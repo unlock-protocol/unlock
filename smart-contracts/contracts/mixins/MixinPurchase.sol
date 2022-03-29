@@ -229,7 +229,6 @@ contract MixinPurchase is
 
     // check the lock
     require(_originalDurations[_tokenId] != type(uint).max, 'NON_EXPIRING_LOCK');
-    require(_originalPrices[_tokenId] != 0, 'FREE_LOCK');
     require(tokenAddress != address(0), 'NON_ERC20_LOCK');
 
     // make sure duration and pricing havent changed  

@@ -105,25 +105,6 @@ contract('Lock / Recurring memberships', (accounts) => {
           'NON_ERC20_LOCK'
         )
       })
-
-      it('can not renew free lock', async () => {
-        const tx = await locks.FREE.purchase(
-          [keyPrice],
-          [keyOwner],
-          [ZERO_ADDRESS],
-          [ZERO_ADDRESS],
-          [],
-          { from: keyOwner }
-        )
-
-        const { args } = tx.logs.find((v) => v.event === 'Transfer')
-        const { tokenId: newTokenId } = args
-
-        await reverts(
-          locks.FREE.renewMembershipFor(newTokenId, ZERO_ADDRESS),
-          'FREE_LOCK'
-        )
-      })
     })
 
     it('should revert if key doesnt exist', async () => {
