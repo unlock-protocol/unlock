@@ -21,7 +21,7 @@ Now, open Telegram and start a new chat.
 
 First, add the Guild bot (@guildxyz_bot) to your Telegram chat.
 
-Then, in Telegram, configure settings to allow the Guild bot to manage the chat.
+Then, in Telegram, configure the settings to allow the Guild bot to manage the chat.
 
 Adjust the chat settings (set to Public, add a name, click "Done," then set the chat back to Private and click "Done").
 
@@ -43,7 +43,7 @@ Head back over the the Guild.xyz site, and set up the token gate using an Unlock
 
 Save your updates, and you should be all set!
 
-To invice someone to the token-gated chat, direct them to the Guild site for your guild. When someone attempts to join, Guild will manage the process and, if the visitor has the correct Unlock key in their wallet, Guild will link the new member over to the Telegram chat for you, seamlessly. 
+To invite someone to the token-gated chat, direct them to the Guild site for your guild. When someone attempts to join, Guild will manage the process and, if the visitor has the correct Unlock key in their wallet, Guild will link the new member over to the Telegram chat for you, seamlessly. 
 
 ![telegram-with-correct-key.png](/images/blog/guildxyz-telegram/telegram-with-correct-key.png)
 
