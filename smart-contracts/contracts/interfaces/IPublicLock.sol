@@ -232,6 +232,13 @@ interface IPublicLock
   ) external payable;
 
   /**
+   * Deactivate an existing key
+   * @param _tokenId the id of token to burn
+   * @notice the key will be expired and ownership records will be destroyed
+   */
+  function burn(uint _tokenId) public;
+
+  /**
   * @param _gasRefundValue price in wei or token in smallest price unit
   * @dev Set the value to be refunded to the sender on purchase
   */
