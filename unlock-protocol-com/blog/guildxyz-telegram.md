@@ -4,7 +4,7 @@ subTitle: How to token-gate Telegram in minutes
 authorName: Christopher Carfi
 publishDate: March 25, 2022
 description: Here's how to token-gate a Telegram chat with Unlock Protocol and Guild.xyz in minutes.
-image: /images/blog/guildxyz-telegram/guildxyz-telegram.gif
+image: /images/blog/guildxyz-telegram/telegram-with-correct-key.png
 ---
 
 Earlier this month, we showed you [how to token-gate a Discord server](/blog/guildxyz-launch) using Unlock and Guild.xyz.
@@ -15,7 +15,7 @@ Before jumping into Guild and Telegram, make sure you have [set up a lock from t
 
 Now, create a guild on [Guild.xyz](https://guild.xyz/). Connect your wallet, name your guild, give it a description, and select `Telegram`.
 
-![guilda-gif](/images/blog/guildxyz-telegram/guilda.gif)
+![guilda-png](/images/blog/guildxyz-telegram/guilda.png)
 
 Now, open Telegram and start a new chat.
 
