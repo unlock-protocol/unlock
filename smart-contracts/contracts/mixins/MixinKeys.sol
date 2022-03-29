@@ -29,6 +29,13 @@ contract MixinKeys is
     bool _timeAdded
   );
 
+  // fire when a key is extended
+  event KeyExtended(
+    uint indexed tokenId,
+    uint newTimestamp
+  );
+
+  
   event KeyManagerChanged(uint indexed _tokenId, address indexed _newManager);
 
   event KeysMigrated(
@@ -316,7 +323,9 @@ contract MixinKeys is
         newTimestamp = block.timestamp + expirationDuration;
       }
     }
-    _keys[_tokenId].expirationTimestamp = newTimestamp;  
+    _keys[_tokenId].expirationTimestamp = newTimestamp;
+
+    emit KeyExtended(_tokenId, newTimestamp);
   } 
 
   /**
