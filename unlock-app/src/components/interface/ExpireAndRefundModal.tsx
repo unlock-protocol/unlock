@@ -4,17 +4,20 @@ import { WalletServiceContext } from '../../utils/withWalletService'
 import Loading from './Loading'
 import useAccount from '../../hooks/useAccount'
 import AuthenticationContext from '../../contexts/AuthenticationContext'
+import InlineModal from './InlineModal'
 
 interface ExpireAndRefundProps {
+  active: boolean
   lock: any
   lockAddresses: string[]
-  onClose: () => void
+  dismiss: () => void
 }
 
-export const ExpireAndRefund: React.FC<ExpireAndRefundProps> = ({
+export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
+  active,
   lock,
   lockAddresses = [],
-  onClose,
+  dismiss,
 }) => {
   const [lockAddress] = lockAddresses
   const { network } = useContext(AuthenticationContext) as any
@@ -32,8 +35,9 @@ export const ExpireAndRefund: React.FC<ExpireAndRefundProps> = ({
   }
 
   useEffect(() => {
+    if (!active) return
     getBalance()
-  }, [])
+  }, [active])
 
   useEffect(() => {
     if (balance === null) return
@@ -45,7 +49,7 @@ export const ExpireAndRefund: React.FC<ExpireAndRefundProps> = ({
   }
 
   const onCloseCallback = () => {
-    if (typeof onClose === 'function') onClose()
+    if (typeof dismiss === 'function') dismiss()
     setLoading(false)
   }
 
@@ -80,39 +84,41 @@ export const ExpireAndRefund: React.FC<ExpireAndRefundProps> = ({
 
   if (!lock) return <span>No lock selected</span>
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
-      <small>Set the amount you want to refund</small>
-      <input
-        className="text-right my-2"
-        type="number"
-        step="0.01"
-        value={refundAmount}
-        onChange={onAmountChange}
-        min={0}
-        disabled={loading}
-      />
-      <button
-        className="bg-gray-200 rounded px-2 py-1 text-sm mt-4 flex justify-center disabled:opacity-50"
-        type="button"
-        onClick={onExpireAndRefund}
-        disabled={loading || !canAfford}
+    <InlineModal active={active} dismiss={onCloseCallback}>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
       >
-        {loading ? (
-          <Loading size={20} />
-        ) : (
-          <span className="ml-2">Expire and Refund</span>
+        <small>Set the amount you want to refund</small>
+        <input
+          className="text-right my-2"
+          type="number"
+          step="0.01"
+          value={refundAmount}
+          onChange={onAmountChange}
+          min={0}
+          disabled={loading}
+        />
+        <button
+          className="bg-gray-200 rounded px-2 py-1 text-sm mt-4 flex justify-center disabled:opacity-50"
+          type="button"
+          onClick={onExpireAndRefund}
+          disabled={loading || !canAfford}
+        >
+          {loading ? (
+            <Loading size={20} />
+          ) : (
+            <span className="ml-2">Expire and Refund</span>
+          )}
+        </button>
+        {!canAfford && (
+          <small className="text-sm text-red-600 mt-2">
+            Balance can&apos;t cover the refund
+          </small>
         )}
-      </button>
-      {!canAfford && (
-        <small className="text-sm text-red-600 mt-2">
-          Balance can&apos;t cover the refund
-        </small>
-      )}
-    </div>
+      </div>
+    </InlineModal>
   )
 }

@@ -9,7 +9,7 @@ import { buildCSV } from '../../utils/csv'
 import Address from './Address'
 import { MemberFilters } from '../../unlockTypes'
 import { InlineModal } from './InlineModal'
-import { ExpireAndRefund } from './ExpireAndRefund'
+import { ExpireAndRefundModal } from './ExpireAndRefundModal'
 
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
@@ -94,16 +94,12 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   }
   return (
     <Wrapper>
-      <InlineModal
+      <ExpireAndRefundModal
         active={showExpireAndRefundModal}
         dismiss={closeExpireAndRefund}
-      >
-        <ExpireAndRefund
-          lock={currentLock}
-          lockAddresses={lockAddresses}
-          onClose={closeExpireAndRefund}
-        />
-      </InlineModal>
+        lock={currentLock}
+        lockAddresses={lockAddresses}
+      />
       <Table>
         <thead>
           <tr>
