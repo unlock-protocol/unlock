@@ -323,7 +323,7 @@ interface IPublicLock
    * Note that due to the time required to mine a tx, the actual refund amount will be lower
    * than what the user reads from this call.
    */
-  function getCancelAndRefundValueFor(
+  function getCancelAndRefundValue(
     address _keyOwner
   ) external view returns (uint refund);
 
