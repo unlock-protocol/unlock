@@ -447,17 +447,6 @@ contract MixinKeys is
     returns (bool)
   { 
     bool isValid = _keys[_tokenId].expirationTimestamp > block.timestamp;
-
-    // use hook if it exists
-    if(address(onValidKeyHook) != address(0)) {
-      isValid = onValidKeyHook.hasValidKey(
-        address(this),
-        _ownerOf[_tokenId],
-        _keys[_tokenId].expirationTimestamp,
-        isValid
-      );
-    }
-
     return isValid;
   }   
 
@@ -470,17 +459,25 @@ contract MixinKeys is
   )
     public
     view
-    returns (bool)
+    returns (bool isValid)
   { 
-    bool isValid = false;
     uint length = balanceOf(_keyOwner);
     if(length > 0) {
       for (uint i = 0; i < length; i++) {
         if(isValidKey(tokenOfOwnerByIndex(_keyOwner, i))) {
-          isValid = true;
-          break; // stop looping at the first valid key
+          return true; // stop looping at the first valid key
         }
       }
+    }
+
+    // use hook if it exists
+    if(address(onValidKeyHook) != address(0)) {
+      isValid = onValidKeyHook.hasValidKey(
+        address(this),
+        _keyOwner,
+        0, // no timestamp needed (we use tokenId)
+        isValid
+      );
     }
     return isValid;   
   }
