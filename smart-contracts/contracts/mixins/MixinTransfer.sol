@@ -79,7 +79,7 @@ contract MixinTransfer is
       // we have to recalculate the fee here
       fee = getTransferFee(_tokenIdFrom, timeRemaining);
       time = timeRemaining - fee;
-      _setKeyExpirationTimestamp(_tokenIdFrom, block.timestamp); // Effectively expiring the key
+      _keys[_tokenIdFrom].expirationTimestamp = block.timestamp; // Effectively expiring the key
       emit ExpireKey(_tokenIdFrom);
     }
 

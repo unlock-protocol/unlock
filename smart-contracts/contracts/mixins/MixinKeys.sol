@@ -75,7 +75,7 @@ contract MixinKeys is
   mapping (address => mapping (address => bool)) private managerToOperatorApproved;
 
   // store all keys: tokenId => token
-  mapping(uint256 => Key) private _keys;
+  mapping(uint256 => Key) internal _keys;
   
   // store ownership: owner => array of tokens owned by that owner
   mapping(address => mapping(uint256 => uint256)) private _ownedKeyIds;
@@ -531,21 +531,6 @@ contract MixinKeys is
     return _keys[_tokenId].expirationTimestamp;
   }
  
-  /**
-  * @dev Set the key's ExpirationTimestamp field for a given token.
-  * @param _tokenId the tokenId of the key
-  * @param _expirationTimestamp the tokenId of the key
-  * @dev Returns 0 if the owner has never owned a key for this lock
-  */
-  function _setKeyExpirationTimestamp(
-    uint _tokenId,
-    uint _expirationTimestamp
-  ) internal
-  {
-    _isKey(_tokenId);
-    _keys[_tokenId].expirationTimestamp = _expirationTimestamp;
-  }
-
   // Returns the owner of a given tokenId
   function ownerOf(
     uint _tokenId
