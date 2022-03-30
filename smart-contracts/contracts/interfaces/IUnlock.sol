@@ -85,6 +85,17 @@ interface IUnlock
     uint16 version
   ) external returns(address);
 
+  /**
+  * Registers the address of the migration script to use during upgrade
+  * @param _migrationScript the address of the contract
+  */
+  function setMigrationScript(address _migrationScript) external;
+  
+  /**
+  * Returns the address of the migration script
+  */
+  function migrationScript() external returns (address _migrationScript);
+
     /**
    * This function keeps track of the added GDP, as well as grants of discount tokens
    * to the referrer, if applicable.

@@ -203,6 +203,11 @@ contract Unlock is
     emit UnlockTemplateAdded(impl, version);
   }
 
+  /**
+  * Registers the address of the migration script to use during upgrade
+  * @param _migrationScript the address of the contract
+  * @dev if set to address zero, migration step will be ignore during upgrade
+  */
   function setMigrationScript(address _migrationScript) public onlyOwner {
     migrationScript = _migrationScript;
   }
