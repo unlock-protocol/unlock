@@ -1,6 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import { waitFor } from '@testing-library/react'
+import { act, waitFor } from '@testing-library/react'
 import { CancelAndRefundModal } from '../../../../components/interface/keychain/CancelAndRefundModal'
 import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
 import { WalletServiceContext } from '../../../../utils/withWalletService'
@@ -85,7 +85,9 @@ describe('CancelAndRefundModal', () => {
     await waitFor(() => expect(confirmButton).not.toBeDisabled(), {
       timeout: 5000,
     })
-    rtl.fireEvent.click(confirmButton)
+    act(async () => {
+      rtl.fireEvent.click(confirmButton)
+    })
     expect(dismiss).toBeCalledTimes(1)
   })
 })
