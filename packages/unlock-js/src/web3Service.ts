@@ -7,7 +7,7 @@ import {
   getErc20Decimals,
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
-import { Lock } from './types'
+import { Lock, LockManager } from './types'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -74,7 +74,7 @@ export default class Web3Service extends UnlockService {
 
     const unlockContact = await this.getUnlockContract(
       this.networks[network].unlockAddress!,
-      this.providerForNetwork(network)
+      this.providerForNetwork(network)!
     )
     if (unlockContact.publicLockAddress) {
       const templateAddress = await unlockContact.publicLockAddress()
@@ -107,7 +107,7 @@ export default class Web3Service extends UnlockService {
    */
   async getAddressBalance(address: string, network: number) {
     const balance = await this.providerForNetwork(network).getBalance(address)
-    return utils.fromWei(balance, 'ethers')
+    return utils.fromWei(balance, 'ether')
   }
 
   /**

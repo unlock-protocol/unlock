@@ -12,5 +12,11 @@
         "outDir": "dist",
         "resolveJsonModule": true,
         "skipLibCheck": true,
-    }
+    },
+    "include": [
+        "./src/**/*.ts"
+    ],
+    "exclude": [
+        "./src/__tests__"
+    ]
 }

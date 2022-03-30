@@ -3,7 +3,7 @@ import { ethers } from 'ethers'
 // this allows us to flexibly upgrade web3 and fix bugs as they surface
 // or to migrate to a totally different library and have a single point of modification
 export default {
-  toWei: (value: string, units: string) =>
+  toWei: (value: string, units: ethers.BigNumberish) =>
     ethers.utils.parseUnits(value, units),
   // This converts a string representation from a value to a number of units, based on the number of decimals passed in
   toDecimal: (value: string, decimals: number) =>
@@ -16,7 +16,7 @@ export default {
       .formatUnits(ethers.BigNumber.from(num), 'wei')
       .replace('.0', ''),
   toChecksumAddress: ethers.utils.getAddress,
-  fromWei: (num: number, units: string) => {
+  fromWei: (num: ethers.BigNumber, units: ethers.BigNumberish) => {
     return ethers.utils
       .formatUnits(ethers.BigNumber.from(num), units)
       .replace(/\.0$/, '')

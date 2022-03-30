@@ -1,4 +1,5 @@
-import { NetworkConfig, NetworkConfigs } from '@unlock-protocol/types'
+import { JsonRpcProvider } from '@ethersproject/providers'
+import { NetworkConfigs } from '@unlock-protocol/types'
 import { ethers } from 'ethers'
 
 import PublicLockVersions from './PublicLock/index'
@@ -13,18 +14,14 @@ export const Errors = {
  * It is not meant to be instantiated (only subclasses should)
  */
 export default class UnlockService {
-  networks!: {
-    [key: string]: NetworkConfig & {
-      ethersProvider: any
-    }
-  }
+  networks!: NetworkConfigs
+
   versionForAddress: Record<string, any>;
+
+  // eslint-disable-next-line
   [key: string]: any
-  constructor(networks: {
-    [key: string]: NetworkConfig & {
-      ethersProvider: any
-    }
-  }) {
+
+  constructor(networks: NetworkConfigs) {
     this.networks = networks
     this.versionForAddress = {}
   }
@@ -33,9 +30,10 @@ export default class UnlockService {
     if (!this.networks[networkId]) {
       throw new Error(`Missing config for ${networkId}`)
     }
+
     // for convenience, pass directly an ethers provider in the `networks` contructor
     if (this.networks[networkId].ethersProvider) {
-      return this.networks[networkId].ethersProvider
+      return this.networks[networkId].ethersProvider!
     }
     return new ethers.providers.JsonRpcProvider(
       this.networks[networkId].provider,
@@ -53,9 +51,9 @@ export default class UnlockService {
       throw new Error(`Missing config for ${network}`)
     }
 
-    let opCode = await this.providerForNetwork(network).getCode(
-      this.networks[network].unlockAddress
-    )
+    let opCode = await (
+      this.providerForNetwork(network) as JsonRpcProvider
+    ).getCode(this.networks[network].unlockAddress!)
     return opCode !== '0x'
   }
 
