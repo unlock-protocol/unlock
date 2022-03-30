@@ -6,13 +6,13 @@ import {
   Fallback as AvatarFallback,
 } from '@radix-ui/react-avatar'
 import { MdExplore as ExploreIcon } from 'react-icons/md'
-import { CgDanger as DangerIcon } from 'react-icons/cg'
 import styled from 'styled-components'
 import {
   FaWallet as WalletIcon,
   FaQrcode as QrCodeIcon,
   FaCheckCircle as CheckIcon,
 } from 'react-icons/fa'
+import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
 import { Badge } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
@@ -25,6 +25,7 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { MAX_UINT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
+
 interface KeyBoxProps {
   tokenURI: string
   lock: any
