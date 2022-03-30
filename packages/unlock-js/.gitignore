@@ -1,11 +1,10 @@
 # Builds are in:
-/lib
-/esm
+dist
 
 coverage/
 *.tgz
 
-# hardhat 
+# hardhat
 cache
 src/__tests__/contracts
 src/__tests__/artifacts

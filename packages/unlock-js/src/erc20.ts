@@ -5,11 +5,10 @@ import erc20abi from './erc20abi'
 // The SAI contract does not have the symbol method implemented correctly
 const SAI_ADDRESS = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'.toLowerCase()
 
-// This file provides ways to interact with an ERC20 contract
 export async function getErc20BalanceForAddress(
-  erc20ContractAddress,
-  address,
-  provider
+  erc20ContractAddress: string,
+  address: string,
+  provider: ethers.providers.Provider
 ) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
   const balance = await contract.balanceOf(address)
@@ -21,7 +20,10 @@ export async function getErc20BalanceForAddress(
  * @param {*} erc20ContractAddress
  * @param {*} provider
  */
-export async function getErc20Decimals(erc20ContractAddress, provider) {
+export async function getErc20Decimals(
+  erc20ContractAddress: string,
+  provider: ethers.providers.Provider
+) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
   let decimals
   try {
@@ -38,7 +40,10 @@ export async function getErc20Decimals(erc20ContractAddress, provider) {
  * @param {*} erc20ContractAddress
  * @param {*} provider
  */
-export async function getErc20TokenSymbol(erc20ContractAddress, provider) {
+export async function getErc20TokenSymbol(
+  erc20ContractAddress: string,
+  provider: ethers.providers.Provider
+) {
   // The SAI contract has its symbol not implemented
   if (erc20ContractAddress.toLowerCase() === SAI_ADDRESS) {
     return 'SAI'
@@ -62,10 +67,10 @@ export async function getErc20TokenSymbol(erc20ContractAddress, provider) {
  * @param {*} provider
  */
 export async function getAllowance(
-  erc20ContractAddress,
-  lockContractAddress,
-  provider,
-  signer
+  erc20ContractAddress: string,
+  lockContractAddress: string,
+  provider: ethers.providers.Provider,
+  signer: ethers.Signer
 ) {
   const purchaser = await signer.getAddress()
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
@@ -79,11 +84,11 @@ export async function getAllowance(
 }
 
 export async function approveTransfer(
-  erc20ContractAddress,
-  lockContractAddress,
-  value,
-  provider,
-  signer
+  erc20ContractAddress: string,
+  lockContractAddress: string,
+  value: unknown,
+  provider: ethers.providers.Provider,
+  signer: ethers.Signer
 ) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, signer)
   return contract.approve(lockContractAddress, value)

@@ -53,7 +53,6 @@ export default class Dispatcher {
       {
         lockAddress,
         recipient,
-        // @ts-expect-error
         transactionOptions,
       },
       cb

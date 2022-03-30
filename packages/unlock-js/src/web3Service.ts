@@ -7,6 +7,7 @@ import {
   getErc20Decimals,
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
+import { Lock, LockManager } from './types'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -37,7 +38,12 @@ export default class Web3Service extends UnlockService {
    * bytecode for eip-1167 (which defines proxies for locks).
    * @private
    */
-  _create2Address(unlockAddress, templateAddress, account, lockSalt) {
+  _create2Address(
+    unlockAddress: string,
+    templateAddress: string,
+    account: string,
+    lockSalt: string
+  ) {
     const saltHex = `${account}${lockSalt}`
     const byteCode = `0x3d602d80600a3d3981f3363d3d373d3d3d363d73${templateAddress.replace(
       /0x/,
@@ -61,21 +67,21 @@ export default class Web3Service extends UnlockService {
    * For now, losely inspired by
    * https://github.com/HardlyDifficult/hardlydifficult-ethereum-contracts/blob/master/src/utils/create2.js#L29
    */
-  async generateLockAddress(owner, lock, network) {
+  async generateLockAddress(owner: string, lock: Lock, network: number) {
     if (!this.networks[network]) {
       throw new Error(`Missing config for ${network}`)
     }
 
     const unlockContact = await this.getUnlockContract(
-      this.networks[network].unlockAddress,
-      this.providerForNetwork(network)
+      this.networks[network].unlockAddress!,
+      this.providerForNetwork(network)!
     )
     if (unlockContact.publicLockAddress) {
       const templateAddress = await unlockContact.publicLockAddress()
       // Compute the hash identically to v5 (TODO: extract this?)
       const lockSalt = utils.sha3(utils.utf8ToHex(lock.name)).substring(2, 26) // 2+24
       return this._create2Address(
-        this.networks[network].unlockAddress,
+        this.networks[network].unlockAddress!,
         templateAddress,
         owner,
         lockSalt
@@ -90,7 +96,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} network
    * @returns
    */
-  async getTransaction(hash, network) {
+  async getTransaction(hash: string, network: number) {
     return await this.providerForNetwork(network).getTransaction(hash)
   }
 
@@ -99,7 +105,7 @@ export default class Web3Service extends UnlockService {
    * and formats it to a string of ether.
    * Returns a promise with the balance
    */
-  async getAddressBalance(address, network) {
+  async getAddressBalance(address: string, network: number) {
     const balance = await this.providerForNetwork(network).getBalance(address)
     return utils.fromWei(balance, 'ether')
   }
@@ -109,7 +115,7 @@ export default class Web3Service extends UnlockService {
    * We use the block version
    * @return Promise<Lock>
    */
-  async getLock(address, network) {
+  async getLock(address: string, network: number) {
     const version = await this.lockContractAbiVersion(
       address,
       this.providerForNetwork(network)
@@ -124,20 +130,24 @@ export default class Web3Service extends UnlockService {
 
   /**
    * Tell whether a user is a manager for the lock
-   * @param {string} lock
+   * @param {string} lockAddress
    * @param {string} manager
    * @return Promise<boolean>
    */
-  async isLockManager(lock, manager, network) {
+  async isLockManager(
+    lockAddress: string,
+    manager: LockManager,
+    network: number
+  ) {
     const version = await this.lockContractAbiVersion(
-      lock,
+      lockAddress,
       this.providerForNetwork(network)
     )
     if (!version.isLockManager) {
       throw new Error('Lock version not supported')
     }
     return version.isLockManager.bind(this)(
-      lock,
+      lockAddress,
       manager,
       this.providerForNetwork(network)
     )
@@ -145,19 +155,23 @@ export default class Web3Service extends UnlockService {
 
   /**
    * Returns the key to the lock by the account.
-   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} lockAddress
    * @param {PropTypes.string} owner
    */
-  async getKeyByLockForOwner(lock, owner, network) {
+  async getKeyByLockForOwner(
+    lockAddress: string,
+    owner: string,
+    network: number
+  ) {
     const expiration = await this.getKeyExpirationByLockForOwner(
-      lock,
+      lockAddress,
       owner,
       network
     )
-    const tokenId = await this.getTokenIdForOwner(lock, owner, network)
+    const tokenId = await this.getTokenIdForOwner(lockAddress, owner, network)
     const keyPayload = {
       tokenId,
-      lock,
+      lock: lockAddress,
       owner,
       expiration,
     }
@@ -167,13 +181,17 @@ export default class Web3Service extends UnlockService {
   /**
    * Returns the key expiration to the lock by the account.
    * @private
-   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} lockAddress
    * @param {PropTypes.string} owner
    * @return Promise<>
    */
-  async getKeyExpirationByLockForOwner(lock, owner, network) {
+  async getKeyExpirationByLockForOwner(
+    lockAddress: string,
+    owner: string,
+    network: number
+  ) {
     const lockContract = await this.getLockContract(
-      lock,
+      lockAddress,
       this.providerForNetwork(network)
     )
 
@@ -199,13 +217,17 @@ export default class Web3Service extends UnlockService {
   /**
    * Returns the key expiration to the lock by the account.
    * @private
-   * @param {PropTypes.string} lock
+   * @param {PropTypes.string} lockAddress
    * @param {PropTypes.string} owner
    * @return Promise<>
    */
-  async getTokenIdForOwner(lock, owner, network) {
+  async getTokenIdForOwner(
+    lockAddress: string,
+    owner: string,
+    network: number
+  ) {
     const lockContract = await this.getLockContract(
-      lock,
+      lockAddress,
       this.providerForNetwork(network)
     )
 
@@ -223,7 +245,10 @@ export default class Web3Service extends UnlockService {
    * @param signedData
    * @returns {Promise<*>}
    */
-  async recoverAccountFromSignedData(data, signedData) {
+  async recoverAccountFromSignedData<T extends string | ethers.Bytes>(
+    data: T,
+    signedData: ethers.Signature
+  ) {
     return utils.verifyMessage(data, signedData)
   }
 
@@ -232,7 +257,7 @@ export default class Web3Service extends UnlockService {
    * @param {string} contractAddress
    * @returns {Promise<string>}
    */
-  async getTokenSymbol(contractAddress, network) {
+  async getTokenSymbol(contractAddress: string, network: number) {
     const symbolPromise = getErc20TokenSymbol(
       contractAddress,
       this.providerForNetwork(network)
@@ -246,7 +271,11 @@ export default class Web3Service extends UnlockService {
    * @param {string} userWalletAddress
    * @returns {Promise<string>}
    */
-  async getTokenBalance(contractAddress, userWalletAddress, network) {
+  async getTokenBalance(
+    contractAddress: string,
+    userWalletAddress: string,
+    network: number
+  ) {
     const balance = await getErc20BalanceForAddress(
       contractAddress,
       userWalletAddress,
@@ -262,7 +291,7 @@ export default class Web3Service extends UnlockService {
   /**
    * Yields true if an address is key granter on a lock
    */
-  async isKeyGranter(lockAddress, address, network) {
+  async isKeyGranter(lockAddress: string, address: string, network: number) {
     const version = await this.lockContractAbiVersion(
       lockAddress,
       this.providerForNetwork(network)
@@ -284,7 +313,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} tokenId
    * @param {*} network
    */
-  async keyManagerOf(lockAddress, tokenId, network) {
+  async keyManagerOf(lockAddress: string, tokenId: string, network: number) {
     const version = await this.lockContractAbiVersion(
       lockAddress,
       this.providerForNetwork(network)
@@ -305,7 +334,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} tokenId
    * @param {*} network
    */
-  async ownerOf(lockAddress, tokenId, network) {
+  async ownerOf(lockAddress: string, tokenId: string, network: number) {
     const lockContract = await this.getLockContract(
       lockAddress,
       this.providerForNetwork(network)
@@ -318,7 +347,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} lockAddress
    * @param {*} network
    */
-  async lockContract(lockAddress, network) {
+  async lockContract(lockAddress: string, network: number) {
     return await this.getLockContract(
       lockAddress,
       this.providerForNetwork(network)

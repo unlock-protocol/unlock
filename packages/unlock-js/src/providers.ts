@@ -1,6 +1,6 @@
 // There is no standard way to detect the provider name...
 // TODO: remove? this convenience function is unused
-export function getCurrentProvider(environment) {
+export function getCurrentProvider(environment: any) {
   if (
     environment.ethereum &&
     environment.ethereum.constructor.name === 'Object'
@@ -36,6 +36,6 @@ export function getCurrentProvider(environment) {
   return 'UnknownProvider'
 }
 
-export function getWeb3Provider(url) {
+export function getWeb3Provider(url: string) {
   return url // we will simply return the URL, walletService will construct its own ethers provider!
 }
