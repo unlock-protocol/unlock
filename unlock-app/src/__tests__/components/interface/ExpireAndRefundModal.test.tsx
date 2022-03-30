@@ -2,7 +2,6 @@ import React from 'react'
 import * as rtl from '@testing-library/react'
 import { OwnedKey } from '../../../components/interface/keychain/KeychainTypes'
 import { ExpireAndRefundModal } from '../../../components/interface/ExpireAndRefundModal'
-<<<<<<< HEAD
 import { WalletServiceContext } from '../../../utils/withWalletService'
 import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 import { ConfigContext } from '../../../utils/withConfig'
@@ -11,8 +10,6 @@ import {
   AuthenticationContext,
   defaultValues,
 } from '../../../contexts/AuthenticationContext'
-=======
->>>>>>> 6708f35ef (add test for key cancelation modals)
 
 const aKey: OwnedKey = {
   id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
@@ -31,7 +28,6 @@ const aKey: OwnedKey = {
   },
 }
 const dismiss: jest.Mock<any, any> = jest.fn()
-<<<<<<< HEAD
 
 const renderWithContexts = (component: React.ReactElement<any>) => {
   const network = 1337
@@ -64,8 +60,6 @@ const renderWithContexts = (component: React.ReactElement<any>) => {
   )
 }
 
-=======
->>>>>>> 6708f35ef (add test for key cancelation modals)
 const modalActive: React.ReactElement<any> = (
   <ExpireAndRefundModal
     active
@@ -82,7 +76,6 @@ const modalInactive: React.ReactElement<any> = (
     lockAddresses={[aKey.lock.address]}
   />
 )
-<<<<<<< HEAD
 
 const mockWalletService = {
   getCancelAndRefundValueFor: jest.fn(),
@@ -118,18 +111,6 @@ describe('ExpireAndRefundModal', () => {
   it('correctly render ExpireAndRefund and have title', () => {
     expect.assertions(2)
     const { container, getByText } = renderWithContexts(modalActive)
-=======
-const render = () => {
-  return rtl.render(modalActive)
-}
-const renderInactive = () => {
-  return rtl.render(modalInactive)
-}
-describe('ExpireAndRefundModal', () => {
-  it('correctly render ExpireAndRefund and have title', () => {
-    expect.assertions(2)
-    const { container, getByText } = render()
->>>>>>> 6708f35ef (add test for key cancelation modals)
     const title = getByText('Expire and Refund')
     expect(title).toBeDefined()
     expect(container).toBeDefined()
@@ -137,22 +118,14 @@ describe('ExpireAndRefundModal', () => {
 
   it('should show error if lock is not passaed as prop', () => {
     expect.assertions(1)
-<<<<<<< HEAD
     const { getByText } = renderWithContexts(modalInactive)
-=======
-    const { getByText } = renderInactive()
->>>>>>> 6708f35ef (add test for key cancelation modals)
     const message = getByText('No lock selected')
     expect(message).toBeDefined()
   })
 
   it('should call dismiss when CancelAndRefund confirmed', () => {
     expect.assertions(3)
-<<<<<<< HEAD
     const { getByText } = renderWithContexts(modalActive)
-=======
-    const { getByText } = render()
->>>>>>> 6708f35ef (add test for key cancelation modals)
 
     expect(dismiss).toBeCalledTimes(0)
     const confirmButton = getByText('Expire and Refund')

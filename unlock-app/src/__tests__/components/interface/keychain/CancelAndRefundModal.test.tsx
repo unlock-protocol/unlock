@@ -1,6 +1,5 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-<<<<<<< HEAD
 import { act, waitFor, screen } from '@testing-library/react'
 import { CancelAndRefundModal } from '../../../../components/interface/keychain/CancelAndRefundModal'
 import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
@@ -10,12 +9,6 @@ import AuthenticationContext, {
 } from '../../../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../../../utils/withConfig'
 import { Web3ServiceContext } from '../../../../utils/withWeb3Service'
-=======
-import { waitFor } from '@testing-library/react'
-import { CancelAndRefundModal } from '../../../../components/interface/keychain/CancelAndRefundModal'
-import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
-import { WalletServiceContext } from '../../../../utils/withWalletService'
->>>>>>> 6708f35ef (add test for key cancelation modals)
 
 const accountAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const aKey: OwnedKey = {
@@ -35,7 +28,6 @@ const aKey: OwnedKey = {
   },
 }
 const dismiss: jest.Mock<any, any> = jest.fn()
-<<<<<<< HEAD
 
 const renderWithContexts = (component: React.ReactElement<any>) => {
   const account = '0x123'
@@ -71,18 +63,13 @@ const renderWithContexts = (component: React.ReactElement<any>) => {
   )
 }
 
-=======
->>>>>>> 6708f35ef (add test for key cancelation modals)
 const component: React.ReactElement<any> = (
   <CancelAndRefundModal
     active
     dismiss={dismiss}
     lock={aKey.lock}
     account={accountAddress}
-<<<<<<< HEAD
     currency="eth"
-=======
->>>>>>> 6708f35ef (add test for key cancelation modals)
   />
 )
 
@@ -92,24 +79,10 @@ const componentInactive: React.ReactElement<any> = (
     dismiss={dismiss}
     lock={undefined}
     account={accountAddress}
-<<<<<<< HEAD
     currency="eth"
   />
 )
 
-=======
-  />
-)
-
-const render = () => {
-  return rtl.render(component)
-}
-
-const renderInactive = () => {
-  return rtl.render(componentInactive)
-}
-
->>>>>>> 6708f35ef (add test for key cancelation modals)
 const mockWalletService = {
   getCancelAndRefundValueFor: jest.fn(),
 }
@@ -125,47 +98,30 @@ describe('CancelAndRefundModal', () => {
   })
   it('correctly render CancelAndRefund', () => {
     expect.assertions(1)
-<<<<<<< HEAD
     const { container } = renderWithContexts(component)
-=======
-    const { container } = render()
->>>>>>> 6708f35ef (add test for key cancelation modals)
     expect(container).toBeDefined()
   })
 
   it('should show error if lock is not passaed as prop', () => {
     expect.assertions(1)
-<<<<<<< HEAD
     const { getByText } = renderWithContexts(componentInactive)
-=======
-    const { getByText } = renderInactive()
->>>>>>> 6708f35ef (add test for key cancelation modals)
     const message = getByText('No lock selected')
     expect(message).toBeDefined()
   })
 
   it('should call dismiss when CancelAndRefund confirmed', async () => {
     expect.assertions(5)
-<<<<<<< HEAD
     const { container } = renderWithContexts(component)
     expect(await screen.findByText(/Cancel and Refund/i)).toBeInTheDocument()
-=======
-    const { container } = render()
-
->>>>>>> 6708f35ef (add test for key cancelation modals)
     expect(dismiss).toBeCalledTimes(0)
     const confirmButton = container.querySelector('button') as HTMLElement
     expect(confirmButton).toBeDefined()
     await waitFor(() => expect(confirmButton).not.toBeDisabled(), {
       timeout: 5000,
     })
-<<<<<<< HEAD
     act(async () => {
       rtl.fireEvent.click(confirmButton)
     })
-=======
-    rtl.fireEvent.click(confirmButton)
->>>>>>> 6708f35ef (add test for key cancelation modals)
     expect(dismiss).toBeCalledTimes(1)
   })
 })
