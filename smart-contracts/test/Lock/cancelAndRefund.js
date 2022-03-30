@@ -60,7 +60,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
   it('the amount of refund should be less than the original keyPrice when purchased normally', async () => {
     const estimatedRefund = new BigNumber(
-      await lock.getCancelAndRefundValueFor.call(tokenIds[0])
+      await lock.getCancelAndRefundValue.call(tokenIds[0])
     )
     assert(estimatedRefund.lt(keyPrice))
   })
@@ -76,7 +76,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     )
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
     const estimatedRefund = new BigNumber(
-      await lock.getCancelAndRefundValueFor.call(args.tokenId)
+      await lock.getCancelAndRefundValue(args.tokenId)
     )
     assert(estimatedRefund.lt(keyPrice))
   })
@@ -92,7 +92,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     )
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
     const estimatedRefund = new BigNumber(
-      await locks.FREE.getCancelAndRefundValueFor.call(args.tokenId)
+      await locks.FREE.getCancelAndRefundValue.call(args.tokenId)
     )
     assert(estimatedRefund, 0)
   })
@@ -112,7 +112,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
         await web3.eth.getBalance(keyOwners[0])
       )
       estimatedRefund = new BigNumber(
-        await lock.getCancelAndRefundValueFor.call(tokenIds[0])
+        await lock.getCancelAndRefundValue.call(tokenIds[0])
       )
       txObj = await lock.cancelAndRefund(tokenIds[0], {
         from: keyOwners[0],

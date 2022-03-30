@@ -403,7 +403,7 @@ contract('Unlock / upgrades', async (accounts) => {
                   })
 
                   it('Latest Key is owned', async () => {
-                    const id = await lockLatest.getKeyOfOwnerByIndex(
+                    const id = await lockLatest.tokenOfOwnerByIndex(
                       keyOwner.address,
                       0
                     )

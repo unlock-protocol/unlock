@@ -41,22 +41,6 @@ contract MixinERC721Enumerable is
     return _index;
   }
 
-  /// @notice Enumerate NFTs assigned to an owner
-  /// @dev Throws if `_index` >= `balanceOf(_keyOwner)` or if
-  ///  `_keyOwner` is the zero address, representing invalid NFTs.
-  /// @param _keyOwner An address where we are interested in NFTs owned by them
-  /// @param _index A counter less than `balanceOf(_keyOwner)`
-  /// @return The token identifier for the `_index`th NFT assigned to `_keyOwner`,
-  ///   (sort order not specified)
-  function tokenOfOwnerByIndex(
-    address _keyOwner,
-    uint256 _index
-  ) public view
-    returns (uint256)
-  {
-    return getKeyOfOwnerByIndex(_keyOwner, _index);
-  }
-
   function supportsInterface(bytes4 interfaceId) 
     public 
     view 
