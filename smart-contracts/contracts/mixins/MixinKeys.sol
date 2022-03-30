@@ -399,6 +399,7 @@ contract MixinKeys is
 
     // add time to destination key
     _timeMachine(_tokenIdTo, _amount, true);
+
   }
 
   /**

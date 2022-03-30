@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const { ethers } = require('hardhat')
-const { WalletService } = require('../../../lib/index')
+const { WalletService } = require('../../../dist/index')
 
 const Erc20 = require('./deploy-erc20')
 const Ether = require('./transfer')

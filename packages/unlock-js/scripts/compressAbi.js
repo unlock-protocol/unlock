@@ -110,7 +110,7 @@ const doNotModify = `/* eslint-disable */
 `
 console.log('writing abis...')
 fs.writeFileSync(
-  `${path.dirname(__dirname)}/src/abis.js`,
+  `${path.dirname(__dirname)}/src/abis.ts`,
   `${doNotModify}
 const abis = ${JSON.stringify(parsedAbis, null, 2)}
 export default abis`
