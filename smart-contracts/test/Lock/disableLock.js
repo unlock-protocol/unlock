@@ -71,7 +71,7 @@ contract('Lock / disableLock', (accounts) => {
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             value: keyPrice,
           }
@@ -87,7 +87,7 @@ contract('Lock / disableLock', (accounts) => {
           [keyOwner],
           [accounts[3]],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             value: keyPrice,
           }
