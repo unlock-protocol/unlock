@@ -119,20 +119,13 @@ export const Checkout = ({
   const { getAutoLoginEmail } = useAutoLogin()
   const storedEmail = getAutoLoginEmail()
 
-  const checkUnlockLogin = useRef(false)
-  const firstLoading = useRef(false)
   // state change
   useEffect(() => {
     setState(defaultState)
   }, [defaultState])
 
-  useEffect(() => {
-    firstLoading.current = true
-  }, [])
-
   const showLoginForm = () => {
     if (storedEmail.length > 0) {
-      checkUnlockLogin.current = true
       setStoredLoginEmail(storedEmail)
       setCheckoutState('login')
     } else {
@@ -143,7 +136,7 @@ export const Checkout = ({
   // When the account is changed, make sure we ping!
   useEffect(() => {
     const handleUser = async (account?: string) => {
-      if (account && !firstLoading.current) {
+      if (account) {
         let signedMessage
         if (paywallConfig?.messageToSign) {
           signedMessage = await signMessage(paywallConfig?.messageToSign)
@@ -177,7 +170,7 @@ export const Checkout = ({
       }
     }
     handleUser(account)
-  }, [account, firstLoading.current])
+  }, [account])
 
   const allowClose = !(!paywallConfig || paywallConfig?.persistentCheckout)
 
