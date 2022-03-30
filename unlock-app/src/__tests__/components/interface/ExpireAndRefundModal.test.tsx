@@ -2,6 +2,16 @@ import React from 'react'
 import * as rtl from '@testing-library/react'
 import { OwnedKey } from '../../../components/interface/keychain/KeychainTypes'
 import { ExpireAndRefundModal } from '../../../components/interface/ExpireAndRefundModal'
+import { WalletServiceContext } from '../../../utils/withWalletService'
+import { Web3ServiceContext } from '../../../utils/withWeb3Service'
+import { ConfigContext } from '../../../utils/withConfig'
+import configure from '../../../config'
+import {
+  AuthenticationContext,
+  defaultValues,
+} from '../../../contexts/AuthenticationContext'
+
+process.on('unhandledRejection', (err) => console.trace(err))
 
 const aKey: OwnedKey = {
   id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
@@ -20,6 +30,39 @@ const aKey: OwnedKey = {
   },
 }
 const dismiss: jest.Mock<any, any> = jest.fn()
+
+const renderWithContexts = (component: React.ReactElement<any>) => {
+  //const account = '0x123'
+  const network = 1337
+  const config = {
+    networks: {
+      1337: {
+        explorer: {
+          urls: {
+            address: () => '',
+          },
+        },
+      },
+    },
+  }
+
+  const web3Service = {
+    getAddressBalance: jest.fn(() => '123.45'),
+  }
+
+  const Web3ServiceContextProvider = Web3ServiceContext.Provider
+
+  return rtl.render(
+    <Web3ServiceContextProvider value={web3Service}>
+      <ConfigContext.Provider value={config}>
+        <AuthenticationContext.Provider value={{ ...defaultValues, network }}>
+          {component}
+        </AuthenticationContext.Provider>
+      </ConfigContext.Provider>
+    </Web3ServiceContextProvider>
+  )
+}
+
 const modalActive: React.ReactElement<any> = (
   <ExpireAndRefundModal
     active
@@ -36,16 +79,41 @@ const modalInactive: React.ReactElement<any> = (
     lockAddresses={[aKey.lock.address]}
   />
 )
-const render = () => {
-  return rtl.render(modalActive)
+
+const mockWalletService = {
+  getCancelAndRefundValueFor: jest.fn(),
 }
-const renderInactive = () => {
-  return rtl.render(modalInactive)
+
+const mockWeb3Service = {
+  getTransaction: jest.fn(),
 }
+
+const config = configure()
 describe('ExpireAndRefundModal', () => {
+  beforeEach(() => {
+    jest.clearAllMocks()
+    jest.spyOn(React, 'useContext').mockImplementation((context) => {
+      const networkId = 31337
+      if (context === WalletServiceContext) {
+        return mockWalletService
+      }
+      if (context === AuthenticationContext) {
+        return { network: networkId }
+      }
+      if (context === Web3ServiceContext) {
+        return mockWeb3Service
+      }
+      if (context === WalletServiceContext) {
+        return mockWalletService
+      }
+      if (context === ConfigContext) {
+        return config
+      }
+    })
+  })
   it('correctly render ExpireAndRefund and have title', () => {
     expect.assertions(2)
-    const { container, getByText } = render()
+    const { container, getByText } = renderWithContexts(modalActive)
     const title = getByText('Expire and Refund')
     expect(title).toBeDefined()
     expect(container).toBeDefined()
@@ -53,14 +121,14 @@ describe('ExpireAndRefundModal', () => {
 
   it('should show error if lock is not passaed as prop', () => {
     expect.assertions(1)
-    const { getByText } = renderInactive()
+    const { getByText } = renderWithContexts(modalInactive)
     const message = getByText('No lock selected')
     expect(message).toBeDefined()
   })
 
   it('should call dismiss when CancelAndRefund confirmed', () => {
     expect.assertions(3)
-    const { getByText } = render()
+    const { getByText } = renderWithContexts(modalActive)
 
     expect(dismiss).toBeCalledTimes(0)
     const confirmButton = getByText('Expire and Refund')

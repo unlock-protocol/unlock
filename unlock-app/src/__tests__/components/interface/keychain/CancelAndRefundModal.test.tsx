@@ -4,7 +4,13 @@ import { act, waitFor, screen } from '@testing-library/react'
 import { CancelAndRefundModal } from '../../../../components/interface/keychain/CancelAndRefundModal'
 import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
 import { WalletServiceContext } from '../../../../utils/withWalletService'
+import AuthenticationContext, {
+  defaultValues,
+} from '../../../../contexts/AuthenticationContext'
+import { ConfigContext } from '../../../../utils/withConfig'
+import { Web3ServiceContext } from '../../../../utils/withWeb3Service'
 
+const Web3ServiceProvider = Web3ServiceContext.Provider
 const accountAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const aKey: OwnedKey = {
   id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
@@ -23,6 +29,41 @@ const aKey: OwnedKey = {
   },
 }
 const dismiss: jest.Mock<any, any> = jest.fn()
+
+const renderWithContexts = (component: React.ReactElement<any>) => {
+  const account = '0x123'
+  const network = 1337
+  const config = {
+    networks: {
+      1337: {
+        explorer: {
+          urls: {
+            address: () => '',
+          },
+        },
+      },
+    },
+  }
+
+  const web3Service = {
+    getAddressBalance: jest.fn(() => '123.45'),
+  }
+
+  const Web3ServiceContextProvider = Web3ServiceContext.Provider
+
+  return rtl.render(
+    <Web3ServiceContextProvider value={web3Service}>
+      <ConfigContext.Provider value={config}>
+        <AuthenticationContext.Provider
+          value={{ ...defaultValues, account, network }}
+        >
+          {component}
+        </AuthenticationContext.Provider>
+      </ConfigContext.Provider>
+    </Web3ServiceContextProvider>
+  )
+}
+
 const component: React.ReactElement<any> = (
   <CancelAndRefundModal
     active
@@ -41,14 +82,6 @@ const componentInactive: React.ReactElement<any> = (
   />
 )
 
-const render = () => {
-  return rtl.render(component)
-}
-
-const renderInactive = () => {
-  return rtl.render(componentInactive)
-}
-
 const mockWalletService = {
   getCancelAndRefundValueFor: jest.fn(),
 }
@@ -64,20 +97,20 @@ describe('CancelAndRefundModal', () => {
   })
   it('correctly render CancelAndRefund', () => {
     expect.assertions(1)
-    const { container } = render()
+    const { container } = renderWithContexts(component)
     expect(container).toBeDefined()
   })
 
   it('should show error if lock is not passaed as prop', () => {
     expect.assertions(1)
-    const { getByText } = renderInactive()
+    const { getByText } = renderWithContexts(componentInactive)
     const message = getByText('No lock selected')
     expect(message).toBeDefined()
   })
 
   it('should call dismiss when CancelAndRefund confirmed', async () => {
     expect.assertions(5)
-    const { container } = render()
+    const { container } = renderWithContexts(component)
     expect(await screen.findByText(/Cancel and Refund/i)).toBeInTheDocument()
     expect(dismiss).toBeCalledTimes(0)
     const confirmButton = container.querySelector('button') as HTMLElement
