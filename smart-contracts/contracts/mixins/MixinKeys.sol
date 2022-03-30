@@ -46,9 +46,7 @@ contract MixinKeys is
   mapping (address => Key) internal keyByOwner;
 
   // Each tokenId can have at most exactly one owner at a time.
-  // Returns 0 if the token does not exist
-  // TODO: once we decouple tokenId from owner address (incl in js), then we can consider
-  // merging this with totalSupply into an array instead.
+  // Returns address(0) if the token does not exist
   mapping (uint => address) internal _ownerOf;
 
   // Keep track of the total number of unique owners for this lock (both expired and valid).
@@ -67,7 +65,7 @@ contract MixinKeys is
   // be a single approved address
   mapping (uint => address) private approved;
 
-    // Keeping track of approved operators for a given Key manager.
+  // Keeping track of approved operators for a given Key manager.
   // This approves a given operator for all keys managed by the calling "keyManager"
   // The caller may not currently be the keyManager for ANY keys.
   // These approvals are never reset/revoked automatically, unlike "approved",
@@ -86,9 +84,13 @@ contract MixinKeys is
   // Mapping owner address to token count
   mapping(address => uint256) private _balances;
 
-  // Ensure that the caller is the keyManager of the key
-  // or that the caller has been approved
-  // for ownership of that key
+  
+  /** 
+   * Ensure that the caller is the keyManager of the key
+   * or that the caller has been approved
+   * for ownership of that key
+   * @dev This is a modifier
+   */ 
   function _onlyKeyManagerOrApproved(
     uint _tokenId
   )
@@ -103,7 +105,11 @@ contract MixinKeys is
     );
   }
 
-  // Ensures that an owner has a valid key
+  /**
+   * Ensures that an owner has a valid key
+   * @param _user the account to check
+   * @dev This is a modifier
+   */ 
   function _hasValidKey(
     address _user
   ) 
@@ -116,7 +122,8 @@ contract MixinKeys is
   }
 
   /**
-   * Modifier to check if a key is expired or not
+   * Check if a key is expired or not
+   * @dev This is a modifier
    */
   function _isValidKey(
     uint _tokenId
@@ -130,7 +137,10 @@ contract MixinKeys is
     );
   }
 
-  // Ensures that a key has an owner
+  /**
+   * Check if a key actually exists
+   * @dev This is a modifier
+   */
   function _isKey(
     uint _tokenId
   ) 
@@ -158,16 +168,16 @@ contract MixinKeys is
   }
 
   /**
-  * Migrate data from the previous single owner => key mapping to 
-  * the new data structure w multiple tokens.
-  * @param _calldata an ABI-encoded representation of the params 
-  * for v10: `(uint _startIndex, uint nbRecordsToUpdate)`
-  * -  `_startIndex` : the index of the first record to migrate
-  * -  `_nbRecordsToUpdate` : number of records to migrate
-  * @dev if all records can be processed at once, the `schemaVersion` will be updated
-  * if not, you will have to call `updateSchemaVersion`
-  * variable to the latest/current lock version
-  */
+    * Migrate data from the previous single owner => key mapping to 
+    * the new data structure w multiple tokens.
+    * @param _calldata an ABI-encoded representation of the params 
+    * for v10: `(uint _startIndex, uint nbRecordsToUpdate)`
+    * -  `_startIndex` : the index of the first record to migrate
+    * -  `_nbRecordsToUpdate` : number of records to migrate
+    * @dev if all records can be processed at once, the `schemaVersion` will be updated
+    * if not, you will have to call `updateSchemaVersion`
+    * variable to the latest/current lock version
+    */
   function migrate(
     bytes calldata _calldata
   ) virtual public {
@@ -253,16 +263,16 @@ contract MixinKeys is
   }
 
   /**
-  * Returns the id of a key for a specific owner at a specific index
-  * @notice Enumerate keys assigned to an owner
-  * @dev Throws if `_index` >= `balanceOf(_keyOwner)` or if
-  *  `_keyOwner` is the zero address, representing invalid keys.
-  * @param _keyOwner address of the owner
-  * @param _index position index in the array of all keys - less than `balanceOf(_keyOwner)`
-  * @return The token identifier for the `_index`th key assigned to `_keyOwner`,
-  *   (sort order not specified)
-  * NB: name kept to be ERC721 compatible
-  */
+    * Returns the id of a key for a specific owner at a specific index
+    * @notice Enumerate keys assigned to an owner
+    * @dev Throws if `_index` >= `balanceOf(_keyOwner)` or if
+    *  `_keyOwner` is the zero address, representing invalid keys.
+    * @param _keyOwner address of the owner
+    * @param _index position index in the array of all keys - less than `balanceOf(_keyOwner)`
+    * @return The token identifier for the `_index`th key assigned to `_keyOwner`,
+    *   (sort order not specified)
+    * NB: name kept to be ERC721 compatible
+    */
   function tokenOfOwnerByIndex(
     address _keyOwner,
     uint256 _index
@@ -426,19 +436,14 @@ contract MixinKeys is
     returns (uint)
   {
     require(_keyOwner != address(0), 'INVALID_ADDRESS');
-    // uint balance;
-    // if (keyByOwner[_keyOwner].expirationTimestamp != 0) {
-    //   balance = 1;
-    // } 
-    // return balance + _balances[_keyOwner];
     return _balances[_keyOwner];
   }
 
   /**
-  * Check if a certain key is valid
-  * @param _tokenId the id of the key to check validity
-  * @notice this makes use of the onValidKeyHook if it is set
-  */
+   * Check if a certain key is valid
+   * @param _tokenId the id of the key to check validity
+   * @notice this makes use of the onValidKeyHook if it is set
+   */
   function isValidKey(
     uint _tokenId
   )
@@ -483,10 +488,10 @@ contract MixinKeys is
   }
 
   /**
-  * @dev Returns the key's ExpirationTimestamp field for a given token.
-  * @param _tokenId the tokenId of the key
-  * @dev Returns 0 if the owner has never owned a key for this lock
-  */
+    * Returns the key's ExpirationTimestamp field for a given token.
+    * @param _tokenId the tokenId of the key
+    * @dev Returns 0 if the owner has never owned a key for this lock
+    */
   function keyExpirationTimestampFor(
     uint _tokenId
   ) public view
@@ -495,7 +500,11 @@ contract MixinKeys is
     return _keys[_tokenId].expirationTimestamp;
   }
  
-  // Returns the owner of a given tokenId
+  /** 
+   *  Returns the owner of a given tokenId
+   * @param _tokenId the id of the token
+   * @return the address of the owner
+   */ 
   function ownerOf(
     uint _tokenId
   ) public view
@@ -505,10 +514,10 @@ contract MixinKeys is
   }
 
   /**
-  * @notice Public function for updating transfer and cancel rights for a given key
-  * @param _tokenId The id of the key to assign rights for
-  * @param _keyManager The address with the manager's rights for the given key.
-  * Setting _keyManager to address(0) means the keyOwner is also the keyManager
+   * @notice Public function for updating transfer and cancel rights for a given key
+   * @param _tokenId The id of the key to assign rights for
+   * @param _keyManager The address with the manager's rights for the given key.
+   * Setting _keyManager to address(0) means the keyOwner is also the keyManager
    */
   function setKeyManagerOf(
     uint _tokenId,
@@ -587,8 +596,8 @@ contract MixinKeys is
   }
 
   /**
-  * Returns true if _keyManager is the manager of the key
-  * identified by _tokenId
+   * Returns true if _keyManager is the manager of the key
+   * identified by _tokenId
    */
   function _isKeyManager(
     uint _tokenId,
@@ -605,15 +614,15 @@ contract MixinKeys is
   }
 
   /**
-  * @notice Modify the expirationTimestamp of a key
-  * by a given amount.
-  * @param _tokenId The ID of the key to modify.
-  * @param _deltaT The amount of time in seconds by which
-  * to modify the keys expirationTimestamp
-  * @param _addTime Choose whether to increase or decrease
-  * expirationTimestamp (false == decrease, true == increase)
-  * @dev Throws if owner does not have a valid key.
-  */
+    * @notice Modify the expirationTimestamp of a key
+    * by a given amount.
+    * @param _tokenId The ID of the key to modify.
+    * @param _deltaT The amount of time in seconds by which
+    * to modify the keys expirationTimestamp
+    * @param _addTime Choose whether to increase or decrease
+    * expirationTimestamp (false == decrease, true == increase)
+    * @dev Throws if owner does not have a valid key.
+    */
   function _timeMachine(
     uint _tokenId,
     uint256 _deltaT,
@@ -639,7 +648,7 @@ contract MixinKeys is
     emit ExpirationChanged(_tokenId, _deltaT, _addTime);
   }
 
-    /**
+  /**
    * @dev Sets or unsets the approval of a given operator
    * An operator is allowed to transfer all tokens of the sender on their behalf
    * @param _to operator address to set the approval
