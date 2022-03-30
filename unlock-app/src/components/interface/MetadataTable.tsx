@@ -8,7 +8,6 @@ import { camelCaseToTitle } from '../../utils/strings'
 import { buildCSV } from '../../utils/csv'
 import Address from './Address'
 import { MemberFilters } from '../../unlockTypes'
-import { InlineModal } from './InlineModal'
 import { ExpireAndRefundModal } from './ExpireAndRefundModal'
 
 interface KeyMetadata {
