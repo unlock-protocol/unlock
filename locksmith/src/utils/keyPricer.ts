@@ -100,6 +100,18 @@ export default class KeyPricer {
     const gasFee = await this.gasFee(network)
     const unlockServiceFee = this.unlockServiceFee(usdKeyPrice) + gasFee
 
+    // We will invoice EthCC inpendently
+    if (
+      lockAddress.toLowerCase() ===
+      '0xd0A031d9f9486B1D914124D0C1FCAC2e9e6504FE'.toLowerCase()
+    ) {
+      return {
+        keyPrice: usdKeyPrice,
+        unlockServiceFee: 0,
+        creditCardProcessing: 0,
+      }
+    }
+
     return {
       keyPrice: usdKeyPrice,
       unlockServiceFee,

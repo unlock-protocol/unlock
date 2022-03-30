@@ -203,14 +203,17 @@ export const CardConfirmationCheckout = ({
             Pay ${formattedPrice} with Card
           </Button>
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          <FeeNotice>
-            Includes ${(fee / 100).toFixed(2)} in fees{' '}
-            <Link href="https://docs.unlock-protocol.com/governance/frequently-asked-questions#what-are-the-credit-card-fees">
-              <a target="_blank">
-                <InfoIcon />
-              </a>
-            </Link>
-          </FeeNotice>
+          {fee > 0 && (
+            <FeeNotice>
+              Includes ${(fee / 100).toFixed(2)} in fees{' '}
+              <Link href="https://docs.unlock-protocol.com/governance/frequently-asked-questions#what-are-the-credit-card-fees">
+                <a target="_blank">
+                  <InfoIcon />
+                </a>
+              </Link>
+            </FeeNotice>
+          )}
+
           <CardNumber>Card ending in {card.last4}</CardNumber>
         </>
       )}
