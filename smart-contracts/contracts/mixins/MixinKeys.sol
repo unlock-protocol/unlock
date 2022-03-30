@@ -97,7 +97,7 @@ contract MixinKeys is
   {
     require(
       _isKeyManager(_tokenId, msg.sender) ||
-      _isApproved(_tokenId, msg.sender) ||
+      approved[_tokenId] == msg.sender ||
       isApprovedForAll(_ownerOf[_tokenId], msg.sender),
       'ONLY_KEY_MANAGER_OR_APPROVED'
     );
@@ -654,18 +654,6 @@ contract MixinKeys is
     require(_to != msg.sender, 'APPROVE_SELF');
     managerToOperatorApproved[msg.sender][_to] = _approved;
     emit ApprovalForAll(msg.sender, _to, _approved);
-  }
-
-    /**
-   * @dev Checks if the given user is approved to transfer the tokenId.
-   */
-  function _isApproved(
-    uint _tokenId,
-    address _user
-  ) internal view
-    returns (bool)
-  {
-    return approved[_tokenId] == _user;
   }
 
   /**
