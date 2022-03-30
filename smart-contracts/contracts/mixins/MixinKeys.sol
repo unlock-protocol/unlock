@@ -197,7 +197,7 @@ contract MixinKeys is
         nbRecordsToUpdate = 100;
     } else {
       // decode param
-      (startIndex, startIndex) = abi.decode(_calldata, (uint, uint));
+      (startIndex, nbRecordsToUpdate) = abi.decode(_calldata, (uint, uint));
     }
 
     // parse migration script
@@ -217,8 +217,7 @@ contract MixinKeys is
   }
 
   function migrateKey (uint tokenId) public returns (bool migrated) {
-    _onlyLockManager;
-    
+
     // get owner
     address keyOwner = _ownerOf[tokenId];
     
