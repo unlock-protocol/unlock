@@ -61,7 +61,7 @@ contract MixinPurchase is
     address[] memory _recipients,
     address[] memory _referrers,
     address[] memory _keyManagers,
-    bytes calldata _data
+    bytes[] calldata _data
   ) external payable
   {
     _onlyIfAlive();
@@ -94,7 +94,7 @@ contract MixinPurchase is
       }
 
       // price      
-      uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrers[i], _data);
+      uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrers[i], _data[i]);
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
       if(tokenAddress != address(0)) {
@@ -123,7 +123,7 @@ contract MixinPurchase is
           msg.sender, 
           _recipient, 
           _referrers[i], 
-          _data, 
+          _data[i], 
           inMemoryKeyPrice, 
           pricePaid
         );
