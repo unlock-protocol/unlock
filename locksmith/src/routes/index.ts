@@ -22,8 +22,7 @@ router.use((request, _, next) => {
     // When the route starts with the chain (deprecated?)
     chain = parseInt(match[1])
   } else if (request.query?.chain) {
-    // @ts-expect-error
-    chain = parseInt(request.query.chain)
+    chain = parseInt(String(request.query.chain))
   }
   // @ts-expect-error
   request.chain = chain

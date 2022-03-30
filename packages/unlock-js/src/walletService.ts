@@ -157,6 +157,11 @@ export default class WalletService extends UnlockService {
   async purchaseKey(
     params: {
       lockAddress: string
+      owner?: string
+      keyPrice?: string
+      data?: string
+      erc20Address?: string
+      decimals?: number
     },
     callback: WalletServiceCallback
   ) {
@@ -195,6 +200,9 @@ export default class WalletService extends UnlockService {
     params: {
       lockAddress: string
       keyOwner: string
+      amount?: string
+      decimals?: number
+      erc20Address?: string
     },
     callback: WalletServiceCallback
   ) {
@@ -215,6 +223,7 @@ export default class WalletService extends UnlockService {
   async cancelAndRefund(
     params: {
       lockAddress: string
+      tokenId: string
     },
     callback: WalletServiceCallback
   ) {
@@ -235,6 +244,8 @@ export default class WalletService extends UnlockService {
     params: {
       lockAddress: string
       recipient: string
+      tokenId: string
+      duration?: string
     },
     callback: WalletServiceCallback
   ) {
@@ -254,6 +265,9 @@ export default class WalletService extends UnlockService {
   async grantKey(
     params: {
       lockAddress: string
+      recipient: string
+      expiration?: string
+      transactionOptions?: unknown
     },
     callback: WalletServiceCallback
   ) {
@@ -272,6 +286,9 @@ export default class WalletService extends UnlockService {
   async withdrawFromLock(
     params: {
       lockAddress: string
+      amount?: string
+      decimals?: number
+      erc20Address?: string
     },
     callback: WalletServiceCallback
   ) {
@@ -343,13 +360,16 @@ export default class WalletService extends UnlockService {
       const signature = await this.signMessage(data, method)
       callback(null, Buffer.from(signature).toString('base64'))
     } catch (error) {
-      callback(error as Error, null)
+      if (error instanceof Error) {
+        callback(error, null)
+      }
     }
   }
 
   async setMaxNumberOfKeys(
     params: {
       lockAddress: string
+      maxNumbeOfKeys: string
     },
     callback: WalletServiceCallback
   ) {
