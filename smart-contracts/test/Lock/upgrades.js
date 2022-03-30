@@ -31,6 +31,7 @@ describe('PublicLock upgrades', () => {
   let lock
   let PublicLockLatest
   let PublicLockPast
+  let migrationScript
 
   const pastPublicLockPath = require.resolve(
     `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${versionNumber}.sol`
@@ -47,6 +48,13 @@ describe('PublicLock upgrades', () => {
 
     // re-compile contract using hardhat
     await run('compile')
+
+    // deploy migration script
+    const MigrationScript = await ethers.getContractFactory(
+      'MigrateLockV9toV10'
+    )
+    migrationScript = await MigrationScript.deploy()
+    await migrationScript.deployed()
   })
 
   after(async () => {
@@ -192,7 +200,9 @@ describe('PublicLock upgrades', () => {
           [0, 100]
         )
         const [, lockOwner] = await ethers.getSigners()
-        const tx = await lock.connect(lockOwner).migrate(calldata)
+        const tx = await lock
+          .connect(lockOwner)
+          .migrate(migrationScript.address, calldata)
         const { events } = await tx.wait()
         const { args } = events.find((v) => v.event === 'KeysMigrated')
         updatedRecordsCount = args.updatedRecordsCount
