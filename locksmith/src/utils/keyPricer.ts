@@ -86,8 +86,14 @@ export default class KeyPricer {
   }
 
   // Fee denominated in cents
-  unlockServiceFee(cost: number): number {
-    return Math.ceil(cost * 0.1) // Unlock charges 10% of transaction.
+  unlockServiceFee(lock: string, cost: number): number {
+    if (
+      lock.toLowerCase() ===
+      '0xd0A031d9f9486B1D914124D0C1FCAC2e9e6504FE'.toLowerCase()
+    ) {
+      return Math.ceil(cost * 0.25) // Special terms for Ethcc 2022. we charge 2.5%
+    }
+    return Math.ceil(cost * 0.07) // Unlock charges 7% of transaction.
   }
 
   async generate(
@@ -98,7 +104,8 @@ export default class KeyPricer {
     const usdKeyPrice = await this.keyPriceUSD(lockAddress, network)
 
     const gasFee = await this.gasFee(network)
-    const unlockServiceFee = this.unlockServiceFee(usdKeyPrice) + gasFee
+    const unlockServiceFee =
+      this.unlockServiceFee(lockAddress, usdKeyPrice) + gasFee
 
     return {
       keyPrice: usdKeyPrice,
