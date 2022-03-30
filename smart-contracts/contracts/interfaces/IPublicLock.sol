@@ -529,11 +529,19 @@ interface IPublicLock
   /**
   * Migrate data from the previous single owner => key mapping to 
   * the new data structure w multiple tokens.
+  * @param _migrationScript the address of the contract used to migrate
   * @param _calldata an ABI-encoded representation of the params (v10: the number of records to migrate as `uint`)
   * @dev when all record schemas are sucessfully upgraded, this function will update the `schemaVersion`
   * variable to the latest/current lock version
   */
-  function migrate(bytes calldata _calldata) external;
+  function migrate(address _migrationScript, bytes calldata _calldata) external;
+  
+  /**
+   * Migrate a single key
+   * @param _tokenId the token of the id to migrate
+   * @return true if token has been migrated, else false
+   */
+  function migrateKey(uint _tokenId) external returns (bool);
 
   /**
   * Returns the version number of the data schema currently used by the lock

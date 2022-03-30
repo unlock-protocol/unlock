@@ -11,7 +11,7 @@ contract TestPublicLockUpgraded is PublicLock {
     return 'hello world';
   }
 
-  function migrate(bytes calldata) public override {
+  function migrate(address, bytes calldata) public override {
     schemaVersion = super.publicLockVersion() + 1;
   }
 }

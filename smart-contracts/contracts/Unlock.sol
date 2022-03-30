@@ -103,6 +103,9 @@ contract Unlock is
   mapping(uint16 => address) private _publicLockImpls;
   uint16 public publicLockLatestVersion;
 
+  // set script for migration
+  address public migrationScript;
+
   // Events
   event NewLock(
     address indexed lockOwner,
@@ -198,6 +201,10 @@ contract Unlock is
     if (publicLockLatestVersion < version) publicLockLatestVersion = version;
 
     emit UnlockTemplateAdded(impl, version);
+  }
+
+  function setMigrationScript(address _migrationScript) public onlyOwner {
+    migrationScript = _migrationScript;
   }
 
   /**
@@ -312,9 +319,11 @@ contract Unlock is
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
     proxyAdmin.upgrade(proxy, impl);
 
-    // let's upgrade the data schema
-    // the function is called with empty bytes as migration behaviour is set by the lock in accordance to data version
-    lock.migrate('0x');
+    // if the migration address is empty then no migration is triggered
+    if(migrationScript != address(0)) {
+      // the function is called with empty bytes as migration behaviour is set by the lock in accordance to data version
+      lock.migrate(migrationScript, '');
+    }
 
     emit LockUpgraded(lockAddress, version);
     return lockAddress;

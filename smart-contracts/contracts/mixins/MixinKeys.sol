@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import './MixinLockCore.sol';
+import '../interfaces/migrations/IMigrateLockV9toV10.sol';
 
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
@@ -160,6 +161,7 @@ contract MixinKeys is
   /**
   * Migrate data from the previous single owner => key mapping to 
   * the new data structure w multiple tokens.
+  * @param _migrationScript the address of the migration script
   * @param _calldata an ABI-encoded representation of the params 
   * for v10: `(uint _startIndex, uint nbRecordsToUpdate)`
   * -  `_startIndex` : the index of the first record to migrate
@@ -169,9 +171,10 @@ contract MixinKeys is
   * variable to the latest/current lock version
   */
   function migrate(
+    address _migrationScript,
     bytes calldata _calldata
   ) virtual public {
-    
+
     // make sure we have correct data version before migrating
     require(
       (
@@ -181,66 +184,64 @@ contract MixinKeys is
       ),
       'SCHEMA_VERSION_NOT_CORRECT'
     );
-
-    // count the records that are actually migrated
-    uint startIndex = 0;
     
     // count the records that are actually migrated
-    uint updatedRecordsCount;
+    uint startIndex = 0;
 
     // the index of the last record to migrate in this call
     uint nbRecordsToUpdate;
 
-    // the total number of records to migrate
-    uint totalSupply = totalSupply();
-    
     // default to 100 when sent from Unlock, as this is called by default in the upgrade script.
     // If there are more than 100 keys, the migrate function will need to be called again until all keys have been migrated.
     if( msg.sender == address(unlockProtocol) ) {
-      nbRecordsToUpdate = 100;
+        nbRecordsToUpdate = 100;
     } else {
       // decode param
-      (startIndex, nbRecordsToUpdate) = abi.decode(_calldata, (uint, uint));
+      (startIndex, startIndex) = abi.decode(_calldata, (uint, uint));
     }
 
-    // cap the number of records to migrate to totalSupply
-    if(nbRecordsToUpdate > totalSupply) nbRecordsToUpdate = totalSupply;
+    // parse migration script
+    IMigrateLockV9toV10 migrationScript = IMigrateLockV9toV10(_migrationScript);
 
-    for (uint256 i = startIndex; i < startIndex + nbRecordsToUpdate; i++) {
-      // tokenId starts at 1
-      uint tokenId = i + 1;
-      address keyOwner = _ownerOf[tokenId];
-      Key memory k = keyByOwner[keyOwner];
-
-      // make sure key exists
-      if(k.tokenId != 0 && k.expirationTimestamp != 0) {
-
-        // copy key in new mapping
-        _keys[i + 1] = Key(k.tokenId, k.expirationTimestamp);
-        
-        // delete token from previous owner
-        delete keyByOwner[keyOwner];
-
-        // record new owner
-        _ownedKeyIds[keyOwner][0] = tokenId;
-        _ownedKeysIndex[tokenId] = 0;
-
-        // update ownership
-        _balances[keyOwner] += 1;
-
-        // keep track of updated records
-        updatedRecordsCount++;
-      }
-    }
-    
-    // enable lock if all keys has been migrated in a single run
-    if(nbRecordsToUpdate >= totalSupply) {
-      schemaVersion = publicLockVersion();
-    }
-
-    emit KeysMigrated(
-      updatedRecordsCount // records that have been migrated
+    // start migration
+    uint updatedRecordsCount = migrationScript.migrate(
+      address(this),
+      startIndex,
+      nbRecordsToUpdate
     );
+
+    // keep track of records that have been migrated
+    emit KeysMigrated(
+      updatedRecordsCount 
+    );
+  }
+
+  function migrateKey (uint tokenId) public returns (bool migrated) {
+    _onlyLockManager;
+    
+    // get owner
+    address keyOwner = _ownerOf[tokenId];
+    
+    // check if key needs to be migrated
+    if(keyByOwner[keyOwner].expirationTimestamp != 0) {
+      // copy key in new mapping
+      _keys[tokenId] = Key(tokenId, keyByOwner[keyOwner].expirationTimestamp);
+      
+      // delete token from previous owner
+      delete keyByOwner[keyOwner];
+
+      // record new owner
+      _ownedKeyIds[keyOwner][0] = tokenId;
+      _ownedKeysIndex[tokenId] = 0;
+
+      // update ownership
+      _balances[keyOwner] += 1;
+      
+      // flag
+      migrated = true;
+    } else {
+      migrated = false;
+    }
   }
 
   /**
