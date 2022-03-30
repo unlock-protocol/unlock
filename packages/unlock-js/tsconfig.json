@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "allowJs": true,
+        "target": "es2020",
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "strict": true,
+        "alwaysStrict": true,
+        "forceConsistentCasingInFileNames": true,
+        "checkJs": false,
+        "esModuleInterop": true,
+        "outDir": "dist",
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+    },
+    "include": [
+        "./src/**/*.ts"
+    ],
+    "exclude": [
+        "./src/__tests__"
+    ]
+}
