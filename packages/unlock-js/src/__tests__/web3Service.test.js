@@ -15,7 +15,7 @@ const networks = {
 
 let web3Service
 
-jest.mock('../erc20.js', () => {
+jest.mock('../erc20.ts', () => {
   return {
     getErc20Decimals: jest.fn(() => Promise.resolve(18)),
     getErc20BalanceForAddress: jest.fn(() => Promise.resolve('0x0')),
