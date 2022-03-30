@@ -21,7 +21,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
       [accounts[1]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
-      [],
+      [[]],
       {
         from: accounts[1],
         value: keyPrice,

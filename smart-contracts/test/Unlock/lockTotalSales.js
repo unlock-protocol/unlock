@@ -32,7 +32,7 @@ contract('Unlock / lockTotalSales', (accounts) => {
         [accounts[0]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           value: price,
           from: accounts[0],

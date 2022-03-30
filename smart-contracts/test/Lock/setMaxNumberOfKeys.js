@@ -44,7 +44,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
         buyers.slice(0, 10).map((b) => b.address),
         buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
         buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
-        [],
+        [[]],
         {
           value: keyPrice.mul(buyers.length).toString(),
         }
@@ -61,7 +61,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
             [buyers[11].address],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],
-            [],
+            [[]],
             {
               value: keyPrice.toString(),
             }
@@ -101,7 +101,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
         buyers.map((b) => b.address),
         buyers.map(() => web3.utils.padLeft(0, 40)),
         buyers.map(() => web3.utils.padLeft(0, 40)),
-        [],
+        [[]],
         {
           value: keyPrice.mul(buyers.length).toString(),
         }
@@ -123,7 +123,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
         buyers.slice(0, 10).map((b) => b.address),
         buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
         buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
-        [],
+        [[]],
         {
           value: keyPrice.mul(buyers.length).toString(),
         }
@@ -147,7 +147,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
             [buyers[11].address],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],
-            [],
+            [[]],
             {
               value: keyPrice.toString(),
             }

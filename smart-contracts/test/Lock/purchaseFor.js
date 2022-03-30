@@ -44,7 +44,7 @@ contract('Lock / purchaseFor', (accounts) => {
         [accounts[0]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
         }
@@ -71,7 +71,7 @@ contract('Lock / purchaseFor', (accounts) => {
         [accounts[2]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
         }

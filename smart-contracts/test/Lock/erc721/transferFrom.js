@@ -28,7 +28,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      [],
+      keyOwners.map(() => []),
       {
         value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
         from,
@@ -181,7 +181,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
             [accounts[8]],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],
-            [],
+            [[]],
             {
               value: web3.utils.toWei('0.01', 'ether'),
               from: accounts[8],
@@ -232,7 +232,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       [accounts[1]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
-      [],
+      [[]],
       {
         from: accounts[1],
       }
