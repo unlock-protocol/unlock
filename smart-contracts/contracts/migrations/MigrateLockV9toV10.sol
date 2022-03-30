@@ -47,12 +47,8 @@ contract MigrateLockV9toV10 {
         uint nbRecordsToUpdate =  _nbRecordsToUpdate > totalSupply ? totalSupply : _nbRecordsToUpdate;
 
         for (uint256 i = _startIndex; i < _startIndex + nbRecordsToUpdate; i++) {
-            // tokenId starts at 1
-            uint tokenId = i + 1;
-            address keyOwner = lock.ownerOf(tokenId);
-
-            // migrate the key
-            bool migrated = lock.migrateKey(tokenId);
+            // migrate the key (tokenId starts at 1)
+            bool migrated = lock.migrateKey(i + 1);
             if(migrated) {
                 // keep track of updated records
                 updatedRecordsCount++;

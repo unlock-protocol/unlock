@@ -68,6 +68,7 @@ const extendFails = async (lock) => {
 describe('upgradeLock / data migration', () => {
   let unlock
   let lock
+  let migrationScript
   let pastVersion
 
   const pastPublicLockPath = require.resolve(
@@ -124,6 +125,13 @@ describe('upgradeLock / data migration', () => {
     // set v1 as main template
     await unlock.setLockTemplate(publicLockPast.address)
 
+    // deploy migration script
+    const MigrationScript = await ethers.getContractFactory(
+      'MigrateLockV9toV10'
+    )
+    migrationScript = await MigrationScript.deploy()
+    await migrationScript.deployed()
+
     // deploy a simple lock
     const args = [
       60 * 60 * 24 * 30, // 30 days
@@ -148,10 +156,30 @@ describe('upgradeLock / data migration', () => {
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()
     await unlock.addLockTemplate(publicLockLatest.address, pastVersion + 1)
+
+    // set migration template
+    await unlock.setMigrationScript(migrationScript.address)
   })
 
   it('lock should have correct version', async () => {
     assert.equal(await lock.publicLockVersion(), pastVersion)
+  })
+
+  describe('migrationScript', () => {
+    it('can be set only by Unlock owner', async () => {
+      const [, , someone] = await ethers.getSigners()
+      await reverts(
+        unlock.connect(someone).setMigrationScript(migrationScript.address),
+        'ONLY_OWNER'
+      )
+    })
+    it('stores adress correctly', async () => {
+      const [lockManager] = await ethers.getSigners()
+      await unlock
+        .connect(lockManager)
+        .setMigrationScript(migrationScript.address)
+      assert.equal(await unlock.migrationScript(), migrationScript.address)
+    })
   })
 
   describe('data / schema migration with more than 100 records', () => {
@@ -286,7 +314,9 @@ describe('upgradeLock / data migration', () => {
           ['uint', 'uint'],
           [100, 100]
         )
-        const tx = await lock.connect(lockOwner).migrate(calldata)
+        const tx = await lock
+          .connect(lockOwner)
+          .migrate(migrationScript.address, calldata)
         const { events } = await tx.wait()
         const { args } = events.find((event) => event.event === 'KeysMigrated')
         updatedRecordsCount = args.updatedRecordsCount
@@ -327,7 +357,9 @@ describe('upgradeLock / data migration', () => {
           ['uint', 'uint'],
           [200, 100]
         )
-        const tx = await lock.connect(lockOwner).migrate(calldata1)
+        const tx = await lock
+          .connect(lockOwner)
+          .migrate(migrationScript.address, calldata1)
         const { events } = await tx.wait()
         const { args } = events.find((v) => v.event === 'KeysMigrated')
         assert.equal(args.updatedRecordsCount.toNumber(), 100)
@@ -337,7 +369,9 @@ describe('upgradeLock / data migration', () => {
           ['uint', 'uint'],
           [300, 200]
         )
-        const tx2 = await lock.connect(lockOwner).migrate(calldata2)
+        const tx2 = await lock
+          .connect(lockOwner)
+          .migrate(migrationScript.address, calldata2)
         const { events: events2 } = await tx2.wait()
         const { args: args2 } = events2.find((v) => v.event === 'KeysMigrated')
         assert.equal(args2.updatedRecordsCount.toNumber(), 200)
