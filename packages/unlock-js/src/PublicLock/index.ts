@@ -3,7 +3,6 @@ import v6 from './v6'
 import v7 from './v7'
 import v8 from './v8'
 import v9 from './v9'
-import v10 from './v10'
 
 export default {
   v4,
@@ -11,5 +10,4 @@ export default {
   v7,
   v8,
   v9,
-  v10,
-}
+} as Record<string, any>
