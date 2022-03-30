@@ -232,6 +232,14 @@ interface IPublicLock
   ) external payable;
 
   /**
+   * Merge existing keys
+   * @param _tokenIdFrom the id of the token to substract time from
+   * @param _tokenIdTo the id of the destination token  to add time
+   * @param _amount the amount of time to transfer (in seconds)
+   */
+  function mergeKeys(uint _tokenIdFrom, uint _tokenIdTo, uint _amount) external;
+
+  /**
    * Deactivate an existing key
    * @param _tokenId the id of token to burn
    * @notice the key will be expired and ownership records will be destroyed
