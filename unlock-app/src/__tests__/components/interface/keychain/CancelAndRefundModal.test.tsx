@@ -1,6 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import { act, waitFor } from '@testing-library/react'
+import { act, waitFor, screen } from '@testing-library/react'
 import { CancelAndRefundModal } from '../../../../components/interface/keychain/CancelAndRefundModal'
 import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
 import { WalletServiceContext } from '../../../../utils/withWalletService'
@@ -78,7 +78,7 @@ describe('CancelAndRefundModal', () => {
   it('should call dismiss when CancelAndRefund confirmed', async () => {
     expect.assertions(5)
     const { container } = render()
-
+    expect(await screen.findByText(/Cancel and Refund/i)).toBeInTheDocument()
     expect(dismiss).toBeCalledTimes(0)
     const confirmButton = container.querySelector('button') as HTMLElement
     expect(confirmButton).toBeDefined()
