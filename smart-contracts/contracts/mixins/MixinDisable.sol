@@ -8,6 +8,6 @@ pragma solidity ^0.8.0;
  * @dev the variables are kept to prevent conflicts in storage layout during upgrades
  */
 contract MixinDisable {
-  bool public isAlive;
+  bool isAlive;
   uint256[1000] private __safe_upgrade_gap;
 }

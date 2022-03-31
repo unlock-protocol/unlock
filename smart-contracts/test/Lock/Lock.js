@@ -26,14 +26,12 @@ contract('Lock / Lock', (accounts) => {
       maxNumberOfKeys,
       totalSupply,
       numberOfOwners,
-      isAlive,
     ] = await Promise.all([
       lock.expirationDuration.call(),
       lock.keyPrice.call(),
       lock.maxNumberOfKeys.call(),
       lock.totalSupply.call(),
       lock.numberOfOwners.call(),
-      lock.isAlive.call(),
     ])
     expirationDuration = new BigNumber(expirationDuration)
     keyPrice = new BigNumber(keyPrice)
