@@ -18,15 +18,6 @@ contract('unlockUtils', (accounts) => {
     })
   })
 
-  describe('function strConcat', () => {
-    let resultingStr
-
-    it('should concatenate 4 strings', async () => {
-      resultingStr = await mock.strConcat.call('hello', '-unlock', '/', '42')
-      assert.equal(resultingStr, 'hello-unlock/42')
-    })
-  })
-
   describe('function address2Str', () => {
     let senderAddress
     // currently returns the address as a string with all chars in lowercase

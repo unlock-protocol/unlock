@@ -12,7 +12,7 @@ let baseTokenURI
 let uri
 
 // Helper function to deal with the lock returning the address part of the URI in lowercase.
-function stringShifter(str) {
+function lowerCase(str) {
   let lowercaseAddress = ''
   let c
   for (let i = 0; i < str.length; i++) {
@@ -29,9 +29,6 @@ function stringShifter(str) {
 contract('Lock / erc721 / tokenURI', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
-
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
   })
 
   describe('the global tokenURI stored in Unlock', () => {
@@ -92,52 +89,80 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
   })
 
   describe(' The custom tokenURI stored in the Lock', () => {
-    it('should allow the lock creator to set a custom base tokenURI', async () => {
-      txObj = await lock.setBaseTokenURI(
-        'https:/customBaseTokenURI.com/api/key/',
+    beforeEach(async () => {
+      // set in unlock
+      await unlock.configUnlock(
+        await unlock.udt(),
+        await unlock.weth(),
+        0,
+        await unlock.globalTokenSymbol(),
+        'https://default.com/api/key/',
+        1, // mainnet
         {
           from: accounts[0],
         }
       )
-      event = txObj.logs[0]
 
-      await lock.purchase(
-        [],
-        [accounts[0]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
-        [],
-        {
-          value: web3.utils.toWei('0.01', 'ether'),
-        }
+      // deploy locks
+      const locks = await deployLocks(unlock, accounts[0])
+      lock = locks.FIRST
+    })
+
+    it('should set base tokenURI from Unlock as default', async () => {
+      baseTokenURI = await lock.tokenURI.call(0)
+      assert.equal(
+        baseTokenURI,
+        `https://default.com/api/key/${lowerCase(lock.address)}/`
       )
-      uri = await lock.tokenURI.call(1)
-      assert.equal(uri, 'https:/customBaseTokenURI.com/api/key/' + '1')
+    })
+
+    it('should allow the lock creator to set a custom base tokenURI', async () => {
+      await lock.setBaseTokenURI('https:/customBaseTokenURI.com/api/key/', {
+        from: accounts[0],
+      })
+      assert.equal(
+        await lock.tokenURI.call(1),
+        'https:/customBaseTokenURI.com/api/key/' + '1'
+      )
+      assert.equal(
+        await lock.tokenURI.call(1234567890),
+        'https:/customBaseTokenURI.com/api/key/' + '1234567890'
+      )
     })
 
     it('should let anyone get the baseTokenURI for a lock by passing tokenId 0', async () => {
-      // here we pass 0 as the tokenId to get the baseTokenURI
-      baseTokenURI = await lock.tokenURI.call(0)
-      // should be the same as the previously set URI
-      assert.equal(baseTokenURI, 'https:/customBaseTokenURI.com/api/key/')
+      // default URI
+      assert.equal(
+        await lock.tokenURI.call(0),
+        `https://default.com/api/key/${lowerCase(lock.address)}/`
+      )
+
+      // use custom URI
+      await lock.setBaseTokenURI('https://customBaseTokenURI.com/api/key/', {
+        from: accounts[0],
+      })
+      assert.equal(
+        await lock.tokenURI.call(0),
+        'https://customBaseTokenURI.com/api/key/'
+      )
     })
 
     it('should allow the lock creator to to unset the custom URI and default to the global one', async () => {
       await lock.setBaseTokenURI('', {
         from: accounts[0],
       })
-      baseTokenURI = await lock.tokenURI.call(0)
-      const lockAddressStr = lock.address.toString()
-      const lowerCaseAddress = stringShifter(lockAddressStr)
       // should now return the globalBaseTokenURI + the lock address
       assert.equal(
-        baseTokenURI,
-        `https://globalBaseTokenURI.com/api/key/${lowerCaseAddress}` + '/'
+        await lock.tokenURI.call(0),
+        `https://default.com/api/key/${lowerCase(lock.address)}` + '/'
       )
-      uri = await lock.tokenURI.call(1)
       assert.equal(
-        uri,
-        `https://globalBaseTokenURI.com/api/key/${lowerCaseAddress}` + '/1'
+        await lock.tokenURI.call(1),
+        `https://default.com/api/key/${lowerCase(lock.address)}` + '/1'
+      )
+      assert.equal(
+        await lock.tokenURI.call(123456789),
+        `https://default.com/api/key/${lowerCase(lock.address)}` + '/123456789'
       )
     })
 

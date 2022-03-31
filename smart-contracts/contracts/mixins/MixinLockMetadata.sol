@@ -22,7 +22,6 @@ contract MixinLockMetadata is
 {
   using UnlockUtils for uint;
   using UnlockUtils for address;
-  using UnlockUtils for string;
 
   /// A descriptive name for a collection of NFTs in this contract.Defaults to "Unlock-Protocol" but is settable by lock owner
   string public name;
@@ -46,6 +45,14 @@ contract MixinLockMetadata is
     // set default values
     name = _lockName;
     lockSymbol = unlockProtocol.globalTokenSymbol();
+    baseTokenURI = string(
+      abi.encodePacked(
+        unlockProtocol.globalBaseTokenURI(),
+        address(this).address2Str(),
+        '/'
+      )
+    );
+
     // registering the optional erc721 metadata interface with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x5b5e139f);
@@ -87,13 +94,28 @@ contract MixinLockMetadata is
 
   /**
    * Allows the Lock owner to update the baseTokenURI for this Lock.
+   * @param _baseTokenURI a URL ending with a /
+   * @notice if an empty string is passed, then the baseTokenURI is reset to 
+   * the default one from the Unlock contract
    */
   function setBaseTokenURI(
     string calldata _baseTokenURI
   ) external
   {
     _onlyLockManager();
-    baseTokenURI = _baseTokenURI;
+    
+    // if empty, reset tokenURI to default
+    if(bytes(_baseTokenURI).length == 0) {
+      baseTokenURI = string(
+        abi.encodePacked(
+          unlockProtocol.globalBaseTokenURI(),
+          address(this).address2Str(),
+          '/'
+        )
+      );
+    } else {
+      baseTokenURI = _baseTokenURI;
+    }
   }
 
   /**  @notice A distinct Uniform Resource Identifier (URI) for a given asset.
@@ -109,45 +131,25 @@ contract MixinLockMetadata is
     uint256 _tokenId
   ) external
     view
-    returns(string memory)
+    returns(string memory _tokenURI)
   {
-    string memory URI;
-    string memory tokenId;
-    string memory lockAddress = address(this).address2Str();
-    string memory seperator;
-
-    if(_tokenId != 0) {
-      tokenId = _tokenId.uint2Str();
-    } else {
-      tokenId = '';
-    }
-
     if(address(onTokenURIHook) != address(0))
     {
-      uint expirationTimestamp = keyExpirationTimestampFor(_tokenId);
       return onTokenURIHook.tokenURI(
         address(this),
         msg.sender,
         ownerOf(_tokenId),
         _tokenId,
-        expirationTimestamp
+        keyExpirationTimestampFor(_tokenId)
         );
     }
 
-    if(bytes(baseTokenURI).length == 0) {
-      URI = unlockProtocol.globalBaseTokenURI();
-      seperator = '/';
-    } else {
-      URI = baseTokenURI;
-      seperator = '';
-      lockAddress = '';
-    }
-
-    return URI.strConcat(
-        lockAddress,
-        seperator,
-        tokenId
-      );
+    return string(
+      abi.encodePacked(
+        baseTokenURI,
+        _tokenId != 0 ? _tokenId.uint2Str() : ''
+      )
+    );
   }
 
   function supportsInterface(bytes4 interfaceId) 

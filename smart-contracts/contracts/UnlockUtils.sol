@@ -7,17 +7,6 @@ pragma solidity >=0.5.17 <=0.8.7;
 
 library UnlockUtils {
 
-  function strConcat(
-    string memory _a,
-    string memory _b,
-    string memory _c,
-    string memory _d
-  ) internal pure
-    returns (string memory _concatenatedString)
-  {
-    return string(abi.encodePacked(_a, _b, _c, _d));
-  }
-
   function uint2Str(
     uint _i
   ) internal pure

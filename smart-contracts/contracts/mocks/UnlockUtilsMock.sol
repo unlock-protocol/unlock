@@ -9,19 +9,7 @@ contract UnlockUtilsMock
 {
   using UnlockUtils for uint;
   using UnlockUtils for address;
-  using UnlockUtils for string;
-
-  function strConcat(
-    string memory _a,
-    string memory _b,
-    string memory _c,
-    string memory _d
-  ) public pure
-    returns (string memory _concatenatedString)
-  {
-    return _a.strConcat(_b, _c, _d);
-  }
-
+  
   function uint2Str(
     uint _i
   ) public pure
