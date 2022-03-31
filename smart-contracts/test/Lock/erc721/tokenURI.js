@@ -6,10 +6,7 @@ const getProxy = require('../../helpers/proxy')
 
 let unlock
 let lock
-let txObj
 let event
-let baseTokenURI
-let uri
 
 // Helper function to deal with the lock returning the address part of the URI in lowercase.
 function lowerCase(str) {
@@ -38,7 +35,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
 
     describe('set global base URI', () => {
       beforeEach(async () => {
-        txObj = await unlock.configUnlock(
+        const tx = await unlock.configUnlock(
           await unlock.udt(),
           await unlock.weth(),
           0,
@@ -49,7 +46,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
             from: accounts[0],
           }
         )
-        event = txObj.logs[0]
+        event = tx.logs[0]
       })
 
       it('should allow the owner to set the global base token URI', async () => {
@@ -109,9 +106,8 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
     })
 
     it('should set base tokenURI from Unlock as default', async () => {
-      baseTokenURI = await lock.tokenURI.call(0)
       assert.equal(
-        baseTokenURI,
+        await lock.tokenURI.call(0),
         `https://default.com/api/key/${lowerCase(lock.address)}/`
       )
     })
