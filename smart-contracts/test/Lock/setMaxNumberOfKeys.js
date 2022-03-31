@@ -101,7 +101,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
         buyers.map((b) => b.address),
         buyers.map(() => web3.utils.padLeft(0, 40)),
         buyers.map(() => web3.utils.padLeft(0, 40)),
-        buyers.slice(0, 10).map(() => []),
+        buyers.map(() => []),
         {
           value: keyPrice.mul(buyers.length).toString(),
         }
