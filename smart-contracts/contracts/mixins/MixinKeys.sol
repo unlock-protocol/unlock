@@ -232,11 +232,10 @@ contract MixinKeys is
         delete keyByOwner[keyOwner];
 
         // record new owner
-        _ownedKeyIds[keyOwner][0] = tokenId;
-        _ownedKeysIndex[tokenId] = 0;
-
-        // update ownership
-        _balances[keyOwner] += 1;
+        _createOwnershipRecord(
+          tokenId,
+          keyOwner
+        );
 
         // keep track of updated records
         updatedRecordsCount++;
