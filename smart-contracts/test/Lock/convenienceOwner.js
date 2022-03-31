@@ -35,72 +35,39 @@ contract('Lock / mimick owner()', () => {
     lock = PublicLock.attach(newLockAddress)
   })
 
+  /*
   describe('owner()', () => {
     it('default should be set as deployer', async () => {
       assert.equal(await lock.owner(), deployer.address)
     })
   })
-
-  describe('setOwner()', () => {
-    it('should set any address as owner', async () => {
-      const wallet = await ethers.Wallet.createRandom()
-      const tx = await lock.connect(deployer).setOwner(wallet.address)
-      await tx.wait()
-      assert.equal(await lock.owner(), wallet.address)
-    })
-    it('should revert on address zero', async () => {
-      await expectRevert(
-        lock.connect(deployer).setOwner(ethers.constants.AddressZero),
-        'OWNER_CANT_BE_ADDRESS_ZERO'
-      )
-    })
-    it('should revert if not lock manager', async () => {
-      const [, notManager, anotherAddress] = await ethers.getSigners()
-      await expectRevert(
-        lock.connect(notManager).setOwner(notManager.address),
-        'ONLY_LOCK_MANAGER'
-      )
-      await expectRevert(
-        lock.connect(notManager).setOwner(anotherAddress.address),
-        'ONLY_LOCK_MANAGER'
-      )
-    })
-  })
+  */
 
   describe('isOwner()', () => {
-    it('should return true when owner address is passed', async () => {
+    it('should return true when address is a Lock Manager', async () => {
       // check default
       assert.equal(await lock.isOwner(deployer.address), true)
+      assert.equal(await lock.isLockManager(deployer.address), true)
+
       // check random address
       const wallet = await ethers.Wallet.createRandom()
-      const tx = await lock.connect(deployer).setOwner(wallet.address)
+      const tx = await lock.connect(deployer).addLockManager(wallet.address)
       await tx.wait()
       assert.equal(await lock.isOwner(wallet.address), true)
     })
-    it('should return false when another address is passed', async () => {
-      const wallet = await ethers.Wallet.createRandom()
+    it('should return false when another address is not a lock Manager', async () => {
       // check default
+      const wallet = await ethers.Wallet.createRandom()
       assert.equal(await lock.isOwner(wallet.address), false)
 
       // check random address
-      const tx = await lock.connect(deployer).setOwner(wallet.address)
+      const tx = await lock.connect(deployer).addLockManager(wallet.address)
       await tx.wait()
       assert.equal(await lock.isOwner(wallet.address), true)
-      assert.equal(await lock.isOwner(deployer.address), false)
-    })
-  })
 
-  describe('OwnershipTransferred event', () => {
-    it('should be emitted when new owner is set', async () => {
-      const wallet = await ethers.Wallet.createRandom()
-      const tx = await lock.connect(deployer).setOwner(wallet.address)
-      const { events } = await tx.wait()
-      const {
-        args: { previousOwner, newOwner },
-      } = events.find(({ event }) => event === 'OwnershipTransferred')
-      assert.equal(previousOwner, deployer.address)
-      assert.equal(newOwner, wallet.address)
-      assert.equal(await lock.owner(), wallet.address)
+      // remove lock manager
+      lock.connect(deployer).renounceLockManager()
+      assert.equal(await lock.isOwner(deployer.address), false)
     })
   })
 })
