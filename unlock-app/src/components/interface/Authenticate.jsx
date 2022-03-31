@@ -195,7 +195,7 @@ Authenticate.defaultProps = {
   optional: false,
   onCancel: null,
   embedded: false,
-  onAuthenticated: () => {},
+  onAuthenticated: () => { },
   providerAdapter: null,
   skipAutoLogin: false,
 }

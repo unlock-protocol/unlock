@@ -4,6 +4,7 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
+import { loadStripe } from '@stripe/stripe-js'
 
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -39,9 +40,13 @@ export const CardConfirmationCheckout = ({
   redirectUri,
 }: CardConfirmationCheckoutProps) => {
   const config = useContext(ConfigContext)
+
   const { account } = useContext(AuthenticationContext)
   // @ts-expect-error account is _always_ defined in this component
-  const { chargeCard } = useAccount(account, network)
+  const { chargeCard, prepareChargeForCard, captureChargeForCard } = useAccount(
+    account,
+    network
+  )
   const [purchasePending, setPurchasePending] = useState(false)
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [error, setError] = useState('')
@@ -99,28 +104,66 @@ export const CardConfirmationCheckout = ({
     setError('')
     setPurchasePending(true)
     try {
-      const hash = await chargeCard(
+      const clientSecret = await prepareChargeForCard(
         token,
         lock.address,
         network,
         formattedPrice,
         recipient || account
       )
-      if (hash) {
-        emitTransactionInfo({
-          lock: lock.address,
-          hash,
-        })
-        if (!paywallConfig.pessimistic) {
-          setKeyExpiration(Infinity) // Optimistic!
-          setPurchasePending(false)
-        } else {
-          setPurchasePending(hash)
-        }
-      } else {
-        setError('Purchase failed. Please try again.')
+      const stripe = await loadStripe(config.stripeApiKey)
+      if (!stripe) {
+        setError('We could not load Stripe.')
         setPurchasePending(false)
+        return
       }
+      const confirmation = await stripe.confirmCardPayment(clientSecret)
+      if (
+        confirmation.error ||
+        confirmation.paymentIntent?.status !== 'requires_capture'
+      ) {
+        setError(
+          confirmation?.error?.message || 'We could not confirm your payment.'
+        )
+        setPurchasePending(false)
+        return
+      }
+      // Cool we have the paymentStatus in good order!
+      // Let's just then send to backend for actual capture and execution of the tx!
+      await captureChargeForCard(
+        lock.address,
+        network,
+        recipient || account,
+        confirmation.paymentIntent.id
+      )
+      // To create a PaymentIntent for confirmation, see our guide at: https://stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic
+      // const paymentIntent = await stripe.paymentIntents.confirm(
+      //   'pi_1DqH152eZvKYlo2CFHYZuxkP',
+      //   {payment_method: 'pm_card_visa'}
+      // );
+
+      // const hash = await chargeCard(
+      //   token,
+      //   lock.address,
+      //   network,
+      //   formattedPrice,
+      //   recipient || account
+      // )
+      // if (hash) {
+      //   emitTransactionInfo({
+      //     lock: lock.address,
+      //     hash,
+      //   })
+      //   if (!paywallConfig.pessimistic) {
+      //     setKeyExpiration(Infinity) // Optimistic!
+      //     setPurchasePending(false)
+      //   } else {
+      //     setPurchasePending(hash)
+      //   }
+      // } else {
+      //   setError('Purchase failed. Please try again.')
+      //   setPurchasePending(false)
+      // }
     } catch (error: any) {
       console.error(error)
       setError('Purchase failed. Please try again.')
