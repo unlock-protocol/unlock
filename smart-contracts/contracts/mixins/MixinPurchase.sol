@@ -94,7 +94,7 @@ contract MixinPurchase is
       }
 
       // price      
-      uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrers[i], _data);
+      uint inMemoryKeyPrice = purchasePriceFor(_recipient, _referrers[i], _data);
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
       if(tokenAddress != address(0)) {
@@ -178,7 +178,7 @@ contract MixinPurchase is
     _extendKey(_tokenId);
 
     // transfer the tokens
-    uint inMemoryKeyPrice = _purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
+    uint inMemoryKeyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
 
     if(tokenAddress != address(0)) {
       require(inMemoryKeyPrice <= _value, 'INSUFFICIENT_ERC20_VALUE');
@@ -198,21 +198,7 @@ contract MixinPurchase is
     address _recipient,
     address _referrer,
     bytes calldata _data
-  ) external view
-    returns (uint minKeyPrice)
-  {
-    minKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
-  }
-
-  /**
-   * @notice returns the minimum price paid for a purchase with these params.
-   * @dev minKeyPrice considers any discount from Unlock or the OnKeyPurchase hook
-   */
-  function _purchasePriceFor(
-    address _recipient,
-    address _referrer,
-    bytes memory _data
-  ) internal view
+  ) public view
     returns (uint minKeyPrice)
   {
     if(address(onKeyPurchaseHook) != address(0))
@@ -223,7 +209,6 @@ contract MixinPurchase is
     {
       minKeyPrice = keyPrice;
     }
-    return minKeyPrice;
   }
 
   uint256[1000] private __safe_upgrade_gap;
