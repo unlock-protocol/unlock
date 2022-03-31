@@ -1,4 +1,4 @@
-import { Table, Column, Model } from 'sequelize-typescript'
+import Model, { Table, Column } from './sequelize'
 
 @Table({ tableName: 'LockIcons', timestamps: true })
 // eslint-disable-next-line import/prefer-default-export

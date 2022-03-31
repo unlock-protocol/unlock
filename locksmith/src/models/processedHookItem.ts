@@ -1,4 +1,4 @@
-import { Table, Model, Column, Validate } from 'sequelize-typescript'
+import Model, { Table, Column, Validate } from './sequelize'
 
 @Table({ tableName: 'ProcessedHookItems', timestamps: true })
 export class ProcessedHookItem extends Model<ProcessedHookItem> {

@@ -1,4 +1,4 @@
-import { Table, Model, DataType, Column } from 'sequelize-typescript'
+import Model, { Table, Column, DataType } from './sequelize'
 
 @Table({ tableName: 'Transactions', timestamps: true })
 // eslint-disable-next-line import/prefer-default-export

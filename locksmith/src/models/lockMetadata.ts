@@ -1,4 +1,4 @@
-import { Table, Model, Column, DataType } from 'sequelize-typescript'
+import Model, { Table, Column, DataType } from './sequelize'
 
 @Table({ tableName: 'LockMetadata', timestamps: true })
 // eslint-disable-next-line import/prefer-default-export

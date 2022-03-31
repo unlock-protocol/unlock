@@ -1,4 +1,4 @@
-import { Table, Column, Model, AllowNull, DataType } from 'sequelize-typescript'
+import Model, { Table, Column, AllowNull, DataType } from './sequelize'
 
 @Table({ tableName: 'HookEvents', timestamps: true })
 export class HookEvent extends Model<HookEvent> {
