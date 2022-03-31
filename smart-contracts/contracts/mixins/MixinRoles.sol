@@ -78,5 +78,16 @@ contract MixinRoles is AccessControlUpgradeable {
     emit KeyGranterRemoved(_granter);
   }
 
+  /** `isOwner()` is provided as an helper to mimick the `Ownable` contract ABI.
+    * The `Ownable` logic is used by many 3rd party services to determine
+    * contract ownership - e.g. who is allowed to edit metadata on Opensea.
+    * @param _account the account to check as lock manager
+    * @notice This logic is NOT used internally by the Unlock Protocol and is made 
+    * available only as a convenience helper.
+   */
+  function isOwner(address _account) public view returns (bool) {
+    return hasRole(LOCK_MANAGER_ROLE, _account);
+  }
+
   uint256[1000] private __safe_upgrade_gap;
 }
