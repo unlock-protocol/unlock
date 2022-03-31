@@ -67,6 +67,14 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
       name: 'Docs',
       href: UNLOCK_LINKS.docs,
     },
+    {
+      name: 'Privacy',
+      href: '/privacy',
+    },
+    {
+      name: 'Terms',
+      href: '/terms',
+    },
   ],
 }
 
