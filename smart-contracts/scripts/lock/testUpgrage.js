@@ -1,10 +1,15 @@
+/**
+ * This script is use to check the changes in storage layout between two upgrades
+ * using the openzeppellin plugin. It will deploy first the version `LATEST_PUBLIC_LOCK_VERSION`
+ * then deploy the version in `contracts/PublicLock.sol`. The errors thrown bu the upgrades plugin
+ * should allow to detect changes in storage layout.
+ *
+ * Usage: `yarn hardhat run scripts/lock/testUpgrage.js`
+ */
 const { ethers, upgrades, run } = require('hardhat')
 const fs = require('fs-extra')
 const path = require('path')
 
-// const {
-//   LATEST_PUBLIC_LOCK_VERSION,
-// } = require('../helpers/constants')
 const LATEST_PUBLIC_LOCK_VERSION = 9
 
 async function main() {

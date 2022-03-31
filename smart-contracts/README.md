@@ -112,6 +112,21 @@ NB: for Polygon, you need an API key from https://polygonscan.com
 
 ### Update PublicLock template
 
+#### Detect changes in storage layout
+
+```
+yarn hardhat run scripts/lock/testUpgrage.js
+```
+
+Note: you need to update the `LATEST_PUBLIC_LOCK_VERSION` in the script.
+
+This script is use to check the changes in storage layout between two upgrades
+using the openzeppellin plugin. It will deploy first the version `LATEST_PUBLIC_LOCK_VERSION`
+then deploy the version in `contracts/PublicLock.sol`. The errors thrown bu the upgrades plugin
+should allow to detect changes in storage layout.
+
+#### Deploy a PublicLock upgrade
+
 ```
 # deploy a new template
 yarn hardhat deploy:template
