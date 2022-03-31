@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useContext,
-  useReducer,
-  useEffect,
-  useRef,
-} from 'react'
+import React, { useState, useContext, useReducer, useEffect } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Web3Service } from '@unlock-protocol/unlock-js'
