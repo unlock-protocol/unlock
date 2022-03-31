@@ -8,7 +8,7 @@ import {
   Model,
   DataTypes,
   BelongsToOptions,
-} from 'sequelize/types'
+} from 'sequelize'
 
 interface TableOptions extends ModelOptions {
   modelName?: string
