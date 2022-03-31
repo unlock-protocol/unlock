@@ -115,7 +115,7 @@ NB: for Polygon, you need an API key from https://polygonscan.com
 #### Detect changes in storage layout
 
 ```
-yarn hardhat run scripts/lock/testUpgrage.js
+yarn hardhat run scripts/lock/testUpgrade.js
 ```
 
 Note: you need to update the `LATEST_PUBLIC_LOCK_VERSION` in the script.

@@ -4,7 +4,7 @@
  * then deploy the version in `contracts/PublicLock.sol`. The errors thrown bu the upgrades plugin
  * should allow to detect changes in storage layout.
  *
- * Usage: `yarn hardhat run scripts/lock/testUpgrage.js`
+ * Usage: `yarn hardhat run scripts/lock/testUpgrade.js`
  */
 const { ethers, upgrades, run } = require('hardhat')
 const fs = require('fs-extra')
