@@ -26,14 +26,12 @@ contract('Lock / Lock', (accounts) => {
       maxNumberOfKeys,
       totalSupply,
       numberOfOwners,
-      isAlive,
     ] = await Promise.all([
       lock.expirationDuration.call(),
       lock.keyPrice.call(),
       lock.maxNumberOfKeys.call(),
       lock.totalSupply.call(),
       lock.numberOfOwners.call(),
-      lock.isAlive.call(),
     ])
     expirationDuration = new BigNumber(expirationDuration)
     keyPrice = new BigNumber(keyPrice)
@@ -45,7 +43,6 @@ contract('Lock / Lock', (accounts) => {
     assert.equal(maxNumberOfKeys.toFixed(), 10)
     assert.equal(totalSupply.toFixed(), 0)
     assert.equal(numberOfOwners.toFixed(), 0)
-    assert.equal(isAlive, true)
   })
 
   it('Should fail on unknown calls', async () => {

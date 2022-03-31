@@ -212,18 +212,6 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         )
       })
     })
-
-    describe('when the lock is disabled', () => {
-      it('should revert', async () => {
-        await locks.FIRST.disableLock()
-        await reverts(
-          locks.FIRST.transferFrom(keyOwners[0], accounts[7], tokenIds[0], {
-            from: keyOwners[0],
-          }),
-          'LOCK_DEPRECATED'
-        )
-      })
-    })
   })
 
   it('can transfer a FREE key', async () => {

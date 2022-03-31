@@ -50,7 +50,6 @@ contract MixinTransfer is
     uint _timeShared
   ) public
   {
-    _onlyIfAlive();
     _lockIsUpToDate();
     _onlyKeyManagerOrApproved(_tokenIdFrom);
     _isValidKey(_tokenIdFrom);
@@ -107,7 +106,6 @@ contract MixinTransfer is
   )
     public
   {
-    _onlyIfAlive();
     _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
     require(ownerOf(_tokenId) == _from, 'TRANSFER_FROM: NOT_KEY_OWNER');
