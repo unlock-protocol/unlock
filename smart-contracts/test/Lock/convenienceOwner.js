@@ -1,5 +1,4 @@
 const { ethers } = require('hardhat')
-const { expectRevert } = require('@openzeppelin/test-helpers')
 const { getProxyAddress } = require('../../helpers/deployments')
 const createLockHash = require('../helpers/createLockCalldata')
 
