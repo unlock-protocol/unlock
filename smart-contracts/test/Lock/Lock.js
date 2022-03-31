@@ -43,7 +43,6 @@ contract('Lock / Lock', (accounts) => {
     assert.equal(maxNumberOfKeys.toFixed(), 10)
     assert.equal(totalSupply.toFixed(), 0)
     assert.equal(numberOfOwners.toFixed(), 0)
-    assert.equal(isAlive, true)
   })
 
   it('Should fail on unknown calls', async () => {
