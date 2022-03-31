@@ -109,10 +109,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
       await tx.wait()
 
       // increase supply
-      await expectRevert(
-        lock.setMaxNumberOfKeys(5),
-        'maxNumberOfKeys is smaller than existing supply'
-      )
+      await expectRevert(lock.setMaxNumberOfKeys(5), 'SMALLER_THAN_SUPPLY')
     })
 
     it('should allow setting a value equal to current total supply', async () => {

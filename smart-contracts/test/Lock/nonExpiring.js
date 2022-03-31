@@ -69,17 +69,17 @@ contract('Lock / non expiring', (accounts) => {
   })
 
   describe('Refund', () => {
-    describe('getCancelAndRefundValueFor', () => {
+    describe('getCancelAndRefundValue', () => {
       it('should refund entire price, regardless of time passed since purchase', async () => {
         // check the refund value
         assert.equal(
-          (await lock.getCancelAndRefundValueFor(tokenId)).toString(),
+          (await lock.getCancelAndRefundValue(tokenId)).toString(),
           keyPrice.toString()
         )
         const fiveHundredYears = 5 * 100 * 365 * 24 * 60 * 60 * 1000
         await time.increaseTo(Date.now() + fiveHundredYears)
         assert.equal(
-          (await lock.getCancelAndRefundValueFor(tokenId)).toString(),
+          (await lock.getCancelAndRefundValue(tokenId)).toString(),
           keyPrice.toString()
         )
       })
