@@ -42,7 +42,10 @@ contract MixinLockMetadata is
   ) internal
   {
     ERC165StorageUpgradeable.__ERC165Storage_init();
+
+    // set default values
     name = _lockName;
+    lockSymbol = unlockProtocol.globalTokenSymbol();
     // registering the optional erc721 metadata interface with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x5b5e139f);
@@ -79,11 +82,7 @@ contract MixinLockMetadata is
     external view
     returns(string memory)
   {
-    if(bytes(lockSymbol).length == 0) {
-      return unlockProtocol.globalTokenSymbol();
-    } else {
-      return lockSymbol;
-    }
+    return lockSymbol;
   }
 
   /**
