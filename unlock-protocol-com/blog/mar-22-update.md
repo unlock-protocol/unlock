@@ -26,8 +26,8 @@ And there are a *huge* number of March 2022 product updates from Unlock! The tea
 - **Whole new static site** - Completely redesigned https://www.unlock-protocol.com
 - **Skipping metadata collection when all fields are optional** - Enable a purchaser to skip optional metadata collection during checkout
 - **Redesigned Keychain** - Redesigned look and feel for the Keychain page, including links to OpenSea for every key
-- **Attachment in emails** - we can now set attachments for email being sent on key purchases for example
-- **Customizable recipient on checkout** - it is now possible upoin checkout to customize the address of the wallet that will receive the NFT membership. in other words, I can buy a membership for someone.
+- **Attachment in emails** - You can now set attachments for email being sent on key purchases for example
+- **Customizable recipient on checkout** - It is now possible upon checkout to customize the address of the wallet that will receive the NFT membership, so a purchaser can buy a membership for someone else.
 - **Easier checkout flow** - Based on community feedback, we continue to deploy redesigned and improved checkout experiences throughout Unlock
 
 ## Coming soon
