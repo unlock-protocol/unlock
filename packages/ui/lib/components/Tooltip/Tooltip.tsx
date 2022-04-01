@@ -30,7 +30,7 @@ export function Tooltip({
       <Content
         side={side}
         sideOffset={sideOffset}
-        className="rounded-lg text-brand-dark text-sm bg-white [box-shadow:0px_8px_30px_rgba(0,0,0,0.08)] px-4 py-0.5"
+        className="rounded text-brand-dark text-sm bg-white [box-shadow:0px_8px_30px_rgba(0,0,0,0.08)] px-4 py-0.5"
       >
         <TooltipArrow className="fill-white" />
         {tip}
