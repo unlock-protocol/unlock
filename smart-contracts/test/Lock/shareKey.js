@@ -89,7 +89,7 @@ contract('Lock / shareKey', (accounts) => {
           buyers,
           buyers.map(() => web3.utils.padLeft(0, 40)),
           buyers.map(() => web3.utils.padLeft(0, 40)),
-          [],
+          buyers.map(() => []),
           {
             value: (keyPrice * buyers.length).toFixed(),
             from: keyOwners[0],
