@@ -1,9 +1,9 @@
 ---
 title: Unlock Protocol Product Updates for March 2022
-subTitle: , and more
+subTitle: Over a dozen new features launched for NFT ticketing, memberships, and user experience improvements
 authorName: Christopher Carfi
 publishDate: March 31, 2022
-description: Unlock Protocol new features for March 2022, including , and more.
+description: Unlock Protocol new features for March 2022, including over a dozen new features launched for NFT ticketing, memberships, and user experience improvements.
 image: /images/blog/mar-22-update/mar-22-banner.png
 ---
 
