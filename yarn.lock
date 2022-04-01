@@ -11515,14 +11515,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/user-event@npm:13.5.0":
-  version: 13.5.0
-  resolution: "@testing-library/user-event@npm:13.5.0"
-  dependencies:
-    "@babel/runtime": ^7.12.5
+"@testing-library/user-event@npm:14.0.4":
+  version: 14.0.4
+  resolution: "@testing-library/user-event@npm:14.0.4"
   peerDependencies:
     "@testing-library/dom": ">=7.21.4"
-  checksum: 16319de685fbb7008f1ba667928f458b2d08196918002daca56996de80ef35e6d9de26e9e1ece7d00a004692b95a597cf9142fff0dc53f2f51606a776584f549
+  checksum: 7a99309acfd22e5173543546548ad2fe8b53466294607fdc9300e914d320f86b1631a45f2e5a695750c1067272d7b57ed541e7e3645fe1fff4de285ecdf76521
   languageName: node
   linkType: hard
 
@@ -14163,7 +14161,7 @@ __metadata:
   dependencies:
     "@testing-library/jest-dom": 5.16.2
     "@testing-library/react": 12.1.3
-    "@testing-library/user-event": 13.5.0
+    "@testing-library/user-event": 14.0.4
     "@unlock-protocol/networks": "workspace:./packages/networks"
     bootstrap: 5.1.3
     formik: 2.2.9
