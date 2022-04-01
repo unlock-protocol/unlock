@@ -11086,10 +11086,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stripe/stripe-js@npm:1.24.0":
-  version: 1.24.0
-  resolution: "@stripe/stripe-js@npm:1.24.0"
-  checksum: 1b26a429a78a7e69ff492d71e2b161d2359a59c2ea6b7dfa2fe068a0daf8f7fdc9639f3003f9358036372a993fcf4279dbc1bf3a6f9e560562f14970e373990b
+"@stripe/stripe-js@npm:1.26.0":
+  version: 1.26.0
+  resolution: "@stripe/stripe-js@npm:1.26.0"
+  checksum: da899da4eb25ff90e322d02da2b024252992ff012bb1e5f238b6855a63ce1e6ff0192384a742c2a454928c0822a0d1b97c6a51094f738d15d4b090a00a49c48f
   languageName: node
   linkType: hard
 
@@ -14552,7 +14552,7 @@ __metadata:
     "@storybook/addons": 6.4.17
     "@storybook/react": 6.4.17
     "@stripe/react-stripe-js": 1.7.0
-    "@stripe/stripe-js": 1.24.0
+    "@stripe/stripe-js": 1.26.0
     "@testing-library/jest-dom": 5.16.3
     "@testing-library/react": 12.1.3
     "@testing-library/react-hooks": 7.0.2
@@ -14586,10 +14586,10 @@ __metadata:
     cross-fetch: 3.1.5
     deep-object-diff: 1.1.7
     dotenv: 16.0.0
-    eslint: 8.10.0
+    eslint: 8.12.0
     eth-sig-util: 2.5.4
     ethereumjs-utils: 5.2.5
-    ethers: 5.5.4
+    ethers: 5.6.2
     file-saver: 2.0.5
     graphql: 15.8.0
     jest: 27.5.1
@@ -14602,14 +14602,14 @@ __metadata:
     node-forge: 1.3.0
     postcss: 8.4.12
     postmate: 1.5.2
-    prettier: 2.5.1
+    prettier: 2.6.1
     prop-types: 15.8.1
     qrcode.react: 3.0.1
     react: 17.0.2
     react-dom: 17.0.2
     react-google-recaptcha: ^2.1.0
     react-gtm-module: 2.0.11
-    react-hook-form: 7.27.1
+    react-hook-form: 7.29.0
     react-hot-toast: ^2.2.0
     react-icons: ^4.3.1
     react-jazzicon: 1.0.3
@@ -26460,6 +26460,44 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ethers@npm:5.6.2, ethers@npm:^5.6.2":
+  version: 5.6.2
+  resolution: "ethers@npm:5.6.2"
+  dependencies:
+    "@ethersproject/abi": 5.6.0
+    "@ethersproject/abstract-provider": 5.6.0
+    "@ethersproject/abstract-signer": 5.6.0
+    "@ethersproject/address": 5.6.0
+    "@ethersproject/base64": 5.6.0
+    "@ethersproject/basex": 5.6.0
+    "@ethersproject/bignumber": 5.6.0
+    "@ethersproject/bytes": 5.6.1
+    "@ethersproject/constants": 5.6.0
+    "@ethersproject/contracts": 5.6.0
+    "@ethersproject/hash": 5.6.0
+    "@ethersproject/hdnode": 5.6.0
+    "@ethersproject/json-wallets": 5.6.0
+    "@ethersproject/keccak256": 5.6.0
+    "@ethersproject/logger": 5.6.0
+    "@ethersproject/networks": 5.6.1
+    "@ethersproject/pbkdf2": 5.6.0
+    "@ethersproject/properties": 5.6.0
+    "@ethersproject/providers": 5.6.2
+    "@ethersproject/random": 5.6.0
+    "@ethersproject/rlp": 5.6.0
+    "@ethersproject/sha2": 5.6.0
+    "@ethersproject/signing-key": 5.6.0
+    "@ethersproject/solidity": 5.6.0
+    "@ethersproject/strings": 5.6.0
+    "@ethersproject/transactions": 5.6.0
+    "@ethersproject/units": 5.6.0
+    "@ethersproject/wallet": 5.6.0
+    "@ethersproject/web": 5.6.0
+    "@ethersproject/wordlists": 5.6.0
+  checksum: 47458ba83140bff55e884ae4e7f1558b0bb3a4d90b98c002d60387cfc1fe7c5cac7a6903930880e6d7e791ebdc5409a16c634e77bcb0cc56d85ccd6b5441c7ad
+  languageName: node
+  linkType: hard
+
 "ethers@npm:^4.0.0-beta.1, ethers@npm:^4.0.20, ethers@npm:^4.0.32, ethers@npm:^4.0.40":
   version: 4.0.49
   resolution: "ethers@npm:4.0.49"
@@ -26550,44 +26588,6 @@ __metadata:
     "@ethersproject/web": 5.4.0
     "@ethersproject/wordlists": 5.4.0
   checksum: 744d58c1c46c88ea6f713ab58436c3f2e1d976691842c021c0377fb22a647eaa64c603ef52273e9de5bdbfaf2831a191c6ae9efc4e78fb571453e9b9492c32a0
-  languageName: node
-  linkType: hard
-
-"ethers@npm:^5.6.2":
-  version: 5.6.2
-  resolution: "ethers@npm:5.6.2"
-  dependencies:
-    "@ethersproject/abi": 5.6.0
-    "@ethersproject/abstract-provider": 5.6.0
-    "@ethersproject/abstract-signer": 5.6.0
-    "@ethersproject/address": 5.6.0
-    "@ethersproject/base64": 5.6.0
-    "@ethersproject/basex": 5.6.0
-    "@ethersproject/bignumber": 5.6.0
-    "@ethersproject/bytes": 5.6.1
-    "@ethersproject/constants": 5.6.0
-    "@ethersproject/contracts": 5.6.0
-    "@ethersproject/hash": 5.6.0
-    "@ethersproject/hdnode": 5.6.0
-    "@ethersproject/json-wallets": 5.6.0
-    "@ethersproject/keccak256": 5.6.0
-    "@ethersproject/logger": 5.6.0
-    "@ethersproject/networks": 5.6.1
-    "@ethersproject/pbkdf2": 5.6.0
-    "@ethersproject/properties": 5.6.0
-    "@ethersproject/providers": 5.6.2
-    "@ethersproject/random": 5.6.0
-    "@ethersproject/rlp": 5.6.0
-    "@ethersproject/sha2": 5.6.0
-    "@ethersproject/signing-key": 5.6.0
-    "@ethersproject/solidity": 5.6.0
-    "@ethersproject/strings": 5.6.0
-    "@ethersproject/transactions": 5.6.0
-    "@ethersproject/units": 5.6.0
-    "@ethersproject/wallet": 5.6.0
-    "@ethersproject/web": 5.6.0
-    "@ethersproject/wordlists": 5.6.0
-  checksum: 47458ba83140bff55e884ae4e7f1558b0bb3a4d90b98c002d60387cfc1fe7c5cac7a6903930880e6d7e791ebdc5409a16c634e77bcb0cc56d85ccd6b5441c7ad
   languageName: node
   linkType: hard
 
@@ -42433,12 +42433,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:7.27.1":
-  version: 7.27.1
-  resolution: "react-hook-form@npm:7.27.1"
+"react-hook-form@npm:7.29.0":
+  version: 7.29.0
+  resolution: "react-hook-form@npm:7.29.0"
   peerDependencies:
-    react: ^16.8.0 || ^17
-  checksum: 99af1d47d34e74bff723e5e987f7e663ed93f11f32fa91f90802ad783105015b3df17d3024fc48dfb7f227a0a4a43473a56dfe950e7c0904c0532f4e29cb5a9e
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 4379f972c916d01f4706c27c0fb207b1676b382fc4803ee557edf77cb2355ff320a659940325fda81c1f4fd799e685a6e228577c1050e5b8c32e815884d0defe
   languageName: node
   linkType: hard
 
