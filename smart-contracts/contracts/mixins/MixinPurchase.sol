@@ -221,7 +221,6 @@ contract MixinPurchase is
     uint _tokenId,
     address _referrer
   ) public {
-    _onlyIfAlive();
     _lockIsUpToDate();
     _isKey(_tokenId);
 
@@ -230,7 +229,7 @@ contract MixinPurchase is
     require(tokenAddress != address(0), 'NON_ERC20_LOCK');
 
     // make sure duration and pricing havent changed  
-    uint keyPrice = _purchasePriceFor(ownerOf(_tokenId), _referrer, '');
+    uint keyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, '');
     require(_originalPrices[_tokenId] == keyPrice, 'PRICE_CHANGED');
     require(_originalDurations[_tokenId] == expirationDuration, 'DURATION_CHANGED');
     require(_originalTokens[_tokenId] == tokenAddress, 'TOKEN_CHANGED');
