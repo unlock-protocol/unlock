@@ -14614,7 +14614,7 @@ __metadata:
     remark: 14.0.2
     remark-html: 15.0.1
     rss: 1.2.2
-    showdown-highlight: 2.1.8
+    showdown-highlight: 3.0.0
     styled-components: 5.3.3
     tailwind-merge: 1.2.0
     tailwindcss: 3.0.18
@@ -20706,6 +20706,13 @@ __metadata:
   version: 8.3.0
   resolution: "commander@npm:8.3.0"
   checksum: 0f82321821fc27b83bd409510bb9deeebcfa799ff0bf5d102128b500b7af22872c0c92cb6a0ebc5a4cf19c6b550fba9cedfa7329d18c6442a625f851377bacf0
+  languageName: node
+  linkType: hard
+
+"commander@npm:^9.0.0":
+  version: 9.1.0
+  resolution: "commander@npm:9.1.0"
+  checksum: 1428319b6b90600a813c28fe1e413996d1be99bf01afe9ebc4a9fc6f8077ff3e75f11809b2d2f85bd9b13d7cb592154278e9bbfdb16dc5843cef97bcba6a9cfd
   languageName: node
   linkType: hard
 
@@ -29394,10 +29401,17 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"highlight.js@npm:^10.1.1, highlight.js@npm:^10.4.1, highlight.js@npm:^10.7.2, highlight.js@npm:~10.7.0":
+"highlight.js@npm:^10.1.1, highlight.js@npm:^10.4.1, highlight.js@npm:~10.7.0":
   version: 10.7.3
   resolution: "highlight.js@npm:10.7.3"
   checksum: defeafcd546b535d710d8efb8e650af9e3b369ef53e28c3dc7893eacfe263200bba4c5fcf43524ae66d5c0c296b1af0870523ceae3e3104d24b7abf6374a4fea
+  languageName: node
+  linkType: hard
+
+"highlight.js@npm:^11.5.0":
+  version: 11.5.0
+  resolution: "highlight.js@npm:11.5.0"
+  checksum: a4339278d5be464fa29047fd00bc91f3d3966f5acbbb861ec51a09f3eea7c79ca63c2e0a2ba0c7b3d3663ee56b11c6470ab2759c7278e0d11af5cb0efa26e6eb
   languageName: node
   linkType: hard
 
@@ -44689,14 +44703,14 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"showdown-highlight@npm:2.1.8":
-  version: 2.1.8
-  resolution: "showdown-highlight@npm:2.1.8"
+"showdown-highlight@npm:3.0.0":
+  version: 3.0.0
+  resolution: "showdown-highlight@npm:3.0.0"
   dependencies:
-    highlight.js: ^10.7.2
+    highlight.js: ^11.5.0
     html-encoder-decoder: ^1.3.9
-    showdown: ^1.9.1
-  checksum: 97ed58078ec62f09e5b0958c589e0c9ae2fa8b1b2a0481243a97c2e53c5b98fc984ea94e9eb8280cad21912ffa93f1ccdacf06ffd7ce961fb015a2c8df8006f0
+    showdown: ^2.0.3
+  checksum: 7a10671185727feb50868afef27a76cbcd47cf6d098b17436c9eb3efa3693ecfaa72fd6518d1c6adf5803a63c02bc70a2aab35b70ce09100d1d3444a01f49833
   languageName: node
   linkType: hard
 
@@ -44708,6 +44722,17 @@ resolve@^2.0.0-next.3:
   bin:
     showdown: bin/showdown.js
   checksum: d6aac199cb28c2b89bce804eddda928c816e5a2b0e0e6dfe66db8ced6968e237995bf1d547046c9970b804e5c3181b1a55740883e1332c837024668f9c031a01
+  languageName: node
+  linkType: hard
+
+"showdown@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "showdown@npm:2.0.3"
+  dependencies:
+    commander: ^9.0.0
+  bin:
+    showdown: bin/showdown.js
+  checksum: 790e728a9ea19d8b3531c1562b063327e95198c9b416f0f927b36e68897233266b8b368e562b61d76dae3eaf88b5b90f95f1fb0a3db9b7504ea6c31e3e305024
   languageName: node
   linkType: hard
 
