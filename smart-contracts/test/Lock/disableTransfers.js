@@ -66,6 +66,17 @@ contract('Lock / disableTransfers', (accounts) => {
       })
     })
 
+    describe('disabling setApprovalForAll', () => {
+      it('should prevent user from setting setApprovalForAll', async () => {
+        await reverts(
+          lock.setApprovalForAll(accounts[8], true, {
+            from: keyOwner,
+          }),
+          'KEY_TRANSFERS_DISABLED'
+        )
+      })
+    })
+
     describe('disabling shareKey', () => {
       it('should prevent key sharing by reverting', async () => {
         // check owner has a key

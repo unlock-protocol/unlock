@@ -70,7 +70,7 @@ contract MixinKeys is
   // The caller may not currently be the keyManager for ANY keys.
   // These approvals are never reset/revoked automatically, unlike "approved",
   // which is reset on transfer.
-  mapping (address => mapping (address => bool)) private managerToOperatorApproved;
+  mapping (address => mapping (address => bool)) internal managerToOperatorApproved;
 
   // store all keys: tokenId => token
   mapping(uint256 => Key) internal _keys;
@@ -673,22 +673,6 @@ contract MixinKeys is
     }
 
     emit ExpirationChanged(_tokenId, _deltaT, _addTime);
-  }
-
-  /**
-   * @dev Sets or unsets the approval of a given operator
-   * An operator is allowed to transfer all tokens of the sender on their behalf
-   * @param _to operator address to set the approval
-   * @param _approved representing the status of the approval to be set
-   */
-  function setApprovalForAll(
-    address _to,
-    bool _approved
-  ) public
-  {
-    require(_to != msg.sender, 'APPROVE_SELF');
-    managerToOperatorApproved[msg.sender][_to] = _approved;
-    emit ApprovalForAll(msg.sender, _to, _approved);
   }
 
   /**
