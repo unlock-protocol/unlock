@@ -39,7 +39,7 @@ contract('Permissions / KeyManager', (accounts) => {
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      [],
+      keyOwners.map(() => []),
       {
         value: (keyPrice * keyOwners.length).toFixed(),
         from: accounts[0],
@@ -62,7 +62,7 @@ contract('Permissions / KeyManager', (accounts) => {
         [keyOwner1],
         [web3.utils.padLeft(0, 40)],
         [accounts[8]],
-        [],
+        [[]],
         {
           value: keyPrice.toFixed(),
           from: keyOwner1,
@@ -82,7 +82,7 @@ contract('Permissions / KeyManager', (accounts) => {
         [keyOwner1],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           value: keyPrice.toFixed(),
           from: keyOwner1,
@@ -129,7 +129,7 @@ contract('Permissions / KeyManager', (accounts) => {
         keyOwners,
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        [],
+        keyOwners.map(() => []),
         {
           value: (keyPrice * keyOwners.length).toFixed(),
           from: accounts[0],

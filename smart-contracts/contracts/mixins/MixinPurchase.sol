@@ -25,7 +25,7 @@ contract MixinPurchase is
   event UnlockCallFailed(address indexed lockAddress, address unlockAddress);
 
   // default to 0 
-  uint256 private _gasRefundValue;
+  uint256 internal _gasRefundValue;
 
   /**
   * @dev Set the value/price to be refunded to the sender on purchase
@@ -61,7 +61,7 @@ contract MixinPurchase is
     address[] memory _recipients,
     address[] memory _referrers,
     address[] memory _keyManagers,
-    bytes calldata _data
+    bytes[] calldata _data
   ) external payable
   {
     _lockIsUpToDate();
@@ -93,7 +93,8 @@ contract MixinPurchase is
       }
 
       // price      
-      uint inMemoryKeyPrice = purchasePriceFor(_recipient, _referrers[i], _data);
+
+      uint inMemoryKeyPrice = purchasePriceFor(_recipient, _referrers[i], _data[i]);
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
       if(tokenAddress != address(0)) {
@@ -122,7 +123,7 @@ contract MixinPurchase is
           msg.sender, 
           _recipient, 
           _referrers[i], 
-          _data, 
+          _data[i], 
           inMemoryKeyPrice, 
           pricePaid
         );
@@ -139,16 +140,7 @@ contract MixinPurchase is
     }
 
     // refund gas
-    if (_gasRefundValue != 0) {
-      if(tokenAddress != address(0)) {
-        IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
-        token.transferFrom(address(this), msg.sender, _gasRefundValue);
-      } else {
-        (bool success, ) = msg.sender.call{value: _gasRefundValue}("");
-        require(success, "REFUND_FAILED");
-      }
-      emit GasRefunded(msg.sender, _gasRefundValue, tokenAddress);
-    }
+    _refundGas();
   }
 
   /**
@@ -186,6 +178,9 @@ contract MixinPurchase is
       // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
       require(inMemoryKeyPrice <= msg.value, 'INSUFFICIENT_VALUE');
     }
+
+    // refund gas (if applicable)
+    _refundGas();
   }
 
   /**
@@ -206,6 +201,23 @@ contract MixinPurchase is
     else
     {
       minKeyPrice = keyPrice;
+    }
+  }
+
+  /**
+   * Refund the specified gas amount and emit an event
+   * @notice this does sth only if `_gasRefundValue` is non-null
+   */
+  function _refundGas() internal {
+    if (_gasRefundValue != 0) { 
+      if(tokenAddress != address(0)) {
+        IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
+        token.transferFrom(address(this), msg.sender, _gasRefundValue);
+      } else {
+        (bool success, ) = msg.sender.call{value: _gasRefundValue}("");
+        require(success, "REFUND_FAILED");
+      }
+      emit GasRefunded(msg.sender, _gasRefundValue, tokenAddress);
     }
   }
 

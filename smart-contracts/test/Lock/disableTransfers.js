@@ -28,7 +28,7 @@ contract('Lock / disableTransfers', (accounts) => {
       [keyOwner],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
-      [],
+      [[]],
       {
         value: keyPrice.toFixed(),
         from: keyOwner,
@@ -62,6 +62,17 @@ contract('Lock / disableTransfers', (accounts) => {
             from: accountWithNoKey,
           }),
           0
+        )
+      })
+    })
+
+    describe('disabling setApprovalForAll', () => {
+      it('should prevent user from setting setApprovalForAll', async () => {
+        await reverts(
+          lock.setApprovalForAll(accounts[8], true, {
+            from: keyOwner,
+          }),
+          'KEY_TRANSFERS_DISABLED'
         )
       })
     })
