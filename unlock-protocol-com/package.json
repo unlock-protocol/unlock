@@ -57,7 +57,7 @@
     "eslint-config-next": "12.0.10",
     "feed": "4.2.2",
     "gray-matter": "4.0.3",
-    "postcss": "8.4.5",
+    "postcss": "8.4.12",
     "prettier": "2.5.1",
     "remark": "14.0.2",
     "remark-html": "15.0.1",
