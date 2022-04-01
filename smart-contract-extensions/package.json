@@ -54,6 +54,6 @@
     "solium": "1.2.5",
     "truffle-assertions": "0.9.2",
     "web3": "1.7.1",
-    "web3-eth-abi": "1.7.0"
+    "web3-eth-abi": "1.7.1"
   }
 }
