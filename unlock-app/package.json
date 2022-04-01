@@ -34,7 +34,7 @@
     "@unlock-protocol/ui": "workspace:./packages/ui",
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
-    "@walletconnect/web3-provider": "1.7.1",
+    "@walletconnect/web3-provider": "1.7.7",
     "apollo-boost": "0.4.9",
     "axios": "0.26.0",
     "babel-eslint": "10.1.0",
