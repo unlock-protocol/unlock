@@ -23,6 +23,7 @@ import NewAccountCheckout from './NewAccountCheckout'
 import { pageTitle } from '../../../constants'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
 import LogIn from '../LogIn'
+import { useAutoLogin } from '../../../hooks/useAutoLogin'
 
 import {
   UserInfo,
@@ -108,11 +109,23 @@ export const Checkout = ({
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
+  const [storedLoginEmail, setStoredLoginEmail] = useState<string>('')
+  const { getAutoLoginEmail } = useAutoLogin()
+  const storedEmail = getAutoLoginEmail()
 
   // state change
   useEffect(() => {
     setState(defaultState)
   }, [defaultState])
+
+  const showLoginForm = () => {
+    if (storedEmail.length > 0) {
+      setStoredLoginEmail(storedEmail)
+      setCheckoutState('login')
+    } else {
+      setCheckoutState('pick-lock')
+    }
+  }
 
   // When the account is changed, make sure we ping!
   useEffect(() => {
@@ -138,16 +151,16 @@ export const Checkout = ({
       if (selectedLock) {
         if (!isUnlockAccount) {
           // Check if we have card details.
-          if (cardDetails) {
-            setCheckoutState('confirm-card-purchase')
-          } else {
-            setCheckoutState('crypto-checkout')
-          }
+          const checkoutState = cardDetails
+            ? 'confirm-card-purchase'
+            : 'crypto-checkout'
+          setCheckoutState(checkoutState)
         } else {
           cardCheckoutOrClaim(selectedLock)
         }
       } else {
         setCheckoutState(defaultState)
+        if (!account && storedEmail) showLoginForm()
       }
     }
     handleUser(account)
@@ -242,6 +255,7 @@ export const Checkout = ({
       <LogIn
         network={1} // We don't actually need a network here really.
         useWallet={() => setCheckoutState('wallet-picker')}
+        storedLoginEmail={storedLoginEmail}
       />
     )
   } else if (state === 'wallet-picker') {
@@ -386,7 +400,7 @@ export const Checkout = ({
         />
         <Locks
           network={paywallConfig?.network}
-          locks={paywallConfig?.locks}
+          locks={paywallConfig?.locks ?? {}}
           setHasKey={setHasKey}
           onSelected={onSelected}
         />
@@ -396,7 +410,7 @@ export const Checkout = ({
             Already a member? Access with your
             <br />{' '}
             <button type="button" onClick={() => setCheckoutState('login')}>
-              unlock acount
+              unlock account
             </button>{' '}
             or your{' '}
             <button

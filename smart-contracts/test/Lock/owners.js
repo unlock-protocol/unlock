@@ -27,7 +27,7 @@ contract('Lock / owners', (accounts) => {
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      [],
+      keyOwners.map(() => []),
       {
         value: (lock.params.keyPrice * keyOwners.length).toFixed(),
         from: accounts[0],
@@ -128,7 +128,7 @@ contract('Lock / owners', (accounts) => {
         [keyOwners[3]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           value: lock.params.keyPrice.toFixed(),
           from: keyOwners[3],

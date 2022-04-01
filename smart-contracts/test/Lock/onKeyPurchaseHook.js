@@ -40,7 +40,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
         [to],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        dataField,
+        [dataField],
         {
           from,
           value: keyPrice.toFixed(),
@@ -58,7 +58,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
         [to],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        dataField,
+        [dataField],
         {
           from,
           value: keyPrice.toFixed(),
@@ -84,7 +84,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
           [to],
           [constants.ZERO_ADDRESS],
           [constants.ZERO_ADDRESS],
-          dataField,
+          [dataField],
           {
             from,
             value: keyPrice.div(2).toFixed(),
@@ -127,7 +127,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
         [to],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        dataField,
+        [dataField],
         {
           from,
           value: keyPrice.div(2).toFixed(),
@@ -147,7 +147,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
         [to],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        dataField,
+        [dataField],
         {
           from,
           value: '0',
@@ -162,7 +162,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
           [to],
           [constants.ZERO_ADDRESS],
           [constants.ZERO_ADDRESS],
-          dataField,
+          [dataField],
           {
             from,
             value: '42',

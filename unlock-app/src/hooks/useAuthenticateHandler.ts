@@ -47,6 +47,13 @@ export function useAuthenticateHandler({
         if (!p?.account) {
           return Promise.reject('Unable to get provider')
         }
+
+        if (p?.isUnlock && p?.email) {
+          setStorage('email', p.email)
+        } else {
+          removeKey('email')
+        }
+        setStorage('provider', providerType)
       }),
       {
         error:
@@ -56,10 +63,6 @@ export function useAuthenticateHandler({
           'Trying to connect with wallet provider. Please approve request on your wallet.',
       }
     )
-    // We can't autologin with Unlock accounts
-    if (providerType !== 'UNLOCK') {
-      setStorage('provider', providerType)
-    }
     return connectedProvider
   }
 
