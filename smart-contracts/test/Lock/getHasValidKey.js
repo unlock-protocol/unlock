@@ -67,6 +67,7 @@ contract('Lock / getHasValidKey', (accounts) => {
     keyOwner = accounts[6]
     beforeEach(async () => {
       lock = locks.SECOND
+      await locks.SECOND.setMaxKeysPerAddress(10)
       const tx = await lock.purchase(
         [],
         [keyOwner, keyOwner, keyOwner],
