@@ -31,7 +31,7 @@ contract MixinPurchase is
   mapping(uint256 => uint256) private _originalPrices;
   
   // Keep track of duration when purchased
-  mapping(uint256 => uint256) private _originalDurations;
+  mapping(uint256 => uint256) internal _originalDurations;
   
   // keep track of token pricing when purchased
   mapping(uint256 => address) private _originalTokens;
@@ -228,14 +228,14 @@ contract MixinPurchase is
     require(_originalDurations[_tokenId] != type(uint).max, 'NON_EXPIRING_LOCK');
     require(tokenAddress != address(0), 'NON_ERC20_LOCK');
 
-    // make sure key is ready for renewal
-    require(isValidKey(_tokenId) == false, 'NOT_READY');
-
     // make sure duration and pricing havent changed  
     uint keyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, '');
     require(_originalPrices[_tokenId] == keyPrice, 'PRICE_CHANGED');
     require(_originalDurations[_tokenId] == expirationDuration, 'DURATION_CHANGED');
     require(_originalTokens[_tokenId] == tokenAddress, 'TOKEN_CHANGED');
+
+    // make sure key is ready for renewal
+    require(isValidKey(_tokenId) == false, 'NOT_READY');
 
     // extend key duration
     _extendKey(_tokenId);

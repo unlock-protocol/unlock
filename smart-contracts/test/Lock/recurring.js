@@ -275,9 +275,28 @@ contract('Lock / Recurring memberships', (accounts) => {
     })
 
     describe('cancel or expire membership', () => {
-      it('expireAndRefund works correctly', async () => {
+      it('reverts after transferFrom', async () => {
+        // make sure key is valid
+        await lock.renewMembershipFor(tokenId, ZERO_ADDRESS)
+        // transfer
+        await lock.transferFrom(keyOwner, accounts[9], tokenId, {
+          from: keyOwner,
+        })
+        // should fail
+        await reverts(
+          lock.renewMembershipFor(tokenId, ZERO_ADDRESS),
+          'DURATION_CHANGED'
+        )
+      })
+
+      it('reverts after a expireAndRefund', async () => {
+        // renew once
+        await lock.renewMembershipFor(tokenId, ZERO_ADDRESS)
         const balanceBefore = new BigNumber(await dai.balanceOf(keyOwner))
-        // expire
+        const allowanceBefore = new BigNumber(
+          await dai.allowance(keyOwner, lock.address)
+        )
+
         const tx = await lock.expireAndRefundFor(tokenId, keyPrice, {
           from: lockOwner,
         })
@@ -287,17 +306,23 @@ contract('Lock / Recurring memberships', (accounts) => {
 
         // refund ok
         assert.equal(
-          new BigNumber(await dai.balanceOf(keyOwner)),
+          new BigNumber(await dai.balanceOf(keyOwner)).toFixed(),
           balanceBefore.plus(keyPrice).toFixed()
         )
 
         // key expired
         assert.equal(await lock.getHasValidKey.call(keyOwner), false)
+        assert.equal(await lock.isValidKey.call(tokenId), false)
 
-        // ERC20 allowance cleared
+        // ERC20 allowance has not been cancelled
         assert.equal(
-          new BigNumber(await dai.allowance(keyOwner, lock.address)).toFixed(),
-          0
+          allowanceBefore.toFixed(),
+          new BigNumber(await dai.allowance(keyOwner, lock.address)).toFixed()
+        )
+
+        await reverts(
+          lock.renewMembershipFor(tokenId, ZERO_ADDRESS),
+          'DURATION_CHANGED'
         )
       })
     })
