@@ -95,7 +95,7 @@ contract MixinPurchase is
 
       // price      
 
-      uint inMemoryKeyPrice = purchasePriceFor(_recipient, _referrers[i], _data);
+      uint inMemoryKeyPrice = purchasePriceFor(_recipient, _referrers[i], _data[i]);
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
       if(tokenAddress != address(0)) {
