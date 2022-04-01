@@ -179,7 +179,6 @@ contract MixinLockCore is
   )
     external
   {
-    _onlyIfAlive();
     _onlyLockManager();
     _isValidToken(_tokenAddress);
     uint oldKeyPrice = keyPrice;

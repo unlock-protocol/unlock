@@ -43,13 +43,6 @@ interface IPublicLock
   function publicLockVersion() external pure returns (uint16);
 
   /**
-  * @notice Used to disable lock before migrating keys and/or destroying contract.
-  * @dev Throws if called by other than a lock manager.
-  * @dev Throws if lock contract has already been disabled.
-  */
-  function disableLock() external;
-
-  /**
    * @dev Called by a lock manager or beneficiary to withdraw all funds from the lock and send them to the `beneficiary`.
    * @dev Throws if called by other than a lock manager or beneficiary
    * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually
@@ -370,8 +363,6 @@ interface IPublicLock
   function expirationDuration() external view returns (uint256 );
 
   function freeTrialLength() external view returns (uint256 );
-
-  function isAlive() external view returns (bool );
 
   function keyPrice() external view returns (uint256 );
 

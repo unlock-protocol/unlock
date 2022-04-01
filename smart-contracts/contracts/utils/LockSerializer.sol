@@ -108,7 +108,6 @@ contract LockSerializer {
   function serialize(address lockAddress) public view returns (Lock memory) {
 
     IPublicLock lock = IPublicLock(lockAddress); 
-    require( lock.isAlive() == true, "Disabled lock can not be serialized");
     
     LockMetadata memory metadata = serializeMetadata(lock);
     LockFees memory fees = serializeFees(lock);

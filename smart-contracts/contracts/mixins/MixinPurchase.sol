@@ -64,7 +64,6 @@ contract MixinPurchase is
     bytes[] calldata _data
   ) external payable
   {
-    _onlyIfAlive();
     _lockIsUpToDate();
     require(maxNumberOfKeys > _totalSupply, 'LOCK_SOLD_OUT');
     require(_recipients.length == _referrers.length, 'INVALID_REFERRERS_LENGTH');
@@ -171,7 +170,6 @@ contract MixinPurchase is
     public 
     payable
   {
-    _onlyIfAlive();
     _lockIsUpToDate();
     _isKey(_tokenId);
 
