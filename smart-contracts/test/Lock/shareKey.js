@@ -11,26 +11,21 @@ let locks
 let tokenIds
 
 contract('Lock / shareKey', (accounts) => {
-  before(async () => {
-    unlock = await getProxy(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-  })
-
   let lock
   let event
   let event1
   let event2
-  let tx1
   let tx2
 
   const keyOwners = [accounts[1], accounts[2], accounts[3]]
-  const accountWithNoKey1 = accounts[4]
   const accountWithNoKey2 = accounts[5]
   const accountWithNoKey3 = accounts[6]
   const approvedAddress = accounts[7]
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
 
-  before(async () => {
+  beforeEach(async () => {
+    unlock = await getProxy(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     const tx = await lock.purchase(
       [],
@@ -54,7 +49,7 @@ contract('Lock / shareKey', (accounts) => {
       it('sender is not approved', async () => {
         await reverts(
           lock.shareKey(accounts[7], 11, 1000, {
-            from: accountWithNoKey1,
+            from: accounts[4],
           }),
           'ONLY_KEY_MANAGER_OR_APPROVED'
         )
@@ -127,22 +122,28 @@ contract('Lock / shareKey', (accounts) => {
     })
 
     describe('fallback behaviors', () => {
-      it('transfers all remaining time if amount to share >= remaining time', async () => {
-        let tooMuchTime = new BigNumber(60 * 60 * 24 * 30 * 2) // 60 days
+      let remaining
+      let tx
+
+      beforeEach(async () => {
+        const tooMuchTime = new BigNumber(60 * 60 * 24 * 30 * 2) // 60 days
         assert.equal(await lock.isValidKey.call(tokenIds[1]), true)
 
-        const remaining = await lock.keyExpirationTimestampFor(tokenIds[1])
-        assert.equal(await lock.balanceOf(accountWithNoKey1), 0)
+        remaining = await lock.keyExpirationTimestampFor(tokenIds[1])
+        assert.equal(await lock.balanceOf(accounts[4]), 0)
 
-        tx1 = await lock.shareKey(accountWithNoKey1, tokenIds[1], tooMuchTime, {
+        tx = await lock.shareKey(accounts[4], tokenIds[1], tooMuchTime, {
           from: keyOwners[1],
         })
-        const { args } = tx1.logs.find((v) => v.event === 'Transfer')
+      })
+
+      it('transfers all remaining time if amount to share >= remaining time', async () => {
+        const { args } = tx.logs.find((v) => v.event === 'Transfer')
         assert.equal(await lock.isValidKey(args.tokenId), true)
 
         // new owner now has a fresh key
-        assert.equal(await lock.balanceOf(accountWithNoKey1), 1)
-        assert.equal(await lock.getHasValidKey.call(accountWithNoKey1), true)
+        assert.equal(await lock.balanceOf(accounts[4]), 1)
+        assert.equal(await lock.getHasValidKey.call(accounts[4]), true)
 
         let newExpirationTimestamp = new BigNumber(
           await lock.keyExpirationTimestampFor.call(args.tokenId)
@@ -151,10 +152,11 @@ contract('Lock / shareKey', (accounts) => {
       })
 
       it('should emit the expireKey Event', async () => {
-        assert.equal(tx1.logs[0].event, 'ExpireKey')
+        assert.equal(tx.logs[0].event, 'ExpireKey')
       })
 
       it('The origin key is expired', async () => {
+        assert.equal(await lock.isValidKey(tokenIds[1]), false)
         assert.equal(await lock.getHasValidKey.call(keyOwners[1]), false)
       })
 
@@ -175,7 +177,7 @@ contract('Lock / shareKey', (accounts) => {
     let timestampAfterSharing
     let newTokenId
 
-    before(async () => {
+    beforeEach(async () => {
       // Change the fee to 5%
       await lock.updateTransferFee(500)
       // approve an address
