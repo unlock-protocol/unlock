@@ -86,6 +86,28 @@ contract('Lock / shareKey', (accounts) => {
           'TRANSFER_TO_SELF'
         )
       })
+
+      it('should revert if keys are sold out', async () => {
+        const buyers = accounts.slice(3, 10)
+        await lock.purchase(
+          [],
+          buyers,
+          buyers.map(() => web3.utils.padLeft(0, 40)),
+          buyers.map(() => web3.utils.padLeft(0, 40)),
+          [],
+          {
+            value: (keyPrice * buyers.length).toFixed(),
+            from: keyOwners[0],
+          }
+        )
+
+        await reverts(
+          lock.shareKey(keyOwners[0], tokenIds[0], 1000, {
+            from: keyOwners[0],
+          }),
+          'LOCK_SOLD_OUT'
+        )
+      })
     })
 
     it('should fail if trying to share a key with a contract which does not implement onERC721Received', async () => {
