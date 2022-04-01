@@ -161,7 +161,7 @@ describe('upgradeLock / data migration', () => {
     let totalSupply = 500
 
     before(async () => {
-      const [, generousBuyer] = await ethers.getSigners()
+      const [, lockOwner, generousBuyer] = await ethers.getSigners()
 
       // create 500 random wallets
       keyOwners = await Promise.all(
@@ -226,7 +226,7 @@ describe('upgradeLock / data migration', () => {
       assert.equal(version, pastVersion + 1)
 
       // set multiple keys
-      await lock.setMaxKeysPerAddress(10)
+      await lock.connect(lockOwner).setMaxKeysPerAddress(10)
     })
 
     describe('features for key are deactivated', () => {
