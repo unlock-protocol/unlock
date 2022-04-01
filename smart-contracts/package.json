@@ -37,7 +37,7 @@
     "ethers": "5.5.4",
     "fs-extra": "10.0.1",
     "hardhat": "2.8.0",
-    "hardhat-contract-sizer": "^2.5.0",
+    "hardhat-contract-sizer": "2.5.1",
     "hardhat-erc1820": "0.1.0",
     "hardhat-gas-reporter": "1.0.8",
     "hardhat-storage-layout": "0.1.6",
