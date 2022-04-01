@@ -11,7 +11,7 @@ image: /images/blog/mar-22-update/mar-22-banner.png
 
 ## Governance items
 
-- **DAO proposal** - Launched a proposal to modify the Unlock DAO quorum and minimum token requirements (Do you hold even a single $UDT? [Please review and vote on the proposal here!](https://www.tally.xyz/governance/eip155:1:0x7757f7f21F5Fa9b1fd168642B79416051cd0BB94/proposal/91388393958346767282436830202582381357138252819862358258168352110789792788073)
+- **DAO proposal** - Launched a proposal to modify the Unlock DAO quorum and minimum token requirements (**NOTE**: Do you hold even a single $UDT? If so, [please review and vote on the proposal here!](https://www.tally.xyz/governance/eip155:1:0x7757f7f21F5Fa9b1fd168642B79416051cd0BB94/proposal/91388393958346767282436830202582381357138252819862358258168352110789792788073))
 
 
 And there are a *huge* number of March 2022 product updates from Unlock! The team delivered a number of new features this month that include:
