@@ -32,7 +32,7 @@
     "react-dom": "17.0.2",
     "react-test-renderer": "17.0.2",
     "style-loader": "3.3.1",
-    "styled-components": "5.3.3"
+    "styled-components": "5.3.5"
   },
   "license": "MIT",
   "devDependencies": {
