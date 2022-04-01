@@ -288,8 +288,12 @@ const Key = ({ ownedKey, account, network }: Props) => {
           >
             <OpenSeaIcon />
           </button>
+<<<<<<< HEAD
           {true && (
 >>>>>>> 68d8f0132 (refactoring)
+=======
+          {!isKeyExpired && (
+>>>>>>> 359db4e0d (restore check on button)
             <button
               className={iconButtonClass}
               type="button"
