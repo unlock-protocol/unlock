@@ -12988,12 +12988,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:17.0.12":
-  version: 17.0.12
-  resolution: "@types/react-dom@npm:17.0.12"
+"@types/react-dom@npm:17.0.14":
+  version: 17.0.14
+  resolution: "@types/react-dom@npm:17.0.14"
   dependencies:
     "@types/react": "*"
-  checksum: 9754e1d0c0107310eab35a2eb1dad45f6ef0a41e562c23a29d6bf723a29c8a2036c4acd6a1a1422bf7cf956d431e41b154608dd917f6e69c7ab0d87720c5e27e
+  checksum: b54cd0ef573236b3d87fe7493e6d1c36d8b4ca37a3b46364272a5c91ac178e3296b68ea1aeb299ce68f12ad663c5720ee890d0539b14881c6754bdcbdb0befa0
   languageName: node
   linkType: hard
 
@@ -14231,7 +14231,7 @@ __metadata:
     "@types/node": 16.11.21
     "@types/postmate": 1.5.2
     "@types/react": 17.0.39
-    "@types/react-dom": 17.0.12
+    "@types/react-dom": 17.0.14
     "@types/styled-components": 5.1.24
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
@@ -14444,7 +14444,7 @@ __metadata:
     "@tailwindcss/line-clamp": 0.3.1
     "@tailwindcss/typography": 0.5.2
     "@types/react": 17.0.39
-    "@types/react-dom": 17.0.12
+    "@types/react-dom": 17.0.14
     "@vitejs/plugin-react": 1.2.0
     autoprefixer: 10.4.2
     babel-loader: 8.2.3
