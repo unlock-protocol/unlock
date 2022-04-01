@@ -354,6 +354,18 @@ interface IPublicLock
    */
   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external;
 
+   /**
+   * Set the maximum number of keys a specific address can use
+   * @param _maxKeysPerAddress the maximum amount of key a user can own
+   */
+  function setMaxKeysPerAddress (uint _maxKeysPerAddress) external;
+
+  /**
+   * @return the maximum number of key allowed for a single address
+   */
+  function maxKeysPerAddress() external view returns (uint);
+
+
   ///===================================================================
   /// Auto-generated getter functions from public state variables
 

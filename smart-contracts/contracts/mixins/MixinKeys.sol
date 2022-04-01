@@ -83,7 +83,6 @@ contract MixinKeys is
 
   // Mapping owner address to token count
   mapping(address => uint256) private _balances;
-
   
   /** 
    * Ensure that the caller is the keyManager of the key
@@ -362,6 +361,9 @@ contract MixinKeys is
    address _recipient
   ) internal { 
     uint length = balanceOf(_recipient);
+    
+    // make sure address does not have more keys than allowed
+    require(length < _maxKeysPerAddress, 'MAX_KEYS');
 
     // record new owner
     _ownedKeysIndex[_tokenId] = length;
@@ -725,6 +727,23 @@ contract MixinKeys is
   function setExpirationDuration(uint _newExpirationDuration) external {
      _onlyLockManager();
      expirationDuration = _newExpirationDuration;
+  }
+  
+  /**
+   * Set the maximum number of keys a specific address can use
+   * @param _maxKeys the maximum amount of key a user can own
+   */
+  function setMaxKeysPerAddress(uint _maxKeys) external {
+     _onlyLockManager();
+     require(_maxKeys != 0, 'NULL_VALUE');
+     _maxKeysPerAddress = _maxKeys;
+  }
+
+  /**
+   * @return the maximum number of key allowed for a single address
+   */
+  function maxKeysPerAddress() external view returns (uint) {
+    return _maxKeysPerAddress;
   }
   
   // decrease 1000 to 996 when adding new tokens/owners mappings in v10
