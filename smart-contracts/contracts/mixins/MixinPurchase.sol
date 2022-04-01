@@ -252,7 +252,7 @@ contract MixinPurchase is
   function purchasePriceFor(
     address _recipient,
     address _referrer,
-    bytes calldata _data
+    bytes memory _data
   ) public view
     returns (uint minKeyPrice)
   {
