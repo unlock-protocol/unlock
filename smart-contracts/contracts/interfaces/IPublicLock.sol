@@ -534,4 +534,15 @@ interface IPublicLock
    * @notice only lock manager call call this
    */
   function updateSchemaVersion() external;
+
+    /**
+  * Renew a given token
+  * @notice only works for non-free, expiring, ERC20 locks
+  * @param _tokenId the ID fo the token to renew
+  * @param _referrer the address of the person to be granted UDT
+  */
+  function renewMembershipFor(
+    uint _tokenId,
+    address _referrer
+  ) external;
 }
