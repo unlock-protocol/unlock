@@ -20,7 +20,7 @@ And there are a *huge* number of March 2022 product updates from Unlock! The tea
 
 - **Notification toasts in Dashboard** - Added toaster notifications throughout the Unlock interface for communicating status
 - **Captcha on checkout flow bot prevention measure** - Deter bots from purchasing NFT tickets in a scripted manner
-- **Support for password-protected checkout** - Our checkout flow now supports a “password” flow where a lock manager can set a hook on their contract so that purchasing keys only works if the user enters a password in the checkout flow.
+- **Support for password-protected checkout** - Our checkout flow now supports a “password” flow where a lock manager can set a hook on their contract so that purchasing keys only works if the user enters a password in the checkout flow
 - **Support for unlimited duration in Dashboard and Keychain** - Enable lock managers to set unlimited key duration directly from the dashboard
 - **Changing number of keys on Dashboard** - Enable lock managers to update maximum keys directly from dashboard
 - **Whole new static site** - Completely redesigned https://www.unlock-protocol.com
