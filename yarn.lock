@@ -141,10 +141,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollographql/apollo-tools@npm:^0.5.0, @apollographql/apollo-tools@npm:^0.5.1":
+"@apollographql/apollo-tools@npm:^0.5.0":
   version: 0.5.1
   resolution: "@apollographql/apollo-tools@npm:0.5.1"
   checksum: 02c47fa6f293f37068a8654eabb807c083cbe19ef30fd3b65a0abe7d4bda0075b8c066c30eb9a80a88a4d0d1111f4b9700ae97faf10d9c5e97cbadce07485b21
+  languageName: node
+  linkType: hard
+
+"@apollographql/apollo-tools@npm:^0.5.3":
+  version: 0.5.3
+  resolution: "@apollographql/apollo-tools@npm:0.5.3"
+  peerDependencies:
+    graphql: ^14.2.1 || ^15.0.0 || ^16.0.0
+  checksum: 652f16f8ae4afb65a2cb62a47e46882f49368f8f2c115f421773c3f8aa47b466ab9a6758fc18138495bd010baea5fda05d3c313edd11c4f4b3e8f8783b54d5a2
   languageName: node
   linkType: hard
 
@@ -14155,7 +14164,7 @@ __metadata:
     apollo-client: 2.6.10
     apollo-datasource-graphql: 1.3.2
     apollo-link-http: 1.5.17
-    apollo-server: 3.6.3
+    apollo-server: 3.6.7
     apollo-server-express: 2.25.3
     babel-jest: 27.5.1
     color-scheme: 1.0.1
@@ -16408,12 +16417,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apollo-reporting-protobuf@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "apollo-reporting-protobuf@npm:3.3.0"
+"apollo-reporting-protobuf@npm:^3.3.1":
+  version: 3.3.1
+  resolution: "apollo-reporting-protobuf@npm:3.3.1"
   dependencies:
     "@apollo/protobufjs": 1.2.2
-  checksum: 6a4d31240101d92ed0a105f1fa28e528170d26ffa3b117af26fff371321e09b6130f289bc55b8c77cc6e8cb9d6cd1e6955812f77ceba086b41f60a6b8cd77978
+  checksum: 1933affb1640d5905e29f8a41becdba1981effd767660748517ea1d4ef30db4c6789b17eba02f11dafd29b46b56d95cd15cbc3eb319d0a90affbdd0f2d168473
   languageName: node
   linkType: hard
 
@@ -16479,22 +16488,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apollo-server-core@npm:^3.6.3":
-  version: 3.6.3
-  resolution: "apollo-server-core@npm:3.6.3"
+"apollo-server-core@npm:^3.6.7":
+  version: 3.6.7
+  resolution: "apollo-server-core@npm:3.6.7"
   dependencies:
-    "@apollographql/apollo-tools": ^0.5.1
+    "@apollographql/apollo-tools": ^0.5.3
     "@apollographql/graphql-playground-html": 1.6.29
     "@graphql-tools/mock": ^8.1.2
     "@graphql-tools/schema": ^8.0.0
     "@josephg/resolvable": ^1.0.0
     apollo-datasource: ^3.3.1
-    apollo-reporting-protobuf: ^3.3.0
+    apollo-reporting-protobuf: ^3.3.1
     apollo-server-caching: ^3.3.0
     apollo-server-env: ^4.2.1
     apollo-server-errors: ^3.3.1
-    apollo-server-plugin-base: ^3.5.1
-    apollo-server-types: ^3.5.1
+    apollo-server-plugin-base: ^3.5.2
+    apollo-server-types: ^3.5.2
     async-retry: ^1.2.1
     fast-json-stable-stringify: ^2.1.0
     graphql-tag: ^2.11.0
@@ -16505,7 +16514,7 @@ __metadata:
     uuid: ^8.0.0
   peerDependencies:
     graphql: ^15.3.0 || ^16.0.0
-  checksum: 91058baf0b199a5b7578345bb94ee6fc373505d5f7b95d9489c6d7b67b2bcd80e496e34abd6bd027d9ffa628d8ba1224b6f06867011aeeeaa03c8308c6f2281f
+  checksum: 4ffd0a772f29c7b0a30fe445b7c71c7b32b782fa7992753708d1cdc7cf3b249f602b23e06e2dbe64ed54f65bafe7d38afc1f3e9ec828518edff348525062c6c0
   languageName: node
   linkType: hard
 
@@ -16583,9 +16592,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apollo-server-express@npm:^3.6.3":
-  version: 3.6.3
-  resolution: "apollo-server-express@npm:3.6.3"
+"apollo-server-express@npm:^3.6.7":
+  version: 3.6.7
+  resolution: "apollo-server-express@npm:3.6.7"
   dependencies:
     "@types/accepts": ^1.3.5
     "@types/body-parser": 1.19.2
@@ -16593,15 +16602,15 @@ __metadata:
     "@types/express": 4.17.13
     "@types/express-serve-static-core": 4.17.28
     accepts: ^1.3.5
-    apollo-server-core: ^3.6.3
-    apollo-server-types: ^3.5.1
+    apollo-server-core: ^3.6.7
+    apollo-server-types: ^3.5.2
     body-parser: ^1.19.0
     cors: ^2.8.5
     parseurl: ^1.3.3
   peerDependencies:
     express: ^4.17.1
     graphql: ^15.3.0 || ^16.0.0
-  checksum: 23a13043d8284d80514882db9428f523e5bd3e63fde1fe626e56d06bd212738ac7d16d2e1875bedc4b139d3a7ef3a28552f9f602346f3239ee3fbf2a3ab9dae0
+  checksum: 657264e36ec04d04dc6abc7e4e0695b8b552a71f82c31bd7765bfca1951a50a4251b2dec4c44a9df92b2f7d25331ca1a0187710468b397ca5413453ddaca7589
   languageName: node
   linkType: hard
 
@@ -16616,14 +16625,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apollo-server-plugin-base@npm:^3.5.1":
-  version: 3.5.1
-  resolution: "apollo-server-plugin-base@npm:3.5.1"
+"apollo-server-plugin-base@npm:^3.5.2":
+  version: 3.5.2
+  resolution: "apollo-server-plugin-base@npm:3.5.2"
   dependencies:
-    apollo-server-types: ^3.5.1
+    apollo-server-types: ^3.5.2
   peerDependencies:
     graphql: ^15.3.0 || ^16.0.0
-  checksum: 5705ed2eb510215d079a3d7a101ff6dbd755fb6d0997fb1da22b1db2037ae9f17131a20f2df648bb9e3d03cf980723b5a1d3ab6da9d236c07c19714710617502
+  checksum: 0798d064a2a955467385606c7faed5b9c3c00aa27fb35c612c00b63118fdf7936648c529f3efdbfe8931289f61da31008096d04d28b21ece18f41672c6c76c30
   languageName: node
   linkType: hard
 
@@ -16640,29 +16649,29 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apollo-server-types@npm:^3.5.1":
-  version: 3.5.1
-  resolution: "apollo-server-types@npm:3.5.1"
+"apollo-server-types@npm:^3.5.2":
+  version: 3.5.2
+  resolution: "apollo-server-types@npm:3.5.2"
   dependencies:
-    apollo-reporting-protobuf: ^3.3.0
+    apollo-reporting-protobuf: ^3.3.1
     apollo-server-caching: ^3.3.0
     apollo-server-env: ^4.2.1
   peerDependencies:
     graphql: ^15.3.0 || ^16.0.0
-  checksum: b0f33dd9684c40586fdc67e3f91310341251ca3181e2d6f4b8f79864ef307bff5030a8892b0aa1d8685b489d632c989c5b807dca058cbf7f4092cd7dd5faf308
+  checksum: e1b3fc53f810c03d1ef5c0c88627dc46c7f7780149e8af5273e20518616345837f090651c8dc355bcda7cda2d9968de3571be7f37895d3a50e2f60943c13ad57
   languageName: node
   linkType: hard
 
-"apollo-server@npm:3.6.3":
-  version: 3.6.3
-  resolution: "apollo-server@npm:3.6.3"
+"apollo-server@npm:3.6.7":
+  version: 3.6.7
+  resolution: "apollo-server@npm:3.6.7"
   dependencies:
-    apollo-server-core: ^3.6.3
-    apollo-server-express: ^3.6.3
+    apollo-server-core: ^3.6.7
+    apollo-server-express: ^3.6.7
     express: ^4.17.1
   peerDependencies:
     graphql: ^15.3.0 || ^16.0.0
-  checksum: 684710cf038fae4a620238d24a531cb263253125a3929640d711c18d797169eeb5fd98908fe61830beefeb880a1e673159c782cb447a4f2655094f0b72f5002e
+  checksum: 55cceb42b103ece816cc2a37608342fa69cd6ad9f84b787fe7fe722d59a47802126f558b700ed10a237372566519990217cdc7755406b31cbec54b536672c5b8
   languageName: node
   linkType: hard
 
