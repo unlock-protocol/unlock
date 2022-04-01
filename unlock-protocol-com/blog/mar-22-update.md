@@ -4,10 +4,10 @@ subTitle: Over a dozen new features launched for NFT ticketing, memberships, and
 authorName: Christopher Carfi
 publishDate: March 31, 2022
 description: Unlock Protocol launched over a dozen new features in March 2022 for NFT ticketing, memberships, and an array of user experience improvements.
-image: /images/blog/mar-22-update/mar-22-banner.png
+image: /images/blog/mar-22-update/mar-22-banner.jpg
 ---
 
-![mar-22-banner.png](/images/blog/mar-22-update/mar-22-banner.png)
+![mar-22-banner.jpg](/images/blog/mar-22-update/mar-22-banner.jpg)
 
 ## Governance items
 
