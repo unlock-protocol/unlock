@@ -14475,7 +14475,7 @@ __metadata:
     prism-react-renderer: 1.2.1
     react-icons: 4.3.1
     react-use-clipboard: ^1.0.7
-    storybook-builder-vite: 0.1.22
+    storybook-builder-vite: 0.1.17
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.23
     tsconfig-paths-webpack-plugin: ^3.5.2
@@ -14613,7 +14613,7 @@ __metadata:
     jest-styled-components: 7.0.8
     js-base64: 3.7.2
     next: 12.1.4
-    node-forge: 1.3.0
+    node-forge: 1.3.1
     postcss: 8.4.12
     postmate: 1.5.2
     prettier: 2.5.1
@@ -14799,7 +14799,7 @@ __metadata:
     eslint: 8.12.0
     jest: 27.5.1
     lint-staged: 12.3.7
-    node-forge: 1.3.0
+    node-forge: 1.3.1
     nodemailer: 6.7.3
     nodemon: 2.0.15
     prettier: 2.6.1
@@ -37809,10 +37809,10 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"node-forge@npm:1.3.0":
-  version: 1.3.0
-  resolution: "node-forge@npm:1.3.0"
-  checksum: 3d8124168dd82006fafbb079f40a529afa0de5bf4d77e6a5a471877e9d39bece31fdc8339e8aee30d5480dc79ffcd1059cfcb21983d350dd3f2a9f226db6ca85
+"node-forge@npm:1.3.1":
+  version: 1.3.1
+  resolution: "node-forge@npm:1.3.1"
+  checksum: 08fb072d3d670599c89a1704b3e9c649ff1b998256737f0e06fbd1a5bf41cae4457ccaee32d95052d80bbafd9ffe01284e078c8071f0267dc9744e51c5ed42a9
   languageName: node
   linkType: hard
 
@@ -46140,9 +46140,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"storybook-builder-vite@npm:0.1.22":
-  version: 0.1.22
-  resolution: "storybook-builder-vite@npm:0.1.22"
+"storybook-builder-vite@npm:0.1.17":
+  version: 0.1.17
+  resolution: "storybook-builder-vite@npm:0.1.17"
   dependencies:
     "@joshwooding/vite-plugin-react-docgen-typescript": 0.0.2
     "@mdx-js/mdx": ^1.6.22
@@ -46157,7 +46157,7 @@ resolve@^2.0.0-next.3:
   peerDependencies:
     "@storybook/core-common": ^6.4.3
     vite: ">=2.6.7"
-  checksum: b0dbcc944026736b9a1c03cea09717d0a0e98d9c94407c2086321896ec334c009dd9920a557c63ebf7b2c200e8427b9b9b14c024318f13667452740b179199af
+  checksum: 728460d081c7e79435592cd07184c5802dd83a63813be0ebd4d2d9f80dbaedc5ee08a65df17d2570624abab00483553c724332402fadf77e2caecce1a7fa7185
   languageName: node
   linkType: hard
 
