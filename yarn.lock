@@ -13069,14 +13069,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:17.0.39":
-  version: 17.0.39
-  resolution: "@types/react@npm:17.0.39"
+"@types/react@npm:17.0.43":
+  version: 17.0.43
+  resolution: "@types/react@npm:17.0.43"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: bf04d3c2894559012710d595553e12b422d3b91cd8f4f7e122d8cb044ba9c2ba17f6e8a4e09581359cc5509ddc59cd8c8fabd6774f3505a40a45393f074d6e6e
+  checksum: 981b0993f5b3ea9d3488b8cc883201e8ae47ba7732929f788f450a79fd72829e658080d5084e67caa008e58d989b0abc1d5f36ff0a1cda09315ea3a3c0c9dc11
   languageName: node
   linkType: hard
 
@@ -14239,7 +14239,7 @@ __metadata:
     "@types/next": 8.0.7
     "@types/node": 16.11.21
     "@types/postmate": 1.5.2
-    "@types/react": 17.0.39
+    "@types/react": 17.0.43
     "@types/react-dom": 17.0.14
     "@types/styled-components": 5.1.24
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -14452,7 +14452,7 @@ __metadata:
     "@tailwindcss/forms": 0.4.0
     "@tailwindcss/line-clamp": 0.3.1
     "@tailwindcss/typography": 0.5.2
-    "@types/react": 17.0.39
+    "@types/react": 17.0.43
     "@types/react-dom": 17.0.14
     "@vitejs/plugin-react": 1.2.0
     autoprefixer: 10.4.2
@@ -14561,7 +14561,7 @@ __metadata:
     "@types/jest": 27.4.1
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2
-    "@types/react": 17.0.39
+    "@types/react": 17.0.43
     "@types/react-google-recaptcha": ^2.1.5
     "@types/react-gtm-module": 2.0.1
     "@types/storybook__react": 4.0.2
@@ -14715,7 +14715,7 @@ __metadata:
     "@types/jest": 27.4.1
     "@types/next": 8.0.7
     "@types/node": 17.0.21
-    "@types/react": 17.0.39
+    "@types/react": 17.0.43
     "@types/styled-components": 5.1.24
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:"
