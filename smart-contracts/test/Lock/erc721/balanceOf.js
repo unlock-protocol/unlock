@@ -13,6 +13,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
+    await locks.FIRST.setMaxKeysPerAddress(10)
   })
 
   it('should fail if the user address is 0', async () => {

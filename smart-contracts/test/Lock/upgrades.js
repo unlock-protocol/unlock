@@ -84,6 +84,8 @@ describe('PublicLock upgrades', () => {
     let totalSupplyBefore
 
     beforeEach(async () => {
+      await lock.setMaxKeysPerAddress(10)
+
       // buy some keys
       const signers = await ethers.getSigners()
       buyers = signers.slice(1, 11)

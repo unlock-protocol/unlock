@@ -144,6 +144,8 @@ describe('upgradeLock / data migration', () => {
       newLockAddress
     )
 
+    await lock.setMaxKeysPerAddress(10)
+
     // deploy latest implementation
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()
