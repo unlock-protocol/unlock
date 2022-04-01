@@ -144,8 +144,6 @@ describe('upgradeLock / data migration', () => {
       newLockAddress
     )
 
-    await lock.setMaxKeysPerAddress(10)
-
     // deploy latest implementation
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()
@@ -226,6 +224,9 @@ describe('upgradeLock / data migration', () => {
       // make sure upgrade event is correct
       assert.equal(lockAddress, lock.address)
       assert.equal(version, pastVersion + 1)
+
+      // set multiple keys
+      await lock.setMaxKeysPerAddress(10)
     })
 
     describe('features for key are deactivated', () => {

@@ -56,7 +56,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
         [keyOwner],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
         }

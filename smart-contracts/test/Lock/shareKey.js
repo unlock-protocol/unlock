@@ -32,6 +32,7 @@ contract('Lock / shareKey', (accounts) => {
 
   before(async () => {
     lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
     const tx = await lock.purchase(
       [],
       keyOwners,
