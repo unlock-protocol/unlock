@@ -23,7 +23,7 @@ And there are a *huge* number of March 2022 product updates from Unlock! The tea
 - **Support for password-protected checkout** - Our checkout flow now supports a “password” flow where a lock manager can set a hook on their contract so that purchasing keys only works if the user enters a password in the checkout flow
 - **Support for unlimited duration in Dashboard and Keychain** - Enable lock managers to set unlimited key duration directly from the dashboard
 - **Changing number of keys on Dashboard** - Enable lock managers to update maximum keys directly from dashboard
-- **Whole new static site** - Completely redesigned https://www.unlock-protocol.com
+- **Whole new static site** - Completely redesigned [https://www.unlock-protocol.com](https://www.unlock-protocol.com)
 - **Skipping metadata collection when all fields are optional** - Enable a purchaser to skip optional metadata collection during checkout
 - **Redesigned Keychain** - Redesigned look and feel for the Keychain page, including links to OpenSea for every key
 - **Attachment in emails** - You can now set attachments for email being sent on key purchases
