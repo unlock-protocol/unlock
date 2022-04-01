@@ -32,7 +32,7 @@
     "@tailwindcss/aspect-ratio": "0.4.0",
     "@tailwindcss/forms": "0.4.0",
     "@tailwindcss/line-clamp": "0.3.1",
-    "@tailwindcss/typography": "0.5.1",
+    "@tailwindcss/typography": "0.5.2",
     "prism-react-renderer": "1.2.1",
     "react-icons": "4.3.1",
     "react-use-clipboard": "^1.0.7",
