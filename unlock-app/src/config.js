@@ -21,7 +21,7 @@ export default function configure(
   // Services
   const services = {
     storage: {
-      host: 'http://localhost:8080',
+      host: runtimeConfig.locksmithHost || 'http://localhost:8080',
     },
     wedlocks: {
       host: runtimeConfig.wedlocksUri || 'http://localhost:1337',

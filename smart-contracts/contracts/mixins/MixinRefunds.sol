@@ -63,7 +63,7 @@ contract MixinRefunds is
     _isKey(_tokenId);
     _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
-    uint refund = _getCancelAndRefundValue(_tokenId);
+    uint refund = getCancelAndRefundValue(_tokenId);
     _cancelAndRefund(_tokenId, refund);
   }
 
@@ -85,21 +85,6 @@ contract MixinRefunds is
   }
 
   /**
-   * @dev Determines how much of a refund a key would receive if a cancelAndRefund
-   * is issued now
-   * @notice due to the time required to mine a tx, the actual refund amount will be lower
-   * than what the user reads from this call.
-   */
-  function getCancelAndRefundValueFor(
-    uint _tokenId
-  )
-    external view
-    returns (uint refund)
-  {
-    return _getCancelAndRefundValue(_tokenId);
-  }
-
-  /**
    * @dev cancels the key for the given keyOwner and sends the refund to the msg.sender.
    * @notice this deletes ownership info and expire the key, but doesnt 'burn' it
    */
@@ -116,7 +101,6 @@ contract MixinRefunds is
     // emit event
     emit CancelKey(_tokenId, keyOwner, msg.sender, refund);
     
-
     if (refund > 0) {
       // Security: doing this last to avoid re-entrancy concerns
       _transfer(tokenAddress, keyOwner, refund);
@@ -133,11 +117,13 @@ contract MixinRefunds is
    * @dev Determines how much of a refund a key would be worth if a cancelAndRefund
    * is issued now.
    * @param _tokenId the key to check the refund value for.
+   * @notice due to the time required to mine a tx, the actual refund amount will be lower
+   * than what the user reads from this call.
    */
-  function _getCancelAndRefundValue(
+  function getCancelAndRefundValue(
     uint _tokenId
   )
-    private view
+    public view
     returns (uint refund)
   {
     _isValidKey(_tokenId);

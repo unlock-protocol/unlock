@@ -10,7 +10,7 @@
   "dependencies": {
     "@gnosis.pm/safe-core-sdk": "2.0.0",
     "@nomiclabs/hardhat-ethers": "2.0.5",
-    "@nomiclabs/hardhat-etherscan": "3.0.2",
+    "@nomiclabs/hardhat-etherscan": "3.0.3",
     "@nomiclabs/hardhat-truffle5": "2.0.5",
     "@nomiclabs/hardhat-waffle": "2.0.3",
     "@nomiclabs/hardhat-web3": "2.0.0",
@@ -29,7 +29,7 @@
     "babel-register": "6.26.0",
     "bignumber.js": "9.0.2",
     "cross-fetch": "3.1.5",
-    "debug": "4.3.3",
+    "debug": "4.3.4",
     "eslint": "8.8.0",
     "eslint-plugin-mocha": "10.0.3",
     "eth-gas-reporter": "0.2.24",
@@ -37,14 +37,14 @@
     "ethers": "5.5.4",
     "fs-extra": "10.0.1",
     "hardhat": "2.8.0",
-    "hardhat-contract-sizer": "^2.5.0",
+    "hardhat-contract-sizer": "2.5.1",
     "hardhat-erc1820": "0.1.0",
     "hardhat-gas-reporter": "1.0.8",
     "hardhat-storage-layout": "0.1.6",
     "hardhat-tracer": "1.0.0-alpha.6",
     "hardlydifficult-eth": "1.1.4",
     "hardlydifficult-ethereum-contracts": "0.11.1",
-    "lint-staged": "12.3.4",
+    "lint-staged": "12.3.7",
     "prettier": "2.5.1",
     "prompt": "1.2.2",
     "solhint": "3.3.7",
@@ -54,7 +54,7 @@
   "devDependencies": {
     "chai": "4.3.4",
     "ethereum-waffle": "3.4.0",
-    "web3": "1.7.0"
+    "web3": "1.7.1"
   },
   "lint-staged": {
     "*.{js,ts}": [

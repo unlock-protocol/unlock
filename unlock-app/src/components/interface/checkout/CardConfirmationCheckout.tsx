@@ -2,9 +2,9 @@ import React, { useContext, useState, useEffect } from 'react'
 import { ethers } from 'ethers'
 import Link from 'next/link'
 import styled from 'styled-components'
+import { loadStripe } from '@stripe/stripe-js'
 import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
-import { loadStripe } from '@stripe/stripe-js'
 
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -104,6 +104,15 @@ export const CardConfirmationCheckout = ({
     setError('')
     setPurchasePending(true)
     try {
+      // TODO: load when component is loading to make things faster?
+      const stripe = await loadStripe(config.stripeApiKey)
+      if (!stripe) {
+        setError('We could not load Stripe.')
+        setPurchasePending(false)
+        return
+      }
+
+      // TODO: consider doing this when the component is loaded for faster processing?
       const clientSecret = await prepareChargeForCard(
         token,
         lock.address,
@@ -111,12 +120,7 @@ export const CardConfirmationCheckout = ({
         formattedPrice,
         recipient || account
       )
-      const stripe = await loadStripe(config.stripeApiKey)
-      if (!stripe) {
-        setError('We could not load Stripe.')
-        setPurchasePending(false)
-        return
-      }
+
       const confirmation = await stripe.confirmCardPayment(clientSecret)
       if (
         confirmation.error ||
@@ -128,44 +132,34 @@ export const CardConfirmationCheckout = ({
         setPurchasePending(false)
         return
       }
-      // Cool we have the paymentStatus in good order!
-      // Let's just then send to backend for actual capture and execution of the tx!
-      await captureChargeForCard(
+
+      // payment intent is confirmed, we should trigger the charge
+      const hash = await captureChargeForCard(
         lock.address,
         network,
         recipient || account,
         confirmation.paymentIntent.id
       )
-      // To create a PaymentIntent for confirmation, see our guide at: https://stripe.com/docs/payments/payment-intents/creating-payment-intents#creating-for-automatic
-      // const paymentIntent = await stripe.paymentIntents.confirm(
-      //   'pi_1DqH152eZvKYlo2CFHYZuxkP',
-      //   {payment_method: 'pm_card_visa'}
-      // );
 
-      // const hash = await chargeCard(
-      //   token,
-      //   lock.address,
-      //   network,
-      //   formattedPrice,
-      //   recipient || account
-      // )
-      // if (hash) {
-      //   emitTransactionInfo({
-      //     lock: lock.address,
-      //     hash,
-      //   })
-      //   if (!paywallConfig.pessimistic) {
-      //     setKeyExpiration(Infinity) // Optimistic!
-      //     setPurchasePending(false)
-      //   } else {
-      //     setPurchasePending(hash)
-      //   }
-      // } else {
-      //   setError('Purchase failed. Please try again.')
-      //   setPurchasePending(false)
-      // }
+      if (hash) {
+        emitTransactionInfo({
+          lock: lock.address,
+          hash,
+        })
+        if (!paywallConfig.pessimistic) {
+          setKeyExpiration(Infinity) // Optimistic!
+          setPurchasePending(false)
+        } else {
+          setPurchasePending(hash)
+        }
+      } else {
+        // TODO: show error message in user interface
+        setError('Purchase failed. Please try again.')
+        setPurchasePending(false)
+      }
     } catch (error: any) {
       console.error(error)
+      // TODO: show error message in user interface
       setError('Purchase failed. Please try again.')
       setPurchasePending(false)
     }
@@ -246,14 +240,17 @@ export const CardConfirmationCheckout = ({
             Pay ${formattedPrice} with Card
           </Button>
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          <FeeNotice>
-            Includes ${(fee / 100).toFixed(2)} in fees{' '}
-            <Link href="https://docs.unlock-protocol.com/governance/frequently-asked-questions#what-are-the-credit-card-fees">
-              <a target="_blank">
-                <InfoIcon />
-              </a>
-            </Link>
-          </FeeNotice>
+          {fee > 0 && (
+            <FeeNotice>
+              Includes ${(fee / 100).toFixed(2)} in fees{' '}
+              <Link href="https://docs.unlock-protocol.com/governance/frequently-asked-questions#what-are-the-credit-card-fees">
+                <a target="_blank">
+                  <InfoIcon />
+                </a>
+              </Link>
+            </FeeNotice>
+          )}
+
           <CardNumber>Card ending in {card.last4}</CardNumber>
         </>
       )}

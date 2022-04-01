@@ -51,7 +51,6 @@ contract PublicLock is
     initializer()
   {
     MixinFunds._initializeMixinFunds(_tokenAddress);
-    MixinDisable._initializeMixinDisable();
     MixinLockCore._initializeMixinLockCore(_lockCreator, _expirationDuration, _keyPrice, _maxNumberOfKeys);
     MixinLockMetadata._initializeMixinLockMetadata(_lockName);
     MixinERC721Enumerable._initializeMixinERC721Enumerable();
