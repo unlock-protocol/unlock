@@ -14096,7 +14096,7 @@ __metadata:
     eslint-plugin-node: 11.1.0
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-promise: 6.0.0
-    eslint-plugin-react: 7.29.2
+    eslint-plugin-react: 7.29.4
     eslint-plugin-react-hooks: 4.4.0
     eslint-plugin-standard: 4.1.0
     jest: 27.5.1
@@ -14475,7 +14475,7 @@ __metadata:
     prism-react-renderer: 1.2.1
     react-icons: 4.3.1
     react-use-clipboard: ^1.0.7
-    storybook-builder-vite: 0.1.22
+    storybook-builder-vite: 0.1.17
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.23
     tsconfig-paths-webpack-plugin: ^3.5.2
@@ -14660,7 +14660,7 @@ __metadata:
     eslint-plugin-node: 11.1.0
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-promise: 6.0.0
-    eslint-plugin-react: 7.29.2
+    eslint-plugin-react: 7.29.4
     eslint-plugin-standard: 4.1.0
     gh-pages: 3.2.3
     microbundle-crl: 0.13.11
@@ -25252,9 +25252,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-react@npm:7.29.2":
-  version: 7.29.2
-  resolution: "eslint-plugin-react@npm:7.29.2"
+"eslint-plugin-react@npm:7.29.4":
+  version: 7.29.4
+  resolution: "eslint-plugin-react@npm:7.29.4"
   dependencies:
     array-includes: ^3.1.4
     array.prototype.flatmap: ^1.2.5
@@ -25272,7 +25272,7 @@ __metadata:
     string.prototype.matchall: ^4.0.6
   peerDependencies:
     eslint: ^3 || ^4 || ^5 || ^6 || ^7 || ^8
-  checksum: fcd793c0fd8e4570dcf8f70dd4afae9882303f4a4b650e09dac2f85fdc0b28747cb97b79832f4b8f4eabdbfb9edf69dc0ff04e8b7f33e0bb8e3f024185f4b037
+  checksum: bb7d3715ccd7f3e0d7bfaa2125b26d96865695bcfea4a3d510a5763342a74ab5b99a88e13aad9245f9461ad87e4bce69c33fc946888115d576233f9b6e69700d
   languageName: node
   linkType: hard
 
@@ -46140,9 +46140,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"storybook-builder-vite@npm:0.1.22":
-  version: 0.1.22
-  resolution: "storybook-builder-vite@npm:0.1.22"
+"storybook-builder-vite@npm:0.1.17":
+  version: 0.1.17
+  resolution: "storybook-builder-vite@npm:0.1.17"
   dependencies:
     "@joshwooding/vite-plugin-react-docgen-typescript": 0.0.2
     "@mdx-js/mdx": ^1.6.22
@@ -46157,7 +46157,7 @@ resolve@^2.0.0-next.3:
   peerDependencies:
     "@storybook/core-common": ^6.4.3
     vite: ">=2.6.7"
-  checksum: b0dbcc944026736b9a1c03cea09717d0a0e98d9c94407c2086321896ec334c009dd9920a557c63ebf7b2c200e8427b9b9b14c024318f13667452740b179199af
+  checksum: 728460d081c7e79435592cd07184c5802dd83a63813be0ebd4d2d9f80dbaedc5ee08a65df17d2570624abab00483553c724332402fadf77e2caecce1a7fa7185
   languageName: node
   linkType: hard
 
