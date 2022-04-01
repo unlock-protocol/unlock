@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.17.5",
+    "@babel/core": "7.17.8",
     "@headlessui/react": "1.4.3",
     "@radix-ui/react-avatar": "0.1.4",
     "@testing-library/jest-dom": "5.16.3",
@@ -21,7 +21,7 @@
     "@zeit/next-source-maps": "0.0.3",
     "babel-eslint": "10.1.0",
     "babel-jest": "27.5.1",
-    "babel-loader": "8.2.3",
+    "babel-loader": "8.2.4",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-plugin-styled-components": "2.0.6",
     "babel-preset-react-app": "10.0.1",
