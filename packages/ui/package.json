@@ -36,7 +36,7 @@
     "prism-react-renderer": "1.2.1",
     "react-icons": "4.3.1",
     "react-use-clipboard": "^1.0.7",
-    "tailwind-merge": "1.2.0",
+    "tailwind-merge": "1.2.1",
     "tailwindcss": "3.0.18"
   },
   "peerDependencies": {
