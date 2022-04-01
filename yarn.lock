@@ -14120,7 +14120,7 @@ __metadata:
     prop-types: 15.8.1
     react: 17.0.2
     react-dom: 17.0.2
-    react-test-renderer: 17.0.2
+    react-test-renderer: 18.0.0
     style-loader: 3.3.1
     styled-components: 5.3.3
     typescript: 4.6.2
@@ -14472,7 +14472,7 @@ __metadata:
     react-hot-toast: ^2.2.0
     react-icons: ^4.3.1
     react-jazzicon: 1.0.3
-    react-test-renderer: 17.0.2
+    react-test-renderer: 18.0.0
     react-use-clipboard: ^1.0.7
     storybook-addon-next-router: 3.1.1
     styled-components: 5.3.3
@@ -14610,7 +14610,7 @@ __metadata:
     react-gtm-module: 2.0.11
     react-icons: 4.3.1
     react-showdown: 2.3.1
-    react-test-renderer: 17.0.2
+    react-test-renderer: 18.0.0
     remark: 14.0.2
     remark-html: 15.0.1
     rss: 1.2.2
@@ -42020,6 +42020,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"react-is@npm:^18.0.0":
+  version: 18.0.0
+  resolution: "react-is@npm:18.0.0"
+  checksum: d38f6afee4d8d791cdd69c715841c01a503c9b06da6158e0893447cea6ba50cd262dca9bde84127720cf44fd05c58185eafc32accace4bb2deb03b3cdbeb6b6b
+  languageName: node
+  linkType: hard
+
 "react-jazzicon@npm:1.0.3":
   version: 1.0.3
   resolution: "react-jazzicon@npm:1.0.3"
@@ -42255,17 +42262,16 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-test-renderer@npm:17.0.2":
-  version: 17.0.2
-  resolution: "react-test-renderer@npm:17.0.2"
+"react-test-renderer@npm:18.0.0":
+  version: 18.0.0
+  resolution: "react-test-renderer@npm:18.0.0"
   dependencies:
-    object-assign: ^4.1.1
-    react-is: ^17.0.2
+    react-is: ^18.0.0
     react-shallow-renderer: ^16.13.1
-    scheduler: ^0.20.2
+    scheduler: ^0.21.0
   peerDependencies:
-    react: 17.0.2
-  checksum: e6b5c6ed2a0bde2c34f1ab9523ff9bc4c141a271daf730d6b852374e83acc0155d58ab71a318251e953ebfa65b8bebb9c5dce3eba1ccfcbef7cc4e1e8261c401
+    react: ^18.0.0
+  checksum: c0e5250fa2e4c3650e247b986c262631bec68f18c06817269ab7a4e2cffa5a152bb58ce0fe4182ffa8c333e6c2a8d763ac92e0928e5f6914a7aa188c2de1943a
   languageName: node
   linkType: hard
 
@@ -44042,6 +44048,15 @@ resolve@^2.0.0-next.3:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: c4b35cf967c8f0d3e65753252d0f260271f81a81e427241295c5a7b783abf4ea9e905f22f815ab66676f5313be0a25f47be582254db8f9241b259213e999b8fc
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.21.0":
+  version: 0.21.0
+  resolution: "scheduler@npm:0.21.0"
+  dependencies:
+    loose-envify: ^1.1.0
+  checksum: 4f8285076041ed2c81acdd1faa987f1655fdbd30554bc667c1ea64743fc74fb3a04ca7d27454b3d678735df5a230137a3b84756061b43dc5796e80701b66d124
   languageName: node
   linkType: hard
 
