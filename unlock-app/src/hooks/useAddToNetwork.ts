@@ -35,18 +35,12 @@ export const useAddToNetwork = (account?: string) => {
       nativeCurrency,
     }
 
-    try {
-      await await toast.promise(
-        provider.send('wallet_addEthereumChain', [params], account),
-        {
-          loading: `Changing network to ${chainName}. Please Approve on your wallet.`,
-          error: `Error in changing network to ${chainName}`,
-          success: `Successfully changed network to ${chainName}`,
-        }
-      )
-    } catch (err) {
-      toast.error(`Error in changing network to ${chainName}`)
-    }
+    const promise = provider.send('wallet_addEthereumChain', [params], account)
+    await toast.promise(promise, {
+      loading: `Changing network to ${chainName}. Please Approve on your wallet.`,
+      error: `Error in changing network to ${chainName}`,
+      success: `Successfully changed network to ${chainName}`,
+    })
   }
 
   return {
