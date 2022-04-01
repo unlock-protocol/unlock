@@ -101,7 +101,6 @@ contract MixinRefunds is
     // emit event
     emit CancelKey(_tokenId, keyOwner, msg.sender, refund);
     
-
     if (refund > 0) {
       // Security: doing this last to avoid re-entrancy concerns
       _transfer(tokenAddress, keyOwner, refund);

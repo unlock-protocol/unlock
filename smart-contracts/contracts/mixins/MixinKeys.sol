@@ -232,11 +232,10 @@ contract MixinKeys is
         delete keyByOwner[keyOwner];
 
         // record new owner
-        _ownedKeyIds[keyOwner][0] = tokenId;
-        _ownedKeysIndex[tokenId] = 0;
-
-        // update ownership
-        _balances[keyOwner] += 1;
+        _createOwnershipRecord(
+          tokenId,
+          keyOwner
+        );
 
         // keep track of updated records
         updatedRecordsCount++;
@@ -585,7 +584,6 @@ contract MixinKeys is
   )
     public
   {
-    _onlyIfAlive();
     _onlyKeyManagerOrApproved(_tokenId);
     require(msg.sender != _approved, 'APPROVE_SELF');
 
@@ -688,7 +686,6 @@ contract MixinKeys is
     bool _approved
   ) public
   {
-    _onlyIfAlive();
     require(_to != msg.sender, 'APPROVE_SELF');
     managerToOperatorApproved[msg.sender][_to] = _approved;
     emit ApprovalForAll(msg.sender, _to, _approved);
