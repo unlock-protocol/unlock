@@ -54,7 +54,7 @@
   "devDependencies": {
     "chai": "4.3.4",
     "ethereum-waffle": "3.4.0",
-    "web3": "1.7.0"
+    "web3": "1.7.1"
   },
   "lint-staged": {
     "*.{js,ts}": [
