@@ -23,7 +23,7 @@ contract('Lock / erc721 / enumerable', (accounts) => {
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      [],
+      keyOwners.map(() => []),
       {
         value: (keyPrice * keyOwners.length).toString(),
         from: accounts[0],

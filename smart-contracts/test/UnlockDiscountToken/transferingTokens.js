@@ -118,7 +118,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       [referrer],
       [constants.ZERO_ADDRESS],
       [web3.utils.padLeft(0, 40)],
-      [],
+      [[]],
       {
         from: referrer,
         value: await lock.keyPrice(),
@@ -177,7 +177,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
         [keyBuyer],
         [referrer],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           from: keyBuyer,
           value: await lock.keyPrice(),
@@ -242,7 +242,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
         [keyBuyer],
         [referrer],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           from: keyBuyer,
           value: await lock.keyPrice(),

@@ -33,7 +33,7 @@ const purchaseFails = async (lock) => {
       someBuyers.map((k) => k.address),
       someBuyers.map(() => web3.utils.padLeft(0, 40)),
       someBuyers.map(() => web3.utils.padLeft(0, 40)),
-      [],
+      someBuyers.map(() => []),
       {
         value: (keyPrice * someBuyers.length).toFixed(),
       }
@@ -170,7 +170,7 @@ describe('upgradeLock / data migration', () => {
           .map(() => ethers.Wallet.createRandom())
       )
 
-      // lets buy some key for each
+      // lets buy some key for each (with v9)
       await Promise.all(
         keyOwners.map((_, i) =>
           lock
@@ -394,7 +394,7 @@ describe('upgradeLock / data migration', () => {
               someBuyers.map((k) => k.address),
               someBuyers.map(() => web3.utils.padLeft(0, 40)),
               someBuyers.map(() => web3.utils.padLeft(0, 40)),
-              [],
+              someBuyers.map(() => []),
               {
                 value: (keyPrice * someBuyers.length).toFixed(),
               }

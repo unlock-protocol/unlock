@@ -156,7 +156,7 @@ contract('Unlock / uniswapValue', (accounts) => {
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: keyOwner,
           }
@@ -226,7 +226,7 @@ contract('Unlock / uniswapValue', (accounts) => {
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: keyOwner,
           }
@@ -276,7 +276,7 @@ contract('Unlock / uniswapValue', (accounts) => {
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: keyOwner,
             value: keyPrice,

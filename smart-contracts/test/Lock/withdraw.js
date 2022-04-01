@@ -161,7 +161,7 @@ async function purchaseKeys(accounts) {
     [accounts[1], accounts[2]],
     [1, 2].map(() => web3.utils.padLeft(0, 40)),
     [1, 2].map(() => web3.utils.padLeft(0, 40)),
-    [],
+    [1, 2].map(() => []),
     {
       value: price * 2,
       from: accounts[1],

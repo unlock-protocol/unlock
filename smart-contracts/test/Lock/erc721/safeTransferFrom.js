@@ -27,7 +27,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
       [from],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
-      [],
+      [[]],
       {
         value: web3.utils.toWei('0.01', 'ether'),
         from,
@@ -51,7 +51,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
       [accounts[7]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
-      [],
+      [[]],
       {
         value: web3.utils.toWei('0.01', 'ether'),
         from: accounts[7],
@@ -80,7 +80,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
       [accounts[5]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
-      [],
+      [[]],
       {
         value: web3.utils.toWei('0.01', 'ether'),
         from: accounts[5],

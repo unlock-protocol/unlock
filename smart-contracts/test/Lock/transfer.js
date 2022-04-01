@@ -37,7 +37,7 @@ contract('Lock / transfer', (accounts) => {
         web3.utils.padLeft(0, 40),
       ],
 
-      [],
+      [[], [], []],
       {
         value: (await lock.keyPrice()) * 3,
         from: singleKeyOwner,

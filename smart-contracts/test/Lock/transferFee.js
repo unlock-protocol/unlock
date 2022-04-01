@@ -26,7 +26,7 @@ contract('Lock / transferFee', (accounts) => {
       [keyOwner],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
-      [],
+      [[]],
       {
         value: keyPrice.toFixed(),
       }
@@ -69,7 +69,7 @@ contract('Lock / transferFee', (accounts) => {
         [accounts[8]],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           value: keyPrice.toFixed(),
         }

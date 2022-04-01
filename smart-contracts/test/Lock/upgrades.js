@@ -141,7 +141,7 @@ describe('PublicLock upgrades', () => {
             buyers.map((k) => k.address),
             buyers.map(() => web3.utils.padLeft(0, 40)),
             buyers.map(() => web3.utils.padLeft(0, 40)),
-            [],
+            buyers.map(() => []),
             {
               value: (keyPrice * buyers.length).toFixed(),
             }
@@ -227,7 +227,7 @@ describe('PublicLock upgrades', () => {
           buyers.map((k) => k.address),
           buyers.map(() => web3.utils.padLeft(0, 40)),
           buyers.map(() => web3.utils.padLeft(0, 40)),
-          [],
+          buyers.map(() => []),
           {
             value: (keyPrice * buyers.length).toFixed(),
           }

@@ -31,7 +31,7 @@ contract('Lock / non expiring', (accounts) => {
       [keyOwner],
       [constants.ZERO_ADDRESS],
       [constants.ZERO_ADDRESS],
-      [],
+      [[]],
       {
         from,
         value: keyPrice,
