@@ -12,7 +12,7 @@
   "dependencies": {
     "@unlock-protocol/unlock-express": "workspace:^",
     "express": "4.17.3",
-    "express-session": "^1.17.2",
-    "passport": "^0.5.2"
+    "express-session": "1.17.2",
+    "passport": "0.5.2"
   }
 }

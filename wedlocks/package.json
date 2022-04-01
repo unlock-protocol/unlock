@@ -50,6 +50,6 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "regenerator-runtime": "^0.13.9"
+    "regenerator-runtime": "0.13.9"
   }
 }
