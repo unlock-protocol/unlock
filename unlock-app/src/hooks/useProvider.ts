@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import { useState, useContext, useEffect } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { toast } from 'react-hot-toast'
+import { useAddToNetwork } from './useAddToNetwork'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
@@ -34,6 +35,7 @@ export const useProvider = (config: any) => {
     any | undefined
   >(undefined)
   const { getStorage, setStorage, clearStorage } = useAppStorage()
+  const { addNetworkToWallet } = useAddToNetwork(account)
 
   useEffect(() => {
     if (!getStorage('account') && account) {
@@ -178,18 +180,7 @@ export const useProvider = (config: any) => {
         // This error code indicates that the chain has not been added to the provider yet.
         if (switchError.code === 4902) {
           try {
-            await provider.send(
-              'wallet_addEthereumChain',
-              [
-                {
-                  chainId: `0x${network.id.toString(16)}`,
-                  chainName: network.name,
-                  rpcUrls: [network.publicProvider],
-                  nativeCurrency: network.nativeCurrency,
-                },
-              ],
-              account
-            )
+            await addNetworkToWallet(network.id)
           } catch (addError) {
             toast.error(
               'Network could not be added. Please try manually adding it to your wallet'
