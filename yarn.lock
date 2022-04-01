@@ -14073,7 +14073,7 @@ __metadata:
     typescript: 4.6.2
     unlock-abi-1-1: 1.1.1
     winston: 3.6.0
-    winston-sentry-log: 1.0.24
+    winston-sentry-log: 1.0.26
     yargs: 17.3.1
     zod: 3.13.3
   languageName: unknown
@@ -52542,14 +52542,14 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"winston-sentry-log@npm:1.0.24":
-  version: 1.0.24
-  resolution: "winston-sentry-log@npm:1.0.24"
+"winston-sentry-log@npm:1.0.26":
+  version: 1.0.26
+  resolution: "winston-sentry-log@npm:1.0.26"
   dependencies:
     "@sentry/node": ^6.13.2
     lodash: ^4.17.21
     winston-transport: ^4.4.0
-  checksum: 7c9a28bfe299680b704bf6907106170bd8cd444573c94fe2e34c8ac408183fb402ad47a95224da64b24e4c8de9231f5eb9d6ecd0db02d786d11c8d672fcd713b
+  checksum: 2cada417cb490121cbe4bedb11b2d39b148f5121930be50b69f73697450add53cb4502ff18949976c877cef5236e1581e2a53d260a03ca2dbaa55247885b46e0
   languageName: node
   linkType: hard
 
