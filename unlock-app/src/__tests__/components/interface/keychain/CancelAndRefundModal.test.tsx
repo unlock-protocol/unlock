@@ -10,7 +10,6 @@ import AuthenticationContext, {
 import { ConfigContext } from '../../../../utils/withConfig'
 import { Web3ServiceContext } from '../../../../utils/withWeb3Service'
 
-const Web3ServiceProvider = Web3ServiceContext.Provider
 const accountAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const aKey: OwnedKey = {
   id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
@@ -70,6 +69,7 @@ const component: React.ReactElement<any> = (
     dismiss={dismiss}
     lock={aKey.lock}
     account={accountAddress}
+    currency="eth"
   />
 )
 
@@ -79,6 +79,7 @@ const componentInactive: React.ReactElement<any> = (
     dismiss={dismiss}
     lock={undefined}
     account={accountAddress}
+    currency="eth"
   />
 )
 

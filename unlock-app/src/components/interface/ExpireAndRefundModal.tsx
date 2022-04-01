@@ -1,9 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import toast from 'react-hot-toast'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import Loading from './Loading'
-import useAccount from '../../hooks/useAccount'
-import AuthenticationContext from '../../contexts/AuthenticationContext'
 import InlineModal from './InlineModal'
 
 interface ExpireAndRefundProps {
@@ -20,29 +18,10 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
   dismiss,
 }) => {
   const [lockAddress] = lockAddresses
-  const { network } = useContext(AuthenticationContext) as any
-  const { getTokenBalance } = useAccount(lockAddress, network)
   const walletService = useContext(WalletServiceContext)
 
   const [refundAmount, setRefundAmount] = useState(0)
   const [loading, setLoading] = useState(false)
-  const [balance, setBalance] = useState<number | null>(null)
-  const [canAfford, setCanAfford] = useState(true)
-
-  const getBalance = async () => {
-    const balance = await getTokenBalance(lock.currencyContractAddress)
-    setBalance(balance)
-  }
-
-  useEffect(() => {
-    if (!active) return
-    getBalance()
-  }, [active])
-
-  useEffect(() => {
-    if (balance === null) return
-    setCanAfford(refundAmount < balance)
-  }, [refundAmount, balance])
 
   const onAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setRefundAmount(parseFloat(e.target.value))
@@ -105,7 +84,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
           className="bg-gray-200 rounded px-2 py-1 text-sm mt-4 flex justify-center disabled:opacity-50"
           type="button"
           onClick={onExpireAndRefund}
-          disabled={loading || !canAfford}
+          disabled={loading}
         >
           {loading ? (
             <Loading size={20} />
@@ -113,11 +92,6 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
             <span className="ml-2">Expire and Refund</span>
           )}
         </button>
-        {!canAfford && (
-          <small className="text-sm text-red-600 mt-2">
-            Balance can&apos;t cover the refund
-          </small>
-        )}
       </div>
     </InlineModal>
   )

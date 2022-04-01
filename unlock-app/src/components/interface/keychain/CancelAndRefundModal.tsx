@@ -9,6 +9,7 @@ export interface ICancelAndRefundProps {
   lock: any
   dismiss: () => void
   account: string
+  currency: string
 }
 
 export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
@@ -16,6 +17,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   lock,
   dismiss,
   account: owner,
+  currency,
 }) => {
   const [loading, setLoading] = useState(false)
   const [loadingAmount, setLoadingAmount] = useState(false)
@@ -86,7 +88,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
           <>
             <h3 className="text-black-500">Cancel and Refund</h3>
             <small className="pt-2">
-              {`${refundAmount} will be refunded, Do you want to proceed?`}
+              {`${refundAmount} ${currency} will be refunded, Do you want to proceed?`}
             </small>
           </>
         )}

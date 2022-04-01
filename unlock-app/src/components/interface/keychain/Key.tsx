@@ -223,6 +223,8 @@ const Key = ({ ownedKey, account, network }: Props) => {
   }
 
   const isAvailableOnOpenSea = [1, 4, 137].indexOf(network) > -1
+  const baseCurrencySymbol =
+    walletService.networks[network].baseCurrencySymbol ?? ''
 
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
@@ -231,6 +233,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         lock={lock}
         dismiss={closeCancelAndRefund}
         account={account}
+        currency={baseCurrencySymbol}
       />
       {signature && (
         <QRModal
@@ -324,7 +327,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
           >
             <OpenSeaIcon />
           </button>
-          {!isKeyExpired && (
+          {true && (
             <button
               aria-label="Cancel and Refund"
               className={iconButtonClass}

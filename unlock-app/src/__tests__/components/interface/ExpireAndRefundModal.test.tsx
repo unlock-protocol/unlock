@@ -11,8 +11,6 @@ import {
   defaultValues,
 } from '../../../contexts/AuthenticationContext'
 
-process.on('unhandledRejection', (err) => console.trace(err))
-
 const aKey: OwnedKey = {
   id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
   expiration: '132546546',
@@ -32,7 +30,6 @@ const aKey: OwnedKey = {
 const dismiss: jest.Mock<any, any> = jest.fn()
 
 const renderWithContexts = (component: React.ReactElement<any>) => {
-  //const account = '0x123'
   const network = 1337
   const config = {
     networks: {
