@@ -228,6 +228,9 @@ contract MixinPurchase is
     require(_originalDurations[_tokenId] != type(uint).max, 'NON_EXPIRING_LOCK');
     require(tokenAddress != address(0), 'NON_ERC20_LOCK');
 
+    // make sure key is ready for renewal
+    require(isValidKey(_tokenId) == false, 'NOT_READY');
+
     // make sure duration and pricing havent changed  
     uint keyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, '');
     require(_originalPrices[_tokenId] == keyPrice, 'PRICE_CHANGED');
