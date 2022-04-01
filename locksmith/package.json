@@ -101,7 +101,7 @@
     "@types/request-promise-native": "1.0.18",
     "@types/sequelize": "4.28.11",
     "@types/stripe": "8.0.416",
-    "@types/supertest": "2.0.11",
+    "@types/supertest": "2.0.12",
     "@unlock-protocol/eslint-config": "workspace:^",
     "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
