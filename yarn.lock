@@ -14235,7 +14235,7 @@ __metadata:
     bignumber.js: 9.0.2
     chai: 4.3.4
     cross-fetch: 3.1.5
-    debug: 4.3.3
+    debug: 4.3.4
     eslint: 8.8.0
     eslint-plugin-mocha: 10.0.3
     eth-gas-reporter: 0.2.24
@@ -22087,6 +22087,18 @@ __metadata:
     supports-color:
       optional: true
   checksum: 14472d56fe4a94dbcfaa6dbed2dd3849f1d72ba78104a1a328047bb564643ca49df0224c3a17fa63533fd11dd3d4c8636cd861191232a2c6735af00cc2d4de16
+  languageName: node
+  linkType: hard
+
+"debug@npm:4.3.4":
+  version: 4.3.4
+  resolution: "debug@npm:4.3.4"
+  dependencies:
+    ms: 2.1.2
+  peerDependenciesMeta:
+    supports-color:
+      optional: true
+  checksum: 3dbad3f94ea64f34431a9cbf0bafb61853eda57bff2880036153438f50fb5a84f27683ba0d8e5426bf41a8c6ff03879488120cf5b3a761e77953169c0600a708
   languageName: node
   linkType: hard
 
