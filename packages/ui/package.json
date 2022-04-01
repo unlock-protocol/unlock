@@ -47,8 +47,8 @@
   "devDependencies": {
     "@babel/core": "7.17.5",
     "@headlessui/react": "1.4.3",
-    "@mdx-js/preact": "2.0.0",
-    "@mdx-js/react": "2.0.0",
+    "@mdx-js/preact": "2.1.1",
+    "@mdx-js/react": "2.1.1",
     "@storybook/addon-actions": "6.5.0-alpha.31",
     "@storybook/addon-docs": "6.5.0-alpha.31",
     "@storybook/addon-essentials": "6.5.0-alpha.31",
