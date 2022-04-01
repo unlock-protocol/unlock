@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { FormEvent, useState, useReducer } from 'react'
+import React, { FormEvent, useState, useReducer, useEffect } from 'react'
 import styled from 'styled-components'
 import { useAccount } from '../../hooks/useAccount'
 import {
@@ -16,9 +16,15 @@ interface LogInProps {
   onCancel?: () => void
   network: number
   useWallet?: () => void
+  storedLoginEmail?: string
 }
 
-const LogIn = ({ onCancel, network, useWallet }: LogInProps) => {
+const LogIn = ({
+  onCancel,
+  network,
+  useWallet,
+  storedLoginEmail = '',
+}: LogInProps) => {
   const { retrieveUserAccount } = useAccount('', network)
   const [loginState, dispatch] = useReducer(
     (state: any, action: any) => {
@@ -81,6 +87,13 @@ const LogIn = ({ onCancel, network, useWallet }: LogInProps) => {
     })
   }
 
+  useEffect(() => {
+    if (storedLoginEmail?.length === 0) return
+    dispatch({
+      change: [{ name: 'emailAddress', value: storedLoginEmail }],
+    })
+  }, [])
+
   return (
     <Container>
       <Form onSubmit={handleSubmit}>
@@ -92,6 +105,7 @@ const LogIn = ({ onCancel, network, useWallet }: LogInProps) => {
           type="email"
           placeholder="Enter your email"
           onChange={handleInputChange}
+          value={emailAddress}
         />
         <Label htmlFor="passwordInput">Password</Label>
         <Input
@@ -104,9 +118,14 @@ const LogIn = ({ onCancel, network, useWallet }: LogInProps) => {
         />
         {submitted && <LoadingButton>Logging In...</LoadingButton>}
         {!submitted && (
-          <Button type="submit" value="Submit">
-            Login
-          </Button>
+          <>
+            {storedLoginEmail.length > 0 && (
+              <small>Welcome back, type your password to continue</small>
+            )}
+            <Button type="submit" value="Submit">
+              Login
+            </Button>
+          </>
         )}
         {error && <FormError>{error}</FormError>}
       </Form>
@@ -125,6 +144,7 @@ const LogIn = ({ onCancel, network, useWallet }: LogInProps) => {
 LogIn.defaultProps = {
   onCancel: undefined,
   useWallet: undefined,
+  storedLoginEmail: '',
 }
 
 export default LogIn

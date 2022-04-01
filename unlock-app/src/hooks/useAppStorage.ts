@@ -15,7 +15,7 @@ export function useAppStorage() {
   }, [])
 
   const removeKey = useCallback((key: string) => {
-    localStorage.removeItem(key)
+    localStorage.removeItem(getKey(key))
   }, [])
 
   const getStorage = useCallback((key: string): string | null => {

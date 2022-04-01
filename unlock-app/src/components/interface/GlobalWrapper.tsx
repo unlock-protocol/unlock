@@ -13,10 +13,9 @@ const wedlockService = new WedlockService(config.services.wedlocks.host)
 
 interface GlobalWrapperProps {
   children: React.ReactNode
-  pageProps: any
 }
 
-export const GlobalWrapper = ({ children, pageProps }: GlobalWrapperProps) => {
+export const GlobalWrapper = ({ children }: GlobalWrapperProps) => {
   const [provider, setProvider] = useState<any>(null)
   useEffect(() => {
     /* eslint-disable no-console */
@@ -31,9 +30,7 @@ export const GlobalWrapper = ({ children, pageProps }: GlobalWrapperProps) => {
         <ConfigContext.Provider value={config}>
           <WedlockServiceContext.Provider value={wedlockService}>
             <ProviderContext.Provider value={{ provider, setProvider }}>
-              <Authenticate skipAutoLogin={pageProps.skipAutoLogin}>
-                {children}
-              </Authenticate>
+              <Authenticate>{children}</Authenticate>
             </ProviderContext.Provider>
           </WedlockServiceContext.Provider>
         </ConfigContext.Provider>
