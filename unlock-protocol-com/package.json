@@ -30,7 +30,7 @@
     "eslint": "8.10.0",
     "jest": "27.5.1",
     "jest-styled-components": "7.0.8",
-    "lint-staged": "12.3.4",
+    "lint-staged": "12.3.7",
     "next": "12.1.0",
     "next-seo": "5.0.0",
     "path-match": "1.2.4",

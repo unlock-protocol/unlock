@@ -14243,7 +14243,7 @@ __metadata:
     copy-webpack-plugin: 10.2.4
     dotenv: 16.0.0
     eslint: 8.10.0
-    lint-staged: 12.3.4
+    lint-staged: 12.3.7
     next: 12.1.0
     nodemon: 2.0.15
     path-match: 1.2.4
@@ -14383,7 +14383,7 @@ __metadata:
     hardhat-tracer: 1.0.0-alpha.6
     hardlydifficult-eth: 1.1.4
     hardlydifficult-ethereum-contracts: 0.11.1
-    lint-staged: 12.3.4
+    lint-staged: 12.3.7
     prettier: 2.5.1
     prompt: 1.2.2
     solhint: 3.3.7
@@ -14404,7 +14404,7 @@ __metadata:
     eslint: 8.8.0
     fs-extra: 10.0.1
     handlebars: 4.7.7
-    lint-staged: 12.3.4
+    lint-staged: 12.3.7
     yargs: 17.3.1
   languageName: unknown
   linkType: soft
@@ -14684,7 +14684,7 @@ __metadata:
     eslint: 8.10.0
     hardhat: 2.9.0
     jest: 27.5.1
-    lint-staged: 12.3.4
+    lint-staged: 12.3.7
     prettier: 2.5.1
     ts-jest: 27.1.3
     tsup: ^5.12.1
@@ -14729,7 +14729,7 @@ __metadata:
     gray-matter: 4.0.3
     jest: 27.5.1
     jest-styled-components: 7.0.8
-    lint-staged: 12.3.4
+    lint-staged: 12.3.7
     next: 12.1.0
     next-seo: 5.0.0
     path-match: 1.2.4
@@ -14775,7 +14775,7 @@ __metadata:
     dotenv: 16.0.0
     eslint: 8.12.0
     jest: 27.5.1
-    lint-staged: 12.3.4
+    lint-staged: 12.3.7
     node-forge: 1.3.0
     nodemailer: 6.7.2
     nodemon: 2.0.15
@@ -34409,9 +34409,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:12.3.4":
-  version: 12.3.4
-  resolution: "lint-staged@npm:12.3.4"
+"lint-staged@npm:12.3.7":
+  version: 12.3.7
+  resolution: "lint-staged@npm:12.3.7"
   dependencies:
     cli-truncate: ^3.1.0
     colorette: ^2.0.16
@@ -34423,12 +34423,13 @@ fsevents@~2.1.1:
     micromatch: ^4.0.4
     normalize-path: ^3.0.0
     object-inspect: ^1.12.0
+    pidtree: ^0.5.0
     string-argv: ^0.3.1
     supports-color: ^9.2.1
     yaml: ^1.10.2
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 4e0b4b9da4183a0daeab35d41e4d243fb1270a39db997efa0c3745fa148a7a4b8b723a51cb757595fc8bb118796ca1465e67aede72f25e9ea48165aec36cec3b
+  checksum: b595097556880eb2ab7ce2cf105047f6f22525ccfd608fbdc63ab243259aa36a26949576fadff673748fb885e7cb37ad3f4471d964ad54c1205d57a58999ba24
   languageName: node
   linkType: hard
 
@@ -39272,6 +39273,15 @@ fsevents@~2.1.1:
   bin:
     pidtree: bin/pidtree.js
   checksum: eb49025099f1af89a4696f7673351421f13420f3397b963c901fe23a1c9c2ff50f4750321970d4472c0ffbb065e4a6c3c27f75e226cc62284b19e21d32ce7012
+  languageName: node
+  linkType: hard
+
+"pidtree@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "pidtree@npm:0.5.0"
+  bin:
+    pidtree: bin/pidtree.js
+  checksum: 371cd14bbc9bdee2a6a44596dd521dd3565e223481e0b1afffdca3f1c29831850bfa7784114dc30d245d37e7d186cec035e036256b39f75d878d19498fe0df6a
   languageName: node
   linkType: hard
 
@@ -48997,7 +49007,7 @@ typescript@^3.8.3:
     babel-plugin-polyfill-corejs2: 0.3.1
     eslint: 8.10.0
     husky: 7.0.4
-    lint-staged: 12.3.4
+    lint-staged: 12.3.7
     prettier: 2.5.1
     typescript: 4.6.2
   languageName: unknown
