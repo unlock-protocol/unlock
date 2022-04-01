@@ -13,9 +13,12 @@ import {
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
 process.on('unhandledRejection', (err) => console.trace(err))
 >>>>>>> c9e20f35b (test updated)
 
+=======
+>>>>>>> 68d8f0132 (refactoring)
 const aKey: OwnedKey = {
   id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
   expiration: '132546546',
@@ -36,9 +39,12 @@ const dismiss: jest.Mock<any, any> = jest.fn()
 
 const renderWithContexts = (component: React.ReactElement<any>) => {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   //const account = '0x123'
 >>>>>>> c9e20f35b (test updated)
+=======
+>>>>>>> 68d8f0132 (refactoring)
   const network = 1337
   const config = {
     networks: {

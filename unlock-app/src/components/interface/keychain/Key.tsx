@@ -252,7 +252,44 @@ const Key = ({ ownedKey, account, network }: Props) => {
       {error && <Error>{error}</Error>}
       <div className="grid gap-2 pt-4">
         <div className="flex items-center gap-2">
+<<<<<<< HEAD
           <Tooltip label="Scan QR code" tip="Scan QR code">
+=======
+          <button
+            aria-label="QRCode"
+            className={iconButtonClass}
+            type="button"
+            onClick={handleSignature}
+          >
+            <QrCodeIcon />
+          </button>
+          <button
+            aria-label="Add To Wallet"
+            className={iconButtonClass}
+            type="button"
+            onClick={addToWallet}
+          >
+            <WalletIcon />
+          </button>
+          <button
+            aria-label="Open on OpenSea"
+            className={iconButtonClass}
+            type="button"
+            onClick={exploreLock}
+          >
+            <ExploreIcon />
+          </button>
+          <button
+            aria-label="Open on OpenSea"
+            className={iconButtonClass}
+            type="button"
+            disabled={!isAvailableOnOpenSea}
+            onClick={viewOnOpenSea}
+          >
+            <OpenSeaIcon />
+          </button>
+          {true && (
+>>>>>>> 68d8f0132 (refactoring)
             <button
               className={iconButtonClass}
               type="button"
