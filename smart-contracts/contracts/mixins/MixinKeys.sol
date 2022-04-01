@@ -191,6 +191,11 @@ contract MixinKeys is
       'SCHEMA_VERSION_NOT_CORRECT'
     );
 
+    // set default value to 1
+    if(_maxKeysPerAddress == 0) {
+      _maxKeysPerAddress = 1;
+    }
+
     // count the records that are actually migrated
     uint startIndex = 0;
     
