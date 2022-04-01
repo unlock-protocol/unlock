@@ -172,7 +172,7 @@ services:
       - postgres
 
   ipfs: # Required for subgraph
-    image: ipfs/go-ipfs:v0.12.0
+    image: ipfs/go-ipfs:v0.12.1
     ports:
       - '5001:5001'
 
