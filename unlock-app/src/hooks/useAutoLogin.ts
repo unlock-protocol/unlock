@@ -27,12 +27,19 @@ export function useAutoLogin() {
     })
   }, [])
 
+  const getAutoLoginEmail = (): string => {
+    if (getStorage('provider') !== 'UNLOCK') return ''
+    return getStorage('email') ?? ''
+  }
+
   const tryAutoLogin = useCallback(async () => {
     setLoading(true)
     const [canAutoLogin, storedProvider] = await getAutoLoginData()
     if (canAutoLogin && storedProvider) {
       try {
-        await authenticateWithProvider(storedProvider)
+        if (storedProvider !== 'UNLOCK') {
+          await authenticateWithProvider(storedProvider)
+        }
       } catch (error: any) {
         console.error('Autologin failed.')
         console.error(error)
@@ -44,5 +51,6 @@ export function useAutoLogin() {
   return {
     tryAutoLogin,
     isLoading,
+    getAutoLoginEmail,
   }
 }
