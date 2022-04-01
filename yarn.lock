@@ -14360,7 +14360,7 @@ __metadata:
     solium: 1.2.5
     truffle-assertions: 0.9.2
     web3: 1.7.1
-    web3-eth-abi: 1.7.0
+    web3-eth-abi: 1.7.1
   languageName: unknown
   linkType: soft
 
@@ -50980,16 +50980,6 @@ typescript@^3.8.3:
     "@ethersproject/abi": 5.0.7
     web3-utils: 1.5.3
   checksum: ce327542202c97b47e40ec3369e9847c38894b6f436cf4c2ee6450a9ed4869faa765f69bc3432f28b28f1300e04802cbe0fba2c74bb09d563c8ed9f539816c4b
-  languageName: node
-  linkType: hard
-
-"web3-eth-abi@npm:1.7.0":
-  version: 1.7.0
-  resolution: "web3-eth-abi@npm:1.7.0"
-  dependencies:
-    "@ethersproject/abi": 5.0.7
-    web3-utils: 1.7.0
-  checksum: 1ff34dbf23844d90e7f669c28915fc709631948afe09dbcd00d061616db526899938d5c2704afd6c7c037d3822aeb9cdafb5a2ad3ad827e38fd22c45a21eace0
   languageName: node
   linkType: hard
 
