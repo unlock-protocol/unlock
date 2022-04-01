@@ -26,7 +26,7 @@ contract('Lock / mergeKeys', (accounts) => {
       [keyOwner, keyOwner2],
       [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
-      [],
+      [[], []],
       {
         value: web3.utils.toWei('0.02', 'ether'),
       }
