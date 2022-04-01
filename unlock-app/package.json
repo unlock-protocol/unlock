@@ -51,7 +51,7 @@
     "ethereumjs-utils": "5.2.5",
     "ethers": "5.5.4",
     "file-saver": "2.0.5",
-    "graphql": "15.8.0",
+    "graphql": "16.3.0",
     "jest": "27.5.1",
     "jest-canvas-mock": "2.3.1",
     "jest-fetch-mock": "3.0.3",
