@@ -327,7 +327,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
           >
             <OpenSeaIcon />
           </button>
-          {true && (
+          {!isKeyExpired && (
             <button
               aria-label="Cancel and Refund"
               className={iconButtonClass}
