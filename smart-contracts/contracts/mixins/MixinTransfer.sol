@@ -6,6 +6,7 @@ import './MixinDisable.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';
 import './MixinLockCore.sol';
+import './MixinPurchase.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 
@@ -21,7 +22,8 @@ contract MixinTransfer is
   MixinRoles,
   MixinFunds,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinPurchase
 {
   using AddressUpgradeable for address;
 
@@ -137,6 +139,9 @@ contract MixinTransfer is
 
     // clear any previous approvals
     _clearApproval(_tokenId);
+
+    // make future reccuring transactions impossible
+    _originalDurations[_tokenId] = 0;
 
     // trigger event
     emit Transfer(
