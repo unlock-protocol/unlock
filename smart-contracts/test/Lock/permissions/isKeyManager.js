@@ -1,4 +1,5 @@
 const BigNumber = require('bignumber.js')
+
 const KeyManagerMock = artifacts.require('KeyManagerMock')
 
 let keyManagerMock
