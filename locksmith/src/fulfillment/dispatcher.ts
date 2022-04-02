@@ -26,7 +26,7 @@ export default class Dispatcher {
             network.id,
             {
               address: wallet.address,
-              balance: balance.toNumber(),
+              balance: ethers.utils.formatEther(balance),
             },
           ]
         } catch (error) {
