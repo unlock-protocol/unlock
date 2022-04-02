@@ -13,7 +13,7 @@ import {
   FaCheckCircle as CheckIcon,
 } from 'react-icons/fa'
 import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
-import { Badge } from '@unlock-protocol/ui'
+import { Badge, Tooltip } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
@@ -225,39 +225,43 @@ const Key = ({ ownedKey, account, network }: Props) => {
       {error && <Error>{error}</Error>}
       <div className="grid gap-2 pt-4">
         <div className="flex items-center gap-2">
-          <button
-            aria-label="QRCode"
-            className={iconButtonClass}
-            type="button"
-            onClick={handleSignature}
-          >
-            <QrCodeIcon />
-          </button>
-          <button
-            aria-label="Add To Wallet"
-            className={iconButtonClass}
-            type="button"
-            onClick={addToWallet}
-          >
-            <WalletIcon />
-          </button>
-          <button
-            aria-label="Open on OpenSea"
-            className={iconButtonClass}
-            type="button"
-            onClick={exploreLock}
-          >
-            <ExploreIcon />
-          </button>
-          <button
-            aria-label="Open on OpenSea"
-            className={iconButtonClass}
-            type="button"
-            disabled={!isAvailableOnOpenSea}
-            onClick={viewOnOpenSea}
-          >
-            <OpenSeaIcon />
-          </button>
+          <Tooltip label="Scan QR code" tip="Scan QR code">
+            <button
+              className={iconButtonClass}
+              type="button"
+              onClick={handleSignature}
+            >
+              <QrCodeIcon />
+            </button>
+          </Tooltip>
+          <Tooltip label="Add to Wallet" tip="Add to Wallet">
+            <button
+              className={iconButtonClass}
+              type="button"
+              onClick={addToWallet}
+            >
+              <WalletIcon />
+            </button>
+          </Tooltip>
+          <Tooltip label="Explore lock" tip="Explore lock">
+            <button
+              className={iconButtonClass}
+              type="button"
+              onClick={exploreLock}
+            >
+              <ExploreIcon />
+            </button>
+          </Tooltip>
+          <Tooltip label="Open on Opensea" tip="Open on Opensea">
+            <button
+              className={iconButtonClass}
+              type="button"
+              disabled={!isAvailableOnOpenSea}
+              onClick={viewOnOpenSea}
+            >
+              <OpenSeaIcon />
+            </button>
+          </Tooltip>
         </div>
       </div>
     </div>
