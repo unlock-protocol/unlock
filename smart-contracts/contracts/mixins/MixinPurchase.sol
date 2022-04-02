@@ -241,6 +241,9 @@ contract MixinPurchase is
     // transfer the tokens
     IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
     token.transferFrom(ownerOf(_tokenId), address(this), keyPrice);
+
+    // refund gas if applicable
+    _refundGas();
   }
 
   /**
