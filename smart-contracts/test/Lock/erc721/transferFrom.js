@@ -156,6 +156,25 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       })
     })
 
+    describe('when the sender is a key manager', async () => {
+      let keyManager
+      beforeEach(async () => {
+        keyManager = accounts[8]
+        await locks.FIRST.setKeyManagerOf(tokenIds[0], keyManager, {
+          from: keyOwners[0],
+        })
+      })
+      it('should reset the key manager', async () => {
+        await locks.FIRST.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
+          from: keyManager,
+        })
+        assert.equal(
+          await locks.FIRST.keyManagerOf(tokenIds[0]),
+          constants.ZERO_ADDRESS
+        )
+      })
+    })
+
     describe('when the lock is sold out', () => {
       it('should still allow the transfer of keys', async () => {
         // first we create a lock with only 1 key
