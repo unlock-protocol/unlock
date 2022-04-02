@@ -355,6 +355,18 @@ interface IPublicLock
    */
   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external;
 
+   /**
+   * Set the maximum number of keys a specific address can use
+   * @param _maxKeysPerAddress the maximum amount of key a user can own
+   */
+  function setMaxKeysPerAddress (uint _maxKeysPerAddress) external;
+
+  /**
+   * @return the maximum number of key allowed for a single address
+   */
+  function maxKeysPerAddress() external view returns (uint);
+
+
   ///===================================================================
   /// Auto-generated getter functions from public state variables
 
@@ -535,4 +547,15 @@ interface IPublicLock
    * @notice only lock manager call call this
    */
   function updateSchemaVersion() external;
+
+    /**
+  * Renew a given token
+  * @notice only works for non-free, expiring, ERC20 locks
+  * @param _tokenId the ID fo the token to renew
+  * @param _referrer the address of the person to be granted UDT
+  */
+  function renewMembershipFor(
+    uint _tokenId,
+    address _referrer
+  ) external;
 }

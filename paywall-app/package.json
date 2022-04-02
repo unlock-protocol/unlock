@@ -32,15 +32,15 @@
     "react-dom": "17.0.2",
     "react-test-renderer": "17.0.2",
     "style-loader": "3.3.1",
-    "styled-components": "5.3.3"
+    "styled-components": "5.3.5"
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "7.17.5",
+    "@babel/core": "7.17.8",
     "@svgr/cli": "6.2.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "babel-loader": "8.2.3",
+    "babel-loader": "8.2.4",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "10.0.1",
     "eslint": "8.12.0",
