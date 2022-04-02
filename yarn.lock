@@ -7836,7 +7836,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/upgrades@npm:2.8.0, @openzeppelin/upgrades@npm:^2.8.0":
+"@openzeppelin/upgrades@npm:2.8.0":
   version: 2.8.0
   resolution: "@openzeppelin/upgrades@npm:2.8.0"
   dependencies:
@@ -8055,7 +8055,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-avatar@npm:0.1.4, @radix-ui/react-avatar@npm:^0.1.4":
+"@radix-ui/react-avatar@npm:0.1.4":
   version: 0.1.4
   resolution: "@radix-ui/react-avatar@npm:0.1.4"
   dependencies:
@@ -8186,7 +8186,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-tooltip@npm:^0.1.7":
+"@radix-ui/react-tooltip@npm:0.1.7":
   version: 0.1.7
   resolution: "@radix-ui/react-tooltip@npm:0.1.7"
   dependencies:
@@ -12473,7 +12473,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai@npm:^4.3.0":
+"@types/chai@npm:4.3.0, @types/chai@npm:^4.3.0":
   version: 4.3.0
   resolution: "@types/chai@npm:4.3.0"
   checksum: 3e393e094263db65df28a0123dc13f342937c1bab6cd173eae913d593c5b9a16b555713a08c34863a1fbf079aa7222b96197c70380a5c130549d6b2f6845a989
@@ -13158,6 +13158,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:8.10.66, @types/node@npm:^8.0.0":
+  version: 8.10.66
+  resolution: "@types/node@npm:8.10.66"
+  checksum: c52039de862654a139abdc6a51de532a69dd80516ac35a959c3b3a2831ecbaaf065b0df5f9db943f5e28b544ebb9a891730d52b52f7a169b86a82bc060210000
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:>=6, @types/node@npm:>=8.1.0":
   version: 16.9.6
   resolution: "@types/node@npm:16.9.6"
@@ -13197,13 +13204,6 @@ __metadata:
   version: 16.11.19
   resolution: "@types/node@npm:16.11.19"
   checksum: a9ba0cd1e61c8ad50f3fc9c2b37b795bf0286dacb39dcc985da90328abf0c5151dffe9932d20bc9a6a52c3ce7bfc1e5a7c2dc1416480fb84f1c2d70e25caeba0
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^8.0.0, @types/node@npm:^8.10.38":
-  version: 8.10.66
-  resolution: "@types/node@npm:8.10.66"
-  checksum: c52039de862654a139abdc6a51de532a69dd80516ac35a959c3b3a2831ecbaaf065b0df5f9db943f5e28b544ebb9a891730d52b52f7a169b86a82bc060210000
   languageName: node
   linkType: hard
 
@@ -13350,7 +13350,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-google-recaptcha@npm:^2.1.5":
+"@types/react-google-recaptcha@npm:2.1.5":
   version: 2.1.5
   resolution: "@types/react-google-recaptcha@npm:2.1.5"
   dependencies:
@@ -14432,24 +14432,24 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.0.5
     "@openzeppelin/hardhat-upgrades": 1.16.1
-    "@types/chai": ^4.3.0
+    "@types/chai": 4.3.0
     "@types/fs-extra": 9.0.13
     "@types/mocha": 9.1.0
-    "@types/node": ^8.10.38
+    "@types/node": 8.10.66
     "@unlock-protocol/contracts": 0.0.3
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
-    chai: ^4.2.0
+    chai: 4.3.4
     eslint: 8.10.0
     hardhat: 2.9.0
     mocha: 9.2.2
     prettier: 2.5.1
-    ts-mocha: ^9.0.2
+    ts-mocha: 9.0.2
     ts-node: 10.6.0
-    tslint: ^5.16.0
-    tslint-config-prettier: ^1.18.0
-    tslint-plugin-prettier: ^2.0.1
+    tslint: 5.20.1
+    tslint-config-prettier: 1.18.0
+    tslint-plugin-prettier: 2.3.0
     typescript: 4.6.2
   peerDependencies:
     hardhat: 2.9.0
@@ -14661,7 +14661,7 @@ __metadata:
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.5.0
     "@openzeppelin/test-helpers": 0.5.15
-    "@openzeppelin/upgrades": ^2.8.0
+    "@openzeppelin/upgrades": 2.8.0
     "@typescript-eslint/eslint-plugin": 5.13.0
     "@typescript-eslint/parser": 5.13.0
     "@unlock-protocol/contracts": ^0.0.2
@@ -14764,7 +14764,7 @@ __metadata:
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    ethers: ^5.6.2
+    ethers: 5.6.2
     typescript: 4.6.2
   languageName: unknown
   linkType: soft
@@ -14777,7 +14777,7 @@ __metadata:
     "@headlessui/react": 1.4.3
     "@mdx-js/preact": 2.1.1
     "@mdx-js/react": 2.1.1
-    "@radix-ui/react-tooltip": ^0.1.7
+    "@radix-ui/react-tooltip": 0.1.7
     "@storybook/addon-actions": 6.5.0-alpha.31
     "@storybook/addon-docs": 6.5.0-alpha.31
     "@storybook/addon-essentials": 6.5.0-alpha.31
@@ -14796,15 +14796,15 @@ __metadata:
     postcss: 8.4.12
     prism-react-renderer: 1.2.1
     react-icons: 4.3.1
-    react-use-clipboard: ^1.0.7
+    react-use-clipboard: 1.0.7
     storybook-builder-vite: 0.1.17
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.23
-    tsconfig-paths-webpack-plugin: ^3.5.2
+    tsconfig-paths-webpack-plugin: 3.5.2
     tsup: 5.11.13
     typescript: 4.6.2
     vite: 2.8.6
-    vite-tsconfig-paths: ^3.4.1
+    vite-tsconfig-paths: 3.4.1
   peerDependencies:
     "@headlessui/react": 1.4.3
     react: 17.0.2
@@ -14881,7 +14881,7 @@ __metadata:
     "@babel/core": 7.17.8
     "@babel/plugin-proposal-optional-chaining": 7.16.7
     "@headlessui/react": 1.5.0
-    "@radix-ui/react-avatar": ^0.1.4
+    "@radix-ui/react-avatar": 0.1.4
     "@storybook/addon-actions": 6.4.17
     "@storybook/addon-knobs": 6.4.0
     "@storybook/addon-viewport": 6.4.17
@@ -14898,7 +14898,7 @@ __metadata:
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2
     "@types/react": 17.0.43
-    "@types/react-google-recaptcha": ^2.1.5
+    "@types/react-google-recaptcha": 2.1.5
     "@types/react-gtm-module": 2.0.1
     "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.24
@@ -14943,17 +14943,17 @@ __metadata:
     qrcode.react: 3.0.1
     react: 17.0.2
     react-dom: 17.0.2
-    react-google-recaptcha: ^2.1.0
+    react-google-recaptcha: 2.1.0
     react-gtm-module: 2.0.11
     react-hook-form: 7.29.0
-    react-hot-toast: ^2.2.0
-    react-icons: ^4.3.1
+    react-hot-toast: 2.2.0
+    react-icons: 4.3.1
     react-jazzicon: 1.0.3
     react-test-renderer: 17.0.2
-    react-use-clipboard: ^1.0.7
+    react-use-clipboard: 1.0.7
     storybook-addon-next-router: 3.1.1
     styled-components: 5.3.5
-    tailwind-merge: ^1.2.1
+    tailwind-merge: 1.2.1
     tailwindcss: 3.0.23
     ts-jest: 27.1.4
     typescript: 4.6.2
@@ -15004,10 +15004,10 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     eslint: 8.10.0
     ethers: 5.5.4
-    passport-custom: ^1.1.1
+    passport-custom: 1.1.1
     prettier: 2.5.1
   peerDependencies:
-    passport: ^0.5.2
+    passport: 0.5.2
   languageName: unknown
   linkType: soft
 
@@ -15125,7 +15125,7 @@ __metadata:
     nodemailer: 6.7.3
     nodemon: 2.0.15
     prettier: 2.6.1
-    regenerator-runtime: ^0.13.9
+    regenerator-runtime: 0.13.9
     ts-jest: 27.1.4
     typescript: 4.6.2
     webpack: 5.71.0
@@ -26920,7 +26920,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.6.2, ethers@npm:^5.6.2":
+"ethers@npm:5.6.2":
   version: 5.6.2
   resolution: "ethers@npm:5.6.2"
   dependencies:
@@ -27344,7 +27344,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-session@npm:^1.17.2":
+"express-session@npm:1.17.2":
   version: 1.17.2
   resolution: "express-session@npm:1.17.2"
   dependencies:
@@ -39546,7 +39546,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"passport-custom@npm:^1.1.1":
+"passport-custom@npm:1.1.1":
   version: 1.1.1
   resolution: "passport-custom@npm:1.1.1"
   dependencies:
@@ -39562,7 +39562,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"passport@npm:^0.5.2":
+"passport@npm:0.5.2":
   version: 0.5.2
   resolution: "passport@npm:0.5.2"
   dependencies:
@@ -42874,7 +42874,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-google-recaptcha@npm:^2.1.0":
+"react-google-recaptcha@npm:2.1.0":
   version: 2.1.0
   resolution: "react-google-recaptcha@npm:2.1.0"
   dependencies:
@@ -42918,7 +42918,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-hot-toast@npm:^2.2.0":
+"react-hot-toast@npm:2.2.0":
   version: 2.2.0
   resolution: "react-hot-toast@npm:2.2.0"
   dependencies:
@@ -42930,7 +42930,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-icons@npm:4.3.1, react-icons@npm:^4.3.1":
+"react-icons@npm:4.3.1":
   version: 4.3.1
   resolution: "react-icons@npm:4.3.1"
   peerDependencies:
@@ -43268,7 +43268,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-use-clipboard@npm:^1.0.7":
+"react-use-clipboard@npm:1.0.7":
   version: 1.0.7
   resolution: "react-use-clipboard@npm:1.0.7"
   dependencies:
@@ -43600,6 +43600,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"regenerator-runtime@npm:0.13.9, regenerator-runtime@npm:^0.13.4, regenerator-runtime@npm:^0.13.7, regenerator-runtime@npm:^0.13.9":
+  version: 0.13.9
+  resolution: "regenerator-runtime@npm:0.13.9"
+  checksum: 65ed455fe5afd799e2897baf691ca21c2772e1a969d19bb0c4695757c2d96249eb74ee3553ea34a91062b2a676beedf630b4c1551cc6299afb937be1426ec55e
+  languageName: node
+  linkType: hard
+
 "regenerator-runtime@npm:^0.10.5":
   version: 0.10.5
   resolution: "regenerator-runtime@npm:0.10.5"
@@ -43611,13 +43618,6 @@ fsevents@~2.1.1:
   version: 0.11.1
   resolution: "regenerator-runtime@npm:0.11.1"
   checksum: 3c97bd2c7b2b3247e6f8e2147a002eb78c995323732dad5dc70fac8d8d0b758d0295e7015b90d3d444446ae77cbd24b9f9123ec3a77018e81d8999818301b4f4
-  languageName: node
-  linkType: hard
-
-"regenerator-runtime@npm:^0.13.4, regenerator-runtime@npm:^0.13.7, regenerator-runtime@npm:^0.13.9":
-  version: 0.13.9
-  resolution: "regenerator-runtime@npm:0.13.9"
-  checksum: 65ed455fe5afd799e2897baf691ca21c2772e1a969d19bb0c4695757c2d96249eb74ee3553ea34a91062b2a676beedf630b4c1551cc6299afb937be1426ec55e
   languageName: node
   linkType: hard
 
@@ -47537,7 +47537,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:1.2.1, tailwind-merge@npm:^1.2.1":
+"tailwind-merge@npm:1.2.1":
   version: 1.2.1
   resolution: "tailwind-merge@npm:1.2.1"
   dependencies:
@@ -48603,7 +48603,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-mocha@npm:^9.0.2":
+"ts-mocha@npm:9.0.2":
   version: 9.0.2
   resolution: "ts-mocha@npm:9.0.2"
   dependencies:
@@ -48733,7 +48733,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tsconfig-paths-webpack-plugin@npm:^3.5.2":
+"tsconfig-paths-webpack-plugin@npm:3.5.2":
   version: 3.5.2
   resolution: "tsconfig-paths-webpack-plugin@npm:3.5.2"
   dependencies:
@@ -48813,7 +48813,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tslint-config-prettier@npm:^1.18.0":
+"tslint-config-prettier@npm:1.18.0":
   version: 1.18.0
   resolution: "tslint-config-prettier@npm:1.18.0"
   bin:
@@ -48822,7 +48822,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tslint-plugin-prettier@npm:^2.0.1":
+"tslint-plugin-prettier@npm:2.3.0":
   version: 2.3.0
   resolution: "tslint-plugin-prettier@npm:2.3.0"
   dependencies:
@@ -48836,7 +48836,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tslint@npm:^5.16.0":
+"tslint@npm:5.20.1":
   version: 5.20.1
   resolution: "tslint@npm:5.20.1"
   dependencies:
@@ -49709,8 +49709,8 @@ typescript@^3.8.3:
   dependencies:
     "@unlock-protocol/unlock-express": "workspace:^"
     express: 4.17.3
-    express-session: ^1.17.2
-    passport: ^0.5.2
+    express-session: 1.17.2
+    passport: 0.5.2
   languageName: unknown
   linkType: soft
 
@@ -50298,7 +50298,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"vite-tsconfig-paths@npm:^3.4.1":
+"vite-tsconfig-paths@npm:3.4.1":
   version: 3.4.1
   resolution: "vite-tsconfig-paths@npm:3.4.1"
   dependencies:
