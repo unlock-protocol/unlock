@@ -15,6 +15,7 @@ contract('Lock / getHasValidKey', (accounts) => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
@@ -30,7 +31,7 @@ contract('Lock / getHasValidKey', (accounts) => {
         [keyOwner],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
         }
@@ -66,6 +67,7 @@ contract('Lock / getHasValidKey', (accounts) => {
     keyOwner = accounts[6]
     beforeEach(async () => {
       lock = locks.SECOND
+      await locks.SECOND.setMaxKeysPerAddress(10)
       const tx = await lock.purchase(
         [],
         [keyOwner, keyOwner, keyOwner],
@@ -79,7 +81,7 @@ contract('Lock / getHasValidKey', (accounts) => {
           web3.utils.padLeft(0, 40),
           web3.utils.padLeft(0, 40),
         ],
-        [],
+        [[], [], []],
         {
           value: web3.utils.toWei('0.03', 'ether'),
         }

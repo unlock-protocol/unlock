@@ -33,7 +33,7 @@ contract('Lock / onTokenURIHook', (accounts) => {
       [to],
       [constants.ZERO_ADDRESS],
       [constants.ZERO_ADDRESS],
-      [],
+      [[]],
       {
         from,
         value: keyPrice,

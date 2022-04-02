@@ -22,6 +22,7 @@ contract('Lock / erc20', (accounts) => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0], token.address)
     lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
   })
 
   describe('creating ERC20 priced locks', () => {
@@ -65,7 +66,7 @@ contract('Lock / erc20', (accounts) => {
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: keyOwner,
           }
@@ -97,7 +98,7 @@ contract('Lock / erc20', (accounts) => {
           [keyOwner3],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: keyOwner3,
           }
@@ -162,7 +163,7 @@ contract('Lock / erc20', (accounts) => {
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: keyOwner,
           }
@@ -174,7 +175,7 @@ contract('Lock / erc20', (accounts) => {
           [keyOwner2],
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: keyOwner2,
           }
@@ -203,7 +204,7 @@ contract('Lock / erc20', (accounts) => {
           [account],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: account,
           }
@@ -222,7 +223,7 @@ contract('Lock / erc20', (accounts) => {
           [account],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: account,
           }

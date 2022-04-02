@@ -13,6 +13,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
+    await locks.FIRST.setMaxKeysPerAddress(10)
   })
 
   it('should fail if the user address is 0', async () => {
@@ -41,7 +42,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
         web3.utils.padLeft(0, 40),
         web3.utils.padLeft(0, 40),
       ],
-      [],
+      [[], [], []],
       {
         value: web3.utils.toWei('0.03', 'ether'),
         from: accounts[1],
@@ -65,7 +66,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
         web3.utils.padLeft(0, 40),
         web3.utils.padLeft(0, 40),
       ],
-      [],
+      [[], [], []],
       {
         value: web3.utils.toWei('0.03', 'ether'),
         from: accounts[6],

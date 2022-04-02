@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.5.17 <0.9.0;
+pragma experimental ABIEncoderV2;
 
 /**
 * @title The PublicLock Interface
@@ -194,7 +195,7 @@ interface IPublicLock
   * @param _recipients array of addresses of the recipients of the purchased key
   * @param _referrers array of addresses of the users making the referral
   * @param _keyManagers optional array of addresses to grant managing rights to a specific address on creation
-  * @param _data arbitrary data populated by the front-end which initiated the sale
+  * @param _data array of arbitrary data populated by the front-end which initiated the sale
   * @notice when called for an existing and non-expired key, the `_keyManager` param will be ignored 
   * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
   * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
@@ -205,7 +206,7 @@ interface IPublicLock
     address[] calldata _recipients,
     address[] calldata _referrers,
     address[] calldata _keyManagers,
-    bytes calldata _data
+    bytes[] calldata _data
   ) external payable;
   
   /**
@@ -353,6 +354,18 @@ interface IPublicLock
    * @param _maxNumberOfKeys uint the maximum number of keys
    */
   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external;
+
+   /**
+   * Set the maximum number of keys a specific address can use
+   * @param _maxKeysPerAddress the maximum amount of key a user can own
+   */
+  function setMaxKeysPerAddress (uint _maxKeysPerAddress) external;
+
+  /**
+   * @return the maximum number of key allowed for a single address
+   */
+  function maxKeysPerAddress() external view returns (uint);
+
 
   ///===================================================================
   /// Auto-generated getter functions from public state variables
