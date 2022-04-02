@@ -86,6 +86,9 @@ contract MixinLockCore is
   // use to check data version
   uint public schemaVersion;
 
+  // keep track of how many key a single address can use
+  uint internal _maxKeysPerAddress;
+
   // modifier to check if data has been upgraded
   function _lockIsUpToDate() internal view {
     require(
@@ -120,6 +123,9 @@ contract MixinLockCore is
 
     // update only when initialized
     schemaVersion = publicLockVersion();
+
+    // only a single key per address is allowed by default
+    _maxKeysPerAddress = 1;
   }
 
   // The version number of the current implementation on this network
@@ -242,6 +248,6 @@ contract MixinLockCore is
   }
 
 
-  // decreased from 1000 to 999 when adding `schemaVersion` in v10 
-  uint256[999] private __safe_upgrade_gap;
+  // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
+  uint256[998] private __safe_upgrade_gap;
 }

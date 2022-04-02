@@ -14,6 +14,7 @@ contract('Lock / purchaseFor', (accounts) => {
   beforeEach(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
+    await locks.FIRST.setMaxKeysPerAddress(10)
   })
 
   describe('when the contract has a public key release', () => {

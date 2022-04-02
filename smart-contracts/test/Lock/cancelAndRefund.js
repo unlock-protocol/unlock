@@ -37,6 +37,8 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
   before(async () => {
     lock = locks.SECOND
+
+    await lock.setMaxKeysPerAddress(10)
     const tx = await lock.purchase(
       [],
       keyOwners,

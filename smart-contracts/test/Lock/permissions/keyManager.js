@@ -34,6 +34,7 @@ contract('Permissions / KeyManager', (accounts) => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, lockCreator)
     lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
     const tx = await lock.purchase(
       [],
       keyOwners,

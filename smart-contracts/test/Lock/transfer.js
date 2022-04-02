@@ -22,7 +22,7 @@ contract('Lock / transfer', (accounts) => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, lockOwner)
     lock = locks.OWNED
-
+    await lock.setMaxKeysPerAddress(10)
     const tx = await lock.purchase(
       [],
       [singleKeyOwner, multipleKeyOwner, multipleKeyOwner],

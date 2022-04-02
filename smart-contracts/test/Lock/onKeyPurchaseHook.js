@@ -22,6 +22,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(
       testEventHooks.address,

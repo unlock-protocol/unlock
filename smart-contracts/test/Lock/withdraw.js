@@ -18,6 +18,7 @@ contract('Lock / withdraw', (accounts) => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, owner)
     lock = locks.OWNED
+    await lock.setMaxKeysPerAddress(10)
     tokenAddress = await lock.tokenAddress.call()
 
     await purchaseKeys(accounts)

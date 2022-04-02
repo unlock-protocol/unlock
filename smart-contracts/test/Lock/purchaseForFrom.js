@@ -10,6 +10,7 @@ contract('Lock / purchaseForFrom', (accounts) => {
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
+    await locks.FIRST.setMaxKeysPerAddress(10)
   })
 
   describe('if the referrer does not have a key', () => {
