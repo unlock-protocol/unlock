@@ -80,7 +80,7 @@
     "sequelize-cli": "6.4.1",
     "sequelize-typescript": "1.1.0",
     "setimmediate": "1.0.5",
-    "stripe": "8.214.0",
+    "stripe": "8.215.0",
     "unlock-abi-1-1": "1.1.1",
     "winston": "3.6.0",
     "winston-sentry-log": "1.0.26",
