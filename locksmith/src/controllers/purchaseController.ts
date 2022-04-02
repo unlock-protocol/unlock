@@ -16,6 +16,21 @@ import logger from '../logger'
 const config = require('../../config/config')
 
 namespace PurchaseController {
+  /**
+   *
+   * @param _req
+   * @param res
+   * @returns
+   */
+  export const info = async (
+    _req: SignedRequest,
+    res: Response
+  ): Promise<any> => {
+    const fulfillmentDispatcher = new Dispatcher()
+
+    return res.json(await fulfillmentDispatcher.balances())
+  }
+
   export const purchase = async (
     req: SignedRequest,
     res: Response
