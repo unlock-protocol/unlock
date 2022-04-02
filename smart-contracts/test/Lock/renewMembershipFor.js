@@ -72,7 +72,7 @@ contract('Lock / Recurring memberships', (accounts) => {
           [keyOwner],
           [ZERO_ADDRESS],
           [ZERO_ADDRESS],
-          [],
+          [[]],
           { from: keyOwner }
         )
 
@@ -94,7 +94,7 @@ contract('Lock / Recurring memberships', (accounts) => {
           [keyOwner],
           [ZERO_ADDRESS],
           [ZERO_ADDRESS],
-          [],
+          [[]],
           { from: keyOwner, value: keyPrice }
         )
 
@@ -126,7 +126,7 @@ contract('Lock / Recurring memberships', (accounts) => {
           [accounts[7]],
           [ZERO_ADDRESS],
           [ZERO_ADDRESS],
-          [],
+          [[]],
           { from: keyOwner }
         )
 
@@ -148,7 +148,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         [keyOwner],
         [ZERO_ADDRESS],
         [ZERO_ADDRESS],
-        [],
+        [[]],
         { from: keyOwner }
       )
 
