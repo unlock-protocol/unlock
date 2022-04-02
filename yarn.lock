@@ -14797,7 +14797,7 @@ __metadata:
     prism-react-renderer: 1.2.1
     react-icons: 4.3.1
     react-use-clipboard: 1.0.7
-    storybook-builder-vite: 0.1.17
+    storybook-builder-vite: 0.1.23
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.23
     tsconfig-paths-webpack-plugin: 3.5.2
@@ -46527,9 +46527,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"storybook-builder-vite@npm:0.1.17":
-  version: 0.1.17
-  resolution: "storybook-builder-vite@npm:0.1.17"
+"storybook-builder-vite@npm:0.1.23":
+  version: 0.1.23
+  resolution: "storybook-builder-vite@npm:0.1.23"
   dependencies:
     "@joshwooding/vite-plugin-react-docgen-typescript": 0.0.2
     "@mdx-js/mdx": ^1.6.22
@@ -46544,7 +46544,7 @@ resolve@^2.0.0-next.3:
   peerDependencies:
     "@storybook/core-common": ^6.4.3
     vite: ">=2.6.7"
-  checksum: 728460d081c7e79435592cd07184c5802dd83a63813be0ebd4d2d9f80dbaedc5ee08a65df17d2570624abab00483553c724332402fadf77e2caecce1a7fa7185
+  checksum: 5cc0bde928d5032f6819a0e5ff98fe93eb71f840c1d1dfbddb439a7f6ca0e79b0721942bca457705e52573b3835a5c59287a4ff352e29493b9778d357007383c
   languageName: node
   linkType: hard
 
