@@ -5,13 +5,14 @@ import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinRoles.sol';
 import './MixinFunds.sol';
-
+import './MixinPurchase.sol';
 
 contract MixinRefunds is
   MixinRoles,
   MixinFunds,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinPurchase
 {
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is calculated as `proRatedRefund * refundPenaltyBasisPoints / BASIS_POINTS_DEN`.
@@ -102,10 +103,12 @@ contract MixinRefunds is
     emit CancelKey(_tokenId, keyOwner, msg.sender, refund);
     
     if (refund > 0) {
-      // Security: doing this last to avoid re-entrancy concerns
       _transfer(tokenAddress, keyOwner, refund);
     }
 
+    // make future reccuring transactions impossible
+    _originalDurations[_tokenId] = 0;
+    
     // inform the hook if there is one registered
     if(address(onKeyCancelHook) != address(0))
     {

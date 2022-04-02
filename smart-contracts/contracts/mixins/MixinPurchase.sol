@@ -27,6 +27,15 @@ contract MixinPurchase is
   // default to 0 
   uint256 internal _gasRefundValue;
 
+  // Keep track of ERC20 price when purchased
+  mapping(uint256 => uint256) private _originalPrices;
+  
+  // Keep track of duration when purchased
+  mapping(uint256 => uint256) internal _originalDurations;
+  
+  // keep track of token pricing when purchased
+  mapping(uint256 => address) private _originalTokens;
+
   /**
   * @dev Set the value/price to be refunded to the sender on purchase
   */
@@ -41,6 +50,26 @@ contract MixinPurchase is
   */
   function gasRefundValue() external view returns (uint256 _refundValue) {
     return _gasRefundValue;
+  }
+
+  /**
+  * @dev Helper to communicate with Unlock (record GNP and mint UDT tokens)
+  */
+  function _recordKeyPurchase (uint _keyPrice, address _referrer) internal  {
+    // make sure unlock is a contract, and we catch possible reverts
+      if (address(unlockProtocol).code.length > 0) {
+        // call Unlock contract to record GNP
+        // the function is capped by gas to prevent running out of gas
+        try unlockProtocol.recordKeyPurchase{gas: 300000}(_keyPrice, _referrer) 
+        {} 
+        catch {
+          // emit missing unlock
+          emit UnlockCallFailed(address(this), address(unlockProtocol));
+        }
+      } else {
+        // emit missing unlock
+        emit UnlockCallFailed(address(this), address(unlockProtocol));
+      }
   }
 
   /**
@@ -70,6 +99,7 @@ contract MixinPurchase is
     require(_recipients.length == _keyManagers.length, 'INVALID_KEY_MANAGERS_LENGTH');
 
     uint totalPriceToPay;
+    uint tokenId;
 
     for (uint256 i = 0; i < _recipients.length; i++) {
       // check recipient address
@@ -79,13 +109,13 @@ contract MixinPurchase is
       // check for a non-expiring key
       if (expirationDuration == type(uint).max) {
         // create a new key
-        _createNewKey(
+        tokenId = _createNewKey(
           _recipient,
           _keyManagers[i],
           type(uint).max
         );
       } else {
-        _createNewKey(
+        tokenId = _createNewKey(
           _recipient,
           _keyManagers[i],
           block.timestamp + expirationDuration
@@ -97,24 +127,17 @@ contract MixinPurchase is
       uint inMemoryKeyPrice = purchasePriceFor(_recipient, _referrers[i], _data[i]);
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
+      // store values at purchase time
+      _originalPrices[tokenId] = inMemoryKeyPrice;
+      _originalDurations[tokenId] = expirationDuration;
+      _originalTokens[tokenId] = tokenAddress;
+      
       if(tokenAddress != address(0)) {
         require(inMemoryKeyPrice <= _values[i], 'INSUFFICIENT_ERC20_VALUE');
       }
 
-      // make sure unlock is a contract, and we catch possible reverts
-      if (address(unlockProtocol).code.length > 0) {
-        // call Unlock contract to record GNP
-        // the function is capped by gas to prevent running out of gas
-        try unlockProtocol.recordKeyPurchase{gas: 300000}(inMemoryKeyPrice, _referrers[i]) 
-        {} 
-        catch {
-          // emit missing unlock
-          emit UnlockCallFailed(address(this), address(unlockProtocol));
-        }
-      } else {
-        // emit missing unlock
-        emit UnlockCallFailed(address(this), address(unlockProtocol));
-      }
+      // store in unlock
+      _recordKeyPurchase(inMemoryKeyPrice, _referrers[i]);
 
       // fire hook
       uint pricePaid = tokenAddress == address(0) ? msg.value : _values[i];
@@ -184,13 +207,50 @@ contract MixinPurchase is
   }
 
   /**
+  * Renew a given token
+  * @notice only works for non-free, expiring, ERC20 locks
+  * @param _tokenId the ID fo the token to renew
+  * @param _referrer the address of the person to be granted UDT
+  */
+  function renewMembershipFor(
+    uint _tokenId,
+    address _referrer
+  ) public {
+    _lockIsUpToDate();
+    _isKey(_tokenId);
+
+    // check the lock
+    require(_originalDurations[_tokenId] != type(uint).max, 'NON_EXPIRING_LOCK');
+    require(tokenAddress != address(0), 'NON_ERC20_LOCK');
+
+    // make sure duration and pricing havent changed  
+    uint keyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, '');
+    require(_originalPrices[_tokenId] == keyPrice, 'PRICE_CHANGED');
+    require(_originalDurations[_tokenId] == expirationDuration, 'DURATION_CHANGED');
+    require(_originalTokens[_tokenId] == tokenAddress, 'TOKEN_CHANGED');
+
+    // make sure key is ready for renewal
+    require(isValidKey(_tokenId) == false, 'NOT_READY');
+
+    // extend key duration
+    _extendKey(_tokenId);
+
+    // store in unlock
+    _recordKeyPurchase(keyPrice, _referrer);
+
+    // transfer the tokens
+    IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
+    token.transferFrom(ownerOf(_tokenId), address(this), keyPrice);
+  }
+
+  /**
    * @notice returns the minimum price paid for a purchase with these params.
    * @dev minKeyPrice considers any discount from Unlock or the OnKeyPurchase hook
    */
   function purchasePriceFor(
     address _recipient,
     address _referrer,
-    bytes calldata _data
+    bytes memory _data
   ) public view
     returns (uint minKeyPrice)
   {
@@ -221,5 +281,6 @@ contract MixinPurchase is
     }
   }
 
-  uint256[1000] private __safe_upgrade_gap;
+  // decreased from 1000 to 997 when added mappings for initial purchases pricing and duration on v10 
+  uint256[997] private __safe_upgrade_gap;
 }
