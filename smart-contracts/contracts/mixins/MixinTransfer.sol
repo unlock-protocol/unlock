@@ -138,6 +138,7 @@ contract MixinTransfer is
     _createOwnershipRecord(_tokenId, _recipient);
 
     // clear any previous approvals
+    _setKeyManagerOf(_tokenId, address(0));
     _clearApproval(_tokenId);
 
     // make future reccuring transactions impossible
