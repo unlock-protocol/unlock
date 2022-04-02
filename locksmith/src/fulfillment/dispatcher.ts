@@ -13,6 +13,33 @@ interface transactionOptionsInterface {
 }
 
 export default class Dispatcher {
+  async balances() {
+    const balances = await Promise.all(
+      Object.values(networks).map(async (network: any) => {
+        try {
+          const provider = new ethers.providers.JsonRpcProvider(
+            network.publicProvider
+          )
+          const wallet = new ethers.Wallet(config.purchaserCredentials)
+          const balance = await provider.getBalance(wallet.address)
+          return [
+            network.id,
+            {
+              address: wallet.address,
+              balance: balance.toNumber(),
+            },
+          ]
+        } catch (error) {
+          logger.error(error)
+          return [network.id, {}]
+        }
+      })
+    )
+    // @ts-expect-error
+    const entries = new Map(balances)
+    return Object.fromEntries(entries)
+  }
+
   /**
    * Called to grant key to user!
    */

@@ -4,6 +4,8 @@ import signatureValidationMiddleware from '../middlewares/signatureValidationMid
 const router = express.Router({ mergeParams: true })
 const purchaseController = require('../controllers/purchaseController')
 
+router.get('/', purchaseController.info)
+
 router.post(
   '/',
   signatureValidationMiddleware.generateProcessor({
