@@ -6,13 +6,14 @@ import {
   Fallback as AvatarFallback,
 } from '@radix-ui/react-avatar'
 import { MdExplore as ExploreIcon } from 'react-icons/md'
-import { CgDanger as DangerIcon } from 'react-icons/cg'
 import styled from 'styled-components'
 import {
   FaWallet as WalletIcon,
   FaQrcode as QrCodeIcon,
   FaCheckCircle as CheckIcon,
 } from 'react-icons/fa'
+import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
+import { Badge } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
@@ -31,22 +32,6 @@ interface KeyBoxProps {
   expiration: string
   keyId: string
   network: number
-}
-
-function ExpiredTag() {
-  return (
-    <p className="bg-red-100 border inline-flex items-center gap-2 border-brand-secondary text-brand-secondary text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">
-      <DangerIcon /> Expired
-    </p>
-  )
-}
-
-function ValidTag() {
-  return (
-    <p className="bg-green-100 border inline-flex items-center gap-2 border-green-600 text-green-600 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">
-      <CheckIcon /> Valid
-    </p>
-  )
 }
 
 const KeyBox = ({
@@ -80,9 +65,21 @@ const KeyBox = ({
           <h3 className="font-medium">{lock.name}</h3>
           <div>
             {expirationDate.toLowerCase() === 'expired' ? (
-              <ExpiredTag />
+              <Badge
+                variant="red"
+                size="tiny"
+                iconRight={<DangerIcon size={11} />}
+              >
+                Expired
+              </Badge>
             ) : (
-              <ValidTag />
+              <Badge
+                size="tiny"
+                variant="green"
+                iconRight={<CheckIcon size={11} />}
+              >
+                Valid
+              </Badge>
             )}
           </div>
         </div>
@@ -93,7 +90,7 @@ const KeyBox = ({
           <span className="text-gray-400">Token ID:</span>
           <span className="font-medium">{keyId}</span>
         </p>
-        <p className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2 text-sm">
           <span className="text-gray-400">Lock Address:</span>
           <div className="flex w-36 justify-between items-center gap-2 pl-2 p-0.5 border rounded">
             <span className="w-12 overflow-hidden font-medium text-ellipsis">
@@ -107,7 +104,7 @@ const KeyBox = ({
               {isCopied ? 'Copied' : 'Copy'}
             </button>
           </div>
-        </p>
+        </div>
         <p className="flex items-center gap-2 text-sm">
           <span className="text-gray-400">Network:</span>
           <span className="font-medium">{networks[network].name}</span>

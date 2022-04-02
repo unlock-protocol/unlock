@@ -136,10 +136,6 @@ contract MixinLockCore is
    * the same as `tokenAddress` in MixinFunds.
    * @param _amount specifies the max amount to withdraw, which may be reduced when
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
-   *
-   * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor`
-   * use cases.
    */
   function withdraw(
     address _tokenAddress,
@@ -183,7 +179,6 @@ contract MixinLockCore is
   )
     external
   {
-    _onlyIfAlive();
     _onlyLockManager();
     _isValidToken(_tokenAddress);
     uint oldKeyPrice = keyPrice;

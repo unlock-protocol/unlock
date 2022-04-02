@@ -6,6 +6,7 @@ import './MixinDisable.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';
 import './MixinLockCore.sol';
+import './MixinPurchase.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 
@@ -21,7 +22,8 @@ contract MixinTransfer is
   MixinRoles,
   MixinFunds,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinPurchase
 {
   using AddressUpgradeable for address;
 
@@ -50,7 +52,6 @@ contract MixinTransfer is
     uint _timeShared
   ) public
   {
-    _onlyIfAlive();
     _lockIsUpToDate();
     _onlyKeyManagerOrApproved(_tokenIdFrom);
     _isValidKey(_tokenIdFrom);
@@ -79,7 +80,7 @@ contract MixinTransfer is
       // we have to recalculate the fee here
       fee = getTransferFee(_tokenIdFrom, timeRemaining);
       time = timeRemaining - fee;
-      _setKeyExpirationTimestamp(_tokenIdFrom, block.timestamp); // Effectively expiring the key
+      _keys[_tokenIdFrom].expirationTimestamp = block.timestamp; // Effectively expiring the key
       emit ExpireKey(_tokenIdFrom);
     }
 
@@ -107,7 +108,6 @@ contract MixinTransfer is
   )
     public
   {
-    _onlyIfAlive();
     _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
     require(ownerOf(_tokenId) == _from, 'TRANSFER_FROM: NOT_KEY_OWNER');
@@ -119,14 +119,27 @@ contract MixinTransfer is
     _timeMachine(_tokenId, getTransferFee(_tokenId, 0), false);  
 
     // transfer a token
-    _transferKey(
-      _tokenId,
-      _recipient,
-      keyExpirationTimestampFor(_tokenId)
-    );
+    Key storage key = _keys[_tokenId];
+
+    // update expiration
+    key.expirationTimestamp = keyExpirationTimestampFor(_tokenId);
+
+    // increase total number of unique owners
+    if(balanceOf(_recipient) == 0 ) {
+      numberOfOwners++;
+    }
+
+    // delete token from previous owner
+    _deleteOwnershipRecord(_tokenId);
+    
+    // record new owner
+    _createOwnershipRecord(_tokenId, _recipient);
 
     // clear any previous approvals
     _clearApproval(_tokenId);
+
+    // make future reccuring transactions impossible
+    _originalDurations[_tokenId] = 0;
 
     // trigger event
     emit Transfer(

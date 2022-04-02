@@ -31,7 +31,7 @@ contract MixinPurchase is
   mapping(uint256 => uint256) private _originalPrices;
   
   // Keep track of duration when purchased
-  mapping(uint256 => uint256) private _originalDurations;
+  mapping(uint256 => uint256) internal _originalDurations;
   
   // keep track of token pricing when purchased
   mapping(uint256 => address) private _originalTokens;
@@ -93,7 +93,6 @@ contract MixinPurchase is
     bytes calldata _data
   ) external payable
   {
-    _onlyIfAlive();
     _lockIsUpToDate();
     require(maxNumberOfKeys > _totalSupply, 'LOCK_SOLD_OUT');
     require(_recipients.length == _referrers.length, 'INVALID_REFERRERS_LENGTH');
@@ -124,7 +123,7 @@ contract MixinPurchase is
       }
 
       // price      
-      uint inMemoryKeyPrice = _purchasePriceFor(_recipient, _referrers[i], _data);
+      uint inMemoryKeyPrice = purchasePriceFor(_recipient, _referrers[i], _data);
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
       // store values at purchase time
@@ -193,7 +192,6 @@ contract MixinPurchase is
     public 
     payable
   {
-    _onlyIfAlive();
     _lockIsUpToDate();
     _isKey(_tokenId);
 
@@ -201,7 +199,7 @@ contract MixinPurchase is
     _extendKey(_tokenId);
 
     // transfer the tokens
-    uint inMemoryKeyPrice = _purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
+    uint inMemoryKeyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
 
     if(tokenAddress != address(0)) {
       require(inMemoryKeyPrice <= _value, 'INSUFFICIENT_ERC20_VALUE');
@@ -223,7 +221,6 @@ contract MixinPurchase is
     uint _tokenId,
     address _referrer
   ) public {
-    _onlyIfAlive();
     _lockIsUpToDate();
     _isKey(_tokenId);
 
@@ -232,10 +229,13 @@ contract MixinPurchase is
     require(tokenAddress != address(0), 'NON_ERC20_LOCK');
 
     // make sure duration and pricing havent changed  
-    uint keyPrice = _purchasePriceFor(ownerOf(_tokenId), _referrer, '');
+    uint keyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, '');
     require(_originalPrices[_tokenId] == keyPrice, 'PRICE_CHANGED');
     require(_originalDurations[_tokenId] == expirationDuration, 'DURATION_CHANGED');
     require(_originalTokens[_tokenId] == tokenAddress, 'TOKEN_CHANGED');
+
+    // make sure key is ready for renewal
+    require(isValidKey(_tokenId) == false, 'NOT_READY');
 
     // extend key duration
     _extendKey(_tokenId);
@@ -255,22 +255,8 @@ contract MixinPurchase is
   function purchasePriceFor(
     address _recipient,
     address _referrer,
-    bytes calldata _data
-  ) external view
-    returns (uint minKeyPrice)
-  {
-    minKeyPrice = _purchasePriceFor(_recipient, _referrer, _data);
-  }
-
-  /**
-   * @notice returns the minimum price paid for a purchase with these params.
-   * @dev minKeyPrice considers any discount from Unlock or the OnKeyPurchase hook
-   */
-  function _purchasePriceFor(
-    address _recipient,
-    address _referrer,
     bytes memory _data
-  ) internal view
+  ) public view
     returns (uint minKeyPrice)
   {
     if(address(onKeyPurchaseHook) != address(0))
@@ -281,7 +267,6 @@ contract MixinPurchase is
     {
       minKeyPrice = keyPrice;
     }
-    return minKeyPrice;
   }
 
   // decreased from 1000 to 997 when added mappings for initial purchases pricing and duration on v10 

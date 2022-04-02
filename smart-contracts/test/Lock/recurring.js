@@ -1,6 +1,7 @@
 const { tokens, constants } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('truffle-assertions')
 const BigNumber = require('bignumber.js')
+const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
 const deployLocks = require('../helpers/deployLocks')
 const getProxy = require('../helpers/proxy')
@@ -107,8 +108,37 @@ contract('Lock / Recurring memberships', (accounts) => {
       })
     })
 
-    it('should revert if key doesnt exist', async () => {
-      await reverts(lock.renewMembershipFor(321, ZERO_ADDRESS), 'NO_SUCH_KEY')
+    describe('fails when key is not correct', () => {
+      it('should revert if key doesnt exist', async () => {
+        await reverts(lock.renewMembershipFor(321, ZERO_ADDRESS), 'NO_SUCH_KEY')
+      })
+
+      it('reverts if key is valid', async () => {
+        await dai.mint(accounts[7], someDai, {
+          from: lockOwner,
+        })
+        await dai.approve(lock.address, totalPrice, {
+          from: accounts[7],
+        })
+
+        const tx = await lock.purchase(
+          [keyPrice],
+          [accounts[7]],
+          [ZERO_ADDRESS],
+          [ZERO_ADDRESS],
+          [],
+          { from: keyOwner }
+        )
+
+        const { args } = tx.logs.find((v) => v.event === 'Transfer')
+        const { tokenId: newTokenId } = args
+
+        assert.equal(await lock.isValidKey(newTokenId), true)
+        await reverts(
+          lock.renewMembershipFor(newTokenId, ZERO_ADDRESS),
+          'NOT_READY'
+        )
+      })
     })
 
     let tokenId
@@ -125,6 +155,9 @@ contract('Lock / Recurring memberships', (accounts) => {
       const { args } = tx.logs.find((v) => v.event === 'Transfer')
       const { tokenId: newTokenId } = args
       tokenId = newTokenId
+
+      const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
+      await time.increaseTo(expirationTs.toNumber())
     })
 
     describe('fails when lock settings have changed', () => {
@@ -209,6 +242,8 @@ contract('Lock / Recurring memberships', (accounts) => {
           new BigNumber(await dai.allowance(keyOwner, lock.address)).toFixed(),
           0
         )
+        const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
+        await time.increaseTo(expirationTs.toNumber())
         // now reverts
         await reverts(
           lock.renewMembershipFor(tokenId, ZERO_ADDRESS),
@@ -227,6 +262,10 @@ contract('Lock / Recurring memberships', (accounts) => {
         })
         assert.equal(new BigNumber(await dai.balanceOf(keyOwner)).toNumber(), 0)
 
+        //
+        const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
+        await time.increaseTo(expirationTs.toNumber())
+
         // now funds are not enough
         await reverts(
           lock.renewMembershipFor(tokenId, ZERO_ADDRESS),
@@ -236,9 +275,28 @@ contract('Lock / Recurring memberships', (accounts) => {
     })
 
     describe('cancel or expire membership', () => {
-      it('expireAndRefund works correctly', async () => {
+      it('reverts after transferFrom', async () => {
+        // make sure key is valid
+        await lock.renewMembershipFor(tokenId, ZERO_ADDRESS)
+        // transfer
+        await lock.transferFrom(keyOwner, accounts[9], tokenId, {
+          from: keyOwner,
+        })
+        // should fail
+        await reverts(
+          lock.renewMembershipFor(tokenId, ZERO_ADDRESS),
+          'DURATION_CHANGED'
+        )
+      })
+
+      it('reverts after a expireAndRefund', async () => {
+        // renew once
+        await lock.renewMembershipFor(tokenId, ZERO_ADDRESS)
         const balanceBefore = new BigNumber(await dai.balanceOf(keyOwner))
-        // expire
+        const allowanceBefore = new BigNumber(
+          await dai.allowance(keyOwner, lock.address)
+        )
+
         const tx = await lock.expireAndRefundFor(tokenId, keyPrice, {
           from: lockOwner,
         })
@@ -248,17 +306,23 @@ contract('Lock / Recurring memberships', (accounts) => {
 
         // refund ok
         assert.equal(
-          new BigNumber(await dai.balanceOf(keyOwner)),
+          new BigNumber(await dai.balanceOf(keyOwner)).toFixed(),
           balanceBefore.plus(keyPrice).toFixed()
         )
 
         // key expired
         assert.equal(await lock.getHasValidKey.call(keyOwner), false)
+        assert.equal(await lock.isValidKey.call(tokenId), false)
 
-        // ERC20 allowance cleared
+        // ERC20 allowance has not been cancelled
         assert.equal(
-          new BigNumber(await dai.allowance(keyOwner, lock.address)).toFixed(),
-          0
+          allowanceBefore.toFixed(),
+          new BigNumber(await dai.allowance(keyOwner, lock.address)).toFixed()
+        )
+
+        await reverts(
+          lock.renewMembershipFor(tokenId, ZERO_ADDRESS),
+          'DURATION_CHANGED'
         )
       })
     })
