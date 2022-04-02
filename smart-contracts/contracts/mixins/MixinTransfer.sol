@@ -51,6 +51,7 @@ contract MixinTransfer is
   ) public
   {
     _lockIsUpToDate();
+    require(maxNumberOfKeys > _totalSupply, 'LOCK_SOLD_OUT');
     _onlyKeyManagerOrApproved(_tokenIdFrom);
     _isValidKey(_tokenIdFrom);
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
