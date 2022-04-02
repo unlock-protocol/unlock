@@ -27,7 +27,7 @@ contract('Lock / uniqueTokenIds', (accounts) => {
         keyOwners,
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        [],
+        keyOwners.map(() => []),
         {
           value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
           from: accounts[0],

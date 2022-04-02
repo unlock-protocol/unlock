@@ -123,7 +123,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       [referrer],
       [constants.ZERO_ADDRESS],
       [constants.ZERO_ADDRESS],
-      [],
+      [[]],
       {
         from: referrer,
         value: await lock.keyPrice(),
@@ -164,7 +164,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
         [keyBuyer],
         [referrer],
         [constants.ZERO_ADDRESS],
-        [],
+        [[]],
         {
           from: keyBuyer,
           value: await lock.keyPrice(),
@@ -227,7 +227,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
         [keyBuyer],
         [referrer],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           from: keyBuyer,
           value: await lock.keyPrice(),
