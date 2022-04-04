@@ -14,19 +14,19 @@ export default function configure(
     gtmId: 'GTM-5XL2RNW',
   }
 
+  const recaptchaKey = '6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir'
+
   const env = runtimeConfig.unlockEnv
 
   // Services
   const services = {
     storage: {
-      host: 'http://localhost:8080',
+      host: runtimeConfig.locksmithHost || 'http://localhost:8080',
     },
     wedlocks: {
       host: runtimeConfig.wedlocksUri || 'http://localhost:1337',
     },
   }
-
-  console.log(services)
 
   // Email signing
   const { base64WedlocksPublicKey } = runtimeConfig
@@ -82,5 +82,6 @@ export default function configure(
     stripeApiKey,
     networks,
     keyGranter,
+    recaptchaKey,
   }
 }

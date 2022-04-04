@@ -28,19 +28,20 @@ contract('Lock / onKeyCancelHook', (accounts) => {
       constants.ZERO_ADDRESS
     )
     keyPrice = await lock.keyPrice()
-    await lock.purchase(
+    const tx = await lock.purchase(
       [],
       [to],
       [constants.ZERO_ADDRESS],
       [constants.ZERO_ADDRESS],
-      [],
+      [[]],
       {
         from,
         value: keyPrice,
       }
     )
-    const ID = await lock.getTokenIdFor.call(to)
-    await lock.cancelAndRefund(ID, { from: to })
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
+    const tokenId = args.tokenId
+    await lock.cancelAndRefund(tokenId, { from: to })
   })
 
   it('key cancels should log the hook event', async () => {

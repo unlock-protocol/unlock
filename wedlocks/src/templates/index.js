@@ -6,6 +6,7 @@ import recoveryKeyConfirmEmail from './recoveryKeyConfirmEmail'
 import confirmEvent from './confirmEvent'
 import keyOwnership from './keyOwnership'
 import keyMined from './keyMined'
+import debug from './debug'
 // eslint-disable-next-line import/no-unresolved
 import * as LockTemplates from './locks'
 
@@ -18,6 +19,7 @@ const baseTemplates = {
   confirmEvent,
   keyOwnership,
   keyMined,
+  debug,
 }
 
 const templates = {}

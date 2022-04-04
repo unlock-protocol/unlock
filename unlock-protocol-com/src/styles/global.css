@@ -29,4 +29,5 @@ body {
   .glass-pane {
     @apply bg-white opacity-100;
   }
-} ;
+}
+

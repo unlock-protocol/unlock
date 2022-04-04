@@ -8,7 +8,7 @@ import GlobalWrapper from '../components/interface/GlobalWrapper'
 import '../index.css'
 
 const config = configure()
-const UnlockApp = ({ Component, pageProps }: AppProps) => {
+const UnlockApp = ({ Component }: AppProps) => {
   useEffect(() => {
     if (!config.isServer) {
       if (config.env === 'prod' && config.tagManagerArgs) {
@@ -18,8 +18,8 @@ const UnlockApp = ({ Component, pageProps }: AppProps) => {
   }, [])
 
   return (
-    <GlobalWrapper pageProps={pageProps}>
-      <Component {...pageProps} />
+    <GlobalWrapper>
+      <Component />
       <Toaster />
     </GlobalWrapper>
   )

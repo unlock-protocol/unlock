@@ -44,7 +44,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
         buyers.slice(0, 10).map((b) => b.address),
         buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
         buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
-        [],
+        buyers.slice(0, 10).map(() => []),
         {
           value: keyPrice.mul(buyers.length).toString(),
         }
@@ -61,7 +61,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
             [buyers[11].address],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],
-            [],
+            [[]],
             {
               value: keyPrice.toString(),
             }
@@ -80,7 +80,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
           [buyers[11].address],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             value: keyPrice.toString(),
           }
@@ -101,7 +101,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
         buyers.map((b) => b.address),
         buyers.map(() => web3.utils.padLeft(0, 40)),
         buyers.map(() => web3.utils.padLeft(0, 40)),
-        [],
+        buyers.map(() => []),
         {
           value: keyPrice.mul(buyers.length).toString(),
         }
@@ -109,10 +109,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
       await tx.wait()
 
       // increase supply
-      await expectRevert(
-        lock.setMaxNumberOfKeys(5),
-        'maxNumberOfKeys is smaller than existing supply'
-      )
+      await expectRevert(lock.setMaxNumberOfKeys(5), 'SMALLER_THAN_SUPPLY')
     })
 
     it('should allow setting a value equal to current total supply', async () => {
@@ -123,7 +120,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
         buyers.slice(0, 10).map((b) => b.address),
         buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
         buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
-        [],
+        buyers.slice(0, 10).map(() => []),
         {
           value: keyPrice.mul(buyers.length).toString(),
         }
@@ -147,7 +144,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
             [buyers[11].address],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],
-            [],
+            [[]],
             {
               value: keyPrice.toString(),
             }
