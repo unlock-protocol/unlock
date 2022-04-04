@@ -57,10 +57,10 @@ export default async function (lock, _lockVersion, callback) {
 
   // get lock interface
   const lockAbi = abis.PublicLock[`v${lockVersion}`]
-  const interface = new Interface(lockAbi)
+  const lockInterface = new Interface(lockAbi)
 
   // parse calldata
-  const calldata = interface.encodeFunctionData(
+  const calldata = lockInterface.encodeFunctionData(
     'initialize(address,uint256,address,uint256,uint256,string)',
     [
       lockCreator,
