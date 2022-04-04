@@ -1,6 +1,7 @@
+import { Interface } from 'ethers'
+import abis from '../../abis'
 import ethersUtils from '../../utils'
 import { ETHERS_MAX_UINT, UNLIMITED_KEYS_COUNT, ZERO } from '../../constants'
-
 import { getErc20Decimals } from '../../erc20'
 
 /**
@@ -53,8 +54,13 @@ export default async function (lock, _lockVersion, callback) {
   if (!lockCreator) {
     throw new Error('No signer detected')
   }
+
+  // get lock interface
+  const lockAbi = abis.PublicLock[`v${lockVersion}`]
+  const interface = new Interface(lockAbi)
+
   // parse calldata
-  const calldata = await lock.interface.encodeFunctionData(
+  const calldata = interface.encodeFunctionData(
     'initialize(address,uint256,address,uint256,uint256,string)',
     [
       lockCreator,
