@@ -75,7 +75,7 @@ interface MembersContentProps {
 }
 export const MembersContent = ({ query }: MembersContentProps) => {
   const [filter, setFilter] = useState<string>(MemberFilters.ACTIVE)
-  const { account, network } = useContext(AuthenticationContext)
+  const { account } = useContext(AuthenticationContext)
   const [isOpen, setIsOpen] = useState(false)
 
   let lockAddresses: string[] = []
