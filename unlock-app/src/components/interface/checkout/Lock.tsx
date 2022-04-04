@@ -57,7 +57,7 @@ export const Lock = ({
     const now = new Date().getTime() / 1000
     const { expiration } = key ?? {}
     const isKeyNotExpired = expiration > now || expiration === -1
-    const isKeyValid = key || isKeyNotExpired
+    const isKeyValid = !!(key && isKeyNotExpired)
     setHasValidKey(isKeyValid)
     setHasKey(key)
   }
