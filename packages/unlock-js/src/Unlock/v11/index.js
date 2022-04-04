@@ -1,8 +1,8 @@
 import abis from '../../abis'
-import createLockAtVersion from './createLockAtVersion'
+import createLock from './createLock'
 
 export default {
-  createLockAtVersion,
+  createLock,
   version: 'v11',
   Unlock: abis.Unlock.v11,
 }
