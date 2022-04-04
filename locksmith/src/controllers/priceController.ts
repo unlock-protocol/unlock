@@ -30,8 +30,6 @@ namespace PriceController {
       const pricer = new KeyPricer()
       const pricing = await pricer.generate(lockAddress, req.chain)
 
-      // TODO: check that the purchaser has enough funds to pay for gas?
-
       // If it is low enough we want to allow users to claim it for free
       const costToGrant = await pricer.gasFee(req.chain, 1000)
       if (
@@ -53,7 +51,6 @@ namespace PriceController {
 
       // Let's check tthat the price is larger than 50cts
       const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
-
       if (
         !hasEnoughToPayForGas ||
         !isAuthorizedForCreditCard ||

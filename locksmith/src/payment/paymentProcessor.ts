@@ -79,6 +79,7 @@ export class PaymentProcessor {
   }
 
   /**
+   *  DEPRECATED
    *  Charges an appropriately configured user with purchasing details, with the amount specified
    *  in the purchase details
    * @param userAddress
@@ -93,7 +94,6 @@ export class PaymentProcessor {
     network: number,
     maxPrice: number // Agreed to by user!
   ) {
-    // Otherwise get the pricing to continue
     const pricing = await new KeyPricer().generate(lock, network)
     const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
     const maxPriceInCents = maxPrice * 100
@@ -144,6 +144,132 @@ export class PaymentProcessor {
     }
   }
 
+  /**
+   *
+   * @param recipient
+   * @param stripeCustomerId
+   * @param lock
+   * @param maxPrice
+   * @param network
+   * @param stripeAccount
+   * @returns
+   */
+  async createPaymentIntent(
+    recipient: ethereumAddress /** this is the recipient of the granted key */,
+    stripeCustomerId: string, // Stripe token of the buyer
+    lock: ethereumAddress,
+    maxPrice: any,
+    network: number,
+    stripeAccount: string
+  ) {
+    const pricing = await new KeyPricer().generate(lock, network)
+    const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
+    const maxPriceInCents = maxPrice * 100
+    if (
+      Math.abs(totalPriceInCents - maxPriceInCents) >
+      0.03 * maxPriceInCents
+    ) {
+      // if price diverged by more than 3%, we fail!
+      throw new Error('Price diverged by more than 3%. Aborting')
+    }
+    const paymentMethods = await this.stripe.paymentMethods.list({
+      customer: stripeCustomerId,
+      type: 'card',
+    })
+
+    const intent = await this.stripe.paymentIntents.create({
+      amount: totalPriceInCents,
+      currency: 'usd',
+      customer: stripeCustomerId,
+      payment_method: paymentMethods.data[0].id,
+      capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
+      metadata: {
+        lock,
+        recipient,
+        network,
+        maxPrice,
+      },
+      application_fee_amount: pricing.unlockServiceFee,
+      on_behalf_of: stripeAccount,
+      transfer_data: {
+        destination: stripeAccount,
+      },
+    })
+    return intent.client_secret
+  }
+
+  /**
+   *
+   * @param recipient
+   * @param stripeCustomerId
+   * @param lock
+   * @param maxPrice
+   * @param network
+   * @param stripeAccount
+   * @returns
+   */
+  async captureConfirmedPaymentIntent(
+    recipient: ethereumAddress /** this is the recipient of the granted key */,
+    lock: ethereumAddress,
+    network: number,
+    paymentIntentId: string
+  ) {
+    const pricing = await new KeyPricer().generate(lock, network)
+    const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
+
+    const paymentIntent = await this.stripe.paymentIntents.retrieve(
+      paymentIntentId
+    )
+
+    if (paymentIntent.metadata.lock !== lock) {
+      throw new Error('Lock does not match with initial intent. Aborting')
+    }
+
+    if (paymentIntent.metadata.recipient !== recipient) {
+      throw new Error('Recipient does not match with initial intent. Aborting')
+    }
+
+    const maxPriceInCents = paymentIntent.amount
+    if (
+      Math.abs(totalPriceInCents - maxPriceInCents) >
+      0.03 * maxPriceInCents
+    ) {
+      // if price diverged by more than 3%, we fail!
+      throw new Error('Price diverged by more than 3%. Aborting')
+    }
+
+    await this.stripe.paymentIntents.capture(paymentIntentId)
+    const fulfillmentDispatcher = new Dispatcher()
+    return new Promise((resolve, reject) => {
+      try {
+        fulfillmentDispatcher.grantKey(
+          paymentIntent.metadata.lock,
+          paymentIntent.metadata.recipient,
+          parseInt(paymentIntent.metadata.network, 10),
+          async (_: any, transactionHash: string) => {
+            // Should we proceed differently here? Save the charge before and keep the state?
+            // This would allow us to easily retrieve transactions that might have failed.
+            const charge: Charge = await Charge.create({
+              userAddress: paymentIntent.metadata.recipient,
+              lock: paymentIntent.metadata.lock,
+              stripeCustomerId: paymentIntent.customer,
+              connectedCustomer: paymentIntent.customer,
+              totalPriceInCents: paymentIntent.amount,
+              unlockServiceFee: paymentIntent.application_fee_amount,
+              stripeCharge: paymentIntent.id,
+              transactionHash,
+              chain: network,
+            })
+            return resolve(charge.transactionHash)
+          }
+        )
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  // DEPRECATED
   async initiatePurchaseForConnectedStripeAccount(
     recipient: ethereumAddress /** this is the recipient of the granted key */,
     stripeCustomerId: string, // Stripe token of the buyer
