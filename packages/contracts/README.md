@@ -23,3 +23,11 @@ NB: all the contracts have been flattened and exist mostly for archiving.
 import "@unlock-protocol/contracts/Unlock/UnlockV0.sol";
 
 ```
+
+## Build the package
+
+After adding a contract, you need to append the file to the index by running:
+
+```
+yarn build:index
+```
