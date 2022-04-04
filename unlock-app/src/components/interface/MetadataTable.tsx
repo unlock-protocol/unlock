@@ -143,7 +143,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         </Tbody>
       </Table>
       <DownloadButton
-        type="button"
         onClick={() => {
           downloadAsCSV(columns, metadata)
         }}
