@@ -44,7 +44,7 @@ export const CardConfirmationCheckout = ({
   const { account } = useContext(AuthenticationContext)
   // @ts-expect-error account is _always_ defined in this component
   const { chargeCard, prepareChargeForCard, captureChargeForCard } = useAccount(
-    account,
+    account || '',
     network
   )
   const [purchasePending, setPurchasePending] = useState(false)
@@ -137,7 +137,7 @@ export const CardConfirmationCheckout = ({
       const hash = await captureChargeForCard(
         lock.address,
         network,
-        recipient || account,
+        recipient || account || '',
         confirmation.paymentIntent.id
       )
 
