@@ -407,6 +407,7 @@ export default class WalletService extends UnlockService {
     params: {
       lockAddress: string
       owner: string
+      tokenAddress: string
     },
     callback: WalletServiceCallback
   ) {
@@ -415,6 +416,9 @@ export default class WalletService extends UnlockService {
     }
     if (!params.owner) {
       throw new Error('Missing owner')
+    }
+    if (!params.tokenAddress) {
+      throw new Error('Missing tokenAddress')
     }
     const version = await this.lockContractAbiVersion(params.lockAddress)
     if (!version.getCancelAndRefundValueFor) {
