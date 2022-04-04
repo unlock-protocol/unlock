@@ -16,7 +16,6 @@ import logger from '../logger'
 const config = require('../../config/config')
 
 namespace PurchaseController {
-
   /**
    *
    * @param _req
