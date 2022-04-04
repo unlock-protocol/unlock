@@ -31,3 +31,11 @@ After adding a contract, you need to append the file to the index by running:
 ```
 yarn build:index
 ```
+
+### Run Tests
+
+Make sure all the contracts are building correctly by running
+
+```
+yarn test
+```
