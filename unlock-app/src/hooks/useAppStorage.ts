@@ -30,7 +30,7 @@ export function useAppStorage() {
     const items = { ...localStorage } ?? []
     Object.keys(items)
       .filter((item: string) => item.includes(APP_NAME))
-      .forEach((item: string) => removeKey(item, false))
+      .forEach((key: string) => removeKey(key, false))
   }, [])
 
   return {
