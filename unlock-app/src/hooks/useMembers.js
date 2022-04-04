@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
+import toast from 'react-hot-toast'
 import { expirationAsDate } from '../utils/durations'
-
 import generateKeyTypedData from '../structured_data/keyMetadataTypedData'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { StorageServiceContext } from '../utils/withStorageService'
@@ -36,7 +36,15 @@ export const getAllKeysMetadataForLock = async (
   })
   // TODO prevent replays by adding timestamp?
   const message = `I want to access member data for ${lock.address}`
-  const signature = await walletService.signMessage(message, 'personal_sign')
+  const signaturePromise = walletService.signMessage(message, 'personal_sign')
+
+  toast.promise(signaturePromise, {
+    error: 'There was an error in getting signature. Please try again.',
+    loading: 'Please sign request to get members.',
+    success: 'Successfully signed request to get members.',
+  })
+
+  const signature = await signaturePromise
   const response = await storageService.getBulkMetadataFor(
     lock.address,
     signature,

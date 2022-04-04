@@ -83,6 +83,21 @@ contract MixinLockCore is
   ILockValidKeyHook public onValidKeyHook;
   ILockTokenURIHook public onTokenURIHook;
 
+  // use to check data version
+  uint public schemaVersion;
+
+  // keep track of how many key a single address can use
+  uint internal _maxKeysPerAddress;
+
+  // modifier to check if data has been upgraded
+  function _lockIsUpToDate() internal view {
+    require(
+      schemaVersion == publicLockVersion(),
+      'MIGRATION_REQUIRED'
+    );
+  }
+
+  // modifier
   function _onlyLockManagerOrBeneficiary() 
   internal 
   view
@@ -105,6 +120,12 @@ contract MixinLockCore is
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
+
+    // update only when initialized
+    schemaVersion = publicLockVersion();
+
+    // only a single key per address is allowed by default
+    _maxKeysPerAddress = 1;
   }
 
   // The version number of the current implementation on this network
@@ -121,10 +142,6 @@ contract MixinLockCore is
    * the same as `tokenAddress` in MixinFunds.
    * @param _amount specifies the max amount to withdraw, which may be reduced when
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
-   *
-   * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor`
-   * use cases.
    */
   function withdraw(
     address _tokenAddress,
@@ -168,7 +185,6 @@ contract MixinLockCore is
   )
     external
   {
-    _onlyIfAlive();
     _onlyLockManager();
     _isValidToken(_tokenAddress);
     uint oldKeyPrice = keyPrice;
@@ -231,5 +247,7 @@ contract MixinLockCore is
     return IERC20Upgradeable(tokenAddress).approve(_spender, _amount);
   }
 
-  uint256[1000] private __safe_upgrade_gap;
+
+  // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
+  uint256[998] private __safe_upgrade_gap;
 }

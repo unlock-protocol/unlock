@@ -1,7 +1,3 @@
-import path from 'path'
-
-const absolutePath = (relative) => path.join(process.cwd(), relative)
-
 export default {
   subject: () => 'BCN Auction',
   html: () =>
@@ -25,9 +21,7 @@ export default {
   attachments: [
     {
       filename: 'blackpool-nfa-barcelona.jpg',
-      path: absolutePath(
-        './src/templates/attachments/blackpool-nfa-barcelona.jpg'
-      ),
+      path: 'https://wedlocks.unlock-protocol.com/attachments/blackpool-nfa-barcelona.jpg',
       cid: 'blackpool-nfa-barcelona.jpg',
     },
   ],

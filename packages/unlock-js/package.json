@@ -2,20 +2,20 @@
   "name": "@unlock-protocol/unlock-js",
   "version": "0.22.2",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
-  "main": "lib/index.js",
-  "module": "esm/index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/unlock-protocol/unlock.git"
   },
   "scripts": {
     "test": "yarn build && hardhat test:jest",
+    "check": "tsc --noEmit",
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
-    "build-esm": "BABEL_ENV=esm yarn babel src --ignore src/__tests__ --out-dir esm",
-    "build-cjs": "BABEL_ENV=cjs yarn babel src --ignore src/__tests__ --out-dir lib",
+    "build:lib": "tsup src/index.ts --dts --format esm,cjs ",
     "build:abis": "node ./scripts/compressAbi.js",
-    "build": "yarn clean && yarn build:abis && yarn build-cjs && yarn build-esm",
+    "build": "yarn clean && yarn build:abis && yarn build:lib",
     "clean": "rm -rf lib esm cache coverage src/__tests__/contracts src/__tests__/artifacts",
     "ci": "yarn test && yarn lint",
     "prepublishOnly": "yarn build"
@@ -32,10 +32,10 @@
   },
   "devDependencies": {
     "@babel/cli": "7.17.6",
-    "@babel/core": "7.17.5",
+    "@babel/core": "7.17.8",
     "@babel/preset-env": "7.16.11",
     "@nomiclabs/hardhat-ethers": "2.0.5",
-    "@openzeppelin/hardhat-upgrades": "1.15.0",
+    "@openzeppelin/hardhat-upgrades": "1.16.1",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/jest-config": "workspace:^",
@@ -45,9 +45,10 @@
     "eslint": "8.10.0",
     "hardhat": "2.9.0",
     "jest": "27.5.1",
-    "lint-staged": "12.3.4",
+    "lint-staged": "12.3.7",
     "prettier": "2.5.1",
-    "ts-jest": "27.1.3",
+    "ts-jest": "27.1.4",
+    "tsup": "5.12.2",
     "typescript": "4.6.2"
   }
 }

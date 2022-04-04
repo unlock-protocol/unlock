@@ -11,233 +11,205 @@ let unlock
 let locks
 let lock
 let lockCreator
+let tokenIds
 
 contract('Permissions / KeyManager', (accounts) => {
   lockCreator = accounts[0]
   const lockManager = lockCreator
   const keyGranter = lockCreator
   const keyOwners = [accounts[1], accounts[2], accounts[3]]
-  const [keyOwner1, keyOwner2, keyOwner3] = keyOwners
+  const [keyOwner1] = keyOwners
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const oneDay = new BigNumber(60 * 60 * 24)
-  let iD
-  let keyManagerBefore
   let keyManager
+  let validExpirationTimestamp
+
+  beforeEach(async () => {
+    // get time
+    const blockNumber = await ethers.provider.getBlockNumber()
+    const latestBlock = await ethers.provider.getBlock(blockNumber)
+    validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
+
+    // purchase keys
+    unlock = await getProxy(unlockContract)
+    locks = await deployLocks(unlock, lockCreator)
+    lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
+    const tx = await lock.purchase(
+      [],
+      keyOwners,
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => []),
+      {
+        value: (keyPrice * keyOwners.length).toFixed(),
+        from: accounts[0],
+      }
+    )
+    tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
+  })
 
   describe('Key Purchases', () => {
-    beforeEach(async () => {
-      unlock = await getProxy(unlockContract)
-      locks = await deployLocks(unlock, lockCreator)
-      lock = locks.FIRST
-      await lock.purchase(
-        [],
-        keyOwners,
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        [],
-        {
-          value: (keyPrice * keyOwners.length).toFixed(),
-          from: accounts[0],
-        }
-      )
-    })
-
     it('should leave the KM == 0x00(default) for new purchases', async () => {
-      iD = await lock.getTokenIdFor(keyOwner1)
-      const keyManager = await lock.keyManagerOf.call(iD)
+      const keyManager = await lock.keyManagerOf.call(tokenIds[0])
       assert.equal(keyManager, constants.ZERO_ADDRESS)
     })
 
-    it('should not change KM when topping-up valid keys', async () => {
-      keyManagerBefore = await lock.keyManagerOf.call(iD)
-      await lock.purchase(
+    it('should allow to set KM when buying new keys', async () => {
+      const tx = await lock.purchase(
         [],
         [keyOwner1],
         [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
-        [],
+        [accounts[8]],
+        [[]],
         {
           value: keyPrice.toFixed(),
           from: keyOwner1,
         }
       )
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManagerBefore, keyManager)
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      const newKeyManager = await lock.keyManagerOf.call(args.tokenId)
+      assert.equal(newKeyManager, accounts[8])
     })
+  })
 
-    it('should reset the KM == 0x00 when renewing expired keys', async () => {
-      iD = await lock.getTokenIdFor(keyOwner1)
-      await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner1 })
-      keyManagerBefore = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManagerBefore, accounts[9])
-      await lock.expireAndRefundFor(keyOwner1, 0, { from: lockManager })
-      await lock.purchase(
+  describe('Key Renewal / extend', () => {
+    let tokenId
+    beforeEach(async () => {
+      const tx = await lock.purchase(
         [],
         [keyOwner1],
         [web3.utils.padLeft(0, 40)],
         [web3.utils.padLeft(0, 40)],
-        [],
+        [[]],
         {
           value: keyPrice.toFixed(),
           from: keyOwner1,
         }
       )
-      assert.notEqual(iD, 0)
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, constants.ZERO_ADDRESS)
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      tokenId = args.tokenId
+    })
+    it('should reset key manager when specified', async () => {
+      assert.equal(
+        await lock.keyManagerOf.call(tokenId),
+        constants.ZERO_ADDRESS
+      )
+      assert.equal(await lock.isValidKey.call(tokenId), true)
+      await lock.extend(0, tokenId, accounts[8], [], {
+        value: keyPrice.toFixed(),
+        from: keyOwner1,
+      })
+      assert.equal(
+        await lock.keyManagerOf.call(tokenId),
+        constants.ZERO_ADDRESS
+      )
+    })
+
+    it('should left untouched when not specified', async () => {
+      await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyOwner1 })
+      assert.equal(await lock.keyManagerOf.call(tokenId), accounts[9])
+      await lock.extend(0, tokenId, web3.utils.padLeft(0, 40), [], {
+        value: keyPrice.toFixed(),
+        from: keyOwner1,
+      })
+      assert.equal(await lock.keyManagerOf.call(tokenId), accounts[9])
     })
   })
 
   describe('Key Transfers', () => {
+    let tokenId
     before(async () => {
       unlock = await getProxy(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
-      await lock.purchase(
+      const tx = await lock.purchase(
         [],
         keyOwners,
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
         keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        [],
+        keyOwners.map(() => []),
         {
           value: (keyPrice * keyOwners.length).toFixed(),
           from: accounts[0],
         }
       )
-      iD = await lock.getTokenIdFor.call(keyOwner3)
-      await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner3 })
-      await lock.expireAndRefundFor(keyOwner3, 0, { from: lockManager })
+      tokenIds = tx.logs
+        .filter((v) => v.event === 'Transfer')
+        .map(({ args }) => args.tokenId)
+      tokenId = tokenIds[0]
     })
 
     it('should leave the KM == 0x00(default) for new recipients', async () => {
-      iD = await lock.getTokenIdFor(keyOwner1)
-      await lock.transferFrom(keyOwner1, accounts[8], iD, {
+      const tx = await lock.transferFrom(keyOwner1, accounts[8], tokenId, {
         from: keyOwner1,
       })
-      iD = await lock.getTokenIdFor(accounts[8])
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, constants.ZERO_ADDRESS)
-    })
-
-    it('should not change KM for existing valid key owners', async () => {
-      let iD8 = await lock.getTokenIdFor(accounts[8])
-      iD = await lock.getTokenIdFor(keyOwner2)
-      keyManagerBefore = await lock.keyManagerOf.call(iD)
-      await lock.transferFrom(accounts[8], keyOwner2, iD8, {
-        from: accounts[8],
-      })
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManagerBefore, keyManager)
-    })
-
-    it('should reset the KM to 0x00 for expired key owners', async () => {
-      iD = await lock.getTokenIdFor(keyOwner3)
-      keyManagerBefore = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManagerBefore, accounts[9])
-      iD = await lock.getTokenIdFor(keyOwner2)
-      await lock.transferFrom(keyOwner2, keyOwner3, iD, {
-        from: keyOwner2,
-      })
-      iD = await lock.getTokenIdFor(keyOwner3)
-      keyManager = await lock.keyManagerOf.call(iD)
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      keyManager = await lock.keyManagerOf.call(args.tokenId)
       assert.equal(keyManager, constants.ZERO_ADDRESS)
     })
   })
 
   describe('Key Sharing', () => {
-    before(async () => {
-      unlock = await getProxy(unlockContract)
-      locks = await deployLocks(unlock, lockCreator)
-      lock = locks.FIRST
-      await lock.purchase(
-        [],
-        keyOwners,
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        [],
-        {
-          value: (keyPrice * keyOwners.length).toFixed(),
-          from: accounts[0],
-        }
+    let newTokenId
+    beforeEach(async () => {
+      // share key creates a new key
+      const tx = await lock.shareKey(accounts[4], tokenIds[0], oneDay, {
+        from: keyOwners[0],
+      })
+      const {
+        args: { tokenId },
+      } = tx.logs.find(
+        (v) => v.event === 'Transfer' && v.from !== constants.ZERO_ADDRESS
       )
-      iD = await lock.getTokenIdFor.call(keyOwner3)
-      await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner3 })
-      await lock.expireAndRefundFor(keyOwner3, 0, { from: lockManager })
+      newTokenId = tokenId
     })
 
     it('should leave the KM == 0x00(default) for new recipients', async () => {
-      iD = await lock.getTokenIdFor(keyOwner1)
-      await lock.shareKey(accounts[4], iD, oneDay, {
-        from: keyOwner1,
-      })
-      iD = await lock.getTokenIdFor(accounts[8])
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, constants.ZERO_ADDRESS)
+      const newKeyManager = await lock.keyManagerOf.call(newTokenId)
+      assert.equal(newKeyManager, constants.ZERO_ADDRESS)
     })
 
+    /*
     it('should not change KM for existing valid key owners', async () => {
-      iD = await lock.getTokenIdFor(keyOwner2)
-      keyManagerBefore = await lock.keyManagerOf.call(iD)
-      iD = await lock.getTokenIdFor(keyOwner1)
-      await lock.shareKey(keyOwner2, iD, oneDay, {
+      keyManagerBefore = await lock.keyManagerOf.call(tokenId)
+      await lock.shareKey(keyOwner2, tokenId, oneDay, {
         from: keyOwner1,
       })
-      iD = await lock.getTokenIdFor(keyOwner2)
-      keyManager = await lock.keyManagerOf.call(iD)
+      tokenId = await lock.getTokenIdFor(keyOwner2)
+      keyManager = await lock.keyManagerOf.call(tokenId)
       assert.equal(keyManagerBefore, keyManager)
     })
 
     it('should reset the KM to 0x00 for expired key owners', async () => {
-      iD = await lock.getTokenIdFor.call(keyOwner1)
-      assert.notEqual(iD, 0)
-      let keyManager = await lock.keyManagerOf.call(iD)
+      tokenId = await lock.getTokenIdFor.call(keyOwner1)
+      assert.notEqual(tokenId, 0)
+      let keyManager = await lock.keyManagerOf.call(tokenId)
       assert.equal(keyManager, constants.ZERO_ADDRESS)
-      const owner = await lock.ownerOf.call(iD)
+      const owner = await lock.ownerOf.call(tokenId)
       assert.equal(owner, keyOwner1)
-      await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner1 })
-      keyManager = await lock.keyManagerOf.call(iD)
+      await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyOwner1 })
+      keyManager = await lock.keyManagerOf.call(tokenId)
       assert.equal(keyManager, accounts[9])
       await lock.expireAndRefundFor(keyOwner1, 0, { from: lockCreator })
       assert.equal(await lock.getHasValidKey.call(keyOwner1), false)
-      iD = await lock.getTokenIdFor(keyOwner2)
-      await lock.shareKey(keyOwner1, iD, oneDay, {
+      tokenId = await lock.getTokenIdFor(keyOwner2)
+      await lock.shareKey(keyOwner1, tokenId, oneDay, {
         from: keyOwner2,
       })
-      iD = await lock.getTokenIdFor(keyOwner1)
-      keyManager = await lock.keyManagerOf.call(iD)
+      tokenId = await lock.getTokenIdFor(keyOwner1)
+      keyManager = await lock.keyManagerOf.call(tokenId)
       assert.equal(await lock.getHasValidKey.call(keyOwner1), true)
       assert.equal(keyManager, constants.ZERO_ADDRESS)
     })
+    */
   })
 
   describe('Key Granting', () => {
-    let validExpirationTimestamp
-    before(async () => {
-      const blockNumber = await ethers.provider.getBlockNumber()
-      const latestBlock = await ethers.provider.getBlock(blockNumber)
-      validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
-
-      unlock = await getProxy(unlockContract)
-      locks = await deployLocks(unlock, lockCreator)
-      lock = locks.FIRST
-      await lock.purchase(
-        [],
-        keyOwners,
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        [],
-        {
-          value: (keyPrice * keyOwners.length).toFixed(),
-          from: accounts[0],
-        }
-      )
-      iD = await lock.getTokenIdFor.call(keyOwner3)
-      await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner3 })
-      await lock.expireAndRefundFor(keyOwner3, 0, { from: lockManager })
-    })
-
     it('should let KeyGranter set an arbitrary KM for new keys', async () => {
-      await lock.grantKeys(
+      const tx = await lock.grantKeys(
         [accounts[7]],
         [validExpirationTimestamp],
         [accounts[8]],
@@ -245,84 +217,31 @@ contract('Permissions / KeyManager', (accounts) => {
           from: keyGranter,
         }
       )
-      iD = await lock.getTokenIdFor(accounts[7])
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, accounts[8])
-    })
-
-    it('should let KeyGranter set an arbitrary KM for existing valid keys', async () => {
-      const blockNumber = await ethers.provider.getBlockNumber()
-      const latestBlock = await ethers.provider.getBlock(blockNumber)
-      const newTimestamp = Math.round(latestBlock.timestamp + 60 * 60 * 24 * 30)
-      assert.equal(await lock.getHasValidKey.call(accounts[7]), true)
-      await lock.grantKeys([accounts[7]], [newTimestamp], [keyGranter], {
-        from: keyGranter,
-      })
-      iD = await lock.getTokenIdFor(accounts[7])
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, keyGranter)
-    })
-
-    it('should let KeyGranter set an arbitrary KM for expired keys', async () => {
-      await lock.expireAndRefundFor(accounts[7], 0, { from: lockCreator })
-      assert.equal(await lock.getHasValidKey.call(accounts[7]), false)
-      const blockNumber = await ethers.provider.getBlockNumber()
-      const latestBlock = await ethers.provider.getBlock(blockNumber)
-      const newTimestamp = Math.round(latestBlock.timestamp + 60 * 60 * 24 * 30)
-      await lock.grantKeys(
-        [accounts[7]],
-        [newTimestamp],
-        [constants.ZERO_ADDRESS],
-        {
-          from: lockCreator,
-        }
-      )
-      const newKeyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(newKeyManager, constants.ZERO_ADDRESS)
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      assert.equal(await lock.keyManagerOf.call(args.tokenId), accounts[8])
     })
   })
 
   describe('configuring the key manager', () => {
-    before(async () => {
-      unlock = await getProxy(unlockContract)
-      locks = await deployLocks(unlock, lockCreator)
-      lock = locks.FIRST
-      await lock.purchase(
-        [],
-        keyOwners,
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        [],
-        {
-          value: (keyPrice * keyOwners.length).toFixed(),
-          from: accounts[0],
-        }
-      )
-      iD = await lock.getTokenIdFor.call(keyOwner3)
-      await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner3 })
-      await lock.expireAndRefundFor(keyOwner3, 0, { from: lockManager })
-    })
-
     it('should allow the current keyManager to set a new KM', async () => {
-      iD = await lock.getTokenIdFor(keyOwner1)
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, constants.ZERO_ADDRESS)
-      await lock.setKeyManagerOf(iD, accounts[9], { from: keyOwner1 })
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, accounts[9])
+      assert.equal(
+        await lock.keyManagerOf.call(tokenIds[0]),
+        constants.ZERO_ADDRESS
+      )
+      await lock.setKeyManagerOf(tokenIds[0], accounts[9], { from: keyOwner1 })
+      assert.equal(await lock.keyManagerOf.call(tokenIds[0]), accounts[9])
     })
 
     it('should allow a LockManager to set a new KM', async () => {
-      iD = await lock.getTokenIdFor(keyOwner2)
-      keyManager = await lock.keyManagerOf.call(iD)
-      await lock.setKeyManagerOf(iD, accounts[7], { from: lockManager })
-      keyManager = await lock.keyManagerOf.call(iD)
-      assert.equal(keyManager, accounts[7])
+      await lock.setKeyManagerOf(tokenIds[1], accounts[7], {
+        from: lockManager,
+      })
+      assert.equal(await lock.keyManagerOf.call(tokenIds[1]), accounts[7])
     })
 
     it('should fail to allow anyone else to set a new KM', async () => {
       await reverts(
-        lock.setKeyManagerOf(iD, accounts[2], { from: accounts[5] }),
+        lock.setKeyManagerOf(tokenIds[0], accounts[2], { from: accounts[5] }),
         'UNAUTHORIZED_KEY_MANAGER_UPDATE'
       )
     })

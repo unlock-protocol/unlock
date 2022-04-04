@@ -12,6 +12,8 @@ import {
   getCardsForAddress,
   chargeAndSaveCard,
   claimMembership,
+  prepareCharge,
+  captureCharge,
 } from './useCards'
 import {
   createAccountAndPasswordEncryptKey,
@@ -169,6 +171,61 @@ export const useAccount = (address: string, network: number) => {
     return response.transactionHash
   }
 
+  /**
+   * Prepares a charge on the backend
+   * @param token
+   * @param lock
+   * @param network
+   * @param pricing
+   * @param recipient
+   * @returns
+   */
+  const captureChargeForCard = async (
+    lock: any,
+    network: number,
+    recipient: string,
+    paymentIntent: string
+  ) => {
+    const response = await captureCharge(
+      config,
+      lock,
+      network,
+      recipient,
+      paymentIntent
+    )
+    return response.transactionHash
+  }
+
+  /**
+   * Prepares a charge on the backend
+   * @param token
+   * @param lock
+   * @param network
+   * @param pricing
+   * @param recipient
+   * @returns
+   */
+  const prepareChargeForCard = async (
+    token: string,
+    lock: any,
+    network: number,
+    pricing: any,
+    recipient?: string
+  ) => {
+    const purchaseAddress = recipient ?? address
+    const response = await prepareCharge(
+      config,
+      walletService,
+      address,
+      token,
+      network,
+      lock,
+      pricing,
+      purchaseAddress
+    )
+    return response.transactionHash
+  }
+
   const claimMembershipFromLock = async (lock: any, network: number) => {
     const response = await claimMembership(
       config,
@@ -239,6 +296,8 @@ export const useAccount = (address: string, network: number) => {
     getTokenBalance,
     getCards,
     chargeCard,
+    captureChargeForCard,
+    prepareChargeForCard,
     connectStripeToLock,
     createUserAccount,
     retrieveUserAccount,

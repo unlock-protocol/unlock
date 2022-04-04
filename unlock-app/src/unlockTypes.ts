@@ -96,6 +96,7 @@ export interface PaywallConfigLock {
   name?: string
   network?: number
   metadataInputs?: MetadataInput[]
+  secret?: string
 }
 
 export enum KeyStatus {
@@ -192,6 +193,7 @@ export interface PaywallConfig {
   referrer?: string
   messageToSign?: string
   pessimistic?: boolean
+  captcha?: boolean
 }
 
 export interface RawLock {

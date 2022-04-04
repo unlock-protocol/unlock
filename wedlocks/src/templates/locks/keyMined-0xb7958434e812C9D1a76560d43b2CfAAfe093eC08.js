@@ -1,7 +1,3 @@
-import path from 'path'
-
-const absolutePath = (relative) => path.join(process.cwd(), relative)
-
 export default {
   subject: () => 'En Direkto - The Clue',
   html: () =>
@@ -18,7 +14,7 @@ export default {
   attachments: [
     {
       filename: 'en-direkto.jpg',
-      path: absolutePath('./src/templates/attachments/en-direkto.jpg'),
+      path: 'https://wedlocks.unlock-protocol.com/attachments/en-direkto.jpg',
       cid: 'en-direkto.jpg',
     },
   ],

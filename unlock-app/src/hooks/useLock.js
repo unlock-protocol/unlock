@@ -189,6 +189,7 @@ export const purchaseKeyFromLock = async (
   referrer,
   setLock,
   network,
+  data,
   callback
 ) => {
   return walletService.purchaseKey(
@@ -197,6 +198,7 @@ export const purchaseKeyFromLock = async (
       owner: recipient,
       referrer,
       keyPrice: lock.keyPrice,
+      data,
     },
     async (error, transactionHash) => {
       if (error) {
@@ -308,7 +310,7 @@ export const useLock = (lockFromProps, network) => {
     }
   }
 
-  const purchaseKey = async (recipient, referrer, callback) => {
+  const purchaseKey = async (recipient, referrer, data, callback) => {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
     } else {
@@ -321,6 +323,7 @@ export const useLock = (lockFromProps, network) => {
         referrer,
         setLock,
         network,
+        data,
         callback
       )
     }

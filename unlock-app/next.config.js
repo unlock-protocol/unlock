@@ -52,8 +52,6 @@ function getUnlockConfig(environment) {
   }
 }
 const unlockConfig = getUnlockConfig(unlockEnv)
-console.log("FUCK")
-console.log(unlockConfig)
 
 const requiredConfigVariables = {
   unlockEnv,
