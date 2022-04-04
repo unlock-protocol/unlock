@@ -14,7 +14,7 @@ import {
   FaCheckCircle as CheckIcon,
 } from 'react-icons/fa'
 import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
-import { Tooltip } from '@unlock-protocol/ui'
+import { Badge, Tooltip } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
@@ -85,6 +85,25 @@ const KeyBox = ({
         <div>
           <h3 className="font-medium">{lock.name}</h3>
           <div>{isKeyExpired ? <ExpiredTag /> : <ValidTag />}</div>
+          <div>
+            {isKeyExpired ? (
+              <Badge
+                variant="red"
+                size="tiny"
+                iconRight={<DangerIcon size={11} />}
+              >
+                Expired
+              </Badge>
+            ) : (
+              <Badge
+                size="tiny"
+                variant="green"
+                iconRight={<CheckIcon size={11} />}
+              >
+                Valid
+              </Badge>
+            )}
+          </div>
         </div>
       </header>
 
