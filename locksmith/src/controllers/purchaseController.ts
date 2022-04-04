@@ -16,6 +16,22 @@ import logger from '../logger'
 const config = require('../../config/config')
 
 namespace PurchaseController {
+  /**
+   *
+   * @param _req
+   * @param res
+   * @returns
+   */
+  export const info = async (
+    _req: SignedRequest,
+    res: Response
+  ): Promise<any> => {
+    const fulfillmentDispatcher = new Dispatcher()
+
+    return res.json(await fulfillmentDispatcher.balances())
+  }
+
+  // DEPRECATED
   export const purchase = async (
     req: SignedRequest,
     res: Response
@@ -76,6 +92,115 @@ namespace PurchaseController {
       })
     } catch (error) {
       logger.error(error)
+      return res.status(400).send(error)
+    }
+  }
+
+  /**
+   * Creates a payment intent that will be passed to the front-end for confirmation with the Stripe API.
+   * Once confirmed, the payment will need to be captured
+   * This flow supports 3D Secure.
+   * @param req
+   * @param res
+   * @returns
+   */
+  export const createPaymentIntent = async (
+    req: SignedRequest,
+    res: Response
+  ): Promise<any> => {
+    const { publicKey, lock, stripeTokenId, pricing, network, recipient } =
+      req.body.message['Charge Card']
+
+    const stripeConnectApiKey = await getStripeConnectForLock(
+      Normalizer.ethereumAddress(lock),
+      network
+    )
+
+    if (stripeConnectApiKey == 0 || stripeConnectApiKey == -1) {
+      return res
+        .status(400)
+        .send({ error: 'Missing Stripe Connect integration' })
+    }
+
+    let stripeCustomerId = await getStripeCustomerIdForAddress(
+      Normalizer.ethereumAddress(publicKey)
+    )
+
+    if (!stripeCustomerId && stripeTokenId) {
+      stripeCustomerId = await createStripeCustomer(
+        stripeTokenId,
+        Normalizer.ethereumAddress(publicKey)
+      )
+    }
+
+    if (!stripeCustomerId) {
+      return res.status(400).send({ error: 'Missing Stripe customer info' })
+    }
+
+    const dispatcher = new Dispatcher()
+    const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
+      network
+    )
+    if (!hasEnoughToPayForGas) {
+      return res.status(400).send({
+        error: `Purchaser does not have enough to pay for gas on ${network}`,
+      })
+    }
+
+    try {
+      const processor = new PaymentProcessor(config.stripeSecret)
+      const hash = await processor.createPaymentIntent(
+        Normalizer.ethereumAddress(recipient),
+        stripeCustomerId,
+        Normalizer.ethereumAddress(lock),
+        pricing,
+        network,
+        stripeConnectApiKey
+      )
+      return res.send({
+        transactionHash: hash,
+      })
+    } catch (error) {
+      logger.error(error)
+      return res.status(400).send(error)
+    }
+  }
+
+  /**
+   * Captures a payment intent and exexutes the transaction to airdrop an NFT to the user.
+   * @param req
+   * @param res
+   * @returns
+   */
+  export const capturePaymentIntent = async (
+    req: SignedRequest,
+    res: Response
+  ): Promise<any> => {
+    const { lock, network, recipient, paymentIntent } = req.body
+
+    const dispatcher = new Dispatcher()
+    const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
+      network
+    )
+    if (!hasEnoughToPayForGas) {
+      return res.status(400).send({
+        error: `Purchaser does not have enough to pay for gas on ${network}`,
+      })
+    }
+
+    try {
+      const processor = new PaymentProcessor(config.stripeSecret)
+      const hash = await processor.captureConfirmedPaymentIntent(
+        Normalizer.ethereumAddress(recipient),
+        Normalizer.ethereumAddress(lock),
+        network,
+        paymentIntent
+      )
+      return res.send({
+        transactionHash: hash,
+      })
+    } catch (error) {
+      logger.error('There was an error when capturing payment', error)
       return res.status(400).send(error)
     }
   }

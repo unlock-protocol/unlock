@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.5.17 <0.9.0;
+pragma experimental ABIEncoderV2;
 
 /**
 * @title The PublicLock Interface
@@ -40,13 +41,6 @@ interface IPublicLock
   * @return The current version number.
   */
   function publicLockVersion() external pure returns (uint16);
-
-  /**
-  * @notice Used to disable lock before migrating keys and/or destroying contract.
-  * @dev Throws if called by other than a lock manager.
-  * @dev Throws if lock contract has already been disabled.
-  */
-  function disableLock() external;
 
   /**
    * @dev Called by a lock manager or beneficiary to withdraw all funds from the lock and send them to the `beneficiary`.
@@ -110,21 +104,12 @@ interface IPublicLock
   ) external view returns (bool);
 
   /**
-   * @notice Find the tokenId for a given user
-   * @return The tokenId of the NFT, else returns 0
-   * @param _account The address of the key owner
-  */
-  function getTokenIdFor(
-    address _account
-  ) external view returns (uint);
-
-  /**
   * @dev Returns the key's ExpirationTimestamp field for a given owner.
-  * @param _keyOwner address of the user for whom we search the key
+  * @param _tokenId the id of the key
   * @dev Returns 0 if the owner has never owned a key for this lock
   */
   function keyExpirationTimestampFor(
-    address _keyOwner
+    uint _tokenId
   ) external view returns (uint timestamp);
   
   /**
@@ -210,7 +195,7 @@ interface IPublicLock
   * @param _recipients array of addresses of the recipients of the purchased key
   * @param _referrers array of addresses of the users making the referral
   * @param _keyManagers optional array of addresses to grant managing rights to a specific address on creation
-  * @param _data arbitrary data populated by the front-end which initiated the sale
+  * @param _data array of arbitrary data populated by the front-end which initiated the sale
   * @notice when called for an existing and non-expired key, the `_keyManager` param will be ignored 
   * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
   * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
@@ -221,24 +206,39 @@ interface IPublicLock
     address[] calldata _recipients,
     address[] calldata _referrers,
     address[] calldata _keyManagers,
-    bytes calldata _data
+    bytes[] calldata _data
   ) external payable;
   
   /**
   * @dev Extend function
   * @param _value the number of tokens to pay for this purchase >= the current keyPrice - any applicable discount
   * (_value is ignored when using ETH)
-  * @param _recipient address of the recipient of the key to extend
+  * @param _tokenId the id of the key to extend
   * @param _referrer address of the user making the referral
   * @param _data arbitrary data populated by the front-end which initiated the sale
   * @dev Throws if lock is disabled or key does not exist for _recipient. Throws if _recipient == address(0).
   */
   function extend(
-    uint256 _value,
-    address _recipient,
+    uint _value,
+    uint _tokenId,
     address _referrer,
     bytes calldata _data
   ) external payable;
+
+  /**
+   * Merge existing keys
+   * @param _tokenIdFrom the id of the token to substract time from
+   * @param _tokenIdTo the id of the destination token  to add time
+   * @param _amount the amount of time to transfer (in seconds)
+   */
+  function mergeKeys(uint _tokenIdFrom, uint _tokenIdTo, uint _amount) external;
+
+  /**
+   * Deactivate an existing key
+   * @param _tokenId the id of token to burn
+   * @notice the key will be expired and ownership records will be destroyed
+   */
+  function burn(uint _tokenId) external;
 
   /**
   * @param _gasRefundValue price in wei or token in smallest price unit
@@ -274,29 +274,30 @@ interface IPublicLock
   ) external;
 
   /**
-   * Determines how much of a fee a key owner would need to pay in order to
-   * transfer the key to another account.  This is pro-rated so the fee goes down
-   * overtime.
-   * @dev Throws if _keyOwner does not have a valid key
-   * @param _keyOwner The owner of the key check the transfer fee for.
+   * Determines how much of a fee would need to be paid in order to
+   * transfer to another account.  This is pro-rated so the fee goes 
+   * down overtime.
+   * @dev Throws if _tokenId does not have a valid key
+   * @param _tokenId The id of the key check the transfer fee for.
    * @param _time The amount of time to calculate the fee for.
    * @return The transfer fee in seconds.
    */
   function getTransferFee(
-    address _keyOwner,
+    uint _tokenId,
     uint _time
   ) external view returns (uint);
 
   /**
-   * @dev Invoked by a Lock manager to expire the user's key and perform a refund and cancellation of the key
-   * @param _keyOwner The key owner to whom we wish to send a refund to
-   * @param amount The amount to refund the key-owner
+   * @dev Invoked by a Lock manager to expire the user's key 
+   * and perform a refund and cancellation of the key
+   * @param _tokenId The key id we wish to refund to
+   * @param _amount The amount to refund to the key-owner
    * @dev Throws if called by other than a Lock manager
    * @dev Throws if _keyOwner does not have a valid key
    */
   function expireAndRefundFor(
-    address _keyOwner,
-    uint amount
+    uint _tokenId,
+    uint _amount
   ) external;
 
    /**
@@ -324,7 +325,7 @@ interface IPublicLock
    * Note that due to the time required to mine a tx, the actual refund amount will be lower
    * than what the user reads from this call.
    */
-  function getCancelAndRefundValueFor(
+  function getCancelAndRefundValue(
     address _keyOwner
   ) external view returns (uint refund);
 
@@ -354,6 +355,18 @@ interface IPublicLock
    */
   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external;
 
+   /**
+   * Set the maximum number of keys a specific address can use
+   * @param _maxKeysPerAddress the maximum amount of key a user can own
+   */
+  function setMaxKeysPerAddress (uint _maxKeysPerAddress) external;
+
+  /**
+   * @return the maximum number of key allowed for a single address
+   */
+  function maxKeysPerAddress() external view returns (uint);
+
+
   ///===================================================================
   /// Auto-generated getter functions from public state variables
 
@@ -362,8 +375,6 @@ interface IPublicLock
   function expirationDuration() external view returns (uint256 );
 
   function freeTrialLength() external view returns (uint256 );
-
-  function isAlive() external view returns (bool );
 
   function keyPrice() external view returns (uint256 );
 
@@ -409,7 +420,19 @@ interface IPublicLock
     uint _tokenId,
     address _keyManager
   ) external;
-
+  
+  /**
+  * Check if a certain key is valid
+  * @param _tokenId the id of the key to check validity
+  * @notice this makes use of the onValidKeyHook if it is set
+  */
+  function isValidKey(
+    uint _tokenId
+  )
+    external
+    view
+    returns (bool);
+  
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
   ///===================================================================
@@ -420,85 +443,133 @@ interface IPublicLock
 
   /// From ERC-721
   /**
-     * @dev Returns the number of NFTs in `owner`'s account.
-     */
-    function balanceOf(address _owner) external view returns (uint256 balance);
+    * @dev Returns the number of NFTs in `owner`'s account.
+    */
+  function balanceOf(address _owner) external view returns (uint256 balance);
 
-    /**
-     * @dev Returns the owner of the NFT specified by `tokenId`.
-     */
-    function ownerOf(uint256 tokenId) external view returns (address _owner);
+  /**
+    * @dev Returns the owner of the NFT specified by `tokenId`.
+    */
+  function ownerOf(uint256 tokenId) external view returns (address _owner);
 
-    /**
-     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-     * another (`to`).
-     *
-     * Requirements:
-     * - `from`, `to` cannot be zero.
-     * - `tokenId` must be owned by `from`.
-     * - If the caller is not `from`, it must be have been allowed to move this
-     * NFT by either {approve} or {setApprovalForAll}.
-     */
-    function safeTransferFrom(address from, address to, uint256 tokenId) external;
-    
-    /**
-     * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-     * another (`to`).
-     *
-     * Requirements:
-     * - If the caller is not `from`, it must be approved to move this NFT by
-     * either {approve} or {setApprovalForAll}.
-     */
-    function transferFrom(address from, address to, uint256 tokenId) external;
-    function approve(address to, uint256 tokenId) external;
+  /**
+    * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
+    * another (`to`).
+    *
+    * Requirements:
+    * - `from`, `to` cannot be zero.
+    * - `tokenId` must be owned by `from`.
+    * - If the caller is not `from`, it must be have been allowed to move this
+    * NFT by either {approve} or {setApprovalForAll}.
+    */
+  function safeTransferFrom(address from, address to, uint256 tokenId) external;
+  
+  /**
+    * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
+    * another (`to`).
+    *
+    * Requirements:
+    * - If the caller is not `from`, it must be approved to move this NFT by
+    * either {approve} or {setApprovalForAll}.
+    */
+  function transferFrom(address from, address to, uint256 tokenId) external;
+  function approve(address to, uint256 tokenId) external;
 
-    /**
+  /**
     * @notice Get the approved address for a single NFT
     * @dev Throws if `_tokenId` is not a valid NFT.
     * @param _tokenId The NFT to find the approved address for
     * @return operator The approved address for this NFT, or the zero address if there is none
     */
-    function getApproved(uint256 _tokenId) external view returns (address operator);
+  function getApproved(uint256 _tokenId) external view returns (address operator);
 
-    function setApprovalForAll(address operator, bool _approved) external;
-    function isApprovedForAll(address _owner, address operator) external view returns (bool);
+   /**
+   * @dev Sets or unsets the approval of a given operator
+   * An operator is allowed to transfer all tokens of the sender on their behalf
+   * @param _operator operator address to set the approval
+   * @param _approved representing the status of the approval to be set
+   * @notice disabled when transfers are disabled
+   */
+  function setApprovalForAll(address _operator, bool _approved) external;
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external;
+   /**
+   * @dev Tells whether an operator is approved by a given keyManager
+   * @param _owner owner address which you want to query the approval of
+   * @param _operator operator address which you want to query the approval of
+   * @return bool whether the given operator is approved by the given owner
+   */
+  function isApprovedForAll(address _owner, address _operator) external view returns (bool);
 
-    function totalSupply() external view returns (uint256);
-    function tokenOfOwnerByIndex(address _owner, uint256 index) external view returns (uint256 tokenId);
+  function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external;
 
-    function tokenByIndex(uint256 index) external view returns (uint256);
+  function totalSupply() external view returns (uint256);
+  function tokenOfOwnerByIndex(address _owner, uint256 index) external view returns (uint256 tokenId);
 
-    /**
+  function tokenByIndex(uint256 index) external view returns (uint256);
+
+  /**
     * Innherited from Open Zeppelin AccessControl.sol
-     */
-    function getRoleAdmin(bytes32 role) external view returns (bytes32);
-    function grantRole(bytes32 role, address account) external;
-    function revokeRole(bytes32 role, address account) external;
-    function renounceRole(bytes32 role, address account) external;
-    function hasRole(bytes32 role, address account) external view returns (bool);
+    */
+  function getRoleAdmin(bytes32 role) external view returns (bytes32);
+  function grantRole(bytes32 role, address account) external;
+  function revokeRole(bytes32 role, address account) external;
+  function renounceRole(bytes32 role, address account) external;
+  function hasRole(bytes32 role, address account) external view returns (bool);
+
+  /**
+    * @notice An ERC-20 style transfer.
+    * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).
+    * @dev The typical use case would be to call this with _value 1, which is on par with calling `transferFrom`. If the user
+    * has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token.
+    */
+  function transfer(
+    address _to,
+    uint _value
+  ) external
+    returns (bool success);
+
+  /** `owner()` is provided as an helper to mimick the `Ownable` contract ABI.
+    * The `Ownable` logic is used by many 3rd party services to determine
+    * contract ownership - e.g. who is allowed to edit metadata on Opensea.
+    * 
+    * @notice This logic is NOT used internally by the Unlock Protocol and is made 
+    * available only as a convenience helper.
+    */
+  function owner() external view returns (address);
+  function setOwner(address account) external;
+  function isOwner(address account) external returns (bool);
+
+  /**
+  * Migrate data from the previous single owner => key mapping to 
+  * the new data structure w multiple tokens.
+  * @param _calldata an ABI-encoded representation of the params (v10: the number of records to migrate as `uint`)
+  * @dev when all record schemas are sucessfully upgraded, this function will update the `schemaVersion`
+  * variable to the latest/current lock version
+  */
+  function migrate(bytes calldata _calldata) external;
+
+  /**
+  * Returns the version number of the data schema currently used by the lock
+  * @notice if this is different from `publicLockVersion`, then the ability to purchase, grant
+  * or extend keys is disabled.
+  * @dev will return 0 if no ;igration has ever been run
+  */
+  function schemaVersion() external view returns (uint);
+
+  /**
+   * Set the schema version to the latest
+   * @notice only lock manager call call this
+   */
+  function updateSchemaVersion() external;
 
     /**
-     * @notice An ERC-20 style transfer.
-     * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).
-     * @dev The typical use case would be to call this with _value 1, which is on par with calling `transferFrom`. If the user
-     * has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token.
-     */
-    function transfer(
-      address _to,
-      uint _value
-    ) external
-      returns (bool success);
-
-    /** `owner()` is provided as an helper to mimick the `Ownable` contract ABI.
-      * The `Ownable` logic is used by many 3rd party services to determine
-      * contract ownership - e.g. who is allowed to edit metadata on Opensea.
-      * 
-      * @notice This logic is NOT used internally by the Unlock Protocol and is made 
-      * available only as a convenience helper.
-      */
-    function owner() external view returns (address);
-    function setOwner(address account) external;
-    function isOwner(address account) external returns (bool);
+  * Renew a given token
+  * @notice only works for non-free, expiring, ERC20 locks
+  * @param _tokenId the ID fo the token to renew
+  * @param _referrer the address of the person to be granted UDT
+  */
+  function renewMembershipFor(
+    uint _tokenId,
+    address _referrer
+  ) external;
 }

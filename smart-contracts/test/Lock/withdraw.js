@@ -18,6 +18,7 @@ contract('Lock / withdraw', (accounts) => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, owner)
     lock = locks.OWNED
+    await lock.setMaxKeysPerAddress(10)
     tokenAddress = await lock.tokenAddress.call()
 
     await purchaseKeys(accounts)
@@ -161,7 +162,7 @@ async function purchaseKeys(accounts) {
     [accounts[1], accounts[2]],
     [1, 2].map(() => web3.utils.padLeft(0, 40)),
     [1, 2].map(() => web3.utils.padLeft(0, 40)),
-    [],
+    [1, 2].map(() => []),
     {
       value: price * 2,
       from: accounts[1],

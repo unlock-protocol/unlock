@@ -1,12 +1,45 @@
 import { WalletService } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import { ethers } from 'ethers'
 import logger from '../logger'
 
-const { ethers } = require('ethers')
 const config = require('../../config/config')
 const { GAS_COST } = require('../utils/keyPricer')
 
+interface transactionOptionsInterface {
+  maxPriorityFeePerGas?: ethers.BigNumber
+  maxFeePerGas?: ethers.BigNumber
+  gasPrice?: ethers.BigNumber
+}
+
 export default class Dispatcher {
+  async balances() {
+    const balances = await Promise.all(
+      Object.values(networks).map(async (network: any) => {
+        try {
+          const provider = new ethers.providers.JsonRpcProvider(
+            network.publicProvider
+          )
+          const wallet = new ethers.Wallet(config.purchaserCredentials)
+          const balance = await provider.getBalance(wallet.address)
+          return [
+            network.id,
+            {
+              address: wallet.address,
+              balance: ethers.utils.formatEther(balance),
+            },
+          ]
+        } catch (error) {
+          logger.error(error)
+          return [network.id, {}]
+        }
+      })
+    )
+    // @ts-expect-error
+    const entries = new Map(balances)
+    return Object.fromEntries(entries)
+  }
+
   /**
    * Called to grant key to user!
    */
@@ -27,27 +60,26 @@ export default class Dispatcher {
       provider
     )
 
-    const feeData = await provider.getFeeData()
-    const transactionOptions = {
-      maxPriorityFeePerGas: null,
-      maxFeePerGas: null,
-      gasPrice: null,
-    }
+    const feeData = await provider.getFeeData().catch(() => null)
+
+    const transactionOptions: transactionOptionsInterface = {}
+
     if (network === 137) {
-      // On polygon hardcode values
-      transactionOptions.maxFeePerGas = ethers.utils.parseUnits('1000', 'gwei')
+      // Hardcode the fee for polygon
       transactionOptions.maxPriorityFeePerGas = ethers.utils.parseUnits(
-        '500',
+        '20',
         'gwei'
       )
-      // transactionOptions.gasPrice = ethers.utils.parseUnits('3000', 'gwei')
-    } else if (feeData?.maxPriorityFeePerGas && feeData?.maxFeePerGas) {
-      // We bump priority by 20% to increase speed of execution
-      transactionOptions.maxFeePerGas = ethers.BigNumber.from('2')
+      transactionOptions.maxFeePerGas = ethers.utils.parseUnits('100', 'gwei')
+    } else if (feeData?.maxPriorityFeePerGas) {
+      // We double to increase speed of execution
       transactionOptions.maxPriorityFeePerGas =
         feeData.maxPriorityFeePerGas.mul(ethers.BigNumber.from('2'))
+      transactionOptions.maxFeePerGas = feeData.maxPriorityFeePerGas.mul(
+        ethers.BigNumber.from('2')
+      )
     } else if (feeData?.gasPrice) {
-      transactionOptions.gasPrice = feeData.maxFeePerGas.mul(
+      transactionOptions.gasPrice = feeData.gasPrice.mul(
         ethers.BigNumber.from('2')
       )
     }
@@ -57,7 +89,6 @@ export default class Dispatcher {
       {
         lockAddress,
         recipient,
-        // @ts-expect-error
         transactionOptions,
       },
       cb

@@ -33,6 +33,7 @@ contract('Lock / grantKeys', (accounts) => {
 
   describe('can grant key(s)', () => {
     describe('can grant a key for a new user', () => {
+      let evt
       before(async () => {
         // the lock creator is assigned the KeyGranter role by default
         tx = await lock.grantKeys(
@@ -43,47 +44,17 @@ contract('Lock / grantKeys', (accounts) => {
             from: lockCreator,
           }
         )
+        evt = tx.logs.find((v) => v.event === 'Transfer')
       })
 
       it('should log Transfer event', async () => {
-        const evt = tx.logs.find((v) => v.event === 'Transfer')
         assert.equal(evt.event, 'Transfer')
         assert.equal(evt.args.from, 0)
         assert.equal(evt.args.to, accounts[2])
       })
 
       it('should acknowledge that user owns key', async () => {
-        assert.notEqual(await lock.getTokenIdFor.call(keyOwner), 0)
-      })
-
-      it('getHasValidKey is true', async () => {
-        assert.equal(await lock.getHasValidKey.call(keyOwner), true)
-      })
-    })
-
-    describe('can grant a key extension for an existing user', () => {
-      let extendedExpiration
-
-      before(async () => {
-        extendedExpiration = validExpirationTimestamp + 100
-        tx = await lock.grantKeys(
-          [keyOwner],
-          [extendedExpiration],
-          [constants.ZERO_ADDRESS],
-          {
-            from: lockCreator,
-          }
-        )
-      })
-
-      it('should log Transfer event', async () => {
-        assert.equal(tx.logs[1].event, 'Transfer')
-        assert.equal(tx.logs[1].args.from, 0)
-        assert.equal(tx.logs[1].args.to, accounts[2])
-      })
-
-      it('should acknowledge that user owns key', async () => {
-        assert.notEqual(await lock.getTokenIdFor.call(keyOwner), 0)
+        assert.equal(await lock.ownerOf.call(evt.args.tokenId), keyOwner)
       })
 
       it('getHasValidKey is true', async () => {
@@ -126,7 +97,7 @@ contract('Lock / grantKeys', (accounts) => {
 
       it('should acknowledge that user owns key', async () => {
         for (let i = 0; i < keyOwnerList.length; i++) {
-          assert.notEqual(await lock.getTokenIdFor.call(keyOwnerList[i]), 0)
+          assert.equal(await lock.balanceOf.call(keyOwnerList[i]), 1)
         }
       })
 
@@ -139,15 +110,6 @@ contract('Lock / grantKeys', (accounts) => {
   })
 
   describe('should fail', () => {
-    it('should fail to revoke a key', async () => {
-      await reverts(
-        lock.grantKeys([keyOwner], [42], [constants.ZERO_ADDRESS], {
-          from: lockCreator,
-        }),
-        'ALREADY_OWNS_KEY'
-      )
-    })
-
     it('should fail to grant key to the 0 address', async () => {
       await reverts(
         lock.grantKeys(
@@ -159,20 +121,6 @@ contract('Lock / grantKeys', (accounts) => {
           }
         ),
         'INVALID_ADDRESS'
-      )
-    })
-
-    it('should fail to reduce the time remaining on a key', async () => {
-      await reverts(
-        lock.grantKeys(
-          [keyOwner],
-          [validExpirationTimestamp - 1],
-          [constants.ZERO_ADDRESS],
-          {
-            from: lockCreator,
-          }
-        ),
-        'ALREADY_OWNS_KEY'
       )
     })
 

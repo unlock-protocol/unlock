@@ -48,7 +48,7 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
             keyOwners,
             keyOwners.map(() => web3.utils.padLeft(0, 40)),
             keyOwners.map(() => web3.utils.padLeft(0, 40)),
-            [],
+            keyOwners.map(() => []),
             {
               value: isErc20 ? 0 : keyPrice * keyOwners.length,
               from: keyOwners[1],
@@ -84,7 +84,7 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
               keyOwners,
               keyOwners.map(() => web3.utils.padLeft(0, 40)),
               keyOwners.map(() => web3.utils.padLeft(0, 40)),
-              [],
+              keyOwners.map(() => []),
               {
                 value: isErc20 ? 0 : keyPrice * (keyOwners.length - 2),
                 from: keyOwners[1],

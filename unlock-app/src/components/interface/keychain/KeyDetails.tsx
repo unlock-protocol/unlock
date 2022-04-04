@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import styled from 'styled-components'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import keyHolderQuery from '../../../queries/keyHolder'
 import 'cross-fetch/polyfill'
@@ -38,11 +37,11 @@ export const KeyDetails = () => {
   }
 
   return (
-    <Container>
+    <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {data.keyHolders[0].keys.map((key: OwnedKey) => (
         <Key key={key.id} ownedKey={key} account={account} network={network} />
       ))}
-    </Container>
+    </div>
   )
 }
 
@@ -60,10 +59,3 @@ export const NoKeys = () => {
     </DefaultError>
   )
 }
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  max-width: 100%;
-`

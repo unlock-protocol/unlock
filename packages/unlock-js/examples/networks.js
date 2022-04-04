@@ -10,7 +10,7 @@
  */
 
 // eslint-disable-next-line import/no-extraneous-dependencies
-const { rinkeby, xdai } = require('@unlock-protocol/networks')
+const { rinkeby, xdai, polygon } = require('@unlock-protocol/networks')
 
 module.exports = {
   4: {
@@ -21,4 +21,9 @@ module.exports = {
     unlockAddress: xdai.unlockAddress,
     provider: xdai.provider,
   },
+  137: {
+    unlockAddress: polygon.unlockAddress,
+    provider: polygon.publicProvider,
+  },
+
 }

@@ -113,6 +113,76 @@ export const chargeAndSaveCard = async (
   return response.json()
 }
 
+/**
+ * @param walletService
+ * @param address
+ */
+export const prepareCharge = async (
+  config: any,
+  walletService: any,
+  address: string,
+  stripeTokenId: string,
+  network: number,
+  lock: string,
+  pricing: any,
+  recipient: string
+) => {
+  const typedData = generateTypedData({
+    'Charge Card': {
+      publicKey: address,
+      stripeTokenId,
+      recipient,
+      pricing,
+      lock,
+      network,
+    },
+  })
+
+  const signature = await getSignature(walletService, typedData, address)
+
+  const opts = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(typedData),
+  }
+  const response = await fetch(
+    `${config.services.storage.host}/purchase/prepare`,
+    opts
+  )
+  return response.json()
+}
+
+export const captureCharge = async (
+  config: any,
+  lock: string,
+  network: number,
+  recipient: string,
+  paymentIntent: string
+) => {
+  const opts = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      lock,
+      network,
+      recipient,
+      paymentIntent,
+    }),
+  }
+  const response = await fetch(
+    `${config.services.storage.host}/purchase/capture`,
+    opts
+  )
+  return response.json()
+}
+
 export const claimMembership = async (
   config: any,
   walletService: any,

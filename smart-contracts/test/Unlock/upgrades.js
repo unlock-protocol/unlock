@@ -231,8 +231,16 @@ contract('Unlock / upgrades', async (accounts) => {
               })
 
               it('Key has an ID', async () => {
-                const id = await lock.getTokenIdFor(keyOwner.address)
-                assert.notEqual(id, 0)
+                let id
+                if (versionNumber >= 1) {
+                  // Version numbers were introduced to PublicLock with v1
+                  if ((await lock.publicLockVersion()) >= 10) {
+                    id = await lock.tokenOfOwnerByIndex(keyOwner.address, 0)
+                  } else {
+                    id = await lock.getTokenIdFor(keyOwner.address)
+                  }
+                  assert.equal(id.toNumber(), 1)
+                }
               })
 
               it('Key is owned', async () => {
@@ -248,7 +256,7 @@ contract('Unlock / upgrades', async (accounts) => {
                 }
               })
 
-              describe('Upgrade Unlock to latest version', () => {
+              describe('Upgrade Unlock and PublicLock to latest version', () => {
                 beforeEach(async () => {
                   // upgrade proxy to latest
                   unlock = await upgrades.upgradeProxy(
@@ -378,7 +386,7 @@ contract('Unlock / upgrades', async (accounts) => {
                       [keyOwner.address],
                       [web3.utils.padLeft(0, 40)],
                       [web3.utils.padLeft(0, 40)],
-                      [],
+                      [[]],
                       { value: keyPrice }
                     )
                   })
@@ -395,7 +403,10 @@ contract('Unlock / upgrades', async (accounts) => {
                   })
 
                   it('Latest Key is owned', async () => {
-                    const id = await lockLatest.getTokenIdFor(keyOwner.address)
+                    const id = await lockLatest.tokenOfOwnerByIndex(
+                      keyOwner.address,
+                      0
+                    )
                     assert.equal(await lockLatest.ownerOf(id), keyOwner.address)
                   })
 
@@ -421,7 +432,7 @@ contract('Unlock / upgrades', async (accounts) => {
               [keyOwner.address],
               [web3.utils.padLeft(0, 40)],
               [web3.utils.padLeft(0, 40)],
-              [],
+              [[]],
               {
                 value: keyPrice,
               }
