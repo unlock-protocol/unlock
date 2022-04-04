@@ -28,7 +28,9 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
   }
 
   const onCloseCallback = () => {
-    if (typeof dismiss === 'function') dismiss()
+    if (typeof dismiss === 'function') {
+      dismiss()
+    }
     setLoading(false)
   }
 
@@ -70,7 +72,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
           flexDirection: 'column',
         }}
       >
-        <small>Set the amount you want to refund</small>
+        <p className="text-sm">Set the amount you want to refund</p>
         <input
           className="text-right my-2"
           type="number"

@@ -87,9 +87,9 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
         ) : (
           <>
             <h3 className="text-black-500">Cancel and Refund</h3>
-            <small className="pt-2">
+            <p className="pt-2 text-sm">
               {`${refundAmount} ${currency} will be refunded, Do you want to proceed?`}
-            </small>
+            </p>
           </>
         )}
         <button
