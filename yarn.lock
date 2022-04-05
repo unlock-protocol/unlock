@@ -14604,7 +14604,6 @@ __metadata:
     apollo-link-http: 1.5.17
     apollo-server: 3.6.7
     apollo-server-express: 2.25.3
-    babel-jest: 27.5.1
     color-scheme: 1.0.1
     cors: 2.8.5
     cross-fetch: 3.1.5
@@ -14621,7 +14620,7 @@ __metadata:
     graphql: 15.8.0
     graphql-tag: 2.12.6
     html-template-tag: 4.0.0
-    iron-session: ^6.1.2
+    iron-session: 6.1.2
     isomorphic-fetch: 3.0.0
     jest: 27.5.1
     lodash.isequal: 4.5.0
@@ -14646,7 +14645,7 @@ __metadata:
     sequelize-cli: 6.4.1
     sequelize-typescript: 1.1.0
     setimmediate: 1.0.5
-    siwe: ^1.1.6
+    siwe: 1.1.6
     stripe: 8.215.0
     supertest: 6.2.2
     ts-jest: 27.1.4
@@ -31497,7 +31496,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"iron-session@npm:^6.1.2":
+"iron-session@npm:6.1.2":
   version: 6.1.2
   resolution: "iron-session@npm:6.1.2"
   dependencies:
@@ -45901,7 +45900,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"siwe@npm:^1.1.6":
+"siwe@npm:1.1.6":
   version: 1.1.6
   resolution: "siwe@npm:1.1.6"
   dependencies:

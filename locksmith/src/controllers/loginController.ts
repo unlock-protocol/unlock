@@ -10,7 +10,6 @@ export class LoginController {
           message: 'Expected prepareMessage object as body.',
         })
       }
-
       const message = new SiweMessage(request.body.message)
       const fields = await message.validate(request.body.signature)
       if (fields.nonce !== request.session.nonce) {
