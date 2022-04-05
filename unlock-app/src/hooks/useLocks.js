@@ -19,6 +19,8 @@ export const getLockAtAddress = async (web3Service, address, network) => {
     lock = await web3Service.getLock(address, network)
     lock.unlimitedKeys = lock.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
     lock.address = address
+    console.log("getLockAtAddress")
+    console.log(lock)
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(`Could not get lock at ${address}: ${error.message}`)
@@ -96,10 +98,6 @@ export const createLock = async (
   // New locks have the following properties
   lock.outstandingKeys = 0
   lock.balance = '0'
-  // First get the address
-  const address = await web3Service.generateLockAddress(owner, lock, network)
-  lock.address = address
-  // Second, create the lock
   const {
     name,
     expirationDuration,
@@ -107,7 +105,7 @@ export const createLock = async (
     currencyContractAddress,
     keyPrice,
   } = lock
-  return walletService.createLock(
+  const lockAddress = await walletService.createLock(
     {
       expirationDuration,
       keyPrice,
@@ -147,6 +145,17 @@ export const createLock = async (
       }
     }
   )
+
+  console.log('READY TO ADD NEW LOCK')
+  console.log(lockAddress)
+
+  // We now have an address! We should get the lock at that address and remove the old one!
+  const newLock = await getLockAtAddress(web3Service, lockAddress, network)
+  addToLocks(newLock)
+
+  console.log(newLock)
+
+  return lockAddress
 }
 
 /**
@@ -172,14 +181,16 @@ export const useLocks = (owner) => {
       // Reset!
       return []
     }
-    if (lock.network !== network) {
+    if (lock?.network !== network) {
       // Wrong network
       return locks
     }
 
     const index = locks.findIndex(
-      (element) => element.address.toLowerCase() === lock.address.toLowerCase()
+      (element) => element.address?.toLowerCase() === lock.address?.toLowerCase()
     )
+
+    console.log(lock, index)
 
     if (index === -1) {
       // New lock, add it

@@ -77,15 +77,12 @@ describe('useLocks', () => {
         ...web3ServiceLock,
       })
     })
-    mockWeb3Service.generateLockAddress = jest.fn(() =>
-      Promise.resolve('0xnewLockAddress')
-    )
     mockWeb3Service.getTransaction = jest.fn(() => {
       Promise.resolve(transaction)
     })
 
-    mockWalletService.connect = jest.fn(() => {})
-    mockWalletService.createLock = jest.fn(() => {})
+    mockWalletService.connect = jest.fn(() => { })
+    mockWalletService.createLock = jest.fn(() => { })
 
     pastTransactions = {}
     mockStorageService.getRecentTransactionsHashesSentBy = jest.fn(() =>
@@ -93,7 +90,7 @@ describe('useLocks', () => {
         hashes: Object.keys(pastTransactions),
       })
     )
-    mockStorageService.storeTransaction = jest.fn(() => {})
+    mockStorageService.storeTransaction = jest.fn(() => { })
 
     mockGraphService.locksByManager = jest.fn(() => Promise.resolve(graphLocks))
   })
@@ -224,41 +221,12 @@ describe('useLocks', () => {
     beforeEach(() => {
       addToLocks = jest.fn()
       setError = jest.fn()
-      mockWalletService.createLock = jest.fn(() => {})
-      mockWeb3Service.generateLockAddress = jest.fn(() =>
-        Promise.resolve(lockAddress)
-      )
-    })
-
-    it('should call generateLockAddress on web3Service', async () => {
-      expect.assertions(1)
-      createLock(
-        mockWeb3Service,
-        mockWalletService,
-        mockStorageService,
-        owner,
-        lock,
-        mockConfig,
-        network,
-        addToLocks,
-        setError,
-        () => {}
-      )
-      expect(mockWeb3Service.generateLockAddress).toHaveBeenCalledWith(
-        owner,
-        {
-          address: lockAddress,
-          balance: '0',
-          outstandingKeys: 0,
-          ...lock,
-        },
-        network
-      )
+      mockWalletService.createLock = jest.fn(() => { })
     })
 
     it('should call createLock on walletService', async () => {
       expect.assertions(1)
-      mockWalletService.createLock = jest.fn(() => {})
+      mockWalletService.createLock = jest.fn(() => { })
       await createLock(
         mockWeb3Service,
         mockWalletService,
@@ -269,7 +237,7 @@ describe('useLocks', () => {
         network,
         addToLocks,
         setError,
-        () => {}
+        () => { }
       )
       expect(mockWalletService.createLock).toHaveBeenCalledWith(
         {
@@ -299,7 +267,7 @@ describe('useLocks', () => {
         network,
         addToLocks,
         setError,
-        () => {}
+        () => { }
       )
       expect(mockStorageService.storeTransaction).toHaveBeenCalledWith(
         transaction.hash,
@@ -324,7 +292,7 @@ describe('useLocks', () => {
         network,
         addToLocks,
         setError,
-        () => {}
+        () => { }
       )
       expect(addToLocks).toHaveBeenCalledWith({
         address: lockAddress,
