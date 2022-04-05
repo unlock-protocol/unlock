@@ -17,6 +17,7 @@ import { StorageService } from '../../../services/storageService'
 import {
   generateDataForPurchaseHook,
   inClaimDisallowList,
+  lockTickerSymbol,
   userCanAffordKey,
 } from '../../../utils/checkoutLockUtils'
 import Buttons from '../buttons/lock'
@@ -161,19 +162,27 @@ export const CryptoCheckout = ({
             setTransactionPending(hash)
           }
         })
+
         setKeyExpiration(Infinity) // We should actually get the real expiration
         setPurchasePending(false)
         setTransactionPending('')
       } catch (error: any) {
-        console.error(error)
-        if (error?.code === 4001) {
+        if (error.message == 'Transaction failed') {
+          // Transaction was sent but failed!
+          toast.error(
+            'Your purchase transaction failed. Please check a block explorer for more details.'
+          )
+        } else if (error?.code === 4001) {
+          // Transaction was not sent
           toast.error('Please confirm the transaction in your wallet.')
         } else {
+          // Other reason...
           toast.error(
             `This transaction could not be sent as it appears to fail. ${error?.error?.message}`
           )
         }
         setPurchasePending(false)
+        setTransactionPending('')
       }
     }
   }
@@ -266,7 +275,11 @@ export const CryptoCheckout = ({
                 </Warning>
               )}
               {!isUnlockAccount && !userIsOnWrongNetwork && !canAfford && (
-                <Warning>Your balance is too low</Warning>
+                <Warning>
+                  Your{' '}
+                  {lockTickerSymbol(lock, networks[network].baseCurrencySymbol)}{' '}
+                  balance is too low
+                </Warning>
               )}
             </CheckoutButton>
 

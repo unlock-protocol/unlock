@@ -74,6 +74,11 @@ export default async function (
 
   // Let's now wait for the transaction to go thru to return the token id
   const receipt = await this.provider.waitForTransaction(hash)
+
+  if (receipt.status === 0) {
+    throw new Error('Transaction failed')
+  }
+
   const parser = lockContract.interface
 
   const transferEvent = receipt.logs
