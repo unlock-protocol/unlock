@@ -148,6 +148,7 @@ export const useProvider = (config: any) => {
     clearStorage()
     try {
       await provider.provider.close()
+      provider.provider.removeAllListeners()
     } catch (error) {
       console.error(
         'We could not disconnect provider properly using provider.disconnect()'
