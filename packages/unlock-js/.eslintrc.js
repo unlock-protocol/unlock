@@ -17,6 +17,7 @@ const rulesToIgnore = [
   'default-param-last',
   'prefer-promise-reject-errors',
   'prefer-const',
+  'no-dupe-class-members',
 ]
 
 module.exports = {
@@ -25,5 +26,6 @@ module.exports = {
     ...rulesToIgnore.reduce((obj, rule) => {
       return { ...obj, [rule]: 'off' }
     }, {}),
+    '@typescript-eslint/no-dupe-class-members': ['error'],
   },
 }
