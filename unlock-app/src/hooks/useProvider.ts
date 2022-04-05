@@ -147,6 +147,7 @@ export const useProvider = (config: any) => {
     setEncryptedPrivateKey(null)
     clearStorage()
     try {
+      provider.provider.removeAllListeners()
       await provider.provider.close()
     } catch (error) {
       console.error(
