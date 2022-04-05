@@ -1,4 +1,10 @@
-import React, { useState, useContext, useReducer, useEffect } from 'react'
+import React, {
+  useState,
+  useContext,
+  useReducer,
+  useEffect,
+  useRef,
+} from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -112,6 +118,7 @@ export const Checkout = ({
   const [storedLoginEmail, setStoredLoginEmail] = useState<string>('')
   const { getAutoLoginEmail } = useAutoLogin()
   const storedEmail = getAutoLoginEmail()
+  const messageSigned = useRef(false)
 
   // state change
   useEffect(() => {
@@ -132,9 +139,10 @@ export const Checkout = ({
     const handleUser = async (account?: string) => {
       if (account) {
         let signedMessage
-        if (paywallConfig?.messageToSign) {
+        if (paywallConfig?.messageToSign && !messageSigned.current) {
           signedMessage = await signMessage(paywallConfig?.messageToSign)
           setSignedMessage(signedMessage)
+          messageSigned.current = true
         }
         setHasKey(-1)
         emitUserInfo({
@@ -147,7 +155,6 @@ export const Checkout = ({
         // Reset card details if user disconnected.
         setCardDetails(null)
       }
-
       if (selectedLock) {
         if (!isUnlockAccount) {
           // Check if we have card details.
@@ -158,6 +165,8 @@ export const Checkout = ({
         } else {
           cardCheckoutOrClaim(selectedLock)
         }
+      } else if (messageSigned.current) {
+        setCheckoutState('pick-lock')
       } else {
         setCheckoutState(defaultState)
         if (!account && storedEmail) showLoginForm()
