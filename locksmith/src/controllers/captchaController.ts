@@ -27,10 +27,14 @@ namespace CaptchaController {
     }
 
     const wallet = new ethers.Wallet(purchaserCredentials)
+    const message = account.toString().toLowerCase()
+    const messageHash = ethers.utils.solidityKeccak256(['string'], [message])
+    const signature = await wallet.signMessage(
+      ethers.utils.arrayify(messageHash)
+    )
 
-    const signature = await wallet.signMessage(account.toString().toLowerCase())
     return res.json({
-      message: account.toString().toLowerCase(),
+      message,
       signer: wallet.address,
       signature,
     })

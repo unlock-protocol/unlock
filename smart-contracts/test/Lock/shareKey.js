@@ -27,6 +27,7 @@ contract('Lock / shareKey', (accounts) => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
     const tx = await lock.purchase(
       [],
       keyOwners,
@@ -89,7 +90,7 @@ contract('Lock / shareKey', (accounts) => {
           buyers,
           buyers.map(() => web3.utils.padLeft(0, 40)),
           buyers.map(() => web3.utils.padLeft(0, 40)),
-          [],
+          buyers.map(() => []),
           {
             value: (keyPrice * buyers.length).toFixed(),
             from: keyOwners[0],

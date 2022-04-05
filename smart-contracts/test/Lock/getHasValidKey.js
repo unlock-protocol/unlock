@@ -15,6 +15,7 @@ contract('Lock / getHasValidKey', (accounts) => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
@@ -66,6 +67,7 @@ contract('Lock / getHasValidKey', (accounts) => {
     keyOwner = accounts[6]
     beforeEach(async () => {
       lock = locks.SECOND
+      await locks.SECOND.setMaxKeysPerAddress(10)
       const tx = await lock.purchase(
         [],
         [keyOwner, keyOwner, keyOwner],

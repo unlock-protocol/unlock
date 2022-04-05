@@ -1,5 +1,5 @@
 const truffleAssert = require('truffle-assertions')
-const { BN } = require('@openzeppelin/test-helpers')
+const { BN, time } = require('@openzeppelin/test-helpers')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 const getProxy = require('../helpers/proxy')
@@ -76,7 +76,7 @@ contract('Lock / GasRefund', (accounts) => {
         })
       })
 
-      describe('gas refund', () => {
+      describe('purchase() / gas refund', () => {
         // test with both ETH and ERC20
         beforeEach(async () => {
           // set gasRefund
@@ -136,6 +136,173 @@ contract('Lock / GasRefund', (accounts) => {
 
           assert.equal(userBalanceAfter.eq(expected), true)
         })
+      })
+
+      describe('extend() / gas refund', () => {
+        // test with both ETH and ERC20
+        beforeEach(async () => {
+          // set gasRefund
+          await lock.setGasRefundValue(gasRefundAmount)
+
+          const txPurchase = await lock.purchase(
+            [keyPrice.toString()],
+            [accounts[2]],
+            [tokenAddress],
+            [web3.utils.padLeft(0, 40)],
+            [[]],
+            {
+              from: accounts[2],
+              value: isErc20 ? 0 : keyPrice.toString(),
+            }
+          )
+
+          // Approve some more spending
+          await testToken.approve(
+            lock.address,
+            new BN(keyPrice).add(gasRefundAmount),
+            {
+              from: accounts[2],
+            }
+          )
+
+          // balance before extending
+          userBalanceBefore = isErc20
+            ? await testToken.balanceOf(accounts[2])
+            : new BN(await web3.eth.getBalance(accounts[2]))
+
+          const { args } = txPurchase.logs.find((v) => v.event === 'Transfer')
+          tx = await lock.extend(
+            isErc20 ? keyPrice : 0,
+            args.tokenId,
+            web3.utils.padLeft(0, 40),
+            [],
+            {
+              value: isErc20 ? 0 : keyPrice.toString(),
+              from: accounts[2],
+            }
+          )
+        })
+
+        it('gas refunded event is fired', async () => {
+          const evt = tx.logs.find((v) => v.event === 'GasRefunded')
+          const {
+            receiver,
+            refundedAmount,
+            tokenAddress: refundedTokenAddress,
+          } = evt.args
+
+          assert.equal(receiver, accounts[2])
+          assert.equal(refundedAmount.eq(gasRefundAmount), true)
+          assert.equal(refundedTokenAddress, tokenAddress)
+        })
+
+        it('user gas has been refunded', async () => {
+          const userBalanceAfter = isErc20
+            ? await testToken.balanceOf(accounts[2])
+            : new BN(await web3.eth.getBalance(accounts[2]))
+
+          const { gasPrice: _gasPrice } = await web3.eth.getTransaction(tx.tx)
+          const { gasUsed: _gasUsed } = tx.receipt
+
+          const gasUsed = new BN(_gasUsed)
+          const gasPrice = new BN(_gasPrice)
+          const gas = gasPrice.mul(gasUsed)
+
+          const refund = new BN(keyPrice).sub(gasRefundAmount)
+
+          const expected = isErc20
+            ? // buy a key, get a refund
+              userBalanceBefore.sub(refund)
+            : userBalanceBefore
+                // buy a key, get a refund
+                .sub(refund)
+                .sub(gas) // pay for the gas
+
+          assert.equal(userBalanceAfter.eq(expected), true)
+        })
+      })
+
+      describe('renewMembershipFor() / gas refund', () => {
+        // test only with ERC20
+        if (isErc20) {
+          beforeEach(async () => {
+            // set gasRefund
+            await lock.setGasRefundValue(gasRefundAmount)
+
+            const txPurchase = await lock.purchase(
+              [keyPrice.toString()],
+              [accounts[2]],
+              [tokenAddress],
+              [web3.utils.padLeft(0, 40)],
+              [[]],
+              {
+                from: accounts[2],
+                value: 0,
+              }
+            )
+
+            const { args } = txPurchase.logs.find((v) => v.event === 'Transfer')
+            const { tokenId } = args
+
+            // Approve some more spending
+            await testToken.approve(
+              lock.address,
+              new BN(keyPrice).add(gasRefundAmount),
+              {
+                from: accounts[2],
+              }
+            )
+
+            // balance before extending
+            userBalanceBefore = await testToken.balanceOf(accounts[2])
+
+            // advance time to expiration
+            const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
+            await time.increaseTo(expirationTs.toNumber())
+
+            tx = await lock.renewMembershipFor(
+              tokenId,
+              web3.utils.padLeft(0, 40),
+              { from: accounts[2] }
+            )
+          })
+
+          it('gas refunded event is fired', async () => {
+            const evt = tx.logs.find((v) => v.event === 'GasRefunded')
+            const {
+              receiver,
+              refundedAmount,
+              tokenAddress: refundedTokenAddress,
+            } = evt.args
+
+            assert.equal(receiver, accounts[2])
+            assert.equal(refundedAmount.eq(gasRefundAmount), true)
+            assert.equal(refundedTokenAddress, tokenAddress)
+          })
+
+          it('user gas has been refunded', async () => {
+            const userBalanceAfter = await testToken.balanceOf(accounts[2])
+
+            const { gasPrice: _gasPrice } = await web3.eth.getTransaction(tx.tx)
+            const { gasUsed: _gasUsed } = tx.receipt
+
+            const gasUsed = new BN(_gasUsed)
+            const gasPrice = new BN(_gasPrice)
+            const gas = gasPrice.mul(gasUsed)
+
+            const refund = new BN(keyPrice).sub(gasRefundAmount)
+
+            const expected = isErc20
+              ? // buy a key, get a refund
+                userBalanceBefore.sub(refund)
+              : userBalanceBefore
+                  // buy a key, get a refund
+                  .sub(refund)
+                  .sub(gas) // pay for the gas
+
+            assert.equal(userBalanceAfter.eq(expected), true)
+          })
+        }
       })
 
       describe('purchase without gas refund', () => {

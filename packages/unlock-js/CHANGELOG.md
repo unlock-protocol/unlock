@@ -1,7 +1,8 @@
 # Changes
 
-# Next patch
+# 0.22.2
 
+- add Unlock v11 and ability to create lock at specific version
 - Non expired keys are represented as -1
 - Gas price calculation fixes
 - Adding support for unlimited durations when granting keys

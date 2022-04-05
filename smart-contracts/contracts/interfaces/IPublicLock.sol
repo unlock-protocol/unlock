@@ -355,6 +355,18 @@ interface IPublicLock
    */
   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external;
 
+   /**
+   * Set the maximum number of keys a specific address can use
+   * @param _maxKeysPerAddress the maximum amount of key a user can own
+   */
+  function setMaxKeysPerAddress (uint _maxKeysPerAddress) external;
+
+  /**
+   * @return the maximum number of key allowed for a single address
+   */
+  function maxKeysPerAddress() external view returns (uint);
+
+
   ///===================================================================
   /// Auto-generated getter functions from public state variables
 
@@ -471,8 +483,22 @@ interface IPublicLock
     */
   function getApproved(uint256 _tokenId) external view returns (address operator);
 
-  function setApprovalForAll(address operator, bool _approved) external;
-  function isApprovedForAll(address _owner, address operator) external view returns (bool);
+   /**
+   * @dev Sets or unsets the approval of a given operator
+   * An operator is allowed to transfer all tokens of the sender on their behalf
+   * @param _operator operator address to set the approval
+   * @param _approved representing the status of the approval to be set
+   * @notice disabled when transfers are disabled
+   */
+  function setApprovalForAll(address _operator, bool _approved) external;
+
+   /**
+   * @dev Tells whether an operator is approved by a given keyManager
+   * @param _owner owner address which you want to query the approval of
+   * @param _operator operator address which you want to query the approval of
+   * @return bool whether the given operator is approved by the given owner
+   */
+  function isApprovedForAll(address _owner, address _operator) external view returns (bool);
 
   function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external;
 
@@ -535,4 +561,15 @@ interface IPublicLock
    * @notice only lock manager call call this
    */
   function updateSchemaVersion() external;
+
+    /**
+  * Renew a given token
+  * @notice only works for non-free, expiring, ERC20 locks
+  * @param _tokenId the ID fo the token to renew
+  * @param _referrer the address of the person to be granted UDT
+  */
+  function renewMembershipFor(
+    uint _tokenId,
+    address _referrer
+  ) external;
 }

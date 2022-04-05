@@ -13,6 +13,33 @@ interface transactionOptionsInterface {
 }
 
 export default class Dispatcher {
+  async balances() {
+    const balances = await Promise.all(
+      Object.values(networks).map(async (network: any) => {
+        try {
+          const provider = new ethers.providers.JsonRpcProvider(
+            network.publicProvider
+          )
+          const wallet = new ethers.Wallet(config.purchaserCredentials)
+          const balance = await provider.getBalance(wallet.address)
+          return [
+            network.id,
+            {
+              address: wallet.address,
+              balance: ethers.utils.formatEther(balance),
+            },
+          ]
+        } catch (error) {
+          logger.error(error)
+          return [network.id, {}]
+        }
+      })
+    )
+    // @ts-expect-error
+    const entries = new Map(balances)
+    return Object.fromEntries(entries)
+  }
+
   /**
    * Called to grant key to user!
    */
@@ -37,14 +64,23 @@ export default class Dispatcher {
 
     const transactionOptions: transactionOptionsInterface = {}
 
-    // We bump priority by 50% to increase speed of execution
-    if (feeData?.maxPriorityFeePerGas && feeData?.maxFeePerGas) {
-      transactionOptions.maxFeePerGas = ethers.BigNumber.from('1.5')
+    if (network === 137) {
+      // Hardcode the fee for polygon
+      transactionOptions.maxPriorityFeePerGas = ethers.utils.parseUnits(
+        '100',
+        'gwei'
+      )
+      transactionOptions.maxFeePerGas = ethers.utils.parseUnits('200', 'gwei')
+    } else if (feeData?.maxPriorityFeePerGas) {
+      // We double to increase speed of execution
       transactionOptions.maxPriorityFeePerGas =
-        feeData.maxPriorityFeePerGas.mul(ethers.BigNumber.from('1.5'))
+        feeData.maxPriorityFeePerGas.mul(ethers.BigNumber.from('2'))
+      transactionOptions.maxFeePerGas = feeData.maxPriorityFeePerGas.mul(
+        ethers.BigNumber.from('2')
+      )
     } else if (feeData?.gasPrice) {
       transactionOptions.gasPrice = feeData.gasPrice.mul(
-        ethers.BigNumber.from('1.5')
+        ethers.BigNumber.from('2')
       )
     }
 

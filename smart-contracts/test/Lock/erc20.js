@@ -22,6 +22,7 @@ contract('Lock / erc20', (accounts) => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0], token.address)
     lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
   })
 
   describe('creating ERC20 priced locks', () => {

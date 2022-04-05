@@ -6,6 +6,7 @@ import './MixinDisable.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';
 import './MixinLockCore.sol';
+import './MixinPurchase.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 
@@ -21,7 +22,8 @@ contract MixinTransfer is
   MixinRoles,
   MixinFunds,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinPurchase
 {
   using AddressUpgradeable for address;
 
@@ -100,6 +102,7 @@ contract MixinTransfer is
     require(_checkOnERC721Received(keyOwner, _to, tokenIdTo, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
   }
 
+
   function transferFrom(
     address _from,
     address _recipient,
@@ -135,7 +138,11 @@ contract MixinTransfer is
     _createOwnershipRecord(_tokenId, _recipient);
 
     // clear any previous approvals
+    _setKeyManagerOf(_tokenId, address(0));
     _clearApproval(_tokenId);
+
+    // make future reccuring transactions impossible
+    _originalDurations[_tokenId] = 0;
 
     // trigger event
     emit Transfer(
@@ -182,6 +189,24 @@ contract MixinTransfer is
     public
   {
     safeTransferFrom(_from, _to, _tokenId, '');
+  }
+
+   /**
+   * @dev Sets or unsets the approval of a given operator
+   * An operator is allowed to transfer all tokens of the sender on their behalf
+   * @param _to operator address to set the approval
+   * @param _approved representing the status of the approval to be set
+   * @notice disabled when transfers are disabled
+   */
+  function setApprovalForAll(
+    address _to,
+    bool _approved
+  ) public
+  {
+    require(_to != msg.sender, 'APPROVE_SELF');
+    require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
+    managerToOperatorApproved[msg.sender][_to] = _approved;
+    emit ApprovalForAll(msg.sender, _to, _approved);
   }
 
   /**

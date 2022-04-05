@@ -127,6 +127,10 @@ describe('PublicLock upgrades', () => {
 
       // make sure ownership is preserved
       assert.equal(await lock.ownerOf(tokenIds[0]), buyers[0].address)
+
+      // set many keys
+      const [, lockOwner] = await ethers.getSigners()
+      await lock.connect(lockOwner).setMaxKeysPerAddress(10)
     })
 
     it('upgraded successfully ', async () => {
