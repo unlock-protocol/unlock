@@ -5,7 +5,6 @@ import Media from '../../theme/media'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
 import { ConfigContext } from '../../utils/withConfig'
-import { useAddToNetwork } from '../../hooks/useAddToNetwork'
 
 interface NetworkType {
   name: string
@@ -31,8 +30,6 @@ export function Account() {
   const networkSelected = (event: any) => {
     changeNetwork(networks[event?.target?.value])
   }
-
-  const { addNetworkToWallet, currentNetwork } = useAddToNetwork(account)
 
   return (
     <AccountWrapper>
@@ -68,14 +65,6 @@ export function Account() {
                   onClick={deAuthenticate}
                 >
                   Disconnect
-                </button>
-                <button
-                  className="px-2 py-1 text-gray-900 bg-gray-200 rounded"
-                  type="button"
-                  onClick={() => addNetworkToWallet(network)}
-                  disabled={currentNetwork === network}
-                >
-                  Add Network
                 </button>
               </div>
             )}
