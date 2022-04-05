@@ -4,6 +4,7 @@ const base = require('@unlock-protocol/jest-config')
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   ...base,
+  testPathIgnorePatterns: ['<rootDir>/__tests__/test-helpers/'],
   moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx', 'json', 'node'],
   coverageThreshold: {
     global: {
@@ -12,5 +13,4 @@ module.exports = {
       lines: 65,
     },
   },
-  testEnvironment: 'node',
 }
