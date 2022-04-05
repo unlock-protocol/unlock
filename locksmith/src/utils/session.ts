@@ -10,8 +10,10 @@ declare module 'iron-session' {
   }
 }
 export const sessionOptions: IronSessionOptions = {
-  cookieName: 'locksmith-token',
-  password: process.env.SECRET_COOKIE_PASSWORD!,
+  cookieName: 'locksmith',
+  password:
+    process.env.SECRET_COOKIE_PASSWORD ??
+    '32-characters-long-secret-cookie-password',
   cookieOptions: {
     secure: process.env.NODE_ENV === 'production',
   },

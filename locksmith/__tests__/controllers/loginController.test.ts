@@ -42,7 +42,7 @@ describe('Auth login endpoints for locksmith', () => {
 
     const loginResponse = await request(app)
       .post('/v2/auth/login')
-      .set('Cookie', [`locksmith-token=${cookieValue}`])
+      .set('Cookie', [`locksmith=${cookieValue}`])
       .send({
         signature: signedMessage,
         message: message.prepareMessage(),
