@@ -28,7 +28,7 @@ subtask(TASK_JEST_RUN_TESTS).setAction(async () => {
 task(TASK_JEST, 'Runs jest tests').setAction(
   async ({ watch }, { run, network }) => {
     // copy Unlock contracts to be used by OZ upgrades
-    ;['UnlockV10', 'UnlockV11'].forEach((unlockName) => {
+    ;['UnlockV10', 'UnlockV11'].forEach(async (unlockName) => {
       // copy contract source over
       await fs.copy(
         require.resolve(
