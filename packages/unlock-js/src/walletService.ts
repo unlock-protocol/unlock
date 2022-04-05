@@ -122,8 +122,8 @@ export default class WalletService extends UnlockService {
   ): Promise<string> {
     const version = await this.unlockContractAbiVersion()
     if (
-      typeof callback === 'undefined' &&
-      typeof lockVersionOrCallback === 'number'
+      typeof lockVersionOrCallback === 'number' &&
+      typeof callback !== 'undefined'
     ) {
       if (version <= 11) {
         throw new Error('Lock creation at version only available for lock v11+')
