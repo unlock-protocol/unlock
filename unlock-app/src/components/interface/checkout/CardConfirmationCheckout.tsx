@@ -251,7 +251,13 @@ export const CardConfirmationCheckout = ({
             </FeeNotice>
           )}
 
-          <CardNumber>Card ending in {card.last4}</CardNumber>
+          <CardNumber>
+            Card ending in {card.last4} (
+            <a target="_blank" href="/settings">
+              change
+            </a>
+            )
+          </CardNumber>
         </>
       )}
 

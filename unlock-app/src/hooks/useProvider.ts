@@ -92,6 +92,10 @@ export const useProvider = (config: any) => {
         setError(
           `Unlock is currently not deployed on this network. Please switch network and refresh the page: ${error.message}`
         )
+      } else if (error.message.includes('could not detect network')) {
+        toast.error(
+          'We could not detect the network to which your wallet is connected. Please try another wallet. (This issue happens often with the Frame Wallet)' // TODO: remove when Frame is fixed
+        )
       } else {
         setError(error.message)
       }
@@ -143,6 +147,7 @@ export const useProvider = (config: any) => {
     setEncryptedPrivateKey(null)
     clearStorage()
     try {
+      provider.provider.removeAllListeners()
       await provider.provider.close()
     } catch (error) {
       console.error(
