@@ -45,6 +45,19 @@ export default function configure(
   const stripeApiKey =
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
 
+  // Address of the key granter (locksmith) used for credit card purchases and more
+  let keyGranter = '0x903073735Bb6FDB802bd3CDD3b3a2b00C36Bc2A9'
+
+  if (env === 'staging') {
+    // Address for the Unlock credit card purchaser
+    keyGranter = '0x903073735Bb6FDB802bd3CDD3b3a2b00C36Bc2A9'
+  }
+
+  if (env === 'prod') {
+    // Address for the Unlock credit card purchaser
+    keyGranter = '0x58b5cede554a39666091f96c8058920df5906581'
+  }
+
   // Network config
   const networks = {}
 
@@ -68,6 +81,7 @@ export default function configure(
     unlockStaticUrl,
     stripeApiKey,
     networks,
+    keyGranter,
     recaptchaKey,
   }
 }
