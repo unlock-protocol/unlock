@@ -30,7 +30,7 @@ task(TASK_JEST, 'Runs jest tests').setAction(
 
     // pre-compile latest Unlock contract to be used by OZ upgrades
     await preCompile({
-      unlockName: 'UnlockV10',
+      unlockName: 'UnlockV11',
     })
 
     const testResults = await run(TASK_JEST_RUN_TESTS, { watch })
