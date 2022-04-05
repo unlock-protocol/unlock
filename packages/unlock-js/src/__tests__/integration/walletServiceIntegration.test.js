@@ -144,10 +144,12 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           // deploy the relevant template
           const templateAddress = await deployTemplate(publicLockVersion)
 
+          // prepare unlock for upgradeable locks
           if (['v10', 'v11'].indexOf(unlockVersion) > -1) {
-            // prepare unlock for upgradeable locks
-            const versionNumber = parseInt(publicLockVersion.replace('v', ''))
-            await unlock.addLockTemplate(templateAddress, versionNumber)
+            const lockVersionNumber = parseInt(
+              publicLockVersion.replace('v', '')
+            )
+            await unlock.addLockTemplate(templateAddress, lockVersionNumber)
           }
 
           // set the right template in Unlock
@@ -167,15 +169,18 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           chainId
         )
 
-        lockAddress = await walletService.createLock(
-          lockParams,
-          (error, hash) => {
-            if (error) {
-              throw error
+        if (['v11'].indexOf(unlockVersion) > -1) {
+          lockAddress = await walletService.createLock(
+            lockParams,
+            parseInt(publicLockVersion.replace('v', '')),
+            (error, hash) => {
+              if (error) {
+                throw error
+              }
+              lockCreationHash = hash
             }
-            lockCreationHash = hash
-          }
-        )
+          )
+        }
 
         lock = await web3Service.getLock(lockAddress, chainId)
       })
@@ -339,7 +344,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           const latestBlock = await walletService.provider.getBlock(blockNumber)
           expect(
             Math.floor(key.expiration) -
-            Math.floor(lock.expirationDuration + latestBlock.timestamp)
+              Math.floor(lock.expirationDuration + latestBlock.timestamp)
           ).toBeLessThan(60)
         })
 
@@ -500,7 +505,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           const latestBlock = await walletService.provider.getBlock(blockNumber)
           expect(
             Math.floor(key.expiration) -
-            Math.floor(lock.expirationDuration + latestBlock.timestamp)
+              Math.floor(lock.expirationDuration + latestBlock.timestamp)
           ).toBeLessThan(60)
         })
       })

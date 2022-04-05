@@ -30,9 +30,14 @@ async function _getKeyPrice(lock, provider) {
  * @param {number} _lockVersion the version of the lock to create
  * @param {function} callback invoked with the transaction hash
  */
-export default async function (lock, _lockVersion, callback) {
+export default async function (lock, lockVersionOrCallback, callback) {
   // default lock version to 9
-  const lockVersion = _lockVersion || 9
+  const lockVersion =
+    typeof lockVersionOrCallback === 'number' ? lockVersionOrCallback : 9
+
+  if (typeof lockVersionOrCallback === 'function') {
+    callback = lockVersionOrCallback
+  }
 
   const unlockContract = await this.getUnlockContract()
   let { maxNumberOfKeys, expirationDuration } = lock
@@ -50,13 +55,13 @@ export default async function (lock, _lockVersion, callback) {
   const lockName = lock.name
 
   // get lock creator
-  const lockCreator = this.signer.getAddress()
+  const lockCreator = await this.signer.getAddress()
   if (!lockCreator) {
     throw new Error('No signer detected')
   }
 
-  // get lock interface
-  const lockAbi = abis.PublicLock[`v${lockVersion}`]
+  // parse interface
+  const { abi: lockAbi } = abis.PublicLock[`v${lockVersion}`]
   const lockInterface = new ethers.utils.Interface(lockAbi)
 
   // parse calldata
