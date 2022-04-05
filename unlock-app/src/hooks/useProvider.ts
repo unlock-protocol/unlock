@@ -92,6 +92,10 @@ export const useProvider = (config: any) => {
         setError(
           `Unlock is currently not deployed on this network. Please switch network and refresh the page: ${error.message}`
         )
+      } else if (error.message.includes('could not detect network')) {
+        toast.error(
+          'could not detect network, please try with different wallet'
+        )
       } else {
         setError(error.message)
       }
