@@ -1,4 +1,4 @@
-import { Interface } from 'ethers'
+import { ethers } from 'ethers'
 import abis from '../../abis'
 import ethersUtils from '../../utils'
 import { ETHERS_MAX_UINT, UNLIMITED_KEYS_COUNT, ZERO } from '../../constants'
@@ -57,7 +57,7 @@ export default async function (lock, _lockVersion, callback) {
 
   // get lock interface
   const lockAbi = abis.PublicLock[`v${lockVersion}`]
-  const lockInterface = new Interface(lockAbi)
+  const lockInterface = new ethers.utils.Interface(lockAbi)
 
   // parse calldata
   const calldata = lockInterface.encodeFunctionData(
