@@ -170,17 +170,20 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         )
 
         if (['v11'].indexOf(unlockVersion) > -1) {
-          lockAddress = await walletService.createLock(
-            lockParams,
-            parseInt(publicLockVersion.replace('v', '')),
-            (error, hash) => {
-              if (error) {
-                throw error
-              }
-              lockCreationHash = hash
-            }
+          lockParams.publicLockVersion = parseInt(
+            publicLockVersion.replace('v', '')
           )
         }
+
+        lockAddress = await walletService.createLock(
+          lockParams,
+          (error, hash) => {
+            if (error) {
+              throw error
+            }
+            lockCreationHash = hash
+          }
+        )
 
         lock = await web3Service.getLock(lockAddress, chainId)
       })
