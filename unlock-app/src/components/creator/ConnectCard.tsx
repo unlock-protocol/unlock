@@ -3,13 +3,13 @@ import React, { useContext, useState, useEffect } from 'react'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
-import { ConfigContext } from '../../utils/withConfig'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { useAccount } from '../../hooks/useAccount'
 
 import Loading from '../interface/Loading'
 import useLock from '../../hooks/useLock'
 import SvgComponents from '../interface/svg'
+import { StorageServiceContext } from '../../utils/withStorageService'
 
 interface ConnectCardProps {
   lockNetwork: number
@@ -20,7 +20,8 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
   const { network: walletNetwork, account } = useContext(AuthenticationContext)
   const web3Service = useContext(Web3ServiceContext)
   const walletService = useContext(WalletServiceContext)
-  const config = useContext(ConfigContext)
+  const storageService = useContext(StorageServiceContext)
+  const [keyGranter, setKeyGranter] = useState('')
 
   const { isStripeConnected } = useLock({ address: lock.address }, lockNetwork)
   // @ts-expect-error
@@ -47,15 +48,15 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
   const grantKeyGrantorRole = async () => {
     await walletService.addKeyGranter({
       lockAddress: lock.address,
-      keyGranter: config.keyGranter,
+      keyGranter,
     })
     setHasRole(true)
   }
 
-  const checkIsKeyGranter = async () => {
+  const checkIsKeyGranter = async (keyGranter: string) => {
     const hasRole = await web3Service.isKeyGranter(
       lock.address,
-      config.keyGranter,
+      keyGranter,
       lockNetwork
     )
     setHasRole(hasRole)
@@ -69,15 +70,16 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
   useEffect(() => {
     const checkState = async () => {
       setLoading(true)
+      const _keyGranter = await storageService.getKeyGranter(lockNetwork)
       await checkIsConnected()
-      await checkIsKeyGranter()
+      await checkIsKeyGranter(_keyGranter)
       setLoading(false)
+      setKeyGranter(_keyGranter)
     }
     checkState()
   }, [lock.address, lockNetwork, isConnected])
 
   const wrongNetwork = walletNetwork !== lockNetwork
-
   return (
     <>
       {loading && <Loading />}
@@ -89,6 +91,7 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
                 <SvgComponents.Checkmark /> Stripe Connected
               </Button>
             )}
+
             {isConnected === -1 && (
               <Button done={false} onClick={connectStripe}>
                 <SvgComponents.Arrow /> Connect Stripe
