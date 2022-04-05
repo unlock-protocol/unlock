@@ -520,4 +520,22 @@ export class StorageService extends EventEmitter {
       return {}
     }
   }
+
+  async getKeyGranter(network) {
+    try {
+      const url = `${this.host}/purchase`
+
+      const options = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+
+      const response = await axios.get(url, options)
+      return response?.data[network].address
+    } catch (error) {
+      console.error(error)
+      return ''
+    }
+  }
 }
