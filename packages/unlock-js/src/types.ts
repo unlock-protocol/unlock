@@ -29,6 +29,7 @@ export interface Lock {
   outstandingKeys?: number
   balance?: string
   owner?: string
+  publicLockVersion?: number
 }
 
 export interface KeyResult {

@@ -66,11 +66,11 @@ export default class Dispatcher {
 
     if (network === 137) {
       // Hardcode the fee for polygon
+      transactionOptions.maxFeePerGas = ethers.utils.parseUnits('1000', 'gwei')
       transactionOptions.maxPriorityFeePerGas = ethers.utils.parseUnits(
-        '20',
+        '500',
         'gwei'
       )
-      transactionOptions.maxFeePerGas = ethers.utils.parseUnits('100', 'gwei')
     } else if (feeData?.maxPriorityFeePerGas) {
       // We double to increase speed of execution
       transactionOptions.maxPriorityFeePerGas =
