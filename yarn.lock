@@ -14478,7 +14478,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@^0.0.2, @unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
+"@unlock-protocol/contracts@0.0.3, @unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
@@ -14491,13 +14491,6 @@ __metadata:
     typescript: 4.6.2
   languageName: unknown
   linkType: soft
-
-"@unlock-protocol/contracts@npm:0.0.3":
-  version: 0.0.3
-  resolution: "@unlock-protocol/contracts@npm:0.0.3"
-  checksum: 80988d7c7c8aff5b88c74ec74b3ccae63f2d0f1ded545c688086a61e38e4fe922bacb029c92eee2a92dee6dc0eb193d4649460cf49d0fabf6146106ddf60bb0c
-  languageName: node
-  linkType: hard
 
 "@unlock-protocol/eslint-config@workspace:./packages/eslint-config, @unlock-protocol/eslint-config@workspace:^, @unlock-protocol/eslint-config@workspace:packages/eslint-config":
   version: 0.0.0-use.local
@@ -14768,7 +14761,7 @@ __metadata:
     "@openzeppelin/upgrades": 2.8.0
     "@typescript-eslint/eslint-plugin": 5.13.0
     "@typescript-eslint/parser": 5.13.0
-    "@unlock-protocol/contracts": ^0.0.2
+    "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     babel-eslint: 10.1.0
     bignumber.js: 9.0.2
