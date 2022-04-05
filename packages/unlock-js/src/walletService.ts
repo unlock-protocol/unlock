@@ -96,45 +96,18 @@ export default class WalletService extends UnlockService {
   /**
    * Creates a lock on behalf of the user.
    * @param {PropTypes.lock} lock
-   * @param {number} lockVersion (ignored before Unlock v11)
    * @param {function} callback : callback invoked with the transaction hash
    * @return Promise<PropTypes.address> lockAddress
    */
   async createLock(
     lock: Lock,
-    lockVersion: number,
     callback: WalletServiceCallback
-  ): Promise<string>
-
-  /**
-   * Creates a lock on behalf of the user.
-   * @param {PropTypes.lock} lock
-   * @param {function} callback : callback invoked with the transaction hash
-   * @return Promise<PropTypes.address> lockAddress
-   */
-  async createLock(lock: Lock, callback: WalletServiceCallback): Promise<string>
-
-  // function implementation for `createLock` to support overloads
-  async createLock(
-    lock: Lock,
-    lockVersionOrCallback: number | WalletServiceCallback,
-    callback?: WalletServiceCallback
   ): Promise<string> {
     const version = await this.unlockContractAbiVersion()
-    if (
-      typeof lockVersionOrCallback === 'number' &&
-      typeof callback !== 'undefined'
-    ) {
-      if (version <= 11) {
-        throw new Error('Lock creation at version only available for lock v11+')
-      }
-      return version.createLock.bind(this)(
-        lock,
-        lockVersionOrCallback,
-        callback
-      )
+    if (typeof lock.publicLockVersion !== 'undefined' && version < 11) {
+      throw new Error('Lock creation at version only available for lock v11+')
     }
-    return version.createLock.bind(this)(lock, lockVersionOrCallback)
+    return version.createLock.bind(this)(lock, callback)
   }
 
   async unlockContractAbiVersion() {

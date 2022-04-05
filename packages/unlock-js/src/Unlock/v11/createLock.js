@@ -27,17 +27,11 @@ async function _getKeyPrice(lock, provider) {
 /**
  * Creates a lock at a specific version
  * @param {PropTypes.lock} lock
- * @param {number} _lockVersion the version of the lock to create
  * @param {function} callback invoked with the transaction hash
  */
-export default async function (lock, lockVersionOrCallback, callback) {
+export default async function (lock, callback) {
   // default lock version to 9
-  const lockVersion =
-    typeof lockVersionOrCallback === 'number' ? lockVersionOrCallback : 9
-
-  if (typeof lockVersionOrCallback === 'function') {
-    callback = lockVersionOrCallback
-  }
+  const lockVersion = lock.publicLockVersion || 9
 
   const unlockContract = await this.getUnlockContract()
   let { maxNumberOfKeys, expirationDuration } = lock
