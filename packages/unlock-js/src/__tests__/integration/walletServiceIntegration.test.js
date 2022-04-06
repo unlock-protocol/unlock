@@ -162,6 +162,12 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         // unique Lock name to avoid conflicting addresses
         lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
 
+        if (['v11'].indexOf(unlockVersion) > -1) {
+          lockParams.publicLockVersion = parseInt(
+            publicLockVersion.replace('v', '')
+          )
+        }
+
         lockAddress = await walletService.createLock(
           lockParams,
           (error, hash) => {
