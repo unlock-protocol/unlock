@@ -38,21 +38,6 @@ interface KeyBoxProps {
   expirationStatus: string
 }
 
-function ExpiredTag() {
-  return (
-    <p className="bg-red-100 border inline-flex items-center gap-2 border-brand-secondary text-brand-secondary text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">
-      <DangerIcon /> Expired
-    </p>
-  )
-}
-function ValidTag() {
-  return (
-    <p className="bg-green-100 border inline-flex items-center gap-2 border-green-600 text-green-600 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">
-      <CheckIcon /> Valid
-    </p>
-  )
-}
-
 const KeyBox = ({
   tokenURI,
   lock,
@@ -84,7 +69,6 @@ const KeyBox = ({
         </Avatar>
         <div>
           <h3 className="font-medium">{lock.name}</h3>
-          <div>{isKeyExpired ? <ExpiredTag /> : <ValidTag />}</div>
           <div>
             {isKeyExpired ? (
               <Badge
