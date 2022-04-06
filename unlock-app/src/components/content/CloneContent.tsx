@@ -8,6 +8,7 @@ import Loading from '../interface/Loading'
 import { Heading, Instructions } from '../interface/FinishSignup'
 import { pageTitle } from '../../constants'
 import { ConfigContext } from '../../utils/withConfig'
+import { ToastHelper } from '../helpers/toast.helper'
 
 interface CloneContentProps {
   query: any
@@ -16,7 +17,6 @@ interface CloneContentProps {
 export const CloneContent = ({ query }: CloneContentProps) => {
   const { account, network } = useContext(AuthenticationContext)
   const config: any = useContext(ConfigContext)
-  const [error, setError] = useState('')
   const [isCloning, setIsCloning] = useState(false)
   const [lockMigration, setLockMigration] = useState({
     existing: false,
@@ -42,11 +42,11 @@ export const CloneContent = ({ query }: CloneContentProps) => {
         }
       } catch (error: any) {
         console.log(error)
-        setError('Fail to clone. Please refresh and try again.')
+        ToastHelper.error('Fail to clone. Please refresh and try again.')
         setIsCloning(false)
       }
     } else {
-      setError('Network not set. aborting.')
+      ToastHelper.error('Network not set. aborting.')
     }
     return false
   }
@@ -73,7 +73,7 @@ export const CloneContent = ({ query }: CloneContentProps) => {
   useEffect(() => {
     const url = new window.URL(window.location.href)
     if (!url.searchParams.get('locks')) {
-      setError('Missing lock param!')
+      ToastHelper.error('Missing lock param!')
     }
     // fetch lock
     if (!lockMigration.existing) {
@@ -107,9 +107,8 @@ export const CloneContent = ({ query }: CloneContentProps) => {
           </p>
         </div>
       )}
-      {error && <p>{error}</p>}
       {!account && <p>Please authentificate to clone this lock</p>}
-      {account && !error && !existing && (
+      {account && !existing && (
         <p>
           <Button onClick={cloneLock}>Clone your lock now</Button>
         </p>

@@ -66,18 +66,6 @@ describe('UseCards', () => {
         expect.any(Object)
       )
     })
-
-    it.skip('should return an error when the fetch fails', async () => {
-      expect.assertions(1)
-
-      fetch.mockRejectedValueOnce(new Error('fail'))
-
-      const { result, waitFor } = renderHook(() => UseCards.useCards())
-
-      await waitFor(() => !!result.current.error)
-
-      expect(result.current.error!.message).toEqual('fail')
-    })
   })
 
   describe('saveCardsForAddress', () => {

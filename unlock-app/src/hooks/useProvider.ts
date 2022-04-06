@@ -6,6 +6,7 @@ import { useAddToNetwork } from './useAddToNetwork'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
+import { ToastHelper } from '../components/helpers/toast.helper'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -24,7 +25,6 @@ interface WatchAssetInterface {
  */
 export const useProvider = (config: any) => {
   const { setProvider, provider } = useContext(ProviderContext)
-  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
   const [network, setNetwork] = useState<string | undefined>(undefined)
@@ -48,7 +48,6 @@ export const useProvider = (config: any) => {
   }, [account, network])
 
   const resetProvider = async (provider: ethers.providers.Provider) => {
-    setError('')
     try {
       const _walletService = new WalletService(config.networks)
 
@@ -89,15 +88,15 @@ export const useProvider = (config: any) => {
       }
     } catch (error: any) {
       if (error.message.startsWith('Missing config')) {
-        setError(
+        ToastHelper.error(
           `Unlock is currently not deployed on this network. Please switch network and refresh the page: ${error.message}`
         )
       } else if (error.message.includes('could not detect network')) {
-        toast.error(
+        ToastHelper.error(
           'We could not detect the network to which your wallet is connected. Please try another wallet. (This issue happens often with the Frame Wallet)' // TODO: remove when Frame is fixed
         )
       } else {
-        setError(error.message)
+        ToastHelper.error(error.message)
       }
       setProvider(null)
       console.error(error)
@@ -234,7 +233,6 @@ export const useProvider = (config: any) => {
     walletService,
     connectProvider,
     disconnectProvider,
-    error,
     watchAsset,
     changeNetwork,
   }
