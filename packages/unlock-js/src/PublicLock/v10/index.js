@@ -1,5 +1,6 @@
 import abis from '../../abis'
 import purchaseKeys from './purchaseKeys'
+import extend from './extend'
 import v9 from '../v9'
 
 const {
@@ -23,6 +24,7 @@ export default {
   version: 'v10',
   PublicLock: abis.PublicLock.v10,
   grantKey,
+  extend,
   updateKeyPrice,
   withdrawFromLock,
   initializeTemplate,
