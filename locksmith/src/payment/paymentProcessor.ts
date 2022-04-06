@@ -195,6 +195,20 @@ export class PaymentProcessor {
         destination: stripeAccount,
       },
     })
+
+    // Create a charge
+    // We can easily look up later which of the charges were not captured and/or which of them did not result
+    // in a key being dropped.
+    await Charge.create({
+      userAddress: recipient,
+      lock: lock,
+      stripeCustomerId: stripeCustomerId,
+      totalPriceInCents: totalPriceInCents,
+      unlockServiceFee: pricing.unlockServiceFee,
+      stripeCharge: intent.id,
+      chain: network,
+    })
+
     return intent.client_secret
   }
 
