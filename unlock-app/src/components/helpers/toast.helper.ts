@@ -40,7 +40,7 @@ export const ToastHelper: ToastHelperProps = {
   promise: async (promise, msgs, opts = {}) => {
     await toast.promise(promise, msgs, opts)
   },
-  // we need to provide an errors pages 404/500
+  // TODO: we need to provide an errors pages 404/500
   redirectErrorPage: (page) => {
     const redirectPage = `/${page}`
     window.location.href = redirectPage
