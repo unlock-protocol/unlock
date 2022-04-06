@@ -173,11 +173,12 @@ IconModal.propTypes = {
   dismiss: PropTypes.func.isRequired,
   current: PropTypes.string.isRequired,
   lockAddress: PropTypes.string,
-  network: PropTypes.number.isRequired,
+  network: PropTypes.number,
 }
 
 IconModal.defaultProps = {
   lockAddress: '',
+  network: 0,
 }
 
 /**
