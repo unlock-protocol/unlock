@@ -37,7 +37,7 @@
     "@openzeppelin/upgrades": "2.8.0",
     "@typescript-eslint/eslint-plugin": "5.13.0",
     "@typescript-eslint/parser": "5.13.0",
-    "@unlock-protocol/contracts": "^0.0.2",
+    "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "babel-eslint": "10.1.0",
     "bignumber.js": "9.0.2",
