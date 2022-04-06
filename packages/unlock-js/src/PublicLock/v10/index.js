@@ -1,5 +1,6 @@
 import abis from '../../abis'
 import purchaseKeys from './purchaseKeys'
+import purchaseKey from './purchaseKey'
 import extend from './extend'
 import v9 from '../v9'
 
@@ -35,6 +36,7 @@ export default {
   cancelAndRefund,
   shareKey,
   getLock,
+  purchaseKey,
   purchaseKeys,
   keyManagerOf,
   setMaxNumberOfKeys,
