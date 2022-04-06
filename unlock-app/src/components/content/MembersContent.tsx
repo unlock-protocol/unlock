@@ -159,13 +159,8 @@ const MetadataTableWrapper = ({
 }: MetadataTableWrapperProps) => {
   const { account } = useContext(AuthenticationContext)
   const [currentPage, setCurrentPage] = useState(page)
-  const { loading, error, list, columns, hasNextPage } = useMembers(
-    lockAddresses,
-    account,
-    filter,
-    currentPage
-  )
-
+  const { loading, error, list, columns, hasNextPage, isLockManager } =
+    useMembers(lockAddresses, account, filter, currentPage)
   if (loading) {
     return <Loading />
   }
@@ -189,7 +184,12 @@ const MetadataTableWrapper = ({
         setCurrentPage={setCurrentPage}
         hasNextPage={hasNextPage}
       />
-      <MetadataTable columns={columns} metadata={list} />
+      <MetadataTable
+        columns={columns}
+        metadata={list}
+        isLockManager={isLockManager}
+        lockAddresses={lockAddresses}
+      />
     </>
   )
 }
