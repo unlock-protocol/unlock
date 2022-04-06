@@ -333,7 +333,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           const latestBlock = await walletService.provider.getBlock(blockNumber)
           expect(
             Math.floor(key.expiration) -
-            Math.floor(lock.expirationDuration + latestBlock.timestamp)
+              Math.floor(lock.expirationDuration + latestBlock.timestamp)
           ).toBeLessThan(60)
         })
 
@@ -494,7 +494,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           const latestBlock = await walletService.provider.getBlock(blockNumber)
           expect(
             Math.floor(key.expiration) -
-            Math.floor(lock.expirationDuration + latestBlock.timestamp)
+              Math.floor(lock.expirationDuration + latestBlock.timestamp)
           ).toBeLessThan(60)
         })
       })
