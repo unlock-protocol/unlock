@@ -5,7 +5,6 @@ we can do it from here without change everything from around the codebase
 */
 
 import { Renderable, toast, Toast } from 'react-hot-toast'
-import { useHistory } from 'react-router-dom'
 
 interface ToastHelperProps {
   success: (message: string) => void
