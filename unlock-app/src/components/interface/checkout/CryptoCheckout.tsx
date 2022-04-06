@@ -48,6 +48,7 @@ export const CryptoCheckout = ({
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
+  const [loading, setLoading] = useState(false)
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>('')
   const {
     network: walletNetwork,
@@ -206,12 +207,14 @@ export const CryptoCheckout = ({
     setCardPurchase()
   }
 
-  const hasValidKeyOrPendingTx = hasValidOrPendingKey || transactionPending
+  const hasValidKeyOrPendingTx =
+    !loading && (hasValidOrPendingKey || transactionPending)
   const showCheckoutButtons =
-    ((recaptchaValue || !paywallConfig.captcha) &&
+    !loading &&
+    (((recaptchaValue || !paywallConfig.captcha) &&
       !transactionPending &&
       !hasValidkey) ||
-    (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
+      (isAdvanced && hasValidKeyOrPendingTx && !transactionPending))
 
   return (
     <>
@@ -226,6 +229,7 @@ export const CryptoCheckout = ({
         onSelected={null}
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
+        onLoading={setLoading}
       />
       {!hasValidKeyOrPendingTx && (
         <>
