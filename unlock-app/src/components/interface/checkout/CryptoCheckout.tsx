@@ -208,7 +208,7 @@ export const CryptoCheckout = ({
   }
 
   const hasValidKeyOrPendingTx =
-    !loading && (hasValidOrPendingKey || transactionPending)
+    hasValidOrPendingKey || transactionPending || loading
   const showCheckoutButtons =
     !loading &&
     (((recaptchaValue || !paywallConfig.captcha) &&
