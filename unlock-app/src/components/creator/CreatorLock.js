@@ -44,14 +44,13 @@ BalanceOnLock.propTypes = {
 const LockKeysNumbers = ({ lock, edit }) => (
   <LockKeys className="flex">
     {lock.outstandingKeys !== null &&
-    lock.maxNumberOfKeys !== null &&
-    typeof lock.outstandingKeys !== 'undefined' &&
-    typeof lock.maxNumberOfKeys !== 'undefined'
-      ? `${lock.outstandingKeys}/${
-          lock.unlimitedKeys || lock.maxNumberOfKeys === -1
-            ? INFINITY
-            : lock.maxNumberOfKeys
-        }`
+      lock.maxNumberOfKeys !== null &&
+      typeof lock.outstandingKeys !== 'undefined' &&
+      typeof lock.maxNumberOfKeys !== 'undefined'
+      ? `${lock.outstandingKeys}/${lock.unlimitedKeys || lock.maxNumberOfKeys === -1
+        ? INFINITY
+        : lock.maxNumberOfKeys
+      }`
       : ' - '}
     <InlineButton type="button" onClick={() => edit(lock.address)}>
       <Svg.Edit name="Edit" />
@@ -176,7 +175,7 @@ export const CreatorLock = ({
         <LockName>
           {name}
           <LockAddress address={!lock.pending && lock.address} />
-          {lock && (
+          {lock && !lock.pending && (
             <div className="flex items-center gap-2 py-1 text-gray-400">
               <span className="text-xs">v{lock.publicLockVersion}</span>
               <span className="text-xs">{networks[lock.network].name}</span>

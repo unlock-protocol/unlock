@@ -129,17 +129,15 @@ export const createLock = async (
           walletService.networkId
         )
 
+        lock.address = '0x' // Address is not known
+        lock.pending = true
         lock.creationBlock = Number.MAX_SAFE_INTEGER.toString()
         lock.network = network
-
-        // Store the hash!
-        storageService.storeTransaction(
-          transactionHash,
-          owner,
-          config.unlockAddress,
-          network.name
-        )
-
+        lock.transactions = {
+          [transactionHash]: {
+            confirmations: 0,
+          },
+        }
         addToLocks(lock)
         callback(null, lock)
       }
@@ -150,11 +148,14 @@ export const createLock = async (
     // Adding a 1 sec delay just to make sure data is available!
     const newLock = await getLockAtAddress(web3Service, lockAddress, network)
     newLock.creationBlock = newLock.asOf // Assume the lock was just created!
+    // remove the pending lock
+    lock.delete = true
+    addToLocks(lock)
     addToLocks(newLock)
-  }, 1000)
-  // We now have an address! We should get the lock at that address and remove the old one!
 
-  return lockAddress
+  }, 1000)
+
+  return 'lockAddress'
 }
 
 /**
@@ -186,22 +187,30 @@ export const useLocks = (owner) => {
     }
 
     const index = locks.findIndex(
-      (element) => element.address?.toLowerCase() === lock.address?.toLowerCase()
+      (element) =>
+        element.address?.toLowerCase() === lock.address?.toLowerCase()
     )
 
     if (index === -1) {
-      // New lock, add it
-      locks.push(lock)
+      locks.push(lock) // not previously seen lock
+    } else if (lock.delete) {
+      locks[index] = null // we delete!
     } else {
-      // The lock already exists. we merge
+      // merging existing lock
       locks[index] = {
         ...locks[index],
         ...lock,
       }
     }
-    return [...locks].sort((x, y) => {
-      return parseInt(y.creationBlock) - parseInt(x.creationBlock)
-    })
+
+    const filteredAndSorted = [...locks]
+      .filter((lock) => !!lock)
+      .sort((x, y) => {
+        return parseInt(y.creationBlock) - parseInt(x.creationBlock)
+      })
+
+    // filter and sort!
+    return filteredAndSorted
   }, [])
 
   /**
