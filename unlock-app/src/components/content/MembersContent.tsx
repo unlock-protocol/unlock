@@ -159,7 +159,7 @@ const MetadataTableWrapper = ({
 }: MetadataTableWrapperProps) => {
   const { account } = useContext(AuthenticationContext)
   const [currentPage, setCurrentPage] = useState(page)
-  const { loading, error, list, columns, hasNextPage } = useMembers(
+  const { loading, list, columns, hasNextPage } = useMembers(
     lockAddresses,
     account,
     filter,
@@ -168,17 +168,6 @@ const MetadataTableWrapper = ({
 
   if (loading) {
     return <Loading />
-  }
-
-  if (error) {
-    return (
-      <Message>
-        An error occurred. Return to your{' '}
-        <Link href="/dashboard">
-          <a>Dashboard</a>
-        </Link>
-      </Message>
-    )
   }
 
   // TODO: rename metadata into members inside of MetadataTable
@@ -197,10 +186,6 @@ const MetadataTableWrapper = ({
 MetadataTableWrapper.defaultProps = {}
 
 const GrantButton = styled(CreateLockButton)``
-
-const Message = styled.p`
-  color: var(--grey);
-`
 
 export const Filters = styled.nav`
   color: var(--grey);
