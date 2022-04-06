@@ -18,6 +18,7 @@ const {
   shareKey,
   getLock,
   keyManagerOf,
+  getCancelAndRefundValueFor,
 } = v8
 
 export default {
@@ -39,4 +40,5 @@ export default {
   keyManagerOf,
   setMaxNumberOfKeys,
   setExpirationDuration,
+  getCancelAndRefundValueFor,
 }
