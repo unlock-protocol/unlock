@@ -17,13 +17,14 @@ import logger from '../logger'
 import { Hook } from './hook'
 import { HookEvent } from './hookEvent'
 import { ProcessedHookItem } from './processedHookItem'
+import { RefreshToken } from './refreshToken'
 
 const config = require('../../config/sequelize.config')
 
 logger.info(`Connecting to database, ${JSON.stringify(config)}`)
 
 // We assume config from an object of {username, password, database, host, dialect}
-const sequelize = new Sequelize(config)
+export const sequelize = new Sequelize(config)
 
 sequelize.addModels([
   User,
@@ -43,6 +44,7 @@ sequelize.addModels([
   Hook,
   HookEvent,
   ProcessedHookItem,
+  RefreshToken,
 ])
 
 User.removeAttribute('id')
