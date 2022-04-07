@@ -42,7 +42,7 @@ module.exports = {
     },
   },
   rules: {
-    '@typescript-eslint/no-unused-vars': ['error'],
+    '@typescript-eslint/no-unused-vars': ['warn'],
     'react/prefer-stateless-function': [2],
     'react/forbid-prop-types': 2,
     'jsx-a11y/anchor-is-valid': [
