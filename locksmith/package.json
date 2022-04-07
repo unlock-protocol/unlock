@@ -6,6 +6,7 @@
   "scripts": {
     "prod": "cd build && node -r ./src/utils/envLoader.js ./server.js",
     "start": "yarn build && node -r ./src/utils/envLoader.js ./build/server.js",
+    "debug": "yarn build && node -r ./src/utils/envLoader.js ./build/scripts/debug.js",
     "dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js server.js",
     "test": "yarn test:db:setup && yarn test:run",
     "test:db:setup": "yarn run test:db:drop && yarn run test:db:create && yarn run test:db:migrate",
