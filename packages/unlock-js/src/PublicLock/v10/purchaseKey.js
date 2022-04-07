@@ -1,7 +1,6 @@
-import utils from '../../utils'
 import { ZERO } from '../../constants'
-import { approveTransfer, getErc20Decimals, getAllowance } from '../../erc20'
-
+import { approveTransfer, getAllowance } from '../../erc20'
+import formatKeyPrice from '../utils/formatKeyPrice'
 /**
  * Purchase key function. This implementation requires the following
  * @param {object} params:
@@ -53,17 +52,13 @@ export default async function (
   if (!keyPrice) {
     // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
     actualAmount = await lockContract.keyPrice()
-  } else if (decimals !== undefined && decimals !== null) {
-    // We have have a keyPrice and decinals, we just use them.
-    actualAmount = utils.toDecimal(keyPrice, decimals)
   } else {
-    // get the decimals from the ERC20 contract or default to 18
-    if (erc20Address && erc20Address !== ZERO) {
-      decimals = await getErc20Decimals(erc20Address, this.provider)
-    } else {
-      decimals = 18
-    }
-    actualAmount = utils.toDecimal(keyPrice, decimals)
+    actualAmount = await formatKeyPrice(
+      keyPrice,
+      erc20Address,
+      decimals,
+      this.provider
+    )
   }
 
   const purchaseForOptions = {}
