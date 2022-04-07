@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { useLock } from '../../../hooks/useLock'
 import { Lock } from './Lock'
 import { LoadingLock } from './LockVariations'
+import { Alert } from '../Alert'
 
 interface LoadLockProps {
   address: string
