@@ -202,6 +202,32 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Purchase key function. This implementation requires the following
+   * @param {object} params:
+   * - {PropTypes.address} lockAddress
+   * - {number} tokenIdFrom
+   * - {number} tokenIdTo
+   * - {number} amount if null, will take the entire remaining time of the from key
+   * @param {function} callback invoked with the transaction hash
+   */
+  async mergeKeys(
+    params: {
+      lockAddress: string
+      tokenIdFrom: string
+      tokenIdTo: string
+      amount?: number
+    },
+    callback: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.mergeKeys) {
+      throw new Error('Lock version not supported')
+    }
+    return version.mergeKeys.bind(this)(params, callback)
+  }
+
+  /**
    * Grants permission to grant keys to address
    * @param {*} params
    * @param {*} callback
