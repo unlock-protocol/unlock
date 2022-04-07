@@ -40,12 +40,18 @@ export class AuthController {
       refreshTokenData.nonce = fields.nonce
 
       const { token: refreshToken } = await refreshTokenData.save()
-
-      response.send({
-        walletAddress: fields.address,
-        accessToken,
-        refreshToken,
-      })
+      response
+        .cookie('refresh-token', refreshToken, {
+          expires: new Date(message.expirationTime!),
+          httpOnly: process.env.NODE_ENV === 'production',
+        })
+        .setHeader('refresh-token', refreshToken)
+        .setHeader('Authorization', `Bearer ${accessToken}`)
+        .send({
+          walletAddress: fields.address,
+          accessToken,
+          refreshToken,
+        })
     } catch (error) {
       logger.error(error.message)
       switch (error) {
@@ -66,45 +72,67 @@ export class AuthController {
   }
 
   async token(request: Request, response: Response) {
-    const refreshToken =
-      request.body.refreshToken || request.headers['refresh-token']?.toString()
-    if (!refreshToken) {
-      return response
-        .status(401)
-        .send('No refresh token provided in the header or body.')
-    }
+    try {
+      const refreshToken =
+        request.cookies['refresh-token'] ||
+        request.body.refreshToken ||
+        request.headers['refresh-token']?.toString()
 
-    const refreshTokenData = await RefreshToken.findOne({
-      where: {
-        token: refreshToken,
-        revoked: {
-          [Op.or]: [null, false],
+      if (!refreshToken) {
+        return response
+          .status(401)
+          .send('No refresh token provided in the header or body.')
+      }
+
+      const refreshTokenData = await RefreshToken.findOne({
+        where: {
+          token: refreshToken,
+          revoked: {
+            [Op.or]: [null, false],
+          },
         },
-      },
-    })
+      })
 
-    if (!refreshTokenData) {
+      if (!refreshTokenData) {
+        return response
+          .status(401)
+          .send('Refresh token provided is invalid or revoked.')
+      }
+
+      // rotate refresh token
+      refreshTokenData.token = createRefreshToken()
+
+      await refreshTokenData.save()
+
+      const accessToken = createAccessToken({
+        walletAddress: refreshTokenData.walletAddress,
+      })
+
       return response
-        .status(401)
-        .send('Refresh token provided is invalid or revoked.')
+        .status(200)
+        .setHeader('Authorization', `Bearer ${accessToken}`)
+        .setHeader('refresh-token', refreshTokenData.token)
+        .cookie('refresh-token', refreshTokenData.token, {
+          httpOnly: process.env.NODE_ENV === 'production',
+        })
+        .send({
+          walletAddress: refreshTokenData.walletAddress,
+          refreshToken: refreshTokenData.token,
+          accessToken: accessToken,
+        })
+    } catch (error) {
+      logger.error(error.message)
+      return response.status(500).send('Failed to issue new token')
     }
-
-    const accessToken = createAccessToken({
-      walletAddress: refreshTokenData.walletAddress,
-    })
-
-    return response.status(200).send({
-      walletAddress: refreshTokenData.walletAddress,
-      refreshToken: refreshTokenData.token,
-      accessToken: accessToken,
-    })
   }
 
   async revokeToken(request: Request, response: Response) {
     try {
       const refreshToken =
         request.body.refreshToken ||
-        request.headers['refresh-token']?.toString()
+        request.headers['refresh-token']?.toString() ||
+        request.cookies['refresh-token']
+
       if (!refreshToken) {
         return response
           .status(401)

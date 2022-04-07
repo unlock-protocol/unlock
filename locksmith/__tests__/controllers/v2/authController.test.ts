@@ -72,9 +72,11 @@ describe('Auth login endpoints for locksmith', () => {
     expect(userResponse.status).toBe(200)
     expect(userResponse.body.walletAddress).toBe(walletAddress)
 
+    await sleep(3600)
+
     const userResponse2 = await request(app)
       .get('/v2/auth/user')
-      .set('authorization', 'Bearer 335asad')
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(userResponse2.status).toBe(403)
 

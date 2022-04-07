@@ -31,7 +31,6 @@ router.use((request, _, next) => {
   request.chain = chain
   next()
 })
-
 router.use('/', transactionRouter)
 router.use('/', lockRouter)
 router.use('/users', userRouter)

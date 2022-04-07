@@ -12582,6 +12582,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/cookie-parser@npm:^1.4.2":
+  version: 1.4.2
+  resolution: "@types/cookie-parser@npm:1.4.2"
+  dependencies:
+    "@types/express": "*"
+  checksum: d5b3c0e193cc95289444306ad396b27b92c9ff1ffd0769268b374d09315c8df1ae94de5fe2a81a79c0629560646763136e15c8a4069d3dc5ba5cb6bc185eaccd
+  languageName: node
+  linkType: hard
+
 "@types/cookie@npm:^0.4.1":
   version: 0.4.1
   resolution: "@types/cookie@npm:0.4.1"
@@ -14517,6 +14526,7 @@ __metadata:
   dependencies:
     "@sentry/node": 6.19.3
     "@sentry/tracing": 6.19.3
+    "@types/cookie-parser": ^1.4.2
     "@types/cors": 2.8.12
     "@types/eth-sig-util": 2.1.1
     "@types/ethereumjs-util": 5.2.0
@@ -14547,6 +14557,7 @@ __metadata:
     apollo-server: 3.6.7
     apollo-server-express: 2.25.3
     color-scheme: 1.0.1
+    cookie-parser: ^1.4.6
     cors: 2.8.5
     cross-fetch: 3.1.5
     dotenv: 16.0.0
@@ -21523,6 +21534,16 @@ __metadata:
   dependencies:
     safe-buffer: ~5.1.1
   checksum: 985d974a2d33e1a2543ada51c93e1ba2f73eaed608dc39f229afc78f71dcc4c8b7d7c684aa647e3c6a3a204027444d69e53e169ce94e8d1fa8d7dee80c9c8fed
+  languageName: node
+  linkType: hard
+
+"cookie-parser@npm:^1.4.6":
+  version: 1.4.6
+  resolution: "cookie-parser@npm:1.4.6"
+  dependencies:
+    cookie: 0.4.1
+    cookie-signature: 1.0.6
+  checksum: 1e5a63aa82e8eb4e02d2977c6902983dee87b02e87ec5ec43ac3cb1e72da354003716570cd5190c0ad9e8a454c9d3237f4ad6e2f16d0902205a96a1c72b77ba5
   languageName: node
   linkType: hard
 

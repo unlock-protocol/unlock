@@ -16,7 +16,7 @@ declare global {
 
 export const jwtConfig = {
   tokenSecret: process.env.JWT_TOKEN_SECRET ?? 'access-token-secret',
-  expire: process.env.JWT_EXPIRE ?? 3600,
+  expire: process.env.JWT_EXPIRE ?? '3600',
 }
 
 export function createRefreshToken() {

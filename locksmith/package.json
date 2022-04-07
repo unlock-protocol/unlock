@@ -49,6 +49,7 @@
     "apollo-server": "3.6.7",
     "apollo-server-express": "2.25.3",
     "color-scheme": "1.0.1",
+    "cookie-parser": "^1.4.6",
     "cors": "2.8.5",
     "cross-fetch": "3.1.5",
     "dotenv": "16.0.0",
@@ -90,6 +91,7 @@
     "zod": "3.14.3"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.2",
     "@types/cors": "2.8.12",
     "@types/eth-sig-util": "2.1.1",
     "@types/ethereumjs-util": "5.2.0",
