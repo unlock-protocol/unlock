@@ -1,8 +1,7 @@
 // Sources flattened with hardhat v2.8.0 https://hardhat.org
+// SPDX-License-Identifier: MIT
 
 // File contracts/interfaces/IPublicLock.sol
-
-// SPDX-License-Identifier: MIT
 pragma solidity >=0.5.17 <0.9.0;
 pragma experimental ABIEncoderV2;
 
@@ -2845,7 +2844,7 @@ contract MixinKeys is
     _isKey(_tokenIdTo);
     
     // make sure there is enough time remaining
-    require(keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp > _amount, 'NOT_ENOUGH_TIME');
+    require(keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp >= _amount, 'NOT_ENOUGH_TIME');
 
     // deduct time from parent key
     _timeMachine(_tokenIdFrom, _amount, false);
