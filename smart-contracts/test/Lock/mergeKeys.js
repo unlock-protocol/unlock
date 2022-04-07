@@ -1,6 +1,5 @@
 const BigNumber = require('bignumber.js')
 const { assert } = require('chai')
-const { ethers } = require('hardhat')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
 
