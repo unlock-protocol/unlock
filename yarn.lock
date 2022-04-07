@@ -12744,7 +12744,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:*, @types/express@npm:4.17.13, @types/express@npm:^4.17.12, @types/express@npm:^4.17.13":
+"@types/express@npm:*, @types/express@npm:4.17.13, @types/express@npm:^4.17.12":
   version: 4.17.13
   resolution: "@types/express@npm:4.17.13"
   dependencies:
@@ -12976,7 +12976,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:^8.5.8":
+"@types/jsonwebtoken@npm:8.5.8":
   version: 8.5.8
   resolution: "@types/jsonwebtoken@npm:8.5.8"
   dependencies:
@@ -14520,11 +14520,11 @@ __metadata:
     "@types/cors": 2.8.12
     "@types/eth-sig-util": 2.1.1
     "@types/ethereumjs-util": 5.2.0
-    "@types/express": ^4.17.13
+    "@types/express": 4.17.13
     "@types/express-serve-static-core": 4.17.28
     "@types/isomorphic-fetch": 0.0.36
     "@types/jest": 27.4.1
-    "@types/jsonwebtoken": ^8.5.8
+    "@types/jsonwebtoken": 8.5.8
     "@types/nock": 10.0.3
     "@types/node": 16.11.21
     "@types/node-cron": 3.0.1
@@ -14564,7 +14564,7 @@ __metadata:
     html-template-tag: 4.0.0
     isomorphic-fetch: 3.0.0
     jest: 27.5.1
-    jsonwebtoken: ^8.5.1
+    jsonwebtoken: 8.5.1
     lodash.isequal: 4.5.0
     msw: 0.39.2
     multer: 1.4.4
@@ -34505,7 +34505,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:^8.1.0, jsonwebtoken@npm:^8.5.1":
+"jsonwebtoken@npm:8.5.1, jsonwebtoken@npm:^8.1.0":
   version: 8.5.1
   resolution: "jsonwebtoken@npm:8.5.1"
   dependencies:
