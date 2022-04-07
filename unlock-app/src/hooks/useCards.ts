@@ -3,6 +3,7 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { Card } from '@stripe/stripe-js'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
+import { ToastHelper } from '../components/helpers/toast.helper'
 
 // TODO: cleanup. We don't need a hook but the API calls should be kept
 
@@ -359,7 +360,6 @@ export const useCards = () => {
   const config: Config = useContext(ConfigContext)
   const [cards, setCards] = useState<Card[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error | undefined>(undefined)
 
   /**
    * retrieves cards for an address
@@ -371,7 +371,7 @@ export const useCards = () => {
       const cards = await getCardsForAddress(config, walletService, address)
       setCards(cards)
     } catch (e: any) {
-      setError(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
@@ -389,7 +389,7 @@ export const useCards = () => {
       await getCards(address)
     } catch (e: any) {
       console.error(e)
-      setError(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
@@ -405,9 +405,9 @@ export const useCards = () => {
         setCards([])
       }
     } catch (e: any) {
-      setError(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
-  return { cards, error, loading, saveCard, deleteCard, getCards }
+  return { cards, loading, saveCard, deleteCard, getCards }
 }

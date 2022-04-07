@@ -7,6 +7,7 @@ import expireAndRefundFor from './expireAndRefundFor'
 import cancelAndRefund from './cancelAndRefund'
 import keyManagerOf from './keyManagerOf'
 import getLock from './getLock'
+import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
 
 import v6 from '../v6'
 
@@ -37,4 +38,5 @@ export default {
   cancelAndRefund,
   shareKey,
   keyManagerOf,
+  getCancelAndRefundValueFor,
 }

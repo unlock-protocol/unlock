@@ -3705,6 +3705,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/plugin-transform-runtime@npm:^7.17.0":
+  version: 7.17.0
+  resolution: "@babel/plugin-transform-runtime@npm:7.17.0"
+  dependencies:
+    "@babel/helper-module-imports": ^7.16.7
+    "@babel/helper-plugin-utils": ^7.16.7
+    babel-plugin-polyfill-corejs2: ^0.3.0
+    babel-plugin-polyfill-corejs3: ^0.5.0
+    babel-plugin-polyfill-regenerator: ^0.3.0
+    semver: ^6.3.0
+  peerDependencies:
+    "@babel/core": ^7.0.0-0
+  checksum: 9a469d4389cb265d50f1e83e6b524ceda7abd24a0bd7cda57e54a1e6103ca7c36efc99eebd485cf0a468f048739e21d940126df40b11db34f4692bdd2d5beacd
+  languageName: node
+  linkType: hard
+
 "@babel/plugin-transform-runtime@npm:^7.5.5":
   version: 7.15.0
   resolution: "@babel/plugin-transform-runtime@npm:7.15.0"
@@ -15207,6 +15223,7 @@ __metadata:
     "@babel/cli": 7.17.6
     "@babel/core": 7.17.8
     "@babel/node": 7.16.8
+    "@babel/plugin-transform-runtime": ^7.17.0
     "@babel/preset-env": 7.16.11
     "@typescript-eslint/parser": 5.17.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"

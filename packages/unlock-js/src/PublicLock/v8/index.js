@@ -17,6 +17,7 @@ const {
   getLock,
   purchaseKey,
   purchaseKeys,
+  getCancelAndRefundValueFor,
 } = v7
 
 export default {
@@ -37,4 +38,5 @@ export default {
   cancelAndRefund,
   shareKey,
   keyManagerOf,
+  getCancelAndRefundValueFor,
 }
