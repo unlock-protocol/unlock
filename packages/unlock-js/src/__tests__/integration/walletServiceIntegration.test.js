@@ -430,7 +430,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         })
 
         it('should have assigned the key to the right user', async () => {
-          expect.assertions(2)
+          expect.assertions(4)
           expect(keys[0].owner).toEqual(keyOwners[0])
           const owner = await web3Service.ownerOf(
             keys[0].lock,
