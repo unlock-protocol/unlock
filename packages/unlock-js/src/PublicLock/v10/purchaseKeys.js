@@ -2,7 +2,7 @@ import utils from '../../utils'
 import { ZERO } from '../../constants'
 import { approveTransfer, getErc20Decimals, getAllowance } from '../../erc20'
 
-const getKeyPrice = async (keyPrice, erc20Address, decimals) => {
+const getKeyPrice = async (keyPrice, erc20Address, decimals, provider) => {
   let actualAmount
   if (decimals !== undefined && decimals !== null) {
     // We have have a keyPrice and decinals, we just use them.
@@ -10,7 +10,7 @@ const getKeyPrice = async (keyPrice, erc20Address, decimals) => {
   } else {
     // get the decimals from the ERC20 contract or default to 18
     if (erc20Address && erc20Address !== ZERO) {
-      decimals = await getErc20Decimals(erc20Address, this.provider)
+      decimals = await getErc20Decimals(erc20Address, provider)
     } else {
       decimals = 18
     }
@@ -33,14 +33,14 @@ const getKeyPrice = async (keyPrice, erc20Address, decimals) => {
  */
 export default async function (
   {
-    _owners,
-    _keyManagers,
-    _keyPrices,
-    _referrers,
+    owners: _owners,
+    keyManagers: _keyManagers,
+    keyPrices: _keyPrices,
+    referrers: _referrers,
     lockAddress,
     erc20Address,
     decimals,
-    _data,
+    data: _data,
   },
   callback
 ) {
@@ -51,25 +51,43 @@ export default async function (
     erc20Address = await lockContract.tokenAddress()
   }
 
-  // parse params
+  // owners default to a single key for current signer
   const defaultOwner = await this.signer.getAddress()
-  const owners = _owners.map((owner) =>
-    !owner || owner === ZERO ? defaultOwner : owner
-  )
+  const owners = _owners || [defaultOwner]
+
+  // we parse by default a length corresponding to the owners length
+  const defaultArray = Array(owners.length).fill(null)
+
   const keyPrices = await Promise.all(
-    _keyPrices.map(async (kp) =>
+    (_keyPrices || defaultArray).map(async (kp) =>
       kp
         ? // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
           lockContract.keyPrice()
-        : getKeyPrice(kp, erc20Address, decimals)
+        : getKeyPrice(kp, erc20Address, decimals, this.provider)
     )
   )
-  const keyManagers = _keyManagers.map((km) => km || ZERO)
-  const referrers = _referrers.map((km) => km || ZERO)
-  const data = _data.map((d) => d || [])
+  const keyManagers = (_keyManagers || defaultArray).map((km) => km || ZERO)
+  const referrers = (_referrers || defaultArray).map((km) => km || ZERO)
+  const data = (_data || defaultArray).map((d) => d || [])
+
+  if (
+    !(
+      keyManagers.length === owners.length &&
+      keyPrices.length === owners.length &&
+      referrers.length === owners.length &&
+      data.length === owners.length
+    )
+  ) {
+    throw new Error(
+      'Params mismatch. All purchaseKeys params array should have the same length'
+    )
+  }
 
   // calculate total price for all keys
-  const totalPrice = keyPrices.reduce((total, p) => total + p, 0)
+  const totalPrice = keyPrices.reduce(
+    (total, kp) => total.add(kp),
+    utils.bigNumberify(0)
+  )
 
   // fix ERC20 allowance
   if (erc20Address && erc20Address !== ZERO) {
@@ -79,6 +97,7 @@ export default async function (
       this.provider,
       this.signer
     )
+
     if (!approvedAmount || approvedAmount.lt(totalPrice)) {
       await approveTransfer(
         erc20Address,
@@ -112,13 +131,12 @@ export default async function (
     } else {
       purchaseForOptions.gasPrice = gasPrice
     }
-
     const gasLimit = await lockContract.estimateGas.purchase(
       keyPrices,
       owners,
       referrers,
       keyManagers,
-      _data,
+      data,
       purchaseForOptions
     )
     // Remove the gas prices settings for the actual transaction (the wallet will set them)
@@ -127,7 +145,6 @@ export default async function (
     delete purchaseForOptions.gasPrice
     purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
   }
-
   const transactionPromise = lockContract.purchase(
     keyPrices,
     owners,
@@ -151,17 +168,17 @@ export default async function (
   }
 
   const parser = lockContract.interface
-  const transferEvent = receipt.logs
+  const transferEvents = receipt.logs
     .map((log) => {
       if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
       return parser.parseLog(log)
     })
     .filter((event) => {
       return event && event.name === 'Transfer'
-    })[0]
+    })
 
-  if (transferEvent) {
-    return transferEvent.args.tokenId.toString()
+  if (transferEvents && transferEvents.length) {
+    return transferEvents.map((v) => v.args.tokenId.toString())
   }
   // There was no Transfer log (transaction failed?)
   return null
