@@ -307,7 +307,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         let keyPurchaser
         let lockBalanceBefore
         let userBalanceBefore
-        let transactionHash
+        const transactionHashes = []
 
         beforeAll(async () => {
           keyPurchaser = accounts[0] // This is the default in walletService
@@ -357,25 +357,36 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               if (error) {
                 throw error
               }
-              transactionHash = hash
+              transactionHashes.push(hash)
             }
           )
-
-          keys = await Promise.all(
-            tokenIds.map(async (tokenId) =>
-              web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
+          if (['v10'].indexOf(publicLockVersion) !== -1) {
+            keys = await Promise.all(
+              tokenIds.map(async (tokenId) =>
+                web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
+              )
             )
-          )
+          } else {
+            keys = await Promise.all(
+              keyOwners.map(async (owner) =>
+                web3Service.getKeyByLockForOwner(lockAddress, owner, chainId)
+              )
+            )
+          }
         })
 
-        it('should have yielded a transaction hash', () => {
-          expect.assertions(1)
-          expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+        it('should have yielded two transactions hash', () => {
+          expect.assertions(3)
+          expect(transactionHashes.length).toBe(2)
+          expect(transactionHashes[0]).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          expect(transactionHashes[1]).toMatch(/^0x[0-9a-fA-F]{64}$/)
         })
 
         it('should yield the tokenId', () => {
-          expect.assertions(3)
+          expect.assertions(5)
           expect(tokenIds).not.toBe(null)
+          expect(typeof tokenIds).toBe('object')
+          expect(tokenIds.length).toBe(2)
           expect(tokenIds[0]).not.toBe(null)
           expect(tokenIds[1]).not.toBe(null)
         })
