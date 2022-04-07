@@ -150,7 +150,6 @@ export default class WalletService extends UnlockService {
   /**
    * Purchase a key to a lock by account.
    * The key object is passed so we can keep track of it from the application
-   * TODO: retrieve the keyPrice, erc20Address from chain when applicable
    * - {PropTypes.address} lockAddress
    * - {PropTypes.address} owner
    * - {string} keyPrice
@@ -173,6 +172,33 @@ export default class WalletService extends UnlockService {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
     return version.purchaseKey.bind(this)(params, callback)
+  }
+
+  /**
+   * Purchase several keys to a lock by account.
+   * The key object is passed so we can keep track of it from the application
+   * - {PropTypes.address} lockAddress
+   * - {PropTypes.arrayOf(PropTypes.address)} owners
+   * - {PropTypes.arrayOf(string)} keyPrices
+   * - {PropTypes.arrayOf(string)} data
+   * - {PropTypes.address} erc20Address
+   * - {number} decimals
+   * @param {function} callback : callback invoked with the transaction hash
+   */
+  async purchaseKeys(
+    params: {
+      lockAddress: string
+      owners?: [string]
+      keyPrices?: [string]
+      data?: [string]
+      erc20Address?: string
+      decimals?: number
+    },
+    callback: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.purchaseKeys.bind(this)(params, callback)
   }
 
   /**
