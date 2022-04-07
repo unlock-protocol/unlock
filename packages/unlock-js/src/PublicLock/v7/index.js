@@ -16,6 +16,7 @@ const {
   withdrawFromLock,
   updateKeyPrice,
   purchaseKey,
+  purchaseKeys
 } = v6
 
 export default {
@@ -25,6 +26,7 @@ export default {
   initializeTemplate,
   updateKeyPrice,
   purchaseKey,
+  purchaseKeys,
   getLock,
   grantKey,
   withdrawFromLock,
