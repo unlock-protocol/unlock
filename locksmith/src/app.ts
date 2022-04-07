@@ -6,6 +6,7 @@ import expressWinston from 'express-winston' // TODO: use a single logger!
 import winston from 'winston'
 import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
+import cookieParser from 'cookie-parser'
 import { typeDefs } from './graphql/typeDefinitions'
 import { resolvers } from './graphql/resolvers'
 
@@ -30,6 +31,9 @@ Sentry.init({
 app.use(Sentry.Handlers.requestHandler())
 // TracingHandler creates a trace for every incoming request
 app.use(Sentry.Handlers.tracingHandler())
+
+// Parse cookies
+app.use(cookieParser())
 
 // Request logging
 app.use(
