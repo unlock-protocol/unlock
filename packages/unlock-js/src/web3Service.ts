@@ -159,6 +159,13 @@ export default class Web3Service extends UnlockService {
    * @param {PropTypes.number} tokenId
    */
   async getKeyByTokenId(lockAddress: string, tokenId: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    if ((await lockContract.publicLockVersion) < 11) {
+      throw new Error('Only available for Lock v11+')
+    }
     const expiration = await this.getKeyExpirationByTokenId(
       lockAddress,
       tokenId,
@@ -191,8 +198,8 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
 
-    if ((await lockContract.publicLockVersion) <= 11) {
-      throw new Error('Only availbale for Lock v11+')
+    if ((await lockContract.publicLockVersion) < 11) {
+      throw new Error('Only available for Lock v11+')
     }
 
     try {
@@ -224,11 +231,11 @@ export default class Web3Service extends UnlockService {
     owner: string,
     network: number
   ) {
-    const version = await this.lockContractAbiVersion(
+    const lockContract = await this.getLockContract(
       lockAddress,
       this.providerForNetwork(network)
     )
-    if (version > 10) {
+    if ((await lockContract.publicLockVersion) > 10) {
       throw new Error('Only available until Lock v10')
     }
     const expiration = await this.getKeyExpirationByLockForOwner(
