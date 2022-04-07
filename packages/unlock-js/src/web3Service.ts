@@ -419,6 +419,20 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * Returns id a key is valid or not
+   * @param {*} lockAddress
+   * @param {*} tokenId
+   * @param {*} network
+   */
+  async isValidKey(lockAddress: string, tokenId: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return lockContract.isValidKey(tokenId)
+  }
+
+  /**
    * Returns the Ethers contract 'connected' (should be used with care)
    * @param {*} lockAddress
    * @param {*} network
