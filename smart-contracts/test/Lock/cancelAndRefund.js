@@ -37,12 +37,14 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
   before(async () => {
     lock = locks.SECOND
+
+    await lock.setMaxKeysPerAddress(10)
     const tx = await lock.purchase(
       [],
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      [],
+      keyOwners.map(() => []),
       {
         value: (keyPrice * keyOwners.length).toFixed(),
         from: lockCreator,

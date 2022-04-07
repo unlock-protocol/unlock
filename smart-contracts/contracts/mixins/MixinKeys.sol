@@ -70,7 +70,7 @@ contract MixinKeys is
   // The caller may not currently be the keyManager for ANY keys.
   // These approvals are never reset/revoked automatically, unlike "approved",
   // which is reset on transfer.
-  mapping (address => mapping (address => bool)) private managerToOperatorApproved;
+  mapping (address => mapping (address => bool)) internal managerToOperatorApproved;
 
   // store all keys: tokenId => token
   mapping(uint256 => Key) internal _keys;
@@ -83,7 +83,6 @@ contract MixinKeys is
 
   // Mapping owner address to token count
   mapping(address => uint256) private _balances;
-
   
   /** 
    * Ensure that the caller is the keyManager of the key
@@ -192,6 +191,11 @@ contract MixinKeys is
       'SCHEMA_VERSION_NOT_CORRECT'
     );
 
+    // set default value to 1
+    if(_maxKeysPerAddress == 0) {
+      _maxKeysPerAddress = 1;
+    }
+
     // count the records that are actually migrated
     uint startIndex = 0;
     
@@ -232,11 +236,10 @@ contract MixinKeys is
         delete keyByOwner[keyOwner];
 
         // record new owner
-        _ownedKeyIds[keyOwner][0] = tokenId;
-        _ownedKeysIndex[tokenId] = 0;
-
-        // update ownership
-        _balances[keyOwner] += 1;
+        _createOwnershipRecord(
+          tokenId,
+          keyOwner
+        );
 
         // keep track of updated records
         updatedRecordsCount++;
@@ -363,6 +366,9 @@ contract MixinKeys is
    address _recipient
   ) internal { 
     uint length = balanceOf(_recipient);
+    
+    // make sure address does not have more keys than allowed
+    require(length < _maxKeysPerAddress, 'MAX_KEYS');
 
     // record new owner
     _ownedKeysIndex[_tokenId] = length;
@@ -585,7 +591,6 @@ contract MixinKeys is
   )
     public
   {
-    _onlyIfAlive();
     _onlyKeyManagerOrApproved(_tokenId);
     require(msg.sender != _approved, 'APPROVE_SELF');
 
@@ -678,23 +683,6 @@ contract MixinKeys is
   }
 
   /**
-   * @dev Sets or unsets the approval of a given operator
-   * An operator is allowed to transfer all tokens of the sender on their behalf
-   * @param _to operator address to set the approval
-   * @param _approved representing the status of the approval to be set
-   */
-  function setApprovalForAll(
-    address _to,
-    bool _approved
-  ) public
-  {
-    _onlyIfAlive();
-    require(_to != msg.sender, 'APPROVE_SELF');
-    managerToOperatorApproved[msg.sender][_to] = _approved;
-    emit ApprovalForAll(msg.sender, _to, _approved);
-  }
-
-  /**
    * @dev Function to clear current approval of a given token ID
    * @param _tokenId uint256 ID of the token to be transferred
    */
@@ -728,6 +716,23 @@ contract MixinKeys is
   function setExpirationDuration(uint _newExpirationDuration) external {
      _onlyLockManager();
      expirationDuration = _newExpirationDuration;
+  }
+  
+  /**
+   * Set the maximum number of keys a specific address can use
+   * @param _maxKeys the maximum amount of key a user can own
+   */
+  function setMaxKeysPerAddress(uint _maxKeys) external {
+     _onlyLockManager();
+     require(_maxKeys != 0, 'NULL_VALUE');
+     _maxKeysPerAddress = _maxKeys;
+  }
+
+  /**
+   * @return the maximum number of key allowed for a single address
+   */
+  function maxKeysPerAddress() external view returns (uint) {
+    return _maxKeysPerAddress;
   }
   
   // decrease 1000 to 996 when adding new tokens/owners mappings in v10

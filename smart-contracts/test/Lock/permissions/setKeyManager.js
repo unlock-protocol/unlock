@@ -28,7 +28,7 @@ contract('Permissions / KeyManager', (accounts) => {
       [accounts[1]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
-      [],
+      [[]],
       {
         value: keyPrice.toFixed(),
         from: accounts[1],

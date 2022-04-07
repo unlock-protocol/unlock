@@ -3,6 +3,7 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { Card } from '@stripe/stripe-js'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
+import { ToastHelper } from '../components/helpers/toast.helper'
 
 // TODO: cleanup. We don't need a hook but the API calls should be kept
 
@@ -110,6 +111,76 @@ export const chargeAndSaveCard = async (
     body: JSON.stringify(typedData),
   }
   const response = await fetch(`${config.services.storage.host}/purchase`, opts)
+  return response.json()
+}
+
+/**
+ * @param walletService
+ * @param address
+ */
+export const prepareCharge = async (
+  config: any,
+  walletService: any,
+  address: string,
+  stripeTokenId: string,
+  network: number,
+  lock: string,
+  pricing: any,
+  recipient: string
+) => {
+  const typedData = generateTypedData({
+    'Charge Card': {
+      publicKey: address,
+      stripeTokenId,
+      recipient,
+      pricing,
+      lock,
+      network,
+    },
+  })
+
+  const signature = await getSignature(walletService, typedData, address)
+
+  const opts = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(typedData),
+  }
+  const response = await fetch(
+    `${config.services.storage.host}/purchase/prepare`,
+    opts
+  )
+  return response.json()
+}
+
+export const captureCharge = async (
+  config: any,
+  lock: string,
+  network: number,
+  recipient: string,
+  paymentIntent: string
+) => {
+  const opts = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      lock,
+      network,
+      recipient,
+      paymentIntent,
+    }),
+  }
+  const response = await fetch(
+    `${config.services.storage.host}/purchase/capture`,
+    opts
+  )
   return response.json()
 }
 
@@ -289,7 +360,6 @@ export const useCards = () => {
   const config: Config = useContext(ConfigContext)
   const [cards, setCards] = useState<Card[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error | undefined>(undefined)
 
   /**
    * retrieves cards for an address
@@ -301,7 +371,7 @@ export const useCards = () => {
       const cards = await getCardsForAddress(config, walletService, address)
       setCards(cards)
     } catch (e: any) {
-      setError(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
@@ -319,7 +389,7 @@ export const useCards = () => {
       await getCards(address)
     } catch (e: any) {
       console.error(e)
-      setError(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
@@ -335,9 +405,9 @@ export const useCards = () => {
         setCards([])
       }
     } catch (e: any) {
-      setError(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
-  return { cards, error, loading, saveCard, deleteCard, getCards }
+  return { cards, loading, saveCard, deleteCard, getCards }
 }

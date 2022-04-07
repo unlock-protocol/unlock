@@ -127,6 +127,10 @@ describe('PublicLock upgrades', () => {
 
       // make sure ownership is preserved
       assert.equal(await lock.ownerOf(tokenIds[0]), buyers[0].address)
+
+      // set many keys
+      const [, lockOwner] = await ethers.getSigners()
+      await lock.connect(lockOwner).setMaxKeysPerAddress(10)
     })
 
     it('upgraded successfully ', async () => {
@@ -141,7 +145,7 @@ describe('PublicLock upgrades', () => {
             buyers.map((k) => k.address),
             buyers.map(() => web3.utils.padLeft(0, 40)),
             buyers.map(() => web3.utils.padLeft(0, 40)),
-            [],
+            buyers.map(() => []),
             {
               value: (keyPrice * buyers.length).toFixed(),
             }
@@ -227,7 +231,7 @@ describe('PublicLock upgrades', () => {
           buyers.map((k) => k.address),
           buyers.map(() => web3.utils.padLeft(0, 40)),
           buyers.map(() => web3.utils.padLeft(0, 40)),
-          [],
+          buyers.map(() => []),
           {
             value: (keyPrice * buyers.length).toFixed(),
           }

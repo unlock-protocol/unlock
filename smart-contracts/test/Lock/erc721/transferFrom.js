@@ -28,7 +28,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       keyOwners,
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
       keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      [],
+      keyOwners.map(() => []),
       {
         value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
         from,
@@ -156,6 +156,53 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       })
     })
 
+    describe('when the sender is a key manager', async () => {
+      let keyManager
+      beforeEach(async () => {
+        keyManager = accounts[8]
+        await locks.FIRST.setKeyManagerOf(tokenIds[0], keyManager, {
+          from: keyOwners[0],
+        })
+      })
+      it('should reset the key manager', async () => {
+        await locks.FIRST.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
+          from: keyManager,
+        })
+        assert.equal(
+          await locks.FIRST.keyManagerOf(tokenIds[0]),
+          constants.ZERO_ADDRESS
+        )
+      })
+    })
+
+    describe('when the sender is approved', async () => {
+      let approved
+      beforeEach(async () => {
+        approved = accounts[8]
+        await locks.FIRST.setApprovalForAll(approved, true, {
+          from: keyOwners[0],
+        })
+        assert.equal(
+          await locks.FIRST.isApprovedForAll(keyOwners[0], approved),
+          true
+        )
+      })
+      it('should allow the transfer', async () => {
+        await locks.FIRST.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
+          from: approved,
+        })
+        assert.equal(
+          await locks.FIRST.isApprovedForAll(keyOwners[0], approved),
+          true
+        )
+        await reverts(
+          locks.FIRST.transferFrom(accounts[9], approved, tokenIds[0], {
+            from: approved,
+          })
+        )
+      })
+    })
+
     describe('when the lock is sold out', () => {
       it('should still allow the transfer of keys', async () => {
         // first we create a lock with only 1 key
@@ -164,7 +211,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
           [keyOwners[0]],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             value: web3.utils.toWei('0.01', 'ether'),
             from,
@@ -181,7 +228,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
             [accounts[8]],
             [web3.utils.padLeft(0, 40)],
             [web3.utils.padLeft(0, 40)],
-            [],
+            [[]],
             {
               value: web3.utils.toWei('0.01', 'ether'),
               from: accounts[8],
@@ -212,18 +259,6 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         )
       })
     })
-
-    describe('when the lock is disabled', () => {
-      it('should revert', async () => {
-        await locks.FIRST.disableLock()
-        await reverts(
-          locks.FIRST.transferFrom(keyOwners[0], accounts[7], tokenIds[0], {
-            from: keyOwners[0],
-          }),
-          'LOCK_DEPRECATED'
-        )
-      })
-    })
   })
 
   it('can transfer a FREE key', async () => {
@@ -232,7 +267,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       [accounts[1]],
       [web3.utils.padLeft(0, 40)],
       [web3.utils.padLeft(0, 40)],
-      [],
+      [[]],
       {
         from: accounts[1],
       }

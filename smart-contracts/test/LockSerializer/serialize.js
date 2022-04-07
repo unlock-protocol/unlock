@@ -54,7 +54,7 @@ contract('LockSerializer', () => {
           [purchaser.address],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           { value: keyPrice }
         )
       await tx.wait()
@@ -95,7 +95,7 @@ contract('LockSerializer', () => {
           purchasers.map((p) => p.address),
           purchasers.map(() => web3.utils.padLeft(0, 40)),
           purchasers.map(() => web3.utils.padLeft(0, 40)),
-          [],
+          purchasers.map(() => []),
           { value: keyPrice.mul(purchasers.length) }
         )
       })

@@ -5,7 +5,9 @@ const APP_NAME = '@unlock-app'
 export function useAppStorage() {
   const isObject = useCallback((value: any) => typeof value === 'object', [])
 
-  const getKey = useCallback((key: string) => `${APP_NAME}.${key}`, [])
+  const getKey = useCallback((key: string, withAppName = true) => {
+    return withAppName ? `${APP_NAME}.${key}` : key
+  }, [])
 
   const setStorage = useCallback((key: string, value: any) => {
     localStorage.setItem(
@@ -14,8 +16,8 @@ export function useAppStorage() {
     )
   }, [])
 
-  const removeKey = useCallback((key: string) => {
-    localStorage.removeItem(key)
+  const removeKey = useCallback((key: string, withAppName = true) => {
+    localStorage.removeItem(getKey(key, withAppName))
   }, [])
 
   const getStorage = useCallback((key: string): string | null => {
@@ -28,7 +30,7 @@ export function useAppStorage() {
     const items = { ...localStorage } ?? []
     Object.keys(items)
       .filter((item: string) => item.includes(APP_NAME))
-      .forEach(removeKey)
+      .forEach((key: string) => removeKey(key, false))
   }, [])
 
   return {

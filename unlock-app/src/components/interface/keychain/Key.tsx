@@ -6,6 +6,7 @@ import {
   Fallback as AvatarFallback,
 } from '@radix-ui/react-avatar'
 import { MdExplore as ExploreIcon } from 'react-icons/md'
+import { BsTrashFill as CancelIcon } from 'react-icons/bs'
 import styled from 'styled-components'
 import {
   FaWallet as WalletIcon,
@@ -13,7 +14,7 @@ import {
   FaCheckCircle as CheckIcon,
 } from 'react-icons/fa'
 import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
-import { Badge } from '@unlock-protocol/ui'
+import { Badge, Tooltip } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
@@ -25,6 +26,7 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { MAX_UINT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
+import { CancelAndRefundModal } from './CancelAndRefundModal'
 
 interface KeyBoxProps {
   tokenURI: string
@@ -32,6 +34,8 @@ interface KeyBoxProps {
   expiration: string
   keyId: string
   network: number
+  isKeyExpired: boolean
+  expirationStatus: string
 }
 
 const KeyBox = ({
@@ -40,9 +44,11 @@ const KeyBox = ({
   expiration,
   keyId,
   network,
+  isKeyExpired,
+  expirationStatus,
 }: KeyBoxProps) => {
   const metadata = useMetadata(tokenURI)
-  const expirationDate = expirationAsDate(expiration)
+
   const [isCopied, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
   })
@@ -64,7 +70,7 @@ const KeyBox = ({
         <div>
           <h3 className="font-medium">{lock.name}</h3>
           <div>
-            {expirationDate.toLowerCase() === 'expired' ? (
+            {isKeyExpired ? (
               <Badge
                 variant="red"
                 size="tiny"
@@ -113,7 +119,7 @@ const KeyBox = ({
           <>
             <p className="flex items-center gap-2 text-sm">
               <span className="text-gray-400">Valid:</span>
-              <span className="font-medium">{expirationDate}</span>
+              <span className="font-medium">{expirationStatus}</span>
             </p>
           </>
         )}
@@ -134,10 +140,14 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const wedlockService = useContext(WedlockServiceContext)
   const { watchAsset } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
+  const expirationStatus = expirationAsDate(expiration)
+  const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
 
   const [error, setError] = useState<string | null>(null)
   const [showingQR, setShowingQR] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
+  const [showCancelModal, setShowCancelModal] = useState(false)
+
   const handleSignature = async () => {
     setError('')
     const payload = JSON.stringify({
@@ -184,6 +194,15 @@ const Key = ({ ownedKey, account, network }: Props) => {
       )
     }
   }
+
+  const onCancelAndRefund = () => {
+    setShowCancelModal(true)
+  }
+
+  const closeCancelAndRefund = () => {
+    setShowCancelModal(false)
+  }
+
   const iconButtonClass =
     'flex items-center disabled:opacity-50 disabled:border-gray-200 disabled:cursor-not-allowed p-2 border border-gray-100 rounded shadow opacity-90 hover:opacity-100 hover:border-gray-200'
   const sendEmail = (recipient: string, qrImage: string) => {
@@ -204,9 +223,18 @@ const Key = ({ ownedKey, account, network }: Props) => {
   }
 
   const isAvailableOnOpenSea = [1, 4, 137].indexOf(network) > -1
+  const baseCurrencySymbol =
+    walletService.networks[network].baseCurrencySymbol ?? ''
 
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
+      <CancelAndRefundModal
+        active={showCancelModal}
+        lock={lock}
+        dismiss={closeCancelAndRefund}
+        account={account}
+        currency={baseCurrencySymbol}
+      />
       {signature && (
         <QRModal
           active={showingQR}
@@ -221,50 +249,69 @@ const Key = ({ ownedKey, account, network }: Props) => {
         expiration={expiration}
         tokenURI={tokenURI}
         keyId={keyId}
+        isKeyExpired={isKeyExpired}
+        expirationStatus={expirationStatus}
       />
       {error && <Error>{error}</Error>}
       <div className="grid gap-2 pt-4">
         <div className="flex items-center gap-2">
-          <button
-            aria-label="QRCode"
-            className={iconButtonClass}
-            type="button"
-            onClick={handleSignature}
-          >
-            <QrCodeIcon />
-          </button>
-          <button
-            aria-label="Add To Wallet"
-            className={iconButtonClass}
-            type="button"
-            onClick={addToWallet}
-          >
-            <WalletIcon />
-          </button>
-          <button
-            aria-label="Open on OpenSea"
-            className={iconButtonClass}
-            type="button"
-            onClick={exploreLock}
-          >
-            <ExploreIcon />
-          </button>
-          <button
-            aria-label="Open on OpenSea"
-            className={iconButtonClass}
-            type="button"
-            disabled={!isAvailableOnOpenSea}
-            onClick={viewOnOpenSea}
-          >
-            <OpenSeaIcon />
-          </button>
+          {!isKeyExpired && (
+            <Tooltip label="Scan QR code" tip="Scan QR code">
+              <button
+                className={iconButtonClass}
+                type="button"
+                onClick={handleSignature}
+              >
+                <QrCodeIcon />
+              </button>
+            </Tooltip>
+          )}
+          <Tooltip label="Add to Wallet" tip="Add to Wallet">
+            <button
+              className={iconButtonClass}
+              type="button"
+              onClick={addToWallet}
+            >
+              <WalletIcon />
+            </button>
+          </Tooltip>
+          <Tooltip label="Explore lock" tip="Explore lock">
+            <button
+              className={iconButtonClass}
+              type="button"
+              onClick={exploreLock}
+            >
+              <ExploreIcon />
+            </button>
+          </Tooltip>
+          <Tooltip label="Open on Opensea" tip="Open on Opensea">
+            <button
+              className={iconButtonClass}
+              type="button"
+              disabled={!isAvailableOnOpenSea}
+              onClick={viewOnOpenSea}
+            >
+              <OpenSeaIcon />
+            </button>
+          </Tooltip>
+          {!isKeyExpired && (
+            <Tooltip label="Cancel and Refund" tip="Cancel and Refund">
+              <button
+                aria-label="Cancel and Refund"
+                className={iconButtonClass}
+                type="button"
+                onClick={onCancelAndRefund}
+              >
+                <CancelIcon />
+              </button>
+            </Tooltip>
+          )}
         </div>
       </div>
     </div>
   )
 }
 export default Key
-
 const Error = styled.p`
   color: var(--red);
 `

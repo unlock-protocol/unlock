@@ -22,7 +22,7 @@ contract('Lock / transfer', (accounts) => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, lockOwner)
     lock = locks.OWNED
-
+    await lock.setMaxKeysPerAddress(10)
     const tx = await lock.purchase(
       [],
       [singleKeyOwner, multipleKeyOwner, multipleKeyOwner],
@@ -37,7 +37,7 @@ contract('Lock / transfer', (accounts) => {
         web3.utils.padLeft(0, 40),
       ],
 
-      [],
+      [[], [], []],
       {
         value: (await lock.keyPrice()) * 3,
         from: singleKeyOwner,

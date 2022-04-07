@@ -135,8 +135,12 @@ export default async function (
 
   // Let's now wait for the transaction to go thru to return the token id
   const receipt = await this.provider.waitForTransaction(hash)
-  const parser = lockContract.interface
 
+  if (receipt.status === 0) {
+    throw new Error('Transaction failed')
+  }
+
+  const parser = lockContract.interface
   const transferEvent = receipt.logs
     .map((log) => {
       if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract

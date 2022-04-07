@@ -22,6 +22,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(
       testEventHooks.address,
@@ -39,7 +40,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
         [to],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        dataField,
+        [dataField],
         {
           from,
           value: keyPrice.toFixed(),
@@ -57,7 +58,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
         [to],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        dataField,
+        [dataField],
         {
           from,
           value: keyPrice.toFixed(),
@@ -83,7 +84,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
           [to],
           [constants.ZERO_ADDRESS],
           [constants.ZERO_ADDRESS],
-          dataField,
+          [dataField],
           {
             from,
             value: keyPrice.div(2).toFixed(),
@@ -126,7 +127,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
         [to],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        dataField,
+        [dataField],
         {
           from,
           value: keyPrice.div(2).toFixed(),
@@ -146,7 +147,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
         [to],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        dataField,
+        [dataField],
         {
           from,
           value: '0',
@@ -161,7 +162,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
           [to],
           [constants.ZERO_ADDRESS],
           [constants.ZERO_ADDRESS],
-          dataField,
+          [dataField],
           {
             from,
             value: '42',

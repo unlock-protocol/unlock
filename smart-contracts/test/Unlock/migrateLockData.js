@@ -33,7 +33,7 @@ const purchaseFails = async (lock) => {
       someBuyers.map((k) => k.address),
       someBuyers.map(() => web3.utils.padLeft(0, 40)),
       someBuyers.map(() => web3.utils.padLeft(0, 40)),
-      [],
+      someBuyers.map(() => []),
       {
         value: (keyPrice * someBuyers.length).toFixed(),
       }
@@ -161,7 +161,7 @@ describe('upgradeLock / data migration', () => {
     let totalSupply = 500
 
     before(async () => {
-      const [, generousBuyer] = await ethers.getSigners()
+      const [, lockOwner, generousBuyer] = await ethers.getSigners()
 
       // create 500 random wallets
       keyOwners = await Promise.all(
@@ -170,7 +170,7 @@ describe('upgradeLock / data migration', () => {
           .map(() => ethers.Wallet.createRandom())
       )
 
-      // lets buy some key for each
+      // lets buy some key for each (with v9)
       await Promise.all(
         keyOwners.map((_, i) =>
           lock
@@ -224,6 +224,9 @@ describe('upgradeLock / data migration', () => {
       // make sure upgrade event is correct
       assert.equal(lockAddress, lock.address)
       assert.equal(version, pastVersion + 1)
+
+      // set multiple keys
+      await lock.connect(lockOwner).setMaxKeysPerAddress(10)
     })
 
     describe('features for key are deactivated', () => {
@@ -394,7 +397,7 @@ describe('upgradeLock / data migration', () => {
               someBuyers.map((k) => k.address),
               someBuyers.map(() => web3.utils.padLeft(0, 40)),
               someBuyers.map(() => web3.utils.padLeft(0, 40)),
-              [],
+              someBuyers.map(() => []),
               {
                 value: (keyPrice * someBuyers.length).toFixed(),
               }
