@@ -40,6 +40,7 @@ export class AuthController {
       refreshTokenData.nonce = fields.nonce
 
       const { token: refreshToken } = await refreshTokenData.save()
+
       response
         .cookie('refresh-token', refreshToken, {
           expires: new Date(message.expirationTime!),
@@ -130,8 +131,7 @@ export class AuthController {
     try {
       const refreshToken =
         request.body.refreshToken ||
-        request.headers['refresh-token']?.toString() ||
-        request.cookies['refresh-token']
+        request.headers['refresh-token']?.toString()
 
       if (!refreshToken) {
         return response
