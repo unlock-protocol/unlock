@@ -1,33 +1,34 @@
+import utils from '../../utils'
+
 /**
- * Purchase key function. This implementation requires the following
+ * Merge two keys together, partially or entirely . This implementation requires the following
  * @param {object} params:
  * - {PropTypes.address} lockAddress
  * - {number} tokenIdFrom
  * - {number} tokenIdTo
- * - {number} amount
+ * - {number} amount if null, will take the entire remaining time of the `fromKey`
  * @param {function} callback invoked with the transaction hash
  */
-export default async function ({
-  lockAddress,
-  tokenIdFrom,
-  tokenIdTo,
-  amount,
-  callback,
-}) {
+export default async function (
+  { lockAddress, tokenIdFrom, tokenIdTo, amount },
+  callback
+) {
   const lockContract = await this.getLockContract(lockAddress)
 
   if (!tokenIdFrom) {
-    throw new Error('Missing tokenId')
+    throw new Error('Missing tokenId from')
   }
   if (!tokenIdTo) {
-    throw new Error('Missing tokenId')
+    throw new Error('Missing tokenId to')
   }
 
-  // transfer entire amount if nothing is specified
+  // transfer entire remaining amount if nothing is specified
   if (!amount) {
-    amount = await lockContract.keyExpirationTimestampFor(tokenIdFrom)
+    const blockNumber = await this.provider.getBlockNumber()
+    const { timestamp } = await this.provider.getBlock(blockNumber)
+    const expiration = await lockContract.keyExpirationTimestampFor(tokenIdFrom)
+    amount = utils.bigNumberify(expiration).sub(timestamp)
   }
-
   const transactionPromise = lockContract.mergeKeys(
     tokenIdFrom,
     tokenIdTo,
