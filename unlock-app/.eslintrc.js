@@ -32,7 +32,6 @@ const rulesToIgnore = [
   'react/no-unstable-nested-components',
   'react/jsx-no-useless-fragment',
   'react/jsx-no-constructed-context-values',
-  '@typescript-eslint/no-unused-vars',
 ]
 
 module.exports = {
@@ -43,6 +42,7 @@ module.exports = {
     },
   },
   rules: {
+    '@typescript-eslint/no-unused-vars': ['error'],
     'react/prefer-stateless-function': [2],
     'react/forbid-prop-types': 2,
     'jsx-a11y/anchor-is-valid': [
