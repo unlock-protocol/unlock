@@ -57,10 +57,10 @@ export default async function (
     !owner || owner === ZERO ? defaultOwner : owner
   )
   const keyPrices = await Promise.all(
-    _keyPrices.map((kp) =>
+    _keyPrices.map(async (kp) =>
       kp
         ? // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
-          await lockContract.keyPrice()
+          lockContract.keyPrice()
         : getKeyPrice(kp, erc20Address, decimals)
     )
   )
