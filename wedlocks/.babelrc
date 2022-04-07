@@ -1,4 +1,13 @@
 {
-  "presets": ["@babel/preset-env"],
-  "plugins": ["wildcard"]
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "8.10"
+        }
+      }
+    ]
+  ],
+  "plugins": ["wildcard", "@babel/plugin-transform-runtime"]
 }
