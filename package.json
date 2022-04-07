@@ -13,13 +13,14 @@
     "@typescript-eslint/parser": "5.17.0",
     "babel-eslint": "10.1.0",
     "babel-plugin-polyfill-corejs2": "0.3.1",
-    "eslint": "8.10.0",
-    "prettier": "2.5.1",
     "typescript": "4.6.2"
   },
   "devDependencies": {
+    "eslint": "8.10.0",
+    "eslint-plugin-prettier": "latest",
     "husky": "7.0.4",
-    "lint-staged": "12.3.7"
+    "lint-staged": "12.3.7",
+    "prettier": "2.6.2"
   },
   "workspaces": [
     "packages/**",
@@ -48,7 +49,8 @@
     "release": "yarn build && yarn bump && yarn publish",
     "start": "./scripts/start.sh",
     "nuke": "./scripts/nuke.sh",
-    "lint": "yarn workspaces foreach -p lint"
+    "lint": "yarn workspaces foreach -p lint",
+    "postinstall": "husky install"
   },
   "repository": {
     "type": "git",
@@ -66,5 +68,9 @@
     "url": "https://github.com/unlock-protocol/unlock/issues"
   },
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.0",
+  "lint-staged": {
+    "*.{js}": "eslint --cache --fix",
+    "*.{js,css,md}": "prettier --write"
+  }
 }
