@@ -47,6 +47,7 @@ export const SmallButton = styled.button`
 
   &:disabled {
     opacity: 0.4;
+    cursor: default;
   }
 `
 
