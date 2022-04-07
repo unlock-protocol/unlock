@@ -299,7 +299,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           })
         })
       }
-      /*
+
       describe('purchaseKeys', () => {
         let tokenIds
         let keys
@@ -469,8 +469,6 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           ).toBeLessThan(60)
         })
       })
-
-      /*
       it('should have deployed the right lock name', () => {
         expect.assertions(1)
         expect(lock.name).toEqual(lockParams.name)
