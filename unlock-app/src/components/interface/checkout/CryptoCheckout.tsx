@@ -221,10 +221,11 @@ export const CryptoCheckout = ({
       !hasValidkey) ||
     (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
 
-  const onLoading = useCallback((loading: boolean) => {
+  const onLoading = (loading: boolean) => {
     setLoading(loading)
     loadingCheck.current = true
-  }, [])
+  }
+
   return (
     <>
       <Lock
