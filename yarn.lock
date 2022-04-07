@@ -12582,7 +12582,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookie-parser@npm:^1.4.2":
+"@types/cookie-parser@npm:1.4.2":
   version: 1.4.2
   resolution: "@types/cookie-parser@npm:1.4.2"
   dependencies:
@@ -14526,7 +14526,7 @@ __metadata:
   dependencies:
     "@sentry/node": 6.19.3
     "@sentry/tracing": 6.19.3
-    "@types/cookie-parser": ^1.4.2
+    "@types/cookie-parser": 1.4.2
     "@types/cors": 2.8.12
     "@types/eth-sig-util": 2.1.1
     "@types/ethereumjs-util": 5.2.0
@@ -14557,7 +14557,7 @@ __metadata:
     apollo-server: 3.6.7
     apollo-server-express: 2.25.3
     color-scheme: 1.0.1
-    cookie-parser: ^1.4.6
+    cookie-parser: 1.4.6
     cors: 2.8.5
     cross-fetch: 3.1.5
     dotenv: 16.0.0
@@ -21537,7 +21537,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie-parser@npm:^1.4.6":
+"cookie-parser@npm:1.4.6":
   version: 1.4.6
   resolution: "cookie-parser@npm:1.4.6"
   dependencies:
