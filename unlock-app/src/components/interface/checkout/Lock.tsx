@@ -19,6 +19,7 @@ interface LockProps {
   hasOptimisticKey: boolean
   purchasePending: boolean
   recipient?: string
+  onLoading?: (state: boolean) => void
 }
 
 const getLockProps = (
@@ -47,6 +48,7 @@ export const Lock = ({
   hasOptimisticKey,
   purchasePending,
   recipient,
+  onLoading,
 }: LockProps) => {
   const config = useContext(ConfigContext)
   const [loading, setLoading] = useState(false)
@@ -61,6 +63,12 @@ export const Lock = ({
     setHasValidKey(isKeyValid)
     setHasKey(key)
   }
+
+  useEffect(() => {
+    if (typeof onLoading === 'function') {
+      onLoading(loading)
+    }
+  }, [loading])
 
   useEffect(() => {
     const getKey = async () => {
@@ -117,4 +125,5 @@ export const Lock = ({
 
 Lock.defaultProps = {
   recipient: '',
+  onLoading: () => undefined,
 }

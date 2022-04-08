@@ -6677,60 +6677,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hapi/b64@npm:5.x.x":
-  version: 5.0.0
-  resolution: "@hapi/b64@npm:5.0.0"
-  dependencies:
-    "@hapi/hoek": 9.x.x
-  checksum: 1e166bc9a6ca2952190ede40089d552efa21554c3325d5174e5616b940f79cd8327520b239ef6725f823f95b9e4684579bc8e99a222b28639b793ae0ef788409
-  languageName: node
-  linkType: hard
-
-"@hapi/boom@npm:9.x.x":
-  version: 9.1.4
-  resolution: "@hapi/boom@npm:9.1.4"
-  dependencies:
-    "@hapi/hoek": 9.x.x
-  checksum: b1cdde1e82fae8222d893ac74e13e9a784f0398ffcb7ece32f6eb69bad990ca62f3c40cca19673e74cc676628ff121ee5576d6b0f1add92dcfa182ff9b90b937
-  languageName: node
-  linkType: hard
-
-"@hapi/bourne@npm:2.x.x":
-  version: 2.0.0
-  resolution: "@hapi/bourne@npm:2.0.0"
-  checksum: 2ea0922101d3fecec43428194c72c5dbe0be908dd7ad07347879dc720820ac410ead79a4c349a2e1726e8af062464160c6d32b6566bbc4c60865923f9d7dd006
-  languageName: node
-  linkType: hard
-
-"@hapi/cryptiles@npm:5.x.x":
-  version: 5.1.0
-  resolution: "@hapi/cryptiles@npm:5.1.0"
-  dependencies:
-    "@hapi/boom": 9.x.x
-  checksum: 3109ad8435d6333b22092e8264e0cc32baafaa10c8c813685ca379c033b5d4123cd503aecdb535fb0c2d39d8e26c494f4c4998d5d040865907b64bf4cb72c705
-  languageName: node
-  linkType: hard
-
-"@hapi/hoek@npm:9.x.x":
-  version: 9.2.1
-  resolution: "@hapi/hoek@npm:9.2.1"
-  checksum: 6a439f672df5f12f1d08d56967b4cb364ce05d81e95e3c3c1b88c5a98b917ca91c70e78cc0b2b4219a760cceec1f22d6658bfc93a83670cecc1ce9ca2247ebd8
-  languageName: node
-  linkType: hard
-
-"@hapi/iron@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "@hapi/iron@npm:6.0.0"
-  dependencies:
-    "@hapi/b64": 5.x.x
-    "@hapi/boom": 9.x.x
-    "@hapi/bourne": 2.x.x
-    "@hapi/cryptiles": 5.x.x
-    "@hapi/hoek": 9.x.x
-  checksum: ef07abc8a55eb8b60ab0c09d797bb13b39d283260ecdabedc1568c64c47d8c15fe517beed4f76a2b69dac57e6c26cd30ac7612169c41adb8f4c77ea3f58d973d
-  languageName: node
-  linkType: hard
-
 "@headlessui/react@npm:1.4.3":
   version: 1.4.3
   resolution: "@headlessui/react@npm:1.4.3"
@@ -12652,7 +12598,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookie@npm:^0.4.0, @types/cookie@npm:^0.4.1":
+"@types/cookie-parser@npm:1.4.2":
+  version: 1.4.2
+  resolution: "@types/cookie-parser@npm:1.4.2"
+  dependencies:
+    "@types/express": "*"
+  checksum: d5b3c0e193cc95289444306ad396b27b92c9ff1ffd0769268b374d09315c8df1ae94de5fe2a81a79c0629560646763136e15c8a4069d3dc5ba5cb6bc185eaccd
+  languageName: node
+  linkType: hard
+
+"@types/cookie@npm:^0.4.1":
   version: 0.4.1
   resolution: "@types/cookie@npm:0.4.1"
   checksum: 3275534ed69a76c68eb1a77d547d75f99fedc80befb75a3d1d03662fb08d697e6f8b1274e12af1a74c6896071b11510631ba891f64d30c78528d0ec45a9c1a18
@@ -12814,7 +12769,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:*, @types/express@npm:4.17.13, @types/express@npm:^4.17.12, @types/express@npm:^4.17.13":
+"@types/express@npm:*, @types/express@npm:4.17.13, @types/express@npm:^4.17.12":
   version: 4.17.13
   resolution: "@types/express@npm:4.17.13"
   dependencies:
@@ -13043,6 +12998,15 @@ __metadata:
   version: 0.0.29
   resolution: "@types/json5@npm:0.0.29"
   checksum: e60b153664572116dfea673c5bda7778dbff150498f44f998e34b5886d8afc47f16799280e4b6e241c0472aef1bc36add771c569c68fc5125fc2ae519a3eb9ac
+  languageName: node
+  linkType: hard
+
+"@types/jsonwebtoken@npm:8.5.8":
+  version: 8.5.8
+  resolution: "@types/jsonwebtoken@npm:8.5.8"
+  dependencies:
+    "@types/node": "*"
+  checksum: 56738a918c543dba30786066959f801212e7fb5cd4ec53cf7b8d227711ed358834feb9e5141f7f88ec7c642bb39757330a5a8917e3b22e0ff9084940d35f0d70
   languageName: node
   linkType: hard
 
@@ -13316,13 +13280,6 @@ __metadata:
   version: 16.11.19
   resolution: "@types/node@npm:16.11.19"
   checksum: a9ba0cd1e61c8ad50f3fc9c2b37b795bf0286dacb39dcc985da90328abf0c5151dffe9932d20bc9a6a52c3ce7bfc1e5a7c2dc1416480fb84f1c2d70e25caeba0
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^16.11.7":
-  version: 16.11.26
-  resolution: "@types/node@npm:16.11.26"
-  checksum: 57757caaba3f0d95de82198cb276a1002c49b710108c932a1d02d7c91ff2fa57cfe2dd19fde60853b6dd90b0964b3cf35557981d2628e20aed6a909057aedfe6
   languageName: node
   linkType: hard
 
@@ -14494,7 +14451,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@0.0.3, @unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
+"@unlock-protocol/contracts@npm:0.0.3":
+  version: 0.0.3
+  resolution: "@unlock-protocol/contracts@npm:0.0.3"
+  checksum: 80988d7c7c8aff5b88c74ec74b3ccae63f2d0f1ded545c688086a61e38e4fe922bacb029c92eee2a92dee6dc0eb193d4649460cf49d0fabf6146106ddf60bb0c
+  languageName: node
+  linkType: hard
+
+"@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
@@ -14585,6 +14549,7 @@ __metadata:
   dependencies:
     "@sentry/node": 6.19.3
     "@sentry/tracing": 6.19.3
+    "@types/cookie-parser": 1.4.2
     "@types/cors": 2.8.12
     "@types/eth-sig-util": 2.1.1
     "@types/ethereumjs-util": 5.2.0
@@ -14592,6 +14557,7 @@ __metadata:
     "@types/express-serve-static-core": 4.17.28
     "@types/isomorphic-fetch": 0.0.36
     "@types/jest": 27.4.1
+    "@types/jsonwebtoken": 8.5.8
     "@types/nock": 10.0.3
     "@types/node": 16.11.21
     "@types/node-cron": 3.0.1
@@ -14614,6 +14580,7 @@ __metadata:
     apollo-server: 3.6.7
     apollo-server-express: 2.25.3
     color-scheme: 1.0.1
+    cookie-parser: 1.4.6
     cors: 2.8.5
     cross-fetch: 3.1.5
     dotenv: 16.0.0
@@ -14629,9 +14596,9 @@ __metadata:
     graphql: 15.8.0
     graphql-tag: 2.12.6
     html-template-tag: 4.0.0
-    iron-session: 6.1.2
     isomorphic-fetch: 3.0.0
     jest: 27.5.1
+    jsonwebtoken: 8.5.1
     lodash.isequal: 4.5.0
     msw: 0.39.2
     multer: 1.4.4
@@ -21594,6 +21561,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie-parser@npm:1.4.6":
+  version: 1.4.6
+  resolution: "cookie-parser@npm:1.4.6"
+  dependencies:
+    cookie: 0.4.1
+    cookie-signature: 1.0.6
+  checksum: 1e5a63aa82e8eb4e02d2977c6902983dee87b02e87ec5ec43ac3cb1e72da354003716570cd5190c0ad9e8a454c9d3237f4ad6e2f16d0902205a96a1c72b77ba5
+  languageName: node
+  linkType: hard
+
 "cookie-signature@npm:1.0.6":
   version: 1.0.6
   resolution: "cookie-signature@npm:1.0.6"
@@ -25668,7 +25645,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:4.0.0":
+"eslint-plugin-prettier@npm:4.0.0, eslint-plugin-prettier@npm:latest":
   version: 4.0.0
   resolution: "eslint-plugin-prettier@npm:4.0.0"
   dependencies:
@@ -31506,27 +31483,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"iron-session@npm:6.1.2":
-  version: 6.1.2
-  resolution: "iron-session@npm:6.1.2"
-  dependencies:
-    "@hapi/iron": ^6.0.0
-    "@types/cookie": ^0.4.0
-    "@types/express": ^4.17.13
-    "@types/node": ^16.11.7
-    cookie: ^0.4.2
-  peerDependencies:
-    express: ">=4"
-    next: ">=10"
-  peerDependenciesMeta:
-    express:
-      optional: true
-    next:
-      optional: true
-  checksum: 5385d43f131fe84107dfcdc1c1425c14afe11459dfabf06dc3427cecb8f7df84e1e283dea64d1894a26f6b795de6ddd6cb88865aab20411722ecb1dca1a20053
-  languageName: node
-  linkType: hard
-
 "is-absolute-url@npm:^2.0.0":
   version: 2.1.0
   resolution: "is-absolute-url@npm:2.1.0"
@@ -34594,7 +34550,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:^8.1.0":
+"jsonwebtoken@npm:8.5.1, jsonwebtoken@npm:^8.1.0":
   version: 8.5.1
   resolution: "jsonwebtoken@npm:8.5.1"
   dependencies:
@@ -41810,6 +41766,15 @@ fsevents@~2.1.1:
   bin:
     prettier: bin-prettier.js
   checksum: 78be1f8a3ddfad7c3d8a854b6c8941a3bb1ddfca4225c38d778e0fe1029a55368f71b3bbefff82c689015fbb4d391ec44add957f01308ad2725e01a7c1f37cb6
+  languageName: node
+  linkType: hard
+
+"prettier@npm:2.6.2":
+  version: 2.6.2
+  resolution: "prettier@npm:2.6.2"
+  bin:
+    prettier: bin-prettier.js
+  checksum: 48d08dde8e9fb1f5bccdd205baa7f192e9fc8bc98f86e1b97d919de804e28c806b0e6cc685e4a88211aa7987fa9668f30baae19580d87ced3ed0f2ec6572106f
   languageName: node
   linkType: hard
 
@@ -49845,9 +49810,10 @@ typescript@^3.8.3:
     babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.3.1
     eslint: 8.10.0
+    eslint-plugin-prettier: latest
     husky: 7.0.4
     lint-staged: 12.3.7
-    prettier: 2.5.1
+    prettier: 2.6.2
     typescript: 4.6.2
   languageName: unknown
   linkType: soft
