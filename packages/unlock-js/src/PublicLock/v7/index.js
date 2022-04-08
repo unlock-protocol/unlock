@@ -6,7 +6,6 @@ import addKeyGranter from './addKeyGranter'
 import expireAndRefundFor from './expireAndRefundFor'
 import cancelAndRefund from './cancelAndRefund'
 import keyManagerOf from './keyManagerOf'
-import getLock from './getLock'
 import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
 
 import v6 from '../v6'
@@ -18,6 +17,7 @@ const {
   updateKeyPrice,
   purchaseKey,
   purchaseKeys,
+  getLock,
 } = v6
 
 export default {

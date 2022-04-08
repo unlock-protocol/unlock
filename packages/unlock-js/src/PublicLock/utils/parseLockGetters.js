@@ -6,36 +6,32 @@ import {
   getErc20TokenSymbol,
 } from '../../erc20'
 
-/**
- * Refresh the lock's data.
- * We use the block version
- * @return Promise<Lock>
- */
+// parser for contract getters
+const attributes = {
+  name: (x) => x,
+  keyPrice: (x) => x,
+  expirationDuration: (value) => {
+    if (utils.isInfiniteDuration(value)) {
+      return -1
+    }
+    return parseInt(value, 10)
+  },
+  maxNumberOfKeys: (value) => {
+    if (utils.isInfiniteKeys(value)) {
+      return UNLIMITED_KEYS_COUNT
+    }
+    return utils.toNumber(value)
+  },
+  maxKeysPerAddress: parseInt,
+  beneficiary: (x) => x,
+  totalSupply: parseInt,
+  tokenAddress: (x) => x,
+  publicLockVersion: parseInt,
+  unlockProtocol: (x) => x,
+}
+
 export default async function (address, provider) {
   const contract = await this.getLockContract(address, provider)
-  const attributes = {
-    name: (x) => x,
-    keyPrice: (x) => x,
-    expirationDuration: (value) => {
-      if (utils.isInfiniteDuration(value)) {
-        return -1
-      }
-      return parseInt(value, 10)
-    },
-    maxNumberOfKeys: (value) => {
-      if (utils.isInfiniteKeys(value)) {
-        return UNLIMITED_KEYS_COUNT
-      }
-      return utils.toNumber(value)
-    },
-    maxKeysPerAddress: (x) => x,
-    beneficiary: (x) => x,
-    totalSupply: parseInt,
-    tokenAddress: (x) => x,
-    publicLockVersion: parseInt,
-    unlockProtocol: (x) => x,
-  }
-
   // Let's load the current block to use to compare versions
   const getBlockNumber = async () => {
     const blockNumber = await provider.getBlockNumber()
@@ -44,10 +40,12 @@ export default async function (address, provider) {
 
   const update = {}
 
-  const constantPromises = Object.keys(attributes).map(async (attribute) => {
-    const result = await contract.functions[`${attribute}()`]()
-    update[attribute] = attributes[attribute](result[0]) // We cast the value
-  })
+  const constantPromises = Object.keys(attributes)
+    .filter((func) => Object.keys(contract).includes(func))
+    .map(async (attribute) => {
+      const result = await contract.functions[`${attribute}()`]()
+      update[attribute] = attributes[attribute](result[0]) // We cast the value
+    })
   constantPromises.push(getBlockNumber())
 
   await Promise.all(constantPromises)
@@ -91,6 +89,5 @@ export default async function (address, provider) {
     update.unlockContractAddress = update.unlockProtocol
     delete update.unlockProtocol
   }
-
   return update
 }
