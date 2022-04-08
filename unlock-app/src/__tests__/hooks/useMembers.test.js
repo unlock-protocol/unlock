@@ -140,6 +140,7 @@ describe('useMembers', () => {
           address: lock.address,
           owner: viewer,
           timestamp: expect.any(Number),
+          owners: ['0x126', '0x252'],
         },
       })
     })
