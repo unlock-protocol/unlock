@@ -44,13 +44,14 @@ BalanceOnLock.propTypes = {
 const LockKeysNumbers = ({ lock, edit }) => (
   <LockKeys className="flex">
     {lock.outstandingKeys !== null &&
-      lock.maxNumberOfKeys !== null &&
-      typeof lock.outstandingKeys !== 'undefined' &&
-      typeof lock.maxNumberOfKeys !== 'undefined'
-      ? `${lock.outstandingKeys}/${lock.unlimitedKeys || lock.maxNumberOfKeys === -1
-        ? INFINITY
-        : lock.maxNumberOfKeys
-      }`
+    lock.maxNumberOfKeys !== null &&
+    typeof lock.outstandingKeys !== 'undefined' &&
+    typeof lock.maxNumberOfKeys !== 'undefined'
+      ? `${lock.outstandingKeys}/${
+          lock.unlimitedKeys || lock.maxNumberOfKeys === -1
+            ? INFINITY
+            : lock.maxNumberOfKeys
+        }`
       : ' - '}
     <InlineButton type="button" onClick={() => edit(lock.address)}>
       <Svg.Edit name="Edit" />

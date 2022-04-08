@@ -152,7 +152,6 @@ export const createLock = async (
     lock.delete = true
     addToLocks(lock)
     addToLocks(newLock)
-
   }, 1000)
 
   return 'lockAddress'
