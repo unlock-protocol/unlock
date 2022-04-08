@@ -4,6 +4,7 @@ import purchaseKey from './purchaseKey'
 import extendKey from './extendKey'
 import mergeKeys from './mergeKeys'
 import shareKey from './shareKey'
+import expireAndRefundFor from './expireAndRefundFor'
 import v9 from '../v9'
 
 const {
@@ -14,7 +15,6 @@ const {
   isLockManager,
   isKeyGranter,
   addKeyGranter,
-  expireAndRefundFor,
   cancelAndRefund,
   getLock,
   keyManagerOf,

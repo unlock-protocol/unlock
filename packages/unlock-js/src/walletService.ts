@@ -256,7 +256,8 @@ export default class WalletService extends UnlockService {
   async expireAndRefundFor(
     params: {
       lockAddress: string
-      keyOwner: string
+      keyOwner: string // deprec from lock v10+
+      tokenId: string // support from lock v10+
       amount?: string
       decimals?: number
       erc20Address?: string

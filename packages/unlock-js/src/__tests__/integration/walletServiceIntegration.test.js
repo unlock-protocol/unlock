@@ -1020,9 +1020,10 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         describe('expireAndRefundFor', () => {
           let keyOwner = '0x2f883401de65129fd1c368fe3cb26d001c4dc583'
           let expiration
+          let tokenId
           beforeAll(async () => {
             // First let's get a user to buy a membership
-            await walletService.purchaseKey({
+            tokenId = await walletService.purchaseKey({
               lockAddress,
               owner: keyOwner,
             })
@@ -1030,11 +1031,13 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
           it('should have set an expiration for this member in the future', async () => {
             expect.assertions(1)
-            const key = await web3Service.getKeyByLockForOwner(
-              lockAddress,
-              keyOwner,
-              chainId
-            )
+            const key = ['v10'].indexOf(publicLockVersion) !== -1
+              ? await web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
+              : await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyOwner,
+                chainId
+              )
             expiration = key.expiration
 
             expect(expiration).toBeGreaterThan(new Date().getTime() / 1000)
@@ -1044,13 +1047,16 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             expect.assertions(1)
             await walletService.expireAndRefundFor({
               lockAddress,
-              keyOwner,
+              keyOwner, // for lock < v10
+              tokenId, // for lock v10+
             })
-            const key = await web3Service.getKeyByLockForOwner(
-              lockAddress,
-              keyOwner,
-              chainId
-            )
+            const key = ['v10'].indexOf(publicLockVersion) !== -1
+              ? await web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
+              : await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyOwner,
+                chainId
+              )
 
             expect(expiration).toBeGreaterThan(key.expiration)
           })
