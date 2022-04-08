@@ -1198,8 +1198,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         describe('maxKeysPerAddress', () => {
           it('should set number of keys per address correctly', async () => {
             expect.assertions(2)
-
-            expect(lock.maxKeysPerAddress.toNumber()).toEqual(100)
+            lock = await web3Service.getLock(lockAddress, chainId)
+            expect(lock.maxKeysPerAddress).toEqual(100)
 
             await walletService.setMaxKeysPerAddress({
               lockAddress,
@@ -1207,7 +1207,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               chainId,
             })
             lock = await web3Service.getLock(lockAddress, chainId)
-            expect(lock.maxKeysPerAddress.toNumber()).toEqual(1000)
+            expect(lock.maxKeysPerAddress).toEqual(1000)
           })
         })
 
