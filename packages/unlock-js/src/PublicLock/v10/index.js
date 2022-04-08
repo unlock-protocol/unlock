@@ -1,10 +1,12 @@
 import abis from '../../abis'
-import purchaseKey from './purchaseKey'
 import purchaseKeys from './purchaseKeys'
-import setMaxNumberOfKeys from './setMaxNumberOfKeys'
-import setExpirationDuration from './setExpirationDuration'
-
-import v8 from '../v8'
+import purchaseKey from './purchaseKey'
+import extendKey from './extendKey'
+import mergeKeys from './mergeKeys'
+import shareKey from './shareKey'
+import setMaxKeysPerAddress from './setMaxKeysPerAddress'
+import expireAndRefundFor from './expireAndRefundFor'
+import v9 from '../v9'
 
 const {
   grantKey,
@@ -14,19 +16,18 @@ const {
   isLockManager,
   isKeyGranter,
   addKeyGranter,
-  expireAndRefundFor,
   cancelAndRefund,
-  shareKey,
   getLock,
   keyManagerOf,
-  getCancelAndRefundValueFor,
-} = v8
+  setMaxNumberOfKeys,
+  setExpirationDuration,
+} = v9
 
 export default {
-  version: 'v9',
-  Unlock: abis.Unlock.v9,
-  PublicLock: abis.PublicLock.v9,
+  version: 'v10',
+  PublicLock: abis.PublicLock.v10,
   grantKey,
+  extendKey,
   updateKeyPrice,
   withdrawFromLock,
   initializeTemplate,
@@ -39,8 +40,9 @@ export default {
   getLock,
   purchaseKey,
   purchaseKeys,
+  mergeKeys,
   keyManagerOf,
   setMaxNumberOfKeys,
   setExpirationDuration,
-  getCancelAndRefundValueFor,
+  setMaxKeysPerAddress,
 }

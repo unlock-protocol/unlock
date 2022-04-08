@@ -124,6 +124,74 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * Returns the key to the lock by the token Id.
+   * @param {PropTypes.string} lockAddress
+   * @param {PropTypes.number} tokenId
+   */
+  async getKeyByTokenId(lockAddress: string, tokenId: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    if ((await lockContract.publicLockVersion) < 11) {
+      throw new Error('Only available for Lock v11+')
+    }
+    const expiration = await this.getKeyExpirationByTokenId(
+      lockAddress,
+      tokenId,
+      network
+    )
+    const owner = await this.ownerOf(lockAddress, tokenId, network)
+    const keyPayload = {
+      tokenId,
+      lock: lockAddress,
+      owner,
+      expiration,
+    }
+    return keyPayload
+  }
+
+  /**
+   * Returns the key expiration to the lock by the account.
+   * @private
+   * @param {PropTypes.string} lockAddress
+   * @param {number} tokenId
+   * @return Promise<>
+   */
+  async getKeyExpirationByTokenId(
+    lockAddress: string,
+    tokenId: string,
+    network: number
+  ) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+
+    if ((await lockContract.publicLockVersion) < 11) {
+      throw new Error('Only available for Lock v11+')
+    }
+
+    try {
+      const expiration = await lockContract.keyExpirationTimestampFor(tokenId)
+      if (
+        expiration ==
+        '3963877391197344453575983046348115674221700746820753546331534351508065746944'
+      ) {
+        // Handling NO_SUCH_KEY
+        // this portion is probably unnecessary, will need to test against the app to be sure
+        return 0
+      }
+      if (expiration.eq(ETHERS_MAX_UINT)) {
+        return -1
+      }
+      return parseInt(expiration, 10)
+    } catch (error) {
+      return 0
+    }
+  }
+
+  /**
    * Returns the key to the lock by the account.
    * @param {PropTypes.string} lockAddress
    * @param {PropTypes.string} owner
@@ -133,6 +201,13 @@ export default class Web3Service extends UnlockService {
     owner: string,
     network: number
   ) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    if ((await lockContract.publicLockVersion) > 10) {
+      throw new Error('Only available until Lock v10')
+    }
     const expiration = await this.getKeyExpirationByLockForOwner(
       lockAddress,
       owner,
@@ -164,6 +239,10 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
+
+    if ((await lockContract.publicLockVersion) > 10) {
+      throw new Error('Only available until Lock v10')
+    }
 
     try {
       const expiration = await lockContract.keyExpirationTimestampFor(owner)
@@ -200,6 +279,10 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
+
+    if ((await lockContract.publicLockVersion) < 11) {
+      throw new Error('Only available until Lock v10')
+    }
 
     try {
       const tokenId = await lockContract.getTokenIdFor(owner)
@@ -310,6 +393,20 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     return lockContract.ownerOf(tokenId)
+  }
+
+  /**
+   * Returns id a key is valid or not
+   * @param {*} lockAddress
+   * @param {*} tokenId
+   * @param {*} network
+   */
+  async isValidKey(lockAddress: string, tokenId: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return lockContract.isValidKey(tokenId)
   }
 
   /**

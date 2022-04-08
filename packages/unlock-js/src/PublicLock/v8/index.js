@@ -16,6 +16,7 @@ const {
   shareKey,
   getLock,
   purchaseKey,
+  purchaseKeys,
   getCancelAndRefundValueFor,
 } = v7
 
@@ -26,6 +27,7 @@ export default {
   initializeTemplate,
   updateKeyPrice,
   purchaseKey,
+  purchaseKeys,
   grantKey,
   getLock,
   withdrawFromLock,

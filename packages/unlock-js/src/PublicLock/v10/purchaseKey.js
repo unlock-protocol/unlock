@@ -97,12 +97,13 @@ export default async function (
     } else {
       purchaseForOptions.gasPrice = gasPrice
     }
+
     const gasLimit = await lockContract.estimateGas.purchase(
-      actualAmount,
-      owner,
-      referrer,
-      keyManager,
-      data,
+      [actualAmount],
+      [owner],
+      [referrer],
+      [keyManager],
+      [data],
       purchaseForOptions
     )
     // Remove the gas prices settings for the actual transaction (the wallet will set them)
@@ -113,11 +114,11 @@ export default async function (
   }
 
   const transactionPromise = lockContract.purchase(
-    actualAmount,
-    owner,
-    referrer,
-    keyManager,
-    data,
+    [actualAmount],
+    [owner],
+    [referrer],
+    [keyManager],
+    [data],
     purchaseForOptions
   )
 

@@ -150,7 +150,6 @@ export default class WalletService extends UnlockService {
   /**
    * Purchase a key to a lock by account.
    * The key object is passed so we can keep track of it from the application
-   * TODO: retrieve the keyPrice, erc20Address from chain when applicable
    * - {PropTypes.address} lockAddress
    * - {PropTypes.address} owner
    * - {string} keyPrice
@@ -173,6 +172,79 @@ export default class WalletService extends UnlockService {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
     return version.purchaseKey.bind(this)(params, callback)
+  }
+
+  /**
+   * Purchase several keys to a lock by account.
+   * The key object is passed so we can keep track of it from the application
+   * - {PropTypes.address} lockAddress
+   * - {PropTypes.arrayOf(PropTypes.address)} owners
+   * - {PropTypes.arrayOf(string)} keyPrices
+   * - {PropTypes.arrayOf(string)} data
+   * - {PropTypes.address} erc20Address
+   * - {number} decimals
+   * @param {function} callback : callback invoked with the transaction hash
+   */
+  async purchaseKeys(
+    params: {
+      lockAddress: string
+      owners?: [string]
+      keyPrices?: [string]
+      data?: [string]
+      erc20Address?: string
+      decimals?: number
+    },
+    callback: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.purchaseKeys.bind(this)(params, callback)
+  }
+
+  /**
+   * Extends an expired key
+   * @param {*} params
+   * @param {*} callback
+   */
+  async extendKey(
+    params: {
+      lockAddress: string
+      tokenId: string
+    },
+    callback: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.cancelAndRefund) {
+      throw new Error('Lock version not supported')
+    }
+    return version.extendKey.bind(this)(params, callback)
+  }
+
+  /**
+   * Purchase key function. This implementation requires the following
+   * @param {object} params:
+   * - {PropTypes.address} lockAddress
+   * - {number} tokenIdFrom
+   * - {number} tokenIdTo
+   * - {number} amount if null, will take the entire remaining time of the from key
+   * @param {function} callback invoked with the transaction hash
+   */
+  async mergeKeys(
+    params: {
+      lockAddress: string
+      tokenIdFrom: string
+      tokenIdTo: string
+      amount?: number
+    },
+    callback: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.mergeKeys) {
+      throw new Error('Lock version not supported')
+    }
+    return version.mergeKeys.bind(this)(params, callback)
   }
 
   /**
@@ -204,7 +276,8 @@ export default class WalletService extends UnlockService {
   async expireAndRefundFor(
     params: {
       lockAddress: string
-      keyOwner: string
+      keyOwner: string // deprec from lock v10+
+      tokenId: string // support from lock v10+
       amount?: string
       decimals?: number
       erc20Address?: string
@@ -243,6 +316,10 @@ export default class WalletService extends UnlockService {
   /**
    * Shares a key by transfering time from key to another key
    * @param {*} params
+   * - {PropTypes.address} lockAddress
+   * - {PropTypes.address } recipient
+   * - {string}: tokenId the token to share time from
+   * - {string}: duration time to share in seconds
    * @param {*} callback
    */
   async shareKey(
@@ -384,6 +461,21 @@ export default class WalletService extends UnlockService {
       throw new Error('Lock version not supported')
     }
     return version.setMaxNumberOfKeys.bind(this)(params, callback)
+  }
+
+  async setMaxKeysPerAddress(
+    params: {
+      lockAddress: string
+      maxKeysPerAddress: string
+    },
+    callback: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setMaxKeysPerAddress) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setMaxKeysPerAddress.bind(this)(params, callback)
   }
 
   async setExpirationDuration(

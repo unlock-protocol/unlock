@@ -1,5 +1,6 @@
 import abis from '../../abis'
 import purchaseKey from './purchaseKey'
+import purchaseKeys from './purchaseKeys'
 import grantKey from './grantKey'
 import updateKeyPrice from './updateKeyPrice'
 import withdrawFromLock from './withdrawFromLock'
@@ -16,6 +17,7 @@ export default {
   initializeTemplate,
   updateKeyPrice,
   purchaseKey,
+  purchaseKeys,
   getLock,
   grantKey,
   withdrawFromLock,
