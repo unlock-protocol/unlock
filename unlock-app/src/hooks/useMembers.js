@@ -10,6 +10,7 @@ import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { GraphServiceContext } from '../utils/withGraphService'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import { ConfigContext } from '../utils/withConfig'
+import { ToastHelper } from '../components/helpers/toast.helper'
 
 /**
  * Helper function to retrieve metadata for a all keys on a lock
@@ -115,8 +116,8 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
   graphService.connect(config.networks[network].subgraphURI)
   const [hasNextPage, setHasNextPage] = useState(false)
   const [members, setMembers] = useState({})
-  const [error, setError] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [isLockManager, setIsLockManager] = useState(false)
 
   const loadMembers = async () => {
     setLoading(true)
@@ -137,12 +138,13 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
 
     const membersForLocksPromise = data.locks.map(async (lockWithKeys) => {
       // If the viewer is not the lock owner, just show the members from chain
-      const isLockManager = await web3Service.isLockManager(
+      const _isLockManager = await web3Service.isLockManager(
         lockWithKeys.address,
         viewer,
         network
       )
-      if (!isLockManager) {
+      setIsLockManager(_isLockManager)
+      if (!_isLockManager) {
         return buildMembersWithMetadata(lockWithKeys, [])
       }
       try {
@@ -156,7 +158,7 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
         )
         return buildMembersWithMetadata(lockWithKeys, storedMetadata)
       } catch (error) {
-        setError(`Could not list members - ${error}`)
+        ToastHelper.error(`Could not list members - ${error}`)
         return []
       }
     })
@@ -186,7 +188,7 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
 
   const list = Object.values(members)
   const columns = generateColumns(list)
-  return { loading, error, list, columns, hasNextPage }
+  return { loading, list, columns, hasNextPage, isLockManager }
 }
 
 export default useMembers
