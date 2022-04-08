@@ -7,7 +7,7 @@ import {
   getErc20Decimals,
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
-import { Lock, LockManager } from './types'
+import { LockManager } from './types'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -58,36 +58,6 @@ export default class Web3Service extends UnlockService {
     const address = utils.sha3(`0x${seed}`).slice(-40)
 
     return utils.toChecksumAddress(`0x${address}`)
-  }
-
-  /**
-   * "Guesses" what the next Lock's address is going to be
-   * After that, we need the lock object because create2 uses a salt which is used to know the address
-   * TODO : ideally this code should be part of ethers... but it looks like it's not there yet.
-   * For now, losely inspired by
-   * https://github.com/HardlyDifficult/hardlydifficult-ethereum-contracts/blob/master/src/utils/create2.js#L29
-   */
-  async generateLockAddress(owner: string, lock: Lock, network: number) {
-    if (!this.networks[network]) {
-      throw new Error(`Missing config for ${network}`)
-    }
-
-    const unlockContact = await this.getUnlockContract(
-      this.networks[network].unlockAddress!,
-      this.providerForNetwork(network)!
-    )
-    if (unlockContact.publicLockAddress) {
-      const templateAddress = await unlockContact.publicLockAddress()
-      // Compute the hash identically to v5 (TODO: extract this?)
-      const lockSalt = utils.sha3(utils.utf8ToHex(lock.name)).substring(2, 26) // 2+24
-      return this._create2Address(
-        this.networks[network].unlockAddress!,
-        templateAddress,
-        owner,
-        lockSalt
-      )
-    }
-    return ethers.constants.AddressZero
   }
 
   /**

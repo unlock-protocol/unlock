@@ -176,7 +176,7 @@ export const CreatorLock = ({
         <LockName>
           {name}
           <LockAddress address={!lock.pending && lock.address} />
-          {lock && (
+          {lock && !lock.pending && (
             <div className="flex items-center gap-2 py-1 text-gray-400">
               <span className="text-xs">v{lock.publicLockVersion}</span>
               <span className="text-xs">{networks[lock.network].name}</span>
