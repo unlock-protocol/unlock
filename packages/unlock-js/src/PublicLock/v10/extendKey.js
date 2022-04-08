@@ -1,43 +1,31 @@
 import { ZERO } from '../../constants'
 import { approveTransfer, getAllowance } from '../../erc20'
 import formatKeyPrice from '../utils/formatKeyPrice'
+
 /**
- * Purchase key function. This implementation requires the following
+ * Extend key. This implementation requires the following
  * @param {object} params:
  * - {PropTypes.address} lockAddress
- * - {PropTypes.address} owner
  * - {string} keyPrice
- * - {PropTypes.address} erc20Address
- * - {number} decimals
+ * - {number} tokenId
  * - {PropTypes.address} referrer (address which will receive UDT - if applicable)
  * - {PropTypes.array[bytes]} data (array of bytes, not used in transaction but can be used by hooks)
+ * - {PropTypes.address} erc20Address
+ * - {number} decimals
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (
-  {
-    lockAddress,
-    owner,
-    keyManager,
-    keyPrice,
-    erc20Address,
-    decimals,
-    referrer,
-    data,
-  },
+  { lockAddress, tokenId, keyPrice, erc20Address, decimals, referrer, data },
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
 
-  if (!owner) {
-    owner = await this.signer.getAddress()
+  if (!tokenId) {
+    throw new Error('Missing tokenId.')
   }
 
   if (!referrer) {
     referrer = ZERO
-  }
-
-  if (!keyManager) {
-    keyManager = ZERO
   }
 
   if (!data) {
@@ -97,11 +85,11 @@ export default async function (
     } else {
       purchaseForOptions.gasPrice = gasPrice
     }
-    const gasLimit = await lockContract.estimateGas.purchase(
+
+    const gasLimit = await lockContract.estimateGas.extend(
       actualAmount,
-      owner,
+      tokenId,
       referrer,
-      keyManager,
       data,
       purchaseForOptions
     )
@@ -112,11 +100,10 @@ export default async function (
     purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
   }
 
-  const transactionPromise = lockContract.purchase(
+  const transactionPromise = lockContract.extend(
     actualAmount,
-    owner,
+    tokenId,
     referrer,
-    keyManager,
     data,
     purchaseForOptions
   )
@@ -126,27 +113,5 @@ export default async function (
   if (callback) {
     callback(null, hash, await transactionPromise)
   }
-
-  // Let's now wait for the transaction to go thru to return the token id
-  const receipt = await this.provider.waitForTransaction(hash)
-
-  if (receipt.status === 0) {
-    throw new Error('Transaction failed')
-  }
-
-  const parser = lockContract.interface
-  const transferEvent = receipt.logs
-    .map((log) => {
-      if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
-      return parser.parseLog(log)
-    })
-    .filter((event) => {
-      return event && event.name === 'Transfer'
-    })[0]
-
-  if (transferEvent) {
-    return transferEvent.args.tokenId.toString()
-  }
-  // There was no Transfer log (transaction failed?)
-  return null
+  await this.provider.waitForTransaction(hash)
 }
