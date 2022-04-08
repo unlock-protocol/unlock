@@ -1,9 +1,8 @@
 import ethJsUtil = require('ethereumjs-util')
 import Sequelize = require('sequelize')
-import * as Normalizer from '../utils/normalizer'
 import { ethers } from 'ethers'
 import networks from '@unlock-protocol/networks'
-
+import * as Normalizer from '../utils/normalizer'
 
 const models = require('../models')
 
