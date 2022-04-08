@@ -295,6 +295,10 @@ export default class WalletService extends UnlockService {
   /**
    * Shares a key by transfering time from key to another key
    * @param {*} params
+   * - {PropTypes.address} lockAddress
+   * - {PropTypes.address } recipient
+   * - {string}: tokenId the token to share time from
+   * - {string}: duration time to share in seconds
    * @param {*} callback
    */
   async shareKey(

@@ -3,6 +3,7 @@ import purchaseKeys from './purchaseKeys'
 import purchaseKey from './purchaseKey'
 import extendKey from './extendKey'
 import mergeKeys from './mergeKeys'
+import shareKey from './shareKey'
 import v9 from '../v9'
 
 const {
@@ -15,7 +16,6 @@ const {
   addKeyGranter,
   expireAndRefundFor,
   cancelAndRefund,
-  shareKey,
   getLock,
   keyManagerOf,
   setMaxNumberOfKeys,
