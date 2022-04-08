@@ -398,7 +398,7 @@ contract MixinKeys is
     _isKey(_tokenIdTo);
     
     // make sure there is enough time remaining
-    require(keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp > _amount, 'NOT_ENOUGH_TIME');
+    require(keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp >= _amount, 'NOT_ENOUGH_TIME');
 
     // deduct time from parent key
     _timeMachine(_tokenIdFrom, _amount, false);
