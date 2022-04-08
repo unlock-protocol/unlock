@@ -132,7 +132,6 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
     )('lock %i: %s', (lockIndex, lockName, lockParams) => {
       let lock
-      let expectedLockAddress
       let lockAddress
       let lockCreationHash
 
@@ -163,12 +162,6 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         // unique Lock name to avoid conflicting addresses
         lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
 
-        expectedLockAddress = await web3Service.generateLockAddress(
-          accounts[0],
-          lockParams,
-          chainId
-        )
-
         if (['v11'].indexOf(unlockVersion) > -1) {
           lockParams.publicLockVersion = parseInt(
             publicLockVersion.replace('v', '')
@@ -192,13 +185,6 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         expect.assertions(1)
         expect(lockCreationHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
       })
-
-      if (['v4', 'v10', 'v11'].indexOf(unlockVersion) === -1) {
-        it('should have deployed a lock at the expected address', async () => {
-          expect.assertions(1)
-          expect(lockAddress).toEqual(expectedLockAddress)
-        })
-      }
 
       it('should have deployed the right lock version', async () => {
         expect.assertions(1)
