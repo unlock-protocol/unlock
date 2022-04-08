@@ -163,6 +163,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
 
         if (['v11'].indexOf(unlockVersion) > -1) {
+          // use createLockAtVersion starting on v10
           lockParams.publicLockVersion = parseInt(
             publicLockVersion.replace('v', '')
           )
@@ -179,6 +180,15 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         )
 
         lock = await web3Service.getLock(lockAddress, chainId)
+
+        // test will fail with default to 1 key per address
+        if (['v10'].indexOf(publicLockVersion) !== -1) {
+          await walletService.setMaxKeysPerAddress({
+            lockAddress,
+            chainId,
+            maxKeysPerAddress: 100,
+          })
+        }
       })
 
       it('should have yielded a transaction hash', () => {
@@ -1161,6 +1171,21 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             expect(
               await web3Service.ownerOf(lockAddress, newTokenId, chainId)
             ).toEqual(recipient)
+          })
+        })
+        describe('maxKeysPerAddress', () => {
+          it('should set number of keys per address correctly', async () => {
+            expect.assertions(2)
+
+            expect(lock.maxKeysPerAddress.toNumber()).toEqual(100)
+
+            await walletService.setMaxKeysPerAddress({
+              lockAddress,
+              maxKeysPerAddress: 1000,
+              chainId,
+            })
+            lock = await web3Service.getLock(lockAddress, chainId)
+            expect(lock.maxKeysPerAddress.toNumber()).toEqual(1000)
           })
         })
       }

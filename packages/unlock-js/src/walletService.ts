@@ -443,6 +443,21 @@ export default class WalletService extends UnlockService {
     return version.setMaxNumberOfKeys.bind(this)(params, callback)
   }
 
+  async setMaxKeysPerAddress(
+    params: {
+      lockAddress: string
+      maxKeysPerAddress: string
+    },
+    callback: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setMaxKeysPerAddress) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setMaxKeysPerAddress.bind(this)(params, callback)
+  }
+
   async setExpirationDuration(
     params: {
       lockAddress: string

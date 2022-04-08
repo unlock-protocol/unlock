@@ -28,6 +28,7 @@ export default async function (address, provider) {
       }
       return utils.toNumber(value)
     },
+    maxKeysPerAddress: (x) => x,
     beneficiary: (x) => x,
     totalSupply: parseInt,
     tokenAddress: (x) => x,

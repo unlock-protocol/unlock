@@ -4,6 +4,7 @@ import purchaseKey from './purchaseKey'
 import extendKey from './extendKey'
 import mergeKeys from './mergeKeys'
 import shareKey from './shareKey'
+import setMaxKeysPerAddress from './setMaxKeysPerAddress'
 import expireAndRefundFor from './expireAndRefundFor'
 import v9 from '../v9'
 
@@ -43,4 +44,5 @@ export default {
   keyManagerOf,
   setMaxNumberOfKeys,
   setExpirationDuration,
+  setMaxKeysPerAddress,
 }
