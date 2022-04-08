@@ -202,6 +202,26 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Extends an expired key
+   * @param {*} params
+   * @param {*} callback
+   */
+  async extendKey(
+    params: {
+      lockAddress: string
+      tokenId: string
+    },
+    callback: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.cancelAndRefund) {
+      throw new Error('Lock version not supported')
+    }
+    return version.extendKey.bind(this)(params, callback)
+  }
+
+  /**
    * Purchase key function. This implementation requires the following
    * @param {object} params:
    * - {PropTypes.address} lockAddress

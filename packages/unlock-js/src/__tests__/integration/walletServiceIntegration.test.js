@@ -1206,6 +1206,63 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             expect(lock.maxKeysPerAddress.toNumber()).toEqual(1000)
           })
         })
+
+        describe('extendKey', () => {
+          let keyOwner
+          let tokenId
+          let transactionHash
+          let key
+
+          beforeAll(async () => {
+            keyOwner = accounts[5]
+
+            tokenId = await walletService.purchaseKey({
+              lockAddress,
+              owners: keyOwner,
+            })
+
+            // expire key
+            await walletService.expireAndRefundFor({
+              lockAddress,
+              keyOwner, // for lock < v10
+              tokenId, // for lock v10+
+            })
+
+            // then extend existing expired key
+            await walletService.extendKey(
+              {
+                lockAddress,
+                tokenId,
+              },
+              (error, hash) => {
+                if (error) {
+                  throw error
+                }
+                transactionHash = hash
+              }
+            )
+
+            key = await web3Service.getKeyByTokenId(
+              lockAddress,
+              tokenId,
+              chainId
+            )
+          })
+
+          it('should have yielded a transaction hash', () => {
+            expect.assertions(1)
+            expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          })
+
+          it('should have renewed the key', async () => {
+            expect.assertions(2)
+            expect(
+              await web3Service.isValidKey(lockAddress, tokenId, chainId)
+            ).toBe(true)
+            const now = Math.floor(new Date().getTime() / 1000)
+            expect(key.expiration).toBeGreaterThan(now)
+          })
+        })
       }
     })
   })
