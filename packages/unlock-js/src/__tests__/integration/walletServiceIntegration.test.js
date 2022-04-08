@@ -246,6 +246,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
                 transactionHash = hash
               }
             )
+            // connect back default signer
+            await walletService.connect(signers[0].provider, signers[0])
           })
 
           it('should have yielded a transaction hash', () => {
