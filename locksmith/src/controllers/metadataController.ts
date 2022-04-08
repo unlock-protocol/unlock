@@ -8,7 +8,6 @@ import Normalizer from '../utils/normalizer'
 import LockData from '../utils/lockData'
 import { expiredSignature } from '../utils/signature'
 import { addMetadata, getMetadata } from '../operations/userMetadataOperations'
-import { KeyHoldersByLock } from '../graphql/datasource/keyholdersByLock'
 import * as lockOperations from '../operations/lockOperations'
 import * as metadataOperations from '../operations/metadataOperations'
 import logger from '../logger'
@@ -223,12 +222,7 @@ namespace MetadataController {
       const lockAddress = Normalizer.ethereumAddress(
         payload.message.LockMetaData.address
       )
-      const keyHolderAddresses =
-        await new KeyHoldersByLock().getKeyHoldingAddresses(
-          lockAddress,
-          payload.message.LockMetaData.page || 0,
-          req.chain
-        )
+      const keyHolderAddresses = payload.message.LockMetaData.owners
       const isAuthorized = await evaluateLockOwnership(
         lockAddress,
         req.signee,

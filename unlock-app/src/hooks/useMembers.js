@@ -29,6 +29,7 @@ export const getAllKeysMetadataForLock = async (
 ) => {
   const payload = generateKeyTypedData({
     LockMetaData: {
+      owners: lock.keys.map((k) => k.owner.address),
       address: lock.address,
       owner: viewer,
       timestamp: Date.now(),
@@ -38,7 +39,6 @@ export const getAllKeysMetadataForLock = async (
   // TODO prevent replays by adding timestamp?
   const message = `I want to access member data for ${lock.address}`
   const signaturePromise = walletService.signMessage(message, 'personal_sign')
-
   toast.promise(signaturePromise, {
     error: 'There was an error in getting signature. Please try again.',
     loading: 'Please sign request to get members.',
@@ -46,6 +46,7 @@ export const getAllKeysMetadataForLock = async (
   })
 
   const signature = await signaturePromise
+
   const response = await storageService.getBulkMetadataFor(
     lock.address,
     signature,
@@ -126,7 +127,7 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
     if (filter === MemberFilters.ALL) {
       expiresAfter = 0
     }
-    const first = 100
+    const first = 30
     const skip = page * first
 
     const { data } = await graphService.keysByLocks(
