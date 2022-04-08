@@ -1160,17 +1160,14 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             ).toEqual(keyOwners[1])
           })
 
-          it('should have expire the first key', async () => {
-            expect.assertions(2)
-            expect(
-              await web3Service.isValidKey(keys[0].lock, tokenIds[0], chainId)
-            ).toEqual(false)
+          it('should have validated the second key', async () => {
+            expect.assertions(1)
             expect(
               await web3Service.isValidKey(keys[1].lock, tokenIds[1], chainId)
             ).toEqual(true)
           })
 
-          it('should have expire add time to the second key', async () => {
+          it('should have add time to the second key', async () => {
             expect.assertions(2)
             const blockNumber = await walletService.provider.getBlockNumber()
             const latestBlock = await walletService.provider.getBlock(
