@@ -223,7 +223,7 @@ export const useAccount = (address: string, network: number) => {
       pricing,
       purchaseAddress
     )
-    return response.transactionHash
+    return response
   }
 
   const claimMembershipFromLock = async (lock: any, network: number) => {
