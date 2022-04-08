@@ -2,6 +2,7 @@ import ethJsUtil = require('ethereumjs-util')
 import Sequelize = require('sequelize')
 import { ethers } from 'ethers'
 import networks from '@unlock-protocol/networks'
+import * as Normalizer from '../utils/normalizer'
 
 const models = require('../models')
 
@@ -73,16 +74,19 @@ export async function getKeyHolderMetadata(
   keyHolders: [string],
   network: number
 ) {
-  return UserTokenMetadata.findAll({
+  const userTokenMetadata = await UserTokenMetadata.findAll({
     attributes: ['userAddress', 'data'],
     where: {
       chain: network,
       tokenAddress: address,
       userAddress: {
-        [Op.in]: keyHolders,
+        [Op.in]: keyHolders.map((address) =>
+          Normalizer.ethereumAddress(address)
+        ),
       },
     },
   })
+  return userTokenMetadata
 }
 
 // get latest lock migration record from DB
