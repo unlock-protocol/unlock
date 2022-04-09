@@ -4,7 +4,7 @@ subTitle: Access NFTs give their holders access to specific communities, experie
 authorName: Iniubong Obonguko
 publishDate: April 11, 2022
 description: Access NFTs give their holders access to specific communities, experiences, and items in the metaverse or in reality.
-image: /images/blog/access-nft/access-nft.png
+image: /images/blog/access-nft/access-nft-header.png
 ---
 
 ![access-nft-header.png](/images/blog/access-nft/access-nft-header.png)
