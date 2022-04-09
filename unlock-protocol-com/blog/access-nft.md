@@ -1,9 +1,9 @@
 ---
 title: What is an Access NFT?
-subTitle: Access NFTs are NFTs that give their holders access to specific communities, experiences, and items both in the metaverse or in reality
+subTitle: Access NFTs give their holders access to specific communities, experiences, and items in the metaverse or in reality
 authorName: Iniubong Obonguko
 publishDate: April 11, 2022
-description: Access NFTs are NFTs that give their holders access to specific communities, experiences, and items both in the metaverse or in reality.
+description: Access NFTs give their holders access to specific communities, experiences, and items in the metaverse or in reality.
 image: /images/blog/access-nft/access-nft.png
 ---
 
@@ -17,7 +17,7 @@ This article will discuss Access NFTs, their use cases, benefits, and highlight 
 
 The value of an NFT can be a function of its utility, which can include the opportunities, perks, or benefits that owning a particular NFT affords. Access NFTs are a quickly growing category in the NFT space.
 
-Access NFTs are NFTs that, as the name implies, give their holders access to specific communities, experiences, and items both in the metaverse or in reality.
+Access NFTs are NFTs that, as the name implies, give their holders access to specific communities, experiences, and items in the metaverse or in reality.
 
 ## What are the use cases for Access NFTs?
 
