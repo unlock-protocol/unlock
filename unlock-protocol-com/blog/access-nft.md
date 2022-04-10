@@ -41,7 +41,7 @@ Let's go over a few projects that integrate with Unlock Protocol to create acces
 
 ### Token-gated access to Discord or Telegram using [Guild.xyz](https://guild.xyz/)
 
-Guild.xyz creates token-gated access into online communities based on Access NFTs.
+Guild.xyz creates [token-gated access](https://unlock-protocol.com/blog/guildxyz-launch) into online communities based on Access NFTs.
 
 Guild is a place for internet communities to come together and form groups to manage these private communities and start working together better. [Guild.xyz](http://guild.xyz/) is a project from [Agora](https://agora.xyz/) which builds essential tools for internet communities.
 
