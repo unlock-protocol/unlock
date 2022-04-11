@@ -55,11 +55,12 @@ export class MetadataController {
 
   async getLockMetadata(request: Request, response: Response) {
     try {
-      const { network, lockAddress } = request.params
-      const networkId = Number(network)
+      const network = Number(request.params.network)
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+
       const lockData = await LockMetadata.findOne({
         where: {
-          chain: networkId,
+          chain: network,
           address: lockAddress,
         },
       })
@@ -78,15 +79,15 @@ export class MetadataController {
 
   async getKeyMetadata(request: Request, response: Response) {
     try {
-      const { network, keyId } = request.params
+      const { keyId } = request.params
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-      const networkId = Number(network)
+      const network = Number(request.params.network)
 
       const includeProtected = await this.#includeProtected({
-        userAddress: request.user?.walletAddress,
-        lockAddress,
         keyId,
-        network: networkId,
+        network,
+        lockAddress,
+        userAddress: request.user?.walletAddress,
       })
 
       const host = `${request.protocol}://${request.headers.host}`
@@ -96,7 +97,7 @@ export class MetadataController {
         keyId,
         includeProtected,
         host,
-        networkId
+        network
       )
 
       if (Object.keys(keyData).length === 0) {
@@ -113,24 +114,24 @@ export class MetadataController {
 
   async getUserMetadata(request: Request, response: Response) {
     try {
-      const { network, keyId } = request.params
+      const { keyId } = request.params
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
       const tokenAddress = `${lockAddress}-${keyId}`
-      const networkId = Number(network)
+      const network = Number(request.params.network)
 
       const includedProtected = await this.#includeProtected({
         keyId,
+        network,
         lockAddress,
         userAddress: request.user?.walletAddress,
-        network: networkId,
       })
 
       const userData = await UserTokenMetadata.findOne({
         where: {
           userAddress,
           tokenAddress,
-          chain: networkId,
+          chain: network,
         },
       })
 
@@ -159,9 +160,8 @@ export class MetadataController {
 
   async updateLockMetadata(request: Request, response: Response) {
     try {
-      const { network, lockAddress } = request.params
-      const address = Normalizer.ethereumAddress(lockAddress)
-      const networkId = Number(network)
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
       const { metadata } = request.body
       const userAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress!
@@ -170,7 +170,7 @@ export class MetadataController {
       const isLockerOwner = await this.web3Service.isLockManager(
         lockAddress,
         userAddress,
-        networkId
+        network
       )
 
       if (!isLockerOwner) {
@@ -182,8 +182,8 @@ export class MetadataController {
       } else {
         const successfulUpdate =
           await metadataOperations.updateDefaultLockMetadata({
-            address,
-            chain: networkId,
+            address: lockAddress,
+            chain: network,
             data: {
               ...metadata,
             },
@@ -204,19 +204,18 @@ export class MetadataController {
 
   async updateKeyMetadata(request: Request, response: Response) {
     try {
-      const { network, lockAddress, keyId } = request.params
-      const address = Normalizer.ethereumAddress(lockAddress)
+      const { keyId } = request.params
+      const { metadata } = request.body
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const userAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress
       )
-
-      const networkId = Number(network)
-      const { metadata } = request.body
+      const network = Number(request.params.network)
 
       const isLockerOwner = await this.web3Service.isLockManager(
-        address,
+        lockAddress,
         userAddress,
-        networkId
+        network
       )
 
       if (!isLockerOwner) {
@@ -233,7 +232,7 @@ export class MetadataController {
         },
         {
           where: {
-            chain: networkId,
+            chain: network,
             address: lockAddress,
             id: keyId,
           },
@@ -257,18 +256,18 @@ export class MetadataController {
 
   async updateUserMetadata(request: Request, response: Response) {
     try {
-      const { network, keyId } = request.params
+      const { keyId } = request.params
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
       const tokenAddress = `${lockAddress}-${keyId}`
-      const networkId = Number(network)
+      const network = Number(request.params.network)
       const { metadata } = request.body
 
       const userData = await UserTokenMetadata.findOne({
         where: {
           userAddress,
           tokenAddress,
-          chain: networkId,
+          chain: network,
         },
       })
 
@@ -276,7 +275,7 @@ export class MetadataController {
       if (!userData) {
         const newUserData = new UserTokenMetadata()
         newUserData.tokenAddress = tokenAddress
-        newUserData.chain = networkId
+        newUserData.chain = network
         newUserData.userAddress = userAddress
         newUserData.data = {
           ...metadata,
@@ -294,13 +293,13 @@ export class MetadataController {
       const isLockerOwner = await this.web3Service.isLockManager(
         lockAddress,
         userAddress,
-        networkId
+        network
       )
 
       const keyOwner = await this.web3Service.ownerOf(
         lockAddress,
         keyId,
-        networkId
+        network
       )
 
       const keyOwnerAddress = Normalizer.ethereumAddress(keyOwner)
@@ -328,7 +327,7 @@ export class MetadataController {
           where: {
             tokenAddress,
             userAddress: userData.userAddress,
-            chain: networkId,
+            chain: network,
           },
           returning: true,
         }

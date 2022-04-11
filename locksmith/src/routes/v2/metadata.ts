@@ -35,8 +35,9 @@ router.get(
   }
 )
 
-router.put('/:network/locks/:lockAddress/users/:keyId', (req, res) =>
-  metadataController.updateUserMetadata(req, res)
+router.put(
+  '/:network/locks/:lockAddress/users/:userAddress/keys/:keyId',
+  (req, res) => metadataController.updateUserMetadata(req, res)
 )
 
 module.exports = router
