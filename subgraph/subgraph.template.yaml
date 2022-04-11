@@ -162,7 +162,7 @@ templates:
           handler: pricingChanged
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: transfer
-        - event: KeyExtended(indexed tokenId,uint256 newTimestamp)
+        - event: KeyExtended(indexed uint256,uint256)
           handler: extendKey
 
 

@@ -6,6 +6,7 @@
   "scripts": {
     "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",
     "codegen": "graph codegen",
+    "graph": "graph",
     "build": "node ./bin/build",
     "deploy": "node ./bin/deploy",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"

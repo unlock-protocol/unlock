@@ -95,18 +95,14 @@ export function pricingChanged(event: PricingChanged): void {
 export function extendKey(event: KeyExtended): void {
   let lockContract = PublicLock.bind(event.address)
 
-  let { tokenId } = event.params
-
   // Get the KeyId
-  let keyID = genKeyID(event.address, tokenId.toString())
+  let keyID = genKeyID(event.address, event.params.tokenId.toString())
 
   // Load the key
   let key = Key.load(keyID)
 
   // Update its expiration
-  key.expiration = lockContract.keyExpirationTimestampFor(
-    BigInt.fromI32(tokenId)
-  )
+  key.expiration = lockContract.keyExpirationTimestampFor(event.params.tokenId)
   key.save()
 }
 

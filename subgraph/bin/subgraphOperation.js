@@ -106,7 +106,7 @@ function process(operation) {
 
   if (operation === 'deploy') {
     const label = argv.label ? `--version-label ${argv.label}` : ''
-    const cmd = `graph ${operation} --node ${config.graphNode} --ipfs ${config.ipfs} ${label} ${config.subgraph}`
+    const cmd = `graph ${operation} --product hosted-service --node ${config.graphNode} --ipfs ${config.ipfs} ${label} ${config.subgraph}`
     executeCommand(cmd)
   } else {
     executeCommand(
