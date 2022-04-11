@@ -116,13 +116,6 @@ describe('ExpireAndRefundModal', () => {
     expect(container).toBeDefined()
   })
 
-  it('should not show error when component renders', () => {
-    expect.assertions(1)
-    const { getByText } = renderWithContexts(modalInactive)
-    const message = getByText('No lock selected')
-    expect(message).not.toBeDefined()
-  })
-
   it('should call dismiss when CancelAndRefund confirmed', () => {
     expect.assertions(3)
     const { getByText } = renderWithContexts(modalActive)
