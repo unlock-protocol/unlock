@@ -82,6 +82,7 @@ export class MetadataController {
       const { keyId } = request.params
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
+      const host = `${request.protocol}://${request.headers.host}`
 
       const includeProtected = await this.#includeProtected({
         keyId,
@@ -89,8 +90,6 @@ export class MetadataController {
         lockAddress,
         userAddress: request.user?.walletAddress,
       })
-
-      const host = `${request.protocol}://${request.headers.host}`
 
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
@@ -211,7 +210,7 @@ export class MetadataController {
         request.user!.walletAddress
       )
       const network = Number(request.params.network)
-
+      const host = `${request.protocol}://${request.headers.host}`
       const isLockerOwner = await this.web3Service.isLockManager(
         lockAddress,
         userAddress,
@@ -224,7 +223,7 @@ export class MetadataController {
           .send('You are not authorized to update this key.')
       }
 
-      const [rows, updatedKeyMetadata] = await KeyMetadata.update(
+      const [rows] = await KeyMetadata.update(
         {
           data: {
             ...metadata,
@@ -245,7 +244,22 @@ export class MetadataController {
         return response.status(500).send('Failed to update the key metadata.')
       }
 
-      return response.status(204).send(updatedKeyMetadata)
+      const includeProtected = await this.#includeProtected({
+        lockAddress,
+        keyId,
+        network,
+        userAddress: request.user?.walletAddress,
+      })
+
+      const keyData = await metadataOperations.generateKeyMetadata(
+        lockAddress,
+        keyId,
+        includeProtected,
+        host,
+        network
+      )
+
+      return response.status(204).send(keyData)
     } catch (error) {
       logger.error(error.message)
       return response
