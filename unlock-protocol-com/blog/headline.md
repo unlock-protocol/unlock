@@ -1,6 +1,6 @@
 ---
-title: Headline is publishing and newsletters built the web3 way
-subTitle: This is what web3 publishing looks like
+title: Headline is publishing and newsletters built the Web3 way
+subTitle: This is what Web3 publishing looks like
 authorName: Christopher Carfi
 publishDate: April 12, 2022
 description: Unlock is happy to announce the launch of Headline, bringing publishing and newsletter subscriptions into the Web3 ecosystem.
@@ -12,7 +12,7 @@ image: /images/blog/headline/headline-header.png
 
 Unlock is happy to announce the launch of Headline, bringing publishing and newsletter subscriptions into the Web3 ecosystem.
 
-Built by Unlock and Raid Guild, Headline utilizes technology from Ceramic, a decentralized data network bringing unlimited data to Web3 applications and Lit Protocol, a distributed network for encryption to set a new standard for subscription newsletters in Web3.
+Built by Unlock and [RaidGuild](https://www.raidguild.org/), Headline utilizes technology from [Ceramic](https://ceramic.network/), a decentralized data network bringing unlimited data to Web3 applications and [Lit Protocol](https://litprotocol.com/), a distributed network for encryption to set a new standard for subscription newsletters in Web3.
 
 "Encrypted data and access control on the open and decentralized web lets creators create world class experiences for their fans, without having to rely on any web2 platform as a middle man. The composability of the open like, like how Lit Protocol and Unlock can work together, are in service of creating more value for creators and their fans," said David Sneider, CEO Lit Protocol
 
@@ -23,3 +23,5 @@ Online publishing platforms have proven time and time again to act with their ow
 With Headline, creators directly share their newsletters with readers who hold those creators' membership NFTs. This approach means creators don't need to rely on a third-party publication platform that forces readers to log into that site to access and subscribe to newsletters. Readers will retain the normal experience of having newsletters arrive in their inboxes, but for creators this represents a sea-change that gives them direct control and ownership over their newsletter membership.
 
 screenshots
+
+
