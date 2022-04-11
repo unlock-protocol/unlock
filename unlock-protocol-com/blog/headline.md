@@ -14,6 +14,9 @@ Unlock is happy to announce the launch of Headline, bringing publishing and news
 
 Built by Unlock and [RaidGuild](https://www.raidguild.org/), Headline utilizes technology from [Ceramic](https://ceramic.network/), a decentralized data network bringing unlimited data to Web3 applications and [Lit Protocol](https://litprotocol.com/), a distributed network for encryption to set a new standard for subscription newsletters in Web3.
 
+![headline-fullpage.png](/images/blog/headline/headline-fullpage.png)
+
+
 "Encrypted data and access control on the open and decentralized web lets creators create world class experiences for their fans, without having to rely on any web2 platform as a middle man. The composability of the open like, like how Lit Protocol and Unlock can work together, are in service of creating more value for creators and their fans," said David Sneider, CEO Lit Protocol
 
 "We believe that the most successful Web3 projects are those building bridges across the ecosystem. Ceramic's open, decentralized data network is a natural fit for Headline, and we're excited to see how creators leverage this composable infrastructure to share their content across a multitude of communities and platforms," said Lauren Feld, Head of Business Development at 3Box Labs.
