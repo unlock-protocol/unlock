@@ -1,6 +1,8 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { Response, Request } from 'express'
+import * as z from 'zod'
+import { Op } from 'sequelize'
 import Normalizer from '../../utils/normalizer'
 import * as metadataOperations from '../../operations/metadataOperations'
 import logger from '../../logger'
@@ -8,6 +10,16 @@ import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
 import { objectWithoutKey } from '../../utils/object'
+
+const UserMetadataBody = z.object({
+  keyId: z.string(),
+  userAddress: z.string(),
+  data: z.any(),
+})
+
+const BulkUserMetadataBody = z.object({
+  users: z.array(UserMetadataBody),
+})
 
 interface IncludeProtectedOptions {
   userAddress?: string
@@ -268,7 +280,7 @@ export class MetadataController {
     }
   }
 
-  async updateUserMetadata(request: Request, response: Response) {
+  async createUserMetadata(request: Request, response: Response) {
     try {
       const { keyId } = request.params
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
@@ -298,13 +310,27 @@ export class MetadataController {
         return response.status(201).send(createdUserMetadata.data)
       }
 
-      if (!request.user?.walletAddress) {
-        return response
-          .status(403)
-          .send('You are not authorized to perform this action.')
-      }
+      return response.status(409).send('User Metadata already exists.')
+    } catch (error) {
+      logger.error(error.message)
+      return response.status(500).send('User metadata could not be added.')
+    }
+  }
 
-      const isLockerOwner = await this.web3Service.isLockManager(
+  async updateUserMetadata(request: Request, response: Response) {
+    try {
+      const { keyId } = request.params
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
+      const loggedUserAddress = Normalizer.ethereumAddress(
+        request.user!.walletAddress
+      )
+      const tokenAddress = `${lockAddress}-${keyId}`
+
+      const network = Number(request.params.network)
+      const { metadata } = request.body
+
+      const isLockOwner = await this.web3Service.isLockManager(
         lockAddress,
         userAddress,
         network
@@ -318,11 +344,9 @@ export class MetadataController {
 
       const keyOwnerAddress = Normalizer.ethereumAddress(keyOwner)
 
-      const isKeyOwner =
-        keyOwnerAddress ===
-        Normalizer.ethereumAddress(request.user.walletAddress)
+      const isKeyOwner = keyOwnerAddress === loggedUserAddress
 
-      if (!(isLockerOwner || isKeyOwner)) {
+      if (!(isLockOwner || isKeyOwner)) {
         return response
           .status(401)
           .send(
@@ -340,7 +364,7 @@ export class MetadataController {
         {
           where: {
             tokenAddress,
-            userAddress: userData.userAddress,
+            userAddress: keyOwnerAddress,
             chain: network,
           },
           returning: true,
@@ -356,6 +380,56 @@ export class MetadataController {
       return response
         .status(500)
         .send('There were some problems in updating the user metadata.')
+    }
+  }
+
+  async createBulkUserMetadata(request: Request, response: Response) {
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
+      const { users } = await BulkUserMetadataBody.parseAsync(request.body)
+      const tokenAddresses = users.map(({ keyId }) => {
+        return `${lockAddress}-${keyId}`
+      })
+
+      const userMetadataResults = await UserTokenMetadata.findAll({
+        where: {
+          tokenAddress: {
+            [Op.in]: tokenAddresses,
+          },
+          chain: network,
+        },
+      })
+
+      if (userMetadataResults.length) {
+        return response
+          .status(401)
+          .send('User metadata already exists for users provided.')
+      }
+
+      const newUsersData = users.map(({ keyId, userAddress, data }) => {
+        const tokenAddress = `${lockAddress}-${keyId}`
+        const newUserData = {
+          userAddress,
+          tokenAddress,
+          chain: network,
+          data: {
+            ...data,
+          },
+        }
+        return newUserData
+      })
+
+      const results = await UserTokenMetadata.bulkCreate(newUsersData)
+
+      return response.status(202).send({
+        results,
+      })
+    } catch (error) {
+      logger.error(error.message)
+      return response
+        .status(500)
+        .send('There were some problems in updating bulk user metadata.')
     }
   }
 }

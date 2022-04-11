@@ -35,8 +35,18 @@ router.get(
   }
 )
 
+router.post(
+  '/:network/locks/:lockAddress/users/:userAddress/keys/:keyId',
+  (req, res) => metadataController.createUserMetadata(req, res)
+)
+
+router.post('/:network/locks/:lockAddress/users', (req, res) =>
+  metadataController.createBulkUserMetadata(req, res)
+)
+
 router.put(
   '/:network/locks/:lockAddress/users/:userAddress/keys/:keyId',
+  authenticatedMiddleware,
   (req, res) => metadataController.updateUserMetadata(req, res)
 )
 
