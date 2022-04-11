@@ -162,8 +162,8 @@ templates:
           handler: pricingChanged
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: transfer
-        - event: RenewKeyPurchase(indexed address,uint256)
-          handler: renewKeyPurchase
+        - event: KeyExtended(indexed tokenId,uint256 newTimestamp)
+          handler: extendKey
 
 
       file: ./src/v10Mappings/mapping.ts
