@@ -79,6 +79,28 @@ task('upgrade:prepare', 'Deploy the implementation of an upgreadable contract')
     })
   })
 
+task('upgrade:import', 'Import a missing impl manifest from a proxy contract')
+  .addParam('contract', 'The contract path')
+  .addParam('proxy', 'The proxy contract address')
+  .setAction(async ({ contract, proxy }, { ethers, run }) => {
+    // first compile latest version
+    await run('compile')
+
+    const { chainId } = await ethers.provider.getNetwork()
+    const networkName = getNetworkName(chainId)
+
+    // eslint-disable-next-line no-console
+    console.log(`Importing implementations from ${contract} on ${networkName}.`)
+
+    // eslint-disable-next-line global-require
+    const prepareUpgrade = require('../scripts/upgrade/import')
+    const contractName = contract.split('/')[1].replace('.sol', '')
+    await prepareUpgrade({
+      proxyAddress: proxy,
+      contractName,
+    })
+  })
+
 /**
  *
  * ex. UDT on mainnet
