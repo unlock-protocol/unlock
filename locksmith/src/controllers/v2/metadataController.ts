@@ -91,36 +91,35 @@ export class MetadataController {
         request.user!.walletAddress!
       )
 
-      const isLockerOwner = await this.web3Service.isLockManager(
+      const isLockOwner = await this.web3Service.isLockManager(
         lockAddress,
         loggedUserAddress,
         network
       )
 
-      if (!isLockerOwner) {
+      if (!isLockOwner) {
         return response
           .status(401)
           .send(
             `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`
           )
-      } else {
-        const [updatedLockMetadata, success] = await LockMetadata.upsert(
-          {
-            address: lockAddress,
-            chain: network,
-            data: {
-              ...metadata,
-            },
+      }
+      const [updatedLockMetadata, success] = await LockMetadata.upsert(
+        {
+          address: lockAddress,
+          chain: network,
+          data: {
+            ...metadata,
           },
-          {
-            returning: true,
-          }
-        )
-        if (success) {
-          return response.status(202).send(updatedLockMetadata.data)
-        } else {
-          return response.status(400).send('update failed')
+        },
+        {
+          returning: true,
         }
+      )
+      if (success) {
+        return response.status(202).send(updatedLockMetadata.data)
+      } else {
+        return response.status(400).send('update failed')
       }
     } catch (error) {
       logger.error(error.message)
@@ -140,13 +139,13 @@ export class MetadataController {
       )
       const network = Number(request.params.network)
       const host = `${request.protocol}://${request.headers.host}`
-      const isLockerOwner = await this.web3Service.isLockManager(
+      const isLockOwner = await this.web3Service.isLockManager(
         lockAddress,
         loggedUserAddress,
         network
       )
 
-      if (!isLockerOwner) {
+      if (!isLockOwner) {
         return response
           .status(401)
           .send('You are not authorized to update this key.')
@@ -172,14 +171,6 @@ export class MetadataController {
       if (!rows) {
         return response.status(500).send('Failed to update the key metadata.')
       }
-
-      const isLockOwner = request.user?.walletAddress
-        ? await this.web3Service.isLockManager(
-            lockAddress,
-            request.user.walletAddress,
-            network
-          )
-        : false
 
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
