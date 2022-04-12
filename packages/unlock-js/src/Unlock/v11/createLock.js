@@ -39,7 +39,7 @@ export default async function (lock, callback) {
     maxNumberOfKeys = ETHERS_MAX_UINT
   }
   if (expirationDuration === -1) {
-    maxNumberOfKeys = ETHERS_MAX_UINT
+    expirationDuration = ETHERS_MAX_UINT
   }
 
   const decimalKeyPrice = await _getKeyPrice(lock, this.provider)
