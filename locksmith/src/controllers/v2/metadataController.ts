@@ -104,7 +104,7 @@ export class MetadataController {
             `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`
           )
       }
-      const [updatedLockMetadata, success] = await LockMetadata.upsert(
+      const [updatedLockMetadata, created] = await LockMetadata.upsert(
         {
           address: lockAddress,
           chain: network,
@@ -116,11 +116,8 @@ export class MetadataController {
           returning: true,
         }
       )
-      if (success) {
-        return response.status(202).send(updatedLockMetadata.data)
-      } else {
-        return response.status(400).send('update failed')
-      }
+      const statusCode = created ? 201 : 204
+      return response.status(statusCode).send(updatedLockMetadata.data)
     } catch (error) {
       logger.error(error.message)
       return response
@@ -151,7 +148,7 @@ export class MetadataController {
           .send('You are not authorized to update this key.')
       }
 
-      const success = await KeyMetadata.upsert({
+      const created = await KeyMetadata.upsert({
         chain: network,
         address: lockAddress,
         id: keyId,
@@ -160,10 +157,6 @@ export class MetadataController {
         },
       })
 
-      if (!success) {
-        return response.status(500).send('Failed to update the key metadata.')
-      }
-
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
         keyId,
@@ -171,8 +164,8 @@ export class MetadataController {
         host,
         network
       )
-
-      return response.status(204).send(keyData)
+      const statusCode = created ? 201 : 204
+      return response.status(statusCode).send(keyData)
     } catch (error) {
       logger.error(error.message)
       return response
