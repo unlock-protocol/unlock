@@ -68,14 +68,6 @@ const modalActive: React.ReactElement<any> = (
     lockAddresses={[aKey.lock.address]}
   />
 )
-const modalInactive: React.ReactElement<any> = (
-  <ExpireAndRefundModal
-    active
-    dismiss={dismiss}
-    lock={undefined}
-    lockAddresses={[aKey.lock.address]}
-  />
-)
 
 const mockWalletService = {
   getCancelAndRefundValueFor: jest.fn(),
