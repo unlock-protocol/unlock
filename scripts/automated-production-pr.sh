@@ -71,7 +71,7 @@ source "${BASH_SOURCE%/*}/production-pull-request-template.sh"
 
 DOY=$(date +%j)
 declare -a REVIEWERS
-REVIEWERS=( julien51 clemsos searchableguy )
+REVIEWERS=( julien51 clemsos searchableguy kalidiagne )
 REVIEWER_INDEX=$(($DOY % ${#REVIEWERS[@]}))
 
 GITHUB_TOKEN=$GITHUB_API_TOKEN ./../hub-linux-amd64-2.11.2/bin/hub pull-request -b production -h $BRANCH --message "$MESSAGE" -r ${REVIEWERS[$REVIEWER_INDEX]}
