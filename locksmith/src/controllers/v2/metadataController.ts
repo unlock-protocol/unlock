@@ -131,7 +131,7 @@ export class MetadataController {
 
   async updateKeyMetadata(request: Request, response: Response) {
     try {
-      const { keyId } = request.params
+      const keyId = request.params.keyId.toLowerCase()
       const { metadata } = request.body
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const loggedUserAddress = Normalizer.ethereumAddress(
@@ -151,24 +151,16 @@ export class MetadataController {
           .send('You are not authorized to update this key.')
       }
 
-      const [rows] = await KeyMetadata.update(
-        {
-          data: {
-            ...metadata,
-          },
+      const success = await KeyMetadata.upsert({
+        chain: network,
+        address: lockAddress,
+        id: keyId,
+        data: {
+          ...metadata,
         },
-        {
-          where: {
-            chain: network,
-            address: lockAddress,
-            id: keyId,
-          },
+      })
 
-          returning: true,
-        }
-      )
-
-      if (!rows) {
+      if (!success) {
         return response.status(500).send('Failed to update the key metadata.')
       }
 
