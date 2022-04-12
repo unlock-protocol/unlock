@@ -1,5 +1,5 @@
 import toast from 'react-hot-toast'
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import ReCAPTCHA from 'react-google-recaptcha'
 
@@ -17,6 +17,7 @@ import { StorageService } from '../../../services/storageService'
 import {
   generateDataForPurchaseHook,
   inClaimDisallowList,
+  lockTickerSymbol,
   userCanAffordKey,
 } from '../../../utils/checkoutLockUtils'
 import Buttons from '../buttons/lock'
@@ -47,6 +48,7 @@ export const CryptoCheckout = ({
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
+  const [loading, setLoading] = useState(false)
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>('')
   const {
     network: walletNetwork,
@@ -70,6 +72,7 @@ export const CryptoCheckout = ({
   const userIsOnWrongNetwork = walletNetwork && walletNetwork !== network
   // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
+  const loadingCheck = useRef(false)
 
   const now = new Date().getTime() / 1000
   const hasValidkey =
@@ -161,19 +164,27 @@ export const CryptoCheckout = ({
             setTransactionPending(hash)
           }
         })
+
         setKeyExpiration(Infinity) // We should actually get the real expiration
         setPurchasePending(false)
         setTransactionPending('')
       } catch (error: any) {
-        console.error(error)
-        if (error?.code === 4001) {
+        if (error.message == 'Transaction failed') {
+          // Transaction was sent but failed!
+          toast.error(
+            'Your purchase transaction failed. Please check a block explorer for more details.'
+          )
+        } else if (error?.code === 4001) {
+          // Transaction was not sent
           toast.error('Please confirm the transaction in your wallet.')
         } else {
+          // Other reason...
           toast.error(
             `This transaction could not be sent as it appears to fail. ${error?.error?.message}`
           )
         }
         setPurchasePending(false)
+        setTransactionPending('')
       }
     }
   }
@@ -204,6 +215,11 @@ export const CryptoCheckout = ({
       !hasValidkey) ||
     (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
 
+  const onLoading = (loading: boolean) => {
+    setLoading(loading)
+    loadingCheck.current = true
+  }
+
   return (
     <>
       <Lock
@@ -217,6 +233,7 @@ export const CryptoCheckout = ({
         onSelected={null}
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
+        onLoading={onLoading}
       />
       {!hasValidKeyOrPendingTx && (
         <>
@@ -226,6 +243,7 @@ export const CryptoCheckout = ({
             checkingRecipient={checkingRecipient}
             setIsAdvanced={setIsAdvanced}
             onRecipientChange={onRecipientChange}
+            loading={loading}
             disabled={(transactionPending?.length ?? 0) > 0 ?? false}
           />
         </>
@@ -246,15 +264,24 @@ export const CryptoCheckout = ({
             onRecipientChange={onRecipientChange}
             customBuyMessage="Buy for a different address"
             disabled={transactionPending?.length > 0 ?? false}
+            loading={loading}
           />
         </>
       )}
       {showCheckoutButtons && (
-        <div style={{ marginBottom: '32px' }}>
+        <div
+          style={{
+            marginBottom: '32px',
+            display:
+              (loading && !isAdvanced) || !loadingCheck.current
+                ? 'none'
+                : 'block',
+          }}
+        >
           <Prompt>Get the membership with:</Prompt>
 
           <CheckoutOptions>
-            <CheckoutButton disabled={cantBuyWithCrypto}>
+            <CheckoutButton disabled={cantBuyWithCrypto || loading}>
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
               {!isUnlockAccount && userIsOnWrongNetwork && (
                 <Warning>
@@ -266,11 +293,15 @@ export const CryptoCheckout = ({
                 </Warning>
               )}
               {!isUnlockAccount && !userIsOnWrongNetwork && !canAfford && (
-                <Warning>Your balance is too low</Warning>
+                <Warning>
+                  Your{' '}
+                  {lockTickerSymbol(lock, networks[network].baseCurrencySymbol)}{' '}
+                  balance is too low
+                </Warning>
               )}
             </CheckoutButton>
 
-            <CheckoutButton disabled={cantPurchaseWithCard}>
+            <CheckoutButton disabled={cantPurchaseWithCard || loading}>
               <Buttons.CreditCard
                 lock={lock}
                 backgroundColor="var(--blue)"

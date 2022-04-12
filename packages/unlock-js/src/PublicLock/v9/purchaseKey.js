@@ -1,7 +1,6 @@
-import utils from '../../utils'
 import { ZERO } from '../../constants'
-import { approveTransfer, getErc20Decimals, getAllowance } from '../../erc20'
-
+import { approveTransfer, getAllowance } from '../../erc20'
+import formatKeyPrice from '../utils/formatKeyPrice'
 /**
  * Purchase key function. This implementation requires the following
  * @param {object} params:
@@ -53,17 +52,13 @@ export default async function (
   if (!keyPrice) {
     // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
     actualAmount = await lockContract.keyPrice()
-  } else if (decimals !== undefined && decimals !== null) {
-    // We have have a keyPrice and decinals, we just use them.
-    actualAmount = utils.toDecimal(keyPrice, decimals)
   } else {
-    // get the decimals from the ERC20 contract or default to 18
-    if (erc20Address && erc20Address !== ZERO) {
-      decimals = await getErc20Decimals(erc20Address, this.provider)
-    } else {
-      decimals = 18
-    }
-    actualAmount = utils.toDecimal(keyPrice, decimals)
+    actualAmount = await formatKeyPrice(
+      keyPrice,
+      erc20Address,
+      decimals,
+      this.provider
+    )
   }
 
   const purchaseForOptions = {}
@@ -102,7 +97,6 @@ export default async function (
     } else {
       purchaseForOptions.gasPrice = gasPrice
     }
-
     const gasLimit = await lockContract.estimateGas.purchase(
       actualAmount,
       owner,
@@ -135,8 +129,12 @@ export default async function (
 
   // Let's now wait for the transaction to go thru to return the token id
   const receipt = await this.provider.waitForTransaction(hash)
-  const parser = lockContract.interface
 
+  if (receipt.status === 0) {
+    throw new Error('Transaction failed')
+  }
+
+  const parser = lockContract.interface
   const transferEvent = receipt.logs
     .map((log) => {
       if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
