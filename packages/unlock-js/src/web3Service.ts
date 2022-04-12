@@ -7,8 +7,6 @@ import {
   getErc20Decimals,
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
-import { Lock } from './types'
-
 
 /**
  * This service reads data from the RPC endpoint.
