@@ -40,7 +40,7 @@ router.post(
   (req, res) => metadataController.createUserMetadata(req, res)
 )
 
-router.post('/:network/locks/:lockAddress/users', (req, res) =>
+router.post('/:network/users', (req, res) =>
   metadataController.createBulkUserMetadata(req, res)
 )
 
