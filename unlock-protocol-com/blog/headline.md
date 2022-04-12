@@ -25,13 +25,28 @@ Online publishing platforms have proven time and time again to act with their ow
 
 With Headline, creators directly share their newsletters with readers who hold those creators' membership NFTs. This approach means creators don't need to rely on a third-party publication platform that forces readers to log into that site to access and subscribe to newsletters. Readers will retain the normal experience of having newsletters arrive in their inboxes, but for creators this represents a sea-change that gives them direct control and ownership over their newsletter membership.
 
+Want to try it out? Head over to [https://viaheadline.xyz](https://viaheadline.xyz).
+
+## More info/community
+
+In the [Unlock Discord #headline channel](https://discord.gg/UQPUgfsqYs).
+
 ## Screenshots of Headline
 
-### one
+### Headline content
 
-### two
+![headline-content.png](/images/blog/headline/headline-content.png)
 
-### three
+
+### Headline article
+
+![headline-article.png](/images/blog/headline/headline-article.png)
+
+
+### Headline memberships
+
+![headline-membershps.png](/images/blog/headline/headline-memberships.png)
+
 
 ## Headline documentation, how-to guides, and FAQs
 
