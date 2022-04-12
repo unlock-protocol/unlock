@@ -1,5 +1,5 @@
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
+import type { Web3Service } from '@unlock-protocol/unlock-js'
+
 import { Response, Request } from 'express'
 import * as z from 'zod'
 import { Op } from 'sequelize'
@@ -30,7 +30,11 @@ interface IsKeyOrLockOwnerOptions {
 }
 
 export class MetadataController {
-  public web3Service = new Web3Service(networks)
+  public web3Service: Web3Service
+
+  constructor({ web3Service }: { web3Service: Web3Service }) {
+    this.web3Service = web3Service
+  }
 
   async #isKeyOrLockOwner({
     userAddress,
