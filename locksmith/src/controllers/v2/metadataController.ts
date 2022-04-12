@@ -291,7 +291,11 @@ export class MetadataController {
         },
       })
 
-      if (!(isLockOwner || (userData && isUserMetadataOwner))) {
+      if (!userData) {
+        return response.status(404).send("User metadata doesn't exist.")
+      }
+
+      if (!(isLockOwner || isUserMetadataOwner)) {
         return response
           .status(401)
           .send('You are not authorized to update user metadata for this key.')
@@ -330,8 +334,8 @@ export class MetadataController {
       const network = Number(request.params.network)
       const { users } = await BulkUserMetadataBody.parseAsync(request.body)
       const tokenAddresses = users.map((user) => {
-        const lockAddress = Normalizer.ethereumAddress(user.lockAddress)
-        return lockAddress
+        const tokenAddress = Normalizer.ethereumAddress(user.lockAddress)
+        return tokenAddress
       })
 
       const userMetadataResults = await UserTokenMetadata.findAll({
