@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/hardhat-plugin",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Hardhat Plugin for Unlock Protocol",
   "author": "Unlock Protocol",
   "license": "MIT",
