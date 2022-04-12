@@ -1,39 +1,9 @@
 import request from 'supertest'
-import { ethers } from 'ethers'
-import { SiweMessage, generateNonce } from 'siwe'
+import { getWalletInput, sleep } from '../../test-helpers/utils'
 
 const app = require('../../../src/app')
 
 jest.setTimeout(10000)
-
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-async function getInput() {
-  const wallet = ethers.Wallet.createRandom()
-  const walletAddress = await wallet.getAddress()
-  const nonce = generateNonce()
-  const message = new SiweMessage({
-    domain: 'locksmith.com',
-    nonce,
-    chainId: 4,
-    uri: 'https://locksmith.unlock-protocol.com',
-    version: '1',
-    statement: 'Authorize',
-    address: walletAddress,
-  })
-
-  const signedMessage = await wallet.signMessage(message.prepareMessage())
-
-  return {
-    signedMessage,
-    message,
-    wallet,
-    walletAddress,
-    nonce,
-  }
-}
 
 describe('Auth login endpoints for locksmith', () => {
   it('Nonce are unique on each request', async () => {
@@ -47,19 +17,18 @@ describe('Auth login endpoints for locksmith', () => {
 
   it('Login returns tokens and walletAddress using siwe signed message and signature', async () => {
     expect.assertions(2)
-    const { walletAddress, message, signedMessage } = await getInput()
+    const { walletAddress, message, signedMessage } = await getWalletInput()
     const loginResponse = await request(app).post('/v2/auth/login').send({
       signature: signedMessage,
       message: message.prepareMessage(),
     })
-
     expect(loginResponse.body.walletAddress).toBe(walletAddress)
     expect(loginResponse.status).toBe(200)
   })
 
   it('User endpoint returns user if provided valid token', async () => {
     expect.assertions(4)
-    const { walletAddress, message, signedMessage } = await getInput()
+    const { walletAddress, message, signedMessage } = await getWalletInput()
     const loginResponse = await request(app).post('/v2/auth/login').send({
       signature: signedMessage,
       message: message.prepareMessage(),
@@ -87,7 +56,7 @@ describe('Auth login endpoints for locksmith', () => {
 
   it('Refresh token can be used to get new access token', async () => {
     expect.assertions(2)
-    const { message, signedMessage } = await getInput()
+    const { message, signedMessage } = await getWalletInput()
     const loginResponse = await request(app).post('/v2/auth/login').send({
       signature: signedMessage,
       message: message.prepareMessage(),
@@ -108,7 +77,7 @@ describe('Auth login endpoints for locksmith', () => {
 
   it('Same nonce or message is rejected on login if already logged in once', async () => {
     expect.assertions(2)
-    const { message, signedMessage } = await getInput()
+    const { message, signedMessage } = await getWalletInput()
     const loginResponse = await request(app).post('/v2/auth/login').send({
       signature: signedMessage,
       message: message.prepareMessage(),
@@ -125,7 +94,7 @@ describe('Auth login endpoints for locksmith', () => {
 
   it('Revoke refresh token', async () => {
     expect.assertions(3)
-    const { message, signedMessage } = await getInput()
+    const { message, signedMessage } = await getWalletInput()
     const loginResponse = await request(app).post('/v2/auth/login').send({
       signature: signedMessage,
       message: message.prepareMessage(),

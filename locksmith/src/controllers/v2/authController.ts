@@ -75,9 +75,9 @@ export class AuthController {
   async token(request: Request, response: Response) {
     try {
       const refreshToken =
-        request.cookies['refresh-token'] ||
         request.body.refreshToken ||
-        request.headers['refresh-token']?.toString()
+        request.headers['refresh-token']?.toString() ||
+        request.cookies['refresh-token']
 
       if (!refreshToken) {
         return response

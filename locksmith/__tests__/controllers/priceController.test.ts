@@ -2,7 +2,8 @@ import request from 'supertest'
 
 const app = require('../../src/app')
 
-const mockWeb3Service = {
+// eslint-disable-next-line
+var mockWeb3Service = {
   getLock: jest.fn(() =>
     Promise.resolve({
       keyPrice: 100,

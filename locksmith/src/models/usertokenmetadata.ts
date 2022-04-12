@@ -1,7 +1,6 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript'
 
 @Table({ tableName: 'UserTokenMetadata', timestamps: true })
-// eslint-disable-next-line import/prefer-default-export
 export class UserTokenMetadata extends Model<UserTokenMetadata> {
   @Column({ unique: 'token_user_address_unique_constraint' })
   tokenAddress!: string
