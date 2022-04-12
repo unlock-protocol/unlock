@@ -9,6 +9,7 @@ interface CheckoutCustomRecipientProps {
   onRecipientChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   customBuyMessage?: string
   disabled?: boolean
+  loading?: boolean
 }
 
 export const CheckoutCustomRecipient: React.FC<
@@ -21,10 +22,14 @@ export const CheckoutCustomRecipient: React.FC<
   checkingRecipient,
   customBuyMessage,
   disabled,
+  loading,
 }) => {
   return (
     <>
-      <SmallButton onClick={() => setIsAdvanced(!isAdvanced)}>
+      <SmallButton
+        disabled={loading}
+        onClick={() => setIsAdvanced(!isAdvanced)}
+      >
         {isAdvanced ? 'Close advanced' : customBuyMessage ?? 'Advanced'}
       </SmallButton>
       {isAdvanced && (
@@ -68,4 +73,5 @@ export const CheckoutCustomRecipient: React.FC<
 CheckoutCustomRecipient.defaultProps = {
   customBuyMessage: undefined,
   disabled: false,
+  loading: false,
 }
