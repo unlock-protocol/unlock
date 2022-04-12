@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import React, { useState, useContext } from 'react'
 import 'cross-fetch/polyfill'
 import Head from 'next/head'
-import Link from 'next/link'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
@@ -159,7 +158,7 @@ const MetadataTableWrapper = ({
 }: MetadataTableWrapperProps) => {
   const { account } = useContext(AuthenticationContext)
   const [currentPage, setCurrentPage] = useState(page)
-  const { loading, error, list, columns, hasNextPage } = useMembers(
+  const { loading, list, columns, hasNextPage, isLockManager } = useMembers(
     lockAddresses,
     account,
     filter,
@@ -170,17 +169,6 @@ const MetadataTableWrapper = ({
     return <Loading />
   }
 
-  if (error) {
-    return (
-      <Message>
-        An error occurred. Return to your{' '}
-        <Link href="/dashboard">
-          <a>Dashboard</a>
-        </Link>
-      </Message>
-    )
-  }
-
   // TODO: rename metadata into members inside of MetadataTable
   return (
     <>
@@ -189,7 +177,12 @@ const MetadataTableWrapper = ({
         setCurrentPage={setCurrentPage}
         hasNextPage={hasNextPage}
       />
-      <MetadataTable columns={columns} metadata={list} />
+      <MetadataTable
+        columns={columns}
+        metadata={list}
+        isLockManager={isLockManager}
+        lockAddresses={lockAddresses}
+      />
     </>
   )
 }
@@ -197,10 +190,6 @@ const MetadataTableWrapper = ({
 MetadataTableWrapper.defaultProps = {}
 
 const GrantButton = styled(CreateLockButton)``
-
-const Message = styled.p`
-  color: var(--grey);
-`
 
 export const Filters = styled.nav`
   color: var(--grey);

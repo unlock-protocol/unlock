@@ -113,7 +113,8 @@ export const CardConfirmationCheckout = ({
       }
 
       // TODO: consider doing this when the component is loaded for faster processing?
-      const clientSecret = await prepareChargeForCard(
+
+      const response = await prepareChargeForCard(
         token,
         lock.address,
         network,
@@ -121,41 +122,48 @@ export const CardConfirmationCheckout = ({
         recipient || account
       )
 
-      const confirmation = await stripe.confirmCardPayment(clientSecret)
-      if (
-        confirmation.error ||
-        confirmation.paymentIntent?.status !== 'requires_capture'
-      ) {
-        setError(
-          confirmation?.error?.message || 'We could not confirm your payment.'
+      if (response.error) {
+        setError(`Purchase failed. ${response.error}`)
+        setPurchasePending(false)
+      } else if (response.clientSecret) {
+        const confirmation = await stripe.confirmCardPayment(
+          response.clientSecret
         )
-        setPurchasePending(false)
-        return
-      }
-
-      // payment intent is confirmed, we should trigger the charge
-      const hash = await captureChargeForCard(
-        lock.address,
-        network,
-        recipient || account || '',
-        confirmation.paymentIntent.id
-      )
-
-      if (hash) {
-        emitTransactionInfo({
-          lock: lock.address,
-          hash,
-        })
-        if (!paywallConfig.pessimistic) {
-          setKeyExpiration(Infinity) // Optimistic!
+        if (
+          confirmation.error ||
+          confirmation.paymentIntent?.status !== 'requires_capture'
+        ) {
+          setError(
+            confirmation?.error?.message || 'We could not confirm your payment.'
+          )
           setPurchasePending(false)
-        } else {
-          setPurchasePending(hash)
+          return
         }
-      } else {
-        // TODO: show error message in user interface
-        setError('Purchase failed. Please try again.')
-        setPurchasePending(false)
+
+        // payment intent is confirmed, we should trigger the charge
+        const hash = await captureChargeForCard(
+          lock.address,
+          network,
+          recipient || account || '',
+          confirmation.paymentIntent.id
+        )
+
+        if (hash) {
+          emitTransactionInfo({
+            lock: lock.address,
+            hash,
+          })
+          if (!paywallConfig.pessimistic) {
+            setKeyExpiration(Infinity) // Optimistic!
+            setPurchasePending(false)
+          } else {
+            setPurchasePending(hash)
+          }
+        } else {
+          // TODO: show error message in user interface
+          setError('Purchase failed. Please try again.')
+          setPurchasePending(false)
+        }
       }
     } catch (error: any) {
       console.error(error)
@@ -243,7 +251,7 @@ export const CardConfirmationCheckout = ({
           {fee > 0 && (
             <FeeNotice>
               Includes ${(fee / 100).toFixed(2)} in fees{' '}
-              <Link href="https://docs.unlock-protocol.com/governance/frequently-asked-questions#what-are-the-credit-card-fees">
+              <Link href="https://docs.unlock-protocol.com/unlock/creators/faq#what-are-the-credit-card-fees">
                 <a target="_blank">
                   <InfoIcon />
                 </a>
