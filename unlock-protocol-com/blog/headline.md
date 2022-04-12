@@ -27,7 +27,7 @@ With Headline, creators directly share their newsletters with readers who hold t
 
 Want to try it out? Head over to [https://viaheadline.xyz](https://viaheadline.xyz).
 
-## Connect with others using Headine
+## Connect with others using Headline
 
 Connect here in the [Unlock Discord #headline channel](https://discord.gg/UQPUgfsqYs).
 
