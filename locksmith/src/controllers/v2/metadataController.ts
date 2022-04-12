@@ -1,5 +1,4 @@
 import type { Web3Service } from '@unlock-protocol/unlock-js'
-
 import { Response, Request } from 'express'
 import * as z from 'zod'
 import { Op } from 'sequelize'

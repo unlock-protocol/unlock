@@ -64,7 +64,8 @@ jest.mock('../../../src/utils/lockData', () => {
   }
 })
 
-const mockWeb3Service = {
+// eslint-disable-next-line
+var mockWeb3Service = {
   isLockManager: jest.fn(() => Promise.resolve(false)),
 }
 
