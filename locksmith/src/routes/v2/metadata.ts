@@ -33,10 +33,6 @@ router.put(
   }
 )
 
-router.get('/:network/locks/:lockAddress/users/:userAddress', (req, res) => {
-  metadataController.getUserMetadata(req, res)
-})
-
 router.post('/:network/locks/:lockAddress/users/:userAddress', (req, res) =>
   metadataController.createUserMetadata(req, res)
 )

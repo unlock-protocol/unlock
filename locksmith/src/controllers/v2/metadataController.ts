@@ -8,7 +8,6 @@ import logger from '../../logger'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
-import { objectWithoutKey } from '../../utils/object'
 
 const UserMetadataBody = z.object({
   lockAddress: z.string(),
@@ -111,53 +110,6 @@ export class MetadataController {
       return response
         .status(500)
         .send('There were some problems in getting the key metadata.')
-    }
-  }
-
-  async getUserMetadata(request: Request, response: Response) {
-    try {
-      const { keyId } = request.params
-      const tokenAddress = Normalizer.ethereumAddress(
-        request.params.lockAddress
-      )
-      const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
-      const network = Number(request.params.network)
-
-      const includedProtected = await this.#isKeyOrLockOwner({
-        keyId,
-        network,
-        lockAddress: tokenAddress,
-        userAddress: request.user?.walletAddress,
-      })
-
-      const userData = await UserTokenMetadata.findOne({
-        where: {
-          userAddress,
-          tokenAddress,
-          chain: network,
-        },
-      })
-
-      if (!userData) {
-        return response.status(404).send('No user metadata found.')
-      }
-
-      if (!includedProtected) {
-        const userMetaData = objectWithoutKey(
-          userData.data.userMetadata,
-          'protected'
-        )
-        return response.send({
-          ...userData.data,
-          userMetaData,
-        })
-      }
-      return response.send(userData.data)
-    } catch (error) {
-      logger.error(error.message)
-      return response
-        .status(500)
-        .send('There were some problems in getting the user metadata.')
     }
   }
 
@@ -324,6 +276,8 @@ export class MetadataController {
       const network = Number(request.params.network)
       const { metadata } = request.body
 
+      const isUserMetadataOwner = userAddress === loggedUserAddress
+
       const isLockOwner = this.web3Service.isLockManager(
         lockAddress,
         loggedUserAddress,
@@ -337,7 +291,7 @@ export class MetadataController {
         },
       })
 
-      if (!(isLockOwner || userData)) {
+      if (!(isLockOwner || (userData && isUserMetadataOwner))) {
         return response
           .status(401)
           .send('You are not authorized to update user metadata for this key.')
