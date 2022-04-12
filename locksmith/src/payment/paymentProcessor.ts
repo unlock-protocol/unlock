@@ -174,6 +174,38 @@ export class PaymentProcessor {
       throw new Error('Price diverged by more than 3%. Aborting')
     }
 
+    // Let's see if we have a paymentIntent already that's less than 10 minutes old
+    const existingIntent = await PaymentIntent.findOne({
+      where: {
+        userAddress: recipient,
+        lockAddress: lock,
+        chain: network,
+        connectedStripeId: stripeAccount,
+        createdAt: {
+          [Op.gte]: Sequelize.literal("NOW() - INTERVAL '10 minute'"),
+        },
+      },
+    })
+
+    // We check if there is an intent and use that one
+    // if its status is still pending confirmation
+    if (existingIntent) {
+      const stripeIntent = await this.stripe.paymentIntents.retrieve(
+        existingIntent.intentId,
+        {
+          stripeAccount: existingIntent.connectedStripeId,
+        }
+      )
+      if (stripeIntent.status === 'requires_confirmation') {
+        return {
+          clientSecret: stripeIntent.client_secret,
+          stripeAccount,
+        }
+      }
+    }
+
+    // If not, we create another intent
+
     const token = await this.stripe.tokens.create(
       { customer: stripeCustomerId },
       { stripeAccount }

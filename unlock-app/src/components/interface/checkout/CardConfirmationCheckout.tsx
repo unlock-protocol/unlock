@@ -89,15 +89,19 @@ export const CardConfirmationCheckout = ({
       )
       if (response.error || !response.clientSecret) {
         setError(
-          `There was an error preparing your payment ${response.error || ''}`
+          `There was an error preparing your payment: ${
+            response.error || 'please try again.'
+          }`
         )
       } else if (response.clientSecret) {
         setPaymentIntent(response)
       }
       setLoading(false)
     }
-    prepareCharge()
-  }, [])
+    if (account) {
+      prepareCharge()
+    }
+  }, [account])
 
   useEffect(() => {
     const waitForTransaction = async (hash: string) => {
