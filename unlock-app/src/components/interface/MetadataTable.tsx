@@ -91,6 +91,14 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     setShowExpireAndRefundModal(false)
     setCurrentLock(null)
   }
+
+  const isKeyValid = (metadata: any) => {
+    if (!metadata?.expiration) return false
+    const now = new Date().getTime()
+    const expiration = new Date(metadata?.expiration).getTime()
+    return expiration > now
+  }
+
   return (
     <Wrapper>
       <ExpireAndRefundModal
@@ -125,7 +133,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
                     </Td>
                   )
                 })}
-                {isLockManager && (
+                {isLockManager && isKeyValid(datum) && (
                   <Td className="text-center">
                     <button
                       className="bg-gray-200 rounded px-2 py-1 text-sm"

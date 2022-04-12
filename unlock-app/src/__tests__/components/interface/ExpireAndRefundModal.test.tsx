@@ -68,14 +68,6 @@ const modalActive: React.ReactElement<any> = (
     lockAddresses={[aKey.lock.address]}
   />
 )
-const modalInactive: React.ReactElement<any> = (
-  <ExpireAndRefundModal
-    active
-    dismiss={dismiss}
-    lock={undefined}
-    lockAddresses={[aKey.lock.address]}
-  />
-)
 
 const mockWalletService = {
   getCancelAndRefundValueFor: jest.fn(),
@@ -114,13 +106,6 @@ describe('ExpireAndRefundModal', () => {
     const title = getByText('Expire and Refund')
     expect(title).toBeDefined()
     expect(container).toBeDefined()
-  })
-
-  it('should show error if lock is not passaed as prop', () => {
-    expect.assertions(1)
-    const { getByText } = renderWithContexts(modalInactive)
-    const message = getByText('No lock selected')
-    expect(message).toBeDefined()
   })
 
   it('should call dismiss when CancelAndRefund confirmed', () => {

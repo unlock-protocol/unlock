@@ -63,7 +63,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
     }
   }
 
-  if (!lock) return <span>No lock selected</span>
+  if (!lockAddresses?.length) return <span>No lock selected</span>
   return (
     <InlineModal active={active} dismiss={onCloseCallback}>
       <div
