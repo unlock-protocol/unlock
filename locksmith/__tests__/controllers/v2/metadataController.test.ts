@@ -81,14 +81,4 @@ describe('Metadata v2 endpoints for locksmith', () => {
     )
     expect(lockMetadataResponse.status).toBe(404)
   })
-
-  it('Get user metadata', async () => {
-    expect.assertions(1)
-    const lockAddress = await ethers.Wallet.createRandom().getAddress()
-    const userAddress = await ethers.Wallet.createRandom().getAddress()
-    const userMetadataResponse = await request(app).get(
-      `/v2/api/metadata/100/locks/${lockAddress}/users/${userAddress}`
-    )
-    expect(userMetadataResponse.status).toBe(404)
-  })
 })
