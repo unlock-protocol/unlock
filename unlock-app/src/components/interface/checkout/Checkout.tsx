@@ -39,6 +39,7 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 import { PaywallConfig, OAuthConfig } from '../../../unlockTypes'
 import { OAuthConnect } from './OauthConnect'
+import { useMultipleRecipient } from '../../../hooks/useMultipleRecipient'
 
 interface CheckoutProps {
   emitCloseModal: (success: boolean) => void
@@ -119,6 +120,9 @@ export const Checkout = ({
   const { getAutoLoginEmail } = useAutoLogin()
   const storedEmail = getAutoLoginEmail()
   const messageSigned = useRef(false)
+  const { recipients, hasMultipleRecipients } = useMultipleRecipient(
+    paywallConfig?.maxRecipients
+  )
 
   // state change
   useEffect(() => {
@@ -304,6 +308,8 @@ export const Checkout = ({
           lock={selectedLock}
           closeModal={closeModal}
           setCardPurchase={() => cardCheckoutOrClaim(selectedLock)}
+          recipients={recipients}
+          hasMultipleRecipients={hasMultipleRecipients}
         />
       )
     }
