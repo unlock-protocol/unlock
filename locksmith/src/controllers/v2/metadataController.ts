@@ -106,9 +106,6 @@ export class MetadataController {
         network
       )
 
-      if (Object.keys(keyData).length === 0) {
-        return response.status(404).send('No key metadata found.')
-      }
       return response.status(200).send(keyData)
     } catch (error) {
       logger.error(error.message)
