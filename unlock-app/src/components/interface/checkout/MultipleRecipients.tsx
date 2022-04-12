@@ -15,7 +15,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   return (
     <div>
       <span className="text-sm">
-        You can add up to {maxRecipients} custom recipient
+        You can purchase up to {maxRecipients} memberships for multiple recipients
       </span>
       {recipients?.map((recipient) => {
         return (
