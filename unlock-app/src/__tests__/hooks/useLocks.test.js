@@ -214,6 +214,7 @@ describe('useLocks', () => {
       expirationDuration: 60 * 60 * 5,
       keyPrice: '1',
       maxNumberOfKeys: 100,
+      publicLockVersion: 10,
     }
     let addToLocks
     let setError
