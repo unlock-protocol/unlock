@@ -11,7 +11,6 @@ import { UserTokenMetadata } from '../../models'
 import { objectWithoutKey } from '../../utils/object'
 
 const UserMetadataBody = z.object({
-  keyId: z.string(),
   lockAddress: z.string(),
   userAddress: z.string(),
   metadata: z.any(),
@@ -118,15 +117,16 @@ export class MetadataController {
   async getUserMetadata(request: Request, response: Response) {
     try {
       const { keyId } = request.params
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const tokenAddress = Normalizer.ethereumAddress(
+        request.params.lockAddress
+      )
       const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
-      const tokenAddress = `${lockAddress}-${keyId}`
       const network = Number(request.params.network)
 
       const includedProtected = await this.#isKeyOrLockOwner({
         keyId,
         network,
-        lockAddress,
+        lockAddress: tokenAddress,
         userAddress: request.user?.walletAddress,
       })
 
@@ -278,10 +278,9 @@ export class MetadataController {
 
   async createUserMetadata(request: Request, response: Response) {
     try {
-      const { keyId } = request.params
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
-      const tokenAddress = `${lockAddress}-${keyId}`
+      const tokenAddress = lockAddress
       const network = Number(request.params.network)
       const { metadata } = request.body
 
@@ -315,44 +314,40 @@ export class MetadataController {
 
   async updateUserMetadata(request: Request, response: Response) {
     try {
-      const { keyId } = request.params
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress
       )
-      const tokenAddress = `${lockAddress}-${keyId}`
+      const tokenAddress = lockAddress
 
       const network = Number(request.params.network)
       const { metadata } = request.body
 
-      const isKeyOrLockOwner = await this.#isKeyOrLockOwner({
-        userAddress: loggedUserAddress,
+      const isLockOwner = this.web3Service.isLockManager(
         lockAddress,
-        keyId,
-        network,
+        loggedUserAddress,
+        network
+      )
+
+      const userData = await UserTokenMetadata.findOne({
+        where: {
+          userAddress,
+          tokenAddress,
+        },
       })
 
-      if (!isKeyOrLockOwner) {
+      if (!(isLockOwner || userData)) {
         return response
           .status(401)
           .send('You are not authorized to update user metadata for this key.')
       }
-
-      const keyOwner = await this.web3Service.ownerOf(
-        lockAddress,
-        keyId,
-        network
-      )
-
-      const keyOwnerAddress = Normalizer.ethereumAddress(keyOwner)
 
       const [rows, updatedUserMetadata] = await UserTokenMetadata.update(
         {
           data: {
             ...metadata,
           },
-          userAddress: keyOwnerAddress,
         },
         {
           where: {
@@ -382,7 +377,7 @@ export class MetadataController {
       const { users } = await BulkUserMetadataBody.parseAsync(request.body)
       const tokenAddresses = users.map((user) => {
         const lockAddress = Normalizer.ethereumAddress(user.lockAddress)
-        return `${lockAddress}-${user.keyId}`
+        return lockAddress
       })
 
       const userMetadataResults = await UserTokenMetadata.findAll({
@@ -401,9 +396,9 @@ export class MetadataController {
       }
 
       const newUsersData = users.map((user) => {
-        const { keyId, userAddress, metadata } = user
+        const { userAddress, metadata } = user
         const lockAddress = Normalizer.ethereumAddress(user.lockAddress)
-        const tokenAddress = `${lockAddress}-${keyId}`
+        const tokenAddress = lockAddress
         const newUserData = {
           userAddress,
           tokenAddress,
