@@ -1,34 +1,77 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import { RecipientItem } from '../../../hooks/useMultipleRecipient'
+import Loading from '../Loading'
 
 interface MultipleRecipientProps {
   recipients: RecipientItem[]
   maxRecipients: number
+  addRecipient: any
+  loading: boolean
 }
 export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   recipients,
   maxRecipients,
+  addRecipient,
+  loading,
 }) => {
-  const onAddWallet = () => {}
+  const [addNewRecipient, setNewRecipient] = useState(false)
+  const [recipient, setRecipient] = useState<string>('')
+  const onAddRecipient = async () => {
+    const valid = await addRecipient(recipient)
+    if (valid) {
+      resetStatus()
+    }
+  }
+
+  const resetStatus = () => {
+    setNewRecipient(false)
+    setRecipient('')
+  }
+
+  const onSubmit = () => {}
+
+  const toggleAddRecipient = () => {
+    setNewRecipient(!addNewRecipient)
+  }
 
   return (
-    <div>
-      <span className="text-sm">
-        You can purchase up to {maxRecipients} memberships for multiple recipients
+    <form onSubmit={onSubmit}>
+      <span className="text-sm pt-2">
+        You can purchase up to {maxRecipients} memberships for multiple
+        recipients
       </span>
-      {recipients?.map((recipient) => {
+      {recipients?.map((recipient, index) => {
+        const key = recipient.keyId ?? recipient.userAddress
+        const currentIndex = index + 1
         return (
-          <CustomRecipient
-            key={recipient.keyId ?? recipient.userAddress}
-            type="text"
-          />
+          <InputGroup key={key}>
+            <span className="text-xs font-medium uppercase">
+              Recipient {currentIndex}:
+            </span>
+            <span className="text-xs">{recipient?.userAddress}</span>
+          </InputGroup>
         )
       })}
-      <AddButton onClick={onAddWallet} type="button">
-        Add Wallet
-      </AddButton>
-    </div>
+      {!addNewRecipient ? (
+        <>
+          <AddButton onClick={toggleAddRecipient} type="button">
+            Add recipient
+          </AddButton>
+        </>
+      ) : (
+        <div className="pt-3">
+          <CustomRecipient
+            onChange={(e) => setRecipient(e.target.value)}
+            disabled={loading}
+          />
+          <AddButton onClick={onAddRecipient} type="button" disabled={loading}>
+            <span className="px-2"> Add recipient </span>
+            {loading && <Loading size={20} />}
+          </AddButton>
+        </div>
+      )}
+    </form>
   )
 }
 
@@ -37,6 +80,7 @@ const CustomRecipient = styled.input`
   border-radius: 4px;
   border: 1px solid #dcdfe6;
   width: 100%;
+  padding: 2px;
 
   + input {
     margin-top: 8px;
@@ -59,4 +103,11 @@ const AddButton = styled.button`
   &:disabled {
     opacity: 0.4;
   }
+`
+
+const InputGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  grid-row-gap: 2px;
+  padding-top: 8px;
 `

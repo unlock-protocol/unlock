@@ -5,11 +5,12 @@ import { getAddressForName } from './useEns'
 export interface RecipientItem {
   userAddress: string
   valid: boolean
+  index: number
   data?: any[]
   keyId?: string
 }
 
-export const useMultipleRecipient = (maxRecipients: number = 1) => {
+export const useMultipleRecipient = (maxRecipients = 1) => {
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
   const [addNew, setAddNew] = useState(false)
@@ -17,7 +18,7 @@ export const useMultipleRecipient = (maxRecipients: number = 1) => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    setHasMultipleRecipients(maxRecipients > 1)
+    setHasMultipleRecipients(+maxRecipients > 1)
   }, [])
 
   const recipientsList = (): RecipientItem[] => {
@@ -61,30 +62,46 @@ export const useMultipleRecipient = (maxRecipients: number = 1) => {
     // todo: submit data
   }
 
-  const addUser = (userAddress: string, metadata?: any) => {
+  const addRecipientItem = async (
+    userAddress: string,
+    metadata?: any
+  ): Promise<boolean> => {
+    setLoading(true)
     if (canAddUser()) {
-      setRecipients(
-        (prev) =>
-          new Set(
-            prev.add({
-              userAddress,
-              data: metadata,
-              valid: false,
-            })
-          )
-      )
-    } else {
-      ToastHelper.error("You can't add morerecipients")
+      const index = recipients?.size + 1
+      const valid = await isAddressValid(userAddress)
+      if (valid) {
+        setRecipients(
+          (prev) =>
+            new Set(
+              prev.add({
+                userAddress: userAddress ?? '',
+                data: metadata,
+                index,
+                valid: false,
+              })
+            )
+        )
+      }
+      if (!valid) {
+        ToastHelper.error('Recipient address is not valid, please check it')
+      }
+      setLoading(false)
+      return Promise.resolve(valid)
     }
+    ToastHelper.error("You can't add more recipients")
+    setLoading(false)
+    return Promise.resolve(false)
   }
 
   return {
     hasMultipleRecipients,
-    recipients: recipientsList,
-    addUser,
+    recipients: recipientsList(),
+    addRecipientItem,
     setAddNew,
     addNew,
     isGroupValid,
     loading,
+    maxRecipients,
   }
 }
