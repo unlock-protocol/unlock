@@ -7,7 +7,6 @@ import {
   getErc20Decimals,
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
-import { LockManager } from './types'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -104,11 +103,7 @@ export default class Web3Service extends UnlockService {
    * @param {string} manager
    * @return Promise<boolean>
    */
-  async isLockManager(
-    lockAddress: string,
-    manager: LockManager,
-    network: number
-  ) {
+  async isLockManager(lockAddress: string, manager: string, network: number) {
     const version = await this.lockContractAbiVersion(
       lockAddress,
       this.providerForNetwork(network)
