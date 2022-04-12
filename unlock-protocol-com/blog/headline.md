@@ -17,7 +17,7 @@ Built by Unlock and [RaidGuild](https://www.raidguild.org/), Headline utilizes t
 ![headline-fullpage.png](/images/blog/headline/headline-fullpage.png)
 
 
-"Encrypted data and access control on the open and decentralized web lets creators create world class experiences for their fans, without having to rely on any web2 platform as a middle man. The composability of the open web, like how Lit Protocol and Unlock can work together, are in service of creating more value for creators and their fans," said David Sneider, CEO Lit Protocol
+"Encrypted data and access control on the open and decentralized web lets creators create world class experiences for their fans, without having to rely on any web2 platform as a middle man. The composability of the open web, like how Lit Protocol and Unlock can work together, is in service of creating more value for creators and their fans," said David Sneider, CEO Lit Protocol
 
 "We believe that the most successful Web3 projects are those building bridges across the ecosystem. Ceramic's open, decentralized data network is a natural fit for Headline, and we're excited to see how creators leverage this composable infrastructure to share their content across a multitude of communities and platforms," said Lauren Feld, Head of Business Development at 3Box Labs.
 
@@ -27,7 +27,7 @@ With Headline, creators directly share their newsletters with readers who hold t
 
 Want to try it out? Head over to [https://viaheadline.xyz](https://viaheadline.xyz).
 
-## Connect with others using Headine
+## Connect with others using Headline
 
 Connect here in the [Unlock Discord #headline channel](https://discord.gg/UQPUgfsqYs).
 
