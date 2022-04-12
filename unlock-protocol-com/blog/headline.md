@@ -1,14 +1,14 @@
 ---
-title: Headline is publishing and newsletters built the Web3 way
+title: Headline is Publishing and Newsletters Built the Web3 Way
 subTitle: This is what Web3 publishing looks like
 authorName: Christopher Carfi
 publishDate: April 12, 2022
 description: Unlock is happy to announce the launch of Headline, bringing publishing and newsletter subscriptions into the Web3 ecosystem.
 
-image: /images/blog/headline/headline-header.png
+image: /images/blog/headline/headline-header-bg.png
 ---
 
-![headline-header.png](/images/blog/headline/headline-header.png)
+![headline-header-bg.png](/images/blog/headline/headline-header-bg.png)
 
 Unlock is happy to announce the launch of Headline, bringing publishing and newsletter subscriptions into the Web3 ecosystem. You can check it out at [https://viaheadline.xyz](https://viaheadline.xyz).
 
@@ -17,7 +17,7 @@ Built by Unlock and [RaidGuild](https://www.raidguild.org/), Headline utilizes t
 ![headline-fullpage.png](/images/blog/headline/headline-fullpage.png)
 
 
-"Encrypted data and access control on the open and decentralized web lets creators create world class experiences for their fans, without having to rely on any web2 platform as a middle man. The composability of the open like, like how Lit Protocol and Unlock can work together, are in service of creating more value for creators and their fans," said David Sneider, CEO Lit Protocol
+"Encrypted data and access control on the open and decentralized web lets creators create world class experiences for their fans, without having to rely on any web2 platform as a middle man. The composability of the open web, like how Lit Protocol and Unlock can work together, are in service of creating more value for creators and their fans," said David Sneider, CEO Lit Protocol
 
 "We believe that the most successful Web3 projects are those building bridges across the ecosystem. Ceramic's open, decentralized data network is a natural fit for Headline, and we're excited to see how creators leverage this composable infrastructure to share their content across a multitude of communities and platforms," said Lauren Feld, Head of Business Development at 3Box Labs.
 
@@ -27,9 +27,9 @@ With Headline, creators directly share their newsletters with readers who hold t
 
 Want to try it out? Head over to [https://viaheadline.xyz](https://viaheadline.xyz).
 
-## More info/community
+## Connect with others using Headine
 
-In the [Unlock Discord #headline channel](https://discord.gg/UQPUgfsqYs).
+Connect here in the [Unlock Discord #headline channel](https://discord.gg/UQPUgfsqYs).
 
 ## Screenshots of Headline
 
