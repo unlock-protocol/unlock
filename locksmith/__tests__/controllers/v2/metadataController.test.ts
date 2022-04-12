@@ -3,7 +3,7 @@ import request from 'supertest'
 
 const app = require('../../../src/app')
 
-jest.setTimeout(10000)
+jest.setTimeout(600000)
 
 describe('Metadata v2 endpoints for locksmith', () => {
   it('Add metadata to user', async () => {
