@@ -147,21 +147,18 @@ export const Authenticate = ({
         watchAsset,
       }}
     >
-      {error && <p>{error}</p>}
-      {!error && (
-        <WalletServiceContext.Provider value={walletService}>
-          <Providers
-            network={requiredNetwork || network}
-            networkConfig={config.networks}
-            account={account}
-            email={email}
-            encryptedPrivateKey={encryptedPrivateKey}
-            authenticate={authenticate}
-          >
-            {children}
-          </Providers>
-        </WalletServiceContext.Provider>
-      )}
+      <WalletServiceContext.Provider value={walletService}>
+        <Providers
+          network={requiredNetwork || network}
+          networkConfig={config.networks}
+          account={account}
+          email={email}
+          encryptedPrivateKey={encryptedPrivateKey}
+          authenticate={authenticate}
+        >
+          {children}
+        </Providers>
+      </WalletServiceContext.Provider>
     </AuthenticationContext.Provider>
   )
 }
