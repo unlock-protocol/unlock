@@ -100,13 +100,18 @@ function selectConfig() {
 function process(operation) {
   const config = selectConfig()
 
+  if (!argv.accessToken) {
+    throw new Error(
+      'Missing --access-token from https://thegraph.com/hosted-service/dashboard?account=unlock-protocol'
+    )
+  }
   if (!config) {
     throw new Error('This is an invalid configuration')
   }
 
   if (operation === 'deploy') {
     const label = argv.label ? `--version-label ${argv.label}` : ''
-    const cmd = `graph ${operation} --node ${config.graphNode} --ipfs ${config.ipfs} ${label} ${config.subgraph}`
+    const cmd = `graph ${operation} --product hosted-service --access-token ${argv.accessToken} --node ${config.graphNode} --ipfs ${config.ipfs} ${label} ${config.subgraph}`
     executeCommand(cmd)
   } else {
     executeCommand(

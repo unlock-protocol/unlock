@@ -9,6 +9,7 @@ import {
 import { ETHERS_MAX_UINT } from './constants'
 import { Lock } from './types'
 
+
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -58,36 +59,6 @@ export default class Web3Service extends UnlockService {
     const address = utils.sha3(`0x${seed}`).slice(-40)
 
     return utils.toChecksumAddress(`0x${address}`)
-  }
-
-  /**
-   * "Guesses" what the next Lock's address is going to be
-   * After that, we need the lock object because create2 uses a salt which is used to know the address
-   * TODO : ideally this code should be part of ethers... but it looks like it's not there yet.
-   * For now, losely inspired by
-   * https://github.com/HardlyDifficult/hardlydifficult-ethereum-contracts/blob/master/src/utils/create2.js#L29
-   */
-  async generateLockAddress(owner: string, lock: Lock, network: number) {
-    if (!this.networks[network]) {
-      throw new Error(`Missing config for ${network}`)
-    }
-
-    const unlockContact = await this.getUnlockContract(
-      this.networks[network].unlockAddress!,
-      this.providerForNetwork(network)!
-    )
-    if (unlockContact.publicLockAddress) {
-      const templateAddress = await unlockContact.publicLockAddress()
-      // Compute the hash identically to v5 (TODO: extract this?)
-      const lockSalt = utils.sha3(utils.utf8ToHex(lock.name)).substring(2, 26) // 2+24
-      return this._create2Address(
-        this.networks[network].unlockAddress!,
-        templateAddress,
-        owner,
-        lockSalt
-      )
-    }
-    return ethers.constants.AddressZero
   }
 
   /**
@@ -150,6 +121,74 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * Returns the key to the lock by the token Id.
+   * @param {PropTypes.string} lockAddress
+   * @param {PropTypes.number} tokenId
+   */
+  async getKeyByTokenId(lockAddress: string, tokenId: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    if ((await lockContract.publicLockVersion) < 11) {
+      throw new Error('Only available for Lock v11+')
+    }
+    const expiration = await this.getKeyExpirationByTokenId(
+      lockAddress,
+      tokenId,
+      network
+    )
+    const owner = await this.ownerOf(lockAddress, tokenId, network)
+    const keyPayload = {
+      tokenId,
+      lock: lockAddress,
+      owner,
+      expiration,
+    }
+    return keyPayload
+  }
+
+  /**
+   * Returns the key expiration to the lock by the account.
+   * @private
+   * @param {PropTypes.string} lockAddress
+   * @param {number} tokenId
+   * @return Promise<>
+   */
+  async getKeyExpirationByTokenId(
+    lockAddress: string,
+    tokenId: string,
+    network: number
+  ) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+
+    if ((await lockContract.publicLockVersion) < 11) {
+      throw new Error('Only available for Lock v11+')
+    }
+
+    try {
+      const expiration = await lockContract.keyExpirationTimestampFor(tokenId)
+      if (
+        expiration ==
+        '3963877391197344453575983046348115674221700746820753546331534351508065746944'
+      ) {
+        // Handling NO_SUCH_KEY
+        // this portion is probably unnecessary, will need to test against the app to be sure
+        return 0
+      }
+      if (expiration.eq(ETHERS_MAX_UINT)) {
+        return -1
+      }
+      return parseInt(expiration, 10)
+    } catch (error) {
+      return 0
+    }
+  }
+
+  /**
    * Returns the key to the lock by the account.
    * @param {PropTypes.string} lockAddress
    * @param {PropTypes.string} owner
@@ -159,6 +198,13 @@ export default class Web3Service extends UnlockService {
     owner: string,
     network: number
   ) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    if ((await lockContract.publicLockVersion) > 10) {
+      throw new Error('Only available until Lock v10')
+    }
     const expiration = await this.getKeyExpirationByLockForOwner(
       lockAddress,
       owner,
@@ -190,6 +236,10 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
+
+    if ((await lockContract.publicLockVersion) > 10) {
+      throw new Error('Only available until Lock v10')
+    }
 
     try {
       const expiration = await lockContract.keyExpirationTimestampFor(owner)
@@ -226,6 +276,10 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
+
+    if ((await lockContract.publicLockVersion) < 11) {
+      throw new Error('Only available until Lock v10')
+    }
 
     try {
       const tokenId = await lockContract.getTokenIdFor(owner)
@@ -336,6 +390,20 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     return lockContract.ownerOf(tokenId)
+  }
+
+  /**
+   * Returns id a key is valid or not
+   * @param {*} lockAddress
+   * @param {*} tokenId
+   * @param {*} network
+   */
+  async isValidKey(lockAddress: string, tokenId: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return lockContract.isValidKey(tokenId)
   }
 
   /**

@@ -213,6 +213,10 @@ const lockIcon = async (req, res) => {
           // This is just a regular URL redirect
           return res.redirect(lockIcon.icon)
         }
+      } else {
+        const svg = lockIconUtils.lockIcon(lockAddress)
+        res.setHeader('Content-Type', 'image/svg+xml')
+        return res.send(svg)
       }
     }
   } catch (e) {

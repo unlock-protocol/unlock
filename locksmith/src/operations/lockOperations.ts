@@ -1,5 +1,8 @@
 import ethJsUtil = require('ethereumjs-util')
 import Sequelize = require('sequelize')
+import { ethers } from 'ethers'
+import networks from '@unlock-protocol/networks'
+import * as Normalizer from '../utils/normalizer'
 
 const models = require('../models')
 
@@ -71,16 +74,19 @@ export async function getKeyHolderMetadata(
   keyHolders: [string],
   network: number
 ) {
-  return UserTokenMetadata.findAll({
+  const userTokenMetadata = await UserTokenMetadata.findAll({
     attributes: ['userAddress', 'data'],
     where: {
       chain: network,
       tokenAddress: address,
       userAddress: {
-        [Op.in]: keyHolders,
+        [Op.in]: keyHolders.map((address) =>
+          Normalizer.ethereumAddress(address)
+        ),
       },
     },
   })
+  return userTokenMetadata
 }
 
 // get latest lock migration record from DB
@@ -105,4 +111,51 @@ export async function updateLockMigrationsLog(
       },
     }
   )
+}
+
+export async function isSoldOut(
+  address: string,
+  chain: number
+): Promise<boolean> {
+  const provider = new ethers.providers.JsonRpcProvider(
+    networks[chain].publicProvider
+  )
+
+  const lock = new ethers.Contract(
+    address,
+    [
+      {
+        inputs: [],
+        name: 'totalSupply',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256',
+          },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+      {
+        inputs: [],
+        name: 'maxNumberOfKeys',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256',
+          },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+      },
+    ],
+    provider
+  )
+
+  const maxNumberOfKeys = await lock.maxNumberOfKeys()
+  const totalSupply = await lock.totalSupply()
+
+  return maxNumberOfKeys.lte(totalSupply)
 }

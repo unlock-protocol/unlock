@@ -6575,12 +6575,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:0.26.0":
-  version: 0.26.0
-  resolution: "@graphprotocol/graph-cli@npm:0.26.0"
+"@graphprotocol/graph-cli@npm:0.21.1":
+  version: 0.21.1
+  resolution: "@graphprotocol/graph-cli@npm:0.21.1"
   dependencies:
-    assemblyscript: 0.19.10
-    binary-install-raw: 0.0.13
+    assemblyscript: "git+https://github.com/AssemblyScript/assemblyscript.git#v0.6"
     chalk: ^3.0.0
     chokidar: ^3.0.2
     debug: ^4.1.1
@@ -6588,7 +6587,7 @@ __metadata:
     dockerode: ^2.5.8
     fs-extra: ^9.0.0
     glob: ^7.1.2
-    gluegun: "git+https://github.com/edgeandnode/gluegun.git#v4.3.1-pin-colors-dep"
+    gluegun: ^4.3.1
     graphql: ^15.5.0
     immutable: ^3.8.2
     ipfs-http-client: ^34.0.0
@@ -6598,22 +6597,20 @@ __metadata:
     pkginfo: ^0.4.1
     prettier: ^1.13.5
     request: ^2.88.0
-    semver: 7.3.5
     tmp-promise: ^3.0.2
-    which: 2.0.2
     yaml: ^1.5.1
   bin:
     graph: bin/graph
-  checksum: 364119043ca60b848a9e008c50cd14bf83590d70563aafe55b10d3de75d6ca5c383d2963bfcb6c98cde632cca4c9ed91f29e8ce558a5bbbdcb4c88f4b5744d83
+  checksum: afe66a1e7459774bbef207a435cad539ff71a84cb2f2a0764aff7c492c5a3fd6ff2441de27cd3b3def9ad40867db282176eaabbfaa8c9e8f657a273d9540e524
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-ts@npm:0.24.1":
-  version: 0.24.1
-  resolution: "@graphprotocol/graph-ts@npm:0.24.1"
+"@graphprotocol/graph-ts@npm:0.20.1":
+  version: 0.20.1
+  resolution: "@graphprotocol/graph-ts@npm:0.20.1"
   dependencies:
-    assemblyscript: 0.19.10
-  checksum: ad88167a4ffe1c2d61be493fc43674cacffe42f6a51de52d357125cbb152484a8a9d9835f42d65114f19fd12a073b862afad0500d8528103ee0db2b7bd92e6bc
+    assemblyscript: "git+https://github.com/AssemblyScript/assemblyscript.git#v0.6"
+  checksum: d98e729d08b10e65f88f64ef619fb99bb76788ae01a1805169908de2d2aa42d6ea21f8d69fecd77375d6a5d79d920e70d0e815f67068b84cf071b388b4984afa
   languageName: node
   linkType: hard
 
@@ -14451,14 +14448,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@npm:0.0.3":
-  version: 0.0.3
-  resolution: "@unlock-protocol/contracts@npm:0.0.3"
-  checksum: 80988d7c7c8aff5b88c74ec74b3ccae63f2d0f1ded545c688086a61e38e4fe922bacb029c92eee2a92dee6dc0eb193d4649460cf49d0fabf6146106ddf60bb0c
-  languageName: node
-  linkType: hard
-
-"@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
+"@unlock-protocol/contracts@0.0.4, @unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
@@ -14512,7 +14502,7 @@ __metadata:
     "@types/fs-extra": 9.0.13
     "@types/mocha": 9.1.0
     "@types/node": 8.10.66
-    "@unlock-protocol/contracts": 0.0.3
+    "@unlock-protocol/contracts": 0.0.4
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
@@ -14821,8 +14811,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": 0.26.0
-    "@graphprotocol/graph-ts": 0.24.1
+    "@graphprotocol/graph-cli": 0.21.1
+    "@graphprotocol/graph-ts": 0.20.1
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
     eslint: 8.8.0
@@ -16624,13 +16614,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"apisauce@npm:^1.0.1":
-  version: 1.1.5
-  resolution: "apisauce@npm:1.1.5"
+"apisauce@npm:^2.0.1":
+  version: 2.1.1
+  resolution: "apisauce@npm:2.1.1"
   dependencies:
-    axios: ^0.21.2
+    axios: ^0.21.1
     ramda: ^0.25.0
-  checksum: 4bac8117b484616c82e102d238580f835ffabee15da4527e845d091c12618f3b85293fb96c2357a119efede4ac1695d1ec78cc2ae5e3774f1522e1e1b1852365
+  checksum: cfe535583f422422943baf43398661ef0043286ebd695c945db0f23eeb726213ea9906228039b7bb51fb1b3890f1bcb2bfef43cffa5f30b4540990c31f48eff8
   languageName: node
   linkType: hard
 
@@ -17473,16 +17463,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"assemblyscript@npm:0.19.10":
-  version: 0.19.10
-  resolution: "assemblyscript@npm:0.19.10"
+"assemblyscript@git+https://github.com/AssemblyScript/assemblyscript.git#v0.6":
+  version: 0.6.0
+  resolution: "assemblyscript@git+https://github.com/AssemblyScript/assemblyscript.git#commit=3ed76a97f05335504166fce1653da75f4face28f"
   dependencies:
-    binaryen: 101.0.0-nightly.20210723
+    "@protobufjs/utf8": ^1.1.0
+    binaryen: 77.0.0-nightly.20190407
+    glob: ^7.1.3
     long: ^4.0.0
+    opencollective-postinstall: ^2.0.0
+    source-map-support: ^0.5.11
   bin:
     asc: bin/asc
     asinit: bin/asinit
-  checksum: d4087bcbae402eb0e972a78d8dfee607b2b51f4b29fcee5359f4db3052912ec12492a8714916bed8424f7f495f9357c7c6ab2482ba1d4ea4a44c55a86df5a67c
+  checksum: fda292f6b3b8b4a9bd4457c9143e50145f8473f3d664e48c057638a9bb1c8e890cd4de4e38e18dd4334240394621cfd9d01afee344ab049c5a7072fe855329b5
   languageName: node
   linkType: hard
 
@@ -17778,7 +17772,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.21.1, axios@npm:^0.21.2":
+"axios@npm:^0.21.1":
   version: 0.21.4
   resolution: "axios@npm:0.21.4"
   dependencies:
@@ -19137,23 +19131,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"binary-install-raw@npm:0.0.13":
-  version: 0.0.13
-  resolution: "binary-install-raw@npm:0.0.13"
-  dependencies:
-    axios: ^0.21.1
-    rimraf: ^3.0.2
-    tar: ^6.1.0
-  checksum: f18515976237100459b4e2983832c941421ed8767c7fbc0ca716aa96210ccdd6c8ae9fdb9e0c39099248ebd8a3f4653560cb0b655192bb3b4efa1f7be204343a
-  languageName: node
-  linkType: hard
-
-"binaryen@npm:101.0.0-nightly.20210723":
-  version: 101.0.0-nightly.20210723
-  resolution: "binaryen@npm:101.0.0-nightly.20210723"
+"binaryen@npm:77.0.0-nightly.20190407":
+  version: 77.0.0-nightly.20190407
+  resolution: "binaryen@npm:77.0.0-nightly.20190407"
   bin:
-    wasm-opt: bin/wasm-opt
-  checksum: b1f7cc8e9fb4f1530e9454b5ea6deba17e2d863cea4efc6d0ba1b2af2325e9080c29df0ffeaf9708d455705a629a6a4fbef0ac29ed789a4e316b4c1437879f57
+    binaryen-as: bin/as.js
+    binaryen-dis: bin/dis.js
+    binaryen-opt: bin/opt.js
+  checksum: 756334720191ec02b28b1fa153009338bee63ead43d5923faa7c651b7b97183b020f2ade712fab45d4cc714cae5bfeef3e8a5624246f87207ee4d847e181f6a9
   languageName: node
   linkType: hard
 
@@ -21188,14 +21173,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colors@npm:1.3.3":
-  version: 1.3.3
-  resolution: "colors@npm:1.3.3"
-  checksum: c57f0aa2b71a836435fb0cd8ac4b9f4025ff5411cb027ffcbaa2274347fd00ed52b9d66904f46be73086c27ac31bad9500da675250c95182568454b392f87ee5
-  languageName: node
-  linkType: hard
-
-"colors@npm:1.4.0, colors@npm:^1.1.2, colors@npm:^1.2.1, colors@npm:^1.4.0":
+"colors@npm:1.4.0, colors@npm:^1.1.2, colors@npm:^1.2.1, colors@npm:^1.3.3, colors@npm:^1.4.0":
   version: 1.4.0
   resolution: "colors@npm:1.4.0"
   checksum: 98aa2c2418ad87dedf25d781be69dc5fc5908e279d9d30c34d8b702e586a0474605b3a189511482b9d5ed0d20c867515d22749537f7bc546256c6014f3ebdcec
@@ -29486,14 +29464,14 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"gluegun@git+https://github.com/edgeandnode/gluegun.git#v4.3.1-pin-colors-dep":
-  version: 4.3.1
-  resolution: "gluegun@https://github.com/edgeandnode/gluegun.git#commit=b34b9003d7bf556836da41b57ef36eb21570620a"
+"gluegun@npm:^4.3.1":
+  version: 4.7.0
+  resolution: "gluegun@npm:4.7.0"
   dependencies:
-    apisauce: ^1.0.1
+    apisauce: ^2.0.1
     app-module-path: ^2.2.0
     cli-table3: ~0.5.0
-    colors: 1.3.3
+    colors: ^1.3.3
     cosmiconfig: 6.0.0
     cross-spawn: ^7.0.0
     ejs: ^2.6.1
@@ -29523,7 +29501,7 @@ fsevents@~2.1.1:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 872685026db07ad1687056a78388f17c6a9bcd22bbf9d99d1e2b21e2d196c6e99a128bcff48063b3f0cf692a4365142fae9dd06cf8c532bc557a45f8ac853308
+  checksum: a74b3522c706c7a409089c55d0a296b720cd0d6d5132250c9154eb5db3696fe3b3bdf2a4f9d91a5932afc4f4281fad92d66b9f2e8f5e63d9d8450757ff19e8cd
   languageName: node
   linkType: hard
 
@@ -35231,15 +35209,15 @@ fsevents@~2.1.1:
   linkType: hard
 
 "listr2@npm:^4.0.1":
-  version: 4.0.2
-  resolution: "listr2@npm:4.0.2"
+  version: 4.0.5
+  resolution: "listr2@npm:4.0.5"
   dependencies:
     cli-truncate: ^2.1.0
     colorette: ^2.0.16
     log-update: ^4.0.0
     p-map: ^4.0.0
     rfdc: ^1.3.0
-    rxjs: ^7.5.2
+    rxjs: ^7.5.5
     through: ^2.3.8
     wrap-ansi: ^7.0.0
   peerDependencies:
@@ -35247,7 +35225,7 @@ fsevents@~2.1.1:
   peerDependenciesMeta:
     enquirer:
       optional: true
-  checksum: 5e0e0a2c4e07e2c3c3605ea50b4a3e368647117e8c7d9abc054a7cb64213802bc69ffed27ad96e112cb2ddd2f4716f34047b107ac44137675972cacd36f32189
+  checksum: 7af31851abe25969ef0581c6db808117e36af15b131401795182427769d9824f451ba9e8aff6ccd25b6a4f6c8796f816292caf08e5f1f9b1775e8e9c313dc6c5
   languageName: node
   linkType: hard
 
@@ -39039,6 +39017,15 @@ fsevents@~2.1.1:
     is-docker: ^2.1.1
     is-wsl: ^2.2.0
   checksum: e9545bec64cdbf30a0c35c1bdc310344adf8428a117f7d8df3c0af0a0a24c513b304916a6d9b11db0190ff7225c2d578885080b761ed46a3d5f6f1eebb98b63c
+  languageName: node
+  linkType: hard
+
+"opencollective-postinstall@npm:^2.0.0":
+  version: 2.0.3
+  resolution: "opencollective-postinstall@npm:2.0.3"
+  bin:
+    opencollective-postinstall: index.js
+  checksum: 0a68c5cef135e46d11e665d5077398285d1ce5311c948e8327b435791c409744d4a6bb9c55bd6507fb5f2ef34b0ad920565adcdaf974cbdae701aead6f32b396
   languageName: node
   linkType: hard
 
@@ -44933,12 +44920,21 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^7.2.0, rxjs@npm:^7.5.2":
+"rxjs@npm:^7.2.0":
   version: 7.5.2
   resolution: "rxjs@npm:7.5.2"
   dependencies:
     tslib: ^2.1.0
   checksum: daf1fe7289de500b25d822fd96cde3c138c7902e8bf0e6aa12a3e70847a5cabeeb4d677f10e19387e1db44b12c5b1be0ff5c79b8cd63ed6ce891d765e566cf4d
+  languageName: node
+  linkType: hard
+
+"rxjs@npm:^7.5.5":
+  version: 7.5.5
+  resolution: "rxjs@npm:7.5.5"
+  dependencies:
+    tslib: ^2.1.0
+  checksum: e034f60805210cce756dd2f49664a8108780b117cf5d0e2281506e9e6387f7b4f1532d974a8c8b09314fa7a16dd2f6cff3462072a5789672b5dcb45c4173f3c6
   languageName: node
   linkType: hard
 
@@ -45350,7 +45346,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"semver@npm:7.3.5, semver@npm:7.x, semver@npm:^7.0.0, semver@npm:^7.2.1, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5":
+"semver@npm:7.x, semver@npm:^7.0.0, semver@npm:^7.2.1, semver@npm:^7.3.2, semver@npm:^7.3.4, semver@npm:^7.3.5":
   version: 7.3.5
   resolution: "semver@npm:7.3.5"
   dependencies:
@@ -46297,6 +46293,16 @@ resolve@^2.0.0-next.3:
   dependencies:
     source-map: ^0.5.6
   checksum: 669aa7e992fec586fac0ba9a8dea8ce81b7328f92806335f018ffac5709afb2920e3870b4e56c68164282607229f04b8bbcf5d0e5c845eb1b5119b092e7585c0
+  languageName: node
+  linkType: hard
+
+"source-map-support@npm:^0.5.11":
+  version: 0.5.20
+  resolution: "source-map-support@npm:0.5.20"
+  dependencies:
+    buffer-from: ^1.0.0
+    source-map: ^0.6.0
+  checksum: 43946aff452011960d16154304b11011e0185549493e65dd90da045959409fb2d266ba1c854fff3d5949f8e59382e3fcc7f7c5fa66136007a6750ad06c6c0baa
   languageName: node
   linkType: hard
 
@@ -47844,7 +47850,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tar@npm:^6.0.2, tar@npm:^6.1.0, tar@npm:^6.1.2":
+"tar@npm:^6.0.2, tar@npm:^6.1.2":
   version: 6.1.11
   resolution: "tar@npm:6.1.11"
   dependencies:
