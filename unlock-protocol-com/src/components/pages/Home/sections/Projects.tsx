@@ -14,7 +14,7 @@ export const UNLOCK_PROJECTS = [
     published: 'February 2022',
     title: 'Guild.xyz',
     text: 'Guild.xyz is a tool for token-curated communities, powered by Agora Space.',
-    href: 'https://agora.xyz/',
+    href: 'https://unlock-protocol.com/blog/guildxyz-launch',
   },
   {
     coverClass:
@@ -30,7 +30,7 @@ export const UNLOCK_PROJECTS = [
     published: 'January 2022',
     title: 'CDAA',
     text: 'CDAA provides industry certification and credentials for digital asset advisors.',
-    href: 'https://twitter.com/PlannerDAO/status/1480991827209641988',
+    href: 'https://unlock-protocol.com/blog/cdaa-unlock-case-study',
   },
   {
     coverClass:
