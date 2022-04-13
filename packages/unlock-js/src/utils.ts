@@ -48,3 +48,32 @@ export default {
   sha3: ethers.utils.keccak256,
   verifyMessage: ethers.utils.verifyMessage,
 }
+
+export class FetchError extends Error {
+  response: Response
+
+  data: {
+    message: string
+  }
+
+  constructor({
+    message,
+    response,
+    data,
+  }: {
+    message: string
+    response: Response
+    data: {
+      message: string
+    }
+  }) {
+    super(message)
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, FetchError)
+    }
+
+    this.name = 'FetchError'
+    this.response = response
+    this.data = data ?? { message }
+  }
+}
