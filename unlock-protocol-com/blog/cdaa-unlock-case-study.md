@@ -1,14 +1,14 @@
 ---
-title: Token-Gating with MintGate | Unlock Case Study
-subTitle: When MintGate needed to pair their front-end design with NFT-based, token-gated access to video, audio, and other content, they reached out to Unlock.
+title: On-chain Certifications from CDAA | Unlock Case Study
+subTitle: The Certified Digital Asset Advisor (CDAA) credential is the first on-chain certification in the financial services industry
 authorName: Christopher Carfi
 publishDate: April 13, 2021
-description: When MintGate needed to pair their front-end design with NFT-based, token-gated access to video, audio, and other content, they reached out to Unlock.
+description: The Certified Digital Asset Advisor (CDAA) industry certification is the first on-chain certification in the financial services industry. And it's powered by Unlock.
 image: /images/blog/cdaa/cdaa-header.png
 ---
 
-MintGate’s vision is to build a platform that empowers creators and communities to create content that they can monetize. MintGate co-founder Jennifer Tran describes MintGate as “the Shopify for tokenized content,” where creators can both mint and sell gated NFTs to their communities. MintGate is committed to providing a superior user experience to its users, and is obsessively focused on UI and UX. 
+The Certified Digital Asset Advisor (CDAA) designation is the only community-owned designation in the financial services industry. To earn the CDAA designation, financial advisors go through in-depth training and education in the core concepts of cryptocurrency, blockchain technology, and decentralized finance. This knowledge enables certified advisors to provide their investor clients with an elevated level of service and education related to cryptoassets.
 
-While MintGate focuses on the frontend experience, they rely on Unlock to provide and manage the behind-the-scenes magic to gate content with time-based NFT access tokens.
+Once a financial advisor completes the required coursework and passes a rigorous final exam, they receive the CDAA Certification Token. CDAA is an on-chain professional credential, powered by Unlock Protocol, that provably shows the advisor has achieved this distinction. 
 
-[See the full case study](https://f.hubspotusercontent20.net/hubfs/19942922/MintGate%20-%20Unlock%20Case%20Study.pdf).
+[See the full case study](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/CDAA%20-%20Unlock%20Case%20Study.pdf).
