@@ -19,11 +19,43 @@ const BulkUserMetadataBody = z.object({
   users: z.array(UserMetadataBody),
 })
 
+interface IsKeyOrLockOwnerOptions {
+  userAddress?: string
+  lockAddress: string
+  keyId: string
+  network: number
+}
+
 export class MetadataController {
   public web3Service: Web3Service
 
   constructor({ web3Service }: { web3Service: Web3Service }) {
     this.web3Service = web3Service
+  }
+
+  async #isKeyOrLockOwner({
+    userAddress,
+    lockAddress,
+    keyId,
+    network,
+  }: IsKeyOrLockOwnerOptions) {
+    if (!userAddress) {
+      return false
+    }
+    const loggedUserAddress = Normalizer.ethereumAddress(userAddress)
+    const isLockOwner = await this.web3Service.isLockManager(
+      lockAddress,
+      loggedUserAddress,
+      network
+    )
+
+    const keyOwner = await this.web3Service.ownerOf(lockAddress, keyId, network)
+
+    const keyOwnerAddress = Normalizer.ethereumAddress(keyOwner)
+
+    const isKeyOwner = keyOwnerAddress === loggedUserAddress
+
+    return isLockOwner || isKeyOwner
   }
 
   async getLockMetadata(request: Request, response: Response) {
@@ -57,18 +89,17 @@ export class MetadataController {
       const network = Number(request.params.network)
       const host = `${request.protocol}://${request.headers.host}`
 
-      const isLockOwner = request.user?.walletAddress
-        ? await this.web3Service.isLockManager(
-            lockAddress,
-            request.user.walletAddress,
-            network
-          )
-        : false
+      const includeProtected = await this.#isKeyOrLockOwner({
+        keyId,
+        network,
+        lockAddress,
+        userAddress: request.user?.walletAddress,
+      })
 
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
         keyId,
-        isLockOwner,
+        includeProtected,
         host,
         network
       )
