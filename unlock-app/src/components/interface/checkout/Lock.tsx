@@ -20,19 +20,25 @@ interface LockProps {
   purchasePending: boolean
   recipient?: string
   onLoading?: (state: boolean) => void
+  numberOfRecipients?: number
 }
 
 const getLockProps = (
   lock: any,
   network: number,
   baseCurrencySymbol: string,
-  name: string
+  name: string,
+  numberOfRecipients = 1
 ) => {
   return {
     cardEnabled: lock?.fiatPricing?.creditCardEnabled,
     formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
-    formattedKeyPrice: formattedKeyPrice(lock, baseCurrencySymbol),
-    convertedKeyPrice: convertedKeyPrice(lock),
+    formattedKeyPrice: formattedKeyPrice(
+      lock,
+      baseCurrencySymbol,
+      numberOfRecipients
+    ),
+    convertedKeyPrice: convertedKeyPrice(lock, numberOfRecipients),
     formattedKeysAvailable: lockKeysAvailable(lock),
     name: name || lock.name,
     address: lock.address,
@@ -49,6 +55,7 @@ export const Lock = ({
   purchasePending,
   recipient,
   onLoading,
+  numberOfRecipients,
 }: LockProps) => {
   const config = useContext(ConfigContext)
   const [loading, setLoading] = useState(false)
@@ -94,7 +101,8 @@ export const Lock = ({
       lock,
       network,
       config.networks[network].baseCurrencySymbol,
-      name
+      name,
+      numberOfRecipients
     ),
     selectable: true, // by default!
   }
@@ -126,4 +134,5 @@ export const Lock = ({
 Lock.defaultProps = {
   recipient: '',
   onLoading: () => undefined,
+  numberOfRecipients: 1,
 }
