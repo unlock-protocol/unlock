@@ -1,5 +1,6 @@
 import request from 'supertest'
 import { ethers } from 'ethers'
+import { SiweMessage, generateNonce } from 'siwe'
 
 const app = require('../../src/app')
 
@@ -81,7 +82,18 @@ describe('Auth Endpoint', () => {
     const client_id = 'ouvre-boite.com'
     const signer = ethers.Wallet.createRandom()
     const address = await signer.getAddress()
-    const digest = `Connecting to ${client_id}`
+    const nonce = generateNonce()
+    const message = new SiweMessage({
+      domain: client_id,
+      address,
+      nonce,
+      chainId: 1,
+      version: '1',
+      statement: '',
+      uri: 'https://app.unlock-protocol.com/login',
+    })
+
+    const digest = message.prepareMessage()
 
     // Get the signature
     const signature = await signer.signMessage(digest)
@@ -113,7 +125,7 @@ describe('Auth Endpoint', () => {
 
     // This was generated in the front-end application, to make sure we keep compatibility
     const code =
-      'eyJkIjoiQ29ubmVjdGluZyBteSBhY2Njb3VudCB0byBvdXZyZS1ib2l0ZS5jb20uIiwicyI6IjB4NjNjOTg3ZDdkMTk3M2E3ZmYyZDMyY2FlNjM3ZWFlNTFmNTBlNTdiMmIwYWRjNjk5NjdkZTA3MjAyYjMxNzIwNzNjNzdhYjZhYjZiZDJkZmJjM2E0ZDUyMDlmN2E2ZWYxNTcxNjljNDRmNTk5MDQ4NmY5YjkzZDUzMDNmM2E1M2ExYyJ9'
+      'eyJkIjoid3d3Lm91dnJlLWJvaXRlLmNvbSB3YW50cyB5b3UgdG8gc2lnbiBpbiB3aXRoIHlvdXIgRXRoZXJldW0gYWNjb3VudDpcbjB4OEVhOWE2ZmVCMGU5MkFBRUViMGVBOGE3NzljOTFCMGJjNWRFMUFkN1xuXG5cblVSSTogaHR0cHM6Ly9hcHAudW5sb2NrLXByb3RvY29sLmNvbS9sb2dpblxuVmVyc2lvbjogMVxuQ2hhaW4gSUQ6IDRcbk5vbmNlOiBnTTRXemFkeDVHYUh1MVJCbVxuSXNzdWVkIEF0OiAyMDIyLTA0LTEzVDEwOjIxOjAwLjg2N1pcbkV4cGlyYXRpb24gVGltZTogMjAyMi0wNC0yMFQxMDoyMTowMC44NjdaIiwicyI6IjB4YTc4MmNlNDY4ODNhNmQ3ZDQxZWQxMGIxZDY5MmE1OGIwZTFiNzBjZTk4YWIyZTNhYWI4MDJhY2YwZmI1MDgzNjc2OGUxZDYyZTk4YmJiODgxY2NlNDgxMDZkZjIxMDhhNzc3M2FmODllODgyZDQ5ZTkwNTgwODBjN2I5ZjVjYTYxYiJ9'
 
     const response = await request(app)
       .post('/api/oauth')
@@ -125,6 +137,6 @@ describe('Auth Endpoint', () => {
         code,
       })
     expect(response.status).toBe(200)
-    expect(response.body.me).toBe('0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44')
+    expect(response.body.me).toBe('0x8Ea9a6feB0e92AAEEb0eA8a779c91B0bc5dE1Ad7')
   })
 })
