@@ -43,6 +43,7 @@ const getLockProps = (
     name: name || lock.name,
     address: lock.address,
     network,
+    prepend: numberOfRecipients > 1 ? `${numberOfRecipients} x ` : '',
   }
 }
 export const Lock = ({
