@@ -26,7 +26,6 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   const { register, getValues, reset, trigger } = useForm()
   const haveRecipients = recipients?.length > 0
 
-  console.log(recipients)
   const onAddRecipient = async () => {
     await trigger()
     const valid = await addRecipient(recipient, getValues())
@@ -111,7 +110,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
             </label>
           ))}
           <AddButton onClick={onAddRecipient} type="button" disabled={loading}>
-            <span className="px-2"> Save recipient </span>
+            <span className="px-2"> Add </span>
             {loading && <Loading size={20} />}
           </AddButton>
         </fieldset>
