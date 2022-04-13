@@ -52,7 +52,7 @@ export class MetadataController {
 
   async getKeyMetadata(request: Request, response: Response) {
     try {
-      const { keyId } = request.params
+      const keyId = request.params.keyId.toLowerCase()
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
       const host = `${request.protocol}://${request.headers.host}`
@@ -176,9 +176,10 @@ export class MetadataController {
 
   async createUserMetadata(request: Request, response: Response) {
     try {
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const tokenAddress = Normalizer.ethereumAddress(
+        request.params.lockAddress
+      )
       const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
-      const tokenAddress = lockAddress
       const network = Number(request.params.network)
       const { metadata } = request.body
 
@@ -212,20 +213,20 @@ export class MetadataController {
 
   async updateUserMetadata(request: Request, response: Response) {
     try {
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const tokenAddress = Normalizer.ethereumAddress(
+        request.params.lockAddress
+      )
       const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress
       )
-      const tokenAddress = lockAddress
-
       const network = Number(request.params.network)
       const { metadata } = request.body
 
       const isUserMetadataOwner = userAddress === loggedUserAddress
 
       const isLockOwner = this.web3Service.isLockManager(
-        lockAddress,
+        tokenAddress,
         loggedUserAddress,
         network
       )
