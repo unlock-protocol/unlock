@@ -1,6 +1,7 @@
 import Stripe from 'stripe'
 import { User } from '../models/user'
 import { Charge } from '../models/charge'
+import { PaymentIntent } from '../models/paymentIntent'
 import { UserReference } from '../models/userReference'
 import * as Normalizer from '../utils/normalizer'
 import KeyPricer from '../utils/keyPricer'
@@ -172,30 +173,92 @@ export class PaymentProcessor {
       // if price diverged by more than 3%, we fail!
       throw new Error('Price diverged by more than 3%. Aborting')
     }
-    const paymentMethods = await this.stripe.paymentMethods.list({
-      customer: stripeCustomerId,
-      type: 'card',
+
+    // Let's see if we have a paymentIntent already that's less than 10 minutes old
+    const existingIntent = await PaymentIntent.findOne({
+      where: {
+        userAddress: recipient,
+        lockAddress: lock,
+        chain: network,
+        connectedStripeId: stripeAccount,
+        createdAt: {
+          [Op.gte]: Sequelize.literal("NOW() - INTERVAL '10 minute'"),
+        },
+      },
     })
 
-    const intent = await this.stripe.paymentIntents.create({
-      amount: totalPriceInCents,
-      currency: 'usd',
-      customer: stripeCustomerId,
-      payment_method: paymentMethods.data[0].id,
-      capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
-      metadata: {
-        lock,
-        recipient,
-        network,
-        maxPrice,
+    // We check if there is an intent and use that one
+    // if its status is still pending confirmation
+    if (existingIntent) {
+      const stripeIntent = await this.stripe.paymentIntents.retrieve(
+        existingIntent.intentId,
+        {
+          stripeAccount: existingIntent.connectedStripeId,
+        }
+      )
+      if (stripeIntent.status === 'requires_confirmation') {
+        return {
+          clientSecret: stripeIntent.client_secret,
+          stripeAccount,
+        }
+      }
+    }
+
+    // If not, we create another intent
+
+    const token = await this.stripe.tokens.create(
+      { customer: stripeCustomerId },
+      { stripeAccount }
+    )
+
+    const connectedCustomer = await this.stripe.customers.create(
+      { source: token.id },
+      { stripeAccount }
+    )
+
+    // How do we list the right payment methods?
+    const paymentMethods = await this.stripe.paymentMethods.list(
+      {
+        customer: connectedCustomer.id,
+        type: 'card',
       },
-      application_fee_amount: pricing.unlockServiceFee,
-      on_behalf_of: stripeAccount,
-      transfer_data: {
-        destination: stripeAccount,
+      { stripeAccount }
+    )
+
+    const intent = await this.stripe.paymentIntents.create(
+      {
+        amount: totalPriceInCents,
+        currency: 'usd',
+        customer: connectedCustomer.id,
+        payment_method: paymentMethods.data[0].id,
+        capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
+        metadata: {
+          lock,
+          recipient,
+          network,
+          maxPrice,
+        },
+        application_fee_amount: pricing.unlockServiceFee,
       },
+      { stripeAccount }
+    )
+
+    // Store the paymentIntent
+    // Note: to avoid multiple purchases, we should make sure we don't create a new one if one already exists!
+    await PaymentIntent.create({
+      userAddress: recipient,
+      lockAddress: lock,
+      chain: network,
+      stripeCustomerId: stripeCustomerId, // Customer Id
+      intentId: intent.id,
+      connectedStripeId: stripeAccount,
+      connectedCustomerId: connectedCustomer.id,
     })
-    return intent.client_secret
+
+    return {
+      clientSecret: intent.client_secret,
+      stripeAccount,
+    }
   }
 
   /**
@@ -217,16 +280,27 @@ export class PaymentProcessor {
     const pricing = await new KeyPricer().generate(lock, network)
     const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
 
+    const paymentIntentRecord = await PaymentIntent.findOne({
+      where: { intentId: paymentIntentId },
+    })
+
+    if (!paymentIntentRecord) {
+      throw new Error('Could not find payment intent.')
+    }
+
     const paymentIntent = await this.stripe.paymentIntents.retrieve(
-      paymentIntentId
+      paymentIntentId,
+      {
+        stripeAccount: paymentIntentRecord.connectedStripeId,
+      }
     )
 
     if (paymentIntent.metadata.lock !== lock) {
-      throw new Error('Lock does not match with initial intent. Aborting')
+      throw new Error('Lock does not match with initial intent.')
     }
 
     if (paymentIntent.metadata.recipient !== recipient) {
-      throw new Error('Recipient does not match with initial intent. Aborting')
+      throw new Error('Recipient does not match with initial intent.')
     }
 
     const maxPriceInCents = paymentIntent.amount
@@ -235,10 +309,13 @@ export class PaymentProcessor {
       0.03 * maxPriceInCents
     ) {
       // if price diverged by more than 3%, we fail!
-      throw new Error('Price diverged by more than 3%. Aborting')
+      throw new Error('Price diverged by more than 3%.')
     }
 
-    await this.stripe.paymentIntents.capture(paymentIntentId)
+    await this.stripe.paymentIntents.capture(paymentIntentId, {
+      stripeAccount: paymentIntentRecord.connectedStripeId,
+    })
+
     const fulfillmentDispatcher = new Dispatcher()
     return new Promise((resolve, reject) => {
       try {
