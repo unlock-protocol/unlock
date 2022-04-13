@@ -30,7 +30,7 @@ import {
 import {
   INFINITY,
   UNLIMITED_KEYS_COUNT,
-  ONE_HUNDRED_YEARS_IN_SECONDS,
+  UNLIMITED_KEYS_DURATION,
 } from '../../constants'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
@@ -96,9 +96,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
 
   const handleUnlimitedDuration = () => {
     dispatch({
-      change: [
-        { name: 'expirationDuration', value: ONE_HUNDRED_YEARS_IN_SECONDS },
-      ],
+      change: [{ name: 'expirationDuration', value: UNLIMITED_KEYS_DURATION }],
     })
   }
 
@@ -150,7 +148,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
   }
 
   const expirationDurationValue =
-    lockInForm?.expirationDuration === ONE_HUNDRED_YEARS_IN_SECONDS
+    lockInForm?.expirationDuration === UNLIMITED_KEYS_DURATION
       ? INFINITY
       : isPositiveIntegerOrZero(lockInForm.expirationDuration)
       ? lockInForm.expirationDuration / (60 * 60 * 24)
@@ -183,7 +181,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
               disabled={!isNew}
             />{' '}
             days
-            {lockInForm?.expirationDuration !== ONE_HUNDRED_YEARS_IN_SECONDS &&
+            {lockInForm?.expirationDuration !== UNLIMITED_KEYS_DURATION &&
               isNew && (
                 <LockLabelUnlimited onClick={handleUnlimitedDuration}>
                   Unlimited

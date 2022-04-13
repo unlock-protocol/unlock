@@ -95,6 +95,41 @@ contract('Lock / mergeKeys', (accounts) => {
       assert.equal(await lock.getHasValidKey.call(keyOwner), true)
     })
   })
+
+  describe('merge with entire available time on a key', () => {
+    it('should allow to transfer the entire amount of time from key', async () => {
+      const expTs = [
+        await lock.keyExpirationTimestampFor(tokenIds[0]),
+        await lock.keyExpirationTimestampFor(tokenIds[1]),
+      ]
+
+      const now = (await web3.eth.getBlock('latest')).timestamp
+      const remaining = expTs[0] - now - 1
+
+      await lock.mergeKeys(tokenIds[0], tokenIds[1], remaining, {
+        from: keyOwner,
+      })
+
+      assert.equal(
+        new BigNumber(expTs[0]).minus(remaining).toString(),
+        new BigNumber(
+          await lock.keyExpirationTimestampFor(tokenIds[0])
+        ).toString()
+      )
+
+      assert.equal(
+        new BigNumber(expTs[1]).plus(remaining).toString(),
+        new BigNumber(
+          await lock.keyExpirationTimestampFor(tokenIds[1])
+        ).toString()
+      )
+
+      assert.equal(await lock.isValidKey.call(tokenIds[0]), false)
+      assert.equal(await lock.isValidKey.call(tokenIds[1]), true)
+      assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
+      assert.equal(await lock.getHasValidKey.call(keyOwner), false)
+    })
+  })
   describe('failures', () => {
     it('should fail if one of the key does not exist', async () => {
       await reverts(
