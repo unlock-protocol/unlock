@@ -9,6 +9,7 @@ import { KeyMetadata } from './keyMetadata'
 import { ParsedBlockForLockCreation } from './parsedBlockForLockCreation'
 import { UserTokenMetadata } from './usertokenmetadata'
 import { StripeCustomer } from './stripeCustomer'
+import { PaymentIntent } from './paymentIntent'
 import { StripeConnectLock } from './stripeConnectLock'
 import { LockIcons } from './lockIcons'
 import { LockMigrations } from './lockMigrations'
@@ -27,24 +28,25 @@ logger.info(`Connecting to database, ${JSON.stringify(config)}`)
 export const sequelize = new Sequelize(config)
 
 sequelize.addModels([
-  User,
-  UserReference,
-  Lock,
-  Transaction,
   AuthorizedLock,
-  LockMetadata,
-  KeyMetadata,
-  ParsedBlockForLockCreation,
-  UserTokenMetadata,
-  StripeCustomer,
-  StripeConnectLock,
-  LockIcons,
-  LockMigrations,
   Charge,
   Hook,
   HookEvent,
+  KeyMetadata,
+  Lock,
+  LockIcons,
+  LockMetadata,
+  LockMigrations,
+  ParsedBlockForLockCreation,
+  PaymentIntent,
   ProcessedHookItem,
   RefreshToken,
+  StripeConnectLock,
+  StripeCustomer,
+  Transaction,
+  User,
+  UserReference,
+  UserTokenMetadata,
 ])
 
 User.removeAttribute('id')
@@ -67,3 +69,4 @@ export * from './lockMigrations'
 export * from './hook'
 export * from './hookEvent'
 export * from './processedHookItem'
+export * from './paymentIntent'
