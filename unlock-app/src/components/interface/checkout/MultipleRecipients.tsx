@@ -178,9 +178,4 @@ const InputGroup = styled.div`
 const ItemRows = styled.div`
   display: flex;
   flex-direction: column;
-  grid-gap: 3px;
-
-  > div {
-    height: 1rem;
-  }
 `
