@@ -348,7 +348,7 @@ export class MetadataController {
 
       const items = await UserTokenMetadata.bulkCreate(newUsersData)
       return response.status(201).send({
-        result: items,
+        result: items.map((item) => item.data),
       })
     } catch (error) {
       logger.error(error.message)
