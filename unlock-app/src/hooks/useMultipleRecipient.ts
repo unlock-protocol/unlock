@@ -83,7 +83,7 @@ export const useMultipleRecipient = (maxRecipients = 1) => {
         )
       }
       if (!valid) {
-        ToastHelper.error('Recipient address is not valid, please check it')
+        ToastHelper.error('Recipient address is not valid, please use a valid wallet address or ENS name.')
       }
       setLoading(false)
       return Promise.resolve(valid)
