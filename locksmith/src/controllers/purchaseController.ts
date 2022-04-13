@@ -135,6 +135,8 @@ namespace PurchaseController {
     )
 
     if (!stripeCustomerId && stripeTokenId) {
+      // Create a "global" stripe customer id
+      // (we will create local customer when we issue charges for a connected lock)
       stripeCustomerId = await createStripeCustomer(
         stripeTokenId,
         Normalizer.ethereumAddress(publicKey)
@@ -158,7 +160,7 @@ namespace PurchaseController {
 
     try {
       const processor = new PaymentProcessor(config.stripeSecret)
-      const hash = await processor.createPaymentIntent(
+      const paymentIntentDetails = await processor.createPaymentIntent(
         Normalizer.ethereumAddress(recipient),
         stripeCustomerId,
         Normalizer.ethereumAddress(lock),
@@ -166,12 +168,12 @@ namespace PurchaseController {
         network,
         stripeConnectApiKey
       )
-      return res.send({
-        transactionHash: hash,
-      })
+      return res.send(paymentIntentDetails)
     } catch (error) {
       logger.error(error)
-      return res.status(400).send(error)
+      return res.status(400).send({
+        error: error.message,
+      })
     }
   }
 

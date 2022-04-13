@@ -8,7 +8,6 @@ export async function createAccountAndPasswordEncryptKey(password) {
   const passwordEncryptedPrivateKey = JSON.parse(
     await newWallet.encrypt(password, WALLET_ENCRYPTION_OPTIONS)
   )
-
   return {
     address,
     passwordEncryptedPrivateKey,
@@ -44,6 +43,6 @@ export async function reEncryptPrivateKey(
   newPassword
 ) {
   const wallet = await getAccountFromPrivateKey(encryptedPrivateKey, password)
-  const newWallet = await wallet.encrypt(newPassword)
+  const newWallet = await wallet.encrypt(newPassword, WALLET_ENCRYPTION_OPTIONS)
   return JSON.parse(newWallet)
 }
