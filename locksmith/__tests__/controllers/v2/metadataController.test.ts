@@ -19,9 +19,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
       },
     }
     const userMetadataResponse = await request(app)
-      .post(
-        `/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}/keys/1`
-      )
+      .post(`/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`)
       .send({ metadata })
 
     expect(userMetadataResponse.status).toBe(201)
@@ -82,15 +80,5 @@ describe('Metadata v2 endpoints for locksmith', () => {
       `/v2/api/metadata/100/locks/${lockAddress}`
     )
     expect(lockMetadataResponse.status).toBe(404)
-  })
-
-  it('Get user metadata', async () => {
-    expect.assertions(1)
-    const lockAddress = await ethers.Wallet.createRandom().getAddress()
-    const userAddress = await ethers.Wallet.createRandom().getAddress()
-    const userMetadataResponse = await request(app).get(
-      `/v2/api/metadata/100/locks/${lockAddress}/users/${userAddress}/keys/1`
-    )
-    expect(userMetadataResponse.status).toBe(404)
   })
 })
