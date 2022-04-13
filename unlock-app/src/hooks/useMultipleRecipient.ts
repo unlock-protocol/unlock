@@ -6,14 +6,13 @@ export interface RecipientItem {
   userAddress: string
   valid: boolean
   index: number
-  data?: any[]
+  data?: { [key: string]: any }
   keyId?: string
 }
 
 export const useMultipleRecipient = (maxRecipients = 1) => {
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
-  const [addNew, setAddNew] = useState(false)
   const [isGroupValid, setIsGroupValid] = useState(false)
   const [loading, setLoading] = useState(false)
 
@@ -76,9 +75,9 @@ export const useMultipleRecipient = (maxRecipients = 1) => {
             new Set(
               prev.add({
                 userAddress: userAddress ?? '',
-                data: metadata,
+                data: metadata ?? {},
                 index,
-                valid: false,
+                valid,
               })
             )
         )
@@ -98,8 +97,6 @@ export const useMultipleRecipient = (maxRecipients = 1) => {
     hasMultipleRecipients,
     recipients: recipientsList(),
     addRecipientItem,
-    setAddNew,
-    addNew,
     isGroupValid,
     loading,
     maxRecipients,

@@ -55,9 +55,10 @@ export const MetadataForm = ({
   const [submittedForm, setSubmittedForm] = useState(false)
   const [skipOptionalFields, setSkipOptionalFields] = useState(false)
 
-  const showSkipButton =
+  const metadataNotRequired =
     fields.every((field) => field.required === false) && !submittedForm
   const showMultipleRecipient = maxRecipients > 1
+  const showSkipButton = metadataNotRequired && !showMultipleRecipient
   // The form returns a map of key-value pair strings. We need to
   // process those into the expected metadata format so that the typed
   // data will be correct.
@@ -75,6 +76,18 @@ export const MetadataForm = ({
       setError('We could not save your info, please try again.')
       setSubmittedForm(false)
     }
+  }
+
+  if (showMultipleRecipient) {
+    return (
+      <MultipleRecipient
+        recipients={recipients}
+        maxRecipients={maxRecipients}
+        addRecipient={addRecipient}
+        loading={loading}
+        fields={fields}
+      />
+    )
   }
   return (
     <form onSubmit={handleSubmit(wrappedOnSubmit)}>
@@ -94,15 +107,6 @@ export const MetadataForm = ({
           />
         </StyledLabel>
       ))}
-
-      {showMultipleRecipient && (
-        <MultipleRecipient
-          recipients={recipients}
-          maxRecipients={maxRecipients}
-          addRecipient={addRecipient}
-          loading={loading}
-        />
-      )}
 
       {submittedForm && <LoadingButton>Saving</LoadingButton>}
 
