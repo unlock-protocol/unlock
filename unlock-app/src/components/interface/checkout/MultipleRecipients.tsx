@@ -57,7 +57,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     <form>
       <span className="text-sm pt-2">
         You can purchase up to {maxRecipients} memberships for multiple
-        recipients
+        recipients.
       </span>
       {recipients?.map(({ userAddress, keyId, data }, index) => {
         const key = keyId ?? userAddress
