@@ -7,7 +7,7 @@ description: The Certified Digital Asset Advisor (CDAA) industry certification i
 image: /images/blog/cdaa/cdaa-header.png
 ---
 
-![CDAA thumbnail](/images/blog/cdaa/cdaa-thumbnail.png)
+![CDAA header](/images/blog/cdaa/cdaa-header.png)
 
 The Certified Digital Asset Advisor (CDAA) designation is the only community-owned designation in the financial services industry. To earn the CDAA designation, financial advisors go through in-depth training and education in the core concepts of cryptocurrency, blockchain technology, and decentralized finance. This knowledge enables certified advisors to provide their investor clients with an elevated level of service and education related to cryptoassets.
 
