@@ -1,21 +1,37 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { ToastHelper } from '../components/helpers/toast.helper'
+import { PaywallConfig } from '../unlockTypes'
+import { ConfigContext } from '../utils/withConfig'
 import { getAddressForName } from './useEns'
 
 export interface RecipientItem {
   userAddress: string
   valid: boolean
   index: number
-  data?: { [key: string]: any }
+  metadata?: { [key: string]: any }
   keyId?: string
 }
-
-export const useMultipleRecipient = (maxRecipients = 1) => {
+export const useMultipleRecipient = (
+  paywallConfig?: PaywallConfig,
+  lockAddress?: string
+) => {
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
   const [isGroupValid, setIsGroupValid] = useState(false)
   const [loading, setLoading] = useState(false)
+  const config: any = useContext(ConfigContext)
+  const { maxRecipients = 1, locks } = paywallConfig ?? {}
+  const lock = lockAddress ? locks?.[lockAddress] : {}
 
+  const normalizeRecipients = () => {
+    return recipientsList().map(({ userAddress, metadata }) => {
+      return {
+        userAddress,
+        metadata,
+        lockAddress,
+      }
+    })
+  }
   useEffect(() => {
     setHasMultipleRecipients(+maxRecipients > 1)
   }, [])
@@ -56,14 +72,28 @@ export const useMultipleRecipient = (maxRecipients = 1) => {
     setLoading(false)
   }
 
+  const submitBulkRecipients = async () => {
+    if (!lock?.network) return
+    const url = `${config.services.storage.host}/users/${lock?.network}`
+    const opts = {
+      method: 'POST',
+      body: JSON.stringify(normalizeRecipients()),
+    }
+    const res = await fetch(url, opts)
+    return res.json()
+  }
+
   const submit = async () => {
-    await validate()
-    // todo: submit data
+    await ToastHelper.promise(submitBulkRecipients(), {
+      success: 'Success',
+      loading: 'Saving recipients',
+      error: 'Ops, something went wrong',
+    })
   }
 
   const addRecipientItem = async (
-    userAddress: string,
-    metadata?: any
+    userAddress = '',
+    metadata = {}
   ): Promise<boolean> => {
     setLoading(true)
     if (canAddUser()) {
@@ -74,8 +104,8 @@ export const useMultipleRecipient = (maxRecipients = 1) => {
           (prev) =>
             new Set(
               prev.add({
-                userAddress: userAddress ?? '',
-                data: metadata ?? {},
+                userAddress,
+                metadata,
                 index,
                 valid,
               })
@@ -83,7 +113,9 @@ export const useMultipleRecipient = (maxRecipients = 1) => {
         )
       }
       if (!valid) {
-        ToastHelper.error('Recipient address is not valid, please use a valid wallet address or ENS name.')
+        ToastHelper.error(
+          'Recipient address is not valid, please use a valid wallet address or ENS name.'
+        )
       }
       setLoading(false)
       return Promise.resolve(valid)
@@ -100,5 +132,6 @@ export const useMultipleRecipient = (maxRecipients = 1) => {
     isGroupValid,
     loading,
     maxRecipients,
+    submitBulkRecipients: submit,
   }
 }

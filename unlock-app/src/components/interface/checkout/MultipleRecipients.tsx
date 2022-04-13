@@ -13,6 +13,7 @@ interface MultipleRecipientProps {
   addRecipient: any
   loading: boolean
   fields: Array<MetadataInput & { value?: any }>
+  submitBulkRecipients: () => void
 }
 export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   recipients,
@@ -20,6 +21,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   addRecipient,
   loading,
   fields = [],
+  submitBulkRecipients,
 }) => {
   const [addNewRecipient, setNewRecipient] = useState(false)
   const [recipient, setRecipient] = useState<string>('')
@@ -40,8 +42,8 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     reset()
   }
 
-  const onSubmit = (data: any) => {
-    // todo: submit data
+  const onSubmit = async () => {
+    await submitBulkRecipients()
   }
 
   const toggleAddRecipient = () => {
@@ -58,7 +60,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         You can purchase up to {maxRecipients} memberships for multiple
         recipients.
       </span>
-      {recipients?.map(({ userAddress, keyId, data }, index) => {
+      {recipients?.map(({ userAddress, keyId, metadata }, index) => {
         const key = keyId ?? userAddress
         const currentIndex = index + 1
         return (
@@ -72,7 +74,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                 <span className="text-xs font-medium">recipient address:</span>
                 <span className="text-xs"> {userAddress}</span>
               </div>
-              {Object.entries(data ?? {}).map(([key, value]) => {
+              {Object.entries(metadata ?? {}).map(([key, value]) => {
                 return (
                   <div key={key}>
                     <span className="text-xs font-medium">{key}:</span>

@@ -18,6 +18,7 @@ interface Props {
   maxRecipients: number
   addRecipient: any
   loading: boolean
+  submitBulkRecipients: () => void
 }
 
 interface DefautltValues {
@@ -33,6 +34,7 @@ export const MetadataForm = ({
   maxRecipients,
   addRecipient,
   loading,
+  submitBulkRecipients,
 }: Props) => {
   const { account } = useContext(AuthenticationContext)
   // @ts-expect-error account is always defined in this component
@@ -86,6 +88,7 @@ export const MetadataForm = ({
         addRecipient={addRecipient}
         loading={loading}
         fields={fields}
+        submitBulkRecipients={submitBulkRecipients}
       />
     )
   }

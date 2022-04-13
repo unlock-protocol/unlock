@@ -127,7 +127,8 @@ export const Checkout = ({
     maxRecipients,
     addRecipientItem,
     loading,
-  } = useMultipleRecipient(paywallConfig?.maxRecipients)
+    submitBulkRecipients,
+  } = useMultipleRecipient(paywallConfig, selectedLock?.address)
   const showMetadataForm =
     (paywallConfig?.metadataInputs || hasMultipleRecipients) && !savedMetadata
 
@@ -306,6 +307,7 @@ export const Checkout = ({
           maxRecipients={maxRecipients}
           addRecipient={addRecipientItem}
           loading={loading}
+          submitBulkRecipients={submitBulkRecipients}
         />
       )
     } else {
@@ -344,6 +346,7 @@ export const Checkout = ({
           maxRecipients={maxRecipients}
           addRecipient={addRecipientItem}
           loading={loading}
+          submitBulkRecipients={submitBulkRecipients}
         />
       )
     } else {
@@ -372,6 +375,7 @@ export const Checkout = ({
           maxRecipients={maxRecipients}
           addRecipient={addRecipientItem}
           loading={loading}
+          submitBulkRecipients={submitBulkRecipients}
         />
       )
     } else {
