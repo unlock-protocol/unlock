@@ -74,6 +74,6 @@ export class FetchError extends Error {
 
     this.name = 'FetchError'
     this.response = response
-    this.data = data ?? { message }
+    this.data = data || { message }
   }
 }
