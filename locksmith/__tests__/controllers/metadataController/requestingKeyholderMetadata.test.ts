@@ -61,7 +61,8 @@ jest.mock('../../../src/utils/keyData', () => {
   })
 })
 
-const mockWeb3Service = {
+// eslint-disable-next-line
+var mockWeb3Service = {
   isLockManager: jest.fn(() => Promise.resolve(false)),
 }
 
@@ -118,6 +119,7 @@ describe('Metadata Controller', () => {
             address: lockAddress,
             owner: lockOwningAddress,
             timestamp: Date.now(),
+            owners: ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'],
           },
         })
 

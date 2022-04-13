@@ -6,6 +6,7 @@
   "scripts": {
     "prod": "cd build && node -r ./src/utils/envLoader.js ./server.js",
     "start": "yarn build && node -r ./src/utils/envLoader.js ./build/server.js",
+    "debug": "yarn build && node -r ./src/utils/envLoader.js ./build/scripts/debug.js",
     "dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js server.js",
     "test": "yarn test:db:setup && yarn test:run",
     "test:db:setup": "yarn run test:db:drop && yarn run test:db:create && yarn run test:db:migrate",
@@ -49,6 +50,7 @@
     "apollo-server": "3.6.7",
     "apollo-server-express": "2.25.3",
     "color-scheme": "1.0.1",
+    "cookie-parser": "1.4.6",
     "cors": "2.8.5",
     "cross-fetch": "3.1.5",
     "dotenv": "16.0.0",
@@ -62,8 +64,8 @@
     "graphql": "15.8.0",
     "graphql-tag": "2.12.6",
     "html-template-tag": "4.0.0",
-    "iron-session": "6.1.2",
     "isomorphic-fetch": "3.0.0",
+    "jsonwebtoken": "8.5.1",
     "lodash.isequal": "4.5.0",
     "multer": "1.4.4",
     "multer-s3": "2.10.0",
@@ -90,6 +92,7 @@
     "zod": "3.14.3"
   },
   "devDependencies": {
+    "@types/cookie-parser": "1.4.2",
     "@types/cors": "2.8.12",
     "@types/eth-sig-util": "2.1.1",
     "@types/ethereumjs-util": "5.2.0",
@@ -97,6 +100,7 @@
     "@types/express-serve-static-core": "4.17.28",
     "@types/isomorphic-fetch": "0.0.36",
     "@types/jest": "27.4.1",
+    "@types/jsonwebtoken": "8.5.8",
     "@types/nock": "10.0.3",
     "@types/node": "16.11.21",
     "@types/node-cron": "3.0.1",

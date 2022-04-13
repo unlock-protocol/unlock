@@ -139,7 +139,9 @@ export default class UnlockService {
       const contractVersion = await contract.publicLockVersion()
       version = parseInt(contractVersion, 10) || 0
     } catch (error) {
-      // This is an older version of Unlock which did not support publicLockVersion
+      console.error(
+        `We could not retrieve the version of the Unlock contract ${address} on this network.`
+      )
     }
     return version
   }

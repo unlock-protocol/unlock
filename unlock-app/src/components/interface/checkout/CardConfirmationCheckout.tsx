@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import Link from 'next/link'
 import styled from 'styled-components'
 import { loadStripe } from '@stripe/stripe-js'
+import { toast } from 'react-hot-toast'
 import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 
@@ -40,17 +41,17 @@ export const CardConfirmationCheckout = ({
   redirectUri,
 }: CardConfirmationCheckoutProps) => {
   const config = useContext(ConfigContext)
-
+  const [paymentIntent, setPaymentIntent] = useState<any>(null)
   const { account } = useContext(AuthenticationContext)
-  // @ts-expect-error account is _always_ defined in this component
-  const { chargeCard, prepareChargeForCard, captureChargeForCard } = useAccount(
+  const { prepareChargeForCard, captureChargeForCard } = useAccount(
     account || '',
     network
   )
   const [purchasePending, setPurchasePending] = useState(false)
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [error, setError] = useState('')
-  // Convenience
+  const [loading, setLoading] = useState(true)
+
   const now = new Date().getTime() / 1000
   const hasValidkey =
     keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
@@ -78,6 +79,31 @@ export const CardConfirmationCheckout = ({
   const formattedPrice = (totalPrice / 100).toFixed(2)
 
   useEffect(() => {
+    const prepareCharge = async () => {
+      const response = await prepareChargeForCard(
+        token,
+        lock.address,
+        network,
+        formattedPrice,
+        recipient || account
+      )
+      if (response.error || !response.clientSecret) {
+        setError(
+          `There was an error preparing your payment: ${
+            response.error || 'please try again.'
+          }`
+        )
+      } else if (response.clientSecret) {
+        setPaymentIntent(response)
+      }
+      setLoading(false)
+    }
+    if (account) {
+      prepareCharge()
+    }
+  }, [account])
+
+  useEffect(() => {
     const waitForTransaction = async (hash: string) => {
       if (config.networks[network]) {
         const provider = new ethers.providers.JsonRpcProvider(
@@ -101,27 +127,24 @@ export const CardConfirmationCheckout = ({
   }, [purchasePending])
 
   const charge = async () => {
+    if (!paymentIntent) {
+      return toast.error('Purchase not ready.')
+    }
     setError('')
     setPurchasePending(true)
     try {
-      // TODO: load when component is loading to make things faster?
-      const stripe = await loadStripe(config.stripeApiKey)
+      const stripe = await loadStripe(config.stripeApiKey, {
+        stripeAccount: paymentIntent.stripeAccount,
+      })
       if (!stripe) {
-        setError('We could not load Stripe.')
-        setPurchasePending(false)
+        setError(
+          'We could not load Stripe. Please refresh the page to try again.'
+        )
         return
       }
-
-      // TODO: consider doing this when the component is loaded for faster processing?
-      const clientSecret = await prepareChargeForCard(
-        token,
-        lock.address,
-        network,
-        formattedPrice,
-        recipient || account
+      const confirmation = await stripe.confirmCardPayment(
+        paymentIntent.clientSecret
       )
-
-      const confirmation = await stripe.confirmCardPayment(clientSecret)
       if (
         confirmation.error ||
         confirmation.paymentIntent?.status !== 'requires_capture'
@@ -196,9 +219,9 @@ export const CardConfirmationCheckout = ({
     )
   }
 
-  const payDisabled = isAdvanced
-    ? purchasePending || !advancedRecipientValid
-    : purchasePending
+  const payDisabled =
+    !paymentIntent ||
+    (isAdvanced ? purchasePending || !advancedRecipientValid : purchasePending)
 
   return (
     <Wrapper>
@@ -237,13 +260,14 @@ export const CardConfirmationCheckout = ({
       {!hasValidkey && !hasOptimisticKey && (
         <>
           <Button disabled={payDisabled} onClick={charge}>
+            {loading && <Svg.Loading title="loading" alt="loading" />}
             Pay ${formattedPrice} with Card
           </Button>
           {error && <ErrorMessage>{error}</ErrorMessage>}
           {fee > 0 && (
             <FeeNotice>
               Includes ${(fee / 100).toFixed(2)} in fees{' '}
-              <Link href="https://docs.unlock-protocol.com/governance/frequently-asked-questions#what-are-the-credit-card-fees">
+              <Link href="https://docs.unlock-protocol.com/unlock/creators/faq#what-are-the-credit-card-fees">
                 <a target="_blank">
                   <InfoIcon />
                 </a>

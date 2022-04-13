@@ -12,6 +12,7 @@ import * as Normalizer from '../utils/normalizer'
 import Dispatcher from '../fulfillment/dispatcher'
 
 import logger from '../logger'
+import { isSoldOut } from '../operations/lockOperations'
 
 const config = require('../../config/config')
 
@@ -111,6 +112,13 @@ namespace PurchaseController {
     const { publicKey, lock, stripeTokenId, pricing, network, recipient } =
       req.body.message['Charge Card']
 
+    const soldOut = await isSoldOut(lock, network)
+    if (soldOut) {
+      return res.status(400).send({
+        error: 'Lock is sold out.',
+      })
+    }
+
     const stripeConnectApiKey = await getStripeConnectForLock(
       Normalizer.ethereumAddress(lock),
       network
@@ -127,6 +135,8 @@ namespace PurchaseController {
     )
 
     if (!stripeCustomerId && stripeTokenId) {
+      // Create a "global" stripe customer id
+      // (we will create local customer when we issue charges for a connected lock)
       stripeCustomerId = await createStripeCustomer(
         stripeTokenId,
         Normalizer.ethereumAddress(publicKey)
@@ -141,6 +151,7 @@ namespace PurchaseController {
     const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
       network
     )
+
     if (!hasEnoughToPayForGas) {
       return res.status(400).send({
         error: `Purchaser does not have enough to pay for gas on ${network}`,
@@ -149,7 +160,7 @@ namespace PurchaseController {
 
     try {
       const processor = new PaymentProcessor(config.stripeSecret)
-      const hash = await processor.createPaymentIntent(
+      const paymentIntentDetails = await processor.createPaymentIntent(
         Normalizer.ethereumAddress(recipient),
         stripeCustomerId,
         Normalizer.ethereumAddress(lock),
@@ -157,12 +168,12 @@ namespace PurchaseController {
         network,
         stripeConnectApiKey
       )
-      return res.send({
-        transactionHash: hash,
-      })
+      return res.send(paymentIntentDetails)
     } catch (error) {
       logger.error(error)
-      return res.status(400).send(error)
+      return res.status(400).send({
+        error: error.message,
+      })
     }
   }
 
@@ -185,6 +196,13 @@ namespace PurchaseController {
     if (!hasEnoughToPayForGas) {
       return res.status(400).send({
         error: `Purchaser does not have enough to pay for gas on ${network}`,
+      })
+    }
+
+    const soldOut = await isSoldOut(lock, network)
+    if (soldOut) {
+      return res.status(400).send({
+        error: 'Lock is sold out.',
       })
     }
 
