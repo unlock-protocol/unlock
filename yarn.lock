@@ -15021,6 +15021,7 @@ __metadata:
     react-jazzicon: 1.0.3
     react-test-renderer: 17.0.2
     react-use-clipboard: 1.0.7
+    siwe: ^1.1.6
     storybook-addon-next-router: 3.1.1
     styled-components: 5.3.5
     tailwind-merge: 1.2.1
@@ -45871,7 +45872,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"siwe@npm:1.1.6":
+"siwe@npm:1.1.6, siwe@npm:^1.1.6":
   version: 1.1.6
   resolution: "siwe@npm:1.1.6"
   dependencies:
