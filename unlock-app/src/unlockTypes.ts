@@ -194,6 +194,7 @@ export interface PaywallConfig {
   messageToSign?: string
   pessimistic?: boolean
   captcha?: boolean
+  maxRecipients?: number
 }
 
 export interface RawLock {
