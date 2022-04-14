@@ -236,7 +236,7 @@ export class MetadataController {
       }
 
       return response.status(409).send({
-        message: "User metadata doesn't exist.",
+        message: 'User metadata already exists.',
       })
     } catch (error) {
       logger.error(error.message)
