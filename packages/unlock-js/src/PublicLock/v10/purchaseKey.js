@@ -16,7 +16,7 @@ export default async function (
   },
   callback
 ) {
-  return purchaseKeys(
+  return purchaseKeys.bind(this)(
     {
       owners: [owner],
       keyManagers: [keyManager],
