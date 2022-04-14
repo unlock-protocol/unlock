@@ -1,10 +1,14 @@
 # Changes
 
+# Next patch
+
+- rescuing gas estimation errors
+
 # 0.23.1
 
-- add support for publicLock v10 
+- add support for publicLock v10
 - add ability for all versions to purchase multiple keys at once with `purchaseKeys`
-- add support for  `extendKey`, `setMaxKeysPerAddress`, `mergeKeys`
+- add support for `extendKey`, `setMaxKeysPerAddress`, `mergeKeys`
 - refactor functions us emultiple times in `./src/PublicLock/utils` folder
 
 # 0.23.0
