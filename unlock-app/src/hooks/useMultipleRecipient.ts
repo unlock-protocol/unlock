@@ -58,7 +58,7 @@ export const useMultipleRecipient = (
   useEffect(() => {
     const activeMultiple = +maxRecipients > 1
     setHasMultipleRecipients(activeMultiple)
-    if (maxRecipients) {
+    if (activeMultiple) {
       addAccountToList()
     }
   }, [])
