@@ -2,6 +2,8 @@ import {
   lockKeysAvailable,
   lockTickerSymbol,
   userCanAffordKey,
+  formattedKeyPrice,
+  convertedKeyPrice,
 } from '../../utils/checkoutLockUtils'
 
 describe('Checkout Lock Utils', () => {
@@ -148,6 +150,66 @@ describe('Checkout Lock Utils', () => {
       }
 
       expect(userCanAffordKey(lock, '50')).toBeFalsy()
+    })
+
+    it('correctly format keyPrice prices', () => {
+      expect.assertions(2)
+      const lock1 = {
+        keyPrice: '100',
+        currencyContractAddress: 'obc3',
+        currencySymbol: 'eth',
+      }
+      const lock2 = {
+        keyPrice: '0',
+        currencyContractAddress: 'Oxbe',
+        currencySymbol: 'eth',
+      }
+
+      expect(formattedKeyPrice(lock1, lock1.currencySymbol)).toEqual('100 ETH')
+
+      expect(formattedKeyPrice(lock2, lock1.currencySymbol)).toEqual('FREE')
+    })
+
+    it('correctly format keyPrice based on numbersOfRecipients', () => {
+      expect.assertions(2)
+      const numbersOfRecipients = 3
+
+      const lock1 = {
+        keyPrice: '12.4',
+        currencyContractAddress: 'obc3',
+        currencySymbol: 'eth',
+      }
+      const lock2 = {
+        keyPrice: '0',
+        currencyContractAddress: 'Oxbe',
+        currencySymbol: 'eth',
+      }
+      expect(
+        formattedKeyPrice(lock1, lock1.currencySymbol, numbersOfRecipients)
+      ).toEqual('37.2 ETH')
+
+      expect(
+        formattedKeyPrice(lock2, lock1.currencySymbol, numbersOfRecipients)
+      ).toEqual('FREE')
+    })
+
+    it('correctly convert keyPrice', () => {
+      expect.assertions(2)
+      const numbersOfRecipients = 6
+
+      const lock = {
+        fiatPricing: {
+          usd: {
+            keyPrice: '7.4',
+          },
+        },
+        currencyContractAddress: 'obc3',
+        currencySymbol: 'eth',
+      }
+
+      expect(convertedKeyPrice(lock)).toEqual('~$0.07')
+
+      expect(convertedKeyPrice(lock, numbersOfRecipients)).toEqual('~$0.44')
     })
   })
 })
