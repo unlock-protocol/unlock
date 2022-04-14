@@ -79,7 +79,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
             <ItemRows>
               <div>
                 <span className="text-xs font-medium">address:</span>
-                <span className="text-xs">{userAddress}</span>
+                <span className="text-xs block">{userAddress}</span>
               </div>
               {Object.entries(metadata ?? {}).map(([key, value]) => {
                 return (

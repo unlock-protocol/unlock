@@ -22,6 +22,7 @@ interface RecipientPayload {
 }
 
 export const useMultipleRecipient = (
+  account?: string,
   paywallConfig?: PaywallConfig,
   lockAddress?: string
 ) => {
@@ -50,8 +51,16 @@ export const useMultipleRecipient = (
     setRecipients(new Set([]))
   }
 
+  const addAccountToList = () => {
+    addRecipientItem(account)
+  }
+
   useEffect(() => {
-    setHasMultipleRecipients(+maxRecipients > 1)
+    const activeMultiple = +maxRecipients > 1
+    setHasMultipleRecipients(activeMultiple)
+    if (maxRecipients) {
+      addAccountToList()
+    }
   }, [])
 
   const recipientsList = (): RecipientItem[] => {

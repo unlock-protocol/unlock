@@ -129,7 +129,7 @@ export const Checkout = ({
     loading,
     submitBulkRecipients,
     clear,
-  } = useMultipleRecipient(paywallConfig, selectedLock?.address)
+  } = useMultipleRecipient(account, paywallConfig, selectedLock?.address)
   const showMetadataForm =
     (paywallConfig?.metadataInputs || hasMultipleRecipients) && !savedMetadata
 
