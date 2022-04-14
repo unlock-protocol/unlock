@@ -39,6 +39,7 @@ const recipientsObj = {
   maxRecipients: 1,
   submitBulkRecipients: () => undefined,
   addRecipient: () => undefined,
+  clear: () => undefined,
 }
 
 describe.skip('Metadata Form', () => {
