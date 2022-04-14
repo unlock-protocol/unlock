@@ -13,9 +13,11 @@ export interface RecipientItem {
 }
 
 interface RecipientPayload {
-  userAddress: string
-  metadata: { [key: string]: any }
-  lockAddress: string
+  users: {
+    userAddress: string
+    metadata: { [key: string]: any }
+    lockAddress: string
+  }[]
 }
 
 export const useMultipleRecipient = (
@@ -32,15 +34,15 @@ export const useMultipleRecipient = (
 
   const normalizeRecipients = () => {
     if (!lockAddress) return
-    const payload: RecipientPayload[] = recipientsList().map(
-      ({ userAddress, metadata = {} }) => {
+    const payload: RecipientPayload = {
+      users: recipientsList().map(({ userAddress, metadata = {} }) => {
         return {
           userAddress,
           metadata,
           lockAddress,
         }
-      }
-    )
+      }),
+    }
     return payload
   }
 
@@ -90,13 +92,12 @@ export const useMultipleRecipient = (
 
   const submitBulkRecipients = async () => {
     if (!lock?.network) return
-    const url = `${config.services.storage.host}/${lock?.network}/users`
+    const url = `${config.services.storage.host}/v2/api/metadata/${lock?.network}/users`
     const opts = {
       method: 'POST',
       body: JSON.stringify(normalizeRecipients()),
     }
-    const res = await fetch(url, opts)
-    return res.json()
+    return (await fetch(url, opts)).json()
   }
 
   const submit = async () => {

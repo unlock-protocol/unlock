@@ -56,6 +56,11 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     }
   }
 
+  const onContinueCallback = async () => {
+    await onSubmit()
+    onContinue()
+  }
+
   return (
     <form>
       <span className="text-sm pt-2">
@@ -120,7 +125,11 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         </fieldset>
       )}
       {haveRecipients && (
-        <Button type="button" disabled={addNewRecipient} onClick={onContinue}>
+        <Button
+          type="button"
+          disabled={addNewRecipient}
+          onClick={onContinueCallback}
+        >
           Continue
         </Button>
       )}

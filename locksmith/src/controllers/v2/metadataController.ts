@@ -303,7 +303,7 @@ export class MetadataController {
       logger.error(error.message)
       return response
         .status(500)
-        .send('There were some problems in updating the user metadata.')
+        .send('There were some problems in adding the user metadata.')
     }
   }
 
@@ -354,7 +354,7 @@ export class MetadataController {
       logger.error(error.message)
       return response
         .status(500)
-        .send('There were some problems in updating bulk user metadata.')
+        .send('There were some problems in adding bulk user metadata.')
     }
   }
 }
