@@ -71,7 +71,7 @@ export const useMultipleRecipient = (
     return recipients.size < maxRecipients
   }
 
-  const isAddressValid = async (recipient: string) => {
+  const getAddressAndValidation = async (recipient: string) => {
     const address = await getAddressForName(recipient)
     return {
       valid: address?.length > 0 ?? false,
@@ -104,7 +104,7 @@ export const useMultipleRecipient = (
     setLoading(true)
     if (canAddUser()) {
       const index = recipients?.size + 1
-      const { valid, address } = await isAddressValid(userAddress)
+      const { valid, address } = await getAddressAndValidation(userAddress)
       if (valid) {
         setRecipients(
           (prev) =>
