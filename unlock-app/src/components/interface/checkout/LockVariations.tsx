@@ -313,6 +313,7 @@ export interface PurchaseableLockProps {
   network: number
   selectable: boolean
   cardEnabled: boolean
+  prepend: string
 }
 
 export const PurchaseableLock = ({
@@ -326,6 +327,7 @@ export const PurchaseableLock = ({
   selectable,
   cardEnabled,
   onClick,
+  prepend,
 }: PurchaseableLockProps) => {
   return (
     <LockContainer
@@ -334,7 +336,10 @@ export const PurchaseableLock = ({
       data-testid="PurchaseableLock"
     >
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <BaseLockBody onClick={onClick}>
@@ -365,6 +370,7 @@ export interface ProcessingLockProps {
   formattedKeysAvailable: string
   network: number
   cardEnabled: boolean
+  prepend: string
 }
 
 export const ProcessingLock = ({
@@ -376,11 +382,15 @@ export const ProcessingLock = ({
   convertedKeyPrice,
   formattedKeysAvailable,
   cardEnabled,
+  prepend,
 }: ProcessingLockProps) => {
   return (
     <LockContainer data-address={address} data-testid="ProcessingLock">
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <BaseLockBody>
