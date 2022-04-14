@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { RecipientItem } from '../../../hooks/useMultipleRecipient'
@@ -14,6 +14,7 @@ interface MultipleRecipientProps {
   loading: boolean
   fields: Array<MetadataInput & { value?: any }>
   submitBulkRecipients: () => void
+  onContinue: () => void
 }
 export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   recipients,
@@ -22,6 +23,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   loading,
   fields = [],
   submitBulkRecipients,
+  onContinue,
 }) => {
   const [addNewRecipient, setNewRecipient] = useState(false)
   const [recipient, setRecipient] = useState<string>('')
@@ -118,7 +120,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         </fieldset>
       )}
       {haveRecipients && (
-        <Button type="button" disabled={addNewRecipient}>
+        <Button type="button" disabled={addNewRecipient} onClick={onContinue}>
           Continue
         </Button>
       )}

@@ -32,6 +32,11 @@ export const useMultipleRecipient = (
       }
     })
   }
+
+  const clear = () => {
+    setRecipients(new Set([]))
+  }
+
   useEffect(() => {
     setHasMultipleRecipients(+maxRecipients > 1)
   }, [])
@@ -133,5 +138,6 @@ export const useMultipleRecipient = (
     loading,
     maxRecipients,
     submitBulkRecipients: submit,
+    clear,
   }
 }
