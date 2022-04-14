@@ -8,10 +8,8 @@ import logger from '../../logger'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
-import { objectWithoutKey } from '../../utils/object'
 
 const UserMetadataBody = z.object({
-  keyId: z.string(),
   lockAddress: z.string(),
   userAddress: z.string(),
   metadata: z.any(),
@@ -86,7 +84,7 @@ export class MetadataController {
 
   async getKeyMetadata(request: Request, response: Response) {
     try {
-      const { keyId } = request.params
+      const keyId = request.params.keyId.toLowerCase()
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
       const host = `${request.protocol}://${request.headers.host}`
@@ -115,52 +113,6 @@ export class MetadataController {
     }
   }
 
-  async getUserMetadata(request: Request, response: Response) {
-    try {
-      const { keyId } = request.params
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-      const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
-      const tokenAddress = `${lockAddress}-${keyId}`
-      const network = Number(request.params.network)
-
-      const includedProtected = await this.#isKeyOrLockOwner({
-        keyId,
-        network,
-        lockAddress,
-        userAddress: request.user?.walletAddress,
-      })
-
-      const userData = await UserTokenMetadata.findOne({
-        where: {
-          userAddress,
-          tokenAddress,
-          chain: network,
-        },
-      })
-
-      if (!userData) {
-        return response.status(404).send('No user metadata found.')
-      }
-
-      if (!includedProtected) {
-        const userMetaData = objectWithoutKey(
-          userData.data.userMetadata,
-          'protected'
-        )
-        return response.send({
-          ...userData.data,
-          userMetaData,
-        })
-      }
-      return response.send(userData.data)
-    } catch (error) {
-      logger.error(error.message)
-      return response
-        .status(500)
-        .send('There were some problems in getting the user metadata.')
-    }
-  }
-
   async updateLockMetadata(request: Request, response: Response) {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
@@ -170,37 +122,33 @@ export class MetadataController {
         request.user!.walletAddress!
       )
 
-      const isLockerOwner = await this.web3Service.isLockManager(
+      const isLockOwner = await this.web3Service.isLockManager(
         lockAddress,
         loggedUserAddress,
         network
       )
 
-      if (!isLockerOwner) {
+      if (!isLockOwner) {
         return response
           .status(401)
           .send(
             `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`
           )
-      } else {
-        const [updatedLockMetadata, success] = await LockMetadata.upsert(
-          {
-            address: lockAddress,
-            chain: network,
-            data: {
-              ...metadata,
-            },
-          },
-          {
-            returning: true,
-          }
-        )
-        if (success) {
-          return response.status(202).send(updatedLockMetadata.data)
-        } else {
-          return response.status(400).send('update failed')
-        }
       }
+      const [updatedLockMetadata, created] = await LockMetadata.upsert(
+        {
+          address: lockAddress,
+          chain: network,
+          data: {
+            ...metadata,
+          },
+        },
+        {
+          returning: true,
+        }
+      )
+      const statusCode = created ? 201 : 204
+      return response.status(statusCode).send(updatedLockMetadata.data)
     } catch (error) {
       logger.error(error.message)
       return response
@@ -211,7 +159,7 @@ export class MetadataController {
 
   async updateKeyMetadata(request: Request, response: Response) {
     try {
-      const { keyId } = request.params
+      const keyId = request.params.keyId.toLowerCase()
       const { metadata } = request.body
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const loggedUserAddress = Normalizer.ethereumAddress(
@@ -219,55 +167,36 @@ export class MetadataController {
       )
       const network = Number(request.params.network)
       const host = `${request.protocol}://${request.headers.host}`
-      const isLockerOwner = await this.web3Service.isLockManager(
+      const isLockOwner = await this.web3Service.isLockManager(
         lockAddress,
         loggedUserAddress,
         network
       )
 
-      if (!isLockerOwner) {
+      if (!isLockOwner) {
         return response
           .status(401)
           .send('You are not authorized to update this key.')
       }
 
-      const [rows] = await KeyMetadata.update(
-        {
-          data: {
-            ...metadata,
-          },
+      const created = await KeyMetadata.upsert({
+        chain: network,
+        address: lockAddress,
+        id: keyId,
+        data: {
+          ...metadata,
         },
-        {
-          where: {
-            chain: network,
-            address: lockAddress,
-            id: keyId,
-          },
-
-          returning: true,
-        }
-      )
-
-      if (!rows) {
-        return response.status(500).send('Failed to update the key metadata.')
-      }
-
-      const includeProtected = await this.#isKeyOrLockOwner({
-        lockAddress,
-        keyId,
-        network,
-        userAddress: loggedUserAddress,
       })
 
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
         keyId,
-        includeProtected,
+        isLockOwner,
         host,
         network
       )
-
-      return response.status(204).send(keyData)
+      const statusCode = created ? 201 : 204
+      return response.status(statusCode).send(keyData)
     } catch (error) {
       logger.error(error.message)
       return response
@@ -278,10 +207,10 @@ export class MetadataController {
 
   async createUserMetadata(request: Request, response: Response) {
     try {
-      const { keyId } = request.params
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const tokenAddress = Normalizer.ethereumAddress(
+        request.params.lockAddress
+      )
       const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
-      const tokenAddress = `${lockAddress}-${keyId}`
       const network = Number(request.params.network)
       const { metadata } = request.body
 
@@ -315,44 +244,46 @@ export class MetadataController {
 
   async updateUserMetadata(request: Request, response: Response) {
     try {
-      const { keyId } = request.params
-      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const tokenAddress = Normalizer.ethereumAddress(
+        request.params.lockAddress
+      )
       const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress
       )
-      const tokenAddress = `${lockAddress}-${keyId}`
-
       const network = Number(request.params.network)
       const { metadata } = request.body
 
-      const isKeyOrLockOwner = await this.#isKeyOrLockOwner({
-        userAddress: loggedUserAddress,
-        lockAddress,
-        keyId,
-        network,
+      const isUserMetadataOwner = userAddress === loggedUserAddress
+
+      const isLockOwner = this.web3Service.isLockManager(
+        tokenAddress,
+        loggedUserAddress,
+        network
+      )
+
+      const userData = await UserTokenMetadata.findOne({
+        where: {
+          userAddress,
+          tokenAddress,
+        },
       })
 
-      if (!isKeyOrLockOwner) {
+      if (!userData) {
+        return response.status(404).send("User metadata doesn't exist.")
+      }
+
+      if (!(isLockOwner || isUserMetadataOwner)) {
         return response
           .status(401)
           .send('You are not authorized to update user metadata for this key.')
       }
-
-      const keyOwner = await this.web3Service.ownerOf(
-        lockAddress,
-        keyId,
-        network
-      )
-
-      const keyOwnerAddress = Normalizer.ethereumAddress(keyOwner)
 
       const [rows, updatedUserMetadata] = await UserTokenMetadata.update(
         {
           data: {
             ...metadata,
           },
-          userAddress: keyOwnerAddress,
         },
         {
           where: {
@@ -381,8 +312,8 @@ export class MetadataController {
       const network = Number(request.params.network)
       const { users } = await BulkUserMetadataBody.parseAsync(request.body)
       const tokenAddresses = users.map((user) => {
-        const lockAddress = Normalizer.ethereumAddress(user.lockAddress)
-        return `${lockAddress}-${user.keyId}`
+        const tokenAddress = Normalizer.ethereumAddress(user.lockAddress)
+        return tokenAddress
       })
 
       const userMetadataResults = await UserTokenMetadata.findAll({
@@ -401,9 +332,9 @@ export class MetadataController {
       }
 
       const newUsersData = users.map((user) => {
-        const { keyId, userAddress, metadata } = user
+        const { userAddress, metadata } = user
         const lockAddress = Normalizer.ethereumAddress(user.lockAddress)
-        const tokenAddress = `${lockAddress}-${keyId}`
+        const tokenAddress = lockAddress
         const newUserData = {
           userAddress,
           tokenAddress,
