@@ -85,6 +85,9 @@ export const useMultipleRecipient = (
     const opts = {
       method: 'POST',
       body: JSON.stringify(normalizeRecipients()),
+      headers: {
+        'content-type': 'application/json',
+      },
     }
     return (await fetch(url, opts)).json()
   }
