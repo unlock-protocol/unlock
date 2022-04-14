@@ -323,6 +323,7 @@ export const Checkout = ({
           lock={selectedLock}
           closeModal={closeModal}
           setCardPurchase={() => cardCheckoutOrClaim(selectedLock)}
+          numberOfRecipients={recipients?.length}
         />
       )
     }

@@ -34,6 +34,7 @@ interface CryptoCheckoutProps {
   closeModal: (success: boolean) => void
   setCardPurchase: () => void
   redirectUri?: string
+  numberOfRecipients?: number
 }
 
 export const CryptoCheckout = ({
@@ -45,6 +46,7 @@ export const CryptoCheckout = ({
   closeModal,
   setCardPurchase,
   redirectUri,
+  numberOfRecipients,
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
@@ -234,6 +236,7 @@ export const CryptoCheckout = ({
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
         onLoading={onLoading}
+        numberOfRecipients={numberOfRecipients}
       />
       {!hasValidKeyOrPendingTx && (
         <>
@@ -368,6 +371,7 @@ export default CryptoCheckout
 
 CryptoCheckout.defaultProps = {
   redirectUri: '',
+  numberOfRecipients: 1,
 }
 
 interface CheckoutButtonProps {

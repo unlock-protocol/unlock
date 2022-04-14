@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { MetadataInput, UserMetadata } from '../../../unlockTypes'
@@ -36,7 +36,6 @@ export const MetadataForm = ({
   addRecipient,
   loading,
   submitBulkRecipients,
-  clear,
 }: Props) => {
   const { account } = useContext(AuthenticationContext)
   // @ts-expect-error account is always defined in this component
