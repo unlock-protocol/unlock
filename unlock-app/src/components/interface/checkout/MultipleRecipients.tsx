@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { RecipientItem } from '../../../hooks/useMultipleRecipient'
@@ -78,8 +78,8 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
 
             <ItemRows>
               <div>
-                <span className="text-xs font-medium">recipient address:</span>
-                <span className="text-xs"> {userAddress}</span>
+                <span className="text-xs font-medium">address:</span>
+                <span className="text-xs">{userAddress}</span>
               </div>
               {Object.entries(metadata ?? {}).map(([key, value]) => {
                 return (

@@ -6,6 +6,7 @@ import { getAddressForName } from './useEns'
 
 export interface RecipientItem {
   userAddress: string
+  resolvedAddress: string
   valid: boolean
   index: number
   metadata?: { [key: string]: any }
@@ -26,7 +27,6 @@ export const useMultipleRecipient = (
 ) => {
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
-  const [isGroupValid, setIsGroupValid] = useState(false)
   const [loading, setLoading] = useState(false)
   const config: any = useContext(ConfigContext)
   const { maxRecipients = 1, locks } = paywallConfig ?? {}
@@ -35,9 +35,9 @@ export const useMultipleRecipient = (
   const normalizeRecipients = () => {
     if (!lockAddress) return
     const payload: RecipientPayload = {
-      users: recipientsList().map(({ userAddress, metadata = {} }) => {
+      users: recipientsList().map(({ resolvedAddress, metadata = {} }) => {
         return {
-          userAddress,
+          userAddress: resolvedAddress,
           metadata,
           lockAddress,
         }
@@ -63,31 +63,11 @@ export const useMultipleRecipient = (
   }
 
   const isAddressValid = async (recipient: string) => {
-    const valid = await getAddressForName(recipient)
-    return valid?.length > 0 ?? false
-  }
-
-  const validate = async () => {
-    setLoading(true)
-    const items = recipientsList()
-    const validations = await Promise.all([
-      ...items.map(({ userAddress }) => {
-        return isAddressValid(userAddress)
-      }),
-    ])
-    const isGroupValid = validations.every((validation) => validation)
-
-    // add validation status for every item
-    const itemsWithValidations = items.map((item, index) => {
-      return {
-        ...item,
-        valid: validations[index],
-      }
-    })
-
-    setRecipients(new Set(itemsWithValidations))
-    setIsGroupValid(isGroupValid)
-    setLoading(false)
+    const address = await getAddressForName(recipient)
+    return {
+      valid: address?.length > 0 ?? false,
+      address,
+    }
   }
 
   const submitBulkRecipients = async () => {
@@ -115,7 +95,7 @@ export const useMultipleRecipient = (
     setLoading(true)
     if (canAddUser()) {
       const index = recipients?.size + 1
-      const valid = await isAddressValid(userAddress)
+      const { valid, address } = await isAddressValid(userAddress)
       if (valid) {
         setRecipients(
           (prev) =>
@@ -124,6 +104,7 @@ export const useMultipleRecipient = (
                 userAddress,
                 metadata,
                 index,
+                resolvedAddress: address ?? userAddress,
                 valid,
               })
             )
@@ -146,7 +127,6 @@ export const useMultipleRecipient = (
     hasMultipleRecipients,
     recipients: recipientsList(),
     addRecipientItem,
-    isGroupValid,
     loading,
     maxRecipients,
     submitBulkRecipients: submit,
