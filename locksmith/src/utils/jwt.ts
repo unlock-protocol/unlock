@@ -49,7 +49,9 @@ export const jwtMiddleware: RequestHandler = (req, _, next) => {
 
 export const authenticatedMiddleware: RequestHandler = (req, res, next) => {
   if (!req.user) {
-    return res.status(403).send('You are not authenticated.')
+    return res.status(403).send({
+      message: 'You are not authenticated.',
+    })
   }
   return next()
 }
