@@ -13,6 +13,7 @@ export default function getConfigFromSearch(
 
     try {
       parsedConfig = JSON.parse(decodedConfig)
+      parsedConfig.maxRecipients = parsedConfig?.maxRecipients || 1
     } catch (e) {
       console.error(
         'paywall config in URL not valid JSON, continuing with undefined'
