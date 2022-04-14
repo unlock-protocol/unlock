@@ -11,6 +11,13 @@ export interface RecipientItem {
   metadata?: { [key: string]: any }
   keyId?: string
 }
+
+interface RecipientPayload {
+  userAddress: string
+  metadata: { [key: string]: any }
+  lockAddress: string
+}
+
 export const useMultipleRecipient = (
   paywallConfig?: PaywallConfig,
   lockAddress?: string
@@ -24,13 +31,17 @@ export const useMultipleRecipient = (
   const lock = lockAddress ? locks?.[lockAddress] : {}
 
   const normalizeRecipients = () => {
-    return recipientsList().map(({ userAddress, metadata }) => {
-      return {
-        userAddress,
-        metadata,
-        lockAddress,
+    if (!lockAddress) return
+    const payload: RecipientPayload[] = recipientsList().map(
+      ({ userAddress, metadata = {} }) => {
+        return {
+          userAddress,
+          metadata,
+          lockAddress,
+        }
       }
-    })
+    )
+    return payload
   }
 
   const clear = () => {
@@ -79,7 +90,7 @@ export const useMultipleRecipient = (
 
   const submitBulkRecipients = async () => {
     if (!lock?.network) return
-    const url = `${config.services.storage.host}/users/${lock?.network}`
+    const url = `${config.services.storage.host}/${lock?.network}/users`
     const opts = {
       method: 'POST',
       body: JSON.stringify(normalizeRecipients()),
