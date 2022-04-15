@@ -130,7 +130,6 @@ export const useMultipleRecipient = (
     if (res) {
       const result: any = await res.json()
       const errorCodes = [500, 401, 404, 409]
-      console.log(result, res)
       if (errorCodes.includes(res.status)) {
         ToastHelper.error(result?.message ?? 'Ops, something went wrong')
         if (retryBulkAction) {
