@@ -132,7 +132,7 @@ export const useMultipleRecipient = (
         error: 'Ops, something went wrong',
       })
     } catch (err: any) {
-      ToastHelper.error(err?.message ?? 'Ops, something went wrong, trying')
+      ToastHelper.error(err?.message ?? 'Ops, something went wrong')
       if (retryBulkAction) {
         setRetryBulkAction(false)
         submitBulkRecipients(err?.users ?? [])
