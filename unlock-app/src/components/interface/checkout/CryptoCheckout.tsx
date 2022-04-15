@@ -290,12 +290,7 @@ export const CryptoCheckout = ({
           <Prompt>Get the membership with:</Prompt>
 
           <CheckoutOptions>
-            <button type="button" onClick={purchaseBulk}>
-              test
-            </button>
-            <CheckoutButton
-              disabled={cantBuyWithCrypto || withMultipleRecipients || loading}
-            >
+            <CheckoutButton disabled={cantBuyWithCrypto || loading}>
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
               {!isUnlockAccount && userIsOnWrongNetwork && (
                 <Warning>
@@ -315,7 +310,11 @@ export const CryptoCheckout = ({
               )}
             </CheckoutButton>
 
-            <CheckoutButton disabled={cantPurchaseWithCard || loading}>
+            <CheckoutButton
+              disabled={
+                cantPurchaseWithCard || withMultipleRecipients || loading
+              }
+            >
               <Buttons.CreditCard
                 lock={lock}
                 backgroundColor="var(--blue)"
