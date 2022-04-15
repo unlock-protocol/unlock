@@ -114,7 +114,7 @@ const UNLOCK_PAST_COHORTS = [
   {
     name: 'Tales of Elatora',
     avatarURL: '/images/marketing/grants/caroline.png',
-    by: 'Carolin',
+    by: 'Caroline',
     socialURL: 'https://twitter.com/littlefortunes',
     text: 'A NFT Artist who uses Unlock to token-gate their story writing. Members can vote on the story. ',
   },
