@@ -125,7 +125,7 @@ export const useMultipleRecipient = (
     return response
   }
 
-  const submit = async (ignoreRecipients?: User[], callback?: () => void) => {
+  const submit = async (ignoreRecipients?: User[]) => {
     const res = await submitBulkRecipients(ignoreRecipients)
     if (res) {
       const result: any = await res.json()
@@ -136,11 +136,10 @@ export const useMultipleRecipient = (
         if (retryBulkAction) {
           ToastHelper.success('Re-try bulk submit')
           setRetryBulkAction(false)
-          submit(result?.users ?? [], callback)
+          submit(result?.users ?? [])
         }
       } else {
         ToastHelper.success('Success')
-        if (typeof callback === 'function') callback()
       }
     }
   }
