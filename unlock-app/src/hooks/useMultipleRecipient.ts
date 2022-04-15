@@ -121,21 +121,26 @@ export const useMultipleRecipient = (
         'content-type': 'application/json',
       },
     }
-    return (await fetch(url, opts)).json()
+    const response = await fetch(url, opts)
+    return response
   }
 
-  const submit = async () => {
-    try {
-      await ToastHelper.promise(submitBulkRecipients(), {
-        success: 'Success',
-        loading: 'Saving recipients',
-        error: 'Ops, something went wrong',
-      })
-    } catch (err: any) {
-      ToastHelper.error(err?.message ?? 'Ops, something went wrong')
-      if (retryBulkAction) {
-        setRetryBulkAction(false)
-        submitBulkRecipients(err?.users ?? [])
+  const submit = async (ignoreRecipients?: User[], callback?: () => void) => {
+    const res = await submitBulkRecipients(ignoreRecipients)
+    if (res) {
+      const result: any = await res.json()
+      const errorCodes = [500, 401, 404, 409]
+      console.log(result, res)
+      if (errorCodes.includes(res.status)) {
+        ToastHelper.error(result?.message ?? 'Ops, something went wrong')
+        if (retryBulkAction) {
+          ToastHelper.success('Re-try bulk submit')
+          setRetryBulkAction(false)
+          submit(result?.users ?? [], callback)
+        }
+      } else {
+        ToastHelper.success('Success')
+        if (typeof callback === 'function') callback()
       }
     }
   }

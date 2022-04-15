@@ -13,7 +13,7 @@ interface MultipleRecipientProps {
   addRecipient: any
   loading: boolean
   fields: Array<MetadataInput & { value?: any }>
-  submitBulkRecipients: () => void
+  submitBulkRecipients: (callback?: () => void) => void
   onContinue: () => void
 }
 export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
@@ -44,8 +44,8 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     reset()
   }
 
-  const onSubmit = async () => {
-    await submitBulkRecipients()
+  const onSubmit = async (callback?: () => void) => {
+    return submitBulkRecipients(callback)
   }
 
   const toggleAddRecipient = () => {
@@ -57,8 +57,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   }
 
   const onContinueCallback = async () => {
-    await onSubmit()
-    onContinue()
+    await onSubmit(onContinue)
   }
 
   return (
