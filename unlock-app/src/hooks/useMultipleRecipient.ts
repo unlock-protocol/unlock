@@ -45,16 +45,24 @@ export const useMultipleRecipient = (
   const normalizeRecipients = (ignoreRecipients?: User[]) => {
     if (!lockAddress) return
 
+    /*
+      we need to exclude user metadata that already already exists,
+      by creating a new array without items in "ignoreRecipients"
+     */
     const listWithoutExcluded = recipientsList().filter(
       ({ resolvedAddress }) => {
-        return ignoreRecipients && ignoreRecipients?.length > 0
-          ? !ignoreRecipients
-              .map(({ userAddress }) => userAddress)
-              .includes(resolvedAddress)
-          : true
+        const exludedAddressList = (ignoreRecipients ?? []).map(
+          ({ userAddress }) => userAddress
+        )
+        const isAddressExcluded =
+          (exludedAddressList?.length > 0 &&
+            exludedAddressList.includes(resolvedAddress)) ||
+          exludedAddressList.length === 0
+        return isAddressExcluded
       }
     )
 
+    console.log(listWithoutExcluded)
     const payload: RecipientPayload = {
       users: listWithoutExcluded.map(({ resolvedAddress, metadata = {} }) => {
         return {
