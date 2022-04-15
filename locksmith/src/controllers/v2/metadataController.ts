@@ -342,7 +342,7 @@ export class MetadataController {
       })
 
       if (userMetadataResults.length) {
-        return response.status(409).send({
+        return response.status(401).send({
           message: 'User metadata already exists for the following users.',
           users: userMetadataResults.map((user) => {
             return {
