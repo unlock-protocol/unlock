@@ -6,6 +6,10 @@ import { WalletServiceContext } from '../utils/withWalletService'
 import { getAddressForName } from './useEns'
 import { purchaseMultipleKeys } from './useLock'
 
+interface User {
+  lockAddress: string
+  userAddress: string
+}
 export interface RecipientItem {
   userAddress: string
   resolvedAddress: string
@@ -33,13 +37,25 @@ export const useMultipleRecipient = (
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
   const [loading, setLoading] = useState(false)
   const config: any = useContext(ConfigContext)
+  const [retryBulkAction, setRetryBulkAction] = useState(true)
   const { maxRecipients = 1, locks } = paywallConfig ?? {}
   const lock = lockAddress ? locks?.[lockAddress] : {}
 
-  const normalizeRecipients = () => {
+  const normalizeRecipients = (ignoreRecipients?: User[]) => {
     if (!lockAddress) return
+
+    const listWithoutExcluded = recipientsList().filter(
+      ({ resolvedAddress }) => {
+        return ignoreRecipients && ignoreRecipients?.length > 0
+          ? !ignoreRecipients
+              .map(({ userAddress }) => userAddress)
+              .includes(resolvedAddress)
+          : true
+      }
+    )
+
     const payload: RecipientPayload = {
-      users: recipientsList().map(({ resolvedAddress, metadata = {} }) => {
+      users: listWithoutExcluded.map(({ resolvedAddress, metadata = {} }) => {
         return {
           userAddress: resolvedAddress,
           metadata,
@@ -95,12 +111,12 @@ export const useMultipleRecipient = (
     }
   }
 
-  const submitBulkRecipients = async () => {
+  const submitBulkRecipients = async (ignoreRecipients?: User[]) => {
     if (!lock?.network) return
     const url = `${config.services.storage.host}/v2/api/metadata/${lock?.network}/users`
     const opts = {
       method: 'POST',
-      body: JSON.stringify(normalizeRecipients()),
+      body: JSON.stringify(normalizeRecipients(ignoreRecipients)),
       headers: {
         'content-type': 'application/json',
       },
@@ -109,11 +125,19 @@ export const useMultipleRecipient = (
   }
 
   const submit = async () => {
-    await ToastHelper.promise(submitBulkRecipients(), {
-      success: 'Success',
-      loading: 'Saving recipients',
-      error: 'Ops, something went wrong',
-    })
+    try {
+      await ToastHelper.promise(submitBulkRecipients(), {
+        success: 'Success',
+        loading: 'Saving recipients',
+        error: 'Ops, something went wrong',
+      })
+    } catch (err: any) {
+      ToastHelper.error(err?.message ?? 'Ops, something went wrong, trying')
+      if (retryBulkAction) {
+        setRetryBulkAction(false)
+        submitBulkRecipients(err?.users ?? [])
+      }
+    }
   }
 
   const addRecipientItem = async (
