@@ -226,10 +226,8 @@ export const purchaseMultipleKeys = async ({
   owners = [],
 }) => {
   return walletService.purchaseKeys({
-    params: {
-      lockAddress,
-      owners,
-    },
+    lockAddress,
+    owners,
   })
 }
 /**
