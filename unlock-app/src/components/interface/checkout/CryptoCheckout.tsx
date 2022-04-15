@@ -96,6 +96,8 @@ export const CryptoCheckout = ({
     !canClaimAirdrop &&
     lock.keyPrice !== '0'
 
+  const withMultipleRecipients = numberOfRecipients > 0
+
   const cantBuyWithCrypto = isAdvanced
     ? !(
         advancedRecipientValid &&
@@ -123,7 +125,7 @@ export const CryptoCheckout = ({
   }
 
   const cryptoPurchase = async () => {
-    if (numberOfRecipients > 1) {
+    if (withMultipleRecipients) {
       if (typeof purchaseBulk === 'function') await purchaseBulk()
     } else if (!cantBuyWithCrypto && account) {
       setPurchasePending(true)
@@ -291,7 +293,9 @@ export const CryptoCheckout = ({
             <button type="button" onClick={purchaseBulk}>
               test
             </button>
-            <CheckoutButton disabled={cantBuyWithCrypto || loading}>
+            <CheckoutButton
+              disabled={cantBuyWithCrypto || withMultipleRecipients || loading}
+            >
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
               {!isUnlockAccount && userIsOnWrongNetwork && (
                 <Warning>
