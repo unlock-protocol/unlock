@@ -63,14 +63,12 @@ export const useMultipleRecipient = (
     const owners = recipientsList().map(
       ({ resolvedAddress }) => resolvedAddress
     )
-    const payload = {
-      params: {
-        walletService,
-        lockAddress,
-        owners,
-      },
-    }
-    await purchaseMultipleKeys(payload as any)
+
+    await purchaseMultipleKeys({
+      walletService,
+      lockAddress,
+      owners,
+    })
   }
 
   useEffect(() => {
