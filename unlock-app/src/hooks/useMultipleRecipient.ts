@@ -36,8 +36,6 @@ export const useMultipleRecipient = (
   const { maxRecipients = 1, locks } = paywallConfig ?? {}
   const lock = lockAddress ? locks?.[lockAddress] : {}
 
-  console.log('walletService', walletService)
-
   const normalizeRecipients = () => {
     if (!lockAddress) return
     const payload: RecipientPayload = {
