@@ -130,10 +130,15 @@ export const Checkout = ({
     submitBulkRecipients,
     clear,
     purchaseBulk,
-  } = useMultipleRecipient(account, paywallConfig, selectedLock?.address)
+  } = useMultipleRecipient(
+    account,
+    paywallConfig,
+    selectedLock?.address,
+    selectedLock?.keyPrice
+  )
   const showMetadataForm =
     (paywallConfig?.metadataInputs || hasMultipleRecipients) && !savedMetadata
-
+  console.log(selectedLock)
   // state change
   useEffect(() => {
     setState(defaultState)

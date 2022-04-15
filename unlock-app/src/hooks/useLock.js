@@ -223,11 +223,13 @@ export const purchaseKeyFromLock = async (
 export const purchaseMultipleKeys = async ({
   walletService,
   lockAddress,
+  keyPrices = [],
   owners = [],
 }) => {
   return walletService.purchaseKeys({
     lockAddress,
     owners,
+    keyPrices,
   })
 }
 /**

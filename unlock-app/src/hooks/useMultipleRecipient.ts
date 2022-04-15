@@ -30,7 +30,8 @@ interface RecipientPayload {
 export const useMultipleRecipient = (
   account?: string,
   paywallConfig?: PaywallConfig,
-  lockAddress?: string
+  lockAddress?: string,
+  singleKeyPrice?: string
 ) => {
   const walletService = useContext(WalletServiceContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
@@ -76,6 +77,7 @@ export const useMultipleRecipient = (
 
   const purchaseBulk = async () => {
     if (!lockAddress) return
+    if (!singleKeyPrice) return
     const owners = recipientsList().map(
       ({ resolvedAddress }) => resolvedAddress
     )
@@ -84,6 +86,7 @@ export const useMultipleRecipient = (
       walletService,
       lockAddress,
       owners,
+      keyPrices: new Array(owners.length).fill(singleKeyPrice),
     })
   }
 
