@@ -2,7 +2,9 @@ import { useState, useEffect, useContext } from 'react'
 import { ToastHelper } from '../components/helpers/toast.helper'
 import { PaywallConfig } from '../unlockTypes'
 import { ConfigContext } from '../utils/withConfig'
+import { WalletServiceContext } from '../utils/withWalletService'
 import { getAddressForName } from './useEns'
+import { purchaseMultipleKeys } from './useLock'
 
 export interface RecipientItem {
   userAddress: string
@@ -26,12 +28,15 @@ export const useMultipleRecipient = (
   paywallConfig?: PaywallConfig,
   lockAddress?: string
 ) => {
+  const walletService = useContext(WalletServiceContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
   const [loading, setLoading] = useState(false)
   const config: any = useContext(ConfigContext)
   const { maxRecipients = 1, locks } = paywallConfig ?? {}
   const lock = lockAddress ? locks?.[lockAddress] : {}
+
+  console.log('walletService', walletService)
 
   const normalizeRecipients = () => {
     if (!lockAddress) return
@@ -53,6 +58,21 @@ export const useMultipleRecipient = (
 
   const addAccountToList = () => {
     addRecipientItem(account)
+  }
+
+  const purchaseBulk = async () => {
+    if (!lockAddress) return
+    const owners = recipientsList().map(
+      ({ resolvedAddress }) => resolvedAddress
+    )
+    const payload = {
+      params: {
+        walletService,
+        lockAddress,
+        owners,
+      },
+    }
+    await purchaseMultipleKeys(payload as any)
   }
 
   useEffect(() => {
@@ -143,5 +163,6 @@ export const useMultipleRecipient = (
     maxRecipients,
     submitBulkRecipients: submit,
     clear,
+    purchaseBulk,
   }
 }

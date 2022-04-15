@@ -35,6 +35,7 @@ interface CryptoCheckoutProps {
   setCardPurchase: () => void
   redirectUri?: string
   numberOfRecipients?: number
+  purchaseBulk?: () => void
 }
 
 export const CryptoCheckout = ({
@@ -46,7 +47,8 @@ export const CryptoCheckout = ({
   closeModal,
   setCardPurchase,
   redirectUri,
-  numberOfRecipients,
+  numberOfRecipients = 1,
+  purchaseBulk,
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
@@ -121,7 +123,9 @@ export const CryptoCheckout = ({
   }
 
   const cryptoPurchase = async () => {
-    if (!cantBuyWithCrypto && account) {
+    if (numberOfRecipients > 1) {
+      if (typeof purchaseBulk === 'function') await purchaseBulk()
+    } else if (!cantBuyWithCrypto && account) {
       setPurchasePending(true)
       try {
         const referrer =
@@ -284,6 +288,9 @@ export const CryptoCheckout = ({
           <Prompt>Get the membership with:</Prompt>
 
           <CheckoutOptions>
+            <button type="button" onClick={purchaseBulk}>
+              test
+            </button>
             <CheckoutButton disabled={cantBuyWithCrypto || loading}>
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
               {!isUnlockAccount && userIsOnWrongNetwork && (
@@ -372,6 +379,7 @@ export default CryptoCheckout
 CryptoCheckout.defaultProps = {
   redirectUri: '',
   numberOfRecipients: 1,
+  purchaseBulk: () => undefined,
 }
 
 interface CheckoutButtonProps {

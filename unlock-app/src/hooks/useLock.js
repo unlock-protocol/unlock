@@ -219,6 +219,20 @@ export const purchaseKeyFromLock = async (
     }
   )
 }
+
+export const purchaseMultipleKeys = async ({
+  walletService,
+  lockAddress,
+  owners = [],
+}) => {
+  const payload = {
+    params: {
+      lockAddress,
+      owners,
+    },
+  }
+  return walletService.purchaseKeys({ payload })
+}
 /**
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  * @param {*} lock
