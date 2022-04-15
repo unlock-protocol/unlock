@@ -62,7 +62,6 @@ export const useMultipleRecipient = (
       }
     )
 
-    console.log(listWithoutExcluded)
     const payload: RecipientPayload = {
       users: listWithoutExcluded.map(({ resolvedAddress, metadata = {} }) => {
         return {
