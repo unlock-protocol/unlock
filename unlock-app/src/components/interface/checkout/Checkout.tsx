@@ -138,7 +138,6 @@ export const Checkout = ({
   )
   const showMetadataForm =
     (paywallConfig?.metadataInputs || hasMultipleRecipients) && !savedMetadata
-  console.log(selectedLock)
   // state change
   useEffect(() => {
     setState(defaultState)
