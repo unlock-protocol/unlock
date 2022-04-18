@@ -16,7 +16,7 @@ export default async function (
   },
   callback
 ) {
-  return purchaseKeys.bind(this)(
+  const keys = await purchaseKeys.bind(this)(
     {
       owners: [owner],
       keyManagers: [keyManager],
@@ -29,4 +29,5 @@ export default async function (
     },
     callback
   )
+  return keys[0] // Only a single key!
 }
