@@ -13,7 +13,7 @@ interface MultipleRecipientProps {
   addRecipient: any
   loading: boolean
   fields: Array<MetadataInput & { value?: any }>
-  submitBulkRecipients: () => void
+  submitBulkRecipients: () => boolean
   onContinue: () => void
 }
 export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
@@ -45,7 +45,10 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   }
 
   const onSubmit = async () => {
-    return submitBulkRecipients()
+    const valid = await submitBulkRecipients()
+    if (valid) {
+      onContinue()
+    }
   }
 
   const toggleAddRecipient = () => {
@@ -54,11 +57,6 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     } else {
       ToastHelper.error("You can't add more recipients")
     }
-  }
-
-  const onContinueCallback = async () => {
-    await onSubmit()
-    onContinue()
   }
 
   return (
@@ -125,11 +123,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         </fieldset>
       )}
       {haveRecipients && (
-        <Button
-          type="button"
-          disabled={addNewRecipient}
-          onClick={onContinueCallback}
-        >
+        <Button type="button" disabled={addNewRecipient} onClick={onSubmit}>
           Continue
         </Button>
       )}

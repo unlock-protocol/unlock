@@ -6,6 +6,7 @@ import { WalletServiceContext } from '../utils/withWalletService'
 import { getAddressForName } from './useEns'
 import { purchaseMultipleKeys } from './useLock'
 
+const MAX_RETRY_COUNT = 5
 interface User {
   lockAddress: string
   userAddress: string
@@ -38,11 +39,12 @@ export const useMultipleRecipient = (
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
   const [loading, setLoading] = useState(false)
   const config: any = useContext(ConfigContext)
-  const [retryBulkAction, setRetryBulkAction] = useState(true)
+  const [retryCount, setRetryCount] = useState(0)
+  const [ignoreRecipients, setIgnoreRecipients] = useState<User[]>([])
   const { maxRecipients = 1, locks } = paywallConfig ?? {}
   const lock = lockAddress ? locks?.[lockAddress] : {}
 
-  const normalizeRecipients = (ignoreRecipients?: User[]) => {
+  const normalizeRecipients = () => {
     if (!lockAddress) return
 
     /*
@@ -121,12 +123,12 @@ export const useMultipleRecipient = (
     }
   }
 
-  const submitBulkRecipients = async (ignoreRecipients?: User[]) => {
+  const submitBulkRecipients = async () => {
     if (!lock?.network) return
     const url = `${config.services.storage.host}/v2/api/metadata/${lock?.network}/users`
     const opts = {
       method: 'POST',
-      body: JSON.stringify(normalizeRecipients(ignoreRecipients)),
+      body: JSON.stringify(normalizeRecipients()),
       headers: {
         'content-type': 'application/json',
       },
@@ -135,22 +137,38 @@ export const useMultipleRecipient = (
     return response
   }
 
-  const submit = async (ignoreRecipients?: User[]) => {
-    const res = await submitBulkRecipients(ignoreRecipients)
-    if (res) {
-      const result: any = await res.json()
-      const errorCodes = [500, 401, 404, 409]
-      if (errorCodes.includes(res.status)) {
-        ToastHelper.error(result?.message ?? 'Ops, something went wrong')
-        if (retryBulkAction) {
-          ToastHelper.success('Re-try bulk submit')
-          setRetryBulkAction(false)
-          submit(result?.users ?? [])
+  const submit = async (): Promise<boolean> => {
+    if (retryCount < MAX_RETRY_COUNT) {
+      const res = await submitBulkRecipients()
+      if (res) {
+        const result: any = await res.json()
+        const errorCodes = [500, 401, 404]
+        const successCodes = [200, 201]
+        setIgnoreRecipients([])
+
+        if (res.status === 409) {
+          const addressesWithMetadata = result?.users?.map(
+            ({ userAddress }: any) => userAddress
+          )
+          setIgnoreRecipients(addressesWithMetadata)
+          setRetryCount(retryCount + 1)
+          ToastHelper.error(`${result?.message}` ?? 'Ops, something went wrong')
         }
-      } else {
-        ToastHelper.success('Success')
+
+        if (errorCodes.includes(res.status)) {
+          ToastHelper.error(result?.message ?? 'Ops, something went wrong')
+          setRetryCount(retryCount + 1)
+        }
+
+        if (successCodes.includes(res.status)) {
+          ToastHelper.success('Success')
+          return true
+        }
       }
+      return false
     }
+    ToastHelper.error('Retry count reached')
+    return false
   }
 
   const addRecipientItem = async (
