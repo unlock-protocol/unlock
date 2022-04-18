@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { IoIosCloseCircle as CloseIcon } from 'react-icons/io'
@@ -81,12 +81,14 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                 tip="Remove recipient"
                 side="right"
               >
-                <CloseIcon
-                  className="text-red-500 ml-1 cursor-pointer text-base hover:text-red-600"
-                  onClick={() => {
-                    removeRecipient(userAddress)
-                  }}
-                />
+                {!addNewRecipient && (
+                  <CloseIcon
+                    className="text-red-500 ml-1 cursor-pointer text-base hover:text-red-600"
+                    onClick={() => {
+                      removeRecipient(userAddress)
+                    }}
+                  />
+                )}
               </Tooltip>
             </span>
 
