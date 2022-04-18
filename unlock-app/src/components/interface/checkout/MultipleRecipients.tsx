@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { IoIosCloseCircle as CloseIcon } from 'react-icons/io'
@@ -8,6 +8,7 @@ import { MetadataInput } from '../../../unlockTypes'
 import { ToastHelper } from '../../helpers/toast.helper'
 import Loading from '../Loading'
 import { Button } from './FormStyles'
+import AuthenticationContext from '../../../contexts/AuthenticationContext'
 
 interface MultipleRecipientProps {
   recipients: RecipientItem[]
@@ -29,11 +30,19 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   onContinue,
   removeRecipient,
 }) => {
+  const { account } = useContext(AuthenticationContext)
   const [addNewRecipient, setNewRecipient] = useState(false)
   const [recipient, setRecipient] = useState<string>('')
   const { register, getValues, reset, trigger } = useForm()
   const haveRecipients = recipients?.length > 0
 
+  const autofillAccountAddress = () => {
+    if (recipients?.length > 1) return
+    if (!account) return
+
+    setNewRecipient(true)
+    setRecipient(account)
+  }
   const onAddRecipient = async () => {
     await trigger()
     const valid = await addRecipient(recipient, getValues())
@@ -117,9 +126,22 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         </>
       ) : (
         <fieldset className="pt-3" disabled={loading}>
-          <span className="text-xs font-normal uppercase">Recipient</span>
+          <span className="text-xs font-normal uppercase flex justify-between items-center mb-2">
+            <span>Recipient</span>
+            {recipients?.length === 0 && (
+              <ActionButton
+                type="button"
+                className="bg-gray-100"
+                onClick={autofillAccountAddress}
+                disabled={recipient?.length > 0}
+              >
+                add account address
+              </ActionButton>
+            )}
+          </span>
           <CustomRecipient
             onChange={(e) => setRecipient(e.target.value)}
+            value={recipient}
             disabled={loading}
           />
           {fields.map(({ name, type, required, placeholder }) => (
@@ -202,4 +224,15 @@ const InputGroup = styled.div`
 const ItemRows = styled.div`
   display: flex;
   flex-direction: column;
+`
+
+const ActionButton = styled.button`
+  font-size: 12px;
+  padding: 5px 10px;
+  background: var(--lightgrey);
+  border-radius: 4px;
+
+  &:disabled {
+    opacity: 0.4;
+  }
 `

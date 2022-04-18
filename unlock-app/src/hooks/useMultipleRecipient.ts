@@ -29,7 +29,6 @@ interface RecipientPayload {
 }
 
 export const useMultipleRecipient = (
-  account?: string,
   paywallConfig?: PaywallConfig,
   lockAddress?: string,
   singleKeyPrice?: string
@@ -80,10 +79,6 @@ export const useMultipleRecipient = (
     setRecipients(new Set([]))
   }
 
-  const addAccountToList = () => {
-    addRecipientItem(account)
-  }
-
   const purchaseBulk = async () => {
     if (!lockAddress) return
     if (!singleKeyPrice) return
@@ -102,9 +97,6 @@ export const useMultipleRecipient = (
   useEffect(() => {
     const activeMultiple = +maxRecipients > 1
     setHasMultipleRecipients(activeMultiple)
-    if (activeMultiple) {
-      addAccountToList()
-    }
   }, [])
 
   const recipientsList = (): RecipientItem[] => {

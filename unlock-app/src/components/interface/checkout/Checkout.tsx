@@ -132,7 +132,6 @@ export const Checkout = ({
     purchaseBulk,
     removeRecipient,
   } = useMultipleRecipient(
-    account,
     paywallConfig,
     selectedLock?.address,
     selectedLock?.keyPrice
