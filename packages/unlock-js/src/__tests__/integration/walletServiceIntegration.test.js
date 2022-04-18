@@ -370,7 +370,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         let keyGrantees
         let transactionHash
         beforeAll(async () => {
-          keyGrantees = [accounts[7], accounts[6]]
+          keyGrantees = [accounts[8], accounts[9]]
           console.log(keyGrantees)
           keysBefore = await Promise.all(
             keyGrantees.map((grantee) =>
