@@ -206,6 +206,13 @@ export const useMultipleRecipient = (
     return Promise.resolve(false)
   }
 
+  const removeRecipient = (address: string) => {
+    const newRecipientsList = recipientsList().filter(
+      ({ userAddress }) => userAddress !== address
+    )
+    setRecipients(new Set(newRecipientsList))
+  }
+
   return {
     hasMultipleRecipients,
     recipients: recipientsList(),
@@ -215,5 +222,6 @@ export const useMultipleRecipient = (
     submitBulkRecipients: submit,
     clear,
     purchaseBulk,
+    removeRecipient,
   }
 }

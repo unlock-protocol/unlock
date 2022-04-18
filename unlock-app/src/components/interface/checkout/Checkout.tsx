@@ -130,6 +130,7 @@ export const Checkout = ({
     submitBulkRecipients,
     clear,
     purchaseBulk,
+    removeRecipient,
   } = useMultipleRecipient(
     account,
     paywallConfig,
@@ -315,6 +316,7 @@ export const Checkout = ({
           loading={loading}
           submitBulkRecipients={submitBulkRecipients}
           clear={clear}
+          removeRecipient={removeRecipient}
         />
       )
     } else {
@@ -357,6 +359,7 @@ export const Checkout = ({
           loading={loading}
           submitBulkRecipients={submitBulkRecipients}
           clear={clear}
+          removeRecipient={removeRecipient}
         />
       )
     } else {
@@ -387,6 +390,7 @@ export const Checkout = ({
           loading={loading}
           submitBulkRecipients={submitBulkRecipients}
           clear={clear}
+          removeRecipient={removeRecipient}
         />
       )
     } else {

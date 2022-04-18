@@ -20,6 +20,7 @@ interface Props {
   loading: boolean
   submitBulkRecipients: () => void
   clear: () => void
+  removeRecipient: (address: string) => void
 }
 
 interface DefautltValues {
@@ -36,6 +37,7 @@ export const MetadataForm = ({
   addRecipient,
   loading,
   submitBulkRecipients,
+  removeRecipient,
 }: Props) => {
   const { account } = useContext(AuthenticationContext)
   // @ts-expect-error account is always defined in this component
@@ -90,6 +92,7 @@ export const MetadataForm = ({
         loading={loading}
         fields={fields}
         submitBulkRecipients={submitBulkRecipients}
+        removeRecipient={removeRecipient}
         onContinue={() => {
           onSubmit(true as any)
         }}

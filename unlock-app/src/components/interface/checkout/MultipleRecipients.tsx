@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
+import { IoIosCloseCircle as CloseIcon } from 'react-icons/io'
+import { Tooltip } from '@unlock-protocol/ui'
 import { RecipientItem } from '../../../hooks/useMultipleRecipient'
 import { MetadataInput } from '../../../unlockTypes'
 import { ToastHelper } from '../../helpers/toast.helper'
@@ -15,6 +17,7 @@ interface MultipleRecipientProps {
   fields: Array<MetadataInput & { value?: any }>
   submitBulkRecipients: () => boolean
   onContinue: () => void
+  removeRecipient: (address: string) => void
 }
 export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   recipients,
@@ -24,6 +27,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   fields = [],
   submitBulkRecipients,
   onContinue,
+  removeRecipient,
 }) => {
   const [addNewRecipient, setNewRecipient] = useState(false)
   const [recipient, setRecipient] = useState<string>('')
@@ -70,8 +74,20 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         const currentIndex = index + 1
         return (
           <InputGroup key={key}>
-            <span className="text-xs font-medium uppercase">
-              Recipient {currentIndex}:
+            <span className="text-xs font-medium uppercase flex items-center">
+              <span>Recipient {currentIndex}:</span>
+              <Tooltip
+                label="Remove recipient"
+                tip="Remove recipient"
+                side="right"
+              >
+                <CloseIcon
+                  className="text-red-500 ml-1 cursor-pointer text-base hover:text-red-600"
+                  onClick={() => {
+                    removeRecipient(userAddress)
+                  }}
+                />
+              </Tooltip>
             </span>
 
             <ItemRows>
