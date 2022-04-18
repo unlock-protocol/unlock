@@ -18,7 +18,7 @@ interface Props {
   maxRecipients: number
   addRecipient: any
   loading: boolean
-  submitBulkRecipients: () => void
+  submitBulkRecipients: () => Promise<boolean>
   clear: () => void
   removeRecipient: (address: string) => void
 }

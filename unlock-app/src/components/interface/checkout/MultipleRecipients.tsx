@@ -16,7 +16,7 @@ interface MultipleRecipientProps {
   addRecipient: any
   loading: boolean
   fields: Array<MetadataInput & { value?: any }>
-  submitBulkRecipients: () => boolean
+  submitBulkRecipients: () => Promise<boolean>
   onContinue: () => void
   removeRecipient: (address: string) => void
 }

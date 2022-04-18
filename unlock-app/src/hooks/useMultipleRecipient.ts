@@ -59,7 +59,7 @@ export const useMultipleRecipient = (
           (exludedAddressList?.length > 0 &&
             exludedAddressList.includes(resolvedAddress)) ||
           exludedAddressList.length === 0
-        return !isAddressExcluded
+        return isAddressExcluded
       }
     )
 
