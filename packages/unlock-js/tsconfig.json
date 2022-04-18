@@ -14,7 +14,8 @@
         "skipLibCheck": true,
     },
     "include": [
-        "./src/**/*.ts"
+        "./src/**/*.ts",
+        "src/PublicLock/v4/grantKeys.js"
     ],
     "exclude": [
         "./src/__tests__"

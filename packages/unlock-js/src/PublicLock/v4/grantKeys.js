@@ -6,7 +6,7 @@ export default async function (
 ) {
   const lockContract = await this.getLockContract(lockAddress)
 
-  if (!expirations.length) {
+  if (!expirations?.length) {
     // Let's get the expiration from the duration (+/- given that the transaction can take time to be mined!)
     const duration = await lockContract.expirationDuration()
 

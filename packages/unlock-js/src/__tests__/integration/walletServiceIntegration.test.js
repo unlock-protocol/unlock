@@ -370,17 +370,20 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         let keyGrantees
         let transactionHash
         beforeAll(async () => {
-          keyGrantees = [accounts[7], accounts[8]]
-          keysBefore = Promise.all(
+          keyGrantees = [accounts[7], accounts[6]]
+          console.log(keyGrantees)
+          keysBefore = await Promise.all(
             keyGrantees.map((grantee) =>
               web3Service.getKeyByLockForOwner(lockAddress, grantee, chainId)
             )
           )
 
-          tokenIds = await walletService.grantKey(
+          console.log(keysBefore)
+
+          tokenIds = await walletService.grantKeys(
             {
               lockAddress,
-              recipient: keyGrantees,
+              recipients: keyGrantees,
             },
             (error, hash) => {
               if (error) {
@@ -389,6 +392,9 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               transactionHash = hash
             }
           )
+
+          console.log(tokenIds)
+
           keys = await Promise.all(
             tokenIds.map(async (tokenId, index) => {
               return ['v10'].indexOf(publicLockVersion) !== -1
@@ -404,10 +410,13 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
                   )
             })
           )
+
+          console.log(keys)
         })
 
         it('should not have a valid key before the transaction', () => {
           expect.assertions(4)
+
           expect(keysBefore[0].owner).toEqual(keyGrantees[0])
           expect(keysBefore[1].owner).toEqual(keyGrantees[1])
           expect(keysBefore[0].expiration).toEqual(0)
