@@ -34,6 +34,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   const [addNewRecipient, setNewRecipient] = useState(false)
   const [recipient, setRecipient] = useState<string>('')
   const { register, getValues, reset, trigger } = useForm()
+  const [confirmCount, setConfirmCount] = useState(0)
   const haveRecipients = recipients?.length > 0
 
   const autofillAccountAddress = () => {
@@ -58,6 +59,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   }
 
   const onSubmit = async () => {
+    setConfirmCount(confirmCount + 1)
     const valid = await submitBulkRecipients()
     if (valid) {
       onContinue()
@@ -164,7 +166,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
       )}
       {haveRecipients && (
         <Button type="button" disabled={addNewRecipient} onClick={onSubmit}>
-          Continue
+          {confirmCount === 0 ? 'Continue' : 'Re-try continue'}
         </Button>
       )}
     </form>

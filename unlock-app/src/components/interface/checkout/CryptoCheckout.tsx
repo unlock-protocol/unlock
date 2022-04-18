@@ -65,6 +65,7 @@ export const CryptoCheckout = ({
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
+  const [purchasedMultiple, setPurchasedMultiple] = useState(false)
   const {
     isAdvanced,
     setIsAdvanced,
@@ -126,7 +127,12 @@ export const CryptoCheckout = ({
 
   const cryptoPurchase = async () => {
     if (withMultipleRecipients) {
-      if (typeof purchaseBulk === 'function') await purchaseBulk()
+      if (typeof purchaseBulk === 'function') {
+        const validPurchase = await purchaseBulk()
+        if (validPurchase) {
+          setPurchasedMultiple(true)
+        }
+      }
     } else if (!cantBuyWithCrypto && account) {
       setPurchasePending(true)
       try {
@@ -228,6 +234,8 @@ export const CryptoCheckout = ({
     loadingCheck.current = true
   }
 
+  const showRedirectButton = (hasValidkey || purchasedMultiple) && !isAdvanced
+
   return (
     <>
       <Lock
@@ -265,19 +273,21 @@ export const CryptoCheckout = ({
               : 'Recipient already has a valid membership!'}
             &nbsp;
           </Message>
-          <CheckoutCustomRecipient
-            isAdvanced={isAdvanced}
-            advancedRecipientValid={advancedRecipientValid}
-            checkingRecipient={checkingRecipient}
-            setIsAdvanced={setIsAdvanced}
-            onRecipientChange={onRecipientChange}
-            customBuyMessage="Buy for a different address"
-            disabled={transactionPending?.length > 0 ?? false}
-            loading={loading}
-          />
+          {!withMultipleRecipients && (
+            <CheckoutCustomRecipient
+              isAdvanced={isAdvanced}
+              advancedRecipientValid={advancedRecipientValid}
+              checkingRecipient={checkingRecipient}
+              setIsAdvanced={setIsAdvanced}
+              onRecipientChange={onRecipientChange}
+              customBuyMessage="Buy for a different address"
+              disabled={transactionPending?.length > 0 ?? false}
+              loading={loading}
+            />
+          )}
         </>
       )}
-      {showCheckoutButtons && (
+      {(showCheckoutButtons || withMultipleRecipients) && (
         <div
           style={{
             marginBottom: '32px',
@@ -287,7 +297,11 @@ export const CryptoCheckout = ({
                 : 'block',
           }}
         >
-          <Prompt>Get the membership with:</Prompt>
+          <Prompt>
+            {withMultipleRecipients
+              ? `Get your multiple membership (${numberOfRecipients} keys) with:`
+              : 'Get the membership with:'}
+          </Prompt>
 
           <CheckoutOptions>
             <CheckoutButton disabled={cantBuyWithCrypto || loading}>
@@ -358,7 +372,7 @@ export const CryptoCheckout = ({
           ! This should take a few seconds :)
         </Message>
       )}
-      {hasValidkey && !isAdvanced && (
+      {showRedirectButton && (
         <EnjoyYourMembership
           redirectUri={redirectUri}
           closeModal={closeModal}

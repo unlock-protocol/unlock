@@ -86,12 +86,21 @@ export const useMultipleRecipient = (
       ({ resolvedAddress }) => resolvedAddress
     )
 
-    await purchaseMultipleKeys({
-      walletService,
-      lockAddress,
-      owners,
-      keyPrices: new Array(owners.length).fill(singleKeyPrice),
-    })
+    try {
+      await purchaseMultipleKeys({
+        walletService,
+        lockAddress,
+        owners,
+        keyPrices: new Array(owners.length).fill(singleKeyPrice),
+      })
+      return true
+    } catch (err: any) {
+      console.error(err)
+      ToastHelper.error(
+        err?.error?.message || 'Ops, error during multiple purchase'
+      )
+      return false
+    }
   }
 
   useEffect(() => {
