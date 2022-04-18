@@ -20,7 +20,7 @@ export default async function (
     }
   }
 
-  if (!keyManagers.length) {
+  if (!keyManagers?.length) {
     // By default the the key manager is the granter
     const signer = this.signer
     const manager = await signer.getAddress()

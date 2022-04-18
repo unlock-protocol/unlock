@@ -27,7 +27,7 @@ export default async function (
   }
 
   const grantKeysOptions = {}
-  const transactionPromise = lockContract.grantKeys(
+  const transactionPromise = lockContract['grantKeys(address[],uint256[])'](
     recipients,
     expirations,
     grantKeysOptions
