@@ -15,7 +15,6 @@
     },
     "include": [
         "./src/**/*.ts",
-        "src/PublicLock/v4/grantKeys.js"
     ],
     "exclude": [
         "./src/__tests__"

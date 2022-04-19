@@ -371,14 +371,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         let transactionHash
         beforeAll(async () => {
           keyGrantees = [accounts[8], accounts[9]]
-          console.log(keyGrantees)
           keysBefore = await Promise.all(
             keyGrantees.map((grantee) =>
               web3Service.getKeyByLockForOwner(lockAddress, grantee, chainId)
             )
           )
-
-          console.log(keysBefore)
 
           tokenIds = await walletService.grantKeys(
             {
@@ -392,8 +389,6 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               transactionHash = hash
             }
           )
-
-          console.log(tokenIds)
 
           keys = await Promise.all(
             tokenIds.map(async (tokenId, index) => {
@@ -410,17 +405,15 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
                   )
             })
           )
-
-          console.log(keys)
         })
 
-        it('should not have a valid key before the transaction', () => {
+        it('should not have valid keys before the transaction', () => {
           expect.assertions(4)
 
           expect(keysBefore[0].owner).toEqual(keyGrantees[0])
           expect(keysBefore[1].owner).toEqual(keyGrantees[1])
           expect(keysBefore[0].expiration).toEqual(0)
-          expect(keysBefore[1].expiration).toEqual(1)
+          expect(keysBefore[1].expiration).toEqual(0)
         })
 
         it('should have yielded a transaction hash', () => {
@@ -428,7 +421,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
         })
 
-        it('should yield the tokenId', () => {
+        it('should yield the tokenIds', () => {
           expect.assertions(1)
           expect(tokenIds).not.toBe(null) // We don't know very much beyond the fact that it is not null
         })
@@ -444,7 +437,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           expect(keys[0].lock).toEqual(lockAddress)
         })
 
-        it('should have set the right duration on the key', async () => {
+        it('should have set the right duration on the keys', async () => {
           expect.assertions(1)
           const blockNumber = await walletService.provider.getBlockNumber()
           const latestBlock = await walletService.provider.getBlock(blockNumber)
