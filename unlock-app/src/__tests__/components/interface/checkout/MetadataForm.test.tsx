@@ -37,7 +37,7 @@ const recipientsObj = {
   recipients: [],
   loading: false,
   maxRecipients: 1,
-  submitBulkRecipients: () => true,
+  submitBulkRecipients: async () => Promise.resolve(true),
   addRecipient: () => undefined,
   clear: () => undefined,
   removeRecipient: () => undefined,

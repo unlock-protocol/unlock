@@ -34,6 +34,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   const [addNewRecipient, setNewRecipient] = useState(false)
   const [recipient, setRecipient] = useState<string>('')
   const { register, getValues, reset, trigger } = useForm()
+  const [isLoading, setIsLoading] = useState(false)
   const [confirmCount, setConfirmCount] = useState(0)
   const haveRecipients = recipients?.length > 0
 
@@ -45,10 +46,14 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     setRecipient(account)
   }
   const onAddRecipient = async () => {
-    await trigger()
-    const valid = await addRecipient(recipient, getValues())
-    if (valid) {
-      resetStatus()
+    const formValid = await trigger()
+    if (formValid) {
+      const valid = await addRecipient(recipient, getValues())
+      if (valid) {
+        resetStatus()
+      }
+    } else {
+      ToastHelper.error('Plase fill all required fields')
     }
   }
 
@@ -59,11 +64,13 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   }
 
   const onSubmit = async () => {
+    setIsLoading(true)
     setConfirmCount(confirmCount + 1)
     const valid = await submitBulkRecipients()
     if (valid) {
       onContinue()
     }
+    setIsLoading(false)
   }
 
   const toggleAddRecipient = () => {
@@ -148,7 +155,10 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
           />
           {fields.map(({ name, type, required, placeholder }) => (
             <label key={name} htmlFor={name}>
-              <span className="text-xs font-normal uppercase">{name}</span>
+              <span className="text-xs font-normal uppercase">
+                {name}
+                {required && <span className="text-red-600">*</span>}
+              </span>
               <CustomRecipient
                 placeholder={placeholder}
                 type={type}
@@ -165,7 +175,11 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         </fieldset>
       )}
       {haveRecipients && (
-        <Button type="button" disabled={addNewRecipient} onClick={onSubmit}>
+        <Button
+          type="button"
+          disabled={addNewRecipient || isLoading}
+          onClick={onSubmit}
+        >
           {confirmCount === 0 ? 'Continue' : 'Re-try continue'}
         </Button>
       )}

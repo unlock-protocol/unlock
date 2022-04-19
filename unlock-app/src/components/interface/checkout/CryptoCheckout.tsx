@@ -35,7 +35,7 @@ interface CryptoCheckoutProps {
   setCardPurchase: () => void
   redirectUri?: string
   numberOfRecipients?: number
-  purchaseBulk?: () => void
+  purchaseBulk?: () => Promise<boolean>
 }
 
 export const CryptoCheckout = ({
@@ -53,6 +53,7 @@ export const CryptoCheckout = ({
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
   const [loading, setLoading] = useState(false)
+  const [purchaseLoading, setPurchaseLoading] = useState(false)
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>('')
   const {
     network: walletNetwork,
@@ -127,12 +128,13 @@ export const CryptoCheckout = ({
 
   const cryptoPurchase = async () => {
     if (withMultipleRecipients) {
-      if (typeof purchaseBulk === 'function') {
-        const validPurchase = await purchaseBulk()
-        if (validPurchase) {
-          setPurchasedMultiple(true)
-        }
+      if (typeof purchaseBulk !== 'function') return
+      setPurchaseLoading(true)
+      const validPurchase = await purchaseBulk()
+      if (validPurchase) {
+        setPurchasedMultiple(true)
       }
+      setPurchaseLoading(false)
     } else if (!cantBuyWithCrypto && account) {
       setPurchasePending(true)
       try {
@@ -249,7 +251,7 @@ export const CryptoCheckout = ({
         onSelected={null}
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
-        onLoading={onLoading}
+        onLoading={onLoading || purchaseLoading}
         numberOfRecipients={numberOfRecipients}
       />
       {!hasValidKeyOrPendingTx && (
@@ -304,7 +306,9 @@ export const CryptoCheckout = ({
           </Prompt>
 
           <CheckoutOptions>
-            <CheckoutButton disabled={cantBuyWithCrypto || loading}>
+            <CheckoutButton
+              disabled={cantBuyWithCrypto || loading || purchaseLoading}
+            >
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
               {!isUnlockAccount && userIsOnWrongNetwork && (
                 <Warning>
