@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext } from 'react'
 import { ToastHelper } from '../components/helpers/toast.helper'
+import AuthenticationContext from '../contexts/AuthenticationContext'
 import { PaywallConfig } from '../unlockTypes'
 import { ConfigContext } from '../utils/withConfig'
-import { WalletServiceContext } from '../utils/withWalletService'
 import { getAddressForName } from './useEns'
-import { purchaseMultipleKeys } from './useLock'
+import useLock from './useLock'
 
 const MAX_RETRY_COUNT = 5
 interface User {
@@ -33,7 +33,7 @@ export const useMultipleRecipient = (
   lockAddress?: string,
   singleKeyPrice?: string
 ) => {
-  const walletService = useContext(WalletServiceContext)
+  const { network } = useContext(AuthenticationContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
   const [loading, setLoading] = useState(false)
@@ -41,8 +41,8 @@ export const useMultipleRecipient = (
   const [retryCount, setRetryCount] = useState(0)
   const [ignoreRecipients, setIgnoreRecipients] = useState<User[]>([])
   const { maxRecipients = 1, locks } = paywallConfig ?? {}
-  const lock = lockAddress ? locks?.[lockAddress] : {}
-
+  const lockByAddress = lockAddress ? locks?.[lockAddress] : {}
+  const { purchaseMultipleKeys } = useLock(lockByAddress, network)
   const normalizeRecipients = () => {
     if (!lockAddress) return
 
@@ -87,15 +87,10 @@ export const useMultipleRecipient = (
     )
 
     try {
-      await purchaseMultipleKeys({
-        walletService,
-        lockAddress,
-        owners,
-        keyPrices: new Array(owners.length).fill(singleKeyPrice),
-      })
+      const keyPrices = new Array(owners.length).fill(singleKeyPrice)
+      await purchaseMultipleKeys(lockAddress, keyPrices, owners)
       return true
     } catch (err: any) {
-      console.error(err)
       ToastHelper.error(
         err?.error?.message || 'Ops, error during multiple purchase'
       )
@@ -125,8 +120,8 @@ export const useMultipleRecipient = (
   }
 
   const submitBulkRecipients = async () => {
-    if (!lock?.network) return
-    const url = `${config.services.storage.host}/v2/api/metadata/${lock?.network}/users`
+    if (!lockByAddress?.network) return
+    const url = `${config.services.storage.host}/v2/api/metadata/${lockByAddress?.network}/users`
     const opts = {
       method: 'POST',
       body: JSON.stringify(normalizeRecipients()),

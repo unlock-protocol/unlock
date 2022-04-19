@@ -35,7 +35,7 @@ interface CryptoCheckoutProps {
   setCardPurchase: () => void
   redirectUri?: string
   numberOfRecipients?: number
-  purchaseBulk?: () => Promise<boolean>
+  purchaseBulk?: () => Promise<boolean | undefined>
 }
 
 export const CryptoCheckout = ({
@@ -53,7 +53,7 @@ export const CryptoCheckout = ({
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
   const [loading, setLoading] = useState(false)
-  const [purchaseLoading, setPurchaseLoading] = useState(false)
+  const [multiPurchaseLoading, setMultiPurchaseLoading] = useState(false)
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>('')
   const {
     network: walletNetwork,
@@ -129,12 +129,12 @@ export const CryptoCheckout = ({
   const cryptoPurchase = async () => {
     if (withMultipleRecipients) {
       if (typeof purchaseBulk !== 'function') return
-      setPurchaseLoading(true)
+      setMultiPurchaseLoading(true)
       const validPurchase = await purchaseBulk()
       if (validPurchase) {
         setPurchasedMultiple(true)
       }
-      setPurchaseLoading(false)
+      setMultiPurchaseLoading(false)
     } else if (!cantBuyWithCrypto && account) {
       setPurchasePending(true)
       try {
@@ -231,6 +231,10 @@ export const CryptoCheckout = ({
       !hasValidkey) ||
     (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
 
+  const enableBuy = withMultipleRecipients
+    ? !purchasedMultiple && !multiPurchaseLoading
+    : showCheckoutButtons
+
   const onLoading = (loading: boolean) => {
     setLoading(loading)
     loadingCheck.current = true
@@ -251,7 +255,7 @@ export const CryptoCheckout = ({
         onSelected={null}
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
-        onLoading={onLoading || purchaseLoading}
+        onLoading={onLoading}
         numberOfRecipients={numberOfRecipients}
       />
       {!hasValidKeyOrPendingTx && (
@@ -289,7 +293,8 @@ export const CryptoCheckout = ({
           )}
         </>
       )}
-      {(showCheckoutButtons || withMultipleRecipients) && (
+      {purchasedMultiple && <Message>Enjoy your memberships!</Message>}
+      {enableBuy && (
         <div
           style={{
             marginBottom: '32px',
@@ -307,7 +312,7 @@ export const CryptoCheckout = ({
 
           <CheckoutOptions>
             <CheckoutButton
-              disabled={cantBuyWithCrypto || loading || purchaseLoading}
+              disabled={cantBuyWithCrypto || loading || multiPurchaseLoading}
             >
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
               {!isUnlockAccount && userIsOnWrongNetwork && (
@@ -361,7 +366,7 @@ export const CryptoCheckout = ({
           </CheckoutOptions>
         </div>
       )}
-      {transactionPending && (
+      {(transactionPending || multiPurchaseLoading) && (
         <Message>
           Waiting for your{' '}
           <a
