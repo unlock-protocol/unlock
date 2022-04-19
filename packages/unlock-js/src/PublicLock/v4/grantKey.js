@@ -4,7 +4,7 @@ export default async function (
   { lockAddress, recipient, expiration },
   callback
 ) {
-  const events = await grantKeys(
+  const events = await grantKeys.bind(this)(
     {
       lockAddress,
       recipients: [recipient],
