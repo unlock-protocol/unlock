@@ -18,11 +18,11 @@ export default async function (
 ) {
   const keys = await purchaseKeys.bind(this)(
     {
-      owners: [owner],
-      keyManagers: [keyManager],
-      keyPrices: [keyPrice],
-      referrers: [referrer],
-      data: [data],
+      owners: owner ? [owner] : null,
+      keyManagers: keyManager ? [keyManager] : null,
+      keyPrices: keyPrice ? [keyPrice] : null,
+      referrers: referrer ? [referrer] : null,
+      data: data ? [data] : null,
       lockAddress,
       erc20Address,
       decimals,
