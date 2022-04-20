@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import ReCAPTCHA from 'react-google-recaptcha'
 
+import { Tooltip } from '@unlock-protocol/ui'
 import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -285,6 +286,20 @@ export const CryptoCheckout = ({
 
   const showRedirectButton = (hasValidkey || purchasedMultiple) && !isAdvanced
 
+  const renderWithTooltip = (
+    component: React.ReactElement,
+    showTooltip: boolean,
+    message: string
+  ) => {
+    return showTooltip ? (
+      <Tooltip label={message} tip={message}>
+        {component}
+      </Tooltip>
+    ) : (
+      <>{component}</>
+    )
+  }
+
   return (
     <>
       <Lock
@@ -374,22 +389,26 @@ export const CryptoCheckout = ({
               )}
             </CheckoutButton>
 
-            <CheckoutButton
-              disabled={
-                cantPurchaseWithCard || withMultipleRecipients || loading
-              }
-            >
-              <Buttons.CreditCard
-                lock={lock}
-                backgroundColor="var(--blue)"
-                fillColor="var(--white)"
-                showLabel
-                size="36px"
-                disabled={cardDisabled}
-                as="button"
-                onClick={() => onCardPurchase(cantPurchaseWithCard)}
-              />
-            </CheckoutButton>
+            {renderWithTooltip(
+              <CheckoutButton
+                disabled={
+                  cantPurchaseWithCard || withMultipleRecipients || loading
+                }
+              >
+                <Buttons.CreditCard
+                  lock={lock}
+                  backgroundColor="var(--blue)"
+                  fillColor="var(--white)"
+                  showLabel
+                  size="36px"
+                  disabled={cardDisabled}
+                  as="button"
+                  onClick={() => onCardPurchase(cantPurchaseWithCard)}
+                />
+              </CheckoutButton>,
+              withMultipleRecipients,
+              'Multiple recipients purchase with credit card is not supported.'
+            )}
 
             {canClaimAirdrop && (
               <CheckoutButton>
