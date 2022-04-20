@@ -2,7 +2,7 @@
 
 # 0.24.0
 
-Add support for granting multiple keys
+- Add support for granting multiple keys
 
 # 0.23.1
 
