@@ -398,6 +398,7 @@ export const Checkout = ({
           network={lockProps?.network || paywallConfig?.network}
           name={lockProps?.name || ''}
           closeModal={closeModal}
+          recipients={recipients}
           {...cardDetails}
         />
       )
