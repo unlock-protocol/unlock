@@ -1,4 +1,4 @@
-import { Table, Column, Model } from 'sequelize-typescript'
+import { Table, Column, Model, DataType } from 'sequelize-typescript'
 
 @Table({ tableName: 'PaymentIntents', timestamps: true })
 // eslint-disable-next-line import/prefer-default-export
@@ -14,6 +14,9 @@ export class PaymentIntent extends Model<PaymentIntent> {
 
   @Column
   stripeCustomerId!: string // Overall customer id
+
+  @Column(DataType.ARRAY(DataType.STRING))
+  recipients?: string[]
 
   @Column
   intentId!: string

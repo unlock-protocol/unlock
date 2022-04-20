@@ -109,9 +109,19 @@ namespace PurchaseController {
     req: SignedRequest,
     res: Response
   ): Promise<any> => {
-    const { publicKey, lock, stripeTokenId, pricing, network, recipient } =
-      req.body.message['Charge Card']
+    const {
+      publicKey,
+      lock,
+      stripeTokenId,
+      pricing,
+      network,
+      recipients,
+      userAddress,
+    } = req.body.message['Charge Card']
 
+    const normalizedRecipients = recipients.map((address: string) =>
+      Normalizer.ethereumAddress(address)
+    )
     const soldOut = await isSoldOut(lock, network)
     if (soldOut) {
       return res.status(400).send({
@@ -161,7 +171,8 @@ namespace PurchaseController {
     try {
       const processor = new PaymentProcessor(config.stripeSecret)
       const paymentIntentDetails = await processor.createPaymentIntent(
-        Normalizer.ethereumAddress(recipient),
+        Normalizer.ethereumAddress(userAddress),
+        normalizedRecipients,
         stripeCustomerId,
         Normalizer.ethereumAddress(lock),
         pricing,
@@ -187,8 +198,11 @@ namespace PurchaseController {
     req: SignedRequest,
     res: Response
   ): Promise<any> => {
-    const { lock, network, recipient, paymentIntent } = req.body
+    const { lock, network, recipients, userAddress, paymentIntent } = req.body
 
+    const normalizedRecipients = recipients.map((address: string) =>
+      Normalizer.ethereumAddress(address)
+    )
     const dispatcher = new Dispatcher()
     const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
       network
@@ -209,7 +223,8 @@ namespace PurchaseController {
     try {
       const processor = new PaymentProcessor(config.stripeSecret)
       const hash = await processor.captureConfirmedPaymentIntent(
-        Normalizer.ethereumAddress(recipient),
+        Normalizer.ethereumAddress(userAddress),
+        normalizedRecipients,
         Normalizer.ethereumAddress(lock),
         network,
         paymentIntent
