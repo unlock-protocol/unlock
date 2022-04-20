@@ -1,10 +1,8 @@
 import { useState, useEffect, useContext } from 'react'
 import { ToastHelper } from '../components/helpers/toast.helper'
-import AuthenticationContext from '../contexts/AuthenticationContext'
 import { PaywallConfig } from '../unlockTypes'
 import { ConfigContext } from '../utils/withConfig'
 import { getAddressForName } from './useEns'
-import useLock from './useLock'
 
 const MAX_RETRY_COUNT = 5
 interface User {
@@ -30,10 +28,8 @@ interface RecipientPayload {
 
 export const useMultipleRecipient = (
   paywallConfig?: PaywallConfig,
-  lockAddress?: string,
-  singleKeyPrice?: string
+  lockAddress?: string
 ) => {
-  const { network } = useContext(AuthenticationContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
   const [loading, setLoading] = useState(false)
@@ -42,7 +38,6 @@ export const useMultipleRecipient = (
   const [ignoreRecipients, setIgnoreRecipients] = useState<User[]>([])
   const { maxRecipients = 1, locks } = paywallConfig ?? {}
   const lockByAddress = lockAddress ? locks?.[lockAddress] : {}
-  const { purchaseMultipleKeys } = useLock(lockByAddress, network)
   const normalizeRecipients = () => {
     if (!lockAddress) return
 
@@ -77,25 +72,6 @@ export const useMultipleRecipient = (
 
   const clear = () => {
     setRecipients(new Set([]))
-  }
-
-  const purchaseBulk = async () => {
-    if (!lockAddress) return
-    if (!singleKeyPrice) return
-    const owners = recipientsList().map(
-      ({ resolvedAddress }) => resolvedAddress
-    )
-
-    try {
-      const keyPrices = new Array(owners.length).fill(singleKeyPrice)
-      await purchaseMultipleKeys(lockAddress, keyPrices, owners)
-      return true
-    } catch (err: any) {
-      ToastHelper.error(
-        err?.error?.message || 'Ops, error during multiple purchase'
-      )
-      return false
-    }
   }
 
   useEffect(() => {
@@ -217,7 +193,6 @@ export const useMultipleRecipient = (
     maxRecipients,
     submitBulkRecipients: submit,
     clear,
-    purchaseBulk,
     removeRecipient,
   }
 }

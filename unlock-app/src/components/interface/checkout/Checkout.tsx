@@ -129,13 +129,8 @@ export const Checkout = ({
     loading,
     submitBulkRecipients,
     clear,
-    purchaseBulk,
     removeRecipient,
-  } = useMultipleRecipient(
-    paywallConfig,
-    selectedLock?.address,
-    selectedLock?.keyPrice
-  )
+  } = useMultipleRecipient(paywallConfig, selectedLock?.address)
   const showMetadataForm =
     (paywallConfig?.metadataInputs || hasMultipleRecipients) && !savedMetadata
   // state change
@@ -330,7 +325,7 @@ export const Checkout = ({
           closeModal={closeModal}
           setCardPurchase={() => cardCheckoutOrClaim(selectedLock)}
           numberOfRecipients={recipients?.length}
-          purchaseBulk={purchaseBulk}
+          recipients={recipients}
         />
       )
     }

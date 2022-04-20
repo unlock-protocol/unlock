@@ -24,6 +24,7 @@ import Buttons from '../buttons/lock'
 import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
+import { ToastHelper } from '../../helpers/toast.helper'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -35,7 +36,7 @@ interface CryptoCheckoutProps {
   setCardPurchase: () => void
   redirectUri?: string
   numberOfRecipients?: number
-  purchaseBulk?: () => Promise<boolean | undefined>
+  recipients?: any[]
 }
 
 export const CryptoCheckout = ({
@@ -48,12 +49,11 @@ export const CryptoCheckout = ({
   setCardPurchase,
   redirectUri,
   numberOfRecipients = 1,
-  purchaseBulk,
+  recipients = [],
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
   const [loading, setLoading] = useState(false)
-  const [multiPurchaseLoading, setMultiPurchaseLoading] = useState(false)
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>('')
   const {
     network: walletNetwork,
@@ -75,6 +75,7 @@ export const CryptoCheckout = ({
     recipient,
     checkingRecipient,
   } = useAdvancedCheckout()
+  const { purchaseMultipleKeys } = useLock(lock.address, network)
   const userIsOnWrongNetwork = walletNetwork && walletNetwork !== network
   // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
@@ -97,6 +98,10 @@ export const CryptoCheckout = ({
     lock.fiatPricing?.creditCardEnabled &&
     !canClaimAirdrop &&
     lock.keyPrice !== '0'
+
+  const [multipleTransactionsHash, setMultipleTransactionsHash] = useState<
+    string[]
+  >([])
 
   const withMultipleRecipients = numberOfRecipients > 0
 
@@ -126,15 +131,47 @@ export const CryptoCheckout = ({
     changeNetwork(networks[network])
   }
 
+  const onPurchaseMultiple = async () => {
+    if (!lock.address) return
+    if (!lock.keyPrice) return
+    const owners = recipients?.map(({ resolvedAddress }) => resolvedAddress)
+
+    try {
+      const keyPrices = new Array(owners.length).fill(lock.keyPrice)
+      await purchaseMultipleKeys(
+        lock.address,
+        keyPrices,
+        owners,
+        (hash: string) => {
+          setMultipleTransactionsHash([...multipleTransactionsHash, hash])
+          emitTransactionInfo({
+            lock: lock.address,
+            hash,
+          })
+          if (!paywallConfig.pessimistic) {
+            setKeyExpiration(Infinity) // Optimistic!
+            setPurchasePending(false)
+          } else {
+            setTransactionPending(hash)
+          }
+        }
+      )
+      return true
+    } catch (err: any) {
+      ToastHelper.error(
+        err?.error?.message || 'Ops, error during multiple purchase'
+      )
+      return false
+    }
+  }
+
   const cryptoPurchase = async () => {
     if (withMultipleRecipients) {
-      if (typeof purchaseBulk !== 'function') return
-      setMultiPurchaseLoading(true)
-      const validPurchase = await purchaseBulk()
+      setMultipleTransactionsHash([])
+      const validPurchase = await onPurchaseMultiple()
       if (validPurchase) {
         setPurchasedMultiple(true)
       }
-      setMultiPurchaseLoading(false)
     } else if (!cantBuyWithCrypto && account) {
       setPurchasePending(true)
       try {
@@ -232,7 +269,7 @@ export const CryptoCheckout = ({
     (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
 
   const enableBuy = withMultipleRecipients
-    ? !purchasedMultiple && !multiPurchaseLoading
+    ? !multipleTransactionsHash?.length
     : showCheckoutButtons
 
   const onLoading = (loading: boolean) => {
@@ -311,9 +348,7 @@ export const CryptoCheckout = ({
           </Prompt>
 
           <CheckoutOptions>
-            <CheckoutButton
-              disabled={cantBuyWithCrypto || loading || multiPurchaseLoading}
-            >
+            <CheckoutButton disabled={cantBuyWithCrypto || loading}>
               <Buttons.Wallet as="button" onClick={cryptoPurchase} />
               {!isUnlockAccount && userIsOnWrongNetwork && (
                 <Warning>
@@ -366,7 +401,7 @@ export const CryptoCheckout = ({
           </CheckoutOptions>
         </div>
       )}
-      {(transactionPending || multiPurchaseLoading) && (
+      {transactionPending && !withMultipleRecipients && (
         <Message>
           Waiting for your{' '}
           <a
@@ -379,6 +414,33 @@ export const CryptoCheckout = ({
             NFT membership to be minted
           </a>
           ! This should take a few seconds :)
+        </Message>
+      )}
+      {transactionPending && withMultipleRecipients && !purchasedMultiple && (
+        <Message>
+          Waiting for your transactions: <br />
+          <ul
+            style={{
+              listStyle: 'disc',
+            }}
+          >
+            {multipleTransactionsHash?.map((recipient: string, index) => {
+              return (
+                <li key={recipient}>
+                  <a
+                    target="_blank"
+                    href={networks[network].explorer.urls.transaction(
+                      recipient
+                    )}
+                    rel="noreferrer"
+                  >
+                    {`NFT (${index + 1}) membership to be minted`}
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+          This should take a few seconds :)
         </Message>
       )}
       {showRedirectButton && (
@@ -405,7 +467,7 @@ export default CryptoCheckout
 CryptoCheckout.defaultProps = {
   redirectUri: '',
   numberOfRecipients: 1,
-  purchaseBulk: () => undefined,
+  recipients: [],
 }
 
 interface CheckoutButtonProps {
