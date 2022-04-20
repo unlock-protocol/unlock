@@ -18,7 +18,8 @@
     "build": "yarn clean && yarn build:abis && yarn build:lib",
     "clean": "rm -rf lib esm cache coverage src/__tests__/contracts src/__tests__/artifacts",
     "ci": "yarn test && yarn lint",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build",
+    "grant-keys": "node ./scripts/grant-keys.js"
   },
   "author": "Unlock Inc",
   "license": "MIT",
