@@ -1,8 +1,9 @@
 # Changes
 
-# Next patch
+# Next minor
 
 - rescuing gas estimation errors
+- Add support for granting multiple keys
 
 # 0.23.1
 
