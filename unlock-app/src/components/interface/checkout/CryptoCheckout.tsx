@@ -106,7 +106,7 @@ export const CryptoCheckout = ({
     string[]
   >([])
 
-  const withMultipleRecipients = numberOfRecipients > 0
+  const withMultipleRecipients = numberOfRecipients > 1
 
   const cantBuyWithCrypto = isAdvanced
     ? !(
@@ -187,8 +187,9 @@ export const CryptoCheckout = ({
             ? paywallConfig.referrer
             : account
 
-        const purchaseAccount = isAdvanced ? recipient : account
-
+        const purchaseAccount = isAdvanced
+          ? recipient
+          : recipients[0]?.resolvedAddress ?? account
         let data
 
         if (paywallConfig.locks[lock.address].secret) {
