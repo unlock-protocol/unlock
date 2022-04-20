@@ -180,7 +180,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
           disabled={addNewRecipient || isLoading}
           onClick={onSubmit}
         >
-          {confirmCount === 0 ? 'Continue' : 'Re-try continue'}
+          Continue
         </Button>
       )}
     </form>
