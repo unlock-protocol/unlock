@@ -405,7 +405,11 @@ export const CryptoCheckout = ({
                   size="36px"
                   disabled={cardDisabled}
                   as="button"
-                  onClick={() => onCardPurchase(cantPurchaseWithCard)}
+                  onClick={() =>
+                    onCardPurchase(
+                      cantPurchaseWithCard || withMultipleRecipients
+                    )
+                  }
                 />
               </CheckoutButton>,
               withMultipleRecipients,
