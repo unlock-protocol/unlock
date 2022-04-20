@@ -43,12 +43,13 @@ export default async function (
   const defaultArray = Array(owners.length).fill(null)
 
   const keyPrices = await Promise.all(
-    (_keyPrices || defaultArray).map(async (kp) =>
-      kp
-        ? // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
-          lockContract.keyPrice()
-        : formatKeyPrice(kp, erc20Address, decimals, this.provider)
-    )
+    (_keyPrices || defaultArray).map(async (kp) => {
+      if (!kp) {
+        // We might not have the keyPrice, in which case, we need to retrieve from the the lock!
+        return await lockContract.keyPrice()
+      }
+      return formatKeyPrice(kp, erc20Address, decimals, this.provider)
+    })
   )
   const keyManagers = (_keyManagers || defaultArray).map((km) => km || ZERO)
   const referrers = (_referrers || defaultArray).map((km) => km || ZERO)
@@ -104,30 +105,40 @@ export default async function (
 
   // Estimate gas. Bump by 30% because estimates are wrong!
   if (!purchaseForOptions.gasLimit) {
-    // To get good estimates we need the gas price, because it matters in the actual execution (UDT calculation takes it into account)
-    // TODO remove once we move to use block.baseFee in UDT calculation
-    const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
-      await this.provider.getFeeData()
+    try {
+      // To get good estimates we need the gas price, because it matters in the actual execution (UDT calculation takes it into account)
+      // TODO remove once we move to use block.baseFee in UDT calculation
+      const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
+        await this.provider.getFeeData()
 
-    if (maxFeePerGas && maxPriorityFeePerGas) {
-      purchaseForOptions.maxFeePerGas = maxFeePerGas
-      purchaseForOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
-    } else {
-      purchaseForOptions.gasPrice = gasPrice
+      if (maxFeePerGas && maxPriorityFeePerGas) {
+        purchaseForOptions.maxFeePerGas = maxFeePerGas
+        purchaseForOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+      } else {
+        purchaseForOptions.gasPrice = gasPrice
+      }
+      const gasLimit = await lockContract.estimateGas.purchase(
+        keyPrices,
+        owners,
+        referrers,
+        keyManagers,
+        data,
+        purchaseForOptions
+      )
+      // Remove the gas prices settings for the actual transaction (the wallet will set them)
+      delete purchaseForOptions.maxFeePerGas
+      delete purchaseForOptions.maxPriorityFeePerGas
+      delete purchaseForOptions.gasPrice
+      purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
+    } catch (error) {
+      console.error(
+        'We could not estimate gas ourselves. Let wallet do it.',
+        error
+      )
+      delete purchaseForOptions.maxFeePerGas
+      delete purchaseForOptions.maxPriorityFeePerGas
+      delete purchaseForOptions.gasPrice
     }
-    const gasLimit = await lockContract.estimateGas.purchase(
-      keyPrices,
-      owners,
-      referrers,
-      keyManagers,
-      data,
-      purchaseForOptions
-    )
-    // Remove the gas prices settings for the actual transaction (the wallet will set them)
-    delete purchaseForOptions.maxFeePerGas
-    delete purchaseForOptions.maxPriorityFeePerGas
-    delete purchaseForOptions.gasPrice
-    purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
   }
   const transactionPromise = lockContract.purchase(
     keyPrices,
