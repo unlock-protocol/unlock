@@ -1,5 +1,6 @@
 import abis from '../../abis'
 import grantKey from './grantKey'
+import grantKeys from './grantKeys'
 import isLockManager from './isLockManager'
 import isKeyGranter from './isKeyGranter'
 import addKeyGranter from './addKeyGranter'
@@ -30,6 +31,7 @@ export default {
   purchaseKeys,
   getLock,
   grantKey,
+  grantKeys,
   withdrawFromLock,
   isLockManager,
   isKeyGranter,

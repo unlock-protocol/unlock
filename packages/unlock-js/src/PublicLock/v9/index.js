@@ -8,6 +8,7 @@ import v8 from '../v8'
 
 const {
   grantKey,
+  grantKeys,
   updateKeyPrice,
   withdrawFromLock,
   initializeTemplate,
@@ -27,6 +28,7 @@ export default {
   Unlock: abis.Unlock.v9,
   PublicLock: abis.PublicLock.v9,
   grantKey,
+  grantKeys,
   updateKeyPrice,
   withdrawFromLock,
   initializeTemplate,

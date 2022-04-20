@@ -2,6 +2,7 @@ import abis from '../../abis'
 import purchaseKey from './purchaseKey'
 import purchaseKeys from './purchaseKeys'
 import grantKey from './grantKey'
+import grantKeys from './grantKeys'
 import updateKeyPrice from './updateKeyPrice'
 import withdrawFromLock from './withdrawFromLock'
 import initializeTemplate from './initializeTemplate'
@@ -20,6 +21,7 @@ export default {
   purchaseKeys,
   getLock,
   grantKey,
+  grantKeys,
   withdrawFromLock,
   isLockManager,
   cancelAndRefund,
