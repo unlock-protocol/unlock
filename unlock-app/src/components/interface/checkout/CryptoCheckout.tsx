@@ -107,6 +107,7 @@ export const CryptoCheckout = ({
   >([])
 
   const withMultipleRecipients = numberOfRecipients > 1
+  const hasRecipients = recipients?.length > 0
 
   const cantBuyWithCrypto = isAdvanced
     ? !(
@@ -276,7 +277,7 @@ export const CryptoCheckout = ({
       !hasValidkey) ||
     (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
 
-  const enableBuy = withMultipleRecipients
+  const enableBuy = hasRecipients
     ? !multipleTransactionsHash?.length
     : showCheckoutButtons
 
@@ -317,7 +318,7 @@ export const CryptoCheckout = ({
         onLoading={onLoading}
         numberOfRecipients={numberOfRecipients}
       />
-      {!hasValidKeyOrPendingTx && !withMultipleRecipients && (
+      {!hasValidKeyOrPendingTx && !hasRecipients && (
         <>
           <CheckoutCustomRecipient
             isAdvanced={isAdvanced}
@@ -338,7 +339,7 @@ export const CryptoCheckout = ({
               : 'Recipient already has a valid membership!'}
             &nbsp;
           </Message>
-          {!withMultipleRecipients && (
+          {!hasRecipients && (
             <CheckoutCustomRecipient
               isAdvanced={isAdvanced}
               advancedRecipientValid={advancedRecipientValid}
@@ -364,7 +365,7 @@ export const CryptoCheckout = ({
           }}
         >
           <Prompt>
-            {withMultipleRecipients
+            {hasRecipients
               ? `Get your multiple membership (${numberOfRecipients} keys) with:`
               : 'Get the membership with:'}
           </Prompt>
