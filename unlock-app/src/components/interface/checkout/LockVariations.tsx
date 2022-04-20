@@ -269,6 +269,7 @@ export interface SoldOutLockProps {
   formattedDuration: string
   network: number
   cardEnabled: boolean
+  prepend: string
 }
 
 export const SoldOutLock = ({
@@ -279,11 +280,15 @@ export const SoldOutLock = ({
   formattedKeyPrice,
   convertedKeyPrice,
   cardEnabled,
+  prepend,
 }: SoldOutLockProps) => {
   return (
     <DisabledLockContainer data-address={address} data-testid="SoldOutLock">
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <DisabledLockBody>
@@ -421,6 +426,7 @@ export interface ConfirmedLockLockProps {
   network: number
   selectable: boolean
   cardEnabled: boolean
+  prepend: string
 }
 
 export const ConfirmedLock = ({
@@ -433,6 +439,7 @@ export const ConfirmedLock = ({
   formattedKeysAvailable,
   selectable,
   cardEnabled,
+  prepend,
 }: ConfirmedLockLockProps) => {
   return (
     <LockContainer
@@ -441,7 +448,10 @@ export const ConfirmedLock = ({
       data-testid="ConfirmedLock"
     >
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <ConfirmedBody>

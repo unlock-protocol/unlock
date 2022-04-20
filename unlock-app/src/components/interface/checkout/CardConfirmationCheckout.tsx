@@ -27,6 +27,7 @@ interface CardConfirmationCheckoutProps {
   token: string
   paywallConfig: PaywallConfig
   redirectUri: string
+  recipients: any[]
 }
 
 export const CardConfirmationCheckout = ({
@@ -39,6 +40,7 @@ export const CardConfirmationCheckout = ({
   token,
   paywallConfig,
   redirectUri,
+  recipients,
 }: CardConfirmationCheckoutProps) => {
   const config = useContext(ConfigContext)
   const [paymentIntent, setPaymentIntent] = useState<any>(null)
@@ -56,6 +58,11 @@ export const CardConfirmationCheckout = ({
   const hasValidkey =
     keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
   const hasOptimisticKey = keyExpiration === Infinity
+  // multiple recipients with card is not supported, we enable only card with multiple recipients only when have 1 item
+  const singleMultipleRecipient =
+    recipients?.length === 1 ? recipients[0]?.resolvedAddress : undefined
+
+  console.log(recipients)
 
   const {
     isAdvanced,
@@ -85,7 +92,7 @@ export const CardConfirmationCheckout = ({
         lock.address,
         network,
         formattedPrice,
-        recipient || account
+        singleMultipleRecipient || recipient || account
       )
       if (response.error || !response.clientSecret) {
         setError(
@@ -160,7 +167,7 @@ export const CardConfirmationCheckout = ({
       const hash = await captureChargeForCard(
         lock.address,
         network,
-        recipient || account || '',
+        singleMultipleRecipient || recipient || account || '',
         confirmation.paymentIntent.id
       )
 
@@ -195,6 +202,11 @@ export const CardConfirmationCheckout = ({
       setKeyExpiration(key.expiration)
     }
   }
+  const recipientAddress = isAdvanced
+    ? advancedRecipientValid
+      ? recipient
+      : ''
+    : singleMultipleRecipient ?? account
 
   if (!hasValidkey && !lock.fiatPricing?.creditCardEnabled) {
     return (
@@ -207,9 +219,7 @@ export const CardConfirmationCheckout = ({
           onSelected={null}
           hasOptimisticKey={hasOptimisticKey}
           purchasePending={purchasePending}
-          recipient={
-            isAdvanced ? (advancedRecipientValid ? recipient : '') : account
-          }
+          recipient={recipientAddress}
         />
         <ErrorMessage>
           Unfortunately, credit card is not available for this lock. You need to
@@ -226,9 +236,7 @@ export const CardConfirmationCheckout = ({
   return (
     <Wrapper>
       <Lock
-        recipient={
-          isAdvanced ? (advancedRecipientValid ? recipient : '') : account
-        }
+        recipient={recipientAddress}
         network={network}
         lock={lock}
         name={name}

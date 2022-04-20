@@ -219,6 +219,44 @@ export const purchaseKeyFromLock = async (
     }
   )
 }
+
+export const purchaseMultipleKeysFromLock = async (
+  web3Service,
+  walletService,
+  config,
+  lock,
+  setLock,
+  network,
+  lockAddress,
+  keyPrices,
+  owners,
+  callback
+) => {
+  return walletService.purchaseKeys(
+    {
+      lockAddress,
+      owners,
+      keyPrices,
+    },
+    async (error, transactionHash) => {
+      if (error) {
+        throw error
+      }
+      processTransaction(
+        'keyPurchase',
+        web3Service,
+        config,
+        lock,
+        setLock,
+        transactionHash,
+        walletService.networkId
+      )
+      if (callback) {
+        return callback(transactionHash)
+      }
+    }
+  )
+}
 /**
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  * @param {*} lock
@@ -324,6 +362,30 @@ export const useLock = (lockFromProps, network) => {
         setLock,
         network,
         data,
+        callback
+      )
+    }
+  }
+
+  const purchaseMultipleKeys = async (
+    lockAddress,
+    keyPrices,
+    owners,
+    callback
+  ) => {
+    if (walletNetwork !== network) {
+      setError(FATAL_WRONG_NETWORK)
+    } else {
+      await purchaseMultipleKeysFromLock(
+        web3Service,
+        walletService,
+        config,
+        lock,
+        setLock,
+        network,
+        lockAddress,
+        keyPrices,
+        owners,
         callback
       )
     }
@@ -459,6 +521,7 @@ export const useLock = (lockFromProps, network) => {
     getKeyData,
     markAsCheckedIn,
     updateMaxNumberOfKeys,
+    purchaseMultipleKeys,
   }
 }
 

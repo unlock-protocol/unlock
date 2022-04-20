@@ -16,7 +16,7 @@ interface ToastHelperProps {
       success: string
       error: string
     },
-    opts:
+    opts?:
       | Partial<
           Pick<
             Toast,
