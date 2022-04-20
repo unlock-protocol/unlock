@@ -37,6 +37,7 @@ interface CryptoCheckoutProps {
   redirectUri?: string
   numberOfRecipients?: number
   recipients?: any[]
+  clearMultileRecipients?: () => void
 }
 
 export const CryptoCheckout = ({
@@ -50,6 +51,7 @@ export const CryptoCheckout = ({
   redirectUri,
   numberOfRecipients = 1,
   recipients = [],
+  clearMultileRecipients,
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
@@ -171,6 +173,10 @@ export const CryptoCheckout = ({
       const validPurchase = await onPurchaseMultiple()
       if (validPurchase) {
         setPurchasedMultiple(true)
+        if (typeof clearMultileRecipients === 'function') {
+          // clear recipients list after transactions done
+          clearMultileRecipients()
+        }
       }
     } else if (!cantBuyWithCrypto && account) {
       setPurchasePending(true)
@@ -295,7 +301,7 @@ export const CryptoCheckout = ({
         onLoading={onLoading}
         numberOfRecipients={numberOfRecipients}
       />
-      {!hasValidKeyOrPendingTx && (
+      {!hasValidKeyOrPendingTx && !withMultipleRecipients && (
         <>
           <CheckoutCustomRecipient
             isAdvanced={isAdvanced}
@@ -468,6 +474,7 @@ CryptoCheckout.defaultProps = {
   redirectUri: '',
   numberOfRecipients: 1,
   recipients: [],
+  clearMultileRecipients: () => undefined,
 }
 
 interface CheckoutButtonProps {

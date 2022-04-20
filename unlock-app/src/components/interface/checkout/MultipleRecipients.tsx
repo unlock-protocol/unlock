@@ -10,7 +10,7 @@ import Loading from '../Loading'
 import { Button } from './FormStyles'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
 
-interface MultipleRecipientProps {
+export interface MultipleRecipientProps {
   recipients: RecipientItem[]
   maxRecipients: number
   addRecipient: any

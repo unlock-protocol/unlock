@@ -90,7 +90,7 @@ export const useMultipleRecipient = (
   const getAddressAndValidation = async (recipient: string) => {
     const address = await getAddressForName(recipient)
     return {
-      valid: address?.length > 0 ?? false,
+      valid: address?.length > 0,
       address,
     }
   }
@@ -124,7 +124,7 @@ export const useMultipleRecipient = (
           )
           setIgnoreRecipients(addressesWithMetadata)
           setRetryCount(retryCount + 1)
-          ToastHelper.error(`${result?.message}` ?? 'Ops, something went wrong')
+          ToastHelper.error(`${result?.message}` ?? 'Failed to add metadata.')
         }
 
         if (errorCodes.includes(res.status)) {
@@ -133,13 +133,13 @@ export const useMultipleRecipient = (
         }
 
         if (successCodes.includes(res.status)) {
-          ToastHelper.success('Success')
+          ToastHelper.success('Successfully added metadata')
           return true
         }
       }
       return false
     }
-    ToastHelper.error('Retry count reached')
+    ToastHelper.error('Failed to add metadata.')
     return false
   }
 
