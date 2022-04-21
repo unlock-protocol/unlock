@@ -236,14 +236,3 @@ const ItemRows = styled.div`
   display: flex;
   flex-direction: column;
 `
-
-const ActionButton = styled.button`
-  font-size: 12px;
-  padding: 5px 10px;
-  background: var(--lightgrey);
-  border-radius: 4px;
-
-  &:disabled {
-    opacity: 0.4;
-  }
-`
