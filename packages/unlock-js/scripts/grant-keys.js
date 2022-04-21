@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const ethers = require('ethers')
 const networks = require('@unlock-protocol/networks')
 const { WalletService, Web3Service } = require('../dist/index.js')
@@ -44,35 +45,33 @@ const grantKeys = async (networkId, lockAddress, rawRecipients) => {
   if (lock.expirationDuration < ethers.constants.MaxUint256) {
     defaultExpiration = now + lock.expirationDuration
   }
-  rawRecipients.forEach(async (r) => {
-    const [recipient, expiration, manager] = r.split(',')
+  for (let i = 0; i < rawRecipients.length; i++) {
+    try {
+      const [recipient, expiration, manager] = rawRecipients[i].split(',')
 
-    const address = await new ethers.providers.JsonRpcProvider(
-      networks.mainnet.publicProvider
-    ).resolveName(recipient)
+      const address = await new ethers.providers.JsonRpcProvider(
+        networks.mainnet.publicProvider
+      ).resolveName(recipient)
 
-    const key = await web3Service.getKeyByLockForOwner(
-      lockAddress,
-      address,
-      networkId
-    )
-    console.log(key)
-    recipients.push(address)
+      recipients.push(address)
 
-    // No expiration? Use the default
-    if (expiration) {
-      expirations.push(expiration)
-    } else {
-      expirations.push(defaultExpiration)
+      // No expiration? Use the default
+      if (expiration) {
+        expirations.push(expiration)
+      } else {
+        expirations.push(defaultExpiration)
+      }
+
+      // No manager? Use the granter's address
+      if (manager) {
+        managers.push(manager)
+      } else {
+        managers.push(wallet.address)
+      }
+    } catch (error) {
+      console.error(error)
     }
-
-    // No manager? Use the granter's address
-    if (manager) {
-      managers.push(manager)
-    } else {
-      managers.push(wallet.address)
-    }
-  })
+  }
 
   // Connect to a provider with a signer
   await walletService.connect(provider, signer)
