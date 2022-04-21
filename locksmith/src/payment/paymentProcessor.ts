@@ -154,7 +154,11 @@ export class PaymentProcessor {
     network: number,
     stripeAccount: string
   ) {
-    const pricing = await new KeyPricer().generate(lock, network)
+    const pricing = await new KeyPricer().generate(
+      lock,
+      network,
+      recipients.length
+    )
     const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
     const maxPriceInCents = maxPrice * 100
     if (
@@ -272,7 +276,11 @@ export class PaymentProcessor {
     network: number,
     paymentIntentId: string
   ) {
-    const pricing = await new KeyPricer().generate(lock, network)
+    const pricing = await new KeyPricer().generate(
+      lock,
+      network,
+      recipients.length
+    )
     const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
 
     const paymentIntentRecord = await PaymentIntent.findOne({
