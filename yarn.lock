@@ -15105,7 +15105,7 @@ __metadata:
     tsup: 5.12.2
     typescript: 4.6.2
   peerDependencies:
-    ethers: 5.5.4
+    ethers: ^5.0.0
   languageName: unknown
   linkType: soft
 
