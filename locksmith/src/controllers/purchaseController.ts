@@ -119,10 +119,10 @@ namespace PurchaseController {
       userAddress,
     } = req.body.message['Charge Card']
 
-    const normalizedRecipients = recipients.map((address: string) =>
+    const normalizedRecipients: string[] = recipients.map((address: string) =>
       Normalizer.ethereumAddress(address)
     )
-    const soldOut = await isSoldOut(lock, network)
+    const soldOut = await isSoldOut(lock, network, normalizedRecipients.length)
     if (soldOut) {
       return res.status(400).send({
         error: 'Lock is sold out.',
@@ -200,7 +200,7 @@ namespace PurchaseController {
   ): Promise<any> => {
     const { lock, network, recipients, userAddress, paymentIntent } = req.body
 
-    const normalizedRecipients = recipients.map((address: string) =>
+    const normalizedRecipients: string[] = recipients.map((address: string) =>
       Normalizer.ethereumAddress(address)
     )
     const dispatcher = new Dispatcher()
@@ -213,7 +213,7 @@ namespace PurchaseController {
       })
     }
 
-    const soldOut = await isSoldOut(lock, network)
+    const soldOut = await isSoldOut(lock, network, normalizedRecipients.length)
     if (soldOut) {
       return res.status(400).send({
         error: 'Lock is sold out.',

@@ -267,7 +267,7 @@ export class PaymentProcessor {
    */
   async captureConfirmedPaymentIntent(
     userAddress: ethereumAddress,
-    recipients: ethereumAddress,
+    recipients: ethereumAddress[],
     lock: ethereumAddress,
     network: number,
     paymentIntentId: string
