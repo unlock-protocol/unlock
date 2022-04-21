@@ -53,7 +53,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         resetStatus()
       }
     } else {
-      ToastHelper.error('Plase fill all required fields')
+      ToastHelper.error('Please fill all required fields')
     }
   }
 
