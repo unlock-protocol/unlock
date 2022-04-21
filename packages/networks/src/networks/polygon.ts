@@ -16,6 +16,8 @@ export const polygon: NetworkConfig = {
     urls: {
       address: (address) => `https://polygonscan.com/address/${address}`,
       transaction: (hash) => `https://polygonscan.com/tx/${hash}`,
+      token: (address, holder) =>
+        `https://polygonscan.com/token/${address}?a=${holder}`,
     },
   },
   requiredConfirmations: 12,
