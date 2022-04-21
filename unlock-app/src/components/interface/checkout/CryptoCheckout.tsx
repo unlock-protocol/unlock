@@ -299,20 +299,6 @@ export const CryptoCheckout = ({
 
   const showRedirectButton = (hasValidkey || purchasedMultiple) && !isAdvanced
 
-  const renderWithTooltip = (
-    component: React.ReactElement,
-    showTooltip: boolean,
-    message: string
-  ) => {
-    return showTooltip ? (
-      <Tooltip label={message} tip={message}>
-        {component}
-      </Tooltip>
-    ) : (
-      <>{component}</>
-    )
-  }
-
   return (
     <>
       <Lock
@@ -401,24 +387,18 @@ export const CryptoCheckout = ({
                 </Warning>
               )}
             </CheckoutButton>
-
-            {renderWithTooltip(
-              <CheckoutButton disabled={cantPurchaseWithCard || loading}>
-                <Buttons.CreditCard
-                  lock={lock}
-                  backgroundColor="var(--blue)"
-                  fillColor="var(--white)"
-                  showLabel
-                  size="36px"
-                  disabled={cardDisabled}
-                  as="button"
-                  onClick={() => onCardPurchase(cantPurchaseWithCard)}
-                />
-              </CheckoutButton>,
-              withMultipleRecipients,
-              'Multiple recipients purchase with credit card is not supported.'
-            )}
-
+            <CheckoutButton disabled={cantPurchaseWithCard || loading}>
+              <Buttons.CreditCard
+                lock={lock}
+                backgroundColor="var(--blue)"
+                fillColor="var(--white)"
+                showLabel
+                size="36px"
+                disabled={cardDisabled}
+                as="button"
+                onClick={() => onCardPurchase(cantPurchaseWithCard)}
+              />
+            </CheckoutButton>
             {canClaimAirdrop && (
               <CheckoutButton>
                 <Buttons.AirDrop
