@@ -219,6 +219,20 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
+   * Returns true if the address has a valid key (will call the hook when applicable!)
+   * @param lockAddress
+   * @param owner
+   * @param network
+   */
+  async getHasValidKey(lockAddress: string, owner: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return lockContract.getHasValidKey(owner)
+  }
+
+  /**
    * Returns the key expiration to the lock by the account.
    * @private
    * @param {PropTypes.string} lockAddress
