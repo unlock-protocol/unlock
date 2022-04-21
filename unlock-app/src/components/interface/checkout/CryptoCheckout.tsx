@@ -403,11 +403,7 @@ export const CryptoCheckout = ({
             </CheckoutButton>
 
             {renderWithTooltip(
-              <CheckoutButton
-                disabled={
-                  cantPurchaseWithCard || withMultipleRecipients || loading
-                }
-              >
+              <CheckoutButton disabled={cantPurchaseWithCard || loading}>
                 <Buttons.CreditCard
                   lock={lock}
                   backgroundColor="var(--blue)"
@@ -416,11 +412,7 @@ export const CryptoCheckout = ({
                   size="36px"
                   disabled={cardDisabled}
                   as="button"
-                  onClick={() =>
-                    onCardPurchase(
-                      cantPurchaseWithCard || withMultipleRecipients
-                    )
-                  }
+                  onClick={() => onCardPurchase(cantPurchaseWithCard)}
                 />
               </CheckoutButton>,
               withMultipleRecipients,

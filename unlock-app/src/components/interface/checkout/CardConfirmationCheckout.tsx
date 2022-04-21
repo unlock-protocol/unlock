@@ -58,12 +58,7 @@ export const CardConfirmationCheckout = ({
   const hasValidkey =
     keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
   const hasOptimisticKey = keyExpiration === Infinity
-  // multiple recipients with card is not supported, we enable only card with multiple recipients only when have 1 item
-  const singleMultipleRecipient =
-    recipients?.length === 1 ? recipients[0]?.resolvedAddress : undefined
-
-  console.log(recipients)
-
+  const purchaseRecipients = recipients.length ? recipients : [account]
   const {
     isAdvanced,
     setIsAdvanced,
@@ -92,7 +87,7 @@ export const CardConfirmationCheckout = ({
         lock.address,
         network,
         formattedPrice,
-        singleMultipleRecipient || recipient || account
+        purchaseRecipients
       )
       if (response.error || !response.clientSecret) {
         setError(
@@ -167,7 +162,7 @@ export const CardConfirmationCheckout = ({
       const hash = await captureChargeForCard(
         lock.address,
         network,
-        singleMultipleRecipient || recipient || account || '',
+        purchaseRecipients,
         confirmation.paymentIntent.id
       )
 
@@ -206,7 +201,7 @@ export const CardConfirmationCheckout = ({
     ? advancedRecipientValid
       ? recipient
       : ''
-    : singleMultipleRecipient ?? account
+    : purchaseRecipients[0]
 
   if (!hasValidkey && !lock.fiatPricing?.creditCardEnabled) {
     return (
