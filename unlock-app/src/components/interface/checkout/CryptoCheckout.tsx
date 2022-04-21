@@ -3,6 +3,7 @@ import React, { useContext, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import ReCAPTCHA from 'react-google-recaptcha'
 
+import { Tooltip } from '@unlock-protocol/ui'
 import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -24,6 +25,8 @@ import Buttons from '../buttons/lock'
 import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
+import { ToastHelper } from '../../helpers/toast.helper'
+import { WalletServiceContext } from '../../../utils/withWalletService'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -34,6 +37,9 @@ interface CryptoCheckoutProps {
   closeModal: (success: boolean) => void
   setCardPurchase: () => void
   redirectUri?: string
+  numberOfRecipients?: number
+  recipients?: any[]
+  clearMultileRecipients?: () => void
 }
 
 export const CryptoCheckout = ({
@@ -45,11 +51,15 @@ export const CryptoCheckout = ({
   closeModal,
   setCardPurchase,
   redirectUri,
+  numberOfRecipients = 1,
+  recipients = [],
+  clearMultileRecipients,
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
   const [loading, setLoading] = useState(false)
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>('')
+  const walletService = useContext(WalletServiceContext)
   const {
     network: walletNetwork,
     account,
@@ -61,6 +71,7 @@ export const CryptoCheckout = ({
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [canAfford, setCanAfford] = useState(true)
   const [purchasePending, setPurchasePending] = useState(false)
+  const [purchasedMultiple, setPurchasedMultiple] = useState(false)
   const {
     isAdvanced,
     setIsAdvanced,
@@ -69,6 +80,7 @@ export const CryptoCheckout = ({
     recipient,
     checkingRecipient,
   } = useAdvancedCheckout()
+  const { purchaseMultipleKeys } = useLock(lock.address, network)
   const userIsOnWrongNetwork = walletNetwork && walletNetwork !== network
   // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
@@ -91,6 +103,13 @@ export const CryptoCheckout = ({
     lock.fiatPricing?.creditCardEnabled &&
     !canClaimAirdrop &&
     lock.keyPrice !== '0'
+
+  const [multipleTransactionsHash, setMultipleTransactionsHash] = useState<
+    string[]
+  >([])
+
+  const withMultipleRecipients = numberOfRecipients > 1
+  const hasRecipients = recipients?.length > 0
 
   const cantBuyWithCrypto = isAdvanced
     ? !(
@@ -118,8 +137,61 @@ export const CryptoCheckout = ({
     changeNetwork(networks[network])
   }
 
+  const onPurchaseMultiple = async () => {
+    if (!lock.address) return
+    if (!lock.keyPrice) return
+    const owners = recipients?.map(({ resolvedAddress }) => resolvedAddress)
+
+    try {
+      const keyPrices = new Array(owners.length).fill(lock.keyPrice)
+      const signature = await walletService.signMessage(
+        `I want to purchase a ${
+          recipients?.length
+        } memberships for this address list: ${recipients?.map(
+          (recipient) => `${recipient.userAddress}`
+        )}`,
+        'personal_sign'
+      )
+      if (!signature) return
+      await purchaseMultipleKeys(
+        lock.address,
+        keyPrices,
+        owners,
+        (hash: string) => {
+          setMultipleTransactionsHash([...multipleTransactionsHash, hash])
+          emitTransactionInfo({
+            lock: lock.address,
+            hash,
+          })
+          if (!paywallConfig.pessimistic) {
+            setKeyExpiration(Infinity) // Optimistic!
+            setPurchasePending(false)
+          } else {
+            setTransactionPending(hash)
+          }
+        }
+      )
+      return true
+    } catch (err: any) {
+      ToastHelper.error(
+        err?.error?.message || 'Ops, error during multiple purchase'
+      )
+      return false
+    }
+  }
+
   const cryptoPurchase = async () => {
-    if (!cantBuyWithCrypto && account) {
+    if (withMultipleRecipients) {
+      setMultipleTransactionsHash([])
+      const validPurchase = await onPurchaseMultiple()
+      if (validPurchase) {
+        setPurchasedMultiple(true)
+        if (typeof clearMultileRecipients === 'function') {
+          // clear recipients list after transactions done
+          clearMultileRecipients()
+        }
+      }
+    } else if (!cantBuyWithCrypto && account) {
       setPurchasePending(true)
       try {
         const referrer =
@@ -127,8 +199,9 @@ export const CryptoCheckout = ({
             ? paywallConfig.referrer
             : account
 
-        const purchaseAccount = isAdvanced ? recipient : account
-
+        const purchaseAccount = isAdvanced
+          ? recipient
+          : recipients[0]?.resolvedAddress ?? account
         let data
 
         if (paywallConfig.locks[lock.address].secret) {
@@ -215,9 +288,29 @@ export const CryptoCheckout = ({
       !hasValidkey) ||
     (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
 
+  const enableBuy = hasRecipients
+    ? !multipleTransactionsHash?.length
+    : showCheckoutButtons
+
   const onLoading = (loading: boolean) => {
     setLoading(loading)
     loadingCheck.current = true
+  }
+
+  const showRedirectButton = (hasValidkey || purchasedMultiple) && !isAdvanced
+
+  const renderWithTooltip = (
+    component: React.ReactElement,
+    showTooltip: boolean,
+    message: string
+  ) => {
+    return showTooltip ? (
+      <Tooltip label={message} tip={message}>
+        {component}
+      </Tooltip>
+    ) : (
+      <>{component}</>
+    )
   }
 
   return (
@@ -234,8 +327,9 @@ export const CryptoCheckout = ({
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
         onLoading={onLoading}
+        numberOfRecipients={numberOfRecipients}
       />
-      {!hasValidKeyOrPendingTx && (
+      {!hasValidKeyOrPendingTx && !hasRecipients && (
         <>
           <CheckoutCustomRecipient
             isAdvanced={isAdvanced}
@@ -256,19 +350,22 @@ export const CryptoCheckout = ({
               : 'Recipient already has a valid membership!'}
             &nbsp;
           </Message>
-          <CheckoutCustomRecipient
-            isAdvanced={isAdvanced}
-            advancedRecipientValid={advancedRecipientValid}
-            checkingRecipient={checkingRecipient}
-            setIsAdvanced={setIsAdvanced}
-            onRecipientChange={onRecipientChange}
-            customBuyMessage="Buy for a different address"
-            disabled={transactionPending?.length > 0 ?? false}
-            loading={loading}
-          />
+          {!hasRecipients && (
+            <CheckoutCustomRecipient
+              isAdvanced={isAdvanced}
+              advancedRecipientValid={advancedRecipientValid}
+              checkingRecipient={checkingRecipient}
+              setIsAdvanced={setIsAdvanced}
+              onRecipientChange={onRecipientChange}
+              customBuyMessage="Buy for a different address"
+              disabled={transactionPending?.length > 0 ?? false}
+              loading={loading}
+            />
+          )}
         </>
       )}
-      {showCheckoutButtons && (
+      {purchasedMultiple && <Message>Enjoy your memberships!</Message>}
+      {enableBuy && (
         <div
           style={{
             marginBottom: '32px',
@@ -278,7 +375,11 @@ export const CryptoCheckout = ({
                 : 'block',
           }}
         >
-          <Prompt>Get the membership with:</Prompt>
+          <Prompt>
+            {hasRecipients
+              ? `Get your multiple membership (${numberOfRecipients} keys) with:`
+              : 'Get the membership with:'}
+          </Prompt>
 
           <CheckoutOptions>
             <CheckoutButton disabled={cantBuyWithCrypto || loading}>
@@ -301,18 +402,30 @@ export const CryptoCheckout = ({
               )}
             </CheckoutButton>
 
-            <CheckoutButton disabled={cantPurchaseWithCard || loading}>
-              <Buttons.CreditCard
-                lock={lock}
-                backgroundColor="var(--blue)"
-                fillColor="var(--white)"
-                showLabel
-                size="36px"
-                disabled={cardDisabled}
-                as="button"
-                onClick={() => onCardPurchase(cantPurchaseWithCard)}
-              />
-            </CheckoutButton>
+            {renderWithTooltip(
+              <CheckoutButton
+                disabled={
+                  cantPurchaseWithCard || withMultipleRecipients || loading
+                }
+              >
+                <Buttons.CreditCard
+                  lock={lock}
+                  backgroundColor="var(--blue)"
+                  fillColor="var(--white)"
+                  showLabel
+                  size="36px"
+                  disabled={cardDisabled}
+                  as="button"
+                  onClick={() =>
+                    onCardPurchase(
+                      cantPurchaseWithCard || withMultipleRecipients
+                    )
+                  }
+                />
+              </CheckoutButton>,
+              withMultipleRecipients,
+              'Multiple recipients purchase with credit card is not supported.'
+            )}
 
             {canClaimAirdrop && (
               <CheckoutButton>
@@ -330,7 +443,7 @@ export const CryptoCheckout = ({
           </CheckoutOptions>
         </div>
       )}
-      {transactionPending && (
+      {transactionPending && !withMultipleRecipients && (
         <Message>
           Waiting for your{' '}
           <a
@@ -345,7 +458,34 @@ export const CryptoCheckout = ({
           ! This should take a few seconds :)
         </Message>
       )}
-      {hasValidkey && !isAdvanced && (
+      {transactionPending && withMultipleRecipients && !purchasedMultiple && (
+        <Message>
+          Waiting for your transactions: <br />
+          <ul
+            style={{
+              listStyle: 'disc',
+            }}
+          >
+            {multipleTransactionsHash?.map((recipient: string, index) => {
+              return (
+                <li key={recipient}>
+                  <a
+                    target="_blank"
+                    href={networks[network].explorer.urls.transaction(
+                      recipient
+                    )}
+                    rel="noreferrer"
+                  >
+                    {`NFT (${index + 1}) membership to be minted`}
+                  </a>
+                </li>
+              )
+            })}
+          </ul>
+          This should take a few seconds :)
+        </Message>
+      )}
+      {showRedirectButton && (
         <EnjoyYourMembership
           redirectUri={redirectUri}
           closeModal={closeModal}
@@ -368,6 +508,9 @@ export default CryptoCheckout
 
 CryptoCheckout.defaultProps = {
   redirectUri: '',
+  numberOfRecipients: 1,
+  recipients: [],
+  clearMultileRecipients: () => undefined,
 }
 
 interface CheckoutButtonProps {
