@@ -58,7 +58,9 @@ export const CardConfirmationCheckout = ({
   const hasValidkey =
     keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
   const hasOptimisticKey = keyExpiration === Infinity
-  const purchaseRecipients = recipients.length ? recipients : [account]
+  const purchaseRecipients = recipients.length
+    ? recipients.map((item) => item.resolvedAddress)
+    : [account]
   const {
     isAdvanced,
     setIsAdvanced,
