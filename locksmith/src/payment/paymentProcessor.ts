@@ -175,6 +175,7 @@ export class PaymentProcessor {
         userAddress,
         lockAddress: lock,
         chain: network,
+        recipients,
         connectedStripeId: stripeAccount,
         createdAt: {
           [Op.gte]: Sequelize.literal("NOW() - INTERVAL '10 minute'"),
