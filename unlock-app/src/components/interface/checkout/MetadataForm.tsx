@@ -83,6 +83,8 @@ export const MetadataForm = ({
     }
   }
 
+  const withMetadata = fields?.length > 0
+
   if (showMultipleRecipient) {
     return (
       <MultipleRecipient
@@ -93,6 +95,7 @@ export const MetadataForm = ({
         fields={fields}
         submitBulkRecipients={submitBulkRecipients}
         removeRecipient={removeRecipient}
+        withMetadata={withMetadata}
         onContinue={() => {
           onSubmit(true as any)
         }}
