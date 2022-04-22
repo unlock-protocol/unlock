@@ -16,6 +16,7 @@ import Svg from '../svg'
 import { PaywallConfig } from '../../../unlockTypes'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
+import { getFiatPricing } from '../../../hooks/useCards'
 
 interface CardConfirmationCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -50,10 +51,14 @@ export const CardConfirmationCheckout = ({
     network
   )
   const [purchasePending, setPurchasePending] = useState(false)
+  const [pricing, setPricing] = useState({
+    keyPrice: 0,
+    creditCardProcessing: 0,
+    unlockServiceFee: 0,
+  })
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
-
   const now = new Date().getTime() / 1000
   const hasValidkey =
     keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
@@ -70,20 +75,39 @@ export const CardConfirmationCheckout = ({
     checkingRecipient,
   } = useAdvancedCheckout()
 
+  useEffect(() => {
+    const fetchPricing = async () => {
+      const price = await getFiatPricing(
+        config,
+        lock.address,
+        network,
+        recipients.length
+      )
+      setPricing(price.usd)
+    }
+
+    fetchPricing()
+  }, [recipients.length, lock.address, config, network])
+
   let totalPrice: number = 0
   let fee: number = 0
+
   if (lock.fiatPricing?.usd) {
-    totalPrice =
-      Object.values(lock.fiatPricing.usd as number).reduce(
-        (s: number, x: number): number => s + x,
-        0
-      ) * purchaseRecipients.length
-    fee = totalPrice - lock.fiatPricing.usd.keyPrice * purchaseRecipients.length
+    totalPrice = Object.values(pricing).reduce(
+      (s: number, x: number): number => s + x,
+      0
+    )
+    fee = totalPrice - pricing.keyPrice
   }
 
   const formattedPrice = (totalPrice / 100).toFixed(2)
 
   useEffect(() => {
+    // Wait for pricing to load
+    if (formattedPrice === '0.00') {
+      return
+    }
+
     const prepareCharge = async () => {
       const response = await prepareChargeForCard(
         token,
@@ -106,7 +130,7 @@ export const CardConfirmationCheckout = ({
     if (account) {
       prepareCharge()
     }
-  }, [account])
+  }, [account, formattedPrice])
 
   useEffect(() => {
     const waitForTransaction = async (hash: string) => {
@@ -239,11 +263,11 @@ export const CardConfirmationCheckout = ({
         network={network}
         lock={lock}
         name={name}
-        numberOfRecipients={recipients.length}
         setHasKey={handleHasKey}
         onSelected={null}
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
+        numberOfRecipients={recipients.length}
       />
 
       {hasValidkey && (
