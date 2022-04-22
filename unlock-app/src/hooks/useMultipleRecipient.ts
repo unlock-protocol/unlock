@@ -186,7 +186,7 @@ export const useMultipleRecipient = (
         )
       } else if (isAddressInList) {
         ToastHelper.error(
-          'This address can already present in list. Please add a new one'
+          'This address is already present in list. Please add a new one'
         )
       } else if (!valid) {
         ToastHelper.error(
