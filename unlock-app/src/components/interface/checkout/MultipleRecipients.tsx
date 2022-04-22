@@ -19,6 +19,7 @@ export interface MultipleRecipientProps {
   submitBulkRecipients: () => Promise<boolean>
   onContinue: () => void
   removeRecipient: (address: string) => void
+  withMetadata: boolean
 }
 export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   recipients,
@@ -29,6 +30,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   submitBulkRecipients,
   onContinue,
   removeRecipient,
+  withMetadata,
 }) => {
   const { account } = useContext(AuthenticationContext)
   const [addNewRecipient, setNewRecipient] = useState(false)
@@ -71,10 +73,15 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   const onSubmit = async () => {
     setIsLoading(true)
     setConfirmCount(confirmCount + 1)
-    const valid = await submitBulkRecipients()
-    if (valid) {
+    if (withMetadata) {
+      const valid = await submitBulkRecipients()
+      if (valid) {
+        onContinue()
+      }
+    } else {
       onContinue()
     }
+
     setIsLoading(false)
   }
 
