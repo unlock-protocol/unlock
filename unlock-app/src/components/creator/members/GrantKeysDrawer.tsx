@@ -62,12 +62,12 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
   const [expirationInputDisabled, setExpirationInputDisabled] = useState(
     lock.expirationDuration === -1
   )
-  const { recipients: recipientItems, addRecipientItem } = useMultipleRecipient(
-    lock?.address,
-    network,
-    Infinity
-  )
-  const disableGrantKeys = recipientItems?.length === 0
+  const {
+    recipients: recipientItems,
+    addRecipientItem,
+    clear,
+  } = useMultipleRecipient(lock?.address, network, Infinity)
+  const disableGrantKeys = recipientItems?.length === 0 && !loading
 
   const defaultValues = {
     recipient: '',
@@ -135,6 +135,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
       )
       setTransaction('')
       onGranted(true)
+      clear()
     } catch (error) {
       console.error(error)
       setTransaction('')
