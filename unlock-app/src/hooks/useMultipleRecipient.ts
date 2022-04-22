@@ -3,7 +3,8 @@ import { ToastHelper } from '../components/helpers/toast.helper'
 import { ConfigContext } from '../utils/withConfig'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { getAddressForName } from './useEns'
-import { Lock } from '../unlockTypes'
+import { Lock, PaywallConfig } from '../unlockTypes'
+import { formResultToMetadata } from '../utils/userMetadata'
 
 const MAX_RETRY_COUNT = 5
 interface User {
@@ -29,6 +30,7 @@ interface RecipientPayload {
 
 export const useMultipleRecipient = (
   lock: Lock,
+  paywallConfig: PaywallConfig,
   network?: number,
   maxRecipients = 1
 ) => {
@@ -61,9 +63,16 @@ export const useMultipleRecipient = (
 
     const payload: RecipientPayload = {
       users: listWithoutExcluded.map(({ resolvedAddress, metadata = {} }) => {
+        const formattedMetadata = formResultToMetadata(
+          metadata,
+          paywallConfig?.metadataInputs || []
+        )
         return {
           userAddress: resolvedAddress,
-          metadata,
+          metadata: {
+            public: formattedMetadata.publicData,
+            protected: formattedMetadata.protectedData,
+          },
           lockAddress: lock.address,
         }
       }),
@@ -98,26 +107,20 @@ export const useMultipleRecipient = (
     const addressList = recipientsList().map(
       ({ resolvedAddress }) => resolvedAddress
     )
-    const addressItemsCount = addressList.filter(
-      (item) => item === address
-    ).length
+
     const isAddressInList = addressList.includes(address)
 
-    const canAddMultiple = (lock?.publicLockVersion ?? 1) >= 10
-
     // todo: need also to check how many keys the address owns to improve this logic
-    const limitNotReached =
-      addressItemsCount < (lock?.maxKeysPerAddress ?? 1) && !isAddressWithKey
+    const limitNotReached = !isAddressWithKey
     const addressValid = address?.length > 0
 
-    const valid = addressValid && canAddMultiple && limitNotReached
+    const valid = addressValid && limitNotReached
     return {
       valid,
       address,
       isAddressWithKey,
       isAddressInList,
       limitNotReached,
-      canAddMultiple,
     }
   }
 
@@ -169,7 +172,7 @@ export const useMultipleRecipient = (
     return false
   }
 
-  const addRecipientItem = async <T>(
+  const addRecipientItem = async <T extends Record<string, any>>(
     userAddress: string,
     metadata: T
   ): Promise<boolean> => {
@@ -181,7 +184,6 @@ export const useMultipleRecipient = (
         address,
         isAddressWithKey,
         isAddressInList,
-        canAddMultiple,
         limitNotReached,
       } = await getAddressAndValidation(userAddress)
       if (valid) {
@@ -200,7 +202,7 @@ export const useMultipleRecipient = (
         ToastHelper.success('Recipient correctly added in list.')
       }
 
-      if (canAddMultiple && !limitNotReached && isAddressWithKey) {
+      if (!limitNotReached && isAddressWithKey) {
         ToastHelper.error(
           'This address reached max keys limit. You cannot grant them a new one.'
         )
