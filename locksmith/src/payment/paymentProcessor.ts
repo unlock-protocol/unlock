@@ -145,25 +145,20 @@ export class PaymentProcessor {
     }
   }
 
-  /**
-   *
-   * @param recipient
-   * @param stripeCustomerId
-   * @param lock
-   * @param maxPrice
-   * @param network
-   * @param stripeAccount
-   * @returns
-   */
   async createPaymentIntent(
-    recipient: ethereumAddress /** this is the recipient of the granted key */,
+    userAddress: ethereumAddress,
+    recipients: ethereumAddress[],
     stripeCustomerId: string, // Stripe token of the buyer
     lock: ethereumAddress,
     maxPrice: any,
     network: number,
     stripeAccount: string
   ) {
-    const pricing = await new KeyPricer().generate(lock, network)
+    const pricing = await new KeyPricer().generate(
+      lock,
+      network,
+      recipients.length
+    )
     const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
     const maxPriceInCents = maxPrice * 100
     if (
@@ -177,9 +172,10 @@ export class PaymentProcessor {
     // Let's see if we have a paymentIntent already that's less than 10 minutes old
     const existingIntent = await PaymentIntent.findOne({
       where: {
-        userAddress: recipient,
+        userAddress,
         lockAddress: lock,
         chain: network,
+        recipients,
         connectedStripeId: stripeAccount,
         createdAt: {
           [Op.gte]: Sequelize.literal("NOW() - INTERVAL '10 minute'"),
@@ -233,8 +229,10 @@ export class PaymentProcessor {
         payment_method: paymentMethods.data[0].id,
         capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
         metadata: {
+          purchaser: userAddress,
           lock,
-          recipient,
+          // For compaitibility and stripe limitation (cannot store an array), we are using the same recipient field name but storing multiple recipients in case we have them.
+          recipient: recipients.join(','),
           network,
           maxPrice,
         },
@@ -246,9 +244,10 @@ export class PaymentProcessor {
     // Store the paymentIntent
     // Note: to avoid multiple purchases, we should make sure we don't create a new one if one already exists!
     await PaymentIntent.create({
-      userAddress: recipient,
+      userAddress,
       lockAddress: lock,
       chain: network,
+      recipients,
       stripeCustomerId: stripeCustomerId, // Customer Id
       intentId: intent.id,
       connectedStripeId: stripeAccount,
@@ -272,12 +271,17 @@ export class PaymentProcessor {
    * @returns
    */
   async captureConfirmedPaymentIntent(
-    recipient: ethereumAddress /** this is the recipient of the granted key */,
+    userAddress: ethereumAddress,
+    recipients: ethereumAddress[],
     lock: ethereumAddress,
     network: number,
     paymentIntentId: string
   ) {
-    const pricing = await new KeyPricer().generate(lock, network)
+    const pricing = await new KeyPricer().generate(
+      lock,
+      network,
+      recipients.length
+    )
     const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
 
     const paymentIntentRecord = await PaymentIntent.findOne({
@@ -299,7 +303,15 @@ export class PaymentProcessor {
       throw new Error('Lock does not match with initial intent.')
     }
 
-    if (paymentIntent.metadata.recipient !== recipient) {
+    if (paymentIntent.metadata.purchaser !== userAddress) {
+      throw new Error('User Address does not match with initial intent.')
+    }
+
+    if (
+      !paymentIntent.metadata.recipient
+        .split(',')
+        .every((r) => recipients.includes(r))
+    ) {
       throw new Error('Recipient does not match with initial intent.')
     }
 
@@ -319,15 +331,16 @@ export class PaymentProcessor {
     const fulfillmentDispatcher = new Dispatcher()
     return new Promise((resolve, reject) => {
       try {
-        fulfillmentDispatcher.grantKey(
+        fulfillmentDispatcher.grantKeys(
           paymentIntent.metadata.lock,
-          paymentIntent.metadata.recipient,
+          paymentIntent.metadata.recipient.split(','),
           parseInt(paymentIntent.metadata.network, 10),
           async (_: any, transactionHash: string) => {
             // Should we proceed differently here? Save the charge before and keep the state?
             // This would allow us to easily retrieve transactions that might have failed.
             const charge: Charge = await Charge.create({
-              userAddress: paymentIntent.metadata.recipient,
+              userAddress: paymentIntent.metadata.purchaser,
+              recipients: paymentIntent.metadata.recipient.split(','),
               lock: paymentIntent.metadata.lock,
               stripeCustomerId: paymentIntent.customer,
               connectedCustomer: paymentIntent.customer,
@@ -366,9 +379,9 @@ export class PaymentProcessor {
     )
     return new Promise((resolve, reject) => {
       try {
-        fulfillmentDispatcher.grantKey(
+        fulfillmentDispatcher.grantKeys(
           lock,
-          recipient,
+          [recipient],
           network,
           async (_: any, transactionHash: string) => {
             const charge: Charge = await Charge.create({

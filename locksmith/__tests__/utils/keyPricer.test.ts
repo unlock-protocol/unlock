@@ -44,6 +44,28 @@ describe('KeyPricer', () => {
     })
   })
 
+  describe('Generate price', () => {
+    it('Generate price for a single quantity key', async () => {
+      expect.assertions(3)
+      mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
+      const pricing = await keyPricer.generate('0x', 100)
+
+      expect(pricing.keyPrice).toBe(1)
+      expect(pricing.creditCardProcessing).toBe(31)
+      expect(pricing.unlockServiceFee).toBe(2)
+    })
+
+    it('Generate price for multiple quantity keys', async () => {
+      expect.assertions(3)
+      mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
+      const pricing = await keyPricer.generate('0x', 100, 100)
+
+      expect(pricing.keyPrice).toBe(100)
+      expect(pricing.unlockServiceFee).toBe(11)
+      expect(pricing.creditCardProcessing).toBe(34)
+    })
+  })
+
   describe('unlockServiceFee', () => {
     it('should return our vig', () => {
       expect.assertions(1)

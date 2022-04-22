@@ -92,13 +92,14 @@ export default class KeyPricer {
 
   async generate(
     lockAddress: string,
-    network: number
+    network: number,
+    quantity = 1
   ): Promise<ItemizedKeyPrice> {
     // Here we need to get the conversion as well!
     const usdKeyPrice = await this.keyPriceUSD(lockAddress, network)
-
+    const usdKeyPricing = usdKeyPrice * quantity
     const gasFee = await this.gasFee(network)
-    const unlockServiceFee = this.unlockServiceFee(usdKeyPrice) + gasFee
+    const unlockServiceFee = this.unlockServiceFee(usdKeyPricing) + gasFee
 
     // We will invoice EthCC inpendently
     if (
@@ -106,17 +107,17 @@ export default class KeyPricer {
       '0xd0A031d9f9486B1D914124D0C1FCAC2e9e6504FE'.toLowerCase()
     ) {
       return {
-        keyPrice: usdKeyPrice,
+        keyPrice: usdKeyPricing,
         unlockServiceFee: 0,
         creditCardProcessing: 0,
       }
     }
 
     return {
-      keyPrice: usdKeyPrice,
+      keyPrice: usdKeyPricing,
       unlockServiceFee,
       creditCardProcessing: this.creditCardProcessingFee(
-        usdKeyPrice + unlockServiceFee
+        usdKeyPricing + unlockServiceFee
       ),
     }
   }

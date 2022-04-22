@@ -115,7 +115,8 @@ export async function updateLockMigrationsLog(
 
 export async function isSoldOut(
   address: string,
-  chain: number
+  chain: number,
+  keysNeeded = 10
 ): Promise<boolean> {
   const provider = new ethers.providers.JsonRpcProvider(
     networks[chain].publicProvider
@@ -156,6 +157,6 @@ export async function isSoldOut(
 
   const maxNumberOfKeys = await lock.maxNumberOfKeys()
   const totalSupply = await lock.totalSupply()
-
-  return maxNumberOfKeys.lte(totalSupply)
+  const newMaxNumberOfKeys = maxNumberOfKeys.add(keysNeeded)
+  return newMaxNumberOfKeys.lte(totalSupply)
 }
