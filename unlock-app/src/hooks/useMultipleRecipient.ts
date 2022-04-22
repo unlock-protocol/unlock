@@ -90,12 +90,11 @@ export const useMultipleRecipient = (
 
   const getAddressAndValidation = async (recipient: string) => {
     const address = await getAddressForName(recipient)
-    const existingExpiration = await web3Service.getKeyExpirationByLockForOwner(
+    const isAddressWithKey = await web3Service.getHasValidKey(
       lock.address,
       address,
       network
     )
-    const isAddressWithKey = existingExpiration > new Date().getTime() / 1000
     const addressList = recipientsList().map(
       ({ resolvedAddress }) => resolvedAddress
     )
@@ -107,13 +106,11 @@ export const useMultipleRecipient = (
     const canAddMultiple = (lock?.publicLockVersion ?? 1) >= 10
 
     // todo: need also to check how many keys the address owns to improve this logic
-    const limitNotReached = addressItemsCount < (lock?.maxKeysPerAddress ?? 1)
-    const isNotDuplicated = !isAddressInList && !isAddressWithKey
+    const limitNotReached =
+      addressItemsCount < (lock?.maxKeysPerAddress ?? 1) && !isAddressWithKey
     const addressValid = address?.length > 0
-    const addMultipleEnabled = canAddMultiple && limitNotReached
 
-    const valid = addressValid && (addMultipleEnabled || isNotDuplicated)
-
+    const valid = addressValid && canAddMultiple && limitNotReached
     return {
       valid,
       address,
@@ -203,7 +200,7 @@ export const useMultipleRecipient = (
         ToastHelper.success('Recipient correctly added in list.')
       }
 
-      if (canAddMultiple && !limitNotReached) {
+      if (canAddMultiple && !limitNotReached && isAddressWithKey) {
         ToastHelper.error(
           'This address reached max keys limit. You cannot grant them a new one.'
         )
