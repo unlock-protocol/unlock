@@ -175,7 +175,6 @@ export class PaymentProcessor {
         userAddress,
         lockAddress: lock,
         chain: network,
-        recipients,
         connectedStripeId: stripeAccount,
         createdAt: {
           [Op.gte]: Sequelize.literal("NOW() - INTERVAL '10 minute'"),
@@ -185,7 +184,12 @@ export class PaymentProcessor {
 
     // We check if there is an intent and use that one
     // if its status is still pending confirmation
-    if (existingIntent) {
+    if (
+      existingIntent &&
+      existingIntent.recipients?.every((recipient) =>
+        recipients.includes(recipient)
+      )
+    ) {
       const stripeIntent = await this.stripe.paymentIntents.retrieve(
         existingIntent.intentId,
         {

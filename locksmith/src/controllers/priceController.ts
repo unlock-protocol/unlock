@@ -15,6 +15,7 @@ namespace PriceController {
     res: Response
   ): Promise<any> => {
     const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
+    const quantity = Number(req.query.quantity || 1)
     try {
       const fulfillmentDispatcher = new Dispatcher()
 
@@ -28,7 +29,7 @@ namespace PriceController {
       )
 
       const pricer = new KeyPricer()
-      const pricing = await pricer.generate(lockAddress, req.chain)
+      const pricing = await pricer.generate(lockAddress, req.chain, quantity)
 
       // If it is low enough we want to allow users to claim it for free
       const costToGrant = await pricer.gasFee(req.chain, 1000)
