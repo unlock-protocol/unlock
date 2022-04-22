@@ -155,9 +155,8 @@ export const useAccount = (address: string, network: number) => {
     lock: any,
     network: number,
     pricing: any,
-    recipient?: string
+    recipients: string[]
   ) => {
-    const purchaseAddress = recipient ?? address
     const response = await chargeAndSaveCard(
       config,
       walletService,
@@ -166,7 +165,7 @@ export const useAccount = (address: string, network: number) => {
       network,
       lock,
       pricing,
-      purchaseAddress
+      recipients
     )
     return response.transactionHash
   }
@@ -183,14 +182,15 @@ export const useAccount = (address: string, network: number) => {
   const captureChargeForCard = async (
     lock: any,
     network: number,
-    recipient: string,
+    recipients: string[],
     paymentIntent: string
   ) => {
     const response = await captureCharge(
       config,
       lock,
       network,
-      recipient,
+      address,
+      recipients,
       paymentIntent
     )
     return response.transactionHash
@@ -210,9 +210,8 @@ export const useAccount = (address: string, network: number) => {
     lock: any,
     network: number,
     pricing: any,
-    recipient?: string
+    recipients: string[]
   ) => {
-    const purchaseAddress = recipient ?? address
     const response = await prepareCharge(
       config,
       walletService,
@@ -221,7 +220,7 @@ export const useAccount = (address: string, network: number) => {
       network,
       lock,
       pricing,
-      purchaseAddress
+      recipients
     )
     return response
   }
