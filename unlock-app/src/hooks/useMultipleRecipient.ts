@@ -3,6 +3,7 @@ import { ToastHelper } from '../components/helpers/toast.helper'
 import { ConfigContext } from '../utils/withConfig'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { getAddressForName } from './useEns'
+import { Lock } from '../unlockTypes'
 
 const MAX_RETRY_COUNT = 5
 interface User {
@@ -27,7 +28,7 @@ interface RecipientPayload {
 }
 
 export const useMultipleRecipient = (
-  lockAddress: string,
+  lock: Lock,
   network?: number,
   maxRecipients = 1
 ) => {
@@ -39,7 +40,7 @@ export const useMultipleRecipient = (
   const [retryCount, setRetryCount] = useState(0)
   const [ignoreRecipients, setIgnoreRecipients] = useState<User[]>([])
   const normalizeRecipients = () => {
-    if (!lockAddress) return
+    if (!lock.address) return
 
     /*
       we need to exclude user metadata that already already exists,
@@ -63,7 +64,7 @@ export const useMultipleRecipient = (
         return {
           userAddress: resolvedAddress,
           metadata,
-          lockAddress,
+          lockAddress: lock.address,
         }
       }),
     }
@@ -89,22 +90,34 @@ export const useMultipleRecipient = (
 
   const getAddressAndValidation = async (recipient: string) => {
     const address = await getAddressForName(recipient)
-    const existingExpiration = await web3Service.getKeyExpirationByLockForOwner(
-      lockAddress,
+    const isAddressWithKey = await web3Service.getHasValidKey(
+      lock.address,
       address,
       network
     )
-    const isAddressWithKey = existingExpiration > new Date().getTime() / 1000
-    const isAddressInList = recipientsList()
-      .map(({ resolvedAddress }) => resolvedAddress)
-      .includes(address)
+    const addressList = recipientsList().map(
+      ({ resolvedAddress }) => resolvedAddress
+    )
+    const addressItemsCount = addressList.filter(
+      (item) => item === address
+    ).length
+    const isAddressInList = addressList.includes(address)
 
-    const valid = address?.length > 0 && !isAddressWithKey && !isAddressInList
+    const canAddMultiple = (lock?.publicLockVersion ?? 1) >= 10
+
+    // todo: need also to check how many keys the address owns to improve this logic
+    const limitNotReached =
+      addressItemsCount < (lock?.maxKeysPerAddress ?? 1) && !isAddressWithKey
+    const addressValid = address?.length > 0
+
+    const valid = addressValid && canAddMultiple && limitNotReached
     return {
       valid,
       address,
       isAddressWithKey,
       isAddressInList,
+      limitNotReached,
+      canAddMultiple,
     }
   }
 
@@ -163,8 +176,14 @@ export const useMultipleRecipient = (
     setLoading(true)
     if (canAddUser()) {
       const index = recipients?.size + 1
-      const { valid, address, isAddressWithKey, isAddressInList } =
-        await getAddressAndValidation(userAddress)
+      const {
+        valid,
+        address,
+        isAddressWithKey,
+        isAddressInList,
+        canAddMultiple,
+        limitNotReached,
+      } = await getAddressAndValidation(userAddress)
       if (valid) {
         setRecipients(
           (prev) =>
@@ -178,16 +197,20 @@ export const useMultipleRecipient = (
               })
             )
         )
-        ToastHelper.success('Recipient correctly added in list')
+        ToastHelper.success('Recipient correctly added in list.')
       }
 
-      if (isAddressWithKey) {
+      if (canAddMultiple && !limitNotReached && isAddressWithKey) {
+        ToastHelper.error(
+          'This address reached max keys limit. You cannot grant them a new one.'
+        )
+      } else if (isAddressWithKey) {
         ToastHelper.error(
           'This address already owns a valid key. You cannot grant them a new one.'
         )
       } else if (isAddressInList) {
         ToastHelper.error(
-          'This address can already present in list. Please add a new one'
+          'This address is already present in list. Please add a new one.'
         )
       } else if (!valid) {
         ToastHelper.error(
