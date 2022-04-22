@@ -21,8 +21,13 @@ import { useMultipleRecipient } from '../../../hooks/useMultipleRecipient'
 interface GrantKeyFormProps {
   lock: Lock
   onGranted: (granted: boolean) => void
-  recipients: any[]
-  addRecipientItem: <T>(recipient: string, metadata: T) => Promise<any>
+}
+
+interface MetadataProps {
+  lockAddress: string
+  expiration: string | number
+  keyManager?: string
+  neverExpires: boolean
 }
 
 // Prevents re-rendering when time changes!
@@ -48,22 +53,21 @@ const formatDate = (timestamp: number) => {
  * Form part
  * @returns
  */
-const GrantKeyForm = ({
-  onGranted,
-  lock,
-  recipients,
-  addRecipientItem,
-}: GrantKeyFormProps) => {
+const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
   const { account, network } = useContext(AuthenticationContext)
 
   const walletService = useContext(WalletServiceContext)
-  const web3Service = useContext(Web3ServiceContext)
   const [transaction, setTransaction] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [expirationInputDisabled, setExpirationInputDisabled] = useState(
     lock.expirationDuration === -1
   )
-  const disableGrantKeys = recipients?.length === 0
+  const { recipients: recipientItems, addRecipientItem } = useMultipleRecipient(
+    lock?.address,
+    network,
+    Infinity
+  )
+  const disableGrantKeys = recipientItems?.length === 0
 
   const defaultValues = {
     recipient: '',
@@ -73,7 +77,6 @@ const GrantKeyForm = ({
   }
 
   const {
-    handleSubmit,
     register,
     reset,
     formState: { errors, isDirty },
@@ -86,68 +89,51 @@ const GrantKeyForm = ({
     defaultValues,
   })
 
-  console.log(lock)
   useEffect(() => reset(defaultValues), [lock.name])
 
-  interface onSubmitInterface {
-    recipient: string
-    keyManager: string
-    expiration: string
-    neverExpires: boolean
-  }
-
-  const onSubmit = async ({
-    recipient,
-    keyManager,
-    expiration,
-    neverExpires,
-  }: onSubmitInterface) => {
+  const onSubmit = async () => {
     setLoading(true)
     try {
-      const existingExpiration =
-        await web3Service.getKeyExpirationByLockForOwner(
-          lock.address,
-          recipient,
-          network
-        )
-      if (existingExpiration > new Date().getTime() / 1000) {
-        toast.error(
-          'This address already owns a valid key. You cannot grant them a new one.'
-        )
-        onGranted(false)
-      } else {
-        await toast.promise(
-          walletService.grantKey(
-            {
-              lockAddress: lock.address,
-              recipient,
-              expiration: neverExpires
-                ? MAX_UINT
-                : Math.floor(new Date(expiration).getTime() / 1000),
-              keyManager: keyManager || account,
-            },
-            (error: any, hash: string) => {
-              if (error) {
-                toast.error(
-                  'There was an error and the key could not be granted. Please refresh the page and try again.'
-                )
-              }
-              if (hash) {
-                setTransaction(hash)
-              }
-            }
-          ),
+      const recipients = recipientItems?.map(
+        ({ resolvedAddress }) => resolvedAddress
+      )
+      const expirations = recipientItems?.map(({ metadata }) => {
+        return metadata?.neverExpires
+          ? MAX_UINT
+          : Math.floor(new Date(metadata?.expiration).getTime() / 1000)
+      })
+      const keyManagers = recipientItems?.map(
+        ({ metadata }) => metadata?.keyManager || account
+      )
+      await toast.promise(
+        walletService.grantKeys(
           {
-            loading: `Granting key to ${recipient}`,
-            success: `Successfully granted key to ${recipient}`,
-            error: `There was an error in granting key to ${recipient}. Please try again.`,
+            lockAddress: lock.address,
+            recipients,
+            expirations,
+            keyManagers,
           },
-          {
-            className: 'break-all',
+          (error: any, hash: string) => {
+            if (error) {
+              toast.error(
+                'There was an error and the keys could not be granted. Please refresh the page and try again.'
+              )
+            }
+            if (hash) {
+              setTransaction(hash)
+            }
           }
-        )
-        setTransaction('')
-      }
+        ),
+        {
+          loading: `Granting ${recipients?.length} keys`,
+          success: `Successfully granted ${recipients?.length} keys`,
+          error: 'There was an error in granting keys. Please try again.',
+        },
+        {
+          className: 'break-all',
+        }
+      )
+      setTransaction('')
       onGranted(true)
     } catch (error) {
       console.error(error)
@@ -180,20 +166,23 @@ const GrantKeyForm = ({
         ? MAX_UINT
         : Math.floor(new Date(expiration).getTime() / 1000)
 
-      const metadata = {
+      const metadata: MetadataProps = {
         lockAddress: lock.address,
         expiration: expirationTime,
         keyManager: keyManager || account,
+        neverExpires,
       }
-      await addRecipientItem(recipient, metadata)
-      reset(defaultValues)
+      const valid = await addRecipientItem(recipient, metadata)
+      if (valid) {
+        reset(defaultValues)
+      }
     }
   }
 
-  const hasRecipients = recipients?.length > 0
+  const hasRecipients = recipientItems?.length > 0
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-screen-lg">
+    <form className="w-full max-w-screen-lg">
       <div className="flex flex-wrap mb-6 -mx-3">
         <div className="w-full px-3">
           <Label htmlFor="grid-recipient">Recipient</Label>
@@ -291,7 +280,7 @@ const GrantKeyForm = ({
                   Airdrop recipients list:
                 </span>
                 <ul className="list-disc px-3">
-                  {recipients?.map(({ userAddress, index }) => {
+                  {recipientItems?.map(({ userAddress, index }) => {
                     return <li key={index}>{userAddress}</li>
                   })}
                 </ul>
@@ -300,10 +289,11 @@ const GrantKeyForm = ({
           )}
           <button
             className="bg-[#74ce63] text-white flex justify-center w-full px-4 py-3 font-medium rounded hover:bg-[#59c245] disabled:opacity-40"
-            type="submit"
+            type="button"
             disabled={disableGrantKeys}
+            onClick={onSubmit}
           >
-            {`Grant ${recipients?.length} Key`}
+            {`Grant ${recipientItems?.length} Key`}
           </button>
         </>
       )}
@@ -330,11 +320,6 @@ export const GrantKeysDrawer = ({
   const web3Service = useContext(Web3ServiceContext)
   const [locks, setLocks] = useState<any>({})
   const [lock, setLock] = useState<any>(null)
-  const { recipients, addRecipientItem } = useMultipleRecipient(
-    lock?.address,
-    network,
-    Infinity
-  )
 
   // Let's load the locks's details
   useEffect(() => {
@@ -398,14 +383,7 @@ export const GrantKeysDrawer = ({
         </div>
       </div>
 
-      {lock?.canGrant && (
-        <GrantKeyForm
-          onGranted={handleGranted}
-          lock={lock}
-          recipients={recipients}
-          addRecipientItem={addRecipientItem}
-        />
-      )}
+      {lock?.canGrant && <GrantKeyForm onGranted={handleGranted} lock={lock} />}
 
       {!lock?.canGrant && (
         <p className="text-xs -mt-4 text-[#f24c15]">

@@ -95,10 +95,16 @@ export const useMultipleRecipient = (
       network
     )
     const isAddressWithKey = existingExpiration > new Date().getTime() / 1000
+    const isAddressInList = recipientsList()
+      .map(({ resolvedAddress }) => resolvedAddress)
+      .includes(address)
+
+    const valid = address?.length > 0 && !isAddressWithKey && !isAddressInList
     return {
-      valid: address?.length > 0 && !isAddressWithKey,
+      valid,
       address,
       isAddressWithKey,
+      isAddressInList,
     }
   }
 
@@ -157,7 +163,7 @@ export const useMultipleRecipient = (
     setLoading(true)
     if (canAddUser()) {
       const index = recipients?.size + 1
-      const { valid, address, isAddressWithKey } =
+      const { valid, address, isAddressWithKey, isAddressInList } =
         await getAddressAndValidation(userAddress)
       if (valid) {
         setRecipients(
@@ -172,11 +178,16 @@ export const useMultipleRecipient = (
               })
             )
         )
+        ToastHelper.success('Recipient correctly added in list')
       }
 
       if (isAddressWithKey) {
         ToastHelper.error(
           'This address already owns a valid key. You cannot grant them a new one.'
+        )
+      } else if (isAddressInList) {
+        ToastHelper.error(
+          'This address can already present in list. Please add a new one'
         )
       } else if (!valid) {
         ToastHelper.error(
