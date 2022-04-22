@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { ToastHelper } from '../components/helpers/toast.helper'
-import { PaywallConfig } from '../unlockTypes'
 import { ConfigContext } from '../utils/withConfig'
+import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { getAddressForName } from './useEns'
 
 const MAX_RETRY_COUNT = 5
@@ -27,17 +27,17 @@ interface RecipientPayload {
 }
 
 export const useMultipleRecipient = (
-  paywallConfig?: PaywallConfig,
-  lockAddress?: string
+  lockAddress: string,
+  network?: number,
+  maxRecipients = 1
 ) => {
+  const web3Service = useContext(Web3ServiceContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
   const [loading, setLoading] = useState(false)
   const config: any = useContext(ConfigContext)
   const [retryCount, setRetryCount] = useState(0)
   const [ignoreRecipients, setIgnoreRecipients] = useState<User[]>([])
-  const { maxRecipients = 1, locks } = paywallConfig ?? {}
-  const lockByAddress = lockAddress ? locks?.[lockAddress] : {}
   const normalizeRecipients = () => {
     if (!lockAddress) return
 
@@ -89,15 +89,28 @@ export const useMultipleRecipient = (
 
   const getAddressAndValidation = async (recipient: string) => {
     const address = await getAddressForName(recipient)
-    return {
-      valid: address?.length > 0,
+    const existingExpiration = await web3Service.getKeyExpirationByLockForOwner(
+      lockAddress,
       address,
+      network
+    )
+    const isAddressWithKey = existingExpiration > new Date().getTime() / 1000
+    const isAddressInList = recipientsList()
+      .map(({ resolvedAddress }) => resolvedAddress)
+      .includes(address)
+
+    const valid = address?.length > 0 && !isAddressWithKey && !isAddressInList
+    return {
+      valid,
+      address,
+      isAddressWithKey,
+      isAddressInList,
     }
   }
 
   const submitBulkRecipients = async () => {
-    if (!lockByAddress?.network) return
-    const url = `${config.services.storage.host}/v2/api/metadata/${lockByAddress?.network}/users`
+    if (!network) return
+    const url = `${config.services.storage.host}/v2/api/metadata/${network}/users`
     const opts = {
       method: 'POST',
       body: JSON.stringify(normalizeRecipients()),
@@ -143,14 +156,15 @@ export const useMultipleRecipient = (
     return false
   }
 
-  const addRecipientItem = async (
-    userAddress = '',
-    metadata = {}
+  const addRecipientItem = async <T>(
+    userAddress: string,
+    metadata: T
   ): Promise<boolean> => {
     setLoading(true)
     if (canAddUser()) {
       const index = recipients?.size + 1
-      const { valid, address } = await getAddressAndValidation(userAddress)
+      const { valid, address, isAddressWithKey, isAddressInList } =
+        await getAddressAndValidation(userAddress)
       if (valid) {
         setRecipients(
           (prev) =>
@@ -165,11 +179,21 @@ export const useMultipleRecipient = (
             )
         )
       }
-      if (!valid) {
+
+      if (isAddressWithKey) {
+        ToastHelper.error(
+          'This address already owns a valid key. You cannot grant them a new one.'
+        )
+      } else if (isAddressInList) {
+        ToastHelper.error(
+          'This address can already present in list. Please add a new one'
+        )
+      } else if (!valid) {
         ToastHelper.error(
           'Recipient address is not valid, please use a valid wallet address or ENS name.'
         )
       }
+
       setLoading(false)
       return Promise.resolve(valid)
     }
