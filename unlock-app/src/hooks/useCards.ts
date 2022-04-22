@@ -324,7 +324,8 @@ export const deleteCardForAddress = async (
 export const getFiatPricing = async (
   config: any,
   lock: string,
-  network: number
+  network: number,
+  quantity = 1
 ) => {
   const opts = {
     method: 'GET',
@@ -332,9 +333,8 @@ export const getFiatPricing = async (
       'Content-Type': 'application/json',
     },
   }
-
   const response = await fetch(
-    `${config.services.storage.host}/price/fiat/${lock}?chain=${network}`,
+    `${config.services.storage.host}/price/fiat/${lock}?chain=${network}&quantity=${quantity}`,
     opts
   )
   return response.json()
