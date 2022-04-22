@@ -25,6 +25,24 @@ describe('Metadata v2 endpoints for locksmith', () => {
     expect(userMetadataResponse.status).toBe(201)
     expect(userMetadataResponse.body).toStrictEqual(metadata)
   })
+
+  it('Add invalid user metadata', async () => {
+    expect.assertions(2)
+    const lockAddress = await ethers.Wallet.createRandom().getAddress()
+    const walletAddress = await ethers.Wallet.createRandom().getAddress()
+
+    const metadata = {
+      badMetadataForm: {},
+    }
+
+    const userMetadataResponse = await request(app)
+      .post(`/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`)
+      .send({ metadata })
+
+    expect(userMetadataResponse.status).toBe(400)
+    expect(userMetadataResponse.body.error).not.toBe(undefined)
+  })
+
   it('Add metadata to users in bulk', async () => {
     expect.assertions(2)
     const users = await Promise.all(
@@ -61,6 +79,41 @@ describe('Metadata v2 endpoints for locksmith', () => {
     const expectedUsersMetadata = users.map((user) => user.metadata)
     expect(userMetadataResponse.status).toBe(201)
     expect(usersMetadata).toStrictEqual(expectedUsersMetadata)
+  })
+
+  it('Add bulk broken user metadata', async () => {
+    expect.assertions(2)
+
+    const users = await Promise.all(
+      Array(3)
+        .fill(0)
+        .map(async (_, index) => {
+          const lockAddress = await ethers.Wallet.createRandom().getAddress()
+          const userAddress = await ethers.Wallet.createRandom().getAddress()
+          const metadata = {
+            public: {
+              username: userAddress.slice(5),
+            },
+            blah: {
+              private: true,
+            },
+          }
+          const keyId = String(index + 1)
+          return {
+            userAddress,
+            keyId,
+            lockAddress,
+            metadata,
+          }
+        })
+    )
+
+    const userMetadataResponse = await request(app)
+      .post('/v2/api/metadata/100/users')
+      .send({ users })
+
+    expect(userMetadataResponse.status).toBe(400)
+    expect(userMetadataResponse.body.error).not.toBe(undefined)
   })
 
   it('Get key metadata', async () => {
