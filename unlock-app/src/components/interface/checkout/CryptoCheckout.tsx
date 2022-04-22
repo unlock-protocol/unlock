@@ -2,12 +2,9 @@ import toast from 'react-hot-toast'
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import ReCAPTCHA from 'react-google-recaptcha'
-
-import { Tooltip } from '@unlock-protocol/ui'
 import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
-
 import { useLock } from '../../../hooks/useLock'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { PaywallConfig } from '../../../unlockTypes'
