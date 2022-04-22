@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { IoIosCloseCircle as CloseIcon } from 'react-icons/io'
@@ -45,6 +45,11 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     setNewRecipient(true)
     setRecipient(account)
   }
+
+  useEffect(() => {
+    autofillAccountAddress()
+  }, [])
+
   const onAddRecipient = async () => {
     const formValid = await trigger()
     if (formValid) {
@@ -53,7 +58,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         resetStatus()
       }
     } else {
-      ToastHelper.error('Plase fill all required fields')
+      ToastHelper.error('Please fill all required fields')
     }
   }
 
@@ -137,16 +142,6 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         <fieldset className="pt-3" disabled={loading}>
           <span className="text-xs font-normal uppercase flex justify-between items-center mb-2">
             <span>Recipient</span>
-            {recipients?.length === 0 && (
-              <ActionButton
-                type="button"
-                className="bg-gray-100"
-                onClick={autofillAccountAddress}
-                disabled={recipient?.length > 0}
-              >
-                add account address
-              </ActionButton>
-            )}
           </span>
           <CustomRecipient
             onChange={(e) => setRecipient(e.target.value)}
@@ -240,15 +235,4 @@ const InputGroup = styled.div`
 const ItemRows = styled.div`
   display: flex;
   flex-direction: column;
-`
-
-const ActionButton = styled.button`
-  font-size: 12px;
-  padding: 5px 10px;
-  background: var(--lightgrey);
-  border-radius: 4px;
-
-  &:disabled {
-    opacity: 0.4;
-  }
 `
