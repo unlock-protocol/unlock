@@ -23,7 +23,9 @@ describe('Metadata v2 endpoints for locksmith', () => {
       .send({ metadata })
 
     expect(userMetadataResponse.status).toBe(201)
-    expect(userMetadataResponse.body).toStrictEqual(metadata)
+    expect(userMetadataResponse.body).toStrictEqual({
+      userMetadata: metadata,
+    })
   })
 
   it('Add invalid user metadata', async () => {
@@ -76,7 +78,9 @@ describe('Metadata v2 endpoints for locksmith', () => {
     const usersMetadata = userMetadataResponse.body.result.map(
       (user: any) => user.data
     )
-    const expectedUsersMetadata = users.map((user) => user.metadata)
+    const expectedUsersMetadata = users.map((user) => ({
+      userMetadata: user.metadata,
+    }))
     expect(userMetadataResponse.status).toBe(201)
     expect(usersMetadata).toStrictEqual(expectedUsersMetadata)
   })
