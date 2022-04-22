@@ -2,7 +2,8 @@
 
 # Next minor
 
-- rescuing gas estimation errors
+- Add locksmithService for interacting with locksmith servers.
+- Rescuing gas estimation errors
 - Add support for granting multiple keys
 
 # 0.23.1
