@@ -9,10 +9,18 @@ import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
 
+const UserMetadata = z
+  .object({
+    public: z.record(z.string(), z.any()).optional(),
+    protected: z.record(z.string(), z.any()).optional(),
+  })
+  .strict()
+  .partial()
+
 const UserMetadataBody = z.object({
   lockAddress: z.string(),
   userAddress: z.string(),
-  metadata: z.any(),
+  metadata: UserMetadata,
 })
 
 const BulkUserMetadataBody = z.object({
@@ -212,8 +220,7 @@ export class MetadataController {
       )
       const userAddress = Normalizer.ethereumAddress(request.params.userAddress)
       const network = Number(request.params.network)
-      const { metadata } = request.body
-
+      const metadata = await UserMetadata.parseAsync(request.body.metadata)
       const userData = await UserTokenMetadata.findOne({
         where: {
           userAddress,
@@ -229,7 +236,9 @@ export class MetadataController {
         newUserData.chain = network
         newUserData.userAddress = userAddress
         newUserData.data = {
-          ...metadata,
+          userMetadata: {
+            ...metadata,
+          },
         }
         const createdUserMetadata = await newUserData.save()
         return response.status(201).send(createdUserMetadata.data)
@@ -240,6 +249,14 @@ export class MetadataController {
       })
     } catch (error) {
       logger.error(error.message)
+
+      if (error instanceof z.ZodError) {
+        return response.status(400).send({
+          message: 'User metadata is not in the correct form.',
+          error: error.format(),
+        })
+      }
+
       return response.status(500).send({
         message: 'User metadata could not be added.',
       })
@@ -256,7 +273,7 @@ export class MetadataController {
         request.user!.walletAddress
       )
       const network = Number(request.params.network)
-      const { metadata } = request.body
+      const metadata = await UserMetadata.parseAsync(request.body.metadata)
 
       const isUserMetadataOwner = userAddress === loggedUserAddress
 
@@ -289,7 +306,9 @@ export class MetadataController {
       const [rows, updatedUserMetadata] = await UserTokenMetadata.update(
         {
           data: {
-            ...metadata,
+            userMetadata: {
+              ...metadata,
+            },
           },
         },
         {
@@ -310,8 +329,16 @@ export class MetadataController {
       return response.status(204).send(updatedUserMetadata[0].data)
     } catch (error) {
       logger.error(error.message)
+
+      if (error instanceof z.ZodError) {
+        return response.status(400).send({
+          message: 'User metadata is not in the correct form.',
+          error: error.format(),
+        })
+      }
+
       return response.status(500).send({
-        message: 'There were some problems in adding user metadata.',
+        message: 'There were some problems in updating user metadata.',
       })
     }
   }
@@ -354,15 +381,18 @@ export class MetadataController {
       }
 
       const newUsersData = users.map((user) => {
-        const { userAddress, metadata } = user
+        const { userAddress } = user
         const lockAddress = Normalizer.ethereumAddress(user.lockAddress)
         const tokenAddress = lockAddress
+        const metadata = UserMetadata.parse(user.metadata)
         const newUserData = {
           userAddress,
           tokenAddress,
           chain: network,
           data: {
-            ...metadata,
+            userMetadata: {
+              ...metadata,
+            },
           },
         }
         return newUserData
@@ -374,8 +404,15 @@ export class MetadataController {
       })
     } catch (error) {
       logger.error(error.message)
+
+      if (error instanceof z.ZodError) {
+        return response.status(400).send({
+          message: 'User metadata is not in the correct form.',
+          error: error.format(),
+        })
+      }
       return response.status(500).send({
-        message: 'There were some problems in adding bulk user metadata',
+        message: 'Bulk user metadata could not be added.',
       })
     }
   }
