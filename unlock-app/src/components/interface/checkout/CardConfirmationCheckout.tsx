@@ -218,6 +218,7 @@ export const CardConfirmationCheckout = ({
           hasOptimisticKey={hasOptimisticKey}
           purchasePending={purchasePending}
           recipient={recipientAddress}
+          numberOfRecipients={recipients.length}
         />
         <ErrorMessage>
           Unfortunately, credit card is not available for this lock. You need to
@@ -238,6 +239,7 @@ export const CardConfirmationCheckout = ({
         network={network}
         lock={lock}
         name={name}
+        numberOfRecipients={recipients.length}
         setHasKey={handleHasKey}
         onSelected={null}
         hasOptimisticKey={hasOptimisticKey}

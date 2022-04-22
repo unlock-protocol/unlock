@@ -3,7 +3,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.addColumn('Charges', 'recipients', {
-      type: Sequelize.ARRAY(Sequelize.STRING),
+      type: Sequelize.JSON,
       allowNull: true,
     })
   },

@@ -12,7 +12,7 @@ export class Charge extends Model<Charge> {
   @Column
   userAddress!: string
 
-  @Column(DataType.ARRAY(DataType.STRING))
+  @Column(DataType.JSON)
   recipients?: string[]
 
   @Column
