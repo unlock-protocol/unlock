@@ -4,6 +4,7 @@ import { ConfigContext } from '../utils/withConfig'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { getAddressForName } from './useEns'
 import { Lock } from '../unlockTypes'
+import { WalletServiceContext } from '../utils/withWalletService'
 
 const MAX_RETRY_COUNT = 5
 interface User {
@@ -33,6 +34,7 @@ export const useMultipleRecipient = (
   maxRecipients = 1
 ) => {
   const web3Service = useContext(Web3ServiceContext)
+  const walletService = useContext(WalletServiceContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
   const [loading, setLoading] = useState(false)
@@ -123,16 +125,26 @@ export const useMultipleRecipient = (
 
   const submitBulkRecipients = async () => {
     if (!network) return
-    const url = `${config.services.storage.host}/v2/api/metadata/${network}/users`
-    const opts = {
-      method: 'POST',
-      body: JSON.stringify(normalizeRecipients()),
-      headers: {
-        'content-type': 'application/json',
-      },
+    try {
+      const message = `I am signing the metadata for the lock at ${lock.address}`
+      const signature = await walletService.signMessage(
+        message,
+        'personal_sign'
+      )
+      if (!signature) return
+      const url = `${config.services.storage.host}/v2/api/metadata/${network}/users`
+      const opts = {
+        method: 'POST',
+        body: JSON.stringify(normalizeRecipients()),
+        headers: {
+          'content-type': 'application/json',
+        },
+      }
+      const response = await fetch(url, opts)
+      return response
+    } catch (err: any) {
+      ToastHelper.error(err?.message ?? 'Ops, something went wrong')
     }
-    const response = await fetch(url, opts)
-    return response
   }
 
   const submit = async (): Promise<boolean> => {
