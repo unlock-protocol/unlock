@@ -73,6 +73,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   const onSubmit = async () => {
     setIsLoading(true)
     setConfirmCount(confirmCount + 1)
+    // send metadata only if forms contains some metadata
     if (withMetadata) {
       const valid = await submitBulkRecipients()
       if (valid) {
