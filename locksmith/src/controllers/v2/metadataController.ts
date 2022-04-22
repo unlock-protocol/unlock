@@ -71,14 +71,16 @@ export class MetadataController {
       })
 
       if (!lockData) {
-        return response.status(404).send('No lock metadata found.')
+        return response.status(404).send({
+          message: 'No lock metadata found.',
+        })
       }
       return response.status(200).send(lockData.data)
     } catch (error) {
       logger.error(error.message)
-      return response
-        .status(500)
-        .send('There were some problems in getting the lock data.')
+      return response.status(500).send({
+        message: 'There were some problems in getting the lock data.',
+      })
     }
   }
 
@@ -107,9 +109,9 @@ export class MetadataController {
       return response.status(200).send(keyData)
     } catch (error) {
       logger.error(error.message)
-      return response
-        .status(500)
-        .send('There were some problems in getting the key metadata.')
+      return response.status(500).send({
+        message: 'There were some problems in getting the key metadata.',
+      })
     }
   }
 
@@ -129,11 +131,9 @@ export class MetadataController {
       )
 
       if (!isLockOwner) {
-        return response
-          .status(401)
-          .send(
-            `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`
-          )
+        return response.status(401).send({
+          message: `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`,
+        })
       }
       const [updatedLockMetadata, created] = await LockMetadata.upsert(
         {
@@ -151,9 +151,9 @@ export class MetadataController {
       return response.status(statusCode).send(updatedLockMetadata.data)
     } catch (error) {
       logger.error(error.message)
-      return response
-        .status(500)
-        .send('There were some problems in updating the lock metadata.')
+      return response.status(500).send({
+        message: 'There were some problems in updating the lock metadata.',
+      })
     }
   }
 
@@ -174,9 +174,9 @@ export class MetadataController {
       )
 
       if (!isLockOwner) {
-        return response
-          .status(401)
-          .send('You are not authorized to update this key.')
+        return response.status(401).send({
+          message: 'You are not authorized to update this key.',
+        })
       }
 
       const created = await KeyMetadata.upsert({
@@ -199,9 +199,9 @@ export class MetadataController {
       return response.status(statusCode).send(keyData)
     } catch (error) {
       logger.error(error.message)
-      return response
-        .status(500)
-        .send('There were some problems in updating the key metadata.')
+      return response.status(500).send({
+        message: 'There were some problems in updating the key metadata.',
+      })
     }
   }
 
@@ -235,10 +235,14 @@ export class MetadataController {
         return response.status(201).send(createdUserMetadata.data)
       }
 
-      return response.status(409).send('User Metadata already exists.')
+      return response.status(409).send({
+        message: 'User metadata already exists.',
+      })
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).send('User metadata could not be added.')
+      return response.status(500).send({
+        message: 'User metadata could not be added.',
+      })
     }
   }
 
@@ -270,13 +274,16 @@ export class MetadataController {
       })
 
       if (!userData) {
-        return response.status(404).send("User metadata doesn't exist.")
+        return response.status(404).send({
+          message: "User metadata doesn't exist.",
+        })
       }
 
       if (!(isLockOwner || isUserMetadataOwner)) {
-        return response
-          .status(401)
-          .send('You are not authorized to update user metadata for this key.')
+        return response.status(401).send({
+          message:
+            'You are not authorized to update user metadata for this key.',
+        })
       }
 
       const [rows, updatedUserMetadata] = await UserTokenMetadata.update(
@@ -296,14 +303,16 @@ export class MetadataController {
       )
 
       if (!rows) {
-        return response.status(500).send('Failed to update the user metadata.')
+        return response.status(500).send({
+          message: 'Failed to update the user metadata.',
+        })
       }
       return response.status(204).send(updatedUserMetadata[0].data)
     } catch (error) {
       logger.error(error.message)
-      return response
-        .status(500)
-        .send('There were some problems in updating the user metadata.')
+      return response.status(500).send({
+        message: 'There were some problems in adding user metadata.',
+      })
     }
   }
 
@@ -311,24 +320,37 @@ export class MetadataController {
     try {
       const network = Number(request.params.network)
       const { users } = await BulkUserMetadataBody.parseAsync(request.body)
-      const tokenAddresses = users.map((user) => {
+      const query = users.map((user) => {
         const tokenAddress = Normalizer.ethereumAddress(user.lockAddress)
-        return tokenAddress
+        const userAddress = Normalizer.ethereumAddress(user.userAddress)
+        return {
+          [Op.and]: [
+            {
+              tokenAddress,
+            },
+            {
+              userAddress,
+            },
+          ],
+        }
       })
 
       const userMetadataResults = await UserTokenMetadata.findAll({
         where: {
-          tokenAddress: {
-            [Op.in]: tokenAddresses,
-          },
-          chain: network,
+          [Op.or]: query,
         },
       })
 
       if (userMetadataResults.length) {
-        return response
-          .status(401)
-          .send('User metadata already exists for users provided.')
+        return response.status(409).send({
+          message: 'User metadata already exists for the following users.',
+          users: userMetadataResults.map((user) => {
+            return {
+              lockAddress: user.tokenAddress,
+              userAddress: user.userAddress,
+            }
+          }),
+        })
       }
 
       const newUsersData = users.map((user) => {
@@ -352,9 +374,9 @@ export class MetadataController {
       })
     } catch (error) {
       logger.error(error.message)
-      return response
-        .status(500)
-        .send('There were some problems in updating bulk user metadata.')
+      return response.status(500).send({
+        message: 'There were some problems in adding bulk user metadata',
+      })
     }
   }
 }

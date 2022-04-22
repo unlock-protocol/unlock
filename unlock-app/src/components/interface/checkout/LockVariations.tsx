@@ -269,6 +269,7 @@ export interface SoldOutLockProps {
   formattedDuration: string
   network: number
   cardEnabled: boolean
+  prepend: string
 }
 
 export const SoldOutLock = ({
@@ -279,11 +280,15 @@ export const SoldOutLock = ({
   formattedKeyPrice,
   convertedKeyPrice,
   cardEnabled,
+  prepend,
 }: SoldOutLockProps) => {
   return (
     <DisabledLockContainer data-address={address} data-testid="SoldOutLock">
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <DisabledLockBody>
@@ -313,6 +318,7 @@ export interface PurchaseableLockProps {
   network: number
   selectable: boolean
   cardEnabled: boolean
+  prepend: string
 }
 
 export const PurchaseableLock = ({
@@ -326,6 +332,7 @@ export const PurchaseableLock = ({
   selectable,
   cardEnabled,
   onClick,
+  prepend,
 }: PurchaseableLockProps) => {
   return (
     <LockContainer
@@ -334,7 +341,10 @@ export const PurchaseableLock = ({
       data-testid="PurchaseableLock"
     >
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <BaseLockBody onClick={onClick}>
@@ -365,6 +375,7 @@ export interface ProcessingLockProps {
   formattedKeysAvailable: string
   network: number
   cardEnabled: boolean
+  prepend: string
 }
 
 export const ProcessingLock = ({
@@ -376,11 +387,15 @@ export const ProcessingLock = ({
   convertedKeyPrice,
   formattedKeysAvailable,
   cardEnabled,
+  prepend,
 }: ProcessingLockProps) => {
   return (
     <LockContainer data-address={address} data-testid="ProcessingLock">
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <BaseLockBody>
@@ -411,6 +426,7 @@ export interface ConfirmedLockLockProps {
   network: number
   selectable: boolean
   cardEnabled: boolean
+  prepend: string
 }
 
 export const ConfirmedLock = ({
@@ -423,6 +439,7 @@ export const ConfirmedLock = ({
   formattedKeysAvailable,
   selectable,
   cardEnabled,
+  prepend,
 }: ConfirmedLockLockProps) => {
   return (
     <LockContainer
@@ -431,7 +448,10 @@ export const ConfirmedLock = ({
       data-testid="ConfirmedLock"
     >
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <ConfirmedBody>

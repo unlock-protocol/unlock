@@ -44,6 +44,7 @@ export interface NetworkConfig {
     urls: {
       address(address: string): string
       transaction(hash: string): string
+      token(address: string, owner: string): string
     }
   }
   erc20?: {

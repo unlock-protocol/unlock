@@ -5,6 +5,7 @@ import v7 from '../v7'
 
 const {
   grantKey,
+  grantKeys,
   updateKeyPrice,
   withdrawFromLock,
   initializeTemplate,
@@ -29,6 +30,7 @@ export default {
   purchaseKey,
   purchaseKeys,
   grantKey,
+  grantKeys,
   getLock,
   withdrawFromLock,
   isLockManager,
