@@ -109,11 +109,11 @@ export const useMultipleRecipient = (
 
     // todo: need also to check how many keys the address owns to improve this logic
     const limitNotReached = addressItemsCount < (lock?.maxKeysPerAddress ?? 1)
+    const isNotDuplicated = !isAddressInList && !isAddressWithKey
+    const addressValid = address?.length > 0
+    const addMultipleEnabled = canAddMultiple && limitNotReached
 
-    const valid =
-      address?.length > 0 &&
-      ((canAddMultiple && limitNotReached) ||
-        (!isAddressInList && !isAddressWithKey))
+    const valid = addressValid && (addMultipleEnabled || isNotDuplicated)
 
     return {
       valid,
