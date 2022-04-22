@@ -58,12 +58,9 @@ export const CardConfirmationCheckout = ({
   const hasValidkey =
     keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
   const hasOptimisticKey = keyExpiration === Infinity
-  // multiple recipients with card is not supported, we enable only card with multiple recipients only when have 1 item
-  const singleMultipleRecipient =
-    recipients?.length === 1 ? recipients[0]?.resolvedAddress : undefined
-
-  console.log(recipients)
-
+  const purchaseRecipients = recipients.length
+    ? recipients.map((item) => item.resolvedAddress)
+    : [account]
   const {
     isAdvanced,
     setIsAdvanced,
@@ -76,11 +73,12 @@ export const CardConfirmationCheckout = ({
   let totalPrice: number = 0
   let fee: number = 0
   if (lock.fiatPricing?.usd) {
-    totalPrice = Object.values(lock.fiatPricing.usd as number).reduce(
-      (s: number, x: number): number => s + x,
-      0
-    ) as number
-    fee = totalPrice - lock.fiatPricing.usd.keyPrice
+    totalPrice =
+      Object.values(lock.fiatPricing.usd as number).reduce(
+        (s: number, x: number): number => s + x,
+        0
+      ) * purchaseRecipients.length
+    fee = totalPrice - lock.fiatPricing.usd.keyPrice * purchaseRecipients.length
   }
 
   const formattedPrice = (totalPrice / 100).toFixed(2)
@@ -92,7 +90,7 @@ export const CardConfirmationCheckout = ({
         lock.address,
         network,
         formattedPrice,
-        singleMultipleRecipient || recipient || account
+        purchaseRecipients
       )
       if (response.error || !response.clientSecret) {
         setError(
@@ -167,7 +165,7 @@ export const CardConfirmationCheckout = ({
       const hash = await captureChargeForCard(
         lock.address,
         network,
-        singleMultipleRecipient || recipient || account || '',
+        purchaseRecipients,
         confirmation.paymentIntent.id
       )
 
@@ -206,7 +204,7 @@ export const CardConfirmationCheckout = ({
     ? advancedRecipientValid
       ? recipient
       : ''
-    : singleMultipleRecipient ?? account
+    : purchaseRecipients[0]
 
   if (!hasValidkey && !lock.fiatPricing?.creditCardEnabled) {
     return (
@@ -220,6 +218,7 @@ export const CardConfirmationCheckout = ({
           hasOptimisticKey={hasOptimisticKey}
           purchasePending={purchasePending}
           recipient={recipientAddress}
+          numberOfRecipients={recipients.length}
         />
         <ErrorMessage>
           Unfortunately, credit card is not available for this lock. You need to
@@ -240,6 +239,7 @@ export const CardConfirmationCheckout = ({
         network={network}
         lock={lock}
         name={name}
+        numberOfRecipients={recipients.length}
         setHasKey={handleHasKey}
         onSelected={null}
         hasOptimisticKey={hasOptimisticKey}
