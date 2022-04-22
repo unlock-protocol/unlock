@@ -23,7 +23,6 @@ import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
 import { ToastHelper } from '../../helpers/toast.helper'
-import { WalletServiceContext } from '../../../utils/withWalletService'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -56,7 +55,6 @@ export const CryptoCheckout = ({
   const storageService = new StorageService(services.storage.host)
   const [loading, setLoading] = useState(false)
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>('')
-  const walletService = useContext(WalletServiceContext)
   const {
     network: walletNetwork,
     account,
@@ -141,15 +139,6 @@ export const CryptoCheckout = ({
 
     try {
       const keyPrices = new Array(owners.length).fill(lock.keyPrice)
-      const signature = await walletService.signMessage(
-        `I want to purchase a ${
-          recipients?.length
-        } memberships for this address list: ${recipients?.map(
-          (recipient) => `${recipient.userAddress}`
-        )}`,
-        'personal_sign'
-      )
-      if (!signature) return
       await purchaseMultipleKeys(
         lock.address,
         keyPrices,
