@@ -32,7 +32,6 @@ export const useMultipleRecipient = (
   network?: number,
   maxRecipients = 1
 ) => {
-  console.log('here lock', lock)
   const web3Service = useContext(Web3ServiceContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
   const [recipients, setRecipients] = useState(new Set<RecipientItem>())
