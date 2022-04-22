@@ -124,6 +124,8 @@ export interface Lock {
   balance?: string
   owner?: string
   creationBlock?: number
+  publicLockVersion?: number
+  maxKeysPerAddress?: number
 }
 
 export interface Locks {

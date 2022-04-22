@@ -104,7 +104,7 @@ export const Checkout = ({
   web3Provider, // provider passed from the website which implements the paywall so we can support any wallet!
   defaultState,
 }: CheckoutProps) => {
-  const { account, isUnlockAccount, signMessage } = useContext(
+  const { account, isUnlockAccount, signMessage, network } = useContext(
     AuthenticationContext
   )
   const [skipPaywallIcon, setSkipPaywallIcon] = useState(false)
@@ -130,7 +130,11 @@ export const Checkout = ({
     submitBulkRecipients,
     clear,
     removeRecipient,
-  } = useMultipleRecipient(paywallConfig, selectedLock?.address)
+  } = useMultipleRecipient(
+    selectedLock,
+    network,
+    paywallConfig?.maxRecipients ?? 1
+  )
   const showMetadataForm =
     (paywallConfig?.metadataInputs || hasMultipleRecipients) && !savedMetadata
   // state change
