@@ -1,4 +1,5 @@
 import fetch from 'cross-fetch'
+import { SiweMessage } from 'siwe'
 import { FetchError } from './utils'
 
 export const PRODUCTION_HOST = 'https://locksmith.unlock-protocol.com'
@@ -21,6 +22,13 @@ export class LocksmithService {
   constructor(options: LocksmithServiceOptions = {}) {
     const { host = PRODUCTION_HOST } = options
     this.baseURL = host
+  }
+
+  /**
+   * Helper static createSiweMessage method wrapping SIWE or sign in with ethereum standard message
+   */
+  static createSiweMessage(options: Partial<SiweMessage>) {
+    return new SiweMessage(options)
   }
 
   getEndpoint(path: string) {
@@ -70,10 +78,10 @@ export class LocksmithService {
    * @param message - Message based on EIP-4361 https://docs.login.xyz/general-information/siwe-overview/eip-4361
    * @param signature - Signature from resulting message with the wallet specified in the message.
    *
-   *  An example using siwe library is presented below
    * ```ts
-   *  import { SiweMessage } from 'siwe';
-   *  const siweMessage = new SiweMessage({
+   *
+   * const const service = new LocksmithService()
+   *  const siweMessage = LocksmithService.createSiweMessage({
    *    domain,
    *    address,
    *    statement,
@@ -83,7 +91,6 @@ export class LocksmithService {
    *  });
    *  const message = siweMessage.prepareMessage();
    *  const signature = await provider.getSigner().signMessage(message)
-   *  const const service = new LocksmithService()
    *  service.login(message, signature)
    * ```
    */
