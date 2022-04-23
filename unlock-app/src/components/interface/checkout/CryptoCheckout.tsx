@@ -99,10 +99,6 @@ export const CryptoCheckout = ({
     !canClaimAirdrop &&
     lock.keyPrice !== '0'
 
-  const [multipleTransactionsHash, setMultipleTransactionsHash] = useState<
-    string[]
-  >([])
-
   const withMultipleRecipients = numberOfRecipients > 1
   const hasRecipients = recipients?.length > 0
 
@@ -138,13 +134,13 @@ export const CryptoCheckout = ({
     const owners = recipients?.map(({ resolvedAddress }) => resolvedAddress)
 
     try {
+      setPurchasePending(true)
       const keyPrices = new Array(owners.length).fill(lock.keyPrice)
       await purchaseMultipleKeys(
         lock.address,
         keyPrices,
         owners,
         (hash: string) => {
-          setMultipleTransactionsHash([...multipleTransactionsHash, hash])
           emitTransactionInfo({
             lock: lock.address,
             hash,
@@ -157,6 +153,8 @@ export const CryptoCheckout = ({
           }
         }
       )
+      setPurchasePending(false)
+      setTransactionPending('')
       return true
     } catch (err: any) {
       ToastHelper.error(
@@ -168,7 +166,6 @@ export const CryptoCheckout = ({
 
   const cryptoPurchase = async () => {
     if (withMultipleRecipients) {
-      setMultipleTransactionsHash([])
       const validPurchase = await onPurchaseMultiple()
       if (validPurchase) {
         setPurchasedMultiple(true)
@@ -274,10 +271,6 @@ export const CryptoCheckout = ({
       !hasValidkey) ||
     (isAdvanced && hasValidKeyOrPendingTx && !transactionPending)
 
-  const enableBuy = hasRecipients
-    ? !multipleTransactionsHash?.length
-    : showCheckoutButtons
-
   const onLoading = (loading: boolean) => {
     setLoading(loading)
     loadingCheck.current = true
@@ -301,7 +294,7 @@ export const CryptoCheckout = ({
         onLoading={onLoading}
         numberOfRecipients={numberOfRecipients}
       />
-      {!hasValidKeyOrPendingTx && !hasRecipients && (
+      {!hasValidKeyOrPendingTx && !hasRecipients && !purchasedMultiple && (
         <>
           <CheckoutCustomRecipient
             isAdvanced={isAdvanced}
@@ -322,7 +315,7 @@ export const CryptoCheckout = ({
               : 'Recipient already has a valid membership!'}
             &nbsp;
           </Message>
-          {!hasRecipients && (
+          {!hasRecipients && !purchasedMultiple && (
             <CheckoutCustomRecipient
               isAdvanced={isAdvanced}
               advancedRecipientValid={advancedRecipientValid}
@@ -337,7 +330,7 @@ export const CryptoCheckout = ({
         </>
       )}
       {purchasedMultiple && <Message>Enjoy your memberships!</Message>}
-      {enableBuy && (
+      {showCheckoutButtons && !purchasedMultiple && (
         <div
           style={{
             marginBottom: '32px',
@@ -401,7 +394,7 @@ export const CryptoCheckout = ({
           </CheckoutOptions>
         </div>
       )}
-      {transactionPending && !withMultipleRecipients && (
+      {transactionPending && (
         <Message>
           Waiting for your{' '}
           <a
@@ -414,33 +407,6 @@ export const CryptoCheckout = ({
             NFT membership to be minted
           </a>
           ! This should take a few seconds :)
-        </Message>
-      )}
-      {transactionPending && withMultipleRecipients && !purchasedMultiple && (
-        <Message>
-          Waiting for your transactions: <br />
-          <ul
-            style={{
-              listStyle: 'disc',
-            }}
-          >
-            {multipleTransactionsHash?.map((recipient: string, index) => {
-              return (
-                <li key={recipient}>
-                  <a
-                    target="_blank"
-                    href={networks[network].explorer.urls.transaction(
-                      recipient
-                    )}
-                    rel="noreferrer"
-                  >
-                    {`NFT (${index + 1}) membership to be minted`}
-                  </a>
-                </li>
-              )
-            })}
-          </ul>
-          This should take a few seconds :)
         </Message>
       )}
       {showRedirectButton && (
