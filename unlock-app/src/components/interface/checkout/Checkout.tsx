@@ -132,6 +132,7 @@ export const Checkout = ({
     removeRecipient,
   } = useMultipleRecipient(
     selectedLock,
+    paywallConfig!,
     network,
     paywallConfig?.maxRecipients ?? 1
   )
