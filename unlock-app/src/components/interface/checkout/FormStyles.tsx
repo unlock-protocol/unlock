@@ -80,6 +80,7 @@ export const Button = styled.button`
     background-color: var(--grey);
     cursor: not-allowed;
     color: white;
+    opacity: 0.5;
   }
   margin-top: 16px;
 

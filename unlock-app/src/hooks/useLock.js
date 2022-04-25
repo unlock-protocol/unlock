@@ -1,17 +1,15 @@
-import { useState, useContext, useEffect, useReducer } from 'react'
+import { useState, useContext, useReducer } from 'react'
 import * as ethers from 'ethers'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
-import { TransactionType } from '../unlockTypes'
-import { transactionTypeMapping } from '../utils/types'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import { FATAL_WRONG_NETWORK } from '../errors'
 import { getFiatPricing, getCardConnected } from './useCards'
 import { generateKeyMetadataPayload } from '../structured_data/keyMetadata'
 import { StorageService } from '../services/storageService'
 import LocksContext from '../contexts/LocksContext'
-import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
+import { UNLIMITED_KEYS_COUNT } from '../constants'
 /**
  * Event handler
  * @param {*} hash
@@ -219,6 +217,44 @@ export const purchaseKeyFromLock = async (
     }
   )
 }
+
+export const purchaseMultipleKeysFromLock = async (
+  web3Service,
+  walletService,
+  config,
+  lock,
+  setLock,
+  network,
+  lockAddress,
+  keyPrices,
+  owners,
+  callback
+) => {
+  return walletService.purchaseKeys(
+    {
+      lockAddress,
+      owners,
+      keyPrices,
+    },
+    async (error, transactionHash) => {
+      if (error) {
+        throw error
+      }
+      processTransaction(
+        'keyPurchase',
+        web3Service,
+        config,
+        lock,
+        setLock,
+        transactionHash,
+        walletService.networkId
+      )
+      if (callback) {
+        return callback(transactionHash)
+      }
+    }
+  )
+}
 /**
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  * @param {*} lock
@@ -324,6 +360,30 @@ export const useLock = (lockFromProps, network) => {
         setLock,
         network,
         data,
+        callback
+      )
+    }
+  }
+
+  const purchaseMultipleKeys = async (
+    lockAddress,
+    keyPrices,
+    owners,
+    callback
+  ) => {
+    if (walletNetwork !== network) {
+      setError(FATAL_WRONG_NETWORK)
+    } else {
+      await purchaseMultipleKeysFromLock(
+        web3Service,
+        walletService,
+        config,
+        lock,
+        setLock,
+        network,
+        lockAddress,
+        keyPrices,
+        owners,
         callback
       )
     }
@@ -459,6 +519,7 @@ export const useLock = (lockFromProps, network) => {
     getKeyData,
     markAsCheckedIn,
     updateMaxNumberOfKeys,
+    purchaseMultipleKeys,
   }
 }
 

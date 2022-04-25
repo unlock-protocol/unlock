@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ethers } from 'ethers'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -16,6 +16,7 @@ import Svg from '../svg'
 import { PaywallConfig } from '../../../unlockTypes'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
+import { getFiatPricing } from '../../../hooks/useCards'
 
 interface CardConfirmationCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -27,6 +28,7 @@ interface CardConfirmationCheckoutProps {
   token: string
   paywallConfig: PaywallConfig
   redirectUri: string
+  recipients: any[]
 }
 
 export const CardConfirmationCheckout = ({
@@ -39,6 +41,7 @@ export const CardConfirmationCheckout = ({
   token,
   paywallConfig,
   redirectUri,
+  recipients,
 }: CardConfirmationCheckoutProps) => {
   const config = useContext(ConfigContext)
   const [paymentIntent, setPaymentIntent] = useState<any>(null)
@@ -48,15 +51,22 @@ export const CardConfirmationCheckout = ({
     network
   )
   const [purchasePending, setPurchasePending] = useState(false)
+  const [pricing, setPricing] = useState({
+    keyPrice: 0,
+    creditCardProcessing: 0,
+    unlockServiceFee: 0,
+  })
   const [keyExpiration, setKeyExpiration] = useState(0)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
-
   const now = new Date().getTime() / 1000
+  const numberOfRecipients = useRef(0)
   const hasValidkey =
     keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
   const hasOptimisticKey = keyExpiration === Infinity
-
+  const purchaseRecipients = recipients.length
+    ? recipients.map((item) => item.resolvedAddress)
+    : [account]
   const {
     isAdvanced,
     setIsAdvanced,
@@ -66,26 +76,51 @@ export const CardConfirmationCheckout = ({
     checkingRecipient,
   } = useAdvancedCheckout()
 
+  useEffect(() => {
+    // todo: we get numbers of recipients on page load, and when list is cleared we still have the count
+    numberOfRecipients.current = recipients?.length || 1
+  }, [])
+
+  useEffect(() => {
+    const fetchPricing = async () => {
+      const price = await getFiatPricing(
+        config,
+        lock.address,
+        network,
+        numberOfRecipients.current || 1
+      )
+      setPricing(price.usd)
+    }
+
+    fetchPricing()
+  }, [numberOfRecipients.current, lock.address, config, network])
+
   let totalPrice: number = 0
   let fee: number = 0
+
   if (lock.fiatPricing?.usd) {
-    totalPrice = Object.values(lock.fiatPricing.usd as number).reduce(
+    totalPrice = Object.values(pricing).reduce(
       (s: number, x: number): number => s + x,
       0
-    ) as number
-    fee = totalPrice - lock.fiatPricing.usd.keyPrice
+    )
+    fee = totalPrice - pricing.keyPrice
   }
 
   const formattedPrice = (totalPrice / 100).toFixed(2)
 
   useEffect(() => {
+    // Wait for pricing to load
+    if (formattedPrice === '0.00') {
+      return
+    }
+
     const prepareCharge = async () => {
       const response = await prepareChargeForCard(
         token,
         lock.address,
         network,
         formattedPrice,
-        recipient || account
+        purchaseRecipients
       )
       if (response.error || !response.clientSecret) {
         setError(
@@ -101,7 +136,7 @@ export const CardConfirmationCheckout = ({
     if (account) {
       prepareCharge()
     }
-  }, [account])
+  }, [account, formattedPrice])
 
   useEffect(() => {
     const waitForTransaction = async (hash: string) => {
@@ -160,7 +195,7 @@ export const CardConfirmationCheckout = ({
       const hash = await captureChargeForCard(
         lock.address,
         network,
-        recipient || account || '',
+        purchaseRecipients,
         confirmation.paymentIntent.id
       )
 
@@ -195,6 +230,11 @@ export const CardConfirmationCheckout = ({
       setKeyExpiration(key.expiration)
     }
   }
+  const recipientAddress = isAdvanced
+    ? advancedRecipientValid
+      ? recipient
+      : ''
+    : purchaseRecipients[0]
 
   if (!hasValidkey && !lock.fiatPricing?.creditCardEnabled) {
     return (
@@ -207,9 +247,8 @@ export const CardConfirmationCheckout = ({
           onSelected={null}
           hasOptimisticKey={hasOptimisticKey}
           purchasePending={purchasePending}
-          recipient={
-            isAdvanced ? (advancedRecipientValid ? recipient : '') : account
-          }
+          recipient={recipientAddress}
+          numberOfRecipients={recipients.length}
         />
         <ErrorMessage>
           Unfortunately, credit card is not available for this lock. You need to
@@ -226,9 +265,7 @@ export const CardConfirmationCheckout = ({
   return (
     <Wrapper>
       <Lock
-        recipient={
-          isAdvanced ? (advancedRecipientValid ? recipient : '') : account
-        }
+        recipient={recipientAddress}
         network={network}
         lock={lock}
         name={name}
@@ -236,6 +273,7 @@ export const CardConfirmationCheckout = ({
         onSelected={null}
         hasOptimisticKey={hasOptimisticKey}
         purchasePending={purchasePending}
+        numberOfRecipients={recipients.length}
       />
 
       {hasValidkey && (

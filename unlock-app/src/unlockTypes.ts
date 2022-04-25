@@ -114,6 +114,7 @@ export interface Lock {
   canGrant?: boolean
   name: string
   address: string
+  network: number
   keyPrice: string
   expirationDuration: number
   key: Key
@@ -124,6 +125,8 @@ export interface Lock {
   balance?: string
   owner?: string
   creationBlock?: number
+  publicLockVersion?: number
+  maxKeysPerAddress?: number
 }
 
 export interface Locks {
@@ -194,6 +197,7 @@ export interface PaywallConfig {
   messageToSign?: string
   pessimistic?: boolean
   captcha?: boolean
+  maxRecipients?: number
 }
 
 export interface RawLock {

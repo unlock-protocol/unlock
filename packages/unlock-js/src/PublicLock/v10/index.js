@@ -10,6 +10,7 @@ import v9 from '../v9'
 
 const {
   grantKey,
+  grantKeys,
   updateKeyPrice,
   withdrawFromLock,
   initializeTemplate,
@@ -27,6 +28,7 @@ export default {
   version: 'v10',
   PublicLock: abis.PublicLock.v10,
   grantKey,
+  grantKeys,
   extendKey,
   updateKeyPrice,
   withdrawFromLock,

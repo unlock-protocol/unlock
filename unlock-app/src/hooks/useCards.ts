@@ -85,13 +85,14 @@ export const chargeAndSaveCard = async (
   network: number,
   lock: string,
   pricing: any,
-  recipient: string
+  recipients: string[]
 ) => {
   const typedData = generateTypedData({
     'Charge Card': {
       publicKey: address,
+      userAddress: address,
       stripeTokenId,
-      recipient,
+      recipients,
       pricing,
       lock,
       network,
@@ -126,13 +127,14 @@ export const prepareCharge = async (
   network: number,
   lock: string,
   pricing: any,
-  recipient: string
+  recipients: string[]
 ) => {
   const typedData = generateTypedData({
     'Charge Card': {
       publicKey: address,
+      userAddress: address,
       stripeTokenId,
-      recipient,
+      recipients,
       pricing,
       lock,
       network,
@@ -162,7 +164,8 @@ export const captureCharge = async (
   config: any,
   lock: string,
   network: number,
-  recipient: string,
+  address: string,
+  recipients: string[],
   paymentIntent: string
 ) => {
   const opts = {
@@ -173,7 +176,8 @@ export const captureCharge = async (
     body: JSON.stringify({
       lock,
       network,
-      recipient,
+      userAddress: address,
+      recipients,
       paymentIntent,
     }),
   }
@@ -320,7 +324,8 @@ export const deleteCardForAddress = async (
 export const getFiatPricing = async (
   config: any,
   lock: string,
-  network: number
+  network: number,
+  quantity = 1
 ) => {
   const opts = {
     method: 'GET',
@@ -328,9 +333,8 @@ export const getFiatPricing = async (
       'Content-Type': 'application/json',
     },
   }
-
   const response = await fetch(
-    `${config.services.storage.host}/price/fiat/${lock}?chain=${network}`,
+    `${config.services.storage.host}/price/fiat/${lock}?chain=${network}&quantity=${quantity}`,
     opts
   )
   return response.json()
