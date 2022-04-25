@@ -98,12 +98,19 @@ export const useMultipleRecipient = (
   }
 
   const getAddressAndValidation = async (recipient: string) => {
-    const address = await getAddressForName(recipient)
-    const isAddressWithKey = await web3Service.getHasValidKey(
-      lock.address,
-      address,
-      network
-    )
+    let address = ''
+    let isAddressWithKey = false
+    try {
+      address = await getAddressForName(recipient)
+      isAddressWithKey = await web3Service.getHasValidKey(
+        lock.address,
+        address,
+        network
+      )
+    } catch (err: any) {
+      console.error(err?.message)
+    }
+
     const addressList = recipientsList().map(
       ({ resolvedAddress }) => resolvedAddress
     )
