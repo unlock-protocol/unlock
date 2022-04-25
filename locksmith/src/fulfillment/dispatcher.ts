@@ -43,9 +43,9 @@ export default class Dispatcher {
   /**
    * Called to grant key to user!
    */
-  async grantKey(
+  async grantKeys(
     lockAddress: string,
-    recipient: string,
+    recipients: string[],
     network: number,
     cb?: any
   ) {
@@ -85,10 +85,10 @@ export default class Dispatcher {
     }
 
     await walletService.connect(provider, walletWithProvider)
-    return await walletService.grantKey(
+    return await walletService.grantKeys(
       {
         lockAddress,
-        recipient,
+        recipients,
         transactionOptions,
       },
       cb

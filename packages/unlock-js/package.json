@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.23.1",
+  "version": "0.24.0",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -18,12 +18,13 @@
     "build": "yarn clean && yarn build:abis && yarn build:lib",
     "clean": "rm -rf lib esm cache coverage src/__tests__/contracts src/__tests__/artifacts",
     "ci": "yarn test && yarn lint",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn build",
+    "grant-keys": "node ./scripts/grant-keys.js"
   },
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "ethers": "5.5.4"
+    "ethers": "^5.0.0"
   },
   "lint-staged": {
     "*.{js,ts}": [
@@ -50,5 +51,9 @@
     "ts-jest": "27.1.4",
     "tsup": "5.12.2",
     "typescript": "4.6.2"
+  },
+  "dependencies": {
+    "cross-fetch": "3.1.5",
+    "siwe": "1.1.6"
   }
 }
