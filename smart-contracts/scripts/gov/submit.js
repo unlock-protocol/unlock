@@ -10,6 +10,8 @@ const { impersonate } = require('../../test/helpers/mainnet')
 async function main({
   proposerAddress,
   contractName,
+  contractAddress,
+  contractAbi,
   functionName,
   functionArgs,
   proposalName,
@@ -25,20 +27,18 @@ async function main({
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
 
-  let proposal
   if (!functionName) {
     // eslint-disable-next-line no-console
     throw new Error('GOV SUBMIT > Missing function name.')
   }
-  if (!contractName) {
+  if (!contractName && !contractAbi) {
     // eslint-disable-next-line no-console
-    throw new Error('GOV SUBMIT > Missing function name.')
+    throw new Error('GOV SUBMIT > Missing contract name or ABI.')
   }
   if (!proposerAddress) {
     // eslint-disable-next-line no-console
     throw new Error('GOV SUBMIT > Missing proposer address.')
   }
-
   if (!proposalName) {
     // eslint-disable-next-line no-console
     throw new Error('GOV SUBMIT > Missing proposal name.')
@@ -49,6 +49,7 @@ async function main({
       contractName,
       functionName,
       functionArgs,
+      contractAbi,
     })
   } else {
     // parse to log
@@ -60,8 +61,10 @@ async function main({
   }
 
   // parse proposal correctly
-  proposal = await parseProposal({
+  const proposal = await parseProposal({
     contractName,
+    contractAddress,
+    contractAbi,
     calldata,
     proposalName,
   })
@@ -95,6 +98,9 @@ async function main({
   console.log(
     `GOV SUBMIT > proposal submitted: ${await proposalId.toString()} (txid: ${transactionHash})`
   )
+
+  // eslint-disable-next-line consistent-return
+  return proposalId
 }
 
 // execute as standalone

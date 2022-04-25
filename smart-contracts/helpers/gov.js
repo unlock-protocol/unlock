@@ -52,6 +52,8 @@ const getProposalIdFromContract = async (proposal) => {
 
 const parseProposal = async ({
   contractName,
+  contractAbi,
+  contractAddress,
   calldata, // if not present, will be encoded using func name + args
   functionName,
   functionArgs,
@@ -64,19 +66,23 @@ const parseProposal = async ({
   }
 
   // get contract instance
-  const { chainId } = await ethers.provider.getNetwork()
-  const { address } = await getDeployment(chainId, contractName)
+  if (!contractAddress) {
+    const { chainId } = await ethers.provider.getNetwork()
+    const { address } = await getDeployment(chainId, contractName)
+    contractAddress = address
+  }
 
   // if no call data, then parse it
   if (!calldata) {
     calldata = await encodeProposalArgs({
       contractName,
+      contractAbi,
       functionName,
       functionArgs,
     })
   }
   return [
-    [address], // contract to send the proposal to
+    [contractAddress], // contract to send the proposal to
     [value], // value in ETH, default to 0
     [calldata], // encoded func call
     proposalName,
@@ -87,11 +93,15 @@ const encodeProposalArgs = async ({
   contractName,
   functionName,
   functionArgs,
+  contractAbi,
 }) => {
   // get contract instance
   const { chainId } = await ethers.provider.getNetwork()
-  const { abi, address } = await getDeployment(chainId, contractName)
-  const { interface } = new ethers.Contract(address, abi)
+  if (contractName) {
+    const { abi } = await getDeployment(chainId, contractName)
+    contractAbi = abi
+  }
+  const interface = new ethers.utils.Interface(contractAbi)
 
   // parse function data
   const calldata = encodeProposalFunc({ interface, functionName, functionArgs })
