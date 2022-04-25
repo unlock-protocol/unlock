@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useRef } from 'react'
 import { ethers } from 'ethers'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -60,6 +60,7 @@ export const CardConfirmationCheckout = ({
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
   const now = new Date().getTime() / 1000
+  const numberOfRecipients = useRef(0)
   const hasValidkey =
     keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
   const hasOptimisticKey = keyExpiration === Infinity
@@ -76,18 +77,23 @@ export const CardConfirmationCheckout = ({
   } = useAdvancedCheckout()
 
   useEffect(() => {
+    // todo: we get numbers of recipients on page load, and when list is cleared we still have the count
+    numberOfRecipients.current = recipients?.length || 1
+  }, [])
+
+  useEffect(() => {
     const fetchPricing = async () => {
       const price = await getFiatPricing(
         config,
         lock.address,
         network,
-        recipients.length
+        numberOfRecipients.current || 1
       )
       setPricing(price.usd)
     }
 
     fetchPricing()
-  }, [recipients.length, lock.address, config, network])
+  }, [numberOfRecipients.current, lock.address, config, network])
 
   let totalPrice: number = 0
   let fee: number = 0
