@@ -132,9 +132,9 @@ export const Checkout = ({
     removeRecipient,
   } = useMultipleRecipient(
     selectedLock,
-    paywallConfig!,
     network,
-    paywallConfig?.maxRecipients ?? 1
+    paywallConfig?.maxRecipients ?? 1,
+    paywallConfig?.metadataInputs
   )
   const showMetadataForm =
     (paywallConfig?.metadataInputs || hasMultipleRecipients) && !savedMetadata

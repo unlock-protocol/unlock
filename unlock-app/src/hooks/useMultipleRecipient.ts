@@ -30,9 +30,9 @@ interface RecipientPayload {
 
 export const useMultipleRecipient = (
   lock: Lock,
-  paywallConfig: PaywallConfig,
   network?: number,
-  maxRecipients = 1
+  maxRecipients = 1,
+  metadataInputs: PaywallConfig['metadataInputs'] = []
 ) => {
   const web3Service = useContext(Web3ServiceContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
@@ -65,7 +65,7 @@ export const useMultipleRecipient = (
       users: listWithoutExcluded.map(({ resolvedAddress, metadata = {} }) => {
         const formattedMetadata = formResultToMetadata(
           metadata,
-          paywallConfig?.metadataInputs || []
+          metadataInputs || []
         )
         return {
           userAddress: resolvedAddress,
