@@ -12,38 +12,48 @@ namespace AuthController {
     const { redirect_uri, client_id, grant_type, code } = req.body
 
     if (!redirect_uri) {
+      const details = 'missing redirect_uri'
+      logger.info(details)
       return res.status(400).json({
         error: 'invalid_request',
-        details: 'missing redirect_uri',
+        details,
       })
     }
 
     if (!client_id) {
+      const details = 'missing client_id'
+      logger.info(details)
       return res.status(400).json({
         error: 'invalid_request',
-        details: 'missing client_id',
+        details,
       })
     }
 
     if (grant_type !== 'authorization_code') {
+      const details = 'wrong grant_type'
+      logger.info(details)
       return res.status(400).json({
         error: 'invalid_request',
-        details: 'wrong grant_type',
+        details,
       })
     }
 
     if (!code) {
+      const details = 'missing code'
+      logger.info(details)
       return res.status(400).json({
         error: 'invalid_request',
-        details: 'missing code',
+        details,
       })
     }
 
     const redirectUrl = new URL(redirect_uri)
     if (redirectUrl.host !== client_id) {
+      const details = 'client_id does not match redirect_uri host'
+      logger.info(details)
       return res.status(400).json({
         error: 'invalid_request',
-        details: 'client_id does not match redirect_uri host',
+        details,
       })
     }
 
@@ -60,6 +70,9 @@ namespace AuthController {
       })
     } catch (error: any) {
       logger.error('Error verifying auth signature', { code })
+      return res.status(500).json({
+        error: 'invalid_request',
+      })
     }
   }
 }
