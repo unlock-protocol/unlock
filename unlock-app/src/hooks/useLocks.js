@@ -1,11 +1,9 @@
 import { useState, useEffect, useContext, useReducer } from 'react'
-import { TransactionType, TransactionStatus } from '../unlockTypes'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { GraphServiceContext } from '../utils/withGraphService'
-import { transactionTypeMapping } from '../utils/types'
 import { ConfigContext } from '../utils/withConfig'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import { processTransaction } from './useLock'
@@ -188,7 +186,7 @@ export const useLocks = (owner) => {
 
     const index = locks.findIndex(
       (element) =>
-        element.address?.toLowerCase() === lock.address?.toLowerCase()
+        element?.address?.toLowerCase() === lock.address?.toLowerCase()
     )
 
     if (index === -1) {

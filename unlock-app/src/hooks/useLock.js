@@ -1,17 +1,15 @@
-import { useState, useContext, useEffect, useReducer } from 'react'
+import { useState, useContext, useReducer } from 'react'
 import * as ethers from 'ethers'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
-import { TransactionType } from '../unlockTypes'
-import { transactionTypeMapping } from '../utils/types'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import { FATAL_WRONG_NETWORK } from '../errors'
 import { getFiatPricing, getCardConnected } from './useCards'
 import { generateKeyMetadataPayload } from '../structured_data/keyMetadata'
 import { StorageService } from '../services/storageService'
 import LocksContext from '../contexts/LocksContext'
-import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '../constants'
+import { UNLIMITED_KEYS_COUNT } from '../constants'
 /**
  * Event handler
  * @param {*} hash
