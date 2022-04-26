@@ -1,3 +1,4 @@
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useState, useContext, useReducer } from 'react'
 import * as ethers from 'ethers'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
@@ -18,7 +19,7 @@ import { Lock } from '../unlockTypes'
  */
 export const processTransaction = async (
   type: string,
-  web3Service: any,
+  web3Service: Web3Service,
   config: any,
   lock: any,
   setLock: (...args: any) => void,
