@@ -18,6 +18,9 @@ async function main({ voter, proposalId }) {
     )
   }
 
+  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
+  const gov = await ethers.getContractAt(abi, address)
+
   // eslint-disable-next-line no-console
   console.log(`GOV VOTE > proposal ID : ${proposalId}`)
 
@@ -38,14 +41,15 @@ async function main({ voter, proposalId }) {
     const state = await getProposalState(proposalId)
     if (state === 'Pending') {
       // wait for a block (default voting delay)
+      const votingDelay = await gov.votingDelay()
+      // eslint-disable-next-line no-console
+      console.log(`GOV VOTE > votingDelay: ${votingDelay}`)
       const currentBlock = await ethers.provider.getBlockNumber()
-      await time.advanceBlockTo(currentBlock + 2)
+      await time.advanceBlockTo(currentBlock + parseInt(votingDelay) + 1)
     }
   }
 
   const voterWallet = await ethers.getSigner(voter)
-  const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
-  const gov = await ethers.getContractAt(abi, address)
 
   const currentBlock = await ethers.provider.getBlockNumber()
   // eslint-disable-next-line no-console

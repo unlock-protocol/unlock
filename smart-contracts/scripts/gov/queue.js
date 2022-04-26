@@ -46,7 +46,7 @@ async function main({ proposal }) {
 
   // queue proposal
   if (state === 'Succeeded') {
-    const tx = await queueProposal({ proposalId })
+    const tx = await queueProposal({ proposal })
     const { events, transactionHash } = await tx.wait()
     const evt = events.find((v) => v.event === 'ProposalQueued')
     const { eta } = evt.args

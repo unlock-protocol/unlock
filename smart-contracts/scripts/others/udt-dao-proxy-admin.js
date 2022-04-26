@@ -1,8 +1,15 @@
-const { ethers, upgrades, network } = require('hardhat')
+const { ethers, upgrades, network, run } = require('hardhat')
+const { time } = require('@openzeppelin/test-helpers')
 const { UNLOCK_MULTISIG_ADDRESS } = require('../../helpers/multisig')
 const { impersonate } = require('../../test/helpers/mainnet')
-const gov = require('../gov')
+const { addUDT, getDictator } = require('../../test/helpers/mainnet')
 const newProxyAdminABI = require('../../test/helpers/ABIs/proxy.json')
+
+// import gov tasks
+const submit = require('../gov/submit')
+const vote = require('../gov/vote')
+const queue = require('../gov/queue')
+const execute = require('../gov/execute')
 
 const udtProxyAdminABI = JSON.parse(
   '[{"constant":true,"inputs":[{"name":"proxy","type":"address"}],"name":"getProxyImplementation","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renounceOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"proxy","type":"address"},{"name":"newAdmin","type":"address"}],"name":"changeProxyAdmin","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"isOwner","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"proxy","type":"address"},{"name":"implementation","type":"address"},{"name":"data","type":"bytes"}],"name":"upgradeAndCall","outputs":[],"payable":true,"stateMutability":"payable","type":"function"},{"constant":false,"inputs":[{"name":"proxy","type":"address"},{"name":"implementation","type":"address"}],"name":"upgrade","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"proxy","type":"address"}],"name":"getProxyAdmin","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":true,"name":"previousOwner","type":"address"},{"indexed":true,"name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"}]'
@@ -78,7 +85,7 @@ async function main() {
 
     // now lets perform an UDT upgrade using the new proxy
     // prepare upgrade and deploy new contract implementation
-    const [deployer, proposer] = await ethers.getSigners()
+    const [deployer, proposer, localDictator] = await ethers.getSigners()
     const UnlockDiscountTokenV4 = await ethers.getContractFactory(
       'TestUnlockDiscountTokenV4',
       deployer
@@ -91,12 +98,56 @@ async function main() {
     // eslint-disable-next-line no-console
     console.log(`UDT > new UDT v4 impl deployed: ${newImpl}`)
 
-    // bring default voting period to 10 blocks for testing purposes
+    const quorum = await run('gov:quorum')
+    const dictator = !process.env.RUN_MAINNET_FORK
+      ? localDictator
+      : await getDictator()
+
+    // lower voting delqy and delay period
     await network.provider.send('hardhat_setStorageAt', [
       govAddress,
-      '0x1c7', // '455' storage slot
+      '0x1c6', // voting delay - '454' storage slot
+      '0x0000000000000000000000000000000000000000000000000000000000000001', // 1 block
+    ])
+
+    await network.provider.send('hardhat_setStorageAt', [
+      govAddress,
+      '0x1c7', // voting period - '455' storage slot
       '0x0000000000000000000000000000000000000000000000000000000000000032', // 50 blocks
     ])
+
+    // Authoritarian mode: delegate UDT to a single voter (aka dictator) to bypass quorum
+    // NB: this has to be done *before* proposal submission's block height so votes get accounted for
+    await addUDT(proposer.address, quorum * 2)
+
+    // delegate 30k to voter
+    const udt = await ethers.getContractAt(
+      'UnlockDiscountTokenV3',
+      udtAddress,
+      proposer
+    )
+    const tx = await udt.delegate(dictator.address)
+    const { events } = await tx.wait()
+    const evt = events.find((v) => v.event === 'DelegateVotesChanged')
+    if (evt) {
+      // eslint-disable-next-line no-console
+      console.log(
+        `GOV VOTE (dev) > ${proposer.address} delegated quorum to ${dictator.address}`,
+        `(total votes: ${ethers.utils.formatUnits(
+          await udt.getVotes(dictator.address),
+          18
+        )})`
+      )
+    }
+
+    // eslint-disable-next-line no-console
+    console.log(
+      `GOV VOTE (dev) > Dictator votes: ${ethers.utils.formatUnits(
+        await udt.getVotes(dictator.address),
+        18
+      )}`
+    )
+    await time.advanceBlock()
 
     const proposal = {
       contractAbi: newProxyAdminABI,
@@ -108,7 +159,20 @@ async function main() {
       proposerAddress: proposer.address,
     }
 
-    await gov({ proposal })
+    // execute proposal
+    const proposalId = await submit({ ...proposal })
+    await vote({ proposalId }) // no voter address enables authoritarian mode
+    await queue({ proposal: { ...proposal, proposalId } })
+    await execute({ proposal: { ...proposal, proposalId } })
+
+    // now lets make sure it worked
+    const udtUpgraded = await ethers.getContractAt(
+      'TestUnlockDiscountTokenV4',
+      udtAddress
+    )
+    const helloWorld = await udtUpgraded.sayHello()
+    // eslint-disable-next-line no-console
+    console.log(`UDT v4 is saying "${helloWorld}". Upgrade successful!`)
   }
 }
 

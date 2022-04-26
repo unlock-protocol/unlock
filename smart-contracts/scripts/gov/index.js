@@ -47,7 +47,7 @@ async function main({ proposal }) {
     // delegate 30k to voter
     const tx = await udt.delegate(dictator.address)
     const { events } = await tx.wait()
-    const evt = events.find((v) => v.event === 'DelegateVotesChanged')
+    const evt = events.find((v) => v.event === 'DelegateChanged')
     if (evt) {
       // eslint-disable-next-line no-console
       console.log(
