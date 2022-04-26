@@ -61,13 +61,16 @@ export default async function (
       )
       // approve entire price
       if (!approvedAmount || approvedAmount.lt(totalPrice)) {
-        await approveTransfer(
-          erc20Address,
-          lockAddress,
-          totalPrice,
-          this.provider,
-          this.signer
-        )
+        // We must wait for the transaction to pass if we want the next one to succeed!
+        await (
+          await approveTransfer(
+            erc20Address,
+            lockAddress,
+            totalPrice,
+            this.provider,
+            this.signer
+          )
+        ).wait()
       }
     }
   }
