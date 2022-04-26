@@ -172,7 +172,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
             </label>
           ))}
           <AddButton onClick={onAddRecipient} type="button" disabled={loading}>
-            <span className="px-2"> Add </span>
+            <span className="px-2"> Save </span>
             {loading && <Loading size={20} />}
           </AddButton>
         </fieldset>
