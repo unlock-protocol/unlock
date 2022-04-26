@@ -48,6 +48,10 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
       href: '/about',
     },
     {
+      name: 'Careers',
+      href: 'https://www.notion.so/unlockprotocol/Unlock-Jobs-907811d15c4d490091eb298f71b0954c',
+    },
+    {
       name: 'Blog',
       href: '/blog',
     },
