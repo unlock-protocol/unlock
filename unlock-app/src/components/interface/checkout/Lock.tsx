@@ -103,7 +103,7 @@ export const Lock = ({
       network,
       config.networks[network].baseCurrencySymbol,
       name,
-      numberOfRecipients
+      numberOfRecipients || 1
     ),
     selectable: true, // by default!
   }

@@ -114,6 +114,7 @@ export interface Lock {
   canGrant?: boolean
   name: string
   address: string
+  network: number
   keyPrice: string
   expirationDuration: number
   key: Key

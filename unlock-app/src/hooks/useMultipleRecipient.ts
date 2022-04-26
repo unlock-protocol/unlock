@@ -30,7 +30,6 @@ interface RecipientPayload {
 
 export const useMultipleRecipient = (
   lock: Lock,
-  network?: number,
   maxRecipients = 1,
   metadataInputs: PaywallConfig['metadataInputs'] = []
 ) => {
@@ -98,12 +97,19 @@ export const useMultipleRecipient = (
   }
 
   const getAddressAndValidation = async (recipient: string) => {
-    const address = await getAddressForName(recipient)
-    const isAddressWithKey = await web3Service.getHasValidKey(
-      lock.address,
-      address,
-      network
-    )
+    let address = ''
+    let isAddressWithKey = false
+    try {
+      address = await getAddressForName(recipient)
+      isAddressWithKey = await web3Service.getHasValidKey(
+        lock.address,
+        address,
+        lock.network
+      )
+    } catch (err: any) {
+      console.error(err?.message)
+    }
+
     const addressList = recipientsList().map(
       ({ resolvedAddress }) => resolvedAddress
     )
@@ -125,8 +131,8 @@ export const useMultipleRecipient = (
   }
 
   const submitBulkRecipients = async () => {
-    if (!network) return
-    const url = `${config.services.storage.host}/v2/api/metadata/${network}/users`
+    if (!lock) return
+    const url = `${config.services.storage.host}/v2/api/metadata/${lock.network}/users`
     const opts = {
       method: 'POST',
       body: JSON.stringify(normalizeRecipients()),
