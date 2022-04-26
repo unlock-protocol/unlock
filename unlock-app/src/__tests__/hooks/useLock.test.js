@@ -1,16 +1,12 @@
 import React from 'react'
 
 import { renderHook } from '@testing-library/react-hooks'
-import useLock, {
-  processTransaction,
-  updateKeyPriceOnLock,
-} from '../../hooks/useLock'
+import useLock, { updateKeyPriceOnLock } from '../../hooks/useLock'
 import configure from '../../config'
 import LocksContext from '../../contexts/LocksContext'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
-import { TransactionType } from '../../unlockTypes'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
 const config = configure()

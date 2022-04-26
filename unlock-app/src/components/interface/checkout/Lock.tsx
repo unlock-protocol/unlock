@@ -80,6 +80,7 @@ export const Lock = ({
 
   useEffect(() => {
     const getKey = async () => {
+      if (!recipient) return
       setLoading(true)
       alreadyHasKey(await getKeyForAccount(recipient))
       setLoading(false)
