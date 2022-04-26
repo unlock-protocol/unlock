@@ -40,9 +40,7 @@ export default async function (
     actualAmount = utils.toDecimal(keyPrice, decimals)
   }
 
-  const purchaseForOptions = {
-    gasLimit: 400000,
-  }
+  const purchaseForOptions = {}
 
   if (erc20Address && erc20Address !== ZERO) {
     const approvedAmount = await getAllowance(
@@ -52,13 +50,16 @@ export default async function (
       this.signer
     )
     if (!approvedAmount || approvedAmount.lt(actualAmount)) {
-      await approveTransfer(
-        erc20Address,
-        lockAddress,
-        actualAmount,
-        this.provider,
-        this.signer
-      )
+      // We must wait for the transaction to pass if we want the next one to succeed!
+      await (
+        await approveTransfer(
+          erc20Address,
+          lockAddress,
+          actualAmount,
+          this.provider,
+          this.signer
+        )
+      ).wait()
     }
   } else {
     purchaseForOptions.value = actualAmount

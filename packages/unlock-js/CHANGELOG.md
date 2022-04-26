@@ -1,7 +1,8 @@
 # Changes
 
-# Next minor
+# 0.24.0
 
+- Removed hard coded gas limit and waits on erc20 approvals
 - Add locksmithService for interacting with locksmith servers.
 - Rescuing gas estimation errors
 - Add support for granting multiple keys
