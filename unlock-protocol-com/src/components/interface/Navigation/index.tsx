@@ -3,6 +3,11 @@ import { Popover, Transition, Disclosure } from '@headlessui/react'
 import { Button } from '@unlock-protocol/ui'
 import React, { Fragment } from 'react'
 import { MdFormatListBulleted as BulletedListIcon } from 'react-icons/md'
+import {
+  RiCalendarCheckLine as EventIcon,
+  RiHeartsLine as HeartIcon,
+  RiPlantLine as PlantIcon,
+} from 'react-icons/ri'
 import { FaGithub as GithubIcon } from 'react-icons/fa'
 import { FiLifeBuoy as LifeBuoyIcon, FiCode as CodeIcon } from 'react-icons/fi'
 import { IconType } from 'react-icons'
@@ -14,6 +19,7 @@ import {
 } from 'react-icons/ai'
 import { HiX as XIcon, HiMenu as MenuIcon } from 'react-icons/hi'
 import { unlockConfig } from '../../../config/unlock'
+import { SOCIAL_URL } from '../../../config/seo'
 interface NavigationLink {
   name: string
   href: string
@@ -166,14 +172,153 @@ function DeveloperPopover() {
                     </div>
                   </div>
                 </div>
-                <div className="p-2">
-                  <div className="grid grid-cols-2 gap-1 p-4 bg-white rounded-3xl">
+                <div className="p-1">
+                  <div className="grid grid-cols-2 gap-1 p-2 bg-white rounded-3xl">
                     {DEVELOPER_NAVIGATION_BOTTOM_ITEMS.map(
                       ({ name, href, Icon }, index) => (
                         <Link
                           href={href}
                           key={index}
-                          className="flex gap-2 p-2 text-sm font-medium rounded-xl hover:bg-slate-50"
+                          className="flex gap-2 p-2 text-sm font-medium rounded-3xl hover:bg-slate-50"
+                        >
+                          <Icon className="text-lg not-sr-only text-brand-ui-primary" />
+                          {name}
+                        </Link>
+                      )
+                    )}
+                  </div>
+                </div>
+              </div>
+            </Popover.Panel>
+          </Transition>
+        </>
+      )}
+    </Popover>
+  )
+}
+
+const COMMUNITY_NAVIGATION_JOIN: NavigationLink[] = [
+  {
+    name: 'Discord',
+    href: SOCIAL_URL.discord,
+  },
+  {
+    name: 'Twitter',
+    href: SOCIAL_URL.twitter,
+  },
+  {
+    name: 'Forum',
+    href: SOCIAL_URL.discourse,
+  },
+]
+
+const COMMUNITY_NAVIGATION_STORY: NavigationLink[] = [
+  {
+    name: 'About',
+    href: '/about',
+  },
+  {
+    name: 'Blog',
+    href: '/blog',
+  },
+]
+
+const COMMUNITY_NAVIGATION_BOTTOM_ITEMS: NavigationalLinkWithIcon[] = [
+  // Enable it when upcoming-events page is live.
+  // {
+  //   name: 'Upcoming Events',
+  //   Icon: EventIcon,
+  //   href: '/upcoming-events',
+  // },
+  {
+    name: 'Grants',
+    Icon: HeartIcon,
+    href: '/grants',
+  },
+]
+
+function CommunityPopover() {
+  return (
+    <Popover className="relative">
+      {({ open }) => (
+        <>
+          <Popover.Button
+            className={`hover:text-brand-dark flex items-center gap-2 ${
+              open ? 'text-black' : 'text-brand-gray'
+            }`}
+          >
+            Community {open ? <UpIcon size={12} /> : <DownIcon size={12} />}
+          </Popover.Button>
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-200"
+            enterFrom="opacity-0 translate-y-1"
+            enterTo="opacity-100 translate-y-0"
+            leave="transition ease-in duration-150"
+            leaveFrom="opacity-100 translate-y-0"
+            leaveTo="opacity-0 translate-y-1"
+          >
+            <Popover.Panel className="absolute w-screen max-w-xl px-4 mt-3 transform -translate-x-1/2 z-100 left-1/2">
+              <div className="glass-pane rounded-3xl">
+                <div className="grid p-4">
+                  <header className="flex pb-6 gap-x-2 items-base">
+                    <div>
+                      <PlantIcon
+                        size={20}
+                        className="not-sr-only fill-brand-ui-primary"
+                      />
+                    </div>
+                    <div className="flex flex-col space-y-1">
+                      <Link href="https://docs.unlock-protocol.com/unlock/">
+                        <p className="text-sm font-bold"> Community </p>
+                      </Link>
+                      <p className="text-sm text-brand-gray">
+                        Join community of thousands of developers, creators, and
+                        governants building the future of Unlock!
+                      </p>
+                    </div>
+                  </header>
+                  <div className="flex justify-between max-w-[400px] pl-8">
+                    <div>
+                      <p className="text-xs font-bold uppercase ">Our Story</p>
+                      <nav className="grid gap-1 pt-2">
+                        {COMMUNITY_NAVIGATION_STORY.map((item, index) => (
+                          <Link
+                            className="text-sm text-brand-gray hover:text-brand-dark"
+                            key={index}
+                            href={item.href}
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+                      </nav>
+                    </div>
+                    <div>
+                      <p className="text-xs font-bold uppercase ">
+                        Join our community
+                      </p>
+                      <nav className="grid gap-1 pt-2">
+                        {COMMUNITY_NAVIGATION_JOIN.map((item, index) => (
+                          <Link
+                            className="text-sm text-brand-gray hover:text-brand-dark"
+                            key={index}
+                            href={item.href}
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-1">
+                  <div className="grid grid-cols-2 gap-1 p-2 bg-white rounded-3xl">
+                    {COMMUNITY_NAVIGATION_BOTTOM_ITEMS.map(
+                      ({ name, href, Icon }, index) => (
+                        <Link
+                          href={href}
+                          key={index}
+                          className="flex gap-2 p-2 text-sm font-medium rounded-3xl hover:bg-slate-50"
                         >
                           <Icon className="text-lg not-sr-only text-brand-ui-primary" />
                           {name}
@@ -202,9 +347,7 @@ function Desktop() {
       >
         Creators
       </Link>
-      <Link className={link} href="/about">
-        About
-      </Link>
+      <CommunityPopover />
       <Button href={unlockConfig.appURL} variant="outlined-primary" as={Link}>
         Dashboard
       </Button>
@@ -215,12 +358,12 @@ function Desktop() {
 function Mobile() {
   return (
     <div className="relative flex justify-center w-full">
-      <Disclosure.Panel className="absolute w-full max-w-lg px-4 space-y-1 sm:hidden">
-        <div className="space-y-2 glass-pane rounded-xl">
+      <Disclosure.Panel className="absolute w-full max-w-lg px-4 pt-2 space-y-1 sm:hidden">
+        <div className="glass-pane rounded-xl">
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex items-center justify-between w-full p-4 font-medium bg-white shadow-lg rounded-xl">
+                <Disclosure.Button className="flex items-center justify-between w-full p-4 font-medium bg-white shadow-lg rounded-t-xl border-b">
                   For Devs {open ? <UpIcon /> : <DownIcon />}{' '}
                 </Disclosure.Button>
                 <Transition
@@ -274,13 +417,13 @@ function Mobile() {
                         </nav>
                       </div>
                     </div>
-                    <div className="p-4 m-2 space-y-2 bg-white rounded-3xl">
+                    <div className="p-2 m-2 space-y-1 bg-white rounded-3xl">
                       {DEVELOPER_NAVIGATION_BOTTOM_ITEMS.map(
                         ({ name, href, Icon }, index) => (
                           <Link
                             href={href}
                             key={index}
-                            className="flex gap-2 p-2 text-sm font-medium rounded-xl hover:bg-slate-50"
+                            className="flex gap-2 p-2 text-sm font-medium rounded-3xl hover:bg-slate-50"
                           >
                             <Icon className="text-lg not-sr-only text-brand-ui-primary" />
                             {name}
@@ -293,11 +436,86 @@ function Mobile() {
               </>
             )}
           </Disclosure>
-          <div className="flex flex-col gap-4 p-4 bg-white rounded-xl">
-            <Link href="https://docs.unlock-protocol.com/unlock/creators/faq">
-              Creators
+          <Disclosure>
+            {({ open }) => (
+              <>
+                <Disclosure.Button
+                  className={`flex items-center justify-between w-full p-4 font-medium bg-white shadow-lg border-b`}
+                >
+                  For Community {open ? <UpIcon /> : <DownIcon />}
+                </Disclosure.Button>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-150"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-125"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Disclosure.Panel>
+                    <div className="p-6 space-y-4">
+                      <div>
+                        <p className="text-xs font-bold uppercase ">
+                          Our Story
+                        </p>
+                        <nav className="grid gap-2 pt-2">
+                          {COMMUNITY_NAVIGATION_STORY.map((item, index) => (
+                            <Link
+                              className="text-sm text-brand-gray hover:text-brand-dark"
+                              key={index}
+                              href={item.href}
+                            >
+                              {item.name}
+                            </Link>
+                          ))}
+                        </nav>
+                      </div>
+                      <div>
+                        <Link href="https://docs.unlock-protocol.com/unlock/developers/tutorials">
+                          <p className="text-xs font-bold uppercase ">
+                            Join our community
+                          </p>
+                        </Link>
+                        <nav className="grid gap-2 pt-2">
+                          {COMMUNITY_NAVIGATION_JOIN.map((item, index) => (
+                            <Link
+                              className="text-sm text-brand-gray hover:text-brand-dark"
+                              key={index}
+                              href={item.href}
+                            >
+                              {item.name}
+                            </Link>
+                          ))}
+                        </nav>
+                      </div>
+                    </div>
+                    <div className="p-2 m-2 space-y-1 bg-white rounded-3xl">
+                      {COMMUNITY_NAVIGATION_BOTTOM_ITEMS.map(
+                        ({ name, href, Icon }, index) => (
+                          <Link
+                            href={href}
+                            key={index}
+                            className="flex gap-2 p-2 text-sm font-medium rounded-3xl hover:bg-slate-50"
+                          >
+                            <Icon className="text-lg not-sr-only text-brand-ui-primary" />
+                            {name}
+                          </Link>
+                        )
+                      )}
+                    </div>
+                  </Disclosure.Panel>
+                </Transition>
+              </>
+            )}
+          </Disclosure>
+          <div className="flex flex-col gap-4 p-4 bg-white rounded-b-xl">
+            <Link
+              className="font-medium"
+              href="https://docs.unlock-protocol.com/unlock/creators/faq"
+            >
+              For Creators
             </Link>
-            <Link href="/about"> About us </Link>
             <Button as={Link} href={unlockConfig.appURL}>
               Dashboard
             </Button>
