@@ -2,10 +2,6 @@ const { run, ethers, network } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const { getDeployment } = require('../../helpers/deployments')
 const { addUDT, getDictator } = require('../../test/helpers/mainnet')
-const submit = require('./submit')
-const vote = require('./vote')
-const queue = require('./queue')
-const execute = require('./queue')
 
 async function main({ proposal }) {
   const [, holder, localDictator] = await ethers.getSigners()
@@ -74,11 +70,11 @@ async function main({ proposal }) {
   }
 
   // Run the gov workflow
-  const proposalId = await submit(proposal)
-  await vote({ proposalId }) // no voter address enables authoritarian mode
-  // await votes', { proposal }) // show votes
-  await queue({ proposal: { ...proposal, proposalId } })
-  await execute({ proposal: { ...proposal, proposalId } })
+  await run('gov:submit', { proposal })
+  await run('gov:vote', { proposal }) // no voter address enables authoritarian mode
+  await run('gov:votes', { proposal }) // show votes
+  // await run('gov:queue', { proposal })
+  // await run('gov:execute', { proposal })
 }
 
 // execute as standalone
