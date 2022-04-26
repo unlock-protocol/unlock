@@ -267,11 +267,11 @@ export const purchaseMultipleKeysFromLock = async (
  * @param {*} lock
  * @param {*} network // network on which the lock is
  */
-export const useLock = (lockFromProps: Lock, network: number) => {
+export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
   const { locks, addLock } = useContext(LocksContext)
 
   const [lock, setLock] = useReducer(
-    (oldLock: Lock, newLock: any) => {
+    (oldLock: any, newLock: any) => {
       return { ...oldLock, ...newLock }
     },
     {
@@ -427,6 +427,7 @@ export const useLock = (lockFromProps: Lock, network: number) => {
   // -1 if no stripe account exsist
   // 0 if a stripe account exists but is not ready
   const isStripeConnected = async () => {
+    if (!lockFromProps.address) return
     try {
       const response = await getCardConnected(
         config,
@@ -478,6 +479,7 @@ export const useLock = (lockFromProps: Lock, network: number) => {
   }
 
   const markAsCheckedIn = async (signer: string, keyId: string) => {
+    if (!lockFromProps.address) return
     const payload = generateKeyMetadataPayload(signer, {
       lockAddress: lockFromProps.address,
       keyId,
