@@ -359,6 +359,27 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Grant keys to multiple recipient addresses with custom expiration
+   * @param {function} callback : callback invoked with the transaction hash
+   */
+  async grantKeys(
+    params: {
+      lockAddress: string
+      recipients: string[]
+      expirations?: string[]
+      keyManagers?: string[]
+      transactionOptions?: unknown
+    },
+    callback: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) {
+      throw new Error('Missing lockAddress')
+    }
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.grantKeys.bind(this)(params, callback)
+  }
+
+  /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {object} params
    * - {PropTypes.address} lockAddress

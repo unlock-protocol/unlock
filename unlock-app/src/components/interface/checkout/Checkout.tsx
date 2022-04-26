@@ -39,6 +39,7 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 import { PaywallConfig, OAuthConfig } from '../../../unlockTypes'
 import { OAuthConnect } from './OauthConnect'
+import { useMultipleRecipient } from '../../../hooks/useMultipleRecipient'
 
 interface CheckoutProps {
   emitCloseModal: (success: boolean) => void
@@ -119,7 +120,22 @@ export const Checkout = ({
   const { getAutoLoginEmail } = useAutoLogin()
   const storedEmail = getAutoLoginEmail()
   const messageSigned = useRef(false)
-
+  const {
+    recipients,
+    hasMultipleRecipients,
+    maxRecipients,
+    addRecipientItem,
+    loading,
+    submitBulkRecipients,
+    clear,
+    removeRecipient,
+  } = useMultipleRecipient(
+    selectedLock,
+    paywallConfig?.maxRecipients ?? 1,
+    paywallConfig?.metadataInputs
+  )
+  const showMetadataForm =
+    (paywallConfig?.metadataInputs || hasMultipleRecipients) && !savedMetadata
   // state change
   useEffect(() => {
     setState(defaultState)
@@ -284,13 +300,20 @@ export const Checkout = ({
     // Final step for the crypto checkout. We should save the metadata first!
     if (!paywallConfig) {
       content = <p>Missing paywall configuration. Please refresh this page</p>
-    } else if (paywallConfig?.metadataInputs && !savedMetadata) {
+    } else if (showMetadataForm) {
       content = (
         <MetadataForm
           network={lockProps?.network || paywallConfig?.network}
           lock={selectedLock}
           fields={paywallConfig!.metadataInputs!}
           onSubmit={setSavedMetadata}
+          recipients={recipients}
+          maxRecipients={maxRecipients}
+          addRecipient={addRecipientItem}
+          loading={loading}
+          submitBulkRecipients={submitBulkRecipients}
+          clear={clear}
+          removeRecipient={removeRecipient}
         />
       )
     } else {
@@ -304,6 +327,9 @@ export const Checkout = ({
           lock={selectedLock}
           closeModal={closeModal}
           setCardPurchase={() => cardCheckoutOrClaim(selectedLock)}
+          numberOfRecipients={recipients?.length}
+          recipients={recipients}
+          clearMultileRecipients={clear}
         />
       )
     }
@@ -318,13 +344,20 @@ export const Checkout = ({
       />
     )
   } else if (state === 'claim-membership') {
-    if (paywallConfig?.metadataInputs && !savedMetadata) {
+    if (showMetadataForm) {
       content = (
         <MetadataForm
           network={lockProps?.network || paywallConfig?.network}
           lock={selectedLock}
           fields={paywallConfig!.metadataInputs!}
           onSubmit={setSavedMetadata}
+          recipients={recipients}
+          maxRecipients={maxRecipients}
+          addRecipient={addRecipientItem}
+          loading={loading}
+          submitBulkRecipients={submitBulkRecipients}
+          clear={clear}
+          removeRecipient={removeRecipient}
         />
       )
     } else {
@@ -342,13 +375,20 @@ export const Checkout = ({
       )
     }
   } else if (state === 'confirm-card-purchase') {
-    if (paywallConfig?.metadataInputs && !savedMetadata) {
+    if (showMetadataForm) {
       content = (
         <MetadataForm
           network={lockProps?.network || paywallConfig?.network}
           lock={selectedLock}
           fields={paywallConfig!.metadataInputs!}
           onSubmit={setSavedMetadata}
+          recipients={recipients}
+          maxRecipients={maxRecipients}
+          addRecipient={addRecipientItem}
+          loading={loading}
+          submitBulkRecipients={submitBulkRecipients}
+          clear={clear}
+          removeRecipient={removeRecipient}
         />
       )
     } else {
@@ -361,6 +401,7 @@ export const Checkout = ({
           network={lockProps?.network || paywallConfig?.network}
           name={lockProps?.name || ''}
           closeModal={closeModal}
+          recipients={recipients}
           {...cardDetails}
         />
       )
