@@ -1,3 +1,22 @@
+/**
+  This script demonstrates how to transfer ownership of the UDT contract to the DAO / Governor contract
+
+  What it does 
+
+  1) deploy a new `ProxyAdmin` 
+  2) transfer the ownership of that new `ProxyAdmin` to the `Timelock` (which manages the DAO execution)
+  3) change UDT's proxy admin to the new one
+  4) perform a small upgrade to the UDT contract through the DAO voting process
+
+  The steps 1-3 are meant to actually deploy the changes on mainnet, while step 4 is a test to be run on a local mainnet fork.
+
+  ### How to run on mainnet
+
+  ```
+  export ALCHEMY_API_KEY=<xxx>
+  RUN_MAINNET_FORK=1 yarn hardhat run scripts/others/udt-dao-proxy-admin.js
+  ```
+ */
 const { ethers, upgrades, network, run } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const { UNLOCK_MULTISIG_ADDRESS } = require('../../helpers/multisig')
