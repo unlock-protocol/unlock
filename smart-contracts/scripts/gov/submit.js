@@ -71,7 +71,7 @@ async function main({
 
   // eslint-disable-next-line no-console
   console.log(
-    `GOV SUBMIT > Proposed: ${contractName} ${functionName} ${functionArgs}`
+    `GOV SUBMIT > Proposed "${proposalName}" : ${functionName}(${functionArgs})`
   )
 
   // submit the proposal
