@@ -28,6 +28,7 @@ export async function renewKey({
   // parse lock
   const abi = [
     'function renewMembershipFor(uint256 _tokenId,address _referrer)',
+    'function publicLockVersion()',
   ]
   const lock = new Contract(lockAddress, abi, signer)
 
