@@ -84,22 +84,22 @@ export default async function (
     )
 
     if (!approvedAmount || approvedAmount.lt(totalPrice)) {
-      await approveTransfer(
-        erc20Address,
-        lockAddress,
-        totalPrice,
-        this.provider,
-        this.signer
-      )
+      // We must wait for the transaction to pass if we want the next one to succeed!
+      await (
+        await approveTransfer(
+          erc20Address,
+          lockAddress,
+          totalPrice,
+          this.provider,
+          this.signer
+        )
+      ).wait()
     }
   }
 
   // tx options
   const purchaseForOptions = {}
-  if (erc20Address && erc20Address !== ZERO) {
-    // Since we sent the approval transaction, we cannot rely on Ethers to do an estimate, because the computation would fail (since the approval might not have been mined yet)
-    // purchaseForOptions.gasLimit = 400000
-  } else {
+  if (!erc20Address || erc20Address === ZERO) {
     purchaseForOptions.value = totalPrice
   }
 

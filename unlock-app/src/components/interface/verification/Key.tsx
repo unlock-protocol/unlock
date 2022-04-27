@@ -146,6 +146,7 @@ export const ValidKey = ({
   const { isLockManager, getKeyData, markAsCheckedIn } = useLock(lock, network)
 
   const checkIn = async () => {
+    if (!viewer) return
     const success = await markAsCheckedIn(viewer, unlockKey.tokenId)
     if (success) {
       setCheckedIn(true)
@@ -160,6 +161,7 @@ export const ValidKey = ({
 
   useEffect(() => {
     const onLoad = async () => {
+      if (!viewer) return
       const _isLockManager = await isLockManager(viewer)
       if (_isLockManager) {
         setViewerIsLockOwner(true)
@@ -167,6 +169,7 @@ export const ValidKey = ({
         setKeyData(metadata || {})
       } else {
         setViewerIsLockOwner(false)
+        // @ts-ignore
         const metadata = (await getKeyData(unlockKey.tokenId)) as any
         setKeyData(metadata || {})
       }
