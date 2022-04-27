@@ -63,7 +63,7 @@ async function renewKeys(network: number) {
     })
 
     // send all renewal txs
-    await Promise.all(
+    const promises = await Promise.allSettled(
       keys.map(({ id, lock }) =>
         renewKey({
           keyId: id,
@@ -72,6 +72,15 @@ async function renewKeys(network: number) {
         })
       )
     )
+
+    // log errors
+    promises
+      .filter((promise) => promise.status === 'rejected')
+      .forEach((promise) => {
+        logger.info('Renewing key failed', {
+          promise,
+        })
+      })
 
     page += 1
   }
