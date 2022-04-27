@@ -222,7 +222,6 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                         </div>
                       )
                     })}
-                  <span className="text-xs block">{userAddress}</span>
                 </ItemRows>
               </InputGroup>
             )
