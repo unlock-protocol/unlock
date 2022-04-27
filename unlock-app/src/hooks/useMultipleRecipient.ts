@@ -30,12 +30,22 @@ interface RecipientPayload {
 
 export const useMultipleRecipient = (
   lock: Lock,
-  maxRecipients = 1,
-  metadataInputs: PaywallConfig['metadataInputs'] = []
+  {
+    minRecipients,
+    maxRecipients,
+    metadataInputs,
+  }: Pick<
+    PaywallConfig,
+    'metadataInputs' | 'maxRecipients' | 'minRecipients'
+  > = {
+    metadataInputs: [],
+    maxRecipients: 1,
+    minRecipients: 1,
+  }
 ) => {
   const web3Service = useContext(Web3ServiceContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
-  const [recipients, setRecipients] = useState(new Set<RecipientItem>())
+  const [recipients, setRecipients] = useState(new Map<number, RecipientItem>())
   const [loading, setLoading] = useState(false)
   const config: any = useContext(ConfigContext)
   const [retryCount, setRetryCount] = useState(0)
@@ -80,23 +90,28 @@ export const useMultipleRecipient = (
   }
 
   const clear = () => {
-    setRecipients(new Set([]))
+    setRecipients(new Map([]))
   }
 
   useEffect(() => {
-    const activeMultiple = +maxRecipients > 1
+    if (!maxRecipients || !minRecipients) return
+    const activeMultiple = +maxRecipients > 1 || +minRecipients > 1
     setHasMultipleRecipients(activeMultiple)
   }, [])
 
   const recipientsList = (): RecipientItem[] => {
-    return Array.from(recipients)
+    return Array.from(recipients.values())
   }
 
   const canAddUser = () => {
+    if (!maxRecipients) return
     return recipients.size < maxRecipients
   }
 
-  const getAddressAndValidation = async (recipient: string) => {
+  const getAddressAndValidation = async (
+    recipient: string,
+    isUpdate: boolean
+  ) => {
     let address = ''
     let isAddressWithKey = false
     try {
@@ -114,13 +129,14 @@ export const useMultipleRecipient = (
       ({ resolvedAddress }) => resolvedAddress
     )
 
-    const isAddressInList = addressList.includes(address)
+    // on updates we ignore duplicates check
+    const isAddressInList = isUpdate ? false : addressList.includes(address)
 
     // todo: need also to check how many keys the address owns to improve this logic
     const limitNotReached = !isAddressWithKey
     const addressValid = address?.length > 0
 
-    const valid = addressValid && limitNotReached
+    const valid = addressValid && limitNotReached && !isAddressInList
     return {
       valid,
       address,
@@ -180,32 +196,36 @@ export const useMultipleRecipient = (
 
   const addRecipientItem = async <T extends Record<string, any>>(
     userAddress: string,
-    metadata: T
+    metadata: T,
+    updateIndex?: number
   ): Promise<boolean> => {
     setLoading(true)
-    if (canAddUser()) {
-      const index = recipients?.size + 1
+    const isUpdate = typeof updateIndex === 'number'
+    if (canAddUser() || isUpdate) {
+      const index = updateIndex || recipients?.size + 1
       const {
         valid,
         address,
         isAddressWithKey,
         isAddressInList,
         limitNotReached,
-      } = await getAddressAndValidation(userAddress)
+      } = await getAddressAndValidation(userAddress, isUpdate)
       if (valid) {
-        setRecipients(
-          (prev) =>
-            new Set(
-              prev.add({
-                userAddress,
-                metadata,
-                index,
-                resolvedAddress: address ?? userAddress,
-                valid,
-              })
-            )
-        )
-        ToastHelper.success('Recipient correctly added in list.')
+        try {
+          setRecipients((prev) =>
+            prev.set(index, {
+              userAddress,
+              metadata,
+              index,
+              resolvedAddress: address ?? userAddress,
+              valid,
+            })
+          )
+          ToastHelper.success('Recipient correctly added in list.')
+        } catch (err) {
+          console.error(err)
+          ToastHelper.error('Error by adding recipient in list')
+        }
       }
 
       if (!limitNotReached && isAddressWithKey) {
@@ -234,21 +254,23 @@ export const useMultipleRecipient = (
     return Promise.resolve(false)
   }
 
-  const removeRecipient = (address: string) => {
-    const newRecipientsList = recipientsList().filter(
-      ({ userAddress }) => userAddress !== address
-    )
-    setRecipients(new Set(newRecipientsList))
+  const removeRecipient = (index: number) => {
+    recipients.delete(index)
+    setRecipients(new Map(recipients))
   }
+
+  const hasMinimumRecipients = recipientsList().length >= (minRecipients || 1)
 
   return {
     hasMultipleRecipients,
     recipients: recipientsList(),
     addRecipientItem,
     loading,
-    maxRecipients,
+    maxRecipients: maxRecipients || 1,
+    minRecipients: minRecipients || 1,
     submitBulkRecipients: submit,
     clear,
     removeRecipient,
+    hasMinimumRecipients,
   }
 }
