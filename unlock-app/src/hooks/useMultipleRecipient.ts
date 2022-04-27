@@ -30,8 +30,18 @@ interface RecipientPayload {
 
 export const useMultipleRecipient = (
   lock: Lock,
-  maxRecipients = 1,
-  metadataInputs: PaywallConfig['metadataInputs'] = []
+  {
+    minRecipients,
+    maxRecipients,
+    metadataInputs,
+  }: Pick<
+    PaywallConfig,
+    'metadataInputs' | 'maxRecipients' | 'minRecipients'
+  > = {
+    metadataInputs: [],
+    maxRecipients: 1,
+    minRecipients: 1,
+  }
 ) => {
   const web3Service = useContext(Web3ServiceContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
@@ -84,7 +94,8 @@ export const useMultipleRecipient = (
   }
 
   useEffect(() => {
-    const activeMultiple = +maxRecipients > 1
+    if (!maxRecipients || !minRecipients) return
+    const activeMultiple = +maxRecipients > 1 || +minRecipients > 1
     setHasMultipleRecipients(activeMultiple)
   }, [])
 
@@ -93,6 +104,7 @@ export const useMultipleRecipient = (
   }
 
   const canAddUser = () => {
+    if (!maxRecipients) return
     return recipients.size < maxRecipients
   }
 
@@ -247,14 +259,18 @@ export const useMultipleRecipient = (
     setRecipients(new Map(recipients))
   }
 
+  const hasMinimumRecipients = recipientsList().length >= (minRecipients || 1)
+
   return {
     hasMultipleRecipients,
     recipients: recipientsList(),
     addRecipientItem,
     loading,
-    maxRecipients,
+    maxRecipients: maxRecipients || 1,
+    minRecipients: minRecipients || 1,
     submitBulkRecipients: submit,
     clear,
     removeRecipient,
+    hasMinimumRecipients,
   }
 }
