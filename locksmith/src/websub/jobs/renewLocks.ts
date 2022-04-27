@@ -9,9 +9,15 @@ const FETCH_LIMIT = 25
 
 async function fetchKeysToRenew(network: number, page = 0) {
   const keysSource = new KeysToRenew()
+
+  // timeframe of last 15 min
+  const end = Math.floor(Date.now() / 1000)
+  const start = end - 60 * 15 // 15 min ago
+
   const keys = await keysSource.getKeysToRenew(
+    start,
+    end,
     network,
-    12, // since
     page ? page * FETCH_LIMIT : 0 // page
   )
 

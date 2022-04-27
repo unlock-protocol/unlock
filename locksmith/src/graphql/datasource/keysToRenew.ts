@@ -4,18 +4,19 @@ import networks from '@unlock-protocol/networks'
 
 export class KeysToRenew extends GraphQLDataSource {
   async getKeysToRenew(
+    start: number,
+    end: number,
     network: number,
-    since: number,
     page: number
   ): Promise<any[]> {
     this.baseURL = networks[network].subgraphURI
     const keysToRenewQuery = gql`
-      query Keys($since: Int!, $skip: Int) {
+      query Keys($start: Int!, $end: Int!, $skip: Int) {
         keys(
-          skip: $skip,
-          orderBy: expiration, 
-          orderDirection: asc,
-          where: { expiration_gte: $since }
+          skip: $skip
+          orderBy: expiration
+          orderDirection: desc
+          where: { expiration_gte: $start, expiration_lte: $end }
         ) {
           id
           lock {
@@ -26,6 +27,7 @@ export class KeysToRenew extends GraphQLDataSource {
             price
             expirationDuration
             totalSupply
+            version
           }
           keyId
           expiration
@@ -33,6 +35,7 @@ export class KeysToRenew extends GraphQLDataSource {
             id
             address
           }
+        }
       }
     `
 
@@ -42,10 +45,10 @@ export class KeysToRenew extends GraphQLDataSource {
 
     try {
       const response = await this.query(keysToRenewQuery, {
-        variables: { since, first, skip },
+        variables: { start, end, first, skip },
       })
 
-      return response.data.locks
+      return response.data.keys // .filter((key: any) => key.lock.version >= 10)
     } catch (error) {
       return []
     }
