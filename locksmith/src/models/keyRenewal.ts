@@ -18,5 +18,5 @@ export class KeyRenewal extends Model<KeyRenewal> {
   tx!: string
 
   @Column
-  chain!: number
+  network!: number
 }
