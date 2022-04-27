@@ -13,7 +13,9 @@ import AuthenticationContext from '../../../contexts/AuthenticationContext'
 
 export interface MultipleRecipientProps {
   recipients: RecipientItem[]
+  minRecipients: number
   maxRecipients: number
+  hasMinimumRecipients: boolean
   addRecipient: any
   loading: boolean
   fields: Array<MetadataInput & { value?: any }>
@@ -25,6 +27,8 @@ export interface MultipleRecipientProps {
 export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   recipients,
   maxRecipients,
+  minRecipients,
+  hasMinimumRecipients,
   addRecipient,
   loading,
   fields = [],
@@ -89,19 +93,25 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   }
 
   const onSubmit = async () => {
-    setIsLoading(true)
-    setConfirmCount(confirmCount + 1)
-    // send metadata only if forms contains some metadata
-    if (withMetadata) {
-      const valid = await submitBulkRecipients()
-      if (valid) {
+    if (hasMinimumRecipients) {
+      setIsLoading(true)
+      setConfirmCount(confirmCount + 1)
+      // send metadata only if forms contains some metadata
+      if (withMetadata) {
+        const valid = await submitBulkRecipients()
+        if (valid) {
+          onContinue()
+        }
+      } else {
         onContinue()
       }
-    } else {
-      onContinue()
-    }
 
-    setIsLoading(false)
+      setIsLoading(false)
+    } else {
+      ToastHelper.error(
+        `You need to add at least ${minRecipients} recipients to continue.`
+      )
+    }
   }
 
   const toggleAddRecipient = () => {
@@ -136,10 +146,15 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
 
   return (
     <form>
-      <span className="text-sm pt-2">
-        You can purchase up to {maxRecipients} memberships for multiple
+      <span className="text-sm block">
+        - You can purchase up to {maxRecipients} memberships for multiple
         recipients.
       </span>
+      {minRecipients > 1 && (
+        <span className="text-sm pt-1 block">
+          - You need add at least {minRecipients} recipients to proceede.
+        </span>
+      )}
       {showList && (
         <>
           {recipients?.map((recipient) => {
@@ -197,10 +212,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                 </div>
 
                 <ItemRows>
-                  <div>
-                    <span className="text-xs font-medium">address:</span>
-                    <span className="text-xs block">{userAddress}</span>
-                  </div>
+                  <span className="text-xs block">{userAddress}</span>
                   {showMetadata &&
                     Object.entries(metadata ?? {}).map(([key, value]) => {
                       return (
@@ -210,6 +222,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                         </div>
                       )
                     })}
+                  <span className="text-xs block">{userAddress}</span>
                 </ItemRows>
               </InputGroup>
             )
