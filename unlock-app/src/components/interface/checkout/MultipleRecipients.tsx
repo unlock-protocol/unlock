@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { IoIosCloseCircle as CloseIcon } from 'react-icons/io'
+import { FiEdit as EditIcon } from 'react-icons/fi'
 import { Tooltip } from '@unlock-protocol/ui'
 import { RecipientItem } from '../../../hooks/useMultipleRecipient'
 import { MetadataInput } from '../../../unlockTypes'
@@ -18,7 +19,7 @@ export interface MultipleRecipientProps {
   fields: Array<MetadataInput & { value?: any }>
   submitBulkRecipients: () => Promise<boolean>
   onContinue: () => void
-  removeRecipient: (address: string) => void
+  removeRecipient: (index: number) => void
   withMetadata: boolean
 }
 export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
@@ -34,14 +35,15 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
 }) => {
   const { account } = useContext(AuthenticationContext)
   const [addNewRecipient, setNewRecipient] = useState(false)
+  const [editIndex, setEditIndex] = useState<number | null>(null)
   const [recipient, setRecipient] = useState<string>('')
-  const { register, getValues, reset, trigger } = useForm()
+  const { register, unregister, getValues, reset, trigger } = useForm()
   const [isLoading, setIsLoading] = useState(false)
   const [confirmCount, setConfirmCount] = useState(0)
   const haveRecipients = recipients?.length > 0
 
   const autofillAccountAddress = () => {
-    if (recipients?.length > 1) return
+    if (haveRecipients) return
     if (!account) return
 
     setNewRecipient(true)
@@ -52,10 +54,11 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     autofillAccountAddress()
   }, [])
 
-  const onAddRecipient = async () => {
+  const updateRecipientList = async (updateIndex?: number) => {
     const formValid = await trigger()
     if (formValid) {
-      const valid = await addRecipient(recipient, getValues())
+      const metadata = getValues()
+      const valid = await addRecipient(recipient, metadata, updateIndex)
       if (valid) {
         resetStatus()
       }
@@ -64,10 +67,24 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     }
   }
 
+  const onSaveRecipient = () => {
+    if (addNewRecipient) {
+      updateRecipientList()
+    }
+
+    if (isEdit && editIndex !== null) {
+      updateRecipientList(editIndex)
+      Object.keys(getValues()).map((key) => {
+        unregister(key)
+      })
+    }
+  }
+
   const resetStatus = () => {
     setNewRecipient(false)
-    setRecipient('')
+    setEditIndex(null)
     reset()
+    setRecipient('')
   }
 
   const onSubmit = async () => {
@@ -94,62 +111,96 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     }
   }
 
+  const onEditRecipient = (
+    index: number,
+    defaultMetadataValues: any,
+    userAddress: string
+  ) => {
+    reset(defaultMetadataValues)
+    setRecipient(userAddress)
+    setEditIndex(index)
+  }
+
+  const isEdit = editIndex !== null
+  const showForm = isEdit || addNewRecipient
+  const showList = !addNewRecipient && !isEdit
+
   return (
     <form>
       <span className="text-sm pt-2">
         You can purchase up to {maxRecipients} memberships for multiple
         recipients.
       </span>
-      {recipients?.map(({ userAddress, keyId, metadata }, index) => {
-        const key = keyId ?? userAddress
-        const currentIndex = index + 1
-        return (
-          <InputGroup key={key}>
-            <span className="text-xs font-medium uppercase flex items-center">
-              <span>Recipient {currentIndex}:</span>
-              <Tooltip
-                label="Remove recipient"
-                tip="Remove recipient"
-                side="right"
-              >
-                {!addNewRecipient && (
-                  <CloseIcon
-                    className="text-red-500 ml-1 cursor-pointer text-base hover:text-red-600"
-                    onClick={() => {
-                      removeRecipient(userAddress)
-                    }}
-                  />
-                )}
-              </Tooltip>
-            </span>
-
-            <ItemRows>
-              <div>
-                <span className="text-xs font-medium">address:</span>
-                <span className="text-xs block">{userAddress}</span>
-              </div>
-              {Object.entries(metadata ?? {}).map(([key, value]) => {
-                return (
-                  <div key={key}>
-                    <span className="text-xs font-medium">{key}:</span>
-                    <span className="text-xs"> {value}</span>
-                  </div>
-                )
-              })}
-            </ItemRows>
-          </InputGroup>
-        )
-      })}
-      {!addNewRecipient ? (
+      {showList && (
         <>
+          {recipients?.map((recipient) => {
+            const { userAddress, keyId, metadata, index } = recipient
+            const key = keyId ?? userAddress
+
+            return (
+              <InputGroup key={key}>
+                <div className="flex items-center">
+                  <span className="text-xs font-medium uppercase">
+                    Recipient {index}:
+                  </span>
+
+                  {!addNewRecipient && (
+                    <div className="flex items-center">
+                      <Tooltip
+                        label="Remove recipient"
+                        tip="Remove recipient"
+                        side="right"
+                      >
+                        <CloseIcon
+                          className="text-red-500 ml-1 cursor-pointer text-base hover:text-red-600"
+                          onClick={() => {
+                            removeRecipient(index)
+                          }}
+                        />
+                      </Tooltip>
+                      <Tooltip
+                        label="Edit recipient"
+                        tip="Edit recipient"
+                        side="right"
+                      >
+                        <EditIcon
+                          className="text-grey-500 ml-1 cursor-pointer text-base hover:text-black-600"
+                          onClick={() => {
+                            onEditRecipient(index, metadata, userAddress)
+                          }}
+                        />
+                      </Tooltip>
+                    </div>
+                  )}
+                </div>
+
+                <ItemRows>
+                  <div>
+                    <span className="text-xs font-medium">address:</span>
+                    <span className="text-xs block">{userAddress}</span>
+                  </div>
+                  {Object.entries(metadata ?? {}).map(([key, value]) => {
+                    return (
+                      <div key={key}>
+                        <span className="text-xs font-medium">{key}:</span>
+                        <span className="text-xs"> {value}</span>
+                      </div>
+                    )
+                  })}
+                </ItemRows>
+              </InputGroup>
+            )
+          })}
           <AddButton onClick={toggleAddRecipient} type="button">
             Add recipient
           </AddButton>
         </>
-      ) : (
+      )}
+      {showForm && (
         <fieldset className="pt-3" disabled={loading}>
           <span className="text-xs font-normal uppercase flex justify-between items-center mb-2">
-            <span>Recipient</span>
+            {isEdit && <span>Edit recipient {editIndex}</span>}
+            {addNewRecipient && <span>Add recipient</span>}
           </span>
           <CustomRecipient
             onChange={(e) => setRecipient(e.target.value)}
@@ -171,16 +222,37 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
               />
             </label>
           ))}
-          <AddButton onClick={onAddRecipient} type="button" disabled={loading}>
-            <span className="px-2"> Add </span>
-            {loading && <Loading size={20} />}
-          </AddButton>
+          <div className="flex items-center justify-center">
+            <AddButton
+              onClick={onSaveRecipient}
+              type="button"
+              style={{
+                marginLeft: 0,
+                marginRight: 0,
+              }}
+              disabled={loading}
+            >
+              <span className="px-2">{addNewRecipient ? 'Add' : 'Update'}</span>
+              {loading && <Loading size={20} />}
+            </AddButton>
+            <AddButton
+              onClick={resetStatus}
+              type="button"
+              style={{
+                marginLeft: '1rem',
+                marginRight: 0,
+              }}
+              disabled={loading}
+            >
+              <span className="px-2"> Close </span>
+            </AddButton>
+          </div>
         </fieldset>
       )}
       {haveRecipients && (
         <Button
           type="button"
-          disabled={addNewRecipient || isLoading}
+          disabled={addNewRecipient || isEdit || isLoading}
           onClick={onSubmit}
         >
           Continue
