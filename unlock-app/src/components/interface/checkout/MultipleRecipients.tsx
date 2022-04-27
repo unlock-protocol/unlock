@@ -40,6 +40,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   const { register, unregister, getValues, reset, trigger } = useForm()
   const [isLoading, setIsLoading] = useState(false)
   const [confirmCount, setConfirmCount] = useState(0)
+  const [showMetadataList, setShowMetadataList] = useState<number[]>([])
   const haveRecipients = recipients?.length > 0
 
   const autofillAccountAddress = () => {
@@ -121,6 +122,14 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     setEditIndex(index)
   }
 
+  const onToggleMetadata = (index: number) => {
+    if (showMetadataList?.includes(index)) {
+      setShowMetadataList((prev) => prev.filter((item) => item !== index))
+    } else {
+      setShowMetadataList((prev) => [...prev, index])
+    }
+  }
+
   const isEdit = editIndex !== null
   const showForm = isEdit || addNewRecipient
   const showList = !addNewRecipient && !isEdit
@@ -136,6 +145,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
           {recipients?.map((recipient) => {
             const { userAddress, keyId, metadata, index } = recipient
             const key = keyId ?? userAddress
+            const showMetadata = showMetadataList.includes(index)
 
             return (
               <InputGroup key={key}>
@@ -170,6 +180,18 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                           }}
                         />
                       </Tooltip>
+                      {withMetadata && (
+                        <button
+                          className="text-sm cursor-pointer text-blue-600 ml-1"
+                          style={{
+                            fontSize: '0.8rem',
+                          }}
+                          onClick={() => onToggleMetadata(index)}
+                          type="button"
+                        >
+                          {showMetadata ? 'Hide metadata' : 'Show metadata'}
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
@@ -179,14 +201,15 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                     <span className="text-xs font-medium">address:</span>
                     <span className="text-xs block">{userAddress}</span>
                   </div>
-                  {Object.entries(metadata ?? {}).map(([key, value]) => {
-                    return (
-                      <div key={key}>
-                        <span className="text-xs font-medium">{key}:</span>
-                        <span className="text-xs"> {value}</span>
-                      </div>
-                    )
-                  })}
+                  {showMetadata &&
+                    Object.entries(metadata ?? {}).map(([key, value]) => {
+                      return (
+                        <div key={key}>
+                          <span className="text-xs font-medium">{key}:</span>
+                          <span className="text-xs"> {value}</span>
+                        </div>
+                      )
+                    })}
                 </ItemRows>
               </InputGroup>
             )
