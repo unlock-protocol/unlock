@@ -35,7 +35,7 @@ export const useMultipleRecipient = (
 ) => {
   const web3Service = useContext(Web3ServiceContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
-  const [recipients, setRecipients] = useState(new Set<RecipientItem>())
+  const [recipients, setRecipients] = useState(new Map<number, RecipientItem>())
   const [loading, setLoading] = useState(false)
   const config: any = useContext(ConfigContext)
   const [retryCount, setRetryCount] = useState(0)
@@ -80,7 +80,7 @@ export const useMultipleRecipient = (
   }
 
   const clear = () => {
-    setRecipients(new Set([]))
+    setRecipients(new Map([]))
   }
 
   useEffect(() => {
@@ -89,7 +89,7 @@ export const useMultipleRecipient = (
   }, [])
 
   const recipientsList = (): RecipientItem[] => {
-    return Array.from(recipients)
+    return Array.from(recipients.values())
   }
 
   const canAddUser = () => {
@@ -120,7 +120,7 @@ export const useMultipleRecipient = (
     const limitNotReached = !isAddressWithKey
     const addressValid = address?.length > 0
 
-    const valid = addressValid && limitNotReached
+    const valid = addressValid && limitNotReached && !isAddressInList
     return {
       valid,
       address,
@@ -180,11 +180,12 @@ export const useMultipleRecipient = (
 
   const addRecipientItem = async <T extends Record<string, any>>(
     userAddress: string,
-    metadata: T
+    metadata: T,
+    updateIndex?: number
   ): Promise<boolean> => {
     setLoading(true)
     if (canAddUser()) {
-      const index = recipients?.size + 1
+      const index = updateIndex || recipients?.size + 1
       const {
         valid,
         address,
@@ -193,10 +194,10 @@ export const useMultipleRecipient = (
         limitNotReached,
       } = await getAddressAndValidation(userAddress)
       if (valid) {
-        setRecipients(
-          (prev) =>
-            new Set(
-              prev.add({
+        try {
+          setRecipients(
+            new Map(
+              recipients.set(index, {
                 userAddress,
                 metadata,
                 index,
@@ -204,8 +205,12 @@ export const useMultipleRecipient = (
                 valid,
               })
             )
-        )
-        ToastHelper.success('Recipient correctly added in list.')
+          )
+          ToastHelper.success('Recipient correctly added in list.')
+        } catch (err) {
+          console.error(err)
+          ToastHelper.error('Error by adding recipient in list')
+        }
       }
 
       if (!limitNotReached && isAddressWithKey) {
@@ -234,11 +239,9 @@ export const useMultipleRecipient = (
     return Promise.resolve(false)
   }
 
-  const removeRecipient = (address: string) => {
-    const newRecipientsList = recipientsList().filter(
-      ({ userAddress }) => userAddress !== address
-    )
-    setRecipients(new Set(newRecipientsList))
+  const removeRecipient = (index: number) => {
+    recipients.delete(index)
+    setRecipients(new Map(recipients))
   }
 
   return {

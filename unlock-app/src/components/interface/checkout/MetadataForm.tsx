@@ -20,7 +20,7 @@ interface Props {
   loading: boolean
   submitBulkRecipients: () => Promise<boolean>
   clear: () => void
-  removeRecipient: (address: string) => void
+  removeRecipient: (index: number) => void
 }
 
 interface DefautltValues {
