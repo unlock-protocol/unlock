@@ -35,15 +35,15 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
 }) => {
   const { account } = useContext(AuthenticationContext)
   const [addNewRecipient, setNewRecipient] = useState(false)
-  const [isEdit, setIsEdit] = useState(false)
+  const [editIndex, setEditIndex] = useState<number | null>(null)
   const [recipient, setRecipient] = useState<string>('')
-  const { register, getValues, reset, trigger } = useForm()
+  const { register, unregister, getValues, reset, trigger } = useForm()
   const [isLoading, setIsLoading] = useState(false)
   const [confirmCount, setConfirmCount] = useState(0)
   const haveRecipients = recipients?.length > 0
 
   const autofillAccountAddress = () => {
-    if (recipients?.length > 1) return
+    if (haveRecipients) return
     if (!account) return
 
     setNewRecipient(true)
@@ -57,7 +57,8 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   const updateRecipientList = async (updateIndex?: number) => {
     const formValid = await trigger()
     if (formValid) {
-      const valid = await addRecipient(recipient, getValues(), updateIndex)
+      const metadata = getValues()
+      const valid = await addRecipient(recipient, metadata, updateIndex)
       if (valid) {
         resetStatus()
       }
@@ -71,16 +72,19 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
       updateRecipientList()
     }
 
-    if (isEdit) {
-      updateRecipientList(getValues('index'))
+    if (isEdit && editIndex !== null) {
+      updateRecipientList(editIndex)
+      Object.keys(getValues()).map((key) => {
+        unregister(key)
+      })
     }
   }
 
   const resetStatus = () => {
+    setNewRecipient(false)
+    setEditIndex(null)
     reset()
     setRecipient('')
-    setNewRecipient(false)
-    setIsEdit(false)
   }
 
   const onSubmit = async () => {
@@ -107,12 +111,17 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     }
   }
 
-  const onEditRecipient = (defaultValues: any) => {
-    reset(defaultValues)
-    setRecipient(defaultValues?.userAddress ?? '')
-    setIsEdit(true)
+  const onEditRecipient = (
+    index: number,
+    defaultMetadataValues: any,
+    userAddress: string
+  ) => {
+    reset(defaultMetadataValues)
+    setRecipient(userAddress)
+    setEditIndex(index)
   }
 
+  const isEdit = editIndex !== null
   const showForm = isEdit || addNewRecipient
   const showList = !addNewRecipient && !isEdit
 
@@ -124,15 +133,15 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
       </figure>
       {showList && (
         <>
-          {recipients?.map((recipient, index) => {
-            const { userAddress, keyId, metadata } = recipient
+          {recipients?.map((recipient) => {
+            const { userAddress, keyId, metadata, index } = recipient
             const key = keyId ?? userAddress
-            const currentIndex = index + 1
+
             return (
               <InputGroup key={key}>
                 <div className="flex items-center">
                   <span className="text-xs font-medium uppercase">
-                    Recipient {currentIndex}:
+                    Recipient {index}:
                   </span>
 
                   {!addNewRecipient && (
@@ -157,7 +166,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                         <EditIcon
                           className="text-grey-500 ml-1 cursor-pointer text-base hover:text-black-600"
                           onClick={() => {
-                            onEditRecipient(recipient)
+                            onEditRecipient(index, metadata, userAddress)
                           }}
                         />
                       </Tooltip>
@@ -190,7 +199,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
       {showForm && (
         <fieldset className="pt-3" disabled={loading}>
           <span className="text-xs font-normal uppercase flex justify-between items-center mb-2">
-            {isEdit && <span>Edit recipient</span>}
+            {isEdit && <span>Edit recipient {editIndex}</span>}
             {addNewRecipient && <span>Add recipient</span>}
           </span>
           <CustomRecipient

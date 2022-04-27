@@ -96,7 +96,10 @@ export const useMultipleRecipient = (
     return recipients.size < maxRecipients
   }
 
-  const getAddressAndValidation = async (recipient: string) => {
+  const getAddressAndValidation = async (
+    recipient: string,
+    isUpdate: boolean
+  ) => {
     let address = ''
     let isAddressWithKey = false
     try {
@@ -114,7 +117,8 @@ export const useMultipleRecipient = (
       ({ resolvedAddress }) => resolvedAddress
     )
 
-    const isAddressInList = addressList.includes(address)
+    // on updates we ignore duplicates check
+    const isAddressInList = isUpdate ? false : addressList.includes(address)
 
     // todo: need also to check how many keys the address owns to improve this logic
     const limitNotReached = !isAddressWithKey
@@ -184,7 +188,8 @@ export const useMultipleRecipient = (
     updateIndex?: number
   ): Promise<boolean> => {
     setLoading(true)
-    if (canAddUser()) {
+    const isUpdate = typeof updateIndex === 'number'
+    if (canAddUser() || isUpdate) {
       const index = updateIndex || recipients?.size + 1
       const {
         valid,
@@ -192,19 +197,17 @@ export const useMultipleRecipient = (
         isAddressWithKey,
         isAddressInList,
         limitNotReached,
-      } = await getAddressAndValidation(userAddress)
+      } = await getAddressAndValidation(userAddress, isUpdate)
       if (valid) {
         try {
-          setRecipients(
-            new Map(
-              recipients.set(index, {
-                userAddress,
-                metadata,
-                index,
-                resolvedAddress: address ?? userAddress,
-                valid,
-              })
-            )
+          setRecipients((prev) =>
+            prev.set(index, {
+              userAddress,
+              metadata,
+              index,
+              resolvedAddress: address ?? userAddress,
+              valid,
+            })
           )
           ToastHelper.success('Recipient correctly added in list.')
         } catch (err) {
