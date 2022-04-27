@@ -127,10 +127,10 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
 
   return (
     <form>
-      <figure className="text-sm pt-2">
+      <span className="text-sm pt-2">
         You can purchase up to {maxRecipients} memberships for multiple
         recipients.
-      </figure>
+      </span>
       {showList && (
         <>
           {recipients?.map((recipient) => {
