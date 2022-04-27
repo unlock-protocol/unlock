@@ -123,17 +123,19 @@ export const Checkout = ({
   const {
     recipients,
     hasMultipleRecipients,
+    minRecipients,
     maxRecipients,
     addRecipientItem,
     loading,
     submitBulkRecipients,
     clear,
     removeRecipient,
-  } = useMultipleRecipient(
-    selectedLock,
-    paywallConfig?.maxRecipients ?? 1,
-    paywallConfig?.metadataInputs
-  )
+    hasMinimumRecipients,
+  } = useMultipleRecipient(selectedLock, {
+    maxRecipients: paywallConfig?.maxRecipients || 1,
+    minRecipients: paywallConfig?.minRecipients || 1,
+    metadataInputs: paywallConfig?.metadataInputs || [],
+  })
   const showMetadataForm =
     (paywallConfig?.metadataInputs || hasMultipleRecipients) && !savedMetadata
   // state change
@@ -309,6 +311,8 @@ export const Checkout = ({
           onSubmit={setSavedMetadata}
           recipients={recipients}
           maxRecipients={maxRecipients}
+          minRecipients={minRecipients}
+          hasMinimumRecipients={hasMinimumRecipients}
           addRecipient={addRecipientItem}
           loading={loading}
           submitBulkRecipients={submitBulkRecipients}
@@ -353,6 +357,8 @@ export const Checkout = ({
           onSubmit={setSavedMetadata}
           recipients={recipients}
           maxRecipients={maxRecipients}
+          minRecipients={minRecipients}
+          hasMinimumRecipients={hasMinimumRecipients}
           addRecipient={addRecipientItem}
           loading={loading}
           submitBulkRecipients={submitBulkRecipients}
@@ -384,6 +390,8 @@ export const Checkout = ({
           onSubmit={setSavedMetadata}
           recipients={recipients}
           maxRecipients={maxRecipients}
+          minRecipients={minRecipients}
+          hasMinimumRecipients={hasMinimumRecipients}
           addRecipient={addRecipientItem}
           loading={loading}
           submitBulkRecipients={submitBulkRecipients}
