@@ -21,13 +21,13 @@ The contracts have also been [audited by 3 independent teams](https://docs.unloc
 
 Until now, the upgrade could only be triggered by the Unlock Inc. team multi-signature wallet. As of today, we have transferred ownership to the DAO Timelock contract, which means that the only way to trigger updates is through DAO proposals: Unlock Inc. **cannot** arbitrarily do these changes anymore.
 
-Since the contract is upgradable, the community can now decide of how the UDT control behavior should evolve. Community members are encouraged to prepare upgrades, extensively test them and submit them to the DAO for voting!
+Since the contract is upgradable, the community can now decide how the UDT control behavior should evolve. Community members are encouraged to prepare upgrades, extensively test them and submit them to the DAO for voting!
 
 Of course, Unlock Inc. _will_ submit proposals. For example, we are considering that it could be useful to support [`L2StandardERC20`](https://github.com/ethereum-optimism/optimism/blob/develop/packages/contracts/contracts/standards/L2StandardERC20.sol) in order to bridge the governance tokens to Optimism or other L2.
 
 ## UDT distribution
 
-As of today, we are also resuming the distribution of UDT on every transaction on Polygon. In order to ensure that all users of the protocol are offered the ability to join our governance, every transaction optionnaly includes a "referrer" address. On mainnet, new UDT are minted ([example](https://etherscan.io/tx/0x8ac364bc429b20b35269393d2261892eb83239392586f7f75b9ec82b28a6acf8)), on sidechains and Layer 2 ([example](https://polygonscan.com/tx/0xcca8648a9fb265acfbfeb6f332de36b4dfa6ae9ffc834affc5701f69d9f2c96f)), some tokens have been bridged from the mainnet and are distributed from the _local_ Unlock contract.
+As of today, we are also resuming the distribution of UDT on every transaction on Polygon. In order to ensure that all users of the protocol are offered the ability to join our governance, every transaction optionaly includes a "referrer" address. On mainnet, new UDT are minted ([example](https://etherscan.io/tx/0x8ac364bc429b20b35269393d2261892eb83239392586f7f75b9ec82b28a6acf8)), on sidechains and Layer 2 ([example](https://polygonscan.com/tx/0xcca8648a9fb265acfbfeb6f332de36b4dfa6ae9ffc834affc5701f69d9f2c96f)), some tokens have been bridged from the mainnet and are distributed from the _local_ Unlock contract.
 
 The amount of tokens minted is capped by the actual contribution to the networks' gross network product (i.e. a free membership will not yield any UDT), as well as by the actual gas spent (using the chain's current `baseFee`).
 
