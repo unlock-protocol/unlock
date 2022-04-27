@@ -245,7 +245,6 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
               disabled={loading}
             >
               <span className="px-2"> Close </span>
-              {loading && <Loading size={20} />}
             </AddButton>
           </div>
         </fieldset>
