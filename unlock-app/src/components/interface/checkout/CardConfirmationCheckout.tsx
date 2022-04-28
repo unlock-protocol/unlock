@@ -115,23 +115,29 @@ export const CardConfirmationCheckout = ({
     }
 
     const prepareCharge = async () => {
-      const response = await prepareChargeForCard(
-        token,
-        lock.address,
-        network,
-        formattedPrice,
-        purchaseRecipients
-      )
-      if (response.error || !response.clientSecret) {
-        setError(
-          `There was an error preparing your payment: ${
-            response.error || 'please try again.'
-          }`
-        )
-      } else if (response.clientSecret) {
-        setIntent(response)
+      const paymentMessageError = (error?: string): string => {
+        return `There was an error preparing your payment: ${
+          error || 'please try again.'
+        }`
       }
-      setLoading(false)
+      try {
+        const response = await prepareChargeForCard(
+          token,
+          lock.address,
+          network,
+          formattedPrice,
+          purchaseRecipients
+        )
+        if (response?.error || !response?.clientSecret) {
+          setError(paymentMessageError(response?.error))
+        } else if (response.clientSecret) {
+          setIntent(response)
+        }
+        setLoading(false)
+      } catch (err: any) {
+        setLoading(false)
+        setError(paymentMessageError(err?.error))
+      }
     }
     if (account) {
       prepareCharge()
