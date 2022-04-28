@@ -265,7 +265,9 @@ export class PaymentProcessor {
   }
 
   /**
-   *
+   * This function captures a payment intent previous confirmed
+   * Note: Since the CC charge should always succeed as it was previously confirmed,
+   * we can do it only after the onchain tx has been sent to avoid receiving payment for tx which were not successful
    * @param recipient
    * @param stripeCustomerId
    * @param lock
@@ -303,6 +305,12 @@ export class PaymentProcessor {
       }
     )
 
+    if (paymentIntent.status !== 'requires_capture') {
+      throw new Error(
+        'Stripe payment could not be captured, please refresh and try again'
+      )
+    }
+
     if (paymentIntent.metadata.lock !== lock) {
       throw new Error('Lock does not match with initial intent.')
     }
@@ -328,11 +336,8 @@ export class PaymentProcessor {
       throw new Error('Price diverged by more than 3%.')
     }
 
-    await this.stripe.paymentIntents.capture(paymentIntentId, {
-      stripeAccount: paymentIntentRecord.connectedStripeId,
-    })
-
     const fulfillmentDispatcher = new Dispatcher()
+    // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
     return new Promise((resolve, reject) => {
       try {
         fulfillmentDispatcher.grantKeys(
@@ -354,6 +359,11 @@ export class PaymentProcessor {
               transactionHash,
               chain: network,
             })
+
+            await this.stripe.paymentIntents.capture(paymentIntentId, {
+              stripeAccount: paymentIntentRecord.connectedStripeId,
+            })
+
             return resolve(charge.transactionHash)
           }
         )
