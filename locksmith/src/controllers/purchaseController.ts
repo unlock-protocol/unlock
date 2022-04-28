@@ -234,7 +234,7 @@ namespace PurchaseController {
       })
     } catch (error) {
       logger.error('There was an error when capturing payment', error)
-      return res.status(400).send(error)
+      return res.status(400).send({ error: error.message })
     }
   }
 

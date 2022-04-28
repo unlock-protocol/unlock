@@ -193,7 +193,7 @@ export const useAccount = (address: string, network: number) => {
       recipients,
       paymentIntent
     )
-    return response.transactionHash
+    return response
   }
 
   /**
