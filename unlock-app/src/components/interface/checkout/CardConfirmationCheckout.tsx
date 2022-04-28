@@ -231,7 +231,7 @@ export const CardConfirmationCheckout = ({
         setError(`Purchase failed. Please try again. ${response.error}`)
         setPurchasePending(false)
       } else {
-        setError('Purchase failed. Please try again. hahahha')
+        setError('Purchase failed. Please try again.')
         setPurchasePending(false)
       }
     } catch (error: any) {
