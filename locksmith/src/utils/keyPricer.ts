@@ -116,7 +116,7 @@ export default class KeyPricer {
     }
 
     return {
-      keyPrice: usdKeyPricing,
+      keyPrice: usdKeyPricing, // shows price for all of the keys
       unlockServiceFee,
       creditCardProcessing: this.creditCardProcessingFee(
         usdKeyPricing + unlockServiceFee
