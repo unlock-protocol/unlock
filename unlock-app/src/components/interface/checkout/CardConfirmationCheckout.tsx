@@ -299,7 +299,7 @@ export const CardConfirmationCheckout = ({
         <>
           <Button disabled={payDisabled} onClick={charge}>
             {loading && <Svg.Loading title="loading" alt="loading" />}
-            Pay ${formattedPrice} with Card
+            Pay {!loading && `$${formattedPrice}`} with Card
           </Button>
           {error && <ErrorMessage>{error}</ErrorMessage>}
           {fee > 0 && (
