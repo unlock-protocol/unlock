@@ -59,14 +59,14 @@ async function renewKeys(network: number) {
     }
 
     logger.info('Found new keys to renew', {
-      keys: keys.map(({ id, lock }) => [network, lock.address, id]),
+      keys: keys.map(({ id }) => [network, id]),
     })
 
     // send all renewal txs
     const promises = await Promise.allSettled(
-      keys.map(({ id, lock }) =>
+      keys.map(({ keyId, lock }) =>
         renewKey({
-          keyId: id,
+          keyId,
           lockAddress: lock.address,
           network,
         })
@@ -74,13 +74,17 @@ async function renewKeys(network: number) {
     )
 
     // log errors
-    promises
-      .filter((promise) => promise.status === 'rejected')
-      .forEach((promise) => {
-        logger.info('Renewing key failed', {
+    promises.forEach((promise) => {
+      if (promise.status === 'rejected') {
+        logger.error('Renewing key failed', {
           promise,
         })
-      })
+      } else {
+        logger.info('Key renewed sucessfully', {
+          promise,
+        })
+      }
+    })
 
     page += 1
   }
