@@ -65,19 +65,18 @@ export default class Dispatcher {
     const transactionOptions: transactionOptionsInterface = {}
 
     if (network === 137) {
-      // Hardcode the fee for polygon
-      transactionOptions.maxFeePerGas = ethers.utils.parseUnits('1000', 'gwei')
       transactionOptions.maxPriorityFeePerGas = ethers.utils.parseUnits(
         '500',
         'gwei'
       )
-    } else if (feeData?.maxPriorityFeePerGas) {
+      transactionOptions.maxFeePerGas = transactionOptions.maxPriorityFeePerGas
+    } else if (feeData?.maxFeePerGas) {
       // We double to increase speed of execution
-      transactionOptions.maxPriorityFeePerGas =
-        feeData.maxPriorityFeePerGas.mul(ethers.BigNumber.from('2'))
-      transactionOptions.maxFeePerGas = feeData.maxPriorityFeePerGas.mul(
+      // We may end up paying *more* but we get mined earlier
+      transactionOptions.maxPriorityFeePerGas = feeData.maxFeePerGas.mul(
         ethers.BigNumber.from('2')
       )
+      transactionOptions.maxFeePerGas = transactionOptions.maxPriorityFeePerGas
     } else if (feeData?.gasPrice) {
       transactionOptions.gasPrice = feeData.gasPrice.mul(
         ethers.BigNumber.from('2')
