@@ -308,7 +308,7 @@ export const CardConfirmationCheckout = ({
             Pay {!loading && `$${formattedPrice}`} with Card
           </Button>
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          {fee > 0 && (
+          {fee > 0 && !loading && (
             <FeeNotice>
               Includes ${(fee / 100).toFixed(2)} in fees{' '}
               <Link href="https://docs.unlock-protocol.com/unlock/creators/faq#what-are-the-credit-card-fees">
