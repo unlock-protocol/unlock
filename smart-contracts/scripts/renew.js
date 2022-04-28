@@ -3,8 +3,8 @@ const { ethers } = require('hardhat')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const createLockHash = require('../test/helpers/createLockCalldata')
 
-const useHardlyDifficult = true
-const unlockAddress = '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9'
+const useHardlyDifficult = false
+const unlockAddress = '0x18E317A7D70d8fBf8e6E893616b52390EbBdb629'
 
 const erc20Abi = [
   {
@@ -389,7 +389,7 @@ async function main() {
     args: Object.values(lockParams),
     from: signer.address,
   })
-  const txCreateLock = await unlock.createUpgradeableLockAtVersion(calldata, 11)
+  const txCreateLock = await unlock.createUpgradeableLockAtVersion(calldata, 10)
 
   const { events, transactionHash } = await txCreateLock.wait()
   const { args: argsLock } = events.find(({ event }) => event === 'NewLock')
