@@ -50,7 +50,9 @@ export class KeysToRenew extends GraphQLDataSource {
 
       // return only locks that support recurring memberships
       const renewableLocks = response.data.keys.filter(
-        (key: any) => key.lock.version >= 10
+        (key: any) =>
+          key.lock.version >= 10 &&
+          key.lock.tokenAddress !== '0x0000000000000000000000000000000000000000'
       )
       return renewableLocks
     } catch (error) {
