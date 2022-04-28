@@ -333,6 +333,10 @@ export class PaymentProcessor {
       0.03 * maxPriceInCents
     ) {
       // if price diverged by more than 3%, we fail!
+      console.error('Price diverged by more than 3%', {
+        totalPriceInCents,
+        maxPriceInCents,
+      })
       throw new Error('Price diverged by more than 3%.')
     }
 
