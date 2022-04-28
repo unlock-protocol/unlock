@@ -13,7 +13,7 @@ While MintGate focuses on the frontend experience, they rely on Unlock to provid
 
 [See the full case study](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/MintGate%20-%20Unlock%20Case%20Study.pdf).
 
-[![MintGate thumbnail](/images/blog/mintgate-unlock-case-study/mintgate-thumbnail-2.png)](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/MintGate%20-%20Unlock%20Case%20Study.pdf)
+[![MintGate thumbnail](/images/blog/mintgate-unlock-case-study/mintgate-thumbnail-3.png)](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/MintGate%20-%20Unlock%20Case%20Study.pdf)
 
 
 <div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/Ig1leAaAZn0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
