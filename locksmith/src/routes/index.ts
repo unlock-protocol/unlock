@@ -1,5 +1,5 @@
 import express from 'express'
-import { jwtMiddleware } from '../utils/jwt'
+import { authMiddleware } from '../utils/auth'
 
 const transactionRouter = require('./transaction')
 const lockRouter = require('./lock')
@@ -14,6 +14,8 @@ const healthCheckRouter = require('./health')
 const hookRouter = require('./hook')
 const authRouterV2 = require('./v2/auth')
 const metadataRouterV2 = require('./v2/metadata')
+const applicationRouter = require('./v2/application')
+
 const config = require('../../config/config')
 
 const router = express.Router({ mergeParams: true })
@@ -44,8 +46,9 @@ router.use('/health', healthCheckRouter)
 router.use('/api/oauth', authRouter)
 router.use('/api/captcha', captchaRouter)
 router.use('/api/hooks', hookRouter)
-router.use('/v2', jwtMiddleware)
+router.use('/v2', authMiddleware)
 router.use('/v2/auth', authRouterV2)
+router.use('/v2/application', applicationRouter)
 router.use('/v2/api/metadata', metadataRouterV2)
 
 router.use('/', (_, res) => {

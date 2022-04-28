@@ -4,24 +4,24 @@ import { FetchError } from './utils'
 
 export const PRODUCTION_HOST = 'https://locksmith.unlock-protocol.com'
 
-interface LocksmithServiceOptions {
-  host?: string
-}
-
-interface Creditionals {
-  accessToken: string
-  refreshToken: string
-  walletAddress: string
+interface LocksmithOptions {
+  host: string
+  apiKey?: string
 }
 
 export class LocksmithService {
-  #creditionals?: Creditionals
+  #apiKey?: string
+
+  #userCreditionals?: {
+    accessToken: string
+    refreshToken: string
+  }
 
   public baseURL: string
 
-  constructor(options: LocksmithServiceOptions = {}) {
-    const { host = PRODUCTION_HOST } = options
-    this.baseURL = host
+  constructor(options: LocksmithOptions) {
+    this.baseURL = options.host || PRODUCTION_HOST
+    this.#apiKey = options.apiKey
   }
 
   /**
@@ -36,18 +36,20 @@ export class LocksmithService {
   }
 
   /**
-   * This will provide headers with common defaults such as content-type set to json, authentication headers such as access token and refresh token, etc if they exist.
+   * This will provide headers with common defaults such as content-type set to json, authentication headers such as access token and API key etc if they exist.
    * @returns - Headers
    */
   getHeaders() {
     const headers = new Headers()
     headers.set('content-type', 'application/json')
-    if (!this.#creditionals) {
-      return headers
+    if (this.#apiKey) {
+      headers.set('Authorization', `Basic ${this.#apiKey}`)
+    } else if (this.#userCreditionals) {
+      headers.set(
+        'Authorization',
+        `Bearer ${this.#userCreditionals.accessToken}`
+      )
     }
-    const { refreshToken, accessToken } = this.#creditionals
-    headers.set('Authorization', accessToken)
-    headers.set('refresh-token', refreshToken)
     return headers
   }
 
@@ -107,10 +109,9 @@ export class LocksmithService {
 
     const json = await response.json()
 
-    this.#creditionals = {
+    this.#userCreditionals = {
       accessToken: json.accessToken,
       refreshToken: json.refreshToken,
-      walletAddress: json.walletAddress,
     }
   }
 
@@ -119,15 +120,20 @@ export class LocksmithService {
    */
   async creditionalsRefresh() {
     const headers = this.getHeaders()
-    const response = await this.request('/v2/auth/token', {
-      method: 'POST',
-      headers,
-    })
-    const json = await response.json()
-    this.#creditionals = {
-      accessToken: json.accessToken,
-      refreshToken: json.refreshToken,
-      walletAddress: json.walletAddress,
+    // If not in browser environment, set the refresh token explicitly.
+    if (typeof document === 'undefined') {
+      headers.set('x-refresh-token', this.#userCreditionals?.refreshToken!)
+    }
+    if (this.#userCreditionals) {
+      const response = await this.request('/v2/auth/token', {
+        method: 'POST',
+        headers,
+      })
+      const json = await response.json()
+      this.#userCreditionals = {
+        accessToken: json.accessToken,
+        refreshToken: json.refreshToken,
+      }
     }
   }
 }
