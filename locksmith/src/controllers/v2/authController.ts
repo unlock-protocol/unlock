@@ -43,10 +43,11 @@ export class AuthController {
       const { token: refreshToken } = await refreshTokenData.save()
 
       response
-        .setHeader('refresh-token', refreshTokenData.token)
-        .cookie('refresh-token', refreshTokenData.token, {
+        .cookie('refresh-token', refreshToken, {
+          expires: new Date(message.expirationTime!),
           httpOnly: process.env.NODE_ENV === 'production',
         })
+        .setHeader('refresh-token', refreshToken)
         .setHeader('Authorization', `Bearer ${accessToken}`)
         .send({
           walletAddress: fields.address,
@@ -141,7 +142,6 @@ export class AuthController {
           where: {
             walletAddress: user.walletAddress,
           },
-          returning: true,
         }
       )
       return response.status(200).send({
@@ -175,7 +175,6 @@ export class AuthController {
           where: {
             token: refreshToken,
           },
-          returning: true,
         }
       )
 
