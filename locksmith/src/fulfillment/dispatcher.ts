@@ -84,7 +84,7 @@ export default class Dispatcher {
     }
 
     await walletService.connect(provider, walletWithProvider)
-    return await walletService.grantKeys(
+    return walletService.grantKeys(
       {
         lockAddress,
         recipients,
