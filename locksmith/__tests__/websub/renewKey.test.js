@@ -28,10 +28,6 @@ describe('renewKey', () => {
         'v10+'
       )
     })
-    // eslint-disable-next-line jest/no-disabled-tests
-    it.skip('should throw when ERC20 allowance is too low', async () => {
-      expect.assertions(0)
-    })
     it('should throw if lock gas refund is not set', async () => {
       expect.assertions(1)
       const lock = {
