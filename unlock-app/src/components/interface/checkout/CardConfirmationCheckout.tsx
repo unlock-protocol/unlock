@@ -44,7 +44,7 @@ export const CardConfirmationCheckout = ({
   recipients,
 }: CardConfirmationCheckoutProps) => {
   const config = useContext(ConfigContext)
-  const [paymentIntent, setPaymentIntent] = useState<any>(null)
+  const [intent, setIntent] = useState<any>(null)
   const { account } = useContext(AuthenticationContext)
   const { prepareChargeForCard, captureChargeForCard } = useAccount(
     account || '',
@@ -115,23 +115,29 @@ export const CardConfirmationCheckout = ({
     }
 
     const prepareCharge = async () => {
-      const response = await prepareChargeForCard(
-        token,
-        lock.address,
-        network,
-        formattedPrice,
-        purchaseRecipients
-      )
-      if (response.error || !response.clientSecret) {
-        setError(
-          `There was an error preparing your payment: ${
-            response.error || 'please try again.'
-          }`
-        )
-      } else if (response.clientSecret) {
-        setPaymentIntent(response)
+      const paymentMessageError = (error?: string): string => {
+        return `There was an error preparing your payment: ${
+          error || 'please try again.'
+        }`
       }
-      setLoading(false)
+      try {
+        const response = await prepareChargeForCard(
+          token,
+          lock.address,
+          network,
+          formattedPrice,
+          purchaseRecipients
+        )
+        if (response?.error || !response?.clientSecret) {
+          setError(paymentMessageError(response?.error))
+        } else if (response.clientSecret) {
+          setIntent(response)
+        }
+        setLoading(false)
+      } catch (err: any) {
+        setLoading(false)
+        setError(paymentMessageError(err?.error))
+      }
     }
     if (account) {
       prepareCharge()
@@ -162,14 +168,14 @@ export const CardConfirmationCheckout = ({
   }, [purchasePending])
 
   const charge = async () => {
-    if (!paymentIntent) {
+    if (!intent) {
       return toast.error('Purchase not ready.')
     }
     setError('')
     setPurchasePending(true)
     try {
       const stripe = await loadStripe(config.stripeApiKey, {
-        stripeAccount: paymentIntent.stripeAccount,
+        stripeAccount: intent.stripeAccount,
       })
       if (!stripe) {
         setError(
@@ -177,47 +183,64 @@ export const CardConfirmationCheckout = ({
         )
         return
       }
-      const confirmation = await stripe.confirmCardPayment(
-        paymentIntent.clientSecret
+
+      const { paymentIntent } = await stripe.retrievePaymentIntent(
+        intent.clientSecret
       )
-      if (
-        confirmation.error ||
-        confirmation.paymentIntent?.status !== 'requires_capture'
-      ) {
+
+      // Missing payment intent!
+      if (!paymentIntent) {
         setError(
-          confirmation?.error?.message || 'We could not confirm your payment.'
+          'We could not confirm your payment. Please refresh and try again.'
         )
         setPurchasePending(false)
         return
       }
 
+      // Confirm if neeed!
+      if (paymentIntent.status !== 'requires_capture') {
+        const confirmation = await stripe.confirmCardPayment(
+          intent.clientSecret
+        )
+        if (
+          confirmation.error ||
+          confirmation.paymentIntent?.status !== 'requires_capture'
+        ) {
+          setError(
+            confirmation?.error?.message || 'We could not confirm your payment.'
+          )
+          setPurchasePending(false)
+          return
+        }
+      }
+
       // payment intent is confirmed, we should trigger the charge
-      const hash = await captureChargeForCard(
+      const response = await captureChargeForCard(
         lock.address,
         network,
         purchaseRecipients,
-        confirmation.paymentIntent.id
+        paymentIntent.id
       )
 
-      if (hash) {
+      if (response.transactionHash) {
         emitTransactionInfo({
           lock: lock.address,
-          hash,
+          hash: response.transactionHash,
         })
         if (!paywallConfig.pessimistic) {
           setKeyExpiration(Infinity) // Optimistic!
           setPurchasePending(false)
         } else {
-          setPurchasePending(hash)
+          setPurchasePending(response.transactionHash)
         }
+      } else if (response.error) {
+        setError(`Purchase failed. Please try again. ${response.error}`)
+        setPurchasePending(false)
       } else {
-        // TODO: show error message in user interface
         setError('Purchase failed. Please try again.')
         setPurchasePending(false)
       }
     } catch (error: any) {
-      console.error(error)
-      // TODO: show error message in user interface
       setError('Purchase failed. Please try again.')
       setPurchasePending(false)
     }
@@ -259,7 +282,7 @@ export const CardConfirmationCheckout = ({
   }
 
   const payDisabled =
-    !paymentIntent ||
+    !intent ||
     (isAdvanced ? purchasePending || !advancedRecipientValid : purchasePending)
 
   return (
@@ -299,7 +322,7 @@ export const CardConfirmationCheckout = ({
         <>
           <Button disabled={payDisabled} onClick={charge}>
             {loading && <Svg.Loading title="loading" alt="loading" />}
-            Pay ${formattedPrice} with Card
+            Pay {!loading && `$${formattedPrice}`} with Card
           </Button>
           {error && <ErrorMessage>{error}</ErrorMessage>}
           {fee > 0 && (
