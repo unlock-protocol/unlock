@@ -6,11 +6,7 @@ import getTokenIdForOwner from './getTokenIdForOwner'
  * Or
  * @return Promise<number>
  */
-export default async function (
-  lockAddress: string,
-  owner: string,
-  network: number
-) {
+export default async function (lockAddress, owner, network) {
   const lockContract = await this.getLockContract(
     lockAddress,
     this.providerForNetwork(network)

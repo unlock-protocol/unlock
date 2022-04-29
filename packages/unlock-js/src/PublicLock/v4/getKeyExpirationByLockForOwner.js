@@ -4,11 +4,7 @@ import { ETHERS_MAX_UINT } from '../../constants'
  * Get key expiration by lock for owner
  * @return Promise<number>
  */
-export default async function (
-  lockAddress: string,
-  owner: string,
-  network: number
-) {
+export default async function (lockAddress, owner, network) {
   const lockContract = await this.getLockContract(
     lockAddress,
     this.providerForNetwork(network)

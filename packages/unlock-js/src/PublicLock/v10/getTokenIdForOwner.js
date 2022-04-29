@@ -3,11 +3,7 @@
  * Returns the first tokenId for the user valid if any, or first if none is valid
  * @return Promise<Lock>
  */
-export default async function (
-  lockAddress: string,
-  owner: string,
-  network: number
-) {
+export default async function (lockAddress, owner, network) {
   const lockContract = await this.getLockContract(
     lockAddress,
     this.providerForNetwork(network)
