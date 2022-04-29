@@ -66,7 +66,9 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
     recipients: recipientItems,
     addRecipientItem,
     clear,
-  } = useMultipleRecipient(lock, Infinity)
+  } = useMultipleRecipient(lock, {
+    maxRecipients: Infinity,
+  })
 
   const disableGrantKeys = recipientItems?.length === 0 && !loading
 
