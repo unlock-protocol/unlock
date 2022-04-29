@@ -96,41 +96,74 @@ describe('Application endpoint', () => {
     })
   })
 
-  it('Update application', async () => {
-    expect.assertions(1)
-    const refreshResponse = await request(app).post('/v2/auth/token').send({
-      refreshToken: user.refreshToken,
+  describe('Update application', () => {
+    beforeAll(async () => {
+      const refreshResponse = await request(app).post('/v2/auth/token').send({
+        refreshToken: user.refreshToken,
+      })
+      user = refreshResponse.body
     })
 
-    user = refreshResponse.body
-    const updatedApplication = await request(app)
-      .put(`/v2/applications/${application.id}`)
-      .send({
-        name: NEW_APP_NAME,
-      })
-      .set('Authorization', `Bearer ${user.accessToken}`)
+    it('update application with invalid body', async () => {
+      expect.assertions(2)
 
-    expect(updatedApplication.body.name).toBe(NEW_APP_NAME)
+      const updatedApplication = await request(app)
+        .put(`/v2/applications/${application.id}`)
+        .send({
+          title: NEW_APP_NAME,
+        })
+        .set('Authorization', `Bearer ${user.accessToken}`)
+
+      expect(updatedApplication.statusCode).toBe(400)
+      expect(updatedApplication.body.error).not.toBe(undefined)
+    })
+
+    it('update application successfully', async () => {
+      expect.assertions(2)
+      const updatedApplication = await request(app)
+        .put(`/v2/applications/${application.id}`)
+        .send({
+          name: NEW_APP_NAME,
+        })
+        .set('Authorization', `Bearer ${user.accessToken}`)
+
+      expect(updatedApplication.statusCode).toBe(200)
+      expect(updatedApplication.body.name).toBe(NEW_APP_NAME)
+    })
   })
 
-  it('Delete application', async () => {
-    expect.assertions(2)
-    const refreshResponse = await request(app).post('/v2/auth/token').send({
-      refreshToken: user.refreshToken,
+  describe('Delete application', () => {
+    beforeAll(async () => {
+      const refreshResponse = await request(app).post('/v2/auth/token').send({
+        refreshToken: user.refreshToken,
+      })
+      user = refreshResponse.body
     })
-    user = refreshResponse.body
-    const deletedApplication = await request(app)
-      .delete(`/v2/applications/${application.id}`)
-      .set('Authorization', `Bearer ${user.accessToken}`)
-      .send()
 
-    expect(deletedApplication.statusCode).toBe(200)
+    it('delete non-existent app', async () => {
+      expect.assertions(1)
+      const deletedApplication = await request(app)
+        .delete('/v2/applications/235092335829')
+        .set('Authorization', `Bearer ${user.accessToken}`)
+        .send()
 
-    const userResponse = await request(app)
-      .get('/v2/auth/user')
-      .set('Authorization', `Api-key ${application.key}`)
-      .send()
+      expect(deletedApplication.statusCode).toBe(404)
+    })
 
-    expect(userResponse.statusCode).toBe(403)
+    it('delete existing app', async () => {
+      expect.assertions(2)
+      const deletedApplication = await request(app)
+        .delete(`/v2/applications/${application.id}`)
+        .set('Authorization', `Bearer ${user.accessToken}`)
+        .send()
+
+      const userResponse = await request(app)
+        .get('/v2/auth/user')
+        .set('Authorization', `Api-key ${application.key}`)
+        .send()
+
+      expect(deletedApplication.statusCode).toBe(200)
+      expect(userResponse.statusCode).toBe(403)
+    })
   })
 })

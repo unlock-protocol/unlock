@@ -44,7 +44,7 @@ export class ApplicationController {
 
       application.name = name
       application.walletAddress = user.walletAddress
-      application.key = crypto.randomUUID()
+      application.key = Buffer.from(crypto.randomUUID()).toString('base64')
 
       const applicationData = await application.save()
 
@@ -69,7 +69,7 @@ export class ApplicationController {
   ) {
     try {
       const user = request.user!
-      const { id } = request.params
+      const id = Number(request.params.id)
       const application = await Application.findOne({
         where: {
           id,
@@ -102,7 +102,7 @@ export class ApplicationController {
   ) {
     try {
       const user = request.user!
-      const { id } = request.params
+      const id = Number(request.params.id)
       const { name } = await ApplicationBody.parseAsync(request.body)
 
       const application = await Application.findOne({
