@@ -82,6 +82,9 @@ namespace SignatureValidationMiddleware {
       if (source.message && source.message['Charge Card']) {
         data = `I want to purchase a membership to ${source.message['Charge Card'].lock} for ${source.message['Charge Card'].publicKey} with my card.`
       }
+      if (source.message && source.message['Claim Membership']) {
+        data = `I claim a membership for ${source.message['Claim Membership'].lock} to ${source.message['Claim Membership'].publicKey}`
+      }
 
       const header = req.headers.authorization.split(' ')[1]
       return extractPersonalSignSignee(header, data)
