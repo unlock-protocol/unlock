@@ -66,6 +66,9 @@ export const getSignature = async (
   } else if (typedData.message['Delete Card']) {
     const message = `I am deleting the card linked to my account ${typedData.message['Delete Card'].publicKey}`
     signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Claim Membership']) {
+    const message = `I claim a membership for ${typedData.message['Claim Membership'].lock} to ${typedData.message['Claim Membership'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
   } else {
     signature = await walletService.unformattedSignTypedData(address, typedData)
   }
@@ -204,12 +207,13 @@ export const claimMembership = async (
   })
 
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'POST',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(typedData),

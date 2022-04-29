@@ -66,7 +66,7 @@ export const MetadataForm = ({
 
   const metadataNotRequired =
     fields.every((field) => field.required === false) && !submittedForm
-  const showMultipleRecipient = maxRecipients > 1
+  const showMultipleRecipient = maxRecipients > 1 || minRecipients > 1
   const showSkipButton = metadataNotRequired && !showMultipleRecipient
   // The form returns a map of key-value pair strings. We need to
   // process those into the expected metadata format so that the typed

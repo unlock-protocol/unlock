@@ -11,6 +11,10 @@ import cancelAndRefund from './cancelAndRefund'
 import shareKey from './shareKey'
 import getLock from './getLock'
 
+import v4 from '../v4'
+
+const { getTokenIdForOwner, getKeyExpirationByLockForOwner } = v4
+
 export default {
   version: 'v6',
   Unlock: abis.Unlock.v6,
@@ -26,4 +30,6 @@ export default {
   isLockManager,
   cancelAndRefund,
   shareKey,
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
 }
