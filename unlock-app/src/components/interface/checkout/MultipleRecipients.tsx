@@ -267,7 +267,9 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
               }}
               disabled={loading}
             >
-              <span className="px-2">{addNewRecipient ? 'Add' : 'Update'}</span>
+              <span className="px-2">
+                {addNewRecipient ? 'Save' : 'Update'}
+              </span>
               {loading && <Loading size={20} />}
             </AddButton>
             <AddButton
