@@ -147,12 +147,12 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   return (
     <form>
       <span className="text-sm block">
-        - You can purchase up to {maxRecipients} memberships for multiple
+        You can purchase up to {maxRecipients} memberships for multiple
         recipients.
       </span>
       {minRecipients > 1 && (
         <span className="text-sm pt-1 block">
-          - You need add at least {minRecipients} recipients to proceede.
+          You need add at least {minRecipients} recipients to proceede.
         </span>
       )}
       {showList && (
