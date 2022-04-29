@@ -158,7 +158,8 @@ export const CryptoCheckout = ({
       return true
     } catch (err: any) {
       ToastHelper.error(
-        err?.error?.message || 'Ops, error during multiple purchase'
+        err?.error?.message ||
+          'There was an error and we could not submit your purchase transaction'
       )
       return false
     }
