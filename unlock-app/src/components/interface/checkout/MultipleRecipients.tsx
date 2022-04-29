@@ -147,12 +147,12 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   return (
     <form>
       <span className="text-sm block">
-        - You can purchase up to {maxRecipients} memberships for multiple
+        You can purchase up to {maxRecipients} memberships for multiple
         recipients.
       </span>
       {minRecipients > 1 && (
         <span className="text-sm pt-1 block">
-          - You need add at least {minRecipients} recipients to proceede.
+          You need add at least {minRecipients} recipients to proceed.
         </span>
       )}
       {showList && (
@@ -235,7 +235,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         <fieldset className="pt-3" disabled={loading}>
           <span className="text-xs font-normal uppercase flex justify-between items-center mb-2">
             {isEdit && <span>Edit recipient {editIndex}</span>}
-            {addNewRecipient && <span>Add recipient</span>}
+            {addNewRecipient && <span>Recipient Wallet Address</span>}
           </span>
           <CustomRecipient
             onChange={(e) => setRecipient(e.target.value)}
@@ -267,7 +267,9 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
               }}
               disabled={loading}
             >
-              <span className="px-2">{addNewRecipient ? 'Add' : 'Update'}</span>
+              <span className="px-2">
+                {addNewRecipient ? 'Save' : 'Update'}
+              </span>
               {loading && <Loading size={20} />}
             </AddButton>
             <AddButton
