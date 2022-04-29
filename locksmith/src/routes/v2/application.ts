@@ -6,7 +6,9 @@ const router = express.Router({ mergeParams: true })
 
 const appController = new ApplicationController()
 
-router.post('/', (req, res) => appController.createApplication(req, res))
+router.post('/', authenticatedMiddleware, (req, res) =>
+  appController.createApplication(req, res)
+)
 router.get('/list', authenticatedMiddleware, (req, res) =>
   appController.listApplications(req, res)
 )
