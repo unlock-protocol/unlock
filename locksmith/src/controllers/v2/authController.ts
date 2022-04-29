@@ -133,19 +133,17 @@ export class AuthController {
   async logout(request: Request, response: Response) {
     try {
       const user = request.user!
-      if (user.type === 'user') {
-        await RefreshToken.update(
-          {
-            revoked: true,
+      await RefreshToken.update(
+        {
+          revoked: true,
+        },
+        {
+          where: {
+            walletAddress: user.walletAddress,
           },
-          {
-            where: {
-              walletAddress: user.walletAddress,
-            },
-            returning: true,
-          }
-        )
-      }
+          returning: true,
+        }
+      )
       return response.status(200).send({
         message: 'Successfully logged out',
       })
