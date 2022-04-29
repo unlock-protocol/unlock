@@ -49,7 +49,6 @@ describe('Application endpoint', () => {
 
   it('application cannot access user data without authentication', async () => {
     expect.assertions(1)
-    console.log(application.apiKey)
     const applicationData = await request(app)
       .get('/v2/auth/user')
       .set('Authorization', `Basic 24${application.apiKey}`)

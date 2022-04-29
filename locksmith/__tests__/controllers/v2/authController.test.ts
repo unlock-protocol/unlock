@@ -67,7 +67,7 @@ describe('Auth login endpoints for locksmith', () => {
 
     const tokenResponse = await request(app)
       .post('/v2/auth/token')
-      .set('-x-refresh-token', loginResponse.body.refreshToken)
+      .set('x-refresh-token', loginResponse.body.refreshToken)
       .send()
     expect(tokenResponse.status).toBe(200)
     expect(tokenResponse.body.accessToken).not.toBe(
