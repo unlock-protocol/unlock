@@ -31,6 +31,7 @@ export class ApplicationController {
         return {
           ...app.toJSON(),
           secret: null,
+          apiKey: null,
         }
       })
 
@@ -66,8 +67,14 @@ export class ApplicationController {
       application.secret = createRandomToken()
 
       const applicationData = await application.save()
+      const body = {
+        ...applicationData.toJSON(),
+        apiKey: Buffer.from(
+          `${applicationData.id}:${applicationData.secret}`
+        ).toString('base64'),
+      }
 
-      return response.status(201).json(applicationData.toJSON())
+      return response.status(201).json(body)
     } catch (error) {
       logger.error(error.message)
       if (error instanceof z.ZodError) {
@@ -146,7 +153,11 @@ export class ApplicationController {
 
       application.secret = createRandomToken()
       const result = await application.save()
-      return response.status(200).send(result.toJSON())
+      const body = {
+        ...result.toJSON(),
+        apiKey: Buffer.from(`${result.id}:${result.secret}`).toString('base64'),
+      }
+      return response.status(200).send(body)
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
@@ -191,6 +202,7 @@ export class ApplicationController {
       return response.status(200).json({
         ...app.toJSON(),
         secret: null,
+        apiKey: null,
       })
     } catch (error) {
       logger.error(error.message)

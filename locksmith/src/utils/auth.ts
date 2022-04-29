@@ -30,7 +30,7 @@ export const jwtConfig = {
 }
 
 export function createRandomToken() {
-  return crypto.randomBytes(128).toString('hex')
+  return crypto.randomBytes(64).toString('hex')
 }
 
 export function createAccessToken(user: User) {
@@ -73,7 +73,7 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
       })
 
       if (!app) {
-        throw new Error(`Application with API KEY: ${token} not found.`)
+        throw new Error(`Application with client ID: ${id} not found.`)
       }
 
       req.user = {

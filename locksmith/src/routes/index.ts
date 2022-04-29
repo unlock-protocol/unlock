@@ -48,7 +48,7 @@ router.use('/api/captcha', captchaRouter)
 router.use('/api/hooks', hookRouter)
 router.use('/v2', authMiddleware)
 router.use('/v2/auth', authRouterV2)
-router.use('/v2/application', applicationRouter)
+router.use('/v2/applications', applicationRouter)
 router.use('/v2/api/metadata', metadataRouterV2)
 
 router.use('/', (_, res) => {
