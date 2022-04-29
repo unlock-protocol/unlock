@@ -70,6 +70,7 @@ const component: React.ReactElement<any> = (
     lock={aKey.lock}
     account={accountAddress}
     currency="eth"
+    keyId="1"
   />
 )
 
@@ -80,6 +81,7 @@ const componentInactive: React.ReactElement<any> = (
     lock={undefined}
     account={accountAddress}
     currency="eth"
+    keyId="1"
   />
 )
 

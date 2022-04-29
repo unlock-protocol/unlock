@@ -231,6 +231,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
       <CancelAndRefundModal
         active={showCancelModal}
         lock={lock}
+        keyId={keyId}
         dismiss={closeCancelAndRefund}
         account={account}
         currency={baseCurrencySymbol}

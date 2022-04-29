@@ -21,6 +21,8 @@ const {
   getLock,
   keyManagerOf,
   getCancelAndRefundValueFor,
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
 } = v8
 
 export default {
@@ -45,4 +47,6 @@ export default {
   setMaxNumberOfKeys,
   setExpirationDuration,
   getCancelAndRefundValueFor,
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
 }

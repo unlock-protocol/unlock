@@ -6,6 +6,9 @@ import mergeKeys from './mergeKeys'
 import shareKey from './shareKey'
 import setMaxKeysPerAddress from './setMaxKeysPerAddress'
 import expireAndRefundFor from './expireAndRefundFor'
+import getTokenIdForOwner from './getTokenIdForOwner'
+import getKeyExpirationByLockForOwner from './getKeyExpirationByLockForOwner'
+import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
 import v9 from '../v9'
 
 const {
@@ -47,4 +50,7 @@ export default {
   setMaxNumberOfKeys,
   setExpirationDuration,
   setMaxKeysPerAddress,
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
+  getCancelAndRefundValueFor,
 }

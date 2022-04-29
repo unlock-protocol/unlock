@@ -8,6 +8,8 @@ import withdrawFromLock from './withdrawFromLock'
 import isLockManager from './isLockManager'
 import cancelAndRefund from './cancelAndRefund'
 import getLock from './getLock'
+import getTokenIdForOwner from './getTokenIdForOwner'
+import getKeyExpirationByLockForOwner from './getKeyExpirationByLockForOwner'
 
 export default {
   purchaseKey,
@@ -22,4 +24,6 @@ export default {
   Unlock: abis.Unlock.v4,
   PublicLock: abis.PublicLock.v4,
   cancelAndRefund,
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
 }

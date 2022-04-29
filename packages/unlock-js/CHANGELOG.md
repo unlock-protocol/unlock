@@ -1,5 +1,9 @@
 # Changes
 
+# 0.25.0
+
+- Better support for v10
+
 # 0.24.0
 
 - Removed hard coded gas limit and waits on erc20 approvals

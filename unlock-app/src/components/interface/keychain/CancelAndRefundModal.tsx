@@ -10,6 +10,7 @@ export interface ICancelAndRefundProps {
   dismiss: () => void
   account: string
   currency: string
+  keyId: string
 }
 
 export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
@@ -18,6 +19,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   dismiss,
   account: owner,
   currency,
+  keyId,
 }) => {
   const [loading, setLoading] = useState(false)
   const [loadingAmount, setLoadingAmount] = useState(false)
@@ -36,6 +38,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
       lockAddress,
       owner,
       tokenAddress,
+      tokenId: keyId,
     }
     const totalToRefund = await walletService.getCancelAndRefundValueFor(params)
     setRefundAmount(totalToRefund)
@@ -52,6 +55,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
 
     const params = {
       lockAddress,
+      tokenId: keyId,
     }
 
     try {
