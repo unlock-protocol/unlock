@@ -159,7 +159,9 @@ export class AuthController {
 
   async revokeToken(request: Request, response: Response) {
     try {
-      const { refreshToken } = request.body
+      const refreshToken =
+        request.body.refreshToken ||
+        request.headers['x-refresh-token']?.toString()
 
       if (!refreshToken) {
         return response.status(401).send({
