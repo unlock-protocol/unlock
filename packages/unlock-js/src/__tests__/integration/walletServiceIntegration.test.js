@@ -304,14 +304,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               transactionHash = hash
             }
           )
-          key =
-            ['v10'].indexOf(publicLockVersion) !== -1
-              ? await web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
-              : await web3Service.getKeyByLockForOwner(
-                  lockAddress,
-                  keyGrantee,
-                  chainId
-                )
+          key = await web3Service.getKeyByLockForOwner(
+            lockAddress,
+            keyGrantee,
+            chainId
+          )
         })
 
         it('should not have a valid key before the transaction', () => {
@@ -392,17 +389,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
           keys = await Promise.all(
             tokenIds.map(async (tokenId, index) => {
-              return ['v10'].indexOf(publicLockVersion) !== -1
-                ? await web3Service.getKeyByTokenId(
-                    lockAddress,
-                    tokenId,
-                    chainId
-                  )
-                : await web3Service.getKeyByLockForOwner(
-                    lockAddress,
-                    keyGrantees[index],
-                    chainId
-                  )
+              return await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyGrantees[index],
+                chainId
+              )
             })
           )
         })
@@ -519,14 +510,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               transactionHash = hash
             }
           )
-          key =
-            ['v10'].indexOf(publicLockVersion) !== -1
-              ? await web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
-              : await web3Service.getKeyByLockForOwner(
-                  lockAddress,
-                  keyOwner,
-                  chainId
-                )
+          key = await web3Service.getKeyByLockForOwner(
+            lockAddress,
+            keyOwner,
+            chainId
+          )
         })
 
         it('should have yielded a transaction hash', () => {
@@ -671,19 +659,12 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               transactionHashes.push(hash)
             }
           )
-          if (['v10'].indexOf(publicLockVersion) !== -1) {
-            keys = await Promise.all(
-              tokenIds.map(async (tokenId) =>
-                web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
-              )
+
+          keys = await Promise.all(
+            keyOwners.map(async (owner) =>
+              web3Service.getKeyByLockForOwner(lockAddress, owner, chainId)
             )
-          } else {
-            keys = await Promise.all(
-              keyOwners.map(async (owner) =>
-                web3Service.getKeyByLockForOwner(lockAddress, owner, chainId)
-              )
-            )
-          }
+          )
         })
 
         it('should have yielded two transactions hash', () => {
@@ -922,18 +903,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           })
           await new Promise((resolve) =>
             setTimeout(async () => {
-              key =
-                ['v10'].indexOf(publicLockVersion) !== -1
-                  ? await web3Service.getKeyByTokenId(
-                      lockAddress,
-                      tokenId,
-                      chainId
-                    )
-                  : await web3Service.getKeyByLockForOwner(
-                      lockAddress,
-                      keyOwner,
-                      chainId
-                    )
+              key = await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyOwner,
+                chainId
+              )
               resolve()
             }, 5000)
           )
@@ -946,14 +920,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             lockAddress,
             tokenId, // pass explicitely the token id
           })
-          const afterCancellation =
-            ['v10'].indexOf(publicLockVersion) !== -1
-              ? await web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
-              : await web3Service.getKeyByLockForOwner(
-                  lockAddress,
-                  keyOwner,
-                  chainId
-                )
+          const afterCancellation = await web3Service.getKeyByLockForOwner(
+            lockAddress,
+            keyOwner,
+            chainId
+          )
           expect(afterCancellation.expiration < key.expiration).toBe(true)
         })
       })
@@ -1056,18 +1027,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
           it('should have set an expiration for this member in the future', async () => {
             expect.assertions(1)
-            const key =
-              ['v10'].indexOf(publicLockVersion) !== -1
-                ? await web3Service.getKeyByTokenId(
-                    lockAddress,
-                    tokenId,
-                    chainId
-                  )
-                : await web3Service.getKeyByLockForOwner(
-                    lockAddress,
-                    keyOwner,
-                    chainId
-                  )
+            const key = await web3Service.getKeyByLockForOwner(
+              lockAddress,
+              keyOwner,
+              chainId
+            )
             expiration = key.expiration
 
             expect(expiration).toBeGreaterThan(new Date().getTime() / 1000)
@@ -1080,18 +1044,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               keyOwner, // for lock < v10
               tokenId, // for lock v10+
             })
-            const key =
-              ['v10'].indexOf(publicLockVersion) !== -1
-                ? await web3Service.getKeyByTokenId(
-                    lockAddress,
-                    tokenId,
-                    chainId
-                  )
-                : await web3Service.getKeyByLockForOwner(
-                    lockAddress,
-                    keyOwner,
-                    chainId
-                  )
+            const key = await web3Service.getKeyByLockForOwner(
+              lockAddress,
+              keyOwner,
+              chainId
+            )
 
             expect(expiration).toBeGreaterThan(key.expiration)
           })
@@ -1157,14 +1114,15 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         describe('shareKey (to TokenId)', () => {
           it('should allow a member to share their key with another one', async () => {
             expect.assertions(4)
+            const grantee = accounts[8]
             const tokenId = await walletService.purchaseKey({
               lockAddress,
             })
 
             // Let's now get the duration for that key!
-            const { expiration } = await web3Service.getKeyByTokenId(
+            const { expiration } = await web3Service.getKeyByLockForOwner(
               lockAddress,
-              tokenId,
+              grantee,
               chainId
             )
             const now = Math.floor(new Date().getTime() / 1000)
@@ -1215,8 +1173,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             })
 
             keys = await Promise.all(
-              tokenIds.map(async (tokenId) =>
-                web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
+              keyOwners.map(async (owner) =>
+                web3Service.getKeyByLockForOwner(lockAddress, owner, chainId)
               )
             )
 
@@ -1271,8 +1229,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             )
 
             const keysAfter = await Promise.all(
-              tokenIds.map(async (tokenId) =>
-                web3Service.getKeyByTokenId(lockAddress, tokenId, chainId)
+              keyOwners.map(async (owner) =>
+                web3Service.getKeyByLockForOwner(lockAddress, owner, chainId)
               )
             )
             expect(
@@ -1339,9 +1297,9 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               }
             )
 
-            key = await web3Service.getKeyByTokenId(
+            key = await web3Service.getKeyByLockForOwner(
               lockAddress,
-              tokenId,
+              keyOwner,
               chainId
             )
           })
