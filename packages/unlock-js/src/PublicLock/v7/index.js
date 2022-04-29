@@ -19,6 +19,8 @@ const {
   purchaseKey,
   purchaseKeys,
   getLock,
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
 } = v6
 
 export default {
@@ -41,4 +43,6 @@ export default {
   shareKey,
   keyManagerOf,
   getCancelAndRefundValueFor,
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
 }
