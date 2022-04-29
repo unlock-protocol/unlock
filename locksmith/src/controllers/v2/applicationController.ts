@@ -12,13 +12,6 @@ export class ApplicationController {
   async listApplications(request: Request, response: Response) {
     try {
       const user = request.user!
-
-      if (user.type === 'application') {
-        return response
-          .status(401)
-          .send('Application cannot access details about other applications')
-      }
-
       const applications = await Application.findAll({
         where: {
           walletAddress: user.walletAddress,
@@ -46,12 +39,6 @@ export class ApplicationController {
   async createApplication(request: Request, response: Response) {
     try {
       const user = request.user!
-
-      if (user.type === 'application') {
-        return response.status(401).json({
-          message: 'Application cannot create other application.',
-        })
-      }
       const { name } = await ApplicationBody.parseAsync(request.body)
       const application = new Application()
 
@@ -83,12 +70,6 @@ export class ApplicationController {
     try {
       const user = request.user!
       const { id } = request.params
-
-      if (user.type === 'application') {
-        return response.status(401).json({
-          message: 'Application cannot delete itself.',
-        })
-      }
       const application = await Application.findOne({
         where: {
           id,
@@ -122,11 +103,6 @@ export class ApplicationController {
     try {
       const user = request.user!
       const { id } = request.params
-      if (user.type === 'application') {
-        return response.status(401).json({
-          message: 'Application cannot update itself.',
-        })
-      }
       const { name } = await ApplicationBody.parseAsync(request.body)
 
       const application = await Application.findOne({

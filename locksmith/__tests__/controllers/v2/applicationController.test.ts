@@ -57,21 +57,43 @@ describe('Application endpoint', () => {
     expect(applicationData.statusCode).toBe(403)
   })
 
-  it('list applications', async () => {
-    expect.assertions(2)
-    const refreshResponse = await request(app).post('/v2/auth/token').send({
-      refreshToken: user.refreshToken,
+  describe('list applications', () => {
+    beforeAll(async () => {
+      const refreshResponse = await request(app).post('/v2/auth/token').send({
+        refreshToken: user.refreshToken,
+      })
+      user = refreshResponse.body
     })
 
-    user = refreshResponse.body
+    it('list applications with auth', async () => {
+      expect.assertions(2)
+      const applicationList = await request(app)
+        .get('/v2/applications/list')
+        .set('Authorization', `Bearer ${user.accessToken}`)
+        .send()
 
-    const applicationList = await request(app)
-      .get('/v2/applications/list')
-      .set('Authorization', `Bearer ${user.accessToken}`)
-      .send()
+      expect(applicationList.statusCode).toBe(200)
+      expect(applicationList.body.result).toBeInstanceOf(Array)
+    })
 
-    expect(applicationList.statusCode).toBe(200)
-    expect(applicationList.body.result).toBeInstanceOf(Array)
+    it('list applications without auth', async () => {
+      expect.assertions(1)
+      const applicationList = await request(app)
+        .get('/v2/applications/list')
+        .send()
+
+      expect(applicationList.statusCode).toBe(403)
+    })
+
+    it('list application with API KEY', async () => {
+      expect.assertions(1)
+      const applicationList = await request(app)
+        .get('/v2/applications/list')
+        .set('Authorization', `Api-key ${application.key}`)
+        .send()
+
+      expect(applicationList.statusCode).toBe(401)
+    })
   })
 
   it('Update application', async () => {
