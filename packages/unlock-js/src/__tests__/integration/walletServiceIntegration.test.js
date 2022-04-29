@@ -1140,7 +1140,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             const newExpiration =
               await web3Service.getKeyExpirationByLockForOwner(
                 lockAddress,
-                grantee,
+                recipient,
                 chainId
               )
             expect(newExpiration).toBeLessThan(expiration)
@@ -1148,7 +1148,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             expect(
               await web3Service.getKeyExpirationByLockForOwner(
                 lockAddress,
-                grantee,
+                recipient,
                 chainId
               )
             ).toBeGreaterThanOrEqual(expiration)
