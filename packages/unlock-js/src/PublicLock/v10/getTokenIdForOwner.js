@@ -25,7 +25,6 @@ export default async function (lockAddress, owner, network) {
     }
     i++
   }
-  console.log({ validTokens, allTokens })
 
   return validTokens[0] || allTokens[0] || 0
 }
