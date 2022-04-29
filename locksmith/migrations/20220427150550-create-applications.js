@@ -5,23 +5,19 @@ module.exports = {
     await queryInterface.createTable('Applications', {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.TEXT,
+        type: Sequelize.INTEGER,
       },
       name: {
         allowNull: false,
         type: Sequelize.TEXT,
       },
-      description: {
-        allowNull: true,
-        type: Sequelize.TEXT,
-      },
-      revoked: Sequelize.BOOLEAN,
       walletAddress: {
         allowNull: false,
         type: Sequelize.TEXT,
       },
-      secret: {
+      key: {
         allowNull: false,
         type: Sequelize.TEXT,
       },
@@ -34,6 +30,7 @@ module.exports = {
         type: Sequelize.DATE,
       },
     })
+    await queryInterface.addIndex('Applications', { fields: ['key'] })
   },
 
   async down(queryInterface, Sequelize) {

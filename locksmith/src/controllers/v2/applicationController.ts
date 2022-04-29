@@ -3,11 +3,9 @@ import * as z from 'zod'
 import crypto from 'crypto'
 import { Application } from '../../models/application'
 import { logger } from '../../logger'
-import { createRandomToken } from '../../utils/auth'
 
 export const ApplicationBody = z.object({
   name: z.string(),
-  description: z.string().optional(),
 })
 
 export class ApplicationController {
@@ -26,12 +24,11 @@ export class ApplicationController {
           walletAddress: user.walletAddress,
         },
       })
-      // We don't want to provide secret on applications again
+      // We don't want to provide API KEY again
       const result = applications.map((app) => {
         return {
           ...app.toJSON(),
-          secret: null,
-          apiKey: null,
+          key: null,
         }
       })
 
@@ -55,26 +52,16 @@ export class ApplicationController {
           message: 'Application cannot create other application.',
         })
       }
-      const { description, name } = await ApplicationBody.parseAsync(
-        request.body
-      )
+      const { name } = await ApplicationBody.parseAsync(request.body)
       const application = new Application()
 
       application.name = name
-      application.description = description
       application.walletAddress = user.walletAddress
-      application.id = crypto.randomUUID()
-      application.secret = createRandomToken()
+      application.key = crypto.randomUUID()
 
       const applicationData = await application.save()
-      const body = {
-        ...applicationData.toJSON(),
-        apiKey: Buffer.from(
-          `${applicationData.id}:${applicationData.secret}`
-        ).toString('base64'),
-      }
 
-      return response.status(201).json(body)
+      return response.status(201).json(applicationData.toJSON())
     } catch (error) {
       logger.error(error.message)
       if (error instanceof z.ZodError) {
@@ -128,44 +115,6 @@ export class ApplicationController {
     }
   }
 
-  async regenerate(request: Request<{ id: string }>, response: Response) {
-    try {
-      const user = request.user!
-      const { id } = request.params
-
-      if (user.type === 'application') {
-        return response.status(401).json({
-          message: 'Application cannot generate its own API secret.',
-        })
-      }
-      const application = await Application.findOne({
-        where: {
-          id,
-          walletAddress: user.walletAddress,
-        },
-      })
-
-      if (!application) {
-        return response.status(404).json({
-          message: 'Application not found.',
-        })
-      }
-
-      application.secret = createRandomToken()
-      const result = await application.save()
-      const body = {
-        ...result.toJSON(),
-        apiKey: Buffer.from(`${result.id}:${result.secret}`).toString('base64'),
-      }
-      return response.status(200).send(body)
-    } catch (error) {
-      logger.error(error.message)
-      return response.status(500).send({
-        message: 'There was an error in regenerating the application secret',
-      })
-    }
-  }
-
   async updateApplication(
     request: Request<{ id: string }>,
     response: Response
@@ -178,9 +127,7 @@ export class ApplicationController {
           message: 'Application cannot update itself.',
         })
       }
-      const { name, description } = await ApplicationBody.parseAsync(
-        request.body
-      )
+      const { name } = await ApplicationBody.parseAsync(request.body)
 
       const application = await Application.findOne({
         where: {
@@ -196,13 +143,11 @@ export class ApplicationController {
       }
 
       application.name = name
-      application.description = description
 
       const app = await application.save()
       return response.status(200).json({
         ...app.toJSON(),
-        secret: null,
-        apiKey: null,
+        key: null,
       })
     } catch (error) {
       logger.error(error.message)
@@ -212,7 +157,6 @@ export class ApplicationController {
           error: error.format(),
         })
       }
-
       return response.status(500).send({
         message: 'Server error in updating the application',
       })

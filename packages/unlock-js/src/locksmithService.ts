@@ -43,7 +43,7 @@ export class LocksmithService {
     const headers = new Headers()
     headers.set('content-type', 'application/json')
     if (this.#apiKey) {
-      headers.set('Authorization', `Basic ${this.#apiKey}`)
+      headers.set('Authorization', `Api-key ${this.#apiKey}`)
     } else if (this.#userCreditionals) {
       headers.set(
         'Authorization',
@@ -122,7 +122,7 @@ export class LocksmithService {
     const headers = this.getHeaders()
     // If not in browser environment, set the refresh token explicitly.
     if (typeof document === 'undefined') {
-      headers.set('x-refresh-token', this.#userCreditionals?.refreshToken!)
+      headers.set('refresh-token', this.#userCreditionals?.refreshToken!)
     }
     if (this.#userCreditionals) {
       const response = await this.request('/v2/auth/token', {

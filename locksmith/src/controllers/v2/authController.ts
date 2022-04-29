@@ -43,8 +43,8 @@ export class AuthController {
       const { token: refreshToken } = await refreshTokenData.save()
 
       response
-        .setHeader('x-refresh-token', refreshTokenData.token)
-        .cookie('x-refresh-token', refreshTokenData.token, {
+        .setHeader('refresh-token', refreshTokenData.token)
+        .cookie('refresh-token', refreshTokenData.token, {
           httpOnly: process.env.NODE_ENV === 'production',
         })
         .setHeader('Authorization', `Bearer ${accessToken}`)
@@ -76,8 +76,8 @@ export class AuthController {
     try {
       const refreshToken =
         request.body.refreshToken ||
-        request.headers['x-refresh-token']?.toString() ||
-        request.cookies['x-refresh-token']
+        request.headers['refresh-token']?.toString() ||
+        request.cookies['refresh-token']
 
       if (!refreshToken) {
         return response.status(401).send({
@@ -113,10 +113,10 @@ export class AuthController {
       return response
         .status(200)
         .setHeader('Authorization', `Bearer ${accessToken}`)
-        .cookie('x-refresh-token', refreshTokenData.token, {
+        .cookie('refresh-token', refreshTokenData.token, {
           httpOnly: process.env.NODE_ENV === 'production',
         })
-        .setHeader('x-refresh-token', refreshTokenData.token)
+        .setHeader('refresh-token', refreshTokenData.token)
         .send({
           walletAddress: refreshTokenData.walletAddress,
           refreshToken: refreshTokenData.token,
@@ -161,7 +161,7 @@ export class AuthController {
     try {
       const refreshToken =
         request.body.refreshToken ||
-        request.headers['x-refresh-token']?.toString()
+        request.headers['refresh-token']?.toString()
 
       if (!refreshToken) {
         return response.status(401).send({

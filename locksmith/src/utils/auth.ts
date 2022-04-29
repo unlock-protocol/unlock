@@ -1,7 +1,6 @@
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { RequestHandler, response } from 'express'
-import { Op } from 'sequelize'
 import { Application } from '../models/application'
 import { logger } from '../logger'
 
@@ -13,7 +12,7 @@ export type User =
   | {
       type: 'application'
       walletAddress: string
-      clientId: string
+      id: number
     }
 
 declare global {
@@ -57,29 +56,21 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
       return next()
     }
 
-    if (tokenType === 'basic') {
-      const [id, secret] = Buffer.from(token, 'base64')
-        .toString('utf-8')
-        .split(':')
-
+    if (tokenType === 'api-key') {
       const app = await Application.findOne({
         where: {
-          id,
-          secret,
-          revoked: {
-            [Op.or]: [null, false],
-          },
+          key: token,
         },
       })
 
       if (!app) {
-        throw new Error(`Application with client ID: ${id} not found.`)
+        throw new Error(`Application with key: ${token} not found.`)
       }
 
       req.user = {
         type: 'application',
         walletAddress: app.walletAddress,
-        clientId: app.id,
+        id: app.id,
       }
       return next()
     }

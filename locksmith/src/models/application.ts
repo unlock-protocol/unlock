@@ -5,20 +5,14 @@ import { Table, Column, Model } from 'sequelize-typescript'
   timestamps: true,
 })
 export class Application extends Model<Application> {
-  @Column({ primaryKey: true })
-  id!: string
+  @Column({ primaryKey: true, autoIncrement: true })
+  id!: number
 
   @Column
   name!: string
 
   @Column
-  secret!: string
-
-  @Column
-  revoked?: boolean
-
-  @Column
-  description?: string
+  key!: string
 
   @Column
   walletAddress!: string

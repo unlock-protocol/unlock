@@ -67,7 +67,7 @@ describe('Auth login endpoints for locksmith', () => {
 
     const tokenResponse = await request(app)
       .post('/v2/auth/token')
-      .set('x-refresh-token', loginResponse.body.refreshToken)
+      .set('refresh-token', loginResponse.body.refreshToken)
       .send()
     expect(tokenResponse.status).toBe(200)
     expect(tokenResponse.body.accessToken).not.toBe(
@@ -102,16 +102,16 @@ describe('Auth login endpoints for locksmith', () => {
 
     const revokeResponse = await request(app)
       .post('/v2/auth/revoke')
-      .set('x-refresh-token', loginResponse.body.refreshToken)
+      .set('refresh-token', loginResponse.body.refreshToken)
       .send()
 
     const tokenResponse = await request(app)
       .post('/v2/auth/token')
-      .set('x-refresh-token', loginResponse.body.refreshToken)
+      .set('refresh-token', loginResponse.body.refreshToken)
       .send()
 
     expect(revokeResponse.status).toBe(200)
-    expect(revokeResponse.text).toBe('true')
+    expect(revokeResponse.body.message).toBe('Revoked')
     expect(tokenResponse.status).toBe(401)
   })
 })

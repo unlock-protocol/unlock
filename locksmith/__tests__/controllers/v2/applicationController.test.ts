@@ -9,7 +9,6 @@ jest.setTimeout(10000)
 var application: any
 
 const APP_NAME = 'BANANA'
-const APP_DESC = 'BANANA APP'
 
 describe('Application endpoint', () => {
   beforeAll(async () => {
@@ -24,16 +23,14 @@ describe('Application endpoint', () => {
       .set('Authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send({
         name: APP_NAME,
-        description: APP_DESC,
       })
 
     application = applicationResponse.body
   })
 
-  it('application has specified title and description', () => {
-    expect.assertions(2)
+  it('application has specified name', () => {
+    expect.assertions(1)
     expect(application.name).toBe(APP_NAME)
-    expect(application.description).toBe(APP_DESC)
   })
 
   it('application can access its user data', async () => {
@@ -41,9 +38,9 @@ describe('Application endpoint', () => {
 
     const applicationData = await request(app)
       .get('/v2/auth/user')
-      .set('Authorization', `Basic ${application.apiKey}`)
+      .set('Authorization', `Api-key ${application.key}`)
 
-    expect(applicationData.body.clientId).toBe(application.id)
+    expect(applicationData.body.id).toBe(application.id)
     expect(applicationData.body.type).toBe('application')
   })
 
@@ -51,7 +48,7 @@ describe('Application endpoint', () => {
     expect.assertions(1)
     const applicationData = await request(app)
       .get('/v2/auth/user')
-      .set('Authorization', `Basic 24${application.apiKey}`)
+      .set('Authorization', `Api-key 24${application.key}`)
 
     expect(applicationData.statusCode).toBe(403)
   })

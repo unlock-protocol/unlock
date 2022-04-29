@@ -24,10 +24,5 @@ router.put(
   (req: Request<{ id: string }>, res) =>
     appController.updateApplication(req, res)
 )
-router.post(
-  '/:id',
-  authenticatedMiddleware,
-  (req: Request<{ id: string }>, res) => appController.regenerate(req, res)
-)
 
 module.exports = router
