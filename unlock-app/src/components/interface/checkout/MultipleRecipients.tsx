@@ -161,10 +161,6 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
       NOT_EQUAL: `You need to purchase between ${min} and ${max} memberships for different recipients.`,
     }
 
-    console.table({
-      minValue,
-      maxValue,
-    })
     const minIsDefined = minValue !== undefined
     const maxIsDefined = maxValue !== undefined
     const getValidationKey = (): keyof LimitMessage | undefined => {
