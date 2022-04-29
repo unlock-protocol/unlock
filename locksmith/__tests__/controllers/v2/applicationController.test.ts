@@ -57,6 +57,23 @@ describe('Application endpoint', () => {
     expect(applicationData.statusCode).toBe(403)
   })
 
+  it('list applications', async () => {
+    expect.assertions(2)
+    const refreshResponse = await request(app).post('/v2/auth/token').send({
+      refreshToken: user.refreshToken,
+    })
+
+    user = refreshResponse.body
+
+    const applicationList = await request(app)
+      .get('/v2/applications/list')
+      .set('Authorization', `Bearer ${user.accessToken}`)
+      .send()
+
+    expect(applicationList.statusCode).toBe(200)
+    expect(applicationList.body.result).toBeInstanceOf(Array)
+  })
+
   it('Update application', async () => {
     expect.assertions(1)
     const refreshResponse = await request(app).post('/v2/auth/token').send({
@@ -69,7 +86,7 @@ describe('Application endpoint', () => {
       .send({
         name: NEW_APP_NAME,
       })
-      .set('Authorization', `Bearer ${refreshResponse.body.accessToken}`)
+      .set('Authorization', `Bearer ${user.accessToken}`)
 
     expect(updatedApplication.body.name).toBe(NEW_APP_NAME)
   })
@@ -82,7 +99,7 @@ describe('Application endpoint', () => {
     user = refreshResponse.body
     const deletedApplication = await request(app)
       .delete(`/v2/applications/${application.id}`)
-      .set('Authorization', `Bearer ${refreshResponse.body.accessToken}`)
+      .set('Authorization', `Bearer ${user.accessToken}`)
       .send()
 
     expect(deletedApplication.statusCode).toBe(200)
