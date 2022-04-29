@@ -390,7 +390,7 @@ export const CryptoCheckout = ({
                   showLabel
                   size="36px"
                   as="button"
-                  onClick={onCardPurchase}
+                  onClick={() => onCardPurchase(false)}
                 />
               </CheckoutButton>
             )}
