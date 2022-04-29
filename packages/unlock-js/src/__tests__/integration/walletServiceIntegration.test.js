@@ -1113,7 +1113,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       if (['v10'].indexOf(publicLockVersion) !== -1) {
         describe('shareKey (to TokenId)', () => {
           it('should allow a member to share their key with another one', async () => {
-            expect.assertions(4)
+            expect.assertions(3)
             const grantee = accounts[8]
             const tokenId = await walletService.purchaseKey({
               lockAddress,
@@ -1143,15 +1143,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
                 recipient,
                 chainId
               )
-            expect(newExpiration).toBeLessThan(expiration)
+            expect(newExpiration).toBeGreaterThanOrEqual(expiration)
 
-            expect(
-              await web3Service.getKeyExpirationByLockForOwner(
-                lockAddress,
-                recipient,
-                chainId
-              )
-            ).toBeGreaterThanOrEqual(expiration)
             expect(
               await web3Service.ownerOf(lockAddress, newTokenId, chainId)
             ).toEqual(recipient)
@@ -1223,7 +1216,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           })
 
           it('should have add time to the second key', async () => {
-            expect.assertions(2)
+            expect.assertions(1)
             const blockNumber = await walletService.provider.getBlockNumber()
             const latestBlock = await walletService.provider.getBlock(
               blockNumber
@@ -1234,10 +1227,6 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
                 web3Service.getKeyByLockForOwner(lockAddress, owner, chainId)
               )
             )
-            expect(
-              Math.floor(keysAfter[0].expiration) -
-                Math.floor(latestBlock.timestamp)
-            ).toBeLessThan(60)
 
             expect(
               Math.floor(keysAfter[1].expiration) -
