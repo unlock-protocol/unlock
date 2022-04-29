@@ -152,7 +152,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
       </span>
       {minRecipients > 1 && (
         <span className="text-sm pt-1 block">
-          You need add at least {minRecipients} recipients to proceede.
+          You need add at least {minRecipients} recipients to proceed.
         </span>
       )}
       {showList && (
