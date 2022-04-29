@@ -6,22 +6,13 @@ export const PRODUCTION_HOST = 'https://locksmith.unlock-protocol.com'
 
 interface LocksmithOptions {
   host: string
-  apiKey?: string
 }
 
 export class LocksmithService {
-  #apiKey?: string
-
-  #userCreditionals?: {
-    accessToken: string
-    refreshToken: string
-  }
-
   public baseURL: string
 
   constructor(options: LocksmithOptions) {
     this.baseURL = options.host || PRODUCTION_HOST
-    this.#apiKey = options.apiKey
   }
 
   /**
@@ -33,24 +24,6 @@ export class LocksmithService {
 
   getEndpoint(path: string) {
     return new URL(path, this.baseURL).toString()
-  }
-
-  /**
-   * This will provide headers with common defaults such as content-type set to json, authentication headers such as access token and API key etc if they exist.
-   * @returns - Headers
-   */
-  getHeaders() {
-    const headers = new Headers()
-    headers.set('content-type', 'application/json')
-    if (this.#apiKey) {
-      headers.set('Authorization', `Api-key ${this.#apiKey}`)
-    } else if (this.#userCreditionals) {
-      headers.set(
-        'Authorization',
-        `Bearer ${this.#userCreditionals.accessToken}`
-      )
-    }
-    return headers
   }
 
   /**
@@ -97,7 +70,8 @@ export class LocksmithService {
    * ```
    */
   async login(message: string, signature: string) {
-    const headers = this.getHeaders()
+    const headers = new Headers()
+    headers.set('content-type', 'application/json')
     const response = await this.request('/v2/auth/login', {
       method: 'POST',
       headers,
@@ -109,7 +83,7 @@ export class LocksmithService {
 
     const json = await response.json()
 
-    this.#userCreditionals = {
+    return {
       accessToken: json.accessToken,
       refreshToken: json.refreshToken,
     }
@@ -118,22 +92,21 @@ export class LocksmithService {
   /**
    * This is used to refresh the creditionals on jwt token expiration.
    */
-  async creditionalsRefresh() {
-    const headers = this.getHeaders()
-    // If not in browser environment, set the refresh token explicitly.
-    if (typeof document === 'undefined') {
-      headers.set('refresh-token', this.#userCreditionals?.refreshToken!)
+  async refreshToken(token?: string) {
+    const headers = new Headers()
+    headers.set('content-type', 'application/json')
+    if (token) {
+      headers.set('refresh-token', token)
     }
-    if (this.#userCreditionals) {
-      const response = await this.request('/v2/auth/token', {
-        method: 'POST',
-        headers,
-      })
-      const json = await response.json()
-      this.#userCreditionals = {
-        accessToken: json.accessToken,
-        refreshToken: json.refreshToken,
-      }
+    const response = await this.request('/v2/auth/token', {
+      method: 'POST',
+      headers,
+    })
+    const json = await response.json()
+
+    return {
+      refreshToken: json.refreshToken,
+      accessToken: json.accessToken,
     }
   }
 }

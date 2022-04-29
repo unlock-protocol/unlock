@@ -7,8 +7,11 @@ jest.setTimeout(10000)
 
 // eslint-disable-next-line
 var application: any
+// eslint-disable-next-line
+var user: any
 
 const APP_NAME = 'BANANA'
+const NEW_APP_NAME = 'UPDATED'
 
 describe('Application endpoint', () => {
   beforeAll(async () => {
@@ -25,6 +28,7 @@ describe('Application endpoint', () => {
         name: APP_NAME,
       })
 
+    user = loginResponse.body
     application = applicationResponse.body
   })
 
@@ -51,5 +55,43 @@ describe('Application endpoint', () => {
       .set('Authorization', `Api-key 24${application.key}`)
 
     expect(applicationData.statusCode).toBe(403)
+  })
+
+  it('Update application', async () => {
+    expect.assertions(1)
+    const refreshResponse = await request(app).post('/v2/auth/token').send({
+      refreshToken: user.refreshToken,
+    })
+
+    user = refreshResponse.body
+    const updatedApplication = await request(app)
+      .put(`/v2/applications/${application.id}`)
+      .send({
+        name: NEW_APP_NAME,
+      })
+      .set('Authorization', `Bearer ${refreshResponse.body.accessToken}`)
+
+    expect(updatedApplication.body.name).toBe(NEW_APP_NAME)
+  })
+
+  it('Delete application', async () => {
+    expect.assertions(2)
+    const refreshResponse = await request(app).post('/v2/auth/token').send({
+      refreshToken: user.refreshToken,
+    })
+    user = refreshResponse.body
+    const deletedApplication = await request(app)
+      .delete(`/v2/applications/${application.id}`)
+      .set('Authorization', `Bearer ${refreshResponse.body.accessToken}`)
+      .send()
+
+    expect(deletedApplication.statusCode).toBe(200)
+
+    const userResponse = await request(app)
+      .get('/v2/auth/user')
+      .set('Authorization', `Api-key ${application.key}`)
+      .send()
+
+    expect(userResponse.statusCode).toBe(403)
   })
 })
