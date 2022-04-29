@@ -199,6 +199,30 @@ export const purchaseKeyFromLock = async (
   data: string,
   callback: (...args: any) => void
 ) => {
+  // In order to not modify the behavior for v10, by default if the user owns a key on
+  // a non expiring lock, we extend it.
+  // TODO: allow for purchase of explicit new keys!
+  const tokenId = await web3Service.getTokenIdForOwner(
+    lock.address,
+    recipient,
+    walletService.networkId
+  )
+
+  if (
+    tokenId &&
+    lock.expirationDuration !== -1 &&
+    (lock.publicLockVersion || 0) >= 10
+  ) {
+    // We assume this is a renewal to remain consistent with old versions of the checkout
+    return walletService.extendKey({
+      lockAddress: lock.address,
+      tokenId,
+      referrer,
+      keyPrice: lock.keyPrice,
+      data,
+    })
+  }
+
   return walletService.purchaseKey(
     {
       lockAddress: lock.address,
