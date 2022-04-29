@@ -1,2 +1,2 @@
 export * from './notify'
-export * from './tx'
+export * from './renewKey'

@@ -57,6 +57,54 @@ const abi = [
   },
 ]
 
+export const renewMembershipFor = async (
+  network: number,
+  lock: any,
+  keyId: number,
+  signer?: any
+) => {
+  // make sure reccuring payments are supported
+  if ((await lock.publicLockVersion()) < 10) {
+    // eslint-disable-next-line prefer-promise-reject-errors
+    return Promise.reject(
+      `Renewal only supported for lock v10+ | [${network}, '${lock.address}-${keyId}']`
+    )
+  }
+
+  // We only renew keys for which we are getting a gas refund whose value cover the gas spent.
+  const gasRefund = await lock.gasRefundValue()
+
+  // estimate gas for the renewMembership function.
+  const gasLimit = await lock.estimateGas.renewMembershipFor(
+    keyId,
+    constants.AddressZero
+  )
+  if (gasRefund.lte(gasLimit)) {
+    // eslint-disable-next-line prefer-promise-reject-errors
+    return Promise.reject(
+      `GasRefundValue (${gasRefund.toString()}) does not cover gas cost  | [${network}, '${
+        lock.address
+      }-${keyId}']`
+    )
+  }
+
+  // send actual tx
+  const tx = await lock.renewMembershipFor(keyId, constants.AddressZero, {
+    gasLimit: gasRefund,
+  })
+
+  // record renewal in db
+  const data = {
+    network,
+    lockAddress: lock.address,
+    keyId,
+    initiatedBy: signer?.address,
+    tx: tx.hash,
+  }
+  await KeyRenewal.create(data)
+  return data
+}
+
 export async function renewKey({
   keyId,
   lockAddress,
@@ -75,42 +123,6 @@ export async function renewKey({
   // parse lock
   const lock = new Contract(lockAddress, abi, signer)
 
-  // make sure reccuring payments are supported
-  if ((await lock.publicLockVersion()) < 10) {
-    // eslint-disable-next-line prefer-promise-reject-errors
-    return Promise.reject(
-      `Renewal only supported for lock v10+ | [${network}, '${lockAddress}-${keyId}']`
-    )
-  }
-
-  // We only renew keys for which we are getting a gas refund whose value cover the gas spent.
-  const gasRefund = await lock.gasRefundValue()
-
-  // estimate gas for the renewMembership function.
-  const gasLimit = await lock.estimateGas.renewMembershipFor(
-    keyId,
-    constants.AddressZero
-  )
-  if (gasRefund.lte(gasLimit)) {
-    // eslint-disable-next-line prefer-promise-reject-errors
-    return Promise.reject(
-      `GasRefundValue (${gasRefund.toString()}) does not cover gas cost  | [${network}, '${lockAddress}-${keyId}']`
-    )
-  }
-
-  // send actual tx
-  const tx = await lock.renewMembershipFor(keyId, constants.AddressZero, {
-    gasLimit: gasRefund,
-  })
-
-  // record renewal in db
-  const data = {
-    network,
-    lockAddress,
-    keyId,
-    initiatedBy: signer.address,
-    tx: tx.hash,
-  }
-  await KeyRenewal.create(data)
+  const data = await renewMembershipFor(network, lock, keyId, signer)
   return data
 }
