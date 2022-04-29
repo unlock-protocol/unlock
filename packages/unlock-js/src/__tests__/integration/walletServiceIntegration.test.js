@@ -1137,17 +1137,18 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               duration: expiration - now, // share all of the time!
             })
 
-            const newExpiration = await web3Service.getKeyExpirationByTokenId(
-              lockAddress,
-              tokenId,
-              chainId
-            )
+            const newExpiration =
+              await web3Service.getKeyExpirationByLockForOwner(
+                lockAddress,
+                grantee,
+                chainId
+              )
             expect(newExpiration).toBeLessThan(expiration)
 
             expect(
-              await web3Service.getKeyExpirationByTokenId(
+              await web3Service.getKeyExpirationByLockForOwner(
                 lockAddress,
-                newTokenId,
+                grantee,
                 chainId
               )
             ).toBeGreaterThanOrEqual(expiration)
