@@ -11,6 +11,12 @@ import Loading from '../Loading'
 import { Button } from './FormStyles'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
 
+interface LimitMessage {
+  ONLY_MAX: string
+  ONLY_MIN: string
+  EQUAL: string
+  NOT_EQUAL: string
+}
 export interface MultipleRecipientProps {
   recipients: RecipientItem[]
   minRecipients: number
@@ -144,17 +150,47 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   const showForm = isEdit || addNewRecipient
   const showList = !addNewRecipient && !isEdit
 
+  const recipientsLimitMessage = (min: number, max: number): string => {
+    // default value for min and max is 1, so lets consider as undefined if equal to 1
+    const minValue = min > 1 ? min : undefined
+    const maxValue = max > 1 ? max : undefined
+    const messages: LimitMessage = {
+      ONLY_MAX: `You can purchase up to ${max} memberships for different recipients.`,
+      ONLY_MIN: `You need to purchase at least ${min} memberships for different recipients.`,
+      EQUAL: `You need to purchase exactly ${min} memberships for different recipients.`,
+      NOT_EQUAL: `You need to purchase between ${min} and ${max} memberships for different recipients.`,
+    }
+
+    console.table({
+      minValue,
+      maxValue,
+    })
+    const minIsDefined = minValue !== undefined
+    const maxIsDefined = maxValue !== undefined
+    const getValidationKey = (): keyof LimitMessage | undefined => {
+      if (minIsDefined && maxIsDefined) {
+        if (minValue === maxValue) {
+          return 'EQUAL'
+        }
+        return 'NOT_EQUAL'
+      }
+      if (!minIsDefined && maxIsDefined) {
+        return 'ONLY_MAX'
+      }
+      if (minIsDefined && !maxIsDefined) {
+        return 'ONLY_MIN'
+      }
+    }
+    const key = getValidationKey()
+    if (!key) return ''
+    return messages[key]
+  }
+
   return (
     <form>
       <span className="text-sm block">
-        You can purchase up to {maxRecipients} memberships for multiple
-        recipients.
+        {recipientsLimitMessage(minRecipients, maxRecipients)}
       </span>
-      {minRecipients > 1 && (
-        <span className="text-sm pt-1 block">
-          You need add at least {minRecipients} recipients to proceed.
-        </span>
-      )}
       {showList && (
         <>
           {recipients?.map((recipient) => {
