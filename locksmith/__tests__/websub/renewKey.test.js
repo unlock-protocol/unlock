@@ -1,6 +1,5 @@
 // see hardhat script https://github.com/unlock-protocol/unlock/blob/8e3b93f0c3b0c1ff0d8d883e2dbe8b01ca029e06/smart-contracts/scripts/renew.js
 import { ethers } from 'ethers'
-import { Op } from 'sequelize'
 import { renewMembershipFor } from '../../src/websub/helpers/renewKey'
 import { KeyRenewal } from '../../src/models'
 
@@ -18,27 +17,38 @@ const mockLock = {
     hash: 'txhash',
   }),
 }
+const renewalInfo = {
+  network,
+  keyId,
+  lockAddress: mockLock.address,
+}
 
 describe('renewKey', () => {
   describe('abort on non-reccuring locks', () => {
-    it('should throw when lock version <10', async () => {
+    it('should not renew when lock version <10', async () => {
       expect.assertions(1)
       const lock = { ...mockLock, publicLockVersion: async () => 9 }
-      await expect(renewMembershipFor(network, lock, keyId)).rejects.toContain(
-        'v10+'
-      )
+      await expect(
+        renewMembershipFor(network, lock, keyId)
+      ).resolves.toMatchObject({
+        ...renewalInfo,
+        msg: 'Renewal only supported for lock v10+',
+      })
     })
-    it('should throw if lock gas refund is not set', async () => {
+    it('should not renew if lock gas refund is not set', async () => {
       expect.assertions(1)
       const lock = {
         ...mockLock,
         gasRefundValue: async () => ethers.BigNumber.from(0),
       }
-      await expect(renewMembershipFor(network, lock, keyId)).rejects.toContain(
-        'GasRefundValue (0) does not cover gas cost'
-      )
+      await expect(
+        renewMembershipFor(network, lock, keyId)
+      ).resolves.toMatchObject({
+        ...renewalInfo,
+        msg: 'GasRefundValue (0) does not cover gas cost',
+      })
     })
-    it('should throw if lock gas refund is not sufficient', async () => {
+    it('should not renew if lock gas refund is not sufficient', async () => {
       expect.assertions(1)
       const lock = {
         ...mockLock,
@@ -46,9 +56,12 @@ describe('renewKey', () => {
           renewMembershipFor: async () => ethers.BigNumber.from(200000),
         },
       }
-      await expect(renewMembershipFor(network, lock, keyId)).rejects.toContain(
-        'GasRefundValue (150000) does not cover gas cost'
-      )
+      await expect(
+        renewMembershipFor(network, lock, keyId)
+      ).resolves.toMatchObject({
+        ...renewalInfo,
+        msg: 'GasRefundValue (150000) does not cover gas cost',
+      })
     })
   })
 
@@ -64,10 +77,8 @@ describe('renewKey', () => {
       await expect(
         renewMembershipFor(network, mockLock, keyId, { address: '0xSigner' })
       ).resolves.toEqual({
-        lockAddress: mockLock.address,
-        keyId,
+        ...renewalInfo,
         tx: 'txhash',
-        network,
         initiatedBy: '0xSigner',
       })
     })
@@ -91,10 +102,8 @@ describe('renewKey', () => {
       })
       const dbAfter = await KeyRenewal.findOne({
         where: {
-          [Op.and]: {
-            keyId: `${keyId}`,
-            lockAddress: mockLock.address,
-          },
+          keyId: `${keyId}`,
+          lockAddress: mockLock.address,
         },
       })
       expect(dbAfter).not.toBe(null)

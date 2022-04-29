@@ -1,7 +1,5 @@
-import { Op } from 'sequelize'
 import { networks } from '@unlock-protocol/networks'
 import { KeysToRenew } from '../../graphql/datasource'
-import { KeyRenewal } from '../../models'
 import { renewKey } from '../helpers'
 import { logger } from '../../logger'
 
@@ -20,31 +18,7 @@ async function fetchKeysToRenew(network: number, page = 0) {
     network,
     page ? page * FETCH_LIMIT : 0 // page
   )
-
-  const keyIds = keys.map(({ id }) => id)
-  const lockAddresses = keys.map(({ lock }) => lock.address)
-  const processedKeys = await KeyRenewal.findAll({
-    where: {
-      [Op.and]: {
-        keyId: {
-          [Op.in]: keyIds,
-        },
-        lockAddress: {
-          [Op.in]: lockAddresses,
-        },
-      },
-    },
-  })
-
-  const unprocessedKeys = keys.filter(
-    (key: any) =>
-      !processedKeys.find(
-        ({ keyId, lockAddress }) =>
-          keyId === key.id && lockAddress === key.lock.address
-      )
-  )
-
-  return unprocessedKeys
+  return keys
 }
 
 async function renewKeys(network: number) {
