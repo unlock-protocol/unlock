@@ -161,6 +161,8 @@ export const CryptoCheckout = ({
         err?.error?.message ||
           'There was an error and we could not submit your purchase transaction'
       )
+      setPurchasePending(false)
+      setTransactionPending('')
       return false
     }
   }
