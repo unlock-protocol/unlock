@@ -235,7 +235,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
         <fieldset className="pt-3" disabled={loading}>
           <span className="text-xs font-normal uppercase flex justify-between items-center mb-2">
             {isEdit && <span>Edit recipient {editIndex}</span>}
-            {addNewRecipient && <span>Add recipient</span>}
+            {addNewRecipient && <span>Recipient Wallet Address</span>}
           </span>
           <CustomRecipient
             onChange={(e) => setRecipient(e.target.value)}
