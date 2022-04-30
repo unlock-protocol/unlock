@@ -260,6 +260,7 @@ export const purchaseMultipleKeysFromLock = async (
   lockAddress: string,
   keyPrices: string[],
   owners: string[],
+  data: string[],
   callback: (...args: any) => void
 ) => {
   return walletService.purchaseKeys(
@@ -267,6 +268,7 @@ export const purchaseMultipleKeysFromLock = async (
       lockAddress,
       owners,
       keyPrices,
+      data,
     },
     async (error: any, transactionHash: string) => {
       if (error) {
@@ -408,6 +410,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     lockAddress: string,
     keyPrices: string[],
     owners: string[],
+    data: string[],
     callback: (...args: any) => void
   ) => {
     if (walletNetwork !== network) {
@@ -422,6 +425,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
         lockAddress,
         keyPrices,
         owners,
+        data,
         callback
       )
     }
