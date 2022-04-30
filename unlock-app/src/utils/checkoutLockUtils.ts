@@ -120,3 +120,26 @@ export const inClaimDisallowList = (address: string) => {
   ]
   return claimDisallowList.indexOf(address) > -1
 }
+
+/**
+ * Generates a private key from a secret and signs the purchaser address with it
+ * This shall be used in conjunction with a purchase hook that would fail purchase transactions
+ * when the transaction does not include a valid signature
+ * @param secret
+ * @param recipient
+ * @returns
+ */
+export const generateDataForPurchaseHook = async (
+  secret?: string,
+  recipient?: string
+) => {
+  if (!secret || !recipient) {
+    return null
+  }
+  const wallet = new ethers.Wallet(ethers.utils.id(secret))
+  const messageHash = ethers.utils.solidityKeccak256(
+    ['string'],
+    [recipient.toLowerCase()]
+  )
+  return wallet.signMessage(ethers.utils.arrayify(messageHash))
+}
