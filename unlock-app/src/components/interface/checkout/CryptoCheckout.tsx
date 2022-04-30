@@ -13,7 +13,6 @@ import { useAccount } from '../../../hooks/useAccount'
 import { StorageService } from '../../../services/storageService'
 
 import {
-  generateDataForPurchaseHook,
   inClaimDisallowList,
   lockTickerSymbol,
   userCanAffordKey,
@@ -190,12 +189,7 @@ export const CryptoCheckout = ({
           : recipients[0]?.resolvedAddress ?? account
         let data
 
-        if (paywallConfig.locks[lock.address].secret) {
-          data = await generateDataForPurchaseHook(
-            paywallConfig.locks[lock.address].secret,
-            purchaseAccount
-          )
-        } else if (paywallConfig.captcha) {
+        if (paywallConfig.captcha) {
           // get the secret from locksmith!
           const response = await storageService.getDataForUserAndCaptcha(
             purchaseAccount,
