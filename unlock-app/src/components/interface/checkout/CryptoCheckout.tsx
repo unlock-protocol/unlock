@@ -217,9 +217,9 @@ export const CryptoCheckout = ({
 
         if (paywallConfig.captcha) {
           // get the secret from locksmith!
-          const response = await storageService.getDataForUserAndCaptcha(
-            purchaseAccount,
-            recipients
+          const response = await storageService.getDataForRecipientsAndCaptcha(
+            recipients,
+            recaptchaValue
           )
           if (response.error) {
             setPurchasePending(false)
@@ -228,7 +228,7 @@ export const CryptoCheckout = ({
               'The Captcha value could not ve verified. Please try again.'
             )
           }
-          data = response.signatures
+          data = response.signatures[0]
         }
 
         await purchaseKey(purchaseAccount, referrer, data, (hash: string) => {
