@@ -1,5 +1,3 @@
-import { ethers } from 'ethers'
-
 // These interfaces patch over the sort of incomplete definition of
 // RawLock in unlockTypes. TODO: we should really tighten up our lock
 // type so that it at least includes as optional all possible
