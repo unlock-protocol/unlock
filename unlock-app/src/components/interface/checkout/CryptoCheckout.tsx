@@ -216,7 +216,8 @@ export const CryptoCheckout = ({
         let data
 
         if (paywallConfig.captcha) {
-          const response = await storageService.getDataForRecipientsAndCaptcha(
+          // get the secret from locksmith!
+          const response = await storageService.getDataForUserAndCaptcha(
             purchaseAccount,
             recipients
           )
