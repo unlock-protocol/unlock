@@ -13,7 +13,6 @@ import { useAccount } from '../../../hooks/useAccount'
 import { StorageService } from '../../../services/storageService'
 
 import {
-  generateDataForPurchaseHook,
   inClaimDisallowList,
   lockTickerSymbol,
   userCanAffordKey,
@@ -35,7 +34,7 @@ interface CryptoCheckoutProps {
   redirectUri?: string
   numberOfRecipients?: number
   recipients?: any[]
-  clearMultileRecipients?: () => void
+  clearMultipleRecipients?: () => void
 }
 
 export const CryptoCheckout = ({
@@ -49,7 +48,7 @@ export const CryptoCheckout = ({
   redirectUri,
   numberOfRecipients = 1,
   recipients = [],
-  clearMultileRecipients,
+  clearMultipleRecipients,
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
@@ -172,9 +171,9 @@ export const CryptoCheckout = ({
       const validPurchase = await onPurchaseMultiple()
       if (validPurchase) {
         setPurchasedMultiple(true)
-        if (typeof clearMultileRecipients === 'function') {
+        if (typeof clearMultipleRecipients === 'function') {
           // clear recipients list after transactions done
-          clearMultileRecipients()
+          clearMultipleRecipients()
         }
       }
     } else if (!cantBuyWithCrypto && account) {
@@ -190,12 +189,7 @@ export const CryptoCheckout = ({
           : recipients[0]?.resolvedAddress ?? account
         let data
 
-        if (paywallConfig.locks[lock.address].secret) {
-          data = await generateDataForPurchaseHook(
-            paywallConfig.locks[lock.address].secret,
-            purchaseAccount
-          )
-        } else if (paywallConfig.captcha) {
+        if (paywallConfig.captcha) {
           // get the secret from locksmith!
           const response = await storageService.getDataForRecipientsAndCaptcha(
             recipients,
@@ -437,7 +431,7 @@ CryptoCheckout.defaultProps = {
   redirectUri: '',
   numberOfRecipients: 1,
   recipients: [],
-  clearMultileRecipients: () => undefined,
+  clearMultipleRecipients: () => undefined,
 }
 
 interface CheckoutButtonProps {
