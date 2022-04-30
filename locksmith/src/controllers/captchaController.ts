@@ -9,11 +9,11 @@ namespace CaptchaController {
     req: SignedRequest,
     res: Response
   ): Promise<any> => {
-    const { account, captchaValue } = req.query
+    const { recipients, captchaValue } = req.query
     const { purchaserCredentials, recaptchaSecret } = config
 
-    if (!account || !captchaValue) {
-      return res.json({ error: 'Missing account or captchaValue' })
+    if (!recipients || !captchaValue || !Array.isArray(recipients)) {
+      return res.json({ error: 'Missing recipients or captchaValue' })
     }
 
     const url = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecret}&response=${captchaValue}`
@@ -25,18 +25,24 @@ namespace CaptchaController {
     if (!response.success) {
       return res.json({ error: response['error-codes'] })
     }
-
     const wallet = new ethers.Wallet(purchaserCredentials)
-    const message = account.toString().toLowerCase()
-    const messageHash = ethers.utils.solidityKeccak256(['string'], [message])
-    const signature = await wallet.signMessage(
-      ethers.utils.arrayify(messageHash)
-    )
-
+    const messages: string[] = []
+    const signatures: string[] = []
+    let i = 0
+    while (messages.length < recipients.length) {
+      const message = recipients[i] as string
+      const messageHash = ethers.utils.solidityKeccak256(['string'], [message])
+      const signature = await wallet.signMessage(
+        ethers.utils.arrayify(messageHash)
+      )
+      messages.push(message)
+      signatures.push(signature)
+      i += 1
+    }
     return res.json({
-      message,
+      messages,
       signer: wallet.address,
-      signature,
+      signatures,
     })
   }
 }
