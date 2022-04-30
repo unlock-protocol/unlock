@@ -202,7 +202,7 @@ export const CryptoCheckout = ({
               'The Captcha value could not ve verified. Please try again.'
             )
           }
-          data = response.signatures
+          data = response.signatures[0]
         }
 
         await purchaseKey(purchaseAccount, referrer, data, (hash: string) => {
