@@ -333,7 +333,7 @@ export const Checkout = ({
           setCardPurchase={() => cardCheckoutOrClaim(selectedLock)}
           numberOfRecipients={recipients?.length}
           recipients={recipients}
-          clearMultileRecipients={clear}
+          clearMultipleRecipients={clear}
         />
       )
     }
