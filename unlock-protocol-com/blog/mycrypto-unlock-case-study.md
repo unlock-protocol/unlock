@@ -13,4 +13,4 @@ MyCrypto envisioned a future where, when community members offered their financi
 
 [See the full case study](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/MyCrypto%20-%20Unlock%20Case%20Study.pdf).
 
-[![MyCrypto thumbnail](/images/blog/mycrypto-case-study/mycrypto-thumbnail-2.png)](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/MyCrypto%20-%20Unlock%20Case%20Study.pdf)
+[![MyCrypto thumbnail](/images/blog/mycrypto-case-study/mycrypto-thumbnail-3.png)](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/MyCrypto%20-%20Unlock%20Case%20Study.pdf)
