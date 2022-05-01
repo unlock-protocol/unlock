@@ -15195,7 +15195,7 @@ __metadata:
     jest: 27.5.1
     lint-staged: 12.3.7
     node-forge: 1.3.1
-    nodemailer: 6.7.3
+    nodemailer: 6.7.4
     nodemon: 2.0.15
     prettier: 2.6.1
     regenerator-runtime: 0.13.9
@@ -38427,10 +38427,10 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:6.7.3":
-  version: 6.7.3
-  resolution: "nodemailer@npm:6.7.3"
-  checksum: b94d099f00f25666fc96a7cb498045e7428045b8cc0245ce10522190fd513b586d6e31305afd019f6878f1540d14d169d0dbe2e1f77385795c7054912d822ec0
+"nodemailer@npm:6.7.4":
+  version: 6.7.4
+  resolution: "nodemailer@npm:6.7.4"
+  checksum: e3e89869b8e73b4ffd8214c7b2da38907b8a4c6948dd6283d83f063c62acd666179f2f36610eff5671542be3195687e5564b57435378602ab4356174d4c6638f
   languageName: node
   linkType: hard
 
