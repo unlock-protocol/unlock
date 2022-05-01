@@ -89,7 +89,7 @@
     "winston": "3.6.0",
     "winston-sentry-log": "1.0.26",
     "yargs": "17.4.0",
-    "zod": "3.14.3"
+    "zod": "3.14.4"
   },
   "devDependencies": {
     "@types/cookie-parser": "1.4.2",
