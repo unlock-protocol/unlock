@@ -14863,7 +14863,7 @@ __metadata:
     "@vitejs/plugin-react": 1.2.0
     autoprefixer: 10.4.4
     babel-loader: 8.2.4
-    postcss: 8.4.12
+    postcss: 8.4.13
     prism-react-renderer: 1.2.1
     react-icons: 4.3.1
     react-use-clipboard: 1.0.7
@@ -15006,7 +15006,7 @@ __metadata:
     js-base64: 3.7.2
     next: 12.1.4
     node-forge: 1.3.1
-    postcss: 8.4.12
+    postcss: 8.4.13
     postmate: 1.5.2
     prettier: 2.6.1
     prop-types: 15.8.1
@@ -15150,7 +15150,7 @@ __metadata:
     next: 12.1.4
     next-seo: 5.0.0
     path-match: 1.2.4
-    postcss: 8.4.12
+    postcss: 8.4.13
     prettier: 2.5.1
     raw-loader: 4.0.2
     react: 17.0.2
@@ -37912,6 +37912,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "nanoid@npm:3.3.3"
+  bin:
+    nanoid: bin/nanoid.cjs
+  checksum: ada019402a07464a694553c61d2dca8a4353645a7d92f2830f0d487fedff403678a0bee5323a46522752b2eab95a0bc3da98b6cccaa7c0c55cd9975130e6d6f0
+  languageName: node
+  linkType: hard
+
 "nanomatch@npm:^1.2.9":
   version: 1.2.13
   resolution: "nanomatch@npm:1.2.13"
@@ -41555,14 +41564,14 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"postcss@npm:8.4.12":
-  version: 8.4.12
-  resolution: "postcss@npm:8.4.12"
+"postcss@npm:8.4.13":
+  version: 8.4.13
+  resolution: "postcss@npm:8.4.13"
   dependencies:
-    nanoid: ^3.3.1
+    nanoid: ^3.3.3
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
-  checksum: 248e3d0f9bbb8efaafcfda7f91627a29bdc9a19f456896886330beb28c5abea0e14c7901b35191928602e2eccbed496b1e94097d27a0b2a980854cd00c7a835f
+  checksum: 514fb3552805a5d039a2d6b4df3e73f657001716ca93c0d57e6067b0473abdea70276d80afc96005c9aaff82ed5d98062bd97724d3f47ca400fba0b5e9e436ed
   languageName: node
   linkType: hard
 
