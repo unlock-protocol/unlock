@@ -14686,7 +14686,7 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     babel-jest: 27.5.1
     babel-plugin-require-context-hook: 1.0.0
-    babel-plugin-styled-components: 2.0.6
+    babel-plugin-styled-components: 2.0.7
     css-loader: 6.6.0
     dotenv: 16.0.0
     eslint: 8.10.0
@@ -14987,7 +14987,7 @@ __metadata:
     babel-jest: 27.5.1
     babel-loader: 8.2.4
     babel-plugin-require-context-hook: 1.0.0
-    babel-plugin-styled-components: 2.0.6
+    babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
     cross-fetch: 3.1.5
     deep-object-diff: 1.1.7
@@ -15136,7 +15136,7 @@ __metadata:
     babel-jest: 27.5.1
     babel-loader: 8.2.4
     babel-plugin-require-context-hook: 1.0.0
-    babel-plugin-styled-components: 2.0.6
+    babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
     dotenv: 16.0.0
     embla-carousel-react: 6.2.0
@@ -18371,9 +18371,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-plugin-styled-components@npm:2.0.6":
-  version: 2.0.6
-  resolution: "babel-plugin-styled-components@npm:2.0.6"
+"babel-plugin-styled-components@npm:2.0.7":
+  version: 2.0.7
+  resolution: "babel-plugin-styled-components@npm:2.0.7"
   dependencies:
     "@babel/helper-annotate-as-pure": ^7.16.0
     "@babel/helper-module-imports": ^7.16.0
@@ -18382,7 +18382,7 @@ __metadata:
     picomatch: ^2.3.0
   peerDependencies:
     styled-components: ">= 2"
-  checksum: 7be16a06432e0acfdbef23688b0da7d2320f2c48b6639e6f18089d4cdba4784b68d99e9b90e6d2b6babfb5a370dbc71151f1160f2cd8ca611c1fbd2cb1aea0ab
+  checksum: 80b06b10db02d749432a0ac43a5feedd686f6b648628d7433a39b1844260b2b7c72431f6e705c82636ee025fcfd4f6c32fc05677e44033b8a39ddcd4488b3147
   languageName: node
   linkType: hard
 
