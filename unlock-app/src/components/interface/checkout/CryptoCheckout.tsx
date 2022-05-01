@@ -127,6 +127,10 @@ export const CryptoCheckout = ({
     changeNetwork(networks[network])
   }
 
+  /**
+   * Handling multiple purchases!
+   * @returns
+   */
   const onPurchaseMultiple = async () => {
     if (!lock.address) return
     if (!lock.keyPrice) return
@@ -135,10 +139,31 @@ export const CryptoCheckout = ({
     try {
       setPurchasePending(true)
       const keyPrices = new Array(owners.length).fill(lock.keyPrice)
+
+      let data = new Array(owners.length).fill(null)
+      // We need to handle the captcha here too!
+      if (paywallConfig.captcha) {
+        // get the secret from locksmith!
+        const response = await storageService.getDataForRecipientsAndCaptcha(
+          owners,
+          recaptchaValue
+        )
+        if (response.error || !response.signatures) {
+          setPurchasePending(false)
+          setRecaptchaValue('')
+          toast.error(
+            'The Captcha value could not ve verified. Please try again.'
+          )
+          return false
+        }
+        data = response.signatures
+      }
+
       await purchaseMultipleKeys(
         lock.address,
         keyPrices,
         owners,
+        data,
         (hash: string) => {
           emitTransactionInfo({
             lock: lock.address,
@@ -177,6 +202,7 @@ export const CryptoCheckout = ({
         }
       }
     } else if (!cantBuyWithCrypto && account) {
+      // TODO: we should not have a different path for single or multiple purchase!
       setPurchasePending(true)
       try {
         const referrer =
