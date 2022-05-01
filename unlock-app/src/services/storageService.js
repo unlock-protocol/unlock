@@ -499,7 +499,7 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async getDataForUserAndCaptcha(account, captchaValue) {
+  async getDataForRecipientsAndCaptcha(recipients, captchaValue) {
     try {
       const url = `${this.host}/api/captcha`
 
@@ -508,7 +508,7 @@ export class StorageService extends EventEmitter {
           'Content-Type': 'application/json',
         },
         params: {
-          account,
+          recipients,
           captchaValue,
         },
       }
