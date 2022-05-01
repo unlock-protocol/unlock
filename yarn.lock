@@ -14580,7 +14580,7 @@ __metadata:
     ethereumjs-util: 6.2.1
     ethers: 5.6.2
     express: 4.17.3
-    express-jwt: 6.1.1
+    express-jwt: 6.1.2
     express-list-endpoints: 6.0.0
     express-winston: 4.2.0
     graphql: 15.8.0
@@ -17598,7 +17598,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:1.x, async@npm:^1.4.2, async@npm:^1.5.0":
+"async@npm:1.x, async@npm:^1.4.2":
   version: 1.5.2
   resolution: "async@npm:1.5.2"
   checksum: fe5d6214d8f15bd51eee5ae8ec5079b228b86d2d595f47b16369dec2e11b3ff75a567bb5f70d12d79006665fbbb7ee0a7ec0e388524eefd454ecbe651c124ebd
@@ -17623,7 +17623,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^3.2.3":
+"async@npm:^3.2.2, async@npm:^3.2.3":
   version: 3.2.3
   resolution: "async@npm:3.2.3"
   checksum: c4bee57ab2249af3dc83ca3ef9acfa8e822c0d5e5aa41bae3eaf7f673648343cd64ecd7d26091ffd357f3f044428b17b5f00098494b6cf8b6b3e9681f0636ca1
@@ -27403,15 +27403,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-jwt@npm:6.1.1":
-  version: 6.1.1
-  resolution: "express-jwt@npm:6.1.1"
+"express-jwt@npm:6.1.2":
+  version: 6.1.2
+  resolution: "express-jwt@npm:6.1.2"
   dependencies:
-    async: ^1.5.0
+    async: ^3.2.2
     express-unless: ^1.0.0
     jsonwebtoken: ^8.1.0
     lodash: ^4.17.21
-  checksum: 91b3da4c2bb080a2c3d125327a492f6f2b90a55c3b0fbdf51c78e979b636a6c94cb73fd2dbcebbdd5eedd9dcfe858f2b4ea4ce9c1285e60547f246546d31d9c1
+  checksum: 3263e10197e1d94585adc8c0e3b2d857a37443ae3feb7612264ac7bacfe348b0d8b9d80c6306c7172c7257a0fe2e9abc5983207524a1b51cb258b3efe866e76b
   languageName: node
   linkType: hard
 

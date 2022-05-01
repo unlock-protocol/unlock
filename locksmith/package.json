@@ -58,7 +58,7 @@
     "ethereumjs-util": "6.2.1",
     "ethers": "5.6.2",
     "express": "4.17.3",
-    "express-jwt": "6.1.1",
+    "express-jwt": "6.1.2",
     "express-list-endpoints": "6.0.0",
     "express-winston": "4.2.0",
     "graphql": "15.8.0",
