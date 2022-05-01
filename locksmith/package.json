@@ -92,7 +92,7 @@
     "zod": "3.14.3"
   },
   "devDependencies": {
-    "@types/cookie-parser": "1.4.2",
+    "@types/cookie-parser": "1.4.3",
     "@types/cors": "2.8.12",
     "@types/eth-sig-util": "2.1.1",
     "@types/ethereumjs-util": "5.2.0",
