@@ -174,13 +174,6 @@ export default class Dispatcher {
       throw Error('Renewal only supported for lock v10+')
     }
 
-    return await lock.renewMembershipFor(
-      {
-        lockAddress,
-        keyId,
-        referrer,
-      },
-      transactionOptions
-    )
+    return await lock.renewMembershipFor(keyId, referrer, transactionOptions)
   }
 }
