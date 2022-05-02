@@ -7714,103 +7714,103 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@next/env@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/env@npm:12.1.4"
-  checksum: ff18e94d3b539b6fb0b5dd2c9b642e13e5efd68b886e5fc947330af10be68adb5a1a415777eec34273a7ed1ab51ab7482659aa8b33bd3d932269243d3d6eefad
+"@next/env@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/env@npm:12.1.5"
+  checksum: 21a6345ad6ff39edd76630484af3f2a87a0984d06be19ca88d9758583a1c724905f1ea6c0d110a4c825430e5bcda835f7197ee820c7173c428416fb615ff97e6
   languageName: node
   linkType: hard
 
-"@next/eslint-plugin-next@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/eslint-plugin-next@npm:12.1.4"
+"@next/eslint-plugin-next@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/eslint-plugin-next@npm:12.1.5"
   dependencies:
     glob: 7.1.7
-  checksum: 6908d3ea066cc31a2353a198eb019bccb1158f032df8607568bb5ca17f84d271871e916e426f981eab08f2dbbc3df7a0ab00de2a8f14ed323492417e4f9d7903
+  checksum: fe070fbd42f699b0e158d2ea276569ad686343c78fb698c1835cd587862903bc2d146e04dd747495e186019cff685f36120b3953afce8b0c9f0fb43cd58798a7
   languageName: node
   linkType: hard
 
-"@next/swc-android-arm-eabi@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-android-arm-eabi@npm:12.1.4"
-  checksum: 1f0c6140bf51c02b2c1e92d7ae18c8bd5524f09559258dec7f1c9b69a7f3c050a73116b75b176ea779a7843ee27e035d420a7a35288165b7732e40c2ceb3e8ef
+"@next/swc-android-arm-eabi@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-android-arm-eabi@npm:12.1.5"
+  checksum: 3c7dcad21dfc8049f98539fd5d62ead93735ee5dd7115fa6f8d36a147858d8451b656e77f39b79d12c77a118567c0c4c849ea0257533e1dae025110650e4ba98
   languageName: node
   linkType: hard
 
-"@next/swc-android-arm64@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-android-arm64@npm:12.1.4"
-  checksum: b2c68e09ff30ecf3d9aefca85da7e96a6888de1b27fc7e309b7b59b4d92653166b6a7d382fdbedd2f9a301b1fbdd3dd48f423a135b1787d2305be3e9b27a6f56
+"@next/swc-android-arm64@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-android-arm64@npm:12.1.5"
+  checksum: 5d47320db7c26875ce94b792b9cbeee49f78875f90fb4755409c9485779a393692a914061c4484fd28140d68622fb23b999012aa0373859d49f385796912c863
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-arm64@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-darwin-arm64@npm:12.1.4"
-  checksum: 779a4182d2a5c35310ce6d7f189f422bd8cbb1fb7d3b247b6d0905f2f4399f414359e645b8030b5cbe9af225c4768ea257ebee886834bd7ac747cbe6b11d968d
+"@next/swc-darwin-arm64@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-darwin-arm64@npm:12.1.5"
+  checksum: 912cad11dec78b118f3c64dec5ce4d2203558236e6214817848c1b939d881ede029a3beb4abb081177677113d4faea673eaaf1c8aa84217dc8da59acb397c439
   languageName: node
   linkType: hard
 
-"@next/swc-darwin-x64@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-darwin-x64@npm:12.1.4"
-  checksum: f767c4504f3467505edfda0f3c69d6c6b0d51e21078290575a280291e6125e920d34827d86571f868b524d58f7649f58612fd754876179605221c8515f609447
+"@next/swc-darwin-x64@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-darwin-x64@npm:12.1.5"
+  checksum: 2992c74402a212512419db5b1afe4d65012b37122ab5401ecba2fac36216f7a70365942fb0a86b81838e4937fc3a4f2430f31b084536fdbd739d0320d5d44a29
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm-gnueabihf@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-linux-arm-gnueabihf@npm:12.1.4"
-  checksum: 3c71c07ecf89e57edbc13a0ca0e3f51dbc406146b235a11c6f3de7b3ba01019708dcfb165bd6fb27a3425689573caf4f07ba0db1be39f15a33733afdccf9d781
+"@next/swc-linux-arm-gnueabihf@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-linux-arm-gnueabihf@npm:12.1.5"
+  checksum: f2c834950e08314cc1274de83242ac90721318ddabc55b5fc9500a992a5f1c62c617c7cf152418ed7c062cac22728f62d2d89e8b6b0e6799b03bc6c8d0daa31d
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-gnu@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-linux-arm64-gnu@npm:12.1.4"
-  checksum: 06843c869f1a74f601aff80015d63abb43ca7a1e917b923f74b41cc3a4d07d36fd8f9af811dfcf3b12b866090952a357d26c5030954470d51d10a345c2a937e2
+"@next/swc-linux-arm64-gnu@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-linux-arm64-gnu@npm:12.1.5"
+  checksum: 3e421adc11dc70c7c4a3fd49618f7e4b8ea0adac1c3442ba0fbbd1536ae1ee18377e388040f674c91eaacee1ac24cd37eac9ca139030a51f275386e380d3a2c5
   languageName: node
   linkType: hard
 
-"@next/swc-linux-arm64-musl@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-linux-arm64-musl@npm:12.1.4"
-  checksum: 5016c9eac716c3d08c953241bd25b8593275c4dbbd5d008d67d765a180516b80d9bd8d14fdcf679420c8ead4de56a737f91abc93fe65386ccd39ed1fed761dae
+"@next/swc-linux-arm64-musl@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-linux-arm64-musl@npm:12.1.5"
+  checksum: a5d79599f88eb2479e9c1861c676c1c91860eaa990ce59c90805711034d05106d7ba59776e0c6c0f60922e026221a379c66f3caea4cede93849ca222f01aa8c3
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-gnu@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-linux-x64-gnu@npm:12.1.4"
-  checksum: 553f3dc92ec80e8eb71a8816f4db520cd41b47e67af11fe861aea2eb14f46d7a3982f02aff9e2914c4174f3f71b274994d62fc48e8c0d8fcf7a95d58948558b8
+"@next/swc-linux-x64-gnu@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-linux-x64-gnu@npm:12.1.5"
+  checksum: 25d79ce86ee62b3a2e83c37fec30a8bf6d3342faeeb2d0f6e4c6b96265ef95a81061bc0ee1d18113f0a092d15f797db146d51990425604f04746a37de8ca0c4d
   languageName: node
   linkType: hard
 
-"@next/swc-linux-x64-musl@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-linux-x64-musl@npm:12.1.4"
-  checksum: a0aa5d469f99d7fac42273bc2f6b68956a6e1d72954035a90a66209d2d77abbe2df25804489774905a0b0251064cd84d890b858e664fcdb7e93cadcf4f3cb925
+"@next/swc-linux-x64-musl@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-linux-x64-musl@npm:12.1.5"
+  checksum: fef770f8e4b92eed14880eeacd6a251b81663118efb0ef6d508fc5a58db99ecc37a46279f7c1c8dc4039bed8866fec85cffc39d8ae586b0050a28adeff6d2bbc
   languageName: node
   linkType: hard
 
-"@next/swc-win32-arm64-msvc@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-win32-arm64-msvc@npm:12.1.4"
-  checksum: febc6f5f00e4d9ccf059419f2df28ea2d372e610f07bb540b8ef8d485edc36a0c7f998910d4cd243cf614c2bd00bd6c4df6dabd86d4d359792382d11a4dd911e
+"@next/swc-win32-arm64-msvc@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-win32-arm64-msvc@npm:12.1.5"
+  checksum: 53ddbcab8a5c6c5d8b2e85c17353016662bd7945efecc1364027bbc1296a8786e65911b7df7b08e448f2e971fdd28260afe7200e12364405409df81f65b53e0e
   languageName: node
   linkType: hard
 
-"@next/swc-win32-ia32-msvc@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-win32-ia32-msvc@npm:12.1.4"
-  checksum: cb67544523664aa2378dc0fa6ee539a396d779db19be7b95328cb58cd56b2cc98db934e52520be97e2f6205e3d5adae9d814d7587afd59f8c66e2e3d4e988498
+"@next/swc-win32-ia32-msvc@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-win32-ia32-msvc@npm:12.1.5"
+  checksum: 1daf70d4804cf24ab0ffc6e44257f0b63943a6466c3fb428d247dce681f4b64ed6e79197cdff6a6b8d60a38cd1deae68b8ad4323ca4c4028c90a2b0cc7efb435
   languageName: node
   linkType: hard
 
-"@next/swc-win32-x64-msvc@npm:12.1.4":
-  version: 12.1.4
-  resolution: "@next/swc-win32-x64-msvc@npm:12.1.4"
-  checksum: c954195de9c0ab0066b93a78051aa4e274dc51ab3db7b62e92ff77510b18f22e2b9d0609de09b2c1833bf637b14145a2a658edca3cfa24ea133705663e758de6
+"@next/swc-win32-x64-msvc@npm:12.1.5":
+  version: 12.1.5
+  resolution: "@next/swc-win32-x64-msvc@npm:12.1.5"
+  checksum: aa670335e0ce90a558aa2c5cf2f2ee729a88431d62509e176530cbe2b4095c12acca1695f2742a7811d6ffcf3b097904a7e840d4bf3b11baefab5798a607f4b7
   languageName: node
   linkType: hard
 
@@ -14996,7 +14996,7 @@ __metadata:
     dotenv: 16.0.0
     eslint: 8.14.0
     lint-staged: 12.4.1
-    next: 12.1.4
+    next: 12.1.5
     nodemon: 2.0.16
     path-match: 1.2.4
     postmate: 1.5.2
@@ -15342,7 +15342,7 @@ __metadata:
     jest-mock-axios: 4.6.1
     jest-styled-components: 7.0.8
     js-base64: 3.7.2
-    next: 12.1.4
+    next: 12.1.5
     node-forge: 1.3.1
     postcss: 8.4.13
     postmate: 1.5.2
@@ -15479,13 +15479,13 @@ __metadata:
     dotenv: 16.0.0
     embla-carousel-react: 6.2.0
     eslint: 8.10.0
-    eslint-config-next: 12.1.4
+    eslint-config-next: 12.1.5
     feed: 4.2.2
     gray-matter: 4.0.3
     jest: 27.5.1
     jest-styled-components: 7.0.8
     lint-staged: 12.3.7
-    next: 12.1.4
+    next: 12.1.5
     next-seo: 5.0.0
     path-match: 1.2.4
     postcss: 8.4.13
@@ -25675,11 +25675,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-next@npm:12.1.4":
-  version: 12.1.4
-  resolution: "eslint-config-next@npm:12.1.4"
+"eslint-config-next@npm:12.1.5":
+  version: 12.1.5
+  resolution: "eslint-config-next@npm:12.1.5"
   dependencies:
-    "@next/eslint-plugin-next": 12.1.4
+    "@next/eslint-plugin-next": 12.1.5
     "@rushstack/eslint-patch": 1.0.8
     "@typescript-eslint/parser": 5.10.1
     eslint-import-resolver-node: 0.3.4
@@ -25695,7 +25695,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 913a1b938a35886efebe3c909175ac47b26499d75ddd33cdab4d66eeaac5fdbbad1ef22c601b8f87ef562dee4c2685335fbced356c4a6dc270b7c293a43fd220
+  checksum: 823b50d0c3706b206ab8c9fa62c6580603d7b523b678f1a7dbbb226697c22626e48ee05fab11a8136f82bf6d559d2357e39c90bef3c32d9a167437b0660a9175
   languageName: node
   linkType: hard
 
@@ -38572,23 +38572,23 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"next@npm:12.1.4":
-  version: 12.1.4
-  resolution: "next@npm:12.1.4"
+"next@npm:12.1.5":
+  version: 12.1.5
+  resolution: "next@npm:12.1.5"
   dependencies:
-    "@next/env": 12.1.4
-    "@next/swc-android-arm-eabi": 12.1.4
-    "@next/swc-android-arm64": 12.1.4
-    "@next/swc-darwin-arm64": 12.1.4
-    "@next/swc-darwin-x64": 12.1.4
-    "@next/swc-linux-arm-gnueabihf": 12.1.4
-    "@next/swc-linux-arm64-gnu": 12.1.4
-    "@next/swc-linux-arm64-musl": 12.1.4
-    "@next/swc-linux-x64-gnu": 12.1.4
-    "@next/swc-linux-x64-musl": 12.1.4
-    "@next/swc-win32-arm64-msvc": 12.1.4
-    "@next/swc-win32-ia32-msvc": 12.1.4
-    "@next/swc-win32-x64-msvc": 12.1.4
+    "@next/env": 12.1.5
+    "@next/swc-android-arm-eabi": 12.1.5
+    "@next/swc-android-arm64": 12.1.5
+    "@next/swc-darwin-arm64": 12.1.5
+    "@next/swc-darwin-x64": 12.1.5
+    "@next/swc-linux-arm-gnueabihf": 12.1.5
+    "@next/swc-linux-arm64-gnu": 12.1.5
+    "@next/swc-linux-arm64-musl": 12.1.5
+    "@next/swc-linux-x64-gnu": 12.1.5
+    "@next/swc-linux-x64-musl": 12.1.5
+    "@next/swc-win32-arm64-msvc": 12.1.5
+    "@next/swc-win32-ia32-msvc": 12.1.5
+    "@next/swc-win32-x64-msvc": 12.1.5
     caniuse-lite: ^1.0.30001283
     postcss: 8.4.5
     styled-jsx: 5.0.1
@@ -38632,7 +38632,7 @@ fsevents@~2.1.1:
       optional: true
   bin:
     next: dist/bin/next
-  checksum: d19354cf4e5bc58473e922c38a5a282de62c0b78bebdd31617b9e958b6f6877bcc2df371b7368db2110e098f87722e084c950f9229d35e4c06842de79cd90d20
+  checksum: a70e70f7863035d9b2d5bb70ede6b165d4022c75d8e3b44411097eb20e4a4d9b34205873cb2d0088a76986fe3e0f160edad0ff7602fc269994e02dc4d21d035c
   languageName: node
   linkType: hard
 
