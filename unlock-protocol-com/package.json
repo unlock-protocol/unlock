@@ -23,7 +23,7 @@
     "babel-jest": "27.5.1",
     "babel-loader": "8.2.4",
     "babel-plugin-require-context-hook": "1.0.0",
-    "babel-plugin-styled-components": "2.0.6",
+    "babel-plugin-styled-components": "2.0.7",
     "babel-preset-react-app": "10.0.1",
     "dotenv": "16.0.0",
     "embla-carousel-react": "6.2.0",
