@@ -14659,7 +14659,7 @@ __metadata:
     ethereumjs-util: 6.2.1
     ethers: 5.6.2
     express: 4.17.3
-    express-jwt: 6.1.1
+    express-jwt: 7.5.2
     express-list-endpoints: 6.0.0
     express-winston: 4.2.0
     graphql: 15.8.0
@@ -17677,7 +17677,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:1.x, async@npm:^1.4.2, async@npm:^1.5.0":
+"async@npm:1.x, async@npm:^1.4.2":
   version: 1.5.2
   resolution: "async@npm:1.5.2"
   checksum: fe5d6214d8f15bd51eee5ae8ec5079b228b86d2d595f47b16369dec2e11b3ff75a567bb5f70d12d79006665fbbb7ee0a7ec0e388524eefd454ecbe651c124ebd
@@ -27537,15 +27537,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express-jwt@npm:6.1.1":
-  version: 6.1.1
-  resolution: "express-jwt@npm:6.1.1"
+"express-jwt@npm:7.5.2":
+  version: 7.5.2
+  resolution: "express-jwt@npm:7.5.2"
   dependencies:
-    async: ^1.5.0
     express-unless: ^1.0.0
-    jsonwebtoken: ^8.1.0
-    lodash: ^4.17.21
-  checksum: 91b3da4c2bb080a2c3d125327a492f6f2b90a55c3b0fbdf51c78e979b636a6c94cb73fd2dbcebbdd5eedd9dcfe858f2b4ea4ce9c1285e60547f246546d31d9c1
+    jsonwebtoken: ^8.5.1
+  checksum: 204a45fe4ea3a7a9eca7174880a010df5b6d2c5781ee267ad5c04678b675ac2b69e82e7f9e10fed73604280e9b2efc79a360e4c87f54582dda78c4ea21736b9a
   languageName: node
   linkType: hard
 
@@ -34680,7 +34678,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:8.5.1, jsonwebtoken@npm:^8.1.0":
+"jsonwebtoken@npm:8.5.1, jsonwebtoken@npm:^8.5.1":
   version: 8.5.1
   resolution: "jsonwebtoken@npm:8.5.1"
   dependencies:
