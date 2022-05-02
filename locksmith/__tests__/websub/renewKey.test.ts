@@ -1,7 +1,11 @@
 // see hardhat script https://github.com/unlock-protocol/unlock/blob/8e3b93f0c3b0c1ff0d8d883e2dbe8b01ca029e06/smart-contracts/scripts/renew.js
 import { ethers } from 'ethers'
-import { renewMembershipFor } from '../../src/websub/helpers/renewKey'
 import { KeyRenewal } from '../../src/models'
+
+import {
+  renewMembershipFor,
+  isWorthRenewing,
+} from '../../src/websub/helpers/renewKey'
 
 const network = 31137
 const keyId = 1
@@ -23,6 +27,58 @@ const renewalInfo = {
   lockAddress: mockLock.address,
 }
 
+jest.mock('../../src/utils/keyPricer', () => {
+  return jest.fn(() => {
+    return {
+      gasFee: (network: number) =>
+        Promise.resolve(network === 1 ? 1000000 : 10),
+    }
+  })
+})
+
+describe('isWorthRenewing', () => {
+  it('should return gas refund value', async () => {
+    expect.assertions(2)
+    const { shouldRenew, gasRefund } = await isWorthRenewing(
+      network,
+      mockLock,
+      keyId
+    )
+    expect(gasRefund).toEqual(150000)
+    expect(shouldRenew).toBeTruthy()
+  })
+  it('should return true when gas refund is enough', async () => {
+    expect.assertions(2)
+    const { shouldRenew, gasRefund } = await isWorthRenewing(1, mockLock, keyId)
+    expect(gasRefund).toEqual(150000)
+    expect(shouldRenew).toBeTruthy()
+  })
+  it('should return true when gas fee is covered', async () => {
+    expect.assertions(2)
+    const lock = {
+      ...mockLock,
+      gasRefundValue: async () => ethers.BigNumber.from(0),
+    }
+    const { shouldRenew, gasRefund } = await isWorthRenewing(
+      network,
+      lock,
+      keyId
+    )
+    expect(gasRefund).toEqual(0)
+    expect(shouldRenew).toBeTruthy()
+  })
+  it('should return false when both conditions arent unmet (gasrefund too low + higher than max covered)', async () => {
+    expect.assertions(2)
+    const lock = {
+      ...mockLock,
+      gasRefundValue: async () => ethers.BigNumber.from(0),
+    }
+    const { shouldRenew, gasRefund } = await isWorthRenewing(1, lock, keyId)
+    expect(gasRefund).toEqual(0)
+    expect(shouldRenew).toBeFalsy()
+  })
+})
+
 describe('renewKey', () => {
   describe('abort on non-reccuring locks', () => {
     it('should not renew when lock version <10', async () => {
@@ -35,20 +91,19 @@ describe('renewKey', () => {
         msg: 'Renewal only supported for lock v10+',
       })
     })
-    it('should not renew if lock gas refund is not set', async () => {
+    it('should not renew if lock gas refund is not set and cost are not covered', async () => {
       expect.assertions(1)
       const lock = {
         ...mockLock,
         gasRefundValue: async () => ethers.BigNumber.from(0),
       }
-      await expect(
-        renewMembershipFor(network, lock, keyId)
-      ).resolves.toMatchObject({
+      await expect(renewMembershipFor(1, lock, keyId)).resolves.toMatchObject({
         ...renewalInfo,
+        network: 1,
         msg: 'GasRefundValue (0) does not cover gas cost',
       })
     })
-    it('should not renew if lock gas refund is not sufficient', async () => {
+    it('should not renew if lock gas refund is not sufficient and cost are not covered', async () => {
       expect.assertions(1)
       const lock = {
         ...mockLock,
@@ -56,10 +111,9 @@ describe('renewKey', () => {
           renewMembershipFor: async () => ethers.BigNumber.from(200000),
         },
       }
-      await expect(
-        renewMembershipFor(network, lock, keyId)
-      ).resolves.toMatchObject({
+      await expect(renewMembershipFor(1, lock, keyId)).resolves.toMatchObject({
         ...renewalInfo,
+        network: 1,
         msg: 'GasRefundValue (150000) does not cover gas cost',
       })
     })

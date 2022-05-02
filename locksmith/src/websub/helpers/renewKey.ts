@@ -3,11 +3,17 @@ import { networks } from '@unlock-protocol/networks'
 import { NetworkConfig } from '@unlock-protocol/types'
 import { KeyRenewal } from '../../models'
 import { purchaserCredentials } from '../../../config/config'
+import KeyPricer from '../../utils/keyPricer'
 
 interface RenewKeyParams {
   keyId: number
   lockAddress: string
   network: number
+}
+
+interface ShouldRenew {
+  shouldRenew: boolean
+  gasRefund: string
 }
 
 const abi = [
@@ -57,6 +63,46 @@ const abi = [
   },
 ]
 
+// precision base for gas calculations
+const BASE = 1000000
+
+const getGasFee = async (network: number) => {
+  const pricer = new KeyPricer()
+  const gasPrice = await pricer.gasFee(network, BASE)
+  return gasPrice
+}
+
+export const isWorthRenewing = async (
+  network: number,
+  lock: any,
+  keyId: number
+): Promise<ShouldRenew> => {
+  // max cost covered by Unlock Inc for renew keys (in USD cents base 1000)
+  const MAX_RENEWAL_COST_COVERED = ethers.BigNumber.from(100000).mul(BASE)
+
+  // estimate gas for the renewMembership function (check if reverts).
+  const gasLimit = await lock.estimateGas.renewMembershipFor(
+    keyId,
+    constants.AddressZero
+  )
+  // find cost to renew in USD cents
+  const gasFeeInCents = await getGasFee(network)
+  const costToRenew = await gasLimit.mul(gasFeeInCents)
+
+  // find gas refund in USD cents
+  const gasRefund = await lock.gasRefundValue()
+  const costRefunded = gasRefund.mul(gasFeeInCents)
+
+  const shouldRenew =
+    costToRenew.lte(costRefunded) ||
+    ethers.BigNumber.from(costToRenew).lte(MAX_RENEWAL_COST_COVERED)
+
+  return {
+    shouldRenew,
+    gasRefund: gasRefund.toNumber(),
+  }
+}
+
 export const renewMembershipFor = async (
   network: number,
   lock: any,
@@ -77,18 +123,14 @@ export const renewMembershipFor = async (
     }
   }
 
-  // We only renew keys for which we are getting a gas refund whose value cover the gas spent.
-  const gasRefund = await lock.gasRefundValue()
+  const { shouldRenew, gasRefund } = await isWorthRenewing(network, lock, keyId)
 
-  // estimate gas for the renewMembership function.
-  const gasLimit = await lock.estimateGas.renewMembershipFor(
-    keyId,
-    constants.AddressZero
-  )
-  if (gasRefund.lte(gasLimit)) {
+  if (!shouldRenew) {
     return {
-      ...renewalInfo,
-      msg: `GasRefundValue (${gasRefund.toString()}) does not cover gas cost`,
+      network,
+      keyId,
+      lockAddress: lock.address,
+      msg: `GasRefundValue (${gasRefund}) does not cover gas cost`,
     }
   }
 
