@@ -13836,6 +13836,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/retry@npm:0.12.0":
+  version: 0.12.0
+  resolution: "@types/retry@npm:0.12.0"
+  checksum: 61a072c7639f6e8126588bf1eb1ce8835f2cb9c2aba795c4491cf6310e013267b0c8488039857c261c387e9728c1b43205099223f160bb6a76b4374f741b5603
+  languageName: node
+  linkType: hard
+
 "@types/retry@npm:^0.12.0":
   version: 0.12.1
   resolution: "@types/retry@npm:0.12.1"
@@ -14938,7 +14945,7 @@ __metadata:
     node-cron: 3.0.0
     node-mocks-http: 1.11.0
     nodemon: 2.0.15
-    p-retry: 4.6.1
+    p-retry: 4.6.2
     parse-data-uri: 0.2.0
     path-to-regexp: 6.2.0
     pg: 8.7.3
@@ -39850,7 +39857,17 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"p-retry@npm:4.6.1, p-retry@npm:^4.5.0":
+"p-retry@npm:4.6.2":
+  version: 4.6.2
+  resolution: "p-retry@npm:4.6.2"
+  dependencies:
+    "@types/retry": 0.12.0
+    retry: ^0.13.1
+  checksum: 45c270bfddaffb4a895cea16cb760dcc72bdecb6cb45fef1971fa6ea2e91ddeafddefe01e444ac73e33b1b3d5d29fb0dd18a7effb294262437221ddc03ce0f2e
+  languageName: node
+  linkType: hard
+
+"p-retry@npm:^4.5.0":
   version: 4.6.1
   resolution: "p-retry@npm:4.6.1"
   dependencies:
