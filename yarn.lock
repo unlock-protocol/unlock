@@ -5581,7 +5581,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/abi@npm:5.6.0, @ethersproject/abi@npm:^5.6.0":
+"@ethersproject/abi@npm:5.6.1":
+  version: 5.6.1
+  resolution: "@ethersproject/abi@npm:5.6.1"
+  dependencies:
+    "@ethersproject/address": ^5.6.0
+    "@ethersproject/bignumber": ^5.6.0
+    "@ethersproject/bytes": ^5.6.0
+    "@ethersproject/constants": ^5.6.0
+    "@ethersproject/hash": ^5.6.0
+    "@ethersproject/keccak256": ^5.6.0
+    "@ethersproject/logger": ^5.6.0
+    "@ethersproject/properties": ^5.6.0
+    "@ethersproject/strings": ^5.6.0
+  checksum: 0545a874dc5bfe2fec63e472d269f9c6b22b8f9ea77f4c23b93d36a8652152171f1ae2681dc64ec8d46b69506967a5e99c8156dc1f74346eea48cb6b64a1fdc9
+  languageName: node
+  linkType: hard
+
+"@ethersproject/abi@npm:^5.6.0":
   version: 5.6.0
   resolution: "@ethersproject/abi@npm:5.6.0"
   dependencies:
@@ -6168,7 +6185,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/networks@npm:5.6.1, @ethersproject/networks@npm:^5.6.0":
+"@ethersproject/networks@npm:5.6.2":
+  version: 5.6.2
+  resolution: "@ethersproject/networks@npm:5.6.2"
+  dependencies:
+    "@ethersproject/logger": ^5.6.0
+  checksum: 3326a2d4accee41c9e93bdd3ae51db2319edd4eb9f7aca16e251261157b3940806fe837e9082f28f126164d9bb7583083c6be9493e7073d25289d3e7802c6873
+  languageName: node
+  linkType: hard
+
+"@ethersproject/networks@npm:^5.6.0":
   version: 5.6.1
   resolution: "@ethersproject/networks@npm:5.6.1"
   dependencies:
@@ -6315,9 +6341,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/providers@npm:5.6.2":
-  version: 5.6.2
-  resolution: "@ethersproject/providers@npm:5.6.2"
+"@ethersproject/providers@npm:5.6.4":
+  version: 5.6.4
+  resolution: "@ethersproject/providers@npm:5.6.4"
   dependencies:
     "@ethersproject/abstract-provider": ^5.6.0
     "@ethersproject/abstract-signer": ^5.6.0
@@ -6338,7 +6364,7 @@ __metadata:
     "@ethersproject/web": ^5.6.0
     bech32: 1.1.4
     ws: 7.4.6
-  checksum: 30409755c227eab65a94ec3d7834560af5d0c7a2359855e597c0ecdfd312e851324ab8d47d0afcf60efa7a008b75c23be1a1a9d219872f99aa165283139f543a
+  checksum: 75ec09bbff5c7b8b9372fd7e35b11da1262ae5b16601beb27a028e3ac9332502765540fd9a07971b843aafb54a145e0a7c6a2f28ed97a5707be83d144a97e0f7
   languageName: node
   linkType: hard
 
@@ -14910,7 +14936,7 @@ __metadata:
     eslint-config-standard: 16.0.3
     eth-sig-util: 2.5.4
     ethereumjs-util: 6.2.1
-    ethers: 5.6.2
+    ethers: 5.6.4
     express: 4.17.3
     express-jwt: 7.5.2
     express-list-endpoints: 6.0.0
@@ -15166,7 +15192,7 @@ __metadata:
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    ethers: 5.6.2
+    ethers: 5.6.4
     typescript: 4.6.2
   languageName: unknown
   linkType: soft
@@ -15327,7 +15353,7 @@ __metadata:
     eslint: 8.14.0
     eth-sig-util: 2.5.4
     ethereumjs-utils: 5.2.5
-    ethers: 5.6.2
+    ethers: 5.6.4
     file-saver: 2.0.5
     graphql: 15.8.0
     jest: 27.5.1
@@ -27424,11 +27450,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.6.2":
-  version: 5.6.2
-  resolution: "ethers@npm:5.6.2"
+"ethers@npm:5.6.4":
+  version: 5.6.4
+  resolution: "ethers@npm:5.6.4"
   dependencies:
-    "@ethersproject/abi": 5.6.0
+    "@ethersproject/abi": 5.6.1
     "@ethersproject/abstract-provider": 5.6.0
     "@ethersproject/abstract-signer": 5.6.0
     "@ethersproject/address": 5.6.0
@@ -27443,10 +27469,10 @@ __metadata:
     "@ethersproject/json-wallets": 5.6.0
     "@ethersproject/keccak256": 5.6.0
     "@ethersproject/logger": 5.6.0
-    "@ethersproject/networks": 5.6.1
+    "@ethersproject/networks": 5.6.2
     "@ethersproject/pbkdf2": 5.6.0
     "@ethersproject/properties": 5.6.0
-    "@ethersproject/providers": 5.6.2
+    "@ethersproject/providers": 5.6.4
     "@ethersproject/random": 5.6.0
     "@ethersproject/rlp": 5.6.0
     "@ethersproject/sha2": 5.6.0
@@ -27458,7 +27484,7 @@ __metadata:
     "@ethersproject/wallet": 5.6.0
     "@ethersproject/web": 5.6.0
     "@ethersproject/wordlists": 5.6.0
-  checksum: 47458ba83140bff55e884ae4e7f1558b0bb3a4d90b98c002d60387cfc1fe7c5cac7a6903930880e6d7e791ebdc5409a16c634e77bcb0cc56d85ccd6b5441c7ad
+  checksum: 2d3a10823a0e83c692f59ad513572fb17f0924941c18d512929dae3bfe1e3aa1d4c77d7547eb993fb4363a73c0d06195580d109a38382e802b96264e7b21f583
   languageName: node
   linkType: hard
 
