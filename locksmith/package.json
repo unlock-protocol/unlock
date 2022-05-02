@@ -36,8 +36,8 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
-    "@sentry/node": "6.19.3",
-    "@sentry/tracing": "6.19.3",
+    "@sentry/node": "6.19.7",
+    "@sentry/tracing": "6.19.7",
     "@types/random-words": "1.1.2",
     "@unlock-protocol/contracts": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
