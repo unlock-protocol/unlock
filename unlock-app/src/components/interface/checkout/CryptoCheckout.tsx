@@ -13,7 +13,6 @@ import { useAccount } from '../../../hooks/useAccount'
 import { StorageService } from '../../../services/storageService'
 
 import {
-  generateDataForPurchaseHook,
   inClaimDisallowList,
   lockTickerSymbol,
   userCanAffordKey,
@@ -35,7 +34,7 @@ interface CryptoCheckoutProps {
   redirectUri?: string
   numberOfRecipients?: number
   recipients?: any[]
-  clearMultileRecipients?: () => void
+  clearMultipleRecipients?: () => void
 }
 
 export const CryptoCheckout = ({
@@ -49,7 +48,7 @@ export const CryptoCheckout = ({
   redirectUri,
   numberOfRecipients = 1,
   recipients = [],
-  clearMultileRecipients,
+  clearMultipleRecipients,
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
@@ -128,6 +127,10 @@ export const CryptoCheckout = ({
     changeNetwork(networks[network])
   }
 
+  /**
+   * Handling multiple purchases!
+   * @returns
+   */
   const onPurchaseMultiple = async () => {
     if (!lock.address) return
     if (!lock.keyPrice) return
@@ -136,10 +139,31 @@ export const CryptoCheckout = ({
     try {
       setPurchasePending(true)
       const keyPrices = new Array(owners.length).fill(lock.keyPrice)
+
+      let data = new Array(owners.length).fill(null)
+      // We need to handle the captcha here too!
+      if (paywallConfig.captcha) {
+        // get the secret from locksmith!
+        const response = await storageService.getDataForRecipientsAndCaptcha(
+          owners,
+          recaptchaValue
+        )
+        if (response.error || !response.signatures) {
+          setPurchasePending(false)
+          setRecaptchaValue('')
+          toast.error(
+            'The Captcha value could not ve verified. Please try again.'
+          )
+          return false
+        }
+        data = response.signatures
+      }
+
       await purchaseMultipleKeys(
         lock.address,
         keyPrices,
         owners,
+        data,
         (hash: string) => {
           emitTransactionInfo({
             lock: lock.address,
@@ -172,12 +196,13 @@ export const CryptoCheckout = ({
       const validPurchase = await onPurchaseMultiple()
       if (validPurchase) {
         setPurchasedMultiple(true)
-        if (typeof clearMultileRecipients === 'function') {
+        if (typeof clearMultipleRecipients === 'function') {
           // clear recipients list after transactions done
-          clearMultileRecipients()
+          clearMultipleRecipients()
         }
       }
     } else if (!cantBuyWithCrypto && account) {
+      // TODO: we should not have a different path for single or multiple purchase!
       setPurchasePending(true)
       try {
         const referrer =
@@ -190,15 +215,10 @@ export const CryptoCheckout = ({
           : recipients[0]?.resolvedAddress ?? account
         let data
 
-        if (paywallConfig.locks[lock.address].secret) {
-          data = await generateDataForPurchaseHook(
-            paywallConfig.locks[lock.address].secret,
-            purchaseAccount
-          )
-        } else if (paywallConfig.captcha) {
+        if (paywallConfig.captcha) {
           // get the secret from locksmith!
-          const response = await storageService.getDataForUserAndCaptcha(
-            purchaseAccount,
+          const response = await storageService.getDataForRecipientsAndCaptcha(
+            [purchaseAccount], // recipient
             recaptchaValue
           )
           if (response.error) {
@@ -208,7 +228,7 @@ export const CryptoCheckout = ({
               'The Captcha value could not ve verified. Please try again.'
             )
           }
-          data = response.signature
+          data = response.signatures[0]
         }
 
         await purchaseKey(purchaseAccount, referrer, data, (hash: string) => {
@@ -437,7 +457,7 @@ CryptoCheckout.defaultProps = {
   redirectUri: '',
   numberOfRecipients: 1,
   recipients: [],
-  clearMultileRecipients: () => undefined,
+  clearMultipleRecipients: () => undefined,
 }
 
 interface CheckoutButtonProps {

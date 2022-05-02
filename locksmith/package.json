@@ -92,7 +92,7 @@
     "zod": "3.14.3"
   },
   "devDependencies": {
-    "@types/cookie-parser": "1.4.2",
+    "@types/cookie-parser": "1.4.3",
     "@types/cors": "2.8.12",
     "@types/eth-sig-util": "2.1.1",
     "@types/ethereumjs-util": "5.2.0",
@@ -105,7 +105,7 @@
     "@types/node": "16.11.21",
     "@types/node-cron": "3.0.1",
     "@types/request-promise-native": "1.0.18",
-    "@types/sequelize": "4.28.11",
+    "@types/sequelize": "4.28.12",
     "@types/stripe": "8.0.416",
     "@types/supertest": "2.0.12",
     "@unlock-protocol/eslint-config": "workspace:^",
