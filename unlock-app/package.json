@@ -16,7 +16,7 @@
     "@stripe/react-stripe-js": "1.7.2",
     "@stripe/stripe-js": "1.29.0",
     "@testing-library/jest-dom": "5.16.4",
-    "@testing-library/react": "12.1.4",
+    "@testing-library/react": "12.1.5",
     "@testing-library/react-hooks": "8.0.0",
     "@types/eth-sig-util": "2.1.1",
     "@types/file-saver": "2.0.5",
