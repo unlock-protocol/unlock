@@ -14664,7 +14664,7 @@ __metadata:
     express-winston: 4.2.0
     graphql: 15.8.0
     graphql-tag: 2.12.6
-    html-template-tag: 4.0.0
+    html-template-tag: 4.0.1
     isomorphic-fetch: 3.0.0
     jest: 27.5.1
     jsonwebtoken: 8.5.1
@@ -30731,12 +30731,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"html-template-tag@npm:4.0.0":
-  version: 4.0.0
-  resolution: "html-template-tag@npm:4.0.0"
+"html-template-tag@npm:4.0.1":
+  version: 4.0.1
+  resolution: "html-template-tag@npm:4.0.1"
   dependencies:
     html-es6cape: ^2.0.0
-  checksum: 643bbfeb3714cb845db8a17b84404288b778b8d767fdd25707859188d6f5e63dbcca89d6ab8e1e304d29682f3793bf5f5ddcf80c1f57d4df6ef8e13a40b42718
+  checksum: 68101d03c5366d2143c4411a5954b1ee0363c022a8a68308383f2d848ae58328000f08b748d3eb5a0bed722fc16cb88421e6ea7b8af76203781aba3f8d59fb8d
   languageName: node
   linkType: hard
 
