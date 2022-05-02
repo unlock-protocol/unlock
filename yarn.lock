@@ -13713,14 +13713,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/styled-components@npm:5.1.24":
-  version: 5.1.24
-  resolution: "@types/styled-components@npm:5.1.24"
+"@types/styled-components@npm:5.1.25":
+  version: 5.1.25
+  resolution: "@types/styled-components@npm:5.1.25"
   dependencies:
     "@types/hoist-non-react-statics": "*"
     "@types/react": "*"
     csstype: ^3.0.2
-  checksum: 158c69085ad899622f558426c623d3052f7b521ede01c0fd342280c93ef2ac462a39c4c3b2374e7c7e2630fcc64dfcfd8f4446c8d4809cbac9a7b962a73357c0
+  checksum: 60ce64f13283b01da54fd3a4c5703769d8575c979d5ec6b67ad124c2d4df980c9b96bb91af87e03f6447a816a5d2b0270c63eefad60cfa885091b594984525f5
   languageName: node
   linkType: hard
 
@@ -14725,7 +14725,7 @@ __metadata:
     "@types/postmate": 1.5.2
     "@types/react": 17.0.43
     "@types/react-dom": 17.0.14
-    "@types/styled-components": 5.1.24
+    "@types/styled-components": 5.1.25
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
@@ -15050,7 +15050,7 @@ __metadata:
     "@types/react-google-recaptcha": 2.1.5
     "@types/react-gtm-module": 2.0.1
     "@types/storybook__react": 4.0.2
-    "@types/styled-components": 5.1.24
+    "@types/styled-components": 5.1.25
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
@@ -15203,7 +15203,7 @@ __metadata:
     "@types/next": 8.0.7
     "@types/node": 17.0.21
     "@types/react": 17.0.43
-    "@types/styled-components": 5.1.24
+    "@types/styled-components": 5.1.25
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
