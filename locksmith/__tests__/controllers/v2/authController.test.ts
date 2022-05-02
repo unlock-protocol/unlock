@@ -111,7 +111,7 @@ describe('Auth login endpoints for locksmith', () => {
       .send()
 
     expect(revokeResponse.status).toBe(200)
-    expect(revokeResponse.text).toBe('true')
+    expect(revokeResponse.body.message).toBe('Revoked')
     expect(tokenResponse.status).toBe(401)
   })
 })

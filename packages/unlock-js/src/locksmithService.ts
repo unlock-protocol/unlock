@@ -4,24 +4,15 @@ import { FetchError } from './utils'
 
 export const PRODUCTION_HOST = 'https://locksmith.unlock-protocol.com'
 
-interface LocksmithServiceOptions {
-  host?: string
-}
-
-interface Creditionals {
-  accessToken: string
-  refreshToken: string
-  walletAddress: string
+interface LocksmithOptions {
+  host: string
 }
 
 export class LocksmithService {
-  #creditionals?: Creditionals
-
   public baseURL: string
 
-  constructor(options: LocksmithServiceOptions = {}) {
-    const { host = PRODUCTION_HOST } = options
-    this.baseURL = host
+  constructor(options: LocksmithOptions) {
+    this.baseURL = options.host || PRODUCTION_HOST
   }
 
   /**
@@ -33,22 +24,6 @@ export class LocksmithService {
 
   getEndpoint(path: string) {
     return new URL(path, this.baseURL).toString()
-  }
-
-  /**
-   * This will provide headers with common defaults such as content-type set to json, authentication headers such as access token and refresh token, etc if they exist.
-   * @returns - Headers
-   */
-  getHeaders() {
-    const headers = new Headers()
-    headers.set('content-type', 'application/json')
-    if (!this.#creditionals) {
-      return headers
-    }
-    const { refreshToken, accessToken } = this.#creditionals
-    headers.set('Authorization', accessToken)
-    headers.set('refresh-token', refreshToken)
-    return headers
   }
 
   /**
@@ -95,7 +70,8 @@ export class LocksmithService {
    * ```
    */
   async login(message: string, signature: string) {
-    const headers = this.getHeaders()
+    const headers = new Headers()
+    headers.set('content-type', 'application/json')
     const response = await this.request('/v2/auth/login', {
       method: 'POST',
       headers,
@@ -107,27 +83,30 @@ export class LocksmithService {
 
     const json = await response.json()
 
-    this.#creditionals = {
+    return {
       accessToken: json.accessToken,
       refreshToken: json.refreshToken,
-      walletAddress: json.walletAddress,
     }
   }
 
   /**
    * This is used to refresh the creditionals on jwt token expiration.
    */
-  async creditionalsRefresh() {
-    const headers = this.getHeaders()
+  async refreshToken(token?: string) {
+    const headers = new Headers()
+    headers.set('content-type', 'application/json')
+    if (token) {
+      headers.set('refresh-token', token)
+    }
     const response = await this.request('/v2/auth/token', {
       method: 'POST',
       headers,
     })
     const json = await response.json()
-    this.#creditionals = {
-      accessToken: json.accessToken,
+
+    return {
       refreshToken: json.refreshToken,
-      walletAddress: json.walletAddress,
+      accessToken: json.accessToken,
     }
   }
 }

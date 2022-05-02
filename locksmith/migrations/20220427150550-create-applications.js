@@ -1,17 +1,23 @@
 'use strict'
+
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('RefreshTokens', {
+    await queryInterface.createTable('Applications', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      token: Sequelize.TEXT,
-      nonce: Sequelize.TEXT,
-      revoked: Sequelize.BOOLEAN,
+      name: {
+        allowNull: false,
+        type: Sequelize.TEXT,
+      },
       walletAddress: {
+        allowNull: false,
+        type: Sequelize.TEXT,
+      },
+      key: {
         allowNull: false,
         type: Sequelize.TEXT,
       },
@@ -24,10 +30,10 @@ module.exports = {
         type: Sequelize.DATE,
       },
     })
-    await queryInterface.addIndex('RefreshTokens', { fields: ['token'] })
-    await queryInterface.addIndex('RefreshTokens', { fields: ['nonce'] })
+    await queryInterface.addIndex('Applications', { fields: ['key'] })
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('RefreshTokens')
+    await queryInterface.dropTable('Applications')
   },
 }

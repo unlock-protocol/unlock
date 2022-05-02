@@ -3,7 +3,7 @@ import { ErrorTypes, generateNonce, SiweMessage } from 'siwe'
 import { Op } from 'sequelize'
 import { logger } from '../../logger'
 import { RefreshToken } from '../../models/refreshToken'
-import { createAccessToken, createRefreshToken } from '../../utils/jwt'
+import { createAccessToken, createRandomToken } from '../../utils/auth'
 
 export class AuthController {
   async login(request: Request, response: Response) {
@@ -31,12 +31,13 @@ export class AuthController {
 
       const accessToken = createAccessToken({
         walletAddress: fields.address,
+        type: 'user',
       })
 
       const refreshTokenData = new RefreshToken()
 
       refreshTokenData.walletAddress = fields.address
-      refreshTokenData.token = createRefreshToken()
+      refreshTokenData.token = createRandomToken()
       refreshTokenData.nonce = fields.nonce
 
       const { token: refreshToken } = await refreshTokenData.save()
@@ -80,9 +81,9 @@ export class AuthController {
         request.cookies['refresh-token']
 
       if (!refreshToken) {
-        return response
-          .status(401)
-          .send('No refresh token provided in the header or body.')
+        return response.status(401).send({
+          message: 'No refresh token provided in the header or body.',
+        })
       }
 
       const refreshTokenData = await RefreshToken.findOne({
@@ -95,27 +96,28 @@ export class AuthController {
       })
 
       if (!refreshTokenData) {
-        return response
-          .status(401)
-          .send('Refresh token provided is invalid or revoked.')
+        return response.status(401).send({
+          message: 'Refresh token provided is invalid or revoked.',
+        })
       }
 
       // rotate refresh token
-      refreshTokenData.token = createRefreshToken()
+      refreshTokenData.token = createRandomToken()
 
       await refreshTokenData.save()
 
       const accessToken = createAccessToken({
         walletAddress: refreshTokenData.walletAddress,
+        type: 'user',
       })
 
       return response
         .status(200)
         .setHeader('Authorization', `Bearer ${accessToken}`)
-        .setHeader('refresh-token', refreshTokenData.token)
         .cookie('refresh-token', refreshTokenData.token, {
           httpOnly: process.env.NODE_ENV === 'production',
         })
+        .setHeader('refresh-token', refreshTokenData.token)
         .send({
           walletAddress: refreshTokenData.walletAddress,
           refreshToken: refreshTokenData.token,
@@ -123,7 +125,33 @@ export class AuthController {
         })
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).send('Failed to issue new token')
+      return response.status(500).send({
+        message: 'Failed to issue new token',
+      })
+    }
+  }
+
+  async logout(request: Request, response: Response) {
+    try {
+      const user = request.user!
+      await RefreshToken.update(
+        {
+          revoked: true,
+        },
+        {
+          where: {
+            walletAddress: user.walletAddress,
+          },
+        }
+      )
+      return response.status(200).send({
+        message: 'Successfully logged out',
+      })
+    } catch (error) {
+      logger.error(error.message)
+      return response.status(500).send({
+        message: 'Failed to logout',
+      })
     }
   }
 
@@ -134,12 +162,12 @@ export class AuthController {
         request.headers['refresh-token']?.toString()
 
       if (!refreshToken) {
-        return response
-          .status(401)
-          .send('No refresh token provided in the header or body.')
+        return response.status(401).send({
+          message: 'No refresh token provided.',
+        })
       }
 
-      const [count, [refreshTokenData]] = await RefreshToken.update(
+      await RefreshToken.update(
         {
           revoked: true,
         },
@@ -147,18 +175,17 @@ export class AuthController {
           where: {
             token: refreshToken,
           },
-          returning: true,
         }
       )
 
-      if (!count) {
-        return response.status(404).send('No refresh token found.')
-      }
-
-      return response.status(200).send(refreshTokenData.revoked)
+      return response.status(200).send({
+        message: 'Revoked',
+      })
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).send('Failed to revoke token')
+      return response.status(500).send({
+        message: 'Failed to revoke token',
+      })
     }
   }
 
