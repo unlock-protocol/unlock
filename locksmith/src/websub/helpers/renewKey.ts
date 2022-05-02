@@ -14,7 +14,8 @@ interface RenewKeyParams {
 
 interface ShouldRenew {
   shouldRenew: boolean
-  gasRefund: string
+  gasRefund?: string
+  error?: string
 }
 
 // precision base for gas calculations
@@ -38,29 +39,37 @@ export const isWorthRenewing = async (
   const provider = new ethers.providers.JsonRpcProvider(
     networks[network].publicProvider
   )
-  const lock = await web3Service.getLockContract(lockAddress, provider)
 
-  // estimate gas for the renewMembership function (check if reverts).
-  const gasLimit = await lock.estimateGas.renewMembershipFor(
-    keyId,
-    constants.AddressZero
-  )
+  try {
+    const lock = await web3Service.getLockContract(lockAddress, provider)
 
-  // find cost to renew in USD cents
-  const gasFeeInCents = await getGasFee(network)
-  const costToRenew = await gasLimit.mul(gasFeeInCents)
+    // estimate gas for the renewMembership function (check if reverts).
+    const gasLimit = await lock.estimateGas.renewMembershipFor(
+      keyId,
+      constants.AddressZero
+    )
 
-  // find gas refund in USD cents
-  const gasRefund = await lock.gasRefundValue()
-  const costRefunded = gasRefund.mul(gasFeeInCents)
+    // find cost to renew in USD cents
+    const gasFeeInCents = await getGasFee(network)
+    const costToRenew = await gasLimit.mul(gasFeeInCents)
 
-  const shouldRenew =
-    costToRenew.lte(costRefunded) ||
-    BigNumber.from(costToRenew).lte(MAX_RENEWAL_COST_COVERED)
+    // find gas refund in USD cents
+    const gasRefund = await lock.gasRefundValue()
+    const costRefunded = gasRefund.mul(gasFeeInCents)
 
-  return {
-    shouldRenew,
-    gasRefund: gasRefund.toNumber(),
+    const shouldRenew =
+      costToRenew.lte(costRefunded) ||
+      BigNumber.from(costToRenew).lte(MAX_RENEWAL_COST_COVERED)
+
+    return {
+      shouldRenew,
+      gasRefund: gasRefund.toNumber(),
+    }
+  } catch (error) {
+    return {
+      shouldRenew: false,
+      error,
+    }
   }
 }
 
@@ -75,13 +84,21 @@ export async function renewKey({
     lockAddress,
   }
 
-  const { shouldRenew, gasRefund } = await isWorthRenewing(
+  const { shouldRenew, gasRefund, error } = await isWorthRenewing(
     network,
     lockAddress,
     keyId
   )
 
   if (!shouldRenew) {
+    if (error) {
+      return {
+        network,
+        keyId,
+        lockAddress,
+        msg: error,
+      }
+    }
     return {
       network,
       keyId,
@@ -92,21 +109,30 @@ export async function renewKey({
 
   // send actual tx
   const fulfillmentDispatcher = new Dispatcher()
-  const tx = await fulfillmentDispatcher.renewMembershipFor(
-    network,
-    lockAddress,
-    keyId,
-    constants.AddressZero,
-    {
-      gasLimit: gasRefund,
-    }
-  )
+  try {
+    const tx = await fulfillmentDispatcher.renewMembershipFor(
+      network,
+      lockAddress,
+      keyId,
+      constants.AddressZero,
+      {
+        gasLimit: gasRefund,
+      }
+    )
 
-  // record renewal in db
-  const recordedrenewalInfo = {
-    ...renewalInfo,
-    tx: tx.hash,
+    // record renewal in db
+    const recordedrenewalInfo = {
+      ...renewalInfo,
+      tx: tx.hash,
+    }
+    await KeyRenewal.create(recordedrenewalInfo)
+    return recordedrenewalInfo
+  } catch (error) {
+    return {
+      network,
+      keyId,
+      lockAddress,
+      msg: error,
+    }
   }
-  await KeyRenewal.create(recordedrenewalInfo)
-  return recordedrenewalInfo
 }
