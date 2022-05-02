@@ -14945,7 +14945,7 @@ __metadata:
     postcss: 8.4.12
     prism-react-renderer: 1.2.1
     react-icons: 4.3.1
-    react-use-clipboard: 1.0.7
+    react-use-clipboard: 1.0.8
     storybook-builder-vite: 0.1.23
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.23
@@ -15099,7 +15099,7 @@ __metadata:
     react-icons: 4.3.1
     react-jazzicon: 1.0.3
     react-test-renderer: 17.0.2
-    react-use-clipboard: 1.0.7
+    react-use-clipboard: 1.0.8
     storybook-addon-next-router: 3.1.1
     styled-components: 5.3.5
     tailwind-merge: 1.2.1
@@ -43547,15 +43547,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-use-clipboard@npm:1.0.7":
-  version: 1.0.7
-  resolution: "react-use-clipboard@npm:1.0.7"
+"react-use-clipboard@npm:1.0.8":
+  version: 1.0.8
+  resolution: "react-use-clipboard@npm:1.0.8"
   dependencies:
     copy-to-clipboard: ^3.3.1
   peerDependencies:
-    react: ^16.8.0 || ^17
-    react-dom: ^16.8.0 || ^17
-  checksum: ad8c8847e16c6a750c0a7ecf41d0c1467f97e82742bdb45afd073388856ac3284a6c5eaa8020fa1935f70d04d63f98a834c19a73e7be12a28b7b7b68f4be6475
+    react: ^16.8.0 || ^17 || ^18
+    react-dom: ^16.8.0 || ^17 || ^18
+  checksum: 01414d570773d99bce41f28a42e66db615dbbc1362d9be290e37e831b22c55396c47098a8efc25fb961051c81d6eb432c6224a9aa05db76e880a89b5139831d5
   languageName: node
   linkType: hard
 
