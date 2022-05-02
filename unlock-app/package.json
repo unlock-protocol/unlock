@@ -5,7 +5,7 @@
   "dependencies": {
     "@apollo/react-hooks": "4.0.0",
     "@apollo/react-testing": "4.0.0",
-    "@babel/core": "7.17.8",
+    "@babel/core": "7.17.10",
     "@headlessui/react": "1.6.0",
     "@radix-ui/react-avatar": "0.1.4",
     "@storybook/addon-actions": "6.4.17",
@@ -39,7 +39,7 @@
     "axios": "0.27.2",
     "babel-eslint": "10.1.0",
     "babel-jest": "27.5.1",
-    "babel-loader": "8.2.4",
+    "babel-loader": "8.2.5",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-plugin-styled-components": "2.0.7",
     "babel-preset-react-app": "10.0.1",
