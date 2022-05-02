@@ -71,7 +71,7 @@
     "multer-s3": "2.10.0",
     "node-abort-controller": "3.0.1",
     "node-cron": "3.0.0",
-    "p-retry": "4.6.1",
+    "p-retry": "4.6.2",
     "parse-data-uri": "0.2.0",
     "path-to-regexp": "6.2.0",
     "pg": "8.7.3",
