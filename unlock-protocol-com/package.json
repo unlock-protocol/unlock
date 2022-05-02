@@ -31,7 +31,7 @@
     "jest": "27.5.1",
     "jest-styled-components": "7.0.8",
     "lint-staged": "12.3.7",
-    "next": "12.1.4",
+    "next": "12.1.5",
     "next-seo": "5.0.0",
     "path-match": "1.2.4",
     "prettier": "2.5.1",
@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "autoprefixer": "10.4.6",
-    "eslint-config-next": "12.1.4",
+    "eslint-config-next": "12.1.5",
     "feed": "4.2.2",
     "gray-matter": "4.0.3",
     "postcss": "8.4.13",
