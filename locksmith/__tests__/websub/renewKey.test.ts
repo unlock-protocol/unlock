@@ -23,35 +23,34 @@ const mockLock = {
   }),
 }
 
+const mockGetLockContract = jest.fn((lockAddress: string) => {
+  switch (lockAddress) {
+    case 'v9':
+      return { ...mockLock, publicLockVersion: async () => 9 }
+    case 'noRefund':
+      return {
+        ...mockLock,
+        gasRefundValue: async () => BigNumber.from(0),
+      }
+    case 'highCost':
+      return {
+        ...mockLock,
+        estimateGas: {
+          renewMembershipFor: async () => BigNumber.from(200000),
+        },
+      }
+    default:
+      return mockLock
+  }
+})
+
 const mockWeb3Service = {
-  getLockContract: jest.fn((lockAddress: string) => {
-    switch (lockAddress) {
-      case 'v9':
-        return { ...mockLock, publicLockVersion: async () => 9 }
-      case 'noRefund':
-        return {
-          ...mockLock,
-          gasRefundValue: async () => BigNumber.from(0),
-        }
-      case 'highCost':
-        return {
-          ...mockLock,
-          estimateGas: {
-            renewMembershipFor: async () => BigNumber.from(200000),
-          },
-        }
-      default:
-        return mockLock
-    }
-  }),
+  getLockContract: mockGetLockContract,
 }
-
-class WalletService {
-  connect = jest.fn()
-
-  getLockContract = mockWeb3Service.getLockContract
+const mockWalletService = {
+  connect: jest.fn(),
+  getLockContract: mockGetLockContract,
 }
-const mockWalletService = new WalletService()
 
 jest.mock('@unlock-protocol/networks', () => ({
   1: {},
