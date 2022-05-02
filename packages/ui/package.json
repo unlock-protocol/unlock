@@ -59,7 +59,7 @@
     "@types/react": "17.0.43",
     "@types/react-dom": "17.0.14",
     "@vitejs/plugin-react": "1.2.0",
-    "autoprefixer": "10.4.4",
+    "autoprefixer": "10.4.6",
     "babel-loader": "8.2.4",
     "postcss": "8.4.13",
     "storybook-builder-vite": "0.1.23",
