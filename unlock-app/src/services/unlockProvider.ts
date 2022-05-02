@@ -38,7 +38,10 @@ export default class UnlockProvider extends ethers.providers.JsonRpcProvider {
     this.isUnlock = true
   }
 
-  static reconnect(oldProvider: any, { provider, id }: any) {
+  static reconnect(
+    oldProvider: UnlockProvider,
+    { provider, id }: UnlockProviderOptions
+  ) {
     const newProvider = new UnlockProvider({ provider, id })
     newProvider.wallet = oldProvider.wallet
     newProvider.wallet!.connect(newProvider)
