@@ -15332,7 +15332,7 @@ __metadata:
     dotenv: 16.0.0
     eslint: 8.14.0
     eth-sig-util: 2.5.4
-    ethereumjs-utils: 5.2.5
+    ethereumjs-util: ^7.1.4
     ethers: 5.6.4
     file-saver: 2.0.5
     graphql: 15.8.0
@@ -19490,7 +19490,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bindings@npm:^1.2.1, bindings@npm:^1.5.0":
+"bindings@npm:^1.5.0":
   version: 1.5.0
   resolution: "bindings@npm:1.5.0"
   dependencies:
@@ -27347,18 +27347,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethereumjs-utils@npm:5.2.5":
-  version: 5.2.5
-  resolution: "ethereumjs-utils@npm:5.2.5"
+"ethereumjs-util@npm:^7.1.4":
+  version: 7.1.4
+  resolution: "ethereumjs-util@npm:7.1.4"
   dependencies:
-    bn.js: ^4.11.0
+    "@types/bn.js": ^5.1.0
+    bn.js: ^5.1.2
     create-hash: ^1.1.2
-    ethjs-util: ^0.1.3
-    keccak: ^1.0.2
-    rlp: ^2.0.0
-    safe-buffer: ^5.1.1
-    secp256k1: ^3.0.1
-  checksum: 2e5c0834bd64ec5f3252aa66a6ebc04b1cd0aa6bf47151fd4e27adfadc4fe64b97e0f558f86b493e9bbcbe9bad5fd2551e9865da86f0eebad154adc3f2a62139
+    ethereum-cryptography: ^0.1.3
+    rlp: ^2.2.4
+  checksum: ccfd9208bfe9205af124a9138c5a90db46cd2fcacf4b80f17f67915381c03253aa2fb90ead9e0b53d9a6fcfeed4310e5dfa8dc516ca2846d16baf81d605cd8c2
   languageName: node
   linkType: hard
 
@@ -35126,19 +35124,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"keccak@npm:^1.0.2":
-  version: 1.4.0
-  resolution: "keccak@npm:1.4.0"
-  dependencies:
-    bindings: ^1.2.1
-    inherits: ^2.0.3
-    nan: ^2.2.1
-    node-gyp: latest
-    safe-buffer: ^5.1.0
-  checksum: 236ba4183d64e1118566c4f123d812cc8fa5fb0fa477b6743bc398aced42595816f46a322bf0240a6a7589eff932aa1540066a30db2367e4049436d9fa30f537
-  languageName: node
-  linkType: hard
-
 "keccak@npm:^2.0.0":
   version: 2.1.0
   resolution: "keccak@npm:2.1.0"
@@ -38356,7 +38341,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"nan@npm:^2.12.1, nan@npm:^2.14.0, nan@npm:^2.14.2, nan@npm:^2.2.1":
+"nan@npm:^2.12.1, nan@npm:^2.14.0, nan@npm:^2.14.2":
   version: 2.15.0
   resolution: "nan@npm:2.15.0"
   dependencies:

@@ -48,7 +48,7 @@
     "dotenv": "16.0.0",
     "eslint": "8.14.0",
     "eth-sig-util": "2.5.4",
-    "ethereumjs-utils": "5.2.5",
+    "ethereumjs-util": "^7.1.4",
     "ethers": "5.6.4",
     "file-saver": "2.0.5",
     "graphql": "15.8.0",
