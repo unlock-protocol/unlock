@@ -22,7 +22,7 @@
     "eslint": "8.10.0",
     "jest": "27.5.1",
     "jest-fetch-mock": "3.0.3",
-    "node-fetch": "3.2.3",
+    "node-fetch": "3.2.4",
     "style-loader": "3.3.1",
     "ts-jest": "27.1.4",
     "ts-loader": "9.2.8",
