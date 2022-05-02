@@ -1,4 +1,4 @@
-import { ethers, constants } from 'ethers'
+import { ethers, constants, BigNumber } from 'ethers'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
@@ -32,16 +32,20 @@ export const isWorthRenewing = async (
   keyId: number
 ): Promise<ShouldRenew> => {
   // max cost covered by Unlock Inc for renew keys (in USD cents base 1000)
-  const MAX_RENEWAL_COST_COVERED = ethers.BigNumber.from(100000).mul(BASE)
+  const MAX_RENEWAL_COST_COVERED = BigNumber.from(100000).mul(BASE)
 
   const web3Service = new Web3Service(networks)
-  const lock = await web3Service.getLock(lockAddress, network)
+  const provider = new ethers.providers.JsonRpcProvider(
+    networks[network].publicProvider
+  )
+  const lock = await web3Service.getLockContract(lockAddress, provider)
 
   // estimate gas for the renewMembership function (check if reverts).
   const gasLimit = await lock.estimateGas.renewMembershipFor(
     keyId,
     constants.AddressZero
   )
+
   // find cost to renew in USD cents
   const gasFeeInCents = await getGasFee(network)
   const costToRenew = await gasLimit.mul(gasFeeInCents)
@@ -52,7 +56,7 @@ export const isWorthRenewing = async (
 
   const shouldRenew =
     costToRenew.lte(costRefunded) ||
-    ethers.BigNumber.from(costToRenew).lte(MAX_RENEWAL_COST_COVERED)
+    BigNumber.from(costToRenew).lte(MAX_RENEWAL_COST_COVERED)
 
   return {
     shouldRenew,
