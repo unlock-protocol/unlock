@@ -28,20 +28,25 @@ jest.mock('ethers', () => {
 })
 
 let gasPrice: any
+const network = 1
 describe('gasPrice', () => {
   beforeEach(() => {
     gasPrice = new GasPrice()
   })
   describe('gasPriceETH', () => {
     it('should convert decimals properly ', async () => {
-      expect.assertions(1)
-      await expect(gasPrice.gasPriceETH(1)).resolves.toEqual(0.000001)
+      expect.assertions(3)
+      await expect(gasPrice.gasPriceETH(network, 1)).resolves.toEqual(0.000001)
+      await expect(gasPrice.gasPriceETH(network, 2)).resolves.toEqual(0.000002)
+      await expect(gasPrice.gasPriceETH(network, 100)).resolves.toEqual(0.0001)
     })
   })
   describe('gasPriceUSD', () => {
     it('should convert properly to USD', async () => {
-      expect.assertions(1)
-      await expect(gasPrice.gasPriceUSD(1)).resolves.toEqual(42)
+      expect.assertions(3)
+      await expect(gasPrice.gasPriceUSD(network, 1)).resolves.toEqual(42)
+      await expect(gasPrice.gasPriceUSD(network, 2)).resolves.toEqual(84)
+      await expect(gasPrice.gasPriceUSD(network, 10)).resolves.toEqual(420)
     })
   })
 })
