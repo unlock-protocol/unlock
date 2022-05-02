@@ -13,7 +13,7 @@
     "@storybook/addon-viewport": "6.4.17",
     "@storybook/addons": "6.4.17",
     "@storybook/react": "6.4.17",
-    "@stripe/react-stripe-js": "1.7.0",
+    "@stripe/react-stripe-js": "1.7.2",
     "@stripe/stripe-js": "1.29.0",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "12.1.4",
