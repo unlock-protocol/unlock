@@ -6,7 +6,7 @@
     "@babel/core": "7.17.8",
     "@headlessui/react": "1.4.3",
     "@radix-ui/react-avatar": "0.1.4",
-    "@testing-library/jest-dom": "5.16.3",
+    "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "12.1.4",
     "@types/jest": "27.4.1",
     "@types/next": "8.0.7",
