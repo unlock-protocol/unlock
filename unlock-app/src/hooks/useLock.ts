@@ -1,3 +1,4 @@
+import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useState, useContext, useReducer } from 'react'
 import * as ethers from 'ethers'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
@@ -10,19 +11,20 @@ import { generateKeyMetadataPayload } from '../structured_data/keyMetadata'
 import { StorageService } from '../services/storageService'
 import LocksContext from '../contexts/LocksContext'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
+import { Lock } from '../unlockTypes'
 /**
  * Event handler
  * @param {*} hash
  * @param {*} update
  */
 export const processTransaction = async (
-  type,
-  web3Service,
-  config,
-  lock,
-  setLock,
-  hash,
-  network
+  type: string,
+  web3Service: Web3Service,
+  config: any,
+  lock: any,
+  setLock: (...args: any) => void,
+  hash: string,
+  network: number
 ) => {
   const transaction = await web3Service.getTransaction(hash, network)
   const blockTime = config.networks[network].blockTime
@@ -78,13 +80,21 @@ export function setMaxNumberOfKeysOnLock({
   maxNumberOfKeys,
   setLock,
   callback,
+}: {
+  web3Service: any
+  walletService: any
+  config: any
+  lock: Lock
+  maxNumberOfKeys: number
+  setLock: (...args: any) => void
+  callback: any
 }) {
   walletService.setMaxNumberOfKeys(
     {
       lockAddress: lock.address,
       maxNumberOfKeys,
     },
-    async (error, tHash) => {
+    async (error: any, tHash: string) => {
       if (error) {
         throw error
       }
@@ -108,20 +118,20 @@ export function setMaxNumberOfKeysOnLock({
  * Function called to updated the price of a lock
  */
 export const updateKeyPriceOnLock = (
-  web3Service,
-  walletService,
-  config,
-  lock,
-  newKeyPrice,
-  setLock,
-  callback
+  web3Service: any,
+  walletService: any,
+  config: any,
+  lock: Lock,
+  newKeyPrice: string,
+  setLock: (...args: any) => void,
+  callback: (...args: any) => void
 ) => {
   walletService.updateKeyPrice(
     {
       lockAddress: lock.address,
       keyPrice: newKeyPrice,
     },
-    async (error, transactionHash) => {
+    async (error: any, transactionHash: string) => {
       if (error) {
         throw error
       }
@@ -144,18 +154,18 @@ export const updateKeyPriceOnLock = (
  * Function called to updated the price of a lock
  */
 export const withdrawFromLock = (
-  web3Service,
-  walletService,
-  config,
-  lock,
-  setLock,
-  callback
+  web3Service: any,
+  walletService: any,
+  config: any,
+  lock: Lock,
+  setLock: (...args: any) => void,
+  callback: (...args: any) => void
 ) => {
   walletService.withdrawFromLock(
     {
       lockAddress: lock.address,
     },
-    async (error, transactionHash) => {
+    async (error: any, transactionHash: string) => {
       if (error) {
         throw error
       }
@@ -179,17 +189,40 @@ export const withdrawFromLock = (
  * Function called to updated the price of a lock
  */
 export const purchaseKeyFromLock = async (
-  web3Service,
-  walletService,
-  config,
-  lock,
-  recipient,
-  referrer,
-  setLock,
-  network,
-  data,
-  callback
+  web3Service: any,
+  walletService: any,
+  config: any,
+  lock: Lock,
+  recipient: string,
+  referrer: string,
+  setLock: (...args: any) => void,
+  data: string,
+  callback: (...args: any) => void
 ) => {
+  // In order to not modify the behavior for v10, by default if the user owns a key on
+  // a non expiring lock, we extend it.
+  // TODO: allow for purchase of explicit new keys!
+  const tokenId = await web3Service.getTokenIdForOwner(
+    lock.address,
+    recipient,
+    walletService.networkId
+  )
+
+  if (
+    tokenId &&
+    lock.expirationDuration !== -1 &&
+    (lock.publicLockVersion || 0) >= 10
+  ) {
+    // We assume this is a renewal to remain consistent with old versions of the checkout
+    return walletService.extendKey({
+      lockAddress: lock.address,
+      tokenId,
+      referrer,
+      keyPrice: lock.keyPrice,
+      data,
+    })
+  }
+
   return walletService.purchaseKey(
     {
       lockAddress: lock.address,
@@ -198,7 +231,7 @@ export const purchaseKeyFromLock = async (
       keyPrice: lock.keyPrice,
       data,
     },
-    async (error, transactionHash) => {
+    async (error: any, transactionHash: string) => {
       if (error) {
         throw error
       }
@@ -219,24 +252,25 @@ export const purchaseKeyFromLock = async (
 }
 
 export const purchaseMultipleKeysFromLock = async (
-  web3Service,
-  walletService,
-  config,
-  lock,
-  setLock,
-  network,
-  lockAddress,
-  keyPrices,
-  owners,
-  callback
+  web3Service: any,
+  walletService: any,
+  config: any,
+  lock: Lock,
+  setLock: (...args: any) => void,
+  lockAddress: string,
+  keyPrices: string[],
+  owners: string[],
+  data: string[],
+  callback: (...args: any) => void
 ) => {
   return walletService.purchaseKeys(
     {
       lockAddress,
       owners,
       keyPrices,
+      data,
     },
-    async (error, transactionHash) => {
+    async (error: any, transactionHash: string) => {
       if (error) {
         throw error
       }
@@ -260,11 +294,11 @@ export const purchaseMultipleKeysFromLock = async (
  * @param {*} lock
  * @param {*} network // network on which the lock is
  */
-export const useLock = (lockFromProps, network) => {
+export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
   const { locks, addLock } = useContext(LocksContext)
 
   const [lock, setLock] = useReducer(
-    (oldLock, newLock) => {
+    (oldLock: any, newLock: any) => {
       return { ...oldLock, ...newLock }
     },
     {
@@ -276,16 +310,16 @@ export const useLock = (lockFromProps, network) => {
   const web3Service = useContext(Web3ServiceContext)
   const walletService = useContext(WalletServiceContext)
   const config = useContext(ConfigContext)
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
 
-  const getLock = async (opts = {}) => {
+  const getLock = async (opts: any = {}) => {
     let lockDetails
 
     if (locks && locks[lock.address]) {
       lockDetails = locks[lock.address]
     } else {
       lockDetails = await web3Service.getLock(lock.address, network)
-      if (opts.pricing) {
+      if (opts?.pricing) {
         try {
           const fiatPricing = await getFiatPricing(
             config,
@@ -315,7 +349,10 @@ export const useLock = (lockFromProps, network) => {
     return mergedLock
   }
 
-  const updateKeyPrice = (newKeyPrice, callback) => {
+  const updateKeyPrice = (
+    newKeyPrice: string,
+    callback: (...args: any) => void
+  ) => {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
     } else {
@@ -331,7 +368,7 @@ export const useLock = (lockFromProps, network) => {
     }
   }
 
-  const withdraw = (callback) => {
+  const withdraw = (callback: (...args: any) => void) => {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
     } else {
@@ -346,7 +383,12 @@ export const useLock = (lockFromProps, network) => {
     }
   }
 
-  const purchaseKey = async (recipient, referrer, data, callback) => {
+  const purchaseKey = async (
+    recipient: string,
+    referrer: string,
+    data: string,
+    callback: (...args: any) => void
+  ) => {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
     } else {
@@ -358,7 +400,6 @@ export const useLock = (lockFromProps, network) => {
         recipient,
         referrer,
         setLock,
-        network,
         data,
         callback
       )
@@ -366,10 +407,11 @@ export const useLock = (lockFromProps, network) => {
   }
 
   const purchaseMultipleKeys = async (
-    lockAddress,
-    keyPrices,
-    owners,
-    callback
+    lockAddress: string,
+    keyPrices: string[],
+    owners: string[],
+    data: string[],
+    callback: (...args: any) => void
   ) => {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
@@ -380,16 +422,16 @@ export const useLock = (lockFromProps, network) => {
         config,
         lock,
         setLock,
-        network,
         lockAddress,
         keyPrices,
         owners,
+        data,
         callback
       )
     }
   }
 
-  const getKeyForAccount = async (owner) => {
+  const getKeyForAccount = async (owner: string) => {
     return web3Service.getKeyByLockForOwner(lock.address, owner, network)
   }
 
@@ -403,9 +445,9 @@ export const useLock = (lockFromProps, network) => {
       setLock(mergedLock)
 
       return fiatPricing
-    } catch (error) {
+    } catch (error: any) {
       console.error(
-        `Could not get card pricing for ${lock.address}: ${error.message}`
+        `Could not get card pricing for ${lock.address}: ${error?.message}`
       )
     }
   }
@@ -414,6 +456,7 @@ export const useLock = (lockFromProps, network) => {
   // -1 if no stripe account exsist
   // 0 if a stripe account exists but is not ready
   const isStripeConnected = async () => {
+    if (!lockFromProps.address) return
     try {
       const response = await getCardConnected(
         config,
@@ -422,16 +465,16 @@ export const useLock = (lockFromProps, network) => {
       )
 
       return response.connected
-    } catch (error) {
+    } catch (error: any) {
       console.error(
-        `Could not get Stripe status for ${lockFromProps.address}: ${error.message}`
+        `Could not get Stripe status for ${lockFromProps.address}: ${error?.message}`
       )
       return -1
     }
   }
 
   // Checks if the address is a manager
-  const isLockManager = async (lockManager) => {
+  const isLockManager = async (lockManager: string) => {
     if (!lockManager) {
       return false
     }
@@ -443,7 +486,7 @@ export const useLock = (lockFromProps, network) => {
     return isLockManager
   }
 
-  const getKeyData = async (keyId, signer) => {
+  const getKeyData = async (keyId: string, signer: string) => {
     let payload = {}
     let signature
 
@@ -464,10 +507,12 @@ export const useLock = (lockFromProps, network) => {
     return data
   }
 
-  const markAsCheckedIn = async (signer, keyId) => {
+  const markAsCheckedIn = async (signer: string, keyId: string) => {
+    if (!lockFromProps.address) return
     const payload = generateKeyMetadataPayload(signer, {
       lockAddress: lockFromProps.address,
       keyId,
+      // @ts-ignore
       metadata: {
         checkedInAt: new Date().getTime(),
       },
@@ -487,7 +532,10 @@ export const useLock = (lockFromProps, network) => {
     return response.status === 202
   }
 
-  function updateMaxNumberOfKeys(maxNumberOfKeys, callback) {
+  function updateMaxNumberOfKeys(
+    maxNumberOfKeys: number,
+    callback: (...args: any) => void
+  ) {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
     } else {
@@ -496,6 +544,7 @@ export const useLock = (lockFromProps, network) => {
         walletService,
         config,
         lock,
+        // @ts-ignore
         maxNumberOfKeys:
           maxNumberOfKeys === UNLIMITED_KEYS_COUNT
             ? ethers.constants.MaxUint256

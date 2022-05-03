@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { IoIosCloseCircle as CloseIcon } from 'react-icons/io'
+import { FiEdit as EditIcon } from 'react-icons/fi'
 import { Tooltip } from '@unlock-protocol/ui'
 import { RecipientItem } from '../../../hooks/useMultipleRecipient'
 import { MetadataInput } from '../../../unlockTypes'
@@ -10,20 +11,30 @@ import Loading from '../Loading'
 import { Button } from './FormStyles'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
 
+interface LimitMessage {
+  ONLY_MAX: string
+  ONLY_MIN: string
+  EQUAL: string
+  NOT_EQUAL: string
+}
 export interface MultipleRecipientProps {
   recipients: RecipientItem[]
+  minRecipients: number
   maxRecipients: number
+  hasMinimumRecipients: boolean
   addRecipient: any
   loading: boolean
   fields: Array<MetadataInput & { value?: any }>
   submitBulkRecipients: () => Promise<boolean>
   onContinue: () => void
-  removeRecipient: (address: string) => void
+  removeRecipient: (index: number) => void
   withMetadata: boolean
 }
 export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   recipients,
   maxRecipients,
+  minRecipients,
+  hasMinimumRecipients,
   addRecipient,
   loading,
   fields = [],
@@ -34,14 +45,16 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
 }) => {
   const { account } = useContext(AuthenticationContext)
   const [addNewRecipient, setNewRecipient] = useState(false)
+  const [editIndex, setEditIndex] = useState<number | null>(null)
   const [recipient, setRecipient] = useState<string>('')
-  const { register, getValues, reset, trigger } = useForm()
+  const { register, unregister, getValues, reset, trigger } = useForm()
   const [isLoading, setIsLoading] = useState(false)
   const [confirmCount, setConfirmCount] = useState(0)
+  const [showMetadataList, setShowMetadataList] = useState<number[]>([])
   const haveRecipients = recipients?.length > 0
 
   const autofillAccountAddress = () => {
-    if (recipients?.length > 1) return
+    if (haveRecipients) return
     if (!account) return
 
     setNewRecipient(true)
@@ -52,10 +65,11 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     autofillAccountAddress()
   }, [])
 
-  const onAddRecipient = async () => {
+  const updateRecipientList = async (updateIndex?: number) => {
     const formValid = await trigger()
     if (formValid) {
-      const valid = await addRecipient(recipient, getValues())
+      const metadata = getValues()
+      const valid = await addRecipient(recipient, metadata, updateIndex)
       if (valid) {
         resetStatus()
       }
@@ -64,26 +78,46 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     }
   }
 
+  const onSaveRecipient = () => {
+    if (addNewRecipient) {
+      updateRecipientList()
+    }
+
+    if (isEdit && editIndex !== null) {
+      updateRecipientList(editIndex)
+      Object.keys(getValues()).map((key) => {
+        unregister(key)
+      })
+    }
+  }
+
   const resetStatus = () => {
     setNewRecipient(false)
-    setRecipient('')
+    setEditIndex(null)
     reset()
+    setRecipient('')
   }
 
   const onSubmit = async () => {
-    setIsLoading(true)
-    setConfirmCount(confirmCount + 1)
-    // send metadata only if forms contains some metadata
-    if (withMetadata) {
-      const valid = await submitBulkRecipients()
-      if (valid) {
+    if (hasMinimumRecipients) {
+      setIsLoading(true)
+      setConfirmCount(confirmCount + 1)
+      // send metadata only if forms contains some metadata
+      if (withMetadata) {
+        const valid = await submitBulkRecipients()
+        if (valid) {
+          onContinue()
+        }
+      } else {
         onContinue()
       }
-    } else {
-      onContinue()
-    }
 
-    setIsLoading(false)
+      setIsLoading(false)
+    } else {
+      ToastHelper.error(
+        `You need to add at least ${minRecipients} recipients to continue.`
+      )
+    }
   }
 
   const toggleAddRecipient = () => {
@@ -94,62 +128,146 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
     }
   }
 
+  const onEditRecipient = (
+    index: number,
+    defaultMetadataValues: any,
+    userAddress: string
+  ) => {
+    reset(defaultMetadataValues)
+    setRecipient(userAddress)
+    setEditIndex(index)
+  }
+
+  const onToggleMetadata = (index: number) => {
+    if (showMetadataList?.includes(index)) {
+      setShowMetadataList((prev) => prev.filter((item) => item !== index))
+    } else {
+      setShowMetadataList((prev) => [...prev, index])
+    }
+  }
+
+  const isEdit = editIndex !== null
+  const showForm = isEdit || addNewRecipient
+  const showList = !addNewRecipient && !isEdit
+
+  const recipientsLimitMessage = (min: number, max: number): string => {
+    // default value for min and max is 1, so lets consider as undefined if equal to 1
+    const minValue = min > 1 ? min : undefined
+    const maxValue = max > 1 ? max : undefined
+    const messages: LimitMessage = {
+      ONLY_MAX: `You can purchase up to ${max} memberships for different recipients.`,
+      ONLY_MIN: `You need to purchase at least ${min} memberships for different recipients.`,
+      EQUAL: `You need to purchase exactly ${min} memberships for different recipients.`,
+      NOT_EQUAL: `You need to purchase between ${min} and ${max} memberships for different recipients.`,
+    }
+
+    const minIsDefined = minValue !== undefined
+    const maxIsDefined = maxValue !== undefined
+    const getValidationKey = (): keyof LimitMessage | undefined => {
+      if (minIsDefined && maxIsDefined) {
+        if (minValue === maxValue) {
+          return 'EQUAL'
+        }
+        return 'NOT_EQUAL'
+      }
+      if (!minIsDefined && maxIsDefined) {
+        return 'ONLY_MAX'
+      }
+      if (minIsDefined && !maxIsDefined) {
+        return 'ONLY_MIN'
+      }
+    }
+    const key = getValidationKey()
+    if (!key) return ''
+    return messages[key]
+  }
+
   return (
     <form>
-      <span className="text-sm pt-2">
-        You can purchase up to {maxRecipients} memberships for multiple
-        recipients.
+      <span className="text-sm block">
+        {recipientsLimitMessage(minRecipients, maxRecipients)}
       </span>
-      {recipients?.map(({ userAddress, keyId, metadata }, index) => {
-        const key = keyId ?? userAddress
-        const currentIndex = index + 1
-        return (
-          <InputGroup key={key}>
-            <span className="text-xs font-medium uppercase flex items-center">
-              <span>Recipient {currentIndex}:</span>
-              <Tooltip
-                label="Remove recipient"
-                tip="Remove recipient"
-                side="right"
-              >
-                {!addNewRecipient && (
-                  <CloseIcon
-                    className="text-red-500 ml-1 cursor-pointer text-base hover:text-red-600"
-                    onClick={() => {
-                      removeRecipient(userAddress)
-                    }}
-                  />
-                )}
-              </Tooltip>
-            </span>
-
-            <ItemRows>
-              <div>
-                <span className="text-xs font-medium">address:</span>
-                <span className="text-xs block">{userAddress}</span>
-              </div>
-              {Object.entries(metadata ?? {}).map(([key, value]) => {
-                return (
-                  <div key={key}>
-                    <span className="text-xs font-medium">{key}:</span>
-                    <span className="text-xs"> {value}</span>
-                  </div>
-                )
-              })}
-            </ItemRows>
-          </InputGroup>
-        )
-      })}
-      {!addNewRecipient ? (
+      {showList && (
         <>
+          {recipients?.map((recipient) => {
+            const { userAddress, keyId, metadata, index } = recipient
+            const key = keyId ?? userAddress
+            const showMetadata = showMetadataList.includes(index)
+
+            return (
+              <InputGroup key={key}>
+                <div className="flex items-center">
+                  <span className="text-xs font-medium uppercase">
+                    Recipient {index}:
+                  </span>
+
+                  {!addNewRecipient && (
+                    <div className="flex items-center">
+                      <Tooltip
+                        label="Remove recipient"
+                        tip="Remove recipient"
+                        side="right"
+                      >
+                        <CloseIcon
+                          className="text-red-500 ml-1 cursor-pointer text-base hover:text-red-600"
+                          onClick={() => {
+                            removeRecipient(index)
+                          }}
+                        />
+                      </Tooltip>
+                      <Tooltip
+                        label="Edit recipient"
+                        tip="Edit recipient"
+                        side="right"
+                      >
+                        <EditIcon
+                          className="text-grey-500 ml-1 cursor-pointer text-base hover:text-black-600"
+                          onClick={() => {
+                            onEditRecipient(index, metadata, userAddress)
+                          }}
+                        />
+                      </Tooltip>
+                      {withMetadata && (
+                        <button
+                          className="text-sm cursor-pointer text-blue-600 ml-1"
+                          style={{
+                            fontSize: '0.8rem',
+                          }}
+                          onClick={() => onToggleMetadata(index)}
+                          type="button"
+                        >
+                          {showMetadata ? 'Hide metadata' : 'Show metadata'}
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <ItemRows>
+                  <span className="text-xs block">{userAddress}</span>
+                  {showMetadata &&
+                    Object.entries(metadata ?? {}).map(([key, value]) => {
+                      return (
+                        <div key={key}>
+                          <span className="text-xs font-medium">{key}:</span>
+                          <span className="text-xs"> {value}</span>
+                        </div>
+                      )
+                    })}
+                </ItemRows>
+              </InputGroup>
+            )
+          })}
           <AddButton onClick={toggleAddRecipient} type="button">
             Add recipient
           </AddButton>
         </>
-      ) : (
+      )}
+      {showForm && (
         <fieldset className="pt-3" disabled={loading}>
           <span className="text-xs font-normal uppercase flex justify-between items-center mb-2">
-            <span>Recipient</span>
+            {isEdit && <span>Edit recipient {editIndex}</span>}
+            {addNewRecipient && <span>Recipient Wallet Address</span>}
           </span>
           <CustomRecipient
             onChange={(e) => setRecipient(e.target.value)}
@@ -171,16 +289,39 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
               />
             </label>
           ))}
-          <AddButton onClick={onAddRecipient} type="button" disabled={loading}>
-            <span className="px-2"> Add </span>
-            {loading && <Loading size={20} />}
-          </AddButton>
+          <div className="flex items-center justify-center">
+            <AddButton
+              onClick={onSaveRecipient}
+              type="button"
+              style={{
+                marginLeft: 0,
+                marginRight: 0,
+              }}
+              disabled={loading}
+            >
+              <span className="px-2">
+                {addNewRecipient ? 'Save' : 'Update'}
+              </span>
+              {loading && <Loading size={20} />}
+            </AddButton>
+            <AddButton
+              onClick={resetStatus}
+              type="button"
+              style={{
+                marginLeft: '1rem',
+                marginRight: 0,
+              }}
+              disabled={loading}
+            >
+              <span className="px-2"> Close </span>
+            </AddButton>
+          </div>
         </fieldset>
       )}
       {haveRecipients && (
         <Button
           type="button"
-          disabled={addNewRecipient || isLoading}
+          disabled={addNewRecipient || isEdit || isLoading}
           onClick={onSubmit}
         >
           Continue

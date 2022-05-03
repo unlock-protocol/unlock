@@ -20,6 +20,7 @@ import { Hook } from './hook'
 import { HookEvent } from './hookEvent'
 import { ProcessedHookItem } from './processedHookItem'
 import { RefreshToken } from './refreshToken'
+import { Application } from './application'
 
 const config = require('../../config/sequelize.config')
 
@@ -49,6 +50,7 @@ sequelize.addModels([
   User,
   UserReference,
   UserTokenMetadata,
+  Application,
 ])
 
 User.removeAttribute('id')

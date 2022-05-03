@@ -28,6 +28,6 @@ module.exports = {
     await queryInterface.addIndex('RefreshTokens', { fields: ['nonce'] })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Sessions')
+    await queryInterface.dropTable('RefreshTokens')
   },
 }

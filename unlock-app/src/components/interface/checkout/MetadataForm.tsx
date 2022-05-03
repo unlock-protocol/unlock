@@ -16,11 +16,13 @@ interface Props {
   onSubmit: (metadata: UserMetadata) => void
   recipients: RecipientItem[]
   maxRecipients: number
+  minRecipients: number
+  hasMinimumRecipients: boolean
   addRecipient: any
   loading: boolean
   submitBulkRecipients: () => Promise<boolean>
   clear: () => void
-  removeRecipient: (address: string) => void
+  removeRecipient: (index: number) => void
 }
 
 interface DefautltValues {
@@ -34,6 +36,8 @@ export const MetadataForm = ({
   onSubmit,
   recipients,
   maxRecipients,
+  minRecipients,
+  hasMinimumRecipients,
   addRecipient,
   loading,
   submitBulkRecipients,
@@ -62,7 +66,7 @@ export const MetadataForm = ({
 
   const metadataNotRequired =
     fields.every((field) => field.required === false) && !submittedForm
-  const showMultipleRecipient = maxRecipients > 1
+  const showMultipleRecipient = maxRecipients > 1 || minRecipients > 1
   const showSkipButton = metadataNotRequired && !showMultipleRecipient
   // The form returns a map of key-value pair strings. We need to
   // process those into the expected metadata format so that the typed
@@ -90,6 +94,8 @@ export const MetadataForm = ({
       <MultipleRecipient
         recipients={recipients}
         maxRecipients={maxRecipients}
+        minRecipients={minRecipients}
+        hasMinimumRecipients={hasMinimumRecipients}
         addRecipient={addRecipient}
         loading={loading}
         fields={fields}
