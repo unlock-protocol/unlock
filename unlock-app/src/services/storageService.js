@@ -508,7 +508,7 @@ export class StorageService extends EventEmitter {
           'Content-Type': 'application/json',
         },
         params: {
-          recipients,
+          recipients: recipients.map((r) => r.toLowerCase()),
           captchaValue,
         },
       }

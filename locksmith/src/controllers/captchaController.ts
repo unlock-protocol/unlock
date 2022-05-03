@@ -30,7 +30,8 @@ namespace CaptchaController {
     const signatures: string[] = []
     let i = 0
     while (messages.length < recipients.length) {
-      const message = recipients[i] as string
+      // Lowercasing because addresses are passed to the hook as lowercase
+      const message = (recipients[i] as string).toLowerCase()
       const messageHash = ethers.utils.solidityKeccak256(['string'], [message])
       const signature = await wallet.signMessage(
         ethers.utils.arrayify(messageHash)

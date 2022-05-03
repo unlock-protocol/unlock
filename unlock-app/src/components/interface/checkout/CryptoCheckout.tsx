@@ -134,7 +134,9 @@ export const CryptoCheckout = ({
   const onPurchaseMultiple = async () => {
     if (!lock.address) return
     if (!lock.keyPrice) return
-    const owners = recipients?.map(({ resolvedAddress }) => resolvedAddress)
+    const owners = recipients?.map(({ resolvedAddress }) =>
+      resolvedAddress.toLowerCase()
+    )
 
     try {
       setPurchasePending(true)
@@ -230,7 +232,6 @@ export const CryptoCheckout = ({
           }
           data = response.signatures[0]
         }
-
         await purchaseKey(purchaseAccount, referrer, data, (hash: string) => {
           emitTransactionInfo({
             lock: lock.address,
@@ -259,7 +260,9 @@ export const CryptoCheckout = ({
         } else {
           // Other reason...
           toast.error(
-            `This transaction could not be sent as it appears to fail. ${error?.error?.message}`
+            `This transaction could not be sent as it appears to fail. ${
+              error?.error?.message || ''
+            }`
           )
         }
         setPurchasePending(false)
