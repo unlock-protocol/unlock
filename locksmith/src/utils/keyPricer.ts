@@ -5,6 +5,7 @@ import networks from '@unlock-protocol/networks'
 import * as Normalizer from './normalizer'
 import { ItemizedKeyPrice } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
 import PriceConversion from './priceConversion'
+import GasPrice from './gasPrice'
 
 // Stripe's fee is 30 cents plus 2.9% of the transaction.
 const baseStripeFee = 30
@@ -47,34 +48,11 @@ export default class KeyPricer {
     if (!base) {
       base = 1
     }
-    const providerUrl = networks[network].publicProvider
-    const provider = new ethers.providers.JsonRpcProvider(providerUrl)
 
+    const gasPrice = new GasPrice()
     // Price of gas
-    const gasPrice: any = await provider.getGasPrice()
-
-    // Cost in gwei
-    const costInGwei = gasPrice * GAS_COST
-
-    // Cost in base currency
-    const gasCost =
-      parseFloat(
-        ethers.utils.formatEther(
-          ethers.utils.parseUnits(costInGwei.toString(), 'wei')
-        )
-      ) * base
-
-    let symbol = 'ETH'
-    if (network === 100) {
-      symbol = 'DAI'
-    }
-    if (network === 137) {
-      symbol = 'MATIC'
-    }
-    // TODO: support more "native" currencies
-
-    const priceConversion = new PriceConversion()
-    return priceConversion.convertToUSD(symbol, gasCost)
+    const gasCost = (await gasPrice.gasPriceUSD(network, GAS_COST)) * base
+    return gasCost
   }
 
   // Fee denominated in cents
