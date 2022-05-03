@@ -3,8 +3,14 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
 import { KeyRenewal } from '../../models'
-import KeyPricer from '../../utils/keyPricer'
+import GasPrice from '../../utils/gasPrice'
 import Dispatcher from '../../fulfillment/dispatcher'
+
+// multiply factor to increase precision for gas calculations
+const BASE_POINT_ACCURACY = 1000
+
+// Maximum price we're willing to pay to renew keys (1000 => 1ct)
+const MAX_RENEWAL_COST_COVERED = 1000
 
 interface RenewKeyParams {
   keyId: number
@@ -18,13 +24,11 @@ interface ShouldRenew {
   error?: string
 }
 
-// precision base for gas calculations
-const BASE = 1000000
-
-const getGasFee = async (network: number) => {
-  const pricer = new KeyPricer()
-  const gasPrice = await pricer.gasFee(network, BASE)
-  return gasPrice
+// Calculate price of gas in USD
+const getGasFee = async (network: number, gasCost: number) => {
+  const gasPrice = new GasPrice()
+  const gasCostUSD = await gasPrice.gasPriceUSD(network, gasCost)
+  return gasCostUSD * BASE_POINT_ACCURACY
 }
 
 export const isWorthRenewing = async (
@@ -32,9 +36,6 @@ export const isWorthRenewing = async (
   lockAddress: string,
   keyId: number
 ): Promise<ShouldRenew> => {
-  // max cost covered by Unlock Inc for renew keys (in USD cents base 1000)
-  const MAX_RENEWAL_COST_COVERED = BigNumber.from(100000).mul(BASE)
-
   const web3Service = new Web3Service(networks)
   const provider = new ethers.providers.JsonRpcProvider(
     networks[network].publicProvider
@@ -50,15 +51,14 @@ export const isWorthRenewing = async (
     )
 
     // find cost to renew in USD cents
-    const gasFeeInCents = await getGasFee(network)
-    const costToRenew = await gasLimit.mul(gasFeeInCents)
+    const costToRenew = await getGasFee(network, gasLimit.toNumber())
 
     // find gas refund in USD cents
     const gasRefund = await lock.gasRefundValue()
-    const costRefunded = gasRefund.mul(gasFeeInCents)
+    const costRefunded = await getGasFee(network, gasRefund.toNumber())
 
     const shouldRenew =
-      costToRenew.lte(costRefunded) ||
+      BigNumber.from(costToRenew).lte(costRefunded) ||
       BigNumber.from(costToRenew).lte(MAX_RENEWAL_COST_COVERED)
 
     return {
@@ -132,7 +132,7 @@ export async function renewKey({
       network,
       keyId,
       lockAddress,
-      msg: error,
+      msg: error.message,
     }
   }
 }
