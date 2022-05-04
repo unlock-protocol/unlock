@@ -133,16 +133,10 @@ export class StorageService extends EventEmitter {
    * @param {string} password (do not send to locksmith)
    * @returns {Promise<*>}
    */
-  async createUser(user: any, emailAddress: string, password: string) {
+
+  async createUser(user: any) {
     const opts = {}
     return axios.post(`${this.host}/users/`, user, opts)
-    // return {
-    //   passwordEncryptedPrivateKey:
-    //     user.message.user.passwordEncryptedPrivateKey,
-    //   emailAddress,
-    //   password,
-    //   recoveryPhrase: response.data.recoveryPhrase,
-    // }
   }
 
   /**
