@@ -46,7 +46,7 @@
     "react-dom": "17.0.2"
   },
   "devDependencies": {
-    "@babel/core": "7.17.8",
+    "@babel/core": "7.17.10",
     "@headlessui/react": "1.4.3",
     "@mdx-js/preact": "2.1.1",
     "@mdx-js/react": "2.1.1",
@@ -60,7 +60,7 @@
     "@types/react-dom": "17.0.16",
     "@vitejs/plugin-react": "1.2.0",
     "autoprefixer": "10.4.6",
-    "babel-loader": "8.2.4",
+    "babel-loader": "8.2.5",
     "postcss": "8.4.13",
     "storybook-builder-vite": "0.1.23",
     "tailwindcss": "3.0.24",
