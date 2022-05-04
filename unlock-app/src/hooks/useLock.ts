@@ -71,7 +71,6 @@ export const processTransaction = async (
 /**
  * Function called to set the maxNumberOfKeys of a lock
  */
-
 export function setMaxNumberOfKeysOnLock({
   web3Service,
   walletService,
@@ -115,7 +114,7 @@ export function setMaxNumberOfKeysOnLock({
 }
 
 /**
- * Function called to updated the price of a lock
+ * Function called to update the price of a lock
  */
 export const updateKeyPriceOnLock = (
   web3Service: any,
@@ -151,7 +150,7 @@ export const updateKeyPriceOnLock = (
 }
 
 /**
- * Function called to updated the price of a lock
+ * Function called to withdraw from a lock
  */
 export const withdrawFromLock = (
   web3Service: any,
@@ -186,7 +185,7 @@ export const withdrawFromLock = (
   )
 }
 /**
- * Function called to updated the price of a lock
+ * Function called to purchase a key
  */
 export const purchaseKeyFromLock = async (
   web3Service: any,
@@ -195,10 +194,10 @@ export const purchaseKeyFromLock = async (
   lock: Lock,
   recipient: string,
   referrer: string,
-  approveAmount: number,
   setLock: (...args: any) => void,
   data: string,
-  callback: (...args: any) => void
+  callback: (...args: any) => void,
+  recurringPayments?: number
 ) => {
   // In order to not modify the behavior for v10, by default if the user owns a key on
   // a non expiring lock, we extend it.
@@ -224,14 +223,12 @@ export const purchaseKeyFromLock = async (
     })
   }
 
-  // erc20 approval goes here?
-  console.log(approveAmount)
-
   return walletService.purchaseKey(
     {
       lockAddress: lock.address,
       owner: recipient,
       referrer,
+      recurringPayments,
       keyPrice: lock.keyPrice,
       data,
     },
@@ -265,13 +262,15 @@ export const purchaseMultipleKeysFromLock = async (
   keyPrices: string[],
   owners: string[],
   data: string[],
-  callback: (...args: any) => void
+  callback: (...args: any) => void,
+  recurringPayments?: number[]
 ) => {
   return walletService.purchaseKeys(
     {
       lockAddress,
       owners,
       keyPrices,
+      recurringPayments,
       data,
     },
     async (error: any, transactionHash: string) => {
@@ -391,8 +390,8 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     recipient: string,
     referrer: string,
     data: string,
-    approveAmount: number,
-    callback: (...args: any) => void
+    callback: (...args: any) => void,
+    recurringPayments?: number
   ) => {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
@@ -404,10 +403,10 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
         lock,
         recipient,
         referrer,
-        approveAmount,
         setLock,
         data,
-        callback
+        callback,
+        recurringPayments
       )
     }
   }
@@ -417,7 +416,8 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     keyPrices: string[],
     owners: string[],
     data: string[],
-    callback: (...args: any) => void
+    callback: (...args: any) => void,
+    recurringPayments?: number[]
   ) => {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
@@ -432,7 +432,8 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
         keyPrices,
         owners,
         data,
-        callback
+        callback,
+        recurringPayments
       )
     }
   }

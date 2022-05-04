@@ -101,6 +101,9 @@ export const CryptoCheckout = ({
   const withMultipleRecipients = numberOfRecipients > 1
   const hasRecipients = recipients?.length > 0
 
+  // for recurring purchases
+  const nbPayments = paywallConfig?.recurringPayments
+
   const cantBuyWithCrypto = isAdvanced
     ? !(
         advancedRecipientValid &&
@@ -143,6 +146,14 @@ export const CryptoCheckout = ({
       const keyPrices = new Array(owners.length).fill(lock.keyPrice)
 
       let data = new Array(owners.length).fill(null)
+
+      let recurringPayments
+      if (nbPayments) {
+        recurringPayments = new Array(owners.length).fill(
+          paywallConfig.recurringPayments
+        )
+      }
+
       // We need to handle the captcha here too!
       if (paywallConfig.captcha) {
         // get the secret from locksmith!
@@ -177,7 +188,8 @@ export const CryptoCheckout = ({
           } else {
             setTransactionPending(hash)
           }
-        }
+        },
+        recurringPayments
       )
       setPurchasePending(false)
       setTransactionPending('')
@@ -217,7 +229,7 @@ export const CryptoCheckout = ({
           : recipients[0]?.resolvedAddress ?? account
         let data
 
-        const approveAmount = paywallConfig.approveAmount || 0
+        const recurringPayments = nbPayments
 
         if (paywallConfig.captcha) {
           // get the secret from locksmith!
@@ -238,7 +250,6 @@ export const CryptoCheckout = ({
         await purchaseKey(
           purchaseAccount,
           referrer,
-          approveAmount,
           data,
           (hash: string) => {
             emitTransactionInfo({
@@ -251,7 +262,8 @@ export const CryptoCheckout = ({
             } else {
               setTransactionPending(hash)
             }
-          }
+          },
+          recurringPayments
         )
 
         setKeyExpiration(Infinity) // We should actually get the real expiration
@@ -382,6 +394,8 @@ export const CryptoCheckout = ({
           <Prompt>
             {hasRecipients
               ? `Get your multiple membership (${numberOfRecipients} keys) with:`
+              : nbPayments
+              ? `Get your membership (for ${nbPayments} times) with:`
               : 'Get the membership with:'}
           </Prompt>
 
