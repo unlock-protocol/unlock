@@ -12,6 +12,7 @@ export default async function (
     erc20Address,
     decimals,
     referrer,
+    recurringPayments, // nb of reccuring payments to approve
     data,
   },
   callback
@@ -23,6 +24,7 @@ export default async function (
       keyPrices: keyPrice ? [keyPrice] : null,
       referrers: referrer ? [referrer] : null,
       data: data ? [data] : null,
+      recurringPayments: recurringPayments ? [recurringPayments] : null,
       lockAddress,
       erc20Address,
       decimals,
