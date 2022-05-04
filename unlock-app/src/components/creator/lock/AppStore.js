@@ -116,6 +116,7 @@ const AppStore = ({ lock }) => {
       },
       pessimistic: true,
       persistentCheckout: true,
+      recurringPayments: 4,
       icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
     }
     setCheckoutUrl(

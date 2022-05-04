@@ -394,8 +394,6 @@ export const CryptoCheckout = ({
           <Prompt>
             {hasRecipients
               ? `Get your multiple membership (${numberOfRecipients} keys) with:`
-              : nbPayments
-              ? `Get your membership (for ${nbPayments} times) with:`
               : 'Get the membership with:'}
           </Prompt>
 
@@ -446,6 +444,12 @@ export const CryptoCheckout = ({
             )}
           </CheckoutOptions>
         </div>
+      )}
+      {nbPayments && (
+        <Message>
+          The total amount to approve includes the next {nbPayments} renewals of
+          your key.
+        </Message>
       )}
       {transactionPending && (
         <Message>
