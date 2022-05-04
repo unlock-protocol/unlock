@@ -1,4 +1,4 @@
-import { ethers, constants, BigNumber } from 'ethers'
+import { ethers, constants } from 'ethers'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
@@ -10,12 +10,19 @@ import Dispatcher from '../../fulfillment/dispatcher'
 const BASE_POINT_ACCURACY = 1000
 
 // Maximum price we're willing to pay to renew keys (1000 => 1ct)
-const MAX_RENEWAL_COST_COVERED = 1000
+const MAX_RENEWAL_COST_COVERED = 1 * BASE_POINT_ACCURACY
 
 interface RenewKeyParams {
   keyId: number
   lockAddress: string
   network: number
+}
+interface RenewKeyReturned {
+  keyId: number
+  lockAddress: string
+  network: number
+  tx?: string
+  error?: string
 }
 
 interface ShouldRenew {
@@ -58,8 +65,7 @@ export const isWorthRenewing = async (
     const costRefunded = await getGasFee(network, gasRefund.toNumber())
 
     const shouldRenew =
-      BigNumber.from(costToRenew).lte(costRefunded) ||
-      BigNumber.from(costToRenew).lte(MAX_RENEWAL_COST_COVERED)
+      costToRenew < costRefunded || costToRenew < MAX_RENEWAL_COST_COVERED
 
     return {
       shouldRenew,
@@ -77,7 +83,7 @@ export async function renewKey({
   keyId,
   lockAddress,
   network,
-}: RenewKeyParams) {
+}: RenewKeyParams): Promise<RenewKeyReturned> {
   const renewalInfo = {
     network,
     keyId,
@@ -96,14 +102,14 @@ export async function renewKey({
         network,
         keyId,
         lockAddress,
-        msg: error,
+        error,
       }
     }
     return {
       network,
       keyId,
       lockAddress,
-      msg: `GasRefundValue (${gasRefund}) does not cover gas cost`,
+      error: `GasRefundValue (${gasRefund}) does not cover gas cost`,
     }
   }
 
@@ -132,7 +138,7 @@ export async function renewKey({
       network,
       keyId,
       lockAddress,
-      msg: error.message,
+      error: error.message,
     }
   }
 }
