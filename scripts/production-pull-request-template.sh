@@ -24,8 +24,8 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 
 ## Purchase URL
 * [ ] From the dashboard, create a purchase URL (redirect URL does not matter)
-* [ ] In the purchase URL, configure metadata collection to collect an email address (`metadataInputs: [ { name: 'Name', type: 'text', required: true } ],`)
-* [ ] By using a v10 lock, enable multiple purchase in the URL (`"maxRecipients": 6`)
+* [ ] In the purchase URL, configure metadata collection to collect an email address (\`\"metadataInputs\": [ { name: 'Name', type: 'text', required: true } ],\`)
+* [ ] By using a v10 lock, enable multiple purchase in the URL (\`\"maxRecipients\": 6\`)
 * [ ] Go through the checkout flow and ensure that it works as expected (data is collected for 2 users + and 2 keys are minted)
 
 ## Credit Card flow for Unlock User accounts
