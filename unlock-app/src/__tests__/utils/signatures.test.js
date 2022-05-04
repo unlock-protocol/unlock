@@ -1,6 +1,6 @@
 import * as sigUtil from 'eth-sig-util'
 
-import { toBuffer } from 'ethereumjs-utils'
+import { toBuffer } from 'ethereumjs-util'
 import { isSignatureValidForAddress } from '../../utils/signatures'
 
 const privateKey =

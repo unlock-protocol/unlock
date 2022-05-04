@@ -498,7 +498,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
 
     const storageService = new StorageService(config.services.storage.host)
     const data = await storageService.getKeyMetadata(
-      lockFromProps.address,
+      lockFromProps.address!,
       keyId,
       payload,
       signature,
