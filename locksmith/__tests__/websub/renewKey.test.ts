@@ -82,8 +82,16 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
 jest.mock('../../src/utils/keyPricer', () => {
   return jest.fn(() => {
     return {
-      gasFee: (network: number) =>
-        Promise.resolve(network === 1 ? 1000000 : 10),
+      GAS_COST: 1000,
+    }
+  })
+})
+
+jest.mock('../../src/utils/gasPrice', () => {
+  return jest.fn(() => {
+    return {
+      gasPriceUSD: (network: number, gasCost: number) =>
+        Promise.resolve((network === 1 ? 0.13 : 0.00000001) * gasCost),
     }
   })
 })
@@ -91,11 +99,12 @@ jest.mock('../../src/utils/keyPricer', () => {
 describe('isWorthRenewing', () => {
   it('should return gas refund value', async () => {
     expect.assertions(2)
-    const { shouldRenew, gasRefund } = await isWorthRenewing(
+    const { shouldRenew, gasRefund, error } = await isWorthRenewing(
       network,
       lockAddress,
       keyId
     )
+    console.log(error)
     expect(gasRefund).toEqual(150000)
     expect(shouldRenew).toBeTruthy()
   })
@@ -135,9 +144,8 @@ describe('renewKey', () => {
   describe('abort on non-reccuring locks', () => {
     it('should not renew when lock version <10', async () => {
       expect.assertions(1)
-      await expect(
-        renewKey({ network, lockAddress: 'v9', keyId })
-      ).rejects.toThrow('Renewal only supported for lock v10+')
+      const renewal = await renewKey({ network, lockAddress: 'v9', keyId })
+      expect(renewal.error).toEqual('Renewal only supported for lock v10+')
     })
     it('should not renew if lock gas refund is not set and cost are not covered', async () => {
       expect.assertions(1)
@@ -150,7 +158,7 @@ describe('renewKey', () => {
         ...renewalInfo,
         network: 1,
         lockAddress: 'noRefund',
-        msg: 'GasRefundValue (0) does not cover gas cost',
+        error: 'GasRefundValue (0) does not cover gas cost',
       })
     })
     it('should not renew if lock gas refund is not sufficient and cost are not covered', async () => {
@@ -164,7 +172,7 @@ describe('renewKey', () => {
         ...renewalInfo,
         network: 1,
         lockAddress: 'highCost',
-        msg: 'GasRefundValue (150000) does not cover gas cost',
+        error: 'GasRefundValue (150000) does not cover gas cost',
       })
     })
   })
