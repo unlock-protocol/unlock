@@ -443,13 +443,13 @@ export const CryptoCheckout = ({
               </CheckoutButton>
             )}
           </CheckoutOptions>
+          {nbPayments && (
+            <Message>
+              The total amount to approve includes the next {nbPayments}{' '}
+              renewals of your key.
+            </Message>
+          )}
         </div>
-      )}
-      {nbPayments && (
-        <Message>
-          The total amount to approve includes the next {nbPayments} renewals of
-          your key.
-        </Message>
       )}
       {transactionPending && (
         <Message>
