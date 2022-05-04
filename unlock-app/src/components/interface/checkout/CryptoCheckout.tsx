@@ -148,7 +148,7 @@ export const CryptoCheckout = ({
         // get the secret from locksmith!
         const response = await storageService.getDataForRecipientsAndCaptcha(
           owners,
-          recaptchaValue
+          recaptchaValue!
         )
         if (response.error || !response.signatures) {
           setPurchasePending(false)
@@ -221,7 +221,7 @@ export const CryptoCheckout = ({
           // get the secret from locksmith!
           const response = await storageService.getDataForRecipientsAndCaptcha(
             [purchaseAccount], // recipient
-            recaptchaValue
+            recaptchaValue!
           )
           if (response.error) {
             setPurchasePending(false)
