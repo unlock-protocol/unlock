@@ -217,6 +217,8 @@ export const CryptoCheckout = ({
           : recipients[0]?.resolvedAddress ?? account
         let data
 
+        const approveAmount = paywallConfig.approveAmount || 0
+
         if (paywallConfig.captcha) {
           // get the secret from locksmith!
           const response = await storageService.getDataForRecipientsAndCaptcha(
@@ -232,18 +234,25 @@ export const CryptoCheckout = ({
           }
           data = response.signatures[0]
         }
-        await purchaseKey(purchaseAccount, referrer, data, (hash: string) => {
-          emitTransactionInfo({
-            lock: lock.address,
-            hash,
-          })
-          if (!paywallConfig.pessimistic) {
-            setKeyExpiration(Infinity) // Optimistic!
-            setPurchasePending(false)
-          } else {
-            setTransactionPending(hash)
+
+        await purchaseKey(
+          purchaseAccount,
+          referrer,
+          approveAmount,
+          data,
+          (hash: string) => {
+            emitTransactionInfo({
+              lock: lock.address,
+              hash,
+            })
+            if (!paywallConfig.pessimistic) {
+              setKeyExpiration(Infinity) // Optimistic!
+              setPurchasePending(false)
+            } else {
+              setTransactionPending(hash)
+            }
           }
-        })
+        )
 
         setKeyExpiration(Infinity) // We should actually get the real expiration
         setPurchasePending(false)

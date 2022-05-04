@@ -199,6 +199,7 @@ export interface PaywallConfig {
   captcha?: boolean
   maxRecipients?: number
   minRecipients?: number
+  approveAmount?: number
 }
 
 export interface RawLock {

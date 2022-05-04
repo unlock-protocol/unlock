@@ -195,6 +195,7 @@ export const purchaseKeyFromLock = async (
   lock: Lock,
   recipient: string,
   referrer: string,
+  approveAmount: number,
   setLock: (...args: any) => void,
   data: string,
   callback: (...args: any) => void
@@ -222,6 +223,9 @@ export const purchaseKeyFromLock = async (
       data,
     })
   }
+
+  // erc20 approval goes here?
+  console.log(approveAmount)
 
   return walletService.purchaseKey(
     {
@@ -387,6 +391,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     recipient: string,
     referrer: string,
     data: string,
+    approveAmount: number,
     callback: (...args: any) => void
   ) => {
     if (walletNetwork !== network) {
@@ -399,6 +404,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
         lock,
         recipient,
         referrer,
+        approveAmount,
         setLock,
         data,
         callback
