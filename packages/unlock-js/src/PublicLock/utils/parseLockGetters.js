@@ -78,10 +78,7 @@ export default async function (address, provider) {
     update.keyPrice = utils.fromDecimal(update.keyPrice, erc20Decimals)
     update.balance = utils.fromDecimal(erc20Balance, erc20Decimals)
     update.currencySymbol = erc20Symbol
-    update.currencySelfAllowance = utils.fromDecimal(
-      erc20LockAllowance,
-      erc20Decimals
-    )
+    update.selfAllowance = utils.fromDecimal(erc20LockAllowance, erc20Decimals)
   }
 
   // totalSupply was previously called outstandingKeys. In order to keep compatibility

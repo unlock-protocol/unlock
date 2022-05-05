@@ -127,6 +127,7 @@ export interface Lock {
   creationBlock?: number
   publicLockVersion?: number
   maxKeysPerAddress?: number
+  selfAllowance?: number
 }
 
 export interface Locks {

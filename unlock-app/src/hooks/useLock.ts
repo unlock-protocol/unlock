@@ -150,6 +150,45 @@ export const updateKeyPriceOnLock = (
 }
 
 /**
+ * Function called to the lock ERC20 allowance
+ * (address a v10 bug)
+ */
+export const updateSelfAllowanceOnLock = (
+  web3Service: any,
+  walletService: any,
+  config: any,
+  lock: Lock,
+  allowanceAmount: number,
+  setLock: (...args: any) => void,
+  callback: (...args: any) => void
+) => {
+  walletService.approveBeneficiary(
+    {
+      lockAddress: lock.address,
+      spender: lock.address,
+      amount: allowanceAmount,
+      erc20Address: lock.currencyContractAddress,
+    },
+    async (error: any, transactionHash: string) => {
+      if (error) {
+        throw error
+      }
+      lock.selfAllowance = allowanceAmount
+      processTransaction(
+        'approveBeneficiary',
+        web3Service,
+        config,
+        lock,
+        setLock,
+        transactionHash,
+        walletService.networkId
+      )
+      return callback(transactionHash)
+    }
+  )
+}
+
+/**
  * Function called to withdraw from a lock
  */
 export const withdrawFromLock = (
@@ -561,6 +600,25 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
       })
     }
   }
+
+  function updateSelfAllowance(
+    allowanceAmount: number,
+    callback: (...args: any) => void
+  ) {
+    if (walletNetwork !== network) {
+      setError(FATAL_WRONG_NETWORK)
+    } else {
+      updateSelfAllowanceOnLock(
+        web3Service,
+        walletService,
+        config,
+        lock,
+        allowanceAmount,
+        setLock,
+        callback
+      )
+    }
+  }
   return {
     getLock,
     lock,
@@ -576,6 +634,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     markAsCheckedIn,
     updateMaxNumberOfKeys,
     purchaseMultipleKeys,
+    updateSelfAllowance,
   }
 }
 
