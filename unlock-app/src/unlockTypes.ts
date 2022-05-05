@@ -97,6 +97,7 @@ export interface PaywallConfigLock {
   network?: number
   metadataInputs?: MetadataInput[]
   secret?: string
+  recurringPayments?: number
 }
 
 export enum KeyStatus {
@@ -200,7 +201,6 @@ export interface PaywallConfig {
   captcha?: boolean
   maxRecipients?: number
   minRecipients?: number
-  recurringPayments?: number
 }
 
 export interface RawLock {

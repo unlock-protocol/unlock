@@ -22,6 +22,7 @@ import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
 import { ToastHelper } from '../../helpers/toast.helper'
+import Duration from '../../helpers/Duration'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -102,7 +103,7 @@ export const CryptoCheckout = ({
   const hasRecipients = recipients?.length > 0
 
   // for recurring purchases
-  const nbPayments = paywallConfig?.recurringPayments
+  const nbPayments = paywallConfig?.locks[lock.address]?.recurringPayments
 
   const cantBuyWithCrypto = isAdvanced
     ? !(
@@ -149,9 +150,7 @@ export const CryptoCheckout = ({
 
       let recurringPayments
       if (nbPayments) {
-        recurringPayments = new Array(owners.length).fill(
-          paywallConfig.recurringPayments
-        )
+        recurringPayments = new Array(owners.length).fill(nbPayments)
       }
 
       // We need to handle the captcha here too!
@@ -477,8 +476,10 @@ export const CryptoCheckout = ({
       )}
       {nbPayments && (
         <Message>
-          The total amount of {lock.currencySymbol} to approve includes the next{' '}
-          {nbPayments} renewals of your key for 1 year.
+          The total amount of {lock.currencySymbol} to approve includes{' '}
+          {nbPayments} renewals of your{' '}
+          <Duration seconds={lock.expirationDuration} /> key during the next 1
+          year.
         </Message>
       )}
     </>
