@@ -158,7 +158,7 @@ export const updateSelfAllowanceOnLock = (
   walletService: any,
   config: any,
   lock: Lock,
-  allowanceAmount: number,
+  allowanceAmount: string,
   setLock: (...args: any) => void,
   callback: (...args: any) => void
 ) => {
@@ -602,7 +602,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
   }
 
   function updateSelfAllowance(
-    allowanceAmount: number,
+    allowanceAmount: string,
     callback: (...args: any) => void
   ) {
     if (walletNetwork !== network) {
