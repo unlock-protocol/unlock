@@ -619,6 +619,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
       )
     }
   }
+
   return {
     getLock,
     lock,

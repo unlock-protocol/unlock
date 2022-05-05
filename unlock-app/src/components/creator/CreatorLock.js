@@ -27,6 +27,7 @@ import {
   BalanceContainer,
   LockWarning,
   LockDetails,
+  LockLabelSmall,
 } from './LockStyles'
 import { currencySymbol } from '../../utils/lock'
 import { INFINITY } from '../../constants'
@@ -74,9 +75,18 @@ export const CreatorLock = ({
     showIntegrations ? 'embed-coded' : ''
   )
   const [editing, setEditing] = useState(false)
-  const { lock, updateKeyPrice, updateMaxNumberOfKeys, withdraw } = useLock(
-    lockFromProps,
-    network
+  const {
+    lock,
+    updateKeyPrice,
+    updateMaxNumberOfKeys,
+    withdraw,
+    updateSelfAllowance,
+  } = useLock(lockFromProps, network)
+
+  const [recurringVisible, setRecurringVisible] = useState(
+    lock.publicLockVersion >= 10 &&
+      lock.currencyContractAddress &&
+      lock.selfAllowance < 1
   )
 
   useEffect(() => {
@@ -117,6 +127,13 @@ export const CreatorLock = ({
         saveLock={updateLock}
       />
     )
+  }
+
+  const handleApproveRecurring = () => {
+    const MAX_ALLOWANCE = '10000000000000000'
+    updateSelfAllowance(MAX_ALLOWANCE, () => {
+      setRecurringVisible(false)
+    })
   }
 
   // Some sanitization of strings to display
@@ -185,6 +202,11 @@ export const CreatorLock = ({
         </LockName>
         <LockDuration>
           <Duration seconds={lock.expirationDuration} />
+          {recurringVisible && (
+            <LockLabelSmall onClick={handleApproveRecurring}>
+              Enable recurring
+            </LockLabelSmall>
+          )}
         </LockDuration>
         <LockKeysNumbers edit={edit} lock={lock} />
         <KeyPrice>
