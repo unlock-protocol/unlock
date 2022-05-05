@@ -78,6 +78,8 @@ export default async function (address, provider) {
     update.keyPrice = utils.fromDecimal(update.keyPrice, erc20Decimals)
     update.balance = utils.fromDecimal(erc20Balance, erc20Decimals)
     update.currencySymbol = erc20Symbol
+
+    // fix for a bug in reccuring ERC20 payments on lock v10
     update.selfAllowance = utils.fromDecimal(erc20LockAllowance, erc20Decimals)
   }
 
