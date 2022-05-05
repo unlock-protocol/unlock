@@ -80,7 +80,7 @@ export default async function (address, provider) {
     update.currencySymbol = erc20Symbol
 
     // fix for a bug in reccuring ERC20 payments on lock v10
-    update.selfAllowance = utils.fromDecimal(erc20LockAllowance, erc20Decimals)
+    update.selfAllowance = erc20LockAllowance.toString()
   }
 
   // totalSupply was previously called outstandingKeys. In order to keep compatibility
