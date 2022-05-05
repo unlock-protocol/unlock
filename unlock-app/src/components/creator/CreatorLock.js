@@ -30,7 +30,7 @@ import {
   LockLabelSmall,
 } from './LockStyles'
 import { currencySymbol } from '../../utils/lock'
-import { INFINITY } from '../../constants'
+import { INFINITY, MAX_UINT } from '../../constants'
 
 const BalanceOnLock = withConfig(({ lock, attribute, config }) => {
   const currency = currencySymbol(lock, config.ERC20Contract)
@@ -86,7 +86,7 @@ export const CreatorLock = ({
   const [recurringVisible, setRecurringVisible] = useState(
     lock.publicLockVersion >= 10 &&
       lock.currencyContractAddress &&
-      lock.selfAllowance < 1
+      lock.selfAllowance < parseInt(MAX_UINT)
   )
 
   useEffect(() => {
@@ -130,8 +130,7 @@ export const CreatorLock = ({
   }
 
   const handleApproveRecurring = () => {
-    const MAX_ALLOWANCE = '10000000000000000'
-    updateSelfAllowance(MAX_ALLOWANCE, () => {
+    updateSelfAllowance(MAX_UINT, () => {
       setRecurringVisible(false)
     })
   }
@@ -209,7 +208,7 @@ export const CreatorLock = ({
           )}
           {lock.publicLockVersion >= 10 &&
             lock.currencyContractAddress &&
-            lock.selfAllowance > 1 && (
+            lock.selfAllowance > parseInt(MAX_UINT) && (
               <small>
                 <br />
                 Recurring
