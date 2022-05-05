@@ -86,7 +86,7 @@ export const CreatorLock = ({
   const [recurringVisible, setRecurringVisible] = useState(
     lock.publicLockVersion >= 10 &&
       lock.currencyContractAddress &&
-      lock.selfAllowance < parseInt(MAX_UINT)
+      lock.selfAllowance !== MAX_UINT
   )
 
   useEffect(() => {
@@ -208,7 +208,7 @@ export const CreatorLock = ({
           )}
           {lock.publicLockVersion >= 10 &&
             lock.currencyContractAddress &&
-            lock.selfAllowance > parseInt(MAX_UINT) && (
+            lock.selfAllowance !== MAX_UINT && (
               <small>
                 <br />
                 Recurring
