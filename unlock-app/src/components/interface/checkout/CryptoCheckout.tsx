@@ -443,12 +443,6 @@ export const CryptoCheckout = ({
               </CheckoutButton>
             )}
           </CheckoutOptions>
-          {nbPayments && (
-            <Message>
-              The total amount to approve includes the next {nbPayments}{' '}
-              renewals of your key.
-            </Message>
-          )}
         </div>
       )}
       {transactionPending && (
@@ -480,6 +474,12 @@ export const CryptoCheckout = ({
       )}
       {paywallConfig.captcha && !recaptchaValue && (
         <ReCAPTCHA sitekey={recaptchaKey} onChange={setRecaptchaValue} />
+      )}
+      {nbPayments && (
+        <Message>
+          The total amount of {lock.currencySymbol} to approve includes the next{' '}
+          {nbPayments} renewals of your key for 1 year.
+        </Message>
       )}
     </>
   )
