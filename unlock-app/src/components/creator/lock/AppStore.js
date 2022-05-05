@@ -109,24 +109,25 @@ const AppStore = ({ lock }) => {
   }
 
   const generateUrl = async () => {
+    let recurringPayments
+    if (
+      lock.publicLockVersion >= 10 &&
+      lock.currencyContractAddress &&
+      lock.selfAllowance === MAX_UINT
+    ) {
+      recurringPayments = (365 * 24 * 3600) / lock.expirationDuration
+    }
+
     const checkoutURLConfig = {
       locks: {
         [lock.address]: {
           network: lock.network,
+          recurringPayments
         },
       },
       pessimistic: true,
       persistentCheckout: true,
       icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
-    }
-
-    if (
-      lock.publicLockVersion >= 10 &&
-      lock.currencyContractAddress &&
-      lock.selfAllowance > parseInt(MAX_UINT)
-    ) {
-      const recurringPayments = (365 * 24 * 3600) / lock.expirationDuration
-      checkoutURLConfig.recurringPayments = recurringPayments
     }
 
     setCheckoutUrl(
