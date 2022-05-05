@@ -1,5 +1,5 @@
 import utils from '../../utils'
-import { ZERO } from '../../constants'
+import { ZERO, MAX_UINT } from '../../constants'
 import { getErc20Decimals } from '../../erc20'
 
 export default async function (
@@ -15,12 +15,17 @@ export default async function (
     throw new Error('Lock can only set approval for ERC20')
   }
 
-  // decimals could be 0!
-  if (decimals == null) {
-    decimals = await getErc20Decimals(erc20Address, this.provider)
-  }
+  let actualAmount
+  if (amount !== MAX_UINT) {
+    // decimals could be 0!
+    if (decimals == null) {
+      decimals = await getErc20Decimals(erc20Address, this.provider)
+    }
 
-  const actualAmount = utils.toDecimal(amount, decimals)
+    actualAmount = utils.toDecimal(amount, decimals)
+  } else {
+    actualAmount = amount
+  }
 
   const transactionPromise = lockContract.approveBeneficiary(
     spender,
