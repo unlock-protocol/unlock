@@ -207,6 +207,14 @@ export const CreatorLock = ({
               Enable recurring
             </LockLabelSmall>
           )}
+          {lock.publicLockVersion >= 10 &&
+            lock.currencyContractAddress &&
+            lock.selfAllowance > 1 && (
+              <small>
+                <br />
+                Recurring
+              </small>
+            )}
         </LockDuration>
         <LockKeysNumbers edit={edit} lock={lock} />
         <KeyPrice>
