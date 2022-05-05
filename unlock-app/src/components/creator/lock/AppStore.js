@@ -118,6 +118,16 @@ const AppStore = ({ lock }) => {
       persistentCheckout: true,
       icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
     }
+
+    if (
+      lock.publicLockVersion >= 10 &&
+      lock.currencyContractAddress &&
+      lock.selfAllowance > 100000
+    ) {
+      const recurringPayments = (365 * 24 * 3600) / lock.expirationDuration
+      checkoutURLConfig.recurringPayments = recurringPayments
+    }
+
     setCheckoutUrl(
       new URL(
         `/checkout?redirectUri=${encodeURIComponent(
