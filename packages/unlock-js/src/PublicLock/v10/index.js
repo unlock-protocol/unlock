@@ -9,6 +9,7 @@ import expireAndRefundFor from './expireAndRefundFor'
 import getTokenIdForOwner from './getTokenIdForOwner'
 import getKeyExpirationByLockForOwner from './getKeyExpirationByLockForOwner'
 import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
+import approveBeneficiary from './approveBeneficiary'
 import v9 from '../v9'
 
 const {
@@ -53,4 +54,5 @@ export default {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   getCancelAndRefundValueFor,
+  approveBeneficiary,
 }
