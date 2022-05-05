@@ -4,6 +4,7 @@ import {
   getErc20BalanceForAddress,
   getErc20Decimals,
   getErc20TokenSymbol,
+  getAllowance,
 } from '../../erc20'
 
 // parser for contract getters
@@ -66,9 +67,21 @@ export default async function (address, provider) {
     )
     const erc20Symbol = await getErc20TokenSymbol(update.tokenAddress, provider)
 
+    // get lock allowance of itself (for v10 recurring)
+    const erc20LockAllowance = await getAllowance(
+      update.tokenAddress,
+      address,
+      provider,
+      address
+    )
+
     update.keyPrice = utils.fromDecimal(update.keyPrice, erc20Decimals)
     update.balance = utils.fromDecimal(erc20Balance, erc20Decimals)
     update.currencySymbol = erc20Symbol
+    update.currencySelfAllowance = utils.fromDecimal(
+      erc20LockAllowance,
+      erc20Decimals
+    )
   }
 
   // totalSupply was previously called outstandingKeys. In order to keep compatibility
