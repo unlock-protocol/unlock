@@ -95,7 +95,10 @@ export default async function (
           )
       : totalPrice
 
-    if (!approvedAmount || approvedAmount.lt(totalAmountToApprove)) {
+    if (
+      !approvedAmount ||
+      utils.bigNumberify(approvedAmount).lt(totalAmountToApprove)
+    ) {
       // We must wait for the transaction to pass if we want the next one to succeed!
       await (
         await approveTransfer(
