@@ -148,7 +148,7 @@ export const CryptoCheckout = ({
 
       let data = new Array(owners.length).fill(null)
 
-      let recurringPayments
+      let recurringPayments: number[] | undefined
       if (nbPayments) {
         recurringPayments = new Array(owners.length).fill(nbPayments)
       }
@@ -176,6 +176,7 @@ export const CryptoCheckout = ({
         keyPrices,
         owners,
         data,
+        recurringPayments,
         (hash: string) => {
           emitTransactionInfo({
             lock: lock.address,
@@ -187,8 +188,7 @@ export const CryptoCheckout = ({
           } else {
             setTransactionPending(hash)
           }
-        },
-        recurringPayments
+        }
       )
       setPurchasePending(false)
       setTransactionPending('')
@@ -250,6 +250,7 @@ export const CryptoCheckout = ({
           purchaseAccount,
           referrer,
           data,
+          recurringPayments,
           (hash: string) => {
             emitTransactionInfo({
               lock: lock.address,
@@ -261,8 +262,7 @@ export const CryptoCheckout = ({
             } else {
               setTransactionPending(hash)
             }
-          },
-          recurringPayments
+          }
         )
 
         setKeyExpiration(Infinity) // We should actually get the real expiration

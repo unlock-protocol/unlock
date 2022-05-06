@@ -235,8 +235,8 @@ export const purchaseKeyFromLock = async (
   referrer: string,
   setLock: (...args: any) => void,
   data: string,
-  callback: (...args: any) => void,
-  recurringPayments?: number
+  recurringPayments: number | undefined,
+  callback: (...args: any) => void
 ) => {
   // In order to not modify the behavior for v10, by default if the user owns a key on
   // a non expiring lock, we extend it.
@@ -301,8 +301,8 @@ export const purchaseMultipleKeysFromLock = async (
   keyPrices: string[],
   owners: string[],
   data: string[],
-  callback: (...args: any) => void,
-  recurringPayments?: number[]
+  recurringPayments: number[] | undefined,
+  callback: (...args: any) => void
 ) => {
   return walletService.purchaseKeys(
     {
@@ -429,8 +429,8 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     recipient: string,
     referrer: string,
     data: string,
-    callback: (...args: any) => void,
-    recurringPayments?: number
+    recurringPayments: number | undefined,
+    callback: (...args: any) => void
   ) => {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
@@ -444,8 +444,8 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
         referrer,
         setLock,
         data,
-        callback,
-        recurringPayments
+        recurringPayments,
+        callback
       )
     }
   }
@@ -455,8 +455,8 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     keyPrices: string[],
     owners: string[],
     data: string[],
-    callback: (...args: any) => void,
-    recurringPayments?: number[]
+    recurringPayments: number[] | undefined,
+    callback: (...args: any) => void
   ) => {
     if (walletNetwork !== network) {
       setError(FATAL_WRONG_NETWORK)
@@ -471,8 +471,8 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
         keyPrices,
         owners,
         data,
-        callback,
-        recurringPayments
+        recurringPayments,
+        callback
       )
     }
   }
