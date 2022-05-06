@@ -64,7 +64,7 @@ Of course, that means that the Hook contract has been previously set to be a `ke
 
 An even more exciting hook that the PublicLock contract includes is the `onTokenUri` hook. This hook alters how the `tokenUri` method behaves. This method is the one in charge of yielding the URI that itself renders the JSON blob that includes the image, and other metadata for each individual Non Fungible Token.
 
-The URI that the contract yields can in fact be a [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs). Data URLs, URLs prefixed with the `data:` scheme, and are self-referrential: the URL itself contains the data that's represented by the browser. Here is an example: `data://text,hello%20unlock` is a URL which opens as a new page whose content is just "hello unlock".
+The URI that the contract yields can in fact be a [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs). Data URLs, URLs prefixed with the `data:` scheme, are self-referrential: the URL itself contains the data that's represented by the browser. Here is an example: `data://text,hello%20unlock` is a URL which opens as a new page whose content is just "hello unlock".
 
 By using a data URL as the `tokenUri` return, we can render metadata dynamically. The Tales of Elatora avatars are using this technique to render the image differently based on 2 things:
 
