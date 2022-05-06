@@ -1,9 +1,9 @@
 ---
-title: Dynamic NFT
+title: How to Create Dynamic NFTs Using Unlock Protocol
 subTitle: How Tales of Elatora is making dynamic NFT images
 authorName: Julien Genestoux
 publishDate: May 4, 2022
-description: By leveraging some of the important features of the Unlock contracts, it is possible to make the visual NFT evolve based on some on-chain data characteristics.
+description: By leveraging some of the important features of the Unlock contracts, it is possible to create dynamic NFTs and make the visual NFT evolve over time using on-chain data characteristics.
 image: TK
 ---
 
