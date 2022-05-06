@@ -15,7 +15,7 @@ Players also need weapons to play. Weapons are also NFTs, and a Buntai avatar ca
 
 # The `OnKeyPurchase` hook
 
-The PublicLock contract is highly programmable through the use of [hooks](https://github.com/unlock-protocol/docs/tree/master/developers/smart-contracts/lock-api/hooks). These hooks are external contracts that are used to alter the behavior of a PublicLock contract or trigger actions in other contracts. Any lock manager can configure hooks on a lock using the `setEventHooks` function. Each of these hooks need to implement a few functions and you can also use a single hook contract with all functions.
+The PublicLock contract is highly programmable through the use of [hooks](https://github.com/unlock-protocol/docs/tree/master/developers/smart-contracts/lock-api/hooks). These hooks are external contracts that are used to alter the behavior of a PublicLock contract or trigger actions in other contracts. Any lock manager can configure hooks on a lock using the `setEventHooks` function. Each hook needs to implement a few functions and you can also use a single hook contract with all functions.
 
 `onKeyPurchaseHook` is one of the hooks. This hook is called when the `purchase` function of a lock is called. It needs to implement 2 distinct functions:
 
