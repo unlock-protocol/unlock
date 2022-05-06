@@ -9,7 +9,7 @@ image: TK
 
 [Tales of Elatora](https://talesofelatora.com/) is a game where players need an avatar to play. The Avatars are non-fungible tokens using the Unlock protocol contract. There are two factions: the Buntai and the Gundan.
 
-Players also need weapons to play. Weapons are also NFT but a Buntai avatar can only use a Buntai weapon and a Gundan avatar can only use a Gundan weapon. Anyone who buys an avatar automatically receives a matching weapon, as you can see on [this transaction](https://etherscan.io/tx/0x0f61fd3cdfb520804f59bc5de2ab70c131313a55d3e692bbec4c2a66777e03b7) for example.
+Players also need weapons to play. Weapons are also NFTs, and a Buntai avatar can only use a Buntai weapon and a Gundan avatar can only use a Gundan weapon. Anyone who buys an avatar automatically receives a matching weapon, as you can see on [this transaction](https://etherscan.io/tx/0x0f61fd3cdfb520804f59bc5de2ab70c131313a55d3e692bbec4c2a66777e03b7) for example.
 
 ![2 NFT](/images/blog/dynamic-nft/transaction-2-nft.png)
 
