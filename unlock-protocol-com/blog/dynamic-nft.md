@@ -57,7 +57,7 @@ Tales of Elatora's avatar contract uses a hook to airdrop a weapon to anyone who
   }
 ```
 
-The Avatars are such that every even number is a Buntai and every odd is a Gundan so the hook just calls the `grantKeys` function on the right contract based on that.
+The Avatars are such that every even number is a Buntai and every odd is a Gundan. The hook calls the `grantKeys` function on the right contract based on that.
 Of course, that means that the Hook contract has been previously set to be a `keyGranter` on both locks ([see more info on the roles](https://docs.unlock-protocol.com/unlock/developers/smart-contracts/lock-api/access-control)).
 
 # The `onTokenUri` Hook
