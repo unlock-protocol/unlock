@@ -11,6 +11,6 @@ The Defiant, headed by CEO, journalist, and author Camila Russo, is “The Bloom
 
 The Defiant funds its operations through paid subscriptions from readers as well as through sponsorships. True to its journalism roots, The Defiant does not accept any paid article placements in editorial content, nor does it accept compensation for tweets or retweets.
 
-[See the full case study](https://f.hubspotusercontent20.net/hubfs/19942922/The%20Defiant%20-%20Unlock%20Case%20Study.pdf).
+[See the full case study](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/The%20Defiant%20-%20Unlock%20Case%20Study.pdf).
 
-[![The Defiant thumbnail](/images/blog/thedefiant-case-study/thedefiant-thumbnail.png)](https://f.hubspotusercontent20.net/hubfs/19942922/The%20Defiant%20-%20Unlock%20Case%20Study.pdf)
+[![The Defiant thumbnail](/images/blog/thedefiant-case-study/thedefiant-thumbnail-2.png)](https://19942922.fs1.hubspotusercontent-na1.net/hubfs/19942922/The%20Defiant%20-%20Unlock%20Case%20Study.pdf)
