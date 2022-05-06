@@ -474,7 +474,7 @@ export const CryptoCheckout = ({
       {paywallConfig.captcha && !recaptchaValue && (
         <ReCAPTCHA sitekey={recaptchaKey} onChange={setRecaptchaValue} />
       )}
-      {nbPayments && (
+      {showCheckoutButtons && nbPayments && (
         <Message>
           The total amount of {lock.currencySymbol} to approve includes{' '}
           {nbPayments} renewals of your{' '}
