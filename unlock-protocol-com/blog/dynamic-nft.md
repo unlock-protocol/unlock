@@ -112,7 +112,7 @@ function tokenURI(
 
 Specificaly, Tales of Elatora implements the hook by first checking if the `owner` of the Avatar also owns a corresponding weapon. If so, the final URL will include point to it (the `{weapon-id}` part), if not, it will use `0` for the `{weapon-id}`.
 
-Similarly, the background of the image is dynamic and changes based on the time of the day! If the contract's `tokenUri` is called between 8am and 5pm GMT, it will render the _day_ background. If it is queried between 5pm and 9pm GMT, it will render the _sunset_ background. The rest is used for the night.
+Similarly, the background of the image is dynamic and changes based on the time of the day! If the contract's `tokenUri` is called between 8am and 5pm GMT, it will render the _day_ background. If it is queried between 5pm and 9pm GMT, it will render the _sunset_ background, and if it is queried between 9pm and 8am GMT, it will render the _night_ background.
 
 ## Dynamic contracts
 
