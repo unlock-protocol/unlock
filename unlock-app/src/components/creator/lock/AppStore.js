@@ -122,7 +122,7 @@ const AppStore = ({ lock }) => {
       locks: {
         [lock.address]: {
           network: lock.network,
-          recurringPayments
+          recurringPayments,
         },
       },
       pessimistic: true,
