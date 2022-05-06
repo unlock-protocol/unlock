@@ -114,6 +114,32 @@ Specificaly, Tales of Elatora implements the hook by first checking if the `owne
 
 Similarly, the background of the image is dynamic and changes based on the time of the day! If the contract's `tokenUri` is called between 8am and 5pm GMT, it will render the _day_ background. If it is queried between 5pm and 9pm GMT, it will render the _sunset_ background. The rest is used for the night.
 
+Using etherscan, you can easily [retrieve the metadata](https://etherscan.io/address/0x39aecbe181d94d721ef80924f10b77c785299397#readProxyContract). Here is what token `1` renders as I am writing this post:
+
+```
+data:application/json;base64,eyAiaW1hZ2UiOiAiaXBmczovL1FtUGVDQmNtV0ZpTXJMTkx0QlVqYVo2eUJ0cDFMaG1EcUFWWG1qWFJIeDdxTFovVGFsZXNPZkVsYXRvcmFDb2xsZWN0aW9uX0ZpbmFsXzIvLzEtMS0yLnN2ZyIsICJhdHRyaWJ1dGVzIjogWyB7InRyYWl0X3R5cGUiOiAiZmFjdGlvbiIsICJ2YWx1ZSI6ICJndW5kYW4ifSwgIHsidHJhaXRfdHlwZSI6ICJtb21lbnRPZkRheSIsICJ2YWx1ZSI6ICJzdW5zZXQifSwgIHsidHJhaXRfdHlwZSI6ICJjbGFzcyIsICJ2YWx1ZSI6ICJSb2d1ZSJ9XSwgImRlc2NyaXB0aW9uIjogIlRhbGVzIG9mIEVsYXRvcmEgaXMgYSBjb21tdW5pdHktZHJpdmVuIGZhbnRhc3kgd29ybGQsIHdyaXR0ZW4gbm92ZWwgYW5kIGFuIFJQRy4gVGhpcyBUb0UgTkZUIGdyYW50cyBhY2Nlc3MgdG8gdGhlIHN0b3J5LCB0aGUgZ2FtZSwgdGhlIGNvbW11bml0eSBhbmQgZ2l2ZXMgdGhlIGhvbGRlciB2b3RpbmcgcmlnaHRzLiBodHRwczovL3RhbGVzb2ZlbGF0b3JhLmNvbS8iLCAiZXh0ZXJuYWxfdXJsIjoiaHR0cHM6Ly90YWxlc29mZWxhdG9yYS5jb20vIiwgIm5hbWUiOiAiVGFsZXMgb2YgRWxhdG9yYSBBdmF0YXIgMSJ9
+```
+
+Opening this data URI in a new tab will yield the following JSON:
+
+```js
+{
+  "image": "ipfs://QmPeCBcmWFiMrLNLtBUjaZ6yBtp1LhmDqAVXmjXRHx7qLZ/TalesOfElatoraCollection_Final_2/1-1-2.svg",
+  "attributes": [
+    { "trait_type": "faction", "value": "gundan" },
+    { "trait_type": "momentOfDay", "value": "sunset" },
+    { "trait_type": "class", "value": "Rogue" }
+  ],
+  "description": "Tales of Elatora is a community-driven fantasy world, written novel and an RPG. This ToE NFT grants access to the story, the game, the community and gives the holder voting rights. https://talesofelatora.com/",
+  "external_url": "https://talesofelatora.com/",
+  "name": "Tales of Elatora Avatar 1"
+}
+```
+
+And of course the image can easily be rendered using the following. It was rendered at sunset, and the owner currently owns [this weapon](https://opensea.io/assets/0x93a9f5fa632224117802dcfbf4aa9377fb7448ab/1).
+
+![Tales of Elatora](https://ipfs.io/ipfs/QmPeCBcmWFiMrLNLtBUjaZ6yBtp1LhmDqAVXmjXRHx7qLZ/TalesOfElatoraCollection_Final_2/1-1-2.svg)
+
 ## Dynamic contracts
 
 The core goal of the Unlock Protocol is to build a standard for memberships, where all memberships, from Amazon Prime, to Medium's member program, or the Tales of Elatora game work the same, in the same way that every website is made of the same core protocols: HTML, HTTP and others! However, exactly like every website can also be different, we believe memberships can also look and behave differently on some aspects.
