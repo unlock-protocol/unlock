@@ -71,7 +71,7 @@ By using a data URL as the `tokenUri` return, we can render metadata dynamically
 - whether the owner of the avatar also owns a weapon, and in which case, render the avatar along with the weapon
 - whether the avatar is rendered during the day, at night, or during sunset.
 
-Once configured the `onTokenUri` hook will let the Public Lock contract call a 3rd party contract to generate the JSON. Given an `image` string (see below for more details), this is what the Tales of Elatora Public lock does:
+Once configured, the `onTokenUri` hook will let the Public Lock contract call a 3rd party contract to generate the JSON. Given an `image` string (see below for more details), this is what the Tales of Elatora Public lock does:
 
 ```solidity
 // Create the json that includes the image
