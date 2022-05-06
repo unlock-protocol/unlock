@@ -201,12 +201,13 @@ export const CreatorLock = ({
         </LockName>
         <LockDuration>
           <Duration seconds={lock.expirationDuration} />
-          {isRecurring ? (
+          {isRecurring && (
             <small>
               <br />
-              Recurring
+              Recurring enabled
             </small>
-          ) : (
+          )}
+          {!isRecurring && lock.currencyContractAddress && (
             <LockLabelSmall onClick={handleApproveRecurring}>
               Enable recurring
             </LockLabelSmall>
