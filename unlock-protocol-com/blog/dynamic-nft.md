@@ -90,7 +90,7 @@ return
     );
 ```
 
-We now only have to generate the `image` itself. Using the same technique, it would be perfectly possible create an SVG (or even other image types!) on the fly, but Tales of Elatora used another approach: dynamically generating URL poiting to files pre-uploaded on IPFS, then, they use the contract's state to generate the URL that it needs to point to.
+We now only have to generate the `image` itself. Using the same technique, it would be perfectly possible create an SVG (or another image type!) on the fly, but Tales of Elatora used another approach: dynamically generating URLs pointing to files pre-uploaded on IPFS. Then, they use the contract's state to generate the URL that it needs to point to.
 
 Caroline and David generated all the possible combinations of avatars and weapons (including the absence weapon), and background and then uploaded all of them to IPFS using the following pattern: `{avatar-id}-{weapon-id}-{background}.svg`.
 
