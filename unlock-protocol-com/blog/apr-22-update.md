@@ -3,7 +3,7 @@ title: Unlock Protocol Product Updates for April 2022
 subTitle: Improvements for credit card handling, checkout, dashboard and keychain
 authorName: Christopher Carfi
 publishDate: April 30, 2022
-description: This month, Unlock Protocol improved credit card handling, checkout flows, the dashboard and keychain, and more.
+description: Release Notes for April 2022. Unlock Protocol improved credit card handling, checkout flows, the dashboard and keychain, and more.
 image: /images/blog/apr-22-update/apr-22-banner.jpg
 ---
 
