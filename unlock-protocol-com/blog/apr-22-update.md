@@ -22,7 +22,7 @@ image: /images/blog/apr-22-update/apr-22-banner.jpg
 ## Checkout improvements
 
 - **Customize recipient** — Purchasers can customize the recipient of the purchase (e.g. when purchasing as a gift)
-- **Multiple recipients** — Purchaseers can purchase multiple keys at once
+- **Multiple recipients** — Purchasers can purchase multiple keys at once
 - **CAPTCHA improvements** — Improved CAPTCHA for bot deterrence (especially useful for NFT ticket sales)
 - **Extending expired membership (v10)** — Expired memberships can be reactivated from checkout
 
