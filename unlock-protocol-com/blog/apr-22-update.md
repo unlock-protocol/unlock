@@ -11,23 +11,27 @@ image: /images/blog/mar-22-update/mar-22-banner.jpg
 
 ## Dashboard improvements
 
-- **item** — 
+- **Airdrops to multiple wallets** — Lock managers can now airdrop keys to multiple wallets at one time (huge time saver!)
+- **Lock managers can expire memberships** — Lock managers can expire (cancel) memberships from the dashboard
 
-Dashboard: multiple keys airdropped
-Dashboard: Expire membership (Keychain: Expire membership)
+## Keychain improvements
+
+- **Members can expire memberships** — Similar to the prior point, members can expire (cancel) memberships from their keychain
+
 
 ## Checkout improvements
 
+- **customize recipient** — 
+- **multiple recipients** — 
+- **Captcha** — 
+- **extending expired membership (v10)** — 
+
+
+## Credit card handling improvements
+
+- **item** — 
 - **item** — 
 
-Checkout: Captcha 
-Checkout: customize recipient
-Checkout: multiple recipients
-Checkout: extending expired membership (v10)
-
-## Creditcard handling improvements
-
-- **item** — 
 
 Improved credit card handling 
 * Improved handling of page refresh during credit card transactions
@@ -35,9 +39,7 @@ Improved credit card handling
 
 ## Website improvements
 
-- **item** — 
-
-Website: Community tab
+- **Community tab** — 
 
 
 Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!
