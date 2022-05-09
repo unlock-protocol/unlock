@@ -305,7 +305,7 @@ export const CryptoCheckout = ({
   const showRedirectButton = (hasValidkey || purchasedMultiple) && !isAdvanced
 
   const enablePurchaseButton = withMultipleRecipients
-    ? !purchasedMultiple
+    ? !purchasedMultiple && !transactionPending
     : showCheckoutButtons
 
   return (
