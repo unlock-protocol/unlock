@@ -1,21 +1,21 @@
 ---
-title: Dynamic NFT
+title: How to Create Dynamic NFTs Using Unlock Protocol
 subTitle: How Tales of Elatora is making dynamic NFT images
 authorName: Julien Genestoux
 publishDate: May 4, 2022
-description: By leveraging some of the important features of the Unlock contracts, it is possible to make the visual NFT evolve based on some on-chain data characteristics.
+description: By leveraging some of the important features of the Unlock contracts, it is possible to create dynamic NFTs and make the visual NFT evolve over time using on-chain data characteristics.
 image: TK
 ---
 
 [Tales of Elatora](https://talesofelatora.com/) is a game where players need an avatar to play. The Avatars are non-fungible tokens using the Unlock protocol contract. There are two factions: the Buntai and the Gundan.
 
-Players also need weapons to play. Weapons are also NFT but a Buntai avatar can only use a Buntai weapon and a Gundan avatar can only use a Gundan weapon. Anyone who buys an avatar automatically receives a matching weapon, as you can see on [this transaction](https://etherscan.io/tx/0x0f61fd3cdfb520804f59bc5de2ab70c131313a55d3e692bbec4c2a66777e03b7) for example.
+Players also need weapons to play. Weapons are also NFTs, and a Buntai avatar can only use a Buntai weapon and a Gundan avatar can only use a Gundan weapon. Anyone who buys an avatar automatically receives a matching weapon, as you can see on [this transaction](https://etherscan.io/tx/0x0f61fd3cdfb520804f59bc5de2ab70c131313a55d3e692bbec4c2a66777e03b7) for example.
 
 ![2 NFT](/images/blog/dynamic-nft/transaction-2-nft.png)
 
 # The `OnKeyPurchase` hook
 
-The PublicLock contract is highly programmable through the use of [hooks](https://github.com/unlock-protocol/docs/tree/master/developers/smart-contracts/lock-api/hooks). These hooks are external contracts that are used to alter the behavior of a PublicLock contract or trigger actions in other contracts. Any lock manager can configure hooks on a lock using the `setEventHooks` function. Each of these hooks need to implement a few functions and you can also use a single hook contract with all functions.
+The PublicLock contract is highly programmable through the use of [hooks](https://github.com/unlock-protocol/docs/tree/master/developers/smart-contracts/lock-api/hooks). These hooks are external contracts that are used to alter the behavior of a PublicLock contract or trigger actions in other contracts. Any lock manager can configure hooks on a lock using the `setEventHooks` function. Each hook needs to implement a few functions and you can also use a single hook contract with all functions.
 
 `onKeyPurchaseHook` is one of the hooks. This hook is called when the `purchase` function of a lock is called. It needs to implement 2 distinct functions:
 
@@ -57,21 +57,21 @@ Tales of Elatora's avatar contract uses a hook to airdrop a weapon to anyone who
   }
 ```
 
-The Avatar are such that every even number is a Buntai and every odd is a Gundan so the hook just calls the `grantKeys` function on the right contract based on that.
+The Avatars are such that every even number is a Buntai and every odd is a Gundan. The hook calls the `grantKeys` function on the right contract based on that.
 Of course, that means that the Hook contract has been previously set to be a `keyGranter` on both locks ([see more info on the roles](https://docs.unlock-protocol.com/unlock/developers/smart-contracts/lock-api/access-control)).
 
 # The `onTokenUri` Hook
 
 An even more exciting hook that the PublicLock contract includes is the `onTokenUri` hook. This hook alters how the `tokenUri` method behaves. This method is the one in charge of yielding the URI that itself renders the JSON blob that includes the image, and other metadata for each individual Non Fungible Token.
 
-The URI that the contract yields can in fact be a [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs). Data URLs, URLs prefixed with the `data:` scheme, and are self-referrential: the URL itself contains the data that's represented by the browser. Here is an example: `data://text,hello%20unlock` is a URL which opens as a new page whose content is just "hello unlock".
+The URI that the contract yields can in fact be a [data URL](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/Data_URIs). Data URLs, URLs prefixed with the `data:` scheme, are self-referrential: the URL itself contains the data that's represented by the browser. Here is an example: `data://text,hello%20unlock` is a URL which opens as a new page whose content is just "hello unlock".
 
 By using a data URL as the `tokenUri` return, we can render metadata dynamically. The Tales of Elatora avatars are using this technique to render the image differently based on 2 things:
 
 - whether the owner of the avatar also owns a weapon, and in which case, render the avatar along with the weapon
 - whether the avatar is rendered during the day, at night, or during sunset.
 
-Once configured the `onTokenUri` hook will let the Public Lock contract call a 3rd party contract to generate the JSON. Given an `image` string (see below for more details), this is what the Tales of Elatora Public lock does:
+Once configured, the `onTokenUri` hook will let the Public Lock contract call a 3rd party contract to generate the JSON. Given an `image` string (see below for more details), this is what the Tales of Elatora Public lock does:
 
 ```solidity
 // Create the json that includes the image
@@ -90,9 +90,9 @@ return
     );
 ```
 
-We now only have to generate the `image` itself. Using the same technique it would be perfectly possible create an SVG (or even other image types!) on the fly, but Tales of Elatora used another approach: dynamically generating URL poiting to files pre-uploaded on IPFS, then, they use the contract's state to generate the URL that it needs to point to.
+We now only have to generate the `image` itself. Using the same technique, it would be perfectly possible create an SVG (or another image type!) on the fly, but Tales of Elatora used another approach: dynamically generating URLs pointing to files pre-uploaded on IPFS. Then, they use the contract's state to generate the URL that it needs to point to.
 
-Caroline and David generated all the possible combinations of avatars and weapons (including the absence weapon), and background and then uploaded all of them to IPFS using the following pattern: `{avatar-id}-{weapon-id}-{background}.svg`.
+Caroline and David, leads on the Tales of Elatora project, generated images of all the possible combinations of avatars, weapons and backgrounds (including the absence of a weapon), and then uploaded all of the images to IPFS using the following pattern: `{avatar-id}-{weapon-id}-{background}.svg`.
 
 The hook implements its own `tokenURI` method.
 
@@ -112,7 +112,7 @@ function tokenURI(
 
 Specificaly, Tales of Elatora implements the hook by first checking if the `owner` of the Avatar also owns a corresponding weapon. If so, the final URL will include point to it (the `{weapon-id}` part), if not, it will use `0` for the `{weapon-id}`.
 
-Similarly, the background of the image is dynamic and changes based on the time of the day! If the contract's `tokenUri` is called between 8am and 5pm GMT, it will render the _day_ background. If it is queried between 5pm and 9pm GMT, it will render the _sunset_ background. The rest is used for the night.
+Similarly, the background of the image is dynamic and changes based on the time of the day! If the contract's `tokenUri` is called between 8am and 5pm GMT, it will render the _day_ background, if it is queried between 5pm and 9pm GMT, it will render the _sunset_ background, and if it is queried between 9pm and 8am GMT, it will render the _night_ background.
 
 Using etherscan, you can easily [retrieve the metadata](https://etherscan.io/address/0x39aecbe181d94d721ef80924f10b77c785299397#readProxyContract). Here is what token `1` renders as I am writing this post:
 
