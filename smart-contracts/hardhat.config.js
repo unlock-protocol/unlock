@@ -106,6 +106,7 @@ require('./tasks/release')
 require('./tasks/gov')
 require('./tasks/utils')
 require('./tasks/lock')
+require('./tasks/verify')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
