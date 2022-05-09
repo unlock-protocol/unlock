@@ -146,7 +146,6 @@ export interface PaywallConfig {
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean
   useDelegatedProvider?: boolean
-  approveAmount?: number
   network: number
 }
 
