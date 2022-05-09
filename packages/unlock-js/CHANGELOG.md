@@ -3,6 +3,8 @@
 # 0.26.0
 
 - add support for `approveBeneficiary`
+- pass address as param to `getAllowance` instead of signer
+
 # 0.25.0
 
 - Better support for v10
