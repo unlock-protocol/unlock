@@ -11,7 +11,7 @@ export default async function (address, provider) {
 
   // get lock allowance of itself (for v10 recurring)
   const erc20LockAllowance = await getAllowance(
-    update.tokenAddress,
+    update.currencyContractAddress,
     address,
     provider,
     address
