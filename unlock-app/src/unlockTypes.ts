@@ -97,6 +97,7 @@ export interface PaywallConfigLock {
   network?: number
   metadataInputs?: MetadataInput[]
   secret?: string
+  recurringPayments?: number
 }
 
 export enum KeyStatus {
@@ -127,6 +128,7 @@ export interface Lock {
   creationBlock?: number
   publicLockVersion?: number
   maxKeysPerAddress?: number
+  selfAllowance?: string
 }
 
 export interface Locks {

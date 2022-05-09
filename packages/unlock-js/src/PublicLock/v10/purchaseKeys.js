@@ -12,6 +12,7 @@ import formatKeyPrice from '../utils/formatKeyPrice'
  * - {PropTypes.address} erc20Address
  * - {number} decimals
  * - {PropTypes.arrayOf(PropTypes.address)} referrers (address which will receive UDT - if applicable)
+ * - {PropTypes.arrayOf(number)} recurringPayments the number of payments to allow for each keys. If the array is set, the keys are considered using recurring ERRC20 payments).
  * - {PropTypes.arrayOf(PropTypes.array[bytes])} _data (array of array of bytes, not used in transaction but can be used by hooks)
  * @param {function} callback invoked with the transaction hash
  */
@@ -23,6 +24,7 @@ export default async function (
     referrers: _referrers,
     lockAddress,
     erc20Address,
+    recurringPayments,
     decimals,
     data: _data,
   },
@@ -83,13 +85,26 @@ export default async function (
       this.signer.address
     )
 
-    if (!approvedAmount || approvedAmount.lt(totalPrice)) {
+    // total amount to approve
+    const totalAmountToApprove = recurringPayments
+      ? keyPrices // for reccuring payments
+          .map((kp, i) => kp.mul(recurringPayments[i]))
+          .reduce(
+            (total, approval) => total.add(approval),
+            utils.bigNumberify(0)
+          )
+      : totalPrice
+
+    if (
+      !approvedAmount ||
+      utils.bigNumberify(approvedAmount).lt(totalAmountToApprove)
+    ) {
       // We must wait for the transaction to pass if we want the next one to succeed!
       await (
         await approveTransfer(
           erc20Address,
           lockAddress,
-          totalPrice,
+          totalAmountToApprove,
           this.provider,
           this.signer
         )

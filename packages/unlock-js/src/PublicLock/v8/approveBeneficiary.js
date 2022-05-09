@@ -1,5 +1,5 @@
 import utils from '../../utils'
-import { ZERO } from '../../constants'
+import { ZERO, MAX_UINT } from '../../constants'
 import { getErc20Decimals } from '../../erc20'
 
 export default async function (
@@ -16,11 +16,15 @@ export default async function (
   }
 
   // decimals could be 0!
-  if (decimals == null) {
-    decimals = await getErc20Decimals(erc20Address, this.provider)
+  let actualAmount
+  if (amount !== MAX_UINT) {
+    if (decimals == null) {
+      decimals = await getErc20Decimals(erc20Address, this.provider)
+    }
+    actualAmount = utils.toDecimal(amount, decimals)
+  } else {
+    actualAmount = amount
   }
-
-  const actualAmount = utils.toDecimal(amount, decimals)
 
   const transactionPromise = lockContract.approveBeneficiary(
     spender,

@@ -71,7 +71,6 @@ export const processTransaction = async (
 /**
  * Function called to set the maxNumberOfKeys of a lock
  */
-
 export function setMaxNumberOfKeysOnLock({
   web3Service,
   walletService,
@@ -115,7 +114,7 @@ export function setMaxNumberOfKeysOnLock({
 }
 
 /**
- * Function called to updated the price of a lock
+ * Function called to update the price of a lock
  */
 export const updateKeyPriceOnLock = (
   web3Service: any,
@@ -151,7 +150,46 @@ export const updateKeyPriceOnLock = (
 }
 
 /**
- * Function called to updated the price of a lock
+ * Function called to the lock ERC20 allowance
+ * (address a v10 bug)
+ */
+export const updateSelfAllowanceOnLock = (
+  web3Service: any,
+  walletService: any,
+  config: any,
+  lock: Lock,
+  allowanceAmount: string,
+  setLock: (...args: any) => void,
+  callback: (...args: any) => void
+) => {
+  walletService.approveBeneficiary(
+    {
+      lockAddress: lock.address,
+      spender: lock.address,
+      amount: allowanceAmount,
+      erc20Address: lock.currencyContractAddress,
+    },
+    async (error: any, transactionHash: string) => {
+      if (error) {
+        throw error
+      }
+      lock.selfAllowance = allowanceAmount
+      processTransaction(
+        'approveBeneficiary',
+        web3Service,
+        config,
+        lock,
+        setLock,
+        transactionHash,
+        walletService.networkId
+      )
+      return callback(transactionHash)
+    }
+  )
+}
+
+/**
+ * Function called to withdraw from a lock
  */
 export const withdrawFromLock = (
   web3Service: any,
@@ -186,7 +224,7 @@ export const withdrawFromLock = (
   )
 }
 /**
- * Function called to updated the price of a lock
+ * Function called to purchase a key
  */
 export const purchaseKeyFromLock = async (
   web3Service: any,
@@ -197,6 +235,7 @@ export const purchaseKeyFromLock = async (
   referrer: string,
   setLock: (...args: any) => void,
   data: string,
+  recurringPayments: number | undefined,
   callback: (...args: any) => void
 ) => {
   // In order to not modify the behavior for v10, by default if the user owns a key on
@@ -228,6 +267,7 @@ export const purchaseKeyFromLock = async (
       lockAddress: lock.address,
       owner: recipient,
       referrer,
+      recurringPayments,
       keyPrice: lock.keyPrice,
       data,
     },
@@ -261,6 +301,7 @@ export const purchaseMultipleKeysFromLock = async (
   keyPrices: string[],
   owners: string[],
   data: string[],
+  recurringPayments: number[] | undefined,
   callback: (...args: any) => void
 ) => {
   return walletService.purchaseKeys(
@@ -268,6 +309,7 @@ export const purchaseMultipleKeysFromLock = async (
       lockAddress,
       owners,
       keyPrices,
+      recurringPayments,
       data,
     },
     async (error: any, transactionHash: string) => {
@@ -387,6 +429,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     recipient: string,
     referrer: string,
     data: string,
+    recurringPayments: number | undefined,
     callback: (...args: any) => void
   ) => {
     if (walletNetwork !== network) {
@@ -401,6 +444,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
         referrer,
         setLock,
         data,
+        recurringPayments,
         callback
       )
     }
@@ -411,6 +455,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     keyPrices: string[],
     owners: string[],
     data: string[],
+    recurringPayments: number[] | undefined,
     callback: (...args: any) => void
   ) => {
     if (walletNetwork !== network) {
@@ -426,6 +471,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
         keyPrices,
         owners,
         data,
+        recurringPayments,
         callback
       )
     }
@@ -554,6 +600,26 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
       })
     }
   }
+
+  function updateSelfAllowance(
+    allowanceAmount: string,
+    callback: (...args: any) => void
+  ) {
+    if (walletNetwork !== network) {
+      setError(FATAL_WRONG_NETWORK)
+    } else {
+      updateSelfAllowanceOnLock(
+        web3Service,
+        walletService,
+        config,
+        lock,
+        allowanceAmount,
+        setLock,
+        callback
+      )
+    }
+  }
+
   return {
     getLock,
     lock,
@@ -569,6 +635,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     markAsCheckedIn,
     updateMaxNumberOfKeys,
     purchaseMultipleKeys,
+    updateSelfAllowance,
   }
 }
 

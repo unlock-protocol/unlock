@@ -22,6 +22,7 @@ import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
 import { ToastHelper } from '../../helpers/toast.helper'
+import Duration from '../../helpers/Duration'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -101,6 +102,9 @@ export const CryptoCheckout = ({
   const withMultipleRecipients = numberOfRecipients > 1
   const hasRecipients = recipients?.length > 0
 
+  // for recurring purchases
+  const nbPayments = paywallConfig?.locks[lock.address]?.recurringPayments
+
   const cantBuyWithCrypto = isAdvanced
     ? !(
         advancedRecipientValid &&
@@ -143,6 +147,12 @@ export const CryptoCheckout = ({
       const keyPrices = new Array(owners.length).fill(lock.keyPrice)
 
       let data = new Array(owners.length).fill(null)
+
+      let recurringPayments: number[] | undefined
+      if (nbPayments) {
+        recurringPayments = new Array(owners.length).fill(nbPayments)
+      }
+
       // We need to handle the captcha here too!
       if (paywallConfig.captcha) {
         // get the secret from locksmith!
@@ -166,6 +176,7 @@ export const CryptoCheckout = ({
         keyPrices,
         owners,
         data,
+        recurringPayments,
         (hash: string) => {
           emitTransactionInfo({
             lock: lock.address,
@@ -217,6 +228,8 @@ export const CryptoCheckout = ({
           : recipients[0]?.resolvedAddress ?? account
         let data
 
+        const recurringPayments = nbPayments
+
         if (paywallConfig.captcha) {
           // get the secret from locksmith!
           const response = await storageService.getDataForRecipientsAndCaptcha(
@@ -232,18 +245,25 @@ export const CryptoCheckout = ({
           }
           data = response.signatures[0]
         }
-        await purchaseKey(purchaseAccount, referrer, data, (hash: string) => {
-          emitTransactionInfo({
-            lock: lock.address,
-            hash,
-          })
-          if (!paywallConfig.pessimistic) {
-            setKeyExpiration(Infinity) // Optimistic!
-            setPurchasePending(false)
-          } else {
-            setTransactionPending(hash)
+
+        await purchaseKey(
+          purchaseAccount,
+          referrer,
+          data,
+          recurringPayments,
+          (hash: string) => {
+            emitTransactionInfo({
+              lock: lock.address,
+              hash,
+            })
+            if (!paywallConfig.pessimistic) {
+              setKeyExpiration(Infinity) // Optimistic!
+              setPurchasePending(false)
+            } else {
+              setTransactionPending(hash)
+            }
           }
-        })
+        )
 
         setKeyExpiration(Infinity) // We should actually get the real expiration
         setPurchasePending(false)
@@ -453,6 +473,14 @@ export const CryptoCheckout = ({
       )}
       {paywallConfig.captcha && !recaptchaValue && (
         <ReCAPTCHA sitekey={recaptchaKey} onChange={setRecaptchaValue} />
+      )}
+      {showCheckoutButtons && nbPayments && (
+        <Message>
+          The total amount of {lock.currencySymbol} to approve includes{' '}
+          {nbPayments} renewals of your{' '}
+          <Duration seconds={lock.expirationDuration} /> key during the next 1
+          year.
+        </Message>
       )}
     </>
   )
