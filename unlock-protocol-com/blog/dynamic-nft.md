@@ -2,9 +2,9 @@
 title: How to Create Dynamic NFTs Using Unlock Protocol
 subTitle: How Tales of Elatora is making dynamic NFT images
 authorName: Julien Genestoux
-publishDate: May 4, 2022
+publishDate: May 9, 2022
 description: By leveraging some of the important features of the Unlock contracts, it is possible to create dynamic NFTs and make the visual NFT evolve over time using on-chain data characteristics.
-image: TK
+image: /images/blog/dynamic-nft/tales-of-elatora.gif
 ---
 
 [Tales of Elatora](https://talesofelatora.com/) is a game where players need an avatar to play. The Avatars are non-fungible tokens using the Unlock protocol contract. There are two factions: the Buntai and the Gundan.
@@ -138,7 +138,7 @@ Opening this data URI in a new tab will yield the following JSON:
 
 And of course the image can easily be rendered using the following. It was rendered at sunset, and the owner currently owns [this weapon](https://opensea.io/assets/0x93a9f5fa632224117802dcfbf4aa9377fb7448ab/1).
 
-![Tales of Elatora](https://ipfs.io/ipfs/QmPeCBcmWFiMrLNLtBUjaZ6yBtp1LhmDqAVXmjXRHx7qLZ/TalesOfElatoraCollection_Final_2/1-1-2.svg)
+![Tales of Elatora](/images/blog/dynamic-nft/tales-of-elatora.gif)
 
 ## Dynamic contracts
 
