@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { SiweMessage, generateNonce } from 'siwe'
 import { OAuthConfig } from '../../../unlockTypes'
 import LoginPrompt from '../LoginPrompt'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -20,19 +21,26 @@ interface OAuthConnectProps {
 const formatMessageToSign = (
   clientId: string,
   address: string,
-  message: string
+  statement: string,
+  chainId: number = 1 // Default due compaitibility with existing code.
 ): string => {
-  const nonce = Math.random().toString(36).substring(2, 10)
-  const issuedAt = new Date().toISOString()
-  return `
-${clientId} wants you to sign in with your Ethereum account:
-${address}
+  const nonce = generateNonce()
+  const expirationDate = new Date()
+  // Add 7 day expiration from today. This will account for months.
+  expirationDate.setDate(expirationDate.getDate() + 7)
 
-${message ? `${message}x\n` : ''}URI: https://app.unlock-protocol.com/login
-Version: 1
-Nonce: ${nonce}
-Issued At: ${issuedAt}
-`
+  const message = new SiweMessage({
+    nonce,
+    domain: clientId,
+    statement: statement.trim(),
+    uri: 'https://app.unlock-protocol.com/login',
+    version: '1',
+    address,
+    chainId,
+    expirationTime: expirationDate.toISOString(),
+  })
+
+  return message.prepareMessage()
 }
 
 export const OAuthConnect = ({
@@ -41,7 +49,7 @@ export const OAuthConnect = ({
   message,
   closeModal,
 }: OAuthConnectProps) => {
-  const { account, signMessage, isUnlockAccount } = useContext(
+  const { account, signMessage, isUnlockAccount, network } = useContext(
     AuthenticationContext
   )
   const [showSignMessage, setShowSignMessage] = useState(false)
@@ -55,7 +63,12 @@ export const OAuthConnect = ({
     const handleUser = async (account?: string) => {
       if (account) {
         setShowSignMessage(!isUnlockAccount)
-        const digest = formatMessageToSign(clientId, account, message || '')
+        const digest = formatMessageToSign(
+          clientId,
+          account,
+          message || '',
+          network
+        )
 
         try {
           const signedMessage = await signMessage(digest)

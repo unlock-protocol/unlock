@@ -148,7 +148,7 @@ export const CryptoCheckout = ({
         // get the secret from locksmith!
         const response = await storageService.getDataForRecipientsAndCaptcha(
           owners,
-          recaptchaValue
+          recaptchaValue!
         )
         if (response.error || !response.signatures) {
           setPurchasePending(false)
@@ -221,7 +221,7 @@ export const CryptoCheckout = ({
           // get the secret from locksmith!
           const response = await storageService.getDataForRecipientsAndCaptcha(
             [purchaseAccount], // recipient
-            recaptchaValue
+            recaptchaValue!
           )
           if (response.error) {
             setPurchasePending(false)
@@ -304,6 +304,10 @@ export const CryptoCheckout = ({
 
   const showRedirectButton = (hasValidkey || purchasedMultiple) && !isAdvanced
 
+  const enablePurchaseButton = withMultipleRecipients
+    ? !purchasedMultiple && !transactionPending
+    : showCheckoutButtons
+
   return (
     <>
       <Lock
@@ -356,7 +360,7 @@ export const CryptoCheckout = ({
         </>
       )}
       {purchasedMultiple && <Message>Enjoy your memberships!</Message>}
-      {showCheckoutButtons && !purchasedMultiple && (
+      {enablePurchaseButton && (
         <div
           style={{
             marginBottom: '32px',
