@@ -9,16 +9,18 @@ import { getAllowance } from '../../erc20'
 export default async function (address, provider) {
   const update = await parseLockGetters.bind(this)(address, provider)
 
-  // get lock allowance of itself (for v10 recurring)
-  const erc20LockAllowance = await getAllowance(
-    update.currencyContractAddress,
-    address,
-    provider,
-    address
-  )
+  if (update.currencyContractAddress) {
+    // get lock allowance of itself (for v10 recurring)
+    const erc20LockAllowance = await getAllowance(
+      update.currencyContractAddress,
+      address,
+      provider,
+      address
+    )
 
-  // fix for a bug in reccuring ERC20 payments on lock v10
-  update.selfAllowance = erc20LockAllowance.toString()
+    // fix for a bug in reccuring ERC20 payments on lock v10
+    update.selfAllowance = erc20LockAllowance.toString()
+  }
 
   return update
 }
