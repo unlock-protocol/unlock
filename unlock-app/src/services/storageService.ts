@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { EventEmitter } from 'events'
-
+import { LocksmithService } from '@unlock-protocol/unlock-js'
+import { Lock } from '../unlockTypes'
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
 // these objects, and nothing that isn't emitted should be in one of these
@@ -40,9 +41,20 @@ export const failure = {
 }
 
 export class StorageService extends EventEmitter {
-  constructor(host) {
+  public host: string
+
+  public locksmith: LocksmithService
+
+  constructor(host: string) {
     super()
     this.host = host
+    this.locksmith = new LocksmithService({
+      host,
+    })
+  }
+
+  async login(message: string, signature: string) {
+    return this.locksmith.login(message, signature)
   }
 
   /**
@@ -54,12 +66,12 @@ export class StorageService extends EventEmitter {
    * @paran {*} data (input of transaction, optional)
    */
   async storeTransaction(
-    transactionHash,
-    senderAddress,
-    recipientAddress,
-    chain,
-    beneficiaryAddress /** Used in the context of key purchase *for* */,
-    data
+    transactionHash: string,
+    senderAddress: string,
+    recipientAddress: string,
+    chain: number,
+    beneficiaryAddress: string /** Used in the context of key purchase *for* */,
+    data: any
   ) {
     const payload = {
       transactionHash,
@@ -84,7 +96,7 @@ export class StorageService extends EventEmitter {
    * TODO: consider a more robust url building
    * @param {*} senderAddress
    */
-  async getRecentTransactionsHashesSentBy(senderAddress) {
+  async getRecentTransactionsHashesSentBy(senderAddress: string) {
     let hashes = [] // TODO This is badly named! this returns full transactions
     try {
       const oneDayAgo = new Date().getTime() - 1000 * 60 * 60 * 24
@@ -92,7 +104,7 @@ export class StorageService extends EventEmitter {
         `${this.host}/transactions?sender=${senderAddress}&createdAfter=${oneDayAgo}`
       )
       if (response.data && response.data.transactions) {
-        hashes = response.data.transactions.map((t) => ({
+        hashes = response.data.transactions.map((t: any) => ({
           hash: t.transactionHash,
           network: t.chain,
           to: t.recipient,
@@ -107,7 +119,7 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  genAuthorizationHeader = (token) => {
+  genAuthorizationHeader(token: string) {
     return { Authorization: ` Bearer ${token}` }
   }
 
@@ -121,16 +133,10 @@ export class StorageService extends EventEmitter {
    * @param {string} password (do not send to locksmith)
    * @returns {Promise<*>}
    */
-  async createUser(user, emailAddress, password) {
+
+  async createUser(user: any) {
     const opts = {}
     return axios.post(`${this.host}/users/`, user, opts)
-    // return {
-    //   passwordEncryptedPrivateKey:
-    //     user.message.user.passwordEncryptedPrivateKey,
-    //   emailAddress,
-    //   password,
-    //   recoveryPhrase: response.data.recoveryPhrase,
-    // }
   }
 
   /**
@@ -142,9 +148,14 @@ export class StorageService extends EventEmitter {
    * @param {*} token
    * @returns {Promise<*>}
    */
-  async updateUserEncryptedPrivateKey(emailAddress, user, token) {
-    const opts = {}
-    opts.headers = this.genAuthorizationHeader(token)
+  async updateUserEncryptedPrivateKey(
+    emailAddress: string,
+    user: string,
+    token: string
+  ) {
+    const opts = {
+      headers: this.genAuthorizationHeader(token),
+    }
     try {
       await axios.put(
         `${this.host}/users/${encodeURIComponent(
@@ -166,11 +177,13 @@ export class StorageService extends EventEmitter {
    * @param {*} paymentDetails structured_data used to generate signature
    * @param {*} token
    */
-  async addPaymentMethod(emailAddress, stripeTokenId, token) {
-    const opts = {}
-    if (token) {
-      // TODO: tokens aren't optional
-      opts.headers = this.genAuthorizationHeader(token)
+  async addPaymentMethod(
+    emailAddress: string,
+    stripeTokenId: string,
+    token: string
+  ) {
+    const opts = {
+      headers: this.genAuthorizationHeader(token),
     }
     try {
       await axios.put(
@@ -191,12 +204,11 @@ export class StorageService extends EventEmitter {
    * @param {*} token
    * @returns {Promise<*>}
    */
-  async getUserPrivateKey(emailAddress) {
+  async getUserPrivateKey(emailAddress: string) {
     const opts = {}
     try {
       const response = await axios.get(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/privatekey`,
-        null,
         opts
       )
       if (response.data && response.data.passwordEncryptedPrivateKey) {
@@ -221,12 +233,11 @@ export class StorageService extends EventEmitter {
    * @param {*} token
    * @returns {Promise<*>}
    */
-  async getUserRecoveryPhrase(emailAddress) {
+  async getUserRecoveryPhrase(emailAddress: string) {
     const opts = {}
     try {
       const response = await axios.get(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/recoveryphrase`,
-        null,
         opts
       )
       if (response.data && response.data.recoveryPhrase) {
@@ -251,7 +262,7 @@ export class StorageService extends EventEmitter {
    * their account. Except in event of error, will always respond with an array
    * of 0 or more elements.
    */
-  async getCards(emailAddress) {
+  async getCards(emailAddress: string) {
     try {
       const response = await axios.get(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/cards`
@@ -262,7 +273,7 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async purchaseKey(purchaseRequest, token) {
+  async purchaseKey(purchaseRequest: Record<string, any>, token: string) {
     const opts = {
       headers: this.genAuthorizationHeader(token),
     }
@@ -287,13 +298,13 @@ export class StorageService extends EventEmitter {
    * [Note: locksmith may not know of all the locks by a user at a given point as the lock may not be deployed yet, or the lock might have been transfered]
    * @param {*} address
    */
-  async getLockAddressesForUser(address) {
+  async getLockAddressesForUser(address: string) {
     try {
       const result = await axios.get(`${this.host}/${address}/locks`)
       if (result.data && result.data.locks) {
         this.emit(
           success.getLockAddressesForUser,
-          result.data.locks.map((lock) => lock.address)
+          result.data.locks.map((lock: Lock) => lock.address)
         )
       } else {
         this.emit(
@@ -313,9 +324,10 @@ export class StorageService extends EventEmitter {
    * @param {*} data structured_data used to generate signature
    * @param {*} token
    */
-  async ejectUser(publicKey, data, token) {
-    const opts = {}
-    opts.headers = this.genAuthorizationHeader(btoa(token))
+  async ejectUser(publicKey: string, data: any, token: string) {
+    const opts = {
+      headers: this.genAuthorizationHeader(btoa(token)),
+    }
     try {
       await axios.post(`${this.host}/users/${publicKey}/eject`, data, opts)
       this.emit(success.ejectUser, { publicKey })
@@ -331,7 +343,12 @@ export class StorageService extends EventEmitter {
    * @param {string} signature
    * @param {*} data
    */
-  async getBulkMetadataFor(lockAddress, signature, data, network) {
+  async getBulkMetadataFor(
+    lockAddress: string,
+    signature: string,
+    data: any,
+    network: number
+  ) {
     const stringData = JSON.stringify(data)
     const opts = {
       headers: {
@@ -366,7 +383,7 @@ export class StorageService extends EventEmitter {
    * @param {string} signature
    * @param {*} data
    */
-  async getStripeConnect(lockAddress, signature, data) {
+  async getStripeConnect(lockAddress: string, signature: string, data: any) {
     const opts = {
       headers: {
         Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
@@ -387,7 +404,12 @@ export class StorageService extends EventEmitter {
     return result?.data
   }
 
-  async updateLockIcon(lockAddress, signature, data, icon) {
+  async updateLockIcon(
+    lockAddress: string,
+    signature: string,
+    data: any,
+    icon: any
+  ) {
     const opts = {
       headers: {
         Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
@@ -416,11 +438,11 @@ export class StorageService extends EventEmitter {
    * @returns
    */
   async setUserMetadataData(
-    lockAddress,
-    userAddress,
-    payload,
-    signature,
-    network
+    lockAddress: string,
+    userAddress: string,
+    payload: any,
+    signature: string,
+    network: number
   ) {
     let url = `${this.host}/api/key/${lockAddress}/user/${userAddress}`
     if (network) {
@@ -448,7 +470,13 @@ export class StorageService extends EventEmitter {
    * @param {*} network
    * @returns
    */
-  async setKeyMetadata(lockAddress, keyId, payload, signature, network) {
+  async setKeyMetadata(
+    lockAddress: string,
+    keyId: string,
+    payload: any,
+    signature: string,
+    network: number
+  ) {
     let url = `${this.host}/api/key/${lockAddress}/${keyId}`
     if (network) {
       url = `${url}?chain=${network}`
@@ -473,14 +501,21 @@ export class StorageService extends EventEmitter {
    * @param {*} network
    * @returns
    */
-  async getKeyMetadata(lockAddress, keyId, payload, signature, network) {
+  async getKeyMetadata(
+    lockAddress: string,
+    keyId: string,
+    // @ts-ignore
+    payload: any,
+    signature: string,
+    network: number
+  ) {
     try {
       let url = `${this.host}/api/key/${lockAddress}/${keyId}`
       if (network) {
         url = `${url}?chain=${network}`
       }
 
-      const options = {
+      const options: { headers: Record<string, string> } = {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -499,7 +534,10 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async getDataForRecipientsAndCaptcha(recipients, captchaValue) {
+  async getDataForRecipientsAndCaptcha(
+    recipients: string[],
+    captchaValue: string
+  ) {
     try {
       const url = `${this.host}/api/captcha`
 
@@ -508,7 +546,7 @@ export class StorageService extends EventEmitter {
           'Content-Type': 'application/json',
         },
         params: {
-          recipients,
+          recipients: recipients.map((r) => r.toLowerCase()),
           captchaValue,
         },
       }
@@ -521,7 +559,7 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async getKeyGranter(network) {
+  async getKeyGranter(network: number) {
     try {
       const url = `${this.host}/purchase`
 

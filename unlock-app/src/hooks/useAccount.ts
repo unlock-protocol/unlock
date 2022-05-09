@@ -97,9 +97,7 @@ export const useAccount = (address: string, network: number) => {
           emailAddress,
           publicKey: address,
           passwordEncryptedPrivateKey,
-        }),
-        emailAddress,
-        password
+        })
       )
       // TODO: we can do this without requiring the user to wait but that could be a bit unsafe, because what happens if they close the window?
       recoveryKey = await reEncryptPrivateKey(
