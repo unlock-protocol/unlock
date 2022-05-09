@@ -1,5 +1,8 @@
 # Changes
 
+# 0.26.0
+
+- add support for `approveBeneficiary`
 # 0.25.0
 
 - Better support for v10
