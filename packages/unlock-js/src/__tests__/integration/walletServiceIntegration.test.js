@@ -249,7 +249,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       })
 
       // only v8+
-      if (['v4', 'v6', 'v7'].indexOf(publicLockVersion) !== -1) {
+      if (['v4', 'v6', 'v7'].indexOf(publicLockVersion) === -1) {
         describe('approveBeneficary', () => {
           let spender
           let receiver
