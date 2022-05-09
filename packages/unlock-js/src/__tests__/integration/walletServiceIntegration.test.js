@@ -36,7 +36,7 @@ const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
 describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let walletService
   let web3Service
-  let ERC20Address
+  let ERC20
 
   // Unlock v4 can only interact w PublicLock v4
   const PublicLockVersions =
@@ -46,7 +46,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
-    ERC20Address = await nodeSetup()
+    ERC20 = await nodeSetup()
 
     const [signer] = await ethers.getSigners()
     const ethersProvider = signer.provider
@@ -157,7 +157,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         }
         // parse erc20
         const { isERC20 } = lockParams
-        lockParams.currencyContractAddress = isERC20 ? ERC20Address : null
+        lockParams.currencyContractAddress = isERC20 ? ERC20.address : null
 
         // unique Lock name to avoid conflicting addresses
         lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
