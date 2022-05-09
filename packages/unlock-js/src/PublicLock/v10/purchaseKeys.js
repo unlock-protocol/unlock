@@ -80,7 +80,7 @@ export default async function (
       erc20Address,
       lockAddress,
       this.provider,
-      this.signer
+      this.signer.address
     )
 
     if (!approvedAmount || approvedAmount.lt(totalPrice)) {

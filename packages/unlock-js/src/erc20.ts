@@ -70,13 +70,12 @@ export async function getAllowance(
   erc20ContractAddress: string,
   lockContractAddress: string,
   provider: ethers.providers.Provider,
-  signer: ethers.Signer
+  spenderAddress: string
 ) {
-  const purchaser = await signer.getAddress()
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
   let amount = '0'
   try {
-    amount = await contract.allowance(purchaser, lockContractAddress)
+    amount = await contract.allowance(spenderAddress, lockContractAddress)
   } catch (e) {
     // if no amount was allowed, some provider will fail.
   }
