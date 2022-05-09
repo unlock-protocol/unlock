@@ -21,7 +21,7 @@ const deploy = async (provider, signer) => {
   const erc20Contract = await factory.deploy()
   await erc20Contract.deployed()
 
-  return erc20Contract.address
+  return erc20Contract
 }
 
 /**

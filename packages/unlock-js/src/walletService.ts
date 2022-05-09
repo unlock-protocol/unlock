@@ -248,6 +248,30 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Set ERC20 allowance to the beneficary
+   * @param {object} params:
+   * - {PropTypes.address} lockAddress
+   * - {string} spender the address of the spender
+   * - {number} amount the amount to approve
+   * @param {function} callback invoked with the transaction hash
+   */
+  async approveBeneficiary(
+    params: {
+      lockAddress: string
+      spender: string
+      amount: number
+    },
+    callback: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.approveBeneficiary) {
+      throw new Error('Lock version not supported')
+    }
+    return version.approveBeneficiary.bind(this)(params, callback)
+  }
+
+  /**
    * Grants permission to grant keys to address
    * @param {*} params
    * @param {*} callback

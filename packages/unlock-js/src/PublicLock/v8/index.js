@@ -1,5 +1,6 @@
 import abis from '../../abis'
 import keyManagerOf from './keyManagerOf'
+import approveBeneficiary from './approveBeneficiary'
 
 import v7 from '../v7'
 
@@ -45,4 +46,5 @@ export default {
   getCancelAndRefundValueFor,
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
+  approveBeneficiary,
 }

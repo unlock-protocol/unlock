@@ -23,6 +23,7 @@ const {
   getCancelAndRefundValueFor,
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
+  approveBeneficiary,
 } = v8
 
 export default {
@@ -49,4 +50,5 @@ export default {
   getCancelAndRefundValueFor,
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
+  approveBeneficiary,
 }

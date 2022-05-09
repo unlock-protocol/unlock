@@ -25,6 +25,7 @@ const {
   keyManagerOf,
   setMaxNumberOfKeys,
   setExpirationDuration,
+  approveBeneficiary,
 } = v9
 
 export default {
@@ -53,4 +54,5 @@ export default {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   getCancelAndRefundValueFor,
+  approveBeneficiary,
 }
