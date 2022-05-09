@@ -9,6 +9,7 @@ import expireAndRefundFor from './expireAndRefundFor'
 import getTokenIdForOwner from './getTokenIdForOwner'
 import getKeyExpirationByLockForOwner from './getKeyExpirationByLockForOwner'
 import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
+import getLock from './getLock'
 import v9 from '../v9'
 
 const {
@@ -21,7 +22,6 @@ const {
   isKeyGranter,
   addKeyGranter,
   cancelAndRefund,
-  getLock,
   keyManagerOf,
   setMaxNumberOfKeys,
   setExpirationDuration,
