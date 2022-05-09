@@ -1,7 +1,7 @@
 import purchaseKeys from './purchaseKeys'
 
 /**
- * Purchase key function. calls the purchaseKeys function with the vlalue in array
+ * Purchase key function. calls the purchaseKeys function with the value in array
  */
 export default async function (
   {

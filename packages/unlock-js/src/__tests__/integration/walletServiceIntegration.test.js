@@ -248,87 +248,93 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         expect(lock.beneficiary).toEqual(accounts[0]) // This is the default in walletService
       })
 
-      describe('approveBeneficary', () => {
-        let spender
-        let receiver
-        let receiverBalanceBefore
-        let transactionHash
+      // only v8+
+      if (['v4', 'v6', 'v7'].indexOf(publicLockVersion) === -1) {
+        describe('approveBeneficary', () => {
+          let spender
+          let receiver
+          let receiverBalanceBefore
+          let transactionHash
 
-        beforeAll(async () => {
-          ;[, spender, receiver] = await ethers.getSigners()
-          // Get the erc20 balance of the user before the purchase
-          receiverBalanceBefore = await web3Service.getTokenBalance(
-            lock.currencyContractAddress,
-            receiver.address,
-            chainId
-          )
-
-          await walletService.approveBeneficiary(
-            {
-              lockAddress,
-              spender: spender.address,
-              amount: '10',
-            },
-            (error, hash) => {
-              if (error) {
-                throw error
-              }
-              transactionHash = hash
-            }
-          )
-
-          // purchase a key (to increase lock ERC20 balance)
-          await walletService.purchaseKey(
-            {
-              lockAddress,
-              owner: spender.address,
-              keyPrice: lock.keyPrice,
-            },
-            (error) => {
-              if (error) {
-                throw error
-              }
-            }
-          )
-        })
-
-        itIfErc20('should have yielded a transaction hash', () => {
-          expect.assertions(1)
-          expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
-        })
-
-        itIfErc20('should have set lock erc20 allowance', async () => {
-          expect.assertions(1)
-
-          // make sure allowance has changed
-          const allowance = await ERC20.allowance(lockAddress, spender.address)
-          expect(allowance.toString()).toBe('10000000000000000000')
-        })
-
-        itIfErc20(
-          'should allow to transfer funds directly from lock',
-          async () => {
-            expect.assertions(1)
-            // transfer some tokens directly from lock
-            await ERC20.connect(spender).transferFrom(
-              lockAddress,
-              receiver.address,
-              '1000000000000000000'
-            )
-
-            // make sure tokens have been transferred
-            const receiverBalanceAfter = await web3Service.getTokenBalance(
+          beforeAll(async () => {
+            ;[, spender, receiver] = await ethers.getSigners()
+            // Get the erc20 balance of the user before the purchase
+            receiverBalanceBefore = await web3Service.getTokenBalance(
               lock.currencyContractAddress,
               receiver.address,
               chainId
             )
 
-            expect(parseFloat(receiverBalanceAfter)).toBe(
-              parseFloat(receiverBalanceBefore) + parseFloat(1)
+            await walletService.approveBeneficiary(
+              {
+                lockAddress,
+                spender: spender.address,
+                amount: '10',
+              },
+              (error, hash) => {
+                if (error) {
+                  throw error
+                }
+                transactionHash = hash
+              }
             )
-          }
-        )
-      })
+
+            // purchase a key (to increase lock ERC20 balance)
+            await walletService.purchaseKey(
+              {
+                lockAddress,
+                owner: spender.address,
+                keyPrice: lock.keyPrice,
+              },
+              (error) => {
+                if (error) {
+                  throw error
+                }
+              }
+            )
+          })
+
+          itIfErc20('should have yielded a transaction hash', () => {
+            expect.assertions(1)
+            expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          })
+
+          itIfErc20('should have set lock erc20 allowance', async () => {
+            expect.assertions(1)
+
+            // make sure allowance has changed
+            const allowance = await ERC20.allowance(
+              lockAddress,
+              spender.address
+            )
+            expect(allowance.toString()).toBe('10000000000000000000')
+          })
+
+          itIfErc20(
+            'should allow to transfer funds directly from lock',
+            async () => {
+              expect.assertions(1)
+              // transfer some tokens directly from lock
+              await ERC20.connect(spender).transferFrom(
+                lockAddress,
+                receiver.address,
+                '1000000000000000000'
+              )
+
+              // make sure tokens have been transferred
+              const receiverBalanceAfter = await web3Service.getTokenBalance(
+                lock.currencyContractAddress,
+                receiver.address,
+                chainId
+              )
+
+              expect(parseFloat(receiverBalanceAfter)).toBe(
+                parseFloat(receiverBalanceBefore) + parseFloat(1)
+              )
+            }
+          )
+        })
+      }
 
       describe('updateKeyPrice', () => {
         let oldKeyPrice
