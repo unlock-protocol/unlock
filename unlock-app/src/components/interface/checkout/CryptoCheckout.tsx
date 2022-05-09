@@ -134,7 +134,9 @@ export const CryptoCheckout = ({
   const onPurchaseMultiple = async () => {
     if (!lock.address) return
     if (!lock.keyPrice) return
-    const owners = recipients?.map(({ resolvedAddress }) => resolvedAddress)
+    const owners = recipients?.map(({ resolvedAddress }) =>
+      resolvedAddress.toLowerCase()
+    )
 
     try {
       setPurchasePending(true)
@@ -146,7 +148,7 @@ export const CryptoCheckout = ({
         // get the secret from locksmith!
         const response = await storageService.getDataForRecipientsAndCaptcha(
           owners,
-          recaptchaValue
+          recaptchaValue!
         )
         if (response.error || !response.signatures) {
           setPurchasePending(false)
@@ -219,7 +221,7 @@ export const CryptoCheckout = ({
           // get the secret from locksmith!
           const response = await storageService.getDataForRecipientsAndCaptcha(
             [purchaseAccount], // recipient
-            recaptchaValue
+            recaptchaValue!
           )
           if (response.error) {
             setPurchasePending(false)
@@ -230,7 +232,6 @@ export const CryptoCheckout = ({
           }
           data = response.signatures[0]
         }
-
         await purchaseKey(purchaseAccount, referrer, data, (hash: string) => {
           emitTransactionInfo({
             lock: lock.address,
@@ -259,7 +260,9 @@ export const CryptoCheckout = ({
         } else {
           // Other reason...
           toast.error(
-            `This transaction could not be sent as it appears to fail. ${error?.error?.message}`
+            `This transaction could not be sent as it appears to fail. ${
+              error?.error?.message || ''
+            }`
           )
         }
         setPurchasePending(false)
@@ -300,6 +303,10 @@ export const CryptoCheckout = ({
   }
 
   const showRedirectButton = (hasValidkey || purchasedMultiple) && !isAdvanced
+
+  const enablePurchaseButton = withMultipleRecipients
+    ? !purchasedMultiple && !transactionPending
+    : showCheckoutButtons
 
   return (
     <>
@@ -353,7 +360,7 @@ export const CryptoCheckout = ({
         </>
       )}
       {purchasedMultiple && <Message>Enjoy your memberships!</Message>}
-      {showCheckoutButtons && !purchasedMultiple && (
+      {enablePurchaseButton && (
         <div
           style={{
             marginBottom: '32px',
