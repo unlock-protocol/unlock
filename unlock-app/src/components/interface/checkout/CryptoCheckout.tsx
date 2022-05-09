@@ -304,6 +304,10 @@ export const CryptoCheckout = ({
 
   const showRedirectButton = (hasValidkey || purchasedMultiple) && !isAdvanced
 
+  const enablePurchaseButton = withMultipleRecipients
+    ? !purchasedMultiple
+    : showCheckoutButtons
+
   return (
     <>
       <Lock
@@ -356,7 +360,7 @@ export const CryptoCheckout = ({
         </>
       )}
       {purchasedMultiple && <Message>Enjoy your memberships!</Message>}
-      {showCheckoutButtons && !purchasedMultiple && (
+      {enablePurchaseButton && (
         <div
           style={{
             marginBottom: '32px',
