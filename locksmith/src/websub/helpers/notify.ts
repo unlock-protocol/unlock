@@ -4,8 +4,8 @@ import fetch from 'cross-fetch'
 import { AbortController } from 'node-abort-controller'
 import { setTimeout, clearTimeout } from 'timers'
 import { Op } from 'sequelize'
-import { Hook, HookEvent } from '../models'
-import { logger } from '../logger'
+import { Hook, HookEvent } from '../../models'
+import { logger } from '../../logger'
 
 interface NotifyOptions {
   timeout?: number

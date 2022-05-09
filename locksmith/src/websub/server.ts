@@ -1,7 +1,7 @@
 import cron from 'node-cron'
 import { Op } from 'sequelize'
 import { Hook } from '../models'
-import { notifyOfKeys, notifyOfLocks } from './jobs'
+import { notifyOfKeys, notifyOfLocks, renewAllKeys } from './jobs'
 import { logger } from '../logger'
 
 logger.info('Websub server started.')
@@ -24,6 +24,7 @@ cron.schedule(CURRENT_CRON_SCHEDULE, async () => {
   await Promise.allSettled([
     notifyOfKeys(subscribers),
     notifyOfLocks(subscribers),
+    renewAllKeys(),
   ])
 
   logger.info('Finished running keys and locks job')
