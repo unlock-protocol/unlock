@@ -11,7 +11,7 @@
     "@typescript-eslint/parser": "5.21.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "babel-eslint": "10.1.0",
-    "babel-jest": "27.5.1",
+    "babel-jest": "28.1.0",
     "babel-loader": "8.2.5",
     "babel-plugin-wildcard": "7.0.0",
     "dotenv": "16.0.0",
