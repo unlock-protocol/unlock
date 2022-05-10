@@ -42,7 +42,7 @@
     "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/types": "workspace:./packages/types",
-    "babel-jest": "27.5.1",
+    "babel-jest": "28.1.0",
     "eslint": "8.10.0",
     "hardhat": "2.9.0",
     "jest": "27.5.1",

@@ -16,7 +16,7 @@
     "@types/jest": "27.4.1",
     "@types/postmate": "1.5.2",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "babel-jest": "27.5.1",
+    "babel-jest": "28.1.0",
     "css-loader": "6.6.0",
     "dotenv": "16.0.0",
     "eslint": "8.10.0",
