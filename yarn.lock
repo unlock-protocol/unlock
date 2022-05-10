@@ -15322,10 +15322,10 @@ __metadata:
     cross-fetch: 3.1.5
     deep-object-diff: 1.1.7
     dotenv: 16.0.0
-    eslint: ^8.15.0
-    eslint-config-next: ^12.1.6
+    eslint: 8.15.0
+    eslint-config-next: 12.1.6
     eth-sig-util: 2.5.4
-    ethereumjs-util: ^7.1.4
+    ethereumjs-util: 7.1.4
     ethers: 5.6.4
     file-saver: 2.0.5
     graphql: 15.8.0
@@ -25702,7 +25702,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-next@npm:^12.1.6":
+"eslint-config-next@npm:12.1.6":
   version: 12.1.6
   resolution: "eslint-config-next@npm:12.1.6"
   dependencies:
@@ -26493,7 +26493,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:8.15.0, eslint@npm:^8.15.0":
+"eslint@npm:8.15.0":
   version: 8.15.0
   resolution: "eslint@npm:8.15.0"
   dependencies:
@@ -27414,6 +27414,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ethereumjs-util@npm:7.1.4":
+  version: 7.1.4
+  resolution: "ethereumjs-util@npm:7.1.4"
+  dependencies:
+    "@types/bn.js": ^5.1.0
+    bn.js: ^5.1.2
+    create-hash: ^1.1.2
+    ethereum-cryptography: ^0.1.3
+    rlp: ^2.2.4
+  checksum: ccfd9208bfe9205af124a9138c5a90db46cd2fcacf4b80f17f67915381c03253aa2fb90ead9e0b53d9a6fcfeed4310e5dfa8dc516ca2846d16baf81d605cd8c2
+  languageName: node
+  linkType: hard
+
 "ethereumjs-util@npm:^4.3.0":
   version: 4.5.1
   resolution: "ethereumjs-util@npm:4.5.1"
@@ -27466,19 +27479,6 @@ __metadata:
     ethereum-cryptography: ^0.1.3
     rlp: ^2.2.4
   checksum: 6de7a32af05c7265c96163ecd15ad97327afab9deb36092ef26250616657a8c0b5df8e698328247c8193e7b87c643c967f64f0b3cff2b2937cafa870ff5fcb41
-  languageName: node
-  linkType: hard
-
-"ethereumjs-util@npm:^7.1.4":
-  version: 7.1.4
-  resolution: "ethereumjs-util@npm:7.1.4"
-  dependencies:
-    "@types/bn.js": ^5.1.0
-    bn.js: ^5.1.2
-    create-hash: ^1.1.2
-    ethereum-cryptography: ^0.1.3
-    rlp: ^2.2.4
-  checksum: ccfd9208bfe9205af124a9138c5a90db46cd2fcacf4b80f17f67915381c03253aa2fb90ead9e0b53d9a6fcfeed4310e5dfa8dc516ca2846d16baf81d605cd8c2
   languageName: node
   linkType: hard
 
