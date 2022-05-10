@@ -29,21 +29,24 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
 
   useEffect(() => {
     if (!active) return
-    getRefundAmount()
-  }, [active])
 
-  const getRefundAmount = async () => {
-    setLoadingAmount(true)
-    const params = {
-      lockAddress,
-      owner,
-      tokenAddress,
-      tokenId: keyId,
+    const getRefundAmount = async () => {
+      setLoadingAmount(true)
+      const params = {
+        lockAddress,
+        owner,
+        tokenAddress,
+        tokenId: keyId,
+      }
+      const totalToRefund = await walletService.getCancelAndRefundValueFor(
+        params
+      )
+      setRefundAmount(totalToRefund)
+      setLoadingAmount(false)
     }
-    const totalToRefund = await walletService.getCancelAndRefundValueFor(params)
-    setRefundAmount(totalToRefund)
-    setLoadingAmount(false)
-  }
+
+    getRefundAmount()
+  }, [active, walletService, keyId, lockAddress, tokenAddress, owner])
 
   const onCloseCallback = () => {
     if (typeof dismiss === 'function') dismiss()

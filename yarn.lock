@@ -15228,7 +15228,6 @@ __metadata:
     cross-fetch: 3.1.5
     deep-object-diff: 1.1.7
     dotenv: 16.0.0
-    eslint: 8.14.0
     eth-sig-util: 2.5.4
     ethereumjs-util: ^7.1.4
     ethers: 5.6.4

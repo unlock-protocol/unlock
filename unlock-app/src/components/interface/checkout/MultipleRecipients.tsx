@@ -53,17 +53,13 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   const [showMetadataList, setShowMetadataList] = useState<number[]>([])
   const haveRecipients = recipients?.length > 0
 
-  const autofillAccountAddress = () => {
+  useEffect(() => {
     if (haveRecipients) return
     if (!account) return
 
     setNewRecipient(true)
     setRecipient(account)
-  }
-
-  useEffect(() => {
-    autofillAccountAddress()
-  }, [])
+  }, [account, haveRecipients])
 
   const updateRecipientList = async (updateIndex?: number) => {
     const formValid = await trigger()

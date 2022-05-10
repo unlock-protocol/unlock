@@ -176,7 +176,7 @@ export const ValidKey = ({
       setLoading(false)
     }
     onLoad()
-  }, [lock.address, viewer])
+  }, [lock.address, viewer, getKeyData, isLockManager, unlockKey.tokenId])
 
   if (loading) {
     return <Loading />

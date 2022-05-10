@@ -36,10 +36,6 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
     })
   }
 
-  if (noProviderAdapter) {
-    return <Loading />
-  }
-
   const oAuthConfig = getOAuthFromSearch(query)
 
   useEffect(() => {
@@ -58,6 +54,10 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
     }, 5000)
     return () => clearTimeout(timer)
   }, [])
+
+  if (noProviderAdapter) {
+    return <Loading />
+  }
 
   return (
     <LocksContext.Provider
