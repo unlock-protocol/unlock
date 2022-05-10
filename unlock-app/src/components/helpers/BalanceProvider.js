@@ -8,8 +8,9 @@ export const BalanceProvider = ({ amount, render }) => {
   if (typeof amount === 'undefined' || amount === null) {
     return render(' - ', ' - ') || null
   }
-  const currency = parseFloat(amount)
+  const currency = parseFloat(amount).toFixed(3).replace(/00$/, '')
   const ethWithPresentation = currency
+  console.log(typeof ethWithPresentation)
   return render(ethWithPresentation) || null
 }
 
