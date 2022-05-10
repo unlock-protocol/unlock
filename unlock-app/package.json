@@ -28,7 +28,6 @@
     "@types/react-gtm-module": "2.0.1",
     "@types/storybook__react": "4.0.2",
     "@types/styled-components": "5.1.25",
-    "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/jest-config": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "@unlock-protocol/ui": "workspace:./packages/ui",
