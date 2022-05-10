@@ -24,7 +24,7 @@ export class VerifierController {
         network
       )
 
-      if (!isLockOwner) {
+      if (! isLockManager) {
         return response.status(401).send({
           message: `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`,
         })
