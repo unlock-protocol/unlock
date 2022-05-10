@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize-typescript'
+import { Verifier } from './verifier'
 import { User } from './user'
 import { UserReference } from './userReference'
 import { Lock } from './lock'
@@ -51,6 +52,7 @@ sequelize.addModels([
   UserReference,
   UserTokenMetadata,
   Application,
+  Verifier,
 ])
 
 User.removeAttribute('id')

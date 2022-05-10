@@ -11,7 +11,7 @@ export class VerifierController {
     this.web3Service = web3Service
   }
 
-  private async checkIsLockManager(
+  async #checkIsLockManager(
     lockAddress: string,
     loggedUserAddress: string,
     network: number,
@@ -24,7 +24,7 @@ export class VerifierController {
         network
       )
 
-      if (! isLockManager) {
+      if (!isLockManager) {
         return response.status(401).send({
           message: `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`,
         })
@@ -38,7 +38,7 @@ export class VerifierController {
     }
   }
 
-  private async isVerifierAlreadyExits(
+  async #isVerifierAlreadyExits(
     lockAddress: string,
     verifierAddress: string,
     lockManager: string,
@@ -64,7 +64,7 @@ export class VerifierController {
         request.user!.walletAddress!
       )
 
-      await this.checkIsLockManager(
+      await this.#checkIsLockManager(
         lockAddress,
         loggedUserAddress,
         network,
@@ -100,21 +100,21 @@ export class VerifierController {
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress!
       )
-      await this.checkIsLockManager(
+      await this.#checkIsLockManager(
         lockAddress,
         loggedUserAddress,
         network,
         response
       )
 
-      const alreadyExists = await this.isVerifierAlreadyExits(
+      const alreadyExists = await this.#isVerifierAlreadyExits(
         lockAddress,
         verifierAddress,
         loggedUserAddress,
         network
       )
 
-      if (alreadyExists !== null) {
+      if (!alreadyExists) {
         return response.status(409).send({
           message: 'Verifier already exists',
         })
@@ -147,19 +147,19 @@ export class VerifierController {
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress!
       )
-      await this.checkIsLockManager(
+      await this.#checkIsLockManager(
         lockAddress,
         loggedUserAddress,
         network,
         response
       )
-      const alreadyExists = await this.isVerifierAlreadyExits(
+      const alreadyExists = await this.#isVerifierAlreadyExits(
         lockAddress,
         verifierAddress,
         loggedUserAddress,
         network
       )
-      if (alreadyExists !== null) {
+      if (!alreadyExists) {
         return response.status(409).send({
           message: 'Verifier not exists',
         })
@@ -172,7 +172,7 @@ export class VerifierController {
             network,
           },
         })
-        response.status(201)
+        response.status(204)
       }
     } catch (error) {
       logger.error(error.message)
