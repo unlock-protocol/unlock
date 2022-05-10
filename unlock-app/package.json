@@ -23,7 +23,7 @@
     "@types/jest": "27.4.1",
     "@types/postmate": "1.5.2",
     "@types/qrcode.react": "1.0.2",
-    "@types/react": "17.0.43",
+    "@types/react": "17.0.44",
     "@types/react-google-recaptcha": "2.1.5",
     "@types/react-gtm-module": "2.0.1",
     "@types/storybook__react": "4.0.2",
