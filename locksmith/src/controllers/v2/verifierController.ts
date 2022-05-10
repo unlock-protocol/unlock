@@ -18,7 +18,7 @@ export class VerifierController {
     response: Response
   ) {
     try {
-      const isLockOwner = await this.web3Service.isLockManager(
+      const isLockManager = await this.web3Service.isLockManager(
         lockAddress,
         loggedUserAddress,
         network
