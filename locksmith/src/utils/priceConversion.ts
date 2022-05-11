@@ -15,7 +15,7 @@ export default class PriceConversion {
 
     // Cache is valid for 5 minutes!
     if (cached && cached[0] > new Date().getTime() - 1000 * 60 * 5) {
-      return Math.ceil(cached[1] * amount * 100)
+      return (cached[1] * amount * 100).toFixed(2)
     }
 
     const response = await fetch(
@@ -27,6 +27,6 @@ export default class PriceConversion {
       return 0
     }
     cache[currency] = [new Date().getTime(), parseFloat(data.amount)]
-    return Math.ceil(parseFloat(data.amount) * amount * 100)
+    return (parseFloat(data.amount) * amount * 100).toFixed(2)
   }
 }
