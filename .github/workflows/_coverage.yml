@@ -23,6 +23,6 @@ jobs:
       BLOCKTIME: 0
     steps:
       - uses: actions/checkout@v3
-      - name: Running ${{ matrix.target }} test coverage
-        run: ./scripts/coverage.sh ${{ matrix.target }}
+      - name: Running ${{ inputs.service }} test coverage
+        run: ./scripts/coverage.sh ${{ inputs.service }}
         shell: bash
