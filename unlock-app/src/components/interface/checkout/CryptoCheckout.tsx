@@ -478,8 +478,7 @@ export const CryptoCheckout = ({
         <Message>
           The total amount of {lock.currencySymbol} to approve includes{' '}
           {nbPayments} renewals of your{' '}
-          <Duration seconds={lock.expirationDuration} /> key during the next{' '}
-          <Duration seconds={lock.expirationDuration * nbPayments} />.
+          <Duration seconds={lock.expirationDuration} /> key.
         </Message>
       )}
     </>
