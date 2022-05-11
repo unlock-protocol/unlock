@@ -1,0 +1,28 @@
+name: Run coverage task
+
+on:
+  workflow_call:
+    inputs:
+      service:
+        description: "The service/app where to run coverage task"
+        type: string
+        required: true
+    # secrets:
+    #   COVERALLS_EMAIL:
+    #     required: true
+    #   COVERALLS_API_KEY:
+    #     required: true
+
+jobs:
+  coverage:
+    name: Run test coverage for ${{ inputs.service }}
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+      BLOCKTIME: 0
+    steps:
+      - uses: actions/checkout@v3
+      - name: Running ${{ matrix.target }} test coverage
+        run: ./scripts/coverage.sh ${{ matrix.target }}
+        shell: bash
