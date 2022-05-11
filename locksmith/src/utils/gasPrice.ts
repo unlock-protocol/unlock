@@ -1,4 +1,4 @@
-import { ethers, utils } from 'ethers'
+import { ethers, utils, BigNumber } from 'ethers'
 import networks from '@unlock-protocol/networks'
 
 import PriceConversion from './priceConversion'
@@ -11,7 +11,9 @@ export default class GasPrice {
 
     // Price of gas (in wei)
     const gasPrice: any = await provider.getGasPrice()
-    const gasPriceETH = parseFloat(utils.formatEther(gasPrice * gasCost))
+    const gasPriceETH = parseFloat(
+      utils.formatEther(BigNumber.from(gasPrice).mul(BigNumber.from(gasCost)))
+    )
     return gasPriceETH
   }
 

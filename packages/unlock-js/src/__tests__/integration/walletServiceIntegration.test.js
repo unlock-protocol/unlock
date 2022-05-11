@@ -36,7 +36,7 @@ const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
 describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let walletService
   let web3Service
-  let ERC20Address
+  let ERC20
 
   // Unlock v4 can only interact w PublicLock v4
   const PublicLockVersions =
@@ -46,7 +46,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
-    ERC20Address = await nodeSetup()
+    ERC20 = await nodeSetup()
 
     const [signer] = await ethers.getSigners()
     const ethersProvider = signer.provider
@@ -134,6 +134,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       let lock
       let lockAddress
       let lockCreationHash
+      // used to run some tests only for ERC20 locks
+      let itIfErc20 = lockParams.isERC20 ? it : it.skip
 
       beforeAll(async () => {
         if (publicLockVersion !== 'v4') {
@@ -157,7 +159,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         }
         // parse erc20
         const { isERC20 } = lockParams
-        lockParams.currencyContractAddress = isERC20 ? ERC20Address : null
+        lockParams.currencyContractAddress = isERC20 ? ERC20.address : null
 
         // unique Lock name to avoid conflicting addresses
         lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
@@ -245,6 +247,94 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         expect.assertions(1)
         expect(lock.beneficiary).toEqual(accounts[0]) // This is the default in walletService
       })
+
+      // only v8+
+      if (['v4', 'v6', 'v7'].indexOf(publicLockVersion) === -1) {
+        describe('approveBeneficary', () => {
+          let spender
+          let receiver
+          let receiverBalanceBefore
+          let transactionHash
+
+          beforeAll(async () => {
+            ;[, spender, receiver] = await ethers.getSigners()
+            // Get the erc20 balance of the user before the purchase
+            receiverBalanceBefore = await web3Service.getTokenBalance(
+              lock.currencyContractAddress,
+              receiver.address,
+              chainId
+            )
+
+            await walletService.approveBeneficiary(
+              {
+                lockAddress,
+                spender: spender.address,
+                amount: '10',
+              },
+              (error, hash) => {
+                if (error) {
+                  throw error
+                }
+                transactionHash = hash
+              }
+            )
+
+            // purchase a key (to increase lock ERC20 balance)
+            await walletService.purchaseKey(
+              {
+                lockAddress,
+                owner: spender.address,
+                keyPrice: lock.keyPrice,
+              },
+              (error) => {
+                if (error) {
+                  throw error
+                }
+              }
+            )
+          })
+
+          itIfErc20('should have yielded a transaction hash', () => {
+            expect.assertions(1)
+            expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          })
+
+          itIfErc20('should have set lock erc20 allowance', async () => {
+            expect.assertions(1)
+
+            // make sure allowance has changed
+            const allowance = await ERC20.allowance(
+              lockAddress,
+              spender.address
+            )
+            expect(allowance.toString()).toBe('10000000000000000000')
+          })
+
+          itIfErc20(
+            'should allow to transfer funds directly from lock',
+            async () => {
+              expect.assertions(1)
+              // transfer some tokens directly from lock
+              await ERC20.connect(spender).transferFrom(
+                lockAddress,
+                receiver.address,
+                '1000000000000000000'
+              )
+
+              // make sure tokens have been transferred
+              const receiverBalanceAfter = await web3Service.getTokenBalance(
+                lock.currencyContractAddress,
+                receiver.address,
+                chainId
+              )
+
+              expect(parseFloat(receiverBalanceAfter)).toBe(
+                parseFloat(receiverBalanceBefore) + parseFloat(1)
+              )
+            }
+          )
+        })
+      }
 
       describe('updateKeyPrice', () => {
         let oldKeyPrice

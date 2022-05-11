@@ -13,6 +13,7 @@ import {
   LockLabel,
   LockDuration,
   LockKeys,
+  LockLabelSmall,
 } from './LockStyles'
 
 import Icon from '../lock/Icon'
@@ -183,9 +184,9 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
             days
             {lockInForm?.expirationDuration !== UNLIMITED_KEYS_DURATION &&
               isNew && (
-                <LockLabelUnlimited onClick={handleUnlimitedDuration}>
+                <LockLabelSmall onClick={handleUnlimitedDuration}>
                   Unlimited
-                </LockLabelUnlimited>
+                </LockLabelSmall>
               )}
           </FormLockDuration>
           <FormLockKeys>
@@ -201,9 +202,9 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
               required={isNew}
             />
             {lockInForm?.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT && (
-              <LockLabelUnlimited onClick={handleUnlimitedNumbersOfKeys}>
+              <LockLabelSmall onClick={handleUnlimitedNumbersOfKeys}>
                 Unlimited
-              </LockLabelUnlimited>
+              </LockLabelSmall>
             )}
           </FormLockKeys>
           <FormBalanceWithUnit>
@@ -258,14 +259,6 @@ CreatorLockForm.defaultProps = {
 }
 
 export default CreatorLockForm
-
-const LockLabelUnlimited = styled(LockLabel)`
-  cursor: pointer;
-  font-size: 11px;
-  width: 100%;
-  padding: 5px;
-  padding-left: 0px;
-`
 
 const LockLabelCurrency = styled(LockLabel).attrs(() => ({
   className: 'currency',
