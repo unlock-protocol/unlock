@@ -44,6 +44,11 @@ const settings = {
 
 const networks = getHardhatNetwork()
 
+// fix for solidity-coverage (see https://github.com/sc-forks/solidity-coverage/issues/707)
+if (process.env.IS_COVERAGE) {
+  networks.hardhat.hardfork = 'berlin'
+}
+
 // Etherscan api for verification
 const etherscan = {
   apiKey: {
