@@ -39,7 +39,7 @@ jobs:
       changed: ${{ needs.check-changes.outputs.changed }}
 
   smart-contracts-coverage:
-    needs: run-tests
+    needs: check-changes
     if: ${{ needs.check-changes.outputs.changed != '[]' && ${{ contains(fromJson(needs.check-changes.outputs.changed), "smart-contracts") }} }}
     uses: ./.github/workflows/_coverage.yml
     with:
