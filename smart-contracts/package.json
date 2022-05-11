@@ -19,6 +19,7 @@
     "@openzeppelin/hardhat-upgrades": "1.16.1",
     "@openzeppelin/test-helpers": "0.5.15",
     "@openzeppelin/upgrades-core": "1.12.0",
+    "@primitivefi/hardhat-dodoc": "^0.2.3",
     "@uniswap/v2-core": "1.0.1",
     "@uniswap/v2-periphery": "1.1.0-beta.0",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",

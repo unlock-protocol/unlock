@@ -28,6 +28,9 @@ require('@nomiclabs/hardhat-etherscan')
 // check contract size
 require('hardhat-contract-sizer')
 
+// build contract docs
+require('@primitivefi/hardhat-dodoc')
+
 const { getHardhatNetwork } = require('./helpers/network')
 
 const settings = {
@@ -138,5 +141,20 @@ module.exports = {
   },
   mocha: {
     timeout: 2000000,
+  },
+  dodoc: {
+    runOnCompile: false,
+    debugMode: false,
+    include: ['Unlock', 'PublicLock', 'mixins', 'hooks', 'interfaces'],
+    exclude: [
+      'mocks',
+      'test-artifacts',
+      'UnlockDiscountTokenV3',
+      'UnlockProtocolGovernor',
+      'UnlockProtocolTimelock',
+      'UnlockUtils',
+      'utils',
+      '@unlock-protocol',
+    ],
   },
 }
