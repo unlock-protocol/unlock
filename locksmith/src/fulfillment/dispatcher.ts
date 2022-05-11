@@ -66,7 +66,7 @@ export default class Dispatcher {
 
     if (network === 137) {
       transactionOptions.maxPriorityFeePerGas = ethers.utils.parseUnits(
-        '500',
+        '1000',
         'gwei'
       )
       transactionOptions.maxFeePerGas = transactionOptions.maxPriorityFeePerGas
