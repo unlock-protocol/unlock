@@ -9,16 +9,20 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       verifierAddress: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       lockAddress: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       network: {
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       lockManager: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       createdAt: {
         allowNull: false,
