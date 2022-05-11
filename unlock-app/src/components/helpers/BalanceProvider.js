@@ -10,7 +10,6 @@ export const BalanceProvider = ({ amount, render }) => {
   }
   const currency = parseFloat(amount).toFixed(3).replace(/00$/, '')
   const ethWithPresentation = currency
-  console.log(typeof ethWithPresentation)
   return render(ethWithPresentation) || null
 }
 
