@@ -1,31 +1,44 @@
 #! /bin/sh
 
 # use tmp dir
-cd $(mktemp -d)
+tmpdir=$(mktemp -d)
+dest="docs/developers/smart-contracts/contracts-api"
+FROM_NPM=1
+
+# get contracts tarball
+if [ "$FROM_NPM" -eq "0" ]; then
+  yarn workspace @unlock-protocol/contracts pack --out "$tmpdir/contracts-%v.tgz"
+else
+  wget $(npm view @unlock-protocol/contracts dist.tarball) -P $tmpdir
+fi
+
+# unpack tarball
+cd $tmpdir
+tar -xf contracts-**.tgz
 
 # clone docs repo
 git clone git@github.com:unlock-protocol/docs.git
-cd docs/developers/smart-contracts
-rm -rf contracts-api
-mkdir contracts-api
-cd contracts-api
 
-# get tarball from npm
-wget $(npm view @unlock-protocol/contracts dist.tarball)
-tar -xf unlock-protocol-contracts-**.tgz
-
-# copy doc files over
-cp -R package/dist/docs .
-
-# create branch
+# versioning
 version_number="$(ls *.tgz | awk -F \- {'print substr($2,0,5) '} | sed 's/\./-/g')"
 branch=docs-$version_number
-git checkout -b $branch
+rm -rf *.tgz
 
-# push commit to branch
+# copy doc files over
+rm -rf $dest
+cp -R package/dist/docs $dest
+rm -rf package
+
+# push to git
+cd docs
+git checkout -b $branch
 message="Contract API docs generated from @unlock-protocol/contracts@${version_number}"
-git commit -a -m $message
+git add .
+git commit -a -m"$message"
 git push origin $branch
 
-# create PR
-gh pr create --head $branch --title $message --base master
+# create PR on github
+gh pr create --head "$branch" \
+  --base master  \
+  --title "$message" \
+  --body "This PR adds the latest version of contracts docs, generated from contracts doctrings"
