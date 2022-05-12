@@ -18,10 +18,12 @@ const contractsToDocument = fs
     fs.readdirSync(`${contractsPath}/${contractName}`).filter(
       (n) =>
         n.startsWith('I') && // only interfaces
+        !n.includes('Sol') && // exclude various solc versions
         !n.startsWith('IUnlockDiscountToken') // exclude UDT
     )
   )
   .flat()
+console.log(contractsToDocument)
 
 const settings = {
   optimizer: {
@@ -53,6 +55,13 @@ module.exports = {
     // debugMode: true,
     keepFileStructure: true,
     include: contractsToDocument,
+    exclude: [
+      'IERC165',
+      'IERC721',
+      'IERC721Enumerable',
+      'Initializable',
+      'IPublicLockV8Sol5',
+    ],
   },
   paths: {
     sources: contractsPath,
