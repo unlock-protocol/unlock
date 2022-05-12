@@ -1,7 +1,6 @@
 import { ethers } from 'ethers'
 import { useState, useContext, useEffect } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
-import { toast } from 'react-hot-toast'
 import { useAddToNetwork } from './useAddToNetwork'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
@@ -164,7 +163,7 @@ export const useProvider = (config: any) => {
       resetProvider(newProvider)
     } else {
       try {
-        await toast.promise(
+        await ToastHelper.promise(
           provider.send(
             'wallet_switchEthereumChain',
             [
@@ -186,7 +185,7 @@ export const useProvider = (config: any) => {
           try {
             await addNetworkToWallet(network.id)
           } catch (addError) {
-            toast.error(
+            ToastHelper.error(
               'Network could not be added. Please try manually adding it to your wallet'
             )
           }
@@ -212,7 +211,7 @@ export const useProvider = (config: any) => {
   }
 
   const signMessage = async (messageToSign: string) => {
-    return toast.promise(
+    return ToastHelper.promise(
       walletService.signMessage(messageToSign, 'personal_sign'),
       {
         loading: 'Please sign the message from your wallet',

@@ -1,4 +1,3 @@
-import toast from 'react-hot-toast'
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import ReCAPTCHA from 'react-google-recaptcha'
@@ -167,7 +166,7 @@ export const CryptoCheckout = ({
         if (response.error || !response.signatures) {
           setPurchasePending(false)
           setRecaptchaValue('')
-          toast.error(
+          ToastHelper.error(
             'The Captcha value could not ve verified. Please try again.'
           )
           return false
@@ -243,7 +242,7 @@ export const CryptoCheckout = ({
           if (response.error) {
             setPurchasePending(false)
             setRecaptchaValue('')
-            return toast.error(
+            return ToastHelper.error(
               'The Captcha value could not ve verified. Please try again.'
             )
           }
@@ -275,15 +274,15 @@ export const CryptoCheckout = ({
       } catch (error: any) {
         if (error.message == 'Transaction failed') {
           // Transaction was sent but failed!
-          toast.error(
+          ToastHelper.error(
             'Your purchase transaction failed. Please check a block explorer for more details.'
           )
         } else if (error?.code === 4001) {
           // Transaction was not sent
-          toast.error('Please confirm the transaction in your wallet.')
+          ToastHelper.error('Please confirm the transaction in your wallet.')
         } else {
           // Other reason...
-          toast.error(
+          ToastHelper.error(
             `This transaction could not be sent as it appears to fail. ${
               error?.error?.message || ''
             }`
