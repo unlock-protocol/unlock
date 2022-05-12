@@ -23,7 +23,6 @@ const contractsToDocument = fs
     )
   )
   .flat()
-console.log(contractsToDocument)
 
 const settings = {
   optimizer: {
