@@ -4,7 +4,5 @@ module.exports = {
         'mocks',
         'test-artifacts',
         'UnlockUtils',
-        // ignore UDT as too many gas-dependant tests
-        'UnlockDiscountToken',
     ]
 };
