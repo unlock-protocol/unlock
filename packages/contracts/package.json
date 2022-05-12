@@ -14,7 +14,6 @@
         "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist",
         "docs": "yarn hardhat dodoc",
         "docs:copy": "copyfiles --verbose docs/**/*.md dist"
-
     },
     "devDependencies": {
         "@primitivefi/hardhat-dodoc": "^0.2.3",
