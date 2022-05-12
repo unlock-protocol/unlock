@@ -8,9 +8,9 @@ const FETCH_LIMIT = 25
 async function fetchKeysToRenew(network: number, page = 0) {
   const keysSource = new KeysToRenew()
 
-  // timeframe of last 15 min
+  // timeframe to check for renewal
   const end = Math.floor(Date.now() / 1000)
-  const start = end - 60 * 15 // 15 min ago
+  const start = end - 60 * 15 // expired during the last 15 min
 
   const keys = await keysSource.getKeysToRenew(
     start,
@@ -37,29 +37,28 @@ async function renewKeys(network: number) {
     })
 
     // send all renewal txs
-    const promises = await Promise.allSettled(
-      keys.map(({ keyId, lock }) =>
-        renewKey({
+    for (const { keyId, lock } of keys) {
+      try {
+        const renewal = await renewKey({
           keyId,
           lockAddress: lock.address,
           network,
         })
-      )
-    )
-
-    // log errors
-    promises.forEach((promise) => {
-      if (promise.status === 'rejected') {
+        if (renewal.error) {
+          logger.info('Key renewal failed', {
+            renewal,
+          })
+        } else {
+          logger.info('Key renewal succeed', {
+            renewal,
+          })
+        }
+      } catch (error) {
         logger.error('Renewing key failed', {
-          promise,
-        })
-      } else {
-        logger.info('Key renewed sucessfully', {
-          promise,
+          error,
         })
       }
-    })
-
+    }
     page += 1
   }
 }
