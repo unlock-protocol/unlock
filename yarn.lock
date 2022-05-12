@@ -8237,6 +8237,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@primitivefi/hardhat-dodoc@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "@primitivefi/hardhat-dodoc@npm:0.2.3"
+  dependencies:
+    squirrelly: ^8.0.8
+  peerDependencies:
+    hardhat: ^2.6.4
+    squirrelly: ^8.0.8
+  checksum: b05bbfe2586a8d26e73580b7d3a945e7bb56873b02beda90581b5ece29b2444f057f49b4edbf4ab90beb899a05b7b7c681204f09129c52e43997734a1e8dc14d
+  languageName: node
+  linkType: hard
+
 "@protobufjs/aspromise@npm:^1.1.1, @protobufjs/aspromise@npm:^1.1.2":
   version: 1.1.2
   resolution: "@protobufjs/aspromise@npm:1.1.2"
@@ -14749,6 +14761,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
+    "@primitivefi/hardhat-dodoc": ^0.2.3
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
     chai: 4.3.4
@@ -47202,6 +47215,13 @@ resolve@^2.0.0-next.3:
   version: 1.0.3
   resolution: "sprintf-js@npm:1.0.3"
   checksum: 19d79aec211f09b99ec3099b5b2ae2f6e9cdefe50bc91ac4c69144b6d3928a640bb6ae5b3def70c2e85a2c3d9f5ec2719921e3a59d3ca3ef4b2fd1a4656a0df3
+  languageName: node
+  linkType: hard
+
+"squirrelly@npm:^8.0.8":
+  version: 8.0.8
+  resolution: "squirrelly@npm:8.0.8"
+  checksum: 0ee76512b88ee38be0a91886bedf01b96aa6a557aaf7cee5d6d2b5ab3903ae32898007447805e3ef46a03f9dde7483d678e1ee433e7882c4b7a110b4c58f4f9f
   languageName: node
   linkType: hard
 

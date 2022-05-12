@@ -13,6 +13,7 @@
         "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist"
     },
     "devDependencies": {
+        "@primitivefi/hardhat-dodoc": "^0.2.3",
         "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
         "@unlock-protocol/types": "workspace:^",
         "chai": "4.3.4",
