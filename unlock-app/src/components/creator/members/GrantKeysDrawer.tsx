@@ -101,9 +101,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
         ({ resolvedAddress }) => resolvedAddress
       )
       const expirations = recipientItems?.map(({ metadata }) => {
-        return metadata?.neverExpires
-          ? MAX_UINT
-          : Math.floor(new Date(metadata?.expiration).getTime() / 1000)
+        return metadata?.neverExpires ? MAX_UINT : metadata?.expiration
       })
       const keyManagers = recipientItems?.map(
         ({ metadata }) => metadata?.keyManager || account
