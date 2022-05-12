@@ -10,7 +10,7 @@ export default class PriceConversion {
   client: any
 
   // Returns the price in $
-  async convertToUSD(currency: string, amount: number) {
+  async convertToUSD(currency: string, amount: number): Promise<number> {
     const cached = cache[currency]
 
     // Cache is valid for 5 minutes!
