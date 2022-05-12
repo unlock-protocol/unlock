@@ -12,6 +12,9 @@ const Locks = require('../fixtures/locks')
 
 const estimateGas = 252166 * 2
 
+// skip on coverage until solidity-coverage supports EIP-1559
+const describeOrskip = process.env.IS_COVERAGE ? describe.skip : describe
+
 // files path
 const contractsPath = path.resolve(
   __dirname,
@@ -133,7 +136,7 @@ contract('UnlockDiscountToken upgrade', async () => {
     })
   })
 
-  describe('Minting tokens', () => {
+  describeOrskip('Minting tokens', () => {
     let accounts
     let unlock
     let minter

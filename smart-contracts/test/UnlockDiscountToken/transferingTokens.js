@@ -1,3 +1,6 @@
+/* eslint-disable jest/no-identical-title */
+// ignoring that rule is needed when using the `describeOrskip` workaround
+
 const BigNumber = require('bignumber.js')
 const { constants, tokens, protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
@@ -13,6 +16,9 @@ let udt
 let lock
 
 const estimateGas = 252166 * 2
+
+// skip on coverage until solidity-coverage supports EIP-1559
+const describeOrskip = process.env.IS_COVERAGE ? describe.skip : describe
 
 contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
@@ -164,7 +170,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     )
   })
 
-  describe('grant by gas price', () => {
+  describeOrskip('grant by gas price', () => {
     let gasSpent
 
     beforeEach(async () => {
@@ -218,7 +224,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     })
   })
 
-  describe('grant capped by % growth', () => {
+  describeOrskip('grant capped by % growth', () => {
     beforeEach(async () => {
       // Goal: distribution is 10 UDT (8 for referrer, 2 for dev reward)
       // With 1,000,000 to distribute, that is 0.00001% supply
