@@ -52,7 +52,7 @@ describe('KeyPricer', () => {
 
       expect(pricing.keyPrice).toBe(1)
       expect(pricing.creditCardProcessing).toBe(31)
-      expect(pricing.unlockServiceFee).toBe(2)
+      expect(pricing.unlockServiceFee).toBe(1.04)
     })
 
     it('Generate price for multiple quantity keys', async () => {
@@ -61,7 +61,7 @@ describe('KeyPricer', () => {
       const pricing = await keyPricer.generate('0x', 100, 100)
 
       expect(pricing.keyPrice).toBe(100)
-      expect(pricing.unlockServiceFee).toBe(11)
+      expect(pricing.unlockServiceFee).toBe(10.04)
       expect(pricing.creditCardProcessing).toBe(34)
     })
   })
