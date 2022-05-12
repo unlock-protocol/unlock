@@ -116,7 +116,7 @@ module.exports = {
   etherscan,
   gasReporter: {
     currency: 'USD',
-    excludeContracts: ['Migrations', 'TestNoop'],
+    excludeContracts: ['TestNoop'],
     gasPrice: 5,
   },
   solidity: {
