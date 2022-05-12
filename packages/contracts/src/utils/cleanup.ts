@@ -1,31 +1,28 @@
 /**
- * This script is used to keep only required data in contracts ABI files 
+ * This script is used to keep only required data in contracts ABI files
  * and remove anything added by Truffle or other building systems.
- * 
+ *
  * The file can be called directly with `yarn abi:cleanup`
  */
-const fs = require('fs-extra');
 import path from 'path'
 import { ContractAbi } from '@unlock-protocol/types'
 import { getAbiPaths } from './files'
 
+const fs = require('fs-extra')
+
 const keysToKeep = [
-  "contractName",
-  "abi",
-  "bytecode",
-  "deployedBytecode",
-  "compiler",
-  "schemaVersion",
-  "updatedAt"
+  'contractName',
+  'abi',
+  'bytecode',
+  'deployedBytecode',
+  'compiler',
+  'schemaVersion',
+  'updatedAt',
 ]
 
-
-
 async function main() {
-  
   const paths = await getAbiPaths()
-  paths.flat().forEach(abiPath => {
-    
+  paths.flat().forEach((abiPath) => {
     const abiFullPath = path.resolve('src', abiPath)
     const manifest = fs.readJsonSync(abiFullPath)
     if (Object.keys(manifest).length !== keysToKeep.length) {
@@ -38,7 +35,7 @@ async function main() {
         schemaVersion,
         updatedAt,
       } = manifest
-      
+
       const lighter: ContractAbi = {
         contractName,
         abi,

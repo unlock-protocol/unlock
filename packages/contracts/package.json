@@ -10,6 +10,7 @@
         "build:dist": "yarn clean && tsc && yarn contracts:copy",
         "build:index": "yarn clean && tsc && node dist/utils/parser.js > src/index.ts",
         "ci": "yarn test",
+        "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .ts,.js src/",
         "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist"
     },
     "devDependencies": {
@@ -17,6 +18,7 @@
         "@unlock-protocol/types": "workspace:^",
         "chai": "4.3.4",
         "copyfiles": "2.4.1",
+        "eslint": "^8.15.0",
         "fs-extra": "10.0.1",
         "hardhat": "2.9.0",
         "typescript": "4.6.4"
