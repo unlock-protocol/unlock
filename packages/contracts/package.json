@@ -7,11 +7,14 @@
         "test": "hardhat test",
         "abi:cleanup": "yarn clean && tsc && node dist/utils/cleanup.js",
         "build": "yarn build:index && yarn build:dist",
-        "build:dist": "yarn clean && tsc && yarn contracts:copy",
+        "build:dist": "yarn clean && tsc && yarn contracts:copy && yarn docs && yarn docs:copy",
         "build:index": "yarn clean && tsc && node dist/utils/parser.js > src/index.ts",
         "ci": "yarn test",
         "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .ts,.js src/",
-        "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist"
+        "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist",
+        "docs": "yarn hardhat dodoc",
+        "docs:copy": "copyfiles --verbose docs/**/*.md dist"
+
     },
     "devDependencies": {
         "@primitivefi/hardhat-dodoc": "^0.2.3",
