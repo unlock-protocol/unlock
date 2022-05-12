@@ -4,5 +4,7 @@ module.exports = {
         'mocks',
         'test-artifacts',
         'UnlockUtils',
+        'ERC20Patched.sol',
+        'Migrations'
     ]
 };
