@@ -4,7 +4,8 @@ import { forwardRef, ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { FieldLayout } from './FieldLayout'
 import useClipboard from 'react-use-clipboard'
-import { FiEyeOff as HiddenIcon, FiCopy as CopyIcon } from 'react-icons/fi'
+import { FiCopy as CopyIcon } from 'react-icons/fi'
+
 export interface Props
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -15,11 +16,8 @@ export interface Props
   state?: State
   message?: string
   icon?: ReactNode
-  reveal?: boolean
   copy?: boolean
 }
-
-const HIDDEN_PLACEHOLDER = '**** **** **** ****'
 
 const SIZE_STYLES: SizeStyleProp = {
   small: 'pl-2.5 py-1.5 text-sm',
@@ -52,7 +50,6 @@ export const Input = forwardRef(
       message,
       label,
       icon,
-      reveal,
       ...inputProps
     } = props
     const inputSizeStyle = SIZE_STYLES[size]
@@ -67,10 +64,9 @@ export const Input = forwardRef(
       inputStateStyle,
       icon ? 'pl-10' : undefined
     )
-    const [hidden, setHidden] = useState(reveal)
-    function onReveal() {
-      setHidden(false)
-    }
+
+    const hidden = inputProps.type === 'password' || inputProps.hidden
+
     return (
       <FieldLayout label={label} size={size} state={state} message={message}>
         <div className="relative">
@@ -80,7 +76,7 @@ export const Input = forwardRef(
           <input
             {...inputProps}
             id={label}
-            value={reveal && hidden ? HIDDEN_PLACEHOLDER : value}
+            value={value}
             ref={ref}
             className={inputClass}
           />
@@ -88,12 +84,6 @@ export const Input = forwardRef(
             {copy && !hidden && (
               <button onClick={() => setCopy()} className={inputButtonClass}>
                 <CopyIcon /> {isCopied ? 'Copied' : 'Copy'}
-              </button>
-            )}
-
-            {hidden && (
-              <button className={inputButtonClass} onClick={onReveal}>
-                <HiddenIcon /> Reveal
               </button>
             )}
           </div>

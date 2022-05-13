@@ -65,6 +65,7 @@ import WalletConnect from '../build/svg-component/WalletConnect'
 import Webflow from '../build/svg-component/Webflow'
 import Withdraw from '../build/svg-component/Withdraw'
 import Wordpress from '../build/svg-component/Wordpress'
+import UnlockMonogram from '../build/svg-component/UnlockMonogram'
 
 function wrapViewBox(WrappedComponent, viewBox) {
   const Wrapped = (props) => <WrappedComponent viewBox={viewBox} {...props} />
@@ -131,8 +132,9 @@ export default {
   UnlockWordMark: wrapViewBox(UnlockWordMark, '0 0 1200 256'),
   Upload: wrapViewBox(Upload, '0 0 24 24'),
   Wallet: wrapViewBox(Wallet, '-8 -8 32 32'),
-  WalletConnect: wrapViewBox(WalletConnect, '-3 -6 32 32'),
+  WalletConnect: wrapViewBox(WalletConnect, '0 -1 32 32'),
   Webflow: wrapViewBox(Webflow, '-4 -8 32 32'),
   Withdraw: wrapViewBox(Withdraw, '0 0 24 24'),
   Wordpress: wrapViewBox(Wordpress, '0 0 340 340'),
+  UnlockMonogram,
 }

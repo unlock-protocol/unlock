@@ -15,7 +15,6 @@ Normal.args = {
   icon: <PersonIcon size={16} />,
   label: 'Email address',
   size: 'small',
-  reveal: true,
   value: 'email@email.com',
   message:
     'If you have previously created account with Unlock, please enter the same email to contine',
@@ -27,8 +26,8 @@ Reveal.args = {
   icon: <PersonIcon size={16} />,
   label: 'Password',
   size: 'medium',
-  value: 'email@email.com',
-  reveal: true,
+  value: 'password',
+  type: 'password',
   copy: true,
   message: 'Use a long password.',
 }

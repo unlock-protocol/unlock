@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Checkout } from '../interface/checkout/Checkout'
-import getConfigFromSearch from '../../utils/getConfigFromSearch'
-import getOAuthFromSearch from '../../utils/getOAuthFromSearch'
+import getPaywallConfigFromQuery from '../../utils/getConfigFromSearch'
+import getOAuthFromSearch from '../../utils/oauth'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
 import Loading from '../interface/Loading'
 import { ConfigContext } from '../../utils/withConfig'
@@ -17,7 +17,7 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
   const defaultStateRef = useRef(defaultState)
   defaultStateRef.current = defaultState
   const checkoutCommunication = useCheckoutCommunication()
-  const configFromSearch = getConfigFromSearch(query)
+  const configFromSearch = getPaywallConfigFromQuery(query)
   const config = useContext(ConfigContext)
   const [locks, setLocks] = useState({})
   // We need to delay render until we have a config at least, and
