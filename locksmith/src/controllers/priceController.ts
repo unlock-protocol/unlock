@@ -37,7 +37,7 @@ namespace PriceController {
         hasEnoughToPayForGas &&
         pricing.keyPrice !== undefined &&
         pricing.keyPrice === 0 &&
-        costToGrant < MAX_GRANT_COST
+        (costToGrant < MAX_GRANT_COST || req.chain === 100)
       ) {
         // If it costs less than a half a 1ct, then we can grant the key for free!
         return res.json({
