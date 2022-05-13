@@ -1,25 +1,31 @@
 {
     "name": "@unlock-protocol/contracts",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "main": "dist/index.js",
     "scripts": {
         "clean": "rm -rf dist",
         "test": "hardhat test",
         "abi:cleanup": "yarn clean && tsc && node dist/utils/cleanup.js",
         "build": "yarn build:index && yarn build:dist",
-        "build:dist": "yarn clean && tsc && yarn contracts:copy",
+        "build:dist": "yarn clean && tsc && yarn contracts:copy && yarn docs && yarn docs:copy",
         "build:index": "yarn clean && tsc && node dist/utils/parser.js > src/index.ts",
         "ci": "yarn test",
-        "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist"
+        "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .ts,.js src/",
+        "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist",
+        "docs": "yarn hardhat dodoc",
+        "docs:copy": "copyfiles --verbose docs/**/*.md dist",
+        "prepublish": "yarn build"
     },
     "devDependencies": {
+        "@primitivefi/hardhat-dodoc": "^0.2.3",
         "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
         "@unlock-protocol/types": "workspace:^",
         "chai": "4.3.4",
         "copyfiles": "2.4.1",
+        "eslint": "^8.15.0",
         "fs-extra": "10.0.1",
         "hardhat": "2.9.0",
-        "typescript": "4.6.2"
+        "typescript": "4.6.4"
     },
     "files": [
         "dist"

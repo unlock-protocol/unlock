@@ -7,7 +7,7 @@ pragma solidity >=0.5.17 <0.9.0;
  * @author Nick Furfaro (unlock-protocol.com)
 **/
 
-interface IUnlock
+interface IUnlockV10
 {
   // Use initialize instead of a constructor to support proxies(for upgradeability via zos).
   function initialize(address _unlockOwner) external;

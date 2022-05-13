@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
-import { toast } from 'react-hot-toast'
 import { Locks, Lock } from '../../../unlockTypes'
 import Drawer from '../../interface/Drawer'
 import { WalletServiceContext } from '../../../utils/withWalletService'
@@ -17,6 +16,7 @@ import {
 import { ACCOUNT_REGEXP, MAX_UINT } from '../../../constants'
 import { getAddressForName } from '../../../hooks/useEns'
 import { useMultipleRecipient } from '../../../hooks/useMultipleRecipient'
+import { ToastHelper } from '../../helpers/toast.helper'
 
 interface GrantKeyFormProps {
   lock: Lock
@@ -101,14 +101,12 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
         ({ resolvedAddress }) => resolvedAddress
       )
       const expirations = recipientItems?.map(({ metadata }) => {
-        return metadata?.neverExpires
-          ? MAX_UINT
-          : Math.floor(new Date(metadata?.expiration).getTime() / 1000)
+        return metadata?.neverExpires ? MAX_UINT : metadata?.expiration
       })
       const keyManagers = recipientItems?.map(
         ({ metadata }) => metadata?.keyManager || account
       )
-      await toast.promise(
+      await ToastHelper.promise(
         walletService.grantKeys(
           {
             lockAddress: lock.address,
@@ -118,7 +116,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
           },
           (error: any, hash: string) => {
             if (error) {
-              toast.error(
+              ToastHelper.error(
                 'There was an error and the keys could not be granted. Please refresh the page and try again.'
               )
             }

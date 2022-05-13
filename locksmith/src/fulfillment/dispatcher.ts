@@ -66,7 +66,7 @@ export default class Dispatcher {
 
     if (network === 137) {
       transactionOptions.maxPriorityFeePerGas = ethers.utils.parseUnits(
-        '1000',
+        '500',
         'gwei'
       )
       transactionOptions.maxFeePerGas = transactionOptions.maxPriorityFeePerGas
@@ -145,5 +145,34 @@ export default class Dispatcher {
       },
       cb
     )
+  }
+
+  async renewMembershipFor(
+    network: number,
+    lockAddress: string,
+    keyId: number,
+    referrer: string,
+    transactionOptions?: any
+  ) {
+    const walletService = new WalletService(networks)
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].publicProvider
+    )
+
+    const walletWithProvider = new ethers.Wallet(
+      config.purchaserCredentials,
+      provider
+    )
+    await walletService.connect(provider, walletWithProvider)
+
+    // get lock
+    const lock = await walletService.getLockContract(lockAddress)
+
+    // make sure reccuring payments are supported
+    if ((await lock.publicLockVersion()) < 10) {
+      throw Error('Renewal only supported for lock v10+')
+    }
+
+    return await lock.renewMembershipFor(keyId, referrer, transactionOptions)
   }
 }
