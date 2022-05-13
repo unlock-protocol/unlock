@@ -2,7 +2,27 @@
  * @type import('hardhat/config').HardhatUserConfig
  */
 
+// to build contract docs
+require('@primitivefi/hardhat-dodoc')
+
+const fs = require('fs-extra')
+
 require('./task/exportAbis')
+
+const contractsPath = './src/contracts'
+
+// list all interfaces to document
+const contractsToDocument = fs
+  .readdirSync(contractsPath)
+  .map((contractName) =>
+    fs.readdirSync(`${contractsPath}/${contractName}`).filter(
+      (n) =>
+        n.startsWith('I') && // only interfaces
+        !n.includes('Sol') && // exclude various solc versions
+        !n.startsWith('IUnlockDiscountToken') // exclude UDT
+    )
+  )
+  .flat()
 
 const settings = {
   optimizer: {
@@ -30,7 +50,22 @@ module.exports = {
       { version: '0.8.7', settings },
     ],
   },
+  dodoc: {
+    // debugMode: true,
+    keepFileStructure: true,
+    include: contractsToDocument,
+    exclude: [
+      'IERC165',
+      'IERC721',
+      'IERC721Enumerable',
+      'Initializable',
+      'IPublicLockV8Sol5',
+    ],
+  },
   paths: {
-    sources : 'src/contracts'
-  }
+    sources: contractsPath,
+  },
+  mocha: {
+    timeout: 2000000,
+  },
 }

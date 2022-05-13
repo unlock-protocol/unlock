@@ -6,7 +6,7 @@ pragma solidity ^0.5.0;
  */
 
 
-contract IPublicLockV8
+contract IPublicLockV8Sol5
 {
 
 // See indentationissue description here:

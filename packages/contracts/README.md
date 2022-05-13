@@ -3,16 +3,13 @@
 ### Javascript usage
 
 ```js
-
 // get latest
 import unlock from '@unlock-protocol/contracts/Unlock'
 
 // get previous versions
 import unlock from '@unlock-protocol/contracts/UnlockV0'
 import { UnlockV0 } from '@unlock-protocol/contracts'
-
 ```
-
 
 ### Solidity usage
 
@@ -38,4 +35,12 @@ Make sure all the contracts are building correctly by running
 
 ```
 yarn test
+```
+
+### Build the docs
+
+Output documentation for Unlock and PublicLock in the `/docs` folder
+
+```
+yarn docs
 ```
