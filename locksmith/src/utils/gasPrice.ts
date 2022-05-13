@@ -16,7 +16,7 @@ export default class GasPrice {
     return gasPriceETH
   }
 
-  // Gas price denominated in cents of cents by default
+  // Gas price denominated in cents
   async gasPriceUSD(network: number, gasCost: number): Promise<number> {
     const gasPrice = await this.gasPriceETH(network, gasCost)
     // Cost in currency
