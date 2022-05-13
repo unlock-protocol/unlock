@@ -5,7 +5,10 @@ import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useLock } from '../../../hooks/useLock'
-import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
+import {
+  TransactionInfo,
+  UserInfo,
+} from '../../../hooks/useCheckoutCommunication'
 import { PaywallConfig } from '../../../unlockTypes'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
 import { useAccount } from '../../../hooks/useAccount'
@@ -35,6 +38,7 @@ interface CryptoCheckoutProps {
   numberOfRecipients?: number
   recipients?: any[]
   clearMultipleRecipients?: () => void
+  emitUserInfo: (info: UserInfo) => void
 }
 
 export const CryptoCheckout = ({
@@ -49,6 +53,7 @@ export const CryptoCheckout = ({
   numberOfRecipients = 1,
   recipients = [],
   clearMultipleRecipients,
+  emitUserInfo,
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
@@ -83,6 +88,13 @@ export const CryptoCheckout = ({
   const now = new Date().getTime() / 1000
   const hasValidkey =
     keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
+
+  useEffect(() => {
+    if (!hasValidkey) return
+    emitUserInfo({
+      address: account,
+    })
+  }, [hasValidkey])
 
   const hasOptimisticKey = keyExpiration === Infinity
   const hasValidOrPendingKey = hasValidkey || hasOptimisticKey

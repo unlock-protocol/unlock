@@ -334,6 +334,7 @@ export const Checkout = ({
           numberOfRecipients={recipients?.length}
           recipients={recipients}
           clearMultipleRecipients={clear}
+          emitUserInfo={emitUserInfo}
         />
       )
     }
