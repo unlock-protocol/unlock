@@ -1,5 +1,5 @@
 import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
-import KeyPricer, { MAX_GRANT_COST } from '../utils/keyPricer'
+import KeyPricer from '../utils/keyPricer'
 import AuthorizedLockOperations from '../operations/authorizedLockOperations'
 import { SignedRequest } from '../types'
 import { getStripeConnectForLock } from '../operations/stripeOperations'
@@ -30,16 +30,12 @@ namespace PriceController {
 
       const pricer = new KeyPricer()
       const pricing = await pricer.generate(lockAddress, req.chain, quantity)
-
-      // If it is low enough we want to allow users to claim it for free
-      const costToGrant = await pricer.gasFee(req.chain, 1000)
       if (
         hasEnoughToPayForGas &&
         pricing.keyPrice !== undefined &&
         pricing.keyPrice === 0 &&
-        costToGrant < MAX_GRANT_COST
+        (await pricer.canAffordGrant(req.chain))
       ) {
-        // If it costs less than a half a 1ct, then we can grant the key for free!
         return res.json({
           usd: pricing,
           creditCardEnabled: true,

@@ -4,7 +4,7 @@ import {
   getStripeCustomerIdForAddress,
   createStripeCustomer,
 } from '../operations/stripeOperations'
-import KeyPricer, { MAX_GRANT_COST } from '../utils/keyPricer'
+import KeyPricer from '../utils/keyPricer'
 
 import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
 import PaymentProcessor from '../payment/paymentProcessor'
@@ -261,8 +261,7 @@ namespace PurchaseController {
       return res.status(500).send('Purchaser does not have enough funds!')
     }
 
-    const costToGrant = await pricer.gasFee(network, 1000)
-    if (costToGrant >= MAX_GRANT_COST) {
+    if (!(await pricer.canAffordGrant(network))) {
       return res.status(500).send('Gas fees too high!')
     }
 

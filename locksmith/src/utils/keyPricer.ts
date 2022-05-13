@@ -13,13 +13,26 @@ const stripePercentage = 0.029
 const ZERO = ethers.constants.AddressZero
 export const GAS_COST = 200000 // hardcoded : TODO get better estimate, based on actual execution
 
-export const MAX_GRANT_COST = 1000 // Maximum price we're willing to pay to grant keys! (1000 => 1ct)
+const GAS_COST_TO_GRANT = 250000
 
 export default class KeyPricer {
   readOnlyEthereumService: any
 
   constructor() {
     this.readOnlyEthereumService = new Web3Service(networks)
+  }
+
+  async canAffordGrant(network: number): Promise<boolean> {
+    const gasPrice = new GasPrice()
+    const gasCost = await gasPrice.gasPriceUSD(network, GAS_COST_TO_GRANT) // in cents!
+    switch (network) {
+      case 100:
+        // we max at $1
+        return gasCost < 100
+      default:
+        // We max at 1 cent
+        return gasCost < 1
+    }
   }
 
   async keyPriceUSD(lockAddress: string, network: number): Promise<number> {
