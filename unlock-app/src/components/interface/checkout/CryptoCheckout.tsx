@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import ReCAPTCHA from 'react-google-recaptcha'
+import { logger } from 'ethers'
 import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -293,6 +294,7 @@ export const CryptoCheckout = ({
           // Transaction was not sent
           ToastHelper.error('Please confirm the transaction in your wallet.')
         } else {
+          console.error(error)
           // Other reason...
           ToastHelper.error(
             `This transaction could not be sent as it appears to fail. ${
