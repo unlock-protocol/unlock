@@ -14,6 +14,7 @@ import {
 } from '../../interface/checkout/FormStyles'
 import Alert from '../../interface/Alert'
 import { useAlert } from '../../../hooks/useAlert'
+import { MAX_UINT } from '../../../constants'
 
 const Integration = ({ name, icon, href }) => (
   <App>
@@ -108,16 +109,27 @@ const AppStore = ({ lock }) => {
   }
 
   const generateUrl = async () => {
+    let recurringPayments
+    if (
+      lock.publicLockVersion >= 10 &&
+      lock.currencyContractAddress &&
+      lock.selfAllowance === MAX_UINT
+    ) {
+      recurringPayments = (365 * 24 * 3600) / lock.expirationDuration
+    }
+
     const checkoutURLConfig = {
       locks: {
         [lock.address]: {
           network: lock.network,
+          recurringPayments,
         },
       },
       pessimistic: true,
       persistentCheckout: true,
       icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
     }
+
     setCheckoutUrl(
       new URL(
         `/checkout?redirectUri=${encodeURIComponent(

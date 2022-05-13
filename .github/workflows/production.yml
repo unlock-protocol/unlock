@@ -1,4 +1,4 @@
-name: 'Production Branch'
+name: "Production Branch"
 
 on:
   push:
@@ -6,8 +6,12 @@ on:
       - production
 
 jobs:
+  run-all-tests:
+    uses: ./.github/workflows/_tests.yml
+
   deploy-locksmith-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
+    needs: run-all-tests
     uses: ./.github/workflows/_heroku.yml
     with:
       bypass_diff_check: bypass
@@ -19,14 +23,42 @@ jobs:
 
   deploy-locksmith-websub-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
+    needs: run-all-tests
     uses: ./.github/workflows/_heroku.yml
     with:
       bypass_diff_check: bypass
       service: locksmith-websub
       build-dir: locksmith
-      command: 'yarn websub:prod'
+      command: "yarn websub:prod"
       container-type: worker
       app-name: locksmith-websub-production
     secrets:
       HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+  # Netlify Deployments  
+  deploy-paywall-app-production:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    needs: run-all-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      bypass_diff_check: bypass
+      service: paywall-app
+      target-env: prod
+    secrets:
+      SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_PROD_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_PROD_AUTH_TOKEN }}
+
+  deploy-unlock-app-production:
+    if: ${{ github.repository_owner == 'unlock-protocol' }}
+    needs: run-all-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      bypass_diff_check: bypass
+      service: unlock-app
+      target-env: prod
+    secrets:
+      SITE_ID: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_AUTH_TOKEN }}
+      BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_BASE64_WEDLOCKS_PUBLIC_KEY }}
+      STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_PROD_STRIPE_KEY }}

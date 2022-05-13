@@ -161,7 +161,10 @@ export const ValidKey = ({
 
   useEffect(() => {
     const onLoad = async () => {
-      if (!viewer) return
+      if (!viewer) {
+        setLoading(false)
+        return
+      }
       const _isLockManager = await isLockManager(viewer)
       if (_isLockManager) {
         setViewerIsLockOwner(true)
