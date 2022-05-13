@@ -73,7 +73,7 @@ export async function getAllowance(
   spenderAddress: string
 ) {
   const contract = new ethers.Contract(erc20ContractAddress, erc20abi, provider)
-  let amount = '0'
+  let amount = ethers.BigNumber.from(0)
   try {
     amount = await contract.allowance(spenderAddress, lockContractAddress)
   } catch (e) {
