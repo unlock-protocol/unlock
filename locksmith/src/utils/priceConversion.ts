@@ -35,7 +35,6 @@ export default class PriceConversion {
       cache[currency] = [new Date().getTime(), parseFloat(data.amount)]
       rate = parseFloat(data.amount)
     }
-    console.log()
 
     return parseInt((rate * amount * 100).toFixed(0))
   }

@@ -30,7 +30,6 @@ namespace PriceController {
 
       const pricer = new KeyPricer()
       const pricing = await pricer.generate(lockAddress, req.chain, quantity)
-      console.log(await pricer.canAffordGrant(req.chain))
       if (
         hasEnoughToPayForGas &&
         pricing.keyPrice !== undefined &&
