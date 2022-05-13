@@ -293,6 +293,7 @@ export const CryptoCheckout = ({
           // Transaction was not sent
           ToastHelper.error('Please confirm the transaction in your wallet.')
         } else {
+          console.error(error)
           // Other reason...
           ToastHelper.error(
             `This transaction could not be sent as it appears to fail. ${
