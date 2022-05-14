@@ -62,6 +62,6 @@ Community & Support: [Join the Unlock Discord](https://discord.com/invite/Ah6ZEJ
 
 ### Further Reading
 
-Interview:n[NFTs for Memberships: The Future of Business](https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/)
+Interview: [NFTs for Memberships: The Future of Business](https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/)
 
 Videos: [NFT Membership videos](https://www.youtube.com/channel/UCFpwtvsk_naOwR_w-vKXw-Q)
