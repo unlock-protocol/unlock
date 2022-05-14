@@ -5,7 +5,7 @@ authorName: Christopher Carfi
 publishDate: May 17, 2022
 description: Unlock Protocol launches recurring subscriptions using NFTs, bringing a sustainable business model to the decentralized web3 world.
 
-image: /images/blog/subscription/recurring-blog-header.png
+image: /images/blog/subscriptions/recurring-blog-header.png
 ---
 
 ![recurring-blog-header.png](/images/blog/subscription/recurring-blog-header.png)
@@ -36,7 +36,7 @@ Furthermore, creators, fans, developers, and supporters all have the opportunity
 
 Unlock's approach to recurring billing using NFTs uses a novel smart contract design that is the first in the industry, bringing the recurring revenue model into a decentralized web3 world. Functionally, a user begins a subscription by agreeing to a smart contract transaction that recurs each month (or at whatever interval the subscription is billed), and the user’s membership NFT maintains its validity as long as the payment occurs each time.
 
-![unlock-subscription-dashboard.png](/images/blog/subscription/unlock-subscription-dashboard.png)
+![unlock-subscription-dashboard.png](/images/blog/subscriptions/unlock-subscription-dashboard.png)
 *Example lock in Unlock Dashboard with recurring subscriptions enabled. This publication’s subscription is 30 XDAI ($30) per month. Subscription duration, price, renewal terms, and currency are all configurable by creators.*
 
 Critically, by building in this manner, the relationship between the creator and the subscriber is *direct*. There is no middleman to determine what type of content is allowed or disallowed, there is no opaque algorithm to decide what content is surfaced or submerged, and there is no payment platform between the parties that can withhold payments from a creator based on an arbitrary policy change.
