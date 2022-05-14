@@ -1,9 +1,9 @@
 ---
-title: Headline is Publishing and Newsletters Built the Web3 Way
-subTitle: This is what Web3 publishing looks like
+title: Unlock Protocol Launches Web3 Recurring Subscriptions
+subTitle: A sustainable business model for Web3 creators
 authorName: Christopher Carfi
 publishDate: May 17, 2022
-description: Unlock is happy to announce the launch of Headline, bringing publishing and newsletter subscriptions into the Web3 ecosystem.
+description: Unlock Protocol launches recurring subscriptions using NFTs, bringing a sustainable business model to the decentralized web3 world.
 
 image: /images/blog/subscription/recurring-blog-header.png
 ---
