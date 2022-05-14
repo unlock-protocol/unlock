@@ -53,11 +53,12 @@ For too long, perverse attention economics have both shaped and dictated the con
 
 ### Documentation and Demo
 
+* Community & Support: [Join the Unlock Discord](https://discord.com/invite/Ah6ZEJyTDp)
+
 * Developer documentation: [Recurring Memberships](https://docs.unlock-protocol.com/unlock/creators/recurring-memberships)
 
 * Try it out on a test network: [Try out Unlock's recurring subscriptions](https://discord.com/channels/462280183425138719/974763163214032968/974765424384299058)
 
-* Community & Support: [Join the Unlock Discord](https://discord.com/invite/Ah6ZEJyTDp)
 
 ### Further Reading
 
