@@ -60,7 +60,7 @@ For too long, perverse attention economics have both shaped and dictated the con
 * Try it out on a test network: [Try out Unlock's recurring subscriptions](https://discord.com/channels/462280183425138719/974763163214032968/974765424384299058)
 
 
-### Further Reading
+### Further resources
 
 * Interview: [NFTs for Memberships: The Future of Business](https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/)
 
