@@ -54,26 +54,14 @@ We will be holding a Twitter Space launch event on May 25th. Set a reminder here
 
 ### Documentation and Demo
 
-Documentation: [https://docs.unlock-protocol.com/unlock/creators/recurring-memberships](https://docs.unlock-protocol.com/unlock/creators/recurring-memberships)
+Developer documentation: [https://docs.unlock-protocol.com/unlock/creators/recurring-memberships](Recurring Memberships)
 
-Try it out on a test network: [https://discord.com/channels/462280183425138719/974763163214032968/974765424384299058](https://discord.com/channels/462280183425138719/974763163214032968/974765424384299058)
+Try it out on a test network: [https://discord.com/channels/462280183425138719/974763163214032968/974765424384299058](Try out Unlock's recurring subscriptions)
 
-Community & Support: Join the Unlock Discord
+Community & Support: [https://discord.com/invite/Ah6ZEJyTDp](Join the Unlock Discord)
 
 ### Further Reading
 
-Interview: [https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/](https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/)
+Interview: [https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/](NFTs for Memberships: The Future of Business)
 
-Videos: [https://www.youtube.com/channel/UCFpwtvsk_naOwR_w-vKXw-Q](https://www.youtube.com/channel/UCFpwtvsk_naOwR_w-vKXw-Q)
-
----
-
-## Other assets (not part of blog post)
-
-GIF
-
-![recurring-membership.gif](Recurring%20Subscriptions%20616e627ce4af49dd990e309a2beda43f/recurring-membership.gif)
-
-MP4
-
-[recurring-membership.mp4](Recurring%20Subscriptions%20616e627ce4af49dd990e309a2beda43f/recurring-membership.mp4)
+Videos: [https://www.youtube.com/channel/UCFpwtvsk_naOwR_w-vKXw-Q](NFT Membership videos)
