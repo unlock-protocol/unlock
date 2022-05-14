@@ -45,22 +45,22 @@ For too long, perverse attention economics have both shaped and dictated the con
 
 ### Availability
 
-Unlock Protocol’s recurring subscription membership NFTs are available today.
+* Unlock Protocol’s recurring subscription membership NFTs are available today.
 
 ### Launch event
 
-We will be holding a Twitter Space launch event on May 25th. Set a reminder here.
+* We will be holding a Twitter Space launch event on May 25th. Set a reminder here.
 
 ### Documentation and Demo
 
-Developer documentation: [Recurring Memberships](https://docs.unlock-protocol.com/unlock/creators/recurring-memberships)
+* Developer documentation: [Recurring Memberships](https://docs.unlock-protocol.com/unlock/creators/recurring-memberships)
 
-Try it out on a test network: [Try out Unlock's recurring subscriptions](https://discord.com/channels/462280183425138719/974763163214032968/974765424384299058)
+* Try it out on a test network: [Try out Unlock's recurring subscriptions](https://discord.com/channels/462280183425138719/974763163214032968/974765424384299058)
 
-Community & Support: [Join the Unlock Discord](https://discord.com/invite/Ah6ZEJyTDp)
+* Community & Support: [Join the Unlock Discord](https://discord.com/invite/Ah6ZEJyTDp)
 
 ### Further Reading
 
-Interview: [NFTs for Memberships: The Future of Business](https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/)
+* Interview: [NFTs for Memberships: The Future of Business](https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/)
 
-Videos: [NFT Membership videos](https://www.youtube.com/channel/UCFpwtvsk_naOwR_w-vKXw-Q)
+* Videos: [NFT Membership videos](https://www.youtube.com/channel/UCFpwtvsk_naOwR_w-vKXw-Q)
