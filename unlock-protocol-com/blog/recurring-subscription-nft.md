@@ -22,7 +22,7 @@ Hundreds of creators, developers, brands, and projects have built on top of Unlo
 
 The answer is “yes.”
 
-## Unlock Protocol Launches Web3 Recurring Subscriptions
+## Unlock Protocol launches Web3 recurring subscriptions
 
 Today, Unlock is excited to announce that we’ve created the first-ever mechanism for [recurring subscriptions using membership NFTs](https://docs.unlock-protocol.com/unlock/creators/recurring-memberships). This groundbreaking upgrade to the community-governed Unlock Protocol paves the way to replace legacy subscription systems that use centralized payment processors with a decentralized Web3 model.
 
