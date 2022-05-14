@@ -54,14 +54,14 @@ We will be holding a Twitter Space launch event on May 25th. Set a reminder here
 
 ### Documentation and Demo
 
-Developer documentation: [https://docs.unlock-protocol.com/unlock/creators/recurring-memberships](Recurring Memberships)
+Developer documentation: [Recurring Memberships](https://docs.unlock-protocol.com/unlock/creators/recurring-memberships)
 
-Try it out on a test network: [https://discord.com/channels/462280183425138719/974763163214032968/974765424384299058](Try out Unlock's recurring subscriptions)
+Try it out on a test network: [Try out Unlock's recurring subscriptions](https://discord.com/channels/462280183425138719/974763163214032968/974765424384299058)
 
-Community & Support: [https://discord.com/invite/Ah6ZEJyTDp](Join the Unlock Discord)
+Community & Support: [Join the Unlock Discord](https://discord.com/invite/Ah6ZEJyTDp)
 
 ### Further Reading
 
-Interview: [https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/](NFTs for Memberships: The Future of Business)
+Interview:n[NFTs for Memberships: The Future of Business](https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/)
 
-Videos: [https://www.youtube.com/channel/UCFpwtvsk_naOwR_w-vKXw-Q](NFT Membership videos)
+Videos: [NFT Membership videos](https://www.youtube.com/channel/UCFpwtvsk_naOwR_w-vKXw-Q)
