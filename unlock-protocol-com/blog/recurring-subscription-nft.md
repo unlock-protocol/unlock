@@ -51,7 +51,7 @@ For too long, perverse attention economics have both shaped and dictated the con
 
 * We will be holding a Twitter Space launch event on May 25th. Set a reminder here.
 
-### Documentation and Demo
+### Documentation and demo
 
 * Community & Support: [Join the Unlock Discord](https://discord.com/invite/Ah6ZEJyTDp)
 
