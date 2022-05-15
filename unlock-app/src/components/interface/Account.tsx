@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import styled from 'styled-components'
 import Jazzicon from 'react-jazzicon'
 import Media from '../../theme/media'
-
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
 import { ConfigContext } from '../../utils/withConfig'
@@ -50,7 +49,7 @@ export function Account() {
             {network && (
               <div className="grid space-y-2">
                 <select
-                  className="px-2 py-1 text-black bg-white border rounded"
+                  className="px-2 py-1 text-sm text-black bg-white border rounded"
                   onChange={networkSelected}
                   value={network}
                 >

@@ -1,0 +1,68 @@
+name: Deploy on Heroku
+
+on:
+  workflow_call:
+    inputs:
+      service:
+        description: "The service/app to build"
+        type: string
+        required: true
+      app-name:
+        description: "The Heroku app name to which the application should be deployed"
+        type: string
+        required: true
+      container-type: 
+        description: "The Heroku container type to use to deploy."
+        type: string
+        required: false
+      command: 
+        description: "The start command to run the container with"
+        type: string
+        required: false
+      build-dir:
+        description: 'The build directory to use. By default, it will use name of the service as build directory.'
+        type: string
+        required: false
+      bypass_diff_check:
+        description: "Bypass the monorepo diff check"
+        required: false
+        type: string
+    secrets:
+      HEROKU_EMAIL:
+        required: true
+      HEROKU_API_KEY:
+        required: true
+
+jobs:
+  deploy-to-heroku:
+    name: Deploy ${{ inputs.service }} on Heroku (${{ inputs.app-name }})
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_REPOSITORY: unlockprotocol
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    steps:
+      - name: "Free up disk space"
+        run: sudo rm -rf /usr/share/dotnet && sudo rm -rf /opt/ghc && sudo rm -rf "/usr/local/share/boost" && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Check for changes in ${{ inputs.service }}
+        run: |
+          if  [ -z "${{ inputs.bypass_diff_check }}" ]; then
+            changed=$(scripts/monorepo.sh ${{ inputs.service }} ${{ github.ref_name }})
+          else 
+            changed="changed"
+          fi
+          echo $changed
+          echo "::set-output name=changed::$changed"
+        shell: bash
+        id: check_changes
+      - name: Build & deploy to heroku
+        if: ${{ steps.check_changes.outputs.changed == 'changed' }}
+        run: |
+          sh ./scripts/heroku.sh ${{ inputs.service }} ${{ inputs.app-name }} ${{ inputs.container-type }} "${{ inputs.command }}" ${{ inputs.build-dir }}
+        env:
+          HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        

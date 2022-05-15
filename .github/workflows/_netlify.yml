@@ -1,0 +1,94 @@
+name: Netlify Deployments
+
+on:
+  workflow_call:
+    inputs:
+      service:
+        description: 'The service/app to deploy'
+        type: string
+        required: true
+      target-env:
+        description: 'The target environment (staging/production)'
+        type: string
+        required: true
+      is_forked:
+        description: 'That PR is a fork (or not)'
+        type: string
+        required: false
+        default: 'false'
+      bypass_diff_check:
+        description: 'Bypass the monorepo diff check'
+        required: false
+        type: string
+    secrets:
+      # all netlify deployments
+      SITE_ID:
+        required: true
+      AUTH_TOKEN:
+        required: true
+      NEXT_PUBLIC_UNLOCK_ENV:
+        required: false
+      # unlock-app only
+      BASE64_WEDLOCKS_PUBLIC_KEY:
+        required: false
+      STRIPE_KEY:
+        required: false
+      UNLOCK_GA_ID:
+        required: false
+      # wedlocks only
+      SMTP_HOST:
+        required: false
+      SMTP_USERNAME:
+        required: false
+      SMTP_PASSWORD:
+        required: false
+      BASE64_WEDLOCKS_PRIVATE_KEY:
+        required: false
+
+jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check_changes.outputs.changed }}
+    steps:
+      - name: 'Free up disk space'
+        run: sudo rm -rf /usr/share/dotnet && sudo rm -rf /opt/ghc && sudo rm -rf "/usr/local/share/boost" && sudo rm -rf "$AGENT_TOOLSDIRECTORY"
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Check for changes in ${{ inputs.service }}
+        run: |
+          if  [ -z "${{ inputs.bypass_diff_check }}" ]; then
+            changed=$(scripts/monorepo.sh ${{ inputs.service }} ${{ github.ref_name }})
+          else 
+            changed="changed"
+          fi
+          echo $changed
+          echo "::set-output name=changed::$changed"
+        shell: bash
+        id: check_changes
+
+  deploy-netlify:
+    if: ${{ needs.check-changes.outputs.changed == 'changed' }}
+    name: Deploy ${{ inputs.service }} on Netlify ${{ inputs.target-env }}
+    runs-on: ubuntu-latest
+    needs: check-changes
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    steps:
+      - uses: actions/checkout@v3
+      - name: 'Export secrets to env'
+        id: filter_secrets
+        run: |
+          SERVICE_NAME="${{ inputs.service }}"
+          UPCASE_SERVICE="${SERVICE_NAME^^}"
+          PREFIX="${UPCASE_SERVICE//-/_}_NETLIFY_${{ inputs.target-env }}"
+          PREFIX="${PREFIX^^}" # uppercase
+          bash .github/actions/secrets_to_env.sh '${{ toJson(secrets) }}' $PREFIX
+      - name: Deploy to Netlify
+        run: |
+          # show args
+          echo "${{ inputs.target-env }} ${{ inputs.service }} netlify $GITHUB_SHA $GITHUB_REF_NAME ${{ inputs.is_forked  }}"
+          # run command
+          scripts/deploy.sh ${{ inputs.target-env }} ${{ inputs.service }} netlify "$GITHUB_SHA" "$GITHUB_REF_NAME" ${{ inputs.is_forked  }}

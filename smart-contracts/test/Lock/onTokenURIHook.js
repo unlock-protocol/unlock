@@ -28,23 +28,24 @@ contract('Lock / onTokenURIHook', (accounts) => {
       testEventHooks.address
     )
     const keyPrice = await lock.keyPrice()
-    await lock.purchase(
-      0,
-      to,
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
+    const tx = await lock.purchase(
       [],
+      [to],
+      [constants.ZERO_ADDRESS],
+      [constants.ZERO_ADDRESS],
+      [[]],
       {
         from,
         value: keyPrice,
       }
     )
-    tokenId = await lock.getTokenIdFor.call(to)
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
+    tokenId = args.tokenId
   })
 
   it('tokenURI should returns a custom value', async () => {
     const baseTokenURI = 'https://unlock-uri-hook.test/'
-    const expirationTimestamp = await lock.keyExpirationTimestampFor(to)
+    const expirationTimestamp = await lock.keyExpirationTimestampFor(tokenId)
     const params = [
       lock.address.toLowerCase(), // lockAddress
       to.toLowerCase(), // owner

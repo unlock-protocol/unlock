@@ -6,9 +6,11 @@ import recoveryKeyConfirmEmail from './recoveryKeyConfirmEmail'
 import confirmEvent from './confirmEvent'
 import keyOwnership from './keyOwnership'
 import keyMined from './keyMined'
-import keyMined0x934FE4A45fDcF13a87835500F05C6B358Ec89F69 from './locks/keyMined-0x934FE4A45fDcF13a87835500F05C6B358Ec89F69'
+import debug from './debug'
+// eslint-disable-next-line import/no-unresolved
+import * as LockTemplates from './locks'
 
-export default {
+const baseTemplates = {
   confirmEmail,
   ejectedEmail,
   ejectionWarningEmail,
@@ -17,5 +19,15 @@ export default {
   confirmEvent,
   keyOwnership,
   keyMined,
-  keyMined0x934FE4A45fDcF13a87835500F05C6B358Ec89F69,
+  debug,
 }
+
+const templates = {}
+Object.keys(LockTemplates).forEach((template) => {
+  templates[template.toLowerCase()] = LockTemplates[template]
+})
+
+Object.keys(baseTemplates).forEach((template) => {
+  templates[template.toLowerCase()] = baseTemplates[template]
+})
+export default templates

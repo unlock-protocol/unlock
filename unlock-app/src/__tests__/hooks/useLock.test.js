@@ -1,24 +1,22 @@
 import React from 'react'
 
 import { renderHook } from '@testing-library/react-hooks'
-import useLock, {
-  processTransaction,
-  updateKeyPriceOnLock,
-} from '../../hooks/useLock'
+import useLock, { updateKeyPriceOnLock } from '../../hooks/useLock'
 import configure from '../../config'
 import LocksContext from '../../contexts/LocksContext'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { ConfigContext } from '../../utils/withConfig'
-import { TransactionType } from '../../unlockTypes'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
 const config = configure()
-const network = 1337
+const networkId = 31337
 const mockWeb3Service = {
   getTransaction: jest.fn(),
 }
-const mockWalletService = {}
+const mockWalletService = {
+  networkId,
+}
 const propsLock = {
   address: '0xLock',
   name: 'My Lock',
@@ -34,7 +32,7 @@ describe('useLock', () => {
         return { locks: {}, addLock: () => {} }
       }
       if (context === AuthenticationContext) {
-        return { network }
+        return { network: networkId }
       }
       if (context === Web3ServiceContext) {
         return mockWeb3Service
@@ -102,7 +100,7 @@ describe('useLock', () => {
       )
       expect(mockWeb3Service.getTransaction).toHaveBeenCalledWith(
         hash,
-        undefined
+        networkId
       )
     })
 

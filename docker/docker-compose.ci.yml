@@ -83,6 +83,16 @@ services:
         BUILD_DIR: packages/unlock-js
     env_file:
       - ./${UNLOCK_ENV}.env
+
+  hardhat-plugin: # Container for @unlock-protocol/hardhat-plugin
+    image: hardhat-plugin
+    build:
+      context: ../
+      target: dev
+      args:
+        BUILD_DIR: packages/hardhat-plugin
+    env_file:
+      - ./${UNLOCK_ENV}.env
   contracts: # Container for @unlock-protocol/contracts
     image: contracts
     build:
@@ -162,7 +172,7 @@ services:
       - postgres
 
   ipfs: # Required for subgraph
-    image: ipfs/go-ipfs:v0.11.0
+    image: ipfs/go-ipfs:v0.12.2
     ports:
       - '5001:5001'
 

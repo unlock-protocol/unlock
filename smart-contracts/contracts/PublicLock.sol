@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.7;
 
 import './interfaces/IPublicLock.sol';
 import '@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol';
@@ -15,7 +15,7 @@ import './mixins/MixinPurchase.sol';
 import './mixins/MixinRefunds.sol';
 import './mixins/MixinTransfer.sol';
 import './mixins/MixinRoles.sol';
-
+import './mixins/MixinConvenienceOwnable.sol';
 
 /**
  * @title The Lock contract
@@ -37,7 +37,8 @@ contract PublicLock is
   MixinGrantKeys,
   MixinPurchase,
   MixinTransfer,
-  MixinRefunds
+  MixinRefunds,
+  MixinConvenienceOwnable
 {
   function initialize(
     address payable _lockCreator,
@@ -50,12 +51,12 @@ contract PublicLock is
     initializer()
   {
     MixinFunds._initializeMixinFunds(_tokenAddress);
-    MixinDisable._initializeMixinDisable();
     MixinLockCore._initializeMixinLockCore(_lockCreator, _expirationDuration, _keyPrice, _maxNumberOfKeys);
     MixinLockMetadata._initializeMixinLockMetadata(_lockName);
     MixinERC721Enumerable._initializeMixinERC721Enumerable();
     MixinRefunds._initializeMixinRefunds();
     MixinRoles._initializeMixinRoles(_lockCreator);
+    MixinConvenienceOwnable._initializeMixinConvenienceOwnable(_lockCreator);
     // registering the interface for erc721 with ERC165.sol using
     // the ID specified in the standard: https://eips.ethereum.org/EIPS/eip-721
     _registerInterface(0x80ac58cd);

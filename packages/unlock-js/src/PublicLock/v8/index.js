@@ -1,10 +1,12 @@
 import abis from '../../abis'
 import keyManagerOf from './keyManagerOf'
+import approveBeneficiary from './approveBeneficiary'
 
 import v7 from '../v7'
 
 const {
   grantKey,
+  grantKeys,
   updateKeyPrice,
   withdrawFromLock,
   initializeTemplate,
@@ -16,6 +18,10 @@ const {
   shareKey,
   getLock,
   purchaseKey,
+  purchaseKeys,
+  getCancelAndRefundValueFor,
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
 } = v7
 
 export default {
@@ -25,7 +31,9 @@ export default {
   initializeTemplate,
   updateKeyPrice,
   purchaseKey,
+  purchaseKeys,
   grantKey,
+  grantKeys,
   getLock,
   withdrawFromLock,
   isLockManager,
@@ -35,4 +43,8 @@ export default {
   cancelAndRefund,
   shareKey,
   keyManagerOf,
+  getCancelAndRefundValueFor,
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
+  approveBeneficiary,
 }

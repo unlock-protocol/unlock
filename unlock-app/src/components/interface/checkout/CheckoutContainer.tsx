@@ -1,36 +1,22 @@
-import React from 'react'
-import styled from 'styled-components'
-import Media from '../../../theme/media'
+import React, { useEffect } from 'react'
 
 interface Props {
-  close: () => void
   children: React.ReactNode
 }
 
 export const CheckoutContainer: React.FunctionComponent<Props> = ({
-  close,
   children,
 }: React.PropsWithChildren<Props>) => {
-  return <Container onClick={close}>{children}</Container>
-}
+  useEffect(() => {
+    // We use background color on body on normal pages. This adds a class to override it.
+    document.querySelector('body')?.classList.add('bg-transparent')
+  }, [])
 
-export const Container = styled.div`
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
-  padding-top: 10%;
-  padding-bottom: 5%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  ${Media.phone`
-    padding-top: 0;
-    padding-bottom: 0;
-  `}
-`
+  return (
+    <div className="min-h-screen min-w-full flex flex-col bg-opacity-25 bg-black items-center justify-center overflow-auto">
+      {children}
+    </div>
+  )
+}
 
 export default CheckoutContainer

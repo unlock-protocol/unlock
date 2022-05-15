@@ -1,0 +1,61 @@
+name: Check Changes in Repo
+
+on:
+  workflow_call:
+    inputs:
+      targets:
+        description: "The list of services/sub-repositories concerned (as a stringified array)"
+        type: string
+        required: true
+    outputs:
+      changed:
+        description: "The list of services that have changed"
+        value: ${{ jobs.check_changes.outputs.changed }}
+      target_env:
+        description: "The target environment (staging/prod)"
+        value: ${{ jobs.check_changes.outputs.target_env }}
+      is_forked:
+        description: "Check if repo is a fork"
+        value: ${{ jobs.check_changes.outputs.is_forked }}
+
+jobs:
+  check_changes:
+    runs-on: ubuntu-latest
+    name: 'Check for changes in monorepo'
+    outputs:
+      changed: ${{ steps.check-changes.outputs.changed }}
+      target_env: ${{ steps.set_target.outputs.target }}
+      is_forked: ${{ steps.is_forked.outputs.is_forked }}
+    env:
+      TARGETS: ${{ inputs.targets }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: 'Set GIT_BRANCH in env'
+        if: github.event_name != 'pull_request'
+        id: branch_name
+        run: |
+          # Short name for current branch. For PRs, use target branch (base ref)
+          GIT_BRANCH=${GITHUB_BASE_REF:-${GITHUB_REF#refs/heads/}}
+          echo "GIT_BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
+      - name: 'Check which folders have changed'
+        run: |
+          if [ "${GIT_BRANCH}" == "production" ]; then
+            echo 'Deploy all'
+            echo ::set-output name=changed::$TARGETS
+          else 
+            changed=$(.github/actions/monorepo/check-changes.sh ${{ github.ref_name }})
+            echo ::set-output name=changed::$changed
+          fi
+          printf 'changed:%s\n' "${changed[@]}"
+        shell: bash
+        id: check-changes
+      - name: Check if forked PR
+        id: is_forked
+        run: |
+          echo "::set-output name=is_forked::${{github.repository_owner != 'Unlock Protocol' && github.event.pull_request.merged == true}}"
+      - name: Set target environment
+        id: set_target
+        run: |
+          echo "::set-output name=target::${{ contains(github.base_ref, 'production') && 'prod' || 'staging' }}"

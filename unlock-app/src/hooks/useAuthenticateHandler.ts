@@ -1,6 +1,6 @@
-import { useCallback } from 'react'
 import { useAuthenticate } from './useAuthenticate'
 import { useAppStorage } from './useAppStorage'
+import { ToastHelper } from '../components/helpers/toast.helper'
 
 enum WALLET_PROVIDER {
   METAMASK,
@@ -34,20 +34,37 @@ export function useAuthenticateHandler({
     UNLOCK: handleUnlockProvider,
   }
 
-  const authenticateWithProvider = useCallback(
-    async (providerType: WalletProvider, provider?: any) => {
-      if (!walletHandlers[providerType]) {
-        removeKey('provider')
-      }
-      const connectedProvider = await walletHandlers[providerType](provider)
-      // We can't autologin with Unlock accounts
-      if (providerType !== 'UNLOCK') {
+  async function authenticateWithProvider(
+    providerType: WalletProvider,
+    provider?: any
+  ) {
+    if (!walletHandlers[providerType]) {
+      removeKey('provider')
+    }
+    const connectedProvider = walletHandlers[providerType](provider)
+    await ToastHelper.promise(
+      connectedProvider.then((p) => {
+        if (!p?.account) {
+          return Promise.reject('Unable to get provider')
+        }
+
+        if (p?.isUnlock && p?.email) {
+          setStorage('email', p.email)
+        } else {
+          removeKey('email')
+        }
         setStorage('provider', providerType)
+      }),
+      {
+        error:
+          'There was an error in connecting with your wallet provider. Please try again.',
+        success: 'Successfully connected with wallet provider.',
+        loading:
+          'Trying to connect with wallet provider. Please approve request on your wallet.',
       }
-      return connectedProvider
-    },
-    []
-  )
+    )
+    return connectedProvider
+  }
 
   return {
     authenticateWithProvider,

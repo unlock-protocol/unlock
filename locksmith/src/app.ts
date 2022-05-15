@@ -1,5 +1,4 @@
 import 'setimmediate' // polyfill to prevent jest from crashing
-import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
@@ -7,6 +6,7 @@ import expressWinston from 'express-winston' // TODO: use a single logger!
 import winston from 'winston'
 import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
+import cookieParser from 'cookie-parser'
 import { typeDefs } from './graphql/typeDefinitions'
 import { resolvers } from './graphql/resolvers'
 
@@ -32,6 +32,9 @@ app.use(Sentry.Handlers.requestHandler())
 // TracingHandler creates a trace for every incoming request
 app.use(Sentry.Handlers.tracingHandler())
 
+// Parse cookies
+app.use(cookieParser())
+
 // Request logging
 app.use(
   expressWinston.logger({
@@ -55,8 +58,8 @@ app.use(
 app.use(cors({}))
 
 // Parse body
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json({ limit: '5mb' }))
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: '5mb' }))
 
 const server = new ApolloServer({
   typeDefs,

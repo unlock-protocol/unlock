@@ -5,13 +5,14 @@ import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinRoles.sol';
 import './MixinFunds.sol';
-
+import './MixinPurchase.sol';
 
 contract MixinRefunds is
   MixinRoles,
   MixinFunds,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinPurchase
 {
   // CancelAndRefund will return funds based on time remaining minus this penalty.
   // This is calculated as `proRatedRefund * refundPenaltyBasisPoints / BASIS_POINTS_DEN`.
@@ -38,17 +39,19 @@ contract MixinRefunds is
   }
 
   /**
-   * @dev Invoked by the lock owner to destroy the user's ket and perform a refund and cancellation
+   * @dev Invoked by the lock owner to destroy the user's key and perform a refund and cancellation
    * of the key
+   * @param _tokenId The id of the key to expire
+   * @param _amount The amount to refund
    */
   function expireAndRefundFor(
-    address payable _keyOwner,
-    uint amount
-  ) external
-    onlyLockManager
-    hasValidKey(_keyOwner)
-  {
-    _cancelAndRefund(_keyOwner, amount);
+    uint _tokenId,
+    uint _amount
+  ) external {
+    _isKey(_tokenId);
+    _isValidKey(_tokenId);
+    _onlyLockManager();
+    _cancelAndRefund(_tokenId, _amount);
   }
 
   /**
@@ -57,12 +60,12 @@ contract MixinRefunds is
    */
   function cancelAndRefund(uint _tokenId)
     external
-    onlyKeyManagerOrApproved(_tokenId)
   {
-    address payable keyOwner = payable(ownerOf(_tokenId));
-    uint refund = _getCancelAndRefundValue(keyOwner);
-
-    _cancelAndRefund(keyOwner, refund);
+    _isKey(_tokenId);
+    _isValidKey(_tokenId);
+    _onlyKeyManagerOrApproved(_tokenId);
+    uint refund = getCancelAndRefundValue(_tokenId);
+    _cancelAndRefund(_tokenId, refund);
   }
 
   /**
@@ -71,9 +74,8 @@ contract MixinRefunds is
   function updateRefundPenalty(
     uint _freeTrialLength,
     uint _refundPenaltyBasisPoints
-  ) external
-    onlyLockManager
-  {
+  ) external {
+    _onlyLockManager();
     emit RefundPenaltyChanged(
       _freeTrialLength,
       _refundPenaltyBasisPoints
@@ -84,68 +86,58 @@ contract MixinRefunds is
   }
 
   /**
-   * @dev Determines how much of a refund a key owner would receive if they issued
-   * a cancelAndRefund block.timestamp.
-   * Note that due to the time required to mine a tx, the actual refund amount will be lower
-   * than what the user reads from this call.
-   */
-  function getCancelAndRefundValueFor(
-    address _keyOwner
-  )
-    external view
-    returns (uint refund)
-  {
-    return _getCancelAndRefundValue(_keyOwner);
-  }
-
-  /**
    * @dev cancels the key for the given keyOwner and sends the refund to the msg.sender.
+   * @notice this deletes ownership info and expire the key, but doesnt 'burn' it
    */
   function _cancelAndRefund(
-    address payable _keyOwner,
+    uint _tokenId,
     uint refund
   ) internal
   {
-    Key storage key = keyByOwner[_keyOwner];
-
-    emit CancelKey(key.tokenId, _keyOwner, msg.sender, refund);
-    // expirationTimestamp is a proxy for hasKey, setting this to `block.timestamp` instead
-    // of 0 so that we can still differentiate hasKey from hasValidKey.
-    key.expirationTimestamp = block.timestamp;
-
+    address payable keyOwner = payable(ownerOf(_tokenId));
+    
+    // delete ownership info and expire the key
+    _cancelKey(_tokenId);
+    
+    // emit event
+    emit CancelKey(_tokenId, keyOwner, msg.sender, refund);
+    
     if (refund > 0) {
-      // Security: doing this last to avoid re-entrancy concerns
-      _transfer(tokenAddress, _keyOwner, refund);
+      _transfer(tokenAddress, keyOwner, refund);
     }
 
+    // make future reccuring transactions impossible
+    _originalDurations[_tokenId] = 0;
+    
     // inform the hook if there is one registered
     if(address(onKeyCancelHook) != address(0))
     {
-      onKeyCancelHook.onKeyCancel(msg.sender, _keyOwner, refund);
+      onKeyCancelHook.onKeyCancel(msg.sender, keyOwner, refund);
     }
   }
 
   /**
-   * @dev Determines how much of a refund a key owner would receive if they issued
-   * a cancelAndRefund now.
-   * @param _keyOwner The owner of the key check the refund value for.
+   * @dev Determines how much of a refund a key would be worth if a cancelAndRefund
+   * is issued now.
+   * @param _tokenId the key to check the refund value for.
+   * @notice due to the time required to mine a tx, the actual refund amount will be lower
+   * than what the user reads from this call.
    */
-  function _getCancelAndRefundValue(
-    address _keyOwner
+  function getCancelAndRefundValue(
+    uint _tokenId
   )
-    private view
-    hasValidKey(_keyOwner)
+    public view
     returns (uint refund)
   {
-    Key storage key = keyByOwner[_keyOwner];
+    _isValidKey(_tokenId);
 
     // return entire purchased price if key is non-expiring
     if(expirationDuration == type(uint).max) {
       return keyPrice;
     }
 
-    // Math: safeSub is not required since `hasValidKey` confirms timeRemaining is positive
-    uint timeRemaining = key.expirationTimestamp - block.timestamp;
+    // substract free trial value
+    uint timeRemaining = keyExpirationTimestampFor(_tokenId) - block.timestamp;
     if(timeRemaining + freeTrialLength >= expirationDuration) {
       refund = keyPrice;
     } else {

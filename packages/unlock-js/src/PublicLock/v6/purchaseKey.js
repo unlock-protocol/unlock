@@ -59,44 +59,60 @@ export default async function (
       erc20Address,
       lockAddress,
       this.provider,
-      this.signer
+      this.signer.address
     )
     if (!approvedAmount || approvedAmount.lt(actualAmount)) {
-      await approveTransfer(
-        erc20Address,
-        lockAddress,
-        actualAmount,
-        this.provider,
-        this.signer
-      )
-      // Since we sent the approval transaction, we cannot rely on Ethers to do an estimate, because the computation would fail (since the approval might not have been mined yet)
-      purchaseForOptions.gasLimit = 400000
+      // We must wait for the transaction to pass if we want the next one to succeed!
+      await (
+        await approveTransfer(
+          erc20Address,
+          lockAddress,
+          actualAmount,
+          this.provider,
+          this.signer
+        )
+      ).wait()
     }
   } else {
     purchaseForOptions.value = actualAmount
   }
 
-  // To get good estimates we need the gas price, because it matters in the actual execution
-  const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
-    await this.provider.getFeeData()
-
-  if (maxFeePerGas && maxPriorityFeePerGas) {
-    purchaseForOptions.maxFeePerGas = maxFeePerGas
-    purchaseForOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
-  } else {
-    purchaseForOptions.gasPrice = gasPrice
-  }
-
-  // Estimate gas. Bump by 30% because estimates are wrong
+  // Estimate gas. Bump by 30% because estimates are wrong!
   if (!purchaseForOptions.gasLimit) {
-    const gasLimit = await lockContract.estimateGas.purchase(
-      actualAmount,
-      owner,
-      referrer,
-      data,
-      purchaseForOptions
-    )
-    purchaseForOptions.gasLimit = gasLimit.mul(14).div(10).toNumber()
+    try {
+      // To get good estimates we need the gas price, because it matters in the actual execution (UDT calculation takes it into account)
+      // TODO remove once we move to use block.baseFee in UDT calculation
+      const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
+        await this.provider.getFeeData()
+
+      if (maxFeePerGas && maxPriorityFeePerGas) {
+        purchaseForOptions.maxFeePerGas = maxFeePerGas
+        purchaseForOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+      } else {
+        purchaseForOptions.gasPrice = gasPrice
+      }
+
+      const gasLimit = await lockContract.estimateGas.purchase(
+        actualAmount,
+        owner,
+        referrer,
+        data,
+        purchaseForOptions
+      )
+      // Remove the gas prices settings for the actual transaction (the wallet will set them)
+      delete purchaseForOptions.maxFeePerGas
+      delete purchaseForOptions.maxPriorityFeePerGas
+      delete purchaseForOptions.gasPrice
+      purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
+    } catch (error) {
+      console.error(
+        'We could not estimate gas ourselves. Let wallet do it.',
+        error
+      )
+      delete purchaseForOptions.maxFeePerGas
+      delete purchaseForOptions.maxPriorityFeePerGas
+      delete purchaseForOptions.gasPrice
+    }
   }
 
   const transactionPromise = lockContract.purchase(
@@ -115,6 +131,11 @@ export default async function (
 
   // Let's now wait for the transaction to go thru to return the token id
   const receipt = await this.provider.waitForTransaction(hash)
+
+  if (receipt.status === 0) {
+    throw new Error('Transaction failed')
+  }
+
   const parser = lockContract.interface
 
   const transferEvent = receipt.logs

@@ -34,6 +34,6 @@ contract('proxyAdmin', () => {
   })
 
   it('forbid to deploy twice', async () => {
-    reverts(unlock.initializeProxyAdmin(), 'ProxyAdmin already deployed')
+    reverts(unlock.initializeProxyAdmin(), 'ALREADY_DEPLOYED')
   })
 })

@@ -31,6 +31,26 @@ export const Label = styled.label`
   margin-bottom: 3px;
 `
 
+export const SmallButton = styled.button`
+  margin-top: 0.25rem;
+  margin-left: auto;
+  cursor: pointer;
+  font-size: 0.7em;
+  font-weight: 500;
+  color: var(--grey);
+  float: right;
+  width: unset;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+`
+
 export const Select = styled.select`
   height: 48px;
   width: 100%;
@@ -60,6 +80,7 @@ export const Button = styled.button`
     background-color: var(--grey);
     cursor: not-allowed;
     color: white;
+    opacity: 0.5;
   }
   margin-top: 16px;
 
@@ -73,10 +94,33 @@ export const Button = styled.button`
     background-color: ${(props) =>
       props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
   }
+
+  &[type='reset'],
+  &[type='submit'],
+  &[type='button'] {
+    background-color: var(--green);
+  }
+  &[type='submit']:hover,
+  &[type='reset']:hover,
+  &[type='button']:hover {
+    background-color: ${(props) =>
+      props.disabled ? 'var(--grey)' : 'var(--activegreen)'};
+  }
 `
 
 export const NeutralButton = styled(Button)`
   background-color: var(--grey);
+`
+
+export const DefaultButton = styled(Button)`
+  background-color: var(--lightgrey);
+  color: #000;
+  font-weight: 600;
+
+  &:hover {
+    background-color: var(--lightgrey);
+    border: 1px solid var(--blue);
+  }
 `
 
 export const FormError = styled.p`

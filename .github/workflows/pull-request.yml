@@ -1,0 +1,76 @@
+name: Pull Request
+
+on:
+  pull_request:
+
+jobs:
+  # run all tests if PR contains the 'run-all-tests' tag
+  run-all-tests:
+    # name: "Run all tests"
+    if: ${{ contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
+    uses: ./.github/workflows/_tests.yml
+
+  # check which folder changed in the repo
+  check-changes:
+    # name: "Check for changes in monorepo"
+    if: ${{ ! contains(github.event.pull_request.labels.*.name, 'run-all-tests')}}
+    uses: ./.github/workflows/_check.yml
+    with:
+      targets: '[
+        "locksmith",
+        "packages/contracts",
+        "packages/hardhat-plugin",
+        "packages/unlock-js",
+        "packages/paywall",
+        "smart-contracts",
+        "smart-contract-extensions",
+        "unlock-protocol-com",
+        "wedlocks",
+        "unlock-app"
+        ]'
+
+  # run tests for folders that have changed
+  run-tests:
+    needs: check-changes
+    # name: "Run the tests"
+    if: ${{ needs.check-changes.outputs.changed != '[]' }}
+    uses: ./.github/workflows/_tests.yml
+    with:
+      changed: ${{ needs.check-changes.outputs.changed }}
+
+  # Netlify Deployments (run as drafts, unpublished to main URL)
+  deploy-unlock-protocol-com:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
+    needs: run-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: unlock-protocol-com
+      target-env: staging
+    secrets:
+      SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
+      UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_GA_ID }}
+
+  deploy-paywall-app:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: run-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: paywall-app
+      target-env: staging
+    secrets:
+      SITE_ID: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.PAYWALL_APP_NETLIFY_STAGING_AUTH_TOKEN }}
+
+  deploy-unlock-app:
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+    needs: run-tests
+    uses: ./.github/workflows/_netlify.yml
+    with:
+      service: unlock-app
+      target-env: staging
+    secrets:
+      SITE_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_SITE_ID }}
+      AUTH_TOKEN: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_AUTH_TOKEN }}
+      BASE64_WEDLOCKS_PUBLIC_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_BASE64_WEDLOCKS_PUBLIC_KEY }}
+      STRIPE_KEY: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_STRIPE_KEY }}

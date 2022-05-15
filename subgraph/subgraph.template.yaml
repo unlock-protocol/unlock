@@ -98,7 +98,6 @@ templates:
           handler: handleCancelKey
         - event: ExpireKey(uint256)
           handler: handleExpireKey
-
       file: ./src/prev7Mappings/mapping.ts
 
   - kind: ethereum/contract
@@ -132,7 +131,40 @@ templates:
           handler: transfer
         - event: RenewKeyPurchase(indexed address,uint256)
           handler: renewKeyPurchase
-
-
       file: ./src/v7Mappings/mapping.ts
+
+  - kind: ethereum/contract
+    name: PublicLock10
+    network: {{network}}
+    source:
+      abi: PublicLock
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      entities:
+        - PublicLock10
+      abis:
+        - name: PublicLock
+          file: ./abis/PublicLockV10.json
+      eventHandlers:
+        - event: CancelKey(indexed uint256,indexed address,indexed address,uint256)
+          handler: cancelKey
+        - event: ExpirationChanged(indexed uint256,uint256,bool)
+          handler: expirationChanged
+        - event: ExpireKey(indexed uint256)
+          handler: expireKey
+        - event: LockManagerAdded(indexed address)
+          handler: lockManagerAdded
+        - event: LockManagerRemoved(indexed address)
+          handler: lockManagerRemoved
+        - event: PricingChanged(uint256,uint256,address,address)
+          handler: pricingChanged
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: transfer
+        - event: KeyExtended(indexed uint256,uint256)
+          handler: extendKey
+
+
+      file: ./src/v10Mappings/mapping.ts
 

@@ -96,6 +96,8 @@ export interface PaywallConfigLock {
   name?: string
   network?: number
   metadataInputs?: MetadataInput[]
+  secret?: string
+  recurringPayments?: number
 }
 
 export enum KeyStatus {
@@ -113,6 +115,7 @@ export interface Lock {
   canGrant?: boolean
   name: string
   address: string
+  network: number
   keyPrice: string
   expirationDuration: number
   key: Key
@@ -123,6 +126,9 @@ export interface Lock {
   balance?: string
   owner?: string
   creationBlock?: number
+  publicLockVersion?: number
+  maxKeysPerAddress?: number
+  selfAllowance?: string
 }
 
 export interface Locks {
@@ -192,6 +198,9 @@ export interface PaywallConfig {
   referrer?: string
   messageToSign?: string
   pessimistic?: boolean
+  captcha?: boolean
+  maxRecipients?: number
+  minRecipients?: number
 }
 
 export interface RawLock {

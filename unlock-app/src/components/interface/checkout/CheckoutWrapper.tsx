@@ -70,7 +70,6 @@ const Wrapper = styled.section`
   color: var(--darkgrey);
   border-radius: 4px;
   position: relative;
-  box-shadow: 0px 0px 60px rgba(0, 0, 0, 0.25);
   ${Media.nophone`
     width: 380px;
   `}

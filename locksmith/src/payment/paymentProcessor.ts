@@ -1,6 +1,7 @@
 import Stripe from 'stripe'
 import { User } from '../models/user'
 import { Charge } from '../models/charge'
+import { PaymentIntent } from '../models/paymentIntent'
 import { UserReference } from '../models/userReference'
 import * as Normalizer from '../utils/normalizer'
 import KeyPricer from '../utils/keyPricer'
@@ -10,6 +11,7 @@ import {
   getStripeCustomerIdForAddress,
   saveStripeCustomerIdForAddress,
 } from '../operations/stripeOperations'
+import logger from '../logger'
 
 const Sequelize = require('sequelize')
 
@@ -68,12 +70,17 @@ export class PaymentProcessor {
       }
 
       return !!(await saveStripeCustomerIdForAddress(publicKey, customer.id))
-    } catch (e) {
+    } catch (error) {
+      logger.error(
+        `Failed to update payment details for ${publicKey}: there was an error.`,
+        error
+      )
       return false
     }
   }
 
   /**
+   *  DEPRECATED
    *  Charges an appropriately configured user with purchasing details, with the amount specified
    *  in the purchase details
    * @param userAddress
@@ -88,7 +95,6 @@ export class PaymentProcessor {
     network: number,
     maxPrice: number // Agreed to by user!
   ) {
-    // Otherwise get the pricing to continue
     const pricing = await new KeyPricer().generate(lock, network)
     const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
     const maxPriceInCents = maxPrice * 100
@@ -139,6 +145,241 @@ export class PaymentProcessor {
     }
   }
 
+  async createPaymentIntent(
+    userAddress: ethereumAddress,
+    recipients: ethereumAddress[],
+    stripeCustomerId: string, // Stripe token of the buyer
+    lock: ethereumAddress,
+    maxPrice: any,
+    network: number,
+    stripeAccount: string
+  ) {
+    const pricing = await new KeyPricer().generate(
+      lock,
+      network,
+      recipients.length
+    )
+    const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
+    const maxPriceInCents = maxPrice * 100
+    if (
+      Math.abs(totalPriceInCents - maxPriceInCents) >
+      0.03 * maxPriceInCents
+    ) {
+      // if price diverged by more than 3%, we fail!
+      throw new Error('Price diverged by more than 3%. Aborting')
+    }
+
+    // Let's see if we have a paymentIntent already that's less than 10 minutes old
+    const existingIntent = await PaymentIntent.findOne({
+      where: {
+        userAddress,
+        lockAddress: lock,
+        chain: network,
+        connectedStripeId: stripeAccount,
+        createdAt: {
+          [Op.gte]: Sequelize.literal("NOW() - INTERVAL '10 minute'"),
+        },
+      },
+    })
+
+    // We check if there is an intent and use that one
+    // if its status is still pending confirmation
+    if (
+      existingIntent &&
+      existingIntent.recipients?.every((recipient) =>
+        recipients.includes(recipient)
+      )
+    ) {
+      const stripeIntent = await this.stripe.paymentIntents.retrieve(
+        existingIntent.intentId,
+        {
+          stripeAccount: existingIntent.connectedStripeId,
+        }
+      )
+      if (stripeIntent.status === 'requires_confirmation') {
+        return {
+          clientSecret: stripeIntent.client_secret,
+          stripeAccount,
+          pricing,
+          totalPriceInCents,
+        }
+      }
+    }
+
+    // If not, we create another intent
+
+    const token = await this.stripe.tokens.create(
+      { customer: stripeCustomerId },
+      { stripeAccount }
+    )
+
+    const connectedCustomer = await this.stripe.customers.create(
+      { source: token.id },
+      { stripeAccount }
+    )
+
+    // How do we list the right payment methods?
+    const paymentMethods = await this.stripe.paymentMethods.list(
+      {
+        customer: connectedCustomer.id,
+        type: 'card',
+      },
+      { stripeAccount }
+    )
+
+    const intent = await this.stripe.paymentIntents.create(
+      {
+        amount: totalPriceInCents,
+        currency: 'usd',
+        customer: connectedCustomer.id,
+        payment_method: paymentMethods.data[0].id,
+        capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
+        metadata: {
+          purchaser: userAddress,
+          lock,
+          // For compaitibility and stripe limitation (cannot store an array), we are using the same recipient field name but storing multiple recipients in case we have them.
+          recipient: recipients.join(','),
+          network,
+          maxPrice,
+        },
+        application_fee_amount: pricing.unlockServiceFee,
+      },
+      { stripeAccount }
+    )
+
+    // Store the paymentIntent
+    // Note: to avoid multiple purchases, we should make sure we don't create a new one if one already exists!
+    await PaymentIntent.create({
+      userAddress,
+      lockAddress: lock,
+      chain: network,
+      recipients,
+      stripeCustomerId: stripeCustomerId, // Customer Id
+      intentId: intent.id,
+      connectedStripeId: stripeAccount,
+      connectedCustomerId: connectedCustomer.id,
+    })
+
+    return {
+      clientSecret: intent.client_secret,
+      stripeAccount,
+    }
+  }
+
+  /**
+   * This function captures a payment intent previous confirmed
+   * Note: Since the CC charge should always succeed as it was previously confirmed,
+   * we can do it only after the onchain tx has been sent to avoid receiving payment for tx which were not successful
+   * @param recipient
+   * @param stripeCustomerId
+   * @param lock
+   * @param maxPrice
+   * @param network
+   * @param stripeAccount
+   * @returns
+   */
+  async captureConfirmedPaymentIntent(
+    userAddress: ethereumAddress,
+    recipients: ethereumAddress[],
+    lock: ethereumAddress,
+    network: number,
+    paymentIntentId: string
+  ) {
+    const pricing = await new KeyPricer().generate(
+      lock,
+      network,
+      recipients.length
+    )
+    const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
+
+    const paymentIntentRecord = await PaymentIntent.findOne({
+      where: { intentId: paymentIntentId },
+    })
+
+    if (!paymentIntentRecord) {
+      throw new Error('Could not find payment intent.')
+    }
+
+    const paymentIntent = await this.stripe.paymentIntents.retrieve(
+      paymentIntentId,
+      {
+        stripeAccount: paymentIntentRecord.connectedStripeId,
+      }
+    )
+
+    if (paymentIntent.status !== 'requires_capture') {
+      throw new Error(
+        'Stripe payment could not be captured, please refresh and try again'
+      )
+    }
+
+    if (paymentIntent.metadata.lock !== lock) {
+      throw new Error('Lock does not match with initial intent.')
+    }
+
+    if (paymentIntent.metadata.purchaser !== userAddress) {
+      throw new Error('User Address does not match with initial intent.')
+    }
+
+    if (
+      !paymentIntent.metadata.recipient
+        .split(',')
+        .every((r) => recipients.includes(r))
+    ) {
+      throw new Error('Recipient does not match with initial intent.')
+    }
+
+    const maxPriceInCents = paymentIntent.amount
+    if (
+      Math.abs(totalPriceInCents - maxPriceInCents) >
+      0.03 * maxPriceInCents
+    ) {
+      // if price diverged by more than 3%, we fail!
+      console.error('Price diverged by more than 3%', {
+        totalPriceInCents,
+        maxPriceInCents,
+      })
+      throw new Error('Price diverged by more than 3%.')
+    }
+
+    const fulfillmentDispatcher = new Dispatcher()
+    // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
+    return new Promise((resolve, reject) => {
+      try {
+        fulfillmentDispatcher.grantKeys(
+          paymentIntent.metadata.lock,
+          paymentIntent.metadata.recipient.split(','),
+          parseInt(paymentIntent.metadata.network, 10),
+          async (_: any, transactionHash: string) => {
+            // Should we proceed differently here? Save the charge before and keep the state?
+            // This would allow us to easily retrieve transactions that might have failed.
+            const charge: Charge = await Charge.create({
+              userAddress: paymentIntent.metadata.purchaser,
+              recipients: paymentIntent.metadata.recipient.split(','),
+              lock: paymentIntent.metadata.lock,
+              stripeCustomerId: paymentIntent.customer,
+              connectedCustomer: paymentIntent.customer,
+              totalPriceInCents: paymentIntent.amount,
+              unlockServiceFee: paymentIntent.application_fee_amount,
+              stripeCharge: paymentIntent.id,
+              transactionHash,
+              chain: network,
+            })
+
+            await this.stripe.paymentIntents.capture(paymentIntentId, {
+              stripeAccount: paymentIntentRecord.connectedStripeId,
+            })
+
+            return resolve(charge.transactionHash)
+          }
+        )
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
+
+  // DEPRECATED
   async initiatePurchaseForConnectedStripeAccount(
     recipient: ethereumAddress /** this is the recipient of the granted key */,
     stripeCustomerId: string, // Stripe token of the buyer
@@ -158,9 +399,9 @@ export class PaymentProcessor {
     )
     return new Promise((resolve, reject) => {
       try {
-        fulfillmentDispatcher.grantKey(
+        fulfillmentDispatcher.grantKeys(
           lock,
-          recipient,
+          [recipient],
           network,
           async (_: any, transactionHash: string) => {
             const charge: Charge = await Charge.create({

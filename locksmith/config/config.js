@@ -15,6 +15,7 @@ const config = {
   services: {
     wedlocks: 'http://localhost:1337',
   },
+  recaptchaSecret: process.env.RECAPTCHA_SECRET,
 }
 
 if (Boolean(process.env.ON_HEROKU)) {

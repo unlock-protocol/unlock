@@ -50,11 +50,11 @@ contract('LockSerializer', () => {
       const tx = await lock
         .connect(purchaser)
         .purchase(
-          keyPrice.toString(),
-          purchaser.address,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
+          [keyPrice.toString()],
+          [purchaser.address],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
+          [[]],
           { value: keyPrice }
         )
       await tx.wait()
@@ -90,19 +90,13 @@ contract('LockSerializer', () => {
         purchasers = _purchasers.slice(0, maxNumberOfKeys.toNumber()) // prevent soldout revert
 
         // purchase keys
-        await Promise.all(
-          purchasers.map((purchaser) =>
-            lock
-              .connect(purchaser)
-              .purchase(
-                keyPrice.toString(),
-                purchaser.address,
-                web3.utils.padLeft(0, 40),
-                web3.utils.padLeft(0, 40),
-                [],
-                { value: keyPrice }
-              )
-          )
+        await lock.connect(purchasers[0]).purchase(
+          [],
+          purchasers.map((p) => p.address),
+          purchasers.map(() => web3.utils.padLeft(0, 40)),
+          purchasers.map(() => web3.utils.padLeft(0, 40)),
+          purchasers.map(() => []),
+          { value: keyPrice.mul(purchasers.length) }
         )
       })
 

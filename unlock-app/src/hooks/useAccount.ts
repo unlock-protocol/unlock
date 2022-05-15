@@ -6,13 +6,14 @@ import { StorageService } from '../services/storageService'
 import { WalletServiceContext } from '../utils/withWalletService'
 import UnlockUser from '../structured_data/unlockUser'
 import { generateKeyHolderMetadataPayload } from '../structured_data/keyHolderMetadata'
-
 import WedlockServiceContext from '../contexts/WedlocksContext'
 import {
   generateTypedData,
   getCardsForAddress,
   chargeAndSaveCard,
   claimMembership,
+  prepareCharge,
+  captureCharge,
 } from './useCards'
 import {
   createAccountAndPasswordEncryptKey,
@@ -64,10 +65,8 @@ export const useAccount = (address: string, network: number) => {
       },
     })
 
-    const signature = await walletService.unformattedSignTypedData(
-      address,
-      typedData
-    )
+    const message = `I want to connect Stripe to the lock ${lockAddress}`
+    const signature = await walletService.signMessage(message, 'personal_sign')
 
     try {
       return (
@@ -98,9 +97,7 @@ export const useAccount = (address: string, network: number) => {
           emailAddress,
           publicKey: address,
           passwordEncryptedPrivateKey,
-        }),
-        emailAddress,
-        password
+        })
       )
       // TODO: we can do this without requiring the user to wait but that could be a bit unsafe, because what happens if they close the window?
       recoveryKey = await reEncryptPrivateKey(
@@ -155,7 +152,8 @@ export const useAccount = (address: string, network: number) => {
     token: string,
     lock: any,
     network: number,
-    pricing: any
+    pricing: any,
+    recipients: string[]
   ) => {
     const response = await chargeAndSaveCard(
       config,
@@ -164,9 +162,65 @@ export const useAccount = (address: string, network: number) => {
       token,
       network,
       lock,
-      pricing
+      pricing,
+      recipients
     )
     return response.transactionHash
+  }
+
+  /**
+   * Prepares a charge on the backend
+   * @param token
+   * @param lock
+   * @param network
+   * @param pricing
+   * @param recipient
+   * @returns
+   */
+  const captureChargeForCard = async (
+    lock: any,
+    network: number,
+    recipients: string[],
+    paymentIntent: string
+  ) => {
+    const response = await captureCharge(
+      config,
+      lock,
+      network,
+      address,
+      recipients,
+      paymentIntent
+    )
+    return response
+  }
+
+  /**
+   * Prepares a charge on the backend
+   * @param token
+   * @param lock
+   * @param network
+   * @param pricing
+   * @param recipient
+   * @returns
+   */
+  const prepareChargeForCard = async (
+    token: string,
+    lock: any,
+    network: number,
+    pricing: any,
+    recipients: string[]
+  ) => {
+    const response = await prepareCharge(
+      config,
+      walletService,
+      address,
+      token,
+      network,
+      lock,
+      pricing,
+      recipients
+    )
+    return response
   }
 
   const claimMembershipFromLock = async (lock: any, network: number) => {
@@ -223,10 +277,8 @@ export const useAccount = (address: string, network: number) => {
       },
     })
 
-    const signature = await walletService.unformattedSignTypedData(
-      address,
-      typedData
-    )
+    const message = `I want to change the image for ${lockAddress}`
+    const signature = await walletService.signMessage(message, 'personal_sign')
 
     return storageService.updateLockIcon(
       lockAddress,
@@ -241,6 +293,8 @@ export const useAccount = (address: string, network: number) => {
     getTokenBalance,
     getCards,
     chargeCard,
+    captureChargeForCard,
+    prepareChargeForCard,
     connectStripeToLock,
     createUserAccount,
     retrieveUserAccount,

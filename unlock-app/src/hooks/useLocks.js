@@ -1,11 +1,9 @@
 import { useState, useEffect, useContext, useReducer } from 'react'
-import { TransactionType, TransactionStatus } from '../unlockTypes'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { GraphServiceContext } from '../utils/withGraphService'
-import { transactionTypeMapping } from '../utils/types'
 import { ConfigContext } from '../utils/withConfig'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import { processTransaction } from './useLock'
@@ -19,6 +17,7 @@ export const getLockAtAddress = async (web3Service, address, network) => {
     lock = await web3Service.getLock(address, network)
     lock.unlimitedKeys = lock.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
     lock.address = address
+    lock.network = network
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(`Could not get lock at ${address}: ${error.message}`)
@@ -96,18 +95,23 @@ export const createLock = async (
   // New locks have the following properties
   lock.outstandingKeys = 0
   lock.balance = '0'
-  // First get the address
-  const address = await web3Service.generateLockAddress(owner, lock, network)
-  lock.address = address
-  // Second, create the lock
-  return walletService.createLock(
+  const {
+    name,
+    expirationDuration,
+    maxNumberOfKeys,
+    currencyContractAddress,
+    keyPrice,
+  } = lock
+
+  const lockAddress = await walletService.createLock(
     {
-      expirationDuration: lock.expirationDuration,
-      keyPrice: lock.keyPrice,
-      maxNumberOfKeys: lock.maxNumberOfKeys,
+      expirationDuration,
+      keyPrice,
+      maxNumberOfKeys,
       owner,
-      name: lock.name,
-      currencyContractAddress: lock.currencyContractAddress,
+      name,
+      currencyContractAddress,
+      publicLockVersion: 10, // Current version that we deploy!
     },
     async (createLockError, transactionHash) => {
       if (createLockError) {
@@ -124,22 +128,32 @@ export const createLock = async (
           walletService.networkId
         )
 
+        lock.address = '0x' // Address is not known
+        lock.pending = true
         lock.creationBlock = Number.MAX_SAFE_INTEGER.toString()
         lock.network = network
-
-        // Store the hash!
-        storageService.storeTransaction(
-          transactionHash,
-          owner,
-          config.unlockAddress,
-          network.name
-        )
-
+        lock.transactions = {
+          [transactionHash]: {
+            confirmations: 0,
+          },
+        }
         addToLocks(lock)
         callback(null, lock)
       }
     }
   )
+
+  setTimeout(async () => {
+    // Adding a 1 sec delay just to make sure data is available!
+    const newLock = await getLockAtAddress(web3Service, lockAddress, network)
+    newLock.creationBlock = newLock.asOf // Assume the lock was just created!
+    // remove the pending lock
+    lock.delete = true
+    addToLocks(lock)
+    addToLocks(newLock)
+  }, 1000)
+
+  return 'lockAddress'
 }
 
 /**
@@ -165,28 +179,36 @@ export const useLocks = (owner) => {
       // Reset!
       return []
     }
-    if (lock.network !== network) {
+    if (lock?.network !== network) {
       // Wrong network
       return locks
     }
 
     const index = locks.findIndex(
-      (element) => element.address.toLowerCase() === lock.address.toLowerCase()
+      (element) =>
+        element?.address?.toLowerCase() === lock.address?.toLowerCase()
     )
 
     if (index === -1) {
-      // New lock, add it
-      locks.push(lock)
+      locks.push(lock) // not previously seen lock
+    } else if (lock.delete) {
+      locks[index] = null // we delete!
     } else {
-      // The lock already exists. we merge
+      // merging existing lock
       locks[index] = {
         ...locks[index],
         ...lock,
       }
     }
-    return [...locks].sort((x, y) => {
-      return parseInt(y.creationBlock) - parseInt(x.creationBlock)
-    })
+
+    const filteredAndSorted = [...locks]
+      .filter((lock) => !!lock)
+      .sort((x, y) => {
+        return parseInt(y.creationBlock) - parseInt(x.creationBlock)
+      })
+
+    // filter and sort!
+    return filteredAndSorted
   }, [])
 
   /**

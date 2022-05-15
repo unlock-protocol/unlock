@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply antialiased text-black bg-brand-primary;
+}
+
+@layer utilities {
+  .heading {
+    @apply text-3xl font-semibold md:text-4xl lg:text-5xl;
+  }
+  .sub-heading {
+    @apply text-xl sm:text-2xl text-brand-gray max-w-prose;
+  }
+
+  .heading-small {
+    @apply text-xl font-semibold sm:text-3xl lg:text-4xl;
+  }
+  .sub-heading-small {
+    @apply text-lg sm:text-xl lg:text-2xl text-brand-gray max-w-prose;
+  }
+}
+
+/*
+ Firefox backdrop-blue fix
+*/
+@supports not (backdrop-filter: none) {
+  .glass-pane {
+    @apply bg-white opacity-100;
+  }
+}
+

@@ -43,7 +43,7 @@ abstract contract UnlockOwnable is UnlockInitializable, UnlockContextUpgradeable
      * @dev Throws if called by any account other than the owner.
      */
     modifier onlyOwner() {
-        require(isOwner(), "Ownable: caller is not the owner");
+        require(isOwner(), "ONLY_OWNER");
         _;
     }
 
@@ -70,7 +70,7 @@ abstract contract UnlockOwnable is UnlockInitializable, UnlockContextUpgradeable
      * Can only be called by the current owner.
      */
     function transferOwnership(address newOwner) public onlyOwner {
-      require(newOwner != address(0), "Ownable: new owner is the zero address");
+      require(newOwner != address(0), "INVALID_OWNER");
       _transferOwnership(newOwner);
     }
 

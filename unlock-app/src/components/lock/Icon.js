@@ -121,14 +121,14 @@ const IconModal = ({ active, dismiss, current, lockAddress, network }) => {
       {error && <FormError>{error}</FormError>}
       <Form>
         <Label htmlFor="inputFile">Choose a file</Label>
-        <Button
-          style={{ marginTop: '0px' }}
+        <button
+          className="flex justify-center p-2 items-items [background-color:var(--green)] text-white w-full rounded-lg hover:[background-color:var(--activegreen)] disabled:cursor-not-allowed disabled:[background-color:var(--grey)]"
           type="button"
           id="inputFile"
           onClick={handleFileInputClick}
         >
           Upload a file
-        </Button>
+        </button>
         <input
           accept="image/*"
           type="file"
@@ -145,22 +145,24 @@ const IconModal = ({ active, dismiss, current, lockAddress, network }) => {
         />
 
         <Label htmlFor="restoreDefaultButton">Or</Label>
-        <NeutralButton
-          style={{ marginTop: '0px' }}
-          id="restoreDefaultButton"
-          type="button"
-          onClick={restoreDefault}
-        >
-          Restore default
-        </NeutralButton>
-        <Button
-          disabled={error || !url}
-          style={{ marginTop: '32px' }}
-          type="submit"
-          onClick={save}
-        >
-          Save
-        </Button>
+        <div className="flex flex-col gap-2 py-4">
+          <button
+            className="flex justify-center p-2 items-items [background-color:var(--green)] text-white w-full rounded-lg hover:[background-color:var(--activegreen)] disabled:cursor-not-allowed disabled:[background-color:var(--grey)]"
+            id="restoreDefaultButton"
+            type="button"
+            onClick={restoreDefault}
+          >
+            Restore default
+          </button>
+          <button
+            className="flex justify-center p-2 items-items [background-color:var(--green)] text-white w-full rounded-lg hover:[background-color:var(--activegreen)] disabled:cursor-not-allowed disabled:[background-color:var(--grey)]"
+            disabled={error || !url}
+            type="submit"
+            onClick={save}
+          >
+            Save
+          </button>
+        </div>
       </Form>
     </InlineModal>
   )
@@ -170,8 +172,13 @@ IconModal.propTypes = {
   active: PropTypes.bool.isRequired,
   dismiss: PropTypes.func.isRequired,
   current: PropTypes.string.isRequired,
-  lockAddress: PropTypes.string.isRequired,
-  network: PropTypes.number.isRequired,
+  lockAddress: PropTypes.string,
+  network: PropTypes.number,
+}
+
+IconModal.defaultProps = {
+  lockAddress: '',
+  network: 0,
 }
 
 /**

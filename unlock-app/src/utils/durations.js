@@ -1,4 +1,4 @@
-import { MONTH_NAMES } from '../constants'
+import { MAX_UINT, MONTH_NAMES } from '../constants'
 
 /**
  * Function which computes days, hours, minutes and seconds based on seconds
@@ -42,6 +42,10 @@ export function durations(seconds, intervals) {
  * @param {number} seconds
  */
 export function durationsAsTextFromSeconds(seconds) {
+  if (seconds < 1) {
+    // 0 or infinite return an empty string
+    return ''
+  }
   const d = durations(seconds, {})
   const asArrayOfValues = Object.keys(d).map((duration) => {
     if (d[duration] !== 1) {
@@ -76,7 +80,7 @@ export function secondsAsDays(seconds) {
  * @returns {string}
  */
 export function expirationAsDate(timestamp) {
-  if (!timestamp) {
+  if (!timestamp || timestamp === MAX_UINT || timestamp === -1) {
     return 'Never'
   }
 

@@ -42,7 +42,7 @@ router.put(
 router.get(
   cardsPathRegex,
   signatureValidationMiddleware.generateSignatureEvaluator({
-    name: 'user',
+    name: 'Get Card',
     required: ['publicKey'],
     signee: 'publicKey',
   })
@@ -51,7 +51,7 @@ router.get(
 router.delete(
   cardsPathRegex,
   signatureValidationMiddleware.generateSignatureEvaluator({
-    name: 'user',
+    name: 'Delete Card',
     required: ['publicKey'],
     signee: 'publicKey',
   })
@@ -60,8 +60,8 @@ router.delete(
 router.put(
   cardsPathRegex,
   signatureValidationMiddleware.generateProcessor({
-    name: 'user',
-    required: ['publicKey'],
+    name: 'Save Card',
+    required: ['publicKey', 'stripeTokenId'],
     signee: 'publicKey',
   })
 )
@@ -76,10 +76,7 @@ router.get(
   userController.retrieveRecoveryPhrase
 )
 
-router.get(
-  '/:ethereumAddress/credit-cards',
-  userController.getAddressPaymentDetails
-)
+router.get(cardsPathRegex, userController.getAddressPaymentDetails)
 // Deprecated: we are now using ethereumAddress to store credit cards
 router.get('/:emailAddress/cards', userController.cards)
 
@@ -89,10 +86,7 @@ router.put(
   userController.updatePasswordEncryptedPrivateKey
 )
 router.post('/:ethereumAddress/eject', userController.eject)
-router.put(
-  '/:ethereumAddress/credit-cards',
-  userController.updateAddressPaymentDetails
-)
+router.put(cardsPathRegex, userController.updateAddressPaymentDetails)
 router.delete(
   '/:ethereumAddress/credit-cards',
   userController.deleteAddressPaymentDetails

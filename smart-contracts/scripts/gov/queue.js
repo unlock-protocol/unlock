@@ -13,10 +13,11 @@ async function main({ proposal }) {
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
 
-  if (!proposal) {
+  const proposalId = proposal.proposalId || (await getProposalId(proposal))
+
+  if (!proposalId) {
     throw new Error('GOV QUEUE > Missing proposal ID.')
   }
-  const proposalId = await getProposalId(proposal)
 
   // contract instance
   const { address, abi } = getDeployment(chainId, 'UnlockProtocolGovernor')
@@ -28,7 +29,7 @@ async function main({ proposal }) {
     const deadline = await gov.proposalDeadline(proposalId)
     const currentBlock = await ethers.provider.getBlockNumber()
     if (currentBlock < deadline) {
-      await time.advanceBlockTo(deadline.toNumber())
+      await time.advanceBlockTo(deadline.toNumber() + 1)
       // eslint-disable-next-line no-console
       console.log(
         `GOV QUEUE > closing voting period (advancing to block #${deadline.toNumber()})`
@@ -45,7 +46,7 @@ async function main({ proposal }) {
 
   // queue proposal
   if (state === 'Succeeded') {
-    const tx = await queueProposal({ proposal, proposalId })
+    const tx = await queueProposal({ proposalId })
     const { events, transactionHash } = await tx.wait()
     const evt = events.find((v) => v.event === 'ProposalQueued')
     const { eta } = evt.args

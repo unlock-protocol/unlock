@@ -36,7 +36,7 @@ describe('Wedlocks operations', () => {
         },
       })
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
-        body: '{"template":"keyMined-0xowner","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"keychainUrl":"https://app.unlock-protocol.com/keychain"},"attachments":[]}',
+        body: '{"template":"keyMined0xlock","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"keychainUrl":"https://app.unlock-protocol.com/keychain"},"attachments":[]}',
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })

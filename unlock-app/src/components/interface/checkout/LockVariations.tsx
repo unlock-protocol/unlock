@@ -213,20 +213,6 @@ export const QuantityAndDuration = styled.div`
   }
 `
 
-export interface LockProps {
-  address: string
-  name: string
-  formattedKeyPrice: string
-  convertedKeyPrice: string
-  formattedDuration: string
-  formattedKeysAvailable: string
-  onClick?: () => void
-  network: number
-  walletNetwork?: number
-  selectable: boolean
-  cardEnabled: boolean
-}
-
 export interface LoadingLockProps {
   address: string
   network: number
@@ -275,6 +261,17 @@ export const LoadingLock = ({ address, network }: LoadingLockProps) => {
   )
 }
 
+export interface SoldOutLockProps {
+  address: string
+  name: string
+  formattedKeyPrice: string
+  convertedKeyPrice: string
+  formattedDuration: string
+  network: number
+  cardEnabled: boolean
+  prepend: string
+}
+
 export const SoldOutLock = ({
   network,
   address,
@@ -283,11 +280,15 @@ export const SoldOutLock = ({
   formattedKeyPrice,
   convertedKeyPrice,
   cardEnabled,
-}: LockProps) => {
+  prepend,
+}: SoldOutLockProps) => {
   return (
     <DisabledLockContainer data-address={address} data-testid="SoldOutLock">
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <DisabledLockBody>
@@ -298,12 +299,26 @@ export const SoldOutLock = ({
         />
         <QuantityAndDuration>
           <SoldOut>Sold Out</SoldOut>
-          <span>{formattedDuration}</span>
+          {formattedDuration && <span>{formattedDuration}</span>}
         </QuantityAndDuration>
         <Cross />
       </DisabledLockBody>
     </DisabledLockContainer>
   )
+}
+
+export interface PurchaseableLockProps {
+  address: string
+  name: string
+  formattedKeyPrice: string
+  convertedKeyPrice: string
+  formattedDuration: string
+  formattedKeysAvailable: string
+  onClick: () => void
+  network: number
+  selectable: boolean
+  cardEnabled: boolean
+  prepend: string
 }
 
 export const PurchaseableLock = ({
@@ -317,7 +332,8 @@ export const PurchaseableLock = ({
   selectable,
   cardEnabled,
   onClick,
-}: LockProps) => {
+  prepend,
+}: PurchaseableLockProps) => {
   return (
     <LockContainer
       selectable={selectable}
@@ -325,7 +341,10 @@ export const PurchaseableLock = ({
       data-testid="PurchaseableLock"
     >
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <BaseLockBody onClick={onClick}>
@@ -336,15 +355,27 @@ export const PurchaseableLock = ({
         />
         <QuantityAndDuration>
           {formattedKeysAvailable !== 'Unlimited' && (
-            <span>{formattedKeysAvailable} left</span>
+            <span>{formattedKeysAvailable} Left</span>
           )}
-          <span>{formattedDuration}</span>
+          {formattedDuration && <span>{formattedDuration}</span>}
         </QuantityAndDuration>
         <Cart />
         <Arrow />
       </BaseLockBody>
     </LockContainer>
   )
+}
+
+export interface ProcessingLockProps {
+  address: string
+  name: string
+  formattedKeyPrice: string
+  convertedKeyPrice: string
+  formattedDuration: string
+  formattedKeysAvailable: string
+  network: number
+  cardEnabled: boolean
+  prepend: string
 }
 
 export const ProcessingLock = ({
@@ -356,11 +387,15 @@ export const ProcessingLock = ({
   convertedKeyPrice,
   formattedKeysAvailable,
   cardEnabled,
-}: LockProps) => {
+  prepend,
+}: ProcessingLockProps) => {
   return (
     <LockContainer data-address={address} data-testid="ProcessingLock">
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <BaseLockBody>
@@ -371,14 +406,27 @@ export const ProcessingLock = ({
         />
         <QuantityAndDuration>
           {formattedKeysAvailable !== 'Unlimited' && (
-            <span>{formattedKeysAvailable} left</span>
+            <span>{formattedKeysAvailable} Left</span>
           )}
-          <span>{formattedDuration}</span>
+          {formattedDuration && <span>{formattedDuration}</span>}
         </QuantityAndDuration>
         <Ellipsis />
       </BaseLockBody>
     </LockContainer>
   )
+}
+
+export interface ConfirmedLockLockProps {
+  address: string
+  name: string
+  formattedKeyPrice: string
+  convertedKeyPrice: string
+  formattedDuration: string
+  formattedKeysAvailable: string
+  network: number
+  selectable: boolean
+  cardEnabled: boolean
+  prepend: string
 }
 
 export const ConfirmedLock = ({
@@ -391,7 +439,8 @@ export const ConfirmedLock = ({
   formattedKeysAvailable,
   selectable,
   cardEnabled,
-}: LockProps) => {
+  prepend,
+}: ConfirmedLockLockProps) => {
   return (
     <LockContainer
       selectable={selectable}
@@ -399,7 +448,10 @@ export const ConfirmedLock = ({
       data-testid="ConfirmedLock"
     >
       <InfoWrapper>
-        <LockName>{name}</LockName>
+        <LockName>
+          {prepend}
+          {name}
+        </LockName>
         <NetworkName>{ETHEREUM_NETWORKS_NAMES[network]}</NetworkName>
       </InfoWrapper>
       <ConfirmedBody>
@@ -410,9 +462,9 @@ export const ConfirmedLock = ({
         />
         <QuantityAndDuration>
           {formattedKeysAvailable !== 'Unlimited' && (
-            <span>{formattedKeysAvailable} left</span>
+            <span>{formattedKeysAvailable} Left</span>
           )}
-          <span>{formattedDuration}</span>
+          {formattedDuration && <span>{formattedDuration}</span>}
         </QuantityAndDuration>
         <Checkmark />
       </ConfirmedBody>

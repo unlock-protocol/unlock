@@ -44,11 +44,11 @@ contract('Lock / purchaseTip', (accounts) => {
       describe('purchase with exact value specified', () => {
         beforeEach(async () => {
           await lock.purchase(
-            keyPrice.toString(),
-            accounts[2],
-            web3.utils.padLeft(0, 40),
-            web3.utils.padLeft(0, 40),
-            [],
+            [keyPrice.toString()],
+            [accounts[2]],
+            [web3.utils.padLeft(0, 40)],
+            [web3.utils.padLeft(0, 40)],
+            [[]],
             {
               from: accounts[2],
               value: isErc20 ? 0 : keyPrice.toString(),
@@ -67,11 +67,11 @@ contract('Lock / purchaseTip', (accounts) => {
       describe('purchase with tip', () => {
         beforeEach(async () => {
           await lock.purchase(
-            tip.toString(),
-            accounts[2],
-            web3.utils.padLeft(0, 40),
-            web3.utils.padLeft(0, 40),
-            [],
+            [tip.toString()],
+            [accounts[2]],
+            [web3.utils.padLeft(0, 40)],
+            [web3.utils.padLeft(0, 40)],
+            [[]],
             {
               from: accounts[2],
               value: isErc20 ? 0 : tip.toString(),
@@ -91,11 +91,11 @@ contract('Lock / purchaseTip', (accounts) => {
       describe('purchase with ETH tip > value specified', () => {
         beforeEach(async () => {
           await lock.purchase(
-            keyPrice.toString(),
-            accounts[2],
-            web3.utils.padLeft(0, 40),
-            web3.utils.padLeft(0, 40),
-            [],
+            [keyPrice.toString()],
+            [accounts[2]],
+            [web3.utils.padLeft(0, 40)],
+            [web3.utils.padLeft(0, 40)],
+            [[]],
             {
               from: accounts[2],
               value: isErc20 ? 0 : tip.toString(),
@@ -119,11 +119,11 @@ contract('Lock / purchaseTip', (accounts) => {
         describe('purchase with unspecified ETH tip', () => {
           beforeEach(async () => {
             await lock.purchase(
-              0,
-              accounts[2],
-              web3.utils.padLeft(0, 40),
-              web3.utils.padLeft(0, 40),
               [],
+              [accounts[2]],
+              [web3.utils.padLeft(0, 40)],
+              [web3.utils.padLeft(0, 40)],
+              [[]],
               {
                 from: accounts[2],
                 value: isErc20 ? 0 : tip.toString(),
@@ -148,11 +148,11 @@ contract('Lock / purchaseTip', (accounts) => {
         it('should fail if value is less than keyPrice', async () => {
           await truffleAssert.fails(
             lock.purchase(
-              1,
-              accounts[2],
-              web3.utils.padLeft(0, 40),
-              web3.utils.padLeft(0, 40),
-              [],
+              [1],
+              [accounts[2]],
+              [web3.utils.padLeft(0, 40)],
+              [web3.utils.padLeft(0, 40)],
+              [[]],
               {
                 from: accounts[2],
                 value: isErc20 ? 0 : keyPrice.toString(),

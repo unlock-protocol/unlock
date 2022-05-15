@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
 import InlineModal from '../InlineModal'
-import { Input } from '../user-account/styles'
 
 interface Props {
   active: boolean
@@ -32,7 +31,8 @@ export const QRModal = ({ active, dismiss, sendEmail, signature }: Props) => {
   return (
     <InlineModal active={active} dismiss={dismiss}>
       <QRCode value={QRUrl()} size={256} includeMargin />
-      <Input
+      <input
+        className="w-full my-4"
         type="email"
         required
         value={recipient}

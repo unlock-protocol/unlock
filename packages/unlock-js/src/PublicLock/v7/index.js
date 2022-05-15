@@ -1,12 +1,13 @@
 import abis from '../../abis'
 import grantKey from './grantKey'
+import grantKeys from './grantKeys'
 import isLockManager from './isLockManager'
 import isKeyGranter from './isKeyGranter'
 import addKeyGranter from './addKeyGranter'
 import expireAndRefundFor from './expireAndRefundFor'
 import cancelAndRefund from './cancelAndRefund'
 import keyManagerOf from './keyManagerOf'
-import getLock from './getLock'
+import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
 
 import v6 from '../v6'
 
@@ -16,6 +17,10 @@ const {
   withdrawFromLock,
   updateKeyPrice,
   purchaseKey,
+  purchaseKeys,
+  getLock,
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
 } = v6
 
 export default {
@@ -25,8 +30,10 @@ export default {
   initializeTemplate,
   updateKeyPrice,
   purchaseKey,
+  purchaseKeys,
   getLock,
   grantKey,
+  grantKeys,
   withdrawFromLock,
   isLockManager,
   isKeyGranter,
@@ -35,4 +42,7 @@ export default {
   cancelAndRefund,
   shareKey,
   keyManagerOf,
+  getCancelAndRefundValueFor,
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
 }

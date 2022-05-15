@@ -39,37 +39,29 @@ contract('Lock / setMaxNumberOfKeys', () => {
       const [, ...buyers] = await ethers.getSigners()
 
       // buy 10 key
-      const txs = await Promise.all(
-        Array(10)
-          .fill(0)
-          .map((_, i) =>
-            lock
-              .connect(buyers[i])
-              .purchase(
-                keyPrice.toString(),
-                buyers[i].address,
-                web3.utils.padLeft(0, 40),
-                web3.utils.padLeft(0, 40),
-                [],
-                {
-                  value: keyPrice.toString(),
-                }
-              )
-          )
+      const tx = await lock.connect(buyers[0]).purchase(
+        [],
+        buyers.slice(0, 10).map((b) => b.address),
+        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
+        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
+        buyers.slice(0, 10).map(() => []),
+        {
+          value: keyPrice.mul(buyers.length).toString(),
+        }
       )
 
-      await Promise.all(txs.map((tx) => tx.wait()))
+      await tx.wait()
 
       // try to buy another key exceding totalSupply
       await expectRevert(
         lock
           .connect(buyers[11])
           .purchase(
-            keyPrice.toString(),
-            buyers[11].address,
-            web3.utils.padLeft(0, 40),
-            web3.utils.padLeft(0, 40),
             [],
+            [buyers[11].address],
+            [web3.utils.padLeft(0, 40)],
+            [web3.utils.padLeft(0, 40)],
+            [[]],
             {
               value: keyPrice.toString(),
             }
@@ -84,11 +76,11 @@ contract('Lock / setMaxNumberOfKeys', () => {
       const tx2 = await lock
         .connect(buyers[11])
         .purchase(
-          keyPrice.toString(),
-          buyers[11].address,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
           [],
+          [buyers[11].address],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
+          [[]],
           {
             value: keyPrice.toString(),
           }
@@ -104,30 +96,60 @@ contract('Lock / setMaxNumberOfKeys', () => {
     it('should prevent from setting a value lower than total supply', async () => {
       // buy 10 keys
       const [, ...buyers] = await ethers.getSigners()
-      const txs = await Promise.all(
-        Array(10)
-          .fill(0)
-          .map((_, i) =>
-            lock
-              .connect(buyers[i])
-              .purchase(
-                keyPrice.toString(),
-                buyers[i].address,
-                web3.utils.padLeft(0, 40),
-                web3.utils.padLeft(0, 40),
-                [],
-                {
-                  value: keyPrice.toString(),
-                }
-              )
-          )
+      const tx = await lock.connect(buyers[0]).purchase(
+        [],
+        buyers.map((b) => b.address),
+        buyers.map(() => web3.utils.padLeft(0, 40)),
+        buyers.map(() => web3.utils.padLeft(0, 40)),
+        buyers.map(() => []),
+        {
+          value: keyPrice.mul(buyers.length).toString(),
+        }
       )
-      await Promise.all(txs.map((tx) => tx.wait()))
+      await tx.wait()
 
       // increase supply
+      await expectRevert(lock.setMaxNumberOfKeys(5), 'SMALLER_THAN_SUPPLY')
+    })
+
+    it('should allow setting a value equal to current total supply', async () => {
+      // buy 10 keys
+      const [, ...buyers] = await ethers.getSigners()
+      const tx = await lock.connect(buyers[0]).purchase(
+        [],
+        buyers.slice(0, 10).map((b) => b.address),
+        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
+        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
+        buyers.slice(0, 10).map(() => []),
+        {
+          value: keyPrice.mul(buyers.length).toString(),
+        }
+      )
+      await tx.wait()
+
+      // set max keys to total supply
+      const totalSupply = await lock.totalSupply()
+      await lock.setMaxNumberOfKeys(totalSupply)
+      assert.equal(
+        (await lock.maxNumberOfKeys()).toString(),
+        totalSupply.toString()
+      )
+
+      // try to buy another key exceding totalSupply
       await expectRevert(
-        lock.setMaxNumberOfKeys(5),
-        'maxNumberOfKeys is smaller than existing supply'
+        lock
+          .connect(buyers[11])
+          .purchase(
+            [keyPrice.toString()],
+            [buyers[11].address],
+            [web3.utils.padLeft(0, 40)],
+            [web3.utils.padLeft(0, 40)],
+            [[]],
+            {
+              value: keyPrice.toString(),
+            }
+          ),
+        'LOCK_SOLD_OUT'
       )
     })
   })

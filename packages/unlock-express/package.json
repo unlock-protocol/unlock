@@ -10,11 +10,15 @@
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js ."
   },
   "dependencies": {
-    "ethers": "5.5.4"
+    "ethers": "5.5.4",
+    "passport-custom": "1.1.1"
+  },
+  "peerDependencies": {
+    "passport": "0.5.2"
   },
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "eslint": "8.8.0",
+    "eslint": "8.10.0",
     "prettier": "2.5.1"
   }
 }

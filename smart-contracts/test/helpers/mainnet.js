@@ -66,10 +66,19 @@ const addUDT = async (recipientAddress, amount = 1000) => {
   await ethers.provider.send('evm_mine', [])
 }
 
+const getDictator = async () => {
+  // main UDT holder on mainnet
+  const udtHolder = '0xa39b44c4affbb56b76a1bf1d19eb93a5dfc2eba9'
+  await impersonate(udtHolder)
+  const dictator = await ethers.getSigner(udtHolder)
+  return dictator
+}
+
 module.exports = {
   resetNodeState,
   impersonate,
   stopImpersonate,
+  getDictator,
   addUDT,
   addSomeETH,
 }

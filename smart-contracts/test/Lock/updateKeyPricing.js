@@ -95,7 +95,7 @@ contract('Lock / updateKeyPricing', (accounts) => {
         lock.addLockManager(accounts[7], {
           from: accounts[8],
         }),
-        'MixinRoles: caller does not have the LockManager role'
+        'ONLY_LOCK_MANAGER'
       )
     })
   })

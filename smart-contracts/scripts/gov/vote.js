@@ -2,7 +2,7 @@ const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const { getDeployment } = require('../../helpers/deployments')
 const { getProposalState } = require('../../helpers/gov')
-const { impersonate } = require('../../test/helpers/mainnet')
+const { impersonate, getDictator } = require('../../test/helpers/mainnet')
 
 async function main({ voter, proposalId }) {
   // env settings
@@ -10,29 +10,36 @@ async function main({ voter, proposalId }) {
   const isDev = chainId === 31337
 
   if (!proposalId) {
-    // eslint-disable-next-line no-console
     throw new Error('GOV VOTE > Missing proposal ID.')
   }
   if (!voter && !isDev) {
-    // eslint-disable-next-line no-console
     throw new Error(
       'GOV VOTE > Cast vote w/o voter (authoritarian mode) can only be used on dev network.'
     )
   }
 
+  // eslint-disable-next-line no-console
+  console.log(`GOV VOTE > proposal ID : ${proposalId}`)
+
   if (isDev) {
     if (!voter) {
       // No voter equals to authoritarian mode: a single voter win!
-      const [, , dictator] = await ethers.getSigners()
+      const [, , localDictator] = await ethers.getSigners()
+      const dictator = process.env.RUN_MAINNET_FORK
+        ? await getDictator()
+        : localDictator
+
       voter = dictator.address
       // eslint-disable-next-line no-console
-      console.log('GOV VOTE (dev) > Authoritarian mode ON: bypass quorum')
+      console.log(`GOV VOTE (dev) > Authoritarian mode : ${dictator.address}`)
     }
     await impersonate(voter)
     // make sure proposal state is active
     const state = await getProposalState(proposalId)
     if (state === 'Pending') {
-      await time.advanceBlock()
+      // wait for a block (default voting delay)
+      const currentBlock = await ethers.provider.getBlockNumber()
+      await time.advanceBlockTo(currentBlock + 2)
     }
   }
 
@@ -53,17 +60,24 @@ async function main({ voter, proposalId }) {
       18
     )})`
   )
-  const state = await gov.state(proposalId)
-  if (state === 1) {
+  const state = await getProposalState(proposalId)
+  if (state === 'Active') {
+    const hasVoted = await gov.hasVoted(proposalId, voter)
+    if (hasVoted) {
+      // eslint-disable-next-line no-console
+      console.log('GOV VOTE > voter already voted')
+      return
+    }
+
     const tx = await gov.connect(voterWallet).castVote(proposalId, '1')
     const { events, transactionHash } = await tx.wait()
     const evt = events.find((v) => v.event === 'VoteCast')
 
     // double check vote happened
-    const hasVoted = await gov.hasVoted(proposalId, voter)
+    const hasVotedAfter = await gov.hasVoted(proposalId, voter)
 
     // check for failure
-    if (!evt || !hasVoted) {
+    if (!evt || !hasVotedAfter) {
       throw new Error('GOV VOTE > Vote not casted.')
     }
     // eslint-disable-next-line no-console

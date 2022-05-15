@@ -83,21 +83,31 @@ contract MixinLockCore is
   ILockValidKeyHook public onValidKeyHook;
   ILockTokenURIHook public onTokenURIHook;
 
-  // Ensure that the Lock has not sold all of its keys.
-  modifier notSoldOut() {
-    require(maxNumberOfKeys > _totalSupply, 'LOCK_SOLD_OUT');
-    _;
+  // use to check data version
+  uint public schemaVersion;
+
+  // keep track of how many key a single address can use
+  uint internal _maxKeysPerAddress;
+
+  // modifier to check if data has been upgraded
+  function _lockIsUpToDate() internal view {
+    require(
+      schemaVersion == publicLockVersion(),
+      'MIGRATION_REQUIRED'
+    );
   }
 
-  modifier onlyLockManagerOrBeneficiary()
+  // modifier
+  function _onlyLockManagerOrBeneficiary() 
+  internal 
+  view
   {
     require(
       isLockManager(msg.sender) || msg.sender == beneficiary,
       'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
     );
-    _;
   }
-
+  
   function _initializeMixinLockCore(
     address payable _beneficiary,
     uint _expirationDuration,
@@ -105,12 +115,17 @@ contract MixinLockCore is
     uint _maxNumberOfKeys
   ) internal
   {
-    require(_expirationDuration <= 100 * 365 * 24 * 60 * 60, 'MAX_EXPIRATION_100_YEARS');
     unlockProtocol = IUnlock(msg.sender); // Make sure we link back to Unlock's smart contract.
     beneficiary = _beneficiary;
-    expirationDuration = _expirationDuration == 0 ? type(uint).max : _expirationDuration;
+    expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
+
+    // update only when initialized
+    schemaVersion = publicLockVersion();
+
+    // only a single key per address is allowed by default
+    _maxKeysPerAddress = 1;
   }
 
   // The version number of the current implementation on this network
@@ -118,7 +133,7 @@ contract MixinLockCore is
   ) public pure
     returns (uint16)
   {
-    return 9;
+    return 10;
   }
 
   /**
@@ -127,17 +142,13 @@ contract MixinLockCore is
    * the same as `tokenAddress` in MixinFunds.
    * @param _amount specifies the max amount to withdraw, which may be reduced when
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
-   *
-   * TODO: consider allowing anybody to trigger this as long as it goes to owner anyway?
-   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor`
-   * use cases.
    */
   function withdraw(
     address _tokenAddress,
     uint _amount
   ) external
-    onlyLockManagerOrBeneficiary
   {
+    _onlyLockManagerOrBeneficiary();
 
     // get balance
     uint balance;
@@ -173,15 +184,11 @@ contract MixinLockCore is
     address _tokenAddress
   )
     external
-    onlyLockManager
-    onlyIfAlive
   {
+    _onlyLockManager();
+    _isValidToken(_tokenAddress);
     uint oldKeyPrice = keyPrice;
     address oldTokenAddress = tokenAddress;
-    require(
-      _tokenAddress == address(0) || IERC20Upgradeable(_tokenAddress).totalSupply() > 0,
-      'INVALID_TOKEN'
-    );
     keyPrice = _keyPrice;
     tokenAddress = _tokenAddress;
     emit PricingChanged(oldKeyPrice, keyPrice, oldTokenAddress, tokenAddress);
@@ -193,9 +200,8 @@ contract MixinLockCore is
    */
   function updateBeneficiary(
     address payable _beneficiary
-  ) external
-    onlyLockManagerOrBeneficiary()
-  {
+  ) external {
+    _onlyLockManagerOrBeneficiary();
     require(_beneficiary != address(0), 'INVALID_ADDRESS');
     beneficiary = _beneficiary;
   }
@@ -209,8 +215,8 @@ contract MixinLockCore is
     address _onValidKeyHook,
     address _onTokenURIHook
   ) external
-    onlyLockManager()
   {
+    _onlyLockManager();
     require(_onKeyPurchaseHook == address(0) || _onKeyPurchaseHook.isContract(), 'INVALID_ON_KEY_SOLD_HOOK');
     require(_onKeyCancelHook == address(0) || _onKeyCancelHook.isContract(), 'INVALID_ON_KEY_CANCEL_HOOK');
     require(_onValidKeyHook == address(0) || _onValidKeyHook.isContract(), 'INVALID_ON_VALID_KEY_HOOK');
@@ -235,11 +241,13 @@ contract MixinLockCore is
     address _spender,
     uint _amount
   ) public
-    onlyLockManagerOrBeneficiary
     returns (bool)
   {
+    _onlyLockManagerOrBeneficiary();
     return IERC20Upgradeable(tokenAddress).approve(_spender, _amount);
   }
 
-  uint256[1000] private __safe_upgrade_gap;
+
+  // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
+  uint256[998] private __safe_upgrade_gap;
 }

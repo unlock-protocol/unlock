@@ -15,22 +15,22 @@ import { NoPhone, Phone } from '../../theme/media'
 import withConfig from '../../utils/withConfig'
 import { useLock } from '../../hooks/useLock'
 import Svg from '../interface/svg'
-
 import {
   LockPanel,
   LockAddress,
   LockDivider,
   LockDuration,
   LockKeys,
-  LockName,
   LockRow,
+  LockName,
   DoubleHeightCell,
   BalanceContainer,
   LockWarning,
   LockDetails,
+  LockLabelSmall,
 } from './LockStyles'
 import { currencySymbol } from '../../utils/lock'
-import { INFINITY } from '../../constants'
+import { INFINITY, MAX_UINT } from '../../constants'
 
 const BalanceOnLock = withConfig(({ lock, attribute, config }) => {
   const currency = currencySymbol(lock, config.ERC20Contract)
@@ -75,9 +75,18 @@ export const CreatorLock = ({
     showIntegrations ? 'embed-coded' : ''
   )
   const [editing, setEditing] = useState(false)
-  const { lock, updateKeyPrice, updateMaxNumberOfKeys, withdraw } = useLock(
-    lockFromProps,
-    network
+  const {
+    lock,
+    updateKeyPrice,
+    updateMaxNumberOfKeys,
+    withdraw,
+    updateSelfAllowance,
+  } = useLock(lockFromProps, network)
+
+  const [isRecurring, setIsRecurring] = useState(
+    lock.publicLockVersion >= 10 &&
+      lock.currencyContractAddress &&
+      lock.selfAllowance === MAX_UINT
   )
 
   useEffect(() => {
@@ -120,6 +129,12 @@ export const CreatorLock = ({
     )
   }
 
+  const handleApproveRecurring = () => {
+    updateSelfAllowance(MAX_UINT, () => {
+      setIsRecurring(true)
+    })
+  }
+
   // Some sanitization of strings to display
   const name = lock.name || 'New Lock'
   const lockVersion = lock.publicLockVersion || '1'
@@ -139,7 +154,7 @@ export const CreatorLock = ({
 
   // https://github.com/unlock-protocol/unlock/wiki/Lock-version-1.2-vulnerability
   return (
-    <LockRow>
+    <LockRow className="pb-2">
       {lockVersion === 5 && (
         <LockWarning>
           Your lock is vulnerable, please{' '}
@@ -177,9 +192,26 @@ export const CreatorLock = ({
         <LockName>
           {name}
           <LockAddress address={!lock.pending && lock.address} />
+          {lock && !lock.pending && (
+            <div className="flex items-center gap-2 py-1 text-gray-400">
+              <span className="text-xs">v{lock.publicLockVersion}</span>
+              <span className="text-xs">{networks[lock.network].name}</span>
+            </div>
+          )}
         </LockName>
         <LockDuration>
           <Duration seconds={lock.expirationDuration} />
+          {isRecurring && (
+            <small>
+              <br />
+              Recurring enabled
+            </small>
+          )}
+          {!isRecurring && lock.currencyContractAddress && (
+            <LockLabelSmall onClick={handleApproveRecurring}>
+              Enable recurring
+            </LockLabelSmall>
+          )}
         </LockDuration>
         <LockKeysNumbers edit={edit} lock={lock} />
         <KeyPrice>

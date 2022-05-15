@@ -1,35 +1,55 @@
 /* eslint no-console: 0 */
 const dotenv = require('dotenv')
 const path = require('path')
-const fs = require('fs')
-const { join, resolve } = require('path')
-const { promisify } = require('util')
-const { addBlogPagesToPageObject } = require('./src/utils/blog')
-
-const copyFile = promisify(fs.copyFile)
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
-const googleAnalyticsId = process.env.UNLOCK_GA_ID || '0'
 dotenv.config({
   path: path.resolve(__dirname, '..', `.env.${unlockEnv}.local`),
 })
 
-let tagManagerArgs
-if (unlockEnv === 'prod') {
-  tagManagerArgs = {
-    gtmId: 'GTM-ND2KDWB',
-  }
+const dev = {
+  googleAnalyticsId: process.env.UNLOCK_GA_ID || '0',
+  tagManagerArgs: {},
+  urlBase: process.env.URL_BASE || 'https://unlock-protocol.com',
+  unlockApp:
+    process.env.UNLOCK_APP ||
+    'https://staging-app.unlock-protocol.com/dashboard',
 }
 
-// NOTE: do not set defaults here!
+const staging = {
+  googleAnalyticsId: '0',
+  tagManagerArgs: {},
+  unlockApp: 'https://staging-app.unlock-protocol.com',
+  urlBase: 'https://staging.unlock-protocol.com',
+}
+
+const production = {
+  // keeping that line for legacy support
+  googleAnalyticsId: process.env.UNLOCK_GA_ID || '0',
+  tagManagerArgs: {
+    gtmId: 'GTM-ND2KDWB',
+  },
+  unlockApp: 'https://app.unlock-protocol.com',
+  urlBase: 'https://unlock-protocol.com',
+}
+
+function getUnlockConfig(environment) {
+  switch (environment) {
+    case 'prod':
+      return production
+    case 'staging':
+      return staging
+    default:
+      return dev
+  }
+}
+const unlockConfig = getUnlockConfig(unlockEnv)
+
 // This is a mechanism to ensure that we do not deploy code with missing/wrong
 // environment variables
 const requiredConfigVariables = {
   unlockEnv,
-  googleAnalyticsId,
-  urlBase: process.env.URL_BASE || 'https://unlock-protocol.com',
-  unlockApp: process.env.UNLOCK_APP,
-  tagManagerArgs,
+  ...unlockConfig,
 }
 
 Object.keys(requiredConfigVariables).forEach((configVariableName) => {
@@ -46,7 +66,8 @@ Object.keys(requiredConfigVariables).forEach((configVariableName) => {
     )
   }
 })
-module.exports = {
+
+const nextConfig = {
   publicRuntimeConfig: requiredConfigVariables,
   webpack(config) {
     config.module.rules.push({
@@ -59,19 +80,6 @@ module.exports = {
     })
     return config
   },
-  exportPathMap: async (defaultPathMap, { dir }) => {
-    // Our statically-defined pages to export
-    const pages = {
-      '/': { page: '/home' },
-      '/about': { page: '/about' },
-      '/jobs': { page: '/jobs' },
-      '/terms': { page: '/terms' },
-      '/privacy': { page: '/privacy' },
-      '/blog': { page: '/blog' },
-      '/membership': { page: '/membership' },
-      '/developers': { page: '/developers' },
-    }
-
-    return addBlogPagesToPageObject(resolve(dir, '.'), pages)
-  },
 }
+
+module.exports = nextConfig

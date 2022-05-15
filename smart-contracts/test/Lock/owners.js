@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-const { reverts } = require('truffle-assertions')
+const { assert } = require('chai')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -8,42 +8,44 @@ const getProxy = require('../helpers/proxy')
 let lock
 let locks
 let unlock
+let tokenIds
 
 contract('Lock / owners', (accounts) => {
+  const keyOwners = accounts.slice(1, 6)
   before(async () => {
     unlock = await getProxy(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
-  before(() => {
+  before(async () => {
     // Purchase keys!
-    return Promise.all(
-      [1, 2, 3, 4].map((d) =>
-        lock.purchase(
-          0,
-          accounts[d],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
-          {
-            value: lock.params.keyPrice.toFixed(),
-            from: accounts[0],
-          }
-        )
-      )
+    const tx = await lock.purchase(
+      [],
+      keyOwners,
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => []),
+      {
+        value: (lock.params.keyPrice * keyOwners.length).toFixed(),
+        from: accounts[0],
+      }
     )
+    tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
   })
 
   it('should have the right number of keys', async () => {
     const totalSupply = new BigNumber(await lock.totalSupply.call())
-    assert.equal(totalSupply.toFixed(), 4)
+    assert.equal(totalSupply.toFixed(), keyOwners.length)
   })
 
   it('should have the right number of owners', async () => {
     const numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-    assert.equal(numberOfOwners.toFixed(), 4)
+    assert.equal(numberOfOwners.toFixed(), keyOwners.length)
   })
 
   describe('after a transfer to a new address', () => {
@@ -51,29 +53,21 @@ contract('Lock / owners', (accounts) => {
 
     before(async () => {
       numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      let ID = await lock.getTokenIdFor.call(accounts[1])
-      await lock.transferFrom(accounts[1], accounts[5], ID, {
-        from: accounts[1],
+      await lock.transferFrom(keyOwners[0], accounts[8], tokenIds[0], {
+        from: keyOwners[0],
       })
     })
 
     it('should have the right number of keys', async () => {
       const totalSupply = new BigNumber(await lock.totalSupply.call())
-      assert.equal(totalSupply.toFixed(), 4)
+      assert.equal(totalSupply.toFixed(), tokenIds.length)
     })
 
     it('should have the right number of owners', async () => {
+      assert.equal(await lock.balanceOf.call(accounts[8]), 1)
+      assert.equal(await lock.balanceOf.call(keyOwners[0]), 0)
       const _numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      assert.equal(_numberOfOwners.toFixed(), numberOfOwners.plus(1).toFixed())
-    })
-
-    it('should fail if I transfer from the same account again', async () => {
-      await reverts(
-        lock.transferFrom(accounts[1], accounts[5], accounts[1], {
-          from: accounts[1],
-        }),
-        'KEY_NOT_VALID'
-      )
+      assert.equal(_numberOfOwners.toFixed(), numberOfOwners.toFixed())
     })
   })
 
@@ -82,20 +76,23 @@ contract('Lock / owners', (accounts) => {
 
     before(async () => {
       numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      let ID = await lock.getTokenIdFor.call(accounts[2])
-      await lock.transferFrom(accounts[2], accounts[3], ID, {
-        from: accounts[2],
+
+      // both have tokens
+      assert.equal(await lock.balanceOf.call(keyOwners[1]), 1)
+      assert.equal(await lock.balanceOf.call(keyOwners[2]), 1)
+      await lock.transferFrom(keyOwners[1], keyOwners[2], tokenIds[1], {
+        from: keyOwners[1],
       })
     })
 
     it('should have the right number of keys', async () => {
       const totalSupply = new BigNumber(await lock.totalSupply.call())
-      assert.equal(totalSupply.toFixed(), 4)
+      assert.equal(totalSupply.toFixed(), tokenIds.length)
     })
 
     it('should have the right number of owners', async () => {
       const _numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      assert.equal(_numberOfOwners.toFixed(), numberOfOwners.toFixed())
+      assert.equal(_numberOfOwners.toFixed(), numberOfOwners.toFixed() - 1)
     })
   })
 
@@ -104,38 +101,39 @@ contract('Lock / owners', (accounts) => {
     it('should preserve the right number of owners', async () => {
       // initial state
       const numberOfOwners = new BigNumber(await lock.numberOfOwners.call())
-      const prevKeyId = await lock.getTokenIdFor.call(accounts[4])
       const totalSupplyBefore = new BigNumber(await lock.totalSupply.call())
 
-      // transfer the key
-      await lock.transferFrom(accounts[4], accounts[3], prevKeyId, {
-        from: accounts[4],
+      // transfer the key to an existing owner
+      assert.equal(await lock.balanceOf.call(keyOwners[4]), 1)
+      await lock.transferFrom(keyOwners[3], keyOwners[4], tokenIds[3], {
+        from: keyOwners[3],
       })
-      assert.equal((await lock.getTokenIdFor.call(accounts[4])).toString(), '0')
+      assert.equal(await lock.ownerOf.call(tokenIds[3]), keyOwners[4])
+      assert.equal(await lock.balanceOf.call(keyOwners[4]), 2)
+      assert.equal(await lock.balanceOf.call(keyOwners[3]), 0)
 
       // supply unchanged
       const totalSupplyAfter = new BigNumber(await lock.totalSupply.call())
       assert.equal(totalSupplyBefore.toFixed(), totalSupplyAfter.toFixed())
 
-      // number of owners is identical
+      // number of owners changed
       assert.equal(
-        numberOfOwners.toFixed(),
+        (numberOfOwners - 1).toFixed(),
         new BigNumber(await lock.numberOfOwners.call()).toFixed()
       )
 
       // someone buys a key again for the previous owner
       await lock.purchase(
-        0,
-        accounts[4],
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
         [],
+        [keyOwners[3]],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
+        [[]],
         {
           value: lock.params.keyPrice.toFixed(),
-          from: accounts[4],
+          from: keyOwners[3],
         }
       )
-      assert.equal((await lock.getTokenIdFor.call(accounts[4])).toNumber(), 5)
 
       // number of owners should be left unchanged
       const _numberOfOwners = new BigNumber(await lock.numberOfOwners.call())

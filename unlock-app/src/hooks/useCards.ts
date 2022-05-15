@@ -3,6 +3,7 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { Card } from '@stripe/stripe-js'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
+import { ToastHelper } from '../components/helpers/toast.helper'
 
 // TODO: cleanup. We don't need a hook but the API calls should be kept
 
@@ -15,6 +16,7 @@ interface Config {
 }
 
 export const genAuthorizationHeader = (token: string) => {
+  console.log('DEPRECATED!')
   return { Authorization: ` Bearer ${token}` }
 }
 
@@ -51,10 +53,26 @@ export const getSignature = async (
   typedData: any,
   address: string
 ) => {
-  const signature = await walletService.unformattedSignTypedData(
-    address,
-    typedData
-  )
+  let signature
+  if (typedData.message['Charge Card']) {
+    const message = `I want to purchase a membership to ${typedData.message['Charge Card'].lock} for ${typedData.message['Charge Card'].publicKey} with my card.`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Get Card']) {
+    const message = `I want to retrieve the card token for ${typedData.message['Get Card'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Save Card']) {
+    const message = `I save my payment card for my account ${typedData.message['Save Card'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Delete Card']) {
+    const message = `I am deleting the card linked to my account ${typedData.message['Delete Card'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else if (typedData.message['Claim Membership']) {
+    const message = `I claim a membership for ${typedData.message['Claim Membership'].lock} to ${typedData.message['Claim Membership'].publicKey}`
+    signature = await walletService.signMessage(message, 'personal_sign')
+  } else {
+    signature = await walletService.unformattedSignTypedData(address, typedData)
+  }
+
   return signature
 }
 
@@ -69,12 +87,15 @@ export const chargeAndSaveCard = async (
   stripeTokenId: string,
   network: number,
   lock: string,
-  pricing: any
+  pricing: any,
+  recipients: string[]
 ) => {
   const typedData = generateTypedData({
     'Charge Card': {
       publicKey: address,
+      userAddress: address,
       stripeTokenId,
+      recipients,
       pricing,
       lock,
       network,
@@ -82,17 +103,91 @@ export const chargeAndSaveCard = async (
   })
 
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'POST',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(typedData),
   }
   const response = await fetch(`${config.services.storage.host}/purchase`, opts)
+  return response.json()
+}
+
+/**
+ * @param walletService
+ * @param address
+ */
+export const prepareCharge = async (
+  config: any,
+  walletService: any,
+  address: string,
+  stripeTokenId: string,
+  network: number,
+  lock: string,
+  pricing: any,
+  recipients: string[]
+) => {
+  const typedData = generateTypedData({
+    'Charge Card': {
+      publicKey: address,
+      userAddress: address,
+      stripeTokenId,
+      recipients,
+      pricing,
+      lock,
+      network,
+    },
+  })
+
+  const signature = await getSignature(walletService, typedData, address)
+
+  const opts = {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(typedData),
+  }
+  const response = await fetch(
+    `${config.services.storage.host}/purchase/prepare`,
+    opts
+  )
+  return response.json()
+}
+
+export const captureCharge = async (
+  config: any,
+  lock: string,
+  network: number,
+  address: string,
+  recipients: string[],
+  paymentIntent: string
+) => {
+  const opts = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      lock,
+      network,
+      userAddress: address,
+      recipients,
+      paymentIntent,
+    }),
+  }
+  const response = await fetch(
+    `${config.services.storage.host}/purchase/capture`,
+    opts
+  )
   return response.json()
 }
 
@@ -112,12 +207,13 @@ export const claimMembership = async (
   })
 
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'POST',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(typedData),
@@ -133,18 +229,19 @@ export const saveCardsForAddress = async (
   stripeTokenId: string
 ) => {
   const typedData = generateTypedData({
-    user: {
+    'Save Card': {
       publicKey: address,
       stripeTokenId,
     },
   })
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'PUT',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(typedData),
@@ -164,15 +261,20 @@ export const getCardsForAddress = async (
   address: string
 ) => {
   const typedData = generateTypedData({
-    user: {
+    'Get Card': {
       publicKey: address,
     },
   })
+
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
+
   const opts = {
     method: 'GET',
-    headers: genAuthorizationHeader(token),
+    headers: {
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
+    },
   }
 
   const response = await fetch(
@@ -195,17 +297,18 @@ export const deleteCardForAddress = async (
   address: string
 ) => {
   const typedData = generateTypedData({
-    user: {
+    'Delete Card': {
       publicKey: address,
     },
   })
   const signature = await getSignature(walletService, typedData, address)
-  const token = Buffer.from(signature).toString('base64')
 
   const opts = {
     method: 'DELETE',
     headers: {
-      ...genAuthorizationHeader(token),
+      Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+        'base64'
+      )}`,
       'Content-Type': 'application/json',
     },
   }
@@ -225,7 +328,8 @@ export const deleteCardForAddress = async (
 export const getFiatPricing = async (
   config: any,
   lock: string,
-  network: number
+  network: number,
+  quantity = 1
 ) => {
   const opts = {
     method: 'GET',
@@ -233,9 +337,8 @@ export const getFiatPricing = async (
       'Content-Type': 'application/json',
     },
   }
-
   const response = await fetch(
-    `${config.services.storage.host}/price/fiat/${lock}?chain=${network}`,
+    `${config.services.storage.host}/price/fiat/${lock}?chain=${network}&quantity=${quantity}`,
     opts
   )
   return response.json()
@@ -265,7 +368,6 @@ export const useCards = () => {
   const config: Config = useContext(ConfigContext)
   const [cards, setCards] = useState<Card[]>([])
   const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<Error | undefined>(undefined)
 
   /**
    * retrieves cards for an address
@@ -277,7 +379,7 @@ export const useCards = () => {
       const cards = await getCardsForAddress(config, walletService, address)
       setCards(cards)
     } catch (e: any) {
-      setError(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
@@ -294,7 +396,8 @@ export const useCards = () => {
       // Refresh cards: TODO make locksmith return the cards
       await getCards(address)
     } catch (e: any) {
-      setError(e)
+      console.error(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
@@ -310,9 +413,9 @@ export const useCards = () => {
         setCards([])
       }
     } catch (e: any) {
-      setError(e)
+      ToastHelper.error(e)
     }
     setLoading(false)
   }
-  return { cards, error, loading, saveCard, deleteCard, getCards }
+  return { cards, loading, saveCard, deleteCard, getCards }
 }

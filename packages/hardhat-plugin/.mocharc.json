@@ -1,0 +1,4 @@
+{
+  "ignore": ["test/fixture-projects/**/*"],
+  "timeout": 50000
+}

@@ -6,6 +6,7 @@ import './MixinDisable.sol';
 import './MixinKeys.sol';
 import './MixinFunds.sol';
 import './MixinLockCore.sol';
+import './MixinPurchase.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 
@@ -21,7 +22,8 @@ contract MixinTransfer is
   MixinRoles,
   MixinFunds,
   MixinLockCore,
-  MixinKeys
+  MixinKeys,
+  MixinPurchase
 {
   using AddressUpgradeable for address;
 
@@ -38,34 +40,35 @@ contract MixinTransfer is
   uint public transferFeeBasisPoints;
 
   /**
-  * @notice Allows the key owner to safely share their key (parent key) by
-  * transferring a portion of the remaining time to a new key (child key).
-  * @param _to The recipient of the shared key
-  * @param _tokenId the key to share
+  * @notice Allows the key owner to safely transfer a portion of the remaining time 
+  * from their key to a new key
+  * @param _tokenIdFrom the key to share
+  * @param _to The recipient of the shared time
   * @param _timeShared The amount of time shared
   */
   function shareKey(
     address _to,
-    uint _tokenId,
+    uint _tokenIdFrom,
     uint _timeShared
   ) public
-    onlyIfAlive
-    onlyKeyManagerOrApproved(_tokenId)
   {
+    _lockIsUpToDate();
+    require(maxNumberOfKeys > _totalSupply, 'LOCK_SOLD_OUT');
+    _onlyKeyManagerOrApproved(_tokenIdFrom);
+    _isValidKey(_tokenIdFrom);
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
     require(_to != address(0), 'INVALID_ADDRESS');
-    address keyOwner = _ownerOf[_tokenId];
-    require(getHasValidKey(keyOwner), 'KEY_NOT_VALID');
+    address keyOwner = _ownerOf[_tokenIdFrom];
     require(keyOwner != _to, 'TRANSFER_TO_SELF');
 
-    Key storage fromKey = keyByOwner[keyOwner];
-    Key storage toKey = keyByOwner[_to];
-    uint idTo = toKey.tokenId;
+    // store time to be added
     uint time;
+
     // get the remaining time for the origin key
-    uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
+    uint timeRemaining = keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp;
+
     // get the transfer fee based on amount of time wanted share
-    uint fee = getTransferFee(keyOwner, _timeShared);
+    uint fee = getTransferFee(_tokenIdFrom, _timeShared);
     uint timePlusFee = _timeShared + fee;
 
     // ensure that we don't try to share too much
@@ -73,40 +76,32 @@ contract MixinTransfer is
       // now we can safely set the time
       time = _timeShared;
       // deduct time from parent key, including transfer fee
-      _timeMachine(_tokenId, timePlusFee, false);
+      _timeMachine(_tokenIdFrom, timePlusFee, false);
     } else {
       // we have to recalculate the fee here
-      fee = getTransferFee(keyOwner, timeRemaining);
+      fee = getTransferFee(_tokenIdFrom, timeRemaining);
       time = timeRemaining - fee;
-      fromKey.expirationTimestamp = block.timestamp; // Effectively expiring the key
-      emit ExpireKey(_tokenId);
+      _keys[_tokenIdFrom].expirationTimestamp = block.timestamp; // Effectively expiring the key
+      emit ExpireKey(_tokenIdFrom);
     }
 
-    if (idTo == 0) {
-      _assignNewTokenId(toKey);
-      idTo = toKey.tokenId;
-      _recordOwner(_to, idTo);
-      emit Transfer(
-        address(0), // This is a creation or time-sharing
-        _to,
-        idTo
-      );
-    } else if (toKey.expirationTimestamp <= block.timestamp) {
-      // reset the key Manager for expired keys
-      _setKeyManagerOf(idTo, address(0));
-    }
-
-    // add time to new key
-    _timeMachine(idTo, time, true);
+    // create new key
+    uint tokenIdTo = _createNewKey(
+      _to,
+      address(0),
+      block.timestamp + time
+    );
+    
     // trigger event
     emit Transfer(
       keyOwner,
       _to,
-      idTo
+      tokenIdTo
     );
 
-    require(_checkOnERC721Received(keyOwner, _to, idTo, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
+    require(_checkOnERC721Received(keyOwner, _to, tokenIdTo, ''), 'NON_COMPLIANT_ERC721_RECEIVER');
   }
+
 
   function transferFrom(
     address _from,
@@ -114,52 +109,40 @@ contract MixinTransfer is
     uint _tokenId
   )
     public
-    onlyIfAlive
-    hasValidKey(_from)
-    onlyKeyManagerOrApproved(_tokenId)
   {
+    _isValidKey(_tokenId);
+    _onlyKeyManagerOrApproved(_tokenId);
     require(ownerOf(_tokenId) == _from, 'TRANSFER_FROM: NOT_KEY_OWNER');
     require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
     require(_recipient != address(0), 'INVALID_ADDRESS');
     require(_from != _recipient, 'TRANSFER_TO_SELF');
-    uint fee = getTransferFee(_from, 0);
 
-    Key storage fromKey = keyByOwner[_from];
-    Key storage toKey = keyByOwner[_recipient];
-
-    uint previousExpiration = toKey.expirationTimestamp;
     // subtract the fee from the senders key before the transfer
-    _timeMachine(_tokenId, fee, false);
+    _timeMachine(_tokenId, getTransferFee(_tokenId, 0), false);  
 
-    if (toKey.tokenId == 0) {
-      toKey.tokenId = _tokenId;
-      _recordOwner(_recipient, _tokenId);
-      // Clear any previous approvals
-      _clearApproval(_tokenId);
+    // transfer a token
+    Key storage key = _keys[_tokenId];
+
+    // update expiration
+    key.expirationTimestamp = keyExpirationTimestampFor(_tokenId);
+
+    // increase total number of unique owners
+    if(balanceOf(_recipient) == 0 ) {
+      numberOfOwners++;
     }
 
-    if (previousExpiration <= block.timestamp) {
-      // The recipient did not have a key, or had a key but it expired. The new expiration is the sender's key expiration
-      // An expired key is no longer a valid key, so the new tokenID is the sender's tokenID
-      toKey.expirationTimestamp = fromKey.expirationTimestamp;
-      toKey.tokenId = _tokenId;
+    // delete token from previous owner
+    _deleteOwnershipRecord(_tokenId);
+    
+    // record new owner
+    _createOwnershipRecord(_tokenId, _recipient);
 
-      // Reset the key Manager to the key owner
-      _setKeyManagerOf(_tokenId, address(0));
+    // clear any previous approvals
+    _setKeyManagerOf(_tokenId, address(0));
+    _clearApproval(_tokenId);
 
-      _recordOwner(_recipient, _tokenId);
-    } else {
-      require(expirationDuration != type(uint).max, 'Recipient already owns a non-expiring key');
-      // The recipient has a non expired key. We just add them the corresponding remaining time
-      // SafeSub is not required since the if confirms `previousExpiration - block.timestamp` cannot underflow
-      toKey.expirationTimestamp = fromKey.expirationTimestamp + previousExpiration - block.timestamp;
-    }
-
-    // Effectively expiring the key for the previous owner
-    fromKey.expirationTimestamp = block.timestamp;
-
-    // Set the tokenID to 0 for the previous owner to avoid duplicates
-    fromKey.tokenId = 0;
+    // make future reccuring transactions impossible
+    _originalDurations[_tokenId] = 0;
 
     // trigger event
     emit Transfer(
@@ -171,28 +154,21 @@ contract MixinTransfer is
 
   /**
    * @notice An ERC-20 style transfer.
-   * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).
-   * @dev The typical use case would be to call this with _value 1, which is on par with calling `transferFrom`. If the user
-   * has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token.
+   * @param _tokenId the Id of the token to send
+   * @param _to the destination address
+   * @param _valueBasisPoint a percentage (expressed as basis points) of the time to be transferred
+   * @return success bool success/failure of the transfer
    */
   function transfer(
+    uint _tokenId,
     address _to,
-    uint _value
+    uint _valueBasisPoint
   ) public
     returns (bool success)
   {
-    uint maxTimeToSend = _value * expirationDuration;
-    Key storage fromKey = keyByOwner[msg.sender];
-    uint timeRemaining = fromKey.expirationTimestamp - block.timestamp;
-    if(maxTimeToSend < timeRemaining)
-    {
-      shareKey(_to, fromKey.tokenId, maxTimeToSend);
-    }
-    else
-    {
-      transferFrom(msg.sender, _to, fromKey.tokenId);
-    }
-
+    _isValidKey(_tokenId);
+    uint timeShared = ( keyExpirationTimestampFor(_tokenId) - block.timestamp ) * _valueBasisPoint / BASIS_POINTS_DEN;
+    shareKey( _to, _tokenId, timeShared);
     // Errors will cause a revert
     return true;
   }
@@ -213,6 +189,24 @@ contract MixinTransfer is
     public
   {
     safeTransferFrom(_from, _to, _tokenId, '');
+  }
+
+   /**
+   * @dev Sets or unsets the approval of a given operator
+   * An operator is allowed to transfer all tokens of the sender on their behalf
+   * @param _to operator address to set the approval
+   * @param _approved representing the status of the approval to be set
+   * @notice disabled when transfers are disabled
+   */
+  function setApprovalForAll(
+    address _to,
+    bool _approved
+  ) public
+  {
+    require(_to != msg.sender, 'APPROVE_SELF');
+    require(transferFeeBasisPoints < BASIS_POINTS_DEN, 'KEY_TRANSFERS_DISABLED');
+    managerToOperatorApproved[msg.sender][_to] = _approved;
+    emit ApprovalForAll(msg.sender, _to, _approved);
   }
 
   /**
@@ -244,10 +238,8 @@ contract MixinTransfer is
    */
   function updateTransferFee(
     uint _transferFeeBasisPoints
-  )
-    external
-    onlyLockManager
-  {
+  ) external {
+    _onlyLockManager();
     emit TransferFeeChanged(
       _transferFeeBasisPoints
     );
@@ -255,33 +247,33 @@ contract MixinTransfer is
   }
 
   /**
-   * Determines how much of a fee a key owner would need to pay in order to
-   * transfer the key to another account.  This is pro-rated so the fee goes down
-   * overtime.
-   * @param _keyOwner The owner of the key check the transfer fee for.
+   * Determines how much of a fee would need to be paid in order to
+   * transfer to another account.  This is pro-rated so the fee goes 
+   * down overtime.
+   * @dev Throws if _tokenId is not have a valid key
+   * @param _tokenId The id of the key check the transfer fee for.
+   * @param _time The amount of time to calculate the fee for.
+   * @return The transfer fee in seconds.
    */
   function getTransferFee(
-    address _keyOwner,
+    uint _tokenId,
     uint _time
   )
     public view
     returns (uint)
   {
-    if(! getHasValidKey(_keyOwner)) {
+    _isKey(_tokenId);
+    uint expirationTimestamp = keyExpirationTimestampFor(_tokenId);
+    if(expirationTimestamp < block.timestamp) {
       return 0;
     } else {
-      Key storage key = keyByOwner[_keyOwner];
       uint timeToTransfer;
-      uint fee;
-      // Math: safeSub is not required since `hasValidKey` confirms timeToTransfer is positive
-      // this is for standard key transfers
       if(_time == 0) {
-        timeToTransfer = key.expirationTimestamp - block.timestamp;
+        timeToTransfer = expirationTimestamp - block.timestamp;
       } else {
         timeToTransfer = _time;
       }
-      fee = timeToTransfer * transferFeeBasisPoints / BASIS_POINTS_DEN;
-      return fee;
+      return timeToTransfer * transferFeeBasisPoints / BASIS_POINTS_DEN;
     }
   }
 

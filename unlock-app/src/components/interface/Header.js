@@ -79,7 +79,7 @@ const Header = ({ forContent, title }) => {
       </AppButtons>
       <DesktopButtons>
         {navigationButtons.map((NavButton, index) => (
-          <NavButton key={index.toString()} />
+          <NavButton key={NavButton.constructor.name} />
         ))}
       </DesktopButtons>
       <MobileToggle visibilityToggle={!!menu} onClick={toggleMenu}>

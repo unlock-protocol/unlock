@@ -40,7 +40,7 @@ contract('Lock / configUnlock', (accounts) => {
             from: accounts[7],
           }
         ),
-        'Ownable: caller is not the owner'
+        'ONLY_OWNER'
       )
     })
   })

@@ -1,21 +1,17 @@
 const ethers = require('ethers')
+const passportCustom = require('passport-custom')
 const hasValidKey = require('./src/hasValidKey')
 
-const unlockCheckoutBaseUrl = new URL(
-  'https://app.unlock-protocol.com/checkout'
-)
+const CustomStrategy = passportCustom.Strategy
+
 /**
  * Main function that yields the middleware
- * @param {*} config
- * @param {*} app
+ * @param {*} defaultPaywallConfig
+ * @param {*} passport instance
+ * @param {*} config optional configuration object
  * @returns
  */
-const configureUnlock = (config, app) => {
-  if (!config.baseAuthRedirectPath) {
-    // eslint-disable-next-line no-param-reassign
-    config.baseAuthRedirectPath = '/unlock-callback'
-  }
-
+const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
   if (!config.providers) {
     // eslint-disable-next-line no-param-reassign
     config.providers = {}
@@ -43,47 +39,6 @@ const configureUnlock = (config, app) => {
     config.providers[137] = 'https://rpc-mainnet.matic.network/'
   }
 
-  if (!config.optionalRedirectParams) {
-    // eslint-disable-next-line no-param-reassign
-    config.optionalRedirectParams = () => ({})
-  }
-
-  if (!config.onFailure) {
-    // eslint-disable-next-line no-param-reassign
-    config.onFailure = (req, res, error) => {
-      res.send(
-        `It looks like we could not confirm your membership status! Please try again. ${error}. <a href="/">Home</a>`
-      )
-    }
-  }
-
-  app.get(config.baseAuthRedirectPath, async (req, res) => {
-    const { signature, originalUrl, error } = req.query
-
-    if (error) {
-      return config.onFailure(req, res, error)
-    }
-
-    const paywallConfig = await config.yieldPaywallConfig(req)
-    if (!paywallConfig.messageToSign) {
-      paywallConfig.messageToSign = 'Please connect your wallet'
-    }
-    const userAddress = ethers.utils.verifyMessage(
-      paywallConfig.messageToSign,
-      signature
-    )
-
-    await config.updateUserEthereumAddress(
-      req,
-      res,
-      userAddress,
-      signature,
-      paywallConfig.messageToSign
-    )
-
-    return res.redirect(originalUrl)
-  })
-
   /**
    * Helper function to build the checkout URL easily
    * @param {*} paywallConfig
@@ -91,6 +46,9 @@ const configureUnlock = (config, app) => {
    * @returns
    */
   const buildCheckoutUrl = (paywallConfig, redirectUri) => {
+    const unlockCheckoutBaseUrl = new URL(
+      'https://app.unlock-protocol.com/checkout'
+    )
     unlockCheckoutBaseUrl.searchParams.append('redirectUri', redirectUri)
     unlockCheckoutBaseUrl.searchParams.append(
       'paywallConfig',
@@ -102,7 +60,6 @@ const configureUnlock = (config, app) => {
 
   /**
    * Returns true if the user has memberships
-   * @param {*} memberships
    */
   const hasValidMembership = async (paywallConfig, ethereumAddress) => {
     const promises = Object.entries(paywallConfig.locks).map(
@@ -115,7 +72,6 @@ const configureUnlock = (config, app) => {
         if (!config.providers[network]) {
           throw new Error(`No provider configured for network ${network}`)
         }
-        // Query chain (using balanceOf)
         return hasValidKey(
           config.providers[network],
           lockAddress,
@@ -124,60 +80,103 @@ const configureUnlock = (config, app) => {
       }
     )
     const validMemberships = await Promise.all(promises)
-    return !!validMemberships.find((validMembership) => validMembership)
+    return !!validMemberships.find((valid) => valid)
   }
 
   /**
-   * Middeware function, which redirects user to purchase membership if applicable.
+   * Use the Unlock strategy!
+   */
+  passport.use(
+    'unlock-strategy',
+    new CustomStrategy(async (req, done) => {
+      const { signature, messageToSign, error } = req.query
+
+      if (error) {
+        return done(error, null)
+      }
+
+      let userAddress
+
+      if (!req.user) {
+        if (!signature) {
+          // No logged in user!
+          return done(null, null)
+        }
+
+        userAddress = ethers.utils.verifyMessage(messageToSign, signature)
+      } else {
+        userAddress = req.user.address
+      }
+
+      const hasUnlocked =
+        userAddress &&
+        (await hasValidMembership(req.paywallConfig, userAddress))
+
+      if (hasUnlocked) {
+        return done(null, {
+          address: userAddress,
+          signature,
+          signedMessage: messageToSign,
+        })
+      }
+
+      // Authorization failed!
+      return done(null, null)
+    })
+  )
+
+  /**
+   * Middeware function, which redirects user to purchase memberships if applicable.
    * @returns
    */
-  const membersOnly = (unauthenticatedHander) => async (req, res, next) => {
-    const ethereumAddress = await config.getUserEthereumAddress(req)
-    const paywallConfig = await config.yieldPaywallConfig(req)
-    if (!paywallConfig.messageToSign) {
-      paywallConfig.messageToSign = 'Please connect your wallet'
-    }
-    if (!paywallConfig.locks) {
-      throw new Error('Missing locks on configuration!')
-    }
+  const membersOnly = (paywallConfig) => async (req, res, next) => {
+    const mergedConfig = Object.assign(defaultPaywallConfig, paywallConfig)
+    req.paywallConfig = mergedConfig
+    passport.authenticate('unlock-strategy', (err, user) => {
+      if (err) {
+        return next(err)
+      }
 
-    const hasUnlocked =
-      ethereumAddress &&
-      (await hasValidMembership(paywallConfig, ethereumAddress))
+      if (!user) {
+        if (!mergedConfig.messageToSign) {
+          // eslint-disable-next-line prettier/prettier
+          // eslint-disable-next-line no-console
+          console.warn(
+            'For security reasons, please consider using a custom to sign message with a nonce and a timestamp for which your application will verify uniqueness and recency.'
+          )
+          // eslint-disable-next-line no-param-reassign
+          mergedConfig.messageToSign = `Please connect your wallet to connect to\n${req.get(
+            'host'
+          )}.`
+        }
 
-    if (hasUnlocked) {
+        if (!mergedConfig.locks) {
+          console.error('Missing locks on configuration! We let the users in.')
+          return next()
+        }
+
+        const baseUrl = config.baseUrl || `${req.protocol}://${req.get('host')}`
+        const redirectUri = new URL(`${baseUrl}${req.originalUrl}`)
+        redirectUri.searchParams.append(
+          'messageToSign',
+          mergedConfig.messageToSign
+        )
+
+        const checkoutUrlRedirect = buildCheckoutUrl(
+          mergedConfig,
+          redirectUri.toString()
+        )
+        // Go authorize!
+        return res.redirect(checkoutUrlRedirect.toString())
+      }
+      // We have a user that's authorized! Continue :)
+      req.login(user, next)
       return next()
-    }
-
-    const baseUrl = config.baseUrl || `${req.protocol}://${req.get('host')}`
-
-    // Build the redirect url
-    const redirectUriParams = await config.optionalRedirectParams(req)
-    const redirectUri = new URL(`${baseUrl}${config.baseAuthRedirectPath}`)
-    const searchParams = new URLSearchParams({
-      ...redirectUriParams,
-    })
-    // eslint-disable-next-line no-restricted-syntax
-    for (const param of searchParams) {
-      redirectUri.searchParams.append(param, searchParams[param])
-    }
-    redirectUri.searchParams.append('originalUrl', req.originalUrl)
-    const checkoutUrlRedirect = buildCheckoutUrl(
-      paywallConfig,
-      redirectUri.toString()
-    )
-
-    // If we have a handler, let's use it!
-    if (unauthenticatedHander) {
-      return unauthenticatedHander(checkoutUrlRedirect, req, res, next)
-    }
-
-    // This allows Javascript Fetch to be able to read from the body since it does not yield the `Location` in case of redirect...
-    // res.send(checkoutUrlRedirect.toString())
-    return res.redirect(checkoutUrlRedirect.toString())
+    })(req, res, next)
   }
 
   // Returns the middleware
   return { buildCheckoutUrl, hasValidMembership, membersOnly }
 }
+
 module.exports = configureUnlock

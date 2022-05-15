@@ -3,26 +3,17 @@ import { networks } from '@unlock-protocol/networks'
 import * as z from 'zod'
 import fetch from 'cross-fetch'
 import crypto from 'crypto'
-import { deepStrictEqual } from 'assert'
 import logger from '../logger'
 import { Hook } from '../models'
 
-export type SubscribeRequest = Request<
-  {
-    lock?: string
-    network: string
-  },
-  {},
-  {
-    hub: z.infer<typeof Hub>
-  }
->
+export type SubscribeParams = Partial<Record<'lock' | 'network', string>>
+export type SubscribeRequest = Request<SubscribeParams, {}>
 
 const Hub = z.object({
   topic: z.string().url(),
   callback: z.string().url(),
   mode: z.enum(['subscribe', 'unsubscribe']),
-  lease_seconds: z.number().optional(),
+  lease_seconds: z.number().positive().optional(),
   secret: z.string().optional(),
 })
 
@@ -37,25 +28,38 @@ export class HookController {
   constructor(public options: HookControllerOptions) {}
 
   async handle(request: SubscribeRequest, response: Response) {
-    const network = this.getNetwork(request.params.network)
+    // Subscription request should be of content type: application/x-www-form-urlencoded as per spec - https://www.w3.org/TR/websub/#subscriber-sends-subscription-request
+    if (
+      request.headers['content-type'] !== 'application/x-www-form-urlencoded'
+    ) {
+      return response
+        .status(415)
+        .send('Only application/x-www-form-urlencoded request is accepted.')
+    }
+    const network = this.getNetwork(request.params.network!)
+    const hub = {
+      topic: request.body['hub.topic'],
+      mode: request.body['hub.mode'],
+      callback: request.body['hub.callback'],
+      secret: request.body['hub.secret'],
+      lease_seconds: request.body['hub.lease_seconds']
+        ? Number(request.body['hub.lease_seconds'])
+        : undefined,
+    }
+
     if (!network) {
       return response.status(404).send('Unsupported Network')
     }
-    const result = await Hub.safeParseAsync(request.body.hub)
+    const result = await Hub.safeParseAsync(hub)
     if (!result.success) {
-      return response.status(400).send({
-        hub: {
-          mode: request.body.hub.mode,
-          topic: request.body.hub.topic,
-          reason: result.error.message,
-        },
-      })
+      return response.status(400).send(result.error.flatten())
     } else {
       // Send the accepted request to the subscriber and then validate the intent of the subscriber as well as persist the subscription.
       response.status(202).send('Accepted')
       try {
-        await this.verifySubscriber(request)
-        await this.updateHook(request)
+        await this.verifySubscriber(hub)
+        logger.info(`${hub.mode} intent confirmed for ${hub.topic}`)
+        await this.updateHook(hub, request.params)
         return
       } catch (error) {
         logger.error(error.message)
@@ -91,41 +95,44 @@ export class HookController {
   }
 
   // Verify the subscriber intent by having them echo back the challenge, hub topic, and hub callback. If they match, we can subscribe.
-  async verifySubscriber(request: SubscribeRequest) {
-    const { hub } = request.body
+  async verifySubscriber(hub: z.infer<typeof Hub>) {
     const challenge = this.getChallege()
 
-    const body = {
-      hub: {
-        ...hub,
-        lease_seconds: this.getLeaseSeconds(hub.lease_seconds),
-        challenge,
-      },
-    }
-    const result = await fetch(hub.callback, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    })
+    const callbackEndpoint = new URL(hub.callback)
+    callbackEndpoint.searchParams.set('hub.challenge', challenge)
+    callbackEndpoint.searchParams.set('hub.topic', hub.topic)
+    callbackEndpoint.searchParams.set(
+      'hub.lease_seconds',
+      String(this.getLeaseSeconds(hub.lease_seconds!))
+    )
+    callbackEndpoint.searchParams.set('hub.mode', hub.mode)
+    callbackEndpoint.searchParams.set('hub.secret', hub.secret!)
 
+    const result = await fetch(callbackEndpoint.toString())
     if (!result.ok) {
-      throw new Error('Failed to verify subscriber')
+      throw new Error('Failed to confirm subscription intent')
     }
 
-    const json = await result.json()
+    const text = await result.text()
 
-    // This will throw if the echo is not correct with an assert error.
-    deepStrictEqual(json, body)
-
-    return json
+    if (text != challenge) {
+      const rejectedError = new Error('Challenge body does not match')
+      const rejectionEndpoint = new URL(hub.callback)
+      rejectionEndpoint.searchParams.set('hub.mode', hub.mode)
+      rejectionEndpoint.searchParams.set('hub.topic', hub.topic)
+      rejectionEndpoint.searchParams.set('hub.reason', rejectedError.message)
+      // Notify the callback url of the rejection reason
+      const res = await fetch(rejectionEndpoint.toString())
+      if (!res.ok) {
+        throw new Error('Failed to notify the subscriber about rejection')
+      }
+      throw rejectedError
+    }
   }
 
   // Provide ability to update lease_seconds, secret, and mode.
-  async updateHook(request: SubscribeRequest) {
-    const { network } = request.params
-    const { hub } = request.body
+  async updateHook(hub: z.infer<typeof Hub>, params: SubscribeParams) {
+    const { network } = params
     const hook = await Hook.findOne({
       where: {
         callback: hub.callback,
@@ -136,7 +143,7 @@ export class HookController {
 
     // If we can't find a hook to update, we create a new one.
     if (!hook) {
-      const newHook = await this.createHook(request)
+      const newHook = await this.createHook(hub, params)
       return newHook
     }
 
@@ -156,9 +163,8 @@ export class HookController {
   }
 
   // Create a hook object and save it to the database.
-  async createHook(request: SubscribeRequest) {
-    const { network, lock } = request.params
-    const { hub } = request.body
+  async createHook(hub: z.infer<typeof Hub>, params: SubscribeParams) {
+    const { network, lock } = params
     const hook = new Hook()
     hook.network = Number(network)
     hook.topic = hub.topic

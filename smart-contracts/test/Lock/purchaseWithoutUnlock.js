@@ -85,11 +85,11 @@ contract('Lock / purchaseWithoutUnlock', () => {
       const tx = await lock
         .connect(buyer)
         .purchase(
-          keyPrice.toString(),
-          buyer.address,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
+          [keyPrice.toString()],
+          [buyer.address],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
+          [[]],
           {
             value: keyPrice.toString(),
           }
@@ -124,11 +124,11 @@ contract('Lock / purchaseWithoutUnlock', () => {
       const tx = await lock
         .connect(buyer)
         .purchase(
-          keyPrice,
-          buyer.address,
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
+          [keyPrice],
+          [buyer.address],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
+          [[]],
           {
             value: keyPrice,
           }

@@ -102,11 +102,11 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
       event = txObj.logs[0]
 
       await lock.purchase(
-        0,
-        accounts[0],
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
         [],
+        [accounts[0]],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
+        [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
         }
@@ -146,7 +146,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
         lock.setBaseTokenURI('https://fakeURI.com', {
           from: accounts[1],
         }),
-        'MixinRoles: caller does not have the LockManager role'
+        'ONLY_LOCK_MANAGER'
       )
     })
   })

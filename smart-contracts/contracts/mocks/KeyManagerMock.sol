@@ -1,12 +1,24 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.5.17 <0.8.5;
+pragma solidity >=0.5.17 <=0.8.7;
 
 
-import '../PublicLock.sol';
+import '../mixins/MixinKeys.sol';
 
 contract KeyManagerMock is
-  PublicLock
+  MixinKeys
 {
+  constructor() {
+   _maxKeysPerAddress = 100;
+  }
+
+  // returns tokenId
+  function createNewKey(
+    address _recipient,
+    address _keyManager,
+    uint _expirationTimestamp
+  ) public returns (uint) {
+    return _createNewKey(_recipient, _keyManager, _expirationTimestamp);
+  }
 
   function isKeyManager(
     uint _tokenId,

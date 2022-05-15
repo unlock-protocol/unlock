@@ -127,6 +127,14 @@ contract Unlock is
     address publicLockAddress
   );
 
+  event GNPChanged(
+    uint grossNetworkProduct,
+    uint _valueInETH,
+    address tokenAddress,
+    uint value,
+    address lockAddress
+  );
+  
   event ResetTrackedValue(
     uint grossNetworkProduct,
     uint totalDiscountGranted
@@ -151,7 +159,7 @@ contract Unlock is
   }
 
   function initializeProxyAdmin() public onlyOwner {
-    require(proxyAdminAddress == address(0), "ProxyAdmin already deployed");
+    require(proxyAdminAddress == address(0), "ALREADY_DEPLOYED");
     _deployProxyAdmin();
   }
 
@@ -195,7 +203,7 @@ contract Unlock is
   /**
   * @notice Create lock (legacy)
   * This deploys a lock for a creator. It also keeps track of the deployed lock.
-  * @param _expirationDuration the duration of the lock (pass 0 for unlimited duration)
+  * @param _expirationDuration the duration of the lock (pass type(uint).max for unlimited duration)
   * @param _tokenAddress set to the ERC20 token address, or 0 for ETH.
   * @param _keyPrice the price of each key
   * @param _maxNumberOfKeys the maximum nimbers of keys to be edited
@@ -247,11 +255,28 @@ contract Unlock is
     bytes memory data
   ) public returns(address)
   {
-    require(proxyAdminAddress != address(0), "proxyAdmin is not set");
-    require(publicLockAddress != address(0), 'MISSING_LOCK_TEMPLATE');
+    address newLock = createUpgradeableLockAtVersion(data, publicLockLatestVersion);
+    return newLock;
+  }
+
+  /**
+   * Create an upgradeable lock using a specific PublicLock version
+   * @param data bytes containing the call to initialize the lock template
+   * (refer to createUpgradeableLock for more details)
+   * @param _lockVersion the version of the lock to use
+  */
+  function createUpgradeableLockAtVersion(
+    bytes memory data,
+    uint16 _lockVersion
+  ) public returns (address) {
+    require(proxyAdminAddress != address(0), "MISSING_PROXY_ADMIN");
+
+    // get lock version
+    address publicLockImpl = _publicLockImpls[_lockVersion];
+    require(publicLockImpl != address(0), 'MISSING_LOCK_TEMPLATE');
 
     // deploy a proxy pointing to impl
-    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(publicLockAddress, proxyAdminAddress, data);
+    TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(publicLockImpl, proxyAdminAddress, data);
     address payable newLock = payable(address(proxy));
 
     // assign the new Lock
@@ -270,22 +295,26 @@ contract Unlock is
    * @param version the version number of the template
    */
   function upgradeLock(address payable lockAddress, uint16 version) external returns(address) {
-    require(proxyAdminAddress != address(0), "proxyAdmin is not set");
+    require(proxyAdminAddress != address(0), "MISSING_PROXY_ADMIN");
 
     // check perms
-    require(_isLockManager(lockAddress, msg.sender) == true, "caller is not a manager of this lock");
+    require(_isLockManager(lockAddress, msg.sender) == true, "MANAGER_ONLY");
 
     // check version
     IPublicLock lock = IPublicLock(lockAddress);
     uint16 currentVersion = lock.publicLockVersion();
-    require( version == currentVersion + 1, 'version error: only +1 increments are allowed');
+    require( version == currentVersion + 1, 'VERSION_TOO_HIGH');
 
     // make our upgrade
     address impl = _publicLockImpls[version];
-    require(impl != address(0), "this version number has no corresponding lock template");
+    require(impl != address(0), "MISSING_TEMPLATE");
 
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
     proxyAdmin.upgrade(proxy, impl);
+
+    // let's upgrade the data schema
+    // the function is called with empty bytes as migration behaviour is set by the lock in accordance to data version
+    lock.migrate('0x');
 
     emit LockUpgraded(lockAddress, version);
     return lockAddress;
@@ -350,7 +379,13 @@ contract Unlock is
         valueInETH = _value;
       }
 
-      grossNetworkProduct = grossNetworkProduct + valueInETH;
+      updateGrossNetworkProduct(
+        valueInETH,
+        tokenAddress,
+        _value,
+        msg.sender // lockAddress
+      );
+
       // If GNP does not overflow, the lock totalSales should be safe
       locks[msg.sender].totalSales += valueInETH;
 
@@ -422,6 +457,28 @@ contract Unlock is
   }
 
   /**
+   * Update the GNP by a new value. 
+   * Emits an event to simply tracking
+   */
+  function updateGrossNetworkProduct(
+    uint _valueInETH,
+    address _tokenAddress,
+    uint _value,
+    address _lock
+  ) internal {
+    // increase GNP
+    grossNetworkProduct = grossNetworkProduct + _valueInETH;
+
+    emit GNPChanged(
+      grossNetworkProduct,
+      _valueInETH,
+      _tokenAddress,
+      _value,
+      _lock
+    );
+  }
+
+  /**
    * @notice [DEPRECATED] Call to this function has been removed from PublicLock > v9.
    * @dev [DEPRECATED] only Kept for backwards compatibility
    */
@@ -441,7 +498,7 @@ contract Unlock is
   ) external pure
     returns (uint16)
   {
-    return 10;
+    return 11;
   }
 
   /**

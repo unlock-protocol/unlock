@@ -17,11 +17,11 @@ contract('Unlock / resetTrackedValue', (accounts) => {
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.purchase(
-      keyPrice,
-      accounts[1],
-      web3.utils.padLeft(0, 40),
-      web3.utils.padLeft(0, 40),
-      [],
+      [keyPrice],
+      [accounts[1]],
+      [web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40)],
+      [[]],
       {
         from: accounts[1],
         value: keyPrice,
@@ -53,11 +53,11 @@ contract('Unlock / resetTrackedValue', (accounts) => {
     describe('After purchase', () => {
       beforeEach(async () => {
         await lock.purchase(
-          keyPrice,
-          accounts[2],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
+          [keyPrice],
+          [accounts[2]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
+          [[]],
           {
             from: accounts[2],
             value: keyPrice,
@@ -85,11 +85,11 @@ contract('Unlock / resetTrackedValue', (accounts) => {
     describe('After purchase', () => {
       beforeEach(async () => {
         await lock.purchase(
-          keyPrice,
-          accounts[2],
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          [],
+          [keyPrice],
+          [accounts[2]],
+          [web3.utils.padLeft(0, 40)],
+          [web3.utils.padLeft(0, 40)],
+          [[]],
           {
             from: accounts[2],
             value: keyPrice,

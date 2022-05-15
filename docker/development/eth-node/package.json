@@ -7,12 +7,12 @@
         "start": "hardhat node"
     },
     "dependencies": {
-        "@nomiclabs/hardhat-ethers": "2.0.4",
+        "@nomiclabs/hardhat-ethers": "2.0.5",
         "@unlock-protocol/unlock-abi-9": "1.0.0",
-        "@unlock-protocol/unlock-js": "0.21.1",
+        "@unlock-protocol/unlock-js": "0.23.1",
         "cross-fetch": "3.1.5",
         "ethers": "5.5.4",
-        "hardhat": "2.8.0",
+        "hardhat": "2.9.0",
         "hardhat-erc1820": "0.1.0"
     }
 }

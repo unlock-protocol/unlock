@@ -1,6 +1,8 @@
 const BigNumber = require('bignumber.js')
+const path = require('path')
+const fs = require('fs-extra')
 const { time } = require('@openzeppelin/test-helpers')
-const { ethers, upgrades, network } = require('hardhat')
+const { ethers, upgrades, network, run } = require('hardhat')
 const { constants, tokens, protocols } = require('hardlydifficult-eth')
 
 const { getProxyAddress } = require('../../helpers/deployments')
@@ -9,6 +11,27 @@ const createLockHash = require('../helpers/createLockCalldata')
 const Locks = require('../fixtures/locks')
 
 const estimateGas = 252166 * 2
+
+// files path
+const contractsPath = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  'contracts',
+  'past-versions'
+)
+const artifactsPath = path.resolve(
+  __dirname,
+  '..',
+  '..',
+  'artifacts',
+  'contracts',
+  'past-versions'
+)
+
+const UnlockDiscountTokenV1 = require.resolve(
+  '@unlock-protocol/contracts/dist/UnlockDiscountToken/UnlockDiscountToken.sol'
+)
 
 // helper function
 const upgradeContract = async (contractAddress) => {
@@ -27,9 +50,28 @@ contract('UnlockDiscountToken upgrade', async () => {
   let udt
   const mintAmount = 1000
 
+  before(async function copyAndBuildContract() {
+    // make sure mocha doesnt time out
+    this.timeout(200000)
+
+    // copy previous UDT version over
+    await fs.copy(
+      UnlockDiscountTokenV1,
+      path.resolve(contractsPath, 'UnlockDiscountTokenV1.sol')
+    )
+
+    // re-compile contract using hardhat
+    await run('compile')
+  })
+
+  after(async () => {
+    await fs.remove(contractsPath)
+    await fs.remove(artifactsPath)
+  })
+
   beforeEach(async () => {
     const UnlockDiscountToken = await ethers.getContractFactory(
-      'UnlockDiscountToken'
+      'contracts/past-versions/UnlockDiscountTokenV1.sol:UnlockDiscountToken'
     )
 
     const [, minter] = await ethers.getSigners()
@@ -194,11 +236,11 @@ contract('UnlockDiscountToken upgrade', async () => {
       // Purchase a valid key for the referrer
       await lock.connect(referrer)
       await lock.purchase(
-        0,
-        referrer.address,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
         [],
+        [referrer.address],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
+        [[]],
         {
           value: await lock.keyPrice(),
         }
@@ -235,11 +277,11 @@ contract('UnlockDiscountToken upgrade', async () => {
         // buy a key
         lock.connect(keyBuyer)
         const { blockNumber } = await lock.purchase(
-          0,
-          keyBuyer.address,
-          referrer.address,
-          web3.utils.padLeft(0, 40),
           [],
+          [keyBuyer.address],
+          [referrer.address],
+          [web3.utils.padLeft(0, 40)],
+          [[]],
           {
             value: await lock.keyPrice(),
           }
@@ -293,11 +335,11 @@ contract('UnlockDiscountToken upgrade', async () => {
 
         lock.connect(keyBuyer)
         await lock.purchase(
-          0,
-          keyBuyer.address,
-          referrer.address,
-          web3.utils.padLeft(0, 40),
           [],
+          [keyBuyer.address],
+          [referrer.address],
+          [web3.utils.padLeft(0, 40)],
+          [[]],
           {
             value: await lock.keyPrice(),
           }

@@ -1,0 +1,65 @@
+name: Unlock Test Suite
+
+on:
+  workflow_call:
+    inputs:
+      # pass none to run all tests
+      changed:
+        description: 'The services/apps that changed (JSON array stringified)'
+        type: string
+        required: false
+        default: '[
+          "locksmith",
+          "packages/contracts",
+          "packages/hardhat-plugin",
+          "packages/unlock-js",
+          "packages/paywall",
+          "smart-contracts",
+          "smart-contract-extensions",
+          "unlock-protocol-com",
+          "wedlocks",
+          "unlock-app"
+          ]'
+
+jobs:
+  unit-tests:
+    name: Unit Tests ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    if: ${{ inputs.changed != '[]' }}
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+      BLOCKTIME: 0
+      # below env vars are just used by locksmith
+      DB_USERNAME: locksmith_test
+      DB_PASSWORD: password
+      DB_NAME: locksmith_test
+      DB_HOSTNAME: db
+    strategy:
+      matrix:
+        target: ${{fromJson( inputs.changed )}}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Running ${{ matrix.target }} tests
+        run: ./scripts/tests.sh ${{ matrix.target }}
+        shell: bash
+
+  integration-tests:
+    name: Integration Tests
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Integration Tests
+        run: scripts/integration-tests.sh
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: screenshots
+          path: /tmp/screenshots
+      - name: Log failing tests
+        if: ${{ failure() }}
+        run: ./scripts/docker-compose-log.sh

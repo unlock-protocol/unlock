@@ -8,6 +8,7 @@ import {
 } from '../../../utils/durations'
 import { ActionButton } from '../buttons/ActionButton'
 import Loading from '../Loading'
+import { ToastHelper } from '../../helpers/toast.helper'
 
 interface InvalidKeyProps {
   reason: string
@@ -62,7 +63,9 @@ export const ValidKeyWithMetadata = ({
         <Svg.Checkmark title="Valid" />
       </Circle>
       <KeyStatus>Valid Key</KeyStatus>
-      <KeyExpiration>Until {expirationDate}</KeyExpiration>
+      {unlockKey.expiration !== -1 && (
+        <KeyExpiration>Until {expirationDate}</KeyExpiration>
+      )}
     </Box>
   )
 
@@ -78,7 +81,9 @@ export const ValidKeyWithMetadata = ({
           <Svg.Checkmark title="Valid" />
         </Circle>
         <KeyStatus>Valid Key</KeyStatus>
-        <KeyExpiration>Until {expirationDate}</KeyExpiration>
+        {unlockKey.expiration !== -1 && (
+          <KeyExpiration>Until {expirationDate}</KeyExpiration>
+        )}
         <KeyCheckedInTime>
           Checked-in {durationsAsTextFromSeconds(checkedInAgo)} ago
         </KeyCheckedInTime>
@@ -136,17 +141,17 @@ export const ValidKey = ({
 }: ValidKeyProps) => {
   const [checkedIn, setCheckedIn] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
   const [viewerIsLockOwner, setViewerIsLockOwner] = useState(false)
   const [keyData, setKeyData] = useState({})
   const { isLockManager, getKeyData, markAsCheckedIn } = useLock(lock, network)
 
   const checkIn = async () => {
+    if (!viewer) return
     const success = await markAsCheckedIn(viewer, unlockKey.tokenId)
     if (success) {
       setCheckedIn(true)
     } else {
-      setError('We could not mark this membership as checked in')
+      ToastHelper.error('We could not mark this membership as checked in')
     }
   }
 
@@ -156,6 +161,10 @@ export const ValidKey = ({
 
   useEffect(() => {
     const onLoad = async () => {
+      if (!viewer) {
+        setLoading(false)
+        return
+      }
       const _isLockManager = await isLockManager(viewer)
       if (_isLockManager) {
         setViewerIsLockOwner(true)
@@ -163,6 +172,7 @@ export const ValidKey = ({
         setKeyData(metadata || {})
       } else {
         setViewerIsLockOwner(false)
+        // @ts-ignore
         const metadata = (await getKeyData(unlockKey.tokenId)) as any
         setKeyData(metadata || {})
       }
@@ -173,10 +183,6 @@ export const ValidKey = ({
 
   if (loading) {
     return <Loading />
-  }
-
-  if (error) {
-    return <Error>{error}</Error>
   }
 
   return (
@@ -307,7 +313,4 @@ const Value = styled.div`
   margin-bottom: 15px;
   text-overflow: ellipsis;
   overflow: hidden;
-`
-const Error = styled.p`
-  color: var(--red);
 `

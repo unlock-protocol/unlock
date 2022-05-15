@@ -109,3 +109,11 @@ export const LockDivider = styled.div`
   height: 1px;
   background-color: var(--lightgrey);
 `
+
+export const LockLabelSmall = styled(LockLabel)`
+  cursor: pointer;
+  font-size: 11px;
+  width: 100%;
+  padding: 5px;
+  padding-left: 0px;
+`

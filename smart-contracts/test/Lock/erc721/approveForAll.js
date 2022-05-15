@@ -6,7 +6,7 @@ const getProxy = require('../../helpers/proxy')
 
 let unlock
 let lock
-let ID
+let tokenId
 
 contract('Lock / erc721 / approveForAll', (accounts) => {
   before(async () => {
@@ -21,18 +21,19 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
 
   describe('when the key exists', () => {
     before(async () => {
-      await lock.purchase(
-        0,
-        owner,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
+      const tx = await lock.purchase(
         [],
+        [owner],
+        [web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40)],
+        [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
           from: owner,
         }
       )
-      ID = await lock.getTokenIdFor.call(owner)
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      tokenId = args.tokenId
     })
 
     it('isApprovedForAll defaults to false', async () => {
@@ -76,20 +77,20 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
       it('an authorized operator may set the approved address for an NFT', async () => {
         let newApprovedUser = accounts[8]
 
-        await lock.approve(newApprovedUser, ID, {
+        await lock.approve(newApprovedUser, tokenId, {
           from: approvedUser,
         })
 
-        assert.equal(await lock.getApproved.call(ID), newApprovedUser)
+        assert.equal(await lock.getApproved.call(tokenId), newApprovedUser)
       })
 
       it('should allow the approved user to transferFrom', async () => {
-        await lock.transferFrom(owner, accounts[3], ID, {
+        await lock.transferFrom(owner, accounts[3], tokenId, {
           from: approvedUser,
         })
 
         // Transfer it back to the original owner for other tests
-        await lock.transferFrom(accounts[3], owner, ID, {
+        await lock.transferFrom(accounts[3], owner, tokenId, {
           from: accounts[3],
         })
       })
