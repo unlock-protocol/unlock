@@ -1,6 +1,6 @@
-import toast from 'react-hot-toast'
 import { useAuthenticate } from './useAuthenticate'
 import { useAppStorage } from './useAppStorage'
+import { ToastHelper } from '../components/helpers/toast.helper'
 
 enum WALLET_PROVIDER {
   METAMASK,
@@ -42,7 +42,7 @@ export function useAuthenticateHandler({
       removeKey('provider')
     }
     const connectedProvider = walletHandlers[providerType](provider)
-    await toast.promise(
+    await ToastHelper.promise(
       connectedProvider.then((p) => {
         if (!p?.account) {
           return Promise.reject('Unable to get provider')

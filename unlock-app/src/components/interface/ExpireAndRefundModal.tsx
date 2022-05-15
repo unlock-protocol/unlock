@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react'
-import toast from 'react-hot-toast'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import Loading from './Loading'
 import InlineModal from './InlineModal'
+import { ToastHelper } from '../helpers/toast.helper'
 
 interface ExpireAndRefundProps {
   active: boolean
@@ -48,14 +48,14 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
     try {
       await walletService.expireAndRefundFor(params)
       onCloseCallback()
-      toast.success('Key successfully refunded.')
+      ToastHelper.success('Key successfully refunded.')
       // reload page to show updated list of keys
       setTimeout(() => {
         window.location.reload()
       }, 2000)
     } catch (err: any) {
       onCloseCallback()
-      toast.error(
+      ToastHelper.error(
         err?.error?.message ??
           err?.message ??
           'There was an error in refund process. Please try again.'

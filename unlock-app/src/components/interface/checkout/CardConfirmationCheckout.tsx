@@ -3,7 +3,6 @@ import { ethers } from 'ethers'
 import Link from 'next/link'
 import styled from 'styled-components'
 import { loadStripe } from '@stripe/stripe-js'
-import { toast } from 'react-hot-toast'
 import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 
@@ -17,6 +16,7 @@ import { PaywallConfig } from '../../../unlockTypes'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
 import { getFiatPricing } from '../../../hooks/useCards'
+import { ToastHelper } from '../../helpers/toast.helper'
 
 interface CardConfirmationCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -169,7 +169,7 @@ export const CardConfirmationCheckout = ({
 
   const charge = async () => {
     if (!intent) {
-      return toast.error('Purchase not ready.')
+      return ToastHelper.error('Purchase not ready.')
     }
     setError('')
     setPurchasePending(true)
