@@ -46,6 +46,8 @@ For too long, perverse attention economics have both shaped and dictated the con
 ### Availability
 
 * Unlock Protocol’s recurring subscription membership NFTs are available today.
+* Recurring memberships can be enabled for locks using v10 of the protocol.
+* Locks using v9 can be upgraded to v10.
 
 ### Launch event
 
