@@ -1,5 +1,14 @@
 # Changes
 
+# 0.26.1
+
+- Fixed bug in allowance function
+
+# 0.26.0
+
+- add support for `approveBeneficiary`
+- pass address as param to `getAllowance` instead of signer
+
 # 0.25.0
 
 - Better support for v10
