@@ -8,7 +8,7 @@ description: Unlock Protocol launches recurring subscriptions using NFTs, bringi
 image: /images/blog/subscriptions/recurring-blog-header.png
 ---
 
-![recurring-blog-header.png](/images/blog/subscription/recurring-blog-header.png)
+![recurring-blog-header.png](/images/blog/subscriptions/recurring-blog-header.png)
 
 Traditionally, using NFTs for memberships was a yes-or-no proposition: If someone held the NFT for a project, they had access to the project’s perks or community for as long as they held the NFT — potentially forever. 
 
