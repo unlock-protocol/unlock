@@ -40,14 +40,14 @@ export class VerifierController {
 
   async #isVerifierAlreadyExits(
     lockAddress: string,
-    verifierAddress: string,
+    address: string,
     lockManager: string,
     network: number
   ): Promise<any> {
     return await Verifier.findOne({
       where: {
         lockAddress,
-        verifierAddress,
+        address,
         lockManager,
         network,
       },
@@ -92,9 +92,7 @@ export class VerifierController {
   async addVerifier(request: Request, response: Response) {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-      const verifierAddress = Normalizer.ethereumAddress(
-        request.params.verifierAddress
-      )
+      const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
 
       const loggedUserAddress = Normalizer.ethereumAddress(
@@ -109,7 +107,7 @@ export class VerifierController {
 
       const alreadyExists = await this.#isVerifierAlreadyExits(
         lockAddress,
-        verifierAddress,
+        address,
         loggedUserAddress,
         network
       )
@@ -121,7 +119,7 @@ export class VerifierController {
       } else {
         const newVerifier = new Verifier({
           lockAddress,
-          verifierAddress,
+          address,
           lockManager: loggedUserAddress,
           network,
         })
@@ -140,9 +138,7 @@ export class VerifierController {
   async removeVerifier(request: Request, response: Response) {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-      const verifierAddress = Normalizer.ethereumAddress(
-        request.params.verifierAddress
-      )
+      const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress!
@@ -155,7 +151,7 @@ export class VerifierController {
       )
       const alreadyExists = await this.#isVerifierAlreadyExits(
         lockAddress,
-        verifierAddress,
+        address,
         loggedUserAddress,
         network
       )
@@ -167,7 +163,7 @@ export class VerifierController {
         await Verifier.destroy({
           where: {
             lockAddress,
-            verifierAddress,
+            address,
             lockManager: loggedUserAddress,
             network,
           },

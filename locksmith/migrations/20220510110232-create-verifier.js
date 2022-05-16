@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      verifierAddress: {
+      address: {
         type: Sequelize.STRING,
         allowNull: false
       },

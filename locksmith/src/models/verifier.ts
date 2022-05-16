@@ -3,10 +3,10 @@ import { Table, Column, Model } from 'sequelize-typescript'
 @Table({ tableName: 'Verifiers', timestamps: true })
 export class Verifier extends Model<Verifier> {
   @Column
-  verifierAddress!: string
+  address!: string
 
   @Column
-  userAddress!: string
+  lockAddress!: string
 
   @Column
   lockManager!: string
