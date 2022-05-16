@@ -113,7 +113,7 @@ const AppStore = ({ lock }) => {
     if (
       lock.publicLockVersion >= 10 &&
       lock.currencyContractAddress &&
-      lock.selfAllowance === MAX_UINT
+      lock.selfAllowance !== '0'
     ) {
       recurringPayments = (365 * 24 * 3600) / lock.expirationDuration
     }
