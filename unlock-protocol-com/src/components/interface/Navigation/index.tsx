@@ -341,10 +341,7 @@ function Desktop() {
   return (
     <div className="items-center hidden gap-12 sm:flex">
       <DeveloperPopover />
-      <Link
-        className={link}
-        href="https://docs.unlock-protocol.com/unlock/creators/faq"
-      >
+      <Link className={link} href="https://unlock-protocol.com/guides">
         Creators
       </Link>
       <CommunityPopover />
