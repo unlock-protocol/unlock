@@ -103,7 +103,11 @@ export const CryptoCheckout = ({
   const hasRecipients = recipients?.length > 0
 
   // for recurring purchases
-  const nbPayments = paywallConfig?.locks[lock.address]?.recurringPayments
+  let nbPayments = paywallConfig?.locks[lock.address]?.recurringPayments
+  nbPayments =
+    typeof nbPayments === 'number'
+      ? Math.abs(Math.floor(nbPayments))
+      : undefined
 
   const cantBuyWithCrypto = isAdvanced
     ? !(
@@ -478,8 +482,7 @@ export const CryptoCheckout = ({
         <Message>
           The total amount of {lock.currencySymbol} to approve includes{' '}
           {nbPayments} renewals of your{' '}
-          <Duration seconds={lock.expirationDuration} /> key during the next 1
-          year.
+          <Duration seconds={lock.expirationDuration} /> key.
         </Message>
       )}
     </>
