@@ -26,7 +26,7 @@ The answer is “yes.”
 
 Today, Unlock is excited to announce that we’ve created the first-ever mechanism for [recurring subscriptions using membership NFTs](https://docs.unlock-protocol.com/unlock/creators/recurring-memberships). This groundbreaking upgrade to the community-governed Unlock Protocol paves the way to replace legacy subscription systems that use centralized payment processors with a decentralized Web3 model.
 
-From news to music to shows, there are many great reasons why subscriptions have become a fundamental business model. Subscriptions are predictable, time-bound, and convenient for both the creator and the purchaser. But having a handful of Big Tech platforms acting as middlemen and locking in creators and their audiences is far from ideal. 
+From news to music to streaming, there are many great reasons why subscriptions have become a fundamental business model. Subscriptions are predictable, time-bound, and convenient for both the creator and the purchaser. But having a handful of Big Tech platforms acting as middlemen and locking in creators and their audiences is far from ideal. 
 
 Now, creators using Unlock have full control to flexibly monetize or provide access to their content in the ways that best suit them and their communities. 
 
