@@ -34,12 +34,12 @@ Furthermore, creators, fans, developers, and supporters all have the opportunity
 
 ## How does it work?
 
-Unlock's approach to recurring billing using NFTs uses a novel smart contract design that is the first in the industry, bringing the recurring revenue model into a decentralized web3 world. Functionally, a user begins a subscription by agreeing to a smart contract transaction that recurs each month (or at whatever interval the subscription is billed), and the user’s membership NFT maintains its validity as long as the payment occurs each time.
+Unlock's approach to recurring billing through NFTs uses a novel smart contract design that is the first in the industry, bringing the recurring revenue model into a decentralized web3 world. Functionally, a user begins a subscription by agreeing to a smart contract transaction that recurs each month (or at whatever interval the subscription is billed), and the user’s membership NFT maintains its validity as long as the payment occurs each time.
 
 ![unlock-subscription-dashboard.png](/images/blog/subscriptions/unlock-subscription-dashboard.png)
 *Example lock in Unlock Dashboard with recurring subscriptions enabled. This publication’s subscription is 30 XDAI ($30) per month. Subscription duration, price, renewal terms, and currency are all configurable by creators.*
 
-Critically, by building in this manner, the relationship between the creator and the subscriber is *direct*. There is no middleman to determine what type of content is allowed or disallowed, there is no opaque algorithm to decide what content is surfaced or submerged, and there is no payment platform between the parties that can withhold payments from a creator based on an arbitrary policy change.
+Critically, by building in this manner, the relationship between the creator and the subscriber is *direct*. There isn’t a platform determining what type of content is allowed or disallowed, there is no opaque algorithm to decide what content is surfaced or submerged, and there is no payment platform between the parties that can withhold payments from a creator based on an arbitrary policy change.
 
 For too long, perverse attention economics have both shaped and dictated the content we consume and the way we connect online. Unlock invites and enables an alternative to the eyeballs-at-any-cost business model, so we can all read, listen to, watch, and experience what’s actually interesting to us, not just what grabs our attention the most by its shocking or outrageous nature. Creators using Unlock don’t have to conform to producing clickbait that algorithms are likely to promote, and audiences can enjoy content that’s curated by those creators on their own terms.
 
@@ -65,5 +65,7 @@ For too long, perverse attention economics have both shaped and dictated the con
 ### Further resources
 
 * Interview: [NFTs for Memberships: The Future of Business](https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/)
+
+* Article: [Coindesk: NFTs are Better Paywalls](https://www.coindesk.com/layer2/paymentsweek/2022/04/28/nft-subscriptions-are-better-paywalls/)
 
 * Videos: [NFT Membership videos](https://www.youtube.com/channel/UCFpwtvsk_naOwR_w-vKXw-Q)
