@@ -132,8 +132,14 @@ export const Checkout = ({
     removeRecipient,
     hasMinimumRecipients,
   } = useMultipleRecipient(selectedLock, {
-    maxRecipients: paywallConfig?.maxRecipients || 1,
-    minRecipients: paywallConfig?.minRecipients || 1,
+    maxRecipients:
+      paywallConfig?.maxRecipients ||
+      paywallConfig?.locks[selectedLock.address].maxRecipients ||
+      1,
+    minRecipients:
+      paywallConfig?.minRecipients ||
+      paywallConfig?.locks[selectedLock.address].minRecipients ||
+      1,
     metadataInputs: paywallConfig?.metadataInputs || [],
   })
   const showMetadataForm =
