@@ -5,6 +5,8 @@ module.exports = {
         'test-artifacts',
         'UnlockUtils',
         'ERC20Patched.sol',
-        'Migrations'
+        'UnlockDiscountTokenV3',
+        'UnlockProtocolGovernor',
+        'utils',
     ]
 };
