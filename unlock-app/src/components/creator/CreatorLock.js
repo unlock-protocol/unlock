@@ -92,7 +92,7 @@ export const CreatorLock = ({
   }
 
   const [isRecurring, setIsRecurring] = useState(
-    recurringPossible && lock.selfAllowance === MAX_UINT
+    recurringPossible && lock.selfAllowance !== '0'
   )
 
   useEffect(() => {
