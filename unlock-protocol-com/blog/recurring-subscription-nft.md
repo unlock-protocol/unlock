@@ -3,7 +3,7 @@ title: Unlock Protocol Launches Web3 Recurring Subscriptions
 subTitle: A sustainable business model for Web3 creators
 authorName: Christopher Carfi
 publishDate: May 17, 2022
-description: Unlock Protocol launches recurring subscriptions using NFTs, bringing a sustainable business model to the decentralized web3 world.
+description: Unlock Protocol launches recurring subscriptions using NFTs, bringing a sustainable subscription business model to the decentralized web3 world.
 
 image: /images/blog/subscriptions/recurring-blog-header.png
 ---
