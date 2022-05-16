@@ -113,6 +113,9 @@ export const CryptoCheckout = ({
   const withMultipleRecipients = numberOfRecipients > 1
   const hasRecipients = recipients?.length > 0
 
+  const useCaptcha =
+    paywallConfig.captcha || paywallConfig?.locks[lock.address]?.captcha
+
   // for recurring purchases
   let nbPayments = paywallConfig?.locks[lock.address]?.recurringPayments
   nbPayments =
@@ -169,7 +172,7 @@ export const CryptoCheckout = ({
       }
 
       // We need to handle the captcha here too!
-      if (paywallConfig.captcha) {
+      if (useCaptcha) {
         // get the secret from locksmith!
         const response = await storageService.getDataForRecipientsAndCaptcha(
           owners,
@@ -245,7 +248,7 @@ export const CryptoCheckout = ({
 
         const recurringPayments = nbPayments
 
-        if (paywallConfig.captcha) {
+        if (useCaptcha) {
           // get the secret from locksmith!
           const response = await storageService.getDataForRecipientsAndCaptcha(
             [purchaseAccount], // recipient
@@ -487,7 +490,7 @@ export const CryptoCheckout = ({
           closeModal={closeModal}
         />
       )}
-      {paywallConfig.captcha && !recaptchaValue && (
+      {useCaptcha && !recaptchaValue && (
         <ReCAPTCHA sitekey={recaptchaKey} onChange={setRecaptchaValue} />
       )}
       {showCheckoutButtons && nbPayments && (
