@@ -30,6 +30,12 @@ contract('Unlock / upgrades', async (accounts) => {
   const [unlockOwner, lockOwner, keyOwner] = await ethers.getSigners()
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
+  // cleanup after all tests have been executed
+  after(async () => {
+    await fs.remove(contractsPath)
+    await fs.remove(artifactsPath)
+  })
+
   for (
     let versionNumber = 0;
     versionNumber < LATEST_UNLOCK_VERSION;
@@ -73,11 +79,6 @@ contract('Unlock / upgrades', async (accounts) => {
 
         // re-compile contract using hardhat
         await run('compile')
-      })
-
-      after(async () => {
-        await fs.remove(contractsPath)
-        await fs.remove(artifactsPath)
       })
 
       beforeEach(async () => {
