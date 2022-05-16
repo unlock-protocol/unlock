@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Button, Modal, Input } from '@unlock-protocol/ui'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import { VerifiersList } from '../interface/verifiers/VerifiersList'
+import { getAddressForName } from '../../hooks/useEns'
+import { ToastHelper } from '../helpers/toast.helper'
+import AuthenticationContext from '../../contexts/AuthenticationContext'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -16,18 +19,59 @@ const styling = {
   actions: 'flex mt-5 justify-end',
   button: 'ml-2',
 }
-export const VerifiersContent = () => {
-  const [isAddOpen, setIsAddOpen] = useState(false)
+
+interface VerifiersContentProps {
+  query: any
+}
+
+export const VerifiersContent: React.FC<VerifiersContentProps> = ({
+  query,
+}) => {
+  const [addVerifierModalOpen, setAddVerifierModalOpen] = useState(false)
   const [verifierAddress, setVerifierAddress] = useState('')
+  const [loading, setLoading] = useState(false)
+  const lockAddress: string = query?.lockAddress ?? ''
+  const { network } = useContext(AuthenticationContext)
 
   const onAddVerifier = () => {
-    setIsAddOpen(true)
+    setVerifierAddress('')
+    setAddVerifierModalOpen(true)
   }
 
   const onVerifierAddressChange = (e: any) => {
     const value = e.target.value ?? ''
     setVerifierAddress(value)
   }
+
+  const onAddAddress = async () => {
+    setLoading(true)
+    const resolvedAddress = await getAddressForName(verifierAddress)
+    try {
+      if (resolvedAddress) {
+        const addVerifierUrl = `/verifier/${network}/${lockAddress}/${resolvedAddress}`
+        const requestOptions = {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+        }
+        await fetch(addVerifierUrl, requestOptions)
+          .then((res) => res.json())
+          .then(() => {
+            ToastHelper.success('Verifier added to list')
+          })
+        setLoading(false)
+      } else {
+        ToastHelper.error('Recipient is not valid, please check it again')
+        setLoading(false)
+      }
+    } catch (err: any) {
+      setLoading(false)
+      ToastHelper.error(
+        err?.error ??
+          'There was a problem adding verifier, please re-load and try again'
+      )
+    }
+  }
+
   return (
     <Layout title="Verifiers">
       <Head>
@@ -37,26 +81,38 @@ export const VerifiersContent = () => {
       <VerifierContent>
         <Header>
           <span>A list for all verifiers for your event</span>
-          <Button>Add verifier</Button>
+          <Button onClick={onAddVerifier}>Add verifier</Button>
         </Header>
-        <VerifiersList />
+        <VerifiersList lockAddress={lockAddress} />
       </VerifierContent>
 
-      <Modal isOpen={isAddOpen} setIsOpen={onAddVerifier}>
+      <Modal isOpen={addVerifierModalOpen} setIsOpen={onAddVerifier}>
         <div className={styling.sectionWrapper}>
           <h3 className={styling.sectionTitle}>Add verifier</h3>
           <span className={styling.sectionDesctiption}>
             Input the wallet address of the user you wamt to give permission
           </span>
           <Input
-            placeholder="0x.."
+            placeholder="0x..."
             className={styling.input}
             value={verifierAddress}
             onChange={onVerifierAddressChange}
           />
           <div className={styling.actions}>
-            <Button variant="secondary">Close</Button>
-            <Button className={styling.button}>Add address</Button>
+            <Button
+              variant="secondary"
+              onClick={() => setAddVerifierModalOpen(false)}
+              disabled={loading}
+            >
+              Close
+            </Button>
+            <Button
+              className={styling.button}
+              onClick={onAddAddress}
+              disabled={loading}
+            >
+              Add address
+            </Button>
           </div>
         </div>
       </Modal>
