@@ -135,7 +135,7 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
         if (!isPositiveNumber(value) && value !== INFINITY) {
           return 'The number of keys needs to be greater than 0'
         }
-        if (parseInt(value, 10) <= lock.outstandingKeys) {
+        if (parseInt(value, 10) < lock.outstandingKeys) {
           return `The number of keys needs to be greater than existing number of keys (${lock.outstandingKeys})`
         }
         break
