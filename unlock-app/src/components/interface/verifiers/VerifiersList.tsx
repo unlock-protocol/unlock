@@ -54,7 +54,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
       setLoading(false)
       ToastHelper.error(
         err?.error ??
-          'There was a problem adding verifier, please re-load and try again'
+          'We could not load the list of verifiers for your lock. Please reload to to try again.'
       )
     }
   }
