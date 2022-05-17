@@ -141,11 +141,6 @@ describe('isWorthRenewing', () => {
 
 describe('renewKey', () => {
   describe('abort on non-reccuring locks', () => {
-    it('should not renew when lock version <10', async () => {
-      expect.assertions(1)
-      const renewal = await renewKey({ network, lockAddress: 'v9', keyId })
-      expect(renewal.error).toEqual('Renewal only supported for lock v10+')
-    })
     it('should not renew if lock gas refund is not set and cost are not covered', async () => {
       expect.assertions(1)
       const renewal = await renewKey({
