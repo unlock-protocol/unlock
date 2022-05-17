@@ -76,6 +76,8 @@ router.get(
   userController.retrieveRecoveryPhrase
 )
 
+router.get('/:emailAddress', userController.exist)
+
 router.get(cardsPathRegex, userController.getAddressPaymentDetails)
 // Deprecated: we are now using ethereumAddress to store credit cards
 router.get('/:emailAddress/cards', userController.cards)
