@@ -35,24 +35,21 @@ export const useMultipleRecipient = (
   let maxRecipients = 1
   if (paywallConfig?.maxRecipients) {
     maxRecipients = paywallConfig.maxRecipients
-  }
-  if (lock?.address && paywallConfig?.locks[lock.address]) {
+  } else if (lock?.address && paywallConfig?.locks[lock.address]) {
     maxRecipients = paywallConfig?.locks[lock.address].maxRecipients || 1
   }
 
   let minRecipients = 1
   if (paywallConfig?.minRecipients) {
     minRecipients = paywallConfig.minRecipients
-  }
-  if (lock?.address && paywallConfig?.locks[lock.address]) {
+  } else if (lock?.address && paywallConfig?.locks[lock.address]) {
     minRecipients = paywallConfig?.locks[lock.address].minRecipients || 1
   }
 
   let metadataInputs: Array<any> = []
   if (paywallConfig?.metadataInputs) {
     metadataInputs = paywallConfig.metadataInputs
-  }
-  if (lock?.address && paywallConfig?.locks[lock.address]) {
+  } else if (lock?.address && paywallConfig?.locks[lock.address]) {
     metadataInputs = paywallConfig?.locks[lock.address].metadataInputs || []
   }
 
