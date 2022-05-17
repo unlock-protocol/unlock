@@ -101,8 +101,8 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
         <thead>
           <tr>
             <th>Address</th>
-            <th>Created at</th>
-            <th>Verified at</th>
+            <th className="text-left">Created at</th>
+            <th className="text-left">Verified at</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -111,12 +111,13 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
             const key = `${verifier?.address}-${index}`
             return (
               <tr key={key}>
-                <td>{verifier?.address}</td>
-                <td>{verifier?.createdAt}</td>
-                <td>{verifier?.updatedAt}</td>
+                <td>{verifier?.address ?? '-'}</td>
+                <td>{verifier?.createdAt ?? '-'}</td>
+                <td>{verifier?.updatedAt ?? '-'}</td>
                 <td>
                   <Tooltip tip="Remove verifier" label="Remove verifier">
                     <TrashIcon
+                      className="mx-auto"
                       onClick={() => onDeleteVerifier(verifier?.address)}
                     />
                   </Tooltip>
