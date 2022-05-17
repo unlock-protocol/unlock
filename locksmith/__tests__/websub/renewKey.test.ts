@@ -99,12 +99,11 @@ jest.mock('../../src/utils/gasPrice', () => {
 describe('isWorthRenewing', () => {
   it('should return gas refund value', async () => {
     expect.assertions(2)
-    const { shouldRenew, gasRefund, error } = await isWorthRenewing(
+    const { shouldRenew, gasRefund } = await isWorthRenewing(
       network,
       lockAddress,
       keyId
     )
-    console.log(error)
     expect(gasRefund).toEqual(150000)
     expect(shouldRenew).toBeTruthy()
   })
