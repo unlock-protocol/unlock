@@ -67,7 +67,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
       setLoading(false)
       ToastHelper.error(
         err?.error ??
-          'There was a problem adding verifier, please re-load and try again'
+          'There was a problem adding the verifier address, please re-load and try again'
       )
     }
   }
