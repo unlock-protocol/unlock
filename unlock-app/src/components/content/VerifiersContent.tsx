@@ -60,7 +60,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
           })
         setLoading(false)
       } else {
-        ToastHelper.error('Recipient is not valid, please check it again')
+        ToastHelper.error('Verified address is not a valid Ethereum address.')
         setLoading(false)
       }
     } catch (err: any) {
