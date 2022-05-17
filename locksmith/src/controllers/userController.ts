@@ -282,9 +282,9 @@ namespace UserController {
     const user = await UserOperations.findByEmail(emailAddress)
 
     if (!user) {
-      return response.status(404).send()
+      return response.sendStatus(404)
     }
-    return response.status(200).send()
+    return response.sendStatus(200)
   }
 }
 
