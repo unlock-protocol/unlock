@@ -1,4 +1,4 @@
-import { ethers, constants } from 'ethers'
+import { ethers, Wallet, Contract, constants } from 'ethers'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
@@ -67,18 +67,14 @@ export const isWorthRenewing = async (
     const { currencySymbol, currencyContractAddress } =
       await web3Service.getLock(lockAddress, network)
     const abi = ['function decimals() public view returns (uint decimals)']
-    const tokenContract = new ethers.Contract(
-      currencyContractAddress,
-      abi,
-      provider
-    )
+    const tokenContract = new Contract(currencyContractAddress, abi, provider)
     const decimals = await tokenContract.decimals()
 
     // if gas refund is set, we use a a random signer to get estimate to prevent
     // tx to reverts with msg.sender `ERC20: transfer to address zero`
     let estimateGas
     if (gasRefund.toNumber() !== 0) {
-      const randomWallet = await ethers.Wallet.createRandom().connect(provider)
+      const randomWallet = await Wallet.createRandom().connect(provider)
       estimateGas = lock.connect(randomWallet).estimateGas
     } else {
       estimateGas = lock.estimateGas
