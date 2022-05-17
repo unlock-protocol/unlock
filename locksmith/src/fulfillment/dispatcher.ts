@@ -7,28 +7,13 @@ import logger from '../logger'
 const config = require('../../config/config')
 const { GAS_COST } = require('../utils/keyPricer')
 
-interface transactionOptionsInterface {
-  maxPriorityFeePerGas?: ethers.BigNumber
+interface GasSettings {
   maxFeePerGas?: ethers.BigNumber
+  maxPriorityFeePerGas?: ethers.BigNumber
   gasPrice?: ethers.BigNumber
 }
 
-interface GasSettings {
-  maxFeePerGas: ethers.BigNumber
-  maxPriorityFeePerGas: ethers.BigNumber
-}
-
 export const getGasSettings = async (network: number): Promise<GasSettings> => {
-  const provider = new ethers.providers.JsonRpcProvider(
-    networks[network].publicProvider
-  )
-
-  // get fees from network provider
-  let { maxFeePerGas, maxPriorityFeePerGas } = await provider.getFeeData()
-  maxFeePerGas = maxFeePerGas || ethers.BigNumber.from(40000000000) // fallback to 40 gwei
-  maxPriorityFeePerGas =
-    maxPriorityFeePerGas || ethers.BigNumber.from(40000000000) // fallback to 40 gwei
-
   // workaround for polygon: get max fees from gas station
   // see https://github.com/ethers-io/ethers.js/issues/2828
   if (network === 137) {
@@ -36,11 +21,11 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
       const resp = await fetch('https://gasstation-mainnet.matic.network/v2')
       const { data } = await resp.json()
 
-      maxFeePerGas = ethers.utils.parseUnits(
+      const maxFeePerGas = ethers.utils.parseUnits(
         `${Math.ceil(data.standard.maxFee)}`,
         'gwei'
       )
-      maxPriorityFeePerGas = ethers.utils.parseUnits(
+      const maxPriorityFeePerGas = ethers.utils.parseUnits(
         `${Math.ceil(data.standard.maxPriorityFee)}`,
         'gwei'
       )
@@ -54,9 +39,29 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
     }
   }
 
+  // get fees from network provider
+  const provider = new ethers.providers.JsonRpcProvider(
+    networks[network].publicProvider
+  )
+
+  const feedata = await provider.getFeeData().catch(() => null)
+
+  if (feedata) {
+    const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = feedata
+
+    // We double to increase speed of execution
+    // We may end up paying *more* but we get mined earlier
+    return {
+      maxPriorityFeePerGas: maxFeePerGas?.mul(ethers.BigNumber.from('2')),
+      maxFeePerGas: maxPriorityFeePerGas || undefined,
+      gasPrice: gasPrice?.mul(ethers.BigNumber.from('2')),
+    }
+  }
+
+  // fallback to 40 gwei if no feeData
   return {
-    maxFeePerGas,
-    maxPriorityFeePerGas,
+    maxFeePerGas: ethers.BigNumber.from(40000000000),
+    maxPriorityFeePerGas: ethers.BigNumber.from(40000000000),
   }
 }
 
@@ -108,28 +113,7 @@ export default class Dispatcher {
       provider
     )
 
-    const feeData = await provider.getFeeData().catch(() => null)
-
-    const transactionOptions: transactionOptionsInterface = {}
-
-    if (network === 137) {
-      transactionOptions.maxPriorityFeePerGas = ethers.utils.parseUnits(
-        '500',
-        'gwei'
-      )
-      transactionOptions.maxFeePerGas = transactionOptions.maxPriorityFeePerGas
-    } else if (feeData?.maxFeePerGas) {
-      // We double to increase speed of execution
-      // We may end up paying *more* but we get mined earlier
-      transactionOptions.maxPriorityFeePerGas = feeData.maxFeePerGas.mul(
-        ethers.BigNumber.from('2')
-      )
-      transactionOptions.maxFeePerGas = transactionOptions.maxPriorityFeePerGas
-    } else if (feeData?.gasPrice) {
-      transactionOptions.gasPrice = feeData.gasPrice.mul(
-        ethers.BigNumber.from('2')
-      )
-    }
+    const transactionOptions = await getGasSettings(network)
 
     await walletService.connect(provider, walletWithProvider)
     return walletService.grantKeys(
