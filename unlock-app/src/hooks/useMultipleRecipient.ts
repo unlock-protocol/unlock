@@ -30,19 +30,32 @@ interface RecipientPayload {
 
 export const useMultipleRecipient = (
   lock: Lock,
-  {
-    minRecipients,
-    maxRecipients,
-    metadataInputs,
-  }: Pick<
-    PaywallConfig,
-    'metadataInputs' | 'maxRecipients' | 'minRecipients'
-  > = {
-    metadataInputs: [],
-    maxRecipients: 1,
-    minRecipients: 1,
-  }
+  paywallConfig?: PaywallConfig
 ) => {
+  let maxRecipients = 1
+  if (paywallConfig?.maxRecipients) {
+    maxRecipients = paywallConfig.maxRecipients
+  }
+  if (lock?.address && paywallConfig?.locks[lock.address]) {
+    maxRecipients = paywallConfig?.locks[lock.address].maxRecipients || 1
+  }
+
+  let minRecipients = 1
+  if (paywallConfig?.minRecipients) {
+    minRecipients = paywallConfig.minRecipients
+  }
+  if (lock?.address && paywallConfig?.locks[lock.address]) {
+    minRecipients = paywallConfig?.locks[lock.address].minRecipients || 1
+  }
+
+  let metadataInputs: Array<any> = []
+  if (paywallConfig?.metadataInputs) {
+    metadataInputs = paywallConfig.metadataInputs
+  }
+  if (lock?.address && paywallConfig?.locks[lock.address]) {
+    metadataInputs = paywallConfig?.locks[lock.address].metadataInputs || []
+  }
+
   const web3Service = useContext(Web3ServiceContext)
   const [hasMultipleRecipients, setHasMultipleRecipients] = useState(false)
   const [recipients, setRecipients] = useState(new Map<number, RecipientItem>())
@@ -72,10 +85,7 @@ export const useMultipleRecipient = (
 
     const payload: RecipientPayload = {
       users: listWithoutExcluded.map(({ resolvedAddress, metadata = {} }) => {
-        const formattedMetadata = formResultToMetadata(
-          metadata,
-          metadataInputs || []
-        )
+        const formattedMetadata = formResultToMetadata(metadata, metadataInputs)
         return {
           userAddress: resolvedAddress,
           metadata: {
