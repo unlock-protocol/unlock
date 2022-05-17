@@ -202,6 +202,15 @@ namespace UserOperations {
       }
     )
   }
+
+  export const findByEmail = async (emailAddress: string) => {
+    const user = await UserReference.findOne({
+      where: {
+        emailAddress: Normalizer.emailAddress(emailAddress),
+      },
+    })
+    return user
+  }
 }
 
 export = UserOperations
