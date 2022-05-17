@@ -99,12 +99,11 @@ jest.mock('../../src/utils/gasPrice', () => {
 describe('isWorthRenewing', () => {
   it('should return gas refund value', async () => {
     expect.assertions(2)
-    const { shouldRenew, gasRefund, error } = await isWorthRenewing(
+    const { shouldRenew, gasRefund } = await isWorthRenewing(
       network,
       lockAddress,
       keyId
     )
-    console.log(error)
     expect(gasRefund).toEqual(150000)
     expect(shouldRenew).toBeTruthy()
   })
@@ -142,11 +141,6 @@ describe('isWorthRenewing', () => {
 
 describe('renewKey', () => {
   describe('abort on non-reccuring locks', () => {
-    it('should not renew when lock version <10', async () => {
-      expect.assertions(1)
-      const renewal = await renewKey({ network, lockAddress: 'v9', keyId })
-      expect(renewal.error).toEqual('Renewal only supported for lock v10+')
-    })
     it('should not renew if lock gas refund is not set and cost are not covered', async () => {
       expect.assertions(1)
       const renewal = await renewKey({
