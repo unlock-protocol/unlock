@@ -168,6 +168,36 @@ export default class Dispatcher {
     const lock = await walletService.getLockContract(lockAddress)
 
     // TODO: use team multisig here (based on network config) instead of purchaser address!
-    return await lock.renewMembershipFor(keyId, walletWithProvider.address)
+    const referrer = walletWithProvider.address
+
+    // workaround for polygon: get max fees from gas station
+    // see https://github.com/ethers-io/ethers.js/issues/2828
+    if (network == 137) {
+      let maxFeePerGas = ethers.BigNumber.from(40000000000) // fallback to 40 gwei
+      let maxPriorityFeePerGas = ethers.BigNumber.from(40000000000) // fallback to 40 gwei
+      try {
+        const resp = await fetch('https://gasstation-mainnet.matic.network/v2')
+        const data = await resp.json()
+
+        maxFeePerGas = ethers.utils.parseUnits(
+          `${Math.ceil(data.fast.maxFee)}`,
+          'gwei'
+        )
+        maxPriorityFeePerGas = ethers.utils.parseUnits(
+          `${Math.ceil(data.fast.maxPriorityFee)}`,
+          'gwei'
+        )
+      } catch {
+        // ignore
+      }
+
+      // send tx with custom gas
+      return await lock.renewMembershipFor(keyId, referrer, {
+        maxFeePerGas,
+        maxPriorityFeePerGas,
+      })
+    } else {
+      return await lock.renewMembershipFor(keyId, referrer)
+    }
   }
 }
