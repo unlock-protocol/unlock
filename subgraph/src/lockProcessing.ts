@@ -5,7 +5,7 @@ import { BigInt, Bytes, Address, log } from '@graphprotocol/graph-ts'
 import { PublicLock } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock as PublicLock7 } from '../generated/templates/PublicLock7/PublicLock'
 import { PublicLock as PublicLock10 } from '../generated/templates/PublicLock10/PublicLock'
-import { Lock, LockManager, Lock } from '../generated/schema'
+import { Lock, LockManager } from '../generated/schema'
 import {
   PublicLock as PublicLockTemplate,
   PublicLock7 as PublicLockTemplate7,
@@ -138,8 +138,16 @@ export function processNewLock(event: NewLock): void {
   let lockAddress = event.params.newLockAddress
   let chainPublicLock = PublicLock.bind(lockAddress)
 
-  let lock = bootstrapLock(chainPublicLock)
+  if (
+    lockAddress.equals(
+      Address.fromHexString('0x6e660a9BD048b3293A7e16E9EF48Dddd98A8C7b1')
+    )
+  ) {
+    // This is a buggy lock! One that was upgraded and that is now not compatible anymore!
+    return
+  }
 
+  let lock = bootstrapLock(chainPublicLock)
   if (lock.version >= BigInt.fromI32(10)) {
     processV10(event, lock)
   } else if (lock.version >= BigInt.fromI32(7)) {
