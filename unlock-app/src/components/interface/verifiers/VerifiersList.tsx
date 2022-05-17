@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { HiOutlineTrash as TrashIcon } from 'react-icons/hi'
 import { Button, Modal, Tooltip } from '@unlock-protocol/ui'
+import { ethers } from 'ethers'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
-import { getAddressForName } from '../../../hooks/useEns'
 import { ToastHelper } from '../../helpers/toast.helper'
 import Loading from '../Loading'
 import { ConfigContext } from '../../../utils/withConfig'
@@ -60,10 +60,10 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   }
   const onConfirmDeleteVerifier = async () => {
     setLoading(true)
-    const resolvedAddress = await getAddressForName(selectedVerifier)
+    const isValid = ethers.utils.isAddress(selectedVerifier)
     try {
-      if (resolvedAddress) {
-        const addVerifierUrl = `/verifier/${network}/${lockAddress}/${resolvedAddress}`
+      if (isValid) {
+        const addVerifierUrl = `/verifier/${network}/${lockAddress}/${selectedVerifier}`
         const requestOptions = {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
@@ -79,7 +79,9 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
           getVerifierList()
         }, 2000)
       } else {
-        ToastHelper.error('Recipient is not valid, please check it again')
+        ToastHelper.error(
+          'Recipient address is not valid, please check it again'
+        )
         setLoading(false)
       }
     } catch (err: any) {
