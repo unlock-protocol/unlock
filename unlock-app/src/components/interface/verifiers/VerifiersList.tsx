@@ -74,10 +74,6 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
             ToastHelper.success('Verifier deleted from list')
           })
         setDefaults()
-        setTimeout(() => {
-          // reload page to get updated list after delete
-          getVerifierList()
-        }, 2000)
       } else {
         ToastHelper.error(
           'Recipient address is not valid, please check it again'
