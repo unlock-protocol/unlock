@@ -52,20 +52,30 @@ export const isWorthRenewing = async (
   try {
     const lock = await web3Service.getLockContract(lockAddress, provider)
 
+    // get gas refund from contract
+    const gasRefund = await lock.gasRefundValue()
+    const costRefunded = await getGasFee(network, gasRefund.toNumber())
+
+    // if gas refund is set, we use a a random signer to get estimate to prevent
+    // tx to reverts with msg.sender `ERC20: transfer to address zero`
+    let estimateGas
+    if (gasRefund.toNumber() !== 0) {
+      const randomWallet = await ethers.Wallet.createRandom().connect(provider)
+      estimateGas = lock.connect(randomWallet).estimateGas
+    } else {
+      estimateGas = lock.estimateGas
+    }
+
     // estimate gas for the renewMembership function (check if reverts).
     // we bump by 20%, just to cover temporary changes
     const gasLimit = (
-      await lock.estimateGas.renewMembershipFor(keyId, constants.AddressZero)
+      await estimateGas.renewMembershipFor(keyId, constants.AddressZero)
     )
       .mul(10)
       .div(8)
 
     // find cost to renew in USD cents
     const costToRenew = await getGasFee(network, gasLimit.toNumber())
-
-    // find gas refund in USD cents
-    const gasRefund = await lock.gasRefundValue()
-    const costRefunded = await getGasFee(network, gasRefund.toNumber())
 
     const shouldRenew =
       costToRenew < costRefunded || costToRenew < MAX_RENEWAL_COST_COVERED
