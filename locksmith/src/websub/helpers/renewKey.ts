@@ -27,6 +27,7 @@ interface RenewKeyReturned {
 
 interface ShouldRenew {
   shouldRenew: boolean
+  gasLimit?: ethers.BigNumber
   gasRefund?: string
   error?: string
 }
@@ -52,10 +53,12 @@ export const isWorthRenewing = async (
     const lock = await web3Service.getLockContract(lockAddress, provider)
 
     // estimate gas for the renewMembership function (check if reverts).
-    const gasLimit = await lock.estimateGas.renewMembershipFor(
-      keyId,
-      constants.AddressZero
+    // we bump by 20%, just to cover temporary changes
+    const gasLimit = (
+      await lock.estimateGas.renewMembershipFor(keyId, constants.AddressZero)
     )
+      .mul(10)
+      .div(8)
 
     // find cost to renew in USD cents
     const costToRenew = await getGasFee(network, gasLimit.toNumber())
@@ -69,6 +72,7 @@ export const isWorthRenewing = async (
 
     return {
       shouldRenew,
+      gasLimit,
       gasRefund: gasRefund.toNumber(),
     }
   } catch (error) {
@@ -119,11 +123,7 @@ export async function renewKey({
     const tx = await fulfillmentDispatcher.renewMembershipFor(
       network,
       lockAddress,
-      keyId,
-      constants.AddressZero,
-      {
-        gasLimit: gasRefund,
-      }
+      keyId
     )
 
     // record renewal in db

@@ -10,8 +10,11 @@ const configPath = path.resolve(
   '..',
   `.env.${unlockEnv}.local`
 )
-// eslint-disable-next-line no-console
-console.log(`Loading config from ${configPath}`)
+
+if (process.env.NODE_ENV !== 'test') {
+  // eslint-disable-next-line no-console
+  console.log(`Loading config from ${configPath}`)
+}
 
 try {
   dotenv.config({

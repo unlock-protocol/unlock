@@ -9,7 +9,7 @@ logger.info('Websub server started.')
 // every 5 minute
 const CURRENT_CRON_SCHEDULE = '*/5 * * * *'
 
-cron.schedule(CURRENT_CRON_SCHEDULE, async () => {
+const run = async () => {
   logger.info('Running keys and locks job')
 
   const subscribers = await Hook.findAll({
@@ -28,4 +28,6 @@ cron.schedule(CURRENT_CRON_SCHEDULE, async () => {
   ])
 
   logger.info('Finished running keys and locks job')
-})
+}
+run()
+cron.schedule(CURRENT_CRON_SCHEDULE, run)
