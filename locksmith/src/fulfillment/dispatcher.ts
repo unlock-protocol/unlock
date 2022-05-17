@@ -1,6 +1,7 @@
 import { WalletService } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
+import fetch from 'isomorphic-fetch'
 import logger from '../logger'
 
 const config = require('../../config/config')
@@ -10,6 +11,53 @@ interface transactionOptionsInterface {
   maxPriorityFeePerGas?: ethers.BigNumber
   maxFeePerGas?: ethers.BigNumber
   gasPrice?: ethers.BigNumber
+}
+
+interface GasSettings {
+  maxFeePerGas: ethers.BigNumber
+  maxPriorityFeePerGas: ethers.BigNumber
+}
+
+export const getGasSettings = async (network: number): Promise<GasSettings> => {
+  const provider = new ethers.providers.JsonRpcProvider(
+    networks[network].publicProvider
+  )
+
+  // get fees from network provider
+  let { maxFeePerGas, maxPriorityFeePerGas } = await provider.getFeeData()
+  maxFeePerGas = maxFeePerGas || ethers.BigNumber.from(40000000000) // fallback to 40 gwei
+  maxPriorityFeePerGas =
+    maxPriorityFeePerGas || ethers.BigNumber.from(40000000000) // fallback to 40 gwei
+
+  // workaround for polygon: get max fees from gas station
+  // see https://github.com/ethers-io/ethers.js/issues/2828
+  if (network === 137) {
+    try {
+      const resp = await fetch('https://gasstation-mainnet.matic.network/v2')
+      const { data } = await resp.json()
+
+      maxFeePerGas = ethers.utils.parseUnits(
+        `${Math.ceil(data.standard.maxFee)}`,
+        'gwei'
+      )
+      maxPriorityFeePerGas = ethers.utils.parseUnits(
+        `${Math.ceil(data.standard.maxPriorityFee)}`,
+        'gwei'
+      )
+
+      return {
+        maxFeePerGas,
+        maxPriorityFeePerGas,
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  return {
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+  }
 }
 
 export default class Dispatcher {
@@ -170,34 +218,11 @@ export default class Dispatcher {
     // TODO: use team multisig here (based on network config) instead of purchaser address!
     const referrer = walletWithProvider.address
 
-    // workaround for polygon: get max fees from gas station
-    // see https://github.com/ethers-io/ethers.js/issues/2828
-    if (network == 137) {
-      let maxFeePerGas = ethers.BigNumber.from(40000000000) // fallback to 40 gwei
-      let maxPriorityFeePerGas = ethers.BigNumber.from(40000000000) // fallback to 40 gwei
-      try {
-        const resp = await fetch('https://gasstation-mainnet.matic.network/v2')
-        const data = await resp.json()
-
-        maxFeePerGas = ethers.utils.parseUnits(
-          `${Math.ceil(data.fast.maxFee)}`,
-          'gwei'
-        )
-        maxPriorityFeePerGas = ethers.utils.parseUnits(
-          `${Math.ceil(data.fast.maxPriorityFee)}`,
-          'gwei'
-        )
-      } catch {
-        // ignore
-      }
-
-      // send tx with custom gas
-      return await lock.renewMembershipFor(keyId, referrer, {
-        maxFeePerGas,
-        maxPriorityFeePerGas,
-      })
-    } else {
-      return await lock.renewMembershipFor(keyId, referrer)
-    }
+    // send tx with custom gas
+    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
+    return await lock.renewMembershipFor(keyId, referrer, {
+      maxFeePerGas,
+      maxPriorityFeePerGas,
+    })
   }
 }

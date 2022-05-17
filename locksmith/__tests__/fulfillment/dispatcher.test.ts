@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import Dispatcher from '../../src/fulfillment/dispatcher'
+import Dispatcher, { getGasSettings } from '../../src/fulfillment/dispatcher'
 
 const lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 const recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
@@ -50,7 +50,47 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
+jest.mock('ethers', () => {
+  const { ethers, BigNumber } = jest.requireActual('ethers')
+  return {
+    ethers: {
+      ...ethers,
+      providers: {
+        JsonRpcProvider: jest.fn(() => ({
+          getFeeData: jest.fn(() => ({
+            maxFeePerGas: BigNumber.from(10),
+            maxPriorityFeePerGas: BigNumber.from(20),
+            catch: jest.fn(),
+          })),
+        })),
+      },
+      Wallet: jest.fn(),
+    },
+  }
+})
+
+jest.mock('isomorphic-fetch', () => async () => ({
+  json: async () => ({
+    data: { standard: { maxPriorityFee: 36.37, maxFee: 36.37 } },
+  }),
+}))
+
 describe('Dispatcher', () => {
+  describe('getGasSettings', () => {
+    it('returns correct default value', async () => {
+      expect.assertions(2)
+      const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(1)
+      expect(maxFeePerGas.toNumber()).toBe(10)
+      expect(maxPriorityFeePerGas.toNumber()).toBe(20)
+    })
+    it('returns value from gas station on Polygon mainnet', async () => {
+      expect.assertions(2)
+      const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(137)
+      expect(maxFeePerGas.toNumber()).toBe(37000000000)
+      expect(maxPriorityFeePerGas.toNumber()).toBe(37000000000)
+    })
+  })
+
   describe('grantKey', () => {
     it('should call grant keys on the key granter', async () => {
       expect.assertions(1)
