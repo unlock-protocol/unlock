@@ -5,7 +5,7 @@ async function main({ lockAddress, tokenId, referrer }) {
   const lock = PublicLock.attach(lockAddress)
 
   if ((await lock.publicLockVersion()) < 10) {
-    throw new Error('enewal only avail for v10+')
+    throw new Error('Renewal only available for v10+')
   }
   // default to address zero
   referrer = referrer || ethers.constants.AddressZero
