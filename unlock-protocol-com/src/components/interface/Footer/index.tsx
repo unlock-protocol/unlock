@@ -68,8 +68,8 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
       href: '/grants',
     },
     {
-      name: 'Docs',
-      href: UNLOCK_LINKS.docs,
+      name: 'Guides',
+      href: '/guides',
     },
     {
       name: 'Privacy',
