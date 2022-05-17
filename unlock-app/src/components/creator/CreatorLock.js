@@ -84,7 +84,9 @@ export const CreatorLock = ({
   } = useLock(lockFromProps, network)
 
   const recurringPossible =
-    lock.publicLockVersion >= 10 && lock.currencyContractAddress
+    lock.expirationDuration != -1 &&
+    lock.publicLockVersion >= 10 &&
+    lock.currencyContractAddress
 
   const [isRecurring, setIsRecurring] = useState(
     recurringPossible && lock.selfAllowance !== '0'
