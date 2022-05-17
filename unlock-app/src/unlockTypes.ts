@@ -197,7 +197,7 @@ export interface PaywallConfig {
   persistentCheckout?: boolean
   redirectUri?: string
   useDelegatedProvider?: boolean
-  network: number
+  network?: number
   referrer?: string
   messageToSign?: string
   pessimistic?: boolean
