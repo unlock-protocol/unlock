@@ -167,6 +167,7 @@ export default class Dispatcher {
     // get lock
     const lock = await walletService.getLockContract(lockAddress)
 
+    // TODO: use team multisig here (based on network config) instead of purchaser address!
     return await lock.renewMembershipFor(keyId, walletWithProvider.address)
   }
 }
