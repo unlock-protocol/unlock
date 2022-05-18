@@ -16,10 +16,9 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
       const resp = await fetch('https://gasstation-mainnet.matic.network/v2')
       const { data } = await resp.json()
 
-      const maxFeePerGas = ethers.utils.parseUnits(
-        `${Math.ceil(data.fast.maxFee)}`,
-        'gwei'
-      ).mul(2)
+      const maxFeePerGas = ethers.utils
+        .parseUnits(`${Math.ceil(data.fast.maxFee)}`, 'gwei')
+        .mul(2)
 
       const maxPriorityFeePerGas = ethers.utils
         .parseUnits(`${Math.ceil(data.fast.maxPriorityFee)}`, 'gwei')
