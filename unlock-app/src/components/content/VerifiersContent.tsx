@@ -90,7 +90,8 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
         <div className={styling.sectionWrapper}>
           <h3 className={styling.sectionTitle}>Add verifier</h3>
           <span className={styling.sectionDesctiption}>
-            Enter the Ethereum address of the user you want to add as a Verifier.
+            Enter the Ethereum address of the user you want to add as a
+            Verifier.
           </span>
           <Input
             placeholder="0x..."
