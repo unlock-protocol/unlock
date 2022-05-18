@@ -12,7 +12,7 @@ const verifierController = new VerifierController({
   web3Service,
 })
 
-router.use('/', authenticatedMiddleware, lockManagerMiddleware)
+router.all('/', authenticatedMiddleware, lockManagerMiddleware)
 
 router.get('/list/:network/:lockAddress', (req, res) =>
   verifierController.list(req, res)
