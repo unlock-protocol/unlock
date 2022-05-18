@@ -48,7 +48,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
       await fetch(addVerifierUrl, requestOptions)
         .then((res) => res.json())
         .then((verifiers: any) => {
-          setVerifiers(verifiers)
+          setVerifiers(verifiers?.results)
         })
     } catch (err: any) {
       setLoading(false)
@@ -70,8 +70,9 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
         }
         await fetch(addVerifierUrl, requestOptions)
           .then((res) => res.json())
-          .then(() => {
+          .then((verifiers: any) => {
             ToastHelper.success('Verifier deleted from list')
+            setVerifiers(verifiers?.results)
           })
         setDefaults()
       } else {
