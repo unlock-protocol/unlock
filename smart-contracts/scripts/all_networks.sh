@@ -8,15 +8,16 @@
 ## all networks
 all_networks=("rinkeby" "polygon" "xdai" "mainnet" "binance" "optimism")
 
-# run once on localhost (checking for errors)
+# dry run once on localhost (just checking for errors)
 echo "Run on localhost..."
 echo "$@"
+$@
 
-## now loop through the above array
+## now loop through all networks
 for i in "${all_networks[@]}"
 do
    echo "> Deploying on $i ..."
    echo "$@" "--network $i"
-   $@ "--network $i"
+   $@ --network $i
    echo 
 done
