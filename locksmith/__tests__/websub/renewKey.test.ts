@@ -62,8 +62,15 @@ jest.mock('ethers', () => {
   return {
     ...original,
     ethers: {
+      ...original.ethers,
       providers: {
-        JsonRpcProvider: jest.fn(),
+        JsonRpcProvider: jest.fn(() => ({
+          getFeeData: jest.fn(() => ({
+            maxFeePerGas: BigNumber.from(10),
+            maxPriorityFeePerGas: BigNumber.from(20),
+            catch: jest.fn(),
+          })),
+        })),
       },
       Wallet: jest.fn(),
     },
