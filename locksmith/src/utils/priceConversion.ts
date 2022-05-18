@@ -9,24 +9,33 @@ const cache: PricesCache = {}
 export default class PriceConversion {
   client: any
 
-  // Returns the price in $
-  async convertToUSD(currency: string, amount: number) {
+  /**
+   * Returns the USD cents price of a currency amount
+   * @param currency
+   * @param amount in cents
+   * @returns
+   */
+  async convertToUSD(currency: string, amount: number): Promise<number> {
     const cached = cache[currency]
 
+    let rate
     // Cache is valid for 5 minutes!
     if (cached && cached[0] > new Date().getTime() - 1000 * 60 * 5) {
-      return (cached[1] * amount * 100).toFixed(2)
+      ;[, rate] = cached
+      return parseInt((cached[1] * amount * 100).toFixed(0))
+    } else {
+      const response = await fetch(
+        `https://api.coinbase.com/v2/prices/${currency}-USD/buy`
+      )
+
+      const { data } = await response.json()
+      if (!data?.amount) {
+        return 0
+      }
+      cache[currency] = [new Date().getTime(), parseFloat(data.amount)]
+      rate = parseFloat(data.amount)
     }
 
-    const response = await fetch(
-      `https://api.coinbase.com/v2/prices/${currency}-USD/buy`
-    )
-
-    const { data } = await response.json()
-    if (!data?.amount) {
-      return 0
-    }
-    cache[currency] = [new Date().getTime(), parseFloat(data.amount)]
-    return (parseFloat(data.amount) * amount * 100).toFixed(2)
+    return parseInt((rate * amount * 100).toFixed(0))
   }
 }

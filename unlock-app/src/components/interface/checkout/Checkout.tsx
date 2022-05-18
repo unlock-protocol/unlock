@@ -120,6 +120,7 @@ export const Checkout = ({
   const { getAutoLoginEmail } = useAutoLogin()
   const storedEmail = getAutoLoginEmail()
   const messageSigned = useRef(false)
+
   const {
     recipients,
     hasMultipleRecipients,
@@ -131,11 +132,8 @@ export const Checkout = ({
     clear,
     removeRecipient,
     hasMinimumRecipients,
-  } = useMultipleRecipient(selectedLock, {
-    maxRecipients: paywallConfig?.maxRecipients || 1,
-    minRecipients: paywallConfig?.minRecipients || 1,
-    metadataInputs: paywallConfig?.metadataInputs || [],
-  })
+  } = useMultipleRecipient(selectedLock, paywallConfig)
+
   const showMetadataForm =
     (paywallConfig?.metadataInputs || hasMultipleRecipients) && !savedMetadata
   // state change
@@ -334,6 +332,7 @@ export const Checkout = ({
           numberOfRecipients={recipients?.length}
           recipients={recipients}
           clearMultipleRecipients={clear}
+          emitUserInfo={emitUserInfo}
         />
       )
     }

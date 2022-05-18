@@ -38,7 +38,12 @@ export const ToastHelper: ToastHelperProps = {
   success: (message) => toast.success(message),
   error: (message) => toast.error(message),
   promise: async (promise, msgs, opts = {}) => {
-    await toast.promise(promise, msgs, opts)
+    const start = new Date().getTime()
+    const result = await toast.promise(promise, msgs, opts)
+    if (new Date().getTime() - start < 300) {
+      toast.remove() // This cancels the toast immediately
+    }
+    return result
   },
   // TODO: we need to provide an errors pages 404/500
   redirectErrorPage: (page) => {

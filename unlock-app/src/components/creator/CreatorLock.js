@@ -83,10 +83,13 @@ export const CreatorLock = ({
     updateSelfAllowance,
   } = useLock(lockFromProps, network)
 
-  const [isRecurring, setIsRecurring] = useState(
+  const recurringPossible =
+    lock.expirationDuration != -1 &&
     lock.publicLockVersion >= 10 &&
-      lock.currencyContractAddress &&
-      lock.selfAllowance === MAX_UINT
+    lock.currencyContractAddress
+
+  const [isRecurring, setIsRecurring] = useState(
+    recurringPossible && lock.selfAllowance !== '0'
   )
 
   useEffect(() => {
@@ -207,7 +210,7 @@ export const CreatorLock = ({
               Recurring enabled
             </small>
           )}
-          {!isRecurring && lock.currencyContractAddress && (
+          {!isRecurring && recurringPossible && (
             <LockLabelSmall onClick={handleApproveRecurring}>
               Enable recurring
             </LockLabelSmall>

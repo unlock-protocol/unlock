@@ -276,6 +276,16 @@ namespace UserController {
     }
     return res.sendStatus(400)
   }
+
+  export const exist = async (request: Request, response: Response) => {
+    const { emailAddress } = request.params
+    const user = await UserOperations.findByEmail(emailAddress)
+
+    if (!user) {
+      return response.sendStatus(404)
+    }
+    return response.sendStatus(200)
+  }
 }
 
 export = UserController
