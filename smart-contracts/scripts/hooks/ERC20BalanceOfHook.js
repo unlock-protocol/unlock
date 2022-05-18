@@ -1,4 +1,4 @@
-const { ethers } = require('hardhat')
+const { ethers, run } = require('hardhat')
 
 async function main() {
   const ERC20BalanceOfHook = await ethers.getContractFactory(
@@ -11,6 +11,10 @@ async function main() {
   console.log(
     `HOOK (ERC20 BalanceOf)  > deployed to : ${hook.address} (tx: ${hook.deployTransaction.hash})`
   )
+
+  await run('verify:verify', {
+    address: hook.address,
+  })
 }
 
 // execute as standalone
