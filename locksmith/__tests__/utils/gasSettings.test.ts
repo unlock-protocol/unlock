@@ -31,7 +31,7 @@ jest.mock('ethers', () => {
 
 jest.mock('isomorphic-fetch', () => async () => ({
   json: async () => ({
-    data: { standard: { maxPriorityFee: 36.37, maxFee: 36.37 } },
+    data: { fast: { maxPriorityFee: 36.37, maxFee: 36.37 } },
   }),
 }))
 
