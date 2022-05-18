@@ -17,6 +17,6 @@ for i in "${all_networks[@]}"
 do
    echo "> Deploying on $i ..."
    echo "$@" "--network $i"
-
+   $@ "--network $i"
    echo 
 done
