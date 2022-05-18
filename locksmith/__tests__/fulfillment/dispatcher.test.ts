@@ -1,6 +1,9 @@
+// eslint-disable-next-line max-classes-per-file
 import { EventEmitter } from 'events'
-import { BigNumber } from 'ethers'
-import Dispatcher, { getGasSettings } from '../../src/fulfillment/dispatcher'
+import { BigNumber, Wallet } from 'ethers'
+import Dispatcher from '../../src/fulfillment/dispatcher'
+
+const config = require('../../config/config')
 
 const lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 const recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
@@ -22,6 +25,11 @@ const mockWeb3Service = {
     .mockResolvedValueOnce(standardLock),
 }
 
+class MockLockContract extends EventEmitter {
+  renewMembershipFor = jest.fn()
+}
+
+const mockLockContract = new MockLockContract()
 class MockWalletService extends EventEmitter {
   connect = jest.fn()
 
@@ -38,6 +46,8 @@ class MockWalletService extends EventEmitter {
   setUnlockAddress = jest.fn()
 
   grantKeys = jest.fn()
+
+  getLockContract = jest.fn(async () => mockLockContract)
 }
 
 const mockWalletService = new MockWalletService()
@@ -51,48 +61,16 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
-jest.mock('ethers', () => {
-  const { ethers, BigNumber } = jest.requireActual('ethers')
-  return {
-    BigNumber,
-    ethers: {
-      ...ethers,
-      providers: {
-        JsonRpcProvider: jest.fn(() => ({
-          getFeeData: jest.fn(() => ({
-            maxFeePerGas: BigNumber.from(10),
-            maxPriorityFeePerGas: BigNumber.from(20),
-            catch: jest.fn(),
-          })),
-        })),
-      },
-      Wallet: jest.fn(),
-    },
-  }
-})
-
-jest.mock('isomorphic-fetch', () => async () => ({
-  json: async () => ({
-    data: { standard: { maxPriorityFee: 36.37, maxFee: 36.37 } },
+jest.mock('../../src/utils/gasSettings', () => ({
+  getGasSettings: jest.fn(() => {
+    return {
+      maxFeePerGas: BigNumber.from(40000000000),
+      maxPriorityFeePerGas: BigNumber.from(40000000000),
+    }
   }),
 }))
 
 describe('Dispatcher', () => {
-  describe('getGasSettings', () => {
-    it('returns correct default value', async () => {
-      expect.assertions(2)
-      const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(1)
-      expect(maxFeePerGas?.toNumber()).toBe(40000000000)
-      expect(maxPriorityFeePerGas?.toNumber()).toBe(40000000000)
-    })
-    it('returns value from gas station on Polygon mainnet', async () => {
-      expect.assertions(2)
-      const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(137)
-      expect(maxFeePerGas?.toNumber()).toBe(37000000000)
-      expect(maxPriorityFeePerGas?.toNumber()).toBe(37000000000)
-    })
-  })
-
   describe('grantKey', () => {
     it('should call grant keys on the key granter', async () => {
       expect.assertions(1)
@@ -114,6 +92,26 @@ describe('Dispatcher', () => {
           },
         },
         callback
+      )
+    })
+  })
+  describe('renewMembershipFor', () => {
+    it('should call the function directly on lock contract', async () => {
+      expect.assertions(2)
+      const keyId = 1
+      // check contract is fetched correctly
+      await new Dispatcher().renewMembershipFor(31337, lockAddress, keyId)
+      expect(mockWalletService.getLockContract).toBeCalledWith(lockAddress)
+
+      // check contract call
+      const referrerWallet = new Wallet(config.purchaserCredentials)
+      expect(mockLockContract.renewMembershipFor).toBeCalledWith(
+        keyId,
+        referrerWallet.address,
+        {
+          maxFeePerGas: BigNumber.from(40000000000),
+          maxPriorityFeePerGas: BigNumber.from(40000000000),
+        }
       )
     })
   })
