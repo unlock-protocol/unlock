@@ -1,18 +1,51 @@
 import { WalletService } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import { ethers } from 'ethers'
 import logger from '../logger'
 
-const { ethers } = require('ethers')
 const config = require('../../config/config')
 const { GAS_COST } = require('../utils/keyPricer')
 
+interface transactionOptionsInterface {
+  maxPriorityFeePerGas?: ethers.BigNumber
+  maxFeePerGas?: ethers.BigNumber
+  gasPrice?: ethers.BigNumber
+}
+
 export default class Dispatcher {
+  async balances() {
+    const balances = await Promise.all(
+      Object.values(networks).map(async (network: any) => {
+        try {
+          const provider = new ethers.providers.JsonRpcProvider(
+            network.publicProvider
+          )
+          const wallet = new ethers.Wallet(config.purchaserCredentials)
+          const balance = await provider.getBalance(wallet.address)
+          return [
+            network.id,
+            {
+              address: wallet.address,
+              balance: ethers.utils.formatEther(balance),
+            },
+          ]
+        } catch (error) {
+          logger.error(error)
+          return [network.id, {}]
+        }
+      })
+    )
+    // @ts-expect-error
+    const entries = new Map(balances)
+    return Object.fromEntries(entries)
+  }
+
   /**
    * Called to grant key to user!
    */
-  async grantKey(
+  async grantKeys(
     lockAddress: string,
-    recipient: string,
+    recipients: string[],
     network: number,
     cb?: any
   ) {
@@ -26,12 +59,36 @@ export default class Dispatcher {
       config.purchaserCredentials,
       provider
     )
-    await walletService.connect(provider, walletWithProvider)
 
-    return await walletService.grantKey(
+    const feeData = await provider.getFeeData().catch(() => null)
+
+    const transactionOptions: transactionOptionsInterface = {}
+
+    if (network === 137) {
+      transactionOptions.maxPriorityFeePerGas = ethers.utils.parseUnits(
+        '500',
+        'gwei'
+      )
+      transactionOptions.maxFeePerGas = transactionOptions.maxPriorityFeePerGas
+    } else if (feeData?.maxFeePerGas) {
+      // We double to increase speed of execution
+      // We may end up paying *more* but we get mined earlier
+      transactionOptions.maxPriorityFeePerGas = feeData.maxFeePerGas.mul(
+        ethers.BigNumber.from('2')
+      )
+      transactionOptions.maxFeePerGas = transactionOptions.maxPriorityFeePerGas
+    } else if (feeData?.gasPrice) {
+      transactionOptions.gasPrice = feeData.gasPrice.mul(
+        ethers.BigNumber.from('2')
+      )
+    }
+
+    await walletService.connect(provider, walletWithProvider)
+    return walletService.grantKeys(
       {
         lockAddress,
-        recipient,
+        recipients,
+        transactionOptions,
       },
       cb
     )
@@ -47,8 +104,7 @@ export default class Dispatcher {
     const gasPrice = await provider.getGasPrice()
 
     const balance = await provider.getBalance(wallet.address)
-
-    if (balance < gasPrice.mul(GAS_COST)) {
+    if (balance.lt(gasPrice.mul(GAS_COST))) {
       logger.warn(
         `Purchaser ${
           wallet.address
@@ -59,9 +115,9 @@ export default class Dispatcher {
           gasPrice.mul(GAS_COST)
         )}) on ${network}`
       )
+      return false
     }
-
-    return balance >= gasPrice.mul(GAS_COST)
+    return true
   }
 
   async purchaseKey(
@@ -89,5 +145,29 @@ export default class Dispatcher {
       },
       cb
     )
+  }
+
+  async renewMembershipFor(
+    network: number,
+    lockAddress: string,
+    keyId: number
+  ) {
+    const walletService = new WalletService(networks)
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].publicProvider
+    )
+
+    const walletWithProvider = new ethers.Wallet(
+      config.purchaserCredentials,
+      provider
+    )
+
+    await walletService.connect(provider, walletWithProvider)
+
+    // get lock
+    const lock = await walletService.getLockContract(lockAddress)
+
+    // TODO: use team multisig here (based on network config) instead of purchaser address!
+    return await lock.renewMembershipFor(keyId, walletWithProvider.address)
   }
 }

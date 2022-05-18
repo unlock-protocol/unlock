@@ -60,34 +60,39 @@ export function About({ updates }: Props) {
               </div>
             </div>
             {updates && (
-              <div className="grid gap-6">
+              <div className="grid gap-6 pb-6">
                 <header className="space-y-2">
                   <h2 className="text-2xl font-semibold sm:text-3xl">News</h2>
-                  <p className="text-brand-gray">Latest updates from Unlock.</p>
+                  <p className="text-lg text-brand-gray">
+                    Latest updates from Unlock.
+                  </p>
                 </header>
-                <div className="grid gap-4">
+                <ol className="grid gap-4">
                   {updates.map((item, index) => {
                     const date = new Date(
                       item.frontMatter.publishDate
                     ).toLocaleDateString()
                     return (
-                      <div
+                      <li
                         key={index}
                         className="flex flex-col gap-y-0 sm:flex-row sm:gap-x-4 md:gap-x-6 lg:gap-x-8"
                       >
-                        <time dateTime={date} className="text-brand-gray">
-                          {date}
-                        </time>
+                        <div className="w-full max-w-[100px]">
+                          <time dateTime={date} className="text-brand-gray">
+                            {date}
+                          </time>
+                        </div>
+
                         <Link
                           className="hover:text-brand-ui-primary"
                           href={`/blog/${item.slug}`}
                         >
                           {item.frontMatter.title}
                         </Link>
-                      </div>
+                      </li>
                     )
                   })}
-                </div>
+                </ol>
               </div>
             )}
           </main>

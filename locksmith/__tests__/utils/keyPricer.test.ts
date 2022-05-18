@@ -14,6 +14,7 @@ const standardLock = {
   currencyContractAddress: '0x0000000000000000000000000000000000000000',
   currencySymbol: null,
 }
+
 const mockWeb3Service: { getLock: any } = {
   getLock: jest.fn(),
 }
@@ -26,9 +27,17 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   Web3Service: getMockWeb3Service,
 }))
 
-jest.mock('../../src/utils/ethPrice', () => ({
+jest.mock('../../src/utils/ethPrice', () => async () => ({
   getPrice: jest.fn(() => Promise.resolve(101.18)),
 }))
+
+jest.mock('../../src/utils/gasPrice', () => {
+  return jest.fn(() => {
+    return {
+      gasPriceUSD: () => 0.01,
+    }
+  })
+})
 
 const keyPricer = new KeyPricer()
 const spy = jest.spyOn(PriceConversion.prototype, 'convertToUSD')
@@ -41,6 +50,28 @@ describe('KeyPricer', () => {
         await keyPricer.keyPriceUSD('an address', 1) // default to Eth
         expect(spy).toBeCalledWith('ETH', '0.01')
       })
+    })
+  })
+
+  describe('Generate price', () => {
+    it('Generate price for a single quantity key', async () => {
+      expect.assertions(3)
+      mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
+      const pricing = await keyPricer.generate('0x', 100)
+
+      expect(pricing.keyPrice).toBe(1)
+      expect(pricing.creditCardProcessing).toBe(31)
+      expect(pricing.unlockServiceFee).toBe(1.01)
+    })
+
+    it('Generate price for multiple quantity keys', async () => {
+      expect.assertions(3)
+      mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
+      const pricing = await keyPricer.generate('0x', 100, 100)
+
+      expect(pricing.keyPrice).toBe(100)
+      expect(pricing.unlockServiceFee).toBe(10.01)
+      expect(pricing.creditCardProcessing).toBe(34)
     })
   })
 

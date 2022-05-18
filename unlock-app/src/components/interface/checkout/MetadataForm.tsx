@@ -6,25 +6,47 @@ import { Button, LoadingButton, Input, Label, SmallButton } from './FormStyles'
 import { formResultToMetadata } from '../../../utils/userMetadata'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
+import { RecipientItem } from '../../../hooks/useMultipleRecipient'
+import { MultipleRecipient } from './MultipleRecipients'
 
 interface Props {
   network: number
   lock: any
   fields: MetadataInput[]
   onSubmit: (metadata: UserMetadata) => void
+  recipients: RecipientItem[]
+  maxRecipients: number
+  minRecipients: number
+  hasMinimumRecipients: boolean
+  addRecipient: any
+  loading: boolean
+  submitBulkRecipients: () => Promise<boolean>
+  clear: () => void
+  removeRecipient: (index: number) => void
 }
 
 interface DefautltValues {
   [key: string]: string
 }
 
-export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
+export const MetadataForm = ({
+  network,
+  lock,
+  fields = [],
+  onSubmit,
+  recipients,
+  maxRecipients,
+  minRecipients,
+  hasMinimumRecipients,
+  addRecipient,
+  loading,
+  submitBulkRecipients,
+  removeRecipient,
+}: Props) => {
   const { account } = useContext(AuthenticationContext)
   // @ts-expect-error account is always defined in this component
   const { setUserMetadataData } = useAccount(account, network)
-
   const [error, setError] = useState('')
-
   // We can also destructure the `errors` field here and use it for
   // validation -- we'll have to consider how to handle the different
   // kinds of errors so that we can show the right message
@@ -42,9 +64,10 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
   const [submittedForm, setSubmittedForm] = useState(false)
   const [skipOptionalFields, setSkipOptionalFields] = useState(false)
 
-  const showSkipButton =
+  const metadataNotRequired =
     fields.every((field) => field.required === false) && !submittedForm
-
+  const showMultipleRecipient = maxRecipients > 1 || minRecipients > 1
+  const showSkipButton = metadataNotRequired && !showMultipleRecipient
   // The form returns a map of key-value pair strings. We need to
   // process those into the expected metadata format so that the typed
   // data will be correct.
@@ -64,6 +87,27 @@ export const MetadataForm = ({ network, lock, fields, onSubmit }: Props) => {
     }
   }
 
+  const withMetadata = fields?.length > 0
+
+  if (showMultipleRecipient) {
+    return (
+      <MultipleRecipient
+        recipients={recipients}
+        maxRecipients={maxRecipients}
+        minRecipients={minRecipients}
+        hasMinimumRecipients={hasMinimumRecipients}
+        addRecipient={addRecipient}
+        loading={loading}
+        fields={fields}
+        submitBulkRecipients={submitBulkRecipients}
+        removeRecipient={removeRecipient}
+        withMetadata={withMetadata}
+        onContinue={() => {
+          onSubmit(true as any)
+        }}
+      />
+    )
+  }
   return (
     <form onSubmit={handleSubmit(wrappedOnSubmit)}>
       <Message>

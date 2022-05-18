@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 const { ethers } = require('hardhat')
-const { WalletService } = require('../../../lib/index')
+const { WalletService } = require('../../../dist/index')
 
 const Erc20 = require('./deploy-erc20')
 const Ether = require('./transfer')
@@ -19,10 +19,11 @@ async function main() {
   await walletService.connect(ethers.provider)
 
   // Deploy an ERC20
-  const erc20Address = await Erc20.deploy(
+  const erc20 = await Erc20.deploy(
     walletService.provider,
     await walletService.provider.getSigner(3)
   )
+  const erc20Address = erc20.address
 
   // We then transfer some ERC20 tokens to some users
   const users = await ethers.getSigners()
@@ -48,7 +49,7 @@ async function main() {
     '0.000000000000000001'
   )
 
-  return erc20Address
+  return erc20
 }
 
 // execute as standalone

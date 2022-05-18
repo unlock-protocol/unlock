@@ -1,4 +1,10 @@
-import React, { useState, useContext, useReducer, useEffect } from 'react'
+import React, {
+  useState,
+  useContext,
+  useReducer,
+  useEffect,
+  useRef,
+} from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -23,6 +29,7 @@ import NewAccountCheckout from './NewAccountCheckout'
 import { pageTitle } from '../../../constants'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
 import LogIn from '../LogIn'
+import { useAutoLogin } from '../../../hooks/useAutoLogin'
 
 import {
   UserInfo,
@@ -32,6 +39,7 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 import { PaywallConfig, OAuthConfig } from '../../../unlockTypes'
 import { OAuthConnect } from './OauthConnect'
+import { useMultipleRecipient } from '../../../hooks/useMultipleRecipient'
 
 interface CheckoutProps {
   emitCloseModal: (success: boolean) => void
@@ -49,6 +57,12 @@ const keysReducer = (state: any, key: any) => {
   if (key === -1) {
     return {}
   }
+  // Invalid key: don't change the state
+  if (!key) {
+    return {
+      ...state,
+    }
+  }
   return {
     ...state,
     [key.lock]: key,
@@ -58,7 +72,9 @@ const keysReducer = (state: any, key: any) => {
 const hasValidMembership = (keys: Array<any>) => {
   const now = new Date().getTime() / 1000
   return !!(
-    Object.values(keys).filter(({ expiration }) => expiration > now).length > 0
+    Object.values(keys).filter(
+      ({ expiration }) => expiration === -1 || expiration > now
+    ).length > 0
   )
 }
 
@@ -100,20 +116,49 @@ export const Checkout = ({
   const [existingKeys, setHasKey] = useReducer(keysReducer, {})
   const [selectedLock, selectLock] = useState<any>(null)
   const [savedMetadata, setSavedMetadata] = useState<any>(false)
+  const [storedLoginEmail, setStoredLoginEmail] = useState<string>('')
+  const { getAutoLoginEmail } = useAutoLogin()
+  const storedEmail = getAutoLoginEmail()
+  const messageSigned = useRef(false)
 
+  const {
+    recipients,
+    hasMultipleRecipients,
+    minRecipients,
+    maxRecipients,
+    addRecipientItem,
+    loading,
+    submitBulkRecipients,
+    clear,
+    removeRecipient,
+    hasMinimumRecipients,
+  } = useMultipleRecipient(selectedLock, paywallConfig)
+
+  const showMetadataForm =
+    (paywallConfig?.metadataInputs || hasMultipleRecipients) && !savedMetadata
   // state change
   useEffect(() => {
     setState(defaultState)
   }, [defaultState])
+
+  const showLoginForm = () => {
+    if (storedEmail.length > 0) {
+      setStoredLoginEmail(storedEmail)
+      setCheckoutState('login')
+    } else {
+      setCheckoutState('pick-lock')
+    }
+  }
 
   // When the account is changed, make sure we ping!
   useEffect(() => {
     const handleUser = async (account?: string) => {
       if (account) {
         let signedMessage
-        if (paywallConfig?.messageToSign) {
+        if (paywallConfig?.messageToSign && !messageSigned.current) {
           signedMessage = await signMessage(paywallConfig?.messageToSign)
           setSignedMessage(signedMessage)
+          messageSigned.current = true
         }
         setHasKey(-1)
         emitUserInfo({
@@ -122,19 +167,25 @@ export const Checkout = ({
         })
       }
 
+      if (!account) {
+        // Reset card details if user disconnected.
+        setCardDetails(null)
+      }
       if (selectedLock) {
         if (!isUnlockAccount) {
           // Check if we have card details.
-          if (cardDetails) {
-            setCheckoutState('confirm-card-purchase')
-          } else {
-            setCheckoutState('crypto-checkout')
-          }
+          const checkoutState = cardDetails
+            ? 'confirm-card-purchase'
+            : 'crypto-checkout'
+          setCheckoutState(checkoutState)
         } else {
           cardCheckoutOrClaim(selectedLock)
         }
+      } else if (messageSigned.current) {
+        setCheckoutState('pick-lock')
       } else {
         setCheckoutState(defaultState)
+        if (!account && storedEmail) showLoginForm()
       }
     }
     handleUser(account)
@@ -147,7 +198,12 @@ export const Checkout = ({
   }
 
   const setCheckoutState = (state: string) => {
-    if (!state || state === 'connect' || state === 'loading') {
+    if (
+      !state ||
+      state === 'connect' ||
+      state === 'loading' ||
+      state === 'config-error'
+    ) {
       setShowBack(false)
     } else {
       setShowBack(true)
@@ -198,6 +254,8 @@ export const Checkout = ({
   const cardCheckoutOrClaim = (lock: any) => {
     if (lock.keyPrice === '0' && lock.fiatPricing?.creditCardEnabled) {
       setCheckoutState('claim-membership')
+    } else if (cardDetails) {
+      setCheckoutState('confirm-card-purchase')
     } else {
       setCheckoutState('card-purchase')
     }
@@ -222,6 +280,7 @@ export const Checkout = ({
       <LogIn
         network={1} // We don't actually need a network here really.
         useWallet={() => setCheckoutState('wallet-picker')}
+        storedLoginEmail={storedLoginEmail}
       />
     )
   } else if (state === 'wallet-picker') {
@@ -241,13 +300,22 @@ export const Checkout = ({
     // Final step for the crypto checkout. We should save the metadata first!
     if (!paywallConfig) {
       content = <p>Missing paywall configuration. Please refresh this page</p>
-    } else if (paywallConfig?.metadataInputs && !savedMetadata) {
+    } else if (showMetadataForm) {
       content = (
         <MetadataForm
           network={lockProps?.network || paywallConfig?.network}
           lock={selectedLock}
           fields={paywallConfig!.metadataInputs!}
           onSubmit={setSavedMetadata}
+          recipients={recipients}
+          maxRecipients={maxRecipients}
+          minRecipients={minRecipients}
+          hasMinimumRecipients={hasMinimumRecipients}
+          addRecipient={addRecipientItem}
+          loading={loading}
+          submitBulkRecipients={submitBulkRecipients}
+          clear={clear}
+          removeRecipient={removeRecipient}
         />
       )
     } else {
@@ -261,6 +329,10 @@ export const Checkout = ({
           lock={selectedLock}
           closeModal={closeModal}
           setCardPurchase={() => cardCheckoutOrClaim(selectedLock)}
+          numberOfRecipients={recipients?.length}
+          recipients={recipients}
+          clearMultipleRecipients={clear}
+          emitUserInfo={emitUserInfo}
         />
       )
     }
@@ -275,13 +347,22 @@ export const Checkout = ({
       />
     )
   } else if (state === 'claim-membership') {
-    if (paywallConfig?.metadataInputs && !savedMetadata) {
+    if (showMetadataForm) {
       content = (
         <MetadataForm
           network={lockProps?.network || paywallConfig?.network}
           lock={selectedLock}
           fields={paywallConfig!.metadataInputs!}
           onSubmit={setSavedMetadata}
+          recipients={recipients}
+          maxRecipients={maxRecipients}
+          minRecipients={minRecipients}
+          hasMinimumRecipients={hasMinimumRecipients}
+          addRecipient={addRecipientItem}
+          loading={loading}
+          submitBulkRecipients={submitBulkRecipients}
+          clear={clear}
+          removeRecipient={removeRecipient}
         />
       )
     } else {
@@ -299,13 +380,22 @@ export const Checkout = ({
       )
     }
   } else if (state === 'confirm-card-purchase') {
-    if (paywallConfig?.metadataInputs && !savedMetadata) {
+    if (showMetadataForm) {
       content = (
         <MetadataForm
           network={lockProps?.network || paywallConfig?.network}
           lock={selectedLock}
           fields={paywallConfig!.metadataInputs!}
           onSubmit={setSavedMetadata}
+          recipients={recipients}
+          maxRecipients={maxRecipients}
+          minRecipients={minRecipients}
+          hasMinimumRecipients={hasMinimumRecipients}
+          addRecipient={addRecipientItem}
+          loading={loading}
+          submitBulkRecipients={submitBulkRecipients}
+          clear={clear}
+          removeRecipient={removeRecipient}
         />
       )
     } else {
@@ -318,6 +408,7 @@ export const Checkout = ({
           network={lockProps?.network || paywallConfig?.network}
           name={lockProps?.name || ''}
           closeModal={closeModal}
+          recipients={recipients}
           {...cardDetails}
         />
       )
@@ -366,7 +457,7 @@ export const Checkout = ({
         />
         <Locks
           network={paywallConfig?.network}
-          locks={paywallConfig?.locks}
+          locks={paywallConfig?.locks ?? {}}
           setHasKey={setHasKey}
           onSelected={onSelected}
         />
@@ -376,7 +467,7 @@ export const Checkout = ({
             Already a member? Access with your
             <br />{' '}
             <button type="button" onClick={() => setCheckoutState('login')}>
-              unlock acount
+              unlock account
             </button>{' '}
             or your{' '}
             <button
@@ -413,8 +504,14 @@ export const Checkout = ({
       )
     }
   } else if (state === 'loading') {
-    // Maybe show an error if this is too long?
     content = <Loading />
+  } else if (state === 'config-error') {
+    content = (
+      <p>
+        There is a configuration error in your purchase URL. Please make sure it
+        is configured correctly.
+      </p>
+    )
   }
 
   const onLoggedOut = () => {

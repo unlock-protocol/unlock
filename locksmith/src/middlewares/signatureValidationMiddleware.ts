@@ -64,6 +64,27 @@ namespace SignatureValidationMiddleware {
       if (source.message?.LockMetaData) {
         data = `I want to access member data for ${req.params.address}`
       }
+      if (source.message && source.message['Update Icon']) {
+        data = `I want to change the image for ${source.message['Update Icon'].lockAddress}`
+      }
+      if (source.message && source.message['Connect Stripe']) {
+        data = `I want to connect Stripe to the lock ${source.message['Connect Stripe'].lockAddress}`
+      }
+      if (source.message && source.message['Save Card']) {
+        data = `I save my payment card for my account ${source.message['Save Card'].publicKey}`
+      }
+      if (source.message && source.message['Delete Card']) {
+        data = `I am deleting the card linked to my account ${source.message['Delete Card'].publicKey}`
+      }
+      if (source.message && source.message['Get Card']) {
+        data = `I want to retrieve the card token for ${source.message['Get Card'].publicKey}`
+      }
+      if (source.message && source.message['Charge Card']) {
+        data = `I want to purchase a membership to ${source.message['Charge Card'].lock} for ${source.message['Charge Card'].publicKey} with my card.`
+      }
+      if (source.message && source.message['Claim Membership']) {
+        data = `I claim a membership for ${source.message['Claim Membership'].lock} to ${source.message['Claim Membership'].publicKey}`
+      }
 
       const header = req.headers.authorization.split(' ')[1]
       return extractPersonalSignSignee(header, data)

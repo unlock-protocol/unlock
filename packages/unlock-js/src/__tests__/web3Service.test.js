@@ -15,7 +15,7 @@ const networks = {
 
 let web3Service
 
-jest.mock('../erc20.js', () => {
+jest.mock('../erc20.ts', () => {
   return {
     getErc20Decimals: jest.fn(() => Promise.resolve(18)),
     getErc20BalanceForAddress: jest.fn(() => Promise.resolve('0x0')),
@@ -25,26 +25,6 @@ jest.mock('../erc20.js', () => {
 describe('Web3Service', () => {
   beforeEach(() => {
     web3Service = new Web3Service(networks)
-  })
-
-  describe('generateLockAddress', () => {
-    describe('_create2Address', () => {
-      it('should compute the correct address', async () => {
-        expect.assertions(1)
-        const unlockAddress = '0xBe6ed9A686D288f23C721697e828480E13d138F2'
-        const templateAddress = '0x842207a6a95A0455415db073352d18eB54C728a8'
-        const account = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-        const lockSalt = '1d24dcf6d1c86a947c0e9563'
-        expect(
-          web3Service._create2Address(
-            unlockAddress,
-            templateAddress,
-            account,
-            lockSalt
-          )
-        ).toEqual('0x1c3c3E32878905490eDDFa7c98C47E6EBb003541')
-      })
-    })
   })
 
   describe('versions', () => {

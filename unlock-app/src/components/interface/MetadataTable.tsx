@@ -1,13 +1,14 @@
-import React from 'react'
-import styled from 'styled-components'
+import React, { useState } from 'react'
 import FileSaver from 'file-saver'
 import Link from 'next/link'
-import { ActionButton } from './buttons/ActionButton'
-import Media from '../../theme/media'
+import styled from 'styled-components'
 import { camelCaseToTitle } from '../../utils/strings'
 import { buildCSV } from '../../utils/csv'
 import Address from './Address'
 import { MemberFilters } from '../../unlockTypes'
+import { ExpireAndRefundModal } from './ExpireAndRefundModal'
+import { ActionButton } from './buttons/ActionButton'
+import Media from '../../theme/media'
 
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
@@ -19,11 +20,13 @@ interface KeyMetadata {
   [key: string]: string
 }
 
-interface Props {
+interface MetadataTableProps {
   // The keys to the metadata object, in the order they will be displayed.
   columns: string[]
   metadata: KeyMetadata[]
   filter?: string
+  isLockManager?: boolean
+  lockAddresses?: string[]
 }
 
 /**
@@ -45,13 +48,20 @@ interface CellProps {
 }
 
 export const Cell = ({ kind, value }: CellProps) => {
-  if (kind === 'keyholderAddress') {
-    return <Address address={value} />
-  }
-  return <>{value}</>
+  return kind === 'keyholderAddress' ? (
+    <Address address={value} />
+  ) : (
+    <>{value}</>
+  )
 }
 
-export const MetadataTable = ({ columns, metadata, filter }: Props) => {
+export const MetadataTable: React.FC<MetadataTableProps> = ({
+  columns,
+  metadata,
+  filter,
+  isLockManager,
+  lockAddresses = [],
+}) => {
   if (metadata.length === 0) {
     if (filter === MemberFilters.ALL) {
       return (
@@ -65,25 +75,57 @@ export const MetadataTable = ({ columns, metadata, filter }: Props) => {
       )
     }
 
-    return <Message>No keys found matching the current filter.</Message>
+    return <p>No keys found matching the current filter.</p>
+  }
+
+  const [currentLock, setCurrentLock] = useState(null)
+  const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
+    useState(false)
+
+  const onExpireAndRefund = (lock: any) => {
+    setShowExpireAndRefundModal(true)
+    setCurrentLock(lock)
+  }
+
+  const closeExpireAndRefund = () => {
+    setShowExpireAndRefundModal(false)
+    setCurrentLock(null)
+  }
+
+  const isKeyValid = (metadata: any) => {
+    if (!metadata?.expiration) return false
+    const now = new Date().getTime()
+    const expiration = new Date(metadata?.expiration).getTime()
+    return expiration > now
   }
 
   return (
     <Wrapper>
+      <ExpireAndRefundModal
+        active={showExpireAndRefundModal}
+        dismiss={closeExpireAndRefund}
+        lock={currentLock}
+        lockAddresses={lockAddresses}
+      />
       <Table>
         <thead>
           <tr>
             {columns.map((col) => {
               return <Th key={col}>{camelCaseToTitle(col)}</Th>
             })}
+            {isLockManager && (
+              <Th className="text-center" key="actions">
+                Actions
+              </Th>
+            )}
           </tr>
         </thead>
         <Tbody>
           {metadata.map((datum) => {
+            const { lockName, expiration, keyholderAddress } = datum
+            const key = `${lockName}${expiration}${keyholderAddress}`
             return (
-              <tr
-                key={datum.lockName + datum.expiration + datum.keyholderAddress}
-              >
+              <tr key={key}>
                 {columns.map((col) => {
                   return (
                     <Td key={col}>
@@ -91,6 +133,18 @@ export const MetadataTable = ({ columns, metadata, filter }: Props) => {
                     </Td>
                   )
                 })}
+                {isLockManager && isKeyValid(datum) && (
+                  <Td className="text-center">
+                    <button
+                      className="bg-gray-200 rounded px-2 py-1 text-sm"
+                      type="button"
+                      disabled={!isLockManager}
+                      onClick={() => onExpireAndRefund(datum)}
+                    >
+                      Expire and Refund
+                    </button>
+                  </Td>
+                )}
               </tr>
             )
           })}
@@ -109,12 +163,14 @@ export const MetadataTable = ({ columns, metadata, filter }: Props) => {
 
 MetadataTable.defaultProps = {
   filter: '',
+  isLockManager: false,
+  lockAddresses: [],
 }
 
 const Wrapper = styled.section`
-  display: grid;
   grid-gap: 16px;
-  grid-template-columns: repeat(12, 1fr);
+  display: flex;
+  flex-direction: column;
 `
 
 const DownloadButton = styled(ActionButton)`

@@ -10,7 +10,8 @@ const privateKey = ethJsUtil.toBuffer(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
-const mockWeb3Service = {
+// eslint-disable-next-line
+var mockWeb3Service = {
   isLockManager: jest.fn(() => Promise.resolve(false)),
 }
 

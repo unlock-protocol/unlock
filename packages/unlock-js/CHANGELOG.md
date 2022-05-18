@@ -1,8 +1,39 @@
 # Changes
 
-# Next patch
+# 0.26.1
 
+- Fixed bug in allowance function
+
+# 0.26.0
+
+- add support for `approveBeneficiary`
+- pass address as param to `getAllowance` instead of signer
+
+# 0.25.0
+
+- Better support for v10
+
+# 0.24.0
+
+- Removed hard coded gas limit and waits on erc20 approvals
+- Add locksmithService for interacting with locksmith servers.
+- Rescuing gas estimation errors
+- Add support for granting multiple keys
+
+# 0.23.1
+
+- add support for publicLock v10
+- add ability for all versions to purchase multiple keys at once with `purchaseKeys`
+- add support for `extendKey`, `setMaxKeysPerAddress`, `mergeKeys`
+- refactor functions us emultiple times in `./src/PublicLock/utils` folder
+
+# 0.23.0
+
+- add Unlock v11 and ability to create lock at specific version
 - Non expired keys are represented as -1
+- Gas price calculation fixes
+- Adding support for unlimited durations when granting keys
+- Adding transactionOptions on the grantKeys function
 
 # 0.22.2
 

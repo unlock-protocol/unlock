@@ -44,6 +44,11 @@ export const SmallButton = styled.button`
   &:hover {
     text-decoration: underline;
   }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
 `
 
 export const Select = styled.select`
@@ -75,6 +80,7 @@ export const Button = styled.button`
     background-color: var(--grey);
     cursor: not-allowed;
     color: white;
+    opacity: 0.5;
   }
   margin-top: 16px;
 

@@ -27,9 +27,10 @@ import {
   BalanceContainer,
   LockWarning,
   LockDetails,
+  LockLabelSmall,
 } from './LockStyles'
 import { currencySymbol } from '../../utils/lock'
-import { INFINITY } from '../../constants'
+import { INFINITY, MAX_UINT } from '../../constants'
 
 const BalanceOnLock = withConfig(({ lock, attribute, config }) => {
   const currency = currencySymbol(lock, config.ERC20Contract)
@@ -74,9 +75,21 @@ export const CreatorLock = ({
     showIntegrations ? 'embed-coded' : ''
   )
   const [editing, setEditing] = useState(false)
-  const { lock, updateKeyPrice, updateMaxNumberOfKeys, withdraw } = useLock(
-    lockFromProps,
-    network
+  const {
+    lock,
+    updateKeyPrice,
+    updateMaxNumberOfKeys,
+    withdraw,
+    updateSelfAllowance,
+  } = useLock(lockFromProps, network)
+
+  const recurringPossible =
+    lock.expirationDuration != -1 &&
+    lock.publicLockVersion >= 10 &&
+    lock.currencyContractAddress
+
+  const [isRecurring, setIsRecurring] = useState(
+    recurringPossible && lock.selfAllowance !== '0'
   )
 
   useEffect(() => {
@@ -117,6 +130,12 @@ export const CreatorLock = ({
         saveLock={updateLock}
       />
     )
+  }
+
+  const handleApproveRecurring = () => {
+    updateSelfAllowance(MAX_UINT, () => {
+      setIsRecurring(true)
+    })
   }
 
   // Some sanitization of strings to display
@@ -176,7 +195,7 @@ export const CreatorLock = ({
         <LockName>
           {name}
           <LockAddress address={!lock.pending && lock.address} />
-          {lock && (
+          {lock && !lock.pending && (
             <div className="flex items-center gap-2 py-1 text-gray-400">
               <span className="text-xs">v{lock.publicLockVersion}</span>
               <span className="text-xs">{networks[lock.network].name}</span>
@@ -185,6 +204,17 @@ export const CreatorLock = ({
         </LockName>
         <LockDuration>
           <Duration seconds={lock.expirationDuration} />
+          {isRecurring && (
+            <small>
+              <br />
+              Recurring enabled
+            </small>
+          )}
+          {!isRecurring && recurringPossible && (
+            <LockLabelSmall onClick={handleApproveRecurring}>
+              Enable recurring
+            </LockLabelSmall>
+          )}
         </LockDuration>
         <LockKeysNumbers edit={edit} lock={lock} />
         <KeyPrice>

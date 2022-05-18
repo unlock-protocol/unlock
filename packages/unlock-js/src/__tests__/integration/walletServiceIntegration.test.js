@@ -36,7 +36,7 @@ const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
 describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let walletService
   let web3Service
-  let ERC20Address
+  let ERC20
 
   // Unlock v4 can only interact w PublicLock v4
   const PublicLockVersions =
@@ -46,7 +46,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
-    ERC20Address = await nodeSetup()
+    ERC20 = await nodeSetup()
 
     const [signer] = await ethers.getSigners()
     const ethersProvider = signer.provider
@@ -132,9 +132,10 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
     )('lock %i: %s', (lockIndex, lockName, lockParams) => {
       let lock
-      let expectedLockAddress
       let lockAddress
       let lockCreationHash
+      // used to run some tests only for ERC20 locks
+      let itIfErc20 = lockParams.isERC20 ? it : it.skip
 
       beforeAll(async () => {
         if (publicLockVersion !== 'v4') {
@@ -144,10 +145,12 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           // deploy the relevant template
           const templateAddress = await deployTemplate(publicLockVersion)
 
-          if (unlockVersion === 'v10') {
-            // prepare unlock for upgradeable locks
-            const versionNumber = parseInt(publicLockVersion.replace('v', ''))
-            await unlock.addLockTemplate(templateAddress, versionNumber)
+          // prepare unlock for upgradeable locks
+          if (['v10', 'v11'].indexOf(unlockVersion) > -1) {
+            const lockVersionNumber = parseInt(
+              publicLockVersion.replace('v', '')
+            )
+            await unlock.addLockTemplate(templateAddress, lockVersionNumber)
           }
 
           // set the right template in Unlock
@@ -156,16 +159,17 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         }
         // parse erc20
         const { isERC20 } = lockParams
-        lockParams.currencyContractAddress = isERC20 ? ERC20Address : null
+        lockParams.currencyContractAddress = isERC20 ? ERC20.address : null
 
         // unique Lock name to avoid conflicting addresses
         lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
 
-        expectedLockAddress = await web3Service.generateLockAddress(
-          accounts[0],
-          lockParams,
-          chainId
-        )
+        if (['v11'].indexOf(unlockVersion) > -1) {
+          // use createLockAtVersion starting on v10
+          lockParams.publicLockVersion = parseInt(
+            publicLockVersion.replace('v', '')
+          )
+        }
 
         lockAddress = await walletService.createLock(
           lockParams,
@@ -178,19 +182,21 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         )
 
         lock = await web3Service.getLock(lockAddress, chainId)
+
+        // test will fail with default to 1 key per address
+        if (['v10'].indexOf(publicLockVersion) !== -1) {
+          await walletService.setMaxKeysPerAddress({
+            lockAddress,
+            chainId,
+            maxKeysPerAddress: 100,
+          })
+        }
       })
 
       it('should have yielded a transaction hash', () => {
         expect.assertions(1)
         expect(lockCreationHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
       })
-
-      if (['v4', 'v10'].indexOf(unlockVersion) === -1) {
-        it('should have deployed a lock at the expected address', async () => {
-          expect.assertions(1)
-          expect(lockAddress).toEqual(expectedLockAddress)
-        })
-      }
 
       it('should have deployed the right lock version', async () => {
         expect.assertions(1)
@@ -241,6 +247,94 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         expect.assertions(1)
         expect(lock.beneficiary).toEqual(accounts[0]) // This is the default in walletService
       })
+
+      // only v8+
+      if (['v4', 'v6', 'v7'].indexOf(publicLockVersion) === -1) {
+        describe('approveBeneficary', () => {
+          let spender
+          let receiver
+          let receiverBalanceBefore
+          let transactionHash
+
+          beforeAll(async () => {
+            ;[, spender, receiver] = await ethers.getSigners()
+            // Get the erc20 balance of the user before the purchase
+            receiverBalanceBefore = await web3Service.getTokenBalance(
+              lock.currencyContractAddress,
+              receiver.address,
+              chainId
+            )
+
+            await walletService.approveBeneficiary(
+              {
+                lockAddress,
+                spender: spender.address,
+                amount: '10',
+              },
+              (error, hash) => {
+                if (error) {
+                  throw error
+                }
+                transactionHash = hash
+              }
+            )
+
+            // purchase a key (to increase lock ERC20 balance)
+            await walletService.purchaseKey(
+              {
+                lockAddress,
+                owner: spender.address,
+                keyPrice: lock.keyPrice,
+              },
+              (error) => {
+                if (error) {
+                  throw error
+                }
+              }
+            )
+          })
+
+          itIfErc20('should have yielded a transaction hash', () => {
+            expect.assertions(1)
+            expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          })
+
+          itIfErc20('should have set lock erc20 allowance', async () => {
+            expect.assertions(1)
+
+            // make sure allowance has changed
+            const allowance = await ERC20.allowance(
+              lockAddress,
+              spender.address
+            )
+            expect(allowance.toString()).toBe('10000000000000000000')
+          })
+
+          itIfErc20(
+            'should allow to transfer funds directly from lock',
+            async () => {
+              expect.assertions(1)
+              // transfer some tokens directly from lock
+              await ERC20.connect(spender).transferFrom(
+                lockAddress,
+                receiver.address,
+                '1000000000000000000'
+              )
+
+              // make sure tokens have been transferred
+              const receiverBalanceAfter = await web3Service.getTokenBalance(
+                lock.currencyContractAddress,
+                receiver.address,
+                chainId
+              )
+
+              expect(parseFloat(receiverBalanceAfter)).toBe(
+                parseFloat(receiverBalanceBefore) + parseFloat(1)
+              )
+            }
+          )
+        })
+      }
 
       describe('updateKeyPrice', () => {
         let oldKeyPrice
@@ -356,6 +450,96 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         }
       })
 
+      describe('grantKeys', () => {
+        let tokenIds
+        let keys
+        let keysBefore
+        let keyGrantees
+        let transactionHash
+        beforeAll(async () => {
+          keyGrantees = [accounts[8], accounts[9]]
+          keysBefore = await Promise.all(
+            keyGrantees.map((grantee) =>
+              web3Service.getKeyByLockForOwner(lockAddress, grantee, chainId)
+            )
+          )
+
+          tokenIds = await walletService.grantKeys(
+            {
+              lockAddress,
+              recipients: keyGrantees,
+            },
+            (error, hash) => {
+              if (error) {
+                throw error
+              }
+              transactionHash = hash
+            }
+          )
+
+          keys = await Promise.all(
+            tokenIds.map(async (tokenId, index) => {
+              return await web3Service.getKeyByLockForOwner(
+                lockAddress,
+                keyGrantees[index],
+                chainId
+              )
+            })
+          )
+        })
+
+        it('should not have valid keys before the transaction', () => {
+          expect.assertions(4)
+
+          expect(keysBefore[0].owner).toEqual(keyGrantees[0])
+          expect(keysBefore[1].owner).toEqual(keyGrantees[1])
+          expect(keysBefore[0].expiration).toEqual(0)
+          expect(keysBefore[1].expiration).toEqual(0)
+        })
+
+        it('should have yielded a transaction hash', () => {
+          expect.assertions(1)
+          expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+        })
+
+        it('should yield the tokenIds', () => {
+          expect.assertions(1)
+          expect(tokenIds).not.toBe(null) // We don't know very much beyond the fact that it is not null
+        })
+
+        it('should have assigned the key to the right user', async () => {
+          expect.assertions(2)
+          expect(keys[0].owner).toEqual(keyGrantees[0])
+          expect(keys[1].owner).toEqual(keyGrantees[1])
+        })
+
+        it('should have assigned the key to the right lock', async () => {
+          expect.assertions(1)
+          expect(keys[0].lock).toEqual(lockAddress)
+        })
+
+        it('should have set the right duration on the keys', async () => {
+          expect.assertions(1)
+          const blockNumber = await walletService.provider.getBlockNumber()
+          const latestBlock = await walletService.provider.getBlock(blockNumber)
+          expect(
+            Math.floor(keys[0].expiration) -
+              Math.floor(lock.expirationDuration + latestBlock.timestamp)
+          ).toBeLessThan(60)
+        })
+
+        if (['v4', 'v6'].indexOf(publicLockVersion) == -1) {
+          it('should have set the right keyManager', async () => {
+            expect.assertions(1)
+            const keyManager = await web3Service.keyManagerOf(
+              lockAddress,
+              keys[0].tokenId,
+              chainId
+            )
+            expect(keyManager).toBe(accounts[0])
+          })
+        }
+      })
       describe('purchaseKey', () => {
         let tokenId
         let key
@@ -505,6 +689,190 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         })
       })
 
+      describe('purchaseKeys', () => {
+        let tokenIds
+        let keys
+        let keyOwners
+        let keyPurchaser
+        let lockBalanceBefore
+        let userBalanceBefore
+        const transactionHashes = []
+
+        beforeAll(async () => {
+          keyPurchaser = accounts[0] // This is the default in walletService
+          keyOwners = [accounts[10], accounts[11]]
+
+          if (lock.currencyContractAddress === null) {
+            // Get the ether balance of the lock before the purchase
+            lockBalanceBefore = await web3Service.getAddressBalance(
+              lockAddress,
+              chainId
+            )
+            // Get the ether balance of the user before the purchase
+            userBalanceBefore = await web3Service.getAddressBalance(
+              keyPurchaser,
+              chainId
+            )
+          } else {
+            // Get the erc20 balance of the lock before the purchase
+            lockBalanceBefore = await web3Service.getTokenBalance(
+              lock.currencyContractAddress,
+              lockAddress,
+              chainId
+            )
+            // Get the erc20 balance of the user before the purchase
+            userBalanceBefore = await web3Service.getTokenBalance(
+              lock.currencyContractAddress,
+              keyPurchaser,
+              chainId
+            )
+          }
+
+          // No need to go further if the purchaser does not have enough to make key purchases
+          // Make sure the account[0] (used by default by walletService) has enough Ether or ERC20
+          if (parseFloat(userBalanceBefore) < parseFloat(lock.keyPrice) * 2) {
+            throw new Error(
+              `Key purchaser ${keyPurchaser} does not have enough funds to perform key purchase on ${lockAddress}. Aborting tests.`
+            )
+          }
+
+          tokenIds = await walletService.purchaseKeys(
+            {
+              lockAddress,
+              owners: keyOwners,
+              keyPrices: [lock.keyPrice, lock.keyPrice],
+            },
+            (error, hash) => {
+              if (error) {
+                throw error
+              }
+              transactionHashes.push(hash)
+            }
+          )
+
+          keys = await Promise.all(
+            keyOwners.map(async (owner) =>
+              web3Service.getKeyByLockForOwner(lockAddress, owner, chainId)
+            )
+          )
+        })
+
+        it('should have yielded two transactions hash', () => {
+          expect.assertions(3)
+          if (['v10'].indexOf(publicLockVersion) !== -1) {
+            expect(transactionHashes.length).toBe(1)
+            expect(transactionHashes[0]).toMatch(/^0x[0-9a-fA-F]{64}$/)
+            expect(transactionHashes[1]).toBeUndefined()
+          } else {
+            expect(transactionHashes.length).toBe(2)
+            expect(transactionHashes[0]).toMatch(/^0x[0-9a-fA-F]{64}$/)
+            expect(transactionHashes[1]).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          }
+        })
+
+        it('should yield the tokenId', () => {
+          expect.assertions(5)
+          expect(tokenIds).not.toBe(null)
+          expect(typeof tokenIds).toBe('object')
+          expect(tokenIds.length).toBe(2)
+          expect(tokenIds[0]).not.toBe(null)
+          expect(tokenIds[1]).not.toBe(null)
+        })
+
+        it('should have increased the currency balance on the lock', async () => {
+          expect.assertions(1)
+          let newBalance
+          if (lock.currencyContractAddress === null) {
+            newBalance = await web3Service.getAddressBalance(
+              lockAddress,
+              chainId
+            )
+          } else {
+            newBalance = await web3Service.getTokenBalance(
+              lock.currencyContractAddress,
+              lockAddress,
+              chainId
+            )
+          }
+
+          // workaround for js float madness
+          const approx = (n) => Math.round(n * 1000)
+          expect(approx(parseFloat(newBalance))).toBeGreaterThanOrEqual(
+            approx(parseFloat(lockBalanceBefore)) +
+              approx(parseFloat(lock.keyPrice * 2))
+          )
+        })
+
+        it('should have decreased the currency balance of the person making the purchase', async () => {
+          expect.assertions(1)
+          let newBalance
+          if (lock.currencyContractAddress === null) {
+            newBalance = await web3Service.getAddressBalance(
+              keyPurchaser,
+              chainId
+            )
+          } else {
+            newBalance = await web3Service.getTokenBalance(
+              lock.currencyContractAddress,
+              keyPurchaser,
+              chainId
+            )
+          }
+
+          if (lock.currencyContractAddress === null) {
+            // For Ether we need to account for gas
+            expect(parseFloat(newBalance)).toBeLessThan(
+              parseFloat(userBalanceBefore) - parseFloat(lock.keyPrice * 2)
+            )
+          } else {
+            // For ERC20 the balance should be exact
+            expect(parseFloat(newBalance)).toBe(
+              parseFloat(userBalanceBefore) - parseFloat(lock.keyPrice * 2)
+            )
+          }
+        })
+
+        it('should have assigned the key to the right user', async () => {
+          expect.assertions(4)
+          expect(keys[0].owner).toEqual(keyOwners[0])
+          const owner = await web3Service.ownerOf(
+            keys[0].lock,
+            tokenIds[0],
+            chainId
+          )
+          expect(owner).toEqual(keyOwners[0])
+
+          // 2nd key
+          expect(keys[1].owner).toEqual(keyOwners[1])
+          const owner2 = await web3Service.ownerOf(
+            keys[1].lock,
+            tokenIds[1],
+            chainId
+          )
+          expect(owner2).toEqual(keyOwners[1])
+        })
+
+        it('should have assigned the key to the right lock', async () => {
+          expect.assertions(2)
+          expect(keys[0].lock).toEqual(lockAddress)
+          expect(keys[1].lock).toEqual(lockAddress)
+        })
+
+        it('should have set the right duration on the key', async () => {
+          expect.assertions(2)
+          const blockNumber = await walletService.provider.getBlockNumber()
+          const latestBlock = await walletService.provider.getBlock(blockNumber)
+          expect(
+            Math.floor(keys[0].expiration) -
+              Math.floor(lock.expirationDuration + latestBlock.timestamp)
+          ).toBeLessThan(60)
+          expect(
+            Math.floor(keys[1].expiration) -
+              Math.floor(lock.expirationDuration + latestBlock.timestamp)
+          ).toBeLessThan(60)
+        })
+      })
+
       describe('withdrawFromLock', () => {
         let lockBalanceBefore
         let userBalanceBefore
@@ -616,10 +984,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       describe('cancelAndRefund', () => {
         let key
         let keyOwner
+        let tokenId
 
         beforeAll(async () => {
           keyOwner = accounts[0]
-          await walletService.purchaseKey({
+          tokenId = await walletService.purchaseKey({
             lockAddress,
           })
           await new Promise((resolve) =>
@@ -639,6 +1008,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           expect(key.expiration > new Date().getTime() / 1000).toBe(true)
           await walletService.cancelAndRefund({
             lockAddress,
+            tokenId, // pass explicitely the token id
           })
           const afterCancellation = await web3Service.getKeyByLockForOwner(
             lockAddress,
@@ -676,6 +1046,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             expect(lock.maxNumberOfKeys).toBe(200)
           })
         })
+
         describe('setExpirationDuration', () => {
           let expirationDuration
 
@@ -735,9 +1106,10 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         describe('expireAndRefundFor', () => {
           let keyOwner = '0x2f883401de65129fd1c368fe3cb26d001c4dc583'
           let expiration
+          let tokenId
           beforeAll(async () => {
             // First let's get a user to buy a membership
-            await walletService.purchaseKey({
+            tokenId = await walletService.purchaseKey({
               lockAddress,
               owner: keyOwner,
             })
@@ -759,7 +1131,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             expect.assertions(1)
             await walletService.expireAndRefundFor({
               lockAddress,
-              keyOwner,
+              keyOwner, // for lock < v10
+              tokenId, // for lock v10+
             })
             const key = await web3Service.getKeyByLockForOwner(
               lockAddress,
@@ -772,8 +1145,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         })
       }
 
-      if (['v4'].indexOf(publicLockVersion) == -1) {
-        describe('shareKey', () => {
+      if (['v4', 'v10'].indexOf(publicLockVersion) == -1) {
+        describe('shareKey (to address)', () => {
           it('should allow a member to share their key with another one', async () => {
             expect.assertions(4)
             const tokenId = await walletService.purchaseKey({
@@ -823,6 +1196,206 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
                 chainId
               )
             ).toBeGreaterThan(recipientDurationBefore)
+          })
+        })
+      }
+
+      if (['v10'].indexOf(publicLockVersion) !== -1) {
+        describe('shareKey (to TokenId)', () => {
+          it('should allow a member to share their key with another one', async () => {
+            expect.assertions(3)
+            const grantee = accounts[8]
+            const tokenId = await walletService.purchaseKey({
+              lockAddress,
+            })
+
+            // Let's now get the duration for that key!
+            const { expiration } = await web3Service.getKeyByLockForOwner(
+              lockAddress,
+              grantee,
+              chainId
+            )
+            const now = Math.floor(new Date().getTime() / 1000)
+            expect(expiration).toBeGreaterThan(now)
+
+            // Let's now share the key
+            const recipient = '0x6524dBB97462aC3919866b8fbB22BF181D1D4113'
+            const newTokenId = await walletService.shareKey({
+              lockAddress,
+              tokenId,
+              recipient,
+              duration: expiration - now, // share all of the time!
+            })
+
+            const newExpiration =
+              await web3Service.getKeyExpirationByLockForOwner(
+                lockAddress,
+                recipient,
+                chainId
+              )
+            expect(newExpiration).toBeGreaterThanOrEqual(expiration)
+
+            expect(
+              await web3Service.ownerOf(lockAddress, newTokenId, chainId)
+            ).toEqual(recipient)
+          })
+        })
+
+        describe('mergeKeys', () => {
+          let tokenIds
+          let keys
+          let keyOwners
+          let transactionHash
+
+          beforeAll(async () => {
+            keyOwners = [accounts[5], accounts[6]]
+
+            tokenIds = await walletService.purchaseKeys({
+              lockAddress,
+              owners: keyOwners,
+              keyPrices: [lock.keyPrice, lock.keyPrice],
+            })
+
+            keys = await Promise.all(
+              keyOwners.map(async (owner) =>
+                web3Service.getKeyByLockForOwner(lockAddress, owner, chainId)
+              )
+            )
+
+            // merge entire key
+            const signers = await ethers.getSigners()
+            await walletService.connect(signers[5].provider, signers[5])
+            await walletService.mergeKeys(
+              {
+                lockAddress,
+                tokenIdFrom: tokenIds[0],
+                tokenIdTo: tokenIds[1],
+              },
+              (error, hash) => {
+                if (error) {
+                  throw error
+                }
+                transactionHash = hash
+              }
+            )
+            // connect back default signer
+            await walletService.connect(signers[0].provider, signers[0])
+          })
+
+          it('should have yielded a transaction hash', () => {
+            expect.assertions(1)
+            expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          })
+
+          it('should not have transfer the keys', async () => {
+            expect.assertions(2)
+            expect(
+              await web3Service.ownerOf(keys[0].lock, tokenIds[0], chainId)
+            ).toEqual(keyOwners[0])
+
+            expect(
+              await web3Service.ownerOf(keys[1].lock, tokenIds[1], chainId)
+            ).toEqual(keyOwners[1])
+          })
+
+          it('should have validated the second key', async () => {
+            expect.assertions(1)
+            expect(
+              await web3Service.isValidKey(keys[1].lock, tokenIds[1], chainId)
+            ).toEqual(true)
+          })
+
+          it('should have add time to the second key', async () => {
+            expect.assertions(1)
+            const blockNumber = await walletService.provider.getBlockNumber()
+            const latestBlock = await walletService.provider.getBlock(
+              blockNumber
+            )
+
+            const keysAfter = await Promise.all(
+              keyOwners.map(async (owner) =>
+                web3Service.getKeyByLockForOwner(lockAddress, owner, chainId)
+              )
+            )
+
+            expect(
+              Math.floor(keysAfter[1].expiration) -
+                Math.floor(latestBlock.timestamp) -
+                lock.expirationDuration * 2
+            ).toBeLessThan(60)
+          })
+        })
+
+        describe('maxKeysPerAddress', () => {
+          it('should set number of keys per address correctly', async () => {
+            expect.assertions(2)
+            lock = await web3Service.getLock(lockAddress, chainId)
+            expect(lock.maxKeysPerAddress).toEqual(100)
+
+            await walletService.setMaxKeysPerAddress({
+              lockAddress,
+              maxKeysPerAddress: 1000,
+              chainId,
+            })
+            lock = await web3Service.getLock(lockAddress, chainId)
+            expect(lock.maxKeysPerAddress).toEqual(1000)
+          })
+        })
+
+        describe('extendKey', () => {
+          let keyOwner
+          let tokenId
+          let transactionHash
+          let key
+
+          beforeAll(async () => {
+            keyOwner = accounts[5]
+
+            tokenId = await walletService.purchaseKey({
+              lockAddress,
+              owners: keyOwner,
+            })
+
+            // expire key
+            await walletService.expireAndRefundFor({
+              lockAddress,
+              keyOwner, // for lock < v10
+              tokenId, // for lock v10+
+            })
+
+            // then extend existing expired key
+            await walletService.extendKey(
+              {
+                lockAddress,
+                tokenId,
+              },
+              (error, hash) => {
+                if (error) {
+                  throw error
+                }
+                transactionHash = hash
+              }
+            )
+
+            key = await web3Service.getKeyByLockForOwner(
+              lockAddress,
+              keyOwner,
+              chainId
+            )
+          })
+
+          it('should have yielded a transaction hash', () => {
+            expect.assertions(1)
+            expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          })
+
+          it('should have renewed the key', async () => {
+            expect.assertions(2)
+            expect(
+              await web3Service.isValidKey(lockAddress, tokenId, chainId)
+            ).toBe(true)
+            const now = Math.floor(new Date().getTime() / 1000)
+            expect(key.expiration).toBeGreaterThan(now)
           })
         })
       }

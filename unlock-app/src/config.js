@@ -14,6 +14,8 @@ export default function configure(
     gtmId: 'GTM-5XL2RNW',
   }
 
+  const recaptchaKey = '6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir'
+
   const env = runtimeConfig.unlockEnv
 
   // Services
@@ -43,19 +45,6 @@ export default function configure(
   const stripeApiKey =
     runtimeConfig.stripeApiKey || 'pk_test_BHXKmScocCfrQ1oW8HTmnVrB'
 
-  // Address of the key granter (locksmith) used for credit card purchases and more
-  let keyGranter = '0xe29ec42F0b620b1c9A716f79A02E9DC5A5f5F98a'
-
-  if (env === 'staging') {
-    // Address for the Unlock credit card purchaser
-    keyGranter = '0x903073735Bb6FDB802bd3CDD3b3a2b00C36Bc2A9'
-  }
-
-  if (env === 'prod') {
-    // Address for the Unlock credit card purchaser
-    keyGranter = '0x58b5cede554a39666091f96c8058920df5906581'
-  }
-
   // Network config
   const networks = {}
 
@@ -79,6 +68,6 @@ export default function configure(
     unlockStaticUrl,
     stripeApiKey,
     networks,
-    keyGranter,
+    recaptchaKey,
   }
 }

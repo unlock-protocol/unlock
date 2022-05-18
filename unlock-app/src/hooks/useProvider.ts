@@ -1,9 +1,11 @@
 import { ethers } from 'ethers'
 import { useState, useContext, useEffect } from 'react'
 import { WalletService } from '@unlock-protocol/unlock-js'
+import { useAddToNetwork } from './useAddToNetwork'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
+import { ToastHelper } from '../components/helpers/toast.helper'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -22,8 +24,6 @@ interface WatchAssetInterface {
  */
 export const useProvider = (config: any) => {
   const { setProvider, provider } = useContext(ProviderContext)
-
-  const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [walletService, setWalletService] = useState<any>()
   const [network, setNetwork] = useState<string | undefined>(undefined)
@@ -34,6 +34,7 @@ export const useProvider = (config: any) => {
     any | undefined
   >(undefined)
   const { getStorage, setStorage, clearStorage } = useAppStorage()
+  const { addNetworkToWallet } = useAddToNetwork(account)
 
   useEffect(() => {
     if (!getStorage('account') && account) {
@@ -46,7 +47,6 @@ export const useProvider = (config: any) => {
   }, [account, network])
 
   const resetProvider = async (provider: ethers.providers.Provider) => {
-    setError('')
     try {
       const _walletService = new WalletService(config.networks)
 
@@ -87,11 +87,15 @@ export const useProvider = (config: any) => {
       }
     } catch (error: any) {
       if (error.message.startsWith('Missing config')) {
-        setError(
+        ToastHelper.error(
           `Unlock is currently not deployed on this network. Please switch network and refresh the page: ${error.message}`
         )
+      } else if (error.message.includes('could not detect network')) {
+        ToastHelper.error(
+          'We could not detect the network to which your wallet is connected. Please try another wallet. (This issue happens often with the Frame Wallet)' // TODO: remove when Frame is fixed
+        )
       } else {
-        setError(error.message)
+        ToastHelper.error(error.message)
       }
       setProvider(null)
       console.error(error)
@@ -109,8 +113,7 @@ export const useProvider = (config: any) => {
         try {
           await provider.enable()
         } catch {
-          alert('Please, check your wallet and try again to connect.')
-          return
+          console.error('Please check your wallet and try again to connect.')
         }
       }
       const ethersProvider = new ethers.providers.Web3Provider(provider)
@@ -142,6 +145,7 @@ export const useProvider = (config: any) => {
     setEncryptedPrivateKey(null)
     clearStorage()
     try {
+      provider.provider.removeAllListeners()
       await provider.provider.close()
     } catch (error) {
       console.error(
@@ -159,40 +163,32 @@ export const useProvider = (config: any) => {
       resetProvider(newProvider)
     } else {
       try {
-        await provider.send(
-          'wallet_switchEthereumChain',
-          [
-            {
-              chainId: `0x${network.id.toString(16)}`,
-            },
-          ],
-          account
+        await ToastHelper.promise(
+          provider.send(
+            'wallet_switchEthereumChain',
+            [
+              {
+                chainId: `0x${network.id.toString(16)}`,
+              },
+            ],
+            account
+          ),
+          {
+            loading: `Changing network to ${network.name}. Please Approve on your wallet.`,
+            error: `Error in changing network to ${network.name}`,
+            success: `Successfully changed network to ${network.name}`,
+          }
         )
       } catch (switchError: any) {
         // This error code indicates that the chain has not been added to the provider yet.
         if (switchError.code === 4902) {
           try {
-            await provider.send(
-              'wallet_addEthereumChain',
-              [
-                {
-                  chainId: `0x${network.id.toString(16)}`,
-                  chainName: network.name,
-                  rpcUrls: [network.publicProvider],
-                  nativeCurrency: network.nativeCurrency,
-                },
-              ],
-              account
-            )
+            await addNetworkToWallet(network.id)
           } catch (addError) {
-            window.alert(
+            ToastHelper.error(
               'Network could not be added. Please try manually adding it to your wallet'
             )
           }
-        } else {
-          window.alert(
-            'Network could not be changed. Please change it from your wallet.'
-          )
         }
       }
     }
@@ -215,7 +211,14 @@ export const useProvider = (config: any) => {
   }
 
   const signMessage = async (messageToSign: string) => {
-    return walletService.signMessage(messageToSign, 'personal_sign')
+    return ToastHelper.promise(
+      walletService.signMessage(messageToSign, 'personal_sign'),
+      {
+        loading: 'Please sign the message from your wallet',
+        success: 'Successfully signed the message',
+        error: 'There was an error in signing the message',
+      }
+    )
   }
 
   return {
@@ -229,7 +232,6 @@ export const useProvider = (config: any) => {
     walletService,
     connectProvider,
     disconnectProvider,
-    error,
     watchAsset,
     changeNetwork,
   }

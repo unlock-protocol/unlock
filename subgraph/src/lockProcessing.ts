@@ -4,10 +4,12 @@
 import { BigInt, Bytes, Address, log } from '@graphprotocol/graph-ts'
 import { PublicLock } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock as PublicLock7 } from '../generated/templates/PublicLock7/PublicLock'
+import { PublicLock as PublicLock10 } from '../generated/templates/PublicLock10/PublicLock'
 import { Lock, LockManager, Lock } from '../generated/schema'
 import {
   PublicLock as PublicLockTemplate,
   PublicLock7 as PublicLockTemplate7,
+  PublicLock10 as PublicLockTemplate10,
 } from '../generated/templates'
 
 import { NewLock } from '../generated/Contract/Contract'
@@ -28,6 +30,41 @@ function bootstrapLock(publicLock: PublicLock): Lock {
     lock.version = BigInt.fromI32(0)
   }
   return lock
+}
+
+function processV10(event: NewLock, lock: Lock): void {
+  let chainPublicLock = PublicLock10.bind(event.params.newLockAddress)
+  lock.address = event.params.newLockAddress
+  lock.price = chainPublicLock.keyPrice()
+  lock.expirationDuration = chainPublicLock.expirationDuration()
+  lock.creationBlock = event.block.number
+  lock.owner = event.params.lockOwner
+
+  let lockName = chainPublicLock.try_name()
+
+  if (!lockName.reverted) {
+    lock.name = lockName.value
+  } else {
+    lock.name = ''
+  }
+
+  let totalSupply = chainPublicLock.try_totalSupply()
+  if (!totalSupply.reverted) {
+    lock.totalSupply = totalSupply.value
+  }
+
+  let tokenAddress = chainPublicLock.try_tokenAddress()
+  if (!tokenAddress.reverted) {
+    lock.tokenAddress = tokenAddress.value
+  } else {
+    lock.tokenAddress = Address.fromString(
+      '0000000000000000000000000000000000000000'
+    )
+  }
+
+  PublicLockTemplate10.create(event.params.newLockAddress)
+  lock.save()
+  addInitialLockManager(lock.address, lock.owner as Bytes)
 }
 
 function processV7(event: NewLock, lock: Lock): void {
@@ -103,7 +140,9 @@ export function processNewLock(event: NewLock): void {
 
   let lock = bootstrapLock(chainPublicLock)
 
-  if (lock.version >= BigInt.fromI32(7)) {
+  if (lock.version >= BigInt.fromI32(10)) {
+    processV10(event, lock)
+  } else if (lock.version >= BigInt.fromI32(7)) {
     processV7(event, lock)
   } else {
     processPreV7(event, lock)

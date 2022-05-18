@@ -15,18 +15,20 @@ const dev = {
   paywallUrl:
     process.env.PAYWALL_URL || 'https://staging-paywall.unlock-protocol.com',
   locksmithHost:
-    process.env.LOCKSMITH_URI || 'https://staging-locksmith.unlock-protocol.com',
+    process.env.LOCKSMITH_URI ||
+    'https://staging-locksmith.unlock-protocol.com',
   unlockStaticUrl:
-    process.env.UNLOCK_STATIC_URL || 'https://staging-unlock-protocol.com',
+    process.env.UNLOCK_STATIC_URL || 'https://staging.unlock-protocol.com',
   wedlocksUri:
     process.env.WEDLOCKS_URI ||
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
 }
 
+
 const staging = {
   paywallUrl: 'https://staging-paywall.unlock-protocol.com',
   locksmithHost: 'https://staging-locksmith.unlock-protocol.com',
-  unlockStaticUrl: 'https://staging-unlock-protocol.com',
+  unlockStaticUrl: 'https://staging.unlock-protocol.com',
   wedlocksUri:
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
 }

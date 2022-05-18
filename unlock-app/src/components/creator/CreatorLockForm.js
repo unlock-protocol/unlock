@@ -13,6 +13,7 @@ import {
   LockLabel,
   LockDuration,
   LockKeys,
+  LockLabelSmall,
 } from './LockStyles'
 
 import Icon from '../lock/Icon'
@@ -23,13 +24,14 @@ import {
   isNotEmpty,
   isPositiveInteger,
   isPositiveNumber,
+  isPositiveIntegerOrZero,
   isLTE,
 } from '../../utils/validators'
 
 import {
   INFINITY,
   UNLIMITED_KEYS_COUNT,
-  ONE_HUNDRED_YEARS_IN_SECONDS,
+  UNLIMITED_KEYS_DURATION,
 } from '../../constants'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
@@ -87,9 +89,15 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
     validateAndDispatch(target, [{ name, value: value * (60 * 60 * 24) }])
   }
 
-  const handleUnlimitedClick = () => {
+  const handleUnlimitedNumbersOfKeys = () => {
     dispatch({
       change: [{ name: 'maxNumberOfKeys', value: UNLIMITED_KEYS_COUNT }],
+    })
+  }
+
+  const handleUnlimitedDuration = () => {
+    dispatch({
+      change: [{ name: 'expirationDuration', value: UNLIMITED_KEYS_DURATION }],
     })
   }
 
@@ -119,18 +127,15 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
         }
         break
       case 'expirationDuration':
-        if (
-          !isPositiveInteger(value) ||
-          !isLTE(ONE_HUNDRED_YEARS_IN_SECONDS)(value)
-        ) {
-          return 'The expiration duration for each key must be greater than 0 and less than 100 years'
+        if (!isPositiveInteger(value)) {
+          return 'The expiration duration for each key must be greater than 0'
         }
         break
       case 'maxNumberOfKeys':
         if (!isPositiveNumber(value) && value !== INFINITY) {
           return 'The number of keys needs to be greater than 0'
         }
-        if (parseInt(value, 10) <= lock.outstandingKeys) {
+        if (parseInt(value, 10) < lock.outstandingKeys) {
           return `The number of keys needs to be greater than existing number of keys (${lock.outstandingKeys})`
         }
         break
@@ -142,6 +147,13 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
     }
     return ''
   }
+
+  const expirationDurationValue =
+    lockInForm?.expirationDuration === UNLIMITED_KEYS_DURATION
+      ? INFINITY
+      : isPositiveIntegerOrZero(lockInForm.expirationDuration)
+      ? lockInForm.expirationDuration / (60 * 60 * 24)
+      : ''
 
   return (
     <form method="post" onSubmit={handleSubmit}>
@@ -162,16 +174,20 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
           </FormLockName>
           <FormLockDuration>
             <input
-              type="number"
-              step="1"
-              inputMode="numeric"
+              type="text"
               name="expirationDuration"
               onChange={handleChangeExpirationDuration}
-              defaultValue={lockInForm.expirationDuration / (60 * 60 * 24)}
+              value={expirationDurationValue}
               required={isNew}
               disabled={!isNew}
             />{' '}
             days
+            {lockInForm?.expirationDuration !== UNLIMITED_KEYS_DURATION &&
+              isNew && (
+                <LockLabelSmall onClick={handleUnlimitedDuration}>
+                  Unlimited
+                </LockLabelSmall>
+              )}
           </FormLockDuration>
           <FormLockKeys>
             <input
@@ -186,9 +202,9 @@ const CreatorLockForm = ({ hideAction, lock, saveLock }) => {
               required={isNew}
             />
             {lockInForm?.maxNumberOfKeys !== UNLIMITED_KEYS_COUNT && (
-              <LockLabelUnlimited onClick={handleUnlimitedClick}>
+              <LockLabelSmall onClick={handleUnlimitedNumbersOfKeys}>
                 Unlimited
-              </LockLabelUnlimited>
+              </LockLabelSmall>
             )}
           </FormLockKeys>
           <FormBalanceWithUnit>
@@ -243,14 +259,6 @@ CreatorLockForm.defaultProps = {
 }
 
 export default CreatorLockForm
-
-const LockLabelUnlimited = styled(LockLabel)`
-  cursor: pointer;
-  font-size: 11px;
-  width: 100%;
-  padding: 5px;
-  padding-left: 0px;
-`
 
 const LockLabelCurrency = styled(LockLabel).attrs(() => ({
   className: 'currency',

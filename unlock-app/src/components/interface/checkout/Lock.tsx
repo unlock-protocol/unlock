@@ -8,7 +8,6 @@ import {
 } from '../../../utils/checkoutLockUtils'
 import * as LockVariations from './LockVariations'
 import { useLock } from '../../../hooks/useLock'
-import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../../utils/withConfig'
 
 interface LockProps {
@@ -19,23 +18,32 @@ interface LockProps {
   name: string
   hasOptimisticKey: boolean
   purchasePending: boolean
+  recipient?: string
+  onLoading?: (state: boolean) => void
+  numberOfRecipients?: number
 }
 
 const getLockProps = (
   lock: any,
   network: number,
   baseCurrencySymbol: string,
-  name: string
+  name: string,
+  numberOfRecipients = 1
 ) => {
   return {
     cardEnabled: lock?.fiatPricing?.creditCardEnabled,
     formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
-    formattedKeyPrice: formattedKeyPrice(lock, baseCurrencySymbol),
-    convertedKeyPrice: convertedKeyPrice(lock),
+    formattedKeyPrice: formattedKeyPrice(
+      lock,
+      baseCurrencySymbol,
+      numberOfRecipients
+    ),
+    convertedKeyPrice: convertedKeyPrice(lock, numberOfRecipients),
     formattedKeysAvailable: lockKeysAvailable(lock),
     name: name || lock.name,
     address: lock.address,
     network,
+    prepend: numberOfRecipients > 1 ? `${numberOfRecipients} x ` : '',
   }
 }
 export const Lock = ({
@@ -46,36 +54,44 @@ export const Lock = ({
   onSelected,
   hasOptimisticKey,
   purchasePending,
+  recipient,
+  onLoading,
+  numberOfRecipients,
 }: LockProps) => {
   const config = useContext(ConfigContext)
   const [loading, setLoading] = useState(false)
-  const { account } = useContext(AuthenticationContext)
   const { getKeyForAccount } = useLock(lock, network)
   const [hasValidKey, setHasValidKey] = useState(hasOptimisticKey)
 
   const alreadyHasKey = (key: any) => {
     const now = new Date().getTime() / 1000
-    if (key && key.expiration > now) {
-      setHasValidKey(true)
-    } else {
-      setHasValidKey(false)
-    }
+    const { expiration } = key ?? {}
+    const isKeyNotExpired = expiration > now || expiration === -1
+    const isKeyValid = !!(key && isKeyNotExpired)
+    setHasValidKey(isKeyValid)
     setHasKey(key)
   }
 
   useEffect(() => {
+    if (typeof onLoading === 'function') {
+      onLoading(loading)
+    }
+  }, [loading])
+
+  useEffect(() => {
     const getKey = async () => {
+      if (!recipient) return
       setLoading(true)
-      alreadyHasKey(await getKeyForAccount(account))
+      alreadyHasKey(await getKeyForAccount(recipient))
       setLoading(false)
     }
 
-    if (account) {
+    if (recipient) {
       getKey()
     } else {
-      setHasValidKey(false)
+      alreadyHasKey(null)
     }
-  }, [account])
+  }, [recipient])
 
   const onClick = async () => {
     onSelected && onSelected(lock)
@@ -87,7 +103,8 @@ export const Lock = ({
       lock,
       network,
       config.networks[network].baseCurrencySymbol,
-      name
+      name,
+      numberOfRecipients || 1
     ),
     selectable: true, // by default!
   }
@@ -116,4 +133,8 @@ export const Lock = ({
   )
 }
 
-Lock.defaultProps = {}
+Lock.defaultProps = {
+  recipient: '',
+  onLoading: () => undefined,
+  numberOfRecipients: 1,
+}

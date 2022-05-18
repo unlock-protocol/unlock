@@ -76,23 +76,32 @@ export const userCanAffordKey = (
   return keyPrice <= _balance
 }
 
-export const convertedKeyPrice = (lock: LockTickerSymbolLock) => {
+export const convertedKeyPrice = (
+  lock: LockTickerSymbolLock,
+  numberOfRecipients = 1
+) => {
   const keyPrice = lock?.fiatPricing?.usd?.keyPrice
 
   if (!keyPrice) {
     return ''
   }
-  return `~$${parseInt(keyPrice) / 100}`
+  return `~$${((parseFloat(keyPrice) * numberOfRecipients) / 100).toFixed(2)}`
 }
 
 export const formattedKeyPrice = (
   lock: LockTickerSymbolLock,
-  baseCurrencySymbol: string
+  baseCurrencySymbol: string,
+  numberOfRecipients = 1
 ) => {
+  const { keyPrice } = lock ?? {}
   if (lock.keyPrice === '0') {
     return 'FREE'
   }
-  return `${lock.keyPrice} ${lockTickerSymbol(lock, baseCurrencySymbol)}`
+  const price = keyPrice ? parseFloat(keyPrice) * numberOfRecipients : null
+  return `${price?.toString().substring(0, 9)} ${lockTickerSymbol(
+    lock,
+    baseCurrencySymbol
+  )}`
 }
 
 /**

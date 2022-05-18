@@ -1,6 +1,6 @@
 // This file contains type definitions for the various kinds of data that we use
 // throughout unlock-app.
-
+import { ethers } from 'ethers'
 // A bug in eslint causes it to think that this exported enum is "unused". So
 // disable eslint for that declaration until they fix it. TODO: follow up on this.
 /* eslint-disable no-unused-vars */
@@ -38,11 +38,13 @@ export interface NetworkConfig {
   unlockAddress?: string
   serializerAddress?: string
   subgraphURI?: string
+  ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
     urls: {
       address(address: string): string
       transaction(hash: string): string
+      token(address: string, owner: string): string
     }
   }
   erc20?: {
@@ -55,7 +57,7 @@ export interface NetworkConfig {
     name: string
     symbol: string
     decimals: number
-  },
+  }
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
 }
@@ -65,13 +67,13 @@ export interface NetworkConfigs {
 }
 
 export interface ContractAbi {
-  contractName: string;
-  abi: Array<{}>;
-  bytecode: string;
-  deployedBytecode: string;
-  compiler: string;
-  schemaVersion: string;
-  updatedAt: string;
+  contractName: string
+  abi: Array<{}>
+  bytecode: string
+  deployedBytecode: string
+  compiler: string
+  schemaVersion: string
+  updatedAt: string
 }
 
 export interface Transaction {

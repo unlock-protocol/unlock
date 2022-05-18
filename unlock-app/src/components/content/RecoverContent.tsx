@@ -38,9 +38,8 @@ export const RestoreAccount = ({
     setLoading(true)
     const getRecoveryPhrase = async () => {
       if (email) {
-        const { recoveryPhrase } = await storageService.getUserRecoveryPhrase(
-          email
-        )
+        const result = await storageService.getUserRecoveryPhrase(email)
+        const { recoveryPhrase } = result!
         if (!recoveryPhrase) {
           setError('We do not have a valid recovery phrase for your user')
           setLoading(false)

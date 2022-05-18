@@ -13,8 +13,8 @@ const path = require('path')
 /* eslint-disable import/no-extraneous-dependencies */
 const abis = require('@unlock-protocol/contracts')
 
-const unlockVersions = ['v4', 'v6', 'v7', 'v8', 'v9', 'v10']
-const publicLockVersions = ['v4', 'v6', 'v7', 'v8', 'v9']
+const unlockVersions = ['v4', 'v6', 'v7', 'v8', 'v9', 'v10', 'v11']
+const publicLockVersions = ['v4', 'v6', 'v7', 'v8', 'v9', 'v10']
 
 const data = {
   PublicLock: publicLockVersions.reduce(
@@ -110,7 +110,7 @@ const doNotModify = `/* eslint-disable */
 `
 console.log('writing abis...')
 fs.writeFileSync(
-  `${path.dirname(__dirname)}/src/abis.js`,
+  `${path.dirname(__dirname)}/src/abis.ts`,
   `${doNotModify}
 const abis = ${JSON.stringify(parsedAbis, null, 2)}
 export default abis`

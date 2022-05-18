@@ -22,6 +22,7 @@ contract('Lock / erc20', (accounts) => {
     unlock = await getProxy(unlockContract)
     const locks = await deployLocks(unlock, accounts[0], token.address)
     lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
   })
 
   describe('creating ERC20 priced locks', () => {
@@ -58,17 +59,24 @@ contract('Lock / erc20', (accounts) => {
     })
 
     describe('users can purchase keys', () => {
+      let tokenId
       beforeEach(async () => {
-        await lock.purchase(
+        const tx = await lock.purchase(
           [keyPrice.toFixed()],
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: keyOwner,
           }
         )
+
+        const tokenIds = tx.logs
+          .filter((v) => v.event === 'Transfer')
+          .map(({ args }) => args.tokenId)
+
+        tokenId = tokenIds[0]
       })
 
       it('charges correct amount on purchaseKey', async () => {
@@ -85,16 +93,19 @@ contract('Lock / erc20', (accounts) => {
       })
 
       it('when a lock owner refunds a key, tokens are fully refunded', async () => {
-        await lock.purchase(
+        const tx = await lock.purchase(
           [keyPrice.toFixed()],
           [keyOwner3],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: keyOwner3,
           }
         )
+
+        const { args } = tx.logs.find((v) => v.event === 'Transfer')
+        const tokenId = args.tokenId
 
         const balanceOwnerBefore = new BigNumber(
           await token.balanceOf(keyOwner3)
@@ -103,7 +114,7 @@ contract('Lock / erc20', (accounts) => {
           await token.balanceOf(lock.address)
         )
 
-        await lock.expireAndRefundFor(keyOwner3, refundAmount, {
+        await lock.expireAndRefundFor(tokenId, refundAmount, {
           from: accounts[0],
         })
         const balanceOwnerAfter = new BigNumber(
@@ -126,8 +137,7 @@ contract('Lock / erc20', (accounts) => {
 
       it('when a key owner cancels a key, they are refunded in tokens', async () => {
         const balance = new BigNumber(await token.balanceOf(keyOwner))
-        const ID = await lock.getTokenIdFor.call(keyOwner)
-        await lock.cancelAndRefund(ID, { from: keyOwner })
+        await lock.cancelAndRefund(tokenId, { from: keyOwner })
         assert(balance.lt(await token.balanceOf(keyOwner)))
       })
 
@@ -153,7 +163,7 @@ contract('Lock / erc20', (accounts) => {
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: keyOwner,
           }
@@ -165,7 +175,7 @@ contract('Lock / erc20', (accounts) => {
           [keyOwner2],
           [keyOwner],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: keyOwner2,
           }
@@ -176,14 +186,9 @@ contract('Lock / erc20', (accounts) => {
       })
 
       it('can transfer the key to another user', async () => {
-        await lock.transferFrom(
-          keyOwner,
-          accounts[4],
-          await lock.getTokenIdFor.call(keyOwner),
-          {
-            from: keyOwner,
-          }
-        )
+        await lock.transferFrom(keyOwner, accounts[4], tokenId, {
+          from: keyOwner,
+        })
       })
     })
 
@@ -199,7 +204,7 @@ contract('Lock / erc20', (accounts) => {
           [account],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: account,
           }
@@ -218,7 +223,7 @@ contract('Lock / erc20', (accounts) => {
           [account],
           [web3.utils.padLeft(0, 40)],
           [web3.utils.padLeft(0, 40)],
-          [],
+          [[]],
           {
             from: account,
           }

@@ -1,5 +1,5 @@
 /* eslint no-console:0 */
-const { WalletService } = require('../lib/index')
+const { WalletService } = require('../dist')
 
 // Make sure you add this file!
 // Locally:
@@ -10,7 +10,8 @@ const { WalletService } = require('../lib/index')
 //   'https://....',
 //   1
 // )
-// eslint-disable-next-line import/no-unresolved
+
+// eslint-disable-next-line
 const provider = require('../provider.js')
 
 // Setup provider

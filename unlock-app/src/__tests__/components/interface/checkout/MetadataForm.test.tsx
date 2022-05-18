@@ -33,6 +33,18 @@ const fieldsWithRequired: MetadataInput[] = [
 
 const lock = {}
 
+const recipientsObj = {
+  recipients: [],
+  loading: false,
+  maxRecipients: 1,
+  minRecipients: 1,
+  hasMinimumRecipients: true,
+  submitBulkRecipients: async () => Promise.resolve(true),
+  addRecipient: () => undefined,
+  clear: () => undefined,
+  removeRecipient: () => undefined,
+}
+
 describe.skip('Metadata Form', () => {
   describe('no required fields', () => {
     let onSubmit: jest.Mock<any, any>
@@ -47,6 +59,7 @@ describe.skip('Metadata Form', () => {
           lock={lock}
           fields={fieldsNoRequired}
           onSubmit={onSubmit}
+          {...recipientsObj}
         />
       )
       submitButton = getByText('Continue')
@@ -103,6 +116,7 @@ describe.skip('Metadata Form', () => {
           fields={fieldsWithRequired}
           onSubmit={onSubmit}
           lock={lock}
+          {...recipientsObj}
         />
       )
       submitButton = getByText('Continue')
@@ -165,6 +179,7 @@ describe.skip('Metadata Form', () => {
           fields={fieldsWithRequired}
           onSubmit={onSubmit}
           lock={lock}
+          {...recipientsObj}
         />
       )
       submitButton = getByText('Continue')

@@ -79,7 +79,7 @@ describe('when requesting cards', () => {
       expect.assertions(1)
 
       const message = {
-        user: {
+        'Get Card': {
           publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         },
       }
@@ -106,7 +106,7 @@ describe('when requesting cards', () => {
       expect.assertions(1)
 
       const message = {
-        user: {
+        'Get Card': {
           publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
         },
       }
@@ -117,7 +117,7 @@ describe('when requesting cards', () => {
 
       const typedData = generateTypedData(message)
       const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
+        data: `I want to retrieve the card token for ${message['Get Card'].publicKey}`,
       })
 
       const response = await request(app)
@@ -138,7 +138,7 @@ describe('when updating cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Save Card': {
           publicKey,
           stripeTokenId: 'tok_visa',
         },
@@ -163,7 +163,7 @@ describe('when updating cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Save Card': {
           publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
           stripeTokenId: 'tok_visa',
         },
@@ -194,7 +194,7 @@ describe('when updating cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Save Card': {
           publicKey,
           stripeTokenId: 'tok_visa',
         },
@@ -210,7 +210,7 @@ describe('when updating cards', () => {
 
       const typedData = generateTypedData(message)
       const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
+        data: `I save my payment card for my account ${message['Save Card'].publicKey}`,
       })
 
       const response = await request(app)
@@ -228,7 +228,7 @@ describe('when updating cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Save Card': {
           publicKey,
           stripeTokenId: 'tok_visa',
         },
@@ -240,7 +240,7 @@ describe('when updating cards', () => {
 
       const typedData = generateTypedData(message)
       const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
+        data: `I save my payment card for my account ${message['Save Card'].publicKey}`,
       })
 
       jest
@@ -264,7 +264,7 @@ describe('when deleting cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Delete Card': {
           publicKey,
         },
       }
@@ -288,7 +288,7 @@ describe('when deleting cards', () => {
       const publicKey = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
       const message = {
-        user: {
+        'Delete Card': {
           publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
         },
       }
@@ -316,7 +316,7 @@ describe('when deleting cards', () => {
       expect.assertions(1)
 
       const message = {
-        user: {
+        'Delete Card': {
           publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
         },
       }
@@ -331,7 +331,7 @@ describe('when deleting cards', () => {
 
       const typedData = generateTypedData(message)
       const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
+        data: `I am deleting the card linked to my account ${message['Delete Card'].publicKey}`,
       })
 
       const response = await request(app)
@@ -348,7 +348,7 @@ describe('when deleting cards', () => {
       expect.assertions(1)
 
       const message = {
-        user: {
+        'Delete Card': {
           publicKey: '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a',
         },
       }
@@ -363,7 +363,7 @@ describe('when deleting cards', () => {
 
       const typedData = generateTypedData(message)
       const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
+        data: `I am deleting the card linked to my account ${message['Delete Card'].publicKey}`,
       })
 
       const response = await request(app)

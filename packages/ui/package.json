@@ -29,14 +29,16 @@
   },
   "dependencies": {
     "@headlessui/react": "1.5.0",
+    "@radix-ui/react-tooltip": "0.1.7",
     "@tailwindcss/aspect-ratio": "0.4.0",
     "@tailwindcss/forms": "0.4.0",
     "@tailwindcss/line-clamp": "0.3.1",
-    "@tailwindcss/typography": "0.5.1",
+    "@tailwindcss/typography": "0.5.2",
     "prism-react-renderer": "1.2.1",
     "react-icons": "4.3.1",
-    "tailwind-merge": "1.2.0",
-    "tailwindcss": "3.0.18"
+    "react-use-clipboard": "1.0.8",
+    "tailwind-merge": "1.2.1",
+    "tailwindcss": "3.0.24"
   },
   "peerDependencies": {
     "@headlessui/react": "1.4.3",
@@ -44,26 +46,28 @@
     "react-dom": "17.0.2"
   },
   "devDependencies": {
-    "@babel/core": "7.17.5",
+    "@babel/core": "7.17.10",
     "@headlessui/react": "1.4.3",
-    "@mdx-js/preact": "2.0.0",
-    "@mdx-js/react": "2.0.0",
+    "@mdx-js/preact": "2.1.1",
+    "@mdx-js/react": "2.1.1",
     "@storybook/addon-actions": "6.5.0-alpha.31",
     "@storybook/addon-docs": "6.5.0-alpha.31",
     "@storybook/addon-essentials": "6.5.0-alpha.31",
     "@storybook/addon-links": "6.5.0-alpha.31",
     "@storybook/addon-postcss": "2.0.0",
     "@storybook/react": "6.5.0-alpha.31",
-    "@types/react": "17.0.39",
-    "@types/react-dom": "17.0.12",
+    "@types/react": "17.0.44",
+    "@types/react-dom": "17.0.16",
     "@vitejs/plugin-react": "1.2.0",
-    "autoprefixer": "10.4.2",
-    "babel-loader": "8.2.3",
-    "postcss": "8.4.7",
-    "storybook-builder-vite": "0.1.17",
-    "tailwindcss": "3.0.23",
+    "autoprefixer": "10.4.6",
+    "babel-loader": "8.2.5",
+    "postcss": "8.4.13",
+    "storybook-builder-vite": "0.1.23",
+    "tailwindcss": "3.0.24",
+    "tsconfig-paths-webpack-plugin": "3.5.2",
     "tsup": "5.11.13",
-    "typescript": "4.6.2",
-    "vite": "2.8.6"
+    "typescript": "4.6.4",
+    "vite": "2.8.6",
+    "vite-tsconfig-paths": "3.4.1"
   }
 }
