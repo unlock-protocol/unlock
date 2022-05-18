@@ -10,13 +10,13 @@ export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
   const lockManager = Normalizer.ethereumAddress(req.user!.walletAddress!)
 
   if (!lockAddress) {
-    res.status(404).send({
+    return res.status(404).send({
       message: 'Missing lock Address',
     })
   }
 
   if (!network) {
-    res.status(404).send({
+    return res.status(404).send({
       message: 'Missing network',
     })
   }
