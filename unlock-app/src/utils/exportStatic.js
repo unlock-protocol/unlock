@@ -23,7 +23,6 @@ const exportPaths = (defaultPathMap, { dev, dir, outDir }) => {
     '/verification': { page: '/verification' },
     '/members': { page: '/members' },
     '/checkout': { page: '/checkout' },
-    '/verifiers': { page: '/verifiers' },
   }
 }
 
