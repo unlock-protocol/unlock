@@ -11,47 +11,33 @@ export class VerifierController {
     this.web3Service = web3Service
   }
 
-  async #checkIsLockManager(
-    lockAddress: string,
-    loggedUserAddress: string,
-    network: number,
-    response: Response
-  ) {
-    try {
-      const isLockManager = await this.web3Service.isLockManager(
-        lockAddress,
-        loggedUserAddress,
-        network
-      )
-
-      if (!isLockManager) {
-        return response.status(401).send({
-          message: `${loggedUserAddress} is not a lock manager for ${lockAddress} on ${network}`,
-        })
-      }
-      return response.status(201)
-    } catch (error) {
-      logger.error(error.message)
-      return response.status(500).send({
-        message: 'There were some problems in getting the lock data.',
-      })
-    }
-  }
-
   async #isVerifierAlreadyExits(
     lockAddress: string,
     address: string,
     lockManager: string,
     network: number
-  ): Promise<any> {
-    return await Verifier.findOne({
+  ) {
+    return Verifier.findOne({
       where: {
-        lockAddress,
         address,
+        lockAddress,
         lockManager,
         network,
       },
-      attributes: ['id'],
+    })
+  }
+
+  async #getVerifiersList(
+    lockAddress: string,
+    lockManager: string,
+    network: number
+  ): Promise<Verifier[] | null> {
+    return Verifier.findAll({
+      where: {
+        lockAddress,
+        lockManager,
+        network,
+      },
     })
   }
 
@@ -64,22 +50,19 @@ export class VerifierController {
         request.user!.walletAddress!
       )
 
-      await this.#checkIsLockManager(
+      const list = await this.#getVerifiersList(
         lockAddress,
         loggedUserAddress,
-        network,
-        response
+        network
       )
 
-      const list = await Verifier.findAll({
-        where: {
-          lockAddress,
-          lockManager: loggedUserAddress,
-          chain: network,
-        },
-      })
-
-      return response.status(200).send(list)
+      if (list) {
+        return response.status(200).send({
+          results: list,
+        })
+      } else {
+        return response.sendStatus(204)
+      }
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
@@ -98,12 +81,6 @@ export class VerifierController {
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress!
       )
-      await this.#checkIsLockManager(
-        lockAddress,
-        loggedUserAddress,
-        network,
-        response
-      )
 
       const alreadyExists = await this.#isVerifierAlreadyExits(
         lockAddress,
@@ -112,7 +89,7 @@ export class VerifierController {
         network
       )
 
-      if (!alreadyExists) {
+      if (alreadyExists?.id) {
         return response.status(409).send({
           message: 'Verifier already exists',
         })
@@ -143,19 +120,14 @@ export class VerifierController {
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress!
       )
-      await this.#checkIsLockManager(
-        lockAddress,
-        loggedUserAddress,
-        network,
-        response
-      )
+
       const alreadyExists = await this.#isVerifierAlreadyExits(
         lockAddress,
         address,
         loggedUserAddress,
         network
       )
-      if (!alreadyExists) {
+      if (!alreadyExists?.id) {
         return response.status(409).send({
           message: 'Verifier not exists',
         })
@@ -168,7 +140,14 @@ export class VerifierController {
             network,
           },
         })
-        response.status(204)
+        const list = await this.#getVerifiersList(
+          lockAddress,
+          loggedUserAddress,
+          network
+        )
+        return response.status(200).send({
+          results: list,
+        })
       }
     } catch (error) {
       logger.error(error.message)
@@ -176,6 +155,5 @@ export class VerifierController {
         message: 'There were some problems removing the verifier.',
       })
     }
-    return null
   }
 }
