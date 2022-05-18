@@ -23,7 +23,7 @@ const mockLock = {
   }),
 }
 
-const mockGetLockContract = jest.fn((lockAddress: string) => {
+const mockLockFunctions = jest.fn((lockAddress: string) => {
   switch (lockAddress) {
     case 'v9':
       return { ...mockLock, publicLockVersion: async () => 9 }
@@ -44,9 +44,19 @@ const mockGetLockContract = jest.fn((lockAddress: string) => {
   }
 })
 
+const mockGetLockContract = jest.fn((lockAddress: string) => ({
+  ...mockLockFunctions(lockAddress),
+  connect: jest.fn(() => mockLockFunctions(lockAddress)),
+}))
+
 const mockWeb3Service = {
   getLockContract: mockGetLockContract,
+  getLock: jest.fn(() => ({
+    currencyContractAddress: '0xtestToken',
+    currencySymbol: 'TEST',
+  })),
 }
+
 const mockWalletService = {
   connect: jest.fn(),
   getLockContract: mockGetLockContract,
@@ -61,11 +71,23 @@ jest.mock('ethers', () => {
   const original = jest.requireActual('ethers')
   return {
     ...original,
+    Wallet: {
+      createRandom: jest.fn(() => ({
+        address: '0x',
+        connect: jest.fn(),
+      })),
+    },
+    Contract: jest.fn(() => ({
+      decimals: jest.fn(),
+    })),
     ethers: {
       providers: {
         JsonRpcProvider: jest.fn(),
       },
       Wallet: jest.fn(),
+      utils: {
+        formatUnits: jest.fn(() => '0.01'),
+      },
     },
   }
 })
@@ -90,28 +112,22 @@ jest.mock('../../src/utils/keyPricer', () => {
 jest.mock('../../src/utils/gasPrice', () => {
   return jest.fn(() => {
     return {
-      gasPriceUSD: (network: number, gasCost: number) =>
-        Promise.resolve((network === 1 ? 0.13 : 0.00000001) * gasCost),
+      gasPriceUSD: (network: number) => Promise.resolve(network === 1 ? 10 : 1),
     }
   })
 })
 
+jest.mock('isomorphic-fetch', () => async () => ({
+  json: async () => ({
+    data: { base: 'USDT', currency: 'USD', amount: 1 },
+  }),
+}))
+
 describe('isWorthRenewing', () => {
-  it('should return gas refund value', async () => {
-    expect.assertions(2)
-    const { shouldRenew, gasRefund, error } = await isWorthRenewing(
-      network,
-      lockAddress,
-      keyId
-    )
-    console.log(error)
-    expect(gasRefund).toEqual(150000)
-    expect(shouldRenew).toBeTruthy()
-  })
   it('should return true when gas refund is enough', async () => {
     expect.assertions(2)
     const { shouldRenew, gasRefund } = await isWorthRenewing(
-      1,
+      network,
       lockAddress,
       keyId
     )
@@ -125,8 +141,8 @@ describe('isWorthRenewing', () => {
       'noRefund',
       keyId
     )
-    expect(gasRefund).toEqual(0)
     expect(shouldRenew).toBeTruthy()
+    expect(gasRefund).toEqual(0)
   })
   it('should return false when both conditions arent unmet (gasrefund too low + higher than max covered)', async () => {
     expect.assertions(2)
@@ -142,11 +158,6 @@ describe('isWorthRenewing', () => {
 
 describe('renewKey', () => {
   describe('abort on non-reccuring locks', () => {
-    it('should not renew when lock version <10', async () => {
-      expect.assertions(1)
-      const renewal = await renewKey({ network, lockAddress: 'v9', keyId })
-      expect(renewal.error).toEqual('Renewal only supported for lock v10+')
-    })
     it('should not renew if lock gas refund is not set and cost are not covered', async () => {
       expect.assertions(1)
       const renewal = await renewKey({

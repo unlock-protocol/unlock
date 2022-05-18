@@ -4,12 +4,11 @@ import networks from '@unlock-protocol/networks'
 import PriceConversion from './priceConversion'
 
 export default class GasPrice {
-  // gasCost is expressed in gas
+  // gasCost is expressed in gas, returns cost in base currency (ether on mainnet...)
   async gasPriceETH(network: number, gasCost: number): Promise<number> {
     const providerUrl = networks[network].publicProvider
     const provider = new ethers.providers.JsonRpcProvider(providerUrl)
 
-    // Price of gas (in wei)
     const gasPrice: any = await provider.getGasPrice()
     const gasPriceETH = parseFloat(
       utils.formatEther(BigNumber.from(gasPrice).mul(BigNumber.from(gasCost)))
@@ -17,8 +16,7 @@ export default class GasPrice {
     return gasPriceETH
   }
 
-  // Gas price denominated in cents by default
-  // Multiply base to get more accurate
+  // Gas price denominated in cents
   async gasPriceUSD(network: number, gasCost: number): Promise<number> {
     const gasPrice = await this.gasPriceETH(network, gasCost)
     // Cost in currency
@@ -31,7 +29,6 @@ export default class GasPrice {
     }
     // TODO: support more "native" currencies
     const priceConversion = new PriceConversion()
-    const usd = await priceConversion.convertToUSD(symbol, gasPrice)
-    return usd
+    return priceConversion.convertToUSD(symbol, gasPrice)
   }
 }

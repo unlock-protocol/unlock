@@ -107,6 +107,7 @@ require('./tasks/gov')
 require('./tasks/utils')
 require('./tasks/lock')
 require('./tasks/verify')
+require('./tasks/keys')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
@@ -116,7 +117,7 @@ module.exports = {
   etherscan,
   gasReporter: {
     currency: 'USD',
-    excludeContracts: ['Migrations', 'TestNoop'],
+    excludeContracts: ['TestNoop'],
     gasPrice: 5,
   },
   solidity: {
