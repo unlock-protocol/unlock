@@ -17,12 +17,12 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
       const { data } = await resp.json()
 
       const maxFeePerGas = ethers.utils.parseUnits(
-        `${Math.ceil(data.standard.maxFee)}`,
+        `${Math.ceil(data.fast.maxFee)}`,
         'gwei'
       )
 
       const maxPriorityFeePerGas = ethers.utils
-        .parseUnits(`${Math.ceil(data.standard.maxPriorityFee)}`, 'gwei')
+        .parseUnits(`${Math.ceil(data.fast.maxPriorityFee)}`, 'gwei')
         .mul(2)
 
       return {
