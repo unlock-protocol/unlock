@@ -1,4 +1,3 @@
-/* istanbul ignore file */
 import { ethers, Wallet } from 'ethers'
 import * as contracts from '@unlock-protocol/contracts'
 import { networks } from '@unlock-protocol/networks'
