@@ -118,4 +118,4 @@ And now, our sample lock is wired up, via the hook contract, to token gate acces
 
 At this point, we are ready to go! In the example shown here, if we were to use our lock at `0xf4e931a7FB3d461A005011d659a0F21a7FeA1826` on a WordPress website, a Discord server, or another location, the lock would check for the presence of a SPKZ key in the wallet of the site visitor and grant access to holders of a SPKZ token.
 
-**Update May 2022:** Support for ERC-1155 NFTs with Bring Your Own NFT
+**Update May 2022:** Added support for ERC-1155 NFTs with Bring Your Own NFT
