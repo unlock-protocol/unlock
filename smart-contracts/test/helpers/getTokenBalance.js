@@ -1,8 +1,6 @@
 const BigNumber = require('bignumber.js')
 
-const Erc20Token = artifacts.require(
-  '@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20'
-)
+const Erc20Token = artifacts.require('IERC20.sol')
 
 module.exports = async function getTokenBalance(account, tokenAddress) {
   if (tokenAddress === web3.utils.padLeft(0, 40)) {

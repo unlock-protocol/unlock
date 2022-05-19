@@ -5,9 +5,7 @@ const deployLocks = require('../helpers/deployLocks')
 const getProxy = require('../helpers/proxy')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const Erc20Token = artifacts.require(
-  '@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20'
-)
+const Erc20Token = artifacts.require('IERC20.sol')
 
 const scenarios = [false, true]
 let unlock
