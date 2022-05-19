@@ -33,6 +33,7 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.addIndex('Verifiers', { fields: ['address', 'lockAddress', 'lockManager', 'network'] })
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Verifiers');
