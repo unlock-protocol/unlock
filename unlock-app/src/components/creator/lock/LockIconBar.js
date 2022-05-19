@@ -28,6 +28,7 @@ export function LockIconBar({ lock, toggleCode, withdraw, toggleCreditCard }) {
     )
   }
   const membersPage = `/members?locks=${lock.address}`
+  const verifiersPage = `/verifiers?lockAddress=${lock.address}`
   // Otherwise, we just show the lock icon bar
   return (
     <StatusBlock>
@@ -47,6 +48,7 @@ export function LockIconBar({ lock, toggleCode, withdraw, toggleCreditCard }) {
             href={config.networks[network].explorer.urls.address(lock.address)}
           />
         )}
+        <Buttons.Verifiers href={verifiersPage} />
       </IconBar>
     </StatusBlock>
   )
