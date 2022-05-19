@@ -1,16 +1,17 @@
-import { ethers, constants } from 'ethers'
+import { ethers, Wallet, Contract, constants } from 'ethers'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
 import { KeyRenewal } from '../../models'
 import GasPrice from '../../utils/gasPrice'
+import PriceConversion from '../../utils/priceConversion'
 import Dispatcher from '../../fulfillment/dispatcher'
 
 // multiply factor to increase precision for gas calculations
 const BASE_POINT_ACCURACY = 1000
 
-// Maximum price we're willing to pay to renew keys (1000 => 1ct)
-const MAX_RENEWAL_COST_COVERED = 1 * BASE_POINT_ACCURACY
+// Maximum price we're willing to pay to renew keys (1000 => 5ct)
+const MAX_RENEWAL_COST_COVERED = 5 * BASE_POINT_ACCURACY
 
 interface RenewKeyParams {
   keyId: number
@@ -32,11 +33,18 @@ interface ShouldRenew {
   error?: string
 }
 
-// Calculate price of gas in USD
+// Calculate price of gas in USD cents
 const getGasFee = async (network: number, gasCost: number) => {
   const gasPrice = new GasPrice()
   const gasCostUSD = await gasPrice.gasPriceUSD(network, gasCost)
   return gasCostUSD * BASE_POINT_ACCURACY
+}
+
+// calculate price of any ERC20 to USD cents
+const getERC20AmountInUSD = async (symbol: string, amount: string) => {
+  const conversion = new PriceConversion()
+  const priceUSD = await conversion.convertToUSD(symbol, parseFloat(amount))
+  return priceUSD * BASE_POINT_ACCURACY
 }
 
 export const isWorthRenewing = async (
@@ -52,23 +60,43 @@ export const isWorthRenewing = async (
   try {
     const lock = await web3Service.getLockContract(lockAddress, provider)
 
+    // get gas refund from contract
+    const gasRefund = await lock.gasRefundValue()
+
+    // get ERC20 info
+    const { currencySymbol, currencyContractAddress } =
+      await web3Service.getLock(lockAddress, network)
+    const abi = ['function decimals() public view returns (uint decimals)']
+    const tokenContract = new Contract(currencyContractAddress, abi, provider)
+    const decimals = await tokenContract.decimals()
+
+    // if gas refund is set, we use a a random signer to get estimate to prevent
+    // tx to reverts with msg.sender `ERC20: transfer to address zero`
+    let estimateGas
+    if (gasRefund.toNumber() !== 0) {
+      const randomWallet = await Wallet.createRandom().connect(provider)
+      estimateGas = lock.connect(randomWallet).estimateGas
+    } else {
+      estimateGas = lock.estimateGas
+    }
+
     // estimate gas for the renewMembership function (check if reverts).
     // we bump by 20%, just to cover temporary changes
     const gasLimit = (
-      await lock.estimateGas.renewMembershipFor(keyId, constants.AddressZero)
+      await estimateGas.renewMembershipFor(keyId, constants.AddressZero)
     )
       .mul(10)
       .div(8)
 
-    // find cost to renew in USD cents
+    // find costs in USD cents
     const costToRenew = await getGasFee(network, gasLimit.toNumber())
-
-    // find gas refund in USD cents
-    const gasRefund = await lock.gasRefundValue()
-    const costRefunded = await getGasFee(network, gasRefund.toNumber())
+    const costRefunded = await getERC20AmountInUSD(
+      currencySymbol,
+      ethers.utils.formatUnits(gasRefund, decimals)
+    )
 
     const shouldRenew =
-      costToRenew < costRefunded || costToRenew < MAX_RENEWAL_COST_COVERED
+      costToRenew <= costRefunded || costToRenew < MAX_RENEWAL_COST_COVERED
 
     return {
       shouldRenew,
