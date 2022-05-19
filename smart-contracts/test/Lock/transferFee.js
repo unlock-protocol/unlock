@@ -1,6 +1,7 @@
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
+const { time } = require('@openzeppelin/test-helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -142,6 +143,21 @@ contract('Lock / transferFee', (accounts) => {
         await lock.transferFrom(newOwner, keyOwner, tokenId, {
           from: newOwner,
         })
+      })
+    })
+
+    describe('when the key is expired', () => {
+      let fee
+      before(async () => {
+        const expirationBefore = new BigNumber(
+          await lock.keyExpirationTimestampFor(tokenId)
+        )
+        await time.increaseTo(expirationBefore.toNumber())
+        fee = await lock.getTransferFee(tokenId, 0)
+      })
+
+      it('the fee should be null', async () => {
+        assert.equal(fee, 0)
       })
     })
 
