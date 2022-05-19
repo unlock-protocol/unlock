@@ -1,5 +1,9 @@
+// eslint-disable-next-line max-classes-per-file
 import { EventEmitter } from 'events'
+import { BigNumber, Wallet } from 'ethers'
 import Dispatcher from '../../src/fulfillment/dispatcher'
+
+const config = require('../../config/config')
 
 const lockAddress = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 const recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
@@ -21,6 +25,11 @@ const mockWeb3Service = {
     .mockResolvedValueOnce(standardLock),
 }
 
+class MockLockContract extends EventEmitter {
+  renewMembershipFor = jest.fn()
+}
+
+const mockLockContract = new MockLockContract()
 class MockWalletService extends EventEmitter {
   connect = jest.fn()
 
@@ -37,6 +46,8 @@ class MockWalletService extends EventEmitter {
   setUnlockAddress = jest.fn()
 
   grantKeys = jest.fn()
+
+  getLockContract = jest.fn(async () => mockLockContract)
 }
 
 const mockWalletService = new MockWalletService()
@@ -48,6 +59,15 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   WalletService: function WalletService() {
     return mockWalletService
   },
+}))
+
+jest.mock('../../src/utils/gasSettings', () => ({
+  getGasSettings: jest.fn(() => {
+    return {
+      maxFeePerGas: BigNumber.from(40000000000),
+      maxPriorityFeePerGas: BigNumber.from(40000000000),
+    }
+  }),
 }))
 
 describe('Dispatcher', () => {
@@ -66,9 +86,32 @@ describe('Dispatcher', () => {
         {
           lockAddress: '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267',
           recipients: ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'],
-          transactionOptions: {},
+          transactionOptions: {
+            maxFeePerGas: BigNumber.from(40000000000),
+            maxPriorityFeePerGas: BigNumber.from(40000000000),
+          },
         },
         callback
+      )
+    })
+  })
+  describe('renewMembershipFor', () => {
+    it('should call the function directly on lock contract', async () => {
+      expect.assertions(2)
+      const keyId = 1
+      // check contract is fetched correctly
+      await new Dispatcher().renewMembershipFor(31337, lockAddress, keyId)
+      expect(mockWalletService.getLockContract).toBeCalledWith(lockAddress)
+
+      // check contract call
+      const referrerWallet = new Wallet(config.purchaserCredentials)
+      expect(mockLockContract.renewMembershipFor).toBeCalledWith(
+        keyId,
+        referrerWallet.address,
+        {
+          maxFeePerGas: BigNumber.from(40000000000),
+          maxPriorityFeePerGas: BigNumber.from(40000000000),
+        }
       )
     })
   })
