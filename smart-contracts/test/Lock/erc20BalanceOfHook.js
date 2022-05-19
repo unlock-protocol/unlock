@@ -97,7 +97,7 @@ contract('ERC20BalanceOfHook', (accounts) => {
         [keyOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        [],
+        [[]],
         {
           from,
           value: keyPrice,
@@ -108,12 +108,12 @@ contract('ERC20BalanceOfHook', (accounts) => {
     it('with an expired key', async () => {
       // buy a key
       const keyPrice = await lock.keyPrice()
-      await lock.purchase(
+      const tx = await lock.purchase(
         [],
         [keyOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        [],
+        [[]],
         {
           from,
           value: keyPrice,
@@ -121,8 +121,11 @@ contract('ERC20BalanceOfHook', (accounts) => {
       )
       assert.equal(await lock.getHasValidKey(keyOwner), true)
 
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      const { tokenId } = args
+
       // expire the key
-      await lock.expireAndRefundFor(keyOwner, 0)
+      await lock.expireAndRefundFor(tokenId, 0)
       assert.equal(await lock.getHasValidKey(keyOwner), false)
     })
   })
@@ -146,7 +149,7 @@ contract('ERC20BalanceOfHook', (accounts) => {
         [tokenOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        [],
+        [[]],
         {
           from,
           value: keyPrice,
@@ -157,12 +160,12 @@ contract('ERC20BalanceOfHook', (accounts) => {
     it('with an expired key', async () => {
       // buy a key
       const keyPrice = await lock.keyPrice()
-      await lock.purchase(
+      const tx = await lock.purchase(
         [],
         [tokenOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        [],
+        [[]],
         {
           from,
           value: keyPrice,
@@ -170,8 +173,11 @@ contract('ERC20BalanceOfHook', (accounts) => {
       )
       assert.equal(await lock.getHasValidKey(tokenOwner), true)
 
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      const { tokenId } = args
+
       // expire the key
-      await lock.expireAndRefundFor(tokenOwner, 0)
+      await lock.expireAndRefundFor(tokenId, 0)
       assert.equal(await lock.getHasValidKey(tokenOwner), false)
     })
   })
@@ -195,7 +201,7 @@ contract('ERC20BalanceOfHook', (accounts) => {
         [tokenOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        [],
+        [[]],
         {
           from,
           value: keyPrice,
@@ -206,12 +212,12 @@ contract('ERC20BalanceOfHook', (accounts) => {
     it('with an expired key', async () => {
       // buy a key
       const keyPrice = await lock.keyPrice()
-      await lock.purchase(
+      const tx = await lock.purchase(
         [],
         [tokenOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        [],
+        [[]],
         {
           from,
           value: keyPrice,
@@ -219,8 +225,11 @@ contract('ERC20BalanceOfHook', (accounts) => {
       )
       assert.equal(await lock.getHasValidKey(tokenOwner), true)
 
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      const { tokenId } = args
+
       // expire the key
-      await lock.expireAndRefundFor(tokenOwner, 0)
+      await lock.expireAndRefundFor(tokenId, 0)
       assert.equal(await lock.getHasValidKey(tokenOwner), true)
     })
   })
@@ -244,7 +253,7 @@ contract('ERC20BalanceOfHook', (accounts) => {
         [tokenOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        [],
+        [[]],
         {
           from,
           value: keyPrice,
@@ -255,12 +264,12 @@ contract('ERC20BalanceOfHook', (accounts) => {
     it('with an expired key', async () => {
       // buy a key
       const keyPrice = await lock.keyPrice()
-      await lock.purchase(
+      const tx = await lock.purchase(
         [],
         [tokenOwner],
         [constants.ZERO_ADDRESS],
         [constants.ZERO_ADDRESS],
-        [],
+        [[]],
         {
           from,
           value: keyPrice,
@@ -268,8 +277,11 @@ contract('ERC20BalanceOfHook', (accounts) => {
       )
       assert.equal(await lock.getHasValidKey(tokenOwner), true)
 
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      const { tokenId } = args
+
       // expire the key
-      await lock.expireAndRefundFor(tokenOwner, 0)
+      await lock.expireAndRefundFor(tokenId, 0)
       assert.equal(await lock.getHasValidKey(tokenOwner), true)
     })
   })
