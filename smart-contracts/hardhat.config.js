@@ -43,6 +43,9 @@ const settings = {
 }
 
 const networks = getHardhatNetwork()
+networks.hardhat = {
+  initialBaseFeePerGas: 100000000,
+}
 
 // Etherscan api for verification
 const etherscan = {

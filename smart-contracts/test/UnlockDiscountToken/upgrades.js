@@ -10,6 +10,9 @@ const createLockHash = require('../helpers/createLockCalldata')
 
 const Locks = require('../fixtures/locks')
 
+// skip on coverage until solidity-coverage supports EIP-1559
+const describeOrskip = process.env.IS_COVERAGE ? describe.skip : describe
+
 const estimateGas = 252166 * 2
 
 // files path
@@ -322,7 +325,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       })
     })
 
-    describe('mint capped by % growth', () => {
+    describeOrskip('mint capped by % growth', () => {
       before(async () => {
         // 1,000,000 UDT minted thus far
         // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
