@@ -105,22 +105,6 @@ contract MixinKeys is
   }
 
   /**
-   * Ensures that an owner has a valid key
-   * @param _user the account to check
-   * @dev This is a modifier
-   */ 
-  function _hasValidKey(
-    address _user
-  ) 
-  internal 
-  view 
-  {
-    require(
-      getHasValidKey(_user), 'KEY_NOT_VALID'
-    );
-  }
-
-  /**
    * Check if a key is expired or not
    * @dev This is a modifier
    */
