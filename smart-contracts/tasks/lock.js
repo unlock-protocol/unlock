@@ -60,3 +60,35 @@ task('lock:samples', 'Deploy a sample lock')
     const deploySampleLocks = require('../scripts/lock/samples')
     await deploySampleLocks({ unlockAddress, unlockVersion })
   })
+
+task('lock:create', 'Deploy a lock')
+  .addOptionalParam('price', 'The price')
+  .addOptionalParam('name', 'The name of the lock')
+  .addOptionalParam('duration', 'The duration')
+  .addOptionalParam('maxNumberOfKeys', 'The max number of keys available')
+  .addOptionalParam('tokenAddress', 'The ERC20 token address')
+  .addOptionalParam(
+    'lockVersion',
+    'The PublicLock version to use to deploy the contract'
+  )
+  .setAction(
+    async ({
+      price,
+      duration,
+      maxNumberOfKeys,
+      tokenAddress,
+      lockVersion,
+      name,
+    }) => {
+      // eslint-disable-next-line global-require
+      const createLock = require('../scripts/lock/create')
+      await createLock({
+        price,
+        duration,
+        tokenAddress,
+        maxNumberOfKeys,
+        lockVersion,
+        name,
+      })
+    }
+  )
