@@ -1,18 +1,18 @@
 const { ethers, run } = require('hardhat')
 
 async function main() {
-  const ERC721BalanceOfHook = await ethers.getContractFactory(
-    'ERC721BalanceOfHook'
+  const ERC20BalanceOfHook = await ethers.getContractFactory(
+    'ERC20BalanceOfHook'
   )
-  const hook = await ERC721BalanceOfHook.deploy()
+  const hook = await ERC20BalanceOfHook.deploy()
   await hook.deployed()
 
   // eslint-disable-next-line no-console
   console.log(
-    `HOOK (ERC721 BalanceOf)  > deployed to : ${hook.address} (tx: ${hook.deployTransaction.hash})`
+    `HOOK (ERC20 BalanceOf)  > deployed to : ${hook.address} (tx: ${hook.deployTransaction.hash})`
   )
 
-  run('verify:verify', {
+  await run('verify:verify', {
     address: hook.address,
   })
 }
