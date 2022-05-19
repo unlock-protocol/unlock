@@ -26,6 +26,7 @@ describe('exportStatic', () => {
       '/verification': { page: '/verification' },
       '/members': { page: '/members' },
       '/checkout': { page: '/checkout' },
+      '/verifiers': { page: '/verifiers' },
     })
   })
 })
