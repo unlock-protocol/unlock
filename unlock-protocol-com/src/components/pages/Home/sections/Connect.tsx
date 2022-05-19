@@ -37,6 +37,7 @@ export function Connect() {
             ))}
           </ul>
         </div>
+
         <div className="flex items-center justify-center gap-4 sm:justify-start">
           <Button href="#get-started" as={Link}>
             Get Started
@@ -44,6 +45,18 @@ export function Connect() {
           <Button as={Link} href={unlockConfig.appURL} variant="secondary">
             Dashboard
           </Button>
+        </div>
+
+        <div className="mt-4 flex items-center justify-center gap-4 sm:justify-start">
+          <a target="_blank" rel="noopener">
+            <img
+              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=346805&theme=light"
+              alt="Unlock&#0032;Protocol&#0032;Recurring&#0032;Subscriptions - Launch&#0032;recurring&#0032;subscriptions&#0032;using&#0032;NFTs | Product Hunt"
+              style={{ width: '250px', height: '54px' }}
+              width="250"
+              height="54"
+            />
+          </a>
         </div>
       </div>
 
