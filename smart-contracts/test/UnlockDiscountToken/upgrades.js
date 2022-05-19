@@ -12,9 +12,6 @@ const Locks = require('../fixtures/locks')
 
 const estimateGas = 252166 * 2
 
-// skip on coverage until solidity-coverage supports EIP-1559
-const describeOrskip = process.env.IS_COVERAGE ? describe.skip : describe
-
 // files path
 const contractsPath = path.resolve(
   __dirname,
@@ -65,14 +62,8 @@ contract('UnlockDiscountToken upgrade', async () => {
 
     // re-compile contract using hardhat
     await run('compile')
-  })
 
-  after(async () => {
-    await fs.remove(contractsPath)
-    await fs.remove(artifactsPath)
-  })
-
-  beforeEach(async () => {
+    // deploy udt
     const UnlockDiscountToken = await ethers.getContractFactory(
       'contracts/past-versions/UnlockDiscountTokenV1.sol:UnlockDiscountToken'
     )
@@ -86,6 +77,11 @@ contract('UnlockDiscountToken upgrade', async () => {
         initializer: 'initialize(address)',
       })
       .then((f) => f.deployed())
+  })
+
+  after(async () => {
+    await fs.remove(contractsPath)
+    await fs.remove(artifactsPath)
   })
 
   describe('Details', () => {
@@ -136,7 +132,7 @@ contract('UnlockDiscountToken upgrade', async () => {
     })
   })
 
-  describeOrskip('Minting tokens', () => {
+  describe('Minting tokens', () => {
     let accounts
     let unlock
     let minter
@@ -145,11 +141,11 @@ contract('UnlockDiscountToken upgrade', async () => {
     let lock
     let rate
 
-    beforeEach(async () => {
+    before(async () => {
       accounts = await ethers.getSigners()
       minter = accounts[1]
-      referrer = accounts[2]
       keyBuyer = accounts[3]
+      referrer = accounts[5]
 
       const Unlock = await ethers.getContractFactory('Unlock')
       const { chainId } = await ethers.provider.getNetwork()
@@ -249,6 +245,9 @@ contract('UnlockDiscountToken upgrade', async () => {
         }
       )
 
+      // allow multiiple keys per owner
+      await lock.setMaxKeysPerAddress(10)
+
       rate = await uniswapOracle.consult(
         udt.address,
         web3.utils.toWei('1', 'ether'),
@@ -276,7 +275,7 @@ contract('UnlockDiscountToken upgrade', async () => {
     describe('mint by gas price', () => {
       let gasSpent
 
-      beforeEach(async () => {
+      before(async () => {
         // buy a key
         lock.connect(keyBuyer)
         const { blockNumber } = await lock.purchase(
@@ -296,7 +295,7 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       it('referrer has some UDT now', async () => {
         const actual = await udt.balanceOf(referrer.address)
-        assert.notEqual(actual.toString(), 0)
+        assert.notEqual(actual.toString(), '0')
       })
 
       it('amount minted for referrer ~= gas spent', async () => {
@@ -324,7 +323,7 @@ contract('UnlockDiscountToken upgrade', async () => {
     })
 
     describe('mint capped by % growth', () => {
-      beforeEach(async () => {
+      before(async () => {
         // 1,000,000 UDT minted thus far
         // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
         // keyPrice / GNP / 2 = 10 * 1.25 / 1,000,000 == 40,000 * keyPrice
