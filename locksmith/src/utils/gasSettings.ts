@@ -1,6 +1,7 @@
 import fetch from 'isomorphic-fetch'
 import { ethers } from 'ethers'
 import networks from '@unlock-protocol/networks'
+import logger from '../logger'
 
 interface GasSettings {
   maxFeePerGas?: ethers.BigNumber
@@ -29,7 +30,7 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
         maxPriorityFeePerGas,
       }
     } catch (error) {
-      console.log(`Could not retrieve fee data from ${network}, ${error}`)
+      logger.error(`Could not retrieve fee data from ${network}, ${error}`)
     }
   }
 
@@ -42,7 +43,7 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
   try {
     feedata = await provider.getFeeData()
   } catch (error) {
-    console.log(`Could not retrieve fee data from ${network}, ${error}`)
+    logger.error(`Could not retrieve fee data from ${network}, ${error}`)
   }
 
   if (feedata) {
@@ -60,7 +61,7 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
       gasPrice: gasPrice?.mul(2),
     }
   } else {
-    console.log(`Fee data unavailable from ${network}`)
+    logger.error(`Fee data unavailable from ${network}`)
   }
 
   // fallback to 40 gwei if no feeData
