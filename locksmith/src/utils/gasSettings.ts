@@ -14,7 +14,7 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
   if (network === 137) {
     try {
       const resp = await fetch('https://gasstation-mainnet.matic.network/v2')
-      const { data } = await resp.json()
+      const data = await resp.json()
 
       const maxFeePerGas = ethers.utils
         .parseUnits(`${Math.ceil(data.fast.maxFee)}`, 'gwei')
@@ -28,8 +28,8 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
         maxFeePerGas,
         maxPriorityFeePerGas,
       }
-    } catch {
-      // ignore
+    } catch (error) {
+      console.log(`Could not retrieve fee data from ${network}, ${error}`)
     }
   }
 
@@ -42,24 +42,29 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
   try {
     feedata = await provider.getFeeData()
   } catch (error) {
-    // do nothing
+    console.log(`Could not retrieve fee data from ${network}, ${error}`)
   }
 
   if (feedata) {
-    const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } = feedata
+    const { gasPrice, maxFeePerGas } = feedata
 
     // We double to increase speed of execution
     // We may end up paying *more* but we get mined earlier
+    if (maxFeePerGas) {
+      return {
+        maxPriorityFeePerGas: maxFeePerGas?.mul(2),
+        maxFeePerGas: maxFeePerGas,
+      }
+    }
     return {
-      maxPriorityFeePerGas: maxFeePerGas?.mul(2),
-      maxFeePerGas: maxPriorityFeePerGas || undefined,
       gasPrice: gasPrice?.mul(2),
     }
+  } else {
+    console.log(`Fee data unavailable from ${network}`)
   }
 
   // fallback to 40 gwei if no feeData
   return {
-    maxFeePerGas: ethers.BigNumber.from(40000000000),
-    maxPriorityFeePerGas: ethers.BigNumber.from(40000000000),
+    gasPrice: ethers.BigNumber.from(40000000000),
   }
 }
