@@ -345,6 +345,9 @@ contract('UnlockDiscountToken upgrade', async () => {
           [[]],
           {
             value: await lock.keyPrice(),
+            gasPrice: ethers.BigNumber.from(baseFeePerGas)
+              .mul(2)
+              .toHexString(16),
           }
         )
       })
