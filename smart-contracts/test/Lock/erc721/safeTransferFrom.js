@@ -4,6 +4,8 @@ const deployLocks = require('../../helpers/deployLocks')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
+const TestERC721Recevier = artifacts.require('TestERC721Recevier')
+
 let unlock
 let lock
 
@@ -33,6 +35,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
         from,
       }
     )
+
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
     tokenId = args.tokenId
   })
@@ -98,5 +101,36 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
     // make sure the key was not transferred
     let ownerOf = await lock.ownerOf.call(tokenId)
     assert.equal(ownerOf, accounts[5])
+  })
+
+  it('should success to transfer when a contract implements onERC721Received', async () => {
+    const tx = await lock.purchase(
+      [],
+      [accounts[7]],
+      [web3.utils.padLeft(0, 40)],
+      [web3.utils.padLeft(0, 40)],
+      [[]],
+      {
+        value: web3.utils.toWei('0.01', 'ether'),
+        from: accounts[5],
+      }
+    )
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
+    tokenId = args.tokenId
+    // A contract which does implement onERC721Received:
+    let compliantContract = await TestERC721Recevier.new()
+
+    await lock.safeTransferFrom(
+      accounts[7],
+      compliantContract.address,
+      tokenId,
+      {
+        from: accounts[7],
+      }
+    )
+
+    // make sure the key was not transferred
+    let ownerOf = await lock.ownerOf.call(tokenId)
+    assert.equal(ownerOf, compliantContract.address)
   })
 })

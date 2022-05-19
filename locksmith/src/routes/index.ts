@@ -15,6 +15,7 @@ const hookRouter = require('./hook')
 const authRouterV2 = require('./v2/auth')
 const metadataRouterV2 = require('./v2/metadata')
 const applicationRouter = require('./v2/application')
+const verifierRouter = require('./v2/verifier')
 
 const config = require('../../config/config')
 
@@ -50,6 +51,7 @@ router.use('/v2', authMiddleware)
 router.use('/v2/auth', authRouterV2)
 router.use('/v2/applications', applicationRouter)
 router.use('/v2/api/metadata', metadataRouterV2)
+router.use('/v2/api/verifier', verifierRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
