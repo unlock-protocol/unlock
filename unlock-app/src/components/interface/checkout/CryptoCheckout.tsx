@@ -1,4 +1,3 @@
-import toast from 'react-hot-toast'
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import ReCAPTCHA from 'react-google-recaptcha'
@@ -6,7 +5,10 @@ import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useLock } from '../../../hooks/useLock'
-import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
+import {
+  TransactionInfo,
+  UserInfo,
+} from '../../../hooks/useCheckoutCommunication'
 import { PaywallConfig } from '../../../unlockTypes'
 import { EnjoyYourMembership } from './EnjoyYourMembership'
 import { useAccount } from '../../../hooks/useAccount'
@@ -36,6 +38,7 @@ interface CryptoCheckoutProps {
   numberOfRecipients?: number
   recipients?: any[]
   clearMultipleRecipients?: () => void
+  emitUserInfo: (info: UserInfo) => void
 }
 
 export const CryptoCheckout = ({
@@ -50,6 +53,7 @@ export const CryptoCheckout = ({
   numberOfRecipients = 1,
   recipients = [],
   clearMultipleRecipients,
+  emitUserInfo,
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
@@ -85,6 +89,13 @@ export const CryptoCheckout = ({
   const hasValidkey =
     keyExpiration === -1 || (keyExpiration > now && keyExpiration < Infinity)
 
+  useEffect(() => {
+    if (!hasValidkey) return
+    emitUserInfo({
+      address: account,
+    })
+  }, [hasValidkey])
+
   const hasOptimisticKey = keyExpiration === Infinity
   const hasValidOrPendingKey = hasValidkey || hasOptimisticKey
 
@@ -102,8 +113,15 @@ export const CryptoCheckout = ({
   const withMultipleRecipients = numberOfRecipients > 1
   const hasRecipients = recipients?.length > 0
 
+  const useCaptcha =
+    paywallConfig.captcha || paywallConfig?.locks[lock.address]?.captcha
+
   // for recurring purchases
-  const nbPayments = paywallConfig?.locks[lock.address]?.recurringPayments
+  let nbPayments = paywallConfig?.locks[lock.address]?.recurringPayments
+  nbPayments =
+    typeof nbPayments === 'number'
+      ? Math.abs(Math.floor(nbPayments))
+      : undefined
 
   const cantBuyWithCrypto = isAdvanced
     ? !(
@@ -154,7 +172,7 @@ export const CryptoCheckout = ({
       }
 
       // We need to handle the captcha here too!
-      if (paywallConfig.captcha) {
+      if (useCaptcha) {
         // get the secret from locksmith!
         const response = await storageService.getDataForRecipientsAndCaptcha(
           owners,
@@ -163,7 +181,7 @@ export const CryptoCheckout = ({
         if (response.error || !response.signatures) {
           setPurchasePending(false)
           setRecaptchaValue('')
-          toast.error(
+          ToastHelper.error(
             'The Captcha value could not ve verified. Please try again.'
           )
           return false
@@ -230,7 +248,7 @@ export const CryptoCheckout = ({
 
         const recurringPayments = nbPayments
 
-        if (paywallConfig.captcha) {
+        if (useCaptcha) {
           // get the secret from locksmith!
           const response = await storageService.getDataForRecipientsAndCaptcha(
             [purchaseAccount], // recipient
@@ -239,7 +257,7 @@ export const CryptoCheckout = ({
           if (response.error) {
             setPurchasePending(false)
             setRecaptchaValue('')
-            return toast.error(
+            return ToastHelper.error(
               'The Captcha value could not ve verified. Please try again.'
             )
           }
@@ -271,15 +289,16 @@ export const CryptoCheckout = ({
       } catch (error: any) {
         if (error.message == 'Transaction failed') {
           // Transaction was sent but failed!
-          toast.error(
+          ToastHelper.error(
             'Your purchase transaction failed. Please check a block explorer for more details.'
           )
         } else if (error?.code === 4001) {
           // Transaction was not sent
-          toast.error('Please confirm the transaction in your wallet.')
+          ToastHelper.error('Please confirm the transaction in your wallet.')
         } else {
+          console.error(error)
           // Other reason...
-          toast.error(
+          ToastHelper.error(
             `This transaction could not be sent as it appears to fail. ${
               error?.error?.message || ''
             }`
@@ -471,15 +490,14 @@ export const CryptoCheckout = ({
           closeModal={closeModal}
         />
       )}
-      {paywallConfig.captcha && !recaptchaValue && (
+      {useCaptcha && !recaptchaValue && (
         <ReCAPTCHA sitekey={recaptchaKey} onChange={setRecaptchaValue} />
       )}
       {showCheckoutButtons && nbPayments && (
         <Message>
           The total amount of {lock.currencySymbol} to approve includes{' '}
           {nbPayments} renewals of your{' '}
-          <Duration seconds={lock.expirationDuration} /> key during the next 1
-          year.
+          <Duration seconds={lock.expirationDuration} /> key.
         </Message>
       )}
     </>

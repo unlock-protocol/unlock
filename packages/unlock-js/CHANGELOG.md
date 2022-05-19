@@ -1,5 +1,9 @@
 # Changes
 
+# 0.26.1
+
+- Fixed bug in allowance function
+
 # 0.26.0
 
 - add support for `approveBeneficiary`

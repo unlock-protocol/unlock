@@ -1,6 +1,6 @@
 import { isUnlocked } from '../../utils/isUnlocked'
 import * as optimisticUtil from '../../utils/optimisticUnlocking'
-import * as timeStampUtil from '../../utils/keyExpirationTimestampFor'
+import * as timeStampUtil from '../../utils/hasValidKey'
 
 const provider = 'https://rpc.endpoint'
 const locksmithUri = 'https://locksmith.unlock-protocol.com'
@@ -36,10 +36,9 @@ describe('isUnlocked', () => {
   describe('when the user has a valid key to any of the locks', () => {
     it('should check each locks', async () => {
       expect.assertions(6)
-      const futureTime = new Date().getTime() / 1000 + 50000
       const spy = jest
-        .spyOn(timeStampUtil, 'keyExpirationTimestampFor')
-        .mockResolvedValue(futureTime)
+        .spyOn(timeStampUtil, 'hasValidKey')
+        .mockResolvedValue(true)
 
       const unlocked = await isUnlocked(
         userAccountAddress,
@@ -68,10 +67,7 @@ describe('isUnlocked', () => {
 
   describe('when the user does not have a valid key to any of the locks', () => {
     beforeEach(() => {
-      const pastTime = new Date().getTime() / 1000 - 50000
-      jest
-        .spyOn(timeStampUtil, 'keyExpirationTimestampFor')
-        .mockResolvedValue(pastTime)
+      jest.spyOn(timeStampUtil, 'hasValidKey').mockResolvedValue(false)
     })
 
     describe('when the config is pessimistic', () => {

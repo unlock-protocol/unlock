@@ -5,12 +5,7 @@ import logger from '../logger'
 
 const config = require('../../config/config')
 const { GAS_COST } = require('../utils/keyPricer')
-
-interface transactionOptionsInterface {
-  maxPriorityFeePerGas?: ethers.BigNumber
-  maxFeePerGas?: ethers.BigNumber
-  gasPrice?: ethers.BigNumber
-}
+const { getGasSettings } = require('../utils/gasSettings')
 
 export default class Dispatcher {
   async balances() {
@@ -60,28 +55,7 @@ export default class Dispatcher {
       provider
     )
 
-    const feeData = await provider.getFeeData().catch(() => null)
-
-    const transactionOptions: transactionOptionsInterface = {}
-
-    if (network === 137) {
-      transactionOptions.maxPriorityFeePerGas = ethers.utils.parseUnits(
-        '500',
-        'gwei'
-      )
-      transactionOptions.maxFeePerGas = transactionOptions.maxPriorityFeePerGas
-    } else if (feeData?.maxFeePerGas) {
-      // We double to increase speed of execution
-      // We may end up paying *more* but we get mined earlier
-      transactionOptions.maxPriorityFeePerGas = feeData.maxFeePerGas.mul(
-        ethers.BigNumber.from('2')
-      )
-      transactionOptions.maxFeePerGas = transactionOptions.maxPriorityFeePerGas
-    } else if (feeData?.gasPrice) {
-      transactionOptions.gasPrice = feeData.gasPrice.mul(
-        ethers.BigNumber.from('2')
-      )
-    }
+    const transactionOptions = await getGasSettings(network)
 
     await walletService.connect(provider, walletWithProvider)
     return walletService.grantKeys(
@@ -150,9 +124,7 @@ export default class Dispatcher {
   async renewMembershipFor(
     network: number,
     lockAddress: string,
-    keyId: number,
-    referrer: string,
-    transactionOptions?: any
+    keyId: number
   ) {
     const walletService = new WalletService(networks)
     const provider = new ethers.providers.JsonRpcProvider(
@@ -163,16 +135,20 @@ export default class Dispatcher {
       config.purchaserCredentials,
       provider
     )
+
     await walletService.connect(provider, walletWithProvider)
 
     // get lock
     const lock = await walletService.getLockContract(lockAddress)
 
-    // make sure reccuring payments are supported
-    if ((await lock.publicLockVersion()) < 10) {
-      throw Error('Renewal only supported for lock v10+')
-    }
+    // TODO: use team multisig here (based on network config) instead of purchaser address!
+    const referrer = walletWithProvider.address
 
-    return await lock.renewMembershipFor(keyId, referrer, transactionOptions)
+    // send tx with custom gas
+    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
+    return await lock.renewMembershipFor(keyId, referrer, {
+      maxFeePerGas,
+      maxPriorityFeePerGas,
+    })
   }
 }
