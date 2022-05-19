@@ -140,6 +140,7 @@ contract('UnlockDiscountToken upgrade', async () => {
     let unlock
     let minter
     let referrer
+    let referrer2
     let keyBuyer
     let lock
     let rate
@@ -149,6 +150,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       minter = accounts[1]
       keyBuyer = accounts[3]
       referrer = accounts[5]
+      referrer2 = accounts[6]
 
       const Unlock = await ethers.getContractFactory('Unlock')
       const { chainId } = await ethers.provider.getNetwork()
@@ -235,16 +237,16 @@ contract('UnlockDiscountToken upgrade', async () => {
         from: minter.address,
       })
 
-      // Purchase a valid key for the referrer
+      // Purchase a valid key for the referrers
       await lock.connect(referrer)
       await lock.purchase(
         [],
-        [referrer.address],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
-        [[]],
+        [referrer.address, referrer2.address],
+        [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
+        [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
+        [[], []],
         {
-          value: await lock.keyPrice(),
+          value: (await lock.keyPrice()).mul(2),
         }
       )
 
@@ -326,6 +328,7 @@ contract('UnlockDiscountToken upgrade', async () => {
     })
 
     describeOrskip('mint capped by % growth', () => {
+      let ownerBalanceBefore
       before(async () => {
         // 1,000,000 UDT minted thus far
         // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
@@ -338,15 +341,16 @@ contract('UnlockDiscountToken upgrade', async () => {
           ethers.BigNumber.from(baseFeePerGas).toHexString(16),
         ])
 
+        ownerBalanceBefore = await udt.balanceOf(await unlock.owner())
         lock.connect(keyBuyer)
         await lock.purchase(
           [],
           [keyBuyer.address],
-          [referrer.address],
+          [referrer2.address],
           [web3.utils.padLeft(0, 40)],
           [[]],
           {
-            value: await lock.keyPrice(),
+            value: (await lock.keyPrice()).mul(2),
             gasPrice: ethers.BigNumber.from(baseFeePerGas)
               .mul(2)
               .toHexString(16),
@@ -355,12 +359,12 @@ contract('UnlockDiscountToken upgrade', async () => {
       })
 
       it('referrer has some UDT now', async () => {
-        const actual = await udt.balanceOf(referrer.address)
+        const actual = await udt.balanceOf(referrer2.address)
         assert.notEqual(actual.toString(), 0)
       })
 
       it('amount minted for referrer ~= 10 UDT', async () => {
-        const balance = await udt.balanceOf(referrer.address)
+        const balance = await udt.balanceOf(referrer2.address)
         const bn = new BigNumber(balance.toString())
         assert.equal(bn.shiftedBy(-18).toFixed(0), '10')
       })
@@ -368,7 +372,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       it('amount minted for dev ~= 2 UDT', async () => {
         const balance = await udt.balanceOf(await unlock.owner())
         assert.equal(
-          new BigNumber(balance.toString()).shiftedBy(-18).toFixed(0),
+          parseInt(ethers.utils.formatEther(balance.sub(ownerBalanceBefore))),
           '2'
         )
       })

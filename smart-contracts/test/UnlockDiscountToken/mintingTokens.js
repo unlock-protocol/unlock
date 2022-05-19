@@ -217,6 +217,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
   })
 
   describeOrskip('mint capped by % growth', () => {
+    let ownerBalanceBefore
     before(async () => {
       // 1,000,000 UDT minted thus far
       // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
@@ -231,6 +232,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
         ethers.BigNumber.from(baseFeePerGas).toHexString(16),
       ])
+      ownerBalanceBefore = await udt.balanceOf(await unlock.owner())
 
       const { receipt } = await lock.purchase(
         [],
@@ -263,8 +265,10 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     })
 
     it('amount minted for dev ~= 2 UDT', async () => {
+      const balance = await udt.balanceOf(await unlock.owner())
+
       assert.equal(
-        new BigNumber(await udt.balanceOf(await unlock.owner()))
+        new BigNumber(balance.sub(ownerBalanceBefore).toString())
           .shiftedBy(-18)
           .toFixed(0),
         '2'
