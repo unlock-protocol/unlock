@@ -306,6 +306,7 @@ export const Checkout = ({
           network={lockProps?.network || paywallConfig?.network}
           lock={selectedLock}
           fields={paywallConfig!.metadataInputs!}
+          callToAction={paywallConfig!.callToAction?.metadata}
           onSubmit={setSavedMetadata}
           recipients={recipients}
           maxRecipients={maxRecipients}
