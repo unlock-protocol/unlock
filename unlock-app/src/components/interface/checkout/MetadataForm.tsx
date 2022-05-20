@@ -93,7 +93,7 @@ export const MetadataForm = ({
 
   if (!callToAction) {
     callToAction =
-      'The creator requires some additional information for each attendee. Please complete the form below.'
+      'The creator requires some additional information for each owner. Please complete the form below.'
   }
 
   if (showMultipleRecipient) {
