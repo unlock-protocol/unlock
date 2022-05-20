@@ -40,7 +40,7 @@ namespace UserController {
   }
 
   const userCreationStatus = async (user: any): Promise<any> => {
-    const recoveryPhrase: String | undefined = await UserOperations.createUser({
+    const recoveryPhrase: string | undefined = await UserOperations.createUser({
       emailAddress: user.emailAddress,
       publicKey: user.publicKey,
       passwordEncryptedPrivateKey: user.passwordEncryptedPrivateKey,

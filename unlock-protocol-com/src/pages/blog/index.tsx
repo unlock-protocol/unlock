@@ -8,9 +8,9 @@ import { routes } from '../../config/routes'
 import { NextSeo } from 'next-seo'
 import { Layout } from '../../components/layout/DefaultLayout'
 
-interface Props extends PostsIndexType {}
+export type Props = PostsIndexType
 
-const BlogIndexPage: NextPage<Props> = (props) => {
+const BlogIndexPage: NextPage<PostsIndexType> = (props) => {
   return (
     <Layout>
       <NextSeo

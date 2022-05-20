@@ -19,7 +19,7 @@ const { Op } = Sequelize
 namespace UserOperations {
   export const createUser = async (
     input: UserCreationInput
-  ): Promise<String | undefined> => {
+  ): Promise<string | undefined> => {
     const recoveryPhrase = RecoveryPhrase.generate()
     const publicKey = Normalizer.ethereumAddress(input.publicKey)
     const userReference = await UserReference.create(

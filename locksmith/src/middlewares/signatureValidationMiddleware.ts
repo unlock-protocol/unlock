@@ -112,7 +112,7 @@ namespace SignatureValidationMiddleware {
     }
   }
 
-  const validateSignee = (payload: any, signee: string): Boolean => {
+  const validateSignee = (payload: any, signee: string): boolean => {
     return (
       Normalizer.ethereumAddress(payload) === Normalizer.ethereumAddress(signee)
     )
@@ -121,7 +121,7 @@ namespace SignatureValidationMiddleware {
   const validatePayloadContent = (
     payload: any,
     configuration: SignatureValidationConfiguration
-  ): Boolean => {
+  ): boolean => {
     const result = configuration.required.every((element) => {
       return !(payload[element] == null)
     })
