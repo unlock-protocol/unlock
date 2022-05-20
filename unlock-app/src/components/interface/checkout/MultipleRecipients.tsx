@@ -24,6 +24,7 @@ export interface MultipleRecipientProps {
   hasMinimumRecipients: boolean
   addRecipient: any
   loading: boolean
+  callToAction: string
   fields: Array<MetadataInput & { value?: any }>
   submitBulkRecipients: () => Promise<boolean>
   onContinue: () => void
@@ -37,6 +38,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
   hasMinimumRecipients,
   addRecipient,
   loading,
+  callToAction,
   fields = [],
   submitBulkRecipients,
   onContinue,
@@ -274,6 +276,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
             value={recipient}
             disabled={loading}
           />
+          {callToAction}
           {fields.map(({ name, type, required, placeholder }) => (
             <label key={name} htmlFor={name}>
               <span className="text-xs font-normal uppercase">

@@ -1,3 +1,6 @@
+/* eslint-disable jest/no-identical-title */
+// ignoring that rule is needed when using the `describeOrskip` workaround
+
 const BigNumber = require('bignumber.js')
 const { constants, tokens, protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
@@ -12,13 +15,16 @@ let unlock
 let udt
 let lock
 
+// skip on coverage until solidity-coverage supports EIP-1559
+const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
+
 const estimateGas = 252166 * 2
 
 contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
-  beforeEach(async () => {
+  before(async () => {
     const UnlockEthers = await ethers.getContractFactory('Unlock')
     const proxyUnlock = await upgrades.deployProxy(
       UnlockEthers,
@@ -125,6 +131,9 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       }
     )
 
+    // allow multiiple keys per owner
+    await lock.setMaxKeysPerAddress(10)
+
     rate = await uniswapOracle.consult(
       udt.address,
       web3.utils.toWei('1', 'ether'),
@@ -167,7 +176,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   describe('grant by gas price', () => {
     let gasSpent
 
-    beforeEach(async () => {
+    before(async () => {
       // Let's set GDP to be very low (1 wei) so that we know that growth of supply is cap by gas
       await unlock.resetTrackedValue(web3.utils.toWei('1', 'wei'), 0, {
         from: protocolOwner,
@@ -185,7 +194,8 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       )
 
       const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
-      // using estimatedGas instead of the actual gas used so this test does  not regress as other features are implemented
+      // using estimatedGas instead of the actual gas used so this test does
+      // not regress as other features are implemented
       gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)
     })
 
@@ -218,8 +228,8 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     })
   })
 
-  describe('grant capped by % growth', () => {
-    beforeEach(async () => {
+  describeOrSkip('grant capped by % growth', () => {
+    before(async () => {
       // Goal: distribution is 10 UDT (8 for referrer, 2 for dev reward)
       // With 1,000,000 to distribute, that is 0.00001% supply
       // which translates in a gdp growth of 0.002%
@@ -246,6 +256,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
         {
           from: keyBuyer,
           value: await lock.keyPrice(),
+          gasPrice: ethers.BigNumber.from(baseFeePerGas).mul(2).toHexString(16),
         }
       )
     })

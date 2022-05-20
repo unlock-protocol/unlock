@@ -38,6 +38,13 @@ jobs:
     with:
       changed: ${{ needs.check-changes.outputs.changed }}
 
+  smart-contracts-coverage:
+    needs: check-changes
+    if: ${{ needs.check-changes.outputs.changed != '[]' && contains(fromJson(needs.check-changes.outputs.changed), 'smart-contracts') }} }}
+    uses: ./.github/workflows/_coverage.yml
+    with:
+      service: smart-contracts
+
   # Netlify Deployments (run as drafts, unpublished to main URL)
   deploy-unlock-protocol-com:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }} # make sure we dont deploy from forks
