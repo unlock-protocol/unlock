@@ -20,7 +20,7 @@ interface Props {
   hasMinimumRecipients: boolean
   addRecipient: any
   loading: boolean
-  callToAction: string
+  callToAction?: string
   submitBulkRecipients: () => Promise<boolean>
   clear: () => void
   removeRecipient: (index: number) => void
@@ -142,6 +142,10 @@ export const MetadataForm = ({
       )}
     </form>
   )
+}
+
+MetadataForm.defaultProps = {
+  callToAction: '',
 }
 
 export default MetadataForm
