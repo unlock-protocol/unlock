@@ -1,5 +1,5 @@
 import * as sigUtil from 'eth-sig-util'
-import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { Request, Response } from 'express-serve-static-core'
 import * as Base64 from '../utils/base64'
 import Normalizer from '../utils/normalizer'
 import { SignatureValidationConfiguration } from '../types'

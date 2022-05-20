@@ -1,6 +1,6 @@
-import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { Request, Response } from 'express-serve-static-core'
 import { DecoyUser } from '../utils/decoyUser'
-import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { SignedRequest } from '../types'
 import * as StripeOperations from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
 

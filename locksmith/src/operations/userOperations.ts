@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 import Sequelize from 'sequelize'
-import { ethereumAddress, UserCreationInput } from '../types' // eslint-disable-line no-unused-vars, import/named
+import { ethereumAddress, UserCreationInput } from '../types'
 import * as Normalizer from '../utils/normalizer'
 import { PaymentProcessor } from '../payment/paymentProcessor'
 import { getStripeCustomerIdForAddress } from './stripeOperations'

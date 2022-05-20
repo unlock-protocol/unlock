@@ -1,4 +1,4 @@
-import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { Response } from 'express-serve-static-core'
 import {
   getStripeConnectForLock,
   getStripeCustomerIdForAddress,
@@ -6,7 +6,7 @@ import {
 } from '../operations/stripeOperations'
 import KeyPricer from '../utils/keyPricer'
 
-import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
+import { SignedRequest } from '../types'
 import PaymentProcessor from '../payment/paymentProcessor'
 import * as Normalizer from '../utils/normalizer'
 import Dispatcher from '../fulfillment/dispatcher'
