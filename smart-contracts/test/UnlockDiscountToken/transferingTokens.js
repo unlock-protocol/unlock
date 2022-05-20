@@ -16,7 +16,7 @@ let udt
 let lock
 
 // skip on coverage until solidity-coverage supports EIP-1559
-const describeOrskip = process.env.IS_COVERAGE ? describe.skip : describe
+const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
 
 const estimateGas = 252166 * 2
 
@@ -228,7 +228,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     })
   })
 
-  describeOrskip('grant capped by % growth', () => {
+  describeOrSkip('grant capped by % growth', () => {
     before(async () => {
       // Goal: distribution is 10 UDT (8 for referrer, 2 for dev reward)
       // With 1,000,000 to distribute, that is 0.00001% supply
