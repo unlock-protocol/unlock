@@ -20,6 +20,7 @@ interface Props {
   hasMinimumRecipients: boolean
   addRecipient: any
   loading: boolean
+  callToAction: string
   submitBulkRecipients: () => Promise<boolean>
   clear: () => void
   removeRecipient: (index: number) => void
@@ -34,6 +35,7 @@ export const MetadataForm = ({
   lock,
   fields = [],
   onSubmit,
+  callToAction,
   recipients,
   maxRecipients,
   minRecipients,
@@ -89,6 +91,11 @@ export const MetadataForm = ({
 
   const withMetadata = fields?.length > 0
 
+  if (!callToAction) {
+    callToAction =
+      'The creator requires some additional information for each attendee. Please complete the form below.'
+  }
+
   if (showMultipleRecipient) {
     return (
       <MultipleRecipient
@@ -99,6 +106,7 @@ export const MetadataForm = ({
         addRecipient={addRecipient}
         loading={loading}
         fields={fields}
+        callToAction={callToAction}
         submitBulkRecipients={submitBulkRecipients}
         removeRecipient={removeRecipient}
         withMetadata={withMetadata}
@@ -110,10 +118,7 @@ export const MetadataForm = ({
   }
   return (
     <form onSubmit={handleSubmit(wrappedOnSubmit)}>
-      <Message>
-        The creator of this lock requires some additional information. Please
-        complete the form below.
-      </Message>
+      <Message>{callToAction}</Message>
       {error && <Error>{error}</Error>}
 
       {fields.map(({ name, type, required, placeholder }) => (
