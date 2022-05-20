@@ -14882,10 +14882,11 @@ __metadata:
     "@typescript-eslint/eslint-plugin": 5.21.0
     "@typescript-eslint/parser": 5.21.0
     eslint: 8.10.0
-    eslint-config-next: ^12.1.6
-    eslint-config-prettier: ^8.5.0
+    eslint-config-next: 12.1.6
+    eslint-config-prettier: 8.5.0
     eslint-plugin-jest: 26.1.5
-    eslint-plugin-prettier: ^4.0.0
+    eslint-plugin-mocha: 10.0.4
+    eslint-plugin-prettier: 4.0.0
     jest: 27.5.1
     typescript: 4.6.4
   languageName: unknown
@@ -25847,7 +25848,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-next@npm:^12.1.6":
+"eslint-config-next@npm:12.1.6":
   version: 12.1.6
   resolution: "eslint-config-next@npm:12.1.6"
   dependencies:
@@ -25882,7 +25883,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-prettier@npm:8.5.0, eslint-config-prettier@npm:^8.5.0":
+"eslint-config-prettier@npm:8.5.0":
   version: 8.5.0
   resolution: "eslint-config-prettier@npm:8.5.0"
   peerDependencies:
@@ -26214,7 +26215,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:4.0.0, eslint-plugin-prettier@npm:^4.0.0, eslint-plugin-prettier@npm:latest":
+"eslint-plugin-prettier@npm:4.0.0, eslint-plugin-prettier@npm:latest":
   version: 4.0.0
   resolution: "eslint-plugin-prettier@npm:4.0.0"
   dependencies:

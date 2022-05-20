@@ -11,7 +11,12 @@ module.exports = {
     jest: true,
   },
   root: true,
-  plugins: ['jest', 'eslint-plugin-prettier', '@typescript-eslint'],
+  plugins: [
+    'jest',
+    'eslint-plugin-prettier',
+    'eslint-plugin-mocha',
+    '@typescript-eslint',
+  ],
   parser: '@typescript-eslint/parser',
   settings: {
     'import/parsers': {
