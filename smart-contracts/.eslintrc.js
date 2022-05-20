@@ -31,6 +31,7 @@ module.exports = {
     after: true,
     afterEach: true,
   },
+  ignorePatterns: ['coverage'],
   rules: {
     'import/extensions': 0,
     'mocha/no-exclusive-tests': 'error',

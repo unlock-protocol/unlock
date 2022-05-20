@@ -1,3 +1,6 @@
+/* eslint-disable jest/no-identical-title */
+// ignoring that rule is needed when using the `describe` workaround
+
 const BigNumber = require('bignumber.js')
 const { constants, tokens, protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
@@ -12,6 +15,9 @@ let unlock
 let udt
 let lock
 
+// skip on coverage until solidity-coverage supports EIP-1559
+const describeOrskip = process.env.IS_COVERAGE ? describe.skip : describe
+
 const estimateGas = 252166 * 2
 const baseFeePerGas = 1000000000 // in gwei
 
@@ -19,7 +25,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
   const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
-  beforeEach(async () => {
+  before(async () => {
     const UnlockEthers = await ethers.getContractFactory('Unlock')
     const proxyUnlock = await upgrades.deployProxy(
       UnlockEthers,
@@ -130,6 +136,9 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       }
     )
 
+    // allow multiiple keys per owner
+    await lock.setMaxKeysPerAddress(10)
+
     rate = await uniswapOracle.consult(
       udt.address,
       web3.utils.toWei('1', 'ether'),
@@ -158,7 +167,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
   describe('mint by gas price', () => {
     let gasSpent
 
-    beforeEach(async () => {
+    before(async () => {
       const { blockNumber } = await lock.purchase(
         [],
         [keyBuyer],
@@ -207,8 +216,9 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     })
   })
 
-  describe('mint capped by % growth', () => {
-    beforeEach(async () => {
+  describeOrskip('mint capped by % growth', () => {
+    let ownerBalanceBefore
+    before(async () => {
       // 1,000,000 UDT minted thus far
       // Test goal: 10 UDT minted for the referrer (less than the gas cost equivalent of ~120 UDT)
       // keyPrice / GNP / 2 = 10 * 1.25 / 1,000,000 == 40,000 * keyPrice
@@ -218,11 +228,13 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
         from: protocolOwner,
       })
 
+      // set basefee
       await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [
         ethers.BigNumber.from(baseFeePerGas).toHexString(16),
       ])
+      ownerBalanceBefore = await udt.balanceOf(await unlock.owner())
 
-      const { blockNumber } = await lock.purchase(
+      const { receipt } = await lock.purchase(
         [],
         [keyBuyer],
         [referrer],
@@ -231,12 +243,13 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
         {
           from: keyBuyer,
           value: await lock.keyPrice(),
+          gasPrice: ethers.BigNumber.from(baseFeePerGas).mul(2).toHexString(16), // needed for coverage
         }
       )
 
-      const { baseFeePerGas: baseFeePerGasBlock } =
-        await ethers.provider.getBlock(blockNumber)
-      assert(baseFeePerGasBlock.eq(baseFeePerGas))
+      const { baseFeePerGas: baseFeePerGasBlockTx } =
+        await ethers.provider.getBlock(receipt.blockNumber)
+      assert(baseFeePerGasBlockTx.eq(baseFeePerGas))
     })
 
     it('referrer has some UDT now', async () => {
@@ -252,8 +265,10 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     })
 
     it('amount minted for dev ~= 2 UDT', async () => {
+      const balance = await udt.balanceOf(await unlock.owner())
+
       assert.equal(
-        new BigNumber(await udt.balanceOf(await unlock.owner()))
+        new BigNumber(balance.sub(ownerBalanceBefore).toString())
           .shiftedBy(-18)
           .toFixed(0),
         '2'
