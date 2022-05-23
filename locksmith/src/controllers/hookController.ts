@@ -7,7 +7,7 @@ import logger from '../logger'
 import { Hook } from '../models'
 
 export type SubscribeParams = Partial<Record<'lock' | 'network', string>>
-export type SubscribeRequest = Request<SubscribeParams, {}>
+export type SubscribeRequest = Request<SubscribeParams, Record<string, string>>
 
 const Hub = z.object({
   topic: z.string().url(),

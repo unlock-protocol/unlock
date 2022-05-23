@@ -19,11 +19,11 @@ declare module 'mocha' {
  * @param {any[]} params - The array of function parameters
  * @param {string} message - Optional message to match with error message
  */
-export const expectThrowsAsync = async (
-  method: Function,
-  params: any[],
+export async function expectThrowsAsync<T>(
+  method: (...params: T[]) => Promise<unknown>,
+  params: T[],
   message?: string
-) => {
+): Promise<any> {
   let err: unknown | Error
   try {
     await method(...params)

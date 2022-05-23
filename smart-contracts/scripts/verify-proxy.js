@@ -41,7 +41,6 @@ async function main({
 
   const calldata = await createLockCalldata({ args })
 
-  // eslint-disable-next-line no-console
   console.log(calldata)
 
   if (!transparentProxyAddress) {
@@ -53,7 +52,6 @@ async function main({
       proxyAdminAddress,
       calldata
     )
-    // eslint-disable-next-line no-console
     console.log(
       `TransparentUpgradeableProxy > deployed to : ${transparentProxy.address} (tx: ${transparentProxy.deployTransaction.hash})`,
       '\n waiting for 10 blocks to confirm the tx...'
@@ -63,7 +61,6 @@ async function main({
     await transparentProxy.deployTransaction.wait(10)
     transparentProxyAddress = transparentProxy.address
   } else {
-    // eslint-disable-next-line no-console
     console.log(
       `TransparentUpgradeableProxy already deployed to : ${transparentProxyAddress}`
     )
@@ -79,7 +76,6 @@ async function main({
 
 // execute as standalone
 if (require.main === module) {
-  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {

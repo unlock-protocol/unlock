@@ -35,7 +35,6 @@ const getAccounts = (networkName) => {
 
   const networkAccountsFile = resolve(`./accounts.${networkName}.js`)
   if (fs.existsSync(networkAccountsFile)) {
-    // eslint-disable-next-line import/no-dynamic-require
     const accounts = require(networkAccountsFile)
     if (accounts) {
       return accounts
@@ -47,7 +46,7 @@ const getAccounts = (networkName) => {
     log(
       `No ${networkAccountsFile} file. Trying with the default one: ${accountsFile}.`
     )
-    // eslint-disable-next-line import/no-dynamic-require
+
     const accounts = require(accountsFile)
     if (accounts) {
       return accounts

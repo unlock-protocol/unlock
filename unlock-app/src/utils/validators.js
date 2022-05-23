@@ -123,9 +123,9 @@ export const isValidLock = (lock) => {
     return false
   }
 
-  if (lock.hasOwnProperty('name') && typeof lock.name !== 'string') return false
+  if (Object.hasOwn(lock, 'name') && typeof lock.name !== 'string') return false
   if (
-    lock.hasOwnProperty('currencyContractAddress') &&
+    Object.hasOwn(lock, 'currencyContractAddress') &&
     !isAccountOrNull(lock.currencyContractAddress)
   ) {
     return false

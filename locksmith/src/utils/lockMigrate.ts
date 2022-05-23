@@ -7,7 +7,7 @@ import { purchaserCredentials } from '../../config/config'
 
 interface LockClonerProps {
   lockAddress: string
-  unlockVersion: Number
+  unlockVersion: number
   chainId: number
   recordId: number
 }
@@ -87,7 +87,7 @@ export default async function migrateLock(
   ]
 
   // get proper unlock
-  const { abi } = contracts[`UnlockV${unlockVersion}` as keyof {}]
+  const { abi } = contracts[`UnlockV${unlockVersion}` as keyof typeof contracts]
   const unlock = new ethers.Contract(unlockAddress, abi, signer)
 
   // create the new lock
@@ -96,7 +96,6 @@ export default async function migrateLock(
     const salt = ethers.utils.hexZeroPad(ethers.utils.randomBytes(12), 12)
     txLockCreate = await unlock.createLock(...lockArgs, salt)
   } else {
-    // @ts-ignore
     const calldata = await abi.encodeFunctionData(
       'initialize(address,uint256,address,uint256,uint256,string)',
       [signer.address, ...lockArgs]

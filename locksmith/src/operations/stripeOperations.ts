@@ -1,7 +1,7 @@
 import Stripe from 'stripe'
 
 import { StripeConnectLock } from '../models/stripeConnectLock'
-import { ethereumAddress } from '../types' // eslint-disable-line import/named, no-unused-vars
+import { ethereumAddress } from '../types'
 import * as Normalizer from '../utils/normalizer'
 import { UserReference } from '../models/userReference'
 

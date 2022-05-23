@@ -22,7 +22,7 @@ const formatMessageToSign = (
   clientId: string,
   address: string,
   statement: string,
-  chainId: number = 1 // Default due compaitibility with existing code.
+  chainId = 1 // Default due compaitibility with existing code.
 ): string => {
   const nonce = generateNonce()
   const expirationDate = new Date()

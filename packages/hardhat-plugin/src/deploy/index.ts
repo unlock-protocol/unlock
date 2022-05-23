@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import type { providers, Signer, Contract, ContractFactory } from 'ethers'
 
 import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names'
@@ -24,7 +23,7 @@ export async function deployContract(
   { network }: UnlockHRE,
   factory: ContractFactory,
   constructorArguments: any[],
-  confirmations: number = 5,
+  confirmations = 5,
   deploymentOptions: providers.TransactionRequest = {}
 ): Promise<Contract> {
   if (
@@ -46,7 +45,7 @@ export async function deployUpgreadableContract(
   initializer: string,
   initializerArguments: any[],
   signer?: Signer,
-  confirmations: number = 5,
+  confirmations = 5,
   deploymentOptions: providers.TransactionRequest = {}
 ): Promise<Contract> {
   if (

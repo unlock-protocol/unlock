@@ -17,7 +17,6 @@ async function main({ publicLockAddress, unlockAddress, unlockVersion }) {
   // get unlock instance
   let unlock
   if (unlockVersion < CURRENT_VERSION) {
-    // eslint-disable-next-line import/no-dynamic-require, global-require
     const contracts = require('@unlock-protocol/contracts')
     const { abi } = contracts[`UnlockV${unlockVersion}`]
     unlock = await ethers.getContractAt(abi, unlockAddress)
@@ -47,7 +46,6 @@ async function main({ publicLockAddress, unlockAddress, unlockVersion }) {
 
 // execute as standalone
 if (require.main === module) {
-  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {

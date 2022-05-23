@@ -4,9 +4,7 @@ import { routes } from '../config/routes'
 import { NextSeo } from 'next-seo'
 import { Layout } from '../components/layout/DefaultLayout'
 
-interface Props {}
-
-const DevelopersPage: NextPage<Props> = ({}: Props) => {
+const DevelopersPage: NextPage = () => {
   return (
     <Layout>
       <NextSeo

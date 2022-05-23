@@ -1,7 +1,7 @@
 const fs = require('fs-extra')
 const path = require('path')
 
-export const listFiles = async (folderName: String) => {
+export const listFiles = async (folderName: string) => {
   const folderPath = path.resolve('src', folderName)
 
   if (!(await fs.pathExists(folderPath)))
@@ -16,15 +16,15 @@ export const listFiles = async (folderName: String) => {
   return files
 }
 
-export const parseExports = async (folderName: String) => {
+export const parseExports = async (folderName: string) => {
   const files = await listFiles(folderName)
   const exportsList = files
-    .filter((f: String) => f.includes('.json'))
-    .map((f: String) => `./${folderName}/${f}`)
+    .filter((f: string) => f.includes('.json'))
+    .map((f: string) => `./${folderName}/${f}`)
 
   // make sure all paths exists
   await Promise.all(
-    exportsList.map((f: String) => fs.pathExists(path.resolve(f)))
+    exportsList.map((f: string) => fs.pathExists(path.resolve(f)))
   )
 
   return exportsList

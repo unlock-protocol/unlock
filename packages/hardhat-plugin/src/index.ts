@@ -28,12 +28,12 @@ extendConfig(
       Object.entries(unlock).forEach(([key]) => {
         if (key) {
           // new network in user config
-          if (!merged[key as keyof {}]) {
+          if (!merged[key as keyof typeof networks]) {
             Object.assign(networks, { [key]: unlock[key] })
           } else {
             // existing network in both configs
             merged[key as keyof UnlockNetworkConfigs] = {
-              ...Object(networks[key as keyof {}]),
+              ...Object(networks[key as keyof typeof networks]),
               ...unlock[key],
             }
           }

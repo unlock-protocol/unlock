@@ -1,6 +1,6 @@
 import Stripe from 'stripe'
 import Sequelize from 'sequelize'
-import { ethereumAddress, UserCreationInput } from '../types' // eslint-disable-line no-unused-vars, import/named
+import { ethereumAddress, UserCreationInput } from '../types'
 import * as Normalizer from '../utils/normalizer'
 import { PaymentProcessor } from '../payment/paymentProcessor'
 import { getStripeCustomerIdForAddress } from './stripeOperations'
@@ -19,7 +19,7 @@ const { Op } = Sequelize
 namespace UserOperations {
   export const createUser = async (
     input: UserCreationInput
-  ): Promise<String | undefined> => {
+  ): Promise<string | undefined> => {
     const recoveryPhrase = RecoveryPhrase.generate()
     const publicKey = Normalizer.ethereumAddress(input.publicKey)
     const userReference = await UserReference.create(

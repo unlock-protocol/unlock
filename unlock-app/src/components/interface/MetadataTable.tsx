@@ -62,6 +62,10 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   isLockManager,
   lockAddresses = [],
 }) => {
+  const [currentLock, setCurrentLock] = useState(null)
+  const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
+    useState(false)
+
   if (metadata.length === 0) {
     if (filter === MemberFilters.ALL) {
       return (
@@ -77,10 +81,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
 
     return <p>No keys found matching the current filter.</p>
   }
-
-  const [currentLock, setCurrentLock] = useState(null)
-  const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
-    useState(false)
 
   const onExpireAndRefund = (lock: any) => {
     setShowExpireAndRefundModal(true)

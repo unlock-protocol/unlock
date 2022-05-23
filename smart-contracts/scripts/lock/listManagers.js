@@ -10,7 +10,6 @@ async function main({ lockAddress }) {
   const { subgraphURI } = networks[chainId]
 
   if (!subgraphURI) {
-    // eslint-disable-next-line no-console
     console.log(
       'Missing subGraphURI for this network. Can not fetch from The Graph'
     )
@@ -39,7 +38,6 @@ async function main({ lockAddress }) {
 
   const { data, errors } = await q.json()
   if (errors) {
-    // eslint-disable-next-line no-console
     console.log('LOCK > Error while fetching the graph', errors)
     return []
   }
@@ -49,10 +47,8 @@ async function main({ lockAddress }) {
   } = data
   const managers = LockManagers.map((m) => m.address)
 
-  // eslint-disable-next-line no-console
   console.log(`LOCK > managers for the lock '${await lock.name()}':`)
   managers.forEach((account, i) => {
-    // eslint-disable-next-line no-console
     console.log(`[${i}]: ${account}`)
   })
 
@@ -61,7 +57,6 @@ async function main({ lockAddress }) {
 
 // execute as standalone
 if (require.main === module) {
-  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {

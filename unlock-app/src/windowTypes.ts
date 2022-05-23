@@ -110,7 +110,7 @@ export interface IframeType {
 // used in unlock.js/iframeManager.ts
 export interface IframeManagingWindow {
   document: IframeManagingDocument
-  setInterval: (cb: Function, interval?: number) => number
+  setInterval: typeof setInterval
 }
 
 // used in unlock.js/startup.ts and setupPostOffices.ts

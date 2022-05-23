@@ -1,4 +1,3 @@
-/* eslint import/prefer-default-export: 0 */
 import { route } from './route'
 import logger from '../logger'
 

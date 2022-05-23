@@ -89,7 +89,7 @@ describe('lockOperations', () => {
   describe('saveStripeCustomerIdForAddress', () => {
     it('should store a stripeCustomer, normalized', async () => {
       expect.assertions(1)
-      StripeCustomer.create = jest.fn(() => {})
+      StripeCustomer.create = jest.fn(() => true)
       const publicKey = '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2'
       const stripeCustomerId = 'cus_customerId'
       await saveStripeCustomerIdForAddress(publicKey, stripeCustomerId)

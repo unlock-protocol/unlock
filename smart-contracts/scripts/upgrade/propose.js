@@ -12,7 +12,7 @@ async function main({ proxyAddress, proxyAdminAddress, implementation }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
-  // eslint-disable-next-line no-console
+
   if (isDev) console.log('Dev mode ON')
 
   // TODO: make possible to switch to DAO
@@ -29,7 +29,6 @@ async function main({ proxyAddress, proxyAdminAddress, implementation }) {
     ;[issuer] = await ethers.getSigners()
   }
 
-  // eslint-disable-next-line no-console
   console.log(`Issuer: ${issuer.address}`)
 
   // build upgrade tx
@@ -50,7 +49,6 @@ async function main({ proxyAddress, proxyAdminAddress, implementation }) {
   const evt = events.find((v) => v.event === 'Confirmation')
   const transactionId = evt.args[1]
 
-  // eslint-disable-next-line no-console
   console.log(
     `Upgrade submitted to multisig w transactionId : ${transactionId} (txid: ${transactionHash})`
   )
@@ -64,7 +62,6 @@ async function main({ proxyAddress, proxyAdminAddress, implementation }) {
 
 // execute as standalone
 if (require.main === module) {
-  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {

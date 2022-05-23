@@ -1,4 +1,4 @@
-import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { Response } from 'express-serve-static-core'
 import { ethers } from 'ethers'
 import { SignedRequest } from '../types'
 

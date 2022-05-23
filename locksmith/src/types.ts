@@ -1,4 +1,4 @@
-import { Request } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { Request } from 'express-serve-static-core'
 
 export interface UserCreationInput {
   emailAddress: string

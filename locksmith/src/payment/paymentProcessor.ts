@@ -5,7 +5,7 @@ import { PaymentIntent } from '../models/paymentIntent'
 import { UserReference } from '../models/userReference'
 import * as Normalizer from '../utils/normalizer'
 import KeyPricer from '../utils/keyPricer'
-import { ethereumAddress } from '../types' // eslint-disable-line import/named, no-unused-vars
+import { ethereumAddress } from '../types'
 import Dispatcher from '../fulfillment/dispatcher'
 import {
   getStripeCustomerIdForAddress,

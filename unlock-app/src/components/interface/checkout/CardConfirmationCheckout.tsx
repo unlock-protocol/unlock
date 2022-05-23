@@ -95,8 +95,8 @@ export const CardConfirmationCheckout = ({
     fetchPricing()
   }, [numberOfRecipients.current, lock.address, config, network])
 
-  let totalPrice: number = 0
-  let fee: number = 0
+  let totalPrice = 0
+  let fee = 0
 
   if (lock.fiatPricing?.usd) {
     totalPrice = Object.values(pricing).reduce(

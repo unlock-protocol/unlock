@@ -1,7 +1,5 @@
 import { providers } from 'ethers'
 
-export interface LockManager {}
-
 export interface PurchaseKeyParams {
   lockAddress: string
   owner: string

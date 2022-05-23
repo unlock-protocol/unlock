@@ -126,9 +126,7 @@ export const UNLOCK_HOW_FOR_DEVELOPERS = [
   },
 ]
 
-export interface Props {}
-
-export function Developers({}: Props) {
+export function Developers() {
   return (
     <div className="p-6">
       <div className="mx-auto  max-w-7xl">
