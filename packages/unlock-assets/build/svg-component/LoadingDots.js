@@ -19,7 +19,7 @@ const SvgLoadingDots = ({ title, titleId, ...props }) => (
     </style>
     <path
       id="loadingDots_svg__ep1opzeolwb2"
-      d="M16 32c8.837 0 16-7.163 16-16S24.837 0 16 0 0 7.163 0 16s7.163 16 16 16z"
+      d="M16 32c8.837 0 16-7.163 16-16S24.837 0 16 0 0 7.163 0 16s7.163 16 16 16Z"
       clipRule="evenodd"
       fill="#4D8BE8"
       fillRule="evenodd"

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 const SvgCoinbaseWallet = ({ title, titleId, ...props }) => (
   <svg
-    viewBox="0 0 120 120"
+    viewBox="0 0 32 32"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     aria-labelledby={titleId}
@@ -11,24 +11,24 @@ const SvgCoinbaseWallet = ({ title, titleId, ...props }) => (
   >
     {title ? <title id={titleId}>{title}</title> : null}
     <path
-      d="M60 108.75c26.924 0 48.75-21.826 48.75-48.75S86.924 11.25 60 11.25 11.25 33.076 11.25 60 33.076 108.75 60 108.75z"
-      fill="#fff"
+      d="M16 4.8C9.81 4.8 4.8 9.81 4.8 16c0 6.19 5.01 11.2 11.2 11.2 6.19 0 11.2-5.01 11.2-11.2 0-6.19-5.01-11.2-11.2-11.2Zm0 17.753A6.556 6.556 0 0 1 9.447 16 6.556 6.556 0 0 1 16 9.446 6.556 6.556 0 0 1 22.554 16 6.556 6.556 0 0 1 16 22.553Z"
+      fill="url(#coinbase-wallet_svg__a)"
     />
     <path
-      d="M111 0H9C4.02 0 0 4.02 0 9v102c0 4.98 4.02 9 9 9h102c4.98 0 9-4.02 9-9V9c0-4.98-4.02-9-9-9zM60 101.82c-23.1 0-41.82-18.72-41.82-41.82S36.9 18.18 60 18.18 101.82 36.9 101.82 60 83.1 101.82 60 101.82zm12.09-55.11H47.91c-.66 0-1.2.54-1.2 1.2v24.18c0 .66.54 1.2 1.2 1.2h24.18c.66 0 1.2-.54 1.2-1.2V47.91c0-.66-.54-1.2-1.2-1.2z"
-      fill="url(#coinbase-wallet_svg__paint0_linear)"
+      d="M17.59 18.104H14.41a.504.504 0 0 1-.5-.5v-3.193c0-.273.228-.5.5-.5h3.194c.272 0 .5.227.5.5v3.193c0 .273-.228.5-.515.5Z"
+      fill="#2059EB"
     />
     <defs>
       <linearGradient
-        id="coinbase-wallet_svg__paint0_linear"
-        x1={60}
-        y1={8.045}
-        x2={60}
-        y2={113.754}
+        id="coinbase-wallet_svg__a"
+        x1={16}
+        y1={27.2}
+        x2={16}
+        y2={4.8}
         gradientUnits="userSpaceOnUse"
       >
-        <stop offset={0.002} stopColor="#2E66F9" />
-        <stop offset={1} stopColor="#124BDC" />
+        <stop stopColor="#1447EA" />
+        <stop offset={1} stopColor="#2B65FB" />
       </linearGradient>
     </defs>
   </svg>
