@@ -7,7 +7,7 @@ test('entry point parse', () => {
 })
 
 test('contains some lint instructions', () => {
-  const lint = require('../src')
+  const lint = require('../src/base')
   expect(Object.keys(lint).length).toEqual(7)
   expect(lint.extends.includes('eslint:recommended'))
 })

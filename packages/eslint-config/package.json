@@ -4,6 +4,7 @@
   "main": "./src/index.js",
   "exports": {
     ".": "./src/index.js",
+    "./base": "./src/base.js",
     "./next": "./src/next.js"
   },
   "description": "Unlock's base JS ESLint config",
