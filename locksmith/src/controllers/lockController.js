@@ -93,14 +93,12 @@ const lockMigrate = async (req, res) => {
       }
     }
   )
-    // eslint-disable-next-line promise/prefer-await-to-then
     .then((newLockAddress) => {
       dbRecord.update({
         newLockAddress,
         migrated: true,
       })
     })
-    // eslint-disable-next-line promise/prefer-await-to-then
     .catch((error) => {
       // Unexpected error
       const message = `Failed to migrate lock ${lockAddress}, ${chainId}. ${error.message}`

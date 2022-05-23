@@ -77,9 +77,7 @@ export const CloneContent = ({ query }: CloneContentProps) => {
     }
     // fetch lock
     if (!lockMigration.existing) {
-      fetchLockMigration()
-        // eslint-disable-next-line promise/prefer-await-to-then
-        .catch(console.error)
+      fetchLockMigration().catch(console.error)
     }
   })
 

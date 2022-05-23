@@ -1,7 +1,6 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript'
 
 @Table({ tableName: 'Charges', timestamps: true })
-// eslint-disable-next-line import/prefer-default-export
 export class Charge extends Model<Charge> {
   @Column
   lock!: string

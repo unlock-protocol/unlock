@@ -1,7 +1,4 @@
-/* eslint-disable react/jsx-filename-extension */
-
 import React from 'react'
-
 import About from '../build/svg-component/About'
 import Adfree from '../build/svg-component/Adfree'
 import AppStore from '../build/svg-component/AppStore'

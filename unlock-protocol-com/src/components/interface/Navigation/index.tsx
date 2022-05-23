@@ -4,7 +4,6 @@ import { Button } from '@unlock-protocol/ui'
 import React, { Fragment } from 'react'
 import { MdFormatListBulleted as BulletedListIcon } from 'react-icons/md'
 import {
-  RiCalendarCheckLine as EventIcon,
   RiHeartsLine as HeartIcon,
   RiPlantLine as PlantIcon,
 } from 'react-icons/ri'
@@ -437,7 +436,9 @@ function Mobile() {
             {({ open }) => (
               <>
                 <Disclosure.Button
-                  className={`flex items-center justify-between w-full p-4 font-medium bg-white shadow-lg border-b`}
+                  className={
+                    'flex items-center justify-between w-full p-4 font-medium bg-white shadow-lg border-b'
+                  }
                 >
                   For Community {open ? <UpIcon /> : <DownIcon />}
                 </Disclosure.Button>
