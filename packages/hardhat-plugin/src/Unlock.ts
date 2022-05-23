@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this, import/no-cycle */
 import { BigNumber } from 'ethers'
 import type { providers, Contract } from 'ethers'
 
@@ -128,7 +127,7 @@ export class UnlockHRE {
 
   public deployUnlock = async (
     version = UNLOCK_LATEST_VERSION,
-    confirmations: number = 5,
+    confirmations = 5,
     deploymentOptions: providers.TransactionRequest = {}
   ) => {
     const signer = await this.getSigner()
@@ -143,7 +142,6 @@ export class UnlockHRE {
       deploymentOptions
     )
 
-    // eslint-disable-next-line no-console
     console.log(`UNLOCK > deployed to : ${unlock.address}`)
 
     // set unlock in class
@@ -153,7 +151,7 @@ export class UnlockHRE {
 
   public deployPublicLock = async (
     version = PUBLIC_LOCK_LATEST_VERSION,
-    confirmations: number = 5,
+    confirmations = 5,
     deploymentOptions: providers.TransactionRequest = {}
   ) => {
     const signer = await this.getSigner()
@@ -172,7 +170,6 @@ export class UnlockHRE {
       deploymentOptions
     )
 
-    // eslint-disable-next-line no-console
     console.log(`PUBLICLOCK > deployed to : ${publicLock.address}`)
 
     return publicLock
@@ -181,7 +178,7 @@ export class UnlockHRE {
   public deployProtocol = async (
     unlockVersion = UNLOCK_LATEST_VERSION,
     lockVersion = PUBLIC_LOCK_LATEST_VERSION,
-    confirmations: number = 1, // default to 1, as this is mostly for use on local dev
+    confirmations = 1, // default to 1, as this is mostly for use on local dev
     deploymentOptions: providers.TransactionRequest = {}
   ): Promise<UnlockProtocolContracts> => {
     const signer = await this.getSigner()
