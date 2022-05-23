@@ -142,7 +142,6 @@ export class UnlockHRE {
       deploymentOptions
     )
 
-    // eslint-disable-next-line no-console
     console.log(`UNLOCK > deployed to : ${unlock.address}`)
 
     // set unlock in class
@@ -171,7 +170,6 @@ export class UnlockHRE {
       deploymentOptions
     )
 
-    // eslint-disable-next-line no-console
     console.log(`PUBLICLOCK > deployed to : ${publicLock.address}`)
 
     return publicLock

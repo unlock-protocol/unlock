@@ -5,7 +5,6 @@ async function main({ proxyAddress, contractName }) {
   const Contract = await ethers.getContractFactory(contractName)
   const implementation = await upgrades.forceImport(proxyAddress, Contract)
 
-  // eslint-disable-next-line no-console
   console.log(`${contractName} implementation imported.`)
 
   return implementation
@@ -13,7 +12,6 @@ async function main({ proxyAddress, contractName }) {
 
 // execute as standalone
 if (require.main === module) {
-  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {

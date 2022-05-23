@@ -29,7 +29,6 @@ export const deployLockTask: ActionType<CreateLockTaskArgs> = async (
     maxNumberOfKeys,
   })
 
-  // eslint-disable-next-line no-console
   console.log(
     `LOCK CREATED > deployed to : ${lock.address} (tx: ${transactionHash})`
   )

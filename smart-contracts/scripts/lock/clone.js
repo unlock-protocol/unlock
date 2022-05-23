@@ -11,7 +11,6 @@ async function main({
   const PublicLock = await ethers.getContractFactory('PublicLock')
   const lock = PublicLock.attach(lockAddress)
 
-  // eslint-disable-next-line no-console
   console.log(`CLONE LOCK > serializing: ${await lock.name()}...`)
 
   const Serializer = await ethers.getContractFactory('LockSerializer')
@@ -26,7 +25,6 @@ async function main({
     salt: web3.utils.randomHex(12),
   })
 
-  // eslint-disable-next-line no-console
   console.log('CLONE LOCK > add key owners...')
   const newLock = PublicLock.attach(newLockAddress)
   const { keyOwners, expirationTimestamps, keyManagers } = serializedLock
@@ -40,12 +38,11 @@ async function main({
   const keyManagersChanges = keyEvents.filter(
     ({ event }) => event === 'KeyManagerChanged'
   )
-  // eslint-disable-next-line no-console
+
   console.log(
     `CLONE LOCK > ${transfers.length} keys transferred, ${keyManagersChanges.length} key managers changed`
   )
 
-  // eslint-disable-next-line no-console
   console.log('CLONE LOCK > fetching managers...')
 
   // fetch managers from graph
@@ -60,7 +57,7 @@ async function main({
     const waits = await Promise.all(txs.map((tx) => tx.wait()))
     waits.forEach(({ events }) => {
       const evt = events.find(({ event }) => event === 'LockManagerAdded')
-      // eslint-disable-next-line no-console
+
       console.log(`LOCK CLONE > ${evt.args.account} added as lock manager.`)
     })
   }
@@ -68,7 +65,6 @@ async function main({
 
 // execute as standalone
 if (require.main === module) {
-  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {
