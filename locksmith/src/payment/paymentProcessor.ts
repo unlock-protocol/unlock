@@ -207,12 +207,12 @@ export class PaymentProcessor {
     }
 
     // If not, we create another intent
-
     const token = await this.stripe.tokens.create(
       { customer: stripeCustomerId },
       { stripeAccount }
     )
 
+    //
     const connectedCustomer = await this.stripe.customers.create(
       { source: token.id },
       { stripeAccount }
@@ -254,10 +254,10 @@ export class PaymentProcessor {
       lockAddress: lock,
       chain: network,
       recipients,
-      stripeCustomerId: stripeCustomerId, // Customer Id
+      stripeCustomerId: stripeCustomerId, // Unlock "global" Customer Id
       intentId: intent.id,
-      connectedStripeId: stripeAccount,
-      connectedCustomerId: connectedCustomer.id,
+      connectedStripeId: stripeAccount, // connected account
+      connectedCustomerId: connectedCustomer.id, // connected Customer Id
     })
 
     return {
@@ -342,8 +342,23 @@ export class PaymentProcessor {
       throw new Error('Price diverged by more than 3%.')
     }
 
+    // Create the charge object on our end!
+    const charge: Charge = await Charge.create({
+      userAddress: paymentIntent.metadata.purchaser,
+      recipients: paymentIntent.metadata.recipient.split(','),
+      lock: paymentIntent.metadata.lock,
+      stripeCustomerId: paymentIntent.customer, // TODO: consider checking the customer id under Unlock's stripe account?
+      connectedCustomer: paymentIntent.customer,
+      totalPriceInCents: paymentIntent.amount,
+      unlockServiceFee: paymentIntent.application_fee_amount,
+      stripeCharge: paymentIntent.id,
+      chain: network,
+    })
+
     const fulfillmentDispatcher = new Dispatcher()
+
     // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
+    // This should be fine though since grantKeys transaction should succeed anyway
     return new Promise((resolve, reject) => {
       try {
         fulfillmentDispatcher.grantKeys(
@@ -351,21 +366,24 @@ export class PaymentProcessor {
           paymentIntent.metadata.recipient.split(','),
           parseInt(paymentIntent.metadata.network, 10),
           async (_: any, transactionHash: string) => {
-            // Should we proceed differently here? Save the charge before and keep the state?
-            // This would allow us to easily retrieve transactions that might have failed.
-            const charge: Charge = await Charge.create({
-              userAddress: paymentIntent.metadata.purchaser,
-              recipients: paymentIntent.metadata.recipient.split(','),
-              lock: paymentIntent.metadata.lock,
-              stripeCustomerId: paymentIntent.customer,
-              connectedCustomer: paymentIntent.customer,
-              totalPriceInCents: paymentIntent.amount,
-              unlockServiceFee: paymentIntent.application_fee_amount,
-              stripeCharge: paymentIntent.id,
-              transactionHash,
-              chain: network,
-            })
+            // Update our charge object
+            charge.transactionHash = transactionHash
+            await charge.save()
 
+            // Update Stripe's payment Intent
+            await this.stripe.paymentIntents.update(
+              paymentIntentId,
+              {
+                metadata: {
+                  transactionHash,
+                },
+              },
+              {
+                stripeAccount: paymentIntentRecord.connectedStripeId,
+              }
+            )
+
+            // We only charge the card when everything else was successful
             await this.stripe.paymentIntents.capture(paymentIntentId, {
               stripeAccount: paymentIntentRecord.connectedStripeId,
             })
@@ -378,7 +396,6 @@ export class PaymentProcessor {
       }
     })
   }
-
 }
 
 export default PaymentProcessor
