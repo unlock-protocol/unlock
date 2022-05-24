@@ -66,18 +66,3 @@ export function LoggedOut({
     </div>
   )
 }
-
-interface Props {
-  children: ReactNode
-}
-
-export function Bottom({ children = null }: Props) {
-  return (
-    <footer className="px-6 pt-6 pb-4 rounded-b-xl border-t border-gray-100 shadow">
-      {children}
-      <div className="flex mt-4 justify-center items-center">
-        <p className="text-sm"> Powered by Unlock</p>
-      </div>
-    </footer>
-  )
-}

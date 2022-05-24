@@ -14,25 +14,31 @@ interface Options {
   paywallConfig: PaywallConfig
 }
 
-const getCheckoutStates = (
+export function useCheckoutHeadContent(
   { callToAction = {}, title, locks }: PaywallConfig,
   stage: CheckoutState = 'select'
-) => {
-  const descriptions = Object.assign(callToAction, {
-    pending: 'Purchase pending...',
-    default: `${title} has ${
-      Object.keys(locks).length
-    } membership options, please choose one of the option to continue`,
-    quantity:
-      'Excellent choice! You might be able to add more than one membership below.',
-    metadata:
-      'Please enter the required information below in order to included into your NFT.',
-    confirmed:
-      'Let us prepare the magic, a NFT minting is in progress, you can also follow update in the blockexplorer!',
-    card: 'You need to provide card details.',
-  })
+) {
+  const descriptions = Object.assign(
+    {
+      pending: 'Purchase pending...',
+      default: `${title} has ${
+        Object.keys(locks).length
+      } membership options, please choose one of the option to continue`,
+      quantity:
+        'Excellent choice! You might be able to add more than one membership below.',
+      metadata:
+        'Please enter the required information below in order to included into your NFT.',
+      confirmed:
+        'Let us prepare the magic, a NFT minting is in progress, you can also follow update in the blockexplorer!',
+      card: 'You need to provide card details.',
+    },
+    callToAction
+  )
 
-  const stages = {
+  const stages: Record<
+    CheckoutState,
+    Record<'title' | 'description', string>
+  > = {
     select: {
       title: 'Select membership',
       description: descriptions.default,
@@ -51,7 +57,7 @@ const getCheckoutStates = (
     },
     pending: {
       title: 'Minting membership NFT',
-      message: descriptions.pending,
+      description: descriptions.pending,
     },
     card: {
       title: 'Add card',
@@ -63,10 +69,11 @@ const getCheckoutStates = (
 
 export function useCheckout({ initialStage, paywallConfig }: Options) {
   const [stage, setCheckoutStage] = useState<CheckoutState>(initialStage)
+  const content = useCheckoutHeadContent(paywallConfig, stage)
   return {
     checkoutState: {
       stage,
-      ...getCheckoutStates(paywallConfig, stage),
+      content,
     },
     setCheckoutStage,
   }

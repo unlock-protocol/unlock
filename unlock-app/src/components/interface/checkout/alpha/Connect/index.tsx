@@ -1,24 +1,24 @@
-import React, { useState, ReactNode } from 'react'
+import React, { useState } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
-import { selectProvider } from '~/hooks/useAuthenticate'
-import { useConfig } from '~/utils/withConfig'
 import { ConfirmConnect } from './Confirm'
 import { Shell } from '../Shell'
 import { SignInOrUp } from '../SignInOrUp'
 
 interface Props {
   oauthConfig: OAuthConfig
+  injectedProvider: unknown
   communication: ReturnType<typeof useCheckoutCommunication>
 }
 
 type ConnectStages = 'connect' | 'signin'
 
-export function Connect({ oauthConfig, communication }: Props) {
+export function Connect({
+  injectedProvider,
+  oauthConfig,
+  communication,
+}: Props) {
   const [page, setStage] = useState<ConnectStages>('connect')
-  const config = useConfig()
-  const injectedProvider =
-    communication.providerAdapter || selectProvider(config)
 
   const navigate = (to: ConnectStages) => {
     setStage(to)
@@ -32,32 +32,38 @@ export function Connect({ oauthConfig, communication }: Props) {
     window.location.assign(redirectURI)
   }
 
-  const views: Record<ConnectStages, ReactNode> = {
-    connect: (
-      <ConfirmConnect
-        onClose={onClose}
-        navigate={navigate}
-        oauthConfig={oauthConfig}
-        injectedProvider={injectedProvider}
-      />
-    ),
-    signin: (
-      <SignInOrUp
-        injectedProvider={injectedProvider}
-        onSignedIn={() => navigate('connect')}
-      />
-    ),
+  function Content() {
+    switch (page) {
+      case 'signin': {
+        return (
+          <SignInOrUp
+            injectedProvider={injectedProvider}
+            onSignedIn={() => navigate('connect')}
+          />
+        )
+      }
+      default: {
+        return (
+          <ConfirmConnect
+            onClose={onClose}
+            navigate={navigate}
+            oauthConfig={oauthConfig}
+            injectedProvider={injectedProvider}
+          />
+        )
+      }
+    }
   }
 
   return (
-    <Shell
+    <Shell.Root
       onClose={() =>
         onClose({
           error: 'Closed unexpectedly',
         })
       }
     >
-      {views[page]}
-    </Shell>
+      <Content />
+    </Shell.Root>
   )
 }

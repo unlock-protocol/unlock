@@ -6,7 +6,7 @@ import { useStorageService } from '~/utils/withStorageService'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
 import UnlockProvider from '~/services/unlockProvider'
 import { useConfig } from '~/utils/withConfig'
-import { Bottom } from './Bottom'
+import { Shell } from './Shell'
 
 interface EmailProps {
   onSubmitEmail(email: string): Promise<void>
@@ -25,12 +25,8 @@ function Email({ onSubmitEmail }: EmailProps) {
         <h1 className="font-bold text-lg"> Sign in / up </h1>
         <p> Let&apos;s start with your email address </p>
       </header>
-      <main>
-        <form
-          className="p-6 space-y-4"
-          id="email"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+      <Shell.Content>
+        <form id="email" onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="Email"
             type="email"
@@ -42,12 +38,12 @@ function Email({ onSubmitEmail }: EmailProps) {
             })}
           />
         </form>
-      </main>
-      <Bottom>
+      </Shell.Content>
+      <Shell.Footer>
         <Button type="submit" form="email" className="w-full">
           Next
         </Button>
-      </Bottom>
+      </Shell.Footer>
     </>
   )
 }
@@ -95,12 +91,8 @@ function Password({ onSubmitPassword }: PasswordProps) {
           previously
         </p>
       </header>
-      <main>
-        <form
-          className="p-6 space-y-4"
-          id="password"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+      <Shell.Content>
+        <form id="password" onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="Password"
             type="password"
@@ -113,8 +105,8 @@ function Password({ onSubmitPassword }: PasswordProps) {
             })}
           />
         </form>
-      </main>
-      <Bottom>
+      </Shell.Content>
+      <Shell.Footer>
         <Button
           disabled={loading}
           type="submit"
@@ -123,7 +115,7 @@ function Password({ onSubmitPassword }: PasswordProps) {
         >
           {loading ? 'Signing in' : 'Sign in'}
         </Button>
-      </Bottom>
+      </Shell.Footer>
     </>
   )
 }
@@ -155,11 +147,7 @@ function ConfirmPassword({ onSubmitConfirmedPassword }: ConfirmPasswordProps) {
         </p>
       </header>
       <main>
-        <form
-          className="p-6 space-y-4"
-          id="confirmPassword"
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <form id="confirmPassword" onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="Password"
             type="password"
@@ -182,11 +170,11 @@ function ConfirmPassword({ onSubmitConfirmedPassword }: ConfirmPasswordProps) {
           />
         </form>
       </main>
-      <Bottom>
+      <Shell.Footer>
         <Button type="submit" form="confirmPassword" className="w-full">
           Create Account
         </Button>
-      </Bottom>
+      </Shell.Footer>
     </>
   )
 }
@@ -246,13 +234,23 @@ export function SignInOrUp({ onSignedIn, injectedProvider }: Props) {
     onSignedIn()
   }
 
-  const views: Record<SignInOrUpState, ReactNode> = {
-    email: <Email onSubmitEmail={onSubmitEmail} />,
-    password: <Password onSubmitPassword={onSubmitPassword} />,
-    confirmPassword: (
-      <ConfirmPassword onSubmitConfirmedPassword={onSubmitConfirmedPassword} />
-    ),
+  function Content() {
+    switch (state) {
+      case 'password': {
+        return <Password onSubmitPassword={onSubmitPassword} />
+      }
+      case 'confirmPassword': {
+        return (
+          <ConfirmPassword
+            onSubmitConfirmedPassword={onSubmitConfirmedPassword}
+          />
+        )
+      }
+      default: {
+        return <Email onSubmitEmail={onSubmitEmail} />
+      }
+    }
   }
 
-  return <>{views[state]}</>
+  return <Content />
 }

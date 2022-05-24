@@ -7,7 +7,8 @@ import { OAuthConfig } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { createMessageToSignIn } from '~/utils/oauth'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
-import { Bottom, LoggedIn, LoggedOut } from '../Bottom'
+import { LoggedIn, LoggedOut } from '../Bottom'
+import { Shell } from '../Shell'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -60,7 +61,7 @@ export function ConfirmConnect({
 
   return (
     <>
-      <main className="p-6">
+      <Shell.Content>
         <div className="space-y-4">
           <header>
             <h1 className="font-medium text-xl">
@@ -103,8 +104,8 @@ export function ConfirmConnect({
             {loading ? 'Please sign the message' : 'Sign-in with Ethereum'}
           </Button>
         </div>
-      </main>
-      <Bottom>
+      </Shell.Content>
+      <Shell.Footer>
         {account ? (
           <LoggedIn account={account} onDisconnect={() => deAuthenticate()} />
         ) : (
@@ -113,7 +114,7 @@ export function ConfirmConnect({
             onUnlockAccount={() => navigate('signin')}
           />
         )}
-      </Bottom>
+      </Shell.Footer>
     </>
   )
 }
