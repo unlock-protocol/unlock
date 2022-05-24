@@ -379,50 +379,6 @@ export class PaymentProcessor {
     })
   }
 
-  // DEPRECATED
-  async initiatePurchaseForConnectedStripeAccount(
-    recipient: ethereumAddress /** this is the recipient of the granted key */,
-    stripeCustomerId: string, // Stripe token of the buyer
-    lock: ethereumAddress,
-    pricing: any,
-    network: number,
-    stripeAccount: string
-  ) {
-    const fulfillmentDispatcher = new Dispatcher()
-    const chargeData = await this.chargeUserForConnectedAccount(
-      recipient,
-      stripeCustomerId,
-      lock,
-      stripeAccount,
-      network,
-      pricing
-    )
-    return new Promise((resolve, reject) => {
-      try {
-        fulfillmentDispatcher.grantKeys(
-          lock,
-          [recipient],
-          network,
-          async (_: any, transactionHash: string) => {
-            const charge: Charge = await Charge.create({
-              userAddress: chargeData.userAddress,
-              lock: chargeData.lock,
-              stripeCustomerId: chargeData.stripeCustomerId,
-              connectedCustomer: chargeData.connectedCustomer,
-              totalPriceInCents: chargeData.totalPriceInCents,
-              unlockServiceFee: chargeData.unlockServiceFee,
-              stripeCharge: chargeData.charge,
-              transactionHash,
-              chain: network,
-            })
-            return resolve(charge.transactionHash)
-          }
-        )
-      } catch (error) {
-        reject(error)
-      }
-    })
-  }
 }
 
 export default PaymentProcessor
