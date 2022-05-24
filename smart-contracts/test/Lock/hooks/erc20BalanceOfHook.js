@@ -1,12 +1,13 @@
 const { ethers } = require('hardhat')
 const { constants } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('truffle-assertions')
+
 const deployLocks = require('../../helpers/deployLocks')
+const getProxy = require('../../helpers/proxy')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const Erc20TokenUriHook = artifacts.require('ERC20BalanceOfHook')
 const TestERC20 = artifacts.require('TestERC20')
-const getProxy = require('../../helpers/proxy')
 
 let lock
 let unlock
