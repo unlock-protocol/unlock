@@ -37,7 +37,7 @@ describe('getGasSettings', () => {
   it('returns correct value from provider', async () => {
     expect.assertions(2)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(1)
-    expect(maxFeePerGas?.toNumber()).toBe(10000000000)
+    expect(maxFeePerGas?.toNumber()).toBe(20000000000)
     expect(maxPriorityFeePerGas?.toNumber()).toBe(20000000000)
   })
   it('returns value from gas station on Polygon mainnet', async () => {

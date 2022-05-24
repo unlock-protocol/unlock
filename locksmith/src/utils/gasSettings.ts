@@ -9,6 +9,30 @@ interface GasSettings {
   gasPrice?: ethers.BigNumber
 }
 
+/**
+ * sets the max fee per gas based on maxPriorityFeePerGas
+ * @returns
+ */
+export const setMaxFeePerGas = ({
+  maxPriorityFeePerGas,
+  maxFeePerGas,
+}: GasSettings): GasSettings => {
+  if (
+    maxPriorityFeePerGas &&
+    maxFeePerGas &&
+    maxPriorityFeePerGas.gt(maxFeePerGas)
+  ) {
+    return {
+      maxPriorityFeePerGas,
+      maxFeePerGas: maxPriorityFeePerGas,
+    }
+  }
+  return {
+    maxPriorityFeePerGas,
+    maxFeePerGas,
+  }
+}
+
 export const getGasSettings = async (network: number): Promise<GasSettings> => {
   // workaround for polygon: get max fees from gas station
   // see https://github.com/ethers-io/ethers.js/issues/2828
@@ -25,10 +49,10 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
         .parseUnits(`${Math.ceil(data.fast.maxPriorityFee)}`, 'gwei')
         .mul(2)
 
-      return {
+      return setMaxFeePerGas({
         maxFeePerGas,
         maxPriorityFeePerGas,
-      }
+      })
     } catch (error) {
       logger.error(`Could not retrieve fee data from ${network}, ${error}`)
     }
@@ -52,10 +76,10 @@ export const getGasSettings = async (network: number): Promise<GasSettings> => {
     // We double to increase speed of execution
     // We may end up paying *more* but we get mined earlier
     if (maxFeePerGas) {
-      return {
+      return setMaxFeePerGas({
         maxPriorityFeePerGas: maxFeePerGas?.mul(2),
         maxFeePerGas: maxFeePerGas,
-      }
+      })
     }
     return {
       gasPrice: gasPrice?.mul(2),
