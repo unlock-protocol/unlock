@@ -32,7 +32,6 @@ namespace PurchaseController {
     return res.json(await fulfillmentDispatcher.balances())
   }
 
-
   /**
    * Creates a payment intent that will be passed to the front-end for confirmation with the Stripe API.
    * Once confirmed, the payment will need to be captured
