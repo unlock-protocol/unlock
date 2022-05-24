@@ -28,7 +28,7 @@
     "dotenv": "16.0.0",
     "embla-carousel-react": "6.2.0",
     "eslint": "8.10.0",
-    "jest": "27.5.1",
+    "jest": "28.1.0",
     "jest-styled-components": "7.0.8",
     "lint-staged": "12.3.7",
     "next": "12.1.5",
