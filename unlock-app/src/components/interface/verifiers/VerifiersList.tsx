@@ -30,7 +30,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   const [verifiers, setVerifiers] = useState<any[]>([])
   const config = useContext(ConfigContext)
   const host = config.services.storage.host
-  const [token, setToken] = useState()
+  const [token, setToken] = useState<string>()
 
   const { getEndpoint } = new LocksmithService({
     host,
@@ -55,9 +55,11 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
     loadList()
   }, [token])
 
-  const loginAndGetList = () => {
-    const { accessToken } = getAccessToken()
-    setToken(accessToken)
+  const loginAndGetList = async () => {
+    const { accessToken } = await getAccessToken()
+    if (accessToken) {
+      setToken(accessToken)
+    }
   }
 
   const getVerifierList = async () => {

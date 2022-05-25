@@ -59,6 +59,10 @@ export class StorageService extends EventEmitter {
     return this.locksmith.login(message, signature)
   }
 
+  async refreshToken(token: string) {
+    return this.locksmith.refreshToken(token)
+  }
+
   async getSiweMessage(address: string, chainId: number, version = '1') {
     const siweMessage = LocksmithService.createSiweMessage({
       uri: 'https://locksmith.unlock-protocol.com',
