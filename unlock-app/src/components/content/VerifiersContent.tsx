@@ -10,6 +10,8 @@ import { VerifiersList } from '../interface/verifiers/VerifiersList'
 import { getAddressForName } from '../../hooks/useEns'
 import { ToastHelper } from '../helpers/toast.helper'
 import AuthenticationContext from '../../contexts/AuthenticationContext'
+import { LocksmithService } from '@unlock-protocol/unlock-js'
+import { ConfigContext } from '../../utils/withConfig'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -32,6 +34,12 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   const [loading, setLoading] = useState(false)
   const lockAddress: string = query?.lockAddress ?? ''
   const { network } = useContext(AuthenticationContext)
+  const config = useContext(ConfigContext)
+  const host = config.services.storage.host
+  const { getEndpoint } = new LocksmithService({
+    host,
+  })
+  const [token] = useState()
 
   const onAddVerifier = () => {
     setVerifierAddress('')
@@ -48,10 +56,15 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
     const resolvedAddress = await getAddressForName(verifierAddress)
     try {
       if (resolvedAddress) {
-        const addVerifierUrl = `/verifier/${network}/${lockAddress}/${resolvedAddress}`
+        const addVerifierUrl = getEndpoint(
+          `/verifier/${network}/${lockAddress}/${resolvedAddress}`
+        )
         const requestOptions = {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
         }
         await fetch(addVerifierUrl, requestOptions)
           .then((res) => res.json())

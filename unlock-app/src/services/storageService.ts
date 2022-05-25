@@ -2,6 +2,7 @@ import axios from 'axios'
 import { EventEmitter } from 'events'
 import { LocksmithService } from '@unlock-protocol/unlock-js'
 import { Lock } from '../unlockTypes'
+import { APP_NAME } from '../hooks/useAppStorage'
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
 // these objects, and nothing that isn't emitted should be in one of these
@@ -55,6 +56,26 @@ export class StorageService extends EventEmitter {
 
   async login(message: string, signature: string) {
     return this.locksmith.login(message, signature)
+  }
+
+  async getSiweMessage(address: string, chainId: number, version = '1') {
+    const siweMessage = LocksmithService.createSiweMessage({
+      uri: 'https://locksmith.unlock-protocol.com',
+      domain: this.host,
+      address,
+      chainId,
+      version,
+      statement: 'Authorize',
+    })
+    return siweMessage.prepareMessage()
+  }
+
+  storeToken(token: string) {
+    localStorage.setItem(`${APP_NAME}-token`, token)
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem(`${APP_NAME}-token`)
   }
 
   /**

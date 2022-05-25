@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-const APP_NAME = '@unlock-app'
+export const APP_NAME = '@unlock-app'
 
 export function useAppStorage() {
   const isObject = useCallback((value: any) => typeof value === 'object', [])

@@ -72,6 +72,7 @@
     "react-hot-toast": "2.2.0",
     "react-icons": "4.3.1",
     "react-jazzicon": "1.0.3",
+    "react-jwt": "^1.1.6",
     "react-test-renderer": "17.0.2",
     "react-use-clipboard": "1.0.8",
     "siwe": "1.1.6",

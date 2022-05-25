@@ -71,10 +71,11 @@ export class LocksmithService {
    */
   async login(message: string, signature: string) {
     const headers = new Headers()
-    headers.set('content-type', 'application/json')
     const response = await this.request('/v2/auth/login', {
       method: 'POST',
-      headers,
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({
         message,
         signature,
