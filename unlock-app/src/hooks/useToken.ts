@@ -1,8 +1,7 @@
 import { useContext, useState } from 'react'
 import { StorageServiceContext } from '../utils/withStorageService'
 import { WalletServiceContext } from '../utils/withWalletService'
-import { isExpired, reEvaluateToken } from 'react-jwt'
-import { LocksmithService } from '@unlock-protocol/unlock-js'
+import { isExpired } from 'react-jwt'
 
 const TOKEN_KEY = 'token'
 const NEW_TOKEN_KEY = 'token'
