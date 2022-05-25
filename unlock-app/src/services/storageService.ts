@@ -3,6 +3,7 @@ import { EventEmitter } from 'events'
 import { LocksmithService } from '@unlock-protocol/unlock-js'
 import { Lock } from '../unlockTypes'
 import { APP_NAME } from '../hooks/useAppStorage'
+import { generateNonce } from 'siwe'
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
 // these objects, and nothing that isn't emitted should be in one of these
@@ -66,6 +67,7 @@ export class StorageService extends EventEmitter {
       chainId,
       version,
       statement: 'Authorize',
+      nonce: generateNonce(),
     })
     return siweMessage.prepareMessage()
   }

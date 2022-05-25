@@ -1,7 +1,6 @@
-import fetch from 'cross-fetch'
+import fetch, { Headers } from 'cross-fetch'
 import { SiweMessage } from 'siwe'
 import { FetchError } from './utils'
-
 export const PRODUCTION_HOST = 'https://locksmith.unlock-protocol.com'
 
 interface LocksmithOptions {
@@ -71,11 +70,10 @@ export class LocksmithService {
    */
   async login(message: string, signature: string) {
     const headers = new Headers()
+    headers.set('content-type', 'application/json')
     const response = await this.request('/v2/auth/login', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify({
         message,
         signature,
