@@ -138,15 +138,6 @@ export function processNewLock(event: NewLock): void {
   let lockAddress = event.params.newLockAddress
   let chainPublicLock = PublicLock.bind(lockAddress)
 
-  if (
-    lockAddress.equals(
-      Address.fromHexString('0x6e660a9BD048b3293A7e16E9EF48Dddd98A8C7b1')
-    )
-  ) {
-    // This is a buggy lock! One that was upgraded and that is now not compatible anymore!
-    return
-  }
-
   let lock = bootstrapLock(chainPublicLock)
   if (lock.version >= BigInt.fromI32(10)) {
     processV10(event, lock)
