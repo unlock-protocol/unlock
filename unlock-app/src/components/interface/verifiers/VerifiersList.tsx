@@ -7,8 +7,7 @@ import { ToastHelper } from '../../helpers/toast.helper'
 import Loading from '../Loading'
 import { ConfigContext } from '../../../utils/withConfig'
 import { LocksmithService } from '@unlock-protocol/unlock-js'
-import { WalletServiceContext } from '../../../utils/withWalletService'
-import { StorageServiceContext } from '../../../utils/withStorageService'
+import { useToken } from '../../../hooks/useToken'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -30,14 +29,13 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   const [loading, setLoading] = useState(false)
   const [verifiers, setVerifiers] = useState<any[]>([])
   const config = useContext(ConfigContext)
-  const walletService = useContext(WalletServiceContext)
-  const storageService = useContext(StorageServiceContext)
   const host = config.services.storage.host
+  const [token, setToken] = useState()
 
   const { getEndpoint } = new LocksmithService({
     host,
   })
-  const [token, setToken] = useState()
+  const { getAccessToken } = useToken(account!, network!)
 
   const setDefaults = () => {
     setShowDeleteVerifierModal(false)
@@ -49,22 +47,17 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
     loginAndGetList()
   }, [])
 
-  const loginAndGetList = async () => {
-    const storedToken = storageService.getToken()
-    if (storedToken) {
-      setToken(storedToken)
-      getVerifierList()
-    } else {
-      const { message } = await storageService.getSiweMessage(account, network)
-      const signature = await walletService.signMessage(
-        message,
-        'personal_sign'
-      )
-      const { accessToken } = await storageService.login(message, signature)
-      storageService.setToken(accessToken)
-      setToken(accessToken)
+  useEffect(() => {
+    if (!token) return
+    const loadList = () => {
       getVerifierList()
     }
+    loadList()
+  }, [token])
+
+  const loginAndGetList = () => {
+    const { accessToken } = getAccessToken()
+    setToken(accessToken)
   }
 
   const getVerifierList = async () => {
@@ -93,6 +86,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   const onConfirmDeleteVerifier = async () => {
     setLoading(true)
     const isValid = ethers.utils.isAddress(selectedVerifier)
+
     try {
       if (isValid) {
         const addVerifierUrl = getEndpoint(
@@ -100,7 +94,10 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
         )
         const requestOptions = {
           method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
         }
         await fetch(addVerifierUrl, requestOptions)
           .then((res) => res.json())

@@ -72,12 +72,12 @@ export class StorageService extends EventEmitter {
     return siweMessage.prepareMessage()
   }
 
-  storeToken(token: string) {
-    localStorage.setItem(`${APP_NAME}-token`, token)
+  storeToken(token: string, name: string) {
+    localStorage.setItem(`${APP_NAME}-${name}`, token)
   }
 
-  getToken(): string | null {
-    return localStorage.getItem(`${APP_NAME}-token`)
+  getToken(name: string): string | null {
+    return localStorage.getItem(`${APP_NAME}-${name}`)
   }
 
   /**
