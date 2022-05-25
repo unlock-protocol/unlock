@@ -1,4 +1,4 @@
-import { Headers } from 'cross-fetch'
+import fetch, { Headers } from 'cross-fetch'
 import { SiweMessage } from 'siwe'
 import { FetchError } from './utils'
 export const PRODUCTION_HOST = 'https://locksmith.unlock-protocol.com'
