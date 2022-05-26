@@ -21,6 +21,34 @@ import {
   RenewKeyPurchase,
 } from '../../generated/templates/PublicLock7/PublicLock'
 
+import * as v10Events from '../../generated/templates/PublicLock10/PublicLock'
+import * as v10 from '../v10Mappings/mapping'
+
+/**
+ * Helper function to get the version and handle things accordingly...
+ * @param publicLock
+ * @returns
+ */
+function getVersion(publicLock: PublicLock): BigInt {
+  let version = publicLock.try_publicLockVersion()
+  let lock = new Lock(publicLock._address.toHexString())
+  if (!version.reverted) {
+    return version.value
+  } else {
+    return BigInt.fromI32(0)
+  }
+}
+
+/**
+ * Helper function to get the version and handle things accordingly...
+ * @param publicLock
+ * @returns
+ */
+function isV10OrAbove(publicLock: PublicLock): bool {
+  let version = getVersion(publicLock)
+  return version.ge(BigInt.fromI32(10))
+}
+
 function loadKeyHolder(id: string): KeyHolder {
   let keyHolder = KeyHolder.load(id)
 
@@ -34,78 +62,6 @@ function loadKeyHolder(id: string): KeyHolder {
 
 function genKeyID(lockAddress: Address, tokenId: string): string {
   return lockAddress.toHex().concat('-').concat(tokenId)
-}
-
-export function cancelKey(event: CancelKey): void {
-  let keyID = genKeyID(event.address, event.params.tokenId.toString())
-  let key = Key.load(keyID)
-  let lockContract = PublicLock.bind(event.address)
-  key.expiration = lockContract.keyExpirationTimestampFor(event.params.owner)
-  key.save()
-}
-
-export function expirationChanged(event: ExpirationChanged): void {
-  let keyID = genKeyID(event.address, event.params._tokenId.toString())
-  let key = Key.load(keyID)
-  let lockContract = PublicLock.bind(event.address)
-  let keyOwnwer = lockContract.ownerOf(event.params._tokenId)
-  key.expiration = lockContract.keyExpirationTimestampFor(keyOwnwer)
-  key.save()
-}
-
-export function expireKey(event: ExpireKey): void {
-  let keyID = genKeyID(event.address, event.params.tokenId.toString())
-  let key = Key.load(keyID)
-
-  key.expiration = event.block.timestamp
-
-  key.save()
-}
-
-export function lockManagerAdded(event: LockManagerAdded): void {
-  let lockAddress = event.address.toHex()
-  let manager = event.params.account.toHex()
-
-  let lockManager = new LockManager(lockAddress.concat(manager))
-  lockManager.lock = lockAddress
-  lockManager.address = event.params.account
-  lockManager.save()
-}
-
-export function lockManagerRemoved(event: LockManagerRemoved): void {
-  let lockAddress = event.address.toHex()
-  let manager = event.params.account.toHex()
-
-  store.remove('LockManager', lockAddress.concat(manager))
-}
-
-export function pricingChanged(event: PricingChanged): void {
-  let lockAddress = event.address.toHex()
-  let lock = Lock.load(lockAddress)
-  lock.price = event.params.keyPrice
-  lock.tokenAddress = event.params.tokenAddress
-  lock.save()
-}
-
-/**
- * Event triggered on key renewed.
- *  - owner
- * @param event
- */
-export function renewKeyPurchase(event: RenewKeyPurchase): void {
-  let lockContract = PublicLock.bind(event.address)
-
-  let tokenId = lockContract.getTokenIdFor(event.params.owner)
-
-  // Get the KeyId
-  let keyID = genKeyID(event.address, tokenId.toString())
-
-  // Load the key
-  let key = Key.load(keyID)
-
-  // Update its expiration
-  key.expiration = lockContract.keyExpirationTimestampFor(event.params.owner)
-  key.save()
 }
 
 function newlyMintedKey(event: Transfer): void {
@@ -198,10 +154,35 @@ function newKeyPurchase(
   )
 }
 
+/**
+ * Event triggered on key renewed.
+ *  - owner
+ * @param event
+ */
+export function renewKeyPurchase(event: RenewKeyPurchase): void {
+  let lockContract = PublicLock.bind(event.address)
+
+  let tokenId = lockContract.getTokenIdFor(event.params.owner)
+
+  // Get the KeyId
+  let keyID = genKeyID(event.address, tokenId.toString())
+
+  // Load the key
+  let key = Key.load(keyID)
+
+  // Update its expiration
+  key.expiration = lockContract.keyExpirationTimestampFor(event.params.owner)
+  key.save()
+}
+
 export function transfer(event: Transfer): void {
+  let lockContract = PublicLock.bind(event.address)
+  if (isV10OrAbove(lockContract)) {
+    v10.transfer(event as v10Events.Transfer)
+  }
+
   let lock = Lock.load(event.address.toHex()) as Lock
   let zeroAddress = '0x0000000000000000000000000000000000000000'
-  let lockContract = PublicLock.bind(event.address)
 
   // When using === the strings are different.
   // eslint-disable-next-line eqeqeq
@@ -210,4 +191,80 @@ export function transfer(event: Transfer): void {
   } else {
     existingKeyTransfer(event)
   }
+}
+
+export function cancelKey(event: CancelKey): void {
+  let lockContract = PublicLock.bind(event.address)
+  if (isV10OrAbove(lockContract)) {
+    v10.cancelKey(event as v10Events.CancelKey)
+  }
+  let keyID = genKeyID(event.address, event.params.tokenId.toString())
+  let key = Key.load(keyID)
+  key.expiration = lockContract.keyExpirationTimestampFor(event.params.owner)
+  key.save()
+}
+
+export function expirationChanged(event: ExpirationChanged): void {
+  let lockContract = PublicLock.bind(event.address)
+  if (isV10OrAbove(lockContract)) {
+    v10.expirationChanged(event as v10Events.ExpirationChanged)
+  }
+  let keyID = genKeyID(event.address, event.params._tokenId.toString())
+  let key = Key.load(keyID)
+  let keyOwnwer = lockContract.ownerOf(event.params._tokenId)
+  key.expiration = lockContract.keyExpirationTimestampFor(keyOwnwer)
+  key.save()
+}
+
+export function expireKey(event: ExpireKey): void {
+  let lockContract = PublicLock.bind(event.address)
+  if (isV10OrAbove(lockContract)) {
+    v10.expireKey(event as v10Events.ExpireKey)
+  }
+
+  let keyID = genKeyID(event.address, event.params.tokenId.toString())
+  let key = Key.load(keyID)
+
+  key.expiration = event.block.timestamp
+
+  key.save()
+}
+
+export function lockManagerAdded(event: LockManagerAdded): void {
+  let lockContract = PublicLock.bind(event.address)
+  if (isV10OrAbove(lockContract)) {
+    v10.lockManagerAdded(event as v10Events.LockManagerAdded)
+  }
+  let lockAddress = event.address.toHex()
+  let manager = event.params.account.toHex()
+
+  let lockManager = new LockManager(lockAddress.concat(manager))
+  lockManager.lock = lockAddress
+  lockManager.address = event.params.account
+  lockManager.save()
+}
+
+export function lockManagerRemoved(event: LockManagerRemoved): void {
+  let lockContract = PublicLock.bind(event.address)
+  if (isV10OrAbove(lockContract)) {
+    v10.lockManagerRemoved(event as v10Events.LockManagerRemoved)
+  }
+
+  let lockAddress = event.address.toHex()
+  let manager = event.params.account.toHex()
+
+  store.remove('LockManager', lockAddress.concat(manager))
+}
+
+export function pricingChanged(event: PricingChanged): void {
+  let lockContract = PublicLock.bind(event.address)
+  if (isV10OrAbove(lockContract)) {
+    v10.pricingChanged(event as v10Events.PricingChanged)
+  }
+
+  let lockAddress = event.address.toHex()
+  let lock = Lock.load(lockAddress)
+  lock.price = event.params.keyPrice
+  lock.tokenAddress = event.params.tokenAddress
+  lock.save()
 }
