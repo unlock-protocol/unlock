@@ -5,10 +5,11 @@ const { ethers, upgrades, run } = require('hardhat')
 const { reverts } = require('truffle-assertions')
 const fs = require('fs-extra')
 const path = require('path')
-const createLockHash = require('../helpers/createLockCalldata')
+const createLockHash = require('../../helpers/createLockCalldata')
 
 const contractsPath = path.resolve(
   __dirname,
+  '..',
   '..',
   '..',
   'contracts',
@@ -16,6 +17,7 @@ const contractsPath = path.resolve(
 )
 const artifactsPath = path.resolve(
   __dirname,
+  '..',
   '..',
   '..',
   'artifacts',
