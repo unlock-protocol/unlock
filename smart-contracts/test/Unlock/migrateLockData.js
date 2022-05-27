@@ -20,7 +20,7 @@ const artifactsPath = path.resolve(
   'past-versions'
 )
 
-const versionNumber = 9
+const previousVersionNumber = 10 // to next version
 const keyPrice = ethers.utils.parseEther('0.01')
 
 // helpers
@@ -71,7 +71,7 @@ describe('upgradeLock / data migration', () => {
   let pastVersion
 
   const pastPublicLockPath = require.resolve(
-    `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${versionNumber}.sol`
+    `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${previousVersionNumber}.sol`
   )
 
   before(async function copyAndBuildContract() {
@@ -80,7 +80,7 @@ describe('upgradeLock / data migration', () => {
 
     await fs.copy(
       pastPublicLockPath,
-      path.resolve(contractsPath, `PublicLockV${versionNumber}.sol`)
+      path.resolve(contractsPath, `PublicLockV${previousVersionNumber}.sol`)
     )
 
     // re-compile contract using hardhat
@@ -103,7 +103,7 @@ describe('upgradeLock / data migration', () => {
     await unlock.deployed()
 
     const PublicLockPast = await ethers.getContractFactory(
-      `contracts/past-versions/PublicLockV${versionNumber}.sol:PublicLock`
+      `contracts/past-versions/PublicLockV${previousVersionNumber}.sol:PublicLock`
     )
     const PublicLockLatest = await ethers.getContractFactory(
       'contracts/PublicLock.sol:PublicLock'
@@ -140,7 +140,7 @@ describe('upgradeLock / data migration', () => {
 
     // get lock
     lock = await ethers.getContractAt(
-      `contracts/past-versions/PublicLockV${versionNumber}.sol:PublicLock`,
+      `contracts/past-versions/PublicLockV${previousVersionNumber}.sol:PublicLock`,
       newLockAddress
     )
 
