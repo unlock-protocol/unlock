@@ -70,6 +70,7 @@
     "lintFix": "yarn lint:contracts --fix && yarn lint:code --fix",
     "coverage": "IS_COVERAGE=1 yarn hardhat coverage",
     "dev": "yarn lint && yarn build && yarn test",
+    "size": "yarn hardhat size-contracts",
     "ci": "yarn lint && yarn test",
     "build": "hardhat compile",
     "verify": "hardhat verify",

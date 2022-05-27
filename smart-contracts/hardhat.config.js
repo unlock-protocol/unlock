@@ -143,4 +143,8 @@ module.exports = {
   mocha: {
     timeout: 2000000,
   },
+  contractSizer: {
+    alphaSort: true,
+    only: [':PublicLock', 'Mixin'],
+  },
 }
