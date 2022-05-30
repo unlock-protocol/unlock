@@ -160,7 +160,7 @@ contract MixinLockCore is
     uint amount;
     if(_amount == 0 || _amount > balance)
     {
-      if(balance < 0) {
+      if(balance <= 0) {
         revert NOT_ENOUGH_FUNDS();
       }
       amount = balance;
