@@ -153,13 +153,7 @@ contract MixinKeys is
   /**
     * Migrate data from the previous single owner => key mapping to 
     * the new data structure w multiple tokens.
-    * @param _calldata an ABI-encoded representation of the params 
-    * for v10: `(uint _startIndex, uint nbRecordsToUpdate)`
-    * -  `_startIndex` : the index of the first record to migrate
-    * -  `_nbRecordsToUpdate` : number of records to migrate
-    * @dev if all records can be processed at once, the `schemaVersion` will be updated
-    * if not, you will have to call `updateSchemaVersion`
-    * variable to the latest/current lock version
+    * No data migration needed for v10 > v11
     */
   function migrate(bytes calldata) virtual public {
     schemaVersion = publicLockVersion();
