@@ -1,4 +1,4 @@
-const { reverts } = require('../helpers/errors')
+const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')
 
