@@ -1,6 +1,6 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('truffle-assertions')
 
+const { ADDRESS_ZERO } = require('../helpers/constants')
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')
 
@@ -31,10 +31,10 @@ contract('ERC721BalanceOfHook', (accounts) => {
 
     // set the hook
     await lock.setEventHooks(
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
+      ADDRESS_ZERO,
+      ADDRESS_ZERO,
       hook.address,
-      constants.ZERO_ADDRESS
+      ADDRESS_ZERO
     )
   })
 
@@ -53,11 +53,11 @@ contract('ERC721BalanceOfHook', (accounts) => {
     })
     it('throws on zero addresses', async () => {
       await reverts(
-        hook.createMapping(constants.ZERO_ADDRESS, nft.address),
+        hook.createMapping(ADDRESS_ZERO, nft.address),
         'Lock address can not be zero'
       )
       await reverts(
-        hook.createMapping(lock.address, constants.ZERO_ADDRESS),
+        hook.createMapping(lock.address, ADDRESS_ZERO),
         'ERC721 address can not be zero'
       )
     })
@@ -73,8 +73,8 @@ contract('ERC721BalanceOfHook', (accounts) => {
       await lock.purchase(
         [],
         [keyOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -89,8 +89,8 @@ contract('ERC721BalanceOfHook', (accounts) => {
       const tx = await lock.purchase(
         [],
         [keyOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -123,8 +123,8 @@ contract('ERC721BalanceOfHook', (accounts) => {
       await lock.purchase(
         [],
         [nftOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -139,8 +139,8 @@ contract('ERC721BalanceOfHook', (accounts) => {
       const tx = await lock.purchase(
         [],
         [nftOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -166,8 +166,8 @@ contract('ERC721BalanceOfHook', (accounts) => {
       await lock.purchase(
         [],
         [keyOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -182,8 +182,8 @@ contract('ERC721BalanceOfHook', (accounts) => {
       const tx = await lock.purchase(
         [],
         [keyOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,

@@ -1,11 +1,9 @@
 const truffleAssert = require('truffle-assertions')
 const { reverts } = require('truffle-assertions')
-const { constants } = require('hardlydifficult-ethereum-contracts')
 
 const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
-
-const { errorMessages } = require('../helpers/constants')
+const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants/')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -39,7 +37,7 @@ contract('Lock / grantKeys', (accounts) => {
         tx = await lock.grantKeys(
           [keyOwner],
           [validExpirationTimestamp],
-          [constants.ZERO_ADDRESS],
+          [ADDRESS_ZERO],
           {
             from: lockCreator,
           }
@@ -70,7 +68,7 @@ contract('Lock / grantKeys', (accounts) => {
           lock.grantKeys(
             keyOwnerList,
             [validExpirationTimestamp],
-            [constants.ZERO_ADDRESS],
+            [ADDRESS_ZERO],
             {
               from: lockCreator,
             }
@@ -113,9 +111,9 @@ contract('Lock / grantKeys', (accounts) => {
     it('should fail to grant key to the 0 address', async () => {
       await reverts(
         lock.grantKeys(
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
           [validExpirationTimestamp],
-          [constants.ZERO_ADDRESS],
+          [ADDRESS_ZERO],
           {
             from: lockCreator,
           }
@@ -127,25 +125,15 @@ contract('Lock / grantKeys', (accounts) => {
     // By default, the lockCreator has both the LockManager & KeyGranter roles
     it('should fail if called by anyone but LockManager or KeyGranter', async () => {
       await reverts(
-        lock.grantKeys(
-          [keyOwner],
-          [validExpirationTimestamp],
-          [constants.ZERO_ADDRESS],
-          {
-            from: keyOwner,
-          }
-        )
+        lock.grantKeys([keyOwner], [validExpirationTimestamp], [ADDRESS_ZERO], {
+          from: keyOwner,
+        })
       )
 
       await reverts(
-        lock.grantKeys(
-          [keyOwner],
-          [validExpirationTimestamp],
-          [constants.ZERO_ADDRESS],
-          {
-            from: accounts[9],
-          }
-        )
+        lock.grantKeys([keyOwner], [validExpirationTimestamp], [ADDRESS_ZERO], {
+          from: accounts[9],
+        })
       )
     })
   })

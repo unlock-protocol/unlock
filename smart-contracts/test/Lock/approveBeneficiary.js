@@ -1,6 +1,7 @@
 const { reverts } = require('truffle-assertions')
 const { tokens } = require('hardlydifficult-eth')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = '../../helpers/constants'
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -43,8 +44,8 @@ contract('Lock / approveBeneficiary', (accounts) => {
       await locks.ERC20.purchase(
         [await locks.ERC20.keyPrice()],
         [keyOwner],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from: keyOwner,

@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = '../../helpers/constants'
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -31,8 +31,8 @@ contract('Lock / shareKey', (accounts) => {
     const tx = await lock.purchase(
       [],
       keyOwners,
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => ADDRESS_ZERO),
+      keyOwners.map(() => ADDRESS_ZERO),
       keyOwners.map(() => []),
       {
         value: (keyPrice * keyOwners.length).toFixed(),
@@ -67,7 +67,7 @@ contract('Lock / shareKey', (accounts) => {
 
       it('should abort if the recipient is 0x', async () => {
         await reverts(
-          lock.shareKey(web3.utils.padLeft(0, 40), tokenIds[0], 1000, {
+          lock.shareKey(ADDRESS_ZERO, tokenIds[0], 1000, {
             from: keyOwners[0],
           }),
           'INVALID_ADDRESS'
@@ -88,8 +88,8 @@ contract('Lock / shareKey', (accounts) => {
         await lock.purchase(
           [],
           buyers,
-          buyers.map(() => web3.utils.padLeft(0, 40)),
-          buyers.map(() => web3.utils.padLeft(0, 40)),
+          buyers.map(() => ADDRESS_ZERO),
+          buyers.map(() => ADDRESS_ZERO),
           buyers.map(() => []),
           {
             value: (keyPrice * buyers.length).toFixed(),
@@ -240,7 +240,7 @@ contract('Lock / shareKey', (accounts) => {
 
     it('should not assign the recipient of the granted key as the owner of tokenId 0', async () => {
       const zeroOwner = await lock.ownerOf.call(0)
-      assert.equal(zeroOwner, constants.ZERO_ADDRESS)
+      assert.equal(zeroOwner, ADDRESS_ZERO)
     })
 
     it('total time remaining is <= original time + fee', async () => {

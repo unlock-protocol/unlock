@@ -6,6 +6,7 @@ const { reverts } = require('truffle-assertions')
 const fs = require('fs-extra')
 const path = require('path')
 const createLockHash = require('../../helpers/createLockCalldata')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const contractsPath = path.resolve(
   __dirname,
@@ -36,8 +37,8 @@ const purchaseFails = async (lock) => {
     lock.connect(someBuyers[0]).purchase(
       [],
       someBuyers.map((k) => k.address),
-      someBuyers.map(() => web3.utils.padLeft(0, 40)),
-      someBuyers.map(() => web3.utils.padLeft(0, 40)),
+      someBuyers.map(() => ADDRESS_ZERO),
+      someBuyers.map(() => ADDRESS_ZERO),
       someBuyers.map(() => []),
       {
         value: (keyPrice * someBuyers.length).toFixed(),
@@ -54,7 +55,7 @@ const grantKeysFails = async (lock) => {
     lock.connect(someBuyers[0]).grantKeys(
       someBuyers.map((k) => k.address),
       someBuyers.map(() => Date.now()),
-      someBuyers.map(() => web3.utils.padLeft(0, 40))
+      someBuyers.map(() => ADDRESS_ZERO)
     ),
     'MIGRATION_REQUIRED'
   )
@@ -63,7 +64,7 @@ const grantKeysFails = async (lock) => {
 const extendFails = async (lock) => {
   const [, generousBuyer] = await ethers.getSigners()
   await reverts(
-    lock.connect(generousBuyer).extend(0, 1, web3.utils.padLeft(0, 40), [], {
+    lock.connect(generousBuyer).extend(0, 1, ADDRESS_ZERO, [], {
       value: keyPrice,
     }),
     'MIGRATION_REQUIRED'
@@ -181,16 +182,9 @@ describe('upgradeLock / data migration', () => {
         keyOwners.map((_, i) =>
           lock
             .connect(generousBuyer)
-            .purchase(
-              0,
-              keyOwners[i].address,
-              web3.utils.padLeft(0, 40),
-              web3.utils.padLeft(0, 40),
-              [],
-              {
-                value: keyPrice,
-              }
-            )
+            .purchase(0, keyOwners[i].address, ADDRESS_ZERO, ADDRESS_ZERO, [], {
+              value: keyPrice,
+            })
         )
       )
 
@@ -401,8 +395,8 @@ describe('upgradeLock / data migration', () => {
             const tx = await lock.connect(someBuyers[0]).purchase(
               [],
               someBuyers.map((k) => k.address),
-              someBuyers.map(() => web3.utils.padLeft(0, 40)),
-              someBuyers.map(() => web3.utils.padLeft(0, 40)),
+              someBuyers.map(() => ADDRESS_ZERO),
+              someBuyers.map(() => ADDRESS_ZERO),
               someBuyers.map(() => []),
               {
                 value: (keyPrice * someBuyers.length).toFixed(),
@@ -421,7 +415,7 @@ describe('upgradeLock / data migration', () => {
             const tx = await lock.connect(someBuyers[0]).grantKeys(
               someBuyers.map((k) => k.address),
               someBuyers.map(() => Date.now()),
-              someBuyers.map(() => web3.utils.padLeft(0, 40))
+              someBuyers.map(() => ADDRESS_ZERO)
             )
             const { events } = await tx.wait()
             const tokenIds = events
@@ -434,7 +428,7 @@ describe('upgradeLock / data migration', () => {
           it('extend should now work ', async () => {
             const tx = await lock
               .connect(someBuyers[0])
-              .extend(0, tokenIds[0], web3.utils.padLeft(0, 40), [], {
+              .extend(0, tokenIds[0], ADDRESS_ZERO, [], {
                 value: keyPrice,
               })
             await tx.wait()

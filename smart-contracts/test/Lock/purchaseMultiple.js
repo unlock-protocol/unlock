@@ -2,6 +2,7 @@ const { reverts } = require('truffle-assertions')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 const getProxy = require('../helpers/proxy')
+const { ADDRESS_ZERO } = require('../helpers/constants/')
 
 const unlockContract = artifacts.require('Unlock.sol')
 
@@ -25,7 +26,7 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
           from: accounts[0],
         })
 
-        tokenAddress = isErc20 ? testToken.address : web3.utils.padLeft(0, 40)
+        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
 
         unlock = await getProxy(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
@@ -46,8 +47,8 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
           await lock.purchase(
             isErc20 ? keyOwners.map(() => keyPrice) : [],
             keyOwners,
-            keyOwners.map(() => web3.utils.padLeft(0, 40)),
-            keyOwners.map(() => web3.utils.padLeft(0, 40)),
+            keyOwners.map(() => ADDRESS_ZERO),
+            keyOwners.map(() => ADDRESS_ZERO),
             keyOwners.map(() => []),
             {
               value: isErc20 ? 0 : keyPrice * keyOwners.length,
@@ -82,8 +83,8 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
                 ? keyOwners.map(() => web3.utils.toWei('0.005', 'ether'))
                 : [],
               keyOwners,
-              keyOwners.map(() => web3.utils.padLeft(0, 40)),
-              keyOwners.map(() => web3.utils.padLeft(0, 40)),
+              keyOwners.map(() => ADDRESS_ZERO),
+              keyOwners.map(() => ADDRESS_ZERO),
               keyOwners.map(() => []),
               {
                 value: isErc20 ? 0 : keyPrice * (keyOwners.length - 2),

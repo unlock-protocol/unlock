@@ -7,6 +7,7 @@ const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 
 const keyPrice = web3.utils.toWei('0.01', 'ether')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let lock
@@ -19,8 +20,8 @@ contract('Unlock / resetTrackedValue', (accounts) => {
     await lock.purchase(
       [keyPrice],
       [accounts[1]],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         from: accounts[1],
@@ -55,8 +56,8 @@ contract('Unlock / resetTrackedValue', (accounts) => {
         await lock.purchase(
           [keyPrice],
           [accounts[2]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             from: accounts[2],
@@ -87,8 +88,8 @@ contract('Unlock / resetTrackedValue', (accounts) => {
         await lock.purchase(
           [keyPrice],
           [accounts[2]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             from: accounts[2],

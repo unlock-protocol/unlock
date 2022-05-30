@@ -4,6 +4,7 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
+const { ADDRESS_ZERO } = require('../helpers/constants/')
 
 let unlock
 let locks
@@ -54,8 +55,8 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
       const tx = await lock.purchase(
         [],
         [keyOwner],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
@@ -68,16 +69,9 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
 
     it('prevent users to purchase more keys than allowed', async () => {
       await reverts(
-        lock.purchase(
-          [],
-          [keyOwner],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
-          [[]],
-          {
-            value: web3.utils.toWei('0.01', 'ether'),
-          }
-        ),
+        lock.purchase([], [keyOwner], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
+          value: web3.utils.toWei('0.01', 'ether'),
+        }),
         'MAX_KEYS'
       )
     })
@@ -87,8 +81,8 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
         lock.purchase(
           [],
           [accounts[9], accounts[9]],
-          [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO, ADDRESS_ZERO],
+          [ADDRESS_ZERO, ADDRESS_ZERO],
           [[]],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -102,8 +96,8 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
       await lock.purchase(
         [],
         [accounts[9]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
@@ -121,8 +115,8 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
       await lock.purchase(
         [],
         [accounts[9]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),

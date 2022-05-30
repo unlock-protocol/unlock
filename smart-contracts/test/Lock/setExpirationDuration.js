@@ -1,6 +1,7 @@
 const { ethers } = require('hardhat')
 const { getProxyAddress } = require('../../helpers/deployments')
 const createLockHash = require('../helpers/createLockCalldata')
+const { ADDRESS_ZERO } = require('../helpers/constants/')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
@@ -18,7 +19,7 @@ contract('Lock / setExpirationDuration', () => {
     unlock = Unlock.attach(unlockAddress)
 
     // create a new lock
-    const tokenAddress = web3.utils.padLeft(0, 40)
+    const tokenAddress = ADDRESS_ZERO
     const args = [60 * 30, tokenAddress, keyPrice, 10, 'Test lock']
 
     const calldata = await createLockHash({ args, from: from.address })
@@ -46,8 +47,8 @@ contract('Lock / setExpirationDuration', () => {
       .purchase(
         [keyPrice.toString()],
         [buyer.address],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: keyPrice.toString(),
@@ -70,8 +71,8 @@ contract('Lock / setExpirationDuration', () => {
       .purchase(
         [keyPrice.toString()],
         [buyer2.address],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: keyPrice.toString(),
@@ -96,8 +97,8 @@ contract('Lock / setExpirationDuration', () => {
       .purchase(
         [keyPrice.toString()],
         [buyer.address],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: keyPrice.toString(),

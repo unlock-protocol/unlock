@@ -1,11 +1,12 @@
 const PublicLock = artifacts.require('PublicLock')
 const createLockHash = require('./createLockCalldata')
 const Locks = require('../fixtures/locks')
+const { ADDRESS_ZERO } = './helpers/constants'
 
 module.exports = async function deployLocks(
   unlock,
   from,
-  tokenAddress = web3.utils.padLeft(0, 40)
+  tokenAddress = ADDRESS_ZERO
 ) {
   let locks = {}
   await Promise.all(

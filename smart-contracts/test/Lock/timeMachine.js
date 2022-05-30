@@ -3,7 +3,7 @@ const BigNumber = require('bignumber.js')
 
 const TimeMachineMock = artifacts.require('TimeMachineMock')
 const { reverts } = require('truffle-assertions')
-const { errorMessages } = require('../helpers/constants')
+const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
@@ -27,7 +27,7 @@ contract('Lock / timeMachine', (accounts) => {
 
     tx = await timeMachine.createNewKey(
       keyOwner,
-      web3.utils.padLeft(0, 40), // beneficiary
+      ADDRESS_ZERO, // beneficiary
       timestampBefore
     )
 
