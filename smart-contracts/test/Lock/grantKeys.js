@@ -1,4 +1,3 @@
-const truffleAssert = require('../helpers/errors')
 const { reverts } = require('../helpers/errors')
 const { constants } = require('hardlydifficult-ethereum-contracts')
 
@@ -66,7 +65,7 @@ contract('Lock / grantKeys', (accounts) => {
       const keyOwnerList = [accounts[3], accounts[4], accounts[5]]
 
       it('should fail to grant keys when expiration dates are missing', async () => {
-        await truffleAssert.fails(
+        await reverts(
           lock.grantKeys(
             keyOwnerList,
             [validExpirationTimestamp],

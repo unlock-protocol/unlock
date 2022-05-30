@@ -1,4 +1,4 @@
-const truffleAssert = require('../helpers/errors')
+const { reverts } = require('../helpers/errors')
 const { BN, time } = require('@openzeppelin/test-helpers')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
@@ -60,11 +60,10 @@ contract('Lock / GasRefund', (accounts) => {
         })
 
         it('can not be set if caller is not lock manager', async () => {
-          await truffleAssert.fails(
+          await reverts(
             lock.setGasRefundValue(gasRefundAmount, {
               from: accounts[3],
             }),
-            'revert',
             'ONLY_LOCK_MANAGER'
           )
         })
