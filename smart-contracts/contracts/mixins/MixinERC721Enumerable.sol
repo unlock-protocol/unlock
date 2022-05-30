@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
-import './MixinErrors.sol';
+import {UnlockErrors} from '../UnlockErrors.sol';
 import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol';
 
 
@@ -12,7 +12,6 @@ import '@openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpg
  */
 contract MixinERC721Enumerable is
   ERC165StorageUpgradeable,
-  MixinErrors,
   MixinLockCore, // Implements totalSupply
   MixinKeys
 {
@@ -38,7 +37,7 @@ contract MixinERC721Enumerable is
   ) public view
     returns (uint256)
   {
-    require(_index < _totalSupply, OUT_OF_RANGE);
+    require(_index < _totalSupply, UnlockErrors.OUT_OF_RANGE);
     return _index;
   }
 

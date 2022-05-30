@@ -5,9 +5,9 @@ pragma solidity ^0.8.0;
 // openzeppelin/contracts-ethereum-package/contracts/access/roles
 
 import '@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol';
-import './MixinErrors.sol';
+import {UnlockErrors} from '../UnlockErrors.sol';
 
-contract MixinRoles is AccessControlUpgradeable, MixinErrors {
+contract MixinRoles is AccessControlUpgradeable {
 
   // roles
   bytes32 public constant LOCK_MANAGER_ROLE = keccak256("LOCK_MANAGER");
@@ -42,7 +42,7 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
   internal 
   view
   {
-    require( hasRole(LOCK_MANAGER_ROLE, msg.sender), ONLY_LOCK_MANAGER);
+    require( hasRole(LOCK_MANAGER_ROLE, msg.sender), UnlockErrors.ONLY_LOCK_MANAGER);
   }
 
   // lock manager functions
