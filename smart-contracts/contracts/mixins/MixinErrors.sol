@@ -12,6 +12,7 @@ contract MixinErrors {
   error NULL_VALUE();
   error INVALID_ADDRESS();
   error INVALID_TOKEN();
+  error INVALID_LENGTH();
   error UNAUTHORIZED();
 
   // erc 721
@@ -24,33 +25,31 @@ contract MixinErrors {
   error ONLY_LOCK_MANAGER_OR_BENEFICIARY();
   error ONLY_LOCK_MANAGER();
 
-    // single key status
+  // single key status
   error KEY_NOT_VALID();
   error NO_SUCH_KEY();
 
-    // migration & data schema
+  // single key operations
+  error CANT_EXTEND_NON_EXPIRING_KEY();
+  error NOT_ENOUGH_TIME();
+  error NOT_ENOUGH_FUNDS();
+
+  // migration & data schema
   error SCHEMA_VERSION_NOT_CORRECT();
   error MIGRATION_REQUIRED();
 
-    // lock status/settings
+  // lock status/settings
   error OWNER_CANT_BE_ADDRESS_ZERO();
-  error MAX_KEYS();
+  error MAX_KEYS_REACHED();
   error KEY_TRANSFERS_DISABLED();
+  error CANT_BE_SMALLER_THAN_SUPPLY();
 
   // transfers and approvals
   error TRANSFER_TO_SELF();
   error CANNOT_APPROVE_SELF();
 
-  // 
-  error OWNER_INDEX_OUT_OF_BOUNDS();
-  error CANT_EXTEND_NON_EXPIRING_KEY();
-  error NOT_ENOUGH_TIME();
-  error SMALLER_THAN_SUPPLY();
-  error NOT_ENOUGH_FUNDS();
-
   // keys management 
   error LOCK_SOLD_OUT();
-  error INVALID_LENGTH();
 
   // purchase
   error INSUFFICIENT_ERC20_VALUE();
@@ -61,10 +60,10 @@ contract MixinErrors {
   error LOCK_HAS_CHANGED();
   error NOT_READY();
 
-    // gas refund
+  // gas refund
   error GAS_REFUND_FAILED();
 
-    // hooks
+  // hooks
   error INVALID_HOOK();
 
-  }
+}

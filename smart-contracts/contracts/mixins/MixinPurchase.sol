@@ -208,7 +208,7 @@ contract MixinPurchase is
       revert INSUFFICIENT_ERC20_VALUE();
       IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
       token.transferFrom(msg.sender, address(this), inMemoryKeyPrice);
-    } else if(inMemoryKeyPrice >= msg.value){
+    } else if(inMemoryKeyPrice >= msg.value) {
       // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
       revert INSUFFICIENT_VALUE();
     }

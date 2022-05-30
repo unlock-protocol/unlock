@@ -197,7 +197,7 @@ contract MixinKeys is
     returns (uint256)
   {
       if(_index > balanceOf(_keyOwner)) {
-        revert OWNER_INDEX_OUT_OF_BOUNDS();
+        revert OUT_OF_RANGE();
       }
       return _ownedKeyIds[_keyOwner][_index];
   }
@@ -285,7 +285,7 @@ contract MixinKeys is
     
     // make sure address does not have more keys than allowed
     if(length > _maxKeysPerAddress) {
-      revert MAX_KEYS();
+      revert MAX_KEYS_REACHED();
     }
 
     // record new owner
@@ -628,7 +628,7 @@ contract MixinKeys is
   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
      _onlyLockManager();
      if (_maxNumberOfKeys <= _totalSupply) {
-       revert SMALLER_THAN_SUPPLY();
+       revert CANT_BE_SMALLER_THAN_SUPPLY();
      }
      maxNumberOfKeys = _maxNumberOfKeys;
   }
