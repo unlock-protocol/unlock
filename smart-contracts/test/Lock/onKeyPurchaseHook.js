@@ -1,8 +1,7 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const BigNumber = require('bignumber.js')
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
@@ -121,7 +120,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
 
   describe('with a huge discount', () => {
     beforeEach(async () => {
-      await testEventHooks.configure(true, constants.MAX_UINT)
+      await testEventHooks.configure(true, MAX_UINT)
     })
 
     it('purchases are now free', async () => {
