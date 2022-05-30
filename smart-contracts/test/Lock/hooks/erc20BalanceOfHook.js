@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const { constants } = require('hardlydifficult-ethereum-contracts')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')

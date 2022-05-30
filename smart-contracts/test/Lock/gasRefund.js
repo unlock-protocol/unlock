@@ -1,4 +1,4 @@
-const truffleAssert = require('truffle-assertions')
+const truffleAssert = require('../helpers/errors')
 const { BN, time } = require('@openzeppelin/test-helpers')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')

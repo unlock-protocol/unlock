@@ -1,4 +1,4 @@
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 const getProxy = require('../helpers/proxy')

@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-const truffleAssert = require('truffle-assertions')
+const truffleAssert = require('../helpers/errors')
 
 const deployLocks = require('../helpers/deployLocks')
 

@@ -1,7 +1,7 @@
 const unlockContract = artifacts.require('Unlock.sol')
 const publicLockContract = artifacts.require('PublicLock')
 
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { constants } = require('hardlydifficult-ethereum-contracts')
 const getProxy = require('../helpers/proxy')
 const deployLocks = require('../helpers/deployLocks')

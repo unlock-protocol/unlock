@@ -1,5 +1,5 @@
-const truffleAssert = require('truffle-assertions')
-const { reverts } = require('truffle-assertions')
+const truffleAssert = require('../helpers/errors')
+const { reverts } = require('../helpers/errors')
 const { constants } = require('hardlydifficult-ethereum-contracts')
 
 const { ethers } = require('hardhat')

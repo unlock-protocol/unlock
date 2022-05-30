@@ -3,7 +3,7 @@ const { ethers } = require('hardhat')
 const unlockContract = artifacts.require('Unlock')
 const PublicLock = artifacts.require('PublicLock')
 const { utils } = require('hardlydifficult-ethereum-contracts')
-const truffleAssert = require('truffle-assertions')
+const truffleAssert = require('../helpers/errors')
 const getProxy = require('../helpers/proxy')
 
 let unlock
