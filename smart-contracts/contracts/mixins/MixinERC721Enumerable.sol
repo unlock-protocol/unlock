@@ -38,7 +38,7 @@ contract MixinERC721Enumerable is
   ) public view
     returns (uint256)
   {
-    require(_index < _totalSupply, errors.OUT_OF_RANGE);
+    require(_index < _totalSupply, OUT_OF_RANGE);
     return _index;
   }
 

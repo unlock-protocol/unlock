@@ -39,7 +39,7 @@ contract MixinConvenienceOwnable is MixinErrors, MixinLockCore {
    */ 
   function setOwner(address account) public {
     _onlyLockManager();
-    require(account != address(0), errors.OWNER_CANT_BE_ADDRESS_ZERO);
+    require(account != address(0), OWNER_CANT_BE_ADDRESS_ZERO);
     address _previousOwner = _convenienceOwner;
     _convenienceOwner = account;
     emit OwnershipTransferred(_previousOwner, account);

@@ -37,7 +37,7 @@ contract MixinFunds is MixinErrors
   {
     require(
       _tokenAddress == address(0) || IERC20Upgradeable(_tokenAddress).totalSupply() > 0,
-      errors.INVALID_TOKEN
+      INVALID_TOKEN
     );
   }
 

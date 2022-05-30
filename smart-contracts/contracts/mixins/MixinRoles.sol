@@ -42,7 +42,7 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
   internal 
   view
   {
-    require( hasRole(LOCK_MANAGER_ROLE, msg.sender), errors.ONLY_LOCK_MANAGER);
+    require( hasRole(LOCK_MANAGER_ROLE, msg.sender), ONLY_LOCK_MANAGER);
   }
 
   // lock manager functions

@@ -94,7 +94,7 @@ contract MixinLockCore is
   function _lockIsUpToDate() internal view {
     require(
       schemaVersion == publicLockVersion(),
-      errors.MIGRATION_REQUIRED
+      MIGRATION_REQUIRED
     );
   }
 
@@ -105,7 +105,7 @@ contract MixinLockCore is
   {
     require(
       isLockManager(msg.sender) || msg.sender == beneficiary,
-      errors.ONLY_LOCK_MANAGER_OR_BENEFICIARY
+      ONLY_LOCK_MANAGER_OR_BENEFICIARY
     );
   }
   
@@ -162,7 +162,7 @@ contract MixinLockCore is
     uint amount;
     if(_amount == 0 || _amount > balance)
     {
-      require(balance > 0, errors.NOT_ENOUGH_FUNDS);
+      require(balance > 0, NOT_ENOUGH_FUNDS);
       amount = balance;
     }
     else
@@ -203,7 +203,7 @@ contract MixinLockCore is
     address payable _beneficiary
   ) external {
     _onlyLockManagerOrBeneficiary();
-    require(_beneficiary != address(0), errors.INVALID_ADDRESS);
+    require(_beneficiary != address(0), INVALID_ADDRESS);
     beneficiary = _beneficiary;
   }
 
@@ -218,10 +218,10 @@ contract MixinLockCore is
   ) external
   {
     _onlyLockManager();
-    require(_onKeyPurchaseHook == address(0) || _onKeyPurchaseHook.isContract(), errors.INVALID_ON_KEY_SOLD_HOOK);
-    require(_onKeyCancelHook == address(0) || _onKeyCancelHook.isContract(), errors.INVALID_ON_KEY_CANCEL_HOOK);
-    require(_onValidKeyHook == address(0) || _onValidKeyHook.isContract(), errors.INVALID_ON_VALID_KEY_HOOK);
-    require(_onTokenURIHook == address(0) || _onTokenURIHook.isContract(), errors.INVALID_ON_TOKEN_URI_HOOK);
+    require(_onKeyPurchaseHook == address(0) || _onKeyPurchaseHook.isContract(), INVALID_ON_KEY_SOLD_HOOK);
+    require(_onKeyCancelHook == address(0) || _onKeyCancelHook.isContract(), INVALID_ON_KEY_CANCEL_HOOK);
+    require(_onValidKeyHook == address(0) || _onValidKeyHook.isContract(), INVALID_ON_VALID_KEY_HOOK);
+    require(_onTokenURIHook == address(0) || _onTokenURIHook.isContract(), INVALID_ON_TOKEN_URI_HOOK);
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
     onTokenURIHook = ILockTokenURIHook(_onTokenURIHook);
