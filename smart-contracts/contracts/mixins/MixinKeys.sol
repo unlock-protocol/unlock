@@ -161,7 +161,7 @@ contract MixinKeys is
     * if not, you will have to call `updateSchemaVersion`
     * variable to the latest/current lock version
     */
-  function migrate(bytes calldata _calldata) virtual public {
+  function migrate(bytes calldata) virtual public {
     schemaVersion = publicLockVersion();
   }
 
