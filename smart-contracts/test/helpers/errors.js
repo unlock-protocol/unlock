@@ -1,4 +1,4 @@
-const { reverts } = require('../helpers/errors')
+const { reverts } = require('truffle-assertions')
 const { errorMessages } = require('../helpers/constants')
 const { HARDHAT_VM_ERROR } = errorMessages
 
