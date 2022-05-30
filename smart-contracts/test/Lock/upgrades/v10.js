@@ -2,7 +2,7 @@ const { ethers, upgrades, run } = require('hardhat')
 const { reverts } = require('truffle-assertions')
 const fs = require('fs-extra')
 const path = require('path')
-const { ADDRESS_ZERO } = '../../helpers/constants'
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 // const {
 //   LATEST_PUBLIC_LOCK_VERSION,

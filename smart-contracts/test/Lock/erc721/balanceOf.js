@@ -2,7 +2,7 @@ const BigNumber = require('bignumber.js')
 
 const { reverts } = require('truffle-assertions')
 const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO } = '../../helpers/constants'
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')

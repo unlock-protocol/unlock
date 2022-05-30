@@ -1,7 +1,7 @@
 const PublicLock = artifacts.require('PublicLock')
 const createLockHash = require('./createLockCalldata')
 const Locks = require('../fixtures/locks')
-const { ADDRESS_ZERO } = './helpers/constants'
+const { ADDRESS_ZERO } = require('./constants')
 
 module.exports = async function deployLocks(
   unlock,

@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-const { ADDRESS_ZERO } = '../../helpers/constants'
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const KeyManagerMock = artifacts.require('KeyManagerMock')
 
