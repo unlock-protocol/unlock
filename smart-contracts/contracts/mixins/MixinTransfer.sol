@@ -7,7 +7,7 @@ import './MixinKeys.sol';
 import './MixinFunds.sol';
 import './MixinLockCore.sol';
 import './MixinPurchase.sol';
-import {UnlockErrors} from '../UnlockErrors.sol';
+import './MixinErrors.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 
@@ -20,6 +20,7 @@ import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
  */
 
 contract MixinTransfer is
+  MixinErrors,
   MixinRoles,
   MixinFunds,
   MixinLockCore,
@@ -54,13 +55,13 @@ contract MixinTransfer is
   ) public
   {
     _lockIsUpToDate();
-    require(maxNumberOfKeys > _totalSupply, UnlockErrors.LOCK_SOLD_OUT);
+    require(maxNumberOfKeys > _totalSupply, LOCK_SOLD_OUT);
     _onlyKeyManagerOrApproved(_tokenIdFrom);
     _isValidKey(_tokenIdFrom);
-    require(transferFeeBasisPoints < BASIS_POINTS_DEN, UnlockErrors.KEY_TRANSFERS_DISABLED);
-    require(_to != address(0), UnlockErrors.INVALID_ADDRESS);
+    require(transferFeeBasisPoints < BASIS_POINTS_DEN, KEY_TRANSFERS_DISABLED);
+    require(_to != address(0), INVALID_ADDRESS);
     address keyOwner = _ownerOf[_tokenIdFrom];
-    require(keyOwner != _to, UnlockErrors.TRANSFER_TO_SELF);
+    require(keyOwner != _to, TRANSFER_TO_SELF);
 
     // store time to be added
     uint time;
@@ -102,7 +103,7 @@ contract MixinTransfer is
 
     require(
       _checkOnERC721Received(keyOwner, _to, tokenIdTo, ''), 
-      UnlockErrors.NON_COMPLIANT_ERC721_RECEIVER
+      NON_COMPLIANT_ERC721_RECEIVER
     );
   }
 
@@ -116,10 +117,10 @@ contract MixinTransfer is
   {
     _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
-    require(ownerOf(_tokenId) == _from, UnlockErrors.TRANSFER_FROM_NOT_KEY_OWNER);
-    require(transferFeeBasisPoints < BASIS_POINTS_DEN, UnlockErrors.KEY_TRANSFERS_DISABLED);
-    require(_recipient != address(0), UnlockErrors.INVALID_ADDRESS);
-    require(_from != _recipient, UnlockErrors.TRANSFER_TO_SELF);
+    require(ownerOf(_tokenId) == _from, TRANSFER_FROM_NOT_KEY_OWNER);
+    require(transferFeeBasisPoints < BASIS_POINTS_DEN, KEY_TRANSFERS_DISABLED);
+    require(_recipient != address(0), INVALID_ADDRESS);
+    require(_from != _recipient, TRANSFER_TO_SELF);
 
     // subtract the fee from the senders key before the transfer
     _timeMachine(_tokenId, getTransferFee(_tokenId, 0), false);  
@@ -207,8 +208,8 @@ contract MixinTransfer is
     bool _approved
   ) public
   {
-    require(_to != msg.sender, UnlockErrors.CANNOT_APPROVE_SELF);
-    require(transferFeeBasisPoints < BASIS_POINTS_DEN, UnlockErrors.KEY_TRANSFERS_DISABLED);
+    require(_to != msg.sender, CANNOT_APPROVE_SELF);
+    require(transferFeeBasisPoints < BASIS_POINTS_DEN, KEY_TRANSFERS_DISABLED);
     managerToOperatorApproved[msg.sender][_to] = _approved;
     emit ApprovalForAll(msg.sender, _to, _approved);
   }
@@ -235,7 +236,7 @@ contract MixinTransfer is
     transferFrom(_from, _to, _tokenId);
     require(
       _checkOnERC721Received(_from, _to, _tokenId, _data), 
-      UnlockErrors.NON_COMPLIANT_ERC721_RECEIVER
+      NON_COMPLIANT_ERC721_RECEIVER
     );
 
   }
