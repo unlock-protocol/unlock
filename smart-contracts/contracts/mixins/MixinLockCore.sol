@@ -134,7 +134,7 @@ contract MixinLockCore is
   ) public pure
     returns (uint16)
   {
-    return 10;
+    return 11;
   }
 
   /**
