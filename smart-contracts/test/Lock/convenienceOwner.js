@@ -50,7 +50,7 @@ contract('Lock / mimick owner()', () => {
     })
     it('should revert on address zero', async () => {
       await expectRevert(
-        lock.connect(deployer).setOwner(ethers.constants.AddressZero),
+        lock.connect(deployer).setOwner(ADDRESS_ZERO),
         'OWNER_CANT_BE_ADDRESS_ZERO'
       )
     })

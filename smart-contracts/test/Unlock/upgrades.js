@@ -271,10 +271,7 @@ contract('Unlock / upgrades', async (accounts) => {
                   await publicLockLatestTemplate.deployed()
 
                   // set template
-                  if (
-                    (await unlock.proxyAdminAddress()) ===
-                    ethers.constants.AddressZero
-                  ) {
+                  if ((await unlock.proxyAdminAddress()) === ADDRESS_ZERO) {
                     await unlock.initializeProxyAdmin()
                   }
                   const version =

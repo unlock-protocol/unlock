@@ -71,7 +71,7 @@ describe('PublicLock upgrade v10 > v11', () => {
     const args = [
       lockOwner.address,
       60 * 60 * 24 * 30, // 30 days
-      ethers.constants.AddressZero,
+      ADDRESS_ZERO,
       keyPrice,
       130,
       'A neat upgradeable lock!',

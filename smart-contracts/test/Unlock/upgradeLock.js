@@ -1,7 +1,7 @@
 const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('truffle-assertions')
 const createLockHash = require('../helpers/createLockCalldata')
-
+const { ADDRESS_ZERO } = require('../helpers/constants')
 describe('upgradeLock (deploy template with Proxy)', () => {
   let unlock
   let lock
@@ -37,7 +37,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     // deploy a simple lock
     const args = [
       60 * 60 * 24 * 30, // 30 days
-      ethers.constants.AddressZero,
+      ADDRESS_ZERO,
       ethers.utils.parseEther('0.01'),
       10,
       'A neat upgradeable lock!',
