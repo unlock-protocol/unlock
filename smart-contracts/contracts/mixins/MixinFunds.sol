@@ -35,10 +35,13 @@ contract MixinFunds is MixinErrors
   internal 
   view
   {
-    require(
-      _tokenAddress == address(0) || IERC20Upgradeable(_tokenAddress).totalSupply() > 0,
-      INVALID_TOKEN
-    );
+    if(
+      _tokenAddress != address(0) 
+      && 
+      IERC20Upgradeable(_tokenAddress).totalSupply() < 0
+    ) {
+      revert INVALID_TOKEN();
+    }
   }
 
   /**

@@ -27,13 +27,14 @@ contract MixinGrantKeys is
     address[] calldata _keyManagers
   ) external {
     _lockIsUpToDate();
-    require(
-      isKeyGranter(msg.sender) || isLockManager(msg.sender), 
-      ONLY_LOCK_MANAGER_OR_KEY_GRANTER
-    );
+    if(!isKeyGranter(msg.sender) && !isLockManager(msg.sender)) {
+      revert ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
+    }
 
     for(uint i = 0; i < _recipients.length; i++) {
-      require(_recipients[i] != address(0), INVALID_ADDRESS);
+      if(_recipients[i] == address(0)) { 
+        revert INVALID_ADDRESS();
+      }
 
       // an event is triggered
       _createNewKey(
