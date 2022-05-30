@@ -12,11 +12,13 @@ const contractsPath = path.resolve(
   __dirname,
   '..',
   '..',
+  '..',
   'contracts',
   'past-versions'
 )
 const artifactsPath = path.resolve(
   __dirname,
+  '..',
   '..',
   '..',
   'artifacts',
@@ -27,22 +29,28 @@ const artifactsPath = path.resolve(
 const versionNumber = 9
 const keyPrice = ethers.utils.parseEther('0.01')
 
-describe('PublicLock upgrades', () => {
+describe('PublicLock upgrade  v9 > v10', () => {
   let lock
   let PublicLockLatest
   let PublicLockPast
-
-  const pastPublicLockPath = require.resolve(
-    `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${versionNumber}.sol`
-  )
 
   before(async function copyAndBuildContract() {
     // make sure mocha doesnt time out
     this.timeout(200000)
 
     await fs.copy(
-      pastPublicLockPath,
+      require.resolve(
+        `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${versionNumber}.sol`
+      ),
       path.resolve(contractsPath, `PublicLockV${versionNumber}.sol`)
+    )
+    await fs.copy(
+      require.resolve(
+        `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${
+          versionNumber + 1
+        }.sol`
+      ),
+      path.resolve(contractsPath, `PublicLockV${versionNumber + 1}.sol`)
     )
 
     // re-compile contract using hardhat
@@ -59,7 +67,7 @@ describe('PublicLock upgrades', () => {
       `contracts/past-versions/PublicLockV${versionNumber}.sol:PublicLock`
     )
     PublicLockLatest = await ethers.getContractFactory(
-      'contracts/PublicLock.sol:PublicLock'
+      `contracts/past-versions/PublicLockV${versionNumber + 1}.sol:PublicLock`
     )
 
     const [, lockOwner] = await ethers.getSigners()

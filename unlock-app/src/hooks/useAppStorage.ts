@@ -10,20 +10,33 @@ export function useAppStorage() {
   }, [])
 
   const setStorage = useCallback((key: string, value: any) => {
-    localStorage.setItem(
-      getKey(key),
-      isObject(value) ? JSON.stringify(value) : value
-    )
+    try {
+      localStorage.setItem(
+        getKey(key),
+        isObject(value) ? JSON.stringify(value) : value
+      )
+    } catch (error) {
+      console.error(error)
+    }
   }, [])
 
   const removeKey = useCallback((key: string, withAppName = true) => {
-    localStorage.removeItem(getKey(key, withAppName))
+    try {
+      localStorage.removeItem(getKey(key, withAppName))
+    } catch (error) {
+      console.error(error)
+    }
   }, [])
 
   const getStorage = useCallback((key: string): string | null => {
-    const value = localStorage.getItem(getKey(key))
-    if (!value) return null
-    return isObject(value) ? JSON.parse(value) : value
+    try {
+      const value = localStorage.getItem(getKey(key))
+      if (!value) return null
+      return isObject(value) ? JSON.parse(value) : value
+    } catch (error) {
+      console.error(error)
+    }
+    return null
   }, [])
 
   const clearStorage = useCallback((): void => {
