@@ -9,5 +9,5 @@ module.exports = {
       "Transaction reverted and Hardhat couldn't infer the reason. Please report this to help us improve Hardhat.",
   },
   LATEST_UNLOCK_VERSION: 11,
-  LATEST_PUBLIC_LOCK_VERSION: 10,
+  LATEST_PUBLIC_LOCK_VERSION: 11,
 }

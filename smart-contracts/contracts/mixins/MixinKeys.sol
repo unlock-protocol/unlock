@@ -161,83 +161,8 @@ contract MixinKeys is
     * if not, you will have to call `updateSchemaVersion`
     * variable to the latest/current lock version
     */
-  function migrate(
-    bytes calldata _calldata
-  ) virtual public {
-    
-    // make sure we have correct data version before migrating
-    require(
-      (
-        (schemaVersion == publicLockVersion() - 1)
-        ||
-        schemaVersion == 0
-      ),
-      'SCHEMA_VERSION_NOT_CORRECT'
-    );
-
-    // set default value to 1
-    if(_maxKeysPerAddress == 0) {
-      _maxKeysPerAddress = 1;
-    }
-
-    // count the records that are actually migrated
-    uint startIndex = 0;
-    
-    // count the records that are actually migrated
-    uint updatedRecordsCount;
-
-    // the index of the last record to migrate in this call
-    uint nbRecordsToUpdate;
-
-    // the total number of records to migrate
-    uint totalSupply = totalSupply();
-    
-    // default to 100 when sent from Unlock, as this is called by default in the upgrade script.
-    // If there are more than 100 keys, the migrate function will need to be called again until all keys have been migrated.
-    if( msg.sender == address(unlockProtocol) ) {
-      nbRecordsToUpdate = 100;
-    } else {
-      // decode param
-      (startIndex, nbRecordsToUpdate) = abi.decode(_calldata, (uint, uint));
-    }
-
-    // cap the number of records to migrate to totalSupply
-    if(nbRecordsToUpdate > totalSupply) nbRecordsToUpdate = totalSupply;
-
-    for (uint256 i = startIndex; i < startIndex + nbRecordsToUpdate; i++) {
-      // tokenId starts at 1
-      uint tokenId = i + 1;
-      address keyOwner = _ownerOf[tokenId];
-      Key memory k = keyByOwner[keyOwner];
-
-      // make sure key exists
-      if(k.tokenId != 0 && k.expirationTimestamp != 0) {
-
-        // copy key in new mapping
-        _keys[i + 1] = Key(k.tokenId, k.expirationTimestamp);
-        
-        // delete token from previous owner
-        delete keyByOwner[keyOwner];
-
-        // record new owner
-        _createOwnershipRecord(
-          tokenId,
-          keyOwner
-        );
-
-        // keep track of updated records
-        updatedRecordsCount++;
-      }
-    }
-    
-    // enable lock if all keys has been migrated in a single run
-    if(nbRecordsToUpdate >= totalSupply) {
-      schemaVersion = publicLockVersion();
-    }
-
-    emit KeysMigrated(
-      updatedRecordsCount // records that have been migrated
-    );
+  function migrate(bytes calldata _calldata) virtual public {
+    schemaVersion = publicLockVersion();
   }
 
   /**

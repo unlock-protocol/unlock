@@ -1,11 +1,15 @@
+/**
+ * Tests for the lock data migration for PublicLock v10
+ */
 const { ethers, upgrades, run } = require('hardhat')
 const { reverts } = require('truffle-assertions')
 const fs = require('fs-extra')
 const path = require('path')
-const createLockHash = require('../helpers/createLockCalldata')
+const createLockHash = require('../../helpers/createLockCalldata')
 
 const contractsPath = path.resolve(
   __dirname,
+  '..',
   '..',
   '..',
   'contracts',
@@ -15,12 +19,13 @@ const artifactsPath = path.resolve(
   __dirname,
   '..',
   '..',
+  '..',
   'artifacts',
   'contracts',
   'past-versions'
 )
 
-const versionNumber = 9
+const previousVersionNumber = 9 // to next version
 const keyPrice = ethers.utils.parseEther('0.01')
 
 // helpers
@@ -70,30 +75,27 @@ describe('upgradeLock / data migration', () => {
   let lock
   let pastVersion
 
-  const pastPublicLockPath = require.resolve(
-    `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${versionNumber}.sol`
-  )
-
-  before(async function copyAndBuildContract() {
-    // make sure mocha doesnt time out
-    this.timeout(200000)
-
-    await fs.copy(
-      pastPublicLockPath,
-      path.resolve(contractsPath, `PublicLockV${versionNumber}.sol`)
-    )
-
-    // re-compile contract using hardhat
-    await run('compile')
-  })
-
   after(async () => {
     await fs.remove(contractsPath)
     await fs.remove(artifactsPath)
   })
 
-  before(async () => {
+  before(async function () {
+    // make sure mocha doesnt time out
+    this.timeout(200000)
+
     const [unlockOwner, creator] = await ethers.getSigners()
+
+    // deploy latest implementation
+    const PublicLockLatest = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
+    const publicLockLatest = await PublicLockLatest.deploy()
+    await publicLockLatest.deployed()
+
+    if ((await publicLockLatest.publicLockVersion()) !== 10) {
+      this.skip()
+    }
 
     // deploy Unlock
     const Unlock = await ethers.getContractFactory('Unlock')
@@ -102,14 +104,20 @@ describe('upgradeLock / data migration', () => {
     })
     await unlock.deployed()
 
-    const PublicLockPast = await ethers.getContractFactory(
-      `contracts/past-versions/PublicLockV${versionNumber}.sol:PublicLock`
+    // re-compile impl contract using hardhat
+    await fs.copy(
+      require.resolve(
+        `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${previousVersionNumber}.sol`
+      ),
+      path.resolve(contractsPath, `PublicLockV${previousVersionNumber}.sol`)
     )
-    const PublicLockLatest = await ethers.getContractFactory(
-      'contracts/PublicLock.sol:PublicLock'
-    )
+    await run('compile')
 
     // deploy past impl
+    const PublicLockPast = await ethers.getContractFactory(
+      `contracts/past-versions/PublicLockV${previousVersionNumber}.sol:PublicLock`
+    )
+
     const publicLockPast = await PublicLockPast.deploy()
     await publicLockPast.deployed()
     pastVersion = await publicLockPast.publicLockVersion()
@@ -140,13 +148,11 @@ describe('upgradeLock / data migration', () => {
 
     // get lock
     lock = await ethers.getContractAt(
-      `contracts/past-versions/PublicLockV${versionNumber}.sol:PublicLock`,
+      `contracts/past-versions/PublicLockV${previousVersionNumber}.sol:PublicLock`,
       newLockAddress
     )
 
-    // deploy latest implementation
-    const publicLockLatest = await PublicLockLatest.deploy()
-    await publicLockLatest.deployed()
+    // add latest tempalte
     await unlock.addLockTemplate(publicLockLatest.address, pastVersion + 1)
   })
 
