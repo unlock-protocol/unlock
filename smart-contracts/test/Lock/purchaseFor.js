@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-const { ADDRESS_ZERO } = require('../helpers/constants/')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const { reverts } = require('truffle-assertions')
 const { ethers } = require('hardhat')

@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants/')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 const PublicLock = artifacts.require('PublicLock')
 const getProxy = require('../helpers/proxy')
 const createLockHash = require('../helpers/createLockCalldata')

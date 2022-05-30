@@ -3,7 +3,7 @@ const { Manifest } = require('@openzeppelin/upgrades-core')
 const ProxyAdmin = require('@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json')
 const { getProxyAddress } = require('../../helpers/deployments')
 const createLockHash = require('../helpers/createLockCalldata')
-const { ADDRESS_ZERO } = require('../helpers/constants/')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 let pastImpl

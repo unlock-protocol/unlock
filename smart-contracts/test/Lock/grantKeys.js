@@ -3,7 +3,7 @@ const { reverts } = require('truffle-assertions')
 
 const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
-const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants/')
+const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')

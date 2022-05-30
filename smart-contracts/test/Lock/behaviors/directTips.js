@@ -1,4 +1,4 @@
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 module.exports.getBalanceBehavior = (options) => {
   describe('Lock / behaviors / directTips', () => {

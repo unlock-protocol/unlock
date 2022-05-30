@@ -2,7 +2,7 @@ const { reverts } = require('truffle-assertions')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 const getProxy = require('../helpers/proxy')
-const { ADDRESS_ZERO } = require('../helpers/constants/')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 

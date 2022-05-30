@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { getProxyAddress } = require('../../helpers/deployments')
 const createLockHash = require('../helpers/createLockCalldata')
-const { ADDRESS_ZERO } = require('../helpers/constants/')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 

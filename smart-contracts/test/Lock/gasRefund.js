@@ -5,7 +5,7 @@ const deployLocks = require('../helpers/deployLocks')
 const getProxy = require('../helpers/proxy')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const { ADDRESS_ZERO } = require('../helpers/constants/')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let locks
