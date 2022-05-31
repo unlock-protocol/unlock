@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { time } = require('@openzeppelin/test-helpers')
 const { getProxyAddress } = require('../../helpers/deployments')
 

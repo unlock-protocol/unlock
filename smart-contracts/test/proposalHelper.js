@@ -40,7 +40,8 @@ contract('Proposal Helper', () => {
         calldata: calldataEncoded,
       })
 
-      assert.deepEqual(decoded, functionArgs)
+      assert.equal(decoded[0], functionArgs[0])
+      assert.equal(decoded[1].toString(), functionArgs[1].toString())
     })
   })
 

@@ -1,5 +1,5 @@
 const { tokens, constants } = require('hardlydifficult-ethereum-contracts')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')

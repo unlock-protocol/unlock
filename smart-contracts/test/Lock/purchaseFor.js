@@ -1,6 +1,6 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 

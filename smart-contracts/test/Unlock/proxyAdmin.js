@@ -1,5 +1,5 @@
 const { ethers, upgrades } = require('hardhat')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 
 contract('proxyAdmin', () => {
   let unlock

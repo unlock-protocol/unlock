@@ -1,6 +1,6 @@
 const { expect } = require('chai')
 const { ethers, upgrades } = require('hardhat')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 
 contract('PublicLock template versions', () => {
   let unlock

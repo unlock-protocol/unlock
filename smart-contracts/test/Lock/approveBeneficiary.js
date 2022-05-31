@@ -1,4 +1,4 @@
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { tokens } = require('hardlydifficult-eth')
 const deployLocks = require('../helpers/deployLocks')
 

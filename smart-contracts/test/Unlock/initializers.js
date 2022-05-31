@@ -1,6 +1,6 @@
 const unlockContract = artifacts.require('Unlock.sol')
 
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const getProxy = require('../helpers/proxy')
 const { errorMessages } = require('../helpers/constants')
 

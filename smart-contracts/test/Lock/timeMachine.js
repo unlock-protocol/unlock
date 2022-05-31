@@ -2,7 +2,7 @@ const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const TimeMachineMock = artifacts.require('TimeMachineMock')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { errorMessages } = require('../helpers/constants')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
