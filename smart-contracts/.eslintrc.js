@@ -13,6 +13,7 @@ const rulesToIgnore = [
   'prefer-const',
   'no-return-await',
   'prefer-object-spread',
+  '@typescript-eslint/no-var-requires',
 ]
 
 module.exports = {
