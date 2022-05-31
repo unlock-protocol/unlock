@@ -96,7 +96,7 @@ contract MixinPurchase is
   ) external payable
   {
     _lockIsUpToDate();
-    if(maxNumberOfKeys < _totalSupply) {
+    if(_totalSupply >= maxNumberOfKeys) {
       revert LOCK_SOLD_OUT();
     }
     if(
@@ -133,8 +133,7 @@ contract MixinPurchase is
         );
       }
 
-      // price      
-
+      // price
       uint inMemoryKeyPrice = purchasePriceFor(_recipient, _referrers[i], _data[i]);
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
@@ -143,7 +142,7 @@ contract MixinPurchase is
       _originalDurations[tokenId] = expirationDuration;
       _originalTokens[tokenId] = tokenAddress;
       
-      if(tokenAddress != address(0) && inMemoryKeyPrice >= _values[i]) {
+      if(tokenAddress != address(0) && _values[i] < inMemoryKeyPrice) {
         revert INSUFFICIENT_ERC20_VALUE();
       }
 
@@ -163,12 +162,11 @@ contract MixinPurchase is
         );
       }
     }
-
     // transfer the ERC20 tokens
     if(tokenAddress != address(0)) {
       IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
       token.transferFrom(msg.sender, address(this), totalPriceToPay);
-    } else if(totalPriceToPay >= msg.value) {
+    } else if(msg.value < totalPriceToPay) {
       // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
       revert INSUFFICIENT_VALUE();
     }
