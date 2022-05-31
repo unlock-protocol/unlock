@@ -12,46 +12,44 @@ const Template: ComponentStory<typeof Input> = (args) => <Input {...args} />
 export const Normal = Template.bind({})
 
 Normal.args = {
-  icon: <PersonIcon size={16} />,
+  icon: PersonIcon,
   label: 'Email address',
   size: 'small',
-  reveal: true,
   value: 'email@email.com',
-  message:
+  description:
     'If you have previously created account with Unlock, please enter the same email to contine',
 }
 
-export const Reveal = Template.bind({})
+export const Password = Template.bind({})
 
-Reveal.args = {
-  icon: <PersonIcon size={16} />,
+Password.args = {
+  icon: PersonIcon,
   label: 'Password',
   size: 'medium',
+  type: 'password',
   value: 'email@email.com',
-  reveal: true,
-  copy: true,
-  message: 'Use a long password.',
+  description: 'Use a long password.',
 }
 
 export const Success = Template.bind({})
 
 Success.args = {
-  icon: <AtSignIcon size={18} />,
+  icon: AtSignIcon,
   label: 'Choose username',
   size: 'medium',
-  state: 'success',
-  message: 'Username available',
+  description: 'Pick a nice username',
+  success: 'Username is available',
   value: 'unlock',
 }
 
 export const Error = Template.bind({})
 
 Error.args = {
-  icon: <AtSignIcon size={20} />,
+  icon: AtSignIcon,
   label: 'Type your username',
   size: 'large',
-  state: 'error',
+  error: 'Invalid username',
   value: 'unlock',
+  description: 'Type a good username',
   copy: true,
-  message: 'Username not available',
 }

@@ -1,10 +1,13 @@
 import { InputHTMLAttributes, ForwardedRef, useState } from 'react'
-import type { Size, State, SizeStyleProp, StateStyleProp } from '../../types'
-import { forwardRef, ReactNode } from 'react'
+import type { Size, SizeStyleProp } from '../../types'
+import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { FieldLayout } from './FieldLayout'
 import useClipboard from 'react-use-clipboard'
-import { FiEyeOff as HiddenIcon, FiCopy as CopyIcon } from 'react-icons/fi'
+import { FiCopy as CopyIcon } from 'react-icons/fi'
+import { IconType } from 'react-icons'
+import { Icon } from '../Icon/Icon'
+
 export interface Props
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
@@ -12,14 +15,12 @@ export interface Props
   > {
   label?: string
   size?: Size
-  state?: State
-  message?: string
-  icon?: ReactNode
-  reveal?: boolean
+  success?: string
+  error?: string
+  description?: string
+  icon?: IconType
   copy?: boolean
 }
-
-const HIDDEN_PLACEHOLDER = '**** **** **** ****'
 
 const SIZE_STYLES: SizeStyleProp = {
   small: 'pl-2.5 py-1.5 text-sm',
@@ -27,7 +28,7 @@ const SIZE_STYLES: SizeStyleProp = {
   large: 'pl-4 py-2.5',
 }
 
-const STATE_STYLES: StateStyleProp = {
+const STATE_STYLES = {
   error:
     'border-brand-secondary hover:border-brand-secondary focus:border-brand-secondary focus:ring-brand-secondary',
   success:
@@ -42,21 +43,30 @@ const INPUT_BUTTON_SIZE: SizeStyleProp = {
 
 export const Input = forwardRef(
   (props: Props, ref: ForwardedRef<HTMLInputElement>) => {
-    const [isCopied, setCopy] = useClipboard(props.value as string)
     const {
       size = 'medium',
       value,
       copy,
       className,
-      state,
-      message,
+      error,
+      success,
+      description,
       label,
       icon,
-      reveal,
       ...inputProps
     } = props
+    const [isCopied, setCopy] = useClipboard(props.value as string)
+    const hidden = inputProps.type === 'password' || inputProps.hidden
+
     const inputSizeStyle = SIZE_STYLES[size]
-    const inputStateStyle = STATE_STYLES[state!]
+    let inputStateStyles = ''
+
+    if (error) {
+      inputStateStyles = STATE_STYLES.error
+    } else if (success) {
+      inputStateStyles = STATE_STYLES.success
+    }
+
     const inputButtonClass = twMerge(
       'px-2 py-0.5 border border-gray-300 flex items-center gap-2 hover:border-gray-400 text-gray-600 hover:text-black shadow-sm rounded-lg',
       INPUT_BUTTON_SIZE[size]
@@ -64,23 +74,28 @@ export const Input = forwardRef(
     const inputClass = twMerge(
       'block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1',
       inputSizeStyle,
-      inputStateStyle,
+      inputStateStyles,
       icon ? 'pl-10' : undefined
     )
-    const [hidden, setHidden] = useState(reveal)
-    function onReveal() {
-      setHidden(false)
-    }
+
     return (
-      <FieldLayout label={label} size={size} state={state} message={message}>
+      <FieldLayout
+        label={label}
+        size={size}
+        error={error}
+        success={success}
+        description={description}
+      >
         <div className="relative">
-          <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            {icon}
-          </span>
+          {icon && (
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <Icon icon={icon} size={size} />
+            </span>
+          )}
           <input
             {...inputProps}
             id={label}
-            value={reveal && hidden ? HIDDEN_PLACEHOLDER : value}
+            value={value}
             ref={ref}
             className={inputClass}
           />
@@ -88,12 +103,6 @@ export const Input = forwardRef(
             {copy && !hidden && (
               <button onClick={() => setCopy()} className={inputButtonClass}>
                 <CopyIcon /> {isCopied ? 'Copied' : 'Copy'}
-              </button>
-            )}
-
-            {hidden && (
-              <button className={inputButtonClass} onClick={onReveal}>
-                <HiddenIcon /> Reveal
               </button>
             )}
           </div>
