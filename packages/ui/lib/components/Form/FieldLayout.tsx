@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react'
-import { Size, State, SizeStyleProp, StateStyleProp } from '../../types'
+import { Size, SizeStyleProp } from '../../types'
 import { twMerge } from 'tailwind-merge'
 
 export interface Props {
   label?: string
   size?: Size
-  state?: State
-  message?: string
+  error?: string
+  success?: string
+  description?: string
   children: ReactNode
 }
 
@@ -16,26 +17,53 @@ const SIZE_STYLES: SizeStyleProp = {
   large: 'text-lg',
 }
 
-const STATE_STYLES: StateStyleProp = {
-  error: 'text-red-500',
-  success: 'text-green-500',
-}
-
-const MESSAGE_SIZE_STYLES: SizeStyleProp = {
+const TEXT_SIZE: SizeStyleProp = {
   small: 'text-xs',
   medium: 'text-sm',
   large: 'text-base',
 }
 
 export function FieldLayout(props: Props) {
-  const { children, label, size = 'medium', state, message } = props
+  const {
+    children,
+    label,
+    size = 'medium',
+    error,
+    success,
+    description,
+  } = props
   const labelSizeStyle = SIZE_STYLES[size!]
   const labelClass = twMerge('px-1', labelSizeStyle)
-  const messageClass = twMerge(
-    'text-xs text-gray-600',
-    MESSAGE_SIZE_STYLES[size],
-    STATE_STYLES[state!]
-  )
+  const descriptionClass = twMerge('text-gray-600', TEXT_SIZE[size])
+  const errorClass = twMerge('text-red-500', TEXT_SIZE[size])
+  const successClass = twMerge('text-green-500', TEXT_SIZE[size])
+
+  function Message() {
+    if (error) {
+      return (
+        <p id={label} className={errorClass}>
+          {error}
+        </p>
+      )
+    }
+    if (success) {
+      return (
+        <p id={label} className={successClass}>
+          {success}
+        </p>
+      )
+    }
+
+    if (description) {
+      return (
+        <p id={label} className={descriptionClass}>
+          {description}
+        </p>
+      )
+    }
+
+    return null
+  }
   return (
     <div className="grid gap-1.5">
       {label && (
@@ -44,11 +72,9 @@ export function FieldLayout(props: Props) {
         </label>
       )}
       {children}
-      {message && (
-        <div className="pl-1">
-          <p className={messageClass}>{message} </p>
-        </div>
-      )}
+      <div className="pl-1">
+        <Message />
+      </div>
     </div>
   )
 }
