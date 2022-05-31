@@ -42,6 +42,11 @@ export const failure = {
   getBulkMetadataFor: 'getBulkMetadataFor.failure',
 }
 
+interface GetSiweMessageProps {
+  address: string
+  chainId: number
+  version?: string
+}
 export class StorageService extends EventEmitter {
   public host: string
 
@@ -63,7 +68,11 @@ export class StorageService extends EventEmitter {
     return this.locksmith.refreshToken(token)
   }
 
-  async getSiweMessage(address: string, chainId: number, version = '1') {
+  async getSiweMessage({
+    address,
+    chainId,
+    version = '1',
+  }: GetSiweMessageProps) {
     const siweMessage = LocksmithService.createSiweMessage({
       uri: 'https://locksmith.unlock-protocol.com',
       domain: this.host,
