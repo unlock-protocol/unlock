@@ -4,7 +4,7 @@ const { constants } = require('hardlydifficult-eth')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const TestNoop = artifacts.require('TestNoop.sol')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const getProxy = require('../helpers/proxy')
 const deployLocks = require('../helpers/deployLocks')
 

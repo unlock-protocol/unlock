@@ -1,5 +1,5 @@
 const { ethers, upgrades } = require('hardhat')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const createLockHash = require('../helpers/createLockCalldata')
 
 describe('upgradeLock (deploy template with Proxy)', () => {
