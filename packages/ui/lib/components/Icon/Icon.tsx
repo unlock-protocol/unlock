@@ -2,8 +2,7 @@ import { IconType } from 'react-icons'
 import { IconBaseProps } from 'react-icons/lib'
 import { Size } from '~/types'
 
-interface Props extends IconBaseProps {
-  className?: string
+export interface Props extends IconBaseProps {
   size?: Size | number
   icon: IconType
 }

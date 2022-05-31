@@ -2,6 +2,7 @@ import { Input } from './Input'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { MdPerson as PersonIcon } from 'react-icons/md'
 import { FiAtSign as AtSignIcon } from 'react-icons/fi'
+import { IconBaseProps } from 'react-icons'
 export default {
   component: Input,
   title: 'Input',
@@ -22,8 +23,12 @@ Normal.args = {
 
 export const Password = Template.bind({})
 
+function CustomizedIcon(props: IconBaseProps) {
+  return <PersonIcon {...props} className="fill-gray-500" />
+}
+
 Password.args = {
-  icon: PersonIcon,
+  icon: CustomizedIcon,
   label: 'Password',
   size: 'medium',
   type: 'password',

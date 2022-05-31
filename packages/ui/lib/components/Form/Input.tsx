@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, ForwardedRef, useState } from 'react'
+import { InputHTMLAttributes, ForwardedRef, ComponentType } from 'react'
 import type { Size, SizeStyleProp } from '../../types'
 import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -89,7 +89,7 @@ export const Input = forwardRef(
         <div className="relative">
           {icon && (
             <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <Icon icon={icon} size={size} />
+              <Icon size={size} icon={icon} />
             </span>
           )}
           <input
