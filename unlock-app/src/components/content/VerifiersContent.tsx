@@ -10,8 +10,7 @@ import { VerifiersList } from '../interface/verifiers/VerifiersList'
 import { getAddressForName } from '../../hooks/useEns'
 import { ToastHelper } from '../helpers/toast.helper'
 import AuthenticationContext from '../../contexts/AuthenticationContext'
-import { LocksmithService } from '@unlock-protocol/unlock-js'
-import { ConfigContext } from '../../utils/withConfig'
+import { StorageServiceContext } from '../../utils/withStorageService'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -34,11 +33,8 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   const [loading, setLoading] = useState(false)
   const lockAddress: string = query?.lockAddress ?? ''
   const { network } = useContext(AuthenticationContext)
-  const config = useContext(ConfigContext)
-  const host = config.services.storage.host
-  const { getEndpoint } = new LocksmithService({
-    host,
-  })
+  const storageService = useContext(StorageServiceContext)
+
   const [token] = useState()
 
   const onAddVerifier = () => {
@@ -56,21 +52,22 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
     const resolvedAddress = await getAddressForName(verifierAddress)
     try {
       if (resolvedAddress) {
-        const addVerifierUrl = getEndpoint(
-          `/verifier/${network}/${lockAddress}/${resolvedAddress}`
-        )
-        const requestOptions = {
+        const options = {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         }
-        await fetch(addVerifierUrl, requestOptions)
-          .then((res) => res.json())
+        await storageService
+          .getEndpoint(
+            `/verifier/${network}/${lockAddress}/${resolvedAddress}`,
+            options
+          )
           .then(() => {
             ToastHelper.success('Verifier added to list')
           })
+
         setLoading(false)
       } else {
         ToastHelper.error('Verified address is not a valid Ethereum address.')

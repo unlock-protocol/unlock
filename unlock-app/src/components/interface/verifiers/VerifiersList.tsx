@@ -5,9 +5,8 @@ import { ethers } from 'ethers'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
 import { ToastHelper } from '../../helpers/toast.helper'
 import Loading from '../Loading'
-import { ConfigContext } from '../../../utils/withConfig'
-import { LocksmithService } from '@unlock-protocol/unlock-js'
 import { useToken } from '../../../hooks/useToken'
+import { StorageServiceContext } from '../../../utils/withStorageService'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -28,13 +27,8 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   const [showDeleteVerifierModal, setShowDeleteVerifierModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [verifiers, setVerifiers] = useState<any[]>([])
-  const config = useContext(ConfigContext)
-  const host = config.services.storage.host
+  const storageService = useContext(StorageServiceContext)
   const [token, setToken] = useState<string>()
-
-  const { getEndpoint } = new LocksmithService({
-    host,
-  })
   const { getAccessToken } = useToken(account!, network!)
 
   const setDefaults = () => {
@@ -64,16 +58,16 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
 
   const getVerifierList = async () => {
     try {
-      const addVerifierUrl = getEndpoint(
-        `/v2/api/verifier/${network}/${lockAddress}/${selectedVerifier}`
-      )
-      const requestOptions = {
+      const options = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         Authorization: `Bearer ${token}`,
       }
-      await fetch(addVerifierUrl, requestOptions)
-        .then((res) => res.json())
+      await storageService
+        .getEndpoint(
+          `/v2/api/verifier/${network}/${lockAddress}/${selectedVerifier}`,
+          options
+        )
         .then((verifiers: any) => {
           setVerifiers(verifiers?.results)
         })
@@ -91,18 +85,18 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
 
     try {
       if (isValid) {
-        const addVerifierUrl = getEndpoint(
-          `/verifier/${network}/${lockAddress}/${selectedVerifier}`
-        )
-        const requestOptions = {
+        const options = {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
         }
-        await fetch(addVerifierUrl, requestOptions)
-          .then((res) => res.json())
+        await storageService
+          .getEndpoint(
+            `/verifier/${network}/${lockAddress}/${selectedVerifier}`,
+            options
+          )
           .then((verifiers: any) => {
             ToastHelper.success('Verifier deleted from list')
             setVerifiers(verifiers?.results)
