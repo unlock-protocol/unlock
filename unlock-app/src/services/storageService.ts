@@ -612,4 +612,13 @@ export class StorageService extends EventEmitter {
       return ''
     }
   }
+
+  async getEndpoint(url: string, options?: RequestInit) {
+    const endpoint = `${this.host}${url}`
+    return fetch(endpoint, {
+      ...options,
+    }).then((res) => {
+      return res.json()
+    })
+  }
 }
