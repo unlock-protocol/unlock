@@ -74,7 +74,6 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
         setLoading(false)
       }
     } catch (err: any) {
-      console.error('error', err)
       setLoading(false)
       ToastHelper.error(
         err?.error ??
