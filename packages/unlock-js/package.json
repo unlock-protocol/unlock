@@ -35,7 +35,7 @@
     "@babel/cli": "7.17.10",
     "@babel/core": "7.17.10",
     "@babel/preset-env": "7.17.10",
-    "@nomiclabs/hardhat-ethers": "2.0.5",
+    "@nomiclabs/hardhat-ethers": "2.0.6",
     "@openzeppelin/hardhat-upgrades": "1.16.1",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",

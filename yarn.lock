@@ -7755,13 +7755,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.0.5":
-  version: 2.0.5
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.0.5"
+"@nomiclabs/hardhat-ethers@npm:2.0.6":
+  version: 2.0.6
+  resolution: "@nomiclabs/hardhat-ethers@npm:2.0.6"
   peerDependencies:
     ethers: ^5.0.0
     hardhat: ^2.0.0
-  checksum: 07a5916f9fbb1efd24effc0d3949c70d1f45240d0bc4705653f1d378573c419c72d9a00f8db48b19c4aa27bd6c9dc0033aa40717cc9d77025a2cceeb59668463
+  checksum: 82319a2615804abae2ca70834a20bfc2874c742094fadeaea55e5c788e589794836a3a2eaaf19d8aecdadf1fd0bd7a4f9eac2c32bbda9ed081c8e2e3d4fe55cc
   languageName: node
   linkType: hard
 
@@ -14720,7 +14720,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
-    "@nomiclabs/hardhat-ethers": 2.0.5
+    "@nomiclabs/hardhat-ethers": 2.0.6
     "@openzeppelin/hardhat-upgrades": 1.16.1
     "@types/chai": 4.3.0
     "@types/fs-extra": 9.0.13
@@ -14984,7 +14984,7 @@ __metadata:
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
     "@gnosis.pm/safe-core-sdk": 2.0.0
-    "@nomiclabs/hardhat-ethers": 2.0.5
+    "@nomiclabs/hardhat-ethers": 2.0.6
     "@nomiclabs/hardhat-etherscan": 3.0.3
     "@nomiclabs/hardhat-truffle5": 2.0.5
     "@nomiclabs/hardhat-waffle": 2.0.3
@@ -15311,7 +15311,7 @@ __metadata:
     "@babel/cli": 7.17.10
     "@babel/core": 7.17.10
     "@babel/preset-env": 7.17.10
-    "@nomiclabs/hardhat-ethers": 2.0.5
+    "@nomiclabs/hardhat-ethers": 2.0.6
     "@openzeppelin/hardhat-upgrades": 1.16.1
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
