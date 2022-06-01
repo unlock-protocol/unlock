@@ -13156,6 +13156,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jest@npm:27.5.1":
+  version: 27.5.1
+  resolution: "@types/jest@npm:27.5.1"
+  dependencies:
+    jest-matcher-utils: ^27.0.0
+    pretty-format: ^27.0.0
+  checksum: be20e39f7aaf17179109c0060d0a0489cec2034d4e2e28a631284c7ecd13c5ae52f62697a33a0e89b03b6cfe54e9d5e8c2bd387ab2bd90d6071d68c63b86d1e3
+  languageName: node
+  linkType: hard
+
 "@types/js-levenshtein@npm:^1.1.1":
   version: 1.1.1
   resolution: "@types/js-levenshtein@npm:1.1.1"
@@ -15343,7 +15353,7 @@ __metadata:
     "@radix-ui/react-avatar": 0.1.4
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 12.1.5
-    "@types/jest": 27.4.1
+    "@types/jest": 27.5.1
     "@types/next": 8.0.7
     "@types/node": 17.0.21
     "@types/react": 17.0.44
