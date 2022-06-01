@@ -15380,7 +15380,7 @@ __metadata:
     react-dom: 17.0.2
     react-ga: 3.3.0
     react-gtm-module: 2.0.11
-    react-icons: 4.3.1
+    react-icons: 4.4.0
     react-showdown: 2.3.1
     react-test-renderer: 17.0.2
     remark: 14.0.2
@@ -43671,6 +43671,15 @@ fsevents@~2.1.1:
   peerDependencies:
     react: "*"
   checksum: 2cc608acdd3e906aa3aaee290b8398220639677c949382d86e554020e5dab6a9f1ed7484418aa5272cb5c5c018e1fc9a323d433d901697a76530029f9ecb1263
+  languageName: node
+  linkType: hard
+
+"react-icons@npm:4.4.0":
+  version: 4.4.0
+  resolution: "react-icons@npm:4.4.0"
+  peerDependencies:
+    react: "*"
+  checksum: dd93a1dcc8ac8a3cf46a2b33e80b586fa967331fa5fcb90d061abf276155a8363a331643e203d67cb9bab4261d00a757da854bcce1fce2c6e4258bf3e33f711b
   languageName: node
   linkType: hard
 
