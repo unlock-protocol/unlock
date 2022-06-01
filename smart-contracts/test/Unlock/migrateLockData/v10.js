@@ -2,7 +2,7 @@
  * Tests for the lock data migration for PublicLock v10
  */
 const { ethers, upgrades, run } = require('hardhat')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../../helpers/errors')
 const fs = require('fs-extra')
 const path = require('path')
 const createLockHash = require('../../helpers/createLockCalldata')
