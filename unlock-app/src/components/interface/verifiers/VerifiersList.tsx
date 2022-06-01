@@ -28,7 +28,6 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   const [loading, setLoading] = useState(false)
   const [verifiers, setVerifiers] = useState<any[]>([])
   const storageService = useContext(StorageServiceContext)
-  const [token, setToken] = useState<string>()
   const { getAccessToken } = useToken(account!, network!)
 
   const setDefaults = () => {
@@ -42,18 +41,11 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   }, [])
 
   useEffect(() => {
-    if (!token) return
-    const loadList = () => {
-      getVerifierList()
-    }
-    loadList()
-  }, [token])
+    getVerifierList()
+  }, [])
 
   const loginAndGetList = async () => {
-    const { accessToken } = await getAccessToken()
-    if (accessToken) {
-      setToken(accessToken)
-    }
+    await getAccessToken()
   }
 
   const getVerifierList = async () => {
@@ -61,7 +53,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
       const options = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        Authorization: `Bearer ${token}`,
+        //todo: Authorization: `Bearer ${token}`,
       }
       await storageService
         .getEndpoint(
@@ -89,7 +81,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
+            //todo: Authorization: `Bearer ${token}`,
           },
         }
         await storageService
