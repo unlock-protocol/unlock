@@ -257,11 +257,8 @@ export function SignInOrUp({ onSignedIn, injectedProvider }: Props) {
     setData({
       email,
     })
-    if (existingUser) {
-      setState('signIn')
-    } else {
-      setState('signUp')
-    }
+    const signStatus = existingUser ? 'signIn' : 'signUp'
+    setState(signStatus)
   }
 
   const signIn = async ({ email, password }: UserDetails) => {
