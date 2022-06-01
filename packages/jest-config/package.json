@@ -7,7 +7,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "glob": "8.0.1",
+    "glob": "8.0.3",
     "ts-jest": "27.1.4"
   },
   "peerDependencies": {
