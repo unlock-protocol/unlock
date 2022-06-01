@@ -14750,7 +14750,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/jest-config@workspace:packages/jest-config"
   dependencies:
-    glob: 8.0.1
+    glob: 8.0.3
     ts-jest: 27.1.4
   peerDependencies:
     jest: 27.5.1
@@ -29763,17 +29763,16 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"glob@npm:8.0.1":
-  version: 8.0.1
-  resolution: "glob@npm:8.0.1"
+"glob@npm:8.0.3":
+  version: 8.0.3
+  resolution: "glob@npm:8.0.3"
   dependencies:
     fs.realpath: ^1.0.0
     inflight: ^1.0.4
     inherits: 2
     minimatch: ^5.0.1
     once: ^1.3.0
-    path-is-absolute: ^1.0.0
-  checksum: 7ac782f3ef1c08005884447479e68ceb0ad56997eb2003e1e9aefae71bad3cb48eb7c49190d3d6736f2ffcd8af4985d53a46831b3d5e0052cc5756822a38b61a
+  checksum: 50bcdea19d8e79d8de5f460b1939ffc2b3299eac28deb502093fdca22a78efebc03e66bf54f0abc3d3d07d8134d19a32850288b7440d77e072aa55f9d33b18c5
   languageName: node
   linkType: hard
 
