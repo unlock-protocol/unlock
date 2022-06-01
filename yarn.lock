@@ -15244,7 +15244,7 @@ __metadata:
     react-test-renderer: 17.0.2
     react-use-clipboard: 1.0.8
     siwe: 1.1.6
-    storybook-addon-next-router: 3.1.1
+    storybook-addon-next-router: 4.0.0
     styled-components: 5.3.5
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.24
@@ -47346,9 +47346,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"storybook-addon-next-router@npm:3.1.1":
-  version: 3.1.1
-  resolution: "storybook-addon-next-router@npm:3.1.1"
+"storybook-addon-next-router@npm:4.0.0":
+  version: 4.0.0
+  resolution: "storybook-addon-next-router@npm:4.0.0"
   dependencies:
     tslib: ^2.3.0
   peerDependencies:
@@ -47356,9 +47356,9 @@ resolve@^2.0.0-next.3:
     "@storybook/addons": ^6.0.0
     "@storybook/client-api": ^6.0.0
     next: ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  checksum: be8f1cdede08b8d32d4f4e55aba3d847a3dc11aaf30c32a4f2968b6c80b5f1eec47f064cdaa6eefde63762250b2d542c38c45576fed209fe4d279a5c4df0f431
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 3e203fe069d41faa43a0274ecc09d60871b92457bd2c642ead0eeca792188241a658c4f52b7e8dcce8392569fd54192c1e384d7813e3f84a899d27cd22009c62
   languageName: node
   linkType: hard
 
