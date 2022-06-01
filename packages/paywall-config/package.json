@@ -11,7 +11,7 @@
     "bootstrap": "5.1.3",
     "formik": "2.2.9",
     "react": "18.1.0",
-    "react-bootstrap": "2.1.2",
+    "react-bootstrap": "2.4.0",
     "react-bootstrap-formik": "1.7.2",
     "react-dom": "18.1.0",
     "react-scripts": "5.0.1",
