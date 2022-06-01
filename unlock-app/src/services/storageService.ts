@@ -1,7 +1,7 @@
-import { isExpired } from 'react-jwt'
+import { decodeToken } from 'react-jwt'
 import axios from 'axios'
 import { EventEmitter } from 'events'
-import { LocksmithService } from '@unlock-protocol/unlock-js'
+import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
 import { Lock } from '../unlockTypes'
 import { generateNonce } from 'siwe'
 // The goal of the success and failure objects is to act as a registry of events
@@ -47,10 +47,18 @@ interface GetSiweMessageProps {
   chainId: number
   version?: string
 }
+
+interface LoginPromptProps {
+  address: string
+  chainId: number
+  walletService: WalletService
+}
 export class StorageService extends EventEmitter {
   public host: string
 
   public locksmith: LocksmithService
+
+  private accessToken: string | null
 
   constructor(host: string) {
     super()
@@ -58,10 +66,51 @@ export class StorageService extends EventEmitter {
     this.locksmith = new LocksmithService({
       host,
     })
+    this.accessToken = null
   }
 
   async login(message: string, signature: string) {
     return this.locksmith.login(message, signature)
+  }
+
+  #setToken(token: string) {
+    this.accessToken = token
+    const decoded: any = decodeToken(token)
+    const expireAt: number = decoded?.exp ?? -1
+    if (decoded && expireAt) {
+      const startTime = new Date().getTime()
+      const expireTime = new Date(expireAt).getTime()
+      const timeout = (startTime - expireTime) / 1000 / 60 // time difference in seconds
+      console.table({
+        startTime,
+        expireTime,
+        timeout,
+      })
+      setTimeout(() => {
+        this.refreshToken(token)
+      }, timeout)
+    }
+  }
+
+  async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
+    try {
+      const message = await this.getSiweMessage({
+        address,
+        chainId,
+      })
+      const signature = await walletService.signMessage(
+        message,
+        'personal_sign'
+      )
+      const { accessToken } = await this.login(message, signature)
+      this.#setToken(accessToken)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  get token() {
+    return this.accessToken
   }
 
   async refreshToken(token: string) {
@@ -83,27 +132,6 @@ export class StorageService extends EventEmitter {
       nonce: generateNonce(),
     })
     return siweMessage.prepareMessage()
-  }
-
-  getToken(name: string) {
-    const token = sessionStorage.getItem(name)
-
-    if (token && !isExpired(token)) {
-      return token
-    } else {
-      return this.getRefreshToken(name, token!)
-    }
-  }
-
-  private async getRefreshToken(name: string, token: string) {
-    try {
-      const { accessToken } = (await this.refreshToken(token)) ?? null
-      sessionStorage.setItem(accessToken, name)
-      return accessToken
-    } catch (err) {
-      console.error(err)
-      return null
-    }
   }
 
   /**
@@ -626,10 +654,21 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async getEndpoint(url: string, options?: RequestInit) {
+  async getEndpoint(url: string, options: RequestInit = {}, withAuth: boolean) {
     const endpoint = `${this.host}${url}`
+    let params = options
+    if (withAuth) {
+      params = {
+        ...params,
+        headers: {
+          ...params.headers,
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      }
+    }
+    console.log('params', params, withAuth)
     return fetch(endpoint, {
-      ...options,
+      ...params,
     }).then((res) => {
       return res.json()
     })

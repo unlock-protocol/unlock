@@ -5,8 +5,8 @@ import { ethers } from 'ethers'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
 import { ToastHelper } from '../../helpers/toast.helper'
 import Loading from '../Loading'
-import { useToken } from '../../../hooks/useToken'
 import { StorageServiceContext } from '../../../utils/withStorageService'
+import { WalletServiceContext } from '../../../utils/withWalletService'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -28,7 +28,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   const [loading, setLoading] = useState(false)
   const [verifiers, setVerifiers] = useState<any[]>([])
   const storageService = useContext(StorageServiceContext)
-  const { getAccessToken } = useToken(account!, network!)
+  const walletService = useContext(WalletServiceContext)
 
   const setDefaults = () => {
     setShowDeleteVerifierModal(false)
@@ -40,12 +40,13 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
     loginAndGetList()
   }, [])
 
-  useEffect(() => {
-    getVerifierList()
-  }, [])
-
   const loginAndGetList = async () => {
-    await getAccessToken()
+    await storageService.loginPrompt({
+      walletService,
+      address: account,
+      chainId: network,
+    })
+    getVerifierList()
   }
 
   const getVerifierList = async () => {
@@ -53,18 +54,19 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
       const options = {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
-        //todo: Authorization: `Bearer ${token}`,
       }
       await storageService
         .getEndpoint(
           `/v2/api/verifier/${network}/${lockAddress}/${selectedVerifier}`,
-          options
+          options,
+          true
         )
         .then((verifiers: any) => {
           setVerifiers(verifiers?.results)
         })
     } catch (err: any) {
       setLoading(false)
+      console.error(err)
       ToastHelper.error(
         err?.error ??
           'We could not load the list of verifiers for your lock. Please reload to to try again.'
@@ -81,13 +83,13 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
-            //todo: Authorization: `Bearer ${token}`,
           },
         }
         await storageService
           .getEndpoint(
             `/verifier/${network}/${lockAddress}/${selectedVerifier}`,
-            options
+            options,
+            true
           )
           .then((verifiers: any) => {
             ToastHelper.success('Verifier deleted from list')
@@ -102,6 +104,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
       }
     } catch (err: any) {
       setLoading(false)
+      console.error(err)
       ToastHelper.error(
         err?.error ??
           'There was a problem adding verifier, please re-load and try again'

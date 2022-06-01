@@ -35,8 +35,6 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   const { network } = useContext(AuthenticationContext)
   const storageService = useContext(StorageServiceContext)
 
-  const [token] = useState()
-
   const onAddVerifier = () => {
     setVerifierAddress('')
     setAddVerifierModalOpen(true)
@@ -56,13 +54,13 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
           },
         }
         await storageService
           .getEndpoint(
             `/verifier/${network}/${lockAddress}/${resolvedAddress}`,
-            options
+            options,
+            true
           )
           .then(() => {
             ToastHelper.success('Verifier added to list')
@@ -75,6 +73,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
       }
     } catch (err: any) {
       setLoading(false)
+      console.error(err)
       ToastHelper.error(
         err?.error ??
           'There was a problem adding the verifier address, please re-load and try again'
