@@ -73,7 +73,7 @@
     "node-cron": "3.0.0",
     "p-retry": "4.6.2",
     "parse-data-uri": "0.2.0",
-    "path-to-regexp": "6.2.0",
+    "path-to-regexp": "6.2.1",
     "pg": "8.7.3",
     "random-words": "1.1.2",
     "reflect-metadata": "0.1.13",
