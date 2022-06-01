@@ -15369,7 +15369,7 @@ __metadata:
     gray-matter: 4.0.3
     jest: 27.5.1
     jest-styled-components: 7.0.8
-    lint-staged: 12.3.7
+    lint-staged: 12.5.0
     next: 12.1.5
     next-seo: 5.0.0
     path-match: 1.2.4
@@ -19689,7 +19689,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"braces@npm:^3.0.1, braces@npm:~3.0.2":
+"braces@npm:^3.0.1, braces@npm:^3.0.2, braces@npm:~3.0.2":
   version: 3.0.2
   resolution: "braces@npm:3.0.2"
   dependencies:
@@ -21601,6 +21601,13 @@ __metadata:
   version: 9.1.0
   resolution: "commander@npm:9.1.0"
   checksum: 1428319b6b90600a813c28fe1e413996d1be99bf01afe9ebc4a9fc6f8077ff3e75f11809b2d2f85bd9b13d7cb592154278e9bbfdb16dc5843cef97bcba6a9cfd
+  languageName: node
+  linkType: hard
+
+"commander@npm:^9.3.0":
+  version: 9.3.0
+  resolution: "commander@npm:9.3.0"
+  checksum: d421ce66fee25792a1470c69aa8d1b86434bf873a96483aa92c8267f81a6f20c6f7c426f5e82f88ac50a8ec4855d3f2787aebcdef8aa559e1080a2337a95a217
   languageName: node
   linkType: hard
 
@@ -35769,7 +35776,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"lilconfig@npm:^2.0.5":
+"lilconfig@npm:2.0.5, lilconfig@npm:^2.0.5":
   version: 2.0.5
   resolution: "lilconfig@npm:2.0.5"
   checksum: f7bb9e42656f06930ad04e583026f087508ae408d3526b8b54895e934eb2a966b7aafae569656f2c79a29fe6d779b3ec44ba577e80814734c8655d6f71cdf2d1
@@ -35831,7 +35838,31 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"listr2@npm:^4.0.1":
+"lint-staged@npm:12.5.0":
+  version: 12.5.0
+  resolution: "lint-staged@npm:12.5.0"
+  dependencies:
+    cli-truncate: ^3.1.0
+    colorette: ^2.0.16
+    commander: ^9.3.0
+    debug: ^4.3.4
+    execa: ^5.1.1
+    lilconfig: 2.0.5
+    listr2: ^4.0.5
+    micromatch: ^4.0.5
+    normalize-path: ^3.0.0
+    object-inspect: ^1.12.2
+    pidtree: ^0.5.0
+    string-argv: ^0.3.1
+    supports-color: ^9.2.2
+    yaml: ^1.10.2
+  bin:
+    lint-staged: bin/lint-staged.js
+  checksum: ac203917be098305bc0aebd5f1a969e88ea0854e8fb2199ebcbbb059d8bce324cf97db8f3d25f7954dd48c0666ae13987fb4db569d5b6fecda06f9fb742278e1
+  languageName: node
+  linkType: hard
+
+"listr2@npm:^4.0.1, listr2@npm:^4.0.5":
   version: 4.0.5
   resolution: "listr2@npm:4.0.5"
   dependencies:
@@ -37514,6 +37545,16 @@ fsevents@~2.1.1:
     braces: ^3.0.1
     picomatch: ^2.0.5
   checksum: 39590a96d9ffad21f0afac044d0a5af4f33715a16fdd82c53a01c8f5ff6f70832a31b53e52972dac3deff8bf9f0bed0207d1c34e54ab3306a5e4c4efd5f7d249
+  languageName: node
+  linkType: hard
+
+"micromatch@npm:^4.0.5":
+  version: 4.0.5
+  resolution: "micromatch@npm:4.0.5"
+  dependencies:
+    braces: ^3.0.2
+    picomatch: ^2.3.1
+  checksum: 02a17b671c06e8fefeeb6ef996119c1e597c942e632a21ef589154f23898c9c6a9858526246abb14f8bca6e77734aa9dcf65476fca47cedfb80d9577d52843fc
   languageName: node
   linkType: hard
 
@@ -39388,6 +39429,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"object-inspect@npm:^1.12.2":
+  version: 1.12.2
+  resolution: "object-inspect@npm:1.12.2"
+  checksum: a534fc1b8534284ed71f25ce3a496013b7ea030f3d1b77118f6b7b1713829262be9e6243acbcb3ef8c626e2b64186112cb7f6db74e37b2789b9c789ca23048b2
+  languageName: node
+  linkType: hard
+
 "object-is@npm:^1.0.1":
   version: 1.1.5
   resolution: "object-is@npm:1.1.5"
@@ -40698,6 +40746,13 @@ fsevents@~2.1.1:
   version: 2.2.2
   resolution: "picomatch@npm:2.2.2"
   checksum: 897a589f94665b4fd93e075fa94893936afe3f7bbef44250f0e878a8d9d001972a79589cac2856c24f6f5aa3b0abc9c8ba00c98fae4dc22bc0117188864d4181
+  languageName: node
+  linkType: hard
+
+"picomatch@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "picomatch@npm:2.3.1"
+  checksum: 050c865ce81119c4822c45d3c84f1ced46f93a0126febae20737bd05ca20589c564d6e9226977df859ed5e03dc73f02584a2b0faad36e896936238238b0446cf
   languageName: node
   linkType: hard
 
@@ -48225,6 +48280,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"supports-color@npm:^9.2.2":
+  version: 9.2.2
+  resolution: "supports-color@npm:9.2.2"
+  checksum: 976d84877402fc38c1d43b1fde20b0a8dc0283273f21cfebe4ff7507d27543cdfbeec7db108a96b82d694465f06d64e8577562b05d0520b41710088e0a33cc50
+  languageName: node
+  linkType: hard
+
 "supports-hyperlinks@npm:^2.0.0":
   version: 2.2.0
   resolution: "supports-hyperlinks@npm:2.2.0"
@@ -50550,7 +50612,7 @@ typescript@^3.8.3:
     eslint: 8.10.0
     eslint-plugin-prettier: latest
     husky: 7.0.4
-    lint-staged: 12.3.7
+    lint-staged: 12.5.0
     prettier: 2.6.2
     typescript: 4.6.4
   languageName: unknown
