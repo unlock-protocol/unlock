@@ -15277,7 +15277,7 @@ __metadata:
     eslint-plugin-promise: 6.0.0
     eslint-plugin-react: 7.29.4
     eslint-plugin-standard: 4.1.0
-    gh-pages: 3.2.3
+    gh-pages: 4.0.0
     microbundle-crl: 0.13.11
     npm-run-all: 4.1.5
     prettier: 2.5.1
@@ -29557,9 +29557,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"gh-pages@npm:3.2.3":
-  version: 3.2.3
-  resolution: "gh-pages@npm:3.2.3"
+"gh-pages@npm:4.0.0":
+  version: 4.0.0
+  resolution: "gh-pages@npm:4.0.0"
   dependencies:
     async: ^2.6.1
     commander: ^2.18.0
@@ -29571,7 +29571,7 @@ fsevents@~2.1.1:
   bin:
     gh-pages: bin/gh-pages.js
     gh-pages-clean: bin/gh-pages-clean.js
-  checksum: 0a6e92180ce8fac6f244403d1c8af6d004615b96c7bafdc25da0022eab34f84470895587c618d440ae77b4b4ce1c1b85442ddf3184f53a522f87974da5a41760
+  checksum: 255648eb272104465586393be8a3112d928916a6b35b2b3ffc202c1e55b1c25b1e54e4b5fe83afbf1b1f8e7d37521c0d7b9c7b3db9ff899474db710581662154
   languageName: node
   linkType: hard
 
