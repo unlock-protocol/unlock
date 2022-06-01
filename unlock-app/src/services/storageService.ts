@@ -1,8 +1,8 @@
+import { isExpired } from 'react-jwt'
 import axios from 'axios'
 import { EventEmitter } from 'events'
 import { LocksmithService } from '@unlock-protocol/unlock-js'
 import { Lock } from '../unlockTypes'
-import { APP_NAME } from '../hooks/useAppStorage'
 import { generateNonce } from 'siwe'
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
@@ -85,12 +85,25 @@ export class StorageService extends EventEmitter {
     return siweMessage.prepareMessage()
   }
 
-  storeToken(token: string, name: string) {
-    localStorage.setItem(`${APP_NAME}-${name}`, token)
+  getToken(name: string) {
+    const token = sessionStorage.getItem(name)
+
+    if (token && !isExpired(token)) {
+      return token
+    } else {
+      return this.getRefreshToken(name, token!)
+    }
   }
 
-  getToken(name: string): string | null {
-    return localStorage.getItem(`${APP_NAME}-${name}`)
+  private async getRefreshToken(name: string, token: string) {
+    try {
+      const { accessToken } = (await this.refreshToken(token)) ?? null
+      sessionStorage.setItem(accessToken, name)
+      return accessToken
+    } catch (err) {
+      console.error(err)
+      return null
+    }
   }
 
   /**
