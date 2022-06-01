@@ -8,6 +8,7 @@ import GlobalWrapper from '../components/interface/GlobalWrapper'
 import '../index.css'
 
 const config = configure()
+
 const UnlockApp = ({ Component }: AppProps) => {
   useEffect(() => {
     if (!config.isServer) {
