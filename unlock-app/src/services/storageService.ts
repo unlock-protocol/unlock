@@ -74,7 +74,7 @@ export class StorageService extends EventEmitter {
     version = '1',
   }: GetSiweMessageProps) {
     const siweMessage = LocksmithService.createSiweMessage({
-      uri: 'https://locksmith.unlock-protocol.com',
+      uri: 'locksmith.unlock-protocol.com',
       domain: this.host,
       address,
       chainId,
