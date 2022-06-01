@@ -6910,13 +6910,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:1.6.0":
-  version: 1.6.0
-  resolution: "@headlessui/react@npm:1.6.0"
+"@headlessui/react@npm:1.6.4":
+  version: 1.6.4
+  resolution: "@headlessui/react@npm:1.6.4"
   peerDependencies:
     react: ^16 || ^17 || ^18
     react-dom: ^16 || ^17 || ^18
-  checksum: ee12b13dd2e98fc2f6ccebda78c6bbc4ca00e8f3cbb670cb330334591b317448fdaa250b250795c643833c344a7cbc8ceca1a13ff0a7655e28bd05e742ac8599
+  checksum: f24dd2f5bd4de5954b2fd40998627b58a650a874894a90f96320ae5bad1b961a140e85ce821b92dc8cbed0628523df57ae9533137467d867788eac907bd396d7
   languageName: node
   linkType: hard
 
@@ -15326,7 +15326,7 @@ __metadata:
     "@apollo/react-testing": 4.0.0
     "@babel/core": 7.17.10
     "@babel/plugin-proposal-optional-chaining": 7.16.7
-    "@headlessui/react": 1.6.0
+    "@headlessui/react": 1.6.4
     "@radix-ui/react-avatar": 0.1.4
     "@storybook/addon-actions": 6.4.17
     "@storybook/addon-knobs": 6.4.0
@@ -15493,7 +15493,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
     "@babel/core": 7.17.10
-    "@headlessui/react": 1.4.3
+    "@headlessui/react": 1.6.4
     "@radix-ui/react-avatar": 0.1.4
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 12.1.5
