@@ -20,7 +20,10 @@ export const useToken = (account: string, network: number) => {
   const loginAndGetTokens = async () => {
     if (!account && !network) return
     try {
-      const message = await storageService.getSiweMessage(account, network)
+      const message = await storageService.getSiweMessage({
+        address: account,
+        chainId: network,
+      })
       const signature = await walletService.signMessage(
         message,
         'personal_sign'
