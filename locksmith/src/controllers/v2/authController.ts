@@ -10,7 +10,7 @@ export class AuthController {
     try {
       if (!request.body.message) {
         response.status(422).json({
-          message: 'Expected prepareMessage object as body.',
+          message: 'Expected message object as body.',
         })
       }
       const message = new SiweMessage(request.body.message)
