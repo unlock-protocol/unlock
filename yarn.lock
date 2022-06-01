@@ -192,6 +192,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@aws-sdk/lib-storage@npm:^3.46.0":
+  version: 3.100.0
+  resolution: "@aws-sdk/lib-storage@npm:3.100.0"
+  dependencies:
+    buffer: 5.6.0
+    events: 3.3.0
+    stream-browserify: 3.0.0
+    tslib: ^2.3.1
+  peerDependencies:
+    "@aws-sdk/abort-controller": ^3.0.0
+    "@aws-sdk/client-s3": ^3.0.0
+  checksum: 362a1f26b3b19f2e48d6a9d3bbfc58e93f17889598957474f913f5cbfb994ffb2d8bd10a349735c6775c470de6f111ddf587c02e28db3e39578c1e3f0642a2bc
+  languageName: node
+  linkType: hard
+
 "@babel/cli@npm:7.17.10":
   version: 7.17.10
   resolution: "@babel/cli@npm:7.17.10"
@@ -14816,7 +14831,7 @@ __metadata:
     lodash.isequal: 4.5.0
     msw: 0.39.2
     multer: 1.4.4
-    multer-s3: 2.10.0
+    multer-s3: 3.0.1
     nock: 13.2.4
     node-abort-controller: 3.0.1
     node-cron: 3.0.0
@@ -20081,6 +20096,16 @@ __metadata:
   dependencies:
     safe-buffer: ^5.1.1
   checksum: 78226fcae9f4a0b4adec69dffc049f26f6bab240dfdd1b3f6fe07c4eb6b90da202ea5c363f98af676156ee39450a06405fddd9e8965f68a5327edcc89dcbe5d0
+  languageName: node
+  linkType: hard
+
+"buffer@npm:5.6.0":
+  version: 5.6.0
+  resolution: "buffer@npm:5.6.0"
+  dependencies:
+    base64-js: ^1.0.2
+    ieee754: ^1.1.4
+  checksum: d659494c5032dd39d03d2912e64179cc44c6340e7e9d1f68d3840e7ab4559989fbce92b4950174593c38d05268224235ba404f0878775cab2a616b6dcad9c23e
   languageName: node
   linkType: hard
 
@@ -27689,7 +27714,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"events@npm:^3.0.0, events@npm:^3.3.0":
+"events@npm:3.3.0, events@npm:^3.0.0, events@npm:^3.3.0":
   version: 3.3.0
   resolution: "events@npm:3.3.0"
   checksum: f6f487ad2198aa41d878fa31452f1a3c00958f46e9019286ff4787c84aac329332ab45c9cdc8c445928fc6d7ded294b9e005a7fce9426488518017831b272780
@@ -38211,14 +38236,17 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"multer-s3@npm:2.10.0":
-  version: 2.10.0
-  resolution: "multer-s3@npm:2.10.0"
+"multer-s3@npm:3.0.1":
+  version: 3.0.1
+  resolution: "multer-s3@npm:3.0.1"
   dependencies:
+    "@aws-sdk/lib-storage": ^3.46.0
     file-type: ^3.3.0
     html-comment-regex: ^1.1.2
     run-parallel: ^1.1.6
-  checksum: 7de3089216288ae23a02b685149f11e119e184b9db66180c6a1a6c530f8d8a5b6a044cb19e4a05b407e04b9c16bbcd2aa76766dde961253b4ff59bffd3a84dd6
+  peerDependencies:
+    "@aws-sdk/client-s3": ^3.0.0
+  checksum: 376b832c9f124db80051de5b4d637120d49f569614a5da6333c5903e3c6299e6210bc4e140485b4c6becb884792cc0b1f29da0d06731116b1518b46c4a89cdf6
   languageName: node
   linkType: hard
 
@@ -47383,6 +47411,16 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
+"stream-browserify@npm:3.0.0, stream-browserify@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "stream-browserify@npm:3.0.0"
+  dependencies:
+    inherits: ~2.0.4
+    readable-stream: ^3.5.0
+  checksum: 4c47ef64d6f03815a9ca3874e2319805e8e8a85f3550776c47ce523b6f4c6cd57f40e46ec6a9ab8ad260fde61863c2718f250d3bedb3fe9052444eb9abfd9921
+  languageName: node
+  linkType: hard
+
 "stream-browserify@npm:^2.0.1":
   version: 2.0.2
   resolution: "stream-browserify@npm:2.0.2"
@@ -47390,16 +47428,6 @@ resolve@^2.0.0-next.3:
     inherits: ~2.0.1
     readable-stream: ^2.0.2
   checksum: 8de7bcab5582e9a931ae1a4768be7efe8fa4b0b95fd368d16d8cf3e494b897d6b0a7238626de5d71686e53bddf417fd59d106cfa3af0ec055f61a8d1f8fc77b3
-  languageName: node
-  linkType: hard
-
-"stream-browserify@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "stream-browserify@npm:3.0.0"
-  dependencies:
-    inherits: ~2.0.4
-    readable-stream: ^3.5.0
-  checksum: 4c47ef64d6f03815a9ca3874e2319805e8e8a85f3550776c47ce523b6f4c6cd57f40e46ec6a9ab8ad260fde61863c2718f250d3bedb3fe9052444eb9abfd9921
   languageName: node
   linkType: hard
 
@@ -49615,6 +49643,13 @@ resolve@^2.0.0-next.3:
   version: 2.3.1
   resolution: "tslib@npm:2.3.1"
   checksum: de17a98d4614481f7fcb5cd53ffc1aaf8654313be0291e1bfaee4b4bb31a20494b7d218ff2e15017883e8ea9626599b3b0e0229c18383ba9dce89da2adf15cb9
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.3.1":
+  version: 2.4.0
+  resolution: "tslib@npm:2.4.0"
+  checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
   languageName: node
   linkType: hard
 
