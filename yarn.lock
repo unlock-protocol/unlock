@@ -15358,7 +15358,7 @@ __metadata:
     jest-styled-components: 7.0.8
     lint-staged: 12.3.7
     next: 12.1.5
-    next-seo: 5.0.0
+    next-seo: 5.4.0
     path-match: 1.2.4
     postcss: 8.4.13
     prettier: 2.5.1
@@ -38611,14 +38611,14 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"next-seo@npm:5.0.0":
-  version: 5.0.0
-  resolution: "next-seo@npm:5.0.0"
+"next-seo@npm:5.4.0":
+  version: 5.4.0
+  resolution: "next-seo@npm:5.4.0"
   peerDependencies:
     next: ^8.1.1-canary.54 || >=9.0.0
     react: ">=16.0.0"
     react-dom: ">=16.0.0"
-  checksum: 2f17714196137b9dc3caa73d06bfe418ef7e74dbd9814b4099be63307a52708709317055bef5fa4b4676dd606ed69bef5f1df3b61c1b85c09702c979b7baebd1
+  checksum: fe19b4f7237111d6e8c2f3e9128946480f1b6e2d7ffab5902e8a4a1114721142daa187175334fa7d6da25605658e63cd8c6e3a68a9d9678fd7fbd4fb4b061391
   languageName: node
   linkType: hard
 
