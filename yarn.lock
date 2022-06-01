@@ -15070,7 +15070,7 @@ __metadata:
     "@types/react": 17.0.44
     "@types/react-dom": 17.0.16
     "@vitejs/plugin-react": 1.2.0
-    autoprefixer: 10.4.6
+    autoprefixer: 10.4.7
     babel-loader: 8.2.5
     postcss: 8.4.13
     prism-react-renderer: 1.2.1
@@ -15190,7 +15190,7 @@ __metadata:
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@walletconnect/web3-provider": 1.7.8
     apollo-boost: 0.4.9
-    autoprefixer: 10.4.6
+    autoprefixer: 10.4.7
     axios: 0.27.2
     babel-eslint: 10.1.0
     babel-jest: 28.1.0
@@ -15341,7 +15341,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@zeit/next-source-maps": 0.0.3
-    autoprefixer: 10.4.6
+    autoprefixer: 10.4.7
     babel-eslint: 10.1.0
     babel-jest: 28.1.0
     babel-loader: 8.2.5
@@ -17893,12 +17893,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:10.4.6":
-  version: 10.4.6
-  resolution: "autoprefixer@npm:10.4.6"
+"autoprefixer@npm:10.4.7":
+  version: 10.4.7
+  resolution: "autoprefixer@npm:10.4.7"
   dependencies:
     browserslist: ^4.20.3
-    caniuse-lite: ^1.0.30001334
+    caniuse-lite: ^1.0.30001335
     fraction.js: ^4.2.0
     normalize-range: ^0.1.2
     picocolors: ^1.0.0
@@ -17907,7 +17907,7 @@ __metadata:
     postcss: ^8.1.0
   bin:
     autoprefixer: bin/autoprefixer
-  checksum: 4e8fbe94e8d66e77908958a041e3c1db267eb6d6d710f567db6ec4c349364082a75fef96ae808a6bdbc884bb2c63f1981067858317ef4e6af3d7561b551a634f
+  checksum: 0e55d0d19806c672ec0c79cc23c27cf77e90edf2600670735266ba33ec5294458f404baaa2f7cd4cfe359cf7a97b3c86f01886bdbdc129a4f2f76ca5977a91af
   languageName: node
   linkType: hard
 
@@ -20512,10 +20512,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:^1.0.30001334":
-  version: 1.0.30001335
-  resolution: "caniuse-lite@npm:1.0.30001335"
-  checksum: fe08b49ec6cb76cc69958ff001cf89d0a8ef9f35e0c8028b65981585046384f76e007d64dea372a34ca56d91caa83cc614c00779fe2b4d378aa0e68696374f67
+"caniuse-lite@npm:^1.0.30001335":
+  version: 1.0.30001344
+  resolution: "caniuse-lite@npm:1.0.30001344"
+  checksum: 9dba66f796dc98632dced4c5d487d0fad219e137a27c634eec68520f2e598a613e3371b9207e15a078689a629128eca898793e37fc98841821ab481bddad51b9
   languageName: node
   linkType: hard
 
