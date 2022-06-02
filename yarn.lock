@@ -5328,23 +5328,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/eslintrc@npm:^1.2.3":
-  version: 1.2.3
-  resolution: "@eslint/eslintrc@npm:1.2.3"
-  dependencies:
-    ajv: ^6.12.4
-    debug: ^4.3.2
-    espree: ^9.3.2
-    globals: ^13.9.0
-    ignore: ^5.2.0
-    import-fresh: ^3.2.1
-    js-yaml: ^4.1.0
-    minimatch: ^3.1.2
-    strip-json-comments: ^3.1.1
-  checksum: 48e7b7ac05cd514eee2ebb1d487600f0dd637ac21f63605e353cff6a08c7223275fe4f571d15ee9deae4e78c53edc73369ffcbed15fba4dfc1806179dbf4dc85
-  languageName: node
-  linkType: hard
-
 "@eslint/eslintrc@npm:^1.3.0":
   version: 1.3.0
   resolution: "@eslint/eslintrc@npm:1.3.0"
@@ -8281,19 +8264,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.0.5":
-  version: 2.0.5
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.0.5"
+"@nomiclabs/hardhat-ethers@npm:2.0.6":
+  version: 2.0.6
+  resolution: "@nomiclabs/hardhat-ethers@npm:2.0.6"
   peerDependencies:
     ethers: ^5.0.0
     hardhat: ^2.0.0
-  checksum: 07a5916f9fbb1efd24effc0d3949c70d1f45240d0bc4705653f1d378573c419c72d9a00f8db48b19c4aa27bd6c9dc0033aa40717cc9d77025a2cceeb59668463
+  checksum: 82319a2615804abae2ca70834a20bfc2874c742094fadeaea55e5c788e589794836a3a2eaaf19d8aecdadf1fd0bd7a4f9eac2c32bbda9ed081c8e2e3d4fe55cc
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-etherscan@npm:3.0.3":
-  version: 3.0.3
-  resolution: "@nomiclabs/hardhat-etherscan@npm:3.0.3"
+"@nomiclabs/hardhat-etherscan@npm:3.0.4":
+  version: 3.0.4
+  resolution: "@nomiclabs/hardhat-etherscan@npm:3.0.4"
   dependencies:
     "@ethersproject/abi": ^5.1.2
     "@ethersproject/address": ^5.0.2
@@ -8304,24 +8287,24 @@ __metadata:
     undici: ^4.14.1
   peerDependencies:
     hardhat: ^2.0.4
-  checksum: 6ce0856ad989c4cff5c90f7673d80fb7778ac1941db2bdf0998afca31c2439ed2e840fbad123a6f5958768243179af33a56f7b45919a598c8361b9a7cfdbaea6
+  checksum: 82d2cf96c92370eab51c5f57f9f8491e51a92a7fbcf75f4ac7f99ffec1c79dc731fbb1996c74eba5eb422f86eb18de6c390cf32d06ea580968a9c0f8918fba97
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-truffle5@npm:2.0.5":
-  version: 2.0.5
-  resolution: "@nomiclabs/hardhat-truffle5@npm:2.0.5"
+"@nomiclabs/hardhat-truffle5@npm:2.0.6":
+  version: 2.0.6
+  resolution: "@nomiclabs/hardhat-truffle5@npm:2.0.6"
   dependencies:
     "@nomiclabs/truffle-contract": ^4.2.23
     "@types/chai": ^4.2.0
     chai: ^4.2.0
-    ethereumjs-util: ^7.1.3
+    ethereumjs-util: ^7.1.4
     fs-extra: ^7.0.1
   peerDependencies:
     "@nomiclabs/hardhat-web3": ^2.0.0
     hardhat: ^2.6.4
     web3: ^1.0.0-beta.36
-  checksum: 7e7b5b431211043b6d127383bec83dc5ec05cd70bedee76c8ffbb359e590e4f51460bcd76ec69794abaa148129e98a48be73720231b78bc2d14f50a78bc50be6
+  checksum: c2a1e7f1483bcd29e96dfb121f7bc800cafc17d9ce576f2a603cbe97edf7e09fd3fd77c52646785b3c4237de5705733ff8a10f75d131974b45941558af1a23e5
   languageName: node
   linkType: hard
 
@@ -15251,10 +15234,10 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     chai: 4.3.4
     copyfiles: 2.4.1
-    eslint: ^8.15.0
-    fs-extra: 10.0.1
+    eslint: 8.16.0
+    fs-extra: 10.1.0
     hardhat: 2.9.0
-    typescript: 4.6.4
+    typescript: 4.7.2
   languageName: unknown
   linkType: soft
 
@@ -15279,7 +15262,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
-    "@nomiclabs/hardhat-ethers": 2.0.5
+    "@nomiclabs/hardhat-ethers": 2.0.6
     "@openzeppelin/hardhat-upgrades": 1.18.0
     "@types/chai": 4.3.0
     "@types/fs-extra": 9.0.13
@@ -15510,7 +15493,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contract-extensions@workspace:smart-contract-extensions"
   dependencies:
-    "@nomiclabs/hardhat-truffle5": 2.0.5
+    "@nomiclabs/hardhat-truffle5": 2.0.6
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.5.0
     "@openzeppelin/test-helpers": 0.5.15
@@ -15543,9 +15526,9 @@ __metadata:
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
     "@gnosis.pm/safe-core-sdk": 2.0.0
-    "@nomiclabs/hardhat-ethers": 2.0.5
-    "@nomiclabs/hardhat-etherscan": 3.0.3
-    "@nomiclabs/hardhat-truffle5": 2.0.5
+    "@nomiclabs/hardhat-ethers": 2.0.6
+    "@nomiclabs/hardhat-etherscan": 3.0.4
+    "@nomiclabs/hardhat-truffle5": 2.0.6
     "@nomiclabs/hardhat-waffle": 2.0.3
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.4.2
@@ -15870,7 +15853,7 @@ __metadata:
     "@babel/cli": 7.17.10
     "@babel/core": 7.17.10
     "@babel/preset-env": 7.17.10
-    "@nomiclabs/hardhat-ethers": 2.0.5
+    "@nomiclabs/hardhat-ethers": 2.0.6
     "@openzeppelin/hardhat-upgrades": 1.16.1
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -27055,51 +27038,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:8.15.0, eslint@npm:^8.15.0":
-  version: 8.15.0
-  resolution: "eslint@npm:8.15.0"
-  dependencies:
-    "@eslint/eslintrc": ^1.2.3
-    "@humanwhocodes/config-array": ^0.9.2
-    ajv: ^6.10.0
-    chalk: ^4.0.0
-    cross-spawn: ^7.0.2
-    debug: ^4.3.2
-    doctrine: ^3.0.0
-    escape-string-regexp: ^4.0.0
-    eslint-scope: ^7.1.1
-    eslint-utils: ^3.0.0
-    eslint-visitor-keys: ^3.3.0
-    espree: ^9.3.2
-    esquery: ^1.4.0
-    esutils: ^2.0.2
-    fast-deep-equal: ^3.1.3
-    file-entry-cache: ^6.0.1
-    functional-red-black-tree: ^1.0.1
-    glob-parent: ^6.0.1
-    globals: ^13.6.0
-    ignore: ^5.2.0
-    import-fresh: ^3.0.0
-    imurmurhash: ^0.1.4
-    is-glob: ^4.0.0
-    js-yaml: ^4.1.0
-    json-stable-stringify-without-jsonify: ^1.0.1
-    levn: ^0.4.1
-    lodash.merge: ^4.6.2
-    minimatch: ^3.1.2
-    natural-compare: ^1.4.0
-    optionator: ^0.9.1
-    regexpp: ^3.2.0
-    strip-ansi: ^6.0.1
-    strip-json-comments: ^3.1.0
-    text-table: ^0.2.0
-    v8-compile-cache: ^2.0.3
-  bin:
-    eslint: bin/eslint.js
-  checksum: d8896393832e154e1381a21041cfe4d12a73a76fac26ea27cabbc0e5fdac87918ad651f07f804ef6faacd3868572de3c1ec5d96edf5502bc999eff0c423638f7
-  languageName: node
-  linkType: hard
-
 "eslint@npm:8.16.0":
   version: 8.16.0
   resolution: "eslint@npm:8.16.0"
@@ -29819,6 +29757,17 @@ __metadata:
     jsonfile: ^6.0.1
     universalify: ^2.0.0
   checksum: c1faaa5eb9e1c5c7c7ff09f966e93922ecb068ae1b04801cfc983ef05fcc1f66bfbb8d8d0b745c910014c7a2e7317fb6cf3bfe7390450c1157e3cc1a218f221d
+  languageName: node
+  linkType: hard
+
+"fs-extra@npm:10.1.0":
+  version: 10.1.0
+  resolution: "fs-extra@npm:10.1.0"
+  dependencies:
+    graceful-fs: ^4.2.0
+    jsonfile: ^6.0.1
+    universalify: ^2.0.0
+  checksum: dc94ab37096f813cc3ca12f0f1b5ad6744dfed9ed21e953d72530d103cea193c2f81584a39e9dee1bea36de5ee66805678c0dddc048e8af1427ac19c00fffc50
   languageName: node
   linkType: hard
 
