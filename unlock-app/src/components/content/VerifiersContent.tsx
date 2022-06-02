@@ -61,7 +61,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
           .getEndpoint(
             `/v2/api/verifier/${network}/${lockAddress}/${resolvedAddress}`,
             options,
-            true
+            true /* withAuth */
           )
           .then((res: any) => {
             if (res.message) {
