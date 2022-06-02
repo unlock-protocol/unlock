@@ -7,7 +7,7 @@ export const xdai: NetworkConfig = {
   unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',
   serializerAddress: '0x646E373EAf8a4AEc31Bf62B7Fd6fB59296d6CdA9',
   id: 100,
-  name: 'xDai',
+  name: 'Gnosis Chain',
   blockTime: 5000,
   requiredConfirmations: 12,
   subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
