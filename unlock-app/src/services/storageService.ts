@@ -666,7 +666,6 @@ export class StorageService extends EventEmitter {
         },
       }
     }
-    console.log('params', params, withAuth)
     return fetch(endpoint, {
       ...params,
     }).then((res) => {
