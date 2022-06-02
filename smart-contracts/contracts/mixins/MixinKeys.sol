@@ -310,7 +310,9 @@ contract MixinKeys is
     _isKey(_tokenIdTo);
     
     // make sure there is enough time remaining
-    if(keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp <= _amount) {
+    if(
+      _amount > keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp
+    ) {
       revert NOT_ENOUGH_TIME();
     }
 

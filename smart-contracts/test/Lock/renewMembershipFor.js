@@ -81,7 +81,7 @@ contract('Lock / Recurring memberships', (accounts) => {
 
         await reverts(
           locks.NON_EXPIRING.renewMembershipFor(newTokenId, ADDRESS_ZERO),
-          'NON_EXPIRING_LOCK'
+          'NON_RENEWABLE_LOCK'
         )
       })
 

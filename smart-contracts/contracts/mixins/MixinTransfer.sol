@@ -55,7 +55,7 @@ contract MixinTransfer is
   ) public
   {
     _lockIsUpToDate();
-    if(maxNumberOfKeys < _totalSupply) {
+    if(maxNumberOfKeys <= _totalSupply) {
       revert LOCK_SOLD_OUT();
     }
     _onlyKeyManagerOrApproved(_tokenIdFrom);
