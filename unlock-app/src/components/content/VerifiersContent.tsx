@@ -31,11 +31,10 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   const [addVerifierModalOpen, setAddVerifierModalOpen] = useState(false)
   const [verifierAddress, setVerifierAddress] = useState('')
   const [loading, setLoading] = useState(false)
+  const [verifiers, setVerifiers] = useState<any[]>([])
   const lockAddress: string = query?.lockAddress ?? ''
   const { network } = useContext(AuthenticationContext)
   const storageService = useContext(StorageServiceContext)
-
-  const [token] = useState()
 
   const onAddVerifier = () => {
     setVerifierAddress('')
@@ -56,16 +55,22 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
           },
         }
         await storageService
           .getEndpoint(
-            `/verifier/${network}/${lockAddress}/${resolvedAddress}`,
-            options
+            `/v2/api/verifier/${network}/${lockAddress}/${resolvedAddress}`,
+            options,
+            true /* withAuth */
           )
-          .then(() => {
-            ToastHelper.success('Verifier added to list')
+          .then((res: any) => {
+            if (res.message) {
+              ToastHelper.error(res.message)
+            } else {
+              ToastHelper.success('Verifier added to list')
+              getVerifierList() // get updated list with last item added
+              setAddVerifierModalOpen(false)
+            }
           })
 
         setLoading(false)
@@ -75,9 +80,39 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
       }
     } catch (err: any) {
       setLoading(false)
+      console.error(err)
       ToastHelper.error(
         err?.error ??
           'There was a problem adding the verifier address, please re-load and try again'
+      )
+    }
+  }
+
+  const getVerifierList = async () => {
+    try {
+      const options = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      }
+      await storageService
+        .getEndpoint(
+          `/v2/api/verifier/list/${network}/${lockAddress}`,
+          options,
+          true /* withAuth */
+        )
+        .then((res: any) => {
+          if (res.message) {
+            ToastHelper.error(res.message)
+          } else {
+            setVerifiers(res?.results)
+          }
+        })
+    } catch (err: any) {
+      setLoading(false)
+      console.error(err)
+      ToastHelper.error(
+        err?.error ??
+          'We could not load the list of verifiers for your lock. Please reload to to try again.'
       )
     }
   }
@@ -93,7 +128,12 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
           <span>A list for all verifiers for your event</span>
           <Button onClick={onAddVerifier}>Add verifier</Button>
         </Header>
-        <VerifiersList lockAddress={lockAddress} />
+        <VerifiersList
+          lockAddress={lockAddress}
+          getVerifierList={getVerifierList}
+          verifiers={verifiers}
+          setVerifiers={setVerifiers}
+        />
       </VerifierContent>
 
       <Modal isOpen={addVerifierModalOpen} setIsOpen={onAddVerifier}>
