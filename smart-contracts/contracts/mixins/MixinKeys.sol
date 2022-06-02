@@ -278,7 +278,7 @@ contract MixinKeys is
     uint length = balanceOf(_recipient);
     
     // make sure address does not have more keys than allowed
-    if(length > _maxKeysPerAddress) {
+    if(length >= _maxKeysPerAddress) {
       revert MAX_KEYS_REACHED();
     }
 
