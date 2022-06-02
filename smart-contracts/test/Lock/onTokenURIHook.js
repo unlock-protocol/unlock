@@ -61,7 +61,7 @@ contract('Lock / onTokenURIHook', (accounts) => {
   it('cannot set the hook to a non-contract address', async () => {
     await reverts(
       lock.setEventHooks(ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO, accounts[3]),
-      'INVALID_ON_TOKEN_URI_HOOK'
+      'INVALID_HOOK(3)'
     )
   })
 })
