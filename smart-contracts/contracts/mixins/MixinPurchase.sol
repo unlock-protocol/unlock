@@ -200,11 +200,13 @@ contract MixinPurchase is
     // transfer the tokens
     uint inMemoryKeyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
 
-    if(tokenAddress != address(0) && inMemoryKeyPrice >= _value) {
-      revert INSUFFICIENT_ERC20_VALUE();
+    if(tokenAddress != address(0)) {
+      if(_value < inMemoryKeyPrice) {
+        revert INSUFFICIENT_ERC20_VALUE();
+      }
       IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
       token.transferFrom(msg.sender, address(this), inMemoryKeyPrice);
-    } else if(inMemoryKeyPrice >= msg.value) {
+    } else if(msg.value < inMemoryKeyPrice) {
       // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
       revert INSUFFICIENT_VALUE();
     }
@@ -227,11 +229,7 @@ contract MixinPurchase is
     _isKey(_tokenId);
 
     // check the lock
-    if(
-      _originalDurations[_tokenId] == type(uint).max
-      ||
-      tokenAddress != address(0)
-    ) {
+    if(_originalDurations[_tokenId] == type(uint).max || tokenAddress == address(0)) {
       revert NON_RENEWABLE_LOCK();
     }
 

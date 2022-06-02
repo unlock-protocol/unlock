@@ -103,7 +103,7 @@ contract('Lock / Recurring memberships', (accounts) => {
 
         await reverts(
           locks.FIRST.renewMembershipFor(newTokenId, ADDRESS_ZERO),
-          'NON_ERC20_LOCK'
+          'NON_RENEWABLE_LOCK'
         )
       })
     })
@@ -169,7 +169,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         )
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'PRICE_CHANGED'
+          'LOCK_HAS_CHANGED'
         )
       })
 
@@ -183,7 +183,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         await lock.updateKeyPricing(keyPrice, dai2.address, { from: lockOwner })
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'TOKEN_CHANGED'
+          'LOCK_HAS_CHANGED'
         )
       })
 
@@ -191,7 +191,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         await lock.setExpirationDuration(1000, { from: lockOwner })
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'DURATION_CHANGED'
+          'LOCK_HAS_CHANGED'
         )
       })
     })
@@ -285,7 +285,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         // should fail
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'DURATION_CHANGED'
+          'LOCK_HAS_CHANGED'
         )
       })
 
@@ -322,7 +322,7 @@ contract('Lock / Recurring memberships', (accounts) => {
 
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'DURATION_CHANGED'
+          'LOCK_HAS_CHANGED'
         )
       })
     })
