@@ -48,10 +48,11 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
 
   const loginAndGetList = async () => {
     try {
+      if (!storageService) return
       await storageService.loginPrompt({
         walletService,
-        address: account,
-        chainId: network,
+        address: account!,
+        chainId: network!,
       })
       setLogged(true)
       getVerifierList()
