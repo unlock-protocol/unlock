@@ -2,10 +2,9 @@ const unlockContract = artifacts.require('Unlock.sol')
 const publicLockContract = artifacts.require('PublicLock')
 
 const { reverts } = require('../helpers/errors')
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const getProxy = require('../helpers/proxy')
 const deployLocks = require('../helpers/deployLocks')
-const { errorMessages } = require('../helpers/constants')
+const { ADDRESS_ZERO, errorMessages } = require('../helpers/constants')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
@@ -28,7 +27,7 @@ contract('Lock / initializers', (accounts) => {
 
   it('initialize() may not be called again', async () => {
     await reverts(
-      lock.initialize(accounts[0], 0, constants.ZERO_ADDRESS, 0, 0, ''),
+      lock.initialize(accounts[0], 0, ADDRESS_ZERO, 0, 0, ''),
       `${VM_ERROR_REVERT_WITH_REASON} 'Initializable: contract is already initialized'`
     )
   })

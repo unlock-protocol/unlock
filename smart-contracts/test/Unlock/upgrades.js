@@ -6,8 +6,8 @@ const createLockHash = require('../helpers/createLockCalldata')
 const {
   LATEST_UNLOCK_VERSION,
   LATEST_PUBLIC_LOCK_VERSION,
+  ADDRESS_ZERO,
 } = require('../helpers/constants')
-
 // files path
 const contractsPath = path.resolve(
   __dirname,
@@ -150,7 +150,7 @@ contract('Unlock / upgrades', async (accounts) => {
               if (versionNumber >= 11) {
                 const args = [
                   60 * 60 * 24, // expirationDuration 1 day
-                  web3.utils.padLeft(0, 40), // token address
+                  ADDRESS_ZERO, // token address
                   keyPrice,
                   5, // maxNumberOfKeys
                   'UpgradeTestingLock',
@@ -163,7 +163,7 @@ contract('Unlock / upgrades', async (accounts) => {
                 // Version 5 introduced `create2`, requiring a salt
                 lockTx = await unlock.connect(lockOwner).createLock(
                   60 * 60 * 24, // expirationDuration 1 day
-                  web3.utils.padLeft(0, 40), // token address
+                  ADDRESS_ZERO, // token address
                   keyPrice,
                   5, // maxNumberOfKeys
                   'UpgradeTestingLock',
@@ -173,7 +173,7 @@ contract('Unlock / upgrades', async (accounts) => {
                 // Version 3 added a lock name
                 lockTx = await unlock.connect(lockOwner).createLock(
                   60 * 60 * 24, // expirationDuration 1 day
-                  web3.utils.padLeft(0, 40), // token address
+                  ADDRESS_ZERO, // token address
                   keyPrice,
                   5, // maxNumberOfKeys
                   'UpgradeTestingLock'
@@ -182,7 +182,7 @@ contract('Unlock / upgrades', async (accounts) => {
                 // Version 1 added ERC-20 support, requiring a tokenAddress
                 lockTx = await unlock.connect(lockOwner).createLock(
                   60 * 60 * 24, // expirationDuration 1 day
-                  web3.utils.padLeft(0, 40), // token address
+                  ADDRESS_ZERO, // token address
                   keyPrice,
                   5 // maxNumberOfKeys
                 )
@@ -271,10 +271,7 @@ contract('Unlock / upgrades', async (accounts) => {
                   await publicLockLatestTemplate.deployed()
 
                   // set template
-                  if (
-                    (await unlock.proxyAdminAddress()) ===
-                    ethers.constants.AddressZero
-                  ) {
+                  if ((await unlock.proxyAdminAddress()) === ADDRESS_ZERO) {
                     await unlock.initializeProxyAdmin()
                   }
                   const version =
@@ -363,7 +360,7 @@ contract('Unlock / upgrades', async (accounts) => {
                     // Create a new Lock
                     const args = [
                       60 * 60 * 24, // expirationDuration 1 day
-                      web3.utils.padLeft(0, 40),
+                      ADDRESS_ZERO,
                       keyPrice,
                       5, // maxNumberOfKeys
                       'After-Upgrade Lock',
@@ -384,8 +381,8 @@ contract('Unlock / upgrades', async (accounts) => {
                     await lockLatest.purchase(
                       [],
                       [keyOwner.address],
-                      [web3.utils.padLeft(0, 40)],
-                      [web3.utils.padLeft(0, 40)],
+                      [ADDRESS_ZERO],
+                      [ADDRESS_ZERO],
                       [[]],
                       { value: keyPrice }
                     )
@@ -430,8 +427,8 @@ contract('Unlock / upgrades', async (accounts) => {
             .purchase(
               [],
               [keyOwner.address],
-              [web3.utils.padLeft(0, 40)],
-              [web3.utils.padLeft(0, 40)],
+              [ADDRESS_ZERO],
+              [ADDRESS_ZERO],
               [[]],
               {
                 value: keyPrice,
@@ -442,22 +439,15 @@ contract('Unlock / upgrades', async (accounts) => {
           // Lock Version 9 (used by Unlock v10) added keyManager to purchase
           return await lock
             .connect(lockOwner)
-            .purchase(
-              0,
-              keyOwner.address,
-              web3.utils.padLeft(0, 40),
-              web3.utils.padLeft(0, 40),
-              [],
-              {
-                value: keyPrice,
-              }
-            )
+            .purchase(0, keyOwner.address, ADDRESS_ZERO, ADDRESS_ZERO, [], {
+              value: keyPrice,
+            })
         }
         if (versionNumber >= 5) {
           // Version 5 renamed to purchase, added keyPrice, referrer, and data
           return await lock
             .connect(lockOwner)
-            .purchase(0, keyOwner.address, web3.utils.padLeft(0, 40), [], {
+            .purchase(0, keyOwner.address, ADDRESS_ZERO, [], {
               value: keyPrice,
             })
         }

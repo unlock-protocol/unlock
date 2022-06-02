@@ -3,6 +3,7 @@ const { expectRevert } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
 const { getProxyAddress } = require('../../helpers/deployments')
 const createLockHash = require('../helpers/createLockCalldata')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
@@ -21,7 +22,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
       unlock = Unlock.attach(unlockAddress)
 
       // create a new lock
-      const tokenAddress = web3.utils.padLeft(0, 40)
+      const tokenAddress = ADDRESS_ZERO
       const args = [60 * 60 * 24 * 30, tokenAddress, keyPrice, 10, 'Test lock']
 
       const calldata = await createLockHash({ args, from: from.address })
@@ -42,8 +43,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
       const tx = await lock.connect(buyers[0]).purchase(
         [],
         buyers.slice(0, 10).map((b) => b.address),
-        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
-        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
+        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
+        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
         buyers.slice(0, 10).map(() => []),
         {
           value: keyPrice.mul(buyers.length).toString(),
@@ -59,8 +60,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
           .purchase(
             [],
             [buyers[11].address],
-            [web3.utils.padLeft(0, 40)],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
             [[]],
             {
               value: keyPrice.toString(),
@@ -78,8 +79,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
         .purchase(
           [],
           [buyers[11].address],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: keyPrice.toString(),
@@ -99,8 +100,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
       const tx = await lock.connect(buyers[0]).purchase(
         [],
         buyers.map((b) => b.address),
-        buyers.map(() => web3.utils.padLeft(0, 40)),
-        buyers.map(() => web3.utils.padLeft(0, 40)),
+        buyers.map(() => ADDRESS_ZERO),
+        buyers.map(() => ADDRESS_ZERO),
         buyers.map(() => []),
         {
           value: keyPrice.mul(buyers.length).toString(),
@@ -118,8 +119,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
       const tx = await lock.connect(buyers[0]).purchase(
         [],
         buyers.slice(0, 10).map((b) => b.address),
-        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
-        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
+        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
+        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
         buyers.slice(0, 10).map(() => []),
         {
           value: keyPrice.mul(buyers.length).toString(),
@@ -142,8 +143,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
           .purchase(
             [keyPrice.toString()],
             [buyers[11].address],
-            [web3.utils.padLeft(0, 40)],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
             [[]],
             {
               value: keyPrice.toString(),

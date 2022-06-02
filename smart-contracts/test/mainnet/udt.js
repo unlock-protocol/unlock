@@ -4,7 +4,7 @@ const { time } = require('@openzeppelin/test-helpers')
 const { getProxyAddress } = require('../../helpers/deployments')
 
 const { resetNodeState, impersonate } = require('../helpers/mainnet')
-const { errorMessages } = require('../helpers/constants')
+const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
 const { getUnlockMultisigOwners } = require('../../helpers/multisig')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
@@ -90,7 +90,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
         const { events } = await tx.wait()
         const { args } = events.find((v) => v.event === 'Transfer')
 
-        assert.equal(args.from, ethers.constants.AddressZero)
+        assert.equal(args.from, ADDRESS_ZERO)
         assert.equal(args.to, recipient.address)
         assert.equal(args.value.eq(amount), true)
       })
@@ -371,10 +371,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
           (v) => v.event === 'DelegateChanged'
         )
         assert.equal(evtDelegateChanged.args.delegator, delegator.address)
-        assert.equal(
-          evtDelegateChanged.args.fromDelegate,
-          ethers.constants.AddressZero
-        )
+        assert.equal(evtDelegateChanged.args.fromDelegate, ADDRESS_ZERO)
         assert.equal(evtDelegateChanged.args.toDelegate, holder.address)
 
         const evtDelegateVotesChanged = events.find(
