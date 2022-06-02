@@ -2,7 +2,6 @@
 
 const dotenv = require('dotenv')
 const path = require('path')
-const { exportPaths } = require('./src/utils/exportStatic')
 
 const unlockEnv = process.env.UNLOCK_ENV || 'dev'
 
@@ -23,7 +22,6 @@ const dev = {
     process.env.WEDLOCKS_URI ||
     'https://wedlocks.unlock-protocol.com/.netlify/functions/handler',
 }
-
 
 const staging = {
   paywallUrl: 'https://staging-paywall.unlock-protocol.com',
@@ -89,5 +87,4 @@ module.exports = {
     config.resolve.extensions = [...config.resolve.extensions, '.ts', '.tsx']
     return config
   },
-  exportPathMap: exportPaths,
 }

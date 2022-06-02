@@ -1,7 +1,7 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 
-import Home from '../../pages/home'
+import Home from '../../pages/index'
 import DashboardContent from '../../components/content/DashboardContent'
 
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
