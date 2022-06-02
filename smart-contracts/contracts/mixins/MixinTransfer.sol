@@ -60,7 +60,7 @@ contract MixinTransfer is
     }
     _onlyKeyManagerOrApproved(_tokenIdFrom);
     _isValidKey(_tokenIdFrom);
-    if(transferFeeBasisPoints > BASIS_POINTS_DEN) {
+    if(transferFeeBasisPoints >= BASIS_POINTS_DEN) {
       revert KEY_TRANSFERS_DISABLED();
     }
     if(_to == address(0)) {
@@ -127,7 +127,7 @@ contract MixinTransfer is
     if(ownerOf(_tokenId) != _from) {
       revert UNAUTHORIZED();
     }
-    if(transferFeeBasisPoints > BASIS_POINTS_DEN) {
+    if(transferFeeBasisPoints >= BASIS_POINTS_DEN) {
       revert KEY_TRANSFERS_DISABLED();
     }
     if(_recipient == address(0)) {
@@ -226,7 +226,7 @@ contract MixinTransfer is
     if(_to == msg.sender) {
       revert CANNOT_APPROVE_SELF();
     }
-    if(transferFeeBasisPoints > BASIS_POINTS_DEN) {
+    if(transferFeeBasisPoints >= BASIS_POINTS_DEN) {
       revert KEY_TRANSFERS_DISABLED();
     }
     managerToOperatorApproved[msg.sender][_to] = _approved;

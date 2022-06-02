@@ -38,7 +38,7 @@ contract MixinERC721Enumerable is
   ) public view
     returns (uint256)
   {
-    if(_index > _totalSupply) {
+    if(_index >= _totalSupply) {
       revert OUT_OF_RANGE();
     }
     return _index;

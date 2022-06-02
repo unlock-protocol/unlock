@@ -190,7 +190,7 @@ contract MixinKeys is
     view
     returns (uint256)
   {
-      if(_index > balanceOf(_keyOwner)) {
+      if(_index >= balanceOf(_keyOwner)) {
         revert OUT_OF_RANGE();
       }
       return _ownedKeyIds[_keyOwner][_index];
