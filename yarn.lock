@@ -14689,7 +14689,7 @@ __metadata:
     eslint-config-next: 12.1.6
     eslint-config-prettier: 8.5.0
     eslint-plugin-jest: 26.1.5
-    eslint-plugin-mocha: 10.0.4
+    eslint-plugin-mocha: 10.0.5
     eslint-plugin-prettier: 4.0.0
     jest: 27.5.1
     typescript: 4.6.4
@@ -14965,7 +14965,7 @@ __metadata:
     cross-fetch: 3.1.5
     debug: 4.3.4
     eslint: 8.8.0
-    eslint-plugin-mocha: 10.0.4
+    eslint-plugin-mocha: 10.0.5
     eth-gas-reporter: 0.2.25
     eth-sig-util: 2.5.4
     ethers: 5.5.4
@@ -25951,15 +25951,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-mocha@npm:10.0.4":
-  version: 10.0.4
-  resolution: "eslint-plugin-mocha@npm:10.0.4"
+"eslint-plugin-mocha@npm:10.0.5":
+  version: 10.0.5
+  resolution: "eslint-plugin-mocha@npm:10.0.5"
   dependencies:
     eslint-utils: ^3.0.0
-    ramda: ^0.28.0
+    rambda: ^7.1.0
   peerDependencies:
     eslint: ">=7.0.0"
-  checksum: f175eb94b1e238ece54bf46fa36389758591131397ec96db149d6d4046d7f25476f70c7de68499a72ae94f8d8303d592264a4ce6446f31bc891abd953324c94f
+  checksum: b49f9f64056db355ca43d4fa7d68047434c10c2b1e2ee41eb14f69e0acf60fa3c57c300900cc67fc2e84dbf134792de04553ce6e792037b911e3606512c6431f
   languageName: node
   linkType: hard
 
@@ -43203,6 +43203,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"rambda@npm:^7.1.0":
+  version: 7.1.4
+  resolution: "rambda@npm:7.1.4"
+  checksum: 05683dcb1bc76504beabb83a8b39488738ba744e12eda43ea29a00b28e61d2be923b9310c575aa5a70c25bf2195de070aa8351b78b6ebc212ceb455ef8544cdb
+  languageName: node
+  linkType: hard
+
 "ramda@npm:^0.21.0":
   version: 0.21.0
   resolution: "ramda@npm:0.21.0"
@@ -43221,13 +43228,6 @@ fsevents@~2.1.1:
   version: 0.25.0
   resolution: "ramda@npm:0.25.0"
   checksum: 008abbcc69aefd89a2a4a0c9f4cf9f8da2ec490a0e1e261b4c88de8540ef0c383d469bfdf71b758b559377c71bfa8efea164fdb1779169359a86b46f7cb23cb1
-  languageName: node
-  linkType: hard
-
-"ramda@npm:^0.28.0":
-  version: 0.28.0
-  resolution: "ramda@npm:0.28.0"
-  checksum: 44ea6e5010bba70151b6a92d8114a91915e8b5a16105cce65fae58c9d7386b812c429645e35f21141d7087568550ce383bc10ee1a65cdec951f4b69ea457e6a4
   languageName: node
   linkType: hard
 
