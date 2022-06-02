@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "glob": "8.0.3",
-    "ts-jest": "27.1.4"
+    "ts-jest": "27.1.5"
   },
   "peerDependencies": {
     "jest": "27.5.1"
