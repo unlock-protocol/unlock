@@ -1,6 +1,6 @@
 const { time } = require('@openzeppelin/test-helpers')
 
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { ethers, upgrades, network } = require('hardhat')
 const { getDeployment } = require('../../helpers/deployments')
 const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')

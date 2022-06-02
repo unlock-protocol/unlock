@@ -1,5 +1,4 @@
-const { reverts } = require('truffle-assertions')
-
+const { reverts } = require('../../helpers/errors')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')

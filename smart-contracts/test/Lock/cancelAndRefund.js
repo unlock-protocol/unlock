@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('truffle-assertions')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 

@@ -1,4 +1,4 @@
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { config, ethers, assert, network, upgrades } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')

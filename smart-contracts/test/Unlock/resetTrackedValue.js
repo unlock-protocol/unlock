@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-const truffleAssert = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 
 const deployLocks = require('../helpers/deployLocks')
 
@@ -36,8 +36,9 @@ contract('Unlock / resetTrackedValue', (accounts) => {
   })
 
   it('should fail to resetTrackedValue if called from a non-owner account', async () => {
-    await truffleAssert.fails(
-      unlock.resetTrackedValue(0, 0, { from: accounts[1] })
+    await reverts(
+      unlock.resetTrackedValue(0, 0, { from: accounts[1] }),
+      'ONLY_OWNER'
     )
   })
 
