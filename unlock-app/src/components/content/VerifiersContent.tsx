@@ -61,7 +61,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
           .getEndpoint(
             `/v2/api/verifier/${network}/${lockAddress}/${resolvedAddress}`,
             options,
-            true // use authentication (Bearer token will be attached)
+            true /* withAuth */
           )
           .then((res: any) => {
             if (res.message) {
@@ -98,7 +98,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
         .getEndpoint(
           `/v2/api/verifier/list/${network}/${lockAddress}`,
           options,
-          true // use authentication (Bearer token will be attached)
+          true /* withAuth */
         )
         .then((res: any) => {
           if (res.message) {

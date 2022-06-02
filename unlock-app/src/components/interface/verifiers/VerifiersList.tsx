@@ -76,7 +76,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
           .getEndpoint(
             `/v2/api/verifier/${network}/${lockAddress}/${selectedVerifier}`,
             options,
-            true // use authentication (Bearer token will be attached)
+            true /* withAuth */
           )
           .then((verifiers: any) => {
             ToastHelper.success('Verifier deleted from list')
@@ -108,7 +108,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   if (!logged) {
     return (
       <>
-        <span>Sign message to show verifiers list</span>
+        <span>Sign message in your wallet to show verifiers list.</span>
       </>
     )
   }
