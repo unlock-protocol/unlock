@@ -88,7 +88,7 @@ To launch it locally:
 yarn
 
 # start Unlock main app
-yarn worskspace @unlock-protocol/unlock-app start
+yarn workspace @unlock-protocol/unlock-app start
 ```
 
 This will start
