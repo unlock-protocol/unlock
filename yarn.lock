@@ -15285,7 +15285,7 @@ __metadata:
   resolution: "@unlock-protocol/jest-config@workspace:packages/jest-config"
   dependencies:
     glob: 8.0.3
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
   peerDependencies:
     jest: 27.5.1
   languageName: unknown
@@ -15370,7 +15370,7 @@ __metadata:
     siwe: 1.1.6
     stripe: 8.215.0
     supertest: 6.2.3
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     ts-node-dev: 1.1.8
     typescript: 4.6.4
     unlock-abi-1-1: 1.1.1
@@ -15451,7 +15451,7 @@ __metadata:
     node-fetch: 3.2.5
     postmate: 1.5.2
     style-loader: 3.3.1
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     ts-loader: 9.3.0
     typescript: 4.7.2
     webpack: 5.72.1
@@ -15780,7 +15780,7 @@ __metadata:
     styled-components: 5.3.5
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.24
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     typescript: 4.7.2
     validator: 13.7.0
     walletlink: 2.5.0
@@ -15857,7 +15857,7 @@ __metadata:
     lint-staged: 13.0.0
     prettier: 2.5.1
     siwe: 1.1.6
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     tsup: 5.12.9
     typescript: 4.6.4
   peerDependencies:
@@ -15921,7 +15921,7 @@ __metadata:
     styled-components: 5.3.5
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.24
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     typescript: 4.6.4
     use-local-storage: 2.3.6
     vitest: 0.3.6
@@ -15953,7 +15953,7 @@ __metadata:
     nodemon: 2.0.16
     prettier: 2.6.2
     regenerator-runtime: 0.13.9
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     typescript: 4.6.4
     webpack: 5.72.1
     webpack-cli: 4.9.2
@@ -50061,9 +50061,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:27.1.4":
-  version: 27.1.4
-  resolution: "ts-jest@npm:27.1.4"
+"ts-jest@npm:27.1.5":
+  version: 27.1.5
+  resolution: "ts-jest@npm:27.1.5"
   dependencies:
     bs-logger: 0.x
     fast-json-stable-stringify: 2.x
@@ -50090,7 +50090,7 @@ resolve@^2.0.0-next.3:
       optional: true
   bin:
     ts-jest: cli.js
-  checksum: d2cc2719ed2884a880ab50d2c14c311834be9c88bc79d0064fa0189afce5c296d7676314d26cc3f7e82ddd52df272c2d4137a832c89616f30cbe8f43e30f9a29
+  checksum: 3ef51c538b82f49b3f529331c1a017871a2f90e7a9a6e69333304755036d121818c6b120e2ce32dd161ff8bb2487efec0c790753ecd39b46a9ed1ce0d241464c
   languageName: node
   linkType: hard
 
