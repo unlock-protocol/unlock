@@ -15330,7 +15330,7 @@ __metadata:
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.24
     tsconfig-paths-webpack-plugin: 3.5.2
-    tsup: 5.12.9
+    tsup: 6.0.1
     typescript: 4.7.2
     vite: 2.9.9
     vite-tsconfig-paths: 3.5.0
@@ -15563,7 +15563,7 @@ __metadata:
     prettier: 2.6.2
     siwe: 1.1.6
     ts-jest: 27.1.5
-    tsup: 5.12.9
+    tsup: 6.0.1
     typescript: 4.7.2
   peerDependencies:
     ethers: 5.6.8
@@ -49536,9 +49536,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tsup@npm:5.12.9":
-  version: 5.12.9
-  resolution: "tsup@npm:5.12.9"
+"tsup@npm:6.0.1":
+  version: 6.0.1
+  resolution: "tsup@npm:6.0.1"
   dependencies:
     bundle-require: ^3.0.2
     cac: ^6.7.12
@@ -49568,7 +49568,7 @@ resolve@^2.0.0-next.3:
   bin:
     tsup: dist/cli-default.js
     tsup-node: dist/cli-node.js
-  checksum: 872b7d1b523cb2feb6cdfaf9d0d45c1dee835b4b0a38d4f18dfd619ee5abc312421cf201edc8957cac8ba0d1061e697dd6ad1ccb2b45dc200a78ef7d0dd2569d
+  checksum: 4630409533213b3b1953204b29fad514bd93bdb8635b18c12f76101d0dae745982ab7fe47be052111c3b99e23ef356eebce19e77ebd9f72d3769fda43cf9af6f
   languageName: node
   linkType: hard
 
