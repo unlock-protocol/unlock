@@ -1,4 +1,4 @@
-/* This file is a combination of the automatically generated config produced by `tsc --init` and the recommended config suggested by zeit for next-typescript */{
+/* This file is a combination of the automatically generated config produced by `tsc --init` and the recommended config suggested by zeit for next-typescript */ {
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
     /* Basic Options */
@@ -21,7 +21,13 @@
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./src/*"
+      ]
+    },
   },
   "include": [
     "./src/**/*"
