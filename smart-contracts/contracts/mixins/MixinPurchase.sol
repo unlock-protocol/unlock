@@ -20,8 +20,6 @@ contract MixinPurchase is
   MixinLockCore,
   MixinKeys
 {
-  event RenewKeyPurchase(address indexed owner, uint newExpiration);
-
   event GasRefunded(address indexed receiver, uint refundedAmount, address tokenAddress);
   
   event UnlockCallFailed(address indexed lockAddress, address unlockAddress);

@@ -3,12 +3,15 @@ import type { SizeStyleProp, Size } from '../../types'
 import { twMerge } from 'tailwind-merge'
 import { forwardRef } from 'react'
 import { Box, Props as BoxProps } from '../Box/Box'
+import { Icon } from '../Icon/Icon'
+import { CgSpinner as SpinnerIcon } from 'react-icons/cg'
 
 type Variant = 'primary' | 'secondary' | 'outlined-primary'
 
 interface Props extends BoxProps {
   iconRight?: ReactNode
   iconLeft?: ReactNode
+  loading?: boolean
   variant?: Variant
 }
 
@@ -16,6 +19,7 @@ const SIZE_STYLES: SizeStyleProp = {
   small: 'px-4 py-2 text-sm',
   medium: 'px-6 py-2.5 text-base',
   large: 'px-8 py-3.5 text-lg',
+  tiny: 'px-2 py-1 text-xs',
 }
 
 const VARIANTS_STYLES: Record<Variant, string> = {
@@ -33,6 +37,7 @@ export const Button = forwardRef(
       children,
       size = 'medium',
       variant = 'primary',
+      loading,
       iconLeft,
       iconRight,
       className,
@@ -47,9 +52,17 @@ export const Button = forwardRef(
     )
     return (
       <Box as={as} className={buttonClass} {...restProps} ref={ref}>
-        {iconLeft}
+        {loading ? (
+          <Icon
+            icon={SpinnerIcon}
+            size={size}
+            className="animate-spin motion-reduce:invisible"
+          />
+        ) : (
+          iconLeft
+        )}
         <span> {children}</span>
-        {iconRight}
+        {!loading && iconRight}
       </Box>
     )
   }

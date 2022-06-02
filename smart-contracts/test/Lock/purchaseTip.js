@@ -1,4 +1,4 @@
-const truffleAssert = require('truffle-assertions')
+const truffleAssert = require('../helpers/errors')
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
