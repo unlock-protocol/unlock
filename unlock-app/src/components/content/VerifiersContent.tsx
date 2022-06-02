@@ -57,6 +57,8 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
             'Content-Type': 'application/json',
           },
         }
+
+        if (!storageService) return
         await storageService
           .getEndpoint(
             `/v2/api/verifier/${network}/${lockAddress}/${resolvedAddress}`,
@@ -94,6 +96,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       }
+      if (!storageService) return
       await storageService
         .getEndpoint(
           `/v2/api/verifier/list/${network}/${lockAddress}`,
