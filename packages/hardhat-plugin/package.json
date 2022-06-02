@@ -44,7 +44,7 @@
     "hardhat": "2.9.0",
     "mocha": "10.0.0",
     "prettier": "2.6.2",
-    "ts-mocha": "9.0.2",
+    "ts-mocha": "10.0.0",
     "ts-node": "10.8.0",
     "tslint": "5.20.1",
     "tslint-config-prettier": "1.18.0",
