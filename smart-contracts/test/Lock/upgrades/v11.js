@@ -1,30 +1,8 @@
-const { ethers, upgrades, run } = require('hardhat')
-const { reverts } = require('../../helpers/errors')
-const fs = require('fs-extra')
-const path = require('path')
-
-// const {
-//   LATEST_PUBLIC_LOCK_VERSION,
-// } = require('../helpers/constants')
-
-// files path
-const contractsPath = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'contracts',
-  'past-versions'
-)
-const artifactsPath = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'artifacts',
-  'contracts',
-  'past-versions'
-)
+const { ethers, upgrades } = require('hardhat')
+const {
+  getContractFactoryAtVersion,
+  cleanupPastContracts,
+} = require('../../helpers/versions')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
@@ -34,10 +12,7 @@ describe('PublicLock upgrade v10 > v11', () => {
   let PublicLockPast
   let previousVersionNumber
 
-  after(async () => {
-    await fs.remove(contractsPath)
-    await fs.remove(artifactsPath)
-  })
+  after(async () => await cleanupPastContracts())
 
   before(async function () {
     // make sure mocha doesnt time out
@@ -50,24 +25,16 @@ describe('PublicLock upgrade v10 > v11', () => {
     // get latest version number
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()
+
+    // getr previous version
     previousVersionNumber = (await publicLockLatest.publicLockVersion()) - 1
-
-    await fs.copy(
-      require.resolve(
-        `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${previousVersionNumber}.sol`
-      ),
-      path.resolve(contractsPath, `PublicLockV${previousVersionNumber}.sol`)
+    PublicLockPast = await getContractFactoryAtVersion(
+      'PublicLock',
+      previousVersionNumber
     )
 
-    // re-compile contract using hardhat
-    await run('compile')
-
-    PublicLockPast = await ethers.getContractFactory(
-      `contracts/past-versions/PublicLockV${previousVersionNumber}.sol:PublicLock`
-    )
-
-    const [, lockOwner] = await ethers.getSigners()
     // deploy a simple lock
+    const [, lockOwner] = await ethers.getSigners()
     const args = [
       lockOwner.address,
       60 * 60 * 24 * 30, // 30 days

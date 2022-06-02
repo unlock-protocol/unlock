@@ -62,12 +62,24 @@ async function getContractFactoryAtVersion(contractName, versionNumber) {
   )
 }
 
+async function getContractAtVersion(
+  contractName,
+  versionNumber,
+  contractAddress
+) {
+  return await ethers.getContractAt(
+    `contracts/past-versions/${contractName}V${versionNumber}.sol:${contractName}`,
+    contractAddress
+  )
+}
+
 async function cleanupPastContracts() {
   await fs.remove(CONTRACTS_PATH)
   await fs.remove(ARTIFACTS_PATH)
 }
 
 module.exports = {
+  getContractAtVersion,
   getUnlockVersionNumbers,
   getMatchingLockVersion,
   getContractFactoryAtVersion,
