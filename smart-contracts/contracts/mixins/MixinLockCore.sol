@@ -220,17 +220,12 @@ contract MixinLockCore is
   ) external
   {
     _onlyLockManager();
-    if(
-      (_onKeyPurchaseHook != address(0) && !_onKeyPurchaseHook.isContract())
-      && 
-      (_onKeyCancelHook != address(0) && !_onKeyCancelHook.isContract())
-      && 
-      (_onValidKeyHook != address(0) && !_onValidKeyHook.isContract())
-      && 
-      (_onTokenURIHook != address(0) && !_onTokenURIHook.isContract())
-    ){
-      revert INVALID_HOOK();
-    }
+
+    if(_onKeyPurchaseHook != address(0) && !_onKeyPurchaseHook.isContract()) { revert INVALID_HOOK(0); }
+    if(_onKeyCancelHook != address(0) && !_onKeyCancelHook.isContract()) { revert INVALID_HOOK(1); }
+    if(_onValidKeyHook != address(0) && !_onValidKeyHook.isContract()) { revert INVALID_HOOK(2); }
+    if(_onTokenURIHook != address(0) && !_onTokenURIHook.isContract()) { revert INVALID_HOOK(3); }
+    
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
     onTokenURIHook = ILockTokenURIHook(_onTokenURIHook);

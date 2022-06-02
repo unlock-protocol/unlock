@@ -64,6 +64,7 @@ contract MixinErrors {
   error GAS_REFUND_FAILED();
 
   // hooks
-  error INVALID_HOOK();
+  // NB: `hookIndex` designed the index of hook address in the params of `setEventHooks`
+  error INVALID_HOOK(uint8 hookIndex);
 
 }
