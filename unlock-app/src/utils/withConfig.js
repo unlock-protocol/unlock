@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 /**
  * Function which creates higher order component with the config
@@ -22,4 +22,8 @@ export default function withConfig(Component) {
   }
 
   return componentWithConfig
+}
+
+export function useConfig() {
+  return useContext(ConfigContext)
 }

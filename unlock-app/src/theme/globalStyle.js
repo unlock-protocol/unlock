@@ -31,34 +31,6 @@ export const globalStyle = `
     --alwaysontop: 100000;
   }
 
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: IBM Plex Sans, Helvetica Neue, Arial, sans-serif;
-    color: var(--grey);
-  }
-
-  h1 {
-    font-size: 24px;
-    font-weight: 500;
-  }
-
-  h2 {
-    font-size: 15px;
-    font-weight: 500;
-  }
-
-  a {
-    text-decoration: none;
-    color: var(--link);
-  }
-
-  a:visited {
-    color: var(--link);
-  }
-
   .StripeElement {
     background-color: var(--lightgrey);
     padding: 10px;

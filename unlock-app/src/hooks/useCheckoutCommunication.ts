@@ -114,6 +114,8 @@ export const useCheckoutCommunication = () => {
     resolveOnEnable,
   })
 
+  let insideIframe = false
+
   const pushOrEmit = (kind: CheckoutEvents, payload?: Payload) => {
     if (!parent) {
       setBuffer([...buffer, { kind, payload }])
@@ -155,8 +157,11 @@ export const useCheckoutCommunication = () => {
   const emitOnEvent = (eventName: string) => {
     pushOrEmit(CheckoutEvents.onEvent, eventName)
   }
+
   // If the page is not inside an iframe, window and window.top will be identical
-  const insideIframe = window.top !== window
+  if (typeof window !== 'undefined') {
+    insideIframe = window.top !== window
+  }
 
   if (config && config.useDelegatedProvider && !providerAdapter) {
     setProviderAdapter({

@@ -85,6 +85,7 @@ export interface PaywallCallToAction {
   noWallet: string
   metadata: string
   card: string
+  quantity: string
   [name: string]: string
 }
 
@@ -190,8 +191,9 @@ export interface MetadataInput {
 }
 
 export interface PaywallConfig {
+  title?: string
   icon?: string
-  callToAction?: PaywallCallToAction
+  callToAction?: Partial<PaywallCallToAction>
   locks: PaywallConfigLocks
   metadataInputs?: MetadataInput[]
   persistentCheckout?: boolean

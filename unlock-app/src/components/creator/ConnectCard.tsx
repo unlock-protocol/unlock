@@ -9,7 +9,7 @@ import { useAccount } from '../../hooks/useAccount'
 import Loading from '../interface/Loading'
 import useLock from '../../hooks/useLock'
 import SvgComponents from '../interface/svg'
-import { StorageServiceContext } from '../../utils/withStorageService'
+import { useStorageService } from '../../utils/withStorageService'
 
 interface ConnectCardProps {
   lockNetwork: number
@@ -20,12 +20,11 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
   const { network: walletNetwork, account } = useContext(AuthenticationContext)
   const web3Service = useContext(Web3ServiceContext)
   const walletService = useContext(WalletServiceContext)
-  const storageService = useContext(StorageServiceContext)
+  const storageService = useStorageService()
   const [keyGranter, setKeyGranter] = useState('')
 
   const { isStripeConnected } = useLock({ address: lock.address }, lockNetwork)
-  // @ts-expect-error
-  const { connectStripeToLock } = useAccount(account, walletNetwork)
+  const { connectStripeToLock } = useAccount(account!, walletNetwork!)
 
   const connectStripe = async () => {
     const redirectUrl = await connectStripeToLock(
