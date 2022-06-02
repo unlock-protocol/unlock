@@ -15928,7 +15928,7 @@ __metadata:
     next-seo: 5.4.0
     path-match: 1.2.4
     postcss: 8.4.13
-    prettier: 2.5.1
+    prettier: 2.6.2
     raw-loader: 4.0.2
     react: 18.1.0
     react-dom: 18.1.0
