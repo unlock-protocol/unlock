@@ -73,7 +73,7 @@ export class StorageService extends EventEmitter {
     return this.locksmith.login(message, signature)
   }
 
-  private setToken(token: string) {
+  setToken(token: string) {
     this.accessToken = token
     const decoded: any = decodeToken(token)
     const expireAt: number = decoded?.exp ?? -1
