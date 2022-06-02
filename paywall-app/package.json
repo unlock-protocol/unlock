@@ -24,7 +24,7 @@
     "copy-webpack-plugin": "11.0.0",
     "dotenv": "16.0.1",
     "lint-staged": "13.0.0",
-    "next": "12.1.5",
+    "next": "12.1.6",
     "path-match": "1.2.4",
     "postmate": "1.5.2",
     "prop-types": "15.8.1",
