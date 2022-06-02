@@ -20,6 +20,8 @@ contract('Unlock / upgrades', async (accounts) => {
   const [unlockOwner, lockOwner, keyOwner] = await ethers.getSigners()
   const keyPrice = web3.utils.toWei('0.01', 'ether')
 
+  after(async () => await cleanupPastContracts())
+
   for (let i = 0; i < unlockVersions.length; i++) {
     const versionNumber = unlockVersions[i]
 
