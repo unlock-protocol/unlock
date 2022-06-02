@@ -1,7 +1,7 @@
 const { ethers, upgrades, run } = require('hardhat')
-const { reverts } = require('../../helpers/errors')
 const fs = require('fs-extra')
 const path = require('path')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 // const {
 //   LATEST_PUBLIC_LOCK_VERSION,
@@ -71,7 +71,7 @@ describe('PublicLock upgrade v10 > v11', () => {
     const args = [
       lockOwner.address,
       60 * 60 * 24 * 30, // 30 days
-      ethers.constants.AddressZero,
+      ADDRESS_ZERO,
       keyPrice,
       130,
       'A neat upgradeable lock!',
@@ -96,8 +96,8 @@ describe('PublicLock upgrade v10 > v11', () => {
       const tx = await lock.purchase(
         [],
         buyers.map((keyOwner) => keyOwner.address),
-        buyers.map(() => web3.utils.padLeft(0, 40)),
-        buyers.map(() => web3.utils.padLeft(0, 40)),
+        buyers.map(() => ADDRESS_ZERO),
+        buyers.map(() => ADDRESS_ZERO),
         buyers.map(() => []),
         {
           value: keyPrice.mul(buyers.length),
@@ -176,8 +176,8 @@ describe('PublicLock upgrade v10 > v11', () => {
         const tx = await lock.connect(buyers[0]).purchase(
           [],
           buyers.map((k) => k.address),
-          buyers.map(() => web3.utils.padLeft(0, 40)),
-          buyers.map(() => web3.utils.padLeft(0, 40)),
+          buyers.map(() => ADDRESS_ZERO),
+          buyers.map(() => ADDRESS_ZERO),
           buyers.map(() => []),
           {
             value: (keyPrice * buyers.length).toFixed(),
@@ -196,7 +196,7 @@ describe('PublicLock upgrade v10 > v11', () => {
         const tx = await lock.connect(buyers[0]).grantKeys(
           buyers.map((k) => k.address),
           buyers.map(() => Date.now()),
-          buyers.map(() => web3.utils.padLeft(0, 40))
+          buyers.map(() => ADDRESS_ZERO)
         )
         const { events } = await tx.wait()
         const tokenIds = events
@@ -209,7 +209,7 @@ describe('PublicLock upgrade v10 > v11', () => {
       it('extend should now work ', async () => {
         const tx = await lock
           .connect(buyers[0])
-          .extend(0, tokenIds[0], web3.utils.padLeft(0, 40), [], {
+          .extend(0, tokenIds[0], ADDRESS_ZERO, [], {
             value: keyPrice,
           })
         await tx.wait()
