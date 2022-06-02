@@ -18,15 +18,21 @@ const styling = {
 }
 interface VerifiersListProsps {
   lockAddress: string
+  getVerifierList: () => void
+  verifiers: any[]
+  setVerifiers: any
 }
 export const VerifiersList: React.FC<VerifiersListProsps> = ({
   lockAddress,
+  getVerifierList,
+  verifiers,
+  setVerifiers,
 }) => {
   const { network, account } = useContext(AuthenticationContext)
   const [selectedVerifier, setSelectedVerifier] = useState('')
   const [showDeleteVerifierModal, setShowDeleteVerifierModal] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [verifiers, setVerifiers] = useState<any[]>([])
+  const [logged, setLogged] = useState(false)
   const storageService = useContext(StorageServiceContext)
   const walletService = useContext(WalletServiceContext)
 
@@ -41,38 +47,19 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   }, [])
 
   const loginAndGetList = async () => {
-    await storageService.loginPrompt({
-      walletService,
-      address: account,
-      chainId: network,
-    })
-    getVerifierList()
-  }
-
-  const getVerifierList = async () => {
     try {
-      const options = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      }
-      await storageService
-        .getEndpoint(
-          `/v2/api/verifier/${network}/${lockAddress}/${selectedVerifier}`,
-          options,
-          true
-        )
-        .then((verifiers: any) => {
-          setVerifiers(verifiers?.results)
-        })
-    } catch (err: any) {
-      setLoading(false)
-      console.error(err)
-      ToastHelper.error(
-        err?.error ??
-          'We could not load the list of verifiers for your lock. Please reload to to try again.'
-      )
+      await storageService.loginPrompt({
+        walletService,
+        address: account,
+        chainId: network,
+      })
+      setLogged(true)
+      getVerifierList()
+    } catch (err) {
+      setLogged(false)
     }
   }
+
   const onConfirmDeleteVerifier = async () => {
     setLoading(true)
     const isValid = ethers.utils.isAddress(selectedVerifier)
@@ -87,7 +74,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
         }
         await storageService
           .getEndpoint(
-            `/verifier/${network}/${lockAddress}/${selectedVerifier}`,
+            `/v2/api/verifier/${network}/${lockAddress}/${selectedVerifier}`,
             options,
             true
           )
@@ -118,6 +105,13 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
     setShowDeleteVerifierModal(true)
   }
 
+  if (!logged) {
+    return (
+      <>
+        <span>Sign message to show verifiers list</span>
+      </>
+    )
+  }
   return (
     <>
       <table className="w-full mt-3">
@@ -132,11 +126,17 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
         <tbody>
           {verifiers?.map((verifier: any, index: number) => {
             const key = `${verifier?.address}-${index}`
+            const createdAt = verifier?.createdAt
+              ? new Date(verifier?.createdAt).toLocaleString()
+              : '-'
+            const verifiedAt = verifier?.verifiedAt
+              ? new Date(verifier?.verifiedAt).toLocaleString()
+              : '-'
             return (
               <tr key={key}>
                 <td>{verifier?.address ?? '-'}</td>
-                <td>{verifier?.createdAt ?? '-'}</td>
-                <td>{verifier?.updatedAt ?? '-'}</td>
+                <td>{createdAt ?? '-'}</td>
+                <td>{verifiedAt ?? '-'}</td>
                 <td>
                   <Tooltip tip="Remove verifier" label="Remove verifier">
                     <TrashIcon
