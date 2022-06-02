@@ -7307,26 +7307,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:1.4.3":
-  version: 1.4.3
-  resolution: "@headlessui/react@npm:1.4.3"
-  peerDependencies:
-    react: ^16 || ^17 || ^18
-    react-dom: ^16 || ^17 || ^18
-  checksum: 0c55bba6dc09a81576ec7d41320e3beb57b3f4576637ac4aad6048af851d5fe5434fd0d10dfb5c7b2db16eca6ded5eb3368822ddb87ff4dcb99fc3592ef63b0a
-  languageName: node
-  linkType: hard
-
-"@headlessui/react@npm:1.6.4":
-  version: 1.6.4
-  resolution: "@headlessui/react@npm:1.6.4"
-  peerDependencies:
-    react: ^16 || ^17 || ^18
-    react-dom: ^16 || ^17 || ^18
-  checksum: f24dd2f5bd4de5954b2fd40998627b58a650a874894a90f96320ae5bad1b961a140e85ce821b92dc8cbed0628523df57ae9533137467d867788eac907bd396d7
-  languageName: node
-  linkType: hard
-
 "@headlessui/react@npm:1.6.4":
   version: 1.6.4
   resolution: "@headlessui/react@npm:1.6.4"
@@ -16171,7 +16151,7 @@ __metadata:
   resolution: "@unlock-protocol/jest-config@workspace:packages/jest-config"
   dependencies:
     glob: 8.0.3
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
   peerDependencies:
     jest: 27.5.1
   languageName: unknown
@@ -16258,7 +16238,7 @@ __metadata:
     siwe: 1.1.6
     stripe: 8.215.0
     supertest: 6.2.3
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     ts-node-dev: 1.1.8
     typescript: 4.6.4
     unlock-abi-1-1: 1.1.1
@@ -16339,7 +16319,7 @@ __metadata:
     node-fetch: 3.2.5
     postmate: 1.5.2
     style-loader: 3.3.1
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     ts-loader: 9.3.0
     typescript: 4.7.2
     webpack: 5.72.1
@@ -16668,7 +16648,7 @@ __metadata:
     styled-components: 5.3.5
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.24
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     typescript: 4.7.2
     validator: 13.7.0
     walletlink: 2.5.0
@@ -16746,7 +16726,7 @@ __metadata:
     lint-staged: 13.0.0
     prettier: 2.5.1
     siwe: 1.1.6
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     tsup: 5.12.9
     typescript: 4.6.4
   peerDependencies:
@@ -16810,7 +16790,7 @@ __metadata:
     styled-components: 5.3.5
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.24
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     typescript: 4.6.4
     use-local-storage: 2.3.6
     vitest: 0.3.6
@@ -16842,7 +16822,7 @@ __metadata:
     nodemon: 2.0.16
     prettier: 2.6.2
     regenerator-runtime: 0.13.9
-    ts-jest: 27.1.4
+    ts-jest: 27.1.5
     typescript: 4.6.4
     webpack: 5.72.1
     webpack-cli: 4.9.2
@@ -29323,7 +29303,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^5.0.0":
+"execa@npm:^5.0.0, execa@npm:^5.1.1":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
   dependencies:
@@ -44044,7 +44024,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.13":
+"postcss@npm:^8.4.13, postcss@npm:^8.4.7":
   version: 8.4.14
   resolution: "postcss@npm:8.4.14"
   dependencies:
@@ -44063,17 +44043,6 @@ fsevents@~2.1.1:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: a515ed36622edbee1d3ba153298d3b62ae9826dfa6de19204c2a6f975c8d3ad36808423b5119a9d82b78efd486de3ce35a1faf882a36ac8aa09492be4fbb7fe1
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.4.7":
-  version: 8.4.14
-  resolution: "postcss@npm:8.4.14"
-  dependencies:
-    nanoid: ^3.3.4
-    picocolors: ^1.0.0
-    source-map-js: ^1.0.2
-  checksum: fe58766ff32e4becf65a7d57678995cfd239df6deed2fe0557f038b47c94e4132e7e5f68b5aa820c13adfec32e523b693efaeb65798efb995ce49ccd83953816
   languageName: node
   linkType: hard
 
@@ -45455,15 +45424,6 @@ fsevents@~2.1.1:
     react: ">=16"
     react-dom: ">=16"
   checksum: bb34ddc8ada14cbd75a37f14d2563412174e23276eb05e9fb23a031b6d8374ca190cefa1940692f4371529ddafeb2d4b8d3e5023187c2851ec8cb247461553ee
-  languageName: node
-  linkType: hard
-
-"react-icons@npm:4.3.1":
-  version: 4.3.1
-  resolution: "react-icons@npm:4.3.1"
-  peerDependencies:
-    react: "*"
-  checksum: 2cc608acdd3e906aa3aaee290b8398220639677c949382d86e554020e5dab6a9f1ed7484418aa5272cb5c5c018e1fc9a323d433d901697a76530029f9ecb1263
   languageName: node
   linkType: hard
 
@@ -51210,9 +51170,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:27.1.4":
-  version: 27.1.4
-  resolution: "ts-jest@npm:27.1.4"
+"ts-jest@npm:27.1.5":
+  version: 27.1.5
+  resolution: "ts-jest@npm:27.1.5"
   dependencies:
     bs-logger: 0.x
     fast-json-stable-stringify: 2.x
@@ -51239,7 +51199,7 @@ resolve@^2.0.0-next.3:
       optional: true
   bin:
     ts-jest: cli.js
-  checksum: d2cc2719ed2884a880ab50d2c14c311834be9c88bc79d0064fa0189afce5c296d7676314d26cc3f7e82ddd52df272c2d4137a832c89616f30cbe8f43e30f9a29
+  checksum: 3ef51c538b82f49b3f529331c1a017871a2f90e7a9a6e69333304755036d121818c6b120e2ce32dd161ff8bb2487efec0c790753ecd39b46a9ed1ce0d241464c
   languageName: node
   linkType: hard
 
