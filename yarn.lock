@@ -8315,20 +8315,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-truffle5@npm:2.0.5":
-  version: 2.0.5
-  resolution: "@nomiclabs/hardhat-truffle5@npm:2.0.5"
+"@nomiclabs/hardhat-truffle5@npm:2.0.6":
+  version: 2.0.6
+  resolution: "@nomiclabs/hardhat-truffle5@npm:2.0.6"
   dependencies:
     "@nomiclabs/truffle-contract": ^4.2.23
     "@types/chai": ^4.2.0
     chai: ^4.2.0
-    ethereumjs-util: ^7.1.3
+    ethereumjs-util: ^7.1.4
     fs-extra: ^7.0.1
   peerDependencies:
     "@nomiclabs/hardhat-web3": ^2.0.0
     hardhat: ^2.6.4
     web3: ^1.0.0-beta.36
-  checksum: 7e7b5b431211043b6d127383bec83dc5ec05cd70bedee76c8ffbb359e590e4f51460bcd76ec69794abaa148129e98a48be73720231b78bc2d14f50a78bc50be6
+  checksum: c2a1e7f1483bcd29e96dfb121f7bc800cafc17d9ce576f2a603cbe97edf7e09fd3fd77c52646785b3c4237de5705733ff8a10f75d131974b45941558af1a23e5
   languageName: node
   linkType: hard
 
@@ -15481,7 +15481,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contract-extensions@workspace:smart-contract-extensions"
   dependencies:
-    "@nomiclabs/hardhat-truffle5": 2.0.5
+    "@nomiclabs/hardhat-truffle5": 2.0.6
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.5.0
     "@openzeppelin/test-helpers": 0.5.15
@@ -15516,7 +15516,7 @@ __metadata:
     "@gnosis.pm/safe-core-sdk": 2.0.0
     "@nomiclabs/hardhat-ethers": 2.0.5
     "@nomiclabs/hardhat-etherscan": 3.0.3
-    "@nomiclabs/hardhat-truffle5": 2.0.5
+    "@nomiclabs/hardhat-truffle5": 2.0.6
     "@nomiclabs/hardhat-waffle": 2.0.3
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.4.2
