@@ -63,7 +63,7 @@
     "postmate": "1.5.2",
     "prettier": "2.6.2",
     "prop-types": "15.8.1",
-    "qrcode.react": "3.0.1",
+    "qrcode.react": "3.0.2",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-google-recaptcha": "2.1.0",

@@ -15307,7 +15307,7 @@ __metadata:
     postmate: 1.5.2
     prettier: 2.6.2
     prop-types: 15.8.1
-    qrcode.react: 3.0.1
+    qrcode.react: 3.0.2
     react: 18.1.0
     react-dom: 18.1.0
     react-google-recaptcha: 2.1.0
@@ -43189,12 +43189,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"qrcode.react@npm:3.0.1":
-  version: 3.0.1
-  resolution: "qrcode.react@npm:3.0.1"
+"qrcode.react@npm:3.0.2":
+  version: 3.0.2
+  resolution: "qrcode.react@npm:3.0.2"
   peerDependencies:
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 107bb08a9cb0077de982dc3204484f9e43f204141d02c587cffaf31c8ff94d1237a62e67e1938a94a8be25ae62b6db9d810eab0b42bac15db364e4a77c72fd28
+  checksum: 4102e9f416d86808728b93dca4e90cab0b2d3eca2bfe501a26ca62237062ded2121711cfc4edf64832c63e04d34956e26c2e7088023949f9328bbaa56004777d
   languageName: node
   linkType: hard
 
