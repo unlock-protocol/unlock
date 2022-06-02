@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
-const { constants } = require('hardlydifficult-ethereum-contracts')
-const { reverts } = require('../../helpers/errors')
 
+const { reverts } = require('../../helpers/errors')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')
 
@@ -34,10 +34,10 @@ contract('ERC20BalanceOfHook', (accounts) => {
 
     // set the hook
     await lock.setEventHooks(
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
+      ADDRESS_ZERO,
+      ADDRESS_ZERO,
       hook.address,
-      constants.ZERO_ADDRESS
+      ADDRESS_ZERO
     )
   })
 
@@ -64,19 +64,11 @@ contract('ERC20BalanceOfHook', (accounts) => {
     })
     it('throws on zero addresses', async () => {
       await reverts(
-        hook.createMapping(
-          constants.ZERO_ADDRESS,
-          token.address,
-          minAmount.toString()
-        ),
+        hook.createMapping(ADDRESS_ZERO, token.address, minAmount.toString()),
         'Lock address can not be zero'
       )
       await reverts(
-        hook.createMapping(
-          lock.address,
-          constants.ZERO_ADDRESS,
-          minAmount.toString()
-        ),
+        hook.createMapping(lock.address, ADDRESS_ZERO, minAmount.toString()),
         'ERC20 address can not be zero'
       )
       await reverts(
@@ -96,8 +88,8 @@ contract('ERC20BalanceOfHook', (accounts) => {
       await lock.purchase(
         [],
         [keyOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -112,8 +104,8 @@ contract('ERC20BalanceOfHook', (accounts) => {
       const tx = await lock.purchase(
         [],
         [keyOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -148,8 +140,8 @@ contract('ERC20BalanceOfHook', (accounts) => {
       await lock.purchase(
         [],
         [tokenOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -164,8 +156,8 @@ contract('ERC20BalanceOfHook', (accounts) => {
       const tx = await lock.purchase(
         [],
         [tokenOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -200,8 +192,8 @@ contract('ERC20BalanceOfHook', (accounts) => {
       await lock.purchase(
         [],
         [tokenOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -216,8 +208,8 @@ contract('ERC20BalanceOfHook', (accounts) => {
       const tx = await lock.purchase(
         [],
         [tokenOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -252,8 +244,8 @@ contract('ERC20BalanceOfHook', (accounts) => {
       await lock.purchase(
         [],
         [tokenOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
@@ -268,8 +260,8 @@ contract('ERC20BalanceOfHook', (accounts) => {
       const tx = await lock.purchase(
         [],
         [tokenOwner],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           from,
