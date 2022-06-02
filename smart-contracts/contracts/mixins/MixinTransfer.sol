@@ -133,7 +133,7 @@ contract MixinTransfer is
     if(_recipient == address(0)) {
       revert INVALID_ADDRESS();
     }
-    if(_from != _recipient) {
+    if(_from == _recipient) {
       revert TRANSFER_TO_SELF();
     }
 
