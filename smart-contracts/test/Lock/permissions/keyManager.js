@@ -1,9 +1,9 @@
 const { reverts } = require('../../helpers/errors')
 const BigNumber = require('bignumber.js')
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const { ethers } = require('hardhat')
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 
@@ -38,8 +38,8 @@ contract('Permissions / KeyManager', (accounts) => {
     const tx = await lock.purchase(
       [],
       keyOwners,
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => ADDRESS_ZERO),
+      keyOwners.map(() => ADDRESS_ZERO),
       keyOwners.map(() => []),
       {
         value: (keyPrice * keyOwners.length).toFixed(),
@@ -54,14 +54,14 @@ contract('Permissions / KeyManager', (accounts) => {
   describe('Key Purchases', () => {
     it('should leave the KM == 0x00(default) for new purchases', async () => {
       const keyManager = await lock.keyManagerOf.call(tokenIds[0])
-      assert.equal(keyManager, constants.ZERO_ADDRESS)
+      assert.equal(keyManager, ADDRESS_ZERO)
     })
 
     it('should allow to set KM when buying new keys', async () => {
       const tx = await lock.purchase(
         [],
         [keyOwner1],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
         [accounts[8]],
         [[]],
         {
@@ -81,8 +81,8 @@ contract('Permissions / KeyManager', (accounts) => {
       const tx = await lock.purchase(
         [],
         [keyOwner1],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: keyPrice.toFixed(),
@@ -93,25 +93,19 @@ contract('Permissions / KeyManager', (accounts) => {
       tokenId = args.tokenId
     })
     it('should reset key manager when specified', async () => {
-      assert.equal(
-        await lock.keyManagerOf.call(tokenId),
-        constants.ZERO_ADDRESS
-      )
+      assert.equal(await lock.keyManagerOf.call(tokenId), ADDRESS_ZERO)
       assert.equal(await lock.isValidKey.call(tokenId), true)
       await lock.extend(0, tokenId, accounts[8], [], {
         value: keyPrice.toFixed(),
         from: keyOwner1,
       })
-      assert.equal(
-        await lock.keyManagerOf.call(tokenId),
-        constants.ZERO_ADDRESS
-      )
+      assert.equal(await lock.keyManagerOf.call(tokenId), ADDRESS_ZERO)
     })
 
     it('should left untouched when not specified', async () => {
       await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyOwner1 })
       assert.equal(await lock.keyManagerOf.call(tokenId), accounts[9])
-      await lock.extend(0, tokenId, web3.utils.padLeft(0, 40), [], {
+      await lock.extend(0, tokenId, ADDRESS_ZERO, [], {
         value: keyPrice.toFixed(),
         from: keyOwner1,
       })
@@ -128,8 +122,8 @@ contract('Permissions / KeyManager', (accounts) => {
       const tx = await lock.purchase(
         [],
         keyOwners,
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        keyOwners.map(() => ADDRESS_ZERO),
+        keyOwners.map(() => ADDRESS_ZERO),
         keyOwners.map(() => []),
         {
           value: (keyPrice * keyOwners.length).toFixed(),
@@ -148,7 +142,7 @@ contract('Permissions / KeyManager', (accounts) => {
       })
       const { args } = tx.logs.find((v) => v.event === 'Transfer')
       keyManager = await lock.keyManagerOf.call(args.tokenId)
-      assert.equal(keyManager, constants.ZERO_ADDRESS)
+      assert.equal(keyManager, ADDRESS_ZERO)
     })
   })
 
@@ -161,15 +155,13 @@ contract('Permissions / KeyManager', (accounts) => {
       })
       const {
         args: { tokenId },
-      } = tx.logs.find(
-        (v) => v.event === 'Transfer' && v.from !== constants.ZERO_ADDRESS
-      )
+      } = tx.logs.find((v) => v.event === 'Transfer' && v.from !== ADDRESS_ZERO)
       newTokenId = tokenId
     })
 
     it('should leave the KM == 0x00(default) for new recipients', async () => {
       const newKeyManager = await lock.keyManagerOf.call(newTokenId)
-      assert.equal(newKeyManager, constants.ZERO_ADDRESS)
+      assert.equal(newKeyManager, ADDRESS_ZERO)
     })
 
     /*
@@ -187,7 +179,7 @@ contract('Permissions / KeyManager', (accounts) => {
       tokenId = await lock.getTokenIdFor.call(keyOwner1)
       assert.notEqual(tokenId, 0)
       let keyManager = await lock.keyManagerOf.call(tokenId)
-      assert.equal(keyManager, constants.ZERO_ADDRESS)
+      assert.equal(keyManager, ADDRESS_ZERO)
       const owner = await lock.ownerOf.call(tokenId)
       assert.equal(owner, keyOwner1)
       await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyOwner1 })
@@ -202,7 +194,7 @@ contract('Permissions / KeyManager', (accounts) => {
       tokenId = await lock.getTokenIdFor(keyOwner1)
       keyManager = await lock.keyManagerOf.call(tokenId)
       assert.equal(await lock.getHasValidKey.call(keyOwner1), true)
-      assert.equal(keyManager, constants.ZERO_ADDRESS)
+      assert.equal(keyManager, ADDRESS_ZERO)
     })
     */
   })
@@ -224,10 +216,7 @@ contract('Permissions / KeyManager', (accounts) => {
 
   describe('configuring the key manager', () => {
     it('should allow the current keyManager to set a new KM', async () => {
-      assert.equal(
-        await lock.keyManagerOf.call(tokenIds[0]),
-        constants.ZERO_ADDRESS
-      )
+      assert.equal(await lock.keyManagerOf.call(tokenIds[0]), ADDRESS_ZERO)
       await lock.setKeyManagerOf(tokenIds[0], accounts[9], { from: keyOwner1 })
       assert.equal(await lock.keyManagerOf.call(tokenIds[0]), accounts[9])
     })

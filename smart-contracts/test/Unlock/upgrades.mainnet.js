@@ -2,6 +2,7 @@ const { config, ethers, assert, network, upgrades } = require('hardhat')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 const multisigABI = require('../helpers/ABIs/multisig.json')
 const proxyABI = require('../helpers/ABIs/proxy.json')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 // NB : this needs to be run against a mainnet fork using
 // import proxy info using legacy OZ CLI file export after migration to @openzepplein/upgrades
@@ -162,7 +163,7 @@ contract('Unlock (on mainnet)', async () => {
       const updated = await upgradeContract()
       let tx = await updated.createLock(
         60, // expirationDuration: 1 minute!
-        web3.utils.padLeft(0, 40),
+        ADDRESS_ZERO,
         0, // keyPrice: in wei
         100, // maxNumberOfKeys
         'Upgrade Test Lock',
@@ -183,7 +184,7 @@ contract('Unlock (on mainnet)', async () => {
         [],
         recipient,
         referrer,
-        web3.utils.padLeft(0, 40),
+        ADDRESS_ZERO,
         []
       )
       await purchaseTx.wait()

@@ -3,7 +3,8 @@ const path = require('path')
 const fs = require('fs-extra')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades, network, run } = require('hardhat')
-const { constants, tokens, protocols } = require('hardlydifficult-eth')
+const { tokens, protocols } = require('hardlydifficult-eth')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
 const { getProxyAddress } = require('../../helpers/deployments')
 const createLockHash = require('../helpers/createLockCalldata')
@@ -167,7 +168,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       // create lock
       const args = [
         Locks.FIRST.expirationDuration.toFixed(),
-        web3.utils.padLeft(0, 40),
+        ADDRESS_ZERO,
         Locks.FIRST.keyPrice.toFixed(),
         Locks.FIRST.maxNumberOfKeys.toFixed(),
         Locks.FIRST.lockName,
@@ -185,20 +186,20 @@ contract('UnlockDiscountToken upgrade', async () => {
       const uniswapRouter = await protocols.uniswapV2.deploy(
         web3,
         minter.address,
-        constants.ZERO_ADDRESS,
+        ADDRESS_ZERO,
         weth.address
       )
 
       // Create UDT <-> WETH pool
       await udt.mint(minter.address, web3.utils.toWei('1000000', 'ether'))
-      await udt.approve(uniswapRouter.address, constants.MAX_UINT)
+      await udt.approve(uniswapRouter.address, MAX_UINT)
       await uniswapRouter.addLiquidityETH(
         udt.address,
         web3.utils.toWei('1000000', 'ether'),
         '1',
         '1',
         minter.address,
-        constants.MAX_UINT,
+        MAX_UINT,
         { from: minter.address, value: web3.utils.toWei('40', 'ether') }
       )
 
@@ -216,7 +217,7 @@ contract('UnlockDiscountToken upgrade', async () => {
         1,
         [weth.address, udt.address],
         minter.address,
-        constants.MAX_UINT,
+        MAX_UINT,
         { value: web3.utils.toWei('1', 'ether') }
       )
 
@@ -242,8 +243,8 @@ contract('UnlockDiscountToken upgrade', async () => {
       await lock.purchase(
         [],
         [referrer.address, referrer2.address],
-        [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO, ADDRESS_ZERO],
+        [ADDRESS_ZERO, ADDRESS_ZERO],
         [[], []],
         {
           value: (await lock.keyPrice()).mul(2),
@@ -287,7 +288,7 @@ contract('UnlockDiscountToken upgrade', async () => {
           [],
           [keyBuyer.address],
           [referrer.address],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: await lock.keyPrice(),
@@ -347,7 +348,7 @@ contract('UnlockDiscountToken upgrade', async () => {
           [],
           [keyBuyer.address],
           [referrer2.address],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: (await lock.keyPrice()).mul(2),

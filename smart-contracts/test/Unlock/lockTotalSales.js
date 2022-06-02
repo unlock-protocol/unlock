@@ -4,6 +4,7 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let locks
@@ -30,8 +31,8 @@ contract('Unlock / lockTotalSales', (accounts) => {
       await lock.purchase(
         [],
         [accounts[0]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: price,
@@ -54,8 +55,8 @@ contract('Unlock / lockTotalSales', (accounts) => {
         await lock.purchase(
           [],
           [accounts[i]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: price,

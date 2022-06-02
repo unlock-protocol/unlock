@@ -1,6 +1,7 @@
 const BigNumber = require('bignumber.js')
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -26,8 +27,8 @@ contract('Lock / disableTransfers', (accounts) => {
     const tx = await lock.purchase(
       [],
       [keyOwner],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         value: keyPrice.toFixed(),

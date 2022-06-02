@@ -5,6 +5,7 @@ const { PublicLockV8 } = require('@unlock-protocol/contracts')
 const Locks = require('../../fixtures/locks')
 const deployLock = require('../../../scripts/deployments/lock')
 const compareValues = require('../../LockSerializer/_compareValues')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 contract('Scripts/deploy:lock', () => {
   let serializer
@@ -50,7 +51,7 @@ contract('Scripts/deploy:lock', () => {
         .map(async (name) => {
           const lockArgs = [
             Locks[name].expirationDuration.toFixed(),
-            web3.utils.padLeft(0, 40),
+            ADDRESS_ZERO,
             Locks[name].keyPrice.toFixed(),
             Locks[name].maxNumberOfKeys.toFixed(),
             Locks[name].lockName,

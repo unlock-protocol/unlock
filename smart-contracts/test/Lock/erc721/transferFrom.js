@@ -1,7 +1,6 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
-
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
@@ -26,8 +25,8 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     const tx = await locks.FIRST.purchase(
       [],
       keyOwners,
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => ADDRESS_ZERO),
+      keyOwners.map(() => ADDRESS_ZERO),
       keyOwners.map(() => []),
       {
         value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
@@ -55,14 +54,9 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
 
     it('should abort if the recipient is 0x', async () => {
       await reverts(
-        locks.FIRST.transferFrom(
-          keyOwners[0],
-          web3.utils.padLeft(0, 40),
-          tokenIds[0],
-          {
-            from: keyOwners[0],
-          }
-        ),
+        locks.FIRST.transferFrom(keyOwners[0], ADDRESS_ZERO, tokenIds[0], {
+          from: keyOwners[0],
+        }),
         'INVALID_ADDRESS'
       )
     })
@@ -149,10 +143,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         await locks.FIRST.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
           from: accountApproved,
         })
-        assert.equal(
-          await locks.FIRST.getApproved(tokenIds[0]),
-          constants.ZERO_ADDRESS
-        )
+        assert.equal(await locks.FIRST.getApproved(tokenIds[0]), ADDRESS_ZERO)
       })
     })
 
@@ -168,10 +159,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         await locks.FIRST.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
           from: keyManager,
         })
-        assert.equal(
-          await locks.FIRST.keyManagerOf(tokenIds[0]),
-          constants.ZERO_ADDRESS
-        )
+        assert.equal(await locks.FIRST.keyManagerOf(tokenIds[0]), ADDRESS_ZERO)
       })
     })
 
@@ -209,8 +197,8 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         const tx = await locks['SINGLE KEY'].purchase(
           [],
           [keyOwners[0]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -226,8 +214,8 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
           locks['SINGLE KEY'].purchase(
             [],
             [accounts[8]],
-            [web3.utils.padLeft(0, 40)],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
             [[]],
             {
               value: web3.utils.toWei('0.01', 'ether'),
@@ -265,15 +253,15 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     const tx = await locks.FREE.purchase(
       [],
       [accounts[1]],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         from: accounts[1],
       }
     )
     const { args } = tx.logs.find(
-      (v) => v.event === 'Transfer' && v.args.from === constants.ZERO_ADDRESS
+      (v) => v.event === 'Transfer' && v.args.from === ADDRESS_ZERO
     )
     const { tokenId: newTokenId } = args
 

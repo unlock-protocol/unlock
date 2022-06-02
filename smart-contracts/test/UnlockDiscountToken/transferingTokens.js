@@ -2,10 +2,11 @@
 // ignoring that rule is needed when using the `describeOrskip` workaround
 
 const BigNumber = require('bignumber.js')
-const { constants, tokens, protocols } = require('hardlydifficult-eth')
+const { tokens, protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades, network } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
 const Unlock = artifacts.require('Unlock.sol')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
@@ -60,14 +61,14 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     const uniswapRouter = await protocols.uniswapV2.deploy(
       web3,
       protocolOwner,
-      constants.ZERO_ADDRESS,
+      ADDRESS_ZERO,
       weth.address
     )
     // Create UDT <-> WETH pool
     await udt.mint(minter, web3.utils.toWei('1000000', 'ether'), {
       from: minter,
     })
-    await udt.approve(uniswapRouter.address, constants.MAX_UINT, {
+    await udt.approve(uniswapRouter.address, MAX_UINT, {
       from: minter,
     })
     await uniswapRouter.addLiquidityETH(
@@ -76,7 +77,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       '1',
       '1',
       minter,
-      constants.MAX_UINT,
+      MAX_UINT,
       { from: minter, value: web3.utils.toWei('40', 'ether') }
     )
 
@@ -94,7 +95,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       1,
       [weth.address, udt.address],
       minter,
-      constants.MAX_UINT,
+      MAX_UINT,
       { from: minter, value: web3.utils.toWei('1', 'ether') }
     )
 
@@ -119,17 +120,10 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     })
 
     // Purchase a valid key for the referrer
-    await lock.purchase(
-      [],
-      [referrer],
-      [constants.ZERO_ADDRESS],
-      [web3.utils.padLeft(0, 40)],
-      [[]],
-      {
-        from: referrer,
-        value: await lock.keyPrice(),
-      }
-    )
+    await lock.purchase([], [referrer], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
+      from: referrer,
+      value: await lock.keyPrice(),
+    })
 
     // allow multiiple keys per owner
     await lock.setMaxKeysPerAddress(10)
@@ -185,7 +179,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
         [],
         [keyBuyer],
         [referrer],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
         [[]],
         {
           from: keyBuyer,
@@ -247,18 +241,11 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
         ethers.BigNumber.from(baseFeePerGas).toHexString(16),
       ])
 
-      await lock.purchase(
-        [],
-        [keyBuyer],
-        [referrer],
-        [web3.utils.padLeft(0, 40)],
-        [[]],
-        {
-          from: keyBuyer,
-          value: await lock.keyPrice(),
-          gasPrice: ethers.BigNumber.from(baseFeePerGas).mul(2).toHexString(16),
-        }
-      )
+      await lock.purchase([], [keyBuyer], [referrer], [ADDRESS_ZERO], [[]], {
+        from: keyBuyer,
+        value: await lock.keyPrice(),
+        gasPrice: ethers.BigNumber.from(baseFeePerGas).mul(2).toHexString(16),
+      })
     })
 
     it('referrer has some UDT now', async () => {

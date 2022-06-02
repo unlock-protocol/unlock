@@ -1,4 +1,4 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 module.exports.getBalanceBehavior = (options) => {
   describe('Lock / behaviors / directTips', () => {
@@ -15,7 +15,7 @@ module.exports.getBalanceBehavior = (options) => {
     })
 
     it('can withdraw ETH', async () => {
-      await lock.withdraw(constants.ZERO_ADDRESS)
+      await lock.withdraw(ADDRESS_ZERO)
       const balance = await web3.eth.balanceOf(lock)
       assert.equal(balance.toString(), 0)
     })

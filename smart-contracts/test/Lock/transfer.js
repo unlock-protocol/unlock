@@ -4,7 +4,7 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
-const { errorMessages } = require('../helpers/constants')
+const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
@@ -26,16 +26,8 @@ contract('Lock / transfer', (accounts) => {
     const tx = await lock.purchase(
       [],
       [singleKeyOwner, multipleKeyOwner, multipleKeyOwner],
-      [
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-      ],
-      [
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-      ],
+      [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
+      [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
 
       [[], [], []],
       {

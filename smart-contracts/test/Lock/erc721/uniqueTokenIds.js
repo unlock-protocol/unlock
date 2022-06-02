@@ -2,6 +2,7 @@ const deployLocks = require('../../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 let unlock
 let locks
@@ -25,8 +26,8 @@ contract('Lock / uniqueTokenIds', (accounts) => {
       const tx = await lock.purchase(
         [],
         keyOwners,
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
-        keyOwners.map(() => web3.utils.padLeft(0, 40)),
+        keyOwners.map(() => ADDRESS_ZERO),
+        keyOwners.map(() => ADDRESS_ZERO),
         keyOwners.map(() => []),
         {
           value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
@@ -41,7 +42,7 @@ contract('Lock / uniqueTokenIds', (accounts) => {
       assert(tokenIds[tokenIds.length - 1].eq(supply))
 
       // extend a key
-      await lock.extend(0, tokenIds[1], web3.utils.padLeft(0, 40), [], {
+      await lock.extend(0, tokenIds[1], ADDRESS_ZERO, [], {
         value: web3.utils.toWei('0.01', 'ether'),
         from: keyOwner1,
       })

@@ -11,7 +11,7 @@ const UnlockDiscountTokenV3 = artifacts.require('UnlockDiscountTokenV3.sol')
 const { promisify } = require('util')
 
 const queue = promisify(setImmediate)
-const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 async function countPendingTransactions() {
   return parseInt(
@@ -78,12 +78,12 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
   describe('Delegation', () => {
     it('delegation with balance', async () => {
       await udt.mint(holder, supply, { from: minter })
-      assert.equal(await udt.delegates(minter), ZERO_ADDRESS)
+      assert.equal(await udt.delegates(minter), ADDRESS_ZERO)
       const { receipt } = await udt.delegate(holder, { from: holder })
 
       expectEvent(receipt, 'DelegateChanged', {
         delegator: holder,
-        fromDelegate: ZERO_ADDRESS,
+        fromDelegate: ADDRESS_ZERO,
         toDelegate: holder,
       })
       expectEvent(receipt, 'DelegateVotesChanged', {
@@ -100,12 +100,12 @@ contract('UDT ERC20VotesComp extension', (accounts) => {
       assert(supply.eq(await udt.getPriorVotes(holder, receipt.blockNumber)))
     })
     it('delegation without balance', async () => {
-      expect(await udt.delegates(holder)).to.be.equal(ZERO_ADDRESS)
+      expect(await udt.delegates(holder)).to.be.equal(ADDRESS_ZERO)
 
       const { receipt } = await udt.delegate(holder, { from: holder })
       expectEvent(receipt, 'DelegateChanged', {
         delegator: holder,
-        fromDelegate: ZERO_ADDRESS,
+        fromDelegate: ADDRESS_ZERO,
         toDelegate: holder,
       })
       expectEvent.notEmitted(receipt, 'DelegateVotesChanged')

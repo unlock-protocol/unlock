@@ -1,5 +1,6 @@
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -7,7 +8,6 @@ const getProxy = require('../helpers/proxy')
 let unlock
 let locks
 let tokenId
-const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 
 contract('Lock / burn', (accounts) => {
   let keyOwner = accounts[1]
@@ -21,8 +21,8 @@ contract('Lock / burn', (accounts) => {
     const tx = await lock.purchase(
       [],
       [keyOwner],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         value: web3.utils.toWei('0.01', 'ether'),
@@ -38,14 +38,14 @@ contract('Lock / burn', (accounts) => {
     assert.equal(await lock.ownerOf(tokenId), keyOwner)
     await lock.burn(tokenId, { from: keyOwner })
     assert.equal(await lock.getHasValidKey.call(keyOwner), false)
-    assert.equal(await lock.ownerOf(tokenId), ZERO_ADDRESS)
+    assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 
   it('emit a transfer event', async () => {
     const tx = await lock.burn(tokenId, { from: keyOwner })
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
     assert.equal(args.tokenId.toNumber(), tokenId.toNumber())
-    assert.equal(args.to, ZERO_ADDRESS)
+    assert.equal(args.to, ADDRESS_ZERO)
     assert.equal(args.from, keyOwner)
   })
 
@@ -55,7 +55,7 @@ contract('Lock / burn', (accounts) => {
     assert.equal(await lock.ownerOf(tokenId), keyOwner)
     await lock.burn(tokenId, { from: accounts[9] })
     assert.equal(await lock.getHasValidKey.call(keyOwner), false)
-    assert.equal(await lock.ownerOf(tokenId), ZERO_ADDRESS)
+    assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 
   it('should work only on existing keys', async () => {

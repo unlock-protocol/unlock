@@ -1,4 +1,5 @@
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -20,7 +21,7 @@ contract('Lock / purchaseForFrom', (accounts) => {
         [],
         [accounts[0]],
         [accounts[1]],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
@@ -35,8 +36,8 @@ contract('Lock / purchaseForFrom', (accounts) => {
       await lock.purchase(
         [],
         [accounts[0]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
@@ -46,7 +47,7 @@ contract('Lock / purchaseForFrom', (accounts) => {
         [],
         [accounts[1]],
         [accounts[0]],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
@@ -58,15 +59,15 @@ contract('Lock / purchaseForFrom', (accounts) => {
       await locks.FREE.purchase(
         [],
         [accounts[0]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]]
       )
       const tx = await locks.FREE.purchase(
         [],
         [accounts[2]],
         [accounts[0]],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
         [[]]
       )
       assert.equal(tx.logs[0].event, 'Transfer')
