@@ -76,7 +76,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
           .getEndpoint(
             `/v2/api/verifier/${network}/${lockAddress}/${selectedVerifier}`,
             options,
-            true
+            true // use authentication (Bearer token will be attached)
           )
           .then((verifiers: any) => {
             ToastHelper.success('Verifier deleted from list')
@@ -119,7 +119,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
           <tr>
             <th>Address</th>
             <th className="text-left">Created at</th>
-            <th className="text-left">Verified at</th>
+            <th className="text-left">Updated at</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -129,14 +129,14 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
             const createdAt = verifier?.createdAt
               ? new Date(verifier?.createdAt).toLocaleString()
               : '-'
-            const verifiedAt = verifier?.verifiedAt
-              ? new Date(verifier?.verifiedAt).toLocaleString()
+            const updatedAt = verifier?.updatedAt
+              ? new Date(verifier?.updatedAt).toLocaleString()
               : '-'
             return (
               <tr key={key}>
                 <td>{verifier?.address ?? '-'}</td>
                 <td>{createdAt ?? '-'}</td>
-                <td>{verifiedAt ?? '-'}</td>
+                <td>{updatedAt ?? '-'}</td>
                 <td>
                   <Tooltip tip="Remove verifier" label="Remove verifier">
                     <TrashIcon

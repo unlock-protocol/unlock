@@ -81,11 +81,6 @@ export class StorageService extends EventEmitter {
       const startTime = new Date().getTime()
       const expireTime = new Date(expireAt).getTime()
       const timeout = (startTime - expireTime) / 1000 / 60 // time difference in seconds
-      console.table({
-        startTime,
-        expireTime,
-        timeout,
-      })
       setTimeout(() => {
         this.refreshToken(token)
       }, timeout)
