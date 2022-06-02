@@ -4989,19 +4989,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cspotcode/source-map-consumer@npm:0.8.0":
-  version: 0.8.0
-  resolution: "@cspotcode/source-map-consumer@npm:0.8.0"
-  checksum: c0c16ca3d2f58898f1bd74c4f41a189dbcc202e642e60e489cbcc2e52419c4e89bdead02c886a12fb13ea37798ede9e562b2321df997ebc210ae9bd881561b4e
-  languageName: node
-  linkType: hard
-
-"@cspotcode/source-map-support@npm:0.7.0":
-  version: 0.7.0
-  resolution: "@cspotcode/source-map-support@npm:0.7.0"
+"@cspotcode/source-map-support@npm:^0.8.0":
+  version: 0.8.1
+  resolution: "@cspotcode/source-map-support@npm:0.8.1"
   dependencies:
-    "@cspotcode/source-map-consumer": 0.8.0
-  checksum: 9faddda7757cd778b5fd6812137b2cc265810043680d6399acc20441668fafcdc874053be9dccd0d9110087287bfad27eb3bf342f72bceca9aa9059f5d0c4be8
+    "@jridgewell/trace-mapping": 0.3.9
+  checksum: 5718f267085ed8edb3e7ef210137241775e607ee18b77d95aa5bd7514f47f5019aa2d82d96b3bf342ef7aa890a346fa1044532ff7cc3009e7d24fce3ce6200fa
   languageName: node
   linkType: hard
 
@@ -7936,6 +7929,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jridgewell/trace-mapping@npm:0.3.9, @jridgewell/trace-mapping@npm:^0.3.8":
+  version: 0.3.9
+  resolution: "@jridgewell/trace-mapping@npm:0.3.9"
+  dependencies:
+    "@jridgewell/resolve-uri": ^3.0.3
+    "@jridgewell/sourcemap-codec": ^1.4.10
+  checksum: d89597752fd88d3f3480845691a05a44bd21faac18e2185b6f436c3b0fd0c5a859fbbd9aaa92050c4052caf325ad3e10e2e1d1b64327517471b7d51babc0ddef
+  languageName: node
+  linkType: hard
+
 "@jridgewell/trace-mapping@npm:^0.3.0":
   version: 0.3.4
   resolution: "@jridgewell/trace-mapping@npm:0.3.4"
@@ -7953,16 +7956,6 @@ __metadata:
     "@jridgewell/resolve-uri": ^3.0.3
     "@jridgewell/sourcemap-codec": ^1.4.10
   checksum: 1e5f7ff99f6fe8b671aab61b5a943d00f689728380e2d20df1e8a7418b421d4f941679ab327282d9ad5b2d71c0eedf2928ad2b974d0bd046e57c6fd66e891144
-  languageName: node
-  linkType: hard
-
-"@jridgewell/trace-mapping@npm:^0.3.8":
-  version: 0.3.9
-  resolution: "@jridgewell/trace-mapping@npm:0.3.9"
-  dependencies:
-    "@jridgewell/resolve-uri": ^3.0.3
-    "@jridgewell/sourcemap-codec": ^1.4.10
-  checksum: d89597752fd88d3f3480845691a05a44bd21faac18e2185b6f436c3b0fd0c5a859fbbd9aaa92050c4052caf325ad3e10e2e1d1b64327517471b7d51babc0ddef
   languageName: node
   linkType: hard
 
@@ -8473,6 +8466,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/hardhat-upgrades@npm:1.18.0":
+  version: 1.18.0
+  resolution: "@openzeppelin/hardhat-upgrades@npm:1.18.0"
+  dependencies:
+    "@openzeppelin/upgrades-core": ^1.15.0
+    chalk: ^4.1.0
+    proper-lockfile: ^4.1.1
+  peerDependencies:
+    "@nomiclabs/hardhat-ethers": ^2.0.0
+    "@nomiclabs/hardhat-etherscan": ^3.0.3
+    hardhat: ^2.0.2
+  peerDependenciesMeta:
+    "@nomiclabs/harhdat-etherscan":
+      optional: true
+  bin:
+    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
+  checksum: 399380e327e3f3e094abed9706cdcb009302ce3c23cf12b387bf16f3a31e26ee0d2d8e46ba1161e4b0ae6e8a87e925ffbc4768f7532b02a66cdcb8c9423f44d9
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/test-environment@npm:0.1.3":
   version: 0.1.3
   resolution: "@openzeppelin/test-environment@npm:0.1.3"
@@ -8558,6 +8571,22 @@ __metadata:
     proper-lockfile: ^4.1.1
     solidity-ast: ^0.4.15
   checksum: b6dfb36bc7f83a85a5e072768e98649f5a9895971bd2f81d0c7405fb9a0200bc8ade406aea1ccc3108181be758629c676962c0714b567dc5dccd68536e42eb09
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/upgrades-core@npm:^1.15.0":
+  version: 1.15.0
+  resolution: "@openzeppelin/upgrades-core@npm:1.15.0"
+  dependencies:
+    bn.js: ^5.1.2
+    cbor: ^8.0.0
+    chalk: ^4.1.0
+    compare-versions: ^4.0.0
+    debug: ^4.1.1
+    ethereumjs-util: ^7.0.3
+    proper-lockfile: ^4.1.1
+    solidity-ast: ^0.4.15
+  checksum: a491e33452d9744277d66144206ab0121851d219a5cef1ed095f37977433c5a0536a0483e4d446f3d8b7c06dcb53dabffcc9e638b510c0b92153b6b0feaad998
   languageName: node
   linkType: hard
 
@@ -15234,7 +15263,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.0.6
-    "@openzeppelin/hardhat-upgrades": 1.16.1
+    "@openzeppelin/hardhat-upgrades": 1.18.0
     "@types/chai": 4.3.0
     "@types/fs-extra": 9.0.13
     "@types/mocha": 9.1.1
@@ -15244,16 +15273,16 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     chai: 4.3.4
-    eslint: 8.10.0
+    eslint: 8.16.0
     hardhat: 2.9.0
     mocha: 10.0.0
-    prettier: 2.5.1
+    prettier: 2.6.2
     ts-mocha: 9.0.2
-    ts-node: 10.6.0
+    ts-node: 10.8.0
     tslint: 5.20.1
     tslint-config-prettier: 1.18.0
     tslint-plugin-prettier: 2.3.0
-    typescript: 4.6.4
+    typescript: 4.7.2
   peerDependencies:
     hardhat: 2.9.0
   languageName: unknown
@@ -50298,11 +50327,11 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"ts-node@npm:10.6.0":
-  version: 10.6.0
-  resolution: "ts-node@npm:10.6.0"
+"ts-node@npm:10.8.0":
+  version: 10.8.0
+  resolution: "ts-node@npm:10.8.0"
   dependencies:
-    "@cspotcode/source-map-support": 0.7.0
+    "@cspotcode/source-map-support": ^0.8.0
     "@tsconfig/node10": ^1.0.7
     "@tsconfig/node12": ^1.0.7
     "@tsconfig/node14": ^1.0.0
@@ -50313,7 +50342,7 @@ resolve@^2.0.0-next.3:
     create-require: ^1.1.0
     diff: ^4.0.1
     make-error: ^1.1.1
-    v8-compile-cache-lib: ^3.0.0
+    v8-compile-cache-lib: ^3.0.1
     yn: 3.1.1
   peerDependencies:
     "@swc/core": ">=1.2.50"
@@ -50328,10 +50357,11 @@ resolve@^2.0.0-next.3:
   bin:
     ts-node: dist/bin.js
     ts-node-cwd: dist/bin-cwd.js
+    ts-node-esm: dist/bin-esm.js
     ts-node-script: dist/bin-script.js
     ts-node-transpile-only: dist/bin-transpile.js
     ts-script: dist/bin-script-deprecated.js
-  checksum: bc7589d8c38dc75a2a6f832ac43faaac7edd3d0ef4643f46a9deeaabcdd35722e8c89e729fcd39a16069b30d09e297c2fb3eec917a82dd3f1e7da8b352bbd447
+  checksum: 1c22dc8dd80d0ba4dd4250b82cc032b63f6fbe8c87f8197cef43e7f9e2d43f5b333b445ed712e3006e24119257b4bff2c46605f7da61ab6f5e9514885d296f0c
   languageName: node
   linkType: hard
 
@@ -51840,10 +51870,10 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"v8-compile-cache-lib@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "v8-compile-cache-lib@npm:3.0.0"
-  checksum: 674e312bbca796584b61dc915f33c7e7dc4e06d196e0048cb772c8964493a1ec723f1dd014d9419fd55c24a6eae148f60769da23f622e05cd13268063fa1ed6b
+"v8-compile-cache-lib@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "v8-compile-cache-lib@npm:3.0.1"
+  checksum: 78089ad549e21bcdbfca10c08850022b22024cdcc2da9b168bcf5a73a6ed7bf01a9cebb9eac28e03cd23a684d81e0502797e88f3ccd27a32aeab1cfc44c39da0
   languageName: node
   linkType: hard
 
