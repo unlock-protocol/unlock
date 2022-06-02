@@ -1,5 +1,6 @@
 const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')
@@ -21,8 +22,8 @@ contract('Lock / erc721 / enumerable', (accounts) => {
     const tx = await lock.purchase(
       [],
       keyOwners,
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => ADDRESS_ZERO),
+      keyOwners.map(() => ADDRESS_ZERO),
       keyOwners.map(() => []),
       {
         value: (keyPrice * keyOwners.length).toString(),

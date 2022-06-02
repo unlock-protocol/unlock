@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-const { constants } = require('hardlydifficult-eth')
+const { MAX_UINT } = require('../helpers/constants')
 
 let publicLock = {
   expirationDuration: new BigNumber(60 * 60 * 24 * 30), // 30 days
@@ -30,6 +30,6 @@ module.exports = {
     isErc20: true, // indicates the test should deploy a test token
   }),
   NON_EXPIRING: Object.assign({}, publicLock, {
-    expirationDuration: new BigNumber(constants.MAX_UINT), // indicates that the lock should not expired
+    expirationDuration: new BigNumber(MAX_UINT), // indicates that the lock should not expired
   }),
 }

@@ -576,4 +576,14 @@ export class StorageService extends EventEmitter {
       return ''
     }
   }
+
+  async userExist(emailAddress: string) {
+    try {
+      const endpoint = `${this.host}/users/${emailAddress}`
+      const response = await axios.get(endpoint)
+      return response.status === 200
+    } catch (error) {
+      return false
+    }
+  }
 }
