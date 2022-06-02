@@ -1,4 +1,5 @@
 const createLockHash = require('../../helpers/createLockCalldata')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const PublicLock = artifacts.require('PublicLock')
 
@@ -17,7 +18,7 @@ exports.shouldCreateLock = (options) => {
       beforeEach(async () => {
         const args = [
           60 * 60 * 24 * 30, // expirationDuration: 30 days
-          web3.utils.padLeft(0, 40),
+          ADDRESS_ZERO,
           web3.utils.toWei('1', 'ether'), // keyPrice: in wei
           100, // maxNumberOfKeys
           'New Lock',
