@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.5.17 <=0.8.7;
+pragma solidity >=0.5.17 <=0.8.13;
 
 // This contract provides some utility methods for use with the unlock protocol smart contracts.
 // Borrowed from:
