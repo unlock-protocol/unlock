@@ -14930,7 +14930,7 @@ __metadata:
     cookie-parser: 1.4.6
     cors: 2.8.5
     cross-fetch: 3.1.5
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     eslint: 8.12.0
     eslint-config-standard: 16.0.3
     eth-sig-util: 2.5.4
@@ -15010,7 +15010,7 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
     copy-webpack-plugin: 11.0.0
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     eslint: 8.16.0
     lint-staged: 13.0.0
     next: 12.1.5
@@ -15043,7 +15043,7 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
     css-loader: 6.7.1
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     eslint: 8.16.0
     jest: 27.5.1
     jest-fetch-mock: 3.0.3
@@ -15344,7 +15344,7 @@ __metadata:
     babel-preset-react-app: 10.0.1
     cross-fetch: 3.1.5
     deep-object-diff: 1.1.7
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     eslint: 8.16.0
     eth-sig-util: 2.5.4
     ethereumjs-util: ^7.1.4
@@ -15491,7 +15491,7 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     embla-carousel-react: 6.2.0
     eslint: 8.10.0
     eslint-config-next: 12.1.5
@@ -15543,7 +15543,7 @@ __metadata:
     babel-jest: 28.1.0
     babel-loader: 8.2.5
     babel-plugin-wildcard: 7.0.0
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     eslint: 8.14.0
     jest: 27.5.1
     lint-staged: 13.0.0
@@ -24052,10 +24052,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.0.0":
-  version: 16.0.0
-  resolution: "dotenv@npm:16.0.0"
-  checksum: 664cebb51f0a9a1d1b930f51f0271e72e26d62feaecc9dc03df39453dd494b4e724809ca480fb3ec3213382b1ed3f791aaeb83569a137f9329ce58efd4853dbf
+"dotenv@npm:16.0.1":
+  version: 16.0.1
+  resolution: "dotenv@npm:16.0.1"
+  checksum: f459ffce07b977b7f15d8cc4ee69cdff77d4dd8c5dc8c85d2d485ee84655352c2415f9dd09d42b5b5985ced3be186130871b34e2f3e2569ebc72fbc2e8096792
   languageName: node
   linkType: hard
 

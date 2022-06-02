@@ -25,7 +25,7 @@
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-plugin-styled-components": "2.0.7",
     "babel-preset-react-app": "10.0.1",
-    "dotenv": "16.0.0",
+    "dotenv": "16.0.1",
     "embla-carousel-react": "6.2.0",
     "eslint": "8.10.0",
     "jest": "27.5.1",
