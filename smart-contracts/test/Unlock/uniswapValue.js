@@ -1,7 +1,8 @@
 const BigNumber = require('bignumber.js')
-const { constants, tokens, protocols } = require('hardlydifficult-eth')
+const { tokens, protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -90,14 +91,14 @@ contract('Unlock / uniswapValue', (accounts) => {
       const uniswapRouter = await protocols.uniswapV2.deploy(
         web3,
         protocolOwner,
-        constants.ZERO_ADDRESS,
+        ADDRESS_ZERO,
         weth.address
       )
       // Create DAI <-> WETH pool
       await token.mint(liquidityOwner, web3.utils.toWei('100000', 'ether'), {
         from: protocolOwner,
       })
-      await token.approve(uniswapRouter.address, constants.MAX_UINT, {
+      await token.approve(uniswapRouter.address, MAX_UINT, {
         from: liquidityOwner,
       })
       await uniswapRouter.addLiquidityETH(
@@ -106,7 +107,7 @@ contract('Unlock / uniswapValue', (accounts) => {
         '1',
         '1',
         liquidityOwner,
-        constants.MAX_UINT,
+        MAX_UINT,
         { from: liquidityOwner, value: web3.utils.toWei('10', 'ether') }
       )
 
@@ -124,7 +125,7 @@ contract('Unlock / uniswapValue', (accounts) => {
         1,
         [weth.address, token.address],
         keyOwner,
-        constants.MAX_UINT,
+        MAX_UINT,
         { from: keyOwner, value: web3.utils.toWei('1', 'ether') }
       )
 
@@ -154,8 +155,8 @@ contract('Unlock / uniswapValue', (accounts) => {
         tx = await lock.purchase(
           [keyPrice],
           [keyOwner],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             from: keyOwner,
@@ -224,8 +225,8 @@ contract('Unlock / uniswapValue', (accounts) => {
         tx = await lock.purchase(
           [keyPrice],
           [keyOwner],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             from: keyOwner,
@@ -274,8 +275,8 @@ contract('Unlock / uniswapValue', (accounts) => {
         tx = await lock.purchase(
           [keyPrice],
           [keyOwner],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             from: keyOwner,
@@ -302,7 +303,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
         assert.equal(gdp.toString(), grossNetworkProduct)
         assert.equal(keyPrice, valueInETH)
-        assert.equal(web3.utils.padLeft(0, 40), tokenAddress)
+        assert.equal(ADDRESS_ZERO, tokenAddress)
         assert.equal(keyPrice, value)
         assert.equal(lockAddress, lock.address)
       })
