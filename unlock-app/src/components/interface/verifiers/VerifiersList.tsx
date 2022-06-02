@@ -108,7 +108,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   if (!logged) {
     return (
       <>
-        <span>Sign message to show verifiers list</span>
+        <span>Sign message in your wallet to show verifiers list.</span>
       </>
     )
   }
