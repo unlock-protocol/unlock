@@ -621,7 +621,7 @@ contract MixinKeys is
    */
   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
      _onlyLockManager();
-     if (_maxNumberOfKeys <= _totalSupply) {
+     if (_maxNumberOfKeys < _totalSupply) {
        revert CANT_BE_SMALLER_THAN_SUPPLY();
      }
      maxNumberOfKeys = _maxNumberOfKeys;
