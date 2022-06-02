@@ -7307,26 +7307,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:1.4.3":
-  version: 1.4.3
-  resolution: "@headlessui/react@npm:1.4.3"
-  peerDependencies:
-    react: ^16 || ^17 || ^18
-    react-dom: ^16 || ^17 || ^18
-  checksum: 0c55bba6dc09a81576ec7d41320e3beb57b3f4576637ac4aad6048af851d5fe5434fd0d10dfb5c7b2db16eca6ded5eb3368822ddb87ff4dcb99fc3592ef63b0a
-  languageName: node
-  linkType: hard
-
-"@headlessui/react@npm:1.6.4":
-  version: 1.6.4
-  resolution: "@headlessui/react@npm:1.6.4"
-  peerDependencies:
-    react: ^16 || ^17 || ^18
-    react-dom: ^16 || ^17 || ^18
-  checksum: f24dd2f5bd4de5954b2fd40998627b58a650a874894a90f96320ae5bad1b961a140e85ce821b92dc8cbed0628523df57ae9533137467d867788eac907bd396d7
-  languageName: node
-  linkType: hard
-
 "@headlessui/react@npm:1.6.4":
   version: 1.6.4
   resolution: "@headlessui/react@npm:1.6.4"
@@ -16217,7 +16197,7 @@ __metadata:
     cookie-parser: 1.4.6
     cors: 2.8.5
     cross-fetch: 3.1.5
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     eslint: 8.12.0
     eslint-config-standard: 16.0.3
     eth-sig-util: 2.5.4
@@ -16299,7 +16279,7 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
     copy-webpack-plugin: 11.0.0
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     eslint: 8.16.0
     lint-staged: 13.0.0
     next: 12.1.5
@@ -16332,7 +16312,7 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
     css-loader: 6.7.1
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     eslint: 8.16.0
     jest: 27.5.1
     jest-fetch-mock: 3.0.3
@@ -16633,7 +16613,7 @@ __metadata:
     babel-preset-react-app: 10.0.1
     cross-fetch: 3.1.5
     deep-object-diff: 1.1.7
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     eslint: 8.16.0
     eth-sig-util: 2.5.4
     ethereumjs-util: ^7.1.4
@@ -16781,7 +16761,7 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     embla-carousel-react: 6.2.0
     eslint: 8.10.0
     eslint-config-next: 12.1.5
@@ -16833,7 +16813,7 @@ __metadata:
     babel-jest: 28.1.0
     babel-loader: 8.2.5
     babel-plugin-wildcard: 7.0.0
-    dotenv: 16.0.0
+    dotenv: 16.0.1
     eslint: 8.14.0
     jest: 27.5.1
     lint-staged: 13.0.0
@@ -25369,10 +25349,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:16.0.0":
-  version: 16.0.0
-  resolution: "dotenv@npm:16.0.0"
-  checksum: 664cebb51f0a9a1d1b930f51f0271e72e26d62feaecc9dc03df39453dd494b4e724809ca480fb3ec3213382b1ed3f791aaeb83569a137f9329ce58efd4853dbf
+"dotenv@npm:16.0.1":
+  version: 16.0.1
+  resolution: "dotenv@npm:16.0.1"
+  checksum: f459ffce07b977b7f15d8cc4ee69cdff77d4dd8c5dc8c85d2d485ee84655352c2415f9dd09d42b5b5985ced3be186130871b34e2f3e2569ebc72fbc2e8096792
   languageName: node
   linkType: hard
 
@@ -29323,7 +29303,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"execa@npm:^5.0.0":
+"execa@npm:^5.0.0, execa@npm:^5.1.1":
   version: 5.1.1
   resolution: "execa@npm:5.1.1"
   dependencies:
@@ -44044,7 +44024,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.13":
+"postcss@npm:^8.4.13, postcss@npm:^8.4.7":
   version: 8.4.14
   resolution: "postcss@npm:8.4.14"
   dependencies:
@@ -44063,17 +44043,6 @@ fsevents@~2.1.1:
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
   checksum: a515ed36622edbee1d3ba153298d3b62ae9826dfa6de19204c2a6f975c8d3ad36808423b5119a9d82b78efd486de3ce35a1faf882a36ac8aa09492be4fbb7fe1
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.4.7":
-  version: 8.4.14
-  resolution: "postcss@npm:8.4.14"
-  dependencies:
-    nanoid: ^3.3.4
-    picocolors: ^1.0.0
-    source-map-js: ^1.0.2
-  checksum: fe58766ff32e4becf65a7d57678995cfd239df6deed2fe0557f038b47c94e4132e7e5f68b5aa820c13adfec32e523b693efaeb65798efb995ce49ccd83953816
   languageName: node
   linkType: hard
 
@@ -45455,15 +45424,6 @@ fsevents@~2.1.1:
     react: ">=16"
     react-dom: ">=16"
   checksum: bb34ddc8ada14cbd75a37f14d2563412174e23276eb05e9fb23a031b6d8374ca190cefa1940692f4371529ddafeb2d4b8d3e5023187c2851ec8cb247461553ee
-  languageName: node
-  linkType: hard
-
-"react-icons@npm:4.3.1":
-  version: 4.3.1
-  resolution: "react-icons@npm:4.3.1"
-  peerDependencies:
-    react: "*"
-  checksum: 2cc608acdd3e906aa3aaee290b8398220639677c949382d86e554020e5dab6a9f1ed7484418aa5272cb5c5c018e1fc9a323d433d901697a76530029f9ecb1263
   languageName: node
   linkType: hard
 

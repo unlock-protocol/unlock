@@ -14,7 +14,7 @@
     "babel-jest": "28.1.0",
     "babel-loader": "8.2.5",
     "babel-plugin-wildcard": "7.0.0",
-    "dotenv": "16.0.0",
+    "dotenv": "16.0.1",
     "eslint": "8.14.0",
     "jest": "27.5.1",
     "lint-staged": "13.0.0",

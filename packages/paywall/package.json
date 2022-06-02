@@ -18,7 +18,7 @@
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "babel-jest": "28.1.0",
     "css-loader": "6.7.1",
-    "dotenv": "16.0.0",
+    "dotenv": "16.0.1",
     "eslint": "8.16.0",
     "jest": "27.5.1",
     "jest-fetch-mock": "3.0.3",
