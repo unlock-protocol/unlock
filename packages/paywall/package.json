@@ -13,7 +13,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "27.5.1",
+    "@types/jest": "27.5.2",
     "@types/postmate": "1.5.2",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "babel-jest": "28.1.0",
