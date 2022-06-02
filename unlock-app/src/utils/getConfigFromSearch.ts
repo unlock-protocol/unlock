@@ -2,7 +2,7 @@ import { PaywallConfig } from '../unlockTypes'
 import { isValidPaywallConfig } from './checkoutValidators'
 /* eslint-disable no-console */
 
-export default function getPaywallConfigFromQuery(
+export default function getConfigFromSearch(
   search: any
 ): PaywallConfig | undefined {
   if (typeof search.paywallConfig === 'string') {
@@ -32,7 +32,6 @@ export default function getPaywallConfigFromQuery(
   }
   if (typeof search.network === 'string' && typeof search.lock === 'string') {
     return {
-      title: search?.title,
       network: search.network,
       locks: {
         [search.lock]: {},
