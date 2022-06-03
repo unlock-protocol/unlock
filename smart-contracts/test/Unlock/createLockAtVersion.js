@@ -29,7 +29,9 @@ contract('Unlock / createUpgradeableLockAtVersion', () => {
     await unlock.deployed()
 
     // set version 1
-    const PublicLock = await ethers.getContractFactory('PublicLock')
+    const PublicLock = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
     publicLock = await PublicLock.deploy()
     await publicLock.deployed()
     const tx1 = await unlock.addLockTemplate(publicLock.address, 1)
