@@ -15235,7 +15235,7 @@ __metadata:
     "@uniswap/v2-periphery": 1.1.0-beta.0
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    "@unlock-protocol/networks": "workspace:^"
+    "@unlock-protocol/networks": "workspace:./packages/networks"
     babel-eslint: 10.1.0
     babel-polyfill: 6.26.0
     babel-register: 6.26.0
