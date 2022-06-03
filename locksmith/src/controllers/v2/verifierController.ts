@@ -50,6 +50,18 @@ export class VerifierController {
         request.user!.walletAddress!
       )
 
+      if (!network) {
+        return response.status(500).send({
+          message: 'Network param value is not valid.',
+        })
+      }
+
+      if (!lockAddress) {
+        return response.status(500).send({
+          message: 'lockAddress param value is not valid.',
+        })
+      }
+
       const list = await this.#getVerifiersList(
         lockAddress,
         loggedUserAddress,
@@ -81,6 +93,18 @@ export class VerifierController {
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress!
       )
+
+      if (!network) {
+        return response.status(500).send({
+          message: 'Network param value is not valid.',
+        })
+      }
+
+      if (!lockAddress) {
+        return response.status(500).send({
+          message: 'lockAddress param value is not valid.',
+        })
+      }
 
       const alreadyExists = await this.#isVerifierAlreadyExits(
         lockAddress,
@@ -120,6 +144,18 @@ export class VerifierController {
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress!
       )
+
+      if (!network) {
+        return response.status(500).send({
+          message: 'Network param value is not valid.',
+        })
+      }
+
+      if (!lockAddress) {
+        return response.status(500).send({
+          message: 'lockAddress param value is not valid.',
+        })
+      }
 
       const alreadyExists = await this.#isVerifierAlreadyExits(
         lockAddress,

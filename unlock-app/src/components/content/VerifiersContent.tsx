@@ -123,50 +123,61 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
         <title>{pageTitle('Verifiers')}</title>
       </Head>
 
-      <VerifierContent>
-        <Header>
-          <span>A list for all verifiers for your event</span>
-          <Button onClick={onAddVerifier}>Add verifier</Button>
-        </Header>
-        <VerifiersList
-          lockAddress={lockAddress}
-          getVerifierList={getVerifierList}
-          verifiers={verifiers}
-          setVerifiers={setVerifiers}
-        />
-      </VerifierContent>
-
-      <Modal isOpen={addVerifierModalOpen} setIsOpen={onAddVerifier}>
-        <div className={styling.sectionWrapper}>
-          <h3 className={styling.sectionTitle}>Add verifier</h3>
-          <span className={styling.sectionDesctiption}>
-            Enter the Ethereum address of the user you want to add as a
-            Verifier.
+      {!lockAddress ? (
+        <>
+          <span className="text-red-600">
+            {'"lockAddress"'} query parameter is not defined, please check the
+            url
           </span>
-          <Input
-            placeholder="0x..."
-            className={styling.input}
-            value={verifierAddress}
-            onChange={onVerifierAddressChange}
-          />
-          <div className={styling.actions}>
-            <Button
-              variant="secondary"
-              onClick={() => setAddVerifierModalOpen(false)}
-              disabled={loading}
-            >
-              Close
-            </Button>
-            <Button
-              className={styling.button}
-              onClick={onAddAddress}
-              disabled={loading}
-            >
-              Add address
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        </>
+      ) : (
+        <>
+          <VerifierContent>
+            <Header>
+              <span>A list for all verifiers for your event</span>
+              <Button onClick={onAddVerifier}>Add verifier</Button>
+            </Header>
+            <VerifiersList
+              lockAddress={lockAddress}
+              getVerifierList={getVerifierList}
+              verifiers={verifiers}
+              setVerifiers={setVerifiers}
+            />
+          </VerifierContent>
+
+          <Modal isOpen={addVerifierModalOpen} setIsOpen={onAddVerifier}>
+            <div className={styling.sectionWrapper}>
+              <h3 className={styling.sectionTitle}>Add verifier</h3>
+              <span className={styling.sectionDesctiption}>
+                Enter the Ethereum address of the user you want to add as a
+                Verifier.
+              </span>
+              <Input
+                placeholder="0x..."
+                className={styling.input}
+                value={verifierAddress}
+                onChange={onVerifierAddressChange}
+              />
+              <div className={styling.actions}>
+                <Button
+                  variant="secondary"
+                  onClick={() => setAddVerifierModalOpen(false)}
+                  disabled={loading}
+                >
+                  Close
+                </Button>
+                <Button
+                  className={styling.button}
+                  onClick={onAddAddress}
+                  disabled={loading}
+                >
+                  Add address
+                </Button>
+              </div>
+            </div>
+          </Modal>
+        </>
+      )}
     </Layout>
   )
 }
