@@ -4,7 +4,7 @@ import Button from '../Button'
 
 const Verifiers = (props: any) => (
   <Button label="Verifiers" {...props}>
-    <Svg.Members name="Claim NFT" />
+    <Svg.Members name="Verifiers" />
   </Button>
 )
 
