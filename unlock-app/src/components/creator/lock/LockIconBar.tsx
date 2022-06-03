@@ -7,7 +7,7 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 interface LockIconBarProps {
   lock: any
-  withdraw: any
+  withdraw: (...args: any) => void
   toggleCode: () => void
   toggleCreditCard: () => void
 }
