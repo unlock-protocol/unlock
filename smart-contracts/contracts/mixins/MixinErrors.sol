@@ -58,7 +58,7 @@ contract MixinErrors {
   // renewals
   error NON_RENEWABLE_LOCK();
   error LOCK_HAS_CHANGED();
-  error NOT_READY();
+  error NOT_READY_FOR_RENEWAL();
 
   // gas refund
   error GAS_REFUND_FAILED();
