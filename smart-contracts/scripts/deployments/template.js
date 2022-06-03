@@ -28,7 +28,7 @@ async function main({ publicLockVersion = 10 }) {
 
   // verify
   if (!isLocalNet) {
-    await run(`yarn hardhat verify ${publicLock.address}`)
+    await run(`yarn hardhat verify`, { address: publicLock.address })
   }
 
   // save deployment info
