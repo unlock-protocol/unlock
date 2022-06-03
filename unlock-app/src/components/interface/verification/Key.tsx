@@ -9,6 +9,7 @@ import {
 import { ActionButton } from '../buttons/ActionButton'
 import Loading from '../Loading'
 import { ToastHelper } from '../../helpers/toast.helper'
+import { useStorageService } from '~/utils/withStorageService'
 
 interface InvalidKeyProps {
   reason: string
@@ -38,7 +39,7 @@ interface ValidKeyWithMetadataProps {
   lock: any
   owner: string
   timeElapsedSinceSignature: string
-  viewerIsLockOwner: boolean
+  viewerIsLockOwnerOrVerifier: boolean
   checkIn: () => any
   checkedIn: boolean
 }
@@ -51,7 +52,7 @@ export const ValidKeyWithMetadata = ({
   owner,
   keyData,
   timeElapsedSinceSignature,
-  viewerIsLockOwner,
+  viewerIsLockOwnerOrVerifier,
   checkIn,
   checkedIn,
   lock,
@@ -107,7 +108,7 @@ export const ValidKeyWithMetadata = ({
         <Value>{timeElapsedSinceSignature}</Value>
         {keyData?.userMetadata && attributes(keyData?.userMetadata.protected)}
         {keyData?.userMetadata && attributes(keyData?.userMetadata.public)}
-        {viewerIsLockOwner && (
+        {viewerIsLockOwnerOrVerifier && (
           <CheckInButton onClick={checkIn} disabled={alreadyCheckedIn}>
             {!alreadyCheckedIn && 'Mark as Checked-In'}
             {alreadyCheckedIn && 'Already Checked-In'}
@@ -129,7 +130,7 @@ interface ValidKeyProps {
 
 /**
  * Shows a valid key.
- * If the viewer is the lock owner, include the metadata
+ * If the viewer is the lock owner or a verifier, include the metadata
  */
 export const ValidKey = ({
   unlockKey,
@@ -143,7 +144,9 @@ export const ValidKey = ({
   const [loading, setLoading] = useState(true)
   const [viewerIsLockOwner, setViewerIsLockOwner] = useState(false)
   const [keyData, setKeyData] = useState({})
+  const [isVerifier, setIsVerifier] = useState(false)
   const { isLockManager, getKeyData, markAsCheckedIn } = useLock(lock, network)
+  const storageService = useStorageService()
 
   const checkIn = async () => {
     if (!viewer) return
@@ -152,6 +155,35 @@ export const ValidKey = ({
       setCheckedIn(true)
     } else {
       ToastHelper.error('We could not mark this membership as checked in')
+    }
+  }
+
+  const getVerifierStatus = async (verifier: string) => {
+    try {
+      const options = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      }
+      return await storageService
+        .getEndpoint(
+          `/v2/api/verifier/enabled/${network}/${lock.address}/${verifier}`,
+          options,
+          false
+        )
+        .then((res: any) => {
+          if (res.message) {
+            ToastHelper.error(res.message)
+            return false
+          } else {
+            return res?.enabled ?? false
+          }
+        })
+    } catch (err: any) {
+      console.error(err)
+      ToastHelper.error(
+        err?.error ??
+          'We could not load the list of verifiers for your lock. Please reload to to try again.'
+      )
     }
   }
 
@@ -166,7 +198,9 @@ export const ValidKey = ({
         return
       }
       const _isLockManager = await isLockManager(viewer)
-      if (_isLockManager) {
+      const isVerifierEnabled = await getVerifierStatus(viewer)
+      setIsVerifier(isVerifierEnabled)
+      if (_isLockManager || isVerifierEnabled) {
         setViewerIsLockOwner(true)
         const metadata = (await getKeyData(unlockKey.tokenId, viewer)) as any
         setKeyData(metadata || {})
@@ -185,9 +219,10 @@ export const ValidKey = ({
     return <Loading />
   }
 
+  const viewerIsLockOwnerOrVerifier = viewerIsLockOwner || isVerifier
   return (
     <ValidKeyWithMetadata
-      viewerIsLockOwner={viewerIsLockOwner}
+      viewerIsLockOwnerOrVerifier={viewerIsLockOwnerOrVerifier}
       unlockKey={unlockKey}
       timeElapsedSinceSignature={durationsAsTextFromSeconds(
         secondsElapsedFromSignature

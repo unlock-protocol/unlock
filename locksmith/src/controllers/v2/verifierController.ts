@@ -156,4 +156,31 @@ export class VerifierController {
       })
     }
   }
+
+  // check is address is a Verifier of a specific lock
+  async isVerifierEnabled(request: Request, response: Response) {
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const address = Normalizer.ethereumAddress(request.params.verifierAddress)
+      const network = Number(request.params.network)
+
+      const isVerifier = await Verifier.findOne({
+        where: {
+          lockAddress,
+          address,
+          network,
+        },
+      })
+
+      const isEnabled = isVerifier?.id !== undefined
+      return response.status(200).send({
+        enabled: isEnabled,
+      })
+    } catch (error) {
+      logger.error(error.message)
+      return response.status(500).send({
+        message: 'There were some problems checking verifier status.',
+      })
+    }
+  }
 }

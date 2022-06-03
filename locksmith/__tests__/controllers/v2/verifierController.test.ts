@@ -83,4 +83,26 @@ describe('Verifier v2 endpoints for locksmith', () => {
 
     expect(deleteVerifierResponse.status).toBe(200)
   })
+
+  it('Check is verifiers is enabled', async () => {
+    expect.assertions(2)
+    const network = 4
+
+    const {
+      walletAddress: address,
+      message,
+      signedMessage,
+    } = await getWalletInput()
+    const loginResponse = await request(app).post('/v2/auth/login').send({
+      signature: signedMessage,
+      message: message.prepareMessage(),
+    })
+    expect(loginResponse.status).toBe(200)
+
+    const isVerifierResponse = await request(app)
+      .get(`/v2/api/verifier/enabled/${network}/${lockAddress}/${address}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(isVerifierResponse.status).toBe(200)
+  })
 })

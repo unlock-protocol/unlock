@@ -12,18 +12,29 @@ const verifierController = new VerifierController({
   web3Service,
 })
 
-router.all('/', authenticatedMiddleware, lockManagerMiddleware)
-
-router.get('/list/:network/:lockAddress', (req, res) =>
-  verifierController.list(req, res)
+router.get(
+  '/list/:network/:lockAddress',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  (req, res) => verifierController.list(req, res)
 )
 
-router.put('/:network/:lockAddress/:verifierAddress', (req, res) =>
-  verifierController.addVerifier(req, res)
+router.put(
+  '/:network/:lockAddress/:verifierAddress',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  (req, res) => verifierController.addVerifier(req, res)
 )
 
-router.delete('/:network/:lockAddress/:verifierAddress', (req, res) =>
-  verifierController.removeVerifier(req, res)
+router.delete(
+  '/:network/:lockAddress/:verifierAddress',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  (req, res) => verifierController.removeVerifier(req, res)
+)
+
+router.get('/enabled/:network/:lockAddress/:verifierAddress', (req, res) =>
+  verifierController.isVerifierEnabled(req, res)
 )
 
 module.exports = router
