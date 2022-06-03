@@ -63,9 +63,7 @@ contract MixinTransfer is
     if(transferFeeBasisPoints >= BASIS_POINTS_DEN) {
       revert KEY_TRANSFERS_DISABLED();
     }
-    if(_to == address(0)) {
-      revert INVALID_ADDRESS();
-    } 
+
     address keyOwner = _ownerOf[_tokenIdFrom];
     if(keyOwner == _to) {
       revert TRANSFER_TO_SELF();

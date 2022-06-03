@@ -32,10 +32,6 @@ contract MixinGrantKeys is
     }
 
     for(uint i = 0; i < _recipients.length; i++) {
-      if(_recipients[i] == address(0)) { 
-        revert INVALID_ADDRESS();
-      }
-
       // an event is triggered
       _createNewKey(
         _recipients[i],

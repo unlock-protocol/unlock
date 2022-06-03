@@ -111,10 +111,7 @@ contract MixinPurchase is
     for (uint256 i = 0; i < _recipients.length; i++) {
       // check recipient address
       address _recipient = _recipients[i];
-      if(_recipient == address(0)) {
-        revert INVALID_ADDRESS();
-      }
-      
+
       // check for a non-expiring key
       if (expirationDuration == type(uint).max) {
         // create a new key
