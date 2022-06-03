@@ -247,7 +247,7 @@ contract MixinPurchase is
 
     // make sure key is ready for renewal
     if(isValidKey(_tokenId)) {
-      revert NOT_READY();
+      revert NOT_READY_FOR_RENEWAL();
     }
 
     // extend key duration
