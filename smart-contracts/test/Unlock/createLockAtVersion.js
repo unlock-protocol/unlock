@@ -60,7 +60,10 @@ contract('Unlock / createUpgradeableLockAtVersion', () => {
       args: { newLockAddress: lock1Address },
     } = lock1Events.find(({ event }) => event === 'NewLock')
 
-    const lock1 = await ethers.getContractAt('PublicLock', lock1Address)
+    const lock1 = await ethers.getContractAt(
+      'contracts/PublicLock.sol:PublicLock',
+      lock1Address
+    )
 
     // lock creation params
     assert.equal(await lock1.expirationDuration(), args[0])

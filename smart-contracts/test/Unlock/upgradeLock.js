@@ -49,7 +49,10 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const { events } = await tx.wait()
     const evt = events.find((v) => v.event === 'NewLock')
     const { newLockAddress } = evt.args
-    lock = await ethers.getContractAt('IPublicLock', newLockAddress)
+    lock = await ethers.getContractAt(
+      'contracts/interfaces/IPublicLock.sol:IPublicLock',
+      newLockAddress
+    )
 
     // deploy new implementation
     const PublicLockUpgraded = await ethers.getContractFactory(
