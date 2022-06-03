@@ -17,6 +17,7 @@ async function main({
   liquidity, // in ETH, must be a string
   unlockAddress,
   unlockVersion,
+  publicLockVersion,
   udtAddress,
   publicLockAddress,
   wethAddress,
@@ -45,7 +46,7 @@ async function main({
 
   // deploying PublicLock
   if (!publicLockAddress) {
-    publicLockAddress = await run('deploy:template')
+    publicLockAddress = await run('deploy:template', { publicLockVersion })
   }
 
   // set lock template
