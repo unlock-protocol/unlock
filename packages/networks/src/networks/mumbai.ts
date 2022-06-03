@@ -26,7 +26,7 @@ export const mumbai: NetworkConfig = {
     symbol: 'MATIC',
     decimals: 18,
   },
-  startBlock: 0,
+  startBlock: 26584912,
   previousDeploys: [],
 }
 
