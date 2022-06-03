@@ -70,7 +70,7 @@
   "homepage": "https://github.com/unlock-protocol/unlock#readme",
   "packageManager": "yarn@3.2.0",
   "lint-staged": {
-    "*.{js}": "eslint --cache --fix",
+    "*.js": "eslint --cache --fix",
     "*.{js,css,md}": "prettier --write"
   }
 }
