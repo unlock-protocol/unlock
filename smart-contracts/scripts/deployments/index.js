@@ -61,9 +61,7 @@ async function main({
     udtAddress = await run('deploy:udt')
   }
   if (!udtAddress) {
-    throw new Error(
-      'Missing udtAddress. Cannot proceed. Please use --udt-address'
-    )
+    udtAddress = '0x0000000000000000000000000000000000000000'
   }
 
   // If UDT is not set for this network, let's not worry about it
