@@ -1,13 +1,10 @@
 import React from 'react'
-import { GrUserAdmin as UserAdmin } from 'react-icons/gr'
+import Svg from '../../svg'
 import Button from '../Button'
 
 const Verifiers = (props: any) => (
   <Button label="Verifiers" {...props}>
-    <UserAdmin
-      style={{ height: '15px', stroke: 'var(--gray)' }}
-      className="text-gray-400"
-    />
+    <Svg.Members name="Claim NFT" />
   </Button>
 )
 
