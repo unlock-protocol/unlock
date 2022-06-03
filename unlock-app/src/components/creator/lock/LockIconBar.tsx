@@ -1,8 +1,6 @@
 import React, { useContext } from 'react'
-import PropTypes from 'prop-types'
 
 import Buttons from '../../interface/buttons/lock'
-import UnlockPropTypes from '../../../propTypes'
 import CreatorLockStatus from './CreatorLockStatus'
 import withConfig, { ConfigContext } from '../../../utils/withConfig'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
