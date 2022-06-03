@@ -10,6 +10,7 @@ import { VerifiersList } from '../interface/verifiers/VerifiersList'
 import { getAddressForName } from '../../hooks/useEns'
 import { ToastHelper } from '../helpers/toast.helper'
 import AuthenticationContext from '../../contexts/AuthenticationContext'
+import { useStorageService } from '../../utils/withStorageService'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -30,8 +31,10 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   const [addVerifierModalOpen, setAddVerifierModalOpen] = useState(false)
   const [verifierAddress, setVerifierAddress] = useState('')
   const [loading, setLoading] = useState(false)
+  const [verifiers, setVerifiers] = useState<any[]>([])
   const lockAddress: string = query?.lockAddress ?? ''
   const { network } = useContext(AuthenticationContext)
+  const storageService = useStorageService()
 
   const onAddVerifier = () => {
     setVerifierAddress('')
@@ -48,16 +51,28 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
     const resolvedAddress = await getAddressForName(verifierAddress)
     try {
       if (resolvedAddress) {
-        const addVerifierUrl = `/verifier/${network}/${lockAddress}/${resolvedAddress}`
-        const requestOptions = {
+        const options = {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+          },
         }
-        await fetch(addVerifierUrl, requestOptions)
-          .then((res) => res.json())
-          .then(() => {
-            ToastHelper.success('Verifier added to list')
+        await storageService
+          .getEndpoint(
+            `/v2/api/verifier/${network}/${lockAddress}/${resolvedAddress}`,
+            options,
+            true /* withAuth */
+          )
+          .then((res: any) => {
+            if (res.message) {
+              ToastHelper.error(res.message)
+            } else {
+              ToastHelper.success('Verifier added to list')
+              getVerifierList() // get updated list with last item added
+              setAddVerifierModalOpen(false)
+            }
           })
+
         setLoading(false)
       } else {
         ToastHelper.error('Verified address is not a valid Ethereum address.')
@@ -65,9 +80,39 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
       }
     } catch (err: any) {
       setLoading(false)
+      console.error(err)
       ToastHelper.error(
         err?.error ??
           'There was a problem adding the verifier address, please re-load and try again'
+      )
+    }
+  }
+
+  const getVerifierList = async () => {
+    try {
+      const options = {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      }
+      await storageService
+        .getEndpoint(
+          `/v2/api/verifier/list/${network}/${lockAddress}`,
+          options,
+          true /* withAuth */
+        )
+        .then((res: any) => {
+          if (res.message) {
+            ToastHelper.error(res.message)
+          } else {
+            setVerifiers(res?.results)
+          }
+        })
+    } catch (err: any) {
+      setLoading(false)
+      console.error(err)
+      ToastHelper.error(
+        err?.error ??
+          'We could not load the list of verifiers for your lock. Please reload to to try again.'
       )
     }
   }
@@ -83,7 +128,12 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
           <span>A list for all verifiers for your event</span>
           <Button onClick={onAddVerifier}>Add verifier</Button>
         </Header>
-        <VerifiersList lockAddress={lockAddress} />
+        <VerifiersList
+          lockAddress={lockAddress}
+          getVerifierList={getVerifierList}
+          verifiers={verifiers}
+          setVerifiers={setVerifiers}
+        />
       </VerifierContent>
 
       <Modal isOpen={addVerifierModalOpen} setIsOpen={onAddVerifier}>

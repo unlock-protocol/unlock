@@ -15478,6 +15478,7 @@ __metadata:
     react-hot-toast: 2.2.0
     react-icons: 4.4.0
     react-jazzicon: 1.0.3
+    react-jwt: ^1.1.6
     react-test-renderer: 18.1.0
     react-use-clipboard: 1.0.8
     siwe: 1.1.6
@@ -43599,6 +43600,20 @@ fsevents@~2.1.1:
   peerDependencies:
     react: ^17.0.0
   checksum: cd6ef64ab2c46e0f800b9caa1bbfbc473d6855ff8aeaff7e613ba5d5807de1720cdddbe04264d4764c3f138578cbb23ef1d3f5b442ec2981183abf1790592b24
+  languageName: node
+  linkType: hard
+
+"react-jwt@npm:^1.1.6":
+  version: 1.1.6
+  resolution: "react-jwt@npm:1.1.6"
+  dependencies:
+    fsevents: ^2.3.2
+  peerDependencies:
+    react: ^16.0.0 || ^17.0.0 || ^18.0.0
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  checksum: bc0a6f3a1373725bc092c7a9a0687fc86d78370972474ed3adc8afb001fd626fded3d8b4adf7ee24c9897b505b1ebb242d19b256902c81765a4c5a1b7125d930
   languageName: node
   linkType: hard
 
