@@ -10,7 +10,7 @@ import { VerifiersList } from '../interface/verifiers/VerifiersList'
 import { getAddressForName } from '../../hooks/useEns'
 import { ToastHelper } from '../helpers/toast.helper'
 import AuthenticationContext from '../../contexts/AuthenticationContext'
-import { StorageServiceContext } from '../../utils/withStorageService'
+import { useStorageService } from '../../utils/withStorageService'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -34,7 +34,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   const [verifiers, setVerifiers] = useState<any[]>([])
   const lockAddress: string = query?.lockAddress ?? ''
   const { network } = useContext(AuthenticationContext)
-  const storageService = useContext(StorageServiceContext)
+  const storageService = useStorageService()
 
   const onAddVerifier = () => {
     setVerifierAddress('')
@@ -57,8 +57,6 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
             'Content-Type': 'application/json',
           },
         }
-
-        if (!storageService) return
         await storageService
           .getEndpoint(
             `/v2/api/verifier/${network}/${lockAddress}/${resolvedAddress}`,
@@ -96,7 +94,6 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       }
-      if (!storageService) return
       await storageService
         .getEndpoint(
           `/v2/api/verifier/list/${network}/${lockAddress}`,

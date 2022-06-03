@@ -5,8 +5,8 @@ import { ethers } from 'ethers'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
 import { ToastHelper } from '../../helpers/toast.helper'
 import Loading from '../Loading'
-import { StorageServiceContext } from '../../../utils/withStorageService'
 import { WalletServiceContext } from '../../../utils/withWalletService'
+import { useStorageService } from '~/utils/withStorageService'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -33,7 +33,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   const [showDeleteVerifierModal, setShowDeleteVerifierModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [logged, setLogged] = useState(false)
-  const storageService = useContext(StorageServiceContext)
+  const storageService = useStorageService()
   const walletService = useContext(WalletServiceContext)
 
   const setDefaults = () => {
@@ -48,7 +48,6 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
 
   const loginAndGetList = async () => {
     try {
-      if (!storageService) return
       await storageService.loginPrompt({
         walletService,
         address: account!,
