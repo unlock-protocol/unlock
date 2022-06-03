@@ -42,12 +42,7 @@ export function LockIconBar({
   const { explorer } = config.networks[network!] ?? {}
   // Otherwise, we just show the lock icon bar
   return (
-    <div
-      className="flex flex-wrap justify-around"
-      style={{
-        maxWidth: '250px',
-      }}
-    >
+    <div className="flex flex-wrap justify-around items-center max-w-[250px]">
       <Buttons.CreditCard as="button" lock={lock} action={toggleCreditCard} />
       <Buttons.Withdraw as="button" lock={lock} withdraw={withdraw} />
       <Buttons.Demo
@@ -68,10 +63,4 @@ export function LockIconBar({
   )
 }
 
-LockIconBar.propTypes = {
-  lock: UnlockPropTypes.lock.isRequired,
-  toggleCode: PropTypes.func.isRequired,
-  toggleCreditCard: PropTypes.func.isRequired,
-  withdraw: PropTypes.func.isRequired,
-}
 export default withConfig(LockIconBar)
