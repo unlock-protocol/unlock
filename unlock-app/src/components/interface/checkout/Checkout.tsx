@@ -246,8 +246,7 @@ export const Checkout = ({
       }
       window.location.href = redirectUrl.toString()
     } else {
-      // This will only work if the tab is the "main" tab.
-      window.close()
+      window.history.back()
     }
   }
 
