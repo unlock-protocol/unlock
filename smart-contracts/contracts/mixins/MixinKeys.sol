@@ -207,6 +207,10 @@ contract MixinKeys is
   ) 
   internal 
   returns (uint tokenId) {
+
+    if(_recipient == address(0)) { 
+        revert INVALID_ADDRESS();
+    }
     
     // We increment the tokenId counter
     _totalSupply++;
