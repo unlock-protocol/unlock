@@ -3,7 +3,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 export const mumbai: NetworkConfig = {
   publicProvider: 'https://matic-mumbai.chainstacklabs.com',
   provider: 'https://matic-mumbai.chainstacklabs.com',
-  unlockAddress: '',
+  unlockAddress: '0x1ff7e338d5e582138c46044dc238543ce555c963',
   id: 80001,
   name: 'Mumbai (Polygon)',
   blockTime: 1000,
