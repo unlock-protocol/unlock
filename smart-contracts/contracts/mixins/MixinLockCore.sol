@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 import './MixinDisable.sol';
 import './MixinRoles.sol';
+import './MixinErrors.sol';
 import '../interfaces/IUnlock.sol';
 import './MixinFunds.sol';
 import '../interfaces/hooks/ILockKeyCancelHook.sol';
@@ -91,10 +92,9 @@ contract MixinLockCore is
 
   // modifier to check if data has been upgraded
   function _lockIsUpToDate() internal view {
-    require(
-      schemaVersion == publicLockVersion(),
-      'MIGRATION_REQUIRED'
-    );
+    if(schemaVersion != publicLockVersion()) {
+      revert MIGRATION_REQUIRED();
+    }
   }
 
   // modifier
@@ -102,10 +102,9 @@ contract MixinLockCore is
   internal 
   view
   {
-    require(
-      isLockManager(msg.sender) || msg.sender == beneficiary,
-      'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
-    );
+    if(!isLockManager(msg.sender) && msg.sender != beneficiary) {
+      revert ONLY_LOCK_MANAGER_OR_BENEFICIARY();
+    }
   }
   
   function _initializeMixinLockCore(
@@ -161,7 +160,9 @@ contract MixinLockCore is
     uint amount;
     if(_amount == 0 || _amount > balance)
     {
-      require(balance > 0, 'NOT_ENOUGH_FUNDS');
+      if(balance <= 0) {
+        revert NOT_ENOUGH_FUNDS();
+      }
       amount = balance;
     }
     else
@@ -202,7 +203,9 @@ contract MixinLockCore is
     address payable _beneficiary
   ) external {
     _onlyLockManagerOrBeneficiary();
-    require(_beneficiary != address(0), 'INVALID_ADDRESS');
+    if(_beneficiary == address(0)) {
+      revert INVALID_ADDRESS();
+    }
     beneficiary = _beneficiary;
   }
 
@@ -217,10 +220,12 @@ contract MixinLockCore is
   ) external
   {
     _onlyLockManager();
-    require(_onKeyPurchaseHook == address(0) || _onKeyPurchaseHook.isContract(), 'INVALID_ON_KEY_SOLD_HOOK');
-    require(_onKeyCancelHook == address(0) || _onKeyCancelHook.isContract(), 'INVALID_ON_KEY_CANCEL_HOOK');
-    require(_onValidKeyHook == address(0) || _onValidKeyHook.isContract(), 'INVALID_ON_VALID_KEY_HOOK');
-    require(_onTokenURIHook == address(0) || _onTokenURIHook.isContract(), 'INVALID_ON_TOKEN_URI_HOOK');
+
+    if(_onKeyPurchaseHook != address(0) && !_onKeyPurchaseHook.isContract()) { revert INVALID_HOOK(0); }
+    if(_onKeyCancelHook != address(0) && !_onKeyCancelHook.isContract()) { revert INVALID_HOOK(1); }
+    if(_onValidKeyHook != address(0) && !_onValidKeyHook.isContract()) { revert INVALID_HOOK(2); }
+    if(_onTokenURIHook != address(0) && !_onTokenURIHook.isContract()) { revert INVALID_HOOK(3); }
+    
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
     onTokenURIHook = ILockTokenURIHook(_onTokenURIHook);

@@ -56,7 +56,7 @@ contract('Lock / onKeyCancelHook', (accounts) => {
   it('cannot set the hook to a non-contract address', async () => {
     await reverts(
       lock.setEventHooks(ADDRESS_ZERO, accounts[1], ADDRESS_ZERO, ADDRESS_ZERO),
-      'INVALID_ON_KEY_CANCEL_HOOK'
+      'INVALID_HOOK(1)'
     )
   })
 })

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import './MixinErrors.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol';
@@ -9,7 +10,7 @@ import '@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeab
  * @title An implementation of the money related functions.
  * @author HardlyDifficult (unlock-protocol.com)
  */
-contract MixinFunds
+contract MixinFunds is MixinErrors
 {
   using AddressUpgradeable for address payable;
   using SafeERC20Upgradeable for IERC20Upgradeable;
@@ -34,10 +35,13 @@ contract MixinFunds
   internal 
   view
   {
-    require(
-      _tokenAddress == address(0) || IERC20Upgradeable(_tokenAddress).totalSupply() > 0,
-      'INVALID_TOKEN'
-    );
+    if(
+      _tokenAddress != address(0) 
+      && 
+      IERC20Upgradeable(_tokenAddress).totalSupply() < 0
+    ) {
+      revert INVALID_TOKEN();
+    }
   }
 
   /**

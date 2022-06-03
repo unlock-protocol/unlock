@@ -2,13 +2,14 @@
 pragma solidity ^0.8.0;
 
 import './MixinLockCore.sol';
+import './MixinErrors.sol';
 
 /**
  * @title Mixin to add support for `ownable()`
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
-contract MixinConvenienceOwnable is MixinLockCore {
+contract MixinConvenienceOwnable is MixinErrors, MixinLockCore {
 
   // used for `owner()`convenience helper
   address private _convenienceOwner;
@@ -38,7 +39,9 @@ contract MixinConvenienceOwnable is MixinLockCore {
    */ 
   function setOwner(address account) public {
     _onlyLockManager();
-    require(account != address(0), 'OWNER_CANT_BE_ADDRESS_ZERO');
+    if(account == address(0)) {
+      revert OWNER_CANT_BE_ADDRESS_ZERO(); 
+    }
     address _previousOwner = _convenienceOwner;
     _convenienceOwner = account;
     emit OwnershipTransferred(_previousOwner, account);

@@ -88,7 +88,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
           ADDRESS_ZERO,
           ADDRESS_ZERO
         ),
-        'INVALID_ON_KEY_SOLD_HOOK'
+        'INVALID_HOOK(0)'
       )
     })
   })
