@@ -4,7 +4,7 @@ const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
 const deployLocks = require('../helpers/deployLocks')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const Unlock = artifacts.require('Unlock.sol')
@@ -32,7 +32,7 @@ contract('Lock / Recurring memberships', (accounts) => {
       from: lockOwner,
     })
 
-    unlock = await getProxy(Unlock)
+    unlock = await getContractInstance(Unlock)
     locks = await deployLocks(unlock, lockOwner, dai.address)
     lock = locks.ERC20
 

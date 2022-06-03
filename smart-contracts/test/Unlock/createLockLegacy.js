@@ -4,7 +4,7 @@ const unlockContract = artifacts.require('Unlock')
 const PublicLock = artifacts.require('PublicLock')
 const { utils } = require('hardlydifficult-ethereum-contracts')
 const truffleAssert = require('../helpers/errors')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
@@ -14,7 +14,7 @@ let publicLockUpgraded
 
 contract('Unlock / createLock (Legacy)', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     templateAddress = await unlock.publicLockAddress()
 
     // deploy new implementation

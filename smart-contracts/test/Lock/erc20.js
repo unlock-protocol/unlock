@@ -5,7 +5,7 @@ const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
 const TestNoop = artifacts.require('TestNoop.sol')
 const { reverts } = require('../helpers/errors')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const deployLocks = require('../helpers/deployLocks')
 
 contract('Lock / erc20', (accounts) => {
@@ -19,7 +19,7 @@ contract('Lock / erc20', (accounts) => {
     await token.mint(accounts[0], 1, {
       from: accounts[0],
     })
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, accounts[0], token.address)
     lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)

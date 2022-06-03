@@ -1,6 +1,6 @@
 const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 const unlockContract = artifacts.require('Unlock.sol')
 
@@ -18,7 +18,7 @@ contract('Permissions / Beneficiary', (accounts) => {
   newBeneficiary = accounts[1]
 
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, lockCreator)
     lock = locks.FIRST
   })

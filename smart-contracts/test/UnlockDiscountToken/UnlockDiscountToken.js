@@ -2,7 +2,7 @@ const BigNumber = require('bignumber.js')
 const { reverts } = require('../helpers/errors')
 
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const { errorMessages } = require('../helpers/constants')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
@@ -12,7 +12,7 @@ contract('UnlockDiscountToken', (accounts) => {
   const minter = accounts[1]
 
   before(async () => {
-    unlockDiscountToken = await getProxy(UnlockDiscountToken)
+    unlockDiscountToken = await getContractInstance(UnlockDiscountToken)
   })
 
   it('shouldFail to call init again', async () => {
