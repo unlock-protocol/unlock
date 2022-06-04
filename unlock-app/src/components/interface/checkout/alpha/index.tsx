@@ -46,7 +46,6 @@ export function CheckoutPage() {
         <Checkout
           injectedProvider={injectedProvider}
           communication={communication}
-          initialStage="select"
           paywallConfig={paywallConfig}
         />
       </Container>

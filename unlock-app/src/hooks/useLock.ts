@@ -1,7 +1,7 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { useState, useContext, useReducer } from 'react'
 import * as ethers from 'ethers'
-import { Web3ServiceContext } from '../utils/withWeb3Service'
+import { useWeb3Service } from '../utils/withWeb3Service'
 import { WalletServiceContext } from '../utils/withWalletService'
 import { ConfigContext } from '../utils/withConfig'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
@@ -349,7 +349,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     }
   )
   const { network: walletNetwork } = useContext(AuthenticationContext)
-  const web3Service = useContext(Web3ServiceContext)
+  const web3Service = useWeb3Service()
   const walletService = useContext(WalletServiceContext)
   const config = useContext(ConfigContext)
   const [error, setError] = useState<string | null>(null)
@@ -525,7 +525,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
       return false
     }
     const isLockManager = await web3Service.isLockManager(
-      lockFromProps.address,
+      lockFromProps.address!,
       lockManager,
       network
     )

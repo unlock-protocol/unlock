@@ -1,6 +1,6 @@
-import { Button } from '@unlock-protocol/ui'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
+import { CheckoutState, CheckoutStateDispatch } from '../useCheckoutState'
 import { PaywallConfig } from '~/unlockTypes'
 import { networkToLocksMap } from '~/utils/paywallConfig'
 import { useConfig } from '~/utils/withConfig'
@@ -11,12 +11,13 @@ import { Shell } from '../Shell'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
-  navigate(page: string): void
+  dispatch: CheckoutStateDispatch
+  state: CheckoutState
 }
 
-export function Select({ paywallConfig, navigate, injectedProvider }: Props) {
+export function Select({ paywallConfig, dispatch, injectedProvider }: Props) {
   const config = useConfig()
-  const { account, deAuthenticate, changeNetwork, network } = useAuth()
+  const { account, deAuthenticate } = useAuth()
   const { authenticateWithProvider } = useAuthenticateHandler({
     injectedProvider,
   })
@@ -26,34 +27,35 @@ export function Select({ paywallConfig, navigate, injectedProvider }: Props) {
       <Shell.Content>
         {Object.entries(networkToLocks).map(([network, locks]) => (
           <section key={network}>
-            <header className="flex justify-between">
-              <div>
-                <h3 className="font-bold text-brand-ui-primary text-base">
-                  {config.networks[network].name}
-                </h3>
-                <p className="text-sm text-brand-gray">
-                  The most popular network{' '}
-                </p>
-              </div>
-              <div>
-                {}
-                <Button
-                  onClick={() => changeNetwork(config.networks[4])}
-                  variant="outlined-primary"
-                  size="tiny"
-                >
-                  Connect
-                </Button>
-              </div>
+            <header>
+              <h3 className="font-bold text-brand-ui-primary text-lg">
+                {config.networks[network].name}
+              </h3>
+              <p className="text-sm text-brand-gray">
+                The most popular network{' '}
+              </p>
             </header>
             <div className="grid space-y-4 py-4">
               {locks.map(({ name, address }) => (
                 <Lock
-                  name={name}
+                  name={name!}
                   address={address}
                   network={Number(network)}
                   key={address}
-                  disabled="You need to connect your wallet"
+                  onSelect={(lock) => {
+                    dispatch({
+                      type: 'SELECT_LOCK',
+                      payload: {
+                        lock,
+                      },
+                    })
+                    dispatch({
+                      type: 'CONTINUE',
+                      payload: {
+                        continue: 'QUANTITY',
+                      },
+                    })
+                  }}
                 />
               ))}
             </div>
@@ -66,7 +68,7 @@ export function Select({ paywallConfig, navigate, injectedProvider }: Props) {
         ) : (
           <LoggedOut
             authenticateWithProvider={authenticateWithProvider}
-            onUnlockAccount={() => navigate('signin')}
+            onUnlockAccount={() => {}}
           />
         )}
       </Shell.Footer>

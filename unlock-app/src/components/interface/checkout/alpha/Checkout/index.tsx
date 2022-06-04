@@ -1,14 +1,11 @@
-import React, { useState } from 'react'
-import type { Lock as LockType, PaywallConfig } from '~/unlockTypes'
+import React from 'react'
+import type { PaywallConfig } from '~/unlockTypes'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { useConfig } from '~/utils/withConfig'
-import { CheckoutState, useCheckout } from '../useCheckoutState'
+import { useCheckout } from '../useCheckoutState'
 import { Shell } from '../Shell'
 import { Select } from './Select'
-import { Quantity } from './Quantity'
 
 interface Props {
-  initialStage: CheckoutState
   injectedProvider: unknown
   paywallConfig: PaywallConfig
   communication: ReturnType<typeof useCheckoutCommunication>
@@ -16,32 +13,30 @@ interface Props {
 
 export function Checkout({
   communication,
-  initialStage = 'select',
   paywallConfig,
   injectedProvider,
 }: Props) {
-  const { checkoutState, setCheckoutStage } = useCheckout({
-    initialStage,
+  const { checkout, dispatch } = useCheckout({
+    initialState: {
+      current: 'SELECT',
+    },
     paywallConfig,
   })
 
-  const [lock, setLock] = useState<LockType | null>(null)
-
-  const config = useConfig()
-
   function Content() {
-    switch (checkoutState.stage) {
-      case 'quantity': {
-        return <Quantity lock={lock!} paywallConfig={paywallConfig} />
-      }
-      default: {
+    switch (checkout.state.current) {
+      case 'SELECT': {
         return (
           <Select
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
-            navigate={(page: CheckoutState) => setCheckoutStage(page)}
+            dispatch={dispatch}
+            state={checkout.state}
           />
         )
+      }
+      default: {
+        return null
       }
     }
   }
@@ -49,8 +44,8 @@ export function Checkout({
   return (
     <Shell.Root onClose={() => {}}>
       <Shell.Head
-        description={checkoutState.content.description}
-        title={paywallConfig.title}
+        description={checkout.content.description}
+        title={paywallConfig.title!}
         iconURL={paywallConfig.icon!}
       />
       <Content />

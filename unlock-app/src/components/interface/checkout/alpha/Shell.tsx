@@ -59,7 +59,7 @@ interface HeadProps {
 
 export function Head({ iconURL, title, description }: HeadProps) {
   return (
-    <header className="p-6 space-y-6">
+    <header className="p-6 space-y-6 border-b">
       <div className="flex items-center gap-4">
         <Avatar.Root className="inline-flex items-center justify-center w-16 h-16 rounded-full">
           <Avatar.Image src={iconURL} alt={title} width={64} height={64} />
