@@ -1,6 +1,6 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
@@ -22,17 +22,17 @@ contract('Lock / onTokenURIHook', (accounts) => {
     lock = locks.FIRST
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
+      ADDRESS_ZERO,
+      ADDRESS_ZERO,
+      ADDRESS_ZERO,
       testEventHooks.address
     )
     const keyPrice = await lock.keyPrice()
     const tx = await lock.purchase(
       [],
       [to],
-      [constants.ZERO_ADDRESS],
-      [constants.ZERO_ADDRESS],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         from,
@@ -60,13 +60,8 @@ contract('Lock / onTokenURIHook', (accounts) => {
 
   it('cannot set the hook to a non-contract address', async () => {
     await reverts(
-      lock.setEventHooks(
-        constants.ZERO_ADDRESS,
-        constants.ZERO_ADDRESS,
-        constants.ZERO_ADDRESS,
-        accounts[3]
-      ),
-      'INVALID_ON_TOKEN_URI_HOOK'
+      lock.setEventHooks(ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO, accounts[3]),
+      'INVALID_HOOK(3)'
     )
   })
 })

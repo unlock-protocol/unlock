@@ -1,8 +1,8 @@
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../../helpers/errors')
 const BigNumber = require('bignumber.js')
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../../helpers/deployLocks')
 const getProxy = require('../../helpers/proxy')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 
@@ -26,8 +26,8 @@ contract('Permissions / KeyManager', (accounts) => {
     const tx = await lock.purchase(
       [],
       [accounts[1]],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         value: keyPrice.toFixed(),
@@ -45,7 +45,7 @@ contract('Permissions / KeyManager', (accounts) => {
   describe('setting the key manager', () => {
     it('should have a default KM of 0x00', async () => {
       keyManagerBefore = await lock.keyManagerOf.call(tokenId)
-      assert.equal(keyManagerBefore, constants.ZERO_ADDRESS)
+      assert.equal(keyManagerBefore, ADDRESS_ZERO)
     })
 
     // ensure that by default the owner is also the keyManager
@@ -93,12 +93,12 @@ contract('Permissions / KeyManager', (accounts) => {
         await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyManager })
         keyManager = await lock.keyManagerOf.call(tokenId)
         assert.equal(keyManager, accounts[9])
-        await lock.setKeyManagerOf(tokenId, constants.ZERO_ADDRESS)
+        await lock.setKeyManagerOf(tokenId, ADDRESS_ZERO)
       })
 
       it('should reset to the default KeyManager of 0x00', async () => {
         keyManager = await lock.keyManagerOf.call(tokenId)
-        assert.equal(keyManager, constants.ZERO_ADDRESS)
+        assert.equal(keyManager, ADDRESS_ZERO)
       })
     })
   })

@@ -5,6 +5,7 @@ import './MixinDisable.sol';
 import './MixinKeys.sol';
 import './MixinLockCore.sol';
 import './MixinFunds.sol';
+import './MixinErrors.sol';
 
 /**
  * @title Mixin for the purchase-related functions.
@@ -13,13 +14,12 @@ import './MixinFunds.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinPurchase is
+  MixinErrors,
   MixinFunds,
   MixinDisable,
   MixinLockCore,
   MixinKeys
 {
-  event RenewKeyPurchase(address indexed owner, uint newExpiration);
-
   event GasRefunded(address indexed receiver, uint refundedAmount, address tokenAddress);
   
   event UnlockCallFailed(address indexed lockAddress, address unlockAddress);
@@ -94,9 +94,16 @@ contract MixinPurchase is
   ) external payable
   {
     _lockIsUpToDate();
-    require(maxNumberOfKeys > _totalSupply, 'LOCK_SOLD_OUT');
-    require(_recipients.length == _referrers.length, 'INVALID_REFERRERS_LENGTH');
-    require(_recipients.length == _keyManagers.length, 'INVALID_KEY_MANAGERS_LENGTH');
+    if(_totalSupply >= maxNumberOfKeys) {
+      revert LOCK_SOLD_OUT();
+    }
+    if(
+      (_recipients.length != _referrers.length)
+      ||
+      (_recipients.length != _keyManagers.length)
+      ) {
+      revert INVALID_LENGTH();
+    }
 
     uint totalPriceToPay;
     uint tokenId;
@@ -104,8 +111,7 @@ contract MixinPurchase is
     for (uint256 i = 0; i < _recipients.length; i++) {
       // check recipient address
       address _recipient = _recipients[i];
-      require(_recipient != address(0), 'INVALID_ADDRESS');
-      
+
       // check for a non-expiring key
       if (expirationDuration == type(uint).max) {
         // create a new key
@@ -122,8 +128,7 @@ contract MixinPurchase is
         );
       }
 
-      // price      
-
+      // price
       uint inMemoryKeyPrice = purchasePriceFor(_recipient, _referrers[i], _data[i]);
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
@@ -132,8 +137,8 @@ contract MixinPurchase is
       _originalDurations[tokenId] = expirationDuration;
       _originalTokens[tokenId] = tokenAddress;
       
-      if(tokenAddress != address(0)) {
-        require(inMemoryKeyPrice <= _values[i], 'INSUFFICIENT_ERC20_VALUE');
+      if(tokenAddress != address(0) && _values[i] < inMemoryKeyPrice) {
+        revert INSUFFICIENT_ERC20_VALUE();
       }
 
       // store in unlock
@@ -152,14 +157,13 @@ contract MixinPurchase is
         );
       }
     }
-
     // transfer the ERC20 tokens
     if(tokenAddress != address(0)) {
       IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
       token.transferFrom(msg.sender, address(this), totalPriceToPay);
-    } else {
+    } else if(msg.value < totalPriceToPay) {
       // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-      require(totalPriceToPay <= msg.value, 'INSUFFICIENT_VALUE');
+      revert INSUFFICIENT_VALUE();
     }
 
     // refund gas
@@ -194,12 +198,14 @@ contract MixinPurchase is
     uint inMemoryKeyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
 
     if(tokenAddress != address(0)) {
-      require(inMemoryKeyPrice <= _value, 'INSUFFICIENT_ERC20_VALUE');
+      if(_value < inMemoryKeyPrice) {
+        revert INSUFFICIENT_ERC20_VALUE();
+      }
       IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
       token.transferFrom(msg.sender, address(this), inMemoryKeyPrice);
-    } else {
+    } else if(msg.value < inMemoryKeyPrice) {
       // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
-      require(inMemoryKeyPrice <= msg.value, 'INSUFFICIENT_VALUE');
+      revert INSUFFICIENT_VALUE();
     }
 
     // refund gas (if applicable)
@@ -220,17 +226,26 @@ contract MixinPurchase is
     _isKey(_tokenId);
 
     // check the lock
-    require(_originalDurations[_tokenId] != type(uint).max, 'NON_EXPIRING_LOCK');
-    require(tokenAddress != address(0), 'NON_ERC20_LOCK');
+    if(_originalDurations[_tokenId] == type(uint).max || tokenAddress == address(0)) {
+      revert NON_RENEWABLE_LOCK();
+    }
 
     // make sure duration and pricing havent changed  
     uint keyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, '');
-    require(_originalPrices[_tokenId] == keyPrice, 'PRICE_CHANGED');
-    require(_originalDurations[_tokenId] == expirationDuration, 'DURATION_CHANGED');
-    require(_originalTokens[_tokenId] == tokenAddress, 'TOKEN_CHANGED');
+    if(
+      _originalPrices[_tokenId] != keyPrice
+      ||
+      _originalDurations[_tokenId] != expirationDuration
+      || 
+      _originalTokens[_tokenId] != tokenAddress
+    ) {
+      revert LOCK_HAS_CHANGED();
+    }
 
     // make sure key is ready for renewal
-    require(isValidKey(_tokenId) == false, 'NOT_READY');
+    if(isValidKey(_tokenId)) {
+      revert NOT_READY_FOR_RENEWAL();
+    }
 
     // extend key duration
     _extendKey(_tokenId);
@@ -278,7 +293,9 @@ contract MixinPurchase is
         token.transferFrom(address(this), msg.sender, _gasRefundValue);
       } else {
         (bool success, ) = msg.sender.call{value: _gasRefundValue}("");
-        require(success, "REFUND_FAILED");
+        if(!success) {
+          revert GAS_REFUND_FAILED();
+        }
       }
       emit GasRefunded(msg.sender, _gasRefundValue, tokenAddress);
     }

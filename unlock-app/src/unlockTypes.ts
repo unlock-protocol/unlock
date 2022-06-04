@@ -191,7 +191,7 @@ export interface MetadataInput {
 }
 
 export interface PaywallConfig {
-  title: string
+  title?: string
   icon?: string
   callToAction?: Partial<PaywallCallToAction>
   locks: PaywallConfigLocks

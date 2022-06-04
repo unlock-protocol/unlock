@@ -1,8 +1,9 @@
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const PublicLock = artifacts.require('PublicLock')
 const getProxy = require('../helpers/proxy')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let lockTemplate
@@ -23,14 +24,7 @@ contract('Lock / setLockTemplate', (accounts) => {
     })
 
     it('should revert if the template was already initialized', async () => {
-      await lockTemplate.initialize(
-        accounts[0],
-        0,
-        web3.utils.padLeft(0, 40),
-        0,
-        0,
-        ''
-      )
+      await lockTemplate.initialize(accounts[0], 0, ADDRESS_ZERO, 0, 0, '')
       await reverts(
         unlock.setLockTemplate(lockTemplate.address, {
           from: unlockOwner,

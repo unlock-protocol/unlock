@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import './MixinKeys.sol';
 import './MixinRoles.sol';
+import './MixinErrors.sol';
 
 
 /**
@@ -12,6 +13,7 @@ import './MixinRoles.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinGrantKeys is
+  MixinErrors,
   MixinRoles,
   MixinKeys
 {
@@ -25,11 +27,11 @@ contract MixinGrantKeys is
     address[] calldata _keyManagers
   ) external {
     _lockIsUpToDate();
-    require(isKeyGranter(msg.sender) || isLockManager(msg.sender), 'ONLY_LOCK_MANAGER_OR_KEY_GRANTER');
+    if(!isKeyGranter(msg.sender) && !isLockManager(msg.sender)) {
+      revert ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
+    }
 
     for(uint i = 0; i < _recipients.length; i++) {
-      require(_recipients[i] != address(0), 'INVALID_ADDRESS');
-
       // an event is triggered
       _createNewKey(
         _recipients[i],

@@ -1,6 +1,6 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
@@ -24,8 +24,8 @@ contract('Lock / onValidKeyHook', (accounts) => {
     const tx = await lock.purchase(
       [],
       [to],
-      [constants.ZERO_ADDRESS],
-      [constants.ZERO_ADDRESS],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         from,
@@ -41,10 +41,10 @@ contract('Lock / onValidKeyHook', (accounts) => {
     assert.equal(await lock.getHasValidKey(to), true)
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
+      ADDRESS_ZERO,
+      ADDRESS_ZERO,
       testEventHooks.address,
-      constants.ZERO_ADDRESS
+      ADDRESS_ZERO
     )
     // still returns value
     assert.equal(await lock.getHasValidKey(to), true)
@@ -61,13 +61,8 @@ contract('Lock / onValidKeyHook', (accounts) => {
 
   it('cannot set the hook to a non-contract address', async () => {
     await reverts(
-      lock.setEventHooks(
-        constants.ZERO_ADDRESS,
-        constants.ZERO_ADDRESS,
-        accounts[3],
-        constants.ZERO_ADDRESS
-      ),
-      'INVALID_ON_VALID_KEY_HOOK'
+      lock.setEventHooks(ADDRESS_ZERO, ADDRESS_ZERO, accounts[3], ADDRESS_ZERO),
+      'INVALID_HOOK(2)'
     )
   })
 })

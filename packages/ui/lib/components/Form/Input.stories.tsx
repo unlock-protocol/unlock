@@ -2,6 +2,7 @@ import { Input } from './Input'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { MdPerson as PersonIcon } from 'react-icons/md'
 import { FiAtSign as AtSignIcon } from 'react-icons/fi'
+import { IconBaseProps } from 'react-icons'
 export default {
   component: Input,
   title: 'Input',
@@ -12,45 +13,48 @@ const Template: ComponentStory<typeof Input> = (args) => <Input {...args} />
 export const Normal = Template.bind({})
 
 Normal.args = {
-  icon: <PersonIcon size={16} />,
+  icon: PersonIcon,
   label: 'Email address',
   size: 'small',
   value: 'email@email.com',
-  message:
+  description:
     'If you have previously created account with Unlock, please enter the same email to contine',
 }
 
-export const Reveal = Template.bind({})
+export const Password = Template.bind({})
 
-Reveal.args = {
-  icon: <PersonIcon size={16} />,
+function CustomizedIcon(props: IconBaseProps) {
+  return <PersonIcon {...props} className="fill-gray-500" />
+}
+
+Password.args = {
+  icon: CustomizedIcon,
   label: 'Password',
   size: 'medium',
-  value: 'password',
   type: 'password',
-  copy: true,
-  message: 'Use a long password.',
+  value: 'email@email.com',
+  description: 'Use a long password.',
 }
 
 export const Success = Template.bind({})
 
 Success.args = {
-  icon: <AtSignIcon size={18} />,
+  icon: AtSignIcon,
   label: 'Choose username',
   size: 'medium',
-  state: 'success',
-  message: 'Username available',
+  description: 'Pick a nice username',
+  success: 'Username is available',
   value: 'unlock',
 }
 
 export const Error = Template.bind({})
 
 Error.args = {
-  icon: <AtSignIcon size={20} />,
+  icon: AtSignIcon,
   label: 'Type your username',
   size: 'large',
-  state: 'error',
+  error: 'Invalid username',
   value: 'unlock',
+  description: 'Type a good username',
   copy: true,
-  message: 'Username not available',
 }

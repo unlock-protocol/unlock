@@ -1,8 +1,9 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('truffle-assertions')
-const { constants, tokens } = require('hardlydifficult-ethereum-contracts')
+const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
@@ -42,8 +43,8 @@ contract('Lock / cancelAndRefund', (accounts) => {
     const tx = await lock.purchase(
       [],
       keyOwners,
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => ADDRESS_ZERO),
+      keyOwners.map(() => ADDRESS_ZERO),
       keyOwners.map(() => []),
       {
         value: (keyPrice * keyOwners.length).toFixed(),
@@ -71,7 +72,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     const tx = await lock.grantKeys(
       [accounts[5]],
       [999999999999],
-      [constants.ZERO_ADDRESS],
+      [ADDRESS_ZERO],
       {
         from: accounts[0],
       }
@@ -87,7 +88,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     const tx = await locks.FREE.grantKeys(
       [accounts[5]],
       [999999999999],
-      [constants.ZERO_ADDRESS],
+      [ADDRESS_ZERO],
       {
         from: accounts[0],
       }
@@ -167,7 +168,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     const tx = await locks.FREE.grantKeys(
       [accounts[1]],
       [999999999999],
-      [constants.ZERO_ADDRESS],
+      [ADDRESS_ZERO],
       {
         from: accounts[0],
       }
@@ -183,7 +184,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     const tx = await locks.FREE.grantKeys(
       [keyOwners[1]],
       [999999999999],
-      [constants.ZERO_ADDRESS],
+      [ADDRESS_ZERO],
       {
         from: accounts[0],
       }

@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { FieldValues, useForm } from 'react-hook-form'
 import useAccount from '~/hooks/useAccount'
@@ -13,10 +13,24 @@ interface EmailProps {
 }
 
 function Email({ onSubmitEmail }: EmailProps) {
-  const { register, handleSubmit } = useForm()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm()
 
   async function onSubmit({ email }: FieldValues) {
-    await onSubmitEmail(email)
+    try {
+      await onSubmitEmail(email)
+    } catch (error) {
+      if (error instanceof Error) {
+        setError('email', {
+          type: 'value',
+          message: error.message,
+        })
+      }
+    }
   }
 
   return (
@@ -32,7 +46,8 @@ function Email({ onSubmitEmail }: EmailProps) {
             type="email"
             placeholder="julien@unlock-protocol.com"
             required
-            message="If you have previously created account with Unlock, please enter the same email to contine"
+            error={errors?.email?.message}
+            description="If you have previously created account with Unlock, please enter the same email to contine"
             {...register('email', {
               required: true,
             })}
@@ -48,11 +63,17 @@ function Email({ onSubmitEmail }: EmailProps) {
   )
 }
 
-interface PasswordProps {
-  onSubmitPassword(password: string): Promise<void>
+interface UserDetails {
+  email: string
+  password: string
 }
 
-function Password({ onSubmitPassword }: PasswordProps) {
+interface SignInProps {
+  email: string
+  signIn(user: UserDetails): Promise<void> | void
+}
+
+function SignIn({ email, signIn }: SignInProps) {
   const {
     register,
     formState: { errors },
@@ -64,7 +85,10 @@ function Password({ onSubmitPassword }: PasswordProps) {
   async function onSubmit({ password }: FieldValues) {
     setLoading(true)
     try {
-      await onSubmitPassword(password)
+      await signIn({
+        email,
+        password,
+      })
     } catch (error) {
       if (error instanceof Error) {
         setError(
@@ -98,8 +122,8 @@ function Password({ onSubmitPassword }: PasswordProps) {
             type="password"
             placeholder="password"
             required
-            state={errors?.password ? 'error' : undefined}
-            message={errors?.password?.message || 'Enter your password'}
+            error={errors?.password?.message}
+            description={'Enter your password'}
             {...register('password', {
               required: true,
             })}
@@ -109,6 +133,7 @@ function Password({ onSubmitPassword }: PasswordProps) {
       <Shell.Footer>
         <Button
           disabled={loading}
+          loading={loading}
           type="submit"
           form="password"
           className="w-full"
@@ -120,21 +145,42 @@ function Password({ onSubmitPassword }: PasswordProps) {
   )
 }
 
-interface ConfirmPasswordProps {
-  onSubmitConfirmedPassword(password: string): void
+interface SignUpProps {
+  email: string
+  signUp(user: UserDetails): Promise<void> | void
 }
 
-function ConfirmPassword({ onSubmitConfirmedPassword }: ConfirmPasswordProps) {
-  const { register, handleSubmit, setError } = useForm()
+function SignUp({ signUp, email }: SignUpProps) {
+  const [loading, setLoading] = useState(false)
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm()
 
-  function onSubmit({ password, confirmedPassword }: FieldValues) {
-    if (password !== confirmedPassword) {
-      setError('confirmedPassword', {
-        type: 'validate',
-        message: 'Password does not match',
-      })
+  async function onSubmit({ password, confirmedPassword }: FieldValues) {
+    setLoading(true)
+    try {
+      if (password !== confirmedPassword) {
+        throw new Error('Password does not match')
+      }
+      await signUp({ email, password })
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(
+          'password',
+          {
+            type: 'value',
+            message: error.message,
+          },
+          {
+            shouldFocus: true,
+          }
+        )
+      }
     }
-    onSubmitConfirmedPassword(password)
+    setLoading(false)
   }
 
   return (
@@ -153,7 +199,8 @@ function ConfirmPassword({ onSubmitConfirmedPassword }: ConfirmPasswordProps) {
             type="password"
             placeholder="password"
             required
-            message="Enter your password"
+            error={errors?.password?.message}
+            description="Enter your password"
             {...register('password', {
               required: true,
             })}
@@ -163,7 +210,8 @@ function ConfirmPassword({ onSubmitConfirmedPassword }: ConfirmPasswordProps) {
             type="password"
             placeholder="confirm"
             required
-            message="Retype your password to confirm"
+            error={errors?.confirmedPassword?.message}
+            description="Retype your password to confirm"
             {...register('confirmedPassword', {
               required: true,
             })}
@@ -171,8 +219,14 @@ function ConfirmPassword({ onSubmitConfirmedPassword }: ConfirmPasswordProps) {
         </form>
       </main>
       <Shell.Footer>
-        <Button type="submit" form="confirmPassword" className="w-full">
-          Create Account
+        <Button
+          loading={loading}
+          disabled={loading}
+          type="submit"
+          form="confirmPassword"
+          className="w-full"
+        >
+          {loading ? 'Creating Account' : 'Create Account'}
         </Button>
       </Shell.Footer>
     </>
@@ -184,11 +238,13 @@ interface Props {
   injectedProvider: unknown
 }
 
-type SignInOrUpState = 'email' | 'password' | 'confirmPassword'
+type SignInOrUpState = 'email' | 'signIn' | 'signUp'
 
 export function SignInOrUp({ onSignedIn, injectedProvider }: Props) {
   const [state, setState] = useState<SignInOrUpState>('email')
-  const [emailAddress, setEmailAddress] = useState<string>()
+  const [data, setData] = useState({
+    email: '',
+  })
   const config = useConfig()
   const { retrieveUserAccount, createUserAccount } = useAccount('', 1)
   const { authenticateWithProvider } = useAuthenticateHandler({
@@ -198,35 +254,28 @@ export function SignInOrUp({ onSignedIn, injectedProvider }: Props) {
 
   const onSubmitEmail = async (email: string) => {
     const existingUser = await storageService.userExist(email)
-    setEmailAddress(email)
-    if (existingUser) {
-      setState('password')
-    } else {
-      setState('confirmPassword')
-    }
+    setData({
+      email,
+    })
+    const signStatus = existingUser ? 'signIn' : 'signUp'
+    setState(signStatus)
   }
 
-  const onSubmitPassword = async (password: string) => {
-    if (!emailAddress) {
-      return setState('email')
-    }
-    const unlockProvider = await retrieveUserAccount(emailAddress, password)
+  const signIn = async ({ email, password }: UserDetails) => {
+    const unlockProvider = await retrieveUserAccount(email, password)
     await authenticateWithProvider('UNLOCK', unlockProvider)
     onSignedIn()
   }
 
-  const onSubmitConfirmedPassword = async (password: string) => {
-    if (!emailAddress) {
-      return setState('email')
-    }
+  const signUp = async ({ email, password }: UserDetails) => {
     const { passwordEncryptedPrivateKey } = await createUserAccount(
-      emailAddress,
+      email,
       password
     )
     const unlockProvider = new UnlockProvider(config.networks[1])
     await unlockProvider.connect({
       key: passwordEncryptedPrivateKey,
-      emailAddress,
+      emailAddress: email,
       password,
     })
 
@@ -236,18 +285,14 @@ export function SignInOrUp({ onSignedIn, injectedProvider }: Props) {
 
   function Content() {
     switch (state) {
-      case 'password': {
-        return <Password onSubmitPassword={onSubmitPassword} />
-      }
-      case 'confirmPassword': {
-        return (
-          <ConfirmPassword
-            onSubmitConfirmedPassword={onSubmitConfirmedPassword}
-          />
-        )
-      }
-      default: {
+      case 'email': {
         return <Email onSubmitEmail={onSubmitEmail} />
+      }
+      case 'signIn': {
+        return <SignIn signIn={signIn} email={data.email} />
+      }
+      case 'signUp': {
+        return <SignUp signUp={signUp} email={data.email} />
       }
     }
   }

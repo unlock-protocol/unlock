@@ -1,10 +1,11 @@
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
-const { MAX_UINT } = require('hardlydifficult-ethereum-contracts/src/constants')
+
 const deployLocks = require('../helpers/deployLocks')
 const getProxy = require('../helpers/proxy')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 
@@ -29,7 +30,7 @@ contract('Lock / extend keys', (accounts) => {
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       beforeEach(async () => {
         testToken = await tokens.dai.deploy(web3, lockOwner)
-        tokenAddress = isErc20 ? testToken.address : web3.utils.padLeft(0, 40)
+        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
 
         // Mint some tokens for testing
         await testToken.mint(keyOwner, someTokens, {
@@ -53,8 +54,8 @@ contract('Lock / extend keys', (accounts) => {
           const tx = await lock.purchase(
             isErc20 ? [keyPrice] : [],
             [keyOwner],
-            [web3.utils.padLeft(0, 40)],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
             [[]],
             {
               value: isErc20 ? 0 : keyPrice,
@@ -69,16 +70,10 @@ contract('Lock / extend keys', (accounts) => {
 
         it('prevent extend a non-existing key', async () => {
           await reverts(
-            lock.extend(
-              isErc20 ? keyPrice : 0,
-              1245,
-              web3.utils.padLeft(0, 40),
-              [],
-              {
-                value: isErc20 ? 0 : keyPrice,
-                from: accounts[6],
-              }
-            ),
+            lock.extend(isErc20 ? keyPrice : 0, 1245, ADDRESS_ZERO, [], {
+              value: isErc20 ? 0 : keyPrice,
+              from: accounts[6],
+            }),
             'NO_SUCH_KEY'
           )
         })
@@ -86,16 +81,10 @@ contract('Lock / extend keys', (accounts) => {
         it('reverts with insufficient value', async () => {
           const belowPrice = web3.utils.toWei('0.005', 'ether')
           await reverts(
-            lock.extend(
-              isErc20 ? belowPrice : 0,
-              tokenId,
-              web3.utils.padLeft(0, 40),
-              [],
-              {
-                value: isErc20 ? 0 : belowPrice,
-                from: accounts[6],
-              }
-            ),
+            lock.extend(isErc20 ? belowPrice : 0, tokenId, ADDRESS_ZERO, [], {
+              value: isErc20 ? 0 : belowPrice,
+              from: accounts[6],
+            }),
             isErc20 ? 'INSUFFICIENT_ERC20_VALUE' : 'INSUFFICIENT_VALUE'
           )
         })
@@ -110,7 +99,7 @@ contract('Lock / extend keys', (accounts) => {
             tx = await lock.extend(
               isErc20 ? keyPrice : 0,
               tokenId,
-              web3.utils.padLeft(0, 40),
+              ADDRESS_ZERO,
               [],
               {
                 value: isErc20 ? 0 : keyPrice,
@@ -152,7 +141,7 @@ contract('Lock / extend keys', (accounts) => {
             await lock.extend(
               isErc20 ? keyPrice : 0,
               tokenId,
-              web3.utils.padLeft(0, 40),
+              ADDRESS_ZERO,
               [],
               {
                 value: isErc20 ? 0 : keyPrice,
@@ -194,8 +183,8 @@ contract('Lock / extend keys', (accounts) => {
           const tx = await nonExpiringLock.purchase(
             isErc20 ? [keyPrice] : [],
             [nonExpiringKeyOwner],
-            [web3.utils.padLeft(0, 40)],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
             [[]],
             {
               value: isErc20 ? 0 : keyPrice,
@@ -212,7 +201,7 @@ contract('Lock / extend keys', (accounts) => {
             nonExpiringLock.extend(
               isErc20 ? keyPrice : 0,
               tokenId,
-              web3.utils.padLeft(0, 40),
+              ADDRESS_ZERO,
               [],
               {
                 value: isErc20 ? 0 : keyPrice,
@@ -234,7 +223,7 @@ contract('Lock / extend keys', (accounts) => {
           await nonExpiringLock.extend(
             isErc20 ? keyPrice : 0,
             tokenId,
-            web3.utils.padLeft(0, 40),
+            ADDRESS_ZERO,
             [],
             {
               value: isErc20 ? 0 : keyPrice,

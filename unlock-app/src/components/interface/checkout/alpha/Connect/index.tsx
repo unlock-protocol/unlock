@@ -11,18 +11,10 @@ interface Props {
   communication: ReturnType<typeof useCheckoutCommunication>
 }
 
-type ConnectStages = 'connect' | 'signin'
+type ConnectState = 'connect' | 'signInOrUp'
 
-export function Connect({
-  injectedProvider,
-  oauthConfig,
-  communication,
-}: Props) {
-  const [page, setStage] = useState<ConnectStages>('connect')
-
-  const navigate = (to: ConnectStages) => {
-    setStage(to)
-  }
+export function Connect({ injectedProvider, oauthConfig }: Props) {
+  const [state, setState] = useState<ConnectState>('connect')
 
   const onClose = (params: Record<string, string> = {}) => {
     const redirectURI = new URL(oauthConfig.redirectUri)
@@ -33,22 +25,22 @@ export function Connect({
   }
 
   function Content() {
-    switch (page) {
-      case 'signin': {
-        return (
-          <SignInOrUp
-            injectedProvider={injectedProvider}
-            onSignedIn={() => navigate('connect')}
-          />
-        )
-      }
-      default: {
+    switch (state) {
+      case 'connect': {
         return (
           <ConfirmConnect
             onClose={onClose}
-            navigate={navigate}
+            onUnlockAccount={() => setState('signInOrUp')}
             oauthConfig={oauthConfig}
             injectedProvider={injectedProvider}
+          />
+        )
+      }
+      case 'signInOrUp': {
+        return (
+          <SignInOrUp
+            injectedProvider={injectedProvider}
+            onSignedIn={() => setState('connect')}
           />
         )
       }

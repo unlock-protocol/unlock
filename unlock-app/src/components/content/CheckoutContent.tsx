@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Checkout } from '../interface/checkout/Checkout'
-import getPaywallConfigFromQuery from '../../utils/getConfigFromSearch'
+import { getPaywallConfigFromQuery } from '../../utils/paywallConfig'
 import getOAuthFromSearch from '../../utils/oauth'
 import { useCheckoutCommunication } from '../../hooks/useCheckoutCommunication'
 import Loading from '../interface/Loading'

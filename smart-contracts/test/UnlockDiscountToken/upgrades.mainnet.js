@@ -1,12 +1,11 @@
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { config, ethers, assert, network, upgrades } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
-const { errorMessages } = require('../helpers/constants')
+const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
 const multisigABI = require('../helpers/ABIs/multisig.json')
 const proxyABI = require('../helpers/ABIs/proxy.json')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
-
 const UDTProxyContractAddress = '0x90DE74265a416e1393A450752175AED98fe11517'
 const proxyAdminAddress = '0x79918A4389A437906538E0bbf39918BfA4F7690e'
 
@@ -610,10 +609,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
           (v) => v.event === 'DelegateChanged'
         )
         assert.equal(evtDelegateChanged.args.delegator, delegator.address)
-        assert.equal(
-          evtDelegateChanged.args.fromDelegate,
-          ethers.constants.AddressZero
-        )
+        assert.equal(evtDelegateChanged.args.fromDelegate, ADDRESS_ZERO)
         assert.equal(evtDelegateChanged.args.toDelegate, holder.address)
 
         const evtDelegateVotesChanged = events.find(

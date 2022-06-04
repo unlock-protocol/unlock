@@ -1,4 +1,4 @@
-import getPaywallConfigFromQuery from '../../utils/getConfigFromSearch'
+import { getPaywallConfigFromQuery } from '../../utils/paywallConfig'
 
 let originalConsole: any
 let error = jest.fn()

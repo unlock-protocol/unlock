@@ -1,10 +1,10 @@
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
-const { constants } = require('hardlydifficult-eth')
 
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
 const TestNoop = artifacts.require('TestNoop.sol')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const getProxy = require('../helpers/proxy')
 const deployLocks = require('../helpers/deployLocks')
 
@@ -50,9 +50,9 @@ contract('Lock / erc20', (accounts) => {
       })
 
       // Approve the lock to make transfers
-      await token.approve(lock.address, constants.MAX_UINT, { from: keyOwner })
-      await token.approve(lock.address, constants.MAX_UINT, { from: keyOwner2 })
-      await token.approve(lock.address, constants.MAX_UINT, { from: keyOwner3 })
+      await token.approve(lock.address, MAX_UINT, { from: keyOwner })
+      await token.approve(lock.address, MAX_UINT, { from: keyOwner2 })
+      await token.approve(lock.address, MAX_UINT, { from: keyOwner3 })
 
       keyPrice = new BigNumber(await lock.keyPrice.call())
       refundAmount = keyPrice.toFixed()
@@ -64,8 +64,8 @@ contract('Lock / erc20', (accounts) => {
         const tx = await lock.purchase(
           [keyPrice.toFixed()],
           [keyOwner],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             from: keyOwner,
@@ -96,8 +96,8 @@ contract('Lock / erc20', (accounts) => {
         const tx = await lock.purchase(
           [keyPrice.toFixed()],
           [keyOwner3],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             from: keyOwner3,
@@ -161,8 +161,8 @@ contract('Lock / erc20', (accounts) => {
         await lock.purchase(
           [keyPrice.toFixed()],
           [keyOwner],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             from: keyOwner,
@@ -174,7 +174,7 @@ contract('Lock / erc20', (accounts) => {
           [keyPrice.toFixed()],
           [keyOwner2],
           [keyOwner],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
           [[]],
           {
             from: keyOwner2,
@@ -194,7 +194,7 @@ contract('Lock / erc20', (accounts) => {
 
     it('purchaseKey fails when the user does not have enough funds', async () => {
       const account = accounts[4]
-      await token.approve(lock.address, constants.MAX_UINT, { from: account })
+      await token.approve(lock.address, MAX_UINT, { from: account })
       await token.mint(account, keyPrice.minus(1), {
         from: accounts[0],
       })
@@ -202,8 +202,8 @@ contract('Lock / erc20', (accounts) => {
         lock.purchase(
           [keyPrice.toFixed()],
           [account],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             from: account,
@@ -221,8 +221,8 @@ contract('Lock / erc20', (accounts) => {
         lock.purchase(
           [keyPrice.toFixed()],
           [account],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             from: account,

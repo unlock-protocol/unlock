@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import { Button } from '@unlock-protocol/ui'
+import { Button, Icon } from '@unlock-protocol/ui'
 import { RiUser3Line as UserIcon } from 'react-icons/ri'
 import { FaEthereum as EthereumIcon } from 'react-icons/fa'
-import { CgSpinner as SpinnerIcon } from 'react-icons/cg'
 import { OAuthConfig } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { createMessageToSignIn } from '~/utils/oauth'
@@ -12,7 +11,7 @@ import { Shell } from '../Shell'
 
 interface Props {
   oauthConfig: OAuthConfig
-  navigate(to: string): void
+  onUnlockAccount(): void
   injectedProvider: unknown
   onClose(params?: Record<string, string>): void
 }
@@ -21,7 +20,7 @@ export function ConfirmConnect({
   injectedProvider,
   oauthConfig,
   onClose,
-  navigate,
+  onUnlockAccount,
 }: Props) {
   const [loading, setLoading] = useState(false)
   const { account, network = 1, signMessage, deAuthenticate } = useAuth()
@@ -89,16 +88,8 @@ export function ConfirmConnect({
           <Button
             onClick={onSignIn}
             disabled={loading || !account}
-            iconLeft={
-              loading ? (
-                <SpinnerIcon
-                  key={0}
-                  className="animate-spin motion-reduce:invisible"
-                />
-              ) : (
-                <EthereumIcon key={0} />
-              )
-            }
+            loading={loading}
+            iconLeft={<Icon icon={EthereumIcon} size="medium" />}
             className="w-full"
           >
             {loading ? 'Please sign the message' : 'Sign-in with Ethereum'}
@@ -111,7 +102,7 @@ export function ConfirmConnect({
         ) : (
           <LoggedOut
             authenticateWithProvider={authenticateWithProvider}
-            onUnlockAccount={() => navigate('signin')}
+            onUnlockAccount={onUnlockAccount}
           />
         )}
       </Shell.Footer>

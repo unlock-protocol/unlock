@@ -1,4 +1,3 @@
-import React, { ReactNode } from 'react'
 import SvgComponents from '../../svg'
 
 interface LoggedInProps {
