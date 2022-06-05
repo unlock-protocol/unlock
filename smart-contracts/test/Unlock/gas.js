@@ -4,6 +4,7 @@ const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
 const WalletService = require('../helpers/walletServiceMock.js')
 const createLockHash = require('../helpers/createLockCalldata')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 
@@ -14,7 +15,7 @@ contract('Unlock / gas', (accounts) => {
     unlock = await getProxy(unlockContract)
     const args = [
       60 * 60 * 24 * 30, // expirationDuration: 30 days
-      web3.utils.padLeft(0, 40),
+      ADDRESS_ZERO,
       web3.utils.toWei('1', 'ether'), // keyPrice: in wei
       100, // maxNumberOfKeys
       'Gas Test Lock',

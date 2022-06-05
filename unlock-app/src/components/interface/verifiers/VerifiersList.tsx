@@ -5,7 +5,8 @@ import { ethers } from 'ethers'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
 import { ToastHelper } from '../../helpers/toast.helper'
 import Loading from '../Loading'
-import { ConfigContext } from '../../../utils/withConfig'
+import { WalletServiceContext } from '../../../utils/withWalletService'
+import { useStorageService } from '~/utils/withStorageService'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -17,16 +18,23 @@ const styling = {
 }
 interface VerifiersListProsps {
   lockAddress: string
+  getVerifierList: () => void
+  verifiers: any[]
+  setVerifiers: any
 }
 export const VerifiersList: React.FC<VerifiersListProsps> = ({
   lockAddress,
+  getVerifierList,
+  verifiers,
+  setVerifiers,
 }) => {
-  const { network } = useContext(AuthenticationContext)
+  const { network, account } = useContext(AuthenticationContext)
   const [selectedVerifier, setSelectedVerifier] = useState('')
   const [showDeleteVerifierModal, setShowDeleteVerifierModal] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [verifiers, setVerifiers] = useState<any[]>([])
-  const config: any = useContext(ConfigContext)
+  const [logged, setLogged] = useState(false)
+  const storageService = useStorageService()
+  const walletService = useContext(WalletServiceContext)
 
   const setDefaults = () => {
     setShowDeleteVerifierModal(false)
@@ -35,41 +43,41 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   }
 
   useEffect(() => {
-    getVerifierList()
+    loginAndGetList()
   }, [])
 
-  const getVerifierList = async () => {
+  const loginAndGetList = async () => {
     try {
-      const addVerifierUrl = `${config.services.storage.host}/v2/api/verifier/${network}/${lockAddress}/${selectedVerifier}`
-      const requestOptions = {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      }
-      await fetch(addVerifierUrl, requestOptions)
-        .then((res) => res.json())
-        .then((verifiers: any) => {
-          setVerifiers(verifiers?.results)
-        })
-    } catch (err: any) {
-      setLoading(false)
-      ToastHelper.error(
-        err?.error ??
-          'We could not load the list of verifiers for your lock. Please reload to to try again.'
-      )
+      await storageService.loginPrompt({
+        walletService,
+        address: account!,
+        chainId: network!,
+      })
+      setLogged(true)
+      getVerifierList()
+    } catch (err) {
+      setLogged(false)
     }
   }
+
   const onConfirmDeleteVerifier = async () => {
     setLoading(true)
     const isValid = ethers.utils.isAddress(selectedVerifier)
+
     try {
       if (isValid) {
-        const addVerifierUrl = `/verifier/${network}/${lockAddress}/${selectedVerifier}`
-        const requestOptions = {
+        const options = {
           method: 'DELETE',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+          },
         }
-        await fetch(addVerifierUrl, requestOptions)
-          .then((res) => res.json())
+        await storageService
+          .getEndpoint(
+            `/v2/api/verifier/${network}/${lockAddress}/${selectedVerifier}`,
+            options,
+            true /* withAuth */
+          )
           .then((verifiers: any) => {
             ToastHelper.success('Verifier deleted from list')
             setVerifiers(verifiers?.results)
@@ -83,6 +91,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
       }
     } catch (err: any) {
       setLoading(false)
+      console.error(err)
       ToastHelper.error(
         err?.error ??
           'There was a problem adding verifier, please re-load and try again'
@@ -96,6 +105,13 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
     setShowDeleteVerifierModal(true)
   }
 
+  if (!logged) {
+    return (
+      <>
+        <span>Sign message in your wallet to show verifiers list.</span>
+      </>
+    )
+  }
   return (
     <>
       <table className="w-full mt-3">
@@ -103,18 +119,24 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
           <tr>
             <th>Address</th>
             <th className="text-left">Created at</th>
-            <th className="text-left">Verified at</th>
+            <th className="text-left">Updated at</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {verifiers?.map((verifier: any, index: number) => {
             const key = `${verifier?.address}-${index}`
+            const createdAt = verifier?.createdAt
+              ? new Date(verifier?.createdAt).toLocaleString()
+              : '-'
+            const updatedAt = verifier?.updatedAt
+              ? new Date(verifier?.updatedAt).toLocaleString()
+              : '-'
             return (
               <tr key={key}>
                 <td>{verifier?.address ?? '-'}</td>
-                <td>{verifier?.createdAt ?? '-'}</td>
-                <td>{verifier?.updatedAt ?? '-'}</td>
+                <td>{createdAt ?? '-'}</td>
+                <td>{updatedAt ?? '-'}</td>
                 <td>
                   <Tooltip tip="Remove verifier" label="Remove verifier">
                     <TrashIcon

@@ -4,6 +4,7 @@ const compareValues = require('./_compareValues')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 contract('LockSerializer', () => {
   let serializer
@@ -24,7 +25,9 @@ contract('LockSerializer', () => {
     // get locks (truffle version)
     const locksTruffle = await deployLocks(unlock, beneficiary.address)
     // parse locks for ethers
-    PublicLock = await ethers.getContractFactory('PublicLock')
+    PublicLock = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
     Object.keys(locksTruffle).forEach((k) => {
       locks[k] = PublicLock.attach(locksTruffle[k].address)
     })
@@ -52,8 +55,8 @@ contract('LockSerializer', () => {
         .purchase(
           [keyPrice.toString()],
           [purchaser.address],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           { value: keyPrice }
         )
@@ -93,8 +96,8 @@ contract('LockSerializer', () => {
         await lock.connect(purchasers[0]).purchase(
           [],
           purchasers.map((p) => p.address),
-          purchasers.map(() => web3.utils.padLeft(0, 40)),
-          purchasers.map(() => web3.utils.padLeft(0, 40)),
+          purchasers.map(() => ADDRESS_ZERO),
+          purchasers.map(() => ADDRESS_ZERO),
           purchasers.map(() => []),
           { value: keyPrice.mul(purchasers.length) }
         )

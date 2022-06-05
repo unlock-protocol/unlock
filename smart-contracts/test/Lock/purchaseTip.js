@@ -1,8 +1,9 @@
-const truffleAssert = require('truffle-assertions')
+const truffleAssert = require('../helpers/errors')
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 const getProxy = require('../helpers/proxy')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const Erc20Token = artifacts.require(
@@ -31,7 +32,7 @@ contract('Lock / purchaseTip', (accounts) => {
           from: accounts[0],
         })
 
-        tokenAddress = isErc20 ? testToken.address : web3.utils.padLeft(0, 40)
+        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
 
         unlock = await getProxy(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
@@ -48,8 +49,8 @@ contract('Lock / purchaseTip', (accounts) => {
           await lock.purchase(
             [keyPrice.toString()],
             [accounts[2]],
-            [web3.utils.padLeft(0, 40)],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
             [[]],
             {
               from: accounts[2],
@@ -71,8 +72,8 @@ contract('Lock / purchaseTip', (accounts) => {
           await lock.purchase(
             [tip.toString()],
             [accounts[2]],
-            [web3.utils.padLeft(0, 40)],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
             [[]],
             {
               from: accounts[2],
@@ -95,8 +96,8 @@ contract('Lock / purchaseTip', (accounts) => {
           await lock.purchase(
             [keyPrice.toString()],
             [accounts[2]],
-            [web3.utils.padLeft(0, 40)],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
             [[]],
             {
               from: accounts[2],
@@ -123,8 +124,8 @@ contract('Lock / purchaseTip', (accounts) => {
             await lock.purchase(
               [],
               [accounts[2]],
-              [web3.utils.padLeft(0, 40)],
-              [web3.utils.padLeft(0, 40)],
+              [ADDRESS_ZERO],
+              [ADDRESS_ZERO],
               [[]],
               {
                 from: accounts[2],
@@ -152,8 +153,8 @@ contract('Lock / purchaseTip', (accounts) => {
             lock.purchase(
               [1],
               [accounts[2]],
-              [web3.utils.padLeft(0, 40)],
-              [web3.utils.padLeft(0, 40)],
+              [ADDRESS_ZERO],
+              [ADDRESS_ZERO],
               [[]],
               {
                 from: accounts[2],

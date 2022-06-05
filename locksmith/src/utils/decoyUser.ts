@@ -2,7 +2,7 @@ import { ethers } from 'ethers'
 import randomWords from 'random-words'
 
 export class DecoyUser {
-  recoveryPhrase(): String {
+  recoveryPhrase(): string {
     return randomWords(5).join(' ')
   }
 

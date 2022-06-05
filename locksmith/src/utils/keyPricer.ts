@@ -3,7 +3,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
 import * as Normalizer from './normalizer'
-import { ItemizedKeyPrice } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { ItemizedKeyPrice } from '../types'
 import PriceConversion from './priceConversion'
 import GasPrice from './gasPrice'
 

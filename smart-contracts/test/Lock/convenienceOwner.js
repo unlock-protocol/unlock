@@ -2,7 +2,7 @@ const { ethers } = require('hardhat')
 const { expectRevert } = require('@openzeppelin/test-helpers')
 const { getProxyAddress } = require('../../helpers/deployments')
 const createLockHash = require('../helpers/createLockCalldata')
-
+const { ADDRESS_ZERO } = require('../helpers/constants')
 const keyPrice = ethers.utils.parseEther('0.01')
 
 contract('Lock / mimick owner()', () => {
@@ -21,7 +21,7 @@ contract('Lock / mimick owner()', () => {
     unlock = Unlock.attach(unlockAddress)
 
     // create a new lock
-    const tokenAddress = web3.utils.padLeft(0, 40)
+    const tokenAddress = ADDRESS_ZERO
     const args = [60 * 30, tokenAddress, keyPrice, 10, 'Test lock']
 
     const calldata = await createLockHash({ args, from: deployer.address })
@@ -50,7 +50,7 @@ contract('Lock / mimick owner()', () => {
     })
     it('should revert on address zero', async () => {
       await expectRevert(
-        lock.connect(deployer).setOwner(ethers.constants.AddressZero),
+        lock.connect(deployer).setOwner(ADDRESS_ZERO),
         'OWNER_CANT_BE_ADDRESS_ZERO'
       )
     })

@@ -27,7 +27,6 @@ router.post(
   })
 )
 
-router.post('/', purchaseController.purchase)
 router.post('/prepare', purchaseController.createPaymentIntent)
 router.post('/capture', purchaseController.capturePaymentIntent) // No signature needed
 

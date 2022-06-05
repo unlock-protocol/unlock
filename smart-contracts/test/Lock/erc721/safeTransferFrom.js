@@ -1,6 +1,6 @@
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
-
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../../helpers/proxy')
 
@@ -27,8 +27,8 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
     const tx = await lock.purchase(
       [],
       [from],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         value: web3.utils.toWei('0.01', 'ether'),
@@ -52,8 +52,8 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
     const tx = await lock.purchase(
       [],
       [accounts[7]],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         value: web3.utils.toWei('0.01', 'ether'),
@@ -81,8 +81,8 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
     const tx = await lock.purchase(
       [],
       [accounts[5]],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         value: web3.utils.toWei('0.01', 'ether'),
@@ -107,8 +107,8 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
     const tx = await lock.purchase(
       [],
       [accounts[7]],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         value: web3.utils.toWei('0.01', 'ether'),

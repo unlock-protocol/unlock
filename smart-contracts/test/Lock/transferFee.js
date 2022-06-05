@@ -1,11 +1,12 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { time } = require('@openzeppelin/test-helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let locks
@@ -25,8 +26,8 @@ contract('Lock / transferFee', (accounts) => {
     const tx = await lock.purchase(
       [],
       [keyOwner],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         value: keyPrice.toFixed(),
@@ -68,8 +69,8 @@ contract('Lock / transferFee', (accounts) => {
       await lock.purchase(
         [],
         [accounts[8]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: keyPrice.toFixed(),

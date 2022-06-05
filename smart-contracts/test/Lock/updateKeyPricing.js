@@ -1,11 +1,12 @@
 const BigNumber = require('bignumber.js')
 
 const { tokens } = require('hardlydifficult-ethereum-contracts')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getProxy = require('../helpers/proxy')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let locks
@@ -112,10 +113,7 @@ contract('Lock / updateKeyPricing', (accounts) => {
     })
 
     it('should allow a LockManager to switch from erc20 => eth', async () => {
-      await lock.updateKeyPricing(
-        await lock.keyPrice.call(),
-        web3.utils.padLeft(0, 40)
-      )
+      await lock.updateKeyPricing(await lock.keyPrice.call(), ADDRESS_ZERO)
       assert.equal(await lock.tokenAddress.call(), 0)
     })
 

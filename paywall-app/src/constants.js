@@ -1,5 +1,3 @@
-/* eslint import/prefer-default-export: 0 */ // This file does not have a default export
-
 export const MAX_DEVICE_WIDTHS = {
   PHONE: 736,
   TABLET: 1000,
