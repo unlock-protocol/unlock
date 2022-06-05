@@ -15,7 +15,7 @@ module.exports = async () => {
   const [unlockOwner, minter] = await ethers.getSigners()
 
   // 1. deploying Unlock with a proxy
-  const Unlock = await ethers.getContractFactory('Unlock')
+  const Unlock = await ethers.getContractFactory('contracts/Unlock.sol:Unlock')
 
   const unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
     initializer: 'initialize(address)',
@@ -26,7 +26,9 @@ module.exports = async () => {
   await addDeployment('Unlock', unlock, true)
 
   // 2. deploying PublicLock
-  const PublicLock = await ethers.getContractFactory('PublicLock')
+  const PublicLock = await ethers.getContractFactory(
+    'contracts/PublicLock.sol:PublicLock'
+  )
   const publicLock = await PublicLock.deploy()
 
   // save deployment info
