@@ -25,7 +25,9 @@ contract('LockSerializer', () => {
     // get locks (truffle version)
     const locksTruffle = await deployLocks(unlock, beneficiary.address)
     // parse locks for ethers
-    PublicLock = await ethers.getContractFactory('PublicLock')
+    PublicLock = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
     Object.keys(locksTruffle).forEach((k) => {
       locks[k] = PublicLock.attach(locksTruffle[k].address)
     })

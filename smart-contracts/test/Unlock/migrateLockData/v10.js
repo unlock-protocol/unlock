@@ -1,30 +1,15 @@
 /**
  * Tests for the lock data migration for PublicLock v10
  */
-const { ethers, upgrades, run } = require('hardhat')
+const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
-const fs = require('fs-extra')
-const path = require('path')
 const createLockHash = require('../../helpers/createLockCalldata')
+const {
+  getContractFactoryAtVersion,
+  cleanupPastContracts,
+  getContractAtVersion,
+} = require('../../helpers/versions')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
-
-const contractsPath = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'contracts',
-  'past-versions'
-)
-const artifactsPath = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'artifacts',
-  'contracts',
-  'past-versions'
-)
 
 const previousVersionNumber = 9 // to next version
 const keyPrice = ethers.utils.parseEther('0.01')
@@ -71,15 +56,12 @@ const extendFails = async (lock) => {
   )
 }
 
-describe('upgradeLock / data migration', () => {
+describe('upgradeLock / data migration v9 > v10', () => {
   let unlock
   let lock
   let pastVersion
 
-  after(async () => {
-    await fs.remove(contractsPath)
-    await fs.remove(artifactsPath)
-  })
+  after(async () => await cleanupPastContracts())
 
   before(async function () {
     // make sure mocha doesnt time out
@@ -88,40 +70,24 @@ describe('upgradeLock / data migration', () => {
     const [unlockOwner, creator] = await ethers.getSigners()
 
     // deploy latest implementation
-    const PublicLockLatest = await ethers.getContractFactory(
-      'contracts/PublicLock.sol:PublicLock'
-    )
+    const PublicLockLatest = await getContractFactoryAtVersion('PublicLock', 10)
     const publicLockLatest = await PublicLockLatest.deploy()
     await publicLockLatest.deployed()
 
-    if ((await publicLockLatest.publicLockVersion()) !== 10) {
-      this.skip()
-    }
+    // deploy past impl
+    const PublicLockPast = await getContractFactoryAtVersion('PublicLock', 9)
+    const publicLockPast = await PublicLockPast.deploy()
+    await publicLockPast.deployed()
+    pastVersion = await publicLockPast.publicLockVersion()
 
     // deploy Unlock
-    const Unlock = await ethers.getContractFactory('Unlock')
+    const Unlock = await ethers.getContractFactory(
+      'contracts/Unlock.sol:Unlock'
+    )
     unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
       initializer: 'initialize(address)',
     })
     await unlock.deployed()
-
-    // re-compile impl contract using hardhat
-    await fs.copy(
-      require.resolve(
-        `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${previousVersionNumber}.sol`
-      ),
-      path.resolve(contractsPath, `PublicLockV${previousVersionNumber}.sol`)
-    )
-    await run('compile')
-
-    // deploy past impl
-    const PublicLockPast = await ethers.getContractFactory(
-      `contracts/past-versions/PublicLockV${previousVersionNumber}.sol:PublicLock`
-    )
-
-    const publicLockPast = await PublicLockPast.deploy()
-    await publicLockPast.deployed()
-    pastVersion = await publicLockPast.publicLockVersion()
 
     // add past impl to Unlock
     const txImpl = await unlock.addLockTemplate(
@@ -148,13 +114,13 @@ describe('upgradeLock / data migration', () => {
     const { newLockAddress } = evt.args
 
     // get lock
-    lock = await ethers.getContractAt(
-      `contracts/past-versions/PublicLockV${previousVersionNumber}.sol:PublicLock`,
+    lock = await getContractAtVersion(
+      'PublicLock',
+      previousVersionNumber,
       newLockAddress
     )
-
     // add latest tempalte
-    await unlock.addLockTemplate(publicLockLatest.address, pastVersion + 1)
+    await unlock.addLockTemplate(publicLockLatest.address, 10)
   })
 
   it('lock should have correct version', async () => {
@@ -199,8 +165,9 @@ describe('upgradeLock / data migration', () => {
       )
 
       // update abi before upgrade, so we can track event
-      lock = await ethers.getContractAt(
-        'contracts/PublicLock.sol:PublicLock',
+      lock = await getContractAtVersion(
+        'PublicLock',
+        pastVersion + 1,
         lock.address
       )
 
