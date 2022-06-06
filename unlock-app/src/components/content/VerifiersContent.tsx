@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Button, Modal, Input } from '@unlock-protocol/ui'
