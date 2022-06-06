@@ -29,7 +29,9 @@ contract('Unlock / createUpgradeableLockAtVersion', () => {
     await unlock.deployed()
 
     // set version 1
-    const PublicLock = await ethers.getContractFactory('PublicLock')
+    const PublicLock = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
     publicLock = await PublicLock.deploy()
     await publicLock.deployed()
     const tx1 = await unlock.addLockTemplate(publicLock.address, 1)
@@ -58,7 +60,10 @@ contract('Unlock / createUpgradeableLockAtVersion', () => {
       args: { newLockAddress: lock1Address },
     } = lock1Events.find(({ event }) => event === 'NewLock')
 
-    const lock1 = await ethers.getContractAt('PublicLock', lock1Address)
+    const lock1 = await ethers.getContractAt(
+      'contracts/PublicLock.sol:PublicLock',
+      lock1Address
+    )
 
     // lock creation params
     assert.equal(await lock1.expirationDuration(), args[0])
