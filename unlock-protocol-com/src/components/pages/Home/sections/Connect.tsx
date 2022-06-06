@@ -31,12 +31,12 @@ const featuredUsers = [
 ]
 
 export function Connect() {
-  const [featured, setFeatured] = useState(0)
-  useEffect(() => {
-    setInterval(() => {
-      setFeatured((featured + 1) % featuredUsers.length)
-    }, 5000)
-  })
+  const [featured, setFeatured] = useState(1)
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     setFeatured((featured + 1) % featuredUsers.length)
+  //   }, 5000)
+  // })
 
   return (
     <section className="flex flex-col-reverse items-center justify-between mx-auto lg:space-x-16 max-w-7xl md:gap-6 md:flex-row">
