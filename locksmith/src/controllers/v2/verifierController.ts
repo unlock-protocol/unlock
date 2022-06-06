@@ -180,6 +180,15 @@ export class VerifierController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
+
+      const verifierMatchesLoggedUser = request.user?.walletAddress === address
+
+      if (!verifierMatchesLoggedUser) {
+        return response.status(401).send({
+          message: `User not authozired`,
+        })
+      }
+
       let isLockManager = false
 
       const isVerifier = await Verifier.findOne({
