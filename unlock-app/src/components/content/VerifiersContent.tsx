@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Button, Modal, Input } from '@unlock-protocol/ui'
@@ -32,7 +32,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   const [verifierAddress, setVerifierAddress] = useState('')
   const [loading, setLoading] = useState(false)
   const [verifiers, setVerifiers] = useState<any[]>([])
-  const lockAddress: string = query?.lockAddress ?? ''
+  const lockAddress: string = query?.lock ?? ''
   const { network } = useContext(AuthenticationContext)
   const storageService = useStorageService()
 
@@ -123,61 +123,50 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
         <title>{pageTitle('Verifiers')}</title>
       </Head>
 
-      {!lockAddress ? (
-        <>
-          <span className="text-red-600">
-            {'"lockAddress"'} query parameter is not defined, please check the
-            url
-          </span>
-        </>
-      ) : (
-        <>
-          <VerifierContent>
-            <Header>
-              <span>A list for all verifiers for your event</span>
-              <Button onClick={onAddVerifier}>Add verifier</Button>
-            </Header>
-            <VerifiersList
-              lockAddress={lockAddress}
-              getVerifierList={getVerifierList}
-              verifiers={verifiers}
-              setVerifiers={setVerifiers}
-            />
-          </VerifierContent>
+      <VerifierContent>
+        <Header>
+          <span>A list for all verifiers for your event</span>
+          <Button onClick={onAddVerifier}>Add verifier</Button>
+        </Header>
+        <VerifiersList
+          lockAddress={lockAddress}
+          getVerifierList={getVerifierList}
+          verifiers={verifiers}
+          setVerifiers={setVerifiers}
+        />
+      </VerifierContent>
 
-          <Modal isOpen={addVerifierModalOpen} setIsOpen={onAddVerifier}>
-            <div className={styling.sectionWrapper}>
-              <h3 className={styling.sectionTitle}>Add verifier</h3>
-              <span className={styling.sectionDesctiption}>
-                Enter the Ethereum address of the user you want to add as a
-                Verifier.
-              </span>
-              <Input
-                placeholder="0x..."
-                className={styling.input}
-                value={verifierAddress}
-                onChange={onVerifierAddressChange}
-              />
-              <div className={styling.actions}>
-                <Button
-                  variant="secondary"
-                  onClick={() => setAddVerifierModalOpen(false)}
-                  disabled={loading}
-                >
-                  Close
-                </Button>
-                <Button
-                  className={styling.button}
-                  onClick={onAddAddress}
-                  disabled={loading}
-                >
-                  Add address
-                </Button>
-              </div>
-            </div>
-          </Modal>
-        </>
-      )}
+      <Modal isOpen={addVerifierModalOpen} setIsOpen={onAddVerifier}>
+        <div className={styling.sectionWrapper}>
+          <h3 className={styling.sectionTitle}>Add verifier</h3>
+          <span className={styling.sectionDesctiption}>
+            Enter the Ethereum address of the user you want to add as a
+            Verifier.
+          </span>
+          <Input
+            placeholder="0x..."
+            className={styling.input}
+            value={verifierAddress}
+            onChange={onVerifierAddressChange}
+          />
+          <div className={styling.actions}>
+            <Button
+              variant="secondary"
+              onClick={() => setAddVerifierModalOpen(false)}
+              disabled={loading}
+            >
+              Close
+            </Button>
+            <Button
+              className={styling.button}
+              onClick={onAddAddress}
+              disabled={loading}
+            >
+              Add address
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </Layout>
   )
 }
