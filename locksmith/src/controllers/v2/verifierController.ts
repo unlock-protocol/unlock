@@ -66,19 +66,6 @@ export class VerifierController {
         request.user!.walletAddress!
       )
 
-      const isLockManager = await this.#isLockManager({
-        lockAddress,
-        lockManager,
-        network,
-      })
-
-      if (!isLockManager) {
-        return response.status(401).send({
-          message:
-            'Operation not authorized, only the lock manager can get this results.',
-        })
-      }
-
       const list = await this.#getVerifiersList(
         lockAddress,
         lockManager,
@@ -110,19 +97,6 @@ export class VerifierController {
       const loggedUserAddress = Normalizer.ethereumAddress(
         request.user!.walletAddress!
       )
-
-      const isLockManager = await this.#isLockManager({
-        lockAddress,
-        lockManager: loggedUserAddress,
-        network,
-      })
-
-      if (!isLockManager) {
-        return response.status(401).send({
-          message:
-            'Operation not authorized, only the lock manager can perform this action.',
-        })
-      }
 
       const alreadyExists = await this.#isVerifierAlreadyExits(
         lockAddress,
@@ -170,19 +144,6 @@ export class VerifierController {
         network
       )
 
-      const isLockManager = await this.#isLockManager({
-        lockAddress,
-        lockManager: address,
-        network,
-      })
-
-      if (!isLockManager) {
-        return response.status(401).send({
-          message:
-            'Operation not authorized, only the lock manager can perform this action.',
-        })
-      }
-
       if (!alreadyExists?.id) {
         return response.status(409).send({
           message: 'Verifier not exists',
@@ -219,6 +180,7 @@ export class VerifierController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
+      let isLockManager = false
 
       const isVerifier = await Verifier.findOne({
         where: {
@@ -228,11 +190,13 @@ export class VerifierController {
         },
       })
 
-      const isLockManager = await this.#isLockManager({
-        lockAddress,
-        lockManager: address,
-        network,
-      })
+      if (!isVerifier) {
+        isLockManager = await this.#isLockManager({
+          lockAddress,
+          lockManager: address,
+          network,
+        })
+      }
 
       const isEnabled = isVerifier?.id !== undefined || isLockManager
       return response.status(200).send({
