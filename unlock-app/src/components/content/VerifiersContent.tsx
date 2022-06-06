@@ -9,7 +9,6 @@ import { pageTitle } from '../../constants'
 import { VerifiersList } from '../interface/verifiers/VerifiersList'
 import { getAddressForName } from '../../hooks/useEns'
 import { ToastHelper } from '../helpers/toast.helper'
-import AuthenticationContext from '../../contexts/AuthenticationContext'
 import { useStorageService } from '../../utils/withStorageService'
 
 const styling = {
@@ -32,8 +31,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   const [verifierAddress, setVerifierAddress] = useState('')
   const [loading, setLoading] = useState(false)
   const [verifiers, setVerifiers] = useState<any[]>([])
-  const lockAddress: string = query?.lock ?? ''
-  const { network } = useContext(AuthenticationContext)
+  const { lock, network } = query
   const storageService = useStorageService()
 
   const onAddVerifier = () => {
@@ -59,7 +57,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
         }
         await storageService
           .getEndpoint(
-            `/v2/api/verifier/${network}/${lockAddress}/${resolvedAddress}`,
+            `/v2/api/verifier/${network}/${lock}/${resolvedAddress}`,
             options,
             true /* withAuth */
           )
@@ -96,7 +94,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
       }
       await storageService
         .getEndpoint(
-          `/v2/api/verifier/list/${network}/${lockAddress}`,
+          `/v2/api/verifier/list/${network}/${lock}`,
           options,
           true /* withAuth */
         )
@@ -129,7 +127,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
           <Button onClick={onAddVerifier}>Add verifier</Button>
         </Header>
         <VerifiersList
-          lockAddress={lockAddress}
+          lockAddress={lock}
           getVerifierList={getVerifierList}
           verifiers={verifiers}
           setVerifiers={setVerifiers}
