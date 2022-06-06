@@ -3,7 +3,7 @@ const deployLocks = require('../helpers/deployLocks')
 const compareValues = require('./_compareValues')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 contract('LockSerializer', () => {
@@ -14,7 +14,7 @@ contract('LockSerializer', () => {
   const locks = {}
 
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     ;[, beneficiary] = await ethers.getSigners()
 
     // deploy serializer

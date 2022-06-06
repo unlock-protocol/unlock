@@ -1,24 +1,20 @@
 const { ethers } = require('hardhat')
 const { expectRevert } = require('@openzeppelin/test-helpers')
-const { getProxyAddress } = require('../../helpers/deployments')
+
+const deployContracts = require('../fixtures/deploy')
 const createLockHash = require('../helpers/createLockCalldata')
 const { ADDRESS_ZERO } = require('../helpers/constants')
+
 const keyPrice = ethers.utils.parseEther('0.01')
 
 contract('Lock / mimick owner()', () => {
-  let unlock
   let lock
   let deployer
 
   beforeEach(async () => {
-    const chainId = 31337
-    const unlockAddress = getProxyAddress(chainId, 'Unlock')
-
-    // parse unlock
     ;[deployer] = await ethers.getSigners()
 
-    const Unlock = await ethers.getContractFactory('Unlock')
-    unlock = Unlock.attach(unlockAddress)
+    const { unlock } = await deployContracts()
 
     // create a new lock
     const tokenAddress = ADDRESS_ZERO

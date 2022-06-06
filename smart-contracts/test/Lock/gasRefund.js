@@ -2,7 +2,7 @@ const { reverts } = require('../helpers/errors')
 const { BN, time } = require('@openzeppelin/test-helpers')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const { ADDRESS_ZERO } = require('../helpers/constants')
@@ -27,7 +27,7 @@ contract('Lock / GasRefund', (accounts) => {
       isErc20 ? 'ERC20' : 'ETH'
     }`, () => {
       beforeEach(async () => {
-        unlock = await getProxy(unlockContract)
+        unlock = await getContractInstance(unlockContract)
 
         testToken = await tokens.dai.deploy(web3, accounts[0])
         // Mint some tokens for testing

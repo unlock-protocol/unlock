@@ -4,6 +4,7 @@ const { reverts } = require('../helpers/errors')
 const { ethers, upgrades, network } = require('hardhat')
 const { getDeployment } = require('../../helpers/deployments')
 const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
+const deployContracts = require('../fixtures/deploy')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
@@ -60,6 +61,8 @@ contract('UnlockProtocolGovernor', () => {
 
     updateTx = await tx.wait()
   }
+
+  before(async () => await deployContracts())
 
   beforeEach(async () => {
     // deploying timelock with a proxy
