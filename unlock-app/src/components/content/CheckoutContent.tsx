@@ -51,7 +51,7 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
       if (defaultStateRef.current === 'loading') {
         setDefaultState('config-error')
       }
-    }, 5000)
+    }, 30000)
     return () => clearTimeout(timer)
   }, [])
 
