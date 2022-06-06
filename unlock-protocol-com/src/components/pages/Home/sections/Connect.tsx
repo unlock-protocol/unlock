@@ -32,11 +32,12 @@ const featuredUsers = [
 
 export function Connect() {
   const [featured, setFeatured] = useState(1)
-  // useEffect(() => {
-  //   setInterval(() => {
-  //     setFeatured((featured + 1) % featuredUsers.length)
-  //   }, 5000)
-  // })
+
+  useEffect(() => {
+    setInterval(() => {
+      setFeatured((featured + 1) % featuredUsers.length)
+    }, 5000)
+  })
 
   return (
     <section className="flex flex-col-reverse items-center justify-between mx-auto lg:space-x-16 max-w-7xl md:gap-6 md:flex-row">
@@ -85,13 +86,13 @@ export function Connect() {
               </p>
             </header>
             <img
-              className="w-full object-fit rounded-t-xl sm:rounded-none"
+              className="w-full h-96 object-cover rounded-t-xl sm:rounded-none"
               alt={featuredUsers[featured].title}
               src={featuredUsers[featured].illustration}
             />
             <div className="flex items-center gap-4 px-6 py-4">
               <div>
-                <Avatar className="overflow-hidden">
+                <Avatar className="overflow-hidden w-10 h-10">
                   <AvatarImage
                     className="inline-block w-10 h-10 rounded-full"
                     src={featuredUsers[featured].avatar}
