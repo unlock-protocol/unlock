@@ -26,6 +26,13 @@ export interface FiatPricing {
   }
 }
 
+interface Quantity {
+  count: number
+  keyPrice: number
+  baseToken: string
+  fiatPricing: FiatPricing
+}
+
 export interface LockState extends Lock {
   fiatPricing: FiatPricing
 }
@@ -33,7 +40,7 @@ export interface LockState extends Lock {
 export interface CheckoutState {
   lock?: LockState
   signature?: string
-  quantity?: number
+  quantity?: Quantity
   current: CheckoutPage
   previous?: CheckoutPage
 }
@@ -65,12 +72,7 @@ export interface AddSignatureEvent {
 
 export interface AddQuantityEvent {
   type: 'ADD_QUANTITY'
-  payload: {
-    count: number
-    keyPrice: number
-    baseToken: string
-    fiatPricing: FiatPricing
-  }
+  payload: Quantity
 }
 
 export type CheckoutStateEvents =
@@ -113,6 +115,7 @@ const checkoutReducer: Reducer<CheckoutState, CheckoutStateEvents> = (
     case 'ADD_QUANTITY': {
       return {
         ...state,
+        quantity: action.payload,
       }
     }
     case 'ADD_SIGNATURE': {
