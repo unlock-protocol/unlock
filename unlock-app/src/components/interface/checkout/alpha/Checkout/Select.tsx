@@ -1,6 +1,10 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
-import { CheckoutState, CheckoutStateDispatch } from '../useCheckoutState'
+import {
+  CheckoutState,
+  CheckoutStateDispatch,
+  LockState,
+} from '../useCheckoutState'
 import { PaywallConfig } from '~/unlockTypes'
 import { networkToLocksMap } from '~/utils/paywallConfig'
 import { useConfig } from '~/utils/withConfig'
@@ -46,7 +50,7 @@ export function Select({ paywallConfig, dispatch, injectedProvider }: Props) {
                     dispatch({
                       type: 'SELECT_LOCK',
                       payload: {
-                        lock,
+                        lock: lock as LockState,
                       },
                     })
                     dispatch({

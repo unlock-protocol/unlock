@@ -27,25 +27,27 @@ export function Lock({
   const web3Service = useWeb3Service()
 
   const { isLoading, data: lock } = useQuery(address, async () => {
-    const [lockData, pricingData] = await Promise.all([
+    const [lockData, fiatPricing] = await Promise.all([
       web3Service.getLock(address, network),
       getFiatPricing(config, address, network),
     ])
-    const result = {
-      ...lockData,
-      ...pricingData,
-    }
-
     return {
-      ...result,
-      ...getLockProps(
-        result,
+      ...lockData,
+      network,
+      name,
+      address,
+      fiatPricing,
+    }
+  })
+
+  const formattedData = lock
+    ? getLockProps(
+        lock,
         network,
         config.networks[network].baseCurrencySymbol,
         name!
-      ),
-    }
-  })
+      )
+    : ({} as any)
 
   const Lock = twMerge(
     'border flex flex-col w-full border-gray-400 shadow p-4 rounded-lg',
@@ -56,7 +58,7 @@ export function Lock({
   return (
     <button
       type="button"
-      disabled={!!disabled || isLoading || lock.soldOut}
+      disabled={!!disabled || isLoading || formattedData?.isSoldOut}
       onClick={(event) => {
         event.stopPropagation()
         onSelect(lock)
@@ -67,15 +69,15 @@ export function Lock({
         <h3 className="font-bold text-xl"> {name}</h3>
         {!isLoading ? (
           <div className="grid">
-            {lock.creditCardEnabled ? (
+            {formattedData.cardEnabled ? (
               <>
-                <p>${lock.usd.keyPrice / 100} </p>
-                <p>{lock?.formattedKeyPrice} </p>
+                <p>${(lock.fiatPricing.usd.keyPrice / 100).toFixed(2)}</p>
+                <p>{formattedData?.formattedKeyPrice} </p>
               </>
             ) : (
               <>
-                <p>{lock?.formattedKeyPrice} </p>
-                <p>${lock.usd.keyPrice / 100} </p>
+                <p>{formattedData?.formattedKeyPrice} </p>
+                <p>${(lock.fiatPricing.usd.keyPrice / 100).toFixed(2)}</p>
               </>
             )}
           </div>
@@ -91,11 +93,11 @@ export function Lock({
           <ul className="flex items-center gap-2 text-sm">
             <li className="inline-flex items-center gap-2">
               <span className="text-gray-500"> Duration: </span>
-              <time> {lock.formattedDuration} </time>
+              <time> {formattedData.formattedDuration} </time>
             </li>
             <li className="inline-flex items-center gap-2">
               <span className="text-gray-500"> Quantity: </span>
-              <time> {lock.formattedKeysAvailable} </time>
+              <time> {formattedData.formattedKeysAvailable} </time>
             </li>
           </ul>
         ) : (

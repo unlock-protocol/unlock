@@ -4,6 +4,7 @@ import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useCheckout } from '../useCheckoutState'
 import { Shell } from '../Shell'
 import { Select } from './Select'
+import { Quantity } from './Quantity'
 
 interface Props {
   injectedProvider: unknown
@@ -28,6 +29,17 @@ export function Checkout({
       case 'SELECT': {
         return (
           <Select
+            injectedProvider={injectedProvider}
+            paywallConfig={paywallConfig}
+            dispatch={dispatch}
+            state={checkout.state}
+          />
+        )
+      }
+
+      case 'QUANTITY': {
+        return (
+          <Quantity
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
             dispatch={dispatch}

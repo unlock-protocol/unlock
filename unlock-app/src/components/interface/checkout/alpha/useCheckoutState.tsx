@@ -17,8 +17,21 @@ interface Options {
   paywallConfig: PaywallConfig
 }
 
+export interface FiatPricing {
+  creditCardEnabled: boolean
+  usd: {
+    keyPrice: number
+    unlockServiceFee: number
+    creditCardProcessing: number
+  }
+}
+
+export interface LockState extends Lock {
+  fiatPricing: FiatPricing
+}
+
 export interface CheckoutState {
-  lock?: Lock
+  lock?: LockState
   signature?: string
   quantity?: number
   current: CheckoutPage
@@ -39,7 +52,7 @@ export interface BackEvent {
 export interface SelectLockEvent {
   type: 'SELECT_LOCK'
   payload: {
-    lock: Lock
+    lock: LockState
   }
 }
 
@@ -54,13 +67,16 @@ export interface AddQuantityEvent {
   type: 'ADD_QUANTITY'
   payload: {
     count: number
+    keyPrice: number
+    baseToken: string
+    fiatPricing: FiatPricing
   }
 }
 
 export type CheckoutStateEvents =
   | SelectLockEvent
-  | AddQuantityEvent
   | AddSignatureEvent
+  | AddQuantityEvent
   | ContinueEvent
   | BackEvent
 
@@ -97,7 +113,6 @@ const checkoutReducer: Reducer<CheckoutState, CheckoutStateEvents> = (
     case 'ADD_QUANTITY': {
       return {
         ...state,
-        quantity: action.payload.count,
       }
     }
     case 'ADD_SIGNATURE': {
