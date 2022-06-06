@@ -1,22 +1,16 @@
 const { ethers } = require('hardhat')
-const { getProxyAddress } = require('../../helpers/deployments')
 const createLockHash = require('../helpers/createLockCalldata')
 const { ADDRESS_ZERO } = require('../helpers/constants')
+const deployContracts = require('../fixtures/deploy')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
 contract('Lock / setExpirationDuration', () => {
-  let unlock
   let lock
 
   beforeEach(async () => {
-    const chainId = 31337
-    const unlockAddress = getProxyAddress(chainId, 'Unlock')
-
-    // parse unlock
+    const { unlock } = await deployContracts()
     const [from] = await ethers.getSigners()
-    const Unlock = await ethers.getContractFactory('Unlock')
-    unlock = Unlock.attach(unlockAddress)
 
     // create a new lock
     const tokenAddress = ADDRESS_ZERO

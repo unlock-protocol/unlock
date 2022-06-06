@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const WalletService = require('../helpers/walletServiceMock.js')
 const createLockHash = require('../helpers/createLockCalldata')
 const { ADDRESS_ZERO } = require('../helpers/constants')
@@ -12,7 +12,7 @@ contract('Unlock / gas', (accounts) => {
   let createLockGas = new BigNumber(42)
 
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const args = [
       60 * 60 * 24 * 30, // expirationDuration: 30 days
       ADDRESS_ZERO,

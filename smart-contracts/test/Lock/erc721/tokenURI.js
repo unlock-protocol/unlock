@@ -2,7 +2,7 @@ const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 let unlock
 let lock
@@ -28,7 +28,7 @@ function stringShifter(str) {
 
 contract('Lock / erc721 / tokenURI', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
 
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST

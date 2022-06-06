@@ -3,7 +3,7 @@ const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
@@ -17,7 +17,7 @@ contract('Lock / transfer', (accounts) => {
   const [lockOwner, singleKeyOwner, multipleKeyOwner, destination] = accounts
 
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, lockOwner)
     lock = locks.OWNED
     await lock.setMaxKeysPerAddress(10)

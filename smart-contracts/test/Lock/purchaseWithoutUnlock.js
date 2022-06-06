@@ -1,7 +1,8 @@
 const { ethers, network } = require('hardhat')
 const { Manifest } = require('@openzeppelin/upgrades-core')
 const ProxyAdmin = require('@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json')
-const { getProxyAddress } = require('../../helpers/deployments')
+
+const deployContracts = require('../fixtures/deploy')
 const createLockHash = require('../helpers/createLockCalldata')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
@@ -43,18 +44,14 @@ contract('Lock / purchaseWithoutUnlock', () => {
       admin.address,
       unlockOwner
     )
+
+    const deployments = await deployContracts()
+    unlock = deployments.unlock
   })
 
   describe('purchase with a lock while Unlock is broken', () => {
     beforeEach(async () => {
-      const chainId = 31337
-      const unlockAddress = getProxyAddress(chainId, 'Unlock')
-
-      // parse unlock
       const [from] = await ethers.getSigners()
-      const Unlock = await ethers.getContractFactory('Unlock')
-      unlock = Unlock.attach(unlockAddress)
-
       // create a new lock
       const tokenAddress = ADDRESS_ZERO
       const args = [60 * 60 * 24 * 30, tokenAddress, keyPrice, 100, 'Test lock']

@@ -4,7 +4,7 @@ const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 const keyPrice = web3.utils.toWei('0.01', 'ether')
 const { ADDRESS_ZERO } = require('../helpers/constants')
@@ -14,7 +14,7 @@ let lock
 
 contract('Unlock / resetTrackedValue', (accounts) => {
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.purchase(

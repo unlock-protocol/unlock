@@ -5,8 +5,8 @@ const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades, network, run } = require('hardhat')
 const { tokens, protocols } = require('hardlydifficult-eth')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+const deployContracts = require('../fixtures/deploy')
 
-const { getProxyAddress } = require('../../helpers/deployments')
 const createLockHash = require('../helpers/createLockCalldata')
 
 const Locks = require('../fixtures/locks')
@@ -72,15 +72,15 @@ contract('UnlockDiscountToken upgrade', async () => {
       'contracts/past-versions/UnlockDiscountTokenV1.sol:UnlockDiscountToken'
     )
 
-    const [, minter] = await ethers.getSigners()
-    const udtSigned = await UnlockDiscountToken.connect(minter)
+    const [deployer] = await ethers.getSigners()
+    const udtSigned = await UnlockDiscountToken.connect(deployer)
 
-    udt = await upgrades
-      .deployProxy(udtSigned, [minter.address], {
-        kind: 'transparent',
-        initializer: 'initialize(address)',
-      })
-      .then((f) => f.deployed())
+    udt = await upgrades.deployProxy(udtSigned, [deployer.address], {
+      kind: 'transparent',
+      initializer: 'initialize(address)',
+    })
+
+    await udt.deployed()
   })
 
   after(async () => {
@@ -137,9 +137,9 @@ contract('UnlockDiscountToken upgrade', async () => {
   })
 
   describe('Minting tokens', () => {
-    let accounts
     let unlock
-    let minter
+    let deployer
+    let lockOwner
     let referrer
     let referrer2
     let keyBuyer
@@ -147,23 +147,17 @@ contract('UnlockDiscountToken upgrade', async () => {
     let rate
 
     before(async () => {
-      accounts = await ethers.getSigners()
-      minter = accounts[1]
-      keyBuyer = accounts[3]
-      referrer = accounts[5]
-      referrer2 = accounts[6]
+      ;[deployer, lockOwner, keyBuyer, referrer, referrer2] =
+        await ethers.getSigners()
 
-      const Unlock = await ethers.getContractFactory('Unlock')
-      const { chainId } = await ethers.provider.getNetwork()
-      const unlockAddress = getProxyAddress(chainId, 'Unlock')
-      unlock = Unlock.attach(unlockAddress)
+      const { unlock: unlockDeployed } = await deployContracts()
+      unlock = unlockDeployed
 
       // Grant Unlock minting permissions
       await udt.addMinter(unlock.address)
 
       // upgrade contract
       await upgradeContract(udt.address)
-      udt.connect(minter)
 
       // create lock
       const args = [
@@ -173,7 +167,7 @@ contract('UnlockDiscountToken upgrade', async () => {
         Locks.FIRST.maxNumberOfKeys.toFixed(),
         Locks.FIRST.lockName,
       ]
-      const calldata = await createLockHash({ args })
+      const calldata = await createLockHash({ args, from: lockOwner.address })
       const tx = await unlock.createUpgradeableLock(calldata)
 
       const { events } = await tx.wait()
@@ -182,30 +176,30 @@ contract('UnlockDiscountToken upgrade', async () => {
       lock = await PublicLock.attach(evt.args.newLockAddress)
 
       // Deploy the exchange
-      const weth = await tokens.weth.deploy(web3, minter.address)
+      const weth = await tokens.weth.deploy(web3, deployer.address)
       const uniswapRouter = await protocols.uniswapV2.deploy(
         web3,
-        minter.address,
+        deployer.address,
         ADDRESS_ZERO,
         weth.address
       )
 
       // Create UDT <-> WETH pool
-      await udt.mint(minter.address, web3.utils.toWei('1000000', 'ether'))
+      await udt.mint(deployer.address, web3.utils.toWei('1000000', 'ether'))
       await udt.approve(uniswapRouter.address, MAX_UINT)
       await uniswapRouter.addLiquidityETH(
         udt.address,
         web3.utils.toWei('1000000', 'ether'),
         '1',
         '1',
-        minter.address,
+        deployer.address,
         MAX_UINT,
-        { from: minter.address, value: web3.utils.toWei('40', 'ether') }
+        { from: deployer.address, value: web3.utils.toWei('40', 'ether') }
       )
 
       const uniswapOracle = await protocols.uniswapOracle.deploy(
         web3,
-        minter.address,
+        deployer.address,
         await uniswapRouter.factory()
       )
 
@@ -216,7 +210,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       await uniswapRouter.swapExactETHForTokens(
         1,
         [weth.address, udt.address],
-        minter.address,
+        deployer.address,
         MAX_UINT,
         { value: web3.utils.toWei('1', 'ether') }
       )
@@ -235,24 +229,25 @@ contract('UnlockDiscountToken upgrade', async () => {
       // Advance time so 1 full period has past and then update again so we have data point to read
       await time.increase(time.duration.hours(30))
       await uniswapOracle.update(weth.address, udt.address, {
-        from: minter.address,
+        from: deployer.address,
       })
 
       // Purchase a valid key for the referrers
-      await lock.connect(referrer)
-      await lock.purchase(
-        [],
-        [referrer.address, referrer2.address],
-        [ADDRESS_ZERO, ADDRESS_ZERO],
-        [ADDRESS_ZERO, ADDRESS_ZERO],
-        [[], []],
-        {
-          value: (await lock.keyPrice()).mul(2),
-        }
-      )
+      await lock
+        .connect(keyBuyer)
+        .purchase(
+          [],
+          [referrer.address, referrer2.address],
+          [ADDRESS_ZERO, ADDRESS_ZERO],
+          [ADDRESS_ZERO, ADDRESS_ZERO],
+          [[], []],
+          {
+            value: (await lock.keyPrice()).mul(2),
+          }
+        )
 
       // allow multiiple keys per owner
-      await lock.setMaxKeysPerAddress(10)
+      await lock.connect(lockOwner).setMaxKeysPerAddress(10)
 
       rate = await uniswapOracle.consult(
         udt.address,
@@ -272,14 +267,9 @@ contract('UnlockDiscountToken upgrade', async () => {
       assert.equal(actual.toString(), 0)
     })
 
-    it('owner starts with 0 UDT', async () => {
-      const owner = await unlock.owner()
-      const balance = await udt.balanceOf(owner)
-      assert(balance.eq(0), `balance not null ${balance.toString()}`)
-    })
-
     describe('mint by gas price', () => {
       let gasSpent
+      let balanceBefore
 
       before(async () => {
         // buy a key
@@ -297,6 +287,8 @@ contract('UnlockDiscountToken upgrade', async () => {
         // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
         const { baseFeePerGas } = await ethers.provider.getBlock(blockNumber)
         gasSpent = new BigNumber(baseFeePerGas.toString()).times(estimateGas)
+
+        balanceBefore = await udt.balanceOf(await unlock.owner())
       })
 
       it('referrer has some UDT now', async () => {
@@ -319,6 +311,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       it('amount minted for dev ~= gas spent * 20%', async () => {
         assert.equal(
           new BigNumber((await udt.balanceOf(await unlock.owner())).toString())
+            .minus(new BigNumber(balanceBefore.toString()))
             .shiftedBy(-18) // shift UDT balance
             .times(rate)
             .shiftedBy(-18) // shift the rate

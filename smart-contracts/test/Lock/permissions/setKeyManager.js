@@ -1,7 +1,7 @@
 const { reverts } = require('../../helpers/errors')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../../helpers/deployLocks')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -20,7 +20,7 @@ contract('Permissions / KeyManager', (accounts) => {
   let keyManagerBefore
 
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, lockCreator)
     lock = locks.FIRST
     const tx = await lock.purchase(

@@ -5,7 +5,7 @@ const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 const keyPrice = web3.utils.toWei('0.01', 'ether')
 
@@ -72,7 +72,7 @@ contract('Unlock / uniswapValue', (accounts) => {
   const [keyOwner, liquidityOwner, protocolOwner] = accounts
 
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
   })
 
   describe('A supported token', () => {

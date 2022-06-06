@@ -3,7 +3,7 @@ const lockTypes = ['FIRST', 'ERC20', 'FREE']
 
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../../helpers/deployLocks')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 const unlockContract = artifacts.require('Unlock.sol')
 
@@ -11,7 +11,7 @@ contract('Lock / lockBehaviors', (accounts) => {
   beforeEach(async () => {
     this.accounts = accounts
 
-    this.unlock = await getProxy(unlockContract)
+    this.unlock = await getContractInstance(unlockContract)
     this.testToken = await tokens.sai.deploy(web3, accounts[0])
     // Mint some tokens for testing
     for (let i = 0; i < accounts.length; i++) {

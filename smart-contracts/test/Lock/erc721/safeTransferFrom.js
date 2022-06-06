@@ -2,7 +2,7 @@ const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 const TestERC721Recevier = artifacts.require('TestERC721Recevier')
 
@@ -11,7 +11,7 @@ let lock
 
 contract('Lock / erc721 / safeTransferFrom', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.updateTransferFee(0) // disable the transfer fee for this test

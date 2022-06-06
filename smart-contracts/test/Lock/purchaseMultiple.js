@@ -1,7 +1,7 @@
 const { reverts } = require('../helpers/errors')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -28,7 +28,7 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
 
         tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
 
-        unlock = await getProxy(unlockContract)
+        unlock = await getContractInstance(unlockContract)
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
         lock = locks.FIRST
 

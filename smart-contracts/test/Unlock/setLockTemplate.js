@@ -2,7 +2,7 @@ const { reverts } = require('../helpers/errors')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const PublicLock = artifacts.require('PublicLock')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
@@ -11,7 +11,7 @@ let unlockOwner
 
 contract('Lock / setLockTemplate', (accounts) => {
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     lockTemplate = await PublicLock.new()
     unlockOwner = accounts[0]
   })

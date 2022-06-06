@@ -1,5 +1,5 @@
 const { constants } = require('hardlydifficult-ethereum-contracts')
-const { getProxyAddress } = require('../../../helpers/deployments.js')
+const deployContracts = require('../../fixtures/deploy')
 
 const shared = require('./shared')
 
@@ -14,8 +14,8 @@ contract('Unlock / UnlockProxy', (accounts) => {
     this.unlockOwner = unlockOwner
 
     // get proxy from hardhat deployment
-    const chainId = await web3.eth.net.getId()
-    this.proxyAddress = getProxyAddress(chainId, 'Unlock')
+    const { unlock } = await deployContracts()
+    this.proxyAddress = unlock.address
 
     // use with truffle
     this.unlock = await Unlock.at(this.proxyAddress)
