@@ -9,7 +9,8 @@ import { useState } from 'react'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
-import { Button } from '@unlock-protocol/ui'
+import { Button, Icon } from '@unlock-protocol/ui'
+import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 
 interface Props {
   injectedProvider: unknown
@@ -96,10 +97,12 @@ export function Quantity({
                   </li>
                 </ul>
                 <a
-                  href=""
-                  className="text-sm text-brand-ui-primary hover:opacity-75"
+                  href={config.networks[lock!.network].explorer.urls.address(
+                    lock!.address
+                  )}
+                  className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
                 >
-                  View Contract
+                  View Contract <Icon icon={ExternalLinkIcon} size="small" />
                 </a>
               </div>
             ) : (
