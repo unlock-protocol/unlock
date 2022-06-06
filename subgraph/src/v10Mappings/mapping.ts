@@ -1,7 +1,8 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable prefer-const */
-import { Address, Bytes, BigInt, store } from '@graphprotocol/graph-ts'
+import { Address, Bytes, BigInt, store, log } from '@graphprotocol/graph-ts'
+
 import {
   Lock,
   LockManager,
@@ -127,25 +128,33 @@ function existingKeyTransfer(event: Transfer): void {
 function genKey(event: Transfer, lockContract: PublicLock): void {
   let keyID = genKeyID(event.address, event.params.tokenId.toString())
 
+  log.info('genKey lock: {} token: {} to: {} version: {} ', [
+    event.address.toHexString(),
+    event.params.tokenId.toString(),
+    event.params.to.toHexString(),
+    lockContract.debugVersion(),
+  ])
   newlyMintedKey(event)
   let key = new Key(keyID)
   key.lock = event.address.toHex()
   key.keyId = event.params.tokenId
   key.owner = event.params.to.toHex()
-  key.expiration = lockContract.keyExpirationTimestampFor(event.params.tokenId)
-  key.tokenURI = lockContract.tokenURI(key.keyId)
-  key.createdAt = event.block.timestamp
 
-  let lock = Lock.load(key.lock)
-
-  if (lock.version > BigInt.fromI32(0)) {
-    let tokenURI = lockContract.try_tokenURI(key.keyId)
-
-    if (!tokenURI.reverted) {
-      key.tokenURI = lockContract.tokenURI(key.keyId)
-    }
+  // TEMPORARY DEBUG
+  if (
+    event.address.toHex() == '0x253ff450fa62e8c7916ce5ea08e312681c5c7485' ||
+    event.address.toHex() == '0x6e660a9bd048b3293a7e16e9ef48dddd98a8c7b1'
+  ) {
+    log.info('Using wrong expiration', [])
+    key.expiration = event.block.timestamp
+  } else {
+    key.expiration = lockContract.keyExpirationTimestampFor(
+      event.params.tokenId
+    )
   }
 
+  key.tokenURI = lockContract.tokenURI(key.keyId)
+  key.createdAt = event.block.timestamp
   key.save()
 }
 
@@ -199,6 +208,7 @@ function newKeyPurchase(
 export function transfer(event: Transfer): void {
   let lock = Lock.load(event.address.toHex()) as Lock
   let zeroAddress = '0x0000000000000000000000000000000000000000'
+
   let lockContract = PublicLock.bind(event.address)
 
   // When using === the strings are different.

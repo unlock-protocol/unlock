@@ -93,7 +93,6 @@ const networkMap = {
 function selectConfig() {
   const network = argv.network || 'mainnet'
   const environment = argv.environment || 'development'
-
   return networkMap[environment][network]
 }
 

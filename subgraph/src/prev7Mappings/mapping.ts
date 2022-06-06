@@ -64,7 +64,6 @@ function genKey(event: Transfer, lockContract: PublicLock): void {
   key.keyId = event.params._tokenId
   key.owner = event.params._to.toHex()
   key.expiration = lockContract.keyExpirationTimestampFor(event.params._to)
-  // key.tokenURI = lockContract.tokenURI(key.keyId);
   key.createdAt = event.block.timestamp
 
   let lock = Lock.load(key.lock)
