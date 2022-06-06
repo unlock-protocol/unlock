@@ -29,13 +29,11 @@ export class VerifierController {
 
   async #getVerifiersList(
     lockAddress: string,
-    lockManager: string,
     network: number
   ): Promise<Verifier[] | null> {
     return Verifier.findAll({
       where: {
         lockAddress,
-        lockManager,
         network,
       },
     })
@@ -62,15 +60,8 @@ export class VerifierController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const lockManager = Normalizer.ethereumAddress(
-        request.user!.walletAddress!
-      )
 
-      const list = await this.#getVerifiersList(
-        lockAddress,
-        lockManager,
-        network
-      )
+      const list = await this.#getVerifiersList(lockAddress, network)
 
       if (list) {
         return response.status(200).send({
@@ -157,11 +148,7 @@ export class VerifierController {
             network,
           },
         })
-        const list = await this.#getVerifiersList(
-          lockAddress,
-          loggedUserAddress,
-          network
-        )
+        const list = await this.#getVerifiersList(lockAddress, network)
         return response.status(200).send({
           results: list,
         })
