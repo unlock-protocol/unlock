@@ -1,5 +1,6 @@
 const { argv } = require('yargs')
 const { exec } = require('child_process')
+const networksConfig = require('@unlock-protocol/networks')
 
 const executeCommand = (command) => {
   exec(command, function (error, stdout, stderr) {
@@ -14,81 +15,32 @@ const executeCommand = (command) => {
 }
 
 const networkMap = {
-  development: {
-    mainnet: {
-      subgraph: 'unlock-protocol/unlock',
-      graphNode: 'http://graph-node:8020/',
-      ipfs: 'http://ipfs:5001',
-    },
-    kovan: {
-      subgraph: 'unlock-protocol/unlock-kovan',
-      graphNode: 'http://graph-node:8020/',
-      ipfs: 'http://ipfs:5001',
-    },
-    rinkeby: {
-      subgraph: 'unlock-protocol/unlock-rinkeby',
-      graphNode: 'http://graph-node:8020/',
-      ipfs: 'http://ipfs:5001',
-    },
-    ropsten: {
-      subgraph: 'unlock-protocol/unlock-ropsten',
-      graphNode: 'http://graph-node:8020/',
-      ipfs: 'http://ipfs:5001',
-    },
-    xdai: {
-      subgraph: 'unlock-protocol/xdai',
-      graphNode: 'http://graph-node:8020/',
-      ipfs: 'http://ipfs:5001',
-    },
-  },
-  production: {
-    kovan: {
-      subgraph: 'unlock-protocol/unlock-kovan',
-      graphNode: 'https://api.thegraph.com/deploy/',
-      ipfs: 'https://api.thegraph.com/ipfs/',
-    },
-    mainnet: {
-      subgraph: 'unlock-protocol/unlock',
-      graphNode: 'https://api.thegraph.com/deploy/',
-      ipfs: 'https://api.thegraph.com/ipfs/',
-    },
-    rinkeby: {
-      subgraph: 'unlock-protocol/unlock-rinkeby',
-      graphNode: 'https://api.thegraph.com/deploy/',
-      ipfs: 'https://api.thegraph.com/ipfs/',
-    },
-    ropsten: {
-      subgraph: 'unlock-protocol/unlock-ropsten',
-      graphNode: 'https://api.thegraph.com/deploy/',
-      ipfs: 'https://api.thegraph.com/ipfs/',
-    },
-    xdai: {
-      subgraph: 'unlock-protocol/xdai',
-      graphNode: 'https://api.thegraph.com/deploy/',
-      ipfs: 'https://api.thegraph.com/ipfs/',
-    },
-    matic: {
-      subgraph: 'unlock-protocol/polygon',
-      graphNode: 'https://api.thegraph.com/deploy/',
-      ipfs: 'https://api.thegraph.com/ipfs/',
-    },
-    demorinkeby: {
-      subgraph: 'unlock-protocol/demo-rinkeby',
-      graphNode: 'https://api.thegraph.com/deploy/',
-      ipfs: 'https://api.thegraph.com/ipfs/',
-    },
-    bsc: {
-      subgraph: 'unlock-protocol/bsc',
-      graphNode: 'https://api.thegraph.com/deploy/',
-      ipfs: 'https://api.thegraph.com/ipfs/',
-    },
-    optimism: {
-      subgraph: 'unlock-protocol/optimism',
-      graphNode: 'https://api.thegraph.com/deploy/',
-      ipfs: 'https://api.thegraph.com/ipfs/',
-    },
-  },
+  development: {},
+  production: {}
 }
+
+
+
+Object.keys(networksConfig).forEach((network) => {
+  if (['network', 'default'].indexOf(network) == -1) {
+    if (networksConfig[network].subgraphURI) {
+      const base = (networksConfig[network].subgraphURI).match(/https:\/\/api\.thegraph\.com\/subgraphs\/name\/(.*)/)
+      if (base) {
+        networkMap.development[network] = {
+          subgraph: base[1],
+          graphNode: 'http://graph-node:8020/',
+          ipfs: 'http://ipfs:5001',
+        }
+        networkMap.production[network] = {
+          subgraph: base[1],
+          graphNode: 'https://api.thegraph.com/deploy/',
+          ipfs: 'https://api.thegraph.com/ipfs/',
+        }
+
+      }
+    }
+  }
+})
 
 function selectConfig() {
   const network = argv.network || 'mainnet'

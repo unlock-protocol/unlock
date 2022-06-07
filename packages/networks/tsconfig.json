@@ -2,5 +2,8 @@
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
     "outDir": "dist"
-  }
+  },
+  "exclude" : [
+    "dist",
+]
 }
