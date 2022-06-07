@@ -26,7 +26,9 @@ export function Metadata({ dispatch, state, paywallConfig }: Props) {
   const { account, deAuthenticate } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const storage = useStorageService()
-
+  const metadataInputs =
+    paywallConfig.locks[state.lock!.address].metadataInputs ??
+    paywallConfig.metadataInputs
   const {
     register,
     control,
@@ -61,10 +63,6 @@ export function Metadata({ dispatch, state, paywallConfig }: Props) {
         .map((_, index) => remove(fields.length - index))
     }
   }, [state.quantity, account, fields, append, remove])
-
-  const metadataInputs =
-    paywallConfig.locks[state.lock!.address].metadataInputs ??
-    paywallConfig.metadataInputs
 
   async function onSubmit(data: FieldValues) {
     setIsLoading(true)
@@ -147,6 +145,9 @@ export function Metadata({ dispatch, state, paywallConfig }: Props) {
                   size="small"
                   placeholder={metadataInputItem.placeholder}
                   type={metadataInputItem.type}
+                  error={
+                    errors?.metadata?.[index]?.[metadataInputItem.name]?.message
+                  }
                   {...register(`metadata.${index}.${metadataInputItem.name}`, {
                     required:
                       metadataInputItem.required &&
