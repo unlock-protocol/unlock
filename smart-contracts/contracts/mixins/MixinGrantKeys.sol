@@ -40,6 +40,18 @@ contract MixinGrantKeys is
       ); 
     }
   }
+  
+  /**
+   * Allows the Lock owner to extend an existin keys with no charge.
+   */
+  function grantKeyExtension(uint _tokenId) external {
+    _lockIsUpToDate();
+    _isKey(_tokenId);
+    if(!isKeyGranter(msg.sender) && !isLockManager(msg.sender)) {
+      revert ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
+    }
+    _extendKey(_tokenId);
+  }
 
   uint256[1000] private __safe_upgrade_gap;
 }
