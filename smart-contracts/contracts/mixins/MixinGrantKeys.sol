@@ -43,6 +43,7 @@ contract MixinGrantKeys is
   
   /**
    * Allows the Lock owner to extend an existin keys with no charge.
+   * @param _tokenId The id of the token to extend
    */
   function grantKeyExtension(uint _tokenId) external {
     _lockIsUpToDate();
