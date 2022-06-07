@@ -6,14 +6,14 @@ const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 let unlock
 let locks
 
 contract('Lock / purchaseFor', (accounts) => {
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     await locks.FIRST.setMaxKeysPerAddress(10)
   })

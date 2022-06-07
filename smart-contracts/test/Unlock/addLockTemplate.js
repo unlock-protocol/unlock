@@ -15,7 +15,9 @@ contract('PublicLock template versions', () => {
     })
     await unlock.deployed()
 
-    const PublicLock = await ethers.getContractFactory('PublicLock')
+    const PublicLock = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
     publicLock = await PublicLock.deploy()
     await publicLock.deployed()
 

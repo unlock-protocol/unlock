@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 const PublicLock = artifacts.require('PublicLock')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const createLockHash = require('../helpers/createLockCalldata')
 
 const unlockContract = artifacts.require('Unlock')
@@ -10,7 +10,7 @@ let unlock
 
 contract('Lock / createLockWithInfiniteKeys', () => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
   })
 
   describe('Create a Lock with infinite keys', () => {

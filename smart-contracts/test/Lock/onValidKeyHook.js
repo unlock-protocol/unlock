@@ -4,7 +4,7 @@ const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 let lock
 let locks
@@ -17,7 +17,7 @@ contract('Lock / onValidKeyHook', (accounts) => {
   const to = accounts[2]
 
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     const keyPrice = await lock.keyPrice()

@@ -1,12 +1,11 @@
 import { PaywallConfig } from '../unlockTypes'
 import { isValidPaywallConfig } from './checkoutValidators'
-/* eslint-disable no-console */
 
-export default function getConfigFromSearch(
-  search: any
+export function getPaywallConfigFromQuery(
+  query: Record<string, any>
 ): PaywallConfig | undefined {
-  if (typeof search.paywallConfig === 'string') {
-    const rawConfig = search.paywallConfig
+  if (typeof query.paywallConfig === 'string') {
+    const rawConfig = query.paywallConfig
     const decodedConfig = decodeURIComponent(rawConfig)
 
     let parsedConfig: any
@@ -30,11 +29,12 @@ export default function getConfigFromSearch(
     )
     return undefined
   }
-  if (typeof search.network === 'string' && typeof search.lock === 'string') {
+  if (typeof query.lock === 'string') {
     return {
-      network: search.network,
+      title: query.title,
+      network: Number(query.network),
       locks: {
-        [search.lock]: {},
+        [query.lock]: {},
       },
     }
   }

@@ -8338,10 +8338,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable@npm:4.4.2":
-  version: 4.4.2
-  resolution: "@openzeppelin/contracts-upgradeable@npm:4.4.2"
-  checksum: 016cf7b22381a1e482206bf3f9a9ee29f7a317bafefff5aab56c7184b7fc22100b54ec02aa0c3d0f24526e277d7a9a0b858d2912d702b3279bc08a6f5707db55
+"@openzeppelin/contracts-upgradeable@npm:4.6.0":
+  version: 4.6.0
+  resolution: "@openzeppelin/contracts-upgradeable@npm:4.6.0"
+  checksum: f9802c9cccf31bd475412ba5d862ed15eed5352302c30b29c38f84aed2dcfe0d957687935a72068f3d44292a4a55b0ff26cd018b2e14a47f16f74f087009aa29
   languageName: node
   linkType: hard
 
@@ -8359,17 +8359,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:4.4.2":
-  version: 4.4.2
-  resolution: "@openzeppelin/contracts@npm:4.4.2"
-  checksum: 5c6be7bfe757c6a43eb5b24aa9c61a79deaed9de4bc5f59356b35f5519b0fb340f4da8b4df99588bded5e6b6a773fc54961917a1c657063247c1763f9752bd0e
-  languageName: node
-  linkType: hard
-
 "@openzeppelin/contracts@npm:4.5.0":
   version: 4.5.0
   resolution: "@openzeppelin/contracts@npm:4.5.0"
   checksum: 1c9c5dff041905771d2a83ac29c64dbf0b48603de43f74a34fb1358813d7c7bf259efe2f64e2112b410c5cca7a0b41aaedd882368be5f01a6d50a3ee0740f962
+  languageName: node
+  linkType: hard
+
+"@openzeppelin/contracts@npm:4.6.0":
+  version: 4.6.0
+  resolution: "@openzeppelin/contracts@npm:4.6.0"
+  checksum: 1de06211b279d7aef2bb9abbdd58eb80c71256f7e888a10855ea23bb06ef8723b22fb550d06af60247dfbd7f0f23de9821732012d7541a823339070a8442d1db
   languageName: node
   linkType: hard
 
@@ -15226,8 +15226,8 @@ __metadata:
     "@nomiclabs/hardhat-truffle5": 2.0.6
     "@nomiclabs/hardhat-waffle": 2.0.3
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 4.4.2
-    "@openzeppelin/contracts-upgradeable": 4.4.2
+    "@openzeppelin/contracts": 4.6.0
+    "@openzeppelin/contracts-upgradeable": 4.6.0
     "@openzeppelin/hardhat-upgrades": 1.16.1
     "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades-core": 1.12.0
@@ -15235,7 +15235,7 @@ __metadata:
     "@uniswap/v2-periphery": 1.1.0-beta.0
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
-    "@unlock-protocol/networks": "workspace:^"
+    "@unlock-protocol/networks": "workspace:./packages/networks"
     babel-eslint: 10.1.0
     babel-polyfill: 6.26.0
     babel-register: 6.26.0

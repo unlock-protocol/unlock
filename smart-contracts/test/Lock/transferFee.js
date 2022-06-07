@@ -5,7 +5,7 @@ const { time } = require('@openzeppelin/test-helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
@@ -19,7 +19,7 @@ contract('Lock / transferFee', (accounts) => {
   let tokenId
 
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     // TODO test using an ERC20 priced lock as well
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST

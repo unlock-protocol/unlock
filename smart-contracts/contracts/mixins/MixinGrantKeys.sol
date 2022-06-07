@@ -25,24 +25,24 @@ contract MixinGrantKeys is
     address[] calldata _recipients,
     uint[] calldata _expirationTimestamps,
     address[] calldata _keyManagers
-  ) external {
+  ) external 
+    returns (uint[] memory)
+  {
     _lockIsUpToDate();
     if(!isKeyGranter(msg.sender) && !isLockManager(msg.sender)) {
       revert ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
     }
 
+    uint[] memory tokenIds = new uint[](_recipients.length);
     for(uint i = 0; i < _recipients.length; i++) {
-      if(_recipients[i] == address(0)) { 
-        revert INVALID_ADDRESS();
-      }
-
       // an event is triggered
-      _createNewKey(
+      tokenIds[i] = _createNewKey(
         _recipients[i],
         _keyManagers[i],  
         _expirationTimestamps[i]
       ); 
     }
+    return tokenIds;
   }
 
   uint256[1000] private __safe_upgrade_gap;

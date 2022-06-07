@@ -2,7 +2,7 @@ const { reverts } = require('../../helpers/errors')
 const BigNumber = require('bignumber.js')
 const { ethers } = require('hardhat')
 const deployLocks = require('../../helpers/deployLocks')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -31,7 +31,7 @@ contract('Permissions / KeyManager', (accounts) => {
     validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
 
     // purchase keys
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, lockCreator)
     lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
@@ -116,7 +116,7 @@ contract('Permissions / KeyManager', (accounts) => {
   describe('Key Transfers', () => {
     let tokenId
     before(async () => {
-      unlock = await getProxy(unlockContract)
+      unlock = await getContractInstance(unlockContract)
       locks = await deployLocks(unlock, lockCreator)
       lock = locks.FIRST
       const tx = await lock.purchase(
