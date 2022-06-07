@@ -63,6 +63,7 @@ if (process.env.ETHERSCAN_API_KEY) {
 }
 if (process.env.POLYGONSCAN_API_KEY) {
   etherscan.apiKey.polygon = process.env.POLYGONSCAN_API_KEY
+  etherscan.apiKey.polygonMumbai = process.env.POLYGONSCAN_API_KEY
 }
 if (process.env.BSCSCAN_API_KEY) {
   etherscan.apiKey.bsc = process.env.BSCSCAN_API_KEY

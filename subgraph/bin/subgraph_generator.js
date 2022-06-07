@@ -12,6 +12,7 @@ const templateValues = (networkName) => {
     process.exit(1)
   }
   const network = networksConfig[networkName]
+
   return {
     network: networkName,
     startBlock: network.startBlock || 0,

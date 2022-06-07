@@ -11,6 +11,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
     'publicLockAddress',
     'the address of an existing public Lock contract'
   )
+  .addOptionalParam('publicLockVersion', 'the version of public Lock to deploy')
   .addOptionalParam('wethAddress', 'the address of the WETH token contract')
   .addOptionalParam(
     'uniswapFactoryAddress',
@@ -41,6 +42,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
       {
         unlockAddress,
         unlockVersion,
+        publicLockVersion,
         udtAddress,
         publicLockAddress,
         wethAddress,
@@ -68,6 +70,7 @@ task('deploy', 'Deploy the entire Unlock protocol')
       await mainDeployer({
         unlockAddress,
         unlockVersion,
+        publicLockVersion,
         udtAddress,
         publicLockAddress,
         wethAddress,
@@ -122,11 +125,13 @@ task('deploy:oracle', 'Deploy UDT <> WETH oracle contract')
     return await oracleDeployer({ uniswapFactoryAddress })
   })
 
-task('deploy:template', 'Deploy PublicLock contract').setAction(async () => {
-  // eslint-disable-next-line global-require
-  const templateDeployer = require('../scripts/deployments/template')
-  return await templateDeployer()
-})
+task('deploy:template', 'Deploy PublicLock contract')
+  .addOptionalParam('publicLockVersion', 'the version of unlock to deploy')
+  .setAction(async ({ publicLockVersion }) => {
+    // eslint-disable-next-line global-require
+    const templateDeployer = require('../scripts/deployments/template')
+    return await templateDeployer({ publicLockVersion })
+  })
 
 task('deploy:serializer', 'Deploy LockSerializer').setAction(async () => {
   // eslint-disable-next-line global-require

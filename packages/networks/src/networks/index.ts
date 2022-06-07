@@ -5,4 +5,5 @@ export * from './xdai';
 export * from './polygon';
 export * from './bsc';
 export * from './optimism';
+export * from './mumbai';
 
