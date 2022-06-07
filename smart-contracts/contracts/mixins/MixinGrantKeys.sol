@@ -33,7 +33,7 @@ contract MixinGrantKeys is
       revert ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
     }
 
-    uint[] memory tokenIds;
+    uint[] memory tokenIds = new uint[](_recipients.length);
     for(uint i = 0; i < _recipients.length; i++) {
       // an event is triggered
       tokenIds[i] = _createNewKey(

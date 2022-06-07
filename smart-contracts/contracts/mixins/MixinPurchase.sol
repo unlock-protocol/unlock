@@ -108,7 +108,7 @@ contract MixinPurchase is
 
     uint totalPriceToPay;
     uint tokenId;
-    uint[] memory tokenIds;
+    uint[] memory tokenIds = new uint[](_recipients.length);
 
     for (uint256 i = 0; i < _recipients.length; i++) {
       // check recipient address
