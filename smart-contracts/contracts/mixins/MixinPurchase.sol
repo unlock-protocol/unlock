@@ -95,7 +95,7 @@ contract MixinPurchase is
     returns (uint[] memory)
   {
     _lockIsUpToDate();
-    if(_totalSupply >= maxNumberOfKeys) {
+    if(_totalSupply +  _recipients.length > maxNumberOfKeys) {
       revert LOCK_SOLD_OUT();
     }
     if(
