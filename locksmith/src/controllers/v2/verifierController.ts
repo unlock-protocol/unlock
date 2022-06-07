@@ -172,7 +172,7 @@ export class VerifierController {
 
       if (!verifierMatchesLoggedUser) {
         return response.status(401).send({
-          message: `User not authozired`,
+          message: `User not authorized`,
         })
       }
 
