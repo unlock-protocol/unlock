@@ -189,6 +189,12 @@ interface IPublicLock
   ) external;
 
   /**
+   * Allows the Lock owner to extend an existin keys with no charge.
+   * @param _tokenId The id of the token to extend
+   */
+  function grantKeyExtension(uint _tokenId) external;
+
+  /**
   * @dev Purchase function
   * @param _values array of tokens amount to pay for this purchase >= the current keyPrice - any applicable discount
   * (_values is ignored when using ETH)
