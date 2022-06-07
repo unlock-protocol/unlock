@@ -5,6 +5,7 @@ import { useCheckout } from '../useCheckoutState'
 import { Shell } from '../Shell'
 import { Select } from './Select'
 import { Quantity } from './Quantity'
+import { Metadata } from './Metadata'
 
 interface Props {
   injectedProvider: unknown
@@ -40,6 +41,17 @@ export function Checkout({
       case 'QUANTITY': {
         return (
           <Quantity
+            injectedProvider={injectedProvider}
+            paywallConfig={paywallConfig}
+            dispatch={dispatch}
+            state={checkout.state}
+          />
+        )
+      }
+
+      case 'METADATA': {
+        return (
+          <Metadata
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
             dispatch={dispatch}

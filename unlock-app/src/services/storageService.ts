@@ -677,4 +677,27 @@ export class StorageService extends EventEmitter {
       return false
     }
   }
+
+  async submitMetadata(
+    users: {
+      userAddress: string
+      metadata: {
+        public?: Record<string, string>
+        protected?: Record<string, string>
+      }
+      lockAddress: string
+    }[],
+    network: number
+  ) {
+    const url = `${this.host}/v2/api/metadata/${network}/users`
+    const opts = {
+      method: 'POST',
+      body: JSON.stringify({ users }),
+      headers: {
+        'content-type': 'application/json',
+      },
+    }
+    const response = await fetch(url, opts)
+    return response.json()
+  }
 }
