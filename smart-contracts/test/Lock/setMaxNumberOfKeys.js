@@ -92,7 +92,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
 
     it('should prevent from setting a value lower than total supply', async () => {
       // buy 10 keys
-      const [, ...buyers] = await ethers.getSigners()
+      const signers = await ethers.getSigners()
+      const buyers = signers.slice(0, 9)
       const tx = await lock.connect(buyers[0]).purchase(
         [],
         buyers.map((b) => b.address),
