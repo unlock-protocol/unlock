@@ -92,6 +92,7 @@ contract MixinPurchase is
     address[] memory _keyManagers,
     bytes[] calldata _data
   ) external payable
+    returns (uint[] memory)
   {
     _lockIsUpToDate();
     if(_totalSupply >= maxNumberOfKeys) {
@@ -107,6 +108,7 @@ contract MixinPurchase is
 
     uint totalPriceToPay;
     uint tokenId;
+    uint[] memory tokenIds = new uint[](_recipients.length);
 
     for (uint256 i = 0; i < _recipients.length; i++) {
       // check recipient address
@@ -136,6 +138,9 @@ contract MixinPurchase is
       _originalPrices[tokenId] = inMemoryKeyPrice;
       _originalDurations[tokenId] = expirationDuration;
       _originalTokens[tokenId] = tokenAddress;
+
+      // store tokenIds 
+      tokenIds[i] = tokenId;
       
       if(tokenAddress != address(0) && _values[i] < inMemoryKeyPrice) {
         revert INSUFFICIENT_ERC20_VALUE();
@@ -168,6 +173,8 @@ contract MixinPurchase is
 
     // refund gas
     _refundGas();
+
+    return tokenIds;
   }
 
   /**
