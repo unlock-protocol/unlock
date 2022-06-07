@@ -54,7 +54,9 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
         chainId: network!,
       })
       setLogged(true)
-      getVerifierList()
+      setLoading(true)
+      await getVerifierList()
+      setLoading(false)
     } catch (err) {
       setLogged(false)
     }
@@ -81,6 +83,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
           .then((verifiers: any) => {
             ToastHelper.success('Verifier deleted from list')
             setVerifiers(verifiers?.results)
+            setLoading(false)
           })
         setDefaults()
       } else {
@@ -105,7 +108,15 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
     setShowDeleteVerifierModal(true)
   }
 
-  if (!logged) {
+  if (loading) {
+    return (
+      <div className="flex w-full justify-center">
+        <Loading />
+      </div>
+    )
+  }
+
+  if (!logged && !loading) {
     return (
       <>
         <span>Sign message in your wallet to show verifiers list.</span>

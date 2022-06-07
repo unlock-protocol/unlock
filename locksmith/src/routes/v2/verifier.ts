@@ -1,16 +1,11 @@
 import express from 'express'
-import networks from '@unlock-protocol/networks'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import { VerifierController } from '../../controllers/v2/verifierController'
 import { lockManagerMiddleware } from '../../utils/lockManager'
 import { authenticatedMiddleware } from '../../utils/auth'
 
 const router = express.Router({ mergeParams: true })
-const web3Service = new Web3Service(networks)
 
-const verifierController = new VerifierController({
-  web3Service,
-})
+const verifierController = new VerifierController()
 
 router.all('/', authenticatedMiddleware, lockManagerMiddleware)
 
