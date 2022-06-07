@@ -94,7 +94,7 @@ contract MixinPurchase is
   ) external payable
   {
     _lockIsUpToDate();
-    if(_totalSupply >= maxNumberOfKeys) {
+    if(_totalSupply +  _recipients.length >= maxNumberOfKeys) {
       revert LOCK_SOLD_OUT();
     }
     if(
