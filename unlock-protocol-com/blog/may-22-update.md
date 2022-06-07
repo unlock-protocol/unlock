@@ -9,33 +9,42 @@ image: /images/blog/may-22-update/may-22-banner.png
 
 ![may-22-banner.png](/images/blog/may-22-update/may-22-banner.png)
 
-## Dashboard improvements
+## Checkout and Dashboard improvements 
 
-- **Airdrops to multiple wallets** — Lock managers can now airdrop keys to multiple wallets at one time (huge time saver!)
-- **Lock managers can expire memberships** — Lock managers can expire (cancel) memberships right from the dashboard
-
-## Keychain improvements
-
-- **Members can expire memberships** — Similar to the above, members can expire (cancel) memberships right from their keychain
-
-
-## Checkout improvements
-
-- **Customize recipient** — Purchasers can customize the recipient of the purchase (e.g. when purchasing as a gift)
-- **Multiple recipients** — Purchasers can purchase multiple keys at once
-- **CAPTCHA improvements** — Improved CAPTCHA for bot deterrence (especially useful for NFT ticket sales)
-- **Extending expired membership (v10)** — Expired memberships can be reactivated from checkout
-
+- ** ** — aver!)
+- ** ** — oard
 
 ## Credit card handling improvements
 
-- **Improved page handling** — Improved handling of page refresh to reduce the chance of transactions being submitted multiple times
-- **Improved transaction sequencing** — Credit card purchases are now executed only after the blockchain transaction is successful
+- ** ** — mes
+- ** ** — ful
 
 
-## Website improvements
+## Other improvements
 
-- **Community tab** — Based on website visitor feedback, added a new "Community" tab to the Unlock website
+- ** ** — bsite
+
+
+Updates May:
+
+* Recurring memberships!
+
+* ERC20 and ERC1155 hooks
+
+
+* Refactored credit card handling to _only_ collect charges on successfully submitted transactions
+* Reactored credit card handling on front-end to re-use payment intent object (reduce risk of duplicate charge if user tries to purchase again/refresh page)
+* * Improved gas calculation for credit card purchases
+
+
+* Fixed incognito mode for Paywall and Dashboard applications
+* Support for multiple recipients in checkout UI
+* Support for captcha in checkout
+* Fixed transparent background on paywall checkout modal
+
+
+* Updated Subgraph to handle upgraded locks (between v10 and v11)
+
 
 
 Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!
