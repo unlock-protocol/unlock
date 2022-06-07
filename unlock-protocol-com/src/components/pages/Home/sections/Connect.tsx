@@ -34,9 +34,12 @@ export function Connect() {
   const [featured, setFeatured] = useState(1)
 
   useEffect(() => {
-    setInterval(() => {
+    const interval = setInterval(() => {
       setFeatured((featured + 1) % featuredUsers.length)
     }, 5000)
+    return () => {
+      clearInterval(interval)
+    }
   })
 
   return (
