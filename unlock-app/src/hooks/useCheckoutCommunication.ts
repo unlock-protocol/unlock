@@ -107,12 +107,14 @@ export const useCheckoutCommunication = () => {
   const [config, setConfig] = useState<PaywallConfig | undefined>(undefined)
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
+      console.log('Got config from paywall app', config)
       setConfig(config)
     },
     resolveMethodCall,
     resolveOnEvent,
     resolveOnEnable,
   })
+  console.log('using config', config)
 
   let insideIframe = false
 
