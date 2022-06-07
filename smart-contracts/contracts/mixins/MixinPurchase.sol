@@ -216,7 +216,7 @@ contract MixinPurchase is
     }
 
     // store the new price
-    _originalPrices[tokenId] = inMemoryKeyPrice;
+    _originalPrices[_tokenId] = inMemoryKeyPrice;
 
     // refund gas (if applicable)
     _refundGas();
