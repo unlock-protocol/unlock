@@ -23,16 +23,18 @@ export function Quantity({
   state: { lock },
   dispatch,
   injectedProvider,
+  paywallConfig,
 }: Props) {
   const { account, deAuthenticate, network, changeNetwork } = useAuth()
   const { authenticateWithProvider } = useAuthenticateHandler({
     injectedProvider,
   })
   const config = useConfig()
-  const [quantity, setQuantity] = useState(1)
+  const [quantityInput, setQuantityInput] = useState('1')
+  const quantity = Number(quantityInput)
 
   const { isLoading, data: fiatPricing } = useQuery(
-    [quantity, lock!.address, lock!.network],
+    [quantityInput, lock!.address, lock!.network],
     async () => {
       const pricing = await getFiatPricing(
         config,
@@ -116,9 +118,11 @@ export function Quantity({
               <input
                 onChange={(event) => {
                   event.stopPropagation()
-                  setQuantity(Number(event.target.value))
+                  const count = event.target.value.replace(/\D/, '')
+                  setQuantityInput(count)
                 }}
-                value={quantity}
+                pattern="[0-9]{0,2}"
+                value={quantityInput}
                 type="text"
                 className="rounded border p-2 w-16"
               ></input>
@@ -138,6 +142,7 @@ export function Quantity({
               </Button>
             ) : (
               <Button
+                disabled={quantity < 1}
                 onClick={() => {
                   dispatch({
                     type: 'ADD_QUANTITY',
@@ -148,15 +153,29 @@ export function Quantity({
                       fiatPricing,
                     },
                   })
-                  dispatch({
-                    type: 'CONTINUE',
-                    payload: {
-                      continue: 'METADATA',
-                    },
-                  })
+
+                  if (
+                    paywallConfig.metadataInputs ||
+                    paywallConfig.locks[lock!.address].metadataInputs ||
+                    quantity > 1
+                  ) {
+                    dispatch({
+                      type: 'CONTINUE',
+                      payload: {
+                        continue: 'METADATA',
+                      },
+                    })
+                  } else {
+                    dispatch({
+                      type: 'CONTINUE',
+                      payload: {
+                        continue: 'CONFIRM',
+                      },
+                    })
+                  }
                 }}
               >
-                Continue
+                {quantity > 0 ? 'Continue' : 'Add at least 1 membership'}
               </Button>
             )}
           </div>
