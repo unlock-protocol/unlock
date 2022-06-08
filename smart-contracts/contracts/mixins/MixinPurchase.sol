@@ -215,8 +215,16 @@ contract MixinPurchase is
       revert INSUFFICIENT_VALUE();
     }
 
-    // store the new price
-    _originalPrices[_tokenId] = inMemoryKeyPrice;
+    // if params have changed, then update them
+    if(_originalPrices[_tokenId] != inMemoryKeyPrice) {
+      _originalPrices[_tokenId] = inMemoryKeyPrice;
+    }
+    if(_originalDurations[_tokenId] != expirationDuration) {
+      _originalDurations[_tokenId] = expirationDuration;
+    }
+    if(_originalTokens[_tokenId] != tokenAddress) {
+      _originalTokens[_tokenId] = tokenAddress;
+    }
 
     // refund gas (if applicable)
     _refundGas();
