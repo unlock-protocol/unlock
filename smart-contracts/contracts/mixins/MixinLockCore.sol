@@ -80,17 +80,20 @@ contract MixinLockCore is
   // The denominator component for values specified in basis points.
   uint internal constant BASIS_POINTS_DEN = 10000;
 
+  // lock hooks
   ILockKeyPurchaseHook public onKeyPurchaseHook;
   ILockKeyCancelHook public onKeyCancelHook;
   ILockValidKeyHook public onValidKeyHook;
   ILockTokenURIHook public onTokenURIHook;
-  ILockKeyTransferHook public onKeyTransferHook;
 
-  // use to check data version
+  // use to check data version (added to v10)
   uint public schemaVersion;
 
-  // keep track of how many key a single address can use
+  // keep track of how many key a single address can use (added to v10)
   uint internal _maxKeysPerAddress;
+
+  // one more hook (added to v11)
+  ILockKeyTransferHook public onKeyTransferHook;
 
   // modifier to check if data has been upgraded
   function _lockIsUpToDate() internal view {
@@ -259,5 +262,6 @@ contract MixinLockCore is
 
 
   // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
-  uint256[998] private __safe_upgrade_gap;
+  // decreased from 998 to 997 when adding `onKeyTransferHook` in v11
+  uint256[997] private __safe_upgrade_gap;
 }
