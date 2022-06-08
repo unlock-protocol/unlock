@@ -12,6 +12,7 @@ import '../interfaces/hooks/ILockKeyCancelHook.sol';
 import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
 import '../interfaces/hooks/ILockValidKeyHook.sol';
 import '../interfaces/hooks/ILockTokenURIHook.sol';
+import '../interfaces/hooks/ILockKeyTransferHook.sol';
 
 /**
  * @title Mixin for core lock data and functions.
@@ -83,6 +84,7 @@ contract MixinLockCore is
   ILockKeyCancelHook public onKeyCancelHook;
   ILockValidKeyHook public onValidKeyHook;
   ILockTokenURIHook public onTokenURIHook;
+  ILockKeyTransferHook public onKeyTransferHook;
 
   // use to check data version
   uint public schemaVersion;
@@ -216,7 +218,8 @@ contract MixinLockCore is
     address _onKeyPurchaseHook,
     address _onKeyCancelHook,
     address _onValidKeyHook,
-    address _onTokenURIHook
+    address _onTokenURIHook,
+    address _onKeyTransferHook
   ) external
   {
     _onlyLockManager();
@@ -225,11 +228,13 @@ contract MixinLockCore is
     if(_onKeyCancelHook != address(0) && !_onKeyCancelHook.isContract()) { revert INVALID_HOOK(1); }
     if(_onValidKeyHook != address(0) && !_onValidKeyHook.isContract()) { revert INVALID_HOOK(2); }
     if(_onTokenURIHook != address(0) && !_onTokenURIHook.isContract()) { revert INVALID_HOOK(3); }
+    if(_onKeyTransferHook != address(0) && !_onKeyTransferHook.isContract()) { revert INVALID_HOOK(4); }
     
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
     onTokenURIHook = ILockTokenURIHook(_onTokenURIHook);
     onValidKeyHook = ILockValidKeyHook(_onValidKeyHook);
+    onKeyTransferHook = ILockKeyTransferHook(_onKeyTransferHook);
   }
 
   function totalSupply()
