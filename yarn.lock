@@ -15479,7 +15479,7 @@ __metadata:
     react-icons: 4.4.0
     react-jazzicon: 1.0.3
     react-jwt: ^1.1.6
-    react-test-renderer: 18.1.0
+    react-test-renderer: 17.0.2
     react-use-clipboard: 1.0.8
     siwe: 1.1.6
     storybook-addon-next-router: 4.0.0
@@ -15619,7 +15619,7 @@ __metadata:
     react-gtm-module: 2.0.11
     react-icons: 4.4.0
     react-showdown: 2.3.1
-    react-test-renderer: 18.1.0
+    react-test-renderer: 17.0.2
     remark: 14.0.2
     remark-html: 15.0.1
     rss: 1.2.2
@@ -43584,7 +43584,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0, react-is@npm:^18.1.0":
+"react-is@npm:^16.12.0 || ^17.0.0 || ^18.0.0":
   version: 18.1.0
   resolution: "react-is@npm:18.1.0"
   checksum: d206a0fe6790851bff168727bfb896de02c5591695afb0c441163e8630136a3e13ee1a7ddd59fdccddcc93968b4721ae112c10f790b194b03b35a3dc13a355ef
@@ -43794,7 +43794,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-shallow-renderer@npm:^16.13.1, react-shallow-renderer@npm:^16.15.0":
+"react-shallow-renderer@npm:^16.13.1":
   version: 16.15.0
   resolution: "react-shallow-renderer@npm:16.15.0"
   dependencies:
@@ -43857,19 +43857,6 @@ fsevents@~2.1.1:
   peerDependencies:
     react: 17.0.2
   checksum: e6b5c6ed2a0bde2c34f1ab9523ff9bc4c141a271daf730d6b852374e83acc0155d58ab71a318251e953ebfa65b8bebb9c5dce3eba1ccfcbef7cc4e1e8261c401
-  languageName: node
-  linkType: hard
-
-"react-test-renderer@npm:18.1.0":
-  version: 18.1.0
-  resolution: "react-test-renderer@npm:18.1.0"
-  dependencies:
-    react-is: ^18.1.0
-    react-shallow-renderer: ^16.15.0
-    scheduler: ^0.22.0
-  peerDependencies:
-    react: ^18.1.0
-  checksum: 401a0020ff39ebdb37e015197ab11ceb13ddb7004716b7fb6304b169f20d6b0c4d0e14aaa0da139ce2b1eb14088cf370b5771b30fee52f16d6b682b5332c5781
   languageName: node
   linkType: hard
 
