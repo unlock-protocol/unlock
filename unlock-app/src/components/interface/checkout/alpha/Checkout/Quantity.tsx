@@ -23,7 +23,6 @@ export function Quantity({
   state: { lock },
   dispatch,
   injectedProvider,
-  paywallConfig,
 }: Props) {
   const { account, deAuthenticate, network, changeNetwork } = useAuth()
   const { authenticateWithProvider } = useAuthenticateHandler({
@@ -133,7 +132,6 @@ export function Quantity({
       <Shell.Footer>
         {account ? (
           <div className="grid space-y-2">
-            <LoggedIn account={account} onDisconnect={() => deAuthenticate()} />
             {lock!.network !== network ? (
               <Button
                 onClick={() => changeNetwork(config.networks[lock!.network])}
@@ -142,7 +140,7 @@ export function Quantity({
               </Button>
             ) : (
               <Button
-                disabled={quantity < 1}
+                disabled={quantity < 1 || isLoading}
                 onClick={() => {
                   dispatch({
                     type: 'ADD_QUANTITY',
@@ -153,31 +151,18 @@ export function Quantity({
                       fiatPricing,
                     },
                   })
-
-                  if (
-                    paywallConfig.metadataInputs ||
-                    paywallConfig.locks[lock!.address].metadataInputs ||
-                    quantity > 1
-                  ) {
-                    dispatch({
-                      type: 'CONTINUE',
-                      payload: {
-                        continue: 'METADATA',
-                      },
-                    })
-                  } else {
-                    dispatch({
-                      type: 'CONTINUE',
-                      payload: {
-                        continue: 'CONFIRM',
-                      },
-                    })
-                  }
+                  dispatch({
+                    type: 'CONTINUE',
+                    payload: {
+                      continue: 'METADATA',
+                    },
+                  })
                 }}
               >
                 {quantity > 0 ? 'Continue' : 'Add at least 1 membership'}
               </Button>
             )}
+            <LoggedIn account={account} onDisconnect={() => deAuthenticate()} />
           </div>
         ) : (
           <LoggedOut

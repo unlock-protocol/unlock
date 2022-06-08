@@ -41,6 +41,7 @@ export interface CheckoutState {
   lock?: LockState
   signature?: string
   quantity?: Quantity
+  recipients?: string[]
   current: CheckoutPage
   previous?: CheckoutPage
 }
@@ -75,10 +76,18 @@ export interface AddQuantityEvent {
   payload: Quantity
 }
 
+export interface AddRecipientsEvent {
+  type: 'ADD_RECIPIENTS'
+  payload: {
+    recipients: string[]
+  }
+}
+
 export type CheckoutStateEvents =
   | SelectLockEvent
   | AddSignatureEvent
   | AddQuantityEvent
+  | AddRecipientsEvent
   | ContinueEvent
   | BackEvent
 
@@ -122,6 +131,12 @@ const checkoutReducer: Reducer<CheckoutState, CheckoutStateEvents> = (
       return {
         ...state,
         signature: action.payload.signature,
+      }
+    }
+    case 'ADD_RECIPIENTS': {
+      return {
+        ...state,
+        recipients: action.payload.recipients,
       }
     }
     default: {
