@@ -351,6 +351,8 @@ interface IPublicLock
   function onValidKeyHook() external view returns(bool);
 
   function onTokenURIHook() external view returns(string memory);
+  
+  function onKeyTransferHook() external view returns(string memory);
 
   function revokeKeyGranter(address _granter) external;
 
