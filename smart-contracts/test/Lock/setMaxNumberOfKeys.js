@@ -1,8 +1,9 @@
 const { ethers } = require('hardhat')
 const { expectRevert } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
-const { getProxyAddress } = require('../../helpers/deployments')
+const deployContracts = require('../fixtures/deploy')
 const createLockHash = require('../helpers/createLockCalldata')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
@@ -12,16 +13,12 @@ contract('Lock / setMaxNumberOfKeys', () => {
 
   describe('update the number of keys available in a lock', () => {
     beforeEach(async () => {
-      const chainId = 31337
-      const unlockAddress = getProxyAddress(chainId, 'Unlock')
-
-      // parse unlock
+      const { unlock: unlockDeployed } = await deployContracts()
+      unlock = unlockDeployed
       const [from] = await ethers.getSigners()
-      const Unlock = await ethers.getContractFactory('Unlock')
-      unlock = Unlock.attach(unlockAddress)
 
       // create a new lock
-      const tokenAddress = web3.utils.padLeft(0, 40)
+      const tokenAddress = ADDRESS_ZERO
       const args = [60 * 60 * 24 * 30, tokenAddress, keyPrice, 10, 'Test lock']
 
       const calldata = await createLockHash({ args, from: from.address })
@@ -42,8 +39,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
       const tx = await lock.connect(buyers[0]).purchase(
         [],
         buyers.slice(0, 10).map((b) => b.address),
-        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
-        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
+        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
+        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
         buyers.slice(0, 10).map(() => []),
         {
           value: keyPrice.mul(buyers.length).toString(),
@@ -59,8 +56,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
           .purchase(
             [],
             [buyers[11].address],
-            [web3.utils.padLeft(0, 40)],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
             [[]],
             {
               value: keyPrice.toString(),
@@ -78,8 +75,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
         .purchase(
           [],
           [buyers[11].address],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: keyPrice.toString(),
@@ -95,12 +92,13 @@ contract('Lock / setMaxNumberOfKeys', () => {
 
     it('should prevent from setting a value lower than total supply', async () => {
       // buy 10 keys
-      const [, ...buyers] = await ethers.getSigners()
+      const signers = await ethers.getSigners()
+      const buyers = signers.slice(0, 9)
       const tx = await lock.connect(buyers[0]).purchase(
         [],
         buyers.map((b) => b.address),
-        buyers.map(() => web3.utils.padLeft(0, 40)),
-        buyers.map(() => web3.utils.padLeft(0, 40)),
+        buyers.map(() => ADDRESS_ZERO),
+        buyers.map(() => ADDRESS_ZERO),
         buyers.map(() => []),
         {
           value: keyPrice.mul(buyers.length).toString(),
@@ -118,8 +116,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
       const tx = await lock.connect(buyers[0]).purchase(
         [],
         buyers.slice(0, 10).map((b) => b.address),
-        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
-        buyers.slice(0, 10).map(() => web3.utils.padLeft(0, 40)),
+        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
+        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
         buyers.slice(0, 10).map(() => []),
         {
           value: keyPrice.mul(buyers.length).toString(),
@@ -142,8 +140,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
           .purchase(
             [keyPrice.toString()],
             [buyers[11].address],
-            [web3.utils.padLeft(0, 40)],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
             [[]],
             {
               value: keyPrice.toString(),

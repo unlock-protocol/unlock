@@ -1,11 +1,11 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const BigNumber = require('bignumber.js')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 let lock
 let locks
@@ -19,33 +19,26 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
   let keyPrice
 
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(
       testEventHooks.address,
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS,
-      constants.ZERO_ADDRESS
+      ADDRESS_ZERO,
+      ADDRESS_ZERO,
+      ADDRESS_ZERO
     )
     keyPrice = new BigNumber(await lock.keyPrice())
   })
 
   it('can block purchases', async () => {
     await reverts(
-      lock.purchase(
-        [],
-        [to],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
-        [dataField],
-        {
-          from,
-          value: keyPrice.toFixed(),
-        }
-      ),
+      lock.purchase([], [to], [ADDRESS_ZERO], [ADDRESS_ZERO], [dataField], {
+        from,
+        value: keyPrice.toFixed(),
+      }),
       'PURCHASE_BLOCKED_BY_HOOK'
     )
   })
@@ -56,8 +49,8 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
       await lock.purchase(
         [],
         [to],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [dataField],
         {
           from,
@@ -72,24 +65,17 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
       assert.equal(log.lock, lock.address)
       assert.equal(log.from, from)
       assert.equal(log.recipient, to)
-      assert.equal(log.referrer, web3.utils.padLeft(0, 40))
+      assert.equal(log.referrer, ADDRESS_ZERO)
       assert.equal(log.minKeyPrice, keyPrice.toFixed())
       assert.equal(log.pricePaid, keyPrice.toFixed())
     })
 
     it('Sanity check: cannot buy at half price', async () => {
       await reverts(
-        lock.purchase(
-          [],
-          [to],
-          [constants.ZERO_ADDRESS],
-          [constants.ZERO_ADDRESS],
-          [dataField],
-          {
-            from,
-            value: keyPrice.div(2).toFixed(),
-          }
-        ),
+        lock.purchase([], [to], [ADDRESS_ZERO], [ADDRESS_ZERO], [dataField], {
+          from,
+          value: keyPrice.div(2).toFixed(),
+        }),
         'INSUFFICIENT_VALUE'
       )
     })
@@ -98,11 +84,11 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
       await reverts(
         lock.setEventHooks(
           accounts[1],
-          constants.ZERO_ADDRESS,
-          constants.ZERO_ADDRESS,
-          constants.ZERO_ADDRESS
+          ADDRESS_ZERO,
+          ADDRESS_ZERO,
+          ADDRESS_ZERO
         ),
-        'INVALID_ON_KEY_SOLD_HOOK'
+        'INVALID_HOOK(0)'
       )
     })
   })
@@ -113,11 +99,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
     })
 
     it('can estimate the price', async () => {
-      const price = await lock.purchasePriceFor(
-        to,
-        constants.ZERO_ADDRESS,
-        dataField
-      )
+      const price = await lock.purchasePriceFor(to, ADDRESS_ZERO, dataField)
       assert.equal(price, keyPrice.div(2).toFixed())
     })
 
@@ -125,8 +107,8 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
       await lock.purchase(
         [],
         [to],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [dataField],
         {
           from,
@@ -138,15 +120,15 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
 
   describe('with a huge discount', () => {
     beforeEach(async () => {
-      await testEventHooks.configure(true, constants.MAX_UINT)
+      await testEventHooks.configure(true, MAX_UINT)
     })
 
     it('purchases are now free', async () => {
       await lock.purchase(
         [],
         [to],
-        [constants.ZERO_ADDRESS],
-        [constants.ZERO_ADDRESS],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [dataField],
         {
           from,
@@ -160,8 +142,8 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
         await lock.purchase(
           [],
           [to],
-          [constants.ZERO_ADDRESS],
-          [constants.ZERO_ADDRESS],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [dataField],
           {
             from,
@@ -176,7 +158,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
         assert.equal(log.lock, lock.address)
         assert.equal(log.from, from)
         assert.equal(log.recipient, to)
-        assert.equal(log.referrer, web3.utils.padLeft(0, 40))
+        assert.equal(log.referrer, ADDRESS_ZERO)
         assert.equal(log.minKeyPrice, '0')
         assert.equal(log.pricePaid, '42')
       })

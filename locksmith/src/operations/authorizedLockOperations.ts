@@ -8,7 +8,6 @@ const { ethers } = require('ethers')
 const config = require('../../config/config')
 
 namespace AuthorizedLockOperations {
-  // eslint-disable-next-line import/prefer-default-export
   export const hasAuthorization = async (
     address: string,
     network: number

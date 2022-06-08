@@ -114,6 +114,7 @@ describe('Unlock Hardhat plugin', function () {
 
       it('Should fail if number version doesnt exist', async function () {
         await expectThrowsAsync(
+          // @ts-expect-error - Argument type mismatch
           this.hre.unlock.deployUnlock,
           [135, 1],
           "Contract 'UnlockV135' is not in present in @unlock-protocol/contracts"
@@ -143,6 +144,7 @@ describe('Unlock Hardhat plugin', function () {
 
       it('Should fail if contract does not exist', async function () {
         await expectThrowsAsync(
+          // @ts-expect-error - Argument type mismatch
           this.hre.unlock.setUnlock,
           [],
           'Missing Unlock contract address'

@@ -12,10 +12,12 @@ export const defaultCallToAction: PaywallCallToAction = {
   card: 'Please, enter your credit card details.',
   noWallet:
     'To buy a key you will need to use a crypto-enabled browser that has a wallet. Here are a few options.',
+  quantity: 'You might be able add more than one membership',
 }
+
 interface CallToActionProps {
   state: string
-  callToAction?: PaywallCallToAction
+  callToAction?: Partial<PaywallCallToAction>
 }
 
 export const CallToAction = ({ state, callToAction }: CallToActionProps) => {

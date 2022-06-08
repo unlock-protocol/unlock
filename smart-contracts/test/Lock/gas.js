@@ -1,8 +1,9 @@
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 
+const { ADDRESS_ZERO } = require('../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const WalletService = require('../helpers/walletServiceMock.js')
 
 let unlock
@@ -10,7 +11,7 @@ let lock
 
 contract('Lock / gas', (accounts) => {
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
   })
@@ -19,8 +20,8 @@ contract('Lock / gas', (accounts) => {
     let tx = await lock.purchase(
       [],
       [accounts[0]],
-      [web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         value: web3.utils.toWei('0.01', 'ether'),

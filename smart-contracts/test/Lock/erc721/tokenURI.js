@@ -1,8 +1,8 @@
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
-
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 let unlock
 let lock
@@ -28,7 +28,7 @@ function stringShifter(str) {
 
 contract('Lock / erc721 / tokenURI', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
 
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
@@ -104,8 +104,8 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
       await lock.purchase(
         [],
         [accounts[0]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),

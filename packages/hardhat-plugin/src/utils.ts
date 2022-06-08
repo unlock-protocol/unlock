@@ -13,7 +13,7 @@ export const getContractAbi = (contractName: string, versionNumber: number) => {
   contractExists(contractName, versionNumber)
   const contractVersion = `${contractName}V${versionNumber}`
   // get bytecode
-  const { bytecode, abi } = contracts[contractVersion as keyof {}]
+  const { bytecode, abi } = contracts[contractVersion as keyof typeof contracts]
 
   return { bytecode, abi }
 }

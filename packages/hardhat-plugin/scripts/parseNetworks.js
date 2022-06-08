@@ -14,5 +14,5 @@ Object.keys(networks).forEach((chainId) => {
 })
 
 fs.outputJSONSync(filePath, filtered, { spaces: 2 })
-// eslint-disable-next-line no-console
+
 console.log(`networks saved to ${filePath}.`)

@@ -1,14 +1,14 @@
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 let locks
 
 contract('Lock / erc721 / getApproved', (accounts) => {
   before(async () => {
-    this.unlock = await getProxy(unlockContract)
+    this.unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(this.unlock, accounts[0])
   })
 

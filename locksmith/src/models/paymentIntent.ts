@@ -1,7 +1,6 @@
 import { Table, Column, Model, DataType } from 'sequelize-typescript'
 
 @Table({ tableName: 'PaymentIntents', timestamps: true })
-// eslint-disable-next-line import/prefer-default-export
 export class PaymentIntent extends Model<PaymentIntent> {
   @Column
   lockAddress!: string

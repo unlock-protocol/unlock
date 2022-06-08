@@ -1,12 +1,12 @@
 const { time } = require('@openzeppelin/test-helpers')
 
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { ethers, upgrades, network } = require('hardhat')
 const { getDeployment } = require('../../helpers/deployments')
-const { errorMessages } = require('../helpers/constants')
+const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
+const deployContracts = require('../fixtures/deploy')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
-const ZERO_ADDRESS = web3.utils.padLeft(0, 40)
 
 const PROPOSER_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
@@ -62,6 +62,8 @@ contract('UnlockProtocolGovernor', () => {
     updateTx = await tx.wait()
   }
 
+  before(async () => await deployContracts())
+
   beforeEach(async () => {
     // deploying timelock with a proxy
     const UnlockProtocolTimelock = await ethers.getContractFactory(
@@ -71,7 +73,7 @@ contract('UnlockProtocolGovernor', () => {
     const timelock = await upgrades.deployProxy(UnlockProtocolTimelock, [
       1, // 1 second delay
       [], // proposers list is empty at deployment
-      [ZERO_ADDRESS], // allow any address to execute a proposal once the timelock has expired
+      [ADDRESS_ZERO], // allow any address to execute a proposal once the timelock has expired
     ])
     await timelock.deployed()
 

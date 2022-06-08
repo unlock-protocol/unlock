@@ -63,6 +63,7 @@ if (process.env.ETHERSCAN_API_KEY) {
 }
 if (process.env.POLYGONSCAN_API_KEY) {
   etherscan.apiKey.polygon = process.env.POLYGONSCAN_API_KEY
+  etherscan.apiKey.polygonMumbai = process.env.POLYGONSCAN_API_KEY
 }
 if (process.env.BSCSCAN_API_KEY) {
   etherscan.apiKey.bsc = process.env.BSCSCAN_API_KEY
@@ -138,9 +139,14 @@ module.exports = {
       { version: '0.8.2', settings },
       { version: '0.8.4', settings },
       { version: '0.8.7', settings },
+      { version: '0.8.13', settings },
     ],
   },
   mocha: {
     timeout: 2000000,
+  },
+  contractSizer: {
+    alphaSort: true,
+    only: [':PublicLock', 'Mixin'],
   },
 }

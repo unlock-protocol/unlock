@@ -1,10 +1,11 @@
-const truffleAssert = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { BN, time } = require('@openzeppelin/test-helpers')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 const unlockContract = artifacts.require('Unlock.sol')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let locks
@@ -16,7 +17,7 @@ const scenarios = [true, false]
 
 contract('Lock / GasRefund', (accounts) => {
   let lock
-  let tokenAddress = web3.utils.padLeft(0, 40)
+  let tokenAddress = ADDRESS_ZERO
   let userBalanceBefore
   let tx
   let testToken
@@ -26,7 +27,7 @@ contract('Lock / GasRefund', (accounts) => {
       isErc20 ? 'ERC20' : 'ETH'
     }`, () => {
       beforeEach(async () => {
-        unlock = await getProxy(unlockContract)
+        unlock = await getContractInstance(unlockContract)
 
         testToken = await tokens.dai.deploy(web3, accounts[0])
         // Mint some tokens for testing
@@ -35,7 +36,7 @@ contract('Lock / GasRefund', (accounts) => {
         })
 
         // deploy lock w ERC20
-        tokenAddress = isErc20 ? testToken.address : web3.utils.padLeft(0, 40)
+        tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
         locks = await deployLocks(unlock, accounts[0], tokenAddress)
         lock = locks.FIRST
 
@@ -60,11 +61,10 @@ contract('Lock / GasRefund', (accounts) => {
         })
 
         it('can not be set if caller is not lock manager', async () => {
-          await truffleAssert.fails(
+          await reverts(
             lock.setGasRefundValue(gasRefundAmount, {
               from: accounts[3],
             }),
-            'revert',
             'ONLY_LOCK_MANAGER'
           )
         })
@@ -90,7 +90,7 @@ contract('Lock / GasRefund', (accounts) => {
             [keyPrice.toString()],
             [accounts[2]],
             [tokenAddress],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
             [[]],
             {
               from: accounts[2],
@@ -148,7 +148,7 @@ contract('Lock / GasRefund', (accounts) => {
             [keyPrice.toString()],
             [accounts[2]],
             [tokenAddress],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
             [[]],
             {
               from: accounts[2],
@@ -174,7 +174,7 @@ contract('Lock / GasRefund', (accounts) => {
           tx = await lock.extend(
             isErc20 ? keyPrice : 0,
             args.tokenId,
-            web3.utils.padLeft(0, 40),
+            ADDRESS_ZERO,
             [],
             {
               value: isErc20 ? 0 : keyPrice.toString(),
@@ -233,7 +233,7 @@ contract('Lock / GasRefund', (accounts) => {
               [keyPrice.toString()],
               [accounts[2]],
               [tokenAddress],
-              [web3.utils.padLeft(0, 40)],
+              [ADDRESS_ZERO],
               [[]],
               {
                 from: accounts[2],
@@ -260,11 +260,9 @@ contract('Lock / GasRefund', (accounts) => {
             const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
             await time.increaseTo(expirationTs.toNumber())
 
-            tx = await lock.renewMembershipFor(
-              tokenId,
-              web3.utils.padLeft(0, 40),
-              { from: accounts[2] }
-            )
+            tx = await lock.renewMembershipFor(tokenId, ADDRESS_ZERO, {
+              from: accounts[2],
+            })
           })
 
           it('gas refunded event is fired', async () => {
@@ -316,8 +314,8 @@ contract('Lock / GasRefund', (accounts) => {
           tx = await lock.purchase(
             [keyPrice.toString()],
             [accounts[2]],
-            [web3.utils.padLeft(0, 40)],
-            [web3.utils.padLeft(0, 40)],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
             [[]],
             {
               from: accounts[2],

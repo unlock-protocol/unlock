@@ -1,8 +1,8 @@
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 let unlock
 let unnamedlock
@@ -10,7 +10,7 @@ let namedLock
 
 contract('Lock / erc721 / name', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     unnamedlock = locks.FIRST
     namedLock = locks.NAMED

@@ -9,7 +9,7 @@ This repository includes all the code deployed by Unlock, including smart contra
 
 Read more about [why we're building Unlock](https://medium.com/unlock-protocol/its-time-to-unlock-the-web-b98e9b94add1).
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Build Status](https://circleci.com/gh/unlock-protocol/unlock.svg?style=svg)](https://circleci.com/gh/unlock-protocol/unlock)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Demo
 
@@ -88,7 +88,7 @@ To launch it locally:
 yarn
 
 # start Unlock main app
-yarn worskspace @unlock-protocol/unlock-app start
+yarn workspace @unlock-protocol/unlock-app start
 ```
 
 This will start

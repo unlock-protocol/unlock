@@ -1,5 +1,5 @@
 import * as sigUtil from 'eth-sig-util'
-import { Request, Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { Request, Response } from 'express-serve-static-core'
 import * as Base64 from '../utils/base64'
 import Normalizer from '../utils/normalizer'
 import { SignatureValidationConfiguration } from '../types'
@@ -112,7 +112,7 @@ namespace SignatureValidationMiddleware {
     }
   }
 
-  const validateSignee = (payload: any, signee: string): Boolean => {
+  const validateSignee = (payload: any, signee: string): boolean => {
     return (
       Normalizer.ethereumAddress(payload) === Normalizer.ethereumAddress(signee)
     )
@@ -121,7 +121,7 @@ namespace SignatureValidationMiddleware {
   const validatePayloadContent = (
     payload: any,
     configuration: SignatureValidationConfiguration
-  ): Boolean => {
+  ): boolean => {
     const result = configuration.required.every((element) => {
       return !(payload[element] == null)
     })

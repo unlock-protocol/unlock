@@ -1,7 +1,7 @@
 const { ethers, upgrades } = require('hardhat')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const createLockHash = require('../helpers/createLockCalldata')
-
+const { ADDRESS_ZERO } = require('../helpers/constants')
 describe('upgradeLock (deploy template with Proxy)', () => {
   let unlock
   let lock
@@ -18,7 +18,9 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     })
     await unlock.deployed()
 
-    const PublicLock = await ethers.getContractFactory('PublicLock')
+    const PublicLock = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
     publicLock = await PublicLock.deploy()
     await publicLock.deployed()
 
@@ -37,7 +39,7 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     // deploy a simple lock
     const args = [
       60 * 60 * 24 * 30, // 30 days
-      ethers.constants.AddressZero,
+      ADDRESS_ZERO,
       ethers.utils.parseEther('0.01'),
       10,
       'A neat upgradeable lock!',
@@ -47,7 +49,10 @@ describe('upgradeLock (deploy template with Proxy)', () => {
     const { events } = await tx.wait()
     const evt = events.find((v) => v.event === 'NewLock')
     const { newLockAddress } = evt.args
-    lock = await ethers.getContractAt('IPublicLock', newLockAddress)
+    lock = await ethers.getContractAt(
+      'contracts/interfaces/IPublicLock.sol:IPublicLock',
+      newLockAddress
+    )
 
     // deploy new implementation
     const PublicLockUpgraded = await ethers.getContractFactory(

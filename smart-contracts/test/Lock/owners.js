@@ -1,9 +1,10 @@
 const BigNumber = require('bignumber.js')
 const { assert } = require('chai')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 let lock
 let locks
@@ -13,7 +14,7 @@ let tokenIds
 contract('Lock / owners', (accounts) => {
   const keyOwners = accounts.slice(1, 6)
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
@@ -25,8 +26,8 @@ contract('Lock / owners', (accounts) => {
     const tx = await lock.purchase(
       [],
       keyOwners,
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
-      keyOwners.map(() => web3.utils.padLeft(0, 40)),
+      keyOwners.map(() => ADDRESS_ZERO),
+      keyOwners.map(() => ADDRESS_ZERO),
       keyOwners.map(() => []),
       {
         value: (lock.params.keyPrice * keyOwners.length).toFixed(),
@@ -126,8 +127,8 @@ contract('Lock / owners', (accounts) => {
       await lock.purchase(
         [],
         [keyOwners[3]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: lock.params.keyPrice.toFixed(),

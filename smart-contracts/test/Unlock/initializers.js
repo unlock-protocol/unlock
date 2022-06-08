@@ -1,7 +1,7 @@
 const unlockContract = artifacts.require('Unlock.sol')
 
-const { reverts } = require('truffle-assertions')
-const getProxy = require('../helpers/proxy')
+const { reverts } = require('../helpers/errors')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const { errorMessages } = require('../helpers/constants')
 
 const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
@@ -10,7 +10,7 @@ let unlock
 
 contract('Unlock / initializers', (accounts) => {
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
   })
 
   it('There is only 1 public initializer in Unlock', async () => {

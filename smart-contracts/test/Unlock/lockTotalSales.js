@@ -3,7 +3,8 @@ const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let locks
@@ -13,7 +14,7 @@ contract('Unlock / lockTotalSales', (accounts) => {
   let lock
 
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
   })
@@ -30,8 +31,8 @@ contract('Unlock / lockTotalSales', (accounts) => {
       await lock.purchase(
         [],
         [accounts[0]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: price,
@@ -54,8 +55,8 @@ contract('Unlock / lockTotalSales', (accounts) => {
         await lock.purchase(
           [],
           [accounts[i]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: price,

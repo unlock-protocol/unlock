@@ -1,4 +1,5 @@
 import { IconBase, IconBaseProps } from 'react-icons'
+
 export function UnlockTextIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg

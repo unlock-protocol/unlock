@@ -17,6 +17,7 @@ async function main({
   liquidity, // in ETH, must be a string
   unlockAddress,
   unlockVersion,
+  publicLockVersion,
   udtAddress,
   publicLockAddress,
   wethAddress,
@@ -45,7 +46,7 @@ async function main({
 
   // deploying PublicLock
   if (!publicLockAddress) {
-    publicLockAddress = await run('deploy:template')
+    publicLockAddress = await run('deploy:template', { publicLockVersion })
   }
 
   // set lock template
@@ -61,9 +62,7 @@ async function main({
     udtAddress = await run('deploy:udt')
   }
   if (!udtAddress) {
-    throw new Error(
-      'Missing udtAddress. Cannot proceed. Please use --udt-address'
-    )
+    udtAddress = '0x0000000000000000000000000000000000000000'
   }
 
   // If UDT is not set for this network, let's not worry about it
@@ -192,7 +191,6 @@ async function main({
 
 // execute as standalone
 if (require.main === module) {
-  /* eslint-disable promise/prefer-await-to-then, no-console */
   main()
     .then(() => process.exit(0))
     .catch((error) => {

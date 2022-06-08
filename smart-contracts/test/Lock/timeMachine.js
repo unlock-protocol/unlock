@@ -2,10 +2,9 @@ const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const TimeMachineMock = artifacts.require('TimeMachineMock')
-const { reverts } = require('truffle-assertions')
-const { errorMessages } = require('../helpers/constants')
 
-const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
+const { ADDRESS_ZERO } = require('../helpers/constants')
+const { reverts } = require('../helpers/errors')
 
 contract('Lock / timeMachine', (accounts) => {
   let timeMachine
@@ -27,7 +26,7 @@ contract('Lock / timeMachine', (accounts) => {
 
     tx = await timeMachine.createNewKey(
       keyOwner,
-      web3.utils.padLeft(0, 40), // beneficiary
+      ADDRESS_ZERO, // beneficiary
       timestampBefore
     )
 
@@ -91,7 +90,7 @@ contract('Lock / timeMachine', (accounts) => {
     it('should not work for a non-existant key', async () => {
       await reverts(
         timeMachine.timeMachine(17, 42, true, { from: accounts[3] }),
-        `${VM_ERROR_REVERT_WITH_REASON} 'NO_SUCH_KEY'`
+        'NO_SUCH_KEY'
       )
     })
   })

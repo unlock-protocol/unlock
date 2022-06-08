@@ -1,11 +1,11 @@
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 let unlock
 let lock
@@ -15,7 +15,7 @@ contract('Lock / withdrawByAddress', (accounts) => {
   let owner = accounts[0]
 
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, owner)
     lock = locks.OWNED
 

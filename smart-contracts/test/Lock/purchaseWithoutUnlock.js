@@ -1,8 +1,10 @@
 const { ethers, network } = require('hardhat')
 const { Manifest } = require('@openzeppelin/upgrades-core')
 const ProxyAdmin = require('@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol/ProxyAdmin.json')
-const { getProxyAddress } = require('../../helpers/deployments')
+
+const deployContracts = require('../fixtures/deploy')
 const createLockHash = require('../helpers/createLockCalldata')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 let pastImpl
@@ -42,20 +44,16 @@ contract('Lock / purchaseWithoutUnlock', () => {
       admin.address,
       unlockOwner
     )
+
+    const deployments = await deployContracts()
+    unlock = deployments.unlock
   })
 
   describe('purchase with a lock while Unlock is broken', () => {
     beforeEach(async () => {
-      const chainId = 31337
-      const unlockAddress = getProxyAddress(chainId, 'Unlock')
-
-      // parse unlock
       const [from] = await ethers.getSigners()
-      const Unlock = await ethers.getContractFactory('Unlock')
-      unlock = Unlock.attach(unlockAddress)
-
       // create a new lock
-      const tokenAddress = web3.utils.padLeft(0, 40)
+      const tokenAddress = ADDRESS_ZERO
       const args = [60 * 60 * 24 * 30, tokenAddress, keyPrice, 100, 'Test lock']
 
       const calldata = await createLockHash({ args, from: from.address })
@@ -87,8 +85,8 @@ contract('Lock / purchaseWithoutUnlock', () => {
         .purchase(
           [keyPrice.toString()],
           [buyer.address],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: keyPrice.toString(),
@@ -115,9 +113,9 @@ contract('Lock / purchaseWithoutUnlock', () => {
       // set on purchase hook
       await lock.setEventHooks(
         testEventHooks.address,
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40)
+        ADDRESS_ZERO,
+        ADDRESS_ZERO,
+        ADDRESS_ZERO
       )
       // 50% discount
       await testEventHooks.configure(true, keyPrice.div(2))
@@ -126,8 +124,8 @@ contract('Lock / purchaseWithoutUnlock', () => {
         .purchase(
           [keyPrice],
           [buyer.address],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: keyPrice,

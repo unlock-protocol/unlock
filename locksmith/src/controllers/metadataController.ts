@@ -3,7 +3,7 @@
 
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
-import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { Response } from 'express-serve-static-core'
 import Normalizer from '../utils/normalizer'
 import LockData from '../utils/lockData'
 import { expiredSignature } from '../utils/signature'

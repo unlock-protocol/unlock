@@ -1,26 +1,24 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 let unlock
 let locks
 
 contract('Lock / erc721 / balanceOf', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     await locks.FIRST.setMaxKeysPerAddress(10)
   })
 
   it('should fail if the user address is 0', async () => {
-    await reverts(
-      locks.FIRST.balanceOf.call(web3.utils.padLeft(0, 40)),
-      'INVALID_ADDRESS'
-    )
+    await reverts(locks.FIRST.balanceOf.call(ADDRESS_ZERO), 'INVALID_ADDRESS')
   })
 
   it('should return 0 if the user has no key', async () => {
@@ -32,16 +30,8 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
     await locks.FIRST.purchase(
       [],
       [accounts[1], accounts[1], accounts[1]],
-      [
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-      ],
-      [
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-      ],
+      [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
+      [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
         value: web3.utils.toWei('0.03', 'ether'),
@@ -56,16 +46,8 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
     await locks.FIRST.purchase(
       [],
       [accounts[6], accounts[6], accounts[6]],
-      [
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-      ],
-      [
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-        web3.utils.padLeft(0, 40),
-      ],
+      [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
+      [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
         value: web3.utils.toWei('0.03', 'ether'),

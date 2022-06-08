@@ -10,7 +10,15 @@ import UnlockPropTypes from '../../propTypes'
 
 export const HomeContent = ({ config }) => {
   useEffect(() => {
-    window.location = config.unlockStaticUrl
+    // In dev, redirect to dashboard, otherwise to static site!
+    if (
+      ['localhost', '127.0.0.1', '0.0,0,0'].indexOf(window.location.hostname) >
+      -1
+    ) {
+      window.location.assign('/dashboard')
+    } else {
+      window.location.assign(config.unlockStaticUrl)
+    }
   })
   return (
     <Layout forContent>

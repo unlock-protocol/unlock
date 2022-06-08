@@ -1,8 +1,7 @@
 const BigNumber = require('bignumber.js')
-const { constants } = require('hardlydifficult-eth')
-
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 const PublicLock = artifacts.require('PublicLock')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const createLockHash = require('../helpers/createLockCalldata')
 
 const unlockContract = artifacts.require('Unlock')
@@ -11,7 +10,7 @@ let unlock
 
 contract('Lock / createLockWithInfiniteKeys', () => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
   })
 
   describe('Create a Lock with infinite keys', () => {
@@ -19,9 +18,9 @@ contract('Lock / createLockWithInfiniteKeys', () => {
     before(async () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
-        web3.utils.padLeft(0, 40), // token address
+        ADDRESS_ZERO, // token address
         web3.utils.toWei('1', 'ether'), // keyPrice: in wei
-        constants.MAX_UINT, // maxNumberOfKeys
+        MAX_UINT, // maxNumberOfKeys
         'Infinite Keys Lock', // name
       ]
       const calldata = await createLockHash({ args })
@@ -45,7 +44,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
     before(async () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
-        web3.utils.padLeft(0, 40),
+        ADDRESS_ZERO,
         web3.utils.toWei('1', 'ether'), // keyPrice: in wei
         0, // maxNumberOfKeys
         'Zero-Key Lock',

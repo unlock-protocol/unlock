@@ -1,4 +1,5 @@
 const BigNumber = require('bignumber.js')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const KeyManagerMock = artifacts.require('KeyManagerMock')
 
@@ -19,7 +20,7 @@ contract('Permissions / isKeyManager', (accounts) => {
 
     const tx = await keyManagerMock.createNewKey(
       keyOwner,
-      web3.utils.padLeft(0, 40), // beneficiary
+      ADDRESS_ZERO, // beneficiary
       timestampBefore
     )
 
