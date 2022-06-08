@@ -9,13 +9,13 @@ image: /images/blog/may-22-update/may-22-banner.png
 
 ![may-22-banner.png](/images/blog/may-22-update/may-22-banner.png)
 
-## Recurring Memberships & Subscriptions are Live 
+## Recurring memberships & subscriptions are live 
 
 - **Blog post** — [Subscription NFTs blog post and full announcement](https://unlock-protocol.com/blog/recurring-subscription-nft)
 - **Twitter Space** — [Subscription NFTs Twitter Space with the Unlock team and community](https://youtu.be/3JlvZ9xTODs)
 
 
-## Expanded "Bring Your Own NFT" Capabilities 
+## Expanded "Bring Your Own NFT" capabilities 
 
 - **Bring Your Own ERC-1155** — [Added ERC-1155 support to Bring Your Own NFT](https://unlock-protocol.com/blog/bring-your-own-nft)
 - **Bring Your Own ERC-20** — [Added ERC-20 support to Bring Your Own NFT](https://docs.unlock-protocol.com/unlock/creators/tutorials-1/using-an-existing-nft-contract)
