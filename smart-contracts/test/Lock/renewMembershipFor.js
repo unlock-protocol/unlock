@@ -4,7 +4,7 @@ const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
 const deployLocks = require('../helpers/deployLocks')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const Unlock = artifacts.require('Unlock.sol')
@@ -32,7 +32,7 @@ contract('Lock / Recurring memberships', (accounts) => {
       from: lockOwner,
     })
 
-    unlock = await getProxy(Unlock)
+    unlock = await getContractInstance(Unlock)
     locks = await deployLocks(unlock, lockOwner, dai.address)
     lock = locks.ERC20
 
@@ -81,7 +81,7 @@ contract('Lock / Recurring memberships', (accounts) => {
 
         await reverts(
           locks.NON_EXPIRING.renewMembershipFor(newTokenId, ADDRESS_ZERO),
-          'NON_EXPIRING_LOCK'
+          'NON_RENEWABLE_LOCK'
         )
       })
 
@@ -103,7 +103,7 @@ contract('Lock / Recurring memberships', (accounts) => {
 
         await reverts(
           locks.FIRST.renewMembershipFor(newTokenId, ADDRESS_ZERO),
-          'NON_ERC20_LOCK'
+          'NON_RENEWABLE_LOCK'
         )
       })
     })
@@ -169,7 +169,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         )
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'PRICE_CHANGED'
+          'LOCK_HAS_CHANGED'
         )
       })
 
@@ -183,7 +183,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         await lock.updateKeyPricing(keyPrice, dai2.address, { from: lockOwner })
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'TOKEN_CHANGED'
+          'LOCK_HAS_CHANGED'
         )
       })
 
@@ -191,7 +191,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         await lock.setExpirationDuration(1000, { from: lockOwner })
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'DURATION_CHANGED'
+          'LOCK_HAS_CHANGED'
         )
       })
     })
@@ -285,7 +285,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         // should fail
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'DURATION_CHANGED'
+          'LOCK_HAS_CHANGED'
         )
       })
 
@@ -322,7 +322,7 @@ contract('Lock / Recurring memberships', (accounts) => {
 
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'DURATION_CHANGED'
+          'LOCK_HAS_CHANGED'
         )
       })
     })

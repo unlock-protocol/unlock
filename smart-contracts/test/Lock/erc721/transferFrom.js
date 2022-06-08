@@ -2,7 +2,7 @@ const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 let unlock
 let locks
@@ -11,7 +11,7 @@ let keyOwners
 
 contract('Lock / erc721 / transferFrom', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
   })
 
   const from = accounts[0]
@@ -74,7 +74,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         locks.FIRST.transferFrom(keyOwners[2], accounts[9], tokenIds[0], {
           from: keyOwners[0],
         }),
-        'TRANSFER_FROM: NOT_KEY_OWNER'
+        'UNAUTHORIZED'
       )
     })
 

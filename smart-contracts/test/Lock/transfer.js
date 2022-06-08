@@ -3,10 +3,8 @@ const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
-const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
-
-const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let lock
@@ -19,7 +17,7 @@ contract('Lock / transfer', (accounts) => {
   const [lockOwner, singleKeyOwner, multipleKeyOwner, destination] = accounts
 
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, lockOwner)
     lock = locks.OWNED
     await lock.setMaxKeysPerAddress(10)
@@ -115,7 +113,7 @@ contract('Lock / transfer', (accounts) => {
       lock.transfer(tokenIds[0], singleKeyOwner, 1000, {
         from: singleKeyOwner,
       }),
-      `${VM_ERROR_REVERT_WITH_REASON} 'TRANSFER_TO_SELF'`
+      'TRANSFER_TO_SELF'
     )
   })
 

@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import './MixinLockCore.sol';
+import './MixinErrors.sol';
 
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
@@ -11,6 +12,7 @@ import './MixinLockCore.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinKeys is
+  MixinErrors,
   MixinLockCore
 {
   // The struct for a key
@@ -96,12 +98,13 @@ contract MixinKeys is
   internal
   view
   {
-    require(
-      _isKeyManager(_tokenId, msg.sender) ||
-      approved[_tokenId] == msg.sender ||
-      isApprovedForAll(_ownerOf[_tokenId], msg.sender),
-      'ONLY_KEY_MANAGER_OR_APPROVED'
-    );
+    if(
+      !_isKeyManager(_tokenId, msg.sender)
+      && approved[_tokenId] != msg.sender
+      && !isApprovedForAll(_ownerOf[_tokenId], msg.sender)
+    ) {
+      revert ONLY_KEY_MANAGER_OR_APPROVED();
+    }
   }
 
   /**
@@ -114,10 +117,10 @@ contract MixinKeys is
   internal
   view
   {
-    require(
-      isValidKey(_tokenId),
-      'KEY_NOT_VALID'
-    );
+    if(!isValidKey(_tokenId)) {
+      revert KEY_NOT_VALID();
+    }
+    
   }
 
   /**
@@ -130,9 +133,9 @@ contract MixinKeys is
   internal
   view 
   {
-    require(
-      _keys[_tokenId].expirationTimestamp != 0, 'NO_SUCH_KEY'
-    );
+    if(_keys[_tokenId].expirationTimestamp == 0) {
+      revert NO_SUCH_KEY();
+    }
   }
 
   /**
@@ -187,7 +190,9 @@ contract MixinKeys is
     view
     returns (uint256)
   {
-      require(_index < balanceOf(_keyOwner), "OWNER_INDEX_OUT_OF_BOUNDS");
+      if(_index >= balanceOf(_keyOwner)) {
+        revert OUT_OF_RANGE();
+      }
       return _ownedKeyIds[_keyOwner][_index];
   }
 
@@ -202,6 +207,10 @@ contract MixinKeys is
   ) 
   internal 
   returns (uint tokenId) {
+
+    if(_recipient == address(0)) { 
+        revert INVALID_ADDRESS();
+    }
     
     // We increment the tokenId counter
     _totalSupply++;
@@ -239,7 +248,9 @@ contract MixinKeys is
     uint expirationTimestamp = _keys[_tokenId].expirationTimestamp;
 
     // prevent extending a valid non-expiring key
-    require(expirationTimestamp != type(uint).max, 'CANT_EXTEND_NON_EXPIRING_KEY');
+    if(expirationTimestamp == type(uint).max){
+      revert CANT_EXTEND_NON_EXPIRING_KEY();
+    }
     
     // if non-expiring but not valid then extend
     if(expirationDuration == type(uint).max) {
@@ -271,7 +282,9 @@ contract MixinKeys is
     uint length = balanceOf(_recipient);
     
     // make sure address does not have more keys than allowed
-    require(length < _maxKeysPerAddress, 'MAX_KEYS');
+    if(length >= _maxKeysPerAddress) {
+      revert MAX_KEYS_REACHED();
+    }
 
     // record new owner
     _ownedKeysIndex[_tokenId] = length;
@@ -301,7 +314,11 @@ contract MixinKeys is
     _isKey(_tokenIdTo);
     
     // make sure there is enough time remaining
-    require(keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp >= _amount, 'NOT_ENOUGH_TIME');
+    if(
+      _amount > keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp
+    ) {
+      revert NOT_ENOUGH_TIME();
+    }
 
     // deduct time from parent key
     _timeMachine(_tokenIdFrom, _amount, false);
@@ -373,7 +390,9 @@ contract MixinKeys is
     view
     returns (uint)
   {
-    require(_keyOwner != address(0), 'INVALID_ADDRESS');
+    if(_keyOwner == address(0)) { 
+      revert INVALID_ADDRESS();
+    }
     return _balances[_keyOwner];
   }
 
@@ -463,11 +482,12 @@ contract MixinKeys is
   ) public
   {
     _isKey(_tokenId);
-    require(
-      _isKeyManager(_tokenId, msg.sender) ||
-      isLockManager(msg.sender),
-      'UNAUTHORIZED_KEY_MANAGER_UPDATE'
-    );
+    if(
+      !_isKeyManager(_tokenId, msg.sender) 
+      && !isLockManager(msg.sender)
+    ) {
+      revert UNAUTHORIZED_KEY_MANAGER_UPDATE();
+    }
     _setKeyManagerOf(_tokenId, _keyManager);
   }
 
@@ -495,7 +515,9 @@ contract MixinKeys is
     public
   {
     _onlyKeyManagerOrApproved(_tokenId);
-    require(msg.sender != _approved, 'APPROVE_SELF');
+    if(msg.sender == _approved) {
+      revert CANNOT_APPROVE_SELF();
+    }
 
     approved[_tokenId] = _approved;
     emit Approval(_ownerOf[_tokenId], _approved, _tokenId);
@@ -605,7 +627,9 @@ contract MixinKeys is
    */
   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
      _onlyLockManager();
-     require (_maxNumberOfKeys >= _totalSupply, "SMALLER_THAN_SUPPLY");
+     if (_maxNumberOfKeys < _totalSupply) {
+       revert CANT_BE_SMALLER_THAN_SUPPLY();
+     }
      maxNumberOfKeys = _maxNumberOfKeys;
   }
 
@@ -627,7 +651,9 @@ contract MixinKeys is
    */
   function setMaxKeysPerAddress(uint _maxKeys) external {
      _onlyLockManager();
-     require(_maxKeys != 0, 'NULL_VALUE');
+     if(_maxKeys == 0) {
+       revert NULL_VALUE();
+     }
      _maxKeysPerAddress = _maxKeys;
   }
 

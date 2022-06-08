@@ -649,7 +649,7 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async getEndpoint(url: string, options: RequestInit = {}, withAuth: boolean) {
+  async getEndpoint(url: string, options: RequestInit = {}, withAuth = false) {
     const endpoint = `${this.host}${url}`
     let params = options
     if (withAuth) {

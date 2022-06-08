@@ -2,7 +2,7 @@ const unlockContract = artifacts.require('Unlock.sol')
 const publicLockContract = artifacts.require('PublicLock')
 
 const { reverts } = require('../helpers/errors')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO, errorMessages } = require('../helpers/constants')
 
@@ -13,14 +13,14 @@ let lock
 
 contract('Lock / initializers', (accounts) => {
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
   })
 
   it('There are exactly 1 public initializer in PublicLock', async () => {
     const count = publicLockContract.abi.filter((x) =>
-      (x.name || '').toLowerCase().includes('initialize')
+      (x.name || '').includes('initialize')
     ).length
     assert.equal(count, 1)
   })

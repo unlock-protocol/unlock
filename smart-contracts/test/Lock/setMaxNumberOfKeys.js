@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { expectRevert } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
-const { getProxyAddress } = require('../../helpers/deployments')
+const deployContracts = require('../fixtures/deploy')
 const createLockHash = require('../helpers/createLockCalldata')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
@@ -13,13 +13,9 @@ contract('Lock / setMaxNumberOfKeys', () => {
 
   describe('update the number of keys available in a lock', () => {
     beforeEach(async () => {
-      const chainId = 31337
-      const unlockAddress = getProxyAddress(chainId, 'Unlock')
-
-      // parse unlock
+      const { unlock: unlockDeployed } = await deployContracts()
+      unlock = unlockDeployed
       const [from] = await ethers.getSigners()
-      const Unlock = await ethers.getContractFactory('Unlock')
-      unlock = Unlock.attach(unlockAddress)
 
       // create a new lock
       const tokenAddress = ADDRESS_ZERO
@@ -96,7 +92,8 @@ contract('Lock / setMaxNumberOfKeys', () => {
 
     it('should prevent from setting a value lower than total supply', async () => {
       // buy 10 keys
-      const [, ...buyers] = await ethers.getSigners()
+      const signers = await ethers.getSigners()
+      const buyers = signers.slice(0, 9)
       const tx = await lock.connect(buyers[0]).purchase(
         [],
         buyers.map((b) => b.address),
