@@ -172,7 +172,8 @@ interface IPublicLock
     address _onKeyPurchaseHook,
     address _onKeyCancelHook,
     address _onValidKeyHook,
-    address _onTokenURIHook
+    address _onTokenURIHook,
+    address _onKeyTransferHook
   ) external;
 
   /**
