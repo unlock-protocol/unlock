@@ -8,7 +8,7 @@ export type CheckoutPage =
   | 'METADATA'
   | 'CONFIRM'
   | 'CARD'
-  | 'PENDING'
+  | 'MINTING'
   | 'MESSAGE_TO_SIGN'
   | 'CAPTCHA'
 
@@ -37,11 +37,26 @@ export interface LockState extends Lock {
   fiatPricing: FiatPricing
 }
 
+type Mint =
+  | {
+      status: 'ERROR'
+      value: string
+    }
+  | {
+      status: 'PROCESSING'
+      value: string
+    }
+  | {
+      status: 'FINISHED'
+      value: string[]
+    }
+
 export interface CheckoutState {
   lock?: LockState
   signature?: string
   quantity?: Quantity
   recipients?: string[]
+  mint?: Mint
   current: CheckoutPage
   previous?: CheckoutPage
 }
@@ -83,11 +98,19 @@ export interface AddRecipientsEvent {
   }
 }
 
+export interface AddMintStatusEvent {
+  type: 'ADD_MINT_STATUS'
+  payload: {
+    mint: Mint
+  }
+}
+
 export type CheckoutStateEvents =
   | SelectLockEvent
   | AddSignatureEvent
   | AddQuantityEvent
   | AddRecipientsEvent
+  | AddMintStatusEvent
   | ContinueEvent
   | BackEvent
 
@@ -139,6 +162,12 @@ const checkoutReducer: Reducer<CheckoutState, CheckoutStateEvents> = (
         recipients: action.payload.recipients,
       }
     }
+    case 'ADD_MINT_STATUS': {
+      return {
+        ...state,
+        mint: action.payload.mint,
+      }
+    }
     default: {
       return state
     }
@@ -151,7 +180,8 @@ export function useCheckoutHeadContent(
 ) {
   const descriptions = Object.assign(
     {
-      pending: 'Purchase pending...',
+      minting:
+        'Let us prepare the magic, a NFT minting is in progress, you can also follow update in the blockexplorer!',
       default: `${title} has ${
         Object.keys(locks).length
       } membership options, please choose one of the option to continue`,
@@ -159,8 +189,7 @@ export function useCheckoutHeadContent(
         'Excellent choice! You might be able to add more than one membership below.',
       metadata:
         'Please enter the required information below in order to included into your NFT.',
-      confirmed:
-        'Let us prepare the magic, a NFT minting is in progress, you can also follow update in the blockexplorer!',
+      confirmed: "Let's have a last look before we process the payment.",
       card: 'You need to provide card details.',
       messageToSign: 'You need to sign the message provided by the lock owner.',
       captcha: 'You need to solve captcha to continue.',
@@ -185,9 +214,9 @@ export function useCheckoutHeadContent(
       title: 'Minting is completed',
       description: descriptions.confirmed,
     },
-    PENDING: {
+    MINTING: {
       title: 'Minting membership NFT',
-      description: descriptions.pending,
+      description: descriptions.minting,
     },
     CARD: {
       title: 'Add card',

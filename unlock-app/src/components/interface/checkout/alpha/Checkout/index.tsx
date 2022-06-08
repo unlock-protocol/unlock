@@ -6,6 +6,7 @@ import { Shell } from '../Shell'
 import { Select } from './Select'
 import { Quantity } from './Quantity'
 import { Metadata } from './Metadata'
+import { Confirm } from './Confirm'
 
 interface Props {
   injectedProvider: unknown
@@ -37,7 +38,6 @@ export function Checkout({
           />
         )
       }
-
       case 'QUANTITY': {
         return (
           <Quantity
@@ -48,10 +48,19 @@ export function Checkout({
           />
         )
       }
-
       case 'METADATA': {
         return (
           <Metadata
+            injectedProvider={injectedProvider}
+            paywallConfig={paywallConfig}
+            dispatch={dispatch}
+            state={checkout.state}
+          />
+        )
+      }
+      case 'CONFIRM': {
+        return (
+          <Confirm
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
             dispatch={dispatch}
@@ -64,7 +73,6 @@ export function Checkout({
       }
     }
   }
-
   return (
     <Shell.Root onClose={() => {}}>
       <Shell.Head
