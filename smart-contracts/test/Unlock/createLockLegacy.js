@@ -3,8 +3,9 @@ const { ethers } = require('hardhat')
 const unlockContract = artifacts.require('Unlock')
 const PublicLock = artifacts.require('PublicLock')
 const { utils } = require('hardlydifficult-ethereum-contracts')
-const truffleAssert = require('truffle-assertions')
-const getProxy = require('../helpers/proxy')
+const truffleAssert = require('../helpers/errors')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let lock
@@ -13,7 +14,7 @@ let publicLockUpgraded
 
 contract('Unlock / createLock (Legacy)', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     templateAddress = await unlock.publicLockAddress()
 
     // deploy new implementation
@@ -43,7 +44,7 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
         before(async () => {
           args = [
             60 * 60 * 24 * 30, // expirationDuration: 30 days
-            web3.utils.padLeft(0, 40),
+            ADDRESS_ZERO,
             web3.utils.toWei('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'Test Lock',
@@ -92,7 +93,7 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
           await truffleAssert.reverts(
             unlock.createLock(
               60 * 60 * 24 * 30, // expirationDuration: 30 days
-              web3.utils.padLeft(0, 40),
+              ADDRESS_ZERO,
               web3.utils.toWei('1', 'ether'), // keyPrice: in wei
               100, // maxNumberOfKeys
               'Test Lock',
@@ -109,7 +110,7 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
         it.skip('Can use the same salt if the account is different', async () => {
           await unlock.createLock(
             60 * 60 * 24 * 30, // expirationDuration: 30 days
-            web3.utils.padLeft(0, 40),
+            ADDRESS_ZERO,
             web3.utils.toWei('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'Test Lock',

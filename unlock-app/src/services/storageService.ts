@@ -1,7 +1,9 @@
+import { decodeToken } from 'react-jwt'
 import axios from 'axios'
 import { EventEmitter } from 'events'
-import { LocksmithService } from '@unlock-protocol/unlock-js'
+import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
 import { Lock } from '../unlockTypes'
+import { generateNonce } from 'siwe'
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
 // these objects, and nothing that isn't emitted should be in one of these
@@ -40,10 +42,23 @@ export const failure = {
   getBulkMetadataFor: 'getBulkMetadataFor.failure',
 }
 
+interface GetSiweMessageProps {
+  address: string
+  chainId: number
+  version?: string
+}
+
+interface LoginPromptProps {
+  address: string
+  chainId: number
+  walletService: WalletService
+}
 export class StorageService extends EventEmitter {
   public host: string
 
   public locksmith: LocksmithService
+
+  private accessToken: string | null
 
   constructor(host: string) {
     super()
@@ -51,10 +66,67 @@ export class StorageService extends EventEmitter {
     this.locksmith = new LocksmithService({
       host,
     })
+    this.accessToken = null
   }
 
   async login(message: string, signature: string) {
     return this.locksmith.login(message, signature)
+  }
+
+  setToken(token: string) {
+    this.accessToken = token
+    const decoded: any = decodeToken(token)
+    const expireAt: number = decoded?.exp ?? -1
+    if (decoded && expireAt) {
+      const startTime = new Date().getTime()
+      const expireTime = new Date(expireAt).getTime()
+      const timeout = (startTime - expireTime) / 1000 / 60 // time difference in seconds
+      setTimeout(() => {
+        this.refreshToken(token)
+      }, timeout)
+    }
+  }
+
+  async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
+    try {
+      const message = await this.getSiweMessage({
+        address,
+        chainId,
+      })
+      const signature = await walletService.signMessage(
+        message,
+        'personal_sign'
+      )
+      const { accessToken } = await this.login(message, signature)
+      this.setToken(accessToken)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  get token() {
+    return this.accessToken
+  }
+
+  async refreshToken(token: string) {
+    return this.locksmith.refreshToken(token)
+  }
+
+  async getSiweMessage({
+    address,
+    chainId,
+    version = '1',
+  }: GetSiweMessageProps) {
+    const siweMessage = LocksmithService.createSiweMessage({
+      domain: 'locksmith.unlock-protocol.com',
+      uri: this.host,
+      address,
+      chainId,
+      version,
+      statement: 'Authorize',
+      nonce: generateNonce(),
+    })
+    return siweMessage.prepareMessage()
   }
 
   /**
@@ -574,6 +646,35 @@ export class StorageService extends EventEmitter {
     } catch (error) {
       console.error(error)
       return ''
+    }
+  }
+
+  async getEndpoint(url: string, options: RequestInit = {}, withAuth = false) {
+    const endpoint = `${this.host}${url}`
+    let params = options
+    if (withAuth) {
+      params = {
+        ...params,
+        headers: {
+          ...params.headers,
+          Authorization: `Bearer ${this.accessToken}`,
+        },
+      }
+    }
+    return fetch(endpoint, {
+      ...params,
+    }).then((res) => {
+      return res.json()
+    })
+  }
+
+  async userExist(emailAddress: string) {
+    try {
+      const endpoint = `${this.host}/users/${emailAddress}`
+      const response = await axios.get(endpoint)
+      return response.status === 200
+    } catch (error) {
+      return false
     }
   }
 }

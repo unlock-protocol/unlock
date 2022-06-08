@@ -1,9 +1,9 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
 
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 let unlock
 let locks
@@ -11,7 +11,7 @@ let tokenId
 
 contract('Lock / erc721 / approve', (accounts) => {
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
   })
 
@@ -31,8 +31,8 @@ contract('Lock / erc721 / approve', (accounts) => {
       const tx = await locks.FIRST.purchase(
         [],
         [accounts[1]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
@@ -104,20 +104,16 @@ contract('Lock / erc721 / approve', (accounts) => {
 
       describe('when clearing the approved address', () => {
         before(async () => {
-          let result = await locks.FIRST.approve(
-            web3.utils.padLeft(0, 40),
-            tokenId,
-            {
-              from: accounts[1],
-            }
-          )
+          let result = await locks.FIRST.approve(ADDRESS_ZERO, tokenId, {
+            from: accounts[1],
+          })
           event = result.logs[0]
         })
 
         it('The zero address indicates there is no approved address', async () => {
           assert.equal(
             await locks.FIRST.getApproved.call(tokenId),
-            constants.ZERO_ADDRESS
+            ADDRESS_ZERO
           )
         })
       })

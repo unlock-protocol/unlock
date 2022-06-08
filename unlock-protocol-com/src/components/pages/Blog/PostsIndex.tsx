@@ -2,7 +2,7 @@ import type { PostsIndexType } from '../../../utils/posts'
 import { Link } from '../../helpers/Link'
 import { useRouter } from 'next/router'
 
-export interface Props extends PostsIndexType {}
+export type Props = PostsIndexType
 
 export function PostsIndex({ posts, next, prev, total }: Props) {
   const router = useRouter()

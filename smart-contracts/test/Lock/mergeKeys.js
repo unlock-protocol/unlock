@@ -1,10 +1,11 @@
 const BigNumber = require('bignumber.js')
 const { assert } = require('chai')
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 let unlock
 let locks
@@ -17,15 +18,15 @@ contract('Lock / mergeKeys', (accounts) => {
   let lock
 
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
 
     const tx = await lock.purchase(
       [],
       [keyOwner, keyOwner2],
-      [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
-      [web3.utils.padLeft(0, 40), web3.utils.padLeft(0, 40)],
+      [ADDRESS_ZERO, ADDRESS_ZERO],
+      [ADDRESS_ZERO, ADDRESS_ZERO],
       [[], []],
       {
         value: web3.utils.toWei('0.02', 'ether'),

@@ -1,7 +1,8 @@
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let locks
@@ -12,7 +13,7 @@ contract('Lock / getHasValidKey', (accounts) => {
   let lock
 
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
@@ -29,8 +30,8 @@ contract('Lock / getHasValidKey', (accounts) => {
       const tx = await lock.purchase(
         [],
         [keyOwner],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
@@ -71,16 +72,8 @@ contract('Lock / getHasValidKey', (accounts) => {
       const tx = await lock.purchase(
         [],
         [keyOwner, keyOwner, keyOwner],
-        [
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-        ],
-        [
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-          web3.utils.padLeft(0, 40),
-        ],
+        [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
+        [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
         [[], [], []],
         {
           value: web3.utils.toWei('0.03', 'ether'),

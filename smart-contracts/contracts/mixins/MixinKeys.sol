@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import './MixinLockCore.sol';
+import './MixinErrors.sol';
 
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
@@ -11,6 +12,7 @@ import './MixinLockCore.sol';
  * separates logically groupings of code to ease readability.
  */
 contract MixinKeys is
+  MixinErrors,
   MixinLockCore
 {
   // The struct for a key
@@ -96,12 +98,13 @@ contract MixinKeys is
   internal
   view
   {
-    require(
-      _isKeyManager(_tokenId, msg.sender) ||
-      approved[_tokenId] == msg.sender ||
-      isApprovedForAll(_ownerOf[_tokenId], msg.sender),
-      'ONLY_KEY_MANAGER_OR_APPROVED'
-    );
+    if(
+      !_isKeyManager(_tokenId, msg.sender)
+      && approved[_tokenId] != msg.sender
+      && !isApprovedForAll(_ownerOf[_tokenId], msg.sender)
+    ) {
+      revert ONLY_KEY_MANAGER_OR_APPROVED();
+    }
   }
 
   /**
@@ -114,10 +117,10 @@ contract MixinKeys is
   internal
   view
   {
-    require(
-      isValidKey(_tokenId),
-      'KEY_NOT_VALID'
-    );
+    if(!isValidKey(_tokenId)) {
+      revert KEY_NOT_VALID();
+    }
+    
   }
 
   /**
@@ -130,9 +133,9 @@ contract MixinKeys is
   internal
   view 
   {
-    require(
-      _keys[_tokenId].expirationTimestamp != 0, 'NO_SUCH_KEY'
-    );
+    if(_keys[_tokenId].expirationTimestamp == 0) {
+      revert NO_SUCH_KEY();
+    }
   }
 
   /**
@@ -153,91 +156,10 @@ contract MixinKeys is
   /**
     * Migrate data from the previous single owner => key mapping to 
     * the new data structure w multiple tokens.
-    * @param _calldata an ABI-encoded representation of the params 
-    * for v10: `(uint _startIndex, uint nbRecordsToUpdate)`
-    * -  `_startIndex` : the index of the first record to migrate
-    * -  `_nbRecordsToUpdate` : number of records to migrate
-    * @dev if all records can be processed at once, the `schemaVersion` will be updated
-    * if not, you will have to call `updateSchemaVersion`
-    * variable to the latest/current lock version
+    * No data migration needed for v10 > v11
     */
-  function migrate(
-    bytes calldata _calldata
-  ) virtual public {
-    
-    // make sure we have correct data version before migrating
-    require(
-      (
-        (schemaVersion == publicLockVersion() - 1)
-        ||
-        schemaVersion == 0
-      ),
-      'SCHEMA_VERSION_NOT_CORRECT'
-    );
-
-    // set default value to 1
-    if(_maxKeysPerAddress == 0) {
-      _maxKeysPerAddress = 1;
-    }
-
-    // count the records that are actually migrated
-    uint startIndex = 0;
-    
-    // count the records that are actually migrated
-    uint updatedRecordsCount;
-
-    // the index of the last record to migrate in this call
-    uint nbRecordsToUpdate;
-
-    // the total number of records to migrate
-    uint totalSupply = totalSupply();
-    
-    // default to 100 when sent from Unlock, as this is called by default in the upgrade script.
-    // If there are more than 100 keys, the migrate function will need to be called again until all keys have been migrated.
-    if( msg.sender == address(unlockProtocol) ) {
-      nbRecordsToUpdate = 100;
-    } else {
-      // decode param
-      (startIndex, nbRecordsToUpdate) = abi.decode(_calldata, (uint, uint));
-    }
-
-    // cap the number of records to migrate to totalSupply
-    if(nbRecordsToUpdate > totalSupply) nbRecordsToUpdate = totalSupply;
-
-    for (uint256 i = startIndex; i < startIndex + nbRecordsToUpdate; i++) {
-      // tokenId starts at 1
-      uint tokenId = i + 1;
-      address keyOwner = _ownerOf[tokenId];
-      Key memory k = keyByOwner[keyOwner];
-
-      // make sure key exists
-      if(k.tokenId != 0 && k.expirationTimestamp != 0) {
-
-        // copy key in new mapping
-        _keys[i + 1] = Key(k.tokenId, k.expirationTimestamp);
-        
-        // delete token from previous owner
-        delete keyByOwner[keyOwner];
-
-        // record new owner
-        _createOwnershipRecord(
-          tokenId,
-          keyOwner
-        );
-
-        // keep track of updated records
-        updatedRecordsCount++;
-      }
-    }
-    
-    // enable lock if all keys has been migrated in a single run
-    if(nbRecordsToUpdate >= totalSupply) {
-      schemaVersion = publicLockVersion();
-    }
-
-    emit KeysMigrated(
-      updatedRecordsCount // records that have been migrated
-    );
+  function migrate(bytes calldata) virtual public {
+    schemaVersion = publicLockVersion();
   }
 
   /**
@@ -268,7 +190,9 @@ contract MixinKeys is
     view
     returns (uint256)
   {
-      require(_index < balanceOf(_keyOwner), "OWNER_INDEX_OUT_OF_BOUNDS");
+      if(_index >= balanceOf(_keyOwner)) {
+        revert OUT_OF_RANGE();
+      }
       return _ownedKeyIds[_keyOwner][_index];
   }
 
@@ -283,6 +207,10 @@ contract MixinKeys is
   ) 
   internal 
   returns (uint tokenId) {
+
+    if(_recipient == address(0)) { 
+        revert INVALID_ADDRESS();
+    }
     
     // We increment the tokenId counter
     _totalSupply++;
@@ -320,7 +248,9 @@ contract MixinKeys is
     uint expirationTimestamp = _keys[_tokenId].expirationTimestamp;
 
     // prevent extending a valid non-expiring key
-    require(expirationTimestamp != type(uint).max, 'CANT_EXTEND_NON_EXPIRING_KEY');
+    if(expirationTimestamp == type(uint).max){
+      revert CANT_EXTEND_NON_EXPIRING_KEY();
+    }
     
     // if non-expiring but not valid then extend
     if(expirationDuration == type(uint).max) {
@@ -352,7 +282,9 @@ contract MixinKeys is
     uint length = balanceOf(_recipient);
     
     // make sure address does not have more keys than allowed
-    require(length < _maxKeysPerAddress, 'MAX_KEYS');
+    if(length >= _maxKeysPerAddress) {
+      revert MAX_KEYS_REACHED();
+    }
 
     // record new owner
     _ownedKeysIndex[_tokenId] = length;
@@ -382,7 +314,11 @@ contract MixinKeys is
     _isKey(_tokenIdTo);
     
     // make sure there is enough time remaining
-    require(keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp >= _amount, 'NOT_ENOUGH_TIME');
+    if(
+      _amount > keyExpirationTimestampFor(_tokenIdFrom) - block.timestamp
+    ) {
+      revert NOT_ENOUGH_TIME();
+    }
 
     // deduct time from parent key
     _timeMachine(_tokenIdFrom, _amount, false);
@@ -454,7 +390,9 @@ contract MixinKeys is
     view
     returns (uint)
   {
-    require(_keyOwner != address(0), 'INVALID_ADDRESS');
+    if(_keyOwner == address(0)) { 
+      revert INVALID_ADDRESS();
+    }
     return _balances[_keyOwner];
   }
 
@@ -544,11 +482,12 @@ contract MixinKeys is
   ) public
   {
     _isKey(_tokenId);
-    require(
-      _isKeyManager(_tokenId, msg.sender) ||
-      isLockManager(msg.sender),
-      'UNAUTHORIZED_KEY_MANAGER_UPDATE'
-    );
+    if(
+      !_isKeyManager(_tokenId, msg.sender) 
+      && !isLockManager(msg.sender)
+    ) {
+      revert UNAUTHORIZED_KEY_MANAGER_UPDATE();
+    }
     _setKeyManagerOf(_tokenId, _keyManager);
   }
 
@@ -576,7 +515,9 @@ contract MixinKeys is
     public
   {
     _onlyKeyManagerOrApproved(_tokenId);
-    require(msg.sender != _approved, 'APPROVE_SELF');
+    if(msg.sender == _approved) {
+      revert CANNOT_APPROVE_SELF();
+    }
 
     approved[_tokenId] = _approved;
     emit Approval(_ownerOf[_tokenId], _approved, _tokenId);
@@ -686,7 +627,9 @@ contract MixinKeys is
    */
   function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
      _onlyLockManager();
-     require (_maxNumberOfKeys >= _totalSupply, "SMALLER_THAN_SUPPLY");
+     if (_maxNumberOfKeys < _totalSupply) {
+       revert CANT_BE_SMALLER_THAN_SUPPLY();
+     }
      maxNumberOfKeys = _maxNumberOfKeys;
   }
 
@@ -708,7 +651,9 @@ contract MixinKeys is
    */
   function setMaxKeysPerAddress(uint _maxKeys) external {
      _onlyLockManager();
-     require(_maxKeys != 0, 'NULL_VALUE');
+     if(_maxKeys == 0) {
+       revert NULL_VALUE();
+     }
      _maxKeysPerAddress = _maxKeys;
   }
 

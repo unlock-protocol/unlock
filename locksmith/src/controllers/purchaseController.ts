@@ -1,4 +1,4 @@
-import { Response } from 'express-serve-static-core' // eslint-disable-line no-unused-vars, import/no-unresolved
+import { Response } from 'express-serve-static-core'
 import {
   getStripeConnectForLock,
   getStripeCustomerIdForAddress,
@@ -6,7 +6,7 @@ import {
 } from '../operations/stripeOperations'
 import KeyPricer from '../utils/keyPricer'
 
-import { SignedRequest } from '../types' // eslint-disable-line no-unused-vars, import/no-unresolved, import/named
+import { SignedRequest } from '../types'
 import PaymentProcessor from '../payment/paymentProcessor'
 import * as Normalizer from '../utils/normalizer'
 import Dispatcher from '../fulfillment/dispatcher'
@@ -30,71 +30,6 @@ namespace PurchaseController {
     const fulfillmentDispatcher = new Dispatcher()
 
     return res.json(await fulfillmentDispatcher.balances())
-  }
-
-  // DEPRECATED
-  export const purchase = async (
-    req: SignedRequest,
-    res: Response
-  ): Promise<any> => {
-    const { publicKey, lock, stripeTokenId, pricing, network, recipient } =
-      req.body.message['Charge Card']
-
-    // First, get the locks stripe account
-    const stripeConnectApiKey = await getStripeConnectForLock(
-      Normalizer.ethereumAddress(lock),
-      network
-    )
-
-    if (stripeConnectApiKey == 0 || stripeConnectApiKey == -1) {
-      return res
-        .status(400)
-        .send({ error: 'Missing Stripe Connect integration' })
-    }
-
-    let stripeCustomerId = await getStripeCustomerIdForAddress(
-      Normalizer.ethereumAddress(publicKey)
-    )
-
-    if (!stripeCustomerId && stripeTokenId) {
-      stripeCustomerId = await createStripeCustomer(
-        stripeTokenId,
-        Normalizer.ethereumAddress(publicKey)
-      )
-    }
-
-    // Throw if no stripeCustomerId
-    if (!stripeCustomerId) {
-      return res.status(400).send({ error: 'Missing Stripe customer info' })
-    }
-
-    const dispatcher = new Dispatcher()
-    const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
-      network
-    )
-    if (!hasEnoughToPayForGas) {
-      return res.status(400).send({
-        error: `Purchaser does not have enough to pay for gas on ${network}`,
-      })
-    }
-
-    try {
-      const processor = new PaymentProcessor(config.stripeSecret)
-      const hash = await processor.initiatePurchaseForConnectedStripeAccount(
-        Normalizer.ethereumAddress(recipient),
-        stripeCustomerId,
-        Normalizer.ethereumAddress(lock),
-        pricing,
-        network,
-        stripeConnectApiKey
-      )
-      return res.send({
-        transactionHash: hash,
-      })
-    } catch (error) {
-      logger.error(error)
-      return res.status(400).send(error)
-    }
   }
 
   /**

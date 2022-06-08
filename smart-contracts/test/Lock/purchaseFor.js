@@ -1,18 +1,19 @@
 const BigNumber = require('bignumber.js')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 let unlock
 let locks
 
 contract('Lock / purchaseFor', (accounts) => {
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     await locks.FIRST.setMaxKeysPerAddress(10)
   })
@@ -23,8 +24,8 @@ contract('Lock / purchaseFor', (accounts) => {
         locks.FIRST.purchase(
           [],
           [accounts[0]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: web3.utils.toWei('0.0001', 'ether'),
@@ -43,8 +44,8 @@ contract('Lock / purchaseFor', (accounts) => {
       await locks['SINGLE KEY'].purchase(
         [],
         [accounts[0]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
@@ -54,8 +55,8 @@ contract('Lock / purchaseFor', (accounts) => {
         locks['SINGLE KEY'].purchase(
           [],
           [accounts[1]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -70,8 +71,8 @@ contract('Lock / purchaseFor', (accounts) => {
       const tx = await locks.FIRST.purchase(
         [],
         [accounts[2]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]],
         {
           value: web3.utils.toWei('0.01', 'ether'),
@@ -90,8 +91,8 @@ contract('Lock / purchaseFor', (accounts) => {
         const tx = await locks.SECOND.purchase(
           [],
           [accounts[4]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -110,8 +111,8 @@ contract('Lock / purchaseFor', (accounts) => {
         await locks.SECOND.purchase(
           [],
           [accounts[4]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -127,8 +128,8 @@ contract('Lock / purchaseFor', (accounts) => {
         await locks.FIRST.purchase(
           [],
           [accounts[1]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -138,8 +139,8 @@ contract('Lock / purchaseFor', (accounts) => {
         await locks.FIRST.purchase(
           [],
           [accounts[1]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -163,8 +164,8 @@ contract('Lock / purchaseFor', (accounts) => {
         const newKeyTx = await locks.FIRST.purchase(
           [],
           [accounts[0]],
-          [web3.utils.padLeft(0, 40)],
-          [web3.utils.padLeft(0, 40)],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
           [[]],
           {
             value: web3.utils.toWei('0.01', 'ether'),
@@ -218,8 +219,8 @@ contract('Lock / purchaseFor', (accounts) => {
       const tx = await locks.FREE.purchase(
         [],
         [accounts[2]],
-        [web3.utils.padLeft(0, 40)],
-        [web3.utils.padLeft(0, 40)],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
         [[]]
       )
       assert.equal(tx.logs[0].event, 'Transfer')

@@ -1,12 +1,12 @@
 const { assert } = require('chai')
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const { time } = require('@openzeppelin/test-helpers')
 const BigNumber = require('bignumber.js')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 let lock
 let locks
@@ -19,7 +19,7 @@ contract('Lock / non expiring', (accounts) => {
   let tokenId
 
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
   })
 
   beforeEach(async () => {
@@ -29,8 +29,8 @@ contract('Lock / non expiring', (accounts) => {
     const tx = await lock.purchase(
       [],
       [keyOwner],
-      [constants.ZERO_ADDRESS],
-      [constants.ZERO_ADDRESS],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
       [[]],
       {
         from,
@@ -43,10 +43,7 @@ contract('Lock / non expiring', (accounts) => {
 
   describe('Create lock', () => {
     it('should set the expiration date to MAX_UINT', async () => {
-      assert.equal(
-        (await lock.expirationDuration()).toString(),
-        constants.MAX_UINT.toString()
-      )
+      assert.equal((await lock.expirationDuration()).toString(), MAX_UINT)
     })
   })
 
@@ -56,7 +53,7 @@ contract('Lock / non expiring', (accounts) => {
       assert.equal(await lock.balanceOf(keyOwner), 1)
       assert.equal(
         (await lock.keyExpirationTimestampFor(tokenId)).toString(),
-        constants.MAX_UINT.toString()
+        MAX_UINT
       )
     })
 
@@ -143,7 +140,7 @@ contract('Lock / non expiring', (accounts) => {
 
       assert.equal(
         (await lock.keyExpirationTimestampFor(tokenId)).toString(),
-        constants.MAX_UINT.toString()
+        MAX_UINT
       )
     })
   })

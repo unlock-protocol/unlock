@@ -1,4 +1,4 @@
-import { createContext } from 'react'
+import { createContext, useContext } from 'react'
 
 interface AuthenticationContextType {
   changeNetwork: (network: any) => void
@@ -23,5 +23,9 @@ export const defaultValues = {
 
 export const AuthenticationContext =
   createContext<AuthenticationContextType>(defaultValues)
+
+export const useAuth = () => {
+  return useContext(AuthenticationContext)
+}
 
 export default AuthenticationContext

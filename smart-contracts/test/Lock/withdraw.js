@@ -1,10 +1,11 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('truffle-assertions')
+const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let lock
@@ -15,7 +16,7 @@ contract('Lock / withdraw', (accounts) => {
   let owner = accounts[0]
 
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, owner)
     lock = locks.OWNED
     await lock.setMaxKeysPerAddress(10)
@@ -160,8 +161,8 @@ async function purchaseKeys(accounts) {
   await lock.purchase(
     [],
     [accounts[1], accounts[2]],
-    [1, 2].map(() => web3.utils.padLeft(0, 40)),
-    [1, 2].map(() => web3.utils.padLeft(0, 40)),
+    [1, 2].map(() => ADDRESS_ZERO),
+    [1, 2].map(() => ADDRESS_ZERO),
     [1, 2].map(() => []),
     {
       value: price * 2,

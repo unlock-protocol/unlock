@@ -1,5 +1,6 @@
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
 import { Button } from '@unlock-protocol/ui'
+import { useEffect, useState } from 'react'
 import { unlockConfig } from '../../../../config/unlock'
 import { Link } from '../../../helpers/Link'
 import { BulletPointIcon } from '../../../icons'
@@ -10,7 +11,37 @@ const UNLOCK_BENEFITS = [
   'Open-source, community governed',
 ]
 
+const featuredUsers = [
+  {
+    link: '/blog/talesofelatora',
+    title: 'Tales of Elatora',
+    illustration: '/images/marketing/home-card.png',
+    avatar: '/images/marketing/caroline.png',
+    creator: 'Caroline',
+    quote: 'Sold out mint in one day',
+  },
+  {
+    link: 'https://bakery.fyi/bakery-nft/',
+    title: 'The Bakery',
+    illustration: '/images/marketing/featured/the-bakery/bakery.png',
+    avatar: '/images/marketing/featured/the-bakery/avatar.jpg',
+    creator: 'Croissant',
+    quote: 'An NFT based DAO membership',
+  },
+]
+
 export function Connect() {
+  const [featured, setFeatured] = useState(1)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFeatured((featured + 1) % featuredUsers.length)
+    }, 5000)
+    return () => {
+      clearInterval(interval)
+    }
+  })
+
   return (
     <section className="flex flex-col-reverse items-center justify-between mx-auto lg:space-x-16 max-w-7xl md:gap-6 md:flex-row">
       <div className="w-full max-w-xl">
@@ -46,47 +77,37 @@ export function Connect() {
             Dashboard
           </Button>
         </div>
-
-        <div className="mt-4 flex items-center justify-center gap-4 sm:justify-start">
-          <a target="_blank" rel="noopener">
-            <img
-              src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=346805&theme=light"
-              alt="Unlock&#0032;Protocol&#0032;Recurring&#0032;Subscriptions - Launch&#0032;recurring&#0032;subscriptions&#0032;using&#0032;NFTs | Product Hunt"
-              style={{ width: '250px', height: '54px' }}
-              width="250"
-              height="54"
-            />
-          </a>
-        </div>
       </div>
 
       <div className="flex justify-center w-full pb-6 max-w-fit lg:max-w-md md:pb-0">
-        <Link href="/blog/talesofelatora">
+        <Link href={featuredUsers[featured].link}>
           <div className="w-full bg-white glass-pane rounded-3xl ">
             <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
-              <p className="font-bold">Tales of Elatora</p>
+              <p className="font-bold">{featuredUsers[featured].title}</p>
               <p className="font-mono text-sm font-bold text-brand-ui-primary">
                 Powered by Unlock
               </p>
             </header>
             <img
-              className="w-full object-fit rounded-t-xl sm:rounded-none"
-              alt="Caroline"
-              src="/images/marketing/home-card.png"
+              className="w-full h-96 object-cover rounded-t-xl sm:rounded-none"
+              alt={featuredUsers[featured].title}
+              src={featuredUsers[featured].illustration}
             />
             <div className="flex items-center gap-4 px-6 py-4">
               <div>
-                <Avatar className="overflow-hidden">
+                <Avatar className="overflow-hidden w-10 h-10">
                   <AvatarImage
                     className="inline-block w-10 h-10 rounded-full"
-                    src="/images/marketing/caroline.png"
-                    alt="Calorine"
+                    src={featuredUsers[featured].avatar}
+                    alt={featuredUsers[featured].creator}
                   />
                 </Avatar>
               </div>
               <div>
-                <h4 className="font-bold"> Caroline </h4>
-                <p className="text-sm brand-gray"> Sold out mint in one day </p>
+                <h4 className="font-bold">{featuredUsers[featured].creator}</h4>
+                <p className="text-sm brand-gray">
+                  {featuredUsers[featured].quote}
+                </p>
               </div>
             </div>
           </div>

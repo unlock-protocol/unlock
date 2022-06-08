@@ -67,7 +67,6 @@ Button.defaultProps = {
   fillHoverColor: 'white',
   disabled: false,
   title: '',
-  target: '',
 }
 
 export const ButtonLink = styled.a`
