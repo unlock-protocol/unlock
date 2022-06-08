@@ -43,7 +43,6 @@ contract('Lock / onValidKeyHook', (accounts) => {
     await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      ADDRESS_ZERO,
       testEventHooks.address,
       ADDRESS_ZERO,
       ADDRESS_ZERO
