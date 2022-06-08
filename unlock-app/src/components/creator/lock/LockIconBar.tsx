@@ -17,7 +17,7 @@ export function LockIconBar({
   withdraw,
   toggleCreditCard,
 }: LockIconBarProps) {
-  const config = useContext(ConfigContext)
+  const config: any = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
 
   // If there is any blocking transaction, we show the lock as either submitted or confirming
