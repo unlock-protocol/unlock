@@ -95,7 +95,7 @@ contract MixinPurchase is
     returns (uint[] memory)
   {
     _lockIsUpToDate();
-    if(_totalSupply >= maxNumberOfKeys) {
+    if(_totalSupply +  _recipients.length > maxNumberOfKeys) {
       revert LOCK_SOLD_OUT();
     }
     if(
@@ -297,7 +297,8 @@ contract MixinPurchase is
     if (_gasRefundValue != 0) { 
       if(tokenAddress != address(0)) {
         IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
-        token.transferFrom(address(this), msg.sender, _gasRefundValue);
+        // send tokens to refun gas
+        token.transfer(msg.sender, _gasRefundValue);
       } else {
         (bool success, ) = msg.sender.call{value: _gasRefundValue}("");
         if(!success) {
