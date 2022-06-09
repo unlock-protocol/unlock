@@ -276,7 +276,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
             value={recipient}
             disabled={loading}
           />
-          {callToAction}
+          <span className="block">{callToAction}</span>
           {fields.map(({ name, type, required, placeholder }) => (
             <label key={name} htmlFor={name}>
               <span className="text-xs font-normal uppercase">
