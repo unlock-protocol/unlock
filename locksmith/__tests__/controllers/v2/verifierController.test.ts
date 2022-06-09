@@ -2,58 +2,37 @@ import request from 'supertest'
 import { getWalletInput } from '../../test-helpers/utils'
 
 const app = require('../../../src/app')
-
 jest.setTimeout(600000)
-const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
+
+const lockAddress = '0xFf8e6a02c4Ae22FB3eaa3b375a4506Bf3A9C8D5B'
 
 describe('Verifier v2 endpoints for locksmith', () => {
-  it('Add verifier to list and not add duplicates', async () => {
-    expect.assertions(3)
+  it('Get list items without authorization', async () => {
+    expect.assertions(1)
     const network = 4
 
-    const {
-      walletAddress: address,
-      message,
-      signedMessage,
-    } = await getWalletInput()
-    const loginResponse = await request(app).post('/v2/auth/login').send({
-      signature: signedMessage,
-      message: message.prepareMessage(),
-    })
-    expect(loginResponse.status).toBe(200)
-
-    const addVerifierResponse = await request(app)
-      .put(`/v2/api/verifier/${network}/${lockAddress}/${address}`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
-
-    expect(addVerifierResponse.status).toBe(201)
-
-    const addVerifierResponseDuplicate = await request(app)
-      .put(`/v2/api/verifier/${network}/${lockAddress}/${address}`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
-    expect(addVerifierResponseDuplicate.status).toBe(409)
+    const getListEndpoint = await request(app).get(
+      `/v2/api/verifier/${network}/${lockAddress}`
+    )
+    expect(getListEndpoint.status).toBe(403)
   })
 
-  it('Add verifier with error', async () => {
+  it('Get list items from lock with random address (not lockManager)', async () => {
     expect.assertions(2)
-    const network = null
+    const network = 4
 
-    const {
-      walletAddress: address,
-      message,
-      signedMessage,
-    } = await getWalletInput()
+    const { message, signedMessage } = await getWalletInput()
     const loginResponse = await request(app).post('/v2/auth/login').send({
       signature: signedMessage,
       message: message.prepareMessage(),
     })
     expect(loginResponse.status).toBe(200)
 
-    const addVerifierResponse = await request(app)
-      .put(`/v2/api/verifier/${network}/${lockAddress}/${address}`)
+    const getListResponse = await request(app)
+      .get(`/v2/api/verifier/list/${network}/${lockAddress}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(addVerifierResponse.status).toBe(500)
+    expect(getListResponse.status).toBe(401)
   })
 
   it('Add add verifier and delete correctly', async () => {
