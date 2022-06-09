@@ -44,7 +44,7 @@
     "@unlock-protocol/types": "workspace:./packages/types",
     "babel-jest": "28.1.0",
     "eslint": "8.16.0",
-    "hardhat": "2.9.0",
+    "hardhat": "2.9.9",
     "jest": "27.5.1",
     "lint-staged": "13.0.0",
     "prettier": "2.6.2",
