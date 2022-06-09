@@ -1,9 +1,9 @@
 ---
 title: Gitcoin Grants
-subTitle:
+subTitle: Earn UDT as part of Gitcoin's round of public funding!
 authorName: Julien Genestoux
 publishDate: June 9, 2022
-description:
+description: Unlock Labs will match up to $25,000 in UDT tokens for projects that get funding from their own communities.
 image: /images/blog/gitcoin-round-14.jpg
 ---
 
