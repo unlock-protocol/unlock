@@ -99,7 +99,14 @@ export function Metadata({ dispatch, state, paywallConfig }: Props) {
 
     setIsLoading(false)
 
-    if (paywallConfig.captcha) {
+    if (paywallConfig.messageToSign) {
+      dispatch({
+        type: 'CONTINUE',
+        payload: {
+          continue: 'MESSAGE_TO_SIGN',
+        },
+      })
+    } else if (paywallConfig.captcha) {
       dispatch({
         type: 'CONTINUE',
         payload: {

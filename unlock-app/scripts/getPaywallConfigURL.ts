@@ -14,6 +14,8 @@ const paywallConfig = {
       name: 'Outer world',
     },
   },
+  messageToSign:
+    'You agree to our terms and conditions listed at: https://example.com/tos',
   icon: 'https://i.ibb.co/sQkJxhb/Ellipse-56.png',
   callToAction: {},
   metadataInputs: [
