@@ -38,7 +38,7 @@ git checkout -b $branch
 message="Contract API docs generated from @unlock-protocol/contracts@${version_number}"
 git add .
 git commit -a -m"$message"
-git push --force origin $branch
+git push origin $branch
 
 # create PR on github
 gh pr create --head "$branch" \
