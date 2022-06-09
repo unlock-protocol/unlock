@@ -1,7 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutState, CheckoutStateDispatch } from '../useCheckoutState'
 import { PaywallConfig } from '~/unlockTypes'
-import { LoggedIn } from '../Bottom'
+import { LoggedIn, LoggedOut } from '../Bottom'
 import { Shell } from '../Shell'
 import { useQuery } from 'react-query'
 import { getFiatPricing } from '~/hooks/useCards'
@@ -11,6 +11,7 @@ import { Button, Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
 import { useState } from 'react'
+import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
 
 interface Props {
   injectedProvider: unknown
@@ -22,11 +23,15 @@ interface Props {
 export function Confirm({
   state: { lock, quantity, recipients },
   dispatch,
+  injectedProvider,
 }: Props) {
   const { account, deAuthenticate } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
   const [isConfirming, setIsConfirming] = useState(false)
+  const { authenticateWithProvider } = useAuthenticateHandler({
+    injectedProvider,
+  })
   const { isLoading, data: fiatPricing } = useQuery(
     [quantity!.count, lock!.address, lock!.network],
     async () => {
@@ -173,15 +178,20 @@ export function Confirm({
       <Shell.Footer>
         <div className="space-y-4">
           <Button
-            disabled={isLoading || isConfirming}
+            disabled={isLoading || isConfirming || !account}
             loading={isConfirming}
             onClick={onConfirm}
             className="w-full"
           >
             {isConfirming ? 'Confirm the transaction' : 'Confirm'}
           </Button>
-          {account && (
+          {account ? (
             <LoggedIn account={account} onDisconnect={() => deAuthenticate()} />
+          ) : (
+            <LoggedOut
+              authenticateWithProvider={authenticateWithProvider}
+              onUnlockAccount={() => {}}
+            />
           )}
         </div>
       </Shell.Footer>
