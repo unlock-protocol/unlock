@@ -115,6 +115,7 @@ contract('Lock / purchaseWithoutUnlock', () => {
         testEventHooks.address,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
+        ADDRESS_ZERO,
         ADDRESS_ZERO
       )
       // 50% discount
