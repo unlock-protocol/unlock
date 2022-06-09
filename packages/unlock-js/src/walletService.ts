@@ -188,9 +188,9 @@ export default class WalletService extends UnlockService {
   async purchaseKeys(
     params: {
       lockAddress: string
-      owners?: [string]
-      keyPrices?: [string]
-      data?: [string]
+      owners?: string[]
+      keyPrices?: string[]
+      data?: string[]
       erc20Address?: string
       decimals?: number
     },
