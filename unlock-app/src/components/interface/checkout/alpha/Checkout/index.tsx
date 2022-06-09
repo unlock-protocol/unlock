@@ -7,6 +7,7 @@ import { Select } from './Select'
 import { Quantity } from './Quantity'
 import { Metadata } from './Metadata'
 import { Confirm } from './Confirm'
+import { MessageToSign } from './MessageToSign'
 
 interface Props {
   injectedProvider: unknown
@@ -14,11 +15,7 @@ interface Props {
   communication: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function Checkout({
-  communication,
-  paywallConfig,
-  injectedProvider,
-}: Props) {
+export function Checkout({ paywallConfig, injectedProvider }: Props) {
   const { checkout, dispatch } = useCheckout({
     initialState: {
       current: 'SELECT',
@@ -61,6 +58,17 @@ export function Checkout({
       case 'CONFIRM': {
         return (
           <Confirm
+            injectedProvider={injectedProvider}
+            paywallConfig={paywallConfig}
+            dispatch={dispatch}
+            state={checkout.state}
+          />
+        )
+      }
+
+      case 'MESSAGE_TO_SIGN': {
+        return (
+          <MessageToSign
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
             dispatch={dispatch}
