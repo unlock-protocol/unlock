@@ -380,10 +380,9 @@ contract MixinKeys is
   }
 
   /**
-   * In the specific case of a Lock, each owner can own only at most 1 key.
-   * @return The number of NFTs owned by `_keyOwner`, either 0 or 1.
+   * @return The number of keys owned by `_keyOwner` (expired or not)
   */
-  function balanceOf(
+  function totalKeysForUser(
     address _keyOwner
   )
     public
@@ -393,7 +392,28 @@ contract MixinKeys is
     if(_keyOwner == address(0)) { 
       revert INVALID_ADDRESS();
     }
+
     return _balances[_keyOwner];
+  }
+
+  /**
+   * In the specific case of a Lock, `balanceOf` returns only the tokens with a valid expiration timerange
+   * @return The number of valid keys owned by `_keyOwner`
+  */
+  function balanceOf(
+    address _keyOwner
+  )
+    public
+    view
+    returns (uint balance)
+  {
+    uint length = totalKeysForUser(_keyOwner);
+    if(length == 0) return 0;
+    for (uint i = 0; i < length; i++) {
+      if(isValidKey(tokenOfOwnerByIndex(_keyOwner, i))) {
+        balance++;
+      }
+    }
   }
 
   /**
