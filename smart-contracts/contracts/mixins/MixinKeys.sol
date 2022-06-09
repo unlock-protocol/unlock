@@ -220,7 +220,7 @@ contract MixinKeys is
     _keys[tokenId] = Key(tokenId, expirationTimestamp);
     
     // increase total number of unique owners
-    if(balanceOf(_recipient) == 0 ) {
+    if(totalKeys(_recipient) == 0 ) {
       numberOfOwners++;
     }
 
@@ -353,7 +353,7 @@ contract MixinKeys is
     delete _ownedKeyIds[previousOwner][lastTokenIndex];
 
     // remove from owner count if thats the only key 
-    if(balanceOf(previousOwner) == 1 ) {
+    if(totalKeys(previousOwner) == 1 ) {
       numberOfOwners--;
     }
     // update balance
