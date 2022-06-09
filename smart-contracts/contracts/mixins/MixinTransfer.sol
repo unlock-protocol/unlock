@@ -168,6 +168,18 @@ contract MixinTransfer is
       _recipient,
       _tokenId
     );
+
+    // fire hook if it exists
+    if(address(onKeyTransferHook) != address(0)) {
+      onKeyTransferHook.onKeyTransfer(
+        address(this),
+        _tokenId,
+        msg.sender, // operator
+        _from,
+        _recipient,
+        key.expirationTimestamp
+      );
+    }
   }
 
   /**
@@ -187,7 +199,6 @@ contract MixinTransfer is
     _isValidKey(_tokenId);
     uint timeShared = ( keyExpirationTimestampFor(_tokenId) - block.timestamp ) * _valueBasisPoint / BASIS_POINTS_DEN;
     shareKey( _to, _tokenId, timeShared);
-    // Errors will cause a revert
     return true;
   }
 

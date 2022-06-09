@@ -349,6 +349,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         testEventHooks.address,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
+        ADDRESS_ZERO,
         ADDRESS_ZERO
       )
       await reverts(
