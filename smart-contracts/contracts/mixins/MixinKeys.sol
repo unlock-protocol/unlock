@@ -3,7 +3,6 @@ pragma solidity ^0.8.0;
 
 import './MixinLockCore.sol';
 import './MixinErrors.sol';
-import 'hardhat/console.sol';
 
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
@@ -409,7 +408,6 @@ contract MixinKeys is
     returns (uint balance)
   {
     uint length = totalKeys(_keyOwner);
-    if(length == 0) return 0;
     for (uint i = 0; i < length; i++) {
       if(isValidKey(tokenOfOwnerByIndex(_keyOwner, i))) {
         balance++;
