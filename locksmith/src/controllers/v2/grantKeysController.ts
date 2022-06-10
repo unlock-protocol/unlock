@@ -2,7 +2,15 @@ import { Request, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 import Dispatcher from '../../fulfillment/dispatcher'
+import * as z from 'zod'
 
+const Key = z.object({
+  recipient: z.string(),
+})
+
+const GrantKeysBody = z.object({
+  keys: z.array(Key),
+})
 export class GrantKeysController {
   constructor() {}
 
@@ -27,7 +35,7 @@ export class GrantKeysController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const keys = request.body.keys
+      const { keys } = await GrantKeysBody.parseAsync(request.body)
 
       /** Duration and managers are ignored for now, until a later PR since dispatcher does not support them yet */
       const recipients = keys.map((k: any) => k.recipient)

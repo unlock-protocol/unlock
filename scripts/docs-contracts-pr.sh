@@ -30,6 +30,13 @@ rm -rf $dest
 cp -R package/dist/docs $dest
 rm -rf package
 
+echo $dest
+
+# add category
+echo '{"label": "API Reference","position": 4}' > _category_.json
+
+exit();
+
 # push to git
 cd docs
 git fetch origin $base
