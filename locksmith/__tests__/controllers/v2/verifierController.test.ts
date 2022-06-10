@@ -1,19 +1,52 @@
 import { ethers } from 'ethers'
-import { generateNonce, SiweMessage } from 'siwe'
 import request from 'supertest'
 import { getWalletInput } from '../../test-helpers/utils'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const app = require('../../../src/app')
 
 jest.setTimeout(600000)
 
-const lockAddress = '0xcc04a8E25B712EBbdAD337dfDb59a154Bd6bbd06'
-const privateKey =
-  'a78e7b5e88c33dc1eebd200f37bae00d49059f76adbfeacdadb02d118a3d7f39'
+const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
+const managedLock = '0xdCc44A9502239657578cB626C5afe9c2615733c0'
+const network = 4
+jest.mock('@unlock-protocol/unlock-js', () => {
+  return {
+    Web3Service: jest.fn().mockImplementation(() => {
+      return {
+        isLockManager: (lockAddress: string) => lockAddress === managedLock,
+      }
+    }),
+  }
+})
+
+jest.mock('../../../src/controllers/v2/verifierController', () => {
+  const mockDispatcher = {
+    list: jest.fn((_req, res) =>
+      res.status(200).send({
+        results: [],
+      })
+    ),
+    addVerifier: jest.fn(() => Promise.resolve()),
+    removeVerifier: jest.fn(() => Promise.resolve()),
+  }
+
+  return jest.fn().mockImplementation(() => {
+    return mockDispatcher
+  })
+})
+
+jest.mock('../../../src/utils/lockManager', () => {
+  return jest.fn().mockImplementation(() => {
+    return {
+      lockManagerMiddleware: async () => jest.fn(),
+    }
+  })
+})
+
 describe('Verifier v2 endpoints for locksmith', () => {
   it('Get list items without authorization', async () => {
     expect.assertions(1)
-    const network = 80001
 
     const getListEndpoint = await request(app).get(
       `/v2/api/verifier/${network}/${lockAddress}`
@@ -23,7 +56,6 @@ describe('Verifier v2 endpoints for locksmith', () => {
 
   it('Get list items from lock with random address (not lockManager)', async () => {
     expect.assertions(2)
-    const network = 80001
 
     const { message, signedMessage } = await getWalletInput()
     const loginResponse = await request(app).post('/v2/auth/login').send({
@@ -41,22 +73,8 @@ describe('Verifier v2 endpoints for locksmith', () => {
 
   it('Add add verifier and delete correctly', async () => {
     expect.assertions(3)
-    const network = 80001
 
-    const wallet = new ethers.Wallet(privateKey)
-    const walletAddress = await wallet.getAddress()
-    const nonce = generateNonce()
-    const message = new SiweMessage({
-      domain: 'locksmith.com',
-      nonce,
-      chainId: network,
-      uri: 'https://locksmith.unlock-protocol.com',
-      version: '1',
-      statement: 'Authorize',
-      address: walletAddress,
-    })
-
-    const signedMessage = await wallet.signMessage(message.prepareMessage())
+    const { signedMessage, message } = await getWalletInput()
 
     const loginResponse = await request(app).post('/v2/auth/login').send({
       signature: signedMessage,
@@ -70,6 +88,7 @@ describe('Verifier v2 endpoints for locksmith', () => {
       .put(`/v2/api/verifier/${network}/${lockAddress}/${randomWallet}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
+    console.log('here', addVerifierResponse)
     expect(addVerifierResponse.status).toBe(201)
 
     const deleteVerifierResponse = await request(app)
@@ -81,22 +100,8 @@ describe('Verifier v2 endpoints for locksmith', () => {
 
   it('Get verifiers list', async () => {
     expect.assertions(3)
-    const network = 80001
 
-    const wallet = new ethers.Wallet(privateKey)
-    const walletAddress = await wallet.getAddress()
-    const nonce = generateNonce()
-    const message = new SiweMessage({
-      domain: 'locksmith.com',
-      nonce,
-      chainId: network,
-      uri: 'https://locksmith.unlock-protocol.com',
-      version: '1',
-      statement: 'Authorize',
-      address: walletAddress,
-    })
-
-    const signedMessage = await wallet.signMessage(message.prepareMessage())
+    const { signedMessage, message } = await getWalletInput()
 
     const loginResponse = await request(app).post('/v2/auth/login').send({
       signature: signedMessage,
