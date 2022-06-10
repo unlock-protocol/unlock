@@ -1,4 +1,5 @@
 const BigNumber = require('bignumber.js')
+const { time } = require('@openzeppelin/test-helpers')
 
 const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
@@ -40,6 +41,40 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
     )
     const balance = new BigNumber(await locks.FIRST.balanceOf.call(accounts[1]))
     assert.equal(balance.toFixed(), 3)
+  })
+
+  it('should count only valid keys', async () => {
+    const tx = await locks.FIRST.purchase(
+      [],
+      [accounts[1], accounts[1], accounts[1]],
+      [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
+      [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
+      [[], [], []],
+      {
+        value: web3.utils.toWei('0.03', 'ether'),
+        from: accounts[1],
+      }
+    )
+
+    const tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
+
+    // expire all keys
+    const expirationTs = await locks.FIRST.keyExpirationTimestampFor(
+      tokenIds[0]
+    )
+    await time.increaseTo(expirationTs.toNumber() + 10)
+
+    assert.equal((await locks.FIRST.balanceOf.call(accounts[1])).toNumber(), 0)
+
+    // renew one
+    await locks.FIRST.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
+      value: web3.utils.toWei('0.03', 'ether'),
+      from: accounts[1],
+    })
+
+    assert.equal((await locks.FIRST.balanceOf.call(accounts[1])).toNumber(), 1)
   })
 
   it('should return correct number after key transfers', async () => {
