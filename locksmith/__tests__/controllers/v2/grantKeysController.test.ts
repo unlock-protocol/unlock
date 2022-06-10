@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { getWalletInput } from '../../test-helpers/utils'
+import { getWalletInput, loginRandomUser } from '../../test-helpers/utils'
 
 const app = require('../../../src/app')
 
@@ -53,15 +53,7 @@ describe('grantKeys endpoint', () => {
   it('returns an error when authentication is there but the user is not a lock manager', async () => {
     expect.assertions(2)
 
-    const {
-      walletAddress: address,
-      message,
-      signedMessage,
-    } = await getWalletInput()
-    const loginResponse = await request(app).post('/v2/auth/login').send({
-      signature: signedMessage,
-      message: message.prepareMessage(),
-    })
+    const { loginResponse, address } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
     const response = await request(app)
@@ -82,15 +74,8 @@ describe('grantKeys endpoint', () => {
   it('grant keys if the caller is a lock manager', async () => {
     expect.assertions(3)
 
-    const {
-      walletAddress: address,
-      message,
-      signedMessage,
-    } = await getWalletInput()
-    const loginResponse = await request(app).post('/v2/auth/login').send({
-      signature: signedMessage,
-      message: message.prepareMessage(),
-    })
+    const { loginResponse, address } = await loginRandomUser(app)
+
     expect(loginResponse.status).toBe(200)
 
     const response = await request(app)
