@@ -3,6 +3,8 @@ import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 import Dispatcher from '../../fulfillment/dispatcher'
 import * as z from 'zod'
+import GasPrice from '../../utils/gasPrice'
+import { GAS_COST_TO_GRANT } from '../../utils/keyPricer'
 
 const Key = z.object({
   recipient: z.string(),
@@ -41,13 +43,35 @@ export class GrantKeysController {
       const recipients = keys.map((k: any) => k.recipient)
       const dispatcher = new Dispatcher()
 
+      const gasPrice = new GasPrice()
+      const gasCost = await gasPrice.gasPriceUSD(network, GAS_COST_TO_GRANT) // in cents!
+
+      // We max at 5 cts per transaction
+      if (gasCost > 5) {
+        response.status(500).send({
+          error: 'Gas fees too high to grant keys',
+        })
+        return
+      }
+
+      const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
+        network
+      )
+
+      if (!hasEnoughToPayForGas) {
+        response.status(500).send({
+          error: `Purchaser does not have enough to pay for gas on ${network}`,
+        })
+        return
+      }
+
       dispatcher.grantKeys(
         lockAddress,
         recipients,
         network,
         async (error: any, hash: string) => {
           if (error) {
-            console.error(error)
+            logger.error(error)
             response.status(500).send({
               error: 'There was an error granting the keys',
             })
@@ -61,11 +85,7 @@ export class GrantKeysController {
       )
       return
     } catch (error) {
-      logger.error(error.message)
-      response.status(500).send({
-        message: 'Grant key failed',
-      })
-      return
+      console.error(error)
     }
   }
 }
