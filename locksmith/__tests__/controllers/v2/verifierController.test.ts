@@ -78,4 +78,40 @@ describe('Verifier v2 endpoints for locksmith', () => {
 
     expect(deleteVerifierResponse.status).toBe(200)
   })
+
+  it('Get verifiers list', async () => {
+    expect.assertions(3)
+    const network = 80001
+
+    const wallet = new ethers.Wallet(privateKey)
+    const walletAddress = await wallet.getAddress()
+    const nonce = generateNonce()
+    const message = new SiweMessage({
+      domain: 'locksmith.com',
+      nonce,
+      chainId: network,
+      uri: 'https://locksmith.unlock-protocol.com',
+      version: '1',
+      statement: 'Authorize',
+      address: walletAddress,
+    })
+
+    const signedMessage = await wallet.signMessage(message.prepareMessage())
+
+    const loginResponse = await request(app).post('/v2/auth/login').send({
+      signature: signedMessage,
+      message: message.prepareMessage(),
+    })
+
+    expect(loginResponse.status).toBe(200)
+
+    const getVerifierListResponse = await request(app)
+      .get(`/v2/api/verifier/list/${network}/${lockAddress}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(getVerifierListResponse.status).toBe(200)
+    expect(Array.isArray(getVerifierListResponse.body.results)).toStrictEqual(
+      true
+    )
+  })
 })
