@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import Normalizer from './normalizer'
+import Normalizer from '../normalizer'
 
 export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
   const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)

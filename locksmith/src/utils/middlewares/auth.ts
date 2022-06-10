@@ -1,8 +1,8 @@
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { RequestHandler, response } from 'express'
-import { Application } from '../models/application'
-import { logger } from '../logger'
+import { Application } from '../../models/application'
+import { logger } from '../../logger'
 
 export type User =
   | {

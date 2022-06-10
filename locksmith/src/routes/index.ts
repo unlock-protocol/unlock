@@ -1,5 +1,5 @@
 import express from 'express'
-import { authMiddleware } from '../utils/auth'
+import { authMiddleware } from '../utils/middlewares/auth'
 
 const transactionRouter = require('./transaction')
 const lockRouter = require('./lock')
