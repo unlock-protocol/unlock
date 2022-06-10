@@ -7,10 +7,11 @@ const router = express.Router({ mergeParams: true })
 
 const grantKeysController = new GrantKeysController()
 
-router.use('/', authenticatedMiddleware, lockManagerMiddleware)
-
-router.post('/:network/locks/:lockAddress', (req, res) =>
-  grantKeysController.grantKeys(req, res)
+router.post(
+  '/:network/:lockAddress',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  grantKeysController.grantKeys
 )
 
 module.exports = router

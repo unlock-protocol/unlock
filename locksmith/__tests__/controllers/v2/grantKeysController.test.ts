@@ -6,6 +6,7 @@ const app = require('../../../src/app')
 jest.setTimeout(600000)
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const managedLock = '0xdCc44A9502239657578cB626C5afe9c2615733c0'
+const network = 4
 
 jest.mock('@unlock-protocol/unlock-js', () => {
   return {
@@ -30,9 +31,8 @@ jest.mock('../../../src/fulfillment/dispatcher', () => {
 })
 
 describe('grantKeys endpoint', () => {
-  it.only('returns an error when authentication is missing', async () => {
-    expect.assertions(2)
-    const network = 4
+  it('returns an error when authentication is missing', async () => {
+    expect.assertions(1)
 
     const { walletAddress: address } = await getWalletInput()
 
@@ -47,13 +47,11 @@ describe('grantKeys endpoint', () => {
           },
         ],
       })
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(403)
   })
 
   it('returns an error when authentication is there but the user is not a lock manager', async () => {
-    expect.assertions(3)
-
-    const network = 4
+    expect.assertions(2)
 
     const {
       walletAddress: address,
@@ -68,21 +66,21 @@ describe('grantKeys endpoint', () => {
 
     const response = await request(app)
       .post(`/v2/api/grant/${network}/${lockAddress}`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send({
         keys: [
           {
             recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
-            expiration: new Date().getTime() / 1000 + 60 * 60 * 24,
+            expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
         ],
       })
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(401)
   })
 
   it('grant keys if the caller is a lock manager', async () => {
     expect.assertions(3)
-    const network = 4
 
     const {
       walletAddress: address,
@@ -102,7 +100,7 @@ describe('grantKeys endpoint', () => {
         keys: [
           {
             recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
-            expiration: new Date().getTime() / 1000 + 60 * 60 * 24,
+            expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
             manager: address,
           },
         ],
