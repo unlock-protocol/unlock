@@ -85,6 +85,8 @@ describe('Dispatcher', () => {
       expect(mockWalletService.grantKeys).toBeCalledWith(
         {
           lockAddress: '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267',
+          expirations: [],
+          keyManagers: [],
           recipients: ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'],
           transactionOptions: {
             maxFeePerGas: BigNumber.from(40000000000),
