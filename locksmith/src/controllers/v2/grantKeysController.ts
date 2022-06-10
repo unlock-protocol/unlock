@@ -47,8 +47,9 @@ export class GrantKeysController {
         network,
         async (error: any, hash: string) => {
           if (error) {
+            console.error(error)
             response.status(500).send({
-              error,
+              error: 'There was an error granting the keys',
             })
             return
           }
