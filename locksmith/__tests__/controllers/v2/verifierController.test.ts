@@ -63,17 +63,17 @@ describe('Verifier v2 endpoints for locksmith', () => {
       message: message.prepareMessage(),
     })
 
-    const walletToAdd = ethers.Wallet.createRandom().getAddress()
+    const randomWallet = await ethers.Wallet.createRandom().getAddress()
     expect(loginResponse.status).toBe(200)
 
     const addVerifierResponse = await request(app)
-      .put(`/v2/api/verifier/${network}/${lockAddress}/${walletToAdd}`)
+      .put(`/v2/api/verifier/${network}/${lockAddress}/${randomWallet}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(addVerifierResponse.status).toBe(201)
 
     const deleteVerifierResponse = await request(app)
-      .delete(`/v2/api/verifier/${network}/${lockAddress}/${walletToAdd}`)
+      .delete(`/v2/api/verifier/${network}/${lockAddress}/${randomWallet}`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(deleteVerifierResponse.status).toBe(200)
