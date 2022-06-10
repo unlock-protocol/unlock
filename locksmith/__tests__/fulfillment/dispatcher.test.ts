@@ -78,7 +78,7 @@ describe('Dispatcher', () => {
       const callback = jest.fn()
       await new Dispatcher().grantKeys(
         lockAddress,
-        [recipient],
+        [{ recipient }],
         31337,
         callback
       )

@@ -8,6 +8,8 @@ import { GAS_COST_TO_GRANT } from '../../utils/keyPricer'
 
 const Key = z.object({
   recipient: z.string(),
+  expiration: z.number(),
+  manager: z.string(),
 })
 
 const GrantKeysBody = z.object({
@@ -40,7 +42,6 @@ export class GrantKeysController {
       const { keys } = await GrantKeysBody.parseAsync(request.body)
 
       /** Duration and managers are ignored for now, until a later PR since dispatcher does not support them yet */
-      const recipients = keys.map((k: any) => k.recipient)
       const dispatcher = new Dispatcher()
 
       const gasPrice = new GasPrice()
@@ -67,7 +68,7 @@ export class GrantKeysController {
 
       dispatcher.grantKeys(
         lockAddress,
-        recipients,
+        keys,
         network,
         async (error: any, hash: string) => {
           if (error) {
