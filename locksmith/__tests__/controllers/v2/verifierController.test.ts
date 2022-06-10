@@ -49,7 +49,7 @@ describe('Verifier v2 endpoints for locksmith', () => {
     const message = new SiweMessage({
       domain: 'locksmith.com',
       nonce,
-      chainId: 4,
+      chainId: network,
       uri: 'https://locksmith.unlock-protocol.com',
       version: '1',
       statement: 'Authorize',
