@@ -34,7 +34,7 @@ export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
       })
     }
   } catch (err) {
-    return res.status(404).send({
+    return res.status(422).send({
       message: `There is some problem, please try again`,
     })
   }
