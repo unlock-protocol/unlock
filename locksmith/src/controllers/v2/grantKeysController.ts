@@ -27,12 +27,6 @@ export class GrantKeysController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-<<<<<<< HEAD
-
-      console.log(request.user)
-
-=======
->>>>>>> 84dae797f (finished implementation)
       const keys = request.body.keys
 
       /** Duration and managers are ignored for now, until a later PR since dispatcher does not support them yet */
