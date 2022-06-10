@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
+import Dispatcher from '../../fulfillment/dispatcher'
 
 export class GrantKeysController {
   constructor() {}
@@ -26,21 +27,42 @@ export class GrantKeysController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
+<<<<<<< HEAD
 
       console.log(request.user)
 
+=======
+>>>>>>> 84dae797f (finished implementation)
       const keys = request.body.keys
-      console.log(keys)
-      console.log(lockAddress)
-      console.log(network)
-      return response.status(200).send({
-        hash: '0x123',
-      })
+
+      /** Duration and managers are ignored for now, until a later PR since dispatcher does not support them yet */
+      const recipients = keys.map((k: any) => k.recipient)
+      const dispatcher = new Dispatcher()
+
+      dispatcher.grantKeys(
+        lockAddress,
+        recipients,
+        network,
+        async (error: any, hash: string) => {
+          if (error) {
+            response.status(500).send({
+              error,
+            })
+            return
+          }
+          response.status(200).send({
+            hash,
+          })
+          return
+        }
+      )
+      return
     } catch (error) {
       logger.error(error.message)
-      return response.status(500).send({
+      response.status(500).send({
         message: 'Grant key failed',
       })
+      return
     }
   }
 }
