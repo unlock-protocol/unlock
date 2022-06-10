@@ -108,7 +108,7 @@ contract MixinRefunds is
 
     // make future reccuring transactions impossible
     _originalDurations[_tokenId] = 0;
-    _originalPrices [_tokenId] = 0;
+    _originalPrices[_tokenId] = 0;
     
     // inform the hook if there is one registered
     if(address(onKeyCancelHook) != address(0))
