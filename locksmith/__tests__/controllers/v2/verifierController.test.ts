@@ -7,7 +7,7 @@ const app = require('../../../src/app')
 
 jest.setTimeout(600000)
 
-const lockAddress = '0xFf8e6a02c4Ae22FB3eaa3b375a4506Bf3A9C8D5B'
+const lockAddress = '0xcc04a8E25B712EBbdAD337dfDb59a154Bd6bbd06'
 const privateKey =
   'a78e7b5e88c33dc1eebd200f37bae00d49059f76adbfeacdadb02d118a3d7f39'
 describe('Verifier v2 endpoints for locksmith', () => {
