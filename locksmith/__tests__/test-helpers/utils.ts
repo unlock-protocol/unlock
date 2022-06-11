@@ -51,3 +51,19 @@ export async function loginRandomUser(app: any) {
     loginResponse,
   }
 }
+
+export async function loginAsApplication(app: any, name: string) {
+  const { address, loginResponse } = await loginRandomUser(app)
+  const applicationResponse = await request(app)
+    .post('/v2/applications')
+    .set('Authorization', `Bearer ${loginResponse.body.accessToken}`)
+    .send({
+      name,
+    })
+
+  return {
+    address,
+    application: applicationResponse.body,
+    loginResponse,
+  }
+}

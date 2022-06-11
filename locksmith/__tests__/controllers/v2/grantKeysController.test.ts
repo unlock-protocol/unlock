@@ -1,5 +1,9 @@
 import request from 'supertest'
-import { getWalletInput, loginRandomUser } from '../../test-helpers/utils'
+import {
+  getWalletInput,
+  loginRandomUser,
+  loginAsApplication,
+} from '../../test-helpers/utils'
 
 const app = require('../../../src/app')
 
@@ -68,12 +72,15 @@ describe('grantKeys endpoint', () => {
   it('returns an error when authentication is there but the user is not a lock manager or key granter', async () => {
     expect.assertions(2)
 
-    const { loginResponse, address } = await loginRandomUser(app)
+    const { loginResponse, address, application } = await loginAsApplication(
+      app,
+      'WP'
+    )
     expect(loginResponse.status).toBe(200)
 
     const response = await request(app)
       .post(`/v2/api/grant/${network}/${lockAddress}`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .set('Authorization', `Api-key ${application.key}`)
       .send({
         keys: [
           {
@@ -86,8 +93,8 @@ describe('grantKeys endpoint', () => {
     expect(response.status).toBe(401)
   })
 
-  it('grant keys if the caller is a lock manager', async () => {
-    expect.assertions(3)
+  it('returns an error when authentication is not an application', async () => {
+    expect.assertions(2)
 
     const { loginResponse, address } = await loginRandomUser(app)
 
@@ -105,6 +112,31 @@ describe('grantKeys endpoint', () => {
           },
         ],
       })
+    expect(response.status).toBe(401)
+  })
+
+  it('grant keys if the caller is a lock manager', async () => {
+    expect.assertions(3)
+
+    const { loginResponse, address, application } = await loginAsApplication(
+      app,
+      'WP'
+    )
+
+    expect(loginResponse.status).toBe(200)
+
+    const response = await request(app)
+      .post(`/v2/api/grant/${network}/${managedLock}`)
+      .set('Authorization', `Api-key ${application.key}`)
+      .send({
+        keys: [
+          {
+            recipient: '0xea674fdde714fd979de3edf0f56aa9716b898ec8',
+            expiration: Math.floor(new Date().getTime() / 1000 + 60 * 60 * 24),
+            manager: address,
+          },
+        ],
+      })
     expect(response.body.hash).toBe('0x123')
     expect(response.status).toBe(200)
   })
@@ -112,13 +144,16 @@ describe('grantKeys endpoint', () => {
   it('grant keys if the caller is a key granter', async () => {
     expect.assertions(3)
 
-    const { loginResponse, address } = await loginRandomUser(app)
+    const { loginResponse, address, application } = await loginAsApplication(
+      app,
+      'WP'
+    )
 
     expect(loginResponse.status).toBe(200)
 
     const response = await request(app)
       .post(`/v2/api/grant/${network}/${keyGranterLock}`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .set('Authorization', `Api-key ${application.key}`)
       .send({
         keys: [
           {
@@ -135,13 +170,16 @@ describe('grantKeys endpoint', () => {
   it('returns an error when gas price is too high', async () => {
     expect.assertions(3)
 
-    const { loginResponse, address } = await loginRandomUser(app)
+    const { loginResponse, address, application } = await loginAsApplication(
+      app,
+      'WP'
+    )
 
     expect(loginResponse.status).toBe(200)
 
     const response = await request(app)
       .post(`/v2/api/grant/${expensiveNetwork}/${managedLock}`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .set('Authorization', `Api-key ${application.key}`)
       .send({
         keys: [
           {
@@ -158,13 +196,16 @@ describe('grantKeys endpoint', () => {
   it('returns an error when the purchaser does not have enough funds', async () => {
     expect.assertions(3)
 
-    const { loginResponse, address } = await loginRandomUser(app)
+    const { loginResponse, address, application } = await loginAsApplication(
+      app,
+      'WP'
+    )
 
     expect(loginResponse.status).toBe(200)
 
     const response = await request(app)
       .post(`/v2/api/grant/${noGasNetwork}/${managedLock}`)
-      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .set('Authorization', `Api-key ${application.key}`)
       .send({
         keys: [
           {
