@@ -1,5 +1,5 @@
 import express from 'express'
-import { VerifierController } from '../../controllers/v2/verifierController'
+import VerifierController from '../../controllers/v2/verifierController'
 import { lockManagerMiddleware } from '../../utils/lockManager'
 import { authenticatedMiddleware } from '../../utils/auth'
 
