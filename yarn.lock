@@ -15463,6 +15463,7 @@ __metadata:
     jest-mock-axios: 4.6.1
     jest-styled-components: 7.0.8
     js-base64: 3.7.2
+    lottie-react: ^2.2.1
     next: 12.1.6
     node-forge: 1.3.1
     postcss: 8.4.14
@@ -36333,6 +36334,25 @@ fsevents@~2.1.1:
   bin:
     loose-envify: cli.js
   checksum: 6517e24e0cad87ec9888f500c5b5947032cdfe6ef65e1c1936a0c48a524b81e65542c9c3edc91c97d5bddc806ee2a985dbc79be89215d613b1de5db6d1cfe6f4
+  languageName: node
+  linkType: hard
+
+"lottie-react@npm:^2.2.1":
+  version: 2.2.1
+  resolution: "lottie-react@npm:2.2.1"
+  dependencies:
+    lottie-web: ^5.8.1
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0
+    react-dom: ^16.8.0 || ^17.0.0
+  checksum: 37ca04e2baf0ae18def7e82b1746175a742410e8adcadd2d8c0f4206eee4dac65a4ba1d14709134fac2d8251d514b866af1d62e6d87fea345eb7af383e569efa
+  languageName: node
+  linkType: hard
+
+"lottie-web@npm:^5.8.1":
+  version: 5.9.4
+  resolution: "lottie-web@npm:5.9.4"
+  checksum: b7da159779791c92dc45bd7861bf37babef43a7139a6b12d0c1596773fbc338562e4547df766a42ce73516fe82ec790e8ddcebe7d4c9d7fa2ee4d42e0072904c
   languageName: node
   linkType: hard
 

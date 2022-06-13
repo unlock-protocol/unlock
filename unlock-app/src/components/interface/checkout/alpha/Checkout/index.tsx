@@ -8,6 +8,7 @@ import { Quantity } from './Quantity'
 import { Metadata } from './Metadata'
 import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
+import { Minting } from './Minting'
 
 interface Props {
   injectedProvider: unknown
@@ -22,6 +23,10 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
     },
     paywallConfig,
   })
+
+  const onClose = () => {
+    // TODO
+  }
 
   function Content() {
     switch (checkout.state.current) {
@@ -65,10 +70,20 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
           />
         )
       }
-
       case 'MESSAGE_TO_SIGN': {
         return (
           <MessageToSign
+            injectedProvider={injectedProvider}
+            paywallConfig={paywallConfig}
+            dispatch={dispatch}
+            state={checkout.state}
+          />
+        )
+      }
+      case 'MINTING': {
+        return (
+          <Minting
+            onClose={onClose}
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
             dispatch={dispatch}
@@ -81,8 +96,9 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
       }
     }
   }
+
   return (
-    <Shell.Root onClose={() => {}}>
+    <Shell.Root onClose={onClose}>
       <Shell.Head
         description={checkout.content.description}
         title={paywallConfig.title!}

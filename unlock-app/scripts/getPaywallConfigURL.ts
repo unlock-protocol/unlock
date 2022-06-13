@@ -1,7 +1,7 @@
 const paywallConfig = {
   title: 'Bakery.fyi',
   locks: {
-    '0x81aFDE0689618071CaCDBa5F8Bc46ea160f75265': {
+    '0xff6e45FdE991cf534d0253e241743cf4238b21D9': {
       name: 'Basic',
       network: 4,
     },
