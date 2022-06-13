@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
-import { getWalletInput } from '../../test-helpers/utils'
+import { loginRandomUser } from '../../test-helpers/utils'
 
 const app = require('../../../src/app')
 
@@ -31,11 +31,7 @@ describe('Verifier v2 endpoints for locksmith', () => {
   it('Get list items from lock with random address (not lockManager)', async () => {
     expect.assertions(2)
     const lock = await ethers.Wallet.createRandom().getAddress()
-    const { message, signedMessage } = await getWalletInput()
-    const loginResponse = await request(app).post('/v2/auth/login').send({
-      signature: signedMessage,
-      message: message.prepareMessage(),
-    })
+    const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
     const getListResponse = await request(app)
@@ -48,13 +44,7 @@ describe('Verifier v2 endpoints for locksmith', () => {
   it('Add add verifier and delete correctly', async () => {
     expect.assertions(3)
 
-    const { signedMessage, message } = await getWalletInput()
-
-    const loginResponse = await request(app).post('/v2/auth/login').send({
-      signature: signedMessage,
-      message: message.prepareMessage(),
-    })
-
+    const { loginResponse } = await loginRandomUser(app)
     const randomWallet = await ethers.Wallet.createRandom().getAddress()
     expect(loginResponse.status).toBe(200)
 
@@ -74,12 +64,7 @@ describe('Verifier v2 endpoints for locksmith', () => {
   it('Get verifiers list', async () => {
     expect.assertions(3)
 
-    const { signedMessage, message } = await getWalletInput()
-
-    const loginResponse = await request(app).post('/v2/auth/login').send({
-      signature: signedMessage,
-      message: message.prepareMessage(),
-    })
+    const { loginResponse } = await loginRandomUser(app)
 
     expect(loginResponse.status).toBe(200)
 
