@@ -25,7 +25,8 @@ contract('Lock / onTokenURIHook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address
+      testEventHooks.address,
+      ADDRESS_ZERO
     )
     const keyPrice = await lock.keyPrice()
     const tx = await lock.purchase(
@@ -60,7 +61,13 @@ contract('Lock / onTokenURIHook', (accounts) => {
 
   it('cannot set the hook to a non-contract address', async () => {
     await reverts(
-      lock.setEventHooks(ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO, accounts[3]),
+      lock.setEventHooks(
+        ADDRESS_ZERO,
+        ADDRESS_ZERO,
+        ADDRESS_ZERO,
+        accounts[3],
+        ADDRESS_ZERO
+      ),
       'INVALID_HOOK(3)'
     )
   })
