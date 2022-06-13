@@ -1,5 +1,5 @@
 import express from 'express'
-import { authMiddleware } from '../utils/auth'
+import { authMiddleware } from '../utils/middlewares/auth'
 
 const transactionRouter = require('./transaction')
 const lockRouter = require('./lock')
@@ -16,6 +16,7 @@ const authRouterV2 = require('./v2/auth')
 const metadataRouterV2 = require('./v2/metadata')
 const applicationRouter = require('./v2/application')
 const verifierRouter = require('./v2/verifier')
+const grantKeysRouter = require('./v2/grantKeys')
 
 const config = require('../../config/config')
 
@@ -52,6 +53,7 @@ router.use('/v2/auth', authRouterV2)
 router.use('/v2/applications', applicationRouter)
 router.use('/v2/api/metadata', metadataRouterV2)
 router.use('/v2/api/verifier', verifierRouter)
+router.use('/v2/api/grant', grantKeysRouter)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
