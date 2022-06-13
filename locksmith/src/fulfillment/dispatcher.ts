@@ -7,6 +7,11 @@ const config = require('../../config/config')
 const { GAS_COST } = require('../utils/keyPricer')
 const { getGasSettings } = require('../utils/gasSettings')
 
+interface KeyToGrant {
+  recipient: string
+  manager?: string
+  expiration?: number
+}
 export default class Dispatcher {
   async balances() {
     const balances = await Promise.all(
@@ -40,7 +45,7 @@ export default class Dispatcher {
    */
   async grantKeys(
     lockAddress: string,
-    recipients: string[],
+    keys: KeyToGrant[],
     network: number,
     cb?: any
   ) {
@@ -57,11 +62,26 @@ export default class Dispatcher {
 
     const transactionOptions = await getGasSettings(network)
 
+    const recipients: string[] = []
+    const keyManagers: string[] = []
+    const expirations: string[] = []
+    keys.forEach(({ recipient, manager, expiration }) => {
+      recipients.push(recipient)
+      if (manager) {
+        keyManagers.push(manager)
+      }
+      if (expiration) {
+        expirations.push(expiration.toString())
+      }
+    })
+
     await walletService.connect(provider, walletWithProvider)
     return walletService.grantKeys(
       {
         lockAddress,
         recipients,
+        keyManagers,
+        expirations,
         transactionOptions,
       },
       cb

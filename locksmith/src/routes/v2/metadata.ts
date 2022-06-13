@@ -2,7 +2,7 @@ import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import express from 'express'
 import { MetadataController } from '../../controllers/v2/metadataController'
-import { authenticatedMiddleware } from '../../utils/auth'
+import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 
 const router = express.Router({ mergeParams: true })
 

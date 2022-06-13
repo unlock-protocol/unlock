@@ -1,9 +1,8 @@
 import { RequestHandler } from 'express'
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import Normalizer from './normalizer'
+import Normalizer from '../normalizer'
 
-const web3Service = new Web3Service(networks)
 export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
   const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
   const network = Number(req.params.network)
@@ -20,6 +19,8 @@ export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
       message: 'Missing network',
     })
   }
+
+  const web3Service = new Web3Service(networks)
 
   const isLockManager = await web3Service.isLockManager(
     lockAddress,
