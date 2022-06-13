@@ -87,6 +87,10 @@ export class GrantKeysController {
       return
     } catch (error) {
       console.error(error)
+      response.status(500).send({
+        error: 'There was an error granting keys. Please try again.',
+      })
+      return
     }
   }
 }
