@@ -1,7 +1,7 @@
 import express from 'express'
 import { VerifierController } from '../../controllers/v2/verifierController'
-import { lockManagerMiddleware } from '../../utils/lockManager'
-import { authenticatedMiddleware } from '../../utils/auth'
+import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
+import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 
 const router = express.Router({ mergeParams: true })
 

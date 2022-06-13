@@ -1,6 +1,9 @@
 import express, { Request } from 'express'
 import { ApplicationController } from '../../controllers/v2/applicationController'
-import { authenticatedMiddleware, userOnlyMiddleware } from '../../utils/auth'
+import {
+  authenticatedMiddleware,
+  userOnlyMiddleware,
+} from '../../utils/middlewares/auth'
 
 const router = express.Router({ mergeParams: true })
 

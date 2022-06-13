@@ -3,7 +3,10 @@ import { ErrorTypes, generateNonce, SiweMessage } from 'siwe'
 import { Op } from 'sequelize'
 import { logger } from '../../logger'
 import { RefreshToken } from '../../models/refreshToken'
-import { createAccessToken, createRandomToken } from '../../utils/auth'
+import {
+  createAccessToken,
+  createRandomToken,
+} from '../../utils/middlewares/auth'
 
 export class AuthController {
   async login(request: Request, response: Response) {
