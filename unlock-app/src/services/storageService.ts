@@ -1,4 +1,4 @@
-import { decodeToken } from 'react-jwt'
+import { decodeToken, isExpired } from 'react-jwt'
 import axios from 'axios'
 import { EventEmitter } from 'events'
 import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
@@ -75,6 +75,7 @@ export class StorageService extends EventEmitter {
 
   setToken(token: string) {
     this.accessToken = token
+    sessionStorage.setItem('token', token)
     const decoded: any = decodeToken(token)
     const expireAt: number = decoded?.exp ?? -1
     if (decoded && expireAt) {
@@ -87,29 +88,36 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
-    try {
-      const message = await this.getSiweMessage({
-        address,
-        chainId,
-      })
-      const signature = await walletService.signMessage(
-        message,
-        'personal_sign'
-      )
-      const { accessToken } = await this.login(message, signature)
-      this.setToken(accessToken)
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
   get token() {
-    return this.accessToken
+    return this.accessToken || sessionStorage.getItem('token')
   }
 
   async refreshToken(token: string) {
     return this.locksmith.refreshToken(token)
+  }
+
+  async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
+    try {
+      const currentToken = this.token || sessionStorage.getItem('token')
+
+      // force login only when token is expired
+      if (isExpired(currentToken || '') || !currentToken) {
+        const message = await this.getSiweMessage({
+          address,
+          chainId,
+        })
+        const signature = await walletService.signMessage(
+          message,
+          'personal_sign'
+        )
+        const { accessToken } = await this.login(message, signature)
+        this.setToken(accessToken)
+      } else {
+        this.setToken(currentToken)
+      }
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   async getSiweMessage({
