@@ -2,6 +2,7 @@ import { RequestHandler } from 'express'
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import Normalizer from './normalizer'
+import logger from '../logger'
 
 const web3Service = new Web3Service(networks)
 export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
@@ -34,6 +35,7 @@ export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
       })
     }
   } catch (err) {
+    logger.error(err.message)
     return res.status(422).send({
       message: `There is some problem, please try again`,
     })
