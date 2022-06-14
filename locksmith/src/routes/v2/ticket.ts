@@ -7,7 +7,7 @@ const router = express.Router({ mergeParams: true })
 
 const ticketsController = new TicketsController()
 
-router.post(
+router.get(
   '/:network/:lockAddress/:tokenId/sign',
   authenticatedMiddleware,
   keyOwnerMiddleware,

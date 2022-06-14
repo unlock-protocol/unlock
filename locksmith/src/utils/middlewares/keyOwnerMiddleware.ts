@@ -6,7 +6,7 @@ import Normalizer from '../normalizer'
 export const keyOwnerMiddleware: RequestHandler = async (req, res, next) => {
   const network = Number(req.params.network)
   const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
-  const tokenId = Normalizer.ethereumAddress(req.params.tokenId)
+  const tokenId = req.params.tokenId
   const userAddress = Normalizer.ethereumAddress(req.user!.walletAddress!)
 
   if (!lockAddress) {
@@ -28,7 +28,6 @@ export const keyOwnerMiddleware: RequestHandler = async (req, res, next) => {
   }
 
   const web3Service = new Web3Service(networks)
-
   const tokenOwner = await web3Service.ownerOf(lockAddress, tokenId, network)
 
   if (tokenOwner !== userAddress) {

@@ -191,6 +191,7 @@ export default class Dispatcher {
       network,
       account,
       lockAddress,
+      tokenId,
       timestamp: Date.now(),
     })
 

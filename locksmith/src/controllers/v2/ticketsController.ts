@@ -22,6 +22,6 @@ export class TicketsController {
       lockAddress,
       tokenId
     )
-    response.status(200).send([payload, signature])
+    response.status(200).send({ payload, signature })
   }
 }
