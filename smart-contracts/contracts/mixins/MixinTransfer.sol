@@ -189,6 +189,7 @@ contract MixinTransfer is
       revert TRANSFER_TO_SELF();
     }
 
+
     // subtract the fee from the senders key before the transfer
     _timeMachine(_tokenId, getTransferFee(_tokenId, 0), false);  
 
