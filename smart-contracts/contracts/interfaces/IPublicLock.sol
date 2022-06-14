@@ -519,8 +519,6 @@ interface IPublicLock
   */
   function lendKey(address from, address to, uint tokenId) external;
 
-
-
   function approve(address to, uint256 tokenId) external;
 
   /**
