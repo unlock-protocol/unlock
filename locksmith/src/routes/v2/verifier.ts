@@ -32,4 +32,11 @@ router.get(
   (req, res) => verifierController.isVerifierEnabled(req, res)
 )
 
+router.put(
+  '/:network/lock/:lockAddress/key/:keyId/check',
+  lockManagerMiddleware,
+  (req, res) => {
+    verifierController.markTicketAsCheckIn(req, res)
+  }
+)
 module.exports = router

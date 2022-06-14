@@ -4,6 +4,7 @@ import logger from '../../logger'
 import { Verifier } from '../../models/verifier'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import * as metadataOperations from '../../operations/metadataOperations'
 
 export default class VerifierController {
   public web3Service: Web3Service
@@ -54,6 +55,36 @@ export default class VerifierController {
       lockManager,
       network
     )
+  }
+
+  async #isVerifier({
+    lockAddress,
+    address,
+    network,
+  }: {
+    lockAddress: string
+    address: string
+    network: number
+  }) {
+    let isLockManager = false
+
+    const isVerifier = await Verifier.findOne({
+      where: {
+        lockAddress,
+        address,
+        network,
+      },
+    })
+
+    if (!isVerifier) {
+      isLockManager = await this.#isLockManager({
+        lockAddress,
+        lockManager: address,
+        network,
+      })
+    }
+    console.log('isVerifier', isVerifier?.id !== undefined || isLockManager)
+    return isVerifier?.id !== undefined || isLockManager
   }
 
   // for a lock manager to list all verifiers for a specicifc lock address
@@ -169,25 +200,12 @@ export default class VerifierController {
       const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
 
-      let isLockManager = false
-
-      const isVerifier = await Verifier.findOne({
-        where: {
-          lockAddress,
-          address,
-          network,
-        },
+      const isEnabled = await this.#isVerifier({
+        lockAddress,
+        address,
+        network,
       })
 
-      if (!isVerifier) {
-        isLockManager = await this.#isLockManager({
-          lockAddress,
-          lockManager: address,
-          network,
-        })
-      }
-
-      const isEnabled = isVerifier?.id !== undefined || isLockManager
       return response.status(200).send({
         enabled: isEnabled,
       })
@@ -196,6 +214,43 @@ export default class VerifierController {
       return response.status(500).send({
         message: 'There were some problems checking verifier status.',
       })
+    }
+  }
+
+  async markTicketAsCheckIn(request: Request, response: Response) {
+    const viewerAddress = Normalizer.ethereumAddress(
+      request.user!.walletAddress!
+    )
+    const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+    const network = Number(request.params.network)
+    const metadata = request.body.message.KeyMetaData
+    const id = request.params.keyId.toLowerCase()
+
+    const isVerifier = this.#isVerifier({
+      lockAddress,
+      address: viewerAddress,
+      network,
+    })
+
+    if (!isVerifier) {
+      return response.status(401).send({
+        message: 'Not authorized verifier for this operation.',
+      })
+    } else {
+      const successfulUpdate = await metadataOperations.updateKeyMetadata({
+        chain: network,
+        address: lockAddress,
+        id,
+        data: metadata,
+      })
+
+      if (successfulUpdate) {
+        return response.sendStatus(202)
+      } else {
+        return response.status(400).send({
+          message: 'update failed',
+        })
+      }
     }
   }
 }

@@ -179,7 +179,6 @@ export const ValidKey = ({
   const checkIn = async () => {
     if (!viewer) return
     const success = await markAsCheckedIn(viewer, unlockKey.tokenId)
-    console.log('success', success)
     if (success) {
       setCheckedIn(true)
     } else {
@@ -234,7 +233,7 @@ export const ValidKey = ({
         setLoading(false)
         return
       }
-      //await siweLogin()
+      await siweLogin()
       const isVerifier = await getVerifierStatus(viewer)
       setViewerIsVerifier(isVerifier)
       if (isVerifier) {

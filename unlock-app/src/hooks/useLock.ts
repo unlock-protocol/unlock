@@ -563,18 +563,13 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
         checkedInAt: new Date().getTime(),
       },
     })
-    const signature = await walletService.unformattedSignTypedData(
-      signer,
-      payload
-    )
     const storageService = new StorageService(config.services.storage.host)
-    const response = await storageService.setKeyMetadata(
-      lockFromProps.address,
+    const response = await storageService.setKeyMetadataWithVerifier({
+      lockAddress: lockFromProps.address,
       keyId,
       payload,
-      signature,
-      network
-    )
+      network,
+    })
     return response.status === 202
   }
 

@@ -572,6 +572,30 @@ export class StorageService extends EventEmitter {
     })
   }
 
+  async setKeyMetadataWithVerifier({
+    lockAddress,
+    keyId,
+    payload,
+    network,
+  }: {
+    lockAddress: string
+    keyId: string
+    payload: any
+    network: number
+  }) {
+    return this.getEndpoint(
+      `/v2/api/verifier/${network}/lock/${lockAddress}/key/${keyId}/check`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      },
+      true
+    )
+  }
+
   /**
    *
    * @param {*} lockAddress
