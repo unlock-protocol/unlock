@@ -131,10 +131,7 @@ contract MixinTransfer is
     public
   {
     _isValidKey(_tokenId);
-    if(
-      // the specified address does not own the token
-      ownerOf(_tokenId) != _from
-      || 
+    if( 
       ( // the sender is not owner or authorized
         ownerOf(_tokenId) != msg.sender
         && approved[_tokenId] != msg.sender
@@ -154,7 +151,7 @@ contract MixinTransfer is
   * @param _from the owner of token to transfer
   * @param _recipient the address that will receive the token
   * @param _tokenId the id of the token
-  * @notice This requires the `msg.sender` to be set as a key manager 
+  * @notice This requires the key manager to be set 
   */
 
   function lendKey(
@@ -166,7 +163,7 @@ contract MixinTransfer is
   {
     _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
-    if(ownerOf(_tokenId) != _from && keyManagerOf[_tokenId] != msg.sender) {
+    if(keyManagerOf[_tokenId] == address(0)) {
       revert UNAUTHORIZED();
     }
     _transferFrom(_from, _recipient, _tokenId);
@@ -182,6 +179,9 @@ contract MixinTransfer is
     uint _tokenId
   ) private {
 
+    if(ownerOf(_tokenId) != _from) {
+      revert UNAUTHORIZED();
+    }
     if(transferFeeBasisPoints >= BASIS_POINTS_DEN) {
       revert KEY_TRANSFERS_DISABLED();
     }
@@ -191,6 +191,7 @@ contract MixinTransfer is
     if(_from == _recipient) {
       revert TRANSFER_TO_SELF();
     }
+
 
     // subtract the fee from the senders key before the transfer
     _timeMachine(_tokenId, getTransferFee(_tokenId, 0), false);  
@@ -213,7 +214,6 @@ contract MixinTransfer is
     _createOwnershipRecord(_tokenId, _recipient);
 
     // clear any previous approvals
-    _setKeyManagerOf(_tokenId, address(0));
     _clearApproval(_tokenId);
 
     // make future reccuring transactions impossible
