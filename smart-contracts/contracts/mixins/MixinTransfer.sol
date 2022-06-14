@@ -117,8 +117,11 @@ contract MixinTransfer is
   * @param _from the owner of token to transfer
   * @param _recipient the address that will receive the token
   * @param _tokenId the id of the token
-  * @notice To prevent the key manager to retain ownership rights on the token after transfer, the 
+  * @notice Requirements:
+  * - To prevent the key manager to retain ownership rights on the token after transfer, the 
   * operation will fail if a key manager if set. 
+  * - If the caller is not `from`, it must be approved to move this token by
+  * either {approve} or {setApprovalForAll}.
   */
   function transferFrom(
     address _from,
@@ -142,6 +145,43 @@ contract MixinTransfer is
     ) {
       revert UNAUTHORIZED();
     }
+    _transferFrom(_from, _recipient, _tokenId);
+  }
+
+  /** 
+  * Lending a key allows you to transfer the token while retaining the 
+  * ownerships right by setting yourself as a key manager first
+  * @param _from the owner of token to transfer
+  * @param _recipient the address that will receive the token
+  * @param _tokenId the id of the token
+  * @notice This requires the `msg.sender` to be set as a key manager 
+  */
+
+  function lendKey(
+    address _from,
+    address _recipient,
+    uint _tokenId
+  )
+    public
+  {
+    _isValidKey(_tokenId);
+    _onlyKeyManagerOrApproved(_tokenId);
+    if(ownerOf(_tokenId) != _from && keyManagerOf[_tokenId] != msg.sender) {
+      revert UNAUTHORIZED();
+    }
+    _transferFrom(_from, _recipient, _tokenId);
+  }
+
+  /**
+   * This functions contains the logic to transfer a token
+   * from an account to another
+   */
+  function _transferFrom(
+    address _from,
+    address _recipient,
+    uint _tokenId
+  ) private {
+
     if(transferFeeBasisPoints >= BASIS_POINTS_DEN) {
       revert KEY_TRANSFERS_DISABLED();
     }
