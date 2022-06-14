@@ -685,4 +685,10 @@ export class StorageService extends EventEmitter {
       return false
     }
   }
+
+  getLockImage(lockAddress: string): string {
+    return lockAddress
+      ? `${this.host}/lock/${lockAddress}/icon`
+      : '/images/svg/default-lock-logo.svg'
+  }
 }

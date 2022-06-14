@@ -11,6 +11,11 @@ import Loading from '../Loading'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { useStorageService } from '~/utils/withStorageService'
 import { WalletServiceContext } from '~/utils/withWalletService'
+import {
+  AvatarImage,
+  Root as Avatar,
+  Fallback as AvatarFallback,
+} from '@radix-ui/react-avatar'
 
 interface InvalidKeyProps {
   reason: string
@@ -59,6 +64,8 @@ export const ValidKeyWithMetadata = ({
   lock,
 }: ValidKeyWithMetadataProps) => {
   const expirationDate = expirationAsDate(unlockKey.expiration)
+  const storageService = useStorageService()
+
   let box = (
     <Box color="--green">
       <Circle>
@@ -99,9 +106,29 @@ export const ValidKeyWithMetadata = ({
     <Wrapper>
       {box}
       <KeyInfo>
-        <Label>Lock Name</Label>
-        <Value>{lock.name}</Value>
-        <Label>Token Id</Label>
+        <div className="flex mb-3">
+          <Avatar className="flex items-center justify-center w-12 h-12 border rounded-full">
+            <AvatarImage
+              className="rounded-full"
+              alt={lock.name}
+              src={storageService.getLockImage(lock.address)}
+              width={50}
+              height={50}
+            />
+            <AvatarFallback className="uppercase" delayMs={100}>
+              {lock.name.slice(0, 2)}
+            </AvatarFallback>
+          </Avatar>
+          <div className="ml-3">
+            <div className="flex">
+              <Label>
+                Lock Name
+                <strong className="text-sm block"> {lock.name}</strong>
+              </Label>
+            </div>
+          </div>
+        </div>
+        <Label>Token id</Label>
         <Value>{unlockKey.tokenId}</Value>
         <Label>Owner Address</Label>
         <Value>{owner}</Value>
@@ -152,6 +179,7 @@ export const ValidKey = ({
   const checkIn = async () => {
     if (!viewer) return
     const success = await markAsCheckedIn(viewer, unlockKey.tokenId)
+    console.log('success', success)
     if (success) {
       setCheckedIn(true)
     } else {
@@ -206,7 +234,7 @@ export const ValidKey = ({
         setLoading(false)
         return
       }
-      await siweLogin()
+      //await siweLogin()
       const isVerifier = await getVerifierStatus(viewer)
       setViewerIsVerifier(isVerifier)
       if (isVerifier) {
