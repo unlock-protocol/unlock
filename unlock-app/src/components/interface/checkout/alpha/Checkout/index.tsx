@@ -9,6 +9,7 @@ import { Metadata } from './Metadata'
 import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
+import { CardPayment } from './CardPayment'
 
 interface Props {
   injectedProvider: unknown
@@ -20,6 +21,7 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
   const { checkout, dispatch } = useCheckout({
     initialState: {
       current: 'SELECT',
+      payment: 'crypto',
     },
     paywallConfig,
   })
@@ -43,6 +45,16 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
       case 'QUANTITY': {
         return (
           <Quantity
+            injectedProvider={injectedProvider}
+            paywallConfig={paywallConfig}
+            dispatch={dispatch}
+            state={checkout.state}
+          />
+        )
+      }
+      case 'CARD': {
+        return (
+          <CardPayment
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
             dispatch={dispatch}
