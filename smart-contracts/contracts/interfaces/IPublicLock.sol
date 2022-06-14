@@ -481,9 +481,9 @@ interface IPublicLock
   
   /** 
   * an ERC721-like function to transfer a token from one account to another
-  * @param _from the owner of token to transfer
-  * @param _recipient the address that will receive the token
-  * @param _tokenId the id of the token
+  * @param from the owner of token to transfer
+  * @param to the address that will receive the token
+  * @param tokenId the id of the token
   * @notice Requirements:
   * - To prevent the key manager to retain ownership rights on the token after transfer, the 
   * operation will fail if a key manager if set. 
@@ -495,13 +495,13 @@ interface IPublicLock
   /** 
   * Lending a key allows you to transfer the token while retaining the 
   * ownerships right by setting yourself as a key manager first
-  * @param _from the owner of token to transfer
-  * @param _recipient the address that will receive the token
-  * @param _tokenId the id of the token
+  * @param from the owner of token to transfer
+  * @param to the address that will receive the token
+  * @param tokenId the id of the token
   * @notice This requires the `msg.sender` to be set as a key manager 
   */
 
-  function lendKey(address _from, address _recipient, uint _tokenId) external;
+  function lendKey(address from, address to, uint tokenId) external;
 
 
 
