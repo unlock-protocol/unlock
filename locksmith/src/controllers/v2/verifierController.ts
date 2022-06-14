@@ -4,7 +4,8 @@ import logger from '../../logger'
 import { Verifier } from '../../models/verifier'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
-export class VerifierController {
+
+export default class VerifierController {
   public web3Service: Web3Service
 
   constructor() {
@@ -167,14 +168,6 @@ export class VerifierController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
-
-      const verifierMatchesLoggedUser = request.user?.walletAddress === address
-
-      if (!verifierMatchesLoggedUser) {
-        return response.status(401).send({
-          message: `User not authorized`,
-        })
-      }
 
       let isLockManager = false
 
