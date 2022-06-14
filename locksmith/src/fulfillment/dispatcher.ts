@@ -1,4 +1,4 @@
-import { WalletService } from '@unlock-protocol/unlock-js'
+import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import logger from '../logger'
@@ -170,5 +170,32 @@ export default class Dispatcher {
       maxFeePerGas,
       maxPriorityFeePerGas,
     })
+  }
+
+  /**
+   * Function that lets the purchaser sign a to proove ownership of a token (personal_sign)
+   * @param network
+   * @param lockAddress
+   * @param tokenId
+   * @returns [payload: string, signature: string]
+   */
+  async signToken(network, lockAddress, tokenId) {
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].publicProvider
+    )
+    const web3Service = new Web3Service(networks)
+
+    const account = await web3Service.ownerOf(lockAddress, tokenId, network)
+
+    const payload = JSON.stringify({
+      network,
+      account,
+      lockAddress,
+      timestamp: Date.now(),
+    })
+
+    const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
+
+    return [payload, await wallet.signMessage(payload)]
   }
 }
