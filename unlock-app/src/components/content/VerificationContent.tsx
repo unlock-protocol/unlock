@@ -5,7 +5,6 @@ import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import VerificationStatus from '../interface/VerificationStatus'
 import { pageTitle } from '../../constants'
-import Authenticate from '../interface/Authenticate'
 import Loading from '../interface/Loading'
 import LocksContext from '../../contexts/LocksContext'
 
@@ -41,17 +40,15 @@ export const VerificationContent = () => {
       <Head>
         <title>{pageTitle('Verification')}</title>
       </Head>
-      <Authenticate optional>
-        <Account />
-        <LocksContext.Provider
-          value={{
-            locks,
-            addLock,
-          }}
-        >
-          <VerificationStatus data={data} sig={sig} hexData={hexData} />
-        </LocksContext.Provider>
-      </Authenticate>
+      <Account />
+      <LocksContext.Provider
+        value={{
+          locks,
+          addLock,
+        }}
+      >
+        <VerificationStatus data={data} sig={sig} hexData={hexData} />
+      </LocksContext.Provider>
     </Layout>
   )
 }

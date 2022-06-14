@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { useLock } from '../../../hooks/useLock'
 import Svg from '../svg'
@@ -10,6 +10,7 @@ import { ActionButton } from '../buttons/ActionButton'
 import Loading from '../Loading'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { useStorageService } from '~/utils/withStorageService'
+import { WalletServiceContext } from '~/utils/withWalletService'
 
 interface InvalidKeyProps {
   reason: string
@@ -39,7 +40,7 @@ interface ValidKeyWithMetadataProps {
   lock: any
   owner: string
   timeElapsedSinceSignature: string
-  viewerIsLockOwnerOrVerifier: boolean
+  viewerIsVerifier: boolean
   checkIn: () => any
   checkedIn: boolean
 }
@@ -52,7 +53,7 @@ export const ValidKeyWithMetadata = ({
   owner,
   keyData,
   timeElapsedSinceSignature,
-  viewerIsLockOwnerOrVerifier,
+  viewerIsVerifier,
   checkIn,
   checkedIn,
   lock,
@@ -108,7 +109,7 @@ export const ValidKeyWithMetadata = ({
         <Value>{timeElapsedSinceSignature}</Value>
         {keyData?.userMetadata && attributes(keyData?.userMetadata.protected)}
         {keyData?.userMetadata && attributes(keyData?.userMetadata.public)}
-        {viewerIsLockOwnerOrVerifier && (
+        {viewerIsVerifier && (
           <CheckInButton onClick={checkIn} disabled={alreadyCheckedIn}>
             {!alreadyCheckedIn && 'Mark as Checked-In'}
             {alreadyCheckedIn && 'Already Checked-In'}
@@ -142,11 +143,11 @@ export const ValidKey = ({
 }: ValidKeyProps) => {
   const [checkedIn, setCheckedIn] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [viewerIsLockOwner, setViewerIsLockOwner] = useState(false)
+  const [viewerIsVerifier, setViewerIsVerifier] = useState(false)
   const [keyData, setKeyData] = useState({})
-  const [isVerifier, setIsVerifier] = useState(false)
-  const { isLockManager, getKeyData, markAsCheckedIn } = useLock(lock, network)
+  const { getKeyData, markAsCheckedIn } = useLock(lock, network)
   const storageService = useStorageService()
+  const walletService = useContext(WalletServiceContext)
 
   const checkIn = async () => {
     if (!viewer) return
@@ -156,6 +157,14 @@ export const ValidKey = ({
     } else {
       ToastHelper.error('We could not mark this membership as checked in')
     }
+  }
+
+  const siweLogin = async () => {
+    await storageService.loginPrompt({
+      walletService,
+      address: viewer!,
+      chainId: network!,
+    })
   }
 
   const getVerifierStatus = async (verifier: string) => {
@@ -168,7 +177,7 @@ export const ValidKey = ({
         .getEndpoint(
           `/v2/api/verifier/enabled/${network}/${lock.address}/${verifier}`,
           options,
-          false
+          true
         )
         .then((res: any) => {
           if (res.message) {
@@ -197,15 +206,13 @@ export const ValidKey = ({
         setLoading(false)
         return
       }
-      const _isLockManager = await isLockManager(viewer)
-      const isVerifierEnabled = await getVerifierStatus(viewer)
-      setIsVerifier(isVerifierEnabled)
-      if (_isLockManager || isVerifierEnabled) {
-        setViewerIsLockOwner(true)
+      await siweLogin()
+      const isVerifier = await getVerifierStatus(viewer)
+      setViewerIsVerifier(isVerifier)
+      if (isVerifier) {
         const metadata = (await getKeyData(unlockKey.tokenId, viewer)) as any
         setKeyData(metadata || {})
       } else {
-        setViewerIsLockOwner(false)
         // @ts-ignore
         const metadata = (await getKeyData(unlockKey.tokenId)) as any
         setKeyData(metadata || {})
@@ -219,10 +226,9 @@ export const ValidKey = ({
     return <Loading />
   }
 
-  const viewerIsLockOwnerOrVerifier = viewerIsLockOwner || isVerifier
   return (
     <ValidKeyWithMetadata
-      viewerIsLockOwnerOrVerifier={viewerIsLockOwnerOrVerifier}
+      viewerIsVerifier={viewerIsVerifier}
       unlockKey={unlockKey}
       timeElapsedSinceSignature={durationsAsTextFromSeconds(
         secondsElapsedFromSignature

@@ -665,7 +665,7 @@ export class StorageService extends EventEmitter {
         ...params,
         headers: {
           ...params.headers,
-          Authorization: `Bearer ${this.accessToken}`,
+          Authorization: `Bearer ${this.token}`,
         },
       }
     }

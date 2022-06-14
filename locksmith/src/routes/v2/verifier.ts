@@ -1,3 +1,4 @@
+import { userMatchAddress } from './../../utils/middlewares/userMatchAddress'
 import express from 'express'
 import VerifierController from '../../controllers/v2/verifierController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
@@ -25,8 +26,10 @@ router.delete(
   (req, res) => verifierController.removeVerifier(req, res)
 )
 
-router.get('/enabled/:network/:lockAddress/:verifierAddress', (req, res) =>
-  verifierController.isVerifierEnabled(req, res)
+router.get(
+  '/enabled/:network/:lockAddress/:verifierAddress',
+  userMatchAddress,
+  (req, res) => verifierController.isVerifierEnabled(req, res)
 )
 
 module.exports = router
