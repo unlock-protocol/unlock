@@ -179,7 +179,7 @@ export default class Dispatcher {
    * @param tokenId
    * @returns [payload: string, signature: string]
    */
-  async signToken(network, lockAddress, tokenId) {
+  async signToken(network: number, lockAddress: string, tokenId: string) {
     const provider = new ethers.providers.JsonRpcProvider(
       networks[network].publicProvider
     )

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
-import logger from '../../logger'
 import Dispatcher from '../../fulfillment/dispatcher'
 
 export class TicketsController {
