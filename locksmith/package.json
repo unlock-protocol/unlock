@@ -73,6 +73,7 @@
     "parse-data-uri": "0.2.0",
     "path-to-regexp": "6.2.1",
     "pg": "8.7.3",
+    "qrcode": "^1.5.0",
     "random-words": "1.1.2",
     "reflect-metadata": "0.1.13",
     "request": "2.88.2",
