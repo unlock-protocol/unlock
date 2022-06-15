@@ -65,7 +65,7 @@ contract MixinKeys is
   // the transfer of a key to another address where their key can be transferred
   // Note: the approver may actually NOT have a key... and there can only
   // be a single approved address
-  mapping (uint => address) private approved;
+  mapping (uint => address) internal approved;
 
   // Keeping track of approved operators for a given Key manager.
   // This approves a given operator for all keys managed by the calling "keyManager"
