@@ -25,11 +25,21 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
     uint minKeyPrice,
     uint pricePaid
   );
+
   event OnKeyCancel(
     address lock,
     address operator,
     address to,
     uint refund
+  );
+  
+  event OnKeyTransfer(
+    address lock,
+    uint tokenId,
+    address operator,
+    address from,
+    address to,
+    uint time
   );
 
   uint public discount;
@@ -83,6 +93,25 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
   ) external
   {
     emit OnKeyCancel(msg.sender, _operator, _to, _refund);
+  }
+  
+  function onKeyTransfer(
+    address _lockAddress,
+    uint _tokenId,
+    address _operator,
+    address _from,
+    address _to,
+    uint _expirationTimestamp
+  ) external
+  {
+    emit OnKeyTransfer(
+      _lockAddress, // lock address
+      _tokenId,
+      _operator,
+      _from, 
+      _to, 
+      _expirationTimestamp
+    );
   }
 
   // test case for valid key hook

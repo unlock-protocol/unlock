@@ -5,7 +5,7 @@ const { ADDRESS_ZERO } = require('../../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
 const Erc1155TokenUriHook = artifacts.require('ERC1155BalanceOfHook')
 const TestERC1155 = artifacts.require('TestERC1155')
-const getProxy = require('../../helpers/proxy')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 let lock
 let unlock
@@ -20,7 +20,7 @@ contract('ERC1155BalanceOfHook', (accounts) => {
   const keyOwner = accounts[3]
 
   beforeEach(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
 
@@ -35,6 +35,7 @@ contract('ERC1155BalanceOfHook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       hook.address,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
   })

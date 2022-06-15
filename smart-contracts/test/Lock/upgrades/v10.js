@@ -1,31 +1,10 @@
-const { ethers, upgrades, run } = require('hardhat')
+const { ethers, upgrades } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
-const fs = require('fs-extra')
-const path = require('path')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
-
-// const {
-//   LATEST_PUBLIC_LOCK_VERSION,
-// } = require('../helpers/constants')
-
-// files path
-const contractsPath = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'contracts',
-  'past-versions'
-)
-const artifactsPath = path.resolve(
-  __dirname,
-  '..',
-  '..',
-  '..',
-  'artifacts',
-  'contracts',
-  'past-versions'
-)
+const {
+  getContractFactoryAtVersion,
+  cleanupPastContracts,
+} = require('../../helpers/versions')
 
 const versionNumber = 9
 const keyPrice = ethers.utils.parseEther('0.01')
@@ -35,42 +14,21 @@ describe('PublicLock upgrade  v9 > v10', () => {
   let PublicLockLatest
   let PublicLockPast
 
+  after(async () => await cleanupPastContracts())
+
   before(async function copyAndBuildContract() {
-    // make sure mocha doesnt time out
     this.timeout(200000)
-
-    await fs.copy(
-      require.resolve(
-        `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${versionNumber}.sol`
-      ),
-      path.resolve(contractsPath, `PublicLockV${versionNumber}.sol`)
+    PublicLockPast = await getContractFactoryAtVersion(
+      'PublicLock',
+      versionNumber
     )
-    await fs.copy(
-      require.resolve(
-        `@unlock-protocol/contracts/dist/PublicLock/PublicLockV${
-          versionNumber + 1
-        }.sol`
-      ),
-      path.resolve(contractsPath, `PublicLockV${versionNumber + 1}.sol`)
+    PublicLockLatest = await getContractFactoryAtVersion(
+      'PublicLock',
+      versionNumber + 1
     )
-
-    // re-compile contract using hardhat
-    await run('compile')
-  })
-
-  after(async () => {
-    await fs.remove(contractsPath)
-    await fs.remove(artifactsPath)
   })
 
   beforeEach(async () => {
-    PublicLockPast = await ethers.getContractFactory(
-      `contracts/past-versions/PublicLockV${versionNumber}.sol:PublicLock`
-    )
-    PublicLockLatest = await ethers.getContractFactory(
-      `contracts/past-versions/PublicLockV${versionNumber + 1}.sol:PublicLock`
-    )
-
     const [, lockOwner] = await ethers.getSigners()
     // deploy a simple lock
     const args = [

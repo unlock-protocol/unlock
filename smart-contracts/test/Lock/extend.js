@@ -4,7 +4,7 @@ const { ethers } = require('hardhat')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 
 const deployLocks = require('../helpers/deployLocks')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -37,7 +37,7 @@ contract('Lock / extend keys', (accounts) => {
           from: lockOwner,
         })
 
-        unlock = await getProxy(unlockContract)
+        unlock = await getContractInstance(unlockContract)
         locks = await deployLocks(unlock, lockOwner, tokenAddress)
         lock = locks.FIRST
         nonExpiringLock = locks.NON_EXPIRING

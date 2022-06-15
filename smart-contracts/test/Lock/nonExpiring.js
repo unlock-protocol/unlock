@@ -6,7 +6,7 @@ const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
-const getProxy = require('../helpers/proxy')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 let lock
 let locks
@@ -19,7 +19,7 @@ contract('Lock / non expiring', (accounts) => {
   let tokenId
 
   before(async () => {
-    unlock = await getProxy(unlockContract)
+    unlock = await getContractInstance(unlockContract)
   })
 
   beforeEach(async () => {

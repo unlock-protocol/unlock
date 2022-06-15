@@ -38,7 +38,9 @@ async function getImplementationAddress(proxyAddress) {
 const parseDeploymentInfo = async (contractName, instance, isProxy) => {
   // eslint-disable-next-line global-require
   const { artifacts } = require('hardhat')
-  const artifact = await artifacts.readArtifact(contractName)
+  const artifact = await artifacts.readArtifact(
+    `contracts/${contractName}.sol:${contractName}`
+  )
   const receipt = await instance.deployTransaction.wait()
 
   const deployment = {

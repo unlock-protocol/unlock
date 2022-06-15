@@ -1,6 +1,6 @@
 const { ethers, upgrades } = require('hardhat')
 const { copySync } = require('fs-extra')
-const { addDeployment } = require('../helpers/deployments')
+const { addDeployment } = require('../../helpers/deployments')
 
 module.exports = async () => {
   // when running a mainnet fork
@@ -15,22 +15,18 @@ module.exports = async () => {
   const [unlockOwner, minter] = await ethers.getSigners()
 
   // 1. deploying Unlock with a proxy
-  const Unlock = await ethers.getContractFactory('Unlock')
+  const Unlock = await ethers.getContractFactory('contracts/Unlock.sol:Unlock')
 
   const unlock = await upgrades.deployProxy(Unlock, [unlockOwner.address], {
     initializer: 'initialize(address)',
   })
   await unlock.deployed()
 
-  // save deployment info
-  await addDeployment('Unlock', unlock, true)
-
   // 2. deploying PublicLock
-  const PublicLock = await ethers.getContractFactory('PublicLock')
+  const PublicLock = await ethers.getContractFactory(
+    'contracts/PublicLock.sol:PublicLock'
+  )
   const publicLock = await PublicLock.deploy()
-
-  // save deployment info
-  await addDeployment('PublicLock', publicLock)
 
   // 3. setting lock template
   const version = await publicLock.publicLockVersion()
@@ -39,19 +35,24 @@ module.exports = async () => {
 
   // 5. deploy UDT (v3)
   const UDTv3 = await ethers.getContractFactory('UnlockDiscountTokenV3')
-  const tokenv3 = await upgrades.deployProxy(UDTv3, [minter.address], {
+  const udt = await upgrades.deployProxy(UDTv3, [minter.address], {
     initializer: 'initialize(address)',
   })
-  await tokenv3.deployed()
+  await udt.deployed()
 
-  // save deployment info
-  await addDeployment('UnlockDiscountTokenV3', tokenv3, true)
+  await addDeployment('UnlockDiscountTokenV3', udt, true)
 
   // 5. deploy Gov
   const Governor = await ethers.getContractFactory('UnlockProtocolGovernor')
   const gov = await Governor.deploy()
   await gov.deployed()
 
-  // save deployment info
   await addDeployment('UnlockProtocolGovernor', gov, true)
+
+  return {
+    unlock,
+    publicLock,
+    udt,
+    gov,
+  }
 }

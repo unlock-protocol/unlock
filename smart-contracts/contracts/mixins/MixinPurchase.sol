@@ -92,9 +92,10 @@ contract MixinPurchase is
     address[] memory _keyManagers,
     bytes[] calldata _data
   ) external payable
+    returns (uint[] memory)
   {
     _lockIsUpToDate();
-    if(_totalSupply >= maxNumberOfKeys) {
+    if(_totalSupply +  _recipients.length > maxNumberOfKeys) {
       revert LOCK_SOLD_OUT();
     }
     if(
@@ -107,6 +108,7 @@ contract MixinPurchase is
 
     uint totalPriceToPay;
     uint tokenId;
+    uint[] memory tokenIds = new uint[](_recipients.length);
 
     for (uint256 i = 0; i < _recipients.length; i++) {
       // check recipient address
@@ -136,6 +138,9 @@ contract MixinPurchase is
       _originalPrices[tokenId] = inMemoryKeyPrice;
       _originalDurations[tokenId] = expirationDuration;
       _originalTokens[tokenId] = tokenAddress;
+
+      // store tokenIds 
+      tokenIds[i] = tokenId;
       
       if(tokenAddress != address(0) && _values[i] < inMemoryKeyPrice) {
         revert INSUFFICIENT_ERC20_VALUE();
@@ -168,6 +173,8 @@ contract MixinPurchase is
 
     // refund gas
     _refundGas();
+
+    return tokenIds;
   }
 
   /**
@@ -206,6 +213,17 @@ contract MixinPurchase is
     } else if(msg.value < inMemoryKeyPrice) {
       // We explicitly allow for greater amounts of ETH or tokens to allow 'donations'
       revert INSUFFICIENT_VALUE();
+    }
+
+    // if params have changed, then update them
+    if(_originalPrices[_tokenId] != inMemoryKeyPrice) {
+      _originalPrices[_tokenId] = inMemoryKeyPrice;
+    }
+    if(_originalDurations[_tokenId] != expirationDuration) {
+      _originalDurations[_tokenId] = expirationDuration;
+    }
+    if(_originalTokens[_tokenId] != tokenAddress) {
+      _originalTokens[_tokenId] = tokenAddress;
     }
 
     // refund gas (if applicable)
@@ -290,7 +308,8 @@ contract MixinPurchase is
     if (_gasRefundValue != 0) { 
       if(tokenAddress != address(0)) {
         IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
-        token.transferFrom(address(this), msg.sender, _gasRefundValue);
+        // send tokens to refun gas
+        token.transfer(msg.sender, _gasRefundValue);
       } else {
         (bool success, ) = msg.sender.call{value: _gasRefundValue}("");
         if(!success) {
