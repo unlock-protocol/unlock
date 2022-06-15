@@ -25,4 +25,8 @@ router.delete(
   (req, res) => verifierController.removeVerifier(req, res)
 )
 
+router.get('/enabled/:network/:lockAddress/:verifierAddress', (req, res) =>
+  verifierController.isVerifierEnabled(req, res)
+)
+
 module.exports = router
