@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import Dispatcher from '../../fulfillment/dispatcher'
-import { generateKeyMetadataPayload } from '../../utils/metadata'
 
 export class TicketsController {
   constructor() {}
@@ -37,9 +36,8 @@ export class TicketsController {
     const id = request.params.keyId.toLowerCase()
 
     const metadata = {
-        checkedInAt: new Date().getTime(),
-      }
-      .KeyMetaData
+      checkedInAt: new Date().getTime(),
+    }
 
     const successfulUpdate = await metadataOperations.updateKeyMetadata({
       chain: network,
