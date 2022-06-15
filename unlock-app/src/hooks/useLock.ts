@@ -553,9 +553,9 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     return data
   }
 
-  const markAsCheckedIn = async (signer: string, keyId: string) => {
+  const markAsCheckedIn = async (viewer: string, keyId: string) => {
     if (!lockFromProps.address) return
-    const payload = generateKeyMetadataPayload(signer, {
+    const payload = generateKeyMetadataPayload(viewer, {
       lockAddress: lockFromProps.address,
       keyId,
       // @ts-ignore
@@ -563,18 +563,13 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
         checkedInAt: new Date().getTime(),
       },
     })
-    const signature = await walletService.unformattedSignTypedData(
-      signer,
-      payload
-    )
     const storageService = new StorageService(config.services.storage.host)
-    const response = await storageService.setKeyMetadata(
-      lockFromProps.address,
+    const response = await storageService.markTicketAsCheckedIn({
+      lockAddress: lockFromProps.address,
       keyId,
       payload,
-      signature,
-      network
-    )
+      network,
+    })
     return response.status === 202
   }
 

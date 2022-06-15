@@ -677,4 +677,46 @@ export class StorageService extends EventEmitter {
       return false
     }
   }
+
+  async markTicketAsCheckedIn({
+    lockAddress,
+    keyId,
+    payload,
+    network,
+  }: {
+    lockAddress: string
+    keyId: string
+    payload: any
+    network: number
+  }) {
+    const url = `${this.host}/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${this.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+  }
+
+  async getVerifierStatus({
+    viewer,
+    network,
+    lockAddress,
+  }: {
+    viewer: string
+    network: number
+    lockAddress: string
+  }) {
+    const options = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    return await this.getEndpoint(
+      `/v2/api/verifier/enabled/${network}/${lockAddress}/${viewer}`,
+      options,
+      true
+    )
+  }
 }

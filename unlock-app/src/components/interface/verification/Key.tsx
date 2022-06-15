@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import styled from 'styled-components'
 import { useLock } from '../../../hooks/useLock'
 import Svg from '../svg'
@@ -9,6 +9,8 @@ import {
 import { ActionButton } from '../buttons/ActionButton'
 import Loading from '../Loading'
 import { ToastHelper } from '../../helpers/toast.helper'
+import { useStorageService } from '~/utils/withStorageService'
+import { WalletServiceContext } from '~/utils/withWalletService'
 
 interface InvalidKeyProps {
   reason: string
@@ -38,7 +40,7 @@ interface ValidKeyWithMetadataProps {
   lock: any
   owner: string
   timeElapsedSinceSignature: string
-  viewerIsLockOwner: boolean
+  viewerIsVerifier: boolean
   checkIn: () => any
   checkedIn: boolean
 }
@@ -51,7 +53,7 @@ export const ValidKeyWithMetadata = ({
   owner,
   keyData,
   timeElapsedSinceSignature,
-  viewerIsLockOwner,
+  viewerIsVerifier,
   checkIn,
   checkedIn,
   lock,
@@ -107,7 +109,7 @@ export const ValidKeyWithMetadata = ({
         <Value>{timeElapsedSinceSignature}</Value>
         {keyData?.userMetadata && attributes(keyData?.userMetadata.protected)}
         {keyData?.userMetadata && attributes(keyData?.userMetadata.public)}
-        {viewerIsLockOwner && (
+        {viewerIsVerifier && (
           <CheckInButton onClick={checkIn} disabled={alreadyCheckedIn}>
             {!alreadyCheckedIn && 'Mark as Checked-In'}
             {alreadyCheckedIn && 'Already Checked-In'}
@@ -141,9 +143,11 @@ export const ValidKey = ({
 }: ValidKeyProps) => {
   const [checkedIn, setCheckedIn] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [viewerIsLockOwner, setViewerIsLockOwner] = useState(false)
+  const [viewerIsVerifier, setViewerIsVerifier] = useState(false)
   const [keyData, setKeyData] = useState({})
-  const { isLockManager, getKeyData, markAsCheckedIn } = useLock(lock, network)
+  const { getKeyData, markAsCheckedIn } = useLock(lock, network)
+  const storageService = useStorageService()
+  const walletService = useContext(WalletServiceContext)
 
   const checkIn = async () => {
     if (!viewer) return
@@ -153,6 +157,14 @@ export const ValidKey = ({
     } else {
       ToastHelper.error('We could not mark this membership as checked in')
     }
+  }
+
+  const siweLogin = async () => {
+    await storageService.loginPrompt({
+      walletService,
+      address: viewer!,
+      chainId: network!,
+    })
   }
 
   const secondsElapsedFromSignature = Math.floor(
@@ -165,13 +177,17 @@ export const ValidKey = ({
         setLoading(false)
         return
       }
-      const _isLockManager = await isLockManager(viewer)
-      if (_isLockManager) {
-        setViewerIsLockOwner(true)
+      await siweLogin()
+      const isVerifier = await storageService.getVerifierStatus({
+        viewer,
+        network,
+        lockAddress: lock.address,
+      })
+      setViewerIsVerifier(isVerifier)
+      if (isVerifier) {
         const metadata = (await getKeyData(unlockKey.tokenId, viewer)) as any
         setKeyData(metadata || {})
       } else {
-        setViewerIsLockOwner(false)
         // @ts-ignore
         const metadata = (await getKeyData(unlockKey.tokenId)) as any
         setKeyData(metadata || {})
@@ -187,7 +203,7 @@ export const ValidKey = ({
 
   return (
     <ValidKeyWithMetadata
-      viewerIsLockOwner={viewerIsLockOwner}
+      viewerIsVerifier={viewerIsVerifier}
       unlockKey={unlockKey}
       timeElapsedSinceSignature={durationsAsTextFromSeconds(
         secondsElapsedFromSignature
