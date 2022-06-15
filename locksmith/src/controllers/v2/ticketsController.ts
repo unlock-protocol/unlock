@@ -34,10 +34,10 @@ export class TicketsController {
   async markTicketAsCheckIn(request: Request, response: Response) {
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
-    const payload = request.body
     const id = request.params.keyId.toLowerCase()
 
-    const metadata = generateKeyMetadataPayload(payload).message.KeyMetaData
+    const metadata = generateKeyMetadataPayload(request.body).message
+      .KeyMetaData
 
     const successfulUpdate = await metadataOperations.updateKeyMetadata({
       chain: network,
