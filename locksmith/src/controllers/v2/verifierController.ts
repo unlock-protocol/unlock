@@ -83,7 +83,6 @@ export default class VerifierController {
         network,
       })
     }
-    console.log('isVerifier', isVerifier?.id !== undefined || isLockManager)
     return isVerifier?.id !== undefined || isLockManager
   }
 
