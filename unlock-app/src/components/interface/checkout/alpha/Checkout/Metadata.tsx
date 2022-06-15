@@ -33,8 +33,11 @@ export function Metadata({ dispatch, state, paywallConfig }: Props) {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm()
+  } = useForm({
+    shouldUnregister: false,
+  })
   const { fields, append, remove } = useFieldArray({
     name: 'metadata',
     control,
@@ -62,7 +65,7 @@ export function Metadata({ dispatch, state, paywallConfig }: Props) {
         .fill(0)
         .map((_, index) => remove(fields.length - index))
     }
-  }, [state.quantity, account, fields, append, remove])
+  }, [state.quantity, reset, account, fields, append, remove])
 
   async function onSubmit(data: FieldValues) {
     setIsLoading(true)

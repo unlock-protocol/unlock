@@ -68,16 +68,21 @@ export function MessageToSign({
       </Shell.Content>
       <Shell.Footer>
         <div className="space-y-4">
-          <Button
-            disabled={!account || isSigning}
-            loading={isSigning}
-            onClick={onSign}
-            className="w-full"
-          >
-            Sign the message
-          </Button>
           {account ? (
-            <LoggedIn account={account} onDisconnect={() => deAuthenticate()} />
+            <div className="space-y-2">
+              <Button
+                disabled={!account || isSigning}
+                loading={isSigning}
+                onClick={onSign}
+                className="w-full"
+              >
+                Sign the message
+              </Button>
+              <LoggedIn
+                account={account}
+                onDisconnect={() => deAuthenticate()}
+              />
+            </div>
           ) : (
             <LoggedOut
               authenticateWithProvider={authenticateWithProvider}

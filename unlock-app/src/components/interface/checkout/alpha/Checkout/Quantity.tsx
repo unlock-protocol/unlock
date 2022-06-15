@@ -56,6 +56,18 @@ export function Quantity({
     quantity
   )
 
+  const addQuantity = () => {
+    dispatch({
+      type: 'ADD_QUANTITY',
+      payload: {
+        count: quantity,
+        keyPrice: Number(lock!.keyPrice),
+        baseToken: '',
+        fiatPricing,
+      },
+    })
+  }
+
   return (
     <>
       <Shell.Content>
@@ -139,28 +151,55 @@ export function Quantity({
                 Switch Network
               </Button>
             ) : (
-              <Button
-                disabled={quantity < 1 || isLoading}
-                onClick={() => {
-                  dispatch({
-                    type: 'ADD_QUANTITY',
-                    payload: {
-                      count: quantity,
-                      keyPrice: Number(lock!.keyPrice),
-                      baseToken: '',
-                      fiatPricing,
-                    },
-                  })
-                  dispatch({
-                    type: 'CONTINUE',
-                    payload: {
-                      continue: 'METADATA',
-                    },
-                  })
-                }}
-              >
-                {quantity > 0 ? 'Continue' : 'Add at least 1 membership'}
-              </Button>
+              <div className="text-center grid gap-2">
+                <p className="text-sm font-medium">
+                  Select payment method to continue
+                </p>
+                <div className="flex gap-6 justify-between">
+                  <Button
+                    className="w-full"
+                    disabled={quantity < 1 || isLoading}
+                    onClick={() => {
+                      addQuantity()
+                      dispatch({
+                        type: 'SELECT_PAYMENT_METHOD',
+                        payload: {
+                          method: 'CRYPTO',
+                        },
+                      })
+                      dispatch({
+                        type: 'CONTINUE',
+                        payload: {
+                          continue: 'METADATA',
+                        },
+                      })
+                    }}
+                  >
+                    Crypto
+                  </Button>
+                  <Button
+                    className="w-full"
+                    disabled={quantity < 1 || isLoading}
+                    onClick={() => {
+                      addQuantity()
+                      dispatch({
+                        type: 'SELECT_PAYMENT_METHOD',
+                        payload: {
+                          method: 'CARD',
+                        },
+                      })
+                      dispatch({
+                        type: 'CONTINUE',
+                        payload: {
+                          continue: 'CARD',
+                        },
+                      })
+                    }}
+                  >
+                    Credit
+                  </Button>
+                </div>
+              </div>
             )}
             <LoggedIn account={account} onDisconnect={() => deAuthenticate()} />
           </div>

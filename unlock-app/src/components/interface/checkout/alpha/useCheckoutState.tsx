@@ -53,6 +53,8 @@ type Mint =
 
 export interface CheckoutState {
   lock?: LockState
+  paymentMethod: 'CRYPTO' | 'CARD'
+  cardId?: string
   signature?: string
   quantity?: Quantity
   recipients?: string[]
@@ -105,12 +107,28 @@ export interface AddMintStatusEvent {
   }
 }
 
+export interface SelectPaymentMethodEvent {
+  type: 'SELECT_PAYMENT_METHOD'
+  payload: {
+    method: 'CRYPTO' | 'CARD'
+  }
+}
+
+export interface SelectCardToChargeEvent {
+  type: 'SELECT_CARD_TO_CHARGE'
+  payload: {
+    cardId: string
+  }
+}
+
 export type CheckoutStateEvents =
   | SelectLockEvent
   | AddSignatureEvent
   | AddQuantityEvent
   | AddRecipientsEvent
   | AddMintStatusEvent
+  | SelectPaymentMethodEvent
+  | SelectCardToChargeEvent
   | ContinueEvent
   | BackEvent
 
@@ -166,6 +184,19 @@ const checkoutReducer: Reducer<CheckoutState, CheckoutStateEvents> = (
       return {
         ...state,
         mint: action.payload.mint,
+      }
+    }
+    case 'SELECT_PAYMENT_METHOD': {
+      return {
+        ...state,
+        paymentMethod: action.payload.method,
+      }
+    }
+
+    case 'SELECT_CARD_TO_CHARGE': {
+      return {
+        ...state,
+        cardId: action.payload.cardId,
       }
     }
     default: {
