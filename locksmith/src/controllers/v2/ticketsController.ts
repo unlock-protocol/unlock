@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import Dispatcher from '../../fulfillment/dispatcher'
+import { generateKeyMetadataPayload } from '../../utils/metadata'
 
 export class TicketsController {
   constructor() {}
@@ -33,8 +34,10 @@ export class TicketsController {
   async markTicketAsCheckIn(request: Request, response: Response) {
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
-    const metadata = request.body.message.KeyMetaData
+    const payload = request.body
     const id = request.params.keyId.toLowerCase()
+
+    const metadata = generateKeyMetadataPayload(payload)
 
     const successfulUpdate = await metadataOperations.updateKeyMetadata({
       chain: network,
