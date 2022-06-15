@@ -36,7 +36,7 @@ export function LockIconBar({
     )
   }
   const membersPage = `/members?locks=${lock.address}`
-  const verifiersPage = `/${network}/locks/${lock.address}/verifiers`
+  const verifiersPage = `/verifiers?lock=${lock}&network=${network}`
   const { explorer } = config.networks[network!] ?? {}
   // Otherwise, we just show the lock icon bar
   return (
