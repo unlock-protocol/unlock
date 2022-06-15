@@ -75,9 +75,6 @@ export default class VerifierController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
-      const loggedUserAddress = Normalizer.ethereumAddress(
-        request.user!.walletAddress!
-      )
 
       const alreadyExists = await VerifierOperations.isVerifierAlreadyExits(
         lockAddress,
@@ -113,7 +110,7 @@ export default class VerifierController {
    * @param response
    * @returns
    */
-  async isVerifierEnabled(request: Request, response: Response) {
+  async isVerifierEnabled(_request: Request, response: Response) {
     // Handled by middlewares...
     return response.status(200).send({
       enabled: true,
