@@ -246,11 +246,14 @@ interface IUnlockV11
     address _oracleAddress
   ) external;
 
-  // Initialize the Ownable contract, granting contract ownership to the specified sender
+  /**
+   * Initialize the Ownable contract, granting contract ownership to the specified sender 
+   */ 
   function __initializeOwnable(address sender) external;
 
   /**
    * @dev Returns true if the caller is the current owner.
+   * @return bool True of the caller is the owner
    */
   function isOwner() external view returns(bool);
 
