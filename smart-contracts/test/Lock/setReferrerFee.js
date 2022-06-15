@@ -166,4 +166,43 @@ contract('Lock / setReferrerFee', (accounts) => {
       assert.equal(fee.div(BASIS_POINT_DENOMINATOR).toFixed(), 0.7)
     })
   })
+
+  describe('extend() also pays the referrer', () => {
+    let balanceBefore
+    before(async () => {
+      await lock.setReferrerFee(referrer, 2000)
+      balanceBefore = new BigNumber(await web3.eth.getBalance(referrer))
+
+      const tx = await lock.purchase(
+        [],
+        [accounts[8]],
+        [referrer],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          value: await lock.keyPrice(),
+        }
+      )
+
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      const { tokenId } = args
+      console.log(tokenId)
+      console.log(tokenId.toNumber())
+
+      await lock.extend(0, tokenId, referrer, [], {
+        value: await lock.keyPrice(),
+      })
+    })
+
+    it('transfer 5% of the key price on extend', async () => {
+      const balanceAfter = new BigNumber(await web3.eth.getBalance(referrer))
+      assert.equal(
+        balanceAfter.toFixed(),
+        balanceBefore
+          .plus((keyPrice * 2000) / BASIS_POINT_DENOMINATOR) // purchase
+          .plus((keyPrice * 2000) / BASIS_POINT_DENOMINATOR) // extend
+          .toFixed()
+      )
+    })
+  })
 })
