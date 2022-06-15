@@ -10,6 +10,7 @@ export interface Typegen0 {
     selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
     selectRecipients: 'SELECT_RECIPIENTS'
     signMessage: 'SIGN_MESSAGE'
+    solveCaptcha: 'SOLVE_CAPTCHA'
     confirmMint: 'CONFIRM_MINT'
     finishMint: 'FINISH_MINT'
   }

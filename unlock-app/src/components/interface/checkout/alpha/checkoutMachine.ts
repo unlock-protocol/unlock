@@ -84,6 +84,11 @@ interface FinishMintEvent extends Mint {
   type: 'FINISH_MINT'
 }
 
+interface SolveCaptchaEvent {
+  type: 'SOLVE_CAPTCHA'
+  data: string[]
+}
+
 export type CheckoutMachineEvents =
   | SelectLockEvent
   | SelectQuantityEvent
@@ -92,6 +97,7 @@ export type CheckoutMachineEvents =
   | SelectCardToChargeEvent
   | SignMessageEvent
   | MakeAnotherPurchaseEvent
+  | SolveCaptchaEvent
   | ConfirmMintEvent
   | FinishMintEvent
   | ContinueEvent
@@ -115,6 +121,7 @@ interface CheckoutMachineContext {
   paywallConfig: PaywallConfig
   lock?: LockState
   payment: Payment
+  captcha?: string[]
   messageToSign?: {
     signature: string
     address: string
@@ -128,7 +135,7 @@ export const checkoutMachine = createMachine(
   {
     id: 'checkout',
     initial: 'SELECT',
-    tsTypes: {} as import('./useCheckoutState.typegen').Typegen0,
+    tsTypes: {} as import('./checkoutMachine.typegen').Typegen0,
     schema: {
       context: {} as CheckoutMachineContext,
       events: {} as CheckoutMachineEvents,
@@ -138,6 +145,7 @@ export const checkoutMachine = createMachine(
       lock: undefined,
       messageToSign: undefined,
       mint: undefined,
+      captcha: undefined,
       payment: {
         method: 'crypto',
       },
@@ -266,6 +274,10 @@ export const checkoutMachine = createMachine(
             target: 'QUANTITY',
             actions: ['disconnect'],
           },
+          SOLVE_CAPTCHA: {
+            target: 'CONFIRM',
+            actions: ['solveCaptcha'],
+          },
         },
       },
       CONFIRM: {
@@ -281,6 +293,7 @@ export const checkoutMachine = createMachine(
         },
       },
       MINTING: {
+        type: 'final',
         on: {
           FINISH_MINT: {
             actions: ['finishMint'],
@@ -361,6 +374,11 @@ export const checkoutMachine = createMachine(
             status,
             transactionHash,
           } as const
+        },
+      }),
+      solveCaptcha: assign({
+        captcha: (context, event) => {
+          return event.data
         },
       }),
     },
