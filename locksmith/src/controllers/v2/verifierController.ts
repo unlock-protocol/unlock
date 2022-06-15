@@ -12,6 +12,35 @@ export default class VerifierController {
     this.web3Service = new Web3Service(networks)
   }
 
+  async #isVerifier({
+    lockAddress,
+    address,
+    network,
+  }: {
+    lockAddress: string
+    address: string
+    network: number
+  }) {
+    let isLockManager = false
+
+    const isVerifier = await Verifier.findOne({
+      where: {
+        lockAddress,
+        address,
+        network,
+      },
+    })
+
+    if (!isVerifier) {
+      isLockManager = await this.#isLockManager({
+        lockAddress,
+        lockManager: address,
+        network,
+      })
+    }
+    return isVerifier?.id !== undefined || isLockManager
+  }
+
   async #isVerifierAlreadyExits(
     lockAddress: string,
     address: string,
@@ -177,25 +206,12 @@ export default class VerifierController {
         })
       }
 
-      let isLockManager = false
-
-      const isVerifier = await Verifier.findOne({
-        where: {
-          lockAddress,
-          address,
-          network,
-        },
+      const isEnabled = await this.#isVerifier({
+        lockAddress,
+        address,
+        network,
       })
 
-      if (!isVerifier) {
-        isLockManager = await this.#isLockManager({
-          lockAddress,
-          lockManager: address,
-          network,
-        })
-      }
-
-      const isEnabled = isVerifier?.id !== undefined || isLockManager
       return response.status(200).send({
         enabled: isEnabled,
       })
