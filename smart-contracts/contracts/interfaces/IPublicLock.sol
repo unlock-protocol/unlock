@@ -500,7 +500,6 @@ interface IPublicLock
   * @param tokenId the id of the token
   * @notice This requires the `msg.sender` to be set as a key manager 
   */
-
   function lendKey(address from, address to, uint tokenId) external;
 
 
