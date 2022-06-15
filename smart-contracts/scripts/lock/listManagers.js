@@ -1,5 +1,4 @@
 const { ethers } = require('hardhat')
-const fetch = require('cross-fetch')
 const { networks } = require('@unlock-protocol/networks')
 
 async function main({ lockAddress }) {

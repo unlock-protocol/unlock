@@ -1,7 +1,6 @@
 import { Response, Request } from 'express'
 import { networks } from '@unlock-protocol/networks'
 import * as z from 'zod'
-import fetch from 'cross-fetch'
 import crypto from 'crypto'
 import logger from '../logger'
 import { Hook } from '../models'

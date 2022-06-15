@@ -1,6 +1,5 @@
 import pRetry from 'p-retry'
 import crypto from 'crypto'
-import fetch from 'cross-fetch'
 import { AbortController } from 'node-abort-controller'
 import { setTimeout, clearTimeout } from 'timers'
 import { Op } from 'sequelize'

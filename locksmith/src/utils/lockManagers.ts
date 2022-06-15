@@ -1,5 +1,3 @@
-import fetch from 'cross-fetch'
-
 interface listManagersProps {
   lockAddress: string
   subgraphURI: string
