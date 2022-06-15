@@ -1,13 +1,16 @@
 import { RequestHandler } from 'express'
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import Normalizer from './normalizer'
+import Normalizer from '../normalizer'
 
-const web3Service = new Web3Service(networks)
-export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
+export const lockManagerOrKeyGranterMiddleware: RequestHandler = async (
+  req,
+  res,
+  next
+) => {
   const lockAddress = Normalizer.ethereumAddress(req.params.lockAddress)
   const network = Number(req.params.network)
-  const lockManager = Normalizer.ethereumAddress(req.user!.walletAddress!)
+  const userAddress = Normalizer.ethereumAddress(req.user!.walletAddress!)
 
   if (!lockAddress) {
     return res.status(404).send({
@@ -21,15 +24,23 @@ export const lockManagerMiddleware: RequestHandler = async (req, res, next) => {
     })
   }
 
+  const web3Service = new Web3Service(networks)
+
   const isLockManager = await web3Service.isLockManager(
     lockAddress,
-    lockManager,
+    userAddress,
     network
   )
 
-  if (!isLockManager) {
+  const isKeyGranter = await web3Service.isKeyGranter(
+    lockAddress,
+    userAddress,
+    network
+  )
+
+  if (!isLockManager && !isKeyGranter) {
     return res.status(401).send({
-      message: `${lockManager} is not a lock manager for ${lockAddress} on ${network}`,
+      message: `${userAddress} is not a lock manager or key granter for ${lockAddress} on ${network}`,
     })
   }
   return next()

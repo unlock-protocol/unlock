@@ -172,7 +172,8 @@ interface IPublicLock
     address _onKeyPurchaseHook,
     address _onKeyCancelHook,
     address _onValidKeyHook,
-    address _onTokenURIHook
+    address _onTokenURIHook,
+    address _onKeyTransferHook
   ) external;
 
   /**
@@ -350,6 +351,8 @@ interface IPublicLock
   function onValidKeyHook() external view returns(bool);
 
   function onTokenURIHook() external view returns(string memory);
+  
+  function onKeyTransferHook() external view returns(string memory);
 
   function revokeKeyGranter(address _granter) external;
 
@@ -439,6 +442,11 @@ interface IPublicLock
     view
     returns (bool);
   
+  /**
+   * @return The number of keys owned by `_keyOwner` (expired or not)
+  */
+  function totalKeys(address _keyOwner) external view returns (uint);
+  
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
   ///===================================================================
@@ -449,8 +457,9 @@ interface IPublicLock
 
   /// From ERC-721
   /**
-    * @dev Returns the number of NFTs in `owner`'s account.
-    */
+   * In the specific case of a Lock, `balanceOf` returns only the tokens with a valid expiration timerange
+   * @return balance The number of valid keys owned by `_keyOwner`
+  */
   function balanceOf(address _owner) external view returns (uint256 balance);
 
   /**

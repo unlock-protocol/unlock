@@ -363,7 +363,9 @@ export class PaymentProcessor {
       try {
         fulfillmentDispatcher.grantKeys(
           paymentIntent.metadata.lock,
-          paymentIntent.metadata.recipient.split(','),
+          paymentIntent.metadata.recipient.split(',').map((recipient) => ({
+            recipient,
+          })),
           parseInt(paymentIntent.metadata.network, 10),
           async (_: any, transactionHash: string) => {
             // Update our charge object
