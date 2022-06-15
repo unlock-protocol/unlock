@@ -13,13 +13,13 @@ namespace VerifierOperations {
     address: string,
     network: number
   ): Promise<boolean> => {
-    return !!Verifier.findOne({
+    return !!(await Verifier.findOne({
       where: {
         address,
         lockAddress,
         network,
       },
-    })
+    }))
   }
 
   /**
