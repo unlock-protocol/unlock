@@ -65,6 +65,33 @@ contract MixinPurchase is
     referrerFees[_referrer] = _feeBasisPoint;
   }
 
+  /** 
+  @dev internal function to execute the payments to referrers if any is set
+  */
+  function _payReferrers(
+    address[] memory _referrers,
+    address tokenAddress
+  ) internal {
+    // get default value
+    uint basisPointsToPay = referrerFees[address(0)];
+
+    for (uint256 i = 0; i < _referrers.length; i++) {
+      // get value for each referrer
+      if(referrerFees[_referrers[i]] != 0) {
+        basisPointsToPay = referrerFees[_referrers[i]];
+      }
+      
+      // pay the referrer if necessary
+      if (basisPointsToPay != 0) {
+        _transfer(
+          tokenAddress,
+          payable(_referrers[i]), 
+          keyPrice * basisPointsToPay / BASIS_POINTS_DEN
+        );
+      }
+    }
+  }
+
   /**
   * @dev Helper to communicate with Unlock (record GNP and mint UDT tokens)
   */
@@ -175,6 +202,7 @@ contract MixinPurchase is
         );
       }
     }
+
     // transfer the ERC20 tokens
     if(tokenAddress != address(0)) {
       IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
@@ -186,6 +214,9 @@ contract MixinPurchase is
 
     // refund gas
     _refundGas();
+
+    // send what is due to referrers
+    _payReferrers(_referrers, tokenAddress);
 
     return tokenIds;
   }
@@ -334,5 +365,6 @@ contract MixinPurchase is
   }
 
   // decreased from 1000 to 997 when added mappings for initial purchases pricing and duration on v10 
-  uint256[997] private __safe_upgrade_gap;
+  // decreased from 997 to 996 when added the `referrerFees` mapping on v11
+  uint256[996] private __safe_upgrade_gap;
 }
