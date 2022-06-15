@@ -37,7 +37,7 @@ export class TicketsController {
     const payload = request.body
     const id = request.params.keyId.toLowerCase()
 
-    const metadata = generateKeyMetadataPayload(payload)
+    const metadata = generateKeyMetadataPayload(payload).message.KeyMetaData
 
     const successfulUpdate = await metadataOperations.updateKeyMetadata({
       chain: network,
