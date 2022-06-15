@@ -65,7 +65,7 @@ contract MixinKeys is
   // the transfer of a key to another address where their key can be transferred
   // Note: the approver may actually NOT have a key... and there can only
   // be a single approved address
-  mapping (uint => address) private approved;
+  mapping (uint => address) internal approved;
 
   // Keeping track of approved operators for a given Key manager.
   // This approves a given operator for all keys managed by the calling "keyManager"
@@ -190,7 +190,7 @@ contract MixinKeys is
     view
     returns (uint256)
   {
-      if(_index >= balanceOf(_keyOwner)) {
+      if(_index >= totalKeys(_keyOwner)) {
         revert OUT_OF_RANGE();
       }
       return _ownedKeyIds[_keyOwner][_index];
@@ -220,7 +220,7 @@ contract MixinKeys is
     _keys[tokenId] = Key(tokenId, expirationTimestamp);
     
     // increase total number of unique owners
-    if(balanceOf(_recipient) == 0 ) {
+    if(totalKeys(_recipient) == 0 ) {
       numberOfOwners++;
     }
 
@@ -353,7 +353,7 @@ contract MixinKeys is
     delete _ownedKeyIds[previousOwner][lastTokenIndex];
 
     // remove from owner count if thats the only key 
-    if(balanceOf(previousOwner) == 1 ) {
+    if(totalKeys(previousOwner) == 1 ) {
       numberOfOwners--;
     }
     // update balance
@@ -380,10 +380,9 @@ contract MixinKeys is
   }
 
   /**
-   * In the specific case of a Lock, each owner can own only at most 1 key.
-   * @return The number of NFTs owned by `_keyOwner`, either 0 or 1.
+   * @return The number of keys owned by `_keyOwner` (expired or not)
   */
-  function balanceOf(
+  function totalKeys(
     address _keyOwner
   )
     public
@@ -393,7 +392,27 @@ contract MixinKeys is
     if(_keyOwner == address(0)) { 
       revert INVALID_ADDRESS();
     }
+
     return _balances[_keyOwner];
+  }
+
+  /**
+   * In the specific case of a Lock, `balanceOf` returns only the tokens with a valid expiration timerange
+   * @return balance The number of valid keys owned by `_keyOwner`
+  */
+  function balanceOf(
+    address _keyOwner
+  )
+    public
+    view
+    returns (uint balance)
+  {
+    uint length = totalKeys(_keyOwner);
+    for (uint i = 0; i < length; i++) {
+      if(isValidKey(tokenOfOwnerByIndex(_keyOwner, i))) {
+        balance++;
+      }
+    }
   }
 
   /**
