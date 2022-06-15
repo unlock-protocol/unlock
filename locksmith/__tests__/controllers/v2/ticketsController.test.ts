@@ -16,6 +16,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
       return {
         ownerOf: (_lockAddress: string, _tokenId: string, _network: number) =>
           owner,
+        isLockManager: (lock: string) => lockAddress === lock,
       }
     }),
   }
@@ -64,5 +65,17 @@ describe('sign endpoint', () => {
     expect(payload.timestamp).toBeLessThan(now)
     expect(typeof response.body.signature).toBe('string')
     expect(response.status).toBe(200)
+  })
+
+  it('marks ticket as check-in', async () => {
+    expect.assertions(2)
+    const { loginResponse } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    const response = await request(app)
+      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(response.status).toBe(202)
   })
 })

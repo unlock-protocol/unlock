@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import Dispatcher from '../../fulfillment/dispatcher'
+import * as metadataOperations from '../../operations/metadataOperations'
 
 export class TicketsController {
   constructor() {}
