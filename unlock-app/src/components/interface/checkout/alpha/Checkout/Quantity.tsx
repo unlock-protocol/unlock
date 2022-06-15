@@ -1,6 +1,6 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
-import { CheckoutState, CheckoutStateDispatch } from '../useCheckoutState'
+import { CheckoutState, CheckoutSend } from '../checkoutMachine'
 import { PaywallConfig } from '~/unlockTypes'
 import { LoggedIn, LoggedOut } from '../Bottom'
 import { Shell } from '../Shell'
@@ -15,15 +15,12 @@ import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
-  dispatch: CheckoutStateDispatch
+  send: CheckoutSend
   state: CheckoutState
 }
 
-export function Quantity({
-  state: { lock },
-  dispatch,
-  injectedProvider,
-}: Props) {
+export function Quantity({ state, send, injectedProvider }: Props) {
+  const lock = state.context.lock!
   const { account, deAuthenticate, network, changeNetwork } = useAuth()
   const { authenticateWithProvider } = useAuthenticateHandler({
     injectedProvider,
@@ -33,12 +30,12 @@ export function Quantity({
   const quantity = Number(quantityInput)
 
   const { isLoading, data: fiatPricing } = useQuery(
-    [quantityInput, lock!.address, lock!.network],
+    [quantityInput, lock.address, lock.network],
     async () => {
       const pricing = await getFiatPricing(
         config,
-        lock!.address,
-        lock!.network,
+        lock.address,
+        lock.network,
         quantity
       )
       return pricing
@@ -55,18 +52,6 @@ export function Quantity({
     lock!.name,
     quantity
   )
-
-  const addQuantity = () => {
-    dispatch({
-      type: 'ADD_QUANTITY',
-      payload: {
-        count: quantity,
-        keyPrice: Number(lock!.keyPrice),
-        baseToken: '',
-        fiatPricing,
-      },
-    })
-  }
 
   return (
     <>
@@ -160,19 +145,17 @@ export function Quantity({
                     className="w-full"
                     disabled={quantity < 1 || isLoading}
                     onClick={() => {
-                      addQuantity()
-                      dispatch({
+                      send({
+                        type: 'SELECT_QUANTITY',
+                        quantity,
+                      })
+                      send({
                         type: 'SELECT_PAYMENT_METHOD',
-                        payload: {
-                          method: 'CRYPTO',
+                        payment: {
+                          method: 'crypto',
                         },
                       })
-                      dispatch({
-                        type: 'CONTINUE',
-                        payload: {
-                          continue: 'METADATA',
-                        },
-                      })
+                      send('CONTINUE')
                     }}
                   >
                     Crypto
@@ -181,19 +164,17 @@ export function Quantity({
                     className="w-full"
                     disabled={quantity < 1 || isLoading}
                     onClick={() => {
-                      addQuantity()
-                      dispatch({
+                      send({
+                        type: 'SELECT_QUANTITY',
+                        quantity,
+                      })
+                      send({
                         type: 'SELECT_PAYMENT_METHOD',
-                        payload: {
-                          method: 'CARD',
+                        payment: {
+                          method: 'card',
                         },
                       })
-                      dispatch({
-                        type: 'CONTINUE',
-                        payload: {
-                          continue: 'CARD',
-                        },
-                      })
+                      send('CONTINUE')
                     }}
                   >
                     Credit

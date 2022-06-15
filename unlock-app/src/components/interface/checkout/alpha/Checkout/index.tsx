@@ -1,7 +1,7 @@
 import React from 'react'
 import type { PaywallConfig } from '~/unlockTypes'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { useCheckout } from '../useCheckoutState'
+import { checkoutMachine, CheckoutPage } from '../checkoutMachine'
 import { Shell } from '../Shell'
 import { Select } from './Select'
 import { Quantity } from './Quantity'
@@ -10,7 +10,8 @@ import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
-
+import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
+import { useMachine } from '@xstate/react'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
@@ -18,27 +19,30 @@ interface Props {
 }
 
 export function Checkout({ paywallConfig, injectedProvider }: Props) {
-  const { checkout, dispatch } = useCheckout({
-    initialState: {
-      current: 'SELECT',
-      payment: 'crypto',
+  const [state, send] = useMachine(checkoutMachine, {
+    context: {
+      paywallConfig,
     },
-    paywallConfig,
   })
+
+  const { title, description } = useCheckoutHeadContent(
+    paywallConfig,
+    state.value as CheckoutPage
+  )
 
   const onClose = () => {
     // TODO
   }
 
   function Content() {
-    switch (checkout.state.current) {
+    switch (state.value) {
       case 'SELECT': {
         return (
           <Select
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
-            dispatch={dispatch}
-            state={checkout.state}
+            send={send}
+            state={state}
           />
         )
       }
@@ -47,8 +51,8 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
           <Quantity
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
-            dispatch={dispatch}
-            state={checkout.state}
+            send={send}
+            state={state}
           />
         )
       }
@@ -57,8 +61,8 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
           <CardPayment
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
-            dispatch={dispatch}
-            state={checkout.state}
+            send={send}
+            state={state}
           />
         )
       }
@@ -67,8 +71,8 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
           <Metadata
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
-            dispatch={dispatch}
-            state={checkout.state}
+            send={send}
+            state={state}
           />
         )
       }
@@ -77,8 +81,8 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
           <Confirm
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
-            dispatch={dispatch}
-            state={checkout.state}
+            send={send}
+            state={state}
           />
         )
       }
@@ -87,8 +91,8 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
           <MessageToSign
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
-            dispatch={dispatch}
-            state={checkout.state}
+            send={send}
+            state={state}
           />
         )
       }
@@ -98,8 +102,8 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
             onClose={onClose}
             injectedProvider={injectedProvider}
             paywallConfig={paywallConfig}
-            dispatch={dispatch}
-            state={checkout.state}
+            send={send}
+            state={state}
           />
         )
       }
@@ -112,8 +116,8 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
   return (
     <Shell.Root onClose={onClose}>
       <Shell.Head
-        description={checkout.content.description}
-        title={paywallConfig.title!}
+        description={description}
+        title={title}
         iconURL={paywallConfig.icon!}
       />
       <Content />

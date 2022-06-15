@@ -1,5 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutStateDispatch } from '../useCheckoutState'
+import { CheckoutState, CheckoutSend } from '../useCheckoutState'
 import { PaywallConfig } from '~/unlockTypes'
 import { LoggedIn, LoggedOut } from '../Bottom'
 import { Shell } from '../Shell'
@@ -28,11 +28,11 @@ import { loadStripe } from '@stripe/stripe-js'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
-  dispatch: CheckoutStateDispatch
+  send: CheckoutSend
   state: CheckoutState
 }
 
-export function CardPayment({ dispatch, injectedProvider }: Props) {
+export function CardPayment({ send, injectedProvider }: Props) {
   const { account, deAuthenticate } = useAuth()
   const [editCard, setEditCard] = useState(false)
   const config = useConfig()
@@ -92,17 +92,9 @@ export function CardPayment({ dispatch, injectedProvider }: Props) {
                 className="w-full"
                 disabled={!card}
                 onClick={() => {
-                  dispatch({
+                  send({
                     type: 'SELECT_CARD_TO_CHARGE',
-                    payload: {
-                      cardId: card.id,
-                    },
-                  })
-                  dispatch({
-                    type: 'CONTINUE',
-                    payload: {
-                      continue: 'CONFIRM',
-                    },
+                    cardId: card.id,
                   })
                 }}
               >

@@ -1,5 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutStateDispatch } from '../useCheckoutState'
+import { CheckoutState, CheckoutSend } from '../checkoutMachine'
 import { PaywallConfig } from '~/unlockTypes'
 import { LoggedIn, LoggedOut } from '../Bottom'
 import { Shell } from '../Shell'
@@ -12,19 +12,16 @@ import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
 import { useState } from 'react'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
-  dispatch: CheckoutStateDispatch
+  send: CheckoutSend
   state: CheckoutState
 }
 
-export function Confirm({
-  state: { lock, quantity, recipients },
-  dispatch,
-  injectedProvider,
-}: Props) {
+export function Confirm({ state, send, injectedProvider }: Props) {
   const { account, deAuthenticate } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
@@ -32,14 +29,15 @@ export function Confirm({
   const { authenticateWithProvider } = useAuthenticateHandler({
     injectedProvider,
   })
+  const { lock, quantity, recipients } = state.context
   const { isLoading, data: fiatPricing } = useQuery(
-    [quantity!.count, lock!.address, lock!.network],
+    [quantity, lock!.address, lock!.network],
     async () => {
       const pricing = await getFiatPricing(
         config,
         lock!.address,
         lock!.network,
-        quantity!.count
+        quantity
       )
       return pricing
     }
@@ -53,7 +51,7 @@ export function Confirm({
     lock!.network,
     config.networks[lock!.network].baseCurrencySymbol,
     lock!.name,
-    quantity!.count
+    quantity
   )
 
   const onConfirm = async () => {
@@ -62,7 +60,7 @@ export function Confirm({
       const keyPrices: string[] = new Array(recipients!.length).fill(
         lock!.keyPrice
       )
-      const tokenIds = await walletService.purchaseKeys(
+      await walletService.purchaseKeys(
         {
           lockAddress: lock!.address,
           keyPrices,
@@ -70,46 +68,30 @@ export function Confirm({
         },
         (error, hash) => {
           if (error) {
+            send({
+              type: 'CONFIRM_MINT',
+              status: 'ERROR',
+              transactionHash: hash!,
+            })
             throw new Error(error.message)
+          } else {
+            send({
+              type: 'CONFIRM_MINT',
+              status: 'PROCESSING',
+              transactionHash: hash!,
+            })
           }
-          dispatch({
-            type: 'ADD_MINT_STATUS',
-            payload: {
-              mint: {
-                status: 'PROCESSING',
-                value: hash!,
-              },
-            },
-          })
-          dispatch({
-            type: 'CONTINUE',
-            payload: {
-              continue: 'MINTING',
-            },
-          })
           setIsConfirming(false)
         }
       )
-      dispatch({
-        type: 'ADD_MINT_STATUS',
-        payload: {
-          mint: {
-            status: 'FINISHED',
-            value: tokenIds,
-          },
-        },
+      send({
+        type: 'FINISH_MINT',
+        status: 'FINISHED',
+        transactionHash: state.context.mint?.transactionHash,
       })
     } catch (error) {
       if (error instanceof Error) {
-        dispatch({
-          type: 'ADD_MINT_STATUS',
-          payload: {
-            mint: {
-              status: 'ERROR',
-              value: error.message,
-            },
-          },
-        })
+        ToastHelper.error(error.message)
       }
     }
   }
@@ -120,7 +102,7 @@ export function Confirm({
         <div>
           <div className="flex items-start justify-between">
             <h3 className="font-bold text-xl">
-              {quantity!.count}X {lock!.name}
+              {quantity}X {lock!.name}
             </h3>
             {!isLoading ? (
               <div className="grid">
@@ -136,7 +118,7 @@ export function Confirm({
                   </>
                 )}
                 <p className="text-sm text-gray-500">
-                  {quantity?.count} X {formattedData.formattedKeyPrice}
+                  {quantity} X {formattedData.formattedKeyPrice}
                 </p>
               </div>
             ) : (
