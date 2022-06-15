@@ -36,6 +36,8 @@ contract MixinPurchase is
   // keep track of token pricing when purchased
   mapping(uint256 => address) private _originalTokens;
 
+  mapping(address => uint) public referrerFees;
+
   /**
   * @dev Set the value/price to be refunded to the sender on purchase
   */
@@ -50,6 +52,17 @@ contract MixinPurchase is
   */
   function gasRefundValue() external view returns (uint256 _refundValue) {
     return _gasRefundValue;
+  }
+
+  /**
+  * Set a specific percentage of the keyPrice to be sent to the referrer
+  * @param _referrer the address of the referrer
+  * @param _feeBasisPoint the percentage of the price to be used for this 
+  * specific referrer (in basic points)
+  */
+  function setReferrerFee(address _referrer, uint _feeBasisPoint) public {
+    _onlyLockManager();
+    referrerFees[_referrer] = _feeBasisPoint;
   }
 
   /**
