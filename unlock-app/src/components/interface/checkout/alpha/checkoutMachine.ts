@@ -1,0 +1,377 @@
+import { Lock, PaywallConfig } from '~/unlockTypes'
+import {
+  createMachine,
+  assign,
+  StateFrom,
+  SCXML,
+  SingleOrArray,
+  Event,
+  EventData,
+} from 'xstate'
+
+export type CheckoutPage =
+  | 'SELECT'
+  | 'QUANTITY'
+  | 'METADATA'
+  | 'CONFIRM'
+  | 'CARD'
+  | 'MINTING'
+  | 'MESSAGE_TO_SIGN'
+  | 'CAPTCHA'
+  | 'RETURNING'
+
+export interface FiatPricing {
+  creditCardEnabled: boolean
+  usd: {
+    keyPrice: number
+    unlockServiceFee: number
+    creditCardProcessing: number
+  }
+}
+
+export interface LockState extends Lock {
+  fiatPricing: FiatPricing
+}
+
+export interface SelectLockEvent {
+  type: 'SELECT_LOCK'
+  lock: LockState
+}
+
+export interface SignMessageEvent {
+  type: 'SIGN_MESSAGE'
+  signature: string
+  address: string
+}
+
+export interface SelectQuantityEvent {
+  type: 'SELECT_QUANTITY'
+  quantity: number
+}
+
+export interface SelectRecipientsEvent {
+  type: 'SELECT_RECIPIENTS'
+  recipients: string[]
+}
+
+export interface SelectPaymentMethodEvent {
+  type: 'SELECT_PAYMENT_METHOD'
+  payment: Payment
+}
+
+export interface SelectCardToChargeEvent {
+  type: 'SELECT_CARD_TO_CHARGE'
+  cardId: string
+}
+
+export interface DisconnectEvent {
+  type: 'DISCONNECT'
+}
+
+export interface ContinueEvent {
+  type: 'CONTINUE'
+}
+
+export interface MakeAnotherPurchaseEvent {
+  type: 'MAKE_ANOTHER_PURCHASE'
+}
+
+interface ConfirmMintEvent extends Mint {
+  type: 'CONFIRM_MINT'
+}
+
+interface FinishMintEvent extends Mint {
+  type: 'FINISH_MINT'
+}
+
+export type CheckoutMachineEvents =
+  | SelectLockEvent
+  | SelectQuantityEvent
+  | SelectPaymentMethodEvent
+  | SelectRecipientsEvent
+  | SelectCardToChargeEvent
+  | SignMessageEvent
+  | MakeAnotherPurchaseEvent
+  | ConfirmMintEvent
+  | FinishMintEvent
+  | ContinueEvent
+  | DisconnectEvent
+
+type Payment =
+  | {
+      method: 'card'
+      cardId?: string
+    }
+  | {
+      method: 'crypto'
+    }
+
+export interface Mint {
+  status: 'ERROR' | 'PROCESSING' | 'FINISHED'
+  transactionHash?: string
+}
+
+interface CheckoutMachineContext {
+  paywallConfig: PaywallConfig
+  lock?: LockState
+  payment: Payment
+  messageToSign?: {
+    signature: string
+    address: string
+  }
+  quantity: number
+  recipients: string[]
+  mint?: Mint
+}
+
+export const checkoutMachine = createMachine(
+  {
+    id: 'checkout',
+    initial: 'SELECT',
+    tsTypes: {} as import('./useCheckoutState.typegen').Typegen0,
+    schema: {
+      context: {} as CheckoutMachineContext,
+      events: {} as CheckoutMachineEvents,
+    },
+    context: {
+      paywallConfig: {} as PaywallConfig,
+      lock: undefined,
+      messageToSign: undefined,
+      mint: undefined,
+      payment: {
+        method: 'crypto',
+      },
+      quantity: 1,
+      recipients: [],
+    },
+    states: {
+      SELECT: {
+        on: {
+          SELECT_LOCK: {
+            target: 'QUANTITY',
+            actions: ['selectLock'],
+          },
+          DISCONNECT: {
+            actions: ['disconnect'],
+          },
+        },
+      },
+      QUANTITY: {
+        on: {
+          SELECT_QUANTITY: {
+            actions: ['selectQuantity'],
+          },
+          SELECT_PAYMENT_METHOD: {
+            actions: ['selectPaymentMethod'],
+          },
+          CONTINUE: [
+            {
+              target: 'CARD',
+              cond: (context) => context.payment.method === 'card',
+            },
+            {
+              target: 'METADATA',
+              cond: (context) =>
+                Boolean(
+                  context.paywallConfig.metadataInputs?.length ||
+                    context.paywallConfig.locks?.[context.lock!.address]
+                      ?.metadataInputs?.length
+                ),
+            },
+            {
+              target: 'CONFIRM',
+            },
+          ],
+          DISCONNECT: {
+            actions: ['disconnect'],
+          },
+        },
+      },
+      CARD: {
+        on: {
+          SELECT_CARD_TO_CHARGE: [
+            {
+              target: 'METADATA',
+              actions: ['selectCardToCharge'],
+              cond: (context) =>
+                Boolean(
+                  context.paywallConfig.metadataInputs?.length ||
+                    context.paywallConfig.locks?.[context.lock!.address]
+                      ?.metadataInputs?.length
+                ),
+            },
+            {
+              target: 'MESSAGE_TO_SIGN',
+              actions: ['selectCardToCharge'],
+              cond: (context) => !!context.paywallConfig.messageToSign,
+            },
+            {
+              target: 'CAPTCHA',
+              actions: ['selectCardToCharge'],
+              cond: (context) => !!context.paywallConfig.captcha,
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['selectCardToCharge'],
+            },
+          ],
+          DISCONNECT: {
+            target: 'QUANTITY',
+            actions: ['disconnect'],
+          },
+        },
+      },
+      METADATA: {
+        on: {
+          SELECT_RECIPIENTS: [
+            {
+              target: 'MESSAGE_TO_SIGN',
+              actions: ['selectRecipients'],
+              cond: (context) => !!context.paywallConfig.messageToSign,
+            },
+            {
+              target: 'CAPTCHA',
+              actions: ['selectRecipients'],
+              cond: (context) => !!context.paywallConfig.captcha,
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['selectRecipients'],
+            },
+          ],
+          DISCONNECT: {
+            target: 'QUANTITY',
+            actions: ['disconnect'],
+          },
+        },
+      },
+      MESSAGE_TO_SIGN: {
+        on: {
+          SIGN_MESSAGE: [
+            {
+              target: 'CAPTCHA',
+              actions: ['signMessage'],
+              cond: (context) => !!context.paywallConfig.captcha,
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['signMessage'],
+            },
+          ],
+        },
+      },
+      CAPTCHA: {
+        on: {
+          DISCONNECT: {
+            target: 'QUANTITY',
+            actions: ['disconnect'],
+          },
+        },
+      },
+      CONFIRM: {
+        on: {
+          DISCONNECT: {
+            target: 'QUANTITY',
+            actions: ['disconnect'],
+          },
+          CONFIRM_MINT: {
+            target: 'MINTING',
+            actions: ['confirmMint'],
+          },
+        },
+      },
+      MINTING: {
+        on: {
+          FINISH_MINT: {
+            actions: ['finishMint'],
+          },
+        },
+      },
+      RETURNING: {
+        on: {
+          MAKE_ANOTHER_PURCHASE: {
+            target: 'SELECT',
+          },
+        },
+      },
+    },
+  },
+  {
+    actions: {
+      disconnect: assign((context) => {
+        return {
+          paywallConfig: context.paywallConfig,
+          lock: context.lock,
+          payment: {
+            method: 'crypto',
+          },
+          quantity: context.quantity,
+          messageToSign: undefined,
+          recipients: [],
+          mint: undefined,
+        } as CheckoutMachineContext
+      }),
+      selectLock: assign({
+        lock: (context, event) => {
+          return event.lock
+        },
+      }),
+      selectQuantity: assign({
+        quantity: (context, event) => {
+          return event.quantity
+        },
+      }),
+      selectPaymentMethod: assign({
+        payment: (context, event) => {
+          return event.payment
+        },
+      }),
+      selectRecipients: assign({
+        recipients: (context, event) => {
+          return event.recipients
+        },
+      }),
+      selectCardToCharge: assign({
+        payment: (context, event) => {
+          return {
+            method: context.payment.method,
+            cardId: event.cardId,
+          } as const
+        },
+      }),
+      signMessage: assign({
+        messageToSign: (context, event) => {
+          return {
+            address: event.address,
+            signature: event.signature,
+          } as const
+        },
+      }),
+      confirmMint: assign({
+        mint: (context, { status, transactionHash }) => {
+          return {
+            status,
+            transactionHash,
+          } as const
+        },
+      }),
+      finishMint: assign({
+        mint: (context, { status, transactionHash }) => {
+          return {
+            status,
+            transactionHash,
+          } as const
+        },
+      }),
+    },
+  }
+)
+
+export type CheckoutState = StateFrom<typeof checkoutMachine>
+
+export type CheckoutSend = (
+  event:
+    | SCXML.Event<CheckoutMachineEvents>
+    | SingleOrArray<Event<CheckoutMachineEvents>>,
+  payload?: EventData | undefined
+) => any

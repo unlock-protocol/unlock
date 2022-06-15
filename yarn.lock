@@ -15507,6 +15507,7 @@ __metadata:
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@walletconnect/web3-provider": 1.7.8
+    "@xstate/react": ^3.0.0
     apollo-boost: 0.4.9
     autoprefixer: 10.4.7
     axios: 0.27.2
@@ -15560,6 +15561,7 @@ __metadata:
     typescript: 4.7.2
     validator: 13.7.0
     walletlink: 2.5.0
+    xstate: ^4.32.1
   languageName: unknown
   linkType: soft
 
@@ -16394,6 +16396,25 @@ __metadata:
   version: 0.7.5
   resolution: "@xmldom/xmldom@npm:0.7.5"
   checksum: 8d7ec35c1ef6183b4f621df08e01d7e61f244fb964a4719025e65fe6ac06fac418919be64fb40fe5908e69158ef728f2d936daa082db326fe04603012b5f2a84
+  languageName: node
+  linkType: hard
+
+"@xstate/react@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@xstate/react@npm:3.0.0"
+  dependencies:
+    use-isomorphic-layout-effect: ^1.0.0
+    use-sync-external-store: ^1.0.0
+  peerDependencies:
+    "@xstate/fsm": ^2.0.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    xstate: ^4.31.0
+  peerDependenciesMeta:
+    "@xstate/fsm":
+      optional: true
+    xstate:
+      optional: true
+  checksum: 3ead5ce2bfda1ac3e6ebd1f1a842d3fcdf7236b11edb548d32e58979de7640a860747434704bace9911e01c9a5c9daa6e31b13a774b35f6b931ca338d722d7c5
   languageName: node
   linkType: hard
 
@@ -50879,6 +50900,15 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
+"use-sync-external-store@npm:^1.0.0":
+  version: 1.2.0
+  resolution: "use-sync-external-store@npm:1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 5c639e0f8da3521d605f59ce5be9e094ca772bd44a4ce7322b055a6f58eeed8dda3c94cabd90c7a41fb6fa852210092008afe48f7038792fd47501f33299116a
+  languageName: node
+  linkType: hard
+
 "use@npm:^3.1.0":
   version: 3.1.1
   resolution: "use@npm:3.1.1"
@@ -55218,6 +55248,13 @@ typescript@^3.8.3:
   bin:
     xss: bin/xss
   checksum: fdb5e60e51be4edd3a694f92a910f3cd55e3d4746fcf53133863e4d40572c9b4ab1ce8e0011645c776c61f86c5a2ff9fc3e02554766e987bc0bf27d16cd3b407
+  languageName: node
+  linkType: hard
+
+"xstate@npm:^4.32.1":
+  version: 4.32.1
+  resolution: "xstate@npm:4.32.1"
+  checksum: c16298b2b3dab7689da99d5b1e5128d2ca3bf381f37c8cb95e4af83bb1044b9251629fc00758f7f31785a72c2ddddd26f602b2801e6068cd78373b7f6dd6c28b
   languageName: node
   linkType: hard
 

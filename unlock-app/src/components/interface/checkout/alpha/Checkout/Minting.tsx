@@ -1,5 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutStateDispatch } from '../useCheckoutState'
+import { CheckoutState, CheckoutSend, Mint } from '../checkoutMachine'
 import { PaywallConfig } from '~/unlockTypes'
 import { LoggedIn, LoggedOut } from '../Bottom'
 import { Shell } from '../Shell'
@@ -14,16 +14,12 @@ import { useConfig } from '~/utils/withConfig'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
-  dispatch: CheckoutStateDispatch
+  send: CheckoutSend
   onClose(): void
   state: CheckoutState
 }
 
-function AnimationContent({
-  status,
-}: {
-  status: Exclude<CheckoutState['mint'], undefined>['status']
-}) {
+function AnimationContent({ status }: Mint) {
   switch (status) {
     case 'PROCESSING':
       return (
@@ -46,26 +42,23 @@ function AnimationContent({
   }
 }
 
-export function Minting({
-  injectedProvider,
-  onClose,
-  state: { mint, lock },
-}: Props) {
+export function Minting({ injectedProvider, onClose, state }: Props) {
   const { account, deAuthenticate } = useAuth()
   const { authenticateWithProvider } = useAuthenticateHandler({
     injectedProvider,
   })
   const config = useConfig()
+  const { mint, lock } = state.context
   const processing = mint!.status === 'PROCESSING'
 
   return (
     <>
       <Shell.Content>
         <div className="space-y-6 justify-center grid">
-          <AnimationContent status={mint!.status} />
+          <AnimationContent {...mint!} />
           <a
             href={config.networks[lock!.network].explorer.urls.transaction(
-              mint!.value
+              mint!.transactionHash
             )}
             className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
           >

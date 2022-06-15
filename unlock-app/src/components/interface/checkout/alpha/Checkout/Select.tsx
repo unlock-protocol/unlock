@@ -1,10 +1,6 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
-import {
-  CheckoutState,
-  CheckoutStateDispatch,
-  LockState,
-} from '../useCheckoutState'
+import { CheckoutState, CheckoutSend, LockState } from '../checkoutMachine'
 import { PaywallConfig } from '~/unlockTypes'
 import { networkToLocksMap } from '~/utils/paywallConfig'
 import { useConfig } from '~/utils/withConfig'
@@ -15,11 +11,11 @@ import { Shell } from '../Shell'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
-  dispatch: CheckoutStateDispatch
+  send: CheckoutSend
   state: CheckoutState
 }
 
-export function Select({ paywallConfig, dispatch, injectedProvider }: Props) {
+export function Select({ paywallConfig, send, injectedProvider }: Props) {
   const config = useConfig()
   const { account, deAuthenticate } = useAuth()
   const { authenticateWithProvider } = useAuthenticateHandler({
@@ -47,17 +43,9 @@ export function Select({ paywallConfig, dispatch, injectedProvider }: Props) {
                   network={Number(network)}
                   key={address}
                   onSelect={(lock) => {
-                    dispatch({
+                    send({
                       type: 'SELECT_LOCK',
-                      payload: {
-                        lock: lock as LockState,
-                      },
-                    })
-                    dispatch({
-                      type: 'CONTINUE',
-                      payload: {
-                        continue: 'QUANTITY',
-                      },
+                      lock,
                     })
                   }}
                 />

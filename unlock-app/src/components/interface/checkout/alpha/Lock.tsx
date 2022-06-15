@@ -1,10 +1,10 @@
-import { Lock as LockType } from '~/unlockTypes'
 import { twMerge } from 'tailwind-merge'
 import { getLockProps } from '~/utils/lock'
 import { useConfig } from '~/utils/withConfig'
 import { useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { getFiatPricing } from '~/hooks/useCards'
+import { LockState } from './useCheckoutState'
 
 interface Props {
   name: string
@@ -12,7 +12,7 @@ interface Props {
   network: number
   disabled?: string
   className?: string
-  onSelect: (lock: LockType) => Promise<unknown> | unknown
+  onSelect: (lock: LockState) => Promise<unknown> | unknown
 }
 
 export function Lock({
@@ -71,13 +71,13 @@ export function Lock({
           <div className="grid">
             {formattedData.cardEnabled ? (
               <>
-                <p>${(lock.fiatPricing.usd.keyPrice / 100).toFixed(2)}</p>
+                <p>${(lock.fiatPricing?.usd?.keyPrice / 100).toFixed(2)}</p>
                 <p>{formattedData?.formattedKeyPrice} </p>
               </>
             ) : (
               <>
                 <p>{formattedData?.formattedKeyPrice} </p>
-                <p>${(lock.fiatPricing.usd.keyPrice / 100).toFixed(2)}</p>
+                <p>${(lock.fiatPricing?.usd?.keyPrice / 100).toFixed(2)}</p>
               </>
             )}
           </div>

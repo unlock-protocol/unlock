@@ -35,6 +35,7 @@
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@walletconnect/web3-provider": "1.7.8",
+    "@xstate/react": "^3.0.0",
     "apollo-boost": "0.4.9",
     "axios": "0.27.2",
     "babel-eslint": "10.1.0",
@@ -84,7 +85,8 @@
     "ts-jest": "27.1.5",
     "typescript": "4.7.2",
     "validator": "13.7.0",
-    "walletlink": "2.5.0"
+    "walletlink": "2.5.0",
+    "xstate": "^4.32.1"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "7.17.12",

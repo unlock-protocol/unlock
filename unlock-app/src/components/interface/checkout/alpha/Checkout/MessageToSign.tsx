@@ -1,21 +1,22 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutStateDispatch } from '../useCheckoutState'
+import { CheckoutState, CheckoutSend } from '../checkoutMachine'
 import { PaywallConfig } from '~/unlockTypes'
 import { LoggedIn, LoggedOut } from '../Bottom'
 import { Shell } from '../Shell'
 import { Button } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
-  dispatch: CheckoutStateDispatch
+  send: CheckoutSend
   state: CheckoutState
 }
 
 export function MessageToSign({
-  dispatch,
+  send,
   injectedProvider,
   paywallConfig,
 }: Props) {
@@ -24,36 +25,19 @@ export function MessageToSign({
     injectedProvider,
   })
   const [isSigning, setIsSigning] = useState(false)
-  const [signingError, setSigningError] = useState('')
 
   const onSign = async () => {
     setIsSigning(true)
     try {
       const signature = await signMessage(paywallConfig.messageToSign!)
-      dispatch({
-        type: 'ADD_SIGNATURE',
-        payload: {
-          signature,
-        },
+      send({
+        type: 'SIGN_MESSAGE',
+        signature,
+        address: account!,
       })
-      if (paywallConfig.captcha) {
-        dispatch({
-          type: 'CONTINUE',
-          payload: {
-            continue: 'CAPTCHA',
-          },
-        })
-      } else {
-        dispatch({
-          type: 'CONTINUE',
-          payload: {
-            continue: 'CONFIRM',
-          },
-        })
-      }
     } catch (error) {
       if (error instanceof Error) {
-        setSigningError(error.message)
+        ToastHelper.error(error.message)
       }
     }
     setIsSigning(false)

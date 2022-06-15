@@ -1,5 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutStateDispatch } from '../useCheckoutState'
+import { CheckoutState, CheckoutSend } from '../checkoutMachine'
 import { PaywallConfig } from '~/unlockTypes'
 import { Shell } from '../Shell'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
@@ -14,7 +14,7 @@ import { useStorageService } from '~/utils/withStorageService'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
-  dispatch: CheckoutStateDispatch
+  send: CheckoutSend
   state: CheckoutState
 }
 
@@ -22,18 +22,19 @@ interface FormData {
   metadata: Record<'recipient' | string, string>[]
 }
 
-export function Metadata({ dispatch, state, paywallConfig }: Props) {
+export function Metadata({ send, state }: Props) {
+  const { lock, paywallConfig, quantity } = state.context
   const { account, deAuthenticate } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const storage = useStorageService()
   const metadataInputs =
-    paywallConfig.locks[state.lock!.address].metadataInputs ??
+    paywallConfig.locks[lock!.address].metadataInputs ??
     paywallConfig.metadataInputs
+
   const {
     register,
     control,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     shouldUnregister: false,
@@ -44,8 +45,8 @@ export function Metadata({ dispatch, state, paywallConfig }: Props) {
   })
 
   useEffect(() => {
-    if (state.quantity!.count > fields.length) {
-      const fieldsRequired = state.quantity!.count - fields.length
+    if (quantity > fields.length) {
+      const fieldsRequired = quantity - fields.length
 
       new Array(fieldsRequired).fill(0).map((_, index) => {
         if (!index) {
@@ -60,16 +61,15 @@ export function Metadata({ dispatch, state, paywallConfig }: Props) {
         }
       })
     } else {
-      const fieldsRemove = fields.length - state.quantity!.count
+      const fieldsRemove = fields.length - quantity
       new Array(fieldsRemove)
         .fill(0)
         .map((_, index) => remove(fields.length - index))
     }
-  }, [state.quantity, reset, account, fields, append, remove])
+  }, [quantity, account, fields, append, remove])
 
   async function onSubmit(data: FieldValues) {
     setIsLoading(true)
-
     const formData = data as FormData
     const recipients = await Promise.all(
       formData.metadata.map(async (item) => {
@@ -77,14 +77,10 @@ export function Metadata({ dispatch, state, paywallConfig }: Props) {
         return address
       })
     )
-
-    dispatch({
-      type: 'ADD_RECIPIENTS',
-      payload: {
-        recipients,
-      },
+    send({
+      type: 'SELECT_RECIPIENTS',
+      recipients,
     })
-
     if (metadataInputs) {
       const users = formData.metadata.map(({ recipient, ...rest }) => {
         const formattedMetadata = formResultToMetadata(rest, metadataInputs!)
@@ -94,36 +90,13 @@ export function Metadata({ dispatch, state, paywallConfig }: Props) {
             public: formattedMetadata.publicData,
             protected: formattedMetadata.protectedData,
           },
-          lockAddress: state.lock!.address,
+          lockAddress: lock!.address,
         }
       })
-      await storage.submitMetadata(users, state.lock!.network)
+      await storage.submitMetadata(users, lock!.network)
     }
-
+    send('CONTINUE')
     setIsLoading(false)
-
-    if (paywallConfig.messageToSign) {
-      dispatch({
-        type: 'CONTINUE',
-        payload: {
-          continue: 'MESSAGE_TO_SIGN',
-        },
-      })
-    } else if (paywallConfig.captcha) {
-      dispatch({
-        type: 'CONTINUE',
-        payload: {
-          continue: 'CAPTCHA',
-        },
-      })
-    } else {
-      dispatch({
-        type: 'CONTINUE',
-        payload: {
-          continue: 'CONFIRM',
-        },
-      })
-    }
   }
   return (
     <>
