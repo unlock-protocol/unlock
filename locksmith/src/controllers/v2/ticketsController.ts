@@ -36,7 +36,9 @@ export class TicketsController {
     const network = Number(request.params.network)
     const id = request.params.keyId.toLowerCase()
 
-    const metadata = generateKeyMetadataPayload(request.body).message
+    const metadata = {
+        checkedInAt: new Date().getTime(),
+      }
       .KeyMetaData
 
     const successfulUpdate = await metadataOperations.updateKeyMetadata({
