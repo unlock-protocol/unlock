@@ -583,17 +583,15 @@ export class StorageService extends EventEmitter {
     payload: any
     network: number
   }) {
-    return this.getEndpoint(
-      `/v2/api/verifier/${network}/lock/${lockAddress}/key/${keyId}/check`,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+    const url = `${this.host}/v2/api/verifier/${network}/lock/${lockAddress}/key/${keyId}/check`
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
       },
-      true
-    )
+      body: JSON.stringify(payload),
+    })
   }
 
   /**
