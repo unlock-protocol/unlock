@@ -204,6 +204,9 @@ contract MixinPurchase is
     // transfer the tokens
     uint inMemoryKeyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
 
+    // process in unlock
+    _recordKeyPurchase(inMemoryKeyPrice, _referrer);
+
     if(tokenAddress != address(0)) {
       if(_value < inMemoryKeyPrice) {
         revert INSUFFICIENT_ERC20_VALUE();
