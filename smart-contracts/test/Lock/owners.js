@@ -1,4 +1,3 @@
-const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { assert } = require('chai')
 const deployLocks = require('../helpers/deployLocks')

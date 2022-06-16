@@ -1,4 +1,4 @@
-const { ethers, provider } = require('hardhat')
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { tokens } = require('hardlydifficult-ethereum-contracts')
@@ -35,7 +35,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     accounts[4],
     accounts[5],
   ]
-  const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   const lockCreator = accounts[0]
 
   before(async () => {
@@ -67,7 +67,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     const estimatedRefund = new BigNumber(
       await lock.getCancelAndRefundValue(tokenIds[0])
     )
-    assert(estimatedRefund.lt(keyPrice))
+    assert(estimatedRefund.lt(keyPrice.toString()))
   })
 
   it('the amount of refund should be less than the original keyPrice when expiration is very far in the future', async () => {
@@ -83,7 +83,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     const estimatedRefund = new BigNumber(
       await lock.getCancelAndRefundValue(args.tokenId)
     )
-    assert(estimatedRefund.lt(keyPrice))
+    assert(estimatedRefund.lt(keyPrice.toString()))
   })
 
   it('the estimated refund for a free Key should be 0', async () => {
@@ -136,7 +136,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
     it('the amount of refund should be less than or equal to the original key price', async () => {
       const refund = new BigNumber(txObj.logs[0].args.refund)
-      assert(refund.lt(keyPrice))
+      assert(refund.lt(keyPrice.toString()))
     })
 
     it('the amount of refund should be less than or equal to the estimated refund', async () => {
@@ -150,7 +150,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     })
 
     it("should increase the owner's balance with the amount of funds withdrawn from the lock", async () => {
-      const txHash = await provider.getTransaction(txObj.tx)
+      const txHash = await ethers.provider.getTransaction(txObj.tx)
       const gasUsed = new BigNumber(txObj.receipt.gasUsed)
       const gasPrice = new BigNumber(txHash.gasPrice)
       const txFee = gasPrice.times(gasUsed)

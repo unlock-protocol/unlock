@@ -1,6 +1,6 @@
 const { assert } = require('chai')
 const { time } = require('@openzeppelin/test-helpers')
-const { provider } = require('hardhat')
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 const { getBalance } = require('../helpers')
@@ -100,7 +100,7 @@ contract('Lock / non expiring', (accounts) => {
         assert(refund.isEqualTo(keyPrice))
 
         // get gas used
-        const txHash = await provider.getTransaction(tx.tx)
+        const txHash = await ethers.provider.getTransaction(tx.tx)
         const gasUsed = new BigNumber(tx.receipt.gasUsed)
         const gasPrice = new BigNumber(txHash.gasPrice)
         const txFee = gasPrice.times(gasUsed)

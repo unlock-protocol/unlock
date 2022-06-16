@@ -1,4 +1,4 @@
-const { provider } = require('hardhat')
+const { ethers } = require('hardhat')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 const { getBalance } = require('../../helpers')
 
@@ -8,7 +8,7 @@ module.exports.getBalanceBehavior = (options) => {
 
     beforeEach(async () => {
       ;({ lock } = options)
-      await provider.sendTransaction({ to: lock, value: 42 })
+      await ethers.provider.sendTransaction({ to: lock, value: 42 })
     })
 
     it('ETH tip balance appears', async () => {

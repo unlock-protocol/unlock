@@ -1,4 +1,4 @@
-const { provider, ethers } = require('hardhat')
+const { ethers } = require('hardhat')
 const { reverts } = require('../helpers/errors')
 const { BN, time } = require('@openzeppelin/test-helpers')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
@@ -121,7 +121,9 @@ contract('Lock / GasRefund', (accounts) => {
             isErc20 ? testToken.address : null
           )
 
-          const { gasPrice: _gasPrice } = await provider.getTransaction(tx.tx)
+          const { gasPrice: _gasPrice } = await ethers.provider.getTransaction(
+            tx.tx
+          )
           const { gasUsed: _gasUsed } = tx.receipt
 
           const gasUsed = new BN(_gasUsed)
@@ -207,7 +209,9 @@ contract('Lock / GasRefund', (accounts) => {
             isErc20 ? testToken.address : null
           )
 
-          const { gasPrice: _gasPrice } = await provider.getTransaction(tx.tx)
+          const { gasPrice: _gasPrice } = await ethers.provider.getTransaction(
+            tx.tx
+          )
           const { gasUsed: _gasUsed } = tx.receipt
 
           const gasUsed = new BN(_gasUsed)
@@ -287,7 +291,8 @@ contract('Lock / GasRefund', (accounts) => {
           it('user gas has been refunded', async () => {
             const userBalanceAfter = await testToken.balanceOf(accounts[2])
 
-            const { gasPrice: _gasPrice } = await provider.getTransaction(tx.tx)
+            const { gasPrice: _gasPrice } =
+              await ethers.provider.getTransaction(tx.tx)
             const { gasUsed: _gasUsed } = tx.receipt
 
             const gasUsed = new BN(_gasUsed)
@@ -343,7 +348,9 @@ contract('Lock / GasRefund', (accounts) => {
           )
 
           // gather gas info for ETH balance
-          const { gasPrice: _gasPrice } = await provider.getTransaction(tx.tx)
+          const { gasPrice: _gasPrice } = await ethers.provider.getTransaction(
+            tx.tx
+          )
           const { gasUsed: _gasUsed } = tx.receipt
           const gasUsed = new BN(_gasUsed)
           const gasPrice = new BN(_gasPrice)

@@ -1,4 +1,3 @@
-const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 

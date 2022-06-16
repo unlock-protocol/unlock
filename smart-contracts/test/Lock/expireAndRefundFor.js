@@ -1,4 +1,4 @@
-const { ethers, provider } = require('hardhat')
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('../helpers/errors')
@@ -21,8 +21,8 @@ contract('Lock / expireAndRefundFor', (accounts) => {
   let lock
   let tokenIds
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
-  const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
-  const refundAmount = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+  const refundAmount = ethers.utils.parseUnits('0.01', 'ether')
   const lockCreator = accounts[0]
 
   before(async () => {
@@ -73,7 +73,7 @@ contract('Lock / expireAndRefundFor', (accounts) => {
     })
 
     it("should increase the owner's balance with the amount of funds refunded from the lock", async () => {
-      const txHash = await provider.getTransaction(txObj.tx)
+      const txHash = await ethers.provider.getTransaction(txObj.tx)
       const gasUsed = new BigNumber(txObj.receipt.gasUsed)
       const gasPrice = new BigNumber(txHash.gasPrice)
       const txFee = gasPrice.times(gasUsed)

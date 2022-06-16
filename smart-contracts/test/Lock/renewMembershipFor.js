@@ -15,9 +15,9 @@ let unlock
 let locks
 let dai
 
-const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
+const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice.times(10)
-const someDai = new BigNumber(ethers.utils.parseUnits('10', 'ether'))
+const someDai = ethers.utils.parseUnits('10', 'ether')
 
 let lock
 contract('Lock / Recurring memberships', (accounts) => {

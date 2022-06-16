@@ -194,9 +194,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
         assert.equal(gdp.toString(), grossNetworkProduct)
         assert.equal(
-          new BigNumber(ethers.utils.parseUnits('0.00006', 'ether'))
-            .shiftedBy(-18)
-            .toFixed(5),
+          ethers.utils.parseUnits('0.00006', 'ether').shiftedBy(-18).toFixed(5),
           new BigNumber(valueInETH).shiftedBy(-18).toFixed(5)
         )
         assert.equal(token.address, tokenAddress)

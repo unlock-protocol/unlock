@@ -1,4 +1,4 @@
-const { ethers, provider } = require('hardhat')
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('../helpers/errors')
@@ -14,7 +14,7 @@ let locks
 
 contract('Lock / transferFee', (accounts) => {
   let lock
-  const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   const keyOwner = accounts[1]
   const denominator = 10000
   let tokenId
@@ -64,7 +64,7 @@ contract('Lock / transferFee', (accounts) => {
     })
 
     it('estimates the transfer fee, which is 5% of remaining duration or less', async () => {
-      const { timestamp: nowBefore } = await provider.getBlock('latest')
+      const { timestamp: nowBefore } = await ethers.provider.getBlock('latest')
       fee = new BigNumber(await lock.getTransferFee(tokenId, 0))
       // Mine a transaction in order to ensure the block.timestamp has updated
       await lock.purchase(
@@ -77,7 +77,7 @@ contract('Lock / transferFee', (accounts) => {
           value: keyPrice.toFixed(),
         }
       )
-      const { timestamp: nowAfter } = await provider.getBlock('latest')
+      const { timestamp: nowAfter } = await ethers.provider.getBlock('latest')
       let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor(tokenId)
       )

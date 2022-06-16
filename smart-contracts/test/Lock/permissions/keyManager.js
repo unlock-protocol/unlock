@@ -19,7 +19,7 @@ contract('Permissions / KeyManager', (accounts) => {
   const keyGranter = lockCreator
   const keyOwners = [accounts[1], accounts[2], accounts[3]]
   const [keyOwner1] = keyOwners
-  const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   const oneDay = new BigNumber(60 * 60 * 24)
   let keyManager
   let validExpirationTimestamp

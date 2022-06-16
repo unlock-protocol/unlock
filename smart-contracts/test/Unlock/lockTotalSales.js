@@ -11,7 +11,7 @@ let unlock
 let locks
 
 contract('Unlock / lockTotalSales', (accounts) => {
-  const price = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
+  const price = ethers.utils.parseUnits('0.01', 'ether')
   let lock
 
   before(async () => {

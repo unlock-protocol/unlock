@@ -20,7 +20,7 @@ contract('Lock / disableTransfers', (accounts) => {
   let tokenId
   const keyOwner = accounts[1]
   const accountWithNoKey = accounts[2]
-  const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   const oneDay = new BigNumber(60 * 60 * 24)
 
   before(async () => {

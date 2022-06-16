@@ -1,4 +1,4 @@
-const { ethers, provider } = require('hardhat')
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('../helpers/errors')
@@ -55,7 +55,7 @@ contract('Lock / withdraw', (accounts) => {
 
     it("should increase the owner's balance with the funds from the lock", async () => {
       const balance = await getBalance(owner)
-      const txHash = await provider.getTransaction(tx.tx)
+      const txHash = await ethers.provider.getTransaction(tx.tx)
       const gasUsed = new BigNumber(tx.receipt.gasUsed)
       const gasPrice = new BigNumber(txHash.gasPrice)
       const txFee = gasPrice.times(gasUsed)
@@ -99,7 +99,7 @@ contract('Lock / withdraw', (accounts) => {
 
     it("should increase the owner's balance by 42", async () => {
       const balance = await getBalance(owner)
-      const txHash = await provider.getTransaction(tx.tx)
+      const txHash = await ethers.provider.getTransaction(tx.tx)
       const gasUsed = new BigNumber(tx.receipt.gasUsed)
       const gasPrice = new BigNumber(txHash.gasPrice)
       const txFee = gasPrice.times(gasUsed)
