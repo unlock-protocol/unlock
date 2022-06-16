@@ -4,6 +4,7 @@ const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
 const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../helpers/constants')
+const { getBalance } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 
@@ -59,9 +60,10 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
         })
 
         it('user sent correct token amounts to the contract', async () => {
-          const balance = isErc20
-            ? await testToken.balanceOf(lock.address)
-            : await web3.eth.getBalance(lock.address)
+          const balance = await getBalance(
+            lock.address,
+            isErc20 ? testToken.address : null
+          )
           assert.equal(
             balance.toString(),
             (keyPrice * keyOwners.length).toString()

@@ -3,6 +3,7 @@ const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const { reverts } = require('../helpers/errors')
+const { getBalance } = require('../helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -155,7 +156,7 @@ contract('Lock / purchaseFor', (accounts) => {
       let tokenId
 
       beforeEach(async () => {
-        balance = new BigNumber(await web3.eth.getBalance(locks.FIRST.address))
+        balance = await getBalance(locks.FIRST.address)
         totalSupply = new BigNumber(await locks.FIRST.totalSupply())
         numberOfOwners = new BigNumber(await locks.FIRST.numberOfOwners())
         const newKeyTx = await locks.FIRST.purchase(
@@ -187,13 +188,8 @@ contract('Lock / purchaseFor', (accounts) => {
       })
 
       it('should have added the funds to the contract', async () => {
-        let newBalance = new BigNumber(
-          await web3.eth.getBalance(locks.FIRST.address)
-        )
-        assert.equal(
-          parseFloat(web3.utils.fromWei(newBalance.toFixed(), 'ether')),
-          parseFloat(web3.utils.fromWei(balance.toFixed(), 'ether')) + 0.01
-        )
+        let newBalance = await getBalance(locks.FIRST.address)
+        assert.equal(newBalance, balance.plus(ethers.utils.parseEther, '0.01'))
       })
 
       it('should have increased the number of outstanding keys', async () => {

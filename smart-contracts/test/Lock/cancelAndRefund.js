@@ -1,4 +1,4 @@
-const { ethers } = require('hardhat')
+const { ethers, provider } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { tokens } = require('hardlydifficult-ethereum-contracts')
@@ -150,7 +150,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     })
 
     it("should increase the owner's balance with the amount of funds withdrawn from the lock", async () => {
-      const txHash = await web3.eth.getTransaction(txObj.tx)
+      const txHash = await provider.getTransaction(txObj.tx)
       const gasUsed = new BigNumber(txObj.receipt.gasUsed)
       const gasPrice = new BigNumber(txHash.gasPrice)
       const txFee = gasPrice.times(gasUsed)

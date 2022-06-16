@@ -39,7 +39,7 @@ contract('Lock / Lock', (accounts) => {
     totalSupply = new BigNumber(totalSupply)
     numberOfOwners = new BigNumber(numberOfOwners)
     assert.equal(expirationDuration.toFixed(), 60 * 60 * 24 * 30)
-    assert.strictEqual(web3.utils.fromWei(keyPrice.toFixed(), 'ether'), '0.01')
+    assert.strictEqual(ethers.utils.formatUnits(keyPrice), '0.01')
     assert.equal(maxNumberOfKeys.toFixed(), 10)
     assert.equal(totalSupply.toFixed(), 0)
     assert.equal(numberOfOwners.toFixed(), 0)

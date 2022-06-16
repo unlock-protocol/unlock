@@ -16,7 +16,7 @@ let testEventHooks
 contract('Lock / onKeyPurchaseHook', (accounts) => {
   const from = accounts[1]
   const to = accounts[2]
-  const dataField = web3.utils.asciiToHex('TestData')
+  const dataField = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('TestData'))
   let keyPrice
 
   beforeEach(async () => {
