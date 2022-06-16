@@ -104,20 +104,27 @@ describe('sign endpoint', () => {
     expect(response.status).toBe(202)
   })
 
-  it('correctly marks ticket as checked-in without metadata', async () => {
-    expect.assertions(3)
+  it('does correctly marks ticket as checked-in and set key data', async () => {
+    expect.assertions(5)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
     const metadata = {}
+
     const response = await request(app)
       .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .send(metadata)
     expect(response.status).toBe(202)
 
-    const updateStatus = await metadataOperations.updateKeyMetadata(metadata)
-    expect(updateStatus).toBe(false)
+    const keyData = await metadataOperations.getKeyCentricData(
+      lockAddress,
+      tokenId
+    )
+    const now = new Date().getTime()
+    expect(keyData.metadata.checkedInAt).toBeGreaterThan(now - 10000) // at most 10 seconds ago
+    expect(keyData.lockAddress).toBe(lockAddress)
+    expect(keyData.keyId).toBe(tokenId)
   })
 
   it('correctly marks ticket as checked-in and updates metadata', async () => {
