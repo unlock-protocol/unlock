@@ -15507,7 +15507,7 @@ __metadata:
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@walletconnect/web3-provider": 1.7.8
-    "@xstate/react": ^3.0.0
+    "@xstate/react": 3.0.0
     apollo-boost: 0.4.9
     autoprefixer: 10.4.7
     axios: 0.27.2
@@ -15522,7 +15522,7 @@ __metadata:
     dotenv: 16.0.1
     eslint: 8.16.0
     eth-sig-util: 2.5.4
-    ethereumjs-util: ^7.1.4
+    ethereumjs-util: 7.1.4
     ethers: 5.6.8
     file-saver: 2.0.5
     graphql: 15.8.0
@@ -15532,7 +15532,7 @@ __metadata:
     jest-mock-axios: 4.6.1
     jest-styled-components: 7.0.8
     js-base64: 3.7.2
-    lottie-react: ^2.2.1
+    lottie-react: 2.2.1
     next: 12.1.6
     node-forge: 1.3.1
     postcss: 8.4.14
@@ -15548,9 +15548,9 @@ __metadata:
     react-hot-toast: 2.2.0
     react-icons: 4.4.0
     react-jazzicon: 1.0.3
-    react-jwt: ^1.1.6
-    react-query: ^3.39.1
-    react-test-renderer: 18.1.0
+    react-jwt: 1.1.6
+    react-query: 3.39.1
+    react-test-renderer: 17.0.2
     react-use-clipboard: 1.0.8
     siwe: 1.1.6
     storybook-addon-next-router: 4.0.0
@@ -15561,7 +15561,7 @@ __metadata:
     typescript: 4.7.2
     validator: 13.7.0
     walletlink: 2.5.0
-    xstate: ^4.32.1
+    xstate: 4.32.1
   languageName: unknown
   linkType: soft
 
@@ -16399,7 +16399,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xstate/react@npm:^3.0.0":
+"@xstate/react@npm:3.0.0":
   version: 3.0.0
   resolution: "@xstate/react@npm:3.0.0"
   dependencies:
@@ -27330,6 +27330,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ethereumjs-util@npm:7.1.4, ethereumjs-util@npm:^7.1.4":
+  version: 7.1.4
+  resolution: "ethereumjs-util@npm:7.1.4"
+  dependencies:
+    "@types/bn.js": ^5.1.0
+    bn.js: ^5.1.2
+    create-hash: ^1.1.2
+    ethereum-cryptography: ^0.1.3
+    rlp: ^2.2.4
+  checksum: ccfd9208bfe9205af124a9138c5a90db46cd2fcacf4b80f17f67915381c03253aa2fb90ead9e0b53d9a6fcfeed4310e5dfa8dc516ca2846d16baf81d605cd8c2
+  languageName: node
+  linkType: hard
+
 "ethereumjs-util@npm:^4.3.0":
   version: 4.5.1
   resolution: "ethereumjs-util@npm:4.5.1"
@@ -27382,19 +27395,6 @@ __metadata:
     ethereum-cryptography: ^0.1.3
     rlp: ^2.2.4
   checksum: 6de7a32af05c7265c96163ecd15ad97327afab9deb36092ef26250616657a8c0b5df8e698328247c8193e7b87c643c967f64f0b3cff2b2937cafa870ff5fcb41
-  languageName: node
-  linkType: hard
-
-"ethereumjs-util@npm:^7.1.4":
-  version: 7.1.4
-  resolution: "ethereumjs-util@npm:7.1.4"
-  dependencies:
-    "@types/bn.js": ^5.1.0
-    bn.js: ^5.1.2
-    create-hash: ^1.1.2
-    ethereum-cryptography: ^0.1.3
-    rlp: ^2.2.4
-  checksum: ccfd9208bfe9205af124a9138c5a90db46cd2fcacf4b80f17f67915381c03253aa2fb90ead9e0b53d9a6fcfeed4310e5dfa8dc516ca2846d16baf81d605cd8c2
   languageName: node
   linkType: hard
 
@@ -36447,7 +36447,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"lottie-react@npm:^2.2.1":
+"lottie-react@npm:2.2.1":
   version: 2.2.1
   resolution: "lottie-react@npm:2.2.1"
   dependencies:
@@ -43799,13 +43799,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-is@npm:^18.1.0":
-  version: 18.2.0
-  resolution: "react-is@npm:18.2.0"
-  checksum: e72d0ba81b5922759e4aff17e0252bd29988f9642ed817f56b25a3e217e13eea8a7f2322af99a06edb779da12d5d636e9fda473d620df9a3da0df2a74141d53e
-  languageName: node
-  linkType: hard
-
 "react-jazzicon@npm:1.0.3":
   version: 1.0.3
   resolution: "react-jazzicon@npm:1.0.3"
@@ -43817,7 +43810,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-jwt@npm:^1.1.6":
+"react-jwt@npm:1.1.6":
   version: 1.1.6
   resolution: "react-jwt@npm:1.1.6"
   dependencies:
@@ -43865,7 +43858,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-query@npm:^3.39.1":
+"react-query@npm:3.39.1":
   version: 3.39.1
   resolution: "react-query@npm:3.39.1"
   dependencies:
@@ -44013,7 +44006,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-shallow-renderer@npm:^16.13.1, react-shallow-renderer@npm:^16.15.0":
+"react-shallow-renderer@npm:^16.13.1":
   version: 16.15.0
   resolution: "react-shallow-renderer@npm:16.15.0"
   dependencies:
@@ -44076,19 +44069,6 @@ fsevents@~2.1.1:
   peerDependencies:
     react: 17.0.2
   checksum: e6b5c6ed2a0bde2c34f1ab9523ff9bc4c141a271daf730d6b852374e83acc0155d58ab71a318251e953ebfa65b8bebb9c5dce3eba1ccfcbef7cc4e1e8261c401
-  languageName: node
-  linkType: hard
-
-"react-test-renderer@npm:18.1.0":
-  version: 18.1.0
-  resolution: "react-test-renderer@npm:18.1.0"
-  dependencies:
-    react-is: ^18.1.0
-    react-shallow-renderer: ^16.15.0
-    scheduler: ^0.22.0
-  peerDependencies:
-    react: ^18.1.0
-  checksum: 401a0020ff39ebdb37e015197ab11ceb13ddb7004716b7fb6304b169f20d6b0c4d0e14aaa0da139ce2b1eb14088cf370b5771b30fee52f16d6b682b5332c5781
   languageName: node
   linkType: hard
 
@@ -55251,7 +55231,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"xstate@npm:^4.32.1":
+"xstate@npm:4.32.1":
   version: 4.32.1
   resolution: "xstate@npm:4.32.1"
   checksum: c16298b2b3dab7689da99d5b1e5128d2ca3bf381f37c8cb95e4af83bb1044b9251629fc00758f7f31785a72c2ddddd26f602b2801e6068cd78373b7f6dd6c28b
