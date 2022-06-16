@@ -124,7 +124,7 @@ describe('sign endpoint', () => {
     expect(keyData.keyId).toBe(tokenId)
   })
 
-  it('does not ovveride metadata', async () => {
+  it('does not override metadata', async () => {
     expect.assertions(3)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
