@@ -1,10 +1,12 @@
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
+const metadataOperations = require('../../../src/operations/metadataOperations')
 
 const app = require('../../../src/app')
 
 jest.setTimeout(600000)
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
+const wrongLockAddress = '0x00'
 const network = 4
 const tokenId = '123'
 const wrongTokenId = '666'
@@ -67,6 +69,29 @@ describe('sign endpoint', () => {
     expect(response.status).toBe(200)
   })
 
+  it('marks ticket as checked-in without auth fails', async () => {
+    expect.assertions(1)
+    const response = await request(app).put(
+      `/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`
+    )
+
+    expect(response.status).toBe(500)
+  })
+
+  it('marks ticket as checked-in fails for non-verifier', async () => {
+    expect.assertions(2)
+    const { loginResponse } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    const response = await request(app)
+      .put(
+        `/v2/api/ticket/${network}/lock/${wrongLockAddress}/key/${tokenId}/check`
+      )
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(response.status).toBe(401)
+  })
+
   it('marks ticket as checked-in', async () => {
     expect.assertions(2)
     const { loginResponse } = await loginRandomUser(app)
@@ -77,5 +102,45 @@ describe('sign endpoint', () => {
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(response.status).toBe(202)
+  })
+
+  it('correctly marks ticket as checked-in without metadata', async () => {
+    expect.assertions(3)
+    const { loginResponse } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    const metadata = {}
+    const response = await request(app)
+      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send(metadata)
+    expect(response.status).toBe(202)
+
+    const updateStatus = await metadataOperations.updateKeyMetadata(metadata)
+    expect(updateStatus).toBe(false)
+  })
+
+  it('correctly marks ticket as checked-in and updates metadata', async () => {
+    expect.assertions(3)
+    const { loginResponse } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    const metadata = {
+      chain: network,
+      address: lockAddress,
+      id: 2,
+      data: {
+        metadata: {
+          checkedInAt: new Date().getTime(),
+        },
+      },
+    }
+    const response = await request(app)
+      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+    expect(response.status).toBe(202)
+
+    const updateStatus = await metadataOperations.updateKeyMetadata(metadata)
+    expect(updateStatus).toBe(true)
   })
 })
