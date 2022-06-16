@@ -279,7 +279,7 @@ contract('Unlock / upgrades', async (accounts) => {
 
             it('grossNetworkProduct remains', async () => {
               const grossNetworkProduct = await unlock.grossNetworkProduct()
-              assert.equal(grossNetworkProduct, keyPrice)
+              assert.equal(grossNetworkProduct.toString(), keyPrice.toString())
             })
 
             it('lock data should persist state between upgrades', async () => {
