@@ -129,8 +129,8 @@ contract('Lock / updateKeyPricing', (accounts) => {
       )
       assert.equal(await lock.tokenAddress(), token.address)
       assert.equal(
-        await lock.keyPrice.call(),
-        ethers.utils.parseUnits('0.42', 'ether')
+        (await lock.keyPrice()).toString(),
+        ethers.utils.parseUnits('0.42', 'ether').toString()
       )
     })
 

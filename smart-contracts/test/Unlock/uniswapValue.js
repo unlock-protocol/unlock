@@ -175,7 +175,7 @@ contract('Unlock / uniswapValue', (accounts) => {
         assert.equal(
           gdp.shiftedBy(-18).toFixed(5),
           gdpBefore
-            .plus(ethers.utils.parseUnits('0.00006', 'ether'))
+            .plus(ethers.utils.parseUnits('0.00006', 'ether').toString())
             .shiftedBy(-18)
             .toFixed(5)
         )
@@ -194,7 +194,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
         assert.equal(gdp.toString(), grossNetworkProduct)
         assert.equal(
-          ethers.utils.parseUnits('0.00006', 'ether').shiftedBy(-18).toFixed(5),
+          '0.00006',
           new BigNumber(valueInETH).shiftedBy(-18).toFixed(5)
         )
         assert.equal(token.address, tokenAddress)
@@ -290,7 +290,10 @@ contract('Unlock / uniswapValue', (accounts) => {
 
       it('GDP went up by the keyPrice', async () => {
         const gdp = new BigNumber(await unlock.grossNetworkProduct())
-        assert.equal(gdp.toFixed(), gdpBefore.plus(keyPrice).toFixed())
+        assert.equal(
+          gdp.toFixed(),
+          gdpBefore.plus(keyPrice.toString()).toFixed()
+        )
       })
 
       it('a GDP tracking event has been emitted', async () => {
