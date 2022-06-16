@@ -677,4 +677,35 @@ export class StorageService extends EventEmitter {
       return false
     }
   }
+
+  async signTicket({
+    walletService,
+    network,
+    lockAddress,
+    address,
+    tokenId,
+  }: {
+    walletService: WalletService
+    network: number
+    lockAddress: string
+    address: string
+    tokenId: number
+  }) {
+    try {
+      if (!this.accessToken) {
+        await this.loginPrompt({
+          walletService,
+          address,
+          chainId: network,
+        })
+      }
+      return this.getEndpoint(
+        `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/sign`,
+        {},
+        true
+      )
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }

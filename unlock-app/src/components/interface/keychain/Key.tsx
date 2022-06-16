@@ -27,6 +27,8 @@ import { MAX_UINT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
+import { useStorageService } from '~/utils/withStorageService'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface KeyBoxProps {
   tokenURI: string
@@ -147,21 +149,32 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const [showingQR, setShowingQR] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
+  const storageService = useStorageService()
+
+  const loginAndSignTicket = async () => {
+    return await storageService.signTicket({
+      walletService,
+      address: account,
+      network,
+      lockAddress: lock.address,
+      tokenId: Number(keyId),
+    })
+  }
 
   const handleSignature = async () => {
-    setError('')
-    const payload = JSON.stringify({
-      network,
-      account,
-      lockAddress: lock.address,
-      timestamp: Date.now(),
-    })
-    const signature = await walletService.signMessage(payload, 'personal_sign')
-    setSignature({
-      payload,
-      signature,
-    })
-    setShowingQR(true)
+    try {
+      setError('')
+      const { payload, signature } = await loginAndSignTicket()
+      setSignature({
+        payload,
+        signature,
+      })
+      setShowingQR(true)
+    } catch (err) {
+      ToastHelper.error(
+        'There is some issue with QR-code generation, please try again'
+      )
+    }
   }
 
   const addToWallet = async () => {
