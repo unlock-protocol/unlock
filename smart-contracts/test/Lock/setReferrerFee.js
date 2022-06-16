@@ -1,6 +1,7 @@
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { time } = require('@openzeppelin/test-helpers')
 
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
@@ -196,7 +197,6 @@ contract('Lock / setReferrerFee', (accounts) => {
         let balanceBefore
         before(async () => {
           await lock.setReferrerFee(referrer, 2000)
-          balanceBefore = await getBalance(referrer)
 
           const tx = await lock.purchase(
             isErc20 ? [keyPrice] : [],
@@ -213,6 +213,8 @@ contract('Lock / setReferrerFee', (accounts) => {
           const { args } = tx.logs.find((v) => v.event === 'Transfer')
           const { tokenId } = args
 
+          balanceBefore = await getBalance(referrer)
+
           await lock.extend(isErc20 ? keyPrice : 0, tokenId, referrer, [], {
             value: isErc20 ? 0 : keyPrice,
             from: keyOwner,
@@ -224,12 +226,60 @@ contract('Lock / setReferrerFee', (accounts) => {
           assert.equal(
             balanceAfter.toFixed(),
             balanceBefore
-              .plus((keyPrice * 2000) / BASIS_POINT_DENOMINATOR) // purchase
-              .plus((keyPrice * 2000) / BASIS_POINT_DENOMINATOR) // extend
+              .plus((keyPrice * 2000) / BASIS_POINT_DENOMINATOR)
               .toFixed()
           )
         })
       })
+
+      if (isErc20) {
+        describe('renewMembershipFor() also pays the referrer', () => {
+          let balanceBefore
+          before(async () => {
+            await lock.setReferrerFee(referrer, 2000)
+
+            const tx = await lock.purchase(
+              isErc20 ? [keyPrice] : [],
+              [accounts[8]],
+              [referrer],
+              [ADDRESS_ZERO],
+              [[]],
+              {
+                value: isErc20 ? 0 : keyPrice,
+                from: keyOwner,
+              }
+            )
+
+            const { args } = tx.logs.find((v) => v.event === 'Transfer')
+            const { tokenId } = args
+
+            const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
+            await time.increaseTo(expirationTs.toNumber())
+
+            // Mint some dais for testing
+            const renewer = accounts[8]
+            await dai.mint(renewer, someDai, {
+              from: lockOwner,
+            })
+            await dai.approve(lock.address, MAX_UINT256, { from: renewer })
+
+            balanceBefore = await getBalance(referrer)
+            await lock.renewMembershipFor(tokenId, referrer, {
+              from: renewer,
+            })
+          })
+
+          it('transfer 5% of the key price on extend', async () => {
+            const balanceAfter = await getBalance(referrer)
+            assert.equal(
+              balanceAfter.toFixed(),
+              balanceBefore
+                .plus((keyPrice * 2000) / BASIS_POINT_DENOMINATOR)
+                .toFixed()
+            )
+          })
+        })
+      }
     })
   })
 })

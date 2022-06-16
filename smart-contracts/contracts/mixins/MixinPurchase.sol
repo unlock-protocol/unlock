@@ -324,6 +324,9 @@ contract MixinPurchase is
 
     // refund gas if applicable
     _refundGas();
+
+    // send what is due to referrer
+    _payReferrer(_referrer, tokenAddress);
   }
 
   /**
