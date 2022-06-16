@@ -119,8 +119,7 @@ describe('sign endpoint', () => {
       lockAddress,
       tokenId
     )
-    const now = new Date().getTime()
-    expect(keyData.metadata.checkedInAt).toBeGreaterThan(now - 10000) // at most 10 seconds ago
+    expect(keyData.metadata.checkedInAt).not.toBeUndefined()
     expect(keyData.lockAddress).toBe(lockAddress)
     expect(keyData.keyId).toBe(tokenId)
   })
@@ -153,7 +152,7 @@ describe('sign endpoint', () => {
     const response = await request(app)
       .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
-    expect(response.status).toBe(405)
+    expect(response.status).toBe(202)
 
     const keyData = await metadataOperations.getKeyCentricData(
       lockAddress,

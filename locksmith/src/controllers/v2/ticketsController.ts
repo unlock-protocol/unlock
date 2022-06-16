@@ -38,6 +38,7 @@ export class TicketsController {
 
     const keyData = await metadataOperations.getKeyCentricData(lockAddress, id)
 
+    // update metadata only if not presenet
     if (!keyData) {
       const successfulUpdate = await metadataOperations.updateKeyMetadata({
         chain: network,
@@ -59,7 +60,7 @@ export class TicketsController {
         })
       }
     } else {
-      return response.sendStatus(405)
+      return response.sendStatus(202)
     }
   }
 }
