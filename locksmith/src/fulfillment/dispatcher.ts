@@ -1,4 +1,4 @@
-import { WalletService } from '@unlock-protocol/unlock-js'
+import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import logger from '../logger'
@@ -7,6 +7,11 @@ const config = require('../../config/config')
 const { GAS_COST } = require('../utils/keyPricer')
 const { getGasSettings } = require('../utils/gasSettings')
 
+interface KeyToGrant {
+  recipient: string
+  manager?: string
+  expiration?: number
+}
 export default class Dispatcher {
   async balances() {
     const balances = await Promise.all(
@@ -40,7 +45,7 @@ export default class Dispatcher {
    */
   async grantKeys(
     lockAddress: string,
-    recipients: string[],
+    keys: KeyToGrant[],
     network: number,
     cb?: any
   ) {
@@ -57,11 +62,26 @@ export default class Dispatcher {
 
     const transactionOptions = await getGasSettings(network)
 
+    const recipients: string[] = []
+    const keyManagers: string[] = []
+    const expirations: string[] = []
+    keys.forEach(({ recipient, manager, expiration }) => {
+      recipients.push(recipient)
+      if (manager) {
+        keyManagers.push(manager)
+      }
+      if (expiration) {
+        expirations.push(expiration.toString())
+      }
+    })
+
     await walletService.connect(provider, walletWithProvider)
     return walletService.grantKeys(
       {
         lockAddress,
         recipients,
+        keyManagers,
+        expirations,
         transactionOptions,
       },
       cb
@@ -150,5 +170,33 @@ export default class Dispatcher {
       maxFeePerGas,
       maxPriorityFeePerGas,
     })
+  }
+
+  /**
+   * Function that lets the purchaser sign a to proove ownership of a token (personal_sign)
+   * @param network
+   * @param lockAddress
+   * @param tokenId
+   * @returns [payload: string, signature: string]
+   */
+  async signToken(network: number, lockAddress: string, tokenId: string) {
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].publicProvider
+    )
+    const web3Service = new Web3Service(networks)
+
+    const account = await web3Service.ownerOf(lockAddress, tokenId, network)
+
+    const payload = JSON.stringify({
+      network,
+      account,
+      lockAddress,
+      tokenId,
+      timestamp: Date.now(),
+    })
+
+    const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
+
+    return [payload, await wallet.signMessage(payload)]
   }
 }

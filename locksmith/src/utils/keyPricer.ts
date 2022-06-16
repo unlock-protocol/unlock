@@ -13,7 +13,7 @@ const stripePercentage = 0.029
 const ZERO = ethers.constants.AddressZero
 export const GAS_COST = 200000 // hardcoded : TODO get better estimate, based on actual execution
 
-const GAS_COST_TO_GRANT = 250000
+export const GAS_COST_TO_GRANT = 250000
 
 export default class KeyPricer {
   readOnlyEthereumService: any

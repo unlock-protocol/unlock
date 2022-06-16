@@ -4,7 +4,8 @@ import logger from '../../logger'
 import { Verifier } from '../../models/verifier'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
-export class VerifierController {
+
+export default class VerifierController {
   public web3Service: Web3Service
 
   constructor() {
