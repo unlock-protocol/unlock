@@ -60,7 +60,6 @@ export const ValidKeyWithMetadata = ({
   checkedIn,
   lock,
 }: ValidKeyWithMetadataProps) => {
-  let tokenURI
   const expirationDate = expirationAsDate(unlockKey.expiration)
   let box = (
     <Box color="--green">
