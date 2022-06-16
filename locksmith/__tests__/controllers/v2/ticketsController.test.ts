@@ -104,7 +104,7 @@ describe('sign endpoint', () => {
     expect(response.status).toBe(202)
   })
 
-  it('does correctly marks ticket as checked-in and set key data', async () => {
+  it('correctly marks ticket as checked-in and set key data', async () => {
     expect.assertions(5)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
