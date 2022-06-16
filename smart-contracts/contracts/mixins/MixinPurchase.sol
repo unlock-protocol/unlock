@@ -28,13 +28,13 @@ contract MixinPurchase is
   uint256 internal _gasRefundValue;
 
   // Keep track of ERC20 price when purchased
-  mapping(uint256 => uint256) private _originalPrices;
+  mapping(uint256 => uint256) internal _originalPrices;
   
   // Keep track of duration when purchased
   mapping(uint256 => uint256) internal _originalDurations;
   
   // keep track of token pricing when purchased
-  mapping(uint256 => address) private _originalTokens;
+  mapping(uint256 => address) internal _originalTokens;
 
   /**
   * @dev Set the value/price to be refunded to the sender on purchase
