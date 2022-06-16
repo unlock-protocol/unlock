@@ -1,4 +1,3 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const deployContracts = require('../../fixtures/deploy')
 const { MAX_GAS } = require('../../helpers/constants')
 
@@ -24,7 +23,7 @@ contract('Unlock / UnlockProxy', (accounts) => {
 
     await this.unlock.setLockTemplate(lock.address, {
       from: this.unlockOwner,
-      gas: constants.MAX_GAS,
+      gas: MAX_GAS,
     })
   })
 
