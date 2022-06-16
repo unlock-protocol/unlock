@@ -27,8 +27,8 @@ import { MAX_UINT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
-import { useStorageService } from '~/utils/withStorageService'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useStorageService } from '../../../utils/withStorageService'
+import { ToastHelper } from '../../../components/helpers/toast.helper'
 
 interface KeyBoxProps {
   tokenURI: string
