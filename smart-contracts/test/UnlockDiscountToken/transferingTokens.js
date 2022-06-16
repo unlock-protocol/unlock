@@ -2,11 +2,12 @@
 // ignoring that rule is needed when using the `describeOrskip` workaround
 
 const BigNumber = require('bignumber.js')
-const { tokens, protocols } = require('hardlydifficult-eth')
+const { protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades, network } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+const { deployWETH } = require('../helpers')
 
 const Unlock = artifacts.require('Unlock.sol')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
@@ -57,7 +58,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     lock = (await deployLocks(unlock, lockOwner)).FIRST
 
     // Deploy the exchange
-    const weth = await tokens.weth.deploy(web3, protocolOwner)
+    const weth = await deployWETH(protocolOwner)
     const uniswapRouter = await protocols.uniswapV2.deploy(
       web3,
       protocolOwner,

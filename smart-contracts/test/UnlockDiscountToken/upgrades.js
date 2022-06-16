@@ -3,8 +3,9 @@ const path = require('path')
 const fs = require('fs-extra')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades, network, run } = require('hardhat')
-const { tokens, protocols } = require('hardlydifficult-eth')
+const { protocols } = require('hardlydifficult-eth')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+const { deployWETH } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
 const createLockHash = require('../helpers/createLockCalldata')
@@ -176,7 +177,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       lock = await PublicLock.attach(evt.args.newLockAddress)
 
       // Deploy the exchange
-      const weth = await tokens.weth.deploy(web3, deployer.address)
+      const weth = await deployWETH(deployer.address)
       const uniswapRouter = await protocols.uniswapV2.deploy(
         web3,
         deployer.address,
