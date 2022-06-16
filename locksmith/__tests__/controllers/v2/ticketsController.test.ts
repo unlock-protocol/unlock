@@ -109,12 +109,9 @@ describe('sign endpoint', () => {
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
-    const metadata = {}
-
     const response = await request(app)
       .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
-      .send(metadata)
     expect(response.status).toBe(202)
 
     const keyData = await metadataOperations.getKeyCentricData(
@@ -127,27 +124,27 @@ describe('sign endpoint', () => {
     expect(keyData.keyId).toBe(tokenId)
   })
 
-  it('correctly marks ticket as checked-in and updates metadata', async () => {
+  it('does not ovveride metadata', async () => {
     expect.assertions(3)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
     const metadata = {
-      chain: network,
-      address: lockAddress,
-      id: 2,
-      data: {
-        metadata: {
-          checkedInAt: new Date().getTime(),
-        },
-      },
+      userMetadata: { public: {}, protected: { fullname: 'Random' } },
     }
+
+    await metadataOperations.updateKeyMetadata(metadata)
+
     const response = await request(app)
       .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
     expect(response.status).toBe(202)
 
-    const updateStatus = await metadataOperations.updateKeyMetadata(metadata)
-    expect(updateStatus).toBe(true)
+    const keyData = await metadataOperations.getKeyCentricData(
+      lockAddress,
+      tokenId
+    )
+
+    expect(keyData.metadata.userMetadata.protected).toBe('Random')
   })
 })
