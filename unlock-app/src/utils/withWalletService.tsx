@@ -29,8 +29,5 @@ export default function withWalletService(Component: any) {
 
 export function useWalletService() {
   const walletService = useContext(WalletServiceContext)
-  if (!walletService) {
-    throw new Error('No wallet service provided in the provider')
-  }
-  return walletService
+  return walletService!
 }

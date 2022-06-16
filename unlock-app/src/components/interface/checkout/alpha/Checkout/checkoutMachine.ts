@@ -8,6 +8,7 @@ import {
   Event,
   EventData,
 } from 'xstate'
+import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
 export type CheckoutPage =
   | 'SELECT'
@@ -19,6 +20,7 @@ export type CheckoutPage =
   | 'MESSAGE_TO_SIGN'
   | 'CAPTCHA'
   | 'RETURNING'
+  | 'UNLOCK_ACCOUNT'
 
 export interface FiatPricing {
   creditCardEnabled: boolean
@@ -80,13 +82,13 @@ interface ConfirmMintEvent extends Mint {
   type: 'CONFIRM_MINT'
 }
 
-interface FinishMintEvent extends Mint {
-  type: 'FINISH_MINT'
-}
-
 interface SolveCaptchaEvent {
   type: 'SOLVE_CAPTCHA'
   data: string[]
+}
+
+interface UnlockAccountEvent {
+  type: 'UNLOCK_ACCOUNT'
 }
 
 export type CheckoutMachineEvents =
@@ -99,7 +101,7 @@ export type CheckoutMachineEvents =
   | MakeAnotherPurchaseEvent
   | SolveCaptchaEvent
   | ConfirmMintEvent
-  | FinishMintEvent
+  | UnlockAccountEvent
   | ContinueEvent
   | DisconnectEvent
 
@@ -115,6 +117,7 @@ type Payment =
 export interface Mint {
   status: 'ERROR' | 'PROCESSING' | 'FINISHED'
   transactionHash?: string
+  tokenIds?: string[]
 }
 
 interface CheckoutMachineContext {
@@ -162,6 +165,9 @@ export const checkoutMachine = createMachine(
           DISCONNECT: {
             actions: ['disconnect'],
           },
+          UNLOCK_ACCOUNT: {
+            target: 'UNLOCK_ACCOUNT',
+          },
         },
       },
       QUANTITY: {
@@ -192,6 +198,9 @@ export const checkoutMachine = createMachine(
           ],
           DISCONNECT: {
             actions: ['disconnect'],
+          },
+          UNLOCK_ACCOUNT: {
+            target: 'UNLOCK_ACCOUNT',
           },
         },
       },
@@ -293,11 +302,26 @@ export const checkoutMachine = createMachine(
         },
       },
       MINTING: {
-        type: 'final',
         on: {
-          FINISH_MINT: {
-            actions: ['finishMint'],
+          CONFIRM_MINT: {
+            type: 'final',
+            actions: ['confirmMint'],
           },
+        },
+      },
+      UNLOCK_ACCOUNT: {
+        invoke: {
+          id: 'unlockAccount',
+          src: unlockAccountMachine,
+          onDone: [
+            {
+              target: 'QUANTITY',
+              cond: (context) => !!context.lock,
+            },
+            {
+              target: 'SELECT',
+            },
+          ],
         },
       },
       RETURNING: {
@@ -361,19 +385,12 @@ export const checkoutMachine = createMachine(
         },
       }),
       confirmMint: assign({
-        mint: (context, { status, transactionHash }) => {
-          return {
-            status,
-            transactionHash,
-          } as const
-        },
-      }),
-      finishMint: assign({
-        mint: (context, { status, transactionHash }) => {
-          return {
-            status,
-            transactionHash,
-          } as const
+        mint: (context, { type, ...rest }) => {
+          const result = {
+            ...context.mint,
+            ...rest,
+          }
+          return result
         },
       }),
       solveCaptcha: assign({

@@ -1,15 +1,16 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutSend } from '../checkoutMachine'
+import { CheckoutState, CheckoutSend } from './checkoutMachine'
 import { PaywallConfig } from '~/unlockTypes'
-import { Shell } from '../Shell'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { getAddressForName } from '~/hooks/useEns'
-import { LoggedIn } from '../Bottom'
+import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { useStorageService } from '~/utils/withStorageService'
+import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   injectedProvider: unknown
@@ -22,9 +23,12 @@ interface FormData {
   metadata: Record<'recipient' | string, string>[]
 }
 
-export function Metadata({ send, state }: Props) {
+export function Metadata({ send, state, injectedProvider }: Props) {
   const { lock, paywallConfig, quantity } = state.context
   const { account, deAuthenticate } = useAuth()
+  const { authenticateWithProvider } = useAuthenticateHandler({
+    injectedProvider,
+  })
   const [isLoading, setIsLoading] = useState(false)
   const storage = useStorageService()
   const metadataInputs =
@@ -69,38 +73,44 @@ export function Metadata({ send, state }: Props) {
   }, [quantity, account, fields, append, remove])
 
   async function onSubmit(data: FieldValues) {
-    setIsLoading(true)
-    const formData = data as FormData
-    const recipients = await Promise.all(
-      formData.metadata.map(async (item) => {
-        const address = await getAddressForName(item.recipient)
-        return address
+    try {
+      setIsLoading(true)
+      const formData = data as FormData
+      const recipients = await Promise.all(
+        formData.metadata.map(async (item) => {
+          const address = await getAddressForName(item.recipient)
+          return address
+        })
+      )
+      if (metadataInputs) {
+        const users = formData.metadata.map(({ recipient, ...rest }) => {
+          const formattedMetadata = formResultToMetadata(rest, metadataInputs!)
+          return {
+            userAddress: recipient,
+            metadata: {
+              public: formattedMetadata.publicData,
+              protected: formattedMetadata.protectedData,
+            },
+            lockAddress: lock!.address,
+          }
+        })
+        await storage.submitMetadata(users, lock!.network)
+      }
+      setIsLoading(false)
+      send({
+        type: 'SELECT_RECIPIENTS',
+        recipients,
       })
-    )
-    send({
-      type: 'SELECT_RECIPIENTS',
-      recipients,
-    })
-    if (metadataInputs) {
-      const users = formData.metadata.map(({ recipient, ...rest }) => {
-        const formattedMetadata = formResultToMetadata(rest, metadataInputs!)
-        return {
-          userAddress: recipient,
-          metadata: {
-            public: formattedMetadata.publicData,
-            protected: formattedMetadata.protectedData,
-          },
-          lockAddress: lock!.address,
-        }
-      })
-      await storage.submitMetadata(users, lock!.network)
+    } catch (error) {
+      if (error instanceof Error) {
+        ToastHelper.error(error.message)
+      }
+      setIsLoading(false)
     }
-    send('CONTINUE')
-    setIsLoading(false)
   }
   return (
-    <>
-      <Shell.Content>
+    <div>
+      <main className="p-6 overflow-auto h-64 sm:h-72">
         <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
           {fields.map((item, index) => (
             <div
@@ -141,15 +151,24 @@ export function Metadata({ send, state }: Props) {
             </div>
           ))}
         </form>
-      </Shell.Content>
-      <Shell.Footer>
-        <div className="space-y-2">
+      </main>
+      <footer className="p-6 border-t grid items-center">
+        <Connected
+          account={account}
+          authenticateWithProvider={authenticateWithProvider}
+          onDisconnect={() => {
+            deAuthenticate()
+            send('DISCONNECT')
+          }}
+          onUnlockAccount={() => {
+            send('UNLOCK_ACCOUNT')
+          }}
+        >
           <Button loading={isLoading} className="w-full" form="metadata">
             {isLoading ? 'Continuing' : 'Next'}
           </Button>
-          <LoggedIn account={account!} onDisconnect={() => deAuthenticate()} />
-        </div>
-      </Shell.Footer>
-    </>
+        </Connected>
+      </footer>
+    </div>
   )
 }

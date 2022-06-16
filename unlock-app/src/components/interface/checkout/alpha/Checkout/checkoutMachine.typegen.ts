@@ -12,7 +12,6 @@ export interface Typegen0 {
     signMessage: 'SIGN_MESSAGE'
     solveCaptcha: 'SOLVE_CAPTCHA'
     confirmMint: 'CONFIRM_MINT'
-    finishMint: 'FINISH_MINT'
   }
   internalEvents: {
     'xstate.init': { type: 'xstate.init' }
@@ -36,6 +35,7 @@ export interface Typegen0 {
     | 'CAPTCHA'
     | 'CONFIRM'
     | 'MINTING'
+    | 'UNLOCK_ACCOUNT'
     | 'RETURNING'
   tags: never
 }

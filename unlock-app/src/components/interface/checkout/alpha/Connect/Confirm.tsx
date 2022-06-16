@@ -6,12 +6,13 @@ import { OAuthConfig } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { createMessageToSignIn } from '~/utils/oauth'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
-import { LoggedIn, LoggedOut } from '../Bottom'
-import { Shell } from '../Shell'
+import { Connected } from '../Connected'
+import { ConnectSend, ConnectState } from './connectMachine'
 
 interface Props {
   oauthConfig: OAuthConfig
-  onUnlockAccount(): void
+  state: ConnectState
+  send: ConnectSend
   injectedProvider: unknown
   onClose(params?: Record<string, string>): void
 }
@@ -20,7 +21,7 @@ export function ConfirmConnect({
   injectedProvider,
   oauthConfig,
   onClose,
-  onUnlockAccount,
+  send,
 }: Props) {
   const [loading, setLoading] = useState(false)
   const { account, network = 1, signMessage, deAuthenticate } = useAuth()
@@ -59,8 +60,8 @@ export function ConfirmConnect({
   }
 
   return (
-    <>
-      <Shell.Content>
+    <div>
+      <main className="p-6 overflow-auto">
         <div className="space-y-4">
           <header>
             <h1 className="font-medium text-xl">
@@ -95,17 +96,19 @@ export function ConfirmConnect({
             {loading ? 'Please sign the message' : 'Sign-in with Ethereum'}
           </Button>
         </div>
-      </Shell.Content>
-      <Shell.Footer>
-        {account ? (
-          <LoggedIn account={account} onDisconnect={() => deAuthenticate()} />
-        ) : (
-          <LoggedOut
-            authenticateWithProvider={authenticateWithProvider}
-            onUnlockAccount={onUnlockAccount}
-          />
-        )}
-      </Shell.Footer>
-    </>
+      </main>
+      <footer className="p-6 border-t grid items-center">
+        <Connected
+          account={account}
+          onUnlockAccount={() => {
+            send('SIGN_IN_USING_UNLOCK_ACCOUNT')
+          }}
+          onDisconnect={() => {
+            deAuthenticate()
+          }}
+          authenticateWithProvider={authenticateWithProvider}
+        />
+      </footer>
+    </div>
   )
 }

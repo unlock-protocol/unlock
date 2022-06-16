@@ -1,8 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutSend } from '../checkoutMachine'
+import { CheckoutState, CheckoutSend } from './checkoutMachine'
 import { PaywallConfig } from '~/unlockTypes'
-import { LoggedIn, LoggedOut } from '../Bottom'
-import { Shell } from '../Shell'
+import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
@@ -30,6 +29,7 @@ export function MessageToSign({
     setIsSigning(true)
     try {
       const signature = await signMessage(paywallConfig.messageToSign!)
+      setIsSigning(false)
       send({
         type: 'SIGN_MESSAGE',
         signature,
@@ -39,42 +39,39 @@ export function MessageToSign({
       if (error instanceof Error) {
         ToastHelper.error(error.message)
       }
+      setIsSigning(false)
     }
-    setIsSigning(false)
   }
 
   return (
-    <>
-      <Shell.Content>
+    <div>
+      <main className="p-6 overflow-auto h-64 sm:h-72">
         <pre className="text-brand-gray whitespace-pre-wrap">
           {paywallConfig.messageToSign}
         </pre>
-      </Shell.Content>
-      <Shell.Footer>
-        <div className="space-y-4">
-          {account ? (
-            <div className="space-y-2">
-              <Button
-                disabled={!account || isSigning}
-                loading={isSigning}
-                onClick={onSign}
-                className="w-full"
-              >
-                Sign the message
-              </Button>
-              <LoggedIn
-                account={account}
-                onDisconnect={() => deAuthenticate()}
-              />
-            </div>
-          ) : (
-            <LoggedOut
-              authenticateWithProvider={authenticateWithProvider}
-              onUnlockAccount={() => {}}
-            />
-          )}
-        </div>
-      </Shell.Footer>
-    </>
+      </main>
+      <footer className="p-6 border-t grid items-center">
+        <Connected
+          account={account}
+          onDisconnect={() => {
+            deAuthenticate()
+            send('DISCONNECT')
+          }}
+          authenticateWithProvider={authenticateWithProvider}
+          onUnlockAccount={() => {
+            send('UNLOCK_ACCOUNT')
+          }}
+        >
+          <Button
+            disabled={!account || isSigning}
+            loading={isSigning}
+            onClick={onSign}
+            className="w-full"
+          >
+            Sign the message
+          </Button>
+        </Connected>
+      </footer>
+    </div>
   )
 }

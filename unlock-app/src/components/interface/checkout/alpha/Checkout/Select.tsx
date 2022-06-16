@@ -1,12 +1,11 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
-import { CheckoutState, CheckoutSend, LockState } from '../checkoutMachine'
+import { CheckoutState, CheckoutSend } from './checkoutMachine'
 import { PaywallConfig } from '~/unlockTypes'
 import { networkToLocksMap } from '~/utils/paywallConfig'
 import { useConfig } from '~/utils/withConfig'
-import { LoggedIn, LoggedOut } from '../Bottom'
+import { Connected } from '../Connected'
 import { Lock } from '../Lock'
-import { Shell } from '../Shell'
 
 interface Props {
   injectedProvider: unknown
@@ -23,8 +22,8 @@ export function Select({ paywallConfig, send, injectedProvider }: Props) {
   })
   const networkToLocks = networkToLocksMap(paywallConfig)
   return (
-    <>
-      <Shell.Content>
+    <div>
+      <main className="p-6 overflow-auto h-64 sm:h-96">
         {Object.entries(networkToLocks).map(([network, locks]) => (
           <section key={network}>
             <header>
@@ -53,17 +52,20 @@ export function Select({ paywallConfig, send, injectedProvider }: Props) {
             </div>
           </section>
         ))}
-      </Shell.Content>
-      <Shell.Footer>
-        {account ? (
-          <LoggedIn account={account} onDisconnect={() => deAuthenticate()} />
-        ) : (
-          <LoggedOut
-            authenticateWithProvider={authenticateWithProvider}
-            onUnlockAccount={() => {}}
-          />
-        )}
-      </Shell.Footer>
-    </>
+      </main>
+      <footer className="p-6 border-t grid items-center">
+        <Connected
+          account={account}
+          onDisconnect={() => {
+            deAuthenticate()
+            send('DISCONNECT')
+          }}
+          authenticateWithProvider={authenticateWithProvider}
+          onUnlockAccount={() => {
+            send('UNLOCK_ACCOUNT')
+          }}
+        />
+      </footer>
+    </div>
   )
 }
