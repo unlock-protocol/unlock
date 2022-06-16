@@ -168,7 +168,7 @@ contract('UnlockProtocolGovernor', () => {
         // propose
         const proposal = [
           [gov.address],
-          [web3.utils.toWei('0')],
+          [ethers.utils.parseUnits('0')],
           [encoded],
           '<proposal description: update the quorum>',
         ]
@@ -202,7 +202,7 @@ contract('UnlockProtocolGovernor', () => {
         // propose
         const proposal = [
           [gov.address],
-          [web3.utils.toWei('0')],
+          [ethers.utils.parseUnits('0')],
           [encoded],
           '<proposal description>',
         ]
@@ -234,7 +234,7 @@ contract('UnlockProtocolGovernor', () => {
 
         const proposal = [
           [gov.address],
-          [web3.utils.toWei('0')],
+          [ethers.utils.parseUnits('0')],
           [encoded],
           '<proposal description>',
         ]

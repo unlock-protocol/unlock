@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -34,7 +35,7 @@ contract('Lock / getHasValidKey', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: ethers.utils.parseUnits('0.01', 'ether'),
         }
       )
       const tokenIds = tx.logs
@@ -76,7 +77,7 @@ contract('Lock / getHasValidKey', (accounts) => {
         [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
         [[], [], []],
         {
-          value: web3.utils.toWei('0.03', 'ether'),
+          value: ethers.utils.parseUnits('0.03', 'ether'),
         }
       )
       tokenIds = tx.logs

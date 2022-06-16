@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('../helpers/errors')
@@ -13,7 +14,7 @@ let locks
 
 contract('Lock / transferFee', (accounts) => {
   let lock
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
   const keyOwner = accounts[1]
   const denominator = 10000
   let tokenId

@@ -65,7 +65,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       weth.address
     )
     // Create UDT <-> WETH pool
-    await udt.mint(minter, web3.utils.toWei('1000000', 'ether'), {
+    await udt.mint(minter, ethers.utils.parseUnits('1000000', 'ether'), {
       from: minter,
     })
     await udt.approve(uniswapRouter.address, MAX_UINT, {
@@ -73,12 +73,12 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     })
     await uniswapRouter.addLiquidityETH(
       udt.address,
-      web3.utils.toWei('1000000', 'ether'),
+      ethers.utils.parseUnits('1000000', 'ether'),
       '1',
       '1',
       minter,
       MAX_UINT,
-      { from: minter, value: web3.utils.toWei('40', 'ether') }
+      { from: minter, value: ethers.utils.parseUnits('40', 'ether') }
     )
 
     const uniswapOracle = await protocols.uniswapOracle.deploy(
@@ -96,7 +96,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       [weth.address, udt.address],
       minter,
       MAX_UINT,
-      { from: minter, value: web3.utils.toWei('1', 'ether') }
+      { from: minter, value: ethers.utils.parseUnits('1', 'ether') }
     )
 
     // Config in Unlock
@@ -130,14 +130,18 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
 
     rate = await uniswapOracle.consult(
       udt.address,
-      web3.utils.toWei('1', 'ether'),
+      ethers.utils.parseUnits('1', 'ether'),
       weth.address
     )
 
     // Mint another 1000000
-    await udt.mint(unlock.address, web3.utils.toWei('1000000', 'ether'), {
-      from: minter,
-    })
+    await udt.mint(
+      unlock.address,
+      ethers.utils.parseUnits('1000000', 'ether'),
+      {
+        from: minter,
+      }
+    )
   })
 
   it('exchange rate is > 0', async () => {
@@ -172,7 +176,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
 
     before(async () => {
       // Let's set GDP to be very low (1 wei) so that we know that growth of supply is cap by gas
-      await unlock.resetTrackedValue(web3.utils.toWei('1', 'wei'), 0, {
+      await unlock.resetTrackedValue(ethers.utils.parseUnits('1', 'wei'), 0, {
         from: protocolOwner,
       })
       const { blockNumber } = await lock.purchase(
@@ -232,9 +236,13 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       // Total value exchanged = 1M USD
       // Key purchase 0.01 ETH = 20 USD
       // user earns 10UDT or
-      await unlock.resetTrackedValue(web3.utils.toWei('500', 'ether'), 0, {
-        from: protocolOwner,
-      })
+      await unlock.resetTrackedValue(
+        ethers.utils.parseUnits('500', 'ether'),
+        0,
+        {
+          from: protocolOwner,
+        }
+      )
 
       const baseFeePerGas = 1000000000 // in gwei
       await network.provider.send('hardhat_setNextBlockBaseFeePerGas', [

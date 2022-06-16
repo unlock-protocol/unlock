@@ -1,9 +1,11 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../helpers/constants')
+const { getBalance } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -33,7 +35,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     accounts[4],
     accounts[5],
   ]
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
   const lockCreator = accounts[0]
 
   before(async () => {
@@ -108,21 +110,19 @@ contract('Lock / cancelAndRefund', (accounts) => {
     let withdrawalAmount
 
     before(async () => {
-      initialLockBalance = new BigNumber(
-        await web3.eth.getBalance(lock.address)
-      )
-      initialKeyOwnerBalance = new BigNumber(
-        await web3.eth.getBalance(keyOwners[0])
-      )
+      initialLockBalance = await getBalance(lock.address)
+
+      initialKeyOwnerBalance = await getBalance(keyOwners[0])
+
       estimatedRefund = new BigNumber(
         await lock.getCancelAndRefundValue(tokenIds[0])
       )
       txObj = await lock.cancelAndRefund(tokenIds[0], {
         from: keyOwners[0],
       })
-      withdrawalAmount = new BigNumber(
-        await web3.eth.getBalance(lock.address)
-      ).minus(initialLockBalance)
+      withdrawalAmount = (await getBalance(lock.address)).minus(
+        initialLockBalance
+      )
     })
 
     it('should emit a CancelKey event', async () => {
@@ -154,9 +154,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
       const gasUsed = new BigNumber(txObj.receipt.gasUsed)
       const gasPrice = new BigNumber(txHash.gasPrice)
       const txFee = gasPrice.times(gasUsed)
-      const finalOwnerBalance = new BigNumber(
-        await web3.eth.getBalance(keyOwners[0])
-      )
+      const finalOwnerBalance = await getBalance(keyOwners[0])
       assert(
         finalOwnerBalance.toFixed(),
         initialKeyOwnerBalance.plus(withdrawalAmount).minus(txFee).toFixed()

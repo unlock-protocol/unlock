@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../helpers/constants')
@@ -25,7 +26,7 @@ contract('Lock / burn', (accounts) => {
       [ADDRESS_ZERO],
       [[]],
       {
-        value: web3.utils.toWei('0.01', 'ether'),
+        value: ethers.utils.parseUnits('0.01', 'ether'),
       }
     )
     const { args } = tx.logs.find((v) => v.event === 'Transfer')

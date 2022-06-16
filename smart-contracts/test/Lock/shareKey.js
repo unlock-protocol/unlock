@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('../helpers/errors')
@@ -22,7 +23,7 @@ contract('Lock / shareKey', (accounts) => {
   const accountWithNoKey2 = accounts[5]
   const accountWithNoKey3 = accounts[6]
   const approvedAddress = accounts[7]
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
   beforeEach(async () => {
     unlock = await getContractInstance(unlockContract)
@@ -188,10 +189,11 @@ contract('Lock / shareKey', (accounts) => {
       expirationBeforeSharing = new BigNumber(
         await lock.keyExpirationTimestampFor(tokenIds[2])
       )
-      timestampBeforeSharing = new BigNumber(
-        (await web3.eth.getBlock('latest')).timestamp
-      )
+
+      timestampBeforeSharing = await ethers.provider.getBlock('latest')
+        .timestamp
       fee = new BigNumber(await lock.getTransferFee(tokenIds[2], oneDay))
+
       tx2 = await lock.shareKey(accountWithNoKey2, tokenIds[2], oneDay, {
         from: keyOwners[2],
       })
@@ -229,9 +231,7 @@ contract('Lock / shareKey', (accounts) => {
       sharedKeyExpiration = new BigNumber(
         await lock.keyExpirationTimestampFor(newTokenId)
       )
-      let currentTimestamp = new BigNumber(
-        (await web3.eth.getBlock('latest')).timestamp
-      )
+      let currentTimestamp = await ethers.provider.getBlock('latest').timestamp
       assert.equal(hadKeyBefore, false)
       assert(sharedKeyExpiration.eq(currentTimestamp.plus(oneDay)))
     })
@@ -242,9 +242,7 @@ contract('Lock / shareKey', (accounts) => {
     })
 
     it('total time remaining is <= original time + fee', async () => {
-      timestampAfterSharing = new BigNumber(
-        (await web3.eth.getBlock('latest')).timestamp
-      )
+      timestampAfterSharing = await ethers.provider.getBlock('latest').timestamp
       let timeRemainingBefore = expirationBeforeSharing.minus(
         timestampBeforeSharing
       )

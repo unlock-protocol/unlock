@@ -1,8 +1,7 @@
-const BigNumber = require('bignumber.js')
+const { ethers } = require('hardhat')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const { reverts } = require('../helpers/errors')
-const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -27,7 +26,7 @@ contract('Lock / soldOut', (accounts) => {
       buyers.map(() => ADDRESS_ZERO),
       buyers.map(() => []),
       {
-        value: web3.utils.toWei('0.08', 'ether'),
+        value: ethers.utils.parseUnits('0.08', 'ether'),
       }
     )
 
@@ -39,7 +38,7 @@ contract('Lock / soldOut', (accounts) => {
         accounts.slice(0, 3).map(() => ADDRESS_ZERO),
         accounts.slice(0, 3).map(() => []),
         {
-          value: web3.utils.toWei('0.04', 'ether'),
+          value: ethers.utils.parseUnits('0.04', 'ether'),
         }
       ),
       'LOCK_SOLD_OUT'

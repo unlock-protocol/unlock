@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 
@@ -15,7 +16,7 @@ contract('Permissions / isKeyManager', (accounts) => {
     keyManagerMock = await KeyManagerMock.new()
 
     const timestampBefore = new BigNumber(
-      (await web3.eth.getBlock('latest')).timestamp
+      await ethers.provider.getBlock('latest').timestamp
     ).plus(expirationDuration)
 
     const tx = await keyManagerMock.createNewKey(

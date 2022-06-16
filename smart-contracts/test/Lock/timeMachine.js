@@ -1,4 +1,4 @@
-const { ethers } = require('hardhat')
+const { ethers, provider } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const TimeMachineMock = artifacts.require('TimeMachineMock')
@@ -21,7 +21,7 @@ contract('Lock / timeMachine', (accounts) => {
     timeMachine = await TimeMachineMock.new()
 
     timestampBefore = new BigNumber(
-      (await web3.eth.getBlock('latest')).timestamp
+      (await provider.getBlock('latest')).timestamp
     ).plus(expirationDuration)
 
     tx = await timeMachine.createNewKey(

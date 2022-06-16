@@ -1,5 +1,6 @@
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('../helpers/errors')
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
@@ -14,9 +15,9 @@ let unlock
 let locks
 let dai
 
-const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
 const totalPrice = keyPrice.times(10)
-const someDai = new BigNumber(web3.utils.toWei('10', 'ether'))
+const someDai = new BigNumber(ethers.utils.parseUnits('10', 'ether'))
 
 let lock
 contract('Lock / Recurring memberships', (accounts) => {
@@ -163,7 +164,7 @@ contract('Lock / Recurring memberships', (accounts) => {
     describe('fails when lock settings have changed', () => {
       it('should revert if price has changed', async () => {
         await lock.updateKeyPricing(
-          web3.utils.toWei('0.3', 'ether'),
+          ethers.utils.parseUnits('0.3', 'ether'),
           dai.address,
           { from: lockOwner }
         )

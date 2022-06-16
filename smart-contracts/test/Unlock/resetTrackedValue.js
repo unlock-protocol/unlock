@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { reverts } = require('../helpers/errors')
 
@@ -6,7 +7,7 @@ const deployLocks = require('../helpers/deployLocks')
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
 
-const keyPrice = web3.utils.toWei('0.01', 'ether')
+const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock

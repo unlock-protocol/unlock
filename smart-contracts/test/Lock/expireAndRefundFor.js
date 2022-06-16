@@ -1,8 +1,10 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../helpers/constants')
+const { getBalance } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -19,8 +21,8 @@ contract('Lock / expireAndRefundFor', (accounts) => {
   let lock
   let tokenIds
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
-  const refundAmount = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
+  const refundAmount = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
   const lockCreator = accounts[0]
 
   before(async () => {
@@ -48,12 +50,9 @@ contract('Lock / expireAndRefundFor', (accounts) => {
     let txObj
 
     before(async () => {
-      initialLockBalance = new BigNumber(
-        await web3.eth.getBalance(lock.address)
-      )
-      initialKeyOwnerBalance = new BigNumber(
-        await web3.eth.getBalance(keyOwners[0])
-      )
+      initialLockBalance = await getBalance(lock.address)
+      initialKeyOwnerBalance = await getBalance(keyOwners[0])
+
       txObj = await lock.expireAndRefundFor(tokenIds[0], refundAmount, {
         from: lockCreator,
       })
@@ -78,9 +77,7 @@ contract('Lock / expireAndRefundFor', (accounts) => {
       const gasUsed = new BigNumber(txObj.receipt.gasUsed)
       const gasPrice = new BigNumber(txHash.gasPrice)
       const txFee = gasPrice.times(gasUsed)
-      const finalOwnerBalance = new BigNumber(
-        await web3.eth.getBalance(keyOwners[0])
-      )
+      const finalOwnerBalance = await getBalance(keyOwners[0])
       assert(
         finalOwnerBalance.toFixed(),
         initialKeyOwnerBalance.plus(keyPrice).minus(txFee).toFixed()
@@ -88,9 +85,9 @@ contract('Lock / expireAndRefundFor', (accounts) => {
     })
 
     it("should increase the lock's balance by the keyPrice", async () => {
-      const finalLockBalance = new BigNumber(
-        await web3.eth.getBalance(lock.address)
-      ).minus(initialLockBalance)
+      const finalLockBalance = await getBalance(lock.address).minus(
+        initialLockBalance
+      )
 
       assert(
         finalLockBalance.toFixed(),

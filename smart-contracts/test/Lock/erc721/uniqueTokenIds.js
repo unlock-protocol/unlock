@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const deployLocks = require('../../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -30,7 +31,7 @@ contract('Lock / uniqueTokenIds', (accounts) => {
         keyOwners.map(() => ADDRESS_ZERO),
         keyOwners.map(() => []),
         {
-          value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
+          value: ethers.utils.parseUnits(`${0.01 * keyOwners.length}`, 'ether'),
           from: accounts[0],
         }
       )
@@ -43,7 +44,7 @@ contract('Lock / uniqueTokenIds', (accounts) => {
 
       // extend a key
       await lock.extend(0, tokenIds[1], ADDRESS_ZERO, [], {
-        value: web3.utils.toWei('0.01', 'ether'),
+        value: ethers.utils.parseUnits('0.01', 'ether'),
         from: keyOwner1,
       })
 

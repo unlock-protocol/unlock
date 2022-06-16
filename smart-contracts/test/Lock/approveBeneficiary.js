@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const { reverts } = require('../helpers/errors')
 const { tokens } = require('hardlydifficult-eth')
 const deployLocks = require('../helpers/deployLocks')
@@ -33,7 +34,7 @@ contract('Lock / approveBeneficiary', (accounts) => {
 
     before(async () => {
       token = await tokens.dai.deploy(web3, daiOwner)
-      await token.mint(keyOwner, web3.utils.toWei('100', 'ether'), {
+      await token.mint(keyOwner, ethers.utils.parseUnits('100', 'ether'), {
         from: daiOwner,
       })
       locks = await deployLocks(unlock, beneficiary, token.address)

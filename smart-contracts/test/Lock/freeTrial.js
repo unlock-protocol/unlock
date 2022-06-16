@@ -1,7 +1,9 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../helpers/constants')
+const { getBalance } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -13,7 +15,7 @@ let tokenId
 contract('Lock / freeTrial', (accounts) => {
   let lock
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
 
   beforeEach(async () => {
     unlock = await getContractInstance(unlockContract)
@@ -46,9 +48,7 @@ contract('Lock / freeTrial', (accounts) => {
 
     beforeEach(async () => {
       await lock.updateRefundPenalty(5, 2000)
-      initialLockBalance = new BigNumber(
-        await web3.eth.getBalance(lock.address)
-      )
+      initialLockBalance = await getBalance(lock.address)
     })
 
     describe('should cancel and provide a full refund when enough time remains', () => {
@@ -60,7 +60,7 @@ contract('Lock / freeTrial', (accounts) => {
 
       it('should provide a full refund', async () => {
         const refundAmount = initialLockBalance.minus(
-          await web3.eth.getBalance(lock.address)
+          await getBalance(lock.address)
         )
         assert.equal(refundAmount.toFixed(), keyPrice.toFixed())
       })
@@ -76,7 +76,7 @@ contract('Lock / freeTrial', (accounts) => {
 
       it('should provide less than a full refund', async () => {
         const refundAmount = initialLockBalance.minus(
-          await web3.eth.getBalance(lock.address)
+          await getBalance(lock.address)
         )
         assert.notEqual(refundAmount.toFixed(), keyPrice.toFixed())
         assert(refundAmount.lt(keyPrice))

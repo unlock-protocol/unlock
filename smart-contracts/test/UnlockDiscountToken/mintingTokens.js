@@ -70,7 +70,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       weth.address
     )
     // Create UDT <-> WETH pool
-    await udt.mint(minter, web3.utils.toWei('1000000', 'ether'), {
+    await udt.mint(minter, ethers.utils.parseUnits('1000000', 'ether'), {
       from: minter,
     })
     await udt.approve(uniswapRouter.address, MAX_UINT, {
@@ -78,12 +78,12 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     })
     await uniswapRouter.addLiquidityETH(
       udt.address,
-      web3.utils.toWei('1000000', 'ether'),
+      ethers.utils.parseUnits('1000000', 'ether'),
       '1',
       '1',
       minter,
       MAX_UINT,
-      { from: minter, value: web3.utils.toWei('40', 'ether') }
+      { from: minter, value: ethers.utils.parseUnits('40', 'ether') }
     )
 
     const uniswapOracle = await protocols.uniswapOracle.deploy(
@@ -101,7 +101,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       [weth.address, udt.address],
       minter,
       MAX_UINT,
-      { from: minter, value: web3.utils.toWei('1', 'ether') }
+      { from: minter, value: ethers.utils.parseUnits('1', 'ether') }
     )
 
     // Config in Unlock
@@ -135,7 +135,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
 
     rate = await uniswapOracle.consult(
       udt.address,
-      web3.utils.toWei('1', 'ether'),
+      ethers.utils.parseUnits('1', 'ether'),
       weth.address
     )
   })

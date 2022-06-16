@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
@@ -29,7 +30,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       keyOwners.map(() => ADDRESS_ZERO),
       keyOwners.map(() => []),
       {
-        value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
+        value: ethers.utils.parseUnits(`${0.01 * keyOwners.length}`, 'ether'),
         from,
       }
     )
@@ -218,7 +219,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.01', 'ether'),
             from,
           }
         )
@@ -235,7 +236,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
             [ADDRESS_ZERO],
             [[]],
             {
-              value: web3.utils.toWei('0.01', 'ether'),
+              value: ethers.utils.parseUnits('0.01', 'ether'),
               from: accounts[8],
             }
           ),

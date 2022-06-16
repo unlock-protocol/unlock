@@ -1,8 +1,8 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const { reverts } = require('../helpers/errors')
-const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -28,7 +28,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.0001', 'ether'),
+            value: ethers.utils.parseUnits('0.0001', 'ether'),
           }
         ),
         'INSUFFICIENT_VALUE'
@@ -45,7 +45,7 @@ contract('Lock / purchaseFor', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: ethers.utils.parseUnits('0.01', 'ether'),
         }
       )
       await reverts(
@@ -56,7 +56,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.01', 'ether'),
             from: accounts[1],
           }
         ),
@@ -72,7 +72,7 @@ contract('Lock / purchaseFor', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: ethers.utils.parseUnits('0.01', 'ether'),
         }
       )
       assert.equal(tx.logs[0].event, 'Transfer')
@@ -92,7 +92,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.01', 'ether'),
           }
         )
         assert.equal(await locks.SECOND.balanceOf(accounts[4]), 1)
@@ -112,7 +112,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.01', 'ether'),
           }
         )
         assert.equal(await locks.SECOND.balanceOf(accounts[4]), 1)
@@ -129,7 +129,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.01', 'ether'),
           }
         )
         assert.equal(await locks.FIRST.balanceOf(accounts[1]), 1)
@@ -140,7 +140,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.01', 'ether'),
           }
         )
         assert.equal(await locks.FIRST.balanceOf(accounts[1]), 2)
@@ -165,7 +165,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.01', 'ether'),
           }
         )
         const { args } = newKeyTx.logs.find((v) => v.event === 'Transfer')

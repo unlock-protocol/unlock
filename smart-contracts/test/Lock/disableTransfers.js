@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
@@ -19,7 +20,7 @@ contract('Lock / disableTransfers', (accounts) => {
   let tokenId
   const keyOwner = accounts[1]
   const accountWithNoKey = accounts[2]
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
   const oneDay = new BigNumber(60 * 60 * 24)
 
   before(async () => {

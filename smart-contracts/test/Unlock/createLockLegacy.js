@@ -45,7 +45,7 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
           args = [
             60 * 60 * 24 * 30, // expirationDuration: 30 days
             ADDRESS_ZERO,
-            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+            ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'Test Lock',
           ]
@@ -94,7 +94,7 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
             unlock.createLock(
               60 * 60 * 24 * 30, // expirationDuration: 30 days
               ADDRESS_ZERO,
-              web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+              ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
               100, // maxNumberOfKeys
               'Test Lock',
               salt,
@@ -111,7 +111,7 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
           await unlock.createLock(
             60 * 60 * 24 * 30, // expirationDuration: 30 days
             ADDRESS_ZERO,
-            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+            ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'Test Lock',
             salt,

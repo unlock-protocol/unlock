@@ -185,16 +185,22 @@ contract('UnlockDiscountToken upgrade', async () => {
       )
 
       // Create UDT <-> WETH pool
-      await udt.mint(deployer.address, web3.utils.toWei('1000000', 'ether'))
+      await udt.mint(
+        deployer.address,
+        ethers.utils.parseUnits('1000000', 'ether')
+      )
       await udt.approve(uniswapRouter.address, MAX_UINT)
       await uniswapRouter.addLiquidityETH(
         udt.address,
-        web3.utils.toWei('1000000', 'ether'),
+        ethers.utils.parseUnits('1000000', 'ether'),
         '1',
         '1',
         deployer.address,
         MAX_UINT,
-        { from: deployer.address, value: web3.utils.toWei('40', 'ether') }
+        {
+          from: deployer.address,
+          value: ethers.utils.parseUnits('40', 'ether'),
+        }
       )
 
       const uniswapOracle = await protocols.uniswapOracle.deploy(
@@ -212,7 +218,7 @@ contract('UnlockDiscountToken upgrade', async () => {
         [weth.address, udt.address],
         deployer.address,
         MAX_UINT,
-        { value: web3.utils.toWei('1', 'ether') }
+        { value: ethers.utils.parseUnits('1', 'ether') }
       )
 
       // Config in Unlock
@@ -251,7 +257,7 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       rate = await uniswapOracle.consult(
         udt.address,
-        web3.utils.toWei('1', 'ether'),
+        ethers.utils.parseUnits('1', 'ether'),
         weth.address
       )
     })

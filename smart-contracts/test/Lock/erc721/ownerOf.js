@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const deployLocks = require('../../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 
@@ -27,7 +28,7 @@ contract('Lock / erc721 / ownerOf', (accounts) => {
       [ADDRESS_ZERO],
       [[]],
       {
-        value: web3.utils.toWei('0.01', 'ether'),
+        value: ethers.utils.parseUnits('0.01', 'ether'),
         from: accounts[1],
       }
     )
@@ -44,7 +45,7 @@ contract('Lock / erc721 / ownerOf', (accounts) => {
       [ADDRESS_ZERO],
       [[]],
       {
-        value: web3.utils.toWei('0.01', 'ether'),
+        value: ethers.utils.parseUnits('0.01', 'ether'),
         from: accounts[1],
       }
     )

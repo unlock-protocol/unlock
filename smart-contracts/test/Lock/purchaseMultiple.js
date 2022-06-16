@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const { reverts } = require('../helpers/errors')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const deployLocks = require('../helpers/deployLocks')
@@ -10,7 +11,7 @@ const scenarios = [false, true]
 let unlock
 let locks
 let testToken
-const keyPrice = web3.utils.toWei('0.01', 'ether')
+const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
 contract('Lock / purchase multiple keys at once', (accounts) => {
   scenarios.forEach((isErc20) => {
@@ -80,7 +81,7 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
           await reverts(
             lock.purchase(
               isErc20
-                ? keyOwners.map(() => web3.utils.toWei('0.005', 'ether'))
+                ? keyOwners.map(() => ethers.utils.parseUnits('0.005', 'ether'))
                 : [],
               keyOwners,
               keyOwners.map(() => ADDRESS_ZERO),

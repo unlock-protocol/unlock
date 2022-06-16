@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 
@@ -35,7 +36,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
-        value: web3.utils.toWei('0.03', 'ether'),
+        value: ethers.utils.parseUnits('0.03', 'ether'),
         from: accounts[1],
       }
     )
@@ -51,7 +52,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
-        value: web3.utils.toWei('0.03', 'ether'),
+        value: ethers.utils.parseUnits('0.03', 'ether'),
         from: accounts[1],
       }
     )
@@ -70,7 +71,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
 
     // renew one
     await locks.FIRST.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
-      value: web3.utils.toWei('0.03', 'ether'),
+      value: ethers.utils.parseUnits('0.03', 'ether'),
       from: accounts[1],
     })
 
@@ -85,7 +86,7 @@ contract('Lock / erc721 / balanceOf', (accounts) => {
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
-        value: web3.utils.toWei('0.03', 'ether'),
+        value: ethers.utils.parseUnits('0.03', 'ether'),
         from: accounts[6],
       }
     )

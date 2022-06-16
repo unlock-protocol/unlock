@@ -12,10 +12,10 @@ module.exports = async function deployLocks(
   await Promise.all(
     Object.keys(Locks).map(async (name) => {
       const args = [
-        Locks[name].expirationDuration.toFixed(),
+        Locks[name].expirationDuration,
         tokenAddress,
-        Locks[name].keyPrice.toFixed(),
-        Locks[name].maxNumberOfKeys.toFixed(),
+        Locks[name].keyPrice,
+        Locks[name].maxNumberOfKeys,
         Locks[name].lockName,
       ]
       const calldata = await createLockHash({ args, from })

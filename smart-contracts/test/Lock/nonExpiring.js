@@ -1,7 +1,9 @@
 const { assert } = require('chai')
 const { time } = require('@openzeppelin/test-helpers')
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+const { getBalance } = require('../helpers')
 
 const deployLocks = require('../helpers/deployLocks')
 
@@ -84,12 +86,8 @@ contract('Lock / non expiring', (accounts) => {
     describe('cancelAndRefund', () => {
       it('should transfer entire price back', async () => {
         // make sure the refund actually happened
-        const initialLockBalance = new BigNumber(
-          await web3.eth.getBalance(lock.address)
-        )
-        const initialKeyOwnerBalance = new BigNumber(
-          await web3.eth.getBalance(keyOwner)
-        )
+        const initialLockBalance = getBalance(lock.address)
+        const initialKeyOwnerBalance = await getBalance(keyOwner)
 
         // refund
         const tx = await lock.cancelAndRefund(tokenId, { from: keyOwner })
@@ -108,18 +106,16 @@ contract('Lock / non expiring', (accounts) => {
         const txFee = gasPrice.times(gasUsed)
 
         // check key owner balance
-        const finalOwnerBalance = new BigNumber(
-          await web3.eth.getBalance(keyOwner)
-        )
+        const finalOwnerBalance = await getBalance(keyOwner)
+
         assert(
           finalOwnerBalance.toFixed(),
           initialKeyOwnerBalance.plus(refund).minus(txFee).toFixed()
         )
 
         // also check lock balance
-        const finalLockBalance = new BigNumber(
-          await web3.eth.getBalance(lock.address)
-        )
+        const finalLockBalance = await getBalance(lock.address)
+
         assert(
           finalLockBalance.toFixed(),
           initialLockBalance.minus(refund).toFixed()

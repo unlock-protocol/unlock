@@ -18,7 +18,7 @@ const unlockVersions = getUnlockVersionNumbers()
 
 contract('Unlock / upgrades', async (accounts) => {
   const [unlockOwner, lockOwner, keyOwner] = await ethers.getSigners()
-  const keyPrice = web3.utils.toWei('0.01', 'ether')
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
   after(async () => await cleanupPastContracts())
 
@@ -100,7 +100,7 @@ contract('Unlock / upgrades', async (accounts) => {
           if (versionNumber >= 11) {
             const args = [
               60 * 60 * 24, // expirationDuration 1 day
-              web3.utils.padLeft(0, 40), // token address
+              ADDRESS_ZERO, // token address
               keyPrice,
               5, // maxNumberOfKeys
               'UpgradeTestingLock',
@@ -113,7 +113,7 @@ contract('Unlock / upgrades', async (accounts) => {
             // Version 5 introduced `create2`, requiring a salt
             lockTx = await unlock.connect(lockOwner).createLock(
               60 * 60 * 24, // expirationDuration 1 day
-              web3.utils.padLeft(0, 40), // token address
+              ADDRESS_ZERO, // token address
               keyPrice,
               5, // maxNumberOfKeys
               'UpgradeTestingLock',
@@ -123,7 +123,7 @@ contract('Unlock / upgrades', async (accounts) => {
             // Version 3 added a lock name
             lockTx = await unlock.connect(lockOwner).createLock(
               60 * 60 * 24, // expirationDuration 1 day
-              web3.utils.padLeft(0, 40), // token address
+              ADDRESS_ZERO, // token address
               keyPrice,
               5, // maxNumberOfKeys
               'UpgradeTestingLock'
@@ -132,7 +132,7 @@ contract('Unlock / upgrades', async (accounts) => {
             // Version 1 added ERC-20 support, requiring a tokenAddress
             lockTx = await unlock.connect(lockOwner).createLock(
               60 * 60 * 24, // expirationDuration 1 day
-              web3.utils.padLeft(0, 40), // token address
+              ADDRESS_ZERO, // token address
               keyPrice,
               5 // maxNumberOfKeys
             )
@@ -327,8 +327,8 @@ contract('Unlock / upgrades', async (accounts) => {
                 await lockLatest.purchase(
                   [],
                   [keyOwner.address],
-                  [web3.utils.padLeft(0, 40)],
-                  [web3.utils.padLeft(0, 40)],
+                  [ADDRESS_ZERO],
+                  [ADDRESS_ZERO],
                   [[]],
                   { value: keyPrice }
                 )

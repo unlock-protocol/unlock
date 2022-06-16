@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { reverts } = require('../helpers/errors')
@@ -10,7 +11,7 @@ const { ADDRESS_ZERO } = require('../helpers/constants')
 let unlock
 let lock
 let tokenAddress
-const price = web3.utils.toWei('0.01', 'ether')
+const price = ethers.utils.parseUnits('0.01', 'ether')
 
 contract('Lock / withdraw', (accounts) => {
   let owner = accounts[0]

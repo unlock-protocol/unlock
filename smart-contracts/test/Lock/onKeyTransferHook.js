@@ -1,5 +1,6 @@
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const unlockContract = artifacts.require('Unlock.sol')

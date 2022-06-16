@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
@@ -10,7 +11,7 @@ let unlock
 let locks
 
 contract('Unlock / lockTotalSales', (accounts) => {
-  const price = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const price = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
   let lock
 
   before(async () => {

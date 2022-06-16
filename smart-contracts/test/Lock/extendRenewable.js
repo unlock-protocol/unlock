@@ -1,5 +1,6 @@
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 const { reverts } = require('../helpers/errors')
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
@@ -13,10 +14,10 @@ let unlock
 let locks
 let dai
 
-const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
-const newPrice = web3.utils.toWei('0.011', 'ether')
+const keyPrice = new BigNumber(ethers.utils.parseUnits('0.01', 'ether'))
+const newPrice = ethers.utils.parseUnits('0.011', 'ether')
 const totalPrice = keyPrice.times(10)
-const someDai = new BigNumber(web3.utils.toWei('100', 'ether'))
+const someDai = new BigNumber(ethers.utils.parseUnits('100', 'ether'))
 
 let lock
 contract('Lock / Extend with recurring memberships', (accounts) => {
