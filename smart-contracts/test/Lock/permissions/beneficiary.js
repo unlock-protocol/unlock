@@ -25,21 +25,21 @@ contract('Permissions / Beneficiary', (accounts) => {
 
   describe('default permissions on a new lock', () => {
     it('should make the lock creator the beneficiary as well', async () => {
-      const defaultBeneficiary = await lock.beneficiary.call()
+      const defaultBeneficiary = await lock.beneficiary()
       assert.equal(defaultBeneficiary, lockCreator)
     })
   })
   describe('modifying permissions on an existing lock', () => {
     it('should allow a lockManager to update the beneficiary', async () => {
       await lock.updateBeneficiary(newBeneficiary, { from: lockCreator })
-      currentBeneficiary = await lock.beneficiary.call()
+      currentBeneficiary = await lock.beneficiary()
       assert.equal(currentBeneficiary, newBeneficiary)
     })
 
     it('should allow Beneficiary to update the beneficiary', async () => {
-      currentBeneficiary = await lock.beneficiary.call()
+      currentBeneficiary = await lock.beneficiary()
       await lock.updateBeneficiary(accounts[8], { from: currentBeneficiary })
-      currentBeneficiary = await lock.beneficiary.call()
+      currentBeneficiary = await lock.beneficiary()
       assert.equal(currentBeneficiary, accounts[8])
     })
 

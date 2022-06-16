@@ -36,26 +36,26 @@ contract('Lock / timeMachine', (accounts) => {
 
   describe('modifying the time remaining for a key', () => {
     it('should reduce the time by the amount specified', async () => {
-      assert.equal(await timeMachine.isValidKey.call(tokenId), true)
+      assert.equal(await timeMachine.isValidKey(tokenId), true)
       await timeMachine.timeMachine(tokenId, 1000, false, {
         from: accounts[0],
       }) // decrease the time with "false"
 
       timestampAfter = new BigNumber(
-        await timeMachine.keyExpirationTimestampFor.call(tokenId)
+        await timeMachine.keyExpirationTimestampFor(tokenId)
       )
       assert(timestampAfter.eq(timestampBefore.minus(1000)))
     })
 
     it('should increase the time by the amount specified if the key is not expired', async () => {
       timestampBefore = new BigNumber(
-        await timeMachine.keyExpirationTimestampFor.call(tokenId)
+        await timeMachine.keyExpirationTimestampFor(tokenId)
       )
       await timeMachine.timeMachine(tokenId, 42, true, {
         from: accounts[0],
       }) // increase the time with "true"
       timestampAfter = new BigNumber(
-        await timeMachine.keyExpirationTimestampFor.call(tokenId)
+        await timeMachine.keyExpirationTimestampFor(tokenId)
       )
       assert(timestampAfter.eq(timestampBefore.plus(42)))
     })
@@ -76,7 +76,7 @@ contract('Lock / timeMachine', (accounts) => {
       )
 
       timestampAfter = new BigNumber(
-        await timeMachine.keyExpirationTimestampFor.call(tokenId)
+        await timeMachine.keyExpirationTimestampFor(tokenId)
       )
       assert(timestampAfter.eq(new BigNumber(now).plus(expirationDuration)))
     })
