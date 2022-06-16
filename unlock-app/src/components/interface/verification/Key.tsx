@@ -9,7 +9,11 @@ import {
 import { ActionButton } from '../buttons/ActionButton'
 import Loading from '../Loading'
 import { ToastHelper } from '../../helpers/toast.helper'
-
+import {
+  AvatarImage,
+  Root as Avatar,
+  Fallback as AvatarFallback,
+} from '@radix-ui/react-avatar'
 interface InvalidKeyProps {
   reason: string
 }
@@ -56,6 +60,7 @@ export const ValidKeyWithMetadata = ({
   checkedIn,
   lock,
 }: ValidKeyWithMetadataProps) => {
+  let tokenURI
   const expirationDate = expirationAsDate(unlockKey.expiration)
   let box = (
     <Box color="--green">
@@ -97,9 +102,29 @@ export const ValidKeyWithMetadata = ({
     <Wrapper>
       {box}
       <KeyInfo>
-        <Label>Lock Name</Label>
-        <Value>{lock.name}</Value>
-        <Label>Token Id</Label>
+        <div className="flex mb-3">
+          <Avatar className="flex items-center justify-center w-12 h-12 border rounded-full">
+            <AvatarImage
+              className="rounded-full"
+              alt={lock.name}
+              src={keyData.image}
+              width={50}
+              height={50}
+            />
+            <AvatarFallback className="uppercase" delayMs={100}>
+              {lock.name.slice(0, 2)}
+            </AvatarFallback>
+          </Avatar>
+          <div className="ml-3">
+            <div className="flex">
+              <Label>
+                Lock Name
+                <strong className="text-sm block"> {lock.name}</strong>
+              </Label>
+            </div>
+          </div>
+        </div>
+        <Label>Token id</Label>
         <Value>{unlockKey.tokenId}</Value>
         <Label>Owner Address</Label>
         <Value>{owner}</Value>
