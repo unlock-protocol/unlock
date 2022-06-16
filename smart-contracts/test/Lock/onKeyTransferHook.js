@@ -1,8 +1,5 @@
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
-const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
-
 const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
