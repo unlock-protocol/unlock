@@ -1,4 +1,4 @@
-const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { deployERC20 } = require('../helpers')
 const { reverts } = require('../helpers/errors')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
@@ -25,7 +25,7 @@ contract('Lock / Recurring memberships', (accounts) => {
   // const referrer = accounts[3]
 
   beforeEach(async () => {
-    dai = await tokens.dai.deploy(web3, lockOwner)
+    dai = await deployERC20(lockOwner)
 
     // Mint some dais for testing
     await dai.mint(keyOwner, someDai, {
@@ -175,7 +175,7 @@ contract('Lock / Recurring memberships', (accounts) => {
 
       it('should revert if erc20 token has changed', async () => {
         // deploy another token
-        const dai2 = await tokens.dai.deploy(web3, accounts[3])
+        const dai2 = await deployERC20(accounts[3])
         await dai2.mint(keyOwner, someDai, {
           from: accounts[3],
         })

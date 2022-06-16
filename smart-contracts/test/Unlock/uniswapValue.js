@@ -1,8 +1,9 @@
 const BigNumber = require('bignumber.js')
-const { tokens, protocols } = require('hardlydifficult-eth')
+const { protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+const { deployWETH, deployERC20 } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -77,7 +78,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
   describe('A supported token', () => {
     beforeEach(async () => {
-      token = await tokens.dai.deploy(web3, protocolOwner)
+      token = await deployERC20(protocolOwner)
       // Mint some tokens so that the totalSupply is greater than 0
       await token.mint(keyOwner, web3.utils.toWei('10000', 'ether'), {
         from: protocolOwner,
@@ -87,7 +88,7 @@ contract('Unlock / uniswapValue', (accounts) => {
       lock = locks.FIRST
 
       // Deploy the exchange
-      const weth = await tokens.weth.deploy(web3, protocolOwner)
+      const weth = await deployWETH(protocolOwner)
       const uniswapRouter = await protocols.uniswapV2.deploy(
         web3,
         protocolOwner,
@@ -203,7 +204,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
   describe('A unsupported token', () => {
     beforeEach(async () => {
-      token = await tokens.dai.deploy(web3, protocolOwner)
+      token = await deployERC20(protocolOwner)
       // Mint some tokens so that the totalSupply is greater than 0
       await token.mint(keyOwner, web3.utils.toWei('10000', 'ether'), {
         from: protocolOwner,

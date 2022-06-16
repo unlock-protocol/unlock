@@ -1,5 +1,5 @@
 const { reverts } = require('../helpers/errors')
-const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { deployERC20 } = require('../helpers')
 const deployLocks = require('../helpers/deployLocks')
 const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../helpers/constants')
@@ -20,7 +20,7 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
 
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       beforeEach(async () => {
-        testToken = await tokens.dai.deploy(web3, accounts[0])
+        testToken = await deployERC20(accounts[0])
         // Mint some tokens for testing
         await testToken.mint(accounts[2], '100000000000000000000', {
           from: accounts[0],
