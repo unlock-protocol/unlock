@@ -68,10 +68,7 @@ contract MixinPurchase is
   /** 
   @dev internal function to execute the payments to referrers if any is set
   */
-  function _payReferrer(
-    address _referrer,
-    address tokenAddress
-  ) internal {
+  function _payReferrer (address _referrer) internal {
     // get default value
     uint basisPointsToPay = referrerFees[address(0)];
 
@@ -215,7 +212,7 @@ contract MixinPurchase is
 
     // send what is due to referrers
     for (uint256 i = 0; i < _referrers.length; i++) { 
-      _payReferrer(_referrers[i], tokenAddress);
+      _payReferrer(_referrers[i]);
     }
 
     return tokenIds;
@@ -274,7 +271,7 @@ contract MixinPurchase is
     _refundGas();
 
     // send what is due to referrer
-    _payReferrer(_referrer, tokenAddress);
+    _payReferrer(_referrer);
   }
 
   /**
@@ -326,7 +323,7 @@ contract MixinPurchase is
     _refundGas();
 
     // send what is due to referrer
-    _payReferrer(_referrer, tokenAddress);
+    _payReferrer(_referrer);
   }
 
   /**
