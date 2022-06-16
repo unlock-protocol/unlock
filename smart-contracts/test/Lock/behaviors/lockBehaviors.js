@@ -1,7 +1,7 @@
 // The test run will repeat for each of these lock fixtures individually
 const lockTypes = ['FIRST', 'ERC20', 'FREE']
 
-const { deployERC20 } = require('../helpers')
+const { deployERC20 } = require('../../helpers')
 const deployLocks = require('../../helpers/deployLocks')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 
