@@ -36,25 +36,30 @@ export class TicketsController {
     const network = Number(request.params.network)
     const id = request.params.keyId.toLowerCase()
 
-    const successfulUpdate = await metadataOperations.updateKeyMetadata({
-      chain: network,
-      address: lockAddress,
-      id,
-      data: {
-        keyId: id,
-        lockAddress,
-        metadata: {
-          checkedInAt: new Date().getTime(),
-        },
-      },
-    })
+    const keyData = await metadataOperations.getKeyCentricData(lockAddress, id)
 
-    if (successfulUpdate) {
-      return response.sendStatus(202)
-    } else {
-      return response.status(400).send({
-        message: 'update failed',
+    if (!keyData) {
+      const successfulUpdate = await metadataOperations.updateKeyMetadata({
+        chain: network,
+        address: lockAddress,
+        id,
+        data: {
+          keyId: id,
+          lockAddress,
+          metadata: {
+            checkedInAt: new Date().getTime(),
+          },
+        },
       })
+      if (successfulUpdate) {
+        return response.send(202)
+      } else {
+        return response.status(400).send({
+          message: 'update failed',
+        })
+      }
+    } else {
+      return response.sendStatus(405)
     }
   }
 }
