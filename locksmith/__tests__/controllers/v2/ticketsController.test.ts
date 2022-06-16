@@ -69,13 +69,13 @@ describe('sign endpoint', () => {
     expect(response.status).toBe(200)
   })
 
-  it('marks ticket as checked-in without auth fails', async () => {
+  it('marks ticket as checked-in when authentication is missing', async () => {
     expect.assertions(1)
     const response = await request(app).put(
       `/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`
     )
 
-    expect(response.status).toBe(500)
+    expect(response.status).toBe(403)
   })
 
   it('marks ticket as checked-in fails for non-verifier', async () => {

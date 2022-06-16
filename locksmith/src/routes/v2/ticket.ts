@@ -17,6 +17,7 @@ router.get(
 
 router.put(
   '/:network/lock/:lockAddress/key/:keyId/check',
+  authenticatedMiddleware,
   isVerifierMiddleware,
   (req, res) => {
     ticketsController.markTicketAsCheckIn(req, res)
