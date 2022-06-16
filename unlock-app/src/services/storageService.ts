@@ -161,7 +161,6 @@ export class StorageService extends EventEmitter {
           'Content-Type': 'application/json',
         },
       })
-      // await axios.post(`${this.host}/transaction`, payload)
       this.emit(success.storeTransaction, transactionHash)
     } catch (error) {
       this.emit(failure.storeTransaction, error)
@@ -184,10 +183,6 @@ export class StorageService extends EventEmitter {
           method: 'GET',
         }
       )
-      // const response = await axios.get(
-      //   `${this.host}/transactions?sender=${senderAddress}&createdAfter=${oneDayAgo}`
-      // )
-
       const data = await response.json()
       if (data && data.transactions) {
         hashes = data.transactions.map((t: any) => ({
@@ -221,7 +216,6 @@ export class StorageService extends EventEmitter {
    */
 
   async createUser(user: any) {
-    // const opts = {}
     return fetch(`${this.host}/users/`, {
       method: 'POST',
       body: JSON.stringify(user),
@@ -229,7 +223,6 @@ export class StorageService extends EventEmitter {
         'Content-Type': 'application/json',
       },
     })
-    // return axios.post(`${this.host}/users/`, user, opts)
   }
 
   /**
@@ -247,7 +240,10 @@ export class StorageService extends EventEmitter {
     token: string
   ) {
     const opts = {
-      headers: this.genAuthorizationHeader(token),
+      headers: {
+        ...this.genAuthorizationHeader(token),
+        ...{ 'Content-Type': 'application/json' },
+      },
     }
     try {
       await fetch(
@@ -260,13 +256,6 @@ export class StorageService extends EventEmitter {
           headers: opts.headers,
         }
       )
-      // await axios.put(
-      //   `${this.host}/users/${encodeURIComponent(
-      //     emailAddress
-      //   )}/passwordEncryptedPrivateKey`,
-      //   user,
-      //   opts
-      // )
       this.emit(success.updateUser, { emailAddress, user })
     } catch (error) {
       this.emit(failure.updateUser, { emailAddress, error })
@@ -297,11 +286,6 @@ export class StorageService extends EventEmitter {
           headers: opts.headers,
         }
       )
-      // await axios.put(
-      //   `${this.host}/users/${encodeURIComponent(emailAddress)}/paymentdetails`,
-      //   stripeTokenId,
-      //   opts
-      // )
       this.emit(success.addPaymentMethod, { emailAddress, stripeTokenId })
     } catch (error) {
       this.emit(failure.addPaymentMethod, { emailAddress, error })
@@ -323,10 +307,7 @@ export class StorageService extends EventEmitter {
         { method: 'GET', headers: opts }
       )
       const data = await response.json()
-      // const response = await axios.get(
-      //   `${this.host}/users/${encodeURIComponent(emailAddress)}/privatekey`,
-      //   opts
-      // )
+
       if (data && data.passwordEncryptedPrivateKey) {
         this.emit(success.getUserPrivateKey, {
           emailAddress,
@@ -356,10 +337,7 @@ export class StorageService extends EventEmitter {
         { method: 'GET', headers: opts }
       )
       const data = await response.json()
-      // const response = await axios.get(
-      //   `${this.host}/users/${encodeURIComponent(emailAddress)}/recoveryphrase`,
-      //   opts
-      // )
+
       if (data && data.recoveryPhrase) {
         const { recoveryPhrase } = data
         this.emit(success.getUserRecoveryPhrase, {
@@ -389,9 +367,6 @@ export class StorageService extends EventEmitter {
         { method: 'GET' }
       )
       const data = await response.json()
-      // const response = await axios.get(
-      //   `${this.host}/users/${encodeURIComponent(emailAddress)}/cards`
-      // )
       this.emit(success.getCards, data)
     } catch (error) {
       this.emit(failure.getCards, { error })
@@ -400,21 +375,19 @@ export class StorageService extends EventEmitter {
 
   async purchaseKey(purchaseRequest: Record<string, any>, token: string) {
     const opts = {
-      headers: this.genAuthorizationHeader(token),
+      headers: {
+        ...this.genAuthorizationHeader(token),
+        ...{ 'Content-Type': 'application/json' },
+      },
     }
     try {
       const response = await fetch(`${this.host}/purchase`, {
         method: 'POST',
         body: JSON.stringify(purchaseRequest),
-        headers: { ...opts.headers, ...{ 'Content-Type': 'application/json' } },
+        headers: opts.headers,
       })
       const data = await response.json()
 
-      // const response = await axios.post(
-      //   `${this.host}/purchase`,
-      //   purchaseRequest,
-      //   opts
-      // )
       this.emit(
         success.keyPurchase,
         purchaseRequest.message.purchaseRequest.lock
@@ -436,8 +409,6 @@ export class StorageService extends EventEmitter {
         method: 'GET',
       })
       const data = await response.json()
-
-      // const result = await axios.get(`${this.host}/${address}/locks`)
 
       if (data && data.locks) {
         this.emit(
@@ -464,7 +435,10 @@ export class StorageService extends EventEmitter {
    */
   async ejectUser(publicKey: string, data: any, token: string) {
     const opts = {
-      headers: this.genAuthorizationHeader(btoa(token)),
+      headers: {
+        ...this.genAuthorizationHeader(token),
+        ...{ 'Content-Type': 'application/json' },
+      },
     }
     try {
       await fetch(`${this.host}/users/${publicKey}/eject`, {
@@ -472,7 +446,6 @@ export class StorageService extends EventEmitter {
         body: JSON.stringify(data),
         headers: { ...opts.headers, ...{ 'Content-Type': 'application/json' } },
       })
-      // await axios.post(`${this.host}/users/${publicKey}/eject`, data, opts)
       this.emit(success.ejectUser, { publicKey })
     } catch (error) {
       this.emit(failure.ejectUser, { publicKey })
@@ -520,11 +493,6 @@ export class StorageService extends EventEmitter {
       )
       const data = response.json()
 
-      // const result = await axios.get(
-      //   `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`,
-      //   opts
-      // )
-
       this.emit(success.getBulkMetadataFor, lockAddress, data)
       return data
     } catch (error) {
@@ -551,10 +519,7 @@ export class StorageService extends EventEmitter {
         signature,
       },
     }
-    // const result = await axios.get(
-    //   `${this.host}/lock/${lockAddress}/stripe`,
-    //   opts
-    // )
+
     const response = await fetch(`${this.host}/lock/${lockAddress}/stripe`, {
       method: 'GET',
       body: JSON.stringify(opts.params),
@@ -586,15 +551,7 @@ export class StorageService extends EventEmitter {
         ...opts.headers,
       },
     })
-    return await response.json()
-
-    // const result = await axios.post(
-    //   `${this.host}/lock/${lockAddress}/icon`,
-    //   { ...data, icon },
-    //   opts
-    // )
-
-    // return result?.data
+    return await response?.json()
   }
 
   /**
@@ -700,9 +657,6 @@ export class StorageService extends EventEmitter {
       })
 
       return await response.json()
-
-      // const response = await axios.get(url, options)
-      // return response?.data
     } catch (error) {
       console.error(error)
       return {}
@@ -732,9 +686,6 @@ export class StorageService extends EventEmitter {
       })
 
       return await response.json()
-
-      // const response = await axios.get(url, options)
-      // return response?.data
     } catch (error) {
       console.error(error)
       return {}
@@ -757,9 +708,6 @@ export class StorageService extends EventEmitter {
       const data = await response.json()
 
       return data[network].address
-
-      // const response = await axios.get(url, options)
-      // return response?.data[network].address
     } catch (error) {
       console.error(error)
       return ''
@@ -793,8 +741,6 @@ export class StorageService extends EventEmitter {
         method: 'GET',
       })
       return response.status === 200
-      // const response = await axios.get(endpoint)
-      // return response.status === 200
     } catch (error) {
       return false
     }
