@@ -2,12 +2,11 @@
 // ignoring that rule is needed when using the `describe` workaround
 
 const BigNumber = require('bignumber.js')
-const { protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, network, upgrades } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
-const { deployWETH } = require('../helpers')
+const { ADDRESS_ZERO } = require('../helpers/constants')
+const { createExchange } = require('../helpers')
 
 const Unlock = artifacts.require('Unlock.sol')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
@@ -62,48 +61,12 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     // Grant Unlock minting permissions
     await udt.addMinter(unlock.address, { from: minter })
 
-    // Deploy the exchange
-    const weth = await deployWETH(protocolOwner)
-    const uniswapRouter = await protocols.uniswapV2.deploy(
-      web3,
-      protocolOwner,
-      ADDRESS_ZERO,
-      weth.address
-    )
-    // Create UDT <-> WETH pool
-    await udt.mint(minter, web3.utils.toWei('1000000', 'ether'), {
-      from: minter,
+    // deploy uniswap exchange
+    const { oracle, weth } = await createExchange({
+      protocolOwner: await ethers.getSigner(protocolOwner),
+      minter: await ethers.getSigner(minter),
+      udtAddress: udt.address,
     })
-    await udt.approve(uniswapRouter.address, MAX_UINT, {
-      from: minter,
-    })
-    await uniswapRouter.addLiquidityETH(
-      udt.address,
-      web3.utils.toWei('1000000', 'ether'),
-      '1',
-      '1',
-      minter,
-      MAX_UINT,
-      { from: minter, value: web3.utils.toWei('40', 'ether') }
-    )
-
-    const uniswapOracle = await protocols.uniswapOracle.deploy(
-      web3,
-      protocolOwner,
-      await uniswapRouter.factory()
-    )
-
-    // Advancing time to avoid an intermittent test fail
-    await time.increase(time.duration.hours(1))
-
-    // Do a swap so there is some data accumulated
-    await uniswapRouter.swapExactETHForTokens(
-      1,
-      [weth.address, udt.address],
-      minter,
-      MAX_UINT,
-      { from: minter, value: web3.utils.toWei('1', 'ether') }
-    )
 
     // Config in Unlock
     await unlock.configUnlock(
@@ -115,15 +78,13 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       1, // mainnet
       { from: protocolOwner }
     )
-    await unlock.setOracle(udt.address, uniswapOracle.address, {
+    await unlock.setOracle(udt.address, oracle.address, {
       from: protocolOwner,
     })
 
     // Advance time so 1 full period has past and then update again so we have data point to read
     await time.increase(time.duration.hours(30))
-    await uniswapOracle.update(weth.address, udt.address, {
-      from: protocolOwner,
-    })
+    await oracle.update(weth.address, udt.address)
 
     // Purchase a valid key for the referrer
     await lock.purchase([], [referrer], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
@@ -134,7 +95,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     // allow multiiple keys per owner
     await lock.setMaxKeysPerAddress(10)
 
-    rate = await uniswapOracle.consult(
+    rate = await oracle.consult(
       udt.address,
       web3.utils.toWei('1', 'ether'),
       weth.address
@@ -142,9 +103,9 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
   })
 
   it('exchange rate is > 0', async () => {
-    assert.notEqual(web3.utils.fromWei(rate.toString(), 'ether'), 0)
+    assert.notEqual(ethers.utils.formatUnits(rate), 0)
     // 1 UDT is worth ~0.000042 ETH
-    assert.equal(new BigNumber(rate).shiftedBy(-18).toFixed(5), '0.00004')
+    assert.equal(Math.floor(ethers.utils.formatUnits(rate, 12)), 42)
   })
 
   it('referrer has 0 UDT to start', async () => {
@@ -192,7 +153,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       assert.equal(
         new BigNumber(await udt.balanceOf(referrer))
           .shiftedBy(-18) // shift UDT balance
-          .times(rate)
+          .times(rate.toString())
           .shiftedBy(-18) // shift the rate
           .toFixed(3),
         gasSpent.shiftedBy(-18).toFixed(3)
@@ -203,7 +164,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       assert.equal(
         new BigNumber(await udt.balanceOf(await unlock.owner()))
           .shiftedBy(-18) // shift UDT balance
-          .times(rate)
+          .times(rate.toString())
           .shiftedBy(-18) // shift the rate
           .toFixed(3),
         gasSpent.times(0.25).shiftedBy(-18).toFixed(3)

@@ -1,9 +1,14 @@
 const BigNumber = require('bignumber.js')
-const { protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
+const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
-const { deployWETH, deployERC20 } = require('../helpers')
+const {
+  deployWETH,
+  deployERC20,
+  deployUniswapV2,
+  deployUniswapOracle,
+} = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -89,12 +94,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
       // Deploy the exchange
       const weth = await deployWETH(protocolOwner)
-      const uniswapRouter = await protocols.uniswapV2.deploy(
-        web3,
-        protocolOwner,
-        ADDRESS_ZERO,
-        weth.address
-      )
+      const uniswapRouter = await deployUniswapV2(weth.address, protocolOwner)
       // Create DAI <-> WETH pool
       await token.mint(liquidityOwner, web3.utils.toWei('100000', 'ether'), {
         from: protocolOwner,
@@ -102,33 +102,36 @@ contract('Unlock / uniswapValue', (accounts) => {
       await token.approve(uniswapRouter.address, MAX_UINT, {
         from: liquidityOwner,
       })
-      await uniswapRouter.addLiquidityETH(
-        token.address,
-        web3.utils.toWei('2000', 'ether'),
-        '1',
-        '1',
-        liquidityOwner,
-        MAX_UINT,
-        { from: liquidityOwner, value: web3.utils.toWei('10', 'ether') }
-      )
+      await uniswapRouter
+        .connect(await ethers.getSigner(liquidityOwner))
+        .addLiquidityETH(
+          token.address,
+          web3.utils.toWei('2000', 'ether'),
+          '1',
+          '1',
+          liquidityOwner,
+          MAX_UINT,
+          { value: web3.utils.toWei('10', 'ether') }
+        )
 
-      const uniswapOracle = await protocols.uniswapOracle.deploy(
-        web3,
-        protocolOwner,
-        await uniswapRouter.factory()
+      const uniswapOracle = await deployUniswapOracle(
+        await uniswapRouter.factory(),
+        protocolOwner
       )
 
       // Advancing time to avoid an intermittent test fail
       await time.increase(time.duration.hours(1))
 
       // Do a swap so there is some data accumulated
-      await uniswapRouter.swapExactETHForTokens(
-        1,
-        [weth.address, token.address],
-        keyOwner,
-        MAX_UINT,
-        { from: keyOwner, value: web3.utils.toWei('1', 'ether') }
-      )
+      await uniswapRouter
+        .connect(await ethers.getSigner(keyOwner))
+        .swapExactETHForTokens(
+          1,
+          [weth.address, token.address],
+          keyOwner,
+          MAX_UINT,
+          { value: web3.utils.toWei('1', 'ether') }
+        )
 
       // Config in Unlock
       await unlock.configUnlock(
