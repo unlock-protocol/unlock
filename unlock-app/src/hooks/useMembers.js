@@ -1,14 +1,23 @@
 import { useEffect, useState, useContext } from 'react'
 import { expirationAsDate } from '../utils/durations'
 import generateKeyTypedData from '../structured_data/keyMetadataTypedData'
-import { WalletServiceContext } from '../utils/withWalletService'
-import { StorageServiceContext } from '../utils/withStorageService'
+import {
+  useWalletService,
+  WalletServiceContext,
+} from '../utils/withWalletService'
+import {
+  StorageServiceContext,
+  useStorageService,
+} from '../utils/withStorageService'
 import { generateColumns } from '../utils/metadataMunging'
 import { MemberFilters } from '../unlockTypes'
-import { Web3ServiceContext } from '../utils/withWeb3Service'
+import { useWeb3Service, Web3ServiceContext } from '../utils/withWeb3Service'
 import { GraphServiceContext } from '../utils/withGraphService'
-import { AuthenticationContext } from '../contexts/AuthenticationContext'
-import { ConfigContext } from '../utils/withConfig'
+import {
+  AuthenticationContext,
+  useAuth,
+} from '../contexts/AuthenticationContext'
+import { ConfigContext, useConfig } from '../utils/withConfig'
 import { ToastHelper } from '../components/helpers/toast.helper'
 
 /**
@@ -106,11 +115,11 @@ export const buildMembersWithMetadata = (lockWithKeys, storedMetadata) => {
  * @param {*} address
  */
 export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
-  const { network } = useContext(AuthenticationContext)
-  const config = useContext(ConfigContext)
-  const walletService = useContext(WalletServiceContext)
-  const web3Service = useContext(Web3ServiceContext)
-  const storageService = useContext(StorageServiceContext)
+  const { network } = useAuth()
+  const config = useConfig()
+  const walletService = useWalletService()
+  const web3Service = useWeb3Service()
+  const storageService = useStorageService()
   const graphService = useContext(GraphServiceContext)
 
   graphService.connect(config.networks[network].subgraphURI)

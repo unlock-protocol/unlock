@@ -1,12 +1,11 @@
-import { useContext } from 'react'
 import UnlockProvider from '../services/unlockProvider'
-import { Web3ServiceContext } from '../utils/withWeb3Service'
-import { ConfigContext } from '../utils/withConfig'
+import { useWeb3Service } from '../utils/withWeb3Service'
+import { useConfig } from '../utils/withConfig'
 import { StorageService } from '../services/storageService'
-import { WalletServiceContext } from '../utils/withWalletService'
+import { useWalletService } from '../utils/withWalletService'
 import UnlockUser from '../structured_data/unlockUser'
 import { generateKeyHolderMetadataPayload } from '../structured_data/keyHolderMetadata'
-import WedlockServiceContext from '../contexts/WedlocksContext'
+import { useWedlockService } from '../contexts/WedlocksContext'
 import {
   generateTypedData,
   getCardsForAddress,
@@ -41,10 +40,10 @@ export const getAccountTokenBalance = async (
  * A hook which yield a lock, tracks its state changes, and (TODO) provides methods to update it
  */
 export const useAccount = (address: string, network: number) => {
-  const web3Service = useContext(Web3ServiceContext)
-  const config = useContext(ConfigContext)
-  const walletService = useContext(WalletServiceContext)
-  const wedlockService = useContext(WedlockServiceContext)
+  const web3Service = useWeb3Service()
+  const config = useConfig()
+  const walletService = useWalletService()
+  const wedlockService = useWedlockService()
 
   const getTokenBalance = (tokenAddress: string) => {
     return getAccountTokenBalance(web3Service, address, tokenAddress, network)
@@ -117,7 +116,6 @@ export const useAccount = (address: string, network: number) => {
       }
     }
 
-    // @ts-expect-error (it is always defined... despite what TS says)
     wedlockService.welcomeEmail(
       emailAddress,
       `${origin}/recover/?email=${encodeURIComponent(
