@@ -1,5 +1,6 @@
 const { constants } = require('hardlydifficult-ethereum-contracts')
 const deployContracts = require('../../fixtures/deploy')
+const { MAX_GAS } = require('../../helpers/constants')
 
 const shared = require('./shared')
 
