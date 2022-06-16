@@ -8,7 +8,7 @@ jest.setTimeout(600000)
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const wrongLockAddress = '0x00'
 const network = 4
-const tokenId = '123'
+const tokenId = '12'
 const wrongTokenId = '666'
 let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 
@@ -112,6 +112,7 @@ describe('sign endpoint', () => {
     const response = await request(app)
       .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
     expect(response.status).toBe(202)
 
     const keyData = await metadataOperations.getKeyCentricData(
@@ -129,8 +130,22 @@ describe('sign endpoint', () => {
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
+    const checkInTime = new Date().getTime()
     const metadata = {
-      userMetadata: { public: {}, protected: { fullname: 'Random' } },
+      chain: network,
+      address: lockAddress,
+      id: tokenId,
+      data: {
+        keyId: tokenId,
+        lockAddress,
+        metadata: {
+          checkedInAt: checkInTime,
+          value: '12',
+        },
+        KeyMetadata: {
+          custom_field: 'Random',
+        },
+      },
     }
 
     await metadataOperations.updateKeyMetadata(metadata)
@@ -145,6 +160,6 @@ describe('sign endpoint', () => {
       tokenId
     )
 
-    expect(keyData.metadata.userMetadata.protected).toBe('Random')
+    expect(keyData.metadata.value).toBe('12')
   })
 })
