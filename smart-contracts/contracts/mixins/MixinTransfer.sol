@@ -162,6 +162,24 @@ contract MixinTransfer is
     keyManagerOf[_tokenId] = msg.sender;
   }
 
+  /** 
+  * Unlend is called when you have lent a key and want to claim its full ownership back
+  * @param _recipient the address that will receive the token ownership
+  * @param _tokenId the id of the token
+  * @notice Only the key manager of the token can call this function
+  */
+  function unlendKey(
+    address _recipient,
+    uint _tokenId
+  ) public {
+    _isValidKey(_tokenId);
+
+    if(msg.sender != keyManagerOf[_tokenId]) {
+      revert UNAUTHORIZED();
+    }
+    _transferFrom(ownerOf(_tokenId), _recipient, _tokenId);
+  }
+
   /**
    * This functions contains the logic to transfer a token
    * from an account to another
