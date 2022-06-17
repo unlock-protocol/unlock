@@ -53,6 +53,6 @@ module.exports = {
     'jest/prefer-expect-assertions': 'error',
     'no-constant-condition': 0,
     'no-promise-executor-return': 0,
-    'no-unused-vars': 'error',
+    'no-unused-vars': ["error", { "argsIgnorePattern": "^_" }],
   },
 }
