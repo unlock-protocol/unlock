@@ -75,6 +75,15 @@ contract('Lock / shareKey', (accounts) => {
         )
       })
 
+      it('should abort if the key owner', async () => {
+        await reverts(
+          lock.shareKey(keyOwners[0], tokenIds[0], 1000, {
+            from: keyOwners[0],
+          }),
+          'TRANSFER_TO_SELF'
+        )
+      })
+
       it('should revert if keys are sold out', async () => {
         const buyers = accounts.slice(3, 10)
         await lock.purchase(
