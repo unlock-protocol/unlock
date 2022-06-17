@@ -137,6 +137,12 @@ contract('Lock / lendKey', (accounts) => {
         await lock.setKeyManagerOf(tokenIds[0], keyManager, {
           from: keyOwners[0],
         })
+        await reverts(
+          locks.FIRST.lendKey(keyOwners[0], accounts[9], tokenIds[0], {
+            from: accountApproved,
+          }),
+          'UNAUTHORIZED'
+        )
       })
 
       it('should prevent from lending a key', async () => {
