@@ -159,7 +159,8 @@ contract MixinTransfer is
   * @param _from the owner of token to transfer
   * @param _recipient the address that will receive the token
   * @param _tokenId the id of the token
-  * @notice This requires the key manager to be set 
+  * @notice Only the key owner or the key manager can call this function. If the owner calls it and no
+  * key manager is set, then the owner will be set as key manager.
   */
 
   function lendKey(
@@ -170,10 +171,17 @@ contract MixinTransfer is
     public
   {
     _isValidKey(_tokenId);
-    _onlyKeyManagerOrApproved(_tokenId);
-    if(keyManagerOf[_tokenId] == address(0)) {
+    
+    // make sure caller is either owner or key manager 
+    if(msg.sender != keyManagerOf[_tokenId] && msg.sender != ownerOf(_tokenId)) {
       revert UNAUTHORIZED();
     }
+
+    // set owner as key manager if none 
+    if(keyManagerOf[_tokenId] == address(0)) {
+      keyManagerOf[_tokenId] == ownerOf(_tokenId);
+    }
+    
     _transferFrom(_from, _recipient, _tokenId);
   }
 

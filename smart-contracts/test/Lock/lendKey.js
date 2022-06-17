@@ -8,6 +8,8 @@ let unlock
 let locks
 let tokenIds
 let keyOwners
+let accountApproved
+let keyManager
 
 contract('Lock / lendKey', (accounts) => {
   before(async () => {
@@ -16,6 +18,8 @@ contract('Lock / lendKey', (accounts) => {
 
   const from = accounts[0]
   keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
+  accountApproved = accounts[8]
+  keyManager = accounts[9]
 
   beforeEach(async () => {
     locks = await deployLocks(unlock, accounts[0])
@@ -44,61 +48,149 @@ contract('Lock / lendKey', (accounts) => {
     })
   })
 
-  afterEach(async () => {
-    // make sure it retains the correct key manager after lend
-    assert.equal(await locks.FIRST.keyManagerOf(tokenIds[0]), keyOwners[0])
-  })
-
   describe('when the lock is public', () => {
-    it('should abort when there is no key to lend', async () => {
-      await reverts(
-        locks.FIRST.lendKey(keyOwners[0], accounts[9], 999),
-        'KEY_NOT_VALID'
-      )
-    })
-
-    it('should abort if the recipient is 0x', async () => {
-      await reverts(
-        locks.FIRST.lendKey(keyOwners[0], ADDRESS_ZERO, tokenIds[0], {
-          from: keyOwners[0],
-        }),
-        'INVALID_ADDRESS'
-      )
-    })
-
-    it('should only allow key manager, approved or owner to lend', async () => {
-      // testing an id mismatch
-      await reverts(
-        locks.FIRST.lendKey(keyOwners[0], accounts[9], tokenIds[0], {
-          from: keyOwners[5],
-        }),
-        'ONLY_KEY_MANAGER_OR_APPROVED'
-      )
-      // testing a mismatched _from address
-      await reverts(
-        locks.FIRST.lendKey(keyOwners[2], accounts[9], tokenIds[0], {
-          from: keyOwners[0],
-        }),
-        'UNAUTHORIZED'
-      )
-    })
-
-    it('should prevent lending an expired key', async () => {
-      // Then let's expire the key
-      await locks.FIRST.expireAndRefundFor(tokenIds[0], 0, {
-        from: accounts[0],
+    describe('failures', () => {
+      it('should abort when there is no key to lend', async () => {
+        await reverts(
+          locks.FIRST.lendKey(keyOwners[0], accounts[9], 999),
+          'KEY_NOT_VALID'
+        )
       })
-      await reverts(
-        locks.FIRST.lendKey(keyOwners[1], accounts[7], tokenIds[0], {
-          from: keyOwners[1],
+
+      it('should abort if the recipient is 0x', async () => {
+        await reverts(
+          locks.FIRST.lendKey(keyOwners[0], ADDRESS_ZERO, tokenIds[0], {
+            from: keyOwners[0],
+          }),
+          'INVALID_ADDRESS'
+        )
+      })
+
+      it('should only allow key manager or owner', async () => {
+        // testing an id mismatch
+        await reverts(
+          locks.FIRST.lendKey(keyOwners[0], accounts[9], tokenIds[0], {
+            from: keyOwners[5],
+          }),
+          'UNAUTHORIZED'
+        )
+        // testing a mismatched _from address
+        await reverts(
+          locks.FIRST.lendKey(keyOwners[2], accounts[9], tokenIds[0], {
+            from: keyOwners[0],
+          }),
+          'UNAUTHORIZED'
+        )
+      })
+
+      it('should prevent lending an expired key', async () => {
+        // Then let's expire the key
+        await locks.FIRST.expireAndRefundFor(tokenIds[0], 0, {
+          from: accounts[0],
         })
-      )
+        await reverts(
+          locks.FIRST.lendKey(keyOwners[1], accounts[7], tokenIds[0], {
+            from: keyOwners[1],
+          })
+        )
+      })
+
+      it('should fail if the sender has been approved for that key', async () => {
+        await locks.FIRST.approve(accountApproved, tokenIds[0], {
+          from: keyOwners[0],
+        })
+        await reverts(
+          locks.FIRST.lendKey(keyOwners[0], accounts[9], tokenIds[0], {
+            from: accountApproved,
+          }),
+          'UNAUTHORIZED'
+        )
+      })
+
+      it('should fail if the sender has been approved for all owner keys', async () => {
+        await locks.FIRST.setApprovalForAll(accountApproved, true, {
+          from: keyOwners[0],
+        })
+        assert.equal(
+          await locks.FIRST.isApprovedForAll(keyOwners[0], accountApproved),
+          true
+        )
+        await reverts(
+          locks.FIRST.lendKey(keyOwners[0], accounts[9], tokenIds[0], {
+            from: accountApproved,
+          }),
+          'UNAUTHORIZED'
+        )
+      })
     })
 
-    describe('when the key owner is the sender', () => {
+    describe('when the sender is the key owner', () => {
+      describe('no key manager is set', () => {
+        beforeEach(async () => {
+          await locks.FIRST.lendKey(keyOwners[0], accounts[7], tokenIds[0], {
+            from: keyOwners[0],
+          })
+        })
+
+        it('should lend ownership correctly', async () => {
+          assert.equal(await locks.FIRST.ownerOf(tokenIds[0]), accounts[7])
+        })
+
+        it('update balances properly', async () => {
+          assert.equal(await locks.FIRST.balanceOf(accounts[7]), 1)
+          assert.equal(await locks.FIRST.balanceOf(keyOwners[0]), 0)
+        })
+
+        it('update key validity properly', async () => {
+          assert.equal(await locks.FIRST.getHasValidKey(accounts[7]), true)
+          assert.equal(await locks.FIRST.getHasValidKey(keyOwners[0]), false)
+        })
+
+        it('should set previous owner as key manager', async () => {
+          assert.equal(
+            await locks.FIRST.keyManagerOf(tokenIds[0]),
+            keyOwners[0]
+          )
+        })
+      })
+
+      describe('a key manager is set', () => {
+        beforeEach(async () => {
+          await locks.FIRST.setKeyManagerOf(tokenIds[0], keyManager, {
+            from: keyOwners[0],
+          })
+          await locks.FIRST.lendKey(keyOwners[0], accounts[7], tokenIds[0], {
+            from: keyOwners[0],
+          })
+        })
+
+        it('should lend ownership correctly', async () => {
+          assert.equal(await locks.FIRST.ownerOf(tokenIds[0]), accounts[7])
+        })
+
+        it('update balances properly', async () => {
+          assert.equal(await locks.FIRST.balanceOf(accounts[7]), 1)
+          assert.equal(await locks.FIRST.balanceOf(keyOwners[0]), 0)
+        })
+
+        it('update key validity properly', async () => {
+          assert.equal(await locks.FIRST.getHasValidKey(accounts[7]), true)
+          assert.equal(await locks.FIRST.getHasValidKey(keyOwners[0]), false)
+        })
+
+        it('retains the correct key manager', async () => {
+          assert.equal(await locks.FIRST.keyManagerOf(tokenIds[0]), keyManager)
+        })
+      })
+    })
+
+    describe('when the sender is a key manager', async () => {
       beforeEach(async () => {
-        await locks.FIRST.lendKey(keyOwners[0], accounts[7], tokenIds[0], {
+        await locks.FIRST.setKeyManagerOf(tokenIds[0], keyManager, {
           from: keyOwners[0],
+        })
+        await locks.FIRST.lendKey(keyOwners[0], accounts[7], tokenIds[0], {
+          from: keyManager,
         })
       })
 
@@ -115,78 +207,9 @@ contract('Lock / lendKey', (accounts) => {
         assert.equal(await locks.FIRST.getHasValidKey(accounts[7]), true)
         assert.equal(await locks.FIRST.getHasValidKey(keyOwners[0]), false)
       })
-    })
 
-    describe('when the key owner is not the sender', async () => {
-      let accountApproved
-
-      beforeEach(async () => {
-        accountApproved = accounts[8]
-        await locks.FIRST.approve(accountApproved, tokenIds[0], {
-          from: keyOwners[0],
-        })
-      })
-
-      it('should fail if the sender has not been approved for that key', async () => {
-        await reverts(
-          locks.FIRST.lendKey(keyOwners[0], accountApproved, tokenIds[2], {
-            from: accountApproved,
-          }),
-          'ONLY_KEY_MANAGER_OR_APPROVED'
-        )
-      })
-
-      it('should fail if the sender has been approved for that key', async () => {
-        await locks.FIRST.lendKey(keyOwners[0], accounts[9], tokenIds[0], {
-          from: accountApproved,
-        })
-        assert.equal(await locks.FIRST.ownerOf(tokenIds[0]), accounts[9])
-        assert.equal(await locks.FIRST.balanceOf.call(accounts[9]), 1)
-      })
-
-      it('approval should be cleared after a lend', async () => {
-        await locks.FIRST.lendKey(keyOwners[0], accounts[9], tokenIds[0], {
-          from: accountApproved,
-        })
-        assert.equal(await locks.FIRST.getApproved(tokenIds[0]), ADDRESS_ZERO)
-      })
-    })
-
-    describe('when the sender is a key manager', async () => {
-      let keyManager
-      beforeEach(async () => {
-        keyManager = accounts[8]
-        await locks.FIRST.setKeyManagerOf(tokenIds[0], keyManager, {
-          from: keyOwners[0],
-        })
-      })
-    })
-
-    describe('when the sender is approved', async () => {
-      let approved
-      beforeEach(async () => {
-        approved = accounts[8]
-        await locks.FIRST.setApprovalForAll(approved, true, {
-          from: keyOwners[0],
-        })
-        assert.equal(
-          await locks.FIRST.isApprovedForAll(keyOwners[0], approved),
-          true
-        )
-      })
-      it('should allow the lend', async () => {
-        await locks.FIRST.lendKey(keyOwners[0], accounts[9], tokenIds[0], {
-          from: approved,
-        })
-        assert.equal(
-          await locks.FIRST.isApprovedForAll(keyOwners[0], approved),
-          true
-        )
-        await reverts(
-          locks.FIRST.lendKey(accounts[9], approved, tokenIds[0], {
-            from: approved,
-          })
-        )
+      it('retains the correct key manager', async () => {
+        assert.equal(await locks.FIRST.keyManagerOf(tokenIds[0]), keyManager)
       })
     })
 
