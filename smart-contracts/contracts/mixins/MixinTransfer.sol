@@ -65,9 +65,6 @@ contract MixinTransfer is
     }
 
     address keyOwner = _ownerOf[_tokenIdFrom];
-    if(keyOwner == _to) {
-      revert TRANSFER_TO_SELF();
-    }
 
     // store time to be added
     uint time;
