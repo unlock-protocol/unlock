@@ -1,9 +1,9 @@
-import { decodeToken } from 'react-jwt'
+import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
 import axios from 'axios'
 import { EventEmitter } from 'events'
-import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
-import { Lock } from '../unlockTypes'
+import { decodeToken } from 'react-jwt'
 import { generateNonce } from 'siwe'
+import { Lock } from '../unlockTypes'
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
 // these objects, and nothing that isn't emitted should be in one of these
@@ -676,5 +676,24 @@ export class StorageService extends EventEmitter {
     } catch (error) {
       return false
     }
+  }
+
+  async markTicketAsCheckedIn({
+    lockAddress,
+    keyId,
+    network,
+  }: {
+    lockAddress: string
+    keyId: string
+    network: number
+  }) {
+    const url = `${this.host}/v2/api/verifier/${network}/lock/${lockAddress}/key/${keyId}/check`
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
+      },
+    })
   }
 }
