@@ -125,7 +125,7 @@ describe('sign endpoint', () => {
   })
 
   it('does not override metadata', async () => {
-    expect.assertions(3)
+    expect.assertions(4)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
@@ -160,5 +160,6 @@ describe('sign endpoint', () => {
     )
 
     expect(keyData.metadata.value).toBe('12')
+    expect(keyData.KeyMetadata.custom_field).toBe('Random')
   })
 })
