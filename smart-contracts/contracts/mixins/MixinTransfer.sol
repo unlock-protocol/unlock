@@ -178,6 +178,7 @@ contract MixinTransfer is
 
     // make future reccuring transactions impossible
     _originalDurations[_tokenId] = 0;
+    _originalPrices[_tokenId] = 0;
 
     // trigger event
     emit Transfer(
