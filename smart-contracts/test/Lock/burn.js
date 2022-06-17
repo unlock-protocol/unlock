@@ -21,7 +21,7 @@ contract('Lock / burn', (accounts) => {
   })
 
   beforeEach(async () => {
-    ;({tokenId} = await purchaseKey(lock, keyOwner))
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   it('should delete ownership record', async () => {

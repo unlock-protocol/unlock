@@ -26,7 +26,7 @@ contract('Lock / non expiring', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.NON_EXPIRING
     keyPrice = await lock.keyPrice()
-    ;({tokenId} = await purchaseKey(lock, keyOwner))
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   describe('Create lock', () => {

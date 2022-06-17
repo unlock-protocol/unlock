@@ -41,7 +41,7 @@ contract('Lock / approveBeneficiary', (accounts) => {
       await token.approve(locks.ERC20.address, await locks.ERC20.keyPrice(), {
         from: keyOwner,
       })
-      
+
       await purchaseKey(locks.ERC20, keyOwner, true)
       await locks.ERC20.approveBeneficiary(spender, 1, { from: beneficiary })
     })

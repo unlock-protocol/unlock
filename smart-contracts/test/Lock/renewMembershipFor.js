@@ -66,7 +66,11 @@ contract('Lock / Recurring memberships', (accounts) => {
         await dai.approve(locks.NON_EXPIRING.address, totalPrice, {
           from: keyOwner,
         })
-        const { tokenId: newTokenId } = await purchaseKey(locks.NON_EXPIRING, keyOwner, true)
+        const { tokenId: newTokenId } = await purchaseKey(
+          locks.NON_EXPIRING,
+          keyOwner,
+          true
+        )
         await reverts(
           locks.NON_EXPIRING.renewMembershipFor(newTokenId, ADDRESS_ZERO),
           'NON_RENEWABLE_LOCK'
@@ -98,7 +102,11 @@ contract('Lock / Recurring memberships', (accounts) => {
           from: accounts[7],
         })
 
-        const { tokenId: newTokenId } = await purchaseKey(lock, accounts[7], true)
+        const { tokenId: newTokenId } = await purchaseKey(
+          lock,
+          accounts[7],
+          true
+        )
         assert.equal(await lock.isValidKey(newTokenId), true)
         await reverts(
           lock.renewMembershipFor(newTokenId, ADDRESS_ZERO),

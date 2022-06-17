@@ -52,7 +52,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
   describe('enforcing the number of keys per address', () => {
     let tokenId
     beforeEach(async () => {
-      ;({tokenId} = await purchaseKey(lock, keyOwner))
+      ;({ tokenId } = await purchaseKey(lock, keyOwner))
     })
 
     it('prevent users to purchase more keys than allowed', async () => {

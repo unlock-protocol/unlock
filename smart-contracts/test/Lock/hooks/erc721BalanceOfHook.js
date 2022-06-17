@@ -1,4 +1,4 @@
-const { ADDRESS_ZERO,purchaseKey, reverts } = require('../../helpers')
+const { ADDRESS_ZERO, purchaseKey, reverts } = require('../../helpers')
 const deployLocks = require('../../helpers/deployLocks')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 

@@ -71,19 +71,7 @@ contract('Lock / shareKey', (accounts) => {
       })
 
       it('should revert if keys are sold out', async () => {
-        const buyers = accounts.slice(3, 10)
-        await lock.purchase(
-          [],
-          buyers,
-          buyers.map(() => ADDRESS_ZERO),
-          buyers.map(() => ADDRESS_ZERO),
-          buyers.map(() => []),
-          {
-            value: (keyPrice * buyers.length).toFixed(),
-            from: keyOwners[0],
-          }
-        )
-
+        await purchaseKeys(lock, 7)
         await reverts(
           lock.shareKey(keyOwners[0], tokenIds[0], 1000, {
             from: keyOwners[0],

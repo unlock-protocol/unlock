@@ -5,11 +5,14 @@ const DEFAULT_KEY_PRICE = ethers.utils.parseEther('0.01')
 
 const purchaseKey = async (lock, keyOwner, isErc20 = false) => {
   // make sure we got ethers lock
-  lock = await ethers.getContractAt('PublicLock', lock.address)
+  lock = await ethers.getContractAt(
+    'contracts/PublicLock.sol:PublicLock',
+    lock.address
+  )
 
   // get ethers signer
   keyOwner = await ethers.getSigner(keyOwner)
-  
+
   const tx = await lock
     .connect(keyOwner)
     .purchase(
@@ -26,14 +29,17 @@ const purchaseKey = async (lock, keyOwner, isErc20 = false) => {
   // get token ids
   const { events, blockNumber } = await tx.wait()
   const { args } = events.find((v) => v.event === 'Transfer')
-  const { tokenId } = args
-  
-  return { tokenId, blockNumber }
+  const { tokenId, from, to } = args
+
+  return { tokenId, blockNumber, from, to }
 }
 
 const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false) => {
   // make sure we got ethers lock
-  lock = await ethers.getContractAt('PublicLock', lock.address)
+  lock = await ethers.getContractAt(
+    'contracts/PublicLock.sol:PublicLock',
+    lock.address
+  )
 
   // signer 0 is the lockOwner so keyOwners starts at index 1
   const signers = await ethers.getSigners()

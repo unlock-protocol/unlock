@@ -35,7 +35,7 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
   })
 
   beforeEach(async () => {
-    ;({tokenId} = await purchaseKey(lock, keyOwner))
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   it('is not fired when a key is created', async () => {

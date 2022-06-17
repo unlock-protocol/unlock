@@ -21,7 +21,7 @@ contract('Lock / mergeKeys', (accounts) => {
     unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
-    ;({tokenIds} = await purchaseKeys(lock, 2))
+    ;({ tokenIds } = await purchaseKeys(lock, 2))
   })
 
   describe('merge some amount of time', () => {

@@ -51,7 +51,7 @@ contract('Lock / extend keys', (accounts) => {
           })
 
           // purchase a key
-          ;({tokenId} = await purchaseKey(lock, keyOwner, isErc20))
+          ;({ tokenId } = await purchaseKey(lock, keyOwner, isErc20))
         })
 
         it('prevent extend a non-existing key', async () => {
@@ -166,7 +166,11 @@ contract('Lock / extend keys', (accounts) => {
           })
 
           // purchase a key for non-expiring
-          ;({tokenId} = await purchaseKey(nonExpiringLock, nonExpiringKeyOwner, isErc20))
+          ;({ tokenId } = await purchaseKey(
+            nonExpiringLock,
+            nonExpiringKeyOwner,
+            isErc20
+          ))
         })
 
         it('reverts when attempting to extend a valid key', async () => {

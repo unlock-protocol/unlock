@@ -18,7 +18,7 @@ contract('Lock / onValidKeyHook', (accounts) => {
     unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
-    ;({tokenId} = await purchaseKey(lock, keyOwner))
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   it('hasValidKey should returns a custom value', async () => {

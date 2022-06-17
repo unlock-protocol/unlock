@@ -24,8 +24,8 @@ contract('Lock / disableTransfers', (accounts) => {
 
   before(async () => {
     lock = locks.FIRST
-    ;({tokenId} = await purchaseKey(lock, keyOwner))
-    
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
+
     // Change the fee to 100%
     await lock.updateTransferFee(10000)
   })

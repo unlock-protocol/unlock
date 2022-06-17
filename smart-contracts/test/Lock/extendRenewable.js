@@ -48,7 +48,7 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
     beforeEach(async () => {
       // reset pricing
       await lock.updateKeyPricing(keyPrice, dai.address, { from: lockOwner })
-      ;({tokenId} = await purchaseKey(lock, keyOwner, true))
+      ;({ tokenId } = await purchaseKey(lock, keyOwner, true))
 
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
       await time.increaseTo(expirationTs.toNumber())

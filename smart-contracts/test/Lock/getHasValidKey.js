@@ -27,7 +27,7 @@ contract('Lock / getHasValidKey', (accounts) => {
 
   describe('after purchase', () => {
     beforeEach(async () => {
-      ;({tokenId} = await purchaseKey(lock, keyOwner))
+      ;({ tokenId } = await purchaseKey(lock, keyOwner))
     })
 
     it('should be true', async () => {

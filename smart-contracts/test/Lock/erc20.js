@@ -1,12 +1,7 @@
 const BigNumber = require('bignumber.js')
 const { tokens } = require('hardlydifficult-ethereum-contracts')
 
-const { 
-  ADDRESS_ZERO, 
-  MAX_UINT, 
-  reverts,
-  purchaseKey
-} = require('../helpers')
+const { ADDRESS_ZERO, MAX_UINT, reverts, purchaseKey } = require('../helpers')
 const unlockContract = artifacts.require('Unlock.sol')
 const TestNoop = artifacts.require('TestNoop.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')

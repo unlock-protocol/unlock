@@ -1,12 +1,11 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('../helpers/errors')
 const { time } = require('@openzeppelin/test-helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO, reverts, purchaseKey } = require('../helpers/constants')
 
 let unlock
 let locks
@@ -52,16 +51,8 @@ contract('Lock / transferFee', (accounts) => {
       const nowBefore = (await web3.eth.getBlock('latest')).timestamp
       fee = new BigNumber(await lock.getTransferFee(tokenId, 0))
       // Mine a transaction in order to ensure the block.timestamp has updated
-      await lock.purchase(
-        [],
-        [accounts[8]],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          value: keyPrice.toFixed(),
-        }
-      )
+      await purchaseKey(lock, accounts[8])
+
       const nowAfter = (await web3.eth.getBlock('latest')).timestamp
       let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor(tokenId)

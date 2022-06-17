@@ -1,5 +1,5 @@
 const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO, purchaseKey, reverts } = require('../../helpers/constants')
+const { ADDRESS_ZERO, purchaseKey, reverts } = require('../../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const Erc1155TokenUriHook = artifacts.require('ERC1155BalanceOfHook')
@@ -142,7 +142,7 @@ contract('ERC1155BalanceOfHook', (accounts) => {
       // buy a key
       const { tokenId } = await purchaseKey(lock, keyOwner)
       assert.equal(await lock.getHasValidKey(keyOwner), true)
-      
+
       // expire the key
       await lock.expireAndRefundFor(tokenId, 0)
       assert.equal(await lock.getHasValidKey(keyOwner), false)

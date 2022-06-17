@@ -26,7 +26,7 @@ contract('Lock / onTokenURIHook', (accounts) => {
       testEventHooks.address,
       ADDRESS_ZERO
     )
-    ;({tokenId} = await purchaseKey(lock, keyOwner))
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   it('tokenURI should returns a custom value', async () => {

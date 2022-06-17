@@ -17,7 +17,7 @@ contract('Lock / isValidKey', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.updateTransferFee(0) // disable the transfer fee for this test
-    ;({tokenId} = await purchaseKey(lock, keyOwner))
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   it('should be false if the key does not exist', async () => {

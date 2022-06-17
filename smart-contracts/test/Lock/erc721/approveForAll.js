@@ -101,7 +101,10 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
         })
 
         it('original operator is still approved', async () => {
-          assert.equal(await lock.isApprovedForAll(keyOwner, approvedUser), true)
+          assert.equal(
+            await lock.isApprovedForAll(keyOwner, approvedUser),
+            true
+          )
         })
       })
     })
