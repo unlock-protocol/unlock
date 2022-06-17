@@ -179,7 +179,7 @@ contract MixinTransfer is
 
     // set owner as key manager if none 
     if(keyManagerOf[_tokenId] == address(0)) {
-      keyManagerOf[_tokenId] == ownerOf(_tokenId);
+      keyManagerOf[_tokenId] = ownerOf(_tokenId);
     }
     
     _transferFrom(_from, _recipient, _tokenId);

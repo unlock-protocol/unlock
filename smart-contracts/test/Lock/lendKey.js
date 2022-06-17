@@ -41,11 +41,6 @@ contract('Lock / lendKey', (accounts) => {
     tokenIds = tx.logs
       .filter((v) => v.event === 'Transfer')
       .map(({ args }) => args.tokenId)
-
-    // set default key owner as key manager
-    await locks.FIRST.setKeyManagerOf(tokenIds[0], keyOwners[0], {
-      from: keyOwners[0],
-    })
   })
 
   describe('when the lock is public', () => {
