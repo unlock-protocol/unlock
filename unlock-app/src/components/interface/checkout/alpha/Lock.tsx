@@ -4,7 +4,7 @@ import { useConfig } from '~/utils/withConfig'
 import { useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { getFiatPricing } from '~/hooks/useCards'
-import { LockState } from './useCheckoutState'
+import { LockState } from './Checkout/checkoutMachine'
 
 interface Props {
   name: string

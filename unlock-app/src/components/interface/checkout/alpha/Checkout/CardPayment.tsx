@@ -1,8 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutSend } from '../useCheckoutState'
+import { CheckoutState, CheckoutSend } from './checkoutMachine'
 import { PaywallConfig } from '~/unlockTypes'
-import { LoggedIn, LoggedOut } from '../Bottom'
-import { Shell } from '../Shell'
+import { Connected } from '../Connected'
 import { useQuery } from 'react-query'
 import {
   deleteCardForAddress,
@@ -54,8 +53,8 @@ export function CardPayment({ send, injectedProvider }: Props) {
 
   const card = data?.[0]
   return (
-    <>
-      <Shell.Content>
+    <div>
+      <main className="p-6 overflow-auto h-64 sm:h-72">
         <Elements stripe={stripe}>
           {editCard ? (
             <CardForm
@@ -73,45 +72,46 @@ export function CardPayment({ send, injectedProvider }: Props) {
             <Card onChange={() => setEditCard(true)} {...card} />
           )}
         </Elements>
-      </Shell.Content>
-      <Shell.Footer>
-        {account ? (
-          <div className="space-y-2">
-            {editCard ? (
-              <Button
-                disabled={!card || isSaving}
-                loading={isSaving}
-                type="submit"
-                form="card-save"
-                className="w-full"
-              >
-                {isSaving ? 'Saving' : 'Save'}
-              </Button>
-            ) : (
-              <Button
-                className="w-full"
-                disabled={!card}
-                onClick={() => {
-                  send({
-                    type: 'SELECT_CARD_TO_CHARGE',
-                    cardId: card.id,
-                  })
-                }}
-              >
-                Continue
-              </Button>
-            )}
-
-            <LoggedIn account={account} onDisconnect={() => deAuthenticate()} />
-          </div>
-        ) : (
-          <LoggedOut
-            authenticateWithProvider={authenticateWithProvider}
-            onUnlockAccount={() => {}}
-          />
-        )}
-      </Shell.Footer>
-    </>
+      </main>
+      <footer className="p-6 border-t grid items-center">
+        <Connected
+          account={account}
+          onDisconnect={() => {
+            deAuthenticate()
+            send('DISCONNECT')
+          }}
+          authenticateWithProvider={authenticateWithProvider}
+          onUnlockAccount={() => {
+            send('UNLOCK_ACCOUNT')
+          }}
+        >
+          {editCard ? (
+            <Button
+              disabled={!card || isSaving}
+              loading={isSaving}
+              type="submit"
+              form="card-save"
+              className="w-full"
+            >
+              {isSaving ? 'Saving' : 'Save'}
+            </Button>
+          ) : (
+            <Button
+              className="w-full"
+              disabled={!card}
+              onClick={() => {
+                send({
+                  type: 'SELECT_CARD_TO_CHARGE',
+                  cardId: card.id,
+                })
+              }}
+            >
+              Continue
+            </Button>
+          )}
+        </Connected>
+      </footer>
+    </div>
   )
 }
 

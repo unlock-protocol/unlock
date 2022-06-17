@@ -28,29 +28,6 @@ export function Root({ children, onClose }: RootProps) {
   )
 }
 
-interface FooterProps {
-  children?: ReactNode
-}
-
-export function Footer({ children }: FooterProps) {
-  return (
-    <footer className="px-6 pt-6 pb-4 rounded-b-xl border-t border-gray-100 shadow">
-      {children}
-      <div className="flex mt-4 justify-center items-center">
-        <p className="text-sm"> Powered by Unlock</p>
-      </div>
-    </footer>
-  )
-}
-
-interface ContentProps {
-  children?: ReactNode
-}
-
-export function Content({ children }: ContentProps) {
-  return <main className="grid p-6 max-h-96 overflow-y-auto">{children}</main>
-}
-
 interface HeadProps {
   iconURL?: string
   title: string
@@ -78,8 +55,6 @@ export function Head({ iconURL, title, description }: HeadProps) {
 }
 
 export const Shell = {
-  Footer,
   Head,
   Root,
-  Content,
 }

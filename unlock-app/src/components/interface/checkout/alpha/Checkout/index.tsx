@@ -1,7 +1,7 @@
 import React from 'react'
 import type { PaywallConfig } from '~/unlockTypes'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { checkoutMachine, CheckoutPage } from '../checkoutMachine'
+import { checkoutMachine, CheckoutPage } from './checkoutMachine'
 import { Shell } from '../Shell'
 import { Select } from './Select'
 import { Quantity } from './Quantity'
@@ -12,6 +12,7 @@ import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { useMachine } from '@xstate/react'
+import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
@@ -104,6 +105,15 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
             paywallConfig={paywallConfig}
             send={send}
             state={state}
+          />
+        )
+      }
+      case 'UNLOCK_ACCOUNT': {
+        return (
+          <UnlockAccountSignIn
+            injectedProvider={injectedProvider}
+            state={state}
+            send={send}
           />
         )
       }

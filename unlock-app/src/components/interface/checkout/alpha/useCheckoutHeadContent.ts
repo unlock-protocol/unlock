@@ -1,5 +1,5 @@
 import { PaywallConfig } from '~/unlockTypes'
-import { CheckoutPage } from './checkoutMachine'
+import { CheckoutPage } from './Checkout/checkoutMachine'
 
 export function useCheckoutHeadContent(
   { callToAction = {}, title, locks }: PaywallConfig,
@@ -8,7 +8,7 @@ export function useCheckoutHeadContent(
   const descriptions = Object.assign(
     {
       minting:
-        'Let us prepare the magic, a NFT minting is in progress, you can also follow update in the blockexplorer!',
+        'NFT minting is in progress, you can follow update in the blockexplorer!',
       default: `${title} has ${
         Object.keys(locks).length
       } membership options, please choose one of the option to continue`,
@@ -38,7 +38,7 @@ export function useCheckoutHeadContent(
       description: descriptions.metadata,
     },
     CONFIRM: {
-      title: 'Minting is completed',
+      title: 'Minting will start',
       description: descriptions.confirmed,
     },
     MINTING: {
@@ -60,6 +60,11 @@ export function useCheckoutHeadContent(
     RETURNING: {
       title: '',
       description: '',
+    },
+    UNLOCK_ACCOUNT: {
+      title: 'Sign in / up',
+      description:
+        "Let us onboard you to the beauty of blockchain, even if you don't have a wallet yet. :D",
     },
   }
   return pages[page]

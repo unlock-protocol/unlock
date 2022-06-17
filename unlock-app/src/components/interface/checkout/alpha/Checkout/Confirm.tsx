@@ -1,8 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutSend } from '../checkoutMachine'
+import { CheckoutState, CheckoutSend } from './checkoutMachine'
 import { PaywallConfig } from '~/unlockTypes'
-import { LoggedIn, LoggedOut } from '../Bottom'
-import { Shell } from '../Shell'
+import { Connected } from '../Connected'
 import { useQuery } from 'react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
@@ -60,13 +59,14 @@ export function Confirm({ state, send, injectedProvider }: Props) {
       const keyPrices: string[] = new Array(recipients!.length).fill(
         lock!.keyPrice
       )
-      await walletService.purchaseKeys(
+      const tokenIds = await walletService?.purchaseKeys(
         {
           lockAddress: lock!.address,
           keyPrices,
           owners: recipients!,
         },
         (error, hash) => {
+          setIsConfirming(false)
           if (error) {
             send({
               type: 'CONFIRM_MINT',
@@ -81,84 +81,92 @@ export function Confirm({ state, send, injectedProvider }: Props) {
               transactionHash: hash!,
             })
           }
-          setIsConfirming(false)
         }
       )
       send({
-        type: 'FINISH_MINT',
+        type: 'CONFIRM_MINT',
         status: 'FINISHED',
-        transactionHash: state.context.mint?.transactionHash,
+        tokenIds,
       })
     } catch (error) {
       if (error instanceof Error) {
         ToastHelper.error(error.message)
       }
+      setIsConfirming(false)
     }
   }
 
   return (
-    <>
-      <Shell.Content>
-        <div>
-          <div className="flex items-start justify-between">
-            <h3 className="font-bold text-xl">
-              {quantity}X {lock!.name}
-            </h3>
-            {!isLoading ? (
-              <div className="grid">
-                {fiatPricing.creditCardEnabled ? (
-                  <>
-                    <p>${fiatPricing.usd.keyPrice / 100} </p>
-                    <p>{formattedData.formattedKeyPrice} </p>
-                  </>
-                ) : (
-                  <>
-                    <p>{formattedData.formattedKeyPrice} </p>
-                    <p>${fiatPricing.usd.keyPrice / 100} </p>
-                  </>
-                )}
-                <p className="text-sm text-gray-500">
-                  {quantity} X {formattedData.formattedKeyPrice}
-                </p>
-              </div>
-            ) : (
-              <div className="flex gap-2 flex-col items-center">
-                <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-                <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-              </div>
-            )}
-          </div>
+    <div>
+      <main className="p-6 overflow-auto h-64 sm:h-72">
+        <div className="flex items-start justify-between">
+          <h3 className="font-bold text-xl">
+            {quantity}X {lock!.name}
+          </h3>
           {!isLoading ? (
-            <div className="space-y-1 border-t-2 py-2 border-brand-gray mt-2">
-              <ul className="flex items-center gap-2 text-sm">
-                <li className="inline-flex items-center gap-2">
-                  <span className="text-gray-500"> Duration: </span>
-                  <time> {formattedData.formattedDuration} </time>
-                </li>
-                <li className="inline-flex items-center gap-2">
-                  <span className="text-gray-500"> Quantity: </span>
-                  <time> {formattedData.formattedKeysAvailable} </time>
-                </li>
-              </ul>
-              <a
-                href={config.networks[lock!.network].explorer.urls.address(
-                  lock!.address
-                )}
-                className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
-              >
-                View Contract <Icon icon={ExternalLinkIcon} size="small" />
-              </a>
+            <div className="grid">
+              {fiatPricing.creditCardEnabled ? (
+                <>
+                  <p>${fiatPricing.usd.keyPrice / 100} </p>
+                  <p>{formattedData.formattedKeyPrice} </p>
+                </>
+              ) : (
+                <>
+                  <p>{formattedData.formattedKeyPrice} </p>
+                  <p>${fiatPricing.usd.keyPrice / 100} </p>
+                </>
+              )}
+              <p className="text-sm text-gray-500">
+                {quantity} X {formattedData.formattedKeyPrice}
+              </p>
             </div>
           ) : (
-            <div className="py-1.5 space-y-2 items-center">
-              <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-              <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+            <div className="flex gap-2 flex-col items-center">
+              <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+              <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
             </div>
           )}
         </div>
-      </Shell.Content>
-      <Shell.Footer>
-        <div className="space-y-4">
+        {!isLoading ? (
+          <div className="space-y-1 border-t-2 py-2 border-brand-gray mt-2">
+            <ul className="flex items-center gap-2 text-sm">
+              <li className="inline-flex items-center gap-2">
+                <span className="text-gray-500"> Duration: </span>
+                <time> {formattedData.formattedDuration} </time>
+              </li>
+              <li className="inline-flex items-center gap-2">
+                <span className="text-gray-500"> Quantity: </span>
+                <time> {formattedData.formattedKeysAvailable} </time>
+              </li>
+            </ul>
+            <a
+              href={config.networks[lock!.network].explorer.urls.address(
+                lock!.address
+              )}
+              className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+            >
+              View Contract <Icon icon={ExternalLinkIcon} size="small" />
+            </a>
+          </div>
+        ) : (
+          <div className="py-1.5 space-y-2 items-center">
+            <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+            <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+          </div>
+        )}
+      </main>
+      <footer className="p-6 border-t grid items-center">
+        <Connected
+          account={account}
+          onDisconnect={() => {
+            deAuthenticate()
+            send('DISCONNECT')
+          }}
+          authenticateWithProvider={authenticateWithProvider}
+          onUnlockAccount={() => {
+            send('UNLOCK_ACCOUNT')
+          }}
+        >
           <Button
             disabled={isLoading || isConfirming || !account}
             loading={isConfirming}
@@ -167,16 +175,8 @@ export function Confirm({ state, send, injectedProvider }: Props) {
           >
             {isConfirming ? 'Confirm the transaction' : 'Confirm'}
           </Button>
-          {account ? (
-            <LoggedIn account={account} onDisconnect={() => deAuthenticate()} />
-          ) : (
-            <LoggedOut
-              authenticateWithProvider={authenticateWithProvider}
-              onUnlockAccount={() => {}}
-            />
-          )}
-        </div>
-      </Shell.Footer>
-    </>
+        </Connected>
+      </footer>
+    </div>
   )
 }

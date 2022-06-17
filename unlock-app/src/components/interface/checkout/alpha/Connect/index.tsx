@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
 import { ConfirmConnect } from './Confirm'
 import { Shell } from '../Shell'
-import { SignInOrUp } from '../SignInOrUp'
+import { useMachine } from '@xstate/react'
+import { connectMachine } from './connectMachine'
+import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -11,11 +13,8 @@ interface Props {
   communication: ReturnType<typeof useCheckoutCommunication>
 }
 
-type ConnectState = 'connect' | 'signInOrUp'
-
 export function Connect({ injectedProvider, oauthConfig }: Props) {
-  const [state, setState] = useState<ConnectState>('connect')
-
+  const [state, send] = useMachine(connectMachine)
   const onClose = (params: Record<string, string> = {}) => {
     const redirectURI = new URL(oauthConfig.redirectUri)
     for (const [key, value] of Object.entries(params)) {
@@ -25,24 +24,29 @@ export function Connect({ injectedProvider, oauthConfig }: Props) {
   }
 
   function Content() {
-    switch (state) {
-      case 'connect': {
+    switch (state.value) {
+      case 'CONNECT': {
         return (
           <ConfirmConnect
             onClose={onClose}
-            onUnlockAccount={() => setState('signInOrUp')}
+            send={send}
+            state={state}
             oauthConfig={oauthConfig}
             injectedProvider={injectedProvider}
           />
         )
       }
-      case 'signInOrUp': {
+      case 'SIGN_IN': {
         return (
-          <SignInOrUp
+          <UnlockAccountSignIn
+            state={state}
+            send={send}
             injectedProvider={injectedProvider}
-            onSignedIn={() => setState('connect')}
           />
         )
+      }
+      default: {
+        return null
       }
     }
   }
