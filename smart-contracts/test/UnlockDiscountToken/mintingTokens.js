@@ -281,11 +281,12 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
 
     it('amount minted for referrer ~= gas spent', async () => {
       // 120 UDT minted * 0.000042 ETH/UDT == 0.005 ETH spent
+
       assert.equal(
         new BigNumber(await udt.balanceOf(referrer))
           .minus(balanceBefore)
           .shiftedBy(-18) // shift UDT balance
-          .times(rate)
+          .times(rate.toString())
           .shiftedBy(-18) // shift the rate
           .toFixed(3),
         gasSpent.shiftedBy(-18).toFixed(3)
@@ -295,9 +296,9 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     it('amount minted for dev ~= gas spent * 20%', async () => {
       assert.equal(
         new BigNumber(await udt.balanceOf(await unlock.owner()))
-          .minus(balanceOwnerBefore)
+          .minus(balanceOwnerBefore.toString())
           .shiftedBy(-18) // shift UDT balance
-          .times(rate)
+          .times(rate.toString())
           .shiftedBy(-18) // shift the rate
           .toFixed(3),
         gasSpent.times(0.25).shiftedBy(-18).toFixed(3)
