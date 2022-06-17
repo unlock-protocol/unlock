@@ -231,4 +231,77 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       )
     })
   })
+
+  describe('extend()', () => {
+    let gasSpent
+    let tokenId
+    let balanceBefore
+    let balanceOwnerBefore
+
+    before(async () => {
+      const { logs } = await lock.purchase(
+        [],
+        [keyBuyer],
+        [referrer],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          from: keyBuyer,
+          value: await lock.keyPrice(),
+        }
+      )
+
+      const { args } = logs.find((v) => v.event === 'Transfer')
+      const { tokenId: newTokenId } = args
+      tokenId = newTokenId
+
+      balanceBefore = new BigNumber(await udt.balanceOf(referrer))
+      balanceOwnerBefore = new BigNumber(
+        await udt.balanceOf(await unlock.owner())
+      )
+
+      const { blockNumber } = await lock.extend(0, tokenId, referrer, [], {
+        from: keyBuyer,
+        value: await lock.keyPrice(),
+      })
+
+      const { baseFeePerGas: baseFeePerGasBlock } =
+        await ethers.provider.getBlock(blockNumber)
+
+      // using estimatedGas instead of the actual gas used so this test does not regress as other features are implemented
+      gasSpent = new BigNumber(baseFeePerGasBlock.toString()).times(estimateGas)
+    })
+
+    it('referrer has some UDT now', async () => {
+      const actual = new BigNumber(await udt.balanceOf(referrer)).minus(
+        balanceBefore
+      )
+      assert.notEqual(actual.toString(), 0)
+    })
+
+    it('amount minted for referrer ~= gas spent', async () => {
+      // 120 UDT minted * 0.000042 ETH/UDT == 0.005 ETH spent
+      assert.equal(
+        new BigNumber(await udt.balanceOf(referrer))
+          .minus(balanceBefore)
+          .shiftedBy(-18) // shift UDT balance
+          .times(rate)
+          .shiftedBy(-18) // shift the rate
+          .toFixed(3),
+        gasSpent.shiftedBy(-18).toFixed(3)
+      )
+    })
+
+    it('amount minted for dev ~= gas spent * 20%', async () => {
+      assert.equal(
+        new BigNumber(await udt.balanceOf(await unlock.owner()))
+          .minus(balanceOwnerBefore)
+          .shiftedBy(-18) // shift UDT balance
+          .times(rate)
+          .shiftedBy(-18) // shift the rate
+          .toFixed(3),
+        gasSpent.times(0.25).shiftedBy(-18).toFixed(3)
+      )
+    })
+  })
 })

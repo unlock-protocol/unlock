@@ -314,8 +314,8 @@ contract('Lock / Recurring memberships', (accounts) => {
         )
 
         // key expired
-        assert.equal(await lock.getHasValidKey.call(keyOwner), false)
-        assert.equal(await lock.isValidKey.call(tokenId), false)
+        assert.equal(await lock.getHasValidKey(keyOwner), false)
+        assert.equal(await lock.isValidKey(tokenId), false)
 
         // ERC20 allowance has not been cancelled
         assert.equal(

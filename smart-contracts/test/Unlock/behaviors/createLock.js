@@ -50,7 +50,7 @@ exports.shouldCreateLock = (options) => {
 
       it('should have created the lock with the right address for unlock', async () => {
         let publicLock = await PublicLock.at(evt.args.newLockAddress)
-        let unlockProtocol = await publicLock.unlockProtocol.call()
+        let unlockProtocol = await publicLock.unlockProtocol()
         assert.equal(
           web3.utils.toChecksumAddress(unlockProtocol),
           web3.utils.toChecksumAddress(unlock.address)
