@@ -1,13 +1,12 @@
-import React, { useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import Layout from '../interface/Layout'
-import Account from '../interface/Account'
-import VerificationStatus from '../interface/VerificationStatus'
+import { useState } from 'react'
 import { pageTitle } from '../../constants'
-import Authenticate from '../interface/Authenticate'
-import Loading from '../interface/Loading'
 import LocksContext from '../../contexts/LocksContext'
+import Account from '../interface/Account'
+import Layout from '../interface/Layout'
+import Loading from '../interface/Loading'
+import VerificationStatus from '../interface/VerificationStatus'
 
 export const VerificationContent = () => {
   const { query } = useRouter()
@@ -41,17 +40,15 @@ export const VerificationContent = () => {
       <Head>
         <title>{pageTitle('Verification')}</title>
       </Head>
-      <Authenticate optional>
-        <Account />
-        <LocksContext.Provider
-          value={{
-            locks,
-            addLock,
-          }}
-        >
-          <VerificationStatus data={data} sig={sig} hexData={hexData} />
-        </LocksContext.Provider>
-      </Authenticate>
+      <Account />
+      <LocksContext.Provider
+        value={{
+          locks,
+          addLock,
+        }}
+      >
+        <VerificationStatus data={data} sig={sig} hexData={hexData} />
+      </LocksContext.Provider>
     </Layout>
   )
 }
