@@ -7,13 +7,13 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
+const { purchaseKey } = require('../helpers')
 
 let lock
 let locks
 let unlock
 
 contract('Lock / non expiring', (accounts) => {
-  const from = accounts[1]
   const keyOwner = accounts[2]
   let keyPrice
   let tokenId
@@ -26,19 +26,7 @@ contract('Lock / non expiring', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.NON_EXPIRING
     keyPrice = await lock.keyPrice()
-    const tx = await lock.purchase(
-      [],
-      [keyOwner],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        from,
-        value: keyPrice,
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = args.tokenId
+    ;({tokenId} = await purchaseKey(lock, keyOwner))
   })
 
   describe('Create lock', () => {

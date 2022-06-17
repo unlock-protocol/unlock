@@ -197,10 +197,9 @@ contract('Lock / setReferrerFee', (accounts) => {
         let balanceBefore
         before(async () => {
           await lock.setReferrerFee(referrer, 2000)
-
           const tx = await lock.purchase(
             isErc20 ? [keyPrice] : [],
-            [accounts[8]],
+            [],
             [referrer],
             [ADDRESS_ZERO],
             [[]],

@@ -143,7 +143,7 @@ contract('Lock / GasRefund', (accounts) => {
         beforeEach(async () => {
           // set gasRefund
           await lock.setGasRefundValue(gasRefundAmount)
-
+          
           const txPurchase = await lock.purchase(
             [keyPrice.toString()],
             [accounts[2]],

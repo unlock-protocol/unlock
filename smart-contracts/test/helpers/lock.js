@@ -3,22 +3,50 @@ const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const DEFAULT_KEY_PRICE = ethers.utils.parseEther('0.01')
 
-const purchaseKeys = async (_lock, nbOfKeys = 1) => {
+const purchaseKey = async (lock, keyOwner, isErc20 = false) => {
   // make sure we got ethers lock
-  const lock = await ethers.getContractAt('PublicLock', _lock.address)
+  lock = await ethers.getContractAt('PublicLock', lock.address)
+
+  // get ethers signer
+  keyOwner = await ethers.getSigner(keyOwner)
+  
+  const tx = await lock
+    .connect(keyOwner)
+    .purchase(
+      isErc20 ? [DEFAULT_KEY_PRICE] : [],
+      [keyOwner.address],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
+      [[]],
+      {
+        value: isErc20 ? 0 : DEFAULT_KEY_PRICE,
+      }
+    )
+
+  // get token ids
+  const { events, blockNumber } = await tx.wait()
+  const { args } = events.find((v) => v.event === 'Transfer')
+  const { tokenId } = args
+  
+  return { tokenId, blockNumber }
+}
+
+const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false) => {
+  // make sure we got ethers lock
+  lock = await ethers.getContractAt('PublicLock', lock.address)
 
   // signer 0 is the lockOwner so keyOwners starts at index 1
   const signers = await ethers.getSigners()
   const keyOwners = signers.slice(1, nbOfKeys + 1)
 
   const tx = await lock.purchase(
-    [],
+    isErc20 ? keyOwners.map(() => DEFAULT_KEY_PRICE) : [],
     keyOwners.map(({ address }) => address),
     keyOwners.map(() => ADDRESS_ZERO),
     keyOwners.map(() => ADDRESS_ZERO),
     keyOwners.map(() => []),
     {
-      value: DEFAULT_KEY_PRICE.mul(nbOfKeys),
+      value: isErc20 ? 0 : DEFAULT_KEY_PRICE.mul(nbOfKeys),
     }
   )
   // get token ids
@@ -34,6 +62,7 @@ const purchaseKeys = async (_lock, nbOfKeys = 1) => {
 }
 
 module.exports = {
+  purchaseKey,
   purchaseKeys,
   DEFAULT_KEY_PRICE,
 }

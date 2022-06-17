@@ -23,21 +23,7 @@ contract('Lock / transferFee', (accounts) => {
     // TODO test using an ERC20 priced lock as well
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
-    const tx = await lock.purchase(
-      [],
-      [keyOwner],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: keyPrice.toFixed(),
-      }
-    )
-
-    const tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
-    tokenId = tokenIds[0]
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   it('has a default fee of 0%', async () => {

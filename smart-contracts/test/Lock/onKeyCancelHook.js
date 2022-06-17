@@ -29,19 +29,7 @@ contract('Lock / onKeyCancelHook', (accounts) => {
       ADDRESS_ZERO
     )
     keyPrice = await lock.keyPrice()
-    const tx = await lock.purchase(
-      [],
-      [to],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        from,
-        value: keyPrice,
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    const tokenId = args.tokenId
+    const {tokenId} = await purchaseKey(lock, to)
     await lock.cancelAndRefund(tokenId, { from: to })
   })
 

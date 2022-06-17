@@ -1,7 +1,6 @@
 const { ethers } = require('hardhat')
 
-const { reverts } = require('../../helpers/errors')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { reverts, ADDRESS_ZERO, purchaseKey } = require('../../helpers')
 const deployLocks = require('../../helpers/deployLocks')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 
@@ -85,38 +84,13 @@ contract('ERC20BalanceOfHook', (accounts) => {
     })
     it('with a valid key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      await lock.purchase(
-        [],
-        [keyOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      await purchaseKey(lock, keyOwner)
       assert.equal(await lock.getHasValidKey(keyOwner), true)
     })
     it('with an expired key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      const tx = await lock.purchase(
-        [],
-        [keyOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      const { tokenId } = await purchaseKey(lock, keyOwner)
       assert.equal(await lock.getHasValidKey(keyOwner), true)
-
-      const { args } = tx.logs.find((v) => v.event === 'Transfer')
-      const { tokenId } = args
 
       // expire the key
       await lock.expireAndRefundFor(tokenId, 0)
@@ -137,38 +111,13 @@ contract('ERC20BalanceOfHook', (accounts) => {
     })
     it('with a valid key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      await lock.purchase(
-        [],
-        [tokenOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      await purchaseKey(lock, tokenOwner)
       assert.equal(await lock.getHasValidKey(tokenOwner), true)
     })
     it('with an expired key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      const tx = await lock.purchase(
-        [],
-        [tokenOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      const { tokenId } = await purchaseKey(lock, tokenOwner)
       assert.equal(await lock.getHasValidKey(tokenOwner), true)
-
-      const { args } = tx.logs.find((v) => v.event === 'Transfer')
-      const { tokenId } = args
 
       // expire the key
       await lock.expireAndRefundFor(tokenId, 0)
@@ -189,38 +138,13 @@ contract('ERC20BalanceOfHook', (accounts) => {
     })
     it('with a valid key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      await lock.purchase(
-        [],
-        [tokenOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      await purchaseKey(lock, tokenOwner)
       assert.equal(await lock.getHasValidKey(tokenOwner), true)
     })
     it('with an expired key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      const tx = await lock.purchase(
-        [],
-        [tokenOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      const { tokenId } = await purchaseKey(lock, tokenOwner)
       assert.equal(await lock.getHasValidKey(tokenOwner), true)
-
-      const { args } = tx.logs.find((v) => v.event === 'Transfer')
-      const { tokenId } = args
 
       // expire the key
       await lock.expireAndRefundFor(tokenId, 0)
@@ -241,38 +165,13 @@ contract('ERC20BalanceOfHook', (accounts) => {
     })
     it('with a valid key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      await lock.purchase(
-        [],
-        [tokenOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      await purchaseKey(lock, tokenOwner)
       assert.equal(await lock.getHasValidKey(tokenOwner), true)
     })
     it('with an expired key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      const tx = await lock.purchase(
-        [],
-        [tokenOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      const { tokenId } = await purchaseKey(lock, tokenOwner)
       assert.equal(await lock.getHasValidKey(tokenOwner), true)
-
-      const { args } = tx.logs.find((v) => v.event === 'Transfer')
-      const { tokenId } = args
 
       // expire the key
       await lock.expireAndRefundFor(tokenId, 0)

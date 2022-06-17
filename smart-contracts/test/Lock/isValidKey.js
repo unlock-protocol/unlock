@@ -2,7 +2,7 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { purchaseKey } = require('../helpers')
 
 let unlock
 let locks
@@ -17,20 +17,7 @@ contract('Lock / isValidKey', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.updateTransferFee(0) // disable the transfer fee for this test
-    const tx = await lock.purchase(
-      [],
-      [keyOwner],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: web3.utils.toWei('0.01', 'ether'),
-      }
-    )
-    const tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
-    tokenId = tokenIds[0]
+    ;({tokenId} = await purchaseKey(lock, keyOwner))
   })
 
   it('should be false if the key does not exist', async () => {

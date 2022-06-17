@@ -1,6 +1,5 @@
-const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO, purchaseKeys } = require('../../helpers')
+const { reverts, ADDRESS_ZERO, purchaseKeys, purchaseKey } = require('../../helpers')
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 
@@ -196,34 +195,11 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     describe('when the lock is sold out', () => {
       it('should still allow the transfer of keys', async () => {
         // first we create a lock with only 1 key
-        const tx = await locks['SINGLE KEY'].purchase(
-          [],
-          [keyOwners[0]],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          {
-            value: web3.utils.toWei('0.01', 'ether'),
-            from,
-          }
-        )
-
-        const { args } = tx.logs.find((v) => v.event === 'Transfer')
-        const { tokenId } = args
+        const { tokenId } = await purchaseKey(locks['SINGLE KEY'], keyOwners[0])
 
         // confirm that the lock is sold out
         await reverts(
-          locks['SINGLE KEY'].purchase(
-            [],
-            [accounts[8]],
-            [ADDRESS_ZERO],
-            [ADDRESS_ZERO],
-            [[]],
-            {
-              value: web3.utils.toWei('0.01', 'ether'),
-              from: accounts[8],
-            }
-          ),
+          await purchaseKey(locks['SINGLE KEY'], keyOwners[0]),
           'LOCK_SOLD_OUT'
         )
 
