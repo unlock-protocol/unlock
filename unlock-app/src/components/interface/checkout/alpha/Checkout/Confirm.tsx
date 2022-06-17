@@ -34,7 +34,7 @@ export function Confirm({ state, send, injectedProvider }: Props) {
     network!
   )
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, quantity, recipients, payment } = state.context
+  const { lock, quantity, recipients, payment, captcha } = state.context
   const { isLoading, data: fiatPricing } = useQuery(
     [quantity, lock!.address, lock!.network],
     async () => {
@@ -146,6 +146,7 @@ export function Confirm({ state, send, injectedProvider }: Props) {
           lockAddress: lock!.address,
           keyPrices,
           owners: recipients!,
+          data: captcha,
         },
         (error, hash) => {
           setIsConfirming(true)
@@ -182,7 +183,7 @@ export function Confirm({ state, send, injectedProvider }: Props) {
               loading={isConfirming}
               disabled={isConfirming}
               onClick={(event) => {
-                event.stopPropagation()
+                event.preventDefault()
                 onConfirmCard()
               }}
             >
@@ -201,7 +202,7 @@ export function Confirm({ state, send, injectedProvider }: Props) {
               loading={isConfirming}
               disabled={isConfirming}
               onClick={(event) => {
-                event.stopPropagation()
+                event.preventDefault()
                 onConfirmCrypto()
               }}
             >

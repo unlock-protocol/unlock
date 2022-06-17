@@ -223,11 +223,6 @@ export const checkoutMachine = createMachine(
               cond: (context) => !!context.paywallConfig.messageToSign,
             },
             {
-              target: 'CAPTCHA',
-              actions: ['selectCardToCharge'],
-              cond: (context) => !!context.paywallConfig.captcha,
-            },
-            {
               target: 'CONFIRM',
               actions: ['selectCardToCharge'],
             },
@@ -249,7 +244,9 @@ export const checkoutMachine = createMachine(
             {
               target: 'CAPTCHA',
               actions: ['selectRecipients'],
-              cond: (context) => !!context.paywallConfig.captcha,
+              cond: (context) =>
+                !!context.paywallConfig.captcha &&
+                context.payment.method !== 'card',
             },
             {
               target: 'CONFIRM',
@@ -268,7 +265,9 @@ export const checkoutMachine = createMachine(
             {
               target: 'CAPTCHA',
               actions: ['signMessage'],
-              cond: (context) => !!context.paywallConfig.captcha,
+              cond: (context) =>
+                !!context.paywallConfig.captcha &&
+                context.payment.method !== 'card',
             },
             {
               target: 'CONFIRM',

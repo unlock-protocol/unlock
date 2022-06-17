@@ -13,6 +13,7 @@ import { CardPayment } from './CardPayment'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { useMachine } from '@xstate/react'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
+import { Captcha } from './Captcha'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
@@ -26,7 +27,7 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
     },
   })
 
-  const { title, description } = useCheckoutHeadContent(
+  const { description } = useCheckoutHeadContent(
     paywallConfig,
     state.value as CheckoutPage
   )
@@ -117,6 +118,16 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
           />
         )
       }
+      case 'CAPTCHA': {
+        return (
+          <Captcha
+            injectedProvider={injectedProvider}
+            paywallConfig={paywallConfig}
+            send={send}
+            state={state}
+          />
+        )
+      }
       default: {
         return null
       }
@@ -127,7 +138,7 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
     <Shell.Root onClose={onClose}>
       <Shell.Head
         description={description}
-        title={title}
+        title={paywallConfig.title!}
         iconURL={paywallConfig.icon!}
       />
       <Content />
