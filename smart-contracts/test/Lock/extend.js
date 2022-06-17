@@ -92,7 +92,7 @@ contract('Lock / extend keys', (accounts) => {
         describe('extend a valid key', () => {
           let tx
           beforeEach(async () => {
-            assert.equal(await lock.isValidKey.call(tokenId), true)
+            assert.equal(await lock.isValidKey(tokenId), true)
             tsBefore = await lock.keyExpirationTimestampFor(tokenId)
 
             // extend
@@ -109,7 +109,7 @@ contract('Lock / extend keys', (accounts) => {
           })
 
           it('key should stay valid', async () => {
-            assert.equal(await lock.isValidKey.call(tokenId), true)
+            assert.equal(await lock.isValidKey(tokenId), true)
           })
 
           it('duration has been extended accordingly', async () => {
@@ -135,7 +135,7 @@ contract('Lock / extend keys', (accounts) => {
             await lock.expireAndRefundFor(tokenId, 0, {
               from: lockOwner,
             })
-            assert.equal(await lock.isValidKey.call(tokenId), false)
+            assert.equal(await lock.isValidKey(tokenId), false)
 
             // extend
             await lock.extend(
@@ -151,7 +151,7 @@ contract('Lock / extend keys', (accounts) => {
           })
 
           it('key should stay valid', async () => {
-            assert.equal(await lock.isValidKey.call(tokenId), true)
+            assert.equal(await lock.isValidKey(tokenId), true)
           })
 
           it('duration has been extended accordingly', async () => {
@@ -217,7 +217,7 @@ contract('Lock / extend keys', (accounts) => {
           await nonExpiringLock.expireAndRefundFor(tokenId, 0, {
             from: lockOwner,
           })
-          assert.equal(await nonExpiringLock.isValidKey.call(tokenId), false)
+          assert.equal(await nonExpiringLock.isValidKey(tokenId), false)
 
           // extend
           await nonExpiringLock.extend(
@@ -231,7 +231,7 @@ contract('Lock / extend keys', (accounts) => {
             }
           )
 
-          assert.equal(await nonExpiringLock.isValidKey.call(tokenId), true)
+          assert.equal(await nonExpiringLock.isValidKey(tokenId), true)
 
           it('duration has been extended accordingly', async () => {
             assert.equal(

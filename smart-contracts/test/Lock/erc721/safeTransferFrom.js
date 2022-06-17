@@ -44,7 +44,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
     await lock.safeTransferFrom(from, to, tokenId, {
       from,
     })
-    let ownerOf = await lock.ownerOf.call(tokenId)
+    let ownerOf = await lock.ownerOf(tokenId)
     assert.equal(ownerOf, to)
   })
 
@@ -72,7 +72,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
         from: accounts[7],
       }
     )
-    let ownerOf = await lock.ownerOf.call(tokenId)
+    let ownerOf = await lock.ownerOf(tokenId)
     assert.equal(ownerOf, accounts[6])
     // while we may pass data to the safeTransferFrom function, it is not currently utilized in any way other than being passed to the `onERC721Received` function in MixinTransfer.sol
   })
@@ -99,7 +99,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
       })
     )
     // make sure the key was not transferred
-    let ownerOf = await lock.ownerOf.call(tokenId)
+    let ownerOf = await lock.ownerOf(tokenId)
     assert.equal(ownerOf, accounts[5])
   })
 
@@ -130,7 +130,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
     )
 
     // make sure the key was not transferred
-    let ownerOf = await lock.ownerOf.call(tokenId)
+    let ownerOf = await lock.ownerOf(tokenId)
     assert.equal(ownerOf, compliantContract.address)
   })
 })

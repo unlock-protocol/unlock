@@ -112,7 +112,14 @@ contract MixinTransfer is
     }
   }
 
-
+  /** 
+  * an ERC721-like function to transfer a token from one account to another
+  * @param _from the owner of token to transfer
+  * @param _recipient the address that will receive the token
+  * @param _tokenId the id of the token
+  * @notice To prevent the key manager to retain ownership rights on the token after transfer, the 
+  * operation will fail if a key manager if set. 
+  */
   function transferFrom(
     address _from,
     address _recipient,
@@ -121,8 +128,18 @@ contract MixinTransfer is
     public
   {
     _isValidKey(_tokenId);
-    _onlyKeyManagerOrApproved(_tokenId);
-    if(ownerOf(_tokenId) != _from) {
+    if(
+      // the specified address does not own the token
+      ownerOf(_tokenId) != _from
+      || 
+      ( // the sender is not owner or authorized
+        ownerOf(_tokenId) != msg.sender
+        && approved[_tokenId] != msg.sender
+        && !isApprovedForAll(_ownerOf[_tokenId], msg.sender)
+      )
+      || // a key manager is set
+      keyManagerOf[_tokenId] != address(0)
+    ) {
       revert UNAUTHORIZED();
     }
     if(transferFeeBasisPoints >= BASIS_POINTS_DEN) {
@@ -161,6 +178,7 @@ contract MixinTransfer is
 
     // make future reccuring transactions impossible
     _originalDurations[_tokenId] = 0;
+    _originalPrices[_tokenId] = 0;
 
     // trigger event
     emit Transfer(

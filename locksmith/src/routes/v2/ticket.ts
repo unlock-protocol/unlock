@@ -1,5 +1,5 @@
 import express from 'express'
-import { TicketsController } from '../../controllers/v2/TicketsController'
+import { TicketsController } from '../../controllers/v2/ticketsController'
 import { keyOwnerMiddleware } from '../../utils/middlewares/keyOwnerMiddleware'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 

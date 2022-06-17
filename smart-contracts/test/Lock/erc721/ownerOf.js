@@ -15,7 +15,7 @@ contract('Lock / erc721 / ownerOf', (accounts) => {
   })
 
   it('should return 0x0 when key is nonexistent', async () => {
-    let address = await locks.FIRST.ownerOf.call(42)
+    let address = await locks.FIRST.ownerOf(42)
     assert.equal(address, ADDRESS_ZERO)
   })
 
@@ -32,7 +32,7 @@ contract('Lock / erc721 / ownerOf', (accounts) => {
       }
     )
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    let address = await locks.FIRST.ownerOf.call(args.tokenId)
+    let address = await locks.FIRST.ownerOf(args.tokenId)
     assert.equal(address, accounts[1])
   })
 
@@ -49,13 +49,13 @@ contract('Lock / erc721 / ownerOf', (accounts) => {
       }
     )
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    let address = await locks.FIRST.ownerOf.call(args.tokenId)
+    let address = await locks.FIRST.ownerOf(args.tokenId)
     assert.equal(address, accounts[1])
 
     // transfer
     await locks.FIRST.transferFrom(accounts[1], accounts[7], args.tokenId, {
       from: accounts[1],
     })
-    assert.equal(await locks.FIRST.ownerOf.call(args.tokenId), accounts[7])
+    assert.equal(await locks.FIRST.ownerOf(args.tokenId), accounts[7])
   })
 })

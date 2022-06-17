@@ -38,7 +38,7 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
     })
 
     it('isApprovedForAll defaults to false', async () => {
-      assert.equal(await lock.isApprovedForAll.call(owner, approvedUser), false)
+      assert.equal(await lock.isApprovedForAll(owner, approvedUser), false)
     })
 
     describe('when the sender is self approving', () => {
@@ -62,10 +62,7 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
       })
 
       it('isApprovedForAll is true', async () => {
-        assert.equal(
-          await lock.isApprovedForAll.call(owner, approvedUser),
-          true
-        )
+        assert.equal(await lock.isApprovedForAll(owner, approvedUser), true)
       })
 
       it('should trigger the ApprovalForAll event', () => {
@@ -82,7 +79,7 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
           from: approvedUser,
         })
 
-        assert.equal(await lock.getApproved.call(tokenId), newApprovedUser)
+        assert.equal(await lock.getApproved(tokenId), newApprovedUser)
       })
 
       it('should allow the approved user to transferFrom', async () => {
@@ -97,10 +94,7 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
       })
 
       it('isApprovedForAll is still true (not lost after transfer)', async () => {
-        assert.equal(
-          await lock.isApprovedForAll.call(owner, approvedUser),
-          true
-        )
+        assert.equal(await lock.isApprovedForAll(owner, approvedUser), true)
       })
 
       describe('allows for multiple operators per owner', () => {
@@ -114,16 +108,13 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
 
         it('new operator is approved', async () => {
           assert.equal(
-            await lock.isApprovedForAll.call(owner, newApprovedUser),
+            await lock.isApprovedForAll(owner, newApprovedUser),
             true
           )
         })
 
         it('original operator is still approved', async () => {
-          assert.equal(
-            await lock.isApprovedForAll.call(owner, approvedUser),
-            true
-          )
+          assert.equal(await lock.isApprovedForAll(owner, approvedUser), true)
         })
       })
     })
@@ -142,10 +133,7 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
       })
 
       it('isApprovedForAll is false again', async () => {
-        assert.equal(
-          await lock.isApprovedForAll.call(owner, approvedUser),
-          false
-        )
+        assert.equal(await lock.isApprovedForAll(owner, approvedUser), false)
       })
 
       it('This emits when an operator is (enabled or) disabled for an owner.', async () => {
@@ -173,7 +161,7 @@ contract('Lock / erc721 / approveForAll', (accounts) => {
 
       it('operator is approved', async () => {
         assert.equal(
-          await lock.isApprovedForAll.call(ownerWithoutAKey, approvedUser),
+          await lock.isApprovedForAll(ownerWithoutAKey, approvedUser),
           true
         )
       })

@@ -24,7 +24,6 @@ export class TicketsController {
     )
     response.status(200).send({ payload, signature })
   }
-
   /**
    * Function called by a lock manager to email a QR code ticket to its owner.
    * @param request
