@@ -1,6 +1,5 @@
 const base = require('@unlock-protocol/jest-config')
 const { pathsToModuleNameMapper } = require('ts-jest')
-const { compilerOptions } = require('./tsconfig.json')
 
 module.exports = {
   ...base,
@@ -50,5 +49,7 @@ module.exports = {
       statements: 58,
     },
   },
-  moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
+  moduleNameMapper: pathsToModuleNameMapper({
+    '~/*': ['./src/*'],
+  }),
 }

@@ -32,6 +32,7 @@ const paywallConfig = {
     },
   ],
   pessimistic: true,
+  captcha: true,
 }
 
 console.log(
