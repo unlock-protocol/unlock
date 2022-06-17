@@ -36,7 +36,7 @@ contract('Lock / lockBehaviors', (accounts) => {
         for (let i = 0; i < accounts.length; i++) {
           await this.testToken.approve(
             this.lock.address,
-            await this.lock.keyPrice.call(),
+            await this.lock.keyPrice(),
             {
               from: accounts[i],
             }

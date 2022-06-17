@@ -151,7 +151,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
           from: accountApproved,
         })
         assert.equal(await locks.FIRST.ownerOf(tokenIds[0]), accounts[9])
-        assert.equal(await locks.FIRST.balanceOf.call(accounts[9]), 1)
+        assert.equal(await locks.FIRST.balanceOf(accounts[9]), 1)
       })
 
       it('approval should be cleared after a transfer', async () => {
@@ -243,10 +243,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         )
 
         // check ownership
-        assert.equal(
-          await locks['SINGLE KEY'].ownerOf.call(tokenId),
-          keyOwners[0]
-        )
+        assert.equal(await locks['SINGLE KEY'].ownerOf(tokenId), keyOwners[0])
 
         // transfer
         await locks['SINGLE KEY'].transferFrom(
@@ -258,10 +255,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
           }
         )
 
-        assert.equal(
-          await locks['SINGLE KEY'].ownerOf.call(tokenId),
-          accounts[9]
-        )
+        assert.equal(await locks['SINGLE KEY'].ownerOf(tokenId), accounts[9])
       })
     })
   })
