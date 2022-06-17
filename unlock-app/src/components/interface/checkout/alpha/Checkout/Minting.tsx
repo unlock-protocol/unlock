@@ -9,6 +9,9 @@ import mintedAnimation from '~/animations/minted.json'
 import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
+import { useEffect } from 'react'
+import { ethers } from 'ethers'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   injectedProvider: unknown
@@ -50,6 +53,36 @@ export function Minting({ injectedProvider, send, onClose, state }: Props) {
   const { mint, lock } = state.context
   const processing = mint?.status === 'PROCESSING'
 
+  useEffect(() => {
+    async function waitForConfirmation() {
+      try {
+        if (!mint?.transactionHash && mint?.status !== 'PROCESSING') {
+          return
+        }
+        const network = config.networks[lock!.network]
+        if (network) {
+          const provider = new ethers.providers.JsonRpcProvider(
+            network.provider
+          )
+          await provider.waitForTransaction(mint.transactionHash!)
+          send({
+            type: 'CONFIRM_MINT',
+            status: 'FINISHED',
+          })
+        }
+      } catch (error) {
+        if (error instanceof Error) {
+          ToastHelper.error(error.message)
+          send({
+            type: 'CONFIRM_MINT',
+            status: 'ERROR',
+          })
+        }
+      }
+    }
+    waitForConfirmation()
+  }, [mint, lock, config, send])
+
   return (
     <div>
       <main className="p-6 overflow-auto h-64 sm:h-72">
@@ -59,6 +92,8 @@ export function Minting({ injectedProvider, send, onClose, state }: Props) {
             href={config.networks[lock!.network].explorer.urls.transaction(
               mint?.transactionHash
             )}
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
           >
             See in block explorer <Icon icon={ExternalLinkIcon} size="small" />

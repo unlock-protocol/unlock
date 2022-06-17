@@ -95,6 +95,8 @@ export function Quantity({ state, send, injectedProvider }: Props) {
                 href={config.networks[lock!.network].explorer.urls.address(
                   lock!.address
                 )}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
               >
                 View Contract <Icon icon={ExternalLinkIcon} size="small" />
@@ -149,7 +151,7 @@ export function Quantity({ state, send, injectedProvider }: Props) {
               <div className="flex gap-6 justify-between">
                 <Button
                   className="w-full"
-                  disabled={quantity < 1 || isLoading}
+                  disabled={quantity < 1 || isLoading || isUnlockAccount}
                   onClick={(event) => {
                     event.stopPropagation()
                     send({
@@ -169,7 +171,9 @@ export function Quantity({ state, send, injectedProvider }: Props) {
                 </Button>
                 <Button
                   className="w-full"
-                  disabled={quantity < 1 || isLoading}
+                  disabled={
+                    quantity < 1 || isLoading || !fiatPricing.creditCardEnabled
+                  }
                   onClick={(event) => {
                     event.stopPropagation()
                     send({

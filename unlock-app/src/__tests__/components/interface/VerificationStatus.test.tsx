@@ -183,7 +183,7 @@ describe('VerificationStatus', () => {
       }),
     }
     const { getByText } = renderWithContexts(
-      <WalletServiceProvider value={walletService}>
+      <WalletServiceProvider value={walletService as any}>
         <ConfigProvider value={config}>
           <VerificationStatus
             data={{
@@ -240,7 +240,7 @@ describe('VerificationStatus', () => {
       }),
     }
     const { getByText } = renderWithContexts(
-      <WalletServiceProvider value={walletService}>
+      <WalletServiceProvider value={walletService as any}>
         <ConfigProvider value={config}>
           <VerificationStatus
             data={{
