@@ -34,10 +34,10 @@ contract('Lock / burn', (accounts) => {
   })
 
   it('should delete ownership record', async () => {
-    assert.equal(await lock.getHasValidKey.call(keyOwner), true)
+    assert.equal(await lock.getHasValidKey(keyOwner), true)
     assert.equal(await lock.ownerOf(tokenId), keyOwner)
     await lock.burn(tokenId, { from: keyOwner })
-    assert.equal(await lock.getHasValidKey.call(keyOwner), false)
+    assert.equal(await lock.getHasValidKey(keyOwner), false)
     assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 
@@ -51,10 +51,10 @@ contract('Lock / burn', (accounts) => {
 
   it('allow key manager to burn a key', async () => {
     await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyOwner })
-    assert.equal(await lock.getHasValidKey.call(keyOwner), true)
+    assert.equal(await lock.getHasValidKey(keyOwner), true)
     assert.equal(await lock.ownerOf(tokenId), keyOwner)
     await lock.burn(tokenId, { from: accounts[9] })
-    assert.equal(await lock.getHasValidKey.call(keyOwner), false)
+    assert.equal(await lock.getHasValidKey(keyOwner), false)
     assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 
