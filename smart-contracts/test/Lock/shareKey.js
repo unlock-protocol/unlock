@@ -2,7 +2,7 @@ const BigNumber = require('bignumber.js')
 
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO, purchaseKeys } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -29,21 +29,7 @@ contract('Lock / shareKey', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
-    const tx = await lock.purchase(
-      [],
-      keyOwners,
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => []),
-      {
-        value: (keyPrice * keyOwners.length).toFixed(),
-        from: keyOwners[0],
-      }
-    )
-
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   describe('failing to share a key', () => {

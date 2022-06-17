@@ -2,7 +2,7 @@ const deployLocks = require('../../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { ADDRESS_ZERO, purchaseKeys } = require('../../helpers')
 
 let unlock
 let locks
@@ -23,20 +23,7 @@ contract('Lock / uniqueTokenIds', (accounts) => {
   describe('extending keys', () => {
     it('should not duplicate tokenIDs', async () => {
       // buy some keys
-      const tx = await lock.purchase(
-        [],
-        keyOwners,
-        keyOwners.map(() => ADDRESS_ZERO),
-        keyOwners.map(() => ADDRESS_ZERO),
-        keyOwners.map(() => []),
-        {
-          value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
-          from: accounts[0],
-        }
-      )
-      const tokenIds = tx.logs
-        .filter((v) => v.event === 'Transfer')
-        .map(({ args }) => args.tokenId)
+      const { tokenIds } = await purchaseKeys(lock, keyOwners.length)
 
       const supply = await lock.totalSupply()
       assert(tokenIds[tokenIds.length - 1].eq(supply))

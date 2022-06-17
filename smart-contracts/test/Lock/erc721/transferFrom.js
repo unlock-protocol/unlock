@@ -1,6 +1,6 @@
 const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { ADDRESS_ZERO, purchaseKeys } = require('../../helpers')
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 
@@ -21,22 +21,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     locks = await deployLocks(unlock, accounts[0])
     await locks.FIRST.updateTransferFee(0) // disable the transfer fee for this test
     await locks['SINGLE KEY'].updateTransferFee(0) // disable the transfer fee for this test
-
-    const tx = await locks.FIRST.purchase(
-      [],
-      keyOwners,
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => []),
-      {
-        value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
-        from,
-      }
-    )
-
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    ;({ tokenIds } = await purchaseKeys(locks.FIRST, keyOwners.length))
   })
 
   // / @dev Throws unless `msg.sender` is the current owner, an authorized

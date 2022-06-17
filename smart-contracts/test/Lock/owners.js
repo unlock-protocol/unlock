@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
 const { assert } = require('chai')
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { purchaseKeys, ADDRESS_ZERO } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -19,24 +19,12 @@ contract('Lock / owners', (accounts) => {
     lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
     await lock.updateTransferFee(0) // disable the transfer fee for this test
+    await purchaseKeys()
   })
 
   before(async () => {
     // Purchase keys!
-    const tx = await lock.purchase(
-      [],
-      keyOwners,
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => []),
-      {
-        value: (lock.params.keyPrice * keyOwners.length).toFixed(),
-        from: accounts[0],
-      }
-    )
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   it('should have the right number of keys', async () => {
