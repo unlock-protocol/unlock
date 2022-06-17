@@ -40,12 +40,9 @@ export function Checkout({
   const { messageToSign, mint, lock } = state.context
 
   useEffect(() => {
-    if (
-      mint &&
-      mint.transactionHash &&
-      mint.status === 'FINISHED' &&
-      communication
-    ) {
+    const isMintingFinished =
+      mint && mint.transactionHash && mint.status === 'FINISHED'
+    if (isMintingFinished && communication) {
       communication.emitTransactionInfo({
         hash: mint!.transactionHash!,
         lock: lock!.address,
