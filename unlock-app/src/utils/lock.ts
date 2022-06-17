@@ -11,7 +11,7 @@ import {
  * @param {*} lock
  * @param {*} config
  */
-export const currencySymbol = (lock: any, defaultERC20: any) => {
+export const currencySymbol = (lock: any) => {
   let currency = ''
   if (lock.currencySymbol) {
     currency = lock.currencySymbol

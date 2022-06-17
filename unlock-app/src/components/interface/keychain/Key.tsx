@@ -20,17 +20,11 @@ import { expirationAsDate } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
-import {
-  useWalletService,
-  WalletServiceContext,
-} from '../../../utils/withWalletService'
+import { useWalletService } from '../../../utils/withWalletService'
 import WedlockServiceContext from '../../../contexts/WedlocksContext'
-import {
-  AuthenticationContext,
-  useAuth,
-} from '../../../contexts/AuthenticationContext'
+import { useAuth } from '../../../contexts/AuthenticationContext'
 import { MAX_UINT } from '../../../constants'
-import { ConfigContext, useConfig } from '../../../utils/withConfig'
+import { useConfig } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
 

@@ -534,20 +534,24 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
 
   const getKeyData = async (keyId: string, signer: string) => {
     let payload = {}
-    let signature
+    let signature: string | undefined
 
     // If we have a signer, try to get the protected data!
     if (signer) {
       payload = generateKeyMetadataPayload(signer, {})
-      signature = await walletService.unformattedSignTypedData(signer, payload)
+      signature = (await walletService.unformattedSignTypedData(
+        signer,
+        payload
+      )) as string
     }
 
     const storageService = new StorageService(config.services.storage.host)
+
     const data = await storageService.getKeyMetadata(
       lockFromProps.address!,
       keyId,
       payload,
-      signature,
+      signature!,
       network
     )
     return data
@@ -558,15 +562,15 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     const payload = generateKeyMetadataPayload(signer, {
       lockAddress: lockFromProps.address,
       keyId,
-      // @ts-ignore
+      // @ts-expect-error
       metadata: {
         checkedInAt: new Date().getTime(),
       },
     })
-    const signature = await walletService.unformattedSignTypedData(
+    const signature = (await walletService.unformattedSignTypedData(
       signer,
       payload
-    )
+    )) as string
     const storageService = new StorageService(config.services.storage.host)
     const response = await storageService.setKeyMetadata(
       lockFromProps.address,

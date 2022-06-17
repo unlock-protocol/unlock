@@ -29,8 +29,8 @@ interface Props {
 export const VerificationStatus = ({ data, sig, hexData }: Props) => {
   const { account, lockAddress, timestamp, network } = data
   const [showLogin, setShowLogin] = useState(false)
-  const [lock, setLock] = useState(null)
-  const [unlockKey, setUnlockKey] = useState(null)
+  const [lock, setLock] = useState<any>(null)
+  const [unlockKey, setUnlockKey] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const { account: viewer } = useContext(AuthenticationContext)
   const { getKeyForAccount, getLock } = useLock(
@@ -42,13 +42,18 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
 
   useEffect(() => {
     const onLoad = async () => {
-      setUnlockKey(await getKeyForAccount(account))
-      setLock(await getLock({ pricing: false }))
+      if (!account) {
+        return
+      }
+      const key = await getKeyForAccount(account)
+      setUnlockKey(key)
+      const lock = await getLock({ pricing: false })
+      setLock(lock)
       setLoading(false)
     }
 
     onLoad()
-  }, [lockAddress])
+  }, [lockAddress, getKeyForAccount, getLock, account])
 
   if (loading) {
     return <Loading />
