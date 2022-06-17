@@ -16,7 +16,7 @@ let locks
 let dai
 
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const totalPrice = keyPrice.times(10)
+const totalPrice = keyPrice.mul(10)
 const someDai = ethers.utils.parseUnits('10', 'ether')
 
 let lock
