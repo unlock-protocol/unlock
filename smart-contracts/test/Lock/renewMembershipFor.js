@@ -247,7 +247,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         // now reverts
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'Dai/insufficient-allowance'
+          'ERC20: insufficient allowance'
         )
       })
 
@@ -257,6 +257,9 @@ contract('Lock / Recurring memberships', (accounts) => {
 
         // empty the account
         const balanceBefore = new BigNumber(await dai.balanceOf(keyOwner))
+        await dai.approve(keyOwner, balanceBefore, {
+          from: keyOwner,
+        })
         await dai.transferFrom(keyOwner, accounts[9], balanceBefore, {
           from: keyOwner,
         })
@@ -269,7 +272,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         // now funds are not enough
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
-          'Dai/insufficient-balance'
+          'ERC20: transfer amount exceeds balance'
         )
       })
     })
