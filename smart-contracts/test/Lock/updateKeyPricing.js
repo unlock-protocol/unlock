@@ -31,8 +31,8 @@ contract('Lock / updateKeyPricing', (accounts) => {
     unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
-    keyPriceBefore = new BigNumber(await lock.keyPrice.call())
-    tokenAddressBefore = await lock.tokenAddress.call()
+    keyPriceBefore = new BigNumber(await lock.keyPrice())
+    tokenAddressBefore = await lock.tokenAddress()
     assert.equal(keyPriceBefore.toFixed(), 10000000000000000)
     transaction = await lock.updateKeyPricing(
       web3.utils.toWei('0.3', 'ether'),
@@ -46,7 +46,7 @@ contract('Lock / updateKeyPricing', (accounts) => {
   })
 
   it('should change the actual keyPrice', async () => {
-    const keyPriceAfter = new BigNumber(await lock.keyPrice.call())
+    const keyPriceAfter = new BigNumber(await lock.keyPrice())
     assert.equal(keyPriceAfter.toFixed(), 300000000000000000)
   })
 
@@ -62,8 +62,8 @@ contract('Lock / updateKeyPricing', (accounts) => {
   })
 
   it('should allow changing price to 0', async () => {
-    await lock.updateKeyPricing(0, await lock.tokenAddress.call())
-    const keyPriceAfter = new BigNumber(await lock.keyPrice.call())
+    await lock.updateKeyPricing(0, await lock.tokenAddress())
+    const keyPriceAfter = new BigNumber(await lock.keyPrice())
     assert.equal(keyPriceAfter.toFixed(), 0)
   })
 
@@ -71,11 +71,11 @@ contract('Lock / updateKeyPricing', (accounts) => {
     let keyPrice
 
     before(async () => {
-      keyPrice = new BigNumber(await lock.keyPrice.call())
+      keyPrice = new BigNumber(await lock.keyPrice())
       await reverts(
         lock.updateKeyPricing(
           web3.utils.toWei('0.3', 'ether'),
-          await lock.tokenAddress.call(),
+          await lock.tokenAddress(),
           {
             from: accounts[3],
           }
@@ -85,7 +85,7 @@ contract('Lock / updateKeyPricing', (accounts) => {
     })
 
     it('should leave the price unchanged', async () => {
-      const keyPriceAfter = new BigNumber(await lock.keyPrice.call())
+      const keyPriceAfter = new BigNumber(await lock.keyPrice())
       assert.equal(keyPrice.toFixed(), keyPriceAfter.toFixed())
     })
 
@@ -105,16 +105,16 @@ contract('Lock / updateKeyPricing', (accounts) => {
     it('should allow a LockManager to switch from eth => erc20', async () => {
       assert.equal(tokenAddressBefore, 0)
       assert.equal(await lock.isLockManager(lockCreator), true)
-      await lock.updateKeyPricing(await lock.keyPrice.call(), token.address, {
+      await lock.updateKeyPricing(await lock.keyPrice(), token.address, {
         from: lockCreator,
       })
-      let tokenAddressAfter = await lock.tokenAddress.call()
+      let tokenAddressAfter = await lock.tokenAddress()
       assert.equal(tokenAddressAfter, token.address)
     })
 
     it('should allow a LockManager to switch from erc20 => eth', async () => {
-      await lock.updateKeyPricing(await lock.keyPrice.call(), ADDRESS_ZERO)
-      assert.equal(await lock.tokenAddress.call(), 0)
+      await lock.updateKeyPricing(await lock.keyPrice(), ADDRESS_ZERO)
+      assert.equal(await lock.tokenAddress(), 0)
     })
 
     it('should allow a lock manager who is not the owner to make changes', async () => {
@@ -126,11 +126,8 @@ contract('Lock / updateKeyPricing', (accounts) => {
         token.address,
         { from: accounts[8] }
       )
-      assert.equal(await lock.tokenAddress.call(), token.address)
-      assert.equal(
-        await lock.keyPrice.call(),
-        web3.utils.toWei('0.42', 'ether')
-      )
+      assert.equal(await lock.tokenAddress(), token.address)
+      assert.equal(await lock.keyPrice(), web3.utils.toWei('0.42', 'ether'))
     })
 
     it('should allow a lockManager to renounce their role', async () => {
@@ -140,7 +137,7 @@ contract('Lock / updateKeyPricing', (accounts) => {
 
     it('should revert if trying to switch to an invalid token address', async () => {
       await reverts(
-        lock.updateKeyPricing(await lock.keyPrice.call(), invalidTokenAddress, {
+        lock.updateKeyPricing(await lock.keyPrice(), invalidTokenAddress, {
           from: lockCreator,
         })
       )

@@ -18,7 +18,7 @@ contract('Lock / erc721 / name', (accounts) => {
 
   describe('when no name has been set on creation', () => {
     it('should return the default name when attempting to read the name', async () => {
-      assert.equal(await unnamedlock.name.call(), 'Unlock-Protocol Lock')
+      assert.equal(await unnamedlock.name(), 'Unlock-Protocol Lock')
     })
 
     it('should fail if someone other than the owner tries to set the name', async () => {
@@ -39,7 +39,7 @@ contract('Lock / erc721 / name', (accounts) => {
 
   describe('when the Lock has a name', () => {
     it('should return return the expected name', async () => {
-      assert.equal(await namedLock.name.call(), 'Custom Named Lock')
+      assert.equal(await namedLock.name(), 'Custom Named Lock')
     })
 
     it('should fail if someone other than the owner tries to change the name', async () => {
@@ -58,7 +58,7 @@ contract('Lock / erc721 / name', (accounts) => {
       })
 
       it('should return return the expected name', async () => {
-        assert.equal(await namedLock.name.call(), 'Difficult')
+        assert.equal(await namedLock.name(), 'Difficult')
       })
     })
 
@@ -70,7 +70,7 @@ contract('Lock / erc721 / name', (accounts) => {
       })
 
       it('should return return the expected name', async () => {
-        assert.equal(await namedLock.name.call(), '')
+        assert.equal(await namedLock.name(), '')
       })
     })
   })

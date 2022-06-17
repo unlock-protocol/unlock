@@ -69,7 +69,7 @@ contract('Lock / expireAndRefundFor', (accounts) => {
     })
 
     it('should make the key no longer valid (i.e. expired)', async () => {
-      const isValid = await lock.getHasValidKey.call(keyOwners[0])
+      const isValid = await lock.getHasValidKey(keyOwners[0])
       assert.equal(isValid, false)
     })
 
@@ -119,7 +119,7 @@ contract('Lock / expireAndRefundFor', (accounts) => {
     })
 
     it('the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw(await lock.tokenAddress.call(), 0, {
+      await lock.withdraw(await lock.tokenAddress(), 0, {
         from: lockCreator,
       })
       await reverts(

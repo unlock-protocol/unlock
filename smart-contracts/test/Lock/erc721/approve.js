@@ -75,7 +75,7 @@ contract('Lock / erc721 / approve', (accounts) => {
       })
 
       it('should assign the approvedForTransfer value', async () => {
-        const approved = await locks.FIRST.getApproved.call(tokenId)
+        const approved = await locks.FIRST.getApproved(tokenId)
         assert.equal(approved, accounts[2])
       })
 
@@ -111,10 +111,7 @@ contract('Lock / erc721 / approve', (accounts) => {
         })
 
         it('The zero address indicates there is no approved address', async () => {
-          assert.equal(
-            await locks.FIRST.getApproved.call(tokenId),
-            ADDRESS_ZERO
-          )
+          assert.equal(await locks.FIRST.getApproved(tokenId), ADDRESS_ZERO)
         })
       })
     })

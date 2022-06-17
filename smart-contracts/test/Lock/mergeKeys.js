@@ -59,8 +59,8 @@ contract('Lock / mergeKeys', (accounts) => {
         ).toString()
       )
 
-      assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
-      assert.equal(await lock.getHasValidKey.call(keyOwner), true)
+      assert.equal(await lock.getHasValidKey(keyOwner2), true)
+      assert.equal(await lock.getHasValidKey(keyOwner), true)
     })
     it('should allow key manager to call', async () => {
       const expTs = [
@@ -92,8 +92,8 @@ contract('Lock / mergeKeys', (accounts) => {
         ).toString()
       )
 
-      assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
-      assert.equal(await lock.getHasValidKey.call(keyOwner), true)
+      assert.equal(await lock.getHasValidKey(keyOwner2), true)
+      assert.equal(await lock.getHasValidKey(keyOwner), true)
     })
   })
 
@@ -125,10 +125,10 @@ contract('Lock / mergeKeys', (accounts) => {
         ).toString()
       )
 
-      assert.equal(await lock.isValidKey.call(tokenIds[0]), false)
-      assert.equal(await lock.isValidKey.call(tokenIds[1]), true)
-      assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
-      assert.equal(await lock.getHasValidKey.call(keyOwner), false)
+      assert.equal(await lock.isValidKey(tokenIds[0]), false)
+      assert.equal(await lock.isValidKey(tokenIds[1]), true)
+      assert.equal(await lock.getHasValidKey(keyOwner2), true)
+      assert.equal(await lock.getHasValidKey(keyOwner), false)
     })
   })
   describe('failures', () => {

@@ -37,7 +37,7 @@ contract('Lock / freeTrial', (accounts) => {
   })
 
   it('No free trial by default', async () => {
-    const freeTrialLength = new BigNumber(await lock.freeTrialLength.call())
+    const freeTrialLength = new BigNumber(await lock.freeTrialLength())
     assert.equal(freeTrialLength.toFixed(), 0)
   })
 

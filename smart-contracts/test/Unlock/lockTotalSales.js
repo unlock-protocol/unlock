@@ -21,7 +21,7 @@ contract('Unlock / lockTotalSales', (accounts) => {
 
   it('total sales defaults to 0', async () => {
     const totalSales = new BigNumber(
-      (await unlock.locks.call(lock.address)).totalSales
+      (await unlock.locks(lock.address)).totalSales
     )
     assert.equal(totalSales.toFixed(), 0)
   })
@@ -43,7 +43,7 @@ contract('Unlock / lockTotalSales', (accounts) => {
 
     it('total sales includes the purchase', async () => {
       const totalSales = new BigNumber(
-        (await unlock.locks.call(lock.address)).totalSales
+        (await unlock.locks(lock.address)).totalSales
       )
       assert.equal(totalSales.toFixed(), price.toFixed())
     })
@@ -68,7 +68,7 @@ contract('Unlock / lockTotalSales', (accounts) => {
 
     it('total sales incluse all purchases', async () => {
       const totalSales = new BigNumber(
-        (await unlock.locks.call(lock.address)).totalSales
+        (await unlock.locks(lock.address)).totalSales
       )
       assert.equal(totalSales.toFixed(), price.times(5).toFixed())
     })

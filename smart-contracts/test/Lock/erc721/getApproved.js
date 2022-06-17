@@ -13,6 +13,6 @@ contract('Lock / erc721 / getApproved', (accounts) => {
   })
 
   it('should fail if the key does not exist', async () => {
-    await reverts(locks.FIRST.getApproved.call(42), 'NO_SUCH_KEY')
+    await reverts(locks.FIRST.getApproved(42), 'NO_SUCH_KEY')
   })
 })

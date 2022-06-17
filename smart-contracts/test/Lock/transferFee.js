@@ -41,7 +41,7 @@ contract('Lock / transferFee', (accounts) => {
   })
 
   it('has a default fee of 0%', async () => {
-    const feeNumerator = new BigNumber(await lock.transferFeeBasisPoints.call())
+    const feeNumerator = new BigNumber(await lock.transferFeeBasisPoints())
     assert.equal(feeNumerator.div(denominator).toFixed(), 0.0)
   })
 
@@ -64,7 +64,7 @@ contract('Lock / transferFee', (accounts) => {
 
     it('estimates the transfer fee, which is 5% of remaining duration or less', async () => {
       const nowBefore = (await web3.eth.getBlock('latest')).timestamp
-      fee = new BigNumber(await lock.getTransferFee.call(tokenId, 0))
+      fee = new BigNumber(await lock.getTransferFee(tokenId, 0))
       // Mine a transaction in order to ensure the block.timestamp has updated
       await lock.purchase(
         [],
@@ -78,7 +78,7 @@ contract('Lock / transferFee', (accounts) => {
       )
       const nowAfter = (await web3.eth.getBlock('latest')).timestamp
       let expiration = new BigNumber(
-        await lock.keyExpirationTimestampFor.call(tokenId)
+        await lock.keyExpirationTimestampFor(tokenId)
       )
       // Fee is <= the expected fee before the call
       assert(
@@ -95,9 +95,9 @@ contract('Lock / transferFee', (accounts) => {
     })
 
     it('calculates the fee based on the time value passed in', async () => {
-      fee1 = await lock.getTransferFee.call(tokenId, 100)
-      fee2 = await lock.getTransferFee.call(tokenId, 60 * 60 * 24 * 365)
-      fee3 = await lock.getTransferFee.call(tokenId, 60 * 60 * 24 * 30)
+      fee1 = await lock.getTransferFee(tokenId, 100)
+      fee2 = await lock.getTransferFee(tokenId, 60 * 60 * 24 * 365)
+      fee3 = await lock.getTransferFee(tokenId, 60 * 60 * 24 * 30)
       assert.equal(fee1, 5)
       assert.equal(fee2, 1576800)
       assert.equal(fee3, 129600)
@@ -171,9 +171,7 @@ contract('Lock / transferFee', (accounts) => {
       })
 
       it('has an updated fee', async () => {
-        const feeNumerator = new BigNumber(
-          await lock.transferFeeBasisPoints.call()
-        )
+        const feeNumerator = new BigNumber(await lock.transferFeeBasisPoints())
         assert.equal(feeNumerator.div(denominator).toFixed(), 0.0025)
       })
 

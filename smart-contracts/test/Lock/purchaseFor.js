@@ -34,10 +34,7 @@ contract('Lock / purchaseFor', (accounts) => {
         'INSUFFICIENT_VALUE'
       )
       // Making sure we do not have a key set!
-      assert.equal(
-        await locks.FIRST.keyExpirationTimestampFor.call(accounts[0]),
-        0
-      )
+      assert.equal(await locks.FIRST.keyExpirationTimestampFor(accounts[0]), 0)
     })
 
     it('should fail if we reached the max number of keys', async () => {
@@ -159,8 +156,8 @@ contract('Lock / purchaseFor', (accounts) => {
 
       beforeEach(async () => {
         balance = new BigNumber(await web3.eth.getBalance(locks.FIRST.address))
-        totalSupply = new BigNumber(await locks.FIRST.totalSupply.call())
-        numberOfOwners = new BigNumber(await locks.FIRST.numberOfOwners.call())
+        totalSupply = new BigNumber(await locks.FIRST.totalSupply())
+        numberOfOwners = new BigNumber(await locks.FIRST.numberOfOwners())
         const newKeyTx = await locks.FIRST.purchase(
           [],
           [accounts[0]],
@@ -181,10 +178,10 @@ contract('Lock / purchaseFor', (accounts) => {
 
       it('should have the right expiration timestamp for the key', async () => {
         const expirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor.call(tokenId)
+          await locks.FIRST.keyExpirationTimestampFor(tokenId)
         )
         const expirationDuration = new BigNumber(
-          await locks.FIRST.expirationDuration.call()
+          await locks.FIRST.expirationDuration()
         )
         assert(expirationTimestamp.gte(expirationDuration.plus(now)))
       })
@@ -200,13 +197,13 @@ contract('Lock / purchaseFor', (accounts) => {
       })
 
       it('should have increased the number of outstanding keys', async () => {
-        const _totalSupply = new BigNumber(await locks.FIRST.totalSupply.call())
+        const _totalSupply = new BigNumber(await locks.FIRST.totalSupply())
         assert.equal(_totalSupply.toFixed(), totalSupply.plus(1).toFixed())
       })
 
       it('should have increased the number of owners', async () => {
         const _numberOfOwners = new BigNumber(
-          await locks.FIRST.numberOfOwners.call()
+          await locks.FIRST.numberOfOwners()
         )
         assert.equal(
           _numberOfOwners.toFixed(),

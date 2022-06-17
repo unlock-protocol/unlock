@@ -69,7 +69,7 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
 
         it('users should have valid keys', async () => {
           const areValid = await Promise.all(
-            keyOwners.map((account) => lock.getHasValidKey.call(account))
+            keyOwners.map((account) => lock.getHasValidKey(account))
           )
           areValid.forEach((isValid) => assert.equal(isValid, true))
         })

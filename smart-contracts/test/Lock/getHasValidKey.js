@@ -21,7 +21,7 @@ contract('Lock / getHasValidKey', (accounts) => {
   })
 
   it('should be false before purchasing a key', async () => {
-    const isValid = await lock.getHasValidKey.call(keyOwner)
+    const isValid = await lock.getHasValidKey(keyOwner)
     assert.equal(isValid, false)
   })
 
@@ -45,7 +45,7 @@ contract('Lock / getHasValidKey', (accounts) => {
 
     it('should be true', async () => {
       assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 1)
-      const isValid = await lock.getHasValidKey.call(keyOwner)
+      const isValid = await lock.getHasValidKey(keyOwner)
       assert.equal(isValid, true)
     })
 
@@ -57,7 +57,7 @@ contract('Lock / getHasValidKey', (accounts) => {
       })
 
       it('should be false', async () => {
-        const isValid = await lock.getHasValidKey.call(keyOwner)
+        const isValid = await lock.getHasValidKey(keyOwner)
         assert.equal(isValid, false)
       })
     })
@@ -85,7 +85,7 @@ contract('Lock / getHasValidKey', (accounts) => {
     })
 
     it('should be true', async () => {
-      const isValid = await lock.getHasValidKey.call(keyOwner)
+      const isValid = await lock.getHasValidKey(keyOwner)
       assert.equal(isValid, true)
     })
 
@@ -97,9 +97,9 @@ contract('Lock / getHasValidKey', (accounts) => {
       })
 
       it('should still be true', async () => {
-        const isValid = await lock.getHasValidKey.call(keyOwner)
+        const isValid = await lock.getHasValidKey(keyOwner)
         assert.equal(isValid, true)
-        assert.equal(await lock.getHasValidKey.call(accounts[5]), true)
+        assert.equal(await lock.getHasValidKey(accounts[5]), true)
       })
     })
 
@@ -111,7 +111,7 @@ contract('Lock / getHasValidKey', (accounts) => {
       })
 
       it('should be true', async () => {
-        const isValid = await lock.getHasValidKey.call(keyOwner)
+        const isValid = await lock.getHasValidKey(keyOwner)
         assert.equal(isValid, true)
       })
     })
@@ -130,7 +130,7 @@ contract('Lock / getHasValidKey', (accounts) => {
       it('should be false', async () => {
         assert.equal((await lock.balanceOf(keyOwner)).toNumber(), 0)
         assert.equal((await lock.balanceOf(accounts[5])).toNumber(), 3)
-        const isValid = await lock.getHasValidKey.call(keyOwner)
+        const isValid = await lock.getHasValidKey(keyOwner)
         assert.equal(isValid, false)
       })
     })

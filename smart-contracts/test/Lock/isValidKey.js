@@ -38,27 +38,27 @@ contract('Lock / isValidKey', (accounts) => {
   })
 
   it('should be true after purchase', async () => {
-    assert.equal(await lock.isValidKey.call(tokenId), true)
+    assert.equal(await lock.isValidKey(tokenId), true)
   })
 
   it('should still be true after transfering', async () => {
     await lock.transferFrom(keyOwner, accounts[5], tokenId, {
       from: keyOwner,
     })
-    assert.equal(await lock.isValidKey.call(tokenId), true)
+    assert.equal(await lock.isValidKey(tokenId), true)
   })
 
   it('should be false after expiring', async () => {
     await lock.expireAndRefundFor(tokenId, 0, {
       from: accounts[0],
     })
-    assert.equal(await lock.isValidKey.call(tokenId), false)
+    assert.equal(await lock.isValidKey(tokenId), false)
   })
 
   it('should be false after cancelling', async () => {
     await lock.cancelAndRefund(tokenId, {
       from: keyOwner,
     })
-    assert.equal(await lock.isValidKey.call(tokenId), false)
+    assert.equal(await lock.isValidKey(tokenId), false)
   })
 })

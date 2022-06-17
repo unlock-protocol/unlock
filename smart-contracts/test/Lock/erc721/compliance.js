@@ -14,7 +14,7 @@ contract('Lock / erc721 / compliance', (accounts) => {
 
   it('should support the erc721 interface()', async () => {
     // Note: the ERC-165 identifier for the erc721 interface is "0x80ac58cd"
-    const result = await locks.FIRST.supportsInterface.call('0x80ac58cd')
+    const result = await locks.FIRST.supportsInterface('0x80ac58cd')
     assert.equal(result, true)
   })
 })

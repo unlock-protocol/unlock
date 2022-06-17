@@ -36,7 +36,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
 
   describe('the global tokenURI stored in Unlock', () => {
     it('should return the global base token URI', async () => {
-      assert.equal(await unlock.globalBaseTokenURI.call(), '')
+      assert.equal(await unlock.globalBaseTokenURI(), '')
     })
 
     describe('set global base URI', () => {
@@ -57,15 +57,15 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
 
       it('should allow the owner to set the global base token URI', async () => {
         assert.equal(
-          await unlock.globalBaseTokenURI.call(),
+          await unlock.globalBaseTokenURI(),
           'https://globalBaseTokenURI.com/api/key/'
         )
       })
 
       it('getGlobalBaseTokenURI is the same', async () => {
         assert.equal(
-          await unlock.globalBaseTokenURI.call(),
-          await unlock.getGlobalBaseTokenURI.call()
+          await unlock.globalBaseTokenURI(),
+          await unlock.getGlobalBaseTokenURI()
         )
       })
 
@@ -111,13 +111,13 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
           value: web3.utils.toWei('0.01', 'ether'),
         }
       )
-      uri = await lock.tokenURI.call(1)
+      uri = await lock.tokenURI(1)
       assert.equal(uri, 'https:/customBaseTokenURI.com/api/key/' + '1')
     })
 
     it('should let anyone get the baseTokenURI for a lock by passing tokenId 0', async () => {
       // here we pass 0 as the tokenId to get the baseTokenURI
-      baseTokenURI = await lock.tokenURI.call(0)
+      baseTokenURI = await lock.tokenURI(0)
       // should be the same as the previously set URI
       assert.equal(baseTokenURI, 'https:/customBaseTokenURI.com/api/key/')
     })
@@ -126,7 +126,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
       await lock.setBaseTokenURI('', {
         from: accounts[0],
       })
-      baseTokenURI = await lock.tokenURI.call(0)
+      baseTokenURI = await lock.tokenURI(0)
       const lockAddressStr = lock.address.toString()
       const lowerCaseAddress = stringShifter(lockAddressStr)
       // should now return the globalBaseTokenURI + the lock address
@@ -134,7 +134,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
         baseTokenURI,
         `https://globalBaseTokenURI.com/api/key/${lowerCaseAddress}` + '/'
       )
-      uri = await lock.tokenURI.call(1)
+      uri = await lock.tokenURI(1)
       assert.equal(
         uri,
         `https://globalBaseTokenURI.com/api/key/${lowerCaseAddress}` + '/1'

@@ -44,7 +44,7 @@ contract('Permissions / KeyManager', (accounts) => {
 
   describe('setting the key manager', () => {
     it('should have a default KM of 0x00', async () => {
-      keyManagerBefore = await lock.keyManagerOf.call(tokenId)
+      keyManagerBefore = await lock.keyManagerOf(tokenId)
       assert.equal(keyManagerBefore, ADDRESS_ZERO)
     })
 
@@ -54,23 +54,23 @@ contract('Permissions / KeyManager', (accounts) => {
       await lock.setKeyManagerOf(tokenId, accounts[9], {
         from: defaultKeyManager,
       })
-      keyManager = await lock.keyManagerOf.call(tokenId)
+      keyManager = await lock.keyManagerOf(tokenId)
       assert.equal(keyManager, accounts[9])
     })
 
     it('should allow the current keyManager to set a new KM', async () => {
-      keyManagerBefore = await lock.keyManagerOf.call(tokenId)
+      keyManagerBefore = await lock.keyManagerOf(tokenId)
       await lock.setKeyManagerOf(tokenId, accounts[3], {
         from: keyManagerBefore,
       })
-      keyManager = await lock.keyManagerOf.call(tokenId)
+      keyManager = await lock.keyManagerOf(tokenId)
       assert.equal(keyManager, accounts[3])
     })
 
     it('should allow a LockManager to set a new KM', async () => {
-      keyManagerBefore = await lock.keyManagerOf.call(tokenId)
+      keyManagerBefore = await lock.keyManagerOf(tokenId)
       await lock.setKeyManagerOf(tokenId, accounts[5], { from: lockManager })
-      keyManager = await lock.keyManagerOf.call(tokenId)
+      keyManager = await lock.keyManagerOf(tokenId)
       assert.notEqual(keyManagerBefore, keyManager)
       assert.equal(keyManager, accounts[5])
     })
@@ -89,15 +89,15 @@ contract('Permissions / KeyManager', (accounts) => {
     })
     describe('setting the KM to 0x00', () => {
       before(async () => {
-        keyManager = await lock.keyManagerOf.call(tokenId)
+        keyManager = await lock.keyManagerOf(tokenId)
         await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyManager })
-        keyManager = await lock.keyManagerOf.call(tokenId)
+        keyManager = await lock.keyManagerOf(tokenId)
         assert.equal(keyManager, accounts[9])
         await lock.setKeyManagerOf(tokenId, ADDRESS_ZERO)
       })
 
       it('should reset to the default KeyManager of 0x00', async () => {
-        keyManager = await lock.keyManagerOf.call(tokenId)
+        keyManager = await lock.keyManagerOf(tokenId)
         assert.equal(keyManager, ADDRESS_ZERO)
       })
     })
