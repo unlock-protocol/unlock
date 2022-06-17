@@ -28,6 +28,7 @@ export function SignIn({ state, send, signIn }: Props) {
         email: state.context.email,
         password,
       })
+      setIsSigningIn(false)
       send('CONTINUE')
     } catch (error) {
       if (error instanceof Error) {
@@ -50,7 +51,7 @@ export function SignIn({ state, send, signIn }: Props) {
     <div>
       <main className="p-6 overflow-auto h-64 sm:h-96">
         <div className="space-y-4">
-          <h3 className="font-semibold text-lg">
+          <h3 className="font-bold">
             Nice to see you again! Please enter the password you created
             previously
           </h3>
@@ -58,6 +59,7 @@ export function SignIn({ state, send, signIn }: Props) {
             <Input
               label="Password"
               type="password"
+              size="small"
               placeholder="password"
               required
               error={errors?.password?.message}

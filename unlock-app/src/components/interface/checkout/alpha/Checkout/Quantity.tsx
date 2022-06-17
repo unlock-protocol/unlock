@@ -19,7 +19,8 @@ interface Props {
 
 export function Quantity({ state, send, injectedProvider }: Props) {
   const lock = state.context.lock!
-  const { account, deAuthenticate, network, changeNetwork } = useAuth()
+  const { account, deAuthenticate, isUnlockAccount, network, changeNetwork } =
+    useAuth()
   const { authenticateWithProvider } = useAuthenticateHandler({
     injectedProvider,
   })
@@ -133,8 +134,9 @@ export function Quantity({ state, send, injectedProvider }: Props) {
           }}
           authenticateWithProvider={authenticateWithProvider}
         >
-          {lock!.network !== network ? (
+          {lock!.network !== network && !isUnlockAccount ? (
             <Button
+              className="w-full"
               onClick={() => changeNetwork(config.networks[lock!.network])}
             >
               Switch Network

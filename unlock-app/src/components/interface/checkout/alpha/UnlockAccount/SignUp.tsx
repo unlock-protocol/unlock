@@ -29,11 +29,12 @@ export function SignUp({ state, send, signUp }: Props) {
         throw new Error('Password does not match')
       }
       await signUp({ email: state.context.email, password })
+      setIsSigningUp(false)
       send('CONTINUE')
     } catch (error) {
       if (error instanceof Error) {
         setError(
-          'password',
+          'confirmedPassword',
           {
             type: 'value',
             message: error.message,
@@ -51,7 +52,7 @@ export function SignUp({ state, send, signUp }: Props) {
     <div>
       <main className="p-6 overflow-auto h-64 sm:h-96">
         <div className="space-y-4">
-          <h3 className="font-semibold text-lg">
+          <h3 className="font-bold">
             Oh hey, you are new in town! Got a strong password in mind?
             Let&apos;s set it up, shall we?
           </h3>
@@ -61,6 +62,7 @@ export function SignUp({ state, send, signUp }: Props) {
               type="password"
               placeholder="password"
               required
+              size="small"
               error={errors?.password?.message}
               description="Enter your password"
               {...register('password', {

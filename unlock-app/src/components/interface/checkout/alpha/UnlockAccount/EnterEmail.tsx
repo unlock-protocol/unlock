@@ -27,6 +27,7 @@ export function EnterEmail({ send }: Props) {
         email,
         existingUser,
       })
+      setIsContinuing(false)
       send('CONTINUE')
     } catch (error) {
       if (error instanceof Error) {
@@ -43,13 +44,14 @@ export function EnterEmail({ send }: Props) {
     <div>
       <main className="p-6 overflow-auto h-64 sm:h-96">
         <div className="space-y-4">
-          <h3 className="font-semibold text-lg">
+          <h3 className="font-bold">
             Let&apos;s start with your email address
           </h3>
           <form id="enter-email" onSubmit={handleSubmit(onSubmit)}>
             <Input
-              label="Email"
+              label="Email Address"
               type="email"
+              size="small"
               placeholder="julien@unlock-protocol.com"
               required
               error={errors?.email?.message}
