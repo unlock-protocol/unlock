@@ -7,10 +7,7 @@ export const WedlockServiceContext = React.createContext<
 
 export const useWedlockService = () => {
   const wedlockService = useContext(WedlockServiceContext)
-  if (!wedlockService) {
-    throw new Error('Wedlock service not provided by provider')
-  }
-  return wedlockService
+  return wedlockService!
 }
 
 export default WedlockServiceContext

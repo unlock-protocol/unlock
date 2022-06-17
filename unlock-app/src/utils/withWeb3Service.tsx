@@ -25,8 +25,5 @@ export default function withWeb3Service(Component: any) {
 
 export function useWeb3Service(): Web3Service {
   const web3Service = useContext(Web3ServiceContext)
-  if (!web3Service) {
-    throw new Error('No web3 service provided in the provider')
-  }
-  return web3Service
+  return web3Service!
 }

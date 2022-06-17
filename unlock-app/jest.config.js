@@ -49,7 +49,10 @@ module.exports = {
       statements: 58,
     },
   },
-  moduleNameMapper: pathsToModuleNameMapper({
-    '~/*': ['./src/*'],
-  }),
+  moduleNameMapper: pathsToModuleNameMapper(
+    {
+      '~/*': ['src/*'],
+    },
+    { prefix: '<rootDir>/' }
+  ),
 }
