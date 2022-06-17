@@ -27,7 +27,7 @@ router.delete(
 )
 
 router.get(
-  '/:network/lock/:lockAddress/verifier/:verifierAddress',
+  '/:network/lock/:lockAddress/address/:verifierAddress',
   isVerifierMiddleware,
   (req, res) => verifierController.isVerifierEnabled(req, res)
 )
