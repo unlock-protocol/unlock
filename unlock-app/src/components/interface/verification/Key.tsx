@@ -5,13 +5,13 @@ import {
 } from '@radix-ui/react-avatar'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useStorageService } from '~/utils/withStorageService'
-import { WalletServiceContext } from '~/utils/withWalletService'
 import { useLock } from '../../../hooks/useLock'
 import {
   durationsAsTextFromSeconds,
   expirationAsDate,
 } from '../../../utils/durations'
+import { useStorageService } from '../../../utils/withStorageService'
+import { WalletServiceContext } from '../../../utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { ActionButton } from '../buttons/ActionButton'
 import Loading from '../Loading'
