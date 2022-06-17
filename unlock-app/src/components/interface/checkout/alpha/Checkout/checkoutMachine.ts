@@ -117,7 +117,6 @@ type Payment =
 export interface Mint {
   status: 'ERROR' | 'PROCESSING' | 'FINISHED'
   transactionHash?: string
-  tokenIds?: string[]
 }
 
 interface CheckoutMachineContext {
@@ -384,12 +383,18 @@ export const checkoutMachine = createMachine(
         },
       }),
       confirmMint: assign({
-        mint: (context, { type, ...rest }) => {
-          const result = {
-            ...context.mint,
-            ...rest,
+        mint: (context, { type, status, transactionHash }) => {
+          if (!context.paywallConfig.pessimistic) {
+            return {
+              status: 'FINISHED',
+              transactionHash,
+            } as const
+          } else {
+            return {
+              status,
+              transactionHash,
+            } as const
           }
-          return result
         },
       }),
       solveCaptcha: assign({

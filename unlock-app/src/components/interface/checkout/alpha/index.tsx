@@ -23,6 +23,8 @@ export function CheckoutPage() {
     communication.providerAdapter || selectProvider(config)
 
   const paywallConfig = communication.paywallConfig || paywallConfigFromQuery
+  const checkoutRedirectURI =
+    paywallConfig?.redirectUri || (query.redirectUri as string)
 
   useEffect(() => {
     document.body.querySelector('body')?.classList.add('bg-transparent')
@@ -39,7 +41,6 @@ export function CheckoutPage() {
       </Container>
     )
   }
-
   if (paywallConfig) {
     return (
       <Container>
@@ -47,6 +48,9 @@ export function CheckoutPage() {
           injectedProvider={injectedProvider}
           communication={communication}
           paywallConfig={paywallConfig}
+          redirectURI={
+            checkoutRedirectURI ? new URL(checkoutRedirectURI) : undefined
+          }
         />
       </Container>
     )
