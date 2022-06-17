@@ -696,4 +696,24 @@ export class StorageService extends EventEmitter {
       },
     })
   }
+
+  async getVerifierStatus({
+    viewer,
+    network,
+    lockAddress,
+  }: {
+    viewer: string
+    network: number
+    lockAddress: string
+  }) {
+    const options = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    return await this.getEndpoint(
+      `/v2/api/verifier/${network}/lock/${lockAddress}/address/${viewer}`,
+      options,
+      true
+    )
+  }
 }
