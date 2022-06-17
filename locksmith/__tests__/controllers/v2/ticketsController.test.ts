@@ -119,7 +119,6 @@ describe('sign endpoint', () => {
       lockAddress,
       tokenId
     )
-    expect(keyData.metadata.checkedInAt).not.toBeUndefined()
     expect(keyData.lockAddress).toBe(lockAddress)
     expect(keyData.keyId).toBe(tokenId)
   })
