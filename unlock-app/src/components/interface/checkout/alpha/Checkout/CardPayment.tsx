@@ -56,7 +56,9 @@ export function CardPayment({ send, injectedProvider }: Props) {
     <div>
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <Elements stripe={stripe}>
-          {editCard ? (
+          {isLoading ? (
+            <CardPlaceholder />
+          ) : editCard || !card ? (
             <CardForm
               isSaving={isSaving}
               setIsSaving={setIsSaving}
@@ -66,8 +68,6 @@ export function CardPayment({ send, injectedProvider }: Props) {
                 setEditCard(false)
               }}
             />
-          ) : isLoading || !card ? (
-            <CardPlaceholder />
           ) : (
             <Card onChange={() => setEditCard(true)} {...card} />
           )}
@@ -85,9 +85,9 @@ export function CardPayment({ send, injectedProvider }: Props) {
             send('UNLOCK_ACCOUNT')
           }}
         >
-          {editCard ? (
+          {editCard || !card ? (
             <Button
-              disabled={!card || isSaving}
+              disabled={isSaving || isLoading}
               loading={isSaving}
               type="submit"
               form="card-save"
@@ -98,7 +98,7 @@ export function CardPayment({ send, injectedProvider }: Props) {
           ) : (
             <Button
               className="w-full"
-              disabled={!card}
+              disabled={!card || isLoading}
               onClick={() => {
                 send({
                   type: 'SELECT_CARD_TO_CHARGE',

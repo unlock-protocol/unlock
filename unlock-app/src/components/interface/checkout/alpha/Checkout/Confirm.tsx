@@ -12,6 +12,8 @@ import { useWalletService } from '~/utils/withWalletService'
 import { useState } from 'react'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import useAccount from '~/hooks/useAccount'
+import { loadStripe } from '@stripe/stripe-js'
 
 interface Props {
   injectedProvider: unknown
@@ -21,14 +23,18 @@ interface Props {
 }
 
 export function Confirm({ state, send, injectedProvider }: Props) {
-  const { account, deAuthenticate } = useAuth()
+  const { account, deAuthenticate, network } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
-  const [isConfirming, setIsConfirming] = useState(false)
   const { authenticateWithProvider } = useAuthenticateHandler({
     injectedProvider,
   })
-  const { lock, quantity, recipients } = state.context
+  const { prepareChargeForCard, captureChargeForCard } = useAccount(
+    account!,
+    network!
+  )
+  const [isConfirming, setIsConfirming] = useState(false)
+  const { lock, quantity, recipients, payment } = state.context
   const { isLoading, data: fiatPricing } = useQuery(
     [quantity, lock!.address, lock!.network],
     async () => {
@@ -53,26 +59,97 @@ export function Confirm({ state, send, injectedProvider }: Props) {
     quantity
   )
 
-  const onConfirm = async () => {
+  const onConfirmCard = async () => {
     try {
       setIsConfirming(true)
+      if (payment.method !== 'card') {
+        return
+      }
+      const stripeIntent = await prepareChargeForCard(
+        payment.cardId!,
+        lock!.address,
+        network!,
+        formattedData.formattedKeyPrice,
+        recipients
+      )
+
+      if (stripeIntent?.error) {
+        throw new Error(stripeIntent.error)
+      }
+      if (!stripeIntent?.clientSecret) {
+        throw new Error('Creating payment intent failed')
+      }
+      const stripe = await loadStripe(config.stripeApiKey, {
+        stripeAccount: stripeIntent.stripeAccount,
+      })
+
+      if (!stripe) {
+        throw new Error('There was a problem in loading stripe')
+      }
+
+      const { paymentIntent } = await stripe.retrievePaymentIntent(
+        stripeIntent.clientSecret
+      )
+
+      if (!paymentIntent) {
+        throw new Error('Payment intent is missing. Please retry.')
+      }
+
+      if (paymentIntent.status !== 'requires_capture') {
+        const confirmation = await stripe.confirmCardPayment(
+          stripeIntent.clientSecret
+        )
+        if (
+          confirmation.error ||
+          confirmation.paymentIntent?.status !== 'requires_capture'
+        ) {
+          throw new Error('We could not confirm your payment.')
+        }
+      }
+      const response = await captureChargeForCard(
+        lock!.address,
+        network!,
+        recipients,
+        paymentIntent.id
+      )
+
+      if (response.transactionHash) {
+        send({
+          type: 'CONFIRM_MINT',
+          transactionHash: response.transactionHash,
+          status: 'PROCESSING',
+        })
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        send({
+          type: 'CONFIRM_MINT',
+          status: 'ERROR',
+        })
+        ToastHelper.error(error.message)
+      }
+      setIsConfirming(false)
+    }
+  }
+
+  const onConfirmCrypto = async () => {
+    try {
+      setIsConfirming(true)
+      if (payment.method !== 'crypto') {
+        return
+      }
       const keyPrices: string[] = new Array(recipients!.length).fill(
         lock!.keyPrice
       )
-      const tokenIds = await walletService?.purchaseKeys(
+      await walletService?.purchaseKeys(
         {
           lockAddress: lock!.address,
           keyPrices,
           owners: recipients!,
         },
         (error, hash) => {
-          setIsConfirming(false)
+          setIsConfirming(true)
           if (error) {
-            send({
-              type: 'CONFIRM_MINT',
-              status: 'ERROR',
-              transactionHash: hash!,
-            })
             throw new Error(error.message)
           } else {
             send({
@@ -83,16 +160,59 @@ export function Confirm({ state, send, injectedProvider }: Props) {
           }
         }
       )
-      send({
-        type: 'CONFIRM_MINT',
-        status: 'FINISHED',
-        tokenIds,
-      })
     } catch (error) {
       if (error instanceof Error) {
+        send({
+          type: 'CONFIRM_MINT',
+          status: 'ERROR',
+        })
         ToastHelper.error(error.message)
       }
       setIsConfirming(false)
+    }
+  }
+
+  const Payment = () => {
+    switch (payment.method) {
+      case 'card': {
+        return (
+          <div>
+            <Button
+              className="w-full"
+              loading={isConfirming}
+              disabled={isConfirming}
+              onClick={(event) => {
+                event.stopPropagation()
+                onConfirmCard()
+              }}
+            >
+              {isConfirming
+                ? 'Paying using credit card'
+                : 'Pay using credit card'}
+            </Button>
+          </div>
+        )
+      }
+      case 'crypto': {
+        return (
+          <div>
+            <Button
+              className="w-full"
+              loading={isConfirming}
+              disabled={isConfirming}
+              onClick={(event) => {
+                event.stopPropagation()
+                onConfirmCrypto()
+              }}
+            >
+              {isConfirming ? 'Paying using crypto' : 'Pay using crypto'}
+            </Button>
+          </div>
+        )
+      }
+      default: {
+        return null
+      }
     }
   }
 
@@ -143,6 +263,8 @@ export function Confirm({ state, send, injectedProvider }: Props) {
               href={config.networks[lock!.network].explorer.urls.address(
                 lock!.address
               )}
+              target="_blank"
+              rel="noopener noreferrer"
               className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
             >
               View Contract <Icon icon={ExternalLinkIcon} size="small" />
@@ -167,14 +289,7 @@ export function Confirm({ state, send, injectedProvider }: Props) {
             send('UNLOCK_ACCOUNT')
           }}
         >
-          <Button
-            disabled={isLoading || isConfirming || !account}
-            loading={isConfirming}
-            onClick={onConfirm}
-            className="w-full"
-          >
-            {isConfirming ? 'Confirm the transaction' : 'Confirm'}
-          </Button>
+          <Payment />
         </Connected>
       </footer>
     </div>
