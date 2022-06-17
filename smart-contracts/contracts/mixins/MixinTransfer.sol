@@ -120,7 +120,7 @@ contract MixinTransfer is
   * @notice Requirements:
   * - To prevent the key manager to retain ownership rights on the token after transfer, the 
   * operation will fail if a key manager if set. 
-  * - If the caller is not `from`, it must be approved to move this token by
+  * - If the caller is not the token owner, it must be approved to move this token by
   * either {approve} or {setApprovalForAll}.
   */
   function transferFrom(
@@ -131,14 +131,22 @@ contract MixinTransfer is
     public
   {
     _isValidKey(_tokenId);
-    if( 
-      ( // the sender is not owner or authorized
-        ownerOf(_tokenId) != msg.sender
-        && approved[_tokenId] != msg.sender
-        && !isApprovedForAll(_ownerOf[_tokenId], msg.sender)
-      )
-      || // a key manager is set
-      keyManagerOf[_tokenId] != address(0)
+    
+    // the specified address does not own the token
+    if (ownerOf(_tokenId) != _from) {
+      revert UNAUTHORIZED();
+    }
+
+    // a key manager is set
+    if (keyManagerOf[_tokenId] != address(0)) {
+      revert UNAUTHORIZED();
+    }
+
+    // the sender is not owner or authorized
+    if(
+      ownerOf(_tokenId) != msg.sender
+      && approved[_tokenId] != msg.sender
+      && !isApprovedForAll(_ownerOf[_tokenId], msg.sender)
     ) {
       revert UNAUTHORIZED();
     }
