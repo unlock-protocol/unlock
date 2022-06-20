@@ -30,5 +30,7 @@ export const generateQrCode = async ({
   qrcode.setErrorCorrectionLevel(ErrorCorrectionLevel.L)
   qrcode.write(generateQrCodeUrl(payload, signature))
   qrcode.make()
+
+  // this will return a base64 image
   return qrcode.toDataURL(5)
 }
