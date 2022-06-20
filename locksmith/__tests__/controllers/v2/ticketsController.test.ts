@@ -24,6 +24,13 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
+jest.mock('../../../src/operations/wedlocksOperations', () => {
+  return {
+    notifyNewKeyToWedlocks: (key: string, networkId?: number) =>
+      tokenId === key && network === networkId,
+  }
+})
+
 describe('sign endpoint', () => {
   it('returns an error when authentication is missing', async () => {
     expect.assertions(1)
