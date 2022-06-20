@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { pageTitle } from '../../constants'
 import LocksContext from '../../contexts/LocksContext'
 import Account from '../interface/Account'
@@ -8,7 +8,7 @@ import Layout from '../interface/Layout'
 import Loading from '../interface/Loading'
 import VerificationStatus from '../interface/VerificationStatus'
 
-export const VerificationContent = () => {
+export const VerificationContent: React.FC<unknown> = () => {
   const { query } = useRouter()
   const [locks, setLocks] = useState({})
   let data
