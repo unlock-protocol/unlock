@@ -120,10 +120,15 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
       ]
     }
     // Lock address to find the specific template
-    await sendEmail(`keyMined${key.lock.address}`, 'keyMined', recipient, {
-      lockName: key.lock.name,
-      keychainUrl: 'https://app.unlock-protocol.com/keychain',
-      attachments,
-    })
+    await sendEmail(
+      `keyMined${key.lock.address}`,
+      'keyMined',
+      recipient,
+      {
+        lockName: key.lock.name,
+        keychainUrl: 'https://app.unlock-protocol.com/keychain',
+      },
+      attachments
+    )
   }
 }
