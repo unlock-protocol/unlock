@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import Dispatcher from '../../fulfillment/dispatcher'
 import * as metadataOperations from '../../operations/metadataOperations'
+import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
 
 export class TicketsController {
@@ -61,6 +62,18 @@ export class TicketsController {
       }
     } else {
       return response.sendStatus(202)
+    }
+  }
+
+  async sendEmail(request: Request, response: Response) {
+    try {
+      const network = Number(request.params.network)
+      const id = request.params.keyId.toLowerCase()
+
+      await notifyNewKeyToWedlocks(id, network)
+      return response.sendStatus(200)
+    } catch (err) {
+      return response.sendStatus(500)
     }
   }
 }
