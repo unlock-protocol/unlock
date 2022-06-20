@@ -35,7 +35,7 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
   const [loading, setLoading] = useState(true)
   const { account: viewer } = useContext(AuthenticationContext)
   const [keyGranter, setKeyGranter] = useState('')
-  const storage = useStorageService()
+  const storageService = useStorageService()
   const { getKeyForAccount, getLock } = useLock(
     {
       address: lockAddress,
@@ -47,7 +47,7 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
     const onLoad = async () => {
       setUnlockKey(await getKeyForAccount(account))
       setLock(await getLock({ pricing: false }))
-      setKeyGranter(await storage.getKeyGranter(network))
+      setKeyGranter(await storageService.getKeyGranter(network))
       setLoading(false)
     }
 
