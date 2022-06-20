@@ -2,8 +2,6 @@ const { ethers } = require('hardhat')
 
 const unlockContract = artifacts.require('Unlock')
 const PublicLock = artifacts.require('PublicLock')
-const { utils } = require('hardlydifficult-ethereum-contracts')
-const truffleAssert = require('../helpers/errors')
 const getContractInstance = require('../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
@@ -76,49 +74,6 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
             currentVersion.toNumber() + 1
           )
           assert.equal(tx.logs[0].event, 'LockUpgraded')
-        })
-
-        // eslint-disable-next-line jest/no-disabled-tests
-        it.skip('Matches the JS calculated address', async () => {
-          const address = await utils.create2.buildClone2Address(
-            unlock.address,
-            templateAddress,
-            accounts[0] + salt.replace('0x', '')
-          )
-          assert.equal(address, lock.address)
-        })
-
-        // eslint-disable-next-line jest/no-disabled-tests
-        it.skip('Should fail if a salt is re-used', async () => {
-          await truffleAssert.reverts(
-            unlock.createLock(
-              60 * 60 * 24 * 30, // expirationDuration: 30 days
-              ADDRESS_ZERO,
-              web3.utils.toWei('1', 'ether'), // keyPrice: in wei
-              100, // maxNumberOfKeys
-              'Test Lock',
-              salt,
-              {
-                from: accounts[0],
-              }
-            ),
-            'PROXY_DEPLOY_FAILED'
-          )
-        })
-
-        // eslint-disable-next-line jest/no-disabled-tests
-        it.skip('Can use the same salt if the account is different', async () => {
-          await unlock.createLock(
-            60 * 60 * 24 * 30, // expirationDuration: 30 days
-            ADDRESS_ZERO,
-            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
-            100, // maxNumberOfKeys
-            'Test Lock',
-            salt,
-            {
-              from: accounts[1],
-            }
-          )
         })
       })
     }
