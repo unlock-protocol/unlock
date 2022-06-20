@@ -69,7 +69,6 @@ export function Minting({ injectedProvider, send, onClose, state }: Props) {
           send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
-            transactionHash: mint.transactionHash!,
           })
         }
       } catch (error) {
