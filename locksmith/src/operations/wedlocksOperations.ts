@@ -61,7 +61,10 @@ export const sendEmail = async (
  * Resolves when all new keys have been processed
  * @param keys
  */
-export const notifyNewKeysToWedlocks = async (keys: any[], network: number) => {
+export const notifyNewKeysToWedlocks = async (
+  keys: any[],
+  network?: number
+) => {
   logger.info('Notifying following keys to wedlock', {
     keys: keys.map((key: any) => [key.lock.address, key.keyId]),
   })
@@ -75,7 +78,7 @@ export const notifyNewKeysToWedlocks = async (keys: any[], network: number) => {
  * and email based on the lock's template if applicable
  * @param key
  */
-export const notifyNewKeyToWedlocks = async (key: any, network: number) => {
+export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
       tokenAddress: Normalizer.ethereumAddress(key.lock.address),
@@ -102,15 +105,20 @@ export const notifyNewKeyToWedlocks = async (key: any, network: number) => {
       keyId: key.keyId,
     })
 
-    const attachments = [
-      {
-        path: generateQrCode({
-          network,
-          lockAddress: key.lock.address,
-          tokenId: key.keyId,
-        }),
-      },
-    ]
+    let attachments: Attachment[] = []
+    if (network) {
+      const qrCode = await generateQrCode({
+        network,
+        lockAddress: key.lock.address,
+        tokenId: key.keyId,
+      })
+      attachments = [
+        ...attachments,
+        {
+          path: qrCode,
+        },
+      ]
+    }
     // Lock address to find the specific template
     await sendEmail(`keyMined${key.lock.address}`, 'keyMined', recipient, {
       lockName: key.lock.name,
