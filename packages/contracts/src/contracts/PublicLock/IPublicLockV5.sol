@@ -146,7 +146,6 @@ contract IERC721Enumerable is Initializable, IERC721 {
 
 /**
 * @title The PublicLock Interface
-* @author Nick Furfaro (unlock-protocol.com)
  */
 
 contract IPublicLockV5 is IERC721Enumerable {

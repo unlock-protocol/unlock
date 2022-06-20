@@ -32,32 +32,20 @@ contract('Permissions / isKeyManager', (accounts) => {
     let isKeyManager
 
     it('should return true if address is the KM', async () => {
-      isKeyManager = await keyManagerMock.isKeyManager.call(
-        tokenId,
-        accounts[1],
-        {
-          from: accounts[1],
-        }
-      )
+      isKeyManager = await keyManagerMock.isKeyManager(tokenId, accounts[1], {
+        from: accounts[1],
+      })
       assert.equal(isKeyManager, true)
       // it shouldn't matter who is calling
-      isKeyManager = await keyManagerMock.isKeyManager.call(
-        tokenId,
-        accounts[1],
-        {
-          from: accounts[5],
-        }
-      )
+      isKeyManager = await keyManagerMock.isKeyManager(tokenId, accounts[1], {
+        from: accounts[5],
+      })
       assert.equal(isKeyManager, true)
     })
     it('should return false if address is not the KM', async () => {
-      isKeyManager = await keyManagerMock.isKeyManager.call(
-        tokenId,
-        accounts[9],
-        {
-          from: accounts[1],
-        }
-      )
+      isKeyManager = await keyManagerMock.isKeyManager(tokenId, accounts[9], {
+        from: accounts[1],
+      })
       assert.equal(isKeyManager, false)
     })
   })

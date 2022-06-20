@@ -1,6 +1,5 @@
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
-const BigNumber = require('bignumber.js')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
@@ -81,14 +80,14 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
     assert.equal(args.time, expirationTs)
   })
 
-  it('pass correctly operator when different from key owner', async () => {
+  it('not fired when a key manager is set', async () => {
     await lock.setKeyManagerOf(tokenId, accounts[6], { from: keyOwner })
-    await lock.transferFrom(keyOwner, accounts[3], tokenId, {
-      from: accounts[6],
-    })
-    const args = (await testEventHooks.getPastEvents('OnKeyTransfer'))[0]
-      .returnValues
-    assert.equal(args.operator, accounts[6])
+    await reverts(
+      lock.transferFrom(keyOwner, accounts[3], tokenId, {
+        from: accounts[6],
+      }),
+      'UNAUTHORIZED'
+    )
   })
 
   it('cannot set the hook to a non-contract address', async () => {
