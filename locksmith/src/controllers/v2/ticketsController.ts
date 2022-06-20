@@ -4,7 +4,7 @@ import * as metadataOperations from '../../operations/metadataOperations'
 import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-
+import logger from '../../logger'
 export class TicketsController {
   public web3Service: Web3Service
   constructor({ web3Service }: { web3Service: Web3Service }) {
@@ -94,6 +94,7 @@ export class TicketsController {
       )
       return response.sendStatus(200)
     } catch (err) {
+      logger.error(err.message)
       return response.sendStatus(500)
     }
   }
