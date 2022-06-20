@@ -56,7 +56,7 @@ export function Minting({ injectedProvider, send, onClose, state }: Props) {
   useEffect(() => {
     async function waitForConfirmation() {
       try {
-        if (!mint?.transactionHash && mint?.status !== 'PROCESSING') {
+        if (mint?.status !== 'PROCESSING') {
           return
         }
         const network = config.networks[lock!.network]

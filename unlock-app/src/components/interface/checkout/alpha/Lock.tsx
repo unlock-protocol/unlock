@@ -60,7 +60,7 @@ export function Lock({
       type="button"
       disabled={!!disabled || isLoading || formattedData?.isSoldOut}
       onClick={(event) => {
-        event.stopPropagation()
+        event.preventDefault()
         onSelect(lock)
       }}
       className={Lock}

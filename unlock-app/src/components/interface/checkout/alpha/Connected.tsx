@@ -75,7 +75,7 @@ export function SignedOut({
         <h4 className="text-sm"> Don&apos;t have a crypto wallet? </h4>
         <Button
           onClick={(event) => {
-            event.stopPropagation()
+            event.preventDefault()
             onUnlockAccount()
           }}
           size="small"

@@ -112,7 +112,7 @@ export function Quantity({ state, send, injectedProvider }: Props) {
           <div>
             <input
               onChange={(event) => {
-                event.stopPropagation()
+                event.preventDefault()
                 const count = event.target.value.replace(/\D/, '')
                 setQuantityInput(count)
               }}
@@ -153,7 +153,7 @@ export function Quantity({ state, send, injectedProvider }: Props) {
                   className="w-full"
                   disabled={quantity < 1 || isLoading || isUnlockAccount}
                   onClick={(event) => {
-                    event.stopPropagation()
+                    event.preventDefault()
                     send({
                       type: 'SELECT_QUANTITY',
                       quantity,
@@ -175,7 +175,7 @@ export function Quantity({ state, send, injectedProvider }: Props) {
                     quantity < 1 || isLoading || !fiatPricing.creditCardEnabled
                   }
                   onClick={(event) => {
-                    event.stopPropagation()
+                    event.preventDefault()
                     send({
                       type: 'SELECT_QUANTITY',
                       quantity,
