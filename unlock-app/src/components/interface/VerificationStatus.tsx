@@ -43,11 +43,16 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
     network
   )
 
+  const getKeyGranter = async () => {
+    if (!storageService) return
+    setKeyGranter(await storageService.getKeyGranter(network))
+  }
+
   useEffect(() => {
     const onLoad = async () => {
       setUnlockKey(await getKeyForAccount(account))
       setLock(await getLock({ pricing: false }))
-      setKeyGranter(await storageService.getKeyGranter(network))
+      getKeyGranter()
       setLoading(false)
     }
 
