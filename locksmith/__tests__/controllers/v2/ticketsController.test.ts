@@ -162,4 +162,40 @@ describe('sign endpoint', () => {
     expect(keyData.metadata.value).toBe('12')
     expect(keyData.KeyMetadata.custom_field).toBe('Random')
   })
+
+  it('does not send email when auhentication is not present', async () => {
+    expect.assertions(1)
+
+    const response = await request(app).post(
+      `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`
+    )
+    expect(response.status).toBe(403)
+  })
+
+  it('does not send email when auhentication is present but the user is not the key owner', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    const response = await request(app)
+      .post(`/v2/api/ticket/${network}/${lockAddress}/${wrongTokenId}/email`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(response.status).toBe(401)
+  })
+
+  it('send email when user is athenticated and is the key owner', async () => {
+    expect.assertions(2)
+
+    const { loginResponse, address } = await loginRandomUser(app)
+    owner = address
+    expect(loginResponse.status).toBe(200)
+
+    const response = await request(app)
+      .post(`/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(response.status).toBe(200)
+  })
 })

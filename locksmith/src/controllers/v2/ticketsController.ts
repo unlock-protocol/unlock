@@ -68,9 +68,9 @@ export class TicketsController {
   async sendEmail(request: Request, response: Response) {
     try {
       const network = Number(request.params.network)
-      const id = request.params.keyId.toLowerCase()
+      const tokenId = request.params.tokenId.toLowerCase()
 
-      await notifyNewKeyToWedlocks(id, network)
+      await notifyNewKeyToWedlocks(tokenId, network)
       return response.sendStatus(200)
     } catch (err) {
       return response.sendStatus(500)

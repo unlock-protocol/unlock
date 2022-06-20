@@ -26,7 +26,7 @@ router.put(
 )
 
 router.post(
-  ':/network/:lockAddress/:tokenId/email',
+  '/:network/:lockAddress/:tokenId/email',
   authenticatedMiddleware,
   keyOwnerMiddleware,
   lockManagerMiddleware,
