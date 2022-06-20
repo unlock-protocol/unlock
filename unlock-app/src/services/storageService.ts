@@ -3,7 +3,6 @@ import axios from 'axios'
 import { EventEmitter } from 'events'
 import { decodeToken } from 'react-jwt'
 import { generateNonce } from 'siwe'
-import { ToastHelper } from '../components/helpers/toast.helper'
 import { Lock } from '../unlockTypes'
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
@@ -717,7 +716,6 @@ export class StorageService extends EventEmitter {
       true
     ).then((res: any) => {
       if (res.message) {
-        ToastHelper.error(res.message)
         return false
       } else {
         return res?.enabled ?? false
