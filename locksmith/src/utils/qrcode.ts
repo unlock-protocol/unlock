@@ -1,9 +1,34 @@
 import { Encoder, ErrorCorrectionLevel } from '@nuintun/qrcode'
+import Dispatcher from '../fulfillment/dispatcher'
 
-export const generateQrCode = (content: string) => {
+interface GenerateQrCodeProps {
+  network: number
+  lockAddress: string
+  tokenId: string
+}
+
+const generateQrCodeUrl = (data: any, signature: any): string => {
+  const url = new URL(`${window.location.origin}/verification`)
+  url.searchParams.append('data', data)
+  url.searchParams.append('sig', signature)
+
+  return url.toString()
+}
+
+export const generateQrCode = async ({
+  network,
+  lockAddress,
+  tokenId,
+}: GenerateQrCodeProps) => {
+  const dispatcher = new Dispatcher()
+  const [payload, signature] = await dispatcher.signToken(
+    network,
+    lockAddress,
+    tokenId
+  )
   const qrcode = new Encoder()
   qrcode.setErrorCorrectionLevel(ErrorCorrectionLevel.L)
-  qrcode.write(content)
+  qrcode.write(generateQrCodeUrl(payload, signature))
   qrcode.make()
   return qrcode.toDataURL(5)
 }
