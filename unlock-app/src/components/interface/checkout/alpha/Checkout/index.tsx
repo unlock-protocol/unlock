@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { PaywallConfig } from '~/unlockTypes'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine, CheckoutPage } from './checkoutMachine'
@@ -18,9 +18,15 @@ interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
   communication: ReturnType<typeof useCheckoutCommunication>
+  redirectURI?: URL
 }
 
-export function Checkout({ paywallConfig, injectedProvider }: Props) {
+export function Checkout({
+  paywallConfig,
+  injectedProvider,
+  communication,
+  redirectURI,
+}: Props) {
   const [state, send] = useMachine(checkoutMachine, {
     context: {
       paywallConfig,
@@ -31,9 +37,39 @@ export function Checkout({ paywallConfig, injectedProvider }: Props) {
     paywallConfig,
     state.value as CheckoutPage
   )
+  const { messageToSign, mint, lock } = state.context
 
-  const onClose = () => {
-    // TODO
+  useEffect(() => {
+    const isMintingFinished =
+      mint && mint.transactionHash && mint.status === 'FINISHED'
+    if (isMintingFinished && communication) {
+      communication.emitTransactionInfo({
+        hash: mint!.transactionHash!,
+        lock: lock!.address,
+      })
+    }
+  }, [mint, communication, lock])
+
+  const onClose = (params: Record<string, string> = {}) => {
+    communication.emitCloseModal()
+    if (redirectURI) {
+      if (!mint || mint?.status === 'ERROR') {
+        redirectURI.searchParams.append('error', 'access-denied')
+      }
+      if (messageToSign) {
+        redirectURI.searchParams.append('signature', messageToSign.signature)
+        redirectURI.searchParams.append('address', messageToSign.address)
+      }
+      if (params) {
+        for (const [key, value] of Object.entries(params)) {
+          redirectURI.searchParams.append(key, value)
+        }
+      }
+      return window.location.assign(redirectURI)
+    }
+    if (!communication.insideIframe) {
+      return window.history.back()
+    }
   }
 
   function Content() {
