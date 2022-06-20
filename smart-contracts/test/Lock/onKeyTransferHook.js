@@ -1,6 +1,5 @@
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
-const BigNumber = require('bignumber.js')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')

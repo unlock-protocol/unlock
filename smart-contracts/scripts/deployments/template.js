@@ -1,4 +1,3 @@
-const fs = require('fs-extra')
 const { ethers, run } = require('hardhat')
 const { addDeployment } = require('../../helpers/deployments')
 const { getNetworkName } = require('../../helpers/network')

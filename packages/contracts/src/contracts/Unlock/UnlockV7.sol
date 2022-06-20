@@ -361,7 +361,6 @@ pragma solidity 0.5.17;
 
 /**
 * @title The PublicLock Interface
-* @author Nick Furfaro (unlock-protocol.com)
  */
 
 
@@ -851,7 +850,6 @@ pragma solidity 0.5.17;
 
 /**
  * @title The Unlock Interface
- * @author Nick Furfaro (unlock-protocol.com)
 **/
 
 interface IUnlock

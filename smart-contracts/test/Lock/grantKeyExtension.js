@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
-const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -10,8 +10,6 @@ let unlock
 let lock
 let locks
 let tx
-
-const { HARDHAT_VM_ERROR } = errorMessages
 
 contract('Lock / grantKeyExtension', (accounts) => {
   const lockCreator = accounts[1]
