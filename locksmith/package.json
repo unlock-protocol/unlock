@@ -36,6 +36,7 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
+    "@nuintun/qrcode": "^3.3.0",
     "@sentry/node": "7.0.0",
     "@sentry/tracing": "7.0.0",
     "@types/random-words": "1.1.2",

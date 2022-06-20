@@ -8369,6 +8369,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nuintun/qrcode@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "@nuintun/qrcode@npm:3.3.0"
+  dependencies:
+    tslib: ^2.4.0
+  checksum: 9b89b5d1f48f57abdee39093518a9ccec3c5eecca13e4ad79354ccdba9bcef2da6597cf395d77a20c01b7ba08c716205fcfe63a2e37066957d5ea71537d7776c
+  languageName: node
+  linkType: hard
+
 "@open-draft/until@npm:^1.0.3":
   version: 1.0.3
   resolution: "@open-draft/until@npm:1.0.3"
@@ -15088,6 +15097,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/locksmith@workspace:locksmith"
   dependencies:
+    "@nuintun/qrcode": ^3.3.0
     "@sentry/node": 7.0.0
     "@sentry/tracing": 7.0.0
     "@types/cookie-parser": 1.4.3
@@ -49600,6 +49610,13 @@ resolve@^2.0.0-next.3:
   version: 2.3.1
   resolution: "tslib@npm:2.3.1"
   checksum: de17a98d4614481f7fcb5cd53ffc1aaf8654313be0291e1bfaee4b4bb31a20494b7d218ff2e15017883e8ea9626599b3b0e0229c18383ba9dce89da2adf15cb9
+  languageName: node
+  linkType: hard
+
+"tslib@npm:^2.4.0":
+  version: 2.4.0
+  resolution: "tslib@npm:2.4.0"
+  checksum: 8c4aa6a3c5a754bf76aefc38026134180c053b7bd2f81338cb5e5ebf96fefa0f417bff221592bf801077f5bf990562f6264fecbc42cd3309b33872cb6fc3b113
   languageName: node
   linkType: hard
 
