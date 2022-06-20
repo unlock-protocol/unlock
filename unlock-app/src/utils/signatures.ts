@@ -5,18 +5,22 @@ import * as sigUtil from 'eth-sig-util'
  * @param sig
  * @param data
  * @param address
+ * @param keyGranter
  */
 export const isSignatureValidForAddress = (
   sig: string,
   data: string,
-  address: string
+  address: string,
+  keyGranter?: string
 ) => {
   try {
+    const personalSignature = sigUtil.recoverPersonalSignature({
+      data,
+      sig,
+    })
     return (
-      sigUtil.recoverPersonalSignature({
-        data,
-        sig,
-      }) === address.toLowerCase()
+      personalSignature === address.toLocaleLowerCase() ||
+      personalSignature === keyGranter
     )
   } catch (error) {
     console.error(error)

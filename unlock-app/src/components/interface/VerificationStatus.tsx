@@ -8,6 +8,7 @@ import Loading from './Loading'
 import { ValidKey, InvalidKey } from './verification/Key'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import LoginPrompt from './LoginPrompt'
+import { useStorageService } from '../../utils/withStorageService'
 
 interface VerificationData {
   account: string
@@ -33,6 +34,8 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
   const [unlockKey, setUnlockKey] = useState(null)
   const [loading, setLoading] = useState(true)
   const { account: viewer } = useContext(AuthenticationContext)
+  const [keyGranter, setKeyGranter] = useState('')
+  const storage = useStorageService()
   const { getKeyForAccount, getLock } = useLock(
     {
       address: lockAddress,
@@ -44,6 +47,7 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
     const onLoad = async () => {
       setUnlockKey(await getKeyForAccount(account))
       setLock(await getLock({ pricing: false }))
+      setKeyGranter(await storage.getKeyGranter(network))
       setLoading(false)
     }
 
@@ -55,7 +59,7 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
   }
 
   // If the signature is not valid
-  if (!isSignatureValidForAddress(sig, hexData, account)) {
+  if (!isSignatureValidForAddress(sig, hexData, account, keyGranter)) {
     return <InvalidKey reason="Signature does not match!" />
   }
 
