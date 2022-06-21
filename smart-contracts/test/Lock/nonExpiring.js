@@ -86,7 +86,7 @@ contract('Lock / non expiring', (accounts) => {
     describe('cancelAndRefund', () => {
       it('should transfer entire price back', async () => {
         // make sure the refund actually happened
-        const initialLockBalance = getBalance(lock.address)
+        const initialLockBalance = await getBalance(lock.address)
         const initialKeyOwnerBalance = await getBalance(keyOwner)
 
         // refund
@@ -117,8 +117,8 @@ contract('Lock / non expiring', (accounts) => {
         const finalLockBalance = await getBalance(lock.address)
 
         assert(
-          finalLockBalance.toFixed(),
-          initialLockBalance.minus(refund).toFixed()
+          finalLockBalance.toString(),
+          initialLockBalance.minus(refund).toString()
         )
       })
     })

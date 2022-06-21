@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { reverts, ADDRESS_ZERO } = require('../helpers/errors')
+const { reverts, ADDRESS_ZERO } = require('../helpers')
 
 const deployLocks = require('../helpers/deployLocks')
 

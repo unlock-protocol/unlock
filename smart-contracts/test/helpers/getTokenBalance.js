@@ -7,10 +7,12 @@ const Erc20Token = artifacts.require(
 )
 
 module.exports = async function getTokenBalance(account, tokenAddress) {
-  if (tokenAddress === ADDRESS_ZERO) {
-    return new BigNumber(await ethers.provider.getBalance(account))
+  if (!tokenAddress || tokenAddress === ADDRESS_ZERO) {
+    const balanceETH = await ethers.provider.getBalance(account)
+    return new BigNumber(balanceETH.toString())
   }
-  return new BigNumber(
-    await (await Erc20Token.at(tokenAddress)).balanceOf(account)
-  )
+  // erc2
+  const token = await Erc20Token.at(tokenAddress)
+  const balance = await token.balanceOf(account)
+  return new BigNumber(balance.toString())
 }

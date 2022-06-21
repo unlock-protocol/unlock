@@ -14,7 +14,9 @@ let unlock
 let locks
 let testToken
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const tip = new BigNumber(keyPrice).plus(ethers.utils.parseUnits('1', 'ether'))
+const tip = new BigNumber(keyPrice.toString()).plus(
+  ethers.utils.parseUnits('1', 'ether').toString()
+)
 
 contract('Lock / purchaseTip', (accounts) => {
   scenarios.forEach((isErc20, i) => {

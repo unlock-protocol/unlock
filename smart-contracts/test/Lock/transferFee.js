@@ -31,7 +31,7 @@ contract('Lock / transferFee', (accounts) => {
       [ADDRESS_ZERO],
       [[]],
       {
-        value: keyPrice.toFixed(),
+        value: keyPrice,
       }
     )
 
@@ -74,7 +74,7 @@ contract('Lock / transferFee', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: keyPrice.toFixed(),
+          value: keyPrice,
         }
       )
       const { timestamp: nowAfter } = await ethers.provider.getBlock('latest')

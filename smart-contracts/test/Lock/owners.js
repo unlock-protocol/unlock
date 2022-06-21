@@ -30,7 +30,7 @@ contract('Lock / owners', (accounts) => {
       keyOwners.map(() => ADDRESS_ZERO),
       keyOwners.map(() => []),
       {
-        value: (lock.params.keyPrice * keyOwners.length).toFixed(),
+        value: (await lock.keyPrice()) * keyOwners.length,
         from: accounts[0],
       }
     )
@@ -131,7 +131,7 @@ contract('Lock / owners', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: lock.params.keyPrice.toFixed(),
+          value: lock.params.keyPrice.toString(),
           from: keyOwners[3],
         }
       )

@@ -64,7 +64,7 @@ contract('Lock / expireAndRefundFor', (accounts) => {
 
     it('the amount of refund should be the key price', async () => {
       const refund = new BigNumber(txObj.logs[0].args.refund)
-      assert.equal(refund.toFixed(), keyPrice.toFixed())
+      assert.equal(refund.toString(), keyPrice.toString())
     })
 
     it('should make the key no longer valid (i.e. expired)', async () => {
@@ -79,13 +79,13 @@ contract('Lock / expireAndRefundFor', (accounts) => {
       const txFee = gasPrice.times(gasUsed)
       const finalOwnerBalance = await getBalance(keyOwners[0])
       assert(
-        finalOwnerBalance.toFixed(),
-        initialKeyOwnerBalance.plus(keyPrice).minus(txFee).toFixed()
+        finalOwnerBalance.toString(),
+        initialKeyOwnerBalance.plus(keyPrice).minus(txFee).toString()
       )
     })
 
     it("should increase the lock's balance by the keyPrice", async () => {
-      const finalLockBalance = await getBalance(lock.address).minus(
+      const finalLockBalance = (await getBalance(lock.address)).minus(
         initialLockBalance
       )
 

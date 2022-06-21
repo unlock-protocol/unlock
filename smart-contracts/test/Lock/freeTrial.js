@@ -2,8 +2,7 @@ const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const { getBalance } = require('../helpers')
+const { getBalance, ADDRESS_ZERO } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -28,7 +27,7 @@ contract('Lock / freeTrial', (accounts) => {
       keyOwners.map(() => ADDRESS_ZERO),
       keyOwners.map(() => []),
       {
-        value: (keyPrice * keyOwners.length).toFixed(),
+        value: keyPrice.mul(keyOwners.length),
         from: keyOwners[1],
       }
     )
@@ -40,7 +39,7 @@ contract('Lock / freeTrial', (accounts) => {
 
   it('No free trial by default', async () => {
     const freeTrialLength = new BigNumber(await lock.freeTrialLength())
-    assert.equal(freeTrialLength.toFixed(), 0)
+    assert.equal(freeTrialLength.toNumber(), 0)
   })
 
   describe('with a free trial defined', () => {
@@ -62,7 +61,7 @@ contract('Lock / freeTrial', (accounts) => {
         const refundAmount = initialLockBalance.minus(
           await getBalance(lock.address)
         )
-        assert.equal(refundAmount.toFixed(), keyPrice.toFixed())
+        assert.equal(refundAmount.toString(), keyPrice.toString())
       })
     })
 
@@ -78,8 +77,8 @@ contract('Lock / freeTrial', (accounts) => {
         const refundAmount = initialLockBalance.minus(
           await getBalance(lock.address)
         )
-        assert.notEqual(refundAmount.toFixed(), keyPrice.toFixed())
-        assert(refundAmount.lt(keyPrice))
+        assert.notEqual(refundAmount.toString(), keyPrice.toString())
+        assert(refundAmount.lt(keyPrice.toString()))
       })
     })
   })

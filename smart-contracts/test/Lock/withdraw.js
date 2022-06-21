@@ -55,13 +55,12 @@ contract('Lock / withdraw', (accounts) => {
 
     it("should increase the owner's balance with the funds from the lock", async () => {
       const balance = await getBalance(owner)
-      const txHash = await ethers.provider.getTransaction(tx.tx)
+      const { gasPrice } = await ethers.provider.getTransaction(tx.tx)
       const gasUsed = new BigNumber(tx.receipt.gasUsed)
-      const gasPrice = new BigNumber(txHash.gasPrice)
-      const txFee = gasPrice.times(gasUsed)
+      const txFee = gasUsed.times(gasPrice.toString())
       assert.equal(
         balance.toString(),
-        ownerBalance.plus(contractBalance).minus(txFee).toString()
+        ownerBalance.plus(contractBalance.toString()).minus(txFee).toString()
       )
     })
 
@@ -92,20 +91,19 @@ contract('Lock / withdraw', (accounts) => {
 
     it("should reduce the lock's balance by 42", async () => {
       assert.equal(
-        await getBalance(lock.address).toString(),
+        (await getBalance(lock.address)).toString(),
         contractBalance.minus(42).toString()
       )
     })
 
     it("should increase the owner's balance by 42", async () => {
       const balance = await getBalance(owner)
-      const txHash = await ethers.provider.getTransaction(tx.tx)
+      const { gasPrice } = await ethers.provider.getTransaction(tx.tx)
       const gasUsed = new BigNumber(tx.receipt.gasUsed)
-      const gasPrice = new BigNumber(txHash.gasPrice)
-      const txFee = gasPrice.times(gasUsed)
+      const txFee = gasUsed.times(gasPrice.toString())
       assert.equal(
         balance.toString(),
-        ownerBalance.plus(42).minus(txFee).toString()
+        ownerBalance.plus(42).minus(txFee.toString()).toString()
       )
     })
 

@@ -32,7 +32,7 @@ contract('Lock / disableTransfers', (accounts) => {
       [ADDRESS_ZERO],
       [[]],
       {
-        value: keyPrice.toFixed(),
+        value: keyPrice,
         from: keyOwner,
       }
     )

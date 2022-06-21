@@ -161,10 +161,10 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       // create lock
       const args = [
-        Locks.FIRST.expirationDuration.toFixed(),
+        Locks.FIRST.expirationDuration,
         ADDRESS_ZERO,
-        Locks.FIRST.keyPrice.toFixed(),
-        Locks.FIRST.maxNumberOfKeys.toFixed(),
+        Locks.FIRST.keyPrice,
+        Locks.FIRST.maxNumberOfKeys,
         Locks.FIRST.lockName,
       ]
       const calldata = await createLockHash({ args, from: lockOwner.address })
