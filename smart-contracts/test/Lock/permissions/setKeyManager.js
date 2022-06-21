@@ -30,7 +30,7 @@ contract('Permissions / KeyManager', (accounts) => {
       [ADDRESS_ZERO],
       [[]],
       {
-        value: keyPrice.toFixed(),
+        value: keyPrice,
         from: accounts[1],
       }
     )

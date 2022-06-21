@@ -14,10 +14,8 @@ contract('Permissions / isKeyManager', (accounts) => {
   before(async () => {
     // init template
     keyManagerMock = await KeyManagerMock.new()
-
-    const timestampBefore = new BigNumber(
-      await ethers.provider.getBlock('latest').timestamp
-    ).plus(expirationDuration)
+    const { timestamp } = await ethers.provider.getBlock('latest')
+    const timestampBefore = new BigNumber(timestamp).plus(expirationDuration)
 
     const tx = await keyManagerMock.createNewKey(
       keyOwner,

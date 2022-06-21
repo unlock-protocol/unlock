@@ -139,7 +139,7 @@ contract('Lock / GasRefund', (accounts) => {
             : userBalanceBefore
                 // buy a key, get a refund
                 .minus(refund)
-                .minus(gas) // pay for the gas
+                .minus(gas.toString()) // pay for the gas
 
           assert.equal(userBalanceAfter.toString(), expected.toString())
         })
@@ -218,7 +218,7 @@ contract('Lock / GasRefund', (accounts) => {
             : userBalanceBefore
                 // buy a key, get a refund
                 .minus(refund)
-                .minus(gas) // pay for the gas
+                .minus(gas.toString()) // pay for the gas
 
           assert.equal(userBalanceAfter.toString(), expected.toString())
         })
@@ -293,7 +293,7 @@ contract('Lock / GasRefund', (accounts) => {
               : userBalanceBefore
                   // buy a key, get a refund
                   .minus(refund)
-                  .minus(gas) // pay for the gas
+                  .minus(gas.toString()) // pay for the gas
 
             assert.equal(userBalanceAfter.toString(), expected.toString())
           })
@@ -340,7 +340,7 @@ contract('Lock / GasRefund', (accounts) => {
             ? userBalanceBefore.minus(keyPrice) // buy a key
             : userBalanceBefore
                 .minus(keyPrice) // buy a key
-                .minus(gas) // pay for the gas
+                .minus(gas.toString()) // pay for the gas
 
           assert.equal(userBalanceAfter.toString(), expected.toString())
         })
