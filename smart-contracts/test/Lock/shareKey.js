@@ -2,7 +2,7 @@ const BigNumber = require('bignumber.js')
 
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO, purchaseKeys } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -22,28 +22,13 @@ contract('Lock / shareKey', (accounts) => {
   const accountWithNoKey2 = accounts[5]
   const accountWithNoKey3 = accounts[6]
   const approvedAddress = accounts[7]
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
 
   beforeEach(async () => {
     unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
-    const tx = await lock.purchase(
-      [],
-      keyOwners,
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => []),
-      {
-        value: (keyPrice * keyOwners.length).toFixed(),
-        from: keyOwners[0],
-      }
-    )
-
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   describe('failing to share a key', () => {
@@ -85,19 +70,7 @@ contract('Lock / shareKey', (accounts) => {
       })
 
       it('should revert if keys are sold out', async () => {
-        const buyers = accounts.slice(3, 10)
-        await lock.purchase(
-          [],
-          buyers,
-          buyers.map(() => ADDRESS_ZERO),
-          buyers.map(() => ADDRESS_ZERO),
-          buyers.map(() => []),
-          {
-            value: (keyPrice * buyers.length).toFixed(),
-            from: keyOwners[0],
-          }
-        )
-
+        await purchaseKeys(lock, 7)
         await reverts(
           lock.shareKey(keyOwners[0], tokenIds[0], 1000, {
             from: keyOwners[0],

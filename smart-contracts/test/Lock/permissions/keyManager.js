@@ -3,7 +3,7 @@ const BigNumber = require('bignumber.js')
 const { ethers } = require('hardhat')
 const deployLocks = require('../../helpers/deployLocks')
 const getContractInstance = require('../../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { ADDRESS_ZERO, purchaseKeys } = require('../../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 
@@ -35,20 +35,7 @@ contract('Permissions / KeyManager', (accounts) => {
     locks = await deployLocks(unlock, lockCreator)
     lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
-    const tx = await lock.purchase(
-      [],
-      keyOwners,
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => []),
-      {
-        value: (keyPrice * keyOwners.length).toFixed(),
-        from: accounts[0],
-      }
-    )
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   describe('Key Purchases', () => {

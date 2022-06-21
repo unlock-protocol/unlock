@@ -5,7 +5,7 @@ const { deployERC20 } = require('../helpers')
 
 const deployLocks = require('../helpers/deployLocks')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+const { ADDRESS_ZERO, MAX_UINT, purchaseKey } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 
@@ -51,21 +51,7 @@ contract('Lock / extend keys', (accounts) => {
           })
 
           // purchase a key
-          const tx = await lock.purchase(
-            isErc20 ? [keyPrice] : [],
-            [keyOwner],
-            [ADDRESS_ZERO],
-            [ADDRESS_ZERO],
-            [[]],
-            {
-              value: isErc20 ? 0 : keyPrice,
-              from: keyOwner,
-            }
-          )
-          const tokenIds = tx.logs
-            .filter((v) => v.event === 'Transfer')
-            .map(({ args }) => args.tokenId)
-          tokenId = tokenIds[0]
+          ;({ tokenId } = await purchaseKey(lock, keyOwner, isErc20))
         })
 
         it('prevent extend a non-existing key', async () => {
@@ -180,22 +166,13 @@ contract('Lock / extend keys', (accounts) => {
           })
 
           // purchase a key for non-expiring
-          const tx = await nonExpiringLock.purchase(
-            isErc20 ? [keyPrice] : [],
-            [nonExpiringKeyOwner],
-            [ADDRESS_ZERO],
-            [ADDRESS_ZERO],
-            [[]],
-            {
-              value: isErc20 ? 0 : keyPrice,
-              from: nonExpiringKeyOwner,
-            }
-          )
-          const tokenIds = tx.logs
-            .filter((v) => v.event === 'Transfer')
-            .map(({ args }) => args.tokenId)
-          tokenId = tokenIds[0]
+          ;({ tokenId } = await purchaseKey(
+            nonExpiringLock,
+            nonExpiringKeyOwner,
+            isErc20
+          ))
         })
+
         it('reverts when attempting to extend a valid key', async () => {
           await reverts(
             nonExpiringLock.extend(

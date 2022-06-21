@@ -1,10 +1,8 @@
 const BigNumber = require('bignumber.js')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const { tokens } = require('hardlydifficult-ethereum-contracts')
 const { time } = require('@openzeppelin/test-helpers')
 
-const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO, reverts, deployERC20 } = require('../helpers')
 
 const Unlock = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -36,7 +34,7 @@ contract('Lock / setReferrerFee', (accounts) => {
         keyOwner = accounts[1]
         referrer = accounts[5]
 
-        dai = await tokens.dai.deploy(web3, lockOwner)
+        dai = await deployERC20(lockOwner)
         tokenAddress = isErc20 ? dai.address : ADDRESS_ZERO
 
         // Mint some dais for testing
@@ -197,10 +195,9 @@ contract('Lock / setReferrerFee', (accounts) => {
         let balanceBefore
         before(async () => {
           await lock.setReferrerFee(referrer, 2000)
-
           const tx = await lock.purchase(
             isErc20 ? [keyPrice] : [],
-            [accounts[8]],
+            [keyOwner],
             [referrer],
             [ADDRESS_ZERO],
             [[]],

@@ -1,16 +1,14 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('../helpers/errors')
+const { reverts, purchaseKeys } = require('../helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let lock
 let tokenAddress
-const price = web3.utils.toWei('0.01', 'ether')
 
 contract('Lock / withdraw', (accounts) => {
   let owner = accounts[0]
@@ -22,7 +20,7 @@ contract('Lock / withdraw', (accounts) => {
     await lock.setMaxKeysPerAddress(10)
     tokenAddress = await lock.tokenAddress()
 
-    await purchaseKeys(accounts)
+    await purchaseKeys(lock, 2)
   })
 
   it('should only allow the owner to withdraw', async () => {
@@ -79,7 +77,7 @@ contract('Lock / withdraw', (accounts) => {
     let contractBalance
 
     before(async () => {
-      await purchaseKeys(accounts)
+      await purchaseKeys(lock, 2)
 
       ownerBalance = new BigNumber(await web3.eth.getBalance(owner))
       contractBalance = new BigNumber(await web3.eth.getBalance(lock.address))
@@ -129,7 +127,7 @@ contract('Lock / withdraw', (accounts) => {
     let beneficiary = accounts[2]
 
     before(async () => {
-      await purchaseKeys(accounts)
+      await purchaseKeys(lock, 2)
 
       await lock.updateBeneficiary(beneficiary, { from: owner })
     })
@@ -156,17 +154,3 @@ contract('Lock / withdraw', (accounts) => {
     })
   })
 })
-
-async function purchaseKeys(accounts) {
-  await lock.purchase(
-    [],
-    [accounts[1], accounts[2]],
-    [1, 2].map(() => ADDRESS_ZERO),
-    [1, 2].map(() => ADDRESS_ZERO),
-    [1, 2].map(() => []),
-    {
-      value: price * 2,
-      from: accounts[1],
-    }
-  )
-}

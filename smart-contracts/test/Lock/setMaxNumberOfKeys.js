@@ -1,9 +1,13 @@
 const { ethers } = require('hardhat')
-const { expectRevert } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
 const deployContracts = require('../fixtures/deploy')
 const createLockHash = require('../helpers/createLockCalldata')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const {
+  ADDRESS_ZERO,
+  purchaseKey,
+  purchaseKeys,
+  reverts,
+} = require('../helpers')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
@@ -36,94 +40,33 @@ contract('Lock / setMaxNumberOfKeys', () => {
       const [, ...buyers] = await ethers.getSigners()
 
       // buy 10 key
-      const tx = await lock.connect(buyers[0]).purchase(
-        [],
-        buyers.slice(0, 10).map((b) => b.address),
-        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
-        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
-        buyers.slice(0, 10).map(() => []),
-        {
-          value: keyPrice.mul(buyers.length).toString(),
-        }
-      )
-
-      await tx.wait()
+      await purchaseKeys(lock, 10)
 
       // try to buy another key exceding totalSupply
-      await expectRevert(
-        lock
-          .connect(buyers[11])
-          .purchase(
-            [],
-            [buyers[11].address],
-            [ADDRESS_ZERO],
-            [ADDRESS_ZERO],
-            [[]],
-            {
-              value: keyPrice.toString(),
-            }
-          ),
-        'LOCK_SOLD_OUT'
-      )
+      await reverts(purchaseKey(lock, buyers[11].address), 'LOCK_SOLD_OUT')
 
       // increase supply
       await lock.setMaxNumberOfKeys(12)
 
       // actually buy the key
-      const tx2 = await lock
-        .connect(buyers[11])
-        .purchase(
-          [],
-          [buyers[11].address],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          {
-            value: keyPrice.toString(),
-          }
-        )
+      const { to } = await purchaseKey(lock, buyers[11].address)
 
-      //
-      const { events } = await tx2.wait()
-      const transfer = events.find(({ event }) => event === 'Transfer')
-      assert.equal(transfer.args.to, buyers[11].address)
+      assert.equal(to, buyers[11].address)
       assert.equal(await lock.maxNumberOfKeys(), 12)
     })
 
     it('should prevent from setting a value lower than total supply', async () => {
       // buy 10 keys
-      const signers = await ethers.getSigners()
-      const buyers = signers.slice(0, 9)
-      const tx = await lock.connect(buyers[0]).purchase(
-        [],
-        buyers.map((b) => b.address),
-        buyers.map(() => ADDRESS_ZERO),
-        buyers.map(() => ADDRESS_ZERO),
-        buyers.map(() => []),
-        {
-          value: keyPrice.mul(buyers.length).toString(),
-        }
-      )
-      await tx.wait()
+      await purchaseKeys(lock, 10)
 
       // increase supply
-      await expectRevert(lock.setMaxNumberOfKeys(5), 'SMALLER_THAN_SUPPLY')
+      await reverts(lock.setMaxNumberOfKeys(5), 'SMALLER_THAN_SUPPLY')
     })
 
     it('should allow setting a value equal to current total supply', async () => {
       // buy 10 keys
       const [, ...buyers] = await ethers.getSigners()
-      const tx = await lock.connect(buyers[0]).purchase(
-        [],
-        buyers.slice(0, 10).map((b) => b.address),
-        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
-        buyers.slice(0, 10).map(() => ADDRESS_ZERO),
-        buyers.slice(0, 10).map(() => []),
-        {
-          value: keyPrice.mul(buyers.length).toString(),
-        }
-      )
-      await tx.wait()
+      await purchaseKeys(lock, 10)
 
       // set max keys to total supply
       const totalSupply = await lock.totalSupply()
@@ -134,21 +77,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
       )
 
       // try to buy another key exceding totalSupply
-      await expectRevert(
-        lock
-          .connect(buyers[11])
-          .purchase(
-            [keyPrice.toString()],
-            [buyers[11].address],
-            [ADDRESS_ZERO],
-            [ADDRESS_ZERO],
-            [[]],
-            {
-              value: keyPrice.toString(),
-            }
-          ),
-        'LOCK_SOLD_OUT'
-      )
+      await reverts(purchaseKey(lock, buyers[11].address), 'LOCK_SOLD_OUT')
     })
   })
 })

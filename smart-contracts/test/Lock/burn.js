@@ -1,6 +1,6 @@
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO, purchaseKey } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -13,24 +13,15 @@ contract('Lock / burn', (accounts) => {
   let keyOwner = accounts[1]
   let lock
 
-  beforeEach(async () => {
+  before(async () => {
     unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
+    lock.setMaxKeysPerAddress(10)
+  })
 
-    const tx = await lock.purchase(
-      [],
-      [keyOwner],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: web3.utils.toWei('0.01', 'ether'),
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    const { tokenId: newTokenId } = args
-    tokenId = newTokenId
+  beforeEach(async () => {
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   it('should delete ownership record', async () => {
