@@ -130,6 +130,13 @@ contract MixinTransfer is
   )
     public
   {
+    _onlyKeyManagerOrApproved(_tokenId);
+    
+    // revert if keyy manager is set
+    if(keyManagerOf[_tokenId] != address(0)) {
+      revert UNAUTHORIZED();
+    }
+
     _transferFrom(_from, _recipient, _tokenId);
   }
 
@@ -154,13 +161,17 @@ contract MixinTransfer is
     if(msg.sender != keyManagerOf[_tokenId] && msg.sender != ownerOf(_tokenId)) {
       revert UNAUTHORIZED();
     }
-
-    // set owner as key manager if none 
-    if(keyManagerOf[_tokenId] == address(0)) {
-      keyManagerOf[_tokenId] = ownerOf(_tokenId);
-    }
     
+    // store previous owner
+    address previousOwner = ownerOf(_tokenId);
+
+    // transfer key ownership to lender
     _transferFrom(_from, _recipient, _tokenId);
+
+    // set previous owner as key manager (if keys does not already have one KM)
+    if(keyManagerOf[_tokenId] == address(0)) {
+      keyManagerOf[_tokenId] = previousOwner;
+    }
   }
 
   /**
@@ -175,12 +186,10 @@ contract MixinTransfer is
 
     _isValidKey(_tokenId);
 
-    // a key manager is set or incorrect _from field
-    if (keyManagerOf[_tokenId] != address(0) || ownerOf(_tokenId) != _from) {
+    // incorrect _from field
+    if (ownerOf(_tokenId) != _from) {
       revert UNAUTHORIZED();
     }
-
-    _onlyKeyManagerOrApproved(_tokenId);
 
     if(transferFeeBasisPoints >= BASIS_POINTS_DEN) {
       revert KEY_TRANSFERS_DISABLED();
