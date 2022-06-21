@@ -61,20 +61,21 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       )
     })
 
-    it('should only allow approved or owner to transfer', async () => {
-      // testing an id mismatch
+    it('should abort if token owner (from) is incorrect', async () => {
       await reverts(
-        locks.FIRST.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
-          from: keyOwners[5],
-        }),
-        'UNAUTHORIZED'
-      )
-      // testing a mismatched _from address
-      await reverts(
-        locks.FIRST.transferFrom(keyOwners[2], accounts[9], tokenIds[0], {
+        locks.FIRST.transferFrom(keyOwners[0], accounts[9], tokenIds[2], {
           from: keyOwners[0],
         }),
         'UNAUTHORIZED'
+      )
+    })
+
+    it('should only allow owner without KM, KM or approved to transfer', async () => {
+      await reverts(
+        locks.FIRST.transferFrom(keyOwners[2], accounts[9], tokenIds[2], {
+          from: keyOwners[5],
+        }),
+        'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
 

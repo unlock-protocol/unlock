@@ -88,6 +88,14 @@ contract('Permissions / KeyManager', (accounts) => {
       )
     })
 
+    it('should disallow owner to set a new KM if a KM is already set', async () => {
+      await lock.setKeyManagerOf(tokenId, accounts[5], { from: lockManager })
+      await reverts(
+        lock.setKeyManagerOf(tokenId, accounts[1], { from: accounts[1] }),
+        'UNAUTHORIZED_KEY_MANAGER_UPDATE'
+      )
+    })
+
     describe('setting the KM to 0x00', () => {
       before(async () => {
         keyManager = await lock.keyManagerOf.call(tokenId)

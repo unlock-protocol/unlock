@@ -130,11 +130,6 @@ contract MixinTransfer is
   )
     public
   {
-    // a key manager is set
-    if (keyManagerOf[_tokenId] != address(0)) {
-      revert UNAUTHORIZED();
-    }
-    _onlyKeyManagerOrApproved(_tokenIdFrom);
     _transferFrom(_from, _recipient, _tokenId);
   }
 
@@ -179,10 +174,14 @@ contract MixinTransfer is
   ) private {
 
     _isValidKey(_tokenId);
-    
-    if(ownerOf(_tokenId) != _from) {
+
+    // a key manager is set or incorrect _from field
+    if (keyManagerOf[_tokenId] != address(0) || ownerOf(_tokenId) != _from) {
       revert UNAUTHORIZED();
     }
+
+    _onlyKeyManagerOrApproved(_tokenId);
+
     if(transferFeeBasisPoints >= BASIS_POINTS_DEN) {
       revert KEY_TRANSFERS_DISABLED();
     }
