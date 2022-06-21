@@ -1,8 +1,6 @@
-const { ethers } = require('hardhat')
-const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const { deployERC20 } = require('../helpers')
+const { purchaseKey, reverts, deployERC20 } = require('../helpers')
+const { ethers } = require('hardhat')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -42,17 +40,8 @@ contract('Lock / approveBeneficiary', (accounts) => {
       await token.approve(locks.ERC20.address, await locks.ERC20.keyPrice(), {
         from: keyOwner,
       })
-      await locks.ERC20.purchase(
-        [await locks.ERC20.keyPrice()],
-        [keyOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from: keyOwner,
-        }
-      )
 
+      await purchaseKey(locks.ERC20, keyOwner, true)
       await locks.ERC20.approveBeneficiary(spender, 1, { from: beneficiary })
     })
 

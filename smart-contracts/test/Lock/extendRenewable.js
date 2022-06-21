@@ -1,11 +1,14 @@
-const { deployERC20 } = require('../helpers')
-const { reverts } = require('../helpers/errors')
-const { ethers } = require('hardhat')
+const {
+  deployERC20,
+  reverts,
+  purchaseKey,
+  ADDRESS_ZERO,
+} = require('../helpers')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
 const deployLocks = require('../helpers/deployLocks')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ethers } = require('hardhat')
 
 const Unlock = artifacts.require('Unlock.sol')
 
@@ -48,19 +51,7 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
     beforeEach(async () => {
       // reset pricing
       await lock.updateKeyPricing(keyPrice, dai.address, { from: lockOwner })
-
-      const tx = await lock.purchase(
-        [keyPrice],
-        [keyOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        { from: keyOwner }
-      )
-
-      const { args } = tx.logs.find((v) => v.event === 'Transfer')
-      const { tokenId: newTokenId } = args
-      tokenId = newTokenId
+      ;({ tokenId } = await purchaseKey(lock, keyOwner, true))
 
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
       await time.increaseTo(expirationTs.toNumber())

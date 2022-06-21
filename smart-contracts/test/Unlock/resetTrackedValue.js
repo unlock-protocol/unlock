@@ -1,6 +1,5 @@
 const { ethers } = require('hardhat')
-const { reverts, ADDRESS_ZERO } = require('../helpers')
-
+const { reverts, purchaseKey } = require('../helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
@@ -16,17 +15,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
     unlock = await getContractInstance(unlockContract)
     const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
-    await lock.purchase(
-      [keyPrice],
-      [accounts[1]],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        from: accounts[1],
-        value: keyPrice,
-      }
-    )
+    await purchaseKey(lock, accounts[1])
   })
 
   it('grossNetworkProduct has a non-zero value after a purchase', async () => {
@@ -53,17 +42,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
 
     describe('After purchase', () => {
       beforeEach(async () => {
-        await lock.purchase(
-          [keyPrice],
-          [accounts[2]],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          {
-            from: accounts[2],
-            value: keyPrice,
-          }
-        )
+        await purchaseKey(lock, accounts[2])
       })
 
       it('grossNetworkProduct has a non-zero value after a purchase', async () => {
@@ -85,17 +64,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
 
     describe('After purchase', () => {
       beforeEach(async () => {
-        await lock.purchase(
-          [keyPrice],
-          [accounts[2]],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          {
-            from: accounts[2],
-            value: keyPrice,
-          }
-        )
+        await purchaseKey(lock, accounts[2])
       })
 
       it('grossNetworkProduct has a non-zero value after a purchase', async () => {

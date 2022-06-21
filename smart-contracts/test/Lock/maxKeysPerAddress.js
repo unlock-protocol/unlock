@@ -5,7 +5,7 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO, purchaseKey } = require('../helpers')
 
 let unlock
 let locks
@@ -53,19 +53,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
   describe('enforcing the number of keys per address', () => {
     let tokenId
     beforeEach(async () => {
-      const tx = await lock.purchase(
-        [],
-        [keyOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
-        }
-      )
-      const { args } = tx.logs.find((v) => v.event === 'Transfer')
-      const { tokenId: newTokenId } = args
-      tokenId = newTokenId
+      ;({ tokenId } = await purchaseKey(lock, keyOwner))
     })
 
     it('prevent users to purchase more keys than allowed', async () => {

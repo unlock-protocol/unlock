@@ -1,12 +1,15 @@
-const { deployERC20 } = require('../helpers')
-const { reverts } = require('../helpers/errors')
-const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
+const {
+  deployERC20,
+  reverts,
+  purchaseKey,
+  ADDRESS_ZERO,
+} = require('../helpers')
 const deployLocks = require('../helpers/deployLocks')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ethers } = require('hardhat')
 
 const Unlock = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
@@ -67,19 +70,11 @@ contract('Lock / Recurring memberships', (accounts) => {
         await dai.approve(locks.NON_EXPIRING.address, totalPrice, {
           from: keyOwner,
         })
-
-        const tx = await locks.NON_EXPIRING.purchase(
-          [keyPrice],
-          [keyOwner],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          { from: keyOwner }
+        const { tokenId: newTokenId } = await purchaseKey(
+          locks.NON_EXPIRING,
+          keyOwner,
+          true
         )
-
-        const { args } = tx.logs.find((v) => v.event === 'Transfer')
-        const { tokenId: newTokenId } = args
-
         await reverts(
           locks.NON_EXPIRING.renewMembershipFor(newTokenId, ADDRESS_ZERO),
           'NON_RENEWABLE_LOCK'
@@ -90,18 +85,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         // remove dai token
         await locks.FIRST.updateKeyPricing(keyPrice, ADDRESS_ZERO)
 
-        const tx = await locks.FIRST.purchase(
-          [],
-          [keyOwner],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          { from: keyOwner, value: keyPrice }
-        )
-
-        const { args } = tx.logs.find((v) => v.event === 'Transfer')
-        const { tokenId: newTokenId } = args
-
+        const { tokenId: newTokenId } = await purchaseKey(locks.FIRST, keyOwner)
         await reverts(
           locks.FIRST.renewMembershipFor(newTokenId, ADDRESS_ZERO),
           'NON_RENEWABLE_LOCK'
@@ -122,18 +106,11 @@ contract('Lock / Recurring memberships', (accounts) => {
           from: accounts[7],
         })
 
-        const tx = await lock.purchase(
-          [keyPrice],
-          [accounts[7]],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          { from: keyOwner }
+        const { tokenId: newTokenId } = await purchaseKey(
+          lock,
+          accounts[7],
+          true
         )
-
-        const { args } = tx.logs.find((v) => v.event === 'Transfer')
-        const { tokenId: newTokenId } = args
-
         assert.equal(await lock.isValidKey(newTokenId), true)
         await reverts(
           lock.renewMembershipFor(newTokenId, ADDRESS_ZERO),
@@ -144,19 +121,7 @@ contract('Lock / Recurring memberships', (accounts) => {
 
     let tokenId
     beforeEach(async () => {
-      const tx = await lock.purchase(
-        [keyPrice],
-        [keyOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        { from: keyOwner }
-      )
-
-      const { args } = tx.logs.find((v) => v.event === 'Transfer')
-      const { tokenId: newTokenId } = args
-      tokenId = newTokenId
-
+      ;({ tokenId } = await purchaseKey(lock, keyOwner, true))
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
       await time.increaseTo(expirationTs.toNumber())
     })

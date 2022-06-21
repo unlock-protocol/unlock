@@ -1,13 +1,12 @@
 const BigNumber = require('bignumber.js')
 const { assert } = require('chai')
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { purchaseKeys, ADDRESS_ZERO } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
 
 let lock
-let locks
 let unlock
 let tokenIds
 
@@ -15,7 +14,7 @@ contract('Lock / owners', (accounts) => {
   const keyOwners = accounts.slice(1, 6)
   before(async () => {
     unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
+    const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
     await lock.updateTransferFee(0) // disable the transfer fee for this test
@@ -23,20 +22,7 @@ contract('Lock / owners', (accounts) => {
 
   before(async () => {
     // Purchase keys!
-    const tx = await lock.purchase(
-      [],
-      keyOwners,
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => []),
-      {
-        value: (await lock.keyPrice()) * keyOwners.length,
-        from: accounts[0],
-      }
-    )
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   it('should have the right number of keys', async () => {

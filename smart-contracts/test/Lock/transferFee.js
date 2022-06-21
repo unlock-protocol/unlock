@@ -1,20 +1,17 @@
 const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('../helpers/errors')
 const { time } = require('@openzeppelin/test-helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { reverts, purchaseKey } = require('../helpers')
 
 let unlock
-let locks
 
 contract('Lock / transferFee', (accounts) => {
   let lock
-  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   const keyOwner = accounts[1]
   const denominator = 10000
   let tokenId
@@ -22,23 +19,9 @@ contract('Lock / transferFee', (accounts) => {
   before(async () => {
     unlock = await getContractInstance(unlockContract)
     // TODO test using an ERC20 priced lock as well
-    locks = await deployLocks(unlock, accounts[0])
+    const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
-    const tx = await lock.purchase(
-      [],
-      [keyOwner],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: keyPrice,
-      }
-    )
-
-    const tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
-    tokenId = tokenIds[0]
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   it('has a default fee of 0%', async () => {
@@ -67,17 +50,9 @@ contract('Lock / transferFee', (accounts) => {
       const { timestamp: nowBefore } = await ethers.provider.getBlock('latest')
       fee = new BigNumber(await lock.getTransferFee(tokenId, 0))
       // Mine a transaction in order to ensure the block.timestamp has updated
-      await lock.purchase(
-        [],
-        [accounts[8]],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          value: keyPrice,
-        }
-      )
-      const { timestamp: nowAfter } = await ethers.provider.getBlock('latest')
+      await purchaseKey(lock, accounts[8])
+
+      const nowAfter = (await web3.eth.getBlock('latest')).timestamp
       let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor(tokenId)
       )

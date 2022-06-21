@@ -1,7 +1,6 @@
 const { ethers } = require('hardhat')
-const { reverts } = require('../../helpers/errors')
+const { reverts, purchaseKey } = require('../../helpers')
 const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 
@@ -25,20 +24,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
 
   before(async () => {
     // first, let's purchase a brand new key that we can transfer
-    const tx = await lock.purchase(
-      [],
-      [from],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: ethers.utils.parseUnits('0.01', 'ether'),
-        from,
-      }
-    )
-
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = args.tokenId
+    ;({ tokenId } = await purchaseKey(lock, from))
   })
 
   it('should work if no data is passed in', async () => {
@@ -50,19 +36,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
   })
 
   it('should work if some data is passed in', async () => {
-    const tx = await lock.purchase(
-      [],
-      [accounts[7]],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: ethers.utils.parseUnits('0.01', 'ether'),
-        from: accounts[7],
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = args.tokenId
+    ;({ tokenId } = await purchaseKey(lock, accounts[7]))
     const method = 'safeTransferFrom(address,address,uint256,bytes)'
     await lock.methods[method](
       accounts[7],
@@ -79,19 +53,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
   })
 
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
-    const tx = await lock.purchase(
-      [],
-      [accounts[5]],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: ethers.utils.parseUnits('0.01', 'ether'),
-        from: accounts[5],
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = args.tokenId
+    ;({ tokenId } = await purchaseKey(lock, accounts[5]))
     // A contract which does NOT implement onERC721Received:
     let nonCompliantContract = unlock.address
     await reverts(
@@ -105,19 +67,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
   })
 
   it('should success to transfer when a contract implements onERC721Received', async () => {
-    const tx = await lock.purchase(
-      [],
-      [accounts[7]],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: ethers.utils.parseUnits('0.01', 'ether'),
-        from: accounts[5],
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = args.tokenId
+    ;({ tokenId } = await purchaseKey(lock, accounts[7]))
     // A contract which does implement onERC721Received:
     let compliantContract = await TestERC721Recevier.new()
 

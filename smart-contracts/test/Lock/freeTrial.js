@@ -2,10 +2,10 @@ const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const deployLocks = require('../helpers/deployLocks')
-const { getBalance, ADDRESS_ZERO } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
+const { purchaseKeys, getBalance } = require('../helpers')
 
 let unlock
 let locks
@@ -20,21 +20,8 @@ contract('Lock / freeTrial', (accounts) => {
     unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.SECOND
-    const tx = await lock.purchase(
-      [],
-      keyOwners,
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => []),
-      {
-        value: keyPrice.mul(keyOwners.length),
-        from: keyOwners[1],
-      }
-    )
-    const tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
-    tokenId = tokenIds[0]
+    const { tokenIds } = await purchaseKeys(lock, keyOwners.length)
+    ;[tokenId] = tokenIds
   })
 
   it('No free trial by default', async () => {

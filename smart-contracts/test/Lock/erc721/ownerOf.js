@@ -1,62 +1,40 @@
-const { ethers } = require('hardhat')
 const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { ADDRESS_ZERO, purchaseKey } = require('../../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 
 let unlock
-let locks
+let lock
 
 contract('Lock / erc721 / ownerOf', (accounts) => {
   before(async () => {
     unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    await locks.FIRST.setMaxKeysPerAddress(10)
+    const locks = await deployLocks(unlock, accounts[0])
+    lock = locks.FIRST
+    await lock.setMaxKeysPerAddress(10)
   })
 
   it('should return 0x0 when key is nonexistent', async () => {
-    let address = await locks.FIRST.ownerOf(42)
+    let address = await lock.ownerOf(42)
     assert.equal(address, ADDRESS_ZERO)
   })
 
   it('should return the owner of the key', async () => {
-    const tx = await locks.FIRST.purchase(
-      [],
-      [accounts[1]],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: ethers.utils.parseUnits('0.01', 'ether'),
-        from: accounts[1],
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    let address = await locks.FIRST.ownerOf(args.tokenId)
+    const { tokenId } = await purchaseKey(lock, accounts[1])
+    let address = await lock.ownerOf(tokenId)
     assert.equal(address, accounts[1])
   })
 
   it('should work correctly after a transfer', async () => {
-    const tx = await locks.FIRST.purchase(
-      [],
-      [accounts[1]],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: ethers.utils.parseUnits('0.01', 'ether'),
-        from: accounts[1],
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    let address = await locks.FIRST.ownerOf(args.tokenId)
+    const { tokenId } = await purchaseKey(lock, accounts[1])
+    let address = await lock.ownerOf(tokenId)
     assert.equal(address, accounts[1])
 
     // transfer
-    await locks.FIRST.transferFrom(accounts[1], accounts[7], args.tokenId, {
+    await lock.transferFrom(accounts[1], accounts[7], tokenId, {
       from: accounts[1],
     })
-    assert.equal(await locks.FIRST.ownerOf(args.tokenId), accounts[7])
+    assert.equal(await lock.ownerOf(tokenId), accounts[7])
   })
 })

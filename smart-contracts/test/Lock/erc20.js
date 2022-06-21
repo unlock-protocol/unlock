@@ -1,10 +1,9 @@
 const BigNumber = require('bignumber.js')
 const { deployERC20 } = require('../helpers')
 
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+const { ADDRESS_ZERO, MAX_UINT, reverts, purchaseKey } = require('../helpers')
 const unlockContract = artifacts.require('Unlock.sol')
 const TestNoop = artifacts.require('TestNoop.sol')
-const { reverts } = require('../helpers/errors')
 const getContractInstance = require('../helpers/truffle-artifacts')
 const deployLocks = require('../helpers/deployLocks')
 
@@ -61,22 +60,7 @@ contract('Lock / erc20', (accounts) => {
     describe('users can purchase keys', () => {
       let tokenId
       beforeEach(async () => {
-        const tx = await lock.purchase(
-          [keyPrice.toFixed()],
-          [keyOwner],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          {
-            from: keyOwner,
-          }
-        )
-
-        const tokenIds = tx.logs
-          .filter((v) => v.event === 'Transfer')
-          .map(({ args }) => args.tokenId)
-
-        tokenId = tokenIds[0]
+        ;({ tokenId } = await purchaseKey(lock, keyOwner, true))
       })
 
       it('charges correct amount on purchaseKey', async () => {
@@ -93,19 +77,7 @@ contract('Lock / erc20', (accounts) => {
       })
 
       it('when a lock owner refunds a key, tokens are fully refunded', async () => {
-        const tx = await lock.purchase(
-          [keyPrice.toFixed()],
-          [keyOwner3],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          {
-            from: keyOwner3,
-          }
-        )
-
-        const { args } = tx.logs.find((v) => v.event === 'Transfer')
-        const tokenId = args.tokenId
+        const { tokenId } = await purchaseKey(lock, keyOwner3, true)
 
         const balanceOwnerBefore = new BigNumber(
           await token.balanceOf(keyOwner3)
