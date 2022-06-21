@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { deployERC20 } = require('../helpers')
 
 const { ADDRESS_ZERO, MAX_UINT, reverts, purchaseKey } = require('../helpers')
 const unlockContract = artifacts.require('Unlock.sol')
@@ -13,7 +13,7 @@ contract('Lock / erc20', (accounts) => {
   let lock
 
   beforeEach(async () => {
-    token = await tokens.dai.deploy(web3, accounts[0])
+    token = await deployERC20(accounts[0])
     // Mint some tokens so that the totalSupply is greater than 0
     await token.mint(accounts[0], 1, {
       from: accounts[0],

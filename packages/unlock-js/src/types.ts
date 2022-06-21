@@ -46,7 +46,7 @@ export interface KeyPayload {
 export type Web3Provider = string | providers.Web3Provider
 
 export type WalletServiceCallback = (
-  error: Error | null,
-  hash: string | null,
-  transaction?: any | null
+  _error: Error | null,
+  _hash: string | null,
+  _transaction?: any | null
 ) => unknown

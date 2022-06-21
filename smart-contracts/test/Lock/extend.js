@@ -1,7 +1,7 @@
 const { reverts } = require('../helpers/errors')
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { deployERC20 } = require('../helpers')
 
 const deployLocks = require('../helpers/deployLocks')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -29,7 +29,7 @@ contract('Lock / extend keys', (accounts) => {
 
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       beforeEach(async () => {
-        testToken = await tokens.dai.deploy(web3, lockOwner)
+        testToken = await deployERC20(lockOwner)
         tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
 
         // Mint some tokens for testing
