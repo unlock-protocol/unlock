@@ -171,7 +171,7 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
 
         const tsExpected = newExpirationTs.add(await lock.expirationDuration())
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
-        console.log(tsAfter.toNumber() - tsExpected.toNumber())
+
         assert.equal(
           // assert results for +/- 2 sec
           tsAfter.toNumber() - tsExpected.toNumber() <= 2,
