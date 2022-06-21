@@ -1,9 +1,7 @@
 const unlockContract = artifacts.require('Unlock.sol')
 
-const { reverts, errorMessages } = require('../helpers/errors')
+const { reverts } = require('../helpers')
 const getContractInstance = require('../helpers/truffle-artifacts')
-
-const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 let unlock
 
@@ -20,9 +18,6 @@ contract('Unlock / initializers', (accounts) => {
   })
 
   it('initialize may not be called again', async () => {
-    await reverts(
-      unlock.initialize(accounts[0]),
-      `${VM_ERROR_REVERT_WITH_REASON} 'ALREADY_INITIALIZED'`
-    )
+    await reverts(unlock.initialize(accounts[0]), 'ALREADY_INITIALIZED')
   })
 })
