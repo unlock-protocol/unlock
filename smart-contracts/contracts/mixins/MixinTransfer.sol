@@ -14,7 +14,6 @@ import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 /**
  * @title Mixin for the transfer-related functions needed to meet the ERC721
  * standard.
- * @author Nick Furfaro
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */

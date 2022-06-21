@@ -50,11 +50,11 @@ contract('Lock / grantKeys', (accounts) => {
       })
 
       it('should acknowledge that user owns key', async () => {
-        assert.equal(await lock.ownerOf.call(evt.args.tokenId), keyOwner)
+        assert.equal(await lock.ownerOf(evt.args.tokenId), keyOwner)
       })
 
       it('getHasValidKey is true', async () => {
-        assert.equal(await lock.getHasValidKey.call(keyOwner), true)
+        assert.equal(await lock.getHasValidKey(keyOwner), true)
       })
     })
 
@@ -93,13 +93,13 @@ contract('Lock / grantKeys', (accounts) => {
 
       it('should acknowledge that user owns key', async () => {
         for (let i = 0; i < keyOwnerList.length; i++) {
-          assert.equal(await lock.balanceOf.call(keyOwnerList[i]), 1)
+          assert.equal(await lock.balanceOf(keyOwnerList[i]), 1)
         }
       })
 
       it('getHasValidKey is true', async () => {
         for (let i = 0; i < keyOwnerList.length; i++) {
-          assert.equal(await lock.getHasValidKey.call(keyOwnerList[i]), true)
+          assert.equal(await lock.getHasValidKey(keyOwnerList[i]), true)
         }
       })
     })

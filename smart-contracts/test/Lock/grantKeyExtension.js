@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
-const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -10,8 +10,6 @@ let unlock
 let lock
 let locks
 let tx
-
-const { HARDHAT_VM_ERROR } = errorMessages
 
 contract('Lock / grantKeyExtension', (accounts) => {
   const lockCreator = accounts[1]
@@ -45,7 +43,7 @@ contract('Lock / grantKeyExtension', (accounts) => {
     let tx
     let tsBefore
     before(async () => {
-      assert.equal(await lock.isValidKey.call(tokenId), true)
+      assert.equal(await lock.isValidKey(tokenId), true)
       tsBefore = await lock.keyExpirationTimestampFor(tokenId)
       // extend
       tx = await lock.grantKeyExtension(tokenId, {
@@ -54,7 +52,7 @@ contract('Lock / grantKeyExtension', (accounts) => {
     })
 
     it('key should stay valid', async () => {
-      assert.equal(await lock.isValidKey.call(tokenId), true)
+      assert.equal(await lock.isValidKey(tokenId), true)
     })
 
     it('duration has been extended accordingly', async () => {
@@ -80,7 +78,7 @@ contract('Lock / grantKeyExtension', (accounts) => {
       await lock.expireAndRefundFor(tokenId, 0, {
         from: lockCreator,
       })
-      assert.equal(await lock.isValidKey.call(tokenId), false)
+      assert.equal(await lock.isValidKey(tokenId), false)
 
       // extend
       tx = await lock.grantKeyExtension(tokenId, {
@@ -89,7 +87,7 @@ contract('Lock / grantKeyExtension', (accounts) => {
     })
 
     it('key should stay valid', async () => {
-      assert.equal(await lock.isValidKey.call(tokenId), true)
+      assert.equal(await lock.isValidKey(tokenId), true)
     })
 
     it('duration has been extended accordingly', async () => {
