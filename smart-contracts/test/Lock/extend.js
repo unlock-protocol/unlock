@@ -1,17 +1,16 @@
 const { reverts } = require('../helpers/errors')
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const { deployERC20 } = require('../helpers')
 
-const deployLocks = require('../helpers/deployLocks')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO, MAX_UINT, purchaseKey } = require('../helpers')
-
-const unlockContract = artifacts.require('Unlock.sol')
+const {
+  deployERC20,
+  deployLock,
+  ADDRESS_ZERO,
+  MAX_UINT,
+  purchaseKey,
+} = require('../helpers')
 
 const scenarios = [false, true]
-let unlock
-let locks
 let testToken
 const keyPrice = web3.utils.toWei('0.01', 'ether')
 const someTokens = web3.utils.toWei('10', 'ether')
@@ -37,10 +36,8 @@ contract('Lock / extend keys', (accounts) => {
           from: lockOwner,
         })
 
-        unlock = await getContractInstance(unlockContract)
-        locks = await deployLocks(unlock, lockOwner, tokenAddress)
-        lock = locks.FIRST
-        nonExpiringLock = locks.NON_EXPIRING
+        lock = await deployLock({ tokenAddress })
+        nonExpiringLock = await deployLock({ name: 'NON_EXPIRING' })
       })
 
       describe('common lock', () => {

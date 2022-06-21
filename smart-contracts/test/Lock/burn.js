@@ -1,22 +1,13 @@
 const { reverts } = require('../helpers/errors')
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO, purchaseKey } = require('../helpers')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
-let locks
-let tokenId
+const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
 
 contract('Lock / burn', (accounts) => {
   let keyOwner = accounts[1]
   let lock
+  let tokenId
 
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
     lock.setMaxKeysPerAddress(10)
   })
 

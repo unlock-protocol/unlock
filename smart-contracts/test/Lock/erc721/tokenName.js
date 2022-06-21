@@ -1,19 +1,11 @@
-const { reverts } = require('../../helpers/errors')
-const deployLocks = require('../../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-
-let unlock
+const { deployLock, reverts } = require('../../helpers/errors')
 let unnamedlock
 let namedLock
 
 contract('Lock / erc721 / name', (accounts) => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    unnamedlock = locks.FIRST
-    namedLock = locks.NAMED
+    unnamedlock = await deployLock()
+    namedLock = await deployLock({ name: 'NAMED' })
   })
 
   describe('when no name has been set on creation', () => {

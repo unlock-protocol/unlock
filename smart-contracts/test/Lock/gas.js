@@ -1,19 +1,13 @@
 const BigNumber = require('bignumber.js')
-const deployLocks = require('../helpers/deployLocks')
 
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
+const { deployLock, ADDRESS_ZERO } = require('../helpers/constants')
 const WalletService = require('../helpers/walletServiceMock.js')
 
-let unlock
 let lock
 
 contract('Lock / gas', (accounts) => {
-  beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+  before(async () => {
+    lock = await deployLock()
   })
 
   it('gas used to purchaseFor is less than wallet service limit', async () => {

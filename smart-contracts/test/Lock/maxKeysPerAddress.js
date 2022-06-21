@@ -1,22 +1,13 @@
 const { assert } = require('chai')
-const { reverts } = require('../helpers/errors')
-const deployLocks = require('../helpers/deployLocks')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO, purchaseKey } = require('../helpers')
-
-let unlock
-let locks
+const { deployLock, reverts, ADDRESS_ZERO, purchaseKey } = require('../helpers')
 
 contract('Lock / maxKeysPerAddress', (accounts) => {
   let keyOwner = accounts[1]
   let lock
 
-  beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+  before(async () => {
+    lock = await deployLock()
   })
 
   it('default to 1', async () => {

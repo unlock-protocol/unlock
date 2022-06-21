@@ -1,21 +1,18 @@
 const BigNumber = require('bignumber.js')
+const {
+  deployLock,
+  deployERC20,
+  reverts,
+  ADDRESS_ZERO,
+  purchaseKeys,
+} = require('../helpers')
 
-const { deployERC20 } = require('../helpers')
-const { reverts } = require('../helpers/errors')
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const { purchaseKeys } = require('../helpers')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
 let token
 let tokenIds
 
 contract('Lock / cancelAndRefund', (accounts) => {
   let lock
-  let locks
+  let lockFree
   const denominator = 10000
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const lockCreator = accounts[0]
@@ -33,10 +30,8 @@ contract('Lock / cancelAndRefund', (accounts) => {
     await token.mint(accounts[0], 100, {
       from: accounts[0],
     })
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-
-    lock = locks.SECOND
+    lock = await deployLock()
+    lockFree = await deployLock({ name: 'FREE' })
     await lock.setMaxKeysPerAddress(10)
     ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
@@ -70,7 +65,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
   })
 
   it('the estimated refund for a free Key should be 0', async () => {
-    const tx = await locks.FREE.grantKeys(
+    const tx = await lockFree.grantKeys(
       [accounts[5]],
       [999999999999],
       [ADDRESS_ZERO],
@@ -80,7 +75,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     )
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
     const estimatedRefund = new BigNumber(
-      await locks.FREE.getCancelAndRefundValue(args.tokenId)
+      await lockFree.getCancelAndRefundValue(args.tokenId)
     )
     assert(estimatedRefund, 0)
   })
@@ -150,7 +145,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
   })
 
   it('can cancel a free key', async () => {
-    const tx = await locks.FREE.grantKeys(
+    const tx = await lockFree.grantKeys(
       [accounts[1]],
       [999999999999],
       [ADDRESS_ZERO],
@@ -159,14 +154,14 @@ contract('Lock / cancelAndRefund', (accounts) => {
       }
     )
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    const txObj = await locks.FREE.cancelAndRefund(args.tokenId, {
+    const txObj = await lockFree.cancelAndRefund(args.tokenId, {
       from: accounts[1],
     })
     assert.equal(txObj.logs[0].event, 'CancelKey')
   })
 
   it('approved user can cancel a key', async () => {
-    const tx = await locks.FREE.grantKeys(
+    const tx = await lockFree.grantKeys(
       [keyOwners[1]],
       [999999999999],
       [ADDRESS_ZERO],
@@ -175,8 +170,8 @@ contract('Lock / cancelAndRefund', (accounts) => {
       }
     )
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    await locks.FREE.approve(accounts[9], args.tokenId, { from: keyOwners[1] })
-    const txObj = await locks.FREE.cancelAndRefund(args.tokenId, {
+    await lockFree.approve(accounts[9], args.tokenId, { from: keyOwners[1] })
+    const txObj = await lockFree.cancelAndRefund(args.tokenId, {
       from: accounts[9],
     })
     assert.equal(txObj.logs[0].event, 'CancelKey')

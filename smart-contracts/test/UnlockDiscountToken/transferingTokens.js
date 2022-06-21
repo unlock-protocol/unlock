@@ -4,9 +4,7 @@
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades, network } = require('hardhat')
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const { createExchange } = require('../helpers')
+const { deployLock, ADDRESS_ZERO, createExchange } = require('../helpers')
 
 const Unlock = artifacts.require('Unlock.sol')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
@@ -22,7 +20,7 @@ const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
 const estimateGas = 252166 * 2
 
 contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
-  const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
+  const [, protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
   before(async () => {
@@ -54,7 +52,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     await proxyUDT.deployed()
     udt = await UnlockDiscountToken.at(proxyUDT.address)
 
-    lock = (await deployLocks(unlock, lockOwner)).FIRST
+    lock = await deployLock()
 
     // Deploy the exchange
     const { oracle, weth } = await createExchange({

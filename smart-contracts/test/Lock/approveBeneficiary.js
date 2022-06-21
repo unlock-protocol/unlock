@@ -1,27 +1,25 @@
-const deployLocks = require('../helpers/deployLocks')
-const { purchaseKey, reverts, deployERC20 } = require('../helpers')
+const { purchaseKey, reverts, deployERC20, deployLock } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
 
 let unlock
-let locks
 
 contract('Lock / approveBeneficiary', (accounts) => {
   const [daiOwner, beneficiary, keyOwner, spender, other] = accounts
-
+  let lock
   before(async () => {
     unlock = await getContractInstance(unlockContract)
   })
 
   describe('ETH', () => {
     before(async () => {
-      locks = await deployLocks(unlock, beneficiary)
+      lock = await deployLock({ unlock, from: beneficiary })
     })
 
     it('fails to approve if the lock is priced in ETH', async () => {
       await reverts(
-        locks.OWNED.approveBeneficiary(accounts[0], 1, { from: beneficiary })
+        lock.approveBeneficiary(accounts[0], 1, { from: beneficiary })
       )
     })
   })
@@ -34,30 +32,34 @@ contract('Lock / approveBeneficiary', (accounts) => {
       await token.mint(keyOwner, web3.utils.toWei('100', 'ether'), {
         from: daiOwner,
       })
-      locks = await deployLocks(unlock, beneficiary, token.address)
+      lock = await deployLock({
+        unlock,
+        from: beneficiary,
+        tokenAddress: token.address,
+      })
 
-      await token.approve(locks.ERC20.address, await locks.ERC20.keyPrice(), {
+      await token.approve(lock.address, await lock.keyPrice(), {
         from: keyOwner,
       })
 
-      await purchaseKey(locks.ERC20, keyOwner, true)
-      await locks.ERC20.approveBeneficiary(spender, 1, { from: beneficiary })
+      await purchaseKey(lock, keyOwner, true)
+      await lock.approveBeneficiary(spender, 1, { from: beneficiary })
     })
 
     it('approve fails if called from the wrong account', async () => {
       await reverts(
-        locks.OWNED.approveBeneficiary(accounts[0], 1, { from: other }),
+        lock.approveBeneficiary(accounts[0], 1, { from: other }),
         'ONLY_LOCK_MANAGER_OR_BENEFICIARY'
       )
     })
 
     it('has allowance', async () => {
-      const actual = await token.allowance(locks.ERC20.address, spender)
+      const actual = await token.allowance(lock.address, spender)
       assert.equal(actual.toString(), 1)
     })
 
     it('can transferFrom', async () => {
-      await token.transferFrom(locks.ERC20.address, other, 1, {
+      await token.transferFrom(lock.address, other, 1, {
         from: spender,
       })
     })

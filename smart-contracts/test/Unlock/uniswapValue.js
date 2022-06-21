@@ -1,17 +1,14 @@
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers } = require('hardhat')
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+
+const { deployLock, ADDRESS_ZERO, MAX_UINT } = require('../helpers')
 const {
   deployWETH,
   deployERC20,
   deployUniswapV2,
   deployUniswapOracle,
 } = require('../helpers')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
 
 const keyPrice = web3.utils.toWei('0.01', 'ether')
 
@@ -77,10 +74,6 @@ const decodeGNPEvent = (tx) => {
 contract('Unlock / uniswapValue', (accounts) => {
   const [keyOwner, liquidityOwner, protocolOwner] = accounts
 
-  beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-  })
-
   describe('A supported token', () => {
     beforeEach(async () => {
       token = await deployERC20(protocolOwner)
@@ -89,8 +82,7 @@ contract('Unlock / uniswapValue', (accounts) => {
         from: protocolOwner,
       })
 
-      locks = await deployLocks(unlock, protocolOwner, token.address)
-      lock = locks.FIRST
+      lock = await deployLock({ tokenAddress: token.address })
 
       // Deploy the exchange
       const weth = await deployWETH(protocolOwner)
@@ -213,7 +205,7 @@ contract('Unlock / uniswapValue', (accounts) => {
         from: protocolOwner,
       })
 
-      locks = await deployLocks(unlock, protocolOwner, token.address)
+      lock = await deployLock({ tokenAddress: token.address })
       lock = locks.FIRST
     })
 
@@ -265,8 +257,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
   describe('ETH', () => {
     beforeEach(async () => {
-      locks = await deployLocks(unlock, protocolOwner)
-      lock = locks.FIRST
+      lock = await deployLock()
     })
 
     describe('Purchase key', () => {

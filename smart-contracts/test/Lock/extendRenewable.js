@@ -1,4 +1,5 @@
 const {
+  deployLock,
   deployERC20,
   reverts,
   purchaseKey,
@@ -7,13 +8,7 @@ const {
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
-const deployLocks = require('../helpers/deployLocks')
-const getContractInstance = require('../helpers/truffle-artifacts')
 
-const Unlock = artifacts.require('Unlock.sol')
-
-let unlock
-let locks
 let dai
 
 const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
@@ -35,9 +30,7 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
       from: lockOwner,
     })
 
-    unlock = await getContractInstance(Unlock)
-    locks = await deployLocks(unlock, lockOwner, dai.address)
-    lock = locks.ERC20
+    lock = await deployLock({ tokenAddress: dai.address })
     await lock.setMaxKeysPerAddress(10)
 
     // set ERC20 approval for entire scope

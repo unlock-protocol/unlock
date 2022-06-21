@@ -1,17 +1,11 @@
 const BigNumber = require('bignumber.js')
-const deployLocks = require('../helpers/deployLocks')
+const { purchaseKey, reverts, deployLock } = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const { purchaseKey, reverts } = require('../helpers')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
 let locks
 
 contract('Lock / disableTransfers', (accounts) => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
+    lock = await deployLock()
   })
 
   let lock

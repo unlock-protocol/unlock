@@ -1,44 +1,37 @@
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
-const { reverts } = require('../helpers/errors')
+const { deployLock, reverts } = require('../helpers/errors')
 const { ethers } = require('hardhat')
-const deployLocks = require('../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
-let locks
 
 contract('Lock / purchaseFor', (accounts) => {
+  let lock
+  let anotherLock
+  let lockSingleKey
+  let lockFree
+
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    await locks.FIRST.setMaxKeysPerAddress(10)
+    lock = await deployLock()
+    anotherLock = await deployLock()
+    lockSingleKey = await deployLock({ name: 'SINGLE KEY' })
+    lockFree = await deployLock({ name: 'FREE' })
+    await lock.setMaxKeysPerAddress(10)
   })
 
   describe('when the contract has a public key release', () => {
     it('should fail if the price is not enough', async () => {
       await reverts(
-        locks.FIRST.purchase(
-          [],
-          [accounts[0]],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          {
-            value: web3.utils.toWei('0.0001', 'ether'),
-          }
-        ),
+        lock.purchase([], [accounts[0]], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
+          value: web3.utils.toWei('0.0001', 'ether'),
+        }),
         'INSUFFICIENT_VALUE'
       )
       // Making sure we do not have a key set!
-      assert.equal(await locks.FIRST.keyExpirationTimestampFor(accounts[0]), 0)
+      assert.equal(await lock.keyExpirationTimestampFor(accounts[0]), 0)
     })
 
     it('should fail if we reached the max number of keys', async () => {
-      await locks['SINGLE KEY'].purchase(
+      await lockSingleKey.purchase(
         [],
         [accounts[0]],
         [ADDRESS_ZERO],
@@ -49,7 +42,7 @@ contract('Lock / purchaseFor', (accounts) => {
         }
       )
       await reverts(
-        locks['SINGLE KEY'].purchase(
+        lockSingleKey.purchase(
           [],
           [accounts[1]],
           [ADDRESS_ZERO],
@@ -65,7 +58,7 @@ contract('Lock / purchaseFor', (accounts) => {
     })
 
     it('should trigger an event when successful', async () => {
-      const tx = await locks.FIRST.purchase(
+      const tx = await lock.purchase(
         [],
         [accounts[2]],
         [ADDRESS_ZERO],
@@ -85,7 +78,7 @@ contract('Lock / purchaseFor', (accounts) => {
 
     describe('when the user already owns an expired key', () => {
       it('should expand the validity by the default key duration', async () => {
-        const tx = await locks.SECOND.purchase(
+        const tx = await anotherLock.purchase(
           [],
           [accounts[4]],
           [ADDRESS_ZERO],
@@ -95,17 +88,17 @@ contract('Lock / purchaseFor', (accounts) => {
             value: web3.utils.toWei('0.01', 'ether'),
           }
         )
-        assert.equal(await locks.SECOND.balanceOf(accounts[4]), 1)
-        assert.equal(await locks.SECOND.getHasValidKey(accounts[4]), true)
+        assert.equal(await anotherLock.balanceOf(accounts[4]), 1)
+        assert.equal(await anotherLock.getHasValidKey(accounts[4]), true)
 
         // let's now expire the key
         const { args } = tx.logs.find((v) => v.event === 'Transfer')
-        await locks.SECOND.expireAndRefundFor(args.tokenId, 0)
-        assert.equal(await locks.SECOND.getHasValidKey(accounts[4]), false)
-        assert.equal(await locks.SECOND.balanceOf(accounts[4]), 0)
+        await anotherLock.expireAndRefundFor(args.tokenId, 0)
+        assert.equal(await anotherLock.getHasValidKey(accounts[4]), false)
+        assert.equal(await anotherLock.balanceOf(accounts[4]), 0)
 
         // Purchase a new one
-        await locks.SECOND.purchase(
+        await anotherLock.purchase(
           [],
           [accounts[4]],
           [ADDRESS_ZERO],
@@ -115,14 +108,14 @@ contract('Lock / purchaseFor', (accounts) => {
             value: web3.utils.toWei('0.01', 'ether'),
           }
         )
-        assert.equal(await locks.SECOND.balanceOf(accounts[4]), 1)
-        assert.equal(await locks.SECOND.getHasValidKey(accounts[4]), true)
+        assert.equal(await anotherLock.balanceOf(accounts[4]), 1)
+        assert.equal(await anotherLock.getHasValidKey(accounts[4]), true)
       })
     })
 
     describe('when the user already owns a non expired key', () => {
       it('should create a new key', async () => {
-        await locks.FIRST.purchase(
+        await lock.purchase(
           [],
           [accounts[1]],
           [ADDRESS_ZERO],
@@ -132,8 +125,8 @@ contract('Lock / purchaseFor', (accounts) => {
             value: web3.utils.toWei('0.01', 'ether'),
           }
         )
-        assert.equal(await locks.FIRST.balanceOf(accounts[1]), 1)
-        await locks.FIRST.purchase(
+        assert.equal(await lock.balanceOf(accounts[1]), 1)
+        await lock.purchase(
           [],
           [accounts[1]],
           [ADDRESS_ZERO],
@@ -143,7 +136,7 @@ contract('Lock / purchaseFor', (accounts) => {
             value: web3.utils.toWei('0.01', 'ether'),
           }
         )
-        assert.equal(await locks.FIRST.balanceOf(accounts[1]), 2)
+        assert.equal(await lock.balanceOf(accounts[1]), 2)
       })
     })
 
@@ -155,10 +148,10 @@ contract('Lock / purchaseFor', (accounts) => {
       let tokenId
 
       beforeEach(async () => {
-        balance = new BigNumber(await web3.eth.getBalance(locks.FIRST.address))
-        totalSupply = new BigNumber(await locks.FIRST.totalSupply())
-        numberOfOwners = new BigNumber(await locks.FIRST.numberOfOwners())
-        const newKeyTx = await locks.FIRST.purchase(
+        balance = new BigNumber(await web3.eth.getBalance(lock.address))
+        totalSupply = new BigNumber(await lock.totalSupply())
+        numberOfOwners = new BigNumber(await lock.numberOfOwners())
+        const newKeyTx = await lock.purchase(
           [],
           [accounts[0]],
           [ADDRESS_ZERO],
@@ -178,18 +171,16 @@ contract('Lock / purchaseFor', (accounts) => {
 
       it('should have the right expiration timestamp for the key', async () => {
         const expirationTimestamp = new BigNumber(
-          await locks.FIRST.keyExpirationTimestampFor(tokenId)
+          await lock.keyExpirationTimestampFor(tokenId)
         )
         const expirationDuration = new BigNumber(
-          await locks.FIRST.expirationDuration()
+          await lock.expirationDuration()
         )
         assert(expirationTimestamp.gte(expirationDuration.plus(now)))
       })
 
       it('should have added the funds to the contract', async () => {
-        let newBalance = new BigNumber(
-          await web3.eth.getBalance(locks.FIRST.address)
-        )
+        let newBalance = new BigNumber(await web3.eth.getBalance(lock.address))
         assert.equal(
           parseFloat(web3.utils.fromWei(newBalance.toFixed(), 'ether')),
           parseFloat(web3.utils.fromWei(balance.toFixed(), 'ether')) + 0.01
@@ -197,14 +188,12 @@ contract('Lock / purchaseFor', (accounts) => {
       })
 
       it('should have increased the number of outstanding keys', async () => {
-        const _totalSupply = new BigNumber(await locks.FIRST.totalSupply())
+        const _totalSupply = new BigNumber(await lock.totalSupply())
         assert.equal(_totalSupply.toFixed(), totalSupply.plus(1).toFixed())
       })
 
       it('should have increased the number of owners', async () => {
-        const _numberOfOwners = new BigNumber(
-          await locks.FIRST.numberOfOwners()
-        )
+        const _numberOfOwners = new BigNumber(await lock.numberOfOwners())
         assert.equal(
           _numberOfOwners.toFixed(),
           numberOfOwners.plus(1).toFixed()
@@ -213,7 +202,7 @@ contract('Lock / purchaseFor', (accounts) => {
     })
 
     it('can purchase a free key', async () => {
-      const tx = await locks.FREE.purchase(
+      const tx = await lockFree.purchase(
         [],
         [accounts[2]],
         [ADDRESS_ZERO],

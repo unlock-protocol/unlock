@@ -1,14 +1,12 @@
 const { ethers } = require('hardhat')
 const { reverts } = require('../helpers/errors')
-const deployLocks = require('../helpers/deployLocks')
-const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
+const {
+  deployLock,
+  errorMessages,
+  ADDRESS_ZERO,
+} = require('../helpers/constants')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
 let lock
-let locks
 let tx
 
 const { HARDHAT_VM_ERROR } = errorMessages
@@ -22,9 +20,7 @@ contract('Lock / grantKeys', (accounts) => {
     const blockNumber = await ethers.provider.getBlockNumber()
     const latestBlock = await ethers.provider.getBlock(blockNumber)
     validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, lockCreator)
-    lock = locks.FIRST
+    lock = await deployLock({ from: lockCreator })
   })
 
   describe('can grant key(s)', () => {

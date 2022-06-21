@@ -1,20 +1,17 @@
-const { reverts } = require('../../helpers/errors')
-const deployLocks = require('../../helpers/deployLocks')
+const { reverts, deployLock } = require('../../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 
-let unlock
 let lock
+let unlock
 let txObj
 let event
 
 contract('Lock / erc721 / tokenSymbol', (accounts) => {
   before(async () => {
     unlock = await getContractInstance(unlockContract)
-
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
   })
 
   describe('the global token symbol stored in Unlock', () => {

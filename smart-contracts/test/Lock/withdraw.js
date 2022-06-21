@@ -1,25 +1,16 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts, purchaseKeys } = require('../helpers')
-const deployLocks = require('../helpers/deployLocks')
+const { deployLock, reverts, purchaseKeys } = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
 let lock
 let tokenAddress
 
 contract('Lock / withdraw', (accounts) => {
-  let owner = accounts[0]
-
+  const owner = accounts[0]
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, owner)
-    lock = locks.OWNED
+    lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)
     tokenAddress = await lock.tokenAddress()
-
     await purchaseKeys(lock, 2)
   })
 

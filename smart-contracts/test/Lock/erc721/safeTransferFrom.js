@@ -1,18 +1,12 @@
-const { reverts, purchaseKey } = require('../../helpers')
-const deployLocks = require('../../helpers/deployLocks')
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../../helpers/truffle-artifacts')
+const { deployLock, reverts, purchaseKey } = require('../../helpers')
 
 const TestERC721Recevier = artifacts.require('TestERC721Recevier')
 
-let unlock
 let lock
 
 contract('Lock / erc721 / safeTransferFrom', (accounts) => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
@@ -54,7 +48,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
     ;({ tokenId } = await purchaseKey(lock, accounts[5]))
     // A contract which does NOT implement onERC721Received:
-    let nonCompliantContract = unlock.address
+    let nonCompliantContract = accounts[7]
     await reverts(
       lock.safeTransferFrom(accounts[5], nonCompliantContract, tokenId, {
         from: accounts[5],

@@ -1,25 +1,17 @@
 const BigNumber = require('bignumber.js')
 const { ethers } = require('hardhat')
-const { reverts } = require('../helpers/errors')
+const { reverts, deployLock } = require('../helpers')
 
-const deployLocks = require('../helpers/deployLocks')
 const erc777abi = require('../helpers/ABIs/erc777.json')
 
-const unlockContract = artifacts.require('Unlock.sol')
-
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
-let locks
+let lock
 
 contract('Lock / Lock', (accounts) => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
+    lock = await deployLock()
   })
 
   it('should have created locks with the correct value', async () => {
-    const lock = locks.FIRST
     let [
       expirationDuration,
       keyPrice,
@@ -47,7 +39,6 @@ contract('Lock / Lock', (accounts) => {
 
   it('Should fail on unknown calls', async () => {
     const [, recipient] = accounts
-    const lock = locks.FIRST
     const mock777 = await ethers.getContractAt(erc777abi, lock.address)
     await reverts(mock777.send(recipient, 1, '0x'))
   })

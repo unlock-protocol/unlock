@@ -1,26 +1,17 @@
 const BigNumber = require('bignumber.js')
 const { assert } = require('chai')
 
-const deployLocks = require('../helpers/deployLocks')
-const { purchaseKeys, reverts } = require('../helpers')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
-let locks
-let tokenIds
+const { purchaseKeys, reverts, deployLock } = require('../helpers')
 
 contract('Lock / mergeKeys', (accounts) => {
+  let tokenIds
   let lockCreator = accounts[0]
   let keyOwner = accounts[1]
   let keyOwner2 = accounts[2]
   let lock
 
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
     ;({ tokenIds } = await purchaseKeys(lock, 2))
   })
 

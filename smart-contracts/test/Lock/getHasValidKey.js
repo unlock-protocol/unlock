@@ -1,10 +1,5 @@
-const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO, purchaseKey } = require('../helpers')
-
-let unlock
 let locks
 let tokenId
 
@@ -13,9 +8,7 @@ contract('Lock / getHasValidKey', (accounts) => {
   let lock
 
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })

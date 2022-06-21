@@ -7,14 +7,11 @@ const {
   reverts,
   purchaseKey,
   ADDRESS_ZERO,
+  deployLock,
 } = require('../helpers')
-const deployLocks = require('../helpers/deployLocks')
-const getContractInstance = require('../helpers/truffle-artifacts')
 
-const Unlock = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
 
-let unlock
 let locks
 let dai
 
@@ -36,9 +33,7 @@ contract('Lock / Recurring memberships', (accounts) => {
       from: lockOwner,
     })
 
-    unlock = await getContractInstance(Unlock)
-    locks = await deployLocks(unlock, lockOwner, dai.address)
-    lock = locks.ERC20
+    lock = await deployLock({ tokenAddress: dai.address })
 
     // set ERC20 approval for entire scope
     await dai.approve(lock.address, totalPrice, {

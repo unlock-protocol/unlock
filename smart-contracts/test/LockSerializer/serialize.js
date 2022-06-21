@@ -1,20 +1,15 @@
 const { ethers } = require('hardhat')
-const deployLocks = require('../helpers/deployLocks')
 const compareValues = require('./_compareValues')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { deployAllLocks, ADDRESS_ZERO } = require('../helpers/constants')
 
 contract('LockSerializer', () => {
   let serializer
-  let unlock
   let PublicLock
   let beneficiary
   const locks = {}
 
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
     ;[, beneficiary] = await ethers.getSigners()
 
     // deploy serializer
@@ -23,7 +18,7 @@ contract('LockSerializer', () => {
     await serializer.deployed()
 
     // get locks (truffle version)
-    const locksTruffle = await deployLocks(unlock, beneficiary.address)
+    const locksTruffle = await deployAllLocks(null, beneficiary.address)
     // parse locks for ethers
     PublicLock = await ethers.getContractFactory(
       'contracts/PublicLock.sol:PublicLock'

@@ -1,10 +1,9 @@
-const { purchaseKey, reverts } = require('../../helpers')
-const deployLocks = require('../../helpers/deployLocks')
+const { deployLock, purchaseKey, reverts } = require('../../helpers')
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 
-let unlock
 let lock
+let unlock
 let txObj
 let event
 let baseTokenURI
@@ -27,10 +26,8 @@ function stringShifter(str) {
 
 contract('Lock / erc721 / tokenURI', (accounts) => {
   before(async () => {
+    lock = await deployLock()
     unlock = await getContractInstance(unlockContract)
-
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
   })
 
   describe('the global tokenURI stored in Unlock', () => {

@@ -4,8 +4,7 @@
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, network, upgrades } = require('hardhat')
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO, deployLock } = require('../helpers/constants')
 const { createExchange } = require('../helpers')
 
 const Unlock = artifacts.require('Unlock.sol')
@@ -23,7 +22,7 @@ const estimateGas = 252166 * 2
 const baseFeePerGas = 1000000000 // in gwei
 
 contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
-  const [lockOwner, protocolOwner, minter, referrer, keyBuyer] = accounts
+  const [, protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
   before(async () => {
@@ -56,7 +55,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
     udt = await UnlockDiscountToken.at(proxyUDT.address)
 
     // create a lock
-    lock = (await deployLocks(unlock, lockOwner)).FIRST
+    lock = await deployLock()
 
     // Grant Unlock minting permissions
     await udt.addMinter(unlock.address, { from: minter })

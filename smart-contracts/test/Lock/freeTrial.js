@@ -1,13 +1,6 @@
 const BigNumber = require('bignumber.js')
 
-const deployLocks = require('../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { purchaseKeys } = require('../helpers')
-
-let unlock
-let locks
+const { purchaseKeys, deployLock } = require('../helpers')
 let tokenId
 
 contract('Lock / freeTrial', (accounts) => {
@@ -16,9 +9,7 @@ contract('Lock / freeTrial', (accounts) => {
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
 
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.SECOND
+    lock = await deployLock()
     const { tokenIds } = await purchaseKeys(lock, keyOwners.length)
     ;[tokenId] = tokenIds
   })

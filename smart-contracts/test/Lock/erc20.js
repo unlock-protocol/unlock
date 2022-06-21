@@ -1,14 +1,15 @@
 const BigNumber = require('bignumber.js')
-const { deployERC20 } = require('../helpers')
-
-const { ADDRESS_ZERO, MAX_UINT, reverts, purchaseKey } = require('../helpers')
-const unlockContract = artifacts.require('Unlock.sol')
+const {
+  deployLock,
+  deployERC20,
+  ADDRESS_ZERO,
+  MAX_UINT,
+  reverts,
+  purchaseKey,
+} = require('../helpers')
 const TestNoop = artifacts.require('TestNoop.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const deployLocks = require('../helpers/deployLocks')
 
 contract('Lock / erc20', (accounts) => {
-  let unlock
   let token
   let lock
 
@@ -18,9 +19,7 @@ contract('Lock / erc20', (accounts) => {
     await token.mint(accounts[0], 1, {
       from: accounts[0],
     })
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0], token.address)
-    lock = locks.FIRST
+    lock = await deployLock({ tokenAddress: token.address })
     await lock.setMaxKeysPerAddress(10)
   })
 
@@ -206,9 +205,7 @@ contract('Lock / erc20', (accounts) => {
 
   describe('should fail to create a lock when', () => {
     it('when creating a lock for a contract which is not an ERC20', async () => {
-      await reverts(
-        deployLocks(unlock, accounts[0], (await TestNoop.new()).address)
-      )
+      await reverts(deployLock({ testAddress: (await TestNoop.new()).address }))
     })
 
     describe('when creating a lock with an invalid ERC20', () => {

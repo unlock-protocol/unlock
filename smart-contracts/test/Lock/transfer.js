@@ -1,11 +1,6 @@
 const { ethers } = require('hardhat')
-const deployLocks = require('../helpers/deployLocks')
+const { deployLock, ADDRESS_ZERO, reverts } = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO, reverts } = require('../helpers')
-
-let unlock
 let lock
 let tokenIds
 let newTokenId
@@ -13,12 +8,10 @@ let originalDuration
 let blockTs
 
 contract('Lock / transfer', (accounts) => {
-  const [lockOwner, singleKeyOwner, multipleKeyOwner, destination] = accounts
+  const [, singleKeyOwner, multipleKeyOwner, destination] = accounts
 
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, lockOwner)
-    lock = locks.OWNED
+    lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)
     const tx = await lock.purchase(
       [],

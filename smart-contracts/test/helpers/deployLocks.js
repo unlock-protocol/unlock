@@ -1,30 +1,55 @@
+const { ethers } = require('hardhat')
 const PublicLock = artifacts.require('PublicLock')
 const createLockHash = require('./createLockCalldata')
 const Locks = require('../fixtures/locks')
 const { ADDRESS_ZERO } = require('./constants')
 
-module.exports = async function deployLocks(
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
+
+async function deployLock({
   unlock,
-  from,
-  tokenAddress = ADDRESS_ZERO
-) {
+  from: deployer,
+  tokenAddress = ADDRESS_ZERO,
+  name = 'FIRST',
+} = {}) {
+  if (!unlock) {
+    unlock = await getContractInstance(unlockContract)
+  }
+  if (!deployer) {
+    const [defaultDeployer] = await ethers.getSigners()
+    deployer = defaultDeployer.address
+  }
+
+  const { expirationDuration, keyPrice, maxNumberOfKeys, lockName } =
+    Locks[name]
+
+  const args = [
+    expirationDuration.toString(),
+    tokenAddress,
+    keyPrice.toString(),
+    maxNumberOfKeys.toString(),
+    lockName,
+  ]
+
+  const calldata = await createLockHash({ args, from: deployer })
+  const tx = await unlock.createUpgradeableLock(calldata)
+  const evt = tx.logs.find((v) => v.event === 'NewLock')
+  const lock = await PublicLock.at(evt.args.newLockAddress)
+  return lock
+}
+
+async function deployAllLocks(unlock, from, tokenAddress = ADDRESS_ZERO) {
   let locks = {}
   await Promise.all(
-    Object.keys(Locks).map(async (name) => {
-      const args = [
-        Locks[name].expirationDuration.toFixed(),
-        tokenAddress,
-        Locks[name].keyPrice.toFixed(),
-        Locks[name].maxNumberOfKeys.toFixed(),
-        Locks[name].lockName,
-      ]
-      const calldata = await createLockHash({ args, from })
-      const tx = await unlock.createUpgradeableLock(calldata)
-      const evt = tx.logs.find((v) => v.event === 'NewLock')
-      const lock = await PublicLock.at(evt.args.newLockAddress)
-      locks[name] = lock
-      locks[name].params = Locks[name]
-    })
+    Object.keys(Locks).map((name) =>
+      deployLock(unlock, from, tokenAddress, Locks[name])
+    )
   )
   return locks
+}
+
+module.exports = {
+  deployLock,
+  deployAllLocks,
 }
