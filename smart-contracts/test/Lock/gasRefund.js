@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { reverts } = require('../helpers/errors')
 const { BN, time } = require('@openzeppelin/test-helpers')
-const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { deployERC20 } = require('../helpers')
 const deployLocks = require('../helpers/deployLocks')
 const { getBalance } = require('../helpers')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -31,7 +31,7 @@ contract('Lock / GasRefund', (accounts) => {
       beforeEach(async () => {
         unlock = await getContractInstance(unlockContract)
 
-        testToken = await tokens.dai.deploy(web3, accounts[0])
+        testToken = await deployERC20(accounts[0])
         // Mint some tokens for testing
         await testToken.mint(accounts[2], ethers.utils.parseEther('100'), {
           from: accounts[0],

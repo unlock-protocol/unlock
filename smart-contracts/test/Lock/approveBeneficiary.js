@@ -1,8 +1,8 @@
 const { ethers } = require('hardhat')
 const { reverts } = require('../helpers/errors')
-const { tokens } = require('hardlydifficult-eth')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../helpers/constants')
+const { deployERC20 } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -33,7 +33,7 @@ contract('Lock / approveBeneficiary', (accounts) => {
     let token
 
     before(async () => {
-      token = await tokens.dai.deploy(web3, daiOwner)
+      token = await deployERC20(daiOwner)
       await token.mint(keyOwner, ethers.utils.parseUnits('100', 'ether'), {
         from: daiOwner,
       })

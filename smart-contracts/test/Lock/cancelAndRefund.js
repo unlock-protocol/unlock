@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { deployERC20 } = require('../helpers')
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../helpers/constants')
@@ -19,7 +19,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
   const denominator = 10000
 
   before(async () => {
-    token = await tokens.dai.deploy(web3, accounts[0])
+    token = await deployERC20(accounts[0])
     await token.mint(accounts[0], 100, {
       from: accounts[0],
     })

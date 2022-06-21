@@ -1,9 +1,15 @@
 const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
-const { tokens, protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
+const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+const {
+  deployWETH,
+  deployERC20,
+  deployUniswapV2,
+  deployUniswapOracle,
+} = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -78,7 +84,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
   describe('A supported token', () => {
     beforeEach(async () => {
-      token = await tokens.dai.deploy(web3, protocolOwner)
+      token = await deployERC20(protocolOwner)
       // Mint some tokens so that the totalSupply is greater than 0
       await token.mint(keyOwner, ethers.utils.parseUnits('10000', 'ether'), {
         from: protocolOwner,
@@ -88,13 +94,8 @@ contract('Unlock / uniswapValue', (accounts) => {
       lock = locks.FIRST
 
       // Deploy the exchange
-      const weth = await tokens.weth.deploy(web3, protocolOwner)
-      const uniswapRouter = await protocols.uniswapV2.deploy(
-        web3,
-        protocolOwner,
-        ADDRESS_ZERO,
-        weth.address
-      )
+      const weth = await deployWETH(protocolOwner)
+      const uniswapRouter = await deployUniswapV2(weth.address, protocolOwner)
       // Create DAI <-> WETH pool
       await token.mint(
         liquidityOwner,
@@ -106,33 +107,37 @@ contract('Unlock / uniswapValue', (accounts) => {
       await token.approve(uniswapRouter.address, MAX_UINT, {
         from: liquidityOwner,
       })
-      await uniswapRouter.addLiquidityETH(
-        token.address,
-        ethers.utils.parseUnits('2000', 'ether'),
-        '1',
-        '1',
-        liquidityOwner,
-        MAX_UINT,
-        { from: liquidityOwner, value: ethers.utils.parseUnits('10', 'ether') }
-      )
 
-      const uniswapOracle = await protocols.uniswapOracle.deploy(
-        web3,
-        protocolOwner,
-        await uniswapRouter.factory()
+      await uniswapRouter
+        .connect(await ethers.getSigner(liquidityOwner))
+        .addLiquidityETH(
+          token.address,
+          ethers.utils.parseUnits('2000', 'ether'),
+          '1',
+          '1',
+          liquidityOwner,
+          MAX_UINT,
+          { value: ethers.utils.parseUnits('10', 'ether')  }
+        )
+
+      const uniswapOracle = await deployUniswapOracle(
+        await uniswapRouter.factory(),
+        protocolOwner
       )
 
       // Advancing time to avoid an intermittent test fail
       await time.increase(time.duration.hours(1))
 
       // Do a swap so there is some data accumulated
-      await uniswapRouter.swapExactETHForTokens(
-        1,
-        [weth.address, token.address],
-        keyOwner,
-        MAX_UINT,
-        { from: keyOwner, value: ethers.utils.parseUnits('1', 'ether') }
-      )
+      await uniswapRouter
+        .connect(await ethers.getSigner(keyOwner))
+        .swapExactETHForTokens(
+          1,
+          [weth.address, token.address],
+          keyOwner,
+          MAX_UINT,
+          { value: ethers.utils.parseUnits('1', 'ether') }
+        )
 
       // Config in Unlock
       await unlock.configUnlock(
@@ -206,7 +211,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
   describe('A unsupported token', () => {
     beforeEach(async () => {
-      token = await tokens.dai.deploy(web3, protocolOwner)
+      token = await deployERC20(protocolOwner)
       // Mint some tokens so that the totalSupply is greater than 0
       await token.mint(keyOwner, ethers.utils.parseUnits('10000', 'ether'), {
         from: protocolOwner,

@@ -1,4 +1,4 @@
-const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { deployERC20 } = require('../helpers')
 const { reverts } = require('../helpers/errors')
 const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
@@ -25,7 +25,7 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
   // const referrer = accounts[3]
 
   before(async () => {
-    dai = await tokens.dai.deploy(web3, lockOwner)
+    dai = await deployERC20(lockOwner)
 
     // Mint some dais for testing
     await dai.mint(keyOwner, someDai, {
@@ -138,7 +138,7 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
     describe('token changed', () => {
       it('should renew once key has been extended', async () => {
         // deploy a new erc20 token
-        const xdai = await tokens.dai.deploy(web3, lockOwner)
+        const xdai = await deployERC20(lockOwner)
         await xdai.mint(keyOwner, someDai, {
           from: lockOwner,
         })
