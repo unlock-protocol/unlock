@@ -7,13 +7,11 @@ const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let lock
-let templateAddress
 let publicLockUpgraded
 
 contract('Unlock / createLock (Legacy)', (accounts) => {
   before(async () => {
     unlock = await getContractInstance(unlockContract)
-    templateAddress = await unlock.publicLockAddress()
 
     // deploy new implementation
     const PublicLockUpgraded = await ethers.getContractFactory(
