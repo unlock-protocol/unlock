@@ -153,16 +153,20 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
 
         // expire key again
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
+        await time.increaseTo(newExpirationTs.toNumber())
 
         // renewal should work
-        await time.increaseTo(newExpirationTs.toNumber() - 1)
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO, {
           from: keyOwner,
         })
+
+        const tsExpected = newExpirationTs.add(await lock.expirationDuration())
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
+
         assert.equal(
-          newExpirationTs.add(await lock.expirationDuration()).toString(),
-          tsAfter.toString()
+          // assert results for +/- 2 sec
+          tsAfter.toNumber() - tsExpected.toNumber() <= 2,
+          true
         )
       })
     })
