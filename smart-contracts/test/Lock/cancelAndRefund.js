@@ -15,6 +15,7 @@ let tokenIds
 
 contract('Lock / cancelAndRefund', (accounts) => {
   let lock
+  let locks
   const denominator = 10000
   const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const lockCreator = accounts[0]

@@ -16,7 +16,6 @@ let token
 const minAmount = ethers.utils.parseEther('0.05')
 
 contract('ERC20BalanceOfHook', (accounts) => {
-  const from = accounts[1]
   const tokenOwner = accounts[2]
   const keyOwner = accounts[3]
 

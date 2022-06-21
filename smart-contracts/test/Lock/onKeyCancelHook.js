@@ -12,7 +12,6 @@ let testEventHooks
 
 contract('Lock / onKeyCancelHook', (accounts) => {
   const to = accounts[2]
-  let keyPrice
 
   before(async () => {
     unlock = await getContractInstance(unlockContract)
@@ -26,7 +25,6 @@ contract('Lock / onKeyCancelHook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    keyPrice = await lock.keyPrice()
     const { tokenId } = await purchaseKey(lock, to)
     await lock.cancelAndRefund(tokenId, { from: to })
   })

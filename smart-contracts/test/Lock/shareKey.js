@@ -22,7 +22,6 @@ contract('Lock / shareKey', (accounts) => {
   const accountWithNoKey2 = accounts[5]
   const accountWithNoKey3 = accounts[6]
   const approvedAddress = accounts[7]
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
 
   beforeEach(async () => {
     unlock = await getContractInstance(unlockContract)

@@ -1,9 +1,7 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const { purchaseKeys } = require('../helpers')
+const { purchaseKeys, reverts } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')

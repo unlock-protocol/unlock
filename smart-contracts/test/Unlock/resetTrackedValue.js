@@ -1,6 +1,6 @@
 const BigNumber = require('bignumber.js')
 
-const { reverts, ADDRESS_ZERO, purchaseKey } = require('../helpers')
+const { reverts, purchaseKey } = require('../helpers')
 
 const deployLocks = require('../helpers/deployLocks')
 

@@ -2,7 +2,12 @@ const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
 
-const { deployERC20, reverts, purchaseKey, ADDRESS_ZERO } = require('../helpers')
+const {
+  deployERC20,
+  reverts,
+  purchaseKey,
+  ADDRESS_ZERO,
+} = require('../helpers')
 const deployLocks = require('../helpers/deployLocks')
 const getContractInstance = require('../helpers/truffle-artifacts')
 

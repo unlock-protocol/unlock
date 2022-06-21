@@ -1,13 +1,12 @@
 const { assert } = require('chai')
 const { time } = require('@openzeppelin/test-helpers')
 const BigNumber = require('bignumber.js')
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { purchaseKey } = require('../helpers')
+const { purchaseKey, MAX_UINT } = require('../helpers')
 
 let lock
 let locks

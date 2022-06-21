@@ -1,4 +1,9 @@
-const { deployERC20, reverts, purchaseKey, ADDRESS_ZERO } = require('../helpers')
+const {
+  deployERC20,
+  reverts,
+  purchaseKey,
+  ADDRESS_ZERO,
+} = require('../helpers')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')

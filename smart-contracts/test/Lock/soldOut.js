@@ -1,4 +1,4 @@
-const { reverts, purchaseKeys, ADDRESS_ZERO } = require('../helpers')
+const { reverts, purchaseKeys } = require('../helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
