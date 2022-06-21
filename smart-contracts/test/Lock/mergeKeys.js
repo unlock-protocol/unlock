@@ -1,8 +1,8 @@
 const BigNumber = require('bignumber.js')
 const { assert } = require('chai')
-const { reverts } = require('../helpers/errors')
+
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { purchaseKeys, reverts } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -21,20 +21,7 @@ contract('Lock / mergeKeys', (accounts) => {
     unlock = await getContractInstance(unlockContract)
     locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
-
-    const tx = await lock.purchase(
-      [],
-      [keyOwner, keyOwner2],
-      [ADDRESS_ZERO, ADDRESS_ZERO],
-      [ADDRESS_ZERO, ADDRESS_ZERO],
-      [[], []],
-      {
-        value: web3.utils.toWei('0.02', 'ether'),
-      }
-    )
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    ;({ tokenIds } = await purchaseKeys(lock, 2))
   })
 
   describe('merge some amount of time', () => {

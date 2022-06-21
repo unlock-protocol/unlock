@@ -1,6 +1,5 @@
-const { reverts } = require('../../helpers/errors')
+const { purchaseKey, reverts } = require('../../helpers')
 const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 
@@ -101,16 +100,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
       )
       event = txObj.logs[0]
 
-      await lock.purchase(
-        [],
-        [accounts[0]],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          value: web3.utils.toWei('0.01', 'ether'),
-        }
-      )
+      await purchaseKey(lock, accounts[0])
       uri = await lock.tokenURI(1)
       assert.equal(uri, 'https:/customBaseTokenURI.com/api/key/' + '1')
     })
