@@ -130,6 +130,7 @@ contract MixinTransfer is
   )
     public
   {
+    _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
     
     // revert if keyy manager is set

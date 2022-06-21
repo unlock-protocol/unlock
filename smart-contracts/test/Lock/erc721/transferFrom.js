@@ -66,7 +66,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         locks.FIRST.transferFrom(keyOwners[0], accounts[9], tokenIds[2], {
           from: keyOwners[0],
         }),
-        'UNAUTHORIZED'
+        'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
 
@@ -143,7 +143,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
           locks.FIRST.transferFrom(keyOwners[0], accountApproved, tokenIds[2], {
             from: accountApproved,
           }),
-          'UNAUTHORIZED'
+          'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
 
