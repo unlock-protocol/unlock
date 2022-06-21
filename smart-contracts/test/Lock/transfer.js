@@ -3,7 +3,7 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO, reverts } = require('../helpers/constants')
+const { ADDRESS_ZERO, reverts } = require('../helpers')
 
 let unlock
 let lock

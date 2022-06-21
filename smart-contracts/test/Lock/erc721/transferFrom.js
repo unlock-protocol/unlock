@@ -18,7 +18,6 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     unlock = await getContractInstance(unlockContract)
   })
 
-  const from = accounts[0]
   keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
 
   beforeEach(async () => {
@@ -204,7 +203,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
 
         // confirm that the lock is sold out
         await reverts(
-          await purchaseKey(locks['SINGLE KEY'], keyOwners[0]),
+          purchaseKey(locks['SINGLE KEY'], keyOwners[0]),
           'LOCK_SOLD_OUT'
         )
 

@@ -26,7 +26,7 @@ contract('Lock / uniqueTokenIds', (accounts) => {
       const { tokenIds } = await purchaseKeys(lock, keyOwners.length)
 
       const supply = await lock.totalSupply()
-      assert(tokenIds[tokenIds.length - 1].eq(supply))
+      assert.equal(tokenIds[tokenIds.length - 1].toNumber(), supply.toNumber())
 
       // extend a key
       await lock.extend(0, tokenIds[1], ADDRESS_ZERO, [], {
@@ -35,7 +35,10 @@ contract('Lock / uniqueTokenIds', (accounts) => {
       })
 
       // make sure no new keys have been created
-      assert(tokenIds[tokenIds.length - 1].eq(await lock.totalSupply()))
+      assert.equal(
+        tokenIds[tokenIds.length - 1].toNumber(),
+        (await lock.totalSupply()).toNumber()
+      )
     })
   })
 })

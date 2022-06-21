@@ -7,7 +7,6 @@ const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
 
 let lock
-let locks
 let unlock
 let tokenIds
 
@@ -15,11 +14,10 @@ contract('Lock / owners', (accounts) => {
   const keyOwners = accounts.slice(1, 6)
   before(async () => {
     unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
+    const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
     await lock.updateTransferFee(0) // disable the transfer fee for this test
-    await purchaseKeys()
   })
 
   before(async () => {

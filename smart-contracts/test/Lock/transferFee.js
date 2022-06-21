@@ -5,14 +5,12 @@ const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO, reverts, purchaseKey } = require('../helpers/constants')
+const { reverts, purchaseKey } = require('../helpers')
 
 let unlock
-let locks
 
 contract('Lock / transferFee', (accounts) => {
   let lock
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const keyOwner = accounts[1]
   const denominator = 10000
   let tokenId
@@ -20,7 +18,7 @@ contract('Lock / transferFee', (accounts) => {
   before(async () => {
     unlock = await getContractInstance(unlockContract)
     // TODO test using an ERC20 priced lock as well
-    locks = await deployLocks(unlock, accounts[0])
+    const locks = await deployLocks(unlock, accounts[0])
     lock = locks.FIRST
     ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
