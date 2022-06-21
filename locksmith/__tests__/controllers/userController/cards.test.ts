@@ -1,7 +1,6 @@
+import { ethers } from 'ethers'
 import request from 'supertest'
 
-import ethJsUtil = require('ethereumjs-util')
-import sigUtil = require('eth-sig-util')
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
 import models = require('../../../src/models')
@@ -84,14 +83,14 @@ describe('when requesting cards', () => {
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
       const typedData = generateTypedData(message)
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+
+      const { domain, types } = typedData
+      const sig = await wallet._signTypedData(domain, types, message)
 
       const response = await request(app)
         .get(`/users/${publicKey}/credit-cards`)
@@ -111,14 +110,15 @@ describe('when requesting cards', () => {
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61'
       )
 
       const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: `I want to retrieve the card token for ${message['Get Card'].publicKey}`,
-      })
+
+      const sig = await wallet.signMessage(
+        `I want to retrieve the card token for ${message['Get Card'].publicKey}`
+      )
 
       const response = await request(app)
         .get(`/users/${publicKey}/credit-cards`)
@@ -169,14 +169,12 @@ describe('when updating cards', () => {
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
       const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
-      })
+      const sig = await wallet.signMessage(JSON.stringify(typedData))
 
       const response = await request(app)
         .put(`/users/${publicKey}/credit-cards`)
@@ -200,7 +198,7 @@ describe('when updating cards', () => {
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
@@ -209,9 +207,9 @@ describe('when updating cards', () => {
         .mockReturnValueOnce(Promise.resolve(true))
 
       const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: `I save my payment card for my account ${message['Save Card'].publicKey}`,
-      })
+      const sig = await wallet.signMessage(
+        `I save my payment card for my account ${message['Save Card'].publicKey}`
+      )
 
       const response = await request(app)
         .put(`/users/${publicKey}/credit-cards`)
@@ -234,14 +232,14 @@ describe('when updating cards', () => {
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
       const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: `I save my payment card for my account ${message['Save Card'].publicKey}`,
-      })
+      const sig = await wallet.signMessage(
+        `I save my payment card for my account ${message['Save Card'].publicKey}`
+      )
 
       jest
         .spyOn(UserOperations, 'updatePaymentDetails')
@@ -293,14 +291,12 @@ describe('when deleting cards', () => {
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
       const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: JSON.stringify(typedData),
-      })
+      const sig = await wallet.signMessage(JSON.stringify(typedData))
 
       const response = await request(app)
         .delete(`/users/${publicKey}/credit-cards`)
@@ -321,7 +317,7 @@ describe('when deleting cards', () => {
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61'
       )
 
@@ -330,9 +326,9 @@ describe('when deleting cards', () => {
         .mockReturnValueOnce(Promise.resolve(true))
 
       const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: `I am deleting the card linked to my account ${message['Delete Card'].publicKey}`,
-      })
+      const sig = await wallet.signMessage(
+        `I am deleting the card linked to my account ${message['Delete Card'].publicKey}`
+      )
 
       const response = await request(app)
         .delete(`/users/${publicKey}/credit-cards`)
@@ -353,7 +349,7 @@ describe('when deleting cards', () => {
         },
       }
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61'
       )
 
@@ -362,9 +358,9 @@ describe('when deleting cards', () => {
         .mockReturnValueOnce(Promise.resolve(false))
 
       const typedData = generateTypedData(message)
-      const sig = sigUtil.personalSign(privateKey, {
-        data: `I am deleting the card linked to my account ${message['Delete Card'].publicKey}`,
-      })
+      const sig = await wallet.signMessage(
+        `I am deleting the card linked to my account ${message['Delete Card'].publicKey}`
+      )
 
       const response = await request(app)
         .delete(`/users/${publicKey}/credit-cards`)

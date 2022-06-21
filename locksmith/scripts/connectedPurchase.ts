@@ -1,6 +1,5 @@
-import * as sigUtil from 'eth-sig-util'
-import * as ethJsUtil from 'ethereumjs-util'
 import * as Base64 from '../src/utils/base64'
+import { generateTypedSignature } from '../src/utils/signature'
 
 // const args = require('yargs').argv
 const request = require('request-promise-native')
@@ -32,14 +31,6 @@ function generatePurchasePayload(message: any) {
   }
 }
 
-function generateSignature(privateKey: string, data: any) {
-  const pk = ethJsUtil.toBuffer(privateKey)
-
-  return sigUtil.signTypedData(pk, {
-    data,
-  })
-}
-
 const recipient = '0xd8fdbf2302b13d4cf00bac1a25efb786759c7788'
 const pk = '0x00a7bd3ec661f15214f8a48dce017e27dd8e1b4b779aaf823d8eb74d8c960b95'
 const lock = '0xEE9FE39966DF737eECa5920ABa975c283784Faf8'
@@ -59,7 +50,7 @@ async function postPurchaseRequest(
   metadata: any,
   endpoint: string
 ) {
-  const signature = generateSignature(privateKey, metadata)
+  const signature = await generateTypedSignature(privateKey, metadata)
   const params = {
     uri: endpoint,
     method: 'POST',

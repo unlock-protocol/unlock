@@ -1,3 +1,5 @@
+import { ethers } from 'ethers'
+
 import models = require('../../../src/models')
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
@@ -41,10 +43,8 @@ beforeAll(() => {
 
 describe('user creation', () => {
   const request = require('supertest')
-  const sigUtil = require('eth-sig-util')
-  const ethJsUtil = require('ethereumjs-util')
 
-  const privateKey = ethJsUtil.toBuffer(
+  const wallet = new ethers.Wallet(
     '0x68eec585ce3c13bf0cbe407cb05cd2679cb829fe350471846c9a8aa2ea85b6ac'
   )
 
@@ -110,9 +110,9 @@ describe('user creation', () => {
       }
 
       const typedData = generateTypedData(message)
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+
+      const { domain, types } = typedData
+      const sig = await wallet._signTypedData(domain, types, message)
 
       const response = await request(app)
         .post('/users')

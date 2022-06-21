@@ -1,12 +1,11 @@
+import { ethers } from 'ethers'
 import request from 'supertest'
-import * as sigUtil from 'eth-sig-util'
-import * as ethJsUtil from 'ethereumjs-util'
 import { keyTypedData } from '../../test-helpers/typeDataGenerators'
 
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
 
-const privateKey = ethJsUtil.toBuffer(
+const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
@@ -67,9 +66,8 @@ describe('When the signee is the Lock owner', () => {
     it('stores the provided key metadata', async () => {
       expect.assertions(1)
 
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+      const { domain, types, message } = typedData
+      const sig = await wallet._signTypedData(domain, types, message)
 
       mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(true))
       const response = await request(app)

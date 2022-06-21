@@ -1,8 +1,7 @@
 /* eslint-disable no-shadow  */
+import { ethers } from 'ethers'
 import signatureValidationMiddleware from '../../src/middlewares/signatureValidationMiddleware'
 
-const ethJsUtil = require('ethereumjs-util')
-const sigUtil = require('eth-sig-util')
 const httpMocks = require('node-mocks-http')
 const Base64 = require('../../src/utils/base64')
 
@@ -34,7 +33,7 @@ beforeAll(() => {
 describe('Signature Validation Middleware', () => {
   describe('generateSignatureEvaluator', () => {
     describe('when the request has a token', () => {
-      it('returns the signee', (done) => {
+      it('returns the signee', async () => {
         expect.assertions(1)
 
         const body = {
@@ -57,13 +56,12 @@ describe('Signature Validation Middleware', () => {
           },
         }
 
-        const privateKey = ethJsUtil.toBuffer(
+        const wallet = new ethers.Wallet(
           '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
         )
 
-        const sig = sigUtil.signTypedData(privateKey, {
-          data: body,
-        })
+        const { domain, types, message } = body
+        const sig = await wallet._signTypedData(domain, types, message)
 
         const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer ${Base64.encode(sig)}` },
@@ -72,12 +70,13 @@ describe('Signature Validation Middleware', () => {
           },
         })
 
-        evaluator(request, response, function next() {
-          expect(request.signee).toBe(
-            '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-          )
-          done()
+        const signee = await new Promise((resolve, reject) => {
+          evaluator(request, response, function next() {
+            resolve(request.signee)
+          })
         })
+
+        expect(signee).toBe('0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2')
       })
     })
 
