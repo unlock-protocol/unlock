@@ -58,7 +58,7 @@ export function SignUp({ state, send, signUp }: Props) {
           </h3>
           <form
             id="confirmPassword"
-            className="space-y-6"
+            className="space-y-2"
             onSubmit={handleSubmit(onSubmit)}
           >
             <Input
