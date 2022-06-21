@@ -61,7 +61,7 @@ export function ConfirmConnect({
 
   return (
     <div>
-      <main className="p-6 overflow-auto">
+      <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="space-y-4">
           <header>
             <h1 className="font-medium text-xl">

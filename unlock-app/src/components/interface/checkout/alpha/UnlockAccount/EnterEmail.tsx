@@ -41,7 +41,7 @@ export function EnterEmail({ send }: Props) {
 
   return (
     <div>
-      <main className="p-6 overflow-auto h-64 sm:h-96">
+      <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="space-y-4">
           <h3 className="font-bold">
             Let&apos;s start with your email address

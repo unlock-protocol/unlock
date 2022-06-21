@@ -50,7 +50,7 @@ export function SignUp({ state, send, signUp }: Props) {
 
   return (
     <div>
-      <main className="p-6 overflow-auto h-64 sm:h-96">
+      <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="space-y-4">
           <h3 className="font-bold">
             Oh hey, you are new in town! Got a strong password in mind?
