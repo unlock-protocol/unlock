@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { reverts } = require('../helpers/errors')
+const { reverts, ADDRESS_ZERO } = require('../helpers/errors')
 
 const deployLocks = require('../helpers/deployLocks')
 
@@ -7,7 +7,6 @@ const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
 
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let lock

@@ -1,10 +1,10 @@
 const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
-const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 const {
+  ADDRESS_ZERO,
+  MAX_UINT,
   deployWETH,
   deployERC20,
   deployUniswapV2,
@@ -117,7 +117,7 @@ contract('Unlock / uniswapValue', (accounts) => {
           '1',
           liquidityOwner,
           MAX_UINT,
-          { value: ethers.utils.parseUnits('10', 'ether')  }
+          { value: ethers.utils.parseUnits('10', 'ether') }
         )
 
       const uniswapOracle = await deployUniswapOracle(
