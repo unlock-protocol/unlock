@@ -553,17 +553,6 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     return data
   }
 
-  const markAsCheckedIn = async (keyId: string) => {
-    if (!lockFromProps.address) return
-    const storageService = new StorageService(config.services.storage.host)
-    const response = await storageService.markTicketAsCheckedIn({
-      lockAddress: lockFromProps.address,
-      keyId,
-      network,
-    })
-    return response.status === 202
-  }
-
   function updateMaxNumberOfKeys(
     maxNumberOfKeys: number,
     callback: (...args: any) => void
@@ -618,7 +607,6 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     isStripeConnected,
     isLockManager,
     getKeyData,
-    markAsCheckedIn,
     updateMaxNumberOfKeys,
     purchaseMultipleKeys,
     updateSelfAllowance,

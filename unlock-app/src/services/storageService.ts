@@ -687,7 +687,7 @@ export class StorageService extends EventEmitter {
     keyId: string
     network: number
   }) {
-    const url = `${this.host}/v2/api/verifier/${network}/lock/${lockAddress}/key/${keyId}/check`
+    const url = `${this.host}/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
     return fetch(url, {
       method: 'PUT',
       headers: {
