@@ -130,26 +130,11 @@ contract MixinTransfer is
   )
     public
   {
-    _isValidKey(_tokenId);
-    
-    // the specified address does not own the token
-    if (ownerOf(_tokenId) != _from) {
-      revert UNAUTHORIZED();
-    }
-
     // a key manager is set
     if (keyManagerOf[_tokenId] != address(0)) {
       revert UNAUTHORIZED();
     }
-
-    // the sender is not owner or authorized
-    if(
-      ownerOf(_tokenId) != msg.sender
-      && approved[_tokenId] != msg.sender
-      && !isApprovedForAll(_ownerOf[_tokenId], msg.sender)
-    ) {
-      revert UNAUTHORIZED();
-    }
+    _onlyKeyManagerOrApproved(_tokenIdFrom);
     _transferFrom(_from, _recipient, _tokenId);
   }
 
@@ -170,8 +155,6 @@ contract MixinTransfer is
   )
     public
   {
-    _isValidKey(_tokenId);
-    
     // make sure caller is either owner or key manager 
     if(msg.sender != keyManagerOf[_tokenId] && msg.sender != ownerOf(_tokenId)) {
       revert UNAUTHORIZED();
@@ -195,6 +178,8 @@ contract MixinTransfer is
     uint _tokenId
   ) private {
 
+    _isValidKey(_tokenId);
+    
     if(ownerOf(_tokenId) != _from) {
       revert UNAUTHORIZED();
     }
@@ -207,7 +192,6 @@ contract MixinTransfer is
     if(_from == _recipient) {
       revert TRANSFER_TO_SELF();
     }
-
 
     // subtract the fee from the senders key before the transfer
     _timeMachine(_tokenId, getTransferFee(_tokenId, 0), false);  

@@ -490,9 +490,9 @@ contract MixinKeys is
   }
 
   /**
-   * @notice Public function for updating transfer and cancel rights for a given key
+   * @notice Public function for setting the manager for a given key
    * @param _tokenId The id of the key to assign rights for
-   * @param _keyManager The address with the manager's rights for the given key.
+   * @param _keyManager the address with the manager's rights for the given key.
    * Setting _keyManager to address(0) means the keyOwner is also the keyManager
    */
   function setKeyManagerOf(
@@ -502,7 +502,9 @@ contract MixinKeys is
   {
     _isKey(_tokenId);
     if(
+      // is already key manager
       !_isKeyManager(_tokenId, msg.sender) 
+      // is lock manager
       && !isLockManager(msg.sender)
     ) {
       revert UNAUTHORIZED_KEY_MANAGER_UPDATE();
@@ -574,7 +576,8 @@ contract MixinKeys is
   }
 
   /**
-   * Returns true if _keyManager is the manager of the key
+   * Returns true if _keyManager is explicitly set as key manager, or if the 
+   * address is the owner but no km is set.
    * identified by _tokenId
    */
   function _isKeyManager(
@@ -583,8 +586,15 @@ contract MixinKeys is
   ) internal view
     returns (bool)
   {
-    if(keyManagerOf[_tokenId] == _keyManager ||
-      (keyManagerOf[_tokenId] == address(0) && ownerOf(_tokenId) == _keyManager)) {
+    if(
+      // is explicitely a key manager
+      keyManagerOf[_tokenId] == _keyManager 
+      ||
+      (
+        // is owner and no key manager is set
+        ownerOf(_tokenId) == _keyManager)
+        && keyManagerOf[_tokenId] == address(0) 
+      ) {
       return true;
     } else {
       return false;

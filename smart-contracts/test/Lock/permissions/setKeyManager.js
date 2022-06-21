@@ -87,6 +87,7 @@ contract('Permissions / KeyManager', (accounts) => {
         'UNAUTHORIZED_KEY_MANAGER_UPDATE'
       )
     })
+
     describe('setting the KM to 0x00', () => {
       before(async () => {
         keyManager = await lock.keyManagerOf.call(tokenId)
