@@ -154,15 +154,13 @@ export const checkoutMachine = createMachine(
       quantity: 1,
       recipients: [],
     },
+    on: {},
     states: {
       SELECT: {
         on: {
           SELECT_LOCK: {
             target: 'QUANTITY',
             actions: ['selectLock'],
-          },
-          DISCONNECT: {
-            actions: ['disconnect'],
           },
           UNLOCK_ACCOUNT: {
             target: 'UNLOCK_ACCOUNT',
@@ -180,24 +178,20 @@ export const checkoutMachine = createMachine(
           CONTINUE: [
             {
               target: 'CARD',
-              cond: (context) => context.payment.method === 'card',
+              cond: 'requireCardPayment',
             },
             {
               target: 'METADATA',
-              cond: (context) =>
-                Boolean(
-                  context.paywallConfig.metadataInputs?.length ||
-                    context.paywallConfig.locks?.[context.lock!.address]
-                      ?.metadataInputs?.length
-                ),
+              cond: 'requireMetadata',
+            },
+            {
+              target: 'MESSAGE_TO_SIGN',
+              cond: 'requireMessageToSign',
             },
             {
               target: 'CONFIRM',
             },
           ],
-          DISCONNECT: {
-            actions: ['disconnect'],
-          },
           UNLOCK_ACCOUNT: {
             target: 'UNLOCK_ACCOUNT',
           },
@@ -209,27 +203,34 @@ export const checkoutMachine = createMachine(
             {
               target: 'METADATA',
               actions: ['selectCardToCharge'],
-              cond: (context) =>
-                Boolean(
-                  context.paywallConfig.metadataInputs?.length ||
-                    context.paywallConfig.locks?.[context.lock!.address]
-                      ?.metadataInputs?.length
-                ),
+              cond: 'requireMetadata',
             },
             {
               target: 'MESSAGE_TO_SIGN',
               actions: ['selectCardToCharge'],
-              cond: (context) => !!context.paywallConfig.messageToSign,
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'CAPTCHA',
+              actions: ['selectCardToCharge'],
+              cond: 'requireCaptcha',
             },
             {
               target: 'CONFIRM',
               actions: ['selectCardToCharge'],
             },
           ],
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-          },
+          DISCONNECT: [
+            {
+              target: 'QUANTITY',
+              actions: ['disconnect'],
+              cond: 'isLockSelected',
+            },
+            {
+              target: 'SELECT',
+              actions: ['disconnect'],
+            },
+          ],
         },
       },
       METADATA: {
@@ -238,24 +239,29 @@ export const checkoutMachine = createMachine(
             {
               target: 'MESSAGE_TO_SIGN',
               actions: ['selectRecipients'],
-              cond: (context) => !!context.paywallConfig.messageToSign,
+              cond: 'requireMessageToSign',
             },
             {
               target: 'CAPTCHA',
               actions: ['selectRecipients'],
-              cond: (context) =>
-                !!context.paywallConfig.captcha &&
-                context.payment.method !== 'card',
+              cond: 'requireCaptcha',
             },
             {
               target: 'CONFIRM',
               actions: ['selectRecipients'],
             },
           ],
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-          },
+          DISCONNECT: [
+            {
+              target: 'QUANTITY',
+              actions: ['disconnect'],
+              cond: 'isLockSelected',
+            },
+            {
+              target: 'SELECT',
+              actions: ['disconnect'],
+            },
+          ],
         },
       },
       MESSAGE_TO_SIGN: {
@@ -264,39 +270,62 @@ export const checkoutMachine = createMachine(
             {
               target: 'CAPTCHA',
               actions: ['signMessage'],
-              cond: (context) =>
-                !!context.paywallConfig.captcha &&
-                context.payment.method !== 'card',
+              cond: 'requireCaptcha',
             },
             {
               target: 'CONFIRM',
               actions: ['signMessage'],
             },
           ],
+          DISCONNECT: [
+            {
+              target: 'QUANTITY',
+              actions: ['disconnect'],
+              cond: 'isLockSelected',
+            },
+            {
+              target: 'SELECT',
+              actions: ['disconnect'],
+            },
+          ],
         },
       },
       CAPTCHA: {
         on: {
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-          },
           SOLVE_CAPTCHA: {
             target: 'CONFIRM',
             actions: ['solveCaptcha'],
           },
+          DISCONNECT: [
+            {
+              target: 'QUANTITY',
+              actions: ['disconnect'],
+              cond: 'isLockSelected',
+            },
+            {
+              target: 'SELECT',
+              actions: ['disconnect'],
+            },
+          ],
         },
       },
       CONFIRM: {
         on: {
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-          },
           CONFIRM_MINT: {
             target: 'MINTING',
             actions: ['confirmMint'],
           },
+          DISCONNECT: [
+            {
+              target: 'QUANTITY',
+              actions: ['disconnect'],
+              cond: 'isLockSelected',
+            },
+            {
+              target: 'SELECT',
+              actions: ['disconnect'],
+            },
+          ],
         },
       },
       MINTING: {
@@ -314,7 +343,7 @@ export const checkoutMachine = createMachine(
           onDone: [
             {
               target: 'QUANTITY',
-              cond: (context) => !!context.lock,
+              cond: 'isLockSelected',
             },
             {
               target: 'SELECT',
@@ -327,6 +356,17 @@ export const checkoutMachine = createMachine(
           MAKE_ANOTHER_PURCHASE: {
             target: 'SELECT',
           },
+          DISCONNECT: [
+            {
+              target: 'QUANTITY',
+              actions: ['disconnect'],
+              cond: 'isLockSelected',
+            },
+            {
+              target: 'SELECT',
+              actions: ['disconnect'],
+            },
+          ],
         },
       },
     },
@@ -402,6 +442,25 @@ export const checkoutMachine = createMachine(
           return event.data
         },
       }),
+    },
+    guards: {
+      isLockSelected: (context) => {
+        return !!context.lock
+      },
+      requireMetadata: (context) => {
+        return Boolean(
+          context.paywallConfig.metadataInputs?.length ||
+            context.paywallConfig.locks?.[context.lock!.address]?.metadataInputs
+              ?.length
+        )
+      },
+      requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
+      requireCaptcha: (context) => {
+        return (
+          !!context.paywallConfig.captcha && context.payment.method !== 'card'
+        )
+      },
+      requireCardPayment: (context) => context.payment.method === 'card',
     },
   }
 )

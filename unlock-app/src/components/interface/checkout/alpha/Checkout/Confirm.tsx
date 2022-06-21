@@ -113,6 +113,7 @@ export function Confirm({ state, send, injectedProvider }: Props) {
         paymentIntent.id
       )
 
+      setIsConfirming(false)
       if (response.transactionHash) {
         send({
           type: 'CONFIRM_MINT',

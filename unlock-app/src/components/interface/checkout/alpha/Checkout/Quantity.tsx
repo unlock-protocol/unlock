@@ -10,6 +10,7 @@ import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
+import { useEffect } from '@storybook/addons'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
@@ -154,6 +155,9 @@ export function Quantity({ state, send, injectedProvider }: Props) {
                   disabled={quantity < 1 || isLoading || isUnlockAccount}
                   onClick={(event) => {
                     event.preventDefault()
+                    if (isUnlockAccount) {
+                      changeNetwork(config.networks[lock!.network])
+                    }
                     send({
                       type: 'SELECT_QUANTITY',
                       quantity,
@@ -176,6 +180,9 @@ export function Quantity({ state, send, injectedProvider }: Props) {
                   }
                   onClick={(event) => {
                     event.preventDefault()
+                    if (isUnlockAccount) {
+                      changeNetwork(config.networks[lock!.network])
+                    }
                     send({
                       type: 'SELECT_QUANTITY',
                       quantity,

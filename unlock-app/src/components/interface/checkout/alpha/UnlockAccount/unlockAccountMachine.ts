@@ -27,6 +27,7 @@ interface UnlockAccountMachineContext {
 
 export const unlockAccountMachine = createMachine(
   {
+    id: 'unlockAccount',
     tsTypes: {} as import('./unlockAccountMachine.typegen').Typegen0,
     schema: {
       events: {} as UnlockAccountMachineEvents,
@@ -39,20 +40,20 @@ export const unlockAccountMachine = createMachine(
     },
     states: {
       ENTER_EMAIL: {
+        always: [
+          {
+            target: 'SIGN_IN',
+            cond: 'isExistingUser',
+          },
+          {
+            target: 'SIGN_UP',
+            cond: 'isNotExistingUser',
+          },
+        ],
         on: {
           SUBMIT_USER: {
             actions: ['submitUser'],
           },
-          CONTINUE: [
-            {
-              target: 'SIGN_IN',
-              cond: (context) => context.existingUser,
-            },
-            {
-              target: 'SIGN_UP',
-              cond: (context) => !context.existingUser,
-            },
-          ],
         },
       },
       SIGN_UP: {
@@ -82,6 +83,14 @@ export const unlockAccountMachine = createMachine(
           existingUser,
         } as const
       }),
+    },
+    guards: {
+      isExistingUser: (ctx) => {
+        return ctx.existingUser && !!ctx.email
+      },
+      isNotExistingUser: (ctx) => {
+        return !ctx.existingUser && !!ctx.email
+      },
     },
   }
 )

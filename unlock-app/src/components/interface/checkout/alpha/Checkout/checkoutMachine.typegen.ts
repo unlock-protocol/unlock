@@ -4,16 +4,21 @@ export interface Typegen0 {
   '@@xstate/typegen': true
   eventsCausingActions: {
     selectLock: 'SELECT_LOCK'
-    disconnect: 'DISCONNECT'
     selectQuantity: 'SELECT_QUANTITY'
     selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
     selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
+    disconnect: 'DISCONNECT'
     selectRecipients: 'SELECT_RECIPIENTS'
     signMessage: 'SIGN_MESSAGE'
     solveCaptcha: 'SOLVE_CAPTCHA'
     confirmMint: 'CONFIRM_MINT'
   }
   internalEvents: {
+    'done.invoke.unlockAccount': {
+      type: 'done.invoke.unlockAccount'
+      data: unknown
+      __tip: 'See the XState TS docs to learn how to strongly type this.'
+    }
     'xstate.init': { type: 'xstate.init' }
   }
   invokeSrcNameMap: {}
@@ -24,7 +29,19 @@ export interface Typegen0 {
     delays: never
   }
   eventsCausingServices: {}
-  eventsCausingGuards: {}
+  eventsCausingGuards: {
+    requireCardPayment: 'CONTINUE'
+    requireMetadata: 'CONTINUE' | 'SELECT_CARD_TO_CHARGE'
+    requireMessageToSign:
+      | 'CONTINUE'
+      | 'SELECT_CARD_TO_CHARGE'
+      | 'SELECT_RECIPIENTS'
+    requireCaptcha:
+      | 'SELECT_CARD_TO_CHARGE'
+      | 'SELECT_RECIPIENTS'
+      | 'SIGN_MESSAGE'
+    isLockSelected: 'DISCONNECT' | 'done.invoke.unlockAccount'
+  }
   eventsCausingDelays: {}
   matchesStates:
     | 'SELECT'

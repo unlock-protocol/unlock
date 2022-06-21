@@ -16,13 +16,10 @@ type ConnectMachineEvents = UnlockAccountEvent
 
 export const connectMachine = createMachine(
   {
+    id: 'connect',
     tsTypes: {} as import('./connectMachine.typegen').Typegen0,
     schema: {
       events: {} as ConnectMachineEvents,
-    },
-    context: {
-      email: '',
-      existingUser: false,
     },
     initial: 'CONNECT',
     states: {

@@ -28,7 +28,6 @@ export function EnterEmail({ send }: Props) {
         existingUser,
       })
       setIsContinuing(false)
-      send('CONTINUE')
     } catch (error) {
       if (error instanceof Error) {
         setError('email', {

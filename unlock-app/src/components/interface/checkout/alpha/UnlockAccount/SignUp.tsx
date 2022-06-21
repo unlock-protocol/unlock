@@ -56,7 +56,11 @@ export function SignUp({ state, send, signUp }: Props) {
             Oh hey, you are new in town! Got a strong password in mind?
             Let&apos;s set it up, shall we?
           </h3>
-          <form id="confirmPassword" onSubmit={handleSubmit(onSubmit)}>
+          <form
+            id="confirmPassword"
+            className="space-y-6"
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <Input
               label="Password"
               type="password"
@@ -67,6 +71,10 @@ export function SignUp({ state, send, signUp }: Props) {
               description="Enter your password"
               {...register('password', {
                 required: true,
+                minLength: {
+                  value: 8,
+                  message: 'Password should be 8 characters long at least.',
+                },
               })}
             />
             <Input
@@ -74,6 +82,7 @@ export function SignUp({ state, send, signUp }: Props) {
               type="password"
               placeholder="confirm"
               required
+              size="small"
               error={errors?.confirmedPassword?.message}
               description="Retype your password to confirm"
               {...register('confirmedPassword', {
