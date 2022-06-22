@@ -33,7 +33,7 @@ export const useProvider = (config: any) => {
   const [encryptedPrivateKey, setEncryptedPrivateKey] = useState<
     any | undefined
   >(undefined)
-  const { getStorage, setStorage, clearStorage } = useAppStorage()
+  const { getStorage, setStorage, clearStorage, removeKey } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(account)
 
   useEffect(() => {
@@ -46,10 +46,14 @@ export const useProvider = (config: any) => {
     }
   }, [account, network])
 
+  const removeAccessToken = () => {
+    removeKey('token', true)
+  }
+
   const resetProvider = async (provider: ethers.providers.Provider) => {
     try {
+      removeAccessToken()
       const _walletService = new WalletService(config.networks)
-
       setProvider(provider)
       // @ts-expect-error TODO fix walletService signature
       const _network = await _walletService.connect(provider)
