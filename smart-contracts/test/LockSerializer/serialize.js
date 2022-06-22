@@ -1,16 +1,16 @@
 const { ethers } = require('hardhat')
 const compareValues = require('./_compareValues')
 
-const { deployAllLocks, ADDRESS_ZERO } = require('../helpers')
+const { deployLock, ADDRESS_ZERO } = require('../helpers')
 
 contract('LockSerializer', () => {
+  let lock
   let serializer
-  let PublicLock
-  let beneficiary
-  const locks = {}
+  let lockOwner
+  let keyOwner
 
   beforeEach(async () => {
-    ;[, beneficiary] = await ethers.getSigners()
+    ;[lockOwner, keyOwner] = await ethers.getSigners()
 
     // deploy serializer
     const LockSerializer = await ethers.getContractFactory('LockSerializer')
@@ -18,38 +18,31 @@ contract('LockSerializer', () => {
     await serializer.deployed()
 
     // get locks (truffle version)
-    const locksTruffle = await deployAllLocks(null, beneficiary.address)
-    // parse locks for ethers
-    PublicLock = await ethers.getContractFactory(
-      'contracts/PublicLock.sol:PublicLock'
+    const { address } = await deployLock()
+
+    // parse lock for ethers
+    lock = await ethers.getContractAt(
+      'contracts/PublicLock.sol:PublicLock',
+      address
     )
-    Object.keys(locksTruffle).forEach((k) => {
-      locks[k] = PublicLock.attach(locksTruffle[k].address)
-    })
   })
 
   describe('serialize', () => {
-    it('deserialize values properly', () => {
-      Object.keys(locks).forEach(async (id) => {
-        const lock = locks[id]
-        const serialized = await serializer.serialize(lock.address)
-        await compareValues(serialized, lock)
-      })
+    it('deserialize values properly', async () => {
+      const serialized = await serializer.serialize(lock.address)
+      await compareValues(serialized, lock)
     })
 
     it('fetch a sample of the tokenURI properly', async () => {
-      const lock = locks.FIRST
       const keyPrice = ethers.utils.parseEther('0.01')
       const baseTokenURI = 'https://hahaha.com/'
 
-      const [, purchaser] = await ethers.getSigners()
-
       // purchase a key
       const tx = await lock
-        .connect(purchaser)
+        .connect(keyOwner)
         .purchase(
           [keyPrice.toString()],
-          [purchaser.address],
+          [keyOwner.address],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [[]],
@@ -67,7 +60,7 @@ contract('LockSerializer', () => {
       )
 
       // custom URI
-      await lock.connect(beneficiary).setBaseTokenURI(baseTokenURI)
+      await lock.connect(lockOwner).setBaseTokenURI(baseTokenURI)
       const serializedCustomBaseURI = await serializer.serialize(lock.address)
       await assert.equal(
         serializedCustomBaseURI.tokenURISample,
@@ -77,12 +70,10 @@ contract('LockSerializer', () => {
 
     describe('key ownership', () => {
       let purchasers
-      let lock
       const keyPrice = ethers.utils.parseEther('0.01')
 
       // eslint-disable-next-line func-names
       beforeEach(async function () {
-        lock = locks.FIRST
         const [, ..._purchasers] = await ethers.getSigners()
         const maxNumberOfKeys = await lock.maxNumberOfKeys()
         purchasers = _purchasers.slice(0, maxNumberOfKeys.toNumber()) // prevent soldout revert

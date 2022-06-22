@@ -5,7 +5,7 @@ contract('Lock / purchaseForFrom', (accounts) => {
   let lockFree
   before(async () => {
     lock = await deployLock()
-    lock = await deployLock({ name: 'FREE' })
+    lockFree = await deployLock({ name: 'FREE' })
     await lock.setMaxKeysPerAddress(10)
   })
 

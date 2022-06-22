@@ -3,12 +3,15 @@
 
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
-const { ethers, network, upgrades } = require('hardhat')
-const { ADDRESS_ZERO, deployLock, createExchange } = require('../helpers')
+const { ethers, network } = require('hardhat')
+const {
+  ADDRESS_ZERO,
+  deployContracts,
+  deployLock,
+  createExchange,
+} = require('../helpers')
 
-const Unlock = artifacts.require('Unlock.sol')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
-const PublicLock = artifacts.require('PublicLock')
 
 let unlock
 let udt
@@ -21,42 +24,19 @@ const estimateGas = 252166 * 2
 const baseFeePerGas = 1000000000 // in gwei
 
 contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
-  const [, protocolOwner, minter, referrer, keyBuyer] = accounts
+  const [protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
   before(async () => {
-    const UnlockEthers = await ethers.getContractFactory('Unlock')
-    const proxyUnlock = await upgrades.deployProxy(
-      UnlockEthers,
-      [protocolOwner],
-      {
-        kind: 'transparent',
-        initializer: 'initialize(address)',
-      }
-    )
-    await proxyUnlock.deployed()
-    unlock = await Unlock.at(proxyUnlock.address)
-    // init template
-    const lockTemplate = await PublicLock.new()
-    const publicLockLatestVersion = await unlock.publicLockLatestVersion()
-    await unlock.addLockTemplate(
-      lockTemplate.address,
-      publicLockLatestVersion + 1,
-      { from: protocolOwner }
-    )
+    ;({ unlock, udt } = await deployContracts())
 
-    const UDTEthers = await ethers.getContractFactory('UnlockDiscountTokenV3')
-    const proxyUDT = await upgrades.deployProxy(UDTEthers, [minter], {
-      kind: 'transparent',
-      initializer: 'initialize(address)',
-    })
-    await proxyUDT.deployed()
-    udt = await UnlockDiscountToken.at(proxyUDT.address)
+    // parse for truffle
+    udt = await UnlockDiscountToken.at(udt.address)
 
     // create a lock
-    lock = await deployLock()
+    lock = await deployLock({ unlock })
 
-    // Grant Unlock minting permissions
+    // grant Unlock minting permissions
     await udt.addMinter(unlock.address, { from: minter })
 
     // deploy uniswap exchange
@@ -66,7 +46,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       udtAddress: udt.address,
     })
 
-    // Config in Unlock
+    // config unlock
     await unlock.configUnlock(
       udt.address,
       weth.address,

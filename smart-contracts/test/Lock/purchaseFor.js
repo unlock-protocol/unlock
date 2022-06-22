@@ -1,6 +1,6 @@
 const BigNumber = require('bignumber.js')
 
-const { deployLock, reverts, ADDRESS_ZERO } = require('../helpers/errors')
+const { deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
 const { ethers } = require('hardhat')
 
 contract('Lock / purchaseFor', (accounts) => {

@@ -3,12 +3,15 @@
 
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
-const { ethers, upgrades, network } = require('hardhat')
-const { deployLock, ADDRESS_ZERO, createExchange } = require('../helpers')
+const { ethers, network } = require('hardhat')
+const {
+  deployContracts,
+  deployLock,
+  ADDRESS_ZERO,
+  createExchange,
+} = require('../helpers')
 
-const Unlock = artifacts.require('Unlock.sol')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
-const PublicLock = artifacts.require('PublicLock')
 
 let unlock
 let udt
@@ -20,37 +23,13 @@ const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
 const estimateGas = 252166 * 2
 
 contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
-  const [, protocolOwner, minter, referrer, keyBuyer] = accounts
+  const [protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 
   before(async () => {
-    const UnlockEthers = await ethers.getContractFactory('Unlock')
-    const proxyUnlock = await upgrades.deployProxy(
-      UnlockEthers,
-      [protocolOwner],
-      {
-        kind: 'transparent',
-        initializer: 'initialize(address)',
-      }
-    )
-    await proxyUnlock.deployed()
-    unlock = await Unlock.at(proxyUnlock.address)
-
-    const lockTemplate = await PublicLock.new()
-    const publicLockLatestVersion = await unlock.publicLockLatestVersion()
-    await unlock.addLockTemplate(
-      lockTemplate.address,
-      publicLockLatestVersion + 1,
-      { from: protocolOwner }
-    )
-
-    const UDTEthers = await ethers.getContractFactory('UnlockDiscountTokenV3')
-    const proxyUDT = await upgrades.deployProxy(UDTEthers, [minter], {
-      kind: 'transparent',
-      initializer: 'initialize(address)',
-    })
-    await proxyUDT.deployed()
-    udt = await UnlockDiscountToken.at(proxyUDT.address)
+    ;({ unlock, udt } = await deployContracts())
+    // parse for truffle
+    udt = await UnlockDiscountToken.at(udt.address)
 
     lock = await deployLock({ unlock })
 
