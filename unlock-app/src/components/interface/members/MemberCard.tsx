@@ -72,7 +72,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <span className={styles.description}>Checked in At</span>
           <span className={styles.title}>-</span>
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-2 items-center">
           <Button
             size="small"
             variant="outlined-primary"
