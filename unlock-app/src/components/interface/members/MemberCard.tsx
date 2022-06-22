@@ -3,7 +3,7 @@ import { Button } from '@unlock-protocol/ui'
 
 const styles = {
   title: 'text-lg font-bold text-black',
-  description: 'text-xs	font-sm font-normal',
+  description: 'text-sm font-normal text-gray-500',
   address: 'text-sm	font-sm font-normal text-gray-600',
 }
 interface MemberCardProps {
