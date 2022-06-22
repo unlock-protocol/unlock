@@ -1,4 +1,4 @@
-const { reverts } = require('../helpers/errors')
+const { reverts } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')

@@ -1,9 +1,8 @@
-const { reverts } = require('../helpers/errors')
+const { ADDRESS_ZERO, reverts } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const PublicLock = artifacts.require('PublicLock')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let lockTemplate

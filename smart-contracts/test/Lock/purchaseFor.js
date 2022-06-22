@@ -1,12 +1,15 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const { reverts } = require('../helpers/errors')
-const { ethers } = require('hardhat')
+const { getBalance } = require('../helpers')
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
+
+const keyPrice = ethers.utils.parseEther('0.01', 'ether')
 
 let unlock
 let locks
@@ -28,7 +31,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.0001', 'ether'),
+            value: ethers.utils.parseEther('0.0001', 'ether'),
           }
         ),
         'INSUFFICIENT_VALUE'
@@ -45,7 +48,7 @@ contract('Lock / purchaseFor', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: keyPrice,
         }
       )
       await reverts(
@@ -56,7 +59,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
             from: accounts[1],
           }
         ),
@@ -72,7 +75,7 @@ contract('Lock / purchaseFor', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: keyPrice,
         }
       )
       assert.equal(tx.logs[0].event, 'Transfer')
@@ -92,7 +95,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
         assert.equal(await locks.SECOND.balanceOf(accounts[4]), 1)
@@ -112,7 +115,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
         assert.equal(await locks.SECOND.balanceOf(accounts[4]), 1)
@@ -129,7 +132,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
         assert.equal(await locks.FIRST.balanceOf(accounts[1]), 1)
@@ -140,7 +143,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
         assert.equal(await locks.FIRST.balanceOf(accounts[1]), 2)
@@ -155,7 +158,7 @@ contract('Lock / purchaseFor', (accounts) => {
       let tokenId
 
       beforeEach(async () => {
-        balance = new BigNumber(await web3.eth.getBalance(locks.FIRST.address))
+        balance = await getBalance(locks.FIRST.address)
         totalSupply = new BigNumber(await locks.FIRST.totalSupply())
         numberOfOwners = new BigNumber(await locks.FIRST.numberOfOwners())
         const newKeyTx = await locks.FIRST.purchase(
@@ -165,7 +168,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
         const { args } = newKeyTx.logs.find((v) => v.event === 'Transfer')
@@ -187,13 +190,8 @@ contract('Lock / purchaseFor', (accounts) => {
       })
 
       it('should have added the funds to the contract', async () => {
-        let newBalance = new BigNumber(
-          await web3.eth.getBalance(locks.FIRST.address)
-        )
-        assert.equal(
-          parseFloat(web3.utils.fromWei(newBalance.toFixed(), 'ether')),
-          parseFloat(web3.utils.fromWei(balance.toFixed(), 'ether')) + 0.01
-        )
+        const newBalance = await getBalance(locks.FIRST.address)
+        assert.equal(newBalance.toString(), balance.plus(keyPrice.toString()))
       })
 
       it('should have increased the number of outstanding keys', async () => {

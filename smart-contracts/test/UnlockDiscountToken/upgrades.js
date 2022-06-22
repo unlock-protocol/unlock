@@ -161,10 +161,10 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       // create lock
       const args = [
-        Locks.FIRST.expirationDuration.toFixed(),
+        Locks.FIRST.expirationDuration,
         ADDRESS_ZERO,
-        Locks.FIRST.keyPrice.toFixed(),
-        Locks.FIRST.maxNumberOfKeys.toFixed(),
+        Locks.FIRST.keyPrice,
+        Locks.FIRST.maxNumberOfKeys,
         Locks.FIRST.lockName,
       ]
       const calldata = await createLockHash({ args, from: lockOwner.address })
@@ -216,7 +216,7 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       rate = await oracle.consult(
         udt.address,
-        web3.utils.toWei('1', 'ether'),
+        ethers.utils.parseUnits('1', 'ether'),
         weth.address
       )
     })

@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 
@@ -13,10 +14,8 @@ contract('Permissions / isKeyManager', (accounts) => {
   before(async () => {
     // init template
     keyManagerMock = await KeyManagerMock.new()
-
-    const timestampBefore = new BigNumber(
-      (await web3.eth.getBlock('latest')).timestamp
-    ).plus(expirationDuration)
+    const { timestamp } = await ethers.provider.getBlock('latest')
+    const timestampBefore = new BigNumber(timestamp).plus(expirationDuration)
 
     const tx = await keyManagerMock.createNewKey(
       keyOwner,

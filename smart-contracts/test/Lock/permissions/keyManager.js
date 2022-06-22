@@ -19,7 +19,7 @@ contract('Permissions / KeyManager', (accounts) => {
   const keyGranter = lockCreator
   const keyOwners = [accounts[1], accounts[2], accounts[3]]
   const [keyOwner1] = keyOwners
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   const oneDay = new BigNumber(60 * 60 * 24)
   let keyManager
   let validExpirationTimestamp
@@ -52,7 +52,7 @@ contract('Permissions / KeyManager', (accounts) => {
         [accounts[8]],
         [[]],
         {
-          value: keyPrice.toFixed(),
+          value: keyPrice,
           from: keyOwner1,
         }
       )
@@ -72,7 +72,7 @@ contract('Permissions / KeyManager', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: keyPrice.toFixed(),
+          value: keyPrice,
           from: keyOwner1,
         }
       )
@@ -83,7 +83,7 @@ contract('Permissions / KeyManager', (accounts) => {
       assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
       assert.equal(await lock.isValidKey(tokenId), true)
       await lock.extend(0, tokenId, accounts[8], [], {
-        value: keyPrice.toFixed(),
+        value: keyPrice,
         from: keyOwner1,
       })
       assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
@@ -93,7 +93,7 @@ contract('Permissions / KeyManager', (accounts) => {
       await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyOwner1 })
       assert.equal(await lock.keyManagerOf(tokenId), accounts[9])
       await lock.extend(0, tokenId, ADDRESS_ZERO, [], {
-        value: keyPrice.toFixed(),
+        value: keyPrice,
         from: keyOwner1,
       })
       assert.equal(await lock.keyManagerOf(tokenId), accounts[9])
@@ -113,7 +113,7 @@ contract('Permissions / KeyManager', (accounts) => {
         keyOwners.map(() => ADDRESS_ZERO),
         keyOwners.map(() => []),
         {
-          value: (keyPrice * keyOwners.length).toFixed(),
+          value: keyPrice * keyOwners.length,
           from: accounts[0],
         }
       )

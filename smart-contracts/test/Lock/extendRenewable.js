@@ -4,11 +4,11 @@ const {
   purchaseKey,
   ADDRESS_ZERO,
 } = require('../helpers')
-const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
 const deployLocks = require('../helpers/deployLocks')
 const getContractInstance = require('../helpers/truffle-artifacts')
+const { ethers } = require('hardhat')
 
 const Unlock = artifacts.require('Unlock.sol')
 
@@ -16,10 +16,10 @@ let unlock
 let locks
 let dai
 
-const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
-const newPrice = web3.utils.toWei('0.011', 'ether')
-const totalPrice = keyPrice.times(10)
-const someDai = new BigNumber(web3.utils.toWei('100', 'ether'))
+const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const newPrice = ethers.utils.parseUnits('0.011', 'ether')
+const totalPrice = keyPrice.mul(10).toString()
+const someDai = ethers.utils.parseUnits('100', 'ether')
 
 let lock
 contract('Lock / Extend with recurring memberships', (accounts) => {

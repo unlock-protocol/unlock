@@ -1,5 +1,5 @@
 const { reverts } = require('../../helpers/errors')
-const BigNumber = require('bignumber.js')
+const { ethers } = require('hardhat')
 const deployLocks = require('../../helpers/deployLocks')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
@@ -14,7 +14,7 @@ let lockCreator
 contract('Permissions / KeyManager', (accounts) => {
   lockCreator = accounts[0]
   const lockManager = lockCreator
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   let tokenId
   let keyManager
   let keyManagerBefore
@@ -30,7 +30,7 @@ contract('Permissions / KeyManager', (accounts) => {
       [ADDRESS_ZERO],
       [[]],
       {
-        value: keyPrice.toFixed(),
+        value: keyPrice,
         from: accounts[1],
       }
     )

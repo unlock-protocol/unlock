@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const deployLocks = require('../helpers/deployLocks')
 
@@ -24,7 +25,7 @@ contract('Lock / gas', (accounts) => {
       [ADDRESS_ZERO],
       [[]],
       {
-        value: web3.utils.toWei('0.01', 'ether'),
+        value: ethers.utils.parseUnits('0.01', 'ether'),
       }
     )
     const gasUsed = new BigNumber(tx.receipt.gasUsed)

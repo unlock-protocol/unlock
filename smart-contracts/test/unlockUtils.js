@@ -1,5 +1,5 @@
 const mockArtifact = artifacts.require('UnlockUtilsMock')
-
+const { ethers } = require('hardhat')
 let mock
 
 contract('unlockUtils', (accounts) => {
@@ -32,7 +32,7 @@ contract('unlockUtils', (accounts) => {
     // currently returns the address as a string with all chars in lowercase
     it('should convert an ethereum address to an ASCII string', async () => {
       senderAddress = await mock.address2Str(accounts[0])
-      assert.equal(web3.utils.toChecksumAddress(senderAddress), accounts[0])
+      assert.equal(ethers.utils.getAddress(senderAddress), accounts[0])
     })
   })
 })

@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const { assert } = require('chai')
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
@@ -58,7 +59,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
     it('prevent users to purchase more keys than allowed', async () => {
       await reverts(
         lock.purchase([], [keyOwner], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: ethers.utils.parseUnits('0.01', 'ether'),
         }),
         'MAX_KEYS'
       )
@@ -73,7 +74,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.01', 'ether'),
           }
         ),
         'MAX_KEYS'
@@ -88,7 +89,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: ethers.utils.parseUnits('0.01', 'ether'),
         }
       )
       await reverts(
@@ -107,7 +108,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: ethers.utils.parseUnits('0.01', 'ether'),
         }
       )
       await reverts(

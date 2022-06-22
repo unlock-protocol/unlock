@@ -1,13 +1,11 @@
-const BigNumber = require('bignumber.js')
-
+const { ethers } = require('hardhat')
 const { reverts, purchaseKey } = require('../helpers')
-
 const deployLocks = require('../helpers/deployLocks')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
 
-const keyPrice = web3.utils.toWei('0.01', 'ether')
+const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
 let unlock
 let lock
@@ -22,7 +20,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
 
   it('grossNetworkProduct has a non-zero value after a purchase', async () => {
     const grossNetworkProduct = await unlock.grossNetworkProduct()
-    assert.equal(grossNetworkProduct, keyPrice)
+    assert.equal(grossNetworkProduct.toString(), keyPrice.toString())
   })
 
   it('should fail to resetTrackedValue if called from a non-owner account', async () => {
@@ -49,7 +47,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
 
       it('grossNetworkProduct has a non-zero value after a purchase', async () => {
         const grossNetworkProduct = await unlock.grossNetworkProduct()
-        assert.equal(grossNetworkProduct, keyPrice)
+        assert.equal(grossNetworkProduct.toString(), keyPrice.toString())
       })
     })
   })
@@ -72,8 +70,8 @@ contract('Unlock / resetTrackedValue', (accounts) => {
       it('grossNetworkProduct has a non-zero value after a purchase', async () => {
         const grossNetworkProduct = await unlock.grossNetworkProduct()
         assert.equal(
-          grossNetworkProduct,
-          new BigNumber(keyPrice).plus(42).toFixed()
+          grossNetworkProduct.toString(),
+          keyPrice.add(42).toString()
         )
       })
     })

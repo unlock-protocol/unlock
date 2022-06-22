@@ -2,7 +2,7 @@ const { config, ethers, assert, network, upgrades } = require('hardhat')
 const OZ_SDK_EXPORT = require('../../openzeppelin-cli-export.json')
 const multisigABI = require('../helpers/ABIs/multisig.json')
 const proxyABI = require('../helpers/ABIs/proxy.json')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO } = require('../helpers')
 
 // NB : this needs to be run against a mainnet fork using
 // import proxy info using legacy OZ CLI file export after migration to @openzepplein/upgrades

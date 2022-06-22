@@ -20,7 +20,7 @@ contract('Lock / timeMachine', (accounts) => {
     timeMachine = await TimeMachineMock.new()
 
     timestampBefore = new BigNumber(
-      (await web3.eth.getBlock('latest')).timestamp
+      (await ethers.provider.getBlock('latest')).timestamp
     ).plus(expirationDuration)
 
     tx = await timeMachine.createNewKey(
