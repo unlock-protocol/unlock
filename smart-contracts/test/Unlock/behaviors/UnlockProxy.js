@@ -15,6 +15,7 @@ contract('Unlock / UnlockProxy', (accounts) => {
     // get proxy from hardhat deployment
     const { unlock } = await deployContracts()
     this.proxyAddress = unlock.address
+    this.unlock = unlock
 
     // deploy template
     const lock = await PublicLock.new()
