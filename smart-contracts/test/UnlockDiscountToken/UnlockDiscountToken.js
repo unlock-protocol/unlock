@@ -1,11 +1,8 @@
 const BigNumber = require('bignumber.js')
-const { reverts } = require('../helpers/errors')
+const { reverts } = require('../helpers')
 
 const deployContracts = require('../fixtures/deploy')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
-const { errorMessages } = require('../helpers/constants')
-
-const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 contract('UnlockDiscountToken', (accounts) => {
   let unlockDiscountToken
@@ -19,7 +16,7 @@ contract('UnlockDiscountToken', (accounts) => {
   it('shouldFail to call init again', async () => {
     await reverts(
       unlockDiscountToken.initialize(minter),
-      `${VM_ERROR_REVERT_WITH_REASON} 'Initializable: contract is already initialized'`
+      'Initializable: contract is already initialized'
     )
   })
 
