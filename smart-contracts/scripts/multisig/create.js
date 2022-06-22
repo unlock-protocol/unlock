@@ -1,5 +1,6 @@
 const { ethers } = require('hardhat')
-const { SafeFactory, EthersAdapter } = require('@gnosis.pm/safe-core-sdk')
+const { SafeFactory } = require('@gnosis.pm/safe-core-sdk')
+const EthersAdapter = require('@gnosis.pm/safe-ethers-lib').default
 
 async function main({ owners, threshold }) {
   if (!owners) {
@@ -22,10 +23,15 @@ async function main({ owners, threshold }) {
   const ethAdapter = new EthersAdapter({ ethers, signer: deployer })
   const safeFactory = await SafeFactory.create({ ethAdapter })
 
-  const safe = await safeFactory.deploySafe({
+  const safeAccountConfig = {
     owners,
     threshold,
-  })
+  }
+
+  console.log('GNOSIS SAFE SETUP > Deploying new safe...')
+  console.log(safeAccountConfig)
+
+  const safe = await safeFactory.deploySafe({ safeAccountConfig })
   const safeAddress = safe.getAddress()
 
   console.log('GNOSIS SAFE SETUP > New safe deployed at: ', safeAddress)
