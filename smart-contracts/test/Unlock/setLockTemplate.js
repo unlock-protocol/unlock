@@ -1,7 +1,5 @@
-const { reverts } = require('../helpers/errors')
-
+const { ADDRESS_ZERO, deployContracts, reverts } = require('../helpers')
 const PublicLock = artifacts.require('PublicLock')
-const { ADDRESS_ZERO, deployContracts } = require('../helpers')
 
 let unlock
 let lockTemplate

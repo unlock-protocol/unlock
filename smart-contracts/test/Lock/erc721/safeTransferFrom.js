@@ -1,4 +1,5 @@
 const { deployLock, reverts, purchaseKey } = require('../../helpers')
+const { ethers } = require('hardhat')
 
 const TestERC721Recevier = artifacts.require('TestERC721Recevier')
 
@@ -35,7 +36,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
       accounts[7],
       accounts[6],
       tokenId,
-      web3.utils.toHex('Julien'),
+      ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Julien')),
       {
         from: accounts[7],
       }

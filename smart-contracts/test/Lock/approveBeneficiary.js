@@ -5,6 +5,7 @@ const {
   deployLock,
   deployContracts,
 } = require('../helpers')
+const { ethers } = require('hardhat')
 
 let unlock
 let lock
@@ -32,7 +33,7 @@ contract('Lock / approveBeneficiary', (accounts) => {
 
     before(async () => {
       token = await deployERC20(daiOwner)
-      await token.mint(keyOwner, web3.utils.toWei('100', 'ether'), {
+      await token.mint(keyOwner, ethers.utils.parseUnits('100', 'ether'), {
         from: daiOwner,
       })
       lock = await deployLock({

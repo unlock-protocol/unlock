@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { time } = require('@openzeppelin/test-helpers')
@@ -38,7 +39,7 @@ contract('Lock / transferFee', (accounts) => {
     })
 
     it('estimates the transfer fee, which is 5% of remaining duration or less', async () => {
-      const nowBefore = (await web3.eth.getBlock('latest')).timestamp
+      const { timestamp: nowBefore } = await ethers.provider.getBlock('latest')
       fee = new BigNumber(await lock.getTransferFee(tokenId, 0))
       // Mine a transaction in order to ensure the block.timestamp has updated
       await purchaseKey(lock, accounts[8])

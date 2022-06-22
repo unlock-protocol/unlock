@@ -1,6 +1,7 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const { deployLock, reverts, purchaseKeys } = require('../helpers')
+const { getBalance, deployLock, reverts, purchaseKeys } = require('../helpers')
 
 let lock
 let tokenAddress
@@ -29,26 +30,25 @@ contract('Lock / withdraw', (accounts) => {
     let ownerBalance
     let contractBalance
     before(async () => {
-      ownerBalance = new BigNumber(await web3.eth.getBalance(owner))
-      contractBalance = new BigNumber(await web3.eth.getBalance(lock.address))
+      ownerBalance = await getBalance(owner)
+      contractBalance = await getBalance(lock.address)
       tx = await lock.withdraw(tokenAddress, 0, {
         from: owner,
       })
     })
 
     it("should set the lock's balance to 0", async () => {
-      assert.equal(await web3.eth.getBalance(lock.address), 0)
+      assert.equal(await getBalance(lock.address), 0)
     })
 
     it("should increase the owner's balance with the funds from the lock", async () => {
-      const balance = new BigNumber(await web3.eth.getBalance(owner))
-      const txHash = await web3.eth.getTransaction(tx.tx)
+      const balance = await getBalance(owner)
+      const { gasPrice } = await ethers.provider.getTransaction(tx.tx)
       const gasUsed = new BigNumber(tx.receipt.gasUsed)
-      const gasPrice = new BigNumber(txHash.gasPrice)
-      const txFee = gasPrice.times(gasUsed)
+      const txFee = gasUsed.times(gasPrice.toString())
       assert.equal(
         balance.toString(),
-        ownerBalance.plus(contractBalance).minus(txFee).toString()
+        ownerBalance.plus(contractBalance.toString()).minus(txFee).toString()
       )
     })
 
@@ -70,8 +70,8 @@ contract('Lock / withdraw', (accounts) => {
     before(async () => {
       await purchaseKeys(lock, 2)
 
-      ownerBalance = new BigNumber(await web3.eth.getBalance(owner))
-      contractBalance = new BigNumber(await web3.eth.getBalance(lock.address))
+      ownerBalance = await getBalance(owner)
+      contractBalance = await getBalance(lock.address)
       tx = await lock.withdraw(tokenAddress, 42, {
         from: owner,
       })
@@ -79,20 +79,19 @@ contract('Lock / withdraw', (accounts) => {
 
     it("should reduce the lock's balance by 42", async () => {
       assert.equal(
-        (await web3.eth.getBalance(lock.address)).toString(),
+        (await getBalance(lock.address)).toString(),
         contractBalance.minus(42).toString()
       )
     })
 
     it("should increase the owner's balance by 42", async () => {
-      const balance = new BigNumber(await web3.eth.getBalance(owner))
-      const txHash = await web3.eth.getTransaction(tx.tx)
+      const balance = await getBalance(owner)
+      const { gasPrice } = await ethers.provider.getTransaction(tx.tx)
       const gasUsed = new BigNumber(tx.receipt.gasUsed)
-      const gasPrice = new BigNumber(txHash.gasPrice)
-      const txFee = gasPrice.times(gasUsed)
+      const txFee = gasUsed.times(gasPrice.toString())
       assert.equal(
         balance.toString(),
-        ownerBalance.plus(42).minus(txFee).toString()
+        ownerBalance.plus(42).minus(txFee.toString()).toString()
       )
     })
 

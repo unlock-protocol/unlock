@@ -1,9 +1,16 @@
-const { reverts, deployERC20, deployLock, ADDRESS_ZERO } = require('../helpers')
+const {
+  reverts,
+  deployERC20,
+  deployLock,
+  ADDRESS_ZERO,
+  getBalance,
+} = require('../helpers')
+const { ethers } = require('hardhat')
 
 const scenarios = [false, true]
 
 let testToken
-const keyPrice = web3.utils.toWei('0.01', 'ether')
+const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
 contract('Lock / purchase multiple keys at once', (accounts) => {
   scenarios.forEach((isErc20) => {
@@ -48,9 +55,10 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
         })
 
         it('user sent correct token amounts to the contract', async () => {
-          const balance = isErc20
-            ? await testToken.balanceOf(lock.address)
-            : await web3.eth.getBalance(lock.address)
+          const balance = await getBalance(
+            lock.address,
+            isErc20 ? testToken.address : null
+          )
           assert.equal(
             balance.toString(),
             (keyPrice * keyOwners.length).toString()
@@ -70,7 +78,7 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
           await reverts(
             lock.purchase(
               isErc20
-                ? keyOwners.map(() => web3.utils.toWei('0.005', 'ether'))
+                ? keyOwners.map(() => ethers.utils.parseUnits('0.005', 'ether'))
                 : [],
               keyOwners,
               keyOwners.map(() => ADDRESS_ZERO),

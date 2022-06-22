@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const {
@@ -52,15 +53,6 @@ contract('Lock / shareKey', (accounts) => {
             from: keyOwners[0],
           }),
           'INVALID_ADDRESS'
-        )
-      })
-
-      it('should abort if the key owner', async () => {
-        await reverts(
-          lock.shareKey(keyOwners[0], tokenIds[0], 1000, {
-            from: keyOwners[0],
-          }),
-          'TRANSFER_TO_SELF'
         )
       })
 
@@ -159,10 +151,14 @@ contract('Lock / shareKey', (accounts) => {
       expirationBeforeSharing = new BigNumber(
         await lock.keyExpirationTimestampFor(tokenIds[2])
       )
-      timestampBeforeSharing = new BigNumber(
-        (await web3.eth.getBlock('latest')).timestamp
+
+      const { timestamp: timestampBf } = await ethers.provider.getBlock(
+        'latest'
       )
+      timestampBeforeSharing = new BigNumber(timestampBf)
+
       fee = new BigNumber(await lock.getTransferFee(tokenIds[2], oneDay))
+
       tx2 = await lock.shareKey(accountWithNoKey2, tokenIds[2], oneDay, {
         from: keyOwners[2],
       })
@@ -171,6 +167,19 @@ contract('Lock / shareKey', (accounts) => {
       event2 = tx2.logs[2].event
       const { tokenId } = tx2.logs[2].args
       newTokenId = tokenId
+
+      expirationAfterSharing = new BigNumber(
+        await lock.keyExpirationTimestampFor(tokenIds[2])
+      )
+
+      sharedKeyExpiration = new BigNumber(
+        await lock.keyExpirationTimestampFor(newTokenId)
+      )
+
+      const { timestamp: timestampAf } = await ethers.provider.getBlock(
+        'latest'
+      )
+      timestampAfterSharing = new BigNumber(timestampAf)
     })
 
     it('should emit the ExpirationChanged event', async () => {
@@ -184,9 +193,6 @@ contract('Lock / shareKey', (accounts) => {
     })
 
     it('should subtract the time shared + fee from the key owner', async () => {
-      expirationAfterSharing = new BigNumber(
-        await lock.keyExpirationTimestampFor(tokenIds[2])
-      )
       assert(
         expirationAfterSharing.eq(
           expirationBeforeSharing.minus(fee).minus(oneDay)
@@ -196,34 +202,29 @@ contract('Lock / shareKey', (accounts) => {
 
     it('should create a new key and add the time shared to it', async () => {
       assert.equal(await lock.getHasValidKey(accountWithNoKey2), true)
-
-      sharedKeyExpiration = new BigNumber(
-        await lock.keyExpirationTimestampFor(newTokenId)
-      )
-      let currentTimestamp = new BigNumber(
-        (await web3.eth.getBlock('latest')).timestamp
-      )
       assert.equal(hadKeyBefore, false)
-      assert(sharedKeyExpiration.eq(currentTimestamp.plus(oneDay)))
+      assert.equal(
+        sharedKeyExpiration.toString(),
+        oneDay.plus(timestampAfterSharing).toString()
+      )
     })
 
     it('should not assign the recipient of the granted key as the owner of tokenId 0', async () => {
-      const zeroOwner = await lock.ownerOf(0)
-      assert.equal(zeroOwner, ADDRESS_ZERO)
+      assert.equal(await lock.ownerOf(0), ADDRESS_ZERO)
     })
 
     it('total time remaining is <= original time + fee', async () => {
-      timestampAfterSharing = new BigNumber(
-        (await web3.eth.getBlock('latest')).timestamp
+      const timeRemainingBefore = expirationBeforeSharing.minus(
+        timestampBeforeSharing.toString()
       )
-      let timeRemainingBefore = expirationBeforeSharing.minus(
-        timestampBeforeSharing
-      )
-      let totalTimeRemainingAfter = expirationAfterSharing
+
+      const totalTimeRemainingAfter = expirationAfterSharing
         .minus(timestampAfterSharing)
         .plus(sharedKeyExpiration.minus(timestampAfterSharing))
 
-      assert(timeRemainingBefore.minus(fee).gte(totalTimeRemainingAfter))
+      assert(
+        timeRemainingBefore.minus(fee.toString()).gte(totalTimeRemainingAfter)
+      )
     })
 
     it('should allow an approved address to share a key', async () => {

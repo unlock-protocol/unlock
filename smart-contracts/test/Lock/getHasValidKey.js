@@ -1,4 +1,5 @@
 const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
+const { ethers } = require('hardhat')
 
 contract('Lock / getHasValidKey', (accounts) => {
   const [, keyOwner] = accounts
@@ -52,7 +53,7 @@ contract('Lock / getHasValidKey', (accounts) => {
         [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
         [[], [], []],
         {
-          value: web3.utils.toWei('0.03', 'ether'),
+          value: ethers.utils.parseUnits('0.03', 'ether'),
         }
       )
       tokenIds = tx.logs

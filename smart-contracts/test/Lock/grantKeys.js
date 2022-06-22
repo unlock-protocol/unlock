@@ -1,15 +1,8 @@
 const { ethers } = require('hardhat')
-const {
-  reverts,
-  deployLock,
-  errorMessages,
-  ADDRESS_ZERO,
-} = require('../helpers')
+const { reverts, deployLock, ADDRESS_ZERO } = require('../helpers')
 
 let lock
 let tx
-
-const { HARDHAT_VM_ERROR } = errorMessages
 
 contract('Lock / grantKeys', (accounts) => {
   const lockCreator = accounts[1]
@@ -67,7 +60,7 @@ contract('Lock / grantKeys', (accounts) => {
               from: lockCreator,
             }
           ),
-          `${HARDHAT_VM_ERROR} reverted with panic code 0x32 (Array accessed at an out-of-bounds or negative index)`
+          `reverted with panic code 0x32 (Array accessed at an out-of-bounds or negative index)`
         )
       })
     })

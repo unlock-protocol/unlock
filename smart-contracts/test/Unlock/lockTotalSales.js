@@ -1,4 +1,4 @@
-const BigNumber = require('bignumber.js')
+const { ethers } = require('hardhat')
 const {
   deployContracts,
   deployLock,
@@ -8,7 +8,7 @@ const {
 
 let lock
 let unlock
-const price = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+const price = ethers.utils.parseUnits('0.01', 'ether')
 
 contract('Unlock / lockTotalSales', () => {
   before(async () => {
@@ -39,7 +39,7 @@ contract('Unlock / lockTotalSales', () => {
 
     it('total sales incluse all purchases', async () => {
       const { totalSales } = await unlock.locks(lock.address)
-      assert.equal(totalSales.toString(), price.times(5).toString())
+      assert.equal(totalSales.toString(), price.mul(5).toString())
     })
   })
 })

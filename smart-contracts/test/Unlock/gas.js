@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const WalletService = require('../helpers/walletServiceMock.js')
@@ -14,7 +15,7 @@ contract('Unlock / gas', (accounts) => {
     const args = [
       60 * 60 * 24 * 30, // expirationDuration: 30 days
       ADDRESS_ZERO,
-      web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+      ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
       100, // maxNumberOfKeys
       'Gas Test Lock',
     ]

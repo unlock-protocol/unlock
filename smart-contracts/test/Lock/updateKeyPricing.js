@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
 const { reverts, deployLock, deployERC20, ADDRESS_ZERO } = require('../helpers')
@@ -25,7 +26,7 @@ contract('Lock / updateKeyPricing', (accounts) => {
     tokenAddressBefore = await lock.tokenAddress()
     assert.equal(keyPriceBefore.toFixed(), 10000000000000000)
     transaction = await lock.updateKeyPricing(
-      web3.utils.toWei('0.3', 'ether'),
+      ethers.utils.parseUnits('0.3', 'ether'),
       token.address,
       { from: lockCreator }
     )
@@ -64,7 +65,7 @@ contract('Lock / updateKeyPricing', (accounts) => {
       keyPrice = new BigNumber(await lock.keyPrice())
       await reverts(
         lock.updateKeyPricing(
-          web3.utils.toWei('0.3', 'ether'),
+          ethers.utils.parseUnits('0.3', 'ether'),
           await lock.tokenAddress(),
           {
             from: accounts[3],
@@ -112,12 +113,15 @@ contract('Lock / updateKeyPricing', (accounts) => {
       assert.notEqual(accounts[8], lockCreator)
       assert.equal(await lock.isLockManager(accounts[8]), true)
       await lock.updateKeyPricing(
-        web3.utils.toWei('0.42', 'ether'),
+        ethers.utils.parseUnits('0.42', 'ether'),
         token.address,
         { from: accounts[8] }
       )
       assert.equal(await lock.tokenAddress(), token.address)
-      assert.equal(await lock.keyPrice(), web3.utils.toWei('0.42', 'ether'))
+      assert.equal(
+        (await lock.keyPrice()).toString(),
+        ethers.utils.parseUnits('0.42', 'ether').toString()
+      )
     })
 
     it('should allow a lockManager to renounce their role', async () => {

@@ -1,3 +1,4 @@
+const getBalance = require('./getTokenBalance')
 const lock = require('./lock')
 const constants = require('./constants')
 const errors = require('./errors')
@@ -7,11 +8,12 @@ const deployLocks = require('./deployLocks')
 const deployContracts = require('../fixtures/deploy.js')
 
 module.exports = {
+  getBalance,
   deployContracts,
   ...lock,
-  ...errors,
   ...constants,
-  ...tokens,
   ...uniswap,
   ...deployLocks,
+  ...tokens,
+  ...errors,
 }

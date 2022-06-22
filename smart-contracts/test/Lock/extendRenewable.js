@@ -5,18 +5,17 @@ const {
   purchaseKey,
   ADDRESS_ZERO,
 } = require('../helpers')
-const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
-const { assert } = require('chai')
+const { ethers } = require('hardhat')
+
+const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const newPrice = ethers.utils.parseUnits('0.011', 'ether')
+const totalPrice = keyPrice.mul(10).toString()
+const someDai = ethers.utils.parseUnits('100', 'ether')
 
 let dai
-
-const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
-const newPrice = web3.utils.toWei('0.011', 'ether')
-const totalPrice = keyPrice.times(10)
-const someDai = new BigNumber(web3.utils.toWei('100', 'ether'))
-
 let lock
+
 contract('Lock / Extend with recurring memberships', (accounts) => {
   const lockOwner = accounts[0]
   const keyOwner = accounts[1]
@@ -146,16 +145,20 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
 
         // expire key again
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
+        await time.increaseTo(newExpirationTs.toNumber())
 
         // renewal should work
-        await time.increaseTo(newExpirationTs.toNumber() - 1)
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO, {
           from: keyOwner,
         })
+
+        const tsExpected = newExpirationTs.add(await lock.expirationDuration())
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
+
         assert.equal(
-          newExpirationTs.add(await lock.expirationDuration()).toString(),
-          tsAfter.toString()
+          // assert results for +/- 2 sec
+          tsAfter.toNumber() - tsExpected.toNumber() <= 2,
+          true
         )
       })
     })

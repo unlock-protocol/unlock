@@ -1,8 +1,9 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const { deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
-const { ethers } = require('hardhat')
+const { getBalance, deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
 
+const keyPrice = ethers.utils.parseEther('0.01', 'ether')
 contract('Lock / purchaseFor', (accounts) => {
   let lock
   let anotherLock
@@ -21,7 +22,7 @@ contract('Lock / purchaseFor', (accounts) => {
     it('should fail if the price is not enough', async () => {
       await reverts(
         lock.purchase([], [accounts[0]], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
-          value: web3.utils.toWei('0.0001', 'ether'),
+          value: ethers.utils.parseEther('0.0001', 'ether'),
         }),
         'INSUFFICIENT_VALUE'
       )
@@ -37,7 +38,7 @@ contract('Lock / purchaseFor', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: keyPrice,
         }
       )
       await reverts(
@@ -48,7 +49,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
             from: accounts[1],
           }
         ),
@@ -64,7 +65,7 @@ contract('Lock / purchaseFor', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: web3.utils.toWei('0.01', 'ether'),
+          value: keyPrice,
         }
       )
       assert.equal(tx.logs[0].event, 'Transfer')
@@ -84,7 +85,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
         assert.equal(await anotherLock.balanceOf(accounts[4]), 1)
@@ -104,7 +105,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
         assert.equal(await anotherLock.balanceOf(accounts[4]), 1)
@@ -121,7 +122,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
         assert.equal(await lock.balanceOf(accounts[1]), 1)
@@ -132,7 +133,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
         assert.equal(await lock.balanceOf(accounts[1]), 2)
@@ -147,7 +148,7 @@ contract('Lock / purchaseFor', (accounts) => {
       let tokenId
 
       beforeEach(async () => {
-        balance = new BigNumber(await web3.eth.getBalance(lock.address))
+        balance = await getBalance(lock.address)
         totalSupply = new BigNumber(await lock.totalSupply())
         numberOfOwners = new BigNumber(await lock.numberOfOwners())
         const newKeyTx = await lock.purchase(
@@ -157,7 +158,7 @@ contract('Lock / purchaseFor', (accounts) => {
           [ADDRESS_ZERO],
           [[]],
           {
-            value: web3.utils.toWei('0.01', 'ether'),
+            value: keyPrice,
           }
         )
         const { args } = newKeyTx.logs.find((v) => v.event === 'Transfer')
@@ -179,11 +180,8 @@ contract('Lock / purchaseFor', (accounts) => {
       })
 
       it('should have added the funds to the contract', async () => {
-        let newBalance = new BigNumber(await web3.eth.getBalance(lock.address))
-        assert.equal(
-          parseFloat(web3.utils.fromWei(newBalance.toFixed(), 'ether')),
-          parseFloat(web3.utils.fromWei(balance.toFixed(), 'ether')) + 0.01
-        )
+        const newBalance = await getBalance(lock.address)
+        assert.equal(newBalance.toString(), balance.plus(keyPrice.toString()))
       })
 
       it('should have increased the number of outstanding keys', async () => {

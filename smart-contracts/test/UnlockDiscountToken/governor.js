@@ -2,10 +2,8 @@ const { time } = require('@openzeppelin/test-helpers')
 
 const { reverts } = require('../helpers/errors')
 const { ethers, upgrades, network } = require('hardhat')
-const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 const deployContracts = require('../fixtures/deploy')
-
-const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 const PROPOSER_ROLE = ethers.utils.keccak256(
   ethers.utils.toUtf8Bytes('PROPOSER_ROLE')
@@ -110,18 +108,9 @@ contract('UnlockProtocolGovernor', () => {
   describe('Update voting params', () => {
     it('should only be possible through voting', async () => {
       assert.equal(await gov.votingDelay(), 1)
-      await reverts(
-        gov.setVotingDelay(2),
-        `${VM_ERROR_REVERT_WITH_REASON} 'Governor: onlyGovernance'`
-      )
-      await reverts(
-        gov.setQuorum(2),
-        `${VM_ERROR_REVERT_WITH_REASON} 'Governor: onlyGovernance'`
-      )
-      await reverts(
-        gov.setVotingPeriod(2),
-        `${VM_ERROR_REVERT_WITH_REASON} 'Governor: onlyGovernance'`
-      )
+      await reverts(gov.setVotingDelay(2), 'Governor: onlyGovernance')
+      await reverts(gov.setQuorum(2), 'Governor: onlyGovernance')
+      await reverts(gov.setVotingPeriod(2), 'Governor: onlyGovernance')
     })
 
     beforeEach(async () => {
@@ -161,7 +150,7 @@ contract('UnlockProtocolGovernor', () => {
         // propose
         const proposal = [
           [gov.address],
-          [web3.utils.toWei('0')],
+          [ethers.utils.parseUnits('0')],
           [encoded],
           '<proposal description: update the quorum>',
         ]
@@ -195,7 +184,7 @@ contract('UnlockProtocolGovernor', () => {
         // propose
         const proposal = [
           [gov.address],
-          [web3.utils.toWei('0')],
+          [ethers.utils.parseUnits('0')],
           [encoded],
           '<proposal description>',
         ]
@@ -227,7 +216,7 @@ contract('UnlockProtocolGovernor', () => {
 
         const proposal = [
           [gov.address],
-          [web3.utils.toWei('0')],
+          [ethers.utils.parseUnits('0')],
           [encoded],
           '<proposal description>',
         ]

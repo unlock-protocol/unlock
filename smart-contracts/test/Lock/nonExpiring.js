@@ -1,8 +1,9 @@
 const { assert } = require('chai')
 const { time } = require('@openzeppelin/test-helpers')
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const { deployLock, purchaseKey, MAX_UINT } = require('../helpers')
+const { deployLock, purchaseKey, getBalance, MAX_UINT } = require('../helpers')
 
 contract('Lock / non expiring', (accounts) => {
   let lock
@@ -59,12 +60,8 @@ contract('Lock / non expiring', (accounts) => {
     describe('cancelAndRefund', () => {
       it('should transfer entire price back', async () => {
         // make sure the refund actually happened
-        const initialLockBalance = new BigNumber(
-          await web3.eth.getBalance(lock.address)
-        )
-        const initialKeyOwnerBalance = new BigNumber(
-          await web3.eth.getBalance(keyOwner)
-        )
+        const initialLockBalance = await getBalance(lock.address)
+        const initialKeyOwnerBalance = await getBalance(keyOwner)
 
         // refund
         const tx = await lock.cancelAndRefund(tokenId, { from: keyOwner })
@@ -77,27 +74,25 @@ contract('Lock / non expiring', (accounts) => {
         assert(refund.isEqualTo(keyPrice))
 
         // get gas used
-        const txHash = await web3.eth.getTransaction(tx.tx)
+        const txHash = await ethers.provider.getTransaction(tx.tx)
         const gasUsed = new BigNumber(tx.receipt.gasUsed)
         const gasPrice = new BigNumber(txHash.gasPrice)
         const txFee = gasPrice.times(gasUsed)
 
         // check key owner balance
-        const finalOwnerBalance = new BigNumber(
-          await web3.eth.getBalance(keyOwner)
-        )
+        const finalOwnerBalance = await getBalance(keyOwner)
+
         assert(
           finalOwnerBalance.toFixed(),
           initialKeyOwnerBalance.plus(refund).minus(txFee).toFixed()
         )
 
         // also check lock balance
-        const finalLockBalance = new BigNumber(
-          await web3.eth.getBalance(lock.address)
-        )
+        const finalLockBalance = await getBalance(lock.address)
+
         assert(
-          finalLockBalance.toFixed(),
-          initialLockBalance.minus(refund).toFixed()
+          finalLockBalance.toString(),
+          initialLockBalance.minus(refund).toString()
         )
       })
     })

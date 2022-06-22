@@ -1,4 +1,5 @@
 const { ADDRESS_ZERO, purchaseKeys, deployLock } = require('../../helpers')
+const { ethers } = require('hardhat')
 
 contract('Lock / uniqueTokenIds', (accounts) => {
   let lock
@@ -21,7 +22,7 @@ contract('Lock / uniqueTokenIds', (accounts) => {
 
       // extend a key
       await lock.extend(0, tokenIds[1], ADDRESS_ZERO, [], {
-        value: web3.utils.toWei('0.01', 'ether'),
+        value: ethers.utils.parseUnits('0.01', 'ether'),
         from: keyOwner1,
       })
 

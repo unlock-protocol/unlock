@@ -1,10 +1,12 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const {
+  ADDRESS_ZERO,
   deployLock,
   deployERC20,
-  reverts,
-  ADDRESS_ZERO,
+  getBalance,
   purchaseKeys,
+  reverts,
 } = require('../helpers')
 
 let token
@@ -45,7 +47,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     const estimatedRefund = new BigNumber(
       await lock.getCancelAndRefundValue(tokenIds[0])
     )
-    assert(estimatedRefund.lt(keyPrice))
+    assert(estimatedRefund.lt(keyPrice.toString()))
   })
 
   it('the amount of refund should be less than the original keyPrice when expiration is very far in the future', async () => {
@@ -61,7 +63,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     const estimatedRefund = new BigNumber(
       await lock.getCancelAndRefundValue(args.tokenId)
     )
-    assert(estimatedRefund.lt(keyPrice))
+    assert(estimatedRefund.lt(keyPrice.toString()))
   })
 
   it('the estimated refund for a free Key should be 0', async () => {
@@ -88,21 +90,19 @@ contract('Lock / cancelAndRefund', (accounts) => {
     let withdrawalAmount
 
     before(async () => {
-      initialLockBalance = new BigNumber(
-        await web3.eth.getBalance(lock.address)
-      )
-      initialKeyOwnerBalance = new BigNumber(
-        await web3.eth.getBalance(keyOwners[0])
-      )
+      initialLockBalance = await getBalance(lock.address)
+
+      initialKeyOwnerBalance = await getBalance(keyOwners[0])
+
       estimatedRefund = new BigNumber(
         await lock.getCancelAndRefundValue(tokenIds[0])
       )
       txObj = await lock.cancelAndRefund(tokenIds[0], {
         from: keyOwners[0],
       })
-      withdrawalAmount = new BigNumber(
-        await web3.eth.getBalance(lock.address)
-      ).minus(initialLockBalance)
+      withdrawalAmount = (await getBalance(lock.address)).minus(
+        initialLockBalance
+      )
     })
 
     it('should emit a CancelKey event', async () => {
@@ -116,7 +116,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
     it('the amount of refund should be less than or equal to the original key price', async () => {
       const refund = new BigNumber(txObj.logs[0].args.refund)
-      assert(refund.lt(keyPrice))
+      assert(refund.lt(keyPrice.toString()))
     })
 
     it('the amount of refund should be less than or equal to the estimated refund', async () => {
@@ -130,13 +130,11 @@ contract('Lock / cancelAndRefund', (accounts) => {
     })
 
     it("should increase the owner's balance with the amount of funds withdrawn from the lock", async () => {
-      const txHash = await web3.eth.getTransaction(txObj.tx)
+      const txHash = await ethers.provider.getTransaction(txObj.tx)
       const gasUsed = new BigNumber(txObj.receipt.gasUsed)
       const gasPrice = new BigNumber(txHash.gasPrice)
       const txFee = gasPrice.times(gasUsed)
-      const finalOwnerBalance = new BigNumber(
-        await web3.eth.getBalance(keyOwners[0])
-      )
+      const finalOwnerBalance = await getBalance(keyOwners[0])
       assert(
         finalOwnerBalance.toFixed(),
         initialKeyOwnerBalance.plus(withdrawalAmount).minus(txFee).toFixed()
