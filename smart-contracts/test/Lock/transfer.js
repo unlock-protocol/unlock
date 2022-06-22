@@ -107,15 +107,6 @@ contract('Lock / transfer', (accounts) => {
     })
   })
 
-  it('reverts when attempting to transfer to self', async () => {
-    await reverts(
-      lock.transfer(tokenIds[0], singleKeyOwner, 1000, {
-        from: singleKeyOwner,
-      }),
-      'TRANSFER_TO_SELF'
-    )
-  })
-
   it('fails if key is expired', async () => {
     // Push the clock forward 1 second so that the test failure reason is consistent
     await lock.expireAndRefundFor(tokenIds[0], 0, {
