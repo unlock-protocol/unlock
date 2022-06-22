@@ -687,7 +687,7 @@ export class StorageService extends EventEmitter {
     keyId: string
     network: number
   }) {
-    const url = `${this.host}/v2/api/verifier/${network}/lock/${lockAddress}/key/${keyId}/check`
+    const url = `${this.host}/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
     return fetch(url, {
       method: 'PUT',
       headers: {
@@ -705,7 +705,7 @@ export class StorageService extends EventEmitter {
     viewer: string
     network: number
     lockAddress: string
-  }) {
+  }): Promise<boolean> {
     const options = {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
@@ -714,6 +714,12 @@ export class StorageService extends EventEmitter {
       `/v2/api/verifier/${network}/lock/${lockAddress}/address/${viewer}`,
       options,
       true
-    )
+    ).then((res: any) => {
+      if (res.message) {
+        return false
+      } else {
+        return res?.enabled ?? false
+      }
+    })
   }
 }

@@ -1,10 +1,15 @@
 import { Request, Response } from 'express'
-import Normalizer from '../../utils/normalizer'
 import Dispatcher from '../../fulfillment/dispatcher'
 import * as metadataOperations from '../../operations/metadataOperations'
-
+import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
+import Normalizer from '../../utils/normalizer'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import logger from '../../logger'
 export class TicketsController {
-  constructor() {}
+  public web3Service: Web3Service
+  constructor({ web3Service }: { web3Service: Web3Service }) {
+    this.web3Service = web3Service
+  }
 
   /**
    * API to generate signatures that prove validity of a token
@@ -61,6 +66,36 @@ export class TicketsController {
       }
     } else {
       return response.sendStatus(202)
+    }
+  }
+
+  async sendEmail(request: Request, response: Response) {
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
+      const tokenId = request.params.tokenId.toLowerCase()
+
+      const keyOwner = await this.web3Service.ownerOf(
+        lockAddress,
+        tokenId,
+        network
+      )
+
+      await notifyNewKeyToWedlocks(
+        {
+          lock: {
+            address: lockAddress,
+          },
+          owner: {
+            address: keyOwner,
+          },
+        },
+        network
+      )
+      return response.sendStatus(200)
+    } catch (err) {
+      logger.error(err.message)
+      return response.sendStatus(500)
     }
   }
 }

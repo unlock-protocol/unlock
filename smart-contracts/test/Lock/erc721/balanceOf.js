@@ -1,9 +1,8 @@
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 
-const { reverts } = require('../../helpers/errors')
+const { reverts, ADDRESS_ZERO } = require('../../helpers')
 const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../../helpers/truffle-artifacts')

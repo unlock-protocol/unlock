@@ -1,31 +1,25 @@
 const BigNumber = require('bignumber.js')
 
-const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { deployERC20 } = require('../helpers')
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
 const { ADDRESS_ZERO } = require('../helpers/constants')
+const { purchaseKeys } = require('../helpers')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
 
 let unlock
-let locks
 let token
 let tokenIds
 
 contract('Lock / cancelAndRefund', (accounts) => {
-  const denominator = 10000
-
-  before(async () => {
-    token = await tokens.dai.deploy(web3, accounts[0])
-    await token.mint(accounts[0], 100, {
-      from: accounts[0],
-    })
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-  })
-
   let lock
+  let locks
+  const denominator = 10000
+  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const lockCreator = accounts[0]
+
   const keyOwners = [
     accounts[1],
     accounts[2],
@@ -33,27 +27,18 @@ contract('Lock / cancelAndRefund', (accounts) => {
     accounts[4],
     accounts[5],
   ]
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
-  const lockCreator = accounts[0]
 
   before(async () => {
-    lock = locks.SECOND
+    token = await deployERC20(accounts[0])
+    await token.mint(accounts[0], 100, {
+      from: accounts[0],
+    })
+    unlock = await getContractInstance(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
 
+    lock = locks.SECOND
     await lock.setMaxKeysPerAddress(10)
-    const tx = await lock.purchase(
-      [],
-      keyOwners,
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => []),
-      {
-        value: (keyPrice * keyOwners.length).toFixed(),
-        from: lockCreator,
-      }
-    )
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   it('should return the correct penalty', async () => {
