@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useMemo } from 'react'
 import 'cross-fetch/polyfill'
 import Head from 'next/head'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
@@ -17,8 +17,8 @@ import {
   CreateLockButton,
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
+import Fuse from 'fuse.js'
 import { Input } from '@unlock-protocol/ui'
-import { searchFromList } from '../../utils/search'
 interface FilterProps {
   value: string
   current: string
@@ -159,35 +159,31 @@ const MetadataTableWrapper = ({
 }: MetadataTableWrapperProps) => {
   const { account } = useContext(AuthenticationContext)
   const [currentPage, setCurrentPage] = useState(page)
+  const [query, setQuery] = useState('')
+
   const { loading, list, columns, hasNextPage, isLockManager } = useMembers(
     lockAddresses,
     account,
     filter,
     currentPage
   )
-
-  const [filtredItems, setFiltredItems] = useState<any[]>([])
-
-  useEffect(() => {
-    setFiltredItems(list)
-  }, [])
+  const fuseSearch = useMemo(() => {
+    return new Fuse(list, {
+      keys: columns,
+      threshold: 0,
+    })
+  }, [columns, list])
 
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e?.target?.value ?? ''
-    const searchTermEmpty = search.length === 0
-
-    if (searchTermEmpty) {
-      setFiltredItems(list)
-    } else {
-      const filtredResults = searchFromList(list, search, columns)
-      setFiltredItems(filtredResults)
-    }
+    setQuery(search)
   }
 
   if (loading) {
     return <Loading />
   }
-
+  const items = fuseSearch.search(query).map(({ item }) => item)
+  const filtredItems = items?.length > 0 ? items : list
   // TODO: rename metadata into members inside of MetadataTable
   return (
     <>
