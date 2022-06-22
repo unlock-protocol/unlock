@@ -133,7 +133,7 @@ contract MixinTransfer is
     _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
     
-    // revert if keyy manager is set
+    // revert if key manager is set
     if(keyManagerOf[_tokenId] != address(0)) {
       revert UNAUTHORIZED();
     }
