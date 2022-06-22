@@ -16,9 +16,8 @@ export const useMetadata = (url) => {
     if (url) {
       let tokenMetadata = defaultMetadata
       try {
-        tokenMetadata = await fetch(url, { method: 'GET' }).then(
-          (response) => response.data
-        )
+        const response = await fetch(url, { method: 'GET' })
+        tokenMetadata = response.json()
       } catch (error) {
         // Do not fail on error, we'll keep defaulting to the default values
       }

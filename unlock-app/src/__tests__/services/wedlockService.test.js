@@ -1,11 +1,14 @@
-import axios from 'axios'
 import WedlockService, { emailTemplate } from '../../services/wedlockService'
+import fetchMock from 'jest-fetch-mock'
 
+import axios from 'axios'
 jest.mock('axios')
+fetchMock.enableMocks()
 
 let w = new WedlockService('http://notareal.host')
 describe('Wedlocks Service', () => {
   beforeEach(() => {
+    fetch.resetMocks()
     w = new WedlockService('http://notareal.host')
   })
 
@@ -24,19 +27,15 @@ describe('Wedlocks Service', () => {
         },
       },
       attachments: [],
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
     }
-    axios.post.mockReturnValue()
+
+    const body = { body: JSON.stringify(expectedPayload) }
+    fetch.mockResponseOnce(body)
     await w.confirmEmail(recipient, 'https://mcdonalds.gov')
 
-    expect(axios.post).toHaveBeenCalledWith(
-      'http://notareal.host',
-      expectedPayload,
-      {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    )
+    expect(fetch).toHaveBeenCalledWith('http://notareal.host', expectedPayload)
   })
 
   it('should request a welcome email, with the right headers and params', async () => {
