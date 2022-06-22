@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from '@unlock-protocol/ui'
+import { addressMinify } from '../../../utils/strings'
 
 const styles = {
   title: 'text-base font-medium text-black',
@@ -29,11 +30,6 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   metadata = {},
 }) => {
   const [showMetaData, setShowMetaData] = useState(false)
-  const addressMinify = (address: string): string => {
-    return `${address.substring(0, 6)}...${address.substring(
-      address.length - 4
-    )}`
-  }
 
   const extraDataItems: [string, string][] = Object.entries(
     metadata || {}
