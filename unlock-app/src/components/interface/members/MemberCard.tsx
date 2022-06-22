@@ -3,7 +3,7 @@ import { Button } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 
 const styles = {
-  title: 'text-base font-medium text-black',
+  title: 'text-base font-medium text-black break-all	',
   description: 'text-sm font-normal text-gray-500',
   address: 'text-sm	font-sm font-normal text-gray-600',
 }
@@ -45,7 +45,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
 
   return (
     <div className=" border-2 rounded-lg py-4 px-10 hover:shadow-sm">
-      <div className="flex justify-between">
+      <div className="grid grid-cols-7 gap-2 justify-between">
         <div className="flex flex-col">
           <span className={styles.description}>Lock name</span>
           <span className={styles.title}>{lockName}</span>
@@ -68,7 +68,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <span className={styles.description}>Checked in At</span>
           <span className={styles.title}>-</span>
         </div>
-        <div className="flex gap-2 items-center">
+        <div className="col-span-2 flex gap-2 justify-end">
           <Button
             size="small"
             variant="outlined-primary"
