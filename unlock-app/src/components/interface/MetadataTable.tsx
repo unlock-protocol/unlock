@@ -83,6 +83,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   }
 
   const onExpireAndRefund = (lock: any) => {
+    if (expireAndRefundDisabled(lock)) return
     setShowExpireAndRefundModal(true)
     setCurrentLock(lock)
   }
@@ -97,6 +98,10 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     const now = new Date().getTime()
     const expiration = new Date(metadata?.expiration).getTime()
     return expiration > now
+  }
+
+  const expireAndRefundDisabled = (metadata: unknown): boolean => {
+    return !(isLockManager && isKeyValid(metadata))
   }
 
   return (
@@ -133,18 +138,16 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
                     </Td>
                   )
                 })}
-                {isLockManager && isKeyValid(datum) && (
-                  <Td className="text-center">
-                    <button
-                      className="bg-gray-200 rounded px-2 py-1 text-sm"
-                      type="button"
-                      disabled={!isLockManager}
-                      onClick={() => onExpireAndRefund(datum)}
-                    >
-                      Expire and Refund
-                    </button>
-                  </Td>
-                )}
+                <Td className="text-center">
+                  <button
+                    className="bg-gray-200 rounded px-2 py-1 text-sm disabled:opacity-50"
+                    type="button"
+                    disabled={expireAndRefundDisabled(datum)}
+                    onClick={() => onExpireAndRefund(datum)}
+                  >
+                    Expire and Refund
+                  </button>
+                </Td>
               </tr>
             )
           })}
