@@ -3,8 +3,7 @@ const BigNumber = require('bignumber.js')
 
 const TimeMachineMock = artifacts.require('TimeMachineMock')
 
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const { reverts } = require('../helpers/errors')
+const { ADDRESS_ZERO, reverts } = require('../helpers')
 
 contract('Lock / timeMachine', (accounts) => {
   let timeMachine

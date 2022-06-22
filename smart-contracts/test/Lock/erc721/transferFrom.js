@@ -1,6 +1,10 @@
-const { reverts } = require('../../helpers/errors')
 const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const {
+  reverts,
+  ADDRESS_ZERO,
+  purchaseKeys,
+  purchaseKey,
+} = require('../../helpers')
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../../helpers/truffle-artifacts')
 
@@ -14,29 +18,13 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     unlock = await getContractInstance(unlockContract)
   })
 
-  const from = accounts[0]
   keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
 
   beforeEach(async () => {
     locks = await deployLocks(unlock, accounts[0])
     await locks.FIRST.updateTransferFee(0) // disable the transfer fee for this test
     await locks['SINGLE KEY'].updateTransferFee(0) // disable the transfer fee for this test
-
-    const tx = await locks.FIRST.purchase(
-      [],
-      keyOwners,
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => []),
-      {
-        value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
-        from,
-      }
-    )
-
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    ;({ tokenIds } = await purchaseKeys(locks.FIRST, keyOwners.length))
   })
 
   // / @dev Throws unless `msg.sender` is the current owner, an authorized
@@ -211,34 +199,11 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
     describe('when the lock is sold out', () => {
       it('should still allow the transfer of keys', async () => {
         // first we create a lock with only 1 key
-        const tx = await locks['SINGLE KEY'].purchase(
-          [],
-          [keyOwners[0]],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          {
-            value: web3.utils.toWei('0.01', 'ether'),
-            from,
-          }
-        )
-
-        const { args } = tx.logs.find((v) => v.event === 'Transfer')
-        const { tokenId } = args
+        const { tokenId } = await purchaseKey(locks['SINGLE KEY'], keyOwners[0])
 
         // confirm that the lock is sold out
         await reverts(
-          locks['SINGLE KEY'].purchase(
-            [],
-            [accounts[8]],
-            [ADDRESS_ZERO],
-            [ADDRESS_ZERO],
-            [[]],
-            {
-              value: web3.utils.toWei('0.01', 'ether'),
-              from: accounts[8],
-            }
-          ),
+          purchaseKey(locks['SINGLE KEY'], keyOwners[0]),
           'LOCK_SOLD_OUT'
         )
 

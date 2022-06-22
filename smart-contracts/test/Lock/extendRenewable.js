@@ -1,11 +1,14 @@
-const { tokens } = require('hardlydifficult-ethereum-contracts')
-const { reverts } = require('../helpers/errors')
+const {
+  deployERC20,
+  reverts,
+  purchaseKey,
+  ADDRESS_ZERO,
+} = require('../helpers')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { assert } = require('chai')
 const deployLocks = require('../helpers/deployLocks')
 const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
 
 const Unlock = artifacts.require('Unlock.sol')
 
@@ -25,7 +28,7 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
   // const referrer = accounts[3]
 
   before(async () => {
-    dai = await tokens.dai.deploy(web3, lockOwner)
+    dai = await deployERC20(lockOwner)
 
     // Mint some dais for testing
     await dai.mint(keyOwner, someDai, {
@@ -48,19 +51,7 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
     beforeEach(async () => {
       // reset pricing
       await lock.updateKeyPricing(keyPrice, dai.address, { from: lockOwner })
-
-      const tx = await lock.purchase(
-        [keyPrice],
-        [keyOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        { from: keyOwner }
-      )
-
-      const { args } = tx.logs.find((v) => v.event === 'Transfer')
-      const { tokenId: newTokenId } = args
-      tokenId = newTokenId
+      ;({ tokenId } = await purchaseKey(lock, keyOwner, true))
 
       const expirationTs = await lock.keyExpirationTimestampFor(tokenId)
       await time.increaseTo(expirationTs.toNumber())
@@ -138,7 +129,7 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
     describe('token changed', () => {
       it('should renew once key has been extended', async () => {
         // deploy a new erc20 token
-        const xdai = await tokens.dai.deploy(web3, lockOwner)
+        const xdai = await deployERC20(lockOwner)
         await xdai.mint(keyOwner, someDai, {
           from: lockOwner,
         })
@@ -162,16 +153,20 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
 
         // expire key again
         const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
+        await time.increaseTo(newExpirationTs.toNumber())
 
         // renewal should work
-        await time.increaseTo(newExpirationTs.toNumber() - 1)
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO, {
           from: keyOwner,
         })
+
+        const tsExpected = newExpirationTs.add(await lock.expirationDuration())
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
+
         assert.equal(
-          newExpirationTs.add(await lock.expirationDuration()).toString(),
-          tsAfter.toString()
+          // assert results for +/- 2 sec
+          tsAfter.toNumber() - tsExpected.toNumber() <= 2,
+          true
         )
       })
     })

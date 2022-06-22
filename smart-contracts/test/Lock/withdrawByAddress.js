@@ -1,5 +1,5 @@
 const BigNumber = require('bignumber.js')
-const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { deployERC20 } = require('../helpers')
 
 const { reverts } = require('../helpers/errors')
 const deployLocks = require('../helpers/deployLocks')
@@ -20,7 +20,7 @@ contract('Lock / withdrawByAddress', (accounts) => {
     lock = locks.OWNED
 
     // Put some ERC-20 tokens into the contract
-    token = await tokens.dai.deploy(web3, owner)
+    token = await deployERC20(owner)
     await token.mint(lock.address, 42000, {
       from: owner,
     })
