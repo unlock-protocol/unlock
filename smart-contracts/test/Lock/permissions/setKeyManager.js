@@ -1,6 +1,5 @@
-const { reverts } = require('../../helpers/errors')
 const BigNumber = require('bignumber.js')
-const { deployLock, ADDRESS_ZERO } = require('../../helpers/constants')
+const { deployLock, ADDRESS_ZERO, reverts } = require('../../helpers')
 
 let lock
 let lockCreator

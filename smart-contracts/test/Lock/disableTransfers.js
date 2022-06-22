@@ -1,13 +1,7 @@
 const BigNumber = require('bignumber.js')
 const { purchaseKey, reverts, deployLock } = require('../helpers')
 
-let locks
-
 contract('Lock / disableTransfers', (accounts) => {
-  before(async () => {
-    lock = await deployLock()
-  })
-
   let lock
   let tokenId
   const keyOwner = accounts[1]
@@ -15,7 +9,7 @@ contract('Lock / disableTransfers', (accounts) => {
   const oneDay = new BigNumber(60 * 60 * 24)
 
   before(async () => {
-    lock = locks.FIRST
+    lock = await deployLock()
     ;({ tokenId } = await purchaseKey(lock, keyOwner))
 
     // Change the fee to 100%

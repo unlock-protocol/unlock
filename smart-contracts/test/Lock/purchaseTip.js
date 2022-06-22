@@ -1,10 +1,5 @@
-const truffleAssert = require('../helpers/errors')
 const BigNumber = require('bignumber.js')
-const {
-  deployERC20,
-  deployLock,
-  ADDRESS_ZERO,
-} = require('../helpers/constants')
+const { deployERC20, deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
 
 const Erc20Token = artifacts.require(
   '@openzeppelin/contracts/token/ERC20/IERC20.sol:IERC20'
@@ -145,7 +140,7 @@ contract('Lock / purchaseTip', (accounts) => {
 
       if (isErc20) {
         it('should fail if value is less than keyPrice', async () => {
-          await truffleAssert.fails(
+          await reverts(
             lock.purchase(
               [1],
               [accounts[2]],
@@ -157,7 +152,6 @@ contract('Lock / purchaseTip', (accounts) => {
                 value: isErc20 ? 0 : keyPrice.toString(),
               }
             ),
-            'revert',
             'INSUFFICIENT_VALUE'
           )
         })

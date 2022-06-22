@@ -1,4 +1,4 @@
-const { deployLock, ADDRESS_ZERO } = require('../helpers/constants')
+const { deployLock, ADDRESS_ZERO } = require('../helpers')
 
 contract('Lock / purchaseForFrom', (accounts) => {
   let lock

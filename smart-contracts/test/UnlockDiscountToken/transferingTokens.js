@@ -52,7 +52,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     await proxyUDT.deployed()
     udt = await UnlockDiscountToken.at(proxyUDT.address)
 
-    lock = await deployLock()
+    lock = await deployLock({ unlock })
 
     // Deploy the exchange
     const { oracle, weth } = await createExchange({

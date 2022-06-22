@@ -4,8 +4,7 @@
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, network, upgrades } = require('hardhat')
-const { ADDRESS_ZERO, deployLock } = require('../helpers/constants')
-const { createExchange } = require('../helpers')
+const { ADDRESS_ZERO, deployLock, createExchange } = require('../helpers')
 
 const Unlock = artifacts.require('Unlock.sol')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')

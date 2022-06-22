@@ -1,5 +1,4 @@
 const BigNumber = require('bignumber.js')
-const { assert } = require('chai')
 const { deployLock, purchaseKeys, ADDRESS_ZERO } = require('../helpers')
 
 let lock
@@ -110,7 +109,7 @@ contract('Lock / owners', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: lock.params.keyPrice.toFixed(),
+          value: await lock.keyPrice(),
           from: keyOwners[3],
         }
       )

@@ -1,5 +1,6 @@
 const BigNumber = require('bignumber.js')
 const { deployLock, reverts, purchaseKey } = require('../helpers')
+const Unlock = artifacts.require('Unlock.sol')
 
 const keyPrice = web3.utils.toWei('0.01', 'ether')
 
@@ -10,6 +11,7 @@ contract('Unlock / resetTrackedValue', (accounts) => {
   beforeEach(async () => {
     lock = await deployLock()
     await purchaseKey(lock, accounts[1])
+    unlock = await Unlock.at(await lock.unlockProtocol())
   })
 
   it('grossNetworkProduct has a non-zero value after a purchase', async () => {

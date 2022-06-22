@@ -1,10 +1,10 @@
 const { ethers } = require('hardhat')
-const { reverts } = require('../helpers/errors')
 const {
+  reverts,
   deployLock,
   errorMessages,
   ADDRESS_ZERO,
-} = require('../helpers/constants')
+} = require('../helpers')
 
 let lock
 let tx

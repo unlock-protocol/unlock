@@ -1,8 +1,6 @@
 const BigNumber = require('bignumber.js')
 
-const { deployERC20 } = require('../helpers')
-const { reverts } = require('../helpers/errors')
-const { deployLock, ADDRESS_ZERO } = require('../helpers/constants')
+const { reverts, deployLock, deployERC20, ADDRESS_ZERO } = require('../helpers')
 
 let lock
 let keyPriceBefore

@@ -26,9 +26,7 @@ contract('Lock / erc20', (accounts) => {
   describe('creating ERC20 priced locks', () => {
     let keyPrice
     let refundAmount
-    const keyOwner = accounts[1]
-    const keyOwner2 = accounts[2]
-    const keyOwner3 = accounts[3]
+    const [, keyOwner, keyOwner2, keyOwner3] = accounts
     const defaultBalance = new BigNumber(100000000000000000)
 
     beforeEach(async () => {
@@ -205,7 +203,11 @@ contract('Lock / erc20', (accounts) => {
 
   describe('should fail to create a lock when', () => {
     it('when creating a lock for a contract which is not an ERC20', async () => {
-      await reverts(deployLock({ testAddress: (await TestNoop.new()).address }))
+      await reverts(
+        deployLock({
+          tokenAddress: (await TestNoop.new()).address,
+        })
+      )
     })
 
     describe('when creating a lock with an invalid ERC20', () => {

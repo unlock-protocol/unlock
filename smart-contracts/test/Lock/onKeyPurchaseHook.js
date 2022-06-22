@@ -1,10 +1,5 @@
 const BigNumber = require('bignumber.js')
-const {
-  deployLock,
-  reverts,
-  ADDRESS_ZERO,
-  MAX_UINT,
-} = require('../helpers/constants')
+const { deployLock, reverts, ADDRESS_ZERO, MAX_UINT } = require('../helpers')
 
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
 

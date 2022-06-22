@@ -1,6 +1,6 @@
 const { time } = require('@openzeppelin/test-helpers')
 
-const { ADDRESS_ZERO, deployLock } = require('../helpers/constants')
+const { ADDRESS_ZERO, deployLock } = require('../helpers')
 
 let lock
 let tokenIds

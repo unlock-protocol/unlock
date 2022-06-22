@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const { deployLock, reverts, ADDRESS_ZERO } = require('../helpers/constants')
+const { deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
 
 let lock
 let tx

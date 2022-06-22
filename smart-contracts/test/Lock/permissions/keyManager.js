@@ -1,7 +1,11 @@
-const { reverts } = require('../../helpers/errors')
 const BigNumber = require('bignumber.js')
 const { ethers } = require('hardhat')
-const { deployLock, ADDRESS_ZERO, purchaseKeys } = require('../../helpers')
+const {
+  reverts,
+  deployLock,
+  ADDRESS_ZERO,
+  purchaseKeys,
+} = require('../../helpers')
 
 let lock
 let lockCreator

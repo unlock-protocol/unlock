@@ -1,6 +1,6 @@
 const BigNumber = require('bignumber.js')
 
-const { deployLock, ADDRESS_ZERO } = require('../helpers/constants')
+const { deployLock, ADDRESS_ZERO } = require('../helpers')
 const WalletService = require('../helpers/walletServiceMock.js')
 
 let lock

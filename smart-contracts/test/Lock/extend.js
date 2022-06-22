@@ -1,4 +1,4 @@
-const { reverts } = require('../helpers/errors')
+const { reverts } = require('../helpers')
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
 
@@ -21,10 +21,9 @@ contract('Lock / extend keys', (accounts) => {
     let nonExpiringLock
     let tokenAddress
     let tsBefore
-    const lockOwner = accounts[0]
-    const keyOwner = accounts[1]
-    const nonExpiringKeyOwner = accounts[2]
     let tokenId
+
+    const [lockOwner, keyOwner, nonExpiringKeyOwner] = accounts
 
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       beforeEach(async () => {
@@ -37,7 +36,10 @@ contract('Lock / extend keys', (accounts) => {
         })
 
         lock = await deployLock({ tokenAddress })
-        nonExpiringLock = await deployLock({ name: 'NON_EXPIRING' })
+        nonExpiringLock = await deployLock({
+          tokenAddress,
+          name: 'NON_EXPIRING',
+        })
       })
 
       describe('common lock', () => {

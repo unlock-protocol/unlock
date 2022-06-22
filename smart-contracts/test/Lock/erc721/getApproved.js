@@ -1,4 +1,4 @@
-const { reverts, deployLock } = require('../../helpers/errors')
+const { reverts, deployLock } = require('../../helpers')
 
 contract('Lock / erc721 / getApproved', () => {
   let lock

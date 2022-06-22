@@ -7,11 +7,9 @@ const {
   purchaseKeys,
 } = require('../helpers')
 
-let unlock
-let tokenIds
-
 contract('Lock / shareKey', (accounts) => {
   let lock
+  let tokenIds
   let event
   let event1
   let event2
@@ -78,16 +76,19 @@ contract('Lock / shareKey', (accounts) => {
     })
 
     it('should fail if trying to share a key with a contract which does not implement onERC721Received', async () => {
-      let nonCompliantContract = unlock.address
+      // A contract which does NOT implement onERC721Received:
+      const NonCompliantContract = artifacts.require('TestEventHooks')
+      const { address } = await NonCompliantContract.new()
+
       assert.equal(await lock.isValidKey(tokenIds[2]), true)
       assert.equal(await lock.ownerOf(tokenIds[2]), keyOwners[2])
       await reverts(
-        lock.shareKey(nonCompliantContract, tokenIds[2], 1000, {
+        lock.shareKey(address, tokenIds[2], 1000, {
           from: keyOwners[2],
         })
       )
       // make sure the key was not shared
-      assert.notEqual(await lock.ownerOf(tokenIds[2]), nonCompliantContract)
+      assert.notEqual(await lock.ownerOf(tokenIds[2]), address)
     })
 
     describe('fallback behaviors', () => {

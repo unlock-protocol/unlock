@@ -1,4 +1,4 @@
-const { deployLock, reverts } = require('../../helpers/errors')
+const { deployLock, reverts } = require('../../helpers')
 
 let lock
 let lockCreator

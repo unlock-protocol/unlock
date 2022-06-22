@@ -2,8 +2,10 @@ const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers } = require('hardhat')
 
-const { deployLock, ADDRESS_ZERO, MAX_UINT } = require('../helpers')
 const {
+  deployLock,
+  ADDRESS_ZERO,
+  MAX_UINT,
   deployWETH,
   deployERC20,
   deployUniswapV2,
@@ -11,9 +13,9 @@ const {
 } = require('../helpers')
 
 const keyPrice = web3.utils.toWei('0.01', 'ether')
+const Unlock = artifacts.require('Unlock.sol')
 
 let unlock
-let locks
 let lock
 let token
 
@@ -83,10 +85,12 @@ contract('Unlock / uniswapValue', (accounts) => {
       })
 
       lock = await deployLock({ tokenAddress: token.address })
+      unlock = await Unlock.at(await lock.unlockProtocol())
 
       // Deploy the exchange
       const weth = await deployWETH(protocolOwner)
       const uniswapRouter = await deployUniswapV2(weth.address, protocolOwner)
+
       // Create DAI <-> WETH pool
       await token.mint(liquidityOwner, web3.utils.toWei('100000', 'ether'), {
         from: protocolOwner,
@@ -146,7 +150,6 @@ contract('Unlock / uniswapValue', (accounts) => {
 
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
-
         await token.approve(lock.address, keyPrice, { from: keyOwner })
         tx = await lock.purchase(
           [keyPrice],
@@ -206,7 +209,7 @@ contract('Unlock / uniswapValue', (accounts) => {
       })
 
       lock = await deployLock({ tokenAddress: token.address })
-      lock = locks.FIRST
+      unlock = await Unlock.at(await lock.unlockProtocol())
     })
 
     describe('Purchase key', () => {
@@ -258,6 +261,7 @@ contract('Unlock / uniswapValue', (accounts) => {
   describe('ETH', () => {
     beforeEach(async () => {
       lock = await deployLock()
+      unlock = await Unlock.at(await lock.unlockProtocol())
     })
 
     describe('Purchase key', () => {

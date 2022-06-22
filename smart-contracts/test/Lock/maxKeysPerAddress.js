@@ -42,7 +42,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
 
   describe('enforcing the number of keys per address', () => {
     let tokenId
-    beforeEach(async () => {
+    before(async () => {
       ;({ tokenId } = await purchaseKey(lock, keyOwner))
     })
 
@@ -93,7 +93,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
     it('prevent user from transferring a key with someone who has more keys than allowed', async () => {
       await lock.purchase(
         [],
-        [accounts[9]],
+        [accounts[8]],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -102,7 +102,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
         }
       )
       await reverts(
-        lock.transfer(tokenId, accounts[9], 1000, {
+        lock.transfer(tokenId, accounts[8], 1000, {
           from: keyOwner,
         }),
         'MAX_KEYS'

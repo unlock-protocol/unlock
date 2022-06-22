@@ -2,7 +2,7 @@ const { ethers } = require('hardhat')
 const PublicLock = artifacts.require('PublicLock')
 const createLockHash = require('./createLockCalldata')
 const Locks = require('../fixtures/locks')
-const { ADDRESS_ZERO } = require('./constants')
+const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
 
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
@@ -25,7 +25,7 @@ async function deployLock({
     Locks[name]
 
   const args = [
-    expirationDuration.toString(),
+    name === 'NON_EXPIRING' ? MAX_UINT : expirationDuration.toString(),
     tokenAddress,
     keyPrice.toString(),
     maxNumberOfKeys.toString(),
