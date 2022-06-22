@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button } from '@unlock-protocol/ui'
 
 const styles = {
-  title: 'text-lg font-bold text-black',
+  title: 'text-base font-medium text-black',
   description: 'text-sm font-normal text-gray-500',
   address: 'text-sm	font-sm font-normal text-gray-600',
 }
