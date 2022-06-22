@@ -118,11 +118,9 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             {columns.map((col) => {
               return <Th key={col}>{camelCaseToTitle(col)}</Th>
             })}
-            {isLockManager && (
-              <Th className="text-center" key="actions">
-                Actions
-              </Th>
-            )}
+            <Th className="text-center" key="actions">
+              Actions
+            </Th>
           </tr>
         </thead>
         <Tbody>
