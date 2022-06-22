@@ -325,3 +325,9 @@ yarn hardhat verify <address> --network polygon
 export BSCSCAN_API_KEY=<xxx>
 yarn hardhat verify <address> --network binance
 ```
+
+## Create a gnosis safe
+
+```
+yarn hardhat gnosis:create owner1 owner2 owner3 owner4 owner5 --treshold 3 --network rinkeby
+```
