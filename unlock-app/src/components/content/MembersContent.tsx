@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import 'cross-fetch/polyfill'
 import Head from 'next/head'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
@@ -17,7 +17,8 @@ import {
   CreateLockButton,
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
-
+import { Input } from '@unlock-protocol/ui'
+import { searchFromList } from '../../utils/search'
 interface FilterProps {
   value: string
   current: string
@@ -165,6 +166,24 @@ const MetadataTableWrapper = ({
     currentPage
   )
 
+  const [filtredItems, setFiltredItems] = useState<any[]>([])
+
+  useEffect(() => {
+    setFiltredItems(list)
+  }, [])
+
+  const search = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const search = e?.target?.value ?? ''
+    const searchTermEmpty = search.length === 0
+
+    if (searchTermEmpty) {
+      setFiltredItems(list)
+    } else {
+      const filtredResults = searchFromList(list, search, columns)
+      setFiltredItems(filtredResults)
+    }
+  }
+
   if (loading) {
     return <Loading />
   }
@@ -177,9 +196,15 @@ const MetadataTableWrapper = ({
         setCurrentPage={setCurrentPage}
         hasNextPage={hasNextPage}
       />
+      <Input
+        type="text"
+        label="Filter your results"
+        size="medium"
+        onChange={search}
+      />
       <MetadataTable
         columns={columns}
-        metadata={list}
+        metadata={filtredItems}
         isLockManager={isLockManager}
         lockAddresses={lockAddresses}
       />
