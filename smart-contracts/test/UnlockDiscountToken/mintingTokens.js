@@ -97,7 +97,7 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
 
     rate = await oracle.consult(
       udt.address,
-      web3.utils.toWei('1', 'ether'),
+      ethers.utils.parseUnits('1', 'ether'),
       weth.address
     )
   })

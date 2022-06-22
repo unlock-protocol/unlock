@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 
 const deployLocks = require('../helpers/deployLocks')
@@ -25,7 +26,7 @@ contract('Lock / totalKeys', (accounts) => {
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
-        value: web3.utils.toWei('0.03', 'ether'),
+        value: ethers.utils.parseUnits('0.03', 'ether'),
         from: accounts[1],
       }
     )
@@ -50,7 +51,7 @@ contract('Lock / totalKeys', (accounts) => {
   it('should count both expired and renewed keys', async () => {
     // extend once to fix block time in the past in test
     await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
-      value: web3.utils.toWei('0.03', 'ether'),
+      value: ethers.utils.parseUnits('0.03', 'ether'),
       from: accounts[1],
     })
 
@@ -62,7 +63,7 @@ contract('Lock / totalKeys', (accounts) => {
 
     // renew one
     await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
-      value: web3.utils.toWei('0.03', 'ether'),
+      value: ethers.utils.parseUnits('0.03', 'ether'),
       from: accounts[1],
     })
 

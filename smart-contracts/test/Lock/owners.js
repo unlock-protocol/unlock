@@ -117,7 +117,7 @@ contract('Lock / owners', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: lock.params.keyPrice.toFixed(),
+          value: lock.params.keyPrice.toString(),
           from: keyOwners[3],
         }
       )

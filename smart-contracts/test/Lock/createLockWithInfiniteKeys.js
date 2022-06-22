@@ -1,3 +1,4 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 const PublicLock = artifacts.require('PublicLock')
@@ -19,7 +20,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO, // token address
-        web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+        ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
         MAX_UINT, // maxNumberOfKeys
         'Infinite Keys Lock', // name
       ]
@@ -45,7 +46,7 @@ contract('Lock / createLockWithInfiniteKeys', () => {
       const args = [
         60 * 60 * 24 * 30, // expirationDuration: 30 days
         ADDRESS_ZERO,
-        web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+        ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
         0, // maxNumberOfKeys
         'Zero-Key Lock',
         // '0x000000000000000000000001',

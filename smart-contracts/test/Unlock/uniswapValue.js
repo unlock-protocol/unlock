@@ -1,9 +1,10 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
-const { ethers } = require('hardhat')
 const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 const {
+  ADDRESS_ZERO,
+  MAX_UINT,
   deployWETH,
   deployERC20,
   deployUniswapV2,
@@ -13,7 +14,7 @@ const {
 const unlockContract = artifacts.require('Unlock.sol')
 const getContractInstance = require('../helpers/truffle-artifacts')
 
-const keyPrice = web3.utils.toWei('0.01', 'ether')
+const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
 let unlock
 let locks
@@ -85,7 +86,7 @@ contract('Unlock / uniswapValue', (accounts) => {
     beforeEach(async () => {
       token = await deployERC20(protocolOwner)
       // Mint some tokens so that the totalSupply is greater than 0
-      await token.mint(keyOwner, web3.utils.toWei('10000', 'ether'), {
+      await token.mint(keyOwner, ethers.utils.parseUnits('10000', 'ether'), {
         from: protocolOwner,
       })
 
@@ -96,22 +97,27 @@ contract('Unlock / uniswapValue', (accounts) => {
       const weth = await deployWETH(protocolOwner)
       const uniswapRouter = await deployUniswapV2(weth.address, protocolOwner)
       // Create DAI <-> WETH pool
-      await token.mint(liquidityOwner, web3.utils.toWei('100000', 'ether'), {
-        from: protocolOwner,
-      })
+      await token.mint(
+        liquidityOwner,
+        ethers.utils.parseUnits('100000', 'ether'),
+        {
+          from: protocolOwner,
+        }
+      )
       await token.approve(uniswapRouter.address, MAX_UINT, {
         from: liquidityOwner,
       })
+
       await uniswapRouter
         .connect(await ethers.getSigner(liquidityOwner))
         .addLiquidityETH(
           token.address,
-          web3.utils.toWei('2000', 'ether'),
+          ethers.utils.parseUnits('2000', 'ether'),
           '1',
           '1',
           liquidityOwner,
           MAX_UINT,
-          { value: web3.utils.toWei('10', 'ether') }
+          { value: ethers.utils.parseUnits('10', 'ether') }
         )
 
       const uniswapOracle = await deployUniswapOracle(
@@ -130,7 +136,7 @@ contract('Unlock / uniswapValue', (accounts) => {
           [weth.address, token.address],
           keyOwner,
           MAX_UINT,
-          { value: web3.utils.toWei('1', 'ether') }
+          { value: ethers.utils.parseUnits('1', 'ether') }
         )
 
       // Config in Unlock
@@ -174,7 +180,7 @@ contract('Unlock / uniswapValue', (accounts) => {
         assert.equal(
           gdp.shiftedBy(-18).toFixed(5),
           gdpBefore
-            .plus(web3.utils.toWei('0.00006', 'ether'))
+            .plus(ethers.utils.parseUnits('0.00006', 'ether').toString())
             .shiftedBy(-18)
             .toFixed(5)
         )
@@ -193,9 +199,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
         assert.equal(gdp.toString(), grossNetworkProduct)
         assert.equal(
-          new BigNumber(web3.utils.toWei('0.00006', 'ether'))
-            .shiftedBy(-18)
-            .toFixed(5),
+          '0.00006',
           new BigNumber(valueInETH).shiftedBy(-18).toFixed(5)
         )
         assert.equal(token.address, tokenAddress)
@@ -209,7 +213,7 @@ contract('Unlock / uniswapValue', (accounts) => {
     beforeEach(async () => {
       token = await deployERC20(protocolOwner)
       // Mint some tokens so that the totalSupply is greater than 0
-      await token.mint(keyOwner, web3.utils.toWei('10000', 'ether'), {
+      await token.mint(keyOwner, ethers.utils.parseUnits('10000', 'ether'), {
         from: protocolOwner,
       })
 
@@ -291,7 +295,10 @@ contract('Unlock / uniswapValue', (accounts) => {
 
       it('GDP went up by the keyPrice', async () => {
         const gdp = new BigNumber(await unlock.grossNetworkProduct())
-        assert.equal(gdp.toFixed(), gdpBefore.plus(keyPrice).toFixed())
+        assert.equal(
+          gdp.toFixed(),
+          gdpBefore.plus(keyPrice.toString()).toFixed()
+        )
       })
 
       it('a GDP tracking event has been emitted', async () => {

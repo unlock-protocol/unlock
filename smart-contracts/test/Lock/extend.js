@@ -13,8 +13,8 @@ const scenarios = [false, true]
 let unlock
 let locks
 let testToken
-const keyPrice = web3.utils.toWei('0.01', 'ether')
-const someTokens = web3.utils.toWei('10', 'ether')
+const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const someTokens = ethers.utils.parseUnits('10', 'ether')
 
 contract('Lock / extend keys', (accounts) => {
   scenarios.forEach((isErc20) => {
@@ -65,7 +65,7 @@ contract('Lock / extend keys', (accounts) => {
         })
 
         it('reverts with insufficient value', async () => {
-          const belowPrice = web3.utils.toWei('0.005', 'ether')
+          const belowPrice = ethers.utils.parseUnits('0.005', 'ether')
           await reverts(
             lock.extend(isErc20 ? belowPrice : 0, tokenId, ADDRESS_ZERO, [], {
               value: isErc20 ? 0 : belowPrice,

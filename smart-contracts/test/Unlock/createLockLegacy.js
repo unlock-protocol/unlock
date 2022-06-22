@@ -41,7 +41,7 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
           args = [
             60 * 60 * 24 * 30, // expirationDuration: 30 days
             ADDRESS_ZERO,
-            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+            ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'Test Lock',
           ]
@@ -56,7 +56,7 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
           const result = await lock.expirationDuration()
           assert.equal(result, args[0])
           assert.equal(await lock.tokenAddress(), args[1])
-          assert.equal(await lock.keyPrice(), args[2])
+          assert.equal((await lock.keyPrice()).toString(), args[2].toString())
           assert.equal(await lock.maxNumberOfKeys(), args[3])
           assert.equal(await lock.name(), args[4])
         })
