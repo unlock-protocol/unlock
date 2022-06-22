@@ -1,9 +1,7 @@
 const { ethers } = require('hardhat')
 
-const unlockContract = artifacts.require('Unlock')
 const PublicLock = artifacts.require('PublicLock')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { ADDRESS_ZERO, deployContracts } = require('../helpers')
 
 let unlock
 let lock
@@ -11,7 +9,7 @@ let publicLockUpgraded
 
 contract('Unlock / createLock (Legacy)', (accounts) => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
+    ;({ unlock } = await deployContracts())
 
     // deploy new implementation
     const PublicLockUpgraded = await ethers.getContractFactory(

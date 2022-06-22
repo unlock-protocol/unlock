@@ -2,7 +2,6 @@ const { time } = require('@openzeppelin/test-helpers')
 
 const { reverts } = require('../helpers/errors')
 const { ethers, upgrades, network } = require('hardhat')
-const { getDeployment } = require('../../helpers/deployments')
 const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
 const deployContracts = require('../fixtures/deploy')
 
@@ -62,7 +61,9 @@ contract('UnlockProtocolGovernor', () => {
     updateTx = await tx.wait()
   }
 
-  before(async () => await deployContracts())
+  before(async () => {
+    ;({ udt } = await deployContracts())
+  })
 
   beforeEach(async () => {
     // deploying timelock with a proxy
@@ -77,21 +78,13 @@ contract('UnlockProtocolGovernor', () => {
     ])
     await timelock.deployed()
 
-    const UDTInfo = await getDeployment(31337, 'UnlockDiscountTokenV3')
-    const tokenAddress = UDTInfo.address
-
-    const UnlockDiscountToken = await ethers.getContractFactory(
-      'UnlockDiscountTokenV3'
-    )
-    udt = await UnlockDiscountToken.attach(tokenAddress)
-
     // deploy governor
     const UnlockProtocolGovernor = await ethers.getContractFactory(
       'UnlockProtocolGovernor'
     )
 
     gov = await upgrades.deployProxy(UnlockProtocolGovernor, [
-      tokenAddress,
+      udt.address,
       timelock.address,
     ])
     await gov.deployed()

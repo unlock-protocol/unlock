@@ -1,5 +1,9 @@
-const { deployLock, purchaseKey, reverts } = require('../../helpers')
-const unlockContract = artifacts.require('Unlock.sol')
+const {
+  deployLock,
+  deployContracts,
+  purchaseKey,
+  reverts,
+} = require('../../helpers')
 
 let lock
 let unlock
@@ -25,8 +29,8 @@ function stringShifter(str) {
 
 contract('Lock / erc721 / tokenURI', (accounts) => {
   before(async () => {
-    lock = await deployLock()
-    unlock = await unlockContract.at(await lock.unlockProtocol())
+    ;({ unlock } = await deployContracts())
+    lock = await deployLock({ unlock })
   })
 
   describe('the global tokenURI stored in Unlock', () => {

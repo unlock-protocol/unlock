@@ -1,6 +1,10 @@
 const BigNumber = require('bignumber.js')
-const { deployLock, purchaseKey, purchaseKeys } = require('../helpers')
-const Unlock = artifacts.require('Unlock.sol')
+const {
+  deployContracts,
+  deployLock,
+  purchaseKey,
+  purchaseKeys,
+} = require('../helpers')
 
 let lock
 let unlock
@@ -8,8 +12,8 @@ const price = new BigNumber(web3.utils.toWei('0.01', 'ether'))
 
 contract('Unlock / lockTotalSales', () => {
   before(async () => {
-    lock = await deployLock()
-    unlock = await Unlock.at(await lock.unlockProtocol())
+    ;({ unlock } = await deployContracts())
+    lock = await deployLock({ unlock })
   })
 
   it('total sales defaults to 0', async () => {

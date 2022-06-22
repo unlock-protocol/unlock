@@ -1,15 +1,18 @@
-const { purchaseKey, reverts, deployERC20, deployLock } = require('../helpers')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
+const {
+  purchaseKey,
+  reverts,
+  deployERC20,
+  deployLock,
+  deployContracts,
+} = require('../helpers')
 
 let unlock
+let lock
 
 contract('Lock / approveBeneficiary', (accounts) => {
   const [daiOwner, beneficiary, keyOwner, spender, other] = accounts
-  let lock
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
+    ;({ unlock } = await deployContracts())
   })
 
   describe('ETH', () => {

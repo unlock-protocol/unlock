@@ -2,10 +2,8 @@ const { ethers } = require('hardhat')
 const PublicLock = artifacts.require('PublicLock')
 const createLockHash = require('./createLockCalldata')
 const Locks = require('../fixtures/locks')
+const deployContracts = require('../fixtures/deploy')
 const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
 
 async function deployLock({
   unlock,
@@ -14,7 +12,7 @@ async function deployLock({
   name = 'FIRST',
 } = {}) {
   if (!unlock) {
-    unlock = await getContractInstance(unlockContract)
+    ;({ unlock } = await deployContracts())
   }
   if (!deployer) {
     const [defaultDeployer] = await ethers.getSigners()
