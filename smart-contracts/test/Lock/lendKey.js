@@ -270,6 +270,36 @@ contract('Lock / lendKey', (accounts) => {
     assert.equal(await locks.FREE.keyManagerOf(newTokenId), accounts[1])
   })
 
+  describe('approvals with lent key', () => {
+    const approvedUser = accounts[8]
+    beforeEach(async () => {
+      await lock.lendKey(keyOwners[0], accounts[7], tokenIds[0], {
+        from: keyOwners[0],
+      })
+    })
+
+    it('can not approve another account to lend the key', async () => {
+      await reverts(
+        lock.approve(approvedUser, tokenIds[0], {
+          from: accounts[7],
+        }),
+        'ONLY_KEY_MANAGER_OR_APPROVED'
+      )
+    })
+
+    it('can not used an "approved for all" account to transfer the key', async () => {
+      await lock.setApprovalForAll(approvedUser, true, {
+        from: accounts[7],
+      })
+      await reverts(
+        lock.transferFrom(accounts[7], accounts[9], tokenIds[0], {
+          from: approvedUser,
+        }),
+        'UNAUTHORIZED'
+      )
+    })
+  })
+
   describe('a lent key', () => {
     beforeEach(async () => {
       await lock.lendKey(keyOwners[2], accounts[7], tokenIds[2], {
