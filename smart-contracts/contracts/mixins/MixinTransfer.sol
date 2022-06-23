@@ -14,7 +14,6 @@ import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 /**
  * @title Mixin for the transfer-related functions needed to meet the ERC721
  * standard.
- * @author Nick Furfaro
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
@@ -65,9 +64,6 @@ contract MixinTransfer is
     }
 
     address keyOwner = _ownerOf[_tokenIdFrom];
-    if(keyOwner == _to) {
-      revert TRANSFER_TO_SELF();
-    }
 
     // store time to be added
     uint time;
@@ -178,6 +174,7 @@ contract MixinTransfer is
 
     // make future reccuring transactions impossible
     _originalDurations[_tokenId] = 0;
+    _originalPrices[_tokenId] = 0;
 
     // trigger event
     emit Transfer(

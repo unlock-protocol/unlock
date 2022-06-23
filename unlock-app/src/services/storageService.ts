@@ -1,8 +1,9 @@
-import { decodeToken } from 'react-jwt'
-import { EventEmitter } from 'events'
 import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
-import { Lock } from '../unlockTypes'
+import { EventEmitter } from 'events'
+import { decodeToken, isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
+import { APP_NAME } from '../hooks/useAppStorage'
+import { Lock } from '../unlockTypes'
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
 // these objects, and nothing that isn't emitted should be in one of these
@@ -59,6 +60,8 @@ export class StorageService extends EventEmitter {
 
   private accessToken: string | null
 
+  private tokenKeyName = `${APP_NAME}.token`
+
   constructor(host: string) {
     super()
     this.host = host
@@ -74,6 +77,7 @@ export class StorageService extends EventEmitter {
 
   setToken(token: string) {
     this.accessToken = token
+    localStorage.setItem(this.tokenKeyName, token)
     const decoded: any = decodeToken(token)
     const expireAt: number = decoded?.exp ?? -1
     if (decoded && expireAt) {
@@ -88,16 +92,21 @@ export class StorageService extends EventEmitter {
 
   async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
     try {
-      const message = await this.getSiweMessage({
-        address,
-        chainId,
-      })
-      const signature = await walletService.signMessage(
-        message,
-        'personal_sign'
-      )
-      const { accessToken } = await this.login(message, signature)
-      this.setToken(accessToken)
+      const storedToken = localStorage.getItem(this.tokenKeyName)
+      if (storedToken && !isExpired(storedToken)) {
+        this.setToken(storedToken)
+      } else {
+        const message = await this.getSiweMessage({
+          address,
+          chainId,
+        })
+        const signature = await walletService.signMessage(
+          message,
+          'personal_sign'
+        )
+        const { accessToken } = await this.login(message, signature)
+        this.setToken(accessToken)
+      }
     } catch (err) {
       console.error(err)
     }
@@ -744,5 +753,50 @@ export class StorageService extends EventEmitter {
     } catch (error) {
       return false
     }
+  }
+
+  async markTicketAsCheckedIn({
+    lockAddress,
+    keyId,
+    network,
+  }: {
+    lockAddress: string
+    keyId: string
+    network: number
+  }) {
+    const url = `${this.host}/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+  }
+
+  async getVerifierStatus({
+    viewer,
+    network,
+    lockAddress,
+  }: {
+    viewer: string
+    network: number
+    lockAddress: string
+  }): Promise<boolean> {
+    const options = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    return await this.getEndpoint(
+      `/v2/api/verifier/${network}/lock/${lockAddress}/address/${viewer}`,
+      options,
+      true
+    ).then((res: any) => {
+      if (res.message) {
+        return false
+      } else {
+        return res?.enabled ?? false
+      }
+    })
   }
 }
