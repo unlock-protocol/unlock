@@ -5,6 +5,7 @@ import signatureValidationMiddleware from '../../src/middlewares/signatureValida
 const httpMocks = require('node-mocks-http')
 const Base64 = require('../../src/utils/base64')
 
+jest.setTimeout(600000)
 let request: any
 let response: any
 

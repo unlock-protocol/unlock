@@ -2,6 +2,7 @@ const request = require('supertest')
 const app = require('../../src/app')
 const { Lock } = require('../../src/models')
 
+jest.setTimeout(600000)
 const validLockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const validLockAddress = '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83'
 const chain = 31337
