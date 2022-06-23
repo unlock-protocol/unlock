@@ -133,10 +133,8 @@ contract MixinTransfer is
     _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
     
-    // revert if keyy manager is set
-    if(keyManagerOf[_tokenId] != address(0)) {
-      revert UNAUTHORIZED();
-    }
+    // reset key manager to address zero
+    keyManagerOf[_tokenId] = address(0);
 
     _transferFrom(_from, _recipient, _tokenId);
   }
@@ -147,10 +145,10 @@ contract MixinTransfer is
   * @param _from the owner of token to transfer
   * @param _recipient the address that will receive the token
   * @param _tokenId the id of the token
-  * @notice Only the key owner or the key manager can call this function. If the owner calls it and no
-  * key manager is set, then the owner will be set as key manager.
+  * @notice Only a key manager can call this function (i.e. either the owner when no key manager is set
+  * or an explicitely set key manager). It will fail if the key owner tries to call it and a key manager is set. 
+  * If the owner calls it and no key manager is set, then the owner will be set as key manager.
   */
-
   function lendKey(
     address _from,
     address _recipient,
@@ -159,20 +157,15 @@ contract MixinTransfer is
     public
   {
     // make sure caller is either owner or key manager 
-    if(msg.sender != keyManagerOf[_tokenId] && msg.sender != ownerOf(_tokenId)) {
+    if(!_isKeyManager(_tokenId, msg.sender)) {
       revert UNAUTHORIZED();
     }
     
-    // store previous owner
-    address previousOwner = ownerOf(_tokenId);
-
     // transfer key ownership to lender
     _transferFrom(_from, _recipient, _tokenId);
 
-    // set previous owner as key manager (if keys does not already have one KM)
-    if(keyManagerOf[_tokenId] == address(0)) {
-      keyManagerOf[_tokenId] = previousOwner;
-    }
+    // set key owner as key manager
+    keyManagerOf[_tokenId] = msg.sender;
   }
 
   /**
