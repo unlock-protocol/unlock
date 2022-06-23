@@ -3,6 +3,7 @@ import { EventEmitter } from 'events'
 import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
 import { Lock } from '../unlockTypes'
 import { generateNonce } from 'siwe'
+
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
 // these objects, and nothing that isn't emitted should be in one of these
