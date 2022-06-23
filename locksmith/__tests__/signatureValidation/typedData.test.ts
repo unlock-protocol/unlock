@@ -5,14 +5,13 @@ import signatureValidationMiddleware from '../../src/middlewares/signatureValida
 const httpMocks = require('node-mocks-http')
 const Base64 = require('../../src/utils/base64')
 
-jest.setTimeout(600000)
 let request: any
 let response: any
 
 const validSignature =
-  'MHhkYTk4ZDY0MjVkZTc1NjAyNjFlYTM0MzVmNzFkYjhhYmFlY2JjYzM1ZjczNWZhZDM0OGQ2ODZkZGM2OTM0ZWE1M2FjOTY2ZmNhYjNkZTA0NmNmMjdjOGY1YmI5NGQ3ZjA0NzY0NWU2ZTczN2I0ZTQwZjAzZjJkMDg4Y2E2NWMxMDFi'
+  '0x869568dc19561e6820671a556afb199cd35a2c1e141e8992aec235c2a662e8c97ae03c639d284b9102cffb4af86339a195d8acdc4b5c5deb3e68d430a81c265a1b'
 const validSig2 =
-  'MHg3ZTVmMzM3NzViOWQ3MGYwZWQ2NjZiMGE3MTMwMDgyZWY2NTEzMWZjYWRkODFmM2IzM2U4N2NlY2ZmYjUxYTZkNGE2YmUwM2FhZDUwZjM0MzNiMjQ1Y2NiNTliYmMxYmFmYWU0MDhlZmRkOTY3YjQ2M2UxYmMyZWE0YTA1ZjE0YjFi'
+  '0x49792512ab963f229eeaf9c64a43c7ca8a106a2217b06ade3496cdb5568740157b8eb69c1828df6c7687b83da4cda886f0b74406f55766a6172ffb604f97d1581c'
 
 let processor = signatureValidationMiddleware.generateProcessor({
   name: 'lock',
@@ -96,22 +95,25 @@ describe('Signature Validation Middleware', () => {
       it('moves the request to the application', (done) => {
         expect.assertions(1)
         const request = httpMocks.createRequest({
-          headers: { Authorization: `Bearer ${validSig2}` },
+          headers: { Authorization: `Bearer ${Base64.encode(validSig2)}` },
           body: {
             types: {
               User: [
                 { name: 'emailAddress', type: 'string' },
-                { name: 'publickKey', type: 'address' },
+                { name: 'publicKey', type: 'address' },
                 { name: 'passwordEncryptedPrivateKey', type: 'string' },
               ],
             },
             domain: { name: 'Unlock', version: '1' },
             primaryType: 'User',
             message: {
-              emailAddress: 'new_user@example.com',
-              publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-              passwordEncryptedPrivateKey: 'an encrypted value',
+              user: {
+                emailAddress: 'new_user@example.com',
+                publicKey: '0x976EA74026E726554dB657fA54763abd0C3a0aa9',
+                passwordEncryptedPrivateKey: 'an encrypted value',
+              },
             },
+            messageKey: 'user',
           },
         })
 
@@ -126,7 +128,7 @@ describe('Signature Validation Middleware', () => {
         })
         processor(request, response, function next() {
           expect(request.owner).toBe(
-            '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
+            '0x976EA74026E726554dB657fA54763abd0C3a0aa9'
           )
           done()
         })
@@ -138,7 +140,7 @@ describe('Signature Validation Middleware', () => {
         expect.assertions(1)
         Date.now = jest.fn(() => 1546130835000)
         const request = httpMocks.createRequest({
-          headers: { Authorization: `Bearer ${validSignature}` },
+          headers: { Authorization: `Bearer ${Base64.encode(validSignature)}` },
 
           body: {
             types: {
@@ -149,12 +151,15 @@ describe('Signature Validation Middleware', () => {
               ],
             },
             domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
-            primaryType: 'Lock',
+            primaryType: 'lock',
             message: {
-              name: 'New Lock',
-              owner: '0x109B141fDa40c61a9eA85B77dD4727F08EcBE140',
-              address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
+              lock: {
+                name: 'New Lock',
+                owner: '0x976EA74026E726554dB657fA54763abd0C3a0aa9',
+                address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
+              },
             },
+            messageKey: 'lock',
           },
         })
 
@@ -165,7 +170,7 @@ describe('Signature Validation Middleware', () => {
         })
         processor(request, response, function next() {
           expect(request.owner).toBe(
-            '0x109B141fDa40c61a9eA85B77dD4727F08EcBE140'
+            '0x976EA74026E726554dB657fA54763abd0C3a0aa9'
           )
           done()
         })
@@ -213,10 +218,13 @@ describe('Signature Validation Middleware', () => {
             domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
             primaryType: 'Lock',
             message: {
-              name: 'New Lock',
-              owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-              address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
+              lock: {
+                name: 'New Lock',
+                owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+                address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
+              },
             },
+            messageKey: 'lock',
           },
         })
 
@@ -243,10 +251,13 @@ describe('Signature Validation Middleware', () => {
             domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
             primaryType: 'Lock',
             message: {
-              name: 'New Lock',
-              owner: '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
-              address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
+              lock: {
+                name: 'New Lock',
+                owner: '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
+                address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
+              },
             },
+            messageKey: 'lock',
           },
         })
 
