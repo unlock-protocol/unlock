@@ -1,13 +1,8 @@
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO, reverts, purchaseKey } = require('../helpers')
+const { deployLock, ADDRESS_ZERO, reverts, purchaseKey } = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
 
 let lock
-let locks
-let unlock
 let tokenId
 let testEventHooks
 
@@ -15,9 +10,7 @@ contract('Lock / onValidKeyHook', (accounts) => {
   const keyOwner = accounts[1]
 
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
     ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 

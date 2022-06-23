@@ -1,13 +1,8 @@
-const { reverts, purchaseKey, ADDRESS_ZERO } = require('../helpers')
-const deployLocks = require('../helpers/deployLocks')
+const { deployLock, reverts, purchaseKey, ADDRESS_ZERO } = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
 
 let lock
-let locks
-let unlock
 let testEventHooks
 
 contract('Lock / onTokenURIHook', (accounts) => {
@@ -15,9 +10,7 @@ contract('Lock / onTokenURIHook', (accounts) => {
   let tokenId
 
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(
       ADDRESS_ZERO,

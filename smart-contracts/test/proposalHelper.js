@@ -6,8 +6,8 @@ const {
   getProposalId,
   getProposalIdFromContract,
 } = require('../helpers/gov')
-const { getDeployment } = require('../helpers/deployments')
-const deployContracts = require('./fixtures/deploy')
+
+const { deployContracts } = require('./helpers')
 
 const tokenRecipientAddress = '0x8d533d1A48b0D5ddDEF513A0B0a3677E991F3915' // ramdomly generated but deterministic for tests
 
@@ -49,7 +49,9 @@ contract('Proposal Helper', () => {
   describe('proposal parser', () => {
     it('parse gov args correctly', async () => {
       await deployContracts()
-      const { address } = getDeployment(31337, 'UnlockDiscountTokenV3')
+      const {
+        udt: { address },
+      } = await deployContracts()
       const proposalName = 'Send some tokens to a grantee'
 
       const encoded = await encodeProposalArgs({
