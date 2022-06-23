@@ -4,6 +4,7 @@ import { decodeToken, isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
 import { APP_NAME } from '../hooks/useAppStorage'
 import { Lock } from '../unlockTypes'
+import fetch from 'node-fetch'
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
 // these objects, and nothing that isn't emitted should be in one of these

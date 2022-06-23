@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-// import axios from 'axios'
+import fetch from 'node-fetch'
 
 const defaultMetadata = {
   image: 'https://assets.unlock-protocol.com/unlock-default-key-image.png',

@@ -1,5 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks'
 import useMetadata from '../../hooks/useMetadata'
+import fetch from 'node-fetch'
 import fetchMock from 'jest-fetch-mock'
 
 fetchMock.enableMocks()

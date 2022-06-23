@@ -1,10 +1,10 @@
 import { Response, Request } from 'express'
 import { networks } from '@unlock-protocol/networks'
 import * as z from 'zod'
+import fetch from 'node-fetch'
 import crypto from 'crypto'
 import logger from '../logger'
 import { Hook } from '../models'
-
 export type SubscribeParams = Partial<Record<'lock' | 'network', string>>
 export type SubscribeRequest = Request<SubscribeParams, Record<string, string>>
 

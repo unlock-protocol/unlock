@@ -1,3 +1,4 @@
+import fetch from 'node-fetch'
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadata } from '../models'
 import config from '../../config/config'

@@ -1,4 +1,5 @@
 import WedlockService, { emailTemplate } from '../../services/wedlockService'
+import fetch from 'node-fetch'
 import fetchMock from 'jest-fetch-mock'
 
 import axios from 'axios'
