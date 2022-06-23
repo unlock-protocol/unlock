@@ -1,14 +1,13 @@
-const { reverts } = require('../../helpers/errors')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
-const deployLocks = require('../../helpers/deployLocks')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-
-const unlockContract = artifacts.require('Unlock.sol')
+const {
+  deployLock,
+  ADDRESS_ZERO,
+  purchaseKey,
+  reverts,
+} = require('../../helpers')
 const Erc721TokenUriHook = artifacts.require('ERC721BalanceOfHook')
 const TestERC721 = artifacts.require('TestERC721')
 
 let lock
-let unlock
 let hook
 let nft
 
@@ -18,9 +17,7 @@ contract('ERC721BalanceOfHook', (accounts) => {
   const keyOwner = accounts[3]
 
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
 
     // deploy some ERC721
     nft = await TestERC721.new()
@@ -85,23 +82,11 @@ contract('ERC721BalanceOfHook', (accounts) => {
     })
     it('with an expired key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      const tx = await lock.purchase(
-        [],
-        [keyOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
-      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      const { tokenId } = await purchaseKey(lock, keyOwner)
       assert.equal(await lock.getHasValidKey(keyOwner), true)
 
       // expire the key
-      await lock.expireAndRefundFor(args.tokenId, 0)
+      await lock.expireAndRefundFor(tokenId, 0)
       assert.equal(await lock.getHasValidKey(keyOwner), false)
     })
   })
@@ -119,39 +104,16 @@ contract('ERC721BalanceOfHook', (accounts) => {
     })
     it('with a valid key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      await lock.purchase(
-        [],
-        [nftOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      await purchaseKey(lock, keyOwner)
       assert.equal(await lock.getHasValidKey(nftOwner), true)
     })
     it('with an expired key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      const tx = await lock.purchase(
-        [],
-        [nftOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      const { tokenId } = await purchaseKey(lock, keyOwner)
       assert.equal(await lock.getHasValidKey(nftOwner), true)
 
       // expire the key
-      const { args } = tx.logs.find((v) => v.event === 'Transfer')
-      await lock.expireAndRefundFor(args.tokenId, 0)
+      await lock.expireAndRefundFor(tokenId, 0)
       assert.equal(await lock.getHasValidKey(nftOwner), true)
     })
   })
@@ -162,39 +124,16 @@ contract('ERC721BalanceOfHook', (accounts) => {
     })
     it('with a valid key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      await lock.purchase(
-        [],
-        [keyOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      await purchaseKey(lock, keyOwner)
       assert.equal(await lock.getHasValidKey(keyOwner), true)
     })
     it('with an expired key', async () => {
       // buy a key
-      const keyPrice = await lock.keyPrice()
-      const tx = await lock.purchase(
-        [],
-        [keyOwner],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          from,
-          value: keyPrice,
-        }
-      )
+      const { tokenId } = await purchaseKey(lock, keyOwner)
       assert.equal(await lock.getHasValidKey(keyOwner), true)
 
       // expire the key
-      const { args } = tx.logs.find((v) => v.event === 'Transfer')
-      await lock.expireAndRefundFor(args.tokenId, 0)
+      await lock.expireAndRefundFor(tokenId, 0)
       assert.equal(await lock.getHasValidKey(keyOwner), false)
     })
   })

@@ -1,12 +1,6 @@
 const { ethers } = require('hardhat')
-const { reverts } = require('../helpers/errors')
-const deployLocks = require('../helpers/deployLocks')
+const { deployLock, ADDRESS_ZERO, reverts } = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-
-let unlock
 let lock
 let tokenIds
 let newTokenId
@@ -14,12 +8,10 @@ let originalDuration
 let blockTs
 
 contract('Lock / transfer', (accounts) => {
-  const [lockOwner, singleKeyOwner, multipleKeyOwner, destination] = accounts
+  const [, singleKeyOwner, multipleKeyOwner, destination] = accounts
 
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, lockOwner)
-    lock = locks.OWNED
+    lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)
     const tx = await lock.purchase(
       [],
@@ -106,15 +98,6 @@ contract('Lock / transfer', (accounts) => {
       const actual = await lock.keyExpirationTimestampFor(newTokenId)
       assert.equal(actual.toNumber() - blockTs, originalDuration)
     })
-  })
-
-  it('reverts when attempting to transfer to self', async () => {
-    await reverts(
-      lock.transfer(tokenIds[0], singleKeyOwner, 1000, {
-        from: singleKeyOwner,
-      }),
-      'TRANSFER_TO_SELF'
-    )
   })
 
   it('fails if key is expired', async () => {

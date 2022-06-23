@@ -232,6 +232,23 @@ interface IPublicLock
     bytes calldata _data
   ) external payable;
 
+
+  /**
+  * Returns the percentage of the keyPrice to be sent to the referrer (in basic points)
+  * @param _referrer the address of the referrer
+  */
+  function referrerFees(address _referrer) external view;
+  
+  /**
+  * Set a specific percentage of the keyPrice to be sent to the referrer while purchasing, 
+  * extending or renewing a key
+  * @param _referrer the address of the referrer
+  * @param _feeBasisPoint the percentage of the price to be used for this 
+  * specific referrer (in basic points)
+  * @notice to send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
+  */
+  function setReferrerFee(address _referrer, uint _feeBasisPoint) external;
+
   /**
    * Merge existing keys
    * @param _tokenIdFrom the id of the token to substract time from
