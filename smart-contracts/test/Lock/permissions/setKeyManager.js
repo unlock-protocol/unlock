@@ -1,28 +1,19 @@
-const { reverts } = require('../../helpers/errors')
-const BigNumber = require('bignumber.js')
-const deployLocks = require('../../helpers/deployLocks')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { deployLock, ADDRESS_ZERO, reverts } = require('../../helpers')
+const { ethers } = require('hardhat')
 
-const unlockContract = artifacts.require('Unlock.sol')
-
-let unlock
-let locks
 let lock
 let lockCreator
 
 contract('Permissions / KeyManager', (accounts) => {
   lockCreator = accounts[0]
   const lockManager = lockCreator
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   let tokenId
   let keyManager
   let keyManagerBefore
 
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, lockCreator)
-    lock = locks.FIRST
+    lock = await deployLock()
     const tx = await lock.purchase(
       [],
       [accounts[1]],
@@ -30,7 +21,7 @@ contract('Permissions / KeyManager', (accounts) => {
       [ADDRESS_ZERO],
       [[]],
       {
-        value: keyPrice.toFixed(),
+        value: keyPrice,
         from: accounts[1],
       }
     )
@@ -44,7 +35,7 @@ contract('Permissions / KeyManager', (accounts) => {
 
   describe('setting the key manager', () => {
     it('should have a default KM of 0x00', async () => {
-      keyManagerBefore = await lock.keyManagerOf.call(tokenId)
+      keyManagerBefore = await lock.keyManagerOf(tokenId)
       assert.equal(keyManagerBefore, ADDRESS_ZERO)
     })
 
@@ -54,23 +45,23 @@ contract('Permissions / KeyManager', (accounts) => {
       await lock.setKeyManagerOf(tokenId, accounts[9], {
         from: defaultKeyManager,
       })
-      keyManager = await lock.keyManagerOf.call(tokenId)
+      keyManager = await lock.keyManagerOf(tokenId)
       assert.equal(keyManager, accounts[9])
     })
 
     it('should allow the current keyManager to set a new KM', async () => {
-      keyManagerBefore = await lock.keyManagerOf.call(tokenId)
+      keyManagerBefore = await lock.keyManagerOf(tokenId)
       await lock.setKeyManagerOf(tokenId, accounts[3], {
         from: keyManagerBefore,
       })
-      keyManager = await lock.keyManagerOf.call(tokenId)
+      keyManager = await lock.keyManagerOf(tokenId)
       assert.equal(keyManager, accounts[3])
     })
 
     it('should allow a LockManager to set a new KM', async () => {
-      keyManagerBefore = await lock.keyManagerOf.call(tokenId)
+      keyManagerBefore = await lock.keyManagerOf(tokenId)
       await lock.setKeyManagerOf(tokenId, accounts[5], { from: lockManager })
-      keyManager = await lock.keyManagerOf.call(tokenId)
+      keyManager = await lock.keyManagerOf(tokenId)
       assert.notEqual(keyManagerBefore, keyManager)
       assert.equal(keyManager, accounts[5])
     })
@@ -98,15 +89,15 @@ contract('Permissions / KeyManager', (accounts) => {
 
     describe('setting the KM to 0x00', () => {
       before(async () => {
-        keyManager = await lock.keyManagerOf.call(tokenId)
+        keyManager = await lock.keyManagerOf(tokenId)
         await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyManager })
-        keyManager = await lock.keyManagerOf.call(tokenId)
+        keyManager = await lock.keyManagerOf(tokenId)
         assert.equal(keyManager, accounts[9])
         await lock.setKeyManagerOf(tokenId, ADDRESS_ZERO)
       })
 
       it('should reset to the default KeyManager of 0x00', async () => {
-        keyManager = await lock.keyManagerOf.call(tokenId)
+        keyManager = await lock.keyManagerOf(tokenId)
         assert.equal(keyManager, ADDRESS_ZERO)
       })
     })
