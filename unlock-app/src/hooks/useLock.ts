@@ -532,27 +532,6 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     return isLockManager
   }
 
-  const getKeyData = async (keyId: string, signer?: string) => {
-    let payload = {}
-    let signature
-
-    // If we have a signer, try to get the protected data!
-    if (signer) {
-      payload = generateKeyMetadataPayload(signer, {})
-      signature = await walletService.unformattedSignTypedData(signer, payload)
-    }
-
-    const storageService = new StorageService(config.services.storage.host)
-    const data = await storageService.getKeyMetadata(
-      lockFromProps.address!,
-      keyId,
-      payload,
-      signature,
-      network
-    )
-    return data
-  }
-
   function updateMaxNumberOfKeys(
     maxNumberOfKeys: number,
     callback: (...args: any) => void
@@ -595,6 +574,23 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     }
   }
 
+  const getTokenIdFromOwner = async ({
+    lockAddress,
+    owner,
+    network,
+  }: {
+    lockAddress: string
+    owner: string
+    network: number
+  }) => {
+    const tokenId = await web3Service.getTokenIdForOwner(
+      lockAddress,
+      owner,
+      network
+    )
+    return tokenId
+  }
+
   return {
     getLock,
     lock,
@@ -606,10 +602,10 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     getCreditCardPricing,
     isStripeConnected,
     isLockManager,
-    getKeyData,
     updateMaxNumberOfKeys,
     purchaseMultipleKeys,
     updateSelfAllowance,
+    getTokenIdFromOwner,
   }
 }
 

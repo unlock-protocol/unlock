@@ -8,6 +8,7 @@ import logger from '../../logger'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
+import VerifierOperations from '../../operations/verifierOperations'
 
 const UserMetadata = z
   .object({
@@ -41,7 +42,7 @@ export class MetadataController {
     this.web3Service = web3Service
   }
 
-  async #isKeyOrLockOwner({
+  async #isKeyOwnerOrLockVerifier({
     userAddress,
     lockAddress,
     keyId,
@@ -51,9 +52,10 @@ export class MetadataController {
       return false
     }
     const loggedUserAddress = Normalizer.ethereumAddress(userAddress)
-    const isLockOwner = await this.web3Service.isLockManager(
+
+    const isVerifier = await VerifierOperations.isVerifier(
       lockAddress,
-      loggedUserAddress,
+      userAddress,
       network
     )
 
@@ -63,7 +65,7 @@ export class MetadataController {
 
     const isKeyOwner = keyOwnerAddress === loggedUserAddress
 
-    return isLockOwner || isKeyOwner
+    return isVerifier?.id || isKeyOwner
   }
 
   async getLockMetadata(request: Request, response: Response) {
@@ -99,7 +101,7 @@ export class MetadataController {
       const network = Number(request.params.network)
       const host = `${request.protocol}://${request.headers.host}`
 
-      const includeProtected = await this.#isKeyOrLockOwner({
+      const includeProtected = await this.#isKeyOwnerOrLockVerifier({
         keyId,
         network,
         lockAddress,

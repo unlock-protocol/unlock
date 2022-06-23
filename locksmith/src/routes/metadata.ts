@@ -57,13 +57,6 @@ router.get(
 )
 
 router.get(
-  '/:address/:keyId',
-  signatureValidationMiddleware.generateSignatureEvaluator(
-    lockOwnerMetaDataConfiguration
-  )
-)
-
-router.get(
   '/:address/keyHolderMetadata',
   signatureValidationMiddleware.generateSignatureEvaluator(
     lockOwnerMetaDataConfiguration
@@ -71,7 +64,6 @@ router.get(
 )
 
 router.get('/:address/keyHolderMetadata', MetadataController.keyHolderMetadata)
-router.get('/:address/:keyId', MetadataController.data)
 router.put('/:address/:keyId', MetadataController.updateKeyMetadata)
 router.put('/:address', MetadataController.updateDefaults)
 router.put('/:address/user/:userAddress', MetadataController.updateUserMetadata)
