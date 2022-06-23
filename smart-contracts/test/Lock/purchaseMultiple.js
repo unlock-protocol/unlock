@@ -1,16 +1,16 @@
-const {
-  reverts,
-  deployERC20,
-  deployLock,
-  ADDRESS_ZERO,
-  getBalance,
-} = require('../helpers')
-const { ethers } = require('hardhat')
+const { reverts } = require('../helpers/errors')
+const { tokens } = require('hardlydifficult-ethereum-contracts')
+const deployLocks = require('../helpers/deployLocks')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
+
+const unlockContract = artifacts.require('Unlock.sol')
 
 const scenarios = [false, true]
-
+let unlock
+let locks
 let testToken
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const keyPrice = web3.utils.toWei('0.01', 'ether')
 
 contract('Lock / purchase multiple keys at once', (accounts) => {
   scenarios.forEach((isErc20) => {
@@ -20,14 +20,17 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
 
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       beforeEach(async () => {
-        testToken = await deployERC20(accounts[0])
+        testToken = await tokens.dai.deploy(web3, accounts[0])
         // Mint some tokens for testing
         await testToken.mint(accounts[2], '100000000000000000000', {
           from: accounts[0],
         })
 
         tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
-        lock = await deployLock({ tokenAddress })
+
+        unlock = await getContractInstance(unlockContract)
+        locks = await deployLocks(unlock, accounts[0], tokenAddress)
+        lock = locks.FIRST
 
         // Approve spending
         await testToken.approve(
@@ -55,10 +58,9 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
         })
 
         it('user sent correct token amounts to the contract', async () => {
-          const balance = await getBalance(
-            lock.address,
-            isErc20 ? testToken.address : null
-          )
+          const balance = isErc20
+            ? await testToken.balanceOf(lock.address)
+            : await web3.eth.getBalance(lock.address)
           assert.equal(
             balance.toString(),
             (keyPrice * keyOwners.length).toString()
@@ -67,7 +69,7 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
 
         it('users should have valid keys', async () => {
           const areValid = await Promise.all(
-            keyOwners.map((account) => lock.getHasValidKey(account))
+            keyOwners.map((account) => lock.getHasValidKey.call(account))
           )
           areValid.forEach((isValid) => assert.equal(isValid, true))
         })
@@ -78,7 +80,7 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
           await reverts(
             lock.purchase(
               isErc20
-                ? keyOwners.map(() => ethers.utils.parseUnits('0.005', 'ether'))
+                ? keyOwners.map(() => web3.utils.toWei('0.005', 'ether'))
                 : [],
               keyOwners,
               keyOwners.map(() => ADDRESS_ZERO),

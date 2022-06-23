@@ -1,17 +1,22 @@
-const { deployLock, ADDRESS_ZERO } = require('../helpers')
-const { ethers } = require('hardhat')
+const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
+
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
+
+let unlock
+let locks
 
 contract('Lock / purchaseForFrom', (accounts) => {
-  let lock
-  let lockFree
   before(async () => {
-    lock = await deployLock()
-    lockFree = await deployLock({ name: 'FREE' })
-    await lock.setMaxKeysPerAddress(10)
+    unlock = await getContractInstance(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
+    await locks.FIRST.setMaxKeysPerAddress(10)
   })
 
   describe('if the referrer does not have a key', () => {
     it('should succeed', async () => {
+      const lock = locks.FIRST
       await lock.purchase(
         [],
         [accounts[0]],
@@ -19,7 +24,7 @@ contract('Lock / purchaseForFrom', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
     })
@@ -27,6 +32,7 @@ contract('Lock / purchaseForFrom', (accounts) => {
 
   describe('if the referrer has a key', () => {
     it('should succeed', async () => {
+      const lock = locks.FIRST
       await lock.purchase(
         [],
         [accounts[0]],
@@ -34,7 +40,7 @@ contract('Lock / purchaseForFrom', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
       await lock.purchase(
@@ -44,20 +50,20 @@ contract('Lock / purchaseForFrom', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
     })
 
     it('can purchaseForFrom a free key', async () => {
-      await lockFree.purchase(
+      await locks.FREE.purchase(
         [],
         [accounts[0]],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]]
       )
-      const tx = await lockFree.purchase(
+      const tx = await locks.FREE.purchase(
         [],
         [accounts[2]],
         [accounts[0]],

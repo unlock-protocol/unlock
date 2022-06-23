@@ -1,20 +1,68 @@
 import { Request, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
-
-import VerifierOperations from '../../operations/verifierOperations'
+import { Verifier } from '../../models/verifier'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 
 export default class VerifierController {
+  public web3Service: Web3Service
+
+  constructor() {
+    this.web3Service = new Web3Service(networks)
+  }
+
+  async #isVerifierAlreadyExits(
+    lockAddress: string,
+    address: string,
+    lockManager: string,
+    network: number
+  ) {
+    return Verifier.findOne({
+      where: {
+        address,
+        lockAddress,
+        lockManager,
+        network,
+      },
+    })
+  }
+
+  async #getVerifiersList(
+    lockAddress: string,
+    network: number
+  ): Promise<Verifier[] | null> {
+    return Verifier.findAll({
+      where: {
+        lockAddress,
+        network,
+      },
+    })
+  }
+
+  async #isLockManager({
+    lockAddress,
+    lockManager,
+    network,
+  }: {
+    lockAddress: string
+    lockManager: string
+    network: number
+  }) {
+    return await this.web3Service.isLockManager(
+      lockAddress,
+      lockManager,
+      network
+    )
+  }
+
   // for a lock manager to list all verifiers for a specicifc lock address
   async list(request: Request, response: Response) {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
 
-      const list = await VerifierOperations.getVerifiersList(
-        lockAddress,
-        network
-      )
+      const list = await this.#getVerifiersList(lockAddress, network)
 
       if (list) {
         return response.status(200).send({
@@ -42,23 +90,25 @@ export default class VerifierController {
         request.user!.walletAddress!
       )
 
-      const alreadyExists = await VerifierOperations.isVerifierAlreadyExits(
+      const alreadyExists = await this.#isVerifierAlreadyExits(
         lockAddress,
         address,
+        loggedUserAddress,
         network
       )
 
-      if (alreadyExists) {
+      if (alreadyExists?.id) {
         return response.status(409).send({
           message: 'Verifier already exists',
         })
       } else {
-        const createdVerifier = await VerifierOperations.createVerifier(
+        const newVerifier = new Verifier({
           lockAddress,
           address,
-          loggedUserAddress,
-          network
-        )
+          lockManager: loggedUserAddress,
+          network,
+        })
+        const createdVerifier = await newVerifier.save()
         return response.status(201).send(createdVerifier)
       }
     } catch (error) {
@@ -75,23 +125,31 @@ export default class VerifierController {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const address = Normalizer.ethereumAddress(request.params.verifierAddress)
       const network = Number(request.params.network)
+      const loggedUserAddress = Normalizer.ethereumAddress(
+        request.user!.walletAddress!
+      )
 
-      const alreadyExists = await VerifierOperations.isVerifierAlreadyExits(
+      const alreadyExists = await this.#isVerifierAlreadyExits(
         lockAddress,
         address,
+        loggedUserAddress,
         network
       )
 
-      if (!alreadyExists) {
-        return response.status(404).send({
-          message: 'Verifier does not exists',
+      if (!alreadyExists?.id) {
+        return response.status(409).send({
+          message: 'Verifier not exists',
         })
       } else {
-        await VerifierOperations.deleteVerifier(lockAddress, address, network)
-        const list = await VerifierOperations.getVerifiersList(
-          lockAddress,
-          network
-        )
+        await Verifier.destroy({
+          where: {
+            lockAddress,
+            address,
+            lockManager: loggedUserAddress,
+            network,
+          },
+        })
+        const list = await this.#getVerifiersList(lockAddress, network)
         return response.status(200).send({
           results: list,
         })
@@ -104,16 +162,48 @@ export default class VerifierController {
     }
   }
 
-  /**
-   * Returns true if the caller is a verifier on the lock
-   * @param request
-   * @param response
-   * @returns
-   */
-  async isVerifierEnabled(_request: Request, response: Response) {
-    // Handled by middlewares...
-    return response.status(200).send({
-      enabled: true,
-    })
+  // check is address is a Verifier of a specific lock
+  async isVerifierEnabled(request: Request, response: Response) {
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const address = Normalizer.ethereumAddress(request.params.verifierAddress)
+      const network = Number(request.params.network)
+
+      const verifierMatchesLoggedUser = request.user?.walletAddress === address
+
+      if (!verifierMatchesLoggedUser) {
+        return response.status(401).send({
+          message: `User not authorized`,
+        })
+      }
+
+      let isLockManager = false
+
+      const isVerifier = await Verifier.findOne({
+        where: {
+          lockAddress,
+          address,
+          network,
+        },
+      })
+
+      if (!isVerifier) {
+        isLockManager = await this.#isLockManager({
+          lockAddress,
+          lockManager: address,
+          network,
+        })
+      }
+
+      const isEnabled = isVerifier?.id !== undefined || isLockManager
+      return response.status(200).send({
+        enabled: isEnabled,
+      })
+    } catch (error) {
+      logger.error(error.message)
+      return response.status(500).send({
+        message: 'There were some problems checking verifier status.',
+      })
+    }
   }
 }

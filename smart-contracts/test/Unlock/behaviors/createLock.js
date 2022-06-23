@@ -1,4 +1,3 @@
-const { ethers } = require('hardhat')
 const createLockHash = require('../../helpers/createLockCalldata')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 
@@ -20,7 +19,7 @@ exports.shouldCreateLock = (options) => {
         const args = [
           60 * 60 * 24 * 30, // expirationDuration: 30 days
           ADDRESS_ZERO,
-          ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
+          web3.utils.toWei('1', 'ether'), // keyPrice: in wei
           100, // maxNumberOfKeys
           'New Lock',
         ]
@@ -43,18 +42,18 @@ exports.shouldCreateLock = (options) => {
         const event = transaction.logs.find((v) => v.event === 'NewLock')
         assert(event)
         assert.equal(
-          ethers.utils.getAddress(event.args.lockOwner),
-          ethers.utils.getAddress(accounts[0])
+          web3.utils.toChecksumAddress(event.args.lockOwner),
+          web3.utils.toChecksumAddress(accounts[0])
         )
         assert(event.args.newLockAddress)
       })
 
       it('should have created the lock with the right address for unlock', async () => {
         let publicLock = await PublicLock.at(evt.args.newLockAddress)
-        let unlockProtocol = await publicLock.unlockProtocol()
+        let unlockProtocol = await publicLock.unlockProtocol.call()
         assert.equal(
-          ethers.utils.getAddress(unlockProtocol),
-          ethers.utils.getAddress(unlock.address)
+          web3.utils.toChecksumAddress(unlockProtocol),
+          web3.utils.toChecksumAddress(unlock.address)
         )
       })
     })

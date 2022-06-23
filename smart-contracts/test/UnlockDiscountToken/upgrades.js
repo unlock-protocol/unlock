@@ -3,8 +3,8 @@ const path = require('path')
 const fs = require('fs-extra')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades, network, run } = require('hardhat')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const { createExchange } = require('../helpers')
+const { tokens, protocols } = require('hardlydifficult-eth')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 const deployContracts = require('../fixtures/deploy')
 
 const createLockHash = require('../helpers/createLockCalldata')
@@ -150,7 +150,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       ;[deployer, lockOwner, keyBuyer, referrer, referrer2] =
         await ethers.getSigners()
 
-      const { unlockEthers: unlockDeployed } = await deployContracts()
+      const { unlock: unlockDeployed } = await deployContracts()
       unlock = unlockDeployed
 
       // Grant Unlock minting permissions
@@ -161,10 +161,10 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       // create lock
       const args = [
-        Locks.FIRST.expirationDuration,
+        Locks.FIRST.expirationDuration.toFixed(),
         ADDRESS_ZERO,
-        Locks.FIRST.keyPrice,
-        Locks.FIRST.maxNumberOfKeys,
+        Locks.FIRST.keyPrice.toFixed(),
+        Locks.FIRST.maxNumberOfKeys.toFixed(),
         Locks.FIRST.lockName,
       ]
       const calldata = await createLockHash({ args, from: lockOwner.address })
@@ -176,11 +176,44 @@ contract('UnlockDiscountToken upgrade', async () => {
       lock = await PublicLock.attach(evt.args.newLockAddress)
 
       // Deploy the exchange
-      const { oracle, weth } = await createExchange({
-        protocolOwner: deployer,
-        minter: deployer,
-        udtAddress: udt.address,
-      })
+      const weth = await tokens.weth.deploy(web3, deployer.address)
+      const uniswapRouter = await protocols.uniswapV2.deploy(
+        web3,
+        deployer.address,
+        ADDRESS_ZERO,
+        weth.address
+      )
+
+      // Create UDT <-> WETH pool
+      await udt.mint(deployer.address, web3.utils.toWei('1000000', 'ether'))
+      await udt.approve(uniswapRouter.address, MAX_UINT)
+      await uniswapRouter.addLiquidityETH(
+        udt.address,
+        web3.utils.toWei('1000000', 'ether'),
+        '1',
+        '1',
+        deployer.address,
+        MAX_UINT,
+        { from: deployer.address, value: web3.utils.toWei('40', 'ether') }
+      )
+
+      const uniswapOracle = await protocols.uniswapOracle.deploy(
+        web3,
+        deployer.address,
+        await uniswapRouter.factory()
+      )
+
+      // Advancing time to avoid an intermittent test fail
+      await time.increase(time.duration.hours(1))
+
+      // Do a swap so there is some data accumulated
+      await uniswapRouter.swapExactETHForTokens(
+        1,
+        [weth.address, udt.address],
+        deployer.address,
+        MAX_UINT,
+        { value: web3.utils.toWei('1', 'ether') }
+      )
 
       // Config in Unlock
       await unlock.configUnlock(
@@ -191,11 +224,13 @@ contract('UnlockDiscountToken upgrade', async () => {
         await unlock.globalBaseTokenURI(),
         1 // mainnet
       )
-      await unlock.setOracle(udt.address, oracle.address)
+      await unlock.setOracle(udt.address, uniswapOracle.address)
 
       // Advance time so 1 full period has past and then update again so we have data point to read
       await time.increase(time.duration.hours(30))
-      await oracle.update(weth.address, udt.address)
+      await uniswapOracle.update(weth.address, udt.address, {
+        from: deployer.address,
+      })
 
       // Purchase a valid key for the referrers
       await lock
@@ -214,17 +249,17 @@ contract('UnlockDiscountToken upgrade', async () => {
       // allow multiiple keys per owner
       await lock.connect(lockOwner).setMaxKeysPerAddress(10)
 
-      rate = await oracle.consult(
+      rate = await uniswapOracle.consult(
         udt.address,
-        ethers.utils.parseUnits('1', 'ether'),
+        web3.utils.toWei('1', 'ether'),
         weth.address
       )
     })
 
     it('exchange rate is > 0', async () => {
-      assert.notEqual(ethers.utils.formatUnits(rate), 0)
+      assert.notEqual(web3.utils.fromWei(rate.toString(), 'ether'), 0)
       // 1 UDT is worth ~0.000042 ETH
-      assert.equal(Math.floor(ethers.utils.formatUnits(rate, 12)), 42)
+      assert.equal(new BigNumber(rate).shiftedBy(-18).toFixed(5), '0.00004')
     })
 
     it('referrer has 0 UDT to start', async () => {
@@ -266,7 +301,7 @@ contract('UnlockDiscountToken upgrade', async () => {
         assert.equal(
           new BigNumber((await udt.balanceOf(referrer.address)).toString())
             .shiftedBy(-18) // shift UDT balance
-            .times(rate.toString())
+            .times(rate)
             .shiftedBy(-18) // shift the rate
             .toFixed(3),
           gasSpent.shiftedBy(-18).toFixed(3)
@@ -278,7 +313,7 @@ contract('UnlockDiscountToken upgrade', async () => {
           new BigNumber((await udt.balanceOf(await unlock.owner())).toString())
             .minus(new BigNumber(balanceBefore.toString()))
             .shiftedBy(-18) // shift UDT balance
-            .times(rate.toString())
+            .times(rate)
             .shiftedBy(-18) // shift the rate
             .toFixed(3),
           gasSpent.times(0.25).shiftedBy(-18).toFixed(3)

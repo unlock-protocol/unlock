@@ -1,14 +1,22 @@
-const { ethers } = require('hardhat')
 const { assert } = require('chai')
+const { reverts } = require('../helpers/errors')
+const deployLocks = require('../helpers/deployLocks')
 
-const { deployLock, reverts, ADDRESS_ZERO, purchaseKey } = require('../helpers')
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
+
+let unlock
+let locks
 
 contract('Lock / maxKeysPerAddress', (accounts) => {
   let keyOwner = accounts[1]
   let lock
 
-  before(async () => {
-    lock = await deployLock()
+  beforeEach(async () => {
+    unlock = await getContractInstance(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
+    lock = locks.FIRST
   })
 
   it('default to 1', async () => {
@@ -43,14 +51,26 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
 
   describe('enforcing the number of keys per address', () => {
     let tokenId
-    before(async () => {
-      ;({ tokenId } = await purchaseKey(lock, keyOwner))
+    beforeEach(async () => {
+      const tx = await lock.purchase(
+        [],
+        [keyOwner],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          value: web3.utils.toWei('0.01', 'ether'),
+        }
+      )
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      const { tokenId: newTokenId } = args
+      tokenId = newTokenId
     })
 
     it('prevent users to purchase more keys than allowed', async () => {
       await reverts(
         lock.purchase([], [keyOwner], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }),
         'MAX_KEYS'
       )
@@ -65,7 +85,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [[]],
           {
-            value: ethers.utils.parseUnits('0.01', 'ether'),
+            value: web3.utils.toWei('0.01', 'ether'),
           }
         ),
         'MAX_KEYS'
@@ -80,7 +100,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
       await reverts(
@@ -94,16 +114,16 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
     it('prevent user from transferring a key with someone who has more keys than allowed', async () => {
       await lock.purchase(
         [],
-        [accounts[8]],
+        [accounts[9]],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
         {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
+          value: web3.utils.toWei('0.01', 'ether'),
         }
       )
       await reverts(
-        lock.transfer(tokenId, accounts[8], 1000, {
+        lock.transfer(tokenId, accounts[9], 1000, {
           from: keyOwner,
         }),
         'MAX_KEYS'

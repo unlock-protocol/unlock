@@ -1,15 +1,21 @@
 const { ethers } = require('hardhat')
 
+const unlockContract = artifacts.require('Unlock')
 const PublicLock = artifacts.require('PublicLock')
-const { ADDRESS_ZERO, deployContracts } = require('../helpers')
+const { utils } = require('hardlydifficult-ethereum-contracts')
+const truffleAssert = require('../helpers/errors')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
 let lock
+let templateAddress
 let publicLockUpgraded
 
 contract('Unlock / createLock (Legacy)', (accounts) => {
   before(async () => {
-    ;({ unlock } = await deployContracts())
+    unlock = await getContractInstance(unlockContract)
+    templateAddress = await unlock.publicLockAddress()
 
     // deploy new implementation
     const PublicLockUpgraded = await ethers.getContractFactory(
@@ -39,7 +45,7 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
           args = [
             60 * 60 * 24 * 30, // expirationDuration: 30 days
             ADDRESS_ZERO,
-            ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
+            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
             100, // maxNumberOfKeys
             'Test Lock',
           ]
@@ -54,7 +60,7 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
           const result = await lock.expirationDuration()
           assert.equal(result, args[0])
           assert.equal(await lock.tokenAddress(), args[1])
-          assert.equal((await lock.keyPrice()).toString(), args[2].toString())
+          assert.equal(await lock.keyPrice(), args[2])
           assert.equal(await lock.maxNumberOfKeys(), args[3])
           assert.equal(await lock.name(), args[4])
         })
@@ -70,6 +76,49 @@ contract('Unlock / createLock (Legacy)', (accounts) => {
             currentVersion.toNumber() + 1
           )
           assert.equal(tx.logs[0].event, 'LockUpgraded')
+        })
+
+        // eslint-disable-next-line jest/no-disabled-tests
+        it.skip('Matches the JS calculated address', async () => {
+          const address = await utils.create2.buildClone2Address(
+            unlock.address,
+            templateAddress,
+            accounts[0] + salt.replace('0x', '')
+          )
+          assert.equal(address, lock.address)
+        })
+
+        // eslint-disable-next-line jest/no-disabled-tests
+        it.skip('Should fail if a salt is re-used', async () => {
+          await truffleAssert.reverts(
+            unlock.createLock(
+              60 * 60 * 24 * 30, // expirationDuration: 30 days
+              ADDRESS_ZERO,
+              web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+              100, // maxNumberOfKeys
+              'Test Lock',
+              salt,
+              {
+                from: accounts[0],
+              }
+            ),
+            'PROXY_DEPLOY_FAILED'
+          )
+        })
+
+        // eslint-disable-next-line jest/no-disabled-tests
+        it.skip('Can use the same salt if the account is different', async () => {
+          await unlock.createLock(
+            60 * 60 * 24 * 30, // expirationDuration: 30 days
+            ADDRESS_ZERO,
+            web3.utils.toWei('1', 'ether'), // keyPrice: in wei
+            100, // maxNumberOfKeys
+            'Test Lock',
+            salt,
+            {
+              from: accounts[1],
+            }
+          )
         })
       })
     }

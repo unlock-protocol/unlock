@@ -1,23 +1,44 @@
-const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
-const { deployLock, getBalance, purchaseKeys } = require('../helpers')
 
+const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
+
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
+
+let unlock
+let locks
 let tokenId
 
 contract('Lock / freeTrial', (accounts) => {
   let lock
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
-  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
 
   beforeEach(async () => {
-    lock = await deployLock()
-    const { tokenIds } = await purchaseKeys(lock, keyOwners.length)
-    ;[tokenId] = tokenIds
+    unlock = await getContractInstance(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
+    lock = locks.SECOND
+    const tx = await lock.purchase(
+      [],
+      keyOwners,
+      keyOwners.map(() => ADDRESS_ZERO),
+      keyOwners.map(() => ADDRESS_ZERO),
+      keyOwners.map(() => []),
+      {
+        value: (keyPrice * keyOwners.length).toFixed(),
+        from: keyOwners[1],
+      }
+    )
+    const tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
+    tokenId = tokenIds[0]
   })
 
   it('No free trial by default', async () => {
-    const freeTrialLength = new BigNumber(await lock.freeTrialLength())
-    assert.equal(freeTrialLength.toNumber(), 0)
+    const freeTrialLength = new BigNumber(await lock.freeTrialLength.call())
+    assert.equal(freeTrialLength.toFixed(), 0)
   })
 
   describe('with a free trial defined', () => {
@@ -25,7 +46,9 @@ contract('Lock / freeTrial', (accounts) => {
 
     beforeEach(async () => {
       await lock.updateRefundPenalty(5, 2000)
-      initialLockBalance = await getBalance(lock.address)
+      initialLockBalance = new BigNumber(
+        await web3.eth.getBalance(lock.address)
+      )
     })
 
     describe('should cancel and provide a full refund when enough time remains', () => {
@@ -37,9 +60,9 @@ contract('Lock / freeTrial', (accounts) => {
 
       it('should provide a full refund', async () => {
         const refundAmount = initialLockBalance.minus(
-          await getBalance(lock.address)
+          await web3.eth.getBalance(lock.address)
         )
-        assert.equal(refundAmount.toString(), keyPrice.toString())
+        assert.equal(refundAmount.toFixed(), keyPrice.toFixed())
       })
     })
 
@@ -53,10 +76,10 @@ contract('Lock / freeTrial', (accounts) => {
 
       it('should provide less than a full refund', async () => {
         const refundAmount = initialLockBalance.minus(
-          await getBalance(lock.address)
+          await web3.eth.getBalance(lock.address)
         )
-        assert.notEqual(refundAmount.toString(), keyPrice.toString())
-        assert(refundAmount.lt(keyPrice.toString()))
+        assert.notEqual(refundAmount.toFixed(), keyPrice.toFixed())
+        assert(refundAmount.lt(keyPrice))
       })
     })
   })

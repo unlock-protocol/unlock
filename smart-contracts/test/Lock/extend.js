@@ -1,19 +1,20 @@
-const { reverts } = require('../helpers')
+const { reverts } = require('../helpers/errors')
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
+const { tokens } = require('hardlydifficult-ethereum-contracts')
 
-const {
-  deployERC20,
-  deployLock,
-  ADDRESS_ZERO,
-  MAX_UINT,
-  purchaseKey,
-} = require('../helpers')
+const deployLocks = require('../helpers/deployLocks')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+
+const unlockContract = artifacts.require('Unlock.sol')
 
 const scenarios = [false, true]
+let unlock
+let locks
 let testToken
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const someTokens = ethers.utils.parseUnits('10', 'ether')
+const keyPrice = web3.utils.toWei('0.01', 'ether')
+const someTokens = web3.utils.toWei('10', 'ether')
 
 contract('Lock / extend keys', (accounts) => {
   scenarios.forEach((isErc20) => {
@@ -21,13 +22,14 @@ contract('Lock / extend keys', (accounts) => {
     let nonExpiringLock
     let tokenAddress
     let tsBefore
+    const lockOwner = accounts[0]
+    const keyOwner = accounts[1]
+    const nonExpiringKeyOwner = accounts[2]
     let tokenId
-
-    const [lockOwner, keyOwner, nonExpiringKeyOwner] = accounts
 
     describe(`Test ${isErc20 ? 'ERC20' : 'ETH'}`, () => {
       beforeEach(async () => {
-        testToken = await deployERC20(lockOwner)
+        testToken = await tokens.dai.deploy(web3, lockOwner)
         tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
 
         // Mint some tokens for testing
@@ -35,11 +37,10 @@ contract('Lock / extend keys', (accounts) => {
           from: lockOwner,
         })
 
-        lock = await deployLock({ tokenAddress })
-        nonExpiringLock = await deployLock({
-          tokenAddress,
-          name: 'NON_EXPIRING',
-        })
+        unlock = await getContractInstance(unlockContract)
+        locks = await deployLocks(unlock, lockOwner, tokenAddress)
+        lock = locks.FIRST
+        nonExpiringLock = locks.NON_EXPIRING
       })
 
       describe('common lock', () => {
@@ -50,7 +51,21 @@ contract('Lock / extend keys', (accounts) => {
           })
 
           // purchase a key
-          ;({ tokenId } = await purchaseKey(lock, keyOwner, isErc20))
+          const tx = await lock.purchase(
+            isErc20 ? [keyPrice] : [],
+            [keyOwner],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
+            [[]],
+            {
+              value: isErc20 ? 0 : keyPrice,
+              from: keyOwner,
+            }
+          )
+          const tokenIds = tx.logs
+            .filter((v) => v.event === 'Transfer')
+            .map(({ args }) => args.tokenId)
+          tokenId = tokenIds[0]
         })
 
         it('prevent extend a non-existing key', async () => {
@@ -64,7 +79,7 @@ contract('Lock / extend keys', (accounts) => {
         })
 
         it('reverts with insufficient value', async () => {
-          const belowPrice = ethers.utils.parseUnits('0.005', 'ether')
+          const belowPrice = web3.utils.toWei('0.005', 'ether')
           await reverts(
             lock.extend(isErc20 ? belowPrice : 0, tokenId, ADDRESS_ZERO, [], {
               value: isErc20 ? 0 : belowPrice,
@@ -77,7 +92,7 @@ contract('Lock / extend keys', (accounts) => {
         describe('extend a valid key', () => {
           let tx
           beforeEach(async () => {
-            assert.equal(await lock.isValidKey(tokenId), true)
+            assert.equal(await lock.isValidKey.call(tokenId), true)
             tsBefore = await lock.keyExpirationTimestampFor(tokenId)
 
             // extend
@@ -94,7 +109,7 @@ contract('Lock / extend keys', (accounts) => {
           })
 
           it('key should stay valid', async () => {
-            assert.equal(await lock.isValidKey(tokenId), true)
+            assert.equal(await lock.isValidKey.call(tokenId), true)
           })
 
           it('duration has been extended accordingly', async () => {
@@ -120,7 +135,7 @@ contract('Lock / extend keys', (accounts) => {
             await lock.expireAndRefundFor(tokenId, 0, {
               from: lockOwner,
             })
-            assert.equal(await lock.isValidKey(tokenId), false)
+            assert.equal(await lock.isValidKey.call(tokenId), false)
 
             // extend
             await lock.extend(
@@ -136,7 +151,7 @@ contract('Lock / extend keys', (accounts) => {
           })
 
           it('key should stay valid', async () => {
-            assert.equal(await lock.isValidKey(tokenId), true)
+            assert.equal(await lock.isValidKey.call(tokenId), true)
           })
 
           it('duration has been extended accordingly', async () => {
@@ -165,13 +180,22 @@ contract('Lock / extend keys', (accounts) => {
           })
 
           // purchase a key for non-expiring
-          ;({ tokenId } = await purchaseKey(
-            nonExpiringLock,
-            nonExpiringKeyOwner,
-            isErc20
-          ))
+          const tx = await nonExpiringLock.purchase(
+            isErc20 ? [keyPrice] : [],
+            [nonExpiringKeyOwner],
+            [ADDRESS_ZERO],
+            [ADDRESS_ZERO],
+            [[]],
+            {
+              value: isErc20 ? 0 : keyPrice,
+              from: nonExpiringKeyOwner,
+            }
+          )
+          const tokenIds = tx.logs
+            .filter((v) => v.event === 'Transfer')
+            .map(({ args }) => args.tokenId)
+          tokenId = tokenIds[0]
         })
-
         it('reverts when attempting to extend a valid key', async () => {
           await reverts(
             nonExpiringLock.extend(
@@ -193,7 +217,7 @@ contract('Lock / extend keys', (accounts) => {
           await nonExpiringLock.expireAndRefundFor(tokenId, 0, {
             from: lockOwner,
           })
-          assert.equal(await nonExpiringLock.isValidKey(tokenId), false)
+          assert.equal(await nonExpiringLock.isValidKey.call(tokenId), false)
 
           // extend
           await nonExpiringLock.extend(
@@ -207,7 +231,7 @@ contract('Lock / extend keys', (accounts) => {
             }
           )
 
-          assert.equal(await nonExpiringLock.isValidKey(tokenId), true)
+          assert.equal(await nonExpiringLock.isValidKey.call(tokenId), true)
 
           it('duration has been extended accordingly', async () => {
             assert.equal(

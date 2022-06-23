@@ -1,12 +1,18 @@
-const { reverts, deployLock } = require('../../helpers')
+const { reverts } = require('../../helpers/errors')
+const deployLocks = require('../../helpers/deployLocks')
 
-contract('Lock / erc721 / getApproved', () => {
-  let lock
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../../helpers/truffle-artifacts')
+
+let locks
+
+contract('Lock / erc721 / getApproved', (accounts) => {
   before(async () => {
-    lock = await deployLock()
+    this.unlock = await getContractInstance(unlockContract)
+    locks = await deployLocks(this.unlock, accounts[0])
   })
 
   it('should fail if the key does not exist', async () => {
-    await reverts(lock.getApproved(42), 'NO_SUCH_KEY')
+    await reverts(locks.FIRST.getApproved.call(42), 'NO_SUCH_KEY')
   })
 })

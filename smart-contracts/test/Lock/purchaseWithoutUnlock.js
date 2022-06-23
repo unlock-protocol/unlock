@@ -46,7 +46,7 @@ contract('Lock / purchaseWithoutUnlock', () => {
     )
 
     const deployments = await deployContracts()
-    unlock = deployments.unlockEthers
+    unlock = deployments.unlock
   })
 
   describe('purchase with a lock while Unlock is broken', () => {

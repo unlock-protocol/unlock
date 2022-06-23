@@ -2,7 +2,6 @@ import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadata } from '../models'
 import config from '../../config/config'
 import { logger } from '../logger'
-import { generateQrCode } from '../utils/qrcode'
 
 type Params = {
   [key: string]: any
@@ -60,15 +59,12 @@ export const sendEmail = async (
  * Resolves when all new keys have been processed
  * @param keys
  */
-export const notifyNewKeysToWedlocks = async (
-  keys: any[],
-  network?: number
-) => {
+export const notifyNewKeysToWedlocks = async (keys: any[]) => {
   logger.info('Notifying following keys to wedlock', {
     keys: keys.map((key: any) => [key.lock.address, key.keyId]),
   })
   for (const key of keys) {
-    await notifyNewKeyToWedlocks(key, network)
+    await notifyNewKeyToWedlocks(key)
   }
 }
 
@@ -77,7 +73,7 @@ export const notifyNewKeysToWedlocks = async (
  * and email based on the lock's template if applicable
  * @param key
  */
-export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
+export const notifyNewKeyToWedlocks = async (key: any) => {
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
       tokenAddress: Normalizer.ethereumAddress(key.lock.address),
@@ -103,31 +99,10 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
       lock: key.lock.address,
       keyId: key.keyId,
     })
-
-    let attachments: Attachment[] = []
-    if (network) {
-      const qrCode = await generateQrCode({
-        network,
-        lockAddress: key.lock.address,
-        tokenId: key.keyId,
-      })
-      attachments = [
-        ...attachments,
-        {
-          path: qrCode,
-        },
-      ]
-    }
     // Lock address to find the specific template
-    await sendEmail(
-      `keyMined${key.lock.address}`,
-      'keyMined',
-      recipient,
-      {
-        lockName: key.lock.name,
-        keychainUrl: 'https://app.unlock-protocol.com/keychain',
-      },
-      attachments
-    )
+    await sendEmail(`keyMined${key.lock.address}`, 'keyMined', recipient, {
+      lockName: key.lock.name,
+      keychainUrl: 'https://app.unlock-protocol.com/keychain',
+    })
   }
 }

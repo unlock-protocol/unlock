@@ -1,19 +1,25 @@
-const { reverts, deployLock, deployContracts } = require('../../helpers')
+const { reverts } = require('../../helpers/errors')
+const deployLocks = require('../../helpers/deployLocks')
 
-let lock
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../../helpers/truffle-artifacts')
+
 let unlock
+let lock
 let txObj
 let event
 
 contract('Lock / erc721 / tokenSymbol', (accounts) => {
   before(async () => {
-    ;({ unlock } = await deployContracts())
-    lock = await deployLock({ unlock })
+    unlock = await getContractInstance(unlockContract)
+
+    const locks = await deployLocks(unlock, accounts[0])
+    lock = locks.FIRST
   })
 
   describe('the global token symbol stored in Unlock', () => {
     it('should return the global token symbol', async () => {
-      assert.equal(await unlock.globalTokenSymbol(), '')
+      assert.equal(await unlock.globalTokenSymbol.call(), '')
     })
 
     describe('set the global symbol', () => {
@@ -33,13 +39,13 @@ contract('Lock / erc721 / tokenSymbol', (accounts) => {
       })
 
       it('should allow the owner to set the global token Symbol', async () => {
-        assert.equal(await unlock.globalTokenSymbol(), 'KEY')
+        assert.equal(await unlock.globalTokenSymbol.call(), 'KEY')
       })
 
       it('getGlobalTokenSymbol is the same', async () => {
         assert.equal(
-          await unlock.globalTokenSymbol(),
-          await unlock.getGlobalTokenSymbol()
+          await unlock.globalTokenSymbol.call(),
+          await unlock.getGlobalTokenSymbol.call()
         )
       })
 
@@ -69,7 +75,7 @@ contract('Lock / erc721 / tokenSymbol', (accounts) => {
     it('should allow the lock owner to set a custom token symbol', async () => {
       txObj = await lock.updateLockSymbol('MYTKN', { from: accounts[0] })
       event = txObj.logs[0]
-      assert.equal(await lock.symbol(), 'MYTKN')
+      assert.equal(await lock.symbol.call(), 'MYTKN')
     })
 
     it('should fail if someone other than the owner tries to set the symbol', async () => {

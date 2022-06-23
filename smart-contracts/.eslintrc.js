@@ -35,7 +35,6 @@ module.exports = {
   ignorePatterns: ['coverage'],
   rules: {
     'import/extensions': 0,
-    'no-unused-vars': 'error',
     'mocha/no-exclusive-tests': 'error',
     'jest/prefer-expect-assertions': 0, // Smart contract tests are using mocha...
     ...rulesToIgnore.reduce((obj, rule) => {

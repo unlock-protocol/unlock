@@ -1,7 +1,7 @@
 const { ethers, upgrades } = require('hardhat')
-const { ADDRESS_ZERO, reverts } = require('../helpers')
+const { reverts } = require('../helpers/errors')
 const createLockHash = require('../helpers/createLockCalldata')
-
+const { ADDRESS_ZERO } = require('../helpers/constants')
 describe('upgradeLock (deploy template with Proxy)', () => {
   let unlock
   let lock

@@ -1,14 +1,25 @@
+const { reverts } = require('../helpers/errors')
+const deployLocks = require('../helpers/deployLocks')
+
+const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
-const { deployLock, ADDRESS_ZERO, purchaseKey, reverts } = require('../helpers')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let lock
+let locks
+let unlock
 let testEventHooks
 
 contract('Lock / onKeyCancelHook', (accounts) => {
+  const from = accounts[1]
   const to = accounts[2]
+  let keyPrice
 
   before(async () => {
-    lock = await deployLock()
+    unlock = await getContractInstance(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
+    lock = locks.FIRST
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(
       ADDRESS_ZERO,
@@ -17,7 +28,20 @@ contract('Lock / onKeyCancelHook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    const { tokenId } = await purchaseKey(lock, to)
+    keyPrice = await lock.keyPrice()
+    const tx = await lock.purchase(
+      [],
+      [to],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
+      [[]],
+      {
+        from,
+        value: keyPrice,
+      }
+    )
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
+    const tokenId = args.tokenId
     await lock.cancelAndRefund(tokenId, { from: to })
   })
 

@@ -1,21 +1,16 @@
-const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
+const { tokens, protocols } = require('hardlydifficult-eth')
 const { time } = require('@openzeppelin/test-helpers')
+const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
-const {
-  MAX_UINT,
-  ADDRESS_ZERO,
-  deployContracts,
-  deployLock,
-  deployWETH,
-  deployERC20,
-  deployUniswapV2,
-  deployUniswapOracle,
-} = require('../helpers')
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
-const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const keyPrice = web3.utils.toWei('0.01', 'ether')
 
 let unlock
+let locks
 let lock
 let token
 
@@ -76,62 +71,63 @@ const decodeGNPEvent = (tx) => {
 contract('Unlock / uniswapValue', (accounts) => {
   const [keyOwner, liquidityOwner, protocolOwner] = accounts
 
+  beforeEach(async () => {
+    unlock = await getContractInstance(unlockContract)
+  })
+
   describe('A supported token', () => {
     beforeEach(async () => {
-      token = await deployERC20(protocolOwner)
+      token = await tokens.dai.deploy(web3, protocolOwner)
       // Mint some tokens so that the totalSupply is greater than 0
-      await token.mint(keyOwner, ethers.utils.parseUnits('10000', 'ether'), {
+      await token.mint(keyOwner, web3.utils.toWei('10000', 'ether'), {
         from: protocolOwner,
       })
-      ;({ unlock } = await deployContracts())
-      lock = await deployLock({ unlock, tokenAddress: token.address })
+
+      locks = await deployLocks(unlock, protocolOwner, token.address)
+      lock = locks.FIRST
 
       // Deploy the exchange
-      const weth = await deployWETH(protocolOwner)
-      const uniswapRouter = await deployUniswapV2(weth.address, protocolOwner)
-
-      // Create DAI <-> WETH pool
-      await token.mint(
-        liquidityOwner,
-        ethers.utils.parseUnits('100000', 'ether'),
-        {
-          from: protocolOwner,
-        }
+      const weth = await tokens.weth.deploy(web3, protocolOwner)
+      const uniswapRouter = await protocols.uniswapV2.deploy(
+        web3,
+        protocolOwner,
+        ADDRESS_ZERO,
+        weth.address
       )
+      // Create DAI <-> WETH pool
+      await token.mint(liquidityOwner, web3.utils.toWei('100000', 'ether'), {
+        from: protocolOwner,
+      })
       await token.approve(uniswapRouter.address, MAX_UINT, {
         from: liquidityOwner,
       })
+      await uniswapRouter.addLiquidityETH(
+        token.address,
+        web3.utils.toWei('2000', 'ether'),
+        '1',
+        '1',
+        liquidityOwner,
+        MAX_UINT,
+        { from: liquidityOwner, value: web3.utils.toWei('10', 'ether') }
+      )
 
-      await uniswapRouter
-        .connect(await ethers.getSigner(liquidityOwner))
-        .addLiquidityETH(
-          token.address,
-          ethers.utils.parseUnits('2000', 'ether'),
-          '1',
-          '1',
-          liquidityOwner,
-          MAX_UINT,
-          { value: ethers.utils.parseUnits('10', 'ether') }
-        )
-
-      const uniswapOracle = await deployUniswapOracle(
-        await uniswapRouter.factory(),
-        protocolOwner
+      const uniswapOracle = await protocols.uniswapOracle.deploy(
+        web3,
+        protocolOwner,
+        await uniswapRouter.factory()
       )
 
       // Advancing time to avoid an intermittent test fail
       await time.increase(time.duration.hours(1))
 
       // Do a swap so there is some data accumulated
-      await uniswapRouter
-        .connect(await ethers.getSigner(keyOwner))
-        .swapExactETHForTokens(
-          1,
-          [weth.address, token.address],
-          keyOwner,
-          MAX_UINT,
-          { value: ethers.utils.parseUnits('1', 'ether') }
-        )
+      await uniswapRouter.swapExactETHForTokens(
+        1,
+        [weth.address, token.address],
+        keyOwner,
+        MAX_UINT,
+        { from: keyOwner, value: web3.utils.toWei('1', 'ether') }
+      )
 
       // Config in Unlock
       await unlock.configUnlock(
@@ -154,6 +150,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
+
         await token.approve(lock.address, keyPrice, { from: keyOwner })
         tx = await lock.purchase(
           [keyPrice],
@@ -173,7 +170,7 @@ contract('Unlock / uniswapValue', (accounts) => {
         assert.equal(
           gdp.shiftedBy(-18).toFixed(5),
           gdpBefore
-            .plus(ethers.utils.parseUnits('0.00006', 'ether').toString())
+            .plus(web3.utils.toWei('0.00006', 'ether'))
             .shiftedBy(-18)
             .toFixed(5)
         )
@@ -192,7 +189,9 @@ contract('Unlock / uniswapValue', (accounts) => {
 
         assert.equal(gdp.toString(), grossNetworkProduct)
         assert.equal(
-          '0.00006',
+          new BigNumber(web3.utils.toWei('0.00006', 'ether'))
+            .shiftedBy(-18)
+            .toFixed(5),
           new BigNumber(valueInETH).shiftedBy(-18).toFixed(5)
         )
         assert.equal(token.address, tokenAddress)
@@ -204,13 +203,14 @@ contract('Unlock / uniswapValue', (accounts) => {
 
   describe('A unsupported token', () => {
     beforeEach(async () => {
-      token = await deployERC20(protocolOwner)
+      token = await tokens.dai.deploy(web3, protocolOwner)
       // Mint some tokens so that the totalSupply is greater than 0
-      await token.mint(keyOwner, ethers.utils.parseUnits('10000', 'ether'), {
+      await token.mint(keyOwner, web3.utils.toWei('10000', 'ether'), {
         from: protocolOwner,
       })
-      ;({ unlock } = await deployContracts())
-      lock = await deployLock({ unlock, tokenAddress: token.address })
+
+      locks = await deployLocks(unlock, protocolOwner, token.address)
+      lock = locks.FIRST
     })
 
     describe('Purchase key', () => {
@@ -261,8 +261,8 @@ contract('Unlock / uniswapValue', (accounts) => {
 
   describe('ETH', () => {
     beforeEach(async () => {
-      ;({ unlock } = await deployContracts())
-      lock = await deployLock({ unlock })
+      locks = await deployLocks(unlock, protocolOwner)
+      lock = locks.FIRST
     })
 
     describe('Purchase key', () => {
@@ -287,10 +287,7 @@ contract('Unlock / uniswapValue', (accounts) => {
 
       it('GDP went up by the keyPrice', async () => {
         const gdp = new BigNumber(await unlock.grossNetworkProduct())
-        assert.equal(
-          gdp.toFixed(),
-          gdpBefore.plus(keyPrice.toString()).toFixed()
-        )
+        assert.equal(gdp.toFixed(), gdpBefore.plus(keyPrice).toFixed())
       })
 
       it('a GDP tracking event has been emitted', async () => {

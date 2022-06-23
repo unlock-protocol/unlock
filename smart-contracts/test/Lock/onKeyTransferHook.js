@@ -1,9 +1,16 @@
-const { deployLock, reverts, purchaseKey, ADDRESS_ZERO } = require('../helpers')
+const { reverts } = require('../helpers/errors')
+const deployLocks = require('../helpers/deployLocks')
+const BigNumber = require('bignumber.js')
 
+const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 const { assert } = require('chai')
 
 let lock
+let locks
+let unlock
 let testEventHooks
 
 contract('Lock / onKeyTransfer hook', (accounts) => {
@@ -13,7 +20,9 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
   let tokenId
 
   before(async () => {
-    lock = await deployLock()
+    unlock = await getContractInstance(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
+    lock = locks.FIRST
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(
       ADDRESS_ZERO,
@@ -28,7 +37,19 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
   })
 
   beforeEach(async () => {
-    ;({ tokenId } = await purchaseKey(lock, keyOwner))
+    const tx = await lock.purchase(
+      [],
+      [keyOwner],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
+      [[]],
+      {
+        from: accounts[0],
+        value: keyPrice,
+      }
+    )
+    const { args } = tx.logs.find((v) => v.event === 'Transfer')
+    tokenId = args.tokenId
   })
 
   it('is not fired when a key is created', async () => {

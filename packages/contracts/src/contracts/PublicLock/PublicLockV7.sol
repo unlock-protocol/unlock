@@ -6,6 +6,7 @@ pragma solidity 0.5.17;
 
 /**
 * @title The PublicLock Interface
+* @author Nick Furfaro (unlock-protocol.com)
  */
 
 
@@ -1307,6 +1308,7 @@ pragma solidity 0.5.17;
 
 /**
  * @title The Unlock Interface
+ * @author Nick Furfaro (unlock-protocol.com)
 **/
 
 interface IUnlock
@@ -3136,6 +3138,7 @@ pragma solidity 0.5.17;
 /**
  * @title Mixin for the transfer-related functions needed to meet the ERC721
  * standard.
+ * @author Nick Furfaro
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */

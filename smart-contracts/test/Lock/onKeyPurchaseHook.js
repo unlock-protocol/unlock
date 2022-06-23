@@ -1,20 +1,27 @@
-const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
-const { deployLock, reverts, ADDRESS_ZERO, MAX_UINT } = require('../helpers')
+const { reverts } = require('../helpers/errors')
+const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
+const unlockContract = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
 
 let lock
+let locks
+let unlock
 let testEventHooks
 
 contract('Lock / onKeyPurchaseHook', (accounts) => {
   const from = accounts[1]
   const to = accounts[2]
-  const dataField = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('TestData'))
+  const dataField = web3.utils.asciiToHex('TestData')
   let keyPrice
 
   beforeEach(async () => {
-    lock = await deployLock()
+    unlock = await getContractInstance(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
+    lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(

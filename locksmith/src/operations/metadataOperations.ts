@@ -78,7 +78,7 @@ export const getBaseTokenData = async (
   return result
 }
 
-export const getKeyCentricData = async (
+const getKeyCentricData = async (
   address: string,
   tokenId: string
 ): Promise<any> => {

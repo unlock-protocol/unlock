@@ -1,8 +1,17 @@
 const { ethers } = require('hardhat')
-const { reverts, deployLock, ADDRESS_ZERO } = require('../helpers')
+const { reverts } = require('../helpers/errors')
+const deployLocks = require('../helpers/deployLocks')
+const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
 
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
+
+let unlock
 let lock
+let locks
 let tx
+
+const { HARDHAT_VM_ERROR } = errorMessages
 
 contract('Lock / grantKeys', (accounts) => {
   const lockCreator = accounts[1]
@@ -13,7 +22,9 @@ contract('Lock / grantKeys', (accounts) => {
     const blockNumber = await ethers.provider.getBlockNumber()
     const latestBlock = await ethers.provider.getBlock(blockNumber)
     validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
-    lock = await deployLock({ from: lockCreator })
+    unlock = await getContractInstance(unlockContract)
+    locks = await deployLocks(unlock, lockCreator)
+    lock = locks.FIRST
   })
 
   describe('can grant key(s)', () => {
@@ -39,11 +50,11 @@ contract('Lock / grantKeys', (accounts) => {
       })
 
       it('should acknowledge that user owns key', async () => {
-        assert.equal(await lock.ownerOf(evt.args.tokenId), keyOwner)
+        assert.equal(await lock.ownerOf.call(evt.args.tokenId), keyOwner)
       })
 
       it('getHasValidKey is true', async () => {
-        assert.equal(await lock.getHasValidKey(keyOwner), true)
+        assert.equal(await lock.getHasValidKey.call(keyOwner), true)
       })
     })
 
@@ -60,7 +71,7 @@ contract('Lock / grantKeys', (accounts) => {
               from: lockCreator,
             }
           ),
-          `reverted with panic code 0x32 (Array accessed at an out-of-bounds or negative index)`
+          `${HARDHAT_VM_ERROR} reverted with panic code 0x32 (Array accessed at an out-of-bounds or negative index)`
         )
       })
     })
@@ -82,13 +93,13 @@ contract('Lock / grantKeys', (accounts) => {
 
       it('should acknowledge that user owns key', async () => {
         for (let i = 0; i < keyOwnerList.length; i++) {
-          assert.equal(await lock.balanceOf(keyOwnerList[i]), 1)
+          assert.equal(await lock.balanceOf.call(keyOwnerList[i]), 1)
         }
       })
 
       it('getHasValidKey is true', async () => {
         for (let i = 0; i < keyOwnerList.length; i++) {
-          assert.equal(await lock.getHasValidKey(keyOwnerList[i]), true)
+          assert.equal(await lock.getHasValidKey.call(keyOwnerList[i]), true)
         }
       })
     })

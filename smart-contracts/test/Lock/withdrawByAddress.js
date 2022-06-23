@@ -1,5 +1,13 @@
 const BigNumber = require('bignumber.js')
-const { deployERC20, deployLock, reverts } = require('../helpers')
+const { tokens } = require('hardlydifficult-ethereum-contracts')
+
+const { reverts } = require('../helpers/errors')
+const deployLocks = require('../helpers/deployLocks')
+
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
+
+let unlock
 let lock
 let token
 
@@ -7,10 +15,12 @@ contract('Lock / withdrawByAddress', (accounts) => {
   let owner = accounts[0]
 
   before(async () => {
-    lock = await deployLock()
+    unlock = await getContractInstance(unlockContract)
+    const locks = await deployLocks(unlock, owner)
+    lock = locks.OWNED
 
     // Put some ERC-20 tokens into the contract
-    token = await deployERC20(owner)
+    token = await tokens.dai.deploy(web3, owner)
     await token.mint(lock.address, 42000, {
       from: owner,
     })

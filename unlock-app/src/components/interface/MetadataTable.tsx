@@ -83,7 +83,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   }
 
   const onExpireAndRefund = (lock: any) => {
-    if (expireAndRefundDisabled(lock)) return
     setShowExpireAndRefundModal(true)
     setCurrentLock(lock)
   }
@@ -100,10 +99,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     return expiration > now
   }
 
-  const expireAndRefundDisabled = (metadata: unknown): boolean => {
-    return !(isLockManager && isKeyValid(metadata))
-  }
-
   return (
     <Wrapper>
       <ExpireAndRefundModal
@@ -118,9 +113,11 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             {columns.map((col) => {
               return <Th key={col}>{camelCaseToTitle(col)}</Th>
             })}
-            <Th className="text-center" key="actions">
-              Actions
-            </Th>
+            {isLockManager && (
+              <Th className="text-center" key="actions">
+                Actions
+              </Th>
+            )}
           </tr>
         </thead>
         <Tbody>
@@ -136,16 +133,18 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
                     </Td>
                   )
                 })}
-                <Td className="text-center">
-                  <button
-                    className="bg-gray-200 rounded px-2 py-1 text-sm disabled:opacity-50"
-                    type="button"
-                    disabled={expireAndRefundDisabled(datum)}
-                    onClick={() => onExpireAndRefund(datum)}
-                  >
-                    Expire and Refund
-                  </button>
-                </Td>
+                {isLockManager && isKeyValid(datum) && (
+                  <Td className="text-center">
+                    <button
+                      className="bg-gray-200 rounded px-2 py-1 text-sm"
+                      type="button"
+                      disabled={!isLockManager}
+                      onClick={() => onExpireAndRefund(datum)}
+                    >
+                      Expire and Refund
+                    </button>
+                  </Td>
+                )}
               </tr>
             )
           })}

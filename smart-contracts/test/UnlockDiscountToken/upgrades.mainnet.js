@@ -1,9 +1,11 @@
-const { reverts, ADDRESS_ZERO } = require('../helpers')
+const { reverts } = require('../helpers/errors')
 const { config, ethers, assert, network, upgrades } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
+const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
 const multisigABI = require('../helpers/ABIs/multisig.json')
 const proxyABI = require('../helpers/ABIs/proxy.json')
 
+const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 const UDTProxyContractAddress = '0x90DE74265a416e1393A450752175AED98fe11517'
 const proxyAdminAddress = '0x79918A4389A437906538E0bbf39918BfA4F7690e'
 
@@ -208,7 +210,7 @@ contract('UnlockDiscountToken (on mainnet)', async () => {
       // mint tokens
       await reverts(
         updated.addMinter(minter.address),
-        'MinterRole: caller does not have the Minter role'
+        `${VM_ERROR_REVERT_WITH_REASON} 'MinterRole: caller does not have the Minter role'`
       )
     })
   })

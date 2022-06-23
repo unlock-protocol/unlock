@@ -41,7 +41,7 @@ describe('Verifier v2 endpoints for locksmith', () => {
     expect(getListResponse.status).toBe(401)
   })
 
-  it('Add verifier and delete correctly', async () => {
+  it('Add add verifier and delete correctly', async () => {
     expect.assertions(3)
 
     const { loginResponse } = await loginRandomUser(app)

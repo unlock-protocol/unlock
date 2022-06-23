@@ -1,16 +1,29 @@
-const Unlock = artifacts.require('Unlock.sol')
-const { reverts, deployContracts } = require('../helpers')
+const unlockContract = artifacts.require('Unlock.sol')
+
+const { reverts } = require('../helpers/errors')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { errorMessages } = require('../helpers/constants')
+
+const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
+
+let unlock
 
 contract('Unlock / initializers', (accounts) => {
+  beforeEach(async () => {
+    unlock = await getContractInstance(unlockContract)
+  })
+
   it('There is only 1 public initializer in Unlock', async () => {
-    const count = Unlock.abi.filter(
+    const count = unlockContract.abi.filter(
       (x) => x.name.toLowerCase() === 'initialize'
     ).length
     assert.equal(count, 1)
   })
 
   it('initialize may not be called again', async () => {
-    const { unlock } = await deployContracts()
-    await reverts(unlock.initialize(accounts[0]), 'ALREADY_INITIALIZED')
+    await reverts(
+      unlock.initialize(accounts[0]),
+      `${VM_ERROR_REVERT_WITH_REASON} 'ALREADY_INITIALIZED'`
+    )
   })
 })

@@ -1,19 +1,40 @@
-const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { assert } = require('chai')
+const { reverts } = require('../helpers/errors')
+const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
-const { purchaseKeys, reverts, deployLock } = require('../helpers')
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
+
+let unlock
+let locks
+let tokenIds
 
 contract('Lock / mergeKeys', (accounts) => {
-  let tokenIds
   let lockCreator = accounts[0]
   let keyOwner = accounts[1]
   let keyOwner2 = accounts[2]
   let lock
 
   beforeEach(async () => {
-    lock = await deployLock()
-    ;({ tokenIds } = await purchaseKeys(lock, 2))
+    unlock = await getContractInstance(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
+    lock = locks.FIRST
+
+    const tx = await lock.purchase(
+      [],
+      [keyOwner, keyOwner2],
+      [ADDRESS_ZERO, ADDRESS_ZERO],
+      [ADDRESS_ZERO, ADDRESS_ZERO],
+      [[], []],
+      {
+        value: web3.utils.toWei('0.02', 'ether'),
+      }
+    )
+    tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
   })
 
   describe('merge some amount of time', () => {
@@ -38,8 +59,8 @@ contract('Lock / mergeKeys', (accounts) => {
         ).toString()
       )
 
-      assert.equal(await lock.getHasValidKey(keyOwner2), true)
-      assert.equal(await lock.getHasValidKey(keyOwner), true)
+      assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
+      assert.equal(await lock.getHasValidKey.call(keyOwner), true)
     })
     it('should allow key manager to call', async () => {
       const expTs = [
@@ -71,8 +92,8 @@ contract('Lock / mergeKeys', (accounts) => {
         ).toString()
       )
 
-      assert.equal(await lock.getHasValidKey(keyOwner2), true)
-      assert.equal(await lock.getHasValidKey(keyOwner), true)
+      assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
+      assert.equal(await lock.getHasValidKey.call(keyOwner), true)
     })
   })
 
@@ -83,7 +104,7 @@ contract('Lock / mergeKeys', (accounts) => {
         await lock.keyExpirationTimestampFor(tokenIds[1]),
       ]
 
-      const { timestamp: now } = await ethers.provider.getBlock('latest')
+      const now = (await web3.eth.getBlock('latest')).timestamp
       const remaining = expTs[0] - now - 1
 
       await lock.mergeKeys(tokenIds[0], tokenIds[1], remaining, {
@@ -104,10 +125,10 @@ contract('Lock / mergeKeys', (accounts) => {
         ).toString()
       )
 
-      assert.equal(await lock.isValidKey(tokenIds[0]), false)
-      assert.equal(await lock.isValidKey(tokenIds[1]), true)
-      assert.equal(await lock.getHasValidKey(keyOwner2), true)
-      assert.equal(await lock.getHasValidKey(keyOwner), false)
+      assert.equal(await lock.isValidKey.call(tokenIds[0]), false)
+      assert.equal(await lock.isValidKey.call(tokenIds[1]), true)
+      assert.equal(await lock.getHasValidKey.call(keyOwner2), true)
+      assert.equal(await lock.getHasValidKey.call(keyOwner), false)
     })
   })
   describe('failures', () => {
@@ -131,19 +152,19 @@ contract('Lock / mergeKeys', (accounts) => {
 
     it('should fail if time is not enough', async () => {
       const remaining = await lock.keyExpirationTimestampFor(tokenIds[0])
-      const { timestamp: now } = await ethers.provider.getBlock('latest')
+      const blockTs = (await web3.eth.getBlock('latest')).timestamp
       // remove some time
       await lock.shareKey(
         accounts[8],
         tokenIds[0],
-        remaining.toNumber() - now - 100,
+        remaining.toNumber() - blockTs - 100,
         { from: keyOwner }
       )
 
       assert.equal(
         new BigNumber(
           await lock.keyExpirationTimestampFor(tokenIds[0])
-        ).toNumber() - now,
+        ).toNumber() - blockTs,
         100
       )
       assert.equal(await lock.isValidKey(tokenIds[0]), true)

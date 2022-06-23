@@ -1,14 +1,14 @@
-const {
-  deployLock,
-  ADDRESS_ZERO,
-  purchaseKey,
-  reverts,
-} = require('../../helpers')
+const { reverts } = require('../../helpers/errors')
+const deployLocks = require('../../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../../helpers/constants')
 
+const unlockContract = artifacts.require('Unlock.sol')
 const Erc1155TokenUriHook = artifacts.require('ERC1155BalanceOfHook')
 const TestERC1155 = artifacts.require('TestERC1155')
+const getContractInstance = require('../../helpers/truffle-artifacts')
 
 let lock
+let unlock
 let hook
 let nft
 
@@ -20,7 +20,9 @@ contract('ERC1155BalanceOfHook', (accounts) => {
   const keyOwner = accounts[3]
 
   beforeEach(async () => {
-    lock = await deployLock()
+    unlock = await getContractInstance(unlockContract)
+    const locks = await deployLocks(unlock, accounts[0])
+    lock = locks.FIRST
 
     // deploy some ERC1155
     nft = await TestERC1155.new()
@@ -93,7 +95,21 @@ contract('ERC1155BalanceOfHook', (accounts) => {
     })
     it('with an expired key', async () => {
       // buy a key
-      const { tokenId } = await purchaseKey(lock, keyOwner)
+      const keyPrice = await lock.keyPrice()
+      const tx = await lock.purchase(
+        [],
+        [keyOwner],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          from,
+          value: keyPrice,
+        }
+      )
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      const { tokenId } = args
+
       assert.equal(await lock.getHasValidKey(keyOwner), true)
 
       // expire the key
@@ -115,13 +131,37 @@ contract('ERC1155BalanceOfHook', (accounts) => {
     })
     it('with a valid key', async () => {
       // buy a key
-      await purchaseKey(lock, keyOwner)
+      const keyPrice = await lock.keyPrice()
+      await lock.purchase(
+        [],
+        [nftOwner],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          from,
+          value: keyPrice,
+        }
+      )
       assert.equal(await lock.getHasValidKey(nftOwner), true)
     })
     it('with an expired key', async () => {
       // buy a key
-      const { tokenId } = await purchaseKey(lock, keyOwner)
+      const keyPrice = await lock.keyPrice()
+      const tx = await lock.purchase(
+        [],
+        [nftOwner],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          from,
+          value: keyPrice,
+        }
+      )
       assert.equal(await lock.getHasValidKey(nftOwner), true)
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      const { tokenId } = args
 
       // expire the key
       await lock.expireAndRefundFor(tokenId, 0)
@@ -134,14 +174,38 @@ contract('ERC1155BalanceOfHook', (accounts) => {
       assert.equal(await lock.getHasValidKey(keyOwner), false)
     })
     it('with a valid key', async () => {
-      await purchaseKey(lock, keyOwner)
+      // buy a key
+      const keyPrice = await lock.keyPrice()
+      await lock.purchase(
+        [],
+        [keyOwner],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          from,
+          value: keyPrice,
+        }
+      )
       assert.equal(await lock.getHasValidKey(keyOwner), true)
     })
     it('with an expired key', async () => {
       // buy a key
-      const { tokenId } = await purchaseKey(lock, keyOwner)
+      const keyPrice = await lock.keyPrice()
+      const tx = await lock.purchase(
+        [],
+        [keyOwner],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          from,
+          value: keyPrice,
+        }
+      )
       assert.equal(await lock.getHasValidKey(keyOwner), true)
-
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      const { tokenId } = args
       // expire the key
       await lock.expireAndRefundFor(tokenId, 0)
       assert.equal(await lock.getHasValidKey(keyOwner), false)

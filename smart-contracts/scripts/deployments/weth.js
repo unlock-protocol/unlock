@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-const WETH = require('../../test/helpers/ABIs/weth.json')
+const WETH = require('hardlydifficult-eth/src/tokens/weth.json')
 
 async function main() {
   const Weth = await ethers.getContractFactory(WETH.abi, WETH.bytecode)

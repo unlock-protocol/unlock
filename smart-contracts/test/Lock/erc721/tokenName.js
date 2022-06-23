@@ -1,16 +1,24 @@
-const { deployLock, reverts } = require('../../helpers')
+const { reverts } = require('../../helpers/errors')
+const deployLocks = require('../../helpers/deployLocks')
+
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../../helpers/truffle-artifacts')
+
+let unlock
 let unnamedlock
 let namedLock
 
 contract('Lock / erc721 / name', (accounts) => {
   before(async () => {
-    unnamedlock = await deployLock()
-    namedLock = await deployLock({ name: 'NAMED' })
+    unlock = await getContractInstance(unlockContract)
+    const locks = await deployLocks(unlock, accounts[0])
+    unnamedlock = locks.FIRST
+    namedLock = locks.NAMED
   })
 
   describe('when no name has been set on creation', () => {
     it('should return the default name when attempting to read the name', async () => {
-      assert.equal(await unnamedlock.name(), 'Unlock-Protocol Lock')
+      assert.equal(await unnamedlock.name.call(), 'Unlock-Protocol Lock')
     })
 
     it('should fail if someone other than the owner tries to set the name', async () => {
@@ -31,7 +39,7 @@ contract('Lock / erc721 / name', (accounts) => {
 
   describe('when the Lock has a name', () => {
     it('should return return the expected name', async () => {
-      assert.equal(await namedLock.name(), 'Custom Named Lock')
+      assert.equal(await namedLock.name.call(), 'Custom Named Lock')
     })
 
     it('should fail if someone other than the owner tries to change the name', async () => {
@@ -50,7 +58,7 @@ contract('Lock / erc721 / name', (accounts) => {
       })
 
       it('should return return the expected name', async () => {
-        assert.equal(await namedLock.name(), 'Difficult')
+        assert.equal(await namedLock.name.call(), 'Difficult')
       })
     })
 
@@ -62,7 +70,7 @@ contract('Lock / erc721 / name', (accounts) => {
       })
 
       it('should return return the expected name', async () => {
-        assert.equal(await namedLock.name(), '')
+        assert.equal(await namedLock.name.call(), '')
       })
     })
   })

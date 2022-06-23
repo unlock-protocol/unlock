@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
 const createLockHash = require('../helpers/createLockCalldata')
-const { ADDRESS_ZERO, purchaseKey } = require('../helpers')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 const deployContracts = require('../fixtures/deploy')
 
 const keyPrice = ethers.utils.parseEther('0.01')
@@ -9,7 +9,7 @@ contract('Lock / setExpirationDuration', () => {
   let lock
 
   beforeEach(async () => {
-    const { unlockEthers: unlock } = await deployContracts()
+    const { unlock } = await deployContracts()
     const [from] = await ethers.getSigners()
 
     // create a new lock
@@ -36,29 +36,69 @@ contract('Lock / setExpirationDuration', () => {
 
   it('affects newly purchased keys', async () => {
     const [, , buyer, buyer2] = await ethers.getSigners()
-    const { tokenId, blockNumber } = await purchaseKey(lock, buyer.address)
+    const tx = await lock
+      .connect(buyer)
+      .purchase(
+        [keyPrice.toString()],
+        [buyer.address],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          value: keyPrice.toString(),
+        }
+      )
+    await tx.wait()
+    const { events, blockNumber } = await tx.wait()
     const transfer1Block = await ethers.provider.getBlock(blockNumber)
+    const {
+      args: { tokenId },
+    } = events.find((v) => v.event === 'Transfer')
     expect(
       (await lock.keyExpirationTimestampFor(tokenId)).toNumber()
     ).to.be.equals(transfer1Block.timestamp + 1800)
 
     // update duration
     await lock.setExpirationDuration(5000)
-    const { tokenId: tokenId2, blockNumber: blockNumber2 } = await purchaseKey(
-      lock,
-      buyer2.address
-    )
-    const transfer2Block = await ethers.provider.getBlock(blockNumber2)
+    const tx2 = await lock
+      .connect(buyer2)
+      .purchase(
+        [keyPrice.toString()],
+        [buyer2.address],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          value: keyPrice.toString(),
+        }
+      )
+    const receipt2 = await tx2.wait()
+    const transfer2Block = await ethers.provider.getBlock(receipt2.blockNumber)
+    const {
+      args: { tokenId: newTokenId },
+    } = receipt2.events.find((v) => v.event === 'Transfer')
 
     expect(
-      (await lock.keyExpirationTimestampFor(tokenId2)).toNumber()
+      (await lock.keyExpirationTimestampFor(newTokenId)).toNumber()
     ).to.be.equals(transfer2Block.timestamp + 5000)
     expect((await lock.expirationDuration()).toString()).to.be.equal('5000')
   })
 
   it('does not affect the timestamps of existing keys', async () => {
     const [, , buyer] = await ethers.getSigners()
-    await purchaseKey(lock, buyer.address)
+    const tx = await lock
+      .connect(buyer)
+      .purchase(
+        [keyPrice.toString()],
+        [buyer.address],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          value: keyPrice.toString(),
+        }
+      )
+    await tx.wait()
 
     const tsBefore = await lock.keyExpirationTimestampFor(buyer.address)
     await lock.setExpirationDuration(1000)

@@ -1,14 +1,23 @@
-const { ethers } = require('hardhat')
 const { time } = require('@openzeppelin/test-helpers')
 
-const { ADDRESS_ZERO, deployLock } = require('../helpers')
+const { reverts } = require('../helpers/errors')
+const deployLocks = require('../helpers/deployLocks')
 
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
+
+let unlock
 let lock
 let tokenIds
 
 contract('Lock / totalKeys', (accounts) => {
+  let owner = accounts[0]
+
   before(async () => {
-    lock = await deployLock()
+    unlock = await getContractInstance(unlockContract)
+    const locks = await deployLocks(unlock, owner)
+    lock = locks.FIRST
     await lock.setMaxKeysPerAddress(10)
 
     const tx = await lock.purchase(
@@ -18,7 +27,7 @@ contract('Lock / totalKeys', (accounts) => {
       [ADDRESS_ZERO, ADDRESS_ZERO, ADDRESS_ZERO],
       [[], [], []],
       {
-        value: ethers.utils.parseUnits('0.03', 'ether'),
+        value: web3.utils.toWei('0.03', 'ether'),
         from: accounts[1],
       }
     )
@@ -43,7 +52,7 @@ contract('Lock / totalKeys', (accounts) => {
   it('should count both expired and renewed keys', async () => {
     // extend once to fix block time in the past in test
     await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
-      value: ethers.utils.parseUnits('0.03', 'ether'),
+      value: web3.utils.toWei('0.03', 'ether'),
       from: accounts[1],
     })
 
@@ -55,7 +64,7 @@ contract('Lock / totalKeys', (accounts) => {
 
     // renew one
     await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
-      value: ethers.utils.parseUnits('0.03', 'ether'),
+      value: web3.utils.toWei('0.03', 'ether'),
       from: accounts[1],
     })
 

@@ -1385,6 +1385,7 @@ pragma solidity >=0.5.17 <0.9.0;
 
 /**
 * @title The PublicLock Interface
+* @author Nick Furfaro (unlock-protocol.com)
  */
 
 

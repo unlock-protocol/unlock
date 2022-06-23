@@ -48,7 +48,7 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
     })
 
     await Promise.allSettled([
-      notifyNewKeysToWedlocks(keys, network), // send emails when applicable!
+      notifyNewKeysToWedlocks(keys), // send emails when applicable!
       // Send notification to hooks subscribed to keys on a specific lock address
       ...keysOnLockHooks.map(async (keysOnLockHook) => {
         const data = keys.filter(

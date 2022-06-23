@@ -1,24 +1,31 @@
-const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
-const {
-  ADDRESS_ZERO,
-  deployLock,
-  deployERC20,
-  getBalance,
-  purchaseKeys,
-  reverts,
-} = require('../helpers')
 
+const { tokens } = require('hardlydifficult-ethereum-contracts')
+const { reverts } = require('../helpers/errors')
+const deployLocks = require('../helpers/deployLocks')
+const { ADDRESS_ZERO } = require('../helpers/constants')
+
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
+
+let unlock
+let locks
 let token
 let tokenIds
 
 contract('Lock / cancelAndRefund', (accounts) => {
-  let lock
-  let lockFree
   const denominator = 10000
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
-  const lockCreator = accounts[0]
 
+  before(async () => {
+    token = await tokens.dai.deploy(web3, accounts[0])
+    await token.mint(accounts[0], 100, {
+      from: accounts[0],
+    })
+    unlock = await getContractInstance(unlockContract)
+    locks = await deployLocks(unlock, accounts[0])
+  })
+
+  let lock
   const keyOwners = [
     accounts[1],
     accounts[2],
@@ -26,28 +33,39 @@ contract('Lock / cancelAndRefund', (accounts) => {
     accounts[4],
     accounts[5],
   ]
+  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const lockCreator = accounts[0]
 
   before(async () => {
-    token = await deployERC20(accounts[0])
-    await token.mint(accounts[0], 100, {
-      from: accounts[0],
-    })
-    lock = await deployLock()
-    lockFree = await deployLock({ name: 'FREE' })
+    lock = locks.SECOND
+
     await lock.setMaxKeysPerAddress(10)
-    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
+    const tx = await lock.purchase(
+      [],
+      keyOwners,
+      keyOwners.map(() => ADDRESS_ZERO),
+      keyOwners.map(() => ADDRESS_ZERO),
+      keyOwners.map(() => []),
+      {
+        value: (keyPrice * keyOwners.length).toFixed(),
+        from: lockCreator,
+      }
+    )
+    tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
   })
 
   it('should return the correct penalty', async () => {
-    const numerator = new BigNumber(await lock.refundPenaltyBasisPoints())
+    const numerator = new BigNumber(await lock.refundPenaltyBasisPoints.call())
     assert.equal(numerator.div(denominator).toFixed(), 0.1) // default of 10%
   })
 
   it('the amount of refund should be less than the original keyPrice when purchased normally', async () => {
     const estimatedRefund = new BigNumber(
-      await lock.getCancelAndRefundValue(tokenIds[0])
+      await lock.getCancelAndRefundValue.call(tokenIds[0])
     )
-    assert(estimatedRefund.lt(keyPrice.toString()))
+    assert(estimatedRefund.lt(keyPrice))
   })
 
   it('the amount of refund should be less than the original keyPrice when expiration is very far in the future', async () => {
@@ -63,11 +81,11 @@ contract('Lock / cancelAndRefund', (accounts) => {
     const estimatedRefund = new BigNumber(
       await lock.getCancelAndRefundValue(args.tokenId)
     )
-    assert(estimatedRefund.lt(keyPrice.toString()))
+    assert(estimatedRefund.lt(keyPrice))
   })
 
   it('the estimated refund for a free Key should be 0', async () => {
-    const tx = await lockFree.grantKeys(
+    const tx = await locks.FREE.grantKeys(
       [accounts[5]],
       [999999999999],
       [ADDRESS_ZERO],
@@ -77,7 +95,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
     )
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
     const estimatedRefund = new BigNumber(
-      await lockFree.getCancelAndRefundValue(args.tokenId)
+      await locks.FREE.getCancelAndRefundValue.call(args.tokenId)
     )
     assert(estimatedRefund, 0)
   })
@@ -90,19 +108,21 @@ contract('Lock / cancelAndRefund', (accounts) => {
     let withdrawalAmount
 
     before(async () => {
-      initialLockBalance = await getBalance(lock.address)
-
-      initialKeyOwnerBalance = await getBalance(keyOwners[0])
-
+      initialLockBalance = new BigNumber(
+        await web3.eth.getBalance(lock.address)
+      )
+      initialKeyOwnerBalance = new BigNumber(
+        await web3.eth.getBalance(keyOwners[0])
+      )
       estimatedRefund = new BigNumber(
-        await lock.getCancelAndRefundValue(tokenIds[0])
+        await lock.getCancelAndRefundValue.call(tokenIds[0])
       )
       txObj = await lock.cancelAndRefund(tokenIds[0], {
         from: keyOwners[0],
       })
-      withdrawalAmount = (await getBalance(lock.address)).minus(
-        initialLockBalance
-      )
+      withdrawalAmount = new BigNumber(
+        await web3.eth.getBalance(lock.address)
+      ).minus(initialLockBalance)
     })
 
     it('should emit a CancelKey event', async () => {
@@ -116,7 +136,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
     it('the amount of refund should be less than or equal to the original key price', async () => {
       const refund = new BigNumber(txObj.logs[0].args.refund)
-      assert(refund.lt(keyPrice.toString()))
+      assert(refund.lt(keyPrice))
     })
 
     it('the amount of refund should be less than or equal to the estimated refund', async () => {
@@ -125,16 +145,18 @@ contract('Lock / cancelAndRefund', (accounts) => {
     })
 
     it('should make the key no longer valid (i.e. expired)', async () => {
-      const isValid = await lock.getHasValidKey(keyOwners[0])
+      const isValid = await lock.getHasValidKey.call(keyOwners[0])
       assert.equal(isValid, false)
     })
 
     it("should increase the owner's balance with the amount of funds withdrawn from the lock", async () => {
-      const txHash = await ethers.provider.getTransaction(txObj.tx)
+      const txHash = await web3.eth.getTransaction(txObj.tx)
       const gasUsed = new BigNumber(txObj.receipt.gasUsed)
       const gasPrice = new BigNumber(txHash.gasPrice)
       const txFee = gasPrice.times(gasUsed)
-      const finalOwnerBalance = await getBalance(keyOwners[0])
+      const finalOwnerBalance = new BigNumber(
+        await web3.eth.getBalance(keyOwners[0])
+      )
       assert(
         finalOwnerBalance.toFixed(),
         initialKeyOwnerBalance.plus(withdrawalAmount).minus(txFee).toFixed()
@@ -143,7 +165,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
   })
 
   it('can cancel a free key', async () => {
-    const tx = await lockFree.grantKeys(
+    const tx = await locks.FREE.grantKeys(
       [accounts[1]],
       [999999999999],
       [ADDRESS_ZERO],
@@ -152,14 +174,14 @@ contract('Lock / cancelAndRefund', (accounts) => {
       }
     )
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    const txObj = await lockFree.cancelAndRefund(args.tokenId, {
+    const txObj = await locks.FREE.cancelAndRefund(args.tokenId, {
       from: accounts[1],
     })
     assert.equal(txObj.logs[0].event, 'CancelKey')
   })
 
   it('approved user can cancel a key', async () => {
-    const tx = await lockFree.grantKeys(
+    const tx = await locks.FREE.grantKeys(
       [keyOwners[1]],
       [999999999999],
       [ADDRESS_ZERO],
@@ -168,8 +190,8 @@ contract('Lock / cancelAndRefund', (accounts) => {
       }
     )
     const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    await lockFree.approve(accounts[9], args.tokenId, { from: keyOwners[1] })
-    const txObj = await lockFree.cancelAndRefund(args.tokenId, {
+    await locks.FREE.approve(accounts[9], args.tokenId, { from: keyOwners[1] })
+    const txObj = await locks.FREE.cancelAndRefund(args.tokenId, {
       from: accounts[9],
     })
     assert.equal(txObj.logs[0].event, 'CancelKey')
@@ -193,7 +215,9 @@ contract('Lock / cancelAndRefund', (accounts) => {
     })
 
     it('should return the correct penalty', async () => {
-      const numerator = new BigNumber(await lock.refundPenaltyBasisPoints())
+      const numerator = new BigNumber(
+        await lock.refundPenaltyBasisPoints.call()
+      )
       assert.equal(numerator.div(denominator).toFixed(), 0.2) // updated to 20%
     })
 
@@ -208,7 +232,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
   describe('should fail when', () => {
     it('should fail if the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw(await lock.tokenAddress(), 0, {
+      await lock.withdraw(await lock.tokenAddress.call(), 0, {
         from: lockCreator,
       })
       await reverts(
@@ -250,8 +274,8 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
   it('should refund in the new token after token address is changed', async () => {
     // Confirm user has a key paid in eth
-    assert.equal(await lock.getHasValidKey(keyOwners[4]), true)
-    assert.equal(await lock.tokenAddress(), 0)
+    assert.equal(await lock.getHasValidKey.call(keyOwners[4]), true)
+    assert.equal(await lock.tokenAddress.call(), 0)
     // check user's token balance
     assert.equal(await token.balanceOf(keyOwners[4]), 0)
     // update token address and price

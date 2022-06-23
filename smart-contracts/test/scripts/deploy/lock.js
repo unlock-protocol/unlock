@@ -50,10 +50,10 @@ contract('Scripts/deploy:lock', () => {
         .filter((name) => name != 'NON_EXPIRING') // avoid max 100yrs revert
         .map(async (name) => {
           const lockArgs = [
-            Locks[name].expirationDuration,
+            Locks[name].expirationDuration.toFixed(),
             ADDRESS_ZERO,
-            Locks[name].keyPrice,
-            Locks[name].maxNumberOfKeys,
+            Locks[name].keyPrice.toFixed(),
+            Locks[name].maxNumberOfKeys.toFixed(),
             Locks[name].lockName,
             web3.utils.randomHex(12),
           ]

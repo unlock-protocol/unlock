@@ -5,6 +5,7 @@ import './IERC721Enumerable.sol';
 
 /**
 * @title The PublicLock Interface
+* @author Nick Furfaro (unlock-protocol.com)
  */
 
 

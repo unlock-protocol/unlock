@@ -1,26 +1,27 @@
-const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
 const WalletService = require('../helpers/walletServiceMock.js')
 const createLockHash = require('../helpers/createLockCalldata')
-const { ADDRESS_ZERO, deployContracts } = require('../helpers')
+const { ADDRESS_ZERO } = require('../helpers/constants')
 
 let unlock
-let createLockGas = new BigNumber(42)
 
 contract('Unlock / gas', (accounts) => {
-  before(async () => {
-    ;({ unlock } = await deployContracts())
+  let createLockGas = new BigNumber(42)
 
+  beforeEach(async () => {
+    unlock = await getContractInstance(unlockContract)
     const args = [
       60 * 60 * 24 * 30, // expirationDuration: 30 days
       ADDRESS_ZERO,
-      ethers.utils.parseUnits('1', 'ether'), // keyPrice: in wei
+      web3.utils.toWei('1', 'ether'), // keyPrice: in wei
       100, // maxNumberOfKeys
       'Gas Test Lock',
     ]
     const calldata = await createLockHash({ args, from: accounts[0] })
-    const tx = await unlock.createUpgradeableLock(calldata)
+    let tx = await unlock.createUpgradeableLock(calldata)
     createLockGas = new BigNumber(tx.receipt.gasUsed)
   })
 

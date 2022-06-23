@@ -1402,6 +1402,7 @@ pragma experimental ABIEncoderV2;
 
 /**
 * @title The PublicLock Interface
+* @author Nick Furfaro (unlock-protocol.com)
  */
 
 

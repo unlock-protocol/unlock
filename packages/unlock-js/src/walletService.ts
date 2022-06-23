@@ -431,7 +431,7 @@ export default class WalletService extends UnlockService {
    */
   async unformattedSignTypedData(account: string, data: any) {
     // Tries multiple methods because support for 'eth_signTypedData' is still fairly bad.
-    const methods: Record<string, (_data: any) => string> = {
+    const methods: Record<string, (data: any) => string> = {
       eth_signTypedData: (data: any) => data,
       eth_signTypedData_v3: (data: any) => JSON.stringify(data),
       eth_signTypedData_v4: (data: any) => JSON.stringify(data),

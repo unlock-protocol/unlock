@@ -28,15 +28,13 @@ contract MixinPurchase is
   uint256 internal _gasRefundValue;
 
   // Keep track of ERC20 price when purchased
-  mapping(uint256 => uint256) internal _originalPrices;
+  mapping(uint256 => uint256) private _originalPrices;
   
   // Keep track of duration when purchased
   mapping(uint256 => uint256) internal _originalDurations;
   
   // keep track of token pricing when purchased
-  mapping(uint256 => address) internal _originalTokens;
-
-  mapping(address => uint) public referrerFees;
+  mapping(uint256 => address) private _originalTokens;
 
   /**
   * @dev Set the value/price to be refunded to the sender on purchase
@@ -52,41 +50,6 @@ contract MixinPurchase is
   */
   function gasRefundValue() external view returns (uint256 _refundValue) {
     return _gasRefundValue;
-  }
-
-  /**
-  * Set a specific percentage of the keyPrice to be sent to the referrer while purchasing, 
-  * extending or renewing a key
-  * @param _referrer the address of the referrer. If set to the 0x address, any referrer will receive the fee.
-  * @param _feeBasisPoint the percentage of the price to be used for this 
-  * specific referrer (in basic points)
-  * @notice to send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
-  */
-  function setReferrerFee(address _referrer, uint _feeBasisPoint) public {
-    _onlyLockManager();
-    referrerFees[_referrer] = _feeBasisPoint;
-  }
-
-  /** 
-  @dev internal function to execute the payments to referrers if any is set
-  */
-  function _payReferrer (address _referrer) internal {
-    // get default value
-    uint basisPointsToPay = referrerFees[address(0)];
-
-    // get value for the referrer
-    if(referrerFees[_referrer] != 0) {
-      basisPointsToPay = referrerFees[_referrer];
-    }
-    
-    // pay the referrer if necessary
-    if (basisPointsToPay != 0) {
-      _transfer(
-        tokenAddress,
-        payable(_referrer), 
-        keyPrice * basisPointsToPay / BASIS_POINTS_DEN
-      );
-    }
   }
 
   /**
@@ -199,7 +162,6 @@ contract MixinPurchase is
         );
       }
     }
-
     // transfer the ERC20 tokens
     if(tokenAddress != address(0)) {
       IERC20Upgradeable token = IERC20Upgradeable(tokenAddress);
@@ -211,11 +173,6 @@ contract MixinPurchase is
 
     // refund gas
     _refundGas();
-
-    // send what is due to referrers
-    for (uint256 i = 0; i < _referrers.length; i++) { 
-      _payReferrer(_referrers[i]);
-    }
 
     return tokenIds;
   }
@@ -247,9 +204,6 @@ contract MixinPurchase is
     // transfer the tokens
     uint inMemoryKeyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
 
-    // process in unlock
-    _recordKeyPurchase(inMemoryKeyPrice, _referrer);
-
     if(tokenAddress != address(0)) {
       if(_value < inMemoryKeyPrice) {
         revert INSUFFICIENT_ERC20_VALUE();
@@ -274,9 +228,6 @@ contract MixinPurchase is
 
     // refund gas (if applicable)
     _refundGas();
-
-    // send what is due to referrer
-    _payReferrer(_referrer);
   }
 
   /**
@@ -326,9 +277,6 @@ contract MixinPurchase is
 
     // refund gas if applicable
     _refundGas();
-
-    // send what is due to referrer
-    _payReferrer(_referrer);
   }
 
   /**
@@ -373,6 +321,5 @@ contract MixinPurchase is
   }
 
   // decreased from 1000 to 997 when added mappings for initial purchases pricing and duration on v10 
-  // decreased from 997 to 996 when added the `referrerFees` mapping on v11
-  uint256[996] private __safe_upgrade_gap;
+  uint256[997] private __safe_upgrade_gap;
 }

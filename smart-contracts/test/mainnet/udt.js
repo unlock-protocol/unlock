@@ -1,10 +1,13 @@
 const { ethers } = require('hardhat')
-const { reverts, ADDRESS_ZERO } = require('../helpers')
+const { reverts } = require('../helpers/errors')
 const { time } = require('@openzeppelin/test-helpers')
 const { getProxyAddress } = require('../../helpers/deployments')
 
 const { resetNodeState, impersonate } = require('../helpers/mainnet')
+const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
 const { getUnlockMultisigOwners } = require('../../helpers/multisig')
+
+const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
 
 contract('UnlockDiscountToken on mainnet', async () => {
   let udt
@@ -61,7 +64,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
       const [, minter] = await ethers.getSigners()
       await reverts(
         udt.addMinter(minter.address),
-        'MinterRole: caller does not have the Minter role'
+        `${VM_ERROR_REVERT_WITH_REASON} 'MinterRole: caller does not have the Minter role'`
       )
     })
     it('random accounts can not mint', async () => {
@@ -70,7 +73,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
 
       await reverts(
         udt.connect(lambda).mint(recipient.address, amount),
-        'MinterRole: caller does not have the Minter role'
+        `${VM_ERROR_REVERT_WITH_REASON} 'MinterRole: caller does not have the Minter role'`
       )
     })
     describe('the Unlock contract', () => {

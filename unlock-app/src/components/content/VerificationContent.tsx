@@ -1,14 +1,15 @@
+import React, { useState } from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import { pageTitle } from '../../constants'
-import LocksContext from '../../contexts/LocksContext'
-import Account from '../interface/Account'
 import Layout from '../interface/Layout'
-import Loading from '../interface/Loading'
+import Account from '../interface/Account'
 import VerificationStatus from '../interface/VerificationStatus'
+import { pageTitle } from '../../constants'
+import Authenticate from '../interface/Authenticate'
+import Loading from '../interface/Loading'
+import LocksContext from '../../contexts/LocksContext'
 
-export const VerificationContent: React.FC<unknown> = () => {
+export const VerificationContent = () => {
   const { query } = useRouter()
   const [locks, setLocks] = useState({})
   let data
@@ -40,15 +41,17 @@ export const VerificationContent: React.FC<unknown> = () => {
       <Head>
         <title>{pageTitle('Verification')}</title>
       </Head>
-      <Account />
-      <LocksContext.Provider
-        value={{
-          locks,
-          addLock,
-        }}
-      >
-        <VerificationStatus data={data} sig={sig} hexData={hexData} />
-      </LocksContext.Provider>
+      <Authenticate optional>
+        <Account />
+        <LocksContext.Provider
+          value={{
+            locks,
+            addLock,
+          }}
+        >
+          <VerificationStatus data={data} sig={sig} hexData={hexData} />
+        </LocksContext.Provider>
+      </Authenticate>
     </Layout>
   )
 }

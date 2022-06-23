@@ -271,6 +271,7 @@ pragma solidity 0.4.25;
 
 /**
  * @title The Unlock Interface
+ * @author Nick Furfaro (unlock-protocol.com)
 **/
 
 interface IUnlock {

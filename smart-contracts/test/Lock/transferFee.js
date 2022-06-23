@@ -1,23 +1,47 @@
-const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
+const { reverts } = require('../helpers/errors')
 const { time } = require('@openzeppelin/test-helpers')
-const { deployLock, reverts, purchaseKey } = require('../helpers')
+const deployLocks = require('../helpers/deployLocks')
+
+const unlockContract = artifacts.require('Unlock.sol')
+const getContractInstance = require('../helpers/truffle-artifacts')
+const { ADDRESS_ZERO } = require('../helpers/constants')
+
+let unlock
+let locks
 
 contract('Lock / transferFee', (accounts) => {
   let lock
+  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const keyOwner = accounts[1]
   const denominator = 10000
   let tokenId
 
-  // TODO test using an ERC20 priced lock as well
   before(async () => {
-    lock = await deployLock()
-    ;({ tokenId } = await purchaseKey(lock, keyOwner))
+    unlock = await getContractInstance(unlockContract)
+    // TODO test using an ERC20 priced lock as well
+    locks = await deployLocks(unlock, accounts[0])
+    lock = locks.FIRST
+    const tx = await lock.purchase(
+      [],
+      [keyOwner],
+      [ADDRESS_ZERO],
+      [ADDRESS_ZERO],
+      [[]],
+      {
+        value: keyPrice.toFixed(),
+      }
+    )
+
+    const tokenIds = tx.logs
+      .filter((v) => v.event === 'Transfer')
+      .map(({ args }) => args.tokenId)
+    tokenId = tokenIds[0]
   })
 
   it('has a default fee of 0%', async () => {
-    const feeNumerator = new BigNumber(await lock.transferFeeBasisPoints())
+    const feeNumerator = new BigNumber(await lock.transferFeeBasisPoints.call())
     assert.equal(feeNumerator.div(denominator).toFixed(), 0.0)
   })
 
@@ -39,14 +63,22 @@ contract('Lock / transferFee', (accounts) => {
     })
 
     it('estimates the transfer fee, which is 5% of remaining duration or less', async () => {
-      const { timestamp: nowBefore } = await ethers.provider.getBlock('latest')
-      fee = new BigNumber(await lock.getTransferFee(tokenId, 0))
+      const nowBefore = (await web3.eth.getBlock('latest')).timestamp
+      fee = new BigNumber(await lock.getTransferFee.call(tokenId, 0))
       // Mine a transaction in order to ensure the block.timestamp has updated
-      await purchaseKey(lock, accounts[8])
-
+      await lock.purchase(
+        [],
+        [accounts[8]],
+        [ADDRESS_ZERO],
+        [ADDRESS_ZERO],
+        [[]],
+        {
+          value: keyPrice.toFixed(),
+        }
+      )
       const nowAfter = (await web3.eth.getBlock('latest')).timestamp
       let expiration = new BigNumber(
-        await lock.keyExpirationTimestampFor(tokenId)
+        await lock.keyExpirationTimestampFor.call(tokenId)
       )
       // Fee is <= the expected fee before the call
       assert(
@@ -63,9 +95,9 @@ contract('Lock / transferFee', (accounts) => {
     })
 
     it('calculates the fee based on the time value passed in', async () => {
-      fee1 = await lock.getTransferFee(tokenId, 100)
-      fee2 = await lock.getTransferFee(tokenId, 60 * 60 * 24 * 365)
-      fee3 = await lock.getTransferFee(tokenId, 60 * 60 * 24 * 30)
+      fee1 = await lock.getTransferFee.call(tokenId, 100)
+      fee2 = await lock.getTransferFee.call(tokenId, 60 * 60 * 24 * 365)
+      fee3 = await lock.getTransferFee.call(tokenId, 60 * 60 * 24 * 30)
       assert.equal(fee1, 5)
       assert.equal(fee2, 1576800)
       assert.equal(fee3, 129600)
@@ -139,7 +171,9 @@ contract('Lock / transferFee', (accounts) => {
       })
 
       it('has an updated fee', async () => {
-        const feeNumerator = new BigNumber(await lock.transferFeeBasisPoints())
+        const feeNumerator = new BigNumber(
+          await lock.transferFeeBasisPoints.call()
+        )
         assert.equal(feeNumerator.div(denominator).toFixed(), 0.0025)
       })
 

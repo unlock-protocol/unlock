@@ -4,7 +4,7 @@ if in the future we need to change toast functionality/library
 we can do it from here without change everything from around the codebase
 */
 
-import { Renderable, toast, Toast, ToastOptions } from 'react-hot-toast'
+import { Renderable, toast, Toast } from 'react-hot-toast'
 
 interface ToastHelperProps {
   success: (message: string) => void
@@ -34,16 +34,9 @@ interface ToastHelperProps {
   ) => Promise<any>
   redirectErrorPage: (errorPage: '404' | '500') => void
 }
-
-const options: ToastOptions = {
-  style: {
-    wordBreak: 'break-all',
-  },
-}
-
 export const ToastHelper: ToastHelperProps = {
-  success: (message) => toast.success(message, options),
-  error: (message) => toast.error(message, options),
+  success: (message) => toast.success(message),
+  error: (message) => toast.error(message),
   promise: async (promise, msgs, opts = {}) => {
     const start = new Date().getTime()
     const result = await toast.promise(promise, msgs, opts)
