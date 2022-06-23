@@ -484,11 +484,9 @@ interface IPublicLock
   * @param from the owner of token to transfer
   * @param to the address that will receive the token
   * @param tokenId the id of the token
-  * @notice Requirements:
-  * - To prevent the key manager to retain ownership rights on the token after transfer, the 
-  * operation will fail if a key manager if set. 
-  * - If the caller is not `from`, it must be approved to move this token by
-  * either {approve} or {setApprovalForAll}.
+  * @notice requirements: if the caller is not `from`, it must be approved to move this token by
+  * either {approve} or {setApprovalForAll}. 
+  * The key manager will be reset to address zero after the transfer
   */
   function transferFrom(address from, address to, uint256 tokenId) external;
 
@@ -498,7 +496,9 @@ interface IPublicLock
   * @param from the owner of token to transfer
   * @param to the address that will receive the token
   * @param tokenId the id of the token
-  * @notice This requires the `msg.sender` to be set as a key manager 
+  * @notice This function can only called by 1) the key owner when no key manager is set or 2) the key manager.
+  * After calling the function, the `_recipent` will be the new owner, and the previous owner 
+  * will become the key manager.
   */
   function lendKey(address from, address to, uint tokenId) external;
 

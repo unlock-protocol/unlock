@@ -117,11 +117,9 @@ contract MixinTransfer is
   * @param _from the owner of token to transfer
   * @param _recipient the address that will receive the token
   * @param _tokenId the id of the token
-  * @notice Requirements:
-  * - To prevent the key manager to retain ownership rights on the token after transfer, the 
-  * operation will fail if a key manager if set. 
-  * - If the caller is not the token owner, it must be approved to move this token by
-  * either {approve} or {setApprovalForAll}.
+  * @notice requirements: if the caller is not `from`, it must be approved to move this token by
+  * either {approve} or {setApprovalForAll}. 
+  * The key manager will be reset to address zero after the transfer
   */
   function transferFrom(
     address _from,
@@ -145,9 +143,9 @@ contract MixinTransfer is
   * @param _from the owner of token to transfer
   * @param _recipient the address that will receive the token
   * @param _tokenId the id of the token
-  * @notice Only a key manager can call this function (i.e. either the owner when no key manager is set
-  * or an explicitely set key manager). It will fail if the key owner tries to call it and a key manager is set. 
-  * If the owner calls it and no key manager is set, then the owner will be set as key manager.
+  * @notice This function can only called by 1) the key owner when no key manager is set or 2) the key manager.
+  * After calling the function, the `_recipent` will be the new owner, and the previous owner 
+  * will become the key manager.
   */
   function lendKey(
     address _from,
