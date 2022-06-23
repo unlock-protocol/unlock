@@ -50,7 +50,10 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const hasExtraData = extraDataItems?.length > 0
 
   return (
-    <div className=" border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white">
+    <div
+      data-testid="member-card"
+      className="border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
+    >
       <div className="grid grid-cols-7 gap-2 justify-between">
         <div className="flex flex-col">
           <span className={styles.description}>Lock name</span>

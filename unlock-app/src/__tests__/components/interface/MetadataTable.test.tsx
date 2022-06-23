@@ -60,8 +60,8 @@ const render = (component: any) => {
 
 describe('MetadataTable', () => {
   describe('MetadataTable component', () => {
-    it('renders the headings correctly', () => {
-      expect.assertions(4)
+    it('renders members cards correctly', () => {
+      expect.assertions(2)
 
       const { container } = render(
         <MetadataTable
@@ -76,46 +76,10 @@ describe('MetadataTable', () => {
         />
       )
 
-      const headings = container.querySelectorAll('th')
-      const expectedHeadings = [
-        'Lock Name',
-        'Keyholder Address',
-        'Expiration',
-        'Email Address',
-      ]
-
-      expectedHeadings.forEach((heading, index) => {
-        expect(headings[index].textContent).toEqual(heading)
-      })
-    })
-
-    it('Aligns matching values and headers', () => {
-      expect.assertions(4)
-
-      const { container } = render(
-        <MetadataTable
-          columns={[
-            'lockName',
-            'keyholderAddress',
-            'expiration',
-            'emailAddress',
-          ]}
-          metadata={metadata}
-          filter={MemberFilters.ALL}
-        />
+      const memberCards = container.querySelectorAll(
+        '[data-testid="member-card"]'
       )
-
-      const body = container.getElementsByTagName('tbody')[0]
-      const firstRow = body.getElementsByTagName('tr')[0]
-      const values = firstRow.getElementsByTagName('td')
-      ;[
-        'Giant Martian Insect Party',
-        '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-        '123456789',
-        'support@tether.to',
-      ].forEach((expectedValue, index) => {
-        expect(values[index].textContent).toEqual(expectedValue)
-      })
+      expect(memberCards.length).toEqual(4)
     })
 
     describe('when there are no keys', () => {
