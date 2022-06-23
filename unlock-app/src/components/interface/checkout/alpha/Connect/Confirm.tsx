@@ -80,7 +80,9 @@ export function ConfirmConnect({
             </li>
           </ol>
         </div>
-        <div className="mt-6">
+      </main>
+      <footer className="p-6 border-t grid items-center">
+        <Connected injectedProvider={injectedProvider} service={connectService}>
           <Button
             onClick={onSignIn}
             disabled={loading || !account}
@@ -90,13 +92,7 @@ export function ConfirmConnect({
           >
             {loading ? 'Please sign the message' : 'Sign-in with Ethereum'}
           </Button>
-        </div>
-      </main>
-      <footer className="p-6 border-t grid items-center">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={connectService}
-        />
+        </Connected>
       </footer>
     </div>
   )

@@ -1,14 +1,5 @@
 import { Lock, PaywallConfig } from '~/unlockTypes'
-import {
-  createMachine,
-  assign,
-  StateFrom,
-  SCXML,
-  SingleOrArray,
-  Event,
-  EventData,
-  InterpreterFrom,
-} from 'xstate'
+import { createMachine, assign, InterpreterFrom } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
 export type CheckoutPage =

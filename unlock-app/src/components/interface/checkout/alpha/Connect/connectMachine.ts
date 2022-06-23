@@ -1,12 +1,4 @@
-import {
-  createMachine,
-  StateFrom,
-  SCXML,
-  SingleOrArray,
-  Event,
-  EventData,
-  InterpreterFrom,
-} from 'xstate'
+import { createMachine, InterpreterFrom } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
 interface UnlockAccountEvent {

@@ -1,15 +1,16 @@
 import { Button, Input } from '@unlock-protocol/ui'
+import { useActor } from '@xstate/react'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useStorageService } from '~/utils/withStorageService'
-import { UnlockAccountSend, UnlockAccountState } from './unlockAccountMachine'
+import { UnlockAccountService } from './unlockAccountMachine'
 
 interface Props {
-  state: UnlockAccountState
-  send: UnlockAccountSend
+  unlockAccountService: UnlockAccountService
 }
 
-export function EnterEmail({ send }: Props) {
+export function EnterEmail({ unlockAccountService }: Props) {
+  const [_, send] = useActor(unlockAccountService)
   const {
     register,
     handleSubmit,

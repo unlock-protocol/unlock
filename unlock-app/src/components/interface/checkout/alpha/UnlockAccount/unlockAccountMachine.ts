@@ -1,12 +1,4 @@
-import {
-  createMachine,
-  assign,
-  StateFrom,
-  SCXML,
-  SingleOrArray,
-  Event,
-  EventData,
-} from 'xstate'
+import { createMachine, assign, InterpreterFrom, ActorRefFrom } from 'xstate'
 
 interface SubmitUserEvent {
   type: 'SUBMIT_USER'
@@ -95,16 +87,11 @@ export const unlockAccountMachine = createMachine(
   }
 )
 
-export type UnlockAccountState = StateFrom<typeof unlockAccountMachine>
-
-export type UnlockAccountSend = (
-  event:
-    | SCXML.Event<UnlockAccountMachineEvents>
-    | SingleOrArray<Event<UnlockAccountMachineEvents>>,
-  payload?: EventData | undefined
-) => any
-
 export interface UserDetails {
   email: string
   password: string
 }
+
+export type UnlockAccountService =
+  | InterpreterFrom<typeof unlockAccountMachine>
+  | ActorRefFrom<typeof unlockAccountMachine>

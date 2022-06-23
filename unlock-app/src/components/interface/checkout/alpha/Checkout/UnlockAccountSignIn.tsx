@@ -1,6 +1,7 @@
 import { useActor } from '@xstate/react'
 import { UnlockAccount } from '../UnlockAccount'
 import { CheckoutService } from './checkoutMachine'
+import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 
 interface Props {
   injectedProvider: unknown
@@ -12,11 +13,11 @@ export function UnlockAccountSignIn({
   injectedProvider,
 }: Props) {
   const [state] = useActor(checkoutService)
-  const [childState, childSend] = useActor(state.children.unlockAccount)
   return (
     <UnlockAccount
-      state={childState}
-      send={childSend}
+      unlockAccountService={
+        state.children.unlockAccount as UnlockAccountService
+      }
       injectedProvider={injectedProvider}
     />
   )

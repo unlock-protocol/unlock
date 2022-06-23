@@ -1,19 +1,17 @@
 import { Button, Input } from '@unlock-protocol/ui'
+import { useActor } from '@xstate/react'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
-import {
-  UnlockAccountSend,
-  UnlockAccountState,
-  UserDetails,
-} from './unlockAccountMachine'
+import { UnlockAccountService, UserDetails } from './unlockAccountMachine'
 
 interface Props {
-  state: UnlockAccountState
-  send: UnlockAccountSend
+  unlockAccountService: UnlockAccountService
   signUp(user: UserDetails): void
 }
 
-export function SignUp({ state, send, signUp }: Props) {
+export function SignUp({ unlockAccountService, signUp }: Props) {
+  const [state, send] = useActor(unlockAccountService)
+  const { email } = state.context
   const [isSigningUp, setIsSigningUp] = useState(false)
   const {
     register,
@@ -28,7 +26,7 @@ export function SignUp({ state, send, signUp }: Props) {
       if (password !== confirmedPassword) {
         throw new Error('Password does not match')
       }
-      await signUp({ email: state.context.email, password })
+      await signUp({ email, password })
       setIsSigningUp(false)
       send('CONTINUE')
     } catch (error) {
