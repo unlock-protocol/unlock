@@ -29,7 +29,7 @@ export default async function listManagers({
     }),
   })
 
-  const { data, errors } = await q.json()
+  const { data, errors } = (await q.json()) as any
   if (errors) {
     // eslint-disable-next-line no-console
     console.log('LOCK > Error while fetching the graph', errors)
