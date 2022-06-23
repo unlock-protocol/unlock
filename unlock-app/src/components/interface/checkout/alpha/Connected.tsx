@@ -1,18 +1,35 @@
 import { Button, Tooltip } from '@unlock-protocol/ui'
+import { useActor } from '@xstate/react'
 import { ReactNode } from 'react'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
+import { minifyEmail } from '~/utils/strings'
 import SvgComponents from '../../svg'
+import { CheckoutService } from './Checkout/checkoutMachine'
+import { ConnectService } from './Connect/connectMachine'
 
 interface SignedInProps {
-  account: string
   onDisconnect(): void
+  isUnlockAccount: boolean
+  email?: string
+  account?: string
 }
 
-export function SignedIn({ account, onDisconnect }: SignedInProps) {
+export function SignedIn({
+  onDisconnect,
+  isUnlockAccount,
+  email,
+  account,
+}: SignedInProps) {
   return (
     <div className="flex  items-center justify-between text-sm">
-      <p>
-        Wallet: {account?.slice(0, 4)}...{account?.slice(-4)}
-      </p>
+      {isUnlockAccount ? (
+        <p>User: {minifyEmail(email!)}</p>
+      ) : (
+        <p>
+          Wallet: {account?.slice(0, 4)}...{account?.slice(-4)}
+        </p>
+      )}
       <Tooltip side="top" tip="Disconnecting will reset the checkout progress">
         <button
           className="font-medium text-gray-600 hover:text-black"
@@ -89,38 +106,43 @@ export function SignedOut({
   )
 }
 
-interface Props {
-  account?: string
-  onDisconnect(): void
-  authenticateWithProvider(
-    provider: 'METAMASK' | 'UNLOCK' | 'WALLET_CONNECT' | 'COINBASE'
-  ): Promise<void>
-  onUnlockAccount(): void
+interface ConnectedCheckoutProps {
+  injectedProvider?: unknown
+  service: CheckoutService | ConnectService
   children?: ReactNode
 }
 
 export function Connected({
-  account,
-  onDisconnect,
-  authenticateWithProvider,
-  onUnlockAccount,
+  service,
+  injectedProvider,
   children,
-}: Props) {
-  return (
+}: ConnectedCheckoutProps) {
+  const [_, send] = useActor(service)
+  const { account, email, isUnlockAccount, deAuthenticate } = useAuth()
+  const { authenticateWithProvider } = useAuthenticateHandler({
+    injectedProvider,
+  })
+  return account ? (
+    <div className="space-y-2">
+      {children}
+      <SignedIn
+        account={account}
+        email={email}
+        isUnlockAccount={!!isUnlockAccount}
+        onDisconnect={() => {
+          send('DISCONNECT')
+          deAuthenticate()
+        }}
+      />
+    </div>
+  ) : (
     <div>
-      {account ? (
-        <div className="space-y-2">
-          {children}
-          <SignedIn account={account} onDisconnect={onDisconnect} />
-        </div>
-      ) : (
-        <div>
-          <SignedOut
-            onUnlockAccount={onUnlockAccount}
-            authenticateWithProvider={authenticateWithProvider}
-          />
-        </div>
-      )}
+      <SignedOut
+        onUnlockAccount={() => {
+          send('UNLOCK_ACCOUNT')
+        }}
+        authenticateWithProvider={authenticateWithProvider}
+      />
     </div>
   )
 }

@@ -5,14 +5,19 @@ import {
   SingleOrArray,
   Event,
   EventData,
+  InterpreterFrom,
 } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
 interface UnlockAccountEvent {
-  type: 'SIGN_IN_USING_UNLOCK_ACCOUNT'
+  type: 'UNLOCK_ACCOUNT'
 }
 
-type ConnectMachineEvents = UnlockAccountEvent
+interface DisconnectEvent {
+  type: 'DISCONNECT'
+}
+
+type ConnectMachineEvents = UnlockAccountEvent | DisconnectEvent
 
 export const connectMachine = createMachine(
   {
@@ -21,11 +26,14 @@ export const connectMachine = createMachine(
     schema: {
       events: {} as ConnectMachineEvents,
     },
+    on: {
+      DISCONNECT: {},
+    },
     initial: 'CONNECT',
     states: {
       CONNECT: {
         on: {
-          SIGN_IN_USING_UNLOCK_ACCOUNT: {
+          UNLOCK_ACCOUNT: {
             target: 'SIGN_IN',
           },
         },
@@ -42,11 +50,4 @@ export const connectMachine = createMachine(
   {}
 )
 
-export type ConnectState = StateFrom<typeof connectMachine>
-
-export type ConnectSend = (
-  event:
-    | SCXML.Event<ConnectMachineEvents>
-    | SingleOrArray<Event<ConnectMachineEvents>>,
-  payload?: EventData | undefined
-) => any
+export type ConnectService = InterpreterFrom<typeof connectMachine>

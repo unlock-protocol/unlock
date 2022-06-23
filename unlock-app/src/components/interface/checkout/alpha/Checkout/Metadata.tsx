@@ -1,6 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutSend } from './checkoutMachine'
-import { PaywallConfig } from '~/unlockTypes'
+import { CheckoutService } from './checkoutMachine'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
@@ -9,28 +8,24 @@ import { getAddressForName } from '~/hooks/useEns'
 import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { useStorageService } from '~/utils/withStorageService'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useActor } from '@xstate/react'
 
 interface Props {
   injectedProvider: unknown
-  paywallConfig: PaywallConfig
-  send: CheckoutSend
-  state: CheckoutState
+  checkoutService: CheckoutService
 }
 
 interface FormData {
   metadata: Record<'recipient' | string, string>[]
 }
 
-export function Metadata({ send, state, injectedProvider }: Props) {
-  const { lock, paywallConfig, quantity } = state.context
-  const { account, deAuthenticate } = useAuth()
-  const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider,
-  })
+export function Metadata({ checkoutService, injectedProvider }: Props) {
+  const [state, send] = useActor(checkoutService)
+  const { account } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const storage = useStorageService()
+  const { lock, paywallConfig, quantity } = state.context
   const metadataInputs =
     paywallConfig.locks[lock!.address].metadataInputs ??
     paywallConfig.metadataInputs
@@ -52,7 +47,7 @@ export function Metadata({ send, state, injectedProvider }: Props) {
     if (quantity > fields.length) {
       const fieldsRequired = quantity - fields.length
 
-      new Array(fieldsRequired).fill(0).map((_, index) => {
+      Array.from({ length: fieldsRequired }).map((_, index) => {
         if (!index) {
           // fill the first field with the current logged in user address.
           append({
@@ -66,9 +61,9 @@ export function Metadata({ send, state, injectedProvider }: Props) {
       })
     } else {
       const fieldsRemove = fields.length - quantity
-      new Array(fieldsRemove)
-        .fill(0)
-        .map((_, index) => remove(fields.length - index))
+      Array.from({ length: fieldsRemove }).map((_, index) =>
+        remove(fields.length - index)
+      )
     }
   }, [quantity, account, fields, append, remove])
 
@@ -154,15 +149,8 @@ export function Metadata({ send, state, injectedProvider }: Props) {
       </main>
       <footer className="p-6 border-t grid items-center">
         <Connected
-          account={account}
-          authenticateWithProvider={authenticateWithProvider}
-          onDisconnect={() => {
-            deAuthenticate()
-            send('DISCONNECT')
-          }}
-          onUnlockAccount={() => {
-            send('UNLOCK_ACCOUNT')
-          }}
+          injectedProvider={injectedProvider}
+          service={checkoutService}
         >
           <Button loading={isLoading} className="w-full" form="metadata">
             {isLoading ? 'Continuing' : 'Next'}

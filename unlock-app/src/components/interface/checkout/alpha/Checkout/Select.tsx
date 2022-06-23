@@ -1,29 +1,23 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
-import { CheckoutState, CheckoutSend } from './checkoutMachine'
-import { PaywallConfig } from '~/unlockTypes'
+import { CheckoutService } from './checkoutMachine'
 import { networkToLocksMap } from '~/utils/paywallConfig'
 import { useConfig } from '~/utils/withConfig'
 import { Connected } from '../Connected'
 import { Lock } from '../Lock'
+import { useActor } from '@xstate/react'
 
 interface Props {
   injectedProvider: unknown
-  paywallConfig: PaywallConfig
-  send: CheckoutSend
-  state: CheckoutState
+  checkoutService: CheckoutService
 }
 
-export function Select({ paywallConfig, send, injectedProvider }: Props) {
+export function Select({ checkoutService, injectedProvider }: Props) {
+  const [state, send] = useActor(checkoutService)
+  const { paywallConfig } = state.context
   const config = useConfig()
-  const { account, deAuthenticate } = useAuth()
-  const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider,
-  })
   const networkToLocks = networkToLocksMap(paywallConfig)
   return (
     <div>
-      <main className="p-6 overflow-auto h-64 sm:h-96">
+      <main className="p-6 overflow-auto h-64 sm:h-72">
         {Object.entries(networkToLocks).map(([network, locks]) => (
           <section key={network}>
             <header>
@@ -55,15 +49,8 @@ export function Select({ paywallConfig, send, injectedProvider }: Props) {
       </main>
       <footer className="p-6 border-t grid items-center">
         <Connected
-          account={account}
-          onDisconnect={() => {
-            deAuthenticate()
-            send('DISCONNECT')
-          }}
-          authenticateWithProvider={authenticateWithProvider}
-          onUnlockAccount={() => {
-            send('UNLOCK_ACCOUNT')
-          }}
+          service={checkoutService}
+          injectedProvider={injectedProvider}
         />
       </footer>
     </div>

@@ -1,7 +1,4 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
-import { CheckoutState, CheckoutSend } from './checkoutMachine'
-import { PaywallConfig } from '~/unlockTypes'
+import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { useQuery } from 'react-query'
 import { useState } from 'react'
@@ -10,24 +7,20 @@ import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
-import { useEffect } from '@storybook/addons'
+import { useActor } from '@xstate/react'
+import { useAuth } from '~/contexts/AuthenticationContext'
 interface Props {
   injectedProvider: unknown
-  paywallConfig: PaywallConfig
-  send: CheckoutSend
-  state: CheckoutState
+  checkoutService: CheckoutService
 }
 
-export function Quantity({ state, send, injectedProvider }: Props) {
-  const lock = state.context.lock!
-  const { account, deAuthenticate, isUnlockAccount, network, changeNetwork } =
-    useAuth()
-  const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider,
-  })
+export function Quantity({ injectedProvider, checkoutService }: Props) {
+  const [state, send] = useActor(checkoutService)
+  const { network, isUnlockAccount, changeNetwork } = useAuth()
   const config = useConfig()
   const [quantityInput, setQuantityInput] = useState('1')
   const quantity = Number(quantityInput)
+  const lock = state.context.lock!
 
   const { isLoading, data: fiatPricing } = useQuery(
     [quantityInput, lock.address, lock.network],
@@ -127,15 +120,8 @@ export function Quantity({ state, send, injectedProvider }: Props) {
       </main>
       <footer className="p-6 border-t grid items-center">
         <Connected
-          account={account}
-          onDisconnect={() => {
-            deAuthenticate()
-            send('DISCONNECT')
-          }}
-          onUnlockAccount={() => {
-            send('UNLOCK_ACCOUNT')
-          }}
-          authenticateWithProvider={authenticateWithProvider}
+          service={checkoutService}
+          injectedProvider={injectedProvider}
         >
           {lock!.network !== network && !isUnlockAccount ? (
             <Button
@@ -145,60 +131,55 @@ export function Quantity({ state, send, injectedProvider }: Props) {
               Switch Network
             </Button>
           ) : (
-            <div className="text-center grid gap-2">
-              <p className="text-sm font-medium">
-                Select payment method to continue
-              </p>
-              <div className="flex gap-6 justify-between">
-                <Button
-                  className="w-full"
-                  disabled={quantity < 1 || isLoading || isUnlockAccount}
-                  onClick={(event) => {
-                    event.preventDefault()
-                    if (isUnlockAccount) {
-                      changeNetwork(config.networks[lock!.network])
-                    }
-                    send({
-                      type: 'SELECT_QUANTITY',
-                      quantity,
-                    })
-                    send({
-                      type: 'SELECT_PAYMENT_METHOD',
-                      payment: {
-                        method: 'crypto',
-                      },
-                    })
-                    send('CONTINUE')
-                  }}
-                >
-                  Crypto
-                </Button>
-                <Button
-                  className="w-full"
-                  disabled={
-                    quantity < 1 || isLoading || !fiatPricing.creditCardEnabled
+            <div className="flex gap-6 justify-between">
+              <Button
+                className="w-full"
+                disabled={quantity < 1 || isLoading || isUnlockAccount}
+                onClick={(event) => {
+                  event.preventDefault()
+                  if (isUnlockAccount) {
+                    changeNetwork(config.networks[lock!.network])
                   }
-                  onClick={(event) => {
-                    event.preventDefault()
-                    if (isUnlockAccount) {
-                      changeNetwork(config.networks[lock!.network])
-                    }
-                    send({
-                      type: 'SELECT_QUANTITY',
-                      quantity,
-                    })
-                    send({
-                      type: 'SELECT_PAYMENT_METHOD',
-                      payment: {
-                        method: 'card',
-                      },
-                    })
-                    send('CONTINUE')
-                  }}
-                >
-                  Credit
-                </Button>
-              </div>
+                  send({
+                    type: 'SELECT_QUANTITY',
+                    quantity,
+                  })
+                  send({
+                    type: 'SELECT_PAYMENT_METHOD',
+                    payment: {
+                      method: 'crypto',
+                    },
+                  })
+                  send('CONTINUE')
+                }}
+              >
+                Crypto
+              </Button>
+              <Button
+                className="w-full"
+                disabled={
+                  quantity < 1 || isLoading || !fiatPricing.creditCardEnabled
+                }
+                onClick={(event) => {
+                  event.preventDefault()
+                  if (isUnlockAccount) {
+                    changeNetwork(config.networks[lock!.network])
+                  }
+                  send({
+                    type: 'SELECT_QUANTITY',
+                    quantity,
+                  })
+                  send({
+                    type: 'SELECT_PAYMENT_METHOD',
+                    payment: {
+                      method: 'card',
+                    },
+                  })
+                  send('CONTINUE')
+                }}
+              >
+                Credit Card
+              </Button>
             </div>
           )}
         </Connected>

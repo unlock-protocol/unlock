@@ -1,34 +1,25 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutSend } from './checkoutMachine'
-import { PaywallConfig } from '~/unlockTypes'
+import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { useState } from 'react'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useActor } from '@xstate/react'
 
 interface Props {
   injectedProvider: unknown
-  paywallConfig: PaywallConfig
-  send: CheckoutSend
-  state: CheckoutState
+  checkoutService: CheckoutService
 }
 
-export function MessageToSign({
-  send,
-  injectedProvider,
-  paywallConfig,
-}: Props) {
-  const { account, deAuthenticate, signMessage } = useAuth()
-  const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider,
-  })
+export function MessageToSign({ checkoutService, injectedProvider }: Props) {
+  const [state, send] = useActor(checkoutService)
+  const { account, signMessage } = useAuth()
   const [isSigning, setIsSigning] = useState(false)
-
+  const { messageToSign } = state.context.paywallConfig
   const onSign = async () => {
     setIsSigning(true)
     try {
-      const signature = await signMessage(paywallConfig.messageToSign!)
+      const signature = await signMessage(messageToSign!)
       setIsSigning(false)
       send({
         type: 'SIGN_MESSAGE',
@@ -47,20 +38,13 @@ export function MessageToSign({
     <div>
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <pre className="text-brand-gray whitespace-pre-wrap">
-          {paywallConfig.messageToSign}
+          {messageToSign}
         </pre>
       </main>
       <footer className="p-6 border-t grid items-center">
         <Connected
-          account={account}
-          onDisconnect={() => {
-            deAuthenticate()
-            send('DISCONNECT')
-          }}
-          authenticateWithProvider={authenticateWithProvider}
-          onUnlockAccount={() => {
-            send('UNLOCK_ACCOUNT')
-          }}
+          injectedProvider={injectedProvider}
+          service={checkoutService}
         >
           <Button
             disabled={!account || isSigning}

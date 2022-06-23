@@ -7,6 +7,7 @@ import {
   SingleOrArray,
   Event,
   EventData,
+  InterpreterFrom,
 } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
@@ -465,11 +466,4 @@ export const checkoutMachine = createMachine(
   }
 )
 
-export type CheckoutState = StateFrom<typeof checkoutMachine>
-
-export type CheckoutSend = (
-  event:
-    | SCXML.Event<CheckoutMachineEvents>
-    | SingleOrArray<Event<CheckoutMachineEvents>>,
-  payload?: EventData | undefined
-) => any
+export type CheckoutService = InterpreterFrom<typeof checkoutMachine>

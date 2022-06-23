@@ -1,9 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutSend, Mint } from './checkoutMachine'
-import { PaywallConfig } from '~/unlockTypes'
+import { Mint, CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button, Icon } from '@unlock-protocol/ui'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
 import mintingAnimation from '~/animations/minting.json'
 import mintedAnimation from '~/animations/minted.json'
 import Lottie from 'lottie-react'
@@ -12,13 +10,12 @@ import { useConfig } from '~/utils/withConfig'
 import { useEffect } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useActor } from '@xstate/react'
 
 interface Props {
   injectedProvider: unknown
-  paywallConfig: PaywallConfig
-  send: CheckoutSend
+  checkoutService: CheckoutService
   onClose(): void
-  state: CheckoutState
 }
 
 function AnimationContent({ status }: { status: Mint['status'] }) {
@@ -44,12 +41,10 @@ function AnimationContent({ status }: { status: Mint['status'] }) {
   }
 }
 
-export function Minting({ injectedProvider, send, onClose, state }: Props) {
-  const { account, deAuthenticate } = useAuth()
-  const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider,
-  })
+export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
+  const { account } = useAuth()
   const config = useConfig()
+  const [state, send] = useActor(checkoutService)
   const { mint, lock } = state.context
   const processing = mint?.status === 'PROCESSING'
   const status = mint?.status
@@ -103,15 +98,8 @@ export function Minting({ injectedProvider, send, onClose, state }: Props) {
       </main>
       <footer className="p-6 border-t grid items-center">
         <Connected
-          account={account}
-          onDisconnect={() => {
-            deAuthenticate()
-            send('DISCONNECT')
-          }}
-          onUnlockAccount={() => {
-            send('UNLOCK_ACCOUNT')
-          }}
-          authenticateWithProvider={authenticateWithProvider}
+          injectedProvider={injectedProvider}
+          service={checkoutService}
         >
           <Button
             disabled={!account || processing}

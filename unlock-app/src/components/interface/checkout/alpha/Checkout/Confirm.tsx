@@ -1,6 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutSend } from './checkoutMachine'
-import { PaywallConfig } from '~/unlockTypes'
+import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { useQuery } from 'react-query'
 import { getFiatPricing } from '~/hooks/useCards'
@@ -10,25 +9,22 @@ import { Button, Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
 import { useState } from 'react'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
+import { useActor } from '@xstate/react'
 
 interface Props {
   injectedProvider: unknown
-  paywallConfig: PaywallConfig
-  send: CheckoutSend
-  state: CheckoutState
+  checkoutService: CheckoutService
 }
 
-export function Confirm({ state, send, injectedProvider }: Props) {
-  const { account, deAuthenticate, network } = useAuth()
+export function Confirm({ injectedProvider, checkoutService }: Props) {
+  const [state, send] = useActor(checkoutService)
+  const { account, network } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
-  const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider,
-  })
+
   const { prepareChargeForCard, captureChargeForCard } = useAccount(
     account!,
     network!
@@ -281,15 +277,8 @@ export function Confirm({ state, send, injectedProvider }: Props) {
       </main>
       <footer className="p-6 border-t grid items-center">
         <Connected
-          account={account}
-          onDisconnect={() => {
-            deAuthenticate()
-            send('DISCONNECT')
-          }}
-          authenticateWithProvider={authenticateWithProvider}
-          onUnlockAccount={() => {
-            send('UNLOCK_ACCOUNT')
-          }}
+          injectedProvider={injectedProvider}
+          service={checkoutService}
         >
           <Payment />
         </Connected>

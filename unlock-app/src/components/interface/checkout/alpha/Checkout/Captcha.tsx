@@ -1,27 +1,20 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutSend } from './checkoutMachine'
-import { PaywallConfig } from '~/unlockTypes'
+import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
 import { useState } from 'react'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useConfig } from '~/utils/withConfig'
 import { useStorageService } from '~/utils/withStorageService'
+import { useActor } from '@xstate/react'
 
 interface Props {
   injectedProvider: unknown
-  paywallConfig: PaywallConfig
-  send: CheckoutSend
-  state: CheckoutState
+  checkoutService: CheckoutService
 }
 
-export function Captcha({ injectedProvider, send, state }: Props) {
-  const { account, deAuthenticate } = useAuth()
-  const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider,
-  })
+export function Captcha({ injectedProvider, checkoutService }: Props) {
+  const [state, send] = useActor(checkoutService)
   const config = useConfig()
   const storage = useStorageService()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
@@ -68,15 +61,8 @@ export function Captcha({ injectedProvider, send, state }: Props) {
       </main>
       <footer className="p-6 border-t grid items-center">
         <Connected
-          account={account}
-          onDisconnect={() => {
-            deAuthenticate()
-            send('DISCONNECT')
-          }}
-          authenticateWithProvider={authenticateWithProvider}
-          onUnlockAccount={() => {
-            send('UNLOCK_ACCOUNT')
-          }}
+          injectedProvider={injectedProvider}
+          service={checkoutService}
         >
           <Button
             className="w-full"

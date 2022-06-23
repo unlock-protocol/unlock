@@ -1,6 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutState, CheckoutSend } from './checkoutMachine'
-import { PaywallConfig } from '~/unlockTypes'
+import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { useQuery } from 'react-query'
 import {
@@ -12,7 +11,6 @@ import { useConfig } from '~/utils/withConfig'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useWalletService } from '~/utils/withWalletService'
 import { useState } from 'react'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
 import { Card, CardPlaceholder } from '../Card'
 import { FieldValues, useForm } from 'react-hook-form'
 import {
@@ -23,16 +21,16 @@ import {
 } from '@stripe/react-stripe-js'
 import { countries } from '~/utils/countries'
 import { loadStripe } from '@stripe/stripe-js'
+import { useActor } from '@xstate/react'
 
 interface Props {
   injectedProvider: unknown
-  paywallConfig: PaywallConfig
-  send: CheckoutSend
-  state: CheckoutState
+  checkoutService: CheckoutService
 }
 
-export function CardPayment({ send, injectedProvider }: Props) {
-  const { account, deAuthenticate } = useAuth()
+export function CardPayment({ checkoutService, injectedProvider }: Props) {
+  const [_, send] = useActor(checkoutService)
+  const { account } = useAuth()
   const [editCard, setEditCard] = useState(false)
   const config = useConfig()
   const stripe = loadStripe(config.stripeApiKey, {})
@@ -46,10 +44,6 @@ export function CardPayment({ send, injectedProvider }: Props) {
       enabled: !!account,
     }
   )
-
-  const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider,
-  })
 
   const card = data?.[0]
   return (
@@ -75,15 +69,8 @@ export function CardPayment({ send, injectedProvider }: Props) {
       </main>
       <footer className="p-6 border-t grid items-center">
         <Connected
-          account={account}
-          onDisconnect={() => {
-            deAuthenticate()
-            send('DISCONNECT')
-          }}
-          authenticateWithProvider={authenticateWithProvider}
-          onUnlockAccount={() => {
-            send('UNLOCK_ACCOUNT')
-          }}
+          injectedProvider={injectedProvider}
+          service={checkoutService}
         >
           {editCard || !card ? (
             <Button

@@ -5,14 +5,12 @@ import { FaEthereum as EthereumIcon } from 'react-icons/fa'
 import { OAuthConfig } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { createMessageToSignIn } from '~/utils/oauth'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
 import { Connected } from '../Connected'
-import { ConnectSend, ConnectState } from './connectMachine'
+import { ConnectService } from './connectMachine'
 
 interface Props {
   oauthConfig: OAuthConfig
-  state: ConnectState
-  send: ConnectSend
+  connectService: ConnectService
   injectedProvider: unknown
   onClose(params?: Record<string, string>): void
 }
@@ -21,13 +19,10 @@ export function ConfirmConnect({
   injectedProvider,
   oauthConfig,
   onClose,
-  send,
+  connectService,
 }: Props) {
   const [loading, setLoading] = useState(false)
-  const { account, network = 1, signMessage, deAuthenticate } = useAuth()
-  const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider,
-  })
+  const { account, network = 1, signMessage } = useAuth()
   const onSignIn = async () => {
     setLoading(true)
     try {
@@ -99,14 +94,8 @@ export function ConfirmConnect({
       </main>
       <footer className="p-6 border-t grid items-center">
         <Connected
-          account={account}
-          onUnlockAccount={() => {
-            send('SIGN_IN_USING_UNLOCK_ACCOUNT')
-          }}
-          onDisconnect={() => {
-            deAuthenticate()
-          }}
-          authenticateWithProvider={authenticateWithProvider}
+          injectedProvider={injectedProvider}
+          service={connectService}
         />
       </footer>
     </div>

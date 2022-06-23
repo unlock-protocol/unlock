@@ -3,7 +3,7 @@ import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import type { OAuthConfig } from '~/unlockTypes'
 import { ConfirmConnect } from './Confirm'
 import { Shell } from '../Shell'
-import { useMachine } from '@xstate/react'
+import { useActor, useInterpret } from '@xstate/react'
 import { connectMachine } from './connectMachine'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 
@@ -14,7 +14,8 @@ interface Props {
 }
 
 export function Connect({ injectedProvider, oauthConfig }: Props) {
-  const [state, send] = useMachine(connectMachine)
+  const connectService = useInterpret(connectMachine)
+  const [state, send] = useActor(connectService)
   const onClose = (params: Record<string, string> = {}) => {
     const redirectURI = new URL(oauthConfig.redirectUri)
     for (const [key, value] of Object.entries(params)) {
@@ -29,8 +30,7 @@ export function Connect({ injectedProvider, oauthConfig }: Props) {
         return (
           <ConfirmConnect
             onClose={onClose}
-            send={send}
-            state={state}
+            connectService={connectService}
             oauthConfig={oauthConfig}
             injectedProvider={injectedProvider}
           />
@@ -39,8 +39,7 @@ export function Connect({ injectedProvider, oauthConfig }: Props) {
       case 'SIGN_IN': {
         return (
           <UnlockAccountSignIn
-            state={state}
-            send={send}
+            connectService={connectService}
             injectedProvider={injectedProvider}
           />
         )

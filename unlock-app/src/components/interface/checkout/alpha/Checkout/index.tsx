@@ -11,7 +11,8 @@ import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import { useMachine } from '@xstate/react'
+import { useActor, useInterpret, useMachine } from '@xstate/react'
+
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 interface Props {
@@ -27,12 +28,12 @@ export function Checkout({
   communication,
   redirectURI,
 }: Props) {
-  const [state, send] = useMachine(checkoutMachine, {
+  const checkoutService = useInterpret(checkoutMachine, {
     context: {
       paywallConfig,
     },
   })
-
+  const [state] = useActor(checkoutService)
   const { description } = useCheckoutHeadContent(
     paywallConfig,
     state.value as CheckoutPage
@@ -78,9 +79,7 @@ export function Checkout({
         return (
           <Select
             injectedProvider={injectedProvider}
-            paywallConfig={paywallConfig}
-            send={send}
-            state={state}
+            checkoutService={checkoutService}
           />
         )
       }
@@ -88,9 +87,7 @@ export function Checkout({
         return (
           <Quantity
             injectedProvider={injectedProvider}
-            paywallConfig={paywallConfig}
-            send={send}
-            state={state}
+            checkoutService={checkoutService}
           />
         )
       }
@@ -98,9 +95,7 @@ export function Checkout({
         return (
           <CardPayment
             injectedProvider={injectedProvider}
-            paywallConfig={paywallConfig}
-            send={send}
-            state={state}
+            checkoutService={checkoutService}
           />
         )
       }
@@ -108,9 +103,7 @@ export function Checkout({
         return (
           <Metadata
             injectedProvider={injectedProvider}
-            paywallConfig={paywallConfig}
-            send={send}
-            state={state}
+            checkoutService={checkoutService}
           />
         )
       }
@@ -118,9 +111,7 @@ export function Checkout({
         return (
           <Confirm
             injectedProvider={injectedProvider}
-            paywallConfig={paywallConfig}
-            send={send}
-            state={state}
+            checkoutService={checkoutService}
           />
         )
       }
@@ -128,9 +119,7 @@ export function Checkout({
         return (
           <MessageToSign
             injectedProvider={injectedProvider}
-            paywallConfig={paywallConfig}
-            send={send}
-            state={state}
+            checkoutService={checkoutService}
           />
         )
       }
@@ -139,9 +128,7 @@ export function Checkout({
           <Minting
             onClose={onClose}
             injectedProvider={injectedProvider}
-            paywallConfig={paywallConfig}
-            send={send}
-            state={state}
+            checkoutService={checkoutService}
           />
         )
       }
@@ -149,8 +136,7 @@ export function Checkout({
         return (
           <UnlockAccountSignIn
             injectedProvider={injectedProvider}
-            state={state}
-            send={send}
+            checkoutService={checkoutService}
           />
         )
       }
@@ -158,9 +144,7 @@ export function Checkout({
         return (
           <Captcha
             injectedProvider={injectedProvider}
-            paywallConfig={paywallConfig}
-            send={send}
-            state={state}
+            checkoutService={checkoutService}
           />
         )
       }

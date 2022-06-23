@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react'
 
 interface Props {
-  children: ReactNode
+  children?: ReactNode
 }
 
 export function Container({ children }: Props) {

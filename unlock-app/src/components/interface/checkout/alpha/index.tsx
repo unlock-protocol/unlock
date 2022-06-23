@@ -56,5 +56,5 @@ export function CheckoutPage() {
     )
   }
 
-  return <Container>Error</Container>
+  return <Container />
 }
