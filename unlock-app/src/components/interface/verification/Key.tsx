@@ -211,7 +211,7 @@ export const ValidKey = ({
         lockAddress: lock.address,
       })
 
-      const metadata = await storageService.getKeyMetadata({
+      const metadata = await storageService.getKeyMetadataValues({
         lockAddress: lock.address,
         network,
         keyId: unlockKey.tokenId,
