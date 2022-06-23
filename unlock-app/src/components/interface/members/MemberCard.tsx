@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 
@@ -13,6 +13,7 @@ interface MemberCardProps {
   keyholderAddress: string
   tokenId: string
   onExpireAndRefund: (lock: any) => void
+  expandAllMetadata: boolean
   isLockManager?: boolean
   expireAndRefundDisabled?: boolean
   metadata?: object
@@ -26,10 +27,11 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   keyholderAddress,
   tokenId,
   onExpireAndRefund,
+  expandAllMetadata,
   expireAndRefundDisabled = true,
   metadata = {},
 }) => {
-  const [showMetaData, setShowMetaData] = useState(false)
+  const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
 
   const extraDataItems: [string, string][] = Object.entries(
     metadata || {}
@@ -40,6 +42,10 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const toggleMetada = () => {
     setShowMetaData(!showMetaData)
   }
+
+  useEffect(() => {
+    setShowMetaData(expandAllMetadata)
+  }, [expandAllMetadata])
 
   const hasExtraData = extraDataItems?.length > 0
 

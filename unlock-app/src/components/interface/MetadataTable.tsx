@@ -46,6 +46,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   lockAddresses = [],
 }) => {
   const [currentLock, setCurrentLock] = useState(null)
+  const [expandAllMetadata, setExpandAllMetadata] = useState(false)
   const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
     useState(false)
 
@@ -87,6 +88,11 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     return !(isLockManager && isKeyValid(metadata))
   }
 
+  const onExpandAllMetadata = () => {
+    if (!isLockManager) return
+    setExpandAllMetadata(!expandAllMetadata)
+  }
+
   return (
     <section className="flex flex-col gap-3">
       <ExpireAndRefundModal
@@ -95,6 +101,12 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         lock={currentLock}
         lockAddresses={lockAddresses}
       />
+
+      {isLockManager && (
+        <div className="flex justify-end">
+          <Button onClick={onExpandAllMetadata}>Show all metadata</Button>
+        </div>
+      )}
       {metadata?.map((data: any) => {
         const { lockName, expiration, keyholderAddress, token } = data
         const key = `${lockName}${expiration}${keyholderAddress}`
@@ -107,6 +119,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             tokenId={token}
             keyholderAddress={keyholderAddress}
             metadata={data}
+            expandAllMetadata={expandAllMetadata}
             isLockManager={isLockManager}
             expireAndRefundDisabled={expireAndRefundDisabled(data)}
             onExpireAndRefund={() => onExpireAndRefund(data)}
