@@ -35,17 +35,11 @@ export default class WedlockService {
       const result = await fetch(this.uri, {
         method: 'POST',
         headers: {
-          'content-type': 'application/json',
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       })
-      // const result = await axios.post(this.uri, payload, {
-      //   headers: {
-      //     'content-type': 'application/json',
-      //   },
-      // })
-
-      return await result.json()
+      return await result.text()
     } catch (error) {
       console.error('Failed to send email', error)
     }

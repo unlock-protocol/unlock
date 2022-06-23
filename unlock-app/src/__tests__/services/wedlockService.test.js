@@ -19,23 +19,27 @@ describe('Wedlocks Service', () => {
       template: emailTemplate.signupConfirmation,
       recipient,
       params: {
-        confirmLink: 'https://mcdonalds.gov',
         email: encodeURIComponent(recipient),
         signedEmail: {
-          encrypt: true,
           value: recipient,
+          encrypt: true,
         },
+        confirmLink: 'https://mcdonalds.gov',
       },
       attachments: [],
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
     }
 
-    const body = { body: JSON.stringify(expectedPayload) }
-    fetch.mockResponseOnce(body)
-    await w.confirmEmail(recipient, 'https://mcdonalds.gov')
+    const fetchExpected = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(expectedPayload),
+    }
 
-    expect(fetch).toHaveBeenCalledWith('http://notareal.host', expectedPayload)
+    fetch.mockResponseOnce(expectedPayload)
+    await w.confirmEmail(recipient, 'https://mcdonalds.gov')
+    expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
   })
 
   it('should request a welcome email, with the right headers and params', async () => {
@@ -45,23 +49,24 @@ describe('Wedlocks Service', () => {
       template: emailTemplate.welcome,
       recipient,
       params: {
-        recoveryLink: 'https://recovery',
         email: encodeURIComponent(recipient),
+        recoveryLink: 'https://recovery',
       },
       attachments: [],
     }
-    axios.post.mockReturnValue()
+
+    const fetchExpected = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(expectedPayload),
+    }
+
+    fetch.mockResponseOnce()
     await w.welcomeEmail(recipient, 'https://recovery')
 
-    expect(axios.post).toHaveBeenCalledWith(
-      'http://notareal.host',
-      expectedPayload,
-      {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    )
+    expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
   })
 
   it('should request a welcome email, with the right headers and params, including an encoded URL', async () => {
@@ -71,23 +76,24 @@ describe('Wedlocks Service', () => {
       template: emailTemplate.welcome,
       recipient,
       params: {
-        recoveryLink: 'https://recovery',
         email: encodeURIComponent(recipient),
+        recoveryLink: 'https://recovery',
       },
       attachments: [],
     }
-    axios.post.mockReturnValue()
+
+    const fetchExpected = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(expectedPayload),
+    }
+
+    fetch.mockResponseOnce()
     await w.welcomeEmail(recipient, 'https://recovery')
 
-    expect(axios.post).toHaveBeenCalledWith(
-      'http://notareal.host',
-      expectedPayload,
-      {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    )
+    expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
   })
 
   it('should request a QR code email, with the right headers and params', async () => {
@@ -105,17 +111,16 @@ describe('Wedlocks Service', () => {
       },
       attachments: [{ path: qrData }],
     }
-    axios.post.mockReturnValue()
+    const fetchExpected = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(expectedPayload),
+    }
+    fetch.mockResponseOnce()
     await w.keychainQREmail(recipient, keychainLink, lockName, qrData)
 
-    expect(axios.post).toHaveBeenCalledWith(
-      'http://notareal.host',
-      expectedPayload,
-      {
-        headers: {
-          'content-type': 'application/json',
-        },
-      }
-    )
+    expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
   })
 })
