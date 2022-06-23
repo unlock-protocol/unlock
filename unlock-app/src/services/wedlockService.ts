@@ -39,7 +39,7 @@ export default class WedlockService {
         },
         body: JSON.stringify(payload),
       })
-      return await result.text()
+      return await result?.json()
     } catch (error) {
       console.error('Failed to send email', error)
     }
