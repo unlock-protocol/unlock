@@ -573,48 +573,6 @@ export class StorageService extends EventEmitter {
     })
   }
 
-  /**
-   *
-   * @param {*} lockAddress
-   * @param {*} keyId
-   * @param {*} payload
-   * @param {*} signature
-   * @param {*} network
-   * @returns
-   */
-  async getKeyMetadata(
-    lockAddress: string,
-    keyId: string,
-    // @ts-ignore
-    payload: any,
-    signature: string,
-    network: number
-  ) {
-    try {
-      let url = `${this.host}/api/key/${lockAddress}/${keyId}`
-      if (network) {
-        url = `${url}?chain=${network}`
-      }
-
-      const options: { headers: Record<string, string> } = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-      if (signature) {
-        options.headers.Authorization = `Bearer ${Buffer.from(
-          signature
-        ).toString('base64')}`
-      }
-
-      const response = await axios.get(url, options)
-      return response?.data
-    } catch (error) {
-      console.error(error)
-      return {}
-    }
-  }
-
   async getDataForRecipientsAndCaptcha(
     recipients: string[],
     captchaValue: string
@@ -730,5 +688,25 @@ export class StorageService extends EventEmitter {
         return res?.enabled ?? false
       }
     })
+  }
+
+  async getKeyMetadata({
+    lockAddress,
+    network,
+    keyId,
+  }: {
+    lockAddress: string
+    network: number
+    keyId: number
+  }): Promise<any> {
+    const options = {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    return await this.getEndpoint(
+      `/v2/api/metadata/${network}/locks/${lockAddress}/keys/${keyId}`,
+      options,
+      true
+    )
   }
 }
