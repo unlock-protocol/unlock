@@ -5,7 +5,6 @@ import {
 } from '@radix-ui/react-avatar'
 import React, { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useLock } from '../../../hooks/useLock'
 import {
   durationsAsTextFromSeconds,
   expirationAsDate,
