@@ -6,23 +6,20 @@ const {
   reverts,
   purchaseKey,
   ADDRESS_ZERO,
+  deployLock,
 } = require('../helpers')
-const deployLocks = require('../helpers/deployLocks')
-const getContractInstance = require('../helpers/truffle-artifacts')
 const { ethers } = require('hardhat')
 
-const Unlock = artifacts.require('Unlock.sol')
 const TestEventHooks = artifacts.require('TestEventHooks.sol')
 
-let unlock
-let locks
+let lock
+
 let dai
 
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice.mul(10)
 const someDai = ethers.utils.parseUnits('10', 'ether')
 
-let lock
 contract('Lock / Recurring memberships', (accounts) => {
   const lockOwner = accounts[0]
   const keyOwner = accounts[1]
@@ -36,9 +33,7 @@ contract('Lock / Recurring memberships', (accounts) => {
       from: lockOwner,
     })
 
-    unlock = await getContractInstance(Unlock)
-    locks = await deployLocks(unlock, lockOwner, dai.address)
-    lock = locks.ERC20
+    lock = await deployLock({ tokenAddress: dai.address })
 
     // set ERC20 approval for entire scope
     await dai.approve(lock.address, totalPrice, {
@@ -67,27 +62,31 @@ contract('Lock / Recurring memberships', (accounts) => {
   describe('renewMembershipFor', () => {
     describe('fails with wrong lock settings', async () => {
       it('can not renew non-expiring keys', async () => {
-        await dai.approve(locks.NON_EXPIRING.address, totalPrice, {
+        const lockNonExpiring = await deployLock({
+          tokenAddress: dai.address,
+          name: 'NON_EXPIRING',
+        })
+        await dai.approve(lockNonExpiring.address, totalPrice, {
           from: keyOwner,
         })
         const { tokenId: newTokenId } = await purchaseKey(
-          locks.NON_EXPIRING,
+          lockNonExpiring,
           keyOwner,
           true
         )
         await reverts(
-          locks.NON_EXPIRING.renewMembershipFor(newTokenId, ADDRESS_ZERO),
+          lockNonExpiring.renewMembershipFor(newTokenId, ADDRESS_ZERO),
           'NON_RENEWABLE_LOCK'
         )
       })
 
       it('can not renew lock with no ERC20 tokens set', async () => {
         // remove dai token
-        await locks.FIRST.updateKeyPricing(keyPrice, ADDRESS_ZERO)
+        await lock.updateKeyPricing(keyPrice, ADDRESS_ZERO)
 
-        const { tokenId: newTokenId } = await purchaseKey(locks.FIRST, keyOwner)
+        const { tokenId: newTokenId } = await purchaseKey(lock, keyOwner)
         await reverts(
-          locks.FIRST.renewMembershipFor(newTokenId, ADDRESS_ZERO),
+          lock.renewMembershipFor(newTokenId, ADDRESS_ZERO),
           'NON_RENEWABLE_LOCK'
         )
       })

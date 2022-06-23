@@ -150,7 +150,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       ;[deployer, lockOwner, keyBuyer, referrer, referrer2] =
         await ethers.getSigners()
 
-      const { unlock: unlockDeployed } = await deployContracts()
+      const { unlockEthers: unlockDeployed } = await deployContracts()
       unlock = unlockDeployed
 
       // Grant Unlock minting permissions

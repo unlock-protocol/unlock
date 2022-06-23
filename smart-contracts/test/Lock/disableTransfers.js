@@ -1,19 +1,7 @@
 const BigNumber = require('bignumber.js')
-const deployLocks = require('../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const { purchaseKey, reverts } = require('../helpers')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
-let locks
+const { purchaseKey, reverts, deployLock } = require('../helpers')
 
 contract('Lock / disableTransfers', (accounts) => {
-  before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-  })
-
   let lock
   let tokenId
   const keyOwner = accounts[1]
@@ -21,7 +9,7 @@ contract('Lock / disableTransfers', (accounts) => {
   const oneDay = new BigNumber(60 * 60 * 24)
 
   before(async () => {
-    lock = locks.FIRST
+    lock = await deployLock()
     ;({ tokenId } = await purchaseKey(lock, keyOwner))
 
     // Change the fee to 100%

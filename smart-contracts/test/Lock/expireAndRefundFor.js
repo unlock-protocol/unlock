@@ -1,21 +1,9 @@
 const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const deployLocks = require('../helpers/deployLocks')
-const { purchaseKeys, reverts, getBalance } = require('../helpers')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
-let locks
+const { deployLock, getBalance, purchaseKeys, reverts } = require('../helpers')
 
 contract('Lock / expireAndRefundFor', (accounts) => {
-  before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-  })
-
   let lock
   let tokenIds
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
@@ -24,7 +12,7 @@ contract('Lock / expireAndRefundFor', (accounts) => {
   const lockCreator = accounts[0]
 
   before(async () => {
-    lock = locks.SECOND
+    lock = await deployLock()
     ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 

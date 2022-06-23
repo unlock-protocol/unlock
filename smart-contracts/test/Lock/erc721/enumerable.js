@@ -1,21 +1,13 @@
 const { reverts } = require('../../helpers/errors')
-const deployLocks = require('../../helpers/deployLocks')
-const { purchaseKeys } = require('../../helpers')
+const { deployLock, purchaseKeys } = require('../../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-
-let unlock
-let locks
 let lock
 let tokenIds
 let keyOwners
 
 contract('Lock / erc721 / enumerable', (accounts) => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
 
     // Buy test keys for each account
     keyOwners = accounts.slice(1, 6)

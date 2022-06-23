@@ -1,21 +1,7 @@
-const unlockContract = artifacts.require('Unlock.sol')
 const publicLockContract = artifacts.require('PublicLock')
-
-const { reverts } = require('../helpers/errors')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-
-let unlock
-let lock
+const { reverts, ADDRESS_ZERO, deployLock } = require('../helpers')
 
 contract('Lock / initializers', (accounts) => {
-  beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
-  })
-
   it('There are exactly 1 public initializer in PublicLock', async () => {
     const count = publicLockContract.abi.filter((x) =>
       (x.name || '').includes('initialize')
@@ -24,6 +10,7 @@ contract('Lock / initializers', (accounts) => {
   })
 
   it('initialize() may not be called again', async () => {
+    const lock = await deployLock()
     await reverts(
       lock.initialize(accounts[0], 0, ADDRESS_ZERO, 0, 0, ''),
       'Initializable: contract is already initialized'

@@ -1,23 +1,21 @@
 const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
-const deployLocks = require('../helpers/deployLocks')
+
 const {
-  ADDRESS_ZERO,
   MAX_UINT,
+  ADDRESS_ZERO,
+  deployContracts,
+  deployLock,
   deployWETH,
   deployERC20,
   deployUniswapV2,
   deployUniswapOracle,
 } = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
 let unlock
-let locks
 let lock
 let token
 
@@ -78,10 +76,6 @@ const decodeGNPEvent = (tx) => {
 contract('Unlock / uniswapValue', (accounts) => {
   const [keyOwner, liquidityOwner, protocolOwner] = accounts
 
-  beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-  })
-
   describe('A supported token', () => {
     beforeEach(async () => {
       token = await deployERC20(protocolOwner)
@@ -89,13 +83,13 @@ contract('Unlock / uniswapValue', (accounts) => {
       await token.mint(keyOwner, ethers.utils.parseUnits('10000', 'ether'), {
         from: protocolOwner,
       })
-
-      locks = await deployLocks(unlock, protocolOwner, token.address)
-      lock = locks.FIRST
+      ;({ unlock } = await deployContracts())
+      lock = await deployLock({ unlock, tokenAddress: token.address })
 
       // Deploy the exchange
       const weth = await deployWETH(protocolOwner)
       const uniswapRouter = await deployUniswapV2(weth.address, protocolOwner)
+
       // Create DAI <-> WETH pool
       await token.mint(
         liquidityOwner,
@@ -160,7 +154,6 @@ contract('Unlock / uniswapValue', (accounts) => {
 
       beforeEach(async () => {
         gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
-
         await token.approve(lock.address, keyPrice, { from: keyOwner })
         tx = await lock.purchase(
           [keyPrice],
@@ -216,9 +209,8 @@ contract('Unlock / uniswapValue', (accounts) => {
       await token.mint(keyOwner, ethers.utils.parseUnits('10000', 'ether'), {
         from: protocolOwner,
       })
-
-      locks = await deployLocks(unlock, protocolOwner, token.address)
-      lock = locks.FIRST
+      ;({ unlock } = await deployContracts())
+      lock = await deployLock({ unlock, tokenAddress: token.address })
     })
 
     describe('Purchase key', () => {
@@ -269,8 +261,8 @@ contract('Unlock / uniswapValue', (accounts) => {
 
   describe('ETH', () => {
     beforeEach(async () => {
-      locks = await deployLocks(unlock, protocolOwner)
-      lock = locks.FIRST
+      ;({ unlock } = await deployContracts())
+      lock = await deployLock({ unlock })
     })
 
     describe('Purchase key', () => {

@@ -1,16 +1,8 @@
 const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const { deployERC20 } = require('../helpers')
-const { reverts } = require('../helpers/errors')
-const deployLocks = require('../helpers/deployLocks')
+const { reverts, deployLock, deployERC20, ADDRESS_ZERO } = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-
-let unlock
-let locks
 let lock
 let keyPriceBefore
 let tokenAddressBefore
@@ -29,9 +21,7 @@ contract('Lock / updateKeyPricing', (accounts) => {
     await token.mint(accounts[0], 1, {
       from: accounts[0],
     })
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
     keyPriceBefore = new BigNumber(await lock.keyPrice())
     tokenAddressBefore = await lock.tokenAddress()
     assert.equal(keyPriceBefore.toFixed(), 10000000000000000)

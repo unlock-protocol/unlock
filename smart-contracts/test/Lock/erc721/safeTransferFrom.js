@@ -1,28 +1,22 @@
+const { deployLock, reverts, purchaseKey } = require('../../helpers')
 const { ethers } = require('hardhat')
-const { reverts, purchaseKey } = require('../../helpers')
-const deployLocks = require('../../helpers/deployLocks')
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../../helpers/truffle-artifacts')
 
 const TestERC721Recevier = artifacts.require('TestERC721Recevier')
 
-let unlock
 let lock
 
 contract('Lock / erc721 / safeTransferFrom', (accounts) => {
-  before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
-    await lock.updateTransferFee(0) // disable the transfer fee for this test
-  })
-
-  // function safeTransferFrom() still uses transferFrom() under the hood, but adds an additional check afterwards. transferFrom is already well-tested, so here we add a few checks to test only the new functionality.
-  const from = accounts[1]
-  const to = accounts[2]
+  // function safeTransferFrom() still uses transferFrom() under the hood
+  // but adds an additional check afterwards. transferFrom is already well-tested,
+  // so here we add a few checks to test only the new functionality.
   let tokenId
+  const [, from, to] = accounts
 
   before(async () => {
+    lock = await deployLock()
+    await lock.updateTransferFee(0) // disable the transfer fee for this test
+    await lock.setMaxKeysPerAddress(10)
+
     // first, let's purchase a brand new key that we can transfer
     ;({ tokenId } = await purchaseKey(lock, from))
   })
@@ -53,11 +47,14 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
   })
 
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
-    ;({ tokenId } = await purchaseKey(lock, accounts[5]))
+    const { tokenId } = await purchaseKey(lock, accounts[5])
+
     // A contract which does NOT implement onERC721Received:
-    let nonCompliantContract = unlock.address
+    const NonCompliantContract = artifacts.require('TestEventHooks')
+    const { address } = await NonCompliantContract.new()
+
     await reverts(
-      lock.safeTransferFrom(accounts[5], nonCompliantContract, tokenId, {
+      lock.safeTransferFrom(accounts[5], address, tokenId, {
         from: accounts[5],
       })
     )

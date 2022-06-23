@@ -17,7 +17,7 @@ contract('Lock / setMaxNumberOfKeys', () => {
 
   describe('update the number of keys available in a lock', () => {
     beforeEach(async () => {
-      const { unlock: unlockDeployed } = await deployContracts()
+      const { unlockEthers: unlockDeployed } = await deployContracts()
       unlock = unlockDeployed
       const [from] = await ethers.getSigners()
 

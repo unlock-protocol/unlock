@@ -1,30 +1,24 @@
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
+const {
+  deployContracts,
+  deployLock,
+  purchaseKey,
+  purchaseKeys,
+} = require('../helpers')
 
-const deployLocks = require('../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { purchaseKey, purchaseKeys } = require('../helpers')
-
+let lock
 let unlock
-let locks
+const price = ethers.utils.parseUnits('0.01', 'ether')
 
-contract('Unlock / lockTotalSales', (accounts) => {
-  const price = ethers.utils.parseUnits('0.01', 'ether')
-  let lock
-
+contract('Unlock / lockTotalSales', () => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    ;({ unlock } = await deployContracts())
+    lock = await deployLock({ unlock })
   })
 
   it('total sales defaults to 0', async () => {
-    const totalSales = new BigNumber(
-      (await unlock.locks(lock.address)).totalSales
-    )
-    assert.equal(totalSales.toString(), 0)
+    const { totalSales } = await unlock.locks(lock.address)
+    assert.equal(totalSales, 0)
   })
 
   describe('buy 1 key', () => {
@@ -33,9 +27,7 @@ contract('Unlock / lockTotalSales', (accounts) => {
     })
 
     it('total sales includes the purchase', async () => {
-      const totalSales = new BigNumber(
-        (await unlock.locks(lock.address)).totalSales
-      )
+      const { totalSales } = await unlock.locks(lock.address)
       assert.equal(totalSales.toString(), price.toString())
     })
   })
@@ -46,9 +38,7 @@ contract('Unlock / lockTotalSales', (accounts) => {
     })
 
     it('total sales incluse all purchases', async () => {
-      const totalSales = new BigNumber(
-        (await unlock.locks(lock.address)).totalSales
-      )
+      const { totalSales } = await unlock.locks(lock.address)
       assert.equal(totalSales.toString(), price.mul(5).toString())
     })
   })

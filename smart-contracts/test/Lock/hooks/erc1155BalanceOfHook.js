@@ -1,13 +1,14 @@
-const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO, purchaseKey, reverts } = require('../../helpers')
+const {
+  deployLock,
+  ADDRESS_ZERO,
+  purchaseKey,
+  reverts,
+} = require('../../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
 const Erc1155TokenUriHook = artifacts.require('ERC1155BalanceOfHook')
 const TestERC1155 = artifacts.require('TestERC1155')
-const getContractInstance = require('../../helpers/truffle-artifacts')
 
 let lock
-let unlock
 let hook
 let nft
 
@@ -19,9 +20,7 @@ contract('ERC1155BalanceOfHook', (accounts) => {
   const keyOwner = accounts[3]
 
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
 
     // deploy some ERC1155
     nft = await TestERC1155.new()

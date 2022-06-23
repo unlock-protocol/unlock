@@ -1,24 +1,15 @@
+const { ADDRESS_ZERO, purchaseKeys, deployLock } = require('../../helpers')
 const { ethers } = require('hardhat')
-const deployLocks = require('../../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-const { ADDRESS_ZERO, purchaseKeys } = require('../../helpers')
-
-let unlock
-let locks
-let lock
 
 contract('Lock / uniqueTokenIds', (accounts) => {
+  let lock
   let lockOwner = accounts[9]
   let keyOwner1 = accounts[1]
   let keyOwner2 = accounts[2]
   const keyOwners = [keyOwner1, keyOwner2, accounts[3], accounts[4]]
 
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, lockOwner)
-    lock = locks.SECOND
+    lock = await deployLock({ from: lockOwner })
   })
 
   describe('extending keys', () => {

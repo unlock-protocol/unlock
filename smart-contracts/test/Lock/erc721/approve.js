@@ -1,10 +1,9 @@
-const deployLocks = require('../../helpers/deployLocks')
-
-const { ADDRESS_ZERO, purchaseKey, reverts } = require('../../helpers')
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-
-let unlock
+const {
+  deployLock,
+  ADDRESS_ZERO,
+  purchaseKey,
+  reverts,
+} = require('../../helpers')
 let lock
 let tokenId
 let keyOwner
@@ -12,9 +11,7 @@ let keyOwner
 contract('Lock / erc721 / approve', (accounts) => {
   before(async () => {
     keyOwner = accounts[1]
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
   })
 
   describe('when the token does not exist', () => {
