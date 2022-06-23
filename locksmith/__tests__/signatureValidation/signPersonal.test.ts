@@ -20,13 +20,6 @@ const wallets: Wallet[] = [
 
 const body = {
   types: {
-    EIP712Domain: [
-      { name: 'name', type: 'string' },
-      { name: 'version', type: 'string' },
-      { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' },
-      { name: 'salt', type: 'bytes32' },
-    ],
     Lock: [
       { name: 'name', type: 'string' },
       { name: 'owner', type: 'address' },
@@ -42,6 +35,7 @@ const body = {
       address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
     },
   },
+  messageKey: 'lock',
 }
 
 let processor = signatureValidationMiddleware.generateProcessor({
@@ -74,13 +68,6 @@ describe('Signature Validation Middleware', () => {
 
         const body = {
           types: {
-            EIP712Domain: [
-              { name: 'name', type: 'string' },
-              { name: 'version', type: 'string' },
-              { name: 'chainId', type: 'uint256' },
-              { name: 'verifyingContract', type: 'address' },
-              { name: 'salt', type: 'bytes32' },
-            ],
             User: [{ name: 'publickKey', type: 'address' }],
           },
           domain: { name: 'Unlock', version: '1' },
@@ -90,6 +77,7 @@ describe('Signature Validation Middleware', () => {
               publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
             },
           },
+          messageKey: 'user',
         }
 
         const sig = await generateSignature(wallets[1], body)
@@ -98,7 +86,7 @@ describe('Signature Validation Middleware', () => {
           query: { data: encodeURIComponent(JSON.stringify(body)) },
         })
 
-        const signee = await new Promise((resolve, reject) => {
+        const signee = await new Promise((resolve) => {
           evaluator(request, response, function next() {
             resolve(request.signee)
           })
@@ -131,13 +119,6 @@ describe('Signature Validation Middleware', () => {
 
         const body = {
           types: {
-            EIP712Domain: [
-              { name: 'name', type: 'string' },
-              { name: 'version', type: 'string' },
-              { name: 'chainId', type: 'uint256' },
-              { name: 'verifyingContract', type: 'address' },
-              { name: 'salt', type: 'bytes32' },
-            ],
             User: [
               { name: 'emailAddress', type: 'string' },
               { name: 'publickKey', type: 'address' },
@@ -153,6 +134,7 @@ describe('Signature Validation Middleware', () => {
               passwordEncryptedPrivateKey: 'an encrypted value',
             },
           },
+          messageKey: 'user',
         }
 
         const sig = await generateSignature(wallets[1], body)
@@ -173,7 +155,7 @@ describe('Signature Validation Middleware', () => {
           signee: 'publicKey',
         })
 
-        const owner = await new Promise((resolve, reject) => {
+        const owner = await new Promise((resolve) => {
           processor(request, response, function next() {
             resolve(request.owner)
           })
@@ -190,13 +172,6 @@ describe('Signature Validation Middleware', () => {
 
         const body = {
           types: {
-            EIP712Domain: [
-              { name: 'name', type: 'string' },
-              { name: 'version', type: 'string' },
-              { name: 'chainId', type: 'uint256' },
-              { name: 'verifyingContract', type: 'address' },
-              { name: 'salt', type: 'bytes32' },
-            ],
             Lock: [
               { name: 'name', type: 'string' },
               { name: 'owner', type: 'address' },
@@ -212,6 +187,7 @@ describe('Signature Validation Middleware', () => {
               address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
             },
           },
+          messageKey: 'lock',
         }
 
         const sig = await generateSignature(wallets[1], body)
@@ -227,7 +203,7 @@ describe('Signature Validation Middleware', () => {
           required: ['name', 'owner', 'address'],
           signee: 'owner',
         })
-        const owner = await new Promise((resolve, reject) => {
+        const owner = await new Promise((resolve) => {
           processor(request, response, function next() {
             resolve(request.owner)
           })

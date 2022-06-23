@@ -19,21 +19,27 @@ const keyHolderWallet = new ethers.Wallet(
   '0xe5986c22698a3c1eb5f84455895ad6826fbdff7b82dbeee240bad0024469d93a'
 )
 
-const typedData = lockTypedData({
-  LockMetaData: {
-    address: lockAddress,
-    owner: lockOwner,
-    timestamp: Date.now(),
+const typedData = lockTypedData(
+  {
+    LockMetaData: {
+      address: lockAddress,
+      owner: lockOwner,
+      timestamp: Date.now(),
+    },
   },
-})
+  'LockMetaData'
+)
 
-const keyHolderStructuredData = lockTypedData({
-  LockMetaData: {
-    address: lockAddress,
-    owner: keyOwner,
-    timestamp: Date.now(),
+const keyHolderStructuredData = lockTypedData(
+  {
+    LockMetaData: {
+      address: lockAddress,
+      owner: keyOwner,
+      timestamp: Date.now(),
+    },
   },
-})
+  'LockMetaData'
+)
 
 const chain = 31337
 
@@ -77,7 +83,7 @@ jest.mock('../../../src/utils/keyData', () => {
   return jest.fn().mockImplementation(() => {
     return {
       get: jest.fn().mockResolvedValue({
-        owner: '0xabcd',
+        owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         expiration: 1567190711,
       }),
       openSeaPresentation: jest.fn().mockReturnValue({
@@ -117,7 +123,7 @@ describe('Requesting Token Data', () => {
     await addMetadata({
       chain,
       tokenAddress: lockAddress,
-      userAddress: '0xaBCD',
+      userAddress: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
       data: {
         protected: {
           hidden: 'metadata',
@@ -218,7 +224,11 @@ describe('Requesting Token Data', () => {
           mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(true))
 
           const { domain, types, message } = typedData
-          const sig = await wallet._signTypedData(domain, types, message)
+          const sig = await wallet._signTypedData(
+            domain,
+            types,
+            message['LockMetaData']
+          )
 
           const response = await request(app)
             .get(`/api/key/${lockAddress}/1`)
@@ -250,9 +260,8 @@ describe('Requesting Token Data', () => {
           const keyHolderSignature = await keyHolderWallet._signTypedData(
             domain,
             types,
-            message
+            message['LockMetaData']
           )
-
           const response = await request(app)
             .get(`/api/key/${lockAddress}/1`)
             .set('Authorization', `Bearer ${Base64.encode(keyHolderSignature)}`)

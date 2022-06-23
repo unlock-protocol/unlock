@@ -9,37 +9,27 @@ const chain = 31337
 const testLockDetails = {
   chain,
   name: 'Test Lock',
-  address: '0xab7c74abC0C4d48d1bdad5DCB26153FC8780f83E',
-  owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
+  address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
+  owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
 }
 
 const ownedLocks = [
   {
     chain,
     name: 'a mighty fine lock',
-    address: 'jqfqod74',
-    owner: '0x423893453',
+    address: '0xab7c74abC0C4d48d1bdad5DCB26153FC8780f83A',
+    owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
   },
   {
     chain,
     name: 'A random other lock',
-    address: 'jqfqod75',
-    owner: '0x423893453',
+    address: '0xab7c74abC0C4d48d1bdad5DCB26153FC8780f83B',
+    owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
   },
 ]
 
 const lockPayload = {
   types: {
-    EIP712Domain: [
-      { name: 'name', type: 'string' },
-      { name: 'version', type: 'string' },
-      { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' },
-      {
-        name: 'salt',
-        type: 'bytes32',
-      },
-    ],
     Lock: [
       { name: 'name', type: 'string' },
       { name: 'owner', type: 'address' },
@@ -55,6 +45,7 @@ const lockPayload = {
       address: validLockAddress,
     },
   },
+  messageKey: 'lock',
 }
 
 beforeEach(async () => {
@@ -123,7 +114,7 @@ describe('lockController', () => {
     })
 
     describe('when the address owns locks', () => {
-      const owner = '0x423893453'
+      const owner = '0xCA750f9232C1c38e34D27e77534e1631526eC99e'
 
       it('return the details of the owned locks', async () => {
         expect.assertions(3)
@@ -137,8 +128,8 @@ describe('lockController', () => {
           expect.arrayContaining([
             expect.objectContaining({
               name: 'A random other lock',
-              address: 'jqfqod75',
-              owner: '0x423893453',
+              address: '0xab7c74abC0C4d48d1bdad5DCB26153FC8780f83B',
+              owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
             }),
           ])
         )
@@ -147,8 +138,8 @@ describe('lockController', () => {
           expect.arrayContaining([
             expect.objectContaining({
               name: 'a mighty fine lock',
-              address: 'jqfqod74',
-              owner: '0x423893453',
+              address: '0xab7c74abC0C4d48d1bdad5DCB26153FC8780f83A',
+              owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
             }),
           ])
         )
@@ -159,7 +150,7 @@ describe('lockController', () => {
       it('returns an empty collection', async () => {
         expect.assertions(1)
         const response = await request(app)
-          .get('/0xd489fF3/locks')
+          .get('/0xCA750f9232C1c38e34D27e77534e1631526eC99e/locks')
           .set('Accept', /json/)
         expect(response.body).toEqual({ locks: [] })
       })

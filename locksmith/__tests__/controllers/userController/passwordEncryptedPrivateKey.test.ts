@@ -2,16 +2,9 @@ import { ethers } from 'ethers'
 
 import models = require('../../../src/models')
 
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       User: [
         { name: 'emailAddress', type: 'string' },
         { name: 'publicKey', type: 'address' },
@@ -24,6 +17,7 @@ function generateTypedData(message: any) {
     },
     primaryType: 'User',
     message,
+    messageKey,
   }
 }
 
@@ -59,7 +53,7 @@ describe("updating a user's password encrypted private key", () => {
       },
     }
 
-    const typedData = generateTypedData(message)
+    const typedData = generateTypedData(message, 'user')
 
     const { domain, types } = typedData
 
@@ -76,7 +70,7 @@ describe("updating a user's password encrypted private key", () => {
 
       await UserOperations.createUser(userCreationDetails)
 
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put(
@@ -103,7 +97,7 @@ describe("updating a user's password encrypted private key", () => {
       const emailAddress = 'ejected_user@example.com'
       const user = {
         emailAddress,
-        publicKey: 'ejected_user_phrase_public_key',
+        publicKey: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
 
@@ -114,10 +108,10 @@ describe("updating a user's password encrypted private key", () => {
         user,
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'user')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put(`/users/${user.publicKey}/passwordEncryptedPrivateKey`)

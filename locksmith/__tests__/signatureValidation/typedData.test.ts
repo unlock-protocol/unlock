@@ -38,14 +38,7 @@ describe('Signature Validation Middleware', () => {
 
         const body = {
           types: {
-            EIP712Domain: [
-              { name: 'name', type: 'string' },
-              { name: 'version', type: 'string' },
-              { name: 'chainId', type: 'uint256' },
-              { name: 'verifyingContract', type: 'address' },
-              { name: 'salt', type: 'bytes32' },
-            ],
-            User: [{ name: 'publickKey', type: 'address' }],
+            User: [{ name: 'publicKey', type: 'address' }],
           },
           domain: { name: 'Unlock', version: '1' },
           primaryType: 'User',
@@ -54,6 +47,7 @@ describe('Signature Validation Middleware', () => {
               publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
             },
           },
+          messageKey: 'user',
         }
 
         const wallet = new ethers.Wallet(
@@ -61,7 +55,7 @@ describe('Signature Validation Middleware', () => {
         )
 
         const { domain, types, message } = body
-        const sig = await wallet._signTypedData(domain, types, message)
+        const sig = await wallet._signTypedData(domain, types, message['user'])
 
         const request = httpMocks.createRequest({
           headers: { Authorization: `Bearer ${Base64.encode(sig)}` },
@@ -70,7 +64,7 @@ describe('Signature Validation Middleware', () => {
           },
         })
 
-        const signee = await new Promise((resolve, reject) => {
+        const signee = await new Promise((resolve) => {
           evaluator(request, response, function next() {
             resolve(request.signee)
           })
@@ -104,13 +98,6 @@ describe('Signature Validation Middleware', () => {
           headers: { Authorization: `Bearer ${validSig2}` },
           body: {
             types: {
-              EIP712Domain: [
-                { name: 'name', type: 'string' },
-                { name: 'version', type: 'string' },
-                { name: 'chainId', type: 'uint256' },
-                { name: 'verifyingContract', type: 'address' },
-                { name: 'salt', type: 'bytes32' },
-              ],
               User: [
                 { name: 'emailAddress', type: 'string' },
                 { name: 'publickKey', type: 'address' },
@@ -120,11 +107,9 @@ describe('Signature Validation Middleware', () => {
             domain: { name: 'Unlock', version: '1' },
             primaryType: 'User',
             message: {
-              user: {
-                emailAddress: 'new_user@example.com',
-                publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-                passwordEncryptedPrivateKey: 'an encrypted value',
-              },
+              emailAddress: 'new_user@example.com',
+              publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+              passwordEncryptedPrivateKey: 'an encrypted value',
             },
           },
         })
@@ -156,13 +141,6 @@ describe('Signature Validation Middleware', () => {
 
           body: {
             types: {
-              EIP712Domain: [
-                { name: 'name', type: 'string' },
-                { name: 'version', type: 'string' },
-                { name: 'chainId', type: 'uint256' },
-                { name: 'verifyingContract', type: 'address' },
-                { name: 'salt', type: 'bytes32' },
-              ],
               Lock: [
                 { name: 'name', type: 'string' },
                 { name: 'owner', type: 'address' },
@@ -172,11 +150,9 @@ describe('Signature Validation Middleware', () => {
             domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
             primaryType: 'Lock',
             message: {
-              lock: {
-                name: 'New Lock',
-                owner: '0x109B141fDa40c61a9eA85B77dD4727F08EcBE140',
-                address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
-              },
+              name: 'New Lock',
+              owner: '0x109B141fDa40c61a9eA85B77dD4727F08EcBE140',
+              address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
             },
           },
         })
@@ -227,13 +203,6 @@ describe('Signature Validation Middleware', () => {
 
           body: {
             types: {
-              EIP712Domain: [
-                { name: 'name', type: 'string' },
-                { name: 'version', type: 'string' },
-                { name: 'chainId', type: 'uint256' },
-                { name: 'verifyingContract', type: 'address' },
-                { name: 'salt', type: 'bytes32' },
-              ],
               Lock: [
                 { name: 'name', type: 'string' },
                 { name: 'owner', type: 'address' },
@@ -243,11 +212,9 @@ describe('Signature Validation Middleware', () => {
             domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
             primaryType: 'Lock',
             message: {
-              lock: {
-                name: 'New Lock',
-                owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-                address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
-              },
+              name: 'New Lock',
+              owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+              address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
             },
           },
         })
@@ -266,13 +233,6 @@ describe('Signature Validation Middleware', () => {
 
           body: {
             types: {
-              EIP712Domain: [
-                { name: 'name', type: 'string' },
-                { name: 'version', type: 'string' },
-                { name: 'chainId', type: 'uint256' },
-                { name: 'verifyingContract', type: 'address' },
-                { name: 'salt', type: 'bytes32' },
-              ],
               Lock: [
                 { name: 'name', type: 'string' },
                 { name: 'owner', type: 'address' },
@@ -282,11 +242,9 @@ describe('Signature Validation Middleware', () => {
             domain: { name: 'Unlock Dashboard', version: '1', chainId: 31337 },
             primaryType: 'Lock',
             message: {
-              lock: {
-                name: 'New Lock',
-                owner: '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
-                address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
-              },
+              name: 'New Lock',
+              owner: '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8',
+              address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
             },
           },
         })

@@ -27,13 +27,6 @@ async function updateMetadata(
 function generateLockMetadataPayload(message: any) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       LockMetadata: [
         { name: 'name', type: 'string' },
         { name: 'description', type: 'string' },
@@ -53,13 +46,6 @@ function generateLockMetadataPayload(message: any) {
 function generateKeyMetadataPayload(message: any) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       KeyMetadata: [],
     },
     domain: {

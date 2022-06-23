@@ -13,12 +13,12 @@ namespace SignatureValidationMiddleware {
 
   const extractTypeDataSignee = (header: string, body: any) => {
     const decodedSignature = Base64.decode(header)
-    const { domain, types, message } = body
+    const { domain, types, message, messageKey } = body
     try {
       return ethers.utils.verifyTypedData(
         domain,
         types,
-        message,
+        message[messageKey],
         decodedSignature
       )
     } catch (error) {

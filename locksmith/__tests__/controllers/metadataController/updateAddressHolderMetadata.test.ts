@@ -41,19 +41,26 @@ jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
 describe('updating address holder metadata', () => {
   it('stores the passed data', async () => {
     expect.assertions(1)
-    const typedData = keyTypedData({
-      UserMetaData: {
-        owner: keyHolder[0],
-        data: {
-          protected: {
-            emailAddress: 'emailAddress@example.com',
+    const typedData = keyTypedData(
+      {
+        UserMetaData: {
+          owner: keyHolder[0],
+          data: {
+            protected: {
+              emailAddress: 'emailAddress@example.com',
+            },
           },
         },
       },
-    })
+      'UserMetaData'
+    )
 
     const { domain, types, message } = typedData
-    const sig = await wallet._signTypedData(domain, types, message)
+    const sig = await wallet._signTypedData(
+      domain,
+      types,
+      message['UserMetaData']
+    )
 
     const response = await request(app)
       .put(`/api/key/${lockAddress}/user/${keyHolder[0]}`)
@@ -67,19 +74,26 @@ describe('updating address holder metadata', () => {
   it('should update existing data if it already exists', async () => {
     expect.assertions(1)
 
-    const typedData = keyTypedData({
-      UserMetaData: {
-        owner: keyHolder[0],
-        data: {
-          protected: {
-            emailAddress: 'updatedEmailAddress@example.com',
+    const typedData = keyTypedData(
+      {
+        UserMetaData: {
+          owner: keyHolder[0],
+          data: {
+            protected: {
+              emailAddress: 'updatedEmailAddress@example.com',
+            },
           },
         },
       },
-    })
+      'UserMetaData'
+    )
 
     const { domain, types, message } = typedData
-    const sig = await wallet._signTypedData(domain, types, message)
+    const sig = await wallet._signTypedData(
+      domain,
+      types,
+      message['UserMetaData']
+    )
 
     const response = await request(app)
       .put(`/api/key/${lockAddress}/user/${keyHolder[0]}`)
@@ -94,19 +108,26 @@ describe('updating address holder metadata', () => {
     it('returns unauthorized', async () => {
       expect.assertions(1)
 
-      const typedData = keyTypedData({
-        UserMetaData: {
-          owner: keyHolder[0],
-          protected: {
-            data: {
-              emailAddress: 'updatedEmailAddress@example.com',
+      const typedData = keyTypedData(
+        {
+          UserMetaData: {
+            owner: keyHolder[0],
+            protected: {
+              data: {
+                emailAddress: 'updatedEmailAddress@example.com',
+              },
             },
           },
         },
-      })
+        'UserMetaData'
+      )
 
       const { domain, types, message } = typedData
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(
+        domain,
+        types,
+        message['UserMetaData']
+      )
 
       const response = await request(app)
         .put(`/api/key/${lockAddress}/user/${keyHolder[1]}`)

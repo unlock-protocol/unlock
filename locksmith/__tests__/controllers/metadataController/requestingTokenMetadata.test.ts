@@ -38,12 +38,15 @@ jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
 
 let typedData: any
 beforeAll(() => {
-  typedData = keyTypedData({
-    KeyMetaData: {
-      custom_field: 'custom value',
-      owner: owningAddress,
+  typedData = keyTypedData(
+    {
+      KeyMetaData: {
+        custom_field: 'custom value',
+        owner: owningAddress,
+      },
     },
-  })
+    'KeyMetaData'
+  )
 
   mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(false))
 })
@@ -67,7 +70,11 @@ describe('When the signee is the Lock owner', () => {
       expect.assertions(1)
 
       const { domain, types, message } = typedData
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(
+        domain,
+        types,
+        message['KeyMetaData']
+      )
 
       mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(true))
       const response = await request(app)

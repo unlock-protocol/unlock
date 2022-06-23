@@ -37,12 +37,15 @@ describe('updateKeyMetadata', () => {
   describe('when the signee does not own the lock', () => {
     let typedData: any
     beforeAll(() => {
-      typedData = keyTypedData({
-        KeyMetaData: {
-          custom_field: 'custom value',
-          owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+      typedData = keyTypedData(
+        {
+          KeyMetaData: {
+            custom_field: 'custom value',
+            owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+          },
         },
-      })
+        'KeyMetaData'
+      )
 
       mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(false))
     })
@@ -51,7 +54,11 @@ describe('updateKeyMetadata', () => {
       expect.assertions(1)
 
       const { domain, types, message } = typedData
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(
+        domain,
+        types,
+        message['KeyMetaData']
+      )
 
       const response = await request(app)
         .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7/5')

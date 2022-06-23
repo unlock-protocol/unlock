@@ -5,7 +5,7 @@ const app = require('../../../src/app')
 const Base64 = require('../../../src/utils/base64')
 
 const wallet2 = new ethers.Wallet(
-  '0xbbabdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
+  '0xe5986c22698a3c1eb5f84455895ad6826fbdff7b82dbeee240bad0024469d93a'
 )
 
 const wallet = new ethers.Wallet(
@@ -36,20 +36,14 @@ jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
   }),
 }))
 
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       LockMetadata: [
-        { name: 'address', type: 'address' },
         { name: 'name', type: 'string' },
         { name: 'description', type: 'string' },
+        { name: 'address', type: 'address' },
+        { name: 'owner', type: 'address' },
         { name: 'image', type: 'string' },
       ],
     },
@@ -59,6 +53,7 @@ function generateTypedData(message: any) {
     },
     primaryType: 'LockMetadata',
     message,
+    messageKey,
   }
 }
 
@@ -66,15 +61,18 @@ describe('updateDefaults', () => {
   let typedData: any
 
   beforeAll(() => {
-    typedData = generateTypedData({
-      LockMetaData: {
-        name: 'An awesome Lock',
-        description: 'we are chilling and such',
-        address: '0x85de5F777A3e283bFf0c47374998E10D8A2183C7',
-        owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
-        image: 'http://image.location.url',
+    typedData = generateTypedData(
+      {
+        LockMetaData: {
+          name: 'An awesome Lock',
+          description: 'we are chilling and such',
+          address: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+          owner: '0xaaadeed4c0b861cb36f4ce006a9c90ba2e43fdc2',
+          image: 'http://image.location.url',
+        },
       },
-    })
+      'LockMetaData'
+    )
   })
 
   describe('when the signee does not own the lock', () => {
@@ -86,7 +84,11 @@ describe('updateDefaults', () => {
       expect.assertions(1)
 
       const { domain, types, message } = typedData
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(
+        domain,
+        types,
+        message['LockMetaData']
+      )
 
       const response = await request(app)
         .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7')
@@ -107,7 +109,11 @@ describe('updateDefaults', () => {
       expect.assertions(1)
 
       const { domain, types, message } = typedData
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(
+        domain,
+        types,
+        message['LockMetaData']
+      )
 
       const response = await request(app)
         .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7')
@@ -123,7 +129,11 @@ describe('updateDefaults', () => {
         expect.assertions(1)
 
         const { domain, types, message } = typedData
-        const sig = await wallet2._signTypedData(domain, types, message)
+        const sig = await wallet2._signTypedData(
+          domain,
+          types,
+          message['LockMetaData']
+        )
 
         const response = await request(app)
           .put('/api/key/0x95de5F777A3e283bFf0c47374998E10D8A2183C7')

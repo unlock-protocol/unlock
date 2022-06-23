@@ -4,17 +4,9 @@ import { generateTypedSignature } from '../src/utils/signature'
 // const args = require('yargs').argv
 const request = require('request-promise-native')
 
-function generatePurchasePayload(message: any) {
+function generatePurchasePayload(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
-
       PurchaseRequest: [
         { name: 'recipient', type: 'address' },
         { name: 'lock', type: 'address' },
@@ -28,6 +20,7 @@ function generatePurchasePayload(message: any) {
     },
     primaryType: 'PurchaseRequest',
     message: message,
+    messageKey,
   }
 }
 
@@ -44,7 +37,7 @@ const message = {
   },
 }
 
-const typedData = generatePurchasePayload(message)
+const typedData = generatePurchasePayload(message, 'purchaseRequest')
 async function postPurchaseRequest(
   privateKey: string,
   metadata: any,

@@ -6,16 +6,9 @@ import Base64 = require('../../../src/utils/base64')
 import models = require('../../../src/models')
 import UserOperations = require('../../../src/operations/userOperations')
 
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       User: [{ name: 'publicKey', type: 'address' }],
     },
     domain: {
@@ -24,6 +17,7 @@ function generateTypedData(message: any) {
     },
     primaryType: 'User',
     message,
+    messageKey,
   }
 }
 
@@ -63,10 +57,10 @@ describe('when ejecting an address', () => {
         },
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'user')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const emailAddress = 'existing@example.com'
       const userCreationDetails = {
@@ -101,10 +95,10 @@ describe('when ejecting an address', () => {
         },
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'user')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .post('/users/0xef49773e0d59f607cea8c8be4ce87bd26fd8e208/eject')
@@ -129,10 +123,10 @@ describe('when ejecting an address', () => {
         },
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'user')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const emailAddress = 'ejected_user@example.com'
       const userCreationDetails = {

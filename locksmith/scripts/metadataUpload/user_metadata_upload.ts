@@ -24,16 +24,9 @@ async function updateMetadata(
   await request(options)
 }
 
-function generateUserMetadataPayload(message: any) {
+function generateUserMetadataPayload(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       UserMetaData: [],
     },
     domain: {
@@ -42,6 +35,7 @@ function generateUserMetadataPayload(message: any) {
     },
     primaryType: 'UserMetaData',
     message: message,
+    messageKey,
   }
 }
 
@@ -65,7 +59,7 @@ async function main(
   const contents = fs.readFileSync(resolve(inputFile), 'utf8')
   const message = JSON.parse(contents)
 
-  const data = generateUserMetadataPayload(message)
+  const data = generateUserMetadataPayload(message, 'key')
   updateMetadata(privateKey, data, endpoint)
 }
 

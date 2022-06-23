@@ -13,16 +13,9 @@ const { StripeCustomer } = models
 
 const publicKey = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
 
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       User: [{ name: 'publicKey', type: 'address' }],
     },
     domain: {
@@ -31,6 +24,7 @@ function generateTypedData(message: any) {
     },
     primaryType: 'User',
     message,
+    messageKey,
   }
 }
 
@@ -87,10 +81,14 @@ describe('when requesting cards', () => {
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Get Card')
 
       const { domain, types } = typedData
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(
+        domain,
+        types,
+        message['Get Card']
+      )
 
       const response = await request(app)
         .get(`/users/${publicKey}/credit-cards`)
@@ -114,7 +112,7 @@ describe('when requesting cards', () => {
         '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61'
       )
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Get Card')
 
       const sig = await wallet.signMessage(
         `I want to retrieve the card token for ${message['Get Card'].publicKey}`
@@ -144,7 +142,7 @@ describe('when updating cards', () => {
         },
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Save Card')
 
       const response = await request(app)
         .put(`/users/${publicKey}/credit-cards`)
@@ -173,7 +171,7 @@ describe('when updating cards', () => {
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Save Card')
       const sig = await wallet.signMessage(JSON.stringify(typedData))
 
       const response = await request(app)
@@ -206,7 +204,7 @@ describe('when updating cards', () => {
         .spyOn(UserOperations, 'updatePaymentDetails')
         .mockReturnValueOnce(Promise.resolve(true))
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Save Card')
       const sig = await wallet.signMessage(
         `I save my payment card for my account ${message['Save Card'].publicKey}`
       )
@@ -236,7 +234,7 @@ describe('when updating cards', () => {
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Save Card')
       const sig = await wallet.signMessage(
         `I save my payment card for my account ${message['Save Card'].publicKey}`
       )
@@ -267,7 +265,7 @@ describe('when deleting cards', () => {
         },
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Delete Card')
 
       const response = await request(app)
         .delete(`/users/${publicKey}/credit-cards`)
@@ -295,7 +293,7 @@ describe('when deleting cards', () => {
         '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
       )
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Delete Card')
       const sig = await wallet.signMessage(JSON.stringify(typedData))
 
       const response = await request(app)
@@ -325,7 +323,7 @@ describe('when deleting cards', () => {
         .spyOn(StripeOperations, 'deletePaymentDetailsForAddress')
         .mockReturnValueOnce(Promise.resolve(true))
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Delete Card')
       const sig = await wallet.signMessage(
         `I am deleting the card linked to my account ${message['Delete Card'].publicKey}`
       )
@@ -357,7 +355,7 @@ describe('when deleting cards', () => {
         .spyOn(StripeOperations, 'deletePaymentDetailsForAddress')
         .mockReturnValueOnce(Promise.resolve(false))
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'Delete Card')
       const sig = await wallet.signMessage(
         `I am deleting the card linked to my account ${message['Delete Card'].publicKey}`
       )

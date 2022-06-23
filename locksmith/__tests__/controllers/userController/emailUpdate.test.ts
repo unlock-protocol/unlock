@@ -5,16 +5,9 @@ import app = require('../../../src/app')
 import UserOperations = require('../../../src/operations/userOperations')
 import Base64 = require('../../../src/utils/base64')
 
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       User: [
         { name: 'emailAddress', type: 'string' },
         { name: 'publicKey', type: 'address' },
@@ -27,6 +20,7 @@ function generateTypedData(message: any) {
     },
     primaryType: 'User',
     message,
+    messageKey,
   }
 }
 
@@ -55,7 +49,7 @@ describe("updating a user's email address", () => {
     },
   }
 
-  const typedData = generateTypedData(message)
+  const typedData = generateTypedData(message, 'user')
 
   const { domain, types } = typedData
 
@@ -65,12 +59,12 @@ describe("updating a user's email address", () => {
       const emailAddress = 'user@example.com'
       const userCreationDetails = {
         emailAddress,
-        publicKey: 'an_email_update_public_key',
+        publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
       await UserOperations.createUser(userCreationDetails)
 
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put('/users/user@example.com')
@@ -91,7 +85,7 @@ describe("updating a user's email address", () => {
     it('returns 400', async () => {
       expect.assertions(1)
 
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put('/users/non-existing@example.com')
@@ -109,14 +103,14 @@ describe("updating a user's email address", () => {
       const emailAddress = 'ejected_user@example.com'
       const userCreationDetails = {
         emailAddress,
-        publicKey: 'ejected_user_phrase_public_key',
+        publicKey: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
 
       await UserOperations.createUser(userCreationDetails)
       await UserOperations.eject(userCreationDetails.publicKey)
 
-      const sig = await wallet._signTypedData(domain, types, message)
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .put('/users/ejected_user@example.com')

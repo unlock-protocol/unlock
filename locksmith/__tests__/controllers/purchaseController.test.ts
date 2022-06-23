@@ -19,16 +19,9 @@ const mockPaymentProcessor = {
 const keyPricer = {
   keyPriceUSD: jest.fn().mockReturnValueOnce(250).mockReturnValueOnce(1000000),
 }
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       PurchaseRequest: [
         { name: 'recipient', type: 'address' },
         { name: 'lock', type: 'address' },
@@ -42,6 +35,7 @@ function generateTypedData(message: any) {
     },
     primaryType: 'PurchaseRequest',
     message,
+    messageKey,
   }
 }
 
@@ -69,13 +63,17 @@ describe('Purchase Controller', () => {
         },
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'purchaseRequest')
 
       it('responds with a 200 status code', async () => {
         expect.assertions(1)
 
         const { domain, types } = typedData
-        const sig = await wallet._signTypedData(domain, types, message)
+        const sig = await wallet._signTypedData(
+          domain,
+          types,
+          message.purchaseRequest
+        )
 
         const response = await request(app)
           .post('/purchase/USD')
