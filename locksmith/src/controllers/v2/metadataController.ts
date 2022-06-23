@@ -8,7 +8,6 @@ import logger from '../../logger'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
-import { Verifier } from '../../models/verifier'
 
 const UserMetadata = z
   .object({
@@ -28,46 +27,11 @@ const BulkUserMetadataBody = z.object({
   users: z.array(UserMetadataBody),
 })
 
-interface IsKeyOrLockOwnerOptions {
-  userAddress?: string
-  lockAddress: string
-  keyId: string
-  network: number
-}
-
 export class MetadataController {
   public web3Service: Web3Service
 
   constructor({ web3Service }: { web3Service: Web3Service }) {
     this.web3Service = web3Service
-  }
-
-  async #isKeyOwnerOrLockVerifier({
-    userAddress,
-    lockAddress,
-    keyId,
-    network,
-  }: IsKeyOrLockOwnerOptions) {
-    if (!userAddress) {
-      return false
-    }
-    const loggedUserAddress = Normalizer.ethereumAddress(userAddress)
-
-    const isVerifier = await Verifier.findOne({
-      where: {
-        lockAddress,
-        userAddress,
-        network,
-      },
-    })
-
-    const keyOwner = await this.web3Service.ownerOf(lockAddress, keyId, network)
-
-    const keyOwnerAddress = Normalizer.ethereumAddress(keyOwner)
-
-    const isKeyOwner = keyOwnerAddress === loggedUserAddress
-
-    return isVerifier?.id || isKeyOwner
   }
 
   async getLockMetadata(request: Request, response: Response) {
@@ -103,12 +67,13 @@ export class MetadataController {
       const network = Number(request.params.network)
       const host = `${request.protocol}://${request.headers.host}`
 
-      const includeProtected = await this.#isKeyOwnerOrLockVerifier({
-        keyId,
-        network,
-        lockAddress,
-        userAddress: request.user?.walletAddress,
-      })
+      const includeProtected =
+        await metadataOperations.isKeyOwnerOrLockVerifier({
+          keyId,
+          network,
+          lockAddress,
+          userAddress: request.user?.walletAddress,
+        })
 
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
