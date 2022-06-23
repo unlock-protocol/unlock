@@ -497,7 +497,7 @@ interface IPublicLock
   * @param to the address that will receive the token
   * @param tokenId the id of the token
   * @notice This function can only called by 1) the key owner when no key manager is set or 2) the key manager.
-  * After calling the function, the `_recipent` will be the new owner, and the previous owner 
+  * After calling the function, the `_recipent` will be the new owner, and the sender of the tx
   * will become the key manager.
   */
   function lendKey(address from, address to, uint tokenId) external;
