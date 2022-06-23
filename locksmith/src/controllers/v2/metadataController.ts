@@ -8,7 +8,7 @@ import logger from '../../logger'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
-import VerifierOperations from '../../operations/verifierOperations'
+import { Verifier } from '../../models/verifier'
 
 const UserMetadata = z
   .object({
@@ -53,11 +53,13 @@ export class MetadataController {
     }
     const loggedUserAddress = Normalizer.ethereumAddress(userAddress)
 
-    const isVerifier = await VerifierOperations.isVerifier(
-      lockAddress,
-      userAddress,
-      network
-    )
+    const isVerifier = await Verifier.findOne({
+      where: {
+        lockAddress,
+        userAddress,
+        network,
+      },
+    })
 
     const keyOwner = await this.web3Service.ownerOf(lockAddress, keyId, network)
 

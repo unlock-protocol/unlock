@@ -572,23 +572,6 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     }
   }
 
-  const getTokenIdFromOwner = async ({
-    lockAddress,
-    owner,
-    network,
-  }: {
-    lockAddress: string
-    owner: string
-    network: number
-  }) => {
-    const tokenId = await web3Service.getTokenIdForOwner(
-      lockAddress,
-      owner,
-      network
-    )
-    return tokenId
-  }
-
   return {
     getLock,
     lock,
@@ -603,7 +586,6 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     updateMaxNumberOfKeys,
     purchaseMultipleKeys,
     updateSelfAllowance,
-    getTokenIdFromOwner,
   }
 }
 
