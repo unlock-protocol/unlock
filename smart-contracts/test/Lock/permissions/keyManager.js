@@ -1,14 +1,12 @@
-const { reverts } = require('../../helpers/errors')
 const BigNumber = require('bignumber.js')
 const { ethers } = require('hardhat')
-const deployLocks = require('../../helpers/deployLocks')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-const { ADDRESS_ZERO, purchaseKeys } = require('../../helpers')
+const {
+  reverts,
+  deployLock,
+  ADDRESS_ZERO,
+  purchaseKeys,
+} = require('../../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-
-let unlock
-let locks
 let lock
 let lockCreator
 let tokenIds
@@ -31,9 +29,7 @@ contract('Permissions / KeyManager', (accounts) => {
     validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
 
     // purchase keys
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, lockCreator)
-    lock = locks.FIRST
+    lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)
     ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
@@ -103,9 +99,7 @@ contract('Permissions / KeyManager', (accounts) => {
   describe('Key Transfers', () => {
     let tokenId
     before(async () => {
-      unlock = await getContractInstance(unlockContract)
-      locks = await deployLocks(unlock, lockCreator)
-      lock = locks.FIRST
+      lock = await deployLock()
       const tx = await lock.purchase(
         [],
         keyOwners,

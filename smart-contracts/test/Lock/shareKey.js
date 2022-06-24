@@ -1,19 +1,16 @@
 const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('../helpers/errors')
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO, purchaseKeys } = require('../helpers')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
-let locks
-let tokenIds
+const {
+  reverts,
+  deployLock,
+  ADDRESS_ZERO,
+  purchaseKeys,
+} = require('../helpers')
 
 contract('Lock / shareKey', (accounts) => {
   let lock
+  let tokenIds
   let event
   let event1
   let event2
@@ -25,9 +22,7 @@ contract('Lock / shareKey', (accounts) => {
   const approvedAddress = accounts[7]
 
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)
     ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
@@ -73,16 +68,19 @@ contract('Lock / shareKey', (accounts) => {
     })
 
     it('should fail if trying to share a key with a contract which does not implement onERC721Received', async () => {
-      let nonCompliantContract = unlock.address
+      // A contract which does NOT implement onERC721Received:
+      const NonCompliantContract = artifacts.require('TestEventHooks')
+      const { address } = await NonCompliantContract.new()
+
       assert.equal(await lock.isValidKey(tokenIds[2]), true)
       assert.equal(await lock.ownerOf(tokenIds[2]), keyOwners[2])
       await reverts(
-        lock.shareKey(nonCompliantContract, tokenIds[2], 1000, {
+        lock.shareKey(address, tokenIds[2], 1000, {
           from: keyOwners[2],
         })
       )
       // make sure the key was not shared
-      assert.notEqual(await lock.ownerOf(tokenIds[2]), nonCompliantContract)
+      assert.notEqual(await lock.ownerOf(tokenIds[2]), address)
     })
 
     describe('fallback behaviors', () => {

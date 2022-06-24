@@ -1,18 +1,11 @@
-const deployLocks = require('../../helpers/deployLocks')
-const { purchaseKey, reverts } = require('../../helpers')
+const { deployLock, purchaseKey, reverts } = require('../../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-
-let unlock
 let lock
 let tokenId
 
 contract('Lock / erc721 / approveForAll', (accounts) => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 
