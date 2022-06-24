@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Button, Tooltip } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
-import { TbQrcode as QrCode } from 'react-icons/tb'
 import { useStorageService } from '../../../utils/withStorageService'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { WalletServiceContext } from '../../../utils/withWalletService'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -24,7 +24,13 @@ interface MemberCardProps {
   metadata?: { [key: string]: any }
 }
 
-const keysToIgnore = ['token', 'lockName', 'keyholderAddress', 'expiration']
+const keysToIgnore = [
+  'token',
+  'lockName',
+  'keyholderAddress',
+  'expiration',
+  'lockAddress',
+]
 
 export const MemberCard: React.FC<MemberCardProps> = ({
   lockName,
@@ -63,14 +69,20 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       address: account!,
       chainId: network,
     })
-    const email = await storageService.sendKeyQrCodeViaEmail({
+    const res = await storageService.sendKeyQrCodeViaEmail({
       lockAddress: metadata.lockAddress,
       network,
       tokenId,
     })
 
-    console.log('email', email)
+    if (res.message) {
+      ToastHelper.error(res.message)
+    } else {
+      ToastHelper.success('QR-code sent by email')
+    }
   }
+
+  const hasEmailMetadata = extraDataItems.map(([key]) => key).includes('email')
 
   return (
     <div
@@ -111,34 +123,36 @@ export const MemberCard: React.FC<MemberCardProps> = ({
               <ArrowDown />
             </div>
           </Button>
-          <Tooltip tip="Send QR-code via email" label="Send QR-code via email">
-            <Button
-              size="medium"
-              variant="primary"
-              className="h-full"
-              onClick={onSendQrCode}
-            >
-              <QrCode />
-            </Button>
-          </Tooltip>
         </div>
       </div>
       <div>
         {showMetaData && (
           <div>
-            <span className={styles.description}>Metadata</span>
             {!hasExtraData && (
               <span className="block">There is no metadata</span>
             )}
-            {hasExtraData &&
-              hasExtraData &&
-              extraDataItems?.map(([key, value], index) => {
-                return (
-                  <div key={index}>
-                    <strong>{key}</strong>: <span>{value}</span>
-                  </div>
-                )
-              })}
+            {hasExtraData && hasExtraData && (
+              <div className="flex flex-col">
+                {hasEmailMetadata && (
+                  <Button
+                    size="tiny"
+                    variant="primary"
+                    className="my-3 ml-auto"
+                    onClick={onSendQrCode}
+                  >
+                    Send QR-code by email
+                  </Button>
+                )}
+                <span className={styles.description}>Metadata</span>
+                {extraDataItems?.map(([key, value], index) => {
+                  return (
+                    <div key={index}>
+                      <strong>{key}</strong>: <span>{value}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
           </div>
         )}
       </div>
