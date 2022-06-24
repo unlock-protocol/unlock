@@ -1,17 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks'
 import useMetadata from '../../hooks/useMetadata'
-import fetch from 'node-fetch'
-import fetchMock from 'jest-fetch-mock'
-
-fetchMock.enableMocks()
-
+import fetch from 'jest-fetch-mock'
 const metadata = {
   image: 'https://...',
 }
 
 describe('useMetadata', () => {
   beforeEach(() => {
-    fetchMock.resetMocks()
+    fetch.resetMocks()
     global.fetch = jest.fn(() => {
       return Promise.resolve({
         data: () => {
