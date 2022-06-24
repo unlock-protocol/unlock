@@ -2,15 +2,19 @@ const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
 
 const {
+  deployLock,
   impersonate,
   confirmMultisigTx,
   UNLOCK_MULTISIG_ADDRESS,
+  MULTISIG_ADDRESS_OWNER,
 } = require('../helpers')
 
-const submitTx = require('../../scripts/multisig/submitTx')
-const { getSafe } = require('../../scripts/multisig/_helpers')
-const getSafeAddress = require('../../scripts/multisig/existing')
-const getSafeOwners = require('../../scripts/multisig/owners')
+const {
+  getSafe,
+  submitTx,
+  getSafeAddress,
+  getOwners,
+} = require('../../scripts/multisig')
 
 const { assert } = require('chai')
 const { unlockAddress } = networks[1]
@@ -29,11 +33,9 @@ describe('scripts / gnosis', () => {
     }
     unlock = await ethers.getContractAt('Unlock', unlockAddress)
 
-    // impersonate julien51.eth :P
-    await impersonate('0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44')
-    signer = await ethers.getSigner(
-      '0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44'
-    )
+    // impersonate one of the multisig owner
+    await impersonate(MULTISIG_ADDRESS_OWNER)
+    signer = await ethers.getSigner(MULTISIG_ADDRESS_OWNER)
 
     // get mainnet safe
     safe = await getSafe({ safeAddress: UNLOCK_MULTISIG_ADDRESS, signer })
@@ -69,13 +71,13 @@ describe('scripts / gnosis', () => {
 
   describe('get owners', () => {
     it('should get the correct list of owners based on chain id', async () => {
-      const owners = await getSafeOwners({ chainId: 1 })
+      const owners = await getOwners({ chainId: 1 })
       assert.equal(owners[0], '0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44')
       assert.equal(owners[1], '0x2785f2a3DDaCfDE5947F1A9D6c878CCD7F885400')
       assert.equal(owners.length, 8)
     })
     it('should get the correct list of owners based on safe address', async () => {
-      const owners = await getSafeOwners({
+      const owners = await getOwners({
         safeAddress: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
       })
       assert.equal(owners[0], '0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44')
@@ -108,7 +110,7 @@ describe('scripts / gnosis', () => {
         contractName: 'Unlock',
         contractAddress: unlockAddress,
         functionName: 'addLockTemplate',
-        functionArgs: [publicLockUpgraded.address, publicLockLatestVersion + 1],
+        functionArgs: [publicLockUpgraded.address, publicLockLatestVersion],
       }
       ;({ events } = await submitTx({
         tx: addLockTemplateTx,
@@ -215,7 +217,7 @@ describe('scripts / gnosis', () => {
     it('tx got correctly executed', async () => {
       // confirm a version has been added
       await confirmMultisigTx({ transactionId: previousTxCount.toNumber() })
-      const version = (await publicLockUpgraded.publicLockVersion()) + 1
+      const version = await publicLockUpgraded.publicLockVersion()
       assert.equal(
         await unlock.publicLockImpls(version),
         publicLockUpgraded.address
@@ -224,14 +226,13 @@ describe('scripts / gnosis', () => {
         await unlock.publicLockVersions(publicLockUpgraded.address),
         version
       )
-      // confirm the new version is set
+      // confirm the new version is correctly set
       await confirmMultisigTx({ transactionId: previousTxCount.toNumber() + 1 })
-      // const lock = await deployLock({ unlock })
-      // assert.equal(
-      //   await lock.publicLockVersion(),
-      //   version
-      // )
-      // assert.equal(await lock.sayHello(), 'hello world')
+      const { address } = await deployLock({ unlock })
+      const lock = await ethers.getContractAt('TestPublicLockUpgraded', address)
+
+      assert.equal(await lock.sayHello(), 'hello world')
+      assert.equal(await lock.publicLockVersion(), version)
     })
   })
 })

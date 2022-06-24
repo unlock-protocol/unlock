@@ -1,34 +1,16 @@
 const { ethers } = require('hardhat')
 const { impersonate } = require('./mainnet')
 
-// /unlockMultisigAddress
 const multisigABI = require('./ABIs/multisig.json')
-const proxyABI = require('./ABIs/proxy.json')
-
 const UNLOCK_MULTISIG_ADDRESS = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
-
-const getUnlockMultisig = async () => {
-  return await ethers.getContractAt(multisigABI, UNLOCK_MULTISIG_ADDRESS)
-}
-
-const getUnlockMultisigOwners = async () => {
-  const multisig = await getUnlockMultisig()
-  return await multisig.getOwners()
-}
-
-const encodeUpgradeTxData = async ({ proxyAddress, implementation }) => {
-  // build upgrade tx
-  const proxy = await ethers.getContractAt(proxyABI, proxyAddress)
-  const data = proxy.interface.encodeFunctionData('upgrade', [
-    proxyAddress,
-    implementation,
-  ])
-  return data
-}
+const MULTISIG_ADDRESS_OWNER = '0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44'
 
 // test helper to reach concensus on multisig
 const confirmMultisigTx = async ({ transactionId }) => {
-  const multisig = await getUnlockMultisig()
+  const multisig = await ethers.getContractAt(
+    multisigABI,
+    UNLOCK_MULTISIG_ADDRESS
+  )
   const signers = await multisig.getOwners()
   const txs = await Promise.all(
     signers.slice(1, 4).map(async (signerAddress) => {
@@ -62,8 +44,6 @@ const confirmMultisigTx = async ({ transactionId }) => {
 
 module.exports = {
   confirmMultisigTx,
-  getUnlockMultisig,
-  getUnlockMultisigOwners,
-  encodeUpgradeTxData,
   UNLOCK_MULTISIG_ADDRESS,
+  MULTISIG_ADDRESS_OWNER,
 }
