@@ -1,63 +1,56 @@
 const { ethers } = require('hardhat')
+const proxyABI = require('./ABIs/proxy.json')
 
-const {
-  getUnlockMultisig,
-  confirmMultisigTx,
-  encodeUpgradeTxData,
-  impersonate,
-} = require('../../test/helpers')
+const { confirmMultisigTx, impersonate } = require('../../test/helpers')
+
+const { getSafe, getOwners } = require('../multisig')
 
 // used to update contract implementation address in proxy admin using multisig
 async function main({ proxyAddress, proxyAdminAddress, implementation }) {
   // env settings
   const { chainId } = await ethers.provider.getNetwork()
   const isDev = chainId === 31337
-
   if (isDev) console.log('Dev mode ON')
 
-  // TODO: make possible to switch to DAO
-  const multisig = await getUnlockMultisig()
-  const owners = await multisig.getOwners()
-
   // get proper credentials
-  let issuer
+  const owners = await getOwners(chainId)
+  let signer
   if (isDev) {
     // impersonate multisig owner
-    issuer = await ethers.getSigner(owners[0])
+    signer = await ethers.getSigner(owners[0])
     await impersonate(owners[0])
   } else {
-    ;[issuer] = await ethers.getSigners()
+    ;[signer] = await ethers.getSigners()
   }
-
-  console.log(`Issuer: ${issuer.address}`)
+  console.log(`Signer: ${signer.address}`)
 
   // build upgrade tx
-  const encodedTxData = await encodeUpgradeTxData({
+  const { interface } = new ethers.Contract(proxyABI, proxyAddress)
+  const data = interface.encodeFunctionData('upgrade', [
     proxyAddress,
     implementation,
-  })
+  ])
 
-  // submit proxy upgrade tx
-  const tx = await multisig.connect(issuer).submitTransaction(
+  // submit proxy upgrade tx to proxyAdmin
+  const multisig = getSafe({ signer })
+  const tx = await multisig.submitTransaction(
     proxyAdminAddress,
     0, // ETH value
-    encodedTxData
+    data
   )
 
   // get tx id
   const { events, transactionHash } = await tx.wait()
-  const evt = events.find((v) => v.event === 'Confirmation')
-  const transactionId = evt.args[1]
+  const { transactionId } = events.find((v) => v.event === 'Submission')
 
   console.log(
-    `Upgrade submitted to multisig w transactionId : ${transactionId} (txid: ${transactionHash})`
+    `Upgrade submitted to multisig w transactionId : ${transactionId.toNumber()} (txid: ${transactionHash})`
   )
 
+  // make sure it doesnt revert
   if (isDev) {
-    // reach concensus
     await confirmMultisigTx({ transactionId })
   }
-  return transactionId
 }
 
 // execute as standalone
