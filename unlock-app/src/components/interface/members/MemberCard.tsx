@@ -80,14 +80,14 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         </div>
         <div className="col-span-full flex gap-2 justify-start lg:col-span-2 lg:justify-end">
           <Button
-            size="tiny"
+            size="small"
             variant="outlined-primary"
             disabled={expireAndRefundDisabled}
             onClick={onExpireAndRefund}
           >
             Expire & Refund
           </Button>
-          <Button size="tiny" variant="secondary" onClick={toggleMetada}>
+          <Button size="small" variant="secondary" onClick={toggleMetada}>
             <div className="flex items-center">
               <span>Show metadata</span>
               <ArrowDown />
