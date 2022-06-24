@@ -1,15 +1,16 @@
 const { ethers } = require('hardhat')
 
-const { reverts, ADDRESS_ZERO, purchaseKey } = require('../../helpers')
-const deployLocks = require('../../helpers/deployLocks')
-const getContractInstance = require('../../helpers/truffle-artifacts')
+const {
+  reverts,
+  ADDRESS_ZERO,
+  purchaseKey,
+  deployLock,
+} = require('../../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
 const Erc20TokenUriHook = artifacts.require('ERC20BalanceOfHook')
 const TestERC20 = artifacts.require('TestERC20')
 
 let lock
-let unlock
 let hook
 let token
 
@@ -20,9 +21,7 @@ contract('ERC20BalanceOfHook', (accounts) => {
   const keyOwner = accounts[3]
 
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
 
     // deploy some ERC20
     token = await TestERC20.new()
