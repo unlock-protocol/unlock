@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
+import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -55,43 +56,42 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       className="border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
     >
       <div className="grid grid-cols-7 gap-2 justify-between">
-        <div className="flex flex-col">
+        <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Lock name</span>
           <span className={styles.title}>{lockName}</span>
         </div>
-        <div className="flex flex-col">
+        <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Owner</span>
           <span className={styles.title}>
             {addressMinify(keyholderAddress)}
           </span>
         </div>
-        <div className="flex flex-col">
+        <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Token ID</span>
           <span className={styles.title}>{tokenId}</span>
         </div>
-        <div className="flex flex-col">
+        <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Expiration</span>
           <span className={styles.title}>{expiration}</span>
         </div>
-        <div className="flex flex-col">
+        <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Checked in At</span>
           <span className={styles.title}>-</span>
         </div>
-        <div className="col-span-2 flex gap-2 justify-end">
+        <div className="col-span-full flex gap-2 justify-start lg:col-span-2 lg:justify-end">
           <Button
             size="small"
             variant="outlined-primary"
             disabled={expireAndRefundDisabled}
             onClick={onExpireAndRefund}
           >
-            Expire and Refund
+            Expire & Refund
           </Button>
-          <Button
-            size="small"
-            variant="outlined-primary"
-            onClick={toggleMetada}
-          >
-            Show metadata
+          <Button size="tiny" variant="secondary" onClick={toggleMetada}>
+            <div className="flex items-center">
+              <span>Show metadata</span>
+              <ArrowDown />
+            </div>
           </Button>
         </div>
       </div>
