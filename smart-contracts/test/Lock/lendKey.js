@@ -1,47 +1,33 @@
-const { reverts } = require('../helpers/errors')
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const unlockContract = artifacts.require('Unlock.sol')
+const {
+  reverts,
+  ADDRESS_ZERO,
+  deployLock,
+  purchaseKeys,
+} = require('../helpers')
 
-let unlock
-let locks
 let lock
+let lockFree
+let lockSingleKey
 let tokenIds
 let keyOwners
 let accountApproved
 let keyManager
 
 contract('Lock / lendKey', (accounts) => {
-  before(async () => {
-    unlock = await getContractInstance(unlockContract)
-  })
-
   const from = accounts[0]
   keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   accountApproved = accounts[8]
   keyManager = accounts[9]
 
   beforeEach(async () => {
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
-    await lock.updateTransferFee(0) // disable the lend fee for this test
-    await locks['SINGLE KEY'].updateTransferFee(0) // disable the lend fee for this test
-    const tx = await lock.purchase(
-      [],
-      keyOwners,
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => []),
-      {
-        value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
-        from,
-      }
-    )
+    // deploy some locks
+    lock = await deployLock()
+    lockFree = await deployLock({ name: 'FREE' })
+    lockSingleKey = await deployLock({ name: 'SINGLE KEY' })
 
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    await lock.updateTransferFee(0) // disable the lend fee for this test
+    await lockSingleKey.updateTransferFee(0) // disable the lend fee for this test
+    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   describe('failures', () => {
@@ -196,7 +182,7 @@ contract('Lock / lendKey', (accounts) => {
   describe('when the lock is sold out', () => {
     it('should still allow the lend of keys', async () => {
       // first we create a lock with only 1 key
-      const tx = await locks['SINGLE KEY'].purchase(
+      const tx = await lockSingleKey.purchase(
         [],
         [keyOwners[0]],
         [ADDRESS_ZERO],
@@ -213,7 +199,7 @@ contract('Lock / lendKey', (accounts) => {
 
       // confirm that the lock is sold out
       await reverts(
-        locks['SINGLE KEY'].purchase(
+        lockSingleKey.purchase(
           [],
           [accounts[8]],
           [ADDRESS_ZERO],
@@ -228,27 +214,24 @@ contract('Lock / lendKey', (accounts) => {
       )
 
       // set default key owner as key manager
-      await locks['SINGLE KEY'].setKeyManagerOf(tokenId, accounts[1], {
+      await lockSingleKey.setKeyManagerOf(tokenId, accounts[1], {
         from: accounts[1],
       })
 
       // check ownership
-      assert.equal(
-        await locks['SINGLE KEY'].ownerOf.call(tokenId),
-        keyOwners[0]
-      )
+      assert.equal(await lockSingleKey.ownerOf.call(tokenId), keyOwners[0])
 
       // lend
-      await locks['SINGLE KEY'].lendKey(keyOwners[0], accounts[9], tokenId, {
+      await lockSingleKey.lendKey(keyOwners[0], accounts[9], tokenId, {
         from: keyOwners[0],
       })
 
-      assert.equal(await locks['SINGLE KEY'].ownerOf.call(tokenId), accounts[9])
+      assert.equal(await lockSingleKey.ownerOf.call(tokenId), accounts[9])
     })
   })
 
   it('can lend a FREE key', async () => {
-    const tx = await locks.FREE.purchase(
+    const tx = await lockFree.purchase(
       [],
       [accounts[1]],
       [ADDRESS_ZERO],
@@ -263,11 +246,11 @@ contract('Lock / lendKey', (accounts) => {
     )
     const { tokenId: newTokenId } = args
 
-    await locks.FREE.lendKey(accounts[1], accounts[2], newTokenId, {
+    await lockFree.lendKey(accounts[1], accounts[2], newTokenId, {
       from: accounts[1],
     })
-    assert.equal(await locks.FREE.ownerOf(newTokenId), accounts[2])
-    assert.equal(await locks.FREE.keyManagerOf(newTokenId), accounts[1])
+    assert.equal(await lockFree.ownerOf(newTokenId), accounts[2])
+    assert.equal(await lockFree.keyManagerOf(newTokenId), accounts[1])
   })
 
   describe('approvals with lent key', () => {
