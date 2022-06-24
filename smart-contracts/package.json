@@ -33,7 +33,7 @@
     "eslint": "8.8.0",
     "eslint-plugin-mocha": "10.0.5",
     "eth-gas-reporter": "0.2.25",
-    "eth-sig-util": "2.5.4",
+    "eth-sig-util": "3.0.1",
     "ethers": "5.5.4",
     "fs-extra": "10.0.1",
     "hardhat": "2.8.0",
