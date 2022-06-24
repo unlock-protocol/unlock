@@ -1,13 +1,21 @@
 const { task } = require('hardhat/config')
 
 task('gnosis:create', 'Create a Gnosis safe from a list of owners')
-  .addVariadicPositionalParam('owners', 'addresses of the owners')
+  .addOptionalVariadicPositionalParam('owners', 'addresses of the owners')
   .addOptionalParam('threshold', 'threshold for majority vote', '1')
   .addFlag('clone', 'use addresses from Unlock mainnet wallet', '1')
   .setAction(async ({ owners, threshold, clone }) => {
     // eslint-disable-next-line global-require
     const gnosisDeployer = require('../scripts/multisig/create')
     return await gnosisDeployer({ owners, threshold, clone })
+  })
+
+task('gnosis:transfer', 'transfer the contract ownership to a multisig')
+  .addParam('safeAddress', 'the address of the multisig contract')
+  .addParam('contractAddress', 'the address of the ownable contract')
+  .setAction(async ({ safeAddress, contractAddress }) => {
+    const transferOwnership = require('../scripts/multisig/transferOwnership')
+    await transferOwnership({ safeAddress, contractAddress })
   })
 
 task('gnosis:address', 'Get the address of a safe')

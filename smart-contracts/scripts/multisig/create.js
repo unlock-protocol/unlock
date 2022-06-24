@@ -3,26 +3,20 @@ const { SafeFactory } = require('@gnosis.pm/safe-core-sdk')
 const EthersAdapter = require('@gnosis.pm/safe-ethers-lib').default
 const getOwners = require('./owners')
 
-async function main({ owners, threshold = 4, clone }) {
-  if (!owners) {
-    throw new Error('GNOSIS SAFE SETUP > Missing owners.')
-  }
-  if (owners.length % 2 == 0) {
+async function main({ owners, threshold = 4 }) {
+  if (owners && owners.length % 2 == 0) {
     throw new Error('GNOSIS SAFE SETUP > Number of owners should be odd.')
   }
-  if (!threshold) {
-    throw new Error('GNOSIS SAFE SETUP > Missing threshold.')
-  }
-  if (owners.length < threshold) {
+  if (owners && owners.length < threshold) {
     throw new Error(
       'GNOSIS SAFE SETUP > Threshold is greater than number of owners.'
     )
   }
 
   // get mainnet owners if needed
-  if (clone) {
+  if (!owners) {
     const mainnetOwners = await getOwners({ chainId: 1 })
-    owners = [...owners, ...mainnetOwners]
+    owners = mainnetOwners
   }
 
   const [deployer] = await ethers.getSigners()
