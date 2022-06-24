@@ -7,7 +7,6 @@ import {
 } from '@radix-ui/react-avatar'
 import { MdExplore as ExploreIcon } from 'react-icons/md'
 import { BsTrashFill as CancelIcon } from 'react-icons/bs'
-import { BiMailSend as SendMailIcon } from 'react-icons/bi'
 import styled from 'styled-components'
 import {
   FaWallet as WalletIcon,
@@ -28,8 +27,6 @@ import { MAX_UINT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
-import { useStorageService } from '../../../utils/withStorageService'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface KeyBoxProps {
   tokenURI: string
@@ -151,8 +148,6 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
 
-  const storageService = useStorageService()
-
   const handleSignature = async () => {
     setError('')
     const payload = JSON.stringify({
@@ -227,26 +222,6 @@ const Key = ({ ownedKey, account, network }: Props) => {
     }
   }
 
-  const onSendQrCode = async () => {
-    if (!network) return
-    await storageService.loginPrompt({
-      walletService,
-      address: account!,
-      chainId: network,
-    })
-    const res = await storageService.sendKeyQrCodeViaEmail({
-      lockAddress: lock.address,
-      network,
-      tokenId: keyId,
-    })
-
-    if (res.message) {
-      ToastHelper.error(res.error)
-    } else {
-      ToastHelper.success('QR-code sent via email')
-    }
-  }
-
   const isAvailableOnOpenSea = [1, 4, 137].indexOf(network) > -1
   const baseCurrencySymbol =
     walletService.networks[network].baseCurrencySymbol ?? ''
@@ -280,31 +255,17 @@ const Key = ({ ownedKey, account, network }: Props) => {
       />
       {error && <Error>{error}</Error>}
       <div className="grid gap-2 pt-4">
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex items-center gap-2">
           {!isKeyExpired && (
-            <>
-              <Tooltip label="Scan QR code" tip="Scan QR code">
-                <button
-                  className={iconButtonClass}
-                  type="button"
-                  onClick={handleSignature}
-                >
-                  <QrCodeIcon />
-                </button>
-              </Tooltip>
-              <Tooltip
-                label="Send QR code via Email"
-                tip="Send QR code via Email"
+            <Tooltip label="Scan QR code" tip="Scan QR code">
+              <button
+                className={iconButtonClass}
+                type="button"
+                onClick={handleSignature}
               >
-                <button
-                  className={iconButtonClass}
-                  type="button"
-                  onClick={onSendQrCode}
-                >
-                  <SendMailIcon />
-                </button>
-              </Tooltip>
-            </>
+                <QrCodeIcon />
+              </button>
+            </Tooltip>
           )}
           <Tooltip label="Add to Wallet" tip="Add to Wallet">
             <button

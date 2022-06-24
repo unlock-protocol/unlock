@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import { Button } from '@unlock-protocol/ui'
+import React, { useState, useEffect, useContext } from 'react'
+import { Button, Tooltip } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
+import { TbQrcode as QrCode } from 'react-icons/tb'
+import { useStorageService } from '../../../utils/withStorageService'
+import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+import { WalletServiceContext } from '../../../utils/withWalletService'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -17,7 +21,7 @@ interface MemberCardProps {
   expandAllMetadata: boolean
   isLockManager?: boolean
   expireAndRefundDisabled?: boolean
-  metadata?: object
+  metadata?: { [key: string]: any }
 }
 
 const keysToIgnore = ['token', 'lockName', 'keyholderAddress', 'expiration']
@@ -32,8 +36,10 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   expireAndRefundDisabled = true,
   metadata = {},
 }) => {
+  const { network, account } = useContext(AuthenticationContext)
+  const walletService = useContext(WalletServiceContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
-
+  const storageService = useStorageService()
   const extraDataItems: [string, string][] = Object.entries(
     metadata || {}
   ).filter(([key]) => {
@@ -49,6 +55,22 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   }, [expandAllMetadata])
 
   const hasExtraData = extraDataItems?.length > 0
+
+  const onSendQrCode = async () => {
+    if (!network) return
+    await storageService.loginPrompt({
+      walletService,
+      address: account!,
+      chainId: network,
+    })
+    const email = await storageService.sendKeyQrCodeViaEmail({
+      lockAddress: metadata.lockAddress,
+      network,
+      tokenId,
+    })
+
+    console.log('email', email)
+  }
 
   return (
     <div
@@ -89,6 +111,16 @@ export const MemberCard: React.FC<MemberCardProps> = ({
               <ArrowDown />
             </div>
           </Button>
+          <Tooltip tip="Send QR-code via email" label="Send QR-code via email">
+            <Button
+              size="medium"
+              variant="primary"
+              className="h-full"
+              onClick={onSendQrCode}
+            >
+              <QrCode />
+            </Button>
+          </Tooltip>
         </div>
       </div>
       <div>
