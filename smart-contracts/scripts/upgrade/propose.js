@@ -2,10 +2,10 @@ const { ethers } = require('hardhat')
 
 const {
   getUnlockMultisig,
-  encodeUpgradeTxData,
   confirmMultisigTx,
-} = require('../../helpers/multisig')
-const { impersonate } = require('../../test/helpers/mainnet')
+  encodeUpgradeTxData,
+  impersonate,
+} = require('../../test/helpers')
 
 // used to update contract implementation address in proxy admin using multisig
 async function main({ proxyAddress, proxyAdminAddress, implementation }) {

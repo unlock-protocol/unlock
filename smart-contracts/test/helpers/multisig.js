@@ -1,9 +1,9 @@
 const { ethers } = require('hardhat')
+const { impersonate } = require('./mainnet')
 
 // /unlockMultisigAddress
-const multisigABI = require('../test/helpers/ABIs/multisig.json')
-const proxyABI = require('../test/helpers/ABIs/proxy.json')
-const { impersonate } = require('../test/helpers/mainnet')
+const multisigABI = require('./ABIs/multisig.json')
+const proxyABI = require('./ABIs/proxy.json')
 
 const UNLOCK_MULTISIG_ADDRESS = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
 
