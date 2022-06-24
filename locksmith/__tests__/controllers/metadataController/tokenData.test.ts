@@ -1,6 +1,5 @@
+import { ethers } from 'ethers'
 import request from 'supertest'
-import * as sigUtil from 'eth-sig-util'
-import * as ethJsUtil from 'ethereumjs-util'
 import { LockMetadata } from '../../../src/models/lockMetadata'
 import { KeyMetadata } from '../../../src/models/keyMetadata'
 import { addMetadata } from '../../../src/operations/userMetadataOperations'
@@ -13,38 +12,36 @@ const lockAddress = '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691'
 const lockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const keyOwner = '0xc66ef2e0d0edcce723b3fdd4307db6c5f0dda1b8'
 const weekInEthereumLockAddress = '0x95de5F777A3e283bFf0c47374998E10D8A2183C7'
-const privateKey = ethJsUtil.toBuffer(
+const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
-const keyHolderPrivateKey = ethJsUtil.toBuffer(
+const keyHolderWallet = new ethers.Wallet(
   '0xe5986c22698a3c1eb5f84455895ad6826fbdff7b82dbeee240bad0024469d93a'
 )
 
-const typedData = lockTypedData({
-  LockMetaData: {
-    address: lockAddress,
-    owner: lockOwner,
-    timestamp: Date.now(),
+const typedData = lockTypedData(
+  {
+    LockMetaData: {
+      address: lockAddress,
+      owner: lockOwner,
+      timestamp: Date.now(),
+    },
   },
-})
+  'LockMetaData'
+)
 
-const sig = sigUtil.signTypedData(privateKey, {
-  data: typedData,
-})
-
-const keyHolderStructuredData = lockTypedData({
-  LockMetaData: {
-    address: lockAddress,
-    owner: keyOwner,
-    timestamp: Date.now(),
+const keyHolderStructuredData = lockTypedData(
+  {
+    LockMetaData: {
+      address: lockAddress,
+      owner: keyOwner,
+      timestamp: Date.now(),
+    },
   },
-})
+  'LockMetaData'
+)
 
 const chain = 31337
-
-const keyHolderSignature = sigUtil.signTypedData(keyHolderPrivateKey, {
-  data: keyHolderStructuredData,
-})
 
 const mockOnChainLockOwnership = {
   getKeyOwner: jest.fn(() => {
@@ -86,7 +83,7 @@ jest.mock('../../../src/utils/keyData', () => {
   return jest.fn().mockImplementation(() => {
     return {
       get: jest.fn().mockResolvedValue({
-        owner: '0xabcd',
+        owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         expiration: 1567190711,
       }),
       openSeaPresentation: jest.fn().mockReturnValue({
@@ -126,7 +123,7 @@ describe('Requesting Token Data', () => {
     await addMetadata({
       chain,
       tokenAddress: lockAddress,
-      userAddress: '0xaBCD',
+      userAddress: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
       data: {
         protected: {
           hidden: 'metadata',
@@ -225,6 +222,14 @@ describe('Requesting Token Data', () => {
         it('returns the protected metadata', async () => {
           expect.assertions(2)
           mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(true))
+
+          const { domain, types, message } = typedData
+          const sig = await wallet._signTypedData(
+            domain,
+            types,
+            message['LockMetaData']
+          )
+
           const response = await request(app)
             .get(`/api/key/${lockAddress}/1`)
             .set('Authorization', `Bearer ${Base64.encode(sig)}`)
@@ -251,6 +256,12 @@ describe('Requesting Token Data', () => {
         it('returns the protected metadata', async () => {
           expect.assertions(2)
 
+          const { domain, types, message } = keyHolderStructuredData
+          const keyHolderSignature = await keyHolderWallet._signTypedData(
+            domain,
+            types,
+            message['LockMetaData']
+          )
           const response = await request(app)
             .get(`/api/key/${lockAddress}/1`)
             .set('Authorization', `Bearer ${Base64.encode(keyHolderSignature)}`)

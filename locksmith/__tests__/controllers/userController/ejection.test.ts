@@ -1,22 +1,14 @@
+import { ethers } from 'ethers'
 import request from 'supertest'
 
-import ethJsUtil = require('ethereumjs-util')
-import sigUtil = require('eth-sig-util')
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
 import models = require('../../../src/models')
 import UserOperations = require('../../../src/operations/userOperations')
 
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       User: [{ name: 'publicKey', type: 'address' }],
     },
     domain: {
@@ -25,6 +17,7 @@ function generateTypedData(message: any) {
     },
     primaryType: 'User',
     message,
+    messageKey,
   }
 }
 
@@ -54,7 +47,7 @@ describe('when ejecting an address', () => {
     it('returns 202', async () => {
       expect.assertions(1)
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0x00a7bd3ec661f15214f8a48dce017e27dd8e1b4b779aaf823d8eb74d8c960b95'
       )
 
@@ -64,11 +57,10 @@ describe('when ejecting an address', () => {
         },
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'user')
 
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+      const { domain, types } = typedData
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const emailAddress = 'existing@example.com'
       const userCreationDetails = {
@@ -93,7 +85,7 @@ describe('when ejecting an address', () => {
     it('returns 400', async () => {
       expect.assertions(1)
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xc7f80893d7a8eda620643280aedd684e87541555c9de450f70e11eb53c7cd02e'
       )
 
@@ -103,11 +95,10 @@ describe('when ejecting an address', () => {
         },
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'user')
 
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+      const { domain, types } = typedData
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .post('/users/0xef49773e0d59f607cea8c8be4ce87bd26fd8e208/eject')
@@ -122,7 +113,7 @@ describe('when ejecting an address', () => {
     it('returns 400', async () => {
       expect.assertions(1)
 
-      const privateKey = ethJsUtil.toBuffer(
+      const wallet = new ethers.Wallet(
         '0xa272d59fbefc1eb1564b5a0f7c603f645965f02e3175f08d40e5486a5dcebd1c'
       )
 
@@ -132,11 +123,10 @@ describe('when ejecting an address', () => {
         },
       }
 
-      const typedData = generateTypedData(message)
+      const typedData = generateTypedData(message, 'user')
 
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+      const { domain, types } = typedData
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const emailAddress = 'ejected_user@example.com'
       const userCreationDetails = {

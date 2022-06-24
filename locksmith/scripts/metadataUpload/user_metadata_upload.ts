@@ -1,27 +1,18 @@
-import * as sigUtil from 'eth-sig-util'
-import * as ethJsUtil from 'ethereumjs-util'
 import * as Base64 from '../../src/utils/base64'
+import { generateTypedSignature } from '../../src/utils/signature'
 
 const args = require('yargs').argv
-let request = require('request-promise-native')
-var fs = require('fs')
+const request = require('request-promise-native')
+const fs = require('fs')
 const resolve = require('path').resolve
-
-function generateSignature(privateKey: string, data: any) {
-  let pk = ethJsUtil.toBuffer(privateKey)
-
-  return sigUtil.signTypedData(pk, {
-    data,
-  })
-}
 
 async function updateMetadata(
   privateKey: string,
   metadata: any,
   endpoint: string
 ) {
-  let signature = generateSignature(privateKey, metadata)
-  let options = {
+  const signature = await generateTypedSignature(privateKey, metadata)
+  const options = {
     uri: endpoint,
     method: 'PUT',
     headers: {
@@ -33,16 +24,9 @@ async function updateMetadata(
   await request(options)
 }
 
-function generateUserMetadataPayload(message: any) {
+function generateUserMetadataPayload(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       UserMetaData: [],
     },
     domain: {
@@ -51,6 +35,7 @@ function generateUserMetadataPayload(message: any) {
     },
     primaryType: 'UserMetaData',
     message: message,
+    messageKey,
   }
 }
 
@@ -71,10 +56,10 @@ async function main(
 ) {
   const userAddress = '0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a'
   const endpoint = `${host}/api/key/${lockAddress}/user/${userAddress}`
-  var contents = fs.readFileSync(resolve(inputFile), 'utf8')
-  let message = JSON.parse(contents)
+  const contents = fs.readFileSync(resolve(inputFile), 'utf8')
+  const message = JSON.parse(contents)
 
-  let data = generateUserMetadataPayload(message)
+  const data = generateUserMetadataPayload(message, 'key')
   updateMetadata(privateKey, data, endpoint)
 }
 
@@ -82,10 +67,10 @@ async function main(
 //'/Users/akeem/projects/unlock/locksmith/scripts/data.json'
 //'http://localhost:8080'
 
-let privateKey = args.privateKey
-let lockAddress = args.lockAddress
-let host = args.host
-let inputFile = args.inputFile
+const privateKey = args.privateKey
+const lockAddress = args.lockAddress
+const host = args.host
+const inputFile = args.inputFile
 
 if (preflightCheck(privateKey, lockAddress, inputFile, host)) {
   main(privateKey, lockAddress, inputFile, host)

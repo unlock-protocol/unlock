@@ -12,7 +12,7 @@ const mockWeb3Service: { getLock: any } = {
     outstandingKeys: 1,
     name: 'a mighty fine lock',
     address: '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267',
-    owner: '0xb43333',
+    owner: '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
   }),
 }
 
@@ -64,7 +64,9 @@ describe('Lock Ownership', () => {
         },
       })
 
-      expect(lock.owner.toLowerCase()).toEqual('0xb43333')
+      expect(lock.owner.toLowerCase()).toEqual(
+        '0x70997970c51812dc3a010c7d01b50e0d17dc79c8'
+      )
     })
   })
 })

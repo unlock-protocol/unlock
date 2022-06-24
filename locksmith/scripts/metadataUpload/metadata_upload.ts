@@ -1,27 +1,18 @@
-import * as sigUtil from 'eth-sig-util'
-import * as ethJsUtil from 'ethereumjs-util'
 import * as Base64 from '../../src/utils/base64'
+import { generateTypedSignature } from '../../src/utils/signature'
 
 const args = require('yargs').argv
-let request = require('request-promise-native')
-var fs = require('fs')
+const request = require('request-promise-native')
+const fs = require('fs')
 const resolve = require('path').resolve
-
-function generateSignature(privateKey: string, data: any) {
-  let pk = ethJsUtil.toBuffer(privateKey)
-
-  return sigUtil.signTypedData(pk, {
-    data,
-  })
-}
 
 async function updateMetadata(
   privateKey: string,
   metadata: any,
   endpoint: string
 ) {
-  let signature = generateSignature(privateKey, metadata)
-  let options = {
+  const signature = await generateTypedSignature(privateKey, metadata)
+  const options = {
     uri: endpoint,
     method: 'PUT',
     headers: {
@@ -33,16 +24,9 @@ async function updateMetadata(
   await request(options)
 }
 
-function generateLockMetadataPayload(message: any) {
+function generateLockMetadataPayload(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       LockMetadata: [
         { name: 'name', type: 'string' },
         { name: 'description', type: 'string' },
@@ -56,19 +40,13 @@ function generateLockMetadataPayload(message: any) {
     },
     primaryType: 'LockMetadata',
     message: message,
+    messageKey,
   }
 }
 
-function generateKeyMetadataPayload(message: any) {
+function generateKeyMetadataPayload(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       KeyMetadata: [],
     },
     domain: {
@@ -77,6 +55,7 @@ function generateKeyMetadataPayload(message: any) {
     },
     primaryType: 'KeyMetadata',
     message: message,
+    messageKey,
   }
 }
 
@@ -96,14 +75,20 @@ async function main(
   host: string,
   scope: string
 ) {
-  var contents = fs.readFileSync(resolve(inputFile), 'utf8')
-  let message = JSON.parse(contents)
+  const contents = fs.readFileSync(resolve(inputFile), 'utf8')
+  const message = JSON.parse(contents)
 
   if (scope == 'default') {
-    let data = generateLockMetadataPayload(message)
+    const data = generateLockMetadataPayload(
+      { lockMetadata: message },
+      'lockMetadata'
+    )
     updateMetadata(privateKey, data, `${host}/api/key/${lockAddress}`)
   } else {
-    let data = generateKeyMetadataPayload(message)
+    const data = generateKeyMetadataPayload(
+      { keyMetadata: message },
+      'keyMetadata'
+    )
     updateMetadata(privateKey, data, `${host}/api/key/${lockAddress}/1`)
   }
 }
@@ -112,11 +97,11 @@ async function main(
 //'/Users/akeem/projects/unlock/locksmith/scripts/data.json'
 //'http://localhost:8080'
 
-let privateKey = args.privateKey
-let lockAddress = args.lockAddress
-let host = args.host
-let inputFile = args.inputFile
-let scope = args.scope
+const privateKey = args.privateKey
+const lockAddress = args.lockAddress
+const host = args.host
+const inputFile = args.inputFile
+const scope = args.scope
 
 if (preflightCheck(privateKey, lockAddress, inputFile, host)) {
   main(privateKey, lockAddress, inputFile, host, scope)

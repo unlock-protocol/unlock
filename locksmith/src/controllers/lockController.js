@@ -29,8 +29,8 @@ const lockSave = async (req, res) => {
   if (!databaseLock) {
     lock.chain = req.chain
     await createLock(lock)
-    return res.sendStatus(200)
   }
+  return res.sendStatus(200)
 }
 
 const lockGet = async (req, res) => {
@@ -39,7 +39,6 @@ const lockGet = async (req, res) => {
     req.params.lockAddress,
     `${req.protocol}://${req.headers.host}`
   )
-
   res.json(baseTokenData)
 }
 

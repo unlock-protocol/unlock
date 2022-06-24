@@ -1,13 +1,12 @@
+import { ethers } from 'ethers'
 import request from 'supertest'
-import * as sigUtil from 'eth-sig-util'
-import * as ethJsUtil from 'ethereumjs-util'
 import { LockMetadata } from '../../../src/models/lockMetadata'
 import { addMetadata } from '../../../src/operations/userMetadataOperations'
 
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
 
-const privateKey = ethJsUtil.toBuffer(
+const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 
@@ -15,21 +14,14 @@ const lockOwningAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const lockAddress = '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691'
 const chain = 31337
 
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       LockMetadata: [
         { name: 'address', type: 'address' },
-        { name: 'name', type: 'string' },
-        { name: 'description', type: 'string' },
-        { name: 'image', type: 'string' },
+        { name: 'owner', type: 'address' },
+        { name: 'timestamp', type: 'uint256' },
+        { name: 'owners', type: 'address[]' },
       ],
     },
     domain: {
@@ -38,6 +30,7 @@ function generateTypedData(message: any) {
     },
     primaryType: 'LockMetadata',
     message,
+    messageKey,
   }
 }
 
@@ -114,18 +107,24 @@ describe('Metadata Controller', () => {
 
         mockWeb3Service.isLockManager = jest.fn(() => Promise.resolve(true))
 
-        const typedData = generateTypedData({
-          LockMetaData: {
-            address: lockAddress,
-            owner: lockOwningAddress,
-            timestamp: Date.now(),
-            owners: ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'],
+        const typedData = generateTypedData(
+          {
+            LockMetaData: {
+              address: lockAddress,
+              owner: lockOwningAddress,
+              timestamp: Date.now(),
+              owners: ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'],
+            },
           },
-        })
+          'LockMetaData'
+        )
 
-        const sig = sigUtil.signTypedData(privateKey, {
-          data: typedData,
-        })
+        const { domain, types, message } = typedData
+        const sig = await wallet._signTypedData(
+          domain,
+          types,
+          message['LockMetaData']
+        )
 
         const response = await request(app)
           .get(`/api/key/${lockAddress}/keyHolderMetadata`)

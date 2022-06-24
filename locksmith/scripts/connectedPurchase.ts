@@ -1,21 +1,12 @@
-import * as sigUtil from 'eth-sig-util'
-import * as ethJsUtil from 'ethereumjs-util'
 import * as Base64 from '../src/utils/base64'
+import { generateTypedSignature } from '../src/utils/signature'
 
 // const args = require('yargs').argv
 const request = require('request-promise-native')
 
-function generatePurchasePayload(message: any) {
+function generatePurchasePayload(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
-
       PurchaseRequest: [
         { name: 'recipient', type: 'address' },
         { name: 'lock', type: 'address' },
@@ -29,15 +20,8 @@ function generatePurchasePayload(message: any) {
     },
     primaryType: 'PurchaseRequest',
     message: message,
+    messageKey,
   }
-}
-
-function generateSignature(privateKey: string, data: any) {
-  const pk = ethJsUtil.toBuffer(privateKey)
-
-  return sigUtil.signTypedData(pk, {
-    data,
-  })
 }
 
 const recipient = '0xd8fdbf2302b13d4cf00bac1a25efb786759c7788'
@@ -53,13 +37,13 @@ const message = {
   },
 }
 
-const typedData = generatePurchasePayload(message)
+const typedData = generatePurchasePayload(message, 'purchaseRequest')
 async function postPurchaseRequest(
   privateKey: string,
   metadata: any,
   endpoint: string
 ) {
-  const signature = generateSignature(privateKey, metadata)
+  const signature = await generateTypedSignature(privateKey, metadata)
   const params = {
     uri: endpoint,
     method: 'POST',

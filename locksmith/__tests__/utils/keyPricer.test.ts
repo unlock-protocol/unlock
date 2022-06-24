@@ -47,7 +47,10 @@ describe('KeyPricer', () => {
       it('returns the key price in USD', async () => {
         expect.assertions(1)
         mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
-        await keyPricer.keyPriceUSD('an address', 1) // default to Eth
+        await keyPricer.keyPriceUSD(
+          '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+          1
+        ) // default to Eth
         expect(spy).toBeCalledWith('ETH', '0.01')
       })
     })
@@ -57,7 +60,10 @@ describe('KeyPricer', () => {
     it('Generate price for a single quantity key', async () => {
       expect.assertions(3)
       mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
-      const pricing = await keyPricer.generate('0x', 100)
+      const pricing = await keyPricer.generate(
+        '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5',
+        100
+      )
 
       expect(pricing.keyPrice).toBe(1)
       expect(pricing.creditCardProcessing).toBe(31)
@@ -67,7 +73,11 @@ describe('KeyPricer', () => {
     it('Generate price for multiple quantity keys', async () => {
       expect.assertions(3)
       mockWeb3Service.getLock.mockResolvedValueOnce(standardLock)
-      const pricing = await keyPricer.generate('0x', 100, 100)
+      const pricing = await keyPricer.generate(
+        '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5',
+        100,
+        100
+      )
 
       expect(pricing.keyPrice).toBe(100)
       expect(pricing.unlockServiceFee).toBe(10.01)

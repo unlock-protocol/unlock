@@ -8,29 +8,29 @@ describe('transactionController', () => {
     await Transaction.bulkCreate([
       {
         transactionHash: '0x345546565',
-        sender: '0xcAFe',
-        recipient: '0xBeeFE',
+        sender: '0xdD2FD4581271e230360230F9337D5c0430Bf44C0',
+        recipient: '0x8626f6940E2eb28930eFb4CeF49B2d1F2C9C1199',
       },
       {
         transactionHash: '0x445546565',
-        sender: '0xcAFe',
-        recipient: '0xBeeFE',
+        sender: '0xdD2FD4581271e230360230F9337D5c0430Bf44C0',
+        recipient: '0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec',
       },
       {
         transactionHash: '0x545546565',
-        sender: '0xcAFe2',
-        recipient: '0xBeeFE',
+        sender: '0xcd3B766CCDd6AE721141F452C550Ca635964ce71',
+        recipient: '0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec',
       },
       {
         transactionHash: '0x645546565',
-        sender: '0xcAFe2',
-        recipient: '0xBEefb',
+        sender: '0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec',
+        recipient: '0xcd3B766CCDd6AE721141F452C550Ca635964ce71',
       },
       {
         transactionHash: '0x645546567',
-        sender: '0xcAFe2',
-        recipient: '0xBEefb',
-        for: '0xcAFe2',
+        sender: '0xcd3B766CCDd6AE721141F452C550Ca635964ce71',
+        recipient: '0xdD2FD4581271e230360230F9337D5c0430Bf44C0',
+        for: '0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec',
       },
     ])
   })
@@ -45,7 +45,7 @@ describe('transactionController', () => {
         expect.assertions(1)
         const response = await request(app)
           .get('/transactions')
-          .query({ sender: '0xd489fF3' })
+          .query({ sender: '0x9965507d1a55bcc2695c58ba16fb37d819b0a4dc' })
           .set('Accept', /json/)
         expect(response.body).toEqual({ transactions: [] })
       })
@@ -54,7 +54,7 @@ describe('transactionController', () => {
     describe('when the address has transactions', () => {
       it("returns the addresses' transactions", async () => {
         expect.assertions(1)
-        const sender = '0xcAFe'
+        const sender = '0xdd2fd4581271e230360230f9337d5c0430bf44c0'
 
         const response = await request(app)
           .get('/transactions')
@@ -68,11 +68,17 @@ describe('transactionController', () => {
     describe('when the address has transactions to the recipient', () => {
       it("returns the addresses' transactions", async () => {
         expect.assertions(1)
-        const sender = '0xcAFe2'
+        const sender = '0xcd3b766ccdd6ae721141f452c550ca635964ce71'
 
         const response = await request(app)
           .get('/transactions')
-          .query({ sender, recipient: ['0xBeeFE', '0x4565t'] })
+          .query({
+            sender,
+            recipient: [
+              '0x1cbd3b2770909d4e10f157cabc84c7264073c9ec',
+              '0x8626f6940e2eb28930efb4cef49b2d1f2c9c1199',
+            ],
+          })
           .set('Accept', /json/)
 
         expect(response.body.transactions.length).toEqual(1)
@@ -82,13 +88,13 @@ describe('transactionController', () => {
     describe('when filtering on for', () => {
       it("returns the addresses' transactions", async () => {
         expect.assertions(2)
-        const sender = '0xcAFe2'
+        const sender = '0xcd3B766CCDd6AE721141F452C550Ca635964ce71'
 
         const response = await request(app)
           .get('/transactions')
           .query({
             sender,
-            for: '0xcAFe2',
+            for: '0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec',
           })
           .set('Accept', /json/)
 
@@ -105,8 +111,11 @@ describe('transactionController', () => {
         const response = await request(app)
           .get('/transactions')
           .query({
-            recipient: ['0xBeeFB', '0xBeeFB'],
-            for: '0xcAFe2',
+            recipient: [
+              '0xdD2FD4581271e230360230F9337D5c0430Bf44C0',
+              '0xdD2FD4581271e230360230F9337D5c0430Bf44C0',
+            ],
+            for: '0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec',
           })
           .set('Accept', /json/)
 
@@ -131,16 +140,20 @@ describe('transactionController', () => {
           .set('Accept', /json/)
           .send({
             transactionHash: '0xsdbegjkbg,egf',
-            sender: '0xSDgErGR',
-            recipient: '0xSdaG433r',
+            sender: '0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec',
+            recipient: '0xdD2FD4581271e230360230F9337D5c0430Bf44C0',
             data: transactionData,
             chain: 42,
           })
 
         const record = await Transaction.findOne({
-          where: { sender: '0xSDgErGR', recipient: '0xSdaG433r', chain: 42 },
+          where: {
+            sender: '0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec',
+            recipient: '0xdD2FD4581271e230360230F9337D5c0430Bf44C0',
+            chain: 42,
+          },
         })
-        expect(record.sender).toBe('0xSDgErGR')
+        expect(record.sender).toBe('0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec')
         expect(record.data).toEqual(transactionData)
         expect(response.statusCode).toBe(202)
       })
@@ -154,8 +167,8 @@ describe('transactionController', () => {
           .set('Accept', /json/)
           .send({
             transactionHash: '0x345546565',
-            sender: '0xcAFe',
-            recipient: '0xBeeFE',
+            sender: '0x1CBd3b2770909D4e10f157cABC84C7264073C9Ec',
+            recipient: '0xdD2FD4581271e230360230F9337D5c0430Bf44C0',
           })
 
         expect(response.statusCode).toBe(202)

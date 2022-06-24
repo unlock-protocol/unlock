@@ -88,7 +88,7 @@ describe('userMetadataOperations', () => {
 
         const metaData = await getMetadata(
           '0x720b9F6D572C3CA4689E93CF029B40569c6b40e8',
-          '0xabbc'
+          '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
         )
         const result = await metaData
         expect(result).toBe(null)
