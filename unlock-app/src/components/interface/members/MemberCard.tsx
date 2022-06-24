@@ -55,7 +55,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       data-testid="member-card"
       className="border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
     >
-      <div className="grid grid-cols-7 gap-2 justify-between">
+      <div className="grid grid-cols-6 gap-2 justify-between">
         <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Lock name</span>
           <span className={styles.title}>{lockName}</span>
@@ -73,10 +73,6 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Expiration</span>
           <span className={styles.title}>{expiration}</span>
-        </div>
-        <div className="col-span-full	flex flex-col md:col-span-1">
-          <span className={styles.description}>Checked in At</span>
-          <span className={styles.title}>-</span>
         </div>
         <div className="col-span-full flex gap-2 justify-start lg:col-span-2 lg:justify-end">
           <Button
