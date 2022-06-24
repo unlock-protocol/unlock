@@ -278,7 +278,7 @@ contract('Lock / lendKey', (accounts) => {
         lock.transferFrom(accounts[7], accounts[9], tokenIds[0], {
           from: approvedUser,
         }),
-        'UNAUTHORIZED'
+        'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
   })

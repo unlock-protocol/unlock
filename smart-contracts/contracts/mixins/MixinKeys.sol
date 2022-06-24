@@ -98,10 +98,11 @@ contract MixinKeys is
   internal
   view
   {
+    address realKeyOwner = keyManagerOf[_tokenId] == address(0) ? _ownerOf[_tokenId] : keyManagerOf[_tokenId];
     if(
       !_isKeyManager(_tokenId, msg.sender)
       && approved[_tokenId] != msg.sender
-      && !isApprovedForAll(_ownerOf[_tokenId], msg.sender)
+      && !isApprovedForAll(realKeyOwner, msg.sender)
     ) {
       revert ONLY_KEY_MANAGER_OR_APPROVED();
     }
