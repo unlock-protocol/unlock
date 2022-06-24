@@ -61,7 +61,7 @@ const render = (component: any) => {
 describe('MetadataTable', () => {
   describe('MetadataTable component', () => {
     it('renders members cards correctly', () => {
-      expect.assertions(2)
+      expect.assertions(1)
 
       const { container } = render(
         <MetadataTable
