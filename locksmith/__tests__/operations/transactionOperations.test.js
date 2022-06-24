@@ -20,7 +20,7 @@ describe('lockOperations', () => {
       expect.assertions(6)
       const transactionHash =
         '0x7d6289db59c3434b6a034b4f211be52ca34f05e2aa856fc3e69b8af101355842'
-      const sender = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
+      const sender = '0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
       const recipient = '0xca750f9232c1c38e34d27e77534e1631526ec99e'
       const chain = 31337
       Transaction.findOrCreate = jest.fn((query) => {
@@ -29,7 +29,7 @@ describe('lockOperations', () => {
         })
         expect(query.defaults.transactionHash).toEqual(transactionHash)
         expect(query.defaults.sender).toEqual(
-          '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
+          '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5'
         )
         expect(query.defaults.recipient).toEqual(
           '0xCA750f9232C1c38e34D27e77534e1631526eC99e'
@@ -50,10 +50,10 @@ describe('lockOperations', () => {
   describe('getTransactionsByFilter', () => {
     it('should get the list of transactions by that sender after having checksummed the address', async () => {
       expect.assertions(2)
-      const sender = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
+      const sender = '0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
       Transaction.findAll = jest.fn((query) => {
         expect(query.where.sender[Op.eq]).toEqual(
-          '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
+          '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5'
         )
       })
       await getTransactionsByFilter({ sender })
@@ -63,10 +63,10 @@ describe('lockOperations', () => {
     describe('when passed a recipient filter', () => {
       it('only returns transactions for the appropriate recipient', async () => {
         expect.assertions(2)
-        const sender = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
+        const sender = '0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
         Transaction.findAll = jest.fn((query) => {
           expect(query.where.sender[Op.eq]).toEqual(
-            '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
+            '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5'
           )
         })
         await getTransactionsByFilter({
@@ -78,7 +78,7 @@ describe('lockOperations', () => {
             recipient: {
               [Op.in]: ['0xCA750f9232C1c38e34D27e77534e1631526eC99e'],
             },
-            sender: { [Op.eq]: '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5' },
+            sender: { [Op.eq]: '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5' },
           },
         })
       })
@@ -87,7 +87,7 @@ describe('lockOperations', () => {
     describe('when passed a createdAfter value', () => {
       it('should only return transactions created after that date', async () => {
         expect.assertions(1)
-        const sender = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
+        const sender = '0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
         const timestamp = 1573742842379
         Transaction.findAll = jest.fn(() => {})
         await getTransactionsByFilter({
@@ -100,7 +100,7 @@ describe('lockOperations', () => {
             recipient: {
               [Op.in]: ['0xCA750f9232C1c38e34D27e77534e1631526eC99e'],
             },
-            sender: { [Op.eq]: '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5' },
+            sender: { [Op.eq]: '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5' },
             createdAt: {
               [Op.gte]: new Date(timestamp),
             },
