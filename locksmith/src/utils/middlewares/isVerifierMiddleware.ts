@@ -3,7 +3,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import { RequestHandler } from 'express-serve-static-core'
 import Normalizer from '../normalizer'
 import { logger } from '@sentry/utils'
-import VerifierOperations from '../../operations/verifierOperations'
+import { Verifier } from '../../models/verifier'
 
 export const isVerifierMiddleware: RequestHandler = async (req, res, next) => {
   try {
@@ -13,11 +13,13 @@ export const isVerifierMiddleware: RequestHandler = async (req, res, next) => {
 
     let isLockManager = false
 
-    const isVerifier = await VerifierOperations.isVerifier(
-      lockAddress,
-      address,
-      network
-    )
+    const isVerifier = await Verifier.findOne({
+      where: {
+        lockAddress,
+        address,
+        network,
+      },
+    })
 
     if (!isVerifier) {
       const web3Service = new Web3Service(networks)

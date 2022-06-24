@@ -171,10 +171,15 @@ export const isKeyOwnerOrLockVerifier = async ({
   })
 
   const keyOwner = await web3Service.ownerOf(lockAddress, keyId, network)
+  const isLockManager = await web3Service.isLockManager(
+    lockAddress,
+    userAddress,
+    network
+  )
 
   const keyOwnerAddress = Normalizer.ethereumAddress(keyOwner)
 
   const isKeyOwner = keyOwnerAddress === loggedUserAddress
 
-  return isVerifier?.id || isKeyOwner
+  return isVerifier?.id || isKeyOwner || isLockManager
 }
