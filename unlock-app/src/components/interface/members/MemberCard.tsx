@@ -80,7 +80,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         </div>
         <div className="col-span-full flex gap-2 justify-start lg:col-span-2 lg:justify-end">
           <Button
-            size="small"
+            size="tiny"
             variant="outlined-primary"
             disabled={expireAndRefundDisabled}
             onClick={onExpireAndRefund}
