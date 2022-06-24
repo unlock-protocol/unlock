@@ -1,23 +1,14 @@
 const { ethers } = require('hardhat')
 const { assert } = require('chai')
-const { reverts } = require('../helpers/errors')
-const deployLocks = require('../helpers/deployLocks')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO, purchaseKey } = require('../helpers')
-
-let unlock
-let locks
+const { deployLock, reverts, ADDRESS_ZERO, purchaseKey } = require('../helpers')
 
 contract('Lock / maxKeysPerAddress', (accounts) => {
   let keyOwner = accounts[1]
   let lock
 
-  beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+  before(async () => {
+    lock = await deployLock()
   })
 
   it('default to 1', async () => {
@@ -52,7 +43,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
 
   describe('enforcing the number of keys per address', () => {
     let tokenId
-    beforeEach(async () => {
+    before(async () => {
       ;({ tokenId } = await purchaseKey(lock, keyOwner))
     })
 
@@ -103,7 +94,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
     it('prevent user from transferring a key with someone who has more keys than allowed', async () => {
       await lock.purchase(
         [],
-        [accounts[9]],
+        [accounts[8]],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -112,7 +103,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
         }
       )
       await reverts(
-        lock.transfer(tokenId, accounts[9], 1000, {
+        lock.transfer(tokenId, accounts[8], 1000, {
           from: keyOwner,
         }),
         'MAX_KEYS'

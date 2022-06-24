@@ -1,11 +1,8 @@
 const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO, reverts, deployERC20 } = require('../helpers')
+const { deployLock, ADDRESS_ZERO, reverts, deployERC20 } = require('../helpers')
 
-const Unlock = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
 const {
   ZERO_ADDRESS,
   MAX_UINT256,
@@ -19,7 +16,6 @@ const scenarios = [false, true]
 contract('Lock / setReferrerFee', (accounts) => {
   let lock
   let dai
-  let unlock
   let referrer
   let lockOwner
   let keyOwner
@@ -42,10 +38,8 @@ contract('Lock / setReferrerFee', (accounts) => {
           from: lockOwner,
         })
 
-        // get locks
-        unlock = await getContractInstance(Unlock)
-        const locks = await deployLocks(unlock, accounts[0], tokenAddress)
-        lock = locks.FIRST
+        // deploy a lock
+        lock = await deployLock({ tokenAddress })
         await lock.setMaxKeysPerAddress(10)
 
         keyPrice = await lock.keyPrice()

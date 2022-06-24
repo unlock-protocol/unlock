@@ -1,21 +1,13 @@
 const BigNumber = require('bignumber.js')
-const { assert } = require('chai')
-const deployLocks = require('../helpers/deployLocks')
-const { purchaseKeys, ADDRESS_ZERO } = require('../helpers')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
+const { deployLock, purchaseKeys, ADDRESS_ZERO } = require('../helpers')
 
 let lock
-let unlock
 let tokenIds
 
 contract('Lock / owners', (accounts) => {
   const keyOwners = accounts.slice(1, 6)
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
@@ -117,7 +109,7 @@ contract('Lock / owners', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: lock.params.keyPrice.toString(),
+          value: await lock.keyPrice(),
           from: keyOwners[3],
         }
       )

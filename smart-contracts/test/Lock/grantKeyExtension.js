@@ -1,14 +1,7 @@
 const { ethers } = require('hardhat')
-const { reverts } = require('../helpers/errors')
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
+const { deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
 let lock
-let locks
 let tx
 
 contract('Lock / grantKeyExtension', (accounts) => {
@@ -22,9 +15,8 @@ contract('Lock / grantKeyExtension', (accounts) => {
     const blockNumber = await ethers.provider.getBlockNumber()
     const latestBlock = await ethers.provider.getBlock(blockNumber)
     validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, lockCreator)
-    lock = locks.FIRST
+
+    lock = await deployLock({ from: lockCreator })
 
     // the lock creator is assigned the KeyGranter role by default
     tx = await lock.grantKeys(
