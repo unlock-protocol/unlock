@@ -11,25 +11,25 @@ let publicLock = {
 }
 
 module.exports = {
-  FIRST: Object.assign({}, publicLock, {}),
-  SECOND: Object.assign({}, publicLock, {}),
-  'SINGLE KEY': Object.assign({}, publicLock, {
+  FIRST: { ...publicLock },
+  SECOND: { ...publicLock },
+  'SINGLE KEY': {
+    ...publicLock,
     maxNumberOfKeys: 1,
-  }),
-  OWNED: Object.assign({}, publicLock, {}),
-  NAMED: Object.assign({}, publicLock, {
-    lockName: 'Custom Named Lock',
-  }),
-  FREE: Object.assign({}, publicLock, {
-    keyPrice: 0,
-  }),
-  SHORT: Object.assign({}, publicLock, {
+  },
+  OWNED: { ...publicLock },
+  NAMED: { ...publicLock, lockName: 'Custom Named Lock' },
+  FREE: { ...publicLock, keyPrice: 0 },
+  SHORT: {
+    ...publicLock,
     expirationDuration: 5, // 5 seconds
-  }),
-  ERC20: Object.assign({}, publicLock, {
+  },
+  ERC20: {
+    ...publicLock,
     isErc20: true, // indicates the test should deploy a test token
-  }),
-  NON_EXPIRING: Object.assign({}, publicLock, {
+  },
+  NON_EXPIRING: {
+    ...publicLock,
     expirationDuration: MAX_UINT, // indicates that the lock should not expired
-  }),
+  },
 }

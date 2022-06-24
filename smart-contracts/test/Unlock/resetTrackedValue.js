@@ -1,9 +1,10 @@
+const {
+  deployContracts,
+  deployLock,
+  reverts,
+  purchaseKey,
+} = require('../helpers')
 const { ethers } = require('hardhat')
-const { reverts, purchaseKey } = require('../helpers')
-const deployLocks = require('../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
 
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
@@ -12,9 +13,8 @@ let lock
 
 contract('Unlock / resetTrackedValue', (accounts) => {
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    ;({ unlock } = await deployContracts())
+    lock = await deployLock({ unlock })
     await purchaseKey(lock, accounts[1])
   })
 

@@ -1,16 +1,14 @@
+const {
+  reverts,
+  deployERC20,
+  deployLock,
+  ADDRESS_ZERO,
+  getBalance,
+} = require('../helpers')
 const { ethers } = require('hardhat')
-const { reverts } = require('../helpers/errors')
-const { deployERC20 } = require('../helpers')
-const deployLocks = require('../helpers/deployLocks')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const { getBalance } = require('../helpers')
-
-const unlockContract = artifacts.require('Unlock.sol')
 
 const scenarios = [false, true]
-let unlock
-let locks
+
 let testToken
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
@@ -29,10 +27,7 @@ contract('Lock / purchase multiple keys at once', (accounts) => {
         })
 
         tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
-
-        unlock = await getContractInstance(unlockContract)
-        locks = await deployLocks(unlock, accounts[0], tokenAddress)
-        lock = locks.FIRST
+        lock = await deployLock({ tokenAddress })
 
         // Approve spending
         await testToken.approve(

@@ -1,17 +1,14 @@
 const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+const { ADDRESS_ZERO, MAX_UINT, deployContracts } = require('../helpers')
 const PublicLock = artifacts.require('PublicLock')
-const getContractInstance = require('../helpers/truffle-artifacts')
 const createLockHash = require('../helpers/createLockCalldata')
-
-const unlockContract = artifacts.require('Unlock')
 
 let unlock
 
 contract('Lock / createLockWithInfiniteKeys', () => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
+    ;({ unlock } = await deployContracts())
   })
 
   describe('Create a Lock with infinite keys', () => {

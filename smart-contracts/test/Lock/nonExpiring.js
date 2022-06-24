@@ -3,28 +3,16 @@ const { time } = require('@openzeppelin/test-helpers')
 const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const deployLocks = require('../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { purchaseKey, MAX_UINT, getBalance } = require('../helpers')
-
-let lock
-let locks
-let unlock
+const { deployLock, purchaseKey, getBalance, MAX_UINT } = require('../helpers')
 
 contract('Lock / non expiring', (accounts) => {
+  let lock
   const keyOwner = accounts[2]
   let keyPrice
   let tokenId
 
-  before(async () => {
-    unlock = await getContractInstance(unlockContract)
-  })
-
   beforeEach(async () => {
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.NON_EXPIRING
+    lock = await deployLock({ name: 'NON_EXPIRING' })
     keyPrice = await lock.keyPrice()
     ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })

@@ -1,14 +1,13 @@
-const { ethers } = require('hardhat')
-const { reverts } = require('../helpers/errors')
 const { BN, time } = require('@openzeppelin/test-helpers')
-const { deployERC20 } = require('../helpers')
-const deployLocks = require('../helpers/deployLocks')
-const { getBalance } = require('../helpers')
-const getContractInstance = require('../helpers/truffle-artifacts')
+const {
+  getBalance,
+  ADDRESS_ZERO,
+  deployLock,
+  reverts,
+  deployERC20,
+} = require('../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-
+const { ethers } = require('hardhat')
 const keyPrice = new BN(ethers.utils.parseEther('0.01').toString())
 const gasRefundAmount = new BN(ethers.utils.parseEther('0.001').toString())
 
@@ -24,8 +23,6 @@ const gasRefund = async (tx) => {
 }
 
 contract('Lock / GasRefund', (accounts) => {
-  let unlock
-  let locks
   let lock
   let tokenAddress = ADDRESS_ZERO
   let userBalanceBefore
@@ -37,8 +34,6 @@ contract('Lock / GasRefund', (accounts) => {
       isErc20 ? 'ERC20' : 'ETH'
     }`, () => {
       beforeEach(async () => {
-        unlock = await getContractInstance(unlockContract)
-
         testToken = await deployERC20(accounts[0])
         // Mint some tokens for testing
         await testToken.mint(accounts[2], ethers.utils.parseEther('100'), {
@@ -47,8 +42,7 @@ contract('Lock / GasRefund', (accounts) => {
 
         // deploy lock w ERC20
         tokenAddress = isErc20 ? testToken.address : ADDRESS_ZERO
-        locks = await deployLocks(unlock, accounts[0], tokenAddress)
-        lock = locks.FIRST
+        lock = await deployLock({ tokenAddress })
 
         // Approve spending
         await testToken.approve(
