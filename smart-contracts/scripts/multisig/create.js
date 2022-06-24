@@ -3,9 +3,6 @@ const { SafeFactory } = require('@gnosis.pm/safe-core-sdk')
 const EthersAdapter = require('@gnosis.pm/safe-ethers-lib').default
 const getOwners = require('./owners')
 
-const UNLOCK_MAINNET_MULTISIG_ADDRESS =
-  '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
-
 async function main({ owners, threshold, clone }) {
   if (!owners) {
     throw new Error('GNOSIS SAFE SETUP > Missing owners.')
@@ -24,10 +21,7 @@ async function main({ owners, threshold, clone }) {
 
   // get mainnet owners if needed
   if (clone) {
-    const mainnetOwners = await getOwners({
-      chainId: 1,
-      safeAddress: UNLOCK_MAINNET_MULTISIG_ADDRESS,
-    })
+    const mainnetOwners = await getOwners({ chainId: 1 })
     owners = [...owners, ...mainnetOwners]
   }
 
