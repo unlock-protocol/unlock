@@ -24,7 +24,7 @@ async function updateMetadata(
   await request(options)
 }
 
-function generateLockMetadataPayload(message: any) {
+function generateLockMetadataPayload(message: any, messageKey: string) {
   return {
     types: {
       LockMetadata: [
@@ -40,10 +40,11 @@ function generateLockMetadataPayload(message: any) {
     },
     primaryType: 'LockMetadata',
     message: message,
+    messageKey,
   }
 }
 
-function generateKeyMetadataPayload(message: any) {
+function generateKeyMetadataPayload(message: any, messageKey: string) {
   return {
     types: {
       KeyMetadata: [],
@@ -54,6 +55,7 @@ function generateKeyMetadataPayload(message: any) {
     },
     primaryType: 'KeyMetadata',
     message: message,
+    messageKey,
   }
 }
 
@@ -77,10 +79,16 @@ async function main(
   const message = JSON.parse(contents)
 
   if (scope == 'default') {
-    const data = generateLockMetadataPayload(message)
+    const data = generateLockMetadataPayload(
+      { lockMetadata: message },
+      'lockMetadata'
+    )
     updateMetadata(privateKey, data, `${host}/api/key/${lockAddress}`)
   } else {
-    const data = generateKeyMetadataPayload(message)
+    const data = generateKeyMetadataPayload(
+      { keyMetadata: message },
+      'keyMetadata'
+    )
     updateMetadata(privateKey, data, `${host}/api/key/${lockAddress}/1`)
   }
 }

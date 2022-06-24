@@ -10,8 +10,8 @@ const chain = 31337
 const testLockDetails = {
   chain,
   name: 'Test Lock',
-  address: '0x21cC9C438D9751A3225496F6FD1F1215C7bd5D83',
-  owner: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
+  address: '0xab7c74abC0C4d48d1bdad5DCB26153FC8780f83E',
+  owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
 }
 
 const ownedLocks = [
@@ -123,7 +123,7 @@ describe('lockController', () => {
           .get(`/${owner}/locks`)
           .set('Accept', /json/)
 
-        expect(response.body.locks).toHaveLength(2)
+        expect(response.body.locks).toHaveLength(3)
 
         expect(response.body.locks).toEqual(
           expect.arrayContaining([
@@ -151,7 +151,7 @@ describe('lockController', () => {
       it('returns an empty collection', async () => {
         expect.assertions(1)
         const response = await request(app)
-          .get('/0xCA750f9232C1c38e34D27e77534e1631526eC99e/locks')
+          .get('/0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2/locks')
           .set('Accept', /json/)
         expect(response.body).toEqual({ locks: [] })
       })
