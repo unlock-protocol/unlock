@@ -3,7 +3,7 @@ const { SafeFactory } = require('@gnosis.pm/safe-core-sdk')
 const EthersAdapter = require('@gnosis.pm/safe-ethers-lib').default
 const getOwners = require('./owners')
 
-async function main({ owners, threshold, clone }) {
+async function main({ owners, threshold = 4, clone }) {
   if (!owners) {
     throw new Error('GNOSIS SAFE SETUP > Missing owners.')
   }
