@@ -15517,7 +15517,7 @@ __metadata:
     dotenv: 16.0.1
     eslint: 8.16.0
     eth-sig-util: 3.0.1
-    ethereumjs-util: ^7.1.4
+    ethereumjs-util: 7.1.5
     ethers: 5.6.8
     file-saver: 2.0.5
     graphql: 15.8.0
@@ -27299,6 +27299,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ethereumjs-util@npm:7.1.5, ethereumjs-util@npm:^7.1.5":
+  version: 7.1.5
+  resolution: "ethereumjs-util@npm:7.1.5"
+  dependencies:
+    "@types/bn.js": ^5.1.0
+    bn.js: ^5.1.2
+    create-hash: ^1.1.2
+    ethereum-cryptography: ^0.1.3
+    rlp: ^2.2.4
+  checksum: 27a3c79d6e06b2df34b80d478ce465b371c8458b58f5afc14d91c8564c13363ad336e6e83f57eb0bd719fde94d10ee5697ceef78b5aa932087150c5287b286d1
+  languageName: node
+  linkType: hard
+
 "ethereumjs-util@npm:^4.3.0":
   version: 4.5.1
   resolution: "ethereumjs-util@npm:4.5.1"
@@ -27364,19 +27377,6 @@ __metadata:
     ethereum-cryptography: ^0.1.3
     rlp: ^2.2.4
   checksum: ccfd9208bfe9205af124a9138c5a90db46cd2fcacf4b80f17f67915381c03253aa2fb90ead9e0b53d9a6fcfeed4310e5dfa8dc516ca2846d16baf81d605cd8c2
-  languageName: node
-  linkType: hard
-
-"ethereumjs-util@npm:^7.1.5":
-  version: 7.1.5
-  resolution: "ethereumjs-util@npm:7.1.5"
-  dependencies:
-    "@types/bn.js": ^5.1.0
-    bn.js: ^5.1.2
-    create-hash: ^1.1.2
-    ethereum-cryptography: ^0.1.3
-    rlp: ^2.2.4
-  checksum: 27a3c79d6e06b2df34b80d478ce465b371c8458b58f5afc14d91c8564c13363ad336e6e83f57eb0bd719fde94d10ee5697ceef78b5aa932087150c5287b286d1
   languageName: node
   linkType: hard
 
