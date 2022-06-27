@@ -186,7 +186,7 @@ describe('sign endpoint', () => {
     expect(loginResponse.status).toBe(200)
 
     const response = await request(app)
-      .post(`/v2/api/ticket/${network}/${lockAddress}/${wrongTokenId}/email`)
+      .post(`/v2/api/ticket/${network}/${wrongLockAddress}/${tokenId}/email`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(response.status).toBe(401)
