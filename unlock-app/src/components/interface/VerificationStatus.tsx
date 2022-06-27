@@ -64,6 +64,11 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
     return <InvalidKey reason="This user does not have a key!" />
   }
 
+  // The current owner does not match the signed owner
+  if (!unlockKey) {
+    return <InvalidKey reason="The current owner does not match the signature!" />
+  
+
   if (showLogin && !viewer) {
     return <LoginPrompt />
   }

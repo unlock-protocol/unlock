@@ -40,4 +40,13 @@ router.post(
   }
 )
 
+router.get(
+  '/:network/:lockAddrress/:tokenId/qr',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  (req, res) => {
+    ticketsController.getQrCode(req, res)
+  }
+)
+
 module.exports = router

@@ -152,7 +152,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
     setError('')
     const payload = JSON.stringify({
       network,
-      account,
+      account, // TODO: MUST BE THE OWNER ADDRESS
       lockAddress: lock.address,
       timestamp: Date.now(),
     })
