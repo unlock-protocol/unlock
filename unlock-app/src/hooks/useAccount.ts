@@ -56,14 +56,17 @@ export const useAccount = (address: string, network: number) => {
     baseUrl: string
   ) => {
     const storageService = new StorageService(config.services.storage.host)
-    const typedData = generateTypedData({
-      'Connect Stripe': {
-        lockAddress,
-        chain: network,
-        lockManager: address,
-        baseUrl,
+    const typedData = generateTypedData(
+      {
+        'Connect Stripe': {
+          lockAddress,
+          chain: network,
+          lockManager: address,
+          baseUrl,
+        },
       },
-    })
+      'Connect Stripe'
+    )
 
     const message = `I want to connect Stripe to the lock ${lockAddress}`
     const signature = await walletService.signMessage(message, 'personal_sign')
@@ -269,13 +272,16 @@ export const useAccount = (address: string, network: number) => {
     icon: string
   ) => {
     const storageService = new StorageService(config.services.storage.host)
-    const typedData = generateTypedData({
-      'Update Icon': {
-        lockAddress,
-        chain: network,
-        lockManager: address,
+    const typedData = generateTypedData(
+      {
+        'Update Icon': {
+          lockAddress,
+          chain: network,
+          lockManager: address,
+        },
       },
-    })
+      'Update Icon'
+    )
 
     const message = `I want to change the image for ${lockAddress}`
     const signature = await walletService.signMessage(message, 'personal_sign')
