@@ -82,7 +82,9 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     }
   }
 
-  const hasEmailMetadata = extraDataItems.map(([key]) => key).includes('email')
+  const hasEmailMetadata = extraDataItems
+    .map(([key]) => key.toLowerCase())
+    .includes('email')
 
   return (
     <div
