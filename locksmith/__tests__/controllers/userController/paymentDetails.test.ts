@@ -87,7 +87,7 @@ describe('payment details', () => {
       const emailAddress = 'ejected_user@example.com'
       const userCreationDetails = {
         emailAddress,
-        publicKey: 'ejected_user_phrase_public_key',
+        publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
 
@@ -100,7 +100,7 @@ describe('payment details', () => {
         .send({
           message: {
             user: {
-              publicKey: 'ejected_user_phrase_public_key',
+              publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
               stripeTokenId: 'tok_RANDOM',
             },
           },

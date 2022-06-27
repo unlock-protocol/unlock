@@ -1,11 +1,12 @@
-const { reverts } = require('../../helpers/errors')
-const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../../helpers/truffle-artifacts')
+const {
+  deployLock,
+  deployContracts,
+  purchaseKey,
+  reverts,
+} = require('../../helpers')
 
-let unlock
 let lock
+let unlock
 let txObj
 let event
 let baseTokenURI
@@ -28,10 +29,8 @@ function stringShifter(str) {
 
 contract('Lock / erc721 / tokenURI', (accounts) => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    ;({ unlock } = await deployContracts())
+    lock = await deployLock({ unlock })
   })
 
   describe('the global tokenURI stored in Unlock', () => {
@@ -101,16 +100,7 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
       )
       event = txObj.logs[0]
 
-      await lock.purchase(
-        [],
-        [accounts[0]],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          value: web3.utils.toWei('0.01', 'ether'),
-        }
-      )
+      await purchaseKey(lock, accounts[0])
       uri = await lock.tokenURI(1)
       assert.equal(uri, 'https:/customBaseTokenURI.com/api/key/' + '1')
     })

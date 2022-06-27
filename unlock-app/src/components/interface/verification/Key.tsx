@@ -169,7 +169,7 @@ export const ValidKey = ({
   const [loading, setLoading] = useState(true)
   const [viewerIsVerifier, setViewerIsVerifier] = useState(false)
   const [keyData, setKeyData] = useState({})
-  const { getKeyData, markAsCheckedIn } = useLock(lock, network)
+  const { getKeyData } = useLock(lock, network)
 
   const storageService = useStorageService()
   const walletService = useWalletService()
@@ -184,7 +184,11 @@ export const ValidKey = ({
 
   const checkIn = async () => {
     if (!viewer) return
-    const success = await markAsCheckedIn(unlockKey.tokenId)
+    const success = await storageService.markTicketAsCheckedIn({
+      lockAddress: lock.address,
+      keyId: unlockKey.tokenId,
+      network,
+    })
     if (success) {
       setCheckedIn(true)
     } else {

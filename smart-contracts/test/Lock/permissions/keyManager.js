@@ -1,14 +1,12 @@
-const { reverts } = require('../../helpers/errors')
 const BigNumber = require('bignumber.js')
 const { ethers } = require('hardhat')
-const deployLocks = require('../../helpers/deployLocks')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const {
+  reverts,
+  deployLock,
+  ADDRESS_ZERO,
+  purchaseKeys,
+} = require('../../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-
-let unlock
-let locks
 let lock
 let lockCreator
 let tokenIds
@@ -19,7 +17,7 @@ contract('Permissions / KeyManager', (accounts) => {
   const keyGranter = lockCreator
   const keyOwners = [accounts[1], accounts[2], accounts[3]]
   const [keyOwner1] = keyOwners
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   const oneDay = new BigNumber(60 * 60 * 24)
   let keyManager
   let validExpirationTimestamp
@@ -31,24 +29,9 @@ contract('Permissions / KeyManager', (accounts) => {
     validExpirationTimestamp = Math.round(latestBlock.timestamp + 600)
 
     // purchase keys
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, lockCreator)
-    lock = locks.FIRST
+    lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)
-    const tx = await lock.purchase(
-      [],
-      keyOwners,
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => ADDRESS_ZERO),
-      keyOwners.map(() => []),
-      {
-        value: (keyPrice * keyOwners.length).toFixed(),
-        from: accounts[0],
-      }
-    )
-    tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
+    ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
   describe('Key Purchases', () => {
@@ -65,7 +48,7 @@ contract('Permissions / KeyManager', (accounts) => {
         [accounts[8]],
         [[]],
         {
-          value: keyPrice.toFixed(),
+          value: keyPrice,
           from: keyOwner1,
         }
       )
@@ -85,7 +68,7 @@ contract('Permissions / KeyManager', (accounts) => {
         [ADDRESS_ZERO],
         [[]],
         {
-          value: keyPrice.toFixed(),
+          value: keyPrice,
           from: keyOwner1,
         }
       )
@@ -96,7 +79,7 @@ contract('Permissions / KeyManager', (accounts) => {
       assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
       assert.equal(await lock.isValidKey(tokenId), true)
       await lock.extend(0, tokenId, accounts[8], [], {
-        value: keyPrice.toFixed(),
+        value: keyPrice,
         from: keyOwner1,
       })
       assert.equal(await lock.keyManagerOf(tokenId), ADDRESS_ZERO)
@@ -106,7 +89,7 @@ contract('Permissions / KeyManager', (accounts) => {
       await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyOwner1 })
       assert.equal(await lock.keyManagerOf(tokenId), accounts[9])
       await lock.extend(0, tokenId, ADDRESS_ZERO, [], {
-        value: keyPrice.toFixed(),
+        value: keyPrice,
         from: keyOwner1,
       })
       assert.equal(await lock.keyManagerOf(tokenId), accounts[9])
@@ -116,9 +99,7 @@ contract('Permissions / KeyManager', (accounts) => {
   describe('Key Transfers', () => {
     let tokenId
     before(async () => {
-      unlock = await getContractInstance(unlockContract)
-      locks = await deployLocks(unlock, lockCreator)
-      lock = locks.FIRST
+      lock = await deployLock()
       const tx = await lock.purchase(
         [],
         keyOwners,
@@ -126,7 +107,7 @@ contract('Permissions / KeyManager', (accounts) => {
         keyOwners.map(() => ADDRESS_ZERO),
         keyOwners.map(() => []),
         {
-          value: (keyPrice * keyOwners.length).toFixed(),
+          value: keyPrice * keyOwners.length,
           from: accounts[0],
         }
       )

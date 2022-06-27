@@ -1,11 +1,5 @@
-const { reverts } = require('../../helpers/errors')
-const deployLocks = require('../../helpers/deployLocks')
-const getContractInstance = require('../../helpers/truffle-artifacts')
+const { deployLock, reverts } = require('../../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-
-let unlock
-let locks
 let lock
 let lockCreator
 let notAuthorized
@@ -18,9 +12,7 @@ contract('Permissions / Beneficiary', (accounts) => {
   newBeneficiary = accounts[1]
 
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, lockCreator)
-    lock = locks.FIRST
+    lock = await deployLock()
   })
 
   describe('default permissions on a new lock', () => {

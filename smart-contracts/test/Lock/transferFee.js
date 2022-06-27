@@ -1,43 +1,19 @@
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 
-const { reverts } = require('../helpers/errors')
 const { time } = require('@openzeppelin/test-helpers')
-const deployLocks = require('../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-
-let unlock
-let locks
+const { deployLock, reverts, purchaseKey } = require('../helpers')
 
 contract('Lock / transferFee', (accounts) => {
   let lock
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
   const keyOwner = accounts[1]
   const denominator = 10000
   let tokenId
 
+  // TODO test using an ERC20 priced lock as well
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    // TODO test using an ERC20 priced lock as well
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
-    const tx = await lock.purchase(
-      [],
-      [keyOwner],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: keyPrice.toFixed(),
-      }
-    )
-
-    const tokenIds = tx.logs
-      .filter((v) => v.event === 'Transfer')
-      .map(({ args }) => args.tokenId)
-    tokenId = tokenIds[0]
+    lock = await deployLock()
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   it('has a default fee of 0%', async () => {
@@ -63,19 +39,11 @@ contract('Lock / transferFee', (accounts) => {
     })
 
     it('estimates the transfer fee, which is 5% of remaining duration or less', async () => {
-      const nowBefore = (await web3.eth.getBlock('latest')).timestamp
+      const { timestamp: nowBefore } = await ethers.provider.getBlock('latest')
       fee = new BigNumber(await lock.getTransferFee(tokenId, 0))
       // Mine a transaction in order to ensure the block.timestamp has updated
-      await lock.purchase(
-        [],
-        [accounts[8]],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [[]],
-        {
-          value: keyPrice.toFixed(),
-        }
-      )
+      await purchaseKey(lock, accounts[8])
+
       const nowAfter = (await web3.eth.getBlock('latest')).timestamp
       let expiration = new BigNumber(
         await lock.keyExpirationTimestampFor(tokenId)
