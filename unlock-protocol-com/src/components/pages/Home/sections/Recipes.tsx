@@ -17,7 +17,7 @@ export const UNLOCK_RECIPES = [
   {
     Icon: WordpressIcon,
     text: 'How to use the Ʉnlock WordPress plugin',
-    href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/wordpress-plugin',
+    href: 'https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/wordpress-plugin',
   },
   {
     Icon: SiWebflow,
@@ -27,17 +27,17 @@ export const UNLOCK_RECIPES = [
   {
     Icon: EthereumIcon,
     text: 'How to sign-in with Ethereum Wallet',
-    href: 'https://docs.unlock-protocol.com/unlock/developers/sign-in-with-ethereum',
+    href: 'https://docs.unlock-protocol.com/tools/sign-in-with-ethereum/',
   },
   {
     Icon: NFTTicketIcon,
     text: 'How to build an NFT ticketing solution',
-    href: 'https://docs.unlock-protocol.com/unlock/creators/tutorials-1/selling-tickets-for-an-event',
+    href: 'https://unlock-protocol.com/guides/how-to-sell-nft-tickets-for-an-event/',
   },
   {
     Icon: AirdropIcon,
     text: 'How to airdrop memberships',
-    href: 'https://docs.unlock-protocol.com/unlock/creators/tutorials-1/how-to-airdrop-memberships',
+    href: 'https://unlock-protocol.com/guides/how-to-airdrop-memberships/',
   },
 ]
 

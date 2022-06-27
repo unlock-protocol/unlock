@@ -11,7 +11,7 @@ const UNLOCK_GRANT_APPLICATION_LINK =
   'https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22'
 
 const UNLOCK_GRANT_PROGRAM_LINK =
-  'https://docs.unlock-protocol.com/unlock/governance/grants-bounties-and-matchings'
+  'https://docs.unlock-protocol.com/governance/grants-bounties-and-matchings'
 
 const UNLOCK_GRANT_HELP = [
   {

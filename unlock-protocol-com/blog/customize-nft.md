@@ -13,7 +13,7 @@ From the beginning we chose a fully open approach where creators deploy their ow
 
 From there, a creator can customize the famous metadata URL to be anything they want and build very custom NFT for each of their members.
 
-Now, we also know that many creators don't have the resources to hire a developer to customize things for them, so today, we made it really easy for all lock creators to [customize their NFT memberships](https://docs.unlock-protocol.com/creators/customizing-the-nft)!
+Now, we also know that many creators don't have the resources to hire a developer to customize things for them, so today, we made it really easy for all lock creators to [customize their NFT memberships](https://unlock-protocol.com/guides/customize-nft-image/)!
 
 On the dashboard, click on the lock icon, and opens a modal where you can easily customize the image used on the NFT.
 
@@ -24,5 +24,3 @@ After this, you can easily customize the image by uploading one of your choice, 
 ![Customize image](https://gblobscdn.gitbook.com/assets%2F-LqrxNPR_lYaebzG998t%2F-MdvE9BsBJTFodP6gQoY%2F-MdvMFXybQKkRwH1-kQz%2Fimage.png?alt=media&token=c2b9284a-9713-4d98-8f8f-480788693d68)
 
 Once set, the image will be visible for all of your members in their wallets (if the wallet supports NFT), as well as on market places like [OpenSea](https://opensea.io/)!
-
-

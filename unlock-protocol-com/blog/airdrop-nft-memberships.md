@@ -9,7 +9,7 @@ image: /images/blog/airdrop-nft-memberships/dashboard.gif
 
 Creators can easily deploy their membership contracts (called Locks) using the Unlock dashboard. Each Lock has different membership terms: membership price, number of members, duration of the membership (yes, the NFT does expire!)... etc.
 
-Memberships can then be purchased directly by the fans. This happens by calling the [`purchase` function](https://docs.unlock-protocol.com/developers/smart-contracts/lock-api#purchase) on the Lock contract. In practice, this function can actually be called with another recipient's address, in order for them to receive the NFT (instead of the buyer).
+Memberships can then be purchased directly by the fans. This happens by calling the `purchase` function on the Lock contract. In practice, this function can actually be called with another recipient's address, in order for them to receive the NFT (instead of the buyer).
 
 However, in a lot of cases, creators may want to "give away" or **airdrop NFT memberships** for free to some of their users. Here are examples of why this is useful:
 
@@ -45,9 +45,9 @@ A drawer will open and let you easily airdrop a membership to any address.
 
 ## Using code
 
-Of course, granting keys is possible through code! The `grantKeys` function on the lock can be called by any _lock manager_ or _key granter_ ([read more about the roles](https://docs.unlock-protocol.com/developers/smart-contracts/lock-api/access-control)). In order to reduce risks, we recommend using a dedicated `key granter` in your application so that if that account (or contract) was compromised, the attacker could "only" grant new keys (which could be cancelled by a lock manager too...).
+Of course, granting keys is possible through code! The `grantKeys` function on the lock can be called by any _lock manager_ or _key granter_ ([read more about the roles](https://docs.unlock-protocol.com/core-protocol/Public%20Lock/access-control)). In order to reduce risks, we recommend using a dedicated `key granter` in your application so that if that account (or contract) was compromised, the attacker could "only" grant new keys (which could be cancelled by a lock manager too...).
 
-Then, on your code you would call the [`grantKeys` function](https://docs.unlock-protocol.com/developers/smart-contracts/lock-api#grantkeys). This function can in fact be called to grant multiple keys to multiple users at once. There is a practical limit based on the block-size of each chain. You would call this function with 3 arrays of the same size:
+Then, on your code you would call the `grantKeys` function](https://docs.unlock-protocol.com/core-protocol/smart-contracts-api/IPublicLockV10#grantkeys). This function can in fact be called to grant multiple keys to multiple users at once. There is a practical limit based on the block-size of each chain. You would call this function with 3 arrays of the same size:
 
 1. the recipients
 2. the expiration timestamps
