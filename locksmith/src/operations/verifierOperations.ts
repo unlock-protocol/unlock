@@ -83,6 +83,20 @@ namespace VerifierOperations {
       },
     })
   }
+
+  export const isVerifier = async (
+    lockAddress: string,
+    address: string,
+    network: number
+  ) => {
+    return await Verifier.findOne({
+      where: {
+        lockAddress,
+        address,
+        network,
+      },
+    })
+  }
 }
 
 export default VerifierOperations
