@@ -33,7 +33,6 @@ router.put(
 router.post(
   '/:network/:lockAddress/:tokenId/email',
   authenticatedMiddleware,
-  keyOwnerMiddleware,
   lockManagerMiddleware,
   (req, res) => {
     ticketsController.sendEmail(req, res)

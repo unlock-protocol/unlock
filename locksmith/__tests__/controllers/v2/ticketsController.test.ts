@@ -179,20 +179,20 @@ describe('sign endpoint', () => {
     expect(response.status).toBe(403)
   })
 
-  it('does not send email when auhentication is present but the user is not the key owner', async () => {
+  it('does not send email when auhentication is present but the user is not the key manager', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
     const response = await request(app)
-      .post(`/v2/api/ticket/${network}/${lockAddress}/${wrongTokenId}/email`)
+      .post(`/v2/api/ticket/${network}/${wrongLockAddress}/${tokenId}/email`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(response.status).toBe(401)
   })
 
-  it('send email when user is athenticated and is the key owner', async () => {
+  it('send email when user is athenticated and is the key manager', async () => {
     expect.assertions(2)
 
     const { loginResponse, address } = await loginRandomUser(app)
