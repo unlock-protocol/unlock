@@ -17,7 +17,7 @@ export function useCheckoutHeadContent(
       metadata:
         'Please enter the required information below in order to included into your NFT.',
       confirmed: "Let's have a last look before we process the payment.",
-      card: 'You need to provide card details.',
+      card: "Let's choose the card to pay for the NFT membership. Add card if you don't any.",
       messageToSign: 'You need to sign the message provided by the lock owner.',
       captcha: 'You need to solve captcha to continue.',
     },
@@ -58,8 +58,8 @@ export function useCheckoutHeadContent(
       description: descriptions.captcha,
     },
     RETURNING: {
-      title: '',
-      description: '',
+      title: 'Existing member',
+      description: 'You already have a valid membership',
     },
     UNLOCK_ACCOUNT: {
       title: 'Sign in / up',

@@ -7,13 +7,15 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import { useConfig } from '~/utils/withConfig'
 import { useStorageService } from '~/utils/withStorageService'
 import { useActor } from '@xstate/react'
+import { Shell } from '../Shell'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
+  onClose(params?: Record<string, string>): void
 }
 
-export function Captcha({ injectedProvider, checkoutService }: Props) {
+export function Captcha({ injectedProvider, checkoutService, onClose }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
   const storage = useStorageService()
@@ -48,7 +50,8 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
     }
   }
   return (
-    <div>
+    <Shell.Root onClose={() => onClose()}>
+      <Shell.Head checkoutService={checkoutService} />
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="space-y-4">
           <div className="flex justify-center">
@@ -81,6 +84,6 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
           </Button>
         </Connected>
       </footer>
-    </div>
+    </Shell.Root>
   )
 }

@@ -11,7 +11,7 @@ import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import { useActor, useInterpret, useMachine } from '@xstate/react'
+import { useActor, useInterpret, useMachine, useSelector } from '@xstate/react'
 
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
@@ -34,22 +34,12 @@ export function Checkout({
     },
   })
   const [state] = useActor(checkoutService)
-  const { description } = useCheckoutHeadContent(
-    paywallConfig,
-    state.value as CheckoutPage
-  )
-  const { messageToSign, mint, lock } = state.context
 
-  useEffect(() => {
-    const isMintingFinished =
-      mint && mint.transactionHash && mint.status === 'FINISHED'
-    if (isMintingFinished && communication) {
-      communication.emitTransactionInfo({
-        hash: mint!.transactionHash!,
-        lock: lock!.address,
-      })
-    }
-  }, [mint, communication, lock])
+  const messageToSign = useSelector(
+    checkoutService,
+    (state) => state.context.messageToSign
+  )
+  const mint = useSelector(checkoutService, (state) => state.context.mint)
 
   const onClose = (params: Record<string, string> = {}) => {
     communication.emitCloseModal()
@@ -61,10 +51,8 @@ export function Checkout({
         redirectURI.searchParams.append('signature', messageToSign.signature)
         redirectURI.searchParams.append('address', messageToSign.address)
       }
-      if (params) {
-        for (const [key, value] of Object.entries(params)) {
-          redirectURI.searchParams.append(key, value)
-        }
+      for (const [key, value] of Object.entries(params)) {
+        redirectURI.searchParams.append(key, value)
       }
       return window.location.assign(redirectURI)
     }
@@ -73,95 +61,92 @@ export function Checkout({
     }
   }
 
-  function Content() {
-    switch (state.value) {
-      case 'SELECT': {
-        return (
-          <Select
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
-      }
-      case 'QUANTITY': {
-        return (
-          <Quantity
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
-      }
-      case 'CARD': {
-        return (
-          <CardPayment
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
-      }
-      case 'METADATA': {
-        return (
-          <Metadata
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
-      }
-      case 'CONFIRM': {
-        return (
-          <Confirm
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
-      }
-      case 'MESSAGE_TO_SIGN': {
-        return (
-          <MessageToSign
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
-      }
-      case 'MINTING': {
-        return (
-          <Minting
-            onClose={onClose}
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
-      }
-      case 'UNLOCK_ACCOUNT': {
-        return (
-          <UnlockAccountSignIn
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
-      }
-      case 'CAPTCHA': {
-        return (
-          <Captcha
-            injectedProvider={injectedProvider}
-            checkoutService={checkoutService}
-          />
-        )
-      }
-      default: {
-        return null
-      }
+  const matched = state.value.toString()
+
+  switch (matched) {
+    case 'SELECT': {
+      return (
+        <Select
+          onClose={onClose}
+          injectedProvider={injectedProvider}
+          checkoutService={checkoutService}
+        />
+      )
+    }
+    case 'QUANTITY': {
+      return (
+        <Quantity
+          onClose={onClose}
+          injectedProvider={injectedProvider}
+          checkoutService={checkoutService}
+        />
+      )
+    }
+    case 'CARD': {
+      return (
+        <CardPayment
+          onClose={onClose}
+          injectedProvider={injectedProvider}
+          checkoutService={checkoutService}
+        />
+      )
+    }
+    case 'METADATA': {
+      return (
+        <Metadata
+          onClose={onClose}
+          injectedProvider={injectedProvider}
+          checkoutService={checkoutService}
+        />
+      )
+    }
+    case 'CONFIRM': {
+      return (
+        <Confirm
+          onClose={onClose}
+          injectedProvider={injectedProvider}
+          checkoutService={checkoutService}
+        />
+      )
+    }
+    case 'MESSAGE_TO_SIGN': {
+      return (
+        <MessageToSign
+          onClose={onClose}
+          injectedProvider={injectedProvider}
+          checkoutService={checkoutService}
+        />
+      )
+    }
+    case 'MINTING': {
+      return (
+        <Minting
+          onClose={onClose}
+          injectedProvider={injectedProvider}
+          checkoutService={checkoutService}
+        />
+      )
+    }
+    case 'UNLOCK_ACCOUNT': {
+      return (
+        <UnlockAccountSignIn
+          close={onClose}
+          injectedProvider={injectedProvider}
+          checkoutService={checkoutService}
+        />
+      )
+    }
+    case 'CAPTCHA': {
+      return (
+        <Captcha
+          onClose={onClose}
+          injectedProvider={injectedProvider}
+          checkoutService={checkoutService}
+        />
+      )
+    }
+    default: {
+      return null
     }
   }
-
-  return (
-    <Shell.Root onClose={onClose}>
-      <Shell.Head
-        description={description}
-        title={paywallConfig.title!}
-        iconURL={paywallConfig.icon!}
-      />
-      <Content />
-    </Shell.Root>
-  )
 }

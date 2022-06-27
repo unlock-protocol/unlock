@@ -10,17 +10,23 @@ import { formResultToMetadata } from '~/utils/userMetadata'
 import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
+import { Shell } from '../Shell'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
+  onClose(params?: Record<string, string>): void
 }
 
 interface FormData {
   metadata: Record<'recipient' | string, string>[]
 }
 
-export function Metadata({ checkoutService, injectedProvider }: Props) {
+export function Metadata({
+  checkoutService,
+  injectedProvider,
+  onClose,
+}: Props) {
   const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
@@ -104,7 +110,8 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     }
   }
   return (
-    <div>
+    <Shell.Root onClose={() => onClose()}>
+      <Shell.Head checkoutService={checkoutService} />
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
           {fields.map((item, index) => (
@@ -157,6 +164,6 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
           </Button>
         </Connected>
       </footer>
-    </div>
+    </Shell.Root>
   )
 }

@@ -22,13 +22,19 @@ import {
 import { countries } from '~/utils/countries'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
+import { Shell } from '../Shell'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
+  onClose(params?: Record<string, string>): void
 }
 
-export function CardPayment({ checkoutService, injectedProvider }: Props) {
+export function CardPayment({
+  checkoutService,
+  injectedProvider,
+  onClose,
+}: Props) {
   const [_, send] = useActor(checkoutService)
   const { account } = useAuth()
   const [editCard, setEditCard] = useState(false)
@@ -47,7 +53,8 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
 
   const card = data?.[0]
   return (
-    <div>
+    <Shell.Root onClose={() => onClose()}>
+      <Shell.Head checkoutService={checkoutService} />
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <Elements stripe={stripe}>
           {isLoading ? (
@@ -98,7 +105,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
           )}
         </Connected>
       </footer>
-    </div>
+    </Shell.Root>
   )
 }
 
