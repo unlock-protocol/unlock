@@ -6,7 +6,7 @@ const app = require('../../../src/app')
 
 jest.setTimeout(600000)
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
-const wrongLockAddress = '0x00'
+const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
 const network = 4
 const tokenId = '2244'
 const wrongTokenId = '666'

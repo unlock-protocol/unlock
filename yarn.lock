@@ -13274,16 +13274,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ethereumjs-util@npm:5.2.0":
-  version: 5.2.0
-  resolution: "@types/ethereumjs-util@npm:5.2.0"
-  dependencies:
-    "@types/bn.js": "*"
-    "@types/node": "*"
-  checksum: 08c9a47eb03fbf023e774b6eeae8370623cd7d6d898214c262525a94c30390d23a82212b6c19ff62f53589d4d90189c6e93e02e115bb58d31fb443dcd1539b1e
-  languageName: node
-  linkType: hard
-
 "@types/express-serve-static-core@npm:*":
   version: 4.17.27
   resolution: "@types/express-serve-static-core@npm:4.17.27"
@@ -15102,8 +15092,6 @@ __metadata:
     "@sentry/tracing": 7.0.0
     "@types/cookie-parser": 1.4.3
     "@types/cors": 2.8.12
-    "@types/eth-sig-util": 2.1.1
-    "@types/ethereumjs-util": 5.2.0
     "@types/express": 4.17.13
     "@types/express-serve-static-core": 4.17.28
     "@types/isomorphic-fetch": 0.0.36
@@ -15137,8 +15125,6 @@ __metadata:
     dotenv: 16.0.1
     eslint: 8.12.0
     eslint-config-standard: 17.0.0
-    eth-sig-util: 2.5.4
-    ethereumjs-util: 6.2.1
     ethers: 5.6.8
     express: 4.17.3
     express-jwt: 7.5.2
@@ -15324,7 +15310,7 @@ __metadata:
     eslint: 8.8.0
     eslint-plugin-mocha: 10.0.5
     eth-gas-reporter: 0.2.25
-    eth-sig-util: 2.5.4
+    eth-sig-util: 3.0.1
     ethers: 5.5.4
     fs-extra: 10.0.1
     hardhat: 2.8.0
@@ -15530,7 +15516,7 @@ __metadata:
     deep-object-diff: 1.1.7
     dotenv: 16.0.1
     eslint: 8.16.0
-    eth-sig-util: 2.5.4
+    eth-sig-util: 3.0.1
     ethereumjs-util: ^7.1.4
     ethers: 5.6.8
     file-saver: 2.0.5
@@ -26992,18 +26978,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eth-sig-util@npm:2.5.4, eth-sig-util@npm:^2.5.2":
-  version: 2.5.4
-  resolution: "eth-sig-util@npm:2.5.4"
-  dependencies:
-    ethereumjs-abi: 0.6.8
-    ethereumjs-util: ^5.1.1
-    tweetnacl: ^1.0.3
-    tweetnacl-util: ^0.15.0
-  checksum: 727ff2ec7859d9609fa3b43d1652eb40740f075e0196cacd67d5bcf50f8fb17fdbf6f384ad457785684d86a0e8155375aece42ad8393487eb8f665adb640b340
-  languageName: node
-  linkType: hard
-
 "eth-sig-util@npm:3.0.0":
   version: 3.0.0
   resolution: "eth-sig-util@npm:3.0.0"
@@ -27018,6 +26992,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eth-sig-util@npm:3.0.1":
+  version: 3.0.1
+  resolution: "eth-sig-util@npm:3.0.1"
+  dependencies:
+    ethereumjs-abi: ^0.6.8
+    ethereumjs-util: ^5.1.1
+    tweetnacl: ^1.0.3
+    tweetnacl-util: ^0.15.0
+  checksum: 614bf7011b30f78c3532f53e3f80919fe5502b0fa7a3656e6e7dae56d26bc9f559c5b6480c2bcc66d63cd9f72b489732df3b7f1daa0ac9a1fe3b6878347ab4c6
+  languageName: node
+  linkType: hard
+
 "eth-sig-util@npm:^1.4.2":
   version: 1.4.2
   resolution: "eth-sig-util@npm:1.4.2"
@@ -27025,6 +27011,18 @@ __metadata:
     ethereumjs-abi: "git+https://github.com/ethereumjs/ethereumjs-abi.git"
     ethereumjs-util: ^5.1.1
   checksum: 578f5c571c1bb0a86dc1bd4a5b56b8073b37823496d7afa74d772cf91ae6860f91bafcbee931be39a3d13f0c195df9f026a27fce350605ad5d15901a5a4ea94a
+  languageName: node
+  linkType: hard
+
+"eth-sig-util@npm:^2.5.2":
+  version: 2.5.4
+  resolution: "eth-sig-util@npm:2.5.4"
+  dependencies:
+    ethereumjs-abi: 0.6.8
+    ethereumjs-util: ^5.1.1
+    tweetnacl: ^1.0.3
+    tweetnacl-util: ^0.15.0
+  checksum: 727ff2ec7859d9609fa3b43d1652eb40740f075e0196cacd67d5bcf50f8fb17fdbf6f384ad457785684d86a0e8155375aece42ad8393487eb8f665adb640b340
   languageName: node
   linkType: hard
 

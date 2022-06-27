@@ -18,7 +18,7 @@ const config = {
   recaptchaSecret: process.env.RECAPTCHA_SECRET,
 }
 
-if (Boolean(process.env.ON_HEROKU)) {
+if (process.env.ON_HEROKU) {
   // Heroku needs this:
   config.database.ssl = true
   config.database.dialectOptions = {
@@ -35,6 +35,7 @@ if (process.env.DATABASE_URL) {
   config.database.username = databaseConfigUrl.username
   config.database.password = databaseConfigUrl.password
   config.database.host = databaseConfigUrl.hostname
+  config.database.port = databaseConfigUrl.port
   config.database.database = databaseConfigUrl.pathname.substring(1)
 } else {
   config.database.username = process.env.DB_USERNAME
