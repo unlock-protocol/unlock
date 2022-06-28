@@ -68,9 +68,24 @@ export async function updateLockOwnership(
   )
 }
 
+export async function getKeyHolderMetadataByAddress(
+  address: string,
+  keyHolder: string,
+  network: number
+) {
+  return await UserTokenMetadata.findOne({
+    attributes: ['userAddress', 'data'],
+    where: {
+      userAddress: keyHolder,
+      tokenAddress: address,
+      chain: network,
+    },
+  })
+}
+
 export async function getKeyHolderMetadata(
   address: string,
-  keyHolders: [string],
+  keyHolders: string[],
   network: number
 ) {
   const userTokenMetadata = await UserTokenMetadata.findAll({

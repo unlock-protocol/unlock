@@ -8,6 +8,7 @@ import logger from '../../logger'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
+import * as lockOperations from '../../operations/lockOperations'
 
 const UserMetadata = z
   .object({
@@ -390,15 +391,40 @@ export class MetadataController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
+      const keys = request.body
 
-      const results = await KeyMetadata.findAll({
-        where: {
-          address: lockAddress,
-          chain: network,
-        },
+      if (!keys?.keys) {
+        return response
+          .send({
+            message: 'Parameter `keys` is not present',
+          })
+          .status(500)
+      }
+
+      const mergeKeysMetadata = keys.map(async (key: any) => {
+        const mergedData = key?.keys?.map(async ({ owner, keyId }: any) => {
+          const keyOwner: string = owner.address
+          const keyHolderMetadata =
+            await lockOperations.getKeyHolderMetadataByAddress(
+              lockAddress,
+              keyOwner,
+              network
+            )
+
+          const keyData = await metadataOperations.getKeyCentricData(
+            lockAddress,
+            keyId
+          )
+
+          return {
+            ...keyHolderMetadata?.data,
+            ...keyData?.data,
+          }
+        })
+        return mergedData
       })
 
-      return response.send({ results }).status(200)
+      return response.send({ results: mergeKeysMetadata }).status(200)
     } catch (err) {
       logger.error(err.message)
       return response.status(500).send({

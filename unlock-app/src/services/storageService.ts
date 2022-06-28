@@ -751,4 +751,25 @@ export class StorageService extends EventEmitter {
       true
     )
   }
+
+  async getKeysMetadata({
+    lockAddress,
+    network,
+    locks,
+  }: {
+    lockAddress: string
+    network: number
+    locks: any[]
+  }): Promise<any> {
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(locks),
+    }
+    return await this.getEndpoint(
+      `/v2/api/metadata/${network}/locks/${lockAddress}/keys`,
+      options,
+      true
+    )
+  }
 }
