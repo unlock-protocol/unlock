@@ -11,10 +11,6 @@ export const isSignatureValidForAddress = (
   data: string,
   address: string
 ) => {
-  console.log('data', data)
-  console.log('signature', sig)
-  console.log('address', address)
-  console.log('recovered', utils.verifyMessage(data, sig).toLowerCase())
   try {
     return (
       utils.verifyMessage(data, sig).toLowerCase() === address.toLowerCase()

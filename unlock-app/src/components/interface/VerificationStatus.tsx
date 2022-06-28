@@ -1,24 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { isSignatureValidForAddress } from '../../utils/signatures'
-import { useLock } from '../../hooks/useLock'
 import { ActionButton } from './buttons/ActionButton'
 
 import Loading from './Loading'
 import { ValidKey, InvalidKey } from './verification/Key'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import LoginPrompt from './LoginPrompt'
-
-interface VerificationData {
-  account: string // owner of the NFT
-  lockAddress: string // lock address
-  timestamp: number // timestamp
-  network: number // network
-}
+import { Web3ServiceContext } from '../../utils/withWeb3Service'
 
 interface Props {
   data: string
   sig: string
+}
+
+interface Key {
+  owner: string
+  expiration: number
 }
 
 /**
@@ -26,28 +24,35 @@ interface Props {
  * and display the right status
  */
 export const VerificationStatus = ({ data, sig }: Props) => {
-  const { account, lockAddress, timestamp, network } = JSON.parse(data)
+  const { account, lockAddress, timestamp, network, keyId } = JSON.parse(data)
   const [showLogin, setShowLogin] = useState(false)
   const [lock, setLock] = useState(null)
-  const [unlockKey, setUnlockKey] = useState(null)
+  const [unlockKey, setUnlockKey] = useState<Key | null>(null)
   const [loading, setLoading] = useState(true)
   const { account: viewer } = useContext(AuthenticationContext)
-  const { getKeyForAccount, getLock } = useLock(
-    {
-      address: lockAddress,
-    },
-    network
-  )
+  const web3Service = useContext(Web3ServiceContext)
 
   useEffect(() => {
     const onLoad = async () => {
-      setUnlockKey(await getKeyForAccount(account))
-      setLock(await getLock({ pricing: false }))
+      const lock = await web3Service.getLock(lockAddress, network)
+      setLock(lock)
+      let key
+      if (lock.publicLockVersion >= 10) {
+        key = await web3Service.getKeyByTokenId(lockAddress, keyId, network)
+        console.log(key)
+      } else {
+        key = await web3Service.getKeyByLockForOwner(
+          lockAddress,
+          account,
+          network
+        )
+      }
+      setUnlockKey(key)
       setLoading(false)
     }
 
     onLoad()
-  }, [lockAddress])
+  }, [lockAddress, data])
 
   if (loading) {
     return <Loading />
@@ -60,7 +65,20 @@ export const VerificationStatus = ({ data, sig }: Props) => {
 
   // The user does not have a key!
   if (!unlockKey) {
-    return <InvalidKey reason="This user does not have a key!" />
+    return <InvalidKey reason="This key is either invalid or expired!" />
+  }
+
+  if (unlockKey.owner !== account) {
+    return (
+      <InvalidKey reason="The owner of this key does not match the QR code" />
+    )
+  }
+
+  if (
+    unlockKey.expiration != -1 &&
+    unlockKey.expiration < new Date().getTime() / 1000
+  ) {
+    return <InvalidKey reason="This ticket has expired" />
   }
 
   if (showLogin && !viewer) {
