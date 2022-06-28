@@ -1,4 +1,5 @@
 const { ethers, upgrades, run } = require('hardhat')
+const { getImplementationAddress } = require('@openzeppelin/upgrades-core')
 const fs = require('fs-extra')
 const path = require('path')
 
@@ -60,7 +61,11 @@ async function main({ unlockVersion = 10 }) {
 
   // eslint-disable-next-line no-console
   console.log(
-    `UNLOCK SETUP > Unlock (w proxy) deployed to: ${unlock.address} (tx: ${unlock.deployTransaction.hash})`
+    `UNLOCK SETUP > Unlock proxy deployed to: ${unlock.address} (tx: ${unlock.deployTransaction.hash}) `,
+    `- implementation at: ${await getImplementationAddress(
+      ethers.provider,
+      unlock.address
+    )}`
   )
 
   // delete remaining artifact
