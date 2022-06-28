@@ -23,3 +23,13 @@ jobs:
           autosquash: ${{ contains(github.event.comment.body, '/autosquash') || contains(github.event.comment.body, '/rebase-autosquash') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  run-all-tests:
+    name: Run All Tests
+    if: >-
+      github.event.issue.pull_request != '' && 
+      (
+        contains(github.event.comment.body, '/run-all-tests')
+      )
+    uses: ./.github/workflows/_tests.yml
+      
+
