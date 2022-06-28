@@ -78,10 +78,14 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
         await lock.renewMembershipFor(tokenId, ADDRESS_ZERO, {
           from: keyOwner,
         })
+
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
+        const tsExpected = newExpirationTs.add(await lock.expirationDuration())
+
         assert.equal(
-          newExpirationTs.add(await lock.expirationDuration()).toString(),
-          tsAfter.toString()
+          // assert results for +/- 2 sec
+          tsAfter.toNumber() - tsExpected.toNumber() <= 2,
+          true
         )
       })
     })
@@ -111,9 +115,12 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
           from: keyOwner,
         })
         const tsAfter = await lock.keyExpirationTimestampFor(tokenId)
+        const tsExpected = newExpirationTs.add(await lock.expirationDuration())
+
         assert.equal(
-          newExpirationTs.add(await lock.expirationDuration()).toString(),
-          tsAfter.toString()
+          // assert results for +/- 2 sec
+          tsAfter.toNumber() - tsExpected.toNumber() <= 2,
+          true
         )
       })
     })
