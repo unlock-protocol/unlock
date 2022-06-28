@@ -373,3 +373,29 @@ yarn hardhat verify-proxy --public-lock-address 0x5Ad19758103D474bdF5E8764D97cB0
   --proxy-admin-address 0xa87b313b7b918f74b2225759e7b05c243adec271 \
   --network goerli 
 ```
+
+### Create a gnosis safe and transfer Unlock ownership there
+
+1. Run this command to create a safe with the same owners as the mainnet wallet
+
+```
+yarn hardhat gnosis:create --network goerli
+```
+
+2. Go to https://gnosis-safe.io/app/load and follow the steps to add the new wallet.
+
+3. Transfer the ownership of the Unlock instance to the multisig
+
+```
+yarn hardhat gnosis:transfer --safe-address <GNOSIS_SAFE_ADDRESS> \
+  --contract-address <UNLOCK_ADDRESS>
+  --network goerli
+```
+
+### Update the `networks` package
+
+Add info about unlock and multisig to the network file
+
+- edit `packages/networks/src/goerli.ts` 
+- add the unlock address to `unlockAddress` 
+- add the gnosis safe address to `multisig`
