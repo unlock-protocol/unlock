@@ -58,7 +58,7 @@ Great. Now, I’ll go to my Unlock Creator Dashboard and [create a lock](https:/
 
 The contract address for the Unlock lock is `0xf4e931a7FB3d461A005011d659a0F21a7FeA1826`.
 
-Ok! Two out of the three ingredients I need for my recipe are set. Next, I need to find and configure the hook contract to map the Unlock lock to the SPKZ NFT contract. I look up the Polygon hook contract address in the [Unlock documentation on hook contracts](https://docs.unlock-protocol.com/unlock/creators/tutorials-1/using-an-existing-nft-contract) and note the contract address for the Polygon hook contract for using an existing NFT is `0xf705b2dd649bbcb9418d08c1ff508a983f923516`. (**Note:** this address may change in the future. Always refer to the official documentation for the most current contract addresses for the hook contracts.)
+Ok! Two out of the three ingredients I need for my recipe are set. Next, I need to find and configure the hook contract to map the Unlock lock to the SPKZ NFT contract. I look up the Polygon hook contract address in the [Unlock documentation on hook contracts](https://docs.unlock-protocol.com/core-protocol/public-lock/hooks) and note the contract address for the Polygon hook contract for using an existing NFT is `0xf705b2dd649bbcb9418d08c1ff508a983f923516`. (**Note:** this address may change in the future. Always refer to the official documentation for the most current contract addresses for the hook contracts.)
 
 I now have the three ingredients I need:
 

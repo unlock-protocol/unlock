@@ -72,7 +72,7 @@ export function Recipes() {
         <div className="flex items-center gap-4">
           <div>
             <Link
-              href="https://docs.unlock-protocol.com/unlock/creators/tutorials-1"
+              href="https://docs.unlock-protocol.com/tutorials/"
               className="text-sm font-medium uppercase text-brand-ui-primary sm:text-base"
             >
               Explore more recipes {'->'}
