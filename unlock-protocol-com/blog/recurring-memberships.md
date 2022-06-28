@@ -20,19 +20,19 @@ We created a new contract, called the **Key Purchaser**, whose sole purpose is t
 
 1. The lock owner **deploys a Key Purchaser** contract dedicated to their lock. When they do so, they define some characteristics for the recurring memberships:
 
-    - the frequency at which keys can be renewed,
-    - the earliest an existing key can be renewed (before it expires),
-    - the maximum price to pay per key (in case the lock's key price was increased)
-    - a reward for the transaction sender (see below!)
+   - the frequency at which keys can be renewed,
+   - the earliest an existing key can be renewed (before it expires),
+   - the maximum price to pay per key (in case the lock's key price was increased)
+   - a reward for the transaction sender (see below!)
 
 2. Rather than buying keys immediately, prospective members use the ERC20 allowance mechanism to **allow the Key Purchaser** contract to spend some of their ERC20 tokens. The amount that they approve should cover multiple renewals, based on the use case.
 
 3. A third party application should monitor these approvals, and, for each of them, if the approver does not have a valid key to the lock, it should call the Key Purchaser contract to **perform a purchase**. That transaction will only succeed if all of the following pre-requisites are met:
 
-    - The approver has approved an amount that is large enough
-    - The approver has enough ERC20 to perform the purchase
-    - The key price has changed significantly
-    - The approver does not have a key or has a key which is soon to be expired
+   - The approver has approved an amount that is large enough
+   - The approver has enough ERC20 to perform the purchase
+   - The key price has changed significantly
+   - The approver does not have a key or has a key which is soon to be expired
 
 4. If the transaction succeeds, the member will see their ERC20 being spent. Some of the tokens are used to purchase the key and the balancer to provide a reward to the 3rd party application, which sends the transaction. The reward's goal is to cover for the gas spent to perform the transaction.
 
@@ -58,9 +58,3 @@ Easter egg: The membership has now expired, which means it can be renewed... and
 We are [working](https://github.com/unlock-protocol/unlock/issues/6736) on running a 3rd party service that would issue transactions to execute key purchases. This service will monitor deployments of new key purchasers and the corresponding ERC20 approvals. For each of these, it will check whether the user should get a new key and issue a transaction on that case. This service will only execute transactions where the reward covers the gas we would spend.
 
 Another next step is to update our paywall application to support recurring memberships.
-
-### Learn more
-
-You can read more about the [key purchaser contract in our documentation](https://docs.unlock-protocol.com/developers/smart-contracts/key-purchaser).
-
-
