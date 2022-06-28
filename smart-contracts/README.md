@@ -325,3 +325,51 @@ yarn hardhat verify <address> --network polygon
 export BSCSCAN_API_KEY=<xxx>
 yarn hardhat verify <address> --network binance
 ```
+
+
+## How to deploy the Protocol on a new network
+
+### Add network to `@unlock-protocol/networks` 
+
+- add `goerli.ts` to `packages/networks/src`
+- add `export * from './goerli'` to `packages/networks/src/index.ts`
+
+### Create accounts file
+
+- in the smart contracts folder, create accounts
+ex. `accounts.goerli.ts`
+
+### Deploy contracts 
+
+```
+yarn hardhat deploy --public-lock-version 10 --network goerli
+
+Starting deployments on Goerli (Testnet)...
+UNLOCK DEPLOYMENT > Deploying contracts on Goerli (Testnet) with the account: 0x81a662065d5c83Fa9c5C12d0dc0104dF57f85A12
+UNLOCK DEPLOYMENT > isLocalNet : false
+UNLOCK SETUP > Unlock (w proxy) deployed to: 0x1FF7e338d5E582138C46044dc238543Ce555C963 (tx: 0x01f01178b5dffe20d700e71c9dd89bdc7e69ab93808334f4a68846471fc2633b)
+PUBLIC LOCK > deployed v10 to : 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 (tx: 0xd02145635e7a865d4ad4fe7b22f1ba66b4aa45597d74a5bed376e7fd70c90dc5)
+
+```
+
+### Verify contracts
+
+You need to verify the deployed contracts : Unlock , PublicLock and the Proxy used to create locks
+NB: you can get `yarn hardhat impl --proxy-address <UNLOCK_ADDRESS> --network goerli`
+
+```
+export ETHERSCAN_API_KEY=<xxx>
+
+# verify unlock
+yarn hardhat verify <UNLOCK_IMPLEMENTATION_ADDRESS> --network goerli
+
+# verify public-lock (while specifying a version)
+yarn hardhat verify-template --public-lock-address 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 \
+    --public-lock-version 10 \
+    --network goerli
+
+# verify proxy
+yarn hardhat verify-proxy --public-lock-address 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 \
+  --proxy-admin-address 0xa87b313b7b918f74b2225759e7b05c243adec271 \
+  --network goerli 
+```
