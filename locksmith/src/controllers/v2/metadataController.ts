@@ -400,7 +400,6 @@ export class MetadataController {
 
       return response.send({ results }).status(200)
     } catch (err) {
-      console.log(err)
       logger.error(err.message)
       return response.sendStatus(500)
     }
