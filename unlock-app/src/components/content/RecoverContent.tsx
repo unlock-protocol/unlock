@@ -76,7 +76,7 @@ export const RestoreAccount = ({
       newPassword
     )
     try {
-      const { data, signature } = provider.signUserData({
+      const { data, signature } = await provider.signUserData({
         passwordEncryptedPrivateKey,
       })
       await storageService.updateUserEncryptedPrivateKey(email, data, signature)

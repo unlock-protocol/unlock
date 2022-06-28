@@ -135,14 +135,17 @@ describe('useMembers', () => {
         walletService,
         storageService
       )
-      expect(generateKeyTypedData).toHaveBeenCalledWith({
-        LockMetaData: {
-          address: lock.address,
-          owner: viewer,
-          timestamp: expect.any(Number),
-          owners: ['0x126', '0x252'],
+      expect(generateKeyTypedData).toHaveBeenCalledWith(
+        {
+          LockMetaData: {
+            address: lock.address,
+            owner: viewer,
+            timestamp: expect.any(Number),
+            owners: ['0x126', '0x252'],
+          },
         },
-      })
+        'LockMetaData'
+      )
     })
 
     it('should ask the user to sign a request', async () => {

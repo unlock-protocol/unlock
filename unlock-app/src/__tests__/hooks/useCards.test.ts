@@ -79,15 +79,9 @@ describe('UseCards', () => {
         message: {
           'Save Card': { publicKey: userAddress, stripeTokenId: 'tok_token' },
         },
+        messageKey: 'Save Card',
         primaryType: 'User',
         types: {
-          EIP712Domain: [
-            { name: 'name', type: 'string' },
-            { name: 'version', type: 'string' },
-            { name: 'chainId', type: 'uint256' },
-            { name: 'verifyingContract', type: 'address' },
-            { name: 'salt', type: 'bytes32' },
-          ],
           User: [{ name: 'publicKey', type: 'address' }],
         },
       }
@@ -124,13 +118,6 @@ describe('UseCards', () => {
 
       const typedData = {
         types: {
-          EIP712Domain: [
-            { name: 'name', type: 'string' },
-            { name: 'version', type: 'string' },
-            { name: 'chainId', type: 'uint256' },
-            { name: 'verifyingContract', type: 'address' },
-            { name: 'salt', type: 'bytes32' },
-          ],
           User: [{ name: 'publicKey', type: 'address' }],
         },
         domain: { name: 'Unlock', version: '1' },
@@ -138,6 +125,7 @@ describe('UseCards', () => {
         message: {
           'Delete Card': { publicKey: userAddress },
         },
+        messageKey: 'Delete Card',
       }
 
       await UseCards.deleteCardForAddress(config, walletService, userAddress)

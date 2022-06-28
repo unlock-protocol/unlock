@@ -29,12 +29,12 @@ export default class UnlockPurchaseRequest {
 
     return {
       types: {
-        EIP712Domain: domain,
         PurchaseRequest: purchaseRequest,
       },
       domain: domainData,
       primaryType: 'PurchaseRequest',
       message,
+      messageKey: 'purchaseRequest',
     }
   }
 }

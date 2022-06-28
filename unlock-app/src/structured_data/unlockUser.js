@@ -29,12 +29,12 @@ export default class UnlockUser {
 
     return {
       types: {
-        EIP712Domain: domain,
         User: user,
       },
       domain: domainData,
       primaryType: 'User',
       message,
+      messageKey: 'user',
     }
   }
 }
