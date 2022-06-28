@@ -155,8 +155,9 @@ const Key = ({ ownedKey, account, network }: Props) => {
       account,
       lockAddress: lock.address,
       timestamp: Date.now(),
-      keyId,
+      tokenId: keyId,
     })
+
     const signature = await walletService.signMessage(payload, 'personal_sign')
 
     setSignature({

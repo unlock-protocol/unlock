@@ -17,6 +17,7 @@ interface Props {
 interface Key {
   owner: string
   expiration: number
+  tokenId: string
 }
 
 /**
@@ -24,7 +25,7 @@ interface Key {
  * and display the right status
  */
 export const VerificationStatus = ({ data, sig }: Props) => {
-  const { account, lockAddress, timestamp, network, keyId } = JSON.parse(data)
+  const { account, lockAddress, timestamp, network, tokenId } = JSON.parse(data)
   const [showLogin, setShowLogin] = useState(false)
   const [lock, setLock] = useState(null)
   const [unlockKey, setUnlockKey] = useState<Key | null>(null)
@@ -38,7 +39,7 @@ export const VerificationStatus = ({ data, sig }: Props) => {
       setLock(lock)
       let key
       if (lock.publicLockVersion >= 10) {
-        key = await web3Service.getKeyByTokenId(lockAddress, keyId, network)
+        key = await web3Service.getKeyByTokenId(lockAddress, tokenId, network)
         console.log(key)
       } else {
         key = await web3Service.getKeyByLockForOwner(
@@ -66,6 +67,11 @@ export const VerificationStatus = ({ data, sig }: Props) => {
   // The user does not have a key!
   if (!unlockKey) {
     return <InvalidKey reason="This key is either invalid or expired!" />
+  }
+
+  // The token id does not match
+  if (unlockKey.tokenId.toString() !== tokenId.toString()) {
+    return <InvalidKey reason="This key does not match the user" />
   }
 
   if (unlockKey.owner !== account) {
