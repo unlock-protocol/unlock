@@ -385,4 +385,24 @@ export class MetadataController {
       })
     }
   }
+
+  async getBulkLockMetadatas(request: Request, response: Response) {
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
+
+      const results = await KeyMetadata.findAll({
+        where: {
+          address: lockAddress,
+          chain: network,
+        },
+      })
+
+      return response.send({ results }).status(200)
+    } catch (err) {
+      console.log(err)
+      logger.error(err.message)
+      return response.sendStatus(500)
+    }
+  }
 }
