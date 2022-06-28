@@ -13265,15 +13265,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eth-sig-util@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@types/eth-sig-util@npm:2.1.1"
-  dependencies:
-    "@types/node": "*"
-  checksum: 19d9ee0927030145fc34e3da8742e820e6cc1bc2147695105256f87aa05e1225bf3232f29ad515a0917f26bd9f5670ba868586a7a2a665bf88ffd34777603e6e
-  languageName: node
-  linkType: hard
-
 "@types/express-serve-static-core@npm:*":
   version: 4.17.27
   resolution: "@types/express-serve-static-core@npm:4.17.27"
@@ -15157,7 +15148,7 @@ __metadata:
     sequelize-typescript: 1.1.0
     setimmediate: 1.0.5
     siwe: 1.1.6
-    stripe: 8.215.0
+    stripe: 9.10.0
     supertest: 6.2.3
     ts-jest: 27.1.5
     ts-node-dev: 2.0.0
@@ -15485,7 +15476,6 @@ __metadata:
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 12.1.5
     "@testing-library/react-hooks": 8.0.0
-    "@types/eth-sig-util": 2.1.1
     "@types/file-saver": 2.0.5
     "@types/jest": 27.5.2
     "@types/postmate": 1.5.2
@@ -15516,8 +15506,6 @@ __metadata:
     deep-object-diff: 1.1.7
     dotenv: 16.0.1
     eslint: 8.16.0
-    eth-sig-util: 3.0.1
-    ethereumjs-util: ^7.1.4
     ethers: 5.6.8
     file-saver: 2.0.5
     graphql: 15.8.0
@@ -47947,13 +47935,13 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"stripe@npm:8.215.0":
-  version: 8.215.0
-  resolution: "stripe@npm:8.215.0"
+"stripe@npm:9.10.0":
+  version: 9.10.0
+  resolution: "stripe@npm:9.10.0"
   dependencies:
     "@types/node": ">=8.1.0"
     qs: ^6.10.3
-  checksum: 0ccf3c66a259450a63b8d6f27920e04be1fad1207fb6a9c93bdffc250008e1dc915c44bac1d8b4a63be10fcd1865d4aa3de90c79f7966798c43fecab7e4f489d
+  checksum: 979426a3b716f1ee9d1fcb8db78e06c0aa872355df5691a33c1983ef3c3f7247d721cc39418ff5722d3568d276e59cfff3511ccee929a61c2f8a91a177c76bfa
   languageName: node
   linkType: hard
 
