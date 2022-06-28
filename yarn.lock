@@ -13265,15 +13265,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eth-sig-util@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@types/eth-sig-util@npm:2.1.1"
-  dependencies:
-    "@types/node": "*"
-  checksum: 19d9ee0927030145fc34e3da8742e820e6cc1bc2147695105256f87aa05e1225bf3232f29ad515a0917f26bd9f5670ba868586a7a2a665bf88ffd34777603e6e
-  languageName: node
-  linkType: hard
-
 "@types/express-serve-static-core@npm:*":
   version: 4.17.27
   resolution: "@types/express-serve-static-core@npm:4.17.27"
@@ -15154,7 +15145,7 @@ __metadata:
     run-script-os: 1.1.6
     sequelize: 5.22.5
     sequelize-cli: 6.4.1
-    sequelize-typescript: 1.1.0
+    sequelize-typescript: 2.1.3
     setimmediate: 1.0.5
     siwe: 1.1.6
     stripe: 8.215.0
@@ -15485,7 +15476,6 @@ __metadata:
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 12.1.5
     "@testing-library/react-hooks": 8.0.0
-    "@types/eth-sig-util": 2.1.1
     "@types/file-saver": 2.0.5
     "@types/jest": 27.5.2
     "@types/postmate": 1.5.2
@@ -15516,8 +15506,6 @@ __metadata:
     deep-object-diff: 1.1.7
     dotenv: 16.0.1
     eslint: 8.16.0
-    eth-sig-util: 3.0.1
-    ethereumjs-util: ^7.1.4
     ethers: 5.6.8
     file-saver: 2.0.5
     graphql: 15.8.0
@@ -46171,18 +46159,17 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"sequelize-typescript@npm:1.1.0":
-  version: 1.1.0
-  resolution: "sequelize-typescript@npm:1.1.0"
+"sequelize-typescript@npm:2.1.3":
+  version: 2.1.3
+  resolution: "sequelize-typescript@npm:2.1.3"
   dependencies:
-    glob: 7.1.2
+    glob: 7.2.0
   peerDependencies:
-    "@types/bluebird": "*"
     "@types/node": "*"
     "@types/validator": "*"
     reflect-metadata: "*"
-    sequelize: ^5.1.0
-  checksum: 951bf21ab25b8c8b1f0bcdd66ab2541a2a650619a0f6d4b0a18fd8b3cf4841997e1a80c227f714fd666cebda7f0a242d589c90245ea675e86183bebfccd4c884
+    sequelize: ">=6.8.0"
+  checksum: e6e275760054d432689d6e5003abe86dd6828a0693d567b2516e4cc7f81e0d240f60b49412327b7fffc5af099cb04381cabe8db54ce9f29bde8c748439a4e45e
   languageName: node
   linkType: hard
 
