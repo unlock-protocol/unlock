@@ -386,7 +386,7 @@ export class MetadataController {
     }
   }
 
-  async getBulkLockMetadata(request: Request, response: Response) {
+  async getBulkKeysMetadata(request: Request, response: Response) {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
@@ -401,7 +401,9 @@ export class MetadataController {
       return response.send({ results }).status(200)
     } catch (err) {
       logger.error(err.message)
-      return response.sendStatus(500)
+      return response.status(500).send({
+        message: 'There were some problems from getting keys metadata.',
+      })
     }
   }
 }

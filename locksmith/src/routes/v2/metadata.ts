@@ -53,7 +53,7 @@ router.get(
   authenticatedMiddleware,
   lockManagerMiddleware,
   (req, res) => {
-    metadataController.getBulkLockMetadatas(req, res)
+    metadataController.getBulkKeysMetadata(req, res)
   }
 )
 
