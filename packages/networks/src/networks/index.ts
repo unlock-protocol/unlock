@@ -6,5 +6,4 @@ export * from './polygon';
 export * from './bsc';
 export * from './optimism';
 export * from './mumbai';
-export * from './goerli';
 
