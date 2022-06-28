@@ -170,7 +170,7 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
       skip
     )
 
-    const keysMetadata = await getKeysMetadata([lockAddresses, lockAddresses])
+    const keysMetadata = await getKeysMetadata(lockAddresses)
     setKeysMetadata(keysMetadata)
     const membersForLocksPromise = data.locks.map(async (lockWithKeys) => {
       // If the viewer is not the lock owner, just show the members from chain
