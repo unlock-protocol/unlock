@@ -10,24 +10,23 @@ import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import LoginPrompt from './LoginPrompt'
 
 interface VerificationData {
-  account: string
-  lockAddress: string
-  timestamp: number
-  network: number
+  account: string // owner of the NFT
+  lockAddress: string // lock address
+  timestamp: number // timestamp
+  network: number // network
 }
 
 interface Props {
-  data: VerificationData
+  data: string
   sig: string
-  hexData: string
 }
 
 /**
  * React components which given data, signature will verify the validity of a key
  * and display the right status
  */
-export const VerificationStatus = ({ data, sig, hexData }: Props) => {
-  const { account, lockAddress, timestamp, network } = data
+export const VerificationStatus = ({ data, sig }: Props) => {
+  const { account, lockAddress, timestamp, network } = JSON.parse(data)
   const [showLogin, setShowLogin] = useState(false)
   const [lock, setLock] = useState(null)
   const [unlockKey, setUnlockKey] = useState(null)
@@ -55,7 +54,7 @@ export const VerificationStatus = ({ data, sig, hexData }: Props) => {
   }
 
   // If the signature is not valid
-  if (!isSignatureValidForAddress(sig, hexData, account)) {
+  if (!isSignatureValidForAddress(sig, data, account)) {
     return <InvalidKey reason="Signature does not match!" />
   }
 
