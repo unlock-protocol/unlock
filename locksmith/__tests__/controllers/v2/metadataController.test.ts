@@ -156,7 +156,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
 
     const lockAddress = await ethers.Wallet.createRandom().getAddress()
     const lockAddressMetadataResponse = await request(app).get(
-      `/v2/api/metadata/4/${lockAddress}/data`
+      `/v2/api/metadata/4/locks/${lockAddress}/keys`
     )
     expect(lockAddressMetadataResponse.status).toBe(403)
   })
@@ -168,7 +168,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     expect(loginResponse.status).toBe(200)
 
     const lockAddressMetadataResponse = await request(app)
-      .get(`/v2/api/metadata/4/${lockAddress}/data`)
+      .get(`/v2/api/metadata/4/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(lockAddressMetadataResponse.status).toBe(200)
@@ -182,7 +182,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
 
     const lockAddress = await ethers.Wallet.createRandom().getAddress()
     const lockAddressMetadataResponse = await request(app)
-      .get(`/v2/api/metadata/4/${lockAddress}/data`)
+      .get(`/v2/api/metadata/4/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(lockAddressMetadataResponse.status).toBe(401)
