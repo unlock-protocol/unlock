@@ -385,4 +385,25 @@ export class MetadataController {
       })
     }
   }
+
+  async getBulkKeysMetadata(request: Request, response: Response) {
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
+
+      const results = await KeyMetadata.findAll({
+        where: {
+          address: lockAddress,
+          chain: network,
+        },
+      })
+
+      return response.send({ results }).status(200)
+    } catch (err) {
+      logger.error(err.message)
+      return response.status(500).send({
+        message: 'There were some problems from getting keys metadata.',
+      })
+    }
+  }
 }
