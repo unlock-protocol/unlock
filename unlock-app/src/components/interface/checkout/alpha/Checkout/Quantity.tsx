@@ -9,12 +9,18 @@ import { Button, Icon } from '@unlock-protocol/ui'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { Shell } from '../Shell'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
+  onClose(params?: Record<string, string>): void
 }
 
-export function Quantity({ injectedProvider, checkoutService }: Props) {
+export function Quantity({
+  injectedProvider,
+  checkoutService,
+  onClose,
+}: Props) {
   const [state, send] = useActor(checkoutService)
   const { network, isUnlockAccount, changeNetwork } = useAuth()
   const config = useConfig()
@@ -47,7 +53,8 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
   )
 
   return (
-    <div>
+    <Shell.Root onClose={() => onClose()}>
+      <Shell.Head checkoutService={checkoutService} />
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="flex items-start justify-between">
           <h3 className="font-bold text-xl"> {lock?.name}</h3>
@@ -131,7 +138,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
               Switch Network
             </Button>
           ) : (
-            <div className="flex gap-6 justify-between">
+            <div className="flex gap-4 justify-between">
               <Button
                 className="w-full"
                 disabled={quantity < 1 || isLoading || isUnlockAccount}
@@ -184,6 +191,6 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
           )}
         </Connected>
       </footer>
-    </div>
+    </Shell.Root>
   )
 }

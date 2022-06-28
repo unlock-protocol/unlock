@@ -13,13 +13,15 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
+import { Shell } from '../Shell'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
+  onClose(params?: Record<string, string>): void
 }
 
-export function Confirm({ injectedProvider, checkoutService }: Props) {
+export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, network } = useAuth()
   const walletService = useWalletService()
@@ -215,7 +217,8 @@ export function Confirm({ injectedProvider, checkoutService }: Props) {
   }
 
   return (
-    <div>
+    <Shell.Root onClose={() => onClose()}>
+      <Shell.Head checkoutService={checkoutService} />
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="flex items-start justify-between">
           <h3 className="font-bold text-xl">
@@ -283,6 +286,6 @@ export function Confirm({ injectedProvider, checkoutService }: Props) {
           <Payment />
         </Connected>
       </footer>
-    </div>
+    </Shell.Root>
   )
 }

@@ -5,13 +5,19 @@ import { Button } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
+import { Shell } from '../Shell'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
+  onClose(params?: Record<string, string>): void
 }
 
-export function MessageToSign({ checkoutService, injectedProvider }: Props) {
+export function MessageToSign({
+  checkoutService,
+  injectedProvider,
+  onClose,
+}: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, signMessage } = useAuth()
   const [isSigning, setIsSigning] = useState(false)
@@ -35,7 +41,8 @@ export function MessageToSign({ checkoutService, injectedProvider }: Props) {
   }
 
   return (
-    <div>
+    <Shell.Root onClose={() => onClose()}>
+      <Shell.Head checkoutService={checkoutService} />
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <pre className="text-brand-gray whitespace-pre-wrap">
           {messageToSign}
@@ -56,6 +63,6 @@ export function MessageToSign({ checkoutService, injectedProvider }: Props) {
           </Button>
         </Connected>
       </footer>
-    </div>
+    </Shell.Root>
   )
 }

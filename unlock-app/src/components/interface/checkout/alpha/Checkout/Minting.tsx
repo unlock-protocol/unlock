@@ -11,11 +11,13 @@ import { useEffect } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
+import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { Shell } from '../Shell'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(): void
+  onClose(params?: Record<string, string>): void
 }
 
 function AnimationContent({ status }: { status: Mint['status'] }) {
@@ -42,6 +44,7 @@ function AnimationContent({ status }: { status: Mint['status'] }) {
 }
 
 export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
+  const communication = useCheckoutCommunication()
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
@@ -50,17 +53,21 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
   const status = mint?.status
 
   useEffect(() => {
+    if (mint?.status !== 'PROCESSING') {
+      return
+    }
     async function waitForConfirmation() {
       try {
-        if (mint?.status !== 'PROCESSING') {
-          return
-        }
         const network = config.networks[lock!.network]
         if (network) {
           const provider = new ethers.providers.JsonRpcProvider(
             network.provider
           )
-          await provider.waitForTransaction(mint.transactionHash!)
+          await provider.waitForTransaction(mint!.transactionHash!)
+          communication.emitTransactionInfo({
+            hash: mint!.transactionHash!,
+            lock: lock?.address,
+          })
           send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
@@ -77,10 +84,11 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
       }
     }
     waitForConfirmation()
-  }, [mint, lock, config, send])
+  }, [mint, lock, config, send, communication])
 
   return (
-    <div>
+    <Shell.Root onClose={() => onClose()}>
+      <Shell.Head checkoutService={checkoutService} />
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="space-y-6 justify-center grid">
           {status && <AnimationContent status={status} />}
@@ -104,13 +112,13 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
           <Button
             disabled={!account || processing}
             loading={processing}
-            onClick={onClose}
+            onClick={() => onClose()}
             className="w-full"
           >
             {processing ? 'Minting your membership' : 'Return to site'}
           </Button>
         </Connected>
       </footer>
-    </div>
+    </Shell.Root>
   )
 }

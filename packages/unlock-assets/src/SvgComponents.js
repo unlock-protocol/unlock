@@ -63,6 +63,7 @@ import Webflow from '../build/svg-component/Webflow'
 import Withdraw from '../build/svg-component/Withdraw'
 import Wordpress from '../build/svg-component/Wordpress'
 import UnlockMonogram from '../build/svg-component/UnlockMonogram'
+import RocketLaunch from '../build/svg-component/RocketLaunch'
 
 function wrapViewBox(WrappedComponent, viewBox) {
   const Wrapped = (props) => <WrappedComponent viewBox={viewBox} {...props} />
@@ -125,13 +126,14 @@ export default {
   Telegram: wrapViewBox(Telegram, '0 0 24 24'),
   Ticket: wrapViewBox(Ticket, '-8 -6 40 40'),
   Twitter: wrapViewBox(Twitter, '0 0 24 24'),
+  RocketLaunch,
   Unlock: wrapViewBox(Unlock, '0 0 56 56'),
   UnlockWordMark: wrapViewBox(UnlockWordMark, '0 0 1200 256'),
   Upload: wrapViewBox(Upload, '0 0 24 24'),
+  UnlockMonogram,
   Wallet: wrapViewBox(Wallet, '-8 -8 32 32'),
   WalletConnect: wrapViewBox(WalletConnect, '0 -1 32 32'),
   Webflow: wrapViewBox(Webflow, '-4 -8 32 32'),
   Withdraw: wrapViewBox(Withdraw, '0 0 24 24'),
   Wordpress: wrapViewBox(Wordpress, '0 0 340 340'),
-  UnlockMonogram,
 }

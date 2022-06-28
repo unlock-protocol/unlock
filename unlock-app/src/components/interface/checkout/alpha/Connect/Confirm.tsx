@@ -7,6 +7,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { createMessageToSignIn } from '~/utils/oauth'
 import { Connected } from '../Connected'
 import { ConnectService } from './connectMachine'
+import { Shell } from '../Shell'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -18,8 +19,8 @@ interface Props {
 export function ConfirmConnect({
   injectedProvider,
   oauthConfig,
-  onClose,
   connectService,
+  onClose,
 }: Props) {
   const [loading, setLoading] = useState(false)
   const { account, network = 1, signMessage } = useAuth()
@@ -55,7 +56,13 @@ export function ConfirmConnect({
   }
 
   return (
-    <div>
+    <Shell.Root
+      onClose={() =>
+        onClose({
+          error: 'User did not sign the message',
+        })
+      }
+    >
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="space-y-4">
           <header>
@@ -87,13 +94,13 @@ export function ConfirmConnect({
             onClick={onSignIn}
             disabled={loading || !account}
             loading={loading}
-            iconLeft={<Icon icon={EthereumIcon} size="medium" />}
+            iconLeft={<Icon icon={EthereumIcon} size="medium" key="ethereum" />}
             className="w-full"
           >
             {loading ? 'Please sign the message' : 'Sign-in with Ethereum'}
           </Button>
         </Connected>
       </footer>
-    </div>
+    </Shell.Root>
   )
 }
