@@ -33,13 +33,6 @@ export function generateKeyHolderMetadataPayload(owner, metadata) {
 
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       UserMetaData: [],
     },
     domain: {
@@ -48,5 +41,6 @@ export function generateKeyHolderMetadataPayload(owner, metadata) {
     },
     primaryType: 'UserMetaData',
     message,
+    messageKey: 'UserMetaData',
   }
 }
