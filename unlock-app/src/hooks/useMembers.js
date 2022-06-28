@@ -109,7 +109,7 @@ export const buildMembersWithMetadata = (lockWithKeys, storedMetadata) => {
  * @param {*} address
  */
 export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
-  const { network } = useContext(AuthenticationContext)
+  const { network, account } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
   const walletService = useContext(WalletServiceContext)
   const web3Service = useContext(Web3ServiceContext)
@@ -120,7 +120,38 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
   const [hasNextPage, setHasNextPage] = useState(false)
   const [members, setMembers] = useState({})
   const [loading, setLoading] = useState(true)
+  const [keysMetadata, setKeysMetadata] = useState([])
   const [isLockManager, setIsLockManager] = useState(false)
+
+  const login = async () => {
+    if (!storageService) return
+    await storageService.loginPrompt({
+      walletService,
+      address: account,
+      chainId: network,
+    })
+  }
+
+  const getKeysMetadata = async (lockAddresses) => {
+    if (!lockAddresses) return
+    await login()
+    const keysMetadataPromise = lockAddresses.map(async (lockAddress) => {
+      return await storageService.getKeysMetadata({
+        lockAddress,
+        network,
+      })
+    })
+    const keysMetadataItems = []
+    const keysMetadata = await Promise.all(keysMetadataPromise)
+
+    keysMetadata.map(({ results }) => {
+      results.map((result) => {
+        keysMetadataItems.push(result)
+      })
+    })
+
+    return keysMetadataItems
+  }
 
   const loadMembers = async () => {
     setLoading(true)
@@ -139,6 +170,8 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
       skip
     )
 
+    const keysMetadata = await getKeysMetadata([lockAddresses, lockAddresses])
+    setKeysMetadata(keysMetadata)
     const membersForLocksPromise = data.locks.map(async (lockWithKeys) => {
       // If the viewer is not the lock owner, just show the members from chain
       const _isLockManager = await web3Service.isLockManager(
@@ -191,7 +224,7 @@ export const useMembers = (lockAddresses, viewer, filter, page = 0) => {
 
   const list = Object.values(members)
   const columns = generateColumns(list)
-  return { loading, list, columns, hasNextPage, isLockManager }
+  return { loading, list, columns, hasNextPage, isLockManager, keysMetadata }
 }
 
 export default useMembers
