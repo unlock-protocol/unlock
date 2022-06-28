@@ -47,7 +47,7 @@ describe('scripts / gnosis', () => {
       const owners = await safe.getOwners()
       assert.equal(owners[0], '0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44')
       assert.equal(owners[1], '0x2785f2a3DDaCfDE5947F1A9D6c878CCD7F885400')
-      assert.equal(owners.length, 8)
+      assert.equal(owners.length, 9)
     })
   })
 
@@ -74,7 +74,7 @@ describe('scripts / gnosis', () => {
       const owners = await getOwners({ chainId: 1 })
       assert.equal(owners[0], '0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44')
       assert.equal(owners[1], '0x2785f2a3DDaCfDE5947F1A9D6c878CCD7F885400')
-      assert.equal(owners.length, 8)
+      assert.equal(owners.length, 9)
     })
     it('should get the correct list of owners based on safe address', async () => {
       const owners = await getOwners({
@@ -82,7 +82,7 @@ describe('scripts / gnosis', () => {
       })
       assert.equal(owners[0], '0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44')
       assert.equal(owners[1], '0x2785f2a3DDaCfDE5947F1A9D6c878CCD7F885400')
-      assert.equal(owners.length, 8)
+      assert.equal(owners.length, 9)
     })
   })
 

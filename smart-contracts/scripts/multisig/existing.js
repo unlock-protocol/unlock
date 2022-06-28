@@ -1,8 +1,7 @@
-const { getProvider, getSafeAddress } = require('./_helpers')
+const { getSafeAddress } = require('./_helpers')
 
 async function main({ chainId }) {
-  const { provider } = await getProvider(chainId)
-  const safeAddress = await getSafeAddress(provider, chainId)
+  const safeAddress = await getSafeAddress(chainId)
   return safeAddress
 }
 

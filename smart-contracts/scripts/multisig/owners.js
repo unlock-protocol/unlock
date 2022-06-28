@@ -5,7 +5,7 @@ const multisigABI = require('../../test/helpers/ABIs/multisig.json')
 async function main({ chainId, safeAddress }) {
   const { provider } = await getProvider(chainId)
   if (!safeAddress) {
-    safeAddress = await getSafeAddress(provider)
+    safeAddress = await getSafeAddress(chainId)
   }
   const safe = new ethers.Contract(safeAddress, multisigABI, provider)
   const owners = await safe.getOwners()
