@@ -49,7 +49,7 @@ router.put(
 )
 
 router.get(
-  '/:network/:lockAddress/data',
+  '/:network/locks/:lockAddress/keys',
   authenticatedMiddleware,
   lockManagerMiddleware,
   (req, res) => {
