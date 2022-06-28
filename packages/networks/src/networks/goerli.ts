@@ -3,7 +3,8 @@ import { NetworkConfig } from '@unlock-protocol/types'
 export const goerli: NetworkConfig = {
   publicProvider: 'https://eth-goerli.alchemyapi.io/v2/2QOjsvExEDyBaPEpyCu6y3zHvh4Oyrr6',
   provider: 'https://eth-goerli.alchemyapi.io/v2/2QOjsvExEDyBaPEpyCu6y3zHvh4Oyrr6',
-  // unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+  unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+  multisig: '0xC3EBAFD55BC599e614b729a582C371842cc8954a',
   id: 5,
   name: 'Goerli (Testnet)',
   blockTime: 1000,
