@@ -112,6 +112,7 @@ require('./tasks/utils')
 require('./tasks/lock')
 require('./tasks/verify')
 require('./tasks/keys')
+require('./tasks/unlock')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig
