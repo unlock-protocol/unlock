@@ -6,7 +6,7 @@ export const xdai: NetworkConfig = {
     'https://cool-empty-bird.xdai.quiknode.pro/4edba942fb43c718f24480484684e907fe3fe1d3/',
   unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',
   serializerAddress: '0x646E373EAf8a4AEc31Bf62B7Fd6fB59296d6CdA9',
-  multisig: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',
+  multisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
   id: 100,
   name: 'Gnosis Chain',
   blockTime: 5000,
