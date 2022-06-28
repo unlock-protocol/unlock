@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import type { PaywallConfig } from '~/unlockTypes'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { checkoutMachine, CheckoutPage } from './checkoutMachine'
-import { Shell } from '../Shell'
+import { checkoutMachine } from './checkoutMachine'
 import { Select } from './Select'
 import { Quantity } from './Quantity'
 import { Metadata } from './Metadata'
@@ -10,9 +9,7 @@ import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import { useActor, useInterpret, useMachine, useSelector } from '@xstate/react'
-
+import { useActor, useInterpret, useSelector } from '@xstate/react'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 interface Props {
@@ -130,7 +127,7 @@ export function Checkout({
     case 'UNLOCK_ACCOUNT': {
       return (
         <UnlockAccountSignIn
-          close={onClose}
+          onClose={onClose}
           injectedProvider={injectedProvider}
           checkoutService={checkoutService}
         />

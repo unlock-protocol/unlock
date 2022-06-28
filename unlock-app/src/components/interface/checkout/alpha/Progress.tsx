@@ -66,7 +66,7 @@ export function ProgressIndicator({ checkoutService }: Props) {
             <div>
               <ProgressCircleIcon />
             </div>
-            <h4 className="text-sm font-medium"> {title}</h4>
+            <h4 className="text-sm "> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-1">
@@ -87,7 +87,7 @@ export function ProgressIndicator({ checkoutService }: Props) {
               <ProgressCircleIcon />
               <ProgressCircleIcon />
             </div>
-            <h4 className="text-sm font-medium"> {title}</h4>
+            <h4 className="text-sm "> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-0.5">
@@ -108,7 +108,7 @@ export function ProgressIndicator({ checkoutService }: Props) {
                 <div className="p-0.5 w-12 bg-white rounded-full"></div>
               </div>
             </div>
-            <h4 className="text-sm font-medium"> {title}</h4>
+            <h4 className="text-sm "> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-0.5">
@@ -129,7 +129,7 @@ export function ProgressIndicator({ checkoutService }: Props) {
                 <div className="p-0.5 w-12 bg-white rounded-full"></div>
               </div>
             </div>
-            <h4 className="text-sm font-medium"> {title}</h4>
+            <h4 className="text-sm "> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-0.5">
@@ -151,7 +151,7 @@ export function ProgressIndicator({ checkoutService }: Props) {
               <ProgressCircleIcon />
               <ProgressCircleIcon />
             </div>
-            <h4 className="text-sm font-medium"> {title}</h4>
+            <h4 className="text-sm "> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-1">
@@ -173,7 +173,7 @@ export function ProgressIndicator({ checkoutService }: Props) {
               <ProgressCircleIcon />
               <ProgressCircleIcon />
             </div>
-            <h4 className="text-sm font-medium"> {title}</h4>
+            <h4 className="text-sm "> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-1">
@@ -198,7 +198,7 @@ export function ProgressIndicator({ checkoutService }: Props) {
                 </div>
               )}
             </div>
-            <h4 className="text-sm font-medium"> {title}</h4>
+            <h4 className="text-sm "> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-1">
@@ -220,7 +220,7 @@ export function ProgressIndicator({ checkoutService }: Props) {
               <ProgressCircleIcon />
               {paywallConfig.messageToSign && <ProgressCircleIcon />}
             </div>
-            <h4 className="text-sm font-medium"> {title}</h4>
+            <h4 className="text-sm "> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-1">
@@ -241,7 +241,7 @@ export function ProgressIndicator({ checkoutService }: Props) {
               <ProgressCircleIcon />
               <ProgressFinishedIcon />
             </div>
-            <h4 className="text-sm font-medium"> {title}</h4>
+            <h4 className="text-sm "> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
         </div>

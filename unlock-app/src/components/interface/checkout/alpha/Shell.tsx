@@ -44,15 +44,15 @@ export function Head({ checkoutService }: HeadProps) {
     (state) => state.context.paywallConfig
   )
   const matched = state.value.toString() as CheckoutPage
-  const { icon } = paywallConfig
-  const { title, description } = useCheckoutHeadContent(paywallConfig, matched)
+  const { icon, title } = paywallConfig
+  const { description } = useCheckoutHeadContent(paywallConfig, matched)
   return (
     <header className="px-6 pt-6 space-y-4">
       <div className="flex items-center gap-4">
         <Avatar.Root className="inline-flex items-center justify-center w-16 h-16 rounded-full">
           <Avatar.Image src={icon} alt={title} width={64} height={64} />
           <Avatar.Fallback className="inline-flex border items-center justify-center w-16 h-16 rounded-full">
-            {title.slice(0, 2).toUpperCase()}
+            {title?.slice(0, 2).toUpperCase()}
           </Avatar.Fallback>
         </Avatar.Root>
         <div>
