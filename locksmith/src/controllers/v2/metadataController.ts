@@ -402,6 +402,7 @@ export class MetadataController {
       }
 
       const mergeKeysMetadata = keys.map(async (key: any) => {
+        // for every owner we get the medatata and merge it in a single object
         const mergedData = key?.keys?.map(async ({ owner, keyId }: any) => {
           const keyOwner: string = owner.address
           const keyHolderMetadata =
