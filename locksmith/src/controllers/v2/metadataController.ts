@@ -386,7 +386,7 @@ export class MetadataController {
     }
   }
 
-  async getBulkLockMetadatas(request: Request, response: Response) {
+  async getBulkLockMetadata(request: Request, response: Response) {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
