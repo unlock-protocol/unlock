@@ -64,8 +64,7 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
                           address: account,
                         })
                         send('EXISTING_MEMBER')
-                      } else {
-                        send('CONTINUE')
+                        return
                       }
                     }
                     send('CONTINUE')
