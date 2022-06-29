@@ -1,10 +1,11 @@
-import React, { ReactNode } from 'react'
+import React, { Fragment, ReactNode } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
 import { CheckoutPage, CheckoutService } from './Checkout/checkoutMachine'
 import { useActor, useSelector } from '@xstate/react'
 import { useCheckoutHeadContent } from './useCheckoutHeadContent'
 import { ProgressIndicator } from './Progress'
+import { Transition } from '@headlessui/react'
 
 interface RootProps {
   children?: ReactNode
@@ -13,23 +14,35 @@ interface RootProps {
 
 export function Root({ children, onClose }: RootProps) {
   return (
-    <div className="bg-white rounded-xl w-full max-w-md">
-      <div className="flex justify-end mt-6 mr-6">
-        <button
-          onClick={() => onClose()}
-          className="flex items-center justify-center rounded group"
-          aria-label="Close"
-          type="button"
-        >
-          <CloseIcon
-            className="fill-black group-hover:fill-brand-ui-primary"
-            size={24}
-            key="close"
-          />
-        </button>
+    <Transition
+      as={Fragment}
+      appear={true}
+      show={!!children}
+      enter="transition ease-out duration-200"
+      enterFrom="opacity-0 translate-y-1"
+      enterTo="opacity-100 translate-y-0"
+      leave="transition ease-in duration-150"
+      leaveFrom="opacity-100 translate-y-0"
+      leaveTo="opacity-0 translate-y-1"
+    >
+      <div className="bg-white rounded-xl w-full max-w-md">
+        <div className="flex justify-end mt-6 mr-6">
+          <button
+            onClick={() => onClose()}
+            className="flex items-center justify-center rounded group"
+            aria-label="Close"
+            type="button"
+          >
+            <CloseIcon
+              className="fill-black group-hover:fill-brand-ui-primary"
+              size={24}
+              key="close"
+            />
+          </button>
+        </div>
+        <div>{children}</div>
       </div>
-      <div>{children}</div>
-    </div>
+    </Transition>
   )
 }
 

@@ -10,6 +10,7 @@ import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Shell } from '../Shell'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -24,9 +25,12 @@ export function Quantity({
   const [state, send] = useActor(checkoutService)
   const { network, isUnlockAccount, changeNetwork } = useAuth()
   const config = useConfig()
-  const [quantityInput, setQuantityInput] = useState('1')
-  const quantity = Number(quantityInput)
+  const { paywallConfig } = state.context
   const lock = state.context.lock!
+  const [quantityInput, setQuantityInput] = useState(
+    paywallConfig.minRecipients?.toString() || '1'
+  )
+  const quantity = Number(quantityInput)
 
   const { isLoading, data: fiatPricing } = useQuery(
     [quantityInput, lock.address, lock.network],
@@ -115,12 +119,33 @@ export function Quantity({
               onChange={(event) => {
                 event.preventDefault()
                 const count = event.target.value.replace(/\D/, '')
+                const countInt = parseInt(count, 10)
+                if (
+                  paywallConfig.maxRecipients &&
+                  countInt > paywallConfig.maxRecipients
+                ) {
+                  ToastHelper.error(
+                    `You cannot purchase more than ${paywallConfig.maxRecipients} memberships at once`
+                  )
+                  setQuantityInput(paywallConfig.maxRecipients.toString())
+                  return
+                }
+                if (
+                  paywallConfig.minRecipients &&
+                  countInt < paywallConfig.minRecipients
+                ) {
+                  ToastHelper.error(
+                    `You cannot purchase less than ${paywallConfig.minRecipients} memberships at once`
+                  )
+                  setQuantityInput(paywallConfig.minRecipients.toString())
+                  return
+                }
                 setQuantityInput(count)
               }}
               pattern="[0-9]{0,2}"
               value={quantityInput}
               type="text"
-              className="rounded border p-2 w-16"
+              className="w-16 rounded-lg border-2 border-gray-300 focus:ring-0 focus:border-brand-ui-primary"
             ></input>
           </div>
         </div>

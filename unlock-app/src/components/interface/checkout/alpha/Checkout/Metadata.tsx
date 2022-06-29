@@ -32,6 +32,7 @@ export function Metadata({
   const [isLoading, setIsLoading] = useState(false)
   const storage = useStorageService()
   const { lock, paywallConfig, quantity } = state.context
+
   const metadataInputs =
     paywallConfig.locks[lock!.address].metadataInputs ??
     paywallConfig.metadataInputs
@@ -125,7 +126,7 @@ export function Metadata({
               )}
             >
               <Input
-                label="Recipient"
+                label={`Recipient x ${index + 1}`}
                 size="small"
                 error={errors?.metadata?.[index]?.recipient?.message}
                 {...register(`metadata.${index}.recipient`, {
