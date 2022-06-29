@@ -391,7 +391,7 @@ export class MetadataController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const keys = request.body
+      const [keys]: any = request.body
 
       if (!keys?.keys) {
         return response
@@ -401,31 +401,43 @@ export class MetadataController {
           .status(500)
       }
 
-      const mergeKeysMetadata = keys.map(async (key: any) => {
-        // for every owner we get the medatata and merge it in a single object
-        const mergedData = key?.keys?.map(async ({ owner, keyId }: any) => {
-          const keyOwner: string = owner.address
-          const keyHolderMetadata =
-            await lockOperations.getKeyHolderMetadataByAddress(
-              lockAddress,
-              keyOwner,
-              network
-            )
+      const owners: string[] = keys?.keys?.map(
+        ({ owner }: any) => owner?.address
+      )
+      const keyIds: string[] = keys?.keys?.map(({ keyId }: any) => keyId)
 
-          const keyData = await metadataOperations.getKeyCentricData(
-            lockAddress,
-            keyId
-          )
-
-          return {
-            ...keyHolderMetadata?.data,
-            ...keyData?.data,
-          }
-        })
-        return mergedData
+      const keyHoldersMetadataPromise = owners.map(async (owner) => {
+        return await lockOperations.getKeyHolderMetadataByAddress(
+          lockAddress,
+          owner,
+          network
+        )
       })
 
-      return response.send({ results: mergeKeysMetadata }).status(200)
+      const keyDataPromise = keyIds.map(async (keyId) => {
+        return await metadataOperations.getKeyCentricData(lockAddress, keyId)
+      })
+
+      const keyHolderMetadata = await Promise.all(keyHoldersMetadataPromise)
+      const keyData = await Promise.all(keyDataPromise)
+
+      const mergedData = keyHolderMetadata.map((keyMetadata: any, index) => {
+        let metadata = keyMetadata?.data ?? {}
+        const keyDataByIndex = keyData[index]?.data ?? {}
+        const userAddress = keyMetadata?.userAddress
+
+        metadata = {
+          userAddress,
+          ...metadata,
+          ...keyDataByIndex,
+        }
+
+        return {
+          ...metadata,
+        }
+      })
+
+      return response.send({ results: mergedData }).status(200)
     } catch (err) {
       logger.error(err.message)
       return response.status(500).send({
