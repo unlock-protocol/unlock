@@ -128,8 +128,8 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
-    if ((await lockContract.publicLockVersion()) < 11) {
-      throw new Error('Only available for Lock v11+')
+    if ((await lockContract.publicLockVersion()) < 10) {
+      throw new Error('Only available for Lock v10+')
     }
     const expiration = await this.getKeyExpirationByTokenId(
       lockAddress,
@@ -163,8 +163,8 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
 
-    if ((await lockContract.publicLockVersion()) < 11) {
-      throw new Error('Only available for Lock v11+')
+    if ((await lockContract.publicLockVersion()) < 10) {
+      throw new Error('Only available for Lock v10+')
     }
 
     try {

@@ -12,19 +12,14 @@ export const VerificationContent: React.FC<unknown> = () => {
   const { query } = useRouter()
   const [locks, setLocks] = useState({})
   let data
-  let hexData
   let sig
 
   if (typeof query.data === 'string' && typeof query.sig === 'string') {
-    data = JSON.parse(decodeURIComponent(query.data))
-    hexData = `0x${Buffer.from(
-      decodeURIComponent(query.data),
-      'utf-8'
-    ).toString('hex')}`
+    data = decodeURIComponent(query.data)
     sig = query.sig
   }
 
-  if (!data || !sig || !hexData) {
+  if (!data || !sig) {
     return <Loading />
   }
 
@@ -47,7 +42,7 @@ export const VerificationContent: React.FC<unknown> = () => {
           addLock,
         }}
       >
-        <VerificationStatus data={data} sig={sig} hexData={hexData} />
+        <VerificationStatus data={data} sig={sig} />
       </LocksContext.Provider>
     </Layout>
   )
