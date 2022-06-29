@@ -71,6 +71,7 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
           send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
+            transactionHash: mint!.transactionHash!,
           })
         }
       } catch (error) {
@@ -79,6 +80,7 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
           send({
             type: 'CONFIRM_MINT',
             status: 'ERROR',
+            transactionHash: mint!.transactionHash,
           })
         }
       }
