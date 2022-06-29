@@ -391,9 +391,10 @@ export class MetadataController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const [keys]: any = request.body
+      const lock: any = request.body
 
-      if (!keys?.keys) {
+      const keys = lock.keys ?? []
+      if (!keys) {
         return response
           .send({
             message: 'Parameter `keys` is not present',
@@ -401,10 +402,8 @@ export class MetadataController {
           .status(500)
       }
 
-      const owners: string[] = keys?.keys?.map(
-        ({ owner }: any) => owner?.address
-      )
-      const keyIds: string[] = keys?.keys?.map(({ keyId }: any) => keyId)
+      const owners: string[] = keys?.map(({ owner }: any) => owner?.address)
+      const keyIds: string[] = keys?.map(({ keyId }: any) => keyId)
 
       const keyHoldersMetadataPromise = owners.map(async (owner) => {
         return await lockOperations.getKeyHolderMetadataByAddress(
@@ -431,11 +430,13 @@ export class MetadataController {
             userAddress,
             data: {
               ...metadata,
-              ...keyDataByIndex,
+              extraMetadata: {
+                ...keyDataByIndex,
+              },
             },
           }
 
-          if (Object.keys(metadata.data).length === 0 && !userAddress) {
+          if (!userAddress) {
             return null // not return empty object if merged data is empty
           }
           return {
