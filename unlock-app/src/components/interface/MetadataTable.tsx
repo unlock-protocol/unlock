@@ -23,6 +23,7 @@ interface MetadataTableProps {
   filter?: string
   isLockManager?: boolean
   lockAddresses?: string[]
+  keysMetadata: any[]
 }
 
 /**
@@ -43,6 +44,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   metadata,
   filter,
   isLockManager,
+  keysMetadata,
   lockAddresses = [],
 }) => {
   const [currentLock, setCurrentLock] = useState(null)
@@ -123,6 +125,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             isLockManager={isLockManager}
             expireAndRefundDisabled={expireAndRefundDisabled(data)}
             onExpireAndRefund={() => onExpireAndRefund(data)}
+            keysMetadata={keysMetadata}
           />
         )
       })}

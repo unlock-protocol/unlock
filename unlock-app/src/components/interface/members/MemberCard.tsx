@@ -18,6 +18,8 @@ interface MemberCardProps {
   isLockManager?: boolean
   expireAndRefundDisabled?: boolean
   metadata?: object
+  lockAddress?: string
+  keysMetadata?: any[]
 }
 
 const keysToIgnore = ['token', 'lockName', 'keyholderAddress', 'expiration']
@@ -30,7 +32,9 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   onExpireAndRefund,
   expandAllMetadata,
   expireAndRefundDisabled = true,
+  lockAddress = '',
   metadata = {},
+  keysMetadata = [],
 }) => {
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
 
@@ -49,6 +53,14 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   }, [expandAllMetadata])
 
   const hasExtraData = extraDataItems?.length > 0
+
+  const getCheckInTime = (): number | null => {
+    const keyData = keysMetadata?.find(({ data }) => {
+      console.log(data?.lockAddress, data.keyId)
+      return data?.lockAddress.toLowerCase() === lockAddress?.toLowerCase()
+    })
+    return keyData?.data?.metadata?.checkedInAt ?? null
+  }
 
   return (
     <div
@@ -73,6 +85,10 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Expiration</span>
           <span className={styles.title}>{expiration}</span>
+        </div>
+        <div className="col-span-full	flex flex-col md:col-span-1">
+          <span className={styles.description}>Checked-in At</span>
+          <span className={styles.title}>{getCheckInTime()}</span>
         </div>
         <div className="col-span-full flex gap-2 justify-start lg:col-span-2 lg:justify-end">
           <Button

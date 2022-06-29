@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import 'cross-fetch/polyfill'
 import Head from 'next/head'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
@@ -17,7 +17,6 @@ import {
   CreateLockButton,
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
-
 interface FilterProps {
   value: string
   current: string
@@ -158,12 +157,8 @@ const MetadataTableWrapper = ({
 }: MetadataTableWrapperProps) => {
   const { account } = useContext(AuthenticationContext)
   const [currentPage, setCurrentPage] = useState(page)
-  const { loading, list, columns, hasNextPage, isLockManager } = useMembers(
-    lockAddresses,
-    account,
-    filter,
-    currentPage
-  )
+  const { loading, list, columns, hasNextPage, isLockManager, keysMetadata } =
+    useMembers(lockAddresses, account, filter, currentPage)
 
   if (loading) {
     return <Loading />
@@ -182,6 +177,7 @@ const MetadataTableWrapper = ({
         metadata={list}
         isLockManager={isLockManager}
         lockAddresses={lockAddresses}
+        keysMetadata={keysMetadata}
       />
     </>
   )
