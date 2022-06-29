@@ -56,6 +56,8 @@ export function Lock({
     className
   )
 
+  const fiatPrice = lock.fiatPricing?.usd?.keyPrice
+
   return (
     <button
       type="button"
@@ -72,9 +74,11 @@ export function Lock({
           <div className="grid text-right">
             {formattedData.cardEnabled ? (
               <>
-                <span className="font-semibold">
-                  ${(lock.fiatPricing?.usd?.keyPrice / 100).toFixed(2)}
-                </span>
+                {fiatPrice && (
+                  <span className="font-semibold">
+                    ${(fiatPrice / 100).toFixed(2)}
+                  </span>
+                )}
                 <span>{formattedData?.formattedKeyPrice} </span>
               </>
             ) : (
@@ -82,9 +86,11 @@ export function Lock({
                 <span className="font-semibold">
                   {formattedData?.formattedKeyPrice}{' '}
                 </span>
-                <span>
-                  ${(lock.fiatPricing?.usd?.keyPrice / 100).toFixed(2)}
-                </span>
+                {fiatPrice && (
+                  <span className="font-semibold">
+                    ${(fiatPrice / 100).toFixed(2)}
+                  </span>
+                )}
               </>
             )}
           </div>

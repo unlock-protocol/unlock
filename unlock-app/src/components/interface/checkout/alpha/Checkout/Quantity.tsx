@@ -56,6 +56,8 @@ export function Quantity({
     quantity
   )
 
+  const fiatPrice = lock.fiatPricing?.usd?.keyPrice
+
   return (
     <Shell.Root onClose={() => onClose()}>
       <Shell.Head checkoutService={checkoutService} />
@@ -66,9 +68,11 @@ export function Quantity({
             <div className="text-right grid">
               {fiatPricing.creditCardEnabled ? (
                 <>
-                  <span className="font-medium">
-                    ${fiatPricing.usd.keyPrice / 100}
-                  </span>
+                  {fiatPrice && (
+                    <span className="font-semibold">
+                      ${(fiatPrice / 100).toFixed(2)}
+                    </span>
+                  )}
                   <span>{formattedData.formattedKeyPrice} </span>
                 </>
               ) : (
@@ -76,7 +80,11 @@ export function Quantity({
                   <span className="font-medium">
                     {formattedData.formattedKeyPrice}
                   </span>
-                  <span>${fiatPricing.usd.keyPrice / 100} </span>
+                  {fiatPrice && (
+                    <span className="font-semibold">
+                      ${(fiatPrice / 100).toFixed(2)}
+                    </span>
+                  )}
                 </>
               )}
             </div>
