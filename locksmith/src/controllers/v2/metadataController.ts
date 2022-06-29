@@ -440,7 +440,7 @@ export class MetadataController {
       return response.send({ results: mergedData }).status(200)
     } catch (err) {
       logger.error(err.message)
-      return response.status(500).send({
+      return response.status(400).send({
         message: 'There were some problems from getting keys metadata.',
       })
     }
