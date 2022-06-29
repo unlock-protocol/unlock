@@ -20,6 +20,8 @@ export function useCheckoutHeadContent(
       card: "Let's choose the card to pay for the NFT membership. Add card if you don't any.",
       messageToSign: 'You need to sign the message provided by the lock owner.',
       captcha: 'You need to solve captcha to continue.',
+      returning:
+        'We detected there is a membership NFT in your wallet, enjoy it!',
     },
     callToAction
   )
@@ -58,8 +60,8 @@ export function useCheckoutHeadContent(
       description: descriptions.captcha,
     },
     RETURNING: {
-      title: 'Existing member',
-      description: 'You already have a valid membership',
+      title: 'You have it!',
+      description: descriptions.returning,
     },
     UNLOCK_ACCOUNT: {
       title: 'Sign in / up',

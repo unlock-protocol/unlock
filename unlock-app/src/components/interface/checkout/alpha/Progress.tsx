@@ -248,6 +248,24 @@ export function ProgressIndicator({ checkoutService }: Props) {
       )
     }
 
+    case 'RETURNING': {
+      return (
+        <div className="flex flex-wrap items-center w-full gap-2">
+          <div className="flex items-center gap-2 col-span-4">
+            <div className="flex items-center gap-0.5">
+              <ProgressCircleIcon />
+              <ProgressCircleIcon />
+              {paywallConfig.messageToSign && <ProgressCircleIcon />}
+              <ProgressCircleIcon />
+              <ProgressFinishedIcon />
+            </div>
+            <h4 className="text-sm ">{title}</h4>
+          </div>
+          <div className="border-t-4 w-full flex-1"></div>
+        </div>
+      )
+    }
+
     default: {
       return null
     }

@@ -1,12 +1,12 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
+import { Button, Icon } from '@unlock-protocol/ui'
+import { useSelector } from '@xstate/react'
+import Lottie from 'lottie-react'
+import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
+import { Shell } from '../Shell'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { Button } from '@unlock-protocol/ui'
-import { useState } from 'react'
-import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useActor } from '@xstate/react'
-import { Shell } from '../Shell'
-
+import unlockedAnimation from '~/animations/unlocked.json'
+import { useConfig } from '~/utils/withConfig'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -18,57 +18,49 @@ export function Returning({
   injectedProvider,
   onClose,
 }: Props) {
-  const [state, send] = useActor(checkoutService)
-  const { account, signMessage } = useAuth()
-  const [isSigning, setIsSigning] = useState(false)
-  const { messageToSign } = state.context.paywallConfig
-  const onSign = async () => {
-    setIsSigning(true)
-    try {
-      const signature = await signMessage(messageToSign!)
-      setIsSigning(false)
-      send({
-        type: 'SIGN_MESSAGE',
-        signature,
-        address: account!,
-      })
-    } catch (error) {
-      if (error instanceof Error) {
-        ToastHelper.error(error.message)
-      }
-      setIsSigning(false)
-    }
-  }
-
+  const config = useConfig()
+  const lock = useSelector(checkoutService, (state) => state.context.lock)
   return (
     <Shell.Root onClose={() => onClose()}>
       <Shell.Head checkoutService={checkoutService} />
-      <main className="p-6 overflow-auto h-64 sm:h-72">
-        <pre className="text-brand-gray whitespace-pre-wrap">
-          {messageToSign}
-        </pre>
+      <main className="p-4 overflow-auto h-64 sm:h-72">
+        <div className="space-y-6 justify-items-center grid">
+          <div className="grid justify-items-center">
+            <Lottie
+              className="w-40 h-40"
+              loop
+              animationData={unlockedAnimation}
+            />
+            <p className="font-bold text-xl text-brand-ui-primary">
+              Voila! This is unlocked!
+            </p>
+          </div>
+          <a
+            href={config.networks[lock!.network].explorer.urls.address(
+              lock!.address
+            )}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+          >
+            See in block explorer{' '}
+            <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
+          </a>
+        </div>
       </main>
       <footer className="p-6 border-t grid items-center">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          <div className="flex gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <Button
               variant="outlined-primary"
-              loading={isSigning}
-              className="w-full"
-              onClick={() => send('MAKE_ANOTHER_PURCHASE')}
+              onClick={() => checkoutService.send('MAKE_ANOTHER_PURCHASE')}
             >
               Buy membership
             </Button>
-            <Button
-              className="w-full"
-              loading={isSigning}
-              onClick={() => onClose()}
-            >
-              Return to site
-            </Button>
+            <Button onClick={() => onClose()}>Return to site</Button>
           </div>
         </Connected>
       </footer>
