@@ -14,6 +14,7 @@ import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
 import { Shell } from '../Shell'
+import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 
 interface Props {
   injectedProvider: unknown
@@ -25,6 +26,7 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, network } = useAuth()
   const walletService = useWalletService()
+  const communication = useCheckoutCommunication()
   const config = useConfig()
 
   const { prepareChargeForCard, captureChargeForCard } = useAccount(
@@ -32,7 +34,17 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
     network!
   )
   const [isConfirming, setIsConfirming] = useState(false)
-  const { lock, quantity, recipients, payment, captcha } = state.context
+
+  const {
+    lock,
+    quantity,
+    recipients,
+    payment,
+    captcha,
+    messageToSign,
+    paywallConfig,
+  } = state.context
+
   const { isLoading, data: fiatPricing } = useQuery(
     [quantity, lock!.address, lock!.network],
     async () => {
@@ -152,6 +164,16 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
           if (error) {
             throw new Error(error.message)
           } else {
+            if (!paywallConfig.pessimistic && hash) {
+              communication.emitTransactionInfo({
+                hash,
+                lock: lock?.address,
+              })
+              communication.emitUserInfo({
+                address: account,
+                signedMessage: messageToSign?.signature,
+              })
+            }
             send({
               type: 'CONFIRM_MINT',
               status: 'PROCESSING',

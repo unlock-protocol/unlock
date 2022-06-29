@@ -48,7 +48,7 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-  const { mint, lock } = state.context
+  const { mint, lock, messageToSign } = state.context
   const processing = mint?.status === 'PROCESSING'
   const status = mint?.status
 
@@ -68,6 +68,12 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
             hash: mint!.transactionHash!,
             lock: lock?.address,
           })
+
+          communication.emitUserInfo({
+            address: account,
+            signedMessage: messageToSign?.signature,
+          })
+
           send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
