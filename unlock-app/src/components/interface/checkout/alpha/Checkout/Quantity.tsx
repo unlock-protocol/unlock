@@ -56,7 +56,7 @@ export function Quantity({
     quantity
   )
 
-  const fiatPrice = lock.fiatPricing?.usd?.keyPrice
+  const fiatPrice = lock?.fiatPricing?.usd?.keyPrice
 
   return (
     <Shell.Root onClose={() => onClose()}>
