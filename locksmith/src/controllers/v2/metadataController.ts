@@ -421,23 +421,29 @@ export class MetadataController {
       const keyHolderMetadata = await Promise.all(keyHoldersMetadataPromise)
       const keyData = await Promise.all(keyDataPromise)
 
-      const mergedData = keyHolderMetadata.map((keyMetadata: any, index) => {
-        let metadata = keyMetadata?.data ?? {}
-        const keyDataByIndex = keyData[index]?.data ?? {}
-        const userAddress = keyMetadata?.userAddress
+      const mergedData = keyHolderMetadata
+        .map((keyMetadata: any, index) => {
+          let metadata = keyMetadata?.data ?? {}
+          const keyDataByIndex = keyData[index]?.metadata ?? {}
+          const userAddress = keyMetadata?.userAddress
 
-        metadata = {
-          userAddress,
-          ...metadata,
-          ...keyDataByIndex,
-        }
+          metadata = {
+            userAddress,
+            data: {
+              ...metadata,
+              ...keyDataByIndex,
+            },
+          }
 
-        return {
-          ...metadata,
-        }
-      })
+          if (Object.keys(metadata.data).length === 0 && !userAddress)
+            return null
+          return {
+            ...metadata,
+          }
+        })
+        .filter(Boolean)
 
-      return response.send({ results: mergedData }).status(200)
+      return response.send(mergedData).status(200)
     } catch (err) {
       logger.error(err.message)
       return response.status(400).send({
