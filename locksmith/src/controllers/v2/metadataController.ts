@@ -435,8 +435,9 @@ export class MetadataController {
             },
           }
 
-          if (Object.keys(metadata.data).length === 0 && !userAddress)
-            return null
+          if (Object.keys(metadata.data).length === 0 && !userAddress) {
+            return null // not return empty object if merged data is empty
+          }
           return {
             ...metadata,
           }
