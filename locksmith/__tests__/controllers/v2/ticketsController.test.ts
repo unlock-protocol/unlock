@@ -1,5 +1,5 @@
 import request from 'supertest'
-import { loginRandomUser } from '../../test-helpers/utils'
+import { loginRandomUser, loginAsApplication } from '../../test-helpers/utils'
 const metadataOperations = require('../../../src/operations/metadataOperations')
 
 const app = require('../../../src/app')
@@ -31,7 +31,7 @@ jest.mock('../../../src/operations/wedlocksOperations', () => {
   }
 })
 
-describe('sign endpoint', () => {
+describe('tickets endpoint', () => {
   it('returns an error when authentication is missing', async () => {
     expect.assertions(1)
 
@@ -204,5 +204,65 @@ describe('sign endpoint', () => {
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(response.status).toBe(200)
+  })
+
+  describe('qr code', () => {
+    it('returns an error when authentication is missing', async () => {
+      expect.assertions(1)
+
+      const response = await request(app).get(
+        `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/qr`
+      )
+      expect(response.status).toBe(403)
+    })
+
+    it('returns an error when authentication is there but the user is not the lock manager', async () => {
+      expect.assertions(2)
+
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+
+      const response = await request(app)
+        .get(`/v2/api/ticket/${network}/${wrongLockAddress}/${tokenId}/qr`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+      expect(response.status).toBe(401)
+    })
+
+    it('returns the image as QR code when using an HTTP Header', async () => {
+      expect.assertions(4)
+
+      const { loginResponse, address, application } = await loginAsApplication(
+        app,
+        'My App'
+      )
+      owner = address
+      expect(loginResponse.status).toBe(200)
+
+      const response = await request(app)
+        .get(`/v2/api/ticket/${network}/${lockAddress}/${tokenId}/qr`)
+        .set('authorization', `Api-key ${application.key}`)
+      expect(response.status).toBe(200)
+      expect(response.headers['content-type']).toBe('image/gif')
+      expect(response.body.length).toBeGreaterThan(5000) // hardcoded. sampling always returned > 7000
+    })
+
+    it('returns the image as QR code when using an HTTP query param', async () => {
+      expect.assertions(4)
+
+      const { loginResponse, address, application } = await loginAsApplication(
+        app,
+        'My App'
+      )
+      owner = address
+      expect(loginResponse.status).toBe(200)
+
+      const response = await request(app).get(
+        `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/qr?api-key=${application.key}`
+      )
+      expect(response.status).toBe(200)
+      expect(response.headers['content-type']).toBe('image/gif')
+      expect(response.body.length).toBeGreaterThan(5000) // hardcoded. sampling always returned > 7000
+    })
   })
 })

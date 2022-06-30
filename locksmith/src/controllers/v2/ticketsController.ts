@@ -6,6 +6,7 @@ import Normalizer from '../../utils/normalizer'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
 import { generateQrCode } from '../../utils/qrcode'
+
 export class TicketsController {
   public web3Service: Web3Service
   constructor({ web3Service }: { web3Service: Web3Service }) {
@@ -119,21 +120,21 @@ export class TicketsController {
       const network = Number(request.params.network)
       const tokenId = request.params.tokenId.toLowerCase()
 
-      console.log({ lockAddress, network, tokenId })
-      const qrCode = await generateQrCode({
-        network,
-        lockAddress,
-        tokenId,
-      })
+      const qrCode = (
+        await generateQrCode({
+          network,
+          lockAddress,
+          tokenId,
+        })
+      ).replace('data:image/gif;base64,', '')
       const img = Buffer.from(qrCode, 'base64')
 
       response.writeHead(200, {
-        'Content-Type': 'image/png',
-        'Content-Length': img.length,
+        'Content-Type': 'image/gif',
       })
       return response.end(img)
     } catch (err) {
-      logger.error(err.message)
+      logger.error(err)
       return response.sendStatus(500)
     }
   }
