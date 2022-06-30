@@ -17,8 +17,8 @@ import {
   CreateLockButton,
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
-import Fuse from 'fuse.js'
 import { Input } from '@unlock-protocol/ui'
+
 interface FilterProps {
   value: string
   current: string
@@ -165,14 +165,9 @@ const MetadataTableWrapper = ({
     lockAddresses,
     account,
     filter,
-    currentPage
+    currentPage,
+    query
   )
-  const fuseSearch = useMemo(() => {
-    return new Fuse(list, {
-      keys: columns,
-      threshold: 0,
-    })
-  }, [columns, list])
 
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e?.target?.value ?? ''
@@ -182,8 +177,6 @@ const MetadataTableWrapper = ({
   if (loading) {
     return <Loading />
   }
-  const items = fuseSearch.search(query).map(({ item }) => item)
-  const filtredItems = items?.length > 0 ? items : list
   // TODO: rename metadata into members inside of MetadataTable
   return (
     <>
@@ -200,7 +193,7 @@ const MetadataTableWrapper = ({
       />
       <MetadataTable
         columns={columns}
-        metadata={filtredItems}
+        metadata={list}
         isLockManager={isLockManager}
         lockAddresses={lockAddresses}
       />
