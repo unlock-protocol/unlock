@@ -4,10 +4,10 @@ subTitle: NFT.NYC, ETHNewYork, DAO NYC and more — and Unlock was everywhere
 authorName: Christopher Carfi
 publishDate: June 30, 2022
 description: NFT.NYC, ETHNewYork, DAO NYC and more — and Unlock Protocol was everywhere.
-image: /images/blog/nftnyc-wrapup-2022/nyc-cover-image-2022.jpeg
+image: /images/blog/nyc22/nyc-cover-image-2022.jpeg
 ---
 
-![nyc-cover-image-2022.jpeg](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/nyc-cover-image-2022.jpeg)
+![nyc-cover-image-2022.jpeg](/images/blog/nyc22/nyc-cover-image-2022.jpeg)
 
 Wowsa. What a week in New York City — it seems the entire web3 industry was there in one form or another between June 20th and June 26th. There was so 👏 much 👏 going 👏 on 👏. 
 
