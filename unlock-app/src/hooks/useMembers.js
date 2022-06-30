@@ -91,7 +91,6 @@ export const useMembers = (
   const [loading, setLoading] = useState(true)
   const [isLockManager, setIsLockManager] = useState(false)
 
-  console.log('query', query)
   const login = async () => {
     if (!storageService) return
     await storageService.loginPrompt({
@@ -149,8 +148,8 @@ export const useMembers = (
         return buildMembersWithMetadata(lock, [])
       }
       try {
-        if (data?.locks?.length) {
-          const storedMetadata = await getKeysMetadata(data?.locks)
+        if (data?.locks) {
+          const storedMetadata = await getKeysMetadata(data?.locks ?? [])
           return buildMembersWithMetadata(lock, storedMetadata)
         }
       } catch (error) {
@@ -169,8 +168,8 @@ export const useMembers = (
       }, {})
     )
 
+    setMembers(members ?? [])
     if (members.length > 0) {
-      setMembers(members)
       setHasNextPage(Object.keys(members).length === first)
     }
     setLoading(false)
@@ -180,7 +179,14 @@ export const useMembers = (
    */
   useEffect(() => {
     loadMembers()
-  }, [JSON.stringify(lockAddresses), viewer, filter, page, query.length])
+  }, [
+    JSON.stringify(lockAddresses),
+    viewer,
+    filter,
+    page,
+    query.length,
+    filterKey,
+  ])
 
   const list = Object.values(members)
   const columns = generateColumns(list)
