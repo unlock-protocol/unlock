@@ -7,7 +7,7 @@ export default function keyholdersByLockQuery() {
       $expiresAfter: BigInt! = 0
       $first: Int! = 100
       $skip: Int! = 0
-      $owner: String = "0x4"
+      $owner: String = ""
     ) {
       locks(where: { address_in: $addresses }) {
         keys(
