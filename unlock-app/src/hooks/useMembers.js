@@ -12,53 +12,6 @@ import { ConfigContext } from '../utils/withConfig'
 import { ToastHelper } from '../components/helpers/toast.helper'
 
 /**
- * Helper function to retrieve metadata for a all keys on a lock
- * @param {*} lock
- * @param {string} viewer
- * @param {*} walletService
- * @param {*} storageService
- */
-export const getAllKeysMetadataForLock = async (
-  lock,
-  viewer,
-  walletService,
-  storageService,
-  network,
-  page
-) => {
-  const payload = generateKeyTypedData(
-    {
-      LockMetaData: {
-        owners: lock.keys.map((k) => k.owner.address),
-        address: lock.address,
-        owner: viewer,
-        timestamp: Date.now(),
-        page,
-      },
-    },
-    'LockMetaData'
-  )
-  // TODO prevent replays by adding timestamp?
-  const message = `I want to access member data for ${lock.address}`
-  const signaturePromise = walletService.signMessage(message, 'personal_sign')
-  ToastHelper.promise(signaturePromise, {
-    error: 'There was an error in getting signature. Please try again.',
-    loading: 'Please sign request to get members.',
-    success: 'Successfully signed request to get members.',
-  })
-
-  const signature = await signaturePromise
-
-  const response = await storageService.getBulkMetadataFor(
-    lock.address,
-    signature,
-    payload,
-    network
-  )
-  return response
-}
-
-/**
  * Helper function which combines the members and their metadata
  * @param {*} lockWithKeys
  * @param {*} storedMetadata
@@ -68,13 +21,22 @@ export const buildMembersWithMetadata = (lockWithKeys, storedMetadata) => {
   const metadataByKeyOwner = storedMetadata.reduce((byKeyOwner, key) => {
     return {
       ...byKeyOwner,
-      [key.userAddress.toLowerCase()]: key.data.userMetadata,
+      [key.userAddress.toLowerCase()]: {
+        protected: {
+          ...key.data.userMetadata?.protected,
+          ...key.data?.extraMetadata,
+        },
+        public: {
+          ...key.data.userMetadata.public,
+        },
+      },
     }
   }, {})
   lockWithKeys.keys.forEach((key) => {
     const keyOwner = key.owner.address.toLowerCase()
     const index = `${lockWithKeys.address}-${keyOwner}`
     let member = members[index]
+
     if (!member) {
       member = {
         token: key.keyId,
@@ -115,7 +77,7 @@ export const useMembers = (
   page = 0,
   query = ''
 ) => {
-  const { network } = useContext(AuthenticationContext)
+  const { network, account } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
   const walletService = useContext(WalletServiceContext)
   const web3Service = useContext(Web3ServiceContext)
@@ -127,6 +89,32 @@ export const useMembers = (
   const [members, setMembers] = useState({})
   const [loading, setLoading] = useState(true)
   const [isLockManager, setIsLockManager] = useState(false)
+
+  const login = async () => {
+    if (!storageService) return
+    await storageService.loginPrompt({
+      walletService,
+      address: account,
+      chainId: network,
+    })
+  }
+
+  const getKeysMetadata = async (locks) => {
+    if (!locks.length) return
+    await login()
+
+    const keysMetadataPromise = locks.map(async (lock) => {
+      return await storageService.getKeysMetadata({
+        lockAddress: lock.address,
+        network,
+        lock,
+      })
+    })
+
+    const keysMetadata = await Promise.all(keysMetadataPromise)
+    const mergeArrays = [].concat(...keysMetadata.map((item) => item))
+    return [].concat(...keysMetadata.map((item) => item))
+  }
 
   const loadMembers = async () => {
     setLoading(true)
@@ -146,27 +134,22 @@ export const useMembers = (
       query
     )
 
-    const membersForLocksPromise = data.locks.map(async (lockWithKeys) => {
+    const membersForLocksPromise = data.locks.map(async (lock) => {
       // If the viewer is not the lock owner, just show the members from chain
       const _isLockManager = await web3Service.isLockManager(
-        lockWithKeys.address,
+        lock.address,
         viewer,
         network
       )
       setIsLockManager(_isLockManager)
       if (!_isLockManager) {
-        return buildMembersWithMetadata(lockWithKeys, [])
+        return buildMembersWithMetadata(lock, [])
       }
       try {
-        const storedMetadata = await getAllKeysMetadataForLock(
-          lockWithKeys,
-          viewer,
-          walletService,
-          storageService,
-          network,
-          page
-        )
-        return buildMembersWithMetadata(lockWithKeys, storedMetadata)
+        if (data?.locks?.length) {
+          const storedMetadata = await getKeysMetadata(data?.locks)
+          return buildMembersWithMetadata(lock, storedMetadata)
+        }
       } catch (error) {
         ToastHelper.error(`Could not list members - ${error}`)
         return []
