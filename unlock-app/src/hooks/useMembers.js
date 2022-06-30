@@ -129,7 +129,7 @@ export const useMembers = (
   const [isLockManager, setIsLockManager] = useState(false)
 
   const loadMembers = async () => {
-    //setLoading(true)
+    setLoading(true)
 
     let expiresAfter = parseInt(new Date().getTime() / 1000)
     if (filter === MemberFilters.ALL) {
