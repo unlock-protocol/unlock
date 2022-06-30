@@ -17,21 +17,19 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-const locksPayload = [
-  {
-    keys: [
-      {
-        owner: {
-          address: '0xf91c12615592195626a464cc9a8ddebb88a79b59',
-        },
-        keyId: '1',
-        expiration: '1658416869',
+const lockPayload = {
+  keys: [
+    {
+      owner: {
+        address: '0xf91c12615592195626a464cc9a8ddebb88a79b59',
       },
-    ],
-    address: '0x0b9def7d8595b19d9d5464929c107074aa594304',
-    owner: '0x7e44d95df5cc9a2e85f17a08120b28f4ee8a04cc',
-  },
-]
+      keyId: '1',
+      expiration: '1658416869',
+    },
+  ],
+  address: '0x0b9def7d8595b19d9d5464929c107074aa594304',
+  owner: '0x7e44d95df5cc9a2e85f17a08120b28f4ee8a04cc',
+}
 
 describe('Metadata v2 endpoints for locksmith', () => {
   it('Add metadata to user', async () => {
@@ -186,7 +184,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     const lockAddressMetadataResponse = await request(app)
       .put(`/v2/api/metadata/4/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
-      .send(locksPayload)
+      .send(lockPayload)
 
     expect(lockAddressMetadataResponse.status).toBe(200)
   })
