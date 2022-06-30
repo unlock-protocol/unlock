@@ -26,7 +26,7 @@ If you don’t yet know them, [Superfluid](https://www.superfluid.finance/home) 
 
 ## We experienced ~ vibesIRL ~ with Developer DAO
 
-![Screen Shot 2022-06-29 at 9.46.59 PM.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/Screen_Shot_2022-06-29_at_9.46.59_PM.png)
+![vibesIRL-min.png](/images/blog/nyc22/vibesIRL-min.png)
 
 Developer DAO exists to accelerate the education and impact of a new wave of web3 builders. Unlock and Polygon teamed up to help sponsor Developer DAO’s ~ vibesIRL ~ event during blockchain week in New York at Barcade! A great time was had meeting new members of the developer community and reconnecting with old frens. Looking forward to the next one!
 
@@ -36,9 +36,9 @@ Developer DAO exists to accelerate the education and impact of a new wave of web
 
 ## DAO NYC
 
-![Screen Shot 2022-06-29 at 9.49.15 PM.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/Screen_Shot_2022-06-29_at_9.49.15_PM.png)
+![DAONYC-min.png](/images/blog/nyc22/DAONYC-min.png)
 
-DAO NYC [https://www.dao-nyc.xyz/](https://www.dao-nyc.xyz/) was a one-day event halfway through blockchain week, and it has immediately rocketed onto the shortlist of events that Do It Right. From the flawless execution of the event production and logistics to the strong diversity of voices from all across the web3 ecosystem who shared their time and expertise, DAO NYC was a delight. Big ups to the **Tally** crew that pulled it together. The event was SOLD OUT, with over 500 attendees.
+DAO NYC [https://www.dao-nyc.xyz/](https://www.dao-nyc.xyz/) was a one-day event halfway through blockchain week, and it has immediately rocketed onto the shortlist of events that Do It Right. From the flawless execution of the event production and logistics to the strong diversity of voices from all across the web3 ecosystem who shared their time and expertise, DAO NYC was a delight. Big ups to the [Tally.xyz](Tally.xyz) crew that pulled it together. The event was SOLD OUT, with over 500 attendees.
 
 Unlock participated in multiple ways: as a sponsor, as the provider of **NFT ticketing** for the event, and Unlock’s CEO and Founder Julien Genestoux participated in a rich conversation discussing on-line credentials on the “Credentials and Data in DAOs” panel.
 
@@ -64,7 +64,7 @@ Again, hats off to the DAO NYC conference team. Cannot wait for the next one! (T
 
 ## ETH New York
 
-![Screen Shot 2022-06-30 at 11.11.15 AM.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/Screen_Shot_2022-06-30_at_11.11.15_AM.png)
+![ethnewyork.png](/images/blog/nyc22/ethnewyork.png)
 
 The crowning event for the week was ETHGlobal’s ETH New York hackathon. Over 1500 participants showed up for an intense, three-day hackathon building on the core protocols in web3. Unlock, of course, was a sponsor.
 
@@ -114,7 +114,7 @@ GARD3N is a public goods social engagement platform built with Lens, Unlock Prot
 
 ### NFTicket
 
-![ticket.gif](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/ticket.gif)
+![nfticketmin.gif](/images/blog/nyc22/nfticket-min.gif)
 
 **Hackathon project website:** [https://ethglobal.com/showcase/nfticket-qwwba](https://ethglobal.com/showcase/nfticket-qwwba)
 
