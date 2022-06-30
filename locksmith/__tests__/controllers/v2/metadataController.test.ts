@@ -203,7 +203,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     expect(lockAddressMetadataResponse.status).toBe(401)
   })
 
-  it('Doest return error when authentication is present and payload is not sent', async () => {
+  it('Doest return error when authentication is present and payload is wrong', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)
@@ -212,6 +212,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     const lockAddressMetadataResponse = await request(app)
       .put(`/v2/api/metadata/4/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send(lockPayload.keys)
 
     expect(lockAddressMetadataResponse.status).toBe(400)
   })
