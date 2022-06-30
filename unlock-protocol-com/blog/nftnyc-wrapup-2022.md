@@ -40,7 +40,7 @@ Developer DAO exists to accelerate the education and impact of a new wave of web
 
 DAO NYC [https://www.dao-nyc.xyz/](https://www.dao-nyc.xyz/) was a one-day event halfway through blockchain week, and it has immediately rocketed onto the shortlist of events that Do It Right. From the flawless execution of the event production and logistics to the strong diversity of voices from all across the web3 ecosystem who shared their time and expertise, DAO NYC was a delight. Big ups to the [Tally.xyz](Tally.xyz) crew that pulled it together. The event was SOLD OUT, with over 500 attendees.
 
-Unlock participated in multiple ways: as a sponsor, as the provider of **NFT ticketing** for the event, and Unlock’s CEO and Founder Julien Genestoux participated in a rich conversation discussing on-line credentials on the “Credentials and Data in DAOs” panel.
+Unlock participated in multiple ways: as a sponsor, as the provider of [NFT ticketing](https://unlock-protocol.com/guides/how-to-sell-nft-tickets-for-an-event/) for the event, and Unlock’s CEO and Founder Julien Genestoux participated in a rich conversation discussing on-line credentials on the “Credentials and Data in DAOs” panel.
 
 Plus, the views were amazing.
 
