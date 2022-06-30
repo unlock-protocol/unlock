@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import 'cross-fetch/polyfill'
 import Head from 'next/head'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
