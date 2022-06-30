@@ -19,7 +19,7 @@ If you don’t yet know them, [Superfluid](https://www.superfluid.finance/home) 
 
 [https://twitter.com/UnlockProtocol/status/1540321536078389249?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ](https://twitter.com/UnlockProtocol/status/1540321536078389249?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
 
-## We experienced ~vibesIRL~ with Developer DAO
+## We experienced ~ vibesIRL ~ with Developer DAO
 
 ![Screen Shot 2022-06-29 at 9.46.59 PM.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/Screen_Shot_2022-06-29_at_9.46.59_PM.png)
 
