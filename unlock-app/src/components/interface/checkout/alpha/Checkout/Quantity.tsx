@@ -11,6 +11,7 @@ import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Shell } from '../Shell'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -56,7 +57,7 @@ export function Quantity({
     quantity
   )
 
-  const fiatPrice = lock?.fiatPricing?.usd?.keyPrice
+  const fiatPrice = fiatPricing?.usd?.keyPrice
 
   return (
     <Shell.Root onClose={() => onClose()}>
@@ -68,7 +69,7 @@ export function Quantity({
             <div className="text-right grid">
               {fiatPricing.creditCardEnabled ? (
                 <>
-                  {fiatPrice && (
+                  {!!fiatPrice && (
                     <span className="font-semibold">
                       ${(fiatPrice / 100).toFixed(2)}
                     </span>
@@ -77,14 +78,10 @@ export function Quantity({
                 </>
               ) : (
                 <>
-                  <span className="font-medium">
+                  <span className="font-semibold">
                     {formattedData.formattedKeyPrice}
                   </span>
-                  {fiatPrice && (
-                    <span className="font-semibold">
-                      ${(fiatPrice / 100).toFixed(2)}
-                    </span>
-                  )}
+                  {!!fiatPrice && <span>${(fiatPrice / 100).toFixed(2)}</span>}
                 </>
               )}
             </div>
@@ -161,7 +158,7 @@ export function Quantity({
           </div>
         </div>
       </main>
-      <footer className="p-6 border-t grid items-center">
+      <footer className="px-6 pt-6 border-t grid items-center">
         <Connected
           service={checkoutService}
           injectedProvider={injectedProvider}
@@ -226,6 +223,7 @@ export function Quantity({
             </div>
           )}
         </Connected>
+        <PoweredByUnlock />
       </footer>
     </Shell.Root>
   )

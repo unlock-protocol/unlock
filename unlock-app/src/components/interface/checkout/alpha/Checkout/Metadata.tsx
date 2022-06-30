@@ -11,6 +11,7 @@ import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { Shell } from '../Shell'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
   injectedProvider: unknown
@@ -126,7 +127,7 @@ export function Metadata({
               )}
             >
               <Input
-                label={`Recipient x ${index + 1}`}
+                label={`Recipient #${index + 1}`}
                 size="small"
                 error={errors?.metadata?.[index]?.recipient?.message}
                 {...register(`metadata.${index}.recipient`, {
@@ -155,7 +156,7 @@ export function Metadata({
           ))}
         </form>
       </main>
-      <footer className="p-6 border-t grid items-center">
+      <footer className="px-6 pt-6 border-t grid items-center">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
@@ -164,6 +165,7 @@ export function Metadata({
             {isLoading ? 'Continuing' : 'Next'}
           </Button>
         </Connected>
+        <PoweredByUnlock />
       </footer>
     </Shell.Root>
   )

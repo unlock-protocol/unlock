@@ -23,6 +23,7 @@ import { countries } from '~/utils/countries'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
 import { Shell } from '../Shell'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
   injectedProvider: unknown
@@ -74,7 +75,7 @@ export function CardPayment({
           )}
         </Elements>
       </main>
-      <footer className="p-6 border-t grid items-center">
+      <footer className="px-6 pt-6 border-t grid items-center">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
@@ -104,6 +105,7 @@ export function CardPayment({
             </Button>
           )}
         </Connected>
+        <PoweredByUnlock />
       </footer>
     </Shell.Root>
   )

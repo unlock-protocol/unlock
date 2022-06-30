@@ -13,6 +13,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Shell } from '../Shell'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
   injectedProvider: unknown
@@ -103,7 +104,7 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
           </a>
         </div>
       </main>
-      <footer className="p-6 border-t grid items-center">
+      <footer className="px-6 pt-6 border-t grid items-center">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
@@ -117,6 +118,7 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
             {processing ? 'Minting your membership' : 'Return to site'}
           </Button>
         </Connected>
+        <PoweredByUnlock />
       </footer>
     </Shell.Root>
   )

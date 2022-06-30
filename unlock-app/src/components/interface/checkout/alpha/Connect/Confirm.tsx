@@ -8,6 +8,7 @@ import { createMessageToSignIn } from '~/utils/oauth'
 import { Connected } from '../Connected'
 import { ConnectService } from './connectMachine'
 import { Shell } from '../Shell'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -88,7 +89,7 @@ export function ConfirmConnect({
           </ol>
         </div>
       </main>
-      <footer className="p-6 border-t grid items-center">
+      <footer className="px-6 pt-6 border-t grid items-center">
         <Connected injectedProvider={injectedProvider} service={connectService}>
           <Button
             onClick={onSignIn}
@@ -100,6 +101,7 @@ export function ConfirmConnect({
             {loading ? 'Please sign the message' : 'Sign-in with Ethereum'}
           </Button>
         </Connected>
+        <PoweredByUnlock />
       </footer>
     </Shell.Root>
   )

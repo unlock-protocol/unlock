@@ -9,6 +9,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useState } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -76,11 +77,12 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
           </section>
         ))}
       </main>
-      <footer className="p-6 border-t grid items-center">
+      <footer className="px-6 pt-6 border-t grid items-center">
         <Connected
           service={checkoutService}
           injectedProvider={injectedProvider}
         />
+        <PoweredByUnlock />
       </footer>
     </Shell.Root>
   )

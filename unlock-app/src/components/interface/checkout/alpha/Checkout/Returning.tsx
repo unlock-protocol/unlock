@@ -7,6 +7,7 @@ import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
+
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -58,7 +59,7 @@ export function Returning({
               variant="outlined-primary"
               onClick={() => checkoutService.send('MAKE_ANOTHER_PURCHASE')}
             >
-              Buy membership
+              Buy another
             </Button>
             <Button onClick={() => onClose()}>Return to site</Button>
           </div>

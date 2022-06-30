@@ -8,6 +8,7 @@ import { useConfig } from '~/utils/withConfig'
 import { useStorageService } from '~/utils/withStorageService'
 import { useActor } from '@xstate/react'
 import { Shell } from '../Shell'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
   injectedProvider: unknown
@@ -62,7 +63,7 @@ export function Captcha({ injectedProvider, checkoutService, onClose }: Props) {
           </div>
         </div>
       </main>
-      <footer className="p-6 border-t grid items-center">
+      <footer className="px-6 pt-6 border-t grid items-center">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
@@ -83,6 +84,7 @@ export function Captcha({ injectedProvider, checkoutService, onClose }: Props) {
               : 'Continue'}
           </Button>
         </Connected>
+        <PoweredByUnlock />
       </footer>
     </Shell.Root>
   )

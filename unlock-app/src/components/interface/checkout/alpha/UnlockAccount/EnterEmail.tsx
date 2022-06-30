@@ -3,6 +3,7 @@ import { useActor } from '@xstate/react'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { useStorageService } from '~/utils/withStorageService'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 import { UnlockAccountService } from './unlockAccountMachine'
 
 interface Props {
@@ -63,7 +64,7 @@ export function EnterEmail({ unlockAccountService }: Props) {
           </form>
         </div>
       </main>
-      <footer className="p-6 border-t grid items-center">
+      <footer className="px-6 pt-6 border-t grid items-center">
         <Button
           loading={isContinuing}
           form="enter-email"
@@ -72,6 +73,7 @@ export function EnterEmail({ unlockAccountService }: Props) {
         >
           {isContinuing ? 'Continuing' : 'Continue'}
         </Button>
+        <PoweredByUnlock />
       </footer>
     </div>
   )

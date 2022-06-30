@@ -2,6 +2,7 @@ import { Button, Input } from '@unlock-protocol/ui'
 import { useActor } from '@xstate/react'
 import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 import { UnlockAccountService, UserDetails } from './unlockAccountMachine'
 
 interface Props {
@@ -69,7 +70,7 @@ export function SignIn({ unlockAccountService, signIn }: Props) {
           </form>
         </div>
       </main>
-      <footer className="p-6 border-t grid items-center">
+      <footer className="px-6 pt-6 border-t grid items-center">
         <Button
           disabled={isSigningIn}
           loading={isSigningIn}
@@ -79,6 +80,7 @@ export function SignIn({ unlockAccountService, signIn }: Props) {
         >
           {isSigningIn ? 'Signing in' : 'Sign in'}
         </Button>
+        <PoweredByUnlock />
       </footer>
     </div>
   )

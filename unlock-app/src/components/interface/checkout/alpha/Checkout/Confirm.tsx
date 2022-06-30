@@ -15,6 +15,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
 import { Shell } from '../Shell'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
   injectedProvider: unknown
@@ -78,6 +79,8 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
     lock!.name,
     quantity
   )
+
+  const fiatPrice = fiatPricing?.usd?.keyPrice
 
   const onConfirmCard = async () => {
     try {
@@ -152,8 +155,6 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
       setIsConfirming(false)
     }
   }
-
-  console.log(recurringPayments)
 
   const onConfirmCrypto = async () => {
     try {
@@ -263,13 +264,19 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
             <div className="grid">
               {fiatPricing.creditCardEnabled ? (
                 <>
-                  <p>${fiatPricing.usd.keyPrice / 100} </p>
-                  <p>{formattedData.formattedKeyPrice} </p>
+                  {!!fiatPrice && (
+                    <span className="font-semibold">
+                      ${(fiatPrice / 100).toFixed(2)}
+                    </span>
+                  )}
+                  <span>{formattedData.formattedKeyPrice} </span>
                 </>
               ) : (
                 <>
-                  <p>{formattedData.formattedKeyPrice} </p>
-                  <p>${fiatPricing.usd.keyPrice / 100} </p>
+                  <span className="font-semibold">
+                    {formattedData.formattedKeyPrice}{' '}
+                  </span>
+                  {!!fiatPrice && <span>${(fiatPrice / 100).toFixed(2)}</span>}
                 </>
               )}
               <p className="text-sm text-gray-500">
@@ -315,13 +322,14 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
           </div>
         )}
       </main>
-      <footer className="p-6 border-t grid items-center">
+      <footer className="px-6 pt-6 border-t grid items-center">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
           <Payment />
         </Connected>
+        <PoweredByUnlock />
       </footer>
     </Shell.Root>
   )
