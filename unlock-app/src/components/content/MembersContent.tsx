@@ -17,6 +17,7 @@ import {
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
 import { Input } from '@unlock-protocol/ui'
+import useDebounce from '../../hooks/useDebouce'
 
 interface FilterProps {
   value: string
@@ -165,6 +166,7 @@ const MetadataTableWrapper = ({
   const [currentPage, setCurrentPage] = useState(page)
   const [query, setQuery] = useState<string>('')
   const [filterKey, setFilteKey] = useState<string>('owner')
+  const queryValue = useDebounce<string>(query)
 
   const filters: Filter[] = [
     { key: 'owner', label: 'Owner' },
@@ -176,7 +178,7 @@ const MetadataTableWrapper = ({
     account!,
     filter,
     currentPage,
-    query,
+    queryValue,
     filterKey
   )
 
