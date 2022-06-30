@@ -113,8 +113,9 @@ contract MixinTransfer is
   * @param _from the owner of token to transfer
   * @param _recipient the address that will receive the token
   * @param _tokenId the id of the token
-  * @notice To prevent the key manager to retain ownership rights on the token after transfer, the 
-  * operation will fail if a key manager if set. 
+  * @notice requirements: if the caller is not `from`, it must be approved to move this token by
+  * either {approve} or {setApprovalForAll}. 
+  * The key manager will be reset to address zero after the transfer
   */
   function transferFrom(
     address _from,
@@ -124,20 +125,60 @@ contract MixinTransfer is
     public
   {
     _isValidKey(_tokenId);
-    if(
-      // the specified address does not own the token
-      ownerOf(_tokenId) != _from
-      || 
-      ( // the sender is not owner or authorized
-        ownerOf(_tokenId) != msg.sender
-        && approved[_tokenId] != msg.sender
-        && !isApprovedForAll(_ownerOf[_tokenId], msg.sender)
-      )
-      || // a key manager is set
-      keyManagerOf[_tokenId] != address(0)
-    ) {
+    _onlyKeyManagerOrApproved(_tokenId);
+    
+    // reset key manager to address zero
+    keyManagerOf[_tokenId] = address(0);
+
+    _transferFrom(_from, _recipient, _tokenId);
+  }
+
+  /** 
+  * Lending a key allows you to transfer the token while retaining the 
+  * ownerships right by setting yourself as a key manager first
+  * @param _from the owner of token to transfer
+  * @param _recipient the address that will receive the token
+  * @param _tokenId the id of the token
+  * @notice This function can only called by 1) the key owner when no key manager is set or 2) the key manager.
+  * After calling the function, the `_recipient` will be the new owner, and the sender of the tx
+  * will become the key manager.
+  */
+  function lendKey(
+    address _from,
+    address _recipient,
+    uint _tokenId
+  )
+    public
+  {
+    // make sure caller is either owner or key manager 
+    if(!_isKeyManager(_tokenId, msg.sender)) {
       revert UNAUTHORIZED();
     }
+    
+    // transfer key ownership to lender
+    _transferFrom(_from, _recipient, _tokenId);
+
+    // set key owner as key manager
+    keyManagerOf[_tokenId] = msg.sender;
+  }
+
+  /**
+   * This functions contains the logic to transfer a token
+   * from an account to another
+   */
+  function _transferFrom(
+    address _from,
+    address _recipient,
+    uint _tokenId
+  ) private {
+
+    _isValidKey(_tokenId);
+
+    // incorrect _from field
+    if (ownerOf(_tokenId) != _from) {
+      revert UNAUTHORIZED();
+    }
+
     if(transferFeeBasisPoints >= BASIS_POINTS_DEN) {
       revert KEY_TRANSFERS_DISABLED();
     }
@@ -169,7 +210,6 @@ contract MixinTransfer is
     _createOwnershipRecord(_tokenId, _recipient);
 
     // clear any previous approvals
-    _setKeyManagerOf(_tokenId, address(0));
     _clearApproval(_tokenId);
 
     // make future reccuring transactions impossible
