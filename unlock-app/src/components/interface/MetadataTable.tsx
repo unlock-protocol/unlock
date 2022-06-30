@@ -55,6 +55,18 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
     useState(false)
 
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-3">
+        <MemberCardPlaceholder />
+        <MemberCardPlaceholder />
+        <MemberCardPlaceholder />
+        <MemberCardPlaceholder />
+        <MemberCardPlaceholder />
+      </div>
+    )
+  }
+
   if (metadata.length === 0) {
     if (filter === MemberFilters.ALL) {
       return (
@@ -107,53 +119,41 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         lockAddresses={lockAddresses}
       />
 
-      {loading ? (
-        <>
-          <MemberCardPlaceholder />
-          <MemberCardPlaceholder />
-          <MemberCardPlaceholder />
-          <MemberCardPlaceholder />
-          <MemberCardPlaceholder />
-        </>
-      ) : (
-        <>
-          {isLockManager && (
-            <div className="flex justify-end">
-              <Button onClick={onExpandAllMetadata}>Show all metadata</Button>
-            </div>
-          )}
-          {metadata?.map((data: any) => {
-            const { lockName, expiration, keyholderAddress, token } = data
-            const key = `${lockName}${expiration}${keyholderAddress}`
-
-            return (
-              <MemberCard
-                key={key}
-                lockName={lockName}
-                expiration={expiration}
-                tokenId={token}
-                keyholderAddress={keyholderAddress}
-                metadata={data}
-                expandAllMetadata={expandAllMetadata}
-                isLockManager={isLockManager}
-                expireAndRefundDisabled={expireAndRefundDisabled(data)}
-                onExpireAndRefund={() => onExpireAndRefund(data)}
-              />
-            )
-          })}
-
-          <div className="flex justify-end">
-            <Button
-              className="flex-initial"
-              onClick={() => {
-                downloadAsCSV(columns, metadata)
-              }}
-            >
-              Export as CSV
-            </Button>
-          </div>
-        </>
+      {isLockManager && (
+        <div className="flex justify-end">
+          <Button onClick={onExpandAllMetadata}>Show all metadata</Button>
+        </div>
       )}
+      {metadata?.map((data: any) => {
+        const { lockName, expiration, keyholderAddress, token } = data
+        const key = `${lockName}${expiration}${keyholderAddress}`
+
+        return (
+          <MemberCard
+            key={key}
+            lockName={lockName}
+            expiration={expiration}
+            tokenId={token}
+            keyholderAddress={keyholderAddress}
+            metadata={data}
+            expandAllMetadata={expandAllMetadata}
+            isLockManager={isLockManager}
+            expireAndRefundDisabled={expireAndRefundDisabled(data)}
+            onExpireAndRefund={() => onExpireAndRefund(data)}
+          />
+        )
+      })}
+
+      <div className="flex justify-end">
+        <Button
+          className="flex-initial"
+          onClick={() => {
+            downloadAsCSV(columns, metadata)
+          }}
+        >
+          Export as CSV
+        </Button>
+      </div>
     </section>
   )
 }

@@ -70,7 +70,6 @@ export class GraphService {
         keyId,
       },
     })
-    console.log(result)
     return result
   }
 }
