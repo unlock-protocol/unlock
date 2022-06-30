@@ -1,16 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HiOutlineTrash as TrashIcon } from 'react-icons/hi'
 import { Button, Modal, Tooltip } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
-import AuthenticationContext, {
-  useAuth,
-} from '../../../contexts/AuthenticationContext'
+import { useAuth } from '../../../contexts/AuthenticationContext'
 import { ToastHelper } from '../../helpers/toast.helper'
 import Loading from '../Loading'
-import {
-  useWalletService,
-  WalletServiceContext,
-} from '../../../utils/withWalletService'
+import { useWalletService } from '../../../utils/withWalletService'
 import { useStorageService } from '~/utils/withStorageService'
 
 const styling = {

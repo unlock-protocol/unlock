@@ -69,6 +69,7 @@ export const unlockAccountMachine = createMachine(
   },
   {
     actions: {
+      // @ts-expect-error - xstate unused type bug
       submitUser: assign((context, { email, existingUser }) => {
         return {
           email,

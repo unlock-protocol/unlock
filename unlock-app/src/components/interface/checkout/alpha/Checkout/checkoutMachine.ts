@@ -365,21 +365,25 @@ export const checkoutMachine = createMachine(
         } as CheckoutMachineContext
       }),
       selectLock: assign({
+        // @ts-expect-error xstate unused variable type bug
         lock: (context, event) => {
           return event.lock
         },
       }),
       selectQuantity: assign({
+        // @ts-expect-error xstate unused variable type bug
         quantity: (context, event) => {
           return event.quantity
         },
       }),
       selectPaymentMethod: assign({
+        // @ts-expect-error xstate unused variable type bug
         payment: (context, event) => {
           return event.payment
         },
       }),
       selectRecipients: assign({
+        // @ts-expect-error xstate unused variable type bug
         recipients: (context, event) => {
           return event.recipients
         },
@@ -393,6 +397,7 @@ export const checkoutMachine = createMachine(
         },
       }),
       signMessage: assign({
+        // @ts-expect-error xstate unused variable type bug
         messageToSign: (context, event) => {
           return {
             address: event.address,
@@ -401,7 +406,7 @@ export const checkoutMachine = createMachine(
         },
       }),
       confirmMint: assign({
-        mint: (context, { type, status, transactionHash }) => {
+        mint: (context, { status, transactionHash }) => {
           if (!context.paywallConfig.pessimistic) {
             return {
               status: 'FINISHED',
@@ -416,6 +421,7 @@ export const checkoutMachine = createMachine(
         },
       }),
       solveCaptcha: assign({
+        // @ts-expect-error xstate unused variable type bug
         captcha: (context, event) => {
           return event.data
         },
