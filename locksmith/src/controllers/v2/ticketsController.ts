@@ -22,7 +22,7 @@ export class TicketsController {
   async sign(request: Request, response: Response) {
     const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
     const network = Number(request.params.network)
-    const tokenId = request.params.tokenId
+    const tokenId = request.params.keyId
 
     const dispatcher = new Dispatcher()
     const [payload, signature] = await dispatcher.signToken(
@@ -118,7 +118,7 @@ export class TicketsController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const tokenId = request.params.tokenId.toLowerCase()
+      const tokenId = request.params.keyId.toLowerCase()
 
       const qrCode = (
         await generateQrCode({
@@ -135,7 +135,9 @@ export class TicketsController {
       return response.end(img)
     } catch (err) {
       logger.error(err)
-      return response.sendStatus(500)
+      return response.sendStatus(500).send({
+        message: 'Failed to generate QR code',
+      })
     }
   }
 }

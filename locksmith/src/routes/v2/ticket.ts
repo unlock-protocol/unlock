@@ -18,7 +18,7 @@ const ticketsController = new TicketsController({
 })
 
 router.get(
-  '/:network/:lockAddress/:tokenId/sign',
+  '/:network/:lockAddress/:keyId/sign',
   authenticatedMiddleware,
   keyOwnerMiddleware,
   ticketsController.sign
@@ -34,7 +34,7 @@ router.put(
 )
 
 router.post(
-  '/:network/:lockAddress/:tokenId/email',
+  '/:network/:lockAddress/:keyId/email',
   authenticatedMiddleware,
   lockManagerMiddleware,
   (req, res) => {
@@ -43,7 +43,7 @@ router.post(
 )
 
 router.get(
-  '/:network/:lockAddress/:tokenId/qr',
+  '/:network/:lockAddress/:keyId/qr',
   authenticatedMiddleware,
   applicationOnlyMiddleware,
   lockManagerMiddleware,

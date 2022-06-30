@@ -87,11 +87,6 @@ export const VerificationStatus = ({ data, sig }: Props) => {
     return <InvalidKey reason="This ticket has expired" />
   }
 
-  // The current owner does not match the signed owner
-  if (!unlockKey) {
-    return <InvalidKey reason="The current owner does not match the signature!" />
-  
-
   if (showLogin && !viewer) {
     return <LoginPrompt />
   }
