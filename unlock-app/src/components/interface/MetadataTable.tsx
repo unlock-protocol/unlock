@@ -23,7 +23,7 @@ interface MetadataTableProps {
   filter?: string
   isLockManager?: boolean
   lockAddresses?: string[]
-  keysMetadata: any[]
+  keysMetadata?: any[]
 }
 
 /**
