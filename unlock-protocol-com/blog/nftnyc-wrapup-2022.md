@@ -1,9 +1,9 @@
 ---
-title: ETHDenver 2022 | Exploring the Evolution of web3
-subTitle: Technology created by the web3 community supports our collective human experience as we adapt our communities for a decentralized future
+title: NYC Blockchain Week 2022 Recap with Unlock
+subTitle: NFT.NYC, ETHNewYork, DAO NYC and more — and Unlock was everywhere
 authorName: Christopher Carfi
 publishDate: June 30, 2022
-description: Unlock recently attended ETHDenver to meet our community IRL, explore the next evolution of the web and place our fingers on the pulse of web3.
+description: NFT.NYC, ETHNewYork, DAO NYC and more — and Unlock Protocol was everywhere.
 image: /images/blog/nftnyc-wrapup-2022/nyc-cover-image-2022.jpeg
 ---
 
