@@ -1,8 +1,7 @@
 import { useEffect, useState, useContext } from 'react'
 import { expirationAsDate } from '../utils/durations'
-import generateKeyTypedData from '../structured_data/keyMetadataTypedData'
 import { WalletServiceContext } from '../utils/withWalletService'
-import { StorageServiceContext } from '../utils/withStorageService'
+import { useStorageService } from '../utils/withStorageService'
 import { generateColumns } from '../utils/metadataMunging'
 import { MemberFilters } from '../unlockTypes'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
@@ -16,31 +15,37 @@ import { ToastHelper } from '../components/helpers/toast.helper'
  * @param {*} lockWithKeys
  * @param {*} storedMetadata
  */
-export const buildMembersWithMetadata = (lockWithKeys, storedMetadata) => {
-  const members = {}
-  const metadataByKeyOwner = storedMetadata.reduce((byKeyOwner, key) => {
-    return {
-      ...byKeyOwner,
-      [key.userAddress.toLowerCase()]: {
-        protected: {
-          ...key.data.userMetadata?.protected,
-          ...key.data?.extraMetadata,
+export const buildMembersWithMetadata = (
+  lockWithKeys: any,
+  storedMetadata: any
+) => {
+  const members: any = {}
+  const metadataByKeyOwner = storedMetadata.reduce(
+    (byKeyOwner: any, key: any) => {
+      return {
+        ...byKeyOwner,
+        [key.userAddress.toLowerCase()]: {
+          protected: {
+            ...key.data.userMetadata?.protected,
+            ...key.data?.extraMetadata,
+          },
+          public: {
+            ...key.data.userMetadata.public,
+          },
         },
-        public: {
-          ...key.data.userMetadata.public,
-        },
-      },
-    }
-  }, {})
-  lockWithKeys.keys.forEach((key) => {
+      }
+    },
+    {}
+  )
+  lockWithKeys.keys?.forEach((key: any) => {
     const keyOwner = key.owner.address.toLowerCase()
     const index = `${lockWithKeys.address}-${keyOwner}`
-    let member = members[index]
+    let member: any = members[index]
 
     if (!member) {
       member = {
         token: key.keyId,
-        lockName: lockWithKeys.name,
+        lockName: lockWithKeys?.name,
         expiration: expirationAsDate(key.expiration),
         keyholderAddress: keyOwner,
       }
@@ -71,9 +76,9 @@ export const buildMembersWithMetadata = (lockWithKeys, storedMetadata) => {
  * @param {*} address
  */
 export const useMembers = (
-  lockAddresses,
-  viewer,
-  filter,
+  lockAddresses: string[],
+  viewer: string,
+  filter: string,
   page = 0,
   query = '',
   filterKey = ''
@@ -82,10 +87,11 @@ export const useMembers = (
   const config = useContext(ConfigContext)
   const walletService = useContext(WalletServiceContext)
   const web3Service = useContext(Web3ServiceContext)
-  const storageService = useContext(StorageServiceContext)
+  const storageService = useStorageService()
+  //const storageService = useContext(StorageServiceContext)
   const graphService = useContext(GraphServiceContext)
 
-  graphService.connect(config.networks[network].subgraphURI)
+  graphService.connect(config.networks[network!].subgraphURI)
   const [hasNextPage, setHasNextPage] = useState(false)
   const [members, setMembers] = useState({})
   const [loading, setLoading] = useState(true)
@@ -95,32 +101,31 @@ export const useMembers = (
     if (!storageService) return
     await storageService.loginPrompt({
       walletService,
-      address: account,
-      chainId: network,
+      address: account!,
+      chainId: network!,
     })
   }
 
-  const getKeysMetadata = async (locks) => {
+  const getKeysMetadata = async (locks: any) => {
     if (!locks.length) return
     await login()
 
-    const keysMetadataPromise = locks.map(async (lock) => {
+    const keysMetadataPromise = locks.map(async (lock: any) => {
       return await storageService.getKeysMetadata({
         lockAddress: lock.address,
-        network,
+        network: network!,
         lock,
       })
     })
 
     const keysMetadata = await Promise.all(keysMetadataPromise)
-    const mergeArrays = [].concat(...keysMetadata.map((item) => item))
     return [].concat(...keysMetadata.map((item) => item))
   }
 
   const loadMembers = async () => {
     setLoading(true)
 
-    let expiresAfter = parseInt(new Date().getTime() / 1000)
+    let expiresAfter = parseInt(`${new Date().getTime() / 1000}`)
     if (filter === MemberFilters.ALL) {
       expiresAfter = 0
     }
@@ -136,7 +141,7 @@ export const useMembers = (
       filterKey
     )
 
-    const membersForLocksPromise = data.locks.map(async (lock) => {
+    const membersForLocksPromise = data.locks.map(async (lock: any) => {
       // If the viewer is not the lock owner, just show the members from chain
       const _isLockManager = await web3Service.isLockManager(
         lock.address,
@@ -188,7 +193,7 @@ export const useMembers = (
     filterKey,
   ])
 
-  const list = Object.values(members)
+  const list: any = Object.values(members)
   const columns = generateColumns(list)
   return { loading, list, columns, hasNextPage, isLockManager }
 }
