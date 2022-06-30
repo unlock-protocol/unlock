@@ -17,7 +17,6 @@ import {
   CreateLockButton,
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
-
 interface FilterProps {
   value: string
   current: string
