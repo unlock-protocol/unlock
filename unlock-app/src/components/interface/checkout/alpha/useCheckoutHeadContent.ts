@@ -5,16 +5,16 @@ export function useCheckoutHeadContent(checkoutService: CheckoutService) {
   const [state] = useActor(checkoutService)
   const matched = state.value.toString() as CheckoutPage
   const {
-    paywallConfig: { locks, title, callToAction, icon },
+    paywallConfig: { locks, callToAction, icon },
   } = state.context
 
   const descriptions = Object.assign(
     {
       minting:
         'NFT minting is in progress, you can follow update in the blockexplorer!',
-      default: `${title} has ${
+      default: `There are ${
         Object.keys(locks).length
-      } membership options, please choose one of the option to continue`,
+      } membership options, please choose one to continue`,
       quantity:
         'Excellent choice! You might be able to add more than one membership below.',
       metadata:
