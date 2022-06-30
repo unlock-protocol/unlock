@@ -89,7 +89,7 @@ const DEVELOPER_NAVIGATION_BOTTOM_ITEMS: NavigationalLinkWithIcon[] = [
   {
     name: 'Roadmap',
     Icon: CodeIcon,
-    href: 'https://docs.unlock-protocol.com/unlock/governance/roadmap',
+    href: 'https://docs.unlock-protocol.com/governance/roadmap',
   },
 ]
 
@@ -122,7 +122,7 @@ function DeveloperPopover() {
                       <FilesIcon className="not-sr-only" />
                     </div>
                     <div className="flex flex-col space-y-1">
-                      <Link href="https://docs.unlock-protocol.com/unlock/">
+                      <Link href="https://docs.unlock-protocol.com/">
                         <p className="text-sm font-bold"> Documentation </p>
                       </Link>
                       <p className="text-sm text-brand-gray">
@@ -268,7 +268,7 @@ function CommunityPopover() {
                       />
                     </div>
                     <div className="flex flex-col space-y-1">
-                      <Link href="https://docs.unlock-protocol.com/unlock/">
+                      <Link href="https://docs.unlock-protocol.com/">
                         <p className="text-sm font-bold"> Community </p>
                       </Link>
                       <p className="text-sm text-brand-gray">
