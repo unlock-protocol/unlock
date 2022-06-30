@@ -173,7 +173,7 @@ const MetadataTableWrapper = ({
 
   const { loading, list, columns, hasNextPage, isLockManager } = useMembers(
     lockAddresses,
-    account,
+    account!,
     filter,
     currentPage,
     query,
