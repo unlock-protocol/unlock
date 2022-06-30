@@ -60,14 +60,18 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
     assert.equal(args.time, expirationTs)
   })
 
-  it('not fired when a key manager is set', async () => {
+  it('is fired when a key manager is set', async () => {
     await lock.setKeyManagerOf(tokenId, accounts[6], { from: keyOwner })
-    await reverts(
-      lock.transferFrom(keyOwner, accounts[3], tokenId, {
-        from: accounts[6],
-      }),
-      'UNAUTHORIZED'
-    )
+    await lock.transferFrom(keyOwner, accounts[3], tokenId, {
+      from: accounts[6],
+    })
+    const args = (await testEventHooks.getPastEvents('OnKeyTransfer'))[0]
+      .returnValues
+    assert.equal(args.lock, lock.address)
+    assert.equal(args.tokenId, tokenId)
+    assert.equal(args.operator, accounts[6])
+    assert.equal(args.from, keyOwner)
+    assert.equal(args.to, accounts[3])
   })
 
   it('cannot set the hook to a non-contract address', async () => {
