@@ -1,89 +1,120 @@
 ---
 title: ETHDenver 2022 | Exploring the Evolution of web3
 subTitle: Technology created by the web3 community supports our collective human experience as we adapt our communities for a decentralized future
-authorName: Crystal Street
-publishDate: February 25, 2022
+authorName: Christopher Carfi
+publishDate: June 30, 2022
 description: Unlock recently attended ETHDenver to meet our community IRL, explore the next evolution of the web and place our fingers on the pulse of web3.
-image: /images/blog/ethdenver2022/ethdenver-cover-min.jpg
+image: /images/blog/nftnyc-wrapup-2022/nyc-cover-image-2022.jpeg
 ---
 
-![cstreet_unlockblog_1.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_1.jpg)
+![nyc-cover-image-2022.jpeg](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/nyc-cover-image-2022.jpeg)
 
-Last week, over 10,000 web3 builders, artists, creators, and enthusiasts descended upon Denver for the ETHDenver conference, and some of the Unlock crew gathered IRL and met so many of our amazing community members. This was my first ETHDenver event and I was blown away at the energy of the Ethereum community and how many powerful conversations were in the collective discourse dedicated to **solving serious societal issues with technology**, preparing the innovation needed to power our human journey into a more peaceful and just experience and the soft skills of community building.
+Wowsa. What a week in New York City — it seems the entire web3 industry was there in one form or another between June 20th and June 26th. There was so 👏 much 👏 going 👏 on 👏. 
 
-We kicked off our ETHDenver adventure by throwing a happy hour with our friends at [Mintgate](https://www.mintgate.io). As fate would have it, just as our event was starting, the skies opened up and a big old beautiful snowstorm smacked right into Denver. We were blown away at how many amazing community members braved the weather to join us for drinks and powerful conversations. 
+Here are some of the highlights from the events the Unlock Labs squad participated in.
 
-![cstreet_unlockblog_010.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_010.jpg)
+## Collab with Superfluid and Privy around NFT.NYC
 
-Every person I spoke with had **an intriguing project, either in motion or in their thought bubble, that involved membership NFTs and token gating.** Seeing and hearing all the possibilities with our protocol in the hands of our community members, and getting to finally meet so many of our locksmiths IRL was a lovely way to kick off the events of the week.
+If you don’t yet know them, [Superfluid](https://www.superfluid.finance/home) is a token standard to describe programmable, composable and modular cashflows and execute them automatically on chain, while [Privy](https://docs.privy.io/) is a simple API that enables you to manage user data off-chain (e.g. their name, email address or KYC information). Both are great partners to Unlock, and we were thrilled to team up with Superfluid and Privy to co-host a happy hour at Casa Bocado in Manhattan, with stellar conversation, incredible food, and tasty beverages. Big thanks to everyone who came out to connect up with us!
 
+[https://twitter.com/UnlockProtocol/status/1540321536078389249?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ](https://twitter.com/UnlockProtocol/status/1540321536078389249?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
 
-## Beyond Finance
+## We experienced ~vibesIRL~ with Developer DAO
 
-![cstreet_unlockblog_5.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_5.jpg)
+![Screen Shot 2022-06-29 at 9.46.59 PM.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/Screen_Shot_2022-06-29_at_9.46.59_PM.png)
 
-Despite the snow and a never-ending stream of long lines, I was able to slip into the Schelling Point event at the very start of my first day at ETHDenver. While the venue itself was chaotic and the speakers were in the midst of that chaos, I was able to attend some talks that truly reinforced my belief in what’s possible with the technology that powers web3.
+Developer DAO exists to accelerate the education and impact of a new wave of web3 builders. Unlock and Polygon teamed up to help sponsor Developer DAO’s ~vibesIRL~ event during blockchain week in New York at Barcade! A great time was had meeting new members of the developer community and reconnecting with old frens. Looking forward to the next one!
 
-One talk that resonated was *Policy Proposals for Non Dystopian Crypto Protocols* by [Nathan Schneider](https://twitter.com/ntnsndr) from the University of Colorado Boulder. Nathan spoke deeply, as deep as one can in 20 minutes, about governance and moving beyond blockchain as just a financial instrument. His slides placed some profound questions and premises into the community right from the start of Schelling Point.
+[https://twitter.com/tchowd_/status/1540814568376745993?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ](https://twitter.com/tchowd_/status/1540814568376745993?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
 
-> “Build finance around communities, not speculators” 
+[https://twitter.com/0xPolygonDevs/status/1540895003261681665?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ](https://twitter.com/0xPolygonDevs/status/1540895003261681665?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
 
-> “Human Rights Fail-Safes — Like Human Rights Watch with cryptoeconomic teeth”
+## DAO NYC
 
-> “What policies would a decent world run on blockchains need?”
+![Screen Shot 2022-06-29 at 9.49.15 PM.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/Screen_Shot_2022-06-29_at_9.49.15_PM.png)
 
-If you are at all interested in governance and the future of decentralized community building, please take a few minutes and [watch Nathan’s presentation.](https://www.youtube.com/watch?v=ROnYDEwnY04&list=PLvTrX8LNPbPlryx_S85pZPfH9yD7qcPsg&index=7)
+DAO NYC [https://www.dao-nyc.xyz/](https://www.dao-nyc.xyz/) was a one-day event halfway through blockchain week, and it has immediately rocketed onto the shortlist of events that Do It Right. From the flawless execution of the event production and logistics to the strong diversity of voices from all across the web3 ecosystem who shared their time and expertise, DAO NYC was a delight. Big ups to the **Tally** crew that pulled it together. The event was SOLD OUT, with over 500 attendees.
 
-<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/ROnYDEwnY04" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+Unlock participated in multiple ways: as a sponsor, as the provider of **NFT ticketing** for the event, and Unlock’s CEO and Founder Julien Genestoux participated in a rich conversation discussing on-line credentials on the “Credentials and Data in DAOs” panel.
 
-## Plurality
+Plus, the views were amazing.
 
-Another talk that drew me in was [Glen Weyl’s](https://twitter.com/glenweyl) presentation titled *Plurality*. He began by talking about **the notion of public freedom and moments where “the practices of a community have the chance to set a pattern for the whole way that social life works.”** He also placed some highly intellectual premises into the discourse on how we can begin to look at the different sectors of the ecosystem and avoid the mistakes made in past technological movements. 
+[https://twitter.com/ccarfi/status/1539633052686630913?s=20&t=IQYM2Y_wvmZzCQrw28vw-g](https://twitter.com/ccarfi/status/1539633052686630913?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
-One slide that resonated explored “Ideologies of the Future: Corporate Libertarianism, Synthetic Technocracy & Digital Democracy.” He then spoke of the plurality of funding in relation to communities in the web3 ecosystem and he [published a deeper blog post](https://www.radicalxchange.org/media/blog/political-ideologies-for-the-21st-century/) about this very topic the day before his talk. Take a moment to watch his presentation because there are some profound theories and concepts we should explore as we build technology and web3 communities.
+[https://twitter.com/ccarfi/status/1539629471619219458?s=20&t=IQYM2Y_wvmZzCQrw28vw-g](https://twitter.com/ccarfi/status/1539629471619219458?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
-<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/MsMsL5v2-Ls" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+In addition to Julien’s panel, DAO NYC’s programming had a wide array of panels that hit on topics that went much deeper than the typical “wen lambo?” web3 conference fare.
 
-## The Softer Side of Community
+Kinjal Shah, Mana Silvora, Medha Kotari, and Gabriele discussed the importance of doing the work to ensure that web3 represents all its participants, and not just the stereotypical tech bro / crypto bro point of view. (Important note: Major kudos to the DAO NYC team for not just having one side panel on this topic at the end of the day in an out-of-the-way conference room, but instead weaving diverse viewpoints into the speaker roster from the get-go across the board. [See for yourself here](https://www.dao-nyc.xyz/#speakers). This is the group to learn from.)
 
-![cstreet_unlockblog_4.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_4.jpg)
+[https://twitter.com/ccarfi/status/1539623901935828996?s=20&t=IQYM2Y_wvmZzCQrw28vw-g](https://twitter.com/ccarfi/status/1539623901935828996?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
-Community building was a prominent theme for many of the speakers and adapting traditional community-building methodology from web2 for a decentralized community structure like DAOs was a common narrative of ETHDenver. As a community builder, I’m obviously biased to the importance of this topic, and I was inspired to see the speakers talking about **the nuanced soft skills of holding space for community members and fostering positive environments so innovation and collaboration can occur.** I repeatedly heard speakers addressing the health of the community hinging on these often immeasurable, but necessary, soft skills.
+[https://twitter.com/ccarfi/status/1539622330846117892?s=20&t=IQYM2Y_wvmZzCQrw28vw-g](https://twitter.com/ccarfi/status/1539622330846117892?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
-The presentation titled *Coordinating Work in Web3 & Beyond* by [Pooja Shah](https://twitter.com/pooja_eth) had a few particularly excellent slides. The points on the slide titled “Goals for Work Organization in Web3” were particularly interesting and if you watch her presentation, this entire section is worth taking notes and applying to your organization.
+As someone who has worked in and built online communities and community strategies throughout their career, I also wanted to note the conversation in the “Communities in web3” panel was all spot-on and another major highlight of the day.
 
-> “Massively scalable systems of human cooperation (unprecedented levels of scale)
+[https://twitter.com/ccarfi/status/1539616453644673025?s=20&t=IQYM2Y_wvmZzCQrw28vw-g](https://twitter.com/ccarfi/status/1539616453644673025?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
-> That can achieve directed outcomes.
+Again, hats off to the DAO NYC conference team. Cannot wait for the next one! (The conference organizers have assured us that the videos will be live soon. We’ll post links from the @UnlockProtocol Twitter handle when they do.)
 
-> While preserving freedom, autonomy and self-direction effort.”
+## ETH New York
 
-Her talk is relevant for managers and founders working with decentralized ecosystems, such as DAOs, and trying to build or adapt older systems of work organizational structures that will support the unique characteristics of the web3 community.
+![Screen Shot 2022-06-30 at 11.11.15 AM.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/Screen_Shot_2022-06-30_at_11.11.15_AM.png)
 
-<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/Web77iQLbfs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+The crowning event for the week was ETHGlobal’s ETH New York hackathon. Over 1500 participants showed up for an intense, three-day hackathon building on the core protocols in web3. Unlock, of course, was a sponsor.
 
-## Regenerative Culture
+At the end of the weekend, and after the final round of judging, three projects and teams stood out and came away with prizes for the most impressive solutions built using Unlock Protocol. They were:
 
-I was particularly impressed by a presentation from [Beth McCarthy](https://twitter.com/ontologymachine) called *Building Regenerative Culture*. I loved her talk so much I photographed almost every slide and spoke with her after the presentation. **She touched on the care work of community building and addressing cultural debt in a community.**
+### Granted
 
-Here are my favorite points from her slides:
+![Screen Shot 2022-06-30 at 9.00.45 AM.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/Screen_Shot_2022-06-30_at_9.00.45_AM.png)
 
-> “What is care work? It is administrative tasks; emotional labor; listening + holding space; anticipating, mediating + resolving conflict; creating the conditions for growth and connection; understanding your people, their needs, potential, fears and incentives”
+**Hackathon project website:**
 
-> “Cultural Debt: Technical Debt for Human Systems. Cultural debt has wide-ranging ramifications that reverberate through teams and DAOs, and the products, systems, and ecosystems they create burnout, attrition, lack of diversity, poor relationships with the outside world, vulnerabilities, shoddily produced outputs.”
+[https://ethglobal.com/showcase/granted-vtxne](https://ethglobal.com/showcase/granted-vtxne)
 
-> “Care work is hard to measure or quantify — done right, it is invisible, subsumed or soon forgotten.”
+Granted is a milestone-based granting platform for sponsors and developers to issue and apply for grants. Streamlining the grant process by notifying and tracking all the progress on projects being built so that both the developer and sponsor have open, bidirectional communication and provides transparency to both the grant sponsor and the grantee.
 
-> “Awakening our abundance of cultural surplus requires honoring cultural and care work, and embedding it in our systems, codes of conduct, interactions, mission statements & org charts.”
+For sponsors:
 
-If you manage, build or have a protocol, project, or business powered by a community, **please take a moment and watch Beth’s presentation.**
+- As a sponsor, I access my token-gated portal via Unlock Protocol and indicate the number of grants I am funding, and outline the expected deliverables, timelines & payout for each funding tranche.
+- Once a developer is approved, they are notified via EPNS and streamlined through the first milestone.
+- The sponsor is notified whenever the grantee has completed a milestone.
+- The sponsor reviews their milestone to ensure deliverables are met. Once approved, funding is sent via Polygon, Optimism or Harmony
+- The next deliverables for the developers are automatically provided, repeating the process until the project is completed.
 
-<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/ysaIeVbSDCo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+The platform provides a birds eye view of all granted projects, categorizing them by the milestones completed, making it easy to keep track of the progress of our granting program.
 
-## Our Collective Narratives
+For grantees
 
-What surprised me most about ETHDenver was the sheer number of speakers placing these same types of questions into our ecosystem’s collective conversations. **While the context varied, many speakers put forth visions that stretched beyond tokenomics and technicalities and touched the humanity on the other side of the technology.** And I was inspired to hear so many of the narratives presented on stage weaving their way through the individual conversations happening at coffeeshop, NFT art parties, community dinners, and while standing in lines. So many lines.
+- My application is stored via IPFS, and I am notified once my application is accepted via EPNS. I am presented with a roadmap of all expected deliverables and payouts, along with the first milestone, expected timeline and amount I will be paid once the first tranche is appropriately completed.
+- Once I submit a milestone, the sponsor is notified.
+- Once reviewed, I am notified, funded via Polygon, Optimism or Harmony and the next expected milestone is released.
+- Process is repeated until project is completed.
+- If, like most of us, I am working on multiple projects at once, I have an overview of all my projects and progress. My deliverables are also visible for potential sponsors 👀, creating a positive reputation system and increasing the likelihood that future applications will be granted.
 
-![cstreet_unlockblog_8.jpg](/images/blog/ethdenver2022/cstreet_unlockblog_8.jpg)
+### GARD3N
 
-I believe these conversations are necessary to avoid repeating the mistakes of web2 as we build out the web3 infrastructure. **We have the opportunity, as both technologists and humans, to ensure that our technology is grounded in equality and justice.** And while I was already hopeful about the trajectory of this technology before my time in Denver, I now harbor even more hope and vision about what is possible because so many passionate and brilliant minds are addressing the issues of our time through such powerful and decentralized technologies.
+![gard3n.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/gard3n.png)
+
+**Hackathon project website:**
+
+[https://ethglobal.com/showcase/gard3n-fez2q](https://ethglobal.com/showcase/gard3n-fez2q)
+
+**Presentation:** 
+
+[https://drive.google.com/file/d/1cYX9ARThfF7QvYS3pmd5mhZc0pmCXCY3/view](https://drive.google.com/file/d/1cYX9ARThfF7QvYS3pmd5mhZc0pmCXCY3/view)
+
+GARD3N is a public goods social engagement platform built with Lens, Unlock Protocol, and other technologies that rewards creators, and their fans / communities to help cultivate a new form of creating and interacting with shared prosperity at its roots. Gard3n nourishes the relationship between creators and their communities by helping them connect easier while building shared Gard3ns (micro communities powered by social tokens). Fans are rewarded for their time, dedication, and engagement and are able to receive and stake their social tokens allowing them to unlock exclusive drops, NFTs, perks, and benefits based on the creator. Creators are easily onboarded to web3 with easy to use tokenomic templates to help them get started and are rewarded through the buying, redeeming and trading of their social tokens. Creators can create multimedia content in a user-friendly UI experience. Both are rewarded by feeling valued and supported by the other.
+
+### NFTicket
+
+![ticket.gif](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/ticket.gif)
+
+**Hackathon project website:** [https://ethglobal.com/showcase/nfticket-qwwba](https://ethglobal.com/showcase/nfticket-qwwba)
+
+**Presentation:** [https://docs.google.com/presentation/d/1_Y_vZJCcj4Bwtr_5idFTfVhcmIk6rCx9FTED5-rIuaM/edit#slide=id.g12588221e4c_0_190](https://docs.google.com/presentation/d/1_Y_vZJCcj4Bwtr_5idFTfVhcmIk6rCx9FTED5-rIuaM/edit#slide=id.g12588221e4c_0_190)
+
+NFTicket is a hackathon project for online ticketing. The front end of this project allows a user to log in to their MetaMask wallet as well as be able to view NFTs given to them hidden behind an Unlock Paywall. There are three smart contracts, one for each section in the stadium. Users have the ability to mint a ticket and pay a stable USD rate in ETH pulled via a Chainlink price feed. Scripts are then run to deploy the contracts, create (mint) a ticket, create the metadata, and then a final one to set the token URI. The metadata includes the section, seat, row, link to the image on IPFS and other important information for the game this JSON is also uploaded to IPFS. After the game, the user is airdropped an Unlock NFT from the event organizers with a game highlight.
+
+And with that, that’s a wrap. Want to follow up or learn more about any of the above? Hit us up in the Discord! Imma go take a nap…
