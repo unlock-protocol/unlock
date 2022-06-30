@@ -9,12 +9,10 @@
 const ethers = require('ethers')
 const fs = require('fs')
 const path = require('path')
-
-/* eslint-disable import/no-extraneous-dependencies */
 const abis = require('@unlock-protocol/contracts')
 
 const unlockVersions = ['v4', 'v6', 'v7', 'v8', 'v9', 'v10', 'v11']
-const publicLockVersions = ['v4', 'v6', 'v7', 'v8', 'v9', 'v10']
+const publicLockVersions = ['v4', 'v6', 'v7', 'v8', 'v9', 'v10', 'v11']
 
 const data = {
   PublicLock: publicLockVersions.reduce(
