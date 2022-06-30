@@ -75,7 +75,8 @@ export const useMembers = (
   viewer,
   filter,
   page = 0,
-  query = ''
+  query = '',
+  filterKey = ''
 ) => {
   const { network, account } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
@@ -90,6 +91,7 @@ export const useMembers = (
   const [loading, setLoading] = useState(true)
   const [isLockManager, setIsLockManager] = useState(false)
 
+  console.log('query', query)
   const login = async () => {
     if (!storageService) return
     await storageService.loginPrompt({
@@ -131,7 +133,8 @@ export const useMembers = (
       expiresAfter,
       first,
       skip,
-      query
+      query,
+      filterKey
     )
 
     const membersForLocksPromise = data.locks.map(async (lock) => {

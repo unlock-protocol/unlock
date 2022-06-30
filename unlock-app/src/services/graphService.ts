@@ -48,7 +48,8 @@ export class GraphService {
     expiresAfter: number,
     first: number,
     skip: number,
-    searchQuery: string
+    search: string | number,
+    filterKey: string
   ) => {
     const query = keyHoldersByLocks()
 
@@ -59,7 +60,8 @@ export class GraphService {
         expiresAfter,
         first,
         skip,
-        searchQuery,
+        owner: filterKey === 'owner' ? search : '',
+        keyId: filterKey === 'keyId' ? search : undefined,
       },
     })
     return result

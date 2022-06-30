@@ -4,7 +4,10 @@ import Link from 'next/link'
 import { buildCSV } from '../../utils/csv'
 import { MemberFilters } from '../../unlockTypes'
 import { ExpireAndRefundModal } from './ExpireAndRefundModal'
-import { MemberCard } from '../interface/members/MemberCard'
+import {
+  MemberCard,
+  MemberCardPlaceholder,
+} from '../interface/members/MemberCard'
 import { Button } from '@unlock-protocol/ui'
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
@@ -20,6 +23,7 @@ interface MetadataTableProps {
   // The keys to the metadata object, in the order they will be displayed.
   columns: string[]
   metadata: KeyMetadata[]
+  loading?: boolean
   filter?: string
   isLockManager?: boolean
   lockAddresses?: string[]
@@ -42,6 +46,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   columns,
   metadata,
   filter,
+  loading = false,
   isLockManager,
   lockAddresses = [],
 }) => {
@@ -102,41 +107,53 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         lockAddresses={lockAddresses}
       />
 
-      {isLockManager && (
-        <div className="flex justify-end">
-          <Button onClick={onExpandAllMetadata}>Show all metadata</Button>
-        </div>
+      {loading ? (
+        <>
+          <MemberCardPlaceholder />
+          <MemberCardPlaceholder />
+          <MemberCardPlaceholder />
+          <MemberCardPlaceholder />
+          <MemberCardPlaceholder />
+        </>
+      ) : (
+        <>
+          {isLockManager && (
+            <div className="flex justify-end">
+              <Button onClick={onExpandAllMetadata}>Show all metadata</Button>
+            </div>
+          )}
+          {metadata?.map((data: any) => {
+            const { lockName, expiration, keyholderAddress, token } = data
+            const key = `${lockName}${expiration}${keyholderAddress}`
+
+            return (
+              <MemberCard
+                key={key}
+                lockName={lockName}
+                expiration={expiration}
+                tokenId={token}
+                keyholderAddress={keyholderAddress}
+                metadata={data}
+                expandAllMetadata={expandAllMetadata}
+                isLockManager={isLockManager}
+                expireAndRefundDisabled={expireAndRefundDisabled(data)}
+                onExpireAndRefund={() => onExpireAndRefund(data)}
+              />
+            )
+          })}
+
+          <div className="flex justify-end">
+            <Button
+              className="flex-initial"
+              onClick={() => {
+                downloadAsCSV(columns, metadata)
+              }}
+            >
+              Export as CSV
+            </Button>
+          </div>
+        </>
       )}
-      {metadata?.map((data: any) => {
-        const { lockName, expiration, keyholderAddress, token } = data
-        const key = `${lockName}${expiration}${keyholderAddress}`
-
-        return (
-          <MemberCard
-            key={key}
-            lockName={lockName}
-            expiration={expiration}
-            tokenId={token}
-            keyholderAddress={keyholderAddress}
-            metadata={data}
-            expandAllMetadata={expandAllMetadata}
-            isLockManager={isLockManager}
-            expireAndRefundDisabled={expireAndRefundDisabled(data)}
-            onExpireAndRefund={() => onExpireAndRefund(data)}
-          />
-        )
-      })}
-
-      <div className="flex justify-end">
-        <Button
-          className="flex-initial"
-          onClick={() => {
-            downloadAsCSV(columns, metadata)
-          }}
-        >
-          Export as CSV
-        </Button>
-      </div>
     </section>
   )
 }
