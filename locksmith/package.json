@@ -7,7 +7,7 @@
     "prod": "cd build && node -r ./src/utils/envLoader.js ./server.js",
     "start": "yarn build && node -r ./src/utils/envLoader.js ./build/server.js",
     "debug": "ts-node-dev -r ./src/utils/envLoader.js ./scripts/debug.js",
-    "dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js server.js",
+    "dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js --files server.js",
     "test": "yarn test:db:setup && yarn test:run",
     "test:db:setup": "yarn run test:db:drop && yarn run test:db:create && yarn run test:db:migrate",
     "test:db:create": "NODE_ENV=test yarn sequelize db:create",
@@ -36,7 +36,7 @@
   "author": "Unlock Inc",
   "license": "ISC",
   "dependencies": {
-    "@nuintun/qrcode": "^3.3.0",
+    "@nuintun/qrcode": "3.3.0",
     "@sentry/node": "7.0.0",
     "@sentry/tracing": "7.0.0",
     "@types/random-words": "1.1.2",

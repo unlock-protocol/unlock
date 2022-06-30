@@ -37,6 +37,7 @@ export interface NetworkConfig {
   blockTime?: number
   unlockAddress?: string
   serializerAddress?: string
+  multisig?: string
   subgraphURI?: string
   ethersProvider?: ethers.providers.Provider
   explorer?: {
