@@ -23,7 +23,7 @@ If you don’t yet know them, [Superfluid](https://www.superfluid.finance/home) 
 
 ![Screen Shot 2022-06-29 at 9.46.59 PM.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/Screen_Shot_2022-06-29_at_9.46.59_PM.png)
 
-Developer DAO exists to accelerate the education and impact of a new wave of web3 builders. Unlock and Polygon teamed up to help sponsor Developer DAO’s ~vibesIRL~ event during blockchain week in New York at Barcade! A great time was had meeting new members of the developer community and reconnecting with old frens. Looking forward to the next one!
+Developer DAO exists to accelerate the education and impact of a new wave of web3 builders. Unlock and Polygon teamed up to help sponsor Developer DAO’s ~ vibesIRL ~ event during blockchain week in New York at Barcade! A great time was had meeting new members of the developer community and reconnecting with old frens. Looking forward to the next one!
 
 [https://twitter.com/tchowd_/status/1540814568376745993?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ](https://twitter.com/tchowd_/status/1540814568376745993?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
 
