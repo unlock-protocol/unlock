@@ -48,7 +48,7 @@ router.put(
   (req, res) => metadataController.updateUserMetadata(req, res)
 )
 
-router.get(
+router.put(
   '/:network/locks/:lockAddress/keys',
   authenticatedMiddleware,
   lockManagerMiddleware,
