@@ -391,9 +391,8 @@ export class MetadataController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const lock: any = request.body
+      const { keys }: any = request.body
 
-      const keys = lock.keys ?? []
       if (!keys) {
         return response
           .send({
