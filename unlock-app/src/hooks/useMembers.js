@@ -35,15 +35,18 @@ export const getAllKeysMetadataForLock = async (
   network,
   page
 ) => {
-  const payload = generateKeyTypedData({
-    LockMetaData: {
-      owners: lock.keys.map((k) => k.owner.address),
-      address: lock.address,
-      owner: viewer,
-      timestamp: Date.now(),
-      page,
+  const payload = generateKeyTypedData(
+    {
+      LockMetaData: {
+        owners: lock.keys.map((k) => k.owner.address),
+        address: lock.address,
+        owner: viewer,
+        timestamp: Date.now(),
+        page,
+      },
     },
-  })
+    'LockMetaData'
+  )
   // TODO prevent replays by adding timestamp?
   const message = `I want to access member data for ${lock.address}`
   const signaturePromise = walletService.signMessage(message, 'personal_sign')

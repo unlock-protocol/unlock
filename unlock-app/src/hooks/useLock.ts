@@ -8,8 +8,6 @@ import { UNLIMITED_KEYS_COUNT } from '../constants'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import LocksContext from '../contexts/LocksContext'
 import { FATAL_WRONG_NETWORK } from '../errors'
-import { StorageService } from '../services/storageService'
-import { generateKeyMetadataPayload } from '../structured_data/keyMetadata'
 import { Lock } from '../unlockTypes'
 
 import { getCardConnected, getFiatPricing } from './useCards'
@@ -533,31 +531,6 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     return isLockManager
   }
 
-  const getKeyData = async (keyId: string, signer?: string) => {
-    let payload = {}
-    let signature: string | undefined
-
-    // If we have a signer, try to get the protected data!
-    if (signer) {
-      payload = generateKeyMetadataPayload(signer, {})
-      signature = (await walletService.unformattedSignTypedData(
-        signer,
-        payload
-      )) as string
-    }
-
-    const storageService = new StorageService(config.services.storage.host)
-
-    const data = await storageService.getKeyMetadata(
-      lockFromProps.address!,
-      keyId,
-      payload,
-      signature!,
-      network
-    )
-    return data
-  }
-
   function updateMaxNumberOfKeys(
     maxNumberOfKeys: number,
     callback: (...args: any) => void
@@ -611,7 +584,6 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     getCreditCardPricing,
     isStripeConnected,
     isLockManager,
-    getKeyData,
     updateMaxNumberOfKeys,
     purchaseMultipleKeys,
     updateSelfAllowance,

@@ -8369,7 +8369,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuintun/qrcode@npm:^3.3.0":
+"@nuintun/qrcode@npm:3.3.0":
   version: 3.3.0
   resolution: "@nuintun/qrcode@npm:3.3.0"
   dependencies:
@@ -8659,7 +8659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@primitivefi/hardhat-dodoc@npm:^0.2.3":
+"@primitivefi/hardhat-dodoc@npm:0.2.3":
   version: 0.2.3
   resolution: "@primitivefi/hardhat-dodoc@npm:0.2.3"
   dependencies:
@@ -13265,15 +13265,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eth-sig-util@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@types/eth-sig-util@npm:2.1.1"
-  dependencies:
-    "@types/node": "*"
-  checksum: 19d9ee0927030145fc34e3da8742e820e6cc1bc2147695105256f87aa05e1225bf3232f29ad515a0917f26bd9f5670ba868586a7a2a665bf88ffd34777603e6e
-  languageName: node
-  linkType: hard
-
 "@types/express-serve-static-core@npm:*":
   version: 4.17.27
   resolution: "@types/express-serve-static-core@npm:4.17.27"
@@ -15013,7 +15004,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
-    "@primitivefi/hardhat-dodoc": ^0.2.3
+    "@primitivefi/hardhat-dodoc": 0.2.3
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
     chai: 4.3.4
@@ -15087,7 +15078,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/locksmith@workspace:locksmith"
   dependencies:
-    "@nuintun/qrcode": ^3.3.0
+    "@nuintun/qrcode": 3.3.0
     "@sentry/node": 7.0.0
     "@sentry/tracing": 7.0.0
     "@types/cookie-parser": 1.4.3
@@ -15485,7 +15476,6 @@ __metadata:
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 12.1.5
     "@testing-library/react-hooks": 8.0.0
-    "@types/eth-sig-util": 2.1.1
     "@types/file-saver": 2.0.5
     "@types/jest": 27.5.2
     "@types/postmate": 1.5.2
@@ -15517,8 +15507,6 @@ __metadata:
     deep-object-diff: 1.1.7
     dotenv: 16.0.1
     eslint: 8.16.0
-    eth-sig-util: 3.0.1
-    ethereumjs-util: 7.1.4
     ethers: 5.6.8
     file-saver: 2.0.5
     graphql: 15.8.0
@@ -27338,19 +27326,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethereumjs-util@npm:7.1.4, ethereumjs-util@npm:^7.1.4":
-  version: 7.1.4
-  resolution: "ethereumjs-util@npm:7.1.4"
-  dependencies:
-    "@types/bn.js": ^5.1.0
-    bn.js: ^5.1.2
-    create-hash: ^1.1.2
-    ethereum-cryptography: ^0.1.3
-    rlp: ^2.2.4
-  checksum: ccfd9208bfe9205af124a9138c5a90db46cd2fcacf4b80f17f67915381c03253aa2fb90ead9e0b53d9a6fcfeed4310e5dfa8dc516ca2846d16baf81d605cd8c2
-  languageName: node
-  linkType: hard
-
 "ethereumjs-util@npm:^4.3.0":
   version: 4.5.1
   resolution: "ethereumjs-util@npm:4.5.1"
@@ -27403,6 +27378,19 @@ __metadata:
     ethereum-cryptography: ^0.1.3
     rlp: ^2.2.4
   checksum: 6de7a32af05c7265c96163ecd15ad97327afab9deb36092ef26250616657a8c0b5df8e698328247c8193e7b87c643c967f64f0b3cff2b2937cafa870ff5fcb41
+  languageName: node
+  linkType: hard
+
+"ethereumjs-util@npm:^7.1.4":
+  version: 7.1.4
+  resolution: "ethereumjs-util@npm:7.1.4"
+  dependencies:
+    "@types/bn.js": ^5.1.0
+    bn.js: ^5.1.2
+    create-hash: ^1.1.2
+    ethereum-cryptography: ^0.1.3
+    rlp: ^2.2.4
+  checksum: ccfd9208bfe9205af124a9138c5a90db46cd2fcacf4b80f17f67915381c03253aa2fb90ead9e0b53d9a6fcfeed4310e5dfa8dc516ca2846d16baf81d605cd8c2
   languageName: node
   linkType: hard
 

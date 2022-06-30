@@ -5,7 +5,6 @@ import {
 } from '@radix-ui/react-avatar'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useLock } from '../../../hooks/useLock'
 import {
   durationsAsTextFromSeconds,
   expirationAsDate,
@@ -169,7 +168,6 @@ export const ValidKey = ({
   const [loading, setLoading] = useState(true)
   const [viewerIsVerifier, setViewerIsVerifier] = useState(false)
   const [keyData, setKeyData] = useState({})
-  const { getKeyData } = useLock(lock, network)
 
   const storageService = useStorageService()
   const walletService = useWalletService()
@@ -212,14 +210,15 @@ export const ValidKey = ({
         network,
         lockAddress: lock.address,
       })
+
+      const metadata = await storageService.getKeyMetadataValues({
+        lockAddress: lock.address,
+        network,
+        keyId: unlockKey.tokenId,
+      })
+
       setViewerIsVerifier(isVerifier)
-      if (isVerifier) {
-        const metadata = (await getKeyData(unlockKey.tokenId, viewer)) as any
-        setKeyData(metadata || {})
-      } else {
-        const metadata = (await getKeyData(unlockKey.tokenId)) as any
-        setKeyData(metadata || {})
-      }
+      setKeyData(metadata)
       setLoading(false)
     }
     onLoad()
@@ -228,7 +227,6 @@ export const ValidKey = ({
   if (loading) {
     return <Loading />
   }
-
   return (
     <ValidKeyWithMetadata
       viewerIsVerifier={viewerIsVerifier}

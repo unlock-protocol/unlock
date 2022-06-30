@@ -2,8 +2,8 @@ import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import { RequestHandler } from 'express-serve-static-core'
 import Normalizer from '../normalizer'
-import { Verifier } from '../../models/verifier'
 import { logger } from '@sentry/utils'
+import { Verifier } from '../../models/verifier'
 
 export const isVerifierMiddleware: RequestHandler = async (req, res, next) => {
   try {
