@@ -33,6 +33,7 @@ const paywallConfig = {
   ],
   pessimistic: true,
   captcha: true,
+  maxRecipients: 5,
 }
 
 console.log(

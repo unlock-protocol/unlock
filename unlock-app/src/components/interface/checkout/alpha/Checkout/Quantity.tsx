@@ -56,6 +56,8 @@ export function Quantity({
     quantity
   )
 
+  const fiatPrice = lock?.fiatPricing?.usd?.keyPrice
+
   return (
     <Shell.Root onClose={() => onClose()}>
       <Shell.Head checkoutService={checkoutService} />
@@ -63,16 +65,26 @@ export function Quantity({
         <div className="flex items-start justify-between">
           <h3 className="font-bold text-xl"> {lock?.name}</h3>
           {!isLoading ? (
-            <div className="grid">
+            <div className="text-right grid">
               {fiatPricing.creditCardEnabled ? (
                 <>
-                  <p>${fiatPricing.usd.keyPrice / 100} </p>
-                  <p>{formattedData.formattedKeyPrice} </p>
+                  {fiatPrice && (
+                    <span className="font-semibold">
+                      ${(fiatPrice / 100).toFixed(2)}
+                    </span>
+                  )}
+                  <span>{formattedData.formattedKeyPrice} </span>
                 </>
               ) : (
                 <>
-                  <p>{formattedData.formattedKeyPrice} </p>
-                  <p>${fiatPricing.usd.keyPrice / 100} </p>
+                  <span className="font-medium">
+                    {formattedData.formattedKeyPrice}
+                  </span>
+                  {fiatPrice && (
+                    <span className="font-semibold">
+                      ${(fiatPrice / 100).toFixed(2)}
+                    </span>
+                  )}
                 </>
               )}
             </div>
@@ -113,7 +125,6 @@ export function Quantity({
               <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
             </div>
           )}
-
           <div>
             <input
               onChange={(event) => {

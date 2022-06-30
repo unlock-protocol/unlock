@@ -24,19 +24,11 @@ function AnimationContent({ status }: { status: Mint['status'] }) {
   switch (status) {
     case 'PROCESSING':
       return (
-        <Lottie
-          className="w-40 h-40"
-          loop={true}
-          animationData={mintingAnimation}
-        />
+        <Lottie className="w-40 h-40" loop animationData={mintingAnimation} />
       )
     case 'FINISHED':
       return (
-        <Lottie
-          className="w-40 h-40"
-          loop={true}
-          animationData={mintedAnimation}
-        />
+        <Lottie className="w-40 h-40" loop animationData={mintedAnimation} />
       )
     default:
       return null
@@ -73,7 +65,6 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
             address: account,
             signedMessage: messageToSign?.signature,
           })
-
           send({
             type: 'CONFIRM_MINT',
             status: 'FINISHED',
@@ -92,13 +83,13 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
       }
     }
     waitForConfirmation()
-  }, [mint, lock, config, send, communication])
+  }, [mint, lock, config, send, communication, account, messageToSign])
 
   return (
     <Shell.Root onClose={() => onClose()}>
       <Shell.Head checkoutService={checkoutService} />
       <main className="p-6 overflow-auto h-64 sm:h-72">
-        <div className="space-y-6 justify-center grid">
+        <div className="space-y-6 justify-items-center grid">
           {status && <AnimationContent status={status} />}
           <a
             href={config.networks[lock!.network].explorer.urls.transaction(

@@ -78,6 +78,9 @@ interface SolveCaptchaEvent {
   type: 'SOLVE_CAPTCHA'
   data: string[]
 }
+interface ExistingMemberEvent {
+  type: 'EXISTING_MEMBER'
+}
 
 interface UnlockAccountEvent {
   type: 'UNLOCK_ACCOUNT'
@@ -94,6 +97,7 @@ export type CheckoutMachineEvents =
   | SolveCaptchaEvent
   | ConfirmMintEvent
   | UnlockAccountEvent
+  | ExistingMemberEvent
   | ContinueEvent
   | DisconnectEvent
 
@@ -151,8 +155,13 @@ export const checkoutMachine = createMachine(
       SELECT: {
         on: {
           SELECT_LOCK: {
-            target: 'QUANTITY',
             actions: ['selectLock'],
+          },
+          CONTINUE: {
+            target: 'QUANTITY',
+          },
+          EXISTING_MEMBER: {
+            target: 'RETURNING',
           },
           UNLOCK_ACCOUNT: {
             target: 'UNLOCK_ACCOUNT',
@@ -346,7 +355,7 @@ export const checkoutMachine = createMachine(
       RETURNING: {
         on: {
           MAKE_ANOTHER_PURCHASE: {
-            target: 'SELECT',
+            target: 'QUANTITY',
           },
           DISCONNECT: [
             {
