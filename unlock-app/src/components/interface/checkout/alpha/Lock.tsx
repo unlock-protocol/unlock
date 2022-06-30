@@ -11,6 +11,7 @@ interface Props {
   name: string
   address: string
   network: number
+  recurring?: number
   disabled?: boolean
   className?: string
   loading?: boolean
@@ -25,6 +26,7 @@ export function Lock({
   disabled,
   onSelect,
   loading,
+  recurring,
 }: Props) {
   const config = useConfig()
   const web3Service = useWeb3Service()
@@ -69,7 +71,14 @@ export function Lock({
       className={Lock}
     >
       <div className="flex w-full mb-2 items-start justify-between">
-        <h3 className="font-bold text-xl"> {name}</h3>
+        <div>
+          <h3 className="font-bold text-xl"> {name}</h3>
+          {recurring && (
+            <span className="bg-brand-ui-primary bg-opacity-80 group-disabled:group-hover:bg-opacity-80 group-hover:bg-opacity-100 p-1 px-2 rounded-full text-xs font-semibold text-white">
+              Recurring x {recurring}
+            </span>
+          )}
+        </div>
         {!isLoading ? (
           <div className="grid text-right">
             {formattedData.cardEnabled ? (

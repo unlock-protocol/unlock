@@ -166,6 +166,7 @@ export default class WalletService extends UnlockService {
       data?: string
       erc20Address?: string
       decimals?: number
+      recurringPayments?: number
     },
     callback?: WalletServiceCallback
   ) {
@@ -193,6 +194,7 @@ export default class WalletService extends UnlockService {
       data?: string[]
       erc20Address?: string
       decimals?: number
+      recurringPayments?: number[]
     },
     callback?: WalletServiceCallback
   ) {

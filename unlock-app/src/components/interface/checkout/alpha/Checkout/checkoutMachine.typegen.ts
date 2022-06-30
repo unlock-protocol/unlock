@@ -31,16 +31,9 @@ export interface Typegen0 {
   eventsCausingServices: {}
   eventsCausingGuards: {
     requireCardPayment: 'CONTINUE'
-    requireMetadata: 'CONTINUE' | 'SELECT_CARD_TO_CHARGE'
-    requireMessageToSign:
-      | 'CONTINUE'
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_RECIPIENTS'
-    requireCaptcha:
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'SELECT_RECIPIENTS'
-      | 'SIGN_MESSAGE'
     isLockSelected: 'DISCONNECT' | 'done.invoke.unlockAccount'
+    requireMessageToSign: 'SELECT_RECIPIENTS'
+    requireCaptcha: 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
   }
   eventsCausingDelays: {}
   matchesStates:

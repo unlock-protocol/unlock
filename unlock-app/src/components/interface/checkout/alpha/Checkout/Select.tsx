@@ -39,9 +39,10 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
               </p>
             </header>
             <div className="grid space-y-4 py-4">
-              {locks.map(({ name, address }) => (
+              {locks.map(({ name, address, recurringPayments }) => (
                 <Lock
                   name={name!}
+                  recurring={recurringPayments}
                   address={address}
                   loading={isLockLoading === address}
                   network={Number(network)}

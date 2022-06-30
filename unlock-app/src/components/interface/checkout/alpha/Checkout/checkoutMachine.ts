@@ -183,14 +183,6 @@ export const checkoutMachine = createMachine(
             },
             {
               target: 'METADATA',
-              cond: 'requireMetadata',
-            },
-            {
-              target: 'MESSAGE_TO_SIGN',
-              cond: 'requireMessageToSign',
-            },
-            {
-              target: 'CONFIRM',
             },
           ],
           UNLOCK_ACCOUNT: {
@@ -203,21 +195,6 @@ export const checkoutMachine = createMachine(
           SELECT_CARD_TO_CHARGE: [
             {
               target: 'METADATA',
-              actions: ['selectCardToCharge'],
-              cond: 'requireMetadata',
-            },
-            {
-              target: 'MESSAGE_TO_SIGN',
-              actions: ['selectCardToCharge'],
-              cond: 'requireMessageToSign',
-            },
-            {
-              target: 'CAPTCHA',
-              actions: ['selectCardToCharge'],
-              cond: 'requireCaptcha',
-            },
-            {
-              target: 'CONFIRM',
               actions: ['selectCardToCharge'],
             },
           ],
@@ -447,13 +424,6 @@ export const checkoutMachine = createMachine(
     guards: {
       isLockSelected: (context) => {
         return !!context.lock
-      },
-      requireMetadata: (context) => {
-        return Boolean(
-          context.paywallConfig.metadataInputs?.length ||
-            context.paywallConfig.locks?.[context.lock!.address]?.metadataInputs
-              ?.length
-        )
       },
       requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
       requireCaptcha: (context) => {

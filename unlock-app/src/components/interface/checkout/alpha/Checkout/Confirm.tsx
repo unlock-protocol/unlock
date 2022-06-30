@@ -45,6 +45,16 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
     paywallConfig,
   } = state.context
 
+  const recurringPayment =
+    paywallConfig?.locks[lock!.address]?.recurringPayments
+
+  const recurringPayments: number[] | undefined =
+    typeof recurringPayment === 'number'
+      ? new Array(recipients.length).fill(
+          Math.abs(Math.floor(recurringPayment))
+        )
+      : undefined
+
   const { isLoading, data: fiatPricing } = useQuery(
     [quantity, lock!.address, lock!.network],
     async () => {
@@ -143,6 +153,8 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
     }
   }
 
+  console.log(recurringPayments)
+
   const onConfirmCrypto = async () => {
     try {
       setIsConfirming(true)
@@ -158,6 +170,7 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
           keyPrices,
           owners: recipients!,
           data: captcha,
+          recurringPayments,
         },
         (error, hash) => {
           setIsConfirming(true)
@@ -275,12 +288,14 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
             <ul className="flex items-center gap-2 text-sm">
               <li className="inline-flex items-center gap-2">
                 <span className="text-gray-500"> Duration: </span>
-                <time> {formattedData.formattedDuration} </time>
+                <time>{formattedData.formattedDuration}</time>
               </li>
-              <li className="inline-flex items-center gap-2">
-                <span className="text-gray-500"> Quantity: </span>
-                <time> {formattedData.formattedKeysAvailable} </time>
-              </li>
+              {recurringPayments && (
+                <li className="inline-flex items-center gap-2">
+                  <span className="text-gray-500"> Recurring: </span>
+                  <span> {recurringPayment} times </span>
+                </li>
+              )}
             </ul>
             <a
               href={config.networks[lock!.network].explorer.urls.address(

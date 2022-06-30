@@ -1,16 +1,17 @@
-import { PaywallConfig } from '~/unlockTypes'
+import { PaywallConfig, PaywallConfigLock } from '~/unlockTypes'
 import { isValidPaywallConfig } from './checkoutValidators'
+
+interface LockResult extends PaywallConfigLock {
+  address: string
+}
 
 export function networkToLocksMap(paywallConfig: PaywallConfig) {
   const result = Object.entries(paywallConfig.locks).reduce<{
-    [key: string]: {
-      address: string
-      name?: string
-    }[]
-  }>((acc, [address, { network, name }]) => {
+    [key: string]: LockResult[]
+  }>((acc, [address, { network, ...rest }]) => {
     const networkId = Number(network || paywallConfig.network)
     const item = {
-      name,
+      ...rest,
       address,
     }
     if (!acc[networkId]) {
@@ -20,7 +21,6 @@ export function networkToLocksMap(paywallConfig: PaywallConfig) {
     }
     return acc
   }, {})
-
   return result
 }
 
