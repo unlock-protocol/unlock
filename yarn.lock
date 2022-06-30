@@ -8369,7 +8369,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuintun/qrcode@npm:^3.3.0":
+"@nuintun/qrcode@npm:3.3.0":
   version: 3.3.0
   resolution: "@nuintun/qrcode@npm:3.3.0"
   dependencies:
@@ -8659,7 +8659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@primitivefi/hardhat-dodoc@npm:^0.2.3":
+"@primitivefi/hardhat-dodoc@npm:0.2.3":
   version: 0.2.3
   resolution: "@primitivefi/hardhat-dodoc@npm:0.2.3"
   dependencies:
@@ -13265,25 +13265,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/eth-sig-util@npm:2.1.1":
-  version: 2.1.1
-  resolution: "@types/eth-sig-util@npm:2.1.1"
-  dependencies:
-    "@types/node": "*"
-  checksum: 19d9ee0927030145fc34e3da8742e820e6cc1bc2147695105256f87aa05e1225bf3232f29ad515a0917f26bd9f5670ba868586a7a2a665bf88ffd34777603e6e
-  languageName: node
-  linkType: hard
-
-"@types/ethereumjs-util@npm:5.2.0":
-  version: 5.2.0
-  resolution: "@types/ethereumjs-util@npm:5.2.0"
-  dependencies:
-    "@types/bn.js": "*"
-    "@types/node": "*"
-  checksum: 08c9a47eb03fbf023e774b6eeae8370623cd7d6d898214c262525a94c30390d23a82212b6c19ff62f53589d4d90189c6e93e02e115bb58d31fb443dcd1539b1e
-  languageName: node
-  linkType: hard
-
 "@types/express-serve-static-core@npm:*":
   version: 4.17.27
   resolution: "@types/express-serve-static-core@npm:4.17.27"
@@ -15023,7 +15004,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
-    "@primitivefi/hardhat-dodoc": ^0.2.3
+    "@primitivefi/hardhat-dodoc": 0.2.3
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
     chai: 4.3.4
@@ -15097,13 +15078,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/locksmith@workspace:locksmith"
   dependencies:
-    "@nuintun/qrcode": ^3.3.0
+    "@nuintun/qrcode": 3.3.0
     "@sentry/node": 7.0.0
     "@sentry/tracing": 7.0.0
     "@types/cookie-parser": 1.4.3
     "@types/cors": 2.8.12
-    "@types/eth-sig-util": 2.1.1
-    "@types/ethereumjs-util": 5.2.0
     "@types/express": 4.17.13
     "@types/express-serve-static-core": 4.17.28
     "@types/isomorphic-fetch": 0.0.36
@@ -15137,8 +15116,6 @@ __metadata:
     dotenv: 16.0.1
     eslint: 8.12.0
     eslint-config-standard: 17.0.0
-    eth-sig-util: 2.5.4
-    ethereumjs-util: 6.2.1
     ethers: 5.6.8
     express: 4.17.3
     express-jwt: 7.5.2
@@ -15324,7 +15301,7 @@ __metadata:
     eslint: 8.8.0
     eslint-plugin-mocha: 10.0.5
     eth-gas-reporter: 0.2.25
-    eth-sig-util: 2.5.4
+    eth-sig-util: 3.0.1
     ethers: 5.5.4
     fs-extra: 10.0.1
     hardhat: 2.8.0
@@ -15499,7 +15476,6 @@ __metadata:
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 12.1.5
     "@testing-library/react-hooks": 8.0.0
-    "@types/eth-sig-util": 2.1.1
     "@types/file-saver": 2.0.5
     "@types/jest": 27.5.2
     "@types/postmate": 1.5.2
@@ -15530,8 +15506,6 @@ __metadata:
     deep-object-diff: 1.1.7
     dotenv: 16.0.1
     eslint: 8.16.0
-    eth-sig-util: 2.5.4
-    ethereumjs-util: ^7.1.4
     ethers: 5.6.8
     file-saver: 2.0.5
     fuse.js: ^6.6.2
@@ -15557,7 +15531,7 @@ __metadata:
     react-hot-toast: 2.2.0
     react-icons: 4.4.0
     react-jazzicon: 1.0.3
-    react-jwt: ^1.1.6
+    react-jwt: 1.1.6
     react-test-renderer: 17.0.2
     react-use-clipboard: 1.0.8
     siwe: 1.1.6
@@ -26993,18 +26967,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eth-sig-util@npm:2.5.4, eth-sig-util@npm:^2.5.2":
-  version: 2.5.4
-  resolution: "eth-sig-util@npm:2.5.4"
-  dependencies:
-    ethereumjs-abi: 0.6.8
-    ethereumjs-util: ^5.1.1
-    tweetnacl: ^1.0.3
-    tweetnacl-util: ^0.15.0
-  checksum: 727ff2ec7859d9609fa3b43d1652eb40740f075e0196cacd67d5bcf50f8fb17fdbf6f384ad457785684d86a0e8155375aece42ad8393487eb8f665adb640b340
-  languageName: node
-  linkType: hard
-
 "eth-sig-util@npm:3.0.0":
   version: 3.0.0
   resolution: "eth-sig-util@npm:3.0.0"
@@ -27019,6 +26981,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eth-sig-util@npm:3.0.1":
+  version: 3.0.1
+  resolution: "eth-sig-util@npm:3.0.1"
+  dependencies:
+    ethereumjs-abi: ^0.6.8
+    ethereumjs-util: ^5.1.1
+    tweetnacl: ^1.0.3
+    tweetnacl-util: ^0.15.0
+  checksum: 614bf7011b30f78c3532f53e3f80919fe5502b0fa7a3656e6e7dae56d26bc9f559c5b6480c2bcc66d63cd9f72b489732df3b7f1daa0ac9a1fe3b6878347ab4c6
+  languageName: node
+  linkType: hard
+
 "eth-sig-util@npm:^1.4.2":
   version: 1.4.2
   resolution: "eth-sig-util@npm:1.4.2"
@@ -27026,6 +27000,18 @@ __metadata:
     ethereumjs-abi: "git+https://github.com/ethereumjs/ethereumjs-abi.git"
     ethereumjs-util: ^5.1.1
   checksum: 578f5c571c1bb0a86dc1bd4a5b56b8073b37823496d7afa74d772cf91ae6860f91bafcbee931be39a3d13f0c195df9f026a27fce350605ad5d15901a5a4ea94a
+  languageName: node
+  linkType: hard
+
+"eth-sig-util@npm:^2.5.2":
+  version: 2.5.4
+  resolution: "eth-sig-util@npm:2.5.4"
+  dependencies:
+    ethereumjs-abi: 0.6.8
+    ethereumjs-util: ^5.1.1
+    tweetnacl: ^1.0.3
+    tweetnacl-util: ^0.15.0
+  checksum: 727ff2ec7859d9609fa3b43d1652eb40740f075e0196cacd67d5bcf50f8fb17fdbf6f384ad457785684d86a0e8155375aece42ad8393487eb8f665adb640b340
   languageName: node
   linkType: hard
 
@@ -43737,7 +43723,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-jwt@npm:^1.1.6":
+"react-jwt@npm:1.1.6":
   version: 1.1.6
   resolution: "react-jwt@npm:1.1.6"
   dependencies:

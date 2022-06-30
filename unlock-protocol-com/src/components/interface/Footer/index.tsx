@@ -57,7 +57,7 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
     },
     {
       name: 'Integrations',
-      href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations',
+      href: 'https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/',
     },
     {
       name: 'Developers',

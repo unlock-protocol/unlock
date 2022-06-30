@@ -1,4 +1,3 @@
-import ethJsUtil = require('ethereumjs-util')
 import Sequelize = require('sequelize')
 import { ethers } from 'ethers'
 import networks from '@unlock-protocol/networks'
@@ -16,8 +15,8 @@ const { Lock, UserTokenMetadata, LockMigrations } = models
 export async function createLock(lock: any) {
   return Lock.create({
     chain: lock.chain,
-    address: ethJsUtil.toChecksumAddress(lock.address),
-    owner: ethJsUtil.toChecksumAddress(lock.owner),
+    address: ethers.utils.getAddress(lock.address),
+    owner: ethers.utils.getAddress(lock.owner),
   })
 }
 
@@ -29,7 +28,7 @@ export async function getLockByAddress(address: string) {
   return Lock.findOne({
     attributes: Lock.publicFields,
     where: {
-      address: { [Op.eq]: ethJsUtil.toChecksumAddress(address) },
+      address: { [Op.eq]: ethers.utils.getAddress(address) },
     },
   })
 }
@@ -42,7 +41,7 @@ export async function getLocksByOwner(owner: string) {
   return Lock.findAll({
     attributes: Lock.publicFields,
     where: {
-      owner: { [Op.eq]: ethJsUtil.toChecksumAddress(owner) },
+      owner: { [Op.eq]: ethers.utils.getAddress(owner) },
     },
   })
 }
@@ -60,8 +59,8 @@ export async function updateLockOwnership(
   return Lock.upsert(
     {
       chain,
-      address: ethJsUtil.toChecksumAddress(address),
-      owner: ethJsUtil.toChecksumAddress(owner),
+      address: ethers.utils.getAddress(address),
+      owner: ethers.utils.getAddress(owner),
     },
     {
       fields: ['owner'],
