@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Button } from '@unlock-protocol/ui'
+import { Badge, Button } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
+import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
+import { AiOutlineExclamationCircle as ExclamationIcon } from 'react-icons/ai'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -20,7 +22,13 @@ interface MemberCardProps {
   metadata?: object
 }
 
-const keysToIgnore = ['token', 'lockName', 'keyholderAddress', 'expiration']
+const keysToIgnore = [
+  'token',
+  'lockName',
+  'keyholderAddress',
+  'expiration',
+  'checkedInAt',
+]
 
 export const MemberCard: React.FC<MemberCardProps> = ({
   lockName,
@@ -34,15 +42,23 @@ export const MemberCard: React.FC<MemberCardProps> = ({
 }) => {
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
 
-  const extraDataItems: [string, string][] = Object.entries(
+  const extraDataItems: [string, string | number][] = Object.entries(
     metadata || {}
   ).filter(([key]) => {
     return !keysToIgnore.includes(key)
   })
 
+  const getCheckInTime = () => {
+    const [_, checkInTimeValue] =
+      extraDataItems?.find(([key]) => key === 'checkedInAt') ?? []
+    if (!checkInTimeValue) return null
+    return new Date(checkInTimeValue as number).toLocaleString()
+  }
   const toggleMetada = () => {
     setShowMetaData(!showMetaData)
   }
+
+  const isCheckedIn = typeof getCheckInTime() === 'string'
 
   useEffect(() => {
     setShowMetaData(expandAllMetadata)
@@ -55,7 +71,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       data-testid="member-card"
       className="border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
     >
-      <div className="grid grid-cols-6 gap-2 justify-between">
+      <div className="grid gap-2 justify-between grid-cols-6 mb-2">
         <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Lock name</span>
           <span className={styles.title}>{lockName}</span>
@@ -73,10 +89,6 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Expiration</span>
           <span className={styles.title}>{expiration}</span>
-        </div>
-        <div className="col-span-full	flex flex-col md:col-span-1">
-          <span className={styles.description}>Checked-in At</span>
-          <span className={styles.title}>{'PROVA'}</span>
         </div>
         <div className="col-span-full flex gap-2 justify-start lg:col-span-2 lg:justify-end">
           <Button
@@ -99,18 +111,45 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         {showMetaData && (
           <div>
             <span className={styles.description}>Metadata</span>
+            <span className="block py-2">
+              {isCheckedIn ? (
+                <Badge
+                  size="tiny"
+                  variant="green"
+                  iconRight={<CheckIcon size={11} />}
+                >
+                  Checked-in
+                </Badge>
+              ) : (
+                <Badge
+                  size="tiny"
+                  variant="orange"
+                  iconRight={<ExclamationIcon size={11} />}
+                >
+                  Not Checked-in
+                </Badge>
+              )}
+            </span>
             {!hasExtraData && (
               <span className="block">There is no metadata</span>
             )}
-            {hasExtraData &&
-              hasExtraData &&
-              extraDataItems?.map(([key, value], index) => {
-                return (
-                  <div key={index}>
-                    <strong>{key}</strong>: <span>{value}</span>
+            {(hasExtraData || isCheckedIn) && (
+              <>
+                {isCheckedIn && (
+                  <div>
+                    <strong>Checked-in At:</strong>{' '}
+                    <span>{getCheckInTime()}</span>
                   </div>
-                )
-              })}
+                )}
+                {extraDataItems?.map(([key, value], index) => {
+                  return (
+                    <div key={index}>
+                      <strong>{key}</strong>: <span>{value}</span>
+                    </div>
+                  )
+                })}
+              </>
+            )}
           </div>
         )}
       </div>
