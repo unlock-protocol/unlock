@@ -10,7 +10,11 @@ interface ContinueEvent {
   type: 'CONTINUE'
 }
 
-type UnlockAccountMachineEvents = SubmitUserEvent | ContinueEvent
+interface BackEvent {
+  type: 'BACK'
+}
+
+type UnlockAccountMachineEvents = SubmitUserEvent | ContinueEvent | BackEvent
 
 interface UnlockAccountMachineContext {
   email: string
@@ -50,6 +54,7 @@ export const unlockAccountMachine = createMachine(
       },
       SIGN_UP: {
         on: {
+          BACK: 'ENTER_EMAIL',
           CONTINUE: {
             target: 'SIGNED_IN',
           },
@@ -57,6 +62,7 @@ export const unlockAccountMachine = createMachine(
       },
       SIGN_IN: {
         on: {
+          BACK: 'ENTER_EMAIL',
           CONTINUE: {
             target: 'SIGNED_IN',
           },

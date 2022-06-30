@@ -1,5 +1,4 @@
 import { Button, Icon } from '@unlock-protocol/ui'
-import { useSelector } from '@xstate/react'
 import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Shell } from '../Shell'
@@ -7,6 +6,13 @@ import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
+import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
+import {
+  ProgressCircleIcon,
+  ProgressFinishedIcon,
+  ProgressFinishIcon,
+} from '../Progress'
+import { useActor } from '@xstate/react'
 
 interface Props {
   injectedProvider: unknown
@@ -20,18 +26,31 @@ export function Returning({
   onClose,
 }: Props) {
   const config = useConfig()
-  const lock = useSelector(checkoutService, (state) => state.context.lock)
+  const [state] = useActor(checkoutService)
+  const { paywallConfig, lock } = state.context
+  const { title, iconURL, description } =
+    useCheckoutHeadContent(checkoutService)
+
   return (
     <Shell.Root onClose={() => onClose()}>
-      <Shell.Head checkoutService={checkoutService} />
+      <Shell.Head title={title} iconURL={iconURL} description={description} />
+      <div className="flex px-6 py-6 flex-wrap items-center w-full gap-2">
+        <div className="flex items-center gap-2 col-span-4">
+          <div className="flex items-center gap-0.5">
+            <ProgressCircleIcon disabled />
+            <ProgressCircleIcon disabled />
+            {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
+            <ProgressCircleIcon disabled />
+            <ProgressFinishedIcon />
+          </div>
+          <h4 className="text-sm ">{title}</h4>
+        </div>
+        <div className="border-t-4 w-full flex-1"></div>
+      </div>
       <main className="p-4 overflow-auto h-64 sm:h-72">
         <div className="space-y-6 justify-items-center grid">
           <div className="grid justify-items-center">
-            <Lottie
-              className="w-40 h-40"
-              loop
-              animationData={unlockedAnimation}
-            />
+            <Lottie className="w-40 h-40" animationData={unlockedAnimation} />
             <p className="font-bold text-xl text-brand-ui-primary">
               Voila! This is unlocked!
             </p>

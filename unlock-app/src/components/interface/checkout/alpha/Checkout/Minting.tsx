@@ -14,6 +14,8 @@ import { useActor } from '@xstate/react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Shell } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
+import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
+import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
 
 interface Props {
   injectedProvider: unknown
@@ -42,6 +44,8 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
   const { mint, lock, messageToSign } = state.context
+  const { title, description, iconURL } =
+    useCheckoutHeadContent(checkoutService)
   const processing = mint?.status === 'PROCESSING'
   const status = mint?.status
 
@@ -88,7 +92,21 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
 
   return (
     <Shell.Root onClose={() => onClose()}>
-      <Shell.Head checkoutService={checkoutService} />
+      <Shell.Head title={title} iconURL={iconURL} description={description} />
+      <div className="flex px-6 py-6 flex-wrap items-center w-full gap-2">
+        <div className="flex items-center gap-2 col-span-4">
+          <div className="flex items-center gap-0.5">
+            <ProgressCircleIcon disabled />
+            <ProgressCircleIcon disabled />
+            <ProgressCircleIcon disabled />
+            {messageToSign && <ProgressCircleIcon disabled />}
+            <ProgressCircleIcon disabled />
+            <ProgressFinishedIcon active />
+          </div>
+          <h4 className="text-sm "> {title}</h4>
+        </div>
+        <div className="border-t-4 w-full flex-1"></div>
+      </div>
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="space-y-6 justify-items-center grid">
           {status && <AnimationContent status={status} />}
