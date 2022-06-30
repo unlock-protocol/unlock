@@ -47,7 +47,8 @@ export class GraphService {
     locks: string[],
     expiresAfter: number,
     first: number,
-    skip: number
+    skip: number,
+    searchQuery: string
   ) => {
     const query = keyHoldersByLocks()
 
@@ -58,6 +59,7 @@ export class GraphService {
         expiresAfter,
         first,
         skip,
+        searchQuery,
       },
     })
     return result

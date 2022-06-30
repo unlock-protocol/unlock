@@ -15508,7 +15508,6 @@ __metadata:
     eslint: 8.16.0
     ethers: 5.6.8
     file-saver: 2.0.5
-    fuse.js: ^6.6.2
     graphql: 15.8.0
     jest: 27.5.1
     jest-canvas-mock: 2.4.0
@@ -29332,13 +29331,6 @@ fsevents@~2.1.1:
   version: 3.6.1
   resolution: "fuse.js@npm:3.6.1"
   checksum: 958aa877ace65dc900df776becd39a03df68d7eebc7890b5fd2fc8c5d88e2fff238f60c37f80013ce70e9d9e7ac8efa9f503695fdd23d1eca3cc983797b50191
-  languageName: node
-  linkType: hard
-
-"fuse.js@npm:^6.6.2":
-  version: 6.6.2
-  resolution: "fuse.js@npm:6.6.2"
-  checksum: 17ae758ce205276ebd88bd9c9f088a100be0b4896abac9f6b09847151269d1690f41d7f98ff5813d4a58973162dbd99d0072ce807020fee6f9de60170f6b08eb
   languageName: node
   linkType: hard
 
