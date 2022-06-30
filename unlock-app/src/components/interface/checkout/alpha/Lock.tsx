@@ -60,6 +60,7 @@ export function Lock({
 
   const fiatPrice = lock?.fiatPricing?.usd?.keyPrice
   console.log(fiatPrice)
+
   return (
     <button
       type="button"
@@ -115,8 +116,14 @@ export function Lock({
                 <time> {formattedData.formattedDuration} </time>
               </li>
               <li className="inline-flex items-center gap-2">
-                <span className="text-gray-500"> Quantity: </span>
-                <time> {formattedData.formattedKeysAvailable} </time>
+                {formattedData.isSoldOut ? (
+                  <span> Sold out </span>
+                ) : (
+                  <>
+                    <span className="text-gray-500"> Quantity: </span>
+                    <span> {formattedData.formattedKeysAvailable} </span>
+                  </>
+                )}
               </li>
             </ul>
             <div className="flex items-center justify-end">
