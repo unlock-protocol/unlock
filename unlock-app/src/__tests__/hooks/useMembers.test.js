@@ -7,10 +7,7 @@ import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { StorageServiceContext } from '../../utils/withStorageService'
 import { MemberFilters } from '../../unlockTypes'
 
-import useMembers, {
-  getAllKeysMetadataForLock,
-  buildMembersWithMetadata,
-} from '../../hooks/useMembers'
+import useMembers, { buildMembersWithMetadata } from '../../hooks/useMembers'
 import generateKeyTypedData from '../../structured_data/keyMetadataTypedData'
 import {
   AuthenticationContext,
@@ -123,62 +120,6 @@ describe('useMembers', () => {
       if (context === StorageServiceContext) {
         return storageService
       }
-    })
-  })
-
-  describe('getAllKeysMetadataForLock', () => {
-    it('should generate the typed key data', async () => {
-      expect.assertions(1)
-      await getAllKeysMetadataForLock(
-        lock,
-        viewer,
-        walletService,
-        storageService
-      )
-      expect(generateKeyTypedData).toHaveBeenCalledWith(
-        {
-          LockMetaData: {
-            address: lock.address,
-            owner: viewer,
-            timestamp: expect.any(Number),
-            owners: ['0x126', '0x252'],
-          },
-        },
-        'LockMetaData'
-      )
-    })
-
-    it('should ask the user to sign a request', async () => {
-      expect.assertions(1)
-
-      await getAllKeysMetadataForLock(
-        lock,
-        viewer,
-        walletService,
-        storageService
-      )
-      expect(walletService.signMessage).toHaveBeenCalledWith(
-        'I want to access member data for 0xlockAddress',
-        'personal_sign'
-      )
-    })
-
-    it('should retrieve the data from the storage service', async () => {
-      expect.assertions(2)
-
-      const metadataForLock = await getAllKeysMetadataForLock(
-        lock,
-        viewer,
-        walletService,
-        storageService
-      )
-      expect(storageService.getBulkMetadataFor).toHaveBeenCalledWith(
-        lock.address,
-        signature,
-        typedData,
-        undefined // network
-      )
-      expect(metadataForLock).toEqual(storedMetata)
     })
   })
 
