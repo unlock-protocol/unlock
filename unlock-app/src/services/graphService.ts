@@ -3,7 +3,7 @@ import { utils } from 'ethers'
 import locksByManager from '../queries/locksByManager'
 import keyHoldersByLocks from '../queries/keyholdersByLock'
 import { ToastHelper } from '../components/helpers/toast.helper'
-import keyholdersByKeyIdQuery from '~/queries/keyholdersByKeyId'
+import keyholdersByKeyIdQuery from '../queries/keyholdersByKeyId'
 
 export class GraphService {
   public client: any
