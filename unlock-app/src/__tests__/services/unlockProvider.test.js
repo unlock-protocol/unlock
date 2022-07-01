@@ -147,7 +147,7 @@ describe('Unlock Provider', () => {
         // second param is unused, but in keeping with what we receive from WalletService
         const sig = await provider.personal_sign([messageHash, ''])
 
-        expect(utils.verifyMessage(messageHash, sig)).toEqual(
+        expect(utils.verifyMessage(utils.arrayify(messageHash), sig)).toEqual(
           utils.getAddress(publicKey)
         )
       })
