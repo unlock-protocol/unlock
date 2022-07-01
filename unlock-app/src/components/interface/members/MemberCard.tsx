@@ -3,7 +3,6 @@ import { Badge, Button } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
-import { AiOutlineExclamationCircle as ExclamationIcon } from 'react-icons/ai'
 import { StorageServiceContext } from '../../../utils/withStorageService'
 import { ToastHelper } from '../../../components/helpers/toast.helper'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
@@ -55,7 +54,6 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const { network } = useContext(AuthenticationContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
 
-  console.log(metadata)
   const extraDataItems: [string, string | number][] = Object.entries(
     metadata || {}
   ).filter(([key]) => {
