@@ -19,10 +19,6 @@ If you don’t yet know them, [Superfluid](https://www.superfluid.finance/home) 
 
 [https://twitter.com/UnlockProtocol/status/1540321536078389249?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ](https://twitter.com/UnlockProtocol/status/1540321536078389249?s=20&t=Adgq-5dMDayRmtPAwl5ZWQ)
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Thank you to everyone who came out for the <a href="https://twitter.com/UnlockProtocol?ref_src=twsrc%5Etfw">@UnlockProtocol</a> <a href="https://twitter.com/Superfluid_HQ?ref_src=twsrc%5Etfw">@Superfluid_HQ</a> and <a href="https://twitter.com/privy_io?ref_src=twsrc%5Etfw">@privy_io</a> happy hour last night. It was so great to meet you all! <a href="https://t.co/oA6bmBZmLx">pic.twitter.com/oA6bmBZmLx</a></p>&mdash; Ʉnlock - unlock-protocol.eth (@UnlockProtocol) <a href="https://twitter.com/UnlockProtocol/status/1540321536078389249?ref_src=twsrc%5Etfw">June 24, 2022</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/X5DKS48rDBE" title="Unlock Protocol and Guild.xyz Integration" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
-
 
 ## We experienced ~ vibesIRL ~ with Developer DAO
 
