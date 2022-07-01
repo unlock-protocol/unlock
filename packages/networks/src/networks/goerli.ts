@@ -3,7 +3,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 export const goerli: NetworkConfig = {
   publicProvider: 'https://goerli.prylabs.net',
   provider: 'https://goerli.prylabs.net',
-  unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+  unlockAddress: '0x44d1cE6728A74E8862926406f0FfcA58f81c7950',
   multisig: '0xC3EBAFD55BC599e614b729a582C371842cc8954a',
   id: 5,
   name: 'Goerli (Testnet)',
