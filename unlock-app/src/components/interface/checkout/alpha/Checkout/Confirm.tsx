@@ -180,7 +180,11 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
         (error, hash) => {
           setIsConfirming(true)
           if (error) {
-            throw new Error(error.message)
+            send({
+              type: 'CONFIRM_MINT',
+              status: 'ERROR',
+              transactionHash: hash!,
+            })
           } else {
             if (!paywallConfig.pessimistic && hash) {
               communication.emitTransactionInfo({
@@ -200,15 +204,9 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
           }
         }
       )
-    } catch (error) {
-      if (error instanceof Error) {
-        send({
-          type: 'CONFIRM_MINT',
-          status: 'ERROR',
-        })
-        ToastHelper.error(error.message)
-      }
+    } catch (error: any) {
       setIsConfirming(false)
+      ToastHelper.error(error?.error?.message || error.message)
     }
   }
 
