@@ -15667,7 +15667,7 @@ __metadata:
     raw-loader: 4.0.2
     react: 17.0.2
     react-dom: 17.0.2
-    react-ga: 3.3.0
+    react-ga: 3.3.1
     react-gtm-module: 2.0.11
     react-icons: 4.4.0
     react-showdown: 2.3.1
@@ -43570,13 +43570,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-ga@npm:3.3.0":
-  version: 3.3.0
-  resolution: "react-ga@npm:3.3.0"
+"react-ga@npm:3.3.1":
+  version: 3.3.1
+  resolution: "react-ga@npm:3.3.1"
   peerDependencies:
     prop-types: ^15.6.0
-    react: ^15.6.2 || ^16.0 || ^17
-  checksum: b4f5b0ed3a5d7ea781397d6a1f8dacae2284fe7f03f72dde330958dd0a64732f8766c6fa26cf0f1a8fb1303fa02aa51f23cf0b261e52981d0275262b831c7fea
+    react: ^15.6.2 || ^16.0 || ^17 || ^18
+  checksum: 3026976d0249fbf80e7b5dad7707964198064d7ac460f3397de40524e76dd6c29dead0900f850e2bd3135a86a9b083af8cda9cfa087f195852bf8d2b17c1fcfb
   languageName: node
   linkType: hard
 
