@@ -50,13 +50,13 @@ Plus, the views were amazing.
 
 In addition to Julien’s panel, DAO NYC’s programming had a wide array of panels that hit on topics that went much deeper than the typical “wen lambo?” web3 conference fare.
 
-Kinjal Shah, Mana Silvora, Medha Kotari, and Gabriele discussed the importance of doing the work to ensure that web3 represents all its participants, and not just the stereotypical tech bro / crypto bro point of view. (Important note: Major kudos to the DAO NYC team for not just having one side panel on this topic at the end of the day in an out-of-the-way conference room, but instead weaving diverse viewpoints into the speaker roster from the get-go across the board. [See for yourself here](https://www.dao-nyc.xyz/#speakers). This is the group to learn from.)
+Kinjal Shah, Manasi Vora, Medha Kothari, Karima Williams and Gabrielle Micheletti discussed the importance of doing the work to ensure that web3 represents all its participants, and not just the stereotypical tech bro / crypto bro point of view. (Important note: Major kudos to the DAO NYC team for not just having one side panel on this topic at the end of the day in an out-of-the-way conference room, but instead weaving diverse viewpoints into the speaker roster from the get-go across the board. [See for yourself here](https://www.dao-nyc.xyz/#speakers). This is the group to learn from.)
 
 [https://twitter.com/ccarfi/status/1539623901935828996?s=20&t=IQYM2Y_wvmZzCQrw28vw-g](https://twitter.com/ccarfi/status/1539623901935828996?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
 [https://twitter.com/ccarfi/status/1539622330846117892?s=20&t=IQYM2Y_wvmZzCQrw28vw-g](https://twitter.com/ccarfi/status/1539622330846117892?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
-As someone who has worked in and built online communities and community strategies throughout their career, I also wanted to note the conversation in the “Communities in web3” panel was all spot-on and another major highlight of the day.
+In working in and building online communities and community strategies throughout my career, I also wanted to note the conversation in the “Communities in web3” panel was all spot-on and another major highlight of the day.
 
 [https://twitter.com/ccarfi/status/1539616453644673025?s=20&t=IQYM2Y_wvmZzCQrw28vw-g](https://twitter.com/ccarfi/status/1539616453644673025?s=20&t=IQYM2Y_wvmZzCQrw28vw-g)
 
@@ -72,7 +72,7 @@ At the end of the weekend, and after the final round of judging, three projects 
 
 ### Granted
 
-![Screen Shot 2022-06-30 at 9.00.45 AM.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/Screen_Shot_2022-06-30_at_9.00.45_AM.png)
+![granted.png](/images/blog/nyc22/granted.png)
 
 **Hackathon project website:**
 
@@ -100,7 +100,7 @@ For grantees
 
 ### GARD3N
 
-![gard3n.png](NYC%20Blockchain%20Week%202022%20Recap%20with%20Unlock%20b00fd7d7439c489288c8d8089562d0e9/gard3n.png)
+![gard3n.png](/images/blog/nyc22/gard3n.png)
 
 **Hackathon project website:**
 
@@ -114,7 +114,7 @@ GARD3N is a public goods social engagement platform built with Lens, Unlock Prot
 
 ### NFTicket
 
-![nfticketmin.gif](/images/blog/nyc22/nfticket-min.gif)
+![nfticket-min.gif](/images/blog/nyc22/nfticket-min.gif)
 
 **Hackathon project website:** [https://ethglobal.com/showcase/nfticket-qwwba](https://ethglobal.com/showcase/nfticket-qwwba)
 
