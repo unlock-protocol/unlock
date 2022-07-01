@@ -23,6 +23,7 @@ interface MemberCardProps {
   isLockManager?: boolean
   expireAndRefundDisabled?: boolean
   metadata?: { [key: string]: any }
+  loadMembers?: () => void
 }
 
 const keysToIgnore = [
@@ -48,6 +49,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   onExpireAndRefund,
   expandAllMetadata,
   showCheckInTimeInfo,
+  loadMembers,
   expireAndRefundDisabled = true,
   metadata = {},
 }) => {
@@ -94,6 +96,9 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         error: `Error on marking ticket as checked-in`,
         success: `Successfully marked ticket as checked-in`,
       })
+      if (typeof loadMembers === 'function') {
+        loadMembers()
+      }
     } catch (err) {
       ToastHelper.error('Error on marking ticket as checked-in')
     }
