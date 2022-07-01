@@ -173,14 +173,15 @@ const MetadataTableWrapper = ({
     { key: 'keyId', label: 'Token id' },
   ]
 
-  const { loading, list, columns, hasNextPage, isLockManager } = useMembers(
-    lockAddresses,
-    account!,
-    filter,
-    currentPage,
-    queryValue,
-    filterKey
-  )
+  const { loading, list, columns, hasNextPage, isLockManager, loadMembers } =
+    useMembers(
+      lockAddresses,
+      account!,
+      filter,
+      currentPage,
+      queryValue,
+      filterKey
+    )
 
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e?.target?.value ?? ''
@@ -231,6 +232,7 @@ const MetadataTableWrapper = ({
         isLockManager={isLockManager}
         lockAddresses={lockAddresses}
         loading={loading}
+        loadMembers={loadMembers}
       />
     </>
   )

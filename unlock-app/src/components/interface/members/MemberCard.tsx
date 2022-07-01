@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Badge, Button } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
-import { AiOutlineExclamationCircle as ExclamationIcon } from 'react-icons/ai'
+import { StorageServiceContext } from '../../../utils/withStorageService'
+import { ToastHelper } from '../../../components/helpers/toast.helper'
+import AuthenticationContext from '../../../contexts/AuthenticationContext'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -20,7 +22,8 @@ interface MemberCardProps {
   showCheckInTimeInfo: boolean
   isLockManager?: boolean
   expireAndRefundDisabled?: boolean
-  metadata?: object
+  metadata?: { [key: string]: any }
+  loadMembers?: () => void
 }
 
 const keysToIgnore = [
@@ -29,6 +32,7 @@ const keysToIgnore = [
   'keyholderAddress',
   'expiration',
   'checkedInAt',
+  'lockAddress',
 ]
 
 export const MemberCardPlaceholder: React.FC<any> = () => {
@@ -45,9 +49,12 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   onExpireAndRefund,
   expandAllMetadata,
   showCheckInTimeInfo,
+  loadMembers,
   expireAndRefundDisabled = true,
   metadata = {},
 }) => {
+  const storageService = useContext(StorageServiceContext)
+  const { network } = useContext(AuthenticationContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
 
   const extraDataItems: [string, string | number][] = Object.entries(
@@ -73,6 +80,29 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   }, [expandAllMetadata])
 
   const hasExtraData = extraDataItems?.length > 0
+
+  const onMarkAsCheckIn = async () => {
+    try {
+      if (!storageService) return
+      const { lockAddress, token: keyId } = metadata
+      const markTicketCheckInPromise = storageService.markTicketAsCheckedIn({
+        lockAddress,
+        keyId,
+        network: network!,
+      })
+
+      await ToastHelper.promise(markTicketCheckInPromise, {
+        loading: `Marking ticket as Check-in`,
+        error: `Error on marking ticket as checked-in`,
+        success: `Successfully marked ticket as checked-in`,
+      })
+      if (typeof loadMembers === 'function') {
+        loadMembers()
+      }
+    } catch (err) {
+      ToastHelper.error('Error on marking ticket as checked-in')
+    }
+  }
 
   return (
     <div
@@ -120,25 +150,20 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         {showMetaData && (
           <div>
             <span className={styles.description}>Metadata</span>
-            {showCheckInTimeInfo && (
+            {!isCheckedIn && (
+              <Button className="my-2" onClick={onMarkAsCheckIn} size="small">
+                Mark as Checked-in
+              </Button>
+            )}
+            {showCheckInTimeInfo && isCheckedIn && (
               <span className="block py-2">
-                {isCheckedIn ? (
-                  <Badge
-                    size="tiny"
-                    variant="green"
-                    iconRight={<CheckIcon size={11} />}
-                  >
-                    Checked-in
-                  </Badge>
-                ) : (
-                  <Badge
-                    size="tiny"
-                    variant="orange"
-                    iconRight={<ExclamationIcon size={11} />}
-                  >
-                    Not Checked-in
-                  </Badge>
-                )}
+                <Badge
+                  size="tiny"
+                  variant="green"
+                  iconRight={<CheckIcon size={11} />}
+                >
+                  Checked-in
+                </Badge>
               </span>
             )}
             {!hasExtraData && (

@@ -27,6 +27,7 @@ interface MetadataTableProps {
   filter?: string
   isLockManager?: boolean
   lockAddresses?: string[]
+  loadMembers?: () => void
 }
 
 /**
@@ -46,6 +47,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   columns,
   metadata,
   filter,
+  loadMembers,
   loading = false,
   isLockManager,
   lockAddresses = [],
@@ -157,6 +159,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             expireAndRefundDisabled={expireAndRefundDisabled(data)}
             onExpireAndRefund={() => onExpireAndRefund(data)}
             showCheckInTimeInfo={showCheckInTimeInfo}
+            loadMembers={loadMembers}
           />
         )
       })}

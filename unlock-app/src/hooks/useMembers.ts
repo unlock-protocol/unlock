@@ -48,6 +48,7 @@ export const buildMembersWithMetadata = (
         lockName: lockWithKeys?.name,
         expiration: expirationAsDate(key.expiration),
         keyholderAddress: keyOwner,
+        lockAddress: lockWithKeys.address,
       }
     }
 
@@ -195,7 +196,7 @@ export const useMembers = (
 
   const list: any = Object.values(members)
   const columns = generateColumns(list)
-  return { loading, list, columns, hasNextPage, isLockManager }
+  return { loading, list, columns, hasNextPage, isLockManager, loadMembers }
 }
 
 export default useMembers
