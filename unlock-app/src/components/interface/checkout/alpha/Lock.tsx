@@ -109,7 +109,7 @@ export function Lock({
       <div className="border-t pt-2 w-full">
         {!isLoading ? (
           <div className="flex items-center justify-between">
-            <ul className="flex items-center gap-2 text-sm">
+            <ul className="flex items-center gap-2 text-sm flex-wrap">
               <li className="inline-flex items-center gap-2">
                 <span className="text-gray-500"> Duration: </span>
                 <time> {formattedData.formattedDuration} </time>

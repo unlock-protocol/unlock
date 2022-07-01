@@ -77,14 +77,16 @@ export function Returning({
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex gap-4 justify-between">
             <Button
-              variant="outlined-primary"
+              className="w-full"
               onClick={() => checkoutService.send('MAKE_ANOTHER_PURCHASE')}
             >
               Buy another
             </Button>
-            <Button onClick={() => onClose()}>Return to site</Button>
+            <Button className="w-full" onClick={() => onClose()}>
+              Return
+            </Button>
           </div>
         </Connected>
       </footer>

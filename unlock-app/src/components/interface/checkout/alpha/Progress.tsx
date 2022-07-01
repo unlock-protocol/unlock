@@ -35,8 +35,8 @@ export const ProgressFinishIcon = ({ disabled }: ProgressIconProps) => {
 export const ProgressFinishedIcon = ({ disabled }: ProgressIconProps) => {
   return (
     <SvgComponents.RocketLaunch
-      height={22}
-      width={22}
+      height={20}
+      width={20}
       className={`bg-brand-ui-primary p-0.5 rounded-full fill-white  ${
         disabled && 'opacity-75'
       }`}
