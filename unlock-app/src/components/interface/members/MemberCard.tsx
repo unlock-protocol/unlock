@@ -31,6 +31,12 @@ const keysToIgnore = [
   'checkedInAt',
 ]
 
+export const MemberCardPlaceholder: React.FC<any> = () => {
+  return (
+    <div className="h-[130px] md:h-[90px] border-2 rounded-lg bg-slate-200 animate-pulse"></div>
+  )
+}
+
 export const MemberCard: React.FC<MemberCardProps> = ({
   lockName,
   expiration,

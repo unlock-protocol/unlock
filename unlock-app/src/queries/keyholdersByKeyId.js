@@ -1,17 +1,17 @@
 import { gql } from 'apollo-boost'
 
-export default function keyholdersByLockQuery() {
+export default function keyholdersByKeyIdQuery() {
   return gql`
     query Lock(
       $addresses: [String!]
       $expiresAfter: BigInt! = 0
       $first: Int! = 100
       $skip: Int! = 0
-      $owner: String = ""
+      $keyId: BigInt
     ) {
       locks(where: { address_in: $addresses }) {
         keys(
-          where: { expiration_gt: $expiresAfter, owner_contains: $owner }
+          where: { expiration_gt: $expiresAfter, keyId: $keyId }
           first: $first
           skip: $skip
           orderBy: keyId
