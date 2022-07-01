@@ -91,7 +91,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       await ToastHelper.promise(markTicketCheckInPromise, {
         loading: `Marking ticket as Check-in`,
         error: `Error on marking ticket as checked-in`,
-        success: `Successfully Marked ticket as checked-in`,
+        success: `Successfully marked ticket as checked-in`,
       })
     } catch (err) {
       ToastHelper.error('Error on marking ticket as checked-in')
