@@ -519,16 +519,22 @@ interface IPublicLock
   */
   function lendKey(address from, address to, uint tokenId) external;
 
-
+  /** 
+  * Unlend is called when you have lent a key and want to claim its full ownership back
+  * @param _recipient the address that will receive the token ownership
+  * @param _tokenId the id of the token
+  * @notice Only the key manager of the token can call this function
+  */
+  function unlendKey(address _recipient, uint _tokenId) external;
 
   function approve(address to, uint256 tokenId) external;
 
   /**
-    * @notice Get the approved address for a single NFT
-    * @dev Throws if `_tokenId` is not a valid NFT.
-    * @param _tokenId The NFT to find the approved address for
-    * @return operator The approved address for this NFT, or the zero address if there is none
-    */
+  * @notice Get the approved address for a single NFT
+  * @dev Throws if `_tokenId` is not a valid NFT.
+  * @param _tokenId The NFT to find the approved address for
+  * @return operator The approved address for this NFT, or the zero address if there is none
+  */
   function getApproved(uint256 _tokenId) external view returns (address operator);
 
    /**
