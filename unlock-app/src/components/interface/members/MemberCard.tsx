@@ -5,7 +5,7 @@ import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
 import { useStorageService } from '../../../utils/withStorageService'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { WalletServiceContext } from '../../../utils/withWalletService'
-import { ToastHelper } from '~/components/helpers/toast.helper'
+import { ToastHelper } from '../../../components/helpers/toast.helper'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { AiOutlineExclamationCircle as ExclamationIcon } from 'react-icons/ai'
 
