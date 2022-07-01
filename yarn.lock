@@ -15228,7 +15228,7 @@ __metadata:
     eslint: 8.16.0
     jest: 27.5.1
     jest-fetch-mock: 3.0.3
-    node-fetch: 3.2.5
+    node-fetch: 3.2.6
     postmate: 1.5.2
     style-loader: 3.3.1
     ts-jest: 27.1.5
@@ -38870,14 +38870,14 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:3.2.5":
-  version: 3.2.5
-  resolution: "node-fetch@npm:3.2.5"
+"node-fetch@npm:3.2.6":
+  version: 3.2.6
+  resolution: "node-fetch@npm:3.2.6"
   dependencies:
     data-uri-to-buffer: ^4.0.0
     fetch-blob: ^3.1.4
     formdata-polyfill: ^4.0.10
-  checksum: 11fd4118fa3f9f15b4e3d7d37dce80d051340cf641fdb843f8dec0ee021d52a5b5101e1fff73c13ede986844bb40c5832a3b17ba7c894a1db44fde95ebfe8589
+  checksum: ece307ace3a3ff28638ccb0fa0545bb5c0cfd673a9d06fc314d937a73ae6a55917d5bacd7f080f9a9f1449ca20a5c01b1281d0e616acb20315e5ac315971da46
   languageName: node
   linkType: hard
 
