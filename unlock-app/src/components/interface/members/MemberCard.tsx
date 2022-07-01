@@ -102,6 +102,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <Button
             size="small"
             variant="outlined-primary"
+            className="disabled:border-opacity-50 disabled:border-gray-200 disabled:text-opacity-50 hover:disabled:text-opacity-50"
             disabled={expireAndRefundDisabled}
             onClick={onExpireAndRefund}
           >
