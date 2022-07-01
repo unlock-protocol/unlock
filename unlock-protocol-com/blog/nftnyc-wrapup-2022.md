@@ -81,17 +81,17 @@ For sponsors:
 - As a sponsor, I access my token-gated portal via Unlock Protocol and indicate the number of grants I am funding, and outline the expected deliverables, timelines & payout for each funding tranche.
 - Once a developer is approved, they are notified via EPNS and streamlined through the first milestone.
 - The sponsor is notified whenever the grantee has completed a milestone.
-- The sponsor reviews their milestone to ensure deliverables are met. Once approved, funding is sent via Polygon, Optimism or Harmony
+- The sponsor reviews their milestone to ensure deliverables are met. Once approved, funding is sent via Polygon, Optimism or Harmony.
 - The next deliverables for the developers are automatically provided, repeating the process until the project is completed.
 
-The platform provides a birds eye view of all granted projects, categorizing them by the milestones completed, making it easy to keep track of the progress of our granting program.
+The platform provides a bird's eye view of all granted projects, categorizing them by the milestones completed, making it easy to keep track of the progress of a grant program.
 
-For grantees
+For grantees:
 
-- The application is stored via IPFS, and the grant applicant notified once the application is accepted via EPNS. The applicant is presented with a roadmap of all expected deliverables and payouts, along with the first milestone, expected timeline and amount they will be paid once the first tranche is appropriately completed.
+- The application is stored via IPFS, and the grant applicant is notified once the application is accepted via EPNS. The applicant is presented with a roadmap of all expected deliverables and payouts, along with the first milestone, expected timeline and amount they will be paid once the first tranche is appropriately completed.
 - Once an applicant submits a milestone, the sponsor is notified.
-- Once reviewed, the applicant am notified, funded via Polygon, Optimism or Harmony and the next expected milestone is released.
-- Process is repeated until project is completed.
+- Once reviewed, the applicant is notified, funded via Polygon, Optimism or Harmony and the next expected milestone is released.
+- The process is repeated until project is completed.
 - If a grantee is working on multiple projects at once, they have an overview of all their projects and progress. Deliverables are also visible for potential sponsors, creating a positive reputation system and increasing the likelihood that future applications will be granted.
 
 ### Gard3n
@@ -106,7 +106,7 @@ For grantees
 
 [https://drive.google.com/file/d/1cYX9ARThfF7QvYS3pmd5mhZc0pmCXCY3/view](https://drive.google.com/file/d/1cYX9ARThfF7QvYS3pmd5mhZc0pmCXCY3/view)
 
-Gard3n is a public goods social engagement platform built with Lens, Unlock Protocol, and other technologies that rewards creators, and their fans / communities to help cultivate a new form of creating and interacting with shared prosperity at its roots. Gard3n nourishes the relationship between creators and their communities by helping them connect easier while building shared Gard3ns (micro communities powered by social tokens). Fans are rewarded for their time, dedication, and engagement and are able to receive and stake their social tokens allowing them to unlock exclusive drops, NFTs, perks, and benefits based on the creator. Creators are easily onboarded to web3 with easy to use tokenomic templates to help them get started and are rewarded through the buying, redeeming and trading of their social tokens. Creators can create multimedia content in a user-friendly UI experience. Both are rewarded by feeling valued and supported by the other.
+Gard3n is a public goods social engagement platform built with Lens, Unlock Protocol, and other technologies that rewards creators, and their fans / communities to help cultivate a new form of creating and interacting with shared prosperity at its roots. Gard3n nourishes the relationship between creators and their communities by helping them connect more easily while building shared Gard3ns (micro communities powered by social tokens). Fans are rewarded for their time, dedication, and engagement and are able to receive and stake their social tokens allowing them to unlock exclusive drops, NFTs, perks, and benefits based on the creator. Creators are easily onboarded to web3 with easy to use tokenomic templates to help them get started and are rewarded through the buying, redeeming and trading of their social tokens. Creators can create multimedia content in a user-friendly UI experience. Both are rewarded by feeling valued and supported by the other.
 
 ### NFTicket
 
@@ -116,6 +116,8 @@ Gard3n is a public goods social engagement platform built with Lens, Unlock Prot
 
 **Presentation:** [https://docs.google.com/presentation/d/1_Y_vZJCcj4Bwtr_5idFTfVhcmIk6rCx9FTED5-rIuaM/edit#slide=id.g12588221e4c_0_190](https://docs.google.com/presentation/d/1_Y_vZJCcj4Bwtr_5idFTfVhcmIk6rCx9FTED5-rIuaM/edit#slide=id.g12588221e4c_0_190)
 
-NFTicket is a hackathon project for online ticketing. The front end of this project allows a user to log in to their MetaMask wallet as well as be able to view NFTs given to them hidden behind an Unlock Paywall. There are three smart contracts, one for each section in the stadium. Users have the ability to mint a ticket and pay a stable USD rate in ETH pulled via a Chainlink price feed. Scripts are then run to deploy the contracts, create (mint) a ticket, create the metadata, and then a final one to set the token URI. The metadata includes the section, seat, row, link to the image on IPFS and other important information for the game this JSON is also uploaded to IPFS. After the game, the user is airdropped an Unlock NFT from the event organizers with a game highlight.
+NFTicket is a hackathon project for online ticketing. The front end of this project allows a user to log in to their Metamask wallet as well as be able to view NFTs given to them hidden behind an Unlock paywall. There are three smart contracts, one for each section in the stadium. Users have the ability to mint a ticket and pay a stable USD rate in ETH pulled in via a Chainlink price feed. Scripts are then run to deploy the contracts, create (mint) a ticket, create the metadata, and to set the token URI. The metadata includes the section, seat, row, link to the image on IPFS and other important information for the game. This JSON is also uploaded to IPFS. After the game, the user is airdropped an Unlock NFT from the event organizers with a game highlight.
+
+All three of the above were amazing projects, especially when one considers they were conceived, built, and delivered all in under 72 hours — oftentimes by teams where the members had never met each other. Great work, ETHGlobal hackers!
 
 And with that, that’s a wrap. Want to follow up or learn more about any of the above? Hit us up in the Discord! Imma go take a nap…
