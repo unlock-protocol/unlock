@@ -6,7 +6,7 @@
     "@apollo/react-hooks": "4.0.0",
     "@apollo/react-testing": "4.0.0",
     "@babel/core": "7.18.2",
-    "@headlessui/react": "1.6.4",
+    "@headlessui/react": "1.6.5",
     "@radix-ui/react-avatar": "0.1.4",
     "@storybook/addon-actions": "6.5.6",
     "@storybook/addon-knobs": "6.4.0",
