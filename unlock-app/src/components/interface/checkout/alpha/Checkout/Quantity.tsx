@@ -59,6 +59,10 @@ export function Quantity({
 
   const fiatPrice = fiatPricing?.usd?.keyPrice
 
+  const disable = quantity < 1 || isLoading
+  const disableCreditCard = !fiatPricing.creditCardEnabled
+  const disableCrypto = isUnlockAccount
+
   return (
     <Shell.Root onClose={() => onClose()}>
       <Shell.Head checkoutService={checkoutService} />
@@ -157,6 +161,26 @@ export function Quantity({
             ></input>
           </div>
         </div>
+
+        <div className="mt-2">
+          {disableCreditCard && disableCrypto ? (
+            <p className="text-sm text-gray-500">
+              Both payment options are disabled because the lock doesn&apos;t
+              support credit card payments and you are logged in with an unlock
+              account. Change to crypto wallet or go back and select a different
+              lock if there are multiple.
+            </p>
+          ) : disableCreditCard ? (
+            <p className="text-sm text-gray-500">
+              Credit card payment is disabled on this lock.
+            </p>
+          ) : disableCrypto ? (
+            <p className="text-sm text-gray-500">
+              You cannot buy using crypto because you are logged in using an
+              unlock account.
+            </p>
+          ) : null}
+        </div>
       </main>
       <footer className="px-6 pt-6 border-t grid items-center">
         <Connected
@@ -174,7 +198,7 @@ export function Quantity({
             <div className="flex gap-4 justify-between">
               <Button
                 className="w-full"
-                disabled={quantity < 1 || isLoading || isUnlockAccount}
+                disabled={disable || disableCrypto}
                 onClick={(event) => {
                   event.preventDefault()
                   if (isUnlockAccount) {
@@ -197,9 +221,7 @@ export function Quantity({
               </Button>
               <Button
                 className="w-full"
-                disabled={
-                  quantity < 1 || isLoading || !fiatPricing.creditCardEnabled
-                }
+                disabled={disable || disableCreditCard}
                 onClick={(event) => {
                   event.preventDefault()
                   if (isUnlockAccount) {
