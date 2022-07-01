@@ -87,7 +87,9 @@ export default class UnlockProvider extends ethers.providers.JsonRpcProvider {
    */
   // eslint-disable-next-line no-unused-vars
   async personal_sign([data, _]: any[]) {
-    return await this.wallet?.signMessage(data)
+    const content = ethers.utils.arrayify(data)
+    const signature = await this.wallet?.signMessage(content)
+    return signature
   }
 
   async eth_signTypedData([_, data]: any[]) {
