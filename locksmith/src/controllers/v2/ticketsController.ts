@@ -81,14 +81,13 @@ export class TicketsController {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const tokenId = request.params.tokenId.toLowerCase()
+      const keyId = request.params.keyId.toLowerCase()
 
       const keyOwner = await this.web3Service.ownerOf(
         lockAddress,
-        tokenId,
+        keyId,
         network
       )
-
       await notifyNewKeyToWedlocks(
         {
           lock: {

@@ -192,7 +192,7 @@ describe('tickets endpoint', () => {
     expect(response.status).toBe(401)
   })
 
-  it('send email when user is athenticated and is the key manager', async () => {
+  it('send email when user is authenticated and is the key manager', async () => {
     expect.assertions(2)
 
     const { loginResponse, address } = await loginRandomUser(app)
