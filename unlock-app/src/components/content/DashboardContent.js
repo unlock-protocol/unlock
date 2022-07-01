@@ -102,7 +102,7 @@ export const DashboardContent = () => {
               deploying your lock to any of{' '}
               <a
                 target="_blank"
-                href="https://docs.unlock-protocol.com/developers/smart-contracts#production-networks"
+                href="https://docs.unlock-protocol.com/core-protocol/unlock/networks"
                 rel="noreferrer"
               >
                 Unlock&apos;s supported networks

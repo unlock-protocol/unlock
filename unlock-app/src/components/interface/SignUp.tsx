@@ -104,7 +104,7 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
             <LinkButton
               target="_blank"
               rel="noopener noreferrer"
-              href="https://docs.unlock-protocol.com/frequently-asked-questions#what-crypto-wallet-are-supported"
+              href="https://ethereum.org/en/wallets/"
             >
               Connect it
             </LinkButton>
