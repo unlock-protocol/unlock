@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { minifyEmail } from '~/utils/strings'
+import { addressMinify, minifyEmail } from '~/utils/strings'
 import SvgComponents from '../../svg'
 import { CheckoutService } from './Checkout/checkoutMachine'
 import { ConnectService } from './Connect/connectMachine'
@@ -22,22 +22,33 @@ export function SignedIn({
   email,
   account,
 }: SignedInProps) {
+  let userText: string
+  let signOutText: string
+
+  if (isUnlockAccount && email) {
+    userText = `User: ${minifyEmail(email)}`
+    signOutText = 'Sign out'
+  } else {
+    userText = `Wallet: ${addressMinify(account!)}`
+    signOutText = 'Disconnect'
+  }
+
   return (
     <div className="flex items-center justify-between text-sm">
-      {isUnlockAccount ? (
-        <p>User: {minifyEmail(email!)}</p>
-      ) : (
-        <p>
-          Wallet: {account?.slice(0, 4)}...{account?.slice(-4)}
-        </p>
-      )}
-      <Tooltip side="top" tip="Disconnecting will reset the checkout progress">
+      <p> {userText}</p>
+      <Tooltip
+        delay={50}
+        side="top"
+        tip={`${
+          isUnlockAccount ? 'Signing out' : 'Disconnecting'
+        } will reset the flow`}
+      >
         <button
           className="font-medium text-gray-600 hover:text-black"
           onClick={onDisconnect}
           type="button"
         >
-          Disconnect
+          {signOutText}
         </button>
       </Tooltip>
     </div>

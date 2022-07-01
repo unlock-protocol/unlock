@@ -5,6 +5,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 import { useStorageService } from '~/utils/withStorageService'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { UnlockAccountService } from './unlockAccountMachine'
+import { RiArrowLeftLine as LeftArrowIcon } from 'react-icons/ri'
 
 interface Props {
   unlockAccountService: UnlockAccountService
@@ -30,6 +31,7 @@ export function EnterEmail({ unlockAccountService }: Props) {
         existingUser,
       })
       setIsContinuing(false)
+      send('CONTINUE')
     } catch (error) {
       if (error instanceof Error) {
         setError('email', {
@@ -45,9 +47,24 @@ export function EnterEmail({ unlockAccountService }: Props) {
     <div>
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="space-y-4">
-          <h3 className="font-bold">
-            Let&apos;s start with your email address
-          </h3>
+          <div className="flex items-center gap-2">
+            <button
+              className="group"
+              onClick={(event) => {
+                event.preventDefault()
+                send('BACK')
+              }}
+            >
+              <LeftArrowIcon
+                className="group-hover:fill-brand-ui-primary group-hover:-translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
+                size={20}
+              />
+            </button>
+            <h3 className="font-bold">
+              Let&apos;s start with your email address
+            </h3>
+          </div>
+
           <form id="enter-email" onSubmit={handleSubmit(onSubmit)}>
             <Input
               label="Email Address"

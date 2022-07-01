@@ -6,7 +6,6 @@ export interface Typegen0 {
     submitUser: 'SUBMIT_USER'
   }
   internalEvents: {
-    '': { type: '' }
     'xstate.init': { type: 'xstate.init' }
   }
   invokeSrcNameMap: {}
@@ -18,10 +17,15 @@ export interface Typegen0 {
   }
   eventsCausingServices: {}
   eventsCausingGuards: {
-    isExistingUser: ''
-    isNotExistingUser: ''
+    isExistingUser: 'CONTINUE'
+    isNotExistingUser: 'CONTINUE'
   }
   eventsCausingDelays: {}
-  matchesStates: 'ENTER_EMAIL' | 'SIGN_UP' | 'SIGN_IN' | 'SIGNED_IN'
+  matchesStates:
+    | 'ENTER_EMAIL'
+    | 'SIGN_UP'
+    | 'SIGN_IN'
+    | 'SIGNED_IN'
+    | 'NOT_SIGNED_IN'
   tags: never
 }

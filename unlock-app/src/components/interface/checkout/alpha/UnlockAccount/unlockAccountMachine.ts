@@ -36,20 +36,21 @@ export const unlockAccountMachine = createMachine(
     },
     states: {
       ENTER_EMAIL: {
-        always: [
-          {
-            target: 'SIGN_IN',
-            cond: 'isExistingUser',
-          },
-          {
-            target: 'SIGN_UP',
-            cond: 'isNotExistingUser',
-          },
-        ],
         on: {
           SUBMIT_USER: {
             actions: ['submitUser'],
           },
+          CONTINUE: [
+            {
+              target: 'SIGN_IN',
+              cond: 'isExistingUser',
+            },
+            {
+              target: 'SIGN_UP',
+              cond: 'isNotExistingUser',
+            },
+          ],
+          BACK: 'NOT_SIGNED_IN',
         },
       },
       SIGN_UP: {
@@ -69,6 +70,9 @@ export const unlockAccountMachine = createMachine(
         },
       },
       SIGNED_IN: {
+        type: 'final',
+      },
+      NOT_SIGNED_IN: {
         type: 'final',
       },
     },

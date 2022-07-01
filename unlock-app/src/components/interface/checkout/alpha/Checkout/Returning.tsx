@@ -39,6 +39,7 @@ export function Returning({
           <div className="flex items-center gap-0.5">
             <ProgressCircleIcon disabled />
             <ProgressCircleIcon disabled />
+            <ProgressCircleIcon disabled />
             {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
             <ProgressCircleIcon disabled />
             <ProgressFinishedIcon />
