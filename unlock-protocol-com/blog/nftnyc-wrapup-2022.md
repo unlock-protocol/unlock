@@ -74,7 +74,7 @@ At the end of the weekend, and after the final round of judging, three projects 
 
 [https://ethglobal.com/showcase/granted-vtxne](https://ethglobal.com/showcase/granted-vtxne)
 
-Granted is a milestone-based granting platform for sponsors and developers to issue and apply for grants. Streamlining the grant process by notifying and tracking all the progress on projects being built so that both the developer and sponsor have open, bidirectional communication and provides transparency to both the grant sponsor and the grantee.
+Granted is a milestone-based granting platform for sponsors and developers to issue and apply for grants. Granted streamlines the grant process by notifying and tracking all the progress on projects being built so that both the developer and sponsor have open, bidirectional communication and provides transparency to both the grant sponsor and the grantee.
 
 For sponsors:
 
