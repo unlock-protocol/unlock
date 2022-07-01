@@ -62,7 +62,6 @@ export function CheckoutPage() {
     <Container>
       <Shell.Root
         onClose={() => {
-          console.log(communication)
           if (!communication.insideIframe) {
             window.history.back()
           } else {
