@@ -101,7 +101,7 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
             <ProgressCircleIcon disabled />
             {messageToSign && <ProgressCircleIcon disabled />}
             <ProgressCircleIcon disabled />
-            <ProgressFinishedIcon active />
+            <ProgressFinishedIcon />
           </div>
           <h4 className="text-sm "> {title}</h4>
         </div>

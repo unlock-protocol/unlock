@@ -1,6 +1,6 @@
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { Button, Tooltip } from '@unlock-protocol/ui'
+import { Button } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import ReCAPTCHA from 'react-google-recaptcha'

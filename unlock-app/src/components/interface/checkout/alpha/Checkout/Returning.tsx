@@ -7,11 +7,7 @@ import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import {
-  ProgressCircleIcon,
-  ProgressFinishedIcon,
-  ProgressFinishIcon,
-} from '../Progress'
+import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
 import { useActor } from '@xstate/react'
 
 interface Props {

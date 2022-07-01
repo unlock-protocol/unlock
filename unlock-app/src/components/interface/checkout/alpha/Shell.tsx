@@ -1,9 +1,6 @@
 import React, { Fragment, ReactNode } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
-import { CheckoutPage, CheckoutService } from './Checkout/checkoutMachine'
-import { useActor, useSelector } from '@xstate/react'
-import { useCheckoutHeadContent } from './useCheckoutHeadContent'
 import { Transition } from '@headlessui/react'
 
 interface RootProps {

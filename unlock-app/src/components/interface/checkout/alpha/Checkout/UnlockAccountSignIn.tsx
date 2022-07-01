@@ -5,7 +5,6 @@ import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
 import { Shell } from '../Shell'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
-import { Tooltip } from '@unlock-protocol/ui'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService

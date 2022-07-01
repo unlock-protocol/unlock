@@ -8,7 +8,7 @@ import {
   saveCardsForAddress,
 } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
-import { Button, Input, Tooltip } from '@unlock-protocol/ui'
+import { Button, Input } from '@unlock-protocol/ui'
 import { useWalletService } from '~/utils/withWalletService'
 import { useState } from 'react'
 import { Card, CardPlaceholder } from '../Card'
