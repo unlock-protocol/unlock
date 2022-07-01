@@ -48,6 +48,7 @@ export const buildMembersWithMetadata = (
         lockName: lockWithKeys?.name,
         expiration: expirationAsDate(key.expiration),
         keyholderAddress: keyOwner,
+        lockAddress: lockWithKeys.address,
       }
     }
 
