@@ -398,3 +398,35 @@ Add info about unlock and multisig to the network file
 - edit `packages/networks/src/goerli.ts` 
 - add the unlock address to `unlockAddress` 
 - add the gnosis safe address to `multisig`
+- add the block number before Unlock contract creation as `startBlock`
+
+### Deploy a subgraph
+
+1. Prepare `subgraph.yaml` and related deployment files
+
+```shell 
+# got to the subgraph folder
+cd subgraph
+
+# generate .ts contract and template
+yarn codegen
+
+# create the subgraph.yaml 
+yarn generate-subgraph-yaml --network goerli
+
+# build as JSON/wasm
+yarn build --network goerli
+```
+
+2. create a new graph on [The Graph hosted service](https://thegraph.com/hosted-service/subgraph/create?account=unlock-protocol) with the name of the network (here *goerli*)
+
+
+3. deploy the graph
+
+```
+yarn deploy --access-token <THEGRAPH_ACCESS_TOKEN>  --environment production --network goerli
+```
+
+4. Wait for the graph index to sync
+
+The graph will crawl all blocks from the `startBlock` set in the `@unlock-protocol/networks` network file up to the latest block height in the network. The process takes several hours.
