@@ -10,9 +10,6 @@ const purchaseKey = async (lock, keyOwner, isErc20 = false) => {
     lock.address
   )
 
-  // get ethers signer
-  keyOwner = await ethers.getSigner(keyOwner)
-
   const tx = await lock
     .connect(keyOwner)
     .purchase(

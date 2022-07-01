@@ -15,9 +15,9 @@ module.exports = async ({
 
   // creator
   const [defaultSigner] = await ethers.getSigners()
-  const lockCreator = from || defaultSigner.address
+  const lockCreator = from || defaultSigner
   const calldata = await interface.encodeFunctionData(func, [
-    lockCreator,
+    lockCreator.address,
     ...args,
   ])
   return calldata

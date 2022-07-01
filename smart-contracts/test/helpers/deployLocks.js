@@ -31,7 +31,8 @@ async function deployLock({
 
   const calldata = await createLockHash({ args, from: deployer })
   const tx = await unlock.createUpgradeableLock(calldata)
-  const evt = tx.logs.find((v) => v.event === 'NewLock')
+  const { events } = await tx.wait()
+  const evt = events.find((v) => v.event === 'NewLock')
 
   const lock = await ethers.getContractAt('PublicLock', evt.args.newLockAddress)
   return lock
