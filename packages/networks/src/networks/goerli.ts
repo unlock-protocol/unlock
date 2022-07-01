@@ -27,7 +27,7 @@ export const goerli: NetworkConfig = {
     symbol: 'ETH',
     decimals: 18,
   },
-  startBlock: 7132955,
+  startBlock: 7151095,
   previousDeploys: [],
 }
 
