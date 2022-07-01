@@ -4,6 +4,7 @@ import { Connected } from '../Connected'
 import { Button, Icon } from '@unlock-protocol/ui'
 import mintingAnimation from '~/animations/minting.json'
 import mintedAnimation from '~/animations/minted.json'
+import errorAnimation from '~/animations/error.json'
 import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
@@ -14,7 +15,6 @@ import { useActor } from '@xstate/react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { Shell } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -31,6 +31,9 @@ function AnimationContent({ status }: { status: Mint['status'] }) {
       return (
         <Lottie className="w-40 h-40" loop animationData={mintedAnimation} />
       )
+    case 'ERROR': {
+      return <Lottie className="w-40 h-40" animationData={errorAnimation} />
+    }
     default:
       return null
   }
@@ -92,16 +95,24 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="space-y-6 justify-items-center grid">
           {status && <AnimationContent status={status} />}
-          <a
-            href={config.networks[lock!.network].explorer.urls.transaction(
-              mint?.transactionHash
-            )}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
-          >
-            See in block explorer <Icon icon={ExternalLinkIcon} size="small" />
-          </a>
+          {mint?.status === 'ERROR' && (
+            <p className="font-bold text-lg text-brand-ui-primary">
+              Oh no... something went wrong
+            </p>
+          )}
+          {mint?.transactionHash && (
+            <a
+              href={config.networks[lock!.network].explorer.urls.transaction(
+                mint.transactionHash
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+            >
+              See in block explorer{' '}
+              <Icon icon={ExternalLinkIcon} size="small" />
+            </a>
+          )}
         </div>
       </main>
       <footer className="px-6 pt-6 border-t grid items-center">

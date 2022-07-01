@@ -32,7 +32,7 @@ export function Returning({
               loop
               animationData={unlockedAnimation}
             />
-            <p className="font-bold text-xl text-brand-ui-primary">
+            <p className="font-bold text-lg text-brand-ui-primary">
               Voila! This is unlocked!
             </p>
           </div>
