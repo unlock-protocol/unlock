@@ -1,7 +1,7 @@
 const { ADDRESS_ZERO, purchaseKeys, deployLock } = require('../../helpers')
 const { ethers } = require('hardhat')
 
-contract('Lock / uniqueTokenIds', (accounts) => {
+describe('Lock / uniqueTokenIds', (accounts) => {
   let lock
   let lockOwner = accounts[9]
   let keyOwner1 = accounts[1]

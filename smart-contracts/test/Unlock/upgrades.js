@@ -16,7 +16,7 @@ const {
 
 const unlockVersions = getUnlockVersionNumbers()
 
-contract('Unlock / upgrades', async (accounts) => {
+describe('Unlock / upgrades', async (accounts) => {
   const [unlockOwner, lockOwner, keyOwner] = await ethers.getSigners()
   const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 

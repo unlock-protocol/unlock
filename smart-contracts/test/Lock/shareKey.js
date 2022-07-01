@@ -8,7 +8,7 @@ const {
   purchaseKeys,
 } = require('../helpers')
 
-contract('Lock / shareKey', (accounts) => {
+describe('Lock / shareKey', (accounts) => {
   let lock
   let tokenIds
   let event

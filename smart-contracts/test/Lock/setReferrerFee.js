@@ -13,7 +13,7 @@ const someDai = new BigNumber(web3.utils.toWei('10', 'ether'))
 
 const scenarios = [false, true]
 
-contract('Lock / setReferrerFee', (accounts) => {
+describe('Lock / setReferrerFee', (accounts) => {
   let lock
   let dai
   let referrer

@@ -6,7 +6,7 @@ const { ADDRESS_ZERO, deployLock } = require('../helpers')
 let lock
 let tokenIds
 
-contract('Lock / totalKeys', (accounts) => {
+describe('Lock / totalKeys', (accounts) => {
   before(async () => {
     lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)

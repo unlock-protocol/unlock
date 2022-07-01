@@ -5,7 +5,7 @@ const TimeMachineMock = artifacts.require('TimeMachineMock')
 
 const { ADDRESS_ZERO, reverts } = require('../helpers')
 
-contract('Lock / timeMachine', (accounts) => {
+describe('Lock / timeMachine', (accounts) => {
   let timeMachine
   const keyOwner = accounts[2]
   const expirationDuration = new BigNumber(60 * 60 * 24 * 30)

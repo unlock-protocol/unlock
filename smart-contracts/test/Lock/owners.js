@@ -4,7 +4,7 @@ const { deployLock, purchaseKeys, ADDRESS_ZERO } = require('../helpers')
 let lock
 let tokenIds
 
-contract('Lock / owners', (accounts) => {
+describe('Lock / owners', (accounts) => {
   const keyOwners = accounts.slice(1, 6)
   before(async () => {
     lock = await deployLock()

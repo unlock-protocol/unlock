@@ -6,7 +6,7 @@ let notAuthorized
 let currentBeneficiary
 let newBeneficiary
 
-contract('Permissions / Beneficiary', (accounts) => {
+describe('Permissions / Beneficiary', (accounts) => {
   lockCreator = accounts[0]
   notAuthorized = accounts[9]
   newBeneficiary = accounts[1]

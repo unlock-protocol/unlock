@@ -7,7 +7,7 @@ let newTokenId
 let originalDuration
 let blockTs
 
-contract('Lock / transfer', (accounts) => {
+describe('Lock / transfer', (accounts) => {
   const [, singleKeyOwner, multipleKeyOwner, destination] = accounts
 
   beforeEach(async () => {

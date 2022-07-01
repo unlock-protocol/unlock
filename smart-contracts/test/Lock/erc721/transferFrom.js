@@ -9,7 +9,7 @@ const {
 let tokenIds
 let keyOwners
 
-contract('Lock / erc721 / transferFrom', (accounts) => {
+describe('Lock / erc721 / transferFrom', (accounts) => {
   let lock
   let lockSingleKey
   keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]

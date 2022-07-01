@@ -5,7 +5,7 @@ const TestERC721Recevier = artifacts.require('TestERC721Recevier')
 
 let lock
 
-contract('Lock / erc721 / safeTransferFrom', (accounts) => {
+describe('Lock / erc721 / safeTransferFrom', (accounts) => {
   // function safeTransferFrom() still uses transferFrom() under the hood
   // but adds an additional check afterwards. transferFrom is already well-tested,
   // so here we add a few checks to test only the new functionality.

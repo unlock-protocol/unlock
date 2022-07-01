@@ -5,7 +5,7 @@ const TestEventHooks = artifacts.require('TestEventHooks.sol')
 let lock
 let testEventHooks
 
-contract('Lock / onTokenURIHook', (accounts) => {
+describe('Lock / onTokenURIHook', (accounts) => {
   const keyOwner = accounts[1]
   let tokenId
 

@@ -4,7 +4,7 @@ const { deployLock, ADDRESS_ZERO, purchaseKey, reverts } = require('../helpers')
 let lock
 let testEventHooks
 
-contract('Lock / onKeyCancelHook', (accounts) => {
+describe('Lock / onKeyCancelHook', (accounts) => {
   const to = accounts[2]
 
   before(async () => {

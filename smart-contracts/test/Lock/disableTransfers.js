@@ -1,7 +1,7 @@
 const BigNumber = require('bignumber.js')
 const { purchaseKey, reverts, deployLock } = require('../helpers')
 
-contract('Lock / disableTransfers', (accounts) => {
+describe('Lock / disableTransfers', (accounts) => {
   let lock
   let tokenId
   const keyOwner = accounts[1]

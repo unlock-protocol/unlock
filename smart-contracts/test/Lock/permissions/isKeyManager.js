@@ -9,7 +9,7 @@ let keyOwner
 let tokenId
 const expirationDuration = new BigNumber(60 * 60 * 24 * 30)
 
-contract('Permissions / isKeyManager', (accounts) => {
+describe('Permissions / isKeyManager', (accounts) => {
   keyOwner = accounts[1]
   before(async () => {
     // init template

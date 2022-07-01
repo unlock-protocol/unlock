@@ -4,7 +4,7 @@ const { ethers } = require('hardhat')
 let lock
 let lockCreator
 
-contract('Permissions / KeyManager', (accounts) => {
+describe('Permissions / KeyManager', (accounts) => {
   lockCreator = accounts[0]
   const lockManager = lockCreator
   const keyPrice = ethers.utils.parseUnits('0.01', 'ether')

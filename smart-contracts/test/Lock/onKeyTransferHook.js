@@ -6,7 +6,7 @@ const { assert } = require('chai')
 let lock
 let testEventHooks
 
-contract('Lock / onKeyTransfer hook', (accounts) => {
+describe('Lock / onKeyTransfer hook', (accounts) => {
   const keyOwner = accounts[1]
   const to = accounts[2]
   let keyPrice

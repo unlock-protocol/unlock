@@ -5,7 +5,7 @@ let unlock
 let lockTemplate
 let unlockOwner
 
-contract('Lock / setLockTemplate', (accounts) => {
+describe('Lock / setLockTemplate', (accounts) => {
   beforeEach(async () => {
     ;({ unlock } = await deployContracts())
     lockTemplate = await PublicLock.new()

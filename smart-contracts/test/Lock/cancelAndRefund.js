@@ -12,7 +12,7 @@ const {
 let token
 let tokenIds
 
-contract('Lock / cancelAndRefund', (accounts) => {
+describe('Lock / cancelAndRefund', (accounts) => {
   let lock
   let lockFree
   const denominator = 10000

@@ -13,7 +13,7 @@ let keyOwners
 let accountApproved
 let keyManager
 
-contract('Lock / lendKey', (accounts) => {
+describe('Lock / lendKey', (accounts) => {
   const from = accounts[0]
   keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   accountApproved = accounts[8]

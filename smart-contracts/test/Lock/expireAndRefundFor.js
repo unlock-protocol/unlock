@@ -3,7 +3,7 @@ const BigNumber = require('bignumber.js')
 
 const { deployLock, getBalance, purchaseKeys, reverts } = require('../helpers')
 
-contract('Lock / expireAndRefundFor', (accounts) => {
+describe('Lock / expireAndRefundFor', (accounts) => {
   let lock
   let tokenIds
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]

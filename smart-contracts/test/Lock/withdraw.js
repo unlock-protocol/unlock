@@ -6,7 +6,7 @@ const { getBalance, deployLock, reverts, purchaseKeys } = require('../helpers')
 let lock
 let tokenAddress
 
-contract('Lock / withdraw', (accounts) => {
+describe('Lock / withdraw', (accounts) => {
   const owner = accounts[0]
   before(async () => {
     lock = await deployLock()

@@ -48,7 +48,7 @@ async function batchInBlock(txs) {
   }
 }
 
-contract('UDT ERC20VotesComp extension', (accounts) => {
+describe('UDT ERC20VotesComp extension', (accounts) => {
   let udt
   const [minter, holder, recipient, holderDelegatee, other1, other2] = accounts
 

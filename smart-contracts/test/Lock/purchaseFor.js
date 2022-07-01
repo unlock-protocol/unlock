@@ -4,7 +4,7 @@ const BigNumber = require('bignumber.js')
 const { getBalance, deployLock, reverts, ADDRESS_ZERO } = require('../helpers')
 
 const keyPrice = ethers.utils.parseEther('0.01', 'ether')
-contract('Lock / purchaseFor', (accounts) => {
+describe('Lock / purchaseFor', (accounts) => {
   let lock
   let anotherLock
   let lockSingleKey

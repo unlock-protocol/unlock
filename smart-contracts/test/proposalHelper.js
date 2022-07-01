@@ -21,7 +21,7 @@ const functionArgs = [
 const calldataEncoded =
   '0xa9059cbb0000000000000000000000008d533d1a48b0d5dddef513a0b0a3677e991f3915000000000000000000000000000000000000000000000000002386f26fc10000'
 
-contract('Proposal Helper', () => {
+describe('Proposal Helper', () => {
   describe('calldata args encoder', () => {
     it('encode correctly a function call', async () => {
       const encoded = await encodeProposalArgs({

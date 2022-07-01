@@ -11,7 +11,7 @@ let token
 let lockCreator
 let invalidTokenAddress
 
-contract('Lock / updateKeyPricing', (accounts) => {
+describe('Lock / updateKeyPricing', (accounts) => {
   invalidTokenAddress = accounts[9]
   lockCreator = accounts[0]
 

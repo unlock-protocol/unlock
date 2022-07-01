@@ -10,7 +10,7 @@ const { ethers } = require('hardhat')
 let unlock
 let lock
 
-contract('Lock / approveBeneficiary', (accounts) => {
+describe('Lock / approveBeneficiary', (accounts) => {
   const [daiOwner, beneficiary, keyOwner, spender, other] = accounts
   before(async () => {
     ;({ unlock } = await deployContracts())

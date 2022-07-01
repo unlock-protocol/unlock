@@ -23,7 +23,7 @@ const describeOrskip = process.env.IS_COVERAGE ? describe.skip : describe
 const estimateGas = 252166 * 2
 const baseFeePerGas = 1000000000 // in gwei
 
-contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
+describe('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
   const [protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 

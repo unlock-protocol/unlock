@@ -73,7 +73,7 @@ const decodeGNPEvent = (tx) => {
   }
 }
 
-contract('Unlock / uniswapValue', (accounts) => {
+describe('Unlock / uniswapValue', (accounts) => {
   const [keyOwner, liquidityOwner, protocolOwner] = accounts
 
   describe('A supported token', () => {

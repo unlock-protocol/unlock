@@ -22,7 +22,7 @@ const gasRefund = async (tx) => {
   return { gas, refund }
 }
 
-contract('Lock / GasRefund', (accounts) => {
+describe('Lock / GasRefund', (accounts) => {
   let lock
   let tokenAddress = ADDRESS_ZERO
   let userBalanceBefore

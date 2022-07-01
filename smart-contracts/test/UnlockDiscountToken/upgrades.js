@@ -50,7 +50,7 @@ const upgradeContract = async (contractAddress) => {
   return updated
 }
 
-contract('UnlockDiscountToken upgrade', async () => {
+describe('UnlockDiscountToken upgrade', async () => {
   let udt
   const mintAmount = 1000
 

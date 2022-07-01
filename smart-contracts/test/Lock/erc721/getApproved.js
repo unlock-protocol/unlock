@@ -1,6 +1,6 @@
 const { reverts, deployLock } = require('../../helpers')
 
-contract('Lock / erc721 / getApproved', () => {
+describe('Lock / erc721 / getApproved', () => {
   let lock
   before(async () => {
     lock = await deployLock()

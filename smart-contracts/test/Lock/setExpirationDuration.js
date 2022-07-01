@@ -5,7 +5,7 @@ const deployContracts = require('../fixtures/deploy')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
-contract('Lock / setExpirationDuration', () => {
+describe('Lock / setExpirationDuration', () => {
   let lock
 
   beforeEach(async () => {

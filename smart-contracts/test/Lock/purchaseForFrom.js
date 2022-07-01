@@ -1,7 +1,7 @@
 const { deployLock, ADDRESS_ZERO } = require('../helpers')
 const { ethers } = require('hardhat')
 
-contract('Lock / purchaseForFrom', (accounts) => {
+describe('Lock / purchaseForFrom', (accounts) => {
   let lock
   let lockFree
   before(async () => {

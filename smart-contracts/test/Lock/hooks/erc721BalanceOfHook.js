@@ -11,7 +11,7 @@ let lock
 let hook
 let nft
 
-contract('ERC721BalanceOfHook', (accounts) => {
+describe('ERC721BalanceOfHook', (accounts) => {
   const from = accounts[1]
   const nftOwner = accounts[2]
   const keyOwner = accounts[3]

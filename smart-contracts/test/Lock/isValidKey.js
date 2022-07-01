@@ -1,6 +1,6 @@
 const { deployLock, purchaseKey } = require('../helpers')
 
-contract('Lock / isValidKey', (accounts) => {
+describe('Lock / isValidKey', (accounts) => {
   let keyOwner = accounts[1]
   let lock
   let tokenId

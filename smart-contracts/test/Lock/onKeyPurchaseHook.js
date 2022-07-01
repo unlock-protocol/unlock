@@ -7,7 +7,7 @@ const TestEventHooks = artifacts.require('TestEventHooks.sol')
 let lock
 let testEventHooks
 
-contract('Lock / onKeyPurchaseHook', (accounts) => {
+describe('Lock / onKeyPurchaseHook', (accounts) => {
   const from = accounts[1]
   const to = accounts[2]
   const dataField = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('TestData'))

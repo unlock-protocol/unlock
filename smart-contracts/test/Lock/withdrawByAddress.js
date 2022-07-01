@@ -3,7 +3,7 @@ const { deployERC20, deployLock, reverts } = require('../helpers')
 let lock
 let token
 
-contract('Lock / withdrawByAddress', (accounts) => {
+describe('Lock / withdrawByAddress', (accounts) => {
   let owner = accounts[0]
 
   before(async () => {

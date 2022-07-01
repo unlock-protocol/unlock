@@ -2,7 +2,7 @@ const { deployLock, reverts, purchaseKeys } = require('../helpers')
 
 let lock
 
-contract('Lock / soldOut', () => {
+describe('Lock / soldOut', () => {
   beforeEach(async () => {
     lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)

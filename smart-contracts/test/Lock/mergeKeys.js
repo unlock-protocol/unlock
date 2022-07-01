@@ -4,7 +4,7 @@ const { assert } = require('chai')
 
 const { purchaseKeys, reverts, deployLock } = require('../helpers')
 
-contract('Lock / mergeKeys', (accounts) => {
+describe('Lock / mergeKeys', (accounts) => {
   let tokenIds
   let lockCreator = accounts[0]
   let keyOwner = accounts[1]

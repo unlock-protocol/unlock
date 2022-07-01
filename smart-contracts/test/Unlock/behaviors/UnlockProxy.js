@@ -5,7 +5,7 @@ const shared = require('./shared')
 
 const PublicLock = artifacts.require('PublicLock')
 
-contract('Unlock / UnlockProxy', (accounts) => {
+describe('Unlock / UnlockProxy', (accounts) => {
   const [unlockOwner] = accounts
   this.accounts = accounts
 

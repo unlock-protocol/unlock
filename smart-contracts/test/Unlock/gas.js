@@ -8,7 +8,7 @@ const { ADDRESS_ZERO, deployContracts } = require('../helpers')
 let unlock
 let createLockGas = new BigNumber(42)
 
-contract('Unlock / gas', (accounts) => {
+describe('Unlock / gas', (accounts) => {
   before(async () => {
     ;({ unlock } = await deployContracts())
 

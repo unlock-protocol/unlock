@@ -3,7 +3,7 @@ const { reverts, deployContracts } = require('../helpers')
 let unlock
 let unlockOwner
 
-contract('Lock / configUnlock', (accounts) => {
+describe('Lock / configUnlock', (accounts) => {
   before(async () => {
     ;({ unlock } = await deployContracts())
     ;[unlockOwner] = accounts

@@ -4,7 +4,7 @@ const { reverts } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
 
-contract('UnlockDiscountToken', (accounts) => {
+describe('UnlockDiscountToken', (accounts) => {
   let unlockDiscountToken
   const minter = accounts[1]
 

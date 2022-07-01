@@ -27,7 +27,7 @@ function stringShifter(str) {
   return lowercaseAddress
 }
 
-contract('Lock / erc721 / tokenURI', (accounts) => {
+describe('Lock / erc721 / tokenURI', (accounts) => {
   before(async () => {
     ;({ unlock } = await deployContracts())
     lock = await deployLock({ unlock })

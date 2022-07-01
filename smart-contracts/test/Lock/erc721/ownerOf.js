@@ -1,7 +1,7 @@
 const { deployLock, ADDRESS_ZERO, purchaseKey } = require('../../helpers')
 let lock
 
-contract('Lock / erc721 / ownerOf', (accounts) => {
+describe('Lock / erc721 / ownerOf', (accounts) => {
   before(async () => {
     lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)

@@ -4,7 +4,7 @@ const BigNumber = require('bignumber.js')
 const { time } = require('@openzeppelin/test-helpers')
 const { deployLock, reverts, purchaseKey } = require('../helpers')
 
-contract('Lock / transferFee', (accounts) => {
+describe('Lock / transferFee', (accounts) => {
   let lock
   const keyOwner = accounts[1]
   const denominator = 10000

@@ -3,7 +3,7 @@ const { assert } = require('chai')
 
 const { deployLock, reverts, ADDRESS_ZERO, purchaseKey } = require('../helpers')
 
-contract('Lock / maxKeysPerAddress', (accounts) => {
+describe('Lock / maxKeysPerAddress', (accounts) => {
   let keyOwner = accounts[1]
   let lock
 

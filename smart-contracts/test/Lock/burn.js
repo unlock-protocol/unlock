@@ -1,7 +1,7 @@
 const { reverts } = require('../helpers/errors')
 const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
 
-contract('Lock / burn', (accounts) => {
+describe('Lock / burn', (accounts) => {
   let keyOwner = accounts[1]
   let lock
   let tokenId

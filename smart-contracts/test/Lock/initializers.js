@@ -1,7 +1,7 @@
 const { ethers } = require('hardhat')
 const { reverts, ADDRESS_ZERO, deployLock } = require('../helpers')
 
-contract('Lock / initializers', (accounts) => {
+describe('Lock / initializers', (accounts) => {
   it('There are exactly 1 public initializer in PublicLock', async () => {
     const { interface } = await ethers.getContractFactory('PublicLock')
     const count = interface.filter((x) =>

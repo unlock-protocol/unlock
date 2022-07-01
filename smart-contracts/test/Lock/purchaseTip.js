@@ -16,7 +16,7 @@ const tip = new BigNumber(keyPrice.toString()).plus(
   ethers.utils.parseUnits('1', 'ether').toString()
 )
 
-contract('Lock / purchaseTip', (accounts) => {
+describe('Lock / purchaseTip', (accounts) => {
   scenarios.forEach((isErc20, i) => {
     let lock
     let tokenAddress

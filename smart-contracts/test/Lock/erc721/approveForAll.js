@@ -3,7 +3,7 @@ const { deployLock, purchaseKey, reverts } = require('../../helpers')
 let lock
 let tokenId
 
-contract('Lock / erc721 / approveForAll', (accounts) => {
+describe('Lock / erc721 / approveForAll', (accounts) => {
   before(async () => {
     lock = await deployLock()
     await lock.updateTransferFee(0) // disable the transfer fee for this test

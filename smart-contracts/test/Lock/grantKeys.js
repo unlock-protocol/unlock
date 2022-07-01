@@ -4,7 +4,7 @@ const { reverts, deployLock, ADDRESS_ZERO } = require('../helpers')
 let lock
 let tx
 
-contract('Lock / grantKeys', (accounts) => {
+describe('Lock / grantKeys', (accounts) => {
   const lockCreator = accounts[1]
   const keyOwner = accounts[2]
   let validExpirationTimestamp

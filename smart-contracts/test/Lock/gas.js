@@ -6,7 +6,7 @@ const WalletService = require('../helpers/walletServiceMock.js')
 
 let lock
 
-contract('Lock / gas', (accounts) => {
+describe('Lock / gas', (accounts) => {
   before(async () => {
     lock = await deployLock()
   })

@@ -5,7 +5,7 @@ let unlock
 let txObj
 let event
 
-contract('Lock / erc721 / tokenSymbol', (accounts) => {
+describe('Lock / erc721 / tokenSymbol', (accounts) => {
   before(async () => {
     ;({ unlock } = await deployContracts())
     lock = await deployLock({ unlock })

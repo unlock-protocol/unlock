@@ -11,7 +11,7 @@ const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 let unlock
 let lock
 
-contract('Unlock / resetTrackedValue', (accounts) => {
+describe('Unlock / resetTrackedValue', (accounts) => {
   beforeEach(async () => {
     ;({ unlock } = await deployContracts())
     lock = await deployLock({ unlock })

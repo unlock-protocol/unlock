@@ -1,7 +1,7 @@
 const unlockContract = artifacts.require('Unlock.sol')
 const unlockInterface = artifacts.require('IUnlock.sol')
 
-contract('Unlock / interface', () => {
+describe('Unlock / interface', () => {
   it('The interface includes all public functions', async () => {
     // log any missing entries
     unlockContract.abi

@@ -5,7 +5,7 @@ const BigNumber = require('bignumber.js')
 
 const { deployLock, purchaseKey, getBalance, MAX_UINT } = require('../helpers')
 
-contract('Lock / non expiring', (accounts) => {
+describe('Lock / non expiring', (accounts) => {
   let lock
   const keyOwner = accounts[2]
   let keyPrice

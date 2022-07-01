@@ -11,7 +11,7 @@ let lock
 let lockCreator
 let tokenIds
 
-contract('Permissions / KeyManager', (accounts) => {
+describe('Permissions / KeyManager', (accounts) => {
   lockCreator = accounts[0]
   const lockManager = lockCreator
   const keyGranter = lockCreator

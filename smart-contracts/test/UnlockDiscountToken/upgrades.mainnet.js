@@ -83,7 +83,7 @@ const upgradeContract = async () => {
   return UnlockDiscountTokenV3.attach(UDTProxyContractAddress)
 }
 
-contract('UnlockDiscountToken (on mainnet)', async () => {
+describe('UnlockDiscountToken (on mainnet)', async () => {
   let udt
   let deployer
 

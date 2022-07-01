@@ -12,7 +12,7 @@ const scenarios = [false, true]
 let testToken
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
-contract('Lock / purchase multiple keys at once', (accounts) => {
+describe('Lock / purchase multiple keys at once', (accounts) => {
   scenarios.forEach((isErc20) => {
     let lock
     let tokenAddress

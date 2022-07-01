@@ -6,7 +6,7 @@ let lock
 let tokenId
 let testEventHooks
 
-contract('Lock / onValidKeyHook', (accounts) => {
+describe('Lock / onValidKeyHook', (accounts) => {
   const keyOwner = accounts[1]
 
   before(async () => {

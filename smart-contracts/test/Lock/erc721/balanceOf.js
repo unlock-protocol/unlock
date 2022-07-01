@@ -4,7 +4,7 @@ const { time } = require('@openzeppelin/test-helpers')
 
 const { deployLock, reverts, ADDRESS_ZERO } = require('../../helpers')
 
-contract('Lock / erc721 / balanceOf', (accounts) => {
+describe('Lock / erc721 / balanceOf', (accounts) => {
   let lock
   before(async () => {
     lock = await deployLock()

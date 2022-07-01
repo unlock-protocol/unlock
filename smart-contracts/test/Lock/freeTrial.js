@@ -4,7 +4,7 @@ const { deployLock, getBalance, purchaseKeys } = require('../helpers')
 
 let tokenId
 
-contract('Lock / freeTrial', (accounts) => {
+describe('Lock / freeTrial', (accounts) => {
   let lock
   const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
   const keyPrice = ethers.utils.parseUnits('0.01', 'ether')

@@ -14,7 +14,7 @@ let nft
 
 const GOLD = 1
 
-contract('ERC1155BalanceOfHook', (accounts) => {
+describe('ERC1155BalanceOfHook', (accounts) => {
   const from = accounts[1]
   const nftOwner = accounts[2]
   const keyOwner = accounts[3]

@@ -2,7 +2,7 @@ const { deployLock, reverts } = require('../../helpers')
 let unnamedlock
 let namedLock
 
-contract('Lock / erc721 / name', (accounts) => {
+describe('Lock / erc721 / name', (accounts) => {
   before(async () => {
     unnamedlock = await deployLock()
     namedLock = await deployLock({ name: 'NAMED' })

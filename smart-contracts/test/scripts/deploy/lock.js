@@ -7,7 +7,7 @@ const deployLock = require('../../../scripts/deployments/lock')
 const compareValues = require('../../LockSerializer/_compareValues')
 const { ADDRESS_ZERO } = require('../../helpers/constants')
 
-contract('Scripts/deploy:lock', () => {
+describe('Scripts/deploy:lock', () => {
   let serializer
   let unlockAddress
   let PublicLock

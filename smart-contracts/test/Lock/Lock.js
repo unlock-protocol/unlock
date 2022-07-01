@@ -6,7 +6,7 @@ const erc777abi = require('../helpers/ABIs/erc777.json')
 
 let lock
 
-contract('Lock / Lock', (accounts) => {
+describe('Lock / Lock', (accounts) => {
   before(async () => {
     lock = await deployLock()
   })

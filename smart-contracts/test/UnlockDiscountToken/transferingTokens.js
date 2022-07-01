@@ -22,7 +22,7 @@ const describeOrSkip = process.env.IS_COVERAGE ? describe.skip : describe
 
 const estimateGas = 252166 * 2
 
-contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
+describe('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
   const [protocolOwner, minter, referrer, keyBuyer] = accounts
   let rate
 

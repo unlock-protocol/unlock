@@ -7,7 +7,7 @@ let unlock
 let lock
 let publicLockUpgraded
 
-contract('Unlock / createLock (Legacy)', (accounts) => {
+describe('Unlock / createLock (Legacy)', (accounts) => {
   before(async () => {
     ;({ unlock } = await deployContracts())
 

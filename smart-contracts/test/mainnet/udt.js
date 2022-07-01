@@ -6,7 +6,7 @@ const { getProxyAddress } = require('../../helpers/deployments')
 const { resetNodeState, impersonate } = require('../helpers/mainnet')
 const { getUnlockMultisigOwners } = require('../../helpers/multisig')
 
-contract('UnlockDiscountToken on mainnet', async () => {
+describe('UnlockDiscountToken on mainnet', async () => {
   let udt
   const chainId = 1 // mainnet
   let unlockAddress

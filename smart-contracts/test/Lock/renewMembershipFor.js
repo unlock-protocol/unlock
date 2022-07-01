@@ -20,7 +20,7 @@ const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 const totalPrice = keyPrice.mul(10)
 const someDai = ethers.utils.parseUnits('10', 'ether')
 
-contract('Lock / Recurring memberships', (accounts) => {
+describe('Lock / Recurring memberships', (accounts) => {
   const lockOwner = accounts[0]
   const keyOwner = accounts[1]
   // const referrer = accounts[3]
