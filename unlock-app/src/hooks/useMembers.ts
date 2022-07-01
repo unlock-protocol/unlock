@@ -79,7 +79,9 @@ export const useMembers = (
   lockAddresses: string[],
   viewer: string,
   filter: string,
-  page = 0
+  page = 0,
+  query = '',
+  filterKey = ''
 ) => {
   const { network, account } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
@@ -134,7 +136,9 @@ export const useMembers = (
       lockAddresses,
       expiresAfter,
       first,
-      skip
+      skip,
+      query,
+      filterKey
     )
 
     const membersForLocksPromise = data.locks.map(async (lock: any) => {
@@ -149,8 +153,8 @@ export const useMembers = (
         return buildMembersWithMetadata(lock, [])
       }
       try {
-        if (data?.locks?.length) {
-          const storedMetadata = await getKeysMetadata(data?.locks)
+        if (data?.locks) {
+          const storedMetadata = await getKeysMetadata(data?.locks ?? [])
           return buildMembersWithMetadata(lock, storedMetadata)
         }
       } catch (error) {
@@ -169,8 +173,8 @@ export const useMembers = (
       }, {})
     )
 
+    setMembers(members ?? [])
     if (members.length > 0) {
-      setMembers(members)
       setHasNextPage(Object.keys(members).length === first)
     }
     setLoading(false)
@@ -180,7 +184,14 @@ export const useMembers = (
    */
   useEffect(() => {
     loadMembers()
-  }, [JSON.stringify(lockAddresses), viewer, filter, page])
+  }, [
+    JSON.stringify(lockAddresses),
+    viewer,
+    filter,
+    page,
+    query.length,
+    filterKey,
+  ])
 
   const list: any = Object.values(members)
   const columns = generateColumns(list)

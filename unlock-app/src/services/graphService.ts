@@ -3,6 +3,7 @@ import { utils } from 'ethers'
 import locksByManager from '../queries/locksByManager'
 import keyHoldersByLocks from '../queries/keyholdersByLock'
 import { ToastHelper } from '../components/helpers/toast.helper'
+import keyholdersByKeyIdQuery from '../queries/keyholdersByKeyId'
 
 export class GraphService {
   public client: any
@@ -47,9 +48,16 @@ export class GraphService {
     locks: string[],
     expiresAfter: number,
     first: number,
-    skip: number
+    skip: number,
+    search: string | number,
+    filterKey: string
   ) => {
-    const query = keyHoldersByLocks()
+    const query =
+      filterKey === 'owner' ? keyHoldersByLocks() : keyholdersByKeyIdQuery()
+
+    const keyId = !isNaN(parseInt(`${search}`))
+      ? parseInt(`${search}`)
+      : undefined
 
     const result = await this.client.query({
       query,
@@ -58,6 +66,8 @@ export class GraphService {
         expiresAfter,
         first,
         skip,
+        owner: search,
+        keyId,
       },
     })
     return result
