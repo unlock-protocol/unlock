@@ -17,6 +17,7 @@ interface MemberCardProps {
   tokenId: string
   onExpireAndRefund: (lock: any) => void
   expandAllMetadata: boolean
+  showCheckInTimeInfo: boolean
   isLockManager?: boolean
   expireAndRefundDisabled?: boolean
   metadata?: object
@@ -37,6 +38,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   tokenId,
   onExpireAndRefund,
   expandAllMetadata,
+  showCheckInTimeInfo,
   expireAndRefundDisabled = true,
   metadata = {},
 }) => {
@@ -111,25 +113,27 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         {showMetaData && (
           <div>
             <span className={styles.description}>Metadata</span>
-            <span className="block py-2">
-              {isCheckedIn ? (
-                <Badge
-                  size="tiny"
-                  variant="green"
-                  iconRight={<CheckIcon size={11} />}
-                >
-                  Checked-in
-                </Badge>
-              ) : (
-                <Badge
-                  size="tiny"
-                  variant="orange"
-                  iconRight={<ExclamationIcon size={11} />}
-                >
-                  Not Checked-in
-                </Badge>
-              )}
-            </span>
+            {showCheckInTimeInfo && (
+              <span className="block py-2">
+                {isCheckedIn ? (
+                  <Badge
+                    size="tiny"
+                    variant="green"
+                    iconRight={<CheckIcon size={11} />}
+                  >
+                    Checked-in
+                  </Badge>
+                ) : (
+                  <Badge
+                    size="tiny"
+                    variant="orange"
+                    iconRight={<ExclamationIcon size={11} />}
+                  >
+                    Not Checked-in
+                  </Badge>
+                )}
+              </span>
+            )}
             {!hasExtraData && (
               <span className="block">There is no metadata</span>
             )}
