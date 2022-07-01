@@ -1,4 +1,5 @@
 const BigNumber = require('bignumber.js')
+const { ethers } = require('hardhat')
 const {
   deployLock,
   deployERC20,
@@ -7,9 +8,8 @@ const {
   reverts,
   purchaseKey,
 } = require('../helpers')
-const TestNoop = artifacts.require('TestNoop.sol')
 
-contract('Lock / erc20', (accounts) => {
+describe('Lock / erc20', (accounts) => {
   let token
   let lock
 
@@ -203,9 +203,13 @@ contract('Lock / erc20', (accounts) => {
 
   describe('should fail to create a lock when', () => {
     it('when creating a lock for a contract which is not an ERC20', async () => {
+      const TestNoop = await ethers.getContractFactory('TestNoop')
+      const noop = await TestNoop.deploy()
+      await noop.deployed()
+
       await reverts(
         deployLock({
-          tokenAddress: (await TestNoop.new()).address,
+          tokenAddress: noop.address,
         })
       )
     })

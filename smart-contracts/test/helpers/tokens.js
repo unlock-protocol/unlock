@@ -1,8 +1,6 @@
 const { ethers } = require('hardhat')
 const WethABI = require('./ABIs/weth.json')
 
-const TestERC20 = artifacts.require('TestERC20')
-
 const deployERC20 = async (deployer) => {
   const signer =
     typeof deployer === 'string' ? await ethers.getSigner(deployer) : deployer
@@ -10,8 +8,7 @@ const deployERC20 = async (deployer) => {
   const token = await Token.deploy()
   await token.deployed()
 
-  // return truffle artifact for now
-  return TestERC20.at(token.address)
+  return token
 }
 
 const deployWETH = async (deployer) => {

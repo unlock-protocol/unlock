@@ -1,10 +1,14 @@
-const mockArtifact = artifacts.require('UnlockUtilsMock')
 const { ethers } = require('hardhat')
+const { assert } = require('chai')
 let mock
 
-contract('unlockUtils', (accounts) => {
+describe('unlockUtils', () => {
+  let sender
   before(async () => {
-    mock = await mockArtifact.new()
+    const MockArtifact = await ethers.getContractFactory('UnlockUtilsMock')
+    mock = await MockArtifact.deploy()
+    await mock.deployed()
+    ;[sender] = await ethers.getSigners()
   })
 
   describe('function uint2str', () => {
@@ -28,11 +32,10 @@ contract('unlockUtils', (accounts) => {
   })
 
   describe('function address2Str', () => {
-    let senderAddress
     // currently returns the address as a string with all chars in lowercase
     it('should convert an ethereum address to an ASCII string', async () => {
-      senderAddress = await mock.address2Str(accounts[0])
-      assert.equal(ethers.utils.getAddress(senderAddress), accounts[0])
+      const senderAddress = await mock.address2Str(sender.address)
+      assert.equal(ethers.utils.getAddress(senderAddress), sender.address)
     })
   })
 })

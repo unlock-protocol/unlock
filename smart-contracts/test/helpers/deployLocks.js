@@ -1,5 +1,4 @@
 const { ethers } = require('hardhat')
-const PublicLock = artifacts.require('PublicLock')
 const createLockHash = require('./createLockCalldata')
 const Locks = require('../fixtures/locks')
 const deployContracts = require('../fixtures/deploy')
@@ -33,7 +32,8 @@ async function deployLock({
   const calldata = await createLockHash({ args, from: deployer })
   const tx = await unlock.createUpgradeableLock(calldata)
   const evt = tx.logs.find((v) => v.event === 'NewLock')
-  const lock = await PublicLock.at(evt.args.newLockAddress)
+
+  const lock = await ethers.getContractAt('PublicLock', evt.args.newLockAddress)
   return lock
 }
 
