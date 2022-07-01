@@ -170,7 +170,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
                   <Button
                     size="tiny"
                     variant="primary"
-                    className="my-3 ml-auto"
+                    className="my-3"
                     onClick={onSendQrCode}
                   >
                     Send QR-code by email
