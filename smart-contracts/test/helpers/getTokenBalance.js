@@ -1,12 +1,11 @@
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
 const { ADDRESS_ZERO } = require('./constants')
 
 module.exports = async function getTokenBalance(account, tokenAddress) {
   // ETH balance
   if (!tokenAddress || tokenAddress === ADDRESS_ZERO) {
     const balanceETH = await ethers.provider.getBalance(account)
-    return new BigNumber(balanceETH.toString())
+    return balanceETH
   }
   // erc20 balance
   const token = await ethers.getContractAt(
@@ -14,5 +13,5 @@ module.exports = async function getTokenBalance(account, tokenAddress) {
     tokenAddress
   )
   const balance = await token.balanceOf(account)
-  return new BigNumber(balance.toString())
+  return balance
 }

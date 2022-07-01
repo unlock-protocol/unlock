@@ -22,10 +22,10 @@ async function deployLock({
     Locks[name]
 
   const args = [
-    name === 'NON_EXPIRING' ? MAX_UINT : expirationDuration.toString(),
+    name === 'NON_EXPIRING' ? MAX_UINT : expirationDuration,
     tokenAddress,
-    keyPrice.toString(),
-    maxNumberOfKeys.toString(),
+    keyPrice,
+    maxNumberOfKeys,
     lockName,
   ]
 
