@@ -16,6 +16,8 @@ import { useActor } from '@xstate/react'
 import { Shell } from '../Shell'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
+import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
+import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 
 interface Props {
   injectedProvider: unknown
@@ -35,6 +37,8 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
     network!
   )
   const [isConfirming, setIsConfirming] = useState(false)
+  const { title, description, iconURL } =
+    useCheckoutHeadContent(checkoutService)
 
   const {
     lock,
@@ -254,7 +258,49 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
 
   return (
     <Shell.Root onClose={() => onClose()}>
-      <Shell.Head checkoutService={checkoutService} />
+      <Shell.Head title={title} iconURL={iconURL} description={description} />
+      <div className="flex px-6 py-6 flex-wrap items-center w-full gap-2">
+        <div className="flex items-center gap-2 col-span-4">
+          <div className="flex items-center gap-0.5">
+            <IconButton
+              title="Select lock"
+              icon={ProgressCircleIcon}
+              onClick={() => {
+                send('SELECT')
+              }}
+            />
+            <IconButton
+              title="Choose quantity"
+              icon={ProgressCircleIcon}
+              onClick={() => {
+                send('QUANTITY')
+              }}
+            />
+            <IconButton
+              title="Add metadata"
+              icon={ProgressCircleIcon}
+              onClick={() => {
+                send('METADATA')
+              }}
+            />
+            {paywallConfig.messageToSign && (
+              <IconButton
+                title="sign message"
+                icon={ProgressCircleIcon}
+                onClick={() => {
+                  send('SIGN_MESSAGE')
+                }}
+              />
+            )}
+            <ProgressCircleIcon />
+          </div>
+          <h4 className="text-sm "> {title}</h4>
+        </div>
+        <div className="border-t-4 w-full flex-1"></div>
+        <div className="inline-flex items-center gap-1">
+          <ProgressFinishIcon disabled />
+        </div>
+      </div>
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="flex items-start justify-between">
           <h3 className="font-bold text-xl">

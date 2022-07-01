@@ -24,6 +24,8 @@ import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
 import { Shell } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
+import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
+import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
 
 interface Props {
   injectedProvider: unknown
@@ -36,7 +38,7 @@ export function CardPayment({
   injectedProvider,
   onClose,
 }: Props) {
-  const [_, send] = useActor(checkoutService)
+  const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
   const [editCard, setEditCard] = useState(false)
   const config = useConfig()
@@ -51,11 +53,29 @@ export function CardPayment({
       enabled: !!account,
     }
   )
-
+  const { title, description, iconURL } =
+    useCheckoutHeadContent(checkoutService)
+  const { messageToSign } = state.context.paywallConfig
   const card = data?.[0]
+
   return (
     <Shell.Root onClose={() => onClose()}>
-      <Shell.Head checkoutService={checkoutService} />
+      <Shell.Head title={title} iconURL={iconURL} description={description} />
+      <div className="flex px-6 py-6 flex-wrap items-center w-full gap-2">
+        <div className="flex items-center gap-2 col-span-4">
+          <div className="p-2 w-16 bg-brand-ui-primary inline-flex items-center justify-center rounded-full">
+            <div className="p-0.5 w-12 bg-white rounded-full"></div>
+          </div>
+          <h4 className="text-sm "> {title}</h4>
+        </div>
+        <div className="border-t-4 w-full flex-1"></div>
+        <div className="inline-flex items-center gap-0.5">
+          <ProgressCircleIcon disabled />
+          {messageToSign && <ProgressCircleIcon disabled />}
+          <ProgressCircleIcon disabled />
+          <ProgressFinishedIcon disabled />
+        </div>
+      </div>
       <main className="p-6 overflow-auto h-64 sm:h-72">
         <Elements stripe={stripe}>
           {isLoading ? (

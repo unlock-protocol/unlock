@@ -86,6 +86,10 @@ interface UnlockAccountEvent {
   type: 'UNLOCK_ACCOUNT'
 }
 
+interface BackEvent {
+  type: CheckoutPage
+}
+
 export type CheckoutMachineEvents =
   | SelectLockEvent
   | SelectQuantityEvent
@@ -100,6 +104,7 @@ export type CheckoutMachineEvents =
   | ExistingMemberEvent
   | ContinueEvent
   | DisconnectEvent
+  | BackEvent
 
 type Payment =
   | {
@@ -188,6 +193,7 @@ export const checkoutMachine = createMachine(
           UNLOCK_ACCOUNT: {
             target: 'UNLOCK_ACCOUNT',
           },
+          SELECT: 'SELECT',
         },
       },
       CARD: {
@@ -209,6 +215,7 @@ export const checkoutMachine = createMachine(
               actions: ['disconnect'],
             },
           ],
+          QUANTITY: 'QUANTITY',
         },
       },
       METADATA: {
@@ -240,6 +247,9 @@ export const checkoutMachine = createMachine(
               actions: ['disconnect'],
             },
           ],
+          SELECT: 'SELECT',
+          QUANTITY: 'QUANTITY',
+          CARD: 'CARD',
         },
       },
       MESSAGE_TO_SIGN: {
@@ -266,6 +276,10 @@ export const checkoutMachine = createMachine(
               actions: ['disconnect'],
             },
           ],
+          SELECT: 'SELECT',
+          QUANTITY: 'QUANTITY',
+          CARD: 'CARD',
+          METADATA: 'METADATA',
         },
       },
       CAPTCHA: {
@@ -285,6 +299,7 @@ export const checkoutMachine = createMachine(
               actions: ['disconnect'],
             },
           ],
+          MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
         },
       },
       CONFIRM: {
@@ -304,6 +319,11 @@ export const checkoutMachine = createMachine(
               actions: ['disconnect'],
             },
           ],
+          SELECT: 'SELECT',
+          QUANTITY: 'QUANTITY',
+          CARD: 'CARD',
+          METADATA: 'METADATA',
+          MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
         },
       },
       MINTING: {
@@ -315,6 +335,10 @@ export const checkoutMachine = createMachine(
         },
       },
       UNLOCK_ACCOUNT: {
+        on: {
+          QUANTITY: 'QUANTITY',
+          SELECT: 'SELECT',
+        },
         invoke: {
           id: 'unlockAccount',
           src: unlockAccountMachine,

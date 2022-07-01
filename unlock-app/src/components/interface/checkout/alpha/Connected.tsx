@@ -23,7 +23,7 @@ export function SignedIn({
   account,
 }: SignedInProps) {
   return (
-    <div className="flex  items-center justify-between text-sm">
+    <div className="flex items-center justify-between text-sm">
       {isUnlockAccount ? (
         <p>User: {minifyEmail(email!)}</p>
       ) : (

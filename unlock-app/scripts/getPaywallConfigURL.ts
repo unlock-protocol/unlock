@@ -14,23 +14,8 @@ const paywallConfig = {
       name: 'Outer world',
     },
   },
-  messageToSign:
-    'You agree to our terms and conditions listed at: https://example.com/tos',
   icon: 'https://i.ibb.co/sQkJxhb/Ellipse-56.png',
   callToAction: {},
-  metadataInputs: [
-    {
-      name: 'Email',
-      type: 'email',
-      required: true,
-      public: false,
-    },
-    {
-      name: 'Name',
-      type: 'text',
-      required: true,
-    },
-  ],
   pessimistic: true,
   captcha: true,
   maxRecipients: 5,

@@ -1,17 +1,20 @@
-import { PaywallConfig } from '~/unlockTypes'
-import { CheckoutPage } from './Checkout/checkoutMachine'
+import { CheckoutPage, CheckoutService } from './Checkout/checkoutMachine'
+import { useActor } from '@xstate/react'
 
-export function useCheckoutHeadContent(
-  { callToAction = {}, title, locks }: PaywallConfig,
-  page: CheckoutPage = 'SELECT'
-) {
+export function useCheckoutHeadContent(checkoutService: CheckoutService) {
+  const [state] = useActor(checkoutService)
+  const matched = state.value.toString() as CheckoutPage
+  const {
+    paywallConfig: { locks, callToAction, icon },
+  } = state.context
+
   const descriptions = Object.assign(
     {
       minting:
         'NFT minting is in progress, you can follow update in the blockexplorer!',
-      default: `${title} has ${
+      default: `There are ${
         Object.keys(locks).length
-      } membership options, please choose one of the option to continue`,
+      } membership options, please choose one to continue`,
       quantity:
         'Excellent choice! You might be able to add more than one membership below.',
       metadata:
@@ -69,5 +72,8 @@ export function useCheckoutHeadContent(
         "Let us onboard you to the beauty of blockchain, even if you don't have a wallet yet. :D",
     },
   }
-  return pages[page]
+  return {
+    ...pages[matched],
+    iconURL: icon,
+  }
 }

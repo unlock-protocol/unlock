@@ -1,10 +1,6 @@
 import React, { Fragment, ReactNode } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
-import { CheckoutPage, CheckoutService } from './Checkout/checkoutMachine'
-import { useActor, useSelector } from '@xstate/react'
-import { useCheckoutHeadContent } from './useCheckoutHeadContent'
-import { ProgressIndicator } from './Progress'
 import { Transition } from '@headlessui/react'
 
 interface RootProps {
@@ -50,25 +46,19 @@ export function Root({ children, onClose }: RootProps) {
 }
 
 interface HeadProps {
-  checkoutService: CheckoutService
+  title: string
+  description: string
+  iconURL?: string
 }
 
-export function Head({ checkoutService }: HeadProps) {
-  const [state] = useActor(checkoutService)
-  const paywallConfig = useSelector(
-    checkoutService,
-    (state) => state.context.paywallConfig
-  )
-  const matched = state.value.toString() as CheckoutPage
-  const { icon, title } = paywallConfig
-  const { description } = useCheckoutHeadContent(paywallConfig, matched)
+export function Head({ title, description, iconURL }: HeadProps) {
   return (
     <header className="px-6 pt-6 space-y-4">
       <div className="flex items-center gap-4">
         <Avatar.Root>
           <Avatar.Image
             className="inline-flex items-center justify-center w-16 h-16 rounded-full"
-            src={icon}
+            src={iconURL}
             alt={title}
             width={64}
             height={64}
@@ -83,7 +73,6 @@ export function Head({ checkoutService }: HeadProps) {
         </div>
       </div>
       <p className="text-base text-brand-dark">{description}</p>
-      <ProgressIndicator checkoutService={checkoutService} />
     </header>
   )
 }
