@@ -19,7 +19,7 @@
     "babel-jest": "28.1.0",
     "css-loader": "6.7.1",
     "dotenv": "16.0.1",
-    "eslint": "8.16.0",
+    "eslint": "8.18.0",
     "jest": "27.5.1",
     "jest-fetch-mock": "3.0.3",
     "node-fetch": "3.2.5",
@@ -27,8 +27,8 @@
     "ts-jest": "27.1.5",
     "ts-loader": "9.3.0",
     "typescript": "4.7.2",
-    "webpack": "5.72.1",
-    "webpack-cli": "4.9.2"
+    "webpack": "5.73.0",
+    "webpack-cli": "4.10.0"
   },
   "dependencies": {
     "@unlock-protocol/jest-config": "workspace:^",
