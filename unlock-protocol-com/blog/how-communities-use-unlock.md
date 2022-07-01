@@ -28,7 +28,7 @@ First, through the Unlock Creator Dashboard, 8 Locks were created that represent
 ### Website with purchase link
 
 Next, a simple webpage linked out to the Purchase Address link which allowed users to purchase the NFT pass.
-Once someone purchased the NFT pass, they were redirected to the Dinner DAO Discord, where they were instructed to connect to [Collab.Land](https://docs.unlock-protocol.com/creators/plugins-and-integrations/discord-with-collab.land) to verify their membership, which allowed them to join a private channel.
+Once someone purchased the NFT pass, they were redirected to the Dinner DAO Discord, where they were instructed to connect to [Collab.Land](https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/collab-land) to verify their membership, which allowed them to join a private channel.
 
 ### Voting for members
 
@@ -41,9 +41,9 @@ In this example, Dinner DAO members have special access to both voting on Snapsh
 ## Other opportunities
 
 This is one example of many for how Unlock could be used to organize collective groups, clubs, and communities. How you use Unlocks features and integrations could be completely customizable to fit the needs of many different organizations, including but not limited to:
-* DAOs
-* Private online groups
-* Social clubs
-* Book clubs
-* And more
 
+- DAOs
+- Private online groups
+- Social clubs
+- Book clubs
+- And more

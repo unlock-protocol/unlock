@@ -172,7 +172,8 @@ interface IPublicLock
     address _onKeyPurchaseHook,
     address _onKeyCancelHook,
     address _onValidKeyHook,
-    address _onTokenURIHook
+    address _onTokenURIHook,
+    address _onKeyTransferHook
   ) external;
 
   /**
@@ -230,6 +231,23 @@ interface IPublicLock
     address _referrer,
     bytes calldata _data
   ) external payable;
+
+
+  /**
+  * Returns the percentage of the keyPrice to be sent to the referrer (in basic points)
+  * @param _referrer the address of the referrer
+  */
+  function referrerFees(address _referrer) external view;
+  
+  /**
+  * Set a specific percentage of the keyPrice to be sent to the referrer while purchasing, 
+  * extending or renewing a key
+  * @param _referrer the address of the referrer
+  * @param _feeBasisPoint the percentage of the price to be used for this 
+  * specific referrer (in basic points)
+  * @notice to send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
+  */
+  function setReferrerFee(address _referrer, uint _feeBasisPoint) external;
 
   /**
    * Merge existing keys
@@ -350,6 +368,8 @@ interface IPublicLock
   function onValidKeyHook() external view returns(bool);
 
   function onTokenURIHook() external view returns(string memory);
+  
+  function onKeyTransferHook() external view returns(string memory);
 
   function revokeKeyGranter(address _granter) external;
 
@@ -439,6 +459,11 @@ interface IPublicLock
     view
     returns (bool);
   
+  /**
+   * @return The number of keys owned by `_keyOwner` (expired or not)
+  */
+  function totalKeys(address _keyOwner) external view returns (uint);
+  
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
   ///===================================================================
@@ -449,8 +474,9 @@ interface IPublicLock
 
   /// From ERC-721
   /**
-    * @dev Returns the number of NFTs in `owner`'s account.
-    */
+   * In the specific case of a Lock, `balanceOf` returns only the tokens with a valid expiration timerange
+   * @return balance The number of valid keys owned by `_keyOwner`
+  */
   function balanceOf(address _owner) external view returns (uint256 balance);
 
   /**
@@ -470,23 +496,45 @@ interface IPublicLock
     */
   function safeTransferFrom(address from, address to, uint256 tokenId) external;
   
-  /**
-    * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-    * another (`to`).
-    *
-    * Requirements:
-    * - If the caller is not `from`, it must be approved to move this NFT by
-    * either {approve} or {setApprovalForAll}.
-    */
+  /** 
+  * an ERC721-like function to transfer a token from one account to another
+  * @param from the owner of token to transfer
+  * @param to the address that will receive the token
+  * @param tokenId the id of the token
+  * @notice requirements: if the caller is not `from`, it must be approved to move this token by
+  * either {approve} or {setApprovalForAll}. 
+  * The key manager will be reset to address zero after the transfer
+  */
   function transferFrom(address from, address to, uint256 tokenId) external;
+
+  /** 
+  * Lending a key allows you to transfer the token while retaining the 
+  * ownerships right by setting yourself as a key manager first
+  * @param from the owner of token to transfer
+  * @param to the address that will receive the token
+  * @param tokenId the id of the token
+  * @notice This function can only called by 1) the key owner when no key manager is set or 2) the key manager.
+  * After calling the function, the `_recipent` will be the new owner, and the sender of the tx
+  * will become the key manager.
+  */
+  function lendKey(address from, address to, uint tokenId) external;
+
+  /** 
+  * Unlend is called when you have lent a key and want to claim its full ownership back
+  * @param _recipient the address that will receive the token ownership
+  * @param _tokenId the id of the token
+  * @notice Only the key manager of the token can call this function
+  */
+  function unlendKey(address _recipient, uint _tokenId) external;
+
   function approve(address to, uint256 tokenId) external;
 
   /**
-    * @notice Get the approved address for a single NFT
-    * @dev Throws if `_tokenId` is not a valid NFT.
-    * @param _tokenId The NFT to find the approved address for
-    * @return operator The approved address for this NFT, or the zero address if there is none
-    */
+  * @notice Get the approved address for a single NFT
+  * @dev Throws if `_tokenId` is not a valid NFT.
+  * @param _tokenId The NFT to find the approved address for
+  * @return operator The approved address for this NFT, or the zero address if there is none
+  */
   function getApproved(uint256 _tokenId) external view returns (address operator);
 
    /**

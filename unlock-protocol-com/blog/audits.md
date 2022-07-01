@@ -15,4 +15,4 @@ This step is an important one, and while we're working on more improvements and 
 
 It also builds our confidence that we can move ownership of our contracts to the DAO, which we'll also work on the next few weeks.
 
-You can download the reports as well as see a summary [in our docs website](https://docs.unlock-protocol.com/unlock/developers/smart-contracts/audits)!
+You can download the reports as well as see a summary [in our docs website](https://docs.unlock-protocol.com/core-protocol/audits)!

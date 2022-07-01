@@ -1,15 +1,12 @@
-const { reverts } = require('../helpers/errors')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
+const { reverts, deployContracts } = require('../helpers')
 
 let unlock
 let unlockOwner
 
 contract('Lock / configUnlock', (accounts) => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    unlockOwner = accounts[0]
+    ;({ unlock } = await deployContracts())
+    ;[unlockOwner] = accounts
   })
 
   describe('configuring the Unlock contract', () => {

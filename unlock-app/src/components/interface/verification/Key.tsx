@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
-import { useLock } from '../../../hooks/useLock'
-import Svg from '../svg'
 import {
-  expirationAsDate,
+  AvatarImage,
+  Fallback as AvatarFallback,
+  Root as Avatar,
+} from '@radix-ui/react-avatar'
+import React, { useContext, useEffect, useState } from 'react'
+import styled from 'styled-components'
+import {
   durationsAsTextFromSeconds,
+  expirationAsDate,
 } from '../../../utils/durations'
+import { useStorageService } from '../../../utils/withStorageService'
+import { WalletServiceContext } from '../../../utils/withWalletService'
+import { ToastHelper } from '../../helpers/toast.helper'
 import { ActionButton } from '../buttons/ActionButton'
 import Loading from '../Loading'
-import { ToastHelper } from '../../helpers/toast.helper'
-
+import Svg from '../svg'
 interface InvalidKeyProps {
   reason: string
 }
@@ -38,7 +43,7 @@ interface ValidKeyWithMetadataProps {
   lock: any
   owner: string
   timeElapsedSinceSignature: string
-  viewerIsLockOwner: boolean
+  viewerIsVerifier: boolean
   checkIn: () => any
   checkedIn: boolean
 }
@@ -51,7 +56,7 @@ export const ValidKeyWithMetadata = ({
   owner,
   keyData,
   timeElapsedSinceSignature,
-  viewerIsLockOwner,
+  viewerIsVerifier,
   checkIn,
   checkedIn,
   lock,
@@ -97,9 +102,29 @@ export const ValidKeyWithMetadata = ({
     <Wrapper>
       {box}
       <KeyInfo>
-        <Label>Lock Name</Label>
-        <Value>{lock.name}</Value>
-        <Label>Token Id</Label>
+        <div className="flex mb-3">
+          <Avatar className="flex items-center justify-center w-12 h-12 border rounded-full">
+            <AvatarImage
+              className="rounded-full"
+              alt={lock.name}
+              src={keyData.image}
+              width={50}
+              height={50}
+            />
+            <AvatarFallback className="uppercase" delayMs={100}>
+              {lock.name.slice(0, 2)}
+            </AvatarFallback>
+          </Avatar>
+          <div className="ml-3">
+            <div className="flex">
+              <Label>
+                Lock Name
+                <strong className="text-sm block"> {lock.name}</strong>
+              </Label>
+            </div>
+          </div>
+        </div>
+        <Label>Token id</Label>
         <Value>{unlockKey.tokenId}</Value>
         <Label>Owner Address</Label>
         <Value>{owner}</Value>
@@ -107,7 +132,7 @@ export const ValidKeyWithMetadata = ({
         <Value>{timeElapsedSinceSignature}</Value>
         {keyData?.userMetadata && attributes(keyData?.userMetadata.protected)}
         {keyData?.userMetadata && attributes(keyData?.userMetadata.public)}
-        {viewerIsLockOwner && (
+        {viewerIsVerifier && (
           <CheckInButton onClick={checkIn} disabled={alreadyCheckedIn}>
             {!alreadyCheckedIn && 'Mark as Checked-In'}
             {alreadyCheckedIn && 'Already Checked-In'}
@@ -141,13 +166,27 @@ export const ValidKey = ({
 }: ValidKeyProps) => {
   const [checkedIn, setCheckedIn] = useState(false)
   const [loading, setLoading] = useState(true)
-  const [viewerIsLockOwner, setViewerIsLockOwner] = useState(false)
+  const [viewerIsVerifier, setViewerIsVerifier] = useState(false)
   const [keyData, setKeyData] = useState({})
-  const { isLockManager, getKeyData, markAsCheckedIn } = useLock(lock, network)
+
+  const storageService = useStorageService()
+  const walletService = useContext(WalletServiceContext)
+
+  const siweLogin = async () => {
+    await storageService.loginPrompt({
+      walletService,
+      address: viewer!,
+      chainId: network!,
+    })
+  }
 
   const checkIn = async () => {
     if (!viewer) return
-    const success = await markAsCheckedIn(viewer, unlockKey.tokenId)
+    const success = await storageService.markTicketAsCheckedIn({
+      lockAddress: lock.address,
+      keyId: unlockKey.tokenId,
+      network,
+    })
     if (success) {
       setCheckedIn(true)
     } else {
@@ -165,17 +204,21 @@ export const ValidKey = ({
         setLoading(false)
         return
       }
-      const _isLockManager = await isLockManager(viewer)
-      if (_isLockManager) {
-        setViewerIsLockOwner(true)
-        const metadata = (await getKeyData(unlockKey.tokenId, viewer)) as any
-        setKeyData(metadata || {})
-      } else {
-        setViewerIsLockOwner(false)
-        // @ts-ignore
-        const metadata = (await getKeyData(unlockKey.tokenId)) as any
-        setKeyData(metadata || {})
-      }
+      await siweLogin()
+      const isVerifier = await storageService.getVerifierStatus({
+        viewer,
+        network,
+        lockAddress: lock.address,
+      })
+
+      const metadata = await storageService.getKeyMetadataValues({
+        lockAddress: lock.address,
+        network,
+        keyId: unlockKey.tokenId,
+      })
+
+      setViewerIsVerifier(isVerifier)
+      setKeyData(metadata)
       setLoading(false)
     }
     onLoad()
@@ -184,10 +227,9 @@ export const ValidKey = ({
   if (loading) {
     return <Loading />
   }
-
   return (
     <ValidKeyWithMetadata
-      viewerIsLockOwner={viewerIsLockOwner}
+      viewerIsVerifier={viewerIsVerifier}
       unlockKey={unlockKey}
       timeElapsedSinceSignature={durationsAsTextFromSeconds(
         secondsElapsedFromSignature

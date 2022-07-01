@@ -17,5 +17,4 @@ On BSC, gas is paid in BNB, and memberships can be priced in BNB, or, like on ot
 
 Want to purchase membership on BSC? [try this one](https://app.unlock-protocol.com/demo?network=56&lock=0x2B0fba627C0145B86a9e33c36cFF3a8592CF36d6)! Gas costs are within the $0.50 range. You can also easily deploy a lock from your dashboard, by making sure you select the Binance Smart Chain network.
 
-
 For now, [contrary to xDAI and Polygon](https://docs.unlock-protocol.com/governance/the-unlock-token/side-chains-and-layer-2), purchases on BSC will **not** yield UDT, but we're keeping this as an option if we start to see significant usage on that network!

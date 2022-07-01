@@ -46,7 +46,7 @@ contract('Lock / purchaseWithoutUnlock', () => {
     )
 
     const deployments = await deployContracts()
-    unlock = deployments.unlock
+    unlock = deployments.unlockEthers
   })
 
   describe('purchase with a lock while Unlock is broken', () => {
@@ -113,6 +113,7 @@ contract('Lock / purchaseWithoutUnlock', () => {
       // set on purchase hook
       await lock.setEventHooks(
         testEventHooks.address,
+        ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO

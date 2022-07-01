@@ -12,3 +12,7 @@ export function camelCaseToTitle(s: string): string {
       .replace(/^./, (str) => str.toUpperCase())
   )
 }
+
+export function addressMinify(address: string): string {
+  return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
+}
