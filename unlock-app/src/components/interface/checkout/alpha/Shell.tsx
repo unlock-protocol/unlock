@@ -28,7 +28,10 @@ export function Root({ children, onClose }: RootProps) {
       <div className="bg-white rounded-xl w-full max-w-md">
         <div className="flex justify-end mt-6 mr-6">
           <button
-            onClick={() => onClose()}
+            onClick={(event) => {
+              event.preventDefault()
+              onClose()
+            }}
             className="flex items-center justify-center rounded group"
             aria-label="Close"
             type="button"

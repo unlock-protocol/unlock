@@ -40,7 +40,6 @@ export function Checkout({
   const mint = useSelector(checkoutService, (state) => state.context.mint)
 
   const onClose = (params: Record<string, string> = {}) => {
-    communication.emitCloseModal()
     if (redirectURI) {
       if (!mint || mint?.status === 'ERROR') {
         redirectURI.searchParams.append('error', 'access-denied')
@@ -55,7 +54,9 @@ export function Checkout({
       return window.location.assign(redirectURI)
     }
     if (!communication.insideIframe) {
-      return window.history.back()
+      window.history.back()
+    } else {
+      communication.emitCloseModal()
     }
   }
 

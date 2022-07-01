@@ -8,6 +8,8 @@ import { useConfig } from '~/utils/withConfig'
 import { Checkout } from './Checkout'
 import { Connect } from './Connect'
 import { Container } from './Container'
+import { Shell } from './Shell'
+import { PoweredByUnlock } from './PoweredByUnlock'
 
 export function CheckoutPage() {
   const { query } = useRouter()
@@ -27,7 +29,7 @@ export function CheckoutPage() {
     paywallConfig?.redirectUri || (query.redirectUri as string)
 
   useEffect(() => {
-    document.body.querySelector('body')?.classList.add('bg-transparent')
+    document.querySelector('body')?.classList.add('bg-transparent')
   }, [])
 
   if (oauthConfig) {
@@ -56,5 +58,27 @@ export function CheckoutPage() {
     )
   }
 
-  return <Container />
+  return (
+    <Container>
+      <Shell.Root
+        onClose={() => {
+          console.log(communication)
+          if (!communication.insideIframe) {
+            window.history.back()
+          } else {
+            communication.emitCloseModal()
+          }
+        }}
+      >
+        <main className="p-6">
+          <p>
+            Please recheck your paywall or sign in with ethereum configuration.
+          </p>
+        </main>
+        <footer>
+          <PoweredByUnlock />
+        </footer>
+      </Shell.Root>
+    </Container>
+  )
 }

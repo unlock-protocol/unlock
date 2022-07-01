@@ -60,7 +60,7 @@ export function Quantity({
   const fiatPrice = fiatPricing?.usd?.keyPrice
 
   const disable = quantity < 1 || isLoading
-  const disableCreditCard = !fiatPricing.creditCardEnabled
+  const disableCreditCard = !fiatPricing?.creditCardEnabled
   const disableCrypto = isUnlockAccount
 
   return (

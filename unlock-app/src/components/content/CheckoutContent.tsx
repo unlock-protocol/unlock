@@ -36,6 +36,7 @@ export const CheckoutContent = ({ query }: CheckoutContentProps) => {
     })
   }
 
+  console.log(paywallConfig)
   const oAuthConfig = getOAuthFromSearch(query)
 
   useEffect(() => {
