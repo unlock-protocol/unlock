@@ -138,26 +138,18 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <div>
             <span className={styles.description}>Metadata</span>
             {!isCheckedIn && (
-              <Button onClick={onMarkAsCheckIn} size="medium">
+              <Button className="my-2" onClick={onMarkAsCheckIn} size="small">
                 Mark as Checked-in
               </Button>
             )}
             <span className="block py-2">
-              {isCheckedIn ? (
+              {isCheckedIn && (
                 <Badge
                   size="tiny"
                   variant="green"
                   iconRight={<CheckIcon size={11} />}
                 >
                   Checked-in
-                </Badge>
-              ) : (
-                <Badge
-                  size="tiny"
-                  variant="orange"
-                  iconRight={<ExclamationIcon size={11} />}
-                >
-                  Not Checked-in
                 </Badge>
               )}
             </span>
