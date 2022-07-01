@@ -1,11 +1,5 @@
-const { reverts } = require('../../helpers/errors')
-const deployLocks = require('../../helpers/deployLocks')
-const getContractInstance = require('../../helpers/truffle-artifacts')
+const { deployLock, reverts } = require('../../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-
-let unlock
-let locks
 let lock
 let lockCreator
 let notAuthorized
@@ -18,28 +12,26 @@ contract('Permissions / Beneficiary', (accounts) => {
   newBeneficiary = accounts[1]
 
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, lockCreator)
-    lock = locks.FIRST
+    lock = await deployLock()
   })
 
   describe('default permissions on a new lock', () => {
     it('should make the lock creator the beneficiary as well', async () => {
-      const defaultBeneficiary = await lock.beneficiary.call()
+      const defaultBeneficiary = await lock.beneficiary()
       assert.equal(defaultBeneficiary, lockCreator)
     })
   })
   describe('modifying permissions on an existing lock', () => {
     it('should allow a lockManager to update the beneficiary', async () => {
       await lock.updateBeneficiary(newBeneficiary, { from: lockCreator })
-      currentBeneficiary = await lock.beneficiary.call()
+      currentBeneficiary = await lock.beneficiary()
       assert.equal(currentBeneficiary, newBeneficiary)
     })
 
     it('should allow Beneficiary to update the beneficiary', async () => {
-      currentBeneficiary = await lock.beneficiary.call()
+      currentBeneficiary = await lock.beneficiary()
       await lock.updateBeneficiary(accounts[8], { from: currentBeneficiary })
-      currentBeneficiary = await lock.beneficiary.call()
+      currentBeneficiary = await lock.beneficiary()
       assert.equal(currentBeneficiary, accounts[8])
     })
 

@@ -1,9 +1,35 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
+import { loginRandomUser } from '../../test-helpers/utils'
 
 const app = require('../../../src/app')
 
 jest.setTimeout(600000)
+const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
+
+jest.mock('@unlock-protocol/unlock-js', () => {
+  return {
+    Web3Service: jest.fn().mockImplementation(() => {
+      return {
+        isLockManager: (lock: string) => lockAddress === lock,
+      }
+    }),
+  }
+})
+
+const lockPayload = {
+  keys: [
+    {
+      owner: {
+        address: '0xf91c12615592195626a464cc9a8ddebb88a79b59',
+      },
+      keyId: '1',
+      expiration: '1658416869',
+    },
+  ],
+  address: '0x0b9def7d8595b19d9d5464929c107074aa594304',
+  owner: '0x7e44d95df5cc9a2e85f17a08120b28f4ee8a04cc',
+}
 
 describe('Metadata v2 endpoints for locksmith', () => {
   it('Add metadata to user', async () => {
@@ -137,5 +163,57 @@ describe('Metadata v2 endpoints for locksmith', () => {
       `/v2/api/metadata/100/locks/${lockAddress}`
     )
     expect(lockMetadataResponse.status).toBe(404)
+  })
+
+  it('Bulk lock metadata returns error without authentication', async () => {
+    expect.assertions(1)
+
+    const lockAddress = await ethers.Wallet.createRandom().getAddress()
+    const lockAddressMetadataResponse = await request(app).put(
+      `/v2/api/metadata/4/locks/${lockAddress}/keys`
+    )
+    expect(lockAddressMetadataResponse.status).toBe(403)
+  })
+
+  it('Bulk lock metadata returns no error when authentication is present and user is lock manager', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    const lockAddressMetadataResponse = await request(app)
+      .put(`/v2/api/metadata/4/locks/${lockAddress}/keys`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send(lockPayload)
+
+    expect(lockAddressMetadataResponse.status).toBe(200)
+  })
+
+  it('Bulk lock metadata returns error when authentication is present and user is not the lock manager', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    const lockAddress = await ethers.Wallet.createRandom().getAddress()
+    const lockAddressMetadataResponse = await request(app)
+      .put(`/v2/api/metadata/4/locks/${lockAddress}/keys`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(lockAddressMetadataResponse.status).toBe(401)
+  })
+
+  it('Doest return error when authentication is present and payload is wrong', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    const lockAddressMetadataResponse = await request(app)
+      .put(`/v2/api/metadata/4/locks/${lockAddress}/keys`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send(lockPayload.keys)
+
+    expect(lockAddressMetadataResponse.status).toBe(400)
   })
 })

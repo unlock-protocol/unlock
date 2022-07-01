@@ -1,25 +1,19 @@
-const { reverts } = require('../../helpers/errors')
-const deployLocks = require('../../helpers/deployLocks')
+const { reverts, deployLock, deployContracts } = require('../../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-
-let unlock
 let lock
+let unlock
 let txObj
 let event
 
 contract('Lock / erc721 / tokenSymbol', (accounts) => {
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
+    ;({ unlock } = await deployContracts())
+    lock = await deployLock({ unlock })
   })
 
   describe('the global token symbol stored in Unlock', () => {
     it('should return the global token symbol', async () => {
-      assert.equal(await unlock.globalTokenSymbol.call(), '')
+      assert.equal(await unlock.globalTokenSymbol(), '')
     })
 
     describe('set the global symbol', () => {
@@ -39,13 +33,13 @@ contract('Lock / erc721 / tokenSymbol', (accounts) => {
       })
 
       it('should allow the owner to set the global token Symbol', async () => {
-        assert.equal(await unlock.globalTokenSymbol.call(), 'KEY')
+        assert.equal(await unlock.globalTokenSymbol(), 'KEY')
       })
 
       it('getGlobalTokenSymbol is the same', async () => {
         assert.equal(
-          await unlock.globalTokenSymbol.call(),
-          await unlock.getGlobalTokenSymbol.call()
+          await unlock.globalTokenSymbol(),
+          await unlock.getGlobalTokenSymbol()
         )
       })
 
@@ -75,7 +69,7 @@ contract('Lock / erc721 / tokenSymbol', (accounts) => {
     it('should allow the lock owner to set a custom token symbol', async () => {
       txObj = await lock.updateLockSymbol('MYTKN', { from: accounts[0] })
       event = txObj.logs[0]
-      assert.equal(await lock.symbol.call(), 'MYTKN')
+      assert.equal(await lock.symbol(), 'MYTKN')
     })
 
     it('should fail if someone other than the owner tries to set the symbol', async () => {

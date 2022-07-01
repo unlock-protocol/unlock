@@ -14,7 +14,6 @@ import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 /**
  * @title Mixin for the transfer-related functions needed to meet the ERC721
  * standard.
- * @author Nick Furfaro
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
@@ -65,9 +64,6 @@ contract MixinTransfer is
     }
 
     address keyOwner = _ownerOf[_tokenIdFrom];
-    if(keyOwner == _to) {
-      revert TRANSFER_TO_SELF();
-    }
 
     // store time to be added
     uint time;
@@ -112,7 +108,15 @@ contract MixinTransfer is
     }
   }
 
-
+  /** 
+  * an ERC721-like function to transfer a token from one account to another
+  * @param _from the owner of token to transfer
+  * @param _recipient the address that will receive the token
+  * @param _tokenId the id of the token
+  * @notice requirements: if the caller is not `from`, it must be approved to move this token by
+  * either {approve} or {setApprovalForAll}. 
+  * The key manager will be reset to address zero after the transfer
+  */
   function transferFrom(
     address _from,
     address _recipient,
@@ -122,9 +126,77 @@ contract MixinTransfer is
   {
     _isValidKey(_tokenId);
     _onlyKeyManagerOrApproved(_tokenId);
-    if(ownerOf(_tokenId) != _from) {
+    
+    // reset key manager to address zero
+    keyManagerOf[_tokenId] = address(0);
+
+    _transferFrom(_from, _recipient, _tokenId);
+  }
+
+  /** 
+  * Lending a key allows you to transfer the token while retaining the 
+  * ownerships right by setting yourself as a key manager first
+  * @param _from the owner of token to transfer
+  * @param _recipient the address that will receive the token
+  * @param _tokenId the id of the token
+  * @notice This function can only called by 1) the key owner when no key manager is set or 2) the key manager.
+  * After calling the function, the `_recipient` will be the new owner, and the sender of the tx
+  * will become the key manager.
+  */
+  function lendKey(
+    address _from,
+    address _recipient,
+    uint _tokenId
+  )
+    public
+  {
+    // make sure caller is either owner or key manager 
+    if(!_isKeyManager(_tokenId, msg.sender)) {
       revert UNAUTHORIZED();
     }
+    
+    // transfer key ownership to lender
+    _transferFrom(_from, _recipient, _tokenId);
+
+    // set key owner as key manager
+    keyManagerOf[_tokenId] = msg.sender;
+  }
+
+  /** 
+  * Unlend is called when you have lent a key and want to claim its full ownership back
+  * @param _recipient the address that will receive the token ownership
+  * @param _tokenId the id of the token
+  * @notice Only the key manager of the token can call this function
+  */
+  function unlendKey(
+    address _recipient,
+    uint _tokenId
+  ) public {
+    _isValidKey(_tokenId);
+
+    if(msg.sender != keyManagerOf[_tokenId]) {
+      revert UNAUTHORIZED();
+    }
+    _transferFrom(ownerOf(_tokenId), _recipient, _tokenId);
+  }
+
+  /**
+   * This functions contains the logic to transfer a token
+   * from an account to another
+   */
+  function _transferFrom(
+    address _from,
+    address _recipient,
+    uint _tokenId
+  ) private {
+
+    _isValidKey(_tokenId);
+
+    // incorrect _from field
+    if (ownerOf(_tokenId) != _from) {
+      revert UNAUTHORIZED();
+    }
+
     if(transferFeeBasisPoints >= BASIS_POINTS_DEN) {
       revert KEY_TRANSFERS_DISABLED();
     }
@@ -134,6 +206,7 @@ contract MixinTransfer is
     if(_from == _recipient) {
       revert TRANSFER_TO_SELF();
     }
+
 
     // subtract the fee from the senders key before the transfer
     _timeMachine(_tokenId, getTransferFee(_tokenId, 0), false);  
@@ -156,11 +229,11 @@ contract MixinTransfer is
     _createOwnershipRecord(_tokenId, _recipient);
 
     // clear any previous approvals
-    _setKeyManagerOf(_tokenId, address(0));
     _clearApproval(_tokenId);
 
     // make future reccuring transactions impossible
     _originalDurations[_tokenId] = 0;
+    _originalPrices[_tokenId] = 0;
 
     // trigger event
     emit Transfer(
@@ -168,6 +241,18 @@ contract MixinTransfer is
       _recipient,
       _tokenId
     );
+
+    // fire hook if it exists
+    if(address(onKeyTransferHook) != address(0)) {
+      onKeyTransferHook.onKeyTransfer(
+        address(this),
+        _tokenId,
+        msg.sender, // operator
+        _from,
+        _recipient,
+        key.expirationTimestamp
+      );
+    }
   }
 
   /**
@@ -187,7 +272,6 @@ contract MixinTransfer is
     _isValidKey(_tokenId);
     uint timeShared = ( keyExpirationTimestampFor(_tokenId) - block.timestamp ) * _valueBasisPoint / BASIS_POINTS_DEN;
     shareKey( _to, _tokenId, timeShared);
-    // Errors will cause a revert
     return true;
   }
 

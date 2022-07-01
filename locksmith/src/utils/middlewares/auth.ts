@@ -1,8 +1,8 @@
 import crypto from 'crypto'
 import jwt from 'jsonwebtoken'
 import { RequestHandler, response } from 'express'
-import { Application } from '../models/application'
-import { logger } from '../logger'
+import { Application } from '../../models/application'
+import { logger } from '../../logger'
 
 export type User =
   | {
@@ -39,8 +39,35 @@ export function createAccessToken(user: User) {
   })
 }
 
+export const authenticateWithApiKey = async (req: any, token: string) => {
+  const app = await Application.findOne({
+    where: {
+      key: token,
+    },
+  })
+
+  if (!app) {
+    throw new Error(`Application with key: ${token} not found.`)
+  }
+
+  req.user = {
+    type: 'application',
+    walletAddress: app.walletAddress,
+    id: app.id,
+  }
+}
+
 export const authMiddleware: RequestHandler = async (req, _, next) => {
   try {
+    if (req.query['api-key']) {
+      if (Array.isArray(req.query['api-key'])) {
+        await authenticateWithApiKey(req, req.query['api-key'][0] as string)
+      } else {
+        await authenticateWithApiKey(req, req.query['api-key'] as string)
+      }
+      return next()
+    }
+
     const authHeader = req.headers.authorization
 
     if (!authHeader) {
@@ -57,21 +84,7 @@ export const authMiddleware: RequestHandler = async (req, _, next) => {
     }
 
     if (tokenType === 'api-key') {
-      const app = await Application.findOne({
-        where: {
-          key: token,
-        },
-      })
-
-      if (!app) {
-        throw new Error(`Application with key: ${token} not found.`)
-      }
-
-      req.user = {
-        type: 'application',
-        walletAddress: app.walletAddress,
-        id: app.id,
-      }
+      await authenticateWithApiKey(req, token)
       return next()
     }
 
@@ -97,6 +110,15 @@ export const userOnlyMiddleware: RequestHandler = (req, res, next) => {
   if (req.user?.type === 'application') {
     return res.status(401).send({
       message: 'Applications are not authorized to use this endpoint.',
+    })
+  }
+  return next()
+}
+
+export const applicationOnlyMiddleware: RequestHandler = (req, res, next) => {
+  if (req.user?.type !== 'application') {
+    return res.status(401).send({
+      message: 'Only applications are authorized to use this endpoint.',
     })
   }
   return next()

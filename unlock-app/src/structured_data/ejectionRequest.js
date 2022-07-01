@@ -12,13 +12,6 @@ export default class EjectionRequest {
   static build(message) {
     return {
       types: {
-        EIP712Domain: [
-          { name: 'name', type: 'string' },
-          { name: 'version', type: 'string' },
-          { name: 'chainId', type: 'uint256' },
-          { name: 'verifyingContract', type: 'address' },
-          { name: 'salt', type: 'bytes32' },
-        ],
         User: [{ name: 'publicKey', type: 'address' }],
       },
       domain: {
@@ -27,6 +20,7 @@ export default class EjectionRequest {
       },
       primaryType: 'User',
       message,
+      messageKey: 'user',
     }
   }
 }

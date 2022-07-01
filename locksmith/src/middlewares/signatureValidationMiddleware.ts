@@ -1,4 +1,4 @@
-import * as sigUtil from 'eth-sig-util'
+import { ethers } from 'ethers'
 import { Request, Response } from 'express-serve-static-core'
 import * as Base64 from '../utils/base64'
 import Normalizer from '../utils/normalizer'
@@ -13,12 +13,14 @@ namespace SignatureValidationMiddleware {
 
   const extractTypeDataSignee = (header: string, body: any) => {
     const decodedSignature = Base64.decode(header)
-
+    const { domain, types, message, messageKey } = body
     try {
-      return sigUtil.recoverTypedSignature({
-        data: body,
-        sig: decodedSignature,
-      })
+      return ethers.utils.verifyTypedData(
+        domain,
+        types,
+        message[messageKey],
+        decodedSignature
+      )
     } catch (error) {
       logger.error('Failed to extractTypeDataSignee', error)
       return null
@@ -29,10 +31,7 @@ namespace SignatureValidationMiddleware {
     const decodedSignature = Base64.decode(header)
 
     try {
-      return sigUtil.recoverPersonalSignature({
-        data,
-        sig: decodedSignature,
-      })
+      return ethers.utils.verifyMessage(data, decodedSignature)
     } catch (error) {
       logger.error('Failed to extractPersonalSignSignee', error)
       return null
