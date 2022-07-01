@@ -7,10 +7,7 @@ import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { StorageServiceContext } from '../../utils/withStorageService'
 import { MemberFilters } from '../../unlockTypes'
 
-import useMembers, {
-  getAllKeysMetadataForLock,
-  buildMembersWithMetadata,
-} from '../../hooks/useMembers'
+import useMembers, { buildMembersWithMetadata } from '../../hooks/useMembers'
 import generateKeyTypedData from '../../structured_data/keyMetadataTypedData'
 import {
   AuthenticationContext,
@@ -126,62 +123,6 @@ describe('useMembers', () => {
     })
   })
 
-  describe('getAllKeysMetadataForLock', () => {
-    it('should generate the typed key data', async () => {
-      expect.assertions(1)
-      await getAllKeysMetadataForLock(
-        lock,
-        viewer,
-        walletService,
-        storageService
-      )
-      expect(generateKeyTypedData).toHaveBeenCalledWith(
-        {
-          LockMetaData: {
-            address: lock.address,
-            owner: viewer,
-            timestamp: expect.any(Number),
-            owners: ['0x126', '0x252'],
-          },
-        },
-        'LockMetaData'
-      )
-    })
-
-    it('should ask the user to sign a request', async () => {
-      expect.assertions(1)
-
-      await getAllKeysMetadataForLock(
-        lock,
-        viewer,
-        walletService,
-        storageService
-      )
-      expect(walletService.signMessage).toHaveBeenCalledWith(
-        'I want to access member data for 0xlockAddress',
-        'personal_sign'
-      )
-    })
-
-    it('should retrieve the data from the storage service', async () => {
-      expect.assertions(2)
-
-      const metadataForLock = await getAllKeysMetadataForLock(
-        lock,
-        viewer,
-        walletService,
-        storageService
-      )
-      expect(storageService.getBulkMetadataFor).toHaveBeenCalledWith(
-        lock.address,
-        signature,
-        typedData,
-        undefined // network
-      )
-      expect(metadataForLock).toEqual(storedMetata)
-    })
-  })
-
   describe('buildMembersWithMetadata', () => {
     it('should call setMembers with each key if no metadata has been provided', () => {
       expect.assertions(1)
@@ -190,12 +131,14 @@ describe('useMembers', () => {
         '0xlockAddress-0x126': {
           expiration: 'Expired',
           keyholderAddress: '0x126',
+          lockAddress: '0xlockAddress',
           lockName: 'my lock',
           token: '1',
         },
         '0xlockAddress-0x252': {
           expiration: 'Expired',
           keyholderAddress: '0x252',
+          lockAddress: '0xlockAddress',
           lockName: 'my lock',
           token: '2',
         },
@@ -211,6 +154,7 @@ describe('useMembers', () => {
           email: 'julien@unlock-protocol.com',
           expiration: 'Expired',
           keyholderAddress: '0x126',
+          lockAddress: '0xlockAddress',
           lockName: 'my lock',
           token: '1',
         },
@@ -218,6 +162,7 @@ describe('useMembers', () => {
           email: 'chris@unlock-protocol.com',
           expiration: 'Expired',
           keyholderAddress: '0x252',
+          lockAddress: '0xlockAddress',
           lockName: 'my lock',
           token: '2',
         },
