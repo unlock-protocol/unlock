@@ -17,7 +17,6 @@ import {
   CreateLockButton,
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
-
 interface FilterProps {
   value: string
   current: string
@@ -160,7 +159,7 @@ const MetadataTableWrapper = ({
   const [currentPage, setCurrentPage] = useState(page)
   const { loading, list, columns, hasNextPage, isLockManager } = useMembers(
     lockAddresses,
-    account,
+    account!,
     filter,
     currentPage
   )
