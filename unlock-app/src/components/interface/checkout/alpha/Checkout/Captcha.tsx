@@ -25,7 +25,7 @@ export function Captcha({ injectedProvider, checkoutService, onClose }: Props) {
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
   const { recipients } = state.context
   const [isContinuing, setIsContinuing] = useState(false)
-  const { messageToSign } = state.context.paywallConfig
+  const { paywallConfig } = state.context
   const { title, description, iconURL } =
     useCheckoutHeadContent(checkoutService)
   const onContinue = async () => {
@@ -57,11 +57,15 @@ export function Captcha({ injectedProvider, checkoutService, onClose }: Props) {
   }
   return (
     <Shell.Root onClose={() => onClose()}>
-      <Shell.Head title={title} iconURL={iconURL} description={description} />
+      <Shell.Head
+        title={paywallConfig.title}
+        iconURL={iconURL}
+        description={description}
+      />
       <div className="flex px-6 py-6 flex-wrap items-center w-full gap-2">
         <div className="flex items-center gap-2 col-span-4">
           <div className="flex items-center gap-0.5">
-            {messageToSign ? (
+            {paywallConfig.messageToSign ? (
               <div className="p-2 w-32 bg-brand-ui-primary inline-flex items-center justify-center rounded-full">
                 <div className="p-0.5 w-28 bg-white rounded-full"></div>
               </div>

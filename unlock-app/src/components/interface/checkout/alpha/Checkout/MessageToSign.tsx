@@ -24,7 +24,8 @@ export function MessageToSign({
   const [state, send] = useActor(checkoutService)
   const { account, signMessage } = useAuth()
   const [isSigning, setIsSigning] = useState(false)
-  const { messageToSign } = state.context.paywallConfig
+  const { paywallConfig } = state.context
+  const { messageToSign } = paywallConfig
   const { title, description, iconURL } =
     useCheckoutHeadContent(checkoutService)
 
@@ -48,7 +49,11 @@ export function MessageToSign({
 
   return (
     <Shell.Root onClose={() => onClose()}>
-      <Shell.Head title={title} iconURL={iconURL} description={description} />
+      <Shell.Head
+        title={paywallConfig.title}
+        iconURL={iconURL}
+        description={description}
+      />
       <div className="flex px-6 py-6 flex-wrap items-center w-full gap-2">
         <div className="flex items-center gap-2 col-span-4">
           <div className="flex items-center gap-0.5">

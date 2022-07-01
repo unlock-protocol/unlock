@@ -46,7 +46,7 @@ export function Root({ children, onClose }: RootProps) {
 }
 
 interface HeadProps {
-  title: string
+  title?: string
   description: string
   iconURL?: string
 }

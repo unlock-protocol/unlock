@@ -117,7 +117,11 @@ export function Metadata({
   }
   return (
     <Shell.Root onClose={() => onClose()}>
-      <Shell.Head title={title} iconURL={iconURL} description={description} />
+      <Shell.Head
+        title={paywallConfig.title}
+        iconURL={iconURL}
+        description={description}
+      />
       <div className="flex px-6 py-6 flex-wrap items-center w-full gap-2">
         <div className="flex items-center gap-2 col-span-4">
           <div className="flex items-center gap-0.5">
