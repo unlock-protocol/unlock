@@ -102,11 +102,25 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         lockAddresses={lockAddresses}
       />
 
-      {isLockManager && (
-        <div className="flex justify-end">
-          <Button onClick={onExpandAllMetadata}>Show all metadata</Button>
-        </div>
-      )}
+      <div className="flex justify-end gap-[1rem]">
+        <Button
+          className="flex-initial"
+          size="small"
+          onClick={() => {
+            downloadAsCSV(columns, metadata)
+          }}
+        >
+          Export as CSV
+        </Button>
+        {isLockManager && (
+          <div className="flex justify-end">
+            <Button size="small" onClick={onExpandAllMetadata}>
+              Show all metadata
+            </Button>
+          </div>
+        )}
+      </div>
+
       {metadata?.map((data: any) => {
         const { lockName, expiration, keyholderAddress, token } = data
         const key = `${lockName}${expiration}${keyholderAddress}`
