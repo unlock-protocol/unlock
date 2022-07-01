@@ -15,7 +15,7 @@ async function deployLock({
   }
   if (!deployer) {
     const [defaultDeployer] = await ethers.getSigners()
-    deployer = defaultDeployer.address
+    deployer = defaultDeployer
   }
 
   const { expirationDuration, keyPrice, maxNumberOfKeys, lockName } =

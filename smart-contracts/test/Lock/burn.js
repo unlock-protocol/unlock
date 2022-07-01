@@ -1,14 +1,18 @@
 const { reverts } = require('../helpers/errors')
 const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
+const { assert } = require('chai')
+const { ethers } = require('hardhat')
 
-describe('Lock / burn', (accounts) => {
-  let keyOwner = accounts[1]
+describe('Lock / burn', () => {
+  let keyOwner
+  let someAccount
   let lock
   let tokenId
 
   before(async () => {
     lock = await deployLock()
     lock.setMaxKeysPerAddress(10)
+    ;[, keyOwner, someAccount] = await ethers.getSigners()
   })
 
   beforeEach(async () => {
@@ -16,27 +20,28 @@ describe('Lock / burn', (accounts) => {
   })
 
   it('should delete ownership record', async () => {
-    assert.equal(await lock.getHasValidKey(keyOwner), true)
-    assert.equal(await lock.ownerOf(tokenId), keyOwner)
-    await lock.burn(tokenId, { from: keyOwner })
-    assert.equal(await lock.getHasValidKey(keyOwner), false)
+    assert.equal(await lock.getHasValidKey(keyOwner.address), true)
+    assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
+    await lock.connect(keyOwner).burn(tokenId)
+    assert.equal(await lock.getHasValidKey(keyOwner.address), false)
     assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 
   it('emit a transfer event', async () => {
-    const tx = await lock.burn(tokenId, { from: keyOwner })
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
+    const tx = await lock.connect(keyOwner).burn(tokenId)
+    const { events } = await tx.wait()
+    const { args } = events.find((v) => v.event === 'Transfer')
     assert.equal(args.tokenId.toNumber(), tokenId.toNumber())
     assert.equal(args.to, ADDRESS_ZERO)
-    assert.equal(args.from, keyOwner)
+    assert.equal(args.from, keyOwner.address)
   })
 
   it('allow key manager to burn a key', async () => {
-    await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyOwner })
-    assert.equal(await lock.getHasValidKey(keyOwner), true)
-    assert.equal(await lock.ownerOf(tokenId), keyOwner)
-    await lock.burn(tokenId, { from: accounts[9] })
-    assert.equal(await lock.getHasValidKey(keyOwner), false)
+    await lock.connect(keyOwner).setKeyManagerOf(tokenId, someAccount.address)
+    assert.equal(await lock.getHasValidKey(keyOwner.address), true)
+    assert.equal(await lock.ownerOf(tokenId), keyOwner.address)
+    await lock.connect(someAccount).burn(tokenId)
+    assert.equal(await lock.getHasValidKey(keyOwner.address), false)
     assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 
@@ -46,7 +51,7 @@ describe('Lock / burn', (accounts) => {
 
   it('should be callable only by owner', async () => {
     await reverts(
-      lock.burn(tokenId, { from: accounts[5] }),
+      lock.connect(someAccount).burn(tokenId),
       'ONLY_KEY_MANAGER_OR_APPROVED'
     )
   })
