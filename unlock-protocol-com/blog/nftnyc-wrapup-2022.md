@@ -98,7 +98,7 @@ For grantees
 - Process is repeated until project is completed.
 - If, like most of us, I am working on multiple projects at once, I have an overview of all my projects and progress. My deliverables are also visible for potential sponsors 👀, creating a positive reputation system and increasing the likelihood that future applications will be granted.
 
-### GARD3N
+### Gard3n
 
 ![gard3n.png](/images/blog/nyc22/gard3n.png)
 
@@ -110,7 +110,7 @@ For grantees
 
 [https://drive.google.com/file/d/1cYX9ARThfF7QvYS3pmd5mhZc0pmCXCY3/view](https://drive.google.com/file/d/1cYX9ARThfF7QvYS3pmd5mhZc0pmCXCY3/view)
 
-GARD3N is a public goods social engagement platform built with Lens, Unlock Protocol, and other technologies that rewards creators, and their fans / communities to help cultivate a new form of creating and interacting with shared prosperity at its roots. Gard3n nourishes the relationship between creators and their communities by helping them connect easier while building shared Gard3ns (micro communities powered by social tokens). Fans are rewarded for their time, dedication, and engagement and are able to receive and stake their social tokens allowing them to unlock exclusive drops, NFTs, perks, and benefits based on the creator. Creators are easily onboarded to web3 with easy to use tokenomic templates to help them get started and are rewarded through the buying, redeeming and trading of their social tokens. Creators can create multimedia content in a user-friendly UI experience. Both are rewarded by feeling valued and supported by the other.
+Gard3n is a public goods social engagement platform built with Lens, Unlock Protocol, and other technologies that rewards creators, and their fans / communities to help cultivate a new form of creating and interacting with shared prosperity at its roots. Gard3n nourishes the relationship between creators and their communities by helping them connect easier while building shared Gard3ns (micro communities powered by social tokens). Fans are rewarded for their time, dedication, and engagement and are able to receive and stake their social tokens allowing them to unlock exclusive drops, NFTs, perks, and benefits based on the creator. Creators are easily onboarded to web3 with easy to use tokenomic templates to help them get started and are rewarded through the buying, redeeming and trading of their social tokens. Creators can create multimedia content in a user-friendly UI experience. Both are rewarded by feeling valued and supported by the other.
 
 ### NFTicket
 
