@@ -59,7 +59,7 @@ export function Lock({
   )
 
   const fiatPrice = lock?.fiatPricing?.usd?.keyPrice
-  
+
   return (
     <button
       type="button"
