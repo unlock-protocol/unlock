@@ -93,6 +93,8 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     setExpandAllMetadata(!expandAllMetadata)
   }
 
+  const showCheckInTimeInfo = metadata?.some((item) => item?.checkedInAt)
+
   return (
     <section className="flex flex-col gap-3">
       <ExpireAndRefundModal
@@ -123,6 +125,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             isLockManager={isLockManager}
             expireAndRefundDisabled={expireAndRefundDisabled(data)}
             onExpireAndRefund={() => onExpireAndRefund(data)}
+            showCheckInTimeInfo={showCheckInTimeInfo}
           />
         )
       })}
