@@ -68,9 +68,16 @@ export function CardPayment({
       />
       <div className="flex px-6 py-6 flex-wrap items-center w-full gap-2">
         <div className="flex items-center gap-2 col-span-4">
-          <div className="p-2 w-16 bg-brand-ui-primary inline-flex items-center justify-center rounded-full">
+          <button
+            aria-label="back"
+            onClick={(event) => {
+              event.preventDefault()
+              send('BACK')
+            }}
+            className="p-2 w-16 bg-brand-ui-primary inline-flex items-center justify-center rounded-full"
+          >
             <div className="p-0.5 w-12 bg-white rounded-full"></div>
-          </div>
+          </button>
           <h4 className="text-sm "> {title}</h4>
         </div>
         <div className="border-t-4 w-full flex-1"></div>

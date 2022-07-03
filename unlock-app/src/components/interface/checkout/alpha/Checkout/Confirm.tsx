@@ -287,10 +287,10 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
             />
             {paywallConfig.messageToSign && (
               <IconButton
-                title="sign message"
+                title="Sign message"
                 icon={ProgressCircleIcon}
                 onClick={() => {
-                  send('SIGN_MESSAGE')
+                  send('MESSAGE_TO_SIGN')
                 }}
               />
             )}

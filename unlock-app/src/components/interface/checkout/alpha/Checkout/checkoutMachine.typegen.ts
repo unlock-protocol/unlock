@@ -4,10 +4,10 @@ export interface Typegen0 {
   '@@xstate/typegen': true
   eventsCausingActions: {
     selectLock: 'SELECT_LOCK'
+    disconnect: 'DISCONNECT'
     selectQuantity: 'SELECT_QUANTITY'
     selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
     selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
-    disconnect: 'DISCONNECT'
     selectRecipients: 'SELECT_RECIPIENTS'
     signMessage: 'SIGN_MESSAGE'
     solveCaptcha: 'SOLVE_CAPTCHA'
@@ -32,7 +32,7 @@ export interface Typegen0 {
   eventsCausingGuards: {
     requireCardPayment: 'CONTINUE'
     isLockSelected: 'DISCONNECT' | 'done.invoke.unlockAccount'
-    requireMessageToSign: 'SELECT_RECIPIENTS'
+    requireMessageToSign: 'SELECT_RECIPIENTS' | 'BACK'
     requireCaptcha: 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
   }
   eventsCausingDelays: {}

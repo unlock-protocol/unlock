@@ -19,7 +19,7 @@ export function Card({
   exp_year,
 }: Props) {
   return (
-    <div className="border rounded-xl border-brand-ui-primary">
+    <div className="border rounded-xl border-zinc-300">
       <div className="px-6 pt-6">
         <p className="font-medium inline-flex items-center gap-2">
           <CreditCardIcon size={18} /> XXXX-XXXX-XXXX-{last4}
@@ -30,8 +30,7 @@ export function Card({
           {String(exp_month)?.padStart(2, '0')}/{exp_year}
         </time>
       </div>
-
-      <div className="flex p-2 justify-end">
+      <div className="flex items-center p-2 justify-end">
         <Button onClick={onChange} size="small">
           Change
         </Button>

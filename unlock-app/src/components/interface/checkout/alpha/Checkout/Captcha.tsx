@@ -66,13 +66,27 @@ export function Captcha({ injectedProvider, checkoutService, onClose }: Props) {
         <div className="flex items-center gap-2 col-span-4">
           <div className="flex items-center gap-0.5">
             {paywallConfig.messageToSign ? (
-              <div className="p-2 w-32 bg-brand-ui-primary inline-flex items-center justify-center rounded-full">
+              <button
+                aria-label="back"
+                onClick={(event) => {
+                  event.preventDefault()
+                  send('BACK')
+                }}
+                className="p-2 w-32 bg-brand-ui-primary inline-flex items-center justify-center rounded-full"
+              >
                 <div className="p-0.5 w-28 bg-white rounded-full"></div>
-              </div>
+              </button>
             ) : (
-              <div className="p-2 w-28 bg-brand-ui-primary inline-flex items-center justify-center rounded-full">
+              <button
+                aria-label="back"
+                onClick={(event) => {
+                  event.preventDefault()
+                  send('BACK')
+                }}
+                className="p-2 w-28 bg-brand-ui-primary inline-flex items-center justify-center rounded-full"
+              >
                 <div className="p-0.5 w-24 bg-white rounded-full"></div>
-              </div>
+              </button>
             )}
           </div>
           <h4 className="text-sm "> {title}</h4>

@@ -87,7 +87,7 @@ interface UnlockAccountEvent {
 }
 
 interface BackEvent {
-  type: CheckoutPage
+  type: CheckoutPage | 'BACK'
 }
 
 export type CheckoutMachineEvents =
@@ -155,21 +155,20 @@ export const checkoutMachine = createMachine(
       quantity: 1,
       recipients: [],
     },
-    on: {},
+    on: {
+      UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
+    },
     states: {
       SELECT: {
         on: {
           SELECT_LOCK: {
             actions: ['selectLock'],
           },
-          CONTINUE: {
-            target: 'QUANTITY',
-          },
-          EXISTING_MEMBER: {
-            target: 'RETURNING',
-          },
-          UNLOCK_ACCOUNT: {
-            target: 'UNLOCK_ACCOUNT',
+          CONTINUE: 'QUANTITY',
+          EXISTING_MEMBER: 'RETURNING',
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
           },
         },
       },
@@ -190,8 +189,10 @@ export const checkoutMachine = createMachine(
               target: 'METADATA',
             },
           ],
-          UNLOCK_ACCOUNT: {
-            target: 'UNLOCK_ACCOUNT',
+          DISCONNECT: {
+            target: 'QUANTITY',
+            actions: ['disconnect'],
+            cond: 'isLockSelected',
           },
           SELECT: 'SELECT',
         },
@@ -215,7 +216,7 @@ export const checkoutMachine = createMachine(
               actions: ['disconnect'],
             },
           ],
-          QUANTITY: 'QUANTITY',
+          BACK: 'QUANTITY',
         },
       },
       METADATA: {
@@ -249,7 +250,6 @@ export const checkoutMachine = createMachine(
           ],
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
-          CARD: 'CARD',
         },
       },
       MESSAGE_TO_SIGN: {
@@ -278,7 +278,6 @@ export const checkoutMachine = createMachine(
           ],
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
-          CARD: 'CARD',
           METADATA: 'METADATA',
         },
       },
@@ -299,7 +298,15 @@ export const checkoutMachine = createMachine(
               actions: ['disconnect'],
             },
           ],
-          MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
+          BACK: [
+            {
+              target: 'MESSAGE_TO_SIGN',
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'METADATA',
+            },
+          ],
         },
       },
       CONFIRM: {
@@ -321,7 +328,6 @@ export const checkoutMachine = createMachine(
           ],
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
-          CARD: 'CARD',
           METADATA: 'METADATA',
           MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
         },
@@ -335,10 +341,6 @@ export const checkoutMachine = createMachine(
         },
       },
       UNLOCK_ACCOUNT: {
-        on: {
-          QUANTITY: 'QUANTITY',
-          SELECT: 'SELECT',
-        },
         invoke: {
           id: 'unlockAccount',
           src: unlockAccountMachine,
@@ -355,9 +357,7 @@ export const checkoutMachine = createMachine(
       },
       RETURNING: {
         on: {
-          MAKE_ANOTHER_PURCHASE: {
-            target: 'QUANTITY',
-          },
+          MAKE_ANOTHER_PURCHASE: 'QUANTITY',
           DISCONNECT: [
             {
               target: 'QUANTITY',

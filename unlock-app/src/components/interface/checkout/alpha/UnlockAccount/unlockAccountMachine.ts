@@ -14,7 +14,15 @@ interface BackEvent {
   type: 'BACK'
 }
 
-type UnlockAccountMachineEvents = SubmitUserEvent | ContinueEvent | BackEvent
+interface ExitEvent {
+  type: 'EXIT'
+}
+
+type UnlockAccountMachineEvents =
+  | SubmitUserEvent
+  | ContinueEvent
+  | BackEvent
+  | ExitEvent
 
 interface UnlockAccountMachineContext {
   email: string
@@ -33,6 +41,9 @@ export const unlockAccountMachine = createMachine(
     context: {
       email: '',
       existingUser: false,
+    },
+    on: {
+      EXIT: 'exit',
     },
     states: {
       ENTER_EMAIL: {

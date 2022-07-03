@@ -14,6 +14,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -100,7 +101,7 @@ export function Quantity({
         <div className="flex items-start justify-between">
           <h3 className="font-bold text-xl"> {lock?.name}</h3>
           {!isLoading ? (
-            <div className="text-right grid">
+            <div className="text-right grid min-h-[3rem]">
               {fiatPricing.creditCardEnabled ? (
                 <>
                   {!!fiatPrice && (
@@ -193,23 +194,24 @@ export function Quantity({
         </div>
 
         <div className="mt-2">
-          {disableCreditCard && disableCrypto ? (
-            <p className="text-sm text-gray-500">
-              Both payment options are disabled because the lock doesn&apos;t
-              support credit card payments and you are logged in with an unlock
-              account. Change to crypto wallet or go back and select a different
-              lock if there are multiple.
-            </p>
-          ) : disableCreditCard ? (
-            <p className="text-sm text-gray-500">
-              Credit card payment is disabled on this lock.
-            </p>
-          ) : disableCrypto ? (
-            <p className="text-sm text-gray-500">
-              You cannot buy using crypto because you are logged in using an
-              unlock account.
-            </p>
-          ) : null}
+          {!isLoading &&
+            (disableCreditCard && disableCrypto ? (
+              <p className="text-sm text-gray-500">
+                Both payment options are disabled because the lock doesn&apos;t
+                support credit card payments and you are logged in with an
+                unlock account. Change to crypto wallet or go back and select a
+                different lock if there are multiple.
+              </p>
+            ) : disableCreditCard ? (
+              <p className="text-sm text-gray-500">
+                Credit card payment is disabled on this lock.
+              </p>
+            ) : disableCrypto ? (
+              <p className="text-sm text-gray-500">
+                You cannot buy using crypto because you are logged in using an
+                unlock account.
+              </p>
+            ) : null)}
         </div>
       </main>
       <footer className="px-6 pt-6 border-t grid items-center">

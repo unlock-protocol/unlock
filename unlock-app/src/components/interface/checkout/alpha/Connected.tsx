@@ -10,7 +10,7 @@ import { CheckoutService } from './Checkout/checkoutMachine'
 import { ConnectService } from './Connect/connectMachine'
 
 interface SignedInProps {
-  onDisconnect(): void
+  onDisconnect?: () => void
   isUnlockAccount: boolean
   email?: string
   account?: string
@@ -43,13 +43,15 @@ export function SignedIn({
           isUnlockAccount ? 'Signing out' : 'Disconnecting'
         } will reset the flow`}
       >
-        <button
-          className="font-medium text-gray-600 hover:text-black"
-          onClick={onDisconnect}
-          type="button"
-        >
-          {signOutText}
-        </button>
+        {onDisconnect && (
+          <button
+            className="font-medium text-gray-600 hover:text-black"
+            onClick={onDisconnect}
+            type="button"
+          >
+            {signOutText}
+          </button>
+        )}
       </Tooltip>
     </div>
   )
@@ -129,12 +131,17 @@ export function Connected({
   injectedProvider,
   children,
 }: ConnectedCheckoutProps) {
-  const [_, send] = useActor(service)
+  const [state, send] = useActor(service)
   const { account, email, isUnlockAccount, deAuthenticate } = useAuth()
   const { authenticateWithProvider } = useAuthenticateHandler({
     injectedProvider,
   })
   const communication = useCheckoutCommunication()
+  const onDisconnect = () => {
+    send('DISCONNECT')
+    communication.emitUserInfo({})
+    deAuthenticate()
+  }
   return account ? (
     <div className="space-y-2">
       {children}
@@ -142,11 +149,7 @@ export function Connected({
         account={account}
         email={email}
         isUnlockAccount={!!isUnlockAccount}
-        onDisconnect={() => {
-          send('DISCONNECT')
-          communication.emitUserInfo({})
-          deAuthenticate()
-        }}
+        onDisconnect={state.can('DISCONNECT') ? onDisconnect : undefined}
       />
     </div>
   ) : (
