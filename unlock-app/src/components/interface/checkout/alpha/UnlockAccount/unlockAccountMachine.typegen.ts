@@ -21,11 +21,6 @@ export interface Typegen0 {
     isNotExistingUser: 'CONTINUE'
   }
   eventsCausingDelays: {}
-  matchesStates:
-    | 'ENTER_EMAIL'
-    | 'SIGN_UP'
-    | 'SIGN_IN'
-    | 'SIGNED_IN'
-    | 'NOT_SIGNED_IN'
+  matchesStates: 'ENTER_EMAIL' | 'SIGN_UP' | 'SIGN_IN' | 'exit'
   tags: never
 }

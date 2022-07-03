@@ -50,29 +50,22 @@ export const unlockAccountMachine = createMachine(
               cond: 'isNotExistingUser',
             },
           ],
-          BACK: 'NOT_SIGNED_IN',
+          BACK: 'exit',
         },
       },
       SIGN_UP: {
         on: {
           BACK: 'ENTER_EMAIL',
-          CONTINUE: {
-            target: 'SIGNED_IN',
-          },
+          CONTINUE: 'exit',
         },
       },
       SIGN_IN: {
         on: {
           BACK: 'ENTER_EMAIL',
-          CONTINUE: {
-            target: 'SIGNED_IN',
-          },
+          CONTINUE: 'exit',
         },
       },
-      SIGNED_IN: {
-        type: 'final',
-      },
-      NOT_SIGNED_IN: {
+      exit: {
         type: 'final',
       },
     },
