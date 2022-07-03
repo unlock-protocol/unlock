@@ -19,7 +19,7 @@ export const connectMachine = createMachine(
       events: {} as ConnectMachineEvents,
     },
     on: {
-      DISCONNECT: {},
+      DISCONNECT: 'CONNECT',
     },
     initial: 'CONNECT',
     states: {

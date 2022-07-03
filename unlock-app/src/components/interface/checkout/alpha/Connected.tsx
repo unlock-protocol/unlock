@@ -142,6 +142,7 @@ export function Connected({
     communication.emitUserInfo({})
     deAuthenticate()
   }
+
   return account ? (
     <div className="space-y-2">
       {children}
