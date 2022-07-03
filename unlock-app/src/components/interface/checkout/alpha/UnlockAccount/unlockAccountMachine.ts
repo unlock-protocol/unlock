@@ -43,7 +43,7 @@ export const unlockAccountMachine = createMachine(
       existingUser: false,
     },
     on: {
-      EXIT: 'exit',
+      EXIT: 'EXIT',
     },
     states: {
       ENTER_EMAIL: {
@@ -61,22 +61,22 @@ export const unlockAccountMachine = createMachine(
               cond: 'isNotExistingUser',
             },
           ],
-          BACK: 'exit',
+          BACK: 'EXIT',
         },
       },
       SIGN_UP: {
         on: {
           BACK: 'ENTER_EMAIL',
-          CONTINUE: 'exit',
+          CONTINUE: 'EXIT',
         },
       },
       SIGN_IN: {
         on: {
           BACK: 'ENTER_EMAIL',
-          CONTINUE: 'exit',
+          CONTINUE: 'EXIT',
         },
       },
-      exit: {
+      EXIT: {
         type: 'final',
       },
     },
