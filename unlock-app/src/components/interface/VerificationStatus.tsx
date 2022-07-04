@@ -38,7 +38,7 @@ export const VerificationStatus = ({ data, sig }: Props) => {
       const lock = await web3Service.getLock(lockAddress, network)
       setLock(lock)
       let key
-      if (lock.publicLockVersion >= 10) {
+      if (lock.publicLockVersion > 10) {
         key = await web3Service.getKeyByTokenId(lockAddress, tokenId, network)
         console.log(key)
       } else {
