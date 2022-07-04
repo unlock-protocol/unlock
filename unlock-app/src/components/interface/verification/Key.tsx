@@ -172,6 +172,8 @@ export const ValidKey = ({
   const storageService = useStorageService()
   const walletService = useContext(WalletServiceContext)
 
+  console.log(lock)
+
   const siweLogin = async () => {
     await storageService.loginPrompt({
       walletService,
@@ -205,14 +207,17 @@ export const ValidKey = ({
         return
       }
       await siweLogin()
+
+      // get lockAddress for lock that use a past version of Unlock contract
+      const lockAddress = lock?.address || lock?.unlockContractAddress
       const isVerifier = await storageService.getVerifierStatus({
         viewer,
         network,
-        lockAddress: lock.address,
+        lockAddress,
       })
 
       const metadata = await storageService.getKeyMetadataValues({
-        lockAddress: lock.address,
+        lockAddress,
         network,
         keyId: unlockKey.tokenId,
       })
@@ -222,7 +227,7 @@ export const ValidKey = ({
       setLoading(false)
     }
     onLoad()
-  }, [lock.address, viewer])
+  }, [lock.address, viewer, lock.unlockContractAddress])
 
   if (loading) {
     return <Loading />
