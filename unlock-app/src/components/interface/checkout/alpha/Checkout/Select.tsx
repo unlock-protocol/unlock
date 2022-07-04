@@ -84,6 +84,7 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
                         account,
                         lock.network
                       )
+
                       setIsLockLoading('')
                       if (existingMember) {
                         communication.emitUserInfo({

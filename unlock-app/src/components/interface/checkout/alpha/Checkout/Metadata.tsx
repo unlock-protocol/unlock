@@ -14,6 +14,8 @@ import { Shell } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { ethers } from 'ethers'
 
 interface Props {
   injectedProvider: unknown
@@ -37,6 +39,7 @@ export function Metadata({
   const { lock, paywallConfig, quantity } = state.context
   const { title, description, iconURL } =
     useCheckoutHeadContent(checkoutService)
+  const web3Service = useWeb3Service()
 
   const metadataInputs =
     paywallConfig.locks[lock!.address].metadataInputs ??
@@ -168,6 +171,20 @@ export function Metadata({
                 error={errors?.metadata?.[index]?.recipient?.message}
                 {...register(`metadata.${index}.recipient`, {
                   required: 'Recipient is required',
+                  validate: {
+                    max_keys: async (value) => {
+                      const contract = await web3Service.lockContract(
+                        lock!.address,
+                        lock!.network
+                      )
+                      const items = await contract.balanceOf(value)
+                      const numberOfMemberships =
+                        ethers.BigNumber.from(items).toNumber()
+                      return numberOfMemberships < lock!.maxKeysPerAddress!
+                        ? true
+                        : 'Address already holds the maximum number of memberships.'
+                    },
+                  },
                 })}
               />
               {metadataInputs?.map((metadataInputItem) => (
