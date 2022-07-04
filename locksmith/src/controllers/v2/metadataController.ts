@@ -416,30 +416,39 @@ export class MetadataController {
         return await metadataOperations.getKeyCentricData(lockAddress, keyId)
       })
 
+      // get owners address from `ownerOf`, because not every item can include the user address, and void undefined values
+      const ownersAddressPromise = keyIds.map(async (keyId) => {
+        return await this.web3Service.ownerOf(lockAddress, keyId, network)
+      })
+
       const keyHolderMetadata = await Promise.all(keyHoldersMetadataPromise)
       const keyData = await Promise.all(keyDataPromise)
+      const ownersAddress = await Promise.all(ownersAddressPromise)
 
       const mergedData = keyHolderMetadata
         .map((keyMetadata: any, index) => {
           let metadata = keyMetadata?.data ?? {}
           const keyDataByIndex = keyData[index]?.metadata ?? {}
-          const userAddress = keyMetadata?.userAddress
 
-          metadata = {
-            userAddress,
-            data: {
-              ...metadata,
-              extraMetadata: {
-                ...keyDataByIndex,
+          const hasMetadata =
+            [...Object.keys(metadata), ...Object.keys(keyDataByIndex)].length >
+            0
+
+          // build metadata object only if metadata or extraMetadata are present
+          if (hasMetadata) {
+            const owner = ownersAddress[index]
+            metadata = {
+              userAddress: owner,
+              data: {
+                ...metadata,
+                extraMetadata: {
+                  ...keyDataByIndex,
+                },
               },
-            },
-          }
-
-          if (!userAddress) {
-            return null // not return empty object if merged data is empty
-          }
-          return {
-            ...metadata,
+            }
+            return metadata
+          } else {
+            return null
           }
         })
         .filter(Boolean)
