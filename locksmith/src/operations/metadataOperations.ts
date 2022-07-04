@@ -165,7 +165,7 @@ export const isKeyOwnerOrLockVerifier = async ({
   const isVerifier = await Verifier.findOne({
     where: {
       lockAddress,
-      userAddress,
+      address: userAddress,
       network,
     },
   })
