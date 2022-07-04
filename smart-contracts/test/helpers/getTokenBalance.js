@@ -2,6 +2,7 @@ const { ethers } = require('hardhat')
 const { ADDRESS_ZERO } = require('./constants')
 
 module.exports = async function getTokenBalance(account, tokenAddress) {
+  account = typeof account === 'string' ? account : account.address
   // ETH balance
   if (!tokenAddress || tokenAddress === ADDRESS_ZERO) {
     const balanceETH = await ethers.provider.getBalance(account)

@@ -1,3 +1,4 @@
+const { assert } = require('chai')
 const { deployLock } = require('../helpers')
 
 describe('Lock / erc165', () => {

@@ -1,22 +1,24 @@
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
 const { deployLock, getBalance, purchaseKeys } = require('../helpers')
+const { assert } = require('chai')
 
-let tokenId
-
-describe('Lock / freeTrial', (accounts) => {
+describe('Lock / freeTrial', () => {
+  let tokenId
   let lock
-  const keyOwners = [accounts[1], accounts[2], accounts[3], accounts[4]]
+  let keyOwners
   const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
 
   beforeEach(async () => {
     lock = await deployLock()
+    const signers = await ethers.getSigners()
+    keyOwners = signers.slice(1, 4)
+
     const { tokenIds } = await purchaseKeys(lock, keyOwners.length)
     ;[tokenId] = tokenIds
   })
 
   it('No free trial by default', async () => {
-    const freeTrialLength = new BigNumber(await lock.freeTrialLength())
+    const freeTrialLength = await lock.freeTrialLength()
     assert.equal(freeTrialLength.toNumber(), 0)
   })
 
@@ -30,13 +32,11 @@ describe('Lock / freeTrial', (accounts) => {
 
     describe('should cancel and provide a full refund when enough time remains', () => {
       beforeEach(async () => {
-        await lock.cancelAndRefund(tokenId, {
-          from: keyOwners[0],
-        })
+        await lock.connect(keyOwners[0]).cancelAndRefund(tokenId)
       })
 
       it('should provide a full refund', async () => {
-        const refundAmount = initialLockBalance.minus(
+        const refundAmount = initialLockBalance.sub(
           await getBalance(lock.address)
         )
         assert.equal(refundAmount.toString(), keyPrice.toString())
@@ -46,13 +46,11 @@ describe('Lock / freeTrial', (accounts) => {
     describe('should cancel and provide a partial refund after the trial expires', () => {
       beforeEach(async () => {
         await sleep(6000)
-        await lock.cancelAndRefund(tokenId, {
-          from: keyOwners[0],
-        })
+        await lock.connect(keyOwners[0]).cancelAndRefund(tokenId)
       })
 
       it('should provide less than a full refund', async () => {
-        const refundAmount = initialLockBalance.minus(
+        const refundAmount = initialLockBalance.sub(
           await getBalance(lock.address)
         )
         assert.notEqual(refundAmount.toString(), keyPrice.toString())
