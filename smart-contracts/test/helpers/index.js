@@ -6,6 +6,7 @@ const tokens = require('./tokens')
 const uniswap = require('./uniswap')
 const deployLocks = require('./deployLocks')
 const deployContracts = require('../fixtures/deploy.js')
+const time = require('./time')
 
 module.exports = {
   getBalance,
@@ -16,4 +17,5 @@ module.exports = {
   ...deployLocks,
   ...tokens,
   ...errors,
+  ...time,
 }
