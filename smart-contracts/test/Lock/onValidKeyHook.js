@@ -1,22 +1,23 @@
+const { ethers } = require('hardhat')
+const { assert } = require('chai')
 const { deployLock, ADDRESS_ZERO, reverts, purchaseKey } = require('../helpers')
-
-const TestEventHooks = artifacts.require('TestEventHooks.sol')
 
 let lock
 let tokenId
+let keyOwner
 let testEventHooks
 
-describe('Lock / onValidKeyHook', (accounts) => {
-  const keyOwner = accounts[1]
-
+describe('Lock / onValidKeyHook', () => {
   before(async () => {
+    ;[, keyOwner] = await ethers.getSigners()
+
     lock = await deployLock()
     ;({ tokenId } = await purchaseKey(lock, keyOwner))
-  })
 
-  it('hasValidKey should returns a custom value', async () => {
-    assert.equal(await lock.getHasValidKey(keyOwner), true)
-    testEventHooks = await TestEventHooks.new()
+    const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
+    testEventHooks = await TestEventHooks.deploy()
+    await testEventHooks.deployed()
+
     await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -24,17 +25,22 @@ describe('Lock / onValidKeyHook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
+  })
+
+  it('hasValidKey should returns a custom value', async () => {
+    assert.equal(await lock.getHasValidKey(keyOwner.address), true)
+
     // still returns value
-    assert.equal(await lock.getHasValidKey(keyOwner), true)
+    assert.equal(await lock.getHasValidKey(keyOwner.address), true)
 
     // expired the key
     await lock.expireAndRefundFor(tokenId, 0)
-    assert.equal(await lock.getHasValidKey(keyOwner), false)
-    assert.equal(await lock.balanceOf(keyOwner), 0)
+    assert.equal(await lock.getHasValidKey(keyOwner.address), false)
+    assert.equal(await lock.balanceOf(keyOwner.address), 0)
 
     // set custom value in hook
-    await testEventHooks.setSpecialMember(lock.address, keyOwner)
-    assert.equal(await lock.getHasValidKey(keyOwner), true)
+    await testEventHooks.setSpecialMember(lock.address, keyOwner.address)
+    assert.equal(await lock.getHasValidKey(keyOwner.address), true)
   })
 
   it('cannot set the hook to a non-contract address', async () => {
@@ -42,7 +48,7 @@ describe('Lock / onValidKeyHook', (accounts) => {
       lock.setEventHooks(
         ADDRESS_ZERO,
         ADDRESS_ZERO,
-        accounts[3],
+        keyOwner.address,
         ADDRESS_ZERO,
         ADDRESS_ZERO
       ),

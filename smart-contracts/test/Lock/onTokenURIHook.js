@@ -1,17 +1,20 @@
+const { ethers } = require('hardhat')
+const { assert } = require('chai')
 const { deployLock, reverts, purchaseKey, ADDRESS_ZERO } = require('../helpers')
-
-const TestEventHooks = artifacts.require('TestEventHooks.sol')
 
 let lock
 let testEventHooks
+let keyOwner, operator
+let tokenId
 
-describe('Lock / onTokenURIHook', (accounts) => {
-  const keyOwner = accounts[1]
-  let tokenId
-
+describe('Lock / onTokenURIHook', () => {
   before(async () => {
     lock = await deployLock()
-    testEventHooks = await TestEventHooks.new()
+    ;[, keyOwner, operator] = await ethers.getSigners()
+    const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
+    testEventHooks = await TestEventHooks.deploy()
+    await testEventHooks.deployed()
+
     await lock.setEventHooks(
       ADDRESS_ZERO,
       ADDRESS_ZERO,
@@ -27,14 +30,14 @@ describe('Lock / onTokenURIHook', (accounts) => {
     const expirationTimestamp = await lock.keyExpirationTimestampFor(tokenId)
     const params = [
       lock.address.toLowerCase(), // lockAddress
-      keyOwner.toLowerCase(), // owner
-      accounts[3].toLowerCase(), // operator
+      keyOwner.address.toLowerCase(), // owner
+      operator.address.toLowerCase(), // operator
       expirationTimestamp, // expirationTimestamp
       tokenId, // tokenId
     ]
 
     const tokenURI = `${baseTokenURI}${params.join('/')}`
-    assert.equal(await lock.tokenURI(tokenId, { from: accounts[3] }), tokenURI)
+    assert.equal(await lock.connect(operator).tokenURI(tokenId), tokenURI)
   })
 
   it('cannot set the hook to a non-contract address', async () => {
@@ -43,7 +46,7 @@ describe('Lock / onTokenURIHook', (accounts) => {
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
-        accounts[3],
+        operator.address,
         ADDRESS_ZERO
       ),
       'INVALID_HOOK(3)'

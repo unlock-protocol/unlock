@@ -1,15 +1,21 @@
-const TestEventHooks = artifacts.require('TestEventHooks.sol')
+const { assert } = require('chai')
+const { ethers } = require('hardhat')
+
 const { deployLock, ADDRESS_ZERO, purchaseKey, reverts } = require('../helpers')
 
 let lock
+let to
 let testEventHooks
 
-describe('Lock / onKeyCancelHook', (accounts) => {
-  const to = accounts[2]
-
+describe('Lock / onKeyCancelHook', () => {
   before(async () => {
+    ;[, to] = await ethers.getSigners()
     lock = await deployLock()
-    testEventHooks = await TestEventHooks.new()
+
+    const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
+    testEventHooks = await TestEventHooks.deploy()
+    await testEventHooks.deployed()
+
     await lock.setEventHooks(
       ADDRESS_ZERO,
       testEventHooks.address,
@@ -18,23 +24,23 @@ describe('Lock / onKeyCancelHook', (accounts) => {
       ADDRESS_ZERO
     )
     const { tokenId } = await purchaseKey(lock, to)
-    await lock.cancelAndRefund(tokenId, { from: to })
+    await lock.connect(to).cancelAndRefund(tokenId)
   })
 
   it('key cancels should log the hook event', async () => {
-    const log = (await testEventHooks.getPastEvents('OnKeyCancel'))[0]
-      .returnValues
-    assert.equal(log.lock, lock.address)
-    assert.equal(log.operator, to)
-    assert.equal(log.to, to)
-    assert.notEqual(log.refund, 0)
+    const [event] = await testEventHooks.queryFilter('OnKeyCancel')
+    const { args } = event
+    assert.equal(args.lock, lock.address)
+    assert.equal(args.operator, to.address)
+    assert.equal(args.to, to.address)
+    assert.notEqual(args.refund, 0)
   })
 
   it('cannot set the hook to a non-contract address', async () => {
     await reverts(
       lock.setEventHooks(
         ADDRESS_ZERO,
-        accounts[1],
+        to.address,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO

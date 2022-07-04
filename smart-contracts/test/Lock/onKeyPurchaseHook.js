@@ -1,22 +1,27 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
 const { deployLock, reverts, ADDRESS_ZERO, MAX_UINT } = require('../helpers')
-
-const TestEventHooks = artifacts.require('TestEventHooks.sol')
 
 let lock
 let testEventHooks
 
-describe('Lock / onKeyPurchaseHook', (accounts) => {
-  const from = accounts[1]
-  const to = accounts[2]
+describe('Lock / onKeyPurchaseHook', () => {
+  let from, to
   const dataField = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('TestData'))
   let keyPrice
 
-  beforeEach(async () => {
+  before(async () => {
+    ;[, from, to] = await ethers.getSigners()
+
     lock = await deployLock()
     await lock.setMaxKeysPerAddress(10)
-    testEventHooks = await TestEventHooks.new()
+    // await lock.setMaxNumbersOfKeys(50)
+    keyPrice = await lock.keyPrice()
+
+    const TestEventHooks = await ethers.getContractFactory('TestEventHooks')
+    testEventHooks = await TestEventHooks.deploy()
+    await testEventHooks.deployed()
+
     await lock.setEventHooks(
       testEventHooks.address,
       ADDRESS_ZERO,
@@ -24,52 +29,66 @@ describe('Lock / onKeyPurchaseHook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO
     )
-    keyPrice = new BigNumber(await lock.keyPrice())
   })
 
   it('can block purchases', async () => {
     await reverts(
-      lock.purchase([], [to], [ADDRESS_ZERO], [ADDRESS_ZERO], [dataField], {
-        from,
-        value: keyPrice.toFixed(),
-      }),
+      lock
+        .connect(from)
+        .purchase(
+          [],
+          [to.address],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [dataField],
+          {
+            value: keyPrice,
+          }
+        ),
       'PURCHASE_BLOCKED_BY_HOOK'
     )
   })
 
   describe('when enabled without discount', () => {
-    beforeEach(async () => {
+    before(async () => {
       await testEventHooks.configure(true, '0')
-      await lock.purchase(
-        [],
-        [to],
-        [ADDRESS_ZERO],
-        [ADDRESS_ZERO],
-        [dataField],
-        {
-          from,
-          value: keyPrice.toFixed(),
-        }
-      )
+      await lock
+        .connect(from)
+        .purchase(
+          [],
+          [to.address],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [dataField],
+          {
+            value: keyPrice,
+          }
+        )
     })
 
     it('key sales should log the hook event', async () => {
-      const log = (await testEventHooks.getPastEvents('OnKeyPurchase'))[0]
-        .returnValues
-      assert.equal(log.lock, lock.address)
-      assert.equal(log.from, from)
-      assert.equal(log.recipient, to)
-      assert.equal(log.referrer, ADDRESS_ZERO)
-      assert.equal(log.minKeyPrice, keyPrice.toFixed())
-      assert.equal(log.pricePaid, keyPrice.toFixed())
+      const [event] = await testEventHooks.queryFilter('OnKeyPurchase')
+      const { args } = event
+      assert.equal(args.lock, lock.address)
+      assert.equal(args.from, from.address)
+      assert.equal(args.recipient, to.address)
+      assert.equal(args.referrer, ADDRESS_ZERO)
+      assert.equal(args.minKeyPrice.toString(), keyPrice.toString())
+      assert.equal(args.pricePaid.toString(), keyPrice.toString())
     })
 
     it('Sanity check: cannot buy at half price', async () => {
       await reverts(
-        lock.purchase([], [to], [ADDRESS_ZERO], [ADDRESS_ZERO], [dataField], {
-          from,
-          value: keyPrice.div(2).toFixed(),
-        }),
+        lock.purchase(
+          [],
+          [to.address],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [dataField],
+          {
+            value: keyPrice.div(2),
+          }
+        ),
         'INSUFFICIENT_VALUE'
       )
     })
@@ -77,7 +96,7 @@ describe('Lock / onKeyPurchaseHook', (accounts) => {
     it('cannot set the hook to a non-contract address', async () => {
       await reverts(
         lock.setEventHooks(
-          accounts[1],
+          to.address,
           ADDRESS_ZERO,
           ADDRESS_ZERO,
           ADDRESS_ZERO,
@@ -89,44 +108,46 @@ describe('Lock / onKeyPurchaseHook', (accounts) => {
   })
 
   describe('with a 50% off discount', () => {
-    beforeEach(async () => {
-      await testEventHooks.configure(true, keyPrice.div(2).toFixed())
+    before(async () => {
+      await testEventHooks.configure(true, keyPrice.div(2))
     })
 
     it('can estimate the price', async () => {
-      const price = await lock.purchasePriceFor(to, ADDRESS_ZERO, dataField)
-      assert.equal(price, keyPrice.div(2).toFixed())
+      const price = await lock.purchasePriceFor(
+        to.address,
+        ADDRESS_ZERO,
+        dataField
+      )
+      assert.equal(price, keyPrice.div(2).toString())
     })
 
     it('can buy at half price', async () => {
       await lock.purchase(
         [],
-        [to],
+        [to.address],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [dataField],
         {
-          from,
-          value: keyPrice.div(2).toFixed(),
+          value: keyPrice.div(2),
         }
       )
     })
   })
 
   describe('with a huge discount', () => {
-    beforeEach(async () => {
+    before(async () => {
       await testEventHooks.configure(true, MAX_UINT)
     })
 
     it('purchases are now free', async () => {
       await lock.purchase(
         [],
-        [to],
+        [to.address],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [dataField],
         {
-          from,
           value: '0',
         }
       )
@@ -136,26 +157,25 @@ describe('Lock / onKeyPurchaseHook', (accounts) => {
       beforeEach(async () => {
         await lock.purchase(
           [],
-          [to],
+          [to.address],
           [ADDRESS_ZERO],
           [ADDRESS_ZERO],
           [dataField],
           {
-            from,
             value: '42',
           }
         )
       })
 
       it('key sales should log the hook event', async () => {
-        const log = (await testEventHooks.getPastEvents('OnKeyPurchase'))[0]
-          .returnValues
-        assert.equal(log.lock, lock.address)
-        assert.equal(log.from, from)
-        assert.equal(log.recipient, to)
-        assert.equal(log.referrer, ADDRESS_ZERO)
-        assert.equal(log.minKeyPrice, '0')
-        assert.equal(log.pricePaid, '42')
+        const [event] = await testEventHooks.queryFilter('OnKeyPurchase')
+        const { args } = event
+        assert.equal(args.lock, lock.address)
+        assert.equal(args.from, from.address)
+        assert.equal(args.recipient, to.address)
+        assert.equal(args.referrer, ADDRESS_ZERO)
+        assert.equal(args.minKeyPrice.toString(), '0')
+        assert.equal(args.pricePaid.toString(), '42')
       })
     })
   })
