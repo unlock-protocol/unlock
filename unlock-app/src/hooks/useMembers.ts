@@ -31,7 +31,6 @@ export const buildMembersWithMetadata = (
           },
           public: {
             ...key.data?.userMetadata?.public,
-            ...key.data?.userMetadata,
           },
         },
       }
