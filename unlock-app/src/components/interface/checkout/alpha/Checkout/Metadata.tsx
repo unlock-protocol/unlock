@@ -125,7 +125,7 @@ export function Metadata({
         iconURL={iconURL}
         description={description}
       />
-      <div className="flex px-6 py-6 flex-wrap items-center w-full gap-2">
+      <div className="flex px-6 mt-6 flex-wrap items-center w-full gap-2">
         <div className="flex items-center gap-2 col-span-4">
           <div className="flex items-center gap-0.5">
             <IconButton

@@ -34,7 +34,7 @@ export function Returning({
         iconURL={iconURL}
         description={description}
       />
-      <div className="flex px-6 py-6 flex-wrap items-center w-full gap-2">
+      <div className="flex px-6 mt-6 flex-wrap items-center w-full gap-2">
         <div className="flex items-center gap-2 col-span-4">
           <div className="flex items-center gap-0.5">
             <ProgressCircleIcon disabled />
@@ -48,7 +48,7 @@ export function Returning({
         </div>
         <div className="border-t-4 w-full flex-1"></div>
       </div>
-      <main className="p-4 overflow-auto h-64 sm:h-72">
+      <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="space-y-6 justify-items-center grid">
           <div className="grid justify-items-center">
             <Lottie
