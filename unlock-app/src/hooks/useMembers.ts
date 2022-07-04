@@ -26,11 +26,12 @@ export const buildMembersWithMetadata = (
         ...byKeyOwner,
         [key.userAddress.toLowerCase()]: {
           protected: {
-            ...key.data.userMetadata?.protected,
+            ...key.data?.userMetadata?.protected,
             ...key.data?.extraMetadata,
           },
           public: {
-            ...key.data.userMetadata.public,
+            ...key.data?.userMetadata?.public,
+            ...key.data?.userMetadata,
           },
         },
       }
