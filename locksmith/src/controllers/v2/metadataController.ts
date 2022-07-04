@@ -401,10 +401,16 @@ export class MetadataController {
           .status(500)
       }
 
-      const owners: string[] = keys?.map(({ owner }: any) => owner?.address)
-      const keyIds: string[] = keys?.map(({ keyId }: any) => keyId)
+      const owners: { owner: string; keyId: string }[] = keys?.map(
+        ({ owner, keyId }: any) => {
+          return {
+            owner: owner?.address,
+            keyId,
+          }
+        }
+      )
 
-      const keyHoldersMetadataPromise = owners.map(async (owner) => {
+      const keyHoldersMetadataPromise = owners.map(async ({ owner }) => {
         return await lockOperations.getKeyHolderMetadataByAddress(
           lockAddress,
           owner,
@@ -412,21 +418,16 @@ export class MetadataController {
         )
       })
 
-      const keyDataPromise = keyIds.map(async (keyId) => {
+      const keyDataPromise = owners.map(async ({ keyId }) => {
         return await metadataOperations.getKeyCentricData(lockAddress, keyId)
-      })
-
-      // get owners address from `ownerOf`, because not every item can include the user address, and void undefined values
-      const ownersAddressPromise = keyIds.map(async (keyId) => {
-        return await this.web3Service.ownerOf(lockAddress, keyId, network)
       })
 
       const keyHolderMetadata = await Promise.all(keyHoldersMetadataPromise)
       const keyData = await Promise.all(keyDataPromise)
-      const ownersAddress = await Promise.all(ownersAddressPromise)
 
       const mergedData = keyHolderMetadata
         .map((keyMetadata: any, index) => {
+          const { owner } = owners[index]
           let metadata = keyMetadata?.data ?? {}
           const keyDataByIndex = keyData[index]?.metadata ?? {}
 
@@ -436,7 +437,6 @@ export class MetadataController {
 
           // build metadata object only if metadata or extraMetadata are present
           if (hasMetadata) {
-            const owner = ownersAddress[index]
             metadata = {
               userAddress: owner,
               data: {
