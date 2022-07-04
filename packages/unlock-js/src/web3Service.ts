@@ -89,7 +89,7 @@ export default class Web3Service extends UnlockService {
       address,
       this.providerForNetwork(network)
     )
-    const lock = version.getLock.bind(this)(
+    const lock = await version.getLock.bind(this)(
       address,
       this.providerForNetwork(network)
     )

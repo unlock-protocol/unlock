@@ -205,14 +205,16 @@ export const ValidKey = ({
         return
       }
       await siweLogin()
+
+      const lockAddress = lock.address
       const isVerifier = await storageService.getVerifierStatus({
         viewer,
         network,
-        lockAddress: lock.address,
+        lockAddress,
       })
 
       const metadata = await storageService.getKeyMetadataValues({
-        lockAddress: lock.address,
+        lockAddress,
         network,
         keyId: unlockKey.tokenId,
       })
