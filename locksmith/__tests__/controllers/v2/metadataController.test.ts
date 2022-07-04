@@ -6,15 +6,17 @@ const app = require('../../../src/app')
 
 jest.setTimeout(600000)
 
-const walletAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8D'
+let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
+const keyId = 100
 
 jest.mock('@unlock-protocol/unlock-js', () => {
   return {
     Web3Service: jest.fn().mockImplementation(() => {
       return {
         isLockManager: (lock: string) => lockAddress === lock,
-        ownerOf: (address: string) => walletAddress === address,
+        ownerOf: (_lockAddress: string, _tokenId: string, _network: number) =>
+          owner,
       }
     }),
   }
@@ -159,108 +161,78 @@ describe('Metadata v2 endpoints for locksmith', () => {
   })
 
   describe('get key metadata', () => {
+    const metadata = {
+      public: {
+        firstname: 'John',
+        lastname: 'Doe',
+      },
+      protected: {
+        email: 'test@example.com',
+        zipCode: 2022,
+      },
+    }
+
     describe('get key metadata, as an authorized used', () => {
       it('includes the protected part as a key owner', async () => {
         expect.assertions(3)
-
-        const walletAddress = await ethers.Wallet.createRandom().getAddress()
-        const lockAddress = await ethers.Wallet.createRandom().getAddress()
-
-        const { loginResponse } = await loginRandomUser(app)
+        const { loginResponse, address } = await loginRandomUser(app)
+        owner = address
         expect(loginResponse.status).toBe(200)
 
-        const metadata = {
-          public: {
-            firstname: 'John',
-            lastname: 'Doe',
-          },
-          protected: {
-            email: 'test@example.com',
-            zipCode: 2022,
-          },
-        }
-        const userMetadataResponse = await request(app)
-          .post(
-            `/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`
-          )
+        await request(app)
+          .put(`/v2/api/metadata/100/locks/${lockAddress}/keys/${keyId}`)
+          .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
           .send({ metadata })
 
-        expect(userMetadataResponse.status).toBe(201)
-        expect(userMetadataResponse.body.userMetadata.protected).toStrictEqual({
+        const keyMetadata = await request(app).get(
+          `/v2/api/metadata/100/locks/${lockAddress}/keys/${keyId}`
+        )
+
+        expect(keyMetadata.status).toBe(200)
+        expect(keyMetadata.body.protected).toStrictEqual({
           email: 'test@example.com',
           zipCode: 2022,
         })
       })
 
       it('includes the protected part as a verifier', async () => {
-        expect.assertions(5)
-
-        const walletAddress = await ethers.Wallet.createRandom().getAddress()
-        const lockAddress = await ethers.Wallet.createRandom().getAddress()
-
-        const { loginResponse } = await loginRandomUser(app)
+        expect.assertions(3)
+        const { loginResponse, address } = await loginRandomUser(app)
+        owner = address
         expect(loginResponse.status).toBe(200)
 
-        const metadata = {
-          public: {
-            username: 'example',
-          },
-          protected: {
-            email: 'test@example.com',
-            zipCode: 2022,
-          },
-        }
-        const userMetadataResponse = await request(app)
-          .post(
-            `/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`
-          )
+        await request(app)
+          .put(`/v2/api/metadata/100/locks/${lockAddress}/keys/${keyId}`)
+          .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
           .send({ metadata })
 
-        expect(userMetadataResponse.status).toBe(201)
-        expect(userMetadataResponse.body).toStrictEqual({
-          userMetadata: metadata,
-        })
-        expect(userMetadataResponse.body.userMetadata.protected).not.toBe(
-          undefined
+        const keyMetadata = await request(app).get(
+          `/v2/api/metadata/100/locks/${lockAddress}/keys/${keyId}`
         )
-        expect(userMetadataResponse.body.userMetadata.protected).toStrictEqual({
+
+        expect(keyMetadata.status).toBe(200)
+        expect(keyMetadata.body.protected).toStrictEqual({
           email: 'test@example.com',
           zipCode: 2022,
         })
       })
 
       it('includes the protected part as a lock manager', async () => {
-        expect.assertions(5)
-
-        const walletAddress = await ethers.Wallet.createRandom().getAddress()
-        const lockAddress = await ethers.Wallet.createRandom().getAddress()
-
+        expect.assertions(3)
         const { loginResponse } = await loginRandomUser(app)
         expect(loginResponse.status).toBe(200)
 
-        const metadata = {
-          public: {
-            username: 'example',
-          },
-          protected: {
-            email: 'test@example.com',
-            zipCode: 2022,
-          },
-        }
-        const userMetadataResponse = await request(app)
-          .post(
-            `/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`
-          )
+        await request(app)
+          .put(`/v2/api/metadata/100/locks/${lockAddress}/keys/${keyId}`)
+          .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
           .send({ metadata })
 
-        expect(userMetadataResponse.status).toBe(201)
-        expect(userMetadataResponse.body).toStrictEqual({
-          userMetadata: metadata,
-        })
-        expect(userMetadataResponse.body.userMetadata.protected).not.toBe(
-          undefined
+        const keyMetadata = await request(app).get(
+          `/v2/api/metadata/100/locks/${lockAddress}/keys/${keyId}`
         )
-        expect(userMetadataResponse.body.userMetadata.protected).toStrictEqual({
+
+        expect(keyMetadata.status).toBe(200)
+        expect(keyMetadata.body.protected).toStrictEqual({
           email: 'test@example.com',
           zipCode: 2022,
         })
@@ -270,34 +242,14 @@ describe('Metadata v2 endpoints for locksmith', () => {
     describe('as a non-authorized used', () => {
       it('does not include the protected part', async () => {
         expect.assertions(2)
-        const walletAddress = await ethers.Wallet.createRandom().getAddress()
         const lockAddress = await ethers.Wallet.createRandom().getAddress()
 
-        const metadata = {
-          public: {
-            username: 'example',
-          },
-          protected: {
-            email: 'test@example.com',
-            zipCode: 2022,
-          },
-        }
-
-        const metadataResponse = await request(app)
-          .post(
-            `/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`
-          )
-          .send({ metadata })
-
-        console.log(metadataResponse.body)
-
-        const keyMetadataResponse = await request(app).get(
-          `/v2/api/metadata/100/locks/${lockAddress}/keys/1`
+        const keyMetadata = await request(app).get(
+          `/v2/api/metadata/100/locks/${lockAddress}/keys/${keyId}`
         )
 
-        console.log(keyMetadataResponse.body)
-        expect(keyMetadataResponse.status).toBe(200)
-        expect(keyMetadataResponse.body.userMetadata).toBe(undefined)
+        expect(keyMetadata.status).toBe(200)
+        expect(keyMetadata.body.protected).toBe(undefined)
       })
     })
   })
