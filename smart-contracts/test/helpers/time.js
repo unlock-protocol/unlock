@@ -2,7 +2,11 @@ const { network, ethers } = require('hardhat')
 
 async function increaseTimeTo(expirationTs) {
   expirationTs =
-    typeof expirationTs === 'string' ? expirationTs : expirationTs.toNumber()
+    typeof expirationTs === 'number'
+      ? expirationTs
+      : expirationTs === 'string'
+      ? parseInt(expirationTs)
+      : expirationTs.toNumber()
 
   const { timestamp } = await ethers.provider.getBlock('latest')
 
