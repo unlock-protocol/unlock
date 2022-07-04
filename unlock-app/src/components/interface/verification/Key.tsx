@@ -3,14 +3,14 @@ import {
   Fallback as AvatarFallback,
   Root as Avatar,
 } from '@radix-ui/react-avatar'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {
   durationsAsTextFromSeconds,
   expirationAsDate,
 } from '../../../utils/durations'
 import { useStorageService } from '../../../utils/withStorageService'
-import { WalletServiceContext } from '../../../utils/withWalletService'
+import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { ActionButton } from '../buttons/ActionButton'
 import Loading from '../Loading'
@@ -170,7 +170,7 @@ export const ValidKey = ({
   const [keyData, setKeyData] = useState({})
 
   const storageService = useStorageService()
-  const walletService = useContext(WalletServiceContext)
+  const walletService = useWalletService()
 
   const siweLogin = async () => {
     await storageService.loginPrompt({

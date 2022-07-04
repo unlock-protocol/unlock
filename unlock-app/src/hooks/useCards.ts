@@ -1,8 +1,7 @@
-import { useContext, useState } from 'react'
-import { WalletService } from '@unlock-protocol/unlock-js'
+import { useState } from 'react'
 import { Card } from '@stripe/stripe-js'
-import { WalletServiceContext } from '../utils/withWalletService'
-import { ConfigContext } from '../utils/withConfig'
+import { useWalletService } from '../utils/withWalletService'
+import { useConfig } from '../utils/withConfig'
 import { ToastHelper } from '../components/helpers/toast.helper'
 
 // TODO: cleanup. We don't need a hook but the API calls should be kept
@@ -376,8 +375,8 @@ export const getCardConnected = async (
 }
 
 export const useCards = () => {
-  const walletService: WalletService = useContext(WalletServiceContext)
-  const config: Config = useContext(ConfigContext)
+  const walletService = useWalletService()
+  const config: Config = useConfig()
   const [cards, setCards] = useState<Card[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 

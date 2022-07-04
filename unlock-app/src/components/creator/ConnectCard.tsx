@@ -1,15 +1,14 @@
 import styled from 'styled-components'
-import React, { useContext, useState, useEffect } from 'react'
-import { WalletServiceContext } from '../../utils/withWalletService'
+import React, { useState, useEffect } from 'react'
+import { useWalletService } from '~/utils/withWalletService'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
-import { AuthenticationContext } from '../../contexts/AuthenticationContext'
-import { Web3ServiceContext } from '../../utils/withWeb3Service'
+import { useAuth } from '../../contexts/AuthenticationContext'
 import { useAccount } from '../../hooks/useAccount'
-
 import Loading from '../interface/Loading'
 import useLock from '../../hooks/useLock'
 import SvgComponents from '../interface/svg'
 import { useStorageService } from '../../utils/withStorageService'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface ConnectCardProps {
   lockNetwork: number
@@ -17,9 +16,9 @@ interface ConnectCardProps {
 }
 
 export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
-  const { network: walletNetwork, account } = useContext(AuthenticationContext)
-  const web3Service = useContext(Web3ServiceContext)
-  const walletService = useContext(WalletServiceContext)
+  const { network: walletNetwork, account } = useAuth()
+  const web3Service = useWeb3Service()
+  const walletService = useWalletService()
   const storageService = useStorageService()
   const [keyGranter, setKeyGranter] = useState('')
 
@@ -52,21 +51,21 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
     setHasRole(true)
   }
 
-  const checkIsKeyGranter = async (keyGranter: string) => {
-    const hasRole = await web3Service.isKeyGranter(
-      lock.address,
-      keyGranter,
-      lockNetwork
-    )
-    setHasRole(hasRole)
-  }
-
-  const checkIsConnected = async () => {
-    const isConnected = await isStripeConnected()
-    setIsConnected(isConnected)
-  }
-
   useEffect(() => {
+    const checkIsKeyGranter = async (keyGranter: string) => {
+      const hasRole = await web3Service.isKeyGranter(
+        lock.address,
+        keyGranter,
+        lockNetwork
+      )
+      setHasRole(hasRole)
+    }
+
+    const checkIsConnected = async () => {
+      const isConnected = await isStripeConnected()
+      setIsConnected(isConnected)
+    }
+
     const checkState = async () => {
       setLoading(true)
       const _keyGranter = await storageService.getKeyGranter(lockNetwork)
@@ -76,7 +75,18 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
       setKeyGranter(_keyGranter)
     }
     checkState()
-  }, [lock.address, lockNetwork, isConnected])
+  }, [
+    lock.address,
+    lockNetwork,
+    isConnected,
+    storageService,
+    setLoading,
+    setKeyGranter,
+    web3Service,
+    setHasRole,
+    keyGranter,
+    isStripeConnected,
+  ])
 
   const wrongNetwork = walletNetwork !== lockNetwork
   return (

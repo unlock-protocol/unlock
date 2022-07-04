@@ -1,6 +1,6 @@
 import { useEffect, useState, useContext } from 'react'
 import { expirationAsDate } from '../utils/durations'
-import { WalletServiceContext } from '../utils/withWalletService'
+import { useWalletService } from '../utils/withWalletService'
 import { useStorageService } from '../utils/withStorageService'
 import { generateColumns } from '../utils/metadataMunging'
 import { MemberFilters } from '../unlockTypes'
@@ -86,7 +86,7 @@ export const useMembers = (
 ) => {
   const { network, account } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
-  const walletService = useContext(WalletServiceContext)
+  const walletService = useWalletService()
   const web3Service = useContext(Web3ServiceContext)
   const storageService = useStorageService()
   //const storageService = useContext(StorageServiceContext)
