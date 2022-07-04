@@ -10,6 +10,7 @@ import { Connect } from './Connect'
 import { Container } from './Container'
 import { Shell } from './Shell'
 import { PoweredByUnlock } from './PoweredByUnlock'
+import { CgSpinner as LoadingIcon } from 'react-icons/cg'
 
 export function CheckoutPage() {
   const { query } = useRouter()
@@ -21,16 +22,25 @@ export function CheckoutPage() {
   const paywallConfigFromQuery = getPaywallConfigFromQuery(query)
   const oauthConfig = getOauthConfigFromQuery(query)
 
+  const paywallConfig = communication.paywallConfig || paywallConfigFromQuery
+
   const injectedProvider =
     communication.providerAdapter || selectProvider(config)
 
-  const paywallConfig = communication.paywallConfig || paywallConfigFromQuery
   const checkoutRedirectURI =
     paywallConfig?.redirectUri || (query.redirectUri as string)
 
   useEffect(() => {
     document.querySelector('body')?.classList.add('bg-transparent')
   }, [])
+
+  if (!(paywallConfig || oauthConfig) && !Object.keys(query).length) {
+    return (
+      <Container>
+        <LoadingIcon size={20} className="animate-spin" />
+      </Container>
+    )
+  }
 
   if (oauthConfig) {
     return (
@@ -57,7 +67,6 @@ export function CheckoutPage() {
       </Container>
     )
   }
-
   return (
     <Container>
       <Shell.Root
