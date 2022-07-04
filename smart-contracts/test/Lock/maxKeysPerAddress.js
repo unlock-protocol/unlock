@@ -3,11 +3,14 @@ const { assert } = require('chai')
 
 const { deployLock, reverts, ADDRESS_ZERO, purchaseKey } = require('../helpers')
 
-describe('Lock / maxKeysPerAddress', (accounts) => {
-  let keyOwner = accounts[1]
+describe('Lock / maxKeysPerAddress', () => {
   let lock
+  let keyOwner
+  let anotherAccount
+  let yetAnotherAccount
 
   before(async () => {
+    ;[, keyOwner, anotherAccount, yetAnotherAccount] = await ethers.getSigners()
     lock = await deployLock()
   })
 
@@ -18,9 +21,7 @@ describe('Lock / maxKeysPerAddress', (accounts) => {
   describe('set/get maxKeysPerAddress', () => {
     it('can only be invaccounts[9]oked by lock manager', async () => {
       await reverts(
-        lock.setMaxKeysPerAddress(10, {
-          from: accounts[5],
-        }),
+        lock.connect(anotherAccount).setMaxKeysPerAddress(10),
         'ONLY_LOCK_MANAGER'
       )
     })
@@ -49,9 +50,16 @@ describe('Lock / maxKeysPerAddress', (accounts) => {
 
     it('prevent users to purchase more keys than allowed', async () => {
       await reverts(
-        lock.purchase([], [keyOwner], [ADDRESS_ZERO], [ADDRESS_ZERO], [[]], {
-          value: ethers.utils.parseUnits('0.01', 'ether'),
-        }),
+        lock.purchase(
+          [],
+          [keyOwner.address],
+          [ADDRESS_ZERO],
+          [ADDRESS_ZERO],
+          [[]],
+          {
+            value: ethers.utils.parseUnits('0.01', 'ether'),
+          }
+        ),
         'MAX_KEYS'
       )
     })
@@ -60,7 +68,7 @@ describe('Lock / maxKeysPerAddress', (accounts) => {
       await reverts(
         lock.purchase(
           [],
-          [accounts[9], accounts[9]],
+          [anotherAccount.address, anotherAccount.address],
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [[]],
@@ -75,7 +83,7 @@ describe('Lock / maxKeysPerAddress', (accounts) => {
     it('prevent user from sharing a key with someone who has more keys than allowed', async () => {
       await lock.purchase(
         [],
-        [accounts[9]],
+        [anotherAccount.address],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -84,9 +92,7 @@ describe('Lock / maxKeysPerAddress', (accounts) => {
         }
       )
       await reverts(
-        lock.shareKey(accounts[9], tokenId, 1000, {
-          from: keyOwner,
-        }),
+        lock.connect(keyOwner).shareKey(anotherAccount.address, tokenId, 1000),
         'MAX_KEYS'
       )
     })
@@ -94,7 +100,7 @@ describe('Lock / maxKeysPerAddress', (accounts) => {
     it('prevent user from transferring a key with someone who has more keys than allowed', async () => {
       await lock.purchase(
         [],
-        [accounts[8]],
+        [yetAnotherAccount.address],
         [ADDRESS_ZERO],
         [ADDRESS_ZERO],
         [[]],
@@ -103,9 +109,9 @@ describe('Lock / maxKeysPerAddress', (accounts) => {
         }
       )
       await reverts(
-        lock.transfer(tokenId, accounts[8], 1000, {
-          from: keyOwner,
-        }),
+        lock
+          .connect(keyOwner)
+          .transfer(tokenId, yetAnotherAccount.address, 1000),
         'MAX_KEYS'
       )
     })
