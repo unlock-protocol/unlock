@@ -146,7 +146,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     expect(userMetadataResponse.body.error).not.toBe(undefined)
   })
 
-  it('Get key metadata', async () => {
+  it('get key metadata', async () => {
     expect.assertions(2)
     const lockAddress = await ethers.Wallet.createRandom().getAddress()
     const keyMetadataResponse = await request(app).get(
@@ -154,6 +154,24 @@ describe('Metadata v2 endpoints for locksmith', () => {
     )
     expect(keyMetadataResponse.status).toBe(200)
     expect(keyMetadataResponse.body.userMetadata).toBe(undefined)
+  })
+
+  describe('get key metadata', () => {
+    beforeEach(() => {
+      // Insert some metadata for the key, including protected one
+    })
+
+    describe('get key metadata, as an authorized used', () => {
+      it('includes the protected part as a key owner', async () => {})
+
+      it('includes the protected part as a verifier', async () => {})
+
+      it('includes the protected part as a lock manager', async () => {})
+    })
+
+    describe('as a non-authorized used', () => {
+      it('does not include the protected part', async () => {})
+    })
   })
 
   it('Get lock metadata', async () => {
@@ -203,7 +221,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     expect(lockAddressMetadataResponse.status).toBe(401)
   })
 
-  it('Doest return error when authentication is present and payload is wrong', async () => {
+  it('Does return error when authentication is present and payload is wrong', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)

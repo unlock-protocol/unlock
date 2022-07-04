@@ -61,6 +61,13 @@ export class MetadataController {
     }
   }
 
+  /**
+   * Yields the metadata associated with a key and includes protected
+   * fields if the request is performed by key owner or verifier
+   * @param request
+   * @param response
+   * @returns
+   */
   async getKeyMetadata(request: Request, response: Response) {
     try {
       const keyId = request.params.keyId.toLowerCase()
