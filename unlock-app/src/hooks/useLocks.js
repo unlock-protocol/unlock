@@ -1,11 +1,20 @@
 import { useState, useEffect, useContext, useReducer } from 'react'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
-import { StorageServiceContext } from '../utils/withStorageService'
-import { Web3ServiceContext } from '../utils/withWeb3Service'
-import { WalletServiceContext } from '../utils/withWalletService'
+import {
+  StorageServiceContext,
+  useStorageService,
+} from '../utils/withStorageService'
+import { useWeb3Service, Web3ServiceContext } from '../utils/withWeb3Service'
+import {
+  useWalletService,
+  WalletServiceContext,
+} from '../utils/withWalletService'
 import { GraphServiceContext } from '../utils/withGraphService'
 import { ConfigContext } from '../utils/withConfig'
-import { AuthenticationContext } from '../contexts/AuthenticationContext'
+import {
+  AuthenticationContext,
+  useAuth,
+} from '../contexts/AuthenticationContext'
 import { processTransaction } from './useLock'
 
 /**
@@ -162,10 +171,10 @@ export const createLock = async (
  * @param {*} address
  */
 export const useLocks = (owner) => {
-  const { network } = useContext(AuthenticationContext)
-  const web3Service = useContext(Web3ServiceContext)
-  const walletService = useContext(WalletServiceContext)
-  const storageService = useContext(StorageServiceContext)
+  const { network } = useAuth()
+  const web3Service = useWeb3Service()
+  const walletService = useWalletService()
+  const storageService = useStorageService()
   const graphService = useContext(GraphServiceContext)
   const config = useContext(ConfigContext)
   const [error, setError] = useState(undefined)

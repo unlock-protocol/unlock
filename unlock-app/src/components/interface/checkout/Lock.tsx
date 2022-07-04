@@ -1,11 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { durationsAsTextFromSeconds } from '../../../utils/durations'
-import {
-  lockKeysAvailable,
-  numberOfAvailableKeys,
-  convertedKeyPrice,
-  formattedKeyPrice,
-} from '../../../utils/checkoutLockUtils'
+import { getLockProps } from '~/utils/lock'
 import * as LockVariations from './LockVariations'
 import { useLock } from '../../../hooks/useLock'
 import { ConfigContext } from '../../../utils/withConfig'
@@ -23,29 +17,6 @@ interface LockProps {
   numberOfRecipients?: number
 }
 
-const getLockProps = (
-  lock: any,
-  network: number,
-  baseCurrencySymbol: string,
-  name: string,
-  numberOfRecipients = 1
-) => {
-  return {
-    cardEnabled: lock?.fiatPricing?.creditCardEnabled,
-    formattedDuration: durationsAsTextFromSeconds(lock.expirationDuration),
-    formattedKeyPrice: formattedKeyPrice(
-      lock,
-      baseCurrencySymbol,
-      numberOfRecipients
-    ),
-    convertedKeyPrice: convertedKeyPrice(lock, numberOfRecipients),
-    formattedKeysAvailable: lockKeysAvailable(lock),
-    name: name || lock.name,
-    address: lock.address,
-    network,
-    prepend: numberOfRecipients > 1 ? `${numberOfRecipients} x ` : '',
-  }
-}
 export const Lock = ({
   network,
   lock,
@@ -97,7 +68,7 @@ export const Lock = ({
     onSelected && onSelected(lock)
   }
 
-  const lockProps: any = {
+  const lockProps = {
     onClick,
     ...getLockProps(
       lock,
@@ -115,8 +86,7 @@ export const Lock = ({
     )
   }
 
-  const isSoldOut = numberOfAvailableKeys(lock) <= 0
-  if (isSoldOut) {
+  if (lockProps.isSoldOut) {
     return <LockVariations.SoldOutLock {...lockProps} />
   }
 

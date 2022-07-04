@@ -25,7 +25,7 @@ export function Tooltip({
   return (
     <Root delayDuration={delay}>
       <TooltipTrigger className="cursor-pointer" aria-label={label} asChild>
-        <div>{children}</div>
+        {children}
       </TooltipTrigger>
       <Content
         side={side}

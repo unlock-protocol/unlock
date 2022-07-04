@@ -1,9 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import {
-  FaLock as LockIcon,
-  FaExclamation as DangerIcon,
-  FaCheckCircle as CheckIcon,
-} from 'react-icons/fa'
+import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 
 import { Tooltip } from '~/components/Tooltip/Tooltip'
 import { Button } from '~/components/Button/Button'

@@ -1,4 +1,5 @@
 const base = require('@unlock-protocol/jest-config')
+const { pathsToModuleNameMapper } = require('ts-jest')
 
 module.exports = {
   ...base,
@@ -42,10 +43,16 @@ module.exports = {
   coveragePathIgnorePatterns: ['src/stories/.*/*.stories.js'],
   coverageThreshold: {
     global: {
-      branches: 50,
+      branches: 48,
       functions: 40,
       lines: 60,
       statements: 58,
     },
   },
+  moduleNameMapper: pathsToModuleNameMapper(
+    {
+      '~/*': ['src/*'],
+    },
+    { prefix: '<rootDir>/' }
+  ),
 }

@@ -13,6 +13,15 @@ export function camelCaseToTitle(s: string): string {
   )
 }
 
+export function minifyEmail(email: string) {
+  const [username, domain] = email.split('@')
+  const [name, ext] = domain.split('.')
+  const minifiedEmail = `${username.slice(0, 2)}..@${name[0]}..${
+    name[name.length - 1]
+  }.${ext}`
+  return minifiedEmail
+}
+
 export function addressMinify(address: string): string {
   return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
 }

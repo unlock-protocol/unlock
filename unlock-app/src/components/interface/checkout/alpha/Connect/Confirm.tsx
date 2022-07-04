@@ -5,13 +5,14 @@ import { FaEthereum as EthereumIcon } from 'react-icons/fa'
 import { OAuthConfig } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { createMessageToSignIn } from '~/utils/oauth'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
-import { LoggedIn, LoggedOut } from '../Bottom'
+import { Connected } from '../Connected'
+import { ConnectService } from './connectMachine'
 import { Shell } from '../Shell'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
   oauthConfig: OAuthConfig
-  onUnlockAccount(): void
+  connectService: ConnectService
   injectedProvider: unknown
   onClose(params?: Record<string, string>): void
 }
@@ -19,14 +20,11 @@ interface Props {
 export function ConfirmConnect({
   injectedProvider,
   oauthConfig,
+  connectService,
   onClose,
-  onUnlockAccount,
 }: Props) {
   const [loading, setLoading] = useState(false)
-  const { account, network = 1, signMessage, deAuthenticate } = useAuth()
-  const { authenticateWithProvider } = useAuthenticateHandler({
-    injectedProvider,
-  })
+  const { account, network = 1, signMessage } = useAuth()
   const onSignIn = async () => {
     setLoading(true)
     try {
@@ -59,8 +57,14 @@ export function ConfirmConnect({
   }
 
   return (
-    <>
-      <Shell.Content>
+    <Shell.Root
+      onClose={() =>
+        onClose({
+          error: 'User did not sign the message',
+        })
+      }
+    >
+      <main className="p-6 overflow-auto h-64 sm:h-72">
         <div className="space-y-4">
           <header>
             <h1 className="font-medium text-xl">
@@ -84,28 +88,21 @@ export function ConfirmConnect({
             </li>
           </ol>
         </div>
-        <div className="mt-6">
+      </main>
+      <footer className="px-6 pt-6 border-t grid items-center">
+        <Connected injectedProvider={injectedProvider} service={connectService}>
           <Button
             onClick={onSignIn}
             disabled={loading || !account}
             loading={loading}
-            iconLeft={<Icon icon={EthereumIcon} size="medium" />}
+            iconLeft={<Icon icon={EthereumIcon} size="medium" key="ethereum" />}
             className="w-full"
           >
             {loading ? 'Please sign the message' : 'Sign-in with Ethereum'}
           </Button>
-        </div>
-      </Shell.Content>
-      <Shell.Footer>
-        {account ? (
-          <LoggedIn account={account} onDisconnect={() => deAuthenticate()} />
-        ) : (
-          <LoggedOut
-            authenticateWithProvider={authenticateWithProvider}
-            onUnlockAccount={onUnlockAccount}
-          />
-        )}
-      </Shell.Footer>
-    </>
+        </Connected>
+        <PoweredByUnlock />
+      </footer>
+    </Shell.Root>
   )
 }

@@ -180,7 +180,7 @@ describe('VerificationStatus', () => {
       }),
     }
     const { getByText } = renderWithContexts(
-      <WalletServiceProvider value={walletService}>
+      <WalletServiceProvider value={walletService as any}>
         <ConfigProvider value={config}>
           <VerificationStatus
             data={JSON.stringify({
@@ -236,7 +236,7 @@ describe('VerificationStatus', () => {
       }),
     }
     const { getByText } = renderWithContexts(
-      <WalletServiceProvider value={walletService}>
+      <WalletServiceProvider value={walletService as any}>
         <ConfigProvider value={config}>
           <VerificationStatus
             data={JSON.stringify({

@@ -37,7 +37,7 @@ interface ToastHelperProps {
 
 const options: ToastOptions = {
   style: {
-    wordBreak: 'break-all',
+    wordBreak: 'break-word',
   },
 }
 

@@ -40,7 +40,7 @@ Both wedlocks (email service) and unlock-protocol-com (static site) are deployed
 
 ### The smart contracts \(blockchain\)
 
-Smart contracts are on a slow release cycle. We set a goal to deploy them once per quarter. Since each version may introduce breaking tests, their deployment process is slightly more complicated. Once a "stable" version has been reached \(key features fully implemented and usable\), we publish the ABI as an npm module. 
+Smart contracts are on a slow release cycle. We set a goal to deploy them once per quarter. Since each version may introduce breaking tests, their deployment process is slightly more complicated. Once a "stable" version has been reached \(key features fully implemented and usable\), we publish the ABI as an npm module.
 
 The next step is to add this new ABI npm package to all of the other \(web and server if applicable\) apps and ensure that they all run with _both_ the old ABI and the new ABI \(the smart contract including versioning to make feature detection easier if needed\). Fixes are made to the applications if required.
 

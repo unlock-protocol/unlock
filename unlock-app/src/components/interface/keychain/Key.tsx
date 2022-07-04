@@ -20,11 +20,11 @@ import { expirationAsDate } from '../../../utils/durations'
 import { OwnedKey } from './KeychainTypes'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
-import { WalletServiceContext } from '../../../utils/withWalletService'
+import { useWalletService } from '../../../utils/withWalletService'
 import WedlockServiceContext from '../../../contexts/WedlocksContext'
-import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+import { useAuth } from '../../../contexts/AuthenticationContext'
 import { MAX_UINT } from '../../../constants'
-import { ConfigContext } from '../../../utils/withConfig'
+import { useConfig } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
 
@@ -136,10 +136,10 @@ export interface Props {
 
 const Key = ({ ownedKey, account, network }: Props) => {
   const { lock, expiration, tokenURI, keyId } = ownedKey
-  const walletService = useContext(WalletServiceContext)
+  const walletService = useWalletService()
   const wedlockService = useContext(WedlockServiceContext)
-  const { watchAsset } = useContext(AuthenticationContext)
-  const config = useContext(ConfigContext)
+  const { watchAsset } = useAuth()
+  const config = useConfig()
   const expirationStatus = expirationAsDate(expiration)
   const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
 

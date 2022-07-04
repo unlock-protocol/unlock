@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react'
-import { WalletServiceContext } from '../../utils/withWalletService'
+import React, { useState } from 'react'
+import { useWalletService } from '~/utils/withWalletService'
 import Loading from './Loading'
 import InlineModal from './InlineModal'
 import { ToastHelper } from '../helpers/toast.helper'
@@ -18,7 +18,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
   dismiss,
 }) => {
   const [lockAddress] = lockAddresses
-  const walletService = useContext(WalletServiceContext)
+  const walletService = useWalletService()
 
   const [refundAmount, setRefundAmount] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -46,6 +46,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
     }
 
     try {
+      // @ts-expect-error
       await walletService.expireAndRefundFor(params)
       onCloseCallback()
       ToastHelper.success('Key successfully refunded.')

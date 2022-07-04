@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { HiOutlineTrash as TrashIcon } from 'react-icons/hi'
 import { Button, Modal, Tooltip } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
-import AuthenticationContext from '../../../contexts/AuthenticationContext'
+import { useAuth } from '../../../contexts/AuthenticationContext'
 import { ToastHelper } from '../../helpers/toast.helper'
 import Loading from '../Loading'
-import { WalletServiceContext } from '../../../utils/withWalletService'
+import { useWalletService } from '../../../utils/withWalletService'
 import { useStorageService } from '~/utils/withStorageService'
 
 const styling = {
@@ -28,13 +28,13 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   verifiers,
   setVerifiers,
 }) => {
-  const { network, account } = useContext(AuthenticationContext)
+  const { network, account } = useAuth()
   const [selectedVerifier, setSelectedVerifier] = useState('')
   const [showDeleteVerifierModal, setShowDeleteVerifierModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [logged, setLogged] = useState(false)
   const storageService = useStorageService()
-  const walletService = useContext(WalletServiceContext)
+  const walletService = useWalletService()
 
   const setDefaults = () => {
     setShowDeleteVerifierModal(false)

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Locks, Lock } from '../../../unlockTypes'
 import Drawer from '../../interface/Drawer'
-import { WalletServiceContext } from '../../../utils/withWalletService'
+import { useWalletService } from '~/utils/withWalletService'
 import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
@@ -56,7 +56,7 @@ const formatDate = (timestamp: number) => {
 const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
   const { account, network } = useContext(AuthenticationContext)
 
-  const walletService = useContext(WalletServiceContext)
+  const walletService = useWalletService()
   const [transaction, setTransaction] = useState<string>('')
   const [loading, setLoading] = useState(false)
   const [expirationInputDisabled, setExpirationInputDisabled] = useState(
@@ -120,7 +120,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             expirations,
             keyManagers,
           },
-          (error: any, hash: string) => {
+          (error, hash) => {
             if (error) {
               ToastHelper.error(
                 'There was an error and the keys could not be granted. Please refresh the page and try again.'

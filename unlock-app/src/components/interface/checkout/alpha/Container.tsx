@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react'
 
 interface Props {
-  children: ReactNode
+  children?: ReactNode
 }
 
 export function Container({ children }: Props) {
   return (
-    <div className="relative bg-opacity-25 p-6 bg-black h-screen w-full flex flex-col justify-center items-center">
+    <div className="min-h-screen p-4 min-w-full flex flex-col backdrop-filter backdrop-blur-sm bg-zinc-500 bg-opacity-25 items-center justify-center overflow-auto">
       {children}
     </div>
   )
