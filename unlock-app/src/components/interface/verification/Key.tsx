@@ -150,6 +150,7 @@ interface ValidKeyProps {
   signatureTimestamp: number
   owner: string
   network: number
+  onShowLogin?: () => void
 }
 
 /**
@@ -163,11 +164,12 @@ export const ValidKey = ({
   owner,
   viewer,
   network,
+  onShowLogin,
 }: ValidKeyProps) => {
   const [checkedIn, setCheckedIn] = useState(false)
   const [loading, setLoading] = useState(true)
   const [viewerIsVerifier, setViewerIsVerifier] = useState(false)
-  const [keyData, setKeyData] = useState({})
+  const [keyData, setKeyData] = useState<any>({})
 
   const storageService = useStorageService()
   const walletService = useWalletService()
@@ -200,25 +202,29 @@ export const ValidKey = ({
 
   useEffect(() => {
     const onLoad = async () => {
-      if (!viewer) {
-        setLoading(false)
-        return
-      }
-      await siweLogin()
-
       const lockAddress = lock.address
-      const isVerifier = await storageService.getVerifierStatus({
-        viewer,
-        network,
-        lockAddress,
-      })
+      let metadata
+      let isVerifier = false
+      if (!viewer) {
+        metadata = await storageService.getKeyMetadataValues({
+          lockAddress,
+          network,
+          keyId: unlockKey.tokenId,
+        })
+      } else {
+        await siweLogin()
+        isVerifier = await storageService.getVerifierStatus({
+          viewer,
+          network,
+          lockAddress,
+        })
 
-      const metadata = await storageService.getKeyMetadataValues({
-        lockAddress,
-        network,
-        keyId: unlockKey.tokenId,
-      })
-
+        metadata = await storageService.getKeyMetadataValues({
+          lockAddress,
+          network,
+          keyId: unlockKey.tokenId,
+        })
+      }
       setViewerIsVerifier(isVerifier)
       setKeyData(metadata)
       setLoading(false)
@@ -226,22 +232,32 @@ export const ValidKey = ({
     onLoad()
   }, [lock.address, viewer])
 
+  const isCheckedIn = keyData?.metadata?.checkedInAt
+
   if (loading) {
     return <Loading />
   }
+
   return (
-    <ValidKeyWithMetadata
-      viewerIsVerifier={viewerIsVerifier}
-      unlockKey={unlockKey}
-      timeElapsedSinceSignature={durationsAsTextFromSeconds(
-        secondsElapsedFromSignature
+    <>
+      <ValidKeyWithMetadata
+        viewerIsVerifier={viewerIsVerifier}
+        unlockKey={unlockKey}
+        timeElapsedSinceSignature={durationsAsTextFromSeconds(
+          secondsElapsedFromSignature
+        )}
+        lock={lock}
+        owner={owner}
+        keyData={keyData}
+        checkIn={checkIn}
+        checkedIn={checkedIn}
+      />
+      {!viewer && (
+        <ConnectButton onClick={onShowLogin}>
+          {isCheckedIn ? 'Connect' : 'Connect to check user in'}
+        </ConnectButton>
       )}
-      lock={lock}
-      owner={owner}
-      keyData={keyData}
-      checkIn={checkIn}
-      checkedIn={checkedIn}
-    />
+    </>
   )
 }
 
@@ -357,4 +373,14 @@ const Value = styled.div`
   margin-bottom: 15px;
   text-overflow: ellipsis;
   overflow: hidden;
+`
+
+const ConnectButton = styled(ActionButton)`
+  max-width: 290px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 16px;
+  color: var(--white);
 `

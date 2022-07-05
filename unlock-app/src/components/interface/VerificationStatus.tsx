@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import styled from 'styled-components'
 import { isSignatureValidForAddress } from '../../utils/signatures'
-import { ActionButton } from './buttons/ActionButton'
 
 import Loading from './Loading'
 import { ValidKey, InvalidKey } from './verification/Key'
@@ -100,12 +99,8 @@ export const VerificationStatus = ({ data, sig }: Props) => {
         unlockKey={unlockKey}
         lock={lock}
         network={network}
+        onShowLogin={() => setShowLogin(true)}
       />
-      {!viewer && (
-        <ConnectButton onClick={() => setShowLogin(true)}>
-          Connect to check user in
-        </ConnectButton>
-      )}
     </Wrapper>
   )
 }
@@ -114,16 +109,6 @@ const Wrapper = styled.div`
   display: flex;
   justify-items: center;
   flex-direction: column;
-`
-
-const ConnectButton = styled(ActionButton)`
-  max-width: 290px;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  padding: 16px;
-  color: var(--white);
 `
 
 export default VerificationStatus
