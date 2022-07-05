@@ -40,7 +40,7 @@ export const updateDefaultLockMetadata = async (data: any) => {
 export const generateKeyMetadata = async (
   address: string,
   keyId: string,
-  isLockOwner: boolean,
+  includeProtected: boolean,
   host: string,
   network: number
 ) => {
@@ -50,7 +50,7 @@ export const generateKeyMetadata = async (
   }
 
   const userMetadata = onChainKeyMetadata.owner
-    ? await getMetadata(address, onChainKeyMetadata.owner, isLockOwner)
+    ? await getMetadata(address, onChainKeyMetadata.owner, includeProtected)
     : {}
 
   const keyCentricData = await getKeyCentricData(address, keyId)
