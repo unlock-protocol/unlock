@@ -34,6 +34,7 @@ export const bsc: NetworkConfig = {
       startBlock: 12396000,
     },
   ],
+  description: 'EVM compaitible network. Cheaper transaction cost.',
 }
 
 export default bsc

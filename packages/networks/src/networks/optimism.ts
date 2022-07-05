@@ -28,6 +28,7 @@ export const optimism: NetworkConfig = {
     symbol: 'Eth',
     decimals: 18,
   },
+  description: 'Layer 2 network. Cheaper transaction cost.',
 }
 
 export default optimism

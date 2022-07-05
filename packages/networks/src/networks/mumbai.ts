@@ -29,6 +29,7 @@ export const mumbai: NetworkConfig = {
   },
   startBlock: 26584912,
   previousDeploys: [],
+  description: 'Layer 2 testing network. Do not use for production',
 }
 
 export default mumbai

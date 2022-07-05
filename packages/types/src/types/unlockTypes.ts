@@ -61,6 +61,7 @@ export interface NetworkConfig {
   }
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
+  description?: string
 }
 
 export interface NetworkConfigs {

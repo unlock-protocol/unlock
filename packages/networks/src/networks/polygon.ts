@@ -37,6 +37,7 @@ export const polygon: NetworkConfig = {
       startBlock: 15714206,
     },
   ],
+  description: 'Layer 2 network. Cheaper transaction cost.',
 }
 
 export default polygon
