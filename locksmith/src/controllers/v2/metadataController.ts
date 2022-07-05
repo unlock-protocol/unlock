@@ -408,10 +408,16 @@ export class MetadataController {
           .status(500)
       }
 
-      const owners: string[] = keys?.map(({ owner }: any) => owner?.address)
-      const keyIds: string[] = keys?.map(({ keyId }: any) => keyId)
+      const owners: { owner: string; keyId: string }[] = keys?.map(
+        ({ owner, keyId }: any) => {
+          return {
+            owner: owner?.address,
+            keyId,
+          }
+        }
+      )
 
-      const keyHoldersMetadataPromise = owners.map(async (owner) => {
+      const keyHoldersMetadataPromise = owners.map(async ({ owner }) => {
         return await lockOperations.getKeyHolderMetadataByAddress(
           lockAddress,
           owner,
@@ -419,7 +425,7 @@ export class MetadataController {
         )
       })
 
-      const keyDataPromise = keyIds.map(async (keyId) => {
+      const keyDataPromise = owners.map(async ({ keyId }) => {
         return await metadataOperations.getKeyCentricData(lockAddress, keyId)
       })
 
@@ -428,25 +434,28 @@ export class MetadataController {
 
       const mergedData = keyHolderMetadata
         .map((keyMetadata: any, index) => {
+          const { owner } = owners[index]
           let metadata = keyMetadata?.data ?? {}
           const keyDataByIndex = keyData[index]?.metadata ?? {}
-          const userAddress = keyMetadata?.userAddress
 
-          metadata = {
-            userAddress,
-            data: {
-              ...metadata,
-              extraMetadata: {
-                ...keyDataByIndex,
+          const hasMetadata =
+            [...Object.keys(metadata), ...Object.keys(keyDataByIndex)].length >
+            0
+
+          // build metadata object only if metadata or extraMetadata are present
+          if (hasMetadata) {
+            metadata = {
+              userAddress: owner,
+              data: {
+                ...metadata,
+                extraMetadata: {
+                  ...keyDataByIndex,
+                },
               },
-            },
-          }
-
-          if (!userAddress) {
-            return null // not return empty object if merged data is empty
-          }
-          return {
-            ...metadata,
+            }
+            return metadata
+          } else {
+            return null
           }
         })
         .filter(Boolean)
