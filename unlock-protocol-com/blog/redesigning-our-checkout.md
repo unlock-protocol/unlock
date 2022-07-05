@@ -70,7 +70,7 @@ Similar to checkout, we've updated our sign in with ethereum integration to matc
 
 We've not made any breaking changes as part of the redesign effort. However, we have introduced new fields for customizing descriptions on new screens and title shown on the checkout head.
 
-You can find more about them inside the [paywall configuration documentation]().
+You can find more about them inside the [paywall configuration documentation](https://docs.unlock-protocol.com/tools/paywall/configuring-checkout).
 
 ## We are listening
 
