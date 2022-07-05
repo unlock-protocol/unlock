@@ -102,7 +102,6 @@ require('./tasks/accounts')
 require('./tasks/balance')
 require('./tasks/config')
 require('./tasks/deploy')
-require('./tasks/impl')
 require('./tasks/upgrade')
 require('./tasks/set')
 require('./tasks/gnosis')
@@ -112,6 +111,7 @@ require('./tasks/utils')
 require('./tasks/lock')
 require('./tasks/verify')
 require('./tasks/keys')
+require('./tasks/unlock')
 
 /**
  * @type import('hardhat/config').HardhatUserConfig

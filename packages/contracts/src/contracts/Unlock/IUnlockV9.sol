@@ -3,7 +3,6 @@ pragma solidity 0.5.17;
 
 /**
  * @title The Unlock Interface
- * @author Nick Furfaro (unlock-protocol.com)
 **/
 
 interface IUnlockV9

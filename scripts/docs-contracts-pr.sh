@@ -2,7 +2,8 @@
 
 # use tmp dir
 tmpdir=$(mktemp -d)
-dest="docs/developers/smart-contracts/contracts-api"
+dest="docs/core-protocol/smart-contracts-api"
+base="master" # "css-update"
 FROM_NPM=1
 
 # get contracts tarball
@@ -31,6 +32,8 @@ rm -rf package
 
 # push to git
 cd docs
+git fetch origin $base
+git checkout $base
 git checkout -b $branch
 message="Contract API docs generated from @unlock-protocol/contracts@${version_number}"
 git add .
@@ -39,6 +42,6 @@ git push origin $branch
 
 # create PR on github
 gh pr create --head "$branch" \
-  --base master  \
+  --base "$base"  \
   --title "$message" \
   --body "This PR adds the latest version of contracts docs, generated from contracts doctrings"

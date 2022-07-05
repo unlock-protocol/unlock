@@ -1,8 +1,7 @@
-import { useContext, useState } from 'react'
-import { WalletService } from '@unlock-protocol/unlock-js'
+import { useState } from 'react'
 import { Card } from '@stripe/stripe-js'
-import { WalletServiceContext } from '../utils/withWalletService'
-import { ConfigContext } from '../utils/withConfig'
+import { useWalletService } from '../utils/withWalletService'
+import { useConfig } from '../utils/withConfig'
 import { ToastHelper } from '../components/helpers/toast.helper'
 
 // TODO: cleanup. We don't need a hook but the API calls should be kept
@@ -21,16 +20,9 @@ export const genAuthorizationHeader = (token: string) => {
 }
 
 // Taken from locksmith's userController/cards.test.ts
-export function generateTypedData(message: any) {
+export function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       User: [{ name: 'publicKey', type: 'address' }],
     },
     domain: {
@@ -39,6 +31,7 @@ export function generateTypedData(message: any) {
     },
     primaryType: 'User',
     message,
+    messageKey,
   }
 }
 
@@ -90,17 +83,20 @@ export const chargeAndSaveCard = async (
   pricing: any,
   recipients: string[]
 ) => {
-  const typedData = generateTypedData({
-    'Charge Card': {
-      publicKey: address,
-      userAddress: address,
-      stripeTokenId,
-      recipients,
-      pricing,
-      lock,
-      network,
+  const typedData = generateTypedData(
+    {
+      'Charge Card': {
+        publicKey: address,
+        userAddress: address,
+        stripeTokenId,
+        recipients,
+        pricing,
+        lock,
+        network,
+      },
     },
-  })
+    'Charge Card'
+  )
 
   const signature = await getSignature(walletService, typedData, address)
 
@@ -132,17 +128,20 @@ export const prepareCharge = async (
   pricing: any,
   recipients: string[]
 ) => {
-  const typedData = generateTypedData({
-    'Charge Card': {
-      publicKey: address,
-      userAddress: address,
-      stripeTokenId,
-      recipients,
-      pricing,
-      lock,
-      network,
+  const typedData = generateTypedData(
+    {
+      'Charge Card': {
+        publicKey: address,
+        userAddress: address,
+        stripeTokenId,
+        recipients,
+        pricing,
+        lock,
+        network,
+      },
     },
-  })
+    'Charge Card'
+  )
 
   const signature = await getSignature(walletService, typedData, address)
 
@@ -198,13 +197,16 @@ export const claimMembership = async (
   network: number,
   lock: string
 ) => {
-  const typedData = generateTypedData({
-    'Claim Membership': {
-      publicKey: address,
-      lock,
-      network,
+  const typedData = generateTypedData(
+    {
+      'Claim Membership': {
+        publicKey: address,
+        lock,
+        network,
+      },
     },
-  })
+    'Claim Membership'
+  )
 
   const signature = await getSignature(walletService, typedData, address)
 
@@ -228,12 +230,15 @@ export const saveCardsForAddress = async (
   address: string,
   stripeTokenId: string
 ) => {
-  const typedData = generateTypedData({
-    'Save Card': {
-      publicKey: address,
-      stripeTokenId,
+  const typedData = generateTypedData(
+    {
+      'Save Card': {
+        publicKey: address,
+        stripeTokenId,
+      },
     },
-  })
+    'Save Card'
+  )
   const signature = await getSignature(walletService, typedData, address)
 
   const opts = {
@@ -260,11 +265,14 @@ export const getCardsForAddress = async (
   walletService: any,
   address: string
 ) => {
-  const typedData = generateTypedData({
-    'Get Card': {
-      publicKey: address,
+  const typedData = generateTypedData(
+    {
+      'Get Card': {
+        publicKey: address,
+      },
     },
-  })
+    'Get Card'
+  )
 
   const signature = await getSignature(walletService, typedData, address)
 
@@ -296,11 +304,14 @@ export const deleteCardForAddress = async (
   walletService: any,
   address: string
 ) => {
-  const typedData = generateTypedData({
-    'Delete Card': {
-      publicKey: address,
+  const typedData = generateTypedData(
+    {
+      'Delete Card': {
+        publicKey: address,
+      },
     },
-  })
+    'Delete Card'
+  )
   const signature = await getSignature(walletService, typedData, address)
 
   const opts = {
@@ -364,8 +375,8 @@ export const getCardConnected = async (
 }
 
 export const useCards = () => {
-  const walletService: WalletService = useContext(WalletServiceContext)
-  const config: Config = useContext(ConfigContext)
+  const walletService = useWalletService()
+  const config: Config = useConfig()
   const [cards, setCards] = useState<Card[]>([])
   const [loading, setLoading] = useState<boolean>(true)
 

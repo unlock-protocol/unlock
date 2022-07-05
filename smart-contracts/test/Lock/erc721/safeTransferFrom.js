@@ -1,122 +1,70 @@
-const { reverts } = require('../../helpers/errors')
-const deployLocks = require('../../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../../helpers/truffle-artifacts')
+const { deployLock, reverts, purchaseKey } = require('../../helpers')
+const { ethers } = require('hardhat')
 
 const TestERC721Recevier = artifacts.require('TestERC721Recevier')
 
-let unlock
 let lock
 
 contract('Lock / erc721 / safeTransferFrom', (accounts) => {
-  before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
-    await lock.updateTransferFee(0) // disable the transfer fee for this test
-  })
-
-  // function safeTransferFrom() still uses transferFrom() under the hood, but adds an additional check afterwards. transferFrom is already well-tested, so here we add a few checks to test only the new functionality.
-  const from = accounts[1]
-  const to = accounts[2]
+  // function safeTransferFrom() still uses transferFrom() under the hood
+  // but adds an additional check afterwards. transferFrom is already well-tested,
+  // so here we add a few checks to test only the new functionality.
   let tokenId
+  const [, from, to] = accounts
 
   before(async () => {
-    // first, let's purchase a brand new key that we can transfer
-    const tx = await lock.purchase(
-      [],
-      [from],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: web3.utils.toWei('0.01', 'ether'),
-        from,
-      }
-    )
+    lock = await deployLock()
+    await lock.updateTransferFee(0) // disable the transfer fee for this test
+    await lock.setMaxKeysPerAddress(10)
 
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = args.tokenId
+    // first, let's purchase a brand new key that we can transfer
+    ;({ tokenId } = await purchaseKey(lock, from))
   })
 
   it('should work if no data is passed in', async () => {
     await lock.safeTransferFrom(from, to, tokenId, {
       from,
     })
-    let ownerOf = await lock.ownerOf.call(tokenId)
+    let ownerOf = await lock.ownerOf(tokenId)
     assert.equal(ownerOf, to)
   })
 
   it('should work if some data is passed in', async () => {
-    const tx = await lock.purchase(
-      [],
-      [accounts[7]],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: web3.utils.toWei('0.01', 'ether'),
-        from: accounts[7],
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = args.tokenId
+    ;({ tokenId } = await purchaseKey(lock, accounts[7]))
     const method = 'safeTransferFrom(address,address,uint256,bytes)'
     await lock.methods[method](
       accounts[7],
       accounts[6],
       tokenId,
-      web3.utils.toHex('Julien'),
+      ethers.utils.hexlify(ethers.utils.toUtf8Bytes('Julien')),
       {
         from: accounts[7],
       }
     )
-    let ownerOf = await lock.ownerOf.call(tokenId)
+    let ownerOf = await lock.ownerOf(tokenId)
     assert.equal(ownerOf, accounts[6])
     // while we may pass data to the safeTransferFrom function, it is not currently utilized in any way other than being passed to the `onERC721Received` function in MixinTransfer.sol
   })
 
   it('should fail if trying to transfer a key to a contract which does not implement onERC721Received', async () => {
-    const tx = await lock.purchase(
-      [],
-      [accounts[5]],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: web3.utils.toWei('0.01', 'ether'),
-        from: accounts[5],
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = args.tokenId
+    const { tokenId } = await purchaseKey(lock, accounts[5])
+
     // A contract which does NOT implement onERC721Received:
-    let nonCompliantContract = unlock.address
+    const NonCompliantContract = artifacts.require('TestEventHooks')
+    const { address } = await NonCompliantContract.new()
+
     await reverts(
-      lock.safeTransferFrom(accounts[5], nonCompliantContract, tokenId, {
+      lock.safeTransferFrom(accounts[5], address, tokenId, {
         from: accounts[5],
       })
     )
     // make sure the key was not transferred
-    let ownerOf = await lock.ownerOf.call(tokenId)
+    let ownerOf = await lock.ownerOf(tokenId)
     assert.equal(ownerOf, accounts[5])
   })
 
   it('should success to transfer when a contract implements onERC721Received', async () => {
-    const tx = await lock.purchase(
-      [],
-      [accounts[7]],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: web3.utils.toWei('0.01', 'ether'),
-        from: accounts[5],
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = args.tokenId
+    ;({ tokenId } = await purchaseKey(lock, accounts[7]))
     // A contract which does implement onERC721Received:
     let compliantContract = await TestERC721Recevier.new()
 
@@ -130,7 +78,7 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
     )
 
     // make sure the key was not transferred
-    let ownerOf = await lock.ownerOf.call(tokenId)
+    let ownerOf = await lock.ownerOf(tokenId)
     assert.equal(ownerOf, compliantContract.address)
   })
 })

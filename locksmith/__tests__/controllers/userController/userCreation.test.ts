@@ -1,19 +1,14 @@
+import { ethers } from 'ethers'
+
 import models = require('../../../src/models')
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
 
 const UserOperations = require('../../../src/operations/userOperations')
 
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       User: [
         { name: 'emailAddress', type: 'string' },
         { name: 'publicKey', type: 'address' },
@@ -26,6 +21,7 @@ function generateTypedData(message: any) {
     },
     primaryType: 'User',
     message,
+    messageKey,
   }
 }
 
@@ -41,10 +37,8 @@ beforeAll(() => {
 
 describe('user creation', () => {
   const request = require('supertest')
-  const sigUtil = require('eth-sig-util')
-  const ethJsUtil = require('ethereumjs-util')
 
-  const privateKey = ethJsUtil.toBuffer(
+  const wallet = new ethers.Wallet(
     '0x68eec585ce3c13bf0cbe407cb05cd2679cb829fe350471846c9a8aa2ea85b6ac'
   )
 
@@ -55,7 +49,7 @@ describe('user creation', () => {
       passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
     },
   }
-  const typedData = generateTypedData(message)
+  const typedData = generateTypedData(message, 'user')
 
   describe('when a user matching the public key does not exist', () => {
     const models = require('../../../src/models')
@@ -109,10 +103,10 @@ describe('user creation', () => {
         },
       }
 
-      const typedData = generateTypedData(message)
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+      const typedData = generateTypedData(message, 'user')
+
+      const { domain, types } = typedData
+      const sig = await wallet._signTypedData(domain, types, message['user'])
 
       const response = await request(app)
         .post('/users')
@@ -131,7 +125,7 @@ describe('user creation', () => {
       const emailAddress = 'ejected_user@example.com'
       const userCreationDetails = {
         emailAddress,
-        publicKey: 'ejected_user_phrase_public_key',
+        publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
         passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
       }
 
@@ -150,7 +144,7 @@ describe('user creation', () => {
       const response = await request(app)
         .post('/users')
         .set('Accept', /json/)
-        .send(generateTypedData(message))
+        .send(generateTypedData(message, 'user'))
       expect(response.statusCode).toBe(409)
     })
   })

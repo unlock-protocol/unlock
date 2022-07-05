@@ -1,11 +1,5 @@
-const { reverts } = require('../../helpers/errors')
-const deployLocks = require('../../helpers/deployLocks')
-const getContractInstance = require('../../helpers/truffle-artifacts')
+const { deployLock, reverts } = require('../../helpers')
 
-const unlockContract = artifacts.require('Unlock.sol')
-
-let unlock
-let locks
 let lock
 let result
 let lockCreator
@@ -18,29 +12,27 @@ contract('Permissions / KeyGranter', (accounts) => {
   newKeyGranter = accounts[1]
 
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, lockCreator)
-    lock = locks.FIRST
+    lock = await deployLock()
   })
 
   describe('default permissions on a new lock', () => {
     it('should add the lock creator to the keyGranter role', async () => {
-      let result = await lock.isKeyGranter.call(lockCreator)
+      let result = await lock.isKeyGranter(lockCreator)
       assert.equal(result, true)
     })
   })
   describe('modifying permissions on an existing lock', () => {
     // lock creator is also added to the LockManager role by default
     it('should allow a lockManager to add a KeyGranter', async () => {
-      result = await lock.isLockManager.call(lockCreator)
+      result = await lock.isLockManager(lockCreator)
       assert.equal(result, true)
       await lock.addKeyGranter(newKeyGranter, { from: lockCreator })
-      result = await lock.isKeyGranter.call(newKeyGranter)
+      result = await lock.isKeyGranter(newKeyGranter)
       assert.equal(result, true)
     })
 
     it('should not allow anyone else to add a KeyGranter', async () => {
-      result = await lock.isLockManager.call(notAuthorized)
+      result = await lock.isLockManager(notAuthorized)
       assert.equal(result, false)
       await reverts(
         lock.addKeyGranter(accounts[5], { from: notAuthorized }),
@@ -54,7 +46,7 @@ contract('Permissions / KeyGranter', (accounts) => {
         'ONLY_LOCK_MANAGER'
       )
       await lock.revokeKeyGranter(newKeyGranter, { from: lockCreator })
-      result = await lock.isKeyGranter.call(newKeyGranter)
+      result = await lock.isKeyGranter(newKeyGranter)
       assert.equal(result, false)
     })
   })
