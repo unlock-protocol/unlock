@@ -85,7 +85,6 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
     web3Service,
     setHasRole,
     keyGranter,
-    isStripeConnected,
   ])
 
   const wrongNetwork = walletNetwork !== lockNetwork
