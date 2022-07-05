@@ -1,17 +1,25 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
+import verifierOperations from '../../../src/operations/verifierOperations'
 
 const app = require('../../../src/app')
 
 jest.setTimeout(600000)
+
+let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
+let lockManager = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
+const keyId = 100
 
 jest.mock('@unlock-protocol/unlock-js', () => {
   return {
     Web3Service: jest.fn().mockImplementation(() => {
       return {
-        isLockManager: (lock: string) => lockAddress === lock,
+        isLockManager: (lock: string, manager: string) =>
+          lockAddress === lock || manager === lockManager,
+        ownerOf: (_lockAddress: string, _tokenId: string, _network: number) =>
+          owner,
       }
     }),
   }
@@ -146,7 +154,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     expect(userMetadataResponse.body.error).not.toBe(undefined)
   })
 
-  it('Get key metadata', async () => {
+  it('get key metadata', async () => {
     expect.assertions(2)
     const lockAddress = await ethers.Wallet.createRandom().getAddress()
     const keyMetadataResponse = await request(app).get(
@@ -154,6 +162,104 @@ describe('Metadata v2 endpoints for locksmith', () => {
     )
     expect(keyMetadataResponse.status).toBe(200)
     expect(keyMetadataResponse.body.userMetadata).toBe(undefined)
+  })
+
+  describe('get key metadata', () => {
+    let loginResponse: any
+
+    beforeEach(async () => {
+      const response = await loginRandomUser(app)
+      owner = response.address
+      loginResponse = response.loginResponse
+
+      // Store user data for the owner of the key
+      const metadata = {
+        public: {
+          firstname: 'Jane',
+          lastname: 'Doe',
+        },
+        protected: {
+          email: 'jane@unlock-protocol.com',
+          zipCode: 11217,
+        },
+      }
+
+      await request(app)
+        .post(`/v2/api/metadata/100/locks/${lockAddress}/users/${owner}`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+        .send({ metadata })
+    })
+
+    describe('get key metadata, as an authorized used', () => {
+      it('includes the protected part as a key owner', async () => {
+        expect.assertions(2)
+
+        const keyMetadata = await request(app)
+          .get(`/v2/api/metadata/100/locks/${lockAddress}/keys/${keyId}`)
+          .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+        expect(keyMetadata.status).toBe(200)
+        expect(keyMetadata.body.userMetadata.protected).toStrictEqual({
+          email: 'jane@unlock-protocol.com',
+          zipCode: 11217,
+        })
+      })
+
+      it('includes the protected part as a verifier', async () => {
+        expect.assertions(3)
+        const { loginResponse, address } = await loginRandomUser(app)
+        expect(loginResponse.status).toBe(200)
+
+        // Add the new user as a verifier
+        await verifierOperations.createVerifier(
+          lockAddress,
+          address,
+          lockManager,
+          100
+        )
+
+        const keyMetadata = await request(app)
+          .get(`/v2/api/metadata/100/locks/${lockAddress}/keys/${keyId}`)
+          .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+        expect(keyMetadata.status).toBe(200)
+        expect(keyMetadata.body.userMetadata.protected).toStrictEqual({
+          email: 'jane@unlock-protocol.com',
+          zipCode: 11217,
+        })
+      })
+
+      it('includes the protected part as a lock manager', async () => {
+        expect.assertions(3)
+        const { loginResponse, address } = await loginRandomUser(app)
+        expect(loginResponse.status).toBe(200)
+        lockManager = address
+
+        const keyMetadata = await request(app)
+          .get(`/v2/api/metadata/100/locks/${lockAddress}/keys/${keyId}`)
+          .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+        expect(keyMetadata.status).toBe(200)
+        expect(keyMetadata.body.userMetadata.protected).toStrictEqual({
+          email: 'jane@unlock-protocol.com',
+          zipCode: 11217,
+        })
+      })
+    })
+
+    describe('as a non-authorized used', () => {
+      it('does not include the protected part', async () => {
+        expect.assertions(2)
+        const lockAddress = await ethers.Wallet.createRandom().getAddress()
+
+        const keyMetadata = await request(app).get(
+          `/v2/api/metadata/100/locks/${lockAddress}/keys/${keyId}`
+        )
+
+        expect(keyMetadata.status).toBe(200)
+        expect(keyMetadata.body.protected).toBe(undefined)
+      })
+    })
   })
 
   it('Get lock metadata', async () => {
@@ -203,7 +309,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     expect(lockAddressMetadataResponse.status).toBe(401)
   })
 
-  it('Doest return error when authentication is present and payload is wrong', async () => {
+  it('Does return error when authentication is present and payload is wrong', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)
