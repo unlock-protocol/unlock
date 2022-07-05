@@ -65,7 +65,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
 
   const getCheckInTime = () => {
     const [_, checkInTimeValue] =
-      extraDataItems?.find(([key]) => key === 'checkedInAt') ?? []
+      Object.entries(metadata)?.find(([key]) => key === 'checkedInAt') ?? []
     if (!checkInTimeValue) return null
     return new Date(checkInTimeValue as number).toLocaleString()
   }
@@ -79,7 +79,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     setShowMetaData(expandAllMetadata)
   }, [expandAllMetadata])
 
-  const hasExtraData = extraDataItems?.length > 0
+  const hasExtraData = extraDataItems?.length > 0 || isCheckedIn
 
   const onMarkAsCheckIn = async () => {
     try {
