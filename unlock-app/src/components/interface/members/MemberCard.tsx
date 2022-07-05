@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Badge, Button } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
-import { useStorageService } from '../../../utils/withStorageService'
+import { StorageServiceContext } from '../../../utils/withStorageService'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { WalletServiceContext } from '../../../utils/withWalletService'
 import { ToastHelper } from '../../../components/helpers/toast.helper'
@@ -47,8 +47,8 @@ export const MemberCard: React.FC<MemberCardProps> = ({
 }) => {
   const { network, account } = useContext(AuthenticationContext)
   const walletService = useContext(WalletServiceContext)
+  const storageService = useContext(StorageServiceContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
-  const storageService = useStorageService()
   const extraDataItems: [string, string | number][] = Object.entries(
     metadata || {}
   ).filter(([key]) => {
@@ -75,6 +75,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
 
   const onSendQrCode = async () => {
     if (!network) return
+    if (!storageService) return
     await storageService.loginPrompt({
       walletService,
       address: account!,
