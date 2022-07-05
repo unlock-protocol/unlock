@@ -22,7 +22,7 @@ describe('lockOperations', () => {
   describe('createLock', () => {
     it('should invoke Lock.create, with the checksummed adresses', async () => {
       expect.assertions(1)
-      const address = '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
+      const address = '0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
       const owner = '0xca750f9232c1c38e34d27e77534e1631526ec99e'
       Lock.create = jest.fn(() => {})
       await createLock({
@@ -32,7 +32,7 @@ describe('lockOperations', () => {
       })
       expect(Lock.create).toHaveBeenCalledWith({
         chain,
-        address: '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5',
+        address: '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5',
         owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
       })
     })
@@ -43,21 +43,19 @@ describe('lockOperations', () => {
       expect.assertions(4)
       Lock.findOne = jest.fn((query) => {
         expect(query.where.address[Op.eq]).toEqual(
-          '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
+          '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5'
         )
         return {
           name: 'My Lock',
-          address: '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5',
+          address: '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5',
           owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
         }
       })
       const lock = await getLockByAddress(
-        '0x0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
+        '0x77cc4f1fe4555f9b9e0d1e918cac211915b079e5'
       )
       expect(lock.name).toEqual('My Lock')
-      expect(lock.address).toEqual(
-        '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
-      )
+      expect(lock.address).toEqual('0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5')
       expect(Lock.findOne).toHaveBeenCalled()
     })
   })
@@ -78,13 +76,13 @@ describe('lockOperations', () => {
           return [
             {
               name: 'My Lock',
-              address: '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5',
+              address: '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5',
               owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
             },
           ]
         })
         const locks = await getLockAddresses()
-        expect(locks).toEqual(['0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'])
+        expect(locks).toEqual(['0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5'])
       })
     })
   })
@@ -98,7 +96,7 @@ describe('lockOperations', () => {
         )
         return {
           name: 'My Lock',
-          address: '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5',
+          address: '0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5',
           owner: '0xCA750f9232C1c38e34D27e77534e1631526eC99e',
         }
       })
@@ -106,9 +104,7 @@ describe('lockOperations', () => {
         '0xca750f9232c1c38e34d27e77534e1631526ec99e'
       )
       expect(lock.name).toEqual('My Lock')
-      expect(lock.address).toEqual(
-        '0x0X77Cc4F1FE4555f9b9E0d1E918caC211915b079e5'
-      )
+      expect(lock.address).toEqual('0x77Cc4f1FE4555F9B9E0d1E918caC211915B079e5')
       expect(Lock.findAll).toHaveBeenCalled()
     })
   })

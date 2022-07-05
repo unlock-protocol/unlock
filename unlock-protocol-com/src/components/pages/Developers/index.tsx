@@ -34,14 +34,14 @@ export const DEVELOPER_RECIPES = [
   {
     Icon: WordpressIcon,
     title: 'Integrate Unlock with Wordpress',
-    href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/wordpress-plugin',
+    href: 'https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/wordpress-plugin',
     description:
       'Check how you can use unlock wordpress plugin to token gate content on wordpress.',
   },
   {
     Icon: ContractIcon,
     title: 'Using an existing NFT contract',
-    href: 'https://docs.unlock-protocol.com/unlock/creators/tutorials-1/using-an-existing-nft-contract',
+    href: 'https://docs.unlock-protocol.com/Tutorials/using-an-existing-nft-contract',
     description:
       'Your lock is an NFT contract, but you can also plug-in an existing ERC721 contract easily to make sure any of the holder is treated as a valid member',
   },
@@ -49,7 +49,7 @@ export const DEVELOPER_RECIPES = [
   {
     Icon: EthereumIcon,
     title: 'Sign-in With Ethereum',
-    href: 'https://docs.unlock-protocol.com/unlock/developers/sign-in-with-ethereum',
+    href: 'https://docs.unlock-protocol.com/Tools/sign-in-with-ethereum',
     description:
       'In most applications, the first step is to identify users, Unlock provides an easy way to identify users.',
   },
@@ -57,7 +57,7 @@ export const DEVELOPER_RECIPES = [
   {
     Icon: TicketIcon,
     title: 'Selling tickets for an event',
-    href: 'https://docs.unlock-protocol.com/unlock/creators/tutorials-1/selling-tickets-for-an-event',
+    href: 'https://unlock-protocol.com/guides/how-to-sell-nft-tickets-for-an-event/',
     description:
       'A ticket to a conference, a concert or a meetup is a membership to that event. With Unlock, you can easily sell tickets to events you organize!',
   },
@@ -67,7 +67,7 @@ export const UNLOCK_COMMUNITY_INTEGRATIONS = [
   {
     Icon: WordpressIcon,
     name: 'Wordpress',
-    href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/wordpress-plugin',
+    href: 'https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/wordpress-plugin/',
   },
   {
     Icon: DiscourseIcon,
@@ -82,7 +82,7 @@ export const UNLOCK_COMMUNITY_INTEGRATIONS = [
   {
     Icon: DiscordIcon,
     name: 'Discord',
-    href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/discord-with-collab.land',
+    href: 'https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/discord',
   },
   {
     Icon: WebFlowIcon,
@@ -97,7 +97,7 @@ export const UNLOCK_COMMUNITY_INTEGRATIONS = [
   {
     Icon: DecentralLand,
     name: 'DecentralLand',
-    href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/decentraland',
+    href: 'https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/decentraland',
   },
 
   {

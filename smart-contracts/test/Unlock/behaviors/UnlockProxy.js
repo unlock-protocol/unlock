@@ -1,9 +1,8 @@
-const { constants } = require('hardlydifficult-ethereum-contracts')
 const deployContracts = require('../../fixtures/deploy')
+const { MAX_GAS } = require('../../helpers/constants')
 
 const shared = require('./shared')
 
-const Unlock = artifacts.require('Unlock')
 const PublicLock = artifacts.require('PublicLock')
 
 contract('Unlock / UnlockProxy', (accounts) => {
@@ -16,14 +15,14 @@ contract('Unlock / UnlockProxy', (accounts) => {
     // get proxy from hardhat deployment
     const { unlock } = await deployContracts()
     this.proxyAddress = unlock.address
+    this.unlock = unlock
 
-    // use with truffle
-    this.unlock = await Unlock.at(this.proxyAddress)
+    // deploy template
     const lock = await PublicLock.new()
 
     await this.unlock.setLockTemplate(lock.address, {
       from: this.unlockOwner,
-      gas: constants.MAX_GAS,
+      gas: MAX_GAS,
     })
   })
 

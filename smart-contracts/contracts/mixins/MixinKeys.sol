@@ -65,7 +65,7 @@ contract MixinKeys is
   // the transfer of a key to another address where their key can be transferred
   // Note: the approver may actually NOT have a key... and there can only
   // be a single approved address
-  mapping (uint => address) private approved;
+  mapping (uint => address) internal approved;
 
   // Keeping track of approved operators for a given Key manager.
   // This approves a given operator for all keys managed by the calling "keyManager"
@@ -98,10 +98,11 @@ contract MixinKeys is
   internal
   view
   {
+    address realKeyOwner = keyManagerOf[_tokenId] == address(0) ? _ownerOf[_tokenId] : keyManagerOf[_tokenId];
     if(
       !_isKeyManager(_tokenId, msg.sender)
       && approved[_tokenId] != msg.sender
-      && !isApprovedForAll(_ownerOf[_tokenId], msg.sender)
+      && !isApprovedForAll(realKeyOwner, msg.sender)
     ) {
       revert ONLY_KEY_MANAGER_OR_APPROVED();
     }
@@ -190,7 +191,7 @@ contract MixinKeys is
     view
     returns (uint256)
   {
-      if(_index >= balanceOf(_keyOwner)) {
+      if(_index >= totalKeys(_keyOwner)) {
         revert OUT_OF_RANGE();
       }
       return _ownedKeyIds[_keyOwner][_index];
@@ -220,7 +221,7 @@ contract MixinKeys is
     _keys[tokenId] = Key(tokenId, expirationTimestamp);
     
     // increase total number of unique owners
-    if(balanceOf(_recipient) == 0 ) {
+    if(totalKeys(_recipient) == 0 ) {
       numberOfOwners++;
     }
 
@@ -353,7 +354,7 @@ contract MixinKeys is
     delete _ownedKeyIds[previousOwner][lastTokenIndex];
 
     // remove from owner count if thats the only key 
-    if(balanceOf(previousOwner) == 1 ) {
+    if(totalKeys(previousOwner) == 1 ) {
       numberOfOwners--;
     }
     // update balance
@@ -380,10 +381,9 @@ contract MixinKeys is
   }
 
   /**
-   * In the specific case of a Lock, each owner can own only at most 1 key.
-   * @return The number of NFTs owned by `_keyOwner`, either 0 or 1.
+   * @return The number of keys owned by `_keyOwner` (expired or not)
   */
-  function balanceOf(
+  function totalKeys(
     address _keyOwner
   )
     public
@@ -393,7 +393,27 @@ contract MixinKeys is
     if(_keyOwner == address(0)) { 
       revert INVALID_ADDRESS();
     }
+
     return _balances[_keyOwner];
+  }
+
+  /**
+   * In the specific case of a Lock, `balanceOf` returns only the tokens with a valid expiration timerange
+   * @return balance The number of valid keys owned by `_keyOwner`
+  */
+  function balanceOf(
+    address _keyOwner
+  )
+    public
+    view
+    returns (uint balance)
+  {
+    uint length = totalKeys(_keyOwner);
+    for (uint i = 0; i < length; i++) {
+      if(isValidKey(tokenOfOwnerByIndex(_keyOwner, i))) {
+        balance++;
+      }
+    }
   }
 
   /**
@@ -471,9 +491,9 @@ contract MixinKeys is
   }
 
   /**
-   * @notice Public function for updating transfer and cancel rights for a given key
+   * @notice Public function for setting the manager for a given key
    * @param _tokenId The id of the key to assign rights for
-   * @param _keyManager The address with the manager's rights for the given key.
+   * @param _keyManager the address with the manager's rights for the given key.
    * Setting _keyManager to address(0) means the keyOwner is also the keyManager
    */
   function setKeyManagerOf(
@@ -483,7 +503,9 @@ contract MixinKeys is
   {
     _isKey(_tokenId);
     if(
+      // is already key manager
       !_isKeyManager(_tokenId, msg.sender) 
+      // is lock manager
       && !isLockManager(msg.sender)
     ) {
       revert UNAUTHORIZED_KEY_MANAGER_UPDATE();
@@ -555,7 +577,8 @@ contract MixinKeys is
   }
 
   /**
-   * Returns true if _keyManager is the manager of the key
+   * Returns true if _keyManager is explicitly set as key manager, or if the 
+   * address is the owner but no km is set.
    * identified by _tokenId
    */
   function _isKeyManager(
@@ -564,8 +587,15 @@ contract MixinKeys is
   ) internal view
     returns (bool)
   {
-    if(keyManagerOf[_tokenId] == _keyManager ||
-      (keyManagerOf[_tokenId] == address(0) && ownerOf(_tokenId) == _keyManager)) {
+    if(
+      // is explicitely a key manager
+      keyManagerOf[_tokenId] == _keyManager 
+      ||
+      (
+        // is owner and no key manager is set
+        ownerOf(_tokenId) == _keyManager)
+        && keyManagerOf[_tokenId] == address(0) 
+      ) {
       return true;
     } else {
       return false;

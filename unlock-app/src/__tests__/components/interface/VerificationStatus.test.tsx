@@ -71,19 +71,18 @@ describe('VerificationStatus', () => {
     apolloSpy.mockReturnValue({
       loading: true,
       error: undefined,
-      data: {},
+      data: '',
     } as any)
 
     const { getByText } = renderWithContexts(
       <VerificationStatus
-        data={{
+        data={JSON.stringify({
           account: account.address,
           lockAddress: '0x123abc',
           timestamp: 1234567,
           network: 1984,
-        }}
+        })}
         sig="this is a signature string, essentially"
-        hexData="this is some hex data"
       />
     )
 
@@ -104,14 +103,13 @@ describe('VerificationStatus', () => {
 
     const { getByText } = renderWithContexts(
       <VerificationStatus
-        data={{
+        data={JSON.stringify({
           account: account.address,
           lockAddress: '0x123abc',
           timestamp: 1234567,
           network: 1984,
-        }}
+        })}
         sig="this is a signature string, essentially"
-        hexData="this is some hex data"
       />
     )
 
@@ -125,21 +123,20 @@ describe('VerificationStatus', () => {
     apolloSpy.mockReturnValue({
       loading: false,
       error: undefined,
-      data: {},
+      data: '',
     } as any)
 
     signatureUtils.isSignatureValidForAddress = jest.fn(() => true)
 
     const { getByText } = renderWithContexts(
       <VerificationStatus
-        data={{
+        data={JSON.stringify({
           account: account.address,
           lockAddress: '0x123abc',
           timestamp: 1234567,
           network: 1984,
-        }}
+        })}
         sig="this is a signature string, essentially"
-        hexData="this is some hex data"
       />
     )
 
@@ -183,17 +180,16 @@ describe('VerificationStatus', () => {
       }),
     }
     const { getByText } = renderWithContexts(
-      <WalletServiceProvider value={walletService}>
+      <WalletServiceProvider value={walletService as any}>
         <ConfigProvider value={config}>
           <VerificationStatus
-            data={{
+            data={JSON.stringify({
               account: account.address,
               lockAddress: '0x123abc',
               timestamp: 1234567,
               network: 1984,
-            }}
+            })}
             sig="this is a signature string, essentially"
-            hexData="this is some hex data"
           />
         </ConfigProvider>
       </WalletServiceProvider>
@@ -240,17 +236,16 @@ describe('VerificationStatus', () => {
       }),
     }
     const { getByText } = renderWithContexts(
-      <WalletServiceProvider value={walletService}>
+      <WalletServiceProvider value={walletService as any}>
         <ConfigProvider value={config}>
           <VerificationStatus
-            data={{
+            data={JSON.stringify({
               account: account.address,
               lockAddress: '0x123abc',
               timestamp: 1234567,
               network: 1984,
-            }}
+            })}
             sig="this is a signature string, essentially"
-            hexData="this is some hex data"
           />
         </ConfigProvider>
       </WalletServiceProvider>

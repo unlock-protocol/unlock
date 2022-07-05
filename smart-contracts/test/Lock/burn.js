@@ -1,43 +1,25 @@
 const { reverts } = require('../helpers/errors')
-const deployLocks = require('../helpers/deployLocks')
-const { ADDRESS_ZERO } = require('../helpers/constants')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let unlock
-let locks
-let tokenId
+const { ADDRESS_ZERO, purchaseKey, deployLock } = require('../helpers')
 
 contract('Lock / burn', (accounts) => {
   let keyOwner = accounts[1]
   let lock
+  let tokenId
+
+  before(async () => {
+    lock = await deployLock()
+    lock.setMaxKeysPerAddress(10)
+  })
 
   beforeEach(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.FIRST
-
-    const tx = await lock.purchase(
-      [],
-      [keyOwner],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        value: web3.utils.toWei('0.01', 'ether'),
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    const { tokenId: newTokenId } = args
-    tokenId = newTokenId
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   it('should delete ownership record', async () => {
-    assert.equal(await lock.getHasValidKey.call(keyOwner), true)
+    assert.equal(await lock.getHasValidKey(keyOwner), true)
     assert.equal(await lock.ownerOf(tokenId), keyOwner)
     await lock.burn(tokenId, { from: keyOwner })
-    assert.equal(await lock.getHasValidKey.call(keyOwner), false)
+    assert.equal(await lock.getHasValidKey(keyOwner), false)
     assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 
@@ -51,10 +33,10 @@ contract('Lock / burn', (accounts) => {
 
   it('allow key manager to burn a key', async () => {
     await lock.setKeyManagerOf(tokenId, accounts[9], { from: keyOwner })
-    assert.equal(await lock.getHasValidKey.call(keyOwner), true)
+    assert.equal(await lock.getHasValidKey(keyOwner), true)
     assert.equal(await lock.ownerOf(tokenId), keyOwner)
     await lock.burn(tokenId, { from: accounts[9] })
-    assert.equal(await lock.getHasValidKey.call(keyOwner), false)
+    assert.equal(await lock.getHasValidKey(keyOwner), false)
     assert.equal(await lock.ownerOf(tokenId), ADDRESS_ZERO)
   })
 

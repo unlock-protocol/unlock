@@ -33,13 +33,7 @@ echo "This command will open a pull request to deploy $COMMIT_TO_DEPLOY to produ
 LATEST_PRODUCTION_COMMIT_MESSAGE=`git log -1 origin/production --pretty=%B`
 COMMIT_REGEX="commit:([0-9a-f]{40})"
 
-# if [[ $LATEST_PRODUCTION_COMMIT_MESSAGE =~ $COMMIT_REGEX ]]
-# then
   LATEST_COMMIT_ID_IN_PRODUCTION="${BASH_REMATCH[1]}"
-# else
-#   echo "Skipping automated deployment. Latest production does not include commit sha1 (this is to avoid deploying an older version of master)."
-#   exit 0
-# fi
 
 LATEST_PRODUCTION_TIMESTAMP=`git show -s --format=%ct $LATEST_COMMIT_ID_IN_PRODUCTION`
 
