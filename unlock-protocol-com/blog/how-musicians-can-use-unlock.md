@@ -3,14 +3,13 @@ title: How musicians can use Unlock
 subTitle: 'For musicians, Unlock Protocol enables many new ways to be supported by their community.'
 authorName: Austin Robey
 publishDate: September 13, 2021
-description: "For musicians, Unlock Protocol (and other Web 3.0 tooling) enables many new ways to be supported by their community."
+description: 'For musicians, Unlock Protocol (and other Web 3.0 tooling) enables many new ways to be supported by their community.'
 image: /images/blog/musicians-use-unlock/musician.jpg
 ---
 
-
 # How musicians can use Unlock
 
-For musicians, [Unlock Protocol](http://unlock-protocol.com/) (and other Web 3.0 tooling) enables many new ways to be supported by their community. By selling “keys” (NFTs) to "locks" and integrating them with different services, musicians can do a number of unique things -- from allowing paywalled blog posts, to private Discord servers, to members-only access to docs and services __across the web__.
+For musicians, [Unlock Protocol](http://unlock-protocol.com/) (and other Web 3.0 tooling) enables many new ways to be supported by their community. By selling “keys” (NFTs) to "locks" and integrating them with different services, musicians can do a number of unique things -- from allowing paywalled blog posts, to private Discord servers, to members-only access to docs and services **across the web**.
 
 It’s part of a web 3.0 future where creators are empowered to fully own the connection with their audience, independent of particular platforms. For musicians, Unlock allows artists to be directly supported by their community and create a unique membership experience.
 
@@ -48,8 +47,8 @@ Learn more here and see an example [using Unlock here](https://www.youtube.com/w
 
 ### Other Integration Ideas
 
-* Gate blog content on your website [(webflow, wordpress)](https://docs.unlock-protocol.com/creators/plugins-and-integrations/wordpress-plugin)
-* Gate access to soundcloud or audius links and tracks
-* Added perks (zoom meetings, guest list spots, etc)
+- Gate blog content on your website [(webflow, wordpress)](https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/wordpress-plugin)
+- Gate access to soundcloud or audius links and tracks
+- Added perks (zoom meetings, guest list spots, etc)
 
 <small>Photo credit by <a href="https://unsplash.com/@gabrielgurrola">Gabriel</a></small>

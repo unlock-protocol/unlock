@@ -14,7 +14,7 @@ contract('Lock / mimick owner()', () => {
   beforeEach(async () => {
     ;[deployer] = await ethers.getSigners()
 
-    const { unlock } = await deployContracts()
+    const { unlockEthers: unlock } = await deployContracts()
 
     // create a new lock
     const tokenAddress = ADDRESS_ZERO

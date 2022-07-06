@@ -1,17 +1,16 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import { useState, useContext, useReducer } from 'react'
 import * as ethers from 'ethers'
-import { Web3ServiceContext } from '../utils/withWeb3Service'
-import { WalletServiceContext } from '../utils/withWalletService'
-import { ConfigContext } from '../utils/withConfig'
-import { AuthenticationContext } from '../contexts/AuthenticationContext'
-import { FATAL_WRONG_NETWORK } from '../errors'
-import { getFiatPricing, getCardConnected } from './useCards'
-import { generateKeyMetadataPayload } from '../structured_data/keyMetadata'
-import { StorageService } from '../services/storageService'
-import LocksContext from '../contexts/LocksContext'
+import { useContext, useReducer, useState } from 'react'
+import { useConfig } from '~/utils/withConfig'
+import { useWalletService } from '~/utils/withWalletService'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
+import { AuthenticationContext } from '../contexts/AuthenticationContext'
+import LocksContext from '../contexts/LocksContext'
+import { FATAL_WRONG_NETWORK } from '../errors'
 import { Lock } from '../unlockTypes'
+
+import { getCardConnected, getFiatPricing } from './useCards'
 /**
  * Event handler
  * @param {*} hash
@@ -349,9 +348,9 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     }
   )
   const { network: walletNetwork } = useContext(AuthenticationContext)
-  const web3Service = useContext(Web3ServiceContext)
-  const walletService = useContext(WalletServiceContext)
-  const config = useContext(ConfigContext)
+  const web3Service = useWeb3Service()
+  const walletService = useWalletService()
+  const config = useConfig()
   const [error, setError] = useState<string | null>(null)
 
   const getLock = async (opts: any = {}) => {
@@ -525,57 +524,11 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
       return false
     }
     const isLockManager = await web3Service.isLockManager(
-      lockFromProps.address,
+      lockFromProps.address!,
       lockManager,
       network
     )
     return isLockManager
-  }
-
-  const getKeyData = async (keyId: string, signer: string) => {
-    let payload = {}
-    let signature
-
-    // If we have a signer, try to get the protected data!
-    if (signer) {
-      payload = generateKeyMetadataPayload(signer, {})
-      signature = await walletService.unformattedSignTypedData(signer, payload)
-    }
-
-    const storageService = new StorageService(config.services.storage.host)
-    const data = await storageService.getKeyMetadata(
-      lockFromProps.address!,
-      keyId,
-      payload,
-      signature,
-      network
-    )
-    return data
-  }
-
-  const markAsCheckedIn = async (signer: string, keyId: string) => {
-    if (!lockFromProps.address) return
-    const payload = generateKeyMetadataPayload(signer, {
-      lockAddress: lockFromProps.address,
-      keyId,
-      // @ts-ignore
-      metadata: {
-        checkedInAt: new Date().getTime(),
-      },
-    })
-    const signature = await walletService.unformattedSignTypedData(
-      signer,
-      payload
-    )
-    const storageService = new StorageService(config.services.storage.host)
-    const response = await storageService.setKeyMetadata(
-      lockFromProps.address,
-      keyId,
-      payload,
-      signature,
-      network
-    )
-    return response.status === 202
   }
 
   function updateMaxNumberOfKeys(
@@ -631,8 +584,6 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     getCreditCardPricing,
     isStripeConnected,
     isLockManager,
-    getKeyData,
-    markAsCheckedIn,
     updateMaxNumberOfKeys,
     purchaseMultipleKeys,
     updateSelfAllowance,

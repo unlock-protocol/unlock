@@ -1,44 +1,20 @@
 const { assert } = require('chai')
 const { time } = require('@openzeppelin/test-helpers')
+const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
 
-const deployLocks = require('../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../helpers/truffle-artifacts')
-
-let lock
-let locks
-let unlock
+const { deployLock, purchaseKey, getBalance, MAX_UINT } = require('../helpers')
 
 contract('Lock / non expiring', (accounts) => {
-  const from = accounts[1]
+  let lock
   const keyOwner = accounts[2]
   let keyPrice
   let tokenId
 
-  before(async () => {
-    unlock = await getContractInstance(unlockContract)
-  })
-
   beforeEach(async () => {
-    locks = await deployLocks(unlock, accounts[0])
-    lock = locks.NON_EXPIRING
+    lock = await deployLock({ name: 'NON_EXPIRING' })
     keyPrice = await lock.keyPrice()
-    const tx = await lock.purchase(
-      [],
-      [keyOwner],
-      [ADDRESS_ZERO],
-      [ADDRESS_ZERO],
-      [[]],
-      {
-        from,
-        value: keyPrice,
-      }
-    )
-    const { args } = tx.logs.find((v) => v.event === 'Transfer')
-    tokenId = args.tokenId
+    ;({ tokenId } = await purchaseKey(lock, keyOwner))
   })
 
   describe('Create lock', () => {
@@ -84,12 +60,8 @@ contract('Lock / non expiring', (accounts) => {
     describe('cancelAndRefund', () => {
       it('should transfer entire price back', async () => {
         // make sure the refund actually happened
-        const initialLockBalance = new BigNumber(
-          await web3.eth.getBalance(lock.address)
-        )
-        const initialKeyOwnerBalance = new BigNumber(
-          await web3.eth.getBalance(keyOwner)
-        )
+        const initialLockBalance = await getBalance(lock.address)
+        const initialKeyOwnerBalance = await getBalance(keyOwner)
 
         // refund
         const tx = await lock.cancelAndRefund(tokenId, { from: keyOwner })
@@ -102,27 +74,25 @@ contract('Lock / non expiring', (accounts) => {
         assert(refund.isEqualTo(keyPrice))
 
         // get gas used
-        const txHash = await web3.eth.getTransaction(tx.tx)
+        const txHash = await ethers.provider.getTransaction(tx.tx)
         const gasUsed = new BigNumber(tx.receipt.gasUsed)
         const gasPrice = new BigNumber(txHash.gasPrice)
         const txFee = gasPrice.times(gasUsed)
 
         // check key owner balance
-        const finalOwnerBalance = new BigNumber(
-          await web3.eth.getBalance(keyOwner)
-        )
+        const finalOwnerBalance = await getBalance(keyOwner)
+
         assert(
           finalOwnerBalance.toFixed(),
           initialKeyOwnerBalance.plus(refund).minus(txFee).toFixed()
         )
 
         // also check lock balance
-        const finalLockBalance = new BigNumber(
-          await web3.eth.getBalance(lock.address)
-        )
+        const finalLockBalance = await getBalance(lock.address)
+
         assert(
-          finalLockBalance.toFixed(),
-          initialLockBalance.minus(refund).toFixed()
+          finalLockBalance.toString(),
+          initialLockBalance.minus(refund).toString()
         )
       })
     })

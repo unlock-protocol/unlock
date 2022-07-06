@@ -1,54 +1,36 @@
-const deployLocks = require('../../helpers/deployLocks')
-
-const unlockContract = artifacts.require('Unlock.sol')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
-
-let unlock
-let locks
-let lock
+const { ADDRESS_ZERO, purchaseKeys, deployLock } = require('../../helpers')
+const { ethers } = require('hardhat')
 
 contract('Lock / uniqueTokenIds', (accounts) => {
+  let lock
   let lockOwner = accounts[9]
   let keyOwner1 = accounts[1]
   let keyOwner2 = accounts[2]
   const keyOwners = [keyOwner1, keyOwner2, accounts[3], accounts[4]]
 
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, lockOwner)
-    lock = locks.SECOND
+    lock = await deployLock({ from: lockOwner })
   })
 
   describe('extending keys', () => {
     it('should not duplicate tokenIDs', async () => {
       // buy some keys
-      const tx = await lock.purchase(
-        [],
-        keyOwners,
-        keyOwners.map(() => ADDRESS_ZERO),
-        keyOwners.map(() => ADDRESS_ZERO),
-        keyOwners.map(() => []),
-        {
-          value: web3.utils.toWei(`${0.01 * keyOwners.length}`, 'ether'),
-          from: accounts[0],
-        }
-      )
-      const tokenIds = tx.logs
-        .filter((v) => v.event === 'Transfer')
-        .map(({ args }) => args.tokenId)
+      const { tokenIds } = await purchaseKeys(lock, keyOwners.length)
 
       const supply = await lock.totalSupply()
-      assert(tokenIds[tokenIds.length - 1].eq(supply))
+      assert.equal(tokenIds[tokenIds.length - 1].toNumber(), supply.toNumber())
 
       // extend a key
       await lock.extend(0, tokenIds[1], ADDRESS_ZERO, [], {
-        value: web3.utils.toWei('0.01', 'ether'),
+        value: ethers.utils.parseUnits('0.01', 'ether'),
         from: keyOwner1,
       })
 
       // make sure no new keys have been created
-      assert(tokenIds[tokenIds.length - 1].eq(await lock.totalSupply()))
+      assert.equal(
+        tokenIds[tokenIds.length - 1].toNumber(),
+        (await lock.totalSupply()).toNumber()
+      )
     })
   })
 })

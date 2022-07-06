@@ -169,6 +169,7 @@ export const CryptoCheckout = ({
       let recurringPayments: number[] | undefined
       if (nbPayments) {
         recurringPayments = new Array(owners.length).fill(nbPayments)
+        console.log(recurringPayments)
       }
 
       // We need to handle the captcha here too!

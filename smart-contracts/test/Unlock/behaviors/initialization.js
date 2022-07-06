@@ -1,4 +1,5 @@
 const BigNumber = require('bignumber.js')
+const { ethers } = require('hardhat')
 
 exports.shouldHaveInitialized = (options) => {
   describe('Unlock / behaviors / initialization', () => {
@@ -11,7 +12,7 @@ exports.shouldHaveInitialized = (options) => {
 
     it('should have an owner', async () => {
       const owner = await unlock.owner()
-      assert.equal(owner, web3.utils.toChecksumAddress(unlockOwner))
+      assert.equal(owner, ethers.utils.getAddress(unlockOwner))
     })
 
     it('should have initialized grossNetworkProduct', async () => {
