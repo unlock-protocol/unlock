@@ -1,6 +1,6 @@
+import { ethers } from 'ethers'
 import { Transaction } from '../models/transaction'
 
-const ethJsUtil = require('ethereumjs-util')
 const Sequelize = require('sequelize')
 
 const { Op } = Sequelize
@@ -16,8 +16,8 @@ export const findOrCreateTransaction = async (transaction: Transaction) => {
     },
     defaults: {
       transactionHash: transaction.transactionHash,
-      sender: ethJsUtil.toChecksumAddress(transaction.sender),
-      recipient: ethJsUtil.toChecksumAddress(transaction.recipient),
+      sender: ethers.utils.getAddress(transaction.sender),
+      recipient: ethers.utils.getAddress(transaction.recipient),
       for: transactionForPackaging(transaction.for),
       chain: transaction.chain,
       data: transaction.data,
@@ -26,7 +26,7 @@ export const findOrCreateTransaction = async (transaction: Transaction) => {
 }
 
 const transactionForPackaging = (transactionFor: string) => {
-  return transactionFor ? ethJsUtil.toChecksumAddress(transactionFor) : null
+  return transactionFor ? ethers.utils.getAddress(transactionFor) : null
 }
 
 /**
@@ -45,17 +45,17 @@ const queryFilter = (filter: any) => {
   if (filter.recipient) {
     target.recipient = {
       [Op.in]: filter.recipient.map((recipient: string) =>
-        ethJsUtil.toChecksumAddress(recipient)
+        ethers.utils.getAddress(recipient)
       ),
     }
   }
 
   if (filter.for) {
-    target.for = { [Op.eq]: ethJsUtil.toChecksumAddress(filter.for) }
+    target.for = { [Op.eq]: ethers.utils.getAddress(filter.for) }
   }
 
   if (filter.sender) {
-    target.sender = { [Op.eq]: ethJsUtil.toChecksumAddress(filter.sender) }
+    target.sender = { [Op.eq]: ethers.utils.getAddress(filter.sender) }
   }
 
   // createdAfter is a timestamp in microseconds Time. (new Date().getTime())

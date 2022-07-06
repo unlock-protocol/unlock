@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import FileSaver from 'file-saver'
 import Link from 'next/link'
-import styled from 'styled-components'
-import { camelCaseToTitle } from '../../utils/strings'
 import { buildCSV } from '../../utils/csv'
-import Address from './Address'
 import { MemberFilters } from '../../unlockTypes'
 import { ExpireAndRefundModal } from './ExpireAndRefundModal'
-import { ActionButton } from './buttons/ActionButton'
-import Media from '../../theme/media'
-
+import {
+  MemberCard,
+  MemberCardPlaceholder,
+} from '../interface/members/MemberCard'
+import { Button } from '@unlock-protocol/ui'
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
   // strings
@@ -24,9 +23,11 @@ interface MetadataTableProps {
   // The keys to the metadata object, in the order they will be displayed.
   columns: string[]
   metadata: KeyMetadata[]
+  loading?: boolean
   filter?: string
   isLockManager?: boolean
   lockAddresses?: string[]
+  loadMembers?: () => void
 }
 
 /**
@@ -42,40 +43,42 @@ function downloadAsCSV(columns: any, metadata: any) {
   FileSaver.saveAs(blob, 'members.csv')
 }
 
-interface CellProps {
-  kind: string
-  value: string
-}
-
-export const Cell = ({ kind, value }: CellProps) => {
-  return kind === 'keyholderAddress' ? (
-    <Address address={value} />
-  ) : (
-    <>{value}</>
-  )
-}
-
 export const MetadataTable: React.FC<MetadataTableProps> = ({
   columns,
   metadata,
   filter,
+  loadMembers,
+  loading = false,
   isLockManager,
   lockAddresses = [],
 }) => {
   const [currentLock, setCurrentLock] = useState(null)
+  const [expandAllMetadata, setExpandAllMetadata] = useState(false)
   const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
     useState(false)
+
+  if (loading) {
+    return (
+      <div className="flex flex-col gap-3">
+        <MemberCardPlaceholder />
+        <MemberCardPlaceholder />
+        <MemberCardPlaceholder />
+        <MemberCardPlaceholder />
+        <MemberCardPlaceholder />
+      </div>
+    )
+  }
 
   if (metadata.length === 0) {
     if (filter === MemberFilters.ALL) {
       return (
-        <Message>
+        <span className="text-gray-600">
           No keys have been purchased yet. Return to your{' '}
           <Link href="/dashboard">
             <a>Dashboard</a>
           </Link>
           .
-        </Message>
+        </span>
       )
     }
 
@@ -104,61 +107,74 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     return !(isLockManager && isKeyValid(metadata))
   }
 
+  const onExpandAllMetadata = () => {
+    if (!isLockManager) return
+    setExpandAllMetadata(!expandAllMetadata)
+  }
+
+  const showCheckInTimeInfo = metadata?.some((item) => item?.checkedInAt)
+
   return (
-    <Wrapper>
+    <section className="flex flex-col gap-3">
       <ExpireAndRefundModal
         active={showExpireAndRefundModal}
         dismiss={closeExpireAndRefund}
         lock={currentLock}
         lockAddresses={lockAddresses}
       />
-      <Table>
-        <thead>
-          <tr>
-            {columns.map((col) => {
-              return <Th key={col}>{camelCaseToTitle(col)}</Th>
-            })}
-            <Th className="text-center" key="actions">
-              Actions
-            </Th>
-          </tr>
-        </thead>
-        <Tbody>
-          {metadata.map((datum) => {
-            const { lockName, expiration, keyholderAddress } = datum
-            const key = `${lockName}${expiration}${keyholderAddress}`
-            return (
-              <tr key={key}>
-                {columns.map((col) => {
-                  return (
-                    <Td key={col}>
-                      <Cell kind={col} value={datum[col]} />
-                    </Td>
-                  )
-                })}
-                <Td className="text-center">
-                  <button
-                    className="bg-gray-200 rounded px-2 py-1 text-sm disabled:opacity-50"
-                    type="button"
-                    disabled={expireAndRefundDisabled(datum)}
-                    onClick={() => onExpireAndRefund(datum)}
-                  >
-                    Expire and Refund
-                  </button>
-                </Td>
-              </tr>
-            )
-          })}
-        </Tbody>
-      </Table>
-      <DownloadButton
-        onClick={() => {
-          downloadAsCSV(columns, metadata)
-        }}
-      >
-        Export as CSV
-      </DownloadButton>
-    </Wrapper>
+
+      <div className="flex justify-end gap-[1rem]">
+        <Button
+          className="flex-initial"
+          size="small"
+          onClick={() => {
+            downloadAsCSV(columns, metadata)
+          }}
+        >
+          Export as CSV
+        </Button>
+        {isLockManager && (
+          <div className="flex justify-end">
+            <Button size="small" onClick={onExpandAllMetadata}>
+              Show all metadata
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {metadata?.map((data: any) => {
+        const { lockName, expiration, keyholderAddress, token } = data
+        const key = `${lockName}${expiration}${keyholderAddress}`
+
+        return (
+          <MemberCard
+            key={key}
+            lockName={lockName}
+            expiration={expiration}
+            tokenId={token}
+            keyholderAddress={keyholderAddress}
+            metadata={data}
+            expandAllMetadata={expandAllMetadata}
+            isLockManager={isLockManager}
+            expireAndRefundDisabled={expireAndRefundDisabled(data)}
+            onExpireAndRefund={() => onExpireAndRefund(data)}
+            showCheckInTimeInfo={showCheckInTimeInfo}
+            loadMembers={loadMembers}
+          />
+        )
+      })}
+
+      <div className="flex justify-end">
+        <Button
+          className="flex-initial"
+          onClick={() => {
+            downloadAsCSV(columns, metadata)
+          }}
+        >
+          Export as CSV
+        </Button>
+      </div>
+    </section>
   )
 }
 
@@ -167,55 +183,5 @@ MetadataTable.defaultProps = {
   isLockManager: false,
   lockAddresses: [],
 }
-
-const Wrapper = styled.section`
-  grid-gap: 16px;
-  display: flex;
-  flex-direction: column;
-`
-
-const DownloadButton = styled(ActionButton)`
-  grid-row: 2;
-  grid-column: 10/13;
-  padding: 5px;
-  align-self: end;
-  height: 40px;
-  ${Media.phone`
-    display: none;
-  `};
-`
-
-const Table = styled.table`
-  grid-column: 1/13;
-  width: 100%;
-  border-collapse: collapse;
-`
-
-const Tbody = styled.tbody`
-  color: var(--slate);
-`
-
-const Td = styled.td`
-  padding: 0.5rem 0rem;
-  text-align: left;
-`
-
-const Th = styled.th`
-  font-family: 'IBM Plex Mono';
-  font-size: 8px;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--darkgrey);
-  font-weight: 200;
-  padding: 0.5rem 0rem;
-  text-align: left;
-`
-
-const Message = styled.p`
-  color: var(--grey);
-`
 
 export default MetadataTable

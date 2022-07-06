@@ -31,7 +31,7 @@ interface NavigationalLinkWithIcon extends NavigationLink {
 const DEVELOPER_NAVIGATION_INTEGRATIONS: NavigationLink[] = [
   {
     name: 'WordPress',
-    href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/wordpress-plugin',
+    href: 'https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/wordpress-plugin',
   },
   {
     name: 'Webflow',
@@ -39,7 +39,7 @@ const DEVELOPER_NAVIGATION_INTEGRATIONS: NavigationLink[] = [
   },
   {
     name: 'Discord',
-    href: 'https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations/discord',
+    href: 'https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/discord',
   },
   {
     name: 'Shopify',
@@ -53,20 +53,20 @@ const DEVELOPER_NAVIGATION_INTEGRATIONS: NavigationLink[] = [
 
 const DEVELOPER_NAVIGATION_RECIPES: NavigationLink[] = [
   {
-    name: 'Making a custom login',
-    href: 'https://docs.unlock-protocol.com/unlock/developers/sign-in-with-ethereum',
+    name: 'Building token gated applications',
+    href: 'https://docs.unlock-protocol.com/Tutorials/building-token-gated-applications',
+  },
+  {
+    name: 'Sign in with Ethereum',
+    href: 'https://docs.unlock-protocol.com/Tools/sign-in-with-ethereum',
   },
   {
     name: 'Webhooks',
-    href: 'https://docs.unlock-protocol.com/unlock/developers/locksmith/webhooks',
+    href: 'https://docs.unlock-protocol.com/Tools/locksmith/webhooks',
   },
   {
-    name: 'Create your own API',
-    href: 'https://docs.unlock-protocol.com/unlock/developers/unlock-platform',
-  },
-  {
-    name: 'Manage Contracts',
-    href: 'https://docs.unlock-protocol.com/unlock/developers/smart-contracts',
+    name: 'Subgraph',
+    href: 'https://docs.unlock-protocol.com/Tools/subgraph',
   },
 ]
 
@@ -74,7 +74,7 @@ const DEVELOPER_NAVIGATION_BOTTOM_ITEMS: NavigationalLinkWithIcon[] = [
   {
     name: 'API Reference',
     Icon: BulletedListIcon,
-    href: 'https://docs.unlock-protocol.com/unlock/developers/unlock-platform',
+    href: 'https://docs.unlock-protocol.com/core-protocol/',
   },
   {
     name: 'Github',
@@ -89,7 +89,7 @@ const DEVELOPER_NAVIGATION_BOTTOM_ITEMS: NavigationalLinkWithIcon[] = [
   {
     name: 'Roadmap',
     Icon: CodeIcon,
-    href: 'https://docs.unlock-protocol.com/unlock/governance/roadmap',
+    href: 'https://docs.unlock-protocol.com/governance/roadmap',
   },
 ]
 
@@ -122,18 +122,18 @@ function DeveloperPopover() {
                       <FilesIcon className="not-sr-only" />
                     </div>
                     <div className="flex flex-col space-y-1">
-                      <Link href="https://docs.unlock-protocol.com/unlock/">
+                      <Link href="https://docs.unlock-protocol.com/">
                         <p className="text-sm font-bold"> Documentation </p>
                       </Link>
                       <p className="text-sm text-brand-gray">
                         Your starting point for the integration of Unlock into
-                        other platforms
+                        other platforms.
                       </p>
                     </div>
                   </header>
                   <div className="flex justify-between max-w-[400px] pl-8">
                     <div>
-                      <Link href="https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations">
+                      <Link href="https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/">
                         <p className="text-xs font-bold uppercase ">
                           Integrations
                         </p>
@@ -155,7 +155,7 @@ function DeveloperPopover() {
                     </div>
                     <div>
                       <Link href="https://docs.unlock-protocol.com/unlock/developers/tutorials">
-                        <p className="text-xs font-bold uppercase ">Recipes</p>
+                        <p className="text-xs font-bold uppercase ">Tools</p>
                       </Link>
                       <nav className="grid gap-1 pt-2">
                         {DEVELOPER_NAVIGATION_RECIPES.map((item, index) => (
@@ -268,7 +268,7 @@ function CommunityPopover() {
                       />
                     </div>
                     <div className="flex flex-col space-y-1">
-                      <Link href="https://docs.unlock-protocol.com/unlock/">
+                      <Link href="https://docs.unlock-protocol.com/">
                         <p className="text-sm font-bold"> Community </p>
                       </Link>
                       <p className="text-sm text-brand-gray">
@@ -374,7 +374,7 @@ function Mobile() {
                   <Disclosure.Panel>
                     <div className="p-6 space-y-4">
                       <div>
-                        <Link href="https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations">
+                        <Link href="https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/">
                           <p className="text-xs font-bold uppercase ">
                             Integrations
                           </p>
@@ -396,9 +396,7 @@ function Mobile() {
                       </div>
                       <div>
                         <Link href="https://docs.unlock-protocol.com/unlock/developers/tutorials">
-                          <p className="text-xs font-bold uppercase ">
-                            Recipes
-                          </p>
+                          <p className="text-xs font-bold uppercase ">Tools</p>
                         </Link>
                         <nav className="grid gap-2 pt-2">
                           {DEVELOPER_NAVIGATION_RECIPES.map((item, index) => (

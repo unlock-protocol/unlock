@@ -34,6 +34,6 @@ This hook only has a single entry point, `onKeyCancel`, which is invoked when a 
 
 # Examples
 
-Our docs provide 2 examples for how to use callback hooks. The first one shows how to create a [discount code for key purchases](https://docs.unlock-protocol.com/developers/smart-contracts/discount-codes) on a hook. This hook is quite interesting because it solves the challenge of keeping the discount code secret (it is not submitted when performing the purchase!). The second example shows an example where key purchases are restricted to people who have a special access code.
+Our docs provide 2 examples for how to use callback hooks. The first one shows how to create a discount code for key purchases on a hook. This hook is quite interesting because it solves the challenge of keeping the discount code secret (it is not submitted when performing the purchase!). The second example shows an example where key purchases are restricted to people who have a special access code.
 
 With Ethereum, smart contracts are all running in the same "computer" which opens the door for very deep integrations between different components which provide different features.

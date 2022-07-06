@@ -3,6 +3,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import express from 'express'
 import { MetadataController } from '../../controllers/v2/metadataController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
+import { lockManagerMiddleware } from '../../utils/middlewares/lockManager'
 
 const router = express.Router({ mergeParams: true })
 
@@ -45,6 +46,15 @@ router.put(
   '/:network/locks/:lockAddress/users/:userAddress',
   authenticatedMiddleware,
   (req, res) => metadataController.updateUserMetadata(req, res)
+)
+
+router.put(
+  '/:network/locks/:lockAddress/keys',
+  authenticatedMiddleware,
+  lockManagerMiddleware,
+  (req, res) => {
+    metadataController.getBulkKeysMetadata(req, res)
+  }
 )
 
 module.exports = router

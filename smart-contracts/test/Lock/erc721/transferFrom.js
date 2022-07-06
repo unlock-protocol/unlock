@@ -44,20 +44,21 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
       )
     })
 
-    it('should only allow approved or owner to transfer', async () => {
-      // testing an id mismatch
+    it('should abort if token owner (from) is incorrect', async () => {
       await reverts(
-        lock.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
-          from: keyOwners[5],
-        }),
-        'UNAUTHORIZED'
-      )
-      // testing a mismatched _from address
-      await reverts(
-        lock.transferFrom(keyOwners[2], accounts[9], tokenIds[0], {
+        lock.transferFrom(keyOwners[0], accounts[9], tokenIds[2], {
           from: keyOwners[0],
         }),
-        'UNAUTHORIZED'
+        'ONLY_KEY_MANAGER_OR_APPROVED'
+      )
+    })
+
+    it('should only allow owner without KM, KM or approved to transfer', async () => {
+      await reverts(
+        lock.transferFrom(keyOwners[2], accounts[9], tokenIds[2], {
+          from: keyOwners[5],
+        }),
+        'ONLY_KEY_MANAGER_OR_APPROVED'
       )
     })
 
@@ -103,9 +104,9 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         })
         await reverts(
           lock.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
-            from: keyManager,
+            from: keyOwners[0],
           }),
-          'UNAUTHORIZED'
+          'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
     })
@@ -125,7 +126,7 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
           lock.transferFrom(keyOwners[0], accountApproved, tokenIds[2], {
             from: accountApproved,
           }),
-          'UNAUTHORIZED'
+          'ONLY_KEY_MANAGER_OR_APPROVED'
         )
       })
 
@@ -152,14 +153,25 @@ contract('Lock / erc721 / transferFrom', (accounts) => {
         await lock.setKeyManagerOf(tokenIds[0], keyManager, {
           from: keyOwners[0],
         })
+        await lock.transferFrom(keyOwners[0], accounts[7], tokenIds[0], {
+          from: keyManager,
+        })
       })
-      it('should revert if a key manager is set', async () => {
-        await reverts(
-          lock.transferFrom(keyOwners[0], accounts[9], tokenIds[0], {
-            from: keyManager,
-          }),
-          'UNAUTHORIZED'
-        )
+      it('should transfer ownership correctly to the sender', async () => {
+        assert.equal(await lock.ownerOf(tokenIds[0]), accounts[7])
+      })
+
+      it('update balances properly', async () => {
+        assert.equal(await lock.balanceOf(accounts[7]), 1)
+        assert.equal(await lock.balanceOf(keyOwners[0]), 0)
+      })
+
+      it('update key validity properly', async () => {
+        assert.equal(await lock.getHasValidKey(accounts[7]), true)
+        assert.equal(await lock.getHasValidKey(keyOwners[0]), false)
+      })
+      it('reset the key manager to address zero', async () => {
+        assert.equal(await lock.keyManagerOf(tokenIds[0]), ADDRESS_ZERO)
       })
     })
 
