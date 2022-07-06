@@ -31,6 +31,10 @@ latest_unlock=$(ls $SRC_DOCS_FOLDER/Unlock/IUnlockV* | sed -e 's/[^0-9][^0-9]*\(
 mv "$DEST_DOCS_FOLDER/archive/PublicLock/IPublicLockV${latest_template}.md" "$DEST_DOCS_FOLDER/PublicLock.md"
 mv "$DEST_DOCS_FOLDER/archive/Unlock/IUnlockV${latest_unlock}.md" "$DEST_DOCS_FOLDER/Unlock.md"
 
+# change titles
+sed -i -e "s/IPublicLockV${latest_template}/PublicLock (v${latest_template})/g" "$DEST_DOCS_FOLDER/PublicLock.md"
+sed -i -e "s/IUnlockV${latest_unlock}/Unlock (v${latest_unlock})/g" "$DEST_DOCS_FOLDER/Unlock.md"
+
 ### add README
 echo '# Protocol Reference
 
