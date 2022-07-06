@@ -1,15 +1,12 @@
 import WedlockService, { emailTemplate } from '../../services/wedlockService'
 import fetch from 'node-fetch'
-import fetchMock from 'jest-fetch-mock'
-
-import axios from 'axios'
-jest.mock('axios')
-fetchMock.enableMocks()
+jest.mock('node-fetch', () => jest.fn())
 
 let w = new WedlockService('http://notareal.host')
+
 describe('Wedlocks Service', () => {
   beforeEach(() => {
-    fetch.resetMocks()
+    jest.clearAllMocks()
     w = new WedlockService('http://notareal.host')
   })
 
@@ -38,8 +35,10 @@ describe('Wedlocks Service', () => {
       body: JSON.stringify(expectedPayload),
     }
 
-    fetch.mockResponseOnce(expectedPayload)
-    await w.confirmEmail(recipient, 'https://mcdonalds.gov')
+    fetch.mockResolvedValue(fetchExpected)
+
+    const resp = await w.confirmEmail(recipient, 'https://mcdonalds.gov')
+
     expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
   })
 
@@ -64,7 +63,7 @@ describe('Wedlocks Service', () => {
       body: JSON.stringify(expectedPayload),
     }
 
-    fetch.mockResponseOnce()
+    fetch.mockResolvedValue(fetchExpected)
     await w.welcomeEmail(recipient, 'https://recovery')
 
     expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
@@ -91,7 +90,7 @@ describe('Wedlocks Service', () => {
       body: JSON.stringify(expectedPayload),
     }
 
-    fetch.mockResponseOnce()
+    fetch.mockResolvedValue(fetchExpected)
     await w.welcomeEmail(recipient, 'https://recovery')
 
     expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
@@ -119,7 +118,8 @@ describe('Wedlocks Service', () => {
       },
       body: JSON.stringify(expectedPayload),
     }
-    fetch.mockResponseOnce()
+
+    fetch.mockResolvedValue(fetchExpected)
     await w.keychainQREmail(recipient, keychainLink, lockName, qrData)
 
     expect(fetch).toHaveBeenCalledWith('http://notareal.host', fetchExpected)
