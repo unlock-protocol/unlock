@@ -35,7 +35,7 @@ export const rinkeby: NetworkConfig = {
     decimals: 18,
   },
   startBlock: 3530008,
-  description: 'Testing network. Do not use for production',
+  description: 'Ethereum test network. Do not use for production',
 }
 
 export default rinkeby
