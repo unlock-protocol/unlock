@@ -90,7 +90,7 @@ export class StorageService extends EventEmitter {
       const accessToken = localStorage.getItem('locksmith-access-token')
       if (!accessToken || isExpired(accessToken)) {
         if (refreshToken) {
-          const tokens = await this.refreshToken(refreshToken)
+          const tokens = await this.getRefreshToken(refreshToken)
           localStorage.setItem('locksmith-access-token', tokens.accessToken)
           localStorage.setItem('locksmith-refresh-token', tokens.refreshToken)
         } else {
@@ -122,7 +122,7 @@ export class StorageService extends EventEmitter {
     return localStorage.getItem('locksmith-refresh-token')
   }
 
-  async refreshToken(token: string) {
+  async getRefreshToken(token: string) {
     return this.locksmith.refreshToken(token)
   }
 
