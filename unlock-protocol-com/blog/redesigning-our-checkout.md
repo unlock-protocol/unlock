@@ -28,7 +28,7 @@ You will be able to select quantity and payment method you want to use earlier i
 
 ### Recipient and metadata collection
 
-Recipients field will be populated based on the quantity. You will be able to add recipient addresses and fill out information. We've added more validation checks to ensure user cannot buy memberships than allowed by the locker owner early in the flow.
+Recipients field will be populated based on the quantity. You will be able to add recipient addresses and fill out information. We've added more validation checks to ensure user cannot buy memberships than allowed by the lock owner early in the flow.
 
 ![metadata and recipients on checkout](/images/blog/redesigned-checkout/new-checkout-metadata.png)
 
