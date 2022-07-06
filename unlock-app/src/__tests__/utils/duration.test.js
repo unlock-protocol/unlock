@@ -77,7 +77,7 @@ describe('durations', () => {
 
     it('should return the correct timestamp if the date is far enough in the future', () => {
       expect.assertions(1)
-      const dateToTest = 'Jul 7, 2022'
+      const dateToTest = 'Jul 7, 2032'
       const timestamp = Math.round(new Date(dateToTest).getTime() / 1000)
       expect(expirationAsDate(timestamp)).toEqual(dateToTest)
     })

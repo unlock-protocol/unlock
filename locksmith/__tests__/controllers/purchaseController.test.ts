@@ -1,14 +1,13 @@
+import { ethers } from 'ethers'
 import request from 'supertest'
-import * as sigUtil from 'eth-sig-util'
 
-const ethJsUtil = require('ethereumjs-util')
 const app = require('../../src/app')
 const Base64 = require('../../src/utils/base64')
 
 const participatingLock = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'
 const recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 
-const privateKey = ethJsUtil.toBuffer(
+const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
 const mockPaymentProcessor = {
@@ -20,16 +19,9 @@ const mockPaymentProcessor = {
 const keyPricer = {
   keyPriceUSD: jest.fn().mockReturnValueOnce(250).mockReturnValueOnce(1000000),
 }
-function generateTypedData(message: any) {
+function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       PurchaseRequest: [
         { name: 'recipient', type: 'address' },
         { name: 'lock', type: 'address' },
@@ -43,6 +35,7 @@ function generateTypedData(message: any) {
     },
     primaryType: 'PurchaseRequest',
     message,
+    messageKey,
   }
 }
 
@@ -70,14 +63,17 @@ describe('Purchase Controller', () => {
         },
       }
 
-      const typedData = generateTypedData(message)
-
-      const sig = sigUtil.signTypedData(privateKey, {
-        data: typedData,
-      })
+      const typedData = generateTypedData(message, 'purchaseRequest')
 
       it('responds with a 200 status code', async () => {
         expect.assertions(1)
+
+        const { domain, types } = typedData
+        const sig = await wallet._signTypedData(
+          domain,
+          types,
+          message.purchaseRequest
+        )
 
         const response = await request(app)
           .post('/purchase/USD')

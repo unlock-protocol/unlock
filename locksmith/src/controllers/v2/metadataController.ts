@@ -8,6 +8,7 @@ import logger from '../../logger'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
+import * as lockOperations from '../../operations/lockOperations'
 
 const UserMetadata = z
   .object({
@@ -27,43 +28,11 @@ const BulkUserMetadataBody = z.object({
   users: z.array(UserMetadataBody),
 })
 
-interface IsKeyOrLockOwnerOptions {
-  userAddress?: string
-  lockAddress: string
-  keyId: string
-  network: number
-}
-
 export class MetadataController {
   public web3Service: Web3Service
 
   constructor({ web3Service }: { web3Service: Web3Service }) {
     this.web3Service = web3Service
-  }
-
-  async #isKeyOrLockOwner({
-    userAddress,
-    lockAddress,
-    keyId,
-    network,
-  }: IsKeyOrLockOwnerOptions) {
-    if (!userAddress) {
-      return false
-    }
-    const loggedUserAddress = Normalizer.ethereumAddress(userAddress)
-    const isLockOwner = await this.web3Service.isLockManager(
-      lockAddress,
-      loggedUserAddress,
-      network
-    )
-
-    const keyOwner = await this.web3Service.ownerOf(lockAddress, keyId, network)
-
-    const keyOwnerAddress = Normalizer.ethereumAddress(keyOwner)
-
-    const isKeyOwner = keyOwnerAddress === loggedUserAddress
-
-    return isLockOwner || isKeyOwner
   }
 
   async getLockMetadata(request: Request, response: Response) {
@@ -92,6 +61,13 @@ export class MetadataController {
     }
   }
 
+  /**
+   * Yields the metadata associated with a key and includes protected
+   * fields if the request is performed by key owner or verifier
+   * @param request
+   * @param response
+   * @returns
+   */
   async getKeyMetadata(request: Request, response: Response) {
     try {
       const keyId = request.params.keyId.toLowerCase()
@@ -99,12 +75,13 @@ export class MetadataController {
       const network = Number(request.params.network)
       const host = `${request.protocol}://${request.headers.host}`
 
-      const includeProtected = await this.#isKeyOrLockOwner({
-        keyId,
-        network,
-        lockAddress,
-        userAddress: request.user?.walletAddress,
-      })
+      const includeProtected =
+        await metadataOperations.isKeyOwnerOrLockVerifier({
+          keyId,
+          network,
+          lockAddress,
+          userAddress: request.user?.walletAddress,
+        })
 
       const keyData = await metadataOperations.generateKeyMetadata(
         lockAddress,
@@ -413,6 +390,74 @@ export class MetadataController {
       }
       return response.status(500).send({
         message: 'Bulk user metadata could not be added.',
+      })
+    }
+  }
+
+  async getBulkKeysMetadata(request: Request, response: Response) {
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
+      const { keys }: any = request.body
+
+      if (!keys) {
+        return response
+          .send({
+            message: 'Parameter `keys` is not present',
+          })
+          .status(500)
+      }
+
+      const owners: { owner: string; keyId: string }[] = keys?.map(
+        ({ owner, keyId }: any) => {
+          return {
+            owner: owner?.address,
+            keyId,
+          }
+        }
+      )
+
+      const mergedDataList = owners.map(async ({ owner, keyId }) => {
+        let metadata: any = undefined
+        const keyData = await metadataOperations.getKeyCentricData(
+          lockAddress,
+          keyId
+        )
+        const [keyMetadata] = await lockOperations.getKeyHolderMetadata(
+          lockAddress,
+          [owner],
+          network
+        )
+
+        const keyMetadataData = keyMetadata?.data || undefined
+
+        const hasMetadata =
+          [...Object.keys(keyData ?? {}), ...Object.keys(keyMetadataData ?? {})]
+            .length > 0
+
+        // build metadata object only if metadata or extraMetadata are present
+        if (hasMetadata) {
+          metadata = {
+            userAddress: owner,
+            data: {
+              ...keyMetadataData,
+              extraMetadata: {
+                ...keyData?.metadata,
+              },
+            },
+          }
+        }
+        return metadata
+      })
+
+      const mergedData = await Promise.all(mergedDataList)
+      const filtredMergedData = mergedData.filter(Boolean)
+
+      return response.send(filtredMergedData).status(200)
+    } catch (err) {
+      logger.error(err.message)
+      return response.status(400).send({
+        message: 'There were some problems from getting keys metadata.',
       })
     }
   }

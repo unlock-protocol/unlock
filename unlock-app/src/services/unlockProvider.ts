@@ -1,6 +1,4 @@
 import { ethers } from 'ethers'
-import * as sigUtil from 'eth-sig-util'
-import { toBuffer } from 'ethereumjs-util'
 import { getAccountFromPrivateKey } from '../utils/accounts'
 import UnlockUser from '../structured_data/unlockUser'
 import UnlockPaymentDetails from '../structured_data/unlockPaymentDetails'
@@ -88,31 +86,33 @@ export default class UnlockProvider extends ethers.providers.JsonRpcProvider {
    * we use the address in this class.
    */
   // eslint-disable-next-line no-unused-vars
-  personal_sign([data, _]: any[]) {
-    const privateKey = toBuffer(this.wallet!.privateKey)
-    return sigUtil.personalSign(privateKey, { data })
+  async personal_sign([data, _]: any[]) {
+    const content = ethers.utils.arrayify(data)
+    const signature = await this.wallet?.signMessage(content)
+    return signature
   }
 
-  eth_signTypedData([_, data]: any[]) {
-    const privateKey = toBuffer(this.wallet!.privateKey)
-    return sigUtil.signTypedData(privateKey, { data })
+  async eth_signTypedData([_, data]: any[]) {
+    const { domain, types, message, messageKey } = data
+    return await this.wallet?._signTypedData(domain, types, message[messageKey])
   }
 
   // Signature methods
   // TODO: move these into their own module so they aren't directly accessible
   // on the provider?
-  signData(data: any) {
-    const privateKey = toBuffer(this.wallet!.privateKey)
-    const sig = sigUtil.signTypedData(privateKey, { data })
-    return {
-      data,
-      sig,
-    }
+  async signData(data: any) {
+    const { domain, types, message, messageKey } = data
+    const signature = await this.wallet?._signTypedData(
+      domain,
+      types,
+      message[messageKey]
+    )
+    return { data, signature }
   }
 
   // input conforms to unlockUser structured_data; missing properties default to
   // those stored on provider
-  signUserData(input: any) {
+  async signUserData(input: any) {
     const user = { ...input }
     user.emailAddress = user.emailAddress || this.emailAddress
     user.publicKey = user.publicKey || this.wallet!.address
@@ -120,21 +120,21 @@ export default class UnlockProvider extends ethers.providers.JsonRpcProvider {
       user.passwordEncryptedPrivateKey || this.passwordEncryptedPrivateKey
 
     const data = UnlockUser.build(user)
-    return this.signData(data)
+    return await this.signData(data)
   }
 
   // takes and signs a stripe card token
-  signPaymentData(stripeTokenId: string) {
+  async signPaymentData(stripeTokenId: string) {
     const data = UnlockPaymentDetails.build({
       emailAddress: this.emailAddress,
       publicKey: this.wallet!.address,
       stripeTokenId,
     })
-    return this.signData(data)
+    return await this.signData(data)
   }
 
   // input contains recipient and lock addresses
-  signKeyPurchaseRequestData(input: any) {
+  async signKeyPurchaseRequestData(input: any) {
     // default signature expiration to now + 60 seconds
     const expiry = Math.floor(Date.now() / 1000) + 60
     const purchaseRequest = {
@@ -142,16 +142,16 @@ export default class UnlockProvider extends ethers.providers.JsonRpcProvider {
       ...input,
     }
     const data = UnlockPurchaseRequest.build(purchaseRequest)
-    return this.signData(data)
+    return await this.signData(data)
   }
 
-  generateSignedEjectionRequest() {
+  async generateSignedEjectionRequest() {
     const ejectionRequest = {
       user: {
         publicKey: this.wallet!.address,
       },
     }
     const data = EjectionRequest.build(ejectionRequest)
-    return this.signData(data)
+    return await this.signData(data)
   }
 }
