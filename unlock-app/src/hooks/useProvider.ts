@@ -4,10 +4,9 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { useAddToNetwork } from './useAddToNetwork'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
-import { APP_NAME, useAppStorage } from './useAppStorage'
+import { useAppStorage } from './useAppStorage'
 import { ToastHelper } from '../components/helpers/toast.helper'
 import { StorageService } from '~/services/storageService'
-import { useConfig } from '~/utils/withConfig'
 
 export interface EthereumWindow extends Window {
   web3: any
