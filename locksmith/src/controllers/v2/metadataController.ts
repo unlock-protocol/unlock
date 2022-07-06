@@ -417,50 +417,43 @@ export class MetadataController {
         }
       )
 
-      const keyHoldersMetadataPromise = owners.map(async ({ owner }) => {
-        return await lockOperations.getKeyHolderMetadataByAddress(
+      const mergedDataList = owners.map(async ({ owner, keyId }) => {
+        let metadata: any = undefined
+        const keyData = await metadataOperations.getKeyCentricData(
           lockAddress,
-          owner,
+          keyId
+        )
+        const [keyMetadata] = await lockOperations.getKeyHolderMetadata(
+          lockAddress,
+          [owner],
           network
         )
-      })
 
-      const keyDataPromise = owners.map(async ({ keyId }) => {
-        return await metadataOperations.getKeyCentricData(lockAddress, keyId)
-      })
+        const keyMetadataData = keyMetadata?.data || undefined
 
-      const keyHolderMetadata = await Promise.all(keyHoldersMetadataPromise)
-      const keyData = await Promise.all(keyDataPromise)
+        const hasMetadata =
+          [...Object.keys(keyData ?? {}), ...Object.keys(keyMetadataData ?? {})]
+            .length > 0
 
-      const mergedData = keyHolderMetadata
-        .map((keyMetadata: any, index) => {
-          const { owner } = owners[index]
-          let metadata = keyMetadata?.data ?? {}
-          const keyDataByIndex = keyData[index]?.metadata ?? {}
-
-          const hasMetadata =
-            [...Object.keys(metadata), ...Object.keys(keyDataByIndex)].length >
-            0
-
-          // build metadata object only if metadata or extraMetadata are present
-          if (hasMetadata) {
-            metadata = {
-              userAddress: owner,
-              data: {
-                ...metadata,
-                extraMetadata: {
-                  ...keyDataByIndex,
-                },
+        // build metadata object only if metadata or extraMetadata are present
+        if (hasMetadata) {
+          metadata = {
+            userAddress: owner,
+            data: {
+              ...keyMetadataData,
+              extraMetadata: {
+                ...keyData?.metadata,
               },
-            }
-            return metadata
-          } else {
-            return null
+            },
           }
-        })
-        .filter(Boolean)
+        }
+        return metadata
+      })
 
-      return response.send(mergedData).status(200)
+      const mergedData = await Promise.all(mergedDataList)
+      const filtredMergedData = mergedData.filter(Boolean)
+
+      return response.send(filtredMergedData).status(200)
     } catch (err) {
       logger.error(err.message)
       return response.status(400).send({
