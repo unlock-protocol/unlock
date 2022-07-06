@@ -37,6 +37,6 @@ export const xdai: NetworkConfig = {
       startBlock: 14521200,
     },
   ],
-  description: 'EVM compaitible network. Cheaper transaction cost.',
+  description: 'EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.',
 }
 export default xdai
