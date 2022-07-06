@@ -117,8 +117,9 @@ export const useProvider = (config: any) => {
       }
       const ethersProvider = new ethers.providers.Web3Provider(provider)
 
+      // remove access token when account wallet changes
       const removeAccessToken = () => {
-        localStorage.removeItem(`${APP_NAME}.token`)
+        localStorage.removeItem(`locksmith-refresh-token`)
       }
 
       if (provider.on) {
