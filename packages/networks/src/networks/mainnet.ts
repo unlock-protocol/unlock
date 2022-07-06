@@ -33,7 +33,7 @@ export const mainnet: NetworkConfig = {
     decimals: 18,
   },
   startBlock: 7120795,
-  description: 'The most popular chain',
+  description: 'The most popular network',
 }
 
 export default mainnet
