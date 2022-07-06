@@ -12,7 +12,7 @@
         "ci": "yarn test",
         "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .ts,.js src/",
         "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist",
-        "docs": "yarn hardhat dodoc",
+        "docs": "sh ./bin/build_docs.sh",
         "docs:copy": "copyfiles --verbose docs/**/*.md dist",
         "prepublish": "yarn build"
     },
