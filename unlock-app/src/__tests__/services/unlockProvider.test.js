@@ -1,4 +1,3 @@
-import * as sigUtil from 'eth-sig-util'
 import { WalletService } from '@unlock-protocol/unlock-js'
 import { utils } from 'ethers'
 import UnlockProvider from '../../services/unlockProvider'
@@ -75,7 +74,7 @@ describe('Unlock Provider', () => {
 
   describe('signing data', () => {
     describe('signUserData', () => {
-      it('should sign an object with all fields passed', () => {
+      it('should sign an object with all fields passed', async () => {
         expect.assertions(1)
         const input = {
           emailAddress,
@@ -83,72 +82,74 @@ describe('Unlock Provider', () => {
           passwordEncryptedPrivateKey: key,
         }
 
-        const output = provider.signUserData(input)
+        const { data, signature } = await provider.signUserData(input)
+        const { domain, types, message, messageKey } = data
         // sigutil seems to downcase things
-        expect(sigUtil.recoverTypedSignature(output)).toEqual(
-          publicKey.toLowerCase()
-        )
+
+        expect(
+          utils.verifyTypedData(domain, types, message[messageKey], signature)
+        ).toEqual(utils.getAddress(publicKey))
       })
 
-      it('should also sign an object with default values when not everything is passed', () => {
+      it('should also sign an object with default values when not everything is passed', async () => {
         expect.assertions(1)
         const input = {}
 
-        const output = provider.signUserData(input)
+        const { data, signature } = await provider.signUserData(input)
+        const { domain, types, message, messageKey } = data
         // sigutil seems to downcase things
-        expect(sigUtil.recoverTypedSignature(output)).toEqual(
-          publicKey.toLowerCase()
-        )
+        expect(
+          utils.verifyTypedData(domain, types, message[messageKey], signature)
+        ).toEqual(utils.getAddress(publicKey))
       })
     })
 
     describe('signPaymentData', () => {
-      it('should sign a stripe card token', () => {
+      it('should sign a stripe card token', async () => {
         expect.assertions(1)
         const token = 'tok_1EPsocIsiZS2oQBMRXzw21xh'
-        const output = provider.signPaymentData(token)
+        const { data, signature } = await provider.signPaymentData(token)
+        const { domain, types, message, messageKey } = data
 
-        expect(sigUtil.recoverTypedSignature(output)).toEqual(
-          publicKey.toLowerCase()
-        )
+        expect(
+          utils.verifyTypedData(domain, types, message[messageKey], signature)
+        ).toEqual(utils.getAddress(publicKey))
       })
     })
 
     describe('signKeyPurchaseRequestData', () => {
-      it('should sign a key purchase request with a valid expiration time', () => {
+      it('should sign a key purchase request with a valid expiration time', async () => {
         expect.assertions(2)
         const input = {
           recipient: publicKey,
           lock: '0xaC6b4470B0cba92b823aB96762972e67a1C851d5',
         }
-        const output = provider.signKeyPurchaseRequestData(input)
+        const { data, signature } = await provider.signKeyPurchaseRequestData(
+          input
+        )
         const currentTime = Math.floor(Date.now() / 1000)
 
-        expect(sigUtil.recoverTypedSignature(output)).toEqual(
-          publicKey.toLowerCase()
-        )
-        // Expiration must be some amount of time after right now
+        const { domain, types, message, messageKey } = data
         expect(
-          output.data.message.purchaseRequest.expiry > currentTime
-        ).toBeTruthy()
+          utils.verifyTypedData(domain, types, message[messageKey], signature)
+        ).toEqual(utils.getAddress(publicKey))
+        // Expiration must be some amount of time after right now
+        expect(data.message.purchaseRequest.expiry > currentTime).toBeTruthy()
       })
     })
 
     describe('personal_sign', () => {
-      it('should sign some hex data with the user account private key', () => {
+      it('should sign some hex data with the user account private key', async () => {
         expect.assertions(1)
         const someData = 'this is the data I want to sign'
         const messageHash = utf8ToHex(someData)
 
         // second param is unused, but in keeping with what we receive from WalletService
-        const sig = provider.personal_sign([messageHash, ''])
+        const sig = await provider.personal_sign([messageHash, ''])
 
-        expect(
-          sigUtil.recoverPersonalSignature({
-            data: messageHash,
-            sig,
-          })
-        ).toEqual(publicKey.toLowerCase())
+        expect(utils.verifyMessage(utils.arrayify(messageHash), sig)).toEqual(
+          utils.getAddress(publicKey)
+        )
       })
 
       it.skip('should be compatible with walletService', async (done) => {
@@ -166,14 +167,16 @@ describe('Unlock Provider', () => {
     })
 
     describe('generateEjectionRequest', () => {
-      it('should return a signed ejection request for the current account', () => {
+      it('should return a signed ejection request for the current account', async () => {
         expect.assertions(1)
 
-        const signature = provider.generateSignedEjectionRequest()
+        const { data, signature } =
+          await provider.generateSignedEjectionRequest()
 
-        expect(sigUtil.recoverTypedSignature(signature)).toEqual(
-          publicKey.toLowerCase()
-        )
+        const { domain, types, message, messageKey } = data
+        expect(
+          utils.verifyTypedData(domain, types, message[messageKey], signature)
+        ).toEqual(utils.getAddress(publicKey))
       })
     })
   })
