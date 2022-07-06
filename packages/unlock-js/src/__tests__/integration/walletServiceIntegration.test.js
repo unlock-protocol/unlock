@@ -759,7 +759,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
         it('should have yielded two transactions hash', () => {
           expect.assertions(3)
-          if (['v10'].indexOf(publicLockVersion) !== -1) {
+          if (['v10', 'v11'].indexOf(publicLockVersion) !== -1) {
             expect(transactionHashes.length).toBe(1)
             expect(transactionHashes[0]).toMatch(/^0x[0-9a-fA-F]{64}$/)
             expect(transactionHashes[1]).toBeUndefined()
