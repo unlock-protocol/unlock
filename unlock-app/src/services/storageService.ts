@@ -70,9 +70,18 @@ export class StorageService extends EventEmitter {
     return this.locksmith.login(message, signature)
   }
 
-  async signout() {
-    localStorage.removeItem(`locksmith-access-token`)
-    localStorage.removeItem(`locksmith-refresh-token`)
+  async signOut() {
+    const endpoint = `${this.host}/v2/auth/revoke`
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'refresh-token': this.refreshToken!,
+      },
+    })
+    if (response.ok) {
+      localStorage.removeItem(`locksmith-access-token`)
+      localStorage.removeItem(`locksmith-refresh-token`)
+    }
   }
 
   async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
@@ -107,6 +116,10 @@ export class StorageService extends EventEmitter {
 
   get token() {
     return localStorage.getItem('locksmith-access-token')
+  }
+
+  get refreshToken() {
+    return localStorage.getItem('locksmith-refresh-token')
   }
 
   async refreshToken(token: string) {

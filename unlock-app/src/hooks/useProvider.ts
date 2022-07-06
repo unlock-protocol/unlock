@@ -121,12 +121,12 @@ export const useProvider = (config: any) => {
 
       if (provider.on) {
         provider.on('accountsChanged', async () => {
-          await storageService.signout()
+          await storageService.signOut()
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
 
         provider.on('chainChanged', async () => {
-          await storageService.signout()
+          await storageService.signOut()
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
       }
