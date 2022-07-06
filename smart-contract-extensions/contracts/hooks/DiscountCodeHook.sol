@@ -12,7 +12,7 @@ import '../mixins/LockRoles.sol';
  * @notice Used with a Lock to offer discounts if the user enters a code.
  * @dev One instance of this contract may be used for all v7 locks.
  */
-contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
+contract DiscountCodeHook is ILockKeyPurchaseHook, LockRoles
 {
   using SafeMath for uint;
 

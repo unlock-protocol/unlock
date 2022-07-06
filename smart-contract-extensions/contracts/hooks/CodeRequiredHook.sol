@@ -12,7 +12,7 @@ import '../mixins/LockRoles.sol';
  * a code in order to buy.
  * @dev One instance of this contract may be used for all v7 locks.
  */
-contract CodeRequiredHook is ILockKeyPurchaseHookV7, LockRoles
+contract CodeRequiredHook is ILockKeyPurchaseHook, LockRoles
 {
   /**
    * @notice The code expressed as an address where the private key is
