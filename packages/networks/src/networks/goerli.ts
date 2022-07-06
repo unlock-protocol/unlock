@@ -3,8 +3,8 @@ import { NetworkConfig } from '@unlock-protocol/types'
 export const goerli: NetworkConfig = {
   publicProvider: 'https://goerli.prylabs.net',
   provider: 'https://goerli.prylabs.net',
-  unlockAddress: '0x44d1cE6728A74E8862926406f0FfcA58f81c7950',
-  multisig: '0xC3EBAFD55BC599e614b729a582C371842cc8954a',
+  unlockAddress: '0x627118a4fB747016911e5cDA82e2E77C531e8206',
+  multisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
   id: 5,
   name: 'Goerli (Testnet)',
   blockTime: 1000,
@@ -27,7 +27,7 @@ export const goerli: NetworkConfig = {
     symbol: 'ETH',
     decimals: 18,
   },
-  startBlock: 7151095,
+  startBlock: 7179039,
   previousDeploys: [],
 }
 
