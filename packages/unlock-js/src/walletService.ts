@@ -406,6 +406,28 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Grant key extension. This implementation requires the following
+   * @param {object} params:
+   * - {PropTypes.address} lockAddress
+   * - {number} tokenId
+   * @param {function} callback invoked with the transaction hash
+   */
+  async grantKeyExtension(
+    params: {
+      lockAddress: string
+      tokenId: string
+    },
+    callback: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.grantKeyExtension) {
+      throw new Error('Lock version not supported')
+    }
+    return version.grantKeyExtension.bind(this)(params, callback)
+  }
+
+  /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {object} params
    * - {PropTypes.address} lockAddress
