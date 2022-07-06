@@ -70,6 +70,11 @@ export class StorageService extends EventEmitter {
     return this.locksmith.login(message, signature)
   }
 
+  async signout() {
+    localStorage.removeItem(`locksmith-access-token`)
+    localStorage.removeItem(`locksmith-refresh-token`)
+  }
+
   async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
     try {
       const refreshToken = localStorage.getItem('locksmith-refresh-token')
