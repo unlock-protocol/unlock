@@ -119,6 +119,7 @@ export const useProvider = (config: any) => {
 
       // remove access token when account wallet changes
       const removeAccessToken = () => {
+        localStorage.removeItem(`locksmith-access-token`)
         localStorage.removeItem(`locksmith-refresh-token`)
       }
 
