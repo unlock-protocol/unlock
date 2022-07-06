@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { WalletServiceContext } from '../../../utils/withWalletService'
+import React, { useState, useEffect } from 'react'
+import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
 import InlineModal from '../InlineModal'
 import Loading from '../Loading'
@@ -24,26 +24,37 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   const [loading, setLoading] = useState(false)
   const [loadingAmount, setLoadingAmount] = useState(false)
   const [refundAmount, setRefundAmount] = useState<number | null>(null)
-  const walletService = useContext(WalletServiceContext)
+  const walletService = useWalletService()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
   useEffect(() => {
     if (!active) return
-    getRefundAmount()
-  }, [active])
-
-  const getRefundAmount = async () => {
-    setLoadingAmount(true)
-    const params = {
-      lockAddress,
-      owner,
-      tokenAddress,
-      tokenId: keyId,
+    const getRefundAmount = async () => {
+      setLoadingAmount(true)
+      const params = {
+        lockAddress,
+        owner,
+        tokenAddress,
+        tokenId: keyId,
+      }
+      const totalToRefund = await walletService.getCancelAndRefundValueFor(
+        params,
+        () => true
+      )
+      setRefundAmount(totalToRefund)
+      setLoadingAmount(false)
     }
-    const totalToRefund = await walletService.getCancelAndRefundValueFor(params)
-    setRefundAmount(totalToRefund)
-    setLoadingAmount(false)
-  }
+    getRefundAmount()
+  }, [
+    active,
+    setRefundAmount,
+    setLoadingAmount,
+    lockAddress,
+    tokenAddress,
+    keyId,
+    owner,
+    walletService,
+  ])
 
   const onCloseCallback = () => {
     if (typeof dismiss === 'function') dismiss()
@@ -59,7 +70,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
     }
 
     try {
-      await walletService.cancelAndRefund(params)
+      await walletService.cancelAndRefund(params, () => true)
       onCloseCallback()
       ToastHelper.success('Key cancelled and successfully refunded.')
       // reload page to show updated list of keys

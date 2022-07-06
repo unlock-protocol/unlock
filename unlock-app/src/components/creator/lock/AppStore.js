@@ -76,7 +76,7 @@ const AppStore = ({ lock }) => {
     firebase: {
       name: 'Firebase',
       icon: <Svg.Firebase />,
-      href: 'https://docs.unlock-protocol.com/creators/plugins-and-integrations#firebase',
+      href: 'https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations#firebase',
     },
   }
 
@@ -89,17 +89,17 @@ const AppStore = ({ lock }) => {
     tickets: {
       name: 'Tickets',
       icon: <Svg.Ticket />,
-      href: 'https://docs.unlock-protocol.com/tutorials/selling-tickets-for-an-event',
+      href: 'https://unlock-protocol.com/guides/how-to-sell-nft-tickets-for-an-event/',
     },
     donations: {
       name: 'Donations',
       icon: <Svg.Heart />,
-      href: 'https://docs.unlock-protocol.com/tutorials/receiving-donations-on-github',
+      href: 'https://docs.unlock-protocol.com/move-to-guides/receiving-donations-on-github',
     },
     newsletter: {
       name: 'Newsletter',
       icon: <Svg.Newsletter />,
-      href: 'https://docs.unlock-protocol.com/tutorials/using-unlock-newsletter',
+      href: 'https://unlock-protocol.com/guides/using-unlock-for-newsletters/',
     },
   }
 
@@ -174,7 +174,7 @@ const AppStore = ({ lock }) => {
           want them to easily purchase this lock&apos;s NFT membership.{' '}
           <a
             target="_blank"
-            href="https://docs.unlock-protocol.com/creators/selling-memberships"
+            href="https://unlock-protocol.com/guides/how-to-sell-membership-nfts/"
             rel="noreferrer"
           >
             Learn more about these in our docs
@@ -252,7 +252,7 @@ const AppStore = ({ lock }) => {
               borderRadius="3px"
               size="64px"
               fillColor="var(--grey)"
-              href="https://docs.unlock-protocol.com/creators/locking-page"
+              href="https://docs.unlock-protocol.com/tools/paywall/locking-page"
               target="_blank"
             >
               <Svg.Documentation />

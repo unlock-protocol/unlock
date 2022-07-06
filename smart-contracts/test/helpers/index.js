@@ -8,6 +8,7 @@ const mainnet = require('./mainnet')
 const multisig = require('./multisig')
 const deployLocks = require('./deployLocks')
 const deployContracts = require('../fixtures/deploy.js')
+const time = require('./time')
 
 module.exports = {
   getBalance,
@@ -20,4 +21,5 @@ module.exports = {
   ...errors,
   ...mainnet,
   ...multisig,
+  ...time,
 }

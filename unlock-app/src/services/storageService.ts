@@ -687,6 +687,28 @@ export class StorageService extends EventEmitter {
     }
   }
 
+  async submitMetadata(
+    users: {
+      userAddress: string
+      metadata: {
+        public?: Record<string, string>
+        protected?: Record<string, string>
+      }
+      lockAddress: string
+    }[],
+    network: number
+  ) {
+    const url = `${this.host}/v2/api/metadata/${network}/users`
+    const opts = {
+      method: 'POST',
+      body: JSON.stringify({ users }),
+      headers: {
+        'content-type': 'application/json',
+      },
+    }
+    const response = await fetch(url, opts)
+    return response.json()
+  }
   async markTicketAsCheckedIn({
     lockAddress,
     keyId,
@@ -747,6 +769,27 @@ export class StorageService extends EventEmitter {
     }
     return await this.getEndpoint(
       `/v2/api/metadata/${network}/locks/${lockAddress}/keys/${keyId}`,
+      options,
+      true
+    )
+  }
+
+  async getKeysMetadata({
+    lockAddress,
+    network,
+    lock,
+  }: {
+    lockAddress: string
+    network: number
+    lock: any
+  }): Promise<any> {
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(lock),
+    }
+    return await this.getEndpoint(
+      `/v2/api/metadata/${network}/locks/${lockAddress}/keys`,
       options,
       true
     )

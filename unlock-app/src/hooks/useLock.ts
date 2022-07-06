@@ -1,14 +1,15 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import * as ethers from 'ethers'
 import { useContext, useReducer, useState } from 'react'
+import { useConfig } from '~/utils/withConfig'
+import { useWalletService } from '~/utils/withWalletService'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 import { UNLIMITED_KEYS_COUNT } from '../constants'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import LocksContext from '../contexts/LocksContext'
 import { FATAL_WRONG_NETWORK } from '../errors'
 import { Lock } from '../unlockTypes'
-import { ConfigContext } from '../utils/withConfig'
-import { WalletServiceContext } from '../utils/withWalletService'
-import { Web3ServiceContext } from '../utils/withWeb3Service'
+
 import { getCardConnected, getFiatPricing } from './useCards'
 /**
  * Event handler
@@ -347,9 +348,9 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     }
   )
   const { network: walletNetwork } = useContext(AuthenticationContext)
-  const web3Service = useContext(Web3ServiceContext)
-  const walletService = useContext(WalletServiceContext)
-  const config = useContext(ConfigContext)
+  const web3Service = useWeb3Service()
+  const walletService = useWalletService()
+  const config = useConfig()
   const [error, setError] = useState<string | null>(null)
 
   const getLock = async (opts: any = {}) => {
@@ -523,7 +524,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
       return false
     }
     const isLockManager = await web3Service.isLockManager(
-      lockFromProps.address,
+      lockFromProps.address!,
       lockManager,
       network
     )

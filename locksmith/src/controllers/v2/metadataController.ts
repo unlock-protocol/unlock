@@ -8,6 +8,7 @@ import logger from '../../logger'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { LockMetadata } from '../../models/lockMetadata'
 import { UserTokenMetadata } from '../../models'
+import * as lockOperations from '../../operations/lockOperations'
 
 const UserMetadata = z
   .object({
@@ -60,6 +61,13 @@ export class MetadataController {
     }
   }
 
+  /**
+   * Yields the metadata associated with a key and includes protected
+   * fields if the request is performed by key owner or verifier
+   * @param request
+   * @param response
+   * @returns
+   */
   async getKeyMetadata(request: Request, response: Response) {
     try {
       const keyId = request.params.keyId.toLowerCase()
@@ -382,6 +390,81 @@ export class MetadataController {
       }
       return response.status(500).send({
         message: 'Bulk user metadata could not be added.',
+      })
+    }
+  }
+
+  async getBulkKeysMetadata(request: Request, response: Response) {
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
+      const { keys }: any = request.body
+
+      if (!keys) {
+        return response
+          .send({
+            message: 'Parameter `keys` is not present',
+          })
+          .status(500)
+      }
+
+      const owners: { owner: string; keyId: string }[] = keys?.map(
+        ({ owner, keyId }: any) => {
+          return {
+            owner: owner?.address,
+            keyId,
+          }
+        }
+      )
+
+      const keyHoldersMetadataPromise = owners.map(async ({ owner }) => {
+        return await lockOperations.getKeyHolderMetadataByAddress(
+          lockAddress,
+          owner,
+          network
+        )
+      })
+
+      const keyDataPromise = owners.map(async ({ keyId }) => {
+        return await metadataOperations.getKeyCentricData(lockAddress, keyId)
+      })
+
+      const keyHolderMetadata = await Promise.all(keyHoldersMetadataPromise)
+      const keyData = await Promise.all(keyDataPromise)
+
+      const mergedData = keyHolderMetadata
+        .map((keyMetadata: any, index) => {
+          const { owner } = owners[index]
+          let metadata = keyMetadata?.data ?? {}
+          const keyDataByIndex = keyData[index]?.metadata ?? {}
+
+          const hasMetadata =
+            [...Object.keys(metadata), ...Object.keys(keyDataByIndex)].length >
+            0
+
+          // build metadata object only if metadata or extraMetadata are present
+          if (hasMetadata) {
+            metadata = {
+              userAddress: owner,
+              data: {
+                ...metadata,
+                extraMetadata: {
+                  ...keyDataByIndex,
+                },
+              },
+            }
+            return metadata
+          } else {
+            return null
+          }
+        })
+        .filter(Boolean)
+
+      return response.send(mergedData).status(200)
+    } catch (err) {
+      logger.error(err.message)
+      return response.status(400).send({
+        message: 'There were some problems from getting keys metadata.',
       })
     }
   }

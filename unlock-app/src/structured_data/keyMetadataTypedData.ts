@@ -1,14 +1,7 @@
 // Copied from usage in locksmith tests for metadataController
-export default function generateKeyTypedData(message: any) {
+export default function generateKeyTypedData(message: any, messageKey: string) {
   return {
     types: {
-      EIP712Domain: [
-        { name: 'name', type: 'string' },
-        { name: 'version', type: 'string' },
-        { name: 'chainId', type: 'uint256' },
-        { name: 'verifyingContract', type: 'address' },
-        { name: 'salt', type: 'bytes32' },
-      ],
       KeyMetadata: [],
     },
     domain: {
@@ -17,5 +10,6 @@ export default function generateKeyTypedData(message: any) {
     },
     primaryType: 'KeyMetadata',
     message,
+    messageKey,
   }
 }

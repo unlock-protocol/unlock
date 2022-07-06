@@ -328,7 +328,7 @@ export const CardConfirmationCheckout = ({
           {fee > 0 && (
             <FeeNotice>
               Includes ${(fee / 100).toFixed(2)} in fees{' '}
-              <Link href="https://docs.unlock-protocol.com/unlock/creators/faq#what-are-the-credit-card-fees">
+              <Link href="https://unlock-protocol.com/guides/enabling-credit-cards/">
                 <a target="_blank">
                   <InfoIcon />
                 </a>

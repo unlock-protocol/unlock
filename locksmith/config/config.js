@@ -11,6 +11,7 @@ const config = {
     process.env.PURCHASER_CREDENTIALS ||
     '0x08491b7e20566b728ce21a07c88b12ed8b785b3826df93a7baceb21ddacf8b61',
   metadataHost: process.env.METADATA_HOST,
+  unlockApp: process.env.UNLOCK_APP || 'https://app.unlock-protocol.com',
   logging: false,
   services: {
     wedlocks: 'http://localhost:1337',

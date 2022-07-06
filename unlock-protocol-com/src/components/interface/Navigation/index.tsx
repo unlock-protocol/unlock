@@ -89,7 +89,7 @@ const DEVELOPER_NAVIGATION_BOTTOM_ITEMS: NavigationalLinkWithIcon[] = [
   {
     name: 'Roadmap',
     Icon: CodeIcon,
-    href: 'https://docs.unlock-protocol.com/unlock/governance/roadmap',
+    href: 'https://docs.unlock-protocol.com/governance/roadmap',
   },
 ]
 
@@ -122,7 +122,7 @@ function DeveloperPopover() {
                       <FilesIcon className="not-sr-only" />
                     </div>
                     <div className="flex flex-col space-y-1">
-                      <Link href="https://docs.unlock-protocol.com/unlock/">
+                      <Link href="https://docs.unlock-protocol.com/">
                         <p className="text-sm font-bold"> Documentation </p>
                       </Link>
                       <p className="text-sm text-brand-gray">
@@ -133,7 +133,7 @@ function DeveloperPopover() {
                   </header>
                   <div className="flex justify-between max-w-[400px] pl-8">
                     <div>
-                      <Link href="https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations">
+                      <Link href="https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/">
                         <p className="text-xs font-bold uppercase ">
                           Integrations
                         </p>
@@ -268,7 +268,7 @@ function CommunityPopover() {
                       />
                     </div>
                     <div className="flex flex-col space-y-1">
-                      <Link href="https://docs.unlock-protocol.com/unlock/">
+                      <Link href="https://docs.unlock-protocol.com/">
                         <p className="text-sm font-bold"> Community </p>
                       </Link>
                       <p className="text-sm text-brand-gray">
@@ -374,7 +374,7 @@ function Mobile() {
                   <Disclosure.Panel>
                     <div className="p-6 space-y-4">
                       <div>
-                        <Link href="https://docs.unlock-protocol.com/unlock/creators/plugins-and-integrations">
+                        <Link href="https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/">
                           <p className="text-xs font-bold uppercase ">
                             Integrations
                           </p>

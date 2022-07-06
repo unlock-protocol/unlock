@@ -32,10 +32,10 @@ async function main({
 }) {
   const name = 'FIRST'
   const args = [
-    Locks[name].expirationDuration.toFixed(),
+    Locks[name].expirationDuration,
     ethers.constants.AddressZero,
-    Locks[name].keyPrice.toFixed(),
-    Locks[name].maxNumberOfKeys.toFixed(),
+    Locks[name].keyPrice,
+    Locks[name].maxNumberOfKeys,
     Locks[name].lockName,
   ]
 

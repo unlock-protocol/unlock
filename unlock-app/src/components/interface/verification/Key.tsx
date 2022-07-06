@@ -3,14 +3,14 @@ import {
   Fallback as AvatarFallback,
   Root as Avatar,
 } from '@radix-ui/react-avatar'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import {
   durationsAsTextFromSeconds,
   expirationAsDate,
 } from '../../../utils/durations'
 import { useStorageService } from '../../../utils/withStorageService'
-import { WalletServiceContext } from '../../../utils/withWalletService'
+import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { ActionButton } from '../buttons/ActionButton'
 import Loading from '../Loading'
@@ -150,6 +150,7 @@ interface ValidKeyProps {
   signatureTimestamp: number
   owner: string
   network: number
+  onShowLogin?: () => void
 }
 
 /**
@@ -163,14 +164,15 @@ export const ValidKey = ({
   owner,
   viewer,
   network,
+  onShowLogin,
 }: ValidKeyProps) => {
   const [checkedIn, setCheckedIn] = useState(false)
   const [loading, setLoading] = useState(true)
   const [viewerIsVerifier, setViewerIsVerifier] = useState(false)
-  const [keyData, setKeyData] = useState({})
+  const [keyData, setKeyData] = useState<any>({})
 
   const storageService = useStorageService()
-  const walletService = useContext(WalletServiceContext)
+  const walletService = useWalletService()
 
   const siweLogin = async () => {
     await storageService.loginPrompt({
@@ -200,23 +202,29 @@ export const ValidKey = ({
 
   useEffect(() => {
     const onLoad = async () => {
+      const lockAddress = lock.address
+      let metadata
+      let isVerifier = false
       if (!viewer) {
-        setLoading(false)
-        return
+        metadata = await storageService.getKeyMetadataValues({
+          lockAddress,
+          network,
+          keyId: unlockKey.tokenId,
+        })
+      } else {
+        await siweLogin()
+        isVerifier = await storageService.getVerifierStatus({
+          viewer,
+          network,
+          lockAddress,
+        })
+
+        metadata = await storageService.getKeyMetadataValues({
+          lockAddress,
+          network,
+          keyId: unlockKey.tokenId,
+        })
       }
-      await siweLogin()
-      const isVerifier = await storageService.getVerifierStatus({
-        viewer,
-        network,
-        lockAddress: lock.address,
-      })
-
-      const metadata = await storageService.getKeyMetadataValues({
-        lockAddress: lock.address,
-        network,
-        keyId: unlockKey.tokenId,
-      })
-
       setViewerIsVerifier(isVerifier)
       setKeyData(metadata)
       setLoading(false)
@@ -224,22 +232,32 @@ export const ValidKey = ({
     onLoad()
   }, [lock.address, viewer])
 
+  const isCheckedIn = keyData?.metadata?.checkedInAt
+
   if (loading) {
     return <Loading />
   }
+
   return (
-    <ValidKeyWithMetadata
-      viewerIsVerifier={viewerIsVerifier}
-      unlockKey={unlockKey}
-      timeElapsedSinceSignature={durationsAsTextFromSeconds(
-        secondsElapsedFromSignature
+    <>
+      <ValidKeyWithMetadata
+        viewerIsVerifier={viewerIsVerifier}
+        unlockKey={unlockKey}
+        timeElapsedSinceSignature={durationsAsTextFromSeconds(
+          secondsElapsedFromSignature
+        )}
+        lock={lock}
+        owner={owner}
+        keyData={keyData}
+        checkIn={checkIn}
+        checkedIn={checkedIn}
+      />
+      {!viewer && (
+        <ConnectButton onClick={onShowLogin}>
+          {isCheckedIn ? 'Connect' : 'Connect to check user in'}
+        </ConnectButton>
       )}
-      lock={lock}
-      owner={owner}
-      keyData={keyData}
-      checkIn={checkIn}
-      checkedIn={checkedIn}
-    />
+    </>
   )
 }
 
@@ -355,4 +373,14 @@ const Value = styled.div`
   margin-bottom: 15px;
   text-overflow: ellipsis;
   overflow: hidden;
+`
+
+const ConnectButton = styled(ActionButton)`
+  max-width: 290px;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 16px;
+  color: var(--white);
 `
