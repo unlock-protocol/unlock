@@ -4,6 +4,7 @@
 import PublicLockV0 from './abis/PublicLock/PublicLockV0.json' 
 import PublicLockV1 from './abis/PublicLock/PublicLockV1.json' 
 import PublicLockV10 from './abis/PublicLock/PublicLockV10.json' 
+import PublicLockV11 from './abis/PublicLock/PublicLockV11.json' 
 import PublicLockV2 from './abis/PublicLock/PublicLockV2.json' 
 import PublicLockV3 from './abis/PublicLock/PublicLockV3.json' 
 import PublicLockV4 from './abis/PublicLock/PublicLockV4.json' 
@@ -34,6 +35,7 @@ import LockSerializer from './abis/utils/LockSerializer.json'
 export {PublicLockV0}
 export {PublicLockV1}
 export {PublicLockV10}
+export {PublicLockV11}
 export {PublicLockV2}
 export {PublicLockV3}
 export {PublicLockV4}
