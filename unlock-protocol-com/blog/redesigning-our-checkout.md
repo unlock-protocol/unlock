@@ -40,7 +40,7 @@ We've made it easier to pick and change card using the checkout. We're planning 
 
 ### Confirmation
 
-Our new confirmation page will show you how many memberships you are buying, what the total amount is, how many times a membership will recurr if it's a recurring membership and more.
+Our new confirmation page will show you how many memberships you are buying, what the total amount is, how many times a membership will be renewed if it's a recurring membership and more.
 
 ![confirmation on checkout](/images/blog/redesigned-checkout/new-checkout-confirmation.png)
 
