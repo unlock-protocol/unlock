@@ -2,7 +2,7 @@
 pragma solidity 0.8.2;
 
 import '@openzeppelin/contracts/utils/cryptography/ECDSA.sol';
-import '@unlock-protocol/contracts/dist/PublicLock/ILockKeyPurchaseHookV7.sol';
+import '@unlock-protocol/contracts/dist/Hooks/ILockKeyPurchaseHook.sol';
 import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
 import '../mixins/LockRoles.sol';
 
@@ -12,7 +12,7 @@ import '../mixins/LockRoles.sol';
  * a code in order to buy.
  * @dev One instance of this contract may be used for all v7 locks.
  */
-contract CodeRequiredHook is ILockKeyPurchaseHookV7, LockRoles
+contract CodeRequiredHook is ILockKeyPurchaseHook, LockRoles
 {
   /**
    * @notice The code expressed as an address where the private key is
