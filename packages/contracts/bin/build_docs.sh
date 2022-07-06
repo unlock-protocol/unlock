@@ -15,8 +15,13 @@ mv $DEST_DOCS_FOLDER/docs $DEST_DOCS_FOLDER/archive
 rm -rf $DEST_DOCS_FOLDER/archive/col
 
 # docusaurus titles
-echo '{"label": "Protocol Reference"}' > "$DEST_DOCS_FOLDER/__category__.json"
-echo '{"label": "Past Versions"}' > "$DEST_DOCS_FOLDER/archive/__category__.json"
+echo '{
+  "label": "Protocol Reference",
+  "position": 3
+}' > "$DEST_DOCS_FOLDER/_category_.json"
+echo '{
+  "label": "Past Versions"
+}' > "$DEST_DOCS_FOLDER/archive/_category_.json"
 
 # find latest versions
 latest_template=$(ls $SRC_DOCS_FOLDER/PublicLock/IPublicLockV* | sed -e 's/[^0-9][^0-9]*\([0-9][0-9]*\).*/\1/g' | sort -nr | head -n1)
@@ -25,6 +30,13 @@ latest_unlock=$(ls $SRC_DOCS_FOLDER/Unlock/IUnlockV* | sed -e 's/[^0-9][^0-9]*\(
 # get latest versions out of archive folder
 mv "$DEST_DOCS_FOLDER/archive/PublicLock/IPublicLockV${latest_template}.md" "$DEST_DOCS_FOLDER/PublicLock.md"
 mv "$DEST_DOCS_FOLDER/archive/Unlock/IUnlockV${latest_unlock}.md" "$DEST_DOCS_FOLDER/Unlock.md"
+
+### add README
+echo '# Protocol Reference
+
+This section of the docs is generated automatically from the smart contracts themselves. 
+You can find out more about contributing [here](https://github.com/unlock-protocol/unlock).
+' > "$DEST_DOCS_FOLDER/README.md"
 
 # replace docs
 rm -rf $SRC_DOCS_FOLDER
