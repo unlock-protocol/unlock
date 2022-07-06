@@ -1,7 +1,7 @@
 ---
 title: The brand new checkout experience
 authorName: searchableguy
-publishDate: July 5, 2022
+publishDate: July 6, 2022
 description: We are launching public preview of new checkout experience.
 image: /images/blog/redesigned-checkout/new-checkout.png
 ---
