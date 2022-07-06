@@ -47,7 +47,7 @@ Our new confirmation page will show you how many memberships you are buying, wha
 
 ### Minting
 
-We have some cool minting animations to show off while your transactions are confirmed on the chain. In most cases, it will be instant but if not, you have something to look foward to.
+We have some cool minting animations to show off while your transactions are confirmed on the chain. In most cases, it will be instant but if not, you have something to look forward to.
 
 ![minting progress on checkout](/images/blog/redesigned-checkout/new-checkout-minting.png)
 
@@ -55,7 +55,7 @@ We have some cool minting animations to show off while your transactions are con
 
 ### Using an Unlock account
 
-We've tried to make it easier to use an Ulock account and explain who is it intended for. Users can choose to login using their crypto wallet or checkout using Unlock account in which case they would only be able to buy credit card enabled memberships.
+We've tried to make it easier to use an Unlock account and explain who is it intended for. Users can choose to login using their crypto wallet or checkout using Unlock account in which case they would only be able to buy credit card enabled memberships.
 
 ![signing using unlock account](/images/blog/redesigned-checkout/new-checkout-unlock-account.png)
 
