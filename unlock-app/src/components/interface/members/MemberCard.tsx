@@ -50,6 +50,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   expandAllMetadata,
   showCheckInTimeInfo,
   loadMembers,
+  isLockManager,
   expireAndRefundDisabled = true,
   metadata = {},
 }) => {
@@ -70,6 +71,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     return new Date(checkInTimeValue as number).toLocaleString()
   }
   const toggleMetada = () => {
+    if (!isLockManager) return
     setShowMetaData(!showMetaData)
   }
 
@@ -138,12 +140,14 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           >
             Expire & Refund
           </Button>
-          <Button size="small" variant="secondary" onClick={toggleMetada}>
-            <div className="flex items-center">
-              <span>Show metadata</span>
-              <ArrowDown />
-            </div>
-          </Button>
+          {isLockManager && (
+            <Button size="small" variant="secondary" onClick={toggleMetada}>
+              <div className="flex items-center">
+                <span>Show metadata</span>
+                <ArrowDown />
+              </div>
+            </Button>
+          )}
         </div>
       </div>
       <div>
