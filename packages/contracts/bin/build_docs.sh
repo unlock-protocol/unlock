@@ -42,6 +42,16 @@ This section of the docs is generated automatically from the smart contracts the
 You can find out more about contributing [here](https://github.com/unlock-protocol/unlock).
 ' > "$DEST_DOCS_FOLDER/README.md"
 
+# docusaurus titles
+echo '{
+  "label": "Protocol Reference",
+  "position": 3
+}' > "$DEST_DOCS_FOLDER/_category_.json"
+echo '{
+  "label": "Past Versions"
+}' > "$DEST_DOCS_FOLDER/archive/_category_.json"
+
 # replace docs
 rm -rf $SRC_DOCS_FOLDER
 mv $DEST_DOCS_FOLDER $SRC_DOCS_FOLDER
+
