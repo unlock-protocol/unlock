@@ -89,7 +89,11 @@ export const notifyNewKeysToWedlocks = async (
  * and email based on the lock's template if applicable
  * @param key
  */
-export const notifyNewKeyToWedlocks = async (key: Key, network?: number) => {
+export const notifyNewKeyToWedlocks = async (
+  key: Key,
+  network?: number,
+  includeQrCode = false
+) => {
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
       tokenAddress: Normalizer.ethereumAddress(key.lock.address),
@@ -117,7 +121,7 @@ export const notifyNewKeyToWedlocks = async (key: Key, network?: number) => {
     })
 
     const attachments: Attachment[] = []
-    if (network && key.keyId) {
+    if (includeQrCode && network && key?.keyId) {
       const qrCode = await generateQrCode({
         network,
         lockAddress: key.lock.address,

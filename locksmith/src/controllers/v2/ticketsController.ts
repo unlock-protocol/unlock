@@ -98,7 +98,8 @@ export class TicketsController {
             address: keyOwner,
           },
         },
-        network
+        network,
+        true
       )
       return response.sendStatus(200)
     } catch (err) {
