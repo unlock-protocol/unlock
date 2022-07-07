@@ -90,6 +90,7 @@ export class TicketsController {
       )
       await notifyNewKeyToWedlocks(
         {
+          keyId,
           lock: {
             address: lockAddress,
           },

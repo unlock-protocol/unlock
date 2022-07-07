@@ -13,6 +13,17 @@ type Attachment = {
   path: string
 }
 
+interface Key {
+  lock: {
+    address: string
+    name?: string
+  }
+  owner: {
+    address: string
+  }
+  keyId?: string
+}
+
 /**
  * Function to send an email with the Wedlocks service
  * Pass a template, a recipient, some params and attachements
@@ -78,7 +89,7 @@ export const notifyNewKeysToWedlocks = async (
  * and email based on the lock's template if applicable
  * @param key
  */
-export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
+export const notifyNewKeyToWedlocks = async (key: Key, network?: number) => {
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
       tokenAddress: Normalizer.ethereumAddress(key.lock.address),
@@ -94,7 +105,7 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
     ...userTokenMetadataRecord?.data?.userMetadata?.protected,
   })
 
-  const recipient = protectedData.email as string
+  const recipient = protectedData?.email as string
 
   logger.info(`Sending ${recipient} key: ${key.lock.address}-${key.keyId}`)
 
@@ -105,19 +116,14 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
       keyId: key.keyId,
     })
 
-    let attachments: Attachment[] = []
-    if (network) {
+    const attachments: Attachment[] = []
+    if (network && key.keyId) {
       const qrCode = await generateQrCode({
         network,
         lockAddress: key.lock.address,
         tokenId: key.keyId,
       })
-      attachments = [
-        ...attachments,
-        {
-          path: qrCode,
-        },
-      ]
+      attachments.push({ path: qrCode })
     }
     // Lock address to find the specific template
     await sendEmail(
