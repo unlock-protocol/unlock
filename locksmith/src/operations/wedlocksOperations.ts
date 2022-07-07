@@ -4,13 +4,14 @@ import { UserTokenMetadata } from '../models'
 import config from '../../config/config'
 import { logger } from '../logger'
 import { generateQrCode } from '../utils/qrcode'
+import networks from '@unlock-protocol/networks'
 
 type Params = {
   [key: string]: any
   keyId: string
   keychainUrl: string
   lockName: string
-  network: number
+  network: string
 }
 
 type Attachment = {
@@ -132,7 +133,7 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
         lockName: key?.lock?.name ?? '',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
         keyId: key.keyId ?? '',
-        network: network!,
+        network: networks[network!].name ?? '',
       },
       attachments
     )
