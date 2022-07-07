@@ -188,7 +188,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
                   Mark as Checked-in
                 </Button>
               )}
-              {(hasEmailMetadata || true) && (
+              {hasEmailMetadata && (
                 <Button size="tiny" variant="primary" onClick={onSendQrCode}>
                   Send QR-code by email
                 </Button>
