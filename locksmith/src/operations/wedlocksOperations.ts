@@ -7,6 +7,10 @@ import { generateQrCode } from '../utils/qrcode'
 
 type Params = {
   [key: string]: any
+  keyId: string
+  keychainUrl: string
+  lockName: string
+  network: number
 }
 
 type Attachment = {
@@ -27,7 +31,7 @@ export const sendEmail = async (
   template: string,
   failoverTemplate: string,
   recipient: string,
-  params: Params = {},
+  params: Params = {} as any,
   attachments: Attachment[] = []
 ) => {
   const payload = {
@@ -125,8 +129,10 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
       'keyMined',
       recipient,
       {
-        lockName: key.lock.name,
+        lockName: key?.lock?.name ?? '',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
+        keyId: key.keyId ?? '',
+        network: network!,
       },
       attachments
     )
