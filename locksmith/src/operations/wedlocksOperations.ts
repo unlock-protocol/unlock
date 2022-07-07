@@ -12,6 +12,8 @@ type Params = {
   keychainUrl: string
   lockName: string
   network: string
+  txUrl?: string
+  openSeaUrl?: string
 }
 
 type Attachment = {
