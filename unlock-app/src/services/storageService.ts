@@ -71,16 +71,20 @@ export class StorageService extends EventEmitter {
   }
 
   async signOut() {
-    const endpoint = `${this.host}/v2/auth/revoke`
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'refresh-token': this.refreshToken!,
-      },
-    })
-    if (response.ok) {
+    try {
+      const endpoint = `${this.host}/v2/auth/revoke`
+      await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'refresh-token': this.refreshToken!,
+        },
+      })
       localStorage.removeItem(`locksmith-access-token`)
       localStorage.removeItem(`locksmith-refresh-token`)
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      }
     }
   }
 
