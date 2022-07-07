@@ -1,9 +1,9 @@
 {
     "name": "@unlock-protocol/contracts",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "main": "dist/index.js",
     "scripts": {
-        "clean": "rm -rf dist",
+        "clean": "rm -rf dist docs",
         "test": "hardhat test",
         "abi:cleanup": "yarn clean && tsc && node dist/utils/cleanup.js",
         "build": "yarn build:index && yarn build:dist",
@@ -14,7 +14,7 @@
         "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist",
         "docs": "sh ./bin/build_docs.sh",
         "docs:copy": "copyfiles --verbose docs/**/*.md dist",
-        "prepublish": "yarn build"
+        "prepublish": "yarn clean && yarn build"
     },
     "devDependencies": {
         "@primitivefi/hardhat-dodoc": "0.2.3",
