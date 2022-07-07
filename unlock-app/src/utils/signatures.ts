@@ -9,11 +9,14 @@ import { utils } from 'ethers'
 export const isSignatureValidForAddress = (
   sig: string,
   data: string,
-  address: string
+  address: string,
+  keyGranter?: string
 ) => {
   try {
+    const signer = utils.verifyMessage(data, sig).toLowerCase()
+
     return (
-      utils.verifyMessage(data, sig).toLowerCase() === address.toLowerCase()
+      signer === address.toLowerCase() || signer === keyGranter?.toLowerCase()
     )
   } catch (error) {
     console.error(error)
