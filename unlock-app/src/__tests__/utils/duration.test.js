@@ -4,6 +4,7 @@ import {
   secondsAsDays,
   expirationAsDate,
 } from '../../utils/durations'
+import { MONTH_NAMES } from '../../constants'
 
 describe('durations', () => {
   it('should compute the right durations', () => {
@@ -77,8 +78,16 @@ describe('durations', () => {
 
     it('should return the correct timestamp if the date is far enough in the future', () => {
       expect.assertions(1)
-      const dateToTest = 'Jul 7, 2032'
-      const timestamp = Math.round(new Date(dateToTest).getTime() / 1000)
+
+      // set date 100 years in the future
+      const futureDateToTest = new Date(new Date().getFullYear() + 100, 1, 1)
+      const day = futureDateToTest.getDate()
+      const month = futureDateToTest.getMonth()
+      const year = futureDateToTest.getFullYear()
+
+      const dateToTest = `${MONTH_NAMES[month]} ${day}, ${year}`
+
+      const timestamp = Math.round(futureDateToTest.getTime() / 1000)
       expect(expirationAsDate(timestamp)).toEqual(dateToTest)
     })
 
