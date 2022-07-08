@@ -143,8 +143,9 @@ export const notifyNewKeyToWedlocks = async (
 
     const openSeaUrl =
       networks[network!] && tokenId && lockAddress
-        ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId)
-        : null
+        ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
+          undefined
+        : undefined
     // Lock address to find the specific template
     await sendEmail(
       `keyMined${lockAddress}`,
