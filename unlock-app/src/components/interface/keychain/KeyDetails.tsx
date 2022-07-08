@@ -17,7 +17,7 @@ interface KeysByNetworkProps {
   network: NetworkConfig
 }
 export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
-  const { loading, data } = useQuery(keyHolderQuery(), {
+  const { loading, error, data } = useQuery(keyHolderQuery(), {
     variables: { address: account },
   })
 
@@ -27,7 +27,36 @@ export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
   const { keys } = keyHolders ?? []
   const hasKeys = keys?.length == 0
 
+  if (loading) {
+    return (
+      <div className="flex flex-col mb-3">
+        <div className="h-[1.2rem] w-[17rem] bg-slate-200 mb-2"></div>
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+        </div>
+      </div>
+    )
+  }
   if (hasKeys || loading) return null
+  if (error) {
+    return (
+      <DefaultError
+        title="Could not retrieve keys"
+        illustration="/images/illustrations/error.svg"
+        critical
+      >
+        {error.message}
+      </DefaultError>
+    )
+  }
 
   return (
     <div className="flex flex-col mb-[2rem]">
@@ -48,29 +77,9 @@ export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
 
 export const KeyDetails = () => {
   const { account, network } = useContext(AuthenticationContext)
-  const { loading, error, data } = useQuery(keyHolderQuery(), {
-    variables: { address: account },
-  })
 
   if (!account || !network) {
     return <LoginPrompt />
-  }
-
-  if (loading) return <Loading />
-  if (error) {
-    return (
-      <DefaultError
-        title="Could not retrieve keys"
-        illustration="/images/illustrations/error.svg"
-        critical
-      >
-        {error.message}
-      </DefaultError>
-    )
-  }
-
-  if (data.keyHolders.length == 0) {
-    return <NoKeys />
   }
 
   return (
