@@ -50,7 +50,7 @@ export const VerificationStatus = ({ data, sig }: Props) => {
           network
         )
       }
-      setKeyGranter(await storageService.getKeyGranter(network))
+      setKeyGranter(await storageService?.getKeyGranter(network))
       setUnlockKey(key)
       setLoading(false)
     }
