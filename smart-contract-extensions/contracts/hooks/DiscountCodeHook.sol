@@ -3,7 +3,7 @@ pragma solidity 0.8.2;
 
 import '@openzeppelin/contracts/utils/math/SafeMath.sol';
 import '@openzeppelin/contracts/utils/cryptography/ECDSA.sol';
-import '@unlock-protocol/contracts/dist/PublicLock/ILockKeyPurchaseHookV7.sol';
+import '@unlock-protocol/contracts/dist/Hooks/ILockKeyPurchaseHook.sol';
 import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
 import '../mixins/LockRoles.sol';
 
@@ -12,7 +12,7 @@ import '../mixins/LockRoles.sol';
  * @notice Used with a Lock to offer discounts if the user enters a code.
  * @dev One instance of this contract may be used for all v7 locks.
  */
-contract DiscountCodeHook is ILockKeyPurchaseHookV7, LockRoles
+contract DiscountCodeHook is ILockKeyPurchaseHook, LockRoles
 {
   using SafeMath for uint;
 

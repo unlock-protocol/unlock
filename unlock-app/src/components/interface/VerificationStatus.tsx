@@ -7,6 +7,7 @@ import { ValidKey, InvalidKey } from './verification/Key'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import LoginPrompt from './LoginPrompt'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
+import { useStorageService } from '~/utils/withStorageService'
 
 interface Props {
   data: string
@@ -27,10 +28,12 @@ export const VerificationStatus = ({ data, sig }: Props) => {
   const { account, lockAddress, timestamp, network, tokenId } = JSON.parse(data)
   const [showLogin, setShowLogin] = useState(false)
   const [lock, setLock] = useState(null)
+  const [keyGranter, setKeyGranter] = useState<string>('')
   const [unlockKey, setUnlockKey] = useState<Key | null>(null)
   const [loading, setLoading] = useState(true)
   const { account: viewer } = useContext(AuthenticationContext)
   const web3Service = useContext(Web3ServiceContext)
+  const storageService = useStorageService()
 
   useEffect(() => {
     const onLoad = async () => {
@@ -47,6 +50,7 @@ export const VerificationStatus = ({ data, sig }: Props) => {
           network
         )
       }
+      setKeyGranter(await storageService?.getKeyGranter(network))
       setUnlockKey(key)
       setLoading(false)
     }
@@ -59,7 +63,7 @@ export const VerificationStatus = ({ data, sig }: Props) => {
   }
 
   // If the signature is not valid
-  if (!isSignatureValidForAddress(sig, data, account)) {
+  if (!isSignatureValidForAddress(sig, data, account, keyGranter)) {
     return <InvalidKey reason="Signature does not match!" />
   }
 

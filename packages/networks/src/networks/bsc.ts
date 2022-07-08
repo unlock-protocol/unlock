@@ -18,6 +18,9 @@ export const bsc: NetworkConfig = {
         `https://bscscan.com/token/${address}?a=${holder}`,
     },
   },
+  opensea: {
+    tokenUrl: (_lockAddress, _tokenId) => null,
+  },
   requiredConfirmations: 12,
   erc20: null,
   baseCurrencySymbol: 'BNB',
@@ -34,6 +37,7 @@ export const bsc: NetworkConfig = {
       startBlock: 12396000,
     },
   ],
+  isTestNetwork: false,
 }
 
 export default bsc
