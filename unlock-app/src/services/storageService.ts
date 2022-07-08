@@ -803,4 +803,24 @@ export class StorageService extends EventEmitter {
       true
     )
   }
+
+  async sendKeyQrCodeViaEmail({
+    lockAddress,
+    tokenId,
+    network,
+  }: {
+    lockAddress: string
+    tokenId: string
+    network: number
+  }): Promise<any> {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    return await this.getEndpoint(
+      `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`,
+      options,
+      true
+    )
+  }
 }
