@@ -21,15 +21,8 @@ export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
     variables: { address: account },
   })
 
-  const { subgraphURI, name, id } = network
+  const { name, id } = network
 
-  const apolloClientByNetwork = useMemo(
-    () =>
-      new ApolloClient({
-        uri: subgraphURI!,
-      }),
-    []
-  ) as any
   const [keyHolders] = data?.keyHolders ?? []
   const { keys } = keyHolders ?? []
   const hasKeys = keys?.length == 0
@@ -37,16 +30,19 @@ export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
   if (hasKeys || loading) return null
 
   return (
-    <ApolloProvider client={apolloClientByNetwork}>
-      <div className="flex flex-col mb-[2rem]">
-        <span className="font-semibold mb-3">{name}</span>
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {keys.map((key: OwnedKey) => (
-            <Key key={key.id} ownedKey={key} account={account} network={id} />
-          ))}
-        </div>
+    <div className="flex flex-col mb-[2rem]">
+      <div className="flex flex-col">
+        <small className="font-semibold uppercase text-gray-300 text-[10px] tracking-[.4px] mb-[.5px]">
+          network
+        </small>
+        <span className="font-semibold text-lg mb-3">{name}</span>
       </div>
-    </ApolloProvider>
+      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {keys.map((key: OwnedKey) => (
+          <Key key={key.id} ownedKey={key} account={account} network={id} />
+        ))}
+      </div>
+    </div>
   )
 }
 
@@ -81,13 +77,20 @@ export const KeyDetails = () => {
     <div>
       <div>
         {Object.entries(networks).map(([networkId, networkObj]) => {
+          const subgraphURI = networkObj.subgraphURI
+          const apolloClientByNetwork = new ApolloClient({
+            uri: subgraphURI!,
+          }) as any
+
           return (
             <div key={networkId}>
-              <KeysByNetwork
-                key={networkId}
-                network={networkObj}
-                account={account}
-              />
+              <ApolloProvider client={apolloClientByNetwork}>
+                <KeysByNetwork
+                  key={networkId}
+                  network={networkObj}
+                  account={account}
+                />
+              </ApolloProvider>
             </div>
           )
         })}
