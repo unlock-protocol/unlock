@@ -101,7 +101,9 @@ export class TicketsController {
         network,
         true
       )
-      return response.sendStatus(200)
+      return response.status(200).send({
+        sent: true,
+      })
     } catch (err) {
       logger.error(err.message)
       return response.sendStatus(500)
