@@ -19,6 +19,9 @@ export const goerli: NetworkConfig = {
         `https://https://goerli.etherscan.io/token/${address}?a=${holder}`,
     },
   },
+  opensea: {
+    tokenUrl: (_lockAddress, _tokenId) => null,
+  },
   requiredConfirmations: 12,
   erc20: null,
   baseCurrencySymbol: 'ETH',

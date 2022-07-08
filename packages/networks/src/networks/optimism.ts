@@ -20,6 +20,9 @@ export const optimism: NetworkConfig = {
         `https://optimistic.etherscan.io/token/${address}?a=${holder}`,
     },
   },
+  opensea: {
+    tokenUrl: (_lockAddress, _tokenId) => null,
+  },
   requiredConfirmations: 12,
   baseCurrencySymbol: 'Eth',
   locksmithUri: 'https://locksmith.unlock-protocol.com',

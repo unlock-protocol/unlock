@@ -22,6 +22,10 @@ export const rinkeby: NetworkConfig = {
         `https://rinkeby.etherscan.io/token/${address}?a=${holder}`,
     },
   },
+  opensea: {
+    tokenUrl: (lockAddress, tokenId) =>
+      `https://testnets.opensea.io/assets/${lockAddress}/${tokenId}`,
+  },
   requiredConfirmations: 12,
   erc20: {
     symbol: 'WEE',

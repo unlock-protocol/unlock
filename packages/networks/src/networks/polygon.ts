@@ -21,6 +21,10 @@ export const polygon: NetworkConfig = {
         `https://polygonscan.com/token/${address}?a=${holder}`,
     },
   },
+  opensea: {
+    tokenUrl: (lockAddress, tokenId) =>
+      `https://opensea.io/assets/matic/${lockAddress}/${tokenId}`,
+  },
   requiredConfirmations: 12,
   erc20: null,
   baseCurrencySymbol: 'Matic',
