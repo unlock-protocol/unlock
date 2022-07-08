@@ -97,16 +97,7 @@ export const notifyNewKeysToWedlocks = async (
  * @param key
  */
 export const notifyNewKeyToWedlocks = async (
-  key: {
-    lock: {
-      address: string
-      name?: string
-    }
-    owner: {
-      address: string
-    }
-    keyId?: string
-  },
+  key: Key,
   network?: number,
   includeQrCode = false
 ) => {
