@@ -5,7 +5,6 @@ import config from '../../config/config'
 import { logger } from '../logger'
 import { generateQrCode } from '../utils/qrcode'
 import networks from '@unlock-protocol/networks'
-import { generateOpenSeaUrl } from '../utils/openSea'
 
 type Params = {
   [key: string]: any
@@ -87,10 +86,14 @@ export const notifyNewKeysToWedlocks = async (
  * @param key
  */
 export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
+  const lockAddress = key.lock.address
+  const ownerAddress = key.owner.address
+  const tokenId = key?.keyId
+
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
-      tokenAddress: Normalizer.ethereumAddress(key.lock.address),
-      userAddress: Normalizer.ethereumAddress(key.owner.address),
+      tokenAddress: Normalizer.ethereumAddress(lockAddress),
+      userAddress: Normalizer.ethereumAddress(ownerAddress),
     },
   })
   logger.info(
@@ -104,21 +107,21 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
 
   const recipient = protectedData.email as string
 
-  logger.info(`Sending ${recipient} key: ${key.lock.address}-${key.keyId}`)
+  logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
 
   if (recipient) {
     logger.info('Notifying wedlock for new key', {
       recipient,
-      lock: key.lock.address,
-      keyId: key.keyId,
+      lock: lockAddress,
+      keyId: tokenId,
     })
 
     let attachments: Attachment[] = []
     if (network) {
       const qrCode = await generateQrCode({
         network,
-        lockAddress: key.lock.address,
-        tokenId: key.keyId,
+        lockAddress,
+        tokenId,
       })
       attachments = [
         ...attachments,
@@ -128,11 +131,10 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
       ]
     }
 
-    const openSeaUrl = generateOpenSeaUrl({
-      lockAddress: key.lock.address,
-      tokenId: key.lock.keyId,
-      network,
-    })
+    const openSeaUrl =
+      networks[network!] && tokenId && lockAddress
+        ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId)
+        : null
     // Lock address to find the specific template
     await sendEmail(
       `keyMined${key.lock.address}`,
