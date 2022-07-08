@@ -35,6 +35,7 @@ export const rinkeby: NetworkConfig = {
     decimals: 18,
   },
   startBlock: 3530008,
+  isTestNetwork: true,
 }
 
 export default rinkeby

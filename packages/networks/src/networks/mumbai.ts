@@ -29,6 +29,7 @@ export const mumbai: NetworkConfig = {
   },
   startBlock: 26584912,
   previousDeploys: [],
+  isTestNetwork: true,
 }
 
 export default mumbai

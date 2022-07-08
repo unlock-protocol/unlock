@@ -9,7 +9,7 @@ export const generateOpenSeaUrl = ({
   tokenId: string
   network: any
 }): string | undefined => {
-  const isTestNetwork = [4, 31337, 80001].includes(network)
+  const isTestNetwork = networks[network]?.isTestNetwork ?? true
 
   const baseUrl = isTestNetwork
     ? 'https://testnets.opensea.io'

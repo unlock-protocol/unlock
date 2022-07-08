@@ -34,6 +34,7 @@ export const bsc: NetworkConfig = {
       startBlock: 12396000,
     },
   ],
+  isTestNetwork: false,
 }
 
 export default bsc

@@ -33,6 +33,7 @@ export const mainnet: NetworkConfig = {
     decimals: 18,
   },
   startBlock: 7120795,
+  isTestNetwork: false,
 }
 
 export default mainnet

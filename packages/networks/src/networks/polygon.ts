@@ -37,6 +37,7 @@ export const polygon: NetworkConfig = {
       startBlock: 15714206,
     },
   ],
+  isTestNetwork: false,
 }
 
 export default polygon

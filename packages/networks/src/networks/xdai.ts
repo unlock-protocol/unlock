@@ -37,5 +37,6 @@ export const xdai: NetworkConfig = {
       startBlock: 14521200,
     },
   ],
+  isTestNetwork: true,
 }
 export default xdai

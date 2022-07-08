@@ -28,6 +28,7 @@ export const optimism: NetworkConfig = {
     symbol: 'Eth',
     decimals: 18,
   },
+  isTestNetwork: true,
 }
 
 export default optimism
