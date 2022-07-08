@@ -36,7 +36,7 @@ describe('Wedlocks operations', () => {
         },
       })
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
-        body: '{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"keychainUrl":"https://app.unlock-protocol.com/keychain"},"attachments":[]}',
+        body: '{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockName":"","keychainUrl":"https://app.unlock-protocol.com/keychain","keyId":"","network":""},"attachments":[]}',
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })
@@ -95,11 +95,17 @@ describe('Wedlocks operations', () => {
         'template',
         'failover',
         'julien@unlock-protocol.com',
-        { hello: 'world' },
+        {
+          hello: 'world',
+          keyId: '1',
+          keychainUrl: 'test',
+          lockName: 'lockName',
+          network: 'Test',
+        },
         []
       )
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
-        body: '{"template":"template","failoverTemplate":"failover","recipient":"julien@unlock-protocol.com","params":{"hello":"world"},"attachments":[]}',
+        body: '{"template":"template","failoverTemplate":"failover","recipient":"julien@unlock-protocol.com","params":{"hello":"world","keyId":"1","keychainUrl":"test","lockName":"lockName","network":"Test"},"attachments":[]}',
         headers: { 'Content-Type': 'application/json' },
         method: 'POST',
       })

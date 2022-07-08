@@ -22,6 +22,9 @@ export const xdai: NetworkConfig = {
         `https://blockscout.com/xdai/mainnet/token/${address}/token-holders#holders`,
     },
   },
+  opensea: {
+    tokenUrl: (_lockAddress, _tokenId) => null,
+  },
   erc20: null, // no default ERC20 on xdai for now
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   baseCurrencySymbol: 'xDai',
@@ -37,5 +40,6 @@ export const xdai: NetworkConfig = {
       startBlock: 14521200,
     },
   ],
+  isTestNetwork: false,
 }
 export default xdai

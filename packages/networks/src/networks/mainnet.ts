@@ -20,6 +20,10 @@ export const mainnet: NetworkConfig = {
         `https://etherscan.com/token/${address}?a=${holder}`,
     },
   },
+  opensea: {
+    tokenUrl: (lockAddress, tokenId) =>
+      `https://opensea.io/assets/${lockAddress}/${tokenId}`,
+  },
   erc20: {
     symbol: 'DAI',
     address: '0x6b175474e89094c44da98b954eedeac495271d0f',
@@ -33,6 +37,7 @@ export const mainnet: NetworkConfig = {
     decimals: 18,
   },
   startBlock: 7120795,
+  isTestNetwork: false,
 }
 
 export default mainnet
