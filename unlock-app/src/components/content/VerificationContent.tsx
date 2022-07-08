@@ -1,26 +1,48 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { getMembershipVerificationConfig } from '~/utils/verification'
+import { useStorageService } from '~/utils/withStorageService'
+import { useWalletService } from '~/utils/withWalletService'
 import { pageTitle } from '../../constants'
 import LocksContext from '../../contexts/LocksContext'
 import Account from '../interface/Account'
 import Layout from '../interface/Layout'
-import Loading from '../interface/Loading'
+import { Scanner } from '../interface/verification/Scanner'
 import VerificationStatus from '../interface/VerificationStatus'
 
 export const VerificationContent: React.FC<unknown> = () => {
   const { query } = useRouter()
   const [locks, setLocks] = useState({})
-  let data
-  let sig
+  const storageService = useStorageService()
+  const walletService = useWalletService()
+  const { account, network } = useAuth()
 
-  if (typeof query.data === 'string' && typeof query.sig === 'string') {
-    data = decodeURIComponent(query.data)
-    sig = query.sig
-  }
+  useEffect(() => {
+    if (account && network && walletService) {
+      storageService.loginPrompt({
+        walletService,
+        address: account,
+        chainId: network,
+      })
+    }
+  }, [storageService, walletService, account, network])
 
-  if (!data || !sig) {
-    return <Loading />
+  const membershipVerificationConfig = getMembershipVerificationConfig(query)
+
+  if (!membershipVerificationConfig) {
+    return (
+      <Layout title="Verification">
+        <Head>
+          <title>{pageTitle('Verification')}</title>
+        </Head>
+        <Account />
+        <main>
+          <Scanner />
+        </main>
+      </Layout>
+    )
   }
 
   const addLock = (lock: any) => {
@@ -42,7 +64,11 @@ export const VerificationContent: React.FC<unknown> = () => {
           addLock,
         }}
       >
-        <VerificationStatus data={data} sig={sig} />
+        <VerificationStatus
+          rawData={query.data as string}
+          data={membershipVerificationConfig.data}
+          sig={membershipVerificationConfig.sig}
+        />
       </LocksContext.Provider>
     </Layout>
   )

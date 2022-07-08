@@ -44,6 +44,7 @@
     "babel-plugin-styled-components": "2.0.7",
     "babel-preset-react-app": "10.0.1",
     "cross-fetch": "3.1.5",
+    "dayjs": "^1.11.3",
     "deep-object-diff": "1.1.7",
     "dotenv": "16.0.1",
     "eslint": "8.16.0",
@@ -72,6 +73,7 @@
     "react-icons": "4.4.0",
     "react-jazzicon": "1.0.3",
     "react-jwt": "1.1.6",
+    "react-qr-reader": "^3.0.0-beta-1",
     "react-query": "3.39.1",
     "react-test-renderer": "17.0.2",
     "react-use-clipboard": "1.0.8",
@@ -83,7 +85,8 @@
     "typescript": "4.7.2",
     "validator": "13.7.0",
     "walletlink": "2.5.0",
-    "xstate": "4.32.1"
+    "xstate": "4.32.1",
+    "zod": "^3.17.3"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "7.17.12",

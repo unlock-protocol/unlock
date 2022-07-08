@@ -24,7 +24,7 @@ interface InvalidKeyProps {
  */
 export const InvalidKey = ({ reason }: InvalidKeyProps) => {
   return (
-    <Wrapper>
+    <div className="glass-pane">
       <Box color="--red">
         <Circle>
           <Svg.Close title="Invalid" />
@@ -34,7 +34,7 @@ export const InvalidKey = ({ reason }: InvalidKeyProps) => {
       <KeyInfo>
         <Value>{reason}</Value>
       </KeyInfo>
-    </Wrapper>
+    </div>
   )
 }
 interface ValidKeyWithMetadataProps {
@@ -99,19 +99,19 @@ export const ValidKeyWithMetadata = ({
   const alreadyCheckedIn = checkedIn || keyData?.metadata?.checkedInAt
 
   return (
-    <Wrapper>
+    <div className="glass-pane rounded-xl p-6">
       {box}
       <KeyInfo>
         <div className="flex mb-3">
-          <Avatar className="flex items-center justify-center w-12 h-12 border rounded-full">
+          <Avatar>
             <AvatarImage
-              className="rounded-full"
+              className="flex items-center justify-center w-12 h-12 border rounded-full"
               alt={lock.name}
               src={keyData.image}
               width={50}
               height={50}
             />
-            <AvatarFallback className="uppercase" delayMs={100}>
+            <AvatarFallback className="flex items-center justify-center w-12 h-12 border rounded-full">
               {lock.name.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
@@ -139,7 +139,7 @@ export const ValidKeyWithMetadata = ({
           </CheckInButton>
         )}
       </KeyInfo>
-    </Wrapper>
+    </div>
   )
 }
 
@@ -285,9 +285,6 @@ const attributes = (attributes: KeyMetadataAttributes) => {
     )
   })
 }
-const Wrapper = styled.section`
-  width: 100%;
-`
 
 const Box = styled.div`
   margin-top: 20px;

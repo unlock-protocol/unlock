@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import Jazzicon from 'react-jazzicon'
 import Media from '../../theme/media'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
-
 import { ConfigContext } from '../../utils/withConfig'
 
 interface NetworkType {
@@ -62,7 +61,9 @@ export function Account() {
                 <button
                   className="px-2 py-1 text-gray-900 bg-gray-200 rounded"
                   type="button"
-                  onClick={deAuthenticate}
+                  onClick={() => {
+                    deAuthenticate()
+                  }}
                 >
                   Disconnect
                 </button>

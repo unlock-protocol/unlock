@@ -157,7 +157,7 @@ const MobileToggle = styled.div`
   grid-column: second;
 
   ${ButtonLink} {
-    background-color: var(--white);
+    background-color: inherit;
     transition: all 500ms cubic-bezier(0.165, 0.84, 0.44, 1);
     opacity: 1;
     pointer-events: visible;
@@ -194,7 +194,7 @@ const MobileToggle = styled.div`
 `
 
 const MobilePopover = styled.div`
-  background-color: var(--white);
+  background-color: inherit;
   width: 100%;
   height: ${(props) => (props.visibilityToggle ? '0' : 'auto')};
   z-index: var(--foreground);
