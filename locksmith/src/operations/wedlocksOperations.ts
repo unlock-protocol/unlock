@@ -107,7 +107,8 @@ export const notifyNewKeyToWedlocks = async (
     }
     keyId?: string
   },
-  network?: number
+  network?: number,
+  includeQrCode = false
 ) => {
   const lockAddress = key.lock.address
   const ownerAddress = key.owner.address
@@ -140,7 +141,7 @@ export const notifyNewKeyToWedlocks = async (
     })
 
     const attachments: Attachment[] = []
-    if (network && tokenId) {
+    if (includeQrCode && network && tokenId) {
       const qrCode = await generateQrCode({
         network,
         lockAddress,
