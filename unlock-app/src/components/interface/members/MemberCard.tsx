@@ -6,6 +6,7 @@ import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
 import { StorageServiceContext } from '../../../utils/withStorageService'
 import { ToastHelper } from '../../../components/helpers/toast.helper'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
+import { WalletServiceContext } from '~/utils/withWalletService'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -50,11 +51,13 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   expandAllMetadata,
   showCheckInTimeInfo,
   loadMembers,
+  isLockManager,
   expireAndRefundDisabled = true,
   metadata = {},
 }) => {
   const storageService = useContext(StorageServiceContext)
-  const { network } = useContext(AuthenticationContext)
+  const walletService = useContext(WalletServiceContext)
+  const { network, account } = useContext(AuthenticationContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
 
   const extraDataItems: [string, string | number][] = Object.entries(
@@ -70,6 +73,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     return new Date(checkInTimeValue as number).toLocaleString()
   }
   const toggleMetada = () => {
+    if (!isLockManager) return
     setShowMetaData(!showMetaData)
   }
 
@@ -103,6 +107,32 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       ToastHelper.error('Error on marking ticket as checked-in')
     }
   }
+
+  const onSendQrCode = async () => {
+    if (!network) return
+    if (!storageService) return
+    if (!walletService) return
+    await storageService.loginPrompt({
+      walletService,
+      address: account!,
+      chainId: network,
+    })
+    const res = await storageService.sendKeyQrCodeViaEmail({
+      lockAddress: metadata.lockAddress,
+      network,
+      tokenId,
+    })
+
+    if (res.message) {
+      ToastHelper.error(res.message)
+    } else {
+      ToastHelper.success('QR-code sent by email')
+    }
+  }
+
+  const hasEmailMetadata = extraDataItems
+    .map(([key]) => key.toLowerCase())
+    .includes('email')
 
   return (
     <div
@@ -138,23 +168,32 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           >
             Expire & Refund
           </Button>
-          <Button size="small" variant="secondary" onClick={toggleMetada}>
-            <div className="flex items-center">
-              <span>Show metadata</span>
-              <ArrowDown />
-            </div>
-          </Button>
+          {isLockManager && (
+            <Button size="small" variant="secondary" onClick={toggleMetada}>
+              <div className="flex items-center">
+                <span>Show metadata</span>
+                <ArrowDown />
+              </div>
+            </Button>
+          )}
         </div>
       </div>
       <div>
         {showMetaData && (
           <div>
             <span className={styles.description}>Metadata</span>
-            {!isCheckedIn && (
-              <Button className="my-2" onClick={onMarkAsCheckIn} size="small">
-                Mark as Checked-in
-              </Button>
-            )}
+            <div className="flex gap-[1rem] my-3">
+              {!isCheckedIn && (
+                <Button onClick={onMarkAsCheckIn} size="tiny">
+                  Mark as Checked-in
+                </Button>
+              )}
+              {hasEmailMetadata && (
+                <Button size="tiny" variant="primary" onClick={onSendQrCode}>
+                  Send QR-code by email
+                </Button>
+              )}
+            </div>
             {showCheckInTimeInfo && isCheckedIn && (
               <span className="block py-2">
                 <Badge
