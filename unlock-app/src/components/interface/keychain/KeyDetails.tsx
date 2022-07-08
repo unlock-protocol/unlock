@@ -95,16 +95,6 @@ export const KeyDetails = () => {
           )
         })}
       </div>
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {data.keyHolders[0].keys.map((key: OwnedKey) => (
-          <Key
-            key={key.id}
-            ownedKey={key}
-            account={account}
-            network={network}
-          />
-        ))}
-      </div>
     </div>
   )
 }
