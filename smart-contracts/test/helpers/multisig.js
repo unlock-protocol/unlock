@@ -3,7 +3,7 @@ const { impersonate } = require('./mainnet')
 
 const multisigABI = require('./ABIs/multisig.json')
 const UNLOCK_MULTISIG_ADDRESS = '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9'
-const MULTISIG_ADDRESS_OWNER = '0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44'
+const MULTISIG_ADDRESS_OWNER = '0xF5C28ce24Acf47849988f147d5C75787c0103534'
 
 // test helper to reach concensus on multisig
 const confirmMultisigTx = async ({ transactionId }) => {
