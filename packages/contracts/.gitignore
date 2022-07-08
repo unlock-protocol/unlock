@@ -2,4 +2,5 @@ dist
 test/contracts
 artifacts
 cache
+docs-reorg
 docs
