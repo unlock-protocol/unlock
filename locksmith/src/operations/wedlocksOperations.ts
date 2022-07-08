@@ -5,6 +5,7 @@ import config from '../../config/config'
 import { logger } from '../logger'
 import { generateQrCode } from '../utils/qrcode'
 import networks from '@unlock-protocol/networks'
+import { generateOpenSeaUrl } from '../utils/openSea'
 
 type Params = {
   [key: string]: any
@@ -126,6 +127,12 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
         },
       ]
     }
+
+    const openSeaUrl = generateOpenSeaUrl({
+      lockAddress: key.lock.address,
+      tokenId: key.lock.keyId,
+      network,
+    })
     // Lock address to find the specific template
     await sendEmail(
       `keyMined${key.lock.address}`,
@@ -136,6 +143,7 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
         keyId: key.keyId ?? '',
         network: networks[network!].name ?? '',
+        openSeaUrl,
       },
       attachments
     )
