@@ -48,6 +48,9 @@ export interface NetworkConfig {
       token(address: string, owner: string): string
     }
   }
+  opensea?: {
+    tokenUrl: (lockAddress: string, tokenId: string) => string | null
+  }
   erc20?: {
     symbol: string
     address: string
