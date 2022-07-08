@@ -95,7 +95,13 @@ describe('Wedlocks operations', () => {
         'template',
         'failover',
         'julien@unlock-protocol.com',
-        { hello: 'world' },
+        {
+          hello: 'world',
+          keyId: '1',
+          keychainUrl: 'test',
+          lockName: 'lockName',
+          network: 'Test',
+        },
         []
       )
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
