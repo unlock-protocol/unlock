@@ -10,22 +10,26 @@ import Key from './Key'
 import LoginPrompt from '../LoginPrompt'
 import networks from '@unlock-protocol/networks'
 import ApolloClient from 'apollo-boost'
+import { NetworkConfig } from '@unlock-protocol/types'
 
 interface KeysByNetworkProps {
   account: string
-  network: number
-  networkName: string
-  subgraphURI?: string
+  network: NetworkConfig
 }
-export const KeysByNetwork = ({
-  account,
-  networkName,
-  network,
-}: KeysByNetworkProps) => {
-  const { loading, error, data } = useQuery(keyHolderQuery(), {
+export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
+  const { loading, data } = useQuery(keyHolderQuery(), {
     variables: { address: account },
   })
 
+  const { subgraphURI, name, id } = network
+
+  const apolloClientByNetwork = useMemo(
+    () =>
+      new ApolloClient({
+        uri: subgraphURI!,
+      }),
+    []
+  ) as any
   const [keyHolders] = data?.keyHolders ?? []
   const { keys } = keyHolders ?? []
   const hasKeys = keys?.length == 0
@@ -33,19 +37,16 @@ export const KeysByNetwork = ({
   if (hasKeys || loading) return null
 
   return (
-    <div className="flex flex-col mb-[2rem]">
-      <span className="font-semibold">{networkName}</span>
-      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {keys.map((key: OwnedKey) => (
-          <Key
-            key={key.id}
-            ownedKey={key}
-            account={account}
-            network={network}
-          />
-        ))}
+    <ApolloProvider client={apolloClientByNetwork}>
+      <div className="flex flex-col mb-[2rem]">
+        <span className="font-semibold mb-3">{name}</span>
+        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {keys.map((key: OwnedKey) => (
+            <Key key={key.id} ownedKey={key} account={account} network={id} />
+          ))}
+        </div>
       </div>
-    </div>
+    </ApolloProvider>
   )
 }
 
@@ -79,26 +80,17 @@ export const KeyDetails = () => {
   return (
     <div>
       <div>
-        {Object.entries(networks).map(
-          ([networkId, { name: networkName, subgraphURI, id }]) => {
-            const apolloClientByNetwork = new ApolloClient({
-              uri: subgraphURI as string,
-            }) as any
-            return (
-              <div key={networkId}>
-                <ApolloProvider client={apolloClientByNetwork}>
-                  <KeysByNetwork
-                    key={networkId}
-                    account={account}
-                    network={id}
-                    subgraphURI={subgraphURI}
-                    networkName={networkName}
-                  />
-                </ApolloProvider>
-              </div>
-            )
-          }
-        )}
+        {Object.entries(networks).map(([networkId, networkObj]) => {
+          return (
+            <div key={networkId}>
+              <KeysByNetwork
+                key={networkId}
+                network={networkObj}
+                account={account}
+              />
+            </div>
+          )
+        })}
       </div>
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {data.keyHolders[0].keys.map((key: OwnedKey) => (
