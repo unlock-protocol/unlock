@@ -1,9 +1,8 @@
 import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
 import axios from 'axios'
 import { EventEmitter } from 'events'
-import { decodeToken, isExpired } from 'react-jwt'
+import { isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
-import { APP_NAME } from '../hooks/useAppStorage'
 import { Lock } from '../unlockTypes'
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
@@ -59,65 +58,75 @@ export class StorageService extends EventEmitter {
 
   public locksmith: LocksmithService
 
-  private accessToken: string | null
-
-  private tokenKeyName = `${APP_NAME}.token`
-
   constructor(host: string) {
     super()
     this.host = host
     this.locksmith = new LocksmithService({
       host,
     })
-    this.accessToken = null
   }
 
   async login(message: string, signature: string) {
     return this.locksmith.login(message, signature)
   }
 
-  setToken(token: string) {
-    this.accessToken = token
-    localStorage.setItem(this.tokenKeyName, token)
-    const decoded: any = decodeToken(token)
-    const expireAt: number = decoded?.exp ?? -1
-    if (decoded && expireAt) {
-      const startTime = new Date().getTime()
-      const expireTime = new Date(expireAt).getTime()
-      const timeout = (startTime - expireTime) / 1000 / 60 // time difference in seconds
-      setTimeout(() => {
-        this.refreshToken(token)
-      }, timeout)
+  async signOut() {
+    try {
+      const endpoint = `${this.host}/v2/auth/revoke`
+      await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'refresh-token': this.refreshToken!,
+        },
+      })
+      localStorage.removeItem(`locksmith-access-token`)
+      localStorage.removeItem(`locksmith-refresh-token`)
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      }
     }
   }
 
   async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
     try {
-      const storedToken = localStorage.getItem(this.tokenKeyName)
-      if (storedToken && !isExpired(storedToken)) {
-        this.setToken(storedToken)
-      } else {
-        const message = await this.getSiweMessage({
-          address,
-          chainId,
-        })
-        const signature = await walletService.signMessage(
-          message,
-          'personal_sign'
-        )
-        const { accessToken } = await this.login(message, signature)
-        this.setToken(accessToken)
+      const refreshToken = localStorage.getItem('locksmith-refresh-token')
+      const accessToken = localStorage.getItem('locksmith-access-token')
+      if (!accessToken || isExpired(accessToken)) {
+        if (refreshToken) {
+          const tokens = await this.getRefreshToken(refreshToken)
+          localStorage.setItem('locksmith-access-token', tokens.accessToken)
+          localStorage.setItem('locksmith-refresh-token', tokens.refreshToken)
+        } else {
+          const message = await this.getSiweMessage({
+            address,
+            chainId,
+          })
+          const signature = await walletService.signMessage(
+            message,
+            'personal_sign'
+          )
+          const tokens = await this.login(message, signature)
+          localStorage.setItem('locksmith-access-token', tokens.accessToken)
+          localStorage.setItem('locksmith-refresh-token', tokens.refreshToken)
+        }
       }
     } catch (err) {
-      console.error(err)
+      if (err instanceof Error) {
+        console.error(err.message)
+      }
     }
   }
 
   get token() {
-    return this.accessToken
+    return localStorage.getItem('locksmith-access-token')
   }
 
-  async refreshToken(token: string) {
+  get refreshToken() {
+    return localStorage.getItem('locksmith-refresh-token')
+  }
+
+  async getRefreshToken(token: string) {
     return this.locksmith.refreshToken(token)
   }
 
@@ -666,7 +675,7 @@ export class StorageService extends EventEmitter {
         ...params,
         headers: {
           ...params.headers,
-          Authorization: `Bearer ${this.accessToken}`,
+          Authorization: `Bearer ${this.token}`,
         },
       }
     }

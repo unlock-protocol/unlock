@@ -4,8 +4,9 @@ import { WalletService } from '@unlock-protocol/unlock-js'
 import { useAddToNetwork } from './useAddToNetwork'
 import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
-import { APP_NAME, useAppStorage } from './useAppStorage'
+import { useAppStorage } from './useAppStorage'
 import { ToastHelper } from '../components/helpers/toast.helper'
+import { StorageService } from '~/services/storageService'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -35,6 +36,7 @@ export const useProvider = (config: any) => {
   >(undefined)
   const { getStorage, setStorage, clearStorage } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(account)
+  const storageService = new StorageService(config.services.storage.host)
 
   useEffect(() => {
     if (!getStorage('account') && account) {
@@ -117,18 +119,14 @@ export const useProvider = (config: any) => {
       }
       const ethersProvider = new ethers.providers.Web3Provider(provider)
 
-      const removeAccessToken = () => {
-        localStorage.removeItem(`${APP_NAME}.token`)
-      }
-
       if (provider.on) {
-        provider.on('accountsChanged', () => {
-          removeAccessToken()
+        provider.on('accountsChanged', async () => {
+          await storageService.signOut()
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
 
-        provider.on('chainChanged', () => {
-          removeAccessToken()
+        provider.on('chainChanged', async () => {
+          await storageService.signOut()
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
       }
