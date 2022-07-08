@@ -85,7 +85,19 @@ export const notifyNewKeysToWedlocks = async (
  * and email based on the lock's template if applicable
  * @param key
  */
-export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
+export const notifyNewKeyToWedlocks = async (
+  key: {
+    lock: {
+      address: string
+      name?: string
+    }
+    owner: {
+      address: string
+    }
+    keyId?: string
+  },
+  network?: number
+) => {
   const lockAddress = key.lock.address
   const ownerAddress = key.owner.address
   const tokenId = key?.keyId
@@ -117,7 +129,7 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
     })
 
     let attachments: Attachment[] = []
-    if (network) {
+    if (network && tokenId) {
       const qrCode = await generateQrCode({
         network,
         lockAddress,
@@ -137,13 +149,13 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
         : null
     // Lock address to find the specific template
     await sendEmail(
-      `keyMined${key.lock.address}`,
+      `keyMined${lockAddress}`,
       'keyMined',
       recipient,
       {
         lockName: key?.lock?.name ?? '',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
-        keyId: key.keyId ?? '',
+        keyId: tokenId ?? '',
         network: networks[network!].name ?? '',
         openSeaUrl,
       },
