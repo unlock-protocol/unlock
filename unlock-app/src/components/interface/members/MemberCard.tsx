@@ -134,8 +134,9 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     setEmailSent(true)
   }
 
-  const hasEmailMetadata =
-    extraDataItems.map(([key]) => key.toLowerCase()).includes('email') || true
+  const hasEmailMetadata = extraDataItems
+    .map(([key]) => key.toLowerCase())
+    .includes('email')
 
   return (
     <div
