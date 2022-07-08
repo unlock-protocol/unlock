@@ -59,6 +59,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const walletService = useContext(WalletServiceContext)
   const { network, account } = useContext(AuthenticationContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
+  const [emailSent, setEmailSent] = useState(false)
 
   const extraDataItems: [string, string | number][] = Object.entries(
     metadata || {}
@@ -112,27 +113,29 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     if (!network) return
     if (!storageService) return
     if (!walletService) return
+
     await storageService.loginPrompt({
       walletService,
       address: account!,
       chainId: network,
     })
-    const res = await storageService.sendKeyQrCodeViaEmail({
+
+    const sendEmailPromise = storageService.sendKeyQrCodeViaEmail({
       lockAddress: metadata.lockAddress,
       network,
       tokenId,
     })
 
-    if (res.message) {
-      ToastHelper.error(res.message)
-    } else {
-      ToastHelper.success('QR-code sent by email')
-    }
+    ToastHelper.promise(sendEmailPromise, {
+      success: 'QR-code sent by email',
+      loading: 'Sending QR-code by email',
+      error: 'There is some unexpected issue, please try again',
+    })
+    setEmailSent(true)
   }
 
-  const hasEmailMetadata = extraDataItems
-    .map(([key]) => key.toLowerCase())
-    .includes('email')
+  const hasEmailMetadata =
+    extraDataItems.map(([key]) => key.toLowerCase()).includes('email') || true
 
   return (
     <div
@@ -189,7 +192,12 @@ export const MemberCard: React.FC<MemberCardProps> = ({
                 </Button>
               )}
               {hasEmailMetadata && (
-                <Button size="tiny" variant="primary" onClick={onSendQrCode}>
+                <Button
+                  size="tiny"
+                  variant="primary"
+                  onClick={onSendQrCode}
+                  disabled={emailSent}
+                >
                   Send QR-code by email
                 </Button>
               )}
