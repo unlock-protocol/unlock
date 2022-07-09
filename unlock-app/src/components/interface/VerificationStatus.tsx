@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAuth } from '../../contexts/AuthenticationContext'
 import { useWeb3Service } from '../../utils/withWeb3Service'
 import { useQuery } from 'react-query'
 import { Lock } from '~/unlockTypes'
-import { KeyCard, Membership } from './verification/KeyCard'
+import { MembershipCard } from './verification/MembershipCard'
 import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '../helpers/toast.helper'
 import * as z from 'zod'
@@ -24,11 +24,12 @@ interface Props {
  * and display the right status
  */
 export const VerificationStatus = ({ data, sig, rawData }: Props) => {
-  const { account, lockAddress, timestamp, network, tokenId } = data
+  const { lockAddress, timestamp, network, tokenId } = data
   const { account: viewer } = useAuth()
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
   const router = useRouter()
+  const [isCheckingIn, setIsCheckingIn] = useState(false)
   const { isLoading: isLockLoading, data: lock } = useQuery(
     [lockAddress, network],
     async () => {
@@ -40,30 +41,11 @@ export const VerificationStatus = ({ data, sig, rawData }: Props) => {
     }
   )
 
-  const { isLoading: isMembershipLoading, data: membership } = useQuery(
-    [lockAddress, network, tokenId],
-    async () => {
-      if (lock?.publicLockVersion && lock.publicLockVersion >= 10) {
-        return web3Service.getKeyByTokenId(
-          lockAddress,
-          tokenId,
-          network
-        ) as Promise<Membership>
-      } else {
-        return web3Service.getKeyByLockForOwner(
-          lockAddress,
-          account,
-          network
-        ) as unknown as Promise<Membership>
-      }
-    },
-    {
-      refetchInterval: false,
-      enabled: !!lock,
-    }
-  )
-
-  const { data: keyData, isLoading: isKeyDataLoading } = useQuery(
+  const {
+    data: membershipData,
+    refetch: refetchMembershipData,
+    isLoading: isMembershipDataLoading,
+  } = useQuery(
     [tokenId, lockAddress, network],
     () => {
       return storageService.getKeyMetadataValues({
@@ -107,12 +89,7 @@ export const VerificationStatus = ({ data, sig, rawData }: Props) => {
     }
   }
 
-  if (
-    isMembershipLoading ||
-    isLockLoading ||
-    isKeyDataLoading ||
-    isVerifierLoading
-  ) {
+  if (isLockLoading || isMembershipDataLoading || isVerifierLoading) {
     return (
       <div className="flex h-72 justify-center items-center">
         <LoadingIcon size={24} className="animate-spin" />
@@ -121,21 +98,20 @@ export const VerificationStatus = ({ data, sig, rawData }: Props) => {
   }
 
   const invalid = invalidMembershipReason({
-    membership: membership!,
+    membershipData,
     data,
     rawData,
     sig,
   })
 
-  const checkedInAt = keyData?.metadata?.checkedInAt
+  const checkedInAt = membershipData?.metadata?.checkedInAt
 
   return (
     <div className="flex justify-center">
-      <KeyCard
-        keyData={keyData}
+      <MembershipCard
+        membershipData={membershipData}
         invalid={invalid}
         timestamp={timestamp}
-        membership={membership!}
         lock={lock!}
         network={network}
         checkedInAt={checkedInAt}
@@ -143,13 +119,21 @@ export const VerificationStatus = ({ data, sig, rawData }: Props) => {
         <div className="grid w-full">
           {viewer ? (
             <Button
-              disabled={!isVerifier || !!invalid || checkedInAt}
-              onClick={(event) => {
+              loading={isCheckingIn}
+              disabled={!isVerifier || isCheckingIn || !!invalid || checkedInAt}
+              onClick={async (event) => {
                 event.preventDefault()
-                onCheckIn()
+                setIsCheckingIn(true)
+                await onCheckIn()
+                await refetchMembershipData()
+                setIsCheckingIn(false)
               }}
             >
-              {checkedInAt ? 'Already checked in' : 'Check in'}
+              {isCheckingIn
+                ? 'Checking in'
+                : checkedInAt
+                ? 'Checked in'
+                : 'Check in'}
             </Button>
           ) : (
             <Button
@@ -162,7 +146,7 @@ export const VerificationStatus = ({ data, sig, rawData }: Props) => {
             </Button>
           )}
         </div>
-      </KeyCard>
+      </MembershipCard>
     </div>
   )
 }

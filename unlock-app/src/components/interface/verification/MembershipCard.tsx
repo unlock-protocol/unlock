@@ -16,30 +16,21 @@ import { ReactNode } from 'react'
 
 dayjs.extend(relativeTimePlugin)
 
-export interface Membership {
-  tokenId: string
-  lock: string
-  owner: string
-  expiration: number
-}
-
 interface Props {
   timestamp: number
-  membership: Membership
   lock: Lock
-  keyData: any
+  membershipData: any
   network: number
   invalid?: string
   checkedInAt?: string
   children: ReactNode
 }
 
-export function KeyCard({
-  membership,
+export function MembershipCard({
   lock,
   timestamp,
   network,
-  keyData,
+  membershipData,
   checkedInAt,
   invalid,
   children = null,
@@ -70,7 +61,7 @@ export function KeyCard({
             <AvatarImage
               className="flex items-center justify-center w-16 h-16 border rounded-full"
               alt={lock?.name}
-              src={keyData?.image}
+              src={membershipData?.image}
               width={50}
               height={50}
             />
@@ -80,7 +71,7 @@ export function KeyCard({
           </Avatar>
           <div>
             <h3 className="font-medium"> {lock.name} </h3>
-            <Item label="ID" value={membership.tokenId.toString()} />
+            <Item label="ID" value={membershipData.keyId.toString()} />
           </div>
         </div>
         <div className="grid gap-2 py-6">
@@ -95,13 +86,13 @@ export function KeyCard({
           )}
           <Item
             label="Owner"
-            value={addressMinify(membership.owner.toString())}
+            value={addressMinify(membershipData.owner.toString())}
           />
-          {!!keyData?.metadata?.public && (
-            <MetadataItems metadata={keyData.metadata.public} />
+          {!!membershipData?.userMetadata?.public && (
+            <MetadataItems metadata={membershipData.userMetadata.public} />
           )}
-          {!!keyData?.metadata?.protected && (
-            <MetadataItems metadata={keyData.metadata.protected} />
+          {!!membershipData?.userMetadata?.protected && (
+            <MetadataItems metadata={membershipData.userMetadata.protected} />
           )}
         </div>
         {children}
