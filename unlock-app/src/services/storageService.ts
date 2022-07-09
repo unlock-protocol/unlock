@@ -71,16 +71,20 @@ export class StorageService extends EventEmitter {
   }
 
   async signOut() {
-    const endpoint = `${this.host}/v2/auth/revoke`
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'refresh-token': this.refreshToken!,
-      },
-    })
-    if (response.ok) {
+    try {
+      const endpoint = `${this.host}/v2/auth/revoke`
+      await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'refresh-token': this.refreshToken!,
+        },
+      })
       localStorage.removeItem(`locksmith-access-token`)
       localStorage.removeItem(`locksmith-refresh-token`)
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      }
     }
   }
 
@@ -795,6 +799,26 @@ export class StorageService extends EventEmitter {
     }
     return await this.getEndpoint(
       `/v2/api/metadata/${network}/locks/${lockAddress}/keys`,
+      options,
+      true
+    )
+  }
+
+  async sendKeyQrCodeViaEmail({
+    lockAddress,
+    tokenId,
+    network,
+  }: {
+    lockAddress: string
+    tokenId: string
+    network: number
+  }): Promise<any> {
+    const options = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    }
+    return await this.getEndpoint(
+      `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`,
       options,
       true
     )
