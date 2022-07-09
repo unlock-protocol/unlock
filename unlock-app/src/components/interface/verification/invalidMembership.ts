@@ -14,7 +14,7 @@ export function invalidMembership({
 }: Options) {
   const { account, tokenId } = verificationData
   if (!isSignatureValid) {
-    return 'Signature does not match!'
+    return 'Signature does not match'
   }
   if (membershipData.keyId.toString() !== tokenId.toString()) {
     return 'This key does not match the user'
