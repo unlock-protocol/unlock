@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import { getMembershipVerificationConfig } from '~/utils/verification'
 import { pageTitle } from '../../constants'
 import LocksContext from '../../contexts/LocksContext'
 import Account from '../interface/Account'
@@ -11,15 +12,13 @@ import VerificationStatus from '../interface/VerificationStatus'
 export const VerificationContent: React.FC<unknown> = () => {
   const { query } = useRouter()
   const [locks, setLocks] = useState({})
-  let data
-  let sig
 
-  if (typeof query.data === 'string' && typeof query.sig === 'string') {
-    data = decodeURIComponent(query.data)
-    sig = query.sig
-  }
+  const membershipVerificationConfig = getMembershipVerificationConfig({
+    data: query.data?.toString(),
+    sig: query.sig?.toString(),
+  })
 
-  if (!data || !sig) {
+  if (!membershipVerificationConfig) {
     return <Loading />
   }
 
@@ -42,7 +41,7 @@ export const VerificationContent: React.FC<unknown> = () => {
           addLock,
         }}
       >
-        <VerificationStatus data={data} sig={sig} />
+        <VerificationStatus config={membershipVerificationConfig} />
       </LocksContext.Provider>
     </Layout>
   )
