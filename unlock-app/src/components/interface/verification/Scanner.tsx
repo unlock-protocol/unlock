@@ -63,17 +63,6 @@ export function Scanner() {
             <h3 className="font-bold text-lg">
               Scan the QR code to check in Ticket
             </h3>
-            <button
-              onClick={() => {
-                setResult({
-                  result:
-                    'https://staging-app.unlock-protocol.com/verification?data=%257B%2522network%2522%253A4%252C%2522account%2522%253A%25220xd02a0D6dE5A0b56Cc15E0F5E6681a6331f9c7821%2522%252C%2522lockAddress%2522%253A%25220xff6e45fde991cf534d0253e241743cf4238b21d9%2522%252C%2522timestamp%2522%253A1657382710731%252C%2522tokenId%2522%253A%252246%2522%257D&sig=0xeaff850b53bb69e651f80e71500a80124c9072a438c9ac3a8f9b74bce4102b23590976c5b1210a361b1a4386793e1b97da4899360d2b78af1bf8116280b0446f1b',
-                })
-              }}
-            >
-              {' '}
-              test{' '}
-            </button>
           </div>
           <QrCodeScanner
             onResult={(result, error) => {
