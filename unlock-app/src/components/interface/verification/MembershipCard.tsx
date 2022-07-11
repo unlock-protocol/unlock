@@ -71,7 +71,7 @@ export function MembershipCard({
           </Avatar>
           <div>
             <h3 className="font-medium"> {lock.name} </h3>
-            <Item label="ID" value={membershipData.keyId.toString()} />
+            <Item label="ID" value={membershipData?.keyId?.toString()} />
           </div>
         </div>
         <div className="grid gap-2">
