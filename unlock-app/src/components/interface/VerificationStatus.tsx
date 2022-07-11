@@ -72,6 +72,8 @@ export const VerificationStatus = ({ config }: Props) => {
     }
   )
 
+  const isAuthenticated = Boolean(viewer || storageService.token)
+
   const { data: isVerifier, isLoading: isVerifierLoading } = useQuery(
     [viewer, network, lockAddress],
     () => {
@@ -82,7 +84,7 @@ export const VerificationStatus = ({ config }: Props) => {
       })
     },
     {
-      enabled: Boolean(viewer && storageService.token),
+      enabled: isAuthenticated,
       refetchInterval: false,
     }
   )
@@ -126,7 +128,7 @@ export const VerificationStatus = ({ config }: Props) => {
   )
 
   const invalid = invalidMembership({
-    membershipData,
+    membershipData: membershipData!,
     isSignatureValid,
     verificationData: data,
   })

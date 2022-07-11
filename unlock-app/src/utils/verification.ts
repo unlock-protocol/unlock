@@ -15,8 +15,8 @@ export const MembershipVerificationConfig = z.object({
 })
 
 interface Options {
-  data?: string
-  sig?: string
+  data?: string | null
+  sig?: string | null
 }
 
 export function getMembershipVerificationConfig({ data, sig }: Options) {

@@ -1,8 +1,9 @@
 import * as z from 'zod'
 import { MembershipVerificationData } from '~/utils/verification'
+import { MembershipData } from './MembershipCard'
 
 interface Options {
-  membershipData: any
+  membershipData: MembershipData
   isSignatureValid: boolean
   verificationData: z.infer<typeof MembershipVerificationData>
 }

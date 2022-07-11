@@ -73,6 +73,7 @@
     "react-icons": "4.4.0",
     "react-jazzicon": "1.0.3",
     "react-jwt": "1.1.6",
+    "react-qr-reader": "3.0.0-beta-1",
     "react-query": "3.39.1",
     "react-test-renderer": "17.0.2",
     "react-use-clipboard": "1.0.8",
