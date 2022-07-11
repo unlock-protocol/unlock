@@ -1,14 +1,17 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import { Heading, Description } from '../interface/SignupSuccess'
 import LoginPrompt from '../interface/LoginPrompt'
-import { AuthenticationContext } from '../../contexts/AuthenticationContext'
+import { useAuth } from '../../contexts/AuthenticationContext'
+import { useRouter } from 'next/router'
 
 export const LoginContent = () => {
-  const { account } = useContext(AuthenticationContext)
+  const { account } = useAuth()
+  const router = useRouter()
+  const redirect = router.query?.redirect?.toString()
 
   return (
     <Layout title="Login">
@@ -21,11 +24,8 @@ export const LoginContent = () => {
           <Heading>Login</Heading>
 
           <Description>
-            You are now logged in! Visit{' '}
-            <Link href="/settings">
-              <a>your settings page</a>
-            </Link>
-            .
+            You are now logged in.{' '}
+            <Link href={redirect || '/settings'}>Go back</Link>.
           </Description>
         </>
       )}

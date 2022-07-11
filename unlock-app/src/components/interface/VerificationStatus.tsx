@@ -3,12 +3,15 @@ import { useAuth } from '../../contexts/AuthenticationContext'
 import { useWeb3Service } from '../../utils/withWeb3Service'
 import { useQuery } from 'react-query'
 import { Lock } from '~/unlockTypes'
-import { MembershipCard } from './verification/MembershipCard'
+import {
+  MembershipCard,
+  MembershipCardPlaceholder,
+  MembershipData,
+} from './verification/MembershipCard'
 import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '../helpers/toast.helper'
 import { MembershipVerificationConfig } from '~/utils/verification'
 import { invalidMembership } from './verification/invalidMembership'
-import { CgSpinner as LoadingIcon } from 'react-icons/cg'
 import { Button } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { isSignatureValidForAddress } from '~/utils/signatures'
@@ -57,7 +60,7 @@ export const VerificationStatus = ({ config }: Props) => {
     isLoading: isMembershipDataLoading,
   } = useQuery(
     [tokenId, lockAddress, network],
-    () => {
+    (): Promise<MembershipData> => {
       return storageService.getKeyMetadataValues({
         lockAddress,
         network,
@@ -86,6 +89,7 @@ export const VerificationStatus = ({ config }: Props) => {
 
   const onCheckIn = async () => {
     try {
+      setIsCheckingIn(true)
       const response = await storageService.markTicketAsCheckedIn({
         lockAddress,
         keyId: tokenId,
@@ -94,6 +98,8 @@ export const VerificationStatus = ({ config }: Props) => {
       if (!response.ok) {
         throw new Error('Could not check in membership')
       }
+      await refetchMembershipData()
+      setIsCheckingIn(false)
     } catch (error) {
       ToastHelper.error('Failed to check in')
     }
@@ -106,8 +112,8 @@ export const VerificationStatus = ({ config }: Props) => {
     isKeyGranterLoading
   ) {
     return (
-      <div className="flex h-72 justify-center items-center">
-        <LoadingIcon size={24} className="animate-spin" />
+      <div className="flex justify-center">
+        <MembershipCardPlaceholder />
       </div>
     )
   }
@@ -132,13 +138,10 @@ export const VerificationStatus = ({ config }: Props) => {
       {viewer ? (
         <Button
           loading={isCheckingIn}
-          disabled={!isVerifier || isCheckingIn || !!invalid || checkedInAt}
+          disabled={!isVerifier || isCheckingIn || !!invalid || !!checkedInAt}
           onClick={async (event) => {
             event.preventDefault()
-            setIsCheckingIn(true)
-            await onCheckIn()
-            await refetchMembershipData()
-            setIsCheckingIn(false)
+            onCheckIn()
           }}
         >
           {isCheckingIn
@@ -163,7 +166,7 @@ export const VerificationStatus = ({ config }: Props) => {
   return (
     <div className="flex justify-center">
       <MembershipCard
-        membershipData={membershipData}
+        membershipData={membershipData!}
         invalid={invalid}
         timestamp={timestamp}
         lock={lock!}
