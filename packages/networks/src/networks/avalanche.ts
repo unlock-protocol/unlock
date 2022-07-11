@@ -3,7 +3,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 export const avalanche: NetworkConfig = {
   publicProvider: 'https://api.avax.network/ext/bc/C/rpc',
   provider: 'https://api.avax.network/ext/bc/C/rpc',
-  unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+  unlockAddress: '0xeaC0853562c3bda43C7264d7A67962d7Fcb4E5d0',
   multisig: '',
   id: 43114,
   name: 'Avalanche (C-Chain)',
@@ -27,7 +27,7 @@ export const avalanche: NetworkConfig = {
     symbol: 'AVAX',
     decimals: 18,
   },
-  startBlock: 26584912,
+  startBlock: 17188332,
   previousDeploys: [],
 }
 
