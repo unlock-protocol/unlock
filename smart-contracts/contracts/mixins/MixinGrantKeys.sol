@@ -48,14 +48,16 @@ contract MixinGrantKeys is
   /**
    * Allows the Lock owner or key granter to extend an existing keys with no charge. This is the "renewal" equivalent of `grantKeys`.
    * @param _tokenId The id of the token to extend
+   * @param _duration The duration in secondes to add ot the key
+   * @dev set `_duration` to 0 to use the default duration of the lock
    */
-  function grantKeyExtension(uint _tokenId) external {
+  function grantKeyExtension(uint _tokenId, uint _duration) external {
     _lockIsUpToDate();
     _isKey(_tokenId);
     if(!isKeyGranter(msg.sender) && !isLockManager(msg.sender)) {
       revert ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
     }
-    _extendKey(_tokenId);
+    _extendKey(_tokenId, _duration);
   }
 
   uint256[1000] private __safe_upgrade_gap;
