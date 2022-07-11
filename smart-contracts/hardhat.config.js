@@ -53,6 +53,16 @@ const etherscan = {
     // xdai requires only placeholder api key
     xdai: 'api-key',
   },
+  customChains: [
+    {
+      network: 'celo',
+      chainId: 42220,
+      urls: {
+        apiURL: 'https://explorer.celo.org/api',
+        browserURL: 'https://explorer.celo.org/',
+      },
+    },
+  ],
 }
 
 if (process.env.ETHERSCAN_API_KEY) {
@@ -76,6 +86,9 @@ if (process.env.OPTIMISTIC_ETHERSCAN_API_KEY) {
 }
 if (process.env.ARBISCAN_API_KEY) {
   etherscan.apiKey.arbitrumOne = process.env.ARBISCAN_API_KEY
+}
+if (process.env.CELO_API_KEY) {
+  etherscan.apiKey.celo = process.env.CELO_API_KEY
 }
 
 // add mainnet fork -- if API key is present
