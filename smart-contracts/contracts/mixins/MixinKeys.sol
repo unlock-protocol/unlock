@@ -240,7 +240,8 @@ contract MixinKeys is
   }
 
   function _extendKey(
-    uint _tokenId
+    uint _tokenId,
+    uint _duration
   ) internal 
     returns (
       uint newTimestamp
@@ -254,15 +255,16 @@ contract MixinKeys is
     }
     
     // if non-expiring but not valid then extend
-    if(expirationDuration == type(uint).max) {
+    uint duration = _duration == 0 ? expirationDuration : _duration;
+    if(duration == type(uint).max) {
       newTimestamp = type(uint).max;
     } else {
       if (expirationTimestamp > block.timestamp) {
         // extends a valid key  
-        newTimestamp = expirationTimestamp + expirationDuration;
+        newTimestamp = expirationTimestamp + duration;
       } else {
         // renew an expired or cancelled key
-        newTimestamp = block.timestamp + expirationDuration;
+        newTimestamp = block.timestamp + duration;
       }
     }
 

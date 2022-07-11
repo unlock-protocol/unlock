@@ -192,8 +192,10 @@ interface IPublicLock
   /**
    * Allows the Lock owner to extend an existin keys with no charge.
    * @param _tokenId The id of the token to extend
+   * @param _duration The duration in secondes to add ot the key
+   * @dev set `_duration` to 0 to use the default duration of the lock
    */
-  function grantKeyExtension(uint _tokenId) external;
+  function grantKeyExtension(uint _tokenId, uint _duration) external;
 
   /**
   * @dev Purchase function
