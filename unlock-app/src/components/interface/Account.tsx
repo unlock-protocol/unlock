@@ -4,6 +4,7 @@ import Jazzicon from 'react-jazzicon'
 import Media from '../../theme/media'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../utils/withConfig'
+import { useStorageService } from '~/utils/withStorageService'
 
 interface NetworkType {
   name: string
@@ -22,6 +23,7 @@ export function Account() {
   const { account, network, deAuthenticate, changeNetwork } = useContext(
     AuthenticationContext
   )
+  const storageService = useStorageService()
 
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt((account || '0x0000').slice(2, 10), 16)
@@ -63,6 +65,7 @@ export function Account() {
                   type="button"
                   onClick={() => {
                     deAuthenticate()
+                    storageService.signOut()
                   }}
                 >
                   Disconnect

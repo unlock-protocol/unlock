@@ -1,25 +1,23 @@
 import * as z from 'zod'
-import { isSignatureValidForAddress } from '~/utils/signatures'
 import { MembershipVerificationData } from '~/utils/verification'
+import { MembershipData } from './MembershipCard'
 
 interface Options {
-  membershipData: any
-  rawData: string
-  data: z.infer<typeof MembershipVerificationData>
-  sig: string
+  membershipData: MembershipData
+  isSignatureValid: boolean
+  verificationData: z.infer<typeof MembershipVerificationData>
 }
 
-export function invalidMembershipReason({
+export function invalidMembership({
   membershipData,
-  rawData,
-  data,
-  sig,
+  isSignatureValid,
+  verificationData,
 }: Options) {
-  const { account, tokenId } = data
-  if (!isSignatureValidForAddress(sig, decodeURIComponent(rawData), account)) {
-    return 'Signature does not match!'
+  const { account, tokenId } = verificationData
+  if (!isSignatureValid) {
+    return 'Signature does not match'
   }
-  if (membershipData.keyId.toString() !== tokenId.toString()) {
+  if (membershipData?.keyId?.toString() !== tokenId.toString()) {
     return 'This key does not match the user'
   }
 

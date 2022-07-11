@@ -16,14 +16,29 @@ import { ReactNode } from 'react'
 
 dayjs.extend(relativeTimePlugin)
 
+export interface MembershipData {
+  expiration: number
+  image: string
+  keyId: string | number
+  owner: string
+  userMetadata?: {
+    public?: Record<string, string>
+    protected?: Record<string, string>
+  }
+  network: number
+  metadata?: Record<string, string>
+  lockAddress: number
+  attributes: Record<string, string>[]
+}
+
 interface Props {
   timestamp: number
   lock: Lock
-  membershipData: any
+  membershipData: MembershipData
   network: number
   invalid?: string
   checkedInAt?: string
-  children: ReactNode
+  children?: ReactNode
 }
 
 export function MembershipCard({
@@ -55,26 +70,26 @@ export function MembershipCard({
           {invalid ? invalid : `Welcome to ${lock.name}`}
         </p>
       </div>
-      <div className="p-6">
-        <div className="flex gap-2 items-center">
+      <div className="p-6 space-y-6">
+        <div className="flex gap-6 items-center">
           <Avatar>
             <AvatarImage
-              className="flex items-center justify-center w-16 h-16 border rounded-full"
+              className="flex items-center justify-center w-16 h-16 rounded-full"
               alt={lock?.name}
               src={membershipData?.image}
               width={50}
               height={50}
             />
-            <AvatarFallback className="flex items-center uppercase justify-center w-20 h-20 border rounded-full">
+            <AvatarFallback className="flex items-center uppercase justify-center w-20 h-20 rounded-full">
               {lock?.name.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
-          <div>
+          <div className="space-y-2">
             <h3 className="font-medium"> {lock.name} </h3>
-            <Item label="ID" value={membershipData.keyId.toString()} />
+            <Item label="ID" value={membershipData?.keyId?.toString()} />
           </div>
         </div>
-        <div className="grid gap-2 py-6">
+        <div className="grid gap-2">
           <Item label="Lock Address" value={addressMinify(lock.address)} />
           <Item label="Network" value={config.networks[network].name} />
           <Item label="Time since signed" value={timeSinceSigned} />
@@ -86,7 +101,7 @@ export function MembershipCard({
           )}
           <Item
             label="Owner"
-            value={addressMinify(membershipData.owner.toString())}
+            value={addressMinify(membershipData?.owner?.toString())}
           />
           {!!membershipData?.userMetadata?.public && (
             <MetadataItems metadata={membershipData.userMetadata.public} />
@@ -126,5 +141,27 @@ export function MetadataItems({
         <Item label={name} value={value} key={name} />
       ))}
     </>
+  )
+}
+
+export function MembershipCardPlaceholder() {
+  return (
+    <div className="w-full bg-white max-w-sm rounded-xl">
+      <div className="rounded-t-xl bg-gray-100 h-32"></div>
+      <div className="p-6 space-y-6">
+        <div className="flex gap-6 items-center flex-wrap">
+          <div className="flex bg-gray-50 items-center animate-pulse uppercase justify-center w-20 h-20 rounded-full"></div>
+        </div>
+        <div className="grid gap-2">
+          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
+          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
+          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
+          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
+          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
+          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
+        </div>
+        <div className="bg-gray-50 animate-pulse h-12 w-full rounded-full"></div>
+      </div>
+    </div>
   )
 }

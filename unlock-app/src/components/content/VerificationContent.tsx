@@ -7,6 +7,7 @@ import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { pageTitle } from '../../constants'
 import LocksContext from '../../contexts/LocksContext'
+import { ToastHelper } from '../helpers/toast.helper'
 import Account from '../interface/Account'
 import Layout from '../interface/Layout'
 import { Scanner } from '../interface/verification/Scanner'
@@ -19,17 +20,28 @@ export const VerificationContent: React.FC<unknown> = () => {
   const walletService = useWalletService()
   const { account, network } = useAuth()
 
-  useEffect(() => {
-    if (account && network && walletService) {
-      storageService.loginPrompt({
-        walletService,
-        address: account,
-        chainId: network,
-      })
-    }
-  }, [storageService, walletService, account, network])
+  const membershipVerificationConfig = getMembershipVerificationConfig({
+    data: query.data?.toString(),
+    sig: query.sig?.toString(),
+  })
 
-  const membershipVerificationConfig = getMembershipVerificationConfig(query)
+  useEffect(() => {
+    const login = async () => {
+      if (account && network && walletService && !storageService.token) {
+        const promise = storageService.loginPrompt({
+          walletService,
+          address: account,
+          chainId: network,
+        })
+        await ToastHelper.promise(promise, {
+          error: 'Failed to login',
+          success: 'Successfully logged in',
+          loading: 'Please sign message from your wallet to login.',
+        })
+      }
+    }
+    login()
+  }, [storageService, walletService, account, network])
 
   if (!membershipVerificationConfig) {
     return (
@@ -64,11 +76,7 @@ export const VerificationContent: React.FC<unknown> = () => {
           addLock,
         }}
       >
-        <VerificationStatus
-          rawData={query.data as string}
-          data={membershipVerificationConfig.data}
-          sig={membershipVerificationConfig.sig}
-        />
+        <VerificationStatus config={membershipVerificationConfig} />
       </LocksContext.Provider>
     </Layout>
   )

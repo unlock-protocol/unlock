@@ -8,20 +8,37 @@ export const MembershipVerificationData = z.object({
   lockAddress: z.string(),
 })
 
-export const MembershipVerification = z.object({
+export const MembershipVerificationConfig = z.object({
   data: MembershipVerificationData,
   sig: z.string(),
+  raw: z.string(),
 })
 
-export function getMembershipVerificationConfig(query: Record<string, any>) {
+interface Options {
+  data?: string | null
+  sig?: string | null
+}
+
+export function getMembershipVerificationConfig({ data, sig }: Options) {
   try {
-    const item = {
-      sig: query.sig,
-      data: JSON.parse(decodeURIComponent(query.data)),
+    if (sig && data) {
+      const raw = decodeURIComponent(data)
+      const result = MembershipVerificationConfig.parse({
+        sig,
+        raw,
+        data: JSON.parse(raw),
+      })
+      return result
     }
-    const result = MembershipVerification.parse(item)
-    return result
   } catch (error) {
-    return null
+    console.error(error)
   }
 }
+
+export type MembershipVerificationData = z.infer<
+  typeof MembershipVerificationData
+>
+
+export type MembershipVerificationConfig = z.infer<
+  typeof MembershipVerificationConfig
+>
