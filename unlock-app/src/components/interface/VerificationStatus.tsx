@@ -154,7 +154,9 @@ export const VerificationStatus = ({ config }: Props) => {
         <Button
           onClick={(event) => {
             event.preventDefault()
-            router.push('/login?redirect=verification')
+            router.push(
+              `/login?redirect=${encodeURIComponent(window.location.href)}`
+            )
           }}
         >
           Connect Account

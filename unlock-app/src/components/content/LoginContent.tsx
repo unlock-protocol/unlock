@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import Layout from '../interface/Layout'
@@ -22,10 +22,12 @@ export const LoginContent = () => {
       {account && (
         <>
           <Heading>Login</Heading>
-
           <Description>
             You are now logged in.{' '}
-            <Link href={redirect || '/settings'}>Go back</Link>.
+            <Link href={redirect || '/settings'}>
+              {redirect ? 'Go back' : 'Visit Settings'}
+            </Link>
+            .
           </Description>
         </>
       )}
