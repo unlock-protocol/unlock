@@ -12,11 +12,15 @@ export const goerli: NetworkConfig = {
   explorer: {
     name: 'Goerli (Testnet)',
     urls: {
-      address: (address) => `https://https://goerli.etherscan.io/address/${address}`,
+      address: (address) =>
+        `https://https://goerli.etherscan.io/address/${address}`,
       transaction: (hash) => `https://https://goerli.etherscan.io/tx/${hash}`,
       token: (address, holder) =>
         `https://https://goerli.etherscan.io/token/${address}?a=${holder}`,
     },
+  },
+  opensea: {
+    tokenUrl: (_lockAddress, _tokenId) => null,
   },
   requiredConfirmations: 12,
   erc20: null,
@@ -29,6 +33,7 @@ export const goerli: NetworkConfig = {
   },
   startBlock: 7179039,
   previousDeploys: [],
+  isTestNetwork: true,
 }
 
 export default goerli

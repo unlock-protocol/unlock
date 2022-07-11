@@ -52,8 +52,6 @@ export class TicketsController {
         address: lockAddress,
         id,
         data: {
-          keyId: id,
-          lockAddress,
           metadata: {
             checkedInAt: new Date().getTime(),
           },
@@ -90,6 +88,7 @@ export class TicketsController {
       )
       await notifyNewKeyToWedlocks(
         {
+          keyId,
           lock: {
             address: lockAddress,
           },
@@ -97,9 +96,12 @@ export class TicketsController {
             address: keyOwner,
           },
         },
-        network
+        network,
+        true
       )
-      return response.sendStatus(200)
+      return response.status(200).send({
+        sent: true,
+      })
     } catch (err) {
       logger.error(err.message)
       return response.sendStatus(500)

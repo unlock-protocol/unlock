@@ -4,13 +4,31 @@ import { UserTokenMetadata } from '../models'
 import config from '../../config/config'
 import { logger } from '../logger'
 import { generateQrCode } from '../utils/qrcode'
+import networks from '@unlock-protocol/networks'
 
 type Params = {
   [key: string]: any
+  keyId: string
+  keychainUrl: string
+  lockName: string
+  network: string
+  txUrl?: string
+  openSeaUrl?: string
 }
 
 type Attachment = {
   path: string
+}
+
+interface Key {
+  lock: {
+    address: string
+    name?: string
+  }
+  owner: {
+    address: string
+  }
+  keyId?: string
 }
 
 /**
@@ -27,7 +45,7 @@ export const sendEmail = async (
   template: string,
   failoverTemplate: string,
   recipient: string,
-  params: Params = {},
+  params: Params = {} as any,
   attachments: Attachment[] = []
 ) => {
   const payload = {
@@ -78,11 +96,19 @@ export const notifyNewKeysToWedlocks = async (
  * and email based on the lock's template if applicable
  * @param key
  */
-export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
+export const notifyNewKeyToWedlocks = async (
+  key: Key,
+  network?: number,
+  includeQrCode = false
+) => {
+  const lockAddress = key.lock.address
+  const ownerAddress = key.owner.address
+  const tokenId = key?.keyId
+
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
-      tokenAddress: Normalizer.ethereumAddress(key.lock.address),
-      userAddress: Normalizer.ethereumAddress(key.owner.address),
+      tokenAddress: Normalizer.ethereumAddress(lockAddress),
+      userAddress: Normalizer.ethereumAddress(ownerAddress),
     },
   })
   logger.info(
@@ -94,39 +120,43 @@ export const notifyNewKeyToWedlocks = async (key: any, network?: number) => {
     ...userTokenMetadataRecord?.data?.userMetadata?.protected,
   })
 
-  const recipient = protectedData.email as string
+  const recipient = protectedData?.email as string
 
-  logger.info(`Sending ${recipient} key: ${key.lock.address}-${key.keyId}`)
+  logger.info(`Sending ${recipient} key: ${lockAddress}-${tokenId}`)
 
   if (recipient) {
     logger.info('Notifying wedlock for new key', {
       recipient,
-      lock: key.lock.address,
-      keyId: key.keyId,
+      lock: lockAddress,
+      keyId: tokenId,
     })
 
-    let attachments: Attachment[] = []
-    if (network) {
+    const attachments: Attachment[] = []
+    if (includeQrCode && network && tokenId) {
       const qrCode = await generateQrCode({
         network,
-        lockAddress: key.lock.address,
-        tokenId: key.keyId,
+        lockAddress,
+        tokenId,
       })
-      attachments = [
-        ...attachments,
-        {
-          path: qrCode,
-        },
-      ]
+      attachments.push({ path: qrCode })
     }
+
+    const openSeaUrl =
+      networks[network!] && tokenId && lockAddress
+        ? networks[network!].opensea?.tokenUrl(lockAddress, tokenId) ??
+          undefined
+        : undefined
     // Lock address to find the specific template
     await sendEmail(
-      `keyMined${key.lock.address}`,
+      `keyMined${lockAddress}`,
       'keyMined',
       recipient,
       {
-        lockName: key.lock.name,
+        lockName: key?.lock?.name ?? '',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
+        keyId: tokenId ?? '',
+        network: networks[network!]?.name ?? '',
+        openSeaUrl,
       },
       attachments
     )

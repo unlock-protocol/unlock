@@ -1,10 +1,23 @@
 #! /bin/sh
 
+# ==============================================================================
+# This script is used to generate the documentation for the contracts.
+# It will : 1) fetch the package from npm and 2) opens a PR in the docs repo
+#
+# Usage:
+# scripts/docs-contracts-pr.sh
+#
+# If you want to use the local package from `packages/contracts` instead of 
+# the one from npm, use the following:
+# FROM_NPM=0 scripts/docs-contracts-pr.sh
+# ==============================================================================
+
 # use tmp dir
 tmpdir=$(mktemp -d)
 dest="docs/core-protocol/smart-contracts-api"
 base="master" # "css-update"
-FROM_NPM=1
+repo=git@github.com:unlock-protocol/docs.git
+FROM_NPM=${FROM_NPM:-1}
 
 # get contracts tarball
 if [ "$FROM_NPM" -eq "0" ]; then
@@ -17,24 +30,31 @@ fi
 cd $tmpdir
 tar -xf contracts-**.tgz
 
-# clone docs repo
-git clone git@github.com:unlock-protocol/docs.git
-
 # versioning
 version_number="$(ls *.tgz | awk -F \- {'print substr($2,0,5) '} | sed 's/\./-/g')"
 branch=docs-$version_number
 rm -rf *.tgz
 
-# copy doc files over
-rm -rf $dest
-cp -R package/dist/docs $dest
-rm -rf package
-
-# push to git
+# git worflow
+git clone $repo
 cd docs
-git fetch origin $base
+
+# check if a branch already exists
+if $(git ls-remote --heads ${repo} ${branch} | grep ${branch} >/dev/null); then 
+echo "Branch ${branch} already exists, pushing to existing branch"; 
+git fetch origin $branch
+git checkout $branch
+else
 git checkout $base
 git checkout -b $branch
+fi
+
+# copy new docs files over
+rm -rf $dest
+cp -R ../package/dist/docs $dest
+rm -rf ../package
+
+# commit changes
 message="Contract API docs generated from @unlock-protocol/contracts@${version_number}"
 git add .
 git commit -a -m"$message"
