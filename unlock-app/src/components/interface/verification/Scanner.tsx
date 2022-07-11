@@ -34,7 +34,8 @@ function getVerificatioConfigFromURL(text?: string) {
       sig,
     })
     return config
-  } catch {
+  } catch (error) {
+    console.error(error)
     return
   }
 }
