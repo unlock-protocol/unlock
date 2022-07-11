@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply bg-zinc-50;
+  @apply bg-gray-50;
 }
 
 #card-element {
