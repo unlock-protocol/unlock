@@ -52,8 +52,6 @@ export class TicketsController {
         address: lockAddress,
         id,
         data: {
-          keyId: id,
-          lockAddress,
           metadata: {
             checkedInAt: new Date().getTime(),
           },

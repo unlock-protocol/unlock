@@ -59,7 +59,12 @@ export const generateKeyMetadata = async (
     baseTokenData,
     keyCentricData,
     onChainKeyMetadata,
-    userMetadata
+    userMetadata,
+    {
+      keyId,
+      lockAddress: address,
+      network,
+    }
   )
 }
 
