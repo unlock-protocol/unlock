@@ -71,7 +71,7 @@ export function MembershipCard({
         </p>
       </div>
       <div className="p-6 space-y-6">
-        <div className="flex gap-6 items-center flex-wrap">
+        <div className="flex gap-6 items-center">
           <Avatar>
             <AvatarImage
               className="flex items-center justify-center w-16 h-16 rounded-full"
@@ -84,7 +84,7 @@ export function MembershipCard({
               {lock?.name.slice(0, 2)}
             </AvatarFallback>
           </Avatar>
-          <div>
+          <div className="space-y-2">
             <h3 className="font-medium"> {lock.name} </h3>
             <Item label="ID" value={membershipData?.keyId?.toString()} />
           </div>
