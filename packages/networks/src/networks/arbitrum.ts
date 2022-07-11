@@ -31,7 +31,7 @@ export const arbitrum: NetworkConfig = {
     symbol: 'ETH',
     decimals: 18,
   },
-  startBlock: 7179039,
+  startBlock: 17429533,
   previousDeploys: [],
   isTestNetwork: true,
 }
