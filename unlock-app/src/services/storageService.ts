@@ -726,6 +726,7 @@ export class StorageService extends EventEmitter {
     const response = await fetch(url, opts)
     return response.json()
   }
+
   async markTicketAsCheckedIn({
     lockAddress,
     keyId,
@@ -736,13 +737,16 @@ export class StorageService extends EventEmitter {
     network: number
   }) {
     const url = `${this.host}/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
-    return fetch(url, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-        'Content-Type': 'application/json',
+    return this.getEndpoint(
+      url,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    })
+      true
+    )
   }
 
   async getVerifierStatus({
