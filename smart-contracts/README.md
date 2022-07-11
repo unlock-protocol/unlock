@@ -363,13 +363,13 @@ export ETHERSCAN_API_KEY=<xxx>
 yarn hardhat verify <UNLOCK_IMPLEMENTATION_ADDRESS> --network goerli
 
 # verify public-lock (while specifying a version)
-yarn hardhat verify-template --public-lock-address 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 \
+yarn hardhat verify-template --public-lock-address <UNLOCK_IMPLEMENTATION_ADDRESS> \
     --public-lock-version 10 \
     --network goerli
 
 # verify proxy
-yarn hardhat verify-proxy --public-lock-address 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 \
-  --proxy-admin-address 0xa87b313b7b918f74b2225759e7b05c243adec271 \
+yarn hardhat verify-proxy --public-lock-address <UNLOCK_IMPLEMENTATION_ADDRESS> \
+  --proxy-admin-address 0xa87b313b7b918f74b2225759e7b05c243adec271 \ # this is from `unlock.proxyAdminAddress`
   --network goerli 
 ```
 
@@ -430,3 +430,4 @@ yarn deploy --access-token <THEGRAPH_ACCESS_TOKEN>  --environment production --n
 4. Wait for the graph index to sync
 
 The graph will crawl all blocks from the `startBlock` set in the `@unlock-protocol/networks` network file up to the latest block height in the network. The process takes several hours.
+

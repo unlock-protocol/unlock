@@ -31,9 +31,18 @@ async function deployLock({
   ]
 
   const calldata = await createLockHash({ args, from: deployer })
+
+  // support passing unlock as either truffle or ethersjs contract instance
   const tx = await unlock.createUpgradeableLock(calldata)
-  const evt = tx.logs.find((v) => v.event === 'NewLock')
-  const lock = await PublicLock.at(evt.args.newLockAddress)
+  let evt
+  if (unlock.constructor.name === 'TruffleContract') {
+    evt = tx.logs.find((v) => v.event === 'NewLock')
+  } else {
+    const { events } = await tx.wait()
+    evt = events.find((v) => v.event === 'NewLock')
+  }
+  const { newLockAddress } = evt.args
+  const lock = await PublicLock.at(newLockAddress)
   return lock
 }
 
