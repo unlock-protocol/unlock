@@ -14,6 +14,7 @@ export const LoginContent = () => {
   const redirect = router.query?.redirect?.toString()
 
   useEffect(() => {
+    // auto redirect to previous page
     if (redirect && account) {
       router.push(redirect)
     }
