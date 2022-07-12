@@ -17,21 +17,27 @@ export default class KeyData {
       if (!owner) {
         return {}
       }
+      key.owner = owner
+
       const lock = await web3Service.getLock(lockAddress, network)
+      let expiration: number | undefined
+
       if (lock.publicLockVersion >= 10) {
-        key.expiration = await web3Service.getKeyExpirationByTokenId(
+        expiration = await web3Service.getKeyExpirationByTokenId(
           lockAddress,
           tokenId,
           network
         )
       } else {
-        key.expiration = await web3Service.getKeyExpirationByLockForOwner(
+        expiration = await web3Service.getKeyExpirationByLockForOwner(
           lockAddress,
           owner,
           network
         )
       }
-      key.owner = owner
+
+      key.expiration = expiration
+
       return key
     } catch (error) {
       logger.error(
