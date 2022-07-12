@@ -9,7 +9,6 @@ import '../UnlockUtils.sol';
 
 /**
  * @title Test contract for lock event hooks.
- * @author Nick Mancuso (unlock-protocol.com)
  */
 contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenURIHook
 {
