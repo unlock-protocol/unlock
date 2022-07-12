@@ -646,7 +646,7 @@ const abis = {
         "function getHasValidKey(address _keyOwner) view returns (bool isValid)",
         "function getRoleAdmin(bytes32 role) view returns (bytes32)",
         "function getTransferFee(uint256 _tokenId,uint256 _time) view returns (uint256)",
-        "function grantKeyExtension(uint256 _tokenId)",
+        "function grantKeyExtension(uint256 _tokenId,uint256 _duration)",
         "function grantKeys(address[] _recipients,uint256[] _expirationTimestamps,address[] _keyManagers) returns (uint256[])",
         "function grantRole(bytes32 role,address account)",
         "function hasRole(bytes32 role,address account) view returns (bool)",
@@ -719,7 +719,7 @@ const abis = {
         "function updateTransferFee(uint256 _transferFeeBasisPoints)",
         "function withdraw(address _tokenAddress,uint256 _amount)"
       ],
-      "bytecodeHash": "0x4a4f9cd5f66de7a3ecf5a8fa417969c7f382cfbb37a12a21b8cdd607618c7070"
+      "bytecodeHash": "0x2cc5097486050fd8d352e6f0bb5e5044510093b9c71879538bb182699c12cd88"
     }
   },
   "Unlock": {
