@@ -1,15 +1,24 @@
 import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
 import InlineModal from '../InlineModal'
+import { Button, Input, Icon } from '@unlock-protocol/ui'
+import { FaEnvelope, FaMobile } from 'react-icons/fa'
 
 interface Props {
   active: boolean
   dismiss: () => void
   sendEmail: (recipient: string, qrImage: string) => void
   signature: any
+  lock: any
 }
 
-export const QRModal = ({ active, dismiss, sendEmail, signature }: Props) => {
+export const QRModal = ({
+  active,
+  dismiss,
+  sendEmail,
+  signature,
+  lock,
+}: Props) => {
   const [recipient, setRecipient] = useState('')
   const [isValid, setIsValid] = useState(false)
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,17 +37,36 @@ export const QRModal = ({ active, dismiss, sendEmail, signature }: Props) => {
     console.log(url.toString()) // debugging
     return url.toString()
   }
+  const isEthCC =
+    [
+      '0xd0a031d9f9486b1d914124d0c1fcac2e9e6504fe',
+      '0x072149617e12170696481684598a696e9a4d46ff',
+      '0xf181e18e007517605f369eccf0eee6ebb1b10133',
+      '0x6d8c3d90340fa33693a88d1411b0f32df12d0683',
+      '0xf99eb828ac365c54fcbb6779a78417c25f113829',
+      '0x9ab351cb5dae55abd135dd256726851aae8efeb5',
+      '0x4624bbf6d685b1057eecacc691b0a068e287f0a5',
+      '0x623da3e4d4cb9c98dabb4c23789ed5aaa20ea3aa',
+    ].indexOf(lock.address.toLowerCase()) > -1
+
+  const addToPhone = () => {
+    window.open(
+      `https://ethcc.ethpass.xyz/integrations/ethcc?payload=${encodeURIComponent(
+        QRUrl()
+      )}`
+    )
+  }
 
   return (
     <InlineModal active={active} dismiss={dismiss}>
       <QRCode value={QRUrl()} size={256} includeMargin />
-      <input
-        className="w-full my-4"
+      <Input
+        className="w-90 my-4"
         type="email"
         required
         value={recipient}
         onChange={handleChange}
-        placeholder="Email address"
+        placeholder="me@domain.tld"
       />
       <Submit
         active={isValid}
@@ -49,6 +77,16 @@ export const QRModal = ({ active, dismiss, sendEmail, signature }: Props) => {
           }
         }}
       />
+      {isEthCC && (
+        <Button
+          className="w-10/12 m-1"
+          iconLeft={<Icon icon={FaMobile} size="medium" key="Smart Phone" />}
+          onClick={addToPhone}
+        >
+          {' '}
+          Add to phone
+        </Button>
+      )}
     </InlineModal>
   )
 }
@@ -63,26 +101,26 @@ const Submit = ({ active, submit }: SubmitProps) => {
   const [submitted, setSubmitted] = useState(false)
   if (active) {
     return (
-      <button
-        type="button"
+      <Button
+        className="w-10/12 m-1"
+        iconLeft={<Icon icon={FaEnvelope} size="medium" key="Smart Phone" />}
         disabled={submitted}
-        className="bg-[#74ce63] text-white flex justify-center w-full p-1 font-medium rounded hover:bg-[#59c245] disabled:hover:bg-[#74ce63] disabled:cursor-not-allowed"
         onClick={() => {
           setSubmitted(true)
           submit()
         }}
       >
-        {submitted ? 'Sent!' : 'Send Email'}
-      </button>
+        {submitted ? 'Sent!' : 'Receive by email'}
+      </Button>
     )
   }
   return (
-    <button
+    <Button
+      className="w-10/12 m-1"
+      iconLeft={<Icon icon={FaEnvelope} size="medium" key="Smart Phone" />}
       disabled={submitted}
-      type="button"
-      className="flex justify-center w-full p-1 font-medium bg-gray-200 rounded hover:bg-gray-300 disabled:bg-gray-200 disabled:opacity-75 disabled:cursor-not-allowed"
     >
-      Send Email
-    </button>
+      Receive by email
+    </Button>
   )
 }
