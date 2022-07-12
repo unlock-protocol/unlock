@@ -60,7 +60,7 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
                 {config.networks[network].name}
               </h3>
               <p className="text-sm text-brand-gray">
-                The most popular network{' '}
+                {config.networks[network].description}
               </p>
             </header>
             <div className="grid space-y-4 py-4">

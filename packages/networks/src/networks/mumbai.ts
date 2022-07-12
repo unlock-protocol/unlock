@@ -32,6 +32,7 @@ export const mumbai: NetworkConfig = {
   },
   startBlock: 26584912,
   previousDeploys: [],
+  description: 'Polygon test network. Do not use for production',
   isTestNetwork: true,
 }
 
