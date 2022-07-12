@@ -7,6 +7,7 @@ import confirmEvent from './confirmEvent'
 import keyOwnership from './keyOwnership'
 import keyMined from './keyMined'
 import debug from './debug'
+import ethccTicket from './ethccTicket'
 
 import * as LockTemplates from './locks'
 
@@ -20,6 +21,7 @@ const baseTemplates = {
   keyOwnership,
   keyMined,
   debug,
+  ethccTicket,
 }
 
 const templates = {}
