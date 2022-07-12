@@ -86,7 +86,7 @@ export default class WalletService extends UnlockService {
    */
   async updateKeyPrice(
     params: { lockAddress: string },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
@@ -101,7 +101,7 @@ export default class WalletService extends UnlockService {
    */
   async createLock(
     lock: Lock,
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ): Promise<string> {
     const version = await this.unlockContractAbiVersion()
     if (lock && typeof lock.publicLockVersion !== 'undefined' && version < 11) {
@@ -140,7 +140,7 @@ export default class WalletService extends UnlockService {
     params: {
       templateAddress: string
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.templateAddress) throw new Error('Missing templateAddress')
     const version = await this.lockContractAbiVersion(params.templateAddress)
@@ -166,8 +166,9 @@ export default class WalletService extends UnlockService {
       data?: string
       erc20Address?: string
       decimals?: number
+      recurringPayments?: number
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
@@ -188,13 +189,14 @@ export default class WalletService extends UnlockService {
   async purchaseKeys(
     params: {
       lockAddress: string
-      owners?: [string]
-      keyPrices?: [string]
-      data?: [string]
+      owners?: string[]
+      keyPrices?: string[]
+      data?: string[]
       erc20Address?: string
       decimals?: number
+      recurringPayments?: number[]
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
@@ -211,7 +213,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       tokenId: string
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
@@ -237,7 +239,7 @@ export default class WalletService extends UnlockService {
       tokenIdTo: string
       amount?: number
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
@@ -261,7 +263,7 @@ export default class WalletService extends UnlockService {
       spender: string
       amount: number
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
@@ -281,7 +283,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       keyGranter: string
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     if (!params.keyGranter) throw new Error('Missing account')
@@ -306,7 +308,7 @@ export default class WalletService extends UnlockService {
       decimals?: number
       erc20Address?: string
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     if (!params.keyOwner) throw new Error('Missing keyOwner')
@@ -327,7 +329,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       tokenId: string
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
@@ -353,7 +355,7 @@ export default class WalletService extends UnlockService {
       tokenId: string
       duration?: string
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     if (!params.recipient) throw new Error('Missing recipient')
@@ -375,7 +377,7 @@ export default class WalletService extends UnlockService {
       expiration?: string
       transactionOptions?: unknown
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
@@ -394,7 +396,7 @@ export default class WalletService extends UnlockService {
       keyManagers?: string[]
       transactionOptions?: unknown
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) {
       throw new Error('Missing lockAddress')
@@ -417,7 +419,7 @@ export default class WalletService extends UnlockService {
       decimals?: number
       erc20Address?: string
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
@@ -431,7 +433,7 @@ export default class WalletService extends UnlockService {
    */
   async unformattedSignTypedData(account: string, data: any) {
     // Tries multiple methods because support for 'eth_signTypedData' is still fairly bad.
-    const methods: Record<string, (data: any) => string> = {
+    const methods: Record<string, (_data: any) => string> = {
       eth_signTypedData: (data: any) => data,
       eth_signTypedData_v3: (data: any) => JSON.stringify(data),
       eth_signTypedData_v4: (data: any) => JSON.stringify(data),
@@ -498,7 +500,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       maxNumbeOfKeys: string
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
@@ -513,7 +515,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       maxKeysPerAddress: string
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
@@ -528,7 +530,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       expirationDuration: number
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) {
       throw new Error('Missing lockAddress')
@@ -551,7 +553,7 @@ export default class WalletService extends UnlockService {
       owner: string
       tokenAddress: string
     },
-    callback: WalletServiceCallback
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) {
       throw new Error('Missing lockAddress')

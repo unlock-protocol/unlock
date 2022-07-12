@@ -1,12 +1,12 @@
 import request from 'supertest'
-import { loginRandomUser } from '../../test-helpers/utils'
+import { loginRandomUser, loginAsApplication } from '../../test-helpers/utils'
 const metadataOperations = require('../../../src/operations/metadataOperations')
 
 const app = require('../../../src/app')
 
 jest.setTimeout(600000)
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
-const wrongLockAddress = '0x00'
+const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
 const network = 4
 const tokenId = '2244'
 const wrongTokenId = '666'
@@ -24,7 +24,14 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-describe('sign endpoint', () => {
+jest.mock('../../../src/operations/wedlocksOperations', () => {
+  return {
+    notifyNewKeyToWedlocks: (key: string, networkId?: number) =>
+      tokenId === key && network === networkId,
+  }
+})
+
+describe('tickets endpoint', () => {
   it('returns an error when authentication is missing', async () => {
     expect.assertions(1)
 
@@ -105,7 +112,7 @@ describe('sign endpoint', () => {
   })
 
   it('correctly marks ticket as checked-in and set key data', async () => {
-    expect.assertions(5)
+    expect.assertions(3)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
@@ -120,8 +127,6 @@ describe('sign endpoint', () => {
       tokenId
     )
     expect(keyData.metadata.checkedInAt).not.toBeUndefined()
-    expect(keyData.lockAddress).toBe(lockAddress)
-    expect(keyData.keyId).toBe(tokenId)
   })
 
   it('does not override metadata', async () => {
@@ -161,5 +166,101 @@ describe('sign endpoint', () => {
 
     expect(keyData.metadata.value).toBe('12')
     expect(keyData.KeyMetadata.custom_field).toBe('Random')
+  })
+
+  it('does not send email when auhentication is not present', async () => {
+    expect.assertions(1)
+
+    const response = await request(app).post(
+      `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`
+    )
+    expect(response.status).toBe(403)
+  })
+
+  it('does not send email when auhentication is present but the user is not the key manager', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    expect(loginResponse.status).toBe(200)
+
+    const response = await request(app)
+      .post(`/v2/api/ticket/${network}/${wrongLockAddress}/${tokenId}/email`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(response.status).toBe(401)
+  })
+
+  it('send email when user is authenticated and is the key manager', async () => {
+    expect.assertions(2)
+
+    const { loginResponse, address } = await loginRandomUser(app)
+    owner = address
+    expect(loginResponse.status).toBe(200)
+
+    const response = await request(app)
+      .post(`/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(response.status).toBe(200)
+  })
+
+  describe('qr code', () => {
+    it('returns an error when authentication is missing', async () => {
+      expect.assertions(1)
+
+      const response = await request(app).get(
+        `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/qr`
+      )
+      expect(response.status).toBe(403)
+    })
+
+    it('returns an error when authentication is there but the user is not the lock manager', async () => {
+      expect.assertions(2)
+
+      const { loginResponse } = await loginRandomUser(app)
+      expect(loginResponse.status).toBe(200)
+
+      const response = await request(app)
+        .get(`/v2/api/ticket/${network}/${wrongLockAddress}/${tokenId}/qr`)
+        .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+      expect(response.status).toBe(401)
+    })
+
+    it('returns the image as QR code when using an HTTP Header', async () => {
+      expect.assertions(4)
+
+      const { loginResponse, address, application } = await loginAsApplication(
+        app,
+        'My App'
+      )
+      owner = address
+      expect(loginResponse.status).toBe(200)
+
+      const response = await request(app)
+        .get(`/v2/api/ticket/${network}/${lockAddress}/${tokenId}/qr`)
+        .set('authorization', `Api-key ${application.key}`)
+      expect(response.status).toBe(200)
+      expect(response.headers['content-type']).toBe('image/gif')
+      expect(response.body.length).toBeGreaterThan(5000) // hardcoded. sampling always returned > 7000
+    })
+
+    it('returns the image as QR code when using an HTTP query param', async () => {
+      expect.assertions(4)
+
+      const { loginResponse, address, application } = await loginAsApplication(
+        app,
+        'My App'
+      )
+      owner = address
+      expect(loginResponse.status).toBe(200)
+
+      const response = await request(app).get(
+        `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/qr?api-key=${application.key}`
+      )
+      expect(response.status).toBe(200)
+      expect(response.headers['content-type']).toBe('image/gif')
+      expect(response.body.length).toBeGreaterThan(5000) // hardcoded. sampling always returned > 7000
+    })
   })
 })

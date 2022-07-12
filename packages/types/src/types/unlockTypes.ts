@@ -37,6 +37,7 @@ export interface NetworkConfig {
   blockTime?: number
   unlockAddress?: string
   serializerAddress?: string
+  multisig?: string
   subgraphURI?: string
   ethersProvider?: ethers.providers.Provider
   explorer?: {
@@ -47,6 +48,10 @@ export interface NetworkConfig {
       token(address: string, owner: string): string
     }
   }
+  opensea?: {
+    tokenUrl: (lockAddress: string, tokenId: string) => string | null
+  }
+  isTestNetwork?: boolean
   erc20?: {
     symbol: string
     address: string

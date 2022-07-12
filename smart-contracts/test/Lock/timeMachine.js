@@ -3,8 +3,7 @@ const BigNumber = require('bignumber.js')
 
 const TimeMachineMock = artifacts.require('TimeMachineMock')
 
-const { ADDRESS_ZERO } = require('../helpers/constants')
-const { reverts } = require('../helpers/errors')
+const { ADDRESS_ZERO, reverts } = require('../helpers')
 
 contract('Lock / timeMachine', (accounts) => {
   let timeMachine
@@ -21,7 +20,7 @@ contract('Lock / timeMachine', (accounts) => {
     timeMachine = await TimeMachineMock.new()
 
     timestampBefore = new BigNumber(
-      (await web3.eth.getBlock('latest')).timestamp
+      (await ethers.provider.getBlock('latest')).timestamp
     ).plus(expirationDuration)
 
     tx = await timeMachine.createNewKey(

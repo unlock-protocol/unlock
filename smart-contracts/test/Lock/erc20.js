@@ -1,36 +1,32 @@
 const BigNumber = require('bignumber.js')
-const { tokens } = require('hardlydifficult-ethereum-contracts')
-
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
-const unlockContract = artifacts.require('Unlock.sol')
+const {
+  deployLock,
+  deployERC20,
+  ADDRESS_ZERO,
+  MAX_UINT,
+  reverts,
+  purchaseKey,
+} = require('../helpers')
 const TestNoop = artifacts.require('TestNoop.sol')
-const { reverts } = require('../helpers/errors')
-const getContractInstance = require('../helpers/truffle-artifacts')
-const deployLocks = require('../helpers/deployLocks')
 
 contract('Lock / erc20', (accounts) => {
-  let unlock
   let token
   let lock
 
   beforeEach(async () => {
-    token = await tokens.dai.deploy(web3, accounts[0])
+    token = await deployERC20(accounts[0])
     // Mint some tokens so that the totalSupply is greater than 0
     await token.mint(accounts[0], 1, {
       from: accounts[0],
     })
-    unlock = await getContractInstance(unlockContract)
-    const locks = await deployLocks(unlock, accounts[0], token.address)
-    lock = locks.FIRST
+    lock = await deployLock({ tokenAddress: token.address })
     await lock.setMaxKeysPerAddress(10)
   })
 
   describe('creating ERC20 priced locks', () => {
     let keyPrice
     let refundAmount
-    const keyOwner = accounts[1]
-    const keyOwner2 = accounts[2]
-    const keyOwner3 = accounts[3]
+    const [, keyOwner, keyOwner2, keyOwner3] = accounts
     const defaultBalance = new BigNumber(100000000000000000)
 
     beforeEach(async () => {
@@ -61,22 +57,7 @@ contract('Lock / erc20', (accounts) => {
     describe('users can purchase keys', () => {
       let tokenId
       beforeEach(async () => {
-        const tx = await lock.purchase(
-          [keyPrice.toFixed()],
-          [keyOwner],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          {
-            from: keyOwner,
-          }
-        )
-
-        const tokenIds = tx.logs
-          .filter((v) => v.event === 'Transfer')
-          .map(({ args }) => args.tokenId)
-
-        tokenId = tokenIds[0]
+        ;({ tokenId } = await purchaseKey(lock, keyOwner, true))
       })
 
       it('charges correct amount on purchaseKey', async () => {
@@ -93,19 +74,7 @@ contract('Lock / erc20', (accounts) => {
       })
 
       it('when a lock owner refunds a key, tokens are fully refunded', async () => {
-        const tx = await lock.purchase(
-          [keyPrice.toFixed()],
-          [keyOwner3],
-          [ADDRESS_ZERO],
-          [ADDRESS_ZERO],
-          [[]],
-          {
-            from: keyOwner3,
-          }
-        )
-
-        const { args } = tx.logs.find((v) => v.event === 'Transfer')
-        const tokenId = args.tokenId
+        const { tokenId } = await purchaseKey(lock, keyOwner3, true)
 
         const balanceOwnerBefore = new BigNumber(
           await token.balanceOf(keyOwner3)
@@ -235,7 +204,9 @@ contract('Lock / erc20', (accounts) => {
   describe('should fail to create a lock when', () => {
     it('when creating a lock for a contract which is not an ERC20', async () => {
       await reverts(
-        deployLocks(unlock, accounts[0], (await TestNoop.new()).address)
+        deployLock({
+          tokenAddress: (await TestNoop.new()).address,
+        })
       )
     })
 

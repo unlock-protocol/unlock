@@ -1,106 +1,186 @@
-import React, { useState, useContext, useEffect } from 'react'
-import styled from 'styled-components'
-import { isSignatureValidForAddress } from '../../utils/signatures'
-import { useLock } from '../../hooks/useLock'
-import { ActionButton } from './buttons/ActionButton'
-
-import Loading from './Loading'
-import { ValidKey, InvalidKey } from './verification/Key'
-import { AuthenticationContext } from '../../contexts/AuthenticationContext'
-import LoginPrompt from './LoginPrompt'
-
-interface VerificationData {
-  account: string
-  lockAddress: string
-  timestamp: number
-  network: number
-}
+import React, { useState } from 'react'
+import { useAuth } from '../../contexts/AuthenticationContext'
+import { useWeb3Service } from '../../utils/withWeb3Service'
+import { useQuery } from 'react-query'
+import { Lock } from '~/unlockTypes'
+import {
+  MembershipCard,
+  MembershipCardPlaceholder,
+  MembershipData,
+} from './verification/MembershipCard'
+import { useStorageService } from '~/utils/withStorageService'
+import { ToastHelper } from '../helpers/toast.helper'
+import { MembershipVerificationConfig } from '~/utils/verification'
+import { invalidMembership } from './verification/invalidMembership'
+import { Button } from '@unlock-protocol/ui'
+import { useRouter } from 'next/router'
+import { isSignatureValidForAddress } from '~/utils/signatures'
 
 interface Props {
-  data: VerificationData
-  sig: string
-  hexData: string
+  config: MembershipVerificationConfig
 }
 
 /**
  * React components which given data, signature will verify the validity of a key
  * and display the right status
  */
-export const VerificationStatus = ({ data, sig, hexData }: Props) => {
-  const { account, lockAddress, timestamp, network } = data
-  const [showLogin, setShowLogin] = useState(false)
-  const [lock, setLock] = useState(null)
-  const [unlockKey, setUnlockKey] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const { account: viewer } = useContext(AuthenticationContext)
-  const { getKeyForAccount, getLock } = useLock(
-    {
-      address: lockAddress,
+export const VerificationStatus = ({ config }: Props) => {
+  const { data, sig, raw } = config
+  const { lockAddress, timestamp, network, tokenId, account } = data
+  const { account: viewer } = useAuth()
+  const web3Service = useWeb3Service()
+  const storageService = useStorageService()
+  const router = useRouter()
+  const [isCheckingIn, setIsCheckingIn] = useState(false)
+
+  const { isLoading: isKeyGranterLoading, data: keyGranter } = useQuery(
+    [network],
+    () => {
+      return storageService.getKeyGranter(network)
     },
-    network
+    {
+      refetchInterval: false,
+    }
   )
 
-  useEffect(() => {
-    const onLoad = async () => {
-      setUnlockKey(await getKeyForAccount(account))
-      setLock(await getLock({ pricing: false }))
-      setLoading(false)
+  const { isLoading: isLockLoading, data: lock } = useQuery(
+    [lockAddress, network],
+    async () => {
+      const result: Lock = await web3Service.getLock(lockAddress, network)
+      return result
+    },
+    {
+      refetchInterval: false,
     }
+  )
 
-    onLoad()
-  }, [lockAddress])
+  const {
+    data: membershipData,
+    refetch: refetchMembershipData,
+    isLoading: isMembershipDataLoading,
+  } = useQuery(
+    [tokenId, lockAddress, network],
+    (): Promise<MembershipData> => {
+      return storageService.getKeyMetadataValues({
+        lockAddress,
+        network,
+        keyId: Number(tokenId),
+      })
+    },
+    {
+      refetchInterval: false,
+    }
+  )
 
-  if (loading) {
-    return <Loading />
+  const isAuthenticated = Boolean(viewer || storageService.token)
+
+  const { data: isVerifier, isLoading: isVerifierLoading } = useQuery(
+    [viewer, network, lockAddress],
+    () => {
+      return storageService.getVerifierStatus({
+        viewer: viewer!,
+        network,
+        lockAddress,
+      })
+    },
+    {
+      enabled: isAuthenticated,
+      refetchInterval: false,
+    }
+  )
+
+  const onCheckIn = async () => {
+    try {
+      setIsCheckingIn(true)
+      const response = await storageService.markTicketAsCheckedIn({
+        lockAddress,
+        keyId: tokenId,
+        network,
+      })
+      if (!response.ok) {
+        throw new Error('Could not check in membership')
+      }
+      await refetchMembershipData()
+      setIsCheckingIn(false)
+    } catch (error) {
+      ToastHelper.error('Failed to check in')
+    }
   }
 
-  // If the signature is not valid
-  if (!isSignatureValidForAddress(sig, hexData, account)) {
-    return <InvalidKey reason="Signature does not match!" />
+  if (
+    isLockLoading ||
+    isMembershipDataLoading ||
+    isVerifierLoading ||
+    isKeyGranterLoading
+  ) {
+    return (
+      <div className="flex justify-center">
+        <MembershipCardPlaceholder />
+      </div>
+    )
   }
 
-  // The user does not have a key!
-  if (!unlockKey) {
-    return <InvalidKey reason="This user does not have a key!" />
-  }
+  const isSignatureValid = isSignatureValidForAddress(
+    sig,
+    raw,
+    account,
+    keyGranter
+  )
 
-  if (showLogin && !viewer) {
-    return <LoginPrompt />
-  }
+  const invalid = invalidMembership({
+    membershipData: membershipData!,
+    isSignatureValid,
+    verificationData: data,
+  })
+
+  const checkedInAt = membershipData?.metadata?.checkedInAt
+
+  const CardActions = () => (
+    <div className="grid w-full">
+      {viewer ? (
+        <Button
+          loading={isCheckingIn}
+          disabled={!isVerifier || isCheckingIn || !!invalid || !!checkedInAt}
+          onClick={async (event) => {
+            event.preventDefault()
+            onCheckIn()
+          }}
+        >
+          {isCheckingIn
+            ? 'Checking in'
+            : checkedInAt
+            ? 'Checked in'
+            : 'Check in'}
+        </Button>
+      ) : (
+        <Button
+          onClick={(event) => {
+            event.preventDefault()
+            router.push(
+              `/login?redirect=${encodeURIComponent(window.location.href)}`
+            )
+          }}
+        >
+          Connect Account
+        </Button>
+      )}
+    </div>
+  )
 
   return (
-    <Wrapper>
-      <ValidKey
-        viewer={viewer}
-        owner={account}
-        signatureTimestamp={timestamp}
-        unlockKey={unlockKey}
-        lock={lock}
+    <div className="flex justify-center">
+      <MembershipCard
+        membershipData={membershipData!}
+        invalid={invalid}
+        timestamp={timestamp}
+        lock={lock!}
         network={network}
-      />
-      {!viewer && (
-        <ConnectButton onClick={() => setShowLogin(true)}>
-          Connect to check user in
-        </ConnectButton>
-      )}
-    </Wrapper>
+        checkedInAt={checkedInAt}
+      >
+        <CardActions />
+      </MembershipCard>
+    </div>
   )
 }
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-items: center;
-  flex-direction: column;
-`
-
-const ConnectButton = styled(ActionButton)`
-  max-width: 290px;
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  padding: 16px;
-  color: var(--white);
-`
 
 export default VerificationStatus

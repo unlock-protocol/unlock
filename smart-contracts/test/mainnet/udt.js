@@ -1,13 +1,13 @@
 const { ethers } = require('hardhat')
-const { reverts } = require('../helpers/errors')
+const { reverts, ADDRESS_ZERO } = require('../helpers')
 const { time } = require('@openzeppelin/test-helpers')
 const { getProxyAddress } = require('../../helpers/deployments')
 
-const { resetNodeState, impersonate } = require('../helpers/mainnet')
-const { errorMessages, ADDRESS_ZERO } = require('../helpers/constants')
-const { getUnlockMultisigOwners } = require('../../helpers/multisig')
-
-const { VM_ERROR_REVERT_WITH_REASON } = errorMessages
+const {
+  resetNodeState,
+  impersonate,
+  MULTISIG_ADDRESS_OWNER,
+} = require('../helpers')
 
 contract('UnlockDiscountToken on mainnet', async () => {
   let udt
@@ -64,7 +64,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
       const [, minter] = await ethers.getSigners()
       await reverts(
         udt.addMinter(minter.address),
-        `${VM_ERROR_REVERT_WITH_REASON} 'MinterRole: caller does not have the Minter role'`
+        'MinterRole: caller does not have the Minter role'
       )
     })
     it('random accounts can not mint', async () => {
@@ -73,7 +73,7 @@ contract('UnlockDiscountToken on mainnet', async () => {
 
       await reverts(
         udt.connect(lambda).mint(recipient.address, amount),
-        `${VM_ERROR_REVERT_WITH_REASON} 'MinterRole: caller does not have the Minter role'`
+        'MinterRole: caller does not have the Minter role'
       )
     })
     describe('the Unlock contract', () => {
@@ -152,12 +152,13 @@ contract('UnlockDiscountToken on mainnet', async () => {
   })
 
   describe('transfers', () => {
+    let holder
+    beforeEach(async () => {
+      await impersonate(MULTISIG_ADDRESS_OWNER)
+      holder = await ethers.getSigner(MULTISIG_ADDRESS_OWNER)
+    })
     it('should support simple transfer of tokens', async () => {
       const amount = 1
-      const [holderAddress] = await getUnlockMultisigOwners()
-      await impersonate(holderAddress)
-      const holder = await ethers.getSigner(holderAddress)
-
       const recipient = await ethers.Wallet.createRandom()
       await udt.connect(holder).transfer(recipient.address, amount)
 
@@ -166,11 +167,6 @@ contract('UnlockDiscountToken on mainnet', async () => {
     })
     it('should support allowance/transferFrom', async () => {
       const amount = 1
-
-      const [holderAddress] = await getUnlockMultisigOwners()
-      await impersonate(holderAddress)
-      const holder = await ethers.getSigner(holderAddress)
-
       const [spender] = await ethers.getSigners()
       const recipient = await ethers.Wallet.createRandom()
 
@@ -265,12 +261,15 @@ contract('UnlockDiscountToken on mainnet', async () => {
   })
 
   describe('governance', () => {
+    // We assume that multisig signer has at least 1 UDT token
+    let holder
+    beforeEach(async () => {
+      await impersonate(MULTISIG_ADDRESS_OWNER)
+      holder = await ethers.getSigner(MULTISIG_ADDRESS_OWNER)
+    })
     describe('Delegation', () => {
       it('delegation with balance', async () => {
         // a holder directly interact w udt
-        const [holderAddress] = await getUnlockMultisigOwners()
-        await impersonate(holderAddress)
-        const holder = await ethers.getSigner(holderAddress)
         udt = udt.connect(holder)
 
         // delegate some votes
@@ -308,11 +307,6 @@ contract('UnlockDiscountToken on mainnet', async () => {
       it('delegation by signature', async () => {
         // Create a user
         const delegator = ethers.Wallet.createRandom()
-
-        // We assume the first signer on the multisig has at least 1 token
-        const [holderAddress] = await getUnlockMultisigOwners()
-        await impersonate(holderAddress)
-        const holder = await ethers.getSigner(holderAddress)
 
         const balanceBefore = await udt.balanceOf(delegator.address)
         assert.equal(balanceBefore, 0)

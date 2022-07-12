@@ -9,7 +9,6 @@ import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
 import { MemberFilters } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
-import Loading from '../interface/Loading'
 import useMembers from '../../hooks/useMembers'
 import LoginPrompt from '../interface/LoginPrompt'
 import GrantKeysDrawer from '../creator/members/GrantKeysDrawer'
@@ -17,6 +16,8 @@ import {
   CreateLockButton,
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
+import { Input } from '@unlock-protocol/ui'
+import useDebounce from '../../hooks/useDebouce'
 
 interface FilterProps {
   value: string
@@ -146,6 +147,11 @@ interface MetadataTableWrapperProps {
   filter: string
   page: number
 }
+
+interface Filter {
+  key: string
+  label: string
+}
 /**
  * This just wraps the metadataTable component, providing the data
  * from the graph so we can separate the data layer from the
@@ -158,15 +164,33 @@ const MetadataTableWrapper = ({
 }: MetadataTableWrapperProps) => {
   const { account } = useContext(AuthenticationContext)
   const [currentPage, setCurrentPage] = useState(page)
-  const { loading, list, columns, hasNextPage, isLockManager } = useMembers(
-    lockAddresses,
-    account,
-    filter,
-    currentPage
-  )
+  const [query, setQuery] = useState<string>('')
+  const [filterKey, setFilteKey] = useState<string>('owner')
+  const queryValue = useDebounce<string>(query)
 
-  if (loading) {
-    return <Loading />
+  const filters: Filter[] = [
+    { key: 'owner', label: 'Owner' },
+    { key: 'keyId', label: 'Token id' },
+  ]
+
+  const { loading, list, columns, hasNextPage, isLockManager, loadMembers } =
+    useMembers(
+      lockAddresses,
+      account!,
+      filter,
+      currentPage,
+      queryValue,
+      filterKey
+    )
+
+  const search = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const search = e?.target?.value ?? ''
+    setQuery(search)
+  }
+
+  const onFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const key = event?.target?.value ?? ''
+    setFilteKey(key)
   }
 
   // TODO: rename metadata into members inside of MetadataTable
@@ -177,11 +201,38 @@ const MetadataTableWrapper = ({
         setCurrentPage={setCurrentPage}
         hasNextPage={hasNextPage}
       />
+      <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(100px,_450px)] gap-[1.5rem]">
+        <span className="grid gap-1.4">
+          <label htmlFor="filters" className="px-1 text-base">
+            Filter by
+          </label>
+          <select
+            name="filters"
+            className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
+            onChange={onFilterChange}
+          >
+            {filters?.map(({ key, label }) => (
+              <option key={key} value={key}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </span>
+        <Input
+          type="text"
+          label="Filter your results"
+          size="small"
+          placeholder=""
+          onChange={search}
+        />
+      </div>
       <MetadataTable
         columns={columns}
         metadata={list}
         isLockManager={isLockManager}
         lockAddresses={lockAddresses}
+        loading={loading}
+        loadMembers={loadMembers}
       />
     </>
   )

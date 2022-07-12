@@ -6,6 +6,7 @@ import ProviderContext from '../contexts/ProviderContext'
 import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
 import { ToastHelper } from '../components/helpers/toast.helper'
+import { StorageService } from '~/services/storageService'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -35,6 +36,7 @@ export const useProvider = (config: any) => {
   >(undefined)
   const { getStorage, setStorage, clearStorage } = useAppStorage()
   const { addNetworkToWallet } = useAddToNetwork(account)
+  const storageService = new StorageService(config.services.storage.host)
 
   useEffect(() => {
     if (!getStorage('account') && account) {
@@ -49,7 +51,6 @@ export const useProvider = (config: any) => {
   const resetProvider = async (provider: ethers.providers.Provider) => {
     try {
       const _walletService = new WalletService(config.networks)
-
       setProvider(provider)
       // @ts-expect-error TODO fix walletService signature
       const _network = await _walletService.connect(provider)
@@ -119,11 +120,13 @@ export const useProvider = (config: any) => {
       const ethersProvider = new ethers.providers.Web3Provider(provider)
 
       if (provider.on) {
-        provider.on('accountsChanged', () => {
+        provider.on('accountsChanged', async () => {
+          await storageService.signOut()
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
 
-        provider.on('chainChanged', () => {
+        provider.on('chainChanged', async () => {
+          await storageService.signOut()
           resetProvider(new ethers.providers.Web3Provider(provider))
         })
       }

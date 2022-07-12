@@ -192,8 +192,10 @@ interface IPublicLock
   /**
    * Allows the Lock owner to extend an existin keys with no charge.
    * @param _tokenId The id of the token to extend
+   * @param _duration The duration in secondes to add ot the key
+   * @dev set `_duration` to 0 to use the default duration of the lock
    */
-  function grantKeyExtension(uint _tokenId) external;
+  function grantKeyExtension(uint _tokenId, uint _duration) external;
 
   /**
   * @dev Purchase function
@@ -496,23 +498,45 @@ interface IPublicLock
     */
   function safeTransferFrom(address from, address to, uint256 tokenId) external;
   
-  /**
-    * @dev Transfers a specific NFT (`tokenId`) from one account (`from`) to
-    * another (`to`).
-    *
-    * Requirements:
-    * - If the caller is not `from`, it must be approved to move this NFT by
-    * either {approve} or {setApprovalForAll}.
-    */
+  /** 
+  * an ERC721-like function to transfer a token from one account to another
+  * @param from the owner of token to transfer
+  * @param to the address that will receive the token
+  * @param tokenId the id of the token
+  * @notice requirements: if the caller is not `from`, it must be approved to move this token by
+  * either {approve} or {setApprovalForAll}. 
+  * The key manager will be reset to address zero after the transfer
+  */
   function transferFrom(address from, address to, uint256 tokenId) external;
+
+  /** 
+  * Lending a key allows you to transfer the token while retaining the 
+  * ownerships right by setting yourself as a key manager first
+  * @param from the owner of token to transfer
+  * @param to the address that will receive the token
+  * @param tokenId the id of the token
+  * @notice This function can only called by 1) the key owner when no key manager is set or 2) the key manager.
+  * After calling the function, the `_recipent` will be the new owner, and the sender of the tx
+  * will become the key manager.
+  */
+  function lendKey(address from, address to, uint tokenId) external;
+
+  /** 
+  * Unlend is called when you have lent a key and want to claim its full ownership back
+  * @param _recipient the address that will receive the token ownership
+  * @param _tokenId the id of the token
+  * @notice Only the key manager of the token can call this function
+  */
+  function unlendKey(address _recipient, uint _tokenId) external;
+
   function approve(address to, uint256 tokenId) external;
 
   /**
-    * @notice Get the approved address for a single NFT
-    * @dev Throws if `_tokenId` is not a valid NFT.
-    * @param _tokenId The NFT to find the approved address for
-    * @return operator The approved address for this NFT, or the zero address if there is none
-    */
+  * @notice Get the approved address for a single NFT
+  * @dev Throws if `_tokenId` is not a valid NFT.
+  * @param _tokenId The NFT to find the approved address for
+  * @return operator The approved address for this NFT, or the zero address if there is none
+  */
   function getApproved(uint256 _tokenId) external view returns (address operator);
 
    /**

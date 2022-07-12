@@ -4,6 +4,7 @@ export const optimism: NetworkConfig = {
   publicProvider: 'https://mainnet.optimism.io',
   provider: 'https://mainnet.optimism.io',
   unlockAddress: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
+  multisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   id: 10,
   name: 'Optimism',
   blockTime: 8000,
@@ -19,6 +20,9 @@ export const optimism: NetworkConfig = {
         `https://optimistic.etherscan.io/token/${address}?a=${holder}`,
     },
   },
+  opensea: {
+    tokenUrl: (_lockAddress, _tokenId) => null,
+  },
   requiredConfirmations: 12,
   baseCurrencySymbol: 'Eth',
   locksmithUri: 'https://locksmith.unlock-protocol.com',
@@ -27,6 +31,7 @@ export const optimism: NetworkConfig = {
     symbol: 'Eth',
     decimals: 18,
   },
+  isTestNetwork: false,
 }
 
 export default optimism

@@ -7,6 +7,7 @@ export const mainnet: NetworkConfig = {
   provider:
     'https://eth-mainnet.alchemyapi.io/v2/6idtzGwDtRbzil3s6QbYHr2Q_WBfn100',
   unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
+  multisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
   name: 'Ethereum',
   blockTime: 8000,
   subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
@@ -18,6 +19,10 @@ export const mainnet: NetworkConfig = {
       token: (address, holder) =>
         `https://etherscan.com/token/${address}?a=${holder}`,
     },
+  },
+  opensea: {
+    tokenUrl: (lockAddress, tokenId) =>
+      `https://opensea.io/assets/${lockAddress}/${tokenId}`,
   },
   erc20: {
     symbol: 'DAI',
@@ -32,6 +37,7 @@ export const mainnet: NetworkConfig = {
     decimals: 18,
   },
   startBlock: 7120795,
+  isTestNetwork: false,
 }
 
 export default mainnet

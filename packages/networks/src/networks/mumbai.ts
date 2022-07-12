@@ -4,6 +4,7 @@ export const mumbai: NetworkConfig = {
   publicProvider: 'https://matic-mumbai.chainstacklabs.com',
   provider: 'https://matic-mumbai.chainstacklabs.com',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
+  multisig: '0x12E37A8880801E1e5290c815a894d322ac591607',
   id: 80001,
   name: 'Mumbai (Polygon)',
   blockTime: 1000,
@@ -17,6 +18,9 @@ export const mumbai: NetworkConfig = {
         `https://mumbai.polygonscan.com/token/${address}?a=${holder}`,
     },
   },
+  opensea: {
+    tokenUrl: (_lockAddress, _tokenId) => null,
+  },
   requiredConfirmations: 12,
   erc20: null,
   baseCurrencySymbol: 'MATIC',
@@ -28,6 +32,7 @@ export const mumbai: NetworkConfig = {
   },
   startBlock: 26584912,
   previousDeploys: [],
+  isTestNetwork: true,
 }
 
 export default mumbai

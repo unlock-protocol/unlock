@@ -3,10 +3,21 @@ import { LockMetadata } from '../models/lockMetadata'
 import Metadata from '../../config/metadata'
 import KeyData from '../utils/keyData'
 import { getMetadata } from './userMetadataOperations'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
+import { Verifier } from '../models/verifier'
+import Normalizer from '../utils/normalizer'
 
 const Asset = require('../utils/assets')
 
 const baseURIFragement = 'https://assets.unlock-protocol.com'
+
+interface IsKeyOrLockOwnerOptions {
+  userAddress?: string
+  lockAddress: string
+  keyId: string
+  network: number
+}
 
 export const updateKeyMetadata = async (data: any) => {
   try {
@@ -29,7 +40,7 @@ export const updateDefaultLockMetadata = async (data: any) => {
 export const generateKeyMetadata = async (
   address: string,
   keyId: string,
-  isLockOwner: boolean,
+  includeProtected: boolean,
   host: string,
   network: number
 ) => {
@@ -39,7 +50,7 @@ export const generateKeyMetadata = async (
   }
 
   const userMetadata = onChainKeyMetadata.owner
-    ? await getMetadata(address, onChainKeyMetadata.owner, isLockOwner)
+    ? await getMetadata(address, onChainKeyMetadata.owner, includeProtected)
     : {}
 
   const keyCentricData = await getKeyCentricData(address, keyId)
@@ -48,7 +59,12 @@ export const generateKeyMetadata = async (
     baseTokenData,
     keyCentricData,
     onChainKeyMetadata,
-    userMetadata
+    userMetadata,
+    {
+      keyId,
+      lockAddress: address,
+      network,
+    }
   )
 }
 
@@ -137,4 +153,38 @@ const defaultMappings = (address: string, host: string, keyId: string) => {
   // Append description
   defaultResponse.description = `${defaultResponse.description} Unlock is a protocol for memberships. https://unlock-protocol.com/`
   return defaultResponse
+}
+
+export const isKeyOwnerOrLockVerifier = async ({
+  userAddress,
+  lockAddress,
+  keyId,
+  network,
+}: IsKeyOrLockOwnerOptions) => {
+  if (!userAddress) {
+    return false
+  }
+  const web3Service = new Web3Service(networks)
+  const loggedUserAddress = Normalizer.ethereumAddress(userAddress)
+
+  const isVerifier = await Verifier.findOne({
+    where: {
+      lockAddress,
+      address: userAddress,
+      network,
+    },
+  })
+
+  const keyOwner = await web3Service.ownerOf(lockAddress, keyId, network)
+  const isLockManager = await web3Service.isLockManager(
+    lockAddress,
+    userAddress,
+    network
+  )
+
+  const keyOwnerAddress = Normalizer.ethereumAddress(keyOwner)
+
+  const isKeyOwner = keyOwnerAddress === loggedUserAddress
+
+  return isVerifier?.id || isKeyOwner || isLockManager
 }

@@ -1,28 +1,19 @@
-const { reverts } = require('../../helpers/errors')
-const BigNumber = require('bignumber.js')
-const deployLocks = require('../../helpers/deployLocks')
-const getContractInstance = require('../../helpers/truffle-artifacts')
-const { ADDRESS_ZERO } = require('../../helpers/constants')
+const { deployLock, ADDRESS_ZERO, reverts } = require('../../helpers')
+const { ethers } = require('hardhat')
 
-const unlockContract = artifacts.require('Unlock.sol')
-
-let unlock
-let locks
 let lock
 let lockCreator
 
 contract('Permissions / KeyManager', (accounts) => {
   lockCreator = accounts[0]
   const lockManager = lockCreator
-  const keyPrice = new BigNumber(web3.utils.toWei('0.01', 'ether'))
+  const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
   let tokenId
   let keyManager
   let keyManagerBefore
 
   before(async () => {
-    unlock = await getContractInstance(unlockContract)
-    locks = await deployLocks(unlock, lockCreator)
-    lock = locks.FIRST
+    lock = await deployLock()
     const tx = await lock.purchase(
       [],
       [accounts[1]],
@@ -30,7 +21,7 @@ contract('Permissions / KeyManager', (accounts) => {
       [ADDRESS_ZERO],
       [[]],
       {
-        value: keyPrice.toFixed(),
+        value: keyPrice,
         from: accounts[1],
       }
     )
@@ -87,6 +78,15 @@ contract('Permissions / KeyManager', (accounts) => {
         'UNAUTHORIZED_KEY_MANAGER_UPDATE'
       )
     })
+
+    it('should disallow owner to set a new KM if a KM is already set', async () => {
+      await lock.setKeyManagerOf(tokenId, accounts[5], { from: lockManager })
+      await reverts(
+        lock.setKeyManagerOf(tokenId, accounts[1], { from: accounts[1] }),
+        'UNAUTHORIZED_KEY_MANAGER_UPDATE'
+      )
+    })
+
     describe('setting the KM to 0x00', () => {
       before(async () => {
         keyManager = await lock.keyManagerOf(tokenId)

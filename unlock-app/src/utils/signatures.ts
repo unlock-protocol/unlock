@@ -1,4 +1,4 @@
-import * as sigUtil from 'eth-sig-util'
+import { utils } from 'ethers'
 
 /**
  * Helper function which verifies that the signature matches the address and data
@@ -9,14 +9,14 @@ import * as sigUtil from 'eth-sig-util'
 export const isSignatureValidForAddress = (
   sig: string,
   data: string,
-  address: string
+  address: string,
+  keyGranter?: string
 ) => {
   try {
+    const signer = utils.verifyMessage(data, sig).toLowerCase()
+
     return (
-      sigUtil.recoverPersonalSignature({
-        data,
-        sig,
-      }) === address.toLowerCase()
+      signer === address.toLowerCase() || signer === keyGranter?.toLowerCase()
     )
   } catch (error) {
     console.error(error)
