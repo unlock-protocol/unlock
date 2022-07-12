@@ -26,67 +26,43 @@ task('release', 'Release a new version of the contract')
     // console.log(version)
     const versioned = `${contractName}V${version}`
     const libPath = path.resolve('../packages/contracts/src')
+
+    // write artifacts
     const abiPath = path.resolve(
       libPath,
       'abis',
       contractName,
       `${versioned}.json`
     )
+    const artifact = await hre.artifacts.readArtifact(contractName)
+    await fs.writeJSON(abiPath, artifact, { spaces: 2 })
+    console.log(`Artifact for ${contractName} at: ${abiPath}`)
+
+    // flatten the contract
     const solPath = path.resolve(
       libPath,
       'contracts',
       contractName,
       `${versioned}.sol`
     )
+    // NB: this uses a shell child process bcz hardhat flatten output only to stdout
+    exec(`hardhat flatten ${contract} > ${solPath}`)
+    console.log(
+      `Solidity contract for ${contractName} flattened at: ${solPath}`
+    )
+
+    // copy the interface the contract
     const interfacePath = path.resolve(
       libPath,
       'contracts',
       contractName,
       `I${versioned}.sol`
     )
-
-    // make sure we dont erase anything
-    if (await fs.pathExists(abiPath)) {
-      // eslint-disable-next-line no-console
-      console.log(`File ${abiPath} already exists.`)
-    } else {
-      // write files
-      const artifact = await hre.artifacts.readArtifact(contractName)
-      await fs.writeJSON(abiPath, artifact, { spaces: 2 })
-      // eslint-disable-next-line no-console
-      console.log(`Artifact for ${contractName} at: ${abiPath}`)
-    }
-
-    if (await fs.pathExists(solPath)) {
-      // eslint-disable-next-line no-console
-      console.log(`File ${solPath} already exists.`)
-    } else {
-      // flatten the contract
-      // NB: this uses a shell child process bcz hardhat flatten output only to stdout
-      exec(`hardhat flatten ${contract} > ${solPath}`)
-
-      // eslint-disable-next-line no-console
-      console.log(
-        `Solidity contract for ${contractName} flattened at: ${solPath}`
-      )
-    }
-
-    if (await fs.pathExists(interfacePath)) {
-      // eslint-disable-next-line no-console
-      console.log(`File ${interfacePath} already exists.`)
-    } else {
-      // flatten the contract
-      const interfaceSrcPath = path.resolve(
-        'contracts',
-        'interfaces',
-        `I${contractName}.sol`
-      )
-      console.log(interfaceSrcPath)
-      await fs.copyFile(interfaceSrcPath, interfacePath)
-
-      // eslint-disable-next-line no-console
-      console.log(
-        `Solidity interface for ${contractName} copied at: ${interfacePath}`
-      )
-    }
+    await fs.copyFile(
+      path.resolve('contracts', 'interfaces', `I${contractName}.sol`),
+      interfacePath
+    )
+    console.log(
+      `Solidity interface for ${contractName} copied to: ${interfacePath}`
+    )
   })
