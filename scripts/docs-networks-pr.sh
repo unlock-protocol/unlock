@@ -2,22 +2,19 @@
 
 # ==============================================================================
 # This script is used to generate the documentation for the networks.
-# It will : 1) fetch the package from npm and 2) opens a PR in the docs repo
+# It will : 1) generate a list of networks from the existing package in this repo 
+# and 2) opens a PR in the docs repo
 #
 # Usage:
-# scripts/docs-contracts-pr.sh
+# scripts/docs-networks-pr.sh
 #
-# If you want to use the local package from `packages/networks` instead of 
-# the one from npm, use the following:
-# FROM_NPM=0 scripts/docs-networks-pr.sh
 # ==============================================================================
 
 # use tmp dir
-# tmpdir=$(mktemp -d)
 here=$(pwd)
-tmpdir=$(pwd)/tmp-test
+tmpdir=$(mktemp -d)
 dest="docs/core-protocol/unlock/networks.md"
-base="master" # "css-update"
+base="master"
 repo=git@github.com:unlock-protocol/docs.git
 
 # cleanup
