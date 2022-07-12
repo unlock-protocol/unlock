@@ -47,6 +47,9 @@ task('release', 'Release a new version of the contract')
     )
     // NB: this uses a shell child process bcz hardhat flatten output only to stdout
     exec(`hardhat flatten ${contract} > ${solPath}`)
+
+    // remove duplicate licenses and keep only one MIT (skip line 5 to keep 1 license)
+    exec(`sed -i '' '5! /SPDX/d' ${solPath}`)
     console.log(
       `Solidity contract for ${contractName} flattened at: ${solPath}`
     )
