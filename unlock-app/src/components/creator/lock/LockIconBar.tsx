@@ -61,13 +61,17 @@ export function LockIconBar({
           href={explorer.urls.address(lockAddress)}
         />
       )}
-      <Link href={verifiersPage}>
-        <Tooltip tip="Verifiers page" label="Verifiers page">
+
+      <Tooltip tip="Verifiers page" label="Verifiers page">
+        <Link href={verifiersPage}>
           <div className="cursor-pointer bg-[#EEE] h-[24px] w-[24px] flex justify-center rounded-full items-center">
-            <VerifierIcon className="stroke-[#A6A6A6]" />
+            <VerifierIcon
+              className="stroke-[#A6A6A6]"
+              style={{ stroke: '#A6A6A6' }}
+            />
           </div>
-        </Tooltip>
-      </Link>
+        </Link>
+      </Tooltip>
     </div>
   )
 }
