@@ -241,6 +241,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
       />
       {signature && (
         <QRModal
+          lock={lock}
           active={showingQR}
           dismiss={() => setSignature(null)}
           sendEmail={sendEmail}
