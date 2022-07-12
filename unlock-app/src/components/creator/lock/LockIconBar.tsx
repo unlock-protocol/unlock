@@ -61,7 +61,7 @@ export function LockIconBar({
         />
       )}
       <Link href={verifiersPage}>
-        <div className="cursor-pointer	 bg-[#EEE] h-[24px] w-[24px] flex justify-center rounded-full items-center">
+        <div className="cursor-pointer bg-[#EEE] h-[24px] w-[24px] flex justify-center rounded-full items-center">
           <VerifierIcon className="stroke-[#A6A6A6]" />
         </div>
       </Link>
