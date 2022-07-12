@@ -4,6 +4,8 @@ import Buttons from '../../interface/buttons/lock'
 import CreatorLockStatus from './CreatorLockStatus'
 import withConfig, { ConfigContext } from '../../../utils/withConfig'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
+import { GrUserAdmin as VerifierIcon } from 'react-icons/gr'
+import Link from 'next/link'
 
 interface LockIconBarProps {
   lock: any
@@ -20,6 +22,8 @@ export function LockIconBar({
   const config: any = useContext(ConfigContext)
   const { network } = useContext(AuthenticationContext)
 
+  const lockAddress = lock.address
+
   // If there is any blocking transaction, we show the lock as either submitted or confirming
   const hasBlockingTransaction =
     lock?.transactions && Object.keys(lock?.transactions).length > 0
@@ -35,8 +39,8 @@ export function LockIconBar({
       />
     )
   }
-  const membersPage = `/members?locks=${lock.address}`
-  const verifiersPage = `/verifiers?lock=${lock}&network=${network}`
+  const membersPage = `/members?locks=${lockAddress}`
+  const verifiersPage = `/verifiers?lock=${lockAddress}&network=${network}`
   const { explorer } = config.networks[network!] ?? {}
   // Otherwise, we just show the lock icon bar
   return (
@@ -45,7 +49,7 @@ export function LockIconBar({
       <Buttons.Withdraw as="button" lock={lock} withdraw={withdraw} />
       <Buttons.Demo
         as="a"
-        href={`/demo?network=${network}&lock=${lock.address}`}
+        href={`/demo?network=${network}&lock=${lockAddress}`}
         target="_blank"
       />
       <Buttons.Members href={membersPage} />
@@ -53,10 +57,14 @@ export function LockIconBar({
       {explorer && (
         <Buttons.Explorer
           target="_blank"
-          href={explorer.urls.address(lock.address)}
+          href={explorer.urls.address(lockAddress)}
         />
       )}
-      <Buttons.Verifiers as="a" href={verifiersPage} />
+      <Link href={verifiersPage}>
+        <div className="cursor-pointer	 bg-[#EEE] h-[24px] w-[24px] flex justify-center rounded-full items-center">
+          <VerifierIcon className="stroke-[#A6A6A6]" />
+        </div>
+      </Link>
     </div>
   )
 }

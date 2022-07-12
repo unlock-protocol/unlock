@@ -14,7 +14,6 @@ import CreditCard from './CreditCard'
 import AirDrop from './AirDrop'
 import Wallet from './Wallet'
 import Account from './Account'
-import Verifiers from './Verifiers'
 
 export default {
   Account,
@@ -29,7 +28,6 @@ export default {
   Upload,
   Explorer,
   Members,
-  Verifiers,
   Copy,
   CreditCard,
   Wallet,
