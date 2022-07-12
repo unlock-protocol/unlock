@@ -18,8 +18,6 @@ base="master"
 repo=git@github.com:unlock-protocol/docs.git
 
 # cleanup
-rm -rf $tmpdir
-mkdir $tmpdir
 cd $tmpdir
 
 # versioning
