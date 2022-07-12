@@ -56,7 +56,7 @@ export function MembershipCard({
     <div className="w-full bg-white max-w-sm rounded-xl">
       <div
         className={` ${
-          invalid ? 'bg-red-500' : 'bg-green-500'
+          invalid ? 'bg-red-500' : checkedInAt ? 'bg-amber-300' : 'bg-green-500'
         } text-center p-6 rounded-t-xl`}
       >
         <div className="inline-flex items-center justify-center">
