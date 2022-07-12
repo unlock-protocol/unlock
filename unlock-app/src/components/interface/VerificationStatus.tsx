@@ -72,8 +72,6 @@ export const VerificationStatus = ({ config }: Props) => {
     }
   )
 
-  const isAuthenticated = Boolean(viewer || storageService.token)
-
   const { data: isVerifier, isLoading: isVerifierLoading } = useQuery(
     [viewer, network, lockAddress],
     () => {
@@ -84,7 +82,7 @@ export const VerificationStatus = ({ config }: Props) => {
       })
     },
     {
-      enabled: isAuthenticated,
+      enabled: storageService.isAuthenticated,
       refetchInterval: false,
     }
   )
@@ -98,11 +96,12 @@ export const VerificationStatus = ({ config }: Props) => {
         network,
       })
       if (!response.ok) {
-        throw new Error('Could not check in membership')
+        throw new Error('Failed to check in')
       }
       await refetchMembershipData()
       setIsCheckingIn(false)
     } catch (error) {
+      console.error(error)
       ToastHelper.error('Failed to check in')
     }
   }
