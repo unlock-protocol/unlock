@@ -15,6 +15,7 @@ import { invalidMembership } from './verification/invalidMembership'
 import { Button } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { isSignatureValidForAddress } from '~/utils/signatures'
+import { isExpired } from 'react-jwt'
 
 interface Props {
   config: MembershipVerificationConfig
@@ -72,8 +73,6 @@ export const VerificationStatus = ({ config }: Props) => {
     }
   )
 
-  const isAuthenticated = Boolean(viewer || storageService.token)
-
   const { data: isVerifier, isLoading: isVerifierLoading } = useQuery(
     [viewer, network, lockAddress],
     () => {
@@ -84,7 +83,7 @@ export const VerificationStatus = ({ config }: Props) => {
       })
     },
     {
-      enabled: isAuthenticated,
+      enabled: storageService.isAuthenticated,
       refetchInterval: false,
     }
   )
@@ -92,14 +91,18 @@ export const VerificationStatus = ({ config }: Props) => {
   const onCheckIn = async () => {
     try {
       setIsCheckingIn(true)
-      await storageService.markTicketAsCheckedIn({
+      const response = await storageService.markTicketAsCheckedIn({
         lockAddress,
         keyId: tokenId,
         network,
       })
+      if (!response.ok) {
+        throw new Error('Failed to check in')
+      }
       await refetchMembershipData()
       setIsCheckingIn(false)
     } catch (error) {
+      console.error(error)
       ToastHelper.error('Failed to check in')
     }
   }
