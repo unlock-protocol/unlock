@@ -21,6 +21,6 @@ export default {
     <p>If you share your QR code with someone, and this person uses it to enter - then your ticket is gone. Adios, Farewell. Don’t share it. Dont spread it. </p>
     <p>See you next week!</p>
     <p>--
-    Unlock for the EthCC team</p>
+    The Unlock Labs team for the EthCC team</p>
   `,
 }
