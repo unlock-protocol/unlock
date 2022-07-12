@@ -55,7 +55,7 @@ export const VerificationStatus = ({ config }: Props) => {
   )
 
   const { isLoading: isKeyLoading, data: key } = useQuery(
-    [lock, network, tokenId],
+    [lock, network, tokenId, account, lockAddress],
     async () => {
       if (lock && lock.publicLockVersion! >= 10) {
         return web3Service.getKeyByTokenId(lockAddress, tokenId, network)
