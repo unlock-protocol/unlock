@@ -18,6 +18,9 @@ export const optimisticKovan: NetworkConfig = {
         `https://kovan-optimistic.etherscan.io/token/${address}?a=${holder}`,
     },
   },
+  opensea: {
+    tokenUrl: (_lockAddress, _tokenId) => null,
+  },
   requiredConfirmations: 12,
   baseCurrencySymbol: 'Eth',
   locksmithUri: 'https://locksmith.unlock-protocol.com',
@@ -27,6 +30,7 @@ export const optimisticKovan: NetworkConfig = {
     decimals: 18,
   },
   description: 'Optimism test network. Do not use for production.',
+  isTestNetwork: true,
 }
 
 export default optimisticKovan

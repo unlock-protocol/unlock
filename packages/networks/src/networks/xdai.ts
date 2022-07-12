@@ -22,6 +22,9 @@ export const xdai: NetworkConfig = {
         `https://blockscout.com/xdai/mainnet/token/${address}/token-holders#holders`,
     },
   },
+  opensea: {
+    tokenUrl: (_lockAddress, _tokenId) => null,
+  },
   erc20: null, // no default ERC20 on xdai for now
   locksmithUri: 'https://locksmith.unlock-protocol.com',
   baseCurrencySymbol: 'xDai',
@@ -38,5 +41,6 @@ export const xdai: NetworkConfig = {
     },
   ],
   description: 'EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.',
+  isTestNetwork: false,
 }
 export default xdai

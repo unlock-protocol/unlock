@@ -94,9 +94,7 @@ export class StorageService extends EventEmitter {
       const accessToken = localStorage.getItem('locksmith-access-token')
       if (!accessToken || isExpired(accessToken)) {
         if (refreshToken) {
-          const tokens = await this.getRefreshToken(refreshToken)
-          localStorage.setItem('locksmith-access-token', tokens.accessToken)
-          localStorage.setItem('locksmith-refresh-token', tokens.refreshToken)
+          this.getRefreshToken(refreshToken)
         } else {
           const message = await this.getSiweMessage({
             address,
@@ -126,8 +124,11 @@ export class StorageService extends EventEmitter {
     return localStorage.getItem('locksmith-refresh-token')
   }
 
-  async getRefreshToken(token: string) {
-    return this.locksmith.refreshToken(token)
+  async getRefreshToken(refreshToken: string) {
+    const tokens = await this.locksmith.refreshToken(refreshToken)
+    localStorage.setItem('locksmith-access-token', tokens.accessToken)
+    localStorage.setItem('locksmith-refresh-token', tokens.refreshToken)
+    return tokens
   }
 
   async getSiweMessage({
@@ -670,12 +671,19 @@ export class StorageService extends EventEmitter {
   async getEndpoint(url: string, options: RequestInit = {}, withAuth = false) {
     const endpoint = `${this.host}${url}`
     let params = options
+    let token = this.token
+
+    if (token && isExpired(token)) {
+      const { accessToken } = await this.getRefreshToken(this.refreshToken!)
+      token = accessToken
+    }
+
     if (withAuth) {
       params = {
         ...params,
         headers: {
           ...params.headers,
-          Authorization: `Bearer ${this.token}`,
+          Authorization: `Bearer ${token}`,
         },
       }
     }
@@ -718,6 +726,7 @@ export class StorageService extends EventEmitter {
     const response = await fetch(url, opts)
     return response.json()
   }
+
   async markTicketAsCheckedIn({
     lockAddress,
     keyId,
@@ -727,14 +736,16 @@ export class StorageService extends EventEmitter {
     keyId: string
     network: number
   }) {
-    const url = `${this.host}/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
-    return fetch(url, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${this.token}`,
-        'Content-Type': 'application/json',
+    return this.getEndpoint(
+      `/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
       },
-    })
+      true
+    )
   }
 
   async getVerifierStatus({

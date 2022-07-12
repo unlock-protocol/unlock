@@ -22,6 +22,10 @@ export const rinkeby: NetworkConfig = {
         `https://rinkeby.etherscan.io/token/${address}?a=${holder}`,
     },
   },
+  opensea: {
+    tokenUrl: (lockAddress, tokenId) =>
+      `https://testnets.opensea.io/assets/${lockAddress}/${tokenId}`,
+  },
   requiredConfirmations: 12,
   erc20: {
     symbol: 'WEE',
@@ -36,6 +40,7 @@ export const rinkeby: NetworkConfig = {
   },
   startBlock: 3530008,
   description: 'Ethereum test network. Do not use for production',
+  isTestNetwork: true,
 }
 
 export default rinkeby

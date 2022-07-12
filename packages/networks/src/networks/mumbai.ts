@@ -18,6 +18,9 @@ export const mumbai: NetworkConfig = {
         `https://mumbai.polygonscan.com/token/${address}?a=${holder}`,
     },
   },
+  opensea: {
+    tokenUrl: (_lockAddress, _tokenId) => null,
+  },
   requiredConfirmations: 12,
   erc20: null,
   baseCurrencySymbol: 'MATIC',
@@ -30,6 +33,7 @@ export const mumbai: NetworkConfig = {
   startBlock: 26584912,
   previousDeploys: [],
   description: 'Polygon test network. Do not use for production',
+  isTestNetwork: true,
 }
 
 export default mumbai
