@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useState, useEffect, useRef } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 import {
   getMembershipVerificationConfig,
@@ -6,32 +6,6 @@ import {
 } from '~/utils/verification'
 import VerificationStatus from '../VerificationStatus'
 import QrScanner from 'qr-scanner'
-
-interface QRCodeScannerProps {
-  onResult: (content: string) => void | Promise<void>
-}
-
-export function QrCodeScanner({ onResult }: QRCodeScannerProps) {
-  useEffect(() => {
-    const videoElement = document.querySelector<HTMLVideoElement>('#scanner')
-    if (!videoElement) {
-      return
-    }
-    const qrScanner = new QrScanner(
-      videoElement,
-      (result) => {
-        onResult(result.data)
-      },
-      {
-        preferredCamera: 'environment',
-        highlightScanRegion: true,
-      }
-    )
-    qrScanner.start()
-    return () => qrScanner.stop()
-  }, [onResult])
-  return <video className="rounded-xl" muted id="scanner" />
-}
 
 function getVerificatioConfigFromURL(text?: string) {
   try {
@@ -54,9 +28,10 @@ function getVerificatioConfigFromURL(text?: string) {
 export function Scanner() {
   const [membershipVerificationConfig, setMembershipVerificationConfig] =
     useState<MembershipVerificationConfig | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
 
   useEffect(() => {
-    const videoElement = document.querySelector<HTMLVideoElement>('#scanner')
+    const videoElement = videoRef.current
     if (!videoElement) {
       return
     }
@@ -76,7 +51,7 @@ export function Scanner() {
       }
     )
     if (!membershipVerificationConfig) {
-      qrScanner.start()
+      qrScanner.start().catch((error) => console.error(error))
     }
     return () => qrScanner.stop()
   }, [membershipVerificationConfig])
@@ -89,37 +64,46 @@ export function Scanner() {
             Scan the QR code to check in Ticket
           </h3>
         </div>
-        <video className="rounded-xl" muted id="scanner" />
+        {!membershipVerificationConfig && (
+          <video
+            ref={videoRef}
+            className="rounded-xl object-cover w-full max-w-sm h-96"
+            muted
+            id="scanner"
+          />
+        )}
       </div>
-      <Transition show={!!membershipVerificationConfig} appear as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-50"
-          onClose={() => {
-            setMembershipVerificationConfig(null)
-          }}
-          open={!!membershipVerificationConfig}
-        >
-          <div className="fixed inset-0 backdrop-filter backdrop-blur-sm bg-zinc-500 bg-opacity-25" />
-          <Transition.Child
-            as={Fragment}
-            enter="transition ease-out duration-300"
-            enterFrom="opacity-0 translate-y-1"
-            enterTo="opacity-100"
-            leave="transition ease-in duration-150"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0 translate-y-1"
+      {membershipVerificationConfig && (
+        <Transition show appear as={Fragment}>
+          <Dialog
+            as="div"
+            className="relative z-50"
+            onClose={() => {
+              setMembershipVerificationConfig(null)
+            }}
+            open
           >
-            <div className="fixed p-6 inset-0 overflow-y-auto">
-              <div className="flex min-h-full items-center justify-center text-center">
-                <Dialog.Panel className="max-w-sm w-full">
-                  <VerificationStatus config={membershipVerificationConfig!} />
-                </Dialog.Panel>
+            <div className="fixed inset-0 backdrop-filter backdrop-blur-sm bg-zinc-500 bg-opacity-25" />
+            <Transition.Child
+              as={Fragment}
+              enter="transition ease-out duration-300"
+              enterFrom="opacity-0 translate-y-1"
+              enterTo="opacity-100"
+              leave="transition ease-in duration-150"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0 translate-y-1"
+            >
+              <div className="fixed p-6 inset-0 overflow-y-auto">
+                <div className="flex min-h-full items-center justify-center text-center">
+                  <Dialog.Panel className="max-w-sm w-full">
+                    <VerificationStatus config={membershipVerificationConfig} />
+                  </Dialog.Panel>
+                </div>
               </div>
-            </div>
-          </Transition.Child>
-        </Dialog>
-      </Transition>
+            </Transition.Child>
+          </Dialog>
+        </Transition>
+      )}
     </>
   )
 }
