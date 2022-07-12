@@ -6,6 +6,7 @@ import withConfig, { ConfigContext } from '../../../utils/withConfig'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { GrUserAdmin as VerifierIcon } from 'react-icons/gr'
 import Link from 'next/link'
+import { Tooltip } from '@unlock-protocol/ui'
 
 interface LockIconBarProps {
   lock: any
@@ -61,9 +62,11 @@ export function LockIconBar({
         />
       )}
       <Link href={verifiersPage}>
-        <div className="cursor-pointer bg-[#EEE] h-[24px] w-[24px] flex justify-center rounded-full items-center">
-          <VerifierIcon className="stroke-[#A6A6A6]" />
-        </div>
+        <Tooltip tip="Verifiers page" label="Verifiers page">
+          <div className="cursor-pointer bg-[#EEE] h-[24px] w-[24px] flex justify-center rounded-full items-center">
+            <VerifierIcon className="stroke-[#A6A6A6]" />
+          </div>
+        </Tooltip>
       </Link>
     </div>
   )
