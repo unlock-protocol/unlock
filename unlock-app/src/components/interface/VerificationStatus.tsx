@@ -141,6 +141,7 @@ export const VerificationStatus = ({ config }: Props) => {
         <Button
           loading={isCheckingIn}
           disabled={!isVerifier || isCheckingIn || !!invalid || !!checkedInAt}
+          variant={!checkedInAt ? 'primary' : 'outlined-primary'}
           onClick={async (event) => {
             event.preventDefault()
             onCheckIn()

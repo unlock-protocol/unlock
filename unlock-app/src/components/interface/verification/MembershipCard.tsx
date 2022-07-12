@@ -67,7 +67,11 @@ export function MembershipCard({
           )}
         </div>
         <p className="text-white font-bold">
-          {invalid ? invalid : `Welcome to ${lock.name}`}
+          {invalid
+            ? invalid
+            : checkedInAt
+            ? 'Already Checked-in'
+            : `Welcome to ${lock.name}`}
         </p>
       </div>
       <div className="p-6 space-y-6">
