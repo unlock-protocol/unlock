@@ -410,12 +410,15 @@ export default class WalletService extends UnlockService {
    * @param {object} params:
    * - {PropTypes.address} lockAddress
    * - {number} tokenId
+   * - {number} duration default to 0, which will extend the key by the
+   *  default duration of the lock
    * @param {function} callback invoked with the transaction hash
    */
   async grantKeyExtension(
     params: {
       lockAddress: string
       tokenId: string
+      duration: number
     },
     callback: WalletServiceCallback
   ) {
