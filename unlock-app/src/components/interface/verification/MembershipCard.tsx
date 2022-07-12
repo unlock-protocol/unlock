@@ -72,7 +72,7 @@ export function MembershipCard({
           {invalid
             ? invalid
             : checkedInAt
-            ? `Checked-in since ${timeSinceCheckedIn} ago`
+            ? `Checked-in ${timeSinceCheckedIn} ago`
             : `Welcome to ${lock.name}`}
         </p>
       </div>
