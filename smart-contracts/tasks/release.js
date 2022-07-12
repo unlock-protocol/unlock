@@ -38,6 +38,12 @@ task('release', 'Release a new version of the contract')
       contractName,
       `${versioned}.sol`
     )
+    const interfacePath = path.resolve(
+      libPath,
+      'contracts',
+      contractName,
+      `I${versioned}.sol`
+    )
 
     // make sure we dont erase anything
     if (await fs.pathExists(abiPath)) {
@@ -62,6 +68,25 @@ task('release', 'Release a new version of the contract')
       // eslint-disable-next-line no-console
       console.log(
         `Solidity contract for ${contractName} flattened at: ${solPath}`
+      )
+    }
+
+    if (await fs.pathExists(interfacePath)) {
+      // eslint-disable-next-line no-console
+      console.log(`File ${interfacePath} already exists.`)
+    } else {
+      // flatten the contract
+      const interfaceSrcPath = path.resolve(
+        'contracts',
+        'interfaces',
+        `I${contractName}.sol`
+      )
+      console.log(interfaceSrcPath)
+      await fs.copyFile(interfaceSrcPath, interfacePath)
+
+      // eslint-disable-next-line no-console
+      console.log(
+        `Solidity interface for ${contractName} copied at: ${interfacePath}`
       )
     }
   })
