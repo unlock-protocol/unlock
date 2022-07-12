@@ -92,14 +92,11 @@ export const VerificationStatus = ({ config }: Props) => {
   const onCheckIn = async () => {
     try {
       setIsCheckingIn(true)
-      const response = await storageService.markTicketAsCheckedIn({
+      await storageService.markTicketAsCheckedIn({
         lockAddress,
         keyId: tokenId,
         network,
       })
-      if (!response.ok) {
-        throw new Error('Could not check in membership')
-      }
       await refetchMembershipData()
       setIsCheckingIn(false)
     } catch (error) {
