@@ -15,7 +15,6 @@ import { invalidMembership } from './verification/invalidMembership'
 import { Button } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { isSignatureValidForAddress } from '~/utils/signatures'
-import { isExpired } from 'react-jwt'
 
 interface Props {
   config: MembershipVerificationConfig
