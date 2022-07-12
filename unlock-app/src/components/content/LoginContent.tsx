@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import Layout from '../interface/Layout'
@@ -12,6 +12,12 @@ export const LoginContent = () => {
   const { account } = useAuth()
   const router = useRouter()
   const redirect = router.query?.redirect?.toString()
+
+  useEffect(() => {
+    if (redirect && account) {
+      router.push(redirect)
+    }
+  }, [account, redirect, router])
 
   return (
     <Layout title="Login">
