@@ -4,8 +4,9 @@ const { Encoder, ErrorCorrectionLevel } = require('@nuintun/qrcode')
 
 const IMG_PATH = './qr'
 const NUMBER_OF_KEYS = 2
+const VERIF_URL = 'https://staging-app.unlock-protocol.com/verification'
+
 const lockAddress = '0x4D35Fb10150E3D5E09ce332bBc4366D9F89B49c5'
-const verifURL = 'https://staging-app.unlock-protocol.com/verification'
 
 async function main() {
   const { chainId } = await ethers.provider.getNetwork()
@@ -52,15 +53,17 @@ async function main() {
       tokenId: `${tokenId}`.toLowerCase(),
       timestamp: Date.now(),
     })
-
     console.log(payload)
 
     // make sure we get the correct signer
-    const signature = await signers[0].signMessage(payload)
+    const signer = keyOwners.find((s) => s.address === to)
+    const signature = await signer.signMessage(payload)
 
-    const url = new URL(`${verifURL}/verification`)
+    const url = new URL(`${VERIF_URL}/verification`)
+
+    // parse data in URL
     url.searchParams.append('data', payload)
-    url.searchParams.append('sig', JSON.stringify(signature))
+    url.searchParams.append('sig', signature)
 
     // generate qr code
     const qrcode = new Encoder()
@@ -68,9 +71,7 @@ async function main() {
     qrcode.write(url.toString())
     qrcode.make()
 
-    // this will return a base64 image
-    // console.log(qrcode.toDataURL(5)) //.replace('data:image/gif;base64,', '')
-
+    // create the base64 gif image
     const img = Buffer.from(
       qrcode.toDataURL(5).replace('data:image/gif;base64,', ''),
       'base64'
