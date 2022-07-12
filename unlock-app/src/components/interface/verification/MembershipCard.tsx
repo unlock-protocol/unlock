@@ -51,12 +51,14 @@ export function MembershipCard({
   children = null,
 }: Props) {
   const timeSinceSigned = dayjs().from(timestamp, true)
+  const timeSinceCheckedIn = dayjs().from(checkedInAt, true)
   const config = useConfig()
+
   return (
     <div className="w-full bg-white max-w-sm rounded-xl">
       <div
         className={` ${
-          invalid ? 'bg-red-500' : 'bg-green-500'
+          invalid ? 'bg-red-500' : checkedInAt ? 'bg-amber-300' : 'bg-green-500'
         } text-center p-6 rounded-t-xl`}
       >
         <div className="inline-flex items-center justify-center">
@@ -67,7 +69,11 @@ export function MembershipCard({
           )}
         </div>
         <p className="text-white font-bold">
-          {invalid ? invalid : `Welcome to ${lock.name}`}
+          {invalid
+            ? invalid
+            : checkedInAt
+            ? `Checked-in ${timeSinceCheckedIn} ago`
+            : `Welcome to ${lock.name}`}
         </p>
       </div>
       <div className="p-6 space-y-6">
@@ -93,12 +99,6 @@ export function MembershipCard({
           <Item label="Lock Address" value={addressMinify(lock.address)} />
           <Item label="Network" value={config.networks[network].name} />
           <Item label="Time since signed" value={timeSinceSigned} />
-          {checkedInAt && (
-            <Item
-              label="Checked in at"
-              value={new Date(checkedInAt).toLocaleDateString()}
-            />
-          )}
           <Item
             label="Owner"
             value={addressMinify(membershipData?.owner?.toString())}
@@ -153,7 +153,6 @@ export function MembershipCardPlaceholder() {
           <div className="flex bg-gray-50 items-center animate-pulse uppercase justify-center w-20 h-20 rounded-full"></div>
         </div>
         <div className="grid gap-2">
-          <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
           <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
           <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
           <div className="bg-gray-50 animate-pulse h-6 w-full rounded-xl"></div>
