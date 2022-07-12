@@ -1,23 +1,36 @@
-import { Fragment, useState } from 'react'
-import { useQrReader, OnResultFunction } from 'react-qr-reader'
+import { Fragment, useRef, useState, useEffect } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
-import { getMembershipVerificationConfig } from '~/utils/verification'
+import {
+  getMembershipVerificationConfig,
+  MembershipVerificationConfig,
+} from '~/utils/verification'
 import VerificationStatus from '../VerificationStatus'
+import QrScanner from 'qr-scanner'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface QRCodeScannerProps {
-  onResult: OnResultFunction
+  onResult: (content: string) => void | Promise<void>
 }
 
 export function QrCodeScanner({ onResult }: QRCodeScannerProps) {
-  useQrReader({
-    constraints: {
-      aspectRatio: 1,
-      facingMode: 'environment',
-    },
-    videoId: 'scanner',
-    onResult,
-    scanDelay: 250,
-  })
+  useEffect(() => {
+    const videoElement = document.querySelector<HTMLVideoElement>('#scanner')
+    if (!videoElement) {
+      return
+    }
+    const qrScanner = new QrScanner(
+      videoElement,
+      (result) => {
+        onResult(result.data)
+      },
+      {
+        preferredCamera: 'environment',
+        highlightScanRegion: true,
+      }
+    )
+    qrScanner.start()
+    return () => qrScanner.stop()
+  }, [onResult])
   return <video className="rounded-xl" muted id="scanner" />
 }
 
@@ -35,20 +48,41 @@ function getVerificatioConfigFromURL(text?: string) {
     })
     return config
   } catch (error) {
-    console.error(error)
     return
   }
 }
 
 export function Scanner() {
-  const [{ result }, setResult] = useState<
-    Partial<Record<'result' | 'error', string>>
-  >({
-    result: undefined,
-    error: undefined,
-  })
+  const [membershipVerificationConfig, setMembershipVerificationConfig] =
+    useState<MembershipVerificationConfig | null>(null)
 
-  const membershipVerificationConfig = getVerificatioConfigFromURL(result)
+  useEffect(() => {
+    const videoElement = document.querySelector<HTMLVideoElement>('#scanner')
+    if (!videoElement) {
+      return
+    }
+    const qrScanner = new QrScanner(
+      videoElement,
+      (result) => {
+        const config = getVerificatioConfigFromURL(result.data)
+        if (!config) {
+          return
+        }
+        ToastHelper.success(config.sig)
+        setMembershipVerificationConfig(config)
+        qrScanner.stop()
+      },
+      {
+        preferredCamera: 'environment',
+        highlightScanRegion: true,
+      }
+    )
+    if (!membershipVerificationConfig) {
+      qrScanner.start()
+    }
+    return () => qrScanner.stop()
+  }, [membershipVerificationConfig])
+
   return (
     <>
       {!membershipVerificationConfig ? (
@@ -58,14 +92,7 @@ export function Scanner() {
               Scan the QR code to check in Ticket
             </h3>
           </div>
-          <QrCodeScanner
-            onResult={(result, error) => {
-              setResult({
-                result: result?.toString(),
-                error: error?.message,
-              })
-            }}
-          />
+          <video className="rounded-xl" muted id="scanner" />
         </div>
       ) : (
         <Transition show appear as={Fragment}>
@@ -73,7 +100,7 @@ export function Scanner() {
             as="div"
             className="relative z-50"
             onClose={() => {
-              setResult({})
+              setMembershipVerificationConfig(null)
             }}
             open
           >

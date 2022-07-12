@@ -4923,6 +4923,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.16.7":
+  version: 7.18.6
+  resolution: "@babel/runtime@npm:7.18.6"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: 8b707b64ae0524db617d0c49933b258b96376a38307dc0be8fb42db5697608bcc1eba459acce541e376cff5ed5c5287d24db5780bd776b7c75ba2c2e26ff8a2c
+  languageName: node
+  linkType: hard
+
 "@babel/runtime@npm:^7.17.8, @babel/runtime@npm:^7.6.2":
   version: 7.18.3
   resolution: "@babel/runtime@npm:7.18.3"
@@ -13883,6 +13892,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/offscreencanvas@npm:^2019.6.4":
+  version: 2019.7.0
+  resolution: "@types/offscreencanvas@npm:2019.7.0"
+  checksum: 018cfcd19e0c59c44d14ba61caaca7246f77fbb512839c7881654b7f2b6591dbdd5857362eccbf49f29cdc93724e71a4b37c8b6cf203388f9c04e913a53ea390
+  languageName: node
+  linkType: hard
+
 "@types/overlayscrollbars@npm:^1.12.0":
   version: 1.12.1
   resolution: "@types/overlayscrollbars@npm:1.12.1"
@@ -15596,6 +15612,7 @@ __metadata:
     postmate: 1.5.2
     prettier: 2.6.2
     prop-types: 15.8.1
+    qr-scanner: ^1.4.1
     qrcode.react: 3.0.2
     react: 17.0.2
     react-dom: 17.0.2
@@ -15606,7 +15623,8 @@ __metadata:
     react-icons: 4.4.0
     react-jazzicon: 1.0.3
     react-jwt: 1.1.6
-    react-qr-reader: 3.0.0-beta-1
+    react-qr-reader: 2.2.1
+    react-qr-scanner: ^1.0.0-alpha.8
     react-query: 3.39.1
     react-test-renderer: 17.0.2
     react-use-clipboard: 1.0.8
@@ -16505,34 +16523,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@zxing/browser@npm:0.0.7":
-  version: 0.0.7
-  resolution: "@zxing/browser@npm:0.0.7"
-  dependencies:
-    "@zxing/text-encoding": ^0.9.0
-  peerDependencies:
-    "@zxing/library": ^0.18.3
-  dependenciesMeta:
-    "@zxing/text-encoding":
-      optional: true
-  checksum: 5f56628382a053436f0fd4163d0853e11f24059655e26e5311a97baae5fce524efe6fc397a82de7634b12585568c714789bca75d9747478d6030d27b907fc3ab
-  languageName: node
-  linkType: hard
-
-"@zxing/library@npm:^0.18.3":
-  version: 0.18.6
-  resolution: "@zxing/library@npm:0.18.6"
+"@zxing/library@npm:^0.19.1":
+  version: 0.19.1
+  resolution: "@zxing/library@npm:0.19.1"
   dependencies:
     "@zxing/text-encoding": ~0.9.0
     ts-custom-error: ^3.0.0
   dependenciesMeta:
     "@zxing/text-encoding":
       optional: true
-  checksum: 564a25f6245b4fd81b4ce686116bf1fe577daa2aaee4263b4dea3776676482fd3e063ad43783c6378713a4a3dcefd311b6154b6cd43e7be24bb7e7c3e5fec98a
+  checksum: ed650e4afc74560950efad3d1479f4bcd9878b6baadd4ac9280cec45bdbeba957bb1185cde7858e49493b3f0052d25bd0be3a1c277433e4e09e1f29018aec2f3
   languageName: node
   linkType: hard
 
-"@zxing/text-encoding@npm:^0.9.0, @zxing/text-encoding@npm:~0.9.0":
+"@zxing/text-encoding@npm:~0.9.0":
   version: 0.9.0
   resolution: "@zxing/text-encoding@npm:0.9.0"
   checksum: c23b12aee7639382e4949961304a1294776afaffa40f579e09ffecd0e5e68cf26ef3edd75009de46da8a536e571448755ca68b3e2ea707d53793c0edb2e2c34a
@@ -35438,6 +35442,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"jsqr@npm:^1.2.0":
+  version: 1.4.0
+  resolution: "jsqr@npm:1.4.0"
+  checksum: 7c572971f90c42772e30d152bde63b84edf1164bde80c53942e6b2068ea31caf00ad704aa46cacc9e71645f52dbeddebc6e84ba15e883c678ee93cde690de339
+  languageName: node
+  linkType: hard
+
 "jsx-ast-utils@npm:^2.4.1 || ^3.0.0":
   version: 3.2.0
   resolution: "jsx-ast-utils@npm:3.2.0"
@@ -43408,6 +43419,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"qr-scanner@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "qr-scanner@npm:1.4.1"
+  dependencies:
+    "@types/offscreencanvas": ^2019.6.4
+  checksum: c3bab2a35153d2c64363b669dcf5cf3009c109b930d0c719da0e90efa6e62cf432b460478a264e71b6add35f53c0c9dc1e9a8fb09f75e133c0b7f03be5256bb0
+  languageName: node
+  linkType: hard
+
 "qrcode.react@npm:3.0.2":
   version: 3.0.2
   resolution: "qrcode.react@npm:3.0.2"
@@ -44081,17 +44101,31 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-qr-reader@npm:3.0.0-beta-1":
-  version: 3.0.0-beta-1
-  resolution: "react-qr-reader@npm:3.0.0-beta-1"
+"react-qr-reader@npm:2.2.1":
+  version: 2.2.1
+  resolution: "react-qr-reader@npm:2.2.1"
   dependencies:
-    "@zxing/browser": 0.0.7
-    "@zxing/library": ^0.18.3
-    rollup: ^2.67.2
+    jsqr: ^1.2.0
+    prop-types: ^15.7.2
+    webrtc-adapter: ^7.2.1
   peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  checksum: f85fc490251cba1b763b9f1eb56ac8fb3cd006fcb189ed2b4e8e59bfb61f9493d96274aeb5e980b6093b9ca5595af76893369ecc00562664d033f37f567bd00d
+    react: ~16
+    react-dom: ~16
+  checksum: a6e997fdd9106dc06efd5df979c49174cf5da97ced9dd1212ebe084fc6c346d2b8a636c6e710668bde32ced28a54e0a4a99e843101062fc3ca99cb90287473cb
+  languageName: node
+  linkType: hard
+
+"react-qr-scanner@npm:^1.0.0-alpha.8":
+  version: 1.0.0-alpha.8
+  resolution: "react-qr-scanner@npm:1.0.0-alpha.8"
+  dependencies:
+    "@babel/runtime": ^7.16.7
+    "@zxing/library": ^0.19.1
+  peerDependencies:
+    prop-types: ^15.8.1
+    react: ^16.8.0
+    react-dom: ^16.8.0
+  checksum: 87c6cde3d67d45734adfdb65f7cc90689795116237968f0550d2dd1dc62f489603617a54a7ad8fa74c9a4d23fe532ca6c4bffd608f4908de898efd477f0cef02
   languageName: node
   linkType: hard
 
@@ -45877,20 +45911,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"rollup@npm:^2.67.2":
-  version: 2.75.7
-  resolution: "rollup@npm:2.75.7"
-  dependencies:
-    fsevents: ~2.3.2
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    rollup: dist/bin/rollup
-  checksum: a6331d46b01062b184efdcb42ce12caf2e1575f989963944534b02f5855f6f3bc239ed0c1a18893572d7695af6d83166f3aef59dbd0365084e1531cb67824674
-  languageName: node
-  linkType: hard
-
 "rollup@npm:^2.74.1":
   version: 2.75.4
   resolution: "rollup@npm:2.75.4"
@@ -45940,6 +45960,15 @@ resolve@^2.0.0-next.3:
   version: 4.8.5
   resolution: "rsvp@npm:4.8.5"
   checksum: 2d8ef30d8febdf05bdf856ccca38001ae3647e41835ca196bc1225333f79b94ae44def733121ca549ccc36209c9b689f6586905e2a043873262609744da8efc1
+  languageName: node
+  linkType: hard
+
+"rtcpeerconnection-shim@npm:^1.2.15":
+  version: 1.2.15
+  resolution: "rtcpeerconnection-shim@npm:1.2.15"
+  dependencies:
+    sdp: ^2.6.0
+  checksum: 42a733d8e3846b7e7e3c33b6d5cddec95659ceb39d3f990f0a4437e6d719ed717237fea02352d4a18d86c825a1493eaeb481cc835267d2288b0ce43582b97f46
   languageName: node
   linkType: hard
 
@@ -46300,6 +46329,13 @@ resolve@^2.0.0-next.3:
   dependencies:
     pbkdf2: ^3.0.3
   checksum: e09cf253b0974171bbcb77fa46405bb07cb8e241e2851fc5f23b38526a33105f0f7748a4d60027642f40bd4518ada30b1dce5005c05d17a25cbcefad371d4259
+  languageName: node
+  linkType: hard
+
+"sdp@npm:^2.12.0, sdp@npm:^2.6.0":
+  version: 2.12.0
+  resolution: "sdp@npm:2.12.0"
+  checksum: 5deb20ac50a1aeb4dd5ff2e506c22d1674222c21f08ae97105c9552ae979e90ddc42b8526f2c3dcacfeebc45c7b2e6b6b4254ae2cf335263bf3ddf2ad9b8ec76
   languageName: node
   linkType: hard
 
@@ -54797,6 +54833,16 @@ typescript@^3.8.3:
   bin:
     webpack: bin/webpack.js
   checksum: 221ab8ccd440cb678269e86689704bbef81cf41393eb266625873e30c6980ffaa055bb1a7d14bf9fc0f5a2e6f03d15d068cbb995bc876757c01a4ca27fd2870c
+  languageName: node
+  linkType: hard
+
+"webrtc-adapter@npm:^7.2.1":
+  version: 7.7.1
+  resolution: "webrtc-adapter@npm:7.7.1"
+  dependencies:
+    rtcpeerconnection-shim: ^1.2.15
+    sdp: ^2.12.0
+  checksum: 16534a721794bf375753b031e538f5c1ce84df3a272085069bbce7fa1b085e5a2d33b92096256a6fdacdf6f9e30f8543e2478a293ccf5a3849bc7143b10b38d3
   languageName: node
   linkType: hard
 
