@@ -39,7 +39,7 @@ export const buildMembersWithMetadata = (
   )
   lockWithKeys.keys?.forEach((key: any) => {
     const keyOwner = key.owner.address.toLowerCase()
-    const index = `${lockWithKeys.address}-${keyOwner}`
+    const index = `${lockWithKeys.address}-${keyOwner}-${key.keyId}` // lets add keyId to see mutiple keys for the same address
     let member: any = members[index]
 
     if (!member) {
@@ -165,6 +165,7 @@ export const useMembers = (
     })
 
     const membersByLock = await Promise.all(membersForLocksPromise)
+
     const members = Object.values(
       membersByLock.reduce((acc, array) => {
         return {
