@@ -193,7 +193,6 @@ describe('tickets endpoint', () => {
 
     const keyData = await metadataOperations.getKeyCentricData(lockAddress, id)
 
-    console.log(keyData)
     expect(keyData.metadata.value).toBe('12')
     expect(keyData.KeyMetadata.custom_field).toBe('Random')
   })
