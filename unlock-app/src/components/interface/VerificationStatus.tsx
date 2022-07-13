@@ -18,14 +18,14 @@ import { isSignatureValidForAddress } from '~/utils/signatures'
 
 interface Props {
   config: MembershipVerificationConfig
-  setConfig: (config: MembershipVerificationConfig | null) => void
+  onScanNext: () => void
 }
 
 /**
  * React components which given data, signature will verify the validity of a key
  * and display the right status
  */
-export const VerificationStatus = ({ config, setConfig }: Props) => {
+export const VerificationStatus = ({ config, onScanNext }: Props) => {
   const { data, sig, raw } = config
   const { lockAddress, timestamp, network, tokenId, account } = data
   const { account: viewer } = useAuth()
@@ -122,10 +122,6 @@ export const VerificationStatus = ({ config, setConfig }: Props) => {
       console.error(error)
       ToastHelper.error('Failed to check in')
     }
-  }
-
-  const onScanNext = () => {
-    setConfig(null)
   }
 
   if (
