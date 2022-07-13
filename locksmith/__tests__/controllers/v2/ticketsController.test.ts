@@ -4,11 +4,22 @@ const metadataOperations = require('../../../src/operations/metadataOperations')
 
 const app = require('../../../src/app')
 
+function* keyIdGen() {
+  const start = Date.now()
+  let count = 0
+  while (true) {
+    count++
+    const value = start + count
+    yield value.toString()
+  }
+}
+
 jest.setTimeout(600000)
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
 const network = 4
-const tokenId = '2244'
+const keyGen = keyIdGen()
+const tokenId = keyGen.next().value!
 const wrongTokenId = '666'
 let owner = `0x00192fb10df37c9fb26829eb2cc623cd1bf599e8`
 
@@ -27,7 +38,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
 jest.mock('../../../src/operations/wedlocksOperations', () => {
   return {
     notifyNewKeyToWedlocks: (key: string, networkId?: number) =>
-      tokenId === key && network === networkId,
+      tokenId.toString() === key && network === networkId,
   }
 })
 
@@ -78,8 +89,9 @@ describe('tickets endpoint', () => {
 
   it('does not mark the ticket as checked-in when authentication is missing and returns an error', async () => {
     expect.assertions(1)
+    const keyId = keyGen.next().value
     const response = await request(app).put(
-      `/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`
+      `/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
     )
 
     expect(response.status).toBe(403)
@@ -89,10 +101,11 @@ describe('tickets endpoint', () => {
     expect.assertions(2)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
+    const keyId = keyGen.next().value
 
     const response = await request(app)
       .put(
-        `/v2/api/ticket/${network}/lock/${wrongLockAddress}/key/${tokenId}/check`
+        `/v2/api/ticket/${network}/lock/${wrongLockAddress}/key/${keyId}/check`
       )
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
@@ -103,9 +116,10 @@ describe('tickets endpoint', () => {
     expect.assertions(2)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
+    const keyId = keyGen.next().value
 
     const response = await request(app)
-      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`)
+      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(response.status).toBe(202)
@@ -115,35 +129,52 @@ describe('tickets endpoint', () => {
     expect.assertions(3)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
+    const keyId = keyGen.next().value
 
     const response = await request(app)
-      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`)
+      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(response.status).toBe(202)
 
     const keyData = await metadataOperations.getKeyCentricData(
       lockAddress,
-      tokenId
+      keyId
     )
     expect(keyData.metadata.checkedInAt).not.toBeUndefined()
+  })
+
+  it('Throws 409 error when ticket is already checked in', async () => {
+    expect.assertions(3)
+    const { loginResponse } = await loginRandomUser(app)
+
+    const keyId = keyGen.next().value
+
+    const response1 = await request(app)
+      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    const response2 = await request(app)
+      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
+    expect(loginResponse.status).toBe(200)
+    expect(response1.status).toBe(202)
+    expect(response2.status).toBe(409)
   })
 
   it('does not override metadata', async () => {
     expect.assertions(4)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
+    const id = keyGen.next().value
 
-    const checkInTime = new Date().getTime()
     const metadata = {
+      id,
       chain: network,
       address: lockAddress,
-      id: tokenId,
       data: {
-        keyId: tokenId,
-        lockAddress,
         metadata: {
-          checkedInAt: checkInTime,
           value: '12',
         },
         KeyMetadata: {
@@ -155,15 +186,14 @@ describe('tickets endpoint', () => {
     await metadataOperations.updateKeyMetadata(metadata)
 
     const response = await request(app)
-      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${tokenId}/check`)
+      .put(`/v2/api/ticket/${network}/lock/${lockAddress}/key/${id}/check`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+
     expect(response.status).toBe(202)
 
-    const keyData = await metadataOperations.getKeyCentricData(
-      lockAddress,
-      tokenId
-    )
+    const keyData = await metadataOperations.getKeyCentricData(lockAddress, id)
 
+    console.log(keyData)
     expect(keyData.metadata.value).toBe('12')
     expect(keyData.KeyMetadata.custom_field).toBe('Random')
   })
