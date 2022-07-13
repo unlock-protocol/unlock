@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { HiOutlineTrash as TrashIcon } from 'react-icons/hi'
-import { Button, Modal, Tooltip } from '@unlock-protocol/ui'
+import { Button, IconButton, Modal, Tooltip } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { useAuth } from '../../../contexts/AuthenticationContext'
 import { ToastHelper } from '../../helpers/toast.helper'
@@ -157,11 +157,13 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
                 </div>
                 <div className="flex col-span-full	md:col-span-1">
                   <Tooltip tip="Remove verifier" label="Remove verifier">
-                    <Button className="ml-auto">
-                      <TrashIcon
-                        onClick={() => onDeleteVerifier(verifier?.address)}
-                      />
-                    </Button>
+                    <IconButton
+                      className="ml-auto"
+                      label="Remove verifier"
+                      size="medium"
+                      icon={<TrashIcon />}
+                      onClick={() => onDeleteVerifier(verifier?.address)}
+                    />
                   </Tooltip>
                 </div>
               </div>
