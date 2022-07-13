@@ -155,7 +155,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
                       className="ml-auto"
                       label="Remove verifier"
                       size="medium"
-                      icon={<TrashIcon />}
+                      icon={<TrashIcon key="delete" />}
                       onClick={() => onDeleteVerifier(verifier?.address)}
                     />
                   </Tooltip>
