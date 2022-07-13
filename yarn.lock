@@ -13883,6 +13883,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/offscreencanvas@npm:^2019.6.4":
+  version: 2019.7.0
+  resolution: "@types/offscreencanvas@npm:2019.7.0"
+  checksum: 018cfcd19e0c59c44d14ba61caaca7246f77fbb512839c7881654b7f2b6591dbdd5857362eccbf49f29cdc93724e71a4b37c8b6cf203388f9c04e913a53ea390
+  languageName: node
+  linkType: hard
+
 "@types/overlayscrollbars@npm:^1.12.0":
   version: 1.12.1
   resolution: "@types/overlayscrollbars@npm:1.12.1"
@@ -15596,6 +15603,7 @@ __metadata:
     postmate: 1.5.2
     prettier: 2.6.2
     prop-types: 15.8.1
+    qr-scanner: ^1.4.1
     qrcode.react: 3.0.2
     react: 17.0.2
     react-dom: 17.0.2
@@ -15606,7 +15614,6 @@ __metadata:
     react-icons: 4.4.0
     react-jazzicon: 1.0.3
     react-jwt: 1.1.6
-    react-qr-reader: 3.0.0-beta-1
     react-query: 3.39.1
     react-test-renderer: 17.0.2
     react-use-clipboard: 1.0.8
@@ -16502,40 +16509,6 @@ __metadata:
   version: 0.0.3
   resolution: "@zeit/next-source-maps@npm:0.0.3"
   checksum: 269d7d1c82f612064868299ac200f2e3dc34f423fd62ce30dc857bb8185e698f41c122accbebdbfc124273cb751033490d9a38cc1b31ef36b6f38af098e35683
-  languageName: node
-  linkType: hard
-
-"@zxing/browser@npm:0.0.7":
-  version: 0.0.7
-  resolution: "@zxing/browser@npm:0.0.7"
-  dependencies:
-    "@zxing/text-encoding": ^0.9.0
-  peerDependencies:
-    "@zxing/library": ^0.18.3
-  dependenciesMeta:
-    "@zxing/text-encoding":
-      optional: true
-  checksum: 5f56628382a053436f0fd4163d0853e11f24059655e26e5311a97baae5fce524efe6fc397a82de7634b12585568c714789bca75d9747478d6030d27b907fc3ab
-  languageName: node
-  linkType: hard
-
-"@zxing/library@npm:^0.18.3":
-  version: 0.18.6
-  resolution: "@zxing/library@npm:0.18.6"
-  dependencies:
-    "@zxing/text-encoding": ~0.9.0
-    ts-custom-error: ^3.0.0
-  dependenciesMeta:
-    "@zxing/text-encoding":
-      optional: true
-  checksum: 564a25f6245b4fd81b4ce686116bf1fe577daa2aaee4263b4dea3776676482fd3e063ad43783c6378713a4a3dcefd311b6154b6cd43e7be24bb7e7c3e5fec98a
-  languageName: node
-  linkType: hard
-
-"@zxing/text-encoding@npm:^0.9.0, @zxing/text-encoding@npm:~0.9.0":
-  version: 0.9.0
-  resolution: "@zxing/text-encoding@npm:0.9.0"
-  checksum: c23b12aee7639382e4949961304a1294776afaffa40f579e09ffecd0e5e68cf26ef3edd75009de46da8a536e571448755ca68b3e2ea707d53793c0edb2e2c34a
   languageName: node
   linkType: hard
 
@@ -43408,6 +43381,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"qr-scanner@npm:^1.4.1":
+  version: 1.4.1
+  resolution: "qr-scanner@npm:1.4.1"
+  dependencies:
+    "@types/offscreencanvas": ^2019.6.4
+  checksum: c3bab2a35153d2c64363b669dcf5cf3009c109b930d0c719da0e90efa6e62cf432b460478a264e71b6add35f53c0c9dc1e9a8fb09f75e133c0b7f03be5256bb0
+  languageName: node
+  linkType: hard
+
 "qrcode.react@npm:3.0.2":
   version: 3.0.2
   resolution: "qrcode.react@npm:3.0.2"
@@ -44078,20 +44060,6 @@ fsevents@~2.1.1:
     "@popperjs/core": ^2.0.0
     react: ^16.8.0 || ^17
   checksum: 915fcf08e1da4fd48a200074fcdd936f601ee2173f1e730cfed8a54fd47716aa8bf9cce2392463e3bcbe64a096d0baf463809ed2874b94d3a9d430ae6d817b5d
-  languageName: node
-  linkType: hard
-
-"react-qr-reader@npm:3.0.0-beta-1":
-  version: 3.0.0-beta-1
-  resolution: "react-qr-reader@npm:3.0.0-beta-1"
-  dependencies:
-    "@zxing/browser": 0.0.7
-    "@zxing/library": ^0.18.3
-    rollup: ^2.67.2
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  checksum: f85fc490251cba1b763b9f1eb56ac8fb3cd006fcb189ed2b4e8e59bfb61f9493d96274aeb5e980b6093b9ca5595af76893369ecc00562664d033f37f567bd00d
   languageName: node
   linkType: hard
 
@@ -45874,20 +45842,6 @@ resolve@^2.0.0-next.3:
   bin:
     rollup: dist/bin/rollup
   checksum: 23db16ea9d222ad5ae9620ba51d4f45c834927038c1e43d87f7dd3d240aa54422e51c2660437479af4b771e13f9529df236a3d43a3b9f4229bf241347d5f2c8f
-  languageName: node
-  linkType: hard
-
-"rollup@npm:^2.67.2":
-  version: 2.75.7
-  resolution: "rollup@npm:2.75.7"
-  dependencies:
-    fsevents: ~2.3.2
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  bin:
-    rollup: dist/bin/rollup
-  checksum: a6331d46b01062b184efdcb42ce12caf2e1575f989963944534b02f5855f6f3bc239ed0c1a18893572d7695af6d83166f3aef59dbd0365084e1531cb67824674
   languageName: node
   linkType: hard
 
@@ -49746,13 +49700,6 @@ resolve@^2.0.0-next.3:
   version: 1.0.1
   resolution: "tryer@npm:1.0.1"
   checksum: 1cf14d7f67c79613f054b569bfc9a89c7020d331573a812dfcf7437244e8f8e6eb6893b210cbd9cc217f67c1d72617f89793df231e4fe7d53634ed91cf3a89d1
-  languageName: node
-  linkType: hard
-
-"ts-custom-error@npm:^3.0.0":
-  version: 3.2.0
-  resolution: "ts-custom-error@npm:3.2.0"
-  checksum: b1d2016de891cecea46a70c4adbaf1e6f7c6178994f72070ee3c218cc1a9e2b12c3011defb8385f15dc03ddfafd8d88ef2c9217e23700fb6e537755f33b9c801
   languageName: node
   linkType: hard
 

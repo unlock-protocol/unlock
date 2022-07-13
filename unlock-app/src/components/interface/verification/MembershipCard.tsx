@@ -38,6 +38,8 @@ interface Props {
   network: number
   invalid?: string
   checkedInAt?: string
+  owner: string
+  keyId: string
   children?: ReactNode
 }
 
@@ -48,6 +50,8 @@ export function MembershipCard({
   membershipData,
   checkedInAt,
   invalid,
+  owner,
+  keyId,
   children = null,
 }: Props) {
   const timeSinceSigned = dayjs().from(timestamp, true)
@@ -92,17 +96,14 @@ export function MembershipCard({
           </Avatar>
           <div className="space-y-2">
             <h3 className="font-medium"> {lock.name} </h3>
-            <Item label="ID" value={membershipData?.keyId?.toString()} />
+            <Item label="ID" value={keyId} />
           </div>
         </div>
         <div className="grid gap-2">
           <Item label="Lock Address" value={addressMinify(lock.address)} />
           <Item label="Network" value={config.networks[network].name} />
           <Item label="Time since signed" value={timeSinceSigned} />
-          <Item
-            label="Owner"
-            value={addressMinify(membershipData?.owner?.toString())}
-          />
+          <Item label="Owner" value={addressMinify(owner)} />
           {!!membershipData?.userMetadata?.public && (
             <MetadataItems metadata={membershipData.userMetadata.public} />
           )}

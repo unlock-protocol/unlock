@@ -54,6 +54,23 @@ export const VerificationStatus = ({ config }: Props) => {
     }
   )
 
+  const lockVersion = lock?.publicLockVersion
+
+  const { isLoading: isKeyLoading, data: key } = useQuery(
+    [lockVersion, network, tokenId, account, lockAddress],
+    async () => {
+      if (lockVersion && lockVersion >= 10) {
+        return web3Service.getKeyByTokenId(lockAddress, tokenId, network)
+      } else {
+        return web3Service.getKeyByLockForOwner(lockAddress, account, network)
+      }
+    },
+    {
+      enabled: !!lockVersion,
+      refetchInterval: false,
+    }
+  )
+
   const {
     data: membershipData,
     refetch: refetchMembershipData,
@@ -110,7 +127,8 @@ export const VerificationStatus = ({ config }: Props) => {
     isLockLoading ||
     isMembershipDataLoading ||
     isVerifierLoading ||
-    isKeyGranterLoading
+    isKeyGranterLoading ||
+    isKeyLoading
   ) {
     return (
       <div className="flex justify-center">
@@ -127,7 +145,9 @@ export const VerificationStatus = ({ config }: Props) => {
   )
 
   const invalid = invalidMembership({
-    membershipData: membershipData!,
+    keyId: key!.tokenId.toString(),
+    owner: key!.owner,
+    expiration: key!.expiration,
     isSignatureValid,
     verificationData: data,
   })
@@ -170,6 +190,8 @@ export const VerificationStatus = ({ config }: Props) => {
   return (
     <div className="flex justify-center">
       <MembershipCard
+        keyId={key!.tokenId.toString()}
+        owner={key!.owner}
         membershipData={membershipData!}
         invalid={invalid}
         timestamp={timestamp}
