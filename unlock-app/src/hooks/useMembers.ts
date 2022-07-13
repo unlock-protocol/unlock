@@ -165,7 +165,6 @@ export const useMembers = (
     })
 
     const membersByLock = await Promise.all(membersForLocksPromise)
-    console.log(membersByLock)
     const members = Object.values(
       membersByLock.reduce((acc, array) => {
         return {
