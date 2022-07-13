@@ -168,7 +168,7 @@ export const VerificationStatus = ({ config, setConfig }: Props) => {
         <>
           {checkedInAt ? (
             <Button variant="outlined-primary" onClick={onScanNext}>
-              Scan next
+              Scan next ticket
             </Button>
           ) : (
             <Button
