@@ -18,7 +18,7 @@ import { isSignatureValidForAddress } from '~/utils/signatures'
 
 interface Props {
   config: MembershipVerificationConfig
-  onVerified: () => void
+  onVerified?: () => void
 }
 
 /**
@@ -158,12 +158,18 @@ export const VerificationStatus = ({ config, onVerified }: Props) => {
   const disableActions =
     !isVerifier || isCheckingIn || !!invalid || !!checkedInAt
 
+  const onVerifiedCb = () => {
+    if (typeof onVerified === 'function') {
+      onVerified()
+    }
+  }
+
   const CardActions = () => (
     <div className="grid w-full">
       {viewer ? (
         <>
           {checkedInAt ? (
-            <Button variant="outlined-primary" onClick={onVerified}>
+            <Button variant="outlined-primary" onClick={onVerifiedCb}>
               Scan next ticket
             </Button>
           ) : (
