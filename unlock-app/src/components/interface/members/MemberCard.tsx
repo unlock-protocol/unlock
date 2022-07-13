@@ -7,6 +7,7 @@ import { StorageServiceContext } from '../../../utils/withStorageService'
 import { ToastHelper } from '../../../components/helpers/toast.helper'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
 import { WalletServiceContext } from '~/utils/withWalletService'
+import useClipboard from 'react-use-clipboard'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -30,7 +31,6 @@ interface MemberCardProps {
 const keysToIgnore = [
   'token',
   'lockName',
-  'keyholderAddress',
   'expiration',
   'checkedInAt',
   'lockAddress',
@@ -60,6 +60,10 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const { network, account } = useContext(AuthenticationContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
   const [emailSent, setEmailSent] = useState(false)
+
+  const [isCopied, setCopied] = useClipboard(keyholderAddress, {
+    successDuration: 2000,
+  })
 
   const extraDataItems: [string, string | number][] = Object.entries(
     metadata || {}
@@ -143,20 +147,29 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       data-testid="member-card"
       className="border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
     >
-      <div className="grid gap-2 justify-between grid-cols-6 mb-2">
+      <div className="grid gap-2 justify-between grid-cols-7 mb-2">
         <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Lock name</span>
           <span className={styles.title}>{lockName}</span>
         </div>
         <div className="col-span-full	flex flex-col md:col-span-1">
-          <span className={styles.description}>Owner</span>
-          <span className={styles.title}>
-            {addressMinify(keyholderAddress)}
-          </span>
-        </div>
-        <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Token ID</span>
           <span className={styles.title}>{tokenId}</span>
+        </div>
+        <div className="col-span-full	flex flex-col md:col-span-2">
+          <span className={styles.description}>Owner</span>
+          <span className={[styles.title, 'flex gap-2'].join(' ')}>
+            <span className="min-w-[120px]">
+              {addressMinify(keyholderAddress)}
+            </span>
+            <button
+              onClick={setCopied}
+              type="button"
+              className="flex items-center px-4 text-gray-600 border rounded hover:text-black hover:border-gray-300 bg-gray-50"
+            >
+              {isCopied ? 'Copied' : 'Copy'}
+            </button>
+          </span>
         </div>
         <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Expiration</span>
