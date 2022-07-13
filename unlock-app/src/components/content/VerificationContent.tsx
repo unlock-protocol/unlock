@@ -51,7 +51,7 @@ export const VerificationContent: React.FC<unknown> = () => {
         </Head>
         <Account />
         <main>
-          <Scanner />
+          <Scanner account={account} />
         </main>
       </Layout>
     )

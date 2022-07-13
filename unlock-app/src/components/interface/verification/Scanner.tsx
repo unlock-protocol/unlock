@@ -6,6 +6,8 @@ import {
 } from '~/utils/verification'
 import VerificationStatus from '../VerificationStatus'
 import QrScanner from 'qr-scanner'
+import { Button } from '@unlock-protocol/ui'
+import { useRouter } from 'next/router'
 
 function getVerificatioConfigFromURL(text?: string) {
   try {
@@ -25,11 +27,11 @@ function getVerificatioConfigFromURL(text?: string) {
   }
 }
 
-export function Scanner() {
+export function Scanner({ account }: { account?: string }) {
   const [membershipVerificationConfig, setMembershipVerificationConfig] =
     useState<MembershipVerificationConfig | null>(null)
   const videoRef = useRef<HTMLVideoElement | null>(null)
-
+  const router = useRouter()
   useEffect(() => {
     const videoElement = videoRef.current
     if (!videoElement) {
@@ -55,6 +57,24 @@ export function Scanner() {
     }
     return () => qrScanner.stop()
   }, [membershipVerificationConfig])
+
+  if (!account && !membershipVerificationConfig) {
+    return (
+      <div className="grid justify-center gap-3">
+        <h3 className="font-bold text-lg">Login to start check in Ticket</h3>
+        <Button
+          onClick={(event) => {
+            event.preventDefault()
+            router.push(
+              `/login?redirect=${encodeURIComponent(window.location.href)}`
+            )
+          }}
+        >
+          Connect Account
+        </Button>
+      </div>
+    )
+  }
 
   return (
     <>
