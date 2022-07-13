@@ -1,15 +1,18 @@
 import * as z from 'zod'
 import { MembershipVerificationData } from '~/utils/verification'
-import { MembershipData } from './MembershipCard'
 
 interface Options {
-  membershipData: MembershipData
+  owner: string
+  keyId: string
+  expiration: number
   isSignatureValid: boolean
   verificationData: z.infer<typeof MembershipVerificationData>
 }
 
 export function invalidMembership({
-  membershipData,
+  owner,
+  keyId,
+  expiration,
   isSignatureValid,
   verificationData,
 }: Options) {
@@ -17,18 +20,15 @@ export function invalidMembership({
   if (!isSignatureValid) {
     return 'Signature does not match'
   }
-  if (membershipData?.keyId?.toString() !== tokenId.toString()) {
+  if (keyId !== tokenId.toString()) {
     return 'This key does not match the user'
   }
 
-  if (membershipData.owner !== account) {
+  if (owner !== account) {
     return 'The owner of this key does not match the QR code'
   }
 
-  if (
-    membershipData.expiration != -1 &&
-    membershipData.expiration < new Date().getTime() / 1000
-  ) {
+  if (expiration != -1 && expiration < new Date().getTime() / 1000) {
     return 'This ticket has expired'
   }
   return
