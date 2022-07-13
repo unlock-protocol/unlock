@@ -458,7 +458,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           let keyGrantee
           let transactionHash
           beforeAll(async () => {
-            keyGrantee = accounts[7]
+            keyGrantee = accounts[11]
             tokenId = await walletService.grantKey({
               lockAddress,
               recipient: keyGrantee,
