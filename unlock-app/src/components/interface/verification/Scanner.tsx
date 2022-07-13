@@ -56,10 +56,6 @@ export function Scanner() {
     return () => qrScanner.stop()
   }, [membershipVerificationConfig])
 
-  const onScanNext = () => {
-    setMembershipVerificationConfig(null)
-  }
-
   return (
     <>
       <div className="grid justify-center">
@@ -101,7 +97,7 @@ export function Scanner() {
                 <div className="flex min-h-full items-center justify-center text-center">
                   <Dialog.Panel className="max-w-sm w-full">
                     <VerificationStatus
-                      onScanNext={onScanNext}
+                      onVerified={() => setMembershipVerificationConfig(null)}
                       config={membershipVerificationConfig}
                     />
                   </Dialog.Panel>

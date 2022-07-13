@@ -18,14 +18,14 @@ import { isSignatureValidForAddress } from '~/utils/signatures'
 
 interface Props {
   config: MembershipVerificationConfig
-  onScanNext: () => void
+  onVerified: () => void
 }
 
 /**
  * React components which given data, signature will verify the validity of a key
  * and display the right status
  */
-export const VerificationStatus = ({ config, onScanNext }: Props) => {
+export const VerificationStatus = ({ config, onVerified }: Props) => {
   const { data, sig, raw } = config
   const { lockAddress, timestamp, network, tokenId, account } = data
   const { account: viewer } = useAuth()
@@ -163,7 +163,7 @@ export const VerificationStatus = ({ config, onScanNext }: Props) => {
       {viewer ? (
         <>
           {checkedInAt ? (
-            <Button variant="outlined-primary" onClick={onScanNext}>
+            <Button variant="outlined-primary" onClick={onVerified}>
               Scan next ticket
             </Button>
           ) : (
