@@ -96,7 +96,10 @@ export function Scanner() {
               <div className="fixed p-6 inset-0 overflow-y-auto">
                 <div className="flex min-h-full items-center justify-center text-center">
                   <Dialog.Panel className="max-w-sm w-full">
-                    <VerificationStatus config={membershipVerificationConfig} />
+                    <VerificationStatus
+                      setConfig={setMembershipVerificationConfig}
+                      config={membershipVerificationConfig}
+                    />
                   </Dialog.Panel>
                 </div>
               </div>

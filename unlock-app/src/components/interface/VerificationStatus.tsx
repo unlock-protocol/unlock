@@ -18,13 +18,14 @@ import { isSignatureValidForAddress } from '~/utils/signatures'
 
 interface Props {
   config: MembershipVerificationConfig
+  setConfig: (config: MembershipVerificationConfig | null) => void
 }
 
 /**
  * React components which given data, signature will verify the validity of a key
  * and display the right status
  */
-export const VerificationStatus = ({ config }: Props) => {
+export const VerificationStatus = ({ config, setConfig }: Props) => {
   const { data, sig, raw } = config
   const { lockAddress, timestamp, network, tokenId, account } = data
   const { account: viewer } = useAuth()
@@ -123,6 +124,10 @@ export const VerificationStatus = ({ config }: Props) => {
     }
   }
 
+  const onScanNext = () => {
+    setConfig(null)
+  }
+
   if (
     isLockLoading ||
     isMembershipDataLoading ||
@@ -154,24 +159,32 @@ export const VerificationStatus = ({ config }: Props) => {
 
   const checkedInAt = membershipData?.metadata?.checkedInAt
 
+  const disableActions =
+    !isVerifier || isCheckingIn || !!invalid || !!checkedInAt
+
   const CardActions = () => (
     <div className="grid w-full">
       {viewer ? (
-        <Button
-          loading={isCheckingIn}
-          disabled={!isVerifier || isCheckingIn || !!invalid || !!checkedInAt}
-          variant={!checkedInAt ? 'primary' : 'outlined-primary'}
-          onClick={async (event) => {
-            event.preventDefault()
-            onCheckIn()
-          }}
-        >
-          {isCheckingIn
-            ? 'Checking in'
-            : checkedInAt
-            ? 'Checked in'
-            : 'Check in'}
-        </Button>
+        <>
+          {checkedInAt ? (
+            <Button variant="outlined-primary" onClick={onScanNext}>
+              Scan next
+            </Button>
+          ) : (
+            <Button
+              loading={isCheckingIn}
+              disabled={disableActions}
+              variant={'primary'}
+              onClick={async (event) => {
+                event.preventDefault()
+                onCheckIn()
+              }}
+            >
+              {isCheckingIn ? 'Checking in' : 'Check in'}
+            </Button>
+          )}
+          {}
+        </>
       ) : (
         <Button
           onClick={(event) => {
