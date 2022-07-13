@@ -39,6 +39,13 @@ const lock = {
         address: '0x252',
       },
     },
+    {
+      keyId: '3',
+      expiration: '123458',
+      owner: {
+        address: '0x252',
+      },
+    },
   ],
 }
 const storedMetata = [
@@ -128,19 +135,26 @@ describe('useMembers', () => {
       expect.assertions(1)
       const members = buildMembersWithMetadata(lock, [])
       expect(members).toEqual({
-        '0xlockAddress-0x126': {
+        '0xlockAddress-0x126-1': {
           expiration: 'Expired',
           keyholderAddress: '0x126',
           lockAddress: '0xlockAddress',
           lockName: 'my lock',
           token: '1',
         },
-        '0xlockAddress-0x252': {
+        '0xlockAddress-0x252-2': {
           expiration: 'Expired',
           keyholderAddress: '0x252',
           lockAddress: '0xlockAddress',
           lockName: 'my lock',
           token: '2',
+        },
+        '0xlockAddress-0x252-3': {
+          expiration: 'Expired',
+          keyholderAddress: '0x252',
+          lockAddress: '0xlockAddress',
+          lockName: 'my lock',
+          token: '3',
         },
       })
     })
@@ -150,7 +164,7 @@ describe('useMembers', () => {
 
       const members = buildMembersWithMetadata(lock, storedMetata)
       expect(members).toEqual({
-        '0xlockAddress-0x126': {
+        '0xlockAddress-0x126-1': {
           email: 'julien@unlock-protocol.com',
           expiration: 'Expired',
           keyholderAddress: '0x126',
@@ -158,7 +172,7 @@ describe('useMembers', () => {
           lockName: 'my lock',
           token: '1',
         },
-        '0xlockAddress-0x252': {
+        '0xlockAddress-0x252-2': {
           email: 'chris@unlock-protocol.com',
           expiration: 'Expired',
           keyholderAddress: '0x252',
@@ -166,7 +180,26 @@ describe('useMembers', () => {
           lockName: 'my lock',
           token: '2',
         },
+        '0xlockAddress-0x252-3': {
+          email: 'chris@unlock-protocol.com',
+          expiration: 'Expired',
+          keyholderAddress: '0x252',
+          lockAddress: '0xlockAddress',
+          lockName: 'my lock',
+          token: '3',
+        },
       })
+    })
+
+    it('return all keys with unique identifier', () => {
+      expect.assertions(2)
+      const members = buildMembersWithMetadata(lock, [])
+      expect(Object.keys(members).length).toBe(3)
+      expect(Object.keys(members)).toEqual([
+        '0xlockAddress-0x126-1',
+        '0xlockAddress-0x252-2',
+        '0xlockAddress-0x252-3',
+      ])
     })
   })
 })
