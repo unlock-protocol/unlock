@@ -72,12 +72,12 @@ export function MembershipCard({
             <ValidIcon size={54} className="fill-white" />
           )}
         </div>
-        <p className="text-white font-bold">
+        <p className="text-white font-bold text-xl">
           {invalid
             ? invalid
             : checkedInAt
             ? `Checked-in ${timeSinceCheckedIn} ago`
-            : `Welcome to ${lock.name}`}
+            : `${lock.name}`}
         </p>
       </div>
       <div className="p-6 space-y-6">
