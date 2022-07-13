@@ -113,7 +113,11 @@ export const VerificationStatus = ({ config }: Props) => {
         network,
       })
       if (!response.ok) {
-        throw new Error('Failed to check in')
+        if (response.status === 409) {
+          ToastHelper.error('Ticket already checked in')
+        } else {
+          throw new Error('Failed to check in')
+        }
       }
       await refetchMembershipData()
       setIsCheckingIn(false)
