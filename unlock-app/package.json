@@ -44,6 +44,7 @@
     "babel-plugin-styled-components": "2.0.7",
     "babel-preset-react-app": "10.0.1",
     "cross-fetch": "3.1.5",
+    "dayjs": "1.11.3",
     "deep-object-diff": "1.1.7",
     "dotenv": "16.0.1",
     "eslint": "8.16.0",
@@ -62,6 +63,7 @@
     "postmate": "1.5.2",
     "prettier": "2.6.2",
     "prop-types": "15.8.1",
+    "qr-scanner": "^1.4.1",
     "qrcode.react": "3.0.2",
     "react": "17.0.2",
     "react-dom": "17.0.2",
@@ -83,7 +85,8 @@
     "typescript": "4.7.2",
     "validator": "13.7.0",
     "walletlink": "2.5.0",
-    "xstate": "4.32.1"
+    "xstate": "4.32.1",
+    "zod": "3.17.3"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "7.17.12",

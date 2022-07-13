@@ -29,6 +29,7 @@ export const optimisticKovan: NetworkConfig = {
     symbol: 'Eth',
     decimals: 18,
   },
+  description: 'Optimism test network. Do not use for production.',
   isTestNetwork: true,
 }
 
