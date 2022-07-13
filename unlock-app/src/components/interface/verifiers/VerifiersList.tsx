@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { HiOutlineTrash as TrashIcon } from 'react-icons/hi'
-import { Button, Modal, Tooltip } from '@unlock-protocol/ui'
+import { Button, IconButton, Modal, Tooltip } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { useAuth } from '../../../contexts/AuthenticationContext'
 import { ToastHelper } from '../../helpers/toast.helper'
@@ -15,6 +15,9 @@ const styling = {
   address: 'text-indigo-700',
   actions: 'flex mt-5 justify-center',
   button: 'ml-2 flex',
+  title: 'text-base font-medium text-black break-all',
+  description: 'text-sm font-normal text-gray-500',
+  addressCard: 'text-sm	font-sm font-normal text-gray-600',
 }
 interface VerifiersListProsps {
   lockAddress: string
@@ -125,42 +128,43 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
   }
   return (
     <>
-      <table className="w-full mt-3">
-        <thead>
-          <tr>
-            <th>Address</th>
-            <th className="text-left">Created at</th>
-            <th className="text-left">Updated at</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {verifiers?.map((verifier: any, index: number) => {
-            const key = `${verifier?.address}-${index}`
-            const createdAt = verifier?.createdAt
-              ? new Date(verifier?.createdAt).toLocaleString()
-              : '-'
-            const updatedAt = verifier?.updatedAt
-              ? new Date(verifier?.updatedAt).toLocaleString()
-              : '-'
-            return (
-              <tr key={key}>
-                <td>{verifier?.address ?? '-'}</td>
-                <td>{createdAt ?? '-'}</td>
-                <td>{updatedAt ?? '-'}</td>
-                <td>
+      <div className="flex flex-col w-full gap-2 mt-[1rem]">
+        {verifiers?.map((verifier: any, index: number) => {
+          const key = `${verifier?.address}-${index}`
+          const createdAt = verifier?.createdAt
+            ? new Date(verifier?.createdAt).toLocaleString()
+            : '-'
+
+          return (
+            <div
+              className="flex justify-between border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
+              key={key}
+            >
+              <div className="grid gap-2 justify-between items-center grid-cols-4 mb-2 w-full">
+                <div className="col-span-full	flex flex-col md:col-span-2">
+                  <span className={styling.description}>Address</span>
+                  <span className={styling.title}>{verifier?.address}</span>
+                </div>
+                <div className="col-span-full	flex flex-col md:col-span-1">
+                  <span className={styling.description}>Created at</span>
+                  <span className={styling.title}>{createdAt ?? '-'}</span>
+                </div>
+                <div className="flex col-span-full	md:col-span-1">
                   <Tooltip tip="Remove verifier" label="Remove verifier">
-                    <TrashIcon
-                      className="mx-auto"
+                    <IconButton
+                      className="ml-auto"
+                      label="Remove verifier"
+                      size="medium"
+                      icon={<TrashIcon key="delete" />}
                       onClick={() => onDeleteVerifier(verifier?.address)}
                     />
                   </Tooltip>
-                </td>
-              </tr>
-            )
-          })}
-        </tbody>
-      </table>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
 
       <Modal
         isOpen={showDeleteVerifierModal}
