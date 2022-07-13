@@ -134,15 +134,13 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
           const createdAt = verifier?.createdAt
             ? new Date(verifier?.createdAt).toLocaleString()
             : '-'
-          const updatedAt = verifier?.updatedAt
-            ? new Date(verifier?.updatedAt).toLocaleString()
-            : '-'
+
           return (
             <div
               className="flex justify-between border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
               key={key}
             >
-              <div className="grid gap-2 justify-between items-center grid-cols-5 mb-2 w-full">
+              <div className="grid gap-2 justify-between items-center grid-cols-4 mb-2 w-full">
                 <div className="col-span-full	flex flex-col md:col-span-2">
                   <span className={styling.description}>Address</span>
                   <span className={styling.title}>{verifier?.address}</span>
@@ -150,10 +148,6 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
                 <div className="col-span-full	flex flex-col md:col-span-1">
                   <span className={styling.description}>Created at</span>
                   <span className={styling.title}>{createdAt ?? '-'}</span>
-                </div>
-                <div className="col-span-full	flex flex-col md:col-span-1">
-                  <span className={styling.description}>Update at</span>
-                  <span className={styling.title}>{updatedAt ?? '-'}</span>
                 </div>
                 <div className="flex col-span-full	md:col-span-1">
                   <Tooltip tip="Remove verifier" label="Remove verifier">
