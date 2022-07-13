@@ -185,14 +185,7 @@ export const useMembers = (
    */
   useEffect(() => {
     loadMembers()
-  }, [
-    JSON.stringify(lockAddresses),
-    viewer,
-    filter,
-    page,
-    query.length,
-    filterKey,
-  ])
+  }, [JSON.stringify(lockAddresses), viewer, filter, page, query, filterKey])
 
   const list: any = Object.values(members)
   const columns = generateColumns(list)
