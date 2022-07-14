@@ -159,7 +159,6 @@ export const VerificationStatus = ({ config, onVerified }: Props) => {
     !isVerifier || isCheckingIn || !!invalid || !!checkedInAt
 
   const onVerifiedCb = () => {
-    console.log('onVerifiedCb', onVerified)
     if (typeof onVerified === 'function') {
       onVerified()
     }
