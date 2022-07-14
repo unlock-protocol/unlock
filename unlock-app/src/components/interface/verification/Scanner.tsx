@@ -6,7 +6,6 @@ import {
 } from '~/utils/verification'
 import VerificationStatus from '../VerificationStatus'
 import QrScanner from 'qr-scanner'
-import { FaWindowClose as CloseIcon } from 'react-icons/fa'
 
 function getVerificatioConfigFromURL(text?: string) {
   try {
