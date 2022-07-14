@@ -19,13 +19,14 @@ import { isSignatureValidForAddress } from '~/utils/signatures'
 interface Props {
   config: MembershipVerificationConfig
   onVerified: () => void
+  onClose?: () => void
 }
 
 /**
  * React components which given data, signature will verify the validity of a key
  * and display the right status
  */
-export const VerificationStatus = ({ config, onVerified }: Props) => {
+export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const { data, sig, raw } = config
   const { lockAddress, timestamp, network, tokenId, account } = data
   const { account: viewer } = useAuth()
@@ -161,35 +162,28 @@ export const VerificationStatus = ({ config, onVerified }: Props) => {
   const disableActions =
     !isVerifier || isCheckingIn || !!invalid || !!checkedInAt
 
-  const onVerifiedCb = () => {
+  const onClickVerified = () => {
     if (typeof onVerified === 'function') {
       onVerified()
     }
   }
 
   const CardActions = () => (
-    <div className="grid w-full">
+    <div className="grid w-full gap-2">
       {viewer ? (
-        <>
-          {checkedInAt ? (
-            <Button variant="outlined-primary" onClick={onVerifiedCb}>
-              Scan next ticket
-            </Button>
-          ) : (
-            <Button
-              loading={isCheckingIn}
-              disabled={disableActions}
-              variant={'primary'}
-              onClick={async (event) => {
-                event.preventDefault()
-                onCheckIn()
-              }}
-            >
-              {isCheckingIn ? 'Checking in' : 'Check in'}
-            </Button>
-          )}
-          {}
-        </>
+        !checkedInAt && !!isVerifier ? (
+          <Button
+            loading={isCheckingIn}
+            disabled={disableActions}
+            variant={'primary'}
+            onClick={async (event) => {
+              event.preventDefault()
+              onCheckIn()
+            }}
+          >
+            {isCheckingIn ? 'Checking in' : 'Check in'}
+          </Button>
+        ) : null
       ) : (
         <Button
           onClick={(event) => {
@@ -198,16 +192,21 @@ export const VerificationStatus = ({ config, onVerified }: Props) => {
               `/login?redirect=${encodeURIComponent(window.location.href)}`
             )
           }}
+          variant="primary"
         >
-          Connect Account
+          Connect to check-in
         </Button>
       )}
+      <Button variant="outlined-primary" onClick={onClickVerified}>
+        Scan next ticket
+      </Button>
     </div>
   )
 
   return (
     <div className="flex justify-center">
       <MembershipCard
+        onClose={onClose}
         keyId={key!.tokenId.toString()}
         owner={key!.owner}
         membershipData={membershipData!}

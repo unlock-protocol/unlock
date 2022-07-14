@@ -6,6 +6,8 @@ import {
 } from '~/utils/verification'
 import VerificationStatus from '../VerificationStatus'
 import QrScanner from 'qr-scanner'
+import { IconButton } from '@unlock-protocol/ui'
+import { FaWindowClose as CloseIcon } from 'react-icons/fa'
 
 function getVerificatioConfigFromURL(text?: string) {
   try {
@@ -97,6 +99,7 @@ export function Scanner() {
                 <div className="flex min-h-full items-center justify-center text-center">
                   <Dialog.Panel className="max-w-sm w-full">
                     <VerificationStatus
+                      onClose={() => setMembershipVerificationConfig(null)}
                       onVerified={() => setMembershipVerificationConfig(null)}
                       config={membershipVerificationConfig}
                     />
