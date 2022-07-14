@@ -14,6 +14,7 @@ import {
 } from 'react-icons/ri'
 import { ReactNode } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 
 dayjs.extend(relativeTimePlugin)
 
@@ -42,6 +43,7 @@ interface Props {
   owner: string
   keyId: string
   children?: ReactNode
+  onClose?: () => void
 }
 
 export function MembershipCard({
@@ -53,6 +55,7 @@ export function MembershipCard({
   invalid,
   owner,
   keyId,
+  onClose,
   children = null,
 }: Props) {
   const timeSinceSigned = dayjs().from(timestamp, true)
@@ -64,22 +67,42 @@ export function MembershipCard({
       <div
         className={` ${
           invalid ? 'bg-red-500' : checkedInAt ? 'bg-amber-300' : 'bg-green-500'
-        } text-center p-6 rounded-t-xl`}
+        }   rounded-t-xl`}
       >
-        <div className="inline-flex items-center justify-center">
-          {invalid ? (
-            <InvalidIcon size={54} className="fill-white" />
-          ) : (
-            <ValidIcon size={54} className="fill-white" />
+        <div className="flex justify-end items-center">
+          {onClose && (
+            <button
+              onClick={(event) => {
+                event.preventDefault()
+                onClose()
+              }}
+              className="flex items-center justify-center p-2  rounded group"
+              aria-label="Close"
+            >
+              <CloseIcon
+                className="fill-white group-hover:fill-brand-ui-primary"
+                size={24}
+                key="close"
+              />
+            </button>
           )}
         </div>
-        <p className="text-white font-bold text-xl">
-          {invalid
-            ? invalid
-            : checkedInAt
-            ? `Checked-in ${timeSinceCheckedIn} ago`
-            : `${lock.name}`}
-        </p>
+        <div className="text-center p-6">
+          <div className="inline-flex items-center justify-center">
+            {invalid ? (
+              <InvalidIcon size={54} className="fill-white" />
+            ) : (
+              <ValidIcon size={54} className="fill-white" />
+            )}
+          </div>
+          <p className="text-white font-bold text-xl">
+            {invalid
+              ? invalid
+              : checkedInAt
+              ? `Checked-in ${timeSinceCheckedIn} ago`
+              : `${lock.name}`}
+          </p>
+        </div>
       </div>
       <div className="p-6 space-y-6">
         <div className="flex gap-6 items-center">
