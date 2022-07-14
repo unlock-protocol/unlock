@@ -59,6 +59,8 @@ export class GraphService {
       ? parseInt(`${search}`)
       : undefined
 
+    const owner = `${search}`?.toLowerCase() ?? ''
+
     const result = await this.client.query({
       query,
       variables: {
@@ -66,7 +68,7 @@ export class GraphService {
         expiresAfter,
         first,
         skip,
-        owner: search,
+        owner,
         keyId,
       },
     })
