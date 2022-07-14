@@ -108,78 +108,88 @@ export const useMembers = (
   }
 
   const getKeysMetadata = async (locks: any) => {
-    if (!locks.length) return
-    await login()
+    try {
+      if (!locks.length) return
+      await login()
 
-    const keysMetadataPromise = locks.map(async (lock: any) => {
-      return await storageService.getKeysMetadata({
-        lockAddress: lock.address,
-        network: network!,
-        lock,
+      const keysMetadataPromise = locks.map(async (lock: any) => {
+        return await storageService.getKeysMetadata({
+          lockAddress: lock.address,
+          network: network!,
+          lock,
+        })
       })
-    })
 
-    const keysMetadata = await Promise.all(keysMetadataPromise)
-    return [].concat(...keysMetadata.map((item) => item))
+      const keysMetadata = await Promise.all(keysMetadataPromise)
+      return [].concat(...keysMetadata.map((item) => item))
+    } catch (err) {
+      console.log('errore qui', err)
+    }
   }
 
   const loadMembers = async () => {
-    setLoading(true)
+    try {
+      setLoading(true)
 
-    let expiresAfter = parseInt(`${new Date().getTime() / 1000}`)
-    if (filter === MemberFilters.ALL) {
-      expiresAfter = 0
-    }
-    const first = 30
-    const skip = page * first
+      let expiresAfter = parseInt(`${new Date().getTime() / 1000}`)
+      if (filter === MemberFilters.ALL) {
+        expiresAfter = 0
+      }
+      const first = 30
+      const skip = page * first
 
-    const { data } = await graphService.keysByLocks(
-      lockAddresses,
-      expiresAfter,
-      first,
-      skip,
-      query,
-      filterKey
-    )
-
-    const membersForLocksPromise = data.locks.map(async (lock: any) => {
-      // If the viewer is not the lock owner, just show the members from chain
-      const _isLockManager = await web3Service.isLockManager(
-        lock.address,
-        viewer,
-        network
+      const { data } = await graphService.keysByLocks(
+        lockAddresses,
+        expiresAfter,
+        first,
+        skip,
+        query,
+        filterKey
       )
-      setIsLockManager(_isLockManager)
-      if (!_isLockManager) {
-        return buildMembersWithMetadata(lock, [])
-      }
-      try {
-        if (data?.locks) {
-          const storedMetadata = await getKeysMetadata(data?.locks ?? [])
-          return buildMembersWithMetadata(lock, storedMetadata)
+
+      const membersForLocksPromise = data.locks.map(async (lock: any) => {
+        // If the viewer is not the lock owner, just show the members from chain
+        const _isLockManager = await web3Service.isLockManager(
+          lock.address,
+          viewer,
+          network
+        )
+        setIsLockManager(_isLockManager)
+        if (!_isLockManager) {
+          return buildMembersWithMetadata(lock, [])
         }
-      } catch (error) {
-        ToastHelper.error(`Could not list members - ${error}`)
-        return []
-      }
-    })
-
-    const membersByLock = await Promise.all(membersForLocksPromise)
-
-    const members = Object.values(
-      membersByLock.reduce((acc, array) => {
-        return {
-          ...acc,
-          ...array,
+        try {
+          if (data?.locks) {
+            const storedMetadata = await getKeysMetadata(data?.locks ?? [])
+            return buildMembersWithMetadata(lock, storedMetadata)
+          }
+        } catch (error) {
+          ToastHelper.error(`Could not list members - ${error}`)
+          return []
         }
-      }, {})
-    )
+      })
 
-    setMembers(members ?? [])
-    if (members.length > 0) {
-      setHasNextPage(Object.keys(members).length === first)
+      const membersByLock = await Promise.all(membersForLocksPromise)
+
+      const members = Object.values(
+        membersByLock.reduce((acc, array) => {
+          return {
+            ...acc,
+            ...array,
+          }
+        }, {})
+      )
+
+      setMembers(members ?? [])
+      if (members.length > 0) {
+        setHasNextPage(Object.keys(members).length === first)
+      }
+      setLoading(false)
+    } catch (err) {
+      setLoading(false)
+      setMembers([])
+      ToastHelper.error('There is some unexpected issue, please try again')
     }
-    setLoading(false)
   }
   /**
    * When the keyHolders object changes, load the metadata
