@@ -35,7 +35,7 @@ export function Account() {
   return (
     <AccountWrapper>
       <AccountDetails className="items-center">
-        {iconSeed && <UserIcon seed={iconSeed} />}
+        {account && iconSeed && <UserIcon seed={iconSeed} />}
         <div className="grid gap-2 w-[155px]">
           <div
             style={{
@@ -46,7 +46,6 @@ export function Account() {
             {account}
           </div>
           <Label>
-            {!network && <p>Not connected</p>}
             {network && (
               <div className="grid space-y-2">
                 <select
