@@ -186,6 +186,7 @@ export const useMembers = (
       }
       setLoading(false)
     } catch (err) {
+      console.error(err)
       setLoading(false)
       setMembers([])
       ToastHelper.error('There is some unexpected issue, please try again')
