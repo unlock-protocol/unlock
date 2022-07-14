@@ -94,28 +94,21 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     try {
       if (!storageService) return
       const { lockAddress, token: keyId } = metadata
-      const checkIn = async () => {
-        const response = await storageService.markTicketAsCheckedIn({
-          lockAddress,
-          keyId,
-          network: network!,
-        })
-
-        if (!response.ok && response.status === 409) {
-          ToastHelper.error('Ticket already checked in')
-        }
-      }
-
-      const markTicketCheckInPromise = checkIn()
-
-      await ToastHelper.promise(markTicketCheckInPromise, {
-        loading: `Marking ticket as Check-in`,
-        error: `Error on marking ticket as checked-in`,
-        success: `Successfully marked ticket as checked-in`,
+     const response = await storageService.markTicketAsCheckedIn({
+        lockAddress,
+        keyId,
+        network: network!,
       })
 
-      if (typeof loadMembers === 'function') {
-        loadMembers()
+      if (!response.ok && response.status === 409) {
+        ToastHelper.error('Ticket already checked in')
+      }
+
+      if (response.ok) {
+        ToastHelper.success('Successfully marked ticket as checked-in')
+        if (typeof loadMembers === 'function') {
+          loadMembers()
+        }
       }
     } catch (err) {
       ToastHelper.error('Error on marking ticket as checked-in')
