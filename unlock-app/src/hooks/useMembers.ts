@@ -108,23 +108,19 @@ export const useMembers = (
   }
 
   const getKeysMetadata = async (locks: any) => {
-    try {
-      if (!locks.length) return
-      await login()
+    if (!locks.length) return
+    await login()
 
-      const keysMetadataPromise = locks.map(async (lock: any) => {
-        return await storageService.getKeysMetadata({
-          lockAddress: lock.address,
-          network: network!,
-          lock,
-        })
+    const keysMetadataPromise = locks.map(async (lock: any) => {
+      return await storageService.getKeysMetadata({
+        lockAddress: lock.address,
+        network: network!,
+        lock,
       })
+    })
 
-      const keysMetadata = await Promise.all(keysMetadataPromise)
-      return [].concat(...keysMetadata.map((item) => item))
-    } catch (err) {
-      console.log('errore qui', err)
-    }
+    const keysMetadata = await Promise.all(keysMetadataPromise)
+    return [].concat(...keysMetadata.map((item) => item))
   }
 
   const loadMembers = async () => {
