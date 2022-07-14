@@ -9,32 +9,39 @@ image: /images/blog/june-22-update/june-22-banner.png
 
 ![june-22-banner.png](/images/blog/june-22-update/june-22-banner.png)
 
+## New documentation site
 
-## Recurring memberships & subscriptions are live
+* Launched an entirely new docs site at [https://docs.unlock-protocol.com](https://docs.unlock-protocol.com)
 
-- **Blog post** — [Subscription NFTs blog post and full announcement](https://unlock-protocol.com/blog/recurring-subscription-nft)
-- **Twitter Space** — [Subscription NFTs Twitter Space with the Unlock team and community](https://youtu.be/3JlvZ9xTODs)
+## Smart contract enhancements
 
-## Expanded "Bring Your Own NFT" capabilities
+* Moving to error codes instead of string, saves 15% gas
+* Refactored tests to remove Truffle and web3.js dependency
+* Purchase and GrantKeys return the new token ids
+* Added a feature for key granters to extend keys
+* Added new onKeyTransfer hook
+* Added lendKey
 
-- **Bring Your Own ERC-1155** — [Added ERC-1155 support to Bring Your Own NFT](https://unlock-protocol.com/blog/bring-your-own-nft)
-- **Bring Your Own ERC-20** — [Added ERC-20 support to Bring Your Own NFT](https://docs.unlock-protocol.com/Tutorials/using-an-existing-nft-contract)
+## NFT ticketing improvements
 
-## Credit card handling improvements
+* Show NFT image on ticket verification page
+* Verification page now uses Sign In With Ethereum
+* Adding "Verifiers" for events who can verify ticket validity and check-in tickets
 
-- **Improved collection handling** — Refactored credit card handling to only collect charges on successfully submitted blockchain transactions
-- **Improved duplicate charge avoidance** — Refactored credit card handling on front-end to reuse payment intent object (reduce risk of duplicate charge if user tries to purchase again/refresh page)
-- **Improved gas calculation** —Improved gas calculation for credit card purchases
+## Front-end updates
 
-## Checkout and Dashboard improvements
+* Redesigned "Sign In With Ethereum" flow
+* Members page UI refreshed
 
-- **Incognito mode fix** — Fixed incognito mode for Paywall and Dashboard applications
-- **Multiple recipients in checkout flow** — Support for multiple recipients in checkout UI
-- **CAPTCHA in checkout flow** — Support for CAPTCHA in checkout
-- **Background visual improvements** — Fixed transparent background on paywall checkout modal
+## Backend / API server updates
+* Support for API to grant keys on lock
+* Server side QR code generation
+* Ability to send QR codes by email from backend
 
-## Other improvements
+## Others updates and improvements
 
-- **Improved Subgraph handling** — Updated Subgraph to handle upgraded locks (between v10 and v11)
+* Renamed xDai to Gnosis Chain
+* Added Mumbai Polygon network
+* Dependency cleanup and Eslint simplification
 
 Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!
