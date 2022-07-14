@@ -13,6 +13,7 @@ import {
   RiCheckboxCircleFill as ValidIcon,
 } from 'react-icons/ri'
 import { ReactNode } from 'react'
+import { twMerge } from 'tailwind-merge'
 
 dayjs.extend(relativeTimePlugin)
 
@@ -100,6 +101,9 @@ export function MembershipCard({
           </div>
         </div>
         <div className="grid gap-2">
+          <div>
+            <EthCCBadge lockAddress={lock.address} />
+          </div>
           <Item label="Lock Address" value={addressMinify(lock.address)} />
           <Item label="Network" value={config.networks[network].name} />
           <Item label="Time since signed" value={timeSinceSigned} />
@@ -164,4 +168,51 @@ export function MembershipCardPlaceholder() {
       </div>
     </div>
   )
+}
+
+interface EthCCBadgeProps {
+  lockAddress: string
+}
+
+const ETHCC_BADGES: Record<string, Record<'title' | 'class', string>> = {
+  white: {
+    title: 'Attendee',
+    class: 'bg-zinc-50  border-zinc-100',
+  },
+  blue: {
+    title: 'Sponsor',
+    class: 'bg-blue-300 text-blue-900',
+  },
+  green: {
+    title: 'Press',
+    class: 'bg-green-300 text-green-900',
+  },
+  purple: {
+    title: 'Staff',
+    class: 'bg-purple-300 text-purple-900',
+  },
+}
+
+const ETHCC_LOCK_BADGE: Record<string, string> = {
+  '0xd0A031d9f9486B1D914124D0C1FCAC2e9e6504FE': 'white',
+  '0x072149617e12170696481684598a696e9a4d46Ff': 'white',
+  '0x9AB351cB5DAe55abD135dD256726851aae8EFeB5': 'white',
+  '0xF181e18e007517605f369EccF0eeE6EBb1B10133': 'white',
+  '0x6d8C3D90340fa33693a88D1411b0F32Df12D0683': 'blue',
+  '0xF99eb828aC365C54FCbb6779a78417c25f113829': 'green',
+  '0x623dA3e4D4CB9C98DABb4C23789ed5AaA20Ea3aA': 'purple',
+  '0x4624Bbf6d685B1057eEcAcC691B0a068E287F0a5': 'purple',
+}
+
+export function EthCCBadge({ lockAddress }: EthCCBadgeProps) {
+  const badgeLabel = ETHCC_LOCK_BADGE[lockAddress]
+  if (!badgeLabel) {
+    return null
+  }
+  const badge = ETHCC_BADGES[badgeLabel]
+  const badgeClass = twMerge(
+    'px-4 py-0.5 inline-flex items-center border border-transparent rounded-full font-semibold',
+    badge.class
+  )
+  return <div className={badgeClass}>{badge.title}</div>
 }
