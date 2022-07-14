@@ -176,17 +176,21 @@ export const VerificationStatus = ({ config, onVerified }: Props) => {
               Scan next ticket
             </Button>
           ) : (
-            <Button
-              loading={isCheckingIn}
-              disabled={disableActions}
-              variant={'primary'}
-              onClick={async (event) => {
-                event.preventDefault()
-                onCheckIn()
-              }}
-            >
-              {isCheckingIn ? 'Checking in' : 'Check in'}
-            </Button>
+            <>
+              {isVerifier && (
+                <Button
+                  loading={isCheckingIn}
+                  disabled={disableActions}
+                  variant={'primary'}
+                  onClick={async (event) => {
+                    event.preventDefault()
+                    onCheckIn()
+                  }}
+                >
+                  {isCheckingIn ? 'Checking in' : 'Check in'}
+                </Button>
+              )}
+            </>
           )}
           {}
         </>
