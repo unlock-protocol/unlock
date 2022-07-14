@@ -1,11 +1,11 @@
 import { Request, Response } from 'express'
 import Dispatcher from '../../fulfillment/dispatcher'
-import * as metadataOperations from '../../operations/metadataOperations'
 import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
 import { generateQrCode } from '../../utils/qrcode'
+import { KeyMetadata } from '../../models/keyMetadata'
 
 export class TicketsController {
   public web3Service: Web3Service
@@ -39,35 +39,55 @@ export class TicketsController {
    * @return
    */
   async markTicketAsCheckIn(request: Request, response: Response) {
-    const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-    const network = Number(request.params.network)
-    const id = request.params.keyId.toLowerCase()
+    try {
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
+      const id = request.params.keyId.toLowerCase()
 
-    const keyData = await metadataOperations.getKeyCentricData(lockAddress, id)
-
-    // update metadata only if not presenet
-    if (!keyData?.keyId) {
-      const successfulUpdate = await metadataOperations.updateKeyMetadata({
-        chain: network,
-        address: lockAddress,
-        id,
-        data: {
-          keyId: id,
-          lockAddress,
-          metadata: {
-            checkedInAt: new Date().getTime(),
-          },
+      const keyMetadata = await KeyMetadata.findOne({
+        where: {
+          id,
+          address: lockAddress,
         },
       })
-      if (successfulUpdate) {
-        return response.send(202)
-      } else {
-        return response.status(400).send({
-          message: 'update failed',
+
+      const data = keyMetadata?.data as unknown as {
+        metadata: { checkedInAt: number }
+      }
+
+      const isCheckedIn = data?.metadata?.checkedInAt
+
+      if (isCheckedIn) {
+        return response.status(409).send({
+          error: 'Ticket already checked in',
         })
       }
-    } else {
-      return response.sendStatus(202)
+
+      await KeyMetadata.upsert(
+        {
+          id,
+          chain: network,
+          address: lockAddress,
+          data: {
+            ...data,
+            metadata: {
+              ...data?.metadata,
+              checkedInAt: new Date().getTime(),
+            },
+          },
+        },
+        {
+          returning: true,
+        }
+      )
+      return response.status(202).send({
+        message: 'Ticket checked in',
+      })
+    } catch (error) {
+      logger.error(error.message)
+      return response.status(500).send({
+        error: 'Could not mark ticket as checked in',
+      })
     }
   }
 

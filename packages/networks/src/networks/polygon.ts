@@ -41,6 +41,7 @@ export const polygon: NetworkConfig = {
       startBlock: 15714206,
     },
   ],
+  description: 'Popular side chain network. Cheaper transaction cost.',
   isTestNetwork: false,
 }
 

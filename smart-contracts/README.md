@@ -328,15 +328,17 @@ yarn hardhat verify <address> --network binance
 
 ## How to deploy the Protocol on a new network
 
+### Create accounts file
+
+Get tokens and add your account. In the smart contracts folder, create an `accounts.<xxx>.js` file.
+
+ex. `accounts.goerli.ts`
+
 ### Add network to `@unlock-protocol/networks` 
 
 - add `goerli.ts` to `packages/networks/src`
 - add `export * from './goerli'` to `packages/networks/src/index.ts`
 
-### Create accounts file
-
-- in the smart contracts folder, create accounts
-ex. `accounts.goerli.ts`
 
 ### Deploy contracts 
 
@@ -348,7 +350,6 @@ UNLOCK DEPLOYMENT > Deploying contracts on Goerli (Testnet) with the account: 0x
 UNLOCK DEPLOYMENT > isLocalNet : false
 UNLOCK SETUP > Unlock (w proxy) deployed to: 0x1FF7e338d5E582138C46044dc238543Ce555C963 (tx: 0x01f01178b5dffe20d700e71c9dd89bdc7e69ab93808334f4a68846471fc2633b)
 PUBLIC LOCK > deployed v10 to : 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 (tx: 0xd02145635e7a865d4ad4fe7b22f1ba66b4aa45597d74a5bed376e7fd70c90dc5)
-
 ```
 
 ### Verify contracts
@@ -363,15 +364,24 @@ export ETHERSCAN_API_KEY=<xxx>
 yarn hardhat verify <UNLOCK_IMPLEMENTATION_ADDRESS> --network goerli
 
 # verify public-lock (while specifying a version)
-yarn hardhat verify-template --public-lock-address 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 \
+yarn hardhat verify-template --public-lock-address <UNLOCK_IMPLEMENTATION_ADDRESS> \
     --public-lock-version 10 \
     --network goerli
 
 # verify proxy
-yarn hardhat verify-proxy --public-lock-address 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 \
-  --proxy-admin-address 0xa87b313b7b918f74b2225759e7b05c243adec271 \
+yarn hardhat verify-proxy --public-lock-address <UNLOCK_IMPLEMENTATION_ADDRESS> \
+  --proxy-admin-address 0xa87b313b7b918f74b2225759e7b05c243adec271 \ # this is from `unlock.proxyAdminAddress`
   --network goerli 
 ```
+
+### Set template
+
+```
+yarn hardhat set:template --unlock-address 0x1FF7e338d5E582138C46044dc238543Ce555C963 \
+  --public-lock-address 0x5Ad19758103D474bdF5E8764D97cB02b83c3c844 \
+  --network avalanche
+```
+
 
 ### Create a gnosis safe and transfer Unlock ownership there
 
@@ -399,6 +409,7 @@ Add info about unlock and multisig to the network file
 - add the unlock address to `unlockAddress` 
 - add the gnosis safe address to `multisig`
 - add the block number before Unlock contract creation as `startBlock`
+- rebuild the package with `yarn build`
 
 ### Deploy a subgraph
 
@@ -408,11 +419,11 @@ Add info about unlock and multisig to the network file
 # got to the subgraph folder
 cd subgraph
 
-# generate .ts contract and template
-yarn codegen
-
 # create the subgraph.yaml 
 yarn generate-subgraph-yaml --network goerli
+
+# generate .ts contract and template
+yarn codegen
 
 # build as JSON/wasm
 yarn build --network goerli
@@ -430,3 +441,4 @@ yarn deploy --access-token <THEGRAPH_ACCESS_TOKEN>  --environment production --n
 4. Wait for the graph index to sync
 
 The graph will crawl all blocks from the `startBlock` set in the `@unlock-protocol/networks` network file up to the latest block height in the network. The process takes several hours.
+
