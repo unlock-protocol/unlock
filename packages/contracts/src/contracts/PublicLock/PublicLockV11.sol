@@ -201,7 +201,6 @@ library AddressUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol@v4.6.0
 
-
 // OpenZeppelin Contracts (last updated v4.6.0) (proxy/utils/Initializable.sol)
 
 pragma solidity ^0.8.2;
@@ -352,7 +351,6 @@ abstract contract Initializable {
 
 // File @openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol@v4.6.0
 
-
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC165.sol)
 
 pragma solidity ^0.8.0;
@@ -380,7 +378,6 @@ interface IERC165Upgradeable {
 
 
 // File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol@v4.6.0
-
 
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/ERC165.sol)
 
@@ -424,7 +421,6 @@ abstract contract ERC165Upgradeable is Initializable, IERC165Upgradeable {
 
 
 // File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol@v4.6.0
-
 
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/ERC165Storage.sol)
 
@@ -482,7 +478,6 @@ abstract contract ERC165StorageUpgradeable is Initializable, ERC165Upgradeable {
 
 // File contracts/mixins/MixinDisable.sol
 
-
 pragma solidity ^0.8.0;
 
 /**
@@ -498,7 +493,6 @@ contract MixinDisable {
 
 
 // File @openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol@v4.6.0
-
 
 // OpenZeppelin Contracts v4.4.1 (access/IAccessControl.sol)
 
@@ -591,7 +585,6 @@ interface IAccessControlUpgradeable {
 
 // File @openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol@v4.6.0
 
-
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
 
 pragma solidity ^0.8.0;
@@ -630,7 +623,6 @@ abstract contract ContextUpgradeable is Initializable {
 
 
 // File @openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol@v4.6.0
-
 
 // OpenZeppelin Contracts v4.4.1 (utils/Strings.sol)
 
@@ -701,7 +693,6 @@ library StringsUpgradeable {
 
 
 // File @openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol@v4.6.0
-
 
 // OpenZeppelin Contracts (last updated v4.6.0) (access/AccessControl.sol)
 
@@ -952,7 +943,6 @@ abstract contract AccessControlUpgradeable is Initializable, ContextUpgradeable,
 
 // File contracts/mixins/MixinErrors.sol
 
-
 pragma solidity ^0.8.0;
 
 /**
@@ -1025,7 +1015,6 @@ contract MixinErrors {
 
 
 // File contracts/mixins/MixinRoles.sol
-
 
 pragma solidity ^0.8.0;
 
@@ -1112,7 +1101,6 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
 
 
 // File contracts/interfaces/IUnlock.sol
-
 
 pragma solidity >=0.5.17 <0.9.0;
 
@@ -1392,7 +1380,6 @@ interface IUnlock
 
 // File @openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol@v4.6.0
 
-
 // OpenZeppelin Contracts (last updated v4.6.0) (token/ERC20/IERC20.sol)
 
 pragma solidity ^0.8.0;
@@ -1477,7 +1464,6 @@ interface IERC20Upgradeable {
 
 
 // File @openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol@v4.6.0
-
 
 // OpenZeppelin Contracts v4.4.1 (token/ERC20/utils/SafeERC20.sol)
 
@@ -1579,7 +1565,6 @@ library SafeERC20Upgradeable {
 
 // File contracts/mixins/MixinFunds.sol
 
-
 pragma solidity ^0.8.0;
 
 
@@ -1651,7 +1636,6 @@ contract MixinFunds is MixinErrors
 
 // File contracts/interfaces/hooks/ILockKeyCancelHook.sol
 
-
 pragma solidity >=0.5.17 <0.9.0;
 
 
@@ -1677,7 +1661,6 @@ interface ILockKeyCancelHook
 
 
 // File contracts/interfaces/hooks/ILockKeyPurchaseHook.sol
-
 
 pragma solidity >=0.5.17 <0.9.0;
 
@@ -1733,7 +1716,6 @@ interface ILockKeyPurchaseHook
 
 // File contracts/interfaces/hooks/ILockValidKeyHook.sol
 
-
 pragma solidity >=0.5.17 <0.9.0;
 
 
@@ -1764,7 +1746,6 @@ interface ILockValidKeyHook
 
 // File contracts/interfaces/hooks/ILockTokenURIHook.sol
 
-
 pragma solidity >=0.5.17 <0.9.0;
 
 /**
@@ -1794,7 +1775,6 @@ interface ILockTokenURIHook
 
 
 // File contracts/interfaces/hooks/ILockKeyTransferHook.sol
-
 
 pragma solidity >=0.5.17 <0.9.0;
 
@@ -1829,7 +1809,6 @@ interface ILockKeyTransferHook
 
 
 // File contracts/mixins/MixinLockCore.sol
-
 
 pragma solidity ^0.8.0;
 
@@ -2100,7 +2079,6 @@ contract MixinLockCore is
 
 // File contracts/mixins/MixinKeys.sol
 
-
 pragma solidity ^0.8.0;
 
 
@@ -2340,7 +2318,8 @@ contract MixinKeys is
   }
 
   function _extendKey(
-    uint _tokenId
+    uint _tokenId,
+    uint _duration
   ) internal 
     returns (
       uint newTimestamp
@@ -2354,15 +2333,16 @@ contract MixinKeys is
     }
     
     // if non-expiring but not valid then extend
-    if(expirationDuration == type(uint).max) {
+    uint duration = _duration == 0 ? expirationDuration : _duration;
+    if(duration == type(uint).max) {
       newTimestamp = type(uint).max;
     } else {
       if (expirationTimestamp > block.timestamp) {
         // extends a valid key  
-        newTimestamp = expirationTimestamp + expirationDuration;
+        newTimestamp = expirationTimestamp + duration;
       } else {
         // renew an expired or cancelled key
-        newTimestamp = block.timestamp + expirationDuration;
+        newTimestamp = block.timestamp + duration;
       }
     }
 
@@ -2801,7 +2781,6 @@ contract MixinKeys is
 
 // File contracts/mixins/MixinERC721Enumerable.sol
 
-
 pragma solidity ^0.8.0;
 
 
@@ -2863,7 +2842,6 @@ contract MixinERC721Enumerable is
 
 // File contracts/mixins/MixinGrantKeys.sol
 
-
 pragma solidity ^0.8.0;
 
 
@@ -2910,14 +2888,16 @@ contract MixinGrantKeys is
   /**
    * Allows the Lock owner or key granter to extend an existing keys with no charge. This is the "renewal" equivalent of `grantKeys`.
    * @param _tokenId The id of the token to extend
+   * @param _duration The duration in secondes to add ot the key
+   * @dev set `_duration` to 0 to use the default duration of the lock
    */
-  function grantKeyExtension(uint _tokenId) external {
+  function grantKeyExtension(uint _tokenId, uint _duration) external {
     _lockIsUpToDate();
     _isKey(_tokenId);
     if(!isKeyGranter(msg.sender) && !isLockManager(msg.sender)) {
       revert ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
     }
-    _extendKey(_tokenId);
+    _extendKey(_tokenId, _duration);
   }
 
   uint256[1000] private __safe_upgrade_gap;
@@ -2925,7 +2905,6 @@ contract MixinGrantKeys is
 
 
 // File contracts/UnlockUtils.sol
-
 
 pragma solidity >=0.5.17 <=0.8.13;
 
@@ -2994,7 +2973,6 @@ library UnlockUtils {
 
 
 // File contracts/mixins/MixinLockMetadata.sol
-
 
 pragma solidity ^0.8.0;
 
@@ -3164,7 +3142,6 @@ contract MixinLockMetadata is
 
 
 // File contracts/mixins/MixinPurchase.sol
-
 
 pragma solidity ^0.8.0;
 
@@ -3407,7 +3384,7 @@ contract MixinPurchase is
     _isKey(_tokenId);
 
     // extend key duration
-    _extendKey(_tokenId);
+    _extendKey(_tokenId, 0);
 
     // transfer the tokens
     uint inMemoryKeyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
@@ -3480,7 +3457,7 @@ contract MixinPurchase is
     }
 
     // extend key duration
-    _extendKey(_tokenId);
+    _extendKey(_tokenId, 0);
 
     // store in unlock
     _recordKeyPurchase(keyPrice, _referrer);
@@ -3544,7 +3521,6 @@ contract MixinPurchase is
 
 
 // File contracts/mixins/MixinRefunds.sol
-
 
 pragma solidity ^0.8.0;
 
@@ -3708,7 +3684,6 @@ contract MixinRefunds is
 
 // File @openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol@v4.6.0
 
-
 // OpenZeppelin Contracts (last updated v4.6.0) (token/ERC721/IERC721Receiver.sol)
 
 pragma solidity ^0.8.0;
@@ -3738,7 +3713,6 @@ interface IERC721ReceiverUpgradeable {
 
 
 // File contracts/mixins/MixinTransfer.sol
-
 
 pragma solidity ^0.8.0;
 
@@ -4155,7 +4129,6 @@ contract MixinTransfer is
 
 // File contracts/mixins/MixinConvenienceOwnable.sol
 
-
 pragma solidity ^0.8.0;
 
 
@@ -4212,7 +4185,6 @@ contract MixinConvenienceOwnable is MixinErrors, MixinLockCore {
 
 
 // File contracts/PublicLock.sol
-
 
 pragma solidity ^0.8.13;
 

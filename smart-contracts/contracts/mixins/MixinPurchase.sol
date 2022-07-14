@@ -242,7 +242,7 @@ contract MixinPurchase is
     _isKey(_tokenId);
 
     // extend key duration
-    _extendKey(_tokenId);
+    _extendKey(_tokenId, 0);
 
     // transfer the tokens
     uint inMemoryKeyPrice = purchasePriceFor(ownerOf(_tokenId), _referrer, _data);
@@ -315,7 +315,7 @@ contract MixinPurchase is
     }
 
     // extend key duration
-    _extendKey(_tokenId);
+    _extendKey(_tokenId, 0);
 
     // store in unlock
     _recordKeyPurchase(keyPrice, _referrer);

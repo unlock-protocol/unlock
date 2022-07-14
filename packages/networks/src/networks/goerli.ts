@@ -12,11 +12,10 @@ export const goerli: NetworkConfig = {
   explorer: {
     name: 'Goerli (Testnet)',
     urls: {
-      address: (address) =>
-        `https://https://goerli.etherscan.io/address/${address}`,
-      transaction: (hash) => `https://https://goerli.etherscan.io/tx/${hash}`,
+      address: (address) => `https://goerli.etherscan.io/address/${address}`,
+      transaction: (hash) => `https://goerli.etherscan.io/tx/${hash}`,
       token: (address, holder) =>
-        `https://https://goerli.etherscan.io/token/${address}?a=${holder}`,
+        `https://goerli.etherscan.io/token/${address}?a=${holder}`,
     },
   },
   opensea: {

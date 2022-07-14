@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect, useMemo } from 'react'
 import 'cross-fetch/polyfill'
 import Head from 'next/head'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
@@ -151,6 +151,7 @@ interface MetadataTableWrapperProps {
 interface Filter {
   key: string
   label: string
+  type: 'text' | 'number'
 }
 /**
  * This just wraps the metadataTable component, providing the data
@@ -166,12 +167,15 @@ const MetadataTableWrapper = ({
   const [currentPage, setCurrentPage] = useState(page)
   const [query, setQuery] = useState<string>('')
   const [filterKey, setFilteKey] = useState<string>('owner')
+  const [currentFilter, setCurrentFilter] = useState<Filter>()
   const queryValue = useDebounce<string>(query)
 
-  const filters: Filter[] = [
-    { key: 'owner', label: 'Owner' },
-    { key: 'keyId', label: 'Token id' },
-  ]
+  const filters: Filter[] = useMemo(() => {
+    return [
+      { key: 'owner', label: 'Owner', type: 'text' },
+      { key: 'keyId', label: 'Token id', type: 'number' },
+    ]
+  }, [])
 
   const { loading, list, columns, hasNextPage, isLockManager, loadMembers } =
     useMembers(
@@ -192,6 +196,13 @@ const MetadataTableWrapper = ({
     const key = event?.target?.value ?? ''
     setFilteKey(key)
   }
+
+  useEffect(() => {
+    const filter = filters?.find((filter) => filterKey === filter.key)
+    if (filter) {
+      setCurrentFilter(filter)
+    }
+  }, [filterKey, filters])
 
   // TODO: rename metadata into members inside of MetadataTable
   return (
@@ -219,7 +230,7 @@ const MetadataTableWrapper = ({
           </select>
         </span>
         <Input
-          type="text"
+          type={currentFilter?.type ?? 'text'}
           label="Filter your results"
           size="small"
           placeholder=""
