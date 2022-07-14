@@ -18,7 +18,7 @@ import { isSignatureValidForAddress } from '~/utils/signatures'
 
 interface Props {
   config: MembershipVerificationConfig
-  onVerified?: () => void
+  onVerified: () => void
 }
 
 /**
@@ -159,6 +159,7 @@ export const VerificationStatus = ({ config, onVerified }: Props) => {
     !isVerifier || isCheckingIn || !!invalid || !!checkedInAt
 
   const onVerifiedCb = () => {
+    console.log('onVerifiedCb', onVerified)
     if (typeof onVerified === 'function') {
       onVerified()
     }
