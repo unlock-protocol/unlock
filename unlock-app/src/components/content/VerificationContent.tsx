@@ -19,6 +19,7 @@ export const VerificationContent: React.FC<unknown> = () => {
   const storageService = useStorageService()
   const walletService = useWalletService()
   const { account, network } = useAuth()
+  const router = useRouter()
 
   const membershipVerificationConfig = getMembershipVerificationConfig({
     data: query.data?.toString(),
@@ -76,7 +77,12 @@ export const VerificationContent: React.FC<unknown> = () => {
           addLock,
         }}
       >
-        <VerificationStatus config={membershipVerificationConfig} />
+        <VerificationStatus
+          config={membershipVerificationConfig}
+          onVerified={() => {
+            router.push('/verification')
+          }}
+        />
       </LocksContext.Provider>
     </Layout>
   )
