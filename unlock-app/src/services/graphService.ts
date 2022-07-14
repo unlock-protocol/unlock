@@ -4,7 +4,7 @@ import locksByManager from '../queries/locksByManager'
 import keyHoldersByLocks from '../queries/keyholdersByLock'
 import { ToastHelper } from '../components/helpers/toast.helper'
 import keyholdersByKeyIdQuery from '../queries/keyholdersByKeyId'
-
+import { getValidNumber } from '~/utils/strings'
 export class GraphService {
   public client: any
 
@@ -55,9 +55,7 @@ export class GraphService {
     const query =
       filterKey === 'owner' ? keyHoldersByLocks() : keyholdersByKeyIdQuery()
 
-    const keyId = !isNaN(parseInt(`${search}`))
-      ? parseInt(`${search}`)
-      : undefined
+    const keyId = getValidNumber(search)
 
     const owner = `${search}`?.toLowerCase() ?? ''
 

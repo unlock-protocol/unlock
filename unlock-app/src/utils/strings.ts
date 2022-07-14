@@ -25,3 +25,13 @@ export function minifyEmail(email: string) {
 export function addressMinify(address: string): string {
   return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
 }
+
+/**
+ * check if a string contains a valid number and return is value only if have numbers
+ */
+export const getValidNumber = (value: string | number): number | undefined => {
+  const reg = new RegExp('^[0-9]*$')
+  return reg.test(`${value}`) && !isNaN(parseInt(`${value}`))
+    ? parseInt(`${value}`)
+    : undefined
+}
