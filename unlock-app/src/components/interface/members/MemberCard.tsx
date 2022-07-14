@@ -94,7 +94,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     try {
       if (!storageService) return
       const { lockAddress, token: keyId } = metadata
-     const response = await storageService.markTicketAsCheckedIn({
+      const response = await storageService.markTicketAsCheckedIn({
         lockAddress,
         keyId,
         network: network!,
