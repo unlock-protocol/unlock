@@ -13,7 +13,7 @@ image: /images/blog/june-22-update/june-22-banner.png
 
 - Launched an entirely new docs site at [https://docs.unlock-protocol.com](https://docs.unlock-protocol.com)
 
-## Smart contract enhancements
+## Smart contract optimizations and enhancements
 
 - Moving to error codes instead of string, saves 15% gas
 - Refactored tests to remove Truffle and web3.js dependency
