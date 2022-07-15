@@ -229,6 +229,7 @@ export interface Balances {
 export enum MemberFilters {
   ALL = 'all',
   ACTIVE = 'active',
+  EXPIRED = 'expired',
 }
 
 export interface UserMetadata {

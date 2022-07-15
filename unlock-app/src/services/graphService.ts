@@ -53,7 +53,7 @@ export class GraphService {
     filterKey: string
   ) => {
     const query =
-      filterKey === 'owner' ? keyHoldersByLocks() : keyholdersByKeyIdQuery()
+      filterKey === 'keyId' ? keyholdersByKeyIdQuery() : keyHoldersByLocks()
 
     const keyId = getValidNumber(search)
 

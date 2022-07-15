@@ -130,11 +130,7 @@ export const MembersContent = ({ query }: MembersContentProps) => {
               />
             </Filters>
 
-            <MetadataTableWrapper
-              page={page}
-              lockAddresses={lockAddresses}
-              filter={filter}
-            />
+            <MetadataTableWrapper page={page} lockAddresses={lockAddresses} />
           </>
         )}
       </BrowserOnly>
@@ -144,15 +140,24 @@ export const MembersContent = ({ query }: MembersContentProps) => {
 
 interface MetadataTableWrapperProps {
   lockAddresses: string[]
-  filter: string
   page: number
 }
 
 interface Filter {
   key: string
   label: string
-  type: 'text' | 'number'
+  options?: string[]
 }
+
+const filters: Filter[] = [
+  { key: 'owner', label: 'Owner' },
+  { key: 'keyId', label: 'Token id' },
+  {
+    key: 'expiration',
+    label: 'Expiration',
+    options: [MemberFilters.ACTIVE, MemberFilters.EXPIRED, MemberFilters.ALL],
+  },
+]
 /**
  * This just wraps the metadataTable component, providing the data
  * from the graph so we can separate the data layer from the
@@ -160,7 +165,6 @@ interface Filter {
  */
 const MetadataTableWrapper = ({
   lockAddresses,
-  filter,
   page,
 }: MetadataTableWrapperProps) => {
   const { account } = useContext(AuthenticationContext)
@@ -170,22 +174,15 @@ const MetadataTableWrapper = ({
   const [currentFilter, setCurrentFilter] = useState<Filter>()
   const queryValue = useDebounce<string>(query)
 
-  const filters: Filter[] = useMemo(() => {
-    return [
-      { key: 'owner', label: 'Owner', type: 'text' },
-      { key: 'keyId', label: 'Token id', type: 'number' },
-    ]
-  }, [])
-
   const { loading, list, columns, hasNextPage, isLockManager, loadMembers } =
-    useMembers(
+    useMembers({
+      viewer: account!,
       lockAddresses,
-      account!,
-      filter,
-      currentPage,
-      queryValue,
-      filterKey
-    )
+      expiration: undefined,
+      page: currentPage,
+      query: queryValue,
+      filterKey,
+    })
 
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e?.target?.value ?? ''
@@ -202,8 +199,11 @@ const MetadataTableWrapper = ({
     if (filter) {
       setCurrentFilter(filter)
     }
-  }, [filterKey, filters])
+  }, [filterKey])
 
+  const onOptionChange = () => {}
+
+  const options: string[] = currentFilter?.options ?? []
   // TODO: rename metadata into members inside of MetadataTable
   return (
     <>
@@ -229,13 +229,30 @@ const MetadataTableWrapper = ({
             ))}
           </select>
         </span>
-        <Input
-          type={currentFilter?.type ?? 'text'}
-          label="Filter your results"
-          size="small"
-          placeholder=""
-          onChange={search}
-        />
+        <div className="mt-auto">
+          {options?.length ? (
+            <select
+              name={currentFilter?.key}
+              className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
+              onChange={onOptionChange}
+            >
+              {options?.map((option: string) => {
+                return (
+                  <option key={option} value={option}>
+                    {option.toUpperCase()}
+                  </option>
+                )
+              })}
+            </select>
+          ) : (
+            <Input
+              label="Filter your results"
+              type="text"
+              size="small"
+              onChange={search}
+            />
+          )}
+        </div>
       </div>
       <MetadataTable
         columns={columns}

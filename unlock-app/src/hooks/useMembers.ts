@@ -76,14 +76,21 @@ export const buildMembersWithMetadata = (
  * This hooks yields the members for a lock, along with the metadata when applicable
  * @param {*} address
  */
-export const useMembers = (
-  lockAddresses: string[],
-  viewer: string,
-  filter: string,
+export const useMembers = ({
+  viewer,
+  lockAddresses = [],
+  expiration = MemberFilters.ACTIVE,
   page = 0,
   query = '',
-  filterKey = ''
-) => {
+  filterKey = '',
+}: {
+  lockAddresses: string[]
+  viewer: string
+  page: number
+  query: string
+  filterKey: string
+  expiration?: MemberFilters
+}) => {
   const { network, account } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
   const walletService = useWalletService()
@@ -128,9 +135,11 @@ export const useMembers = (
       setLoading(true)
 
       let expiresAfter = parseInt(`${new Date().getTime() / 1000}`)
-      if (filter === MemberFilters.ALL) {
+
+      if (expiration === MemberFilters.ALL) {
         expiresAfter = 0
       }
+
       const first = 30
       const skip = page * first
 
@@ -193,7 +202,7 @@ export const useMembers = (
    */
   useEffect(() => {
     loadMembers()
-  }, [JSON.stringify(lockAddresses), viewer, filter, page, query, filterKey])
+  }, [JSON.stringify(lockAddresses), viewer, page, query, filterKey])
 
   const list: any = Object.values(members)
   const columns = generateColumns(list)
