@@ -134,23 +134,20 @@ export const useMembers = ({
     try {
       setLoading(true)
 
-      let expiresAfter = parseInt(`${new Date().getTime() / 1000}`)
-
-      if (expiration === MemberFilters.ALL) {
-        expiresAfter = 0
-      }
+      const expireTimestamp = parseInt(`${new Date().getTime() / 1000}`)
 
       const first = 30
       const skip = page * first
 
-      const { data } = await graphService.keysByLocks(
-        lockAddresses,
-        expiresAfter,
+      const { data } = await graphService.keysByLocks({
+        locks: lockAddresses,
+        expireTimestamp,
+        expiration,
         first,
         skip,
-        query,
-        filterKey
-      )
+        search: query,
+        filterKey,
+      })
 
       const membersForLocksPromise = data.locks.map(async (lock: any) => {
         // If the viewer is not the lock owner, just show the members from chain
@@ -202,7 +199,14 @@ export const useMembers = ({
    */
   useEffect(() => {
     loadMembers()
-  }, [JSON.stringify(lockAddresses), viewer, page, query, filterKey])
+  }, [
+    JSON.stringify(lockAddresses),
+    viewer,
+    page,
+    query,
+    filterKey,
+    expiration,
+  ])
 
   const list: any = Object.values(members)
   const columns = generateColumns(list)

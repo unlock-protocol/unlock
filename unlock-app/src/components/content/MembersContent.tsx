@@ -172,13 +172,17 @@ const MetadataTableWrapper = ({
   const [query, setQuery] = useState<string>('')
   const [filterKey, setFilteKey] = useState<string>('owner')
   const [currentFilter, setCurrentFilter] = useState<Filter>()
+  const [currentOption, setCurrentOption] = useState<string>()
+  const [expiration, setExpiration] = useState<MemberFilters>(
+    MemberFilters.ACTIVE
+  )
   const queryValue = useDebounce<string>(query)
 
   const { loading, list, columns, hasNextPage, isLockManager, loadMembers } =
     useMembers({
       viewer: account!,
       lockAddresses,
-      expiration: undefined,
+      expiration,
       page: currentPage,
       query: queryValue,
       filterKey,
@@ -201,7 +205,15 @@ const MetadataTableWrapper = ({
     }
   }, [filterKey])
 
-  const onOptionChange = () => {}
+  useEffect(() => {
+    if (currentFilter?.key === 'expiration') {
+      setExpiration(currentOption as MemberFilters)
+    }
+  }, [currentFilter?.key, currentOption])
+
+  const onOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setCurrentOption(event?.target?.value ?? '')
+  }
 
   const options: string[] = currentFilter?.options ?? []
   // TODO: rename metadata into members inside of MetadataTable
