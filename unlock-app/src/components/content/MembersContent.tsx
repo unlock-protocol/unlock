@@ -116,20 +116,6 @@ export const MembersContent = ({ query }: MembersContentProps) => {
               </GrantButton>
             </AccountWrapper>
 
-            <Filters>
-              Show{' '}
-              <Filter
-                value={MemberFilters.ACTIVE}
-                current={filter}
-                setFilter={setFilter}
-              />
-              <Filter
-                value={MemberFilters.ALL}
-                current={filter}
-                setFilter={setFilter}
-              />
-            </Filters>
-
             <MetadataTableWrapper page={page} lockAddresses={lockAddresses} />
           </>
         )}
@@ -155,7 +141,7 @@ const filters: Filter[] = [
   {
     key: 'expiration',
     label: 'Expiration',
-    options: [MemberFilters.ACTIVE, MemberFilters.EXPIRED],
+    options: [MemberFilters.ACTIVE, MemberFilters.EXPIRED, MemberFilters.ALL],
   },
 ]
 /**
@@ -219,12 +205,7 @@ const MetadataTableWrapper = ({
   // TODO: rename metadata into members inside of MetadataTable
   return (
     <>
-      <Pagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        hasNextPage={hasNextPage}
-      />
-      <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(100px,_450px)] gap-[1.5rem]">
+      <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(100px,_450px)_1fr] items-center gap-[1.5rem]">
         <span className="grid gap-1.4">
           <label htmlFor="filters" className="px-1 text-base">
             Filter by
@@ -264,6 +245,13 @@ const MetadataTableWrapper = ({
               onChange={search}
             />
           )}
+        </div>
+        <div className="ml-auto">
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            hasNextPage={hasNextPage}
+          />
         </div>
       </div>
       <MetadataTable
