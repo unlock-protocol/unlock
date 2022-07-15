@@ -6,7 +6,7 @@ const parseNetwork = ({ name, id, unlockAddress, explorer, nativeCurrency }) =>
 
 - chainId: ${id}
 - native currency: ${nativeCurrency.name} (${nativeCurrency.symbol})
-- unlockAddress: \`[${unlockAddress}](${explorer.urls.address(unlockAddress)})\`
+- unlockAddress: [\`${unlockAddress}\`](${explorer.urls.address(unlockAddress)})
 `
 
 const doc = `
