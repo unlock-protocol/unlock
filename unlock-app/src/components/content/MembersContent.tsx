@@ -155,7 +155,7 @@ const filters: Filter[] = [
   {
     key: 'expiration',
     label: 'Expiration',
-    options: [MemberFilters.ACTIVE, MemberFilters.EXPIRED, MemberFilters.ALL],
+    options: [MemberFilters.ACTIVE, MemberFilters.EXPIRED],
   },
 ]
 /**
