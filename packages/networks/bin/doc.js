@@ -1,8 +1,17 @@
 const { networks } = require('../dist')
 
-const parseNetwork = ({ name, id, unlockAddress, explorer, nativeCurrency }) =>
+const parseNetwork = ({
+  name,
+  id,
+  unlockAddress,
+  explorer,
+  nativeCurrency,
+  description,
+}) =>
   `
 ## ${name}
+
+${description || ''}
 
 - chainId: ${id}
 - native currency: ${nativeCurrency.name} (${nativeCurrency.symbol})
