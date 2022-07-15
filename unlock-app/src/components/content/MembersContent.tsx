@@ -74,7 +74,6 @@ interface MembersContentProps {
   query: any
 }
 export const MembersContent = ({ query }: MembersContentProps) => {
-  const [filter, setFilter] = useState<string>(MemberFilters.ACTIVE)
   const { account } = useContext(AuthenticationContext)
   const [isOpen, setIsOpen] = useState(false)
 
