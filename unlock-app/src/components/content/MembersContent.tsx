@@ -181,6 +181,10 @@ const MetadataTableWrapper = ({
   const onFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const key = event?.target?.value ?? ''
     setFilteKey(key)
+
+    // reset pagination on search query
+    setCurrentPage(0)
+    setQuery('')
   }
 
   useEffect(() => {
