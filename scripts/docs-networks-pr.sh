@@ -17,16 +17,16 @@ dest="docs/core-protocol/unlock/networks.md"
 base="master"
 repo=git@github.com:unlock-protocol/docs.git
 
-# cleanup
-cd $tmpdir
-
 # versioning
 version_number=$(yarn workspace @unlock-protocol/networks version:show)
 branch=networks-$version_number
 echo $branch
 
+# cleanup
+cd $tmpdir
+
 # git worflow
-git clone $repo
+git clone --depth=1 $repo
 cd docs
 
 # check if a branch already exists
