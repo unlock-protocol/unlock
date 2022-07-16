@@ -58,20 +58,20 @@ export function Scanner() {
 
   return (
     <>
-      <div className="grid justify-center">
-        <div className="text-center p-6">
-          <h3 className="font-bold text-lg">
-            Scan the QR code to check in Ticket
-          </h3>
+      <div className="grid w-full justify-center">
+        <div>
+          <div className="text-center mb-6">
+            <h3 className="font-medium">Scan to check in ticket</h3>
+          </div>
+          {!membershipVerificationConfig && (
+            <video
+              ref={videoRef}
+              className="rounded-xl object-cover w-80 h-80 shadow-lg"
+              muted
+              id="scanner"
+            />
+          )}
         </div>
-        {!membershipVerificationConfig && (
-          <video
-            ref={videoRef}
-            className="rounded-xl object-cover w-full max-w-sm h-96"
-            muted
-            id="scanner"
-          />
-        )}
       </div>
       {membershipVerificationConfig && (
         <Transition show appear as={Fragment}>
