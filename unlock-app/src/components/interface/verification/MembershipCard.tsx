@@ -123,10 +123,8 @@ export function MembershipCard({
             <Item label="ID" value={keyId} />
           </div>
         </div>
-        <div className="grid gap-2">
-          <div>
-            <EthCCBadge lockAddress={lock.address} />
-          </div>
+        <div className="space-y-2">
+          <EthCCBadge lockAddress={lock.address} />
           <Item label="Lock Address" value={addressMinify(lock.address)} />
           <Item label="Network" value={config.networks[network].name} />
           <Item label="Time since signed" value={timeSinceSigned} />
@@ -200,7 +198,7 @@ interface EthCCBadgeProps {
 const ETHCC_BADGES: Record<string, Record<'title' | 'class', string>> = {
   white: {
     title: 'Attendee',
-    class: 'bg-zinc-50  border-zinc-100',
+    class: 'bg-zinc-50 border-zinc-200',
   },
   blue: {
     title: 'Sponsor',
@@ -216,25 +214,52 @@ const ETHCC_BADGES: Record<string, Record<'title' | 'class', string>> = {
   },
 }
 
-const ETHCC_LOCK_BADGE: Record<string, string> = {
-  '0xd0A031d9f9486B1D914124D0C1FCAC2e9e6504FE': 'white',
-  '0x072149617e12170696481684598a696e9a4d46Ff': 'white',
-  '0x9AB351cB5DAe55abD135dD256726851aae8EFeB5': 'white',
-  '0xF181e18e007517605f369EccF0eeE6EBb1B10133': 'white',
-  '0x6d8C3D90340fa33693a88D1411b0F32Df12D0683': 'blue',
-  '0xF99eb828aC365C54FCbb6779a78417c25f113829': 'green',
-  '0x623dA3e4D4CB9C98DABb4C23789ed5AaA20Ea3aA': 'purple',
-  '0x4624Bbf6d685B1057eEcAcC691B0a068E287F0a5': 'purple',
-}
+const ETHCC_LOCK_BADGE: Record<'address' | 'label', string>[] = [
+  {
+    address: '0xd0A031d9f9486B1D914124D0C1FCAC2e9e6504FE',
+    label: 'white',
+  },
+  {
+    address: '0x072149617e12170696481684598a696e9a4d46Ff',
+    label: 'white',
+  },
+  {
+    address: '0x9AB351cB5DAe55abD135dD256726851aae8EFeB5',
+    label: 'white',
+  },
+  {
+    address: '0xF181e18e007517605f369EccF0eeE6EBb1B10133',
+    label: 'white',
+  },
+  {
+    address: '0x6d8C3D90340fa33693a88D1411b0F32Df12D0683',
+    label: 'blue',
+  },
+  {
+    address: '0xF99eb828aC365C54FCbb6779a78417c25f113829',
+    label: 'green',
+  },
+  {
+    address: '0x623dA3e4D4CB9C98DABb4C23789ed5AaA20Ea3aA',
+    label: 'purple',
+  },
+  {
+    address: '0x4624Bbf6d685B1057eEcAcC691B0a068E287F0a5',
+    label: 'purple',
+  },
+]
 
 export function EthCCBadge({ lockAddress }: EthCCBadgeProps) {
-  const badgeLabel = ETHCC_LOCK_BADGE[lockAddress]
+  const badgeLabel = ETHCC_LOCK_BADGE.find(
+    (item) => item.address.toLowerCase() === lockAddress.toLowerCase()
+  )?.label
+
   if (!badgeLabel) {
     return null
   }
   const badge = ETHCC_BADGES[badgeLabel]
   const badgeClass = twMerge(
-    'px-4 py-0.5 inline-flex items-center border border-transparent rounded-full font-semibold',
+    'px-4 py-0.5 inline-flex border border-transparent rounded-full font-bold',
     badge.class
   )
   return <div className={badgeClass}>{badge.title}</div>
