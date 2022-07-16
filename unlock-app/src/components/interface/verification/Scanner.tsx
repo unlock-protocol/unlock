@@ -94,7 +94,7 @@ export function Scanner() {
               leaveTo="opacity-0 translate-y-1"
             >
               <div className="fixed p-6 inset-0 overflow-y-auto">
-                <div className="flex min-h-full items-center justify-center text-center">
+                <div className="flex min-h-full items-center justify-center">
                   <Dialog.Panel className="max-w-sm w-full">
                     <VerificationStatus
                       onClose={() => setMembershipVerificationConfig(null)}
