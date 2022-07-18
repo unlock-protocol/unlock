@@ -1,6 +1,6 @@
 {
     "name": "@unlock-protocol/networks",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "Unlock Protocol's contract addressess for various networks",
@@ -8,7 +8,9 @@
         "start": "tsc --watch",
         "build": "tsc",
         "clean": "rm -rf ./dist",
-        "prepublish": "yarn build"
+        "prepublish": "yarn build",
+        "doc": "node ./bin/doc.js",
+        "version:show": "echo $npm_package_version"
     },
     "devDependencies": {
         "@unlock-protocol/tsconfig": "workspace:^",

@@ -32,7 +32,7 @@ tar -xf contracts-**.tgz
 
 # versioning
 version_number="$(ls *.tgz | awk -F \- {'print substr($2,0,5) '} | sed 's/\./-/g')"
-branch=docs-$version_number
+branch=contracts-$version_number
 rm -rf *.tgz
 
 # git worflow
