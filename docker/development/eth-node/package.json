@@ -11,7 +11,7 @@
         "@unlock-protocol/unlock-abi-9": "1.0.0",
         "@unlock-protocol/unlock-js": "0.23.1",
         "cross-fetch": "3.1.5",
-        "ethers": "5.6.8",
+        "ethers": "5.6.9",
         "hardhat": "2.9.9",
         "hardhat-erc1820": "0.1.0"
     }
