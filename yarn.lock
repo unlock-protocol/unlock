@@ -7332,13 +7332,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:1.6.4":
-  version: 1.6.4
-  resolution: "@headlessui/react@npm:1.6.4"
+"@headlessui/react@npm:1.6.5":
+  version: 1.6.5
+  resolution: "@headlessui/react@npm:1.6.5"
   peerDependencies:
     react: ^16 || ^17 || ^18
     react-dom: ^16 || ^17 || ^18
-  checksum: f24dd2f5bd4de5954b2fd40998627b58a650a874894a90f96320ae5bad1b961a140e85ce821b92dc8cbed0628523df57ae9533137467d867788eac907bd396d7
+  checksum: 6e3db77c992b5346b7835ea23ab78f251dc2165f2848db38904e6e84a44a2039cf3d5ea94a3a709dd4fc783bccfa638fe3c7bb450216f02ebbac5bb54f29947e
   languageName: node
   linkType: hard
 
@@ -15473,7 +15473,7 @@ __metadata:
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
     "@babel/core": 7.18.2
-    "@headlessui/react": 1.6.4
+    "@headlessui/react": 1.6.5
     "@mdx-js/preact": 2.1.1
     "@mdx-js/react": 2.1.1
     "@radix-ui/react-tooltip": 0.1.7
@@ -15505,7 +15505,7 @@ __metadata:
     vite: 2.9.9
     vite-tsconfig-paths: 3.5.0
   peerDependencies:
-    "@headlessui/react": 1.6.4
+    "@headlessui/react": 1.6.5
     react: 17.0.2
     react-dom: 17.0.2
   languageName: unknown
@@ -15579,7 +15579,7 @@ __metadata:
     "@apollo/react-testing": 4.0.0
     "@babel/core": 7.18.2
     "@babel/plugin-proposal-optional-chaining": 7.17.12
-    "@headlessui/react": 1.6.4
+    "@headlessui/react": 1.6.5
     "@radix-ui/react-avatar": 0.1.4
     "@storybook/addon-actions": 6.5.6
     "@storybook/addon-knobs": 6.4.0
@@ -15750,7 +15750,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
     "@babel/core": 7.18.2
-    "@headlessui/react": 1.6.4
+    "@headlessui/react": 1.6.5
     "@radix-ui/react-avatar": 0.1.4
     "@testing-library/jest-dom": 5.16.4
     "@testing-library/react": 12.1.5
