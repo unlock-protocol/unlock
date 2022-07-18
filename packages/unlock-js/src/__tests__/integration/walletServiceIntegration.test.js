@@ -184,7 +184,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         lock = await web3Service.getLock(lockAddress, chainId)
 
         // test will fail with default to 1 key per address
-        if (['v10'].indexOf(publicLockVersion) !== -1) {
+        if (['v10', 'v11'].indexOf(publicLockVersion) !== -1) {
           await walletService.setMaxKeysPerAddress({
             lockAddress,
             chainId,
@@ -458,7 +458,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           let keyGrantee
           let transactionHash
           beforeAll(async () => {
-            keyGrantee = accounts[11]
+            keyGrantee = accounts[15]
             tokenId = await walletService.grantKey({
               lockAddress,
               recipient: keyGrantee,
