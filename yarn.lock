@@ -15648,7 +15648,7 @@ __metadata:
     react-hook-form: 7.31.3
     react-hot-toast: 2.2.0
     react-icons: 4.4.0
-    react-jazzicon: 1.0.3
+    react-jazzicon: 1.0.4
     react-jwt: 1.1.6
     react-query: 3.39.1
     react-test-renderer: 17.0.2
@@ -44040,14 +44040,15 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-jazzicon@npm:1.0.3":
-  version: 1.0.3
-  resolution: "react-jazzicon@npm:1.0.3"
+"react-jazzicon@npm:1.0.4":
+  version: 1.0.4
+  resolution: "react-jazzicon@npm:1.0.4"
   dependencies:
     mersenne-twister: ^1.1.0
   peerDependencies:
-    react: ^17.0.0
-  checksum: cd6ef64ab2c46e0f800b9caa1bbfbc473d6855ff8aeaff7e613ba5d5807de1720cdddbe04264d4764c3f138578cbb23ef1d3f5b442ec2981183abf1790592b24
+    react: ">=17.0.0"
+    react-dom: ">=17.0.0"
+  checksum: e975b143b001f6e06bf6269498749e174550a86dfd85c255c64750f2adfa0b94d5ac8d79e04eb8b136f94067ee30ce47dae06312f9f1d37219319dc2c658d671
   languageName: node
   linkType: hard
 
