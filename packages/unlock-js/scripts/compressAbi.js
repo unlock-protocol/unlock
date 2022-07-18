@@ -48,6 +48,11 @@ function formatSignature(sig) {
     if (sig.anonymous) return false // can't filter on anonymous events so ignore them
     return `event ${sig.name} (${formatEventTypes(sig.inputs)})`
   }
+  if (sig.type === 'error') {
+    // support for solidity custom errors using functions
+    // https://blog.soliditylang.org/2021/04/21/custom-errors/
+    return `error ${sig.name}(${formatTypes(sig.inputs)})`
+  }
   let ret = `function ${sig.name}(${formatTypes(sig.inputs)})`
   if (sig.constant) ret += ' constant'
   if (sig.stateMutability !== 'nonpayable') ret += ` ${sig.stateMutability}`
@@ -60,7 +65,7 @@ function formatSignature(sig) {
 function parseABI(contractName, version) {
   const abi = abis[`${contractName}${version.toUpperCase()}`]
   const signatures = abi.abi
-    .filter((f) => ['function', 'event'].includes(f.type))
+    .filter((f) => ['function', 'event', 'error'].includes(f.type))
     .map(formatSignature)
     .filter((f) => f)
 
