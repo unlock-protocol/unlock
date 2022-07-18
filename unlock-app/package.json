@@ -17,7 +17,7 @@
     "@stripe/stripe-js": "1.31.0",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "12.1.5",
-    "@testing-library/react-hooks": "8.0.0",
+    "@testing-library/react-hooks": "8.0.1",
     "@types/file-saver": "2.0.5",
     "@types/jest": "27.5.2",
     "@types/postmate": "1.5.2",
