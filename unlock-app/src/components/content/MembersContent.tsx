@@ -184,7 +184,6 @@ const MetadataTableWrapper = ({
 
     // reset pagination on search query
     setCurrentPage(0)
-    setQuery('')
   }
 
   useEffect(() => {
