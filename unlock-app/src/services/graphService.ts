@@ -67,6 +67,7 @@ export class GraphService {
     let query
     const keyId = getValidNumber(search)
 
+    // filter by keyId only when search value is provided
     if (filterKey === 'keyId' && `${search}`?.length) {
       query = keyholdersByKeyIdQuery()
     } else {
