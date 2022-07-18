@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import FileSaver from 'file-saver'
 import Link from 'next/link'
 import { buildCSV } from '../../utils/csv'
-import { MemberFilters } from '../../unlockTypes'
+import { MemberFilter } from '../../unlockTypes'
 import { ExpireAndRefundModal } from './ExpireAndRefundModal'
 import {
   MemberCard,
@@ -24,7 +24,7 @@ interface MetadataTableProps {
   columns: string[]
   metadata: KeyMetadata[]
   loading?: boolean
-  filter?: string
+  filter?: MemberFilter
   isLockManager?: boolean
   lockAddresses?: string[]
   loadMembers?: () => void
@@ -70,7 +70,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   }
 
   if (metadata.length === 0) {
-    if (filter === MemberFilters.ALL) {
+    if (filter === 'all') {
       return (
         <span className="text-gray-600">
           No keys have been purchased yet. Return to your{' '}
@@ -179,7 +179,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
 }
 
 MetadataTable.defaultProps = {
-  filter: '',
+  filter: 'all',
   isLockManager: false,
   lockAddresses: [],
 }

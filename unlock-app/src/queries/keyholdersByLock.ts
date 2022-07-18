@@ -1,5 +1,5 @@
-import { gql } from 'apollo-boost'
-import { MemberFilters } from '~/unlockTypes'
+import { DocumentNode, gql } from 'apollo-boost'
+import { MemberFilter } from '~/unlockTypes'
 
 const AllKeys = gql`
   query Lock(
@@ -87,13 +87,13 @@ const ExpiredKeys = gql`
   }
 `
 
-const QUERY_BY_TYPE = {
-  [MemberFilters.ACTIVE]: ActiveKeys,
-  [MemberFilters.EXPIRED]: ExpiredKeys,
-  [MemberFilters.ALL]: AllKeys,
+const QUERY_BY_TYPE: { [key in MemberFilter]: DocumentNode } = {
+  active: ActiveKeys,
+  expired: ExpiredKeys,
+  all: AllKeys,
 }
 
-export default function keyholdersByLockQuery(type: MemberFilters) {
+export default function keyholdersByLockQuery(type: MemberFilter) {
   try {
     if (QUERY_BY_TYPE[type]) {
       return QUERY_BY_TYPE[type]

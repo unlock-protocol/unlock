@@ -7,7 +7,7 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import Layout from '../interface/Layout'
 import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
-import { MemberFilters } from '../../unlockTypes'
+import { MemberFilter } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
 import useMembers from '../../hooks/useMembers'
 import LoginPrompt from '../interface/LoginPrompt'
@@ -140,7 +140,7 @@ const filters: Filter[] = [
   {
     key: 'expiration',
     label: 'Expiration',
-    options: [MemberFilters.ACTIVE, MemberFilters.EXPIRED, MemberFilters.ALL],
+    options: ['active', 'expired', 'all'],
   },
 ]
 /**
@@ -158,9 +158,7 @@ const MetadataTableWrapper = ({
   const [filterKey, setFilteKey] = useState<string>('owner')
   const [currentFilter, setCurrentFilter] = useState<Filter>()
   const [currentOption, setCurrentOption] = useState<string>()
-  const [expiration, setExpiration] = useState<MemberFilters>(
-    MemberFilters.ACTIVE
-  )
+  const [expiration, setExpiration] = useState<MemberFilter>('active')
   const queryValue = useDebounce<string>(query)
 
   const { loading, list, columns, hasNextPage, isLockManager, loadMembers } =
@@ -196,7 +194,7 @@ const MetadataTableWrapper = ({
 
   useEffect(() => {
     if (currentFilter?.key === 'expiration') {
-      setExpiration(currentOption as MemberFilters)
+      setExpiration(currentOption as MemberFilter)
     }
   }, [currentFilter?.key, currentOption])
 
