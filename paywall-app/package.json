@@ -24,7 +24,7 @@
     "copy-webpack-plugin": "11.0.0",
     "dotenv": "16.0.1",
     "lint-staged": "13.0.0",
-    "next": "12.2.2",
+    "next": "12.1.6",
     "path-match": "1.2.4",
     "postmate": "1.5.2",
     "prop-types": "15.8.1",
@@ -43,9 +43,9 @@
     "babel-loader": "8.2.5",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "10.0.1",
-    "eslint": "8.20.0",
+    "eslint": "8.16.0",
     "nodemon": "2.0.16",
-    "prettier": "2.7.1",
+    "prettier": "2.6.2",
     "typescript": "4.7.2"
   },
   "lint-staged": {
