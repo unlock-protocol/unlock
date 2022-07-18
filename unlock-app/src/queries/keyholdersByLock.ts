@@ -1,4 +1,33 @@
 import { gql } from 'apollo-boost'
+import { MemberFilters } from '~/unlockTypes'
+
+const AllKeys = gql`
+  query Lock(
+    $addresses: [String!]
+    $first: Int! = 100
+    $skip: Int! = 0
+    $owner: String = ""
+  ) {
+    locks(where: { address_in: $addresses }) {
+      keys(
+        where: { expiration_gt: 0, owner_contains: $owner }
+        first: $first
+        skip: $skip
+        orderBy: keyId
+        orderDirection: asc
+      ) {
+        owner {
+          address
+        }
+        keyId
+        expiration
+      }
+      name
+      address
+      owner
+    }
+  }
+`
 
 const ActiveKeys = gql`
   query Lock(
@@ -58,6 +87,20 @@ const ExpiredKeys = gql`
   }
 `
 
-export default function keyholdersByLockQuery(showActive = true) {
-  return showActive ? ActiveKeys : ExpiredKeys
+const QUERY_BY_TYPE = {
+  [MemberFilters.ACTIVE]: ActiveKeys,
+  [MemberFilters.EXPIRED]: ExpiredKeys,
+  [MemberFilters.ALL]: AllKeys,
+}
+
+export default function keyholdersByLockQuery(type: MemberFilters) {
+  try {
+    if (QUERY_BY_TYPE[type]) {
+      return QUERY_BY_TYPE[type]
+    } else {
+      console.error(`${type} is not mapped `)
+    }
+  } catch (err) {
+    console.error(err)
+  }
 }

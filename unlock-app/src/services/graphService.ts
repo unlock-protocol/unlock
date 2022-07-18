@@ -62,11 +62,10 @@ export class GraphService {
     search: string | number
     filterKey: string
   }) => {
-    const showActive = expiration === MemberFilters.ACTIVE
     const query =
       filterKey === 'keyId'
         ? keyholdersByKeyIdQuery()
-        : keyHoldersByLocks(showActive)
+        : keyHoldersByLocks(expiration)
 
     const keyId = getValidNumber(search)
 
