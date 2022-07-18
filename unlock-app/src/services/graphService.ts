@@ -62,12 +62,16 @@ export class GraphService {
     search: string | number
     filterKey: string
   }) => {
-    const query =
-      filterKey === 'keyId'
-        ? keyholdersByKeyIdQuery()
-        : keyHoldersByLocks(expiration)
-
+    let query
     const keyId = getValidNumber(search)
+
+    // filter by keyId only when search value is provided
+    if (filterKey === 'keyId' && `${search}`?.length) {
+      query = keyholdersByKeyIdQuery()
+    } else {
+      // pass expiration type filter 'all' | 'expired' | 'active'
+      query = keyHoldersByLocks(expiration)
+    }
 
     const owner = `${search}`?.toLowerCase() ?? ''
 
