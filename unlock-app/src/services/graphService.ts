@@ -4,7 +4,8 @@ import locksByManager from '../queries/locksByManager'
 import keyHoldersByLocks from '../queries/keyholdersByLock'
 import { ToastHelper } from '../components/helpers/toast.helper'
 import keyholdersByKeyIdQuery from '../queries/keyholdersByKeyId'
-
+import { getValidNumber } from '~/utils/strings'
+import { MemberFilters } from '~/unlockTypes'
 export class GraphService {
   public client: any
 
@@ -44,29 +45,41 @@ export class GraphService {
     }
   }
 
-  keysByLocks = async (
-    locks: string[],
-    expiresAfter: number,
-    first: number,
-    skip: number,
-    search: string | number,
+  keysByLocks = async ({
+    locks,
+    expireTimestamp,
+    expiration,
+    first,
+    skip,
+    search = '',
+    filterKey = '',
+  }: {
+    locks: string[]
+    expireTimestamp: number
+    expiration: MemberFilters
+    first: number
+    skip: number
+    search: string | number
     filterKey: string
-  ) => {
+  }) => {
+    const showActive = expiration === MemberFilters.ACTIVE
     const query =
-      filterKey === 'owner' ? keyHoldersByLocks() : keyholdersByKeyIdQuery()
+      filterKey === 'keyId'
+        ? keyholdersByKeyIdQuery()
+        : keyHoldersByLocks(showActive)
 
-    const keyId = !isNaN(parseInt(`${search}`))
-      ? parseInt(`${search}`)
-      : undefined
+    const keyId = getValidNumber(search)
+
+    const owner = `${search}`?.toLowerCase() ?? ''
 
     const result = await this.client.query({
       query,
       variables: {
         addresses: locks,
-        expiresAfter,
+        expireTimestamp,
         first,
         skip,
-        owner: search,
+        owner,
         keyId,
       },
     })

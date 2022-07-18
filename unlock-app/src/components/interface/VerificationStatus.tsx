@@ -18,13 +18,15 @@ import { isSignatureValidForAddress } from '~/utils/signatures'
 
 interface Props {
   config: MembershipVerificationConfig
+  onVerified: () => void
+  onClose?: () => void
 }
 
 /**
  * React components which given data, signature will verify the validity of a key
  * and display the right status
  */
-export const VerificationStatus = ({ config }: Props) => {
+export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const { data, sig, raw } = config
   const { lockAddress, timestamp, network, tokenId, account } = data
   const { account: viewer } = useAuth()
@@ -51,6 +53,22 @@ export const VerificationStatus = ({ config }: Props) => {
     },
     {
       refetchInterval: false,
+    }
+  )
+
+  const lockVersion = lock?.publicLockVersion
+
+  const { isLoading: isKeyLoading, data: key } = useQuery(
+    [network, tokenId, lockAddress],
+    async () => {
+      if (lockVersion && lockVersion >= 10) {
+        return web3Service.getKeyByTokenId(lockAddress, tokenId, network)
+      } else {
+        return web3Service.getKeyByLockForOwner(lockAddress, account, network)
+      }
+    },
+    {
+      enabled: !!lockVersion,
     }
   )
 
@@ -82,7 +100,7 @@ export const VerificationStatus = ({ config }: Props) => {
       })
     },
     {
-      enabled: Boolean(viewer && storageService.token),
+      enabled: storageService.isAuthenticated,
       refetchInterval: false,
     }
   )
@@ -96,11 +114,16 @@ export const VerificationStatus = ({ config }: Props) => {
         network,
       })
       if (!response.ok) {
-        throw new Error('Could not check in membership')
+        if (response.status === 409) {
+          ToastHelper.error('Ticket already checked in')
+        } else {
+          throw new Error('Failed to check in')
+        }
       }
       await refetchMembershipData()
       setIsCheckingIn(false)
     } catch (error) {
+      console.error(error)
       ToastHelper.error('Failed to check in')
     }
   }
@@ -109,7 +132,8 @@ export const VerificationStatus = ({ config }: Props) => {
     isLockLoading ||
     isMembershipDataLoading ||
     isVerifierLoading ||
-    isKeyGranterLoading
+    isKeyGranterLoading ||
+    isKeyLoading
   ) {
     return (
       <div className="flex justify-center">
@@ -126,30 +150,40 @@ export const VerificationStatus = ({ config }: Props) => {
   )
 
   const invalid = invalidMembership({
-    membershipData,
+    keyId: key!.tokenId.toString(),
+    owner: key!.owner,
+    expiration: key!.expiration,
     isSignatureValid,
     verificationData: data,
   })
 
   const checkedInAt = membershipData?.metadata?.checkedInAt
 
+  const disableActions =
+    !isVerifier || isCheckingIn || !!invalid || !!checkedInAt
+
+  const onClickVerified = () => {
+    if (typeof onVerified === 'function') {
+      onVerified()
+    }
+  }
+
   const CardActions = () => (
-    <div className="grid w-full">
+    <div className="grid w-full gap-2">
       {viewer ? (
-        <Button
-          loading={isCheckingIn}
-          disabled={!isVerifier || isCheckingIn || !!invalid || !!checkedInAt}
-          onClick={async (event) => {
-            event.preventDefault()
-            onCheckIn()
-          }}
-        >
-          {isCheckingIn
-            ? 'Checking in'
-            : checkedInAt
-            ? 'Checked in'
-            : 'Check in'}
-        </Button>
+        !checkedInAt && !!isVerifier ? (
+          <Button
+            loading={isCheckingIn}
+            disabled={disableActions}
+            variant={'primary'}
+            onClick={async (event) => {
+              event.preventDefault()
+              onCheckIn()
+            }}
+          >
+            {isCheckingIn ? 'Checking in' : 'Check in'}
+          </Button>
+        ) : null
       ) : (
         <Button
           onClick={(event) => {
@@ -158,16 +192,23 @@ export const VerificationStatus = ({ config }: Props) => {
               `/login?redirect=${encodeURIComponent(window.location.href)}`
             )
           }}
+          variant="primary"
         >
-          Connect Account
+          Connect to check-in
         </Button>
       )}
+      <Button variant="outlined-primary" onClick={onClickVerified}>
+        Scan next ticket
+      </Button>
     </div>
   )
 
   return (
     <div className="flex justify-center">
       <MembershipCard
+        onClose={onClose}
+        keyId={key!.tokenId.toString()}
+        owner={key!.owner}
         membershipData={membershipData!}
         invalid={invalid}
         timestamp={timestamp}

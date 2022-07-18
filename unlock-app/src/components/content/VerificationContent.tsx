@@ -10,7 +10,7 @@ import LocksContext from '../../contexts/LocksContext'
 import { ToastHelper } from '../helpers/toast.helper'
 import Account from '../interface/Account'
 import Layout from '../interface/Layout'
-import Loading from '../interface/Loading'
+import { Scanner } from '../interface/verification/Scanner'
 import VerificationStatus from '../interface/VerificationStatus'
 
 export const VerificationContent: React.FC<unknown> = () => {
@@ -19,6 +19,12 @@ export const VerificationContent: React.FC<unknown> = () => {
   const storageService = useStorageService()
   const walletService = useWalletService()
   const { account, network } = useAuth()
+  const router = useRouter()
+
+  const membershipVerificationConfig = getMembershipVerificationConfig({
+    data: query.data?.toString(),
+    sig: query.sig?.toString(),
+  })
 
   useEffect(() => {
     const login = async () => {
@@ -38,13 +44,18 @@ export const VerificationContent: React.FC<unknown> = () => {
     login()
   }, [storageService, walletService, account, network])
 
-  const membershipVerificationConfig = getMembershipVerificationConfig({
-    data: query.data?.toString(),
-    sig: query.sig?.toString(),
-  })
-
   if (!membershipVerificationConfig) {
-    return <Loading />
+    return (
+      <Layout title="Verification">
+        <Head>
+          <title>{pageTitle('Verification')}</title>
+        </Head>
+        <Account />
+        <main>
+          <Scanner />
+        </main>
+      </Layout>
+    )
   }
 
   const addLock = (lock: any) => {
@@ -66,7 +77,12 @@ export const VerificationContent: React.FC<unknown> = () => {
           addLock,
         }}
       >
-        <VerificationStatus config={membershipVerificationConfig} />
+        <VerificationStatus
+          config={membershipVerificationConfig}
+          onVerified={() => {
+            router.push('/verification')
+          }}
+        />
       </LocksContext.Provider>
     </Layout>
   )

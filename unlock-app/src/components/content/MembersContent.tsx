@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import 'cross-fetch/polyfill'
 import Head from 'next/head'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
@@ -74,7 +74,6 @@ interface MembersContentProps {
   query: any
 }
 export const MembersContent = ({ query }: MembersContentProps) => {
-  const [filter, setFilter] = useState<string>(MemberFilters.ACTIVE)
   const { account } = useContext(AuthenticationContext)
   const [isOpen, setIsOpen] = useState(false)
 
@@ -116,25 +115,7 @@ export const MembersContent = ({ query }: MembersContentProps) => {
               </GrantButton>
             </AccountWrapper>
 
-            <Filters>
-              Show{' '}
-              <Filter
-                value={MemberFilters.ACTIVE}
-                current={filter}
-                setFilter={setFilter}
-              />
-              <Filter
-                value={MemberFilters.ALL}
-                current={filter}
-                setFilter={setFilter}
-              />
-            </Filters>
-
-            <MetadataTableWrapper
-              page={page}
-              lockAddresses={lockAddresses}
-              filter={filter}
-            />
+            <MetadataTableWrapper page={page} lockAddresses={lockAddresses} />
           </>
         )}
       </BrowserOnly>
@@ -144,14 +125,24 @@ export const MembersContent = ({ query }: MembersContentProps) => {
 
 interface MetadataTableWrapperProps {
   lockAddresses: string[]
-  filter: string
   page: number
 }
 
 interface Filter {
   key: string
   label: string
+  options?: string[]
 }
+
+const filters: Filter[] = [
+  { key: 'owner', label: 'Owner' },
+  { key: 'keyId', label: 'Token id' },
+  {
+    key: 'expiration',
+    label: 'Expiration',
+    options: [MemberFilters.ACTIVE, MemberFilters.EXPIRED, MemberFilters.ALL],
+  },
+]
 /**
  * This just wraps the metadataTable component, providing the data
  * from the graph so we can separate the data layer from the
@@ -159,29 +150,28 @@ interface Filter {
  */
 const MetadataTableWrapper = ({
   lockAddresses,
-  filter,
   page,
 }: MetadataTableWrapperProps) => {
   const { account } = useContext(AuthenticationContext)
   const [currentPage, setCurrentPage] = useState(page)
   const [query, setQuery] = useState<string>('')
   const [filterKey, setFilteKey] = useState<string>('owner')
+  const [currentFilter, setCurrentFilter] = useState<Filter>()
+  const [currentOption, setCurrentOption] = useState<string>()
+  const [expiration, setExpiration] = useState<MemberFilters>(
+    MemberFilters.ACTIVE
+  )
   const queryValue = useDebounce<string>(query)
 
-  const filters: Filter[] = [
-    { key: 'owner', label: 'Owner' },
-    { key: 'keyId', label: 'Token id' },
-  ]
-
   const { loading, list, columns, hasNextPage, isLockManager, loadMembers } =
-    useMembers(
+    useMembers({
+      viewer: account!,
       lockAddresses,
-      account!,
-      filter,
-      currentPage,
-      queryValue,
-      filterKey
-    )
+      expiration,
+      page: currentPage,
+      query: queryValue,
+      filterKey,
+    })
 
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e?.target?.value ?? ''
@@ -191,17 +181,34 @@ const MetadataTableWrapper = ({
   const onFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const key = event?.target?.value ?? ''
     setFilteKey(key)
+
+    // reset pagination on search query
+    setCurrentPage(0)
+    setQuery('')
   }
 
+  useEffect(() => {
+    const filter = filters?.find((filter) => filterKey === filter.key)
+    if (filter) {
+      setCurrentFilter(filter)
+    }
+  }, [filterKey])
+
+  useEffect(() => {
+    if (currentFilter?.key === 'expiration') {
+      setExpiration(currentOption as MemberFilters)
+    }
+  }, [currentFilter?.key, currentOption])
+
+  const onOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setCurrentOption(event?.target?.value ?? '')
+  }
+
+  const options: string[] = currentFilter?.options ?? []
   // TODO: rename metadata into members inside of MetadataTable
   return (
     <>
-      <Pagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        hasNextPage={hasNextPage}
-      />
-      <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(100px,_450px)] gap-[1.5rem]">
+      <div className="grid grid-cols-1 md:grid-cols-[200px_minmax(100px,_450px)_1fr] items-center gap-[1.5rem]">
         <span className="grid gap-1.4">
           <label htmlFor="filters" className="px-1 text-base">
             Filter by
@@ -218,13 +225,37 @@ const MetadataTableWrapper = ({
             ))}
           </select>
         </span>
-        <Input
-          type="text"
-          label="Filter your results"
-          size="small"
-          placeholder=""
-          onChange={search}
-        />
+        <div className="mt-auto">
+          {options?.length ? (
+            <select
+              name={currentFilter?.key}
+              className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
+              onChange={onOptionChange}
+            >
+              {options?.map((option: string) => {
+                return (
+                  <option key={option} value={option}>
+                    {option.toUpperCase()}
+                  </option>
+                )
+              })}
+            </select>
+          ) : (
+            <Input
+              label="Filter your results"
+              type="text"
+              size="small"
+              onChange={search}
+            />
+          )}
+        </div>
+        <div className="ml-auto">
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            hasNextPage={hasNextPage}
+          />
+        </div>
       </div>
       <MetadataTable
         columns={columns}

@@ -39,7 +39,7 @@ export const buildMembersWithMetadata = (
   )
   lockWithKeys.keys?.forEach((key: any) => {
     const keyOwner = key.owner.address.toLowerCase()
-    const index = `${lockWithKeys.address}-${keyOwner}`
+    const index = `${lockWithKeys.address}-${keyOwner}-${key.keyId}` // lets add keyId to see mutiple keys for the same address
     let member: any = members[index]
 
     if (!member) {
@@ -76,14 +76,21 @@ export const buildMembersWithMetadata = (
  * This hooks yields the members for a lock, along with the metadata when applicable
  * @param {*} address
  */
-export const useMembers = (
-  lockAddresses: string[],
-  viewer: string,
-  filter: string,
+export const useMembers = ({
+  viewer,
+  lockAddresses = [],
+  expiration = MemberFilters.ACTIVE,
   page = 0,
   query = '',
-  filterKey = ''
-) => {
+  filterKey = '',
+}: {
+  lockAddresses: string[]
+  viewer: string
+  page: number
+  query: string
+  filterKey: string
+  expiration?: MemberFilters
+}) => {
   const { network, account } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
   const walletService = useWalletService()
@@ -124,61 +131,68 @@ export const useMembers = (
   }
 
   const loadMembers = async () => {
-    setLoading(true)
+    try {
+      setLoading(true)
 
-    let expiresAfter = parseInt(`${new Date().getTime() / 1000}`)
-    if (filter === MemberFilters.ALL) {
-      expiresAfter = 0
-    }
-    const first = 30
-    const skip = page * first
+      const expireTimestamp = parseInt(`${new Date().getTime() / 1000}`)
 
-    const { data } = await graphService.keysByLocks(
-      lockAddresses,
-      expiresAfter,
-      first,
-      skip,
-      query,
-      filterKey
-    )
+      const first = 30
+      const skip = page * first
 
-    const membersForLocksPromise = data.locks.map(async (lock: any) => {
-      // If the viewer is not the lock owner, just show the members from chain
-      const _isLockManager = await web3Service.isLockManager(
-        lock.address,
-        viewer,
-        network
+      const { data } = await graphService.keysByLocks({
+        locks: lockAddresses,
+        expireTimestamp,
+        expiration,
+        first,
+        skip,
+        search: query,
+        filterKey,
+      })
+
+      const membersForLocksPromise = data.locks.map(async (lock: any) => {
+        // If the viewer is not the lock owner, just show the members from chain
+        const _isLockManager = await web3Service.isLockManager(
+          lock.address,
+          viewer,
+          network
+        )
+        setIsLockManager(_isLockManager)
+        if (!_isLockManager) {
+          return buildMembersWithMetadata(lock, [])
+        }
+        try {
+          if (data?.locks) {
+            const storedMetadata = await getKeysMetadata(data?.locks ?? [])
+            return buildMembersWithMetadata(lock, storedMetadata)
+          }
+        } catch (error) {
+          ToastHelper.error(`Could not list members - ${error}`)
+          return []
+        }
+      })
+
+      const membersByLock = await Promise.all(membersForLocksPromise)
+
+      const members = Object.values(
+        membersByLock.reduce((acc, array) => {
+          return {
+            ...acc,
+            ...array,
+          }
+        }, {})
       )
-      setIsLockManager(_isLockManager)
-      if (!_isLockManager) {
-        return buildMembersWithMetadata(lock, [])
-      }
-      try {
-        if (data?.locks) {
-          const storedMetadata = await getKeysMetadata(data?.locks ?? [])
-          return buildMembersWithMetadata(lock, storedMetadata)
-        }
-      } catch (error) {
-        ToastHelper.error(`Could not list members - ${error}`)
-        return []
-      }
-    })
 
-    const membersByLock = await Promise.all(membersForLocksPromise)
-    const members = Object.values(
-      membersByLock.reduce((acc, array) => {
-        return {
-          ...acc,
-          ...array,
-        }
-      }, {})
-    )
-
-    setMembers(members ?? [])
-    if (members.length > 0) {
-      setHasNextPage(Object.keys(members).length === first)
+      setMembers(members ?? [])
+      if (members.length > 0) {
+        setHasNextPage(Object.keys(members).length === first)
+      }
+      setLoading(false)
+    } catch (err) {
+      console.error(err)
+      setLoading(false)
+      setMembers([])
+      ToastHelper.error('There is some unexpected issue, please try again')
     }
-    setLoading(false)
   }
   /**
    * When the keyHolders object changes, load the metadata
@@ -188,10 +202,10 @@ export const useMembers = (
   }, [
     JSON.stringify(lockAddresses),
     viewer,
-    filter,
     page,
-    query.length,
+    query,
     filterKey,
+    expiration,
   ])
 
   const list: any = Object.values(members)

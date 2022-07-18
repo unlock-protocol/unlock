@@ -3,7 +3,9 @@ import * as z from 'zod'
 export const MembershipVerificationData = z.object({
   account: z.string(),
   timestamp: z.number(),
-  tokenId: z.string(),
+  tokenId: z
+    .union([z.string(), z.number()])
+    .transform((value) => value.toString()),
   network: z.number(),
   lockAddress: z.string(),
 })
@@ -15,8 +17,8 @@ export const MembershipVerificationConfig = z.object({
 })
 
 interface Options {
-  data?: string
-  sig?: string
+  data?: string | null
+  sig?: string | null
 }
 
 export function getMembershipVerificationConfig({ data, sig }: Options) {
