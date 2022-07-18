@@ -13,7 +13,7 @@ const UNLOCK_BENEFITS = [
 
 const featuredUsers = [
   {
-    link: '/blog/talesofelatora',
+    link: '/guides/how-to-sell-nft-tickets-for-an-event/',
     title: 'Event ticketing',
     illustration: '/images/marketing/tales-of-elatora.png',
     avatar: '',
@@ -22,7 +22,7 @@ const featuredUsers = [
       'Membership NFTs for event ticketing, check-in, and proof of attendance',
   },
   {
-    link: 'https://bakery.fyi/bakery-nft/',
+    link: '/guides/using-unlock-for-newsletters/',
     title: 'Media membership',
     illustration: '/images/marketing/newspapper.png',
     avatar: '',
@@ -31,7 +31,7 @@ const featuredUsers = [
       'Membership access to content, video, streaming, music, podcast and other media',
   },
   {
-    link: '/blog/talesofelatora',
+    link: '#',
     title: 'DAO membership',
     illustration: '/images/marketing/globe.png',
     avatar: '',
@@ -40,7 +40,7 @@ const featuredUsers = [
       'Seasonal, time-based, or perpetual DAO memberships, community, and event access',
   },
   {
-    link: '/blog/talesofelatora',
+    link: '#',
     title: 'Certification credentials',
     illustration: '/images/marketing/certificate.png',
     avatar: '',
