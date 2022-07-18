@@ -63,12 +63,15 @@ export class GraphService {
     filterKey: string
   }) => {
     const showActive = expiration === MemberFilters.ACTIVE
-    const query =
-      filterKey === 'keyId'
-        ? keyholdersByKeyIdQuery()
-        : keyHoldersByLocks(showActive)
 
+    let query
     const keyId = getValidNumber(search)
+
+    if (filterKey === 'keyId' && keyId) {
+      query = keyholdersByKeyIdQuery()
+    } else {
+      query = keyHoldersByLocks(showActive)
+    }
 
     const owner = `${search}`?.toLowerCase() ?? ''
 
