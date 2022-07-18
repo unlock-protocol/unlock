@@ -192,33 +192,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/cli@npm:7.17.10":
-  version: 7.17.10
-  resolution: "@babel/cli@npm:7.17.10"
-  dependencies:
-    "@jridgewell/trace-mapping": ^0.3.8
-    "@nicolo-ribaudo/chokidar-2": 2.1.8-no-fsevents.3
-    chokidar: ^3.4.0
-    commander: ^4.0.1
-    convert-source-map: ^1.1.0
-    fs-readdir-recursive: ^1.1.0
-    glob: ^7.0.0
-    make-dir: ^2.1.0
-    slash: ^2.0.0
-  peerDependencies:
-    "@babel/core": ^7.0.0-0
-  dependenciesMeta:
-    "@nicolo-ribaudo/chokidar-2":
-      optional: true
-    chokidar:
-      optional: true
-  bin:
-    babel: ./bin/babel.js
-    babel-external-helpers: ./bin/babel-external-helpers.js
-  checksum: 66b50a7d60e9366c82301c45346a1639b2a7351d2049ff9c47812093060802711fbb1690243826e09823cf06be5306d608327fa8c8ea2827fd6340923ac827a0
-  languageName: node
-  linkType: hard
-
 "@babel/cli@npm:7.18.6":
   version: 7.18.6
   resolution: "@babel/cli@npm:7.18.6"
@@ -5952,7 +5925,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/abi@npm:5.6.3, @ethersproject/abi@npm:^5.6.3":
+"@ethersproject/abi@npm:5.6.4":
+  version: 5.6.4
+  resolution: "@ethersproject/abi@npm:5.6.4"
+  dependencies:
+    "@ethersproject/address": ^5.6.1
+    "@ethersproject/bignumber": ^5.6.2
+    "@ethersproject/bytes": ^5.6.1
+    "@ethersproject/constants": ^5.6.1
+    "@ethersproject/hash": ^5.6.1
+    "@ethersproject/keccak256": ^5.6.1
+    "@ethersproject/logger": ^5.6.0
+    "@ethersproject/properties": ^5.6.0
+    "@ethersproject/strings": ^5.6.1
+  checksum: b5e70fa13a29e1143131a0ed25053a3d355c07353e13d436f42add33f40753b5541a088cf31a1ccca6448bb1d773a41ece0bf8367490d3f2ad394a4c26f4876f
+  languageName: node
+  linkType: hard
+
+"@ethersproject/abi@npm:^5.6.3":
   version: 5.6.3
   resolution: "@ethersproject/abi@npm:5.6.3"
   dependencies:
@@ -6530,12 +6520,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ethersproject/networks@npm:5.6.3, @ethersproject/networks@npm:^5.6.3":
-  version: 5.6.3
-  resolution: "@ethersproject/networks@npm:5.6.3"
+"@ethersproject/networks@npm:5.6.4":
+  version: 5.6.4
+  resolution: "@ethersproject/networks@npm:5.6.4"
   dependencies:
     "@ethersproject/logger": ^5.6.0
-  checksum: 94d2981eeed0accb69124cfb9a807552ada98b370415c9d906018bd70a33bc5a1286ff01eb2a3ce213c12334fcc7ab635ad0429f25a687b9b8f34d26d21df74b
+  checksum: d41c07497de4ace3f57e972428685a8703a867600cf01f2bc15a21fcb7f99afb3f05b3d8dbb29ac206473368f30d60b98dc445cc38403be4cbe6f804f70e5173
   languageName: node
   linkType: hard
 
@@ -6545,6 +6535,15 @@ __metadata:
   dependencies:
     "@ethersproject/logger": ^5.5.0
   checksum: cadf2280d29696dcf3e29fe62cdad350ccfc087e81b8dd2fb2b823e1a6c0e5f9e9fd0ccb52a290ea8af810b9c2f16f74f11b00fc34fc9d910bdeed0869089acf
+  languageName: node
+  linkType: hard
+
+"@ethersproject/networks@npm:^5.6.3":
+  version: 5.6.3
+  resolution: "@ethersproject/networks@npm:5.6.3"
+  dependencies:
+    "@ethersproject/logger": ^5.6.0
+  checksum: 94d2981eeed0accb69124cfb9a807552ada98b370415c9d906018bd70a33bc5a1286ff01eb2a3ce213c12334fcc7ab635ad0429f25a687b9b8f34d26d21df74b
   languageName: node
   linkType: hard
 
@@ -8536,26 +8535,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/hardhat-upgrades@npm:1.18.0":
-  version: 1.18.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:1.18.0"
-  dependencies:
-    "@openzeppelin/upgrades-core": ^1.15.0
-    chalk: ^4.1.0
-    proper-lockfile: ^4.1.1
-  peerDependencies:
-    "@nomiclabs/hardhat-ethers": ^2.0.0
-    "@nomiclabs/hardhat-etherscan": ^3.0.3
-    hardhat: ^2.0.2
-  peerDependenciesMeta:
-    "@nomiclabs/harhdat-etherscan":
-      optional: true
-  bin:
-    migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: 399380e327e3f3e094abed9706cdcb009302ce3c23cf12b387bf16f3a31e26ee0d2d8e46ba1161e4b0ae6e8a87e925ffbc4768f7532b02a66cdcb8c9423f44d9
-  languageName: node
-  linkType: hard
-
 "@openzeppelin/hardhat-upgrades@npm:1.19.0":
   version: 1.19.0
   resolution: "@openzeppelin/hardhat-upgrades@npm:1.19.0"
@@ -8661,22 +8640,6 @@ __metadata:
     proper-lockfile: ^4.1.1
     solidity-ast: ^0.4.15
   checksum: b6dfb36bc7f83a85a5e072768e98649f5a9895971bd2f81d0c7405fb9a0200bc8ade406aea1ccc3108181be758629c676962c0714b567dc5dccd68536e42eb09
-  languageName: node
-  linkType: hard
-
-"@openzeppelin/upgrades-core@npm:^1.15.0":
-  version: 1.15.0
-  resolution: "@openzeppelin/upgrades-core@npm:1.15.0"
-  dependencies:
-    bn.js: ^5.1.2
-    cbor: ^8.0.0
-    chalk: ^4.1.0
-    compare-versions: ^4.0.0
-    debug: ^4.1.1
-    ethereumjs-util: ^7.0.3
-    proper-lockfile: ^4.1.1
-    solidity-ast: ^0.4.15
-  checksum: a491e33452d9744277d66144206ab0121851d219a5cef1ed095f37977433c5a0536a0483e4d446f3d8b7c06dcb53dabffcc9e638b510c0b92153b6b0feaad998
   languageName: node
   linkType: hard
 
@@ -15229,7 +15192,7 @@ __metadata:
     dotenv: 16.0.1
     eslint: 8.12.0
     eslint-config-standard: 17.0.0
-    ethers: 5.6.8
+    ethers: 5.6.9
     express: 4.17.3
     express-jwt: 7.5.2
     express-list-endpoints: 6.0.0
@@ -15463,7 +15426,7 @@ __metadata:
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    ethers: 5.6.8
+    ethers: 5.6.9
     typescript: 4.7.2
   languageName: unknown
   linkType: soft
@@ -15623,7 +15586,7 @@ __metadata:
     deep-object-diff: 1.1.7
     dotenv: 16.0.1
     eslint: 8.16.0
-    ethers: 5.6.8
+    ethers: 5.6.9
     file-saver: 2.0.5
     graphql: 15.8.0
     jest: 27.5.1
@@ -15707,7 +15670,7 @@ __metadata:
   dependencies:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     eslint: 8.18.0
-    ethers: 5.6.8
+    ethers: 5.6.9
     passport-custom: 1.1.1
     prettier: 2.7.1
   peerDependencies:
@@ -15741,7 +15704,7 @@ __metadata:
     tsup: 6.1.2
     typescript: 4.7.2
   peerDependencies:
-    ethers: 5.6.8
+    ethers: 5.6.9
   languageName: unknown
   linkType: soft
 
@@ -27727,11 +27690,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.6.8":
-  version: 5.6.8
-  resolution: "ethers@npm:5.6.8"
+"ethers@npm:5.6.9":
+  version: 5.6.9
+  resolution: "ethers@npm:5.6.9"
   dependencies:
-    "@ethersproject/abi": 5.6.3
+    "@ethersproject/abi": 5.6.4
     "@ethersproject/abstract-provider": 5.6.1
     "@ethersproject/abstract-signer": 5.6.2
     "@ethersproject/address": 5.6.1
@@ -27746,7 +27709,7 @@ __metadata:
     "@ethersproject/json-wallets": 5.6.1
     "@ethersproject/keccak256": 5.6.1
     "@ethersproject/logger": 5.6.0
-    "@ethersproject/networks": 5.6.3
+    "@ethersproject/networks": 5.6.4
     "@ethersproject/pbkdf2": 5.6.1
     "@ethersproject/properties": 5.6.0
     "@ethersproject/providers": 5.6.8
@@ -27761,7 +27724,7 @@ __metadata:
     "@ethersproject/wallet": 5.6.2
     "@ethersproject/web": 5.6.1
     "@ethersproject/wordlists": 5.6.1
-  checksum: 3ef1e1509e96029839330bef465c368fee140d98c4fb23d743a0904b7ebdf70fa3c79683a2350355c9400497a5c179fe988d84a2b578d756f09c80462a94f614
+  checksum: e4a029ad55da2355cb7b0ff178b38b0df27f9013604b0600c246dba297223ac2ce8ef0380758fa535cd82ea46bceb4a71aeb29949e1693f3a9c60d4cdaceb208
   languageName: node
   linkType: hard
 
@@ -50088,42 +50051,6 @@ resolve@^2.0.0-next.3:
   version: 0.0.1
   resolution: "tsort@npm:0.0.1"
   checksum: 581566c248690b9ea7e431e1545affb3d2cab0f5dcd0e45ddef815dfaec4864cb5f0cfd8072924dedbc0de9585ff07e3e65db60f14fab4123737b9bb6e72eacc
-  languageName: node
-  linkType: hard
-
-"tsup@npm:6.0.1":
-  version: 6.0.1
-  resolution: "tsup@npm:6.0.1"
-  dependencies:
-    bundle-require: ^3.0.2
-    cac: ^6.7.12
-    chokidar: ^3.5.1
-    debug: ^4.3.1
-    esbuild: ^0.14.25
-    execa: ^5.0.0
-    globby: ^11.0.3
-    joycon: ^3.0.1
-    postcss-load-config: ^3.0.1
-    resolve-from: ^5.0.0
-    rollup: ^2.74.1
-    source-map: 0.8.0-beta.0
-    sucrase: ^3.20.3
-    tree-kill: ^1.2.2
-  peerDependencies:
-    "@swc/core": ^1
-    postcss: ^8.4.12
-    typescript: ^4.1.0
-  peerDependenciesMeta:
-    "@swc/core":
-      optional: true
-    postcss:
-      optional: true
-    typescript:
-      optional: true
-  bin:
-    tsup: dist/cli-default.js
-    tsup-node: dist/cli-node.js
-  checksum: 4630409533213b3b1953204b29fad514bd93bdb8635b18c12f76101d0dae745982ab7fe47be052111c3b99e23ef356eebce19e77ebd9f72d3769fda43cf9af6f
   languageName: node
   linkType: hard
 
