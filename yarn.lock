@@ -9609,6 +9609,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@solidity-parser/parser@npm:^0.14.2":
+  version: 0.14.3
+  resolution: "@solidity-parser/parser@npm:0.14.3"
+  dependencies:
+    antlr4ts: ^0.5.0-alpha.4
+  checksum: 9a27eb961c22a3b8732bd9782ce3b7912e67b2e2183acada552116dd0bbe637c33265177ab3db9610063da48aa57299d67afdeb0616450b631a0e3da865c4e88
+  languageName: node
+  linkType: hard
+
 "@solidity-parser/parser@npm:^0.8.0":
   version: 0.8.2
   resolution: "@solidity-parser/parser@npm:0.8.2"
@@ -15096,9 +15105,9 @@ __metadata:
     "@unlock-protocol/types": "workspace:^"
     chai: 4.3.4
     copyfiles: 2.4.1
-    eslint: 8.16.0
+    eslint: 8.20.0
     fs-extra: 10.1.0
-    hardhat: 2.9.9
+    hardhat: 2.10.1
     typescript: 4.7.2
   languageName: unknown
   linkType: soft
@@ -15476,7 +15485,7 @@ __metadata:
     tsconfig-paths-webpack-plugin: 3.5.2
     tsup: 6.1.2
     typescript: 4.7.2
-    vite: 2.9.9
+    vite: 2.9.14
     vite-tsconfig-paths: 3.5.0
   peerDependencies:
     "@headlessui/react": 1.6.5
@@ -30561,6 +30570,72 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"hardhat@npm:2.10.1":
+  version: 2.10.1
+  resolution: "hardhat@npm:2.10.1"
+  dependencies:
+    "@ethereumjs/block": ^3.6.2
+    "@ethereumjs/blockchain": ^5.5.2
+    "@ethereumjs/common": ^2.6.4
+    "@ethereumjs/tx": ^3.5.1
+    "@ethereumjs/vm": ^5.9.0
+    "@ethersproject/abi": ^5.1.2
+    "@metamask/eth-sig-util": ^4.0.0
+    "@sentry/node": ^5.18.1
+    "@solidity-parser/parser": ^0.14.2
+    "@types/bn.js": ^5.1.0
+    "@types/lru-cache": ^5.1.0
+    abort-controller: ^3.0.0
+    adm-zip: ^0.4.16
+    aggregate-error: ^3.0.0
+    ansi-escapes: ^4.3.0
+    chalk: ^2.4.2
+    chokidar: ^3.4.0
+    ci-info: ^2.0.0
+    debug: ^4.1.1
+    enquirer: ^2.3.0
+    env-paths: ^2.2.0
+    ethereum-cryptography: ^1.0.3
+    ethereumjs-abi: ^0.6.8
+    ethereumjs-util: ^7.1.4
+    find-up: ^2.1.0
+    fp-ts: 1.19.3
+    fs-extra: ^7.0.1
+    glob: 7.2.0
+    immutable: ^4.0.0-rc.12
+    io-ts: 1.10.4
+    lodash: ^4.17.11
+    merkle-patricia-tree: ^4.2.4
+    mnemonist: ^0.38.0
+    mocha: ^10.0.0
+    p-map: ^4.0.0
+    qs: ^6.7.0
+    raw-body: ^2.4.1
+    resolve: 1.17.0
+    semver: ^6.3.0
+    slash: ^3.0.0
+    solc: 0.7.3
+    source-map-support: ^0.5.13
+    stacktrace-parser: ^0.1.10
+    true-case-path: ^2.2.1
+    tsort: 0.0.1
+    undici: ^5.4.0
+    uuid: ^8.3.2
+    ws: ^7.4.6
+  peerDependencies:
+    ts-node: "*"
+    typescript: "*"
+  peerDependenciesMeta:
+    ts-node:
+      optional: true
+    typescript:
+      optional: true
+  bin:
+    hardhat: internal/cli/cli.js
+  checksum: ca9060a25fc620f7be412eb49496603dbb311e2eff0a5d689aa632ff7947aa433009fe4155250acb81daaa6557fb075602174e8313460659891233768881f368
+  languageName: node
+  linkType: hard
+
 "hardhat@npm:2.8.0":
   version: 2.8.0
   resolution: "hardhat@npm:2.8.0"
@@ -38270,7 +38345,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"mocha@npm:10.0.0":
+"mocha@npm:10.0.0, mocha@npm:^10.0.0":
   version: 10.0.0
   resolution: "mocha@npm:10.0.0"
   dependencies:
@@ -51570,9 +51645,9 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"vite@npm:2.9.9":
-  version: 2.9.9
-  resolution: "vite@npm:2.9.9"
+"vite@npm:2.9.14":
+  version: 2.9.14
+  resolution: "vite@npm:2.9.14"
   dependencies:
     esbuild: ^0.14.27
     fsevents: ~2.3.2
@@ -51595,7 +51670,7 @@ typescript@^3.8.3:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 9292b8ba510a393d0c61c407ebfb4eaa818b2d8d106b3476cdc94cb57a0c59348a535936d698db04b35910a1cfdb16aeaf872f0f995b54cf6d7ed31bc7886deb
+  checksum: f78b54f58482ea97d385e36873ae1aa4744c5e467c1d6d4e0835bd55494d2d8f6ce763f17c241c66104be687d5ee535b8e1e96c14210c9ba0c343fe78c58f694
   languageName: node
   linkType: hard
 
