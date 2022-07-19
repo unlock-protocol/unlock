@@ -1,7 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import { MetadataTable } from '../../../components/interface/MetadataTable'
-import { MemberFilter } from '../../../unlockTypes'
 import { ConfigContext } from '../../../utils/withConfig'
 import {
   AuthenticationContext,
