@@ -61,7 +61,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const { isLoading: isKeyLoading, data: key } = useQuery(
     [network, tokenId, lockAddress],
     async () => {
-      if (lockVersion && lockVersion >= 10) {
+      if (lockVersion && lockVersion >= 10 && tokenId) {
         return web3Service.getKeyByTokenId(lockAddress, tokenId, network)
       } else {
         return web3Service.getKeyByLockForOwner(lockAddress, account, network)
@@ -72,21 +72,24 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     }
   )
 
+  const keyId = key?.tokenId.toString()
+
   const {
     data: membershipData,
     refetch: refetchMembershipData,
     isLoading: isMembershipDataLoading,
   } = useQuery(
-    [tokenId, lockAddress, network],
+    [keyId, lockAddress, network],
     (): Promise<MembershipData> => {
       return storageService.getKeyMetadataValues({
         lockAddress,
         network,
-        keyId: Number(tokenId),
+        keyId: Number(keyId),
       })
     },
     {
       refetchInterval: false,
+      enabled: !!key,
     }
   )
 
@@ -110,7 +113,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
       setIsCheckingIn(true)
       const response = await storageService.markTicketAsCheckedIn({
         lockAddress,
-        keyId: tokenId,
+        keyId: keyId!,
         network,
       })
       if (!response.ok) {
@@ -150,7 +153,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   )
 
   const invalid = invalidMembership({
-    keyId: key!.tokenId.toString(),
+    keyId: keyId!,
     owner: key!.owner,
     expiration: key!.expiration,
     isSignatureValid,
@@ -207,7 +210,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     <div className="flex justify-center">
       <MembershipCard
         onClose={onClose}
-        keyId={key!.tokenId.toString()}
+        keyId={keyId!}
         owner={key!.owner}
         membershipData={membershipData!}
         invalid={invalid}
