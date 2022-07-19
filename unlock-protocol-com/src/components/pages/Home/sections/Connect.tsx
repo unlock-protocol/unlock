@@ -1,4 +1,3 @@
-import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
 import { Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { unlockConfig } from '../../../../config/unlock'
@@ -13,16 +12,16 @@ const UNLOCK_BENEFITS = [
 
 const featuredUsers = [
   {
-    link: '/guides/how-to-sell-nft-tickets-for-an-event/',
+    link: '#',
     title: 'Event ticketing',
-    illustration: '/images/marketing/tales-of-elatora.png',
+    illustration: '/images/marketing/event.png',
     avatar: '',
     creator: '',
     quote:
       'Membership NFTs for event ticketing, check-in, and proof of attendance',
   },
   {
-    link: '/guides/using-unlock-for-newsletters/',
+    link: '#',
     title: 'Media membership',
     illustration: '/images/marketing/newspapper.png',
     avatar: '',
@@ -48,7 +47,7 @@ const featuredUsers = [
     quote: 'On-chain certification NFTs for skills and continuing education',
   },
   {
-    link: '/blog/talesofelatora',
+    link: '#',
     title: 'Digital collectibles',
     illustration: '/images/marketing/ronin.png',
     avatar: '',
