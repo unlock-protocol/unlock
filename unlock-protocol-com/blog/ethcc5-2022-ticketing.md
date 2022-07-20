@@ -77,7 +77,7 @@ Attendees who presented tickets that were ok and valid were granted admittance t
 
 Once the doors opened at EthCC, the check-in process went smoothly. Volunteer expediters interacted with each attendee before they got up to the check-in booth to ensure the attendee had their QR code email and directed them to the appropriate check-in station (e.g. sponsor, speaker, general attendee, etc.).
 
-On average, the check-in process — including ticket scanning and verification, handing the wrist band to the attendee, and giving them their sponsor swag bag — took less than fifteen seconds (and sometimes fewer than seven seconds) per attendee. All the attendees who showed up (over 1000!) with valid tickets were checked in using the application in the first hour by the volunteers, and no attendee waited outside the venue for more than a few moments before being directed to a check-in station.
+On average, the check-in process — including ticket scanning and verification, handing the wrist band to the attendee, and giving them their sponsor swag bag — took less than fifteen seconds (and sometimes fewer than seven seconds) per attendee. All the attendees who showed up with valid tickets were checked in using the application in the first hour by the volunteers, and no attendee waited outside the venue for more than a few moments before being directed to a check-in station.
 
 ![checkin1-min.png](/images/blog/ethcc5/checkin1-min.png)
 
