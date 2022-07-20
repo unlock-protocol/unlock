@@ -23,7 +23,7 @@ type Attachment = {
 interface Key {
   lock: {
     address: string
-    name?: string
+    name: string
   }
   owner: {
     address: string
