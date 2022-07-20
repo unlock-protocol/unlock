@@ -1,4 +1,4 @@
-import axios from 'axios'
+import fetch from 'node-fetch'
 
 export enum emailTemplate {
   signupConfirmation = 'confirmEmail',
@@ -34,13 +34,14 @@ export default class WedlockService {
         params,
         attachments,
       }
-      const result = await axios.post(this.uri, payload, {
+      const result = await fetch(this.uri, {
+        method: 'POST',
         headers: {
-          'content-type': 'application/json',
+          'Content-Type': 'application/json',
         },
+        body: JSON.stringify(payload),
       })
-
-      return result
+      return await result?.json()
     } catch (error) {
       console.error('Failed to send email', error)
     }

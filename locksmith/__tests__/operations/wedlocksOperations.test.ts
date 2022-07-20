@@ -1,11 +1,11 @@
-import fetch from 'cross-fetch'
+import fetch from 'node-fetch'
 import { addMetadata } from '../../src/operations/userMetadataOperations'
 import {
   sendEmail,
   notifyNewKeyToWedlocks,
 } from '../../src/operations/wedlocksOperations'
 
-jest.mock('cross-fetch')
+jest.mock('node-fetch')
 
 describe('Wedlocks operations', () => {
   afterEach(() => {
