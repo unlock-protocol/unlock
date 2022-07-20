@@ -11,7 +11,8 @@ Now in its fifth year, the Ethereum Community Conference (EthCC [5]) is the larg
 
 With over 1800 attendees in 2022, EthCC is the premier European event for the Ethereum community. It is held at the historic Maison de la Mutualité, and the EthCC prides itself on a flawless experience for attendees, sponsors, speakers, and all other members of its community.
 
-/images/blog/ethcc5/maison-de-la-mutau.jpg
+
+![maison-de-la-mutau.jpg](/images/blog/ethcc5/maison-de-la-mutau.jpg)
 source: [Wikipedia](https://fr.wikipedia.org/wiki/Maison_de_la_Mutualit%C3%A9#/media/Fichier:DSC_7088-Maison-de-la-Mutau.jpg)
 
 The first impression of any conference participant is the ticketing and check-in experience. The ticket purchase experience needs to be straightforward, and the check-in process at the venue itself needs to be fast and efficient. Other conferences in the crypto space have been plagued with blocks-long queues for entrance, resulting in hours-long wait times to get into the venue for some attendees. EthCC was committed to living up to its reputation and was committed to having the smoothest check-in experience for all its stakeholders.
