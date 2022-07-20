@@ -93,7 +93,7 @@ _EthCC volunteers scanning a ticket_
 
 ![checkin4-min.png](/images/blog/ethcc5/checkin4-min.png)
 
-_Patrick is ready to check-in his next attendee_
+_Patrick is ready to check in his next attendee_
 
 ![checkin5-min.png](/images/blog/ethcc5/checkin5-min.png)
 
@@ -101,7 +101,7 @@ _Wrist band bracelets_
 
 ![checkin6-min.png](/images/blog/ethcc5/checkin6-min.png)
 
-_Wrist-band color decoder_
+_Wrist band color decoder_
 
 <div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/X8aBLbYbTos" title="Unlock Protocol EthCC Ticketing" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
