@@ -2,7 +2,7 @@
 title: Ticketing with Unlock Protocol at EthCC 2022
 subTitle: Behind the scenes on how Unlock handled NFT ticketing for the largest European Ethereum event with 1800 attendees
 authorName: Christopher Carfi
-publishDate: July 30, 2022
+publishDate: July 20, 2022
 description: Behind the scenes on how Unlock handled NFT ticketing for the largest European Ethereum event with 1800 attendees.
 image: /images/blog/ethcc5/ethcc-stage.png
 ---
