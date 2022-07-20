@@ -131,7 +131,7 @@ interface MetadataTableWrapperProps {
 interface Filter {
   key: string
   label: string
-  options?: string[]
+  options?: MemberFilter[]
 }
 
 const filters: Filter[] = [
