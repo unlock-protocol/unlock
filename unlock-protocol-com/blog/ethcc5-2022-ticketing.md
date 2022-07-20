@@ -117,7 +117,7 @@ The experience at EthCC has shown that NFT-based ticketing with Unlock Protocol 
 
 ## Addendum: How to deal with ticket scammers, scalpers, and other bad actors
 
-Like any in-demand event, EthCC attracts actors who aim to exploit systems for their own gain. Through a number of technical architecture decisions and processes, Unlock Protocol makes things difficult for scalpers for scammers. These features include:
+Like any in-demand event, EthCC attracts actors who aim to exploit systems for their own gain. Through a number of technical architecture decisions and processes, Unlock Protocol makes things difficult for scalpers and for scammers. These features include:
 
 * A strong CAPTCHA at purchase time to deter bot purchases
 * Non-transferable NFT tickets to deter aftermarket price inflation
