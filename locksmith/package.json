@@ -112,7 +112,7 @@
     "msw": "0.39.2",
     "nock": "13.2.8",
     "node-mocks-http": "1.11.0",
-    "nodemon": "2.0.16",
+    "nodemon": "2.0.19",
     "run-script-os": "1.1.6",
     "supertest": "6.2.4",
     "ts-jest": "27.1.5",
