@@ -1,4 +1,3 @@
-import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
 import { Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { unlockConfig } from '../../../../config/unlock'
@@ -13,20 +12,38 @@ const UNLOCK_BENEFITS = [
 
 const featuredUsers = [
   {
-    link: '/blog/talesofelatora',
-    title: 'Tales of Elatora',
-    illustration: '/images/marketing/home-card.png',
-    avatar: '/images/marketing/caroline.png',
-    creator: 'Caroline',
-    quote: 'Sold out mint in one day',
+    link: '#',
+    title: 'Event ticketing',
+    illustration: '/images/marketing/event.png',
+    quote:
+      'Membership NFTs for event ticketing, check-in, and proof of attendance',
   },
   {
-    link: 'https://bakery.fyi/bakery-nft/',
-    title: 'The Bakery',
-    illustration: '/images/marketing/featured/the-bakery/bakery.png',
-    avatar: '/images/marketing/featured/the-bakery/avatar.jpg',
-    creator: 'Croissant',
-    quote: 'An NFT based DAO membership',
+    link: '#',
+    title: 'Media membership',
+    illustration: '/images/marketing/newspapper.png',
+    quote:
+      'Membership access to content, video, streaming, music, podcast and other media',
+  },
+  {
+    link: '#',
+    title: 'DAO membership',
+    illustration: '/images/marketing/globe.png',
+    quote:
+      'Seasonal, time-based, or perpetual DAO memberships, community, and event access',
+  },
+  {
+    link: '#',
+    title: 'Certification credentials',
+    illustration: '/images/marketing/certificate.png',
+    quote: 'On-chain certification NFTs for skills and continuing education',
+  },
+  {
+    link: '#',
+    title: 'Digital collectibles',
+    illustration: '/images/marketing/ronin.png',
+    quote:
+      'PFP collections, art NFTs and associated utility for community members',
   },
 ]
 
@@ -80,33 +97,25 @@ export function Connect() {
       </div>
 
       <div className="flex justify-center w-full pb-6 max-w-fit lg:max-w-md md:pb-0">
-        <Link href={featuredUsers[featured].link}>
+        <Link href={featuredUsers[featured]?.link}>
           <div className="w-full bg-white glass-pane rounded-3xl ">
             <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
-              <p className="font-bold">{featuredUsers[featured].title}</p>
-              <p className="font-mono text-sm font-bold text-brand-ui-primary">
-                Powered by Unlock
+              <p className="font-bold text-xl">
+                {featuredUsers[featured]?.title}
               </p>
             </header>
             <img
               className="w-full h-96 object-cover rounded-t-xl sm:rounded-none"
-              alt={featuredUsers[featured].title}
-              src={featuredUsers[featured].illustration}
+              alt={featuredUsers[featured]?.title}
+              src={featuredUsers[featured]?.illustration}
             />
             <div className="flex items-center gap-4 px-6 py-4">
               <div>
-                <Avatar className="overflow-hidden w-10 h-10">
-                  <AvatarImage
-                    className="inline-block w-10 h-10 rounded-full"
-                    src={featuredUsers[featured].avatar}
-                    alt={featuredUsers[featured].creator}
-                  />
-                </Avatar>
-              </div>
-              <div>
-                <h4 className="font-bold">{featuredUsers[featured].creator}</h4>
+                <h4 className="font-bold block sm:hidden">
+                  {featuredUsers[featured]?.title}
+                </h4>
                 <p className="text-sm brand-gray">
-                  {featuredUsers[featured].quote}
+                  {featuredUsers[featured]?.quote}
                 </p>
               </div>
             </div>

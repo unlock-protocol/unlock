@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@gnosis.pm/safe-core-sdk": "2.0.0",
-    "@gnosis.pm/safe-ethers-lib": "^1.1.0",
+    "@gnosis.pm/safe-ethers-lib": "1.1.0",
     "@nomiclabs/hardhat-ethers": "2.0.6",
     "@nomiclabs/hardhat-etherscan": "3.0.4",
     "@nomiclabs/hardhat-truffle5": "2.0.6",
@@ -50,11 +50,11 @@
     "prompt": "1.2.2",
     "solhint": "3.3.7",
     "solidity-coverage": "0.7.21",
-    "yesno": "^0.4.0"
+    "yesno": "0.4.0"
   },
   "devDependencies": {
     "chai": "4.3.4",
-    "web3": "1.7.3"
+    "web3": "1.7.4"
   },
   "lint-staged": {
     "*.{js,ts}": [

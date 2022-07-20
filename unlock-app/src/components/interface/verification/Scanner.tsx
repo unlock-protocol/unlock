@@ -1,25 +1,11 @@
-import { Fragment, useState } from 'react'
-import { useQrReader, OnResultFunction } from 'react-qr-reader'
+import { Fragment, useState, useEffect, useRef } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
-import { getMembershipVerificationConfig } from '~/utils/verification'
+import {
+  getMembershipVerificationConfig,
+  MembershipVerificationConfig,
+} from '~/utils/verification'
 import VerificationStatus from '../VerificationStatus'
-
-interface QRCodeScannerProps {
-  onResult: OnResultFunction
-}
-
-export function QrCodeScanner({ onResult }: QRCodeScannerProps) {
-  useQrReader({
-    constraints: {
-      aspectRatio: 1,
-      facingMode: 'environment',
-    },
-    videoId: 'scanner',
-    onResult,
-    scanDelay: 250,
-  })
-  return <video className="rounded-xl" muted id="scanner" />
-}
+import QrScanner from 'qr-scanner'
 
 function getVerificatioConfigFromURL(text?: string) {
   try {
@@ -35,45 +21,65 @@ function getVerificatioConfigFromURL(text?: string) {
     })
     return config
   } catch (error) {
-    console.error(error)
     return
   }
 }
 
 export function Scanner() {
-  const [{ result }, setResult] = useState<
-    Partial<Record<'result' | 'error', string>>
-  >({
-    result: undefined,
-    error: undefined,
-  })
+  const [membershipVerificationConfig, setMembershipVerificationConfig] =
+    useState<MembershipVerificationConfig | null>(null)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
 
-  const membershipVerificationConfig = getVerificatioConfigFromURL(result)
+  useEffect(() => {
+    const videoElement = videoRef.current
+    if (!videoElement) {
+      return
+    }
+    const qrScanner = new QrScanner(
+      videoElement,
+      (result) => {
+        const config = getVerificatioConfigFromURL(result.data)
+        if (!config) {
+          return
+        }
+        setMembershipVerificationConfig(config)
+        qrScanner.stop()
+      },
+      {
+        preferredCamera: 'environment',
+        highlightScanRegion: true,
+      }
+    )
+    if (!membershipVerificationConfig) {
+      qrScanner.start().catch((error) => console.error(error))
+    }
+    return () => qrScanner.stop()
+  }, [membershipVerificationConfig])
+
   return (
     <>
-      {!membershipVerificationConfig ? (
-        <div className="grid justify-center">
-          <div className="text-center p-6">
-            <h3 className="font-bold text-lg">
-              Scan the QR code to check in Ticket
-            </h3>
+      <div className="grid w-full justify-center">
+        <div>
+          <div className="text-center mb-6">
+            <h3 className="font-medium">Scan to check in ticket</h3>
           </div>
-          <QrCodeScanner
-            onResult={(result, error) => {
-              setResult({
-                result: result?.toString(),
-                error: error?.message,
-              })
-            }}
-          />
+          {!membershipVerificationConfig && (
+            <video
+              ref={videoRef}
+              className="rounded-xl object-cover w-80 h-80 shadow-lg"
+              muted
+              id="scanner"
+            />
+          )}
         </div>
-      ) : (
+      </div>
+      {membershipVerificationConfig && (
         <Transition show appear as={Fragment}>
           <Dialog
             as="div"
             className="relative z-50"
             onClose={() => {
-              setResult({})
+              setMembershipVerificationConfig(null)
             }}
             open
           >
@@ -88,9 +94,13 @@ export function Scanner() {
               leaveTo="opacity-0 translate-y-1"
             >
               <div className="fixed p-6 inset-0 overflow-y-auto">
-                <div className="flex min-h-full items-center justify-center text-center">
+                <div className="flex min-h-full items-center justify-center">
                   <Dialog.Panel className="max-w-sm w-full">
-                    <VerificationStatus config={membershipVerificationConfig} />
+                    <VerificationStatus
+                      onClose={() => setMembershipVerificationConfig(null)}
+                      onVerified={() => setMembershipVerificationConfig(null)}
+                      config={membershipVerificationConfig}
+                    />
                   </Dialog.Panel>
                 </div>
               </div>

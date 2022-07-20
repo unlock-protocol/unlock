@@ -124,6 +124,11 @@ export class StorageService extends EventEmitter {
     return localStorage.getItem('locksmith-refresh-token')
   }
 
+  get isAuthenticated() {
+    const token = this.token
+    return Boolean(token && !isExpired(token))
+  }
+
   async getRefreshToken(refreshToken: string) {
     const tokens = await this.locksmith.refreshToken(refreshToken)
     localStorage.setItem('locksmith-access-token', tokens.accessToken)
@@ -668,16 +673,19 @@ export class StorageService extends EventEmitter {
     }
   }
 
+  async getAccessToken() {
+    const token = this.token
+    if (token && isExpired(token)) {
+      const { accessToken } = await this.getRefreshToken(this.refreshToken!)
+      return accessToken
+    }
+    return token
+  }
+
   async getEndpoint(url: string, options: RequestInit = {}, withAuth = false) {
     const endpoint = `${this.host}${url}`
     let params = options
-    let token = this.token
-
-    if (token && isExpired(token)) {
-      const { accessToken } = await this.getRefreshToken(this.refreshToken!)
-      token = accessToken
-    }
-
+    const token = await this.getAccessToken()
     if (withAuth) {
       params = {
         ...params,
@@ -736,17 +744,15 @@ export class StorageService extends EventEmitter {
     keyId: string
     network: number
   }) {
-    const url = `${this.host}/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
-    return this.getEndpoint(
-      url,
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const token = await this.getAccessToken()
+    const endpoint = `${this.host}/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
+    return fetch(endpoint, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
-      true
-    )
+    })
   }
 
   async getVerifierStatus({

@@ -206,6 +206,7 @@ export interface PaywallConfig {
   captcha?: boolean
   maxRecipients?: number
   minRecipients?: number
+  superfluid?: boolean
 }
 
 export interface RawLock {
@@ -229,6 +230,7 @@ export interface Balances {
 export enum MemberFilters {
   ALL = 'all',
   ACTIVE = 'active',
+  EXPIRED = 'expired',
 }
 
 export interface UserMetadata {
