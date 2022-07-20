@@ -68,6 +68,8 @@ The ticket scanner application developed by Unlock Labs returns one of a number 
 * The ticket has already been checked in (i.e. someone is trying to recycle a ticket)
 * The ticket is not valid (e.g. expired, inauthentic, or some other exception)
 
+![two-phones-min.png](/images/blog/ethcc5/two-phones-min.png)
+
 Attendees who presented tickets that were ok and valid were granted admittance to the venue. If there was an exception thrown during the check-in process, the attendee was referred to a help desk that had an offline list of all valid tickets and their associated attendee name and metadata for issue resolution.
 
 ## What happened when the doors opened at EthCC [5]?
