@@ -15,8 +15,6 @@ const featuredUsers = [
     link: '#',
     title: 'Event ticketing',
     illustration: '/images/marketing/event.png',
-    avatar: '',
-    creator: '',
     quote:
       'Membership NFTs for event ticketing, check-in, and proof of attendance',
   },
@@ -24,8 +22,6 @@ const featuredUsers = [
     link: '#',
     title: 'Media membership',
     illustration: '/images/marketing/newspapper.png',
-    avatar: '',
-    creator: '',
     quote:
       'Membership access to content, video, streaming, music, podcast and other media',
   },
@@ -33,8 +29,6 @@ const featuredUsers = [
     link: '#',
     title: 'DAO membership',
     illustration: '/images/marketing/globe.png',
-    avatar: '',
-    creator: '',
     quote:
       'Seasonal, time-based, or perpetual DAO memberships, community, and event access',
   },
@@ -42,16 +36,12 @@ const featuredUsers = [
     link: '#',
     title: 'Certification credentials',
     illustration: '/images/marketing/certificate.png',
-    avatar: '',
-    creator: '',
     quote: 'On-chain certification NFTs for skills and continuing education',
   },
   {
     link: '#',
     title: 'Digital collectibles',
     illustration: '/images/marketing/ronin.png',
-    avatar: '',
-    creator: '',
     quote:
       'PFP collections, art NFTs and associated utility for community members',
   },
@@ -121,8 +111,8 @@ export function Connect() {
             />
             <div className="flex items-center gap-4 px-6 py-4">
               <div>
-                <h4 className="font-bold">
-                  {featuredUsers[featured]?.creator}
+                <h4 className="font-bold block sm:hidden">
+                  {featuredUsers[featured]?.title}
                 </h4>
                 <p className="text-sm brand-gray">
                   {featuredUsers[featured]?.quote}
