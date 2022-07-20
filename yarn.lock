@@ -15495,7 +15495,7 @@ __metadata:
     react-use-clipboard: 1.0.8
     storybook-builder-vite: 0.1.23
     tailwind-merge: 1.3.0
-    tailwindcss: 3.1.4
+    tailwindcss: 3.1.6
     tsconfig-paths-webpack-plugin: 3.5.2
     tsup: 6.1.2
     typescript: 4.7.2
@@ -15797,7 +15797,7 @@ __metadata:
     showdown-highlight: 3.0.0
     styled-components: 5.3.5
     tailwind-merge: 1.3.0
-    tailwindcss: 3.0.24
+    tailwindcss: 3.1.6
     ts-jest: 27.1.5
     typescript: 4.6.4
     use-local-storage: 2.3.6
@@ -45810,7 +45810,7 @@ resolve@^1.0.0:
   languageName: node
   linkType: hard
 
-"resolve@^1.1.4, resolve@^1.1.7, resolve@^1.17.0, resolve@^1.4.0":
+"resolve@^1.1.4, resolve@^1.1.7, resolve@^1.17.0, resolve@^1.22.1, resolve@^1.4.0":
   version: 1.22.1
   resolution: "resolve@npm:1.22.1"
   dependencies:
@@ -45913,7 +45913,7 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"resolve@patch:resolve@^1.1.4#~builtin<compat/resolve>, resolve@patch:resolve@^1.1.7#~builtin<compat/resolve>, resolve@patch:resolve@^1.17.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.4.0#~builtin<compat/resolve>":
+"resolve@patch:resolve@^1.1.4#~builtin<compat/resolve>, resolve@patch:resolve@^1.1.7#~builtin<compat/resolve>, resolve@patch:resolve@^1.17.0#~builtin<compat/resolve>, resolve@patch:resolve@^1.22.1#~builtin<compat/resolve>, resolve@patch:resolve@^1.4.0#~builtin<compat/resolve>":
   version: 1.22.1
   resolution: "resolve@patch:resolve@npm%3A1.22.1#~builtin<compat/resolve>::version=1.22.1&hash=07638b"
   dependencies:
@@ -49357,9 +49357,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.1.4":
-  version: 3.1.4
-  resolution: "tailwindcss@npm:3.1.4"
+"tailwindcss@npm:3.1.6":
+  version: 3.1.6
+  resolution: "tailwindcss@npm:3.1.6"
   dependencies:
     arg: ^5.0.2
     chokidar: ^3.5.3
@@ -49382,13 +49382,13 @@ resolve@^2.0.0-next.3:
     postcss-selector-parser: ^6.0.10
     postcss-value-parser: ^4.2.0
     quick-lru: ^5.1.1
-    resolve: ^1.22.0
+    resolve: ^1.22.1
   peerDependencies:
     postcss: ^8.0.9
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 716b7d80e51c4904d845920cbb88483114ae6f14b20328b9206f49fd642bbcd390b9764fc574f85901b0377184c5d4eb94c00bcf73e280f81e772cf621d390a5
+  checksum: 90719c6fd0dcdda5c8e2882ad421048c9dd90890e0c118d12ff3ec31adba53eb2df8fed1ed203e728e5b32297e1cc207df463a6b196d37344a63fde9f67c52b6
   languageName: node
   linkType: hard
 
