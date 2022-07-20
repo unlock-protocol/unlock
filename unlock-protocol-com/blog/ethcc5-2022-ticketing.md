@@ -9,7 +9,7 @@ image: /images/blog/ethcc5/ethcc-stage.png
 
 Now in its fifth year, the Ethereum Community Conference (EthCC [5]) is the largest annual European Ethereum event focused on technology and community, consisting of three intense days of conferences, networking and learning. 
 
-With over 1800 attendees in 2022, EthCC is the premier European event for the Ethereum community. It is held at the historic Maison de la Mutualité, and the EthCC prides itself on a flawless experience for attendees, sponsors, speakers, and all other members of its community.
+With over 1800 attendees in 2022, EthCC is the premier European event for the Ethereum community. It is held at the historic Maison de la Mutualité, and EthCC prides itself on a flawless experience for attendees, sponsors, speakers, and all other members of its community.
 
 
 ![maison-de-la-mutau.jpg](/images/blog/ethcc5/maison-de-la-mutau.jpg)
