@@ -4,7 +4,7 @@ subTitle: Behind the scenes on how Unlock handled NFT ticketing for the largest 
 authorName: Christopher Carfi
 publishDate: July 30, 2022
 description: Behind the scenes on how Unlock handled NFT ticketing for the largest European Ethereum event with 1800 attendees.
-image: /images/blog/ethcc5/ethcc-stage.jpg
+image: /images/blog/ethcc5/ethcc-stage.png
 ---
 
 Now in its fifth year, the Ethereum Community Conference (EthCC [5]) is the largest annual European Ethereum event focused on technology and community, consisting of three intense days of conferences, networking and learning. 
@@ -13,7 +13,8 @@ With over 1800 attendees in 2022, EthCC is the premier European event for the Et
 
 
 ![maison-de-la-mutau.jpg](/images/blog/ethcc5/maison-de-la-mutau.jpg)
-source: [Wikipedia](https://fr.wikipedia.org/wiki/Maison_de_la_Mutualit%C3%A9#/media/Fichier:DSC_7088-Maison-de-la-Mutau.jpg)
+
+_source: [Wikipedia](https://fr.wikipedia.org/wiki/Maison_de_la_Mutualit%C3%A9#/media/Fichier:DSC_7088-Maison-de-la-Mutau.jpg)_
 
 The first impression of any conference participant is the ticketing and check-in experience. The ticket purchase experience needs to be straightforward, and the check-in process at the venue itself needs to be fast and efficient. Other conferences in the crypto space have been plagued with blocks-long queues for entrance, resulting in hours-long wait times to get into the venue for some attendees. EthCC was committed to living up to its reputation and was committed to having the smoothest check-in experience for all its stakeholders.
 
@@ -78,31 +79,41 @@ Once the doors opened at EthCC, the check-in process went smoothly. Volunteer ex
 
 On average, the check-in process — including ticket scanning and verification, handing the wrist band to the attendee, and giving them their sponsor swag bag — took less than fifteen seconds (and sometimes fewer than seven seconds) per attendee. All the attendees who showed up (over 1000!) with valid tickets were checked in using the application in the first hour by the volunteers, and no attendee waited outside the venue for more than a few moments before being directed to a check-in station.
 
+![checkin1-min.png](/images/blog/ethcc5/checkin1-min.png)
 
-The doors are open
+_The doors are open_
 
+![checkin2-min.png](/images/blog/ethcc5/checkin2-min.png)
 
-EthCC volunteers checking-in attendees
+_EthCC volunteers checking-in attendees_
 
+![checkin3-min.png](/images/blog/ethcc5/checkin3-min.png)
 
-EthCC volunteers scanning a ticket
+_EthCC volunteers scanning a ticket_
 
+![checkin4-min.png](/images/blog/ethcc5/checkin4-min.png)
 
-Patrick is ready to check-in his next attendee
+_Patrick is ready to check-in his next attendee_
 
+![checkin5-min.png](/images/blog/ethcc5/checkin5-min.png)
 
-Wrist band bracelets
+_Wrist band bracelets_
 
+![checkin6-min.png](/images/blog/ethcc5/checkin6-min.png)
 
-Wrist-band color decoder
+_Wrist-band color decoder_
 
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/X8aBLbYbTos" title="Unlock Protocol EthCC Ticketing" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
-The live check-in experience (click link to play video)
+_The live check-in experience_
 
 
 ## Conclusion: NFT ticketing with Unlock Protocol is ready for events with thousands of attendees
 
 The experience at EthCC has shown that NFT-based ticketing with Unlock Protocol is ready for real-world use. From purchase through check-in, the process and technology work at scale to support large numbers of attendees and support concurrent use by multiple volunteers. 
+
+![ethcc-stairway.png](/images/blog/ethcc5/ethcc-stairway.png)
+
 
 ## Addendum: How to deal with ticket scammers, scalpers, and other bad actors
 
