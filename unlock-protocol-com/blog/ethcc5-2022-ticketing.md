@@ -50,6 +50,8 @@ Since the NFT tickets were delivered directly to attendee’s crypto wallets, at
 
 Even with the mechanisms natively included in Unlock Protocol, EthCC wanted an additional simple, familiar way for attendees to access their tickets: email. To address this need, Unlock Labs developed a process to email a unique QR code ticket to every attendee prior to the event. This QR code represents a link to the NFT and scanning the QR code decodes the ticket metadata, including the ticket type, ticket number, and other identifying information. Using a transactional email system, QR code tickets and check-in instructions were sent to all attendees prior to the event. Attendees would then simply need to show the QR code attached to a familiar email experience to gain entrance to the venue.
 
+![ticket-qr-code.png](/images/blog/ethcc5/ticket-qr-code.png)
+
 ## Preparing for check-in at the event
 
 With over 1800 attendees registered for the event, the EthCC and Unlock Labs teams knew the check-in process at the venue itself needed to be simple, seamless, and incredibly efficient. Even a few seconds delay in checking in each attendee could cascade and potentially result in hours of overall delay and inconvenience for attendees waiting in line to check in to the venue. (For example, a back-of-the-envelope calculation of a one minute check-in time per attendee for 1800 attendees would be 1800 minutes, or approximately 30 hours, to check in all attendees. This would be unacceptable, obviously.)
