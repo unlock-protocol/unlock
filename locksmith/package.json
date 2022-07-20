@@ -60,7 +60,7 @@
     "express-jwt": "7.5.2",
     "express-list-endpoints": "6.0.0",
     "express-winston": "4.2.0",
-    "graphql": "15.8.0",
+    "graphql": "16.5.0",
     "graphql-tag": "2.12.6",
     "html-template-tag": "4.0.1",
     "isomorphic-fetch": "3.0.0",
