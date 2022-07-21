@@ -227,11 +227,7 @@ export interface Balances {
   [contractAddress: string]: string
 }
 
-export enum MemberFilters {
-  ALL = 'all',
-  ACTIVE = 'active',
-  EXPIRED = 'expired',
-}
+export type MemberFilter = 'all' | 'active' | 'expired'
 
 export interface UserMetadata {
   publicData?: {

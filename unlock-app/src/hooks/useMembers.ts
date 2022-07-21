@@ -3,7 +3,7 @@ import { expirationAsDate } from '../utils/durations'
 import { useWalletService } from '../utils/withWalletService'
 import { useStorageService } from '../utils/withStorageService'
 import { generateColumns } from '../utils/metadataMunging'
-import { MemberFilters } from '../unlockTypes'
+import { MemberFilter } from '../unlockTypes'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { GraphServiceContext } from '../utils/withGraphService'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
@@ -79,7 +79,7 @@ export const buildMembersWithMetadata = (
 export const useMembers = ({
   viewer,
   lockAddresses = [],
-  expiration = MemberFilters.ACTIVE,
+  expiration = 'active',
   page = 0,
   query = '',
   filterKey = '',
@@ -89,7 +89,7 @@ export const useMembers = ({
   page: number
   query: string
   filterKey: string
-  expiration?: MemberFilters
+  expiration?: MemberFilter
 }) => {
   const { network, account } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
