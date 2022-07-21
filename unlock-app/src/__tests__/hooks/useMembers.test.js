@@ -5,7 +5,6 @@ import keyHolderQuery from '../../queries/keyholdersByLock'
 import { WalletServiceContext } from '../../utils/withWalletService'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { StorageServiceContext } from '../../utils/withStorageService'
-import { MemberFilters } from '../../unlockTypes'
 
 import useMembers, { buildMembersWithMetadata } from '../../hooks/useMembers'
 import generateKeyTypedData from '../../structured_data/keyMetadataTypedData'
