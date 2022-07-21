@@ -56,7 +56,7 @@ const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
 
   const showTotal = total > 0
 
-  // is there is a missmatch beetween total and active, we have some expired keys
+  // if there is a missmatch beetween total and active, we have some expired keys
   const showActiveTotalRatio = active !== total
 
   return (
