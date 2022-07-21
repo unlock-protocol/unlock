@@ -55,7 +55,10 @@ const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
   const { active, total } = membersCount
 
   const showTotal = total > 0
+
+  // is there is a missmatch beetween total and active, we have some expired keys
   const showActiveTotalRatio = active !== total
+
   return (
     <div className="flex divide-x-2">
       {showTotal && (
