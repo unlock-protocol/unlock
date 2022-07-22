@@ -45,8 +45,8 @@ REVIEWER=${REVIEWERS[$REVIEWER_INDEX]}
 
 echo '["'$COMMIT_MESSAGE'","'$BRANCH'","'$REVIEWER'"]'
 
-# # Checking master out at COMMIT_TO_DEPLOY
-# git checkout -b $BRANCH $COMMIT_TO_DEPLOY
+# Checking master out at COMMIT_TO_DEPLOY
+git checkout -b $BRANCH $COMMIT_TO_DEPLOY
 
 # Diffing versus latest production
 LATEST_PRODUCTION=`git rev-parse origin/production`
