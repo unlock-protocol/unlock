@@ -818,8 +818,10 @@ export class StorageService extends EventEmitter {
     const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
 
     const formattedMetadata = {
-      protected: {
-        ...metadata,
+      metadata: {
+        protected: {
+          ...metadata,
+        },
       },
     }
     const opts = {
