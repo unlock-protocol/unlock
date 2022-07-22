@@ -45,19 +45,21 @@ function downloadAsCSV(columns: any, metadata: any) {
 }
 
 interface MemberCountProps {
-  membersCount: {
+  membersCount?: {
     active: number
     total: number
   }
 }
 
 const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
-  const { active, total } = membersCount ?? {}
+  const { active = 0, total = 0 } = membersCount ?? {}
 
   const showTotal = total > 0
 
   // if there is a missmatch beetween total and active, we have some expired keys
   const showActiveTotalRatio = active !== total
+
+  if (active === 0 && total === 0) return null
 
   return (
     <div className="flex divide-x-2">
