@@ -15422,6 +15422,8 @@ __metadata:
     copy-webpack-plugin: 11.0.0
     dotenv: 16.0.1
     eslint: 8.16.0
+    eslint-plugin-jest: ^26.6.0
+    eslint-plugin-mocha: ^10.1.0
     lint-staged: 13.0.3
     next: 12.1.6
     nodemon: 2.0.19
@@ -15738,6 +15740,8 @@ __metadata:
     deep-object-diff: 1.1.7
     dotenv: 16.0.1
     eslint: 8.16.0
+    eslint-plugin-jest: ^26.6.0
+    eslint-plugin-mocha: ^10.1.0
     ethers: 5.6.9
     file-saver: 2.0.5
     graphql: 15.8.0
@@ -15892,6 +15896,8 @@ __metadata:
     embla-carousel-react: 6.2.0
     eslint: 8.20.0
     eslint-config-next: 12.2.2
+    eslint-plugin-jest: ^26.6.0
+    eslint-plugin-mocha: ^10.1.0
     feed: 4.2.2
     gray-matter: 4.0.3
     jest: 27.5.1
@@ -26426,6 +26432,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-jest@npm:^26.6.0":
+  version: 26.6.0
+  resolution: "eslint-plugin-jest@npm:26.6.0"
+  dependencies:
+    "@typescript-eslint/utils": ^5.10.0
+  peerDependencies:
+    "@typescript-eslint/eslint-plugin": ^5.0.0
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    "@typescript-eslint/eslint-plugin":
+      optional: true
+    jest:
+      optional: true
+  checksum: 5dd60820d5618175e7203b077788476a6f697316b53d77c4bb7037b32073f3d5d539a72dec910eb3f8eedc97c3b28600ba35c5d3bf8c687ade765bb2d0dc77d2
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-jsx-a11y@npm:^6.5.1":
   version: 6.5.1
   resolution: "eslint-plugin-jsx-a11y@npm:6.5.1"
@@ -26457,6 +26480,18 @@ __metadata:
   peerDependencies:
     eslint: ">=7.0.0"
   checksum: b49f9f64056db355ca43d4fa7d68047434c10c2b1e2ee41eb14f69e0acf60fa3c57c300900cc67fc2e84dbf134792de04553ce6e792037b911e3606512c6431f
+  languageName: node
+  linkType: hard
+
+"eslint-plugin-mocha@npm:^10.1.0":
+  version: 10.1.0
+  resolution: "eslint-plugin-mocha@npm:10.1.0"
+  dependencies:
+    eslint-utils: ^3.0.0
+    rambda: ^7.1.0
+  peerDependencies:
+    eslint: ">=7.0.0"
+  checksum: 67c063ba190fe8ab3186baaf800a375e9f16a17f69deaac2ea0d1825f6e4260f9a56bd510ceb2ffbe6644d7090beda0efbd2ab7824e4852ce2abee53a1086179
   languageName: node
   linkType: hard
 
