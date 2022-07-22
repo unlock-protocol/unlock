@@ -57,6 +57,8 @@
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.6",
     "@openzeppelin/hardhat-upgrades": "1.19.0",
-    "@unlock-protocol/contracts": "0.0.4"
+    "@unlock-protocol/contracts": "0.0.4",
+    "eslint-plugin-jest": "26.6.0",
+    "eslint-plugin-mocha": "10.1.0"
   }
 }

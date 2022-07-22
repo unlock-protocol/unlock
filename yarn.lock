@@ -15275,6 +15275,8 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     chai: 4.3.4
     eslint: 8.18.0
+    eslint-plugin-jest: 26.6.0
+    eslint-plugin-mocha: 10.1.0
     hardhat: 2.9.9
     mocha: 10.0.0
     prettier: 2.7.1
