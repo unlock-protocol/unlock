@@ -15451,7 +15451,7 @@ __metadata:
     babel-plugin-styled-components: 2.0.7
     css-loader: 6.7.1
     dotenv: 16.0.1
-    eslint: 8.18.0
+    eslint: 8.20.0
     jest: 27.5.1
     jest-fetch-mock: 3.0.3
     node-fetch: 2.6.7
