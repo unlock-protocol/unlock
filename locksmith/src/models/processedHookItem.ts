@@ -1,7 +1,14 @@
 import { Table, Model, Column, Validate } from 'sequelize-typescript'
 
+interface ProcessedHookItemAttributes {
+  id: number
+  network: number
+  type: 'lock' | 'key'
+  objectId: string
+}
+
 @Table({ tableName: 'ProcessedHookItems', timestamps: true })
-export class ProcessedHookItem extends Model<ProcessedHookItem> {
+export class ProcessedHookItem extends Model<ProcessedHookItemAttributes> {
   @Column({ primaryKey: true, autoIncrement: true })
   id!: number
 

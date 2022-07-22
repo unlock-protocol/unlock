@@ -1,8 +1,15 @@
 import { Table, Column, Model, BelongsTo } from 'sequelize-typescript'
-import { User } from './user'
+import { User, UserAttributes } from './user'
+
+interface UserReferenceAttributes {
+  emailAddress: string
+  User: UserAttributes
+  publicKey?: string
+  stripe_customer_id?: string | null
+}
 
 @Table({ tableName: 'UserReferences', timestamps: true })
-export class UserReference extends Model<UserReference> {
+export class UserReference extends Model<UserReferenceAttributes> {
   @Column
   emailAddress!: string
 

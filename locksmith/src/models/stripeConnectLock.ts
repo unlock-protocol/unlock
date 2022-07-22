@@ -1,7 +1,14 @@
 import { Table, Column, Model } from 'sequelize-typescript'
 
+interface StripeConnectLockAttributes {
+  lock: string
+  chain: number
+  manager: string
+  stripeAccount: string
+}
+
 @Table({ tableName: 'StripeConnectLocks', timestamps: true })
-export class StripeConnectLock extends Model<StripeConnectLock> {
+export class StripeConnectLock extends Model<StripeConnectLockAttributes> {
   @Column
   lock!: string
 

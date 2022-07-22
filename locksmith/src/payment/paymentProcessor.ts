@@ -347,8 +347,8 @@ export class PaymentProcessor {
       userAddress: paymentIntent.metadata.purchaser,
       recipients: paymentIntent.metadata.recipient.split(','),
       lock: paymentIntent.metadata.lock,
-      stripeCustomerId: paymentIntent.customer, // TODO: consider checking the customer id under Unlock's stripe account?
-      connectedCustomer: paymentIntent.customer,
+      stripeCustomerId: paymentIntent.customer?.toString(), // TODO: consider checking the customer id under Unlock's stripe account?
+      connectedCustomer: paymentIntent.customer?.toString(),
       totalPriceInCents: paymentIntent.amount,
       unlockServiceFee: paymentIntent.application_fee_amount,
       stripeCharge: paymentIntent.id,

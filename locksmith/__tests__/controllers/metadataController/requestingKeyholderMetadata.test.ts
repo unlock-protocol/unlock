@@ -127,7 +127,7 @@ describe('Metadata Controller', () => {
         )
 
         const response = await request(app)
-          .get(`/api/key/${lockAddress}/keyHolderMetadata`)
+          .get(`/api/key/${lockAddress}/keyHolderMetadata?chain=${chain}`)
           .set('Authorization', `Bearer ${Base64.encode(sig)}`)
           .query({ data: encodeURIComponent(JSON.stringify(typedData)) })
           .set('Accept', 'json')

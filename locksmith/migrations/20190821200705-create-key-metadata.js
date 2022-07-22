@@ -27,7 +27,7 @@ module.exports = {
       {
         uniqueKeys: {
           id_unique: {
-            fields: ['id', 'address'],
+            fields: ['id'],
           },
         },
       }

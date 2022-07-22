@@ -60,7 +60,7 @@ describe("updating a user's email address", () => {
       const userCreationDetails = {
         emailAddress,
         publicKey: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
-        passwordEncryptedPrivateKey: '{"data" : "encryptedPassword"}',
+        passwordEncryptedPrivateKey: { data: 'encryptedPassword' },
       }
       await UserOperations.createUser(userCreationDetails)
 
