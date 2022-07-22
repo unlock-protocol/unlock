@@ -6,6 +6,8 @@ import { ToastHelper } from '../components/helpers/toast.helper'
 import keyholdersByKeyIdQuery from '../queries/keyholdersByKeyId'
 import { getValidNumber } from '~/utils/strings'
 import { MemberFilter } from '~/unlockTypes'
+import keysCount from '~/queries/keysCount'
+
 export class GraphService {
   public client: any
 
@@ -84,6 +86,20 @@ export class GraphService {
         skip,
         owner,
         keyId,
+      },
+    })
+    return result
+  }
+
+  keysCount = async (locks: string[]) => {
+    const query = keysCount()
+    const timestamp = parseInt(`${new Date().getTime() / 1000}`)
+
+    const result = await this.client.query({
+      query,
+      variables: {
+        addresses: locks,
+        timestamp,
       },
     })
     return result

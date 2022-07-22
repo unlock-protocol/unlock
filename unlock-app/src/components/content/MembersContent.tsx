@@ -161,15 +161,22 @@ const MetadataTableWrapper = ({
   const [expiration, setExpiration] = useState<MemberFilter>('active')
   const queryValue = useDebounce<string>(query)
 
-  const { loading, list, columns, hasNextPage, isLockManager, loadMembers } =
-    useMembers({
-      viewer: account!,
-      lockAddresses,
-      expiration,
-      page: currentPage,
-      query: queryValue,
-      filterKey,
-    })
+  const {
+    loading,
+    list,
+    columns,
+    hasNextPage,
+    isLockManager,
+    loadMembers,
+    membersCount,
+  } = useMembers({
+    viewer: account!,
+    lockAddresses,
+    expiration,
+    page: currentPage,
+    query: queryValue,
+    filterKey,
+  })
 
   const search = (e: React.ChangeEvent<HTMLInputElement>) => {
     const search = e?.target?.value ?? ''
@@ -262,6 +269,7 @@ const MetadataTableWrapper = ({
         lockAddresses={lockAddresses}
         loading={loading}
         loadMembers={loadMembers}
+        membersCount={membersCount}
       />
     </>
   )

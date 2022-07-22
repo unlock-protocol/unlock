@@ -28,6 +28,7 @@ interface MetadataTableProps {
   isLockManager?: boolean
   lockAddresses?: string[]
   loadMembers?: () => void
+  membersCount?: MemberCountProps['membersCount']
 }
 
 /**
@@ -43,11 +44,43 @@ function downloadAsCSV(columns: any, metadata: any) {
   FileSaver.saveAs(blob, 'members.csv')
 }
 
+interface MemberCountProps {
+  membersCount?: {
+    active: number
+    total: number
+  }
+}
+
+const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
+  const { active = 0, total = 0 } = membersCount ?? {}
+
+  const showTotal = total > 0
+
+  // if there is a missmatch beetween total and active, we have some expired keys
+  const showActiveTotalRatio = active !== total
+
+  if (active === 0 && total === 0) return null
+
+  return (
+    <div className="flex divide-x-2">
+      {showTotal && (
+        <div className="font-semibold text-lg px-1">Total members: {total}</div>
+      )}
+      {showActiveTotalRatio && (
+        <div className="font-semibold text-lg px-1">
+          Active members: {active}/{total}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export const MetadataTable: React.FC<MetadataTableProps> = ({
   columns,
   metadata,
   filter,
   loadMembers,
+  membersCount,
   loading = false,
   isLockManager,
   lockAddresses = [],
@@ -123,23 +156,26 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         lockAddresses={lockAddresses}
       />
 
-      <div className="flex justify-end gap-[1rem]">
-        <Button
-          className="flex-initial"
-          size="small"
-          onClick={() => {
-            downloadAsCSV(columns, metadata)
-          }}
-        >
-          Export as CSV
-        </Button>
-        {isLockManager && (
-          <div className="flex justify-end">
-            <Button size="small" onClick={onExpandAllMetadata}>
-              Show all metadata
-            </Button>
-          </div>
-        )}
+      <div className="flex items-center gap-[1rem]">
+        <TotalMemberCount membersCount={membersCount} />
+        <div className="flex ml-auto gap-[1rem]">
+          <Button
+            className="flex-initial"
+            size="small"
+            onClick={() => {
+              downloadAsCSV(columns, metadata)
+            }}
+          >
+            Export as CSV
+          </Button>
+          {isLockManager && (
+            <div className="flex justify-end">
+              <Button size="small" onClick={onExpandAllMetadata}>
+                Show all metadata
+              </Button>
+            </div>
+          )}
+        </div>
       </div>
 
       {metadata?.map((data: any) => {
