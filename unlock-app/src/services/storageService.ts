@@ -816,7 +816,7 @@ export class StorageService extends EventEmitter {
     metadata: any
   }) {
     const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
-
+    const token = await this.getAccessToken()
     const formattedMetadata = {
       metadata: {
         protected: {
@@ -824,11 +824,13 @@ export class StorageService extends EventEmitter {
         },
       },
     }
+
     const opts = {
-      method: 'POST',
+      method: 'PUT',
       body: JSON.stringify(formattedMetadata),
       headers: {
         'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     }
     const response = await fetch(url, opts)

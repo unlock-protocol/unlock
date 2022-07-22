@@ -145,9 +145,6 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     setEmailSent(true)
   }
 
-  const onAddEmail = () => {}
-
-  const onUpdateEmail = () => {}
   const hasEmailMetadata = extraDataItems
     .map(([key]) => key.toLowerCase())
     .includes('email')
@@ -219,7 +216,11 @@ export const MemberCard: React.FC<MemberCardProps> = ({
             <span className={styles.description}>Metadata</span>
             <div className="flex gap-[1rem] my-3">
               {!isCheckedIn && (
-                <Button onClick={onMarkAsCheckIn} size="tiny">
+                <Button
+                  onClick={onMarkAsCheckIn}
+                  variant="outlined-primary"
+                  size="tiny"
+                >
                   Mark as Checked-in
                 </Button>
               )}
@@ -227,18 +228,26 @@ export const MemberCard: React.FC<MemberCardProps> = ({
                 <>
                   <Button
                     size="tiny"
-                    variant="primary"
+                    variant="outlined-primary"
                     onClick={onSendQrCode}
                     disabled={emailSent}
                   >
                     Send QR-code by email
                   </Button>
-                  <Button size="tiny" onClick={onUpdateEmail}>
-                    Update email
+                  <Button
+                    size="tiny"
+                    onClick={() => setAddEmailModalOpen(true)}
+                    variant="outlined-primary"
+                  >
+                    Edit email
                   </Button>
                 </>
               ) : (
-                <Button size="tiny" onClick={() => setAddEmailModalOpen(true)}>
+                <Button
+                  variant="outlined-primary"
+                  size="tiny"
+                  onClick={() => setAddEmailModalOpen(true)}
+                >
                   Add email
                 </Button>
               )}
