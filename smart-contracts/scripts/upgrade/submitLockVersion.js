@@ -1,6 +1,7 @@
 /**
- * Send the txs to the multisig to add and set the new Lock template
- * to the Unlock contract.
+ * Deploy latest PublicLock template and send the txs to the multisig
+ * to add/set it to the Unlock contract.
+ * If no existing address is specified, it will deploy the latest public lock.
  *
  * NB: You can test on mainnet (without the template being deployed) with:
  *
@@ -11,6 +12,7 @@
 const { ethers } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
 const submitTx = require('../multisig/submitTx')
+const deployTemplate = require('../deployments/template')
 
 const {
   addSomeETH,
@@ -26,8 +28,10 @@ async function main({ publicLockAddress }) {
     : await ethers.provider.getNetwork()
 
   const { unlockAddress, multisig } = networks[chainId]
-  if (!publicLockAddress && !process.env.RUN_MAINNET_FORK) {
-    throw new Error('Missing public lock address')
+
+  // if not address is specified, deploy the latest public lock
+  if (!publicLockAddress) {
+    publicLockAddress = await deployTemplate({})
   }
 
   // get multisig signer
@@ -35,18 +39,12 @@ async function main({ publicLockAddress }) {
     ? [await getMultisigSigner(multisig)]
     : await ethers.getSigners()
 
-  let publicLock
   if (process.env.RUN_MAINNET_FORK) {
-    // deploy latest public lock
-    const PublicLock = await ethers.getContractFactory('PublicLock')
-    publicLock = await PublicLock.deploy()
-    await publicLock.deployed()
-
     // some ETH for the issuer
     await addSomeETH(signer.address)
-  } else {
-    publicLock = await ethers.getContractAt('PublicLock', publicLockAddress)
   }
+
+  const publicLock = await ethers.getContractAt('PublicLock', publicLockAddress)
   const version = await publicLock.publicLockVersion()
 
   console.log(`Setting PublicLock v${version} on network ${chainId}`)
@@ -72,11 +70,11 @@ async function main({ publicLockAddress }) {
     return txId1
   }
 
-  // send txsx
+  // send txs to multisig
   const txId1 = await submit('addLockTemplate', [publicLock.address, version])
   const txId2 = await submit('setLockTemplate', [publicLock.address])
 
-  // validate multisig txs and test
+  // check if multisig txs are valid
   if (process.env.RUN_MAINNET_FORK) {
     console.log(`Signing multisigs: ${txId1} ${txId2}`)
     await confirmMultisigTx({
@@ -95,7 +93,7 @@ async function main({ publicLockAddress }) {
 
 // execute as standalone
 if (require.main === module) {
-  main({})
+  main()
     .then(() => process.exit(0))
     .catch((error) => {
       console.error(error)
