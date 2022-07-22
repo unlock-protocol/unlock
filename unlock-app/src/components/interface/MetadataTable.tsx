@@ -28,7 +28,7 @@ interface MetadataTableProps {
   isLockManager?: boolean
   lockAddresses?: string[]
   loadMembers?: () => void
-  membersCount: MemberCountProps['membersCount']
+  membersCount?: MemberCountProps['membersCount']
 }
 
 /**
@@ -52,7 +52,7 @@ interface MemberCountProps {
 }
 
 const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
-  const { active, total } = membersCount
+  const { active, total } = membersCount ?? {}
 
   const showTotal = total > 0
 
