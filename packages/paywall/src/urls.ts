@@ -2,10 +2,11 @@
 let _unlockAppUrl: string
 let _locksmithUri: string
 const baseUrl =
-  document?.currentScript?.getAttribute('src') || 'paywall.unlock-protocol.com' // assume prod
+  document?.currentScript?.getAttribute('src') ||
+  'https://paywall.unlock-protocol.com' // assume prod
 
 const endpoint = new URL(baseUrl)
-const alpha = endpoint.searchParams.get('alpha')
+const alpha = !!endpoint.searchParams.get('alpha')
 
 if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
   if (alpha) {
