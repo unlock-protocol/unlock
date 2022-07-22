@@ -95,6 +95,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
     setValue,
     getValues,
     trigger,
+    handleSubmit,
   } = useForm({
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
@@ -215,7 +216,10 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
   const hasRecipients = recipientItems?.length > 0
 
   return (
-    <form className="w-full max-w-screen-lg">
+    <form
+      className="w-full max-w-screen-lg"
+      onSubmit={handleSubmit(addRecipient)}
+    >
       <div className="flex flex-col gap-3">
         <div className="w-full">
           <Input
