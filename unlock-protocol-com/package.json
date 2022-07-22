@@ -27,7 +27,7 @@
     "babel-preset-react-app": "10.0.1",
     "dotenv": "16.0.1",
     "embla-carousel-react": "6.2.0",
-    "eslint": "8.10.0",
+    "eslint": "8.20.0",
     "jest": "27.5.1",
     "jest-styled-components": "7.0.8",
     "lint-staged": "13.0.3",
