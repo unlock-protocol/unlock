@@ -7,6 +7,7 @@ export const celo: NetworkConfig = {
   multisig: '0x0D3e4e018ba92576dc021a1af0D7683122FA3A4c',
   id: 42220,
   name: 'Celo (Testnet)',
+  description: 'Celo is a EVM compatible proof-of-stake blockchain designed for mobile with the ability to pay gas with tokens or stablecoins.',
   blockTime: 1000,
   subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo',
   explorer: {
