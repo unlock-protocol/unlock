@@ -7,8 +7,6 @@ import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 import {
-  Input,
-  Label,
   Select,
   TransactionPendingButton,
 } from '../../interface/checkout/FormStyles'
@@ -18,7 +16,7 @@ import { useMultipleRecipient } from '../../../hooks/useMultipleRecipient'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { useStorageService } from '~/utils/withStorageService'
 import { formResultToMetadata } from '~/utils/userMetadata'
-import { Button } from '@unlock-protocol/ui'
+import { Button, Input } from '@unlock-protocol/ui'
 
 interface GrantKeyFormProps {
   lock: Lock
@@ -218,11 +216,10 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
 
   return (
     <form className="w-full max-w-screen-lg">
-      <div className="flex flex-wrap mb-6 -mx-3">
-        <div className="w-full px-3">
-          <Label htmlFor="grid-recipient">Recipient</Label>
+      <div className="flex flex-col gap-3">
+        <div className="w-full">
           <Input
-            id="grid-recipient"
+            label="Recipient"
             type="text"
             placeholder="0x..."
             {...register('recipient', {
@@ -232,18 +229,14 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             })}
           />
           {errors.recipient && (
-            <p className="text-xs -mt-4 text-[#f24c15]">
+            <p className="text-xs text-[#f24c15]">
               Please make sure you enter a valid Ethereum address
             </p>
           )}
         </div>
-      </div>
-
-      <div className="flex flex-wrap mb-6 -mx-3">
-        <div className="w-full px-3">
-          <Label htmlFor="grid-recipient">Email</Label>
+        <div className="w-full">
           <Input
-            id="grid-recipient"
+            label="Email"
             type="email"
             placeholder="email@example.com"
             {...register('email', {
@@ -252,23 +245,19 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             })}
           />
           {errors.recipient && (
-            <p className="text-xs -mt-4 text-[#f24c15]">
+            <p className="text-xs text-[#f24c15]">
               Please make sure you enter a valid Ethereum address
             </p>
           )}
         </div>
-      </div>
-
-      <div className="flex flex-wrap mb-6 -mx-3">
-        <div className="w-full px-3">
-          <Label htmlFor="grid-expiration">Expiration</Label>
+        <div className="w-full">
           <Input
+            label="Expiration"
             disabled={expirationInputDisabled}
-            id="grid-expiration"
             type="datetime-local"
             {...register('expiration')}
           />
-          <div className="-mt-3">
+          <div>
             <label htmlFor="never-expires">
               Never Expires
               <input
@@ -288,13 +277,9 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             This is pre-filled based on the default duration of your lock.
           </p>
         </div>
-      </div>
-
-      <div className="flex flex-wrap mb-6 -mx-3">
-        <div className="w-full px-3">
-          <Label htmlFor="grid-key-manager">Key Manager</Label>
+        <div className="w-full">
           <Input
-            id="grid-key-manager"
+            label="Key Manager"
             type="text"
             placeholder="0x..."
             {...register('keyManager', {
@@ -303,13 +288,13 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             })}
           />
           {errors.keyManager && (
-            <p className="text-xs -mt-4 text-[#f24c15]">
+            <p className="text-xs text-[#f24c15]">
               This Ethereum address is not valid.
             </p>
           )}
 
           {!errors.keyManager && (
-            <p className="-mt-4 text-xs italic">
+            <p className="text-xs italic">
               If set the key manager has the transfer and cancellation rights
               for the recipient&apos;s key. If you leave empty, your address
               will be set as manager.
@@ -319,8 +304,8 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
       </div>
 
       {!loading && (
-        <div className="flex flex-col gap-2">
-          <Button className="w-100" onClick={addRecipient} disabled={!isDirty}>
+        <div className="flex flex-col gap-2 mt-4">
+          <Button className="w-100" type="submit" disabled={!isDirty}>
             Add recipient
           </Button>
           {hasRecipients && (
@@ -416,7 +401,9 @@ export const GrantKeysDrawer = ({
 
       <div className="flex flex-wrap mb-6 -mx-3">
         <div className="w-full px-3">
-          <Label htmlFor="grid-lock">Lock</Label>
+          <label className="px-1 text-base" htmlFor="grid-lock">
+            Lock
+          </label>
 
           <Select id="grid-lock" onChange={handleLockChanged}>
             {Object.keys(locks).map((address) => (
@@ -431,7 +418,7 @@ export const GrantKeysDrawer = ({
       {lock?.canGrant && <GrantKeyForm onGranted={handleGranted} lock={lock} />}
 
       {!lock?.canGrant && (
-        <p className="text-xs -mt-4 text-[#f24c15]">
+        <p className="text-xs text-[#f24c15]">
           Please check that you are a lock manager or key granter for this lock.
         </p>
       )}
