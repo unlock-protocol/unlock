@@ -53,6 +53,7 @@
     "jest": "27.5.1",
     "jest-canvas-mock": "2.4.0",
     "jest-fetch-mock": "3.0.3",
+    "jest-mock-axios": "4.6.1",
     "jest-styled-components": "7.0.8",
     "js-base64": "3.7.2",
     "lottie-react": "2.2.1",

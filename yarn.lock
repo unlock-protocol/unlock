@@ -15741,6 +15741,7 @@ __metadata:
     jest: 27.5.1
     jest-canvas-mock: 2.4.0
     jest-fetch-mock: 3.0.3
+    jest-mock-axios: ^4.6.1
     jest-styled-components: 7.0.8
     js-base64: 3.7.2
     lottie-react: 2.2.1
@@ -34597,6 +34598,17 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"jest-mock-axios@npm:^4.6.1":
+  version: 4.6.1
+  resolution: "jest-mock-axios@npm:4.6.1"
+  dependencies:
+    "@jest/globals": ^27.5.1
+    jest: ^27.5.1
+    synchronous-promise: ^2.0.15
+  checksum: b9ba93966cc66a320743e40dadd3481680fe9895647e76dbbcf183aa5da3aa6164ce5f635190ad5dc2a480bac1acf44ca9d36d56ab6e769b1a512402f5220ff0
+  languageName: node
+  linkType: hard
+
 "jest-mock@npm:^27.4.2":
   version: 27.4.2
   resolution: "jest-mock@npm:27.4.2"
@@ -35283,7 +35295,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jest@npm:27.5.1":
+"jest@npm:27.5.1, jest@npm:^27.5.1":
   version: 27.5.1
   resolution: "jest@npm:27.5.1"
   dependencies:

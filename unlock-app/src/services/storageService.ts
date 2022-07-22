@@ -656,6 +656,7 @@ export class StorageService extends EventEmitter {
   async getKeyMetadata(
     lockAddress: string,
     keyId: string,
+    // @ts-ignore
     payload: any,
     signature: string,
     network: number
