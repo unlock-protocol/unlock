@@ -13,10 +13,10 @@ export const celo: NetworkConfig = {
     name: 'Goerli (Testnet)',
     urls: {
       address: (address) =>
-        `https://explorer.celo.org/address/${address}`,
-      transaction: (hash) => `https://explorer.celo.org/tx/${hash}`,
+        `https://celoscan.io/address/${address}`,
+      transaction: (hash) => `https://celoscan.io/tx/${hash}`,
       token: (address, holder) =>
-        `https://explorer.celo.org/token/${address}?a=${holder}`,
+        `https://celoscan.io/token/${address}?a=${holder}`,
     },
   },
   opensea: {
