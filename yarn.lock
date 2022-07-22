@@ -15419,8 +15419,8 @@ __metadata:
     copy-webpack-plugin: 11.0.0
     dotenv: 16.0.1
     eslint: 8.16.0
-    eslint-plugin-jest: ^26.6.0
-    eslint-plugin-mocha: ^10.1.0
+    eslint-plugin-jest: 26.6.0
+    eslint-plugin-mocha: 10.1.0
     lint-staged: 13.0.3
     next: 12.1.6
     nodemon: 2.0.19
@@ -15738,8 +15738,8 @@ __metadata:
     deep-object-diff: 1.1.7
     dotenv: 16.0.1
     eslint: 8.16.0
-    eslint-plugin-jest: ^26.6.0
-    eslint-plugin-mocha: ^10.1.0
+    eslint-plugin-jest: 26.6.0
+    eslint-plugin-mocha: 10.1.0
     ethers: 5.6.9
     file-saver: 2.0.5
     graphql: 15.8.0
@@ -15894,8 +15894,8 @@ __metadata:
     embla-carousel-react: 6.2.0
     eslint: 8.20.0
     eslint-config-next: 12.2.2
-    eslint-plugin-jest: ^26.6.0
-    eslint-plugin-mocha: ^10.1.0
+    eslint-plugin-jest: 26.6.0
+    eslint-plugin-mocha: 10.1.0
     feed: 4.2.2
     gray-matter: 4.0.3
     jest: 27.5.1
@@ -26423,6 +26423,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-jest@npm:26.6.0":
+  version: 26.6.0
+  resolution: "eslint-plugin-jest@npm:26.6.0"
+  dependencies:
+    "@typescript-eslint/utils": ^5.10.0
+  peerDependencies:
+    "@typescript-eslint/eslint-plugin": ^5.0.0
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  peerDependenciesMeta:
+    "@typescript-eslint/eslint-plugin":
+      optional: true
+    jest:
+      optional: true
+  checksum: 5dd60820d5618175e7203b077788476a6f697316b53d77c4bb7037b32073f3d5d539a72dec910eb3f8eedc97c3b28600ba35c5d3bf8c687ade765bb2d0dc77d2
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-jest@npm:^25.3.0":
   version: 25.3.3
   resolution: "eslint-plugin-jest@npm:25.3.3"
@@ -26437,23 +26454,6 @@ __metadata:
     jest:
       optional: true
   checksum: bd157fede7fbfffc18e300d8c26cd2c28b0b4d71d3e8cc545819edf436ba3353d8b43dfab85f983f296726ddc0820b3ca4790d16c6a61c97e40eff404c7d222e
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-jest@npm:^26.6.0":
-  version: 26.6.0
-  resolution: "eslint-plugin-jest@npm:26.6.0"
-  dependencies:
-    "@typescript-eslint/utils": ^5.10.0
-  peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^5.0.0
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    "@typescript-eslint/eslint-plugin":
-      optional: true
-    jest:
-      optional: true
-  checksum: 5dd60820d5618175e7203b077788476a6f697316b53d77c4bb7037b32073f3d5d539a72dec910eb3f8eedc97c3b28600ba35c5d3bf8c687ade765bb2d0dc77d2
   languageName: node
   linkType: hard
 
@@ -26491,7 +26491,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-mocha@npm:^10.1.0":
+"eslint-plugin-mocha@npm:10.1.0":
   version: 10.1.0
   resolution: "eslint-plugin-mocha@npm:10.1.0"
   dependencies:
