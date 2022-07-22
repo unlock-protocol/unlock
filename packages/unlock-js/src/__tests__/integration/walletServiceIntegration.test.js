@@ -184,7 +184,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         lock = await web3Service.getLock(lockAddress, chainId)
 
         // test will fail with default to 1 key per address
-        if (['v10'].indexOf(publicLockVersion) !== -1) {
+        if (['v10', 'v11'].indexOf(publicLockVersion) !== -1) {
           await walletService.setMaxKeysPerAddress({
             lockAddress,
             chainId,
@@ -449,6 +449,83 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           })
         }
       })
+
+      if (['v11'].indexOf(publicLockVersion) > -1) {
+        describe('grantKeyExtension', () => {
+          let tokenId
+          let key
+          let keyBefore
+          let keyGrantee
+          let transactionHash
+          beforeAll(async () => {
+            keyGrantee = accounts[15]
+            tokenId = await walletService.grantKey({
+              lockAddress,
+              recipient: keyGrantee,
+            })
+            keyBefore = await web3Service.getKeyByLockForOwner(
+              lockAddress,
+              keyGrantee,
+              chainId
+            )
+            // extend
+            await walletService.grantKeyExtension(
+              {
+                lockAddress,
+                tokenId,
+              },
+              (error, hash) => {
+                if (error) {
+                  throw error
+                }
+                transactionHash = hash
+              }
+            )
+            key = await web3Service.getKeyByLockForOwner(
+              lockAddress,
+              keyGrantee,
+              chainId
+            )
+          })
+
+          it('should have a valid key before the transaction', async () => {
+            expect.assertions(2)
+            const blockNumber = await walletService.provider.getBlockNumber()
+            const { timestamp } = await walletService.provider.getBlock(
+              blockNumber
+            )
+            expect(keyBefore.owner).toEqual(keyGrantee)
+            expect(keyBefore.expiration >= timestamp).toBeTruthy()
+          })
+
+          it('should have yielded a transaction hash', () => {
+            expect.assertions(1)
+            expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+          })
+
+          it('should have kept the key assigned to the right user', async () => {
+            expect.assertions(1)
+            expect(key.owner).toEqual(keyGrantee)
+          })
+
+          it('should have kept the key in the right lock', async () => {
+            expect.assertions(1)
+            expect(key.lock).toEqual(lockAddress)
+          })
+
+          it('should have extend the key by the correct duration', async () => {
+            expect.assertions(1)
+            const blockNumber = await walletService.provider.getBlockNumber()
+            const { timestamp } = await walletService.provider.getBlock(
+              blockNumber
+            )
+            expect(
+              Math.floor(key.expiration) -
+                Math.floor(lock.expirationDuration * 2 + timestamp)
+            ).toBeLessThan(60)
+          })
+        })
+      }
 
       describe('grantKeys', () => {
         let tokenIds
@@ -759,7 +836,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
         it('should have yielded two transactions hash', () => {
           expect.assertions(3)
-          if (['v10'].indexOf(publicLockVersion) !== -1) {
+          if (['v10', 'v11'].indexOf(publicLockVersion) !== -1) {
             expect(transactionHashes.length).toBe(1)
             expect(transactionHashes[0]).toMatch(/^0x[0-9a-fA-F]{64}$/)
             expect(transactionHashes[1]).toBeUndefined()

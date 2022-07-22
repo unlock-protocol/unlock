@@ -1,4 +1,6 @@
-import { gql } from 'apollo-boost'
+import { DocumentNode, gql } from 'apollo-boost'
+import { MemberFilter } from '~/unlockTypes'
+import { keyListByLock } from './keyListByLock'
 
 const ActiveKeys = gql`
   query Lock(
@@ -58,6 +60,20 @@ const ExpiredKeys = gql`
   }
 `
 
-export default function keyholdersByLockQuery(showActive = true) {
-  return showActive ? ActiveKeys : ExpiredKeys
+const QUERY_BY_TYPE: { [key in MemberFilter]: DocumentNode } = {
+  active: ActiveKeys,
+  expired: ExpiredKeys,
+  all: keyListByLock,
+}
+
+export default function keyholdersByLockQuery(type: MemberFilter) {
+  try {
+    if (QUERY_BY_TYPE[type]) {
+      return QUERY_BY_TYPE[type]
+    } else {
+      console.error(`${type} is not mapped `)
+    }
+  } catch (err) {
+    console.error(err)
+  }
 }
