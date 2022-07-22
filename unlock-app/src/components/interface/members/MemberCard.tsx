@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Badge, Button } from '@unlock-protocol/ui'
+import { Badge, Button, Input, Modal } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
 import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
-import { StorageServiceContext } from '../../../utils/withStorageService'
+import {
+  StorageServiceContext,
+  useStorageService,
+} from '../../../utils/withStorageService'
 import { ToastHelper } from '../../../components/helpers/toast.helper'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
 import { WalletServiceContext } from '~/utils/withWalletService'
 import useClipboard from 'react-use-clipboard'
+import { FieldValues, useForm } from 'react-hook-form'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -60,6 +64,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const { network, account } = useContext(AuthenticationContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
   const [emailSent, setEmailSent] = useState(false)
+  const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
 
   const [isCopied, setCopied] = useClipboard(keyholderAddress, {
     successDuration: 2000,
@@ -140,6 +145,9 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     setEmailSent(true)
   }
 
+  const onAddEmail = () => {}
+
+  const onUpdateEmail = () => {}
   const hasEmailMetadata = extraDataItems
     .map(([key]) => key.toLowerCase())
     .includes('email')
@@ -149,6 +157,14 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       data-testid="member-card"
       className="border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
     >
+      <AddEmailModal
+        isOpen={addEmailModalOpen ?? false}
+        setIsOpen={setAddEmailModalOpen}
+        isLockManager={isLockManager ?? false}
+        userAddress={keyholderAddress}
+        lockAddress={metadata.lockAddress}
+        network={network!}
+      />
       <div className="grid gap-2 justify-between grid-cols-7 mb-2">
         <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Lock name</span>
@@ -207,14 +223,23 @@ export const MemberCard: React.FC<MemberCardProps> = ({
                   Mark as Checked-in
                 </Button>
               )}
-              {hasEmailMetadata && (
-                <Button
-                  size="tiny"
-                  variant="primary"
-                  onClick={onSendQrCode}
-                  disabled={emailSent}
-                >
-                  Send QR-code by email
+              {hasEmailMetadata ? (
+                <>
+                  <Button
+                    size="tiny"
+                    variant="primary"
+                    onClick={onSendQrCode}
+                    disabled={emailSent}
+                  >
+                    Send QR-code by email
+                  </Button>
+                  <Button size="tiny" onClick={onUpdateEmail}>
+                    Update email
+                  </Button>
+                </>
+              ) : (
+                <Button size="tiny" onClick={() => setAddEmailModalOpen(true)}>
+                  Add email
                 </Button>
               )}
             </div>
@@ -253,5 +278,85 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         )}
       </div>
     </div>
+  )
+}
+
+const AddEmailModal = ({
+  isOpen,
+  setIsOpen,
+  isLockManager,
+  userAddress,
+  lockAddress,
+  network,
+}: {
+  isOpen: boolean
+  isLockManager: boolean
+  userAddress: string
+  lockAddress: string
+  network: number
+  setIsOpen: (status: boolean) => void
+}) => {
+  const storage = useStorageService()
+
+  const [loading, setLoading] = useState(false)
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      email: '',
+    },
+  })
+  const onSaveEmail = async ({ email }: FieldValues) => {
+    if (!isLockManager) return
+    const users = []
+    try {
+      setLoading(true)
+      users.push({
+        userAddress,
+        lockAddress,
+        metadata: {
+          protected: {
+            email,
+          },
+        },
+      })
+
+      const saveEmailPromise = storage.submitMetadata(users, network)
+      await ToastHelper.promise(saveEmailPromise, {
+        loading: 'Saving email address',
+        success: 'Email succesfully added to member',
+        error: 'There is some unexpected issue, please try again',
+      })
+      setLoading(false)
+      console.log('save this email', email)
+    } catch (err) {
+      ToastHelper.error('There is some unexpected issue, please try again')
+    }
+  }
+
+  return (
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <div className="flex flex-col p-4 gap-3">
+        <span className="font-semibold text-md mr-0">Add email for member</span>
+        <form onSubmit={handleSubmit(onSaveEmail)}>
+          <Input
+            type="email"
+            {...register('email', {
+              required: true,
+            })}
+          />
+          <div className="flex gap-2 items-center justify-end">
+            <Button
+              variant="secondary"
+              onClick={() => setIsOpen(false)}
+              disabled={loading}
+            >
+              Abort
+            </Button>
+            <Button type="submit" onClick={onSaveEmail} disabled={loading}>
+              Add email
+            </Button>
+          </div>
+        </form>
+      </div>
+    </Modal>
   )
 }
