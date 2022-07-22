@@ -48,6 +48,6 @@ echo '["'$COMMIT_MESSAGE'","'$BRANCH'","'$REVIEWER'"]'
 # # Checking master out at COMMIT_TO_DEPLOY
 # git checkout -b $BRANCH $COMMIT_TO_DEPLOY
 
-# # Diffing versus latest production
-# LATEST_PRODUCTION=`git rev-parse origin/production`
-# git reset --soft $LATEST_PRODUCTION
+# Diffing versus latest production
+LATEST_PRODUCTION=`git rev-parse origin/production`
+git reset --soft $LATEST_PRODUCTION
