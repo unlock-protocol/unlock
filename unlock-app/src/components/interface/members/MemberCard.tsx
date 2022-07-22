@@ -306,27 +306,25 @@ const AddEmailModal = ({
   })
   const onSaveEmail = async ({ email }: FieldValues) => {
     if (!isLockManager) return
-    const users = []
     try {
       setLoading(true)
-      users.push({
-        userAddress,
-        lockAddress,
-        metadata: {
-          protected: {
-            email,
-          },
-        },
-      })
 
-      const saveEmailPromise = storage.submitMetadata(users, network)
+      const metadata = {
+        email,
+      }
+
+      const saveEmailPromise = storage.updatetMetadata({
+        lockAddress,
+        userAddress,
+        network,
+        metadata,
+      })
       await ToastHelper.promise(saveEmailPromise, {
         loading: 'Saving email address',
         success: 'Email succesfully added to member',
         error: 'There is some unexpected issue, please try again',
       })
       setLoading(false)
-      console.log('save this email', email)
     } catch (err) {
       ToastHelper.error('There is some unexpected issue, please try again')
     }
@@ -351,7 +349,7 @@ const AddEmailModal = ({
             >
               Abort
             </Button>
-            <Button type="submit" onClick={onSaveEmail} disabled={loading}>
+            <Button type="submit" disabled={loading}>
               Add email
             </Button>
           </div>

@@ -804,6 +804,35 @@ export class StorageService extends EventEmitter {
     return response.json()
   }
 
+  async updatetMetadata({
+    lockAddress,
+    userAddress,
+    network,
+    metadata,
+  }: {
+    lockAddress: string
+    userAddress: string
+    network: number
+    metadata: any
+  }) {
+    const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
+
+    const formattedMetadata = {
+      protected: {
+        ...metadata,
+      },
+    }
+    const opts = {
+      method: 'POST',
+      body: JSON.stringify(formattedMetadata),
+      headers: {
+        'content-type': 'application/json',
+      },
+    }
+    const response = await fetch(url, opts)
+    return response.json()
+  }
+
   async markTicketAsCheckedIn({
     lockAddress,
     keyId,
