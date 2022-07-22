@@ -15724,7 +15724,6 @@ __metadata:
     "@xstate/react": 3.0.0
     apollo-boost: 0.4.9
     autoprefixer: 10.4.7
-    axios: 0.27.2
     babel-eslint: 10.1.0
     babel-jest: 28.1.3
     babel-loader: 8.2.5
@@ -15742,7 +15741,6 @@ __metadata:
     jest: 27.5.1
     jest-canvas-mock: 2.4.0
     jest-fetch-mock: 3.0.3
-    jest-mock-axios: 4.6.1
     jest-styled-components: 7.0.8
     js-base64: 3.7.2
     lottie-react: 2.2.1
@@ -18556,16 +18554,6 @@ __metadata:
   version: 4.3.5
   resolution: "axe-core@npm:4.3.5"
   checksum: 973c6a80f0aaa663820b209d4202de7a0c240a2dea2f3cff168b09c0f221b27179b1f0988f00ad11ed63cbc50535920f8ca779de1c60dc82090ab2d275f71fdd
-  languageName: node
-  linkType: hard
-
-"axios@npm:0.27.2":
-  version: 0.27.2
-  resolution: "axios@npm:0.27.2"
-  dependencies:
-    follow-redirects: ^1.14.9
-    form-data: ^4.0.0
-  checksum: 38cb7540465fe8c4102850c4368053c21683af85c5fdf0ea619f9628abbcb59415d1e22ebc8a6390d2bbc9b58a9806c874f139767389c862ec9b772235f06854
   languageName: node
   linkType: hard
 
@@ -29356,16 +29344,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.9":
-  version: 1.14.9
-  resolution: "follow-redirects@npm:1.14.9"
-  peerDependenciesMeta:
-    debug:
-      optional: true
-  checksum: f5982e0eb481818642492d3ca35a86989c98af1128b8e1a62911a3410621bc15d2b079e8170b35b19d3bdee770b73ed431a257ed86195af773771145baa57845
-  languageName: node
-  linkType: hard
-
 "for-each@npm:^0.3.3, for-each@npm:~0.3.3":
   version: 0.3.3
   resolution: "for-each@npm:0.3.3"
@@ -34619,17 +34597,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jest-mock-axios@npm:4.6.1":
-  version: 4.6.1
-  resolution: "jest-mock-axios@npm:4.6.1"
-  dependencies:
-    "@jest/globals": ^27.5.1
-    jest: ^27.5.1
-    synchronous-promise: ^2.0.15
-  checksum: b9ba93966cc66a320743e40dadd3481680fe9895647e76dbbcf183aa5da3aa6164ce5f635190ad5dc2a480bac1acf44ca9d36d56ab6e769b1a512402f5220ff0
-  languageName: node
-  linkType: hard
-
 "jest-mock@npm:^27.4.2":
   version: 27.4.2
   resolution: "jest-mock@npm:27.4.2"
@@ -35316,7 +35283,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jest@npm:27.5.1, jest@npm:^27.5.1":
+"jest@npm:27.5.1":
   version: 27.5.1
   resolution: "jest@npm:27.5.1"
   dependencies:
