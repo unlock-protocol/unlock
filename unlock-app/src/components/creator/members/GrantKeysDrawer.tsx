@@ -10,13 +10,15 @@ import {
   Input,
   Label,
   Select,
-  Button,
   TransactionPendingButton,
 } from '../../interface/checkout/FormStyles'
 import { ACCOUNT_REGEXP, MAX_UINT } from '../../../constants'
 import { getAddressForName } from '../../../hooks/useEns'
 import { useMultipleRecipient } from '../../../hooks/useMultipleRecipient'
 import { ToastHelper } from '../../helpers/toast.helper'
+import { useStorageService } from '~/utils/withStorageService'
+import { formResultToMetadata } from '~/utils/userMetadata'
+import { Button } from '@unlock-protocol/ui'
 
 interface GrantKeyFormProps {
   lock: Lock
@@ -25,6 +27,7 @@ interface GrantKeyFormProps {
 
 interface MetadataProps {
   lockAddress: string
+  email: string
   expiration: string | number
   keyManager?: string
   neverExpires: boolean
@@ -55,6 +58,7 @@ const formatDate = (timestamp: number) => {
  */
 const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
   const { account, network } = useContext(AuthenticationContext)
+  const storageService = useStorageService()
 
   const walletService = useWalletService()
   const [transaction, setTransaction] = useState<string>('')
@@ -80,6 +84,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
 
   const defaultValues = {
     recipient: '',
+    email: '',
     expiration: formatDate(lock.expirationDuration),
     keyManager: '',
     neverExpires: lock.expirationDuration === -1,
@@ -112,6 +117,26 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
       const keyManagers = recipientItems?.map(
         ({ metadata }) => metadata?.keyManager || account
       )
+
+      const users = recipientItems.map(({ metadata = {}, resolvedAddress }) => {
+        const formattedMetadata = formResultToMetadata(
+          {
+            email: metadata.email ?? '',
+          },
+          []
+        )
+        return {
+          userAddress: resolvedAddress,
+          metadata: {
+            public: formattedMetadata.publicData,
+            protected: formattedMetadata.protectedData,
+          },
+          lockAddress: lock!.address,
+        }
+      })
+      // save email for all recipients before airdrops keys
+      await storageService.submitMetadata(users, network!)
+
       await ToastHelper.promise(
         walletService.grantKeys(
           {
@@ -168,7 +193,8 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
 
   const addRecipient = async () => {
     const isFormValid = await trigger()
-    const { recipient, expiration, keyManager, neverExpires } = getValues()
+    const { recipient, expiration, keyManager, neverExpires, email } =
+      getValues()
     if (isFormValid) {
       const expirationTime = neverExpires
         ? MAX_UINT
@@ -179,6 +205,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
         expiration: expirationTime,
         keyManager: keyManager || account,
         neverExpires,
+        email,
       }
       const valid = await addRecipientItem(recipient, metadata)
       if (valid) {
@@ -202,6 +229,26 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
               required: true,
               onChange: addressFieldChanged('recipient'),
               pattern: ACCOUNT_REGEXP,
+            })}
+          />
+          {errors.recipient && (
+            <p className="text-xs -mt-4 text-[#f24c15]">
+              Please make sure you enter a valid Ethereum address
+            </p>
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-wrap mb-6 -mx-3">
+        <div className="w-full px-3">
+          <Label htmlFor="grid-recipient">Email</Label>
+          <Input
+            id="grid-recipient"
+            type="email"
+            placeholder="email@example.com"
+            {...register('email', {
+              required: true,
+              onChange: addressFieldChanged('email'),
             })}
           />
           {errors.recipient && (
@@ -272,13 +319,8 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
       </div>
 
       {!loading && (
-        <>
-          <Button
-            className="bg-gray-100 px-2 py-1 mb-2"
-            type="button"
-            onClick={addRecipient}
-            disabled={!isDirty}
-          >
+        <div className="flex flex-col gap-2">
+          <Button className="w-100" onClick={addRecipient} disabled={!isDirty}>
             Add recipient
           </Button>
           {hasRecipients && (
@@ -295,15 +337,10 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
               </div>
             </div>
           )}
-          <button
-            className="bg-[#74ce63] text-white flex justify-center w-full px-4 py-3 font-medium rounded hover:bg-[#59c245] disabled:opacity-40"
-            type="button"
-            disabled={disableGrantKeys}
-            onClick={onSubmit}
-          >
+          <Button disabled={disableGrantKeys} onClick={onSubmit}>
             {`Grant ${recipientItems?.length} Key`}
-          </button>
-        </>
+          </Button>
+        </div>
       )}
       {loading && network && (
         <TransactionPendingButton network={network} transaction={transaction} />
