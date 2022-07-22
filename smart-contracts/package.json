@@ -44,7 +44,7 @@
     "hardhat-tracer": "1.0.0-alpha.6",
     "hardlydifficult-eth": "1.1.4",
     "hardlydifficult-ethereum-contracts": "0.11.1",
-    "lint-staged": "13.0.0",
+    "lint-staged": "13.0.3",
     "node-fetch": "2.6.7",
     "prettier": "2.5.1",
     "prompt": "1.2.2",
