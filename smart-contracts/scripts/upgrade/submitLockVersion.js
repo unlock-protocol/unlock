@@ -1,9 +1,15 @@
 /**
- * Deploy latest PublicLock template and send the txs to the multisig
- * to add/set it to the Unlock contract.
- * If no existing address is specified, it will deploy the latest public lock.
+ * Deploy latest PublicLock template and send the txs to the multisig to add/set
+ * it to the Unlock contract.
  *
- * NB: You can test on mainnet (without the template being deployed) with:
+ * ```
+ * # If no existing address is specified, it will deploy the latest public lock.
+ * yarn hardhat submit:version
+ *
+ * # with an existing address, contract gets deployed and specified
+ * yarn hardhat submit:version --network rinkeby --public-lock-address <TEMPLATE_ADDRESS>
+ * ```
+ * NB: You can first test on mainnet to make sure the template is deploying correctly * :
  *
  * ```
  * RUN_MAINNET_FORK=1 yarn hardhat run scripts/upgrade/submitLockVersion.js
