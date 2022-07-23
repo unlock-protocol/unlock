@@ -85,6 +85,10 @@ interface ExistingMemberEvent {
 interface UnlockAccountEvent {
   type: 'UNLOCK_ACCOUNT'
 }
+interface UpdatePaywallConfigEvent {
+  type: 'UPDATE_PAYWALL_CONFIG'
+  config: PaywallConfig
+}
 
 interface BackEvent {
   type: CheckoutPage | 'BACK'
@@ -101,6 +105,7 @@ export type CheckoutMachineEvents =
   | SolveCaptchaEvent
   | ConfirmMintEvent
   | UnlockAccountEvent
+  | UpdatePaywallConfigEvent
   | ExistingMemberEvent
   | ContinueEvent
   | DisconnectEvent
@@ -157,6 +162,10 @@ export const checkoutMachine = createMachine(
     },
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
+      UPDATE_PAYWALL_CONFIG: {
+        target: 'SELECT',
+        actions: ['updatePaywallConfig'],
+      },
     },
     states: {
       SELECT: {
@@ -443,6 +452,21 @@ export const checkoutMachine = createMachine(
             } as const
           }
         },
+      }),
+      // @ts-expect-error xstate unused variable type bug
+      updatePaywallConfig: assign((context, event) => {
+        return {
+          paywallConfig: event.config,
+          lock: undefined,
+          messageToSign: undefined,
+          mint: undefined,
+          captcha: undefined,
+          payment: {
+            method: 'crypto',
+          },
+          quantity: 1,
+          recipients: [],
+        }
       }),
       solveCaptcha: assign({
         // @ts-expect-error xstate unused variable type bug

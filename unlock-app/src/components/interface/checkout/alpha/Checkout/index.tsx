@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import type { PaywallConfig } from '~/unlockTypes'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { checkoutMachine } from './checkoutMachine'
@@ -32,6 +32,13 @@ export function Checkout({
     },
   })
   const [state] = useActor(checkoutService)
+
+  useEffect(() => {
+    checkoutService.send({
+      type: 'UPDATE_PAYWALL_CONFIG',
+      config: paywallConfig,
+    })
+  }, [paywallConfig, checkoutService])
 
   const messageToSign = useSelector(
     checkoutService,
