@@ -27,7 +27,7 @@
     "babel-preset-react-app": "10.0.1",
     "dotenv": "16.0.1",
     "embla-carousel-autoplay": "7.0.0-rc05",
-    "embla-carousel-react": "latest",
+    "embla-carousel-react": "7.0.0-rc05",
     "eslint": "8.20.0",
     "eslint-plugin-jest": "26.6.0",
     "eslint-plugin-mocha": "10.1.0",
