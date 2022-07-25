@@ -155,7 +155,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       data-testid="member-card"
       className="border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
     >
-      <AddEmailModal
+      <UpdateEmailModal
         isOpen={addEmailModalOpen ?? false}
         setIsOpen={setAddEmailModalOpen}
         isLockManager={isLockManager ?? false}
@@ -296,7 +296,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   )
 }
 
-const AddEmailModal = ({
+const UpdateEmailModal = ({
   isOpen,
   setIsOpen,
   isLockManager,
