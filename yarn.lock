@@ -16419,7 +16419,7 @@ __metadata:
     regenerator-runtime: 0.13.9
     ts-jest: 27.1.5
     typescript: 4.7.2
-    webpack: 5.73.0
+    webpack: 5.74.0
     webpack-cli: 4.10.0
     winston: 3.8.1
   languageName: unknown
