@@ -30,6 +30,8 @@ jest.mock('@unlock-protocol/unlock-js', () => {
         ownerOf: (_lockAddress: string, _tokenId: string, _network: number) =>
           owner,
         isLockManager: (lock: string) => lockAddress === lock,
+        getLock: (lock: string, network: number) =>
+          lockAddress === lock && network,
       }
     }),
   }
