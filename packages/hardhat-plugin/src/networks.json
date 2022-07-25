@@ -2,6 +2,7 @@
   "1": {
     "id": 1,
     "unlockAddress": "0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13",
+    "multisig": "0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9",
     "name": "Ethereum",
     "blockTime": 8000,
     "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock",
@@ -9,6 +10,7 @@
       "name": "Etherscan",
       "urls": {}
     },
+    "opensea": {},
     "erc20": {
       "symbol": "DAI",
       "address": "0x6b175474e89094c44da98b954eedeac495271d0f"
@@ -21,11 +23,14 @@
       "symbol": "Eth",
       "decimals": 18
     },
-    "startBlock": 7120795
+    "startBlock": 7120795,
+    "description": "The most popular network",
+    "isTestNetwork": false
   },
   "4": {
     "unlockAddress": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
     "serializerAddress": "0x1bd356194d97297F77e081fFFAB97b57297E93e4",
+    "multisig": "0x04e855D82c079222d6bDBc041F6202d5A0137267",
     "id": 4,
     "name": "Rinkeby",
     "blockTime": 8000,
@@ -34,6 +39,7 @@
       "name": "Etherscan",
       "urls": {}
     },
+    "opensea": {},
     "requiredConfirmations": 12,
     "erc20": {
       "symbol": "WEE",
@@ -46,10 +52,39 @@
       "symbol": "Eth",
       "decimals": 18
     },
-    "startBlock": 3530008
+    "startBlock": 3530008,
+    "description": "Ethereum test network. Do not use for production",
+    "isTestNetwork": true
+  },
+  "5": {
+    "unlockAddress": "0x627118a4fB747016911e5cDA82e2E77C531e8206",
+    "multisig": "0x95C06469e557d8645966077891B4aeDe8D55A755",
+    "id": 5,
+    "name": "Goerli (Testnet)",
+    "blockTime": 1000,
+    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli",
+    "explorer": {
+      "name": "Goerli (Testnet)",
+      "urls": {}
+    },
+    "opensea": {},
+    "requiredConfirmations": 12,
+    "erc20": null,
+    "baseCurrencySymbol": "ETH",
+    "description": "Main Ethereum test network. Do not use for production",
+    "locksmithUri": "https://locksmith.unlock-protocol.com",
+    "nativeCurrency": {
+      "name": "ETH",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "startBlock": 7179039,
+    "previousDeploys": [],
+    "isTestNetwork": true
   },
   "10": {
     "unlockAddress": "0x99b1348a9129ac49c6de7F11245773dE2f51fB0c",
+    "multisig": "0x6E78b4447e34e751EC181DCBed63633aA753e145",
     "id": 10,
     "name": "Optimism",
     "blockTime": 8000,
@@ -58,6 +93,7 @@
       "name": "Etherscan",
       "urls": {}
     },
+    "opensea": {},
     "requiredConfirmations": 12,
     "baseCurrencySymbol": "Eth",
     "locksmithUri": "https://locksmith.unlock-protocol.com",
@@ -65,18 +101,22 @@
       "name": "Eth",
       "symbol": "Eth",
       "decimals": 18
-    }
+    },
+    "description": "Layer 2 network. Cheaper transaction cost.",
+    "isTestNetwork": false
   },
   "56": {
     "unlockAddress": "0xeC83410DbC48C7797D2f2AFe624881674c65c856",
     "id": 56,
     "name": "Binance Smart Chain",
     "blockTime": 1000,
+    "multisig": "0x373D7cbc4F2700719DEa237500c7a154310B0F9B",
     "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc",
     "explorer": {
       "name": "BscScan",
       "urls": {}
     },
+    "opensea": {},
     "requiredConfirmations": 12,
     "erc20": null,
     "baseCurrencySymbol": "BNB",
@@ -92,13 +132,16 @@
         "unlockAddress": "0x99b1348a9129ac49c6de7F11245773dE2f51fB0c",
         "startBlock": 12396000
       }
-    ]
+    ],
+    "description": "EVM compatible network. Cheaper transaction cost.",
+    "isTestNetwork": false
   },
   "100": {
     "unlockAddress": "0x1bc53f4303c711cc693F6Ec3477B83703DcB317f",
     "serializerAddress": "0x646E373EAf8a4AEc31Bf62B7Fd6fB59296d6CdA9",
+    "multisig": "0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D",
     "id": 100,
-    "name": "xDai",
+    "name": "Gnosis Chain",
     "blockTime": 5000,
     "requiredConfirmations": 12,
     "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai",
@@ -106,6 +149,7 @@
       "name": "Blockscout",
       "urls": {}
     },
+    "opensea": {},
     "erc20": null,
     "locksmithUri": "https://locksmith.unlock-protocol.com",
     "baseCurrencySymbol": "xDai",
@@ -120,10 +164,13 @@
         "unlockAddress": "0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863",
         "startBlock": 14521200
       }
-    ]
+    ],
+    "description": "EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.",
+    "isTestNetwork": false
   },
   "137": {
     "unlockAddress": "0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f",
+    "multisig": "0x479f3830fbd715342868BA95E438609BCe443DFB",
     "serializerAddress": "0x646e373eaf8a4aec31bf62b7fd6fb59296d6cda9",
     "id": 137,
     "name": "Polygon",
@@ -133,6 +180,7 @@
       "name": "Polygonscan",
       "urls": {}
     },
+    "opensea": {},
     "requiredConfirmations": 12,
     "erc20": null,
     "baseCurrencySymbol": "Matic",
@@ -148,7 +196,9 @@
         "unlockAddress": "0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863",
         "startBlock": 15714206
       }
-    ]
+    ],
+    "description": "Popular side chain network. Cheaper transaction cost.",
+    "isTestNetwork": false
   },
   "31337": {
     "id": 31337,
@@ -156,6 +206,34 @@
     "locksmithUri": "http://127.0.0.1:8080",
     "unlockAppUrl": "http://0.0.0.0:3000",
     "subgraphURI": "http://localhost:8000/subgraphs/name/unlock-protocol/unlock",
-    "serializerAddress": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1"
+    "serializerAddress": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+    "description": "Localhost network.",
+    "isTestNetwork": true
+  },
+  "80001": {
+    "unlockAddress": "0x1FF7e338d5E582138C46044dc238543Ce555C963",
+    "multisig": "0x12E37A8880801E1e5290c815a894d322ac591607",
+    "id": 80001,
+    "name": "Mumbai (Polygon)",
+    "blockTime": 1000,
+    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai",
+    "explorer": {
+      "name": "PolygonScan (Mumbai)",
+      "urls": {}
+    },
+    "opensea": {},
+    "requiredConfirmations": 12,
+    "erc20": null,
+    "baseCurrencySymbol": "MATIC",
+    "locksmithUri": "https://locksmith.unlock-protocol.com",
+    "nativeCurrency": {
+      "name": "MATIC",
+      "symbol": "MATIC",
+      "decimals": 18
+    },
+    "startBlock": 26584912,
+    "previousDeploys": [],
+    "description": "Polygon test network. Do not use for production",
+    "isTestNetwork": true
   }
 }
