@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "lint:fix": "yarn lint --fix",
-    "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .tsx,.ts,.js src/ test/",
+    "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/ test/",
     "test": "ts-mocha --exit --recursive 'test/**/*.ts'",
     "ci": "yarn build && yarn lint && yarn test",
     "build": "yarn networks && tsc",
