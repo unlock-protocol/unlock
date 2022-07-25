@@ -11,7 +11,13 @@ const UNLOCK_BENEFITS = [
   'Open-source, community governed',
 ]
 
-const featuredUsers = [
+interface FeaturedUser {
+  link?: string
+  title: string
+  illustration: string
+  quote: string
+}
+const featuredUsers: FeaturedUser[] = [
   {
     link: '/guides/how-to-sell-nft-tickets-for-an-event/',
     title: 'Event ticketing',
@@ -40,7 +46,6 @@ const featuredUsers = [
     quote: 'On-chain certification NFTs for skills and continuing education',
   },
   {
-    link: '#',
     title: 'Digital collectibles',
     illustration: '/images/marketing/ronin.png',
     quote:
@@ -105,42 +110,44 @@ export function Connect() {
         ref={emblaRef}
       >
         <div className="flex justify-center">
-          {featuredUsers?.map(({ title, link, illustration, quote }, index) => {
-            const key = `${title}-${index}`
-              .split(' ')
-              .join('-')
-              .toLocaleLowerCase()
+          {featuredUsers?.map(
+            ({ title, link = '#', illustration, quote }, index) => {
+              const key = `${title}-${index}`
+                .split(' ')
+                .join('-')
+                .toLocaleLowerCase()
 
-            const extraClassLink = link === '#' ? 'cursor-default' : ''
+              const extraClassLink = link === '#' ? 'cursor-default' : ''
 
-            return (
-              <Link
-                key={key}
-                href={link}
-                className={[
-                  'basis-full grow-0 shrink-0 background-red',
-                  extraClassLink,
-                ].join(' ')}
-              >
-                <div className="w-full bg-white rounded-3xl shadow-transparent">
-                  <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
-                    <p className="font-bold text-xl">{title}</p>
-                  </header>
-                  <img
-                    className="w-full h-96 object-cover rounded-t-xl sm:rounded-none"
-                    alt={title}
-                    src={illustration}
-                  />
-                  <div className="flex max-h-[72px] items-center gap-4 px-6 py-4">
-                    <div>
-                      <h4 className="font-bold block sm:hidden">{title}</h4>
-                      <p className="text-sm brand-gray">{quote}</p>
+              return (
+                <Link
+                  key={key}
+                  href={link}
+                  className={[
+                    'basis-full grow-0 shrink-0 background-red',
+                    extraClassLink,
+                  ].join(' ')}
+                >
+                  <div className="w-full bg-white rounded-3xl shadow-transparent">
+                    <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
+                      <p className="font-bold text-xl">{title}</p>
+                    </header>
+                    <img
+                      className="w-full h-96 object-cover rounded-t-xl sm:rounded-none"
+                      alt={title}
+                      src={illustration}
+                    />
+                    <div className="flex max-h-[72px] items-center gap-4 px-6 py-4">
+                      <div>
+                        <h4 className="font-bold block sm:hidden">{title}</h4>
+                        <p className="text-sm brand-gray">{quote}</p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </Link>
-            )
-          })}
+                </Link>
+              )
+            }
+          )}
         </div>
       </div>
     </section>
