@@ -322,11 +322,18 @@ const AddEmailModal = ({
   const storage = useStorageService()
 
   const [loading, setLoading] = useState(false)
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, reset } = useForm({
     defaultValues: {
       email: '',
     },
   })
+
+  const clearAndReloadMembers = () => {
+    reset() // reset fomr state
+    if (typeof loadMembers === 'function') {
+      loadMembers()
+    }
+  }
 
   const createMetadata = async (params: any, callback?: () => void) => {
     try {
@@ -386,9 +393,9 @@ const AddEmailModal = ({
       }
 
       if (hasExtraData) {
-        updateMetadata(params, loadMembers)
+        updateMetadata(params, clearAndReloadMembers)
       } else {
-        createMetadata(params, loadMembers)
+        createMetadata(params, clearAndReloadMembers)
       }
     } catch (err) {
       ToastHelper.error('There is some unexpected issue, please try again')
