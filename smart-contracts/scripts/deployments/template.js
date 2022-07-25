@@ -3,14 +3,14 @@ const { addDeployment } = require('../../helpers/deployments')
 const { getNetworkName } = require('../../helpers/network')
 const contracts = require('@unlock-protocol/contracts')
 
-async function main({ publicLockVersion = 10 }) {
+async function main({ publicLockVersion }) {
   // fetch chain info
   const { chainId } = await ethers.provider.getNetwork()
   const networkName = getNetworkName(chainId)
   const isLocalNet = networkName === 'localhost'
 
   let PublicLock
-  if (publicLockVersion < 11) {
+  if (publicLockVersion) {
     const { abi, bytecode } = contracts[`PublicLockV${publicLockVersion}`]
     PublicLock = await ethers.getContractFactory(abi, bytecode)
   } else {
@@ -22,12 +22,18 @@ async function main({ publicLockVersion = 10 }) {
 
   // eslint-disable-next-line no-console
   console.log(
-    `PUBLIC LOCK > deployed v${publicLockVersion} to : ${publicLock.address} (tx: ${publicLock.deployTransaction.hash})`
+    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion} to : ${
+      publicLock.address
+    } (tx: ${publicLock.deployTransaction.hash})`
   )
 
   // verify
   if (!isLocalNet) {
-    await run(`yarn hardhat verify`, { address: publicLock.address })
+    try {
+      await run(`verify`, { address: publicLock.address })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   // save deployment info

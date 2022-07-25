@@ -34,7 +34,7 @@ async function main({ safeAddress, tx, signer }) {
   console.log(
     `Tx submitted to multisig with id '${nonce}' (txid: ${transactionHash})`
   )
-  return receipt
+  return nonce
 }
 
 module.exports = main
