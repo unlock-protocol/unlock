@@ -165,6 +165,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         loadMembers={loadMembers}
         hasExtraData={hasExtraData}
         hasEmail={hasEmailMetadata}
+        extraDataItems={extraDataItems}
       />
       <div className="grid gap-2 justify-between grid-cols-7 mb-2">
         <div className="col-span-full	flex flex-col md:col-span-1">
@@ -305,6 +306,7 @@ const AddEmailModal = ({
   hasExtraData,
   hasEmail,
   loadMembers,
+  extraDataItems,
 }: {
   isOpen: boolean
   isLockManager: boolean
@@ -313,10 +315,12 @@ const AddEmailModal = ({
   network: number
   hasExtraData: boolean
   hasEmail: boolean
+  extraDataItems: [string, string | number][]
   setIsOpen: (status: boolean) => void
   loadMembers?: () => void
 }) => {
   const storage = useStorageService()
+  console.log(extraDataItems)
 
   const [loading, setLoading] = useState(false)
   const { register, handleSubmit } = useForm({
@@ -360,8 +364,18 @@ const AddEmailModal = ({
     if (!isLockManager) return
     try {
       setLoading(true)
+      let metadata = {}
 
-      const metadata = {
+      extraDataItems.map(([key, value]: [string, string | number]) => {
+        metadata = {
+          ...metadata,
+          [key]: value,
+        }
+      })
+
+      // merge old metadata with new one to prevent data lost
+      metadata = {
+        ...metadata,
         ...formFields,
       }
 
@@ -385,7 +399,9 @@ const AddEmailModal = ({
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="flex flex-col p-4 gap-3">
-        <span className="font-semibold text-md mr-0">Add email for member</span>
+        <span className="font-semibold text-md mr-0">
+          {hasEmail ? 'Update email address' : 'Add email address to metadata'}
+        </span>
         <form onSubmit={handleSubmit(onUpdateValue)}>
           <Input
             type="email"
