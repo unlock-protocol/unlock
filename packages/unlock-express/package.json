@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "eslint": "8.18.0",
+    "eslint": "8.20.0",
     "prettier": "2.7.1"
   }
 }
