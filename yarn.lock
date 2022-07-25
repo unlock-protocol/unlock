@@ -15700,7 +15700,7 @@ __metadata:
     eslint: 8.20.0
     fs-extra: 10.1.0
     hardhat: 2.10.1
-    typescript: 4.7.2
+    typescript: 4.7.4
   languageName: unknown
   linkType: soft
 
@@ -15747,7 +15747,7 @@ __metadata:
     tslint: 5.20.1
     tslint-config-prettier: 1.18.0
     tslint-plugin-prettier: 2.3.0
-    typescript: 4.7.2
+    typescript: 4.7.4
   peerDependencies:
     hardhat: 2.9.9
   languageName: unknown
@@ -15857,7 +15857,7 @@ __metadata:
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    typescript: 4.7.2
+    typescript: 4.7.4
   languageName: unknown
   linkType: soft
 
@@ -15897,7 +15897,7 @@ __metadata:
     react-test-renderer: 17.0.2
     style-loader: 3.3.1
     styled-components: 5.3.5
-    typescript: 4.7.2
+    typescript: 4.7.4
   languageName: unknown
   linkType: soft
 
@@ -15925,7 +15925,7 @@ __metadata:
     style-loader: 3.3.1
     ts-jest: 27.1.5
     ts-loader: 9.3.1
-    typescript: 4.7.2
+    typescript: 4.7.4
     webpack: 5.74.0
     webpack-cli: 4.10.0
   languageName: unknown
@@ -16043,7 +16043,7 @@ __metadata:
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     ethers: 5.6.9
-    typescript: 4.7.2
+    typescript: 4.7.4
   languageName: unknown
   linkType: soft
 
@@ -16080,7 +16080,7 @@ __metadata:
     tailwindcss: 3.1.6
     tsconfig-paths-webpack-plugin: 3.5.2
     tsup: 6.1.2
-    typescript: 4.7.2
+    typescript: 4.7.4
     vite: 2.9.14
     vite-tsconfig-paths: 3.5.0
   peerDependencies:
@@ -16240,7 +16240,7 @@ __metadata:
     tailwind-merge: 1.2.1
     tailwindcss: 3.0.24
     ts-jest: 27.1.5
-    typescript: 4.7.2
+    typescript: 4.7.4
     validator: 13.7.0
     walletlink: 2.5.0
     xstate: 4.32.1
@@ -16320,7 +16320,7 @@ __metadata:
     siwe: 1.1.6
     ts-jest: 27.1.5
     tsup: 6.1.2
-    typescript: 4.7.2
+    typescript: 4.7.4
   peerDependencies:
     ethers: 5.6.9
   languageName: unknown
@@ -16385,7 +16385,7 @@ __metadata:
     tailwind-merge: 1.3.0
     tailwindcss: 3.1.6
     ts-jest: 27.1.5
-    typescript: 4.6.4
+    typescript: 4.7.4
     use-local-storage: 2.3.6
     vitest: 0.16.0
     yaml-front-matter: 4.1.1
@@ -16417,7 +16417,7 @@ __metadata:
     prettier: 2.7.1
     regenerator-runtime: 0.13.9
     ts-jest: 27.1.5
-    typescript: 4.7.2
+    typescript: 4.7.4
     webpack: 5.74.0
     webpack-cli: 4.10.0
     winston: 3.8.1
@@ -25544,16 +25544,6 @@ __metadata:
     graceful-fs: ^4.2.4
     tapable: ^2.2.0
   checksum: d79fbe531106448b768bb0673fb623ec0202d7ee70373ab7d4f4745d5dfe0806f38c9db7e7da8c941288fe475ab3d538db3791fce522056eeea40ca398c9e287
-  languageName: node
-  linkType: hard
-
-"enhanced-resolve@npm:^5.9.3":
-  version: 5.9.3
-  resolution: "enhanced-resolve@npm:5.9.3"
-  dependencies:
-    graceful-fs: ^4.2.4
-    tapable: ^2.2.0
-  checksum: 64c2dbbdd608d1a4df93b6e60786c603a1faf3b2e66dfd051d62cf4cfaeeb5e800166183685587208d62e9f7afff3f78f3d5978e32cd80125ba0c83b59a79d78
   languageName: node
   linkType: hard
 
@@ -51424,13 +51414,13 @@ typescript@4.6.4:
   languageName: node
   linkType: hard
 
-typescript@4.7.2:
-  version: 4.7.2
-  resolution: "typescript@npm:4.7.2"
+typescript@4.7.4:
+  version: 4.7.4
+  resolution: "typescript@npm:4.7.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 5163585e6b56410f77d5483b698d9489bbee8902c99029eb70cf6d21525a186530ce19a00951af84eefd4a131cc51d0959f5118e25e70ab61f45ac4057dbd1ef
+  checksum: 5750181b1cd7e6482c4195825547e70f944114fb47e58e4aa7553e62f11b3f3173766aef9c281783edfd881f7b8299cf35e3ca8caebe73d8464528c907a164df
   languageName: node
   linkType: hard
 
@@ -51454,13 +51444,13 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.7.2#~builtin<compat/typescript>":
-  version: 4.7.2
-  resolution: "typescript@patch:typescript@npm%3A4.7.2#~builtin<compat/typescript>::version=4.7.2&hash=ddd1e8"
+"typescript@patch:typescript@4.7.4#~builtin<compat/typescript>":
+  version: 4.7.4
+  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=ddd1e8"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 09d93fc0983d38eadd9b0427f790b49b4437f45002a87d447be3fbe53120880e87a91dd03e1d900498f99205d6e0b7c9784fe41fca11d56f4bbce371f74bb160
+  checksum: 96d3030cb01143570567cb4f3a616b10df65f658f0e74e853e77a089a6a954e35c800be7db8b9bfe9a1ae05d9c2897e281359f65e4caa1caf266368e1c4febd3
   languageName: node
   linkType: hard
 
@@ -52095,7 +52085,7 @@ typescript@^3.8.3:
     lint-staged: 13.0.3
     node-fetch: 2.6.7
     prettier: 2.7.1
-    typescript: 4.6.4
+    typescript: 4.7.4
   languageName: unknown
   linkType: soft
 
@@ -55659,43 +55649,6 @@ typescript@^3.8.3:
   bin:
     webpack: bin/webpack.js
   checksum: 013fa24c00d4261e16ebca60353fa6f848e417b5a44bdf28c16ebebd67fa61e960420bb314c8df05cfe2dad9b90efabcf38fd6875f2361922769a0384085ef1e
-  languageName: node
-  linkType: hard
-
-"webpack@npm:5.73.0":
-  version: 5.73.0
-  resolution: "webpack@npm:5.73.0"
-  dependencies:
-    "@types/eslint-scope": ^3.7.3
-    "@types/estree": ^0.0.51
-    "@webassemblyjs/ast": 1.11.1
-    "@webassemblyjs/wasm-edit": 1.11.1
-    "@webassemblyjs/wasm-parser": 1.11.1
-    acorn: ^8.4.1
-    acorn-import-assertions: ^1.7.6
-    browserslist: ^4.14.5
-    chrome-trace-event: ^1.0.2
-    enhanced-resolve: ^5.9.3
-    es-module-lexer: ^0.9.0
-    eslint-scope: 5.1.1
-    events: ^3.2.0
-    glob-to-regexp: ^0.4.1
-    graceful-fs: ^4.2.9
-    json-parse-even-better-errors: ^2.3.1
-    loader-runner: ^4.2.0
-    mime-types: ^2.1.27
-    neo-async: ^2.6.2
-    schema-utils: ^3.1.0
-    tapable: ^2.1.1
-    terser-webpack-plugin: ^5.1.3
-    watchpack: ^2.3.1
-    webpack-sources: ^3.2.3
-  peerDependenciesMeta:
-    webpack-cli:
-      optional: true
-  bin:
-    webpack: bin/webpack.js
-  checksum: aa434a241bad6176b68e1bf0feb1972da4dcbf27cb3d94ae24f6eb31acc37dceb9c4aae55e068edca75817bfe91f13cd20b023ac55d9b1b2f8b66a4037c9468f
   languageName: node
   linkType: hard
 
