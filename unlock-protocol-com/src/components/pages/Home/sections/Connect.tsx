@@ -111,7 +111,7 @@ export function Connect() {
               .join('-')
               .toLocaleLowerCase()
 
-            const removePointer = link === '#'
+            const extraClassLink = link === '#' ? 'cursor-default' : ''
 
             return (
               <Link
@@ -119,7 +119,7 @@ export function Connect() {
                 href={link}
                 className={[
                   'basis-full grow-0 shrink-0 background-red',
-                  removePointer ? 'cursor-default' : '',
+                  extraClassLink,
                 ].join(' ')}
               >
                 <div className="w-full bg-white rounded-3xl shadow-transparent">
