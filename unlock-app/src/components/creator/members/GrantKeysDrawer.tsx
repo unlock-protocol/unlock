@@ -248,9 +248,9 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
               onChange: addressFieldChanged('email'),
             })}
           />
-          {errors.recipient && (
+          {errors.email && (
             <p className="text-xs text-[#f24c15]">
-              Please make sure you enter a valid Ethereum address
+              Please make sure you enter a valid email
             </p>
           )}
         </div>
