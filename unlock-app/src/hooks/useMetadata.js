@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import fetch from 'node-fetch'
 
 const defaultMetadata = {
   image: 'https://assets.unlock-protocol.com/unlock-default-key-image.png',
@@ -16,7 +16,7 @@ export const useMetadata = (url) => {
     if (url) {
       let tokenMetadata = defaultMetadata
       try {
-        tokenMetadata = await axios.get(url).then((response) => response.data)
+        tokenMetadata = await fetch(url).then((response) => response.json())
       } catch (error) {
         // Do not fail on error, we'll keep defaulting to the default values
       }

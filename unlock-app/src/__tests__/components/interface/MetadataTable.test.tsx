@@ -1,7 +1,6 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
 import { MetadataTable } from '../../../components/interface/MetadataTable'
-import { MemberFilters } from '../../../unlockTypes'
 import { ConfigContext } from '../../../utils/withConfig'
 import {
   AuthenticationContext,
@@ -72,7 +71,7 @@ describe('MetadataTable', () => {
             'emailAddress',
           ]}
           metadata={metadata}
-          filter={MemberFilters.ALL}
+          filter={'all'}
         />
       )
 
@@ -87,11 +86,7 @@ describe('MetadataTable', () => {
         expect.assertions(1)
 
         const wrapper = render(
-          <MetadataTable
-            columns={[]}
-            metadata={[]}
-            filter={MemberFilters.ALL}
-          />
+          <MetadataTable columns={[]} metadata={[]} filter={'all'} />
         )
         expect(
           wrapper.getByText('No keys have been purchased yet.', {
@@ -104,11 +99,7 @@ describe('MetadataTable', () => {
         expect.assertions(1)
 
         const wrapper = render(
-          <MetadataTable
-            columns={[]}
-            metadata={[]}
-            filter={MemberFilters.ACTIVE}
-          />
+          <MetadataTable columns={[]} metadata={[]} filter={'active'} />
         )
         expect(
           wrapper.getByText('No keys found matching the current filter.')

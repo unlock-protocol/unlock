@@ -23,7 +23,7 @@
     "@unlock-protocol/types": "workspace:./packages/types",
     "copy-webpack-plugin": "11.0.0",
     "dotenv": "16.0.1",
-    "lint-staged": "13.0.0",
+    "lint-staged": "13.0.3",
     "next": "12.1.6",
     "path-match": "1.2.4",
     "postmate": "1.5.2",
@@ -44,7 +44,7 @@
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "10.0.1",
     "eslint": "8.16.0",
-    "nodemon": "2.0.16",
+    "nodemon": "2.0.19",
     "prettier": "2.6.2",
     "typescript": "4.7.2"
   },

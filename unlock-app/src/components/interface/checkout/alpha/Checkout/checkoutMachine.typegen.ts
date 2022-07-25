@@ -3,6 +3,7 @@
 export interface Typegen0 {
   '@@xstate/typegen': true
   eventsCausingActions: {
+    updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
     selectLock: 'SELECT_LOCK'
     disconnect: 'DISCONNECT'
     selectQuantity: 'SELECT_QUANTITY'
