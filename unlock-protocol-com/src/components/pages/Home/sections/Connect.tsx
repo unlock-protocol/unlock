@@ -12,21 +12,21 @@ const UNLOCK_BENEFITS = [
 
 const featuredUsers = [
   {
-    link: '#',
+    link: '/guides/how-to-sell-nft-tickets-for-an-event/',
     title: 'Event ticketing',
     illustration: '/images/marketing/event.png',
     quote:
       'Membership NFTs for event ticketing, check-in, and proof of attendance',
   },
   {
-    link: '#',
+    link: '/guides/using-unlock-for-newsletters/',
     title: 'Media membership',
     illustration: '/images/marketing/newspapper.png',
     quote:
       'Membership access to content, video, streaming, music, podcast and other media',
   },
   {
-    link: '#',
+    link: '/blog/talesofelatora',
     title: 'DAO membership',
     illustration: '/images/marketing/globe.png',
     quote:
