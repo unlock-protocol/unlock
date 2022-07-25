@@ -38,6 +38,7 @@ const keysToIgnore = [
   'expiration',
   'checkedInAt',
   'lockAddress',
+  'keyholderAddress',
 ]
 
 export const MemberCardPlaceholder: React.FC<any> = () => {
@@ -161,6 +162,9 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         userAddress={keyholderAddress}
         lockAddress={metadata.lockAddress}
         network={network!}
+        loadMembers={loadMembers}
+        hasExtraData={hasExtraData}
+        hasEmail={hasEmailMetadata}
       />
       <div className="grid gap-2 justify-between grid-cols-7 mb-2">
         <div className="col-span-full	flex flex-col md:col-span-1">
@@ -263,9 +267,10 @@ export const MemberCard: React.FC<MemberCardProps> = ({
                 </Badge>
               </span>
             )}
-            {!hasExtraData && (
-              <span className="block">There is no metadata</span>
-            )}
+            <span className="block">
+              <strong>Key Holder:</strong>{' '}
+              <span>{metadata?.keyholderAddress}</span>
+            </span>
             {(hasExtraData || isCheckedIn) && (
               <>
                 {isCheckedIn && (
@@ -297,13 +302,19 @@ const AddEmailModal = ({
   userAddress,
   lockAddress,
   network,
+  hasExtraData,
+  hasEmail,
+  loadMembers,
 }: {
   isOpen: boolean
   isLockManager: boolean
   userAddress: string
   lockAddress: string
   network: number
+  hasExtraData: boolean
+  hasEmail: boolean
   setIsOpen: (status: boolean) => void
+  loadMembers?: () => void
 }) => {
   const storage = useStorageService()
 
@@ -313,27 +324,59 @@ const AddEmailModal = ({
       email: '',
     },
   })
-  const onSaveEmail = async ({ email }: FieldValues) => {
+
+  const createMetadata = async (params: any, callback?: () => void) => {
+    try {
+      const createMetadataPromise = storage.createtMetadata(params)
+      await ToastHelper.promise(createMetadataPromise, {
+        loading: 'Saving email address',
+        success: 'Email succesfully added to member',
+        error: 'There is some unexpected issue, please try again',
+      })
+      if (typeof callback === 'function') {
+        callback()
+      }
+    } catch (err: any) {
+      ToastHelper.error(err?.message || 'There is some unexpected issue')
+    }
+  }
+
+  const updateMetadata = async (params: any, callback?: () => void) => {
+    const updateMetadataPromise = storage.updatetMetadata(params)
+    await ToastHelper.promise(updateMetadataPromise, {
+      loading: 'Updating email address',
+      success: 'Email succesfully added to member',
+      error: 'There is some unexpected issue, please try again',
+    })
+    if (typeof callback === 'function') {
+      callback()
+    }
+  }
+  /**
+   * Update metadata or create a new set when not exists
+   * @param {formFields} formFields - useForm data set, all data present in form will be saved as metadata
+   */
+  const onUpdateValue = async (formFields: FieldValues) => {
     if (!isLockManager) return
     try {
       setLoading(true)
 
       const metadata = {
-        email,
+        ...formFields,
       }
 
-      const saveEmailPromise = storage.updatetMetadata({
+      const params = {
         lockAddress,
         userAddress,
         network,
         metadata,
-      })
-      await ToastHelper.promise(saveEmailPromise, {
-        loading: 'Saving email address',
-        success: 'Email succesfully added to member',
-        error: 'There is some unexpected issue, please try again',
-      })
-      setLoading(false)
+      }
+
+      if (hasExtraData) {
+        updateMetadata(params, loadMembers)
+      } else {
+        createMetadata(params, loadMembers)
+      }
     } catch (err) {
       ToastHelper.error('There is some unexpected issue, please try again')
     }
@@ -343,7 +386,7 @@ const AddEmailModal = ({
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       <div className="flex flex-col p-4 gap-3">
         <span className="font-semibold text-md mr-0">Add email for member</span>
-        <form onSubmit={handleSubmit(onSaveEmail)}>
+        <form onSubmit={handleSubmit(onUpdateValue)}>
           <Input
             type="email"
             {...register('email', {
@@ -359,7 +402,7 @@ const AddEmailModal = ({
               Abort
             </Button>
             <Button type="submit" disabled={loading}>
-              Add email
+              {hasEmail ? 'Update email' : 'Add email'}
             </Button>
           </div>
         </form>
