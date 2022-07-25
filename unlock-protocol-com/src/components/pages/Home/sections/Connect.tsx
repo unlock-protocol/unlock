@@ -54,7 +54,7 @@ export function Connect() {
       dragFree: true,
       containScroll: 'trimSnaps',
       slidesToScroll: 1,
-      loop: true,
+      draggable: false,
     },
     [
       Autoplay({
@@ -100,21 +100,29 @@ export function Connect() {
         </div>
       </div>
 
-      <div className="overflow-hidden cursor-move" ref={emblaRef}>
-        <div className="flex justify-center w-full pb-6 max-w-fit lg:max-w-md md:pb-0">
+      <div
+        className="overflow-hidden cursor-move  w-full pb-6 max-w-fit lg:max-w-md md:pb-0"
+        ref={emblaRef}
+      >
+        <div className="flex justify-center">
           {featuredUsers?.map(({ title, link, illustration, quote }, index) => {
             const key = `${title}-${index}`
               .split(' ')
               .join('-')
               .toLocaleLowerCase()
 
+            const removePointer = link === '#'
+
             return (
               <Link
                 key={key}
                 href={link}
-                className="basis-full grow-0 shrink-0"
+                className={[
+                  'basis-full grow-0 shrink-0 background-red',
+                  removePointer ? 'cursor-default' : '',
+                ].join(' ')}
               >
-                <div className="w-full bg-white glass-pane rounded-3xl ">
+                <div className="w-full bg-white rounded-3xl shadow-transparent">
                   <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
                     <p className="font-bold text-xl">{title}</p>
                   </header>
@@ -123,7 +131,7 @@ export function Connect() {
                     alt={title}
                     src={illustration}
                   />
-                  <div className="flex items-center gap-4 px-6 py-4">
+                  <div className="flex max-h-[72px] items-center gap-4 px-6 py-4">
                     <div>
                       <h4 className="font-bold block sm:hidden">{title}</h4>
                       <p className="text-sm brand-gray">{quote}</p>

@@ -16354,7 +16354,8 @@ __metadata:
     babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
     dotenv: 16.0.1
-    embla-carousel-react: 6.2.0
+    embla-carousel-autoplay: 7.0.0-rc05
+    embla-carousel-react: 7.0.0-rc05
     eslint: 8.20.0
     eslint-config-next: 12.2.2
     eslint-plugin-jest: 26.6.0
@@ -18751,7 +18752,7 @@ __metadata:
   bin:
     asc: bin/asc
     asinit: bin/asinit
-  checksum: 8a407db6179addfaa5fcc637543a755ecc22ae8dd5e8259492305afd0d2bb73eae019d4178f79b515f75648d71dfda2c1ceb0c7421bff7817aebb2e2f5c8bfe7
+  checksum: fda292f6b3b8b4a9bd4457c9143e50145f8473f3d664e48c057638a9bb1c8e890cd4de4e38e18dd4334240394621cfd9d01afee344ab049c5a7072fe855329b5
   languageName: node
   linkType: hard
 
@@ -25342,21 +25343,30 @@ __metadata:
   languageName: node
   linkType: hard
 
-"embla-carousel-react@npm:6.2.0":
-  version: 6.2.0
-  resolution: "embla-carousel-react@npm:6.2.0"
-  dependencies:
-    embla-carousel: 6.2.0
+"embla-carousel-autoplay@npm:7.0.0-rc05":
+  version: 7.0.0-rc05
+  resolution: "embla-carousel-autoplay@npm:7.0.0-rc05"
   peerDependencies:
-    react: ^17.0.2
-  checksum: 3313cf43c203ace93c4cd7351611511bf9859694f116bb239abd327496131c26c5bbfac9ce025adc5f550bc0c6418dd9effd8c2ee104414e3f9111ee96e90c8f
+    embla-carousel: 7.0.0-rc05
+  checksum: 8238d422873dc21d81466400ed16becaad4b8409739a8942173e2f5c327d2035f80192bde9da027af1e3c30d8b650c64525d1863af65754311854471c24a0afd
   languageName: node
   linkType: hard
 
-"embla-carousel@npm:6.2.0":
-  version: 6.2.0
-  resolution: "embla-carousel@npm:6.2.0"
-  checksum: feaca1fa45ea58b34a80c4b0fd9648b014b09f4c9f29aef8a26ecb0a645168ddb9f7ffcc202cc68a9b4c416b271687d308ea63f598765ac44bcbb4e4d5851921
+"embla-carousel-react@npm:7.0.0-rc05":
+  version: 7.0.0-rc05
+  resolution: "embla-carousel-react@npm:7.0.0-rc05"
+  dependencies:
+    embla-carousel: 7.0.0-rc05
+  peerDependencies:
+    react: ^18.1.0
+  checksum: d6d579b047e7ba106653c052e30b198f74288e7cfb501d3212e6516afa5417b9539415a546e38e21ba1fe97069db4c809be3317eaee2bd963bf530a6b73eef5c
+  languageName: node
+  linkType: hard
+
+"embla-carousel@npm:7.0.0-rc05":
+  version: 7.0.0-rc05
+  resolution: "embla-carousel@npm:7.0.0-rc05"
+  checksum: 7cfe080ab3bdfc013a7d4304a3deb6f2aeef34f1c8f613f5d5760995dcb91512787edac534830d5c22aaa803e6377b3964cf4d2a41eb519f1d6cd297d9a2cbee
   languageName: node
   linkType: hard
 
@@ -25544,16 +25554,6 @@ __metadata:
     graceful-fs: ^4.2.4
     tapable: ^2.2.0
   checksum: d79fbe531106448b768bb0673fb623ec0202d7ee70373ab7d4f4745d5dfe0806f38c9db7e7da8c941288fe475ab3d538db3791fce522056eeea40ca398c9e287
-  languageName: node
-  linkType: hard
-
-"enhanced-resolve@npm:^5.9.3":
-  version: 5.9.3
-  resolution: "enhanced-resolve@npm:5.9.3"
-  dependencies:
-    graceful-fs: ^4.2.4
-    tapable: ^2.2.0
-  checksum: 64c2dbbdd608d1a4df93b6e60786c603a1faf3b2e66dfd051d62cf4cfaeeb5e800166183685587208d62e9f7afff3f78f3d5978e32cd80125ba0c83b59a79d78
   languageName: node
   linkType: hard
 
@@ -55684,43 +55684,6 @@ typescript@^3.8.3:
   bin:
     webpack: bin/webpack.js
   checksum: 013fa24c00d4261e16ebca60353fa6f848e417b5a44bdf28c16ebebd67fa61e960420bb314c8df05cfe2dad9b90efabcf38fd6875f2361922769a0384085ef1e
-  languageName: node
-  linkType: hard
-
-"webpack@npm:5.73.0":
-  version: 5.73.0
-  resolution: "webpack@npm:5.73.0"
-  dependencies:
-    "@types/eslint-scope": ^3.7.3
-    "@types/estree": ^0.0.51
-    "@webassemblyjs/ast": 1.11.1
-    "@webassemblyjs/wasm-edit": 1.11.1
-    "@webassemblyjs/wasm-parser": 1.11.1
-    acorn: ^8.4.1
-    acorn-import-assertions: ^1.7.6
-    browserslist: ^4.14.5
-    chrome-trace-event: ^1.0.2
-    enhanced-resolve: ^5.9.3
-    es-module-lexer: ^0.9.0
-    eslint-scope: 5.1.1
-    events: ^3.2.0
-    glob-to-regexp: ^0.4.1
-    graceful-fs: ^4.2.9
-    json-parse-even-better-errors: ^2.3.1
-    loader-runner: ^4.2.0
-    mime-types: ^2.1.27
-    neo-async: ^2.6.2
-    schema-utils: ^3.1.0
-    tapable: ^2.1.1
-    terser-webpack-plugin: ^5.1.3
-    watchpack: ^2.3.1
-    webpack-sources: ^3.2.3
-  peerDependenciesMeta:
-    webpack-cli:
-      optional: true
-  bin:
-    webpack: bin/webpack.js
-  checksum: aa434a241bad6176b68e1bf0feb1972da4dcbf27cb3d94ae24f6eb31acc37dceb9c4aae55e068edca75817bfe91f13cd20b023ac55d9b1b2f8b66a4037c9468f
   languageName: node
   linkType: hard
 
