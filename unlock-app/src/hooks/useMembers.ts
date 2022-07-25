@@ -104,6 +104,13 @@ export const useMembers = ({
   const [members, setMembers] = useState({})
   const [loading, setLoading] = useState(true)
   const [isLockManager, setIsLockManager] = useState(false)
+  const [membersCount, setMembersCount] = useState<{
+    total: number
+    active: number
+  }>({
+    active: 0,
+    total: 0,
+  })
 
   const login = async () => {
     if (!storageService) return
@@ -194,6 +201,26 @@ export const useMembers = ({
       ToastHelper.error('There is some unexpected issue, please try again')
     }
   }
+
+  const getMembersCount = async () => {
+    const {
+      data: { activeKeys, totalKeys },
+    } = await graphService.keysCount(lockAddresses)
+
+    // get total for every locks
+    const locksActiveList: number[] = activeKeys.map(
+      (lock: any) => lock?.keys?.length
+    )
+    const locksTotalList: number[] = totalKeys.map(
+      (lock: any) => lock?.keys?.length
+    )
+
+    // return active/total count as sum of every active/total lock count
+    setMembersCount({
+      active: locksActiveList.reduce((acc, curr) => acc + curr),
+      total: locksTotalList.reduce((acc, curr) => acc + curr),
+    })
+  }
   /**
    * When the keyHolders object changes, load the metadata
    */
@@ -208,9 +235,21 @@ export const useMembers = ({
     expiration,
   ])
 
+  useEffect(() => {
+    getMembersCount()
+  }, [])
+
   const list: any = Object.values(members)
   const columns = generateColumns(list)
-  return { loading, list, columns, hasNextPage, isLockManager, loadMembers }
+  return {
+    loading,
+    list,
+    columns,
+    hasNextPage,
+    isLockManager,
+    loadMembers,
+    membersCount,
+  }
 }
 
 export default useMembers
