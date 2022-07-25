@@ -54,7 +54,7 @@ export const Drawer = ({
                     <CloseIcon size="25px" onClick={() => setIsOpen(false)} />
                   </div>
                 </Transition.Child>
-                <div className="h-full flex flex-col py-6 bg-[#FFFDF8] shadow-xl overflow-y-scroll">
+                <div className="h-full flex flex-col py-6 bg-brand-beige shadow-xl overflow-y-scroll">
                   <div className="px-4 sm:px-6">
                     {title && (
                       <Dialog.Title className="text-lg font-medium text-gray-900">
