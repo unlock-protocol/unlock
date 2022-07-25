@@ -320,7 +320,6 @@ const AddEmailModal = ({
   loadMembers?: () => void
 }) => {
   const storage = useStorageService()
-  console.log(extraDataItems)
 
   const [loading, setLoading] = useState(false)
   const { register, handleSubmit } = useForm({
