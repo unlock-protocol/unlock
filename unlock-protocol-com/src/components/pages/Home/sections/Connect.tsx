@@ -34,7 +34,7 @@ const featuredUsers = [
       'Seasonal, time-based, or perpetual DAO memberships, community, and event access',
   },
   {
-    link: '#',
+    link: '/blog/cdaa-unlock-case-study',
     title: 'Certification credentials',
     illustration: '/images/marketing/certificate.png',
     quote: 'On-chain certification NFTs for skills and continuing education',
