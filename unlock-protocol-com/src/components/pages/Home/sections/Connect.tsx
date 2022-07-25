@@ -1,8 +1,9 @@
 import { Button } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import useEmblaCarousel from 'embla-carousel-react'
 import { unlockConfig } from '../../../../config/unlock'
 import { Link } from '../../../helpers/Link'
 import { BulletPointIcon } from '../../../icons'
+import Autoplay from 'embla-carousel-autoplay'
 
 const UNLOCK_BENEFITS = [
   'Create memberships and sell access NFTs in minutes',
@@ -48,16 +49,19 @@ const featuredUsers = [
 ]
 
 export function Connect() {
-  const [featured, setFeatured] = useState(1)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFeatured((featured + 1) % featuredUsers.length)
-    }, 5000)
-    return () => {
-      clearInterval(interval)
-    }
-  })
+  const [emblaRef] = useEmblaCarousel(
+    {
+      dragFree: true,
+      containScroll: 'trimSnaps',
+      slidesToScroll: 1,
+      loop: true,
+    },
+    [
+      Autoplay({
+        delay: 5000,
+      }),
+    ]
+  )
 
   return (
     <section className="flex flex-col-reverse items-center justify-between mx-auto lg:space-x-16 max-w-7xl md:gap-6 md:flex-row">
@@ -96,31 +100,40 @@ export function Connect() {
         </div>
       </div>
 
-      <div className="flex justify-center w-full pb-6 max-w-fit lg:max-w-md md:pb-0">
-        <Link href={featuredUsers[featured]?.link}>
-          <div className="w-full bg-white glass-pane rounded-3xl ">
-            <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
-              <p className="font-bold text-xl">
-                {featuredUsers[featured]?.title}
-              </p>
-            </header>
-            <img
-              className="w-full h-96 object-cover rounded-t-xl sm:rounded-none"
-              alt={featuredUsers[featured]?.title}
-              src={featuredUsers[featured]?.illustration}
-            />
-            <div className="flex items-center gap-4 px-6 py-4">
-              <div>
-                <h4 className="font-bold block sm:hidden">
-                  {featuredUsers[featured]?.title}
-                </h4>
-                <p className="text-sm brand-gray">
-                  {featuredUsers[featured]?.quote}
-                </p>
-              </div>
-            </div>
-          </div>
-        </Link>
+      <div className="overflow-hidden cursor-move" ref={emblaRef}>
+        <div className="flex justify-center w-full pb-6 max-w-fit lg:max-w-md md:pb-0">
+          {featuredUsers?.map(({ title, link, illustration, quote }, index) => {
+            const key = `${title}-${index}`
+              .split(' ')
+              .join('-')
+              .toLocaleLowerCase()
+
+            return (
+              <Link
+                key={key}
+                href={link}
+                className="basis-full grow-0 shrink-0"
+              >
+                <div className="w-full bg-white glass-pane rounded-3xl ">
+                  <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
+                    <p className="font-bold text-xl">{title}</p>
+                  </header>
+                  <img
+                    className="w-full h-96 object-cover rounded-t-xl sm:rounded-none"
+                    alt={title}
+                    src={illustration}
+                  />
+                  <div className="flex items-center gap-4 px-6 py-4">
+                    <div>
+                      <h4 className="font-bold block sm:hidden">{title}</h4>
+                      <p className="text-sm brand-gray">{quote}</p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            )
+          })}
+        </div>
       </div>
     </section>
   )
