@@ -13,7 +13,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-import { Shell } from '../Shell'
+import { CheckoutHead, CloseButton } from '../Shell'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
@@ -255,8 +255,11 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
   }
 
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[80vh]">
+      <div className="flex items-center justify-end mt-4 mx-4">
+        <CloseButton onClick={() => onClose()} />
+      </div>
+      <CheckoutHead
         title={paywallConfig.title}
         iconURL={iconURL}
         description={description}
@@ -303,7 +306,7 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
           <ProgressFinishIcon disabled />
         </div>
       </div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
+      <main className="p-6 overflow-auto h-full">
         <div className="flex items-start justify-between">
           <h3 className="font-bold text-xl">
             {quantity}X {lock!.name}
@@ -379,6 +382,6 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
         </Connected>
         <PoweredByUnlock />
       </footer>
-    </Shell.Root>
+    </div>
   )
 }

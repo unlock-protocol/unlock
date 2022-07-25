@@ -13,7 +13,7 @@ import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { Shell } from '../Shell'
+import { CheckoutHead, CloseButton } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
@@ -95,8 +95,11 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
   }, [mint, lock, config, send, communication, account, messageToSign])
 
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[80vh]">
+      <div className="flex items-center justify-end mt-4 mx-4">
+        <CloseButton onClick={() => onClose()} />
+      </div>
+      <CheckoutHead
         title={paywallConfig.title}
         iconURL={iconURL}
         description={description}
@@ -115,7 +118,7 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
         </div>
         <div className="border-t-4 w-full flex-1"></div>
       </div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
+      <main className="p-6 overflow-auto h-full">
         <div className="space-y-6 justify-items-center grid">
           {status && <AnimationContent status={status} />}
           {mint?.status === 'ERROR' && (
@@ -154,6 +157,6 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
         </Connected>
         <PoweredByUnlock />
       </footer>
-    </Shell.Root>
+    </div>
   )
 }

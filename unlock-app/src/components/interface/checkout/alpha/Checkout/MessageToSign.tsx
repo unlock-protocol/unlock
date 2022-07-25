@@ -5,7 +5,7 @@ import { Button } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
-import { Shell } from '../Shell'
+import { CheckoutHead, CloseButton } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
@@ -48,8 +48,11 @@ export function MessageToSign({
   }
 
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[80vh]">
+      <div className="flex items-center justify-end mt-4 mx-4">
+        <CloseButton onClick={() => onClose()} />
+      </div>
+      <CheckoutHead
         title={paywallConfig.title}
         iconURL={iconURL}
         description={description}
@@ -88,7 +91,7 @@ export function MessageToSign({
           <ProgressFinishIcon disabled />
         </div>
       </div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
+      <main className="p-6 overflow-auto h-full">
         <pre className="text-brand-gray whitespace-pre-wrap">
           {messageToSign}
         </pre>
@@ -109,6 +112,6 @@ export function MessageToSign({
         </Connected>
         <PoweredByUnlock />
       </footer>
-    </Shell.Root>
+    </div>
   )
 }

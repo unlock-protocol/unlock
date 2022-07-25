@@ -4,13 +4,13 @@ import { useConfig } from '~/utils/withConfig'
 import { Connected } from '../Connected'
 import { Lock } from '../Lock'
 import { useActor } from '@xstate/react'
-import { Shell } from '../Shell'
+import { CheckoutHead, CloseButton } from '../Shell'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useState } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { ProgressCircleIcon } from '../Progress'
+import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 interface Props {
   injectedProvider: unknown
@@ -30,13 +30,16 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
   const { title, description, iconURL } =
     useCheckoutHeadContent(checkoutService)
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[80vh]">
+      <div className="flex items-center justify-end mt-4 mx-4">
+        <CloseButton onClick={() => onClose()} />
+      </div>
+      <CheckoutHead
         title={paywallConfig.title}
         iconURL={iconURL}
         description={description}
       />
-      <div className="flex px-6 mt-6 flex-wrap items-center w-full gap-2">
+      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
         <div className="flex items-center gap-2 col-span-4">
           <div className="flex items-center gap-0.5">
             <ProgressCircleIcon />
@@ -50,9 +53,10 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
           {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
           <ProgressCircleIcon disabled />
           <ProgressCircleIcon disabled />
+          <ProgressFinishIcon disabled />
         </div>
       </div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
+      <main className="p-6 overflow-auto h-full">
         {Object.entries(networkToLocks).map(([network, locks]) => (
           <section key={network}>
             <header>
@@ -109,6 +113,6 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
         />
         <PoweredByUnlock />
       </footer>
-    </Shell.Root>
+    </div>
   )
 }

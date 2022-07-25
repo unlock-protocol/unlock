@@ -50,7 +50,7 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
 
   return (
     <div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
+      <main className="p-6 overflow-auto h-full">
         <div className="space-y-4">
           <div className="flex items-center gap-2">
             <button

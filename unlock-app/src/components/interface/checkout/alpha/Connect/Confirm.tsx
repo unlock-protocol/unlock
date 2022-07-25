@@ -7,7 +7,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { createMessageToSignIn } from '~/utils/oauth'
 import { Connected } from '../Connected'
 import { ConnectService } from './connectMachine'
-import { Shell } from '../Shell'
+import { CheckoutHead, CloseButton } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
@@ -57,14 +57,11 @@ export function ConfirmConnect({
   }
 
   return (
-    <Shell.Root
-      onClose={() =>
-        onClose({
-          error: 'User did not sign the message',
-        })
-      }
-    >
-      <main className="p-6 overflow-auto h-64 sm:h-72">
+    <div className="bg-white max-w-md rounded-xl flex flex-col h-[40vh]">
+      <div className="flex items-center justify-end mt-4 mx-4">
+        <CloseButton onClick={() => onClose()} />
+      </div>
+      <main className="p-6 overflow-auto h-full">
         <div className="space-y-4">
           <header>
             <h1 className="font-medium text-xl">
@@ -105,6 +102,6 @@ export function ConfirmConnect({
         </Connected>
         <PoweredByUnlock />
       </footer>
-    </Shell.Root>
+    </div>
   )
 }

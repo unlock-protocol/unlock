@@ -1,7 +1,7 @@
 import { Button, Icon } from '@unlock-protocol/ui'
 import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
-import { Shell } from '../Shell'
+import { CheckoutHead, CloseButton } from '../Shell'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
@@ -28,8 +28,11 @@ export function Returning({
     useCheckoutHeadContent(checkoutService)
 
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[80vh]">
+      <div className="flex items-center justify-end mt-4 mx-4">
+        <CloseButton onClick={() => onClose()} />
+      </div>
+      <CheckoutHead
         title={paywallConfig.title}
         iconURL={iconURL}
         description={description}
@@ -48,7 +51,7 @@ export function Returning({
         </div>
         <div className="border-t-4 w-full flex-1"></div>
       </div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
+      <main className="p-6 overflow-auto h-full">
         <div className="space-y-6 justify-items-center grid">
           <div className="grid justify-items-center">
             <Lottie
@@ -91,6 +94,6 @@ export function Returning({
           </div>
         </Connected>
       </footer>
-    </Shell.Root>
+    </div>
   )
 }

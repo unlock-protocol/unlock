@@ -15744,7 +15744,7 @@ __metadata:
     jest: 27.5.1
     jest-canvas-mock: 2.4.0
     jest-fetch-mock: 3.0.3
-    jest-mock-axios: ^4.6.1
+    jest-mock-axios: 4.6.1
     jest-styled-components: 7.0.8
     js-base64: 3.7.2
     lottie-react: 2.2.1
@@ -15758,6 +15758,7 @@ __metadata:
     qr-scanner: 1.4.1
     qrcode.react: 3.0.2
     react: 17.0.2
+    react-crypto-icons: ^1.0.5
     react-dom: 17.0.2
     react-google-recaptcha: 2.1.0
     react-gtm-module: 2.0.11
@@ -34608,7 +34609,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"jest-mock-axios@npm:^4.6.1":
+"jest-mock-axios@npm:4.6.1":
   version: 4.6.1
   resolution: "jest-mock-axios@npm:4.6.1"
   dependencies:
@@ -44227,6 +44228,16 @@ fsevents@~2.1.1:
     react: ">=16.8.0"
     react-dom: ">=16.8.0"
   checksum: eabecd223a2984c9f35118a42f09b0283aa0a5037c1e4bbecca37002ca0789d83d9adb932123bd78e9b856451ea0784e21e08addb06a978954cb3aa82b9f5c4b
+  languageName: node
+  linkType: hard
+
+"react-crypto-icons@npm:^1.0.5":
+  version: 1.0.5
+  resolution: "react-crypto-icons@npm:1.0.5"
+  peerDependencies:
+    react: ^17.0.2
+    react-dom: ^17.0.2
+  checksum: 73ada927e2c5cee00d585a3a0bc4b0f195990f2f0f52ab2736a93db25988c3cd02398620442259189ad74a870719bfb62ce3b9a02a2c609ce0a2a77a5caa2995
   languageName: node
   linkType: hard
 

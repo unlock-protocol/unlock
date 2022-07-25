@@ -2,7 +2,7 @@ import { useActor } from '@xstate/react'
 import { UnlockAccount } from '../UnlockAccount'
 import { CheckoutService } from './checkoutMachine'
 import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
-import { Shell } from '../Shell'
+import { CheckoutHead, CloseButton } from '../Shell'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 interface Props {
@@ -24,8 +24,11 @@ export function UnlockAccountSignIn({
     .unlockAccount as UnlockAccountService
 
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[80vh]">
+      <div className="flex items-center justify-end mt-4 mx-4">
+        <CloseButton onClick={() => onClose()} />
+      </div>
+      <CheckoutHead
         title={paywallConfig.title}
         iconURL={iconURL}
         description={description}
@@ -56,6 +59,6 @@ export function UnlockAccountSignIn({
         unlockAccountService={unlockAccountService}
         injectedProvider={injectedProvider}
       />
-    </Shell.Root>
+    </div>
   )
 }

@@ -22,7 +22,7 @@ import {
 import { countries } from '~/utils/countries'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-import { Shell } from '../Shell'
+import { CheckoutHead, CloseButton } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
@@ -60,8 +60,11 @@ export function CardPayment({
   const card = data?.[0]
 
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[80vh]">
+      <div className="flex items-center justify-end mt-4 mx-4">
+        <CloseButton onClick={() => onClose()} />
+      </div>
+      <CheckoutHead
         title={paywallConfig.title}
         iconURL={iconURL}
         description={description}
@@ -88,7 +91,7 @@ export function CardPayment({
           <ProgressFinishedIcon disabled />
         </div>
       </div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
+      <main className="p-6 overflow-auto h-full">
         <Elements stripe={stripe}>
           {isLoading ? (
             <CardPlaceholder />
@@ -139,7 +142,7 @@ export function CardPayment({
         </Connected>
         <PoweredByUnlock />
       </footer>
-    </Shell.Root>
+    </div>
   )
 }
 
