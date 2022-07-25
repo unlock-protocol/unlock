@@ -84,9 +84,9 @@ export function CardPayment({
                 event.preventDefault()
                 send('BACK')
               }}
-              className="p-2 w-16 bg-brand-ui-primary inline-flex items-center justify-center rounded-full"
+              className="p-2 w-20 bg-brand-ui-primary inline-flex items-center justify-center rounded-full"
             >
-              <div className="p-0.5 w-12 bg-white rounded-full"></div>
+              <div className="p-0.5 w-16 bg-white rounded-full"></div>
             </button>
             <h4 className="text-sm "> {title}</h4>
           </div>

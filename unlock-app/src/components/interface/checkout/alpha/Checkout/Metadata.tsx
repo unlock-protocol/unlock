@@ -153,6 +153,13 @@ export function Metadata({
                   send('QUANTITY')
                 }}
               />
+              <IconButton
+                title="Select payment method"
+                icon={ProgressCircleIcon}
+                onClick={() => {
+                  send('PAYMENT')
+                }}
+              />
               <ProgressCircleIcon />
             </div>
             <h4 className="text-sm "> {title}</h4>
