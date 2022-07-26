@@ -7,7 +7,7 @@ description: As Rinkeby is getting deprecated, the Unlock Protocol has now been 
 image: images/blog/goerli/goerli-logo.png
 ---
 
-After years of loyal services, the Rinkeby test network is about to [retire](https://twitter.com/peter_szilagyi/status/1526065746165567488?s=20&t=DWU3cGfm2GNgCQlIyPIjMQ) and will no longer receive protocol upgrades. We have decided to redeploy our contracts on another testnet: [Goerli](https://goerli.net/).
+After years of loyal service, the Rinkeby test network is about to [retire](https://twitter.com/peter_szilagyi/status/1526065746165567488?s=20&t=DWU3cGfm2GNgCQlIyPIjMQ) and will no longer receive protocol upgrades. We have decided to redeploy our contracts on another testnet: [Goerli](https://goerli.net/).
 
 ## Why use a test network?
 
