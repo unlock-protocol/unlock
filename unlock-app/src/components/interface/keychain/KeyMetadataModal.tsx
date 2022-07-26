@@ -10,6 +10,21 @@ interface MetadataModalProps {
   network: number
   lock: any
 }
+
+const KeyMetadataPlaceholder = () => {
+  return (
+    <div className="flex flex-col gap-3 p-4">
+      <div className="w-[120px] h-[24px] bg-slate-200 animate-pulse"></div>
+      <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
+      <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
+      <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
+      <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
+      <div className="flex">
+        <div className="ml-auto w-[100px] h-[40px] bg-slate-200 animate-pulse rounded-full"></div>
+      </div>
+    </div>
+  )
+}
 export const KeyMetadataModal = ({
   isOpen,
   setIsOpen,
@@ -24,23 +39,22 @@ export const KeyMetadataModal = ({
 
   useEffect(() => {
     if (!isOpen) return
-    getMetadata()
-  }, [isOpen])
 
-  const getMetadata = async () => {
-    if (!isOpen) return
-    setLoading(true)
-    const data = await storageService.getKeyMetadataValues({
-      lockAddress: lock.address,
-      keyId: parseInt(keyId, 10),
-      network,
-    })
-    setLoading(false)
-    setMetadata({
-      ...data?.userMetadata?.protected,
-      ...data?.userMetadata?.public,
-    })
-  }
+    const getData = async () => {
+      setLoading(true)
+      const data = await storageService.getKeyMetadataValues({
+        lockAddress: lock.address,
+        keyId: parseInt(keyId, 10),
+        network,
+      })
+      setLoading(false)
+      setMetadata({
+        ...data?.userMetadata?.protected,
+        ...data?.userMetadata?.public,
+      })
+    }
+    getData()
+  }, [isOpen, keyId, lock.address, network, storageService])
 
   const values = Object.entries(metadata ?? {})
   const hasValues = values?.length > 0
@@ -50,16 +64,7 @@ export const KeyMetadataModal = ({
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       {loading ? (
-        <div className="flex flex-col gap-3 p-4">
-          <div className="w-[120px] h-[24px] bg-slate-200 animate-pulse"></div>
-          <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
-          <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
-          <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
-          <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
-          <div className="flex">
-            <div className="ml-auto w-[100px] h-[40px] bg-slate-200 animate-pulse rounded-full"></div>
-          </div>
-        </div>
+        <KeyMetadataPlaceholder />
       ) : (
         <div className="flex flex-col gap-3 p-4 min-h-[300px] text-left">
           <span className="font-semibold text-lg">
