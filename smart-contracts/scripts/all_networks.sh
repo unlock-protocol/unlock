@@ -8,14 +8,14 @@
 
 ## all networks
 all_networks=(
-   # "goerli" 
-   # "rinkeby" 
-   # "mumbai" 
+   "goerli" 
+   "rinkeby" 
+   "mumbai" 
    "polygon"
    "xdai" 
    "bsc" 
    "optimism"
-   # "mainnet" 
+   "mainnet" 
 )
 
 # dry run once on localhost (just checking for errors)
