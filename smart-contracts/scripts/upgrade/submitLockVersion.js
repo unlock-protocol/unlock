@@ -12,7 +12,7 @@
  * NB: You can first test on mainnet to make sure the template is deploying correctly * :
  *
  * ```
- * RUN_MAINNET_FORK=1 yarn hardhat run scripts/upgrade/submitLockVersion.js
+ * RUN_MAINNET_FORK=1 hardhat submit:version
  * ```
  */
 const { ethers } = require('hardhat')
@@ -27,7 +27,7 @@ const {
   deployLock,
 } = require('../../test/helpers')
 
-async function main({ publicLockAddress }) {
+async function main({ publicLockAddress } = {}) {
   // make sure we get the correct chain id on local mainnet fork
   const { chainId } = process.env.RUN_MAINNET_FORK
     ? { chainId: '1' }
@@ -93,7 +93,11 @@ async function main({ publicLockAddress }) {
     })
     const unlock = await ethers.getContractAt('Unlock', unlockAddress)
     const lock = await deployLock({ unlock })
-    console.log(`Lock ${await lock.name()} deployed at ${lock.address}.`)
+    console.log(
+      `Lock ${await lock.name()} (${await lock.publicLockVersion()}) deployed at ${
+        lock.address
+      }.`
+    )
   }
 }
 
