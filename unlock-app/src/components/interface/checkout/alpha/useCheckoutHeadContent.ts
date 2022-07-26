@@ -19,7 +19,6 @@ export function useCheckoutHeadContent(checkoutService: CheckoutService) {
         'Excellent choice! You might be able to add more than one membership below.',
       metadata:
         'Please enter the required information below in order to include it into your NFT.',
-      payment: 'Please select one of the payment methods to continue.',
       confirmed: "Let's have a last look before we process the payment.",
       card: "Let's choose the card to pay for the NFT membership.",
       messageToSign: 'Please sign the message provided by the lock owner.',
@@ -50,10 +49,6 @@ export function useCheckoutHeadContent(checkoutService: CheckoutService) {
     MINTING: {
       title: 'Minting membership NFT',
       description: descriptions.minting,
-    },
-    PAYMENT: {
-      title: 'Choose Payment',
-      description: descriptions.payment,
     },
     CARD: {
       title: 'Add card',

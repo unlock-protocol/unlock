@@ -69,7 +69,7 @@ export function CheckoutPage() {
   }
   return (
     <Container>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[80vh]">
+      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
         <div className="flex items-center justify-end mt-4 mx-4">
           <CloseButton
             onClick={() => {

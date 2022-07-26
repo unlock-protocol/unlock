@@ -13,7 +13,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-import { CheckoutHead, CloseButton } from '../Shell'
+import { BackButton, CheckoutHead, CloseButton } from '../Shell'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
@@ -255,8 +255,9 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
   }
 
   return (
-    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[80vh]">
-      <div className="flex items-center justify-end mt-4 mx-4">
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
+      <div className="flex items-center justify-between p-6">
+        <BackButton onClick={() => send('BACK')} />
         <CloseButton onClick={() => onClose()} />
       </div>
       <CheckoutHead
@@ -264,7 +265,7 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
         iconURL={iconURL}
         description={description}
       />
-      <div className="flex px-6 mt-6 flex-wrap items-center w-full gap-2">
+      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
         <div className="flex items-center gap-2 col-span-4">
           <div className="flex items-center gap-0.5">
             <IconButton
@@ -306,7 +307,7 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
           <ProgressFinishIcon disabled />
         </div>
       </div>
-      <main className="p-6 overflow-auto h-full">
+      <main className="px-6 py-2 overflow-auto h-full">
         <div className="flex items-start justify-between">
           <h3 className="font-bold text-xl">
             {quantity}X {lock!.name}

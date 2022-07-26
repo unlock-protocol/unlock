@@ -13,7 +13,6 @@ import { useActor, useInterpret, useSelector } from '@xstate/react'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
-import { Payment } from './Payment'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
@@ -83,15 +82,6 @@ export function Checkout({
     case 'QUANTITY': {
       return (
         <Quantity
-          onClose={onClose}
-          injectedProvider={injectedProvider}
-          checkoutService={checkoutService}
-        />
-      )
-    }
-    case 'PAYMENT': {
-      return (
-        <Payment
           onClose={onClose}
           injectedProvider={injectedProvider}
           checkoutService={checkoutService}

@@ -4,15 +4,18 @@ import React, {
   ReactNode,
   forwardRef,
 } from 'react'
-import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+import {
+  RiCloseLine as CloseIcon,
+  RiArrowLeftLine as BackIcon,
+} from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
 import { Transition } from '@headlessui/react'
 
-interface CloseButtonProps {
+interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>
 }
 
-export const CloseButton = forwardRef<HTMLButtonElement, CloseButtonProps>(
+export const CloseButton = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ onClick }, ref) => {
     return (
       <button
@@ -33,6 +36,28 @@ export const CloseButton = forwardRef<HTMLButtonElement, CloseButtonProps>(
 )
 
 CloseButton.displayName = 'Close Button'
+
+export const BackButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ onClick }, ref) => {
+    return (
+      <button
+        ref={ref}
+        onClick={onClick}
+        className="flex items-center justify-center rounded group"
+        aria-label="Close"
+        type="button"
+      >
+        <BackIcon
+          className="fill-black group-hover:fill-brand-ui-primary"
+          size={24}
+          key="close"
+        />
+      </button>
+    )
+  }
+)
+
+BackButton.displayName = 'Back Button'
 
 interface CheckoutTransitionProps {
   children?: ReactNode
@@ -68,7 +93,7 @@ export function CheckoutHead({
   iconURL,
 }: CheckoutHeadProps) {
   return (
-    <header className="px-6 py-4 space-y-2">
+    <header className="px-6 pt-2 space-y-2">
       <div className="flex flex-1 inset-0 flex-wrap items-center gap-6">
         <Avatar.Root>
           <Avatar.Image
@@ -87,7 +112,7 @@ export function CheckoutHead({
           <p className="text-base text-brand-dark"> Membership </p>
         </div>
       </div>
-      <p className="text-base text-brand-dark overflow line-clamp-2">
+      <p className="text-base text-brand-dark overflow line-clamp-2 h-12">
         {description}
       </p>
     </header>

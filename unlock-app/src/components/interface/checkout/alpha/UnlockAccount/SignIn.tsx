@@ -48,43 +48,26 @@ export function SignIn({ unlockAccountService, signIn }: Props) {
   }
 
   return (
-    <div>
-      <main className="p-6 overflow-auto h-full">
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <button
-              aria-label="back"
-              onClick={(event) => {
-                event.preventDefault()
-                send('BACK')
-              }}
-            >
-              <LeftArrowIcon
-                className="group-hover:fill-brand-ui-primary group-hover:-translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
-                size={20}
-              />
-            </button>
-            <h3 className="font-bold">
-              Nice to see you again! Please enter the password you created
-              previously
-            </h3>
-          </div>
-
-          <form id="password" onSubmit={handleSubmit(onSubmit)}>
-            <Input
-              label="Password"
-              type="password"
-              size="small"
-              placeholder="password"
-              required
-              error={errors?.password?.message as any as string}
-              description={'Enter your password'}
-              {...register('password', {
-                required: true,
-              })}
-            />
-          </form>
-        </div>
+    <div className="h-full flex flex-col justify-between">
+      <main className="px-6 pb-2 space-y-2 overflow-auto h-full">
+        <h3 className="font-bold ml-0.5">
+          Nice to see you again! Please enter the password you created
+          previously
+        </h3>
+        <form id="password" onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            label="Password"
+            type="password"
+            size="small"
+            placeholder="password"
+            required
+            error={errors?.password?.message as any as string}
+            description={'Enter your password'}
+            {...register('password', {
+              required: true,
+            })}
+          />
+        </form>
       </main>
       <footer className="px-6 pt-6 border-t grid items-center">
         <Button
