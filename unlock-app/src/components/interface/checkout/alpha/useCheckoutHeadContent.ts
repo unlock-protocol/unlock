@@ -18,11 +18,11 @@ export function useCheckoutHeadContent(checkoutService: CheckoutService) {
       quantity:
         'Excellent choice! You might be able to add more than one membership below.',
       metadata:
-        'Please enter the required information below in order to included into your NFT.',
+        'Please enter the required information below in order to include it into your NFT.',
       confirmed: "Let's have a last look before we process the payment.",
-      card: "Let's choose the card to pay for the NFT membership. Add card if you don't any.",
-      messageToSign: 'You need to sign the message provided by the lock owner.',
-      captcha: 'You need to solve captcha to continue.',
+      card: "Let's choose the card to pay for the NFT membership.",
+      messageToSign: 'Please sign the message provided by the lock owner.',
+      captcha: 'Please solve the captcha to continue.',
       returning:
         'We detected there is a membership NFT in your wallet, enjoy it!',
     },
