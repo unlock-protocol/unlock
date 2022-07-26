@@ -248,9 +248,13 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
               onChange: addressFieldChanged('email'),
             })}
           />
-          {errors.email && (
-            <p className="text-xs text-[#f24c15]">
-              Please make sure you enter a valid email
+          {!errors.email && (
+            <p className="text-xs italic">
+              If you enter the recipient email address, they will receive an
+              email to confirm the airdrop, as well as a link to view their NFT.
+              The email will also include a QR code of the signed NFT that they
+              can use to prove that they own it in when attending in person
+              events.
             </p>
           )}
         </div>
