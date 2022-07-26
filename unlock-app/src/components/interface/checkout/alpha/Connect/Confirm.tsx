@@ -24,7 +24,7 @@ export function ConfirmConnect({
   onClose,
 }: Props) {
   const [loading, setLoading] = useState(false)
-  const { account, network = 1, signMessage } = useAuth()
+  const { account, network = 1, signMessage, isUnlockAccount } = useAuth()
   const onSignIn = async () => {
     setLoading(true)
     try {
@@ -98,7 +98,9 @@ export function ConfirmConnect({
             iconLeft={<Icon icon={EthereumIcon} size="medium" key="ethereum" />}
             className="w-full"
           >
-            {loading ? 'Please sign the message' : 'Sign-in with Ethereum'}
+            {loading && !isUnlockAccount
+              ? 'Please sign the message'
+              : 'Sign-in with Ethereum'}
           </Button>
         </Connected>
         <PoweredByUnlock />

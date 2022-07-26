@@ -9,14 +9,14 @@
   },
   "dependencies": {
     "@gnosis.pm/safe-core-sdk": "2.0.0",
-    "@gnosis.pm/safe-ethers-lib": "^1.1.0",
+    "@gnosis.pm/safe-ethers-lib": "1.1.0",
     "@nomiclabs/hardhat-ethers": "2.0.6",
-    "@nomiclabs/hardhat-etherscan": "3.0.4",
+    "@nomiclabs/hardhat-etherscan": "3.1.0",
     "@nomiclabs/hardhat-truffle5": "2.0.6",
     "@nomiclabs/hardhat-waffle": "2.0.3",
     "@nomiclabs/hardhat-web3": "2.0.0",
-    "@openzeppelin/contracts": "4.6.0",
-    "@openzeppelin/contracts-upgradeable": "4.6.0",
+    "@openzeppelin/contracts": "4.7.1",
+    "@openzeppelin/contracts-upgradeable": "4.7.1",
     "@openzeppelin/hardhat-upgrades": "1.16.1",
     "@openzeppelin/test-helpers": "0.5.15",
     "@openzeppelin/upgrades-core": "1.12.0",
@@ -29,7 +29,6 @@
     "babel-polyfill": "6.26.0",
     "babel-register": "6.26.0",
     "bignumber.js": "9.0.2",
-    "cross-fetch": "3.1.5",
     "debug": "4.3.4",
     "eslint": "8.8.0",
     "eslint-plugin-mocha": "10.0.5",
@@ -45,16 +44,17 @@
     "hardhat-tracer": "1.0.0-alpha.6",
     "hardlydifficult-eth": "1.1.4",
     "hardlydifficult-ethereum-contracts": "0.11.1",
-    "lint-staged": "13.0.0",
+    "lint-staged": "13.0.3",
+    "node-fetch": "2.6.7",
     "prettier": "2.5.1",
     "prompt": "1.2.2",
     "solhint": "3.3.7",
     "solidity-coverage": "0.7.21",
-    "yesno": "^0.4.0"
+    "yesno": "0.4.0"
   },
   "devDependencies": {
     "chai": "4.3.4",
-    "web3": "1.7.3"
+    "web3": "1.7.4"
   },
   "lint-staged": {
     "*.{js,ts}": [

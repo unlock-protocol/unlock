@@ -1,9 +1,9 @@
-import { Avatar, AvatarImage } from '@radix-ui/react-avatar'
 import { Button } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import useEmblaCarousel from 'embla-carousel-react'
 import { unlockConfig } from '../../../../config/unlock'
 import { Link } from '../../../helpers/Link'
 import { BulletPointIcon } from '../../../icons'
+import Autoplay from 'embla-carousel-autoplay'
 
 const UNLOCK_BENEFITS = [
   'Create memberships and sell access NFTs in minutes',
@@ -11,36 +11,62 @@ const UNLOCK_BENEFITS = [
   'Open-source, community governed',
 ]
 
-const featuredUsers = [
+interface FeaturedUser {
+  link?: string
+  title: string
+  illustration: string
+  quote: string
+}
+const featuredUsers: FeaturedUser[] = [
   {
-    link: '/blog/talesofelatora',
-    title: 'Tales of Elatora',
-    illustration: '/images/marketing/home-card.png',
-    avatar: '/images/marketing/caroline.png',
-    creator: 'Caroline',
-    quote: 'Sold out mint in one day',
+    link: '/guides/how-to-sell-nft-tickets-for-an-event/',
+    title: 'Event ticketing',
+    illustration: '/images/marketing/event.png',
+    quote:
+      'Membership NFTs for event ticketing, check-in, and proof of attendance',
   },
   {
-    link: 'https://bakery.fyi/bakery-nft/',
-    title: 'The Bakery',
-    illustration: '/images/marketing/featured/the-bakery/bakery.png',
-    avatar: '/images/marketing/featured/the-bakery/avatar.jpg',
-    creator: 'Croissant',
-    quote: 'An NFT based DAO membership',
+    link: '/guides/using-unlock-for-newsletters/',
+    title: 'Media membership',
+    illustration: '/images/marketing/newspapper.png',
+    quote:
+      'Membership access to content, video, streaming, music, podcast and other media',
+  },
+  {
+    link: '/blog/talesofelatora',
+    title: 'DAO membership',
+    illustration: '/images/marketing/globe.png',
+    quote:
+      'Seasonal, time-based, or perpetual DAO memberships, community, and event access',
+  },
+  {
+    link: '/blog/cdaa-unlock-case-study',
+    title: 'Certification credentials',
+    illustration: '/images/marketing/certificate.png',
+    quote: 'On-chain certification NFTs for skills and continuing education',
+  },
+  {
+    title: 'Digital collectibles',
+    illustration: '/images/marketing/ronin.png',
+    quote:
+      'PFP collections, art NFTs and associated utility for community members',
   },
 ]
 
 export function Connect() {
-  const [featured, setFeatured] = useState(1)
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setFeatured((featured + 1) % featuredUsers.length)
-    }, 5000)
-    return () => {
-      clearInterval(interval)
-    }
-  })
+  const [emblaRef] = useEmblaCarousel(
+    {
+      dragFree: true,
+      containScroll: 'trimSnaps',
+      draggable: false,
+    },
+    [
+      Autoplay({
+        delay: 5000,
+        stopOnMouseEnter: true,
+      }),
+    ]
+  )
 
   return (
     <section className="flex flex-col-reverse items-center justify-between mx-auto lg:space-x-16 max-w-7xl md:gap-6 md:flex-row">
@@ -79,39 +105,50 @@ export function Connect() {
         </div>
       </div>
 
-      <div className="flex justify-center w-full pb-6 max-w-fit lg:max-w-md md:pb-0">
-        <Link href={featuredUsers[featured].link}>
-          <div className="w-full bg-white glass-pane rounded-3xl ">
-            <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
-              <p className="font-bold">{featuredUsers[featured].title}</p>
-              <p className="font-mono text-sm font-bold text-brand-ui-primary">
-                Powered by Unlock
-              </p>
-            </header>
-            <img
-              className="w-full h-96 object-cover rounded-t-xl sm:rounded-none"
-              alt={featuredUsers[featured].title}
-              src={featuredUsers[featured].illustration}
-            />
-            <div className="flex items-center gap-4 px-6 py-4">
-              <div>
-                <Avatar className="overflow-hidden w-10 h-10">
-                  <AvatarImage
-                    className="inline-block w-10 h-10 rounded-full"
-                    src={featuredUsers[featured].avatar}
-                    alt={featuredUsers[featured].creator}
-                  />
-                </Avatar>
-              </div>
-              <div>
-                <h4 className="font-bold">{featuredUsers[featured].creator}</h4>
-                <p className="text-sm brand-gray">
-                  {featuredUsers[featured].quote}
-                </p>
-              </div>
-            </div>
-          </div>
-        </Link>
+      <div
+        className="overflow-hidden cursor-move w-full pb-6 max-w-fit lg:max-w-md md:pb-0"
+        ref={emblaRef}
+      >
+        <div className="flex">
+          {featuredUsers?.map(
+            ({ title, link = '#', illustration, quote }, index) => {
+              const key = `${title}-${index}`
+                .split(' ')
+                .join('-')
+                .toLocaleLowerCase()
+
+              const extraClassLink = link === '#' ? 'cursor-default' : ''
+
+              return (
+                <Link
+                  key={key}
+                  href={link}
+                  className={[
+                    'basis-full grow-0 shrink-0 background-red',
+                    extraClassLink,
+                  ].join(' ')}
+                >
+                  <div className="w-full bg-white rounded-3xl shadow-transparent">
+                    <header className="items-center justify-between hidden w-full gap-2 px-6 py-4 sm:flex">
+                      <p className="font-bold text-xl">{title}</p>
+                    </header>
+                    <img
+                      className="w-full h-96 object-cover rounded-t-xl sm:rounded-none"
+                      alt={title}
+                      src={illustration}
+                    />
+                    <div className="flex h-[100px] sm:h-[80px] items-center gap-4 px-6 py-4">
+                      <div>
+                        <h4 className="font-bold block sm:hidden">{title}</h4>
+                        <p className="text-sm brand-gray">{quote}</p>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              )
+            }
+          )}
+        </div>
       </div>
     </section>
   )

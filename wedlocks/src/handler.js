@@ -66,6 +66,7 @@ export const handler = async (event, context, responseCallback) => {
       details: response,
     })
   } catch (error) {
+    console.log(error)
     logger.error({
       event,
       error,
