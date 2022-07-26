@@ -81,7 +81,7 @@ export const KeyMetadataModal = ({
               })}
             </form>
           ) : (
-            <div>There is not metadata</div>
+            <div>There is no metadata associated with that key.</div>
           )}
           <div className="flex mt-auto">
             <Button
