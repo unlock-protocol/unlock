@@ -58,12 +58,12 @@ export function Connect() {
     {
       dragFree: true,
       containScroll: 'trimSnaps',
-      slidesToScroll: 1,
       draggable: false,
     },
     [
       Autoplay({
         delay: 5000,
+        stopOnMouseEnter: true,
       }),
     ]
   )
@@ -106,10 +106,10 @@ export function Connect() {
       </div>
 
       <div
-        className="overflow-hidden cursor-move  w-full pb-6 max-w-fit lg:max-w-md md:pb-0"
+        className="overflow-hidden cursor-move w-full pb-6 max-w-fit lg:max-w-md md:pb-0"
         ref={emblaRef}
       >
-        <div className="flex justify-center">
+        <div className="flex">
           {featuredUsers?.map(
             ({ title, link = '#', illustration, quote }, index) => {
               const key = `${title}-${index}`
@@ -137,7 +137,7 @@ export function Connect() {
                       alt={title}
                       src={illustration}
                     />
-                    <div className="flex max-h-[72px] items-center gap-4 px-6 py-4">
+                    <div className="flex h-[100px] sm:h-[80px] items-center gap-4 px-6 py-4">
                       <div>
                         <h4 className="font-bold block sm:hidden">{title}</h4>
                         <p className="text-sm brand-gray">{quote}</p>
