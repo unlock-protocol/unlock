@@ -27,7 +27,7 @@ Like most testnets, Goerli uses a permissioned proof-of-authority consensus mech
 
 ## Unlock Protocol on Goerli
 
-The contracts for Unlock Protocol has been deployed on Goerli and you are able to create test locks from the online dashbaord, starting now. The Unlock main contract lives at the address [`0x627118a4fB747016911e5cDA82e2E77C531e8206`](https://goerli.etherscan.io/address/0x627118a4fb747016911e5cda82e2e77c531e8206). You can get Goerli test coins using a [faucet](https://fauceth.komputing.org/?chain=5) - you can also try [that one](https://goerlifaucet.com/). Goerli is an ideal environment to build custom logic for your lock, using for instance [contract hooks](https://docs.unlock-protocol.com/core-protocol/public-lock/hooks#register-a-hook). You can also check all [networks](https://docs.unlock-protocol.com/core-protocol/unlock/networks/) where Unlock has been been deployed. 
+The contracts for Unlock Protocol have been deployed on Goerli and you are able to create test locks from the online dashbaord, starting now. The Unlock main contract lives at the address [`0x627118a4fB747016911e5cDA82e2E77C531e8206`](https://goerli.etherscan.io/address/0x627118a4fb747016911e5cda82e2e77c531e8206). You can get Goerli test coins using a [faucet](https://fauceth.komputing.org/?chain=5) - you can also try [that one](https://goerlifaucet.com/). Goerli is an ideal environment to build custom logic for your lock, using for instance [contract hooks](https://docs.unlock-protocol.com/core-protocol/public-lock/hooks#register-a-hook). You can also check all [networks](https://docs.unlock-protocol.com/core-protocol/unlock/networks/) where Unlock has been been deployed. 
 
 Now, time to build!
 
