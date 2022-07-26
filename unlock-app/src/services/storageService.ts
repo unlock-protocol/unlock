@@ -547,7 +547,7 @@ export class StorageService extends EventEmitter {
     }
 
     const response = await fetch(`${this.host}/lock/${lockAddress}/stripe`, {
-      method: 'GET',
+      method: 'PUT',
       body: JSON.stringify(opts.params),
       headers: {
         ...opts.headers,

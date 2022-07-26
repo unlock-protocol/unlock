@@ -33,7 +33,7 @@ router.get(
     connectStripeConfiguration
   )
 )
-router.get('/lock/:lockAddress/stripe', lockController.connectStripe)
+router.put('/lock/:lockAddress/stripe', lockController.connectStripe)
 
 router.post('/lock/:lockAddress/migrate', lockController.lockMigrate)
 router.get('/lock/:lockAddress/migrate', lockController.lockMigrateStatus)
