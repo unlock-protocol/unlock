@@ -7,12 +7,12 @@
 #
 
 ## all networks
-all_networks=("rinkeby" "polygon" "xdai" "mainnet" "bsc" "optimism")
+all_networks=("goerli" "rinkeby" "mumbai" "polygon" "xdai" "mainnet" "bsc" "optimism")
 
 # dry run once on localhost (just checking for errors)
-# echo "Run on localhost..."
-# echo "$@"
-# $@
+echo "Run on localhost..."
+echo "$@"
+$@
 
 ## now loop through all networks
 for i in "${all_networks[@]}"
