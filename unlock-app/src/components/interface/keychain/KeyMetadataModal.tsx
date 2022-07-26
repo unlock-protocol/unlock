@@ -87,7 +87,7 @@ export const KeyMetadataModal = ({
             <Button
               className="ml-auto"
               variant="secondary"
-              onClick={() => setIsOpen(true)}
+              onClick={() => setIsOpen(false)}
             >
               Close
             </Button>
