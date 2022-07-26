@@ -12,6 +12,7 @@ import {
   FaWallet as WalletIcon,
   FaQrcode as QrCodeIcon,
   FaCheckCircle as CheckIcon,
+  FaInfoCircle as InfoIcon,
 } from 'react-icons/fa'
 import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
 import { Badge, Tooltip } from '@unlock-protocol/ui'
@@ -27,6 +28,7 @@ import { MAX_UINT } from '../../../constants'
 import { useConfig } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
+import { KeyMetadataModal } from './KeyMetadataModal'
 
 interface KeyBoxProps {
   tokenURI: string
@@ -145,6 +147,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
 
   const [error, setError] = useState<string | null>(null)
   const [showingQR, setShowingQR] = useState(false)
+  const [showMetadata, setShowMetadata] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
 
@@ -231,6 +234,13 @@ const Key = ({ ownedKey, account, network }: Props) => {
 
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
+      <KeyMetadataModal
+        isOpen={showMetadata}
+        setIsOpen={setShowMetadata}
+        lock={lock}
+        keyId={keyId}
+        network={network}
+      />
       <CancelAndRefundModal
         active={showCancelModal}
         lock={lock}
@@ -259,7 +269,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
       />
       {error && <Error>{error}</Error>}
       <div className="grid gap-2 pt-4">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center flex-wrap gap-2">
           {!isKeyExpired && (
             <Tooltip label="Scan QR code" tip="Scan QR code">
               <button
@@ -311,6 +321,15 @@ const Key = ({ ownedKey, account, network }: Props) => {
               </button>
             </Tooltip>
           )}
+          <Tooltip label="Show metadata" tip="Show metadata">
+            <button
+              className={iconButtonClass}
+              type="button"
+              onClick={() => setShowMetadata(true)}
+            >
+              <InfoIcon />
+            </button>
+          </Tooltip>
         </div>
       </div>
     </div>
