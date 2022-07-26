@@ -2,7 +2,7 @@ import { Button, Input, Modal } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useStorageService } from '~/utils/withStorageService'
-
+import React from 'react'
 interface MetadataModalProps {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
@@ -11,7 +11,7 @@ interface MetadataModalProps {
   lock: any
 }
 
-const KeyMetadataPlaceholder = () => {
+const KeyMetadataPlaceholder: React.FC<unknown> = () => {
   return (
     <div className="flex flex-col gap-3 p-4">
       <div className="w-[120px] h-[24px] bg-slate-200 animate-pulse"></div>
@@ -25,13 +25,13 @@ const KeyMetadataPlaceholder = () => {
     </div>
   )
 }
-export const KeyMetadataModal = ({
+export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
   isOpen,
   setIsOpen,
   keyId,
   lock,
   network,
-}: MetadataModalProps) => {
+}) => {
   const [metadata, setMetadata] = useState<{ [key: string]: any }>()
   const [loading, setLoading] = useState(false)
   const storageService = useStorageService()
