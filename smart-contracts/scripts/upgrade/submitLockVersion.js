@@ -15,7 +15,7 @@
  * RUN_MAINNET_FORK=1 hardhat submit:version
  * ```
  */
-const { ethers } = require('hardhat')
+const { ethers, run } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
 const submitTx = require('../multisig/submitTx')
 const deployTemplate = require('../deployments/template')
@@ -28,6 +28,8 @@ const {
 } = require('../../test/helpers')
 
 async function main({ publicLockAddress } = {}) {
+  await run('compile')
+
   // make sure we get the correct chain id on local mainnet fork
   const { chainId } = process.env.RUN_MAINNET_FORK
     ? { chainId: '1' }
@@ -57,47 +59,54 @@ async function main({ publicLockAddress } = {}) {
   console.log(`Unlock: ${unlockAddress} - PublicLock ${publicLock.address}`)
   console.log(`Multisig: ${multisig} - Signer: ${signer.address}`)
 
-  const submit = async (functionName, functionArgs) => {
-    const tx1 = {
-      contractName: 'Unlock',
-      contractAddress: unlockAddress,
-      functionName,
-      functionArgs,
-    }
-    console.log(`submitting ${functionName} to multisig...`)
-    console.log(functionArgs)
+  const parseTx = (functionName, functionArgs) => ({
+    contractName: 'Unlock',
+    contractAddress: unlockAddress,
+    functionName,
+    functionArgs,
+  })
 
-    const txId1 = await submitTx({
+  // rinkeby and mainnet uses old multisigs so we have to send tx 1 by 1
+  if (chainId == 4 || chainId == 1) {
+    const nonce1 = await submitTx({
       safeAddress: multisig,
-      tx: tx1,
+      tx: parseTx('addLockTemplate', [publicLock.address, version]),
       signer,
     })
-
-    return txId1
-  }
-
-  // send txs to multisig
-  const txId1 = await submit('addLockTemplate', [publicLock.address, version])
-  const txId2 = await submit('setLockTemplate', [publicLock.address])
-
-  // check if multisig txs are valid
-  if (process.env.RUN_MAINNET_FORK) {
-    console.log(`Signing multisigs: ${txId1} ${txId2}`)
-    await confirmMultisigTx({
-      transactionId: txId1,
-      multisigAddress: multisig,
+    const nonce2 = await submitTx({
+      safeAddress: multisig,
+      tx: parseTx('setLockTemplate', [publicLock.address]),
+      signer,
     })
-    await confirmMultisigTx({
-      transactionId: txId2,
-      multisigAddress: multisig,
+    // check if multisig txs are valid when on mainnet fork
+    if (process.env.RUN_MAINNET_FORK) {
+      console.log(`Signing multisigs: ${nonce1} ${nonce2}`)
+      await confirmMultisigTx({
+        transactionId: nonce1,
+        multisigAddress: multisig,
+      })
+      await confirmMultisigTx({
+        transactionId: nonce2,
+        multisigAddress: multisig,
+      })
+      const unlock = await ethers.getContractAt('Unlock', unlockAddress)
+      const lock = await deployLock({ unlock })
+      console.log(
+        `Lock ${await lock.name()} (${await lock.publicLockVersion()}) deployed at ${
+          lock.address
+        }.`
+      )
+    }
+  } else {
+    // on all other networks, we can send all txs at once
+    await submitTx({
+      safeAddress: multisig,
+      tx: [
+        parseTx('addLockTemplate', [publicLock.address, version]),
+        parseTx('setLockTemplate', [publicLock.address]),
+      ],
+      signer,
     })
-    const unlock = await ethers.getContractAt('Unlock', unlockAddress)
-    const lock = await deployLock({ unlock })
-    console.log(
-      `Lock ${await lock.name()} (${await lock.publicLockVersion()}) deployed at ${
-        lock.address
-      }.`
-    )
   }
 }
 
