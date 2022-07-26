@@ -13,7 +13,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-import { Shell } from '../Shell'
+import { BackButton, CheckoutHead, CloseButton } from '../Shell'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
@@ -255,13 +255,17 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
   }
 
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
+    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
+      <div className="flex items-center justify-between p-6">
+        <BackButton onClick={() => send('BACK')} />
+        <CloseButton onClick={() => onClose()} />
+      </div>
+      <CheckoutHead
         title={paywallConfig.title}
         iconURL={iconURL}
         description={description}
       />
-      <div className="flex px-6 mt-6 flex-wrap items-center w-full gap-2">
+      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
         <div className="flex items-center gap-2 col-span-4">
           <div className="flex items-center gap-0.5">
             <IconButton
@@ -303,7 +307,7 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
           <ProgressFinishIcon disabled />
         </div>
       </div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
+      <main className="px-6 py-2 overflow-auto h-full">
         <div className="flex items-start justify-between">
           <h3 className="font-bold text-xl">
             {quantity}X {lock!.name}
@@ -379,6 +383,6 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
         </Connected>
         <PoweredByUnlock />
       </footer>
-    </Shell.Root>
+    </div>
   )
 }

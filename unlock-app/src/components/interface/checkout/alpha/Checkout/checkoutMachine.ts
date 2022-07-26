@@ -204,6 +204,7 @@ export const checkoutMachine = createMachine(
             cond: 'isLockSelected',
           },
           SELECT: 'SELECT',
+          BACK: 'SELECT',
         },
       },
       CARD: {
@@ -259,6 +260,15 @@ export const checkoutMachine = createMachine(
           ],
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
+          BACK: [
+            {
+              target: 'CARD',
+              cond: 'requireCardPayment',
+            },
+            {
+              target: 'QUANTITY',
+            },
+          ],
         },
       },
       MESSAGE_TO_SIGN: {
@@ -288,6 +298,7 @@ export const checkoutMachine = createMachine(
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
           METADATA: 'METADATA',
+          BACK: 'METADATA',
         },
       },
       CAPTCHA: {
@@ -339,6 +350,15 @@ export const checkoutMachine = createMachine(
           QUANTITY: 'QUANTITY',
           METADATA: 'METADATA',
           MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
+          BACK: [
+            {
+              target: 'MESSAGE_TO_SIGN',
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'METADATA',
+            },
+          ],
         },
       },
       MINTING: {
@@ -367,6 +387,7 @@ export const checkoutMachine = createMachine(
       RETURNING: {
         on: {
           MAKE_ANOTHER_PURCHASE: 'QUANTITY',
+          BACK: 'SELECT',
           DISCONNECT: [
             {
               target: 'QUANTITY',
@@ -416,8 +437,7 @@ export const checkoutMachine = createMachine(
         },
       }),
       selectRecipients: assign({
-        // @ts-expect-error xstate unused variable type bug
-        recipients: (context, event) => {
+        recipients: (_, event) => {
           return event.recipients
         },
       }),
