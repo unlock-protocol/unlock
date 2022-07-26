@@ -65,7 +65,7 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
             placeholder="password"
             required
             size="small"
-            error={errors?.password?.message as any as string}
+            error={errors?.password?.message as unknown as string}
             description="Enter your password"
             {...register('password', {
               required: true,
@@ -81,7 +81,7 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
             placeholder="confirm"
             required
             size="small"
-            error={errors?.confirmedPassword?.message as any as string}
+            error={errors?.confirmedPassword?.message as unknown as string}
             description="Retype your password to confirm"
             {...register('confirmedPassword', {
               required: true,

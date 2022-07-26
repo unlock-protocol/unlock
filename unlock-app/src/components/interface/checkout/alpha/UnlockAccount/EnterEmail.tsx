@@ -55,7 +55,7 @@ export function EnterEmail({ unlockAccountService }: Props) {
             size="small"
             placeholder="jane.doe@example.com"
             required
-            error={errors?.email?.message as any as string}
+            error={errors?.email?.message as unknown as string}
             description="If you have previously created account with Unlock, please enter the same email to contine"
             {...register('email', {
               required: true,
