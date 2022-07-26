@@ -1,7 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { getAddressForName } from '~/hooks/useEns'
@@ -34,7 +34,6 @@ export function Metadata({
 }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
-  const [isLoading, setIsLoading] = useState(false)
   const storage = useStorageService()
   const { lock, paywallConfig, quantity } = state.context
   const { title, description, iconURL } =
@@ -49,9 +48,11 @@ export function Metadata({
     register,
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValidating, isSubmitting },
   } = useForm({
     shouldUnregister: false,
+    shouldFocusError: true,
+    mode: 'onSubmit',
   })
   const { fields, append, remove } = useFieldArray({
     name: 'metadata',
@@ -84,7 +85,6 @@ export function Metadata({
 
   async function onSubmit(data: FieldValues) {
     try {
-      setIsLoading(true)
       const formData = data as FormData
       const recipients = await Promise.all(
         formData.metadata.map(async (item) => {
@@ -106,7 +106,6 @@ export function Metadata({
         })
         await storage.submitMetadata(users, lock!.network)
       }
-      setIsLoading(false)
       send({
         type: 'SELECT_RECIPIENTS',
         recipients,
@@ -115,9 +114,9 @@ export function Metadata({
       if (error instanceof Error) {
         ToastHelper.error(error.message)
       }
-      setIsLoading(false)
     }
   }
+  const isLoading = isValidating || isSubmitting
   return (
     <Shell.Root onClose={() => onClose()}>
       <Shell.Head
@@ -175,16 +174,23 @@ export function Metadata({
                   required: 'Recipient is required',
                   validate: {
                     max_keys: async (value) => {
-                      const contract = await web3Service.lockContract(
-                        lock!.address,
-                        lock!.network
-                      )
-                      const items = await contract.balanceOf(value)
-                      const numberOfMemberships =
-                        ethers.BigNumber.from(items).toNumber()
-                      return numberOfMemberships < lock!.maxKeysPerAddress!
-                        ? true
-                        : 'Address already holds the maximum number of memberships.'
+                      try {
+                        const address = await getAddressForName(value)
+                        const contract = await web3Service.lockContract(
+                          lock!.address,
+                          lock!.network
+                        )
+                        const items = await contract.balanceOf(address)
+                        const numberOfMemberships =
+                          ethers.BigNumber.from(items).toNumber()
+                        return numberOfMemberships <
+                          (lock?.maxKeysPerAddress || 1)
+                          ? true
+                          : 'Address already holds the maximum number of memberships.'
+                      } catch (error) {
+                        console.error(error)
+                        return 'There is a problem with using this address. Try another.'
+                      }
                     },
                   },
                 })}
@@ -217,7 +223,12 @@ export function Metadata({
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          <Button loading={isLoading} className="w-full" form="metadata">
+          <Button
+            loading={isLoading}
+            disabled={isLoading}
+            className="w-full"
+            form="metadata"
+          >
             {isLoading ? 'Continuing' : 'Next'}
           </Button>
         </Connected>

@@ -4,6 +4,7 @@ import { isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
 import { Lock } from '../unlockTypes'
 import fetch, { RequestInit } from 'node-fetch'
+
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
 // these objects, and nothing that isn't emitted should be in one of these
@@ -681,7 +682,8 @@ export class StorageService extends EventEmitter {
         headers: options.headers,
       })
 
-      return await response.json()
+      const json = await response.json()
+      return json
     } catch (error) {
       console.error(error)
       return {}
@@ -693,24 +695,27 @@ export class StorageService extends EventEmitter {
     captchaValue: string
   ) {
     try {
-      const url = `${this.host}/api/captcha`
-
+      const url = new URL(`${this.host}/api/captcha`)
+      const rs = recipients.map((r) => r.toLowerCase())
       const options = {
         headers: {
           'Content-Type': 'application/json',
         },
-        params: {
-          recipients: recipients.map((r) => r.toLowerCase()),
-          captchaValue,
-        },
       }
-      const response = await fetch(url, {
+
+      for (const r of rs) {
+        url.searchParams.append('recipients[]', r)
+      }
+
+      url.searchParams.append('captchaValue', captchaValue)
+
+      const response = await fetch(url.toString(), {
         method: 'GET',
         headers: options.headers,
-        body: JSON.stringify(options.params),
       })
 
-      return await response.json()
+      const json = await response.json()
+      return json
     } catch (error) {
       console.error(error)
       return {}
