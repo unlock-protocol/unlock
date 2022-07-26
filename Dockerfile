@@ -6,7 +6,7 @@ ARG PORT=3000
 ##
 ## 1. get only needed packages
 ##
-FROM alpine:3.15 as manifests
+FROM alpine:3.16 as manifests
 
 # args need to be mentioned at each stage
 ARG BUILD_DIR

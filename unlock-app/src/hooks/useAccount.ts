@@ -101,11 +101,12 @@ export const useAccount = (address: string, network: number) => {
           passwordEncryptedPrivateKey,
         })
       )
+      const data = await response.json()
       // TODO: we can do this without requiring the user to wait but that could be a bit unsafe, because what happens if they close the window?
       recoveryKey = await reEncryptPrivateKey(
         passwordEncryptedPrivateKey,
         password,
-        response.data.recoveryPhrase
+        data.recoveryPhrase
       )
     } catch (error: any) {
       const details = error?.response?.data[0]

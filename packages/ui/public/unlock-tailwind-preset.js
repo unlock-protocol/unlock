@@ -19,6 +19,7 @@ module.exports = {
           gray: '#535353',
           primary: '#FFF7E8',
           secondary: '#FF6771',
+          beige: '#FFFDF8',
           ui: {
             primary: '#603DEB',
             secondary: '#020207',

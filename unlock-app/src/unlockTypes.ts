@@ -206,6 +206,7 @@ export interface PaywallConfig {
   captcha?: boolean
   maxRecipients?: number
   minRecipients?: number
+  superfluid?: boolean
 }
 
 export interface RawLock {
@@ -226,10 +227,7 @@ export interface Balances {
   [contractAddress: string]: string
 }
 
-export enum MemberFilters {
-  ALL = 'all',
-  ACTIVE = 'active',
-}
+export type MemberFilter = 'all' | 'active' | 'expired'
 
 export interface UserMetadata {
   publicData?: {

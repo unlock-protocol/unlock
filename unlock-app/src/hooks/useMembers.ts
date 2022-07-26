@@ -3,7 +3,7 @@ import { expirationAsDate } from '../utils/durations'
 import { useWalletService } from '../utils/withWalletService'
 import { useStorageService } from '../utils/withStorageService'
 import { generateColumns } from '../utils/metadataMunging'
-import { MemberFilters } from '../unlockTypes'
+import { MemberFilter } from '../unlockTypes'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { GraphServiceContext } from '../utils/withGraphService'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
@@ -76,14 +76,21 @@ export const buildMembersWithMetadata = (
  * This hooks yields the members for a lock, along with the metadata when applicable
  * @param {*} address
  */
-export const useMembers = (
-  lockAddresses: string[],
-  viewer: string,
-  filter: string,
+export const useMembers = ({
+  viewer,
+  lockAddresses = [],
+  expiration = 'active',
   page = 0,
   query = '',
-  filterKey = ''
-) => {
+  filterKey = '',
+}: {
+  lockAddresses: string[]
+  viewer: string
+  page: number
+  query: string
+  filterKey: string
+  expiration?: MemberFilter
+}) => {
   const { network, account } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
   const walletService = useWalletService()
@@ -97,6 +104,13 @@ export const useMembers = (
   const [members, setMembers] = useState({})
   const [loading, setLoading] = useState(true)
   const [isLockManager, setIsLockManager] = useState(false)
+  const [membersCount, setMembersCount] = useState<{
+    total: number
+    active: number
+  }>({
+    active: 0,
+    total: 0,
+  })
 
   const login = async () => {
     if (!storageService) return
@@ -127,21 +141,20 @@ export const useMembers = (
     try {
       setLoading(true)
 
-      let expiresAfter = parseInt(`${new Date().getTime() / 1000}`)
-      if (filter === MemberFilters.ALL) {
-        expiresAfter = 0
-      }
+      const expireTimestamp = parseInt(`${new Date().getTime() / 1000}`)
+
       const first = 30
       const skip = page * first
 
-      const { data } = await graphService.keysByLocks(
-        lockAddresses,
-        expiresAfter,
+      const { data } = await graphService.keysByLocks({
+        locks: lockAddresses,
+        expireTimestamp,
+        expiration,
         first,
         skip,
-        query,
-        filterKey
-      )
+        search: query,
+        filterKey,
+      })
 
       const membersForLocksPromise = data.locks.map(async (lock: any) => {
         // If the viewer is not the lock owner, just show the members from chain
@@ -188,16 +201,55 @@ export const useMembers = (
       ToastHelper.error('There is some unexpected issue, please try again')
     }
   }
+
+  const getMembersCount = async () => {
+    const {
+      data: { activeKeys, totalKeys },
+    } = await graphService.keysCount(lockAddresses)
+
+    // get total for every locks
+    const locksActiveList: number[] = activeKeys.map(
+      (lock: any) => lock?.keys?.length
+    )
+    const locksTotalList: number[] = totalKeys.map(
+      (lock: any) => lock?.keys?.length
+    )
+
+    // return active/total count as sum of every active/total lock count
+    setMembersCount({
+      active: locksActiveList.reduce((acc, curr) => acc + curr),
+      total: locksTotalList.reduce((acc, curr) => acc + curr),
+    })
+  }
   /**
    * When the keyHolders object changes, load the metadata
    */
   useEffect(() => {
     loadMembers()
-  }, [JSON.stringify(lockAddresses), viewer, filter, page, query, filterKey])
+  }, [
+    JSON.stringify(lockAddresses),
+    viewer,
+    page,
+    query,
+    filterKey,
+    expiration,
+  ])
+
+  useEffect(() => {
+    getMembersCount()
+  }, [])
 
   const list: any = Object.values(members)
   const columns = generateColumns(list)
-  return { loading, list, columns, hasNextPage, isLockManager, loadMembers }
+  return {
+    loading,
+    list,
+    columns,
+    hasNextPage,
+    isLockManager,
+    loadMembers,
+    membersCount,
+  }
 }
 
 export default useMembers

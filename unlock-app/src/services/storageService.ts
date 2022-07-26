@@ -1,9 +1,10 @@
 import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
-import axios from 'axios'
 import { EventEmitter } from 'events'
 import { isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
 import { Lock } from '../unlockTypes'
+import fetch, { RequestInit } from 'node-fetch'
+
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
 // these objects, and nothing that isn't emitted should be in one of these
@@ -179,7 +180,13 @@ export class StorageService extends EventEmitter {
     }
 
     try {
-      await axios.post(`${this.host}/transaction`, payload)
+      await fetch(`${this.host}/transaction`, {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
       this.emit(success.storeTransaction, transactionHash)
     } catch (error) {
       this.emit(failure.storeTransaction, error)
@@ -196,11 +203,15 @@ export class StorageService extends EventEmitter {
     let hashes = [] // TODO This is badly named! this returns full transactions
     try {
       const oneDayAgo = new Date().getTime() - 1000 * 60 * 60 * 24
-      const response = await axios.get(
-        `${this.host}/transactions?sender=${senderAddress}&createdAfter=${oneDayAgo}`
+      const response = await fetch(
+        `${this.host}/transactions?sender=${senderAddress}&createdAfter=${oneDayAgo}`,
+        {
+          method: 'GET',
+        }
       )
-      if (response.data && response.data.transactions) {
-        hashes = response.data.transactions.map((t: any) => ({
+      const data = await response.json()
+      if (data && data.transactions) {
+        hashes = data.transactions.map((t: any) => ({
           hash: t.transactionHash,
           network: t.chain,
           to: t.recipient,
@@ -231,8 +242,13 @@ export class StorageService extends EventEmitter {
    */
 
   async createUser(user: any) {
-    const opts = {}
-    return axios.post(`${this.host}/users/`, user, opts)
+    return fetch(`${this.host}/users/`, {
+      method: 'POST',
+      body: JSON.stringify(user),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
   }
 
   /**
@@ -250,15 +266,21 @@ export class StorageService extends EventEmitter {
     token: string
   ) {
     const opts = {
-      headers: this.genAuthorizationHeader(token),
+      headers: {
+        ...this.genAuthorizationHeader(token),
+        ...{ 'Content-Type': 'application/json' },
+      },
     }
     try {
-      await axios.put(
+      await fetch(
         `${this.host}/users/${encodeURIComponent(
           emailAddress
         )}/passwordEncryptedPrivateKey`,
-        user,
-        opts
+        {
+          method: 'PUT',
+          body: JSON.stringify(user),
+          headers: opts.headers,
+        }
       )
       this.emit(success.updateUser, { emailAddress, user })
     } catch (error) {
@@ -282,10 +304,13 @@ export class StorageService extends EventEmitter {
       headers: this.genAuthorizationHeader(token),
     }
     try {
-      await axios.put(
+      await fetch(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/paymentdetails`,
-        stripeTokenId,
-        opts
+        {
+          method: 'PUT',
+          body: JSON.stringify(stripeTokenId),
+          headers: opts.headers,
+        }
       )
       this.emit(success.addPaymentMethod, { emailAddress, stripeTokenId })
     } catch (error) {
@@ -303,19 +328,20 @@ export class StorageService extends EventEmitter {
   async getUserPrivateKey(emailAddress: string) {
     const opts = {}
     try {
-      const response = await axios.get(
+      const response = await fetch(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/privatekey`,
-        opts
+        { method: 'GET', headers: opts }
       )
-      if (response.data && response.data.passwordEncryptedPrivateKey) {
+      const data = await response.json()
+
+      if (data && data.passwordEncryptedPrivateKey) {
         this.emit(success.getUserPrivateKey, {
           emailAddress,
-          passwordEncryptedPrivateKey:
-            response.data.passwordEncryptedPrivateKey,
+          passwordEncryptedPrivateKey: data.passwordEncryptedPrivateKey,
         })
         // We also return from this one so that we can use the value directly to
         // avoid passing the password around too much.
-        return response.data.passwordEncryptedPrivateKey
+        return data.passwordEncryptedPrivateKey
       }
     } catch (error) {
       this.emit(failure.getUserPrivateKey, { emailAddress, error })
@@ -332,12 +358,14 @@ export class StorageService extends EventEmitter {
   async getUserRecoveryPhrase(emailAddress: string) {
     const opts = {}
     try {
-      const response = await axios.get(
+      const response = await fetch(
         `${this.host}/users/${encodeURIComponent(emailAddress)}/recoveryphrase`,
-        opts
+        { method: 'GET', headers: opts }
       )
-      if (response.data && response.data.recoveryPhrase) {
-        const { recoveryPhrase } = response.data
+      const data = await response.json()
+
+      if (data && data.recoveryPhrase) {
+        const { recoveryPhrase } = data
         this.emit(success.getUserRecoveryPhrase, {
           emailAddress,
           recoveryPhrase,
@@ -360,10 +388,12 @@ export class StorageService extends EventEmitter {
    */
   async getCards(emailAddress: string) {
     try {
-      const response = await axios.get(
-        `${this.host}/users/${encodeURIComponent(emailAddress)}/cards`
+      const response = await fetch(
+        `${this.host}/users/${encodeURIComponent(emailAddress)}/cards`,
+        { method: 'GET' }
       )
-      this.emit(success.getCards, response.data)
+      const data = await response.json()
+      this.emit(success.getCards, data)
     } catch (error) {
       this.emit(failure.getCards, { error })
     }
@@ -371,19 +401,24 @@ export class StorageService extends EventEmitter {
 
   async purchaseKey(purchaseRequest: Record<string, any>, token: string) {
     const opts = {
-      headers: this.genAuthorizationHeader(token),
+      headers: {
+        ...this.genAuthorizationHeader(token),
+        ...{ 'Content-Type': 'application/json' },
+      },
     }
     try {
-      const response = await axios.post(
-        `${this.host}/purchase`,
-        purchaseRequest,
-        opts
-      )
+      const response = await fetch(`${this.host}/purchase`, {
+        method: 'POST',
+        body: JSON.stringify(purchaseRequest),
+        headers: opts.headers,
+      })
+      const data = await response.json()
+
       this.emit(
         success.keyPurchase,
         purchaseRequest.message.purchaseRequest.lock
       )
-      return response.data.transactionHash
+      return data.transactionHash
     } catch (error) {
       this.emit(failure.keyPurchase, error)
     }
@@ -396,11 +431,15 @@ export class StorageService extends EventEmitter {
    */
   async getLockAddressesForUser(address: string) {
     try {
-      const result = await axios.get(`${this.host}/${address}/locks`)
-      if (result.data && result.data.locks) {
+      const response = await fetch(`${this.host}/${address}/locks`, {
+        method: 'GET',
+      })
+      const data = await response.json()
+
+      if (data && data.locks) {
         this.emit(
           success.getLockAddressesForUser,
-          result.data.locks.map((lock: Lock) => lock.address)
+          data.locks.map((lock: Lock) => lock.address)
         )
       } else {
         this.emit(
@@ -422,10 +461,17 @@ export class StorageService extends EventEmitter {
    */
   async ejectUser(publicKey: string, data: any, token: string) {
     const opts = {
-      headers: this.genAuthorizationHeader(btoa(token)),
+      headers: {
+        ...this.genAuthorizationHeader(token),
+        ...{ 'Content-Type': 'application/json' },
+      },
     }
     try {
-      await axios.post(`${this.host}/users/${publicKey}/eject`, data, opts)
+      await fetch(`${this.host}/users/${publicKey}/eject`, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: { ...opts.headers, ...{ 'Content-Type': 'application/json' } },
+      })
       this.emit(success.ejectUser, { publicKey })
     } catch (error) {
       this.emit(failure.ejectUser, { publicKey })
@@ -461,13 +507,20 @@ export class StorageService extends EventEmitter {
       },
     }
     try {
-      const result = await axios.get(
-        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`,
-        opts
+      const url = new URL(
+        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`
       )
+      url.searchParams.append('data', JSON.stringify(opts.params))
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          ...opts.headers,
+        },
+      })
+      const data = response.json()
 
-      this.emit(success.getBulkMetadataFor, lockAddress, result.data)
-      return result.data
+      this.emit(success.getBulkMetadataFor, lockAddress, data)
+      return data
     } catch (error) {
       this.emit(failure.getBulkMetadataFor, error)
     }
@@ -487,17 +540,19 @@ export class StorageService extends EventEmitter {
         )}`,
         'Content-Type': 'application/json',
       },
-      params: {
-        data: JSON.stringify(data),
-        signature,
-      },
     }
-    const result = await axios.get(
-      `${this.host}/lock/${lockAddress}/stripe`,
-      opts
-    )
 
-    return result?.data
+    const url = new URL(`${this.host}/lock/${lockAddress}/stripe`)
+    url.searchParams.append('data', JSON.stringify(data))
+    url.searchParams.append('signature', signature)
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        ...opts.headers,
+      },
+    })
+    return response.json()
   }
 
   async updateLockIcon(
@@ -514,14 +569,14 @@ export class StorageService extends EventEmitter {
         'Content-Type': 'application/json',
       },
     }
-
-    const result = await axios.post(
-      `${this.host}/lock/${lockAddress}/icon`,
-      { ...data, icon },
-      opts
-    )
-
-    return result?.data
+    const response = await fetch(`${this.host}/lock/${lockAddress}/icon`, {
+      method: 'POST',
+      body: JSON.stringify({ ...data, icon }),
+      headers: {
+        ...opts.headers,
+      },
+    })
+    return await response?.json()
   }
 
   /**
@@ -621,9 +676,13 @@ export class StorageService extends EventEmitter {
           signature
         ).toString('base64')}`
       }
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: options.headers,
+      })
 
-      const response = await axios.get(url, options)
-      return response?.data
+      const json = await response.json()
+      return json
     } catch (error) {
       console.error(error)
       return {}
@@ -635,20 +694,27 @@ export class StorageService extends EventEmitter {
     captchaValue: string
   ) {
     try {
-      const url = `${this.host}/api/captcha`
-
+      const url = new URL(`${this.host}/api/captcha`)
+      const rs = recipients.map((r) => r.toLowerCase())
       const options = {
         headers: {
           'Content-Type': 'application/json',
         },
-        params: {
-          recipients: recipients.map((r) => r.toLowerCase()),
-          captchaValue,
-        },
       }
 
-      const response = await axios.get(url, options)
-      return response?.data
+      for (const r of rs) {
+        url.searchParams.append('recipients[]', r)
+      }
+
+      url.searchParams.append('captchaValue', captchaValue)
+
+      const response = await fetch(url.toString(), {
+        method: 'GET',
+        headers: options.headers,
+      })
+
+      const json = await response.json()
+      return json
     } catch (error) {
       console.error(error)
       return {}
@@ -664,9 +730,13 @@ export class StorageService extends EventEmitter {
           'Content-Type': 'application/json',
         },
       }
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: options.headers,
+      })
+      const data = await response.json()
 
-      const response = await axios.get(url, options)
-      return response?.data[network].address
+      return data[network].address
     } catch (error) {
       console.error(error)
       return ''
@@ -705,7 +775,10 @@ export class StorageService extends EventEmitter {
   async userExist(emailAddress: string) {
     try {
       const endpoint = `${this.host}/users/${emailAddress}`
-      const response = await axios.get(endpoint)
+
+      const response = await fetch(endpoint, {
+        method: 'GET',
+      })
       return response.status === 200
     } catch (error) {
       return false
@@ -729,6 +802,71 @@ export class StorageService extends EventEmitter {
       body: JSON.stringify({ users }),
       headers: {
         'content-type': 'application/json',
+      },
+    }
+    const response = await fetch(url, opts)
+    return response.json()
+  }
+
+  async updatetMetadata({
+    lockAddress,
+    userAddress,
+    network,
+    metadata,
+  }: {
+    lockAddress: string
+    userAddress: string
+    network: number
+    metadata: any
+  }) {
+    const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
+    const token = await this.getAccessToken()
+    const formattedMetadata = {
+      metadata: {
+        protected: {
+          ...metadata,
+        },
+      },
+    }
+
+    const opts = {
+      method: 'PUT',
+      body: JSON.stringify(formattedMetadata),
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    return await fetch(url, opts)
+  }
+
+  async createtMetadata({
+    lockAddress,
+    userAddress,
+    network,
+    metadata,
+  }: {
+    lockAddress: string
+    userAddress: string
+    network: number
+    metadata: any
+  }) {
+    const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
+    const token = await this.getAccessToken()
+    const formattedMetadata = {
+      metadata: {
+        protected: {
+          ...metadata,
+        },
+      },
+    }
+
+    const opts = {
+      method: 'POST',
+      body: JSON.stringify(formattedMetadata),
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     }
     const response = await fetch(url, opts)

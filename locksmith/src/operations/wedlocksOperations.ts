@@ -1,4 +1,4 @@
-import fetch from 'cross-fetch'
+import fetch from 'node-fetch'
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadata } from '../models'
 import config from '../../config/config'
@@ -23,7 +23,7 @@ type Attachment = {
 interface Key {
   lock: {
     address: string
-    name?: string
+    name: string
   }
   owner: {
     address: string
@@ -152,7 +152,7 @@ export const notifyNewKeyToWedlocks = async (
       'keyMined',
       recipient,
       {
-        lockName: key?.lock?.name ?? '',
+        lockName: key.lock.name,
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
         keyId: tokenId ?? '',
         network: networks[network!]?.name ?? '',

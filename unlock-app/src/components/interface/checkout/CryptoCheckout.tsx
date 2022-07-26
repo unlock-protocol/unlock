@@ -1,6 +1,9 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
+import { ethers } from 'ethers'
+import { BigNumber } from 'ethers'
 import styled from 'styled-components'
 import ReCAPTCHA from 'react-google-recaptcha'
+import { Framework } from '@superfluid-finance/sdk-core'
 import { Lock } from './Lock'
 import { CheckoutCustomRecipient } from './CheckoutCustomRecipient'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -25,6 +28,7 @@ import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
 import { ToastHelper } from '../../helpers/toast.helper'
 import Duration from '../../helpers/Duration'
+import { selectProvider } from '../../../hooks/useAuthenticate'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -56,6 +60,7 @@ export const CryptoCheckout = ({
   emitUserInfo,
 }: CryptoCheckoutProps) => {
   const { networks, services, recaptchaKey } = useContext(ConfigContext)
+  const config = useContext(ConfigContext)
   const storageService = new StorageService(services.storage.host)
   const [loading, setLoading] = useState(false)
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>('')
@@ -248,6 +253,32 @@ export const CryptoCheckout = ({
         let data
 
         const recurringPayments = nbPayments
+
+        if (paywallConfig.superfluid) {
+          const provider = selectProvider(config)
+          const web3Provider = new ethers.providers.Web3Provider(provider)
+          const sf = await Framework.create({
+            chainId: lock.network,
+            provider: web3Provider,
+          })
+          const expiration = BigNumber.from(lock.expirationDuration)
+          const flowRate = BigNumber.from(lock.keyPrice)
+            .mul('1000000000000000000')
+            .div(expiration)
+            .toString()
+          const op = sf.cfaV1.createFlow({
+            sender: provider.address,
+            receiver: lock.address,
+            superToken: lock.currencyContractAddress,
+            flowRate: flowRate,
+          })
+          const signer = web3Provider.getSigner()
+          await op.exec(signer)
+          setKeyExpiration(Infinity) // We should actually get the real expiration
+          setPurchasePending(false)
+          setTransactionPending('')
+          return
+        }
 
         if (useCaptcha) {
           // get the secret from locksmith!
