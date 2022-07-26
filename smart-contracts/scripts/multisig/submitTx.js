@@ -63,35 +63,39 @@ async function main({ safeAddress, tx, signer }) {
   const txs = !Array.isArray(tx) === [tx] || tx
 
   // parse transactions
-  const transactions = txs.map(async (tx) => {
-    // encode contract call
-    const {
-      contractName,
-      contractAddress,
-      functionName,
-      functionArgs,
-      calldata,
-      value, // in ETH
-    } = tx
-
-    let encodedFunctionCall
-    if (!calldata) {
-      const { interface } = await ethers.getContractFactory(contractName)
-      encodedFunctionCall = interface.encodeFunctionData(
+  const transactions = await Promise.all(
+    txs.map(async (tx) => {
+      // encode contract call
+      const {
+        contractName,
+        contractAddress,
         functionName,
-        functionArgs
-      )
-    } else {
-      encodedFunctionCall = calldata
-    }
+        functionArgs,
+        calldata,
+        value, // in ETH
+      } = tx
 
-    return {
-      to: contractAddress,
-      data: encodedFunctionCall,
-      value: value || 0,
-      // operation, // Optional
-    }
-  })
+      let encodedFunctionCall
+      if (!calldata) {
+        const { interface } = await ethers.getContractFactory(contractName)
+        encodedFunctionCall = interface.encodeFunctionData(
+          functionName,
+          functionArgs
+        )
+      } else {
+        encodedFunctionCall = calldata
+      }
+
+      return {
+        to: contractAddress,
+        data: encodedFunctionCall,
+        value: value || 0,
+        // operation, // Optional
+      }
+    })
+  )
+
+  console.log(transactions)
 
   const txOptions = {
     // safeTxGas, // Optional
@@ -119,7 +123,9 @@ async function main({ safeAddress, tx, signer }) {
     senderAddress: signer.address,
     senderSignature: senderSignature.data,
   })
-  console.log(`Tx submitted to multisig with id`)
+
+  const { nonce } = await safeService.getTransaction(safeTxHash)
+  console.log(`Tx submitted to multisig with id: '${nonce}'`)
 }
 
 module.exports = main
