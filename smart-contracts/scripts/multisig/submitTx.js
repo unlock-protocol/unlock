@@ -62,7 +62,14 @@ async function main({ safeAddress, tx, signer }) {
 
   const txs = !Array.isArray(tx) === [tx] || tx
 
-  const explainer = []
+  const explainer = txs
+    .map(
+      ({ functionName, functionArgs }) =>
+        `'${functionName}(${Object.values(functionArgs).toString()})'`
+    )
+    .join(', ')
+  console.log(`Submitting txs: ${explainer}`)
+
   // parse transactions
   const transactions = await Promise.all(
     txs.map(async (tx) => {
@@ -87,9 +94,6 @@ async function main({ safeAddress, tx, signer }) {
         encodedFunctionCall = calldata
       }
 
-      explainer.push(
-        `'${functionName}(${Object.values(functionArgs).toString()})'`
-      )
       return {
         to: contractAddress,
         data: encodedFunctionCall,
@@ -98,11 +102,11 @@ async function main({ safeAddress, tx, signer }) {
       }
     })
   )
-  console.log(explainer.join(', '))
+  console.log(explainer)
   console.log(transactions)
 
   const txOptions = {
-    origin: explainer.join(', '),
+    origin: explainer,
     // safeTxGas, // Optional
     // baseGas, // Optional
     // gasPrice, // Optional
