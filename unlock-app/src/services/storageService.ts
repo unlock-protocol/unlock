@@ -507,16 +507,16 @@ export class StorageService extends EventEmitter {
       },
     }
     try {
-      const response = await fetch(
-        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`,
-        {
-          method: 'GET',
-          body: JSON.stringify(opts.params),
-          headers: {
-            ...opts.headers,
-          },
-        }
+      const url = new URL(
+        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`
       )
+      url.searchParams.append('data', JSON.stringify(opts.params))
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          ...opts.headers,
+        },
+      })
       const data = response.json()
 
       this.emit(success.getBulkMetadataFor, lockAddress, data)
