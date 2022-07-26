@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { UnlockAccountService, UserDetails } from './unlockAccountMachine'
-import { RiArrowLeftLine as LeftArrowIcon } from 'react-icons/ri'
 
 interface Props {
   unlockAccountService: UnlockAccountService

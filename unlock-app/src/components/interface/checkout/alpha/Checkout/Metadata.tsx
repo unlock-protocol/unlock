@@ -53,7 +53,7 @@ export function Metadata({
     register,
     control,
     handleSubmit,
-    formState: { errors, isValidating, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm({
     shouldUnregister: false,
     shouldFocusError: true,
@@ -181,7 +181,7 @@ export function Metadata({
                   size="small"
                   error={
                     errors?.metadata?.[index]?.recipient
-                      ?.message as any as string
+                      ?.message as unknown as string
                   }
                   {...register(`metadata.${index}.recipient`, {
                     required: 'Recipient is required',
@@ -218,7 +218,7 @@ export function Metadata({
                     type={metadataInputItem.type}
                     error={
                       errors?.metadata?.[index]?.[metadataInputItem.name]
-                        ?.message as any as string
+                        ?.message as unknown as string
                     }
                     {...register(
                       `metadata.${index}.${metadataInputItem.name}`,

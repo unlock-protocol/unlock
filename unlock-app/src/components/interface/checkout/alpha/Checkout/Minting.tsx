@@ -13,12 +13,7 @@ import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import {
-  BackButton,
-  CheckoutHead,
-  CheckoutTransition,
-  CloseButton,
-} from '../Shell'
+import { CheckoutHead, CheckoutTransition, CloseButton } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
