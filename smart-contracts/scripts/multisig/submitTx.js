@@ -102,7 +102,6 @@ async function main({ safeAddress, tx, signer }) {
       }
     })
   )
-  console.log(explainer)
   console.log(transactions)
 
   const txOptions = {
