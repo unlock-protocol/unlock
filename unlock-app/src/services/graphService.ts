@@ -5,6 +5,9 @@ import keyHoldersByLocks from '../queries/keyholdersByLock'
 import { ToastHelper } from '../components/helpers/toast.helper'
 import keyholdersByKeyIdQuery from '../queries/keyholdersByKeyId'
 import { getValidNumber } from '~/utils/strings'
+import { MemberFilter } from '~/unlockTypes'
+import keysCount from '~/queries/keysCount'
+
 export class GraphService {
   public client: any
 
@@ -44,18 +47,33 @@ export class GraphService {
     }
   }
 
-  keysByLocks = async (
-    locks: string[],
-    expiresAfter: number,
-    first: number,
-    skip: number,
-    search: string | number,
+  keysByLocks = async ({
+    locks,
+    expireTimestamp,
+    expiration,
+    first,
+    skip,
+    search = '',
+    filterKey = '',
+  }: {
+    locks: string[]
+    expireTimestamp: number
+    expiration: MemberFilter
+    first: number
+    skip: number
+    search: string | number
     filterKey: string
-  ) => {
-    const query =
-      filterKey === 'owner' ? keyHoldersByLocks() : keyholdersByKeyIdQuery()
-
+  }) => {
+    let query
     const keyId = getValidNumber(search)
+
+    // filter by keyId only when search value is provided
+    if (filterKey === 'keyId' && `${search}`?.length) {
+      query = keyholdersByKeyIdQuery()
+    } else {
+      // pass expiration type filter 'all' | 'expired' | 'active'
+      query = keyHoldersByLocks(expiration)
+    }
 
     const owner = `${search}`?.toLowerCase() ?? ''
 
@@ -63,11 +81,25 @@ export class GraphService {
       query,
       variables: {
         addresses: locks,
-        expiresAfter,
+        expireTimestamp,
         first,
         skip,
         owner,
         keyId,
+      },
+    })
+    return result
+  }
+
+  keysCount = async (locks: string[]) => {
+    const query = keysCount()
+    const timestamp = parseInt(`${new Date().getTime() / 1000}`)
+
+    const result = await this.client.query({
+      query,
+      variables: {
+        addresses: locks,
+        timestamp,
       },
     })
     return result
