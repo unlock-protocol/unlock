@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import Close from './buttons/layout/Close'
+import { MdClose as CloseIcon } from 'react-icons/md'
 
 interface DrawerInterface {
   isOpen: boolean
@@ -51,10 +51,10 @@ export const Drawer = ({
               <div className="relative w-screen max-w-md">
                 <Transition.Child {...easeOutTransaction}>
                   <div className="absolute top-0 right-0 h-12 w-12 p-4">
-                    <Close size="16px" onClick={() => setIsOpen(false)} />
+                    <CloseIcon size="25px" onClick={() => setIsOpen(false)} />
                   </div>
                 </Transition.Child>
-                <div className="h-full flex flex-col py-6 bg-white shadow-xl overflow-y-scroll">
+                <div className="h-full flex flex-col py-6 bg-brand-beige shadow-xl overflow-y-scroll">
                   <div className="px-4 sm:px-6">
                     {title && (
                       <Dialog.Title className="text-lg font-medium text-gray-900">
