@@ -167,7 +167,9 @@ export function Metadata({
               <Input
                 label={`Recipient #${index + 1}`}
                 size="small"
-                error={errors?.metadata?.[index]?.recipient?.message}
+                error={
+                  errors?.metadata?.[index]?.recipient?.message as any as string
+                }
                 {...register(`metadata.${index}.recipient`, {
                   required: 'Recipient is required',
                   validate: {
@@ -202,7 +204,8 @@ export function Metadata({
                   placeholder={metadataInputItem.placeholder}
                   type={metadataInputItem.type}
                   error={
-                    errors?.metadata?.[index]?.[metadataInputItem.name]?.message
+                    errors?.metadata?.[index]?.[metadataInputItem.name]
+                      ?.message as any as string
                   }
                   {...register(`metadata.${index}.${metadataInputItem.name}`, {
                     required:

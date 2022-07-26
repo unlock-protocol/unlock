@@ -175,6 +175,11 @@ function CardForm({ onSave, setIsSaving }: CardFormProps) {
     onSave()
   }
 
+  let errorMessage = ''
+  if (errors?.name?.message) {
+    errorMessage = errors.name.message as unknown as string
+  }
+
   return (
     <form
       id="card-save"
@@ -182,7 +187,7 @@ function CardForm({ onSave, setIsSaving }: CardFormProps) {
       className="space-y-2"
     >
       <Input
-        error={errors?.name?.message}
+        error={errorMessage}
         size="small"
         label="Name"
         description="Please use the name on your card"

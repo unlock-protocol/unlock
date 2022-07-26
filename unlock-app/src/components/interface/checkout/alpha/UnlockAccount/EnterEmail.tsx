@@ -70,9 +70,9 @@ export function EnterEmail({ unlockAccountService }: Props) {
               label="Email Address"
               type="email"
               size="small"
-              placeholder="julien@unlock-protocol.com"
+              placeholder="jane.doe@example.com"
               required
-              error={errors?.email?.message}
+              error={errors?.email?.message as any as string}
               description="If you have previously created account with Unlock, please enter the same email to contine"
               {...register('email', {
                 required: true,
