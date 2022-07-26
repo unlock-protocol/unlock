@@ -66,20 +66,25 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
   const [emailSent, setEmailSent] = useState(false)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
+  const [data, setData] = useState(metadata)
+  const [extraDataItems, setExtraDataItems] = useState<
+    [string, string | number][]
+  >([])
 
   const [isCopied, setCopied] = useClipboard(keyholderAddress, {
     successDuration: 2000,
   })
 
-  const extraDataItems: [string, string | number][] = Object.entries(
-    metadata || {}
-  ).filter(([key]) => {
-    return !keysToIgnore.includes(key)
-  })
+  useEffect(() => {
+    const items = Object.entries(data || {}).filter(([key]) => {
+      return !keysToIgnore.includes(key)
+    })
+    setExtraDataItems(items)
+  }, [data])
 
   const getCheckInTime = () => {
     const [_, checkInTimeValue] =
-      Object.entries(metadata)?.find(([key]) => key === 'checkedInAt') ?? []
+      Object.entries(data)?.find(([key]) => key === 'checkedInAt') ?? []
     if (!checkInTimeValue) return null
     return new Date(checkInTimeValue as number).toLocaleString()
   }
@@ -99,7 +104,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const onMarkAsCheckIn = async () => {
     try {
       if (!storageService) return
-      const { lockAddress, token: keyId } = metadata
+      const { lockAddress, token: keyId } = data
       const response = await storageService.markTicketAsCheckedIn({
         lockAddress,
         keyId,
@@ -133,7 +138,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     })
 
     const sendEmailPromise = storageService.sendKeyQrCodeViaEmail({
-      lockAddress: metadata.lockAddress,
+      lockAddress: data.lockAddress,
       network,
       tokenId,
     })
@@ -144,6 +149,13 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       error: 'There is some unexpected issue, please try again',
     })
     setEmailSent(true)
+  }
+
+  const onEmailChange = (values: FieldValues) => {
+    setData({
+      ...data,
+      ...values,
+    })
   }
 
   const hasEmailMetadata = extraDataItems
@@ -160,12 +172,12 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         setIsOpen={setAddEmailModalOpen}
         isLockManager={isLockManager ?? false}
         userAddress={keyholderAddress}
-        lockAddress={metadata.lockAddress}
+        lockAddress={data.lockAddress}
         network={network!}
-        loadMembers={loadMembers}
         hasExtraData={hasExtraData}
         hasEmail={hasEmailMetadata}
         extraDataItems={extraDataItems}
+        onEmailChange={onEmailChange}
       />
       <div className="grid gap-2 justify-between grid-cols-7 mb-2">
         <div className="col-span-full	flex flex-col md:col-span-1">
@@ -305,8 +317,8 @@ const UpdateEmailModal = ({
   network,
   hasExtraData,
   hasEmail,
-  loadMembers,
   extraDataItems,
+  onEmailChange,
 }: {
   isOpen: boolean
   isLockManager: boolean
@@ -317,7 +329,7 @@ const UpdateEmailModal = ({
   hasEmail: boolean
   extraDataItems: [string, string | number][]
   setIsOpen: (status: boolean) => void
-  loadMembers?: () => void
+  onEmailChange: (values: FieldValues) => void
 }) => {
   const storage = useStorageService()
 
@@ -328,10 +340,12 @@ const UpdateEmailModal = ({
     },
   })
 
-  const clearAndReloadMembers = () => {
+  const updateData = (formFields: FieldValues) => {
     reset() // reset fomr state
-    if (typeof loadMembers === 'function') {
-      loadMembers()
+    setLoading(false)
+    setIsOpen(false)
+    if (typeof onEmailChange === 'function') {
+      onEmailChange(formFields)
     }
   }
 
@@ -393,9 +407,13 @@ const UpdateEmailModal = ({
       }
 
       if (hasExtraData) {
-        updateMetadata(params, clearAndReloadMembers)
+        updateMetadata(params, () => {
+          updateData(formFields)
+        })
       } else {
-        createMetadata(params, clearAndReloadMembers)
+        createMetadata(params, () => {
+          updateData(formFields)
+        })
       }
     } catch (err) {
       ToastHelper.error('There is some unexpected issue, please try again')
