@@ -15,7 +15,7 @@ Testnets (for test networks) are alternative chains that are used exclusively fo
 
 ## Why so many testnets?
 
-With test coins being free, there is no economic incentives for miners to secure the test chains and these networks are often left vulnerable. Therefore designing, maintaining and running testnets pertains more to a labor of love of the developer community. Behind their mysterious names, each network has its own set of advantages and flaws. Some are quite unstable, other are stable but slow, some does not support specific Ethereum clients, some have too few active faucets, etc. Picking one always comes with its own set of drawbacks or tradeoffs.
+With test coins being free, there is no economic incentives for miners to secure the test chains and these networks are often left vulnerable. Therefore designing, maintaining and running testnets pertains more to a labor of love of the developer community. Behind their mysterious names, each network has its own set of advantages and flaws. Some are quite unstable, other are stable but slow, some do not support specific Ethereum clients, some have too few active faucets, etc. Picking one always comes with its own set of drawbacks or tradeoffs.
 
 ## Why Goerli?
 
