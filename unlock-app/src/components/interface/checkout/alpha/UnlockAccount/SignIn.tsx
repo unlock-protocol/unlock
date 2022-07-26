@@ -77,7 +77,7 @@ export function SignIn({ unlockAccountService, signIn }: Props) {
               size="small"
               placeholder="password"
               required
-              error={errors?.password?.message}
+              error={errors?.password?.message as any as string}
               description={'Enter your password'}
               {...register('password', {
                 required: true,
