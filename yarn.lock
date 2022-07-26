@@ -7612,25 +7612,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gnosis.pm/safe-core-sdk-types@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@gnosis.pm/safe-core-sdk-types@npm:1.1.0"
+"@gnosis.pm/safe-core-sdk-types@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@gnosis.pm/safe-core-sdk-types@npm:1.2.1"
   dependencies:
     "@ethersproject/bignumber": ^5.6.0
     "@ethersproject/contracts": ^5.6.0
-    "@gnosis.pm/safe-deployments": ^1.12.0
+    "@gnosis.pm/safe-deployments": 1.15.0
     web3-core: ^1.7.1
-  checksum: 8b07adc7992d4fc8e4470476e0a07c7bc17ceb0fadb7f24bd99adf78bf3cad8c90f3788c671ccfabeeba73c126024e6e5e5a34c6e492c6947e2c199d1f2fd522
+  checksum: 728e20a4f95e32e6fb697fce98f1a51a141111451f9c418c367677e667c38a2893ba18030cf27e0214a881ba0b25380253c1586a6fe07ab7581de137abf92ff9
   languageName: node
   linkType: hard
 
-"@gnosis.pm/safe-core-sdk-utils@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@gnosis.pm/safe-core-sdk-utils@npm:1.1.0"
+"@gnosis.pm/safe-core-sdk-utils@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@gnosis.pm/safe-core-sdk-utils@npm:1.2.1"
   dependencies:
-    "@gnosis.pm/safe-core-sdk-types": ^1.1.0
+    "@gnosis.pm/safe-core-sdk-types": ^1.2.1
+    semver: ^7.3.7
     web3-utils: ^1.7.1
-  checksum: d338cc6d07645b0a83bf928efcc61cf9146956e8310aa380a088b34c1526b842cbfe472be14b9999e61e18ed9a15e8d4891cf53ea782255b263b6322764a76ea
+  checksum: 3f92f24f3c599345a4621347d184304870856300caaa404cf4eadd1caf514ddbefe93171b30ac49da6cd6039efe2f6d46197c9c035ac12a61c619b73a460c18a
   languageName: node
   linkType: hard
 
@@ -7648,7 +7649,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gnosis.pm/safe-deployments@npm:^1.12.0":
+"@gnosis.pm/safe-deployments@npm:1.15.0":
   version: 1.15.0
   resolution: "@gnosis.pm/safe-deployments@npm:1.15.0"
   dependencies:
@@ -7664,15 +7665,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gnosis.pm/safe-ethers-lib@npm:1.1.0":
-  version: 1.1.0
-  resolution: "@gnosis.pm/safe-ethers-lib@npm:1.1.0"
+"@gnosis.pm/safe-ethers-lib@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "@gnosis.pm/safe-ethers-lib@npm:1.2.1"
   dependencies:
-    "@gnosis.pm/safe-core-sdk-types": ^1.1.0
-    "@gnosis.pm/safe-core-sdk-utils": ^1.1.0
+    "@gnosis.pm/safe-core-sdk-types": ^1.2.1
+    "@gnosis.pm/safe-core-sdk-utils": ^1.2.1
   peerDependencies:
-    ethers: ^5.5.3
-  checksum: b051bdcf3558a559c11672dfe6d640ee46c7b71e7bbb280a5ef9a1d9924c34b9b86ae0dd908b429654375c2870ddf2c26e03003f5fb7c12e45b16d712f7c7f17
+    ethers: ^5.6.2
+  checksum: e88810d28d3782cfd051940d7d69a0663b5b0cae6d3438b05801a0ef1cccdf91086099dbad6afd3e7114571a4ece2812650c1fda96ba973f1eb85061506f5c79
+  languageName: node
+  linkType: hard
+
+"@gnosis.pm/safe-service-client@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@gnosis.pm/safe-service-client@npm:1.2.0"
+  dependencies:
+    "@ethersproject/abstract-signer": ^5.6.2
+    "@gnosis.pm/safe-core-sdk-types": ^1.2.1
+    node-fetch: ^2.6.6
+  checksum: d9109fa796d6c4bc32bbe6fe1892f982541419402bd01955b358f20874918703b59c3a5f9cfbd0da42b4e617dc05accdbcfa4579c3f1fbcf868094b5a9d89508
   languageName: node
   linkType: hard
 
@@ -16295,7 +16307,8 @@ __metadata:
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
     "@gnosis.pm/safe-core-sdk": 2.0.0
-    "@gnosis.pm/safe-ethers-lib": 1.1.0
+    "@gnosis.pm/safe-ethers-lib": ^1.2.1
+    "@gnosis.pm/safe-service-client": ^1.2.0
     "@nomiclabs/hardhat-ethers": 2.0.6
     "@nomiclabs/hardhat-etherscan": 3.1.0
     "@nomiclabs/hardhat-truffle5": 2.0.6
@@ -40593,7 +40606,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:2.6.7, node-fetch@npm:^2.6.7":
+"node-fetch@npm:2.6.7, node-fetch@npm:^2.6.6, node-fetch@npm:^2.6.7":
   version: 2.6.7
   resolution: "node-fetch@npm:2.6.7"
   dependencies:
