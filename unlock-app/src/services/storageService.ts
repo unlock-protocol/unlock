@@ -540,10 +540,6 @@ export class StorageService extends EventEmitter {
         )}`,
         'Content-Type': 'application/json',
       },
-      params: {
-        data: JSON.stringify(data),
-        signature,
-      },
     }
 
     const url = new URL(`${this.host}/lock/${lockAddress}/stripe`)
