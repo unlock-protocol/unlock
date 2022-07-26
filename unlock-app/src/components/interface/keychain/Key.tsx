@@ -237,6 +237,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
       <KeyMetadataModal
         isOpen={showMetadata}
         setIsOpen={setShowMetadata}
+        account={account}
         lock={lock}
         keyId={keyId}
         network={network}

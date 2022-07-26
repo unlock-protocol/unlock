@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useStorageService } from '~/utils/withStorageService'
 import React from 'react'
+import { useWalletService } from '~/utils/withWalletService'
 interface MetadataModalProps {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
   keyId: string
   network: number
   lock: any
+  account: string
 }
 
 const KeyMetadataPlaceholder: React.FC<unknown> = () => {
@@ -31,17 +33,27 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
   keyId,
   lock,
   network,
+  account,
 }) => {
   const [metadata, setMetadata] = useState<{ [key: string]: any }>()
   const [loading, setLoading] = useState(false)
   const storageService = useStorageService()
+  const walletService = useWalletService()
   const { register } = useForm()
 
   useEffect(() => {
     if (!isOpen) return
 
+    const login = async () => {
+      return await storageService.loginPrompt({
+        walletService,
+        address: account!,
+        chainId: network!,
+      })
+    }
     const getData = async () => {
       setLoading(true)
+      await login()
       const data = await storageService.getKeyMetadataValues({
         lockAddress: lock.address,
         keyId: parseInt(keyId, 10),
@@ -54,7 +66,16 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
       })
     }
     getData()
-  }, [isOpen, keyId, lock.address, network, storageService])
+  }, [
+    account,
+    isOpen,
+    keyId,
+    lock.address,
+    lock.owner,
+    network,
+    storageService,
+    walletService,
+  ])
 
   const values = Object.entries(metadata ?? {})
   const hasValues = values?.length > 0
