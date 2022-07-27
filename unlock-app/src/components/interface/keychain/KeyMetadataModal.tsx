@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { useStorageService } from '~/utils/withStorageService'
 import React from 'react'
 import { useWalletService } from '~/utils/withWalletService'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 interface MetadataModalProps {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
@@ -35,37 +36,49 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
   network,
   account,
 }) => {
-  const [metadata, setMetadata] = useState<{ [key: string]: any }>()
+  const [metadata, setMetadata] = useState<{ [key: string]: string | number }>()
   const [loading, setLoading] = useState(false)
+  const [updating, setUpdating] = useState(false)
   const storageService = useStorageService()
   const walletService = useWalletService()
-  const { register } = useForm()
+  const {
+    register,
+    formState: { isDirty, errors },
+    getValues,
+    handleSubmit,
+    trigger,
+    reset,
+  } = useForm()
 
   useEffect(() => {
     if (!isOpen) return
 
-    const login = async () => {
-      return await storageService.loginPrompt({
-        walletService,
-        address: account!,
-        chainId: network!,
-      })
+    try {
+      const login = async () => {
+        return await storageService.loginPrompt({
+          walletService,
+          address: account!,
+          chainId: network!,
+        })
+      }
+      const getData = async () => {
+        setLoading(true)
+        await login()
+        const data = await storageService.getKeyMetadataValues({
+          lockAddress: lock.address,
+          keyId: parseInt(keyId, 10),
+          network,
+        })
+        setLoading(false)
+        setMetadata({
+          ...data?.userMetadata?.protected,
+          ...data?.userMetadata?.public,
+        })
+      }
+      getData()
+    } catch (err) {
+      ToastHelper.error('There is some unexpected issue, please try again')
     }
-    const getData = async () => {
-      setLoading(true)
-      await login()
-      const data = await storageService.getKeyMetadataValues({
-        lockAddress: lock.address,
-        keyId: parseInt(keyId, 10),
-        network,
-      })
-      setLoading(false)
-      setMetadata({
-        ...data?.userMetadata?.protected,
-        ...data?.userMetadata?.public,
-      })
-    }
-    getData()
   }, [
     account,
     isOpen,
@@ -73,9 +86,35 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
     lock.address,
     lock.owner,
     network,
+    reset,
     storageService,
     walletService,
   ])
+
+  const onUpdateMetadata = async () => {
+    try {
+      const valid = await trigger()
+      setUpdating(true)
+      if (valid) {
+        const params = {
+          lockAddress: lock.address,
+          network,
+          userAddress: account,
+          metadata: getValues(),
+        }
+        const updatePromise = storageService.updatetMetadata(params)
+        await ToastHelper.promise(updatePromise, {
+          success: 'Metadata succesfully updated',
+          error: 'There is some unexpected issue, please try again',
+          loading: 'Updating metadata',
+        })
+        reset() // reset form defaults
+      }
+      setUpdating(false)
+    } catch (err) {
+      ToastHelper.error('There is some unexpected issue, please try again')
+    }
+  }
 
   const values = Object.entries(metadata ?? {})
   const hasValues = values?.length > 0
@@ -92,24 +131,35 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
             {`${lock.name} - Metadata`}{' '}
           </span>
           {hasValues ? (
-            <form action="">
+            <form
+              onSubmit={handleSubmit(onUpdateMetadata)}
+              className="flex flex-col gap-3"
+            >
               {values?.map(([key, value], index) => {
                 return (
-                  <Input
-                    label={key}
-                    disabled={true}
-                    key={index}
-                    {...register(key, {
-                      value,
-                    })}
-                  />
+                  <div key={index}>
+                    <Input
+                      label={key}
+                      key={index}
+                      disabled={updating}
+                      {...register(key, {
+                        value,
+                        required: true,
+                      })}
+                    />
+                    {errors?.[key] && (
+                      <span className="text-[#f24c15] text-xs">
+                        This field is required
+                      </span>
+                    )}
+                  </div>
                 )
               })}
             </form>
           ) : (
             <div>There is no metadata associated with that key.</div>
           )}
-          <div className="flex mt-auto">
+          <div className="flex mt-auto gap-3">
             <Button
               className="ml-auto"
               variant="secondary"
@@ -117,6 +167,16 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
             >
               Close
             </Button>
+            {hasValues && (
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={!isDirty || updating}
+                onClick={onUpdateMetadata}
+              >
+                Update metadata
+              </Button>
+            )}
           </div>
         </div>
       )}
