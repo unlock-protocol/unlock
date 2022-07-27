@@ -1,6 +1,4 @@
-import styled from 'styled-components'
 import React, { useState, useContext, useEffect } from 'react'
-import 'cross-fetch/polyfill'
 import Head from 'next/head'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import BrowserOnly from '../helpers/BrowserOnly'
@@ -12,26 +10,9 @@ import { MetadataTable } from '../interface/MetadataTable'
 import useMembers from '../../hooks/useMembers'
 import LoginPrompt from '../interface/LoginPrompt'
 import GrantKeysDrawer from '../creator/members/GrantKeysDrawer'
-import {
-  CreateLockButton,
-  AccountWrapper,
-} from '../interface/buttons/ActionButton'
-import { Input } from '@unlock-protocol/ui'
+import { Input, Button } from '@unlock-protocol/ui'
 import useDebounce from '../../hooks/useDebouce'
-
-interface FilterProps {
-  value: string
-  current: string
-  setFilter: (filter: string) => any
-}
-
-const Filter = ({ value, current, setFilter }: FilterProps) => {
-  return (
-    <StyledFilter active={current === value} onClick={() => setFilter(value)}>
-      {value}
-    </StyledFilter>
-  )
-}
+import 'cross-fetch/polyfill'
 
 interface PaginationProps {
   currentPage: number
@@ -47,26 +28,26 @@ const Pagination = ({
   if (currentPage === 0 && !hasNextPage) {
     return null
   }
-  const previousPageButton = (
-    <StyledFilter
-      active={currentPage === 0}
-      onClick={() => setCurrentPage(currentPage - 1)}
-    >
-      Previous
-    </StyledFilter>
-  )
-  const nextPageButton = (
-    <StyledFilter
-      active={!hasNextPage}
-      onClick={() => setCurrentPage(currentPage + 1)}
-    >
-      Next
-    </StyledFilter>
-  )
   return (
-    <Filters>
-      Page: {currentPage} {previousPageButton} {nextPageButton}
-    </Filters>
+    <div className="flex gap-2 items-center">
+      <span>{`Page: ${currentPage + 1}`}</span>
+      <Button
+        variant="outlined-primary"
+        size="small"
+        disabled={currentPage === 0}
+        onClick={() => setCurrentPage(currentPage - 1)}
+      >
+        Previous
+      </Button>
+      <Button
+        variant="outlined-primary"
+        size="small"
+        disabled={!hasNextPage}
+        onClick={() => setCurrentPage(currentPage + 1)}
+      >
+        Next
+      </Button>
+    </div>
   )
 }
 
@@ -108,12 +89,10 @@ export const MembersContent = ({ query }: MembersContentProps) => {
         {!account && <LoginPrompt />}
         {account && (
           <>
-            <AccountWrapper>
+            <div className="grid items-center grid-cols-[1fr] gap-3 sm:grid-cols-[1fr_200px]">
               <Account />
-              <GrantButton onClick={() => setIsOpen(!isOpen)}>
-                Airdrop Keys
-              </GrantButton>
-            </AccountWrapper>
+              <Button onClick={() => setIsOpen(!isOpen)}>Airdrop Keys</Button>
+            </div>
 
             <MetadataTableWrapper page={page} lockAddresses={lockAddresses} />
           </>
@@ -276,24 +255,5 @@ const MetadataTableWrapper = ({
 }
 
 MetadataTableWrapper.defaultProps = {}
-
-const GrantButton = styled(CreateLockButton)``
-
-export const Filters = styled.nav`
-  color: var(--grey);
-  font-size: 13px;
-`
-
-interface StyledFilterProps {
-  active?: boolean
-}
-const StyledFilter = styled.li`
-  cursor: ${(props: StyledFilterProps) =>
-    props.active ? 'not-allowed' : 'pointer'};
-  display: inline-block;
-  margin: 5px;
-  color: ${(props) => (props.active ? 'var(--darkgrey)' : 'var(--blue)')};
-  font-weight: ${(props) => (props.active ? '700' : '300')};
-`
 
 export default MembersContent
