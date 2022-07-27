@@ -16,7 +16,6 @@ import {
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
-import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 
 interface Props {
   injectedProvider: unknown
