@@ -401,4 +401,17 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
   }
+
+  /**
+   * Returns numbers of owners for a specific lock
+   * @param {*} lockAddress
+   * @param {*} network
+   */
+  async numberOfOwners(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return lockContract.numberOfOwners()
+  }
 }

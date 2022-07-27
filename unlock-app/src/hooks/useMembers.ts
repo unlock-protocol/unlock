@@ -9,6 +9,7 @@ import { GraphServiceContext } from '../utils/withGraphService'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import { ConfigContext } from '../utils/withConfig'
 import { ToastHelper } from '../components/helpers/toast.helper'
+import { BigNumber, ethers } from 'ethers'
 
 /**
  * Helper function which combines the members and their metadata
@@ -204,17 +205,22 @@ export const useMembers = ({
 
   const getMembersCount = async () => {
     const {
-      data: { activeKeys, totalKeys },
+      data: { activeKeys },
     } = await graphService.keysCount(lockAddresses)
+
+    const totalsPromise = await Promise.all(
+      lockAddresses.map((lockAddress) =>
+        web3Service.numberOfOwners(lockAddress, network)
+      )
+    )
 
     // get total for every locks
     const locksActiveList: number[] = activeKeys.map(
       (lock: any) => lock?.keys?.length
     )
-    const locksTotalList: number[] = totalKeys.map(
-      (lock: any) => lock?.keys?.length
+    const locksTotalList: number[] = totalsPromise.map((total: BigNumber) =>
+      ethers.BigNumber.from(total).toNumber()
     )
-
     // return active/total count as sum of every active/total lock count
     setMembersCount({
       active: locksActiveList.reduce((acc, curr) => acc + curr),
