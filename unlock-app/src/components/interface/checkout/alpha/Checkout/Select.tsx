@@ -8,7 +8,6 @@ import { CheckoutHead, CheckoutTransition, CloseButton } from '../Shell'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useState } from 'react'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
@@ -23,7 +22,6 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
   const { paywallConfig } = state.context
   const config = useConfig()
   const { account } = useAuth()
-  const communication = useCheckoutCommunication()
   const [isLockLoading, setIsLockLoading] = useState('')
   const web3Service = useWeb3Service()
   const networkToLocks = networkToLocksMap(paywallConfig)
@@ -92,9 +90,6 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
                         )
                         setIsLockLoading('')
                         if (existingMember) {
-                          communication.emitUserInfo({
-                            address: account,
-                          })
                           send('EXISTING_MEMBER')
                           return
                         }

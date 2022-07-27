@@ -23,7 +23,7 @@ import {
   CheckoutTransition,
   CloseButton,
 } from '../Shell'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
@@ -32,13 +32,18 @@ interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
+  communication: CheckoutCommunication
 }
 
-export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
+export function Confirm({
+  injectedProvider,
+  checkoutService,
+  onClose,
+  communication,
+}: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, network } = useAuth()
   const walletService = useWalletService()
-  const communication = useCheckoutCommunication()
   const config = useConfig()
 
   const { prepareChargeForCard, captureChargeForCard } = useAccount(
