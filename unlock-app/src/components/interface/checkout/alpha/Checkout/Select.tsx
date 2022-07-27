@@ -85,24 +85,11 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
                       })
                       if (account && lock) {
                         setIsLockLoading(lock.address)
-                        let existingMember = false
-                        if (
-                          lock?.publicLockVersion &&
-                          lock.publicLockVersion >= 10
-                        ) {
-                          existingMember = await web3Service?.getHasValidKey(
-                            lock.address,
-                            account,
-                            lock.network
-                          )
-                        } else {
-                          const key = await web3Service.getKeyByLockForOwner(
-                            lock.address,
-                            account,
-                            lock.network
-                          )
-                          existingMember = !!key
-                        }
+                        const existingMember = await web3Service.getHasValidKey(
+                          lock.address,
+                          account,
+                          lock.network
+                        )
                         setIsLockLoading('')
                         if (existingMember) {
                           communication.emitUserInfo({
