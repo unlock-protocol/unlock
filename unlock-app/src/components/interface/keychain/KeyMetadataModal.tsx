@@ -141,7 +141,7 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
                 return (
                   <div key={index}>
                     <Input
-                      label={key}
+                      label={key.toUpperCase()}
                       key={index}
                       disabled={updating}
                       {...register(key, {
