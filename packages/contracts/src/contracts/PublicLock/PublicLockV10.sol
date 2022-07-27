@@ -61,6 +61,8 @@ interface IPublicLock
 
   /**
    * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
+   * @param _spender address that can spend tokens belonging to the lock
+   * @param _amount amount of tokens that can be spent by the spender
    */
   function approveBeneficiary(
     address _spender,
@@ -2425,6 +2427,8 @@ contract MixinLockCore is
 
   /**
    * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
+   * @param _spender address that can spend tokens belonging to the lock
+   * @param _amount amount of tokens that can be spent by the spender
    */
   function approveBeneficiary(
     address _spender,
