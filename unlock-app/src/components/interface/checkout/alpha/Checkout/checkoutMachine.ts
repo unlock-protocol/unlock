@@ -204,6 +204,7 @@ export const checkoutMachine = createMachine(
             cond: 'isLockSelected',
           },
           SELECT: 'SELECT',
+          BACK: 'SELECT',
         },
       },
       CARD: {
@@ -259,6 +260,15 @@ export const checkoutMachine = createMachine(
           ],
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
+          BACK: [
+            {
+              target: 'CARD',
+              cond: 'requireCardPayment',
+            },
+            {
+              target: 'QUANTITY',
+            },
+          ],
         },
       },
       MESSAGE_TO_SIGN: {
@@ -288,6 +298,7 @@ export const checkoutMachine = createMachine(
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
           METADATA: 'METADATA',
+          BACK: 'METADATA',
         },
       },
       CAPTCHA: {
@@ -339,6 +350,15 @@ export const checkoutMachine = createMachine(
           QUANTITY: 'QUANTITY',
           METADATA: 'METADATA',
           MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
+          BACK: [
+            {
+              target: 'MESSAGE_TO_SIGN',
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'METADATA',
+            },
+          ],
         },
       },
       MINTING: {
@@ -367,6 +387,7 @@ export const checkoutMachine = createMachine(
       RETURNING: {
         on: {
           MAKE_ANOTHER_PURCHASE: 'QUANTITY',
+          BACK: 'SELECT',
           DISCONNECT: [
             {
               target: 'QUANTITY',
@@ -398,26 +419,22 @@ export const checkoutMachine = createMachine(
         } as CheckoutMachineContext
       }),
       selectLock: assign({
-        // @ts-expect-error xstate unused variable type bug
-        lock: (context, event) => {
+        lock: (_, event) => {
           return event.lock
         },
       }),
       selectQuantity: assign({
-        // @ts-expect-error xstate unused variable type bug
-        quantity: (context, event) => {
+        quantity: (_, event) => {
           return event.quantity
         },
       }),
       selectPaymentMethod: assign({
-        // @ts-expect-error xstate unused variable type bug
-        payment: (context, event) => {
+        payment: (_, event) => {
           return event.payment
         },
       }),
       selectRecipients: assign({
-        // @ts-expect-error xstate unused variable type bug
-        recipients: (context, event) => {
+        recipients: (_, event) => {
           return event.recipients
         },
       }),
@@ -430,8 +447,7 @@ export const checkoutMachine = createMachine(
         },
       }),
       signMessage: assign({
-        // @ts-expect-error xstate unused variable type bug
-        messageToSign: (context, event) => {
+        messageToSign: (_, event) => {
           return {
             address: event.address,
             signature: event.signature,
@@ -453,8 +469,7 @@ export const checkoutMachine = createMachine(
           }
         },
       }),
-      // @ts-expect-error xstate unused variable type bug
-      updatePaywallConfig: assign((context, event) => {
+      updatePaywallConfig: assign((_, event) => {
         return {
           paywallConfig: event.config,
           lock: undefined,
@@ -466,11 +481,10 @@ export const checkoutMachine = createMachine(
           },
           quantity: 1,
           recipients: [],
-        }
+        } as CheckoutMachineContext
       }),
       solveCaptcha: assign({
-        // @ts-expect-error xstate unused variable type bug
-        captcha: (context, event) => {
+        captcha: (_, event) => {
           return event.data
         },
       }),

@@ -507,16 +507,16 @@ export class StorageService extends EventEmitter {
       },
     }
     try {
-      const response = await fetch(
-        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`,
-        {
-          method: 'GET',
-          body: JSON.stringify(opts.params),
-          headers: {
-            ...opts.headers,
-          },
-        }
+      const url = new URL(
+        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`
       )
+      url.searchParams.append('data', JSON.stringify(opts.params))
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          ...opts.headers,
+        },
+      })
       const data = response.json()
 
       this.emit(success.getBulkMetadataFor, lockAddress, data)
@@ -540,15 +540,14 @@ export class StorageService extends EventEmitter {
         )}`,
         'Content-Type': 'application/json',
       },
-      params: {
-        data: JSON.stringify(data),
-        signature,
-      },
     }
 
-    const response = await fetch(`${this.host}/lock/${lockAddress}/stripe`, {
+    const url = new URL(`${this.host}/lock/${lockAddress}/stripe`)
+    url.searchParams.append('data', JSON.stringify(data))
+    url.searchParams.append('signature', signature)
+
+    const response = await fetch(url, {
       method: 'GET',
-      body: JSON.stringify(opts.params),
       headers: {
         ...opts.headers,
       },
@@ -803,6 +802,71 @@ export class StorageService extends EventEmitter {
       body: JSON.stringify({ users }),
       headers: {
         'content-type': 'application/json',
+      },
+    }
+    const response = await fetch(url, opts)
+    return response.json()
+  }
+
+  async updatetMetadata({
+    lockAddress,
+    userAddress,
+    network,
+    metadata,
+  }: {
+    lockAddress: string
+    userAddress: string
+    network: number
+    metadata: any
+  }) {
+    const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
+    const token = await this.getAccessToken()
+    const formattedMetadata = {
+      metadata: {
+        protected: {
+          ...metadata,
+        },
+      },
+    }
+
+    const opts = {
+      method: 'PUT',
+      body: JSON.stringify(formattedMetadata),
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    return await fetch(url, opts)
+  }
+
+  async createtMetadata({
+    lockAddress,
+    userAddress,
+    network,
+    metadata,
+  }: {
+    lockAddress: string
+    userAddress: string
+    network: number
+    metadata: any
+  }) {
+    const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
+    const token = await this.getAccessToken()
+    const formattedMetadata = {
+      metadata: {
+        protected: {
+          ...metadata,
+        },
+      },
+    }
+
+    const opts = {
+      method: 'POST',
+      body: JSON.stringify(formattedMetadata),
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     }
     const response = await fetch(url, opts)
