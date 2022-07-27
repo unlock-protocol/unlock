@@ -13,7 +13,12 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-import { BackButton, CheckoutHead, CloseButton } from '../Shell'
+import {
+  BackButton,
+  CheckoutHead,
+  CheckoutTransition,
+  CloseButton,
+} from '../Shell'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
@@ -255,134 +260,145 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
   }
 
   return (
-    <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
-      <div className="flex items-center justify-between p-6">
-        <BackButton onClick={() => send('BACK')} />
-        <CloseButton onClick={() => onClose()} />
-      </div>
-      <CheckoutHead
-        title={paywallConfig.title}
-        iconURL={iconURL}
-        description={description}
-      />
-      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <IconButton
-              title="Select lock"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('SELECT')
-              }}
-            />
-            <IconButton
-              title="Choose quantity"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('QUANTITY')
-              }}
-            />
-            <IconButton
-              title="Add metadata"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('METADATA')
-              }}
-            />
-            {paywallConfig.messageToSign && (
+    <CheckoutTransition>
+      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
+        <div className="flex items-center justify-between p-6">
+          <BackButton onClick={() => send('BACK')} />
+          <CloseButton onClick={() => onClose()} />
+        </div>
+        <CheckoutHead
+          title={paywallConfig.title}
+          iconURL={iconURL}
+          description={description}
+        />
+        <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
+          <div className="flex items-center gap-2 col-span-4">
+            <div className="flex items-center gap-0.5">
               <IconButton
-                title="Sign message"
+                title="Select lock"
                 icon={ProgressCircleIcon}
                 onClick={() => {
-                  send('MESSAGE_TO_SIGN')
+                  send('SELECT')
                 }}
               />
-            )}
-            <ProgressCircleIcon />
-          </div>
-          <h4 className="text-sm "> {title}</h4>
-        </div>
-        <div className="border-t-4 w-full flex-1"></div>
-        <div className="inline-flex items-center gap-1">
-          <ProgressFinishIcon disabled />
-        </div>
-      </div>
-      <main className="px-6 py-2 overflow-auto h-full">
-        <div className="flex items-start justify-between">
-          <h3 className="font-bold text-xl">
-            {quantity}X {lock!.name}
-          </h3>
-          {!isLoading ? (
-            <div className="grid">
-              {fiatPricing.creditCardEnabled ? (
-                <>
-                  {!!fiatPrice && (
-                    <span className="font-semibold">
-                      ${(fiatPrice / 100).toFixed(2)}
-                    </span>
-                  )}
-                  <span>{formattedData.formattedKeyPrice} </span>
-                </>
-              ) : (
-                <>
-                  <span className="font-semibold">
-                    {formattedData.formattedKeyPrice}{' '}
-                  </span>
-                  {!!fiatPrice && <span>${(fiatPrice / 100).toFixed(2)}</span>}
-                </>
+              <IconButton
+                title="Choose quantity"
+                icon={ProgressCircleIcon}
+                onClick={() => {
+                  send('QUANTITY')
+                }}
+              />
+              <IconButton
+                title="Select payment method"
+                icon={ProgressCircleIcon}
+                onClick={() => {
+                  send('PAYMENT')
+                }}
+              />
+              <IconButton
+                title="Add metadata"
+                icon={ProgressCircleIcon}
+                onClick={() => {
+                  send('METADATA')
+                }}
+              />
+              {paywallConfig.messageToSign && (
+                <IconButton
+                  title="Sign message"
+                  icon={ProgressCircleIcon}
+                  onClick={() => {
+                    send('MESSAGE_TO_SIGN')
+                  }}
+                />
               )}
-              <p className="text-sm text-gray-500">
-                {quantity} X {formattedData.formattedKeyPrice}
-              </p>
+              <ProgressCircleIcon />
+            </div>
+            <h4 className="text-sm "> {title}</h4>
+          </div>
+          <div className="border-t-4 w-full flex-1"></div>
+          <div className="inline-flex items-center gap-1">
+            <ProgressFinishIcon disabled />
+          </div>
+        </div>
+        <main className="px-6 py-2 overflow-auto h-full">
+          <div className="flex items-start justify-between">
+            <h3 className="font-bold text-xl">
+              {quantity}X {lock!.name}
+            </h3>
+            {!isLoading ? (
+              <div className="grid">
+                {fiatPricing.creditCardEnabled ? (
+                  <>
+                    {!!fiatPrice && (
+                      <span className="font-semibold">
+                        ${(fiatPrice / 100).toFixed(2)}
+                      </span>
+                    )}
+                    <span>{formattedData.formattedKeyPrice} </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="font-semibold">
+                      {formattedData.formattedKeyPrice}{' '}
+                    </span>
+                    {!!fiatPrice && (
+                      <span>${(fiatPrice / 100).toFixed(2)}</span>
+                    )}
+                  </>
+                )}
+                <p className="text-sm text-gray-500">
+                  {quantity} X {formattedData.formattedKeyPrice}
+                </p>
+              </div>
+            ) : (
+              <div className="flex gap-2 flex-col items-center">
+                <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+                <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+              </div>
+            )}
+          </div>
+          {!isLoading ? (
+            <div className="space-y-1 border-t-2 py-2 border-brand-gray mt-2">
+              <ul className="flex items-center gap-2 text-sm">
+                <li className="inline-flex items-center gap-2">
+                  <span className="text-gray-500"> Duration: </span>
+                  <time>{formattedData.formattedDuration}</time>
+                </li>
+                {recurringPayments && (
+                  <li className="inline-flex items-center gap-2">
+                    <span className="text-gray-500"> Recurring: </span>
+                    <span> {recurringPayment} times </span>
+                  </li>
+                )}
+              </ul>
+              <a
+                href={config.networks[lock!.network].explorer.urls.address(
+                  lock!.address
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+              >
+                View Contract <Icon icon={ExternalLinkIcon} size="small" />
+              </a>
             </div>
           ) : (
-            <div className="flex gap-2 flex-col items-center">
-              <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-              <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+            <div className="py-1.5 space-y-2 items-center">
+              <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+              <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
             </div>
           )}
-        </div>
-        {!isLoading ? (
-          <div className="space-y-1 border-t-2 py-2 border-brand-gray mt-2">
-            <ul className="flex items-center gap-2 text-sm">
-              <li className="inline-flex items-center gap-2">
-                <span className="text-gray-500"> Duration: </span>
-                <time>{formattedData.formattedDuration}</time>
-              </li>
-              {recurringPayments && (
-                <li className="inline-flex items-center gap-2">
-                  <span className="text-gray-500"> Recurring: </span>
-                  <span> {recurringPayment} times </span>
-                </li>
-              )}
-            </ul>
-            <a
-              href={config.networks[lock!.network].explorer.urls.address(
-                lock!.address
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
-            >
-              View Contract <Icon icon={ExternalLinkIcon} size="small" />
-            </a>
-          </div>
-        ) : (
-          <div className="py-1.5 space-y-2 items-center">
-            <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-            <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-          </div>
-        )}
-      </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <Payment />
-        </Connected>
-        <PoweredByUnlock />
-      </footer>
-    </div>
+        </main>
+        <footer className="px-6 pt-6 border-t grid items-center">
+          <Connected
+            injectedProvider={injectedProvider}
+            service={checkoutService}
+          >
+            <Payment />
+          </Connected>
+          <PoweredByUnlock />
+        </footer>
+      </div>
+    </CheckoutTransition>
   )
 }

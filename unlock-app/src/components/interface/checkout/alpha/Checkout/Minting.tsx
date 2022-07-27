@@ -122,6 +122,7 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
               <ProgressCircleIcon disabled />
               <ProgressCircleIcon disabled />
               <ProgressCircleIcon disabled />
+              <ProgressCircleIcon disabled />
               {messageToSign && <ProgressCircleIcon disabled />}
               <ProgressCircleIcon disabled />
               <ProgressFinishedIcon />
@@ -131,7 +132,7 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
           <div className="border-t-4 w-full flex-1"></div>
         </div>
         <main className="px-6 py-2 overflow-auto h-full">
-          <div className="space-y-2 justify-items-center grid">
+          <div className="h-full flex flex-col items-center justify-center space-y-2">
             {status && <AnimationContent status={status} />}
             {mint?.status === 'ERROR' && (
               <p className="font-bold text-lg text-brand-ui-primary">
