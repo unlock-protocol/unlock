@@ -20,6 +20,8 @@ With this integration between Unlock and Superfluid, a Superfluid stream looks a
 
 ## Let’s start streaming payments!
 
-Unlock and Superfluid are thrilled to bring this integration to life, and we are looking forward to seeing web3 creative communities use it to monetize their memberships in new ways! 
+Unlock and Superfluid are thrilled to bring this integration to life, and we are looking forward to seeing web3 creative communities use it to monetize their memberships in new ways!
 
-If you have any ideas or questions on how to use it, [drop by our Discord](https://discord.com/invite/Ah6ZEJyTDp) and share your questions or experiences!
+Ready to start streaming payments, and want to get things set up? Fill out [this quick form](https://airtable.com/shrI89xOtwyp3rUm6) and we'll get right back to you to get things going!
+
+If you have any ideas or questions on how to use Superfluid and Unlock together, [drop by our Discord](https://discord.com/invite/Ah6ZEJyTDp) and share your questions or experiences!
