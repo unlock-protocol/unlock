@@ -9,7 +9,6 @@ import { GraphServiceContext } from '../utils/withGraphService'
 import { AuthenticationContext } from '../contexts/AuthenticationContext'
 import { ConfigContext } from '../utils/withConfig'
 import { ToastHelper } from '../components/helpers/toast.helper'
-import { BigNumber, ethers } from 'ethers'
 
 /**
  * Helper function which combines the members and their metadata
