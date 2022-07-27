@@ -108,7 +108,9 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
           error: 'There is some unexpected issue, please try again',
           loading: 'Updating metadata',
         })
-        reset() // reset form defaults
+        reset({
+          ...getValues(),
+        }) // reset form status + set new values
       }
       setUpdating(false)
     } catch (err) {
