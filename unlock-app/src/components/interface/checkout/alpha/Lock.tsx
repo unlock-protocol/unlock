@@ -45,6 +45,7 @@ export function Lock({
       network,
       address,
       ...lockData,
+      name: name ?? lockData?.name,
       fiatPricing,
     }
   })
