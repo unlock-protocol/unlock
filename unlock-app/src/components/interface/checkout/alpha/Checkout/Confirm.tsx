@@ -6,7 +6,11 @@ import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
 import { Button, Icon } from '@unlock-protocol/ui'
-import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
+import {
+  RiExternalLinkLine as ExternalLinkIcon,
+  RiTimer2Line as DurationIcon,
+  RiRepeatFill as RecurringIcon,
+} from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
 import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -23,7 +27,7 @@ import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
-
+import { LabeledItem } from '../LabeledItem'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -320,7 +324,7 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
             <ProgressFinishIcon disabled />
           </div>
         </div>
-        <main className="px-6 py-2 overflow-auto h-full">
+        <main className="px-6 py-2 overflow-auto h-full space-y-2">
           <div className="flex items-start justify-between">
             <h3 className="font-bold text-xl">
               {quantity}X {lock!.name}
@@ -357,18 +361,21 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
               </div>
             )}
           </div>
+          <div className="border-t w-full"></div>
           {!isLoading ? (
-            <div className="space-y-1 border-t-2 py-2 border-brand-gray mt-2">
-              <ul className="flex items-center gap-2 text-sm">
-                <li className="inline-flex items-center gap-2">
-                  <span className="text-gray-500"> Duration: </span>
-                  <time>{formattedData.formattedDuration}</time>
-                </li>
-                {recurringPayments && (
-                  <li className="inline-flex items-center gap-2">
-                    <span className="text-gray-500"> Recurring: </span>
-                    <span> {recurringPayment} times </span>
-                  </li>
+            <div className="space-y-1 py-2">
+              <ul className="flex items-center gap-4 text-sm">
+                <LabeledItem
+                  label="Duration"
+                  icon={DurationIcon}
+                  value={formattedData.formattedDuration}
+                />
+                {recurringPayments && recurringPayment && (
+                  <LabeledItem
+                    label="Recurring"
+                    icon={RecurringIcon}
+                    value={recurringPayment.toString()}
+                  />
                 )}
               </ul>
               <a

@@ -6,7 +6,11 @@ import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
 import { Button, Icon } from '@unlock-protocol/ui'
-import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
+import {
+  RiExternalLinkLine as ExternalLinkIcon,
+  RiTimer2Line as DurationIcon,
+  RiCoupon2Line as QuantityIcon,
+} from 'react-icons/ri'
 import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import {
@@ -19,6 +23,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { LabeledItem } from '../LabeledItem'
 
 interface Props {
   injectedProvider: unknown
@@ -116,7 +121,7 @@ export function Quantity({
             <ProgressFinishIcon disabled />
           </div>
         </div>
-        <main className="p-6 overflow-auto h-full">
+        <main className="p-6 overflow-auto h-full space-y-2">
           <div className="flex items-start justify-between">
             <h3 className="font-bold text-xl"> {lock?.name}</h3>
             {!isLoading ? (
@@ -145,19 +150,26 @@ export function Quantity({
               <QuantityPlaceholder />
             )}
           </div>
+          <div className="w-full border-t"></div>
           <div className="pt-2 mt-2 w-full flex justify-between">
             {!isLoading ? (
               <div className="space-y-2">
-                <ul className="flex items-center gap-2 text-sm flex-wrap">
-                  <li className="inline-flex items-center gap-2">
-                    <span className="text-gray-500"> Duration: </span>
-                    <time> {formattedData.formattedDuration} </time>
-                  </li>
-                  <li className="inline-flex items-center gap-2">
-                    <span className="text-gray-500"> Quantity: </span>
-                    <time> {formattedData.formattedKeysAvailable} </time>
-                  </li>
-                </ul>
+                <div className="flex items-center gap-4 flex-wrap">
+                  <LabeledItem
+                    label="Duration"
+                    icon={DurationIcon}
+                    value={formattedData.formattedDuration}
+                  />
+                  <LabeledItem
+                    label="Quantity"
+                    icon={QuantityIcon}
+                    value={
+                      formattedData.isSoldOut
+                        ? 'Sold out'
+                        : formattedData.formattedKeysAvailable
+                    }
+                  />
+                </div>
                 <a
                   href={config.networks[lock!.network].explorer.urls.address(
                     lock!.address
