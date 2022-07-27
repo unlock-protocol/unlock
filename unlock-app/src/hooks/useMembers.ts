@@ -208,7 +208,7 @@ export const useMembers = ({
       data: { activeKeys },
     } = await graphService.keysCount(lockAddresses)
 
-    const totalsPromise = await Promise.all(
+    const locksTotalList = await Promise.all(
       lockAddresses.map((lockAddress) =>
         web3Service.numberOfOwners(lockAddress, network)
       )
@@ -217,9 +217,6 @@ export const useMembers = ({
     // get total for every locks
     const locksActiveList: number[] = activeKeys.map(
       (lock: any) => lock?.keys?.length
-    )
-    const locksTotalList: number[] = totalsPromise.map((total: BigNumber) =>
-      ethers.BigNumber.from(total).toNumber()
     )
     // return active/total count as sum of every active/total lock count
     setMembersCount({

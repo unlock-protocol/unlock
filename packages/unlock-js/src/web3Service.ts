@@ -412,6 +412,6 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
-    return lockContract.numberOfOwners()
+    return ethers.BigNumber.from(await lockContract.numberOfOwners()).toNumber()
   }
 }
