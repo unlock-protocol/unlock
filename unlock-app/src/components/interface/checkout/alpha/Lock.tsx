@@ -5,8 +5,13 @@ import { useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { getFiatPricing } from '~/hooks/useCards'
 import { LockState } from './Checkout/checkoutMachine'
-import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
+import {
+  RiArrowRightLine as RightArrowIcon,
+  RiTimer2Line as DurationIcon,
+  RiCoupon2Line as QuantityIcon,
+} from 'react-icons/ri'
 import { CgSpinner as LoadingIcon } from 'react-icons/cg'
+import { LabeledItem } from './LabeledItem'
 interface Props {
   name: string
   address: string
@@ -36,10 +41,9 @@ export function Lock({
       getFiatPricing(config, address, network),
     ])
     return {
-      ...lockData,
       network,
-      name,
       address,
+      ...lockData,
       fiatPricing,
     }
   })
@@ -72,7 +76,7 @@ export function Lock({
     >
       <div className="flex w-full mb-2 items-start justify-between">
         <div>
-          <h3 className="font-bold text-xl"> {name}</h3>
+          <h3 className="font-bold text-xl"> {name || lock?.name}</h3>
           {recurring && (
             <span className="bg-brand-ui-primary bg-opacity-80 group-disabled:group-hover:bg-opacity-80 group-hover:bg-opacity-100 p-1 px-2 rounded-full text-xs font-semibold text-white">
               Recurring x {recurring}
@@ -109,22 +113,22 @@ export function Lock({
       <div className="border-t pt-2 w-full">
         {!isLoading ? (
           <div className="flex items-center justify-between">
-            <ul className="flex items-center gap-2 text-sm flex-wrap">
-              <li className="inline-flex items-center gap-2">
-                <span className="text-gray-500"> Duration: </span>
-                <time> {formattedData.formattedDuration} </time>
-              </li>
-              <li className="inline-flex items-center gap-2">
-                {formattedData.isSoldOut ? (
-                  <span> Sold out </span>
-                ) : (
-                  <>
-                    <span className="text-gray-500"> Quantity: </span>
-                    <span> {formattedData.formattedKeysAvailable} </span>
-                  </>
-                )}
-              </li>
-            </ul>
+            <div className="flex items-center gap-4 flex-wrap">
+              <LabeledItem
+                label="Duration"
+                icon={DurationIcon}
+                value={formattedData.formattedDuration}
+              />
+              <LabeledItem
+                label="Quantity"
+                icon={QuantityIcon}
+                value={
+                  formattedData.isSoldOut
+                    ? 'Sold out'
+                    : formattedData.formattedKeysAvailable
+                }
+              />
+            </div>
             <div className="flex items-center justify-end">
               {!(disabled || loading) && (
                 <RightArrowIcon
