@@ -3,7 +3,6 @@ import { useActor } from '@xstate/react'
 import { ReactNode } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { addressMinify, minifyEmail } from '~/utils/strings'
 import SvgComponents from '../../svg'
 import { CheckoutService } from './Checkout/checkoutMachine'
@@ -136,13 +135,10 @@ export function Connected({
   const { authenticateWithProvider } = useAuthenticateHandler({
     injectedProvider,
   })
-  const communication = useCheckoutCommunication()
   const onDisconnect = () => {
     send('DISCONNECT')
-    communication.emitUserInfo({})
     deAuthenticate()
   }
-
   return account ? (
     <div className="space-y-2">
       {children}

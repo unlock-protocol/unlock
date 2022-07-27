@@ -12,7 +12,7 @@ import { useEffect } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { CheckoutHead, CheckoutTransition, CloseButton } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
@@ -22,6 +22,7 @@ interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
+  communication: CheckoutCommunication
 }
 
 function AnimationContent({ status }: { status: Mint['status'] }) {
@@ -53,8 +54,12 @@ function AnimationContent({ status }: { status: Mint['status'] }) {
   }
 }
 
-export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
-  const communication = useCheckoutCommunication()
+export function Minting({
+  injectedProvider,
+  onClose,
+  checkoutService,
+  communication,
+}: Props) {
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)

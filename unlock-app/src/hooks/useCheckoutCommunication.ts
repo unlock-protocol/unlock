@@ -197,3 +197,5 @@ export const useCheckoutCommunication = () => {
     ready: !!parent,
   }
 }
+
+export type CheckoutCommunication = ReturnType<typeof useCheckoutCommunication>
