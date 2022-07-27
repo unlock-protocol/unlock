@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "@gnosis.pm/safe-core-sdk": "2.0.0",
-    "@gnosis.pm/safe-ethers-lib": "1.1.0",
+    "@gnosis.pm/safe-ethers-lib": "1.2.1",
+    "@gnosis.pm/safe-service-client": "1.2.0",
     "@nomiclabs/hardhat-ethers": "2.0.6",
     "@nomiclabs/hardhat-etherscan": "3.1.0",
     "@nomiclabs/hardhat-truffle5": "2.0.6",

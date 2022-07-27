@@ -4,6 +4,7 @@ const resolve = require('path').resolve
 const debug = require('debug')
 const networksConfigs = require('../networks.js')
 
+const { DEPLOYER_PRIVATE_KEY } = process.env
 const log = debug('hardhat:config')
 
 const getNetworkName = (chainId) => {
@@ -14,6 +15,10 @@ const getNetworkName = (chainId) => {
   return networksConfigs[networkName].name
 }
 /**
+ * You can set DEPLOYER_PRIVATE_KEY in env with a private key of the
+ * account that will be used to deploy the contracts.
+ *
+ * Or you can set an account using a mnemonic phrase.
  * https://hardhat.org/hardhat-network/reference/#config
  * Ether:
  * + An object describing an HD wallet. This is the default. It can have any of the following fields:
@@ -31,6 +36,9 @@ const getAccounts = (networkName) => {
       mnemonic: 'test test test test test test test test test test test junk',
       initialIndex: 0,
     }
+  } else if (DEPLOYER_PRIVATE_KEY) {
+    // if DEPLOYER_PRIVATE_KEY is exported then return a single signer
+    return [DEPLOYER_PRIVATE_KEY]
   }
 
   const networkAccountsFile = resolve(`./accounts.${networkName}.js`)

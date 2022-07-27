@@ -22,7 +22,7 @@ async function main({ publicLockVersion }) {
 
   // eslint-disable-next-line no-console
   console.log(
-    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion} to : ${
+    `PUBLIC LOCK > deployed v${await publicLock.publicLockVersion()} to : ${
       publicLock.address
     } (tx: ${publicLock.deployTransaction.hash})`
   )

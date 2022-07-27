@@ -25,3 +25,5 @@ contracts/past-versions
 coverage
 coverage.json
 drafts
+
+.env
