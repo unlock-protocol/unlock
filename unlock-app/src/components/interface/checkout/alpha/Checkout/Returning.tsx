@@ -31,7 +31,6 @@ export function Returning({
   const { paywallConfig, lock } = state.context
   const { title, iconURL, description } =
     useCheckoutHeadContent(checkoutService)
-
   return (
     <CheckoutTransition>
       <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
@@ -50,6 +49,7 @@ export function Returning({
               <ProgressCircleIcon disabled />
               <ProgressCircleIcon disabled />
               <ProgressCircleIcon disabled />
+              <ProgressCircleIcon disabled />
               {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
               <ProgressCircleIcon disabled />
               <ProgressFinishedIcon />
@@ -59,17 +59,14 @@ export function Returning({
           <div className="border-t-4 w-full flex-1"></div>
         </div>
         <main className="px-6 py-2 overflow-auto h-full">
-          <div className="space-y-6 justify-items-center grid">
-            <div className="grid justify-items-center">
-              <Lottie
-                className="w-40 h-40"
-                loop
-                animationData={unlockedAnimation}
-              />
-              <p className="font-bold text-lg text-brand-ui-primary">
-                Voila! This is unlocked!
-              </p>
-            </div>
+          <div className="h-full flex flex-col items-center justify-center space-y-2">
+            <Lottie
+              className={'w-28 sm:w-36 h-28 sm:h-36'}
+              animationData={unlockedAnimation}
+            />
+            <p className="font-bold text-lg text-brand-ui-primary">
+              Voila! This is unlocked!
+            </p>
             <a
               href={config.networks[lock!.network].explorer.urls.address(
                 lock!.address

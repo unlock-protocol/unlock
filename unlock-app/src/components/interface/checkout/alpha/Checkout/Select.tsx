@@ -52,6 +52,7 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
           <div className="inline-flex items-center gap-1">
             <ProgressCircleIcon disabled />
             <ProgressCircleIcon disabled />
+            <ProgressCircleIcon disabled />
             {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
             <ProgressCircleIcon disabled />
             <ProgressFinishIcon disabled />
@@ -82,15 +83,13 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
                         type: 'SELECT_LOCK',
                         lock,
                       })
-                      if (account) {
+                      if (account && lock) {
                         setIsLockLoading(lock.address)
-                        const existingMember =
-                          await web3Service?.getHasValidKey(
-                            lock.address,
-                            account,
-                            lock.network
-                          )
-
+                        const existingMember = await web3Service.getHasValidKey(
+                          lock.address,
+                          account,
+                          lock.network
+                        )
                         setIsLockLoading('')
                         if (existingMember) {
                           communication.emitUserInfo({
