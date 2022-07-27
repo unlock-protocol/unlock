@@ -18,7 +18,6 @@ const applicationRouter = require('./v2/application')
 const verifierRouter = require('./v2/verifier')
 const grantKeysRouter = require('./v2/grantKeys')
 const ticketRouter = require('./v2/ticket')
-
 const config = require('../../config/config')
 
 const router = express.Router({ mergeParams: true })
@@ -33,7 +32,7 @@ router.use((request, _, next) => {
   } else if (request.query?.chain) {
     chain = parseInt(String(request.query.chain))
   }
-  // @ts-expect-error
+  // @ts-expect-error chain type
   request.chain = chain
   next()
 })

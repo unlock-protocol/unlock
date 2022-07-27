@@ -1,8 +1,10 @@
 import express from 'express'
 import signatureValidationMiddleware from '../middlewares/signatureValidationMiddleware'
+import { PurchaseController } from '../controllers/purchaseController'
+import { SignedRequest } from '../types'
 
+const purchaseController = new PurchaseController()
 const router = express.Router({ mergeParams: true })
-const purchaseController = require('../controllers/purchaseController')
 
 router.post(
   '/',
@@ -12,5 +14,12 @@ router.post(
     signee: 'publicKey',
   })
 )
-router.post('/', purchaseController.claim)
+
+router.get('/:network/locks/:lockAddress', (req, res) =>
+  purchaseController.canClaim(req, res)
+)
+router.post('/', (req, res) =>
+  purchaseController.claim(req as SignedRequest, res)
+)
+
 module.exports = router
