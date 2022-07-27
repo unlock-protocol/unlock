@@ -2,7 +2,7 @@
 
 # 0.26.2
 
-- add support for `numberOfOwners(`
+- add support for `numberOfOwners`
 
 # 0.26.1
 
