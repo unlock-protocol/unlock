@@ -1,5 +1,9 @@
 # Changes
 
+# 0.26.2
+
+- add support for `numberOfOwners(`
+
 # 0.26.1
 
 - Fixed bug in allowance function
