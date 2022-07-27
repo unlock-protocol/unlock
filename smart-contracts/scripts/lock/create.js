@@ -37,7 +37,7 @@ async function main({
 
   // send tx
   const [signer] = await ethers.getSigners()
-  lockVersion = lockVersion || 10
+  lockVersion = lockVersion || 11
   beneficiary = beneficiary || signer.address
 
   const calldata = await createLockHash({
