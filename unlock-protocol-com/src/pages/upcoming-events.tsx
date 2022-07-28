@@ -2,7 +2,7 @@ import type { NextPage } from 'next'
 import { routes } from '../config/routes'
 import { NextSeo } from 'next-seo'
 import { Layout } from '../components/layout/DefaultLayout'
-import { Events } from '../components/pages/Events'
+import { UpcomingEvents } from '../components/pages/UpcomingEvents'
 
 const MembershipPage: NextPage = () => {
   return (
@@ -12,7 +12,7 @@ const MembershipPage: NextPage = () => {
         description={routes.upcomingEvents.seo.description}
         openGraph={routes.upcomingEvents.seo.openGraph}
       />
-      <Events />
+      <UpcomingEvents />
     </Layout>
   )
 }

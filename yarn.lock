@@ -7665,7 +7665,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gnosis.pm/safe-ethers-lib@npm:^1.2.1":
+"@gnosis.pm/safe-ethers-lib@npm:1.2.1":
   version: 1.2.1
   resolution: "@gnosis.pm/safe-ethers-lib@npm:1.2.1"
   dependencies:
@@ -7677,7 +7677,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gnosis.pm/safe-service-client@npm:^1.2.0":
+"@gnosis.pm/safe-service-client@npm:1.2.0":
   version: 1.2.0
   resolution: "@gnosis.pm/safe-service-client@npm:1.2.0"
   dependencies:
@@ -16307,8 +16307,8 @@ __metadata:
   resolution: "@unlock-protocol/smart-contracts@workspace:smart-contracts"
   dependencies:
     "@gnosis.pm/safe-core-sdk": 2.0.0
-    "@gnosis.pm/safe-ethers-lib": ^1.2.1
-    "@gnosis.pm/safe-service-client": ^1.2.0
+    "@gnosis.pm/safe-ethers-lib": 1.2.1
+    "@gnosis.pm/safe-service-client": 1.2.0
     "@nomiclabs/hardhat-ethers": 2.0.6
     "@nomiclabs/hardhat-etherscan": 3.1.0
     "@nomiclabs/hardhat-truffle5": 2.0.6
@@ -16563,7 +16563,7 @@ __metadata:
     qr-scanner: 1.4.1
     qrcode.react: 3.1.0
     react: 17.0.2
-    react-crypto-icons: ^1.0.5
+    react-crypto-icons: 1.0.5
     react-dom: 17.0.2
     react-google-recaptcha: 2.1.0
     react-gtm-module: 2.0.11
@@ -16694,6 +16694,8 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
+    cal-parser: ^1.0.2
+    date-fns: ^2.29.1
     dotenv: 16.0.1
     embla-carousel-autoplay: 7.0.0-rc05
     embla-carousel-react: 7.0.0-rc05
@@ -19093,7 +19095,7 @@ __metadata:
   bin:
     asc: bin/asc
     asinit: bin/asinit
-  checksum: 8a407db6179addfaa5fcc637543a755ecc22ae8dd5e8259492305afd0d2bb73eae019d4178f79b515f75648d71dfda2c1ceb0c7421bff7817aebb2e2f5c8bfe7
+  checksum: fda292f6b3b8b4a9bd4457c9143e50145f8473f3d664e48c057638a9bb1c8e890cd4de4e38e18dd4334240394621cfd9d01afee344ab049c5a7072fe855329b5
   languageName: node
   linkType: hard
 
@@ -21851,6 +21853,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cal-parser@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "cal-parser@npm:1.0.2"
+  dependencies:
+    ical-date-parser: ^4.0.0
+    rrule: ^2.6.8
+  checksum: facb0239a05f576751673a33c916c54d86f30e19032ddab06587945fb9ac0ed00383bff4aa4c46a85dd86c2b5ac471ad09e386fa8cacaf98054b8c8f79205756
+  languageName: node
+  linkType: hard
+
 "call-bind@npm:^1.0.0, call-bind@npm:^1.0.2, call-bind@npm:~1.0.2":
   version: 1.0.2
   resolution: "call-bind@npm:1.0.2"
@@ -24478,6 +24490,13 @@ __metadata:
     whatwg-mimetype: ^2.3.0
     whatwg-url: ^8.0.0
   checksum: 97caf828aac25e25e04ba6869db0f99c75e6859bb5b424ada28d3e7841941ebf08ddff3c1b1bb4585986bd507a5d54c2a716853ea6cb98af877400e637393e71
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^2.29.1":
+  version: 2.29.1
+  resolution: "date-fns@npm:2.29.1"
+  checksum: 9d07f77dffc1eb8c213391bde39f2963ffe7c0019d9edde14487882d627224f3a39b963e6e99d0cc58afff220a6a1a7e8864d2789958f4eaa77714de94d4d076
   languageName: node
   linkType: hard
 
@@ -32932,6 +32951,13 @@ fsevents@~2.1.1:
   bin:
     husky: lib/bin.js
   checksum: 943a73a13d0201318fd30e83d299bb81d866bd245b69e6277804c3b462638dc1921694cb94c2b8c920a4a187060f7d6058d3365152865406352e934c5fff70dc
+  languageName: node
+  linkType: hard
+
+"ical-date-parser@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "ical-date-parser@npm:4.0.0"
+  checksum: 184dc24dcacea29d1bc4dbf4ec40afbce5f397caefa3301bf86f5886548636c5c92ab58202190101a5d621f9415aa847d611533fd053bcecee8af03cc5418fd8
   languageName: node
   linkType: hard
 
@@ -45188,7 +45214,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-crypto-icons@npm:^1.0.5":
+"react-crypto-icons@npm:1.0.5":
   version: 1.0.5
   resolution: "react-crypto-icons@npm:1.0.5"
   peerDependencies:
@@ -47320,6 +47346,15 @@ resolve@^2.0.0-next.3:
   bin:
     rollup: dist/bin/rollup
   checksum: eafa67895644fe004cd8932e67523c632a9091193aae4707a01e630faaddcfcd31470aa858bd4a5f1ffa457ea062f42c36ddef85c82f8ecbae3b14ac00668900
+  languageName: node
+  linkType: hard
+
+"rrule@npm:^2.6.8":
+  version: 2.7.1
+  resolution: "rrule@npm:2.7.1"
+  dependencies:
+    tslib: ^2.4.0
+  checksum: 80b81c5b1c1d12539a2af6de6fc8ebff8d763d8006cd9a418a1de7adbd634ae84ea853f1590d73ea72737422b8775cd53ca64c59e7c4625eda09a2746596f1d9
   languageName: node
   linkType: hard
 

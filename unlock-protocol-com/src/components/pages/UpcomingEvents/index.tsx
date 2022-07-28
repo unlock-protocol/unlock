@@ -1,0 +1,45 @@
+import { useEffect, useState } from 'react'
+import {
+  CalendarEvent,
+  icalEventsToJson,
+} from '../../../utils/icalEventsToJson'
+import { UpcomingEventBox } from './UpcomingEventBox'
+
+export function UpcomingEvents() {
+  const [events, setEvents] = useState<CalendarEvent[]>([])
+
+  const getEvents = async () => {
+    setEvents(await icalEventsToJson('./events.ics'))
+  }
+
+  useEffect(() => {
+    getEvents()
+  }, [])
+
+  console.log(events)
+  return (
+    <div className="mx-auto max-w-7xl px-6 lg:px-0">
+      <header className="flex flex-col gap-[16px] pt-[24px]">
+        <h1 className="heading">Upcoming Events</h1>
+        <p className="text-lg">
+          Join us for AMA, Governance and other activities
+        </p>
+      </header>
+
+      <section className="grid grid-cols-1 gap-[32px] py-[40px] lg:grid-cols-3">
+        {events?.map((event, index) => {
+          return (
+            <UpcomingEventBox
+              key={index}
+              title={event.summary.value}
+              description={event.description?.value ?? ''}
+              location={event.location?.value ?? ''}
+              startDate={event?.dtstart.value}
+              endDate={event?.dtend.value}
+            />
+          )
+        })}
+      </section>
+    </div>
+  )
+}
