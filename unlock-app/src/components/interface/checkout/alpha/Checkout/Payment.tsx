@@ -15,15 +15,16 @@ import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
 import { useQuery } from 'react-query'
 import { getFiatPricing } from '~/hooks/useCards'
-import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
+import { lockTickerSymbol, userCanAffordKey } from '~/utils/checkoutLockUtils'
 import dynamic from 'next/dynamic'
 import { useWalletService } from '~/utils/withWalletService'
 import { useEffect, useState } from 'react'
-import { BigNumber, ethers } from 'ethers'
+import { ethers } from 'ethers'
 import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
 } from 'react-icons/ri'
+import useAccount from '~/hooks/useAccount'
 
 const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
@@ -43,16 +44,15 @@ export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
   const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
   const wallet = useWalletService()
-  const { account } = useAuth()
-  const [balance, setBalance] = useState<BigNumber | null>(null)
+  const { account, network } = useAuth()
+  const { getTokenBalance } = useAccount(account!, network!)
+  const [balance, setBalance] = useState<string | null>(null)
   const baseSymbol = config.networks[lock.network].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock, baseSymbol).toLowerCase()
-  const keyPriceBig = ethers.utils.parseEther(lock.keyPrice)
-  const isPayable = balance?.gt(keyPriceBig)
-  const remainder = balance?.mod(1e12)
+  const isPayable = balance
+    ? userCanAffordKey(lock as any, balance, recipients.length)
+    : false
   const balanceAmount = balance
-    ? ethers.utils.formatEther(balance.sub(remainder!))
-    : null
 
   const { isLoading, data: fiatPricing } = useQuery(
     [quantity.toString(), lock.address, lock.network],
@@ -70,17 +70,19 @@ export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
   useEffect(() => {
     const getBalance = async () => {
       if (account) {
-        const provider = wallet.providerForNetwork(lock.network)
-        const ethAmount = await provider.getBalance(account)
-        setBalance(ethAmount)
+        const balance = await getTokenBalance(lock!.currencyContractAddress!)
+        setBalance(balance)
       }
     }
     getBalance()
-  }, [account, wallet, setBalance, lock])
+  }, [account, wallet, setBalance, lock, getTokenBalance])
 
   const isReceiverAccountOnly =
     recipients.length <= 1 && recipients[0] === account
-  const enableSuperfluid = paywallConfig.superfluid && isReceiverAccountOnly
+  const enableSuperfluid =
+    (paywallConfig.superfluid ||
+      paywallConfig.locks[lock!.address].superfluid) &&
+    isReceiverAccountOnly
 
   return (
     <CheckoutTransition>
@@ -151,18 +153,16 @@ export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
               </div>
             </div>
             <div className="flex items-center w-full justify-between">
-              <div className="text-sm">
+              <div className="text-sm flex items-center w-full text-left text-gray-500">
                 Your balance:
-                <span className="font-bold ml-2">
+                <p className="font-medium ml-2 w-20 truncate">
                   {balanceAmount?.toString()}
-                </span>
+                </p>
               </div>
-              <div className="flex items-center justify-end">
-                <RightArrowIcon
-                  className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
-                  size={20}
-                />
-              </div>
+              <RightArrowIcon
+                className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
+                size={20}
+              />
             </div>
           </button>
           <button
@@ -188,13 +188,13 @@ export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
               </div>
             </div>
             <div className="flex items-center w-full justify-between">
-              <div className="text-sm text-gray-500">Powered by stripe</div>
-              <div className="flex items-center justify-end">
-                <RightArrowIcon
-                  className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
-                  size={20}
-                />
+              <div className="text-sm text-gray-500 text-left">
+                Powered by stripe
               </div>
+              <RightArrowIcon
+                className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
+                size={20}
+              />
             </div>
           </button>
           {enableSuperfluid && (
@@ -213,21 +213,19 @@ export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
               className="border flex flex-col w-full border-gray-400 space-y-2 cursor-pointer shadow p-4 rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
             >
               <div className="items-center flex justify-between w-full">
-                <h3 className="font-bold"> Pay using superfluid </h3>
+                <h3 className="font-bold"> Pay using Superfluid </h3>
                 <div className="flex items-center gap-x-2 text-sm">
-                  <MasterCardIcon size={18} />
+                  Accept: <CryptoIcon name={symbol} size={18} />
                 </div>
               </div>
               <div className="flex items-center w-full justify-between">
-                <div className="text-sm text-gray-500">
-                  Superfluid allows you to stream your payments.
+                <div className="text-sm text-gray-500 text-left">
+                  Superfluid allows you to stream payment.
                 </div>
-                <div className="flex items-center justify-end">
-                  <RightArrowIcon
-                    className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
-                    size={20}
-                  />
-                </div>
+                <RightArrowIcon
+                  className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
+                  size={20}
+                />
               </div>
             </button>
           )}

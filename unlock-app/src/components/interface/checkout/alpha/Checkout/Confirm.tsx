@@ -31,7 +31,6 @@ import { LabeledItem } from '../LabeledItem'
 import { Framework } from '@superfluid-finance/sdk-core'
 import { ethers, BigNumber } from 'ethers'
 import { selectProvider } from '~/hooks/useAuthenticate'
-import LocksContext from '~/contexts/LocksContext'
 
 interface Props {
   injectedProvider: unknown
