@@ -7,23 +7,24 @@
 # Usage:
 # scripts/docs-contracts-pr.sh
 #
-# If you want to use the local package from `packages/contracts` instead of 
-# the one from npm, use the following:
-# FROM_NPM=0 scripts/docs-contracts-pr.sh
+# If you want to use the npm package instead of the one from `packages/contracts`, 
+# use the following:
+# FROM_NPM=1 scripts/docs-contracts-pr.sh
 # ==============================================================================
 
 # use tmp dir
-tmpdir=$(mktemp -d)
+tmpdir="/tmp/debug-docs" # $(mktemp -d)
 dest="docs/core-protocol/smart-contracts-api"
 base="master" # "css-update"
 repo=git@github.com:unlock-protocol/docs.git
 FROM_NPM=${FROM_NPM:-1}
 
 # get contracts tarball
-if [ "$FROM_NPM" -eq "0" ]; then
-  yarn workspace @unlock-protocol/contracts pack --out "$tmpdir/contracts-%v.tgz"
-else
+if [ "$FROM_NPM" -eq "1" ]; then
   wget $(npm view @unlock-protocol/contracts dist.tarball) -P $tmpdir
+else
+  yarn workspace @unlock-protocol/contracts build
+  yarn workspace @unlock-protocol/contracts pack --out "$tmpdir/contracts-%v.tgz"
 fi
 
 # unpack tarball

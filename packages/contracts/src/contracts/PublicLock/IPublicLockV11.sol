@@ -31,9 +31,9 @@ interface IPublicLock
   // receive() external payable;
 
   // roles
-  function DEFAULT_ADMIN_ROLE() external pure returns (bytes32);
-  function KEY_GRANTER_ROLE() external pure returns (bytes32);
-  function LOCK_MANAGER_ROLE() external pure returns (bytes32);
+  function DEFAULT_ADMIN_ROLE() external pure returns (bytes32 role);
+  function KEY_GRANTER_ROLE() external pure returns (bytes32 role);
+  function LOCK_MANAGER_ROLE() external pure returns (bytes32 role);
 
   /**
   * @notice The version number of the current implementation on this network.
