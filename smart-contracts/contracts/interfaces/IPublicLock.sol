@@ -587,9 +587,9 @@ interface IPublicLock
     * @notice This logic is NOT used internally by the Unlock Protocol and is made 
     * available only as a convenience helper.
     */
-  function owner() external view returns (address);
+  function owner() external view returns (address owner);
   function setOwner(address account) external;
-  function isOwner(address account) external returns (bool);
+  function isOwner(address account) external returns (bool isOwner);
 
   /**
   * Migrate data from the previous single owner => key mapping to 
