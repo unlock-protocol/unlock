@@ -13,7 +13,7 @@ import { PoweredByUnlock } from './PoweredByUnlock'
 import { CgSpinner as LoadingIcon } from 'react-icons/cg'
 
 export function CheckoutPage() {
-  const { query } = useRouter()
+  const { query, pathname } = useRouter()
   const config = useConfig()
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
@@ -34,7 +34,7 @@ export function CheckoutPage() {
     document.querySelector('body')?.classList.add('bg-transparent')
   }, [])
 
-  if (!(paywallConfig || oauthConfig) && !Object.keys(query).length) {
+  if (!(paywallConfig || oauthConfig)) {
     return (
       <Container>
         <LoadingIcon size={20} className="animate-spin" />
