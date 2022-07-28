@@ -31,7 +31,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
 
   return (
     <div className="flex flex-col h-full gap-4 p-8 glass-pane rounded-xl">
-      <div className="flex gap-[8px] items-center">
+      <div className="flex gap-2 items-center">
         <CalendarIcon className="stroke-brand-ui-primary" />
         <span className="text-brand-ui-primary text-sm font-semibold uppercase">
           <span>{formattedDate}</span>
@@ -47,7 +47,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
 
       <div className="flex flex-col mt-auto gap-4">
         {location && (
-          <div className="flex gap-[8px] items-center mt-auto">
+          <div className="flex gap-2 items-center mt-auto">
             <div className="w-4">
               <MapPinIcon />
             </div>

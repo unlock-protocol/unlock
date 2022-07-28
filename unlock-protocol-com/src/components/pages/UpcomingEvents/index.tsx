@@ -25,7 +25,7 @@ export function UpcomingEvents() {
         </p>
       </header>
 
-      <section className="grid grid-cols-1 gap-[32px] py-[40px] lg:grid-cols-3">
+      <section className="grid grid-cols-1 gap-8 py-10 lg:grid-cols-3">
         {events?.map((event, index) => {
           return (
             <UpcomingEventBox

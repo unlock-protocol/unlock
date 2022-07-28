@@ -54,7 +54,7 @@ export interface CalendarEvent {
 
 export const icalEventsToJson = async (
   fileUrl: string,
-  futureEventsOnly = true
+  futureEventsOnly = false
 ): Promise<CalendarEvent[]> => {
   try {
     const calendarRaw = await fetch(fileUrl).then((res) => res.text())
