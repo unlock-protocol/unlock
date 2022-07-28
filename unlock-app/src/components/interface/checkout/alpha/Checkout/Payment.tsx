@@ -19,7 +19,6 @@ import { lockTickerSymbol, userCanAffordKey } from '~/utils/checkoutLockUtils'
 import dynamic from 'next/dynamic'
 import { useWalletService } from '~/utils/withWalletService'
 import { useEffect, useState } from 'react'
-import { ethers } from 'ethers'
 import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
