@@ -20,7 +20,7 @@ const gnosisServiceURLs = {
   137: 'https://safe-transaction.polygon.gnosis.io/',
   42161: 'https://safe-transaction.arbitrum.gnosis.io/',
   43114: 'https://safe-transaction.avalanche.gnosis.io/',
-   42220: 'https://safe.celo.org/#/welcome'
+  42220: 'https://safe.celo.org/#/welcome'
   // mumbai isnt supported
 }
 
