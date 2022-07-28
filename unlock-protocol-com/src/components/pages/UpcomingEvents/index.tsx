@@ -13,9 +13,6 @@ export function UpcomingEvents() {
     getEvents()
   }, [])
 
-  if (events?.length === 0) {
-    return <span>There is no upcoming event</span>
-  }
   return (
     <div className="mx-auto max-w-7xl px-6">
       <header className="flex flex-col gap-2 pt-3">
@@ -25,11 +22,17 @@ export function UpcomingEvents() {
         </p>
       </header>
 
-      <section className="grid grid-cols-1 gap-8 py-10 lg:grid-cols-3">
-        {events?.map((event, index) => {
-          return <UpcomingEventBox key={index} event={event} />
-        })}
-      </section>
+      <div className="min-h-screen">
+        {events?.length > 0 ? (
+          <section className="grid grid-cols-1 gap-8 py-10 lg:grid-cols-3">
+            {events?.map((event, index) => {
+              return <UpcomingEventBox key={index} event={event} />
+            })}
+          </section>
+        ) : (
+          <h2 className="mt-5 text-slg">There is no upcoming event</h2>
+        )}
+      </div>
     </div>
   )
 }
