@@ -64,7 +64,8 @@ export function Lock({
   )
 
   const fiatPrice = lock?.fiatPricing?.usd?.keyPrice
-  const lockImageURL = `${config.services.storage.host}/lock/0x9f1aa26d95EfA450C40F2D7d1830910766A843aE/icon`
+  const usdKeyPrice = fiatPrice ? (fiatPrice / 100).toFixed(2) : undefined
+  const lockImageURL = `${config.services.storage.host}/lock/${lock?.address}/icon`
   const lockName = name || lock?.name
   const fiatEnabled = lock?.fiatPricing.cardEnabled
   return (
@@ -104,7 +105,7 @@ export function Lock({
             {!isLoading ? (
               <Pricing
                 isCardEnabled={fiatEnabled}
-                usdPrice={(fiatPrice / 100).toFixed(2)}
+                usdPrice={usdKeyPrice}
                 keyPrice={formattedData.formattedKeyPrice}
               />
             ) : (

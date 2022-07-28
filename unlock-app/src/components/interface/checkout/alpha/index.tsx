@@ -13,7 +13,7 @@ import { PoweredByUnlock } from './PoweredByUnlock'
 import { CgSpinner as LoadingIcon } from 'react-icons/cg'
 
 export function CheckoutPage() {
-  const { query, pathname } = useRouter()
+  const { query } = useRouter()
   const config = useConfig()
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
