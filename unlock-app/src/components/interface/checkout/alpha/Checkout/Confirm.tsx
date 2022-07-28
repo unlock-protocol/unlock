@@ -256,6 +256,10 @@ export function Confirm({
       communication.emitUserInfo({
         address: account,
       })
+      send({
+        type: 'CONFIRM_MINT',
+        status: 'FINISHED',
+      })
       setIsConfirming(false)
     } catch (error: any) {
       setIsConfirming(false)
