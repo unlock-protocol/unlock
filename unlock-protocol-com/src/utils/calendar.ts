@@ -70,21 +70,21 @@ export const icalEventsToJson = async (
 ): Promise<CalendarEvent[]> => {
   try {
     const calendarRaw = await fetch(fileUrl).then((res) => res.text())
-    const { events } = ical.parseString(calendarRaw) as {
+    let { events } = ical.parseString(calendarRaw) as {
       events: CalendarEvent[]
     }
 
+    events = sortEvents(events)
+
     if (!futureEventsOnly) {
-      return sortEvents(events ?? []) as CalendarEvent[]
+      return (events ?? []) as CalendarEvent[]
     }
 
-    return sortEvents(
-      events?.filter((event) => {
-        return event.dtstart?.value
-          ? isFuture(new Date(event.dtstart.value))
-          : false
-      })
-    )
+    return events?.filter((event) => {
+      return event.dtstart?.value
+        ? isFuture(new Date(event.dtstart.value))
+        : false
+    })
   } catch (err) {
     console.error(err)
   }

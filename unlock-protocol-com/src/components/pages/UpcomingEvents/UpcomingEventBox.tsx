@@ -32,9 +32,9 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
     <div className="flex flex-col h-full gap-4 p-8 glass-pane rounded-xl">
       <div className="flex gap-2 items-center">
         <CalendarIcon className="stroke-brand-ui-primary" />
-        <span className="text-brand-ui-primary text-sm font-semibold uppercase">
+        <span className="flex flex-col md:flex-row text-brand-ui-primary text-sm font-semibold uppercase">
           <span>{formattedDate}</span>
-          <span className="ml-3">{formattedHour}</span>
+          <span className="md:ml-3">{formattedHour}</span>
         </span>
       </div>
       <h3 className="block h-18 text-xl font-semibold sm:text-3xl line-clamp-2 overflow-hidden">
