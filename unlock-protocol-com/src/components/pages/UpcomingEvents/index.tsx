@@ -16,7 +16,6 @@ export function UpcomingEvents() {
     getEvents()
   }, [])
 
-  console.log(events)
   return (
     <div className="mx-auto max-w-7xl px-6 lg:px-0">
       <header className="flex flex-col gap-[16px] pt-[24px]">
