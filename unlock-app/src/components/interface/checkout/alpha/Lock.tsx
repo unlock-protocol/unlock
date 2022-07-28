@@ -59,7 +59,7 @@ export function Lock({
     : ({} as any)
 
   const Lock = twMerge(
-    'border flex flex-col w-full border-gray-400 shadow p-4 rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white',
+    'border flex flex-col w-full border-gray-400 shadow rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white',
     className
   )
 
@@ -77,21 +77,22 @@ export function Lock({
       }}
       className={Lock}
     >
-      <div className="flex w-full mb-2 items-center gap-4">
-        <Avatar.Root>
-          <Avatar.Image
-            className="inline-flex items-center justify-center w-20 h-20 rounded-xl"
-            src={lockImageURL}
-            alt={lockName}
-            width={64}
-            height={64}
-          />
-          <Avatar.Fallback className="inline-flex items-center justify-center w-20 h-20 rounded-xl">
-            {lockName?.slice(0, 2).toUpperCase()}
-          </Avatar.Fallback>
-        </Avatar.Root>
-        <div className="w-full flex flex-col space-y-2">
-          <div className="flex w-full items-start justify-between">
+      <div className="w-full flex flex-col space-y-2">
+        <div className="flex gap-4 items-center p-4">
+          <div>
+            <Avatar.Root className="flex items-center justify-center w-16 h-16 rounded-xl">
+              <Avatar.Image
+                src={lockImageURL}
+                alt={lockName}
+                width={64}
+                height={64}
+              />
+              <Avatar.Fallback>
+                {lockName?.slice(0, 2).toUpperCase()}
+              </Avatar.Fallback>
+            </Avatar.Root>
+          </div>
+          <div className="flex items-start justify-between w-full">
             <div className="space-y-2">
               <h3 className="font-bold text-lg"> {lockName}</h3>
               {recurring && (
@@ -110,43 +111,41 @@ export function Lock({
               <PricingPlaceholder />
             )}
           </div>
-          <div className="pt-2 w-full flex border-t">
-            {!isLoading ? (
-              <div className="flex w-full items-center justify-between">
-                <div className="flex items-center gap-2 sm:flex-col sm:items-start flex-wrap">
-                  <LabeledItem
-                    label="Duration"
-                    icon={DurationIcon}
-                    value={formattedData.formattedDuration || 'Forever'}
-                  />
-                  <LabeledItem
-                    label="Quantity"
-                    icon={QuantityIcon}
-                    value={
-                      formattedData.isSoldOut
-                        ? 'Sold out'
-                        : formattedData.formattedKeysAvailable
-                    }
-                  />
-                </div>
-                <div>
-                  {!(disabled || loading) && (
-                    <RightArrowIcon
-                      className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
-                      size={20}
-                    />
-                  )}
-                  {loading && (
-                    <LoadingIcon size={20} className="animate-spin" />
-                  )}
-                </div>
+        </div>
+        <div className="w-full flex items-center border-t px-4 py-2">
+          {!isLoading ? (
+            <div className="flex w-full items-center justify-between">
+              <div className="flex items-center gap-4 flex-wrap">
+                <LabeledItem
+                  label="Duration"
+                  icon={DurationIcon}
+                  value={formattedData.formattedDuration || 'Forever'}
+                />
+                <LabeledItem
+                  label="Quantity"
+                  icon={QuantityIcon}
+                  value={
+                    formattedData.isSoldOut
+                      ? 'Sold out'
+                      : formattedData.formattedKeysAvailable
+                  }
+                />
               </div>
-            ) : (
-              <div className="py-1.5 flex items-center">
-                <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+              <div>
+                {!(disabled || loading) && (
+                  <RightArrowIcon
+                    className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
+                    size={20}
+                  />
+                )}
+                {loading && <LoadingIcon size={20} className="animate-spin" />}
               </div>
-            )}
-          </div>
+            </div>
+          ) : (
+            <div className="py-1.5 flex items-center">
+              <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+            </div>
+          )}
         </div>
       </div>
     </button>
