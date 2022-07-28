@@ -15,8 +15,6 @@ interface UpcomingEventBoxProps {
 export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
   event,
 }) => {
-  const title = event.summary.value
-  const description = event.description?.value ?? ''
   const location = event.location?.value ?? ''
   const startDate = event?.dtstart.value
   const endDate = event?.dtend.value
@@ -40,10 +38,10 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
         </span>
       </div>
       <h3 className="block h-18 text-xl font-semibold sm:text-3xl line-clamp-2 overflow-hidden">
-        {title}
+        {event.summary.value}
       </h3>
       <p className="inline-block h-30 text-brand-gray line-clamp-5 md:line-clamp-10">
-        {description}
+        {event.description?.value ?? ''}
       </p>
 
       <div className="flex flex-col mt-auto gap-4">
@@ -61,7 +59,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
             </span>
           </div>
         )}
-        <Link href={calendarLink}>
+        <Link href={calendarLink ?? '#'}>
           <Button className="w-full">Add to Calendar</Button>
         </Link>
       </div>

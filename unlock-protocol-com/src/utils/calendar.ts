@@ -102,5 +102,5 @@ export const getCalendarEventUrl = (
     endsAt: event.dtend.value,
   }
   const urlObj = makeUrls(eventCalendar)
-  return urlObj[type]
+  return urlObj[type] ?? '#'
 }
