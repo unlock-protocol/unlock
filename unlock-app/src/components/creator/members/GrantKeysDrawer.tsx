@@ -244,7 +244,6 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             type="email"
             placeholder="email@example.com"
             {...register('email', {
-              required: true,
               onChange: addressFieldChanged('email'),
             })}
           />
