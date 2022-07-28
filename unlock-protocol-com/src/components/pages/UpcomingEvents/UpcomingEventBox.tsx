@@ -20,10 +20,12 @@ const weekday = [
 
 interface UpcomingEventBoxProps {
   event: CalendarEvent
+  disabled?: boolean
 }
 
 export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
   event,
+  disabled,
 }) => {
   const location = event.location?.value ?? ''
   const startDate = dayjs(new Date(event?.dtstart.value))
@@ -38,20 +40,36 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
   )}`
 
   const calendarLink = getCalendarEventUrl(event)
+  const extraClassDisabled = disabled ? 'opacity-60' : ''
 
   return (
     <div className="flex flex-col h-full gap-4 p-7 glass-pane rounded-xl">
       <div className="flex gap-2 items-center">
         <CalendarIcon className="stroke-brand-ui-primary" />
-        <span className="flex flex-col gap-1 w-full ml-2 text-brand-ui-primary text-sm font-semibold uppercase">
+        <span
+          className={[
+            'flex flex-col gap-1 w-full ml-2 text-brand-ui-primary text-sm font-semibold uppercase',
+            extraClassDisabled,
+          ].join(' ')}
+        >
           <span className="inline-block">{formattedDate}</span>
           <span className="inline-block">{formattedHour}</span>
         </span>
       </div>
-      <h3 className="block h-18 text-xl font-semibold sm:text-3xl line-clamp-2 overflow-hidden">
+      <h3
+        className={[
+          'block h-18 text-xl font-semibold sm:text-3xl line-clamp-2 overflow-hidden',
+          extraClassDisabled,
+        ].join(' ')}
+      >
         {event.summary.value}
       </h3>
-      <p className="inline-block h-30 text-brand-gray line-clamp-5 md:line-clamp-10">
+      <p
+        className={[
+          ' inline-block h-30 text-brand-gray line-clamp-5 md:line-clamp-10',
+          extraClassDisabled,
+        ].join(' ')}
+      >
         {event.description?.value ?? ''}
       </p>
 
@@ -61,8 +79,13 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
             <div className="w-4">
               <MapPinIcon />
             </div>
-            <span className="text-brand-ui-primary text-lg font-bold break-all truncate overflow-hidden">
-              {locationIsUrl ? (
+            <span
+              className={[
+                'text-brand-ui-primary text-lg font-bold break-all truncate overflow-hidden',
+                extraClassDisabled,
+              ].join(' ')}
+            >
+              {locationIsUrl && !disabled ? (
                 <Link href={location}>{location}</Link>
               ) : (
                 location
@@ -71,7 +94,9 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
           </div>
         )}
         <Link href={calendarLink ?? '#'}>
-          <Button className="w-full">Add to Calendar</Button>
+          <Button className="w-full" disabled={disabled}>
+            Add to Calendar
+          </Button>
         </Link>
       </div>
     </div>

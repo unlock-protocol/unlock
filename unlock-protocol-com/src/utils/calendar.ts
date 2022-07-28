@@ -65,7 +65,7 @@ const sortEvents = (events: CalendarEvent[]) => {
 
 export const icalEventsToJson = async (
   fileUrl: string,
-  futureEventsOnly = true
+  type: 'future' | 'past' | 'all' // get future or past events or all
 ): Promise<CalendarEvent[]> => {
   try {
     const calendarRaw = await fetch(fileUrl).then((res) => res.text())
@@ -75,13 +75,15 @@ export const icalEventsToJson = async (
 
     events = sortEvents(events)
 
-    if (!futureEventsOnly) {
-      return (events ?? []) as CalendarEvent[]
+    if (type === 'all') {
+      return events
     }
 
     return events?.filter((event) => {
       return event.dtstart?.value
-        ? dayjs().isBefore(new Date(event.dtstart.value))
+        ? type === 'future'
+          ? dayjs().isBefore(new Date(event.dtstart.value))
+          : dayjs().isAfter(new Date(event.dtstart.value))
         : false
     })
   } catch (err) {

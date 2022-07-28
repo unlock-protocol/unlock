@@ -3,10 +3,12 @@ import { CalendarEvent, icalEventsToJson } from '../../../utils/calendar'
 import { UpcomingEventBox } from './UpcomingEventBox'
 
 export function UpcomingEvents() {
-  const [events, setEvents] = useState<CalendarEvent[]>([])
+  const [upcomingEvents, setUpcomingEvents] = useState<CalendarEvent[]>([])
+  const [pastEvents, setPastEvents] = useState<CalendarEvent[]>([])
 
   const getEvents = async () => {
-    setEvents(await icalEventsToJson('./events.ics'))
+    setUpcomingEvents(await icalEventsToJson('./events.ics', 'future'))
+    setPastEvents(await icalEventsToJson('./events.ics', 'past'))
   }
 
   useEffect(() => {
@@ -23,15 +25,28 @@ export function UpcomingEvents() {
       </header>
 
       <div className="min-h-screen">
-        {events?.length > 0 ? (
+        {upcomingEvents?.length > 0 ? (
           <section className="grid grid-cols-1 gap-8 py-10 lg:grid-cols-3">
-            {events?.map((event, index) => {
+            {upcomingEvents?.map((event, index) => {
               return <UpcomingEventBox key={index} event={event} />
             })}
           </section>
         ) : (
           <h2 className="mt-5 text-slg">There is no upcoming event</h2>
         )}
+
+        <section>
+          <h1 className="heading">Past Events</h1>
+          {pastEvents?.length > 0 ? (
+            <section className="grid grid-cols-1 gap-8 py-10 lg:grid-cols-3">
+              {pastEvents?.map((event, index) => {
+                return <UpcomingEventBox key={index} event={event} disabled />
+              })}
+            </section>
+          ) : (
+            <h2 className="mt-5 text-slg">There is no past event</h2>
+          )}
+        </section>
       </div>
     </div>
   )
