@@ -243,9 +243,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             label="Email"
             type="email"
             placeholder="email@example.com"
-            {...register('email', {
-              onChange: addressFieldChanged('email'),
-            })}
+            {...register('email')}
           />
           {!errors.email && (
             <p className="text-xs italic">
