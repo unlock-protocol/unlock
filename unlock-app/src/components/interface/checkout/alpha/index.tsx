@@ -34,7 +34,7 @@ export function CheckoutPage() {
     document.querySelector('body')?.classList.add('bg-transparent')
   }, [])
 
-  if (!(paywallConfig || oauthConfig) && !Object.keys(query).length) {
+  if (!(paywallConfig || oauthConfig)) {
     return (
       <Container>
         <LoadingIcon size={20} className="animate-spin" />

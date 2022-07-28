@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function LabeledItem({ icon, label, value }: Props) {
-  const labeledItemClass = twMerge('flex items-center flex-wrap gap-2 text-sm')
+  const labeledItemClass = twMerge('flex items-center flex-wrap gap-1 text-sm')
   const labelClass = twMerge('text-gray-500', icon && 'hidden sm:block')
   return (
     <div className={labeledItemClass}>
