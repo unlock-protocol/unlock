@@ -234,6 +234,7 @@ export const checkoutMachine = createMachine(
               target: 'CARD',
               cond: (context) => context.payment.method === 'card',
             },
+
             {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
