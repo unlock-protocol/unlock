@@ -13,6 +13,9 @@ export function UpcomingEvents() {
     getEvents()
   }, [])
 
+  if (events?.length === 0) {
+    return <span>There is no upcoming event</span>
+  }
   return (
     <div className="mx-auto max-w-7xl px-6">
       <header className="flex flex-col gap-2 pt-3">

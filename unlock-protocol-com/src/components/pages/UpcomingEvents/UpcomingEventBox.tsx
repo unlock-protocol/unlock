@@ -40,10 +40,10 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
   const calendarLink = getCalendarEventUrl(event)
 
   return (
-    <div className="flex flex-col h-full gap-4 p-8 glass-pane rounded-xl">
+    <div className="flex flex-col h-full gap-4 p-7 glass-pane rounded-xl">
       <div className="flex gap-2 items-center">
         <CalendarIcon className="stroke-brand-ui-primary" />
-        <span className="flex flex-col gap-2 md:flex-row w-full text-brand-ui-primary text-sm font-semibold uppercase">
+        <span className="flex flex-col gap-1 w-full ml-2 text-brand-ui-primary text-sm font-semibold uppercase">
           <span className="inline-block">{formattedDate}</span>
           <span className="inline-block">{formattedHour}</span>
         </span>
