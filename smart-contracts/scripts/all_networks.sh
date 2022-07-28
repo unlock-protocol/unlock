@@ -15,6 +15,9 @@ all_networks=(
    "xdai" 
    "bsc" 
    "optimism"
+   "celo"
+   # "arbitrum"
+   # "avalanche"
    "mainnet" 
 )
 
