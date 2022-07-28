@@ -4,5 +4,4 @@ module.exports = {
     './../node_modules/@unlock-protocol/ui/dist/*.{js,css}',
   ],
   presets: [require('@unlock-protocol/ui/dist/unlock-tailwind-preset')],
-  plugins: [require('@tailwindcss/line-clamp')],
 }

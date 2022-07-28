@@ -1,7 +1,6 @@
 import ical from 'cal-parser'
-import { isFuture } from 'date-fns'
 import makeUrls, { TCalendarEvent } from 'add-event-to-calendar'
-
+import dayjs from 'dayjs'
 export interface CalendarEvent {
   dtstart: {
     value: string
@@ -82,7 +81,7 @@ export const icalEventsToJson = async (
 
     return events?.filter((event) => {
       return event.dtstart?.value
-        ? isFuture(new Date(event.dtstart.value))
+        ? dayjs().isBefore(new Date(event.dtstart.value))
         : false
     })
   } catch (err) {

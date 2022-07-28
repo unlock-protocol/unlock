@@ -14,8 +14,8 @@ export function UpcomingEvents() {
   }, [])
 
   return (
-    <div className="mx-auto max-w-7xl px-6 lg:px-0">
-      <header className="flex flex-col gap-[16px] pt-[24px]">
+    <div className="mx-auto max-w-7xl px-6">
+      <header className="flex flex-col gap-2 pt-3">
         <h1 className="heading">Upcoming Events</h1>
         <p className="text-lg">
           Join us for AMA, Governance and other activities

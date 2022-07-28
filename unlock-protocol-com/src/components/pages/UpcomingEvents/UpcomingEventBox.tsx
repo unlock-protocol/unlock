@@ -5,8 +5,18 @@ import {
   FiMapPin as MapPinIcon,
 } from 'react-icons/fi'
 import { Link } from '../../helpers/Link'
-import { format } from 'date-fns'
+import dayjs from 'dayjs'
 import { CalendarEvent, getCalendarEventUrl } from '../../../utils/calendar'
+
+const weekday = [
+  'Sunday',
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+]
 
 interface UpcomingEventBoxProps {
   event: CalendarEvent
@@ -16,14 +26,15 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
   event,
 }) => {
   const location = event.location?.value ?? ''
-  const startDate = event?.dtstart.value
-  const endDate = event?.dtend.value
+  const startDate = dayjs(new Date(event?.dtstart.value))
+  const endDate = dayjs(new Date(event?.dtend.value))
 
   const locationIsUrl = location?.toLowerCase().startsWith('http') ?? false
-  const formattedDate = format(new Date(startDate), 'eeee, MMMM d')
-  const formattedHour = `${format(new Date(startDate), 'p')} - ${format(
-    new Date(endDate),
-    'p'
+
+  const weekDay = weekday[startDate.day()]
+  const formattedDate = `${weekDay}, ${startDate.format(`MMMM d`)}`
+  const formattedHour = `${startDate.format('HH:mm A')} -${endDate.format(
+    'HH:mm A'
   )}`
 
   const calendarLink = getCalendarEventUrl(event)
@@ -32,9 +43,9 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
     <div className="flex flex-col h-full gap-4 p-8 glass-pane rounded-xl">
       <div className="flex gap-2 items-center">
         <CalendarIcon className="stroke-brand-ui-primary" />
-        <span className="flex flex-col md:flex-row text-brand-ui-primary text-sm font-semibold uppercase">
-          <span>{formattedDate}</span>
-          <span className="md:ml-3">{formattedHour}</span>
+        <span className="flex flex-col gap-2 md:flex-row w-full text-brand-ui-primary text-sm font-semibold uppercase">
+          <span className="inline-block">{formattedDate}</span>
+          <span className="inline-block">{formattedHour}</span>
         </span>
       </div>
       <h3 className="block h-18 text-xl font-semibold sm:text-3xl line-clamp-2 overflow-hidden">

@@ -27,7 +27,7 @@
     "babel-plugin-styled-components": "2.0.7",
     "babel-preset-react-app": "10.0.1",
     "cal-parser": "^1.0.2",
-    "date-fns": "^2.29.1",
+    "dayjs": "^1.11.4",
     "dotenv": "16.0.1",
     "embla-carousel-autoplay": "7.0.0-rc05",
     "embla-carousel-react": "7.0.0-rc05",
