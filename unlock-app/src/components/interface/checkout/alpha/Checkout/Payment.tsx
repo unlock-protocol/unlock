@@ -40,7 +40,7 @@ export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
   const config = useConfig()
   const { title, description, iconURL } =
     useCheckoutHeadContent(checkoutService)
-  const { paywallConfig, quantity } = state.context
+  const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
   const wallet = useWalletService()
   const { account } = useAuth()
@@ -78,6 +78,10 @@ export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
     getBalance()
   }, [account, wallet, setBalance, lock])
 
+  const isReceiverAccountOnly =
+    recipients.length <= 1 && recipients[0] === account
+  const enableSuperfluid = paywallConfig.superfluid && isReceiverAccountOnly
+
   return (
     <CheckoutTransition>
       <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
@@ -107,13 +111,19 @@ export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
                   send('QUANTITY')
                 }}
               />
+              <IconButton
+                title="Add metadata"
+                icon={ProgressCircleIcon}
+                onClick={() => {
+                  send('METADATA')
+                }}
+              />
               <ProgressCircleIcon />
             </div>
             <h4 className="text-sm"> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-0.5">
-            <ProgressCircleIcon disabled />
             {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
             <ProgressCircleIcon disabled />
             <ProgressFinishIcon disabled />
@@ -187,6 +197,40 @@ export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
               </div>
             </div>
           </button>
+          {enableSuperfluid && (
+            <button
+              disabled={isLoading}
+              onClick={(event) => {
+                event.preventDefault()
+                send({
+                  type: 'SELECT_PAYMENT_METHOD',
+                  payment: {
+                    method: 'superfluid',
+                  },
+                })
+                send('CONTINUE')
+              }}
+              className="border flex flex-col w-full border-gray-400 space-y-2 cursor-pointer shadow p-4 rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+            >
+              <div className="items-center flex justify-between w-full">
+                <h3 className="font-bold"> Pay using superfluid </h3>
+                <div className="flex items-center gap-x-2 text-sm">
+                  <MasterCardIcon size={18} />
+                </div>
+              </div>
+              <div className="flex items-center w-full justify-between">
+                <div className="text-sm text-gray-500">
+                  Superfluid allows you to stream your payments.
+                </div>
+                <div className="flex items-center justify-end">
+                  <RightArrowIcon
+                    className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
+                    size={20}
+                  />
+                </div>
+              </div>
+            </button>
+          )}
         </main>
         <footer className="px-6 pt-6 border-t grid items-center">
           <Connected
