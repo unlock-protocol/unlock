@@ -93,11 +93,11 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
             </span>
           </div>
         )}
-        <Link href={calendarLink ?? '#'}>
-          <Button className="w-full" disabled={disabled}>
-            Add to Calendar
-          </Button>
-        </Link>
+        {!disabled && (
+          <Link href={calendarLink ?? '#'}>
+            <Button className="w-full">Add to Calendar</Button>
+          </Link>
+        )}
       </div>
     </div>
   )
