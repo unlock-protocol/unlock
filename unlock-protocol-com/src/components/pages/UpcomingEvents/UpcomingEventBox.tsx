@@ -6,28 +6,29 @@ import {
 } from 'react-icons/fi'
 import { Link } from '../../helpers/Link'
 import { format } from 'date-fns'
+import { CalendarEvent, getCalendarEventUrl } from '../../../utils/calendar'
 
 interface UpcomingEventBoxProps {
-  title: string
-  description: string
-  location: string
-  startDate: string
-  endDate: string
+  event: CalendarEvent
 }
 
 export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
-  title,
-  description,
-  location,
-  startDate,
-  endDate,
+  event,
 }) => {
+  const title = event.summary.value
+  const description = event.description?.value ?? ''
+  const location = event.location?.value ?? ''
+  const startDate = event?.dtstart.value
+  const endDate = event?.dtend.value
+
   const locationIsUrl = location?.toLowerCase().startsWith('http') ?? false
   const formattedDate = format(new Date(startDate), 'eeee, MMMM d')
   const formattedHour = `${format(new Date(startDate), 'p')} - ${format(
     new Date(endDate),
     'p'
   )}`
+
+  const calendarLink = getCalendarEventUrl(event)
 
   return (
     <div className="flex flex-col h-full gap-4 p-8 glass-pane rounded-xl">
@@ -60,7 +61,9 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
             </span>
           </div>
         )}
-        <Button>Add to Calendar</Button>
+        <Link href={calendarLink}>
+          <Button className="w-full">Add to Calendar</Button>
+        </Link>
       </div>
     </div>
   )

@@ -1,5 +1,6 @@
 import ical from 'cal-parser'
 import { isFuture } from 'date-fns'
+import makeUrls, { TCalendarEvent } from 'add-event-to-calendar'
 
 export interface CalendarEvent {
   dtstart: {
@@ -52,6 +53,17 @@ export interface CalendarEvent {
   }
 }
 
+const sortEvents = (events: CalendarEvent[]) => {
+  return events?.sort((a, b) => {
+    if (a.dtstart?.value && b.dtstart?.value) {
+      return (
+        new Date(a.dtstart?.value).getTime() -
+        new Date(b.dtstart?.value).getTime()
+      )
+    }
+  })
+}
+
 export const icalEventsToJson = async (
   fileUrl: string,
   futureEventsOnly = true
@@ -63,15 +75,32 @@ export const icalEventsToJson = async (
     }
 
     if (!futureEventsOnly) {
-      return (events ?? []) as CalendarEvent[]
+      return sortEvents(events ?? []) as CalendarEvent[]
     }
 
-    return events?.filter((event) => {
-      return event.dtstart?.value
-        ? isFuture(new Date(event.dtstart.value))
-        : false
-    })
+    return sortEvents(
+      events?.filter((event) => {
+        return event.dtstart?.value
+          ? isFuture(new Date(event.dtstart.value))
+          : false
+      })
+    )
   } catch (err) {
     console.error(err)
   }
+}
+
+export const getCalendarEventUrl = (
+  event: CalendarEvent,
+  type: 'google' | 'outlook' | 'ics' | 'yahoo' = 'google'
+) => {
+  const eventCalendar: TCalendarEvent = {
+    name: event.summary?.value ?? '-',
+    location: event?.location?.value ?? '-',
+    details: event.description?.value ?? '',
+    startsAt: event.dtstart.value,
+    endsAt: event.dtend.value,
+  }
+  const urlObj = makeUrls(eventCalendar)
+  return urlObj[type]
 }

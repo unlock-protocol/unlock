@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react'
-import {
-  CalendarEvent,
-  icalEventsToJson,
-} from '../../../utils/icalEventsToJson'
+import { CalendarEvent, icalEventsToJson } from '../../../utils/calendar'
 import { UpcomingEventBox } from './UpcomingEventBox'
 
 export function UpcomingEvents() {
@@ -27,16 +24,7 @@ export function UpcomingEvents() {
 
       <section className="grid grid-cols-1 gap-8 py-10 lg:grid-cols-3">
         {events?.map((event, index) => {
-          return (
-            <UpcomingEventBox
-              key={index}
-              title={event.summary.value}
-              description={event.description?.value ?? ''}
-              location={event.location?.value ?? ''}
-              startDate={event?.dtstart.value}
-              endDate={event?.dtend.value}
-            />
-          )
+          return <UpcomingEventBox key={index} event={event} />
         })}
       </section>
     </div>

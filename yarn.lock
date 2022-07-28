@@ -16687,6 +16687,7 @@ __metadata:
     "@unlock-protocol/ui": "workspace:./packages/ui"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@zeit/next-source-maps": 0.0.3
+    add-event-to-calendar: ^1.0.7
     autoprefixer: 10.4.7
     babel-eslint: 10.1.0
     babel-jest: 28.1.3
@@ -17751,6 +17752,13 @@ __metadata:
   bin:
     acorn: bin/acorn
   checksum: aca0aabf98826717920ac2583fdcad0a6fbe4e583fdb6e843af2594e907455aeafe30b1e14f1757cd83ce1776773cf8296ffc3a4acf13f0bd3dfebcf1db6ae80
+  languageName: node
+  linkType: hard
+
+"add-event-to-calendar@npm:^1.0.7":
+  version: 1.0.7
+  resolution: "add-event-to-calendar@npm:1.0.7"
+  checksum: 391e9bc1219aed59f8fedc79c2b5750d6ba300689d1c4b8560c698e10c6bc30010a2627c8b47ebb983e1a2211b5d921e5bd6fd10eb62a82066974d6dd1a0bbcd
   languageName: node
   linkType: hard
 
