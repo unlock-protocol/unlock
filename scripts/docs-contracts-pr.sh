@@ -13,7 +13,7 @@
 # ==============================================================================
 
 # use tmp dir
-tmpdir="/tmp/debug-docs" # $(mktemp -d)
+tmpdir=$(mktemp -d)
 dest="docs/core-protocol/smart-contracts-api"
 base="master" # "css-update"
 repo=git@github.com:unlock-protocol/docs.git
