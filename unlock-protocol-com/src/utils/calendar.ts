@@ -53,8 +53,18 @@ export interface CalendarEvent {
   }
 }
 type Sort = 'asc' | 'desc'
+
 const sortEvents = (events: CalendarEvent[], sort: Sort = 'asc') => {
-  return events?.sort((a, b) => {
+  const eventsById = [] // array of events by id to avoid duplicates
+  events.map((event) => {
+    if (
+      eventsById.findIndex((evt) => evt.uid?.value === event?.uid.value) === -1
+    ) {
+      eventsById.push(event)
+    }
+  })
+
+  return eventsById?.sort((a, b) => {
     if (sort === 'asc') {
       if (a.dtstart?.value && b.dtstart?.value) {
         return (
@@ -102,8 +112,8 @@ export const icalEventsToJson = async (
     return events?.filter((event) => {
       return event.dtstart?.value
         ? type === 'future'
-          ? dayjs().isBefore(new Date(event.dtstart.value))
-          : dayjs().isAfter(new Date(event.dtstart.value))
+          ? dayjs().isBefore(new Date(event.dtend.value))
+          : dayjs().isAfter(new Date(event.dtend.value))
         : false
     })
   } catch (err) {
@@ -120,11 +130,18 @@ export const getCalendarUrl = (event: CalendarEvent): string => {
   const title = event.summary.value
   const description = event.description?.value ?? ''
   const location = event.location?.value ?? ''
-
   const startDate = dayjs(event.dtstart.value).format('YYYYMMDDTHHmmss')
   const endDate = dayjs(event.dtend.value).format('YYYYMMDDTHHmmss')
-
   const dates = `${startDate}/${endDate}`
 
-  return `https://www.google.com/calendar/render?action=TEMPLATE&dates=${dates}&text=${title}&details=${description}&location=${location}&sf=true&output=xml`
+  const url = new URL(
+    'https://www.google.com/calendar/render?action=TEMPLATE&sf=true&output=xml'
+  )
+
+  url.searchParams.append('text', title)
+  url.searchParams.append('details', description)
+  url.searchParams.append('location', location)
+  url.searchParams.append('dates', dates)
+
+  return url.toString()
 }
