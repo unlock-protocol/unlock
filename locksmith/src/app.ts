@@ -1,14 +1,11 @@
 import 'setimmediate' // polyfill to prevent jest from crashing
 import cors from 'cors'
 import express from 'express'
-import { ApolloServer } from 'apollo-server-express'
 import expressWinston from 'express-winston' // TODO: use a single logger!
 import winston from 'winston'
 import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
 import cookieParser from 'cookie-parser'
-import { typeDefs } from './graphql/typeDefinitions'
-import { resolvers } from './graphql/resolvers'
 
 const app = express()
 
@@ -60,12 +57,6 @@ app.use(cors({}))
 // Parse body
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json({ limit: '5mb' }))
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-})
-server.applyMiddleware({ app })
 
 const router = require('./routes')
 
