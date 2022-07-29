@@ -33,8 +33,6 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
 
   const locationIsUrl = location?.toLowerCase().startsWith('http') ?? false
 
-  console.log(event.dtstart.value)
-
   const weekDay = weekday[startDate.day()]
   const formattedDate = `${weekDay}, ${startDate.format(`MMMM D`)}`
   const formattedHour = `${startDate.format('HH:mm A')} -${endDate.format(
