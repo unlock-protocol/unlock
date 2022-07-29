@@ -15,6 +15,7 @@ import { Captcha } from './Captcha'
 import { Returning } from './Returning'
 import { Payment } from './Payment'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { isEqual } from 'lodash'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
@@ -37,13 +38,19 @@ export function Checkout({
   const { account } = useAuth()
   const { mint, messageToSign } = state.context
   const matched = state.value.toString()
+  const paywallConfigChanged = !isEqual(
+    paywallConfig,
+    state.context.paywallConfig
+  )
 
   useEffect(() => {
-    checkoutService.send({
-      type: 'UPDATE_PAYWALL_CONFIG',
-      config: paywallConfig,
-    })
-  }, [paywallConfig, checkoutService])
+    if (paywallConfigChanged) {
+      checkoutService.send({
+        type: 'UPDATE_PAYWALL_CONFIG',
+        config: paywallConfig,
+      })
+    }
+  }, [paywallConfig, checkoutService, paywallConfigChanged])
 
   useEffect(() => {
     const user = account ? { address: account } : {}
