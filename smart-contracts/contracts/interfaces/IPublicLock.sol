@@ -24,16 +24,11 @@ interface IPublicLock
     string calldata _lockName
   ) external;
 
-  /**
-   * @notice Allow the contract to accept tips in ETH sent directly to the contract.
-   * @dev This is okay to use even if the lock is priced in ERC-20 tokens
-   */
-  // receive() external payable;
 
   // roles
-  function DEFAULT_ADMIN_ROLE() external pure returns (bytes32);
-  function KEY_GRANTER_ROLE() external pure returns (bytes32);
-  function LOCK_MANAGER_ROLE() external pure returns (bytes32);
+  function DEFAULT_ADMIN_ROLE() external pure returns (bytes32 role);
+  function KEY_GRANTER_ROLE() external pure returns (bytes32 role);
+  function LOCK_MANAGER_ROLE() external pure returns (bytes32 role);
 
   /**
   * @notice The version number of the current implementation on this network.
@@ -58,6 +53,8 @@ interface IPublicLock
 
   /**
    * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
+   * @param _spender address that can spend tokens belonging to the lock
+   * @param _amount amount of tokens that can be spent by the spender
    */
   function approveBeneficiary(
     address _spender,
@@ -590,9 +587,9 @@ interface IPublicLock
     * @notice This logic is NOT used internally by the Unlock Protocol and is made 
     * available only as a convenience helper.
     */
-  function owner() external view returns (address);
+  function owner() external view returns (address owner);
   function setOwner(address account) external;
-  function isOwner(address account) external returns (bool);
+  function isOwner(address account) external returns (bool isOwner);
 
   /**
   * Migrate data from the previous single owner => key mapping to 

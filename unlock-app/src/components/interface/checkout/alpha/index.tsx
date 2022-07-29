@@ -8,7 +8,7 @@ import { useConfig } from '~/utils/withConfig'
 import { Checkout } from './Checkout'
 import { Connect } from './Connect'
 import { Container } from './Container'
-import { Shell } from './Shell'
+import { CloseButton } from './Shell'
 import { PoweredByUnlock } from './PoweredByUnlock'
 import { CgSpinner as LoadingIcon } from 'react-icons/cg'
 
@@ -34,7 +34,7 @@ export function CheckoutPage() {
     document.querySelector('body')?.classList.add('bg-transparent')
   }, [])
 
-  if (!(paywallConfig || oauthConfig) && !Object.keys(query).length) {
+  if (!(paywallConfig || oauthConfig)) {
     return (
       <Container>
         <LoadingIcon size={20} className="animate-spin" />
@@ -69,15 +69,18 @@ export function CheckoutPage() {
   }
   return (
     <Container>
-      <Shell.Root
-        onClose={() => {
-          if (!communication.insideIframe) {
-            window.history.back()
-          } else {
-            communication.emitCloseModal()
-          }
-        }}
-      >
+      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
+        <div className="flex items-center justify-end mt-4 mx-4">
+          <CloseButton
+            onClick={() => {
+              if (!communication.insideIframe) {
+                window.history.back()
+              } else {
+                communication.emitCloseModal()
+              }
+            }}
+          />
+        </div>
         <main className="p-6">
           <p>
             Please recheck your paywall or sign in with ethereum configuration.
@@ -86,7 +89,7 @@ export function CheckoutPage() {
         <footer>
           <PoweredByUnlock />
         </footer>
-      </Shell.Root>
+      </div>
     </Container>
   )
 }

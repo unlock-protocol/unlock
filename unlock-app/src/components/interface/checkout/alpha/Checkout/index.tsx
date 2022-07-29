@@ -9,10 +9,12 @@ import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
-import { useActor, useInterpret, useSelector } from '@xstate/react'
+import { useActor, useInterpret } from '@xstate/react'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
+import { Payment } from './Payment'
+import { useAuth } from '~/contexts/AuthenticationContext'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
@@ -32,6 +34,9 @@ export function Checkout({
     },
   })
   const [state] = useActor(checkoutService)
+  const { account } = useAuth()
+  const { mint, messageToSign } = state.context
+  const matched = state.value.toString()
 
   useEffect(() => {
     checkoutService.send({
@@ -40,11 +45,12 @@ export function Checkout({
     })
   }, [paywallConfig, checkoutService])
 
-  const messageToSign = useSelector(
-    checkoutService,
-    (state) => state.context.messageToSign
-  )
-  const mint = useSelector(checkoutService, (state) => state.context.mint)
+  useEffect(() => {
+    const user = account ? { address: account } : {}
+    if (communication.insideIframe) {
+      communication.emitUserInfo(user)
+    }
+  }, [account, communication])
 
   const onClose = (params: Record<string, string> = {}) => {
     if (redirectURI) {
@@ -67,8 +73,6 @@ export function Checkout({
     }
   }
 
-  const matched = state.value.toString()
-
   switch (matched) {
     case 'SELECT': {
       return (
@@ -82,6 +86,15 @@ export function Checkout({
     case 'QUANTITY': {
       return (
         <Quantity
+          onClose={onClose}
+          injectedProvider={injectedProvider}
+          checkoutService={checkoutService}
+        />
+      )
+    }
+    case 'PAYMENT': {
+      return (
+        <Payment
           onClose={onClose}
           injectedProvider={injectedProvider}
           checkoutService={checkoutService}
@@ -112,6 +125,7 @@ export function Checkout({
           onClose={onClose}
           injectedProvider={injectedProvider}
           checkoutService={checkoutService}
+          communication={communication}
         />
       )
     }
@@ -130,6 +144,7 @@ export function Checkout({
           onClose={onClose}
           injectedProvider={injectedProvider}
           checkoutService={checkoutService}
+          communication={communication}
         />
       )
     }

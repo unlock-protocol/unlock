@@ -7,7 +7,19 @@
 #
 
 ## all networks
-all_networks=("rinkeby" "polygon" "xdai" "mainnet" "bsc" "optimism")
+all_networks=(
+   "goerli" 
+   "rinkeby" 
+   "mumbai" 
+   "polygon"
+   "xdai" 
+   "bsc" 
+   "optimism"
+   "celo"
+   # "arbitrum"
+   # "avalanche"
+   "mainnet" 
+)
 
 # dry run once on localhost (just checking for errors)
 # echo "Run on localhost..."

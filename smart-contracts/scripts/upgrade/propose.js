@@ -3,7 +3,7 @@ const proxyABI = require('./ABIs/proxy.json')
 
 const { confirmMultisigTx, impersonate } = require('../../test/helpers')
 
-const { getSafe, getOwners } = require('../multisig')
+const { submitTx, getOwners } = require('../multisig')
 
 // used to update contract implementation address in proxy admin using multisig
 async function main({ proxyAddress, proxyAdminAddress, implementation }) {
@@ -32,20 +32,13 @@ async function main({ proxyAddress, proxyAdminAddress, implementation }) {
   ])
 
   // submit proxy upgrade tx to proxyAdmin
-  const multisig = getSafe({ signer })
-  const tx = await multisig.submitTransaction(
-    proxyAdminAddress,
-    0, // ETH value
-    data
-  )
-
-  // get tx id
-  const { events, transactionHash } = await tx.wait()
-  const { transactionId } = events.find((v) => v.event === 'Submission')
-
-  console.log(
-    `Upgrade submitted to multisig w transactionId : ${transactionId.toNumber()} (txid: ${transactionHash})`
-  )
+  const transactionId = await submitTx({
+    tx: {
+      contractAddress: proxyAdminAddress,
+      value: 0, // ETH value
+      calldata: data,
+    },
+  })
 
   // make sure it doesnt revert
   if (isDev) {

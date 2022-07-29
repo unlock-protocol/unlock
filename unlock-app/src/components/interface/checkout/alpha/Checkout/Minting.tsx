@@ -12,8 +12,8 @@ import { useEffect } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { Shell } from '../Shell'
+import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { CheckoutHead, CheckoutTransition, CloseButton } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
@@ -22,28 +22,44 @@ interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
+  communication: CheckoutCommunication
 }
 
 function AnimationContent({ status }: { status: Mint['status'] }) {
+  const animationClass = `w-28 sm:w-36 h-28 sm:h-36`
   switch (status) {
     case 'PROCESSING':
       return (
-        <Lottie className="w-40 h-40" loop animationData={mintingAnimation} />
+        <Lottie
+          className={animationClass}
+          loop
+          animationData={mintingAnimation}
+        />
       )
     case 'FINISHED':
       return (
-        <Lottie className="w-40 h-40" loop animationData={mintedAnimation} />
+        <Lottie
+          className={animationClass}
+          loop
+          animationData={mintedAnimation}
+        />
       )
     case 'ERROR': {
-      return <Lottie className="w-40 h-40" animationData={errorAnimation} />
+      return (
+        <Lottie className={animationClass} animationData={errorAnimation} />
+      )
     }
     default:
       return null
   }
 }
 
-export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
-  const communication = useCheckoutCommunication()
+export function Minting({
+  injectedProvider,
+  onClose,
+  checkoutService,
+  communication,
+}: Props) {
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
@@ -95,65 +111,71 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
   }, [mint, lock, config, send, communication, account, messageToSign])
 
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
-        title={paywallConfig.title}
-        iconURL={iconURL}
-        description={description}
-      />
-      <div className="flex px-6 mt-6 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <ProgressCircleIcon disabled />
-            <ProgressCircleIcon disabled />
-            <ProgressCircleIcon disabled />
-            {messageToSign && <ProgressCircleIcon disabled />}
-            <ProgressCircleIcon disabled />
-            <ProgressFinishedIcon />
+    <CheckoutTransition>
+      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
+        <div className="flex items-center justify-end p-6">
+          <CloseButton onClick={() => onClose()} />
+        </div>
+        <CheckoutHead
+          title={paywallConfig.title}
+          iconURL={iconURL}
+          description={description}
+        />
+        <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
+          <div className="flex items-center gap-2 col-span-4">
+            <div className="flex items-center gap-0.5">
+              <ProgressCircleIcon disabled />
+              <ProgressCircleIcon disabled />
+              <ProgressCircleIcon disabled />
+              <ProgressCircleIcon disabled />
+              {messageToSign && <ProgressCircleIcon disabled />}
+              <ProgressCircleIcon disabled />
+              <ProgressFinishedIcon />
+            </div>
+            <h4 className="text-sm "> {title}</h4>
           </div>
-          <h4 className="text-sm "> {title}</h4>
+          <div className="border-t-4 w-full flex-1"></div>
         </div>
-        <div className="border-t-4 w-full flex-1"></div>
-      </div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
-        <div className="space-y-6 justify-items-center grid">
-          {status && <AnimationContent status={status} />}
-          {mint?.status === 'ERROR' && (
-            <p className="font-bold text-lg text-brand-ui-primary">
-              Oh no... something went wrong
-            </p>
-          )}
-          {mint?.transactionHash && (
-            <a
-              href={config.networks[lock!.network].explorer.urls.transaction(
-                mint.transactionHash
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
-            >
-              See in block explorer{' '}
-              <Icon icon={ExternalLinkIcon} size="small" />
-            </a>
-          )}
-        </div>
-      </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
-        <Connected
-          injectedProvider={injectedProvider}
-          service={checkoutService}
-        >
-          <Button
-            disabled={!account || processing}
-            loading={processing}
-            onClick={() => onClose()}
-            className="w-full"
+        <main className="px-6 py-2 overflow-auto h-full">
+          <div className="h-full flex flex-col items-center justify-center space-y-2">
+            {status && <AnimationContent status={status} />}
+            {mint?.status === 'ERROR' && (
+              <p className="font-bold text-lg text-brand-ui-primary">
+                Oh no... something went wrong
+              </p>
+            )}
+            {mint?.transactionHash && (
+              <a
+                href={config.networks[lock!.network].explorer.urls.transaction(
+                  mint.transactionHash
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+              >
+                See in block explorer{' '}
+                <Icon icon={ExternalLinkIcon} size="small" />
+              </a>
+            )}
+          </div>
+        </main>
+        <footer className="px-6 pt-6 border-t grid items-center">
+          <Connected
+            injectedProvider={injectedProvider}
+            service={checkoutService}
           >
-            {processing ? 'Minting your membership' : 'Return to site'}
-          </Button>
-        </Connected>
-        <PoweredByUnlock />
-      </footer>
-    </Shell.Root>
+            <Button
+              disabled={!account || processing}
+              loading={processing}
+              onClick={() => onClose()}
+              className="w-full"
+            >
+              {processing ? 'Minting your membership' : 'Return to site'}
+            </Button>
+          </Connected>
+          <PoweredByUnlock />
+        </footer>
+      </div>
+    </CheckoutTransition>
   )
 }
