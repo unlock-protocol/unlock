@@ -196,6 +196,35 @@ export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
               />
             </div>
           </button>
+          {isReceiverAccountOnly && (
+            <button
+              disabled={!fiatPricing?.creditCardEnabled || isLoading}
+              onClick={(event) => {
+                event.preventDefault()
+                send({
+                  type: 'SELECT_PAYMENT_METHOD',
+                  payment: {
+                    method: 'claim',
+                  },
+                })
+                send('CONTINUE')
+              }}
+              className="border flex flex-col w-full border-gray-400 space-y-2 cursor-pointer shadow p-4 rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+            >
+              <h3 className="font-bold"> Claim membership for free </h3>
+              <div className="flex items-center w-full justify-between">
+                <div className="text-sm text-gray-500">
+                  We will airdrop this free membership to you!
+                </div>
+                <div className="flex items-center justify-end">
+                  <RightArrowIcon
+                    className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
+                    size={20}
+                  />
+                </div>
+              </div>
+            </button>
+          )}
           {enableSuperfluid && (
             <button
               disabled={isLoading}

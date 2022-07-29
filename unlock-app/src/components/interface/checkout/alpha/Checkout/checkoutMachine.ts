@@ -120,7 +120,9 @@ type Payment =
   | {
       method: 'superfluid'
     }
-
+  | {
+      method: 'claim'
+    }
 export interface Mint {
   status: 'ERROR' | 'PROCESSING' | 'FINISHED'
   transactionHash?: string
@@ -232,9 +234,9 @@ export const checkoutMachine = createMachine(
               target: 'CARD',
               cond: (context) => context.payment.method === 'card',
             },
+
             {
               target: 'MESSAGE_TO_SIGN',
-
               cond: 'requireMessageToSign',
             },
             {
@@ -319,7 +321,7 @@ export const checkoutMachine = createMachine(
               cond: 'requireMessageToSign',
             },
             {
-              target: 'METADATA',
+              target: 'PAYMENT',
             },
           ],
           DISCONNECT: {
