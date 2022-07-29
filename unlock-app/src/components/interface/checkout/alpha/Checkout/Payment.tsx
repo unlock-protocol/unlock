@@ -214,7 +214,7 @@ export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
               <h3 className="font-bold"> Claim membership for free </h3>
               <div className="flex items-center w-full justify-between">
                 <div className="text-sm text-gray-500">
-                  We will pay for it out of our pocket. Enjoy.
+                  We will airdrop this free membership to you!
                 </div>
                 <div className="flex items-center justify-end">
                   <RightArrowIcon
