@@ -31,6 +31,7 @@ export interface LockState extends Lock {
 export interface SelectLockEvent {
   type: 'SELECT_LOCK'
   lock: LockState
+  existingMember: boolean
 }
 
 export interface SignMessageEvent {
@@ -79,9 +80,6 @@ interface SolveCaptchaEvent {
   type: 'SOLVE_CAPTCHA'
   data: string[]
 }
-interface ExistingMemberEvent {
-  type: 'EXISTING_MEMBER'
-}
 
 interface UnlockAccountEvent {
   type: 'UNLOCK_ACCOUNT'
@@ -107,7 +105,6 @@ export type CheckoutMachineEvents =
   | ConfirmMintEvent
   | UnlockAccountEvent
   | UpdatePaywallConfigEvent
-  | ExistingMemberEvent
   | ContinueEvent
   | DisconnectEvent
   | BackEvent
@@ -119,6 +116,9 @@ type Payment =
     }
   | {
       method: 'crypto'
+    }
+  | {
+      method: 'superfluid'
     }
 
 export interface Mint {
@@ -138,6 +138,7 @@ interface CheckoutMachineContext {
   quantity: number
   recipients: string[]
   mint?: Mint
+  existingMember: boolean
 }
 
 export const checkoutMachine = createMachine(
@@ -160,6 +161,7 @@ export const checkoutMachine = createMachine(
       },
       quantity: 1,
       recipients: [],
+      existingMember: false,
     },
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
@@ -171,11 +173,18 @@ export const checkoutMachine = createMachine(
     states: {
       SELECT: {
         on: {
-          SELECT_LOCK: {
-            actions: ['selectLock'],
-          },
-          CONTINUE: 'QUANTITY',
-          EXISTING_MEMBER: 'RETURNING',
+          SELECT_LOCK: [
+            {
+              actions: ['selectLock'],
+              target: 'QUANTITY',
+              cond: (_, event) => !event.existingMember,
+            },
+            {
+              actions: ['selectLock'],
+              target: 'RETURNING',
+              cond: (_, event) => event.existingMember,
+            },
+          ],
           DISCONNECT: {
             target: 'SELECT',
             actions: ['disconnect'],
@@ -186,7 +195,7 @@ export const checkoutMachine = createMachine(
         on: {
           SELECT_QUANTITY: {
             actions: ['selectQuantity'],
-            target: 'PAYMENT',
+            target: 'METADATA',
           },
           SELECT: 'SELECT',
           DISCONNECT: {
@@ -195,6 +204,22 @@ export const checkoutMachine = createMachine(
             cond: 'isLockSelected',
           },
           BACK: 'SELECT',
+        },
+      },
+      METADATA: {
+        on: {
+          SELECT_RECIPIENTS: {
+            target: 'PAYMENT',
+            actions: ['selectRecipients'],
+          },
+          SELECT: 'SELECT',
+          QUANTITY: 'QUANTITY',
+          DISCONNECT: {
+            target: 'QUANTITY',
+            actions: ['disconnect'],
+            cond: 'isLockSelected',
+          },
+          BACK: 'QUANTITY',
         },
       },
       PAYMENT: {
@@ -208,64 +233,48 @@ export const checkoutMachine = createMachine(
               cond: (context) => context.payment.method === 'card',
             },
             {
-              target: 'METADATA',
-              cond: (context) => context.payment.method === 'crypto',
-            },
-          ],
-          SELECT: 'SELECT',
-          QUANTITY: 'QUANTITY',
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-            cond: 'isLockSelected',
-          },
-          BACK: 'QUANTITY',
-        },
-      },
-      CARD: {
-        on: {
-          SELECT_CARD_TO_CHARGE: {
-            target: 'METADATA',
-            actions: ['selectCardToCharge'],
-          },
-          BACK: 'PAYMENT',
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-            cond: 'isLockSelected',
-          },
-        },
-      },
-      METADATA: {
-        on: {
-          SELECT_RECIPIENTS: [
-            {
               target: 'MESSAGE_TO_SIGN',
-              actions: ['selectRecipients'],
+
               cond: 'requireMessageToSign',
             },
             {
               target: 'CAPTCHA',
-              actions: ['selectRecipients'],
               cond: 'requireCaptcha',
             },
             {
               target: 'CONFIRM',
-              actions: ['selectRecipients'],
             },
           ],
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
-          PAYMENT: 'PAYMENT',
-          BACK: [
+          METADATA: 'METADATA',
+          DISCONNECT: {
+            target: 'QUANTITY',
+            actions: ['disconnect'],
+            cond: 'isLockSelected',
+          },
+          BACK: 'METADATA',
+        },
+      },
+      CARD: {
+        on: {
+          SELECT_CARD_TO_CHARGE: [
             {
-              target: 'CARD',
-              cond: (context) => context.payment.method === 'card',
+              target: 'MESSAGE_TO_SIGN',
+              actions: ['selectCardToCharge'],
+              cond: 'requireMessageToSign',
             },
             {
-              target: 'PAYMENT',
+              target: 'CAPTCHA',
+              actions: ['selectCardToCharge'],
+              cond: 'requireCaptcha',
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['selectCardToCharge'],
             },
           ],
+          BACK: 'PAYMENT',
           DISCONNECT: {
             target: 'QUANTITY',
             actions: ['disconnect'],
@@ -396,12 +405,15 @@ export const checkoutMachine = createMachine(
           messageToSign: undefined,
           recipients: [],
           mint: undefined,
+          existingMember: false,
         } as CheckoutMachineContext
       }),
-      selectLock: assign({
-        lock: (_, event) => {
-          return event.lock
-        },
+      selectLock: assign((context, event) => {
+        return {
+          ...context,
+          lock: event.lock,
+          existingMember: event.existingMember,
+        }
       }),
       selectQuantity: assign({
         quantity: (_, event) => {
@@ -461,6 +473,7 @@ export const checkoutMachine = createMachine(
           },
           quantity: 1,
           recipients: [],
+          existingMember: false,
         } as CheckoutMachineContext
       }),
       solveCaptcha: assign({

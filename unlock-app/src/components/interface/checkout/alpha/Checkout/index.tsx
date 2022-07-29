@@ -9,11 +9,13 @@ import { Confirm } from './Confirm'
 import { MessageToSign } from './MessageToSign'
 import { Minting } from './Minting'
 import { CardPayment } from './CardPayment'
-import { useActor, useInterpret, useSelector } from '@xstate/react'
+import { useActor, useInterpret } from '@xstate/react'
 import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
 import { Payment } from './Payment'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { isEqual } from 'lodash'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
@@ -33,19 +35,29 @@ export function Checkout({
     },
   })
   const [state] = useActor(checkoutService)
+  const { account } = useAuth()
+  const { mint, messageToSign } = state.context
+  const matched = state.value.toString()
+  const paywallConfigChanged = !isEqual(
+    paywallConfig,
+    state.context.paywallConfig
+  )
 
   useEffect(() => {
-    checkoutService.send({
-      type: 'UPDATE_PAYWALL_CONFIG',
-      config: paywallConfig,
-    })
-  }, [paywallConfig, checkoutService])
+    if (paywallConfigChanged) {
+      checkoutService.send({
+        type: 'UPDATE_PAYWALL_CONFIG',
+        config: paywallConfig,
+      })
+    }
+  }, [paywallConfig, checkoutService, paywallConfigChanged])
 
-  const messageToSign = useSelector(
-    checkoutService,
-    (state) => state.context.messageToSign
-  )
-  const mint = useSelector(checkoutService, (state) => state.context.mint)
+  useEffect(() => {
+    const user = account ? { address: account } : {}
+    if (communication.insideIframe) {
+      communication.emitUserInfo(user)
+    }
+  }, [account, communication])
 
   const onClose = (params: Record<string, string> = {}) => {
     if (redirectURI) {
@@ -67,8 +79,6 @@ export function Checkout({
       communication.emitCloseModal()
     }
   }
-
-  const matched = state.value.toString()
 
   switch (matched) {
     case 'SELECT': {
@@ -122,6 +132,7 @@ export function Checkout({
           onClose={onClose}
           injectedProvider={injectedProvider}
           checkoutService={checkoutService}
+          communication={communication}
         />
       )
     }
@@ -140,6 +151,7 @@ export function Checkout({
           onClose={onClose}
           injectedProvider={injectedProvider}
           checkoutService={checkoutService}
+          communication={communication}
         />
       )
     }

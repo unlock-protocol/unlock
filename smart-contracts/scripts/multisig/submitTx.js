@@ -18,10 +18,10 @@ const gnosisServiceURLs = {
   56: 'https://safe-transaction.bsc.gnosis.io/',
   100: 'https://safe-transaction.xdai.gnosis.io/',
   137: 'https://safe-transaction.polygon.gnosis.io/',
-  // 'https://safe-transaction.arbitrum.gnosis.io/',
-  // 'https://safe-transaction.avalanche.gnosis.io/',
-  // 42220 : 'https://safe-transaction.celo.gnosis.io/',
-  // mumbai missing
+  42161: 'https://safe-transaction.arbitrum.gnosis.io/',
+  43114: 'https://safe-transaction.avalanche.gnosis.io/',
+  42220: 'https://safe.celo.org/#/welcome',
+  // mumbai isnt supported
 }
 
 async function main({ safeAddress, tx, signer }) {
