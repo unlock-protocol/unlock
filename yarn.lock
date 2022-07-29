@@ -16694,8 +16694,8 @@ __metadata:
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
-    cal-parser: ^1.0.2
-    dayjs: ^1.11.4
+    cal-parser: 1.0.2
+    dayjs: 1.11.4
     dotenv: 16.0.1
     embla-carousel-autoplay: 7.0.0-rc05
     embla-carousel-react: 7.0.0-rc05
@@ -21853,7 +21853,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cal-parser@npm:^1.0.2":
+"cal-parser@npm:1.0.2":
   version: 1.0.2
   resolution: "cal-parser@npm:1.0.2"
   dependencies:
@@ -24500,7 +24500,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.11.4":
+"dayjs@npm:1.11.4":
   version: 1.11.4
   resolution: "dayjs@npm:1.11.4"
   checksum: 478c8a2db9e3fc752db9f02ef23f00e12308eebbeb85569913731ea78e8d5616f2335e14f25af48e9f16bbcbd796653092eca4d2f42c0218a948402c31735f59
