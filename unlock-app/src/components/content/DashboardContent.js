@@ -111,6 +111,15 @@ export const DashboardContent = () => {
             </Warning>
           )}
 
+          {network === 4 && (
+            <Warning>
+              The Rinkeby test network has been deprecated and Unlock will
+              remove its support on December 31st 2022. Consider{' '}
+              <a href="https://unlock-protocol.com/blog/goerli">using Goerli</a>
+              !
+            </Warning>
+          )}
+
           <CreatorLocks hideForm={hideForm} formIsVisible={formIsVisible} />
         </BrowserOnly>
       )}
