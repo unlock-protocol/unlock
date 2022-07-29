@@ -27,7 +27,7 @@ export const getStaticProps: GetStaticProps<UpcomingEventsProps> = async () => {
 
   const [rawUpcomingEvents, rawPastEvents] = await Promise.all([
     icalEventsToJson(CALENDAR_URL, 'future'),
-    icalEventsToJson(CALENDAR_URL, 'past'),
+    icalEventsToJson(CALENDAR_URL, 'past', 'desc'),
   ])
 
   const upcomingEvents = JSON.parse(JSON.stringify(rawUpcomingEvents)) ?? []

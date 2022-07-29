@@ -52,14 +52,23 @@ export interface CalendarEvent {
     value?: string
   }
 }
-
-const sortEvents = (events: CalendarEvent[]) => {
+type Sort = 'asc' | 'desc'
+const sortEvents = (events: CalendarEvent[], sort: Sort = 'asc') => {
   return events?.sort((a, b) => {
-    if (a.dtstart?.value && b.dtstart?.value) {
-      return (
-        new Date(a.dtstart?.value).getTime() -
-        new Date(b.dtstart?.value).getTime()
-      )
+    if (sort === 'asc') {
+      if (a.dtstart?.value && b.dtstart?.value) {
+        return (
+          new Date(a.dtstart?.value).getTime() -
+          new Date(b.dtstart?.value).getTime()
+        )
+      }
+    } else {
+      if (a.dtstart?.value && b.dtstart?.value) {
+        return (
+          new Date(b.dtstart?.value).getTime() -
+          new Date(a.dtstart?.value).getTime()
+        )
+      }
     }
   })
 }
@@ -70,7 +79,8 @@ const sortEvents = (events: CalendarEvent[]) => {
  */
 export const icalEventsToJson = async (
   fileUrl: string,
-  type: 'future' | 'past' | 'all' // get future or past events or all
+  type: 'future' | 'past' | 'all', // get future or past events or all,
+  sort: Sort = 'asc'
 ): Promise<CalendarEvent[]> => {
   try {
     const calendarRaw = await fetch(fileUrl).then((res) => res.text())
@@ -78,7 +88,7 @@ export const icalEventsToJson = async (
       events: CalendarEvent[]
     }
 
-    events = sortEvents(events)
+    events = sortEvents(events, sort)
 
     // add calendar url for every event
     events.forEach((event) => {
