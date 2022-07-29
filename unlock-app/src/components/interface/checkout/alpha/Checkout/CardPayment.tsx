@@ -92,7 +92,6 @@ export function CardPayment({
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-0.5">
-            <ProgressCircleIcon disabled />
             {messageToSign && <ProgressCircleIcon disabled />}
             <ProgressCircleIcon disabled />
             <ProgressFinishedIcon disabled />
