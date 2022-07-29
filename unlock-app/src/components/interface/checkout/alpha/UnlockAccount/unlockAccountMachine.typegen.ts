@@ -2,9 +2,6 @@
 
 export interface Typegen0 {
   '@@xstate/typegen': true
-  eventsCausingActions: {
-    submitUser: 'SUBMIT_USER'
-  }
   internalEvents: {
     'xstate.init': { type: 'xstate.init' }
   }
@@ -14,6 +11,9 @@ export interface Typegen0 {
     services: never
     guards: never
     delays: never
+  }
+  eventsCausingActions: {
+    submitUser: 'SUBMIT_USER'
   }
   eventsCausingServices: {}
   eventsCausingGuards: {

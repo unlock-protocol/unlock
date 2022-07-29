@@ -93,7 +93,7 @@ export function CheckoutHead({
   iconURL,
 }: CheckoutHeadProps) {
   return (
-    <header className="px-6 pt-2 space-y-2">
+    <header className="px-6 py-2 space-y-2">
       <div className="flex flex-1 inset-0 flex-wrap items-center gap-6">
         <Avatar.Root>
           <Avatar.Image
