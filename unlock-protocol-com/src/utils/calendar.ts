@@ -120,11 +120,13 @@ export const getCalendarUrl = (event: CalendarEvent): string => {
   const title = event.summary.value
   const description = event.description?.value ?? ''
   const location = event.location?.value ?? ''
-
   const startDate = dayjs(event.dtstart.value).format('YYYYMMDDTHHmmss')
   const endDate = dayjs(event.dtend.value).format('YYYYMMDDTHHmmss')
-
   const dates = `${startDate}/${endDate}`
 
-  return `https://www.google.com/calendar/render?action=TEMPLATE&dates=${dates}&text=${title}&details=${description}&location=${location}&sf=true&output=xml`
+  return `https://www.google.com/calendar/render?action=TEMPLATE&dates=${encodeURIComponent(
+    dates
+  )}&text=${encodeURIComponent(title)}&details=${encodeURIComponent(
+    description
+  )}&location=${encodeURIComponent(location)}&sf=true&output=xml`
 }

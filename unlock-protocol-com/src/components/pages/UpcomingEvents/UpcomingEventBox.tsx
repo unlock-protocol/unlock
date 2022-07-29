@@ -65,12 +65,13 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
       </h3>
       <p
         className={[
-          ' inline-block h-30 text-brand-gray line-clamp-5 md:line-clamp-10',
+          ' inline-block h-30 text-brand-gray line-clamp-5 md:line-clamp-10 child:text-red',
           extraClassDisabled,
         ].join(' ')}
-      >
-        {event.description?.value ?? ''}
-      </p>
+        dangerouslySetInnerHTML={{
+          __html: event.description?.value,
+        }}
+      ></p>
 
       <div className="flex flex-col mt-auto gap-4">
         {location && (
