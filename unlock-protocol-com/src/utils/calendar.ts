@@ -63,7 +63,11 @@ const sortEvents = (events: CalendarEvent[]) => {
     }
   })
 }
-
+/**
+ * Generate JSON array from ICS file
+ * @param {fileUrl} string - file path
+ * @return {events} array of events in JSON
+ */
 export const icalEventsToJson = async (
   fileUrl: string,
   type: 'future' | 'past' | 'all' // get future or past events or all
@@ -96,14 +100,21 @@ export const icalEventsToJson = async (
     console.error(err)
   }
 }
-
+/**
+ * Generate calendar URL link, docs: https://github.com/InteractionDesignFoundation/add-event-to-calendar-docs/blob/main/services/google.md
+ *
+ * @param {event} CalendarEvent - event
+ * @return {string} url to add in google calendar
+ */
 export const getCalendarUrl = (event: CalendarEvent): string => {
   const title = event.summary.value
   const description = event.description?.value ?? ''
   const location = event.location?.value ?? ''
 
-  const startDate = `${dayjs(event.dtstart.value).format('YYYYMMDDTHHmm00')}Z`
-  const endDate = `${dayjs(event.dtend.value).format('YYYYMMDDTHHmm00')}Z`
+  const startDate = dayjs(event.dtstart.value).format('YYYYMMDDTHHmmss')
+  const endDate = dayjs(event.dtend.value).format('YYYYMMDDTHHmmss')
 
-  return `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${description}&dates=${startDate}/${endDate}&location=${location}&sf=true&output=xml`
+  const dates = `${startDate}/${endDate}`
+
+  return `https://www.google.com/calendar/render?action=TEMPLATE&dates=${dates}&text=${title}&details=${description}&location=${location}&sf=true&output=xml`
 }
