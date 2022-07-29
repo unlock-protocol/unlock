@@ -138,6 +138,8 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
               className="flex flex-col gap-3"
             >
               {values?.map(([key, value], index) => {
+                const metadataHasValue = `${value}`?.length > 0 || false
+
                 return (
                   <div key={index}>
                     <Input
@@ -146,7 +148,7 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
                       disabled={updating}
                       {...register(key, {
                         value,
-                        required: true,
+                        required: metadataHasValue,
                       })}
                     />
                     {errors?.[key] && (
