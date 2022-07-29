@@ -31,6 +31,7 @@ import { LabeledItem } from '../LabeledItem'
 import { Framework } from '@superfluid-finance/sdk-core'
 import { ethers, BigNumber } from 'ethers'
 import { selectProvider } from '~/hooks/useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface Props {
   injectedProvider: unknown
@@ -49,6 +50,7 @@ export function Confirm({
   const { account, network } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
+  const web3Service = useWeb3Service()
 
   const { prepareChargeForCard, captureChargeForCard } = useAccount(
     account!,
@@ -241,8 +243,15 @@ export function Confirm({
         provider: web3Provider,
       })
       const expiration = BigNumber.from(lock!.expirationDuration)
+      const decimals = await web3Service.getTokenDecimals(
+        lock!.currencyContractAddress!,
+        lock!.network
+      )
+
+      const mul = BigNumber.from(10).pow(decimals)
+
       const flowRate = BigNumber.from(lock!.keyPrice)
-        .mul('1000000000000000000')
+        .mul(mul)
         .div(expiration)
         .toString()
       const op = sf.cfaV1.createFlow({

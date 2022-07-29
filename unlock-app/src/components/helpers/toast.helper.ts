@@ -36,7 +36,6 @@ interface ToastHelperProps {
 }
 
 const options: ToastOptions = {
-  className: 'lineclamp-2',
   style: {
     wordBreak: 'break-word',
   },

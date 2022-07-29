@@ -29,6 +29,7 @@ import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
 import { ToastHelper } from '../../helpers/toast.helper'
 import Duration from '../../helpers/Duration'
 import { selectProvider } from '../../../hooks/useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface CryptoCheckoutProps {
   emitTransactionInfo: (info: TransactionInfo) => void
@@ -89,6 +90,7 @@ export const CryptoCheckout = ({
   // @ts-expect-error account is _always_ defined in this component
   const { getTokenBalance } = useAccount(account, network)
   const loadingCheck = useRef(false)
+  const web3Service = useWeb3Service()
 
   const now = new Date().getTime() / 1000
   const hasValidkey =
@@ -262,8 +264,13 @@ export const CryptoCheckout = ({
             provider: web3Provider,
           })
           const expiration = BigNumber.from(lock.expirationDuration)
+          const decimals = await web3Service.getTokenDecimals(
+            lock!.currencyContractAddress!,
+            lock!.network
+          )
+          const mul = BigNumber.from(10).pow(decimals)
           const flowRate = BigNumber.from(lock.keyPrice)
-            .mul('1000000000000000000')
+            .mul(mul)
             .div(expiration)
             .toString()
           const op = sf.cfaV1.createFlow({

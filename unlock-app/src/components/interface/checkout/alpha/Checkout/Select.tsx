@@ -81,7 +81,6 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
                         type: 'SELECT_LOCK',
                         lock,
                       })
-                      console.log(lock)
                       if (account && lock) {
                         setIsLockLoading(lock.address)
                         const existingMember = await web3Service.getHasValidKey(
