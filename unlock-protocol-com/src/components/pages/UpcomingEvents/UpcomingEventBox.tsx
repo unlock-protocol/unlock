@@ -39,7 +39,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
     'HH:mm A'
   )}`
 
-  const extraClassDisabled = disabled ? 'opacity-60' : ''
+  const extraClassDisabled = disabled ? 'opacity-60 pointer-events-none' : ''
 
   return (
     <div className="flex flex-col h-full gap-4 p-7 glass-pane rounded-xl">
