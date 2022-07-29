@@ -267,7 +267,7 @@ function CommunityPopover() {
                       />
                     </div>
                     <div className="flex flex-col space-y-1">
-                      <Link href="https://docs.unlock-protocol.com/">
+                      <Link href="https://discord.com/invite/Ah6ZEJyTDp">
                         <p className="text-sm font-bold"> Community </p>
                       </Link>
                       <p className="text-sm text-brand-gray">
