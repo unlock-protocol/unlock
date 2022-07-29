@@ -33,10 +33,18 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
 
   const locationIsUrl = location?.toLowerCase().startsWith('http') ?? false
 
-  const weekDay = weekday[startDate.day()]
-  const formattedDate = `${weekDay}, ${startDate.format(`MMMM D`)}`
-  const formattedHour = `${startDate.format('HH:mm A')} -${endDate.format(
-    'HH:mm A'
+  const startDateWeekday = weekday[startDate.day()]
+  const endDateWeekday = weekday[startDate.day()]
+
+  const isSameDay = startDate.diff(endDate, 'day') === 0
+
+  const formattedDate = `${startDateWeekday}, ${startDate.format(`MMMM D`)}`
+  const formattedHour = isSameDay
+    ? `${startDate.format('HH:mm A')} - ${endDate.format('HH:mm A')}`
+    : `${startDate.format('HH:mm')}`
+
+  const formattedEndDate = `${endDateWeekday}, ${endDate.format(
+    'MMMM D HH:mm'
   )}`
 
   const extraClassDisabled = disabled ? 'opacity-60 pointer-events-none' : ''
@@ -51,8 +59,19 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
             extraClassDisabled,
           ].join(' ')}
         >
-          <span className="inline-block">{formattedDate}</span>
-          <span className="inline-block">{formattedHour}</span>
+          {isSameDay ? (
+            <>
+              <span className="inline-block">{formattedDate}</span>
+              <span className="inline-block">{formattedHour}</span>
+            </>
+          ) : (
+            <>
+              <span className="inline-block">
+                {formattedDate} {formattedHour}
+              </span>
+              <span className="inline-block">{formattedEndDate}</span>
+            </>
+          )}
         </span>
       </div>
       <h3

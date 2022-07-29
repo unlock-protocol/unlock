@@ -53,8 +53,18 @@ export interface CalendarEvent {
   }
 }
 type Sort = 'asc' | 'desc'
+
 const sortEvents = (events: CalendarEvent[], sort: Sort = 'asc') => {
-  return events?.sort((a, b) => {
+  const eventsById = [] // array of events by id to avoid duplicates
+  events.map((event) => {
+    if (
+      eventsById.findIndex((evt) => evt.uid?.value === event?.uid.value) === -1
+    ) {
+      eventsById.push(event)
+    }
+  })
+
+  return eventsById?.sort((a, b) => {
     if (sort === 'asc') {
       if (a.dtstart?.value && b.dtstart?.value) {
         return (
