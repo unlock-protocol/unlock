@@ -200,6 +200,7 @@ function CardForm({ onSave, setIsSaving }: CardFormProps) {
         error={errorMessage}
         size="small"
         label="Name"
+        autoComplete="name"
         description="Please use the name on your card"
         {...register('name')}
       />
@@ -214,6 +215,7 @@ function CardForm({ onSave, setIsSaving }: CardFormProps) {
           Country
         </label>
         <select
+          autoComplete="country"
           defaultValue="United States"
           {...register('address_country', {
             required: true,
