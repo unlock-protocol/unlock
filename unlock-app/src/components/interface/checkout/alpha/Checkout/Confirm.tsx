@@ -52,10 +52,12 @@ export function Confirm({
   const config = useConfig()
   const web3Service = useWeb3Service()
 
-  const { prepareChargeForCard, captureChargeForCard } = useAccount(
-    account!,
-    network!
-  )
+  const {
+    prepareChargeForCard,
+    captureChargeForCard,
+    claimMembershipFromLock,
+  } = useAccount(account!, network!)
+
   const [isConfirming, setIsConfirming] = useState(false)
   const { title, description, iconURL } =
     useCheckoutHeadContent(checkoutService)
@@ -70,8 +72,14 @@ export function Confirm({
     paywallConfig,
   } = state.context
 
-  const recurringPayment =
-    paywallConfig?.locks[lock!.address]?.recurringPayments
+  const {
+    address: lockAddress,
+    network: lockNetwork,
+    name: lockName,
+    keyPrice,
+  } = lock!
+
+  const recurringPayment = paywallConfig?.locks[lockAddress]?.recurringPayments
 
   const recurringPayments: number[] | undefined =
     typeof recurringPayment === 'number'
@@ -81,12 +89,12 @@ export function Confirm({
       : undefined
 
   const { isLoading, data: fiatPricing } = useQuery(
-    [quantity, lock!.address, lock!.network],
+    [quantity, lockAddress, lockNetwork],
     async () => {
       const pricing = await getFiatPricing(
         config,
-        lock!.address,
-        lock!.network,
+        lockAddress,
+        lockNetwork,
         quantity
       )
       return pricing
@@ -98,9 +106,9 @@ export function Confirm({
       ...lock,
       fiatPricing,
     },
-    lock!.network,
-    config.networks[lock!.network].baseCurrencySymbol,
-    lock!.name,
+    lockNetwork,
+    config.networks[lockNetwork].baseCurrencySymbol,
+    lockName,
     quantity
   )
 
@@ -114,8 +122,8 @@ export function Confirm({
       }
       const stripeIntent = await prepareChargeForCard(
         payment.cardId!,
-        lock!.address,
-        network!,
+        lockAddress,
+        lockNetwork,
         formattedData.formattedKeyPrice,
         recipients
       )
@@ -154,8 +162,8 @@ export function Confirm({
         }
       }
       const response = await captureChargeForCard(
-        lock!.address,
-        network!,
+        lockAddress,
+        lockNetwork,
         recipients,
         paymentIntent.id
       )
@@ -186,12 +194,10 @@ export function Confirm({
       if (payment.method !== 'crypto') {
         return
       }
-      const keyPrices: string[] = new Array(recipients!.length).fill(
-        lock!.keyPrice
-      )
+      const keyPrices: string[] = new Array(recipients!.length).fill(keyPrice)
       await walletService?.purchaseKeys(
         {
-          lockAddress: lock!.address,
+          lockAddress,
           keyPrices,
           owners: recipients!,
           data: captcha,
@@ -209,7 +215,7 @@ export function Confirm({
             if (!paywallConfig.pessimistic && hash) {
               communication.emitTransactionInfo({
                 hash,
-                lock: lock?.address,
+                lock: lockAddress,
               })
               communication.emitUserInfo({
                 address: account,
@@ -275,6 +281,32 @@ export function Confirm({
       ToastHelper.error(error?.error?.message || error.message)
     }
   }
+  const onConfirmClaim = async () => {
+    try {
+      setIsConfirming(true)
+      if (payment.method !== 'claim') {
+        return
+      }
+      const hash = await claimMembershipFromLock(lockAddress, lockNetwork)
+      if (hash) {
+        communication.emitTransactionInfo({
+          hash,
+          lock: lockAddress,
+        })
+        send({
+          type: 'CONFIRM_MINT',
+          status: 'FINISHED',
+          transactionHash: hash,
+        })
+      } else {
+        throw new Error('Failed to claim the membership. Try again')
+      }
+      setIsConfirming(false)
+    } catch (error: any) {
+      setIsConfirming(false)
+      ToastHelper.error(error?.error?.message || error.message)
+    }
+  }
 
   const Payment = () => {
     switch (payment.method) {
@@ -308,6 +340,24 @@ export function Confirm({
               }}
             >
               {isConfirming ? 'Paying using crypto' : 'Pay using crypto'}
+            </Button>
+          </div>
+        )
+      }
+      case 'claim': {
+        return (
+          <div className="grid">
+            <Button
+              loading={isConfirming}
+              disabled={isConfirming}
+              onClick={(event) => {
+                event.preventDefault()
+                onConfirmClaim()
+              }}
+            >
+              {isConfirming
+                ? 'Claiming your membership'
+                : 'Claim your membership'}
             </Button>
           </div>
         )
@@ -400,7 +450,7 @@ export function Confirm({
         <main className="px-6 py-2 overflow-auto h-full space-y-2">
           <div className="flex items-start justify-between">
             <h3 className="font-bold text-xl">
-              {quantity}X {lock!.name}
+              {quantity}X {lockName}
             </h3>
             {!isLoading ? (
               <div className="grid">
@@ -452,8 +502,8 @@ export function Confirm({
                 )}
               </ul>
               <a
-                href={config.networks[lock!.network].explorer.urls.address(
-                  lock!.address
+                href={config.networks[lockNetwork].explorer.urls.address(
+                  lockAddress
                 )}
                 target="_blank"
                 rel="noopener noreferrer"

@@ -21,7 +21,7 @@ router.get(
   '/:network/:lockAddress/:keyId/sign',
   authenticatedMiddleware,
   keyOwnerMiddleware,
-  ticketsController.sign
+  (req, res) => ticketsController.sign(req, res)
 )
 
 router.put(
