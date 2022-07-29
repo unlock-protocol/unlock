@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
 import InlineModal from '../InlineModal'
 import { Button, Input, Icon } from '@unlock-protocol/ui'
-import { FaEnvelope, FaMobile } from 'react-icons/fa'
+import { FaEnvelope } from 'react-icons/fa'
 
 interface Props {
   active: boolean
@@ -12,13 +12,7 @@ interface Props {
   lock: any
 }
 
-export const QRModal = ({
-  active,
-  dismiss,
-  sendEmail,
-  signature,
-  lock,
-}: Props) => {
+export const QRModal = ({ active, dismiss, sendEmail, signature }: Props) => {
   const [recipient, setRecipient] = useState('')
   const [isValid, setIsValid] = useState(false)
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
