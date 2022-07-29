@@ -77,24 +77,20 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
                     network={Number(network)}
                     key={address}
                     onSelect={async (lock) => {
+                      setIsLockLoading(lock.address)
+                      const existingMember = account
+                        ? await web3Service.getHasValidKey(
+                            lock!.address,
+                            account,
+                            lock.network
+                          )
+                        : false
+                      setIsLockLoading('')
                       send({
                         type: 'SELECT_LOCK',
+                        existingMember,
                         lock,
                       })
-                      if (account && lock) {
-                        setIsLockLoading(lock.address)
-                        const existingMember = await web3Service.getHasValidKey(
-                          lock.address,
-                          account,
-                          lock.network
-                        )
-                        setIsLockLoading('')
-                        if (existingMember) {
-                          send('EXISTING_MEMBER')
-                          return
-                        }
-                      }
-                      send('CONTINUE')
                     }}
                   />
                 ))}

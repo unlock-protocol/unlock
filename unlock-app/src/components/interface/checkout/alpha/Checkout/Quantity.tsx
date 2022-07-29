@@ -48,10 +48,12 @@ export function Quantity({
   const [state, send] = useActor(checkoutService)
   const { network, isUnlockAccount, changeNetwork } = useAuth()
   const config = useConfig()
-  const { paywallConfig } = state.context
+  const { paywallConfig, quantity: selectedQuantity } = state.context
   const lock = state.context.lock!
   const [quantityInput, setQuantityInput] = useState(
-    paywallConfig.minRecipients?.toString() || '1'
+    selectedQuantity?.toString() ||
+      paywallConfig.minRecipients?.toString() ||
+      '1'
   )
   const { title, description, iconURL } =
     useCheckoutHeadContent(checkoutService)
