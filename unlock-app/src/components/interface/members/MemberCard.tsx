@@ -207,7 +207,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <span className={styles.description}>Expiration</span>
           <span className={styles.title}>{expiration}</span>
         </div>
-        <div className="col-span-full flex gap-2 justify-start lg:col-span-2 lg:justify-end">
+        <div className="col-span-full flex gap-2 justify-start items-center lg:col-span-2 lg:justify-end">
           <Button
             size="small"
             variant="outlined-primary"
