@@ -88,7 +88,7 @@ export const routes: Routes = {
     seo: customizeSEO({
       path: '/upcoming-events',
       title: 'Upcoming Events',
-      description: 'Join us for AMA, Governance and other activities ',
+      description: 'Join the Unlock Protocol community and core teams for conferences, workshops, AMA, Governance and, other activities',
     }),
   },
 }
