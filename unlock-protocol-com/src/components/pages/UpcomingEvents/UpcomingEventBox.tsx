@@ -43,9 +43,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
     ? `${startDate.format('HH:mm A')} - ${endDate.format('HH:mm A')}`
     : `${startDate.format('HH:mm')}`
 
-  const formattedEndDate = `${endDateWeekday}, ${endDate.format(
-    'MMMM D HH:mm'
-  )}`
+  const formattedEndDate = `${endDateWeekday}, ${endDate.format('MMMM D')}`
 
   const extraClassDisabled = disabled ? 'opacity-60 pointer-events-none' : ''
 
@@ -66,9 +64,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
             </>
           ) : (
             <>
-              <span className="inline-block">
-                {formattedDate} {formattedHour}
-              </span>
+              <span className="inline-block">{formattedDate}</span>
               <span className="inline-block">{formattedEndDate}</span>
             </>
           )}

@@ -112,8 +112,8 @@ export const icalEventsToJson = async (
     return events?.filter((event) => {
       return event.dtstart?.value
         ? type === 'future'
-          ? dayjs().isBefore(new Date(event.dtstart.value))
-          : dayjs().isAfter(new Date(event.dtstart.value))
+          ? dayjs().isBefore(new Date(event.dtend.value))
+          : dayjs().isAfter(new Date(event.dtend.value))
         : false
     })
   } catch (err) {
