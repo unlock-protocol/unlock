@@ -38,14 +38,6 @@ export const QRModal = ({
     return url.toString()
   }
 
-  // const addToPhone = () => {
-  //   window.open(
-  //     `https://ethcc.ethpass.xyz/integrations/ethcc?payload=${encodeURIComponent(
-  //       QRUrl()
-  //     )}`
-  //   )
-  // }
-
   return (
     <InlineModal active={active} dismiss={dismiss}>
       <QRCode value={QRUrl()} size={256} includeMargin />
