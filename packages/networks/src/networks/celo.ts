@@ -4,7 +4,7 @@ export const celo: NetworkConfig = {
   publicProvider: 'https://forno.celo.org',
   provider: 'https://forno.celo.org',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
-  multisig: '0x0D3e4e018ba92576dc021a1af0D7683122FA3A4c',
+  multisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
   id: 42220,
   name: 'Celo',
   description:
