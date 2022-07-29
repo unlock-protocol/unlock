@@ -17,6 +17,7 @@ import { isSoldOut } from '../operations/lockOperations'
 const config = require('../../config/config')
 
 export class PurchaseController {
+  // Provides info on the purchaser addresses. This is used for ticket verification as well to verify who signed the QR code.
   async info(_req: SignedRequest, res: Response) {
     const fulfillmentDispatcher = new Dispatcher()
     return res.json(await fulfillmentDispatcher.balances())
