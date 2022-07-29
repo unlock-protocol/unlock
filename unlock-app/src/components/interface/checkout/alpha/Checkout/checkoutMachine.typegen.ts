@@ -31,7 +31,6 @@ export interface Typegen0 {
   }
   eventsCausingServices: {}
   eventsCausingGuards: {
-    requireCardPayment: 'CONTINUE'
     isLockSelected: 'DISCONNECT' | 'done.invoke.unlockAccount'
     requireMessageToSign: 'SELECT_RECIPIENTS' | 'BACK'
     requireCaptcha: 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
@@ -40,6 +39,7 @@ export interface Typegen0 {
   matchesStates:
     | 'SELECT'
     | 'QUANTITY'
+    | 'PAYMENT'
     | 'CARD'
     | 'METADATA'
     | 'MESSAGE_TO_SIGN'

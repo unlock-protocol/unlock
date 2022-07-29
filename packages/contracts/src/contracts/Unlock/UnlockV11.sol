@@ -1429,9 +1429,9 @@ interface IPublicLock
   // receive() external payable;
 
   // roles
-  function DEFAULT_ADMIN_ROLE() external pure returns (bytes32);
-  function KEY_GRANTER_ROLE() external pure returns (bytes32);
-  function LOCK_MANAGER_ROLE() external pure returns (bytes32);
+  function DEFAULT_ADMIN_ROLE() external pure returns (bytes32 role);
+  function KEY_GRANTER_ROLE() external pure returns (bytes32 role);
+  function LOCK_MANAGER_ROLE() external pure returns (bytes32 role);
 
   /**
   * @notice The version number of the current implementation on this network.
@@ -1456,6 +1456,8 @@ interface IPublicLock
 
   /**
    * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
+   * @param _spender address that can spend tokens belonging to the lock
+   * @param _amount amount of tokens that can be spent by the spender
    */
   function approveBeneficiary(
     address _spender,
@@ -1726,6 +1728,9 @@ interface IPublicLock
     address _keyOwner
   ) external view returns (uint refund);
 
+  /**
+   * @param account The address of the key granter.
+   */
   function addKeyGranter(address account) external;
 
   function addLockManager(address account) external;
