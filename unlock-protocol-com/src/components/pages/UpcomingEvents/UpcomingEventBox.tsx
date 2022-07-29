@@ -28,13 +28,15 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
   disabled,
 }) => {
   const location = event.location?.value ?? ''
-  const startDate = dayjs(new Date(event?.dtstart.value))
-  const endDate = dayjs(new Date(event?.dtend.value))
+  const startDate = dayjs(event?.dtstart.value)
+  const endDate = dayjs(event?.dtend.value)
 
   const locationIsUrl = location?.toLowerCase().startsWith('http') ?? false
 
+  console.log(event.dtstart.value)
+
   const weekDay = weekday[startDate.day()]
-  const formattedDate = `${weekDay}, ${startDate.format(`MMMM d`)}`
+  const formattedDate = `${weekDay}, ${startDate.format(`MMMM D`)}`
   const formattedHour = `${startDate.format('HH:mm A')} -${endDate.format(
     'HH:mm A'
   )}`
