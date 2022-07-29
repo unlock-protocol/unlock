@@ -83,4 +83,12 @@ export const routes: Routes = {
         'Apply for Unlock Grant Program to receive UDT tokens, technical and promotional support.',
     }),
   },
+  upcomingEvents: {
+    label: 'Upcoming Events',
+    seo: customizeSEO({
+      path: '/upcoming-events',
+      title: 'Upcoming Events',
+      description: 'Join the Unlock Protocol community and core teams for conferences, workshops, AMA, Governance and, other activities',
+    }),
+  },
 }
