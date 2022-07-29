@@ -1,8 +1,8 @@
 import ical from 'cal-parser'
-import makeUrls, { TCalendarEvent } from 'add-event-to-calendar'
 import dayjs from 'dayjs'
 
 export interface CalendarEvent {
+  url: string
   dtstart: {
     value: string
   }
@@ -76,6 +76,11 @@ export const icalEventsToJson = async (
 
     events = sortEvents(events)
 
+    // add calendar url for every event
+    events.forEach((event) => {
+      event.url = getCalendarUrl(event)
+    })
+
     if (type === 'all') {
       return events
     }
@@ -92,17 +97,13 @@ export const icalEventsToJson = async (
   }
 }
 
-export const getCalendarEventUrl = (
-  event: CalendarEvent,
-  type: 'google' | 'outlook' | 'ics' | 'yahoo' = 'google'
-) => {
-  const eventCalendar: TCalendarEvent = {
-    name: event.summary?.value ?? '-',
-    location: event?.location?.value ?? '-',
-    details: event.description?.value ?? '',
-    startsAt: event.dtstart.value,
-    endsAt: event.dtend.value,
-  }
-  const urlObj = makeUrls(eventCalendar)
-  return urlObj[type] ?? '#'
+export const getCalendarUrl = (event: CalendarEvent): string => {
+  const title = event.summary.value
+  const description = event.description?.value ?? ''
+  const location = event.location?.value ?? ''
+
+  const startDate = `${dayjs(event.dtstart.value).format('YYYYMMDDTHHmm00')}Z`
+  const endDate = `${dayjs(event.dtend.value).format('YYYYMMDDTHHmm00')}Z`
+
+  return `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${description}&dates=${startDate}/${endDate}&location=${location}&sf=true&output=xml`
 }

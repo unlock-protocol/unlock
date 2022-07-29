@@ -6,7 +6,7 @@ import {
 } from 'react-icons/fi'
 import { Link } from '../../helpers/Link'
 import dayjs from 'dayjs'
-import { CalendarEvent, getCalendarEventUrl } from '../../../utils/calendar'
+import { CalendarEvent } from '../../../utils/calendar'
 
 const weekday = [
   'Sunday',
@@ -39,7 +39,6 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
     'HH:mm A'
   )}`
 
-  const calendarLink = getCalendarEventUrl(event)
   const extraClassDisabled = disabled ? 'opacity-60' : ''
 
   return (
@@ -94,7 +93,7 @@ export const UpcomingEventBox: React.FC<UpcomingEventBoxProps> = ({
           </div>
         )}
         {!disabled && (
-          <Link href={calendarLink ?? '#'}>
+          <Link href={event.url ?? '#'}>
             <Button className="w-full">Add to Calendar</Button>
           </Link>
         )}

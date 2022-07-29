@@ -19,7 +19,6 @@
     "@unlock-protocol/ui": "workspace:./packages/ui",
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets",
     "@zeit/next-source-maps": "0.0.3",
-    "add-event-to-calendar": "^1.0.7",
     "babel-eslint": "10.1.0",
     "babel-jest": "28.1.3",
     "babel-loader": "8.2.5",
