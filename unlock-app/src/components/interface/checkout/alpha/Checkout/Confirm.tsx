@@ -28,6 +28,11 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { LabeledItem } from '../LabeledItem'
+import { Framework } from '@superfluid-finance/sdk-core'
+import { ethers, BigNumber } from 'ethers'
+import { selectProvider } from '~/hooks/useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -45,6 +50,7 @@ export function Confirm({
   const { account, network } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
+  const web3Service = useWeb3Service()
 
   const { prepareChargeForCard, captureChargeForCard } = useAccount(
     account!,
@@ -224,13 +230,58 @@ export function Confirm({
     }
   }
 
+  const onConfirmSuperfluid = async () => {
+    try {
+      if (payment.method !== 'superfluid') {
+        return
+      }
+      setIsConfirming(true)
+      const provider = selectProvider(config)
+      const web3Provider = new ethers.providers.Web3Provider(provider)
+      const sf = await Framework.create({
+        chainId: lock!.network,
+        provider: web3Provider,
+      })
+      const expiration = BigNumber.from(lock!.expirationDuration)
+      const decimals = await web3Service.getTokenDecimals(
+        lock!.currencyContractAddress!,
+        lock!.network
+      )
+
+      const mul = BigNumber.from(10).pow(decimals)
+
+      const flowRate = BigNumber.from(lock!.keyPrice)
+        .mul(mul)
+        .div(expiration)
+        .toString()
+      const op = sf.cfaV1.createFlow({
+        sender: provider.address,
+        receiver: lock!.address,
+        superToken: lock!.currencyContractAddress!,
+        flowRate: flowRate,
+      })
+      const signer = web3Provider.getSigner()
+      await op.exec(signer)
+      communication.emitUserInfo({
+        address: account,
+      })
+      send({
+        type: 'CONFIRM_MINT',
+        status: 'FINISHED',
+      })
+      setIsConfirming(false)
+    } catch (error: any) {
+      setIsConfirming(false)
+      ToastHelper.error(error?.error?.message || error.message)
+    }
+  }
+
   const Payment = () => {
     switch (payment.method) {
       case 'card': {
         return (
-          <div>
+          <div className="grid">
             <Button
-              className="w-full"
               loading={isConfirming}
               disabled={isConfirming}
               onClick={(event) => {
@@ -247,9 +298,8 @@ export function Confirm({
       }
       case 'crypto': {
         return (
-          <div>
+          <div className="grid">
             <Button
-              className="w-full"
               loading={isConfirming}
               disabled={isConfirming}
               onClick={(event) => {
@@ -258,6 +308,24 @@ export function Confirm({
               }}
             >
               {isConfirming ? 'Paying using crypto' : 'Pay using crypto'}
+            </Button>
+          </div>
+        )
+      }
+      case 'superfluid': {
+        return (
+          <div className="grid">
+            <Button
+              loading={isConfirming}
+              disabled={isConfirming}
+              onClick={(event) => {
+                event.preventDefault()
+                onConfirmSuperfluid()
+              }}
+            >
+              {isConfirming
+                ? 'Paying using superfluid'
+                : 'Pay using superfluid'}
             </Button>
           </div>
         )
@@ -298,17 +366,17 @@ export function Confirm({
                 }}
               />
               <IconButton
-                title="Select payment method"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('PAYMENT')
-                }}
-              />
-              <IconButton
                 title="Add metadata"
                 icon={ProgressCircleIcon}
                 onClick={() => {
                   send('METADATA')
+                }}
+              />
+              <IconButton
+                title="Select payment method"
+                icon={ProgressCircleIcon}
+                onClick={() => {
+                  send('PAYMENT')
                 }}
               />
               {paywallConfig.messageToSign && (

@@ -102,6 +102,7 @@ export interface PaywallConfigLock {
   captcha?: boolean
   maxRecipients?: number
   minRecipients?: number
+  superfluid?: boolean
 }
 
 export enum KeyStatus {

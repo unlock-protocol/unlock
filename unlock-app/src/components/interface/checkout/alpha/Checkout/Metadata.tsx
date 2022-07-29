@@ -153,19 +153,14 @@ export function Metadata({
                   send('QUANTITY')
                 }}
               />
-              <IconButton
-                title="Select payment method"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('PAYMENT')
-                }}
-              />
+
               <ProgressCircleIcon />
             </div>
             <h4 className="text-sm "> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-1">
+            <ProgressCircleIcon disabled />
             {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
             <ProgressCircleIcon disabled />
             <ProgressFinishIcon disabled />

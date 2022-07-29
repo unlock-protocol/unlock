@@ -120,6 +120,9 @@ type Payment =
   | {
       method: 'crypto'
     }
+  | {
+      method: 'superfluid'
+    }
 
 export interface Mint {
   status: 'ERROR' | 'PROCESSING' | 'FINISHED'
@@ -186,7 +189,7 @@ export const checkoutMachine = createMachine(
         on: {
           SELECT_QUANTITY: {
             actions: ['selectQuantity'],
-            target: 'PAYMENT',
+            target: 'METADATA',
           },
           SELECT: 'SELECT',
           DISCONNECT: {
@@ -195,6 +198,22 @@ export const checkoutMachine = createMachine(
             cond: 'isLockSelected',
           },
           BACK: 'SELECT',
+        },
+      },
+      METADATA: {
+        on: {
+          SELECT_RECIPIENTS: {
+            target: 'PAYMENT',
+            actions: ['selectRecipients'],
+          },
+          SELECT: 'SELECT',
+          QUANTITY: 'QUANTITY',
+          DISCONNECT: {
+            target: 'QUANTITY',
+            actions: ['disconnect'],
+            cond: 'isLockSelected',
+          },
+          BACK: 'QUANTITY',
         },
       },
       PAYMENT: {
@@ -208,64 +227,48 @@ export const checkoutMachine = createMachine(
               cond: (context) => context.payment.method === 'card',
             },
             {
-              target: 'METADATA',
-              cond: (context) => context.payment.method === 'crypto',
-            },
-          ],
-          SELECT: 'SELECT',
-          QUANTITY: 'QUANTITY',
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-            cond: 'isLockSelected',
-          },
-          BACK: 'QUANTITY',
-        },
-      },
-      CARD: {
-        on: {
-          SELECT_CARD_TO_CHARGE: {
-            target: 'METADATA',
-            actions: ['selectCardToCharge'],
-          },
-          BACK: 'PAYMENT',
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-            cond: 'isLockSelected',
-          },
-        },
-      },
-      METADATA: {
-        on: {
-          SELECT_RECIPIENTS: [
-            {
               target: 'MESSAGE_TO_SIGN',
-              actions: ['selectRecipients'],
+
               cond: 'requireMessageToSign',
             },
             {
               target: 'CAPTCHA',
-              actions: ['selectRecipients'],
               cond: 'requireCaptcha',
             },
             {
               target: 'CONFIRM',
-              actions: ['selectRecipients'],
             },
           ],
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
-          PAYMENT: 'PAYMENT',
-          BACK: [
+          METADATA: 'METADATA',
+          DISCONNECT: {
+            target: 'QUANTITY',
+            actions: ['disconnect'],
+            cond: 'isLockSelected',
+          },
+          BACK: 'METADATA',
+        },
+      },
+      CARD: {
+        on: {
+          SELECT_CARD_TO_CHARGE: [
             {
-              target: 'CARD',
-              cond: (context) => context.payment.method === 'card',
+              target: 'MESSAGE_TO_SIGN',
+              actions: ['selectCardToCharge'],
+              cond: 'requireMessageToSign',
             },
             {
-              target: 'PAYMENT',
+              target: 'CAPTCHA',
+              actions: ['selectCardToCharge'],
+              cond: 'requireCaptcha',
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['selectCardToCharge'],
             },
           ],
+          BACK: 'PAYMENT',
           DISCONNECT: {
             target: 'QUANTITY',
             actions: ['disconnect'],
