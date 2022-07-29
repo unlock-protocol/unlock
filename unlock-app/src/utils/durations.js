@@ -1,4 +1,4 @@
-import { MAX_UINT, MONTH_NAMES } from '../constants'
+import { MAX_UINT, MONTH_NAMES, UNLIMITED_KEYS_DURATION } from '../constants'
 
 /**
  * Function which computes days, hours, minutes and seconds based on seconds
@@ -42,10 +42,15 @@ export function durations(seconds, intervals) {
  * @param {number} seconds
  */
 export function durationsAsTextFromSeconds(seconds) {
-  if (seconds < 1) {
-    // 0 or infinite return an empty string
+  if (seconds === UNLIMITED_KEYS_DURATION) {
     return 'Forever'
   }
+
+  if (seconds < 1) {
+    // 0 or 0.5 - return empty.
+    return ''
+  }
+
   const d = durations(seconds, {})
   const asArrayOfValues = Object.keys(d).map((duration) => {
     if (d[duration] !== 1) {
