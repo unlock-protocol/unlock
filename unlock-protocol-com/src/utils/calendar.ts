@@ -124,9 +124,14 @@ export const getCalendarUrl = (event: CalendarEvent): string => {
   const endDate = dayjs(event.dtend.value).format('YYYYMMDDTHHmmss')
   const dates = `${startDate}/${endDate}`
 
-  return `https://www.google.com/calendar/render?action=TEMPLATE&dates=${encodeURIComponent(
-    dates
-  )}&text=${encodeURIComponent(title)}&details=${encodeURIComponent(
-    description
-  )}&location=${encodeURIComponent(location)}&sf=true&output=xml`
+  const url = new URL(
+    'https://www.google.com/calendar/render?action=TEMPLATE&sf=true&output=xml'
+  )
+
+  url.searchParams.append('text', title)
+  url.searchParams.append('details', description)
+  url.searchParams.append('location', location)
+  url.searchParams.append('dates', dates)
+
+  return url.toString()
 }
