@@ -47,6 +47,7 @@ export function Quantity({
 }: Props) {
   const [state, send] = useActor(checkoutService)
   const { network, isUnlockAccount, changeNetwork } = useAuth()
+  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
   const config = useConfig()
   const { paywallConfig, quantity: selectedQuantity } = state.context
   const lock = state.context.lock!
@@ -60,7 +61,7 @@ export function Quantity({
   const quantity = Number(quantityInput)
 
   const { isLoading, data: fiatPricing } = useQuery(
-    [quantityInput, lock.address, lock.network],
+    ['fiat', quantity, lock.address, lock.network],
     async () => {
       const pricing = await getFiatPricing(
         config,
@@ -229,9 +230,12 @@ export function Quantity({
             <div className="grid">
               {isNetworkSwitchRequired ? (
                 <Button
-                  onClick={(event) => {
+                  disabled={isSwitchingNetwork}
+                  loading={isSwitchingNetwork}
+                  onClick={async (event) => {
                     event.preventDefault()
-                    changeNetwork(lockNetwork)
+                    setIsSwitchingNetwork(true)
+                    await changeNetwork(lockNetwork)
                   }}
                 >
                   Switch to {lockNetwork.name} network
@@ -239,7 +243,7 @@ export function Quantity({
               ) : (
                 <Button
                   disabled={isDisabled}
-                  onClick={(event) => {
+                  onClick={async (event) => {
                     event.preventDefault()
                     send({
                       type: 'SELECT_QUANTITY',

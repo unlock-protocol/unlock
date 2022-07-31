@@ -24,7 +24,7 @@ export const ProgressCircleIcon = ({ disabled }: ProgressIconProps) => {
 export const ProgressFinishIcon = ({ disabled }: ProgressIconProps) => {
   return (
     <FinishIcon
-      size={21.6}
+      size={21}
       className={`bg-brand-ui-primary p-0.5 rounded-full fill-white  ${
         disabled && 'opacity-75'
       }`}

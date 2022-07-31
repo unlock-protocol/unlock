@@ -64,10 +64,6 @@ export interface DisconnectEvent {
   type: 'DISCONNECT'
 }
 
-export interface ContinueEvent {
-  type: 'CONTINUE'
-}
-
 export interface MakeAnotherPurchaseEvent {
   type: 'MAKE_ANOTHER_PURCHASE'
 }
@@ -105,7 +101,6 @@ export type CheckoutMachineEvents =
   | ConfirmMintEvent
   | UnlockAccountEvent
   | UpdatePaywallConfigEvent
-  | ContinueEvent
   | DisconnectEvent
   | BackEvent
 
@@ -140,7 +135,6 @@ interface CheckoutMachineContext {
   quantity: number
   recipients: string[]
   mint?: Mint
-  existingMember: boolean
 }
 
 export const checkoutMachine = createMachine(
@@ -163,7 +157,6 @@ export const checkoutMachine = createMachine(
       },
       quantity: 1,
       recipients: [],
-      existingMember: false,
     },
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
@@ -226,24 +219,24 @@ export const checkoutMachine = createMachine(
       },
       PAYMENT: {
         on: {
-          SELECT_PAYMENT_METHOD: {
-            actions: ['selectPaymentMethod'],
-          },
-          CONTINUE: [
+          SELECT_PAYMENT_METHOD: [
             {
               target: 'CARD',
-              cond: (context) => context.payment.method === 'card',
+              actions: ['selectPaymentMethod'],
+              cond: (_, event) => event.payment.method === 'card',
             },
-
             {
               target: 'MESSAGE_TO_SIGN',
+              actions: ['selectPaymentMethod'],
               cond: 'requireMessageToSign',
             },
             {
               target: 'CAPTCHA',
+              actions: ['selectPaymentMethod'],
               cond: 'requireCaptcha',
             },
             {
+              actions: ['selectPaymentMethod'],
               target: 'CONFIRM',
             },
           ],
@@ -407,14 +400,12 @@ export const checkoutMachine = createMachine(
           messageToSign: undefined,
           recipients: [],
           mint: undefined,
-          existingMember: false,
         } as CheckoutMachineContext
       }),
       selectLock: assign((context, event) => {
         return {
           ...context,
           lock: event.lock,
-          existingMember: event.existingMember,
         }
       }),
       selectQuantity: assign({
@@ -475,7 +466,6 @@ export const checkoutMachine = createMachine(
           },
           quantity: 1,
           recipients: [],
-          existingMember: false,
         } as CheckoutMachineContext
       }),
       solveCaptcha: assign({

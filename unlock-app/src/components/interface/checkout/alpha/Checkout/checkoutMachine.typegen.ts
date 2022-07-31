@@ -32,8 +32,14 @@ export interface Typegen0 {
   eventsCausingServices: {}
   eventsCausingGuards: {
     isLockSelected: 'DISCONNECT' | 'done.invoke.unlockAccount'
-    requireMessageToSign: 'CONTINUE' | 'SELECT_CARD_TO_CHARGE' | 'BACK'
-    requireCaptcha: 'CONTINUE' | 'SELECT_CARD_TO_CHARGE' | 'SIGN_MESSAGE'
+    requireMessageToSign:
+      | 'SELECT_PAYMENT_METHOD'
+      | 'SELECT_CARD_TO_CHARGE'
+      | 'BACK'
+    requireCaptcha:
+      | 'SELECT_PAYMENT_METHOD'
+      | 'SELECT_CARD_TO_CHARGE'
+      | 'SIGN_MESSAGE'
   }
   eventsCausingDelays: {}
   matchesStates:
