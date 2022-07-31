@@ -4,7 +4,7 @@ subTitle: We've made significant upgrades in documentation of the Unlock Protoco
 authorName: Angela Steffens
 publishDate: August 1, 2022
 description: Unlock Protocol has made significant upgrades in its developer documentation.
-image: /images/blog/new-docs/new-docs-header.png
+image: /images/blog/new-docs/new-doc-header.png
 ---
 Here at Unlock, we've been working hard at pushing out new features to the protocol, integrations, plug-ins, and tooling. Now we've upgraded our developer docs, too. Let's take a look at precisely what's changed!
 
