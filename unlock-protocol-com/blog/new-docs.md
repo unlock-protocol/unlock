@@ -1,9 +1,9 @@
 ---
 title: Unlock Docs Upgrade
-subTitle: Unlock Protocol have made signifigant improvements in documenation of the protocol.
+subTitle: We've made significant upgrades in documentation of the Unlock Protocol
 authorName: Angela Steffens
 publishDate: August 1, 2022
-description: Unlock Protocol
+description: Unlock Protocol has made significant upgrades in its developer documentation.
 image: /images/blog/new-docs/new-docs-header.png
 ---
 Here at Unlock, we've been working hard at pushing out new features to the protocol, integrations, plug-ins, and tooling. Now we've upgraded our developer docs, too. Let's take a look at precisely what's changed!
@@ -23,7 +23,7 @@ In addition to that, we've included some features that make the docs even more d
 - Better search
 - Improved navigation
 - Light and dark modes
-- Accessibile, high contrast code sample blocks
+- Accessible, high-contrast code sample blocks
 
 All of these enhancements are just the beginning! We're still working to bring you the best experience possible and we are dedicated to regularly releasing more tutorials on specific use cases, integrations, application architecture, and more. We'll be adding more to the tools we've built for developers to use when implementing the protocol. You'll see more development of tutorials and guides for those developers who are new to web3? and need a better understanding of the web3 ecosystem as they onboard from web2.
 
