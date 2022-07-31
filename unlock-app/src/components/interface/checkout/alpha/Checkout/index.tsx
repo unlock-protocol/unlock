@@ -61,7 +61,7 @@ export function Checkout({
 
   const onClose = (params: Record<string, string> = {}) => {
     if (redirectURI) {
-      if (!mint || mint?.status === 'ERROR') {
+      if (mint && mint?.status === 'ERROR') {
         redirectURI.searchParams.append('error', 'access-denied')
       }
       if (messageToSign) {
