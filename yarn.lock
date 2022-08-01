@@ -16662,7 +16662,7 @@ __metadata:
     react-icons: 4.4.0
     react-jazzicon: 1.0.4
     react-jwt: 1.1.6
-    react-query: 3.39.1
+    react-query: 3.39.2
     react-test-renderer: 17.0.2
     react-use-clipboard: 1.0.8
     siwe: 1.1.6
@@ -45749,9 +45749,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-query@npm:3.39.1":
-  version: 3.39.1
-  resolution: "react-query@npm:3.39.1"
+"react-query@npm:3.39.2":
+  version: 3.39.2
+  resolution: "react-query@npm:3.39.2"
   dependencies:
     "@babel/runtime": ^7.5.5
     broadcast-channel: ^3.4.1
@@ -45763,7 +45763,7 @@ fsevents@~2.1.1:
       optional: true
     react-native:
       optional: true
-  checksum: 9273b7c2adf4a78152d3c0b0ac44cfabacc867d5e8e4ad66e6aaccd8a2bd10c5a836c4d3b462e5f083f273998e1c3dd01ed5d126b7508bcfd615eb5aba419b3b
+  checksum: 83b199e66af28ab67ec4d22e51da42f02447186623db926b75d27a1c09a3383da6ddc9e5b83d82578fac7abdba7e6f265aecbffdb91db61981950d3d59409346
   languageName: node
   linkType: hard
 
