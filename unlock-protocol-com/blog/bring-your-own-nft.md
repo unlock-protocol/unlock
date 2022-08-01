@@ -70,7 +70,7 @@ Now it’s time to wire things up.
 
 ### Wiring the contracts up to the hook
 
-First, you’ll need to set up the mapping on the hook. The instructions below are from the Unlock documentation on [Using an Existing NFT](https://docs.unlock-protocol.com/tutorials/using-an-existing-nft-contract/), and are repeated here for readability.
+First, you’ll need to set up the mapping on the hook. The instructions below are from the Unlock documentation on [Using an Existing Contract](https://docs.unlock-protocol.com/tutorials/using-an-existing-nft-contract/), and are repeated here for readability.
 
 > 💡 Different hook contracts on different chains (e.g. mainnet) will have different URLs than this one. In the example we’re walking through here, the block explorer for the Polygon hook contract is at: [https://polygonscan.com/address/0xf705b2dd649bbcb9418d08c1ff508a983f923516](https://polygonscan.com/address/0xf705b2dd649bbcb9418d08c1ff508a983f923516).
 
