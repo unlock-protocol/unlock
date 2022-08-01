@@ -29,4 +29,4 @@ Celo joins the other [EVM-compatible networks where Unlock Protocol-based member
 
 Unlock Protocol on Celo is available immediately.
 
-[Celo network documentation here](https://docs.unlock-protocol.com/core-protocol/unlock/networks/).
+Creators and developers using Unlock can deploy to Celo in the samme manner they deploy to any other network. You can find the [Celo network documentation here](https://docs.unlock-protocol.com/core-protocol/unlock/networks/).
