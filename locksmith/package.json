@@ -67,7 +67,7 @@
     "lodash.isequal": "4.5.0",
     "node-abort-controller": "3.0.1",
     "node-cron": "3.0.1",
-    "node-fetch": "2.6.7",
+    "node-fetch": "3.2.10",
     "p-retry": "4.6.2",
     "parse-data-uri": "0.2.0",
     "path-to-regexp": "6.2.1",
