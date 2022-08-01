@@ -1,0 +1,48 @@
+openapi: '3.0.0'
+info:
+  title: Unlock Locksmith
+  version: '2'
+  description: Locksmith provides backend functionality for enabling ticketing, metadata storage, and notification hooks.
+  license:
+    name: MIT
+
+servers:
+  - url: https://locksmith.unlock-protocol.com
+    description: Production Server
+  - url: https://staging-locksmith.unlock-protocol.com
+    description: Staging Server
+
+components:
+  securitySchemes:
+    User:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    Application:
+      type: apiKey
+      name: api-key
+      in: query
+
+paths:
+  /v2/auth/nonce:
+    get:
+      description: 'Provide a unique nounce for using in sign in with ethereum'
+      parameters: []
+      responses:
+        '200':
+          description: OK
+  /v2/auth/login:
+    post:
+      description: 'Login as a user using Sign in with Ethereum message signed by the wallet address.'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                message:
+                  type: string
+                signature:
+                  type: string
+      responses:
+        '200':
+          description: OK
