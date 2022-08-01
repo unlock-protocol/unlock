@@ -23,7 +23,7 @@ Projects like [Climate Frens](https://climatefrens.xyz/) are a natural fit to de
 
 “The Unlock Labs team and community are tremendously supportive; Climate Frens couldn’t have launched our NFT membership without their help. As a bonus, Climate Frens DAO will have the opportunity to participate in the Unlock DAO, as we earn their tokens (UDT) through our use of the protocol. Unlock was an easy choice as our protocol partner, given our shared alignment and collaborative relationship,” Falls continued.
 
-**image goes here**
+![climate frens image](/images/blog/celo-launch/climate-frens-min.png)
 
 Celo joins the other [EVM-compatible networks where Unlock Protocol-based memberships can be deployed](https://docs.unlock-protocol.com/core-protocol/unlock/networks), including Polygon, Optimism, Gnosis Chain, and the Goerli and Mumbai testnets. Creators and developers using Unlock can deploy to Celo in the same manner they deploy to any other network.
 
