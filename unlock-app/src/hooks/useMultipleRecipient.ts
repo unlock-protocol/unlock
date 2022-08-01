@@ -136,19 +136,15 @@ export const useMultipleRecipient = (
       ({ resolvedAddress }) => resolvedAddress
     )
 
-    // on updates we ignore duplicates check
-    const isAddressInList = isUpdate ? false : addressList.includes(address)
-
     // todo: need also to check how many keys the address owns to improve this logic
     const limitNotReached = !isAddressWithKey
     const addressValid = address?.length > 0
 
-    const valid = addressValid && limitNotReached && !isAddressInList
+    const valid = addressValid && limitNotReached
     return {
       valid,
       address,
       isAddressWithKey,
-      isAddressInList,
       limitNotReached,
     }
   }
@@ -210,13 +206,8 @@ export const useMultipleRecipient = (
     const isUpdate = typeof updateIndex === 'number'
     if (canAddUser() || isUpdate) {
       const index = updateIndex || recipients?.size + 1
-      const {
-        valid,
-        address,
-        isAddressWithKey,
-        isAddressInList,
-        limitNotReached,
-      } = await getAddressAndValidation(userAddress, isUpdate)
+      const { valid, address, isAddressWithKey, limitNotReached } =
+        await getAddressAndValidation(userAddress, isUpdate)
       if (valid) {
         try {
           setRecipients((prev) =>
@@ -242,10 +233,6 @@ export const useMultipleRecipient = (
       } else if (isAddressWithKey) {
         ToastHelper.error(
           'This address already owns a valid key. You cannot grant them a new one.'
-        )
-      } else if (isAddressInList) {
-        ToastHelper.error(
-          'This address is already present in list. Please add a new one.'
         )
       } else if (!valid) {
         ToastHelper.error(
