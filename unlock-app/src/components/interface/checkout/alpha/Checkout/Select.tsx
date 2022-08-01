@@ -11,6 +11,7 @@ import { useState } from 'react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
+import { useQueryClient } from 'react-query'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -27,6 +28,7 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
   const networkToLocks = networkToLocksMap(paywallConfig)
   const { title, description, iconURL } =
     useCheckoutHeadContent(checkoutService)
+  const queryClient = useQueryClient()
 
   return (
     <CheckoutTransition>
@@ -77,24 +79,33 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
                     network={Number(network)}
                     key={address}
                     onSelect={async (lock) => {
+                      setIsLockLoading(lock.address)
+                      let existingMember = false
+                      if (account) {
+                        // cache the result
+                        const result = await queryClient.fetchQuery({
+                          queryKey: [
+                            'existingMember',
+                            account,
+                            lock.address,
+                            lock.network,
+                          ],
+                          queryFn: () => {
+                            return web3Service.getHasValidKey(
+                              lock!.address,
+                              account,
+                              lock.network
+                            ) as Promise<boolean>
+                          },
+                        })
+                        existingMember = result
+                      }
+                      setIsLockLoading('')
                       send({
                         type: 'SELECT_LOCK',
+                        existingMember,
                         lock,
                       })
-                      if (account && lock) {
-                        setIsLockLoading(lock.address)
-                        const existingMember = await web3Service.getHasValidKey(
-                          lock.address,
-                          account,
-                          lock.network
-                        )
-                        setIsLockLoading('')
-                        if (existingMember) {
-                          send('EXISTING_MEMBER')
-                          return
-                        }
-                      }
-                      send('CONTINUE')
                     }}
                   />
                 ))}

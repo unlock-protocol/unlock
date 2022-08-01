@@ -2,18 +2,6 @@
 
 export interface Typegen0 {
   '@@xstate/typegen': true
-  eventsCausingActions: {
-    updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
-    selectLock: 'SELECT_LOCK'
-    disconnect: 'DISCONNECT'
-    selectQuantity: 'SELECT_QUANTITY'
-    selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
-    selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
-    selectRecipients: 'SELECT_RECIPIENTS'
-    signMessage: 'SIGN_MESSAGE'
-    solveCaptcha: 'SOLVE_CAPTCHA'
-    confirmMint: 'CONFIRM_MINT'
-  }
   internalEvents: {
     'done.invoke.unlockAccount': {
       type: 'done.invoke.unlockAccount'
@@ -29,19 +17,37 @@ export interface Typegen0 {
     guards: never
     delays: never
   }
+  eventsCausingActions: {
+    updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
+    signMessage: 'SIGN_MESSAGE'
+    selectLock: 'SELECT_LOCK'
+    disconnect: 'DISCONNECT'
+    selectQuantity: 'SELECT_QUANTITY'
+    selectRecipients: 'SELECT_RECIPIENTS'
+    selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
+    selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
+    solveCaptcha: 'SOLVE_CAPTCHA'
+    confirmMint: 'CONFIRM_MINT'
+  }
   eventsCausingServices: {}
   eventsCausingGuards: {
     isLockSelected: 'DISCONNECT' | 'done.invoke.unlockAccount'
-    requireMessageToSign: 'SELECT_RECIPIENTS' | 'BACK'
-    requireCaptcha: 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
+    requireMessageToSign:
+      | 'SELECT_PAYMENT_METHOD'
+      | 'SELECT_CARD_TO_CHARGE'
+      | 'BACK'
+    requireCaptcha:
+      | 'SELECT_PAYMENT_METHOD'
+      | 'SELECT_CARD_TO_CHARGE'
+      | 'SIGN_MESSAGE'
   }
   eventsCausingDelays: {}
   matchesStates:
     | 'SELECT'
     | 'QUANTITY'
+    | 'METADATA'
     | 'PAYMENT'
     | 'CARD'
-    | 'METADATA'
     | 'MESSAGE_TO_SIGN'
     | 'CAPTCHA'
     | 'CONFIRM'

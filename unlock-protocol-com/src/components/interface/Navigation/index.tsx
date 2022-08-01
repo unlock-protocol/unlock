@@ -11,7 +11,7 @@ import { FaGithub as GithubIcon } from 'react-icons/fa'
 import { FiLifeBuoy as LifeBuoyIcon, FiCode as CodeIcon } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import { UnlockTextIcon } from '../../icons'
-import { FilesIcon } from '../../icons/Util'
+import { EventIcon, FilesIcon } from '../../icons/Util'
 import {
   AiOutlineDown as DownIcon,
   AiOutlineUp as UpIcon,
@@ -223,12 +223,11 @@ const COMMUNITY_NAVIGATION_STORY: NavigationLink[] = [
 ]
 
 const COMMUNITY_NAVIGATION_BOTTOM_ITEMS: NavigationalLinkWithIcon[] = [
-  // Enable it when upcoming-events page is live.
-  // {
-  //   name: 'Upcoming Events',
-  //   Icon: EventIcon,
-  //   href: '/upcoming-events',
-  // },
+  {
+    name: 'Upcoming Events',
+    Icon: EventIcon,
+    href: '/upcoming-events',
+  },
   {
     name: 'Grants',
     Icon: HeartIcon,
@@ -268,7 +267,7 @@ function CommunityPopover() {
                       />
                     </div>
                     <div className="flex flex-col space-y-1">
-                      <Link href="https://docs.unlock-protocol.com/">
+                      <Link href="https://discord.com/invite/Ah6ZEJyTDp">
                         <p className="text-sm font-bold"> Community </p>
                       </Link>
                       <p className="text-sm text-brand-gray">

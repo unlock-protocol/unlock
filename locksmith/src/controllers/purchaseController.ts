@@ -1,4 +1,4 @@
-import { Response } from 'express-serve-static-core'
+import { Response, Request } from 'express-serve-static-core'
 import {
   getStripeConnectForLock,
   getStripeCustomerIdForAddress,
@@ -16,34 +16,19 @@ import { isSoldOut } from '../operations/lockOperations'
 
 const config = require('../../config/config')
 
-namespace PurchaseController {
-  /**
-   *
-   * @param _req
-   * @param res
-   * @returns
-   */
-  export const info = async (
-    _req: SignedRequest,
-    res: Response
-  ): Promise<any> => {
+export class PurchaseController {
+  // Provides info on the purchaser addresses. This is used for ticket verification as well to verify who signed the QR code.
+  async info(_req: SignedRequest, res: Response) {
     const fulfillmentDispatcher = new Dispatcher()
-
     return res.json(await fulfillmentDispatcher.balances())
   }
 
-  /**
+  /*
    * Creates a payment intent that will be passed to the front-end for confirmation with the Stripe API.
    * Once confirmed, the payment will need to be captured
    * This flow supports 3D Secure.
-   * @param req
-   * @param res
-   * @returns
    */
-  export const createPaymentIntent = async (
-    req: SignedRequest,
-    res: Response
-  ): Promise<any> => {
+  async createPaymentIntent(req: SignedRequest, res: Response) {
     const {
       publicKey,
       lock,
@@ -123,16 +108,10 @@ namespace PurchaseController {
     }
   }
 
-  /**
+  /*
    * Captures a payment intent and exexutes the transaction to airdrop an NFT to the user.
-   * @param req
-   * @param res
-   * @returns
    */
-  export const capturePaymentIntent = async (
-    req: SignedRequest,
-    res: Response
-  ): Promise<any> => {
+  async capturePaymentIntent(req: SignedRequest, res: Response): Promise<any> {
     const { lock, network, recipients, userAddress, paymentIntent } = req.body
 
     const normalizedRecipients: string[] = recipients.map((address: string) =>
@@ -175,10 +154,7 @@ namespace PurchaseController {
 
   // TODO: add captcha to avoid spamming!
   // TODO: save claims?
-  export const claim = async (
-    req: SignedRequest,
-    res: Response
-  ): Promise<any> => {
+  async claim(req: SignedRequest, res: Response) {
     const { publicKey, lock, network } = req.body.message['Claim Membership']
 
     // First check that the lock is indeed free and that the gas costs is low enough!
@@ -211,11 +187,53 @@ namespace PurchaseController {
           })
         }
       )
+      return
     } catch (error) {
       logger.error(error)
       return res.status(400).send(error)
     }
   }
-}
 
-export = PurchaseController
+  async canClaim(request: Request, response: Response) {
+    try {
+      const network = Number(request.params.network)
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const pricer = new KeyPricer()
+      const fulfillmentDispatcher = new Dispatcher()
+
+      const hasEnoughToPayForGas =
+        await fulfillmentDispatcher.hasFundsForTransaction(network)
+      if (!hasEnoughToPayForGas) {
+        return response.status(500).send({
+          message:
+            'Purchaser does not have enough funds to allow claiming the membership',
+        })
+      }
+
+      const pricing = await pricer.generate(lockAddress, network)
+
+      if (pricing.keyPrice !== undefined && pricing.keyPrice > 0) {
+        return response.status(500).send({
+          message: 'Lock is not free.',
+        })
+      }
+
+      const canAffordGas = await pricer.canAffordGrant(network)
+
+      if (!canAffordGas) {
+        return response.status(500).send({
+          message: 'Gas fees is too pricey.',
+        })
+      }
+
+      return response.status(200).send({
+        canClaim: true,
+      })
+    } catch (error) {
+      logger.error(error)
+      return response.status(500).send({
+        message: 'You cannot claim the membership',
+      })
+    }
+  }
+}

@@ -26,17 +26,17 @@ echo $branch
 cd $tmpdir
 
 # git worflow
-git clone --depth=1 $repo
+git clone $repo
 cd docs
 
 # check if a branch already exists
 if $(git ls-remote --heads ${repo} ${branch} | grep ${branch} >/dev/null); then 
-echo "Branch ${branch} already exists, pushing to existing branch"; 
-git fetch origin $branch
-git checkout $branch
+  echo "Branch ${branch} already exists, pushing to existing branch"; 
+  git fetch origin
+  git checkout $branch
 else
-git checkout $base
-git checkout -b $branch
+  git checkout $base
+  git checkout -b $branch
 fi
 
 # generate new docs files

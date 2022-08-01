@@ -82,17 +82,17 @@ export function MessageToSign({
                 }}
               />
               <IconButton
-                title="Select payment method"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('PAYMENT')
-                }}
-              />
-              <IconButton
                 title="Add metadata"
                 icon={ProgressCircleIcon}
                 onClick={() => {
                   send('METADATA')
+                }}
+              />
+              <IconButton
+                title="Select payment method"
+                icon={ProgressCircleIcon}
+                onClick={() => {
+                  send('PAYMENT')
                 }}
               />
               <ProgressCircleIcon />

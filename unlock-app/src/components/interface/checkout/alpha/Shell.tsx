@@ -9,7 +9,6 @@ import {
   RiArrowLeftLine as BackIcon,
 } from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
-import { Transition } from '@headlessui/react'
 
 interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>
@@ -62,23 +61,9 @@ BackButton.displayName = 'Back Button'
 interface CheckoutTransitionProps {
   children?: ReactNode
 }
-
+// TODO: Think about better transition effect.
 export const CheckoutTransition = ({ children }: CheckoutTransitionProps) => {
-  return (
-    <Transition
-      as={Fragment}
-      appear={true}
-      show={!!children}
-      enter="transition ease-out duration-200"
-      enterFrom="opacity-0 translate-y-1"
-      enterTo="opacity-100 translate-y-0"
-      leave="transition ease-in duration-150"
-      leaveFrom="opacity-100 translate-y-0"
-      leaveTo="opacity-0 translate-y-1"
-    >
-      {children}
-    </Transition>
-  )
+  return <Fragment>{children}</Fragment>
 }
 
 interface CheckoutHeadProps {
@@ -93,7 +78,7 @@ export function CheckoutHead({
   iconURL,
 }: CheckoutHeadProps) {
   return (
-    <header className="px-6 pt-2 space-y-2">
+    <header className="px-6 py-2 space-y-2">
       <div className="flex flex-1 inset-0 flex-wrap items-center gap-6">
         <Avatar.Root>
           <Avatar.Image
