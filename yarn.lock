@@ -16585,7 +16585,7 @@ __metadata:
     validator: 13.7.0
     walletlink: 2.5.0
     xstate: 4.32.1
-    zod: 3.17.3
+    zod: 3.17.10
   languageName: unknown
   linkType: soft
 
@@ -57582,10 +57582,10 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"zod@npm:3.17.3":
-  version: 3.17.3
-  resolution: "zod@npm:3.17.3"
-  checksum: f74b5d8a307cbed734e7a4a7f57a0c6b0a2d5062adee25e86eceaa1bec606621d6861804130f53342dec2d6e77fe9365f3a5118d55c81688f69f3de5fd3e59af
+"zod@npm:3.17.10":
+  version: 3.17.10
+  resolution: "zod@npm:3.17.10"
+  checksum: 5de630b8eceda3de211cce0a734b629f8c4ca4bc887127b0ebd57e9c9be23204725e60adf2faf1c5ccb9b660c7588a8b04f60dfda1ed8e67a789e93c15f838f1
   languageName: node
   linkType: hard
 
