@@ -1,9 +1,9 @@
 ---
 title: Unlock Launches “Bring Your Own NFT” Token Gating
-subTitle: Token gate anything using any ERC-721 or ERC-1155 NFTs with Unlock Protocol
+subTitle: Token gate anything using any ERC-721, ERC-1155, or ERC-20 with Unlock Protocol
 authorName: Christopher Carfi
 publishDate: March 3, 2022
-description: Using Unlock, creators now can token gate websites, Discord servers, and more using any ERC-721 or ERC-1155 NFT. We call this “Bring Your Own NFT” and it’s amazing.
+description: Using Unlock, creators now can token gate websites, Discord servers, and more using any ERC-721, ERC-1155, or ERC-20. We call this “Bring Your Own NFT” and it’s amazing.
 image: /images/blog/bring-your-own-nft/byonft-header.png
 ---
 
@@ -113,4 +113,4 @@ And now, our sample lock is wired up, via the hook contract, to token gate acces
 
 At this point, we are ready to go! In the example shown here, if we were to use our lock at `0xf4e931a7FB3d461A005011d659a0F21a7FeA1826` on a WordPress website, a Discord server, or another location, the lock would check for the presence of a SPKZ key in the wallet of the site visitor and grant access to holders of a SPKZ token.
 
-**Update May 2022:** Added support for ERC-1155 NFTs with Bring Your Own NFT
+**Update May 2022:** Added support for ERC-1155 NFTs and ERC-20 tokens with Bring Your Own NFT
