@@ -1,7 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { getAddressForName } from '~/hooks/useEns'
@@ -21,6 +21,7 @@ import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
+import { useQuery } from 'react-query'
 
 interface Props {
   injectedProvider: unknown
@@ -38,7 +39,7 @@ export function Metadata({
   onClose,
 }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { account } = useAuth()
+  const { account, isUnlockAccount, email } = useAuth()
   const storage = useStorageService()
   const { lock, paywallConfig, quantity } = state.context
   const { title, description, iconURL } =
@@ -65,21 +66,35 @@ export function Metadata({
     control,
   })
 
-  useEffect(() => {
-    if (quantity > fields.length) {
-      const fieldsRequired = quantity - fields.length
+  const { data: existingMember, isLoading: isExistingMemberLoading } = useQuery(
+    ['existingMember', account, lock!.address, lock!.network],
+    () => {
+      return web3Service.getHasValidKey(
+        lock!.address,
+        account!,
+        lock!.network
+      ) as Promise<boolean>
+    },
+    {
+      enabled: !!account,
+    }
+  )
 
+  const [hideFirstRecipient, setHideFirstRecipient] = useState<boolean>(
+    !existingMember
+  )
+
+  useEffect(() => {
+    if (quantity > fields.length && !isExistingMemberLoading) {
+      const fieldsRequired = quantity - fields.length
       Array.from({ length: fieldsRequired }).map((_, index) => {
-        if (!index) {
-          // fill the first field with the current logged in user address.
-          append({
-            recipient: account,
-          })
-        } else {
-          append({
-            recipient: '',
-          })
-        }
+        const addAccountAddress = !index && !existingMember
+        const recipient = addAccountAddress
+          ? { recipient: account }
+          : { recipient: '' }
+        append(recipient, {
+          shouldFocus: false,
+        })
       })
     } else {
       const fieldsRemove = fields.length - quantity
@@ -87,7 +102,15 @@ export function Metadata({
         remove(fields.length - index)
       )
     }
-  }, [quantity, account, fields, append, remove])
+  }, [
+    quantity,
+    account,
+    fields,
+    append,
+    remove,
+    existingMember,
+    isExistingMemberLoading,
+  ])
 
   async function onSubmit(data: FieldValues) {
     try {
@@ -153,93 +176,117 @@ export function Metadata({
                   send('QUANTITY')
                 }}
               />
-              <IconButton
-                title="Select payment method"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('PAYMENT')
-                }}
-              />
+
               <ProgressCircleIcon />
             </div>
             <h4 className="text-sm "> {title}</h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-1">
+            <ProgressCircleIcon disabled />
             {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
             <ProgressCircleIcon disabled />
             <ProgressFinishIcon disabled />
           </div>
         </div>
         <main className="px-6 py-2 overflow-auto h-full">
-          <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
-            {fields.map((item, index) => (
-              <div
-                key={item.id}
-                className={twMerge(
-                  'py-2',
-                  fields.length > index + 1
-                    ? 'border-b-2 border-brand-gray'
-                    : null
-                )}
-              >
-                <Input
-                  label={`Recipient #${index + 1}`}
-                  size="small"
-                  error={
-                    errors?.metadata?.[index]?.recipient
-                      ?.message as unknown as string
-                  }
-                  {...register(`metadata.${index}.recipient`, {
-                    required: 'Recipient is required',
-                    validate: {
-                      max_keys: async (value) => {
-                        try {
-                          const address = await getAddressForName(value)
-                          const contract = await web3Service.lockContract(
-                            lock!.address,
-                            lock!.network
-                          )
-                          const items = await contract.balanceOf(address)
-                          const numberOfMemberships =
-                            ethers.BigNumber.from(items).toNumber()
-                          return numberOfMemberships <
-                            (lock?.maxKeysPerAddress || 1)
-                            ? true
-                            : 'Address already holds the maximum number of memberships.'
-                        } catch (error) {
-                          console.error(error)
-                          return 'There is a problem with using this address. Try another.'
-                        }
-                      },
-                    },
-                  })}
-                />
-                {metadataInputs?.map((metadataInputItem) => (
-                  <Input
-                    key={metadataInputItem.name}
-                    label={metadataInputItem.name}
-                    defaultValue={metadataInputItem.defaultValue}
-                    size="small"
-                    placeholder={metadataInputItem.placeholder}
-                    type={metadataInputItem.type}
-                    error={
-                      errors?.metadata?.[index]?.[metadataInputItem.name]
-                        ?.message as unknown as string
-                    }
-                    {...register(
-                      `metadata.${index}.${metadataInputItem.name}`,
-                      {
-                        required:
-                          metadataInputItem.required &&
-                          `${metadataInputItem.name} is required`,
-                      }
+          {isExistingMemberLoading ? (
+            <div className="grid w-full gap-y-2 pb-6">
+              <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
+              <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
+              <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
+            </div>
+          ) : (
+            <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
+              {fields.map((item, index) => {
+                const hideRecipient = !index && hideFirstRecipient
+                return (
+                  <div
+                    key={item.id}
+                    className={twMerge(
+                      'py-2 space-y-2',
+                      fields.length > index + 1 ? 'border-b ' : null
                     )}
-                  />
-                ))}
-              </div>
-            ))}
-          </form>
+                  >
+                    {hideRecipient ? (
+                      <div className="space-y-1">
+                        <div className="text-sm ml-1"> Recipient #1 </div>
+                        <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
+                          <div className="w-32 text-sm truncate">
+                            {isUnlockAccount ? email : account}
+                          </div>
+                          <Button
+                            onClick={(event) => {
+                              event.preventDefault()
+                              setHideFirstRecipient(false)
+                            }}
+                            size="tiny"
+                          >
+                            Change
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <Input
+                        label={`Recipient #${index + 1}`}
+                        size="small"
+                        error={
+                          errors?.metadata?.[index]?.recipient
+                            ?.message as unknown as string
+                        }
+                        {...register(`metadata.${index}.recipient`, {
+                          required: 'Recipient is required',
+                          validate: {
+                            max_keys: async (value) => {
+                              try {
+                                const address = await getAddressForName(value)
+                                const contract = await web3Service.lockContract(
+                                  lock!.address,
+                                  lock!.network
+                                )
+                                const items = await contract.balanceOf(address)
+                                const numberOfMemberships =
+                                  ethers.BigNumber.from(items).toNumber()
+                                return numberOfMemberships <
+                                  (lock?.maxKeysPerAddress || 1)
+                                  ? true
+                                  : 'Address already holds the maximum number of memberships.'
+                              } catch (error) {
+                                console.error(error)
+                                return 'There is a problem with using this address. Try another.'
+                              }
+                            },
+                          },
+                        })}
+                      />
+                    )}
+                    {metadataInputs?.map((metadataInputItem) => (
+                      <Input
+                        key={metadataInputItem.name}
+                        label={metadataInputItem.name}
+                        defaultValue={metadataInputItem.defaultValue}
+                        size="small"
+                        placeholder={metadataInputItem.placeholder}
+                        type={metadataInputItem.type}
+                        error={
+                          errors?.metadata?.[index]?.[metadataInputItem.name]
+                            ?.message as unknown as string
+                        }
+                        {...register(
+                          `metadata.${index}.${metadataInputItem.name}`,
+                          {
+                            required:
+                              metadataInputItem.required &&
+                              `${metadataInputItem.name} is required`,
+                          }
+                        )}
+                      />
+                    ))}
+                  </div>
+                )
+              })}
+            </form>
+          )}
         </main>
         <footer className="px-6 pt-6 border-t grid items-center">
           <Connected

@@ -36,7 +36,7 @@ export function Lock({
 }: Props) {
   const config = useConfig()
   const web3Service = useWeb3Service()
-  const { isLoading, data: lock } = useQuery(address, async () => {
+  const { isLoading, data: lock } = useQuery(['lock', address], async () => {
     const [lockData, fiatPricing] = await Promise.all([
       web3Service.getLock(address, network),
       getFiatPricing(config, address, network),
@@ -45,6 +45,7 @@ export function Lock({
       network,
       address,
       ...lockData,
+      name: name ?? lockData?.name,
       fiatPricing,
     }
   })
@@ -82,12 +83,14 @@ export function Lock({
         <div className="flex gap-4 items-center p-4">
           <div>
             <Avatar.Root className="flex items-center justify-center w-16 h-16 rounded-xl">
-              <Avatar.Image
-                src={lockImageURL}
-                alt={lockName}
-                width={64}
-                height={64}
-              />
+              {!isLoading && (
+                <Avatar.Image
+                  src={lockImageURL}
+                  alt={lockName}
+                  width={64}
+                  height={64}
+                />
+              )}
               <Avatar.Fallback>
                 {lockName?.slice(0, 2).toUpperCase()}
               </Avatar.Fallback>
@@ -95,7 +98,7 @@ export function Lock({
           </div>
           <div className="flex items-start justify-between w-full">
             <div className="space-y-2">
-              <h3 className="font-bold text-lg"> {lockName}</h3>
+              <h3 className="font-bold text-lg text-left"> {lockName}</h3>
               {recurring && (
                 <span className="bg-brand-ui-primary bg-opacity-80 group-disabled:group-hover:bg-opacity-80 group-hover:bg-opacity-100 p-1 px-2 rounded-full text-xs font-semibold text-white">
                   Recurring x {recurring}
@@ -120,7 +123,7 @@ export function Lock({
                 <LabeledItem
                   label="Duration"
                   icon={DurationIcon}
-                  value={formattedData.formattedDuration || 'Forever'}
+                  value={formattedData.formattedDuration}
                 />
                 <LabeledItem
                   label="Quantity"

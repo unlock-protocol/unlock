@@ -28,6 +28,11 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { LabeledItem } from '../LabeledItem'
+import { Framework } from '@superfluid-finance/sdk-core'
+import { ethers, BigNumber } from 'ethers'
+import { selectProvider } from '~/hooks/useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -45,11 +50,14 @@ export function Confirm({
   const { account, network } = useAuth()
   const walletService = useWalletService()
   const config = useConfig()
+  const web3Service = useWeb3Service()
 
-  const { prepareChargeForCard, captureChargeForCard } = useAccount(
-    account!,
-    network!
-  )
+  const {
+    prepareChargeForCard,
+    captureChargeForCard,
+    claimMembershipFromLock,
+  } = useAccount(account!, network!)
+
   const [isConfirming, setIsConfirming] = useState(false)
   const { title, description, iconURL } =
     useCheckoutHeadContent(checkoutService)
@@ -64,8 +72,14 @@ export function Confirm({
     paywallConfig,
   } = state.context
 
-  const recurringPayment =
-    paywallConfig?.locks[lock!.address]?.recurringPayments
+  const {
+    address: lockAddress,
+    network: lockNetwork,
+    name: lockName,
+    keyPrice,
+  } = lock!
+
+  const recurringPayment = paywallConfig?.locks[lockAddress]?.recurringPayments
 
   const recurringPayments: number[] | undefined =
     typeof recurringPayment === 'number'
@@ -75,12 +89,12 @@ export function Confirm({
       : undefined
 
   const { isLoading, data: fiatPricing } = useQuery(
-    [quantity, lock!.address, lock!.network],
+    [quantity, lockAddress, lockNetwork],
     async () => {
       const pricing = await getFiatPricing(
         config,
-        lock!.address,
-        lock!.network,
+        lockAddress,
+        lockNetwork,
         quantity
       )
       return pricing
@@ -92,9 +106,9 @@ export function Confirm({
       ...lock,
       fiatPricing,
     },
-    lock!.network,
-    config.networks[lock!.network].baseCurrencySymbol,
-    lock!.name,
+    lockNetwork,
+    config.networks[lockNetwork].baseCurrencySymbol,
+    lockName,
     quantity
   )
 
@@ -108,8 +122,8 @@ export function Confirm({
       }
       const stripeIntent = await prepareChargeForCard(
         payment.cardId!,
-        lock!.address,
-        network!,
+        lockAddress,
+        lockNetwork,
         formattedData.formattedKeyPrice,
         recipients
       )
@@ -148,8 +162,8 @@ export function Confirm({
         }
       }
       const response = await captureChargeForCard(
-        lock!.address,
-        network!,
+        lockAddress,
+        lockNetwork,
         recipients,
         paymentIntent.id
       )
@@ -180,12 +194,10 @@ export function Confirm({
       if (payment.method !== 'crypto') {
         return
       }
-      const keyPrices: string[] = new Array(recipients!.length).fill(
-        lock!.keyPrice
-      )
+      const keyPrices: string[] = new Array(recipients!.length).fill(keyPrice)
       await walletService?.purchaseKeys(
         {
-          lockAddress: lock!.address,
+          lockAddress,
           keyPrices,
           owners: recipients!,
           data: captcha,
@@ -203,7 +215,7 @@ export function Confirm({
             if (!paywallConfig.pessimistic && hash) {
               communication.emitTransactionInfo({
                 hash,
-                lock: lock?.address,
+                lock: lockAddress,
               })
               communication.emitUserInfo({
                 address: account,
@@ -224,13 +236,84 @@ export function Confirm({
     }
   }
 
+  const onConfirmSuperfluid = async () => {
+    try {
+      if (payment.method !== 'superfluid') {
+        return
+      }
+      setIsConfirming(true)
+      const provider = selectProvider(config)
+      const web3Provider = new ethers.providers.Web3Provider(provider)
+      const sf = await Framework.create({
+        chainId: lock!.network,
+        provider: web3Provider,
+      })
+      const expiration = BigNumber.from(lock!.expirationDuration)
+      const decimals = await web3Service.getTokenDecimals(
+        lock!.currencyContractAddress!,
+        lock!.network
+      )
+
+      const mul = BigNumber.from(10).pow(decimals)
+
+      const flowRate = BigNumber.from(lock!.keyPrice)
+        .mul(mul)
+        .div(expiration)
+        .toString()
+      const op = sf.cfaV1.createFlow({
+        sender: provider.address,
+        receiver: lock!.address,
+        superToken: lock!.currencyContractAddress!,
+        flowRate: flowRate,
+      })
+      const signer = web3Provider.getSigner()
+      await op.exec(signer)
+      communication.emitUserInfo({
+        address: account,
+      })
+      send({
+        type: 'CONFIRM_MINT',
+        status: 'FINISHED',
+      })
+      setIsConfirming(false)
+    } catch (error: any) {
+      setIsConfirming(false)
+      ToastHelper.error(error?.error?.message || error.message)
+    }
+  }
+  const onConfirmClaim = async () => {
+    try {
+      setIsConfirming(true)
+      if (payment.method !== 'claim') {
+        return
+      }
+      const hash = await claimMembershipFromLock(lockAddress, lockNetwork)
+      if (hash) {
+        communication.emitTransactionInfo({
+          hash,
+          lock: lockAddress,
+        })
+        send({
+          type: 'CONFIRM_MINT',
+          status: 'FINISHED',
+          transactionHash: hash,
+        })
+      } else {
+        throw new Error('Failed to claim the membership. Try again')
+      }
+      setIsConfirming(false)
+    } catch (error: any) {
+      setIsConfirming(false)
+      ToastHelper.error(error?.error?.message || error.message)
+    }
+  }
+
   const Payment = () => {
     switch (payment.method) {
       case 'card': {
         return (
-          <div>
+          <div className="grid">
             <Button
-              className="w-full"
               loading={isConfirming}
               disabled={isConfirming}
               onClick={(event) => {
@@ -247,9 +330,8 @@ export function Confirm({
       }
       case 'crypto': {
         return (
-          <div>
+          <div className="grid">
             <Button
-              className="w-full"
               loading={isConfirming}
               disabled={isConfirming}
               onClick={(event) => {
@@ -258,6 +340,42 @@ export function Confirm({
               }}
             >
               {isConfirming ? 'Paying using crypto' : 'Pay using crypto'}
+            </Button>
+          </div>
+        )
+      }
+      case 'claim': {
+        return (
+          <div className="grid">
+            <Button
+              loading={isConfirming}
+              disabled={isConfirming}
+              onClick={(event) => {
+                event.preventDefault()
+                onConfirmClaim()
+              }}
+            >
+              {isConfirming
+                ? 'Claiming your membership'
+                : 'Claim your membership'}
+            </Button>
+          </div>
+        )
+      }
+      case 'superfluid': {
+        return (
+          <div className="grid">
+            <Button
+              loading={isConfirming}
+              disabled={isConfirming}
+              onClick={(event) => {
+                event.preventDefault()
+                onConfirmSuperfluid()
+              }}
+            >
+              {isConfirming
+                ? 'Paying using superfluid'
+                : 'Pay using superfluid'}
             </Button>
           </div>
         )
@@ -298,17 +416,17 @@ export function Confirm({
                 }}
               />
               <IconButton
-                title="Select payment method"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('PAYMENT')
-                }}
-              />
-              <IconButton
                 title="Add metadata"
                 icon={ProgressCircleIcon}
                 onClick={() => {
                   send('METADATA')
+                }}
+              />
+              <IconButton
+                title="Select payment method"
+                icon={ProgressCircleIcon}
+                onClick={() => {
+                  send('PAYMENT')
                 }}
               />
               {paywallConfig.messageToSign && (
@@ -332,7 +450,7 @@ export function Confirm({
         <main className="px-6 py-2 overflow-auto h-full space-y-2">
           <div className="flex items-start justify-between">
             <h3 className="font-bold text-xl">
-              {quantity}X {lock!.name}
+              {quantity}X {lockName}
             </h3>
             {!isLoading ? (
               <div className="grid">
@@ -384,8 +502,8 @@ export function Confirm({
                 )}
               </ul>
               <a
-                href={config.networks[lock!.network].explorer.urls.address(
-                  lock!.address
+                href={config.networks[lockNetwork].explorer.urls.address(
+                  lockAddress
                 )}
                 target="_blank"
                 rel="noopener noreferrer"

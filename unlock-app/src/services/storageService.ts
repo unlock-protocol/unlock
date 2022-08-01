@@ -979,4 +979,21 @@ export class StorageService extends EventEmitter {
       true
     )
   }
+
+  async canClaimMembership({
+    network,
+    lockAddress,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const response = await fetch(
+      `${this.host}/claim/${network}/locks/${lockAddress}`
+    )
+    const json = await response.json()
+    if (response.ok) {
+      return !!json?.canClaim
+    }
+    return false
+  }
 }

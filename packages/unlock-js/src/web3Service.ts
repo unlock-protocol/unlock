@@ -322,6 +322,12 @@ export default class Web3Service extends UnlockService {
     return utils.fromDecimal(balance, decimals)
   }
 
+  async getTokenDecimals(contractAddress: string, network: number) {
+    const provider = this.providerForNetwork(network)
+    const decimals = await getErc20Decimals(contractAddress, provider)
+    return decimals
+  }
+
   /**
    * Yields true if an address is key granter on a lock
    */
@@ -400,5 +406,18 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
+  }
+
+  /**
+   * Returns numbers of owners for a specific lock
+   * @param {*} lockAddress
+   * @param {*} network
+   */
+  async numberOfOwners(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return ethers.BigNumber.from(await lockContract.numberOfOwners()).toNumber()
   }
 }

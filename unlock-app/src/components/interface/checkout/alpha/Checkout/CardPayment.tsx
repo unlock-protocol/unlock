@@ -92,7 +92,6 @@ export function CardPayment({
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-0.5">
-            <ProgressCircleIcon disabled />
             {messageToSign && <ProgressCircleIcon disabled />}
             <ProgressCircleIcon disabled />
             <ProgressFinishedIcon disabled />
@@ -201,6 +200,7 @@ function CardForm({ onSave, setIsSaving }: CardFormProps) {
         error={errorMessage}
         size="small"
         label="Name"
+        autoComplete="name"
         description="Please use the name on your card"
         {...register('name')}
       />
@@ -215,6 +215,7 @@ function CardForm({ onSave, setIsSaving }: CardFormProps) {
           Country
         </label>
         <select
+          autoComplete="country"
           defaultValue="United States"
           {...register('address_country', {
             required: true,
