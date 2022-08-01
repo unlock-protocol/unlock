@@ -898,6 +898,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@spruceid/siwe-parser@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "@spruceid/siwe-parser@npm:1.1.3"
+  dependencies:
+    apg-js: ^4.1.1
+  checksum: 708786ba2f10987c45c1fd8a6243ba6572ee7f320531616d71ff66044828bc24af66f5537ce09c9272bdae93fcc35b566a7804fe7997284f2ee5445a36e6add2
+  languageName: node
+  linkType: hard
+
+"@stablelib/binary@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@stablelib/binary@npm:1.0.1"
+  dependencies:
+    "@stablelib/int": ^1.0.1
+  checksum: dca9b98eb1f56a4002b5b9e7351fbc49f3d8616af87007c01e833bd763ac89214eb5f3b7e18673c91ce59d4a0e4856a2eb661ace33d39f17fb1ad267271fccd8
+  languageName: node
+  linkType: hard
+
+"@stablelib/int@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@stablelib/int@npm:1.0.1"
+  checksum: 65bfbf50a382eea70c68e05366bf379cfceff8fbc076f1c267ef2f2411d7aed64fd140c415cb6c29f19a3910d3b8b7805d4b32ad5721a5007a8e744a808c7ae3
+  languageName: node
+  linkType: hard
+
+"@stablelib/random@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@stablelib/random@npm:1.0.1"
+  dependencies:
+    "@stablelib/binary": ^1.0.1
+    "@stablelib/wipe": ^1.0.1
+  checksum: f63275079a588dab1594949996dbd564f3754d313368be8c70c06eea9c9a4fba9059962dcd114cafcca48b3b73707774ce8af2c94b7be79b662cde35d0049846
+  languageName: node
+  linkType: hard
+
+"@stablelib/wipe@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "@stablelib/wipe@npm:1.0.1"
+  checksum: 287802eb146810a46ba72af70b82022caf83a8aeebde23605f5ee0decf64fe2b97a60c856e43b6617b5801287c30cfa863cfb0469e7fcde6f02d143cf0c6cbf4
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:1":
   version: 1.1.2
   resolution: "@tootallnate/once@npm:1.1.2"
@@ -993,7 +1035,7 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.0.6
     "@unlock-protocol/unlock-abi-9": 1.0.0
-    "@unlock-protocol/unlock-js": 0.23.1
+    "@unlock-protocol/unlock-js": 0.26.1
     cross-fetch: 3.1.5
     ethers: 5.6.9
     hardhat: 2.9.9
@@ -1008,12 +1050,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/unlock-js@npm:0.23.1":
-  version: 0.23.1
-  resolution: "@unlock-protocol/unlock-js@npm:0.23.1"
+"@unlock-protocol/unlock-js@npm:0.26.1":
+  version: 0.26.1
+  resolution: "@unlock-protocol/unlock-js@npm:0.26.1"
+  dependencies:
+    cross-fetch: 3.1.5
+    siwe: 1.1.6
   peerDependencies:
-    ethers: 5.5.4
-  checksum: 63b294e93d8970ece3230b46e8df00142f5fec69b4e076c87920d9851139c44eb0375d0b049353408ad3c7786cd6fb8f14998bf80e1f6446e6619027ee14f06c
+    ethers: 5.6.8
+  checksum: f32af97b236b3792dde021be7611b4deb23283926d89836a077b3f45b39a7a40d600e29c4d738282ce9c26b76b2b6229384743409fcf1bdb8d78cbd44da6b4fe
   languageName: node
   linkType: hard
 
@@ -1174,6 +1219,13 @@ __metadata:
     normalize-path: ^3.0.0
     picomatch: ^2.0.4
   checksum: 985163db2292fac9e5a1e072bf99f1b5baccf196e4de25a0b0b81865ebddeb3b3eb4480734ef0a2ac8c002845396b91aa89121f5b84f93981a4658164a9ec6e9
+  languageName: node
+  linkType: hard
+
+"apg-js@npm:^4.1.1":
+  version: 4.1.2
+  resolution: "apg-js@npm:4.1.2"
+  checksum: 54eefdd2e870395458e1419f09a5a5029c0c4ea1471d7b53014f41f4c219ec7d87150fa709f77bc6b6349aec885af061f354d8644eb5ec028789c8f18513589c
   languageName: node
   linkType: hard
 
@@ -3674,6 +3726,19 @@ resolve@1.17.0:
   version: 3.0.5
   resolution: "signal-exit@npm:3.0.5"
   checksum: a1d3d0d63f581bd298b30ed8f6de21b73a0fe5a0c0f123b2e8ed7168bbff8f4c1a45e681de12a1966a89bb725d8eb727816be1c436e136951f31953e4a201587
+  languageName: node
+  linkType: hard
+
+"siwe@npm:1.1.6":
+  version: 1.1.6
+  resolution: "siwe@npm:1.1.6"
+  dependencies:
+    "@spruceid/siwe-parser": ^1.1.3
+    "@stablelib/random": ^1.0.1
+    apg-js: ^4.1.1
+  peerDependencies:
+    ethers: 5.5.1
+  checksum: 067517d2dd37c034f6c81011cf2d9cd821d44710030161990f630cf0228dcf327d02343e59cd00c761836aa3497f1e9f2d975f9d887db6174d611b3b3a6190f5
   languageName: node
   linkType: hard
 
