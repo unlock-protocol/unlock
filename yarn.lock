@@ -15062,15 +15062,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/sequelize@npm:4.28.13":
-  version: 4.28.13
-  resolution: "@types/sequelize@npm:4.28.13"
+"@types/sequelize@npm:4.28.14":
+  version: 4.28.14
+  resolution: "@types/sequelize@npm:4.28.14"
   dependencies:
     "@types/bluebird": "*"
     "@types/continuation-local-storage": "*"
     "@types/lodash": "*"
     "@types/validator": "*"
-  checksum: 388a3b9e89dcd4e458ec79b0ccae960b8005687deb72ba0b4acaacf02896197f347fc6cf089a19c7d8b5efc67be9fb56eb1ded6007352707d702c46249ae00c5
+  checksum: 6e2c3c50b48f7f581ab895933b77cc3099328a266b565f51a19a2533eafcbcdef0d1a9ab636789a95f94f86e361f2d4ee309d8a60cb668d61ad7bdcf616b709e
   languageName: node
   linkType: hard
 
@@ -16150,7 +16150,7 @@ __metadata:
     "@types/node-cron": 3.0.2
     "@types/random-words": 1.1.2
     "@types/request-promise-native": 1.0.18
-    "@types/sequelize": 4.28.13
+    "@types/sequelize": 4.28.14
     "@types/stripe": 8.0.416
     "@types/supertest": 2.0.12
     "@unlock-protocol/contracts": "workspace:^"
