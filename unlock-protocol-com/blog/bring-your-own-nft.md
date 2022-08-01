@@ -11,7 +11,7 @@ image: /images/blog/bring-your-own-nft/byonft-header.png
 
 One of the most common requests we’ve received over the past few months is “can I use an NFT from _project x_ with Unlock?” Now the answer is a resounding “yes!”
 
-Prior to this release, Unlock locks for token gating content and other resources would only open for NFT access keys that were minted from that Unlock lock itself. Now, thanks to some amazing development magic from the Unlock Protocol dev team, creators can configure their Unlock locks to work with _any_ ERC-721 or ERC-1155 NFT. (We call this “Bring Your Own NFT.”)
+Prior to this release, Unlock locks for token gating content and other resources would only open for NFT access keys that were minted from that Unlock lock itself. Now, thanks to some amazing development magic from the Unlock Protocol dev team, creators can configure their Unlock locks to work with _any_ ERC-721, ERC-1155, or ERC-20. (We call this “Bring Your Own NFT.”)
 
 - Want to have a section of your website where the content is only visible to holders of a **World of Women** NFT? You can do that.
 - Want to give a special e-commerce discount to holders of **Boss Beauties**? You can do that as well.
@@ -28,15 +28,15 @@ In order to do this, a small amount of configuration is required to configure wh
 
 ### How a creator can configure a Bring Your Own NFT token gate with Unlock
 
-Here are the ingredients you’ll need in order to use an arbitrary ERC-721 or ERC-1155 NFT with an Unlock lock. You’ll need:
+Here are the ingredients you’ll need in order to use an arbitrary ERC-721, ERC-1155, or ERC-20 with an Unlock lock. You’ll need:
 
-- The contract address of the ERC-721 or ERC-1155 NFT you’d like to use as the key
+- The contract address of the ERC-721, ERC-1155, or ERC-20 you’d like to use as the key
 - A configured Unlock lock and its contract address
 - The contract address of the hook contract that maps the Unlock lock to the NFT contract
 
 **Note:** All three of the above contracts need to be on the **same** network (e.g. mainnet, Polygon, etc.) — this will not work if, say, the lock is on Polygon and the NFT you’d like to use as a key is on Ethereum mainnet.
 
-End-to-end, creating the lock and mapping it to another ERC-721 or ERC-1155 NFT should take about 5-10 minutes.
+End-to-end, creating the lock and mapping it to another ERC-721, ERC-1155, or ERC-20 should take about 5-10 minutes.
 
 Here’s how to do it.
 
