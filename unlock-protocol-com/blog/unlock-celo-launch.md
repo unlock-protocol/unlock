@@ -25,8 +25,6 @@ Projects like [Climate Frens](https://climatefrens.xyz/) are a natural fit to de
 
 **image goes here**
 
-Celo joins the other [EVM-compatible networks where Unlock Protocol-based memberships can be deployed](https://docs.unlock-protocol.com/core-protocol/unlock/networks), including Polygon, Optimism, Gnosis Chain, and the Goerli and Mumbai testnets.
+Celo joins the other [EVM-compatible networks where Unlock Protocol-based memberships can be deployed](https://docs.unlock-protocol.com/core-protocol/unlock/networks), including Polygon, Optimism, Gnosis Chain, and the Goerli and Mumbai testnets. Creators and developers using Unlock can deploy to Celo in the same manner they deploy to any other network.
 
 Unlock Protocol on Celo is available immediately.
-
-Creators and developers using Unlock can deploy to Celo in the samme manner they deploy to any other network. You can find the [Celo network documentation here](https://docs.unlock-protocol.com/core-protocol/unlock/networks/).
