@@ -10,7 +10,7 @@ image: /images/blog/celo-launch/unlock-celo-share-image.png
 One of the primary opportunities in web3 is to use technology to foster a deeper sense of membership in our communities and to participate in regenerative activities. 
 
 <blockquote>
-_”We believe that people live primarily in connection to one another. We recognize that individuals are healthier and happier when they are members of a strong social community with meaningful relationships — that is, when they are living within a healthy and happy whole. We embrace values that strengthen community.” - Celo.org_
+”We believe that people live primarily in connection to one another. We recognize that individuals are healthier and happier when they are members of a strong social community with meaningful relationships — that is, when they are living within a healthy and happy whole. We embrace values that strengthen community.” - Celo.org
 </blockquote>
 
 That’s why today, Unlock Protocol is proud to announce we’re adding [Celo](https://www.celo.org) to the ever-growing list of protocols that can be used to deploy memberships using Unlock. 
