@@ -171,6 +171,9 @@ export const checkoutMachine = createMachine(
         target: 'SELECT',
         actions: ['updatePaywallConfig'],
       },
+      SIGN_MESSAGE: {
+        actions: ['signMessage'],
+      },
     },
     states: {
       SELECT: {
