@@ -36,7 +36,7 @@ export function Lock({
 }: Props) {
   const config = useConfig()
   const web3Service = useWeb3Service()
-  const { isLoading, data: lock } = useQuery(address, async () => {
+  const { isLoading, data: lock } = useQuery(['lock', address], async () => {
     const [lockData, fiatPricing] = await Promise.all([
       web3Service.getLock(address, network),
       getFiatPricing(config, address, network),
