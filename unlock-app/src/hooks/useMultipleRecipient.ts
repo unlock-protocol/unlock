@@ -115,10 +115,7 @@ export const useMultipleRecipient = (
     return recipients.size < maxRecipients
   }
 
-  const getAddressAndValidation = async (
-    recipient: string,
-    isUpdate: boolean
-  ) => {
+  const getAddressAndValidation = async (recipient: string) => {
     let address = ''
     let isAddressWithKey = false
     try {
@@ -131,10 +128,6 @@ export const useMultipleRecipient = (
     } catch (err: any) {
       console.error(err?.message)
     }
-
-    const addressList = recipientsList().map(
-      ({ resolvedAddress }) => resolvedAddress
-    )
 
     // todo: need also to check how many keys the address owns to improve this logic
     const limitNotReached = !isAddressWithKey
@@ -203,11 +196,10 @@ export const useMultipleRecipient = (
     updateIndex?: number
   ): Promise<boolean> => {
     setLoading(true)
-    const isUpdate = typeof updateIndex === 'number'
-    if (canAddUser() || isUpdate) {
+    if (canAddUser()) {
       const index = updateIndex || recipients?.size + 1
       const { valid, address, isAddressWithKey, limitNotReached } =
-        await getAddressAndValidation(userAddress, isUpdate)
+        await getAddressAndValidation(userAddress)
       if (valid) {
         try {
           setRecipients((prev) =>
