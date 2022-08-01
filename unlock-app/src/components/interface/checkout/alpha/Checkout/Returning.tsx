@@ -14,6 +14,9 @@ import { useConfig } from '~/utils/withConfig'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
 import { useActor } from '@xstate/react'
+import { useState } from 'react'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   injectedProvider: unknown
@@ -28,9 +31,33 @@ export function Returning({
 }: Props) {
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-  const { paywallConfig, lock } = state.context
   const { title, iconURL, description } =
     useCheckoutHeadContent(checkoutService)
+  const { paywallConfig, lock } = state.context
+  const { messageToSign } = paywallConfig
+  const { account, signMessage } = useAuth()
+  const [hasMessageToSign, setHasMessageToSign] = useState(!!messageToSign)
+  const [isSigningMessage, setIsSigningMessage] = useState(false)
+
+  const onSign = async () => {
+    try {
+      setIsSigningMessage(true)
+      const signature = await signMessage(messageToSign!)
+      setIsSigningMessage(false)
+      send({
+        type: 'SIGN_MESSAGE',
+        signature,
+        address: account!,
+      })
+      setHasMessageToSign(false)
+    } catch (error) {
+      if (error instanceof Error) {
+        ToastHelper.error(error.message)
+      }
+      setIsSigningMessage(false)
+    }
+  }
+
   return (
     <CheckoutTransition>
       <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
@@ -85,16 +112,31 @@ export function Returning({
             injectedProvider={injectedProvider}
             service={checkoutService}
           >
-            <div className="flex gap-4 justify-between">
-              <Button
-                className="w-full"
-                onClick={() => checkoutService.send('MAKE_ANOTHER_PURCHASE')}
-              >
-                Buy another
-              </Button>
-              <Button className="w-full" onClick={() => onClose()}>
-                Return
-              </Button>
+            <div>
+              {hasMessageToSign ? (
+                <Button
+                  disabled={isSigningMessage}
+                  loading={isSigningMessage}
+                  onClick={onSign}
+                  className="w-full"
+                >
+                  Sign message
+                </Button>
+              ) : (
+                <div className="flex gap-4 justify-between">
+                  <Button
+                    className="w-full"
+                    onClick={() =>
+                      checkoutService.send('MAKE_ANOTHER_PURCHASE')
+                    }
+                  >
+                    Buy another
+                  </Button>
+                  <Button className="w-full" onClick={() => onClose()}>
+                    Return
+                  </Button>
+                </div>
+              )}
             </div>
           </Connected>
         </footer>

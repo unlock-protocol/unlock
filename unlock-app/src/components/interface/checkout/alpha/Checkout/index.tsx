@@ -61,9 +61,14 @@ export function Checkout({
 
   const onClose = (params: Record<string, string> = {}) => {
     if (redirectURI) {
-      if (!mint || mint?.status === 'ERROR') {
+      if (mint && mint?.status === 'ERROR') {
         redirectURI.searchParams.append('error', 'access-denied')
       }
+
+      if (paywallConfig.messageToSign && !messageToSign) {
+        redirectURI.searchParams.append('error', 'user did not sign message')
+      }
+
       if (messageToSign) {
         redirectURI.searchParams.append('signature', messageToSign.signature)
         redirectURI.searchParams.append('address', messageToSign.address)

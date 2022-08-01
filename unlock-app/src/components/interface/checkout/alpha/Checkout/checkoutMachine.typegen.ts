@@ -19,13 +19,13 @@ export interface Typegen0 {
   }
   eventsCausingActions: {
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
+    signMessage: 'SIGN_MESSAGE'
     selectLock: 'SELECT_LOCK'
     disconnect: 'DISCONNECT'
     selectQuantity: 'SELECT_QUANTITY'
     selectRecipients: 'SELECT_RECIPIENTS'
     selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
     selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
-    signMessage: 'SIGN_MESSAGE'
     solveCaptcha: 'SOLVE_CAPTCHA'
     confirmMint: 'CONFIRM_MINT'
   }
