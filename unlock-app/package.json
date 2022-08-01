@@ -89,7 +89,7 @@
     "validator": "13.7.0",
     "walletlink": "2.5.0",
     "xstate": "4.32.1",
-    "zod": "3.17.3"
+    "zod": "3.17.10"
   },
   "devDependencies": {
     "@babel/plugin-proposal-optional-chaining": "7.18.9",
