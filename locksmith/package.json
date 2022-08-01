@@ -110,7 +110,7 @@
     "eslint-config-standard": "17.0.0",
     "jest": "27.5.1",
     "msw": "0.39.2",
-    "nock": "13.2.8",
+    "nock": "13.2.9",
     "node-mocks-http": "1.11.0",
     "nodemon": "2.0.19",
     "run-script-os": "1.1.6",
