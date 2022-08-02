@@ -16580,7 +16580,7 @@ __metadata:
     react-use-clipboard: 1.0.8
     storybook-builder-vite: 0.1.23
     tailwind-merge: 1.5.1
-    tailwindcss: 3.1.6
+    tailwindcss: 3.1.7
     tsconfig-paths-webpack-plugin: 4.0.0
     tsup: 6.2.1
     typescript: 4.7.4
@@ -16742,7 +16742,7 @@ __metadata:
     storybook-addon-next-router: 4.0.0
     styled-components: 5.3.5
     tailwind-merge: 1.5.1
-    tailwindcss: 3.1.6
+    tailwindcss: 3.1.7
     ts-jest: 27.1.5
     typescript: 4.7.4
     validator: 13.7.0
@@ -16890,7 +16890,7 @@ __metadata:
     showdown-highlight: 3.0.0
     styled-components: 5.3.5
     tailwind-merge: 1.5.1
-    tailwindcss: 3.1.6
+    tailwindcss: 3.1.7
     ts-jest: 27.1.5
     typescript: 4.7.4
     use-local-storage: 2.3.6
@@ -37737,6 +37737,13 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"lilconfig@npm:^2.0.6":
+  version: 2.0.6
+  resolution: "lilconfig@npm:2.0.6"
+  checksum: 40a3cd72f103b1be5975f2ac1850810b61d4053e20ab09be8d3aeddfe042187e1ba70b4651a7e70f95efa1642e7dc8b2ae395b317b7d7753b241b43cef7c0f7d
+  languageName: node
+  linkType: hard
+
 "lines-and-columns@npm:^1.1.6":
   version: 1.1.6
   resolution: "lines-and-columns@npm:1.1.6"
@@ -50757,9 +50764,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.1.6":
-  version: 3.1.6
-  resolution: "tailwindcss@npm:3.1.6"
+"tailwindcss@npm:3.1.7":
+  version: 3.1.7
+  resolution: "tailwindcss@npm:3.1.7"
   dependencies:
     arg: ^5.0.2
     chokidar: ^3.5.3
@@ -50770,7 +50777,7 @@ resolve@^2.0.0-next.3:
     fast-glob: ^3.2.11
     glob-parent: ^6.0.2
     is-glob: ^4.0.3
-    lilconfig: ^2.0.5
+    lilconfig: ^2.0.6
     normalize-path: ^3.0.0
     object-hash: ^3.0.0
     picocolors: ^1.0.0
@@ -50788,7 +50795,7 @@ resolve@^2.0.0-next.3:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: 90719c6fd0dcdda5c8e2882ad421048c9dd90890e0c118d12ff3ec31adba53eb2df8fed1ed203e728e5b32297e1cc207df463a6b196d37344a63fde9f67c52b6
+  checksum: adbc9869b72f741e9a0fc281b79710863617a588fd5d897316b676f789b6482c79f46f324223300ca962afbe55bed3ec16a37a6ccf4bb2c99c53cf8c5dd9700d
   languageName: node
   linkType: hard
 
