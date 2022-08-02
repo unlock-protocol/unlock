@@ -5,7 +5,7 @@
   "dependencies": {
     "@babel/core": "7.18.9",
     "@headlessui/react": "1.6.5",
-    "@radix-ui/react-avatar": "0.1.4",
+    "@radix-ui/react-avatar": "1.0.0",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "12.1.5",
     "@types/jest": "27.5.2",
