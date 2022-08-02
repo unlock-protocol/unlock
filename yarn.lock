@@ -9215,10 +9215,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:4.7.1":
-  version: 4.7.1
-  resolution: "@openzeppelin/contracts@npm:4.7.1"
-  checksum: 6377e978edb83dafd68e784d3e1334fc5a4adb9afcf855a44a66e1e8046c25894cb230e7dce54bdaa01f00a38248bb8d45780864a1f429e8ef9ffe666a005bf4
+"@openzeppelin/contracts@npm:4.7.2":
+  version: 4.7.2
+  resolution: "@openzeppelin/contracts@npm:4.7.2"
+  checksum: f02f2b44cdec46bafe1b608b495b6e2dc161ae4a3f308ba9921787cb77b8b877232839047b12f03b4d0fee9ca9208887fd5b9e7bdbf9a8c4f01021b1f1181233
   languageName: node
   linkType: hard
 
@@ -16366,7 +16366,7 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-truffle5": 2.0.6
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 4.7.1
+    "@openzeppelin/contracts": 4.7.2
     "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades": 2.8.0
     "@typescript-eslint/eslint-plugin": 5.13.0
@@ -16404,7 +16404,7 @@ __metadata:
     "@nomiclabs/hardhat-truffle5": 2.0.6
     "@nomiclabs/hardhat-waffle": 2.0.3
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 4.7.1
+    "@openzeppelin/contracts": 4.7.2
     "@openzeppelin/contracts-upgradeable": 4.7.2
     "@openzeppelin/hardhat-upgrades": 1.16.1
     "@openzeppelin/test-helpers": 0.5.15
@@ -51822,42 +51822,6 @@ resolve@^2.0.0-next.3:
   version: 0.0.1
   resolution: "tsort@npm:0.0.1"
   checksum: 581566c248690b9ea7e431e1545affb3d2cab0f5dcd0e45ddef815dfaec4864cb5f0cfd8072924dedbc0de9585ff07e3e65db60f14fab4123737b9bb6e72eacc
-  languageName: node
-  linkType: hard
-
-"tsup@npm:6.1.2":
-  version: 6.1.2
-  resolution: "tsup@npm:6.1.2"
-  dependencies:
-    bundle-require: ^3.0.2
-    cac: ^6.7.12
-    chokidar: ^3.5.1
-    debug: ^4.3.1
-    esbuild: ^0.14.25
-    execa: ^5.0.0
-    globby: ^11.0.3
-    joycon: ^3.0.1
-    postcss-load-config: ^3.0.1
-    resolve-from: ^5.0.0
-    rollup: ^2.74.1
-    source-map: 0.8.0-beta.0
-    sucrase: ^3.20.3
-    tree-kill: ^1.2.2
-  peerDependencies:
-    "@swc/core": ^1
-    postcss: ^8.4.12
-    typescript: ^4.1.0
-  peerDependenciesMeta:
-    "@swc/core":
-      optional: true
-    postcss:
-      optional: true
-    typescript:
-      optional: true
-  bin:
-    tsup: dist/cli-default.js
-    tsup-node: dist/cli-node.js
-  checksum: 258cd2d25ce52b8eb1cabfc2355867e1978e419b19bcd16366b70fe717b12e7fb2d78a9101788aca365e3a33f1d9cfbf766afd6c58aa355bb3fae5b641f5d87b
   languageName: node
   linkType: hard
 
