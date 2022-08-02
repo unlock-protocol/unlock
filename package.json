@@ -8,7 +8,7 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@babel/core": "7.18.9",
+    "@babel/core": "7.18.10",
     "@superfluid-finance/sdk-core": "0.5.2",
     "@typescript-eslint/eslint-plugin": "5.30.7",
     "@typescript-eslint/parser": "5.30.7",
