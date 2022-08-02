@@ -17,7 +17,7 @@
     "@types/node": "16.11.21",
     "@types/postmate": "1.5.2",
     "@types/react": "17.0.44",
-    "@types/react-dom": "18.0.5",
+    "@types/react-dom": "18.0.6",
     "@types/styled-components": "5.1.25",
     "@unlock-protocol/paywall": "workspace:./packages/paywall",
     "@unlock-protocol/types": "workspace:./packages/types",
@@ -38,7 +38,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@babel/core": "7.18.9",
+    "@babel/core": "7.18.10",
     "@svgr/cli": "6.2.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
