@@ -9267,23 +9267,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/hardhat-upgrades@npm:1.19.0":
-  version: 1.19.0
-  resolution: "@openzeppelin/hardhat-upgrades@npm:1.19.0"
+"@openzeppelin/hardhat-upgrades@npm:1.19.1":
+  version: 1.19.1
+  resolution: "@openzeppelin/hardhat-upgrades@npm:1.19.1"
   dependencies:
     "@openzeppelin/upgrades-core": ^1.16.0
     chalk: ^4.1.0
+    debug: ^4.1.1
     proper-lockfile: ^4.1.1
   peerDependencies:
     "@nomiclabs/hardhat-ethers": ^2.0.0
     "@nomiclabs/hardhat-etherscan": ^3.1.0
+    ethers: ^5.0.5
     hardhat: ^2.0.2
   peerDependenciesMeta:
     "@nomiclabs/harhdat-etherscan":
       optional: true
   bin:
     migrate-oz-cli-project: dist/scripts/migrate-oz-cli-project.js
-  checksum: eba1149e3164f162b733af40710c99b0ccbe8aad7d5e7fe000b509e946cdee9a42f6ae58eaf868f0af0094e2a83902a7f67bd3801b6e9d1f52fd212949d84a68
+  checksum: 006acdb309ef5b8d4fa2a8ff61e19089a667dc2d917440bfb127eed8a6dfab487259c89fd0207ffb4fa61983860e767660ad8dce4c73c93b4f10c108385d3ed4
   languageName: node
   linkType: hard
 
@@ -16242,7 +16244,7 @@ __metadata:
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.0.6
-    "@openzeppelin/hardhat-upgrades": 1.19.0
+    "@openzeppelin/hardhat-upgrades": 1.19.1
     "@types/chai": 4.3.0
     "@types/fs-extra": 9.0.13
     "@types/mocha": 9.1.1
@@ -16822,7 +16824,7 @@ __metadata:
     "@babel/core": 7.18.9
     "@babel/preset-env": 7.18.9
     "@nomiclabs/hardhat-ethers": 2.1.0
-    "@openzeppelin/hardhat-upgrades": 1.19.0
+    "@openzeppelin/hardhat-upgrades": 1.19.1
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
