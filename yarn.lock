@@ -16934,7 +16934,7 @@ __metadata:
     dotenv: 16.0.1
     embla-carousel-autoplay: 7.0.0
     embla-carousel-react: 7.0.0
-    eslint: 8.20.0
+    eslint: 8.21.0
     eslint-config-next: 12.2.2
     eslint-plugin-jest: 26.7.0
     eslint-plugin-mocha: 10.1.0
@@ -53013,7 +53013,7 @@ typescript@^3.8.3:
     "@typescript-eslint/parser": 5.30.7
     babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.3.2
-    eslint: 8.20.0
+    eslint: 8.21.0
     eslint-plugin-prettier: latest
     husky: 8.0.1
     lint-staged: 13.0.3
