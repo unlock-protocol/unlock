@@ -99,7 +99,7 @@ export const notifyNewKeysToWedlocks = async (
 export const notifyNewKeyToWedlocks = async (
   key: Key,
   network?: number,
-  includeQrCode = false
+  includeQrCode = true
 ) => {
   const lockAddress = key.lock.address
   const ownerAddress = key.owner.address
