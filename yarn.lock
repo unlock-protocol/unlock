@@ -16934,7 +16934,7 @@ __metadata:
     dotenv: 16.0.1
     embla-carousel-autoplay: 7.0.0
     embla-carousel-react: 7.0.0
-    eslint: 8.20.0
+    eslint: 8.21.0
     eslint-config-next: 12.2.2
     eslint-plugin-jest: 26.7.0
     eslint-plugin-mocha: 10.1.0
@@ -19346,7 +19346,7 @@ __metadata:
   bin:
     asc: bin/asc
     asinit: bin/asinit
-  checksum: fda292f6b3b8b4a9bd4457c9143e50145f8473f3d664e48c057638a9bb1c8e890cd4de4e38e18dd4334240394621cfd9d01afee344ab049c5a7072fe855329b5
+  checksum: 8a407db6179addfaa5fcc637543a755ecc22ae8dd5e8259492305afd0d2bb73eae019d4178f79b515f75648d71dfda2c1ceb0c7421bff7817aebb2e2f5c8bfe7
   languageName: node
   linkType: hard
 
@@ -53013,7 +53013,7 @@ typescript@^3.8.3:
     "@typescript-eslint/parser": 5.30.7
     babel-eslint: 10.1.0
     babel-plugin-polyfill-corejs2: 0.3.2
-    eslint: 8.20.0
+    eslint: 8.21.0
     eslint-plugin-prettier: latest
     husky: 8.0.1
     lint-staged: 13.0.3
