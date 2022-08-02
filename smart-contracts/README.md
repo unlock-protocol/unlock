@@ -382,6 +382,18 @@ yarn hardhat set:template --unlock-address 0x1FF7e338d5E582138C46044dc238543Ce55
   --network avalanche
 ```
 
+### Config Unlock
+
+Run `configUnlock` on the Unlock contract with the following params
+
+```
+udt :0x0000000000000000000000000000000000000000
+weth: <Wrapped ETH Addres on network>
+estimatedGasForPurchase: 200000
+symbol: KEY
+URI: https://locksmith.unlock-protocol.com/api/key/<chainId>
+chainId: <chainId>
+```
 
 ### Create a gnosis safe and transfer Unlock ownership there
 
