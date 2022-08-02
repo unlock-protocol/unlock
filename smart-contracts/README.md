@@ -388,7 +388,7 @@ Run `configUnlock` on the Unlock contract with the following params
 
 ```
 udt :0x0000000000000000000000000000000000000000
-weth: <Wrapped ETH Addres on network>
+weth: <Wrapped base currency (eth on mainnet... etc) address on network>
 estimatedGasForPurchase: 200000
 symbol: KEY
 URI: https://locksmith.unlock-protocol.com/api/key/<chainId>
