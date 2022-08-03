@@ -33,7 +33,7 @@ export const arbitrum: NetworkConfig = {
   },
   startBlock: 17429533,
   previousDeploys: [],
-  isTestNetwork: true,
+  isTestNetwork: false,
 }
 
 export default arbitrum
