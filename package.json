@@ -10,8 +10,8 @@
   "dependencies": {
     "@babel/core": "7.18.10",
     "@superfluid-finance/sdk-core": "0.5.2",
-    "@typescript-eslint/eslint-plugin": "5.30.7",
-    "@typescript-eslint/parser": "5.30.7",
+    "@typescript-eslint/eslint-plugin": "5.32.0",
+    "@typescript-eslint/parser": "5.32.0",
     "babel-eslint": "10.1.0",
     "babel-plugin-polyfill-corejs2": "0.3.2",
     "node-fetch": "2.6.7",
