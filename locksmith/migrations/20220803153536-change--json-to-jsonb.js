@@ -43,6 +43,19 @@ module.exports = {
         }
       )
 
+      await queryInterface.changeColumn(
+        'PaymentIntents',
+        'recipients',
+        {
+          type: Sequelize.DataTypes.JSONB,
+          defaultValue: [],
+          allowNull: true,
+        },
+        {
+          transaction,
+        }
+      )
+
       await transaction.commit()
     } catch (error) {
       await transaction.rollback()
@@ -86,6 +99,19 @@ module.exports = {
           type: Sequelize.DataTypes.JSON,
           defaultValue: {},
           allowNull: false,
+        },
+        {
+          transaction,
+        }
+      )
+
+      await queryInterface.changeColumn(
+        'PaymentIntents',
+        'recipients',
+        {
+          type: Sequelize.DataTypes.JSON,
+          defaultValue: [],
+          allowNull: true,
         },
         {
           transaction,
