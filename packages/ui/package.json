@@ -67,7 +67,7 @@
     "tsconfig-paths-webpack-plugin": "4.0.0",
     "tsup": "6.2.1",
     "typescript": "4.7.4",
-    "vite": "2.9.14",
+    "vite": "3.0.4",
     "vite-tsconfig-paths": "3.5.0"
   }
 }
