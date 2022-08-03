@@ -48,12 +48,6 @@ module.exports = {
       await transaction.rollback()
       throw error
     }
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
   },
 
   async down(queryInterface, Sequelize) {
