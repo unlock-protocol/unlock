@@ -35,6 +35,14 @@ import './utils/UnlockInitializable.sol';
 import './interfaces/IPublicLock.sol';
 import './interfaces/IMintableERC20.sol';
 
+error Unlock__MANAGER_ONLY();   
+error Unlock__VERSION_TOO_HIGH();   
+error Unlock__MISSING_TEMPLATE();  
+error Unlock__ALREADY_DEPLOYED();
+error Unlock__MISSING_PROXY_ADMIN();
+error Unlock__MISSING_LOCK_TEMPLATE();
+
+
 /// @dev Must list the direct base contracts in the order from “most base-like” to “most derived”.
 /// https://solidity.readthedocs.io/en/latest/contracts.html#multiple-inheritance-and-linearization
 contract Unlock is
@@ -157,9 +165,8 @@ contract Unlock is
     // add a proxy admin on deployment
     _deployProxyAdmin();
   }
-
   function initializeProxyAdmin() public onlyOwner {
-    require(proxyAdminAddress == address(0), "ALREADY_DEPLOYED");
+    if(proxyAdminAddress != address(0)){revert Unlock__ALREADY_DEPLOYED();}
     _deployProxyAdmin();
   }
 
@@ -269,11 +276,11 @@ contract Unlock is
     bytes memory data,
     uint16 _lockVersion
   ) public returns (address) {
-    require(proxyAdminAddress != address(0), "MISSING_PROXY_ADMIN");
+    if(proxyAdminAddress == address(0)){revert Unlock__MISSING_PROXY_ADMIN();}
 
     // get lock version
     address publicLockImpl = _publicLockImpls[_lockVersion];
-    require(publicLockImpl != address(0), 'MISSING_LOCK_TEMPLATE');
+    if(publicLockImpl == address(0)){revert Unlock__MISSING_LOCK_TEMPLATE();}
 
     // deploy a proxy pointing to impl
     TransparentUpgradeableProxy proxy = new TransparentUpgradeableProxy(publicLockImpl, proxyAdminAddress, data);
@@ -294,20 +301,22 @@ contract Unlock is
    * @param lockAddress the address of the lock to be upgraded
    * @param version the version number of the template
    */
+  
+ 
   function upgradeLock(address payable lockAddress, uint16 version) external returns(address) {
-    require(proxyAdminAddress != address(0), "MISSING_PROXY_ADMIN");
+    if(proxyAdminAddress == address(0)){revert Unlock__MISSING_PROXY_ADMIN();}
 
     // check perms
-    require(_isLockManager(lockAddress, msg.sender) == true, "MANAGER_ONLY");
+    if(_isLockManager(lockAddress, msg.sender) != true){revert Unlock__MANAGER_ONLY();}
 
     // check version
     IPublicLock lock = IPublicLock(lockAddress);
     uint16 currentVersion = lock.publicLockVersion();
-    require( version == currentVersion + 1, 'VERSION_TOO_HIGH');
+    if(version != currentVersion + 1){revert Unlock__VERSION_TOO_HIGH();}
 
     // make our upgrade
     address impl = _publicLockImpls[version];
-    require(impl != address(0), "MISSING_TEMPLATE");
+    if(impl == address(0)){revert Unlock__MISSING_TEMPLATE();}
 
     TransparentUpgradeableProxy proxy = TransparentUpgradeableProxy(lockAddress);
     proxyAdmin.upgrade(proxy, impl);
