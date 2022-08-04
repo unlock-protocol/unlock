@@ -16,9 +16,9 @@ set -e
 # ==============================================================================
 
 # use tmp dir
-tmpdir="/tmp/tmp-docs" #$(mktemp -d)
+tmpdir=$(mktemp -d)
 dest="docs/core-protocol/smart-contracts-api"
-base="master" # "css-update"
+base="master" 
 repo=git@github.com:unlock-protocol/docs.git
 FROM_NPM=${FROM_NPM:-0}
 
@@ -27,6 +27,7 @@ if [ "$FROM_NPM" -eq "1" ]; then
   wget $(npm view @unlock-protocol/contracts dist.tarball) -P $tmpdir
 else
   yarn workspace @unlock-protocol/contracts clean
+  yarn workspace @unlock-protocol/contracts build:dist
   yarn workspace @unlock-protocol/contracts docs
   yarn workspace @unlock-protocol/contracts pack --out "$tmpdir/contracts-%v.tgz"
 fi
