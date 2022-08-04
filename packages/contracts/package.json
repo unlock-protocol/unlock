@@ -31,5 +31,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@unlock-protocol/contracts": "^0.0.8"
+  }
 }
