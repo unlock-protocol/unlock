@@ -8,8 +8,8 @@ import UnlockProvider from '../../../services/unlockProvider'
 import { SignUp } from '../user-account/SignUp'
 import useAccount from '../../../hooks/useAccount'
 import { ConfigContext } from '../../../utils/withConfig'
-import { useAuthenticateHandler } from '../../../hooks/useAuthenticateHandler'
 import { LinkButton } from './FormStyles'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface OAuthConnectProps {
   oAuthConfig: OAuthConfig
@@ -57,7 +57,7 @@ export const OAuthConnect = ({
   const { clientId } = oAuthConfig
   const { createUserAccount } = useAccount(account || '', 1)
   const config = useContext(ConfigContext)
-  const { authenticateWithProvider } = useAuthenticateHandler({})
+  const { authenticateWithProvider } = useAuthenticate()
 
   useEffect(() => {
     const handleUser = async (account?: string) => {

@@ -2,7 +2,7 @@ import { Button, Tooltip } from '@unlock-protocol/ui'
 import { useActor } from '@xstate/react'
 import { ReactNode } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { addressMinify, minifyEmail } from '~/utils/strings'
 import SvgComponents from '../../svg'
 import { CheckoutService } from './Checkout/checkoutMachine'
@@ -132,7 +132,7 @@ export function Connected({
 }: ConnectedCheckoutProps) {
   const [state, send] = useActor(service)
   const { account, email, isUnlockAccount, deAuthenticate } = useAuth()
-  const { authenticateWithProvider } = useAuthenticateHandler({
+  const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
   })
   const onDisconnect = () => {
