@@ -179,6 +179,8 @@ interface IPublicLockV9
    * Allows a Lock manager to add or remove an event hook
    * @param _onKeyPurchaseHook Hook called when the `purchase` function is called
    * @param _onKeyCancelHook Hook called when the internal `_cancelAndRefund` function is called
+   * @param _onValidKeyHook Hook called to determine if the contract should overide the status for a given address
+   * @param _onTokenURIHook Hook called to generate a data URI used for NFT metadata
    */
   function setEventHooks(
     address _onKeyPurchaseHook,

@@ -27,23 +27,24 @@ if [ "$FROM_NPM" -eq "1" ]; then
   wget $(npm view @unlock-protocol/contracts dist.tarball) -P $tmpdir
 else
   yarn workspace @unlock-protocol/contracts clean
-  yarn workspace @unlock-protocol/contracts build:dist
-  yarn workspace @unlock-protocol/contracts docs
+  yarn workspace @unlock-protocol/contracts build
   yarn workspace @unlock-protocol/contracts pack --out "$tmpdir/contracts-%v.tgz"
 fi
 
 # unpack tarball
 cd $tmpdir
 tar -xf contracts-**.tgz
-# rm -rf *.tgz
+
+# versioning
+version_number="$(ls *.tgz | awk -F \- {'print substr($2,0,5) '} | sed 's/\./-/g')"
+branch=contracts-$version_number
 
 # git worflow
 git clone $repo
 cd docs
 
-# versioning
-branch="contracts-$(date +%Y%m%d-%H%M%S)"
-
+# cleanup
+rm -rf *.tgz
 
 # check if a branch already exists
 if $(git ls-remote --heads ${repo} ${branch} | grep ${branch} >/dev/null); then 
