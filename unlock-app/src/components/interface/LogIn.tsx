@@ -1,6 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { FormEvent, useState, useReducer, useEffect } from 'react'
 import styled from 'styled-components'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAccount } from '../../hooks/useAccount'
 import {
   Button,
@@ -10,7 +11,6 @@ import {
   Label,
   FormError,
 } from './checkout/FormStyles'
-import { useAuthenticateHandler } from '../../hooks/useAuthenticateHandler'
 
 interface LogInProps {
   onCancel?: () => void
@@ -51,7 +51,7 @@ const LogIn = ({
     }
   )
   const [submitted, setSubmitted] = useState(false)
-  const { authenticateWithProvider } = useAuthenticateHandler({})
+  const { authenticateWithProvider } = useAuthenticate()
 
   const { emailAddress, password, error } = loginState
 
