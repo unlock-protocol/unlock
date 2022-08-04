@@ -56,7 +56,7 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
       href: '/blog',
     },
     {
-      name: 'Meida Kit',
+      name: 'Media Kit',
       href: 'https://unlockprotocol.notion.site/Press-Kit-35836bdcc88f400eb5bb429c477c3333",
     },
     {
