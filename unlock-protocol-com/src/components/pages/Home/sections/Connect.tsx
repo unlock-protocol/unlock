@@ -35,7 +35,7 @@ const featuredUsers: FeaturedUser[] = [
   {
     link: '/blog/talesofelatora',
     title: 'DAO membership',
-    illustration: '/images/marketing/globe.png',
+    illustration: '/images/marketing/DAO-membership.png',
     quote:
       'Seasonal, time-based, or perpetual DAO memberships, community, and event access',
   },
@@ -47,7 +47,7 @@ const featuredUsers: FeaturedUser[] = [
   },
   {
     title: 'Digital collectibles',
-    illustration: '/images/marketing/ronin.png',
+    illustration: '/images/marketing/collectible.png',
     quote:
       'PFP collections, art NFTs and associated utility for community members',
   },
