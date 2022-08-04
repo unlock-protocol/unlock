@@ -7,11 +7,10 @@ import { useActor } from '@xstate/react'
 import { CheckoutHead, CheckoutTransition, CloseButton } from '../Shell'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useState } from 'react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import { useQueryClient } from 'react-query'
+import { useQuery } from 'react-query'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -23,12 +22,32 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
   const { paywallConfig } = state.context
   const config = useConfig()
   const { account } = useAuth()
-  const [isLockLoading, setIsLockLoading] = useState('')
   const web3Service = useWeb3Service()
   const networkToLocks = networkToLocksMap(paywallConfig)
   const { title, description, iconURL } =
     useCheckoutHeadContent(checkoutService)
-  const queryClient = useQueryClient()
+
+  const { isLoading: isMembershipsLoading, data: memberships } = useQuery(
+    ['memberships', account, JSON.stringify(paywallConfig)],
+    async () => {
+      const memberships = await Promise.all(
+        Object.entries(paywallConfig.locks).map(async ([lock, { network }]) => {
+          const valid = await web3Service.getHasValidKey(
+            lock,
+            account!,
+            network || paywallConfig.network || 1
+          )
+          if (valid) {
+            return lock
+          }
+        })
+      )
+      return memberships.filter((item) => item)
+    },
+    {
+      enabled: !!account,
+    }
+  )
 
   return (
     <CheckoutTransition>
@@ -75,32 +94,14 @@ export function Select({ checkoutService, injectedProvider, onClose }: Props) {
                     name={name!}
                     recurring={recurringPayments}
                     address={address}
-                    loading={isLockLoading === address}
+                    loading={isMembershipsLoading}
+                    disabled={isMembershipsLoading}
                     network={Number(network)}
                     key={address}
                     onSelect={async (lock) => {
-                      setIsLockLoading(lock.address)
-                      let existingMember = false
-                      if (account) {
-                        // cache the result
-                        const result = await queryClient.fetchQuery({
-                          queryKey: [
-                            'existingMember',
-                            account,
-                            lock.address,
-                            lock.network,
-                          ],
-                          queryFn: () => {
-                            return web3Service.getHasValidKey(
-                              lock!.address,
-                              account,
-                              lock.network
-                            ) as Promise<boolean>
-                          },
-                        })
-                        existingMember = result
-                      }
-                      setIsLockLoading('')
+                      const existingMember = !!memberships?.includes(
+                        lock.address
+                      )
                       send({
                         type: 'SELECT_LOCK',
                         existingMember,

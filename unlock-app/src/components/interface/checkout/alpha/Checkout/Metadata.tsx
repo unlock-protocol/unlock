@@ -65,27 +65,36 @@ export function Metadata({
     name: 'metadata',
     control,
   })
-
-  const { data: existingMember, isLoading: isExistingMemberLoading } = useQuery(
-    ['existingMember', account, lock!.address, lock!.network],
-    () => {
-      return web3Service.getHasValidKey(
-        lock!.address,
-        account!,
-        lock!.network
-      ) as Promise<boolean>
+  const { isLoading: isMembershipsLoading, data: memberships } = useQuery(
+    ['memberships', account, JSON.stringify(paywallConfig)],
+    async () => {
+      const memberships = await Promise.all(
+        Object.entries(paywallConfig.locks).map(async ([lock, { network }]) => {
+          const valid = await web3Service.getHasValidKey(
+            lock,
+            account!,
+            network || paywallConfig.network || 1
+          )
+          if (valid) {
+            return lock
+          }
+        })
+      )
+      return memberships.filter((item) => item)
     },
     {
       enabled: !!account,
     }
   )
 
+  const existingMember = !!memberships?.includes(lock!.address)
+
   const [hideFirstRecipient, setHideFirstRecipient] = useState<boolean>(
     !existingMember
   )
 
   useEffect(() => {
-    if (quantity > fields.length && !isExistingMemberLoading) {
+    if (quantity > fields.length && !isMembershipsLoading) {
       const fieldsRequired = quantity - fields.length
       Array.from({ length: fieldsRequired }).map((_, index) => {
         const addAccountAddress = !index && !existingMember
@@ -109,7 +118,7 @@ export function Metadata({
     append,
     remove,
     existingMember,
-    isExistingMemberLoading,
+    isMembershipsLoading,
   ])
 
   async function onSubmit(data: FieldValues) {
@@ -190,7 +199,7 @@ export function Metadata({
           </div>
         </div>
         <main className="px-6 py-2 overflow-auto h-full">
-          {isExistingMemberLoading ? (
+          {isMembershipsLoading ? (
             <div className="grid w-full gap-y-2 pb-6">
               <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
               <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
