@@ -10,7 +10,7 @@ pragma experimental ABIEncoderV2;
  */
 
 
-interface IPublicLock
+interface IPublicLockV10
 {
 
 // See indentationissue description here:

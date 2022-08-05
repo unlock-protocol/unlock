@@ -3200,11 +3200,11 @@ contract MixinPurchase is
 
   /**
   * Set a specific percentage of the keyPrice to be sent to the referrer while purchasing, 
-  * extending or renewing a key
+  * extending or renewing a key. 
   * @param _referrer the address of the referrer. If set to the 0x address, any referrer will receive the fee.
   * @param _feeBasisPoint the percentage of the price to be used for this 
-  * specific referrer (in basic points)
-  * @notice to send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
+  * specific referrer (in basis points)
+  * @dev To send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
   */
   function setReferrerFee(address _referrer, uint _feeBasisPoint) public {
     _onlyLockManager();
@@ -3824,11 +3824,11 @@ contract MixinTransfer is
   }
 
   /** 
-  * an ERC721-like function to transfer a token from one account to another
+  * An ERC721-like function to transfer a token from one account to another. 
   * @param _from the owner of token to transfer
   * @param _recipient the address that will receive the token
   * @param _tokenId the id of the token
-  * @notice requirements: if the caller is not `from`, it must be approved to move this token by
+  * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
   * either {approve} or {setApprovalForAll}. 
   * The key manager will be reset to address zero after the transfer
   */
@@ -3850,7 +3850,7 @@ contract MixinTransfer is
 
   /** 
   * Lending a key allows you to transfer the token while retaining the 
-  * ownerships right by setting yourself as a key manager first
+  * ownerships right by setting yourself as a key manager first. 
   * @param _from the owner of token to transfer
   * @param _recipient the address that will receive the token
   * @param _tokenId the id of the token
@@ -3878,10 +3878,10 @@ contract MixinTransfer is
   }
 
   /** 
-  * Unlend is called when you have lent a key and want to claim its full ownership back
+  * Unlend is called when you have lent a key and want to claim its full ownership back. 
   * @param _recipient the address that will receive the token ownership
   * @param _tokenId the id of the token
-  * @notice Only the key manager of the token can call this function
+  * @dev Only the key manager of the token can call this function
   */
   function unlendKey(
     address _recipient,
