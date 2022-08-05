@@ -1,5 +1,8 @@
 #! /bin/sh
 
+# Exit on error
+set -e
+
 # ==============================================================================
 # This script is used to generate the documentation for the contracts.
 # It will : 1) fetch the package from npm and 2) opens a PR in the docs repo
@@ -15,14 +18,15 @@
 # use tmp dir
 tmpdir=$(mktemp -d)
 dest="docs/core-protocol/smart-contracts-api"
-base="master" # "css-update"
+base="master" 
 repo=git@github.com:unlock-protocol/docs.git
-FROM_NPM=${FROM_NPM:-1}
+FROM_NPM=${FROM_NPM:-0}
 
 # get contracts tarball
 if [ "$FROM_NPM" -eq "1" ]; then
   wget $(npm view @unlock-protocol/contracts dist.tarball) -P $tmpdir
 else
+  yarn workspace @unlock-protocol/contracts clean
   yarn workspace @unlock-protocol/contracts build
   yarn workspace @unlock-protocol/contracts pack --out "$tmpdir/contracts-%v.tgz"
 fi
@@ -34,20 +38,22 @@ tar -xf contracts-**.tgz
 # versioning
 version_number="$(ls *.tgz | awk -F \- {'print substr($2,0,5) '} | sed 's/\./-/g')"
 branch=contracts-$version_number
-rm -rf *.tgz
 
 # git worflow
 git clone $repo
 cd docs
 
+# cleanup
+rm -rf *.tgz
+
 # check if a branch already exists
 if $(git ls-remote --heads ${repo} ${branch} | grep ${branch} >/dev/null); then 
-echo "Branch ${branch} already exists, pushing to existing branch"; 
-git fetch origin $branch
-git checkout $branch
+  echo "Branch ${branch} already exists, pushing to existing branch"; 
+  git fetch origin $branch
+  git checkout $branch
 else
-git checkout $base
-git checkout -b $branch
+  git checkout $base
+  git checkout -b $branch
 fi
 
 # copy new docs files over
