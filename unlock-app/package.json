@@ -5,9 +5,9 @@
   "dependencies": {
     "@apollo/react-hooks": "4.0.0",
     "@apollo/react-testing": "4.0.0",
-    "@babel/core": "7.18.9",
+    "@babel/core": "7.18.10",
     "@headlessui/react": "1.6.5",
-    "@radix-ui/react-avatar": "0.1.4",
+    "@radix-ui/react-avatar": "1.0.0",
     "@storybook/addon-actions": "6.5.6",
     "@storybook/addon-knobs": "6.4.0",
     "@storybook/addon-viewport": "6.5.6",
@@ -96,7 +96,7 @@
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "autoprefixer": "10.4.8",
     "postcss": "8.4.14",
-    "tailwindcss": "3.1.6"
+    "tailwindcss": "3.1.7"
   },
   "scripts": {
     "dev": "next dev",
