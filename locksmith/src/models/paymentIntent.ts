@@ -14,7 +14,7 @@ export class PaymentIntent extends Model<PaymentIntent> {
   @Column
   stripeCustomerId!: string // Overall customer id
 
-  @Column(DataType.JSON)
+  @Column(DataType.JSONB)
   recipients?: string[]
 
   @Column
