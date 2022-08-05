@@ -1,7 +1,7 @@
 {
   "name": "@unlock-protocol/contracts",
   "version": "0.0.8",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "clean": "rm -rf dist docs",
     "test": "hardhat test",
