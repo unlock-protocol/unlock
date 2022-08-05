@@ -463,8 +463,8 @@ interface IPublicLock
     returns (bool);
   
   /**
-   * @return The number of keys owned by `_keyOwner` (expired or not)
-  */
+   * @return numberOfKeys The number of keys owned by `_keyOwner` (expired or not)
+   */
   function totalKeys(address _keyOwner) external view returns (uint numberOfKeys);
   
   /// @notice A descriptive name for a collection of NFTs in this contract

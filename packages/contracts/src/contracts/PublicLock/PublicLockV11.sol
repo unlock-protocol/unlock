@@ -2463,8 +2463,8 @@ contract MixinKeys is
   }
 
   /**
-   * @return The number of keys owned by `_keyOwner` (expired or not)
-  */
+   * @return numberOfKeys The number of keys owned by `_keyOwner` (expired or not)
+   */
   function totalKeys(
     address _keyOwner
   )
