@@ -195,9 +195,7 @@ interface IPublicLockV7Sol6
   ) external view returns(string memory);
 
   /**
-   * Allows a Lock manager to add or remove an event hook
-   * @param _onKeyPurchaseHook Hook called when the `purchase` function is called
-   * @param _onKeyCancelHook Hook called when the internal `_cancelAndRefund` function is called
+   * @notice Allows a Lock manager to add or remove an event hook
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
