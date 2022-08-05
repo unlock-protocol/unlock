@@ -32,7 +32,8 @@
     "alexkeating",
     "m00n620",
     "giacomolicari",
-    "wonderwomancode"
+    "wonderwomancode",
+    "devabdee"
   ],
   "message": "Thank you for your pull request and welcome to Unlock! We require contributors to sign our [Contributor License Agreement](https://github.com/unlock-protocol/unlock/blob/master/CLA.txt), and we don't seem to have the users {{usersWithoutCLA}} on file. In order for us to review and merge your code, please contact us (easiest way is to [open an issue](https://github.com/unlock-protocol/unlock/issues)) to get yourself added."
 }
