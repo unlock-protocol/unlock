@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+echo $BASH_VERSION
+
+
 # this script runs the test in the service provided as first argument
 
 SERVICE=$1

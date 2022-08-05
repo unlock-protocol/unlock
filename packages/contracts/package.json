@@ -1,14 +1,14 @@
 {
   "name": "@unlock-protocol/contracts",
   "version": "0.0.8",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "clean": "rm -rf dist docs",
     "test": "hardhat test",
     "abi:cleanup": "yarn clean && tsc && node dist/utils/cleanup.js",
     "build": "yarn build:index && yarn build:dist",
     "build:dist": "yarn clean && tsc && yarn contracts:copy && yarn docs && yarn docs:copy",
-    "build:index": "yarn clean && tsc && node dist/src/utils/parser.js > src/index.ts",
+    "build:index": "yarn clean && tsc && node dist/utils/parser.js > src/index.ts",
     "ci": "yarn test",
     "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .ts,.js src/",
     "contracts:copy": "copyfiles --verbose -u 2 src/**/*.sol dist",
