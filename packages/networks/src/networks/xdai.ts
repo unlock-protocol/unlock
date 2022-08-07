@@ -40,7 +40,9 @@ export const xdai: NetworkConfig = {
       startBlock: 14521200,
     },
   ],
-  description: 'EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.',
+  description:
+    'EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.',
   isTestNetwork: false,
+  teamMultisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
 }
 export default xdai

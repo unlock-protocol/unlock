@@ -34,6 +34,7 @@ export const goerli: NetworkConfig = {
   startBlock: 7179039,
   previousDeploys: [],
   isTestNetwork: true,
+  teamMultisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
 }
 
 export default goerli

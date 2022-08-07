@@ -43,6 +43,7 @@ export const polygon: NetworkConfig = {
   ],
   description: 'Popular side chain network. Cheaper transaction cost.',
   isTestNetwork: false,
+  teamMultisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
 }
 
 export default polygon

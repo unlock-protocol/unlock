@@ -35,6 +35,7 @@ export const celo: NetworkConfig = {
   startBlock: 7179039,
   previousDeploys: [],
   isTestNetwork: false,
+  teamMultisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
 }
 
 export default celo

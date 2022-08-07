@@ -62,6 +62,8 @@ export default class Dispatcher {
 
     const transactionOptions = await getGasSettings(network)
 
+    const teamMultisig = networks[network]?.teamMultisig
+
     const recipients: string[] = []
     const keyManagers: string[] = []
     const expirations: string[] = []
@@ -69,6 +71,8 @@ export default class Dispatcher {
       recipients.push(recipient)
       if (manager) {
         keyManagers.push(manager)
+      } else if (teamMultisig) {
+        keyManagers.push(teamMultisig)
       }
       if (expiration) {
         expirations.push(expiration.toString())
