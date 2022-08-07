@@ -39,6 +39,7 @@ export const mainnet: NetworkConfig = {
   startBlock: 7120795,
   description: 'The most popular network',
   isTestNetwork: false,
+  teamMultisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
 }
 
 export default mainnet
