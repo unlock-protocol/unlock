@@ -8,7 +8,7 @@
   "module": "dist/index.modern.js",
   "source": "src/index.js",
   "scripts": {
-    "svg-2-components": "svgr --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",
+    "svg-2-components": "svgr --typescript --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",
     "build": "microbundle-crl --no-compress --format modern,cjs",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "prepublish": "run-s build",
