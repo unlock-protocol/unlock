@@ -24,13 +24,6 @@ interface IPublicLockV8
     string calldata _lockName
   ) external;
 
-  /**
-   * @notice Allow the contract to accept tips in ETH sent directly to the contract.
-   * @dev This is okay to use even if the lock is priced in ERC-20 tokens
-   */
-  // receive() external payable;
-  // fallback() external payable;
-
   // roles
   function DEFAULT_ADMIN_ROLE() external pure returns (bytes32 role);
   function KEY_GRANTER_ROLE() external pure returns (bytes32 role);
