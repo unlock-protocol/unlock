@@ -7,7 +7,7 @@ import { SignUp } from '../user-account/SignUp'
 import { Input, Label } from './FormStyles'
 import UnlockProvider from '../../../services/unlockProvider'
 import { ConfigContext } from '../../../utils/withConfig'
-import { useAuthenticateHandler } from '../../../hooks/useAuthenticateHandler'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface userData {
   name: string
@@ -33,7 +33,7 @@ export const NewAccountCheckout = ({
   // @ts-expect-error account is _always_ defined in this component
   const { createUserAccount } = useAccount(account, network)
   const [error, setError] = useState('')
-  const { authenticateWithProvider } = useAuthenticateHandler({})
+  const { authenticateWithProvider } = useAuthenticate()
 
   const createAccount = async (email: string, password: string, data?: any) => {
     const { passwordEncryptedPrivateKey } = await createUserAccount(

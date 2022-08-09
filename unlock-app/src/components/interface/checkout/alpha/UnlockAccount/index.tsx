@@ -1,6 +1,6 @@
 import { useActor } from '@xstate/react'
 import useAccount from '~/hooks/useAccount'
-import { useAuthenticateHandler } from '~/hooks/useAuthenticateHandler'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 import UnlockProvider from '~/services/unlockProvider'
 import { useConfig } from '~/utils/withConfig'
 import { EnterEmail } from './EnterEmail'
@@ -20,7 +20,7 @@ export function UnlockAccount({
   const config = useConfig()
   const [state] = useActor(unlockAccountService)
   const { retrieveUserAccount, createUserAccount } = useAccount('', 1)
-  const { authenticateWithProvider } = useAuthenticateHandler({
+  const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
   })
 

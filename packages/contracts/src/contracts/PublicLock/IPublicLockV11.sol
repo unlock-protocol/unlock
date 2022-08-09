@@ -7,7 +7,7 @@ pragma experimental ABIEncoderV2;
 */
 
 
-interface IPublicLock
+interface IPublicLockV11
 {
 
 // See indentationissue description here:
@@ -23,12 +23,6 @@ interface IPublicLock
     uint _maxNumberOfKeys,
     string calldata _lockName
   ) external;
-
-  /**
-   * @notice Allow the contract to accept tips in ETH sent directly to the contract.
-   * @dev This is okay to use even if the lock is priced in ERC-20 tokens
-   */
-  // receive() external payable;
 
   // roles
   function DEFAULT_ADMIN_ROLE() external pure returns (bytes32 role);
@@ -167,7 +161,12 @@ interface IPublicLock
   ) external view returns(string memory);
 
   /**
-   * @notice Allows a Lock manager to add or remove an event hook
+   * Allows a Lock manager to add or remove an event hook
+   * @param _onKeyPurchaseHook Hook called when the `purchase` function is called
+   * @param _onKeyCancelHook Hook called when the internal `_cancelAndRefund` function is called
+   * @param _onValidKeyHook Hook called to determine if the contract should overide the status for a given address
+   * @param _onTokenURIHook Hook called to generate a data URI used for NFT metadata
+   * @param _onKeyTransferHook Hook called when a key is transfered
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
@@ -191,7 +190,7 @@ interface IPublicLock
   ) external;
 
   /**
-   * Allows the Lock owner to extend an existin keys with no charge.
+   * Allows the Lock owner to extend an existing keys with no charge.
    * @param _tokenId The id of the token to extend
    * @param _duration The duration in secondes to add ot the key
    * @dev set `_duration` to 0 to use the default duration of the lock
@@ -237,18 +236,18 @@ interface IPublicLock
 
 
   /**
-  * Returns the percentage of the keyPrice to be sent to the referrer (in basic points)
+  * Returns the percentage of the keyPrice to be sent to the referrer (in basis points)
   * @param _referrer the address of the referrer
   */
   function referrerFees(address _referrer) external view;
   
   /**
   * Set a specific percentage of the keyPrice to be sent to the referrer while purchasing, 
-  * extending or renewing a key
+  * extending or renewing a key. 
   * @param _referrer the address of the referrer
   * @param _feeBasisPoint the percentage of the price to be used for this 
-  * specific referrer (in basic points)
-  * @notice to send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
+  * specific referrer (in basis points)
+  * @dev To send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
   */
   function setReferrerFee(address _referrer, uint _feeBasisPoint) external;
 
@@ -364,15 +363,35 @@ interface IPublicLock
 
   function isLockManager(address account) external view returns (bool);
 
-  function onKeyPurchaseHook() external view returns(address);
+  /**
+   * Returns the address of the `onKeyPurchaseHook` hook.
+   * @return hookAddress address of the hook
+   */  
+  function onKeyPurchaseHook() external view returns(address hookAddress);
 
-  function onKeyCancelHook() external view returns(address);
-  
-  function onValidKeyHook() external view returns(bool);
+  /**
+   * Returns the address of the `onKeyCancelHook` hook.
+   * @return hookAddress address of the hook
+   */  
+  function onKeyCancelHook() external view returns(address hookAddress);
 
-  function onTokenURIHook() external view returns(string memory);
+  /**
+   * Returns the address of the `onValidKeyHook` hook.
+   * @return hookAddress address of the hook
+   */  
+  function onValidKeyHook() external view returns(address hookAddress);
+
+  /**
+   * Returns the address of the `onTokenURIHook` hook.
+   * @return hookAddress address of the hook
+   */
+  function onTokenURIHook() external view returns(address hookAddress);
   
-  function onKeyTransferHook() external view returns(string memory);
+  /**
+   * Returns the address of the `onKeyTransferHook` hook.
+   * @return hookAddress address of the hook
+   */
+  function onKeyTransferHook() external view returns(address hookAddress);
 
   function revokeKeyGranter(address _granter) external;
 
@@ -463,9 +482,11 @@ interface IPublicLock
     returns (bool);
   
   /**
-   * @return The number of keys owned by `_keyOwner` (expired or not)
-  */
-  function totalKeys(address _keyOwner) external view returns (uint);
+   * Returns the number of keys owned by `_keyOwner` (expired or not)
+   * @param _keyOwner address for which we are retrieving the total number of keys
+   * @return numberOfKeys total number of keys owned by the address
+   */
+  function totalKeys(address _keyOwner) external view returns (uint numberOfKeys);
   
   /// @notice A descriptive name for a collection of NFTs in this contract
   function name() external view returns (string memory _name);
@@ -500,11 +521,11 @@ interface IPublicLock
   function safeTransferFrom(address from, address to, uint256 tokenId) external;
   
   /** 
-  * an ERC721-like function to transfer a token from one account to another
+  * An ERC721-like function to transfer a token from one account to another. 
   * @param from the owner of token to transfer
   * @param to the address that will receive the token
   * @param tokenId the id of the token
-  * @notice requirements: if the caller is not `from`, it must be approved to move this token by
+  * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
   * either {approve} or {setApprovalForAll}. 
   * The key manager will be reset to address zero after the transfer
   */
@@ -512,7 +533,7 @@ interface IPublicLock
 
   /** 
   * Lending a key allows you to transfer the token while retaining the 
-  * ownerships right by setting yourself as a key manager first
+  * ownerships right by setting yourself as a key manager first. 
   * @param from the owner of token to transfer
   * @param to the address that will receive the token
   * @param tokenId the id of the token
@@ -523,10 +544,10 @@ interface IPublicLock
   function lendKey(address from, address to, uint tokenId) external;
 
   /** 
-  * Unlend is called when you have lent a key and want to claim its full ownership back
+  * Unlend is called when you have lent a key and want to claim its full ownership back. 
   * @param _recipient the address that will receive the token ownership
   * @param _tokenId the id of the token
-  * @notice Only the key manager of the token can call this function
+  * @dev Only the key manager of the token can call this function
   */
   function unlendKey(address _recipient, uint _tokenId) external;
 

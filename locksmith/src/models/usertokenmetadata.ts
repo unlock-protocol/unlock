@@ -8,7 +8,7 @@ export class UserTokenMetadata extends Model<UserTokenMetadata> {
   @Column({ unique: 'token_user_address_unique_constraint' })
   userAddress!: string
 
-  @Column(DataType.JSON)
+  @Column(DataType.JSONB)
   data!: any
 
   @Column

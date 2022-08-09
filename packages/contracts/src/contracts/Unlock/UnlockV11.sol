@@ -1422,11 +1422,6 @@ interface IPublicLock
     string calldata _lockName
   ) external;
 
-  /**
-   * @notice Allow the contract to accept tips in ETH sent directly to the contract.
-   * @dev This is okay to use even if the lock is priced in ERC-20 tokens
-   */
-  // receive() external payable;
 
   // roles
   function DEFAULT_ADMIN_ROLE() external pure returns (bytes32 role);
@@ -1565,7 +1560,9 @@ interface IPublicLock
   ) external view returns(string memory);
 
   /**
-   * @notice Allows a Lock manager to add or remove an event hook
+   * Allows a Lock manager to add or remove an event hook
+   * @param _onKeyPurchaseHook Hook called when the `purchase` function is called
+   * @param _onKeyCancelHook Hook called when the internal `_cancelAndRefund` function is called
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
@@ -1859,9 +1856,9 @@ interface IPublicLock
     * another (`to`).
     *
     * Requirements:
-    * - `from`, `to` cannot be zero.
-    * - `tokenId` must be owned by `from`.
-    * - If the caller is not `from`, it must be have been allowed to move this
+    * * `from`, `to` cannot be zero.
+    * * `tokenId` must be owned by `from`.
+    * * If the caller is not `from`, it must be have been allowed to move this
     * NFT by either {approve} or {setApprovalForAll}.
     */
   function safeTransferFrom(address from, address to, uint256 tokenId) external;
@@ -1871,7 +1868,7 @@ interface IPublicLock
     * another (`to`).
     *
     * Requirements:
-    * - If the caller is not `from`, it must be approved to move this NFT by
+    * If the caller is not `from`, it must be approved to move this NFT by
     * either {approve} or {setApprovalForAll}.
     */
   function transferFrom(address from, address to, uint256 tokenId) external;
