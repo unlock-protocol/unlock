@@ -4,7 +4,7 @@ import SvgComponents from './svg'
 
 import { ActionButton } from './buttons/ActionButton'
 import LogInSignUp from './LogInSignUp'
-import { useAuthenticateHandler } from '../../hooks/useAuthenticateHandler'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface LoginPromptProps {
   unlockUserAccount?: boolean
@@ -34,7 +34,7 @@ const LoginPrompt = ({
 }: LoginPromptProps) => {
   const [walletToShow, setWalletToShow] = useState('')
 
-  const { authenticateWithProvider } = useAuthenticateHandler({
+  const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
   })
 

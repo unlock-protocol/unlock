@@ -24,13 +24,6 @@ interface IPublicLockV8
     string calldata _lockName
   ) external;
 
-  /**
-   * @notice Allow the contract to accept tips in ETH sent directly to the contract.
-   * @dev This is okay to use even if the lock is priced in ERC-20 tokens
-   */
-  // receive() external payable;
-  // fallback() external payable;
-
   // roles
   function DEFAULT_ADMIN_ROLE() external pure returns (bytes32 role);
   function KEY_GRANTER_ROLE() external pure returns (bytes32 role);
@@ -175,7 +168,9 @@ interface IPublicLockV8
   ) external view returns(string memory);
 
   /**
-   * @notice Allows a Lock manager to add or remove an event hook
+   * Allows a Lock manager to add or remove an event hook
+   * @param _onKeyPurchaseHook Hook called when the `purchase` function is called
+   * @param _onKeyCancelHook Hook called when the internal `_cancelAndRefund` function is called
    */
   function setEventHooks(
     address _onKeyPurchaseHook,

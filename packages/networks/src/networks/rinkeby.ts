@@ -41,6 +41,7 @@ export const rinkeby: NetworkConfig = {
   startBlock: 3530008,
   description: 'Ethereum test network. Do not use for production',
   isTestNetwork: true,
+  teamMultisig: '0x04e855D82c079222d6bDBc041F6202d5A0137267',
 }
 
 export default rinkeby
