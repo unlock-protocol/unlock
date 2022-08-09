@@ -6,7 +6,7 @@
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
-  "source": "src/index.js",
+  "source": "src/index.tsx",
   "scripts": {
     "svg-2-components": "svgr --typescript --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",
     "build": "microbundle-crl --no-compress --format modern,cjs",
