@@ -31,7 +31,6 @@ import {
 } from './LockStyles'
 import { currencySymbol } from '../../utils/lock'
 import { INFINITY, MAX_UINT } from '../../constants'
-import { IconButton } from '@unlock-protocol/ui'
 
 const BalanceOnLock = withConfig(({ lock, attribute, config }) => {
   const currency = currencySymbol(lock, config.ERC20Contract)
