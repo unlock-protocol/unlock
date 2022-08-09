@@ -22,12 +22,6 @@ import {
 import { countries } from '~/utils/countries'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-import {
-  BackButton,
-  CheckoutHead,
-  CheckoutTransition,
-  CloseButton,
-} from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
 

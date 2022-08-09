@@ -3,12 +3,6 @@ import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import {
-  BackButton,
-  CheckoutHead,
-  CheckoutTransition,
-  CloseButton,
-} from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
@@ -32,10 +26,9 @@ const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(params?: Record<string, string>): void
 }
 
-export function Payment({ injectedProvider, checkoutService, onClose }: Props) {
+export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
 

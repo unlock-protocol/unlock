@@ -13,10 +13,9 @@ import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(params?: Record<string, string>): void
 }
 
-export function Captcha({ injectedProvider, checkoutService, onClose }: Props) {
+export function Captcha({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
   const storage = useStorageService()

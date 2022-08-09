@@ -131,7 +131,6 @@ export function Checkout({
       case 'PAYMENT': {
         return (
           <Payment
-            onClose={onClose}
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
           />
@@ -165,7 +164,6 @@ export function Checkout({
       case 'MESSAGE_TO_SIGN': {
         return (
           <MessageToSign
-            onClose={onClose}
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
           />
@@ -184,7 +182,6 @@ export function Checkout({
       case 'UNLOCK_ACCOUNT': {
         return (
           <UnlockAccountSignIn
-            onClose={onClose}
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
           />
@@ -193,7 +190,6 @@ export function Checkout({
       case 'CAPTCHA': {
         return (
           <Captcha
-            onClose={onClose}
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
           />

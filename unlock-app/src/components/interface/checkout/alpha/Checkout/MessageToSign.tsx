@@ -5,26 +5,15 @@ import { Button } from '@unlock-protocol/ui'
 import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
-import {
-  BackButton,
-  CheckoutHead,
-  CheckoutTransition,
-  CloseButton,
-} from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(params?: Record<string, string>): void
 }
 
-export function MessageToSign({
-  checkoutService,
-  injectedProvider,
-  onClose,
-}: Props) {
+export function MessageToSign({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, signMessage } = useAuth()
   const [isSigning, setIsSigning] = useState(false)
