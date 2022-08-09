@@ -52,7 +52,6 @@ export const Currency = styled.span.attrs({
 })`
   display: flex;
   flex-direction: row;
-  padding-bottom: 0.5em;
 `
 
 export const CurrencySymbol = styled.span`

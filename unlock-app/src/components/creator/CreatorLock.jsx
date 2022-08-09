@@ -43,7 +43,7 @@ BalanceOnLock.propTypes = {
 }
 
 const LockKeysNumbers = ({ lock, edit }) => (
-  <LockKeys className="flex">
+  <div className="flex items-center">
     {lock.outstandingKeys !== null &&
     lock.maxNumberOfKeys !== null &&
     typeof lock.outstandingKeys !== 'undefined' &&
@@ -54,10 +54,10 @@ const LockKeysNumbers = ({ lock, edit }) => (
             : lock.maxNumberOfKeys
         }`
       : ' - '}
-    <InlineButton type="button" onClick={() => edit(lock.address)}>
-      <Svg.Edit name="Edit" />
-    </InlineButton>
-  </LockKeys>
+    <button aria-label="edit" type="button" onClick={() => edit(lock.address)}>
+      <Svg.Edit height={20} width={20} />
+    </button>
+  </div>
 )
 
 LockKeysNumbers.propTypes = {
@@ -96,7 +96,7 @@ export const CreatorLock = ({
     if (query.stripe && lock.address == query.lock) {
       setShowDrawer('credit-card')
     }
-  }, [query])
+  }, [query, lock])
 
   const toggleDrawer = (state) => {
     if (state === showDrawer) {
@@ -217,12 +217,17 @@ export const CreatorLock = ({
           )}
         </LockDuration>
         <LockKeysNumbers edit={edit} lock={lock} />
-        <KeyPrice>
+        <div className="flex items-center">
           <BalanceOnLock lock={lock} attribute="keyPrice" />
-          <InlineButton type="button" onClick={() => edit(lock.address)}>
-            <Svg.Edit name="Edit" />
-          </InlineButton>
-        </KeyPrice>
+          <button
+            aria-label="edit"
+            className="flex items-center"
+            type="button"
+            onClick={() => edit(lock.address)}
+          >
+            <Svg.Edit height={20} width={20} />
+          </button>
+        </div>
         <BalanceContainer>
           <NoPhone>
             <BalanceOnLock lock={lock} attribute="balance" />
@@ -253,25 +258,6 @@ export const CreatorLock = ({
     </LockRow>
   )
 }
-
-const KeyPrice = styled.div`
-  display: flex;
-`
-
-const InlineButton = styled.button`
-  cursor: pointer;
-  border: none;
-  width: 20px;
-  height: 20px;
-  padding: 0px;
-  background-color: transparent;
-  > svg {
-    fill: var(--darkgrey);
-    &:hover {
-      fill: var(--slate);
-    }
-  }
-`
 
 CreatorLock.propTypes = {
   lock: UnlockPropTypes.lock.isRequired,
