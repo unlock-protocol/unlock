@@ -109,11 +109,11 @@ contract MixinTransfer is
   }
 
   /** 
-  * an ERC721-like function to transfer a token from one account to another
+  * an ERC721-like function to transfer a token from one account to another. 
   * @param _from the owner of token to transfer
   * @param _recipient the address that will receive the token
   * @param _tokenId the id of the token
-  * @notice requirements: if the caller is not `from`, it must be approved to move this token by
+  * @dev Requirements: if the caller is not `from`, it must be approved to move this token by
   * either {approve} or {setApprovalForAll}. 
   * The key manager will be reset to address zero after the transfer
   */
@@ -135,7 +135,7 @@ contract MixinTransfer is
 
   /** 
   * Lending a key allows you to transfer the token while retaining the 
-  * ownerships right by setting yourself as a key manager first
+  * ownerships right by setting yourself as a key manager first. 
   * @param _from the owner of token to transfer
   * @param _recipient the address that will receive the token
   * @param _tokenId the id of the token
@@ -163,10 +163,10 @@ contract MixinTransfer is
   }
 
   /** 
-  * Unlend is called when you have lent a key and want to claim its full ownership back
+  * Unlend is called when you have lent a key and want to claim its full ownership back. 
   * @param _recipient the address that will receive the token ownership
   * @param _tokenId the id of the token
-  * @notice Only the key manager of the token can call this function
+  * @dev Only the key manager of the token can call this function
   */
   function unlendKey(
     address _recipient,
