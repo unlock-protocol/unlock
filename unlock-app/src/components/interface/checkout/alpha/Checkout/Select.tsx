@@ -71,9 +71,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
               <h3 className="font-bold text-brand-ui-primary text-lg">
                 {config.networks[network].name}
               </h3>
-              <p className="text-sm text-brand-gray">
-                {config.networks[network].description}
-              </p>
             </header>
             <div className="grid space-y-4 py-4">
               {locks.map(({ name, address, recurringPayments }) => (
