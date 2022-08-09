@@ -50,10 +50,7 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
   return (
     <div className="h-full flex flex-col justify-between">
       <main className="px-6 pb-2 space-y-2 overflow-auto h-full">
-        <h3 className="font-bold ml-0.5">
-          Oh hey, you are new in town! Got a strong password in mind? Let&apos;s
-          set it up, shall we?
-        </h3>
+        <h3 className="font-bold ml-0.5">Let&apos;s set it up, shall we?</h3>
         <form
           id="confirmPassword"
           className="space-y-2"
@@ -66,7 +63,6 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
             required
             size="small"
             error={errors?.password?.message as unknown as string}
-            description="Enter your password"
             {...register('password', {
               required: true,
               minLength: {
@@ -82,7 +78,6 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
             required
             size="small"
             error={errors?.confirmedPassword?.message as unknown as string}
-            description="Retype your password to confirm"
             {...register('confirmedPassword', {
               required: true,
             })}

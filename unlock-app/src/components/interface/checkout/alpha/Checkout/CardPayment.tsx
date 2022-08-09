@@ -10,7 +10,7 @@ import {
 import { useConfig } from '~/utils/withConfig'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useWalletService } from '~/utils/withWalletService'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Card, CardPlaceholder } from '../Card'
 import { FieldValues, useForm } from 'react-hook-form'
 import {
@@ -29,20 +29,14 @@ import {
   CloseButton,
 } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(params?: Record<string, string>): void
 }
 
-export function CardPayment({
-  checkoutService,
-  injectedProvider,
-  onClose,
-}: Props) {
+export function CardPayment({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
   const [editCard, setEditCard] = useState(false)
@@ -58,98 +52,85 @@ export function CardPayment({
       enabled: !!account,
     }
   )
-  const { title, description, iconURL } =
-    useCheckoutHeadContent(checkoutService)
   const { paywallConfig } = state.context
   const { messageToSign } = paywallConfig
   const card = data?.[0]
 
   return (
-    <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
-        <div className="flex items-center justify-between p-6">
-          <BackButton onClick={() => send('BACK')} />
-          <CloseButton onClick={() => onClose()} />
-        </div>
-        <CheckoutHead
-          title={paywallConfig.title}
-          iconURL={iconURL}
-          description={description}
-        />
-        <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-          <div className="flex items-center gap-2 col-span-4">
-            <button
-              aria-label="back"
-              onClick={(event) => {
-                event.preventDefault()
-                send('BACK')
-              }}
-              className="p-2 w-20 bg-brand-ui-primary inline-flex items-center justify-center rounded-full"
-            >
-              <div className="p-0.5 w-16 bg-white rounded-full"></div>
-            </button>
-            <h4 className="text-sm "> {title}</h4>
-          </div>
-          <div className="border-t-4 w-full flex-1"></div>
-          <div className="inline-flex items-center gap-0.5">
-            {messageToSign && <ProgressCircleIcon disabled />}
-            <ProgressCircleIcon disabled />
-            <ProgressFinishedIcon disabled />
-          </div>
-        </div>
-        <main className="px-6 py-2 overflow-auto h-full">
-          <Elements stripe={stripe}>
-            {isLoading ? (
-              <CardPlaceholder />
-            ) : editCard || !card ? (
-              <CardForm
-                isSaving={isSaving}
-                setIsSaving={setIsSaving}
-                onSave={async () => {
-                  await refetch()
-                  setIsSaving(false)
-                  setEditCard(false)
-                }}
-              />
-            ) : (
-              <Card onChange={() => setEditCard(true)} {...card} />
-            )}
-          </Elements>
-        </main>
-        <footer className="px-6 pt-6 border-t grid items-center">
-          <Connected
-            injectedProvider={injectedProvider}
-            service={checkoutService}
+    <Fragment>
+      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
+        <div className="flex items-center gap-2 col-span-4">
+          <button
+            aria-label="back"
+            onClick={(event) => {
+              event.preventDefault()
+              send('BACK')
+            }}
+            className="p-2 w-20 bg-brand-ui-primary inline-flex items-center justify-center rounded-full"
           >
-            {editCard || !card ? (
-              <Button
-                disabled={isSaving || isLoading}
-                loading={isSaving}
-                type="submit"
-                form="card-save"
-                className="w-full"
-              >
-                {isSaving ? 'Saving' : 'Save'}
-              </Button>
-            ) : (
-              <Button
-                className="w-full"
-                disabled={!card || isLoading}
-                onClick={() => {
-                  send({
-                    type: 'SELECT_CARD_TO_CHARGE',
-                    cardId: card.id,
-                  })
-                }}
-              >
-                Continue
-              </Button>
-            )}
-          </Connected>
-          <PoweredByUnlock />
-        </footer>
+            <div className="p-0.5 w-16 bg-white rounded-full"></div>
+          </button>
+          <h4 className="text-sm"> Add card </h4>
+        </div>
+        <div className="border-t-4 w-full flex-1"></div>
+        <div className="inline-flex items-center gap-0.5">
+          {messageToSign && <ProgressCircleIcon disabled />}
+          <ProgressCircleIcon disabled />
+          <ProgressFinishedIcon disabled />
+        </div>
       </div>
-    </CheckoutTransition>
+      <main className="px-6 py-2 overflow-auto h-full">
+        <Elements stripe={stripe}>
+          {isLoading ? (
+            <CardPlaceholder />
+          ) : editCard || !card ? (
+            <CardForm
+              isSaving={isSaving}
+              setIsSaving={setIsSaving}
+              onSave={async () => {
+                await refetch()
+                setIsSaving(false)
+                setEditCard(false)
+              }}
+            />
+          ) : (
+            <Card onChange={() => setEditCard(true)} {...card} />
+          )}
+        </Elements>
+      </main>
+      <footer className="px-6 pt-6 border-t grid items-center">
+        <Connected
+          injectedProvider={injectedProvider}
+          service={checkoutService}
+        >
+          {editCard || !card ? (
+            <Button
+              disabled={isSaving || isLoading}
+              loading={isSaving}
+              type="submit"
+              form="card-save"
+              className="w-full"
+            >
+              {isSaving ? 'Saving' : 'Save'}
+            </Button>
+          ) : (
+            <Button
+              className="w-full"
+              disabled={!card || isLoading}
+              onClick={() => {
+                send({
+                  type: 'SELECT_CARD_TO_CHARGE',
+                  cardId: card.id,
+                })
+              }}
+            >
+              Continue
+            </Button>
+          )}
+        </Connected>
+        <PoweredByUnlock />
+      </footer>
+    </Fragment>
   )
 }
 

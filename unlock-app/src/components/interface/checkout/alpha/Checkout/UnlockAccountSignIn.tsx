@@ -8,7 +8,6 @@ import {
   CheckoutTransition,
   CloseButton,
 } from '../Shell'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 interface Props {
   injectedProvider: unknown
@@ -23,23 +22,13 @@ export function UnlockAccountSignIn({
 }: Props) {
   const [state] = useActor(checkoutService)
   const { paywallConfig } = state.context
-  const { title, description, iconURL } =
-    useCheckoutHeadContent(checkoutService)
+
   const unlockAccountService = state.children
     .unlockAccount as UnlockAccountService
 
   return (
     <CheckoutTransition>
       <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] max-h-[42rem]">
-        <div className="flex items-center justify-between p-6">
-          <BackButton onClick={() => unlockAccountService.send('BACK')} />
-          <CloseButton onClick={() => onClose()} />
-        </div>
-        <CheckoutHead
-          title={paywallConfig.title}
-          iconURL={iconURL}
-          description={description}
-        />
         <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
           <div className="flex items-center gap-2 col-span-4">
             <button
@@ -52,7 +41,7 @@ export function UnlockAccountSignIn({
             >
               <div className="p-0.5 w-12 bg-white rounded-full"></div>
             </button>
-            <h4 className="text-sm "> {title}</h4>
+            <h4 className="text-sm "></h4>
           </div>
           <div className="border-t-4 w-full flex-1"></div>
           <div className="inline-flex items-center gap-0.5">
