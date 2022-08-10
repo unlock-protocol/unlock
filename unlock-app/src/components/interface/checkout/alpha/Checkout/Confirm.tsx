@@ -12,20 +12,13 @@ import {
   RiRepeatFill as RecurringIcon,
 } from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-import {
-  BackButton,
-  CheckoutHead,
-  CheckoutTransition,
-  CloseButton,
-} from '../Shell'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { LabeledItem } from '../LabeledItem'
 import { Framework } from '@superfluid-finance/sdk-core'
@@ -36,14 +29,12 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(params?: Record<string, string>): void
   communication: CheckoutCommunication
 }
 
 export function Confirm({
   injectedProvider,
   checkoutService,
-  onClose,
   communication,
 }: Props) {
   const [state, send] = useActor(checkoutService)
@@ -59,8 +50,6 @@ export function Confirm({
   } = useAccount(account!, network!)
 
   const [isConfirming, setIsConfirming] = useState(false)
-  const { title, description, iconURL } =
-    useCheckoutHeadContent(checkoutService)
 
   const {
     lock,
@@ -387,148 +376,135 @@ export function Confirm({
   }
 
   return (
-    <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
-        <div className="flex items-center justify-between p-6">
-          <BackButton onClick={() => send('BACK')} />
-          <CloseButton onClick={() => onClose()} />
-        </div>
-        <CheckoutHead
-          title={paywallConfig.title}
-          iconURL={iconURL}
-          description={description}
-        />
-        <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-          <div className="flex items-center gap-2 col-span-4">
-            <div className="flex items-center gap-0.5">
+    <Fragment>
+      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
+        <div className="flex items-center gap-2 col-span-4">
+          <div className="flex items-center gap-0.5">
+            <IconButton
+              title="Select lock"
+              icon={ProgressCircleIcon}
+              onClick={() => {
+                send('SELECT')
+              }}
+            />
+            <IconButton
+              title="Choose quantity"
+              icon={ProgressCircleIcon}
+              onClick={() => {
+                send('QUANTITY')
+              }}
+            />
+            <IconButton
+              title="Add metadata"
+              icon={ProgressCircleIcon}
+              onClick={() => {
+                send('METADATA')
+              }}
+            />
+            <IconButton
+              title="Select payment method"
+              icon={ProgressCircleIcon}
+              onClick={() => {
+                send('PAYMENT')
+              }}
+            />
+            {paywallConfig.messageToSign && (
               <IconButton
-                title="Select lock"
+                title="Sign message"
                 icon={ProgressCircleIcon}
                 onClick={() => {
-                  send('SELECT')
+                  send('MESSAGE_TO_SIGN')
                 }}
               />
-              <IconButton
-                title="Choose quantity"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('QUANTITY')
-                }}
-              />
-              <IconButton
-                title="Add metadata"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('METADATA')
-                }}
-              />
-              <IconButton
-                title="Select payment method"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('PAYMENT')
-                }}
-              />
-              {paywallConfig.messageToSign && (
-                <IconButton
-                  title="Sign message"
-                  icon={ProgressCircleIcon}
-                  onClick={() => {
-                    send('MESSAGE_TO_SIGN')
-                  }}
-                />
-              )}
-              <ProgressCircleIcon />
-            </div>
-            <h4 className="text-sm "> {title}</h4>
-          </div>
-          <div className="border-t-4 w-full flex-1"></div>
-          <div className="inline-flex items-center gap-1">
-            <ProgressFinishIcon disabled />
-          </div>
-        </div>
-        <main className="px-6 py-2 overflow-auto h-full space-y-2">
-          <div className="flex items-start justify-between">
-            <h3 className="font-bold text-xl">
-              {quantity}X {lockName}
-            </h3>
-            {!isLoading ? (
-              <div className="grid">
-                {fiatPricing.creditCardEnabled ? (
-                  <>
-                    {!!fiatPrice && (
-                      <span className="font-semibold">
-                        ${(fiatPrice / 100).toFixed(2)}
-                      </span>
-                    )}
-                    <span>{formattedData.formattedKeyPrice} </span>
-                  </>
-                ) : (
-                  <>
-                    <span className="font-semibold">
-                      {formattedData.formattedKeyPrice}{' '}
-                    </span>
-                    {!!fiatPrice && (
-                      <span>${(fiatPrice / 100).toFixed(2)}</span>
-                    )}
-                  </>
-                )}
-                <p className="text-sm text-gray-500">
-                  {quantity} X {formattedData.formattedKeyPrice}
-                </p>
-              </div>
-            ) : (
-              <div className="flex gap-2 flex-col items-center">
-                <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-                <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-              </div>
             )}
+            <ProgressCircleIcon />
           </div>
-          <div className="border-t w-full"></div>
+          <h4 className="text-sm">Confirm purchase</h4>
+        </div>
+        <div className="border-t-4 w-full flex-1"></div>
+        <div className="inline-flex items-center gap-1">
+          <ProgressFinishIcon disabled />
+        </div>
+      </div>
+      <main className="px-6 py-2 overflow-auto h-full space-y-2">
+        <div className="flex items-start justify-between">
+          <h3 className="font-bold text-xl">
+            {quantity}X {lockName}
+          </h3>
           {!isLoading ? (
-            <div className="space-y-1 py-2">
-              <ul className="flex items-center gap-4 text-sm">
-                <LabeledItem
-                  label="Duration"
-                  icon={DurationIcon}
-                  value={formattedData.formattedDuration}
-                />
-                {recurringPayments && recurringPayment && (
-                  <LabeledItem
-                    label="Recurring"
-                    icon={RecurringIcon}
-                    value={recurringPayment.toString()}
-                  />
-                )}
-              </ul>
-              <a
-                href={config.networks[lockNetwork].explorer.urls.address(
-                  lockAddress
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
-              >
-                View Contract <Icon icon={ExternalLinkIcon} size="small" />
-              </a>
+            <div className="grid">
+              {fiatPricing.creditCardEnabled ? (
+                <>
+                  {!!fiatPrice && (
+                    <span className="font-semibold">
+                      ${(fiatPrice / 100).toFixed(2)}
+                    </span>
+                  )}
+                  <span>{formattedData.formattedKeyPrice} </span>
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold">
+                    {formattedData.formattedKeyPrice}{' '}
+                  </span>
+                  {!!fiatPrice && <span>${(fiatPrice / 100).toFixed(2)}</span>}
+                </>
+              )}
+              <p className="text-sm text-gray-500">
+                {quantity} X {formattedData.formattedKeyPrice}
+              </p>
             </div>
           ) : (
-            <div className="py-1.5 space-y-2 items-center">
-              <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-              <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+            <div className="flex gap-2 flex-col items-center">
+              <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+              <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
             </div>
           )}
-        </main>
-        <footer className="px-6 pt-6 border-t grid items-center">
-          <Connected
-            injectedProvider={injectedProvider}
-            service={checkoutService}
-          >
-            <Payment />
-          </Connected>
-          <PoweredByUnlock />
-        </footer>
-      </div>
-    </CheckoutTransition>
+        </div>
+        <div className="border-t w-full"></div>
+        {!isLoading ? (
+          <div className="space-y-1 py-2">
+            <ul className="flex items-center gap-4 text-sm">
+              <LabeledItem
+                label="Duration"
+                icon={DurationIcon}
+                value={formattedData.formattedDuration}
+              />
+              {recurringPayments && recurringPayment && (
+                <LabeledItem
+                  label="Recurring"
+                  icon={RecurringIcon}
+                  value={recurringPayment.toString()}
+                />
+              )}
+            </ul>
+            <a
+              href={config.networks[lockNetwork].explorer.urls.address(
+                lockAddress
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+            >
+              View Contract <Icon icon={ExternalLinkIcon} size="small" />
+            </a>
+          </div>
+        ) : (
+          <div className="py-1.5 space-y-2 items-center">
+            <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+            <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+          </div>
+        )}
+      </main>
+      <footer className="px-6 pt-6 border-t grid items-center">
+        <Connected
+          injectedProvider={injectedProvider}
+          service={checkoutService}
+        >
+          <Payment />
+        </Connected>
+        <PoweredByUnlock />
+      </footer>
+    </Fragment>
   )
 }
