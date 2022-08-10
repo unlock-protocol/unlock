@@ -181,6 +181,7 @@ export const checkoutMachine = createMachine(
             {
               actions: ['selectLock'],
               target: 'METADATA',
+              // Skip quantity page if min or max doesn't require more than 1 recipients
               cond: ({ paywallConfig }, event) => {
                 const maxRecipients =
                   paywallConfig.maxRecipients ||
@@ -189,8 +190,8 @@ export const checkoutMachine = createMachine(
                   paywallConfig.minRecipients ||
                   paywallConfig.locks[event.lock.address]?.minRecipients
                 const hasMaxRecipients = maxRecipients && maxRecipients > 1
-                const hasMinRecipients = minRecipients && minRecipients >= 1
-                return !(hasMaxRecipients && hasMinRecipients)
+                const hasMinRecipients = minRecipients && minRecipients > 1
+                return !(hasMaxRecipients || hasMinRecipients)
               },
             },
             {

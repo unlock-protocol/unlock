@@ -161,7 +161,6 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                 send('QUANTITY')
               }}
             />
-
             <ProgressCircleIcon />
           </div>
           <h4 className="text-sm "> Add recipient info </h4>
