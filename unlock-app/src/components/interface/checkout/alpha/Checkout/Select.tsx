@@ -1,15 +1,26 @@
-import { CheckoutService } from './checkoutMachine'
-import { networkToLocksMap } from '~/utils/paywallConfig'
+import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { Connected } from '../Connected'
-import { Lock } from '../Lock'
+import { Pricing } from '../Lock'
 import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { useQuery } from 'react-query'
-import { Fragment } from 'react'
+import { Fragment, useState, useMemo } from 'react'
+import { RadioGroup } from '@headlessui/react'
+import { getLockProps } from '~/utils/lock'
+import { getFiatPricing } from '~/hooks/useCards'
+import {
+  RiCheckboxBlankCircleLine as CheckBlankIcon,
+  RiCheckboxCircleFill as CheckIcon,
+  RiTimer2Line as DurationIcon,
+  RiCoupon2Line as QuantityIcon,
+} from 'react-icons/ri'
+import { Button, Icon } from '@unlock-protocol/ui'
+import { LabeledItem } from '../LabeledItem'
+import * as Avatar from '@radix-ui/react-avatar'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -17,21 +28,72 @@ interface Props {
 
 export function Select({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { paywallConfig } = state.context
+  const { paywallConfig, lock: selectedLock } = state.context
+  const lockOptions = useMemo(() => {
+    return Object.entries(paywallConfig.locks).map(([lock, props]) => ({
+      ...props,
+      address: lock,
+      network: props.network || paywallConfig.network || 1,
+    }))
+  }, [paywallConfig.locks, paywallConfig.network])
+  const [lockOption, setLockOption] = useState(
+    lockOptions.find((item) => {
+      if (selectedLock) {
+        return item.address === selectedLock.address
+      } else {
+        return item.default
+      }
+    })
+  )
   const config = useConfig()
   const { account } = useAuth()
   const web3Service = useWeb3Service()
-  const networkToLocks = networkToLocksMap(paywallConfig)
+  const { isLoading: isLocksLoading, data: locks } = useQuery(
+    ['locks', JSON.stringify(paywallConfig)],
+    async () => {
+      const items = await Promise.all(
+        Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
+          const lockNetwork = props.network || paywallConfig.network || 1
+          const [lockData, fiatPricing] = await Promise.all([
+            web3Service.getLock(lock, lockNetwork),
+            getFiatPricing(config, lock, lockNetwork),
+          ])
+          return {
+            ...props,
+            ...lockData,
+            name: props.name || lockData.name,
+            network: lockNetwork,
+            address: lock,
+            fiatPricing,
+          } as LockState
+        })
+      )
+      const locksByNetwork = items?.reduce<{ [key: number]: LockState[] }>(
+        (acc, item) => {
+          const current = acc[item.network]
+          if (current) {
+            acc[item.network] = [...current, item]
+          } else {
+            acc[item.network] = [item]
+          }
+          return acc
+        },
+        {}
+      )
+      return locksByNetwork
+    }
+  )
 
   const { isLoading: isMembershipsLoading, data: memberships } = useQuery(
     ['memberships', account, JSON.stringify(paywallConfig)],
     async () => {
       const memberships = await Promise.all(
-        Object.entries(paywallConfig.locks).map(async ([lock, { network }]) => {
+        Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
+          const lockNetwork = props.network || paywallConfig.network || 1
           const valid = await web3Service.getHasValidKey(
             lock,
             account!,
-            network || paywallConfig.network || 1
+            lockNetwork
           )
           if (valid) {
             return lock
@@ -44,6 +106,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       enabled: !!account,
     }
   )
+  const isDisabled = isLocksLoading || isMembershipsLoading || !lockOption
 
   return (
     <Fragment>
@@ -65,42 +128,154 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         </div>
       </div>
       <main className="px-6 py-2 overflow-auto h-full">
-        {Object.entries(networkToLocks).map(([network, locks]) => (
-          <section key={network}>
-            <header>
-              <h3 className="font-bold text-brand-ui-primary text-lg">
-                {config.networks[network].name}
-              </h3>
-            </header>
-            <div className="grid space-y-4 py-4">
-              {locks.map(({ name, address, recurringPayments }) => (
-                <Lock
-                  name={name!}
-                  recurring={recurringPayments}
-                  address={address}
-                  loading={isMembershipsLoading}
-                  disabled={isMembershipsLoading}
-                  network={Number(network)}
-                  key={address}
-                  onSelect={async (lock) => {
-                    const existingMember = !!memberships?.includes(lock.address)
-                    send({
-                      type: 'SELECT_LOCK',
-                      existingMember,
-                      lock,
-                    })
-                  }}
-                />
+        {isLocksLoading || isMembershipsLoading ? (
+          <div className="space-y-4">
+            {Array.from({ length: lockOptions.length * 2 }).map((_, index) => (
+              <div
+                key={index}
+                className="w-full bg-gray-100 p-4 rounded-lg animate-pulse"
+              />
+            ))}
+          </div>
+        ) : (
+          <RadioGroup
+            key="select"
+            className="space-y-4 box-content"
+            value={lockOption}
+            onChange={setLockOption}
+          >
+            {locks &&
+              Object.entries(locks).map(([network, items]) => (
+                <section key={network} className="space-y-2">
+                  <header>
+                    <p className="font-bold text-brand-ui-primary text-lg">
+                      {config.networks[network].name}
+                    </p>
+                  </header>
+                  {items.map((item) => {
+                    const value = lockOptions.find(
+                      (option) => item.address === option.address
+                    )
+                    return (
+                      <RadioGroup.Option
+                        key={item.address}
+                        value={value}
+                        className={({ checked }) =>
+                          `flex flex-col p-2 w-full gap-4 items-center ring-1 ring-gray-200 rounded-xl cursor-pointer relative ${
+                            checked && 'ring-ui-main-200 bg-ui-main-50'
+                          }`
+                        }
+                      >
+                        {({ checked }) => {
+                          const formattedData = getLockProps(
+                            item,
+                            item.network,
+                            config.networks[item.network].baseCurrencySymbol,
+                            item.name
+                          )
+                          const lockImageURL = `${config.services.storage.host}/lock/${item?.address}/icon`
+
+                          return (
+                            <Fragment>
+                              <div className="flex gap-x-2 w-full">
+                                <div>
+                                  <Avatar.Root className="inline-flex items-center w-14 h-14 justify-center rounded-xl">
+                                    <Avatar.Image
+                                      src={lockImageURL}
+                                      alt={item.name}
+                                    />
+                                    <Avatar.Fallback className="bg-gray-50">
+                                      {item.name.slice(0, 2).toUpperCase()}
+                                    </Avatar.Fallback>
+                                  </Avatar.Root>
+                                </div>
+                                <div className="flex items-start justify-between w-full">
+                                  <RadioGroup.Label
+                                    className="text-lg font-bold"
+                                    as="p"
+                                  >
+                                    {item.name}
+                                  </RadioGroup.Label>
+                                  <Pricing
+                                    keyPrice={formattedData.formattedKeyPrice}
+                                    usdPrice={formattedData.convertedKeyPrice}
+                                    isCardEnabled={formattedData.cardEnabled}
+                                  />
+                                </div>
+                              </div>
+                              <div className="flex items-center justify-between w-full">
+                                <div className="flex items-center gap-2">
+                                  <LabeledItem
+                                    label="Duration"
+                                    icon={DurationIcon}
+                                    value={formattedData.formattedDuration}
+                                  />
+                                  <LabeledItem
+                                    label="Quantity"
+                                    icon={QuantityIcon}
+                                    value={
+                                      formattedData.isSoldOut
+                                        ? 'Sold out'
+                                        : formattedData.formattedKeysAvailable
+                                    }
+                                  />
+                                </div>
+                                <div>
+                                  {checked ? (
+                                    <Icon
+                                      size="large"
+                                      className="fill-brand-ui-primary"
+                                      icon={CheckIcon}
+                                    />
+                                  ) : (
+                                    <Icon
+                                      size="large"
+                                      className="fill-brand-ui-primary"
+                                      icon={CheckBlankIcon}
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            </Fragment>
+                          )
+                        }}
+                      </RadioGroup.Option>
+                    )
+                  })}
+                </section>
               ))}
-            </div>
-          </section>
-        ))}
+          </RadioGroup>
+        )}
       </main>
       <footer className="px-6 pt-6 border-t grid items-center">
         <Connected
           service={checkoutService}
           injectedProvider={injectedProvider}
-        />
+        >
+          <div className="grid">
+            <Button
+              disabled={isDisabled}
+              onClick={(event) => {
+                event.preventDefault()
+                if (lockOption && locks) {
+                  const existingMember = !!memberships?.includes(
+                    lockOption.address
+                  )
+                  const lock = locks[lockOption.network].find(
+                    (lock) => lock.address === lockOption.address
+                  )!
+                  send({
+                    type: 'SELECT_LOCK',
+                    lock,
+                    existingMember,
+                  })
+                }
+              }}
+            >
+              Next
+            </Button>
+          </div>
+        </Connected>
         <PoweredByUnlock />
       </footer>
     </Fragment>

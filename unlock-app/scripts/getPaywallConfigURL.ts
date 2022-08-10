@@ -11,6 +11,7 @@ const paywallConfig = {
     },
     '0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894': {
       network: 100,
+      default: true,
       name: 'Outer world',
     },
   },
@@ -26,7 +27,6 @@ const paywallConfig = {
     },
   ],
   captcha: true,
-  maxRecipients: 5,
 }
 
 console.log(

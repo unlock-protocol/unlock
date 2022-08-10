@@ -201,6 +201,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                           {isUnlockAccount ? email : account}
                         </div>
                         <Button
+                          type="button"
                           onClick={(event) => {
                             event.preventDefault()
                             setHideFirstRecipient(false)

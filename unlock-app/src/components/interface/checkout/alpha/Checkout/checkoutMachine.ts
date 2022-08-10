@@ -26,6 +26,7 @@ export interface FiatPricing {
 
 export interface LockState extends Lock {
   fiatPricing: FiatPricing
+  isMember: boolean
 }
 
 export interface SelectLockEvent {
@@ -174,18 +175,27 @@ export const checkoutMachine = createMachine(
           SELECT_LOCK: [
             {
               actions: ['selectLock'],
-              target: 'QUANTITY',
-              cond: (context, event) =>
-                !!(
-                  !event.existingMember &&
-                  context.paywallConfig.maxRecipients &&
-                  context.paywallConfig.maxRecipients > 1
-                ),
+              target: 'RETURNING',
+              cond: (_, event) => event.existingMember,
             },
             {
               actions: ['selectLock'],
-              target: 'RETURNING',
-              cond: (_, event) => event.existingMember,
+              target: 'METADATA',
+              cond: ({ paywallConfig }, event) => {
+                const maxRecipients =
+                  paywallConfig.maxRecipients ||
+                  paywallConfig.locks[event.lock.address]?.maxRecipients
+                const minRecipients =
+                  paywallConfig.minRecipients ||
+                  paywallConfig.locks[event.lock.address]?.minRecipients
+                const hasMaxRecipients = maxRecipients && maxRecipients > 1
+                const hasMinRecipients = minRecipients && minRecipients >= 1
+                return !(hasMaxRecipients && hasMinRecipients)
+              },
+            },
+            {
+              actions: ['selectLock'],
+              target: 'QUANTITY',
             },
           ],
           DISCONNECT: {
