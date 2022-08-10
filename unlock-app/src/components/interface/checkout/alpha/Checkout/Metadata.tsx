@@ -213,7 +213,9 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                     </div>
                   ) : (
                     <Input
-                      label={`Recipient #${index + 1}`}
+                      label={
+                        quantity > 1 ? `Recipient #${index + 1}` : 'Recipient'
+                      }
                       size="small"
                       error={
                         errors?.metadata?.[index]?.recipient
