@@ -1,9 +1,9 @@
 const paywallConfig = {
   title: 'Bakery.fyi',
   locks: {
-    '0xff6e45FdE991cf534d0253e241743cf4238b21D9': {
+    '0x0933f78b651BDF37511f6905d7e8B134d5b7e358': {
       name: 'Basic',
-      network: 4,
+      network: 5,
     },
     '0x582eCeFA60c350d82EAf169df0035f3DDaCC795D': {
       name: 'Premium',
@@ -17,6 +17,14 @@ const paywallConfig = {
   icon: 'https://i.ibb.co/sQkJxhb/Ellipse-56.png',
   callToAction: {},
   pessimistic: true,
+  metadataInputs: [
+    {
+      type: 'email',
+      name: 'Email',
+      required: true,
+      public: true,
+    },
+  ],
   captcha: true,
   maxRecipients: 5,
 }

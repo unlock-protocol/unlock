@@ -9,7 +9,11 @@ interface DisconnectEvent {
   type: 'DISCONNECT'
 }
 
-type ConnectMachineEvents = UnlockAccountEvent | DisconnectEvent
+interface BackEvent {
+  type: 'BACK'
+}
+
+type ConnectMachineEvents = UnlockAccountEvent | BackEvent | DisconnectEvent
 
 export const connectMachine = createMachine(
   {
@@ -31,6 +35,9 @@ export const connectMachine = createMachine(
         },
       },
       SIGN_IN: {
+        on: {
+          BACK: 'CONNECT',
+        },
         invoke: {
           id: 'unlockAccount',
           src: unlockAccountMachine,
