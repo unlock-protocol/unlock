@@ -161,7 +161,6 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                 send('QUANTITY')
               }}
             />
-
             <ProgressCircleIcon />
           </div>
           <h4 className="text-sm "> Add recipient info </h4>
@@ -201,6 +200,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                           {isUnlockAccount ? email : account}
                         </div>
                         <Button
+                          type="button"
                           onClick={(event) => {
                             event.preventDefault()
                             setHideFirstRecipient(false)

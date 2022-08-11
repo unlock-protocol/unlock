@@ -103,6 +103,7 @@ export interface PaywallConfigLock {
   maxRecipients?: number
   minRecipients?: number
   superfluid?: boolean
+  default?: boolean
 }
 
 export enum KeyStatus {
