@@ -138,13 +138,13 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         ) : (
           <RadioGroup
             key="select"
-            className="space-y-4 box-content"
+            className="space-y-6 box-content"
             value={lockOption}
             onChange={setLockOption}
           >
             {locks &&
               Object.entries(locks).map(([network, items]) => (
-                <section key={network} className="space-y-6">
+                <section key={network} className="space-y-4">
                   <header>
                     <p className="font-bold text-brand-ui-primary text-lg">
                       {config.networks[network].name}
