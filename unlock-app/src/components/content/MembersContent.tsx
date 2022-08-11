@@ -13,6 +13,7 @@ import GrantKeysDrawer from '../creator/members/GrantKeysDrawer'
 import { Input, Button } from '@unlock-protocol/ui'
 import useDebounce from '../../hooks/useDebouce'
 import 'cross-fetch/polyfill'
+import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 
 interface PaginationProps {
   currentPage: number
@@ -73,6 +74,8 @@ export const MembersContent = ({ query }: MembersContentProps) => {
     page = parseInt(query.page)
   }
 
+  const hasLocks = lockAddresses?.length > 0
+
   return (
     <Layout title="Members">
       <Head>
@@ -94,7 +97,11 @@ export const MembersContent = ({ query }: MembersContentProps) => {
               <Button onClick={() => setIsOpen(!isOpen)}>Airdrop Keys</Button>
             </div>
 
-            <MetadataTableWrapper page={page} lockAddresses={lockAddresses} />
+            {!hasLocks ? (
+              <LocksByNetwork owner={account} />
+            ) : (
+              <MetadataTableWrapper page={page} lockAddresses={lockAddresses} />
+            )}
           </>
         )}
       </BrowserOnly>
