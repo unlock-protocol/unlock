@@ -1,6 +1,6 @@
 import forge from 'node-forge'
 import { Base64 } from 'js-base64'
-import configure from '../config'
+import { config } from '../config/app'
 
 /**
  * Verifies that an email was indeed signed by wedlocks

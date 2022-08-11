@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React, { useState } from 'react'
-import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import Link from 'next/link'
 import { RoundedLogo, WordMarkLogo } from './Logo'
@@ -8,7 +7,7 @@ import Buttons from './buttons/layout'
 import PageNavButtons from './buttons/navigation'
 import { ButtonLink } from './buttons/Button'
 import Media from '../../theme/media'
-
+import { useMatch } from '@tanstack/react-location'
 // add new navigation buttons here, layout will reflow appropriately
 const navigationButtons = [
   Buttons.About,
@@ -45,7 +44,7 @@ export const isOnAppPage = (pathname) => {
 }
 
 const Header = ({ forContent, title }) => {
-  const { pathname } = useRouter()
+  const { pathname } = useMatch()
   const [menu, setMenu] = useState(false)
 
   const toggleMenu = () => {

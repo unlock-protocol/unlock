@@ -1,9 +1,7 @@
 import { ethers } from 'ethers'
 import { useState, useEffect } from 'react'
-import configure from '../config'
+import { config } from '../config/app'
 
-const config = configure()
-// @ts-expect-error (TODO: define type for config.networks)
 const publicProvider = config.networks[1].publicProvider
 
 export const getNameOrAddressForAddress = async (

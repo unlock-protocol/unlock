@@ -6,19 +6,22 @@ import { pageTitle } from '../../constants'
 import { Heading, Description } from '../interface/SignupSuccess'
 import LoginPrompt from '../interface/LoginPrompt'
 import { useAuth } from '../../contexts/AuthenticationContext'
-import { useRouter } from 'next/router'
+import { useNavigate, useSearch } from '@tanstack/react-location'
 
 export const LoginContent = () => {
   const { account } = useAuth()
-  const router = useRouter()
-  const redirect = router.query?.redirect?.toString()
+  const navigate = useNavigate()
+  const search = useSearch()
+  const redirect = search.redirect as string
 
   useEffect(() => {
     // auto redirect to previous page
     if (redirect && account) {
-      router.push(redirect)
+      navigate({
+        to: redirect,
+      })
     }
-  }, [account, redirect, router])
+  }, [account, redirect, navigate])
 
   return (
     <Layout title="Login">

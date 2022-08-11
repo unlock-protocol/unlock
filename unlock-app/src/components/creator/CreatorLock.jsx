@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { useRouter } from 'next/router'
 import styled from 'styled-components'
 import networks from '@unlock-protocol/networks'
 import UnlockPropTypes from '../../propTypes'
@@ -31,7 +30,7 @@ import {
 } from './LockStyles'
 import { currencySymbol } from '../../utils/lock'
 import { INFINITY, MAX_UINT } from '../../constants'
-
+import { useSearch } from '@tanstack/react-location'
 const BalanceOnLock = withConfig(({ lock, attribute, config }) => {
   const currency = currencySymbol(lock, config.ERC20Contract)
   return <Balance amount={lock[attribute]} currency={currency} />
@@ -70,7 +69,7 @@ export const CreatorLock = ({
   network,
   showIntegrations,
 }) => {
-  const { query } = useRouter()
+  const query = useSearch()
   const [showDrawer, setShowDrawer] = useState(
     showIntegrations ? 'embed-coded' : ''
   )
