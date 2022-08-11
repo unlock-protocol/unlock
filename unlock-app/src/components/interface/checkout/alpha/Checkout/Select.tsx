@@ -144,7 +144,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
           >
             {locks &&
               Object.entries(locks).map(([network, items]) => (
-                <section key={network} className="space-y-2">
+                <section key={network} className="space-y-6">
                   <header>
                     <p className="font-bold text-brand-ui-primary text-lg">
                       {config.networks[network].name}
