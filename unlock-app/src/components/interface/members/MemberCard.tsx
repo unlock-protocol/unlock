@@ -194,6 +194,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <span className={styles.description}>Owner</span>
           <span className={[styles.title, 'flex gap-2'].join(' ')}>
             <span className="min-w-[120px]">
+              {/* ens will not be minified when resolved */}
               {addressToEns === keyholderAddress
                 ? addressMinify(keyholderAddress)
                 : addressToEns}
