@@ -49,10 +49,7 @@ export function SignIn({ unlockAccountService, signIn }: Props) {
   return (
     <div className="h-full flex flex-col justify-between">
       <main className="px-6 pb-2 space-y-2 overflow-auto h-full">
-        <h3 className="font-bold ml-0.5">
-          Nice to see you again! Please enter the password you created
-          previously
-        </h3>
+        <h3 className="font-bold ml-0.5">Please enter your password</h3>
         <form id="password" onSubmit={handleSubmit(onSubmit)}>
           <Input
             label="Password"
@@ -61,7 +58,6 @@ export function SignIn({ unlockAccountService, signIn }: Props) {
             placeholder="password"
             required
             error={errors?.password?.message as unknown as string}
-            description={'Enter your password'}
             {...register('password', {
               required: true,
             })}

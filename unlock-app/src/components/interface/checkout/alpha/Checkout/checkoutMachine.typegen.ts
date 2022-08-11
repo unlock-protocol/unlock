@@ -18,41 +18,41 @@ export interface Typegen0 {
     delays: never
   }
   eventsCausingActions: {
-    updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
-    signMessage: 'SIGN_MESSAGE'
-    selectLock: 'SELECT_LOCK'
+    confirmMint: 'CONFIRM_MINT'
     disconnect: 'DISCONNECT'
+    selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
+    selectLock: 'SELECT_LOCK'
+    selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
     selectQuantity: 'SELECT_QUANTITY'
     selectRecipients: 'SELECT_RECIPIENTS'
-    selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
-    selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
+    signMessage: 'SIGN_MESSAGE'
     solveCaptcha: 'SOLVE_CAPTCHA'
-    confirmMint: 'CONFIRM_MINT'
+    updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
   }
   eventsCausingServices: {}
   eventsCausingGuards: {
-    isLockSelected: 'DISCONNECT' | 'done.invoke.unlockAccount'
-    requireMessageToSign:
-      | 'SELECT_PAYMENT_METHOD'
-      | 'SELECT_CARD_TO_CHARGE'
-      | 'BACK'
+    isLockSelected: 'done.invoke.unlockAccount'
     requireCaptcha:
-      | 'SELECT_PAYMENT_METHOD'
       | 'SELECT_CARD_TO_CHARGE'
+      | 'SELECT_PAYMENT_METHOD'
       | 'SIGN_MESSAGE'
+    requireMessageToSign:
+      | 'BACK'
+      | 'SELECT_CARD_TO_CHARGE'
+      | 'SELECT_PAYMENT_METHOD'
   }
   eventsCausingDelays: {}
   matchesStates:
-    | 'SELECT'
-    | 'QUANTITY'
-    | 'METADATA'
-    | 'PAYMENT'
-    | 'CARD'
-    | 'MESSAGE_TO_SIGN'
     | 'CAPTCHA'
+    | 'CARD'
     | 'CONFIRM'
+    | 'MESSAGE_TO_SIGN'
+    | 'METADATA'
     | 'MINTING'
-    | 'UNLOCK_ACCOUNT'
+    | 'PAYMENT'
+    | 'QUANTITY'
     | 'RETURNING'
+    | 'SELECT'
+    | 'UNLOCK_ACCOUNT'
   tags: never
 }

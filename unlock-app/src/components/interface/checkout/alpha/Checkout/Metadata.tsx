@@ -1,7 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { getAddressForName } from '~/hooks/useEns'
@@ -10,14 +10,7 @@ import { formResultToMetadata } from '~/utils/userMetadata'
 import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
-import {
-  BackButton,
-  CheckoutHead,
-  CheckoutTransition,
-  CloseButton,
-} from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
@@ -26,24 +19,17 @@ import { useQuery } from 'react-query'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(params?: Record<string, string>): void
 }
 
 interface FormData {
   metadata: Record<'recipient' | string, string>[]
 }
 
-export function Metadata({
-  checkoutService,
-  injectedProvider,
-  onClose,
-}: Props) {
+export function Metadata({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, isUnlockAccount, email } = useAuth()
   const storage = useStorageService()
   const { lock, paywallConfig, quantity } = state.context
-  const { title, description, iconURL } =
-    useCheckoutHeadContent(checkoutService)
   const web3Service = useWeb3Service()
 
   const metadataInputs =
@@ -157,163 +143,154 @@ export function Metadata({
   const isLoading = isSubmitting
 
   return (
-    <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
-        <div className="flex items-center justify-between p-6">
-          <BackButton onClick={() => send('BACK')} />
-          <CloseButton onClick={() => onClose()} />
-        </div>
-        <CheckoutHead
-          title={paywallConfig.title}
-          iconURL={iconURL}
-          description={description}
-        />
-        <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-          <div className="flex items-center gap-2 col-span-4">
-            <div className="flex items-center gap-0.5">
-              <IconButton
-                title="Select lock"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('SELECT')
-                }}
-              />
-              <IconButton
-                title="Choose quantity"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('QUANTITY')
-                }}
-              />
+    <Fragment>
+      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
+        <div className="flex items-center gap-2 col-span-4">
+          <div className="flex items-center gap-0.5">
+            <IconButton
+              title="Select lock"
+              icon={ProgressCircleIcon}
+              onClick={() => {
+                send('SELECT')
+              }}
+            />
+            <IconButton
+              title="Choose quantity"
+              icon={ProgressCircleIcon}
+              onClick={() => {
+                send('QUANTITY')
+              }}
+            />
 
-              <ProgressCircleIcon />
-            </div>
-            <h4 className="text-sm "> {title}</h4>
+            <ProgressCircleIcon />
           </div>
-          <div className="border-t-4 w-full flex-1"></div>
-          <div className="inline-flex items-center gap-1">
-            <ProgressCircleIcon disabled />
-            {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
-            <ProgressCircleIcon disabled />
-            <ProgressFinishIcon disabled />
-          </div>
+          <h4 className="text-sm "> Add recipient info </h4>
         </div>
-        <main className="px-6 py-2 overflow-auto h-full">
-          {isMembershipsLoading ? (
-            <div className="grid w-full gap-y-2 pb-6">
-              <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
-              <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
-              <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
-            </div>
-          ) : (
-            <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
-              {fields.map((item, index) => {
-                const hideRecipient = !index && hideFirstRecipient
-                return (
-                  <div
-                    key={item.id}
-                    className={twMerge(
-                      'py-2 space-y-2',
-                      fields.length > index + 1 ? 'border-b ' : null
-                    )}
-                  >
-                    {hideRecipient ? (
-                      <div className="space-y-1">
-                        <div className="text-sm ml-1"> Recipient #1 </div>
-                        <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
-                          <div className="w-32 text-sm truncate">
-                            {isUnlockAccount ? email : account}
-                          </div>
-                          <Button
-                            onClick={(event) => {
-                              event.preventDefault()
-                              setHideFirstRecipient(false)
-                            }}
-                            size="tiny"
-                          >
-                            Change
-                          </Button>
-                        </div>
-                      </div>
-                    ) : (
-                      <Input
-                        label={`Recipient #${index + 1}`}
-                        size="small"
-                        error={
-                          errors?.metadata?.[index]?.recipient
-                            ?.message as unknown as string
-                        }
-                        {...register(`metadata.${index}.recipient`, {
-                          required: 'Recipient is required',
-                          validate: {
-                            max_keys: async (value) => {
-                              try {
-                                const address = await getAddressForName(value)
-                                const contract = await web3Service.lockContract(
-                                  lock!.address,
-                                  lock!.network
-                                )
-                                const items = await contract.balanceOf(address)
-                                const numberOfMemberships =
-                                  ethers.BigNumber.from(items).toNumber()
-                                return numberOfMemberships <
-                                  (lock?.maxKeysPerAddress || 1)
-                                  ? true
-                                  : 'Address already holds the maximum number of memberships.'
-                              } catch (error) {
-                                console.error(error)
-                                return 'There is a problem with using this address. Try another.'
-                              }
-                            },
-                          },
-                        })}
-                      />
-                    )}
-                    {metadataInputs?.map((metadataInputItem) => (
-                      <Input
-                        key={metadataInputItem.name}
-                        label={metadataInputItem.name}
-                        defaultValue={metadataInputItem.defaultValue}
-                        size="small"
-                        placeholder={metadataInputItem.placeholder}
-                        type={metadataInputItem.type}
-                        error={
-                          errors?.metadata?.[index]?.[metadataInputItem.name]
-                            ?.message as unknown as string
-                        }
-                        {...register(
-                          `metadata.${index}.${metadataInputItem.name}`,
-                          {
-                            required:
-                              metadataInputItem.required &&
-                              `${metadataInputItem.name} is required`,
-                          }
-                        )}
-                      />
-                    ))}
-                  </div>
-                )
-              })}
-            </form>
-          )}
-        </main>
-        <footer className="px-6 pt-6 border-t grid items-center">
-          <Connected
-            injectedProvider={injectedProvider}
-            service={checkoutService}
-          >
-            <Button
-              loading={isLoading}
-              disabled={isLoading}
-              className="w-full"
-              form="metadata"
-            >
-              {isLoading ? 'Continuing' : 'Next'}
-            </Button>
-          </Connected>
-          <PoweredByUnlock />
-        </footer>
+        <div className="border-t-4 w-full flex-1"> </div>
+        <div className="inline-flex items-center gap-1">
+          <ProgressCircleIcon disabled />
+          {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
+          <ProgressCircleIcon disabled />
+          <ProgressFinishIcon disabled />
+        </div>
       </div>
-    </CheckoutTransition>
+      <main className="px-6 py-2 overflow-auto h-full">
+        {isMembershipsLoading ? (
+          <div className="grid w-full gap-y-2 pb-6">
+            <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
+            <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
+            <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
+          </div>
+        ) : (
+          <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
+            {fields.map((item, index) => {
+              const hideRecipient = !index && hideFirstRecipient
+              return (
+                <div
+                  key={item.id}
+                  className={twMerge(
+                    'py-2 space-y-2',
+                    fields.length > index + 1 ? 'border-b ' : null
+                  )}
+                >
+                  {hideRecipient ? (
+                    <div className="space-y-1">
+                      <div className="text-sm ml-1"> Recipient #1 </div>
+                      <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
+                        <div className="w-32 text-sm truncate">
+                          {isUnlockAccount ? email : account}
+                        </div>
+                        <Button
+                          onClick={(event) => {
+                            event.preventDefault()
+                            setHideFirstRecipient(false)
+                          }}
+                          size="tiny"
+                        >
+                          Change
+                        </Button>
+                      </div>
+                    </div>
+                  ) : (
+                    <Input
+                      label={
+                        quantity > 1 ? `Recipient #${index + 1}` : 'Recipient'
+                      }
+                      size="small"
+                      error={
+                        errors?.metadata?.[index]?.recipient
+                          ?.message as unknown as string
+                      }
+                      {...register(`metadata.${index}.recipient`, {
+                        required: 'Recipient is required',
+                        validate: {
+                          max_keys: async (value) => {
+                            try {
+                              const address = await getAddressForName(value)
+                              const contract = await web3Service.lockContract(
+                                lock!.address,
+                                lock!.network
+                              )
+                              const items = await contract.balanceOf(address)
+                              const numberOfMemberships =
+                                ethers.BigNumber.from(items).toNumber()
+                              return numberOfMemberships <
+                                (lock?.maxKeysPerAddress || 1)
+                                ? true
+                                : 'Address already holds the maximum number of memberships.'
+                            } catch (error) {
+                              console.error(error)
+                              return 'There is a problem with using this address. Try another.'
+                            }
+                          },
+                        },
+                      })}
+                    />
+                  )}
+                  {metadataInputs?.map((metadataInputItem) => (
+                    <Input
+                      key={metadataInputItem.name}
+                      label={metadataInputItem.name}
+                      defaultValue={metadataInputItem.defaultValue}
+                      size="small"
+                      placeholder={metadataInputItem.placeholder}
+                      type={metadataInputItem.type}
+                      error={
+                        errors?.metadata?.[index]?.[metadataInputItem.name]
+                          ?.message as unknown as string
+                      }
+                      {...register(
+                        `metadata.${index}.${metadataInputItem.name}`,
+                        {
+                          required:
+                            metadataInputItem.required &&
+                            `${metadataInputItem.name} is required`,
+                        }
+                      )}
+                    />
+                  ))}
+                </div>
+              )
+            })}
+          </form>
+        )}
+      </main>
+      <footer className="px-6 pt-6 border-t grid items-center">
+        <Connected
+          injectedProvider={injectedProvider}
+          service={checkoutService}
+        >
+          <Button
+            loading={isLoading}
+            disabled={isLoading}
+            className="w-full"
+            form="metadata"
+          >
+            {isLoading ? 'Continuing' : 'Next'}
+          </Button>
+        </Connected>
+        <PoweredByUnlock />
+      </footer>
+    </Fragment>
   )
 }
