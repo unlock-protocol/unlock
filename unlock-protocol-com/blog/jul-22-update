@@ -1,45 +1,47 @@
 ---
 title: Unlock Protocol Product Updates for July 2022
-subTitle: Brand new docs site, NFT ticketing enhancements, smart contract optimizations, and various other improvements
+subTitle: Superfluid and Celo integrations, NFT ticketing enhancements, support for Goerli, and improvements to the checkout, keychain, and dashboard experiences
 authorName: Christopher Carfi
 publishDate: July 31, 2022
-description: Release Notes for July 2022. Unlock Protocol launches a brand new docs site, NFT ticketing enhancements, smart contract optimizations, and various other improvements.
+description: Release Notes for July 2022. Unlock Protocol releases Superfluid and Celo integrations, NFT ticketing enhancements, support for Goerli, and improvements to the checkout, keychain, and dashboard experiences..
 image: /images/blog/july-22-update/july-22-banner.png
 ---
 
 ![july-22-banner.png](/images/blog/july-22-update/july-22-banner.png)
 
-## New checkout improvements
-- changing recipient
-- fixed message signing
-- showing lock image
-- claim
-- back button in nav
-## Static site
-- Upcoming events page
-- Home page slider improved
+## Partners and integrations
+- Launched [Superfluid integration](https://unlock-protocol.com/blog/superfluid-unlock)
+- Launched on the [Celo network](https://unlock-protocol.com/blog/unlock-celo-launch)
+
+## Checkout 
+- Changing recipient
+- Showing lock image
+- Claiming
+- Other user experience improvements
 
 ## Members page
-- pagination improved
-- Email in airdrop
+- Pagination improved
+- [Email in airdrop](https://unlock-protocol.com/blog/email-airdrop-nft)
 - Show total members
-- adding and updating members emails
+- Adding and updating members emails
 - QR code sent by email for new keys
 - Search members by token id
 - Search members by address
+
 ## Dashboard
   - Improved support for Sign In With Ethereum
+  
 ## Keychain
-- Load all keys groupped by networks
+- Load all keys grouped by networks
 - Show metadata on keychain
-- Support for EthPass
+- Support for [EthPass](https://twitter.com/ethpass/status/1548054634899550208)
 
-## New QR code verification page:
-  - Button to "scan next"
+## NFT ticketing
+  - Improved check-in app
   
 ## Other
-- Rinkeby deprecation
-- Goerli launch
-- Superfluid integration
-  
+- Added support for the [Goerli test network](https://unlock-protocol.com/blog/goerli)
+- Launched an [upcoming community events](https://unlock-protocol.com/upcoming-events) page
+- Rinkeby network deprecation
+
 Want to know more and try stuff out? [Join the Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!
