@@ -226,7 +226,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
                   })
                 }}
               >
-                Add {quantity} {quantity > 1 ? 'memberships' : 'membership'}
+                {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
               </Button>
             )}
           </div>
