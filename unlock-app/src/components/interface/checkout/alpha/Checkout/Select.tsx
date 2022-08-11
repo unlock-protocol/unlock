@@ -1,7 +1,7 @@
 import { CheckoutService, LockState } from './checkoutMachine'
 import { useConfig } from '~/utils/withConfig'
 import { Connected } from '../Connected'
-import { Pricing } from '../Lock'
+import { LockOptionPlaceholder, Pricing } from '../Lock'
 import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -21,6 +21,7 @@ import {
 import { Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
+
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -128,13 +129,10 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         </div>
       </div>
       <main className="px-6 py-2 overflow-auto h-full">
-        {isLocksLoading || isMembershipsLoading ? (
-          <div className="space-y-4">
-            {Array.from({ length: lockOptions.length * 2 }).map((_, index) => (
-              <div
-                key={index}
-                className="w-full bg-gray-100 p-4 rounded-lg animate-pulse"
-              />
+        {isLocksLoading ? (
+          <div className="space-y-4 mt-6">
+            {Array.from({ length: lockOptions.length }).map((_, index) => (
+              <LockOptionPlaceholder key={index} />
             ))}
           </div>
         ) : (
@@ -158,11 +156,19 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                     )
                     return (
                       <RadioGroup.Option
+                        disabled={isMembershipsLoading}
                         key={item.address}
                         value={value}
-                        className={({ checked }) =>
+                        className={({ checked, disabled }) =>
                           `flex flex-col p-2 w-full gap-4 items-center ring-1 ring-gray-200 rounded-xl cursor-pointer relative ${
                             checked && 'ring-ui-main-200 bg-ui-main-50'
+                          } ${
+                            disabled &&
+                            `opacity-80 bg-gray-50  ${
+                              isMembershipsLoading
+                                ? 'cursor-wait'
+                                : 'cursor-not-allowed'
+                            }`
                           }`
                         }
                       >
