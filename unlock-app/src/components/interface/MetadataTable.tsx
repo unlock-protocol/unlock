@@ -129,14 +129,15 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     setCurrentLock(null)
   }
 
-  const isKeyValid = (metadata: any) => {
+  const isKeyValid = (metadata: KeyMetadata) => {
     if (!metadata?.expiration) return false
+    if (metadata?.expiration.toLowerCase() === 'never') return true
     const now = new Date().getTime()
     const expiration = new Date(metadata?.expiration).getTime()
     return expiration > now
   }
 
-  const expireAndRefundDisabled = (metadata: unknown): boolean => {
+  const expireAndRefundDisabled = (metadata: KeyMetadata): boolean => {
     return !(isLockManager && isKeyValid(metadata))
   }
 
