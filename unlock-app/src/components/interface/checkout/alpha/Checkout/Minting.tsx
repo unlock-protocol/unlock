@@ -140,7 +140,7 @@ export function Minting({
               rel="noopener noreferrer"
               className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
             >
-              See in block explorer{' '}
+              See in the block explorer
               <Icon icon={ExternalLinkIcon} size="small" />
             </a>
           )}
