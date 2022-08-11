@@ -3,7 +3,7 @@ title: Unlock Protocol Product Updates for July 2022
 subTitle: Superfluid and Celo integrations, NFT ticketing enhancements, support for Goerli, and improvements to the checkout, keychain, and dashboard experiences
 authorName: Christopher Carfi
 publishDate: July 31, 2022
-description: Release Notes for July 2022. Unlock Protocol releases Superfluid and Celo integrations, NFT ticketing enhancements, support for Goerli, and improvements to the checkout, keychain, and dashboard experiences..
+description: Release Notes for July 2022. Unlock Protocol releases Superfluid and Celo integrations, NFT ticketing enhancements, support for Goerli, and improvements to the checkout, keychain, and dashboard experiences.
 image: /images/blog/july-22-update/july-22-banner.png
 ---
 
@@ -23,7 +23,7 @@ image: /images/blog/july-22-update/july-22-banner.png
 - Pagination improved
 - [Email in airdrop](https://unlock-protocol.com/blog/email-airdrop-nft)
 - Show total members
-- Adding and updating members emails
+- Adding and updating member emails
 - QR code sent by email for new keys
 - Search members by token id
 - Search members by address
@@ -32,12 +32,12 @@ image: /images/blog/july-22-update/july-22-banner.png
   - Improved support for Sign In With Ethereum
   
 ## Keychain
-- Load all keys grouped by networks
+- Load all keys grouped by network
 - Show metadata on keychain
 - Support for [EthPass](https://twitter.com/ethpass/status/1548054634899550208)
 
 ## NFT ticketing
-  - Improved check-in app
+  - Improved [NFT ticketing check-in app](https://unlock-protocol.com/blog/ethcc5-2022-ticketing)
   
 ## Other
 - Added support for the [Goerli test network](https://unlock-protocol.com/blog/goerli)
