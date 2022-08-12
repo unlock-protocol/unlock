@@ -9,7 +9,7 @@ import {
   RiArrowLeftLine as BackIcon,
 } from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
-
+import SvgComponents from '../../svg'
 interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>
 }
@@ -83,12 +83,16 @@ export function CheckoutHead({ title, iconURL }: CheckoutHeadProps) {
             width={64}
             height={64}
           />
-          <Avatar.Fallback className="inline-flex border items-center justify-center w-16 h-16 rounded-full">
-            {title?.slice(0, 2).toUpperCase()}
+          <Avatar.Fallback>
+            <SvgComponents.UnlockMonogram
+              className="rounded-full"
+              height={64}
+              width={64}
+            />
           </Avatar.Fallback>
         </Avatar.Root>
         <div>
-          <h1 className="font-bold text-lg"> {title} </h1>
+          <h1 className="font-bold text-lg"> {title || 'Unlock Protocol'} </h1>
           <p className="text-base text-brand-dark"> Membership </p>
         </div>
       </div>
