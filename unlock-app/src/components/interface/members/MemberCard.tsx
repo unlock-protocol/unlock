@@ -12,6 +12,7 @@ import AuthenticationContext from '../../../contexts/AuthenticationContext'
 import { WalletServiceContext } from '~/utils/withWalletService'
 import useClipboard from 'react-use-clipboard'
 import { FieldValues, useForm } from 'react-hook-form'
+import useEns from '~/hooks/useEns'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -67,6 +68,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const [emailSent, setEmailSent] = useState(false)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [data, setData] = useState(metadata)
+  const addressToEns = useEns(keyholderAddress)
   const [extraDataItems, setExtraDataItems] = useState<
     [string, string | number][]
   >([])
@@ -192,7 +194,10 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <span className={styles.description}>Owner</span>
           <span className={[styles.title, 'flex gap-2'].join(' ')}>
             <span className="min-w-[120px]">
-              {addressMinify(keyholderAddress)}
+              {/* ens will not be minified when resolved */}
+              {addressToEns === keyholderAddress
+                ? addressMinify(keyholderAddress)
+                : addressToEns}
             </span>
             <button
               onClick={setCopied}
