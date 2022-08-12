@@ -14,6 +14,7 @@ import { Input, Button } from '@unlock-protocol/ui'
 import useDebounce from '../../hooks/useDebouce'
 import 'cross-fetch/polyfill'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
+import { Lock } from '@unlock-protocol/types'
 
 interface PaginationProps {
   currentPage: number
@@ -76,6 +77,10 @@ export const MembersContent = ({ query }: MembersContentProps) => {
 
   const hasLocks = lockAddresses?.length > 0
 
+  const onLockChange = (lock: Lock) => {
+    window.location.href = `/members?locks=${lock.address}`
+  }
+
   return (
     <Layout title="Members">
       <Head>
@@ -94,11 +99,13 @@ export const MembersContent = ({ query }: MembersContentProps) => {
           <>
             <div className="grid items-center grid-cols-[1fr] gap-3 sm:grid-cols-[1fr_200px]">
               <Account />
-              <Button onClick={() => setIsOpen(!isOpen)}>Airdrop Keys</Button>
+              <Button disabled={!hasLocks} onClick={() => setIsOpen(!isOpen)}>
+                Airdrop Keys
+              </Button>
             </div>
 
             {!hasLocks ? (
-              <LocksByNetwork owner={account} />
+              <LocksByNetwork onChange={onLockChange} owner={account} />
             ) : (
               <MetadataTableWrapper page={page} lockAddresses={lockAddresses} />
             )}

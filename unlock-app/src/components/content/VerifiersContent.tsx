@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import { Button, Modal, Input } from '@unlock-protocol/ui'
@@ -10,6 +10,9 @@ import { VerifiersList } from '../interface/verifiers/VerifiersList'
 import { getAddressForName } from '../../hooks/useEns'
 import { ToastHelper } from '../helpers/toast.helper'
 import { useStorageService } from '../../utils/withStorageService'
+import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
+import { Lock } from '@unlock-protocol/types'
+import AuthenticationContext from '~/contexts/AuthenticationContext'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -27,6 +30,7 @@ interface VerifiersContentProps {
 export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   query,
 }) => {
+  const { account } = useContext(AuthenticationContext)
   const [addVerifierModalOpen, setAddVerifierModalOpen] = useState(false)
   const [verifierAddress, setVerifierAddress] = useState('')
   const [loading, setLoading] = useState(false)
@@ -115,6 +119,11 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
     }
   }
 
+  const onLockChange = (lock: Lock, network: number) => {
+    window.location.href = `/verifiers?lock=${lock.address}&network=${network}`
+  }
+
+  const withoutParams = !lock || !network
   return (
     <Layout title="Verifiers">
       <Head>
@@ -124,14 +133,21 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
       <VerifierContent>
         <Header>
           <span>A list for all verifiers for your event</span>
-          <Button onClick={onAddVerifier}>Add verifier</Button>
+          <Button disabled={withoutParams} onClick={onAddVerifier}>
+            Add verifier
+          </Button>
         </Header>
-        <VerifiersList
-          lockAddress={lock}
-          getVerifierList={getVerifierList}
-          verifiers={verifiers}
-          setVerifiers={setVerifiers}
-        />
+
+        {withoutParams ? (
+          <LocksByNetwork onChange={onLockChange} owner={account!} />
+        ) : (
+          <VerifiersList
+            lockAddress={lock}
+            getVerifierList={getVerifierList}
+            verifiers={verifiers}
+            setVerifiers={setVerifiers}
+          />
+        )}
       </VerifierContent>
 
       <Modal isOpen={addVerifierModalOpen} setIsOpen={onAddVerifier}>
