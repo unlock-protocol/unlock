@@ -15,6 +15,7 @@ import useDebounce from '../../hooks/useDebouce'
 import 'cross-fetch/polyfill'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 import { Lock } from '@unlock-protocol/types'
+import { getAddressForName } from '~/hooks/useEns'
 
 interface PaginationProps {
   currentPage: number
@@ -171,8 +172,9 @@ const MetadataTableWrapper = ({
     filterKey,
   })
 
-  const search = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const search = e?.target?.value ?? ''
+  const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const ensToAddress = await getAddressForName(e?.target?.value)
+    const search = ensToAddress || e?.target?.value || ''
     setQuery(search)
   }
 
