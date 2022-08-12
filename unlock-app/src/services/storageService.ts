@@ -960,6 +960,27 @@ export class StorageService extends EventEmitter {
     )
   }
 
+  async getMembers({
+    lockAddress,
+    network,
+    lock,
+  }: {
+    lockAddress: string
+    network: number
+    lock: any
+  }): Promise<any> {
+    const url = new URL(
+      `${this.host}/v2/api/member/${network}/locks/${lockAddress}/list`
+    )
+
+    const response = await fetch(url, {
+      method: 'GET',
+    })
+    const data = response.json()
+
+    return data
+  }
+
   async sendKeyQrCodeViaEmail({
     lockAddress,
     tokenId,
