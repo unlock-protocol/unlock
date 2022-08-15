@@ -155,13 +155,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               <div className="flex w-full justify-between">
                 <h3 className="font-bold"> Pay via cryptocurrency </h3>
                 <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-                  {baseSymbol.toUpperCase()}
+                  {symbol.toUpperCase()}
                   <CryptoIcon name={symbol.toLowerCase()} size={18} />
                 </div>
               </div>
               <div className="flex items-center w-full justify-between">
                 <div className="text-sm flex items-center w-full text-left text-gray-500">
-                  Your balance
+                  Your balance ({symbol.toUpperCase()})
                   <p className="font-medium ml-2 w-20 truncate">
                     {balanceAmount?.toString()}
                   </p>
