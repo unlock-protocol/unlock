@@ -270,7 +270,7 @@ export const buildMembersWithMetadata = (lock: Lock, metadataItems: any[]) => {
       token: key?.keyId,
       lockName: lock?.name,
       expiration: key?.expiration,
-      keyholderAddress: lock?.owner,
+      keyholderAddress: key?.owner?.address,
       lockAddress: lock?.address,
       ...userMetadata?.private,
       ...userMetadata?.protected,
