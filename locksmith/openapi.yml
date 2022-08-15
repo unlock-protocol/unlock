@@ -46,3 +46,39 @@ paths:
       responses:
         '200':
           description: OK
+  /v2/member/{network}/locks/{lockAddress}:
+    get:
+    parameters:
+      - in: path
+        name: network
+        required: true
+        schema:
+          type: integer
+        description: Network id
+      - in: path
+        name: lockAddress
+        required: true
+        schema:
+          type: string
+        description: Lock address
+      description: List of lock keys by network with additional metadata if the caller is the lockManager
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                query:
+                  type: string
+                filterKey:
+                  type: string
+                expiration:
+                  type: string
+                page: 
+                  type: integer
+      responses:
+        '200':
+          description: List of members
+          content:
+            application/json:
+              schema:
+                type: array
