@@ -36,11 +36,7 @@ function AnimationContent({ status }: { status: Mint['status'] }) {
       )
     case 'FINISHED':
       return (
-        <Lottie
-          className={animationClass}
-          loop
-          animationData={mintedAnimation}
-        />
+        <Lottie className={animationClass} animationData={mintedAnimation} />
       )
     case 'ERROR': {
       return (
@@ -106,16 +102,25 @@ export function Minting({
     waitForConfirmation()
   }, [mint, lock, config, send, communication, account, messageToSign])
 
-  const text = useMemo(() => {
+  const content = useMemo(() => {
     switch (status) {
       case 'PROCESSING': {
-        return 'Minting NFT'
+        return {
+          title: 'Minting NFT',
+          text: 'Purchasing NFT...',
+        }
       }
       case 'FINISHED': {
-        return 'You have NFT!'
+        return {
+          title: 'You have NFT!',
+          text: 'Successfully purchased NFT',
+        }
       }
       case 'ERROR': {
-        return 'Minting failed'
+        return {
+          title: 'Minting failed',
+          text: 'Failed to purchase NFT',
+        }
       }
     }
   }, [status])
@@ -133,18 +138,16 @@ export function Minting({
             <ProgressCircleIcon disabled />
             <ProgressFinishedIcon />
           </div>
-          <h4 className="text-sm"> {text} </h4>
+          <h4 className="text-sm"> {content?.title} </h4>
         </div>
         <div className="border-t-4 w-full flex-1"></div>
       </div>
       <main className="px-6 py-2 overflow-auto h-full">
         <div className="h-full flex flex-col items-center justify-center space-y-2">
           {status && <AnimationContent status={status} />}
-          {status === 'ERROR' && (
-            <p className="font-bold text-lg text-brand-ui-primary">
-              Oh no... something went wrong
-            </p>
-          )}
+          <p className="font-bold text-lg text-brand-ui-primary">
+            {content?.text}
+          </p>
           {mint?.transactionHash && (
             <a
               href={config.networks[lock!.network].explorer.urls.transaction(
