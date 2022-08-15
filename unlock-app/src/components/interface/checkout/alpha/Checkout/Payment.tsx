@@ -40,7 +40,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const [balance, setBalance] = useState<string | null>(null)
   const storageService = useStorageService()
   const baseSymbol = config.networks[lock.network].baseCurrencySymbol
-  const symbol = lockTickerSymbol(lock, baseSymbol).toLowerCase()
+  const symbol = lockTickerSymbol(lock, baseSymbol)
   const isPayable = balance
     ? userCanAffordKey(lock as any, balance, recipients.length)
     : false
@@ -153,14 +153,15 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               className="border flex flex-col w-full border-gray-400 space-y-2 cursor-pointer shadow p-4 rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
             >
               <div className="flex w-full justify-between">
-                <h3 className="font-bold"> Pay by Crypto </h3>
-                <div className="flex items-center gap-x-2 text-sm">
-                  Accept: <CryptoIcon name={symbol} size={18} />
+                <h3 className="font-bold"> Pay via cryptocurrency </h3>
+                <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
+                  {symbol.toUpperCase()}
+                  <CryptoIcon name={symbol.toLowerCase()} size={18} />
                 </div>
               </div>
               <div className="flex items-center w-full justify-between">
                 <div className="text-sm flex items-center w-full text-left text-gray-500">
-                  Your balance:
+                  Your balance ({symbol.toUpperCase()})
                   <p className="font-medium ml-2 w-20 truncate">
                     {balanceAmount?.toString()}
                   </p>
@@ -185,7 +186,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 className="border flex flex-col w-full border-gray-400 space-y-2 cursor-pointer shadow p-4 rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="items-center flex justify-between w-full">
-                  <h3 className="font-bold"> Pay by Credit Card </h3>
+                  <h3 className="font-bold"> Pay via credit card </h3>
                   <div className="flex items-center gap-x-2 text-sm">
                     Accept:
                     <VisaIcon size={18} />
@@ -245,7 +246,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 className="border flex flex-col w-full border-gray-400 space-y-2 cursor-pointer shadow p-4 rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="items-center flex justify-between w-full">
-                  <h3 className="font-bold"> Pay using Superfluid </h3>
+                  <h3 className="font-bold"> Pay via superfluid </h3>
                   <div className="flex items-center gap-x-2 text-sm">
                     Accept: <CryptoIcon name={symbol} size={18} />
                   </div>

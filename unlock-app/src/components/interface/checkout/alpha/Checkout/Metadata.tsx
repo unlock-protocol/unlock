@@ -117,10 +117,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         })
       )
       if (metadataInputs) {
-        const users = formData.metadata.map(({ recipient, ...rest }) => {
-          const formattedMetadata = formResultToMetadata(rest, metadataInputs!)
+        const users = formData.metadata.map((props, index) => {
+          const formattedMetadata = formResultToMetadata(props, metadataInputs!)
           return {
-            userAddress: recipient,
+            userAddress: recipients[index],
             metadata: {
               public: formattedMetadata.publicData,
               protected: formattedMetadata.protectedData,
@@ -217,12 +217,13 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                         quantity > 1 ? `Recipient #${index + 1}` : 'Recipient'
                       }
                       size="small"
+                      description="Enter Ethereum address or an ENS"
                       error={
                         errors?.metadata?.[index]?.recipient
                           ?.message as unknown as string
                       }
                       {...register(`metadata.${index}.recipient`, {
-                        required: 'Recipient is required',
+                        required: 'Ethereum address or an ENS is required',
                         validate: {
                           max_keys: async (value) => {
                             try {
