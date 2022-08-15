@@ -18,7 +18,7 @@ export const isSignatureValidForAddress = (
     return !!(
       signer === address.toLowerCase() ||
       (locksmithSigners &&
-        locksmithSigners?.map(item => item.toLowerCase()).includes(signer))
+        locksmithSigners?.map((item) => item.toLowerCase()).includes(signer))
     )
   } catch (error) {
     console.error(error)
