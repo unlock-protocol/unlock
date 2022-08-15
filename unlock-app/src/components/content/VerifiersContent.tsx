@@ -13,6 +13,7 @@ import { useStorageService } from '../../utils/withStorageService'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 import { Lock } from '@unlock-protocol/types'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
+import { useRouter } from 'next/router'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -37,6 +38,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   const [verifiers, setVerifiers] = useState<any[]>([])
   const { lock, network } = query
   const storageService = useStorageService()
+  const router = useRouter()
 
   const onAddVerifier = () => {
     setVerifierAddress('')
@@ -120,7 +122,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   }
 
   const onLockChange = (lock: Lock, network: number) => {
-    window.location.href = `/verifiers?lock=${lock.address}&network=${network}`
+    router.push(`/verifiers?lock=${lock.address}&network=${network}`)
   }
 
   const withoutParams = !lock || !network
@@ -133,9 +135,19 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
       <VerifierContent>
         <Header>
           <span>A list for all verifiers for your event</span>
-          <Button disabled={withoutParams} onClick={onAddVerifier}>
-            Add verifier
-          </Button>
+          <div className="flex gap-2">
+            {!withoutParams && (
+              <Button
+                onClick={() => router.push('verifiers')}
+                variant="secondary"
+              >
+                Change Lock
+              </Button>
+            )}
+            <Button disabled={withoutParams} onClick={onAddVerifier}>
+              Add verifier
+            </Button>
+          </div>
         </Header>
 
         {withoutParams ? (

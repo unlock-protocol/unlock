@@ -16,6 +16,7 @@ import 'cross-fetch/polyfill'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 import { Lock } from '@unlock-protocol/types'
 import { getAddressForName } from '~/hooks/useEns'
+import { useRouter } from 'next/router'
 
 interface PaginationProps {
   currentPage: number
@@ -60,6 +61,7 @@ interface MembersContentProps {
 export const MembersContent = ({ query }: MembersContentProps) => {
   const { account } = useContext(AuthenticationContext)
   const [isOpen, setIsOpen] = useState(false)
+  const router = useRouter()
 
   let lockAddresses: string[] = []
   if (query.locks) {
@@ -79,7 +81,7 @@ export const MembersContent = ({ query }: MembersContentProps) => {
   const hasLocks = lockAddresses?.length > 0
 
   const onLockChange = (lock: Lock) => {
-    window.location.href = `/members?locks=${lock.address}`
+    router.push(`/members?locks=${lock.address}`)
   }
 
   return (
@@ -98,11 +100,22 @@ export const MembersContent = ({ query }: MembersContentProps) => {
         {!account && <LoginPrompt />}
         {account && (
           <>
-            <div className="grid items-center grid-cols-[1fr] gap-3 sm:grid-cols-[1fr_200px]">
+            <div className="grid items-center justify-between grid-cols-[1fr] gap-3 sm:grid-cols-[1fr_1fr]">
               <Account />
-              <Button disabled={!hasLocks} onClick={() => setIsOpen(!isOpen)}>
-                Airdrop Keys
-              </Button>
+              <div className="flex gap-2 justify-end">
+                {hasLocks && (
+                  <Button
+                    onClick={() => router.push('members')}
+                    variant="secondary"
+                  >
+                    Change Lock
+                  </Button>
+                )}
+
+                <Button disabled={!hasLocks} onClick={() => setIsOpen(!isOpen)}>
+                  Airdrop Keys
+                </Button>
+              </div>
             </div>
 
             {!hasLocks ? (

@@ -71,6 +71,9 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
         className="block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 pl-4 py-2 text-base"
         onChange={onOptionChange}
       >
+        <option value="" disabled selected>
+          Choose Lock
+        </option>
         {locks?.map(([networkId, items]) => {
           if (!items?.length) return null
           return items.map(
