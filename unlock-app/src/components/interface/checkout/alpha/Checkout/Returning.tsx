@@ -10,6 +10,7 @@ import { useActor } from '@xstate/react'
 import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
   injectedProvider: unknown
@@ -27,7 +28,9 @@ export function Returning({
 
   const { paywallConfig, lock, messageToSign: signedMessage } = state.context
   const { account, signMessage } = useAuth()
-  const [hasMessageToSign, setHasMessageToSign] = useState(!signedMessage)
+  const [hasMessageToSign, setHasMessageToSign] = useState(
+    !signedMessage && paywallConfig.messageToSign
+  )
   const [isSigningMessage, setIsSigningMessage] = useState(false)
 
   const onSign = async () => {
@@ -88,7 +91,7 @@ export function Returning({
           </a>
         </div>
       </main>
-      <footer className="p-6 border-t grid items-center">
+      <footer className="px-6 pt-6 border-t grid items-center">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
@@ -118,6 +121,7 @@ export function Returning({
             )}
           </div>
         </Connected>
+        <PoweredByUnlock />
       </footer>
     </Fragment>
   )
