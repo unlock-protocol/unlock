@@ -20,6 +20,19 @@ interface IsKeyOrLockOwnerOptions {
   network: number
 }
 
+interface Lock {
+  keys: {
+    owner: {
+      address: string
+    }
+    keyId: string
+    expiration: string
+  }[]
+  address: string
+  name: string
+  owner: string
+}
+
 export const updateKeyMetadata = async (data: any) => {
   try {
     await KeyMetadata.upsert(data, { returning: true })
@@ -240,4 +253,28 @@ export const getKeysMetadata = async ({
 
   const mergedData = await Promise.all(mergedDataList)
   return mergedData.filter(Boolean)
+}
+
+/** merge keys items with the corresponding metadata value */
+export const buildMembersWithMetadata = (lock: Lock, metadataItems: any[]) => {
+  return lock?.keys?.map((key: any) => {
+    // get key metadata for the owner
+    const { userMetadata, extraMetadata } =
+      metadataItems?.find(
+        (metadata) =>
+          metadata?.userAddress?.toLowerCase() ===
+          key?.owner?.address?.toLowerCase()
+      )?.data ?? {}
+
+    return {
+      token: key?.keyId,
+      lockName: lock?.name,
+      expiration: key?.expiration,
+      keyholderAddress: lock?.owner,
+      lockAddress: lock?.address,
+      ...userMetadata?.private,
+      ...userMetadata?.protected,
+      ...extraMetadata,
+    }
+  })
 }

@@ -2,6 +2,7 @@ import { GraphQLDataSource } from 'apollo-datasource-graphql'
 import networks from '@unlock-protocol/networks'
 import gql from 'graphql-tag'
 import { DocumentNode } from 'graphql'
+import { getValidNumber } from '../../utils/normalizer'
 
 export type MemberFilter = 'all' | 'active' | 'expired' | 'keyId'
 const keyholdersByKeyIdQuery = gql`
@@ -127,9 +128,12 @@ const QUERY_BY_TYPE: { [key in MemberFilter]: DocumentNode } = {
 
 interface MemberGetProps {
   addresses: string[]
-  query: string
-  page: number
-  type?: MemberFilter
+  filters: {
+    query: string
+    filterKey: string
+    page: number
+    expiration: MemberFilter
+  }
 }
 
 export class Members extends GraphQLDataSource {
@@ -140,21 +144,33 @@ export class Members extends GraphQLDataSource {
 
   async get({
     addresses = [],
-    query = '',
-    type = 'all',
-    page = 0,
+    filters: {
+      query: search,
+      filterKey = 'owner',
+      expiration = 'active',
+      page = 0,
+    },
   }: MemberGetProps) {
     try {
-      console.log(addresses)
-
       const first = 30
-      const skip = page * first
+      const skip = parseInt(`${page}`, 10) * first
       const expireTimestamp = parseInt(`${new Date().getTime() / 1000}`)
+      const keyId = getValidNumber(search)
 
-      const response = await this.query(QUERY_BY_TYPE[type], {
+      let query
+      if (filterKey === 'keyId' && `${search}`?.length) {
+        query = QUERY_BY_TYPE.keyId
+      } else {
+        query = QUERY_BY_TYPE[expiration]
+      }
+
+      const owner = `${search}`?.toLowerCase() ?? ''
+
+      const response = await this.query(query, {
         variables: {
           addresses,
-          search: query || '',
+          owner,
+          keyId,
           first,
           skip,
           expireTimestamp,

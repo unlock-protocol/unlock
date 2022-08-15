@@ -10,32 +10,48 @@ export default class MemberController {
   constructor({ web3Service }: { web3Service: Web3Service }) {
     this.web3Service = web3Service
   }
-
+  /**
+   * List of members with additional metadata when caller is the lockManager
+   * @return {members} members list
+   */
   async list(request: Request, response: Response) {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)
-      const { page = 0 }: any = request.body
+      const { filters } = request.query
+
+      const loggedUserAddress = Normalizer.ethereumAddress(
+        request!.user!.walletAddress
+      )
+
+      const isLockOwner = await this.web3Service.isLockManager(
+        lockAddress,
+        loggedUserAddress,
+        network
+      )
 
       const client = new Members(network)
-      const [members] = await client.get({
+      const [lock] = await client.get({
         addresses: [lockAddress],
-        query: '',
-        type: 'all',
-        page: parseInt(page),
+        filters: JSON.parse(filters as string),
       })
 
-      const metadata = await metadataOperations.getKeysMetadata({
-        keys: members?.keys || [],
-        network,
-        lockAddress,
-      })
+      // get metadata only if the logged user is the lockManager
+      let metadataItems = []
+      if (isLockOwner) {
+        metadataItems = await metadataOperations.getKeysMetadata({
+          keys: lock?.keys || [],
+          network,
+          lockAddress,
+        })
+      }
 
-      return response.status(200).send({
-        results: [],
-        members,
-        metadata,
-      })
+      const members = metadataOperations.buildMembersWithMetadata(
+        lock,
+        metadataItems
+      )
+
+      return response.status(200).send(members)
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
