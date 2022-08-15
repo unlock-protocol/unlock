@@ -25,16 +25,15 @@ export function Returning({
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
 
-  const { paywallConfig, lock } = state.context
-  const { messageToSign } = paywallConfig
+  const { paywallConfig, lock, messageToSign: signedMessage } = state.context
   const { account, signMessage } = useAuth()
-  const [hasMessageToSign, setHasMessageToSign] = useState(!!messageToSign)
+  const [hasMessageToSign, setHasMessageToSign] = useState(!signedMessage)
   const [isSigningMessage, setIsSigningMessage] = useState(false)
 
   const onSign = async () => {
     try {
       setIsSigningMessage(true)
-      const signature = await signMessage(messageToSign!)
+      const signature = await signMessage(paywallConfig.messageToSign!)
       setIsSigningMessage(false)
       send({
         type: 'SIGN_MESSAGE',

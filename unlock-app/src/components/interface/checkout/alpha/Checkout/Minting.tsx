@@ -8,7 +8,7 @@ import errorAnimation from '~/animations/error.json'
 import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, useMemo } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
@@ -106,6 +106,20 @@ export function Minting({
     waitForConfirmation()
   }, [mint, lock, config, send, communication, account, messageToSign])
 
+  const text = useMemo(() => {
+    switch (status) {
+      case 'PROCESSING': {
+        return 'Minting NFT'
+      }
+      case 'FINISHED': {
+        return 'You have NFT!'
+      }
+      case 'ERROR': {
+        return 'Minting failed'
+      }
+    }
+  }, [status])
+
   return (
     <Fragment>
       <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
@@ -119,14 +133,14 @@ export function Minting({
             <ProgressCircleIcon disabled />
             <ProgressFinishedIcon />
           </div>
-          <h4 className="text-sm"> Minting </h4>
+          <h4 className="text-sm"> {text} </h4>
         </div>
         <div className="border-t-4 w-full flex-1"></div>
       </div>
       <main className="px-6 py-2 overflow-auto h-full">
         <div className="h-full flex flex-col items-center justify-center space-y-2">
           {status && <AnimationContent status={status} />}
-          {mint?.status === 'ERROR' && (
+          {status === 'ERROR' && (
             <p className="font-bold text-lg text-brand-ui-primary">
               Oh no... something went wrong
             </p>
