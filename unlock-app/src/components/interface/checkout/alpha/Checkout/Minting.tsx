@@ -36,11 +36,7 @@ function AnimationContent({ status }: { status: Mint['status'] }) {
       )
     case 'FINISHED':
       return (
-        <Lottie
-          className={animationClass}
-          loop
-          animationData={mintedAnimation}
-        />
+        <Lottie className={animationClass} animationData={mintedAnimation} />
       )
     case 'ERROR': {
       return (
