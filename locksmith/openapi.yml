@@ -46,7 +46,7 @@ paths:
       responses:
         '200':
           description: OK
-  /v2/member/{network}/locks/{lockAddress}:
+  /v2/member/{network}/locks/{lockAddress}/list:
     get:
     parameters:
       - in: path
