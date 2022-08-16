@@ -15,6 +15,7 @@ import { invalidMembership } from './verification/invalidMembership'
 import { Button } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
 import { isSignatureValidForAddress } from '~/utils/signatures'
+import { useConfig } from '~/utils/withConfig'
 
 interface Props {
   config: MembershipVerificationConfig
@@ -34,6 +35,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const storageService = useStorageService()
   const router = useRouter()
   const [isCheckingIn, setIsCheckingIn] = useState(false)
+  const { locksmithSigners } = useConfig()
 
   const { isLoading: isKeyGranterLoading, data: keyGranter } = useQuery(
     [network],
@@ -150,7 +152,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     sig,
     raw,
     account,
-    keyGranter
+    (locksmithSigners || []).concat(keyGranter)
   )
 
   const invalid = invalidMembership({

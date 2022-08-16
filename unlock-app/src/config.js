@@ -56,6 +56,9 @@ export default function configure(
     }
   })
 
+  // List of locksmith signers
+  const locksmithSigners = ['0x58b5CeDE554a39666091F96C8058920dF5906581']
+
   return {
     tagManagerArgs,
     requiredConfirmations: 12,
@@ -69,5 +72,6 @@ export default function configure(
     stripeApiKey,
     networks,
     recaptchaKey,
+    locksmithSigners,
   }
 }
