@@ -161,8 +161,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
           <div className="flex gap-2">
             <Button
               onClick={() => router.push('verifiers')}
-              variant="secondary"
-              disabled={!withoutParams}
+              disabled={withoutParams}
             >
               Change Lock
             </Button>
