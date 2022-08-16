@@ -2,6 +2,7 @@ import networks from '@unlock-protocol/networks'
 import { Lock } from '@unlock-protocol/types'
 import React, { ChangeEvent, useContext } from 'react'
 import { useQuery } from 'react-query'
+import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { network } from '~/propTypes'
 import { addressMinify } from '~/utils/strings'
 import { GraphServiceContext } from '~/utils/withGraphService'
@@ -25,6 +26,10 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
   label = 'Select lock',
   onChange,
 }) => {
+  const { network: currentNetwork, changeNetwork } = useContext(
+    AuthenticationContext
+  )
+
   const graphService = useContext(GraphServiceContext)
 
   const { isLoading, data: locks } = useQuery(
@@ -48,7 +53,7 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
     return <LocksByNetworkPlaceholder />
   }
 
-  const onOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
+  const onOptionChange = async (e: ChangeEvent<HTMLSelectElement>) => {
     if (!network) return
     const id = e?.target?.value
     if (typeof onChange === 'function') {
@@ -59,6 +64,11 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
         selected = items.find((item: any) => item.id === id)
         selectedNetwork = network
       })
+
+      // change network before switch to the lock if has a different network
+      if (selectedNetwork !== currentNetwork) {
+        await changeNetwork(networks[selectedNetwork])
+      }
       onChange(selected, selectedNetwork)
     }
   }
@@ -70,8 +80,9 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
         name="form block form-select"
         className="block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 pl-4 py-2 text-base"
         onChange={onOptionChange}
+        defaultValue=""
       >
-        <option value="" disabled selected>
+        <option value="" disabled>
           Choose Lock
         </option>
         {locks?.map(([networkId, items]) => {
@@ -81,7 +92,7 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
               const minifiedAddress = addressMinify(address || '')
               const networkName = networks[networkId]?.name ?? '-'
               return (
-                <option key={index} value={id}>
+                <option key={`${address}-${networkName}`} value={id}>
                   {`${networkName} - ${name} - ${minifiedAddress}`}
                 </option>
               )

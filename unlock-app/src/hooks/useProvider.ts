@@ -166,6 +166,7 @@ export const useProvider = (config: any) => {
       resetProvider(newProvider)
     } else {
       try {
+        setNetwork(network.id)
         await ToastHelper.promise(
           provider.send(
             'wallet_switchEthereumChain',
