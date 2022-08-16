@@ -28,7 +28,7 @@ export const VerificationContent: React.FC<unknown> = () => {
 
   useEffect(() => {
     const login = async () => {
-      if (account && network && walletService && !storageService.token) {
+      if (account && network && walletService && !storageService.accessToken) {
         const promise = storageService.loginPrompt({
           walletService,
           address: account,
