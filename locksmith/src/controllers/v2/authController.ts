@@ -46,12 +46,15 @@ export class AuthController {
       const { token: refreshToken } = await refreshTokenData.save()
 
       response
-        .cookie('refresh-token', refreshToken, {
-          expires: new Date(message.expirationTime!),
+        .cookie('locksmith-refresh-token', refreshToken, {
+          expires: new Date(fields.expirationTime!),
           httpOnly: process.env.NODE_ENV === 'production',
+          sameSite: 'none',
+          secure: true,
         })
         .setHeader('refresh-token', refreshToken)
         .setHeader('Authorization', `Bearer ${accessToken}`)
+        .status(201)
         .send({
           walletAddress: fields.address,
           accessToken,
@@ -79,7 +82,6 @@ export class AuthController {
   async token(request: Request, response: Response) {
     try {
       const refreshToken =
-        request.body.refreshToken ||
         request.headers['refresh-token']?.toString() ||
         request.cookies['refresh-token']
 
@@ -104,11 +106,6 @@ export class AuthController {
         })
       }
 
-      // rotate refresh token
-      refreshTokenData.token = createRandomToken()
-
-      await refreshTokenData.save()
-
       const accessToken = createAccessToken({
         walletAddress: refreshTokenData.walletAddress,
         type: 'user',
@@ -117,10 +114,6 @@ export class AuthController {
       return response
         .status(200)
         .setHeader('Authorization', `Bearer ${accessToken}`)
-        .cookie('refresh-token', refreshTokenData.token, {
-          httpOnly: process.env.NODE_ENV === 'production',
-        })
-        .setHeader('refresh-token', refreshTokenData.token)
         .send({
           walletAddress: refreshTokenData.walletAddress,
           refreshToken: refreshTokenData.token,
@@ -160,9 +153,15 @@ export class AuthController {
 
   async revokeToken(request: Request, response: Response) {
     try {
+      console.log(
+        `cookies test: ${JSON.stringify(
+          request.cookies,
+          request.signedCookies
+        )}`
+      )
       const refreshToken =
-        request.body.refreshToken ||
-        request.headers['refresh-token']?.toString()
+        request.headers['refresh-token']?.toString() ||
+        request.cookies['refresh-token']
 
       if (!refreshToken) {
         return response.status(401).send({

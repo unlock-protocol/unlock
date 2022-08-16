@@ -76,12 +76,8 @@ export class StorageService extends EventEmitter {
       const endpoint = `${this.host}/v2/auth/revoke`
       await fetch(endpoint, {
         method: 'POST',
-        headers: {
-          'refresh-token': this.refreshToken!,
-        },
       })
       localStorage.removeItem(`locksmith-access-token`)
-      localStorage.removeItem(`locksmith-refresh-token`)
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message)
@@ -91,24 +87,22 @@ export class StorageService extends EventEmitter {
 
   async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
     try {
-      const refreshToken = localStorage.getItem('locksmith-refresh-token')
-      const accessToken = localStorage.getItem('locksmith-access-token')
-      if (!accessToken || isExpired(accessToken)) {
-        if (refreshToken) {
-          this.getRefreshToken(refreshToken)
-        } else {
-          const message = await this.getSiweMessage({
-            address,
-            chainId,
-          })
-          const signature = await walletService.signMessage(
-            message,
-            'personal_sign'
-          )
-          const tokens = await this.login(message, signature)
-          localStorage.setItem('locksmith-access-token', tokens.accessToken)
-          localStorage.setItem('locksmith-refresh-token', tokens.refreshToken)
+      const accessToken = this.accessToken
+      if (accessToken) {
+        if (isExpired(accessToken)) {
+          await this.getRefreshToken()
         }
+      } else {
+        const message = await this.getSiweMessage({
+          address,
+          chainId,
+        })
+        const signature = await walletService.signMessage(
+          message,
+          'personal_sign'
+        )
+        const { accessToken } = await this.login(message, signature)
+        this.accessToken = accessToken
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -117,23 +111,25 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  get token() {
+  get accessToken() {
     return localStorage.getItem('locksmith-access-token')
   }
 
-  get refreshToken() {
-    return localStorage.getItem('locksmith-refresh-token')
+  set accessToken(token: string | null) {
+    if (!token) {
+      return
+    }
+    localStorage.setItem('locksmith-access-token', token)
   }
 
   get isAuthenticated() {
-    const token = this.token
-    return Boolean(token && !isExpired(token))
+    const accessToken = this.accessToken
+    return Boolean(accessToken && !isExpired(accessToken))
   }
 
-  async getRefreshToken(refreshToken: string) {
+  async getRefreshToken(refreshToken?: string) {
     const tokens = await this.locksmith.refreshToken(refreshToken)
-    localStorage.setItem('locksmith-access-token', tokens.accessToken)
-    localStorage.setItem('locksmith-refresh-token', tokens.refreshToken)
+    this.accessToken = tokens.accessToken
     return tokens
   }
 
@@ -744,9 +740,9 @@ export class StorageService extends EventEmitter {
   }
 
   async getAccessToken() {
-    const token = this.token
+    const token = this.accessToken
     if (token && isExpired(token)) {
-      const { accessToken } = await this.getRefreshToken(this.refreshToken!)
+      const { accessToken } = await this.getRefreshToken()
       return accessToken
     }
     return token

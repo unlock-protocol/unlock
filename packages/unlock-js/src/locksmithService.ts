@@ -74,6 +74,7 @@ export class LocksmithService {
     const response = await this.request('/v2/auth/login', {
       method: 'POST',
       headers,
+      credentials: 'include',
       body: JSON.stringify({
         message,
         signature,
@@ -100,6 +101,7 @@ export class LocksmithService {
     const response = await this.request('/v2/auth/token', {
       method: 'POST',
       headers,
+      credentials: 'include',
     })
     const json = await response.json()
 

@@ -55,7 +55,12 @@ app.use(
 )
 
 // Cors
-app.use(cors({}))
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+)
 
 // Parse body
 app.use(express.urlencoded({ extended: true }))
