@@ -21,7 +21,7 @@ describe('Member v2 endpoints for locksmith', () => {
   it('Get members without authorization', async () => {
     expect.assertions(1)
     const getListResponse = await request(app).get(
-      `/v2/api/member/${network}/locks/${lockAddress}/list`
+      `/v2/api/member/${network}/locks/${lockAddress}/members`
     )
     expect(getListResponse.status).toBe(403)
   })
@@ -32,7 +32,7 @@ describe('Member v2 endpoints for locksmith', () => {
     expect(loginResponse.status).toBe(200)
 
     const getListResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/list`)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(getListResponse.status).toBe(404)
@@ -43,7 +43,7 @@ describe('Member v2 endpoints for locksmith', () => {
 
     const { loginResponse } = await loginRandomUser(app)
     const getVerifierListResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/list`)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         filters: JSON.stringify({
