@@ -87,17 +87,15 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
         </option>
         {locks?.map(([networkId, items]) => {
           if (!items?.length) return null
-          return items.map(
-            ({ id, name, address }: Lock & { id: string }, index: number) => {
-              const minifiedAddress = addressMinify(address || '')
-              const networkName = networks[networkId]?.name ?? '-'
-              return (
-                <option key={`${address}-${networkName}`} value={id}>
-                  {`${networkName} - ${name} - ${minifiedAddress}`}
-                </option>
-              )
-            }
-          )
+          return items.map(({ id, name, address }: Lock & { id: string }) => {
+            const minifiedAddress = addressMinify(address || '')
+            const networkName = networks[networkId]?.name ?? '-'
+            return (
+              <option key={`${address}-${networkName}`} value={id}>
+                {`${networkName} - ${name} - ${minifiedAddress}`}
+              </option>
+            )
+          })
         })}
       </select>
     </div>
