@@ -16,7 +16,6 @@ import 'cross-fetch/polyfill'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 import { Lock } from '@unlock-protocol/types'
 import { getAddressForName } from '~/hooks/useEns'
-import { useRouter } from 'next/router'
 
 interface PaginationProps {
   currentPage: number
@@ -60,28 +59,31 @@ interface MembersContentProps {
 }
 export const MembersContent = ({ query }: MembersContentProps) => {
   const { account } = useContext(AuthenticationContext)
+  const [lockAddresses, setLockAddresses] = useState<string[]>([])
   const [isOpen, setIsOpen] = useState(false)
-  const router = useRouter()
 
-  let lockAddresses: string[] = []
-  if (query.locks) {
-    // query.locks will be either a string or an array.
-    // when there is only one value, it's a string. For any more, it's an array.
-    if (typeof query.locks === 'string') {
-      lockAddresses.push(query.locks)
-    } else {
-      lockAddresses = query.locks as any
+  useEffect(() => {
+    if (query.locks) {
+      // query.locks will be either a string or an array.
+      // when there is only one value, it's a string. For any more, it's an array.
+      if (typeof query.locks === 'string') {
+        setLockAddresses(() => [query.locks])
+      }
+
+      if (typeof query.locks === 'object' && query.locks.length > 0) {
+        setLockAddresses(() => query.locks)
+      }
     }
-  }
+  }, [])
+
   let page = 0
   if (query.page && typeof query.page === 'string') {
     page = parseInt(query.page)
   }
-
   const hasLocks = lockAddresses?.length > 0
 
   const onLockChange = (lock: Lock) => {
-    router.push(`/members?locks=${lock.address}`)
+    setLockAddresses(() => [lock.address])
   }
 
   return (
@@ -103,14 +105,12 @@ export const MembersContent = ({ query }: MembersContentProps) => {
             <div className="grid items-center justify-between grid-cols-[1fr] gap-3 sm:grid-cols-[1fr_1fr]">
               <Account />
               <div className="flex gap-2 justify-end">
-                {hasLocks && (
-                  <Button
-                    onClick={() => router.push('members')}
-                    variant="secondary"
-                  >
-                    Change Lock
-                  </Button>
-                )}
+                <Button
+                  onClick={() => setLockAddresses(() => [])}
+                  disabled={!hasLocks}
+                >
+                  Change Lock
+                </Button>
 
                 <Button disabled={!hasLocks} onClick={() => setIsOpen(!isOpen)}>
                   Airdrop Keys
