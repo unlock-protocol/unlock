@@ -42,6 +42,6 @@ This mechanism opens the door for incentivized distribution by platforms or othe
 
 The referrer fee mechanism is extremely flexible and extremely powerful. The presentation below illustrates multiple scenarios where developers or creators could implement referrer or affiliate fees in order to incentivize or support distribution of their products or memberships.
 
-<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQq_4ktW66q-Hn68Q07cazlMaQujJjSJWQHCz2LuzSAElBkmArOmlN8p6Aq5y6lnajicI5T7WvlKrXA/embed?start=false&loop=false&delayms=3000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></div>
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 0%;"><iframe src="https://docs.google.com/presentation/d/e/2PACX-1vQq_4ktW66q-Hn68Q07cazlMaQujJjSJWQHCz2LuzSAElBkmArOmlN8p6Aq5y6lnajicI5T7WvlKrXA/embed?start=false&loop=false&delayms=3000" frameborder="0" width="680" height="411" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></div>
 
 Have questions about implementing referrer or affiliate fees with Unlock? Hit us up in the [Discord](Discord)!
