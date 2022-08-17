@@ -91,20 +91,17 @@ export class LocksmithService {
   /**
    * This is used to refresh the creditionals on jwt token expiration.
    */
-  async refreshToken(token?: string) {
+  async refreshToken(token: string) {
     const headers = new Headers()
     headers.set('content-type', 'application/json')
-    if (token) {
-      headers.set('refresh-token', token)
-    }
+    headers.set('refresh-token', token)
     const response = await this.request('/v2/auth/token', {
       method: 'POST',
       headers,
     })
     const json = await response.json()
-
     return {
-      refreshToken: json.refreshToken,
+      walletAddress: json.walletAddress,
       accessToken: json.accessToken,
     }
   }
