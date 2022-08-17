@@ -13,7 +13,7 @@ The main idea behind this is to enable revenue sharing between the lock (the mem
 
 ## How do Unlock Protocol referrer fees work?
 
-The Unlock Protocol *purchase*, *extend*, and *renew* functions include a *referrer* parameter. This parameter is an address and is expected to be the address of the entity that “triggered” the purchase by the user.
+The Unlock Protocol *purchase*, *extend*, and *renew* functions include a *referrer* parameter. This parameter is an address that is expected to be the address of the entity that “triggered” the purchase by the user.
 
 <aside>
 💡 Let's take an example: let's imagine that an indie developer created a Ghost plugin to add support for Unlock. It would be perfect acceptable in that scenario for the Ghost plugin author to set their address as the referrer in the plugin.
