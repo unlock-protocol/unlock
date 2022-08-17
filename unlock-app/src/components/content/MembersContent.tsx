@@ -102,7 +102,7 @@ export const MembersContent = ({ query }: MembersContentProps) => {
         {!account && <LoginPrompt />}
         {account && (
           <>
-            <div className="grid items-center justify-between grid-cols-[1fr] gap-3 sm:grid-cols-[1fr_1fr]">
+            <div className="grid items-center justify-between grid-cols-1 gap-3 sm:grid-cols-2">
               <Account />
               <div className="flex gap-2 justify-end">
                 <Button

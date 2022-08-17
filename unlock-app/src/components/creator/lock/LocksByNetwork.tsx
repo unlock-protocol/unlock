@@ -32,22 +32,16 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
 
   const graphService = useContext(GraphServiceContext)
 
-  const { isLoading, data: locks } = useQuery(
-    [owner],
-    async () => {
-      const items = Object.values(networks)
-        .filter(({ subgraphURI }) => !subgraphURI?.includes('localhost'))
-        .map(async ({ id, subgraphURI }) => {
-          graphService.connect(subgraphURI)
-          const locksByNetwork = await graphService.locksByManager(owner)
-          return [id, locksByNetwork as any]
-        })
-      return Promise.all(items)
-    },
-    {
-      refetchInterval: false,
-    }
-  )
+  const { isLoading, data: locks } = useQuery([owner], async () => {
+    const items = Object.values(networks)
+      .filter(({ subgraphURI }) => !subgraphURI?.includes('localhost'))
+      .map(async ({ id, subgraphURI }) => {
+        graphService.connect(subgraphURI)
+        const locksByNetwork = await graphService.locksByManager(owner)
+        return [id, locksByNetwork as any]
+      })
+    return Promise.all(items)
+  })
 
   if (isLoading) {
     return <LocksByNetworkPlaceholder />
