@@ -127,6 +127,8 @@ export class StorageService extends EventEmitter {
   set refreshToken(refreshToken: string | null) {
     if (refreshToken) {
       localStorage.setItem(`${APP_NAME}.refresh-token`, refreshToken)
+    } else {
+      localStorage.removeItem(`${APP_NAME}.refresh-token`)
     }
   }
 
