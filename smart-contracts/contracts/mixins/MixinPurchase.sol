@@ -56,11 +56,11 @@ contract MixinPurchase is
 
   /**
   * Set a specific percentage of the keyPrice to be sent to the referrer while purchasing, 
-  * extending or renewing a key
+  * extending or renewing a key. 
   * @param _referrer the address of the referrer. If set to the 0x address, any referrer will receive the fee.
   * @param _feeBasisPoint the percentage of the price to be used for this 
-  * specific referrer (in basic points)
-  * @notice to send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
+  * specific referrer (in basis points)
+  * @dev To send a fixed percentage of the key price to all referrers, sett a percentage to `address(0)`
   */
   function setReferrerFee(address _referrer, uint _feeBasisPoint) public {
     _onlyLockManager();

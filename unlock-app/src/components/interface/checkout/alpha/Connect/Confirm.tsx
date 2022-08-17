@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { RiUser3Line as UserIcon } from 'react-icons/ri'
 import { FaEthereum as EthereumIcon } from 'react-icons/fa'
@@ -7,7 +7,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { createMessageToSignIn } from '~/utils/oauth'
 import { Connected } from '../Connected'
 import { ConnectService } from './connectMachine'
-import { CheckoutTransition, CloseButton } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
@@ -57,58 +56,48 @@ export function ConfirmConnect({
   }
 
   return (
-    <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[70vh] sm:h-[60vh] max-h-[32rem]">
-        <div className="flex items-center justify-end p-6">
-          <CloseButton onClick={() => onClose()} />
-        </div>
-        <main className="px-6 pb-2 space-y-2 overflow-auto h-full">
-          <header>
-            <h1 className="font-medium text-xl">
-              <span className="font-bold text-brand-ui-primary">
-                {oauthConfig.clientId}
-              </span>{' '}
-              wants you to sign in using your ethereum wallet.
-            </h1>
-          </header>
-          <ol>
-            <li className="flex gap-6 items-center">
-              <div>
-                <UserIcon className="fill-brand-ui-primary" size={36} />
-              </div>
-              <div className="text-brand-gray">
-                Read all transactions associated with{' '}
-                <span className="font-medium text-brand-ui-primary p-0.5 border rounded border-brand-ui-primary">
-                  {account
-                    ? `${account.slice(0, 4)}...${account!.slice(-4)}`
-                    : 'address'}
-                </span>
-              </div>
-            </li>
-          </ol>
-        </main>
-        <footer className="px-6 pt-6 border-t grid items-center">
-          <Connected
-            injectedProvider={injectedProvider}
-            service={connectService}
+    <Fragment>
+      <main className="px-6 pb-2 space-y-2 overflow-auto h-full">
+        <header>
+          <h1 className="font-medium text-xl">
+            <span className="font-bold text-brand-ui-primary">
+              {oauthConfig.clientId}
+            </span>{' '}
+            wants you to sign in using your ethereum wallet.
+          </h1>
+        </header>
+        <ol>
+          <li className="flex gap-6 items-center">
+            <div>
+              <UserIcon className="fill-brand-ui-primary" size={36} />
+            </div>
+            <div className="text-brand-gray">
+              Read all transactions associated with{' '}
+              <span className="font-medium text-brand-ui-primary p-0.5 border rounded border-brand-ui-primary">
+                {account
+                  ? `${account.slice(0, 4)}...${account!.slice(-4)}`
+                  : 'address'}
+              </span>
+            </div>
+          </li>
+        </ol>
+      </main>
+      <footer className="px-6 pt-6 border-t grid items-center">
+        <Connected injectedProvider={injectedProvider} service={connectService}>
+          <Button
+            onClick={onSignIn}
+            disabled={loading || !account}
+            loading={loading}
+            iconLeft={<Icon icon={EthereumIcon} size="medium" key="ethereum" />}
+            className="w-full"
           >
-            <Button
-              onClick={onSignIn}
-              disabled={loading || !account}
-              loading={loading}
-              iconLeft={
-                <Icon icon={EthereumIcon} size="medium" key="ethereum" />
-              }
-              className="w-full"
-            >
-              {loading && !isUnlockAccount
-                ? 'Please sign the message'
-                : 'Sign-in with Ethereum'}
-            </Button>
-          </Connected>
-          <PoweredByUnlock />
-        </footer>
-      </div>
-    </CheckoutTransition>
+            {loading && !isUnlockAccount
+              ? 'Please sign the message'
+              : 'Sign-in with Ethereum'}
+          </Button>
+        </Connected>
+        <PoweredByUnlock />
+      </footer>
+    </Fragment>
   )
 }

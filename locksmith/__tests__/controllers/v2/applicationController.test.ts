@@ -62,7 +62,10 @@ describe('Application endpoint', () => {
       const refreshResponse = await request(app).post('/v2/auth/token').send({
         refreshToken: user.refreshToken,
       })
-      user = refreshResponse.body
+      user = {
+        ...refreshResponse.body,
+        refreshToken: user.refreshToken,
+      }
     })
 
     it('list applications with auth', async () => {
@@ -101,7 +104,10 @@ describe('Application endpoint', () => {
       const refreshResponse = await request(app).post('/v2/auth/token').send({
         refreshToken: user.refreshToken,
       })
-      user = refreshResponse.body
+      user = {
+        ...refreshResponse.body,
+        refreshToken: user.refreshToken,
+      }
     })
 
     it('update application with invalid body', async () => {
@@ -137,7 +143,10 @@ describe('Application endpoint', () => {
       const refreshResponse = await request(app).post('/v2/auth/token').send({
         refreshToken: user.refreshToken,
       })
-      user = refreshResponse.body
+      user = {
+        ...refreshResponse.body,
+        refreshToken: user.refreshToken,
+      }
     })
 
     it('delete non-existent app', async () => {

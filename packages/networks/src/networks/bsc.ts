@@ -39,6 +39,7 @@ export const bsc: NetworkConfig = {
   ],
   description: 'EVM compatible network. Cheaper transaction cost.',
   isTestNetwork: false,
+  teamMultisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
 }
 
 export default bsc
