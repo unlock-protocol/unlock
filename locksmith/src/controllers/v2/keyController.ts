@@ -4,8 +4,8 @@ import logger from '../../logger'
 import * as keysOperations from '../../operations/keysOperations'
 export default class KeyController {
   /**
-   * List of members with additional metadata when caller is the lockManager
-   * @return {members} members list
+   * List of keys with additional metadata when caller is the lockManager
+   * @return {Array} keys list
    */
   async keys(request: Request, response: Response) {
     try {
@@ -32,22 +32,21 @@ export default class KeyController {
       }
 
       const loggedInUserAddress = Normalizer.ethereumAddress(
-        //request!.user!.walletAddress
-        '0x4Ff5A116Ff945cC744346cFd32c6C6e3d3a018Ff'
+        request!.user!.walletAddress
       )
 
-      const members = await keysOperations.getKeysWithMetadata({
+      const keys = await keysOperations.getKeysWithMetadata({
         network,
         lockAddress,
         filters,
         loggedInUserAddress,
       })
 
-      return response.status(200).send(members)
+      return response.status(200).send(keys)
     } catch (error) {
       logger.error(error.message)
       return response.status(500).send({
-        message: 'Member list could not be retrived.',
+        message: 'Keys list could not be retrived.',
       })
     }
   }
