@@ -294,4 +294,21 @@ describe('Keys v2 endpoints for lock', () => {
     expect(getKeysResponse.status).toBe(200)
     expect(getKeysResponse.body.length).toStrictEqual(0)
   })
+
+  it('should get keys marked as checkedIn', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '',
+        filterKey: 'checkedInAt',
+        expiration: 'all',
+      })
+
+    expect(getKeysResponse.status).toBe(200)
+    expect(getKeysResponse.body.length).toBe(2)
+  })
 })
