@@ -134,7 +134,7 @@ describe('Keys v2 endpoints for lock', () => {
       .get(`/v2/api/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
-        query: '42',
+        query: '43',
         filterKey: 'keyId',
         expiration: 'all',
       })
