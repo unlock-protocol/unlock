@@ -3,3 +3,5 @@ generated/
 node_modules/
 
 subgraph.yaml
+tests/.latest.json
+*.wasm
