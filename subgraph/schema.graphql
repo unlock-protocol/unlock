@@ -1,8 +1,15 @@
-type UnlockEntity @entity {
+type Lock @entity {
   id: ID!
-  count: BigInt!
-  lockOwner: Bytes! # address
-  newLockAddress: Bytes! # address
+  address: Bytes!
+  LockManagers: [LockManager!] @derivedFrom(field: "lock")
+  keys: [Key!] @derivedFrom(field: "lock")
+  createdAtBlock: BigInt
+  version: BigInt
+}
+
+type LockManager @entity {
+  id: ID!
+  address: Bytes!
 }
 
 type Key @entity {
@@ -10,44 +17,14 @@ type Key @entity {
   lock: Lock!
   keyId: BigInt!
   owner: KeyHolder!
+  manager: Bytes
   expiration: BigInt!
   tokenURI: String
-  createdAt: BigInt!
+  createdAtBlock: BigInt!
 }
 
-type KeyHolder @entity {
+type KeyOwner @entity {
   id: ID!
   address: Bytes!
   keys: [Key]! @derivedFrom(field: "owner")
-}
-
-type KeyPurchase @entity {
-  id: ID!
-  lock: Bytes!
-  purchaser: Bytes!
-  price: BigInt!
-  timestamp: BigInt!
-  tokenAddress: Bytes!
-}
-
-type LockManager @entity {
-  id: ID!
-  lock: Lock!
-  address: Bytes!
-}
-
-type Lock @entity {
-  id: ID! #lock address
-  address: Bytes!
-  name: String
-  tokenAddress: Bytes
-  creationBlock: BigInt
-  price: BigInt
-  expirationDuration: BigInt
-  totalSupply: BigInt
-  maxNumberOfKeys: BigInt
-  LockManagers: [LockManager!] @derivedFrom(field: "lock")
-  keys: [Key!] @derivedFrom(field: "lock")
-  owner: Bytes!
-  version: BigInt
 }
