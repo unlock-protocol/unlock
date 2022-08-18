@@ -1,3 +1,5 @@
 build/
 generated/
 node_modules/
+
+subgraph.yaml
