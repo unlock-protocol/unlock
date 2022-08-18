@@ -6,12 +6,14 @@ const supportedNetworks = {
   '4': 'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
   '5': 'https://goerli.prylabs.net',
   '10': 'https://mainnet.optimism.io',
-  '56': 'https://bsc-dataseed.binance.org/',
+  '56': 'https://rpc.ankr.com/bsc',
   '100':
     'https://cool-empty-bird.xdai.quiknode.pro/4edba942fb43c718f24480484684e907fe3fe1d3/',
   '137':
     'https://snowy-weathered-waterfall.matic.quiknode.pro/5b11a0413a62a295070c0dfb25637d5f8c591aba/',
+  '42161': 'https://rpc.ankr.com/arbitrum',
   '42220': 'https://forno.celo.org',
+  '43114': 'https://api.avax.network/ext/bc/C/rpc',
   '80001': 'https://matic-mumbai.chainstacklabs.com',
 }
 

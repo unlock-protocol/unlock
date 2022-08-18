@@ -2,9 +2,8 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const rinkeby: NetworkConfig = {
   publicProvider:
-    'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
-  provider:
-    'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
+    'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
+  provider: 'https://rpc.unlock-protocol.com/4',
   unlockAddress: '0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b',
   serializerAddress: '0x1bd356194d97297F77e081fFFAB97b57297E93e4',
   multisig: '0x04e855D82c079222d6bDBc041F6202d5A0137267',
