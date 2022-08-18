@@ -8,7 +8,6 @@ import { createMessageToSignIn } from '~/utils/oauth'
 import { Connected } from '../Connected'
 import { ConnectService } from './connectMachine'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   oauthConfig: OAuthConfig
