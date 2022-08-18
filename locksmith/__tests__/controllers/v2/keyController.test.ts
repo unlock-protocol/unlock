@@ -147,7 +147,7 @@ describe('Keys v2 endpoints for lock', () => {
     expect(res.firstname).toBe('mario rossi')
   })
 
-  it('should not containts metadata when caller is not lockManager', async () => {
+  it('should not contains metadata when caller is not lockManager', async () => {
     expect.assertions(5)
 
     const { loginResponse, address } = await loginRandomUser(app)
