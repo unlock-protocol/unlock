@@ -19,7 +19,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('Member v2 endpoints for locksmith', () => {
-  it('should get members without filters throw error', async () => {
+  it('should throw an error when endpoint does not have query parameters', async () => {
     expect.assertions(2)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
