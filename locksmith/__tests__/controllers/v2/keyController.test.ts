@@ -129,8 +129,7 @@ describe('Keys v2 endpoints for lock', () => {
   it('should containts metadata when caller is the lockManager', async () => {
     expect.assertions(5)
 
-    const { loginResponse, address } = await loginRandomUser(app)
-    const lockAddress = address
+    const { loginResponse } = await loginRandomUser(app)
     const getKeysResponse = await request(app)
       .get(`/v2/api/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
