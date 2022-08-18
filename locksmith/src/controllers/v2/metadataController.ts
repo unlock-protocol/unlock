@@ -345,43 +345,40 @@ export class MetadataController {
         },
       })
 
-      if (userMetadataResults.length) {
-        return response.status(409).send({
-          message: 'User metadata already exists for the following users.',
-          users: userMetadataResults.map((user) => {
-            return {
-              lockAddress: user.tokenAddress,
-              userAddress: user.userAddress,
-            }
-          }),
-        })
-      }
-
-      const newUsersData = users.map((user) => {
-        const { userAddress } = user
-        const lockAddress = Normalizer.ethereumAddress(user.lockAddress)
-        const tokenAddress = lockAddress
-        const metadata = UserMetadata.parse(user.metadata)
-        const newUserData = {
-          userAddress,
-          tokenAddress,
-          chain: network,
-          data: {
-            userMetadata: {
-              ...metadata,
+      const newUsersData = users
+        // Filter existing users
+        .filter(
+          (nu) =>
+            !userMetadataResults.some(
+              (item) =>
+                item.tokenAddress === nu.lockAddress &&
+                item.userAddress === nu.userAddress
+            )
+        )
+        .map((user) => {
+          const { userAddress } = user
+          const lockAddress = Normalizer.ethereumAddress(user.lockAddress)
+          const tokenAddress = lockAddress
+          const metadata = UserMetadata.parse(user.metadata)
+          const newUserData = {
+            userAddress,
+            tokenAddress,
+            chain: network,
+            data: {
+              userMetadata: {
+                ...metadata,
+              },
             },
-          },
-        }
-        return newUserData
-      })
+          }
+          return newUserData
+        })
 
       const items = await UserTokenMetadata.bulkCreate(newUsersData)
       return response.status(201).send({
         result: items,
       })
     } catch (error) {
-      logger.error(error.message)
-
+      logger.error(error)
       if (error instanceof z.ZodError) {
         return response.status(400).send({
           message: 'User metadata is not in the correct form.',

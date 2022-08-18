@@ -80,7 +80,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
   })
 
   it('Add metadata to users in bulk', async () => {
-    expect.assertions(2)
+    expect.assertions(3)
     const users = await Promise.all(
       Array(3)
         .fill(0)
@@ -109,6 +109,11 @@ describe('Metadata v2 endpoints for locksmith', () => {
       .post('/v2/api/metadata/100/users')
       .send({ users })
 
+    // next time, ignore the user and return an empty array since they are already saved
+    const userMetadataResponse2 = await request(app)
+      .post('/v2/api/metadata/100/users')
+      .send({ users })
+
     const usersMetadata = userMetadataResponse.body.result.map(
       (user: any) => user.data
     )
@@ -117,6 +122,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     }))
     expect(userMetadataResponse.status).toBe(201)
     expect(usersMetadata).toStrictEqual(expectedUsersMetadata)
+    expect(userMetadataResponse2.body.result?.length).toBe(0)
   })
 
   it('Add bulk broken user metadata', async () => {
