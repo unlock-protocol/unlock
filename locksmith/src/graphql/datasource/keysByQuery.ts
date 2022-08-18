@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import { DocumentNode } from 'graphql'
 import { getValidNumber } from '../../utils/normalizer'
 
-export type MemberFilter = 'all' | 'active' | 'expired' | 'keyId'
+export type KeyFilter = 'all' | 'active' | 'expired' | 'keyId'
 const keyholdersByKeyIdQuery = gql`
   query Lock(
     $addresses: [String!]
@@ -119,7 +119,7 @@ const keyListByLock = gql`
   }
 `
 
-const QUERY_BY_TYPE: { [key in MemberFilter]: DocumentNode } = {
+const QUERY_BY_TYPE: { [key in KeyFilter]: DocumentNode } = {
   active: ActiveKeys,
   expired: ExpiredKeys,
   all: keyListByLock,
@@ -132,7 +132,7 @@ interface MemberGetProps {
     query: string
     filterKey: string
     page: number
-    expiration: MemberFilter
+    expiration: KeyFilter
   }
 }
 

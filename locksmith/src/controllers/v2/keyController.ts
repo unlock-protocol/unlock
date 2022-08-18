@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
-import * as memberOperations from '../../operations/memberOperations'
+import * as keysOperations from '../../operations/keysOperations'
 export default class KeyController {
   /**
    * List of members with additional metadata when caller is the lockManager
@@ -35,7 +35,7 @@ export default class KeyController {
         request!.user!.walletAddress
       )
 
-      const members = await memberOperations.getMembersWithMedata({
+      const members = await keysOperations.getMembersWithMedata({
         network,
         lockAddress,
         filters,

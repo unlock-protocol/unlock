@@ -56,7 +56,7 @@ router.use('/v2/api/metadata', metadataRouterV2)
 router.use('/v2/api/verifier', verifierRouter)
 router.use('/v2/api/grant', grantKeysRouter)
 router.use('/v2/api/ticket', ticketRouter)
-router.use('/v2/api/member', keyController)
+router.use('/v2/api', keyController)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')

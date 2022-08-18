@@ -18,25 +18,25 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-describe('Member v2 endpoints for locksmith', () => {
+describe('Keys v2 endpoints for lock', () => {
   it('should throw an error when endpoint does not have query parameters', async () => {
     expect.assertions(2)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
-    const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(getMembersResponse.status).toBe(404)
+    expect(getKeysResponse.status).toBe(404)
   })
 
   it('should get members list without error with query filters', async () => {
     expect.assertions(7)
 
     const { loginResponse } = await loginRandomUser(app)
-    const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '',
@@ -44,10 +44,10 @@ describe('Member v2 endpoints for locksmith', () => {
         expiration: 'active',
       })
 
-    expect(getMembersResponse.status).toBe(200)
+    expect(getKeysResponse.status).toBe(200)
 
-    expect(Array.isArray(getMembersResponse.body)).toStrictEqual(true)
-    const [firstItem] = getMembersResponse.body ?? []
+    expect(Array.isArray(getKeysResponse.body)).toStrictEqual(true)
+    const [firstItem] = getKeysResponse.body ?? []
     expect(firstItem).toHaveProperty('token')
     expect(firstItem).toHaveProperty('lockName')
     expect(firstItem).toHaveProperty('expiration')
@@ -59,8 +59,8 @@ describe('Member v2 endpoints for locksmith', () => {
     expect.assertions(3)
 
     const { loginResponse } = await loginRandomUser(app)
-    const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '',
@@ -68,18 +68,18 @@ describe('Member v2 endpoints for locksmith', () => {
         expiration: 'all',
       })
 
-    expect(getMembersResponse.status).toBe(200)
+    expect(getKeysResponse.status).toBe(200)
 
-    expect(Array.isArray(getMembersResponse.body)).toStrictEqual(true)
-    expect(getMembersResponse.body.length).not.toBe(0)
+    expect(Array.isArray(getKeysResponse.body)).toStrictEqual(true)
+    expect(getKeysResponse.body.length).not.toBe(0)
   })
 
   it('should search by random query and not have results', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)
-    const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: 'NOT_VALID',
@@ -87,17 +87,17 @@ describe('Member v2 endpoints for locksmith', () => {
         expiration: 'all',
       })
 
-    expect(getMembersResponse.status).toBe(200)
+    expect(getKeysResponse.status).toBe(200)
 
-    expect(getMembersResponse.body.length).toStrictEqual(0)
+    expect(getKeysResponse.body.length).toStrictEqual(0)
   })
 
   it('should search by empty email query and get all results', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)
-    const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '',
@@ -105,17 +105,17 @@ describe('Member v2 endpoints for locksmith', () => {
         expiration: 'all',
       })
 
-    expect(getMembersResponse.status).toBe(200)
+    expect(getKeysResponse.status).toBe(200)
 
-    expect(getMembersResponse.body.length).not.toStrictEqual(0)
+    expect(getKeysResponse.body.length).not.toStrictEqual(0)
   })
 
   it('should search by empty keyId query and get all results', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)
-    const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '',
@@ -123,17 +123,17 @@ describe('Member v2 endpoints for locksmith', () => {
         expiration: 'all',
       })
 
-    expect(getMembersResponse.status).toBe(200)
+    expect(getKeysResponse.status).toBe(200)
 
-    expect(getMembersResponse.body.length).not.toStrictEqual(0)
+    expect(getKeysResponse.body.length).not.toStrictEqual(0)
   })
 
   it('it search by specific keyId query', async () => {
     expect.assertions(3)
 
     const { loginResponse } = await loginRandomUser(app)
-    const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
+    const getKeysResponse = await request(app)
+      .get(`/v2/api/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '4',
@@ -141,9 +141,9 @@ describe('Member v2 endpoints for locksmith', () => {
         expiration: 'all',
       })
 
-    const [data] = getMembersResponse.body
-    expect(getMembersResponse.status).toBe(200)
-    expect(getMembersResponse.body.length).toStrictEqual(1)
+    const [data] = getKeysResponse.body
+    expect(getKeysResponse.status).toBe(200)
+    expect(getKeysResponse.body.length).toStrictEqual(1)
     expect(data.token).toStrictEqual('4')
   })
 })
