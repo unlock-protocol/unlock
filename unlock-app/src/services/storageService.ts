@@ -4,6 +4,7 @@ import { isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
 import { Lock } from '../unlockTypes'
 import fetch, { RequestInit } from 'node-fetch'
+import { APP_NAME } from '~/hooks/useAppStorage'
 
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
@@ -68,7 +69,12 @@ export class StorageService extends EventEmitter {
   }
 
   async login(message: string, signature: string) {
-    return this.locksmith.login(message, signature)
+    const { refreshToken, accessToken } = await this.locksmith.login(
+      message,
+      signature
+    )
+    this.refreshToken = refreshToken
+    this.#accessToken = accessToken
   }
 
   async signOut() {
@@ -80,8 +86,8 @@ export class StorageService extends EventEmitter {
           'refresh-token': this.refreshToken!,
         },
       })
-      localStorage.removeItem(`locksmith-access-token`)
-      localStorage.removeItem(`locksmith-refresh-token`)
+      this.#accessToken = null
+      this.refreshToken = null
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message)
@@ -91,24 +97,19 @@ export class StorageService extends EventEmitter {
 
   async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
     try {
-      const refreshToken = localStorage.getItem('locksmith-refresh-token')
-      const accessToken = localStorage.getItem('locksmith-access-token')
-      if (!accessToken || isExpired(accessToken)) {
-        if (refreshToken) {
-          this.getRefreshToken(refreshToken)
-        } else {
-          const message = await this.getSiweMessage({
-            address,
-            chainId,
-          })
-          const signature = await walletService.signMessage(
-            message,
-            'personal_sign'
-          )
-          const tokens = await this.login(message, signature)
-          localStorage.setItem('locksmith-access-token', tokens.accessToken)
-          localStorage.setItem('locksmith-refresh-token', tokens.refreshToken)
-        }
+      const refreshToken = this.refreshToken
+      if (refreshToken) {
+        await this.getAccessToken()
+      } else {
+        const message = await this.getSiweMessage({
+          address,
+          chainId,
+        })
+        const signature = await walletService.signMessage(
+          message,
+          'personal_sign'
+        )
+        await this.login(message, signature)
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -117,24 +118,36 @@ export class StorageService extends EventEmitter {
     }
   }
 
-  get token() {
-    return localStorage.getItem('locksmith-access-token')
-  }
+  #accessToken: null | string = null
 
   get refreshToken() {
-    return localStorage.getItem('locksmith-refresh-token')
+    return localStorage.getItem(`${APP_NAME}.refresh-token`)
+  }
+
+  set refreshToken(refreshToken: string | null) {
+    if (refreshToken) {
+      localStorage.setItem(`${APP_NAME}.refresh-token`, refreshToken)
+    } else {
+      localStorage.removeItem(`${APP_NAME}.refresh-token`)
+    }
   }
 
   get isAuthenticated() {
-    const token = this.token
-    return Boolean(token && !isExpired(token))
+    const accessToken = this.#accessToken
+    const refreshToken = this.refreshToken
+    return Boolean(accessToken && refreshToken && !isExpired(accessToken))
   }
 
-  async getRefreshToken(refreshToken: string) {
-    const tokens = await this.locksmith.refreshToken(refreshToken)
-    localStorage.setItem('locksmith-access-token', tokens.accessToken)
-    localStorage.setItem('locksmith-refresh-token', tokens.refreshToken)
-    return tokens
+  async getAccessToken() {
+    const refreshToken = this.refreshToken
+    if (!refreshToken) {
+      throw new Error('User is not authenticated')
+    }
+    if (!this.#accessToken || isExpired(this.#accessToken)) {
+      const { accessToken } = await this.locksmith.refreshToken(refreshToken)
+      this.#accessToken = accessToken
+    }
+    return this.#accessToken
   }
 
   async getSiweMessage({
@@ -741,15 +754,6 @@ export class StorageService extends EventEmitter {
       console.error(error)
       return ''
     }
-  }
-
-  async getAccessToken() {
-    const token = this.token
-    if (token && isExpired(token)) {
-      const { accessToken } = await this.getRefreshToken(this.refreshToken!)
-      return accessToken
-    }
-    return token
   }
 
   async getEndpoint(url: string, options: RequestInit = {}, withAuth = false) {
