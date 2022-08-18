@@ -1,0 +1,4 @@
+name = "rpc-provider"
+main = "src/index.ts"
+compatibility_date = "2022-08-17"
+
