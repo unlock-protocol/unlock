@@ -44,7 +44,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       } else {
         return item.default
       }
-    })
+    }) || lockOptions[0]
   )
   const config = useConfig()
   const { account } = useAuth()

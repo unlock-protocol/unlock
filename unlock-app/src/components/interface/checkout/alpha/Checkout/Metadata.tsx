@@ -4,7 +4,7 @@ import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
 import { Fragment, useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
-import { getAddressForName } from '~/hooks/useEns'
+import { getAddressForName, getNameOrAddressForAddress } from '~/hooks/useEns'
 import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { useStorageService } from '~/utils/withStorageService'
@@ -69,6 +69,18 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       return memberships.filter((item) => item)
     },
     {
+      enabled: !!account,
+    }
+  )
+
+  const { data: address } = useQuery(
+    ['ens', account],
+    () => {
+      return getNameOrAddressForAddress(account!)
+    },
+    {
+      refetchInterval: false,
+      refetchOnMount: false,
       enabled: !!account,
     }
   )
@@ -197,7 +209,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                       <div className="text-sm ml-1"> Recipient #1 </div>
                       <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
                         <div className="w-32 text-sm truncate">
-                          {isUnlockAccount ? email : account}
+                          {isUnlockAccount ? email : address}
                         </div>
                         <Button
                           type="button"
