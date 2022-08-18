@@ -18,13 +18,6 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
-jest.mock('../../operations/metadataOperations', () => ({
-  __esModule: true,
-  getKeysMetadata: jest.fn(() => {
-    return mockKeyHoldersByLock
-  }),
-}))
-
 describe('Keys v2 endpoints for lock', () => {
   it('should throw an error when endpoint does not have query parameters', async () => {
     expect.assertions(2)
@@ -38,7 +31,7 @@ describe('Keys v2 endpoints for lock', () => {
     expect(getKeysResponse.status).toBe(404)
   })
 
-  it('should get members list without error with query filters', async () => {
+  it('should get keys list without error with query filters', async () => {
     expect.assertions(7)
 
     const { loginResponse } = await loginRandomUser(app)

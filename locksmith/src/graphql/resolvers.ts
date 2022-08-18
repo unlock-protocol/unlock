@@ -25,7 +25,7 @@ export const resolvers = {
       new Key(network).getKey(args.id),
     keyHolders: async (_root: any, args: any, network: number) =>
       new KeyHolder().get(args.where.address, network),
-    members: async (args: any, network: number) => new Keys(network).get(args),
+    keysList: async (args: any, network: number) => new Keys(network).get(args),
   },
   Key: {
     // eslint-disable-next-line no-unused-vars

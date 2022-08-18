@@ -38,7 +38,7 @@ export const typeDefs = gql`
     locks(where: LocksQuery): [Lock]
     keyPurchases: [KeyPurchase!]
     keyHolders(where: KeyHolderQuery!): [KeyHolder]
-    members(network: ID!): [Lock]
+    keysList(network: ID!): [Lock]
   }
 
   type Attribute {
