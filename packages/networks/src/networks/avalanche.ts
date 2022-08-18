@@ -8,7 +8,8 @@ export const avalanche: NetworkConfig = {
   id: 43114,
   name: 'Avalanche (C-Chain)',
   blockTime: 1000,
-  subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche',
+  subgraphURI:
+    'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche',
   explorer: {
     name: 'Snowtrace (Avalanche)',
     urls: {
@@ -17,6 +18,9 @@ export const avalanche: NetworkConfig = {
       token: (address, holder) =>
         `https://snowtrace.io/token/${address}?a=${holder}`,
     },
+  },
+  opensea: {
+    tokenUrl: (_lockAddress, _tokenId) => null,
   },
   requiredConfirmations: 12,
   erc20: null,
@@ -29,6 +33,9 @@ export const avalanche: NetworkConfig = {
   },
   startBlock: 17188332,
   previousDeploys: [],
+  isTestNetwork: false,
+  description:
+    'Avalanche is an open, programmable smart contracts platform for decentralized applications.',
 }
 
 export default avalanche
