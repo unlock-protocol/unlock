@@ -1,7 +1,7 @@
 type Lock @entity {
   id: ID!
   address: Bytes!
-  LockManagers: [LockManager!] @derivedFrom(field: "lock")
+  LockManagers: [LockManager!]
   keys: [Key!] @derivedFrom(field: "lock")
   createdAtBlock: BigInt
   version: BigInt
@@ -16,7 +16,7 @@ type Key @entity {
   id: ID!
   lock: Lock!
   keyId: BigInt!
-  owner: KeyHolder!
+  owner: KeyOwner!
   manager: Bytes
   expiration: BigInt!
   tokenURI: String
@@ -26,5 +26,5 @@ type Key @entity {
 type KeyOwner @entity {
   id: ID!
   address: Bytes!
-  keys: [Key]! @derivedFrom(field: "owner")
+  keys: [Key!] @derivedFrom(field: "owner")
 }
