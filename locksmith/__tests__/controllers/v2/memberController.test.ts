@@ -18,14 +18,6 @@ jest.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('Member v2 endpoints for locksmith', () => {
-  it('Get members without authorization', async () => {
-    expect.assertions(1)
-    const getListResponse = await request(app).get(
-      `/v2/api/member/${network}/locks/${lockAddress}/members`
-    )
-    expect(getListResponse.status).toBe(403)
-  })
-
   it('Get members without filter query throw error', async () => {
     expect.assertions(2)
     const { loginResponse } = await loginRandomUser(app)
@@ -46,11 +38,9 @@ describe('Member v2 endpoints for locksmith', () => {
       .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
-        filters: JSON.stringify({
-          query: '',
-          filterKey: 'owner',
-          expiration: 'active',
-        }),
+        query: '',
+        filterKey: 'owner',
+        expiration: 'active',
       })
 
     expect(getVerifierListResponse.status).toBe(200)

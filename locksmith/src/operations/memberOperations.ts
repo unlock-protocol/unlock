@@ -2,6 +2,38 @@ import { Members } from '../graphql/datasource'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import * as metadataOperations from './metadataOperations'
+import Fuse from 'fuse.js'
+
+const KEY_FILTER_MAPPING: { [key: string]: string } = {
+  owner: 'keyholderAddress',
+  keyId: 'token',
+  email: 'email',
+}
+/**
+ * Filters members base on query
+ * @param {Array} members - list of members
+ * @param {String} query - query to use as filter on items
+ * @return {Array} - list of filtred members by query
+ */
+async function filterMembers(members: any[], filters: any) {
+  const { query, filterKey } = filters
+  const searchByCheckInTime = filterKey === 'checkedInAt'
+  if (!query?.length && !searchByCheckInTime) return members
+
+  const fuse = new Fuse(members, {
+    threshold: 0,
+    ignoreLocation: true,
+    keys: [KEY_FILTER_MAPPING[filterKey] ?? filterKey],
+  })
+
+  if (!searchByCheckInTime) {
+    return fuse.search(query).map(({ item }) => item)
+  }
+
+  return fuse.remove((item: any) => {
+    return item?.checkedInAt
+  })
+}
 
 export async function getMembersWithMedata({
   network,
@@ -11,7 +43,7 @@ export async function getMembersWithMedata({
 }: {
   network: number
   lockAddress: string
-  filters: string
+  filters: any
   loggedInUserAddress: string
 }) {
   const web3Service = new Web3Service(networks)
@@ -21,14 +53,15 @@ export async function getMembersWithMedata({
     network
   )
 
+  let metadataItems = []
   const client = new Members(network)
+
   const [lock] = await client.get({
     addresses: [lockAddress],
-    filters: JSON.parse((filters as string) ?? '{}'),
+    filters,
   })
 
-  // get metadata only if the logged user is the lockManager
-  let metadataItems = []
+  // only lock manager can see metadata
   if (isLockOwner) {
     metadataItems = await metadataOperations.getKeysMetadata({
       keys: lock?.keys || [],
@@ -42,5 +75,5 @@ export async function getMembersWithMedata({
     metadataItems
   )
 
-  return members
+  return filterMembers(members, filters)
 }

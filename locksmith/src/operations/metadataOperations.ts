@@ -8,8 +8,10 @@ import networks from '@unlock-protocol/networks'
 import { Verifier } from '../models/verifier'
 import Normalizer from '../utils/normalizer'
 import * as lockOperations from './lockOperations'
-
+const models = require('../models')
 const Asset = require('../utils/assets')
+
+const { Lock } = models
 
 const baseURIFragement = 'https://assets.unlock-protocol.com'
 
@@ -257,24 +259,31 @@ export const getKeysMetadata = async ({
 
 /** merge keys items with the corresponding metadata value */
 export const buildMembersWithMetadata = (lock: Lock, metadataItems: any[]) => {
-  return lock?.keys?.map((key: any) => {
-    // get key metadata for the owner
-    const { userMetadata, extraMetadata } =
-      metadataItems?.find(
-        (metadata) =>
-          metadata?.userAddress?.toLowerCase() ===
-          key?.owner?.address?.toLowerCase()
-      )?.data ?? {}
+  return lock?.keys
+    ?.map((key: any) => {
+      // get key metadata for the owner
+      const { userMetadata, extraMetadata } =
+        metadataItems?.find(
+          (metadata) =>
+            metadata?.userAddress?.toLowerCase() ===
+            key?.owner?.address?.toLowerCase()
+        )?.data ?? {}
 
-    return {
-      token: key?.keyId,
-      lockName: lock?.name,
-      expiration: key?.expiration,
-      keyholderAddress: key?.owner?.address,
-      lockAddress: lock?.address,
-      ...userMetadata?.private,
-      ...userMetadata?.protected,
-      ...extraMetadata,
-    }
-  })
+      const metadata = {
+        ...userMetadata?.private,
+        ...userMetadata?.protected,
+        ...extraMetadata,
+      }
+
+      const merged = {
+        token: key?.keyId,
+        lockName: lock?.name,
+        expiration: key?.expiration,
+        keyholderAddress: key?.owner?.address,
+        lockAddress: lock?.address,
+        ...metadata,
+      }
+      return merged
+    })
+    .filter(Boolean)
 }

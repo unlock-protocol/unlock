@@ -152,7 +152,7 @@ export class Members extends GraphQLDataSource {
     },
   }: MemberGetProps) {
     try {
-      const first = 30
+      const first = 1000 // max items
       const skip = parseInt(`${page}`, 10) * first
       const expireTimestamp = parseInt(`${new Date().getTime() / 1000}`)
       const keyId = getValidNumber(search)
@@ -164,12 +164,9 @@ export class Members extends GraphQLDataSource {
         query = QUERY_BY_TYPE[expiration]
       }
 
-      const owner = `${search}`?.toLowerCase() ?? ''
-
       const response = await this.query(query, {
         variables: {
           addresses,
-          owner,
           keyId,
           first,
           skip,

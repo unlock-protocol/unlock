@@ -71,8 +71,7 @@ export async function updateLockOwnership(
 export async function getKeyHolderMetadata(
   address: string,
   keyHolders: string[],
-  network: number,
-  filters: { [key: string]: string } = { email: '' }
+  network: number
 ) {
   const userTokenMetadata = await UserTokenMetadata.findAll({
     attributes: ['userAddress', 'data'],
@@ -83,11 +82,6 @@ export async function getKeyHolderMetadata(
         [Op.in]: keyHolders.map((address) =>
           Normalizer.ethereumAddress(address)
         ),
-      },
-      'data.userMetadata.protected': {
-        email: {
-          [Op.iLike]: `%${filters?.email}%`,
-        },
       },
     },
   })
