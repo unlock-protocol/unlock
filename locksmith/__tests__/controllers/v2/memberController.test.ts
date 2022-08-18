@@ -23,18 +23,18 @@ describe('Member v2 endpoints for locksmith', () => {
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
 
-    const getListResponse = await request(app)
+    const getMembersResponse = await request(app)
       .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(getListResponse.status).toBe(404)
+    expect(getMembersResponse.status).toBe(404)
   })
 
   it('Get members list with filtred query', async () => {
     expect.assertions(7)
 
     const { loginResponse } = await loginRandomUser(app)
-    const getVerifierListResponse = await request(app)
+    const getMembersResponse = await request(app)
       .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
@@ -43,10 +43,10 @@ describe('Member v2 endpoints for locksmith', () => {
         expiration: 'active',
       })
 
-    expect(getVerifierListResponse.status).toBe(200)
+    expect(getMembersResponse.status).toBe(200)
 
-    expect(Array.isArray(getVerifierListResponse.body)).toStrictEqual(true)
-    const [firstItem] = getVerifierListResponse.body ?? []
+    expect(Array.isArray(getMembersResponse.body)).toStrictEqual(true)
+    const [firstItem] = getMembersResponse.body ?? []
     expect(firstItem).toHaveProperty('token')
     expect(firstItem).toHaveProperty('lockName')
     expect(firstItem).toHaveProperty('expiration')
