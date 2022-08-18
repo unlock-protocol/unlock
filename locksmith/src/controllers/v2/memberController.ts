@@ -32,18 +32,6 @@ export default class MemberController {
         expiration,
       }
 
-      if (!filters) {
-        return response.status(404).send({
-          message: 'No filters query found.',
-        })
-      }
-
-      if (!filters) {
-        return response.status(404).send({
-          message: 'No filters query found.',
-        })
-      }
-
       const loggedInUserAddress = Normalizer.ethereumAddress(
         request!.user!.walletAddress
       )
