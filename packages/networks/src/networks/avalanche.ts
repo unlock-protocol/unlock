@@ -4,7 +4,7 @@ export const avalanche: NetworkConfig = {
   publicProvider: 'https://api.avax.network/ext/bc/C/rpc',
   provider: 'https://api.avax.network/ext/bc/C/rpc',
   unlockAddress: '0x70cBE5F72dD85aA634d07d2227a421144Af734b3',
-  multisig: '0x9a9d8C90aB2F4fFd1fc9d1cF562E81C50C059A7d',
+  multisig: '0xEc7777C51327917fd2170c62873272ea168120Cb',
   id: 43114,
   name: 'Avalanche (C-Chain)',
   blockTime: 1000,
