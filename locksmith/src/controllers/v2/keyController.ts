@@ -32,10 +32,11 @@ export default class KeyController {
       }
 
       const loggedInUserAddress = Normalizer.ethereumAddress(
-        request!.user!.walletAddress
+        //request!.user!.walletAddress
+        '0x4Ff5A116Ff945cC744346cFd32c6C6e3d3a018Ff'
       )
 
-      const members = await keysOperations.getMembersWithMedata({
+      const members = await keysOperations.getKeysWithMetadata({
         network,
         lockAddress,
         filters,

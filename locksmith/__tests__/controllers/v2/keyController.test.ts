@@ -18,6 +18,13 @@ jest.mock('@unlock-protocol/unlock-js', () => {
   }
 })
 
+jest.mock('../../operations/metadataOperations', () => ({
+  __esModule: true,
+  getKeysMetadata: jest.fn(() => {
+    return mockKeyHoldersByLock
+  }),
+}))
+
 describe('Keys v2 endpoints for lock', () => {
   it('should throw an error when endpoint does not have query parameters', async () => {
     expect.assertions(2)

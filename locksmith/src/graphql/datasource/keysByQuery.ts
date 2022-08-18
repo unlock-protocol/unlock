@@ -126,7 +126,7 @@ const QUERY_BY_TYPE: { [key in KeyFilter]: DocumentNode } = {
   keyId: keyholdersByKeyIdQuery,
 }
 
-interface MemberGetProps {
+interface KeyGetProps {
   addresses: string[]
   filters: {
     query: string
@@ -136,7 +136,7 @@ interface MemberGetProps {
   }
 }
 
-export class Members extends GraphQLDataSource {
+export class Keys extends GraphQLDataSource {
   constructor(public network: number) {
     super()
     this.baseURL = networks[network].subgraphURI
@@ -150,7 +150,7 @@ export class Members extends GraphQLDataSource {
       expiration = 'active',
       page = 0,
     },
-  }: MemberGetProps) {
+  }: KeyGetProps) {
     try {
       const first = 1000 // max items
       const skip = parseInt(`${page}`, 10) * first
@@ -179,4 +179,4 @@ export class Members extends GraphQLDataSource {
     }
   }
 }
-export default Members
+export default Keys
