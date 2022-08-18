@@ -3,9 +3,8 @@ import { loginRandomUser } from '../../test-helpers/utils'
 
 const app = require('../../../src/app')
 
-jest.setTimeout(600000)
-
 const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
+const wrongLockAddress = '0x70997970C51812dc3A010C7d01b50e0d17dc79C8'
 const network = 4
 
 const lock = {
@@ -150,8 +149,8 @@ describe('Keys v2 endpoints for lock', () => {
   it('should not containts metadata when caller is not lockManager', async () => {
     expect.assertions(5)
 
-    const { loginResponse, address } = await loginRandomUser(app)
-    const lockAddress = address
+    const { loginResponse } = await loginRandomUser(app)
+    const lockAddress = wrongLockAddress
     const getKeysResponse = await request(app)
       .get(`/v2/api/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
