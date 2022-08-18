@@ -8,6 +8,7 @@ import { createMessageToSignIn } from '~/utils/oauth'
 import { Connected } from '../Connected'
 import { ConnectService } from './connectMachine'
 import { PoweredByUnlock } from '../PoweredByUnlock'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   oauthConfig: OAuthConfig
@@ -25,8 +26,8 @@ export function ConfirmConnect({
   const [loading, setLoading] = useState(false)
   const { account, network = 1, signMessage, isUnlockAccount } = useAuth()
   const onSignIn = async () => {
-    setLoading(true)
     try {
+      setLoading(true)
       const message = createMessageToSignIn({
         clientId: oauthConfig.clientId,
         statement: '',
@@ -41,17 +42,14 @@ export function ConfirmConnect({
           s: signature,
         })
       ).toString('base64')
-
+      setLoading(false)
       onClose({
         code,
         state: oauthConfig.state,
       })
-    } catch (error) {
-      if (error instanceof Error) {
-        onClose({
-          error: error.message,
-        })
-      }
+    } catch (error: any) {
+      setLoading(false)
+      console.error(error)
     }
   }
 
