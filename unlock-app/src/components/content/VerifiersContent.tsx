@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Head from 'next/head'
-import styled from 'styled-components'
 import { Button, Modal, Input } from '@unlock-protocol/ui'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
@@ -10,6 +9,10 @@ import { VerifiersList } from '../interface/verifiers/VerifiersList'
 import { getAddressForName } from '../../hooks/useEns'
 import { ToastHelper } from '../helpers/toast.helper'
 import { useStorageService } from '../../utils/withStorageService'
+import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
+import { Lock } from '@unlock-protocol/types'
+import AuthenticationContext from '~/contexts/AuthenticationContext'
+import { useRouter } from 'next/router'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -27,12 +30,35 @@ interface VerifiersContentProps {
 export const VerifiersContent: React.FC<VerifiersContentProps> = ({
   query,
 }) => {
+  const { account } = useContext(AuthenticationContext)
   const [addVerifierModalOpen, setAddVerifierModalOpen] = useState(false)
   const [verifierAddress, setVerifierAddress] = useState('')
   const [loading, setLoading] = useState(false)
   const [verifiers, setVerifiers] = useState<any[]>([])
-  const { lock, network } = query
+  const [lockAddress, setLockAddress] = useState<string | null>(null)
+  const [network, setNetwork] = useState<number | null>(null)
+
   const storageService = useStorageService()
+  const router = useRouter()
+
+  const setParams = ({
+    lock,
+    network,
+  }: {
+    lock: string
+    network: string | number
+  }) => {
+    setLockAddress(lock || null)
+    setNetwork(parseInt(`${network}`, 10) || null)
+  }
+
+  useEffect(() => {
+    const { lock, network } = query
+    setParams({
+      lock,
+      network,
+    })
+  }, [query])
 
   const onAddVerifier = () => {
     setVerifierAddress('')
@@ -57,7 +83,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
         }
         await storageService
           .getEndpoint(
-            `/v2/api/verifier/${network}/${lock}/${resolvedAddress}`,
+            `/v2/api/verifier/${network}/${lockAddress}/${resolvedAddress}`,
             options,
             true /* withAuth */
           )
@@ -94,7 +120,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
       }
       await storageService
         .getEndpoint(
-          `/v2/api/verifier/list/${network}/${lock}`,
+          `/v2/api/verifier/list/${network}/${lockAddress}`,
           options,
           true /* withAuth */
         )
@@ -115,24 +141,47 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
     }
   }
 
+  const onLockChange = (lock: Lock, network: number) => {
+    setParams({
+      lock: lock.address,
+      network,
+    })
+  }
+
+  const withoutParams = !lockAddress || !network
   return (
     <Layout title="Verifiers">
       <Head>
         <title>{pageTitle('Verifiers')}</title>
       </Head>
 
-      <VerifierContent>
-        <Header>
+      <section className="flex flex-col items-start w-full">
+        <section className="flex items-center justify-between w-full">
           <span>A list for all verifiers for your event</span>
-          <Button onClick={onAddVerifier}>Add verifier</Button>
-        </Header>
-        <VerifiersList
-          lockAddress={lock}
-          getVerifierList={getVerifierList}
-          verifiers={verifiers}
-          setVerifiers={setVerifiers}
-        />
-      </VerifierContent>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => router.push('verifiers')}
+              disabled={withoutParams}
+            >
+              Change Lock
+            </Button>
+            <Button disabled={withoutParams} onClick={onAddVerifier}>
+              Add verifier
+            </Button>
+          </div>
+        </section>
+
+        {withoutParams ? (
+          <LocksByNetwork onChange={onLockChange} owner={account!} />
+        ) : (
+          <VerifiersList
+            lockAddress={lockAddress}
+            getVerifierList={getVerifierList}
+            verifiers={verifiers}
+            setVerifiers={setVerifiers}
+          />
+        )}
+      </section>
 
       <Modal isOpen={addVerifierModalOpen} setIsOpen={onAddVerifier}>
         <div className={styling.sectionWrapper}>
@@ -170,16 +219,3 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
 }
 
 export default VerifiersContent
-
-const Header = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-`
-const VerifierContent = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-`

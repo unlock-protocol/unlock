@@ -66,6 +66,7 @@ export interface NetworkConfig {
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
   description?: string
+  teamMultisig?: string
 }
 
 export interface NetworkConfigs {

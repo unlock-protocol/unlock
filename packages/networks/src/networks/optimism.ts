@@ -33,6 +33,7 @@ export const optimism: NetworkConfig = {
   },
   description: 'Layer 2 network. Cheaper transaction cost.',
   isTestNetwork: false,
+  teamMultisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
 }
 
 export default optimism

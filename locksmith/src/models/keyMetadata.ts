@@ -2,7 +2,7 @@ import { Table, Model, Column, DataType } from 'sequelize-typescript'
 
 @Table({ tableName: 'KeyMetadata', timestamps: true })
 export class KeyMetadata extends Model<KeyMetadata> {
-  @Column(DataType.JSON)
+  @Column(DataType.JSONB)
   data!: JSON
 
   @Column({ primaryKey: true })

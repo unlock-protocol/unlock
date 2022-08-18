@@ -1,28 +1,5 @@
-import { PaywallConfig, PaywallConfigLock } from '~/unlockTypes'
+import { PaywallConfig } from '~/unlockTypes'
 import { isValidPaywallConfig } from './checkoutValidators'
-
-interface LockResult extends PaywallConfigLock {
-  address: string
-}
-
-export function networkToLocksMap(paywallConfig: PaywallConfig) {
-  const result = Object.entries(paywallConfig.locks).reduce<{
-    [key: string]: LockResult[]
-  }>((acc, [address, { network, ...rest }]) => {
-    const networkId = Number(network || paywallConfig.network)
-    const item = {
-      ...rest,
-      address,
-    }
-    if (!acc[networkId]) {
-      acc[networkId] = [item]
-    } else {
-      acc[networkId].push(item)
-    }
-    return acc
-  }, {})
-  return result
-}
 
 export function getPaywallConfigFromQuery(
   query: Record<string, any>
@@ -54,7 +31,7 @@ export function getPaywallConfigFromQuery(
   }
   if (typeof query.lock === 'string') {
     return {
-      title: query.title,
+      title: query.title || 'Unlock Protocol',
       network: Number(query.network),
       locks: {
         [query.lock]: {},

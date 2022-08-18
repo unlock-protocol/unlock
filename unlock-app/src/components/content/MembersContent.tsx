@@ -13,6 +13,9 @@ import GrantKeysDrawer from '../creator/members/GrantKeysDrawer'
 import { Input, Button } from '@unlock-protocol/ui'
 import useDebounce from '../../hooks/useDebouce'
 import 'cross-fetch/polyfill'
+import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
+import { Lock } from '@unlock-protocol/types'
+import { getAddressForName } from '~/hooks/useEns'
 
 interface PaginationProps {
   currentPage: number
@@ -56,21 +59,31 @@ interface MembersContentProps {
 }
 export const MembersContent = ({ query }: MembersContentProps) => {
   const { account } = useContext(AuthenticationContext)
+  const [lockAddresses, setLockAddresses] = useState<string[]>([])
   const [isOpen, setIsOpen] = useState(false)
 
-  let lockAddresses: string[] = []
-  if (query.locks) {
-    // query.locks will be either a string or an array.
-    // when there is only one value, it's a string. For any more, it's an array.
-    if (typeof query.locks === 'string') {
-      lockAddresses.push(query.locks)
-    } else {
-      lockAddresses = query.locks as any
+  useEffect(() => {
+    if (query.locks) {
+      // query.locks will be either a string or an array.
+      // when there is only one value, it's a string. For any more, it's an array.
+      if (typeof query.locks === 'string') {
+        setLockAddresses(() => [query.locks])
+      }
+
+      if (typeof query.locks === 'object' && query.locks.length > 0) {
+        setLockAddresses(() => query.locks)
+      }
     }
-  }
+  }, [])
+
   let page = 0
   if (query.page && typeof query.page === 'string') {
     page = parseInt(query.page)
+  }
+  const hasLocks = lockAddresses?.length > 0
+
+  const onLockChange = (lock: Lock) => {
+    setLockAddresses(() => [lock.address])
   }
 
   return (
@@ -89,12 +102,27 @@ export const MembersContent = ({ query }: MembersContentProps) => {
         {!account && <LoginPrompt />}
         {account && (
           <>
-            <div className="grid items-center grid-cols-[1fr] gap-3 sm:grid-cols-[1fr_200px]">
+            <div className="grid items-center justify-between grid-cols-1 gap-3 sm:grid-cols-2">
               <Account />
-              <Button onClick={() => setIsOpen(!isOpen)}>Airdrop Keys</Button>
+              <div className="flex gap-2 justify-end">
+                <Button
+                  onClick={() => setLockAddresses(() => [])}
+                  disabled={!hasLocks}
+                >
+                  Change Lock
+                </Button>
+
+                <Button disabled={!hasLocks} onClick={() => setIsOpen(!isOpen)}>
+                  Airdrop Keys
+                </Button>
+              </div>
             </div>
 
-            <MetadataTableWrapper page={page} lockAddresses={lockAddresses} />
+            {!hasLocks ? (
+              <LocksByNetwork onChange={onLockChange} owner={account} />
+            ) : (
+              <MetadataTableWrapper page={page} lockAddresses={lockAddresses} />
+            )}
           </>
         )}
       </BrowserOnly>
@@ -157,8 +185,9 @@ const MetadataTableWrapper = ({
     filterKey,
   })
 
-  const search = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const search = e?.target?.value ?? ''
+  const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const ensToAddress = await getAddressForName(e?.target?.value)
+    const search = ensToAddress || e?.target?.value || ''
     setQuery(search)
   }
 

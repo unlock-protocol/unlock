@@ -26,6 +26,7 @@ export interface FiatPricing {
 
 export interface LockState extends Lock {
   fiatPricing: FiatPricing
+  isMember: boolean
 }
 
 export interface SelectLockEvent {
@@ -174,13 +175,28 @@ export const checkoutMachine = createMachine(
           SELECT_LOCK: [
             {
               actions: ['selectLock'],
-              target: 'QUANTITY',
-              cond: (_, event) => !event.existingMember,
+              target: 'RETURNING',
+              cond: (_, event) => event.existingMember,
             },
             {
               actions: ['selectLock'],
-              target: 'RETURNING',
-              cond: (_, event) => event.existingMember,
+              target: 'METADATA',
+              // Skip quantity page if min or max doesn't require more than 1 recipients
+              cond: ({ paywallConfig }, event) => {
+                const maxRecipients =
+                  paywallConfig.maxRecipients ||
+                  paywallConfig.locks[event.lock.address]?.maxRecipients
+                const minRecipients =
+                  paywallConfig.minRecipients ||
+                  paywallConfig.locks[event.lock.address]?.minRecipients
+                const hasMaxRecipients = maxRecipients && maxRecipients > 1
+                const hasMinRecipients = minRecipients && minRecipients > 1
+                return !(hasMaxRecipients || hasMinRecipients)
+              },
+            },
+            {
+              actions: ['selectLock'],
+              target: 'QUANTITY',
             },
           ],
           DISCONNECT: {
@@ -196,12 +212,11 @@ export const checkoutMachine = createMachine(
             target: 'METADATA',
           },
           SELECT: 'SELECT',
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-            cond: 'isLockSelected',
-          },
           BACK: 'SELECT',
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
         },
       },
       METADATA: {
@@ -212,12 +227,11 @@ export const checkoutMachine = createMachine(
           },
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-            cond: 'isLockSelected',
-          },
           BACK: 'QUANTITY',
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
         },
       },
       PAYMENT: {
@@ -246,12 +260,11 @@ export const checkoutMachine = createMachine(
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
           METADATA: 'METADATA',
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-            cond: 'isLockSelected',
-          },
           BACK: 'METADATA',
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
         },
       },
       CARD: {
@@ -272,12 +285,11 @@ export const checkoutMachine = createMachine(
               actions: ['selectCardToCharge'],
             },
           ],
-          BACK: 'PAYMENT',
           DISCONNECT: {
-            target: 'QUANTITY',
+            target: 'SELECT',
             actions: ['disconnect'],
-            cond: 'isLockSelected',
           },
+          BACK: 'PAYMENT',
         },
       },
       MESSAGE_TO_SIGN: {
@@ -293,16 +305,15 @@ export const checkoutMachine = createMachine(
               actions: ['signMessage'],
             },
           ],
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-            cond: 'isLockSelected',
-          },
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
           PAYMENT: 'PAYMENT',
           METADATA: 'METADATA',
           BACK: 'METADATA',
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
         },
       },
       CAPTCHA: {
@@ -321,9 +332,8 @@ export const checkoutMachine = createMachine(
             },
           ],
           DISCONNECT: {
-            target: 'QUANTITY',
+            target: 'SELECT',
             actions: ['disconnect'],
-            cond: 'isLockSelected',
           },
         },
       },
@@ -333,11 +343,7 @@ export const checkoutMachine = createMachine(
             target: 'MINTING',
             actions: ['confirmMint'],
           },
-          DISCONNECT: {
-            target: 'QUANTITY',
-            actions: ['disconnect'],
-            cond: 'isLockSelected',
-          },
+
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
           PAYMENT: 'PAYMENT',
@@ -352,6 +358,10 @@ export const checkoutMachine = createMachine(
               target: 'METADATA',
             },
           ],
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
         },
       },
       MINTING: {
@@ -382,9 +392,8 @@ export const checkoutMachine = createMachine(
           MAKE_ANOTHER_PURCHASE: 'QUANTITY',
           BACK: 'SELECT',
           DISCONNECT: {
-            target: 'QUANTITY',
+            target: 'SELECT',
             actions: ['disconnect'],
-            cond: 'isLockSelected',
           },
         },
       },
