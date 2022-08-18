@@ -5,8 +5,9 @@ const app = require('../../../src/app')
 
 jest.setTimeout(600000)
 
-const lockAddress = '0x4D35Fb10150E3D5E09ce332bBc4366D9F89B49c5'
+const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
 const network = 4
+
 jest.mock('@unlock-protocol/unlock-js', () => {
   return {
     Web3Service: jest.fn().mockImplementation(() => {
@@ -18,7 +19,7 @@ jest.mock('@unlock-protocol/unlock-js', () => {
 })
 
 describe('Member v2 endpoints for locksmith', () => {
-  it('Get members without filter query throw error', async () => {
+  it('should get members without filters throw error', async () => {
     expect.assertions(2)
     const { loginResponse } = await loginRandomUser(app)
     expect(loginResponse.status).toBe(200)
@@ -30,7 +31,7 @@ describe('Member v2 endpoints for locksmith', () => {
     expect(getMembersResponse.status).toBe(404)
   })
 
-  it('Get members list with filtred query', async () => {
+  it('should get members list without error with query filters', async () => {
     expect.assertions(7)
 
     const { loginResponse } = await loginRandomUser(app)
@@ -52,5 +53,97 @@ describe('Member v2 endpoints for locksmith', () => {
     expect(firstItem).toHaveProperty('expiration')
     expect(firstItem).toHaveProperty('keyholderAddress')
     expect(firstItem).toHaveProperty('lockAddress')
+  })
+
+  it('should search by empty query and get all results', async () => {
+    expect.assertions(3)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getMembersResponse = await request(app)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '',
+        filterKey: 'owner',
+        expiration: 'all',
+      })
+
+    expect(getMembersResponse.status).toBe(200)
+
+    expect(Array.isArray(getMembersResponse.body)).toStrictEqual(true)
+    expect(getMembersResponse.body.length).not.toBe(0)
+  })
+
+  it('should search by random query and not have results', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getMembersResponse = await request(app)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: 'NOT_VALID',
+        filterKey: 'owner',
+        expiration: 'all',
+      })
+
+    expect(getMembersResponse.status).toBe(200)
+
+    expect(getMembersResponse.body.length).toStrictEqual(0)
+  })
+
+  it('should search by empty email query and get all results', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getMembersResponse = await request(app)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '',
+        filterKey: 'email',
+        expiration: 'all',
+      })
+
+    expect(getMembersResponse.status).toBe(200)
+
+    expect(getMembersResponse.body.length).not.toStrictEqual(0)
+  })
+
+  it('should search by empty keyId query and get all results', async () => {
+    expect.assertions(2)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getMembersResponse = await request(app)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '',
+        filterKey: 'keyId',
+        expiration: 'all',
+      })
+
+    expect(getMembersResponse.status).toBe(200)
+
+    expect(getMembersResponse.body.length).not.toStrictEqual(0)
+  })
+
+  it('it search by specific keyId query', async () => {
+    expect.assertions(3)
+
+    const { loginResponse } = await loginRandomUser(app)
+    const getMembersResponse = await request(app)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .query({
+        query: '4',
+        filterKey: 'keyId',
+        expiration: 'all',
+      })
+
+    const [data] = getMembersResponse.body
+    expect(getMembersResponse.status).toBe(200)
+    expect(getMembersResponse.body.length).toStrictEqual(1)
+    expect(data.token).toStrictEqual('4')
   })
 })
