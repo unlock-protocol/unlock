@@ -25,7 +25,7 @@ describe('Member v2 endpoints for locksmith', () => {
     expect(loginResponse.status).toBe(200)
 
     const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
     expect(getMembersResponse.status).toBe(404)
@@ -36,7 +36,7 @@ describe('Member v2 endpoints for locksmith', () => {
 
     const { loginResponse } = await loginRandomUser(app)
     const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '',
@@ -60,7 +60,7 @@ describe('Member v2 endpoints for locksmith', () => {
 
     const { loginResponse } = await loginRandomUser(app)
     const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '',
@@ -79,7 +79,7 @@ describe('Member v2 endpoints for locksmith', () => {
 
     const { loginResponse } = await loginRandomUser(app)
     const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: 'NOT_VALID',
@@ -97,7 +97,7 @@ describe('Member v2 endpoints for locksmith', () => {
 
     const { loginResponse } = await loginRandomUser(app)
     const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '',
@@ -115,7 +115,7 @@ describe('Member v2 endpoints for locksmith', () => {
 
     const { loginResponse } = await loginRandomUser(app)
     const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '',
@@ -133,7 +133,7 @@ describe('Member v2 endpoints for locksmith', () => {
 
     const { loginResponse } = await loginRandomUser(app)
     const getMembersResponse = await request(app)
-      .get(`/v2/api/member/${network}/locks/${lockAddress}/members`)
+      .get(`/v2/api/member/${network}/locks/${lockAddress}/keys`)
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '4',

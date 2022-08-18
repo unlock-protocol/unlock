@@ -2,13 +2,12 @@ import { Request, Response } from 'express'
 import Normalizer from '../../utils/normalizer'
 import logger from '../../logger'
 import * as memberOperations from '../../operations/memberOperations'
-
-export default class MemberController {
+export default class KeyController {
   /**
    * List of members with additional metadata when caller is the lockManager
    * @return {members} members list
    */
-  async members(request: Request, response: Response) {
+  async keys(request: Request, response: Response) {
     try {
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const network = Number(request.params.network)

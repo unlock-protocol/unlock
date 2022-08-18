@@ -1,16 +1,16 @@
 import express from 'express'
-import MemberController from '../../controllers/v2/memberController'
+import KeyController from '../../controllers/v2/keyController'
 import { authenticatedMiddleware } from '../../utils/middlewares/auth'
 
 const router = express.Router({ mergeParams: true })
 
-const memberController = new MemberController()
+const memberController = new KeyController()
 
 router.get(
-  '/:network/locks/:lockAddress/members',
+  '/:network/locks/:lockAddress/keys',
   authenticatedMiddleware,
   (req, res) => {
-    memberController.members(req, res)
+    memberController.keys(req, res)
   }
 )
 

@@ -18,7 +18,7 @@ const applicationRouter = require('./v2/application')
 const verifierRouter = require('./v2/verifier')
 const grantKeysRouter = require('./v2/grantKeys')
 const ticketRouter = require('./v2/ticket')
-const memberRouter = require('./v2/member')
+const keyController = require('./v2/key')
 const config = require('../../config/config')
 
 const router = express.Router({ mergeParams: true })
@@ -56,7 +56,7 @@ router.use('/v2/api/metadata', metadataRouterV2)
 router.use('/v2/api/verifier', verifierRouter)
 router.use('/v2/api/grant', grantKeysRouter)
 router.use('/v2/api/ticket', ticketRouter)
-router.use('/v2/api/member', memberRouter)
+router.use('/v2/api/member', keyController)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')

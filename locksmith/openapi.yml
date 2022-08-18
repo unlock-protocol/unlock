@@ -46,7 +46,7 @@ paths:
       responses:
         '200':
           description: OK
-  /v2/member/{network}/locks/{lockAddress}/members:
+  /v2/member/{network}/locks/{lockAddress}/keys:
     get:
     parameters:
       - in: path
@@ -77,7 +77,7 @@ paths:
                   type: integer
       responses:
         '200':
-          description: List of members
+          description: List of keys matching the query
           content:
             application/json:
               schema:
