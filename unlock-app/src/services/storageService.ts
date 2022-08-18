@@ -967,18 +967,26 @@ export class StorageService extends EventEmitter {
   async getMembers({
     lockAddress,
     network,
-    lock,
+    filters,
   }: {
     lockAddress: string
     network: number
-    lock: any
+    filters: { [key: string]: any }
   }): Promise<any> {
+    const token = await this.getAccessToken()
     const url = new URL(
-      `${this.host}/v2/api/member/${network}/locks/${lockAddress}/list`
+      `${this.host}/v2/api/member/${network}/locks/${lockAddress}/members`
     )
+
+    Object.entries(filters).forEach(([key, value]) => {
+      url.searchParams.append(key, value)
+    })
 
     const response = await fetch(url, {
       method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     })
     const data = response.json()
 
