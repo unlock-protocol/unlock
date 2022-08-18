@@ -7,7 +7,7 @@ import {
   NewGlobalTokenSymbol,
   OwnershipTransferred,
   CreateLockCall,
-} from '../generated/Contract/Contract'
+} from '../generated/Unlock/Unlock'
 import { UnlockEntity } from '../generated/schema'
 import { processNewLock } from './lockProcessing'
 

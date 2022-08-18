@@ -6,11 +6,11 @@ schema:
   file: ./schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: Contract
+    name: Unlock
     network: {{network}}
     source:
-      address: "{{unlockContractAddress}}"
-      abi: Contract
+      address: "{{unlockUnlockAddress}}"
+      abi: Unlock
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
@@ -22,8 +22,8 @@ dataSources:
         - NewGlobalTokenSymbol
         - OwnershipTransferred
       abis:
-        - name: Contract
-          file: ./abis/Contract.json
+        - name: Unlock
+          file: ./abis/Unlock.json
         - name: PublicLock
           file: ./abis/PublicLock.json
       eventHandlers:
@@ -38,11 +38,11 @@ dataSources:
       file: ./src/mapping.ts
   {{#previousDeploys}}
   - kind: ethereum/contract
-    name: Contract{{index}}
+    name: Unlock{{index}}
     network: {{network}}
     source:
       address: "{{unlockAddress}}"
-      abi: Contract{{index}}
+      abi: Unlock{{index}}
       startBlock: {{startBlock}}
     mapping:
       kind: ethereum/events
@@ -54,8 +54,8 @@ dataSources:
         - NewGlobalTokenSymbol
         - OwnershipTransferred
       abis:
-        - name: Contract{{index}}
-          file: ./abis/Contract.json
+        - name: Unlock{{index}}
+          file: ./abis/Unlock.json
         - name: PublicLock
           file: ./abis/PublicLock.json
       eventHandlers:
