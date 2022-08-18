@@ -126,7 +126,7 @@ describe('Keys v2 endpoints for lock', () => {
     expect(getKeysResponse.status).toBe(404)
   })
 
-  it('should containts metadata when caller is the lockManager', async () => {
+  it('should contain metadata when caller is the lockManager', async () => {
     expect.assertions(5)
 
     const { loginResponse } = await loginRandomUser(app)
