@@ -1,4 +1,4 @@
-import { keysByQuery as graphQLClient } from '../graphql/datasource'
+import { keysByQuery } from '../graphql/datasource'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import * as metadataOperations from './metadataOperations'
@@ -101,9 +101,9 @@ export async function getKeysWithMetadata({
   )
 
   let metadataItems = []
-  const client = new graphQLClient(network)
+  const graphQLClient = new keysByQuery(network)
 
-  const [lock] = await client.get({
+  const [lock] = await graphQLClient.get({
     addresses: [lockAddress],
     filters,
   })
