@@ -2,7 +2,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const arbitrum: NetworkConfig = {
   publicProvider: 'https://rpc.ankr.com/arbitrum',
-  provider: 'https://rpc.ankr.com/arbitrum',
+  provider: 'https://rpc.unlock-protocol.com/42161',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
   multisig: '0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0',
   id: 42161,
