@@ -7,11 +7,12 @@
     "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ unlock-protocol/goerli-v2",
-    "create-local": "graph create --node http://localhost:8020/ unlock-protocol/goerli-v2",
-    "remove-local": "graph remove --node http://localhost:8020/ unlock-protocol/goerli-v2",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 unlock-protocol/goerli-v2",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ ",
+    "create-local": "graph create --node http://localhost:8020/ ",
+    "remove-local": "graph remove --node http://localhost:8020/ ",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
     "test": "graph test",
+    "ci": "yarn generate-subgraph-yaml --network goerli && yarn codegen && yarn test",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
