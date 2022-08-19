@@ -6,7 +6,9 @@ import {
   NewGlobalTokenSymbol,
   OwnershipTransferred,
 } from '../generated/Unlock/Unlock'
+import { PublicLock } from '../generated/templates/PublicLock/PublicLock'
 import { Lock } from '../generated/schema'
+import { BigInt } from '@graphprotocol/graph-ts'
 
 export function handleNewLock(event: NewLock): void {
   // Entities can be loaded from the store using a string ID; this ID
@@ -20,12 +22,20 @@ export function handleNewLock(event: NewLock): void {
     entity = new Lock(entityId)
   }
 
-  entity.address = event.params.newLockAddress
+  let lockAddress = event.params.newLockAddress
+
+  // fetch lock version
+  let publicLock = PublicLock.bind(lockAddress)
+  let version = BigInt.fromI32(0)
+  let publicLockVersion = publicLock.try_publicLockVersion()
+  if (!publicLockVersion.reverted) {
+    version = BigInt.fromI32(publicLockVersion.value)
+  }
+
+  entity.address = lockAddress
+  entity.version = version
   entity.createdAtBlock = event.block.number
   entity.save()
-
-  // trigger lock parsing
-  // processNewLock(event)
 }
 
 export function handleNewTokenURI(_event: NewTokenURI): void {}
