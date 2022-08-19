@@ -44,7 +44,6 @@ export default class KeyController {
 
       return response.status(200).send(keys)
     } catch (error) {
-      console.log('ERROR', error)
       logger.error(error.message)
       return response.status(500).send({
         message: 'Keys list could not be retrived.',
