@@ -29,6 +29,9 @@ import { useConfig } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
 import { KeyMetadataModal } from './KeyMetadataModal'
+import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
+import { useQuery } from 'react-query'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface KeyBoxProps {
   tokenURI: string
@@ -138,18 +141,25 @@ export interface Props {
 
 const Key = ({ ownedKey, account, network }: Props) => {
   const { lock, expiration, tokenURI, keyId } = ownedKey
+  const { network: accountNetwork } = useAuth()
   const walletService = useWalletService()
   const wedlockService = useContext(WedlockServiceContext)
+  const web3Service = useWeb3Service()
   const { watchAsset } = useAuth()
   const config = useConfig()
   const expirationStatus = expirationAsDate(expiration)
   const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
-
   const [error, setError] = useState<string | null>(null)
   const [showingQR, setShowingQR] = useState(false)
   const [showMetadata, setShowMetadata] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
+  const { data: lockData, isLoading: isLockDataLoading } = useQuery(
+    ['lock', lock.address, network],
+    () => {
+      return web3Service.getLock(lock.address, network)
+    }
+  )
 
   const handleSignature = async () => {
     setError('')
@@ -229,8 +239,16 @@ const Key = ({ ownedKey, account, network }: Props) => {
   }
 
   const isAvailableOnOpenSea = [1, 4, 137].indexOf(network) > -1
-  const baseCurrencySymbol =
-    walletService.networks[network].baseCurrencySymbol ?? ''
+  const baseSymbol = walletService.networks[network].baseCurrencySymbol!
+  const symbol = isLockDataLoading
+    ? baseSymbol
+    : lockTickerSymbol(lockData, baseSymbol)
+
+  const isRefundable =
+    !isLockDataLoading &&
+    !isKeyExpired &&
+    lockData.publicLockVersion >= 10 &&
+    network === accountNetwork
 
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
@@ -248,7 +266,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         keyId={keyId}
         dismiss={closeCancelAndRefund}
         account={account}
-        currency={baseCurrencySymbol}
+        currency={symbol}
       />
       {signature && (
         <QRModal
@@ -310,7 +328,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
               <OpenSeaIcon />
             </button>
           </Tooltip>
-          {!isKeyExpired && (
+          {isRefundable && (
             <Tooltip label="Cancel and Refund" tip="Cancel and Refund">
               <button
                 aria-label="Cancel and Refund"
