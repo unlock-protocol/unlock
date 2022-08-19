@@ -96,14 +96,16 @@ export const useMembers = ({
   const walletService = useWalletService()
   const web3Service = useContext(Web3ServiceContext)
   const storageService = useStorageService()
-  //const storageService = useContext(StorageServiceContext)
   const graphService = useContext(GraphServiceContext)
+  // in case of multiple locks lets keep track where the use is the lockManager
+  const [lockManagerMapping, setLockManagerMapping] = useState<{
+    [lockAddress: string]: boolean
+  }>()
 
   graphService.connect(config.networks[network!].subgraphURI)
   const [hasNextPage, setHasNextPage] = useState(false)
   const [members, setMembers] = useState({})
   const [loading, setLoading] = useState(true)
-  const [isLockManager, setIsLockManager] = useState(false)
   const [membersCount, setMembersCount] = useState<{
     total: number
     active: number
@@ -157,14 +159,8 @@ export const useMembers = ({
       })
 
       const membersForLocksPromise = data.locks.map(async (lock: any) => {
-        // If the viewer is not the lock owner, just show the members from chain
-        const _isLockManager = await web3Service.isLockManager(
-          lock.address,
-          viewer,
-          network
-        )
-        setIsLockManager(_isLockManager)
-        if (!_isLockManager) {
+        const isLockManager = lockManagerMapping?.[lock.address] ?? false
+        if (!isLockManager) {
           return buildMembersWithMetadata(lock, [])
         }
         try {
@@ -223,6 +219,26 @@ export const useMembers = ({
       total: locksTotalList.reduce((acc, curr) => acc + curr),
     })
   }
+
+  useEffect(() => {
+    const getLockManagerStatus = async (locks: string[]) => {
+      const lockManagerPromise = locks?.map((lock) =>
+        web3Service.isLockManager(lock, account!, network!)
+      )
+      const status = await Promise.all(lockManagerPromise)
+
+      let mapping = {}
+      locks?.map(
+        (lock, index) =>
+          (mapping = {
+            ...mapping,
+            [lock.toLowerCase()]: status[index] ?? false, // set lockManager status or false is value is not valid
+          })
+      )
+      setLockManagerMapping(mapping)
+    }
+    getLockManagerStatus(lockAddresses)
+  }, [account, lockAddresses, network, web3Service])
   /**
    * When the keyHolders object changes, load the metadata
    */
@@ -248,7 +264,7 @@ export const useMembers = ({
     list,
     columns,
     hasNextPage,
-    isLockManager,
+    lockManagerMapping,
     loadMembers,
     membersCount,
   }

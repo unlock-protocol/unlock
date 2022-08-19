@@ -173,7 +173,7 @@ const MetadataTableWrapper = ({
     list,
     columns,
     hasNextPage,
-    isLockManager,
+    lockManagerMapping,
     loadMembers,
     membersCount,
   } = useMembers({
@@ -273,7 +273,7 @@ const MetadataTableWrapper = ({
       <MetadataTable
         columns={columns}
         metadata={list}
-        isLockManager={isLockManager}
+        lockManagerMapping={lockManagerMapping}
         lockAddresses={lockAddresses}
         loading={loading}
         loadMembers={loadMembers}
