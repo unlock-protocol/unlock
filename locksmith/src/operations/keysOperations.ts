@@ -4,7 +4,7 @@ import networks from '@unlock-protocol/networks'
 import * as metadataOperations from './metadataOperations'
 import Fuse from 'fuse.js'
 
-interface Lock {
+interface SubgraphLock {
   keys: {
     owner: {
       address: string
@@ -49,7 +49,10 @@ async function filterKeys(keys: any[], filters: any) {
 }
 
 /** merge keys items with the corresponding metadata value */
-export const buildKeysWithMetadata = (lock: Lock, metadataItems: any[]) => {
+export const buildKeysWithMetadata = (
+  lock: SubgraphLock,
+  metadataItems: any[]
+) => {
   return lock?.keys
     ?.map((key: any) => {
       // get key metadata for the owner
