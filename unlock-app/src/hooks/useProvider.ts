@@ -148,8 +148,15 @@ export const useProvider = (config: any) => {
     setEncryptedPrivateKey(null)
     clearStorage()
     try {
+      // unlock provider does not support removing listeners or closing.
+      if (provider?.isUnlock) {
+        return
+      }
       provider.provider.removeAllListeners()
-      await provider.provider.close()
+      // metamask does not support disconnect
+      if (provider?.connection?.url !== 'metamask') {
+        await provider.provider.close()
+      }
     } catch (error) {
       console.error(
         'We could not disconnect provider properly using provider.disconnect()'
