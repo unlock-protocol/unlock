@@ -46,9 +46,11 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       }
     }) || lockOptions[0]
   )
+  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
   const config = useConfig()
-  const { account } = useAuth()
+  const { account, network, changeNetwork, isUnlockAccount } = useAuth()
   const web3Service = useWeb3Service()
+
   const { isLoading: isLocksLoading, data: locks } = useQuery(
     ['locks', JSON.stringify(paywallConfig)],
     async () => {
@@ -108,6 +110,9 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     }
   )
   const isDisabled = isLocksLoading || isMembershipsLoading || !lockOption
+  const lockNetwork = config?.networks?.[lockOption.network]
+  const isNetworkSwitchRequired =
+    lockOption.network !== network && !isUnlockAccount
 
   return (
     <Fragment>
@@ -259,27 +264,47 @@ export function Select({ checkoutService, injectedProvider }: Props) {
           injectedProvider={injectedProvider}
         >
           <div className="grid">
-            <Button
-              disabled={isDisabled}
-              onClick={(event) => {
-                event.preventDefault()
-                if (lockOption && locks) {
-                  const existingMember = !!memberships?.includes(
-                    lockOption.address
-                  )
-                  const lock = locks[lockOption.network].find(
-                    (lock) => lock.address === lockOption.address
-                  )!
-                  send({
-                    type: 'SELECT_LOCK',
-                    lock,
-                    existingMember,
-                  })
-                }
-              }}
-            >
-              Next
-            </Button>
+            {isNetworkSwitchRequired && (
+              <Button
+                disabled={isDisabled || isSwitchingNetwork}
+                loading={isSwitchingNetwork}
+                onClick={async (event) => {
+                  setIsSwitchingNetwork(true)
+                  event.preventDefault()
+                  await changeNetwork(lockNetwork)
+                  setIsSwitchingNetwork(false)
+                }}
+              >
+                Switch to {lockNetwork.name}
+              </Button>
+            )}
+            {!isNetworkSwitchRequired && (
+              <Button
+                disabled={isDisabled}
+                onClick={async (event) => {
+                  event.preventDefault()
+                  // Silently change network to the correct one in the background
+                  if (isUnlockAccount) {
+                    await changeNetwork(lockNetwork)
+                  }
+                  if (lockOption && locks) {
+                    const existingMember = !!memberships?.includes(
+                      lockOption.address
+                    )
+                    const lock = locks[lockOption.network].find(
+                      (lock) => lock.address === lockOption.address
+                    )!
+                    send({
+                      type: 'SELECT_LOCK',
+                      lock,
+                      existingMember,
+                    })
+                  }
+                }}
+              >
+                Next
+              </Button>
+            )}
           </div>
         </Connected>
         <PoweredByUnlock />
