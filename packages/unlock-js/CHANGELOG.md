@@ -1,5 +1,9 @@
 # Changes
 
+# 0.26.3
+
+- Add typing for referer in purchase key methods
+
 # 0.26.2
 
 - add support for `numberOfOwners`
