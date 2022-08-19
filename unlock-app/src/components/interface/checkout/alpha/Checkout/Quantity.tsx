@@ -12,7 +12,6 @@ import {
   RiCoupon2Line as QuantityIcon,
 } from 'react-icons/ri'
 import { useActor } from '@xstate/react'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
@@ -34,8 +33,6 @@ const QuantityPlaceholder = () => {
 
 export function Quantity({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { network, isUnlockAccount, changeNetwork } = useAuth()
-  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
   const config = useConfig()
   const { paywallConfig, quantity: selectedQuantity } = state.context
   const lock = state.context.lock!
@@ -72,8 +69,6 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
   )
 
   const fiatPrice = fiatPricing?.usd?.keyPrice
-  const isNetworkSwitchRequired = lock?.network !== network && !isUnlockAccount
-  const lockNetwork = config.networks?.[lock?.network]
   const isDisabled = quantity < 1 || isLoading
 
   return (
@@ -203,32 +198,18 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
           injectedProvider={injectedProvider}
         >
           <div className="grid">
-            {isNetworkSwitchRequired ? (
-              <Button
-                disabled={isSwitchingNetwork}
-                loading={isSwitchingNetwork}
-                onClick={async (event) => {
-                  event.preventDefault()
-                  setIsSwitchingNetwork(true)
-                  await changeNetwork(lockNetwork)
-                }}
-              >
-                Switch to {lockNetwork.name} network
-              </Button>
-            ) : (
-              <Button
-                disabled={isDisabled}
-                onClick={async (event) => {
-                  event.preventDefault()
-                  send({
-                    type: 'SELECT_QUANTITY',
-                    quantity,
-                  })
-                }}
-              >
-                {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
-              </Button>
-            )}
+            <Button
+              disabled={isDisabled}
+              onClick={async (event) => {
+                event.preventDefault()
+                send({
+                  type: 'SELECT_QUANTITY',
+                  quantity,
+                })
+              }}
+            >
+              {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
+            </Button>
           </div>
         </Connected>
         <PoweredByUnlock />
