@@ -1,4 +1,4 @@
-import { KeyPurchase, Key, LocksByOwner } from './datasource'
+import { KeyPurchase, Key, LocksByOwner, keysByQuery } from './datasource'
 import { generateMetadata } from './datasource/metaData'
 import { KeyHolder } from './datasource/keyHolder'
 import { KeyHoldersByLock } from './datasource/keyholdersByLock'
@@ -25,6 +25,8 @@ export const resolvers = {
       new Key(network).getKey(args.id),
     keyHolders: async (_root: any, args: any, network: number) =>
       new KeyHolder().get(args.where.address, network),
+    keysList: async (args: any, network: number) =>
+      new keysByQuery(network).get(args),
   },
   Key: {
     // eslint-disable-next-line no-unused-vars
