@@ -245,10 +245,9 @@ const Key = ({ ownedKey, account, network }: Props) => {
     : lockTickerSymbol(lockData, baseSymbol)
 
   const isRefundable =
-    !isLockDataLoading &&
-    !isKeyExpired &&
-    lockData.publicLockVersion >= 10 &&
-    network === accountNetwork
+    !isLockDataLoading && !isKeyExpired && lockData.publicLockVersion >= 10
+
+  const wrongNetwork = network !== accountNetwork
 
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
@@ -329,11 +328,18 @@ const Key = ({ ownedKey, account, network }: Props) => {
             </button>
           </Tooltip>
           {isRefundable && (
-            <Tooltip label="Cancel and Refund" tip="Cancel and Refund">
+            <Tooltip
+              label="Cancel and Refund"
+              tip={
+                wrongNetwork
+                  ? `Switch to ${walletService.networks[network].name} network`
+                  : 'Cancel and refund'
+              }
+            >
               <button
-                aria-label="Cancel and Refund"
                 className={iconButtonClass}
                 type="button"
+                disabled={wrongNetwork}
                 onClick={onCancelAndRefund}
               >
                 <CancelIcon />
