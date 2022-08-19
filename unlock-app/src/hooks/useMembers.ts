@@ -97,7 +97,7 @@ export const useMembers = ({
   const web3Service = useContext(Web3ServiceContext)
   const storageService = useStorageService()
   const graphService = useContext(GraphServiceContext)
-  // in case of multiple locks lets keep track where the use is the lockManager
+  // in case of multiple locks lets keep track where the user has lockManager status
   const [lockManagerMapping, setLockManagerMapping] = useState<{
     [lockAddress: string]: boolean
   }>()
