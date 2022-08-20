@@ -244,8 +244,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
     ? baseSymbol
     : lockTickerSymbol(lockData, baseSymbol)
 
-  const isRefundable =
-    !isLockDataLoading && !isKeyExpired && lockData.publicLockVersion >= 10
+  const isRefundable = !isLockDataLoading && !isKeyExpired
 
   const wrongNetwork = network !== accountNetwork
 
