@@ -2,7 +2,6 @@ import { useEffect, useState, useContext } from 'react'
 import { expirationAsDate } from '../utils/durations'
 import { useWalletService } from '../utils/withWalletService'
 import { useStorageService } from '../utils/withStorageService'
-import { generateColumns } from '../utils/metadataMunging'
 import { MemberFilter } from '../unlockTypes'
 import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { GraphServiceContext } from '../utils/withGraphService'
@@ -93,10 +92,7 @@ export const useMembers = ({
 }) => {
   const { network, account } = useContext(AuthenticationContext)
   const config = useContext(ConfigContext)
-  const walletService = useWalletService()
   const web3Service = useContext(Web3ServiceContext)
-  const storageService = useStorageService()
-  //const storageService = useContext(StorageServiceContext)
   const graphService = useContext(GraphServiceContext)
 
   graphService.connect(config.networks[network!].subgraphURI)
@@ -111,96 +107,6 @@ export const useMembers = ({
     active: 0,
     total: 0,
   })
-
-  const login = async () => {
-    if (!storageService) return
-    await storageService.loginPrompt({
-      walletService,
-      address: account!,
-      chainId: network!,
-    })
-  }
-
-  const getKeysMetadata = async (locks: any) => {
-    if (!locks.length) return
-    await login()
-
-    const keysMetadataPromise = locks.map(async (lock: any) => {
-      return await storageService.getKeysMetadata({
-        lockAddress: lock.address,
-        network: network!,
-        lock,
-      })
-    })
-
-    const keysMetadata = await Promise.all(keysMetadataPromise)
-    return [].concat(...keysMetadata.map((item) => item))
-  }
-
-  const loadMembers = async () => {
-    try {
-      setLoading(true)
-
-      const expireTimestamp = parseInt(`${new Date().getTime() / 1000}`)
-
-      const first = 30
-      const skip = page * first
-
-      const { data } = await graphService.keysByLocks({
-        locks: lockAddresses,
-        expireTimestamp,
-        expiration,
-        first,
-        skip,
-        search: query,
-        filterKey,
-      })
-
-      const membersForLocksPromise = data.locks.map(async (lock: any) => {
-        // If the viewer is not the lock owner, just show the members from chain
-        const _isLockManager = await web3Service.isLockManager(
-          lock.address,
-          viewer,
-          network
-        )
-        setIsLockManager(_isLockManager)
-        if (!_isLockManager) {
-          return buildMembersWithMetadata(lock, [])
-        }
-        try {
-          if (data?.locks) {
-            const storedMetadata = await getKeysMetadata(data?.locks ?? [])
-            return buildMembersWithMetadata(lock, storedMetadata)
-          }
-        } catch (error) {
-          ToastHelper.error(`Could not list members - ${error}`)
-          return []
-        }
-      })
-
-      const membersByLock = await Promise.all(membersForLocksPromise)
-
-      const members = Object.values(
-        membersByLock.reduce((acc, array) => {
-          return {
-            ...acc,
-            ...array,
-          }
-        }, {})
-      )
-
-      setMembers(members ?? [])
-      if (members.length > 0) {
-        setHasNextPage(Object.keys(members).length === first)
-      }
-      setLoading(false)
-    } catch (err) {
-      console.error(err)
-      setLoading(false)
-      setMembers([])
-      ToastHelper.error('There is some unexpected issue, please try again')
-    }
-  }
 
   const getMembersCount = async () => {
     const {
@@ -223,33 +129,16 @@ export const useMembers = ({
       total: locksTotalList.reduce((acc, curr) => acc + curr),
     })
   }
-  /**
-   * When the keyHolders object changes, load the metadata
-   */
-  useEffect(() => {
-    loadMembers()
-  }, [
-    JSON.stringify(lockAddresses),
-    viewer,
-    page,
-    query,
-    filterKey,
-    expiration,
-  ])
 
   useEffect(() => {
     getMembersCount()
   }, [])
 
-  const list: any = Object.values(members)
-  const columns = generateColumns(list)
   return {
     loading,
-    list,
-    columns,
+    //columns,
     hasNextPage,
     isLockManager,
-    loadMembers,
     membersCount,
   }
 }

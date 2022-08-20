@@ -16,6 +16,8 @@ import 'cross-fetch/polyfill'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 import { Lock } from '@unlock-protocol/types'
 import { getAddressForName } from '~/hooks/useEns'
+import { useQuery } from 'react-query'
+import { useKeys } from '~/hooks/useKeys'
 
 interface PaginationProps {
   currentPage: number
@@ -139,6 +141,7 @@ interface Filter {
   key: string
   label: string
   options?: MemberFilter[]
+  onlyLockManager?: boolean
 }
 
 const filters: Filter[] = [
@@ -149,7 +152,10 @@ const filters: Filter[] = [
     label: 'Expiration',
     options: ['active', 'expired', 'all'],
   },
+  { key: 'email', label: 'Email', onlyLockManager: true },
+  { key: 'checkedInAt', label: 'Checked in time', onlyLockManager: true },
 ]
+
 /**
  * This just wraps the metadataTable component, providing the data
  * from the graph so we can separate the data layer from the
@@ -159,7 +165,7 @@ const MetadataTableWrapper = ({
   lockAddresses,
   page,
 }: MetadataTableWrapperProps) => {
-  const { account } = useContext(AuthenticationContext)
+  const { account, network } = useContext(AuthenticationContext)
   const [currentPage, setCurrentPage] = useState(page)
   const [query, setQuery] = useState<string>('')
   const [filterKey, setFilteKey] = useState<string>('owner')
@@ -169,12 +175,12 @@ const MetadataTableWrapper = ({
   const queryValue = useDebounce<string>(query)
 
   const {
-    loading,
-    list,
-    columns,
-    hasNextPage,
+    //loading,
+    //list,
+    //columns,
+    //hasNextPage,
     isLockManager,
-    loadMembers,
+    //loadMembers,
     membersCount,
   } = useMembers({
     viewer: account!,
@@ -183,6 +189,17 @@ const MetadataTableWrapper = ({
     page: currentPage,
     query: queryValue,
     filterKey,
+  })
+
+  const { getKeys, columns } = useKeys({
+    lockAddress: lockAddresses,
+    viewer: account!,
+    network: network!,
+    filters: {
+      query,
+      filterKey,
+      expiration,
+    },
   })
 
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -200,12 +217,18 @@ const MetadataTableWrapper = ({
     setQuery('')
   }
 
+  const filterItems = filters.filter((filter) => {
+    if (!filter?.onlyLockManager || isLockManager) {
+      return filter
+    }
+  })
+
   useEffect(() => {
-    const filter = filters?.find((filter) => filterKey === filter.key)
+    const filter = filterItems?.find((filter) => filterKey === filter.key)
     if (filter) {
       setCurrentFilter(filter)
     }
-  }, [filterKey])
+  }, [filterItems, filterKey, isLockManager])
 
   useEffect(() => {
     if (currentFilter?.key === 'expiration') {
@@ -216,6 +239,14 @@ const MetadataTableWrapper = ({
   const onOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCurrentOption(event?.target?.value ?? '')
   }
+
+  const {
+    isLoading: loading,
+    data: keys = [],
+    refetch: referchMembers,
+  } = useQuery([query, filterKey], async () => {
+    return getKeys()
+  })
 
   const options: string[] = currentFilter?.options ?? []
   // TODO: rename metadata into members inside of MetadataTable
@@ -231,7 +262,7 @@ const MetadataTableWrapper = ({
             className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
             onChange={onFilterChange}
           >
-            {filters?.map(({ key, label }) => (
+            {filterItems?.map(({ key, label }) => (
               <option key={key} value={key}>
                 {label}
               </option>
@@ -266,17 +297,17 @@ const MetadataTableWrapper = ({
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            hasNextPage={hasNextPage}
+            hasNextPage={false}
           />
         </div>
       </div>
       <MetadataTable
         columns={columns}
-        metadata={list}
+        metadata={keys}
         isLockManager={isLockManager}
         lockAddresses={lockAddresses}
         loading={loading}
-        loadMembers={loadMembers}
+        loadMembers={referchMembers}
         membersCount={membersCount}
       />
     </>
