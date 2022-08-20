@@ -148,8 +148,15 @@ export const useProvider = (config: any) => {
     setEncryptedPrivateKey(null)
     clearStorage()
     try {
+      // unlock provider does not support removing listeners or closing.
+      if (provider?.isUnlock) {
+        return
+      }
       provider.provider.removeAllListeners()
-      await provider.provider.close()
+      // metamask does not support disconnect
+      if (provider?.connection?.url !== 'metamask') {
+        await provider.provider.close()
+      }
     } catch (error) {
       console.error(
         'We could not disconnect provider properly using provider.disconnect()'
@@ -166,23 +173,21 @@ export const useProvider = (config: any) => {
       resetProvider(newProvider)
     } else {
       try {
-        setNetwork(network.id)
-        await ToastHelper.promise(
-          provider.send(
-            'wallet_switchEthereumChain',
-            [
-              {
-                chainId: `0x${network.id.toString(16)}`,
-              },
-            ],
-            account
-          ),
-          {
-            loading: `Changing network to ${network.name}. Please Approve on your wallet.`,
-            error: `Error in changing network to ${network.name}`,
-            success: `Successfully changed network to ${network.name}`,
-          }
+        const changeNetworkRequest = provider.send(
+          'wallet_switchEthereumChain',
+          [
+            {
+              chainId: `0x${network.id.toString(16)}`,
+            },
+          ],
+          account
         )
+        await ToastHelper.promise(changeNetworkRequest, {
+          loading: `Changing network to ${network.name}. Please Approve on your wallet.`,
+          error: `Error in changing network to ${network.name}`,
+          success: `Successfully changed network to ${network.name}`,
+        })
+        setNetwork(network.id)
       } catch (switchError: any) {
         // This error code indicates that the chain has not been added to the provider yet.
         if (switchError.code === 4902) {
