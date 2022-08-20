@@ -23,7 +23,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
 }) => {
   const [loading, setLoading] = useState(false)
   const [loadingAmount, setLoadingAmount] = useState(false)
-  const [refundAmount, setRefundAmount] = useState<number | null>(null)
+  const [refundAmount, setRefundAmount] = useState('')
   const walletService = useWalletService()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
@@ -102,8 +102,11 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
         ) : (
           <>
             <h3 className="text-black-500">Cancel and Refund</h3>
-            <p className="pt-2 text-sm">
-              {`${refundAmount} ${currency} will be refunded, Do you want to proceed?`}
+            <p className="text-sm">
+              <span>
+                {currency} {parseFloat(refundAmount!).toFixed(6)}
+              </span>
+              {` will be refunded, Do you want to proceed?`}
             </p>
           </>
         )}
