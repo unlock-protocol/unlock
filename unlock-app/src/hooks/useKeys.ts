@@ -1,9 +1,10 @@
 import { useWalletService } from '~/utils/withWalletService'
 import { useStorageService } from '~/utils/withStorageService'
 import { generateColumns } from '../utils/metadataMunging'
-import { useContext, useState } from 'react'
-import { GraphServiceContext } from '~/utils/withGraphService'
+import { useEffect, useState } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import networks from '@unlock-protocol/networks'
+import GraphService from '~/services/graphService'
 
 type KeyItem = {
   token: string
@@ -27,11 +28,19 @@ export const useKeys = ({
 }) => {
   const storageService = useStorageService()
   const walletService = useWalletService()
-  const graphService = useContext(GraphServiceContext)
   const web3Service = useWeb3Service()
 
   const [keys, setKeys] = useState<KeyItem[]>([])
+  const [keysCount, setKeysCount] = useState<{ active: number; total: number }>(
+    {
+      active: 0,
+      total: 0,
+    }
+  )
   const [hasNextPage] = useState(false) // todo: restore pagination
+  const [lockManagerMapping, setLockManagerMapping] = useState<{
+    [lockAddress: string]: boolean
+  }>({})
 
   useEffect(() => {
     const getLockManagerStatus = async () => {
@@ -54,6 +63,8 @@ export const useKeys = ({
   }, [viewer, locks, network, web3Service])
 
   const getKeysCount = async () => {
+    const graphService = new GraphService()
+    graphService.connect(networks[network]!.subgraphURI!)
     const {
       data: { activeKeys },
     } = await graphService.keysCount(locks)
@@ -71,10 +82,7 @@ export const useKeys = ({
     const active = locksActiveList.reduce((acc, curr) => acc + curr)
     const total = locksTotalList.reduce((acc, curr) => acc + curr)
     // return active/total count as sum of every active/total lock count
-    return {
-      active,
-      total,
-    }
+    setKeysCount({ active, total })
   }
 
   const getKeys = async () => {
@@ -97,6 +105,7 @@ export const useKeys = ({
       keys = [...keys, ...result]
     })
     setKeys(keys)
+    await getKeysCount()
     return Promise.resolve(keys)
   }
 
@@ -108,5 +117,6 @@ export const useKeys = ({
     hasNextPage,
     getKeysCount,
     lockManagerMapping,
+    keysCount,
   }
 }

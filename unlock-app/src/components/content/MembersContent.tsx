@@ -15,7 +15,7 @@ import 'cross-fetch/polyfill'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 import { Lock } from '@unlock-protocol/types'
 import { getAddressForName } from '~/hooks/useEns'
-import { useQueries } from 'react-query'
+import { useQuery } from 'react-query'
 import { useKeys } from '~/hooks/useKeys'
 
 interface PaginationProps {
@@ -173,7 +173,7 @@ const MetadataTableWrapper = ({
   const [expiration, setExpiration] = useState<MemberFilter>('active')
   const queryValue = useDebounce<string>(query)
 
-  const { getKeys, columns, hasNextPage, getKeysCount, lockManagerMapping } =
+  const { getKeys, columns, hasNextPage, keysCount, lockManagerMapping } =
     useKeys({
       viewer: account!,
       locks: lockAddresses,
@@ -213,14 +213,16 @@ const MetadataTableWrapper = ({
 
   useEffect(() => {
     const filter = filterItems?.find((filter) => filterKey === filter.key)
-    if (filter) {
+    if (filter && filter !== currentFilter) {
       setCurrentFilter(filter)
     }
-  }, [filterItems, filterKey, showLockManagerFilters])
+  }, [currentFilter, filterItems, filterKey, showLockManagerFilters])
 
   useEffect(() => {
     if (currentFilter?.key === 'expiration') {
       setExpiration(currentOption as MemberFilter)
+    } else {
+      setExpiration('active')
     }
   }, [currentFilter?.key, currentOption])
 
@@ -228,21 +230,13 @@ const MetadataTableWrapper = ({
     setCurrentOption(event?.target?.value ?? '')
   }
 
-  const [
-    { isLoading, data: keys = [], refetch: referchMembers },
-    { isLoading: loadingCount, data: keysCount },
-  ] = useQueries([
-    {
-      queryKey: 'keys',
-      queryFn: () => getKeys(),
-    },
-    {
-      queryKey: 'keysCount',
-      queryFn: () => getKeysCount(),
-    },
-  ])
-
-  const loading = isLoading || loadingCount
+  const {
+    isLoading: loading,
+    data: keys = [],
+    refetch: referchMembers,
+  } = useQuery([queryValue, expiration, currentPage, filterKey], () =>
+    getKeys()
+  )
 
   const options: string[] = currentFilter?.options ?? []
   // TODO: rename metadata into members inside of MetadataTable
