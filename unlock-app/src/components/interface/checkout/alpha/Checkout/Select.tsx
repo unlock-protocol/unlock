@@ -6,7 +6,7 @@ import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { Step, StepFinish, StepFinished, Stepper, StepTitle } from '../Progress'
 import { useQuery } from 'react-query'
 import { Fragment, useState, useMemo } from 'react'
 import { RadioGroup } from '@headlessui/react'
@@ -46,6 +46,17 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       }
     }) || lockOptions[0]
   )
+
+  const skipQuantity = useMemo(() => {
+    const maxRecipients =
+      lockOption.maxRecipients || paywallConfig.maxRecipients
+    const minRecipients =
+      lockOption.minRecipients || paywallConfig.minRecipients
+    const hasMaxRecipients = maxRecipients && maxRecipients > 1
+    const hasMinRecipients = minRecipients && minRecipients > 1
+    return !(hasMaxRecipients || hasMinRecipients)
+  }, [lockOption, paywallConfig])
+
   const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
   const config = useConfig()
   const { account, network, changeNetwork, isUnlockAccount } = useAuth()
@@ -116,26 +127,57 @@ export function Select({ checkoutService, injectedProvider }: Props) {
 
   return (
     <Fragment>
-      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <ProgressCircleIcon />
-          </div>
-        </div>
-        <h4 className="text-sm"> Select lock</h4>
-        <div className="border-t-4 w-full flex-1"></div>
-        <div className="inline-flex items-center gap-1">
-          <ProgressCircleIcon disabled />
-          <ProgressCircleIcon disabled />
-          <ProgressCircleIcon disabled />
-          {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
-          <ProgressCircleIcon disabled />
-          <ProgressFinishIcon disabled />
-        </div>
-      </div>
-      <main className="px-6 py-2 overflow-auto h-full">
+      <Stepper
+        position={1}
+        service={checkoutService}
+        items={[
+          {
+            id: 1,
+            name: 'Select lock',
+            to: 'SELECT',
+          },
+          {
+            id: 2,
+            name: 'Choose quantity',
+            skip: skipQuantity,
+            to: 'QUANTITY',
+          },
+          {
+            id: 3,
+            name: 'Add recipients',
+            to: 'METADATA',
+          },
+          {
+            id: 4,
+            name: 'Choose payment',
+            to: 'PAYMENT',
+          },
+          {
+            id: 5,
+            name: 'Sign message',
+            skip: !paywallConfig.messageToSign,
+            to: 'MESSAGE_TO_SIGN',
+          },
+          {
+            id: 6,
+            name: 'Solve captcha',
+            to: 'CAPTCHA',
+            skip: !paywallConfig.captcha,
+          },
+          {
+            id: 7,
+            name: 'Confirm',
+            to: 'CONFIRM',
+          },
+          {
+            id: 8,
+            name: 'Minting NFT',
+          },
+        ]}
+      />
+      <main className="h-full px-6 py-2 overflow-auto">
         {isLocksLoading ? (
-          <div className="space-y-4 mt-6">
+          <div className="mt-6 space-y-4">
             {Array.from({ length: lockOptions.length }).map((_, index) => (
               <LockOptionPlaceholder key={index} />
             ))}
@@ -143,7 +185,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         ) : (
           <RadioGroup
             key="select"
-            className="space-y-6 box-content"
+            className="box-content space-y-6"
             value={lockOption}
             onChange={setLockOption}
           >
@@ -151,7 +193,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
               Object.entries(locks).map(([network, items]) => (
                 <section key={network} className="space-y-4">
                   <header>
-                    <p className="font-bold text-brand-ui-primary text-lg">
+                    <p className="text-lg font-bold text-brand-ui-primary">
                       {config.networks[network].name}
                     </p>
                   </header>
@@ -188,9 +230,9 @@ export function Select({ checkoutService, injectedProvider }: Props) {
 
                           return (
                             <Fragment>
-                              <div className="flex gap-x-2 w-full">
+                              <div className="flex w-full gap-x-2">
                                 <div>
-                                  <Avatar.Root className="inline-flex items-center w-14 h-14 justify-center rounded-xl">
+                                  <Avatar.Root className="inline-flex items-center justify-center w-14 h-14 rounded-xl">
                                     <Avatar.Image
                                       src={lockImageURL}
                                       alt={item.name}
@@ -258,7 +300,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
           </RadioGroup>
         )}
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           service={checkoutService}
           injectedProvider={injectedProvider}
@@ -298,6 +340,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                       type: 'SELECT_LOCK',
                       lock,
                       existingMember,
+                      skipQuantity,
                     })
                   }
                 }}

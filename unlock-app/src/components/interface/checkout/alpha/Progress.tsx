@@ -1,76 +1,129 @@
-import {
-  RiRecordCircleFill as CircleIcon,
-  RiFlagLine as FinishIcon,
-} from 'react-icons/ri'
+import { RiFlagLine as FinishIcon } from 'react-icons/ri'
 import UnlockAssets from '@unlock-protocol/unlock-assets'
 import { Tooltip } from '@unlock-protocol/ui'
-const { SvgComponents } = UnlockAssets
+import { twMerge } from 'tailwind-merge'
+import { ReactNode } from 'react'
+import { IoIosRocket as RocketIcon } from 'react-icons/io'
+import { CheckoutPage, CheckoutService } from './Checkout/checkoutMachine'
+import { UnlockAccountService } from './UnlockAccount/unlockAccountMachine'
 
-interface ProgressIconProps {
-  disabled?: boolean
+interface IconProps {
+  active?: boolean
 }
 
-export const ProgressCircleIcon = ({ disabled }: ProgressIconProps) => {
-  return (
-    <CircleIcon
-      size={24}
-      className={`fill-brand-ui-primary rounded-full ${
-        disabled && 'opacity-75'
-      }`}
-    />
+export const Step = ({
+  active,
+  children = 1,
+}: IconProps & { children?: ReactNode }) => {
+  const stepIconClass = twMerge(
+    `flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full`,
+    active && 'bg-ui-main-500 text-white border-none'
   )
+  return <div className={stepIconClass}>{children}</div>
 }
 
-export const ProgressFinishIcon = ({ disabled }: ProgressIconProps) => {
-  return (
-    <FinishIcon
-      size={21}
-      className={`bg-brand-ui-primary p-0.5 rounded-full fill-white  ${
-        disabled && 'opacity-75'
-      }`}
-    />
+export const StepFinish = ({ active }: IconProps) => {
+  const finishIconClass = twMerge(
+    `font-medium box-border border p-0.5 w-5 text-xs h-5 rounded-full`,
+    active && 'bg-ui-main-500 text-white fill-white border-none'
   )
+  return <FinishIcon size={20} className={finishIconClass} />
 }
 
-export const ProgressFinishedIcon = ({ disabled }: ProgressIconProps) => {
-  return (
-    <SvgComponents.RocketLaunch
-      height={20}
-      width={20}
-      className={`bg-brand-ui-primary p-0.5 rounded-full fill-white  ${
-        disabled && 'opacity-75'
-      }`}
-    />
+export const StepFinished = ({ active }: IconProps) => {
+  const finishedIconClass = twMerge(
+    `font-medium box-border border w-5 p-0.5 text-xs h-5 rounded-full`,
+    active && 'bg-ui-main-500 text-white fill-white border-none'
   )
+  return <RocketIcon size={20} className={finishedIconClass} />
 }
 
-interface IconButtonProps {
-  icon(props: ProgressIconProps): JSX.Element
-  title: string
+interface StepButtonProps {
+  children?: ReactNode
   onClick(): void | Promise<void>
-  disabled?: boolean
+  label?: string
 }
 
-export const IconButton = ({
-  icon: IconComponent,
-  title,
+export const StepButton = ({
+  children = 1,
   onClick,
-  disabled,
-}: IconButtonProps) => {
+  label,
+}: StepButtonProps) => {
+  const stepIconClass = twMerge(
+    `flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full`
+  )
   return (
-    <Tooltip side="top" delay={50} label={title} tip={title}>
+    <Tooltip side="top" delay={50} label={label} tip={label}>
       <button
-        className="rounded-full"
-        aria-label={title}
+        className={stepIconClass}
         onClick={(event) => {
           event.preventDefault()
           onClick()
         }}
-        disabled={disabled}
         type="button"
       >
-        <IconComponent />
+        {children}
       </button>
     </Tooltip>
+  )
+}
+
+export const StepTitle = ({ children }: { children: ReactNode }) => {
+  return <h4 className="text-sm font-medium text-ui-main-500">{children}</h4>
+}
+
+interface StepItem {
+  id: number
+  name: string
+  to?: string
+  skip?: boolean
+}
+
+interface StepperProps {
+  items: StepItem[]
+  position: number
+  service: CheckoutService | UnlockAccountService
+}
+
+export const Stepper = ({ items, position, service }: StepperProps) => {
+  const index = items.findIndex((item) => item.id === position)
+  const step = items[index]
+  const base = items.slice(0, index).filter((item) => !item?.skip)
+  const rest = items.slice(index + 1).filter((item) => !item?.skip)
+  return (
+    <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
+      <div className="flex items-center gap-1.5">
+        {base.map((item, idx) =>
+          item.to && rest.length ? (
+            <StepButton
+              key={idx}
+              onClick={() => {
+                service.send(item.to as any)
+              }}
+              label={item.name}
+            >
+              {idx + 1}
+            </StepButton>
+          ) : (
+            <Step key={idx}>{idx + 1}</Step>
+          )
+        )}
+        {!rest.length ? (
+          <StepFinished active />
+        ) : (
+          <Step active> {base.length + 1}</Step>
+        )}
+        <StepTitle>{step?.name}</StepTitle>
+      </div>
+      <div className="flex items-center gap-1.5">
+        {rest.map((_, index) =>
+          index + 1 >= rest.length ? (
+            <StepFinish key={index} />
+          ) : (
+            <Step key={index}>{base.length + index + 2}</Step>
+          )
+        )}
+      </div>
+    </div>
   )
 }

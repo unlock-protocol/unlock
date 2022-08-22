@@ -23,7 +23,7 @@ import { countries } from '~/utils/countries'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
+import { Step, StepFinished, Stepper } from '../Progress'
 
 interface Props {
   injectedProvider: unknown
@@ -46,34 +46,61 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
       enabled: !!account,
     }
   )
-  const { paywallConfig } = state.context
-  const { messageToSign } = paywallConfig
+  const { paywallConfig, skipQuantity } = state.context
+
   const card = data?.[0]
 
   return (
     <Fragment>
-      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <button
-            aria-label="back"
-            onClick={(event) => {
-              event.preventDefault()
-              send('BACK')
-            }}
-            className="p-2 w-20 bg-brand-ui-primary inline-flex items-center justify-center rounded-full"
-          >
-            <div className="p-0.5 w-16 bg-white rounded-full"></div>
-          </button>
-          <h4 className="text-sm"> Add card </h4>
-        </div>
-        <div className="border-t-4 w-full flex-1"></div>
-        <div className="inline-flex items-center gap-0.5">
-          {messageToSign && <ProgressCircleIcon disabled />}
-          <ProgressCircleIcon disabled />
-          <ProgressFinishedIcon disabled />
-        </div>
-      </div>
-      <main className="px-6 py-2 overflow-auto h-full">
+      <Stepper
+        position={4}
+        service={checkoutService}
+        items={[
+          {
+            id: 1,
+            name: 'Select lock',
+            to: 'SELECT',
+          },
+          {
+            id: 2,
+            name: 'Choose quantity',
+            skip: skipQuantity,
+            to: 'QUANTITY',
+          },
+          {
+            id: 3,
+            name: 'Add recipients',
+            to: 'METADATA',
+          },
+          {
+            id: 4,
+            name: 'Choose payment',
+            to: 'PAYMENT',
+          },
+          {
+            id: 5,
+            name: 'Sign message',
+            skip: !paywallConfig.messageToSign,
+            to: 'MESSAGE_TO_SIGN',
+          },
+          {
+            id: 6,
+            name: 'Solve captcha',
+            to: 'CAPTCHA',
+            skip: !paywallConfig.captcha,
+          },
+          {
+            id: 7,
+            name: 'Confirm',
+            to: 'CONFIRM',
+          },
+          {
+            id: 8,
+            name: 'Minting NFT',
+          },
+        ]}
+      />
+      <main className="h-full px-6 py-2 overflow-auto">
         <Elements stripe={stripe}>
           {isLoading ? (
             <CardPlaceholder />
@@ -92,7 +119,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
           )}
         </Elements>
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
@@ -185,7 +212,7 @@ function CardForm({ onSave, setIsSaving }: CardFormProps) {
         </label>
         <CardElement id="card-element" />
       </div>
-      <div className="space-y-1 pt-2">
+      <div className="pt-2 space-y-1">
         <label className="pl-1 text-sm" htmlFor="card-element">
           Country
         </label>
@@ -195,7 +222,7 @@ function CardForm({ onSave, setIsSaving }: CardFormProps) {
           {...register('address_country', {
             required: true,
           })}
-          className="block border hover:border-gray-500 border-gray-400 text-sm w-full rounded-lg"
+          className="block w-full text-sm border border-gray-400 rounded-lg hover:border-gray-500"
         >
           {countries.map((country) => (
             <option key={country} value={country}>
