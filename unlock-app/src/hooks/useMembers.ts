@@ -24,7 +24,7 @@ export const buildMembersWithMetadata = (
     (byKeyOwner: any, key: any) => {
       return {
         ...byKeyOwner,
-        [key.userAddress.toLowerCase()]: {
+        [key?.userAddress?.toLowerCase()]: {
           protected: {
             ...key.data?.userMetadata?.protected,
             ...key.data?.extraMetadata,
@@ -96,7 +96,6 @@ export const useMembers = ({
   const walletService = useWalletService()
   const web3Service = useContext(Web3ServiceContext)
   const storageService = useStorageService()
-  //const storageService = useContext(StorageServiceContext)
   const graphService = useContext(GraphServiceContext)
 
   graphService.connect(config.networks[network!].subgraphURI)
