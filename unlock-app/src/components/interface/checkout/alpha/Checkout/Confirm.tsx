@@ -184,6 +184,9 @@ export function Confirm({
         return
       }
       const keyPrices: string[] = new Array(recipients!.length).fill(keyPrice)
+      const referers: string[] | undefined = paywallConfig.referrer
+        ? new Array(recipients!.length).fill(paywallConfig.referrer)
+        : undefined
       await walletService?.purchaseKeys(
         {
           lockAddress,
@@ -191,6 +194,7 @@ export function Confirm({
           owners: recipients!,
           data: captcha,
           recurringPayments,
+          referers,
         },
         (error, hash) => {
           setIsConfirming(true)

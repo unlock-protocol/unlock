@@ -23,7 +23,7 @@ export const buildMembersWithMetadata = (
     (byKeyOwner: any, key: any) => {
       return {
         ...byKeyOwner,
-        [key.userAddress.toLowerCase()]: {
+        [key?.userAddress?.toLowerCase()]: {
           protected: {
             ...key.data?.userMetadata?.protected,
             ...key.data?.extraMetadata,

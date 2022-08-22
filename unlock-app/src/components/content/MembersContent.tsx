@@ -173,19 +173,18 @@ const MetadataTableWrapper = ({
   const [expiration, setExpiration] = useState<MemberFilter>('active')
   const queryValue = useDebounce<string>(query)
 
-  const isLockManager = false // REMOVE
-
-  const { getKeys, columns, hasNextPage, getKeysCount } = useKeys({
-    locks: lockAddresses,
-    viewer: account!,
-    network: network!,
-    filters: {
-      query: queryValue,
-      filterKey,
-      expiration,
-      page: currentPage,
-    },
-  })
+  const { getKeys, columns, hasNextPage, getKeysCount, lockManagerMapping } =
+    useKeys({
+      viewer: account!,
+      locks: lockAddresses,
+      network: network!,
+      filters: {
+        query: queryValue,
+        filterKey,
+        expiration,
+        page: currentPage,
+      },
+    })
 
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const ensToAddress = await getAddressForName(e?.target?.value)
@@ -202,8 +201,12 @@ const MetadataTableWrapper = ({
     setQuery('')
   }
 
+  const showLockManagerFilters = Object.values(lockManagerMapping).some(
+    (isLockManager) => isLockManager
+  )
+
   const filterItems = filters.filter((filter) => {
-    if (!filter?.onlyLockManager || isLockManager) {
+    if (!filter?.onlyLockManager || showLockManagerFilters) {
       return filter
     }
   })
@@ -213,7 +216,7 @@ const MetadataTableWrapper = ({
     if (filter) {
       setCurrentFilter(filter)
     }
-  }, [filterItems, filterKey, isLockManager])
+  }, [filterItems, filterKey, showLockManagerFilters])
 
   useEffect(() => {
     if (currentFilter?.key === 'expiration') {
@@ -297,7 +300,7 @@ const MetadataTableWrapper = ({
       <MetadataTable
         columns={columns}
         metadata={keys}
-        isLockManager={isLockManager}
+        lockManagerMapping={lockManagerMapping}
         lockAddresses={lockAddresses}
         loading={loading}
         loadMembers={referchMembers}

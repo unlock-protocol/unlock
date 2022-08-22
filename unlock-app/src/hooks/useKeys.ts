@@ -15,14 +15,14 @@ type KeyItem = {
 }
 
 export const useKeys = ({
-  locks = [],
   viewer,
   network,
+  locks = [],
   filters,
 }: {
-  locks: string[]
   viewer: string
   network: number
+  locks: string[]
   filters: { [key: string]: any }
 }) => {
   const storageService = useStorageService()
@@ -32,6 +32,26 @@ export const useKeys = ({
 
   const [keys, setKeys] = useState<KeyItem[]>([])
   const [hasNextPage] = useState(false) // todo: restore pagination
+
+  useEffect(() => {
+    const getLockManagerStatus = async () => {
+      const lockManagerPromise = locks?.map((lock: string) =>
+        web3Service.isLockManager(lock, viewer!, network!)
+      )
+      const status = await Promise.all(lockManagerPromise)
+
+      let mapping = {}
+      locks?.map(
+        (lock: string, index: number) =>
+          (mapping = {
+            ...mapping,
+            [lock.toLowerCase()]: status[index] ?? false, // set lockManager status or false is value is not valid
+          })
+      )
+      setLockManagerMapping(mapping)
+    }
+    getLockManagerStatus()
+  }, [viewer, locks, network, web3Service])
 
   const getKeysCount = async () => {
     const {
@@ -87,5 +107,6 @@ export const useKeys = ({
     columns,
     hasNextPage,
     getKeysCount,
+    lockManagerMapping,
   }
 }
