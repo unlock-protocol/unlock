@@ -96,6 +96,12 @@ export const DashboardContent = () => {
             </Warning>
           </Phone>
 
+          <Warning>
+            We are switching the current checkout with redesigned checkout on 25
+            August, 2022. The current checkout will be available for the
+            forseable future at a separate legacy path.
+          </Warning>
+
           {network === 1 && (
             <Warning>
               Gas prices are high on Ethereum&apos;s main network. Consider
