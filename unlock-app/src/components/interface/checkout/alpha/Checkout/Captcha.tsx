@@ -8,7 +8,7 @@ import { useConfig } from '~/utils/withConfig'
 import { useStorageService } from '~/utils/withStorageService'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { Step, StepFinish, Stepper } from '../Progress'
+import { Stepper } from '../Progress'
 
 interface Props {
   injectedProvider: unknown

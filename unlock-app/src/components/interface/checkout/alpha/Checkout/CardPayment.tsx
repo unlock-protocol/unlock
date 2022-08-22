@@ -23,7 +23,7 @@ import { countries } from '~/utils/countries'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { Step, StepFinished, Stepper } from '../Progress'
+import { Stepper } from '../Progress'
 
 interface Props {
   injectedProvider: unknown

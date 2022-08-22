@@ -2,7 +2,7 @@ import { useActor } from '@xstate/react'
 import { UnlockAccount } from '../UnlockAccount'
 import { CheckoutService } from './checkoutMachine'
 import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
-import { Step, StepFinish, Stepper } from '../Progress'
+import { Stepper } from '../Progress'
 import { Fragment } from 'react'
 interface Props {
   injectedProvider: unknown

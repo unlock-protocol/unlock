@@ -5,7 +5,7 @@ import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
-import { Step, StepFinished, Stepper } from '../Progress'
+import { Stepper } from '../Progress'
 import { useActor } from '@xstate/react'
 import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -26,12 +26,7 @@ export function Returning({
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
 
-  const {
-    paywallConfig,
-    lock,
-    messageToSign: signedMessage,
-    skipQuantity,
-  } = state.context
+  const { paywallConfig, lock, messageToSign: signedMessage } = state.context
   const { account, signMessage } = useAuth()
   const [hasMessageToSign, setHasMessageToSign] = useState(
     !signedMessage && paywallConfig.messageToSign
