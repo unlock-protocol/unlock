@@ -16,6 +16,7 @@ import 'cross-fetch/polyfill'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 import { Lock } from '@unlock-protocol/types'
 import { getAddressForName } from '~/hooks/useEns'
+import { useKeys } from '~/hooks/useKeys'
 
 interface PaginationProps {
   currentPage: number
@@ -159,7 +160,7 @@ const MetadataTableWrapper = ({
   lockAddresses,
   page,
 }: MetadataTableWrapperProps) => {
-  const { account } = useContext(AuthenticationContext)
+  const { account, network } = useContext(AuthenticationContext)
   const [currentPage, setCurrentPage] = useState(page)
   const [query, setQuery] = useState<string>('')
   const [filterKey, setFilteKey] = useState<string>('owner')
@@ -168,21 +169,20 @@ const MetadataTableWrapper = ({
   const [expiration, setExpiration] = useState<MemberFilter>('active')
   const queryValue = useDebounce<string>(query)
 
-  const {
-    loading,
-    list,
-    columns,
-    hasNextPage,
-    lockManagerMapping,
-    loadMembers,
-    membersCount,
-  } = useMembers({
+  const { loading, list, columns, hasNextPage, loadMembers, membersCount } =
+    useMembers({
+      viewer: account!,
+      lockAddresses,
+      expiration,
+      page: currentPage,
+      query: queryValue,
+      filterKey,
+    })
+
+  const { lockManagerMapping } = useKeys({
     viewer: account!,
-    lockAddresses,
-    expiration,
-    page: currentPage,
-    query: queryValue,
-    filterKey,
+    locks: lockAddresses,
+    network: network!,
   })
 
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {

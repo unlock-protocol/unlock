@@ -190,7 +190,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
       {metadata?.map((data: any) => {
         const { lockName, expiration, keyholderAddress, token, lockAddress } =
           data
-        const key = `${lockName}${expiration}${keyholderAddress}${token}`
+        const key = `${lockName}${expiration}${keyholderAddress}`
         const isLockManager =
           lockManagerMapping?.[lockAddress.toLowerCase()] ?? false
 
