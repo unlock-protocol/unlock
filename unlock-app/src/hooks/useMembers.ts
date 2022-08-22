@@ -172,7 +172,6 @@ export const useMembers = ({
             return buildMembersWithMetadata(lock, storedMetadata)
           }
         } catch (error) {
-          console.error(error)
           ToastHelper.error(`Could not list members - ${error}`)
           return []
         }
