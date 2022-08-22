@@ -14,7 +14,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { Step, StepFinished, Stepper } from '../Progress'
+import { Stepper } from '../Progress'
 
 interface Props {
   injectedProvider: unknown

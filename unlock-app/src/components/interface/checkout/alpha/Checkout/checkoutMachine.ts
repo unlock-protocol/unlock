@@ -505,9 +505,6 @@ export const checkoutMachine = createMachine(
       }),
     },
     guards: {
-      isLockSelected: (context) => {
-        return !!context.lock
-      },
       requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
       requireCaptcha: (context) => {
         return (
