@@ -60,6 +60,7 @@
     "express-jwt": "7.5.2",
     "express-list-endpoints": "6.0.0",
     "express-winston": "4.2.0",
+    "fuse.js": "6.6.2",
     "graphql": "15.8.0",
     "graphql-tag": "2.12.6",
     "html-template-tag": "4.0.1",

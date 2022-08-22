@@ -7,6 +7,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { Verifier } from '../models/verifier'
 import Normalizer from '../utils/normalizer'
+import * as lockOperations from './lockOperations'
 
 const Asset = require('../utils/assets')
 
@@ -187,4 +188,56 @@ export const isKeyOwnerOrLockVerifier = async ({
   const isKeyOwner = keyOwnerAddress === loggedUserAddress
 
   return isVerifier?.id || isKeyOwner || isLockManager
+}
+
+export const getKeysMetadata = async ({
+  keys,
+  lockAddress,
+  network,
+}: {
+  keys: any[]
+  lockAddress: string
+  network: number
+}) => {
+  const owners: { owner: string; keyId: string }[] = keys?.map(
+    ({ owner, keyId }: any) => {
+      return {
+        owner: owner?.address,
+        keyId,
+      }
+    }
+  )
+
+  const mergedDataList = owners.map(async ({ owner, keyId }) => {
+    let metadata: any = undefined
+    const keyData = await getKeyCentricData(lockAddress, keyId)
+    const [keyMetadata] = await lockOperations.getKeyHolderMetadata(
+      lockAddress,
+      [owner],
+      network
+    )
+
+    const keyMetadataData = keyMetadata?.data || undefined
+
+    const hasMetadata =
+      [...Object.keys(keyData ?? {}), ...Object.keys(keyMetadataData ?? {})]
+        .length > 0
+
+    // build metadata object only if metadata or extraMetadata are present
+    if (hasMetadata) {
+      metadata = {
+        userAddress: owner,
+        data: {
+          ...keyMetadataData,
+          extraMetadata: {
+            ...keyData?.metadata,
+          },
+        },
+      }
+    }
+    return metadata
+  })
+
+  const mergedData = await Promise.all(mergedDataList)
+  return mergedData.filter(Boolean)
 }
