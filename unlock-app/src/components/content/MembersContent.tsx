@@ -139,9 +139,10 @@ interface Filter {
   key: string
   label: string
   options?: MemberFilter[]
+  onlyLockManager?: boolean
 }
 
-const filters: Filter[] = [
+const FILTER_ITEMS: Filter[] = [
   { key: 'owner', label: 'Owner' },
   { key: 'keyId', label: 'Token id' },
   {
@@ -149,6 +150,8 @@ const filters: Filter[] = [
     label: 'Expiration',
     options: ['active', 'expired', 'all'],
   },
+  { key: 'email', label: 'Email', onlyLockManager: true },
+  { key: 'checkedInAt', label: 'Checked in time', onlyLockManager: true },
 ]
 /**
  * This just wraps the metadataTable component, providing the data
@@ -200,12 +203,18 @@ const MetadataTableWrapper = ({
     setQuery('')
   }
 
+  const filters = FILTER_ITEMS.filter((filter) => {
+    if (!filter?.onlyLockManager || isLockManager) {
+      return filter
+    }
+  })
+
   useEffect(() => {
     const filter = filters?.find((filter) => filterKey === filter.key)
     if (filter) {
       setCurrentFilter(filter)
     }
-  }, [filterKey])
+  }, [filterKey, filters])
 
   useEffect(() => {
     if (currentFilter?.key === 'expiration') {
