@@ -7,7 +7,6 @@ import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
 import { MemberFilter } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
-import useMembers from '../../hooks/useMembers'
 import LoginPrompt from '../interface/LoginPrompt'
 import GrantKeysDrawer from '../creator/members/GrantKeysDrawer'
 import { Input, Button } from '@unlock-protocol/ui'
@@ -16,7 +15,7 @@ import 'cross-fetch/polyfill'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 import { Lock } from '@unlock-protocol/types'
 import { getAddressForName } from '~/hooks/useEns'
-import { useQuery } from 'react-query'
+import { useQueries } from 'react-query'
 import { useKeys } from '~/hooks/useKeys'
 
 interface PaginationProps {
@@ -174,31 +173,17 @@ const MetadataTableWrapper = ({
   const [expiration, setExpiration] = useState<MemberFilter>('active')
   const queryValue = useDebounce<string>(query)
 
-  const {
-    //loading,
-    //list,
-    //columns,
-    //hasNextPage,
-    isLockManager,
-    //loadMembers,
-    membersCount,
-  } = useMembers({
-    viewer: account!,
-    lockAddresses,
-    expiration,
-    page: currentPage,
-    query: queryValue,
-    filterKey,
-  })
+  const isLockManager = false // REMOVE
 
-  const { getKeys, columns } = useKeys({
-    lockAddress: lockAddresses,
+  const { getKeys, columns, hasNextPage, getKeysCount } = useKeys({
+    locks: lockAddresses,
     viewer: account!,
     network: network!,
     filters: {
-      query,
+      query: queryValue,
       filterKey,
       expiration,
+      page: currentPage,
     },
   })
 
@@ -240,13 +225,21 @@ const MetadataTableWrapper = ({
     setCurrentOption(event?.target?.value ?? '')
   }
 
-  const {
-    isLoading: loading,
-    data: keys = [],
-    refetch: referchMembers,
-  } = useQuery([query, filterKey], async () => {
-    return getKeys()
-  })
+  const [
+    { isLoading, data: keys = [], refetch: referchMembers },
+    { isLoading: loadingCount, data: keysCount },
+  ] = useQueries([
+    {
+      queryKey: 'keys',
+      queryFn: () => getKeys(),
+    },
+    {
+      queryKey: 'keysCount',
+      queryFn: () => getKeysCount(),
+    },
+  ])
+
+  const loading = isLoading || loadingCount
 
   const options: string[] = currentFilter?.options ?? []
   // TODO: rename metadata into members inside of MetadataTable
@@ -297,7 +290,7 @@ const MetadataTableWrapper = ({
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            hasNextPage={false}
+            hasNextPage={hasNextPage}
           />
         </div>
       </div>
@@ -308,7 +301,7 @@ const MetadataTableWrapper = ({
         lockAddresses={lockAddresses}
         loading={loading}
         loadMembers={referchMembers}
-        membersCount={membersCount}
+        membersCount={keysCount}
       />
     </>
   )
