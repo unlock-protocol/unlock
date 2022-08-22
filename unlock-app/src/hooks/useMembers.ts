@@ -103,7 +103,6 @@ export const useMembers = ({
   const [members, setMembers] = useState({})
   const [loading, setLoading] = useState(true)
   const [isLockManager, setIsLockManager] = useState(false)
-
   const [membersCount, setMembersCount] = useState<{
     total: number
     active: number
@@ -223,25 +222,6 @@ export const useMembers = ({
       total: locksTotalList.reduce((acc, curr) => acc + curr),
     })
   }
-
-  useEffect(() => {
-    const getLockManagerStatus = async (locks: string[]) => {
-      const lockManagerPromise = locks?.map((lock) =>
-        web3Service.isLockManager(lock, account!, network!)
-      )
-      const status = await Promise.all(lockManagerPromise)
-
-      let mapping = {}
-      locks?.map(
-        (lock, index) =>
-          (mapping = {
-            ...mapping,
-            [lock.toLowerCase()]: status[index] ?? false, // set lockManager status or false is value is not valid
-          })
-      )
-    }
-    getLockManagerStatus(lockAddresses)
-  }, [account, lockAddresses, network, web3Service])
   /**
    * When the keyHolders object changes, load the metadata
    */
