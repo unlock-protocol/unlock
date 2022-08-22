@@ -5,7 +5,7 @@ import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
-import { Stepper } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { useActor } from '@xstate/react'
 import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -52,23 +52,21 @@ export function Returning({
     }
   }
 
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'You have it',
+    },
+  ]
+
   return (
     <Fragment>
-      <Stepper
-        position={2}
-        service={checkoutService}
-        items={[
-          {
-            id: 1,
-            name: 'Select lock',
-            to: 'SELECT',
-          },
-          {
-            id: 2,
-            name: 'You have it',
-          },
-        ]}
-      />
+      <Stepper position={2} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex flex-col items-center justify-center h-full space-y-2">
           <Lottie

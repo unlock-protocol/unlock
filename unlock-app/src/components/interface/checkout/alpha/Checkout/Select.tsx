@@ -6,7 +6,7 @@ import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { Stepper } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { useQuery } from 'react-query'
 import { Fragment, useState, useMemo } from 'react'
 import { RadioGroup } from '@headlessui/react'
@@ -125,56 +125,54 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const isNetworkSwitchRequired =
     lockOption.network !== network && !isUnlockAccount
 
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip: !paywallConfig.captcha,
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: 'Minting NFT',
+    },
+  ]
+
   return (
     <Fragment>
-      <Stepper
-        position={1}
-        service={checkoutService}
-        items={[
-          {
-            id: 1,
-            name: 'Select lock',
-            to: 'SELECT',
-          },
-          {
-            id: 2,
-            name: 'Choose quantity',
-            skip: skipQuantity,
-            to: 'QUANTITY',
-          },
-          {
-            id: 3,
-            name: 'Add recipients',
-            to: 'METADATA',
-          },
-          {
-            id: 4,
-            name: 'Choose payment',
-            to: 'PAYMENT',
-          },
-          {
-            id: 5,
-            name: 'Sign message',
-            skip: !paywallConfig.messageToSign,
-            to: 'MESSAGE_TO_SIGN',
-          },
-          {
-            id: 6,
-            name: 'Solve captcha',
-            to: 'CAPTCHA',
-            skip: !paywallConfig.captcha,
-          },
-          {
-            id: 7,
-            name: 'Confirm',
-            to: 'CONFIRM',
-          },
-          {
-            id: 8,
-            name: 'Minting NFT',
-          },
-        ]}
-      />
+      <Stepper position={1} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
         {isLocksLoading ? (
           <div className="mt-6 space-y-4">

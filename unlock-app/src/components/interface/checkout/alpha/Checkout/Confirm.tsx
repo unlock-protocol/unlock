@@ -19,7 +19,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { Stepper } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
 import { Framework } from '@superfluid-finance/sdk-core'
 import { ethers, BigNumber } from 'ethers'
@@ -379,57 +379,54 @@ export function Confirm({
       }
     }
   }
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip: !paywallConfig.captcha,
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: 'Minting NFT',
+    },
+  ]
 
   return (
     <Fragment>
-      <Stepper
-        position={7}
-        service={checkoutService}
-        items={[
-          {
-            id: 1,
-            name: 'Select lock',
-            to: 'SELECT',
-          },
-          {
-            id: 2,
-            name: 'Choose quantity',
-            skip: skipQuantity,
-            to: 'QUANTITY',
-          },
-          {
-            id: 3,
-            name: 'Add recipients',
-            to: 'METADATA',
-          },
-          {
-            id: 4,
-            name: 'Choose payment',
-            to: 'PAYMENT',
-          },
-          {
-            id: 5,
-            name: 'Sign message',
-            skip: !paywallConfig.messageToSign,
-            to: 'MESSAGE_TO_SIGN',
-          },
-          {
-            id: 6,
-            name: 'Solve captcha',
-            to: 'CAPTCHA',
-            skip: !paywallConfig.captcha,
-          },
-          {
-            id: 7,
-            name: 'Confirm',
-            to: 'CONFIRM',
-          },
-          {
-            id: 8,
-            name: 'Minting NFT',
-          },
-        ]}
-      />
+      <Stepper position={7} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 space-y-2 overflow-auto">
         <div className="flex items-start justify-between">
           <h3 className="text-xl font-bold">

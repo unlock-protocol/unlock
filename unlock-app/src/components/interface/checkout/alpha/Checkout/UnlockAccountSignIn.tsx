@@ -2,7 +2,7 @@ import { useActor } from '@xstate/react'
 import { UnlockAccount } from '../UnlockAccount'
 import { CheckoutService } from './checkoutMachine'
 import { UnlockAccountService } from '../UnlockAccount/unlockAccountMachine'
-import { Stepper } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { Fragment } from 'react'
 interface Props {
   injectedProvider: unknown
@@ -17,30 +17,30 @@ export function UnlockAccountSignIn({
     .unlockAccount as UnlockAccountService
 
   const [state] = useActor(unlockAccountService)
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Enter email',
+      to: 'ENTER_EMAIL',
+    },
+    {
+      id: 2,
+      name: 'Password',
+    },
+    {
+      id: 3,
+      name: 'Signed in',
+    },
+  ]
   return (
     <Fragment>
       <div className="mb-2">
         <Stepper
           position={state.value === 'ENTER_EMAIL' ? 1 : 2}
           service={unlockAccountService}
-          items={[
-            {
-              id: 1,
-              name: 'Enter email',
-              to: 'ENTER_EMAIL',
-            },
-            {
-              id: 2,
-              name: 'Password',
-            },
-            {
-              id: 3,
-              name: 'Signed in',
-            },
-          ]}
+          items={stepItems}
         />
       </div>
-
       <UnlockAccount
         unlockAccountService={unlockAccountService}
         injectedProvider={injectedProvider}

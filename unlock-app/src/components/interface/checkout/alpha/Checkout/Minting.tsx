@@ -14,7 +14,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { Stepper } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 
 interface Props {
   injectedProvider: unknown
@@ -126,56 +126,54 @@ export function Minting({
     }
   }, [status])
 
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip: !paywallConfig.captcha,
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: status === 'PROCESSING' ? 'Minting NFT' : 'Minted NFT!',
+    },
+  ]
+
   return (
     <Fragment>
-      <Stepper
-        position={8}
-        service={checkoutService}
-        items={[
-          {
-            id: 1,
-            name: 'Select lock',
-            to: 'SELECT',
-          },
-          {
-            id: 2,
-            name: 'Choose quantity',
-            skip: skipQuantity,
-            to: 'QUANTITY',
-          },
-          {
-            id: 3,
-            name: 'Add recipients',
-            to: 'METADATA',
-          },
-          {
-            id: 4,
-            name: 'Choose payment',
-            to: 'PAYMENT',
-          },
-          {
-            id: 5,
-            name: 'Sign message',
-            skip: !paywallConfig.messageToSign,
-            to: 'MESSAGE_TO_SIGN',
-          },
-          {
-            id: 6,
-            name: 'Solve captcha',
-            to: 'CAPTCHA',
-            skip: !paywallConfig.captcha,
-          },
-          {
-            id: 7,
-            name: 'Confirm',
-            to: 'CONFIRM',
-          },
-          {
-            id: 8,
-            name: status === 'PROCESSING' ? 'Minting NFT' : 'Minted NFT!',
-          },
-        ]}
-      />
+      <Stepper position={8} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex flex-col items-center justify-center h-full space-y-2">
           {status && <AnimationContent status={status} />}

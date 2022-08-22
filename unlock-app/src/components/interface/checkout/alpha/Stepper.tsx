@@ -71,7 +71,7 @@ export const StepTitle = ({ children }: { children: ReactNode }) => {
   return <h4 className="text-sm font-medium text-ui-main-500">{children}</h4>
 }
 
-interface StepItem {
+export interface StepItem {
   id: number
   name: string
   to?: string
