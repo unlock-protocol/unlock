@@ -7,23 +7,30 @@ const baseUrl =
 
 const endpoint = new URL(baseUrl)
 const alpha = !!endpoint.searchParams.get('alpha')
+const legacy = !!endpoint.searchParams.get('legacy')
 
 if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
-  if (alpha) {
+  if (legacy) {
+    _unlockAppUrl = 'https://staging-app.unlock-protocol.com/legacy'
+  } else if (alpha) {
     _unlockAppUrl = 'https://staging-app.unlock-protocol.com/alpha'
   } else {
     _unlockAppUrl = 'https://staging-app.unlock-protocol.com'
   }
   _locksmithUri = 'https://staging-locksmith.unlock-protocol.com'
 } else if (baseUrl.match('paywall.unlock-protocol.com')) {
-  if (alpha) {
+  if (legacy) {
+    _unlockAppUrl = 'https://app.unlock-protocol.com/legacy'
+  } else if (alpha) {
     _unlockAppUrl = 'https://app.unlock-protocol.com/alpha'
   } else {
     _unlockAppUrl = 'https://app.unlock-protocol.com'
   }
   _locksmithUri = 'https://locksmith.unlock-protocol.com'
 } else {
-  if (alpha) {
+  if (legacy) {
+    _unlockAppUrl = 'http://localhost:3000/legacy'
+  } else if (alpha) {
     _unlockAppUrl = 'http://localhost:3000/alpha'
   } else {
     _unlockAppUrl = 'http://localhost:3000'
