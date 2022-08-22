@@ -1,34 +1,53 @@
-/* eslint-disable no-underscore-dangle */
-let _unlockAppUrl: string
-let _locksmithUri: string
 const baseUrl =
   document?.currentScript?.getAttribute('src') ||
   'https://paywall.unlock-protocol.com' // assume prod
 
 const endpoint = new URL(baseUrl)
 const alpha = !!endpoint.searchParams.get('alpha')
+const legacy = !!endpoint.searchParams.get('legacy')
 
-if (baseUrl.match('staging-paywall.unlock-protocol.com')) {
-  if (alpha) {
-    _unlockAppUrl = 'https://staging-app.unlock-protocol.com/alpha'
+export function getConfigUrl(
+  url: string,
+  { legacy, alpha }: Partial<Record<'legacy' | 'alpha', boolean>>
+) {
+  let unlockAppUrl: string
+  let locksmithUri: string
+  if (url.match('staging-paywall.unlock-protocol.com')) {
+    if (legacy) {
+      unlockAppUrl = 'https://staging-app.unlock-protocol.com/legacy'
+    } else if (alpha) {
+      unlockAppUrl = 'https://staging-app.unlock-protocol.com/alpha'
+    } else {
+      unlockAppUrl = 'https://staging-app.unlock-protocol.com'
+    }
+    locksmithUri = 'https://staging-locksmith.unlock-protocol.com'
+  } else if (url.match('paywall.unlock-protocol.com')) {
+    if (legacy) {
+      unlockAppUrl = 'https://app.unlock-protocol.com/legacy'
+    } else if (alpha) {
+      unlockAppUrl = 'https://app.unlock-protocol.com/alpha'
+    } else {
+      unlockAppUrl = 'https://app.unlock-protocol.com'
+    }
+    locksmithUri = 'https://locksmith.unlock-protocol.com'
   } else {
-    _unlockAppUrl = 'https://staging-app.unlock-protocol.com'
+    if (legacy) {
+      unlockAppUrl = 'http://localhost:3000/legacy'
+    } else if (alpha) {
+      unlockAppUrl = 'http://localhost:3000/alpha'
+    } else {
+      unlockAppUrl = 'http://localhost:3000'
+    }
+    locksmithUri = 'http://localhost:8080'
   }
-  _locksmithUri = 'https://staging-locksmith.unlock-protocol.com'
-} else if (baseUrl.match('paywall.unlock-protocol.com')) {
-  if (alpha) {
-    _unlockAppUrl = 'https://app.unlock-protocol.com/alpha'
-  } else {
-    _unlockAppUrl = 'https://app.unlock-protocol.com'
+
+  return {
+    locksmithUri,
+    unlockAppUrl,
   }
-  _locksmithUri = 'https://locksmith.unlock-protocol.com'
-} else {
-  if (alpha) {
-    _unlockAppUrl = 'http://localhost:3000/alpha'
-  } else {
-    _unlockAppUrl = 'http://localhost:3000'
-  }
-  _locksmithUri = 'http://localhost:8080'
 }
-export const unlockAppUrl: string = _unlockAppUrl
-export const locksmithUri: string = _locksmithUri
+
+export const { unlockAppUrl, locksmithUri } = getConfigUrl(baseUrl, {
+  legacy,
+  alpha,
+})

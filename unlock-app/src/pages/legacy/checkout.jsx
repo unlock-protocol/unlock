@@ -1,7 +1,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import CheckoutContent from '../components/content/CheckoutContent'
-import BrowserOnly from '../components/helpers/BrowserOnly'
+import CheckoutContent from '~/components/content/CheckoutContent'
+import BrowserOnly from '~/components/helpers/BrowserOnly'
 
 const Checkout = () => {
   const { query } = useRouter()
