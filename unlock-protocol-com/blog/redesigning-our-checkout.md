@@ -21,25 +21,29 @@ Let's go into the details, step-by-step.
 
 Memberships are now grouped by networks and provide information about the network to users. This educates users about the network and makes it easier for creators to sell memberships on multiple networks with different benefits.
 
-![lock selection on checkout](/images/blog/redesigned-checkout/new-checkout.png)
+![lock selection on checkout](/images/blog/redesigned-checkout/checkout-1.png)
 
 ### Quantity selection
 
 Purchasers can now select the quantity and payment method to use earlier in the checkout flow.
 
-![quantity selection on checkout](/images/blog/redesigned-checkout/new-checkout-quantity.jpg)
+![quantity selection on checkout](/images/blog/redesigned-checkout/checkout-quantity.jpg)
 
 ### Recipient and metadata collection
 
 The recipient field is now populated based on the quantity indicated in the prior step. Purchasers can add recipient addresses and fill out metadata information for each recipient. Addtionally, we've added additional validation checks to ensure a user cannot buy more memberships than allowed by the lock owner.
 
-![metadata and recipients on checkout](/images/blog/redesigned-checkout/new-checkout-metadata.png)
+![metadata and recipients on checkout](/images/blog/redesigned-checkout/checkout-recipients.png)
 
 ### Payment using credit cards and other payment types
 
-We've made it easier to pick and change credit cards using the checkout.
+We've updated the payment selection panel.
 
-![card selection on checkout](/images/blog/redesigned-checkout/new-checkout-add-card.png)
+![payment selection on checkout](/images/blog/redesigned-checkout/checkout-payment.png)
+
+Similarly, we've made it easier to pick and change credit cards using the checkout.
+
+![card selection on checkout](/images/blog/redesigned-checkout/checkout-card.png)
 
 We have also added the support for Superfluid and for claiming memberships. If any of those payment methods are enabled for your checkout, they will automatically show up as options to users.
 
@@ -47,7 +51,7 @@ We have also added the support for Superfluid and for claiming memberships. If a
 
 Our new confirmation page shows the purchaser how many memberships they are buying, what the total amount is, and how many times a membership will be renewed if it's a [recurring membership](https://unlock-protocol.com/blog/recurring-subscription-nft). Trust and communication are key elements of user experience, and we want to reduce the chance of surprises at checkout time.
 
-![confirmation on checkout](/images/blog/redesigned-checkout/new-checkout-confirmation.png)
+![confirmation on checkout](/images/blog/redesigned-checkout/checkout-finished.png)
 
 ### Minting
 
