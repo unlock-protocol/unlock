@@ -27,6 +27,7 @@ export interface FiatPricing {
 export interface LockState extends Lock {
   fiatPricing: FiatPricing
   isMember: boolean
+  isSoldOut: boolean
 }
 
 export interface SelectLockEvent {
