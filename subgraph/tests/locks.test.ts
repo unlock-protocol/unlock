@@ -9,7 +9,7 @@ import {
 } from 'matchstick-as/assembly/index'
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import { handleNewLock } from '../src/unlock'
-import { createNewLockEvent } from './unlock-utils'
+import { createNewLockEvent } from './locks-utils'
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
@@ -54,12 +54,14 @@ describe('Describe entity assertions', () => {
       'address',
       '0x89205a3a3b2a69de6dbf7f01ed13b2108b2c43e7'
     )
+    // stores block number
     assert.fieldEquals(
       'Lock',
       '0xa16081f360e3847006db660bae1c6d1b2e17ec2a',
       'createdAtBlock',
       '1'
     )
+    // stores version properly
     assert.fieldEquals(
       'Lock',
       '0xa16081f360e3847006db660bae1c6d1b2e17ec2a',
