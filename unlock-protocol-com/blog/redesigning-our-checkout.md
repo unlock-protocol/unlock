@@ -1,13 +1,11 @@
 ---
 title: Unlock Protocol's Brand New Checkout Experience
-subTitle: We are launching a public preview of the new Unlock checkout experience.
+subTitle: Unlock has launched a completely redesigned checkout experience
 authorName: searchableguy
 publishDate: August 25, 2022
-description: We are launching a public preview of the new Unlock checkout experience.
+description: Unlock has launched a completely redesigned checkout experience.
 image: /images/blog/redesigned-checkout/new-checkout.png
 ---
-
-## Checkout experience
 
 We've completely redesigned the Unlock checkout experience after a ton of user testing and feedback.
 
@@ -35,7 +33,7 @@ The recipients field will be populated based on the quantity indicated in the pr
 
 ### Payment using credit cards
 
-We've made it easier to pick and change credit cards using the checkout. We're planning to introduce more traditional payment options soon.
+We've made it easier to pick and change credit cards using the checkout.
 
 ![card selection on checkout](/images/blog/redesigned-checkout/new-checkout-add-card.png)
 
@@ -53,9 +51,9 @@ We have some cool minting animations to show off while your transactions are con
 
 ![minting finished on checkout](/images/blog/redesigned-checkout/new-checkout-finished.png)
 
-### Using an Unlock account
+### Using an Unlock Account
 
-We've tried to make it easier to use an Unlock account and explain who is it intended for. Users can choose to login using their crypto wallet or checkout using Unlock account in which case they would only be able to buy credit card enabled memberships.
+We've tried to make it easier for purchasers who are using credit cards or who are not crypto-savvy to use an [Unlock Account](https://docs.unlock-protocol.com/basics/new-to-unlock/unlock-accounts). Users can choose to login or checkout using Unlock Account with an email and password, similar to a traditional login experience, as an alternative to using a crypto wallet.
 
 ![signing using unlock account](/images/blog/redesigned-checkout/new-checkout-unlock-account.png)
 
@@ -73,16 +71,6 @@ We've not made any breaking changes as part of the redesign effort. However, we 
 
 You can find more about them inside the [paywall configuration documentation](https://docs.unlock-protocol.com/tools/paywall/configuring-checkout).
 
-## We are listening
+## Unlock's new checkout experience is backward-compatible
 
-We will keep the redesigned checkout experience on a brand new path - `/alpha/checkout` for a month. During this period, we will iron out any bugs, iterate upon user feedback and feature requests and make sure no integration built on top of Unlock Protocol breaks.
-
-If you want to be a tester and provide feedback, all you need to do is prefix your checkout or Sign in with Ethereum URL with `/alpha`.
-
-```
-// from
-https://app.unlock-protocol.com/checkout?client_id=www.ouvre-boite.com&redirect_uri=https%3A%2F%2Fwww.ouvre-boite.com%2F
-
-// to
-https://app.unlock-protocol.com/alpha/checkout?client_id=www.ouvre-boite.com&redirect_uri=https%3A%2F%2Fwww.ouvre-boite.com%2F
-```
+In addition, we have introduced a new path - `/legacy/checkout` - for sites, creators and developers who would like to stay on the existing checkout experience at the current time. Please note that this path will not be maintained going forward, so to always make sure you're using the latest and greatest checkout experience, please do make plans to migrate to the primary checkout experience in the near future.
