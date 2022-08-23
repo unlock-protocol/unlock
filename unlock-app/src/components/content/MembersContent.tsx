@@ -140,15 +140,24 @@ interface Filter {
   key: string
   label: string
   options?: MemberFilter[]
+  onlyLockManager?: boolean
+  hideSearch?: boolean
 }
 
-const filters: Filter[] = [
+const FILTER_ITEMS: Filter[] = [
   { key: 'owner', label: 'Owner' },
   { key: 'keyId', label: 'Token id' },
   {
     key: 'expiration',
     label: 'Expiration',
     options: ['active', 'expired', 'all'],
+  },
+  { key: 'email', label: 'Email', onlyLockManager: true },
+  {
+    key: 'checkedInAt',
+    label: 'Checked in time',
+    hideSearch: true,
+    onlyLockManager: true,
   },
 ]
 /**
@@ -200,12 +209,21 @@ const MetadataTableWrapper = ({
     setQuery('')
   }
 
+  const filters = FILTER_ITEMS.filter((filter) => {
+    if (
+      !filter?.onlyLockManager ||
+      Object.values(lockManagerMapping ?? {}).some((status) => status)
+    ) {
+      return filter
+    }
+  })
+
   useEffect(() => {
     const filter = filters?.find((filter) => filterKey === filter.key)
     if (filter) {
       setCurrentFilter(filter)
     }
-  }, [filterKey])
+  }, [filterKey, filters])
 
   useEffect(() => {
     if (currentFilter?.key === 'expiration') {
@@ -218,6 +236,7 @@ const MetadataTableWrapper = ({
   }
 
   const options: string[] = currentFilter?.options ?? []
+  const hideSearch = currentFilter?.hideSearch ?? false
   // TODO: rename metadata into members inside of MetadataTable
   return (
     <>
@@ -238,30 +257,32 @@ const MetadataTableWrapper = ({
             ))}
           </select>
         </span>
-        <div className="mt-auto">
-          {options?.length ? (
-            <select
-              name={currentFilter?.key}
-              className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
-              onChange={onOptionChange}
-            >
-              {options?.map((option: string) => {
-                return (
-                  <option key={option} value={option}>
-                    {option.toUpperCase()}
-                  </option>
-                )
-              })}
-            </select>
-          ) : (
-            <Input
-              label="Filter your results"
-              type="text"
-              size="small"
-              onChange={search}
-            />
-          )}
-        </div>
+        {!hideSearch && (
+          <div className="mt-auto">
+            {options?.length ? (
+              <select
+                name={currentFilter?.key}
+                className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
+                onChange={onOptionChange}
+              >
+                {options?.map((option: string) => {
+                  return (
+                    <option key={option} value={option}>
+                      {option.toUpperCase()}
+                    </option>
+                  )
+                })}
+              </select>
+            ) : (
+              <Input
+                label="Filter your results"
+                type="text"
+                size="small"
+                onChange={search}
+              />
+            )}
+          </div>
+        )}
         <div className="ml-auto">
           <Pagination
             currentPage={currentPage}
