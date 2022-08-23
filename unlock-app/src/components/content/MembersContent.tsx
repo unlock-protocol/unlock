@@ -220,9 +220,7 @@ const MetadataTableWrapper = ({
 
   useEffect(() => {
     if (currentFilter?.key === 'expiration') {
-      setExpiration(currentOption as MemberFilter)
-    } else {
-      setExpiration('active')
+      setExpiration((currentOption as MemberFilter) ?? 'active')
     }
   }, [currentFilter?.key, currentOption])
 
