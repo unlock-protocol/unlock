@@ -2,7 +2,7 @@
 title: Unlock Protocol's Brand New Checkout Experience
 subTitle: We are launching a public preview of the new Unlock checkout experience.
 authorName: searchableguy
-publishDate: July 6, 2022
+publishDate: August 25, 2022
 description: We are launching a public preview of the new Unlock checkout experience.
 image: /images/blog/redesigned-checkout/new-checkout.png
 ---
