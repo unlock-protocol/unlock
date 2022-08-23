@@ -79,7 +79,7 @@ const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
 
 export const MetadataTable: React.FC<MetadataTableProps> = ({
   columns,
-  metadata,
+  metadata = [],
   filter,
   loadMembers,
   membersCount,
