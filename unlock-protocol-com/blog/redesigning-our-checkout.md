@@ -43,7 +43,7 @@ We've made it easier to pick and change credit cards using the checkout.
 
 ### Confirmation
 
-Our new confirmation page shows the purchaser how many memberships they are buying, what the total amount is, how many times a membership will be renewed if it's a recurring membership. Trust and communication are key elements of user experience, and we want to reduce the chance of surprises at checkout time.
+Our new confirmation page shows the purchaser how many memberships they are buying, what the total amount is, and how many times a membership will be renewed if it's a [recurring membership](https://unlock-protocol.com/blog/recurring-subscription-nft). Trust and communication are key elements of user experience, and we want to reduce the chance of surprises at checkout time.
 
 ![confirmation on checkout](/images/blog/redesigned-checkout/new-checkout-confirmation.png)
 
