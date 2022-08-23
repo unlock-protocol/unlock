@@ -134,6 +134,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     isLocksLoading ||
     isMembershipsLoading ||
     !lockOption ||
+    // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !existingMember)
 
   const stepItems: StepItem[] = [
