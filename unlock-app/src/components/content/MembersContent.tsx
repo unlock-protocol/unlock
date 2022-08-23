@@ -140,6 +140,7 @@ interface Filter {
   label: string
   options?: MemberFilter[]
   onlyLockManager?: boolean
+  hideSearch?: boolean
 }
 
 const FILTER_ITEMS: Filter[] = [
@@ -151,7 +152,12 @@ const FILTER_ITEMS: Filter[] = [
     options: ['active', 'expired', 'all'],
   },
   { key: 'email', label: 'Email', onlyLockManager: true },
-  { key: 'checkedInAt', label: 'Checked in time', onlyLockManager: true },
+  {
+    key: 'checkedInAt',
+    label: 'Checked in time',
+    hideSearch: true,
+    onlyLockManager: true,
+  },
 ]
 /**
  * This just wraps the metadataTable component, providing the data
@@ -227,6 +233,7 @@ const MetadataTableWrapper = ({
   }
 
   const options: string[] = currentFilter?.options ?? []
+  const hideSearch = currentFilter?.hideSearch ?? false
   // TODO: rename metadata into members inside of MetadataTable
   return (
     <>
@@ -263,7 +270,7 @@ const MetadataTableWrapper = ({
               })}
             </select>
           ) : (
-            currentFilter?.key !== 'checkedInAt' && (
+            !hideSearch && (
               <Input
                 label="Filter your results"
                 type="text"
