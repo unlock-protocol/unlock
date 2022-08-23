@@ -4,7 +4,7 @@ subTitle: Unlock launches a completely redesigned checkout experience
 authorName: searchableguy
 publishDate: August 25, 2022
 description: Unlock launches a completely redesigned checkout experience.
-image: /images/blog/redesigned-checkout/new-checkout.png
+image: /images/blog/redesigned-checkout/new-unlock-checkout-animation.gif
 ---
 
 Currently, one of the most notable opportunities in web3 is to [improve and simplify the user experience](https://builtin.com/design-ux/web3-design). With that goal in mind, Unlock has completely redesigned the Unlock checkout experience based on extensive user testing and feedback.
