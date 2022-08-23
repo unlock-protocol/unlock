@@ -71,7 +71,7 @@ Similar to checkout, we've updated our Sign in with Ethereum integration to matc
 
 ## Paywall configuration
 
-We've not made any breaking changes as part of the redesign effort. However, we have introduced new fields for customizing descriptions on new screens and titles shown on the checkout flow.
+We've not made any breaking changes as part of the redesign effort. However, we have introduced new fields for customizing descriptions on new screens and to the titles shown on the checkout flow.
 
 You can find more about them inside the [paywall configuration documentation](https://docs.unlock-protocol.com/tools/paywall/configuring-checkout).
 
