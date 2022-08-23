@@ -125,15 +125,16 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const lock = locks?.[lockOption.network]?.find(
     (item) => item.address === lockOption.address
   )
-  const isDisabled =
-    isLocksLoading ||
-    isMembershipsLoading ||
-    !lockOption ||
-    (lock?.isSoldOut && !lock?.isMember)
   const lockNetwork = config?.networks?.[lockOption.network]
   const isNetworkSwitchRequired =
     lockOption.network !== network && !isUnlockAccount
   const existingMember = !!memberships?.includes(lockOption.address)
+
+  const isDisabled =
+    isLocksLoading ||
+    isMembershipsLoading ||
+    !lockOption ||
+    (lock?.isSoldOut && !existingMember)
 
   const stepItems: StepItem[] = [
     {
