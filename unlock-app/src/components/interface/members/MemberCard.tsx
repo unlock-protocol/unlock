@@ -13,6 +13,7 @@ import { WalletServiceContext } from '~/utils/withWalletService'
 import useClipboard from 'react-use-clipboard'
 import { FieldValues, useForm } from 'react-hook-form'
 import useEns from '~/hooks/useEns'
+import { expirationAsDate } from '~/utils/durations'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -210,7 +211,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         </div>
         <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Expiration</span>
-          <span className={styles.title}>{expiration}</span>
+          <span className={styles.title}>{expirationAsDate(expiration)}</span>
         </div>
         <div className="col-span-full flex gap-2 justify-start items-center lg:col-span-2 lg:justify-end">
           <Button
