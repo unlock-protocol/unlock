@@ -1,9 +1,9 @@
 ---
 title: Unlock Protocol's Brand New Checkout Experience
-subTitle: Unlock has launched a completely redesigned checkout experience
+subTitle: Unlock launches a completely redesigned checkout experience
 authorName: searchableguy
 publishDate: August 25, 2022
-description: Unlock has launched a completely redesigned checkout experience.
+description: Unlock launches a completely redesigned checkout experience.
 image: /images/blog/redesigned-checkout/new-checkout.png
 ---
 
