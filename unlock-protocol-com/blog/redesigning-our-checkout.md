@@ -27,7 +27,7 @@ Memberships are now grouped by networks and provide information about the networ
 
 Purchasers can now select the quantity and payment method to use earlier in the checkout flow.
 
-![quantity selection on checkout](/images/blog/redesigned-checkout/checkout-quantity.jpg)
+![quantity selection on checkout](/images/blog/redesigned-checkout/checkout-quantity.png)
 
 ### Recipient and metadata collection
 
