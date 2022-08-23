@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import networks from '@unlock-protocol/networks'
 import GraphService from '~/services/graphService'
+import { paginate } from '~/utils/pagination'
 
 type KeyItem = {
   token: string
@@ -37,7 +38,7 @@ export const useKeys = ({
       total: 0,
     }
   )
-  const [hasNextPage] = useState(false) // todo: restore pagination
+  const [hasNextPage, setNextPage] = useState(false)
   const [lockManagerMapping, setLockManagerMapping] = useState<{
     [lockAddress: string]: boolean
   }>({})
@@ -96,7 +97,10 @@ export const useKeys = ({
     const locksPromise = locks?.map((lockAddress: string) =>
       storageService.getKeys({
         lockAddress,
-        filters,
+        filters: {
+          ...filters,
+          page: 0,
+        },
         network: network!,
       })
     )
@@ -104,9 +108,15 @@ export const useKeys = ({
     results.forEach((result) => {
       keys = [...keys, ...result]
     })
-    setKeys(keys)
+    const { items, hasNextPage } = paginate({
+      items: keys,
+      page: filters.page,
+      itemsPerPage: 30,
+    })
+    setKeys(items)
+    setNextPage(hasNextPage)
     await getKeysCount()
-    return Promise.resolve(keys)
+    return Promise.resolve(items)
   }
 
   const columns = generateColumns(keys)
