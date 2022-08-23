@@ -228,6 +228,11 @@ const MetadataTableWrapper = ({
     setCurrentOption(event?.target?.value ?? '')
   }
 
+  useEffect(() => {
+    if (queryValue.length === 0) return
+    setCurrentPage(0) // reset pagination when has query
+  }, [queryValue.length])
+
   const {
     isLoading: loading,
     data: keys = [],
