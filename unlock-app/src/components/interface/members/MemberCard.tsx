@@ -31,7 +31,6 @@ interface MemberCardProps {
   isLockManager?: boolean
   expireAndRefundDisabled?: boolean
   metadata?: { [key: string]: any }
-  loadMembers?: () => void
 }
 
 const keysToIgnore = [
@@ -57,7 +56,6 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   onExpireAndRefund,
   expandAllMetadata,
   showCheckInTimeInfo,
-  loadMembers,
   isLockManager,
   expireAndRefundDisabled = true,
   metadata = {},
@@ -70,6 +68,9 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [data, setData] = useState(metadata)
   const addressToEns = useEns(keyholderAddress)
+  const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
+    null
+  )
   const [extraDataItems, setExtraDataItems] = useState<
     [string, string | number][]
   >([])
@@ -88,6 +89,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const getCheckInTime = () => {
     const [_, checkInTimeValue] =
       Object.entries(data)?.find(([key]) => key === 'checkedInAt') ?? []
+    if (checkInTimestamp) return checkInTimestamp
     if (!checkInTimeValue) return null
     return new Date(checkInTimeValue as number).toLocaleString()
   }
@@ -96,7 +98,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     setShowMetaData(!showMetaData)
   }
 
-  const isCheckedIn = typeof getCheckInTime() === 'string'
+  const isCheckedIn = typeof getCheckInTime() === 'string' || !!checkInTimestamp
 
   useEffect(() => {
     setShowMetaData(expandAllMetadata)
@@ -119,10 +121,8 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       }
 
       if (response.ok) {
+        setCheckedInTimestamp(new Date().toLocaleString())
         ToastHelper.success('Successfully marked ticket as checked-in')
-        if (typeof loadMembers === 'function') {
-          loadMembers()
-        }
       }
     } catch (err) {
       ToastHelper.error('Error on marking ticket as checked-in')

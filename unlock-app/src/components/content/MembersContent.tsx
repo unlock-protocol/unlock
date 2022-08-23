@@ -238,12 +238,9 @@ const MetadataTableWrapper = ({
     setCurrentPage(0) // reset pagination when has query
   }, [queryValue.length])
 
-  const {
-    isLoading: loading,
-    data: keys = [],
-    refetch: referchMembers,
-  } = useQuery([queryValue, expiration, currentPage, filterKey], () =>
-    getKeys()
+  const { isLoading: loading, data: keys = [] } = useQuery(
+    [queryValue, expiration, currentPage, filterKey],
+    () => getKeys()
   )
 
   const options: string[] = currentFilter?.options ?? []
@@ -308,7 +305,6 @@ const MetadataTableWrapper = ({
         lockManagerMapping={lockManagerMapping}
         lockAddresses={lockAddresses}
         loading={loading}
-        loadMembers={referchMembers}
         membersCount={keysCount}
       />
     </>
