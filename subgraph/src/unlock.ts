@@ -1,11 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-import {
-  NewLock,
-  NewTokenURI,
-  NewGlobalTokenSymbol,
-  OwnershipTransferred,
-} from '../generated/Unlock/Unlock'
+import { NewLock } from '../generated/Unlock/Unlock'
 import { PublicLock } from '../generated/templates/PublicLock/PublicLock'
 import { Lock } from '../generated/schema'
 import { BigInt } from '@graphprotocol/graph-ts'
@@ -37,11 +32,3 @@ export function handleNewLock(event: NewLock): void {
   entity.createdAtBlock = event.block.number
   entity.save()
 }
-
-export function handleNewTokenURI(_event: NewTokenURI): void {}
-export function handleNewGlobalTokenSymbol(
-  _event: NewGlobalTokenSymbol
-): void {}
-export function handleOwnershipTransferred(
-  _event: OwnershipTransferred
-): void {}
