@@ -9,7 +9,7 @@ import {
   RiArrowLeftLine as BackIcon,
 } from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
-
+import SvgComponents from '../../svg'
 interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>
 }
@@ -61,22 +61,17 @@ BackButton.displayName = 'Back Button'
 interface CheckoutTransitionProps {
   children?: ReactNode
 }
-// TODO: Think about better transition effect.
+
 export const CheckoutTransition = ({ children }: CheckoutTransitionProps) => {
   return <Fragment>{children}</Fragment>
 }
 
 interface CheckoutHeadProps {
   title?: string
-  description: string
   iconURL?: string
 }
 
-export function CheckoutHead({
-  title,
-  description,
-  iconURL,
-}: CheckoutHeadProps) {
+export function CheckoutHead({ title, iconURL }: CheckoutHeadProps) {
   return (
     <header className="px-6 py-2 space-y-2">
       <div className="flex flex-1 inset-0 flex-wrap items-center gap-6">
@@ -88,18 +83,36 @@ export function CheckoutHead({
             width={64}
             height={64}
           />
-          <Avatar.Fallback className="inline-flex border items-center justify-center w-16 h-16 rounded-full">
-            {title?.slice(0, 2).toUpperCase()}
+          <Avatar.Fallback>
+            <SvgComponents.UnlockMonogram
+              className="rounded-full"
+              height={64}
+              width={64}
+            />
           </Avatar.Fallback>
         </Avatar.Root>
         <div>
-          <h1 className="font-bold text-lg"> {title} </h1>
+          <h1 className="font-bold text-lg"> {title || 'Unlock Protocol'} </h1>
           <p className="text-base text-brand-dark"> Membership </p>
         </div>
       </div>
-      <p className="text-base text-brand-dark overflow line-clamp-2 h-12">
-        {description}
-      </p>
     </header>
+  )
+}
+
+interface NavigationProps {
+  onClose?(): void
+  onBack?(): void
+}
+
+export function TopNavigation({ onClose, onBack }: NavigationProps) {
+  const navigationClass = `flex items-center p-6 ${
+    onBack ? 'justify-between' : 'justify-end'
+  }`
+  return (
+    <div className={navigationClass}>
+      {onBack && <BackButton onClick={onBack} />}
+      {onClose && <CloseButton onClick={onClose} />}
+    </div>
   )
 }

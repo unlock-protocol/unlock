@@ -8,15 +8,13 @@ import errorAnimation from '~/animations/error.json'
 import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
-import { useEffect } from 'react'
+import { Fragment, useEffect, useMemo } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { CheckoutHead, CheckoutTransition, CloseButton } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 
 interface Props {
   injectedProvider: unknown
@@ -38,11 +36,7 @@ function AnimationContent({ status }: { status: Mint['status'] }) {
       )
     case 'FINISHED':
       return (
-        <Lottie
-          className={animationClass}
-          loop
-          animationData={mintedAnimation}
-        />
+        <Lottie className={animationClass} animationData={mintedAnimation} />
       )
     case 'ERROR': {
       return (
@@ -63,9 +57,8 @@ export function Minting({
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-  const { mint, lock, messageToSign, paywallConfig } = state.context
-  const { title, description, iconURL } =
-    useCheckoutHeadContent(checkoutService)
+  const { mint, lock, messageToSign, skipQuantity, paywallConfig } =
+    state.context
   const processing = mint?.status === 'PROCESSING'
   const status = mint?.status
 
@@ -73,7 +66,7 @@ export function Minting({
     if (mint?.status !== 'PROCESSING') {
       return
     }
-    async function waitForConfirmation() {
+    const waitForConfirmation = async () => {
       try {
         const network = config.networks[lock!.network]
         if (network) {
@@ -110,72 +103,114 @@ export function Minting({
     waitForConfirmation()
   }, [mint, lock, config, send, communication, account, messageToSign])
 
+  const content = useMemo(() => {
+    switch (status) {
+      case 'PROCESSING': {
+        return {
+          title: 'Minting NFT',
+          text: 'Purchasing NFT...',
+        }
+      }
+      case 'FINISHED': {
+        return {
+          title: 'You have NFT!',
+          text: 'Successfully purchased NFT',
+        }
+      }
+      case 'ERROR': {
+        return {
+          title: 'Minting failed',
+          text: 'Failed to purchase NFT',
+        }
+      }
+    }
+  }, [status])
+
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip: !paywallConfig.captcha,
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: status === 'PROCESSING' ? 'Minting NFT' : 'Minted NFT!',
+    },
+  ]
+
   return (
-    <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
-        <div className="flex items-center justify-end p-6">
-          <CloseButton onClick={() => onClose()} />
-        </div>
-        <CheckoutHead
-          title={paywallConfig.title}
-          iconURL={iconURL}
-          description={description}
-        />
-        <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-          <div className="flex items-center gap-2 col-span-4">
-            <div className="flex items-center gap-0.5">
-              <ProgressCircleIcon disabled />
-              <ProgressCircleIcon disabled />
-              <ProgressCircleIcon disabled />
-              <ProgressCircleIcon disabled />
-              {messageToSign && <ProgressCircleIcon disabled />}
-              <ProgressCircleIcon disabled />
-              <ProgressFinishedIcon />
-            </div>
-            <h4 className="text-sm "> {title}</h4>
-          </div>
-          <div className="border-t-4 w-full flex-1"></div>
-        </div>
-        <main className="px-6 py-2 overflow-auto h-full">
-          <div className="h-full flex flex-col items-center justify-center space-y-2">
-            {status && <AnimationContent status={status} />}
-            {mint?.status === 'ERROR' && (
-              <p className="font-bold text-lg text-brand-ui-primary">
-                Oh no... something went wrong
-              </p>
-            )}
-            {mint?.transactionHash && (
-              <a
-                href={config.networks[lock!.network].explorer.urls.transaction(
-                  mint.transactionHash
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
-              >
-                See in block explorer{' '}
-                <Icon icon={ExternalLinkIcon} size="small" />
-              </a>
-            )}
-          </div>
-        </main>
-        <footer className="px-6 pt-6 border-t grid items-center">
-          <Connected
-            injectedProvider={injectedProvider}
-            service={checkoutService}
-          >
-            <Button
-              disabled={!account || processing}
-              loading={processing}
-              onClick={() => onClose()}
-              className="w-full"
+    <Fragment>
+      <Stepper position={8} service={checkoutService} items={stepItems} />
+      <main className="h-full px-6 py-2 overflow-auto">
+        <div className="flex flex-col items-center justify-center h-full space-y-2">
+          {status && <AnimationContent status={status} />}
+          <p className="text-lg font-bold text-brand-ui-primary">
+            {content?.text}
+          </p>
+          {mint?.transactionHash && (
+            <a
+              href={config.networks[lock!.network].explorer.urls.transaction(
+                mint.transactionHash
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
             >
-              {processing ? 'Minting your membership' : 'Return to site'}
-            </Button>
-          </Connected>
-          <PoweredByUnlock />
-        </footer>
-      </div>
-    </CheckoutTransition>
+              See in the block explorer
+              <Icon icon={ExternalLinkIcon} size="small" />
+            </a>
+          )}
+        </div>
+      </main>
+      <footer className="grid items-center px-6 pt-6 border-t">
+        <Connected
+          injectedProvider={injectedProvider}
+          service={checkoutService}
+        >
+          <Button
+            disabled={!account || processing}
+            loading={processing}
+            onClick={() => onClose()}
+            className="w-full"
+          >
+            {processing ? 'Minting your membership' : 'Return to site'}
+          </Button>
+        </Connected>
+        <PoweredByUnlock />
+      </footer>
+    </Fragment>
   )
 }

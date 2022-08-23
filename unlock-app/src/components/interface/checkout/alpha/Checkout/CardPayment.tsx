@@ -10,7 +10,7 @@ import {
 import { useConfig } from '~/utils/withConfig'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useWalletService } from '~/utils/withWalletService'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { Card, CardPlaceholder } from '../Card'
 import { FieldValues, useForm } from 'react-hook-form'
 import {
@@ -22,27 +22,15 @@ import {
 import { countries } from '~/utils/countries'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-import {
-  BackButton,
-  CheckoutHead,
-  CheckoutTransition,
-  CloseButton,
-} from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(params?: Record<string, string>): void
 }
 
-export function CardPayment({
-  checkoutService,
-  injectedProvider,
-  onClose,
-}: Props) {
+export function CardPayment({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
   const [editCard, setEditCard] = useState(false)
@@ -58,98 +46,110 @@ export function CardPayment({
       enabled: !!account,
     }
   )
-  const { title, description, iconURL } =
-    useCheckoutHeadContent(checkoutService)
-  const { paywallConfig } = state.context
-  const { messageToSign } = paywallConfig
+  const { paywallConfig, skipQuantity } = state.context
+
   const card = data?.[0]
 
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Add card',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip: !paywallConfig.captcha,
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: 'Minting NFT',
+    },
+  ]
+
   return (
-    <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
-        <div className="flex items-center justify-between p-6">
-          <BackButton onClick={() => send('BACK')} />
-          <CloseButton onClick={() => onClose()} />
-        </div>
-        <CheckoutHead
-          title={paywallConfig.title}
-          iconURL={iconURL}
-          description={description}
-        />
-        <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-          <div className="flex items-center gap-2 col-span-4">
-            <button
-              aria-label="back"
-              onClick={(event) => {
-                event.preventDefault()
-                send('BACK')
+    <Fragment>
+      <Stepper position={4} service={checkoutService} items={stepItems} />
+      <main className="h-full px-6 py-2 overflow-auto">
+        <Elements stripe={stripe}>
+          {isLoading ? (
+            <CardPlaceholder />
+          ) : editCard || !card ? (
+            <CardForm
+              isSaving={isSaving}
+              setIsSaving={setIsSaving}
+              onSave={async () => {
+                await refetch()
+                setIsSaving(false)
+                setEditCard(false)
               }}
-              className="p-2 w-20 bg-brand-ui-primary inline-flex items-center justify-center rounded-full"
+            />
+          ) : (
+            <Card onChange={() => setEditCard(true)} {...card} />
+          )}
+        </Elements>
+      </main>
+      <footer className="grid items-center px-6 pt-6 border-t">
+        <Connected
+          injectedProvider={injectedProvider}
+          service={checkoutService}
+        >
+          {editCard || !card ? (
+            <Button
+              disabled={isSaving || isLoading}
+              loading={isSaving}
+              type="submit"
+              form="card-save"
+              className="w-full"
             >
-              <div className="p-0.5 w-16 bg-white rounded-full"></div>
-            </button>
-            <h4 className="text-sm "> {title}</h4>
-          </div>
-          <div className="border-t-4 w-full flex-1"></div>
-          <div className="inline-flex items-center gap-0.5">
-            {messageToSign && <ProgressCircleIcon disabled />}
-            <ProgressCircleIcon disabled />
-            <ProgressFinishedIcon disabled />
-          </div>
-        </div>
-        <main className="px-6 py-2 overflow-auto h-full">
-          <Elements stripe={stripe}>
-            {isLoading ? (
-              <CardPlaceholder />
-            ) : editCard || !card ? (
-              <CardForm
-                isSaving={isSaving}
-                setIsSaving={setIsSaving}
-                onSave={async () => {
-                  await refetch()
-                  setIsSaving(false)
-                  setEditCard(false)
-                }}
-              />
-            ) : (
-              <Card onChange={() => setEditCard(true)} {...card} />
-            )}
-          </Elements>
-        </main>
-        <footer className="px-6 pt-6 border-t grid items-center">
-          <Connected
-            injectedProvider={injectedProvider}
-            service={checkoutService}
-          >
-            {editCard || !card ? (
-              <Button
-                disabled={isSaving || isLoading}
-                loading={isSaving}
-                type="submit"
-                form="card-save"
-                className="w-full"
-              >
-                {isSaving ? 'Saving' : 'Save'}
-              </Button>
-            ) : (
-              <Button
-                className="w-full"
-                disabled={!card || isLoading}
-                onClick={() => {
-                  send({
-                    type: 'SELECT_CARD_TO_CHARGE',
-                    cardId: card.id,
-                  })
-                }}
-              >
-                Continue
-              </Button>
-            )}
-          </Connected>
-          <PoweredByUnlock />
-        </footer>
-      </div>
-    </CheckoutTransition>
+              {isSaving ? 'Saving' : 'Save'}
+            </Button>
+          ) : (
+            <Button
+              className="w-full"
+              disabled={!card || isLoading}
+              onClick={() => {
+                send({
+                  type: 'SELECT_CARD_TO_CHARGE',
+                  cardId: card.id,
+                })
+              }}
+            >
+              Continue
+            </Button>
+          )}
+        </Connected>
+        <PoweredByUnlock />
+      </footer>
+    </Fragment>
   )
 }
 
@@ -210,7 +210,7 @@ function CardForm({ onSave, setIsSaving }: CardFormProps) {
         </label>
         <CardElement id="card-element" />
       </div>
-      <div className="space-y-1 pt-2">
+      <div className="pt-2 space-y-1">
         <label className="pl-1 text-sm" htmlFor="card-element">
           Country
         </label>
@@ -220,7 +220,7 @@ function CardForm({ onSave, setIsSaving }: CardFormProps) {
           {...register('address_country', {
             required: true,
           })}
-          className="block border hover:border-gray-500 border-gray-400 text-sm w-full rounded-lg"
+          className="block w-full text-sm border border-gray-400 rounded-lg hover:border-gray-500"
         >
           {countries.map((country) => (
             <option key={country} value={country}>

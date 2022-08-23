@@ -1,7 +1,7 @@
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { useQuery } from 'react-query'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
@@ -12,52 +12,40 @@ import {
   RiCoupon2Line as QuantityIcon,
 } from 'react-icons/ri'
 import { useActor } from '@xstate/react'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import {
-  BackButton,
-  CheckoutHead,
-  CheckoutTransition,
-  CloseButton,
-} from '../Shell'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(params?: Record<string, string>): void
 }
 
 const QuantityPlaceholder = () => {
   return (
-    <div className="flex gap-2 flex-col items-center">
-      <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-      <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+    <div className="flex flex-col items-center gap-2">
+      <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+      <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
     </div>
   )
 }
 
-export function Quantity({
-  injectedProvider,
-  checkoutService,
-  onClose,
-}: Props) {
+export function Quantity({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { network, isUnlockAccount, changeNetwork } = useAuth()
-  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
   const config = useConfig()
-  const { paywallConfig, quantity: selectedQuantity } = state.context
+  const {
+    paywallConfig,
+    quantity: selectedQuantity,
+    skipQuantity,
+  } = state.context
   const lock = state.context.lock!
   const [quantityInput, setQuantityInput] = useState(
     selectedQuantity?.toString() ||
       paywallConfig.minRecipients?.toString() ||
       '1'
   )
-  const { title, description, iconURL } =
-    useCheckoutHeadContent(checkoutService)
+
   const quantity = Number(quantityInput)
 
   const { isLoading, data: fiatPricing } = useQuery(
@@ -85,180 +73,174 @@ export function Quantity({
   )
 
   const fiatPrice = fiatPricing?.usd?.keyPrice
-  const isNetworkSwitchRequired = lock?.network !== network && !isUnlockAccount
-  const lockNetwork = config.networks?.[lock?.network]
   const isDisabled = quantity < 1 || isLoading
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip: !paywallConfig.captcha,
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: 'Minting NFT',
+    },
+  ]
 
   return (
-    <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
-        <div className="flex items-center justify-between p-6">
-          <BackButton onClick={() => send('BACK')} />
-          <CloseButton onClick={() => onClose()} />
-        </div>
-        <CheckoutHead
-          title={paywallConfig.title}
-          iconURL={iconURL}
-          description={description}
-        />
-        <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-          <div className="flex items-center gap-2 col-span-4">
-            <div className="flex items-center gap-0.5">
-              <IconButton
-                title="Select lock"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('SELECT')
-                }}
-              />
-              <ProgressCircleIcon />
-            </div>
-            <h4 className="text-sm "> {title}</h4>
-          </div>
-          <div className="border-t-4 w-full flex-1"></div>
-          <div className="inline-flex items-center gap-0.5">
-            <ProgressCircleIcon disabled />
-            <ProgressCircleIcon disabled />
-            {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
-            <ProgressCircleIcon disabled />
-            <ProgressFinishIcon disabled />
-          </div>
-        </div>
-        <main className="p-6 overflow-auto h-full space-y-2">
-          <div className="flex items-start justify-between">
-            <h3 className="font-bold text-xl"> {lock?.name}</h3>
-            {!isLoading ? (
-              <div className="text-right grid min-h-[3rem]">
-                {fiatPricing.creditCardEnabled ? (
-                  <>
-                    {!!fiatPrice && (
-                      <span className="font-semibold">
-                        ${(fiatPrice / 100).toFixed(2)}
-                      </span>
-                    )}
-                    <span>{formattedData.formattedKeyPrice} </span>
-                  </>
-                ) : (
-                  <>
+    <Fragment>
+      <Stepper position={2} service={checkoutService} items={stepItems} />
+      <main className="h-full p-6 space-y-2 overflow-auto">
+        <div className="flex items-start justify-between">
+          <h3 className="text-xl font-bold"> {lock?.name}</h3>
+          {!isLoading ? (
+            <div className="text-right grid min-h-[3rem]">
+              {fiatPricing.creditCardEnabled ? (
+                <>
+                  {!!fiatPrice && (
                     <span className="font-semibold">
-                      {formattedData.formattedKeyPrice}
+                      ${(fiatPrice / 100).toFixed(2)}
                     </span>
-                    {!!fiatPrice && (
-                      <span>${(fiatPrice / 100).toFixed(2)}</span>
-                    )}
-                  </>
-                )}
-              </div>
-            ) : (
-              <QuantityPlaceholder />
-            )}
-          </div>
-          <div className="w-full border-t"></div>
-          <div className="pt-2 mt-2 w-full flex justify-between">
-            {!isLoading ? (
-              <div className="space-y-2">
-                <div className="flex items-center gap-4 flex-wrap">
-                  <LabeledItem
-                    label="Duration"
-                    icon={DurationIcon}
-                    value={formattedData.formattedDuration}
-                  />
-                  <LabeledItem
-                    label="Quantity"
-                    icon={QuantityIcon}
-                    value={
-                      formattedData.isSoldOut
-                        ? 'Sold out'
-                        : formattedData.formattedKeysAvailable
-                    }
-                  />
-                </div>
-                <a
-                  href={config.networks[lock!.network].explorer.urls.address(
-                    lock!.address
                   )}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
-                >
-                  View Contract <Icon icon={ExternalLinkIcon} size="small" />
-                </a>
-              </div>
-            ) : (
-              <div className="py-1.5 space-y-2 items-center">
-                <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-                <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-              </div>
-            )}
-            <div>
-              <input
-                onChange={(event) => {
-                  event.preventDefault()
-                  const count = event.target.value.replace(/\D/, '')
-                  const countInt = parseInt(count, 10)
-                  const { maxRecipients, minRecipients } = paywallConfig
-                  const maxAllowed = maxRecipients && countInt > maxRecipients
-                  const minAllowed = minRecipients && countInt < minRecipients
-
-                  if (maxAllowed) {
-                    ToastHelper.error(
-                      `You cannot purchase more than ${paywallConfig.maxRecipients} memberships at once`
-                    )
-                    return setQuantityInput(maxRecipients!.toString())
-                  }
-                  if (minAllowed) {
-                    ToastHelper.error(
-                      `You cannot purchase less than ${paywallConfig.minRecipients} memberships at once`
-                    )
-                    return setQuantityInput(minRecipients!.toString())
-                  }
-                  setQuantityInput(count)
-                }}
-                pattern="[0-9]{0,2}"
-                value={quantityInput}
-                type="text"
-                className="w-16 text-sm rounded-lg border-2 border-gray-300 focus:ring-0 focus:border-brand-ui-primary"
-              ></input>
-            </div>
-          </div>
-        </main>
-        <footer className="px-6 pt-6 border-t items-center">
-          <Connected
-            service={checkoutService}
-            injectedProvider={injectedProvider}
-          >
-            <div className="grid">
-              {isNetworkSwitchRequired ? (
-                <Button
-                  disabled={isSwitchingNetwork}
-                  loading={isSwitchingNetwork}
-                  onClick={async (event) => {
-                    event.preventDefault()
-                    setIsSwitchingNetwork(true)
-                    await changeNetwork(lockNetwork)
-                  }}
-                >
-                  Switch to {lockNetwork.name} network
-                </Button>
+                  <span>{formattedData.formattedKeyPrice} </span>
+                </>
               ) : (
-                <Button
-                  disabled={isDisabled}
-                  onClick={async (event) => {
-                    event.preventDefault()
-                    send({
-                      type: 'SELECT_QUANTITY',
-                      quantity,
-                    })
-                  }}
-                >
-                  Add {quantity} {quantity > 1 ? 'memberships' : 'membership'}
-                </Button>
+                <>
+                  <span className="font-semibold">
+                    {formattedData.formattedKeyPrice}
+                  </span>
+                  {!!fiatPrice && <span>${(fiatPrice / 100).toFixed(2)}</span>}
+                </>
               )}
             </div>
-          </Connected>
-          <PoweredByUnlock />
-        </footer>
-      </div>
-    </CheckoutTransition>
+          ) : (
+            <QuantityPlaceholder />
+          )}
+        </div>
+        <div className="w-full border-t"></div>
+        <div className="flex justify-between w-full pt-2 mt-2">
+          {!isLoading ? (
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-4">
+                <LabeledItem
+                  label="Duration"
+                  icon={DurationIcon}
+                  value={formattedData.formattedDuration}
+                />
+                <LabeledItem
+                  label="Quantity"
+                  icon={QuantityIcon}
+                  value={
+                    formattedData.isSoldOut
+                      ? 'Sold out'
+                      : formattedData.formattedKeysAvailable
+                  }
+                />
+              </div>
+              <a
+                href={config.networks[lock!.network].explorer.urls.address(
+                  lock!.address
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+              >
+                View Contract <Icon icon={ExternalLinkIcon} size="small" />
+              </a>
+            </div>
+          ) : (
+            <div className="py-1.5 space-y-2 items-center">
+              <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
+              <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
+            </div>
+          )}
+          <div>
+            <input
+              aria-label="Quantity"
+              onChange={(event) => {
+                event.preventDefault()
+                const count = event.target.value.replace(/\D/, '')
+                const countInt = parseInt(count, 10)
+                const { maxRecipients, minRecipients } = paywallConfig
+                const maxAllowed = maxRecipients && countInt > maxRecipients
+                const minAllowed = minRecipients && countInt < minRecipients
+
+                if (maxAllowed) {
+                  ToastHelper.error(
+                    `You cannot purchase more than ${paywallConfig.maxRecipients} memberships at once`
+                  )
+                  return setQuantityInput(maxRecipients!.toString())
+                }
+                if (minAllowed) {
+                  ToastHelper.error(
+                    `You cannot purchase less than ${paywallConfig.minRecipients} memberships at once`
+                  )
+                  return setQuantityInput(minRecipients!.toString())
+                }
+                setQuantityInput(count)
+              }}
+              pattern="[0-9]{0,2}"
+              value={quantityInput}
+              type="text"
+              className="w-16 text-sm border-2 border-gray-300 rounded-lg focus:ring-0 focus:border-brand-ui-primary"
+            ></input>
+          </div>
+        </div>
+      </main>
+      <footer className="items-center px-6 pt-6 border-t">
+        <Connected
+          service={checkoutService}
+          injectedProvider={injectedProvider}
+        >
+          <div className="grid">
+            <Button
+              disabled={isDisabled}
+              onClick={async (event) => {
+                event.preventDefault()
+                send({
+                  type: 'SELECT_QUANTITY',
+                  quantity,
+                })
+              }}
+            >
+              {quantity > 1 ? `Buy ${quantity} memberships` : 'Next'}
+            </Button>
+          </div>
+        </Connected>
+        <PoweredByUnlock />
+      </footer>
+    </Fragment>
   )
 }
