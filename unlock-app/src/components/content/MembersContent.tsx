@@ -221,7 +221,7 @@ const MetadataTableWrapper = ({
     if (filter && filter !== currentFilter) {
       setCurrentFilter(filter)
     }
-  }, [filterKey, filters])
+  }, [currentFilter, filterKey, filters])
 
   useEffect(() => {
     if (currentFilter?.key === 'expiration') {
