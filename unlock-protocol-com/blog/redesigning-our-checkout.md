@@ -19,7 +19,7 @@ Let's go into the details, step-by-step.
 
 ### Lock selection
 
-Memberships are now grouped by networks and provide information about the network to users. This educates users about the network and makes it easier for creators to sell memberships on multiple networks with different benefits.
+Memberships are now grouped by network and provide information about the networks to users. This educates users about the network and makes it easier for creators to sell memberships on multiple networks with different benefits.
 
 ![lock selection on checkout](/images/blog/redesigned-checkout/checkout-1.png)
 
@@ -50,6 +50,10 @@ We have also added the support for Superfluid and for claiming memberships. If a
 ### Confirmation
 
 Our new confirmation page shows the purchaser how many memberships they are buying, what the total amount is, and how many times a membership will be renewed if it's a [recurring membership](https://unlock-protocol.com/blog/recurring-subscription-nft). Trust and communication are key elements of user experience, and we want to reduce the chance of surprises at checkout time.
+
+![confirmation on checkout](/images/blog/redesigned-checkout/new-checkout-confirmation.png)
+
+Once the checkout is complete, we show a confirmation page.
 
 ![confirmation on checkout](/images/blog/redesigned-checkout/checkout-finished.png)
 
