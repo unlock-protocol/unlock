@@ -263,12 +263,14 @@ const MetadataTableWrapper = ({
               })}
             </select>
           ) : (
-            <Input
-              label="Filter your results"
-              type="text"
-              size="small"
-              onChange={search}
-            />
+            currentFilter?.key !== 'checkedInAt' && (
+              <Input
+                label="Filter your results"
+                type="text"
+                size="small"
+                onChange={search}
+              />
+            )
           )}
         </div>
         <div className="ml-auto">
