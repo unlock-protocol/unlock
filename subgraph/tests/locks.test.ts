@@ -10,13 +10,12 @@ import {
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import { handleNewLock } from '../src/unlock'
 import { createNewLockEvent } from './locks-utils'
+import { lockAddress } from './constants'
 
 // Tests structure (matchstick-as >=0.5.0)
 // https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
 
-const newLockAddress = Address.fromString(
-  '0x89205A3A3b2A69De6Dbf7f01ED13B2108B2c43e7'
-)
+const newLockAddress = Address.fromString(lockAddress)
 
 // mock publicLock version contract call
 createMockedFunction(
