@@ -12,6 +12,8 @@ import AuthenticationContext from '../../../contexts/AuthenticationContext'
 import { WalletServiceContext } from '~/utils/withWalletService'
 import useClipboard from 'react-use-clipboard'
 import { FieldValues, useForm } from 'react-hook-form'
+import useEns from '~/hooks/useEns'
+import { expirationAsDate } from '~/utils/durations'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -29,7 +31,6 @@ interface MemberCardProps {
   isLockManager?: boolean
   expireAndRefundDisabled?: boolean
   metadata?: { [key: string]: any }
-  loadMembers?: () => void
 }
 
 const keysToIgnore = [
@@ -55,7 +56,6 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   onExpireAndRefund,
   expandAllMetadata,
   showCheckInTimeInfo,
-  loadMembers,
   isLockManager,
   expireAndRefundDisabled = true,
   metadata = {},
@@ -67,6 +67,10 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const [emailSent, setEmailSent] = useState(false)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [data, setData] = useState(metadata)
+  const addressToEns = useEns(keyholderAddress)
+  const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
+    null
+  )
   const [extraDataItems, setExtraDataItems] = useState<
     [string, string | number][]
   >([])
@@ -85,6 +89,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const getCheckInTime = () => {
     const [_, checkInTimeValue] =
       Object.entries(data)?.find(([key]) => key === 'checkedInAt') ?? []
+    if (checkInTimestamp) return checkInTimestamp
     if (!checkInTimeValue) return null
     return new Date(checkInTimeValue as number).toLocaleString()
   }
@@ -93,7 +98,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     setShowMetaData(!showMetaData)
   }
 
-  const isCheckedIn = typeof getCheckInTime() === 'string'
+  const isCheckedIn = typeof getCheckInTime() === 'string' || !!checkInTimestamp
 
   useEffect(() => {
     setShowMetaData(expandAllMetadata)
@@ -116,10 +121,8 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       }
 
       if (response.ok) {
+        setCheckedInTimestamp(new Date().toLocaleString())
         ToastHelper.success('Successfully marked ticket as checked-in')
-        if (typeof loadMembers === 'function') {
-          loadMembers()
-        }
       }
     } catch (err) {
       ToastHelper.error('Error on marking ticket as checked-in')
@@ -192,7 +195,10 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <span className={styles.description}>Owner</span>
           <span className={[styles.title, 'flex gap-2'].join(' ')}>
             <span className="min-w-[120px]">
-              {addressMinify(keyholderAddress)}
+              {/* ens will not be minified when resolved */}
+              {addressToEns === keyholderAddress
+                ? addressMinify(keyholderAddress)
+                : addressToEns}
             </span>
             <button
               onClick={setCopied}
@@ -205,7 +211,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         </div>
         <div className="col-span-full	flex flex-col md:col-span-1">
           <span className={styles.description}>Expiration</span>
-          <span className={styles.title}>{expiration}</span>
+          <span className={styles.title}>{expirationAsDate(expiration)}</span>
         </div>
         <div className="col-span-full flex gap-2 justify-start items-center lg:col-span-2 lg:justify-end">
           <Button

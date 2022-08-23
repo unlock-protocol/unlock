@@ -1,24 +1,17 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
-import { getAddressForName } from '~/hooks/useEns'
+import { getAddressForName, getNameOrAddressForAddress } from '~/hooks/useEns'
 import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
-import {
-  BackButton,
-  CheckoutHead,
-  CheckoutTransition,
-  CloseButton,
-} from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
 import { useQuery } from 'react-query'
@@ -26,24 +19,17 @@ import { useQuery } from 'react-query'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(params?: Record<string, string>): void
 }
 
 interface FormData {
   metadata: Record<'recipient' | string, string>[]
 }
 
-export function Metadata({
-  checkoutService,
-  injectedProvider,
-  onClose,
-}: Props) {
+export function Metadata({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, isUnlockAccount, email } = useAuth()
   const storage = useStorageService()
-  const { lock, paywallConfig, quantity } = state.context
-  const { title, description, iconURL } =
-    useCheckoutHeadContent(checkoutService)
+  const { lock, paywallConfig, quantity, skipQuantity } = state.context
   const web3Service = useWeb3Service()
 
   const metadataInputs =
@@ -83,6 +69,18 @@ export function Metadata({
       return memberships.filter((item) => item)
     },
     {
+      enabled: !!account,
+    }
+  )
+
+  const { data: address, isLoading: isEnsLoading } = useQuery(
+    ['ens', account],
+    () => {
+      return getNameOrAddressForAddress(account!)
+    },
+    {
+      refetchInterval: false,
+      refetchOnMount: false,
       enabled: !!account,
     }
   )
@@ -131,10 +129,10 @@ export function Metadata({
         })
       )
       if (metadataInputs) {
-        const users = formData.metadata.map(({ recipient, ...rest }) => {
-          const formattedMetadata = formResultToMetadata(rest, metadataInputs!)
+        const users = formData.metadata.map((props, index) => {
+          const formattedMetadata = formResultToMetadata(props, metadataInputs!)
           return {
-            userAddress: recipient,
+            userAddress: recipients[index],
             metadata: {
               public: formattedMetadata.publicData,
               protected: formattedMetadata.protectedData,
@@ -156,164 +154,173 @@ export function Metadata({
   }
   const isLoading = isSubmitting
 
-  return (
-    <CheckoutTransition>
-      <div className="bg-white max-w-md rounded-xl flex flex-col w-full h-[90vh] sm:h-[80vh] max-h-[42rem]">
-        <div className="flex items-center justify-between p-6">
-          <BackButton onClick={() => send('BACK')} />
-          <CloseButton onClick={() => onClose()} />
-        </div>
-        <CheckoutHead
-          title={paywallConfig.title}
-          iconURL={iconURL}
-          description={description}
-        />
-        <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-          <div className="flex items-center gap-2 col-span-4">
-            <div className="flex items-center gap-0.5">
-              <IconButton
-                title="Select lock"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('SELECT')
-                }}
-              />
-              <IconButton
-                title="Choose quantity"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('QUANTITY')
-                }}
-              />
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip: !paywallConfig.captcha,
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: 'Minting NFT',
+    },
+  ]
 
-              <ProgressCircleIcon />
-            </div>
-            <h4 className="text-sm "> {title}</h4>
+  return (
+    <Fragment>
+      <Stepper position={3} service={checkoutService} items={stepItems} />
+      <main className="h-full px-6 py-2 overflow-auto">
+        {isMembershipsLoading || isEnsLoading ? (
+          <div className="grid w-full pb-6 gap-y-2">
+            <div className="w-full h-8 rounded-full bg-zinc-50 animate-pulse" />
+            <div className="w-full h-8 rounded-full bg-zinc-50 animate-pulse" />
+            <div className="w-full h-8 rounded-full bg-zinc-50 animate-pulse" />
           </div>
-          <div className="border-t-4 w-full flex-1"></div>
-          <div className="inline-flex items-center gap-1">
-            <ProgressCircleIcon disabled />
-            {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
-            <ProgressCircleIcon disabled />
-            <ProgressFinishIcon disabled />
-          </div>
-        </div>
-        <main className="px-6 py-2 overflow-auto h-full">
-          {isMembershipsLoading ? (
-            <div className="grid w-full gap-y-2 pb-6">
-              <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
-              <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
-              <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
-            </div>
-          ) : (
-            <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
-              {fields.map((item, index) => {
-                const hideRecipient = !index && hideFirstRecipient
-                return (
-                  <div
-                    key={item.id}
-                    className={twMerge(
-                      'py-2 space-y-2',
-                      fields.length > index + 1 ? 'border-b ' : null
-                    )}
-                  >
-                    {hideRecipient ? (
-                      <div className="space-y-1">
-                        <div className="text-sm ml-1"> Recipient #1 </div>
-                        <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
-                          <div className="w-32 text-sm truncate">
-                            {isUnlockAccount ? email : account}
-                          </div>
-                          <Button
-                            onClick={(event) => {
-                              event.preventDefault()
-                              setHideFirstRecipient(false)
-                            }}
-                            size="tiny"
-                          >
-                            Change
-                          </Button>
+        ) : (
+          <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
+            {fields.map((item, index) => {
+              const hideRecipient = !index && hideFirstRecipient
+              return (
+                <div
+                  key={item.id}
+                  className={twMerge(
+                    'py-2 space-y-2',
+                    fields.length > index + 1 ? 'border-b ' : null
+                  )}
+                >
+                  {hideRecipient ? (
+                    <div className="space-y-1">
+                      <div className="ml-1 text-sm"> Recipient #1 </div>
+                      <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
+                        <div className="w-32 text-sm truncate">
+                          {isUnlockAccount ? email : address}
                         </div>
+                        <Button
+                          type="button"
+                          onClick={(event) => {
+                            event.preventDefault()
+                            setHideFirstRecipient(false)
+                          }}
+                          size="tiny"
+                        >
+                          Change
+                        </Button>
                       </div>
-                    ) : (
-                      <Input
-                        label={`Recipient #${index + 1}`}
-                        size="small"
-                        error={
-                          errors?.metadata?.[index]?.recipient
-                            ?.message as unknown as string
-                        }
-                        {...register(`metadata.${index}.recipient`, {
-                          required: 'Recipient is required',
-                          validate: {
-                            max_keys: async (value) => {
-                              try {
-                                const address = await getAddressForName(value)
-                                const contract = await web3Service.lockContract(
-                                  lock!.address,
-                                  lock!.network
-                                )
-                                const items = await contract.balanceOf(address)
-                                const numberOfMemberships =
-                                  ethers.BigNumber.from(items).toNumber()
-                                return numberOfMemberships <
-                                  (lock?.maxKeysPerAddress || 1)
-                                  ? true
-                                  : 'Address already holds the maximum number of memberships.'
-                              } catch (error) {
-                                console.error(error)
-                                return 'There is a problem with using this address. Try another.'
-                              }
-                            },
+                    </div>
+                  ) : (
+                    <Input
+                      label={
+                        quantity > 1 ? `Recipient #${index + 1}` : 'Recipient'
+                      }
+                      size="small"
+                      description="Enter Ethereum address or an ENS"
+                      error={
+                        errors?.metadata?.[index]?.recipient
+                          ?.message as unknown as string
+                      }
+                      {...register(`metadata.${index}.recipient`, {
+                        required: 'Ethereum address or an ENS is required',
+                        validate: {
+                          max_keys: async (value) => {
+                            try {
+                              const address = await getAddressForName(value)
+                              const contract = await web3Service.lockContract(
+                                lock!.address,
+                                lock!.network
+                              )
+                              const items = await contract.balanceOf(address)
+                              const numberOfMemberships =
+                                ethers.BigNumber.from(items).toNumber()
+                              return numberOfMemberships <
+                                (lock?.maxKeysPerAddress || 1)
+                                ? true
+                                : 'Address already holds the maximum number of memberships.'
+                            } catch (error) {
+                              console.error(error)
+                              return 'There is a problem with using this address. Try another.'
+                            }
                           },
-                        })}
-                      />
-                    )}
-                    {metadataInputs?.map((metadataInputItem) => (
-                      <Input
-                        key={metadataInputItem.name}
-                        label={metadataInputItem.name}
-                        defaultValue={metadataInputItem.defaultValue}
-                        size="small"
-                        placeholder={metadataInputItem.placeholder}
-                        type={metadataInputItem.type}
-                        error={
-                          errors?.metadata?.[index]?.[metadataInputItem.name]
-                            ?.message as unknown as string
+                        },
+                      })}
+                    />
+                  )}
+                  {metadataInputs?.map((metadataInputItem) => (
+                    <Input
+                      key={metadataInputItem.name}
+                      label={metadataInputItem.name}
+                      defaultValue={metadataInputItem.defaultValue}
+                      size="small"
+                      placeholder={metadataInputItem.placeholder}
+                      type={metadataInputItem.type}
+                      error={
+                        errors?.metadata?.[index]?.[metadataInputItem.name]
+                          ?.message as unknown as string
+                      }
+                      {...register(
+                        `metadata.${index}.${metadataInputItem.name}`,
+                        {
+                          required:
+                            metadataInputItem.required &&
+                            `${metadataInputItem.name} is required`,
                         }
-                        {...register(
-                          `metadata.${index}.${metadataInputItem.name}`,
-                          {
-                            required:
-                              metadataInputItem.required &&
-                              `${metadataInputItem.name} is required`,
-                          }
-                        )}
-                      />
-                    ))}
-                  </div>
-                )
-              })}
-            </form>
-          )}
-        </main>
-        <footer className="px-6 pt-6 border-t grid items-center">
-          <Connected
-            injectedProvider={injectedProvider}
-            service={checkoutService}
+                      )}
+                    />
+                  ))}
+                </div>
+              )
+            })}
+          </form>
+        )}
+      </main>
+      <footer className="grid items-center px-6 pt-6 border-t">
+        <Connected
+          injectedProvider={injectedProvider}
+          service={checkoutService}
+        >
+          <Button
+            loading={isLoading}
+            disabled={isLoading}
+            className="w-full"
+            form="metadata"
           >
-            <Button
-              loading={isLoading}
-              disabled={isLoading}
-              className="w-full"
-              form="metadata"
-            >
-              {isLoading ? 'Continuing' : 'Next'}
-            </Button>
-          </Connected>
-          <PoweredByUnlock />
-        </footer>
-      </div>
-    </CheckoutTransition>
+            {isLoading ? 'Continuing' : 'Next'}
+          </Button>
+        </Connected>
+        <PoweredByUnlock />
+      </footer>
+    </Fragment>
   )
 }
