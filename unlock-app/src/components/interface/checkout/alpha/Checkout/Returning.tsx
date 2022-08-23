@@ -5,7 +5,7 @@ import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import unlockedAnimation from '~/animations/unlocked.json'
 import { useConfig } from '~/utils/withConfig'
-import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { useActor } from '@xstate/react'
 import { Fragment, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -52,30 +52,28 @@ export function Returning({
     }
   }
 
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'You have it',
+    },
+  ]
+
   return (
     <Fragment>
-      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <ProgressCircleIcon disabled />
-            <ProgressCircleIcon disabled />
-            <ProgressCircleIcon disabled />
-            <ProgressCircleIcon disabled />
-            {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
-            <ProgressCircleIcon disabled />
-            <ProgressFinishedIcon />
-          </div>
-          <h4 className="text-sm"> You have it!</h4>
-        </div>
-        <div className="border-t-4 w-full flex-1"></div>
-      </div>
-      <main className="px-6 py-2 overflow-auto h-full">
-        <div className="h-full flex flex-col items-center justify-center space-y-2">
+      <Stepper position={2} service={checkoutService} items={stepItems} />
+      <main className="h-full px-6 py-2 overflow-auto">
+        <div className="flex flex-col items-center justify-center h-full space-y-2">
           <Lottie
             className={'w-28 sm:w-36 h-28 sm:h-36'}
             animationData={unlockedAnimation}
           />
-          <p className="font-bold text-lg text-brand-ui-primary">
+          <p className="text-lg font-bold text-brand-ui-primary">
             Voila! This is unlocked!
           </p>
           <a
@@ -84,14 +82,14 @@ export function Returning({
             )}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+            className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
           >
             See in the block explorer
             <Icon key="external-link" icon={ExternalLinkIcon} size="small" />
           </a>
         </div>
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
@@ -107,7 +105,7 @@ export function Returning({
                 Sign message
               </Button>
             ) : (
-              <div className="flex gap-4 justify-between">
+              <div className="flex justify-between gap-4">
                 <Button
                   className="w-full"
                   onClick={() => checkoutService.send('MAKE_ANOTHER_PURCHASE')}

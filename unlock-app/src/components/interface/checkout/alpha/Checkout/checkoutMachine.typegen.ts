@@ -3,11 +3,6 @@
 export interface Typegen0 {
   '@@xstate/typegen': true
   internalEvents: {
-    'done.invoke.unlockAccount': {
-      type: 'done.invoke.unlockAccount'
-      data: unknown
-      __tip: 'See the XState TS docs to learn how to strongly type this.'
-    }
     'xstate.init': { type: 'xstate.init' }
   }
   invokeSrcNameMap: {}
@@ -31,7 +26,6 @@ export interface Typegen0 {
   }
   eventsCausingServices: {}
   eventsCausingGuards: {
-    isLockSelected: 'done.invoke.unlockAccount'
     requireCaptcha:
       | 'SELECT_CARD_TO_CHARGE'
       | 'SELECT_PAYMENT_METHOD'

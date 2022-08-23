@@ -6,12 +6,17 @@ export function PoweredByUnlock() {
   return (
     <div className="flex justify-center py-4">
       <a
-        className="inline-flex text-sm items-center gap-1 font-medium"
+        className="inline-flex items-center gap-1 text-sm font-medium"
         href="https://unlock-protocol.com/"
         target="_blank"
         rel="noopener noreferrer"
       >
-        Powered by <SvgComponents.UnlockWordMark height={14} />
+        Powered by{' '}
+        <SvgComponents.UnlockWordMark
+          className="fill-black"
+          fill="#000"
+          height={14}
+        />
       </a>
     </div>
   )

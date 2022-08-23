@@ -14,7 +14,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 
 interface Props {
   injectedProvider: unknown
@@ -57,7 +57,8 @@ export function Minting({
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-  const { mint, lock, messageToSign } = state.context
+  const { mint, lock, messageToSign, skipQuantity, paywallConfig } =
+    state.context
   const processing = mint?.status === 'PROCESSING'
   const status = mint?.status
 
@@ -125,27 +126,58 @@ export function Minting({
     }
   }, [status])
 
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip: !paywallConfig.captcha,
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: status === 'PROCESSING' ? 'Minting NFT' : 'Minted NFT!',
+    },
+  ]
+
   return (
     <Fragment>
-      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <ProgressCircleIcon disabled />
-            <ProgressCircleIcon disabled />
-            <ProgressCircleIcon disabled />
-            <ProgressCircleIcon disabled />
-            {messageToSign && <ProgressCircleIcon disabled />}
-            <ProgressCircleIcon disabled />
-            <ProgressFinishedIcon />
-          </div>
-          <h4 className="text-sm"> {content?.title} </h4>
-        </div>
-        <div className="border-t-4 w-full flex-1"></div>
-      </div>
-      <main className="px-6 py-2 overflow-auto h-full">
-        <div className="h-full flex flex-col items-center justify-center space-y-2">
+      <Stepper position={8} service={checkoutService} items={stepItems} />
+      <main className="h-full px-6 py-2 overflow-auto">
+        <div className="flex flex-col items-center justify-center h-full space-y-2">
           {status && <AnimationContent status={status} />}
-          <p className="font-bold text-lg text-brand-ui-primary">
+          <p className="text-lg font-bold text-brand-ui-primary">
             {content?.text}
           </p>
           {mint?.transactionHash && (
@@ -155,7 +187,7 @@ export function Minting({
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
             >
               See in the block explorer
               <Icon icon={ExternalLinkIcon} size="small" />
@@ -163,7 +195,7 @@ export function Minting({
           )}
         </div>
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
