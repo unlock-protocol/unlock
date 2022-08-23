@@ -1,15 +1,10 @@
 type Lock @entity {
   id: ID!
   address: Bytes!
-  lockManagers: [LockManager!]
+  lockManagers: [address!]
   keys: [Key!] @derivedFrom(field: "lock")
   createdAtBlock: BigInt
   version: BigInt
-}
-
-type LockManager @entity {
-  id: ID!
-  address: Bytes!
 }
 
 type Key @entity {
