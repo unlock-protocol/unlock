@@ -7,7 +7,9 @@ description: Unlock launches a completely redesigned checkout experience.
 image: /images/blog/redesigned-checkout/new-checkout.png
 ---
 
-We've completely redesigned the Unlock checkout experience after a ton of user testing and feedback.
+Currently, one of the most notable opportunities in web3 is to [improve and simplify the user experience](https://builtin.com/design-ux/web3-design). With that goal in mind, Unlock has completely redesigned the Unlock checkout experience based on extensive user testing and feedback.
+
+Here is what the new Unlock checkout experience looks like.
 
 <video controls autoplay>
   <source src="/images/blog/redesigned-checkout/checkout-experience.mp4" type="video/mp4">
