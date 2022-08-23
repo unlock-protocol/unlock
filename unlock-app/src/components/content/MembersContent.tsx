@@ -7,7 +7,6 @@ import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
 import { MemberFilter } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
-import useMembers from '../../hooks/useMembers'
 import LoginPrompt from '../interface/LoginPrompt'
 import GrantKeysDrawer from '../creator/members/GrantKeysDrawer'
 import { Input, Button } from '@unlock-protocol/ui'
@@ -16,6 +15,7 @@ import 'cross-fetch/polyfill'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 import { Lock } from '@unlock-protocol/types'
 import { getAddressForName } from '~/hooks/useEns'
+import { useQuery } from 'react-query'
 import { useKeys } from '~/hooks/useKeys'
 
 interface PaginationProps {
@@ -140,9 +140,11 @@ interface Filter {
   key: string
   label: string
   options?: MemberFilter[]
+  onlyLockManager?: boolean
+  hideSearch?: boolean
 }
 
-const filters: Filter[] = [
+const FILTER_ITEMS: Filter[] = [
   { key: 'owner', label: 'Owner' },
   { key: 'keyId', label: 'Token id' },
   {
@@ -150,7 +152,15 @@ const filters: Filter[] = [
     label: 'Expiration',
     options: ['active', 'expired', 'all'],
   },
+  { key: 'email', label: 'Email', onlyLockManager: true },
+  {
+    key: 'checkedInAt',
+    label: 'Checked in time',
+    hideSearch: true,
+    onlyLockManager: true,
+  },
 ]
+
 /**
  * This just wraps the metadataTable component, providing the data
  * from the graph so we can separate the data layer from the
@@ -169,21 +179,18 @@ const MetadataTableWrapper = ({
   const [expiration, setExpiration] = useState<MemberFilter>('active')
   const queryValue = useDebounce<string>(query)
 
-  const { loading, list, columns, hasNextPage, loadMembers, membersCount } =
-    useMembers({
+  const { getKeys, columns, hasNextPage, keysCount, lockManagerMapping } =
+    useKeys({
       viewer: account!,
-      lockAddresses,
-      expiration,
-      page: currentPage,
-      query: queryValue,
-      filterKey,
+      locks: lockAddresses,
+      network: network!,
+      filters: {
+        query: queryValue,
+        filterKey,
+        expiration,
+        page: currentPage,
+      },
     })
-
-  const { lockManagerMapping } = useKeys({
-    viewer: account!,
-    locks: lockAddresses,
-    network: network!,
-  })
 
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const ensToAddress = await getAddressForName(e?.target?.value)
@@ -200,16 +207,25 @@ const MetadataTableWrapper = ({
     setQuery('')
   }
 
+  const filters = FILTER_ITEMS.filter((filter) => {
+    if (
+      !filter?.onlyLockManager ||
+      Object.values(lockManagerMapping ?? {}).some((status) => status)
+    ) {
+      return filter
+    }
+  })
+
   useEffect(() => {
     const filter = filters?.find((filter) => filterKey === filter.key)
-    if (filter) {
+    if (filter && filter !== currentFilter) {
       setCurrentFilter(filter)
     }
-  }, [filterKey])
+  }, [currentFilter, filterKey, filters])
 
   useEffect(() => {
     if (currentFilter?.key === 'expiration') {
-      setExpiration(currentOption as MemberFilter)
+      setExpiration((currentOption as MemberFilter) ?? 'active')
     }
   }, [currentFilter?.key, currentOption])
 
@@ -217,7 +233,18 @@ const MetadataTableWrapper = ({
     setCurrentOption(event?.target?.value ?? '')
   }
 
+  useEffect(() => {
+    if (queryValue.length === 0) return
+    setCurrentPage(0) // reset pagination when has query
+  }, [queryValue.length])
+
+  const { isLoading: loading, data: keys = [] } = useQuery(
+    [queryValue, expiration, currentPage, filterKey],
+    () => getKeys()
+  )
+
   const options: string[] = currentFilter?.options ?? []
+  const hideSearch = currentFilter?.hideSearch ?? false
   // TODO: rename metadata into members inside of MetadataTable
   return (
     <>
@@ -238,30 +265,32 @@ const MetadataTableWrapper = ({
             ))}
           </select>
         </span>
-        <div className="mt-auto">
-          {options?.length ? (
-            <select
-              name={currentFilter?.key}
-              className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
-              onChange={onOptionChange}
-            >
-              {options?.map((option: string) => {
-                return (
-                  <option key={option} value={option}>
-                    {option.toUpperCase()}
-                  </option>
-                )
-              })}
-            </select>
-          ) : (
-            <Input
-              label="Filter your results"
-              type="text"
-              size="small"
-              onChange={search}
-            />
-          )}
-        </div>
+        {!hideSearch && (
+          <div className="mt-auto">
+            {options?.length ? (
+              <select
+                name={currentFilter?.key}
+                className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
+                onChange={onOptionChange}
+              >
+                {options?.map((option: string) => {
+                  return (
+                    <option key={option} value={option}>
+                      {option.toUpperCase()}
+                    </option>
+                  )
+                })}
+              </select>
+            ) : (
+              <Input
+                label="Filter your results"
+                type="text"
+                size="small"
+                onChange={search}
+              />
+            )}
+          </div>
+        )}
         <div className="ml-auto">
           <Pagination
             currentPage={currentPage}
@@ -272,12 +301,11 @@ const MetadataTableWrapper = ({
       </div>
       <MetadataTable
         columns={columns}
-        metadata={list}
+        metadata={keys}
         lockManagerMapping={lockManagerMapping}
         lockAddresses={lockAddresses}
         loading={loading}
-        loadMembers={loadMembers}
-        membersCount={membersCount}
+        membersCount={keysCount}
       />
     </>
   )

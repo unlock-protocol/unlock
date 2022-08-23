@@ -29,7 +29,6 @@ interface MetadataTableProps {
     [lockAddress: string]: boolean
   }
   lockAddresses?: string[]
-  loadMembers?: () => void
   membersCount?: MemberCountProps['membersCount']
 }
 
@@ -79,9 +78,8 @@ const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
 
 export const MetadataTable: React.FC<MetadataTableProps> = ({
   columns,
-  metadata,
+  metadata = [],
   filter,
-  loadMembers,
   membersCount,
   loading = false,
   lockManagerMapping,
@@ -210,7 +208,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             )}
             onExpireAndRefund={() => onExpireAndRefund(data, isLockManager)}
             showCheckInTimeInfo={showCheckInTimeInfo}
-            loadMembers={loadMembers}
           />
         )
       })}
