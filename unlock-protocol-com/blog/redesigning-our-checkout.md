@@ -15,6 +15,8 @@ Here is what the new Unlock checkout experience looks like.
   <source src="/images/blog/redesigned-checkout/checkout-experience.mp4" type="video/mp4">
 </video>
 
+Let's go into the details, screen-by-screen.
+
 ### Lock selection
 
 Memberships will be grouped by networks and provide information about the network to users. This move is intended to educate users about the network and make it easier for creators to sell memberships on multiple networks with different benefits.
