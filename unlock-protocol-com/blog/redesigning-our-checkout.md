@@ -15,7 +15,7 @@ Here is what the new Unlock checkout experience looks like.
   <source src="/images/blog/redesigned-checkout/checkout-experience.mp4" type="video/mp4">
 </video>
 
-Let's go into the details, screen-by-screen.
+Let's go into the details, step-by-step.
 
 ### Lock selection
 
