@@ -2,7 +2,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const avalanche: NetworkConfig = {
   publicProvider: 'https://api.avax.network/ext/bc/C/rpc',
-  provider: 'https://api.avax.network/ext/bc/C/rpc',
+  provider: 'https://rpc.unlock-protocol.com/43114',
   unlockAddress: '0x70cBE5F72dD85aA634d07d2227a421144Af734b3',
   multisig: '0xEc7777C51327917fd2170c62873272ea168120Cb',
   id: 43114,
