@@ -19,19 +19,19 @@ Let's go into the details, step-by-step.
 
 ### Lock selection
 
-Memberships will be grouped by networks and provide information about the network to users. This move is intended to educate users about the network and make it easier for creators to sell memberships on multiple networks with different benefits.
+Memberships are now grouped by networks and provide information about the network to users. This educates users about the network and makes it easier for creators to sell memberships on multiple networks with different benefits.
 
 ![lock selection on checkout](/images/blog/redesigned-checkout/new-checkout.png)
 
-### Choosing quantity
+### Quantity selection
 
-You will be able to select the quantity and payment method you want to use earlier in the flow.
+Purchasers can now select the quantity and payment method to use earlier in the checkout flow.
 
 ![quantity selection on checkout](/images/blog/redesigned-checkout/new-checkout-quantity.jpg)
 
 ### Recipient and metadata collection
 
-The recipients field will be populated based on the quantity indicated in the prior step. You will be able to add recipient addresses and fill out metadata information for each recipient. We've added more validation checks to ensure a user cannot buy more memberships than allowed by the lock owner early in the flow.
+The recipient field is now populated based on the quantity indicated in the prior step. Purchasers can add recipient addresses and fill out metadata information for each recipient. Addtionally, we've added additional validation checks to ensure a user cannot buy more memberships than allowed by the lock owner.
 
 ![metadata and recipients on checkout](/images/blog/redesigned-checkout/new-checkout-metadata.png)
 
@@ -43,13 +43,13 @@ We've made it easier to pick and change credit cards using the checkout.
 
 ### Confirmation
 
-Our new confirmation page will show you how many memberships you are buying, what the total amount is, how many times a membership will be renewed if it's a recurring membership and more.
+Our new confirmation page shows the purchaser how many memberships they are buying, what the total amount is, how many times a membership will be renewed if it's a recurring membership. Trust and communication are key elements of user experience, and we want to reduce the chance of surprises at checkout time.
 
 ![confirmation on checkout](/images/blog/redesigned-checkout/new-checkout-confirmation.png)
 
 ### Minting
 
-We have some cool minting animations to show off while your transactions are confirmed on the chain. In most cases, it will be instant but if not, you have something to look forward to.
+We have some cool minting animations to show off while transactions are confirmed on the chain. In most cases, minting will be instant but if not, there is something to look forward to.
 
 ![minting progress on checkout](/images/blog/redesigned-checkout/new-checkout-minting.png)
 
@@ -57,7 +57,7 @@ We have some cool minting animations to show off while your transactions are con
 
 ### Using an Unlock Account
 
-We've tried to make it easier for purchasers who are using credit cards or who are not crypto-savvy to use an [Unlock Account](https://docs.unlock-protocol.com/basics/new-to-unlock/unlock-accounts). Users can choose to login or checkout using Unlock Account with an email and password, similar to a traditional login experience, as an alternative to using a crypto wallet.
+We've tried to make it easier for purchasers who are using credit cards or who are not crypto-savvy to use an [Unlock Account](https://docs.unlock-protocol.com/basics/new-to-unlock/unlock-accounts). Users can choose to login or checkout using Unlock Account with an email and password, similar to a traditional login experience as an alternative to using a crypto wallet.
 
 ![signing using unlock account](/images/blog/redesigned-checkout/new-checkout-unlock-account.png)
 
@@ -69,7 +69,7 @@ Similar to checkout, we've updated our Sign in with Ethereum integration to matc
   <source src="/images/blog/redesigned-checkout/sign-in-with-ethereum.mp4" type="video/mp4">
 </video>
 
-## Paywall config
+## Paywall configuration
 
 We've not made any breaking changes as part of the redesign effort. However, we have introduced new fields for customizing descriptions on new screens and titles shown on the checkout flow.
 
@@ -77,4 +77,4 @@ You can find more about them inside the [paywall configuration documentation](ht
 
 ## Unlock's new checkout experience is backward-compatible
 
-In addition, we have introduced a new path - `/legacy/checkout` - for sites, creators and developers who would like to stay on the existing checkout experience at the current time. Please note that this path will not be maintained going forward, so to always make sure you're using the latest and greatest checkout experience, please do make plans to migrate to the primary checkout experience in the near future.
+In addition, we have introduced a new path — `/legacy/checkout` — for sites, creators and developers who would like to stay on the existing checkout experience at the current time. Please note that this path will not be maintained going forward, so to ensure you're using the latest and greatest checkout experience, please do make plans to migrate to the primary checkout experience in the near future if you have any projects using this legacy checkout experience path.
