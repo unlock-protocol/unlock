@@ -35,11 +35,13 @@ The recipient field is now populated based on the quantity indicated in the prio
 
 ![metadata and recipients on checkout](/images/blog/redesigned-checkout/new-checkout-metadata.png)
 
-### Payment using credit cards
+### Payment using credit cards and other payment types
 
 We've made it easier to pick and change credit cards using the checkout.
 
 ![card selection on checkout](/images/blog/redesigned-checkout/new-checkout-add-card.png)
+
+We have also added the support for Superfluid and for claiming memberships. If any of those payment methods are enabled for your checkout, they will automatically show up as options to users.
 
 ### Confirmation
 
