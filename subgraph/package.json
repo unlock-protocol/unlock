@@ -4,7 +4,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "generate-subgraph-yaml": "node ./bin/subgraph_generator.js",
+    "generate-networks": "node ./bin/networks.js",
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ ",
@@ -12,7 +12,7 @@
     "remove-local": "graph remove --node http://localhost:8020/ ",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
     "test": "graph test",
-    "ci": "yarn generate-subgraph-yaml --network goerli && yarn codegen && yarn test",
+    "ci": "yarn generate-networks && yarn codegen && yarn test",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
