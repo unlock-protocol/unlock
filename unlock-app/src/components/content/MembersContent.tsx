@@ -254,32 +254,32 @@ const MetadataTableWrapper = ({
             ))}
           </select>
         </span>
-        <div className="mt-auto">
-          {options?.length ? (
-            <select
-              name={currentFilter?.key}
-              className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
-              onChange={onOptionChange}
-            >
-              {options?.map((option: string) => {
-                return (
-                  <option key={option} value={option}>
-                    {option.toUpperCase()}
-                  </option>
-                )
-              })}
-            </select>
-          ) : (
-            !hideSearch && (
+        {!hideSearch && (
+          <div className="mt-auto">
+            {options?.length ? (
+              <select
+                name={currentFilter?.key}
+                className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
+                onChange={onOptionChange}
+              >
+                {options?.map((option: string) => {
+                  return (
+                    <option key={option} value={option}>
+                      {option.toUpperCase()}
+                    </option>
+                  )
+                })}
+              </select>
+            ) : (
               <Input
                 label="Filter your results"
                 type="text"
                 size="small"
                 onChange={search}
               />
-            )
-          )}
-        </div>
+            )}
+          </div>
+        )}
         <div className="ml-auto">
           <Pagination
             currentPage={currentPage}
