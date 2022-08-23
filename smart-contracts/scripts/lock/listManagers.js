@@ -1,5 +1,5 @@
 const { ethers } = require('hardhat')
-import fetch from 'node-fetch'
+const fetch = require('node-fetch')
 const { networks } = require('@unlock-protocol/networks')
 
 async function main({ lockAddress }) {
@@ -47,7 +47,9 @@ async function main({ lockAddress }) {
   } = data
   const managers = LockManagers.map((m) => m.address)
 
-  console.log(`LOCK > managers for the lock '${await lock.name()}':`)
+  console.log(
+    `LOCK > managers for the lock '${await lock.name()}' (${lockAddress}):`
+  )
   managers.forEach((account, i) => {
     console.log(`[${i}]: ${account}`)
   })
