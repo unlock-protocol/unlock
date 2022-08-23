@@ -1,14 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
 import { BigInt } from '@graphprotocol/graph-ts'
-import {
-  NewLock,
-  NewTokenURI,
-  NewGlobalTokenSymbol,
-  OwnershipTransferred,
-  CreateLockCall,
-} from '../generated/Unlock/Unlock'
-import { UnlockEntity } from '../generated/schema'
+import { NewLock, CreateLockCall } from '../generated/Unlock/Unlock'
 import { processNewLock } from './lockProcessing'
 
 export function handleNewLock(event: NewLock): void {
@@ -32,13 +25,6 @@ export function handleNewLock(event: NewLock): void {
   processNewLock(event)
 }
 
-export function handleNewTokenURI(_event: NewTokenURI): void {}
-export function handleNewGlobalTokenSymbol(
-  _event: NewGlobalTokenSymbol
-): void {}
-export function handleOwnershipTransferred(
-  _event: OwnershipTransferred
-): void {}
 export function handleCreateLock(call: CreateLockCall): void {
   let entityId = call.transaction.hash.toHex()
   let entity = UnlockEntity.load(entityId)
