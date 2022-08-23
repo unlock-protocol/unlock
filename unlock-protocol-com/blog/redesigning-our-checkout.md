@@ -57,7 +57,7 @@ We have some cool minting animations to show off while transactions are confirme
 
 ### Using an Unlock Account
 
-We've tried to make it easier for purchasers who are using credit cards or who are not crypto-savvy to use an [Unlock Account](https://docs.unlock-protocol.com/basics/new-to-unlock/unlock-accounts). Users can choose to login or checkout using Unlock Account with an email and password, similar to a traditional login experience as an alternative to using a crypto wallet.
+We've tried to make it easier for purchasers who are using credit cards or who are not crypto-savvy to use an [Unlock Account](https://docs.unlock-protocol.com/basics/new-to-unlock/unlock-accounts). Users can choose to login or checkout using an Unlock Account with an email and password, similar to a traditional login experience as an alternative to using a crypto wallet.
 
 ![signing using unlock account](/images/blog/redesigned-checkout/new-checkout-unlock-account.png)
 
