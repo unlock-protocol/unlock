@@ -7,7 +7,6 @@ import Account from '../interface/Account'
 import { pageTitle } from '../../constants'
 import { MemberFilter } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
-import useMembers from '../../hooks/useMembers'
 import LoginPrompt from '../interface/LoginPrompt'
 import GrantKeysDrawer from '../creator/members/GrantKeysDrawer'
 import { Input, Button } from '@unlock-protocol/ui'
@@ -16,6 +15,7 @@ import 'cross-fetch/polyfill'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 import { Lock } from '@unlock-protocol/types'
 import { getAddressForName } from '~/hooks/useEns'
+import { useQuery } from 'react-query'
 import { useKeys } from '~/hooks/useKeys'
 
 interface PaginationProps {
@@ -160,6 +160,7 @@ const FILTER_ITEMS: Filter[] = [
     onlyLockManager: true,
   },
 ]
+
 /**
  * This just wraps the metadataTable component, providing the data
  * from the graph so we can separate the data layer from the
@@ -178,21 +179,18 @@ const MetadataTableWrapper = ({
   const [expiration, setExpiration] = useState<MemberFilter>('active')
   const queryValue = useDebounce<string>(query)
 
-  const { loading, list, columns, hasNextPage, loadMembers, membersCount } =
-    useMembers({
+  const { getKeys, columns, hasNextPage, keysCount, lockManagerMapping } =
+    useKeys({
       viewer: account!,
-      lockAddresses,
-      expiration,
-      page: currentPage,
-      query: queryValue,
-      filterKey,
+      locks: lockAddresses,
+      network: network!,
+      filters: {
+        query: queryValue,
+        filterKey,
+        expiration,
+        page: currentPage,
+      },
     })
-
-  const { lockManagerMapping } = useKeys({
-    viewer: account!,
-    locks: lockAddresses,
-    network: network!,
-  })
 
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const ensToAddress = await getAddressForName(e?.target?.value)
@@ -220,20 +218,33 @@ const MetadataTableWrapper = ({
 
   useEffect(() => {
     const filter = filters?.find((filter) => filterKey === filter.key)
-    if (filter) {
+    if (filter && filter !== currentFilter) {
       setCurrentFilter(filter)
     }
-  }, [filterKey, filters])
+  }, [currentFilter, filterKey, filters])
 
   useEffect(() => {
     if (currentFilter?.key === 'expiration') {
-      setExpiration(currentOption as MemberFilter)
+      setExpiration((currentOption as MemberFilter) ?? 'active')
     }
   }, [currentFilter?.key, currentOption])
 
   const onOptionChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setCurrentOption(event?.target?.value ?? '')
   }
+
+  useEffect(() => {
+    if (queryValue.length === 0) return
+    setCurrentPage(0) // reset pagination when has query
+  }, [queryValue.length])
+
+  const {
+    isLoading: loading,
+    data: keys = [],
+    refetch: referchMembers,
+  } = useQuery([queryValue, expiration, currentPage, filterKey], () =>
+    getKeys()
+  )
 
   const options: string[] = currentFilter?.options ?? []
   const hideSearch = currentFilter?.hideSearch ?? false
@@ -293,12 +304,12 @@ const MetadataTableWrapper = ({
       </div>
       <MetadataTable
         columns={columns}
-        metadata={list}
+        metadata={keys}
         lockManagerMapping={lockManagerMapping}
         lockAddresses={lockAddresses}
         loading={loading}
-        loadMembers={loadMembers}
-        membersCount={membersCount}
+        loadMembers={referchMembers}
+        membersCount={keysCount}
       />
     </>
   )
