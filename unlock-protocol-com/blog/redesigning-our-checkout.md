@@ -78,3 +78,7 @@ You can find more about them inside the [paywall configuration documentation](ht
 ## Unlock's new checkout experience is backward-compatible
 
 In addition, we have introduced a new path — `/legacy/checkout` — for sites, creators and developers who would like to stay on the existing checkout experience at the current time. Please note that this `legacy` path will not be maintained going forward, so to ensure you're using the latest and greatest checkout experience, please do make plans to migrate to the primary checkout experience in the near future if you have any projects using this legacy checkout experience path.
+
+## What if I find an issue or bug in the new checkout?
+
+Please open an issue on Github or tell us in the Discord and we'll fix it ASAP.
