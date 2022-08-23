@@ -420,4 +420,18 @@ export default class Web3Service extends UnlockService {
     )
     return ethers.BigNumber.from(await lockContract.numberOfOwners()).toNumber()
   }
+
+  /**
+   * Returns total of key for a specific address
+   * @param {String} lockAddress
+   * @param {String} address
+   * @param {Number} network
+   */
+  async totalKeys(lockAddress: string, owner: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return Number(await lockContract.totalKeys(owner))
+  }
 }
