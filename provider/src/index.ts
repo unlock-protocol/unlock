@@ -12,6 +12,7 @@ const supportedNetworks = {
   '137':
     'https://snowy-weathered-waterfall.matic.quiknode.pro/5b11a0413a62a295070c0dfb25637d5f8c591aba/',
   '42220': 'https://forno.celo.org',
+  '42161': 'https://rpc.ankr.com/arbitrum',
   '80001': 'https://matic-mumbai.chainstacklabs.com',
 }
 
