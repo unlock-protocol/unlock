@@ -210,7 +210,10 @@ const MetadataTableWrapper = ({
   }
 
   const filters = FILTER_ITEMS.filter((filter) => {
-    if (!filter?.onlyLockManager || isLockManager) {
+    if (
+      !filter?.onlyLockManager ||
+      Object.values(lockManagerMapping ?? {}).some((status) => status)
+    ) {
       return filter
     }
   })
