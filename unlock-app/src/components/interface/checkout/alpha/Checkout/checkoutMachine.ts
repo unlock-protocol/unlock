@@ -33,6 +33,7 @@ export interface SelectLockEvent {
   type: 'SELECT_LOCK'
   lock: LockState
   existingMember: boolean
+  skipQuantity?: boolean
 }
 
 export interface SignMessageEvent {
@@ -136,6 +137,7 @@ interface CheckoutMachineContext {
   quantity: number
   recipients: string[]
   mint?: Mint
+  skipQuantity: boolean
 }
 
 export const checkoutMachine = createMachine(
@@ -158,6 +160,7 @@ export const checkoutMachine = createMachine(
       },
       quantity: 1,
       recipients: [],
+      skipQuantity: false,
     },
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
@@ -182,16 +185,8 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'METADATA',
               // Skip quantity page if min or max doesn't require more than 1 recipients
-              cond: ({ paywallConfig }, event) => {
-                const maxRecipients =
-                  paywallConfig.maxRecipients ||
-                  paywallConfig.locks[event.lock.address]?.maxRecipients
-                const minRecipients =
-                  paywallConfig.minRecipients ||
-                  paywallConfig.locks[event.lock.address]?.minRecipients
-                const hasMaxRecipients = maxRecipients && maxRecipients > 1
-                const hasMinRecipients = minRecipients && minRecipients > 1
-                return !(hasMaxRecipients || hasMinRecipients)
+              cond: (_, event) => {
+                return !!event.skipQuantity
               },
             },
             {
@@ -227,7 +222,17 @@ export const checkoutMachine = createMachine(
           },
           SELECT: 'SELECT',
           QUANTITY: 'QUANTITY',
-          BACK: 'QUANTITY',
+          BACK: [
+            {
+              target: 'SELECT',
+              cond: (ctx) => {
+                return !!ctx.skipQuantity
+              },
+            },
+            {
+              target: 'QUANTITY',
+            },
+          ],
           DISCONNECT: {
             target: 'SELECT',
             actions: ['disconnect'],
@@ -322,6 +327,10 @@ export const checkoutMachine = createMachine(
             target: 'CONFIRM',
             actions: ['solveCaptcha'],
           },
+          SELECT: 'SELECT',
+          QUANTITY: 'QUANTITY',
+          PAYMENT: 'PAYMENT',
+          METADATA: 'METADATA',
           BACK: [
             {
               target: 'MESSAGE_TO_SIGN',
@@ -349,6 +358,7 @@ export const checkoutMachine = createMachine(
           PAYMENT: 'PAYMENT',
           METADATA: 'METADATA',
           MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
+          CAPTCHA: 'CAPTCHA',
           BACK: [
             {
               target: 'MESSAGE_TO_SIGN',
@@ -376,21 +386,26 @@ export const checkoutMachine = createMachine(
         invoke: {
           id: 'unlockAccount',
           src: unlockAccountMachine,
-          onDone: [
-            {
-              target: 'QUANTITY',
-              cond: 'isLockSelected',
-            },
-            {
-              target: 'SELECT',
-            },
-          ],
+          onDone: {
+            target: 'SELECT',
+          },
         },
       },
       RETURNING: {
         on: {
-          MAKE_ANOTHER_PURCHASE: 'QUANTITY',
+          MAKE_ANOTHER_PURCHASE: [
+            {
+              target: 'METADATA',
+              cond: (ctx) => {
+                return ctx.skipQuantity
+              },
+            },
+            {
+              target: 'QUANTITY',
+            },
+          ],
           BACK: 'SELECT',
+          SELECT: 'SELECT',
           DISCONNECT: {
             target: 'SELECT',
             actions: ['disconnect'],
@@ -412,12 +427,14 @@ export const checkoutMachine = createMachine(
           messageToSign: undefined,
           recipients: [],
           mint: undefined,
+          skipQuantity: false,
         } as CheckoutMachineContext
       }),
       selectLock: assign((context, event) => {
         return {
           ...context,
           lock: event.lock,
+          skipQuantity: event.skipQuantity,
         }
       }),
       selectQuantity: assign({
@@ -478,6 +495,7 @@ export const checkoutMachine = createMachine(
           },
           quantity: 1,
           recipients: [],
+          skipQuantity: false,
         } as CheckoutMachineContext
       }),
       solveCaptcha: assign({
@@ -487,9 +505,6 @@ export const checkoutMachine = createMachine(
       }),
     },
     guards: {
-      isLockSelected: (context) => {
-        return !!context.lock
-      },
       requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
       requireCaptcha: (context) => {
         return (

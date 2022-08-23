@@ -14,7 +14,7 @@ import {
 import { useActor } from '@xstate/react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
 
 interface Props {
@@ -24,9 +24,9 @@ interface Props {
 
 const QuantityPlaceholder = () => {
   return (
-    <div className="flex gap-2 flex-col items-center">
-      <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-      <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+    <div className="flex flex-col items-center gap-2">
+      <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+      <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
     </div>
   )
 }
@@ -34,7 +34,11 @@ const QuantityPlaceholder = () => {
 export function Quantity({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-  const { paywallConfig, quantity: selectedQuantity } = state.context
+  const {
+    paywallConfig,
+    quantity: selectedQuantity,
+    skipQuantity,
+  } = state.context
   const lock = state.context.lock!
   const [quantityInput, setQuantityInput] = useState(
     selectedQuantity?.toString() ||
@@ -70,35 +74,57 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
 
   const fiatPrice = fiatPricing?.usd?.keyPrice
   const isDisabled = quantity < 1 || isLoading
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip: !paywallConfig.captcha,
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: 'Minting NFT',
+    },
+  ]
 
   return (
     <Fragment>
-      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <IconButton
-              title="Select lock"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('SELECT')
-              }}
-            />
-            <ProgressCircleIcon />
-          </div>
-          <h4 className="text-sm"> Choose quantity </h4>
-        </div>
-        <div className="border-t-4 w-full flex-1"></div>
-        <div className="inline-flex items-center gap-0.5">
-          <ProgressCircleIcon disabled />
-          <ProgressCircleIcon disabled />
-          {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
-          <ProgressCircleIcon disabled />
-          <ProgressFinishIcon disabled />
-        </div>
-      </div>
-      <main className="p-6 overflow-auto h-full space-y-2">
+      <Stepper position={2} service={checkoutService} items={stepItems} />
+      <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="flex items-start justify-between">
-          <h3 className="font-bold text-xl"> {lock?.name}</h3>
+          <h3 className="text-xl font-bold"> {lock?.name}</h3>
           {!isLoading ? (
             <div className="text-right grid min-h-[3rem]">
               {fiatPricing.creditCardEnabled ? (
@@ -124,10 +150,10 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
           )}
         </div>
         <div className="w-full border-t"></div>
-        <div className="pt-2 mt-2 w-full flex justify-between">
+        <div className="flex justify-between w-full pt-2 mt-2">
           {!isLoading ? (
             <div className="space-y-2">
-              <div className="flex items-center gap-4 flex-wrap">
+              <div className="flex flex-wrap items-center gap-4">
                 <LabeledItem
                   label="Duration"
                   icon={DurationIcon}
@@ -149,19 +175,20 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+                className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
               >
                 View Contract <Icon icon={ExternalLinkIcon} size="small" />
               </a>
             </div>
           ) : (
             <div className="py-1.5 space-y-2 items-center">
-              <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-              <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+              <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
+              <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
             </div>
           )}
           <div>
             <input
+              aria-label="Quantity"
               onChange={(event) => {
                 event.preventDefault()
                 const count = event.target.value.replace(/\D/, '')
@@ -187,12 +214,12 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
               pattern="[0-9]{0,2}"
               value={quantityInput}
               type="text"
-              className="w-16 text-sm rounded-lg border-2 border-gray-300 focus:ring-0 focus:border-brand-ui-primary"
+              className="w-16 text-sm border-2 border-gray-300 rounded-lg focus:ring-0 focus:border-brand-ui-primary"
             ></input>
           </div>
         </div>
       </main>
-      <footer className="px-6 pt-6 border-t items-center">
+      <footer className="items-center px-6 pt-6 border-t">
         <Connected
           service={checkoutService}
           injectedProvider={injectedProvider}
