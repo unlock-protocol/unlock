@@ -10,12 +10,14 @@ import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
   handleTransfer,
   handleCancelKey,
+  handleRenewKeyPurchase,
   handleExpirationChanged,
   handleKeyManagerChanged,
 } from '../src/public-lock'
 import {
   createTransferEvent,
   createCancelKeyEvent,
+  createRenewKeyPurchaseEvent,
   createExpirationChangedEvent,
   createKeyManagerChangedEvent,
 } from './keys-utils'
@@ -132,5 +134,28 @@ describe('Cancel keys', () => {
     const newCancelKey = createCancelKeyEvent(BigInt.fromU32(tokenId))
     handleCancelKey(newCancelKey)
     assert.fieldEquals('Key', keyID, 'cancelled', 'true')
+  })
+})
+
+describe('RenewKeyPurchase (lock <v10)', () => {
+  beforeAll(() => {
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+  })
+
+  test('extend a key by the correct time', () => {
+    const newExpiration = expiration + 1000
+
+    const newRenewKeyPurchase = createRenewKeyPurchaseEvent(
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU64(newExpiration)
+    )
+    handleRenewKeyPurchase(newRenewKeyPurchase)
+    assert.fieldEquals('Key', keyID, 'expiration', `${newExpiration}`)
   })
 })

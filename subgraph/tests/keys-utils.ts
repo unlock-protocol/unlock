@@ -10,6 +10,7 @@ import {
   LockManagerRemoved,
   PricingChanged,
   Transfer,
+  RenewKeyPurchase,
 } from '../generated/templates/PublicLock/PublicLock'
 
 export function createTransferEvent(
@@ -119,6 +120,28 @@ export function createCancelKeyEvent(
   // )
 
   return cancelKeyEvent
+}
+
+// before v10
+export function createRenewKeyPurchaseEvent(
+  owner: Address,
+  newTimestamp: BigInt
+): RenewKeyPurchase {
+  const renewKeyPurchaseEvent = changetype<RenewKeyPurchase>(newMockEvent())
+
+  renewKeyPurchaseEvent.parameters = []
+
+  renewKeyPurchaseEvent.parameters.push(
+    new ethereum.EventParam('owner', ethereum.Value.fromAddress(owner))
+  )
+  renewKeyPurchaseEvent.parameters.push(
+    new ethereum.EventParam(
+      'newTimestamp',
+      ethereum.Value.fromUnsignedBigInt(newTimestamp)
+    )
+  )
+
+  return renewKeyPurchaseEvent
 }
 
 // TODO: all functions below

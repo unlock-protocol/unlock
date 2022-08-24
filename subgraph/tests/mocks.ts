@@ -6,6 +6,7 @@ import {
   tokenId,
   tokenURI,
   expiration,
+  keyOwnerAddress,
 } from './constants'
 
 // mock publicLock version contract call
@@ -33,3 +34,15 @@ createMockedFunction(
 )
   .withArgs([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(tokenId))])
   .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(expiration))])
+
+// for < v10
+createMockedFunction(
+  Address.fromString(defaultMockAddress),
+  'tokenOfOwnerByIndex',
+  'tokenOfOwnerByIndex(address,uint256):(uint256)'
+)
+  .withArgs([
+    ethereum.Value.fromAddress(Address.fromString(keyOwnerAddress)),
+    ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(0)),
+  ])
+  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(tokenId))])

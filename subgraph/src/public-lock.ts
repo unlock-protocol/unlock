@@ -1,4 +1,4 @@
-import { Address, log } from '@graphprotocol/graph-ts'
+import { Address, BigInt, log } from '@graphprotocol/graph-ts'
 
 import {
   CancelKey as CancelKeyEvent,
@@ -9,6 +9,7 @@ import {
   LockManagerAdded as LockManagerAddedEvent,
   LockManagerRemoved as LockManagerRemovedEvent,
   PricingChanged as PricingChangedEvent,
+  RenewKeyPurchase as RenewKeyPurchaseEvent,
   Transfer as TransferEvent,
 } from '../generated/templates/PublicLock/PublicLock'
 
@@ -117,13 +118,21 @@ export function handleCancelKey(event: CancelKeyEvent): void {
   }
 }
 
-// export function handleExpireKey(event: ExpireKeyEvent): void {
-//   const entity = new ExpireKey(
-//     event.transaction.hash.toHex() + '-' + event.logIndex.toString()
-//   )
-//   entity.tokenId = event.params.tokenId
-//   entity.save()
-// }
+// from < v10 (before using tokenId accross the board)
+export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
+  const lockContract = PublicLock.bind(event.address)
+
+  const tokenId = lockContract.try_tokenOfOwnerByIndex(
+    event.params.owner,
+    BigInt.fromI32(0) // always the first token
+  )
+  const keyID = genKeyID(event.address, tokenId.value.toString())
+  const key = Key.load(keyID)
+  if (key) {
+    key.expiration = event.params.newExpiration
+    key.save()
+  }
+}
 
 // export function handleKeyExtended(event: KeyExtendedEvent): void {
 //   const entity = new KeyExtended(
