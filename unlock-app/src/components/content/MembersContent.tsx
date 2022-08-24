@@ -204,6 +204,7 @@ const MetadataTableWrapper = ({
   const onFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const key = event?.target?.value ?? ''
     setFilteKey(key)
+    setCurrentPage(0)
     if (query?.length > 0) {
       setRawQueryValue('')
       setQuery('')
