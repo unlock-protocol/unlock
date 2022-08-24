@@ -9,7 +9,7 @@ import { ToastHelper } from '../../helpers/toast.helper'
 export interface ICancelAndRefundProps {
   active: boolean
   lock: any
-  dismiss: (status: boolean) => void
+  setIsOpen: (status: boolean) => void
   account: string
   currency: string
   keyId: string
@@ -33,7 +33,7 @@ const MAX_TRANSFER_FEE = 10000
 export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   active,
   lock,
-  dismiss,
+  setIsOpen,
   account: owner,
   currency,
   keyId,
@@ -87,12 +87,14 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
 
     try {
       await walletService.cancelAndRefund(params, () => true)
+      setIsOpen(false)
       ToastHelper.success('Key cancelled and successfully refunded.')
       // reload page to show updated list of keys
       setTimeout(() => {
         window.location.reload()
       }, 2000)
     } catch (err: any) {
+      setIsOpen(false)
       ToastHelper.error(
         err?.error?.message ??
           err?.message ??
@@ -115,7 +117,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   if (!lock) return <span>No lock selected</span>
 
   return (
-    <Modal isOpen={active} setIsOpen={dismiss}>
+    <Modal isOpen={active} setIsOpen={setIsOpen}>
       {loading ? (
         <CancelAndRefundModalPlaceHolder />
       ) : (

@@ -258,7 +258,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         active={showCancelModal}
         lock={lock}
         keyId={keyId}
-        dismiss={setShowCancelModal}
+        setIsOpen={setShowCancelModal}
         account={account}
         currency={symbol}
         network={network}

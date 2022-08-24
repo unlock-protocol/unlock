@@ -66,22 +66,24 @@ const renderWithContexts = (component: React.ReactElement<any>) => {
 const component: React.ReactElement<any> = (
   <CancelAndRefundModal
     active
-    dismiss={dismiss}
+    setIsOpen={dismiss}
     lock={aKey.lock}
     account={accountAddress}
     currency="eth"
     keyId="1"
+    network={4}
   />
 )
 
 const componentInactive: React.ReactElement<any> = (
   <CancelAndRefundModal
     active
-    dismiss={dismiss}
+    setIsOpen={dismiss}
     lock={undefined}
     account={accountAddress}
     currency="eth"
     keyId="1"
+    network={4}
   />
 )
 
