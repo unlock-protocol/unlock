@@ -311,3 +311,26 @@ describe('RenewKeyPurchase (lock <v10)', () => {
     dataSourceMock.resetValues()
   })
 })
+
+describe('Change in expiration timestamp', () => {
+  beforeAll(() => {
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+
+    const newExpirationEvent = createExpirationChangedEvent(
+      BigInt.fromU32(tokenId),
+      BigInt.fromU32(1000),
+      true
+    )
+    handleExpirationChanged(newExpirationEvent)
+  })
+
+  test('increase timestamp', () => {
+    assert.fieldEquals('Key', keyID, 'expiration', `${expiration + 1000}`)
+  })
+})
