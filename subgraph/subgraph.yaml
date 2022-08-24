@@ -22,6 +22,12 @@ dataSources:
       eventHandlers:
         - event: NewLock(indexed address,indexed address)
           handler: handleNewLock
+        - event: NewTokenURI(string)
+          handler: handleNewTokenURI
+        - event: NewGlobalTokenSymbol(string)
+          handler: handleNewGlobalTokenSymbol
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
       file: ./src/unlock.ts
 
 templates:
@@ -47,6 +53,8 @@ templates:
       abis:
         - name: PublicLock
           file: ./abis/PublicLock.json
+        - name: PublicLockV7
+          file: ./abis/PublicLockV7.json
       eventHandlers:
         - event: CancelKey(indexed uint256,indexed address,indexed address,uint256)
           handler: handleCancelKey
