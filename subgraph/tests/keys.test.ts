@@ -334,3 +334,27 @@ describe('Change in expiration timestamp', () => {
     assert.fieldEquals('Key', keyID, 'expiration', `${expiration + 1000}`)
   })
 })
+
+describe('Key managers', () => {
+  const newKeyManagerAddress = '0x0000000000000000000000000000000000000132'
+
+  beforeAll(() => {
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+  })
+
+  test('key manager changed', () => {
+    const newKeyManagerChanged = createKeyManagerChangedEvent(
+      BigInt.fromU32(tokenId),
+      Address.fromString(newKeyManagerAddress)
+    )
+
+    handleKeyManagerChanged(newKeyManagerChanged)
+    assert.fieldEquals('Key', keyID, 'manager', newKeyManagerAddress)
+  })
+})
