@@ -261,6 +261,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         dismiss={setShowCancelModal}
         account={account}
         currency={symbol}
+        network={network}
       />
       {signature && (
         <QRModal

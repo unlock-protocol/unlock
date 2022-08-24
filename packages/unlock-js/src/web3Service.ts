@@ -420,4 +420,25 @@ export default class Web3Service extends UnlockService {
     )
     return ethers.BigNumber.from(await lockContract.numberOfOwners()).toNumber()
   }
+
+  /**
+   * Returns numbers of owners for a specific lock
+   * @param {*} lockAddress
+   * @param {*} network
+   */
+  async transferFeeBasicPoints(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+
+    // for lock < v11
+    if (!lockContract.transferFeeBasisPoints) {
+      return 0
+    }
+
+    return ethers.BigNumber.from(
+      await lockContract.transferFeeBasisPoints()
+    ).toNumber()
+  }
 }
