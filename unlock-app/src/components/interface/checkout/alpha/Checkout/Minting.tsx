@@ -57,7 +57,7 @@ export function Minting({
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-  const { mint, lock, messageToSign, skipQuantity, paywallConfig } =
+  const { mint, lock, messageToSign, skipQuantity, paywallConfig, payment } =
     state.context
   const processing = mint?.status === 'PROCESSING'
   const status = mint?.status
@@ -158,7 +158,8 @@ export function Minting({
       id: 6,
       name: 'Solve captcha',
       to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
     },
     {
       id: 7,
