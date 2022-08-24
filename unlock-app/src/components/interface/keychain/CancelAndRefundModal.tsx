@@ -1,16 +1,28 @@
-import React, { useState, useEffect } from 'react'
+import { Button, Modal } from '@unlock-protocol/ui'
+import React from 'react'
+import { useQuery } from 'react-query'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
-import InlineModal from '../InlineModal'
-import Loading from '../Loading'
 
 export interface ICancelAndRefundProps {
   active: boolean
   lock: any
-  dismiss: () => void
+  dismiss: (status: boolean) => void
   account: string
   currency: string
   keyId: string
+}
+
+const CancelAndRefundModalPlaceHolder = () => {
+  return (
+    <div className="flex flex-col w-full gap-5 p-4">
+      <div className="flex flex-col gap-2">
+        <div className="h-[24px] w-2/3 bg-slate-200 animate-pulse"></div>
+        <div className="h-[14px] w-1/2 bg-slate-200 animate-pulse"></div>
+      </div>
+      <div className="h-[50px] w-full rounded-full bg-slate-200 animate-pulse"></div>
+    </div>
+  )
 }
 
 export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
@@ -21,49 +33,25 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   currency,
   keyId,
 }) => {
-  const [loading, setLoading] = useState(false)
-  const [loadingAmount, setLoadingAmount] = useState(false)
-  const [refundAmount, setRefundAmount] = useState('')
   const walletService = useWalletService()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
-  useEffect(() => {
-    if (!active) return
-    const getRefundAmount = async () => {
-      setLoadingAmount(true)
-      const params = {
-        lockAddress,
-        owner,
-        tokenAddress,
-        tokenId: keyId,
-      }
-      const totalToRefund = await walletService.getCancelAndRefundValueFor(
-        params,
-        () => true
-      )
-      setRefundAmount(totalToRefund)
-      setLoadingAmount(false)
+  const getRefundAmount = async () => {
+    const params = {
+      lockAddress,
+      owner,
+      tokenAddress,
+      tokenId: keyId,
     }
-    getRefundAmount()
-  }, [
-    active,
-    setRefundAmount,
-    setLoadingAmount,
-    lockAddress,
-    tokenAddress,
-    keyId,
-    owner,
-    walletService,
-  ])
-
-  const onCloseCallback = () => {
-    if (typeof dismiss === 'function') dismiss()
-    setLoading(false)
+    return await walletService.getCancelAndRefundValueFor(params, () => true)
   }
 
-  const onCancelAndRefund = async () => {
-    setLoading(true)
+  const { isLoading: loading, data: refundAmount = 0 } = useQuery(
+    [active, owner, tokenAddress, keyId, lockAddress],
+    () => getRefundAmount()
+  )
 
+  const onCancelAndRefund = async () => {
     const params = {
       lockAddress,
       tokenId: keyId,
@@ -71,14 +59,12 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
 
     try {
       await walletService.cancelAndRefund(params, () => true)
-      onCloseCallback()
       ToastHelper.success('Key cancelled and successfully refunded.')
       // reload page to show updated list of keys
       setTimeout(() => {
         window.location.reload()
       }, 2000)
     } catch (err: any) {
-      onCloseCallback()
       ToastHelper.error(
         err?.error?.message ??
           err?.message ??
@@ -89,40 +75,27 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
 
   if (!lock) return <span>No lock selected</span>
   return (
-    <InlineModal active={active} dismiss={onCloseCallback}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-        }}
-      >
-        {loadingAmount ? (
-          <Loading />
-        ) : (
-          <>
-            <h3 className="text-black-500">Cancel and Refund</h3>
-            <p className="text-sm">
+    <Modal isOpen={active} setIsOpen={dismiss}>
+      {loading ? (
+        <CancelAndRefundModalPlaceHolder />
+      ) : (
+        <div className="flex flex-col w-full gap-5 p-4">
+          <div className="text-left">
+            <h3 className="text-xl font-semibold text-black-500 text-left">
+              Cancel and Refund
+            </h3>
+            <p className="text-md mt-2">
               <span>
                 {currency} {parseFloat(refundAmount!).toFixed(6)}
               </span>
               {` will be refunded, Do you want to proceed?`}
             </p>
-          </>
-        )}
-        <button
-          className="bg-gray-200 rounded px-2 py-1 text-sm mt-4 flex justify-center disabled:opacity-50 w-100"
-          type="button"
-          onClick={onCancelAndRefund}
-          disabled={loading || loadingAmount}
-        >
-          {loading ? (
-            <Loading size={20} />
-          ) : (
+          </div>
+          <Button type="button" onClick={onCancelAndRefund} disabled={loading}>
             <span className="ml-2">Confirm</span>
-          )}
-        </button>
-      </div>
-    </InlineModal>
+          </Button>
+        </div>
+      )}
+    </Modal>
   )
 }
