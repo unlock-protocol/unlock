@@ -75,7 +75,6 @@ describe('MetadataTable', () => {
             'emailAddress',
           ]}
           metadata={metadata}
-          filter={'all'}
         />
       )
 
@@ -89,9 +88,7 @@ describe('MetadataTable', () => {
       it('should show a message when there is no match on when showing all keys', () => {
         expect.assertions(1)
 
-        const wrapper = render(
-          <MetadataTable columns={[]} metadata={[]} filter={'all'} />
-        )
+        const wrapper = render(<MetadataTable columns={[]} metadata={[]} />)
         expect(
           wrapper.getByText('No keys have been purchased yet.', {
             exact: false,
@@ -102,9 +99,7 @@ describe('MetadataTable', () => {
       it('should show a message when there is no match on when showing only active keys', () => {
         expect.assertions(1)
 
-        const wrapper = render(
-          <MetadataTable columns={[]} metadata={[]} filter={'active'} />
-        )
+        const wrapper = render(<MetadataTable columns={[]} metadata={[]} />)
         expect(
           wrapper.getByText('No keys found matching the current filter.')
         ).not.toBeNull()
