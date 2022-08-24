@@ -422,7 +422,7 @@ export default class Web3Service extends UnlockService {
   }
 
   /**
-   * Returns numbers of owners for a specific lock
+   * Returns transfer fee for lock
    * @param {*} lockAddress
    * @param {*} network
    */
