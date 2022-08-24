@@ -1,4 +1,4 @@
-import { Address, Bytes, BigInt, store } from '@graphprotocol/graph-ts'
+import { Address, log } from '@graphprotocol/graph-ts'
 
 import {
   CancelKey as CancelKeyEvent,
@@ -35,6 +35,36 @@ export function handleTransfer(event: TransferEvent): void {
 
   // key.manager = Bytes
   key.save()
+}
+
+export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+
+  if (lock && lock.lockManagers) {
+    const lockManagers = lock.lockManagers
+    lockManagers.push(event.params.account)
+    lock.lockManagers = lockManagers
+    lock.save()
+    log.debug('Lock manager {} added to {}', [
+      event.params.account.toHexString(),
+      event.address.toHexString(),
+    ])
+  }
+}
+
+export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+  if (lock && lock.lockManagers) {
+    const lockManagers = lock.lockManagers
+    const i = lockManagers.indexOf(event.params.account)
+    lockManagers.splice(i)
+    lock.lockManagers = lockManagers
+    lock.save()
+    log.debug('Lock manager {} removed from {}', [
+      event.params.account.toHexString(),
+      event.address.toHexString(),
+    ])
+  }
 }
 
 // export function handleCancelKey(event: CancelKeyEvent): void {
@@ -81,22 +111,6 @@ export function handleTransfer(event: TransferEvent): void {
 //   )
 //   entity._tokenId = event.params._tokenId
 //   entity._newManager = event.params._newManager
-//   entity.save()
-// }
-
-// export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
-//   const entity = new LockManagerAdded(
-//     event.transaction.hash.toHex() + '-' + event.logIndex.toString()
-//   )
-//   entity.account = event.params.account
-//   entity.save()
-// }
-
-// export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
-//   const entity = new LockManagerRemoved(
-//     event.transaction.hash.toHex() + '-' + event.logIndex.toString()
-//   )
-//   entity.account = event.params.account
 //   entity.save()
 // }
 

@@ -1,38 +1,37 @@
 import {
   assert,
-  createMockedFunction,
   describe,
   test,
   clearStore,
   beforeAll,
   afterAll,
 } from 'matchstick-as/assembly/index'
-import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
+import { Address } from '@graphprotocol/graph-ts'
+
 import { handleNewLock } from '../src/unlock'
-import { createNewLockEvent } from './locks-utils'
-import { lockAddress } from './constants'
+import {
+  handleLockManagerAdded,
+  handleLockManagerRemoved,
+} from '../src/public-lock'
 
-// Tests structure (matchstick-as >=0.5.0)
-// https://thegraph.com/docs/en/developer/matchstick/#tests-structure-0-5-0
+import {
+  createNewLockEvent,
+  createLockManagerAddedEvent,
+  createLockManagerRemovedEvent,
+} from './locks-utils'
+import { lockAddress, lockOwner } from './constants'
 
-const newLockAddress = Address.fromString(lockAddress)
+// mock contract functions
+import './mocks'
 
-// mock publicLock version contract call
-createMockedFunction(
-  newLockAddress,
-  'publicLockVersion',
-  'publicLockVersion():(uint16)'
-)
-  .withArgs([])
-  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromString('11'))])
+const lockManager = '0x0000000000000000000000000000000000000018'
 
-describe('Describe entity assertions', () => {
+describe('Describe Locks events', () => {
   beforeAll(() => {
-    const lockOwner = Address.fromString(
-      '0x0000000000000000000000000000000000000001'
+    const newLockEvent = createNewLockEvent(
+      Address.fromString(lockOwner),
+      Address.fromString(lockAddress)
     )
-
-    const newLockEvent = createNewLockEvent(lockOwner, newLockAddress)
     handleNewLock(newLockEvent)
   })
 
@@ -40,34 +39,45 @@ describe('Describe entity assertions', () => {
     clearStore()
   })
 
-  // For more test scenarios, see:
-  // https://thegraph.com/docs/en/developer/matchstick/#write-a-unit-test
-
   test('Lock created and stored', () => {
     assert.entityCount('Lock', 1)
+    assert.fieldEquals('Lock', lockAddress, 'address', lockAddress)
+    assert.fieldEquals('Lock', lockAddress, 'createdAtBlock', '1')
+    assert.fieldEquals('Lock', lockAddress, 'version', '11')
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
+  })
 
-    // 0xa16081f360e3847006db660bae1c6d1b2e17ec2a is the default address used in newMockEvent() function
+  test('Lock manager added', () => {
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
+    const newLockManagerAdded = createLockManagerAddedEvent(
+      Address.fromString(lockManager)
+    )
+    handleLockManagerAdded(newLockManagerAdded)
+
     assert.fieldEquals(
       'Lock',
-      '0xa16081f360e3847006db660bae1c6d1b2e17ec2a',
-      'address',
-      '0x89205a3a3b2a69de6dbf7f01ed13b2108b2c43e7'
+      lockAddress,
+      'lockManagers',
+      `[${lockOwner}, ${lockManager}]`
     )
-    // stores block number
+  })
+
+  test('Lock manager removed', () => {
     assert.fieldEquals(
       'Lock',
-      '0xa16081f360e3847006db660bae1c6d1b2e17ec2a',
-      'createdAtBlock',
-      '1'
+      lockAddress,
+      'lockManagers',
+      `[${lockOwner}, ${lockManager}]`
     )
-    // stores version properly
-    assert.fieldEquals(
-      'Lock',
-      '0xa16081f360e3847006db660bae1c6d1b2e17ec2a',
-      'version',
-      '11'
+    const newLockManagerAdded = createLockManagerAddedEvent(
+      Address.fromString(lockManager)
     )
-    // More assert options:
-    // https://thegraph.com/docs/en/developer/matchstick/#asserts
+    handleLockManagerAdded(newLockManagerAdded)
+
+    const newLockManagerRemoved = createLockManagerRemovedEvent(
+      Address.fromString(lockManager)
+    )
+    handleLockManagerRemoved(newLockManagerRemoved)
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
   })
 })

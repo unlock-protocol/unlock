@@ -7,7 +7,7 @@ import {
   afterAll,
 } from 'matchstick-as/assembly/index'
 import { Address, BigInt } from '@graphprotocol/graph-ts'
-import { handleTransfer } from '../src/public-lock'
+import { handleTransfer } from '../src/keys'
 import { createTransferEvent } from './keys-utils'
 import {
   defaultMockAddress,
@@ -18,7 +18,7 @@ import {
 } from './constants'
 
 // mock contract functions
-import './keys-mocks'
+import './mocks'
 
 describe('Describe keys', () => {
   beforeAll(() => {

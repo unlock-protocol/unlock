@@ -1,23 +1,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
+import { log, BigInt } from '@graphprotocol/graph-ts'
 import { NewLock } from '../generated/Unlock/Unlock'
 import { PublicLock } from '../generated/templates/PublicLock/PublicLock'
 import { Lock } from '../generated/schema'
-import { BigInt } from '@graphprotocol/graph-ts'
 
 export function handleNewLock(event: NewLock): void {
-  // Entities can be loaded from the store using a string ID; this ID
-  // needs to be unique across all entities of the same type
-  let entityId = event.transaction.hash.toHex()
-  let entity = Lock.load(entityId)
-
-  // Entities only exist after they have been saved to the store;
-  // `null` checks allow to create entities on demand
-  if (entity == null) {
-    entity = new Lock(entityId)
-  }
-
   let lockAddress = event.params.newLockAddress
+
+  // create new lock
+  let lockID = lockAddress.toHexString()
+  const lock = new Lock(lockID)
 
   // fetch lock version
   let publicLock = PublicLock.bind(lockAddress)
@@ -27,8 +20,12 @@ export function handleNewLock(event: NewLock): void {
     version = BigInt.fromI32(publicLockVersion.value)
   }
 
-  entity.address = lockAddress
-  entity.version = version
-  entity.createdAtBlock = event.block.number
-  entity.save()
+  // store info
+  lock.address = lockAddress
+  lock.version = version
+  lock.createdAtBlock = event.block.number
+  lock.lockManagers = [event.params.lockOwner]
+  lock.save()
+
+  log.debug('New lock: {}, v{}', [lockID, lock.version])
 }
