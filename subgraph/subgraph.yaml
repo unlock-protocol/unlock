@@ -1,0 +1,73 @@
+specVersion: 0.0.4
+description: Unlock Protocol & Associated contracts
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Unlock
+    network: goerli
+    source:
+      abi: Unlock
+      address: "0x627118a4fB747016911e5cDA82e2E77C531e8206"
+      startBlock: 7179039
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - NewLock
+      abis:
+        - name: Unlock
+          file: ./abis/Unlock.json
+      eventHandlers:
+        - event: NewLock(indexed address,indexed address)
+          handler: handleNewLock
+      file: ./src/unlock.ts
+
+templates:
+  - kind: ethereum
+    name: PublicLock
+    network: goerli
+    source:
+      abi: PublicLock
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.6
+      language: wasm/assemblyscript
+      entities:
+        - CancelKey
+        - ExpirationChanged
+        - ExpireKey
+        - KeyExtended
+        - KeyManagerChanged
+        - LockManagerAdded
+        - LockManagerRemoved
+        - PricingChanged
+        - Transfer
+      abis:
+        - name: PublicLock
+          file: ./abis/PublicLock.json
+      eventHandlers:
+        - event: CancelKey(indexed uint256,indexed address,indexed address,uint256)
+          handler: handleCancelKey
+        - event: ExpirationChanged(indexed uint256,uint256,bool)
+          handler: handleExpirationChanged
+        - event: ExpireKey(indexed uint256)
+          handler: handleExpireKey
+        - event: KeyExtended(indexed uint256,uint256)
+          handler: handleKeyExtended
+        - event: KeyManagerChanged(indexed uint256,indexed address)
+          handler: handleKeyManagerChanged
+        - event: LockManagerAdded(indexed address)
+          handler: handleLockManagerAdded
+        - event: LockManagerRemoved(indexed address)
+          handler: handleLockManagerRemoved
+        - event: PricingChanged(uint256,uint256,address,address)
+          handler: handlePricingChanged
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: RenewKeyPurchase(indexed address,uint256)
+          handler: renewKeyPurchase_v10
+        - event: PriceChanged(uint256,uint256)
+          handler: handlePriceChanged_prevV7
+      file: ./src/public-lock.ts
