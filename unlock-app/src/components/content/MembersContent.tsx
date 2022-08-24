@@ -242,7 +242,7 @@ const MetadataTableWrapper = ({
   }, [queryValue.length])
 
   const { isLoading: loading, data: keys = [] } = useQuery(
-    [queryValue, expiration, currentPage, filterKey],
+    [queryValue, expiration, currentPage, filterKey, rawQueryValue],
     () => getKeys()
   )
 
