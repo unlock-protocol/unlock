@@ -16,6 +16,7 @@ type Key @entity {
   expiration: BigInt!
   tokenURI: String
   createdAtBlock: BigInt!
+  cancelled: Boolean
 }
 
 type KeyOwner @entity {

@@ -4,7 +4,7 @@ import { NewLock } from '../generated/Unlock/Unlock'
 import {
   LockManagerAdded,
   LockManagerRemoved,
-} from '../generated/PublicLock/PublicLock'
+} from '../generated/templates/PublicLock/PublicLock'
 import { lockAddress } from './constants'
 
 export function createNewLockEvent(

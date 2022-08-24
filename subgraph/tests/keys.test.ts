@@ -9,11 +9,13 @@ import {
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
   handleTransfer,
+  handleCancelKey,
   handleExpirationChanged,
   handleKeyManagerChanged,
 } from '../src/public-lock'
 import {
   createTransferEvent,
+  createCancelKeyEvent,
   createExpirationChangedEvent,
   createKeyManagerChangedEvent,
 } from './keys-utils'
@@ -112,5 +114,23 @@ describe('Key managers', () => {
 
     handleKeyManagerChanged(newKeyManagerChanged)
     assert.fieldEquals('Key', keyID, 'manager', newKeyManagerAddress)
+  })
+})
+
+describe('Cancel keys', () => {
+  beforeAll(() => {
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+  })
+
+  test('cancel a key', () => {
+    const newCancelKey = createCancelKeyEvent(BigInt.fromU32(tokenId))
+    handleCancelKey(newCancelKey)
+    assert.fieldEquals('Key', keyID, 'cancelled', 'true')
   })
 })

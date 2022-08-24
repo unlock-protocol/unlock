@@ -10,7 +10,7 @@ import {
   LockManagerRemoved as LockManagerRemovedEvent,
   PricingChanged as PricingChangedEvent,
   Transfer as TransferEvent,
-} from '../generated/PublicLock/PublicLock'
+} from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLock } from '../generated/templates/PublicLock/PublicLock'
 import { Key, KeyOwner, Lock } from '../generated/schema'
@@ -108,16 +108,14 @@ export function handleKeyManagerChanged(event: KeyManagerChangedEvent): void {
   }
 }
 
-// export function handleCancelKey(event: CancelKeyEvent): void {
-//   const entity = new CancelKey(
-//     event.transaction.hash.toHex() + '-' + event.logIndex.toString()
-//   )
-//   entity.tokenId = event.params.tokenId
-//   entity.owner = event.params.owner
-//   entity.sendTo = event.params.sendTo
-//   entity.refund = event.params.refund
-//   entity.save()
-// }
+export function handleCancelKey(event: CancelKeyEvent): void {
+  const keyID = genKeyID(event.address, event.params.tokenId.toString())
+  const key = Key.load(keyID)
+  if (key) {
+    key.cancelled = true
+    key.save()
+  }
+}
 
 // export function handleExpireKey(event: ExpireKeyEvent): void {
 //   const entity = new ExpireKey(

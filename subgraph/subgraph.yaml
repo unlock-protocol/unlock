@@ -66,8 +66,4 @@ templates:
           handler: handlePricingChanged
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-        - event: RenewKeyPurchase(indexed address,uint256)
-          handler: renewKeyPurchase_v10
-        - event: PriceChanged(uint256,uint256)
-          handler: handlePriceChanged_prevV7
       file: ./src/public-lock.ts

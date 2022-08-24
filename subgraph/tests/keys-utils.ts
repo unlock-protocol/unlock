@@ -10,7 +10,7 @@ import {
   LockManagerRemoved,
   PricingChanged,
   Transfer,
-} from '../generated/PublicLock/PublicLock'
+} from '../generated/templates/PublicLock/PublicLock'
 
 export function createTransferEvent(
   from: Address,
@@ -35,35 +35,6 @@ export function createTransferEvent(
   )
 
   return transferEvent
-}
-
-export function createCancelKeyEvent(
-  tokenId: bigint,
-  owner: Address,
-  sendTo: Address,
-  refund: bigint
-): CancelKey {
-  const cancelKeyEvent = changetype<CancelKey>(newMockEvent())
-
-  cancelKeyEvent.parameters = []
-
-  cancelKeyEvent.parameters.push(
-    new ethereum.EventParam(
-      'tokenId',
-      ethereum.Value.fromUnsignedBigInt(tokenId)
-    )
-  )
-  cancelKeyEvent.parameters.push(
-    new ethereum.EventParam('owner', ethereum.Value.fromAddress(owner))
-  )
-  cancelKeyEvent.parameters.push(
-    new ethereum.EventParam('sendTo', ethereum.Value.fromAddress(sendTo))
-  )
-  cancelKeyEvent.parameters.push(
-    new ethereum.EventParam('refund', ethereum.Value.fromUnsignedBigInt(refund))
-  )
-
-  return cancelKeyEvent
 }
 
 export function createExpirationChangedEvent(
@@ -119,6 +90,35 @@ export function createKeyManagerChangedEvent(
   )
 
   return keyManagerChangedEvent
+}
+
+export function createCancelKeyEvent(
+  tokenId: BigInt
+  // owner: Address,
+  // sendTo: Address,
+  // refund: bigint
+): CancelKey {
+  const cancelKeyEvent = changetype<CancelKey>(newMockEvent())
+
+  cancelKeyEvent.parameters = []
+
+  cancelKeyEvent.parameters.push(
+    new ethereum.EventParam(
+      'tokenId',
+      ethereum.Value.fromUnsignedBigInt(tokenId)
+    )
+  )
+  // cancelKeyEvent.parameters.push(
+  //   new ethereum.EventParam('owner', ethereum.Value.fromAddress(owner))
+  // )
+  // cancelKeyEvent.parameters.push(
+  //   new ethereum.EventParam('sendTo', ethereum.Value.fromAddress(sendTo))
+  // )
+  // cancelKeyEvent.parameters.push(
+  //   new ethereum.EventParam('refund', ethereum.Value.fromUnsignedBigInt(refund))
+  // )
+
+  return cancelKeyEvent
 }
 
 // TODO: all functions below
