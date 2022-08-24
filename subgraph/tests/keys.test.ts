@@ -7,8 +7,16 @@ import {
   afterAll,
 } from 'matchstick-as/assembly/index'
 import { Address, BigInt } from '@graphprotocol/graph-ts'
-import { handleTransfer, handleExpirationChanged } from '../src/public-lock'
-import { createTransferEvent, createExpirationChangedEvent } from './keys-utils'
+import {
+  handleTransfer,
+  handleExpirationChanged,
+  handleKeyManagerChanged,
+} from '../src/public-lock'
+import {
+  createTransferEvent,
+  createExpirationChangedEvent,
+  createKeyManagerChangedEvent,
+} from './keys-utils'
 import {
   defaultMockAddress,
   keyOwnerAddress,
@@ -20,6 +28,7 @@ import {
 
 // mock contract functions
 import './mocks'
+import { Key } from '../generated/schema'
 
 const keyID = `${defaultMockAddress}-${tokenId}`
 
@@ -79,5 +88,29 @@ describe('Change in expiration timestamp', () => {
 
   test('increase timestamp', () => {
     assert.fieldEquals('Key', keyID, 'expiration', `${expiration + 1000}`)
+  })
+})
+
+describe('Key managers', () => {
+  const newKeyManagerAddress = '0x0000000000000000000000000000000000000132'
+
+  beforeAll(() => {
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+  })
+
+  test('key manager changed', () => {
+    const newKeyManagerChanged = createKeyManagerChangedEvent(
+      BigInt.fromU32(tokenId),
+      Address.fromString(newKeyManagerAddress)
+    )
+
+    handleKeyManagerChanged(newKeyManagerChanged)
+    assert.fieldEquals('Key', keyID, 'manager', newKeyManagerAddress)
   })
 })

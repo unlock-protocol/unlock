@@ -99,6 +99,15 @@ export function handleExpirationChanged(event: ExpirationChangedEvent): void {
   }
 }
 
+export function handleKeyManagerChanged(event: KeyManagerChangedEvent): void {
+  const keyID = genKeyID(event.address, event.params._tokenId.toString())
+  const key = Key.load(keyID)
+  if (key) {
+    key.manager = event.params._newManager
+    key.save()
+  }
+}
+
 // export function handleCancelKey(event: CancelKeyEvent): void {
 //   const entity = new CancelKey(
 //     event.transaction.hash.toHex() + '-' + event.logIndex.toString()
@@ -124,15 +133,6 @@ export function handleExpirationChanged(event: ExpirationChangedEvent): void {
 //   )
 //   entity.tokenId = event.params.tokenId
 //   entity.newTimestamp = event.params.newTimestamp
-//   entity.save()
-// }
-
-// export function handleKeyManagerChanged(event: KeyManagerChangedEvent): void {
-//   const entity = new KeyManagerChanged(
-//     event.transaction.hash.toHex() + '-' + event.logIndex.toString()
-//   )
-//   entity._tokenId = event.params._tokenId
-//   entity._newManager = event.params._newManager
 //   entity.save()
 // }
 

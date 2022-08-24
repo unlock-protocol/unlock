@@ -5,6 +5,7 @@ import {
   ExpirationChanged,
   ExpireKey,
   KeyExtended,
+  KeyManagerChanged,
   LockManagerAdded,
   LockManagerRemoved,
   PricingChanged,
@@ -96,6 +97,31 @@ export function createExpirationChangedEvent(
   return expirationChangedEvent
 }
 
+export function createKeyManagerChangedEvent(
+  _tokenId: BigInt,
+  _newManager: Address
+): KeyManagerChanged {
+  const keyManagerChangedEvent = changetype<KeyManagerChanged>(newMockEvent())
+
+  keyManagerChangedEvent.parameters = []
+
+  keyManagerChangedEvent.parameters.push(
+    new ethereum.EventParam(
+      '_tokenId',
+      ethereum.Value.fromUnsignedBigInt(_tokenId)
+    )
+  )
+  keyManagerChangedEvent.parameters.push(
+    new ethereum.EventParam(
+      '_newManager',
+      ethereum.Value.fromAddress(_newManager)
+    )
+  )
+
+  return keyManagerChangedEvent
+}
+
+// TODO: all functions below
 export function createExpireKeyEvent(tokenId: bigint): ExpireKey {
   const expireKeyEvent = changetype<ExpireKey>(newMockEvent())
 
@@ -133,30 +159,6 @@ export function createKeyExtendedEvent(
   )
 
   return keyExtendedEvent
-}
-
-export function createKeyManagerChangedEvent(
-  _tokenId: bigint,
-  _newManager: Address
-): KeyManagerChanged {
-  const keyManagerChangedEvent = changetype<KeyManagerChanged>(newMockEvent())
-
-  keyManagerChangedEvent.parameters = []
-
-  keyManagerChangedEvent.parameters.push(
-    new ethereum.EventParam(
-      '_tokenId',
-      ethereum.Value.fromUnsignedBigInt(_tokenId)
-    )
-  )
-  keyManagerChangedEvent.parameters.push(
-    new ethereum.EventParam(
-      '_newManager',
-      ethereum.Value.fromAddress(_newManager)
-    )
-  )
-
-  return keyManagerChangedEvent
 }
 
 export function createLockManagerAddedEvent(
