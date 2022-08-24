@@ -104,7 +104,11 @@ describe('MetadataTable', () => {
         const wrapper = render(
           <MetadataTable columns={[]} metadata={[]} hasSearchValue={true} />
         )
-        expect(wrapper.getByText('No key matches your filter')).not.toBeNull()
+        expect(
+          wrapper.getByText('No key matches your filter', {
+            exact: false,
+          })
+        ).not.toBeNull()
       })
     })
   })
