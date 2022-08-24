@@ -46,7 +46,6 @@ export function createLockManagerAddedEvent(
 
   return newLockManagerAdded
 }
-
 export function createLockManagerRemovedEvent(
   newLockManager: Address
 ): LockManagerRemoved {
