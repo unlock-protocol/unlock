@@ -432,11 +432,6 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
 
-    // for lock < v11
-    if (!lockContract.transferFeeBasisPoints) {
-      return 0
-    }
-
     return ethers.BigNumber.from(
       await lockContract.transferFeeBasisPoints()
     ).toNumber()
