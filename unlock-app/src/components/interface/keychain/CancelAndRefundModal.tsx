@@ -1,5 +1,5 @@
 import { Button, Modal } from '@unlock-protocol/ui'
-import React from 'react'
+import React, { useState } from 'react'
 import { useQuery } from 'react-query'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
@@ -33,6 +33,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   currency,
   keyId,
 }) => {
+  const [isRefundable, setIsRefundable] = useState(false)
   const walletService = useWalletService()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
@@ -74,6 +75,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   }
 
   if (!lock) return <span>No lock selected</span>
+
   return (
     <Modal isOpen={active} setIsOpen={dismiss}>
       {loading ? (
@@ -85,13 +87,26 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
               Cancel and Refund
             </h3>
             <p className="text-md mt-2">
-              <span>
-                {currency} {parseFloat(refundAmount!).toFixed(6)}
-              </span>
-              {` will be refunded, Do you want to proceed?`}
+              {isRefundable ? (
+                <>
+                  <span>
+                    {currency} {parseFloat(refundAmount!).toFixed(6)}
+                  </span>
+                  {` will be refunded, Do you want to proceed?`}
+                </>
+              ) : (
+                <span>
+                  Refund is not possible because the contract does not have
+                  funds to cover
+                </span>
+              )}
             </p>
           </div>
-          <Button type="button" onClick={onCancelAndRefund} disabled={loading}>
+          <Button
+            type="button"
+            onClick={onCancelAndRefund}
+            disabled={loading || !isRefundable}
+          >
             <span className="ml-2">Confirm</span>
           </Button>
         </div>
