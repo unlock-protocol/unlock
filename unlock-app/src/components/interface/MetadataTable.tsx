@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import FileSaver from 'file-saver'
 import Link from 'next/link'
 import { buildCSV } from '../../utils/csv'
-import { MemberFilter } from '../../unlockTypes'
 import { ExpireAndRefundModal } from './ExpireAndRefundModal'
 import {
   MemberCard,
@@ -24,7 +23,7 @@ interface MetadataTableProps {
   columns: string[]
   metadata: KeyMetadata[]
   loading?: boolean
-  filter?: MemberFilter
+  hasSearchValue?: boolean
   lockManagerMapping?: {
     [lockAddress: string]: boolean
   }
@@ -79,11 +78,11 @@ const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
 export const MetadataTable: React.FC<MetadataTableProps> = ({
   columns,
   metadata = [],
-  filter,
   membersCount,
   loading = false,
   lockManagerMapping,
   lockAddresses = [],
+  hasSearchValue = false,
 }) => {
   const hasLockManagerStatus = Object.values(lockManagerMapping ?? {}).some(
     (status) => status
@@ -105,20 +104,18 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     )
   }
 
-  if (metadata.length === 0) {
-    if (filter === 'all') {
-      return (
-        <span className="text-gray-600">
-          No keys have been purchased yet. Return to your{' '}
-          <Link href="/dashboard">
-            <a>Dashboard</a>
-          </Link>
-          .
-        </span>
-      )
-    }
-
-    return <p>No keys found matching the current filter.</p>
+  if (metadata?.length === 0) {
+    return hasSearchValue ? (
+      <span className="text-gray-600">No key matches your filter</span>
+    ) : (
+      <span className="text-gray-600">
+        No keys have been purchased yet. Return to your{' '}
+        <Link href="/dashboard">
+          <a>Dashboard</a>
+        </Link>
+        .
+      </span>
+    )
   }
 
   const onExpireAndRefund = (lock: any, isLockManager: boolean) => {
@@ -227,7 +224,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
 }
 
 MetadataTable.defaultProps = {
-  filter: 'all',
+  hasSearchValue: false,
   lockManagerMapping: {},
   lockAddresses: [],
 }
