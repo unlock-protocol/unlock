@@ -80,18 +80,23 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     getBalance()
   }, [account, wallet, setBalance, lock, getTokenBalance])
 
+  const lockConfig = paywallConfig.locks[lock!.address]
+
   const isReceiverAccountOnly =
     recipients.length <= 1 && recipients[0] === account
 
+  // disable on recurring membership.
   const enableSuperfluid =
-    (paywallConfig.superfluid ||
-      paywallConfig.locks[lock!.address].superfluid) &&
-    isReceiverAccountOnly
+    (paywallConfig.superfluid || lockConfig.superfluid) &&
+    isReceiverAccountOnly &&
+    !lockConfig.recurringPayments
 
   const enableClaim =
     !!isClaimable && !isClaimableLoading && isReceiverAccountOnly
 
-  const enableCreditCard = !!fiatPricing?.creditCardEnabled
+  // disable on recurring membership.
+  const enableCreditCard =
+    !!fiatPricing?.creditCardEnabled && !lockConfig.recurringPayments
 
   const isWaiting = isLoading || isClaimableLoading
 
