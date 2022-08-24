@@ -172,6 +172,7 @@ const MetadataTableWrapper = ({
 }: MetadataTableWrapperProps) => {
   const { account, network } = useContext(AuthenticationContext)
   const [currentPage, setCurrentPage] = useState(page)
+  const [rawQueryValue, setRawQueryValue] = useState('')
   const [query, setQuery] = useState<string>('')
   const [filterKey, setFilteKey] = useState<string>('owner')
   const [currentFilter, setCurrentFilter] = useState<Filter>()
@@ -193,18 +194,21 @@ const MetadataTableWrapper = ({
     })
 
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const ensToAddress = await getAddressForName(e?.target?.value)
-    const search = ensToAddress || e?.target?.value || ''
+    const value = e?.target?.value || ''
+    setRawQueryValue(value)
+    const ensToAddress = await getAddressForName(value)
+    const search = ensToAddress || value
     setQuery(search)
   }
 
   const onFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const key = event?.target?.value ?? ''
     setFilteKey(key)
-
-    // reset pagination on search query
     setCurrentPage(0)
-    setQuery('')
+    if (query?.length > 0) {
+      setRawQueryValue('')
+      setQuery('')
+    }
   }
 
   const filters = FILTER_ITEMS.filter((filter) => {
@@ -239,12 +243,13 @@ const MetadataTableWrapper = ({
   }, [queryValue.length])
 
   const { isLoading: loading, data: keys = [] } = useQuery(
-    [queryValue, expiration, currentPage, filterKey],
+    [queryValue, expiration, currentPage, filterKey, rawQueryValue],
     () => getKeys()
   )
 
   const options: string[] = currentFilter?.options ?? []
   const hideSearch = currentFilter?.hideSearch ?? false
+  const hasSearchValue = queryValue?.length > 0 || hideSearch
   // TODO: rename metadata into members inside of MetadataTable
   return (
     <>
@@ -287,6 +292,7 @@ const MetadataTableWrapper = ({
                 type="text"
                 size="small"
                 onChange={search}
+                value={rawQueryValue}
               />
             )}
           </div>
@@ -306,6 +312,7 @@ const MetadataTableWrapper = ({
         lockAddresses={lockAddresses}
         loading={loading}
         membersCount={keysCount}
+        hasSearchValue={hasSearchValue}
       />
     </>
   )
