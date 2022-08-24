@@ -46,7 +46,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
       enabled: !!account,
     }
   )
-  const { paywallConfig, skipQuantity } = state.context
+  const { paywallConfig, skipQuantity, payment } = state.context
 
   const card = data?.[0]
 
@@ -82,7 +82,8 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
       id: 6,
       name: 'Solve captcha',
       to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
     },
     {
       id: 7,

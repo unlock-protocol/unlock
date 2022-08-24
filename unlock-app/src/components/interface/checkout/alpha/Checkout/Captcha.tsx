@@ -20,7 +20,7 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
   const config = useConfig()
   const storage = useStorageService()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-  const { recipients } = state.context
+  const { recipients, payment } = state.context
   const [isContinuing, setIsContinuing] = useState(false)
   const { paywallConfig, skipQuantity } = state.context
   const onContinue = async () => {
@@ -83,7 +83,8 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
       id: 6,
       name: 'Solve captcha',
       to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
     },
     {
       id: 7,

@@ -34,16 +34,25 @@ const QuantityPlaceholder = () => {
 export function Quantity({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
+
   const {
     paywallConfig,
     quantity: selectedQuantity,
     skipQuantity,
+    payment,
   } = state.context
   const lock = state.context.lock!
+
+  const lockConfig = paywallConfig.locks[lock.address]
+
+  const maxRecipients =
+    lockConfig.maxRecipients || paywallConfig.maxRecipients || 1
+
+  const minRecipients =
+    lockConfig.minRecipients || paywallConfig.minRecipients || 1
+
   const [quantityInput, setQuantityInput] = useState(
-    selectedQuantity?.toString() ||
-      paywallConfig.minRecipients?.toString() ||
-      '1'
+    selectedQuantity?.toString() || minRecipients.toString()
   )
 
   const quantity = Number(quantityInput)
@@ -106,7 +115,8 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
       id: 6,
       name: 'Solve captcha',
       to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
     },
     {
       id: 7,
@@ -193,9 +203,8 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
                 event.preventDefault()
                 const count = event.target.value.replace(/\D/, '')
                 const countInt = parseInt(count, 10)
-                const { maxRecipients, minRecipients } = paywallConfig
-                const maxAllowed = maxRecipients && countInt > maxRecipients
-                const minAllowed = minRecipients && countInt < minRecipients
+                const maxAllowed = countInt > maxRecipients
+                const minAllowed = countInt < minRecipients
 
                 if (maxAllowed) {
                   ToastHelper.error(
@@ -203,12 +212,14 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
                   )
                   return setQuantityInput(maxRecipients!.toString())
                 }
+
                 if (minAllowed) {
                   ToastHelper.error(
                     `You cannot purchase less than ${paywallConfig.minRecipients} memberships at once`
                   )
                   return setQuantityInput(minRecipients!.toString())
                 }
+
                 setQuantityInput(count)
               }}
               pattern="[0-9]{0,2}"
