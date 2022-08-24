@@ -27,5 +27,5 @@ export function handleNewLock(event: NewLock): void {
   lock.lockManagers = [event.params.lockOwner]
   lock.save()
 
-  log.debug('New lock: {}, v{}', [lockID, lock.version])
+  log.debug('New lock: {}', [lockID])
 }

@@ -66,8 +66,8 @@ export function createCancelKeyEvent(
 }
 
 export function createExpirationChangedEvent(
-  _tokenId: bigint,
-  _amount: bigint,
+  _tokenId: BigInt,
+  _amount: BigInt,
   _timeAdded: boolean
 ): ExpirationChanged {
   const expirationChangedEvent = changetype<ExpirationChanged>(newMockEvent())

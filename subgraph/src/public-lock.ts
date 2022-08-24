@@ -67,6 +67,19 @@ export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   }
 }
 
+export function handleExpirationChanged(event: ExpirationChangedEvent): void {
+  const keyID = genKeyID(event.address, event.params._tokenId.toString())
+  const key = Key.load(keyID)
+  if (key) {
+    if (event.params._timeAdded) {
+      key.expiration = key.expiration.plus(event.params._amount)
+    } else {
+      key.expiration = key.expiration.minus(event.params._amount)
+    }
+    key.save()
+  }
+}
+
 // export function handleCancelKey(event: CancelKeyEvent): void {
 //   const entity = new CancelKey(
 //     event.transaction.hash.toHex() + '-' + event.logIndex.toString()
@@ -75,16 +88,6 @@ export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
 //   entity.owner = event.params.owner
 //   entity.sendTo = event.params.sendTo
 //   entity.refund = event.params.refund
-//   entity.save()
-// }
-
-// export function handleExpirationChanged(event: ExpirationChangedEvent): void {
-//   const entity = new ExpirationChanged(
-//     event.transaction.hash.toHex() + '-' + event.logIndex.toString()
-//   )
-//   entity._tokenId = event.params._tokenId
-//   entity._amount = event.params._amount
-//   entity._timeAdded = event.params._timeAdded
 //   entity.save()
 // }
 

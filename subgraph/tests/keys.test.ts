@@ -7,18 +7,21 @@ import {
   afterAll,
 } from 'matchstick-as/assembly/index'
 import { Address, BigInt } from '@graphprotocol/graph-ts'
-import { handleTransfer } from '../src/keys'
-import { createTransferEvent } from './keys-utils'
+import { handleTransfer, handleExpirationChanged } from '../src/public-lock'
+import { createTransferEvent, createExpirationChangedEvent } from './keys-utils'
 import {
   defaultMockAddress,
   keyOwnerAddress,
   nullAddress,
   tokenId,
   tokenURI,
+  expiration,
 } from './constants'
 
 // mock contract functions
 import './mocks'
+
+const keyID = `${defaultMockAddress}-${tokenId}`
 
 describe('Describe keys', () => {
   beforeAll(() => {
@@ -34,13 +37,36 @@ describe('Describe keys', () => {
     clearStore()
   })
 
-  test('Transfer of a new key', () => {
+  test('Creation of a new key', () => {
     assert.entityCount('Key', 1)
-    const keyID = `${defaultMockAddress}-${tokenId}`
     assert.fieldEquals('Key', keyID, 'lock', defaultMockAddress)
     assert.fieldEquals('Key', keyID, 'owner', keyOwnerAddress)
     assert.fieldEquals('Key', keyID, 'tokenId', `${tokenId}`)
     assert.fieldEquals('Key', keyID, 'tokenURI', `${tokenURI}`)
+    assert.fieldEquals('Key', keyID, 'expiration', `${expiration}`)
     assert.fieldEquals('Key', keyID, 'createdAtBlock', '1')
+  })
+})
+
+describe('Change in expiration timestamp', () => {
+  beforeAll(() => {
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+
+    const newExpirationEvent = createExpirationChangedEvent(
+      BigInt.fromU32(tokenId),
+      BigInt.fromU32(1000),
+      true
+    )
+    handleExpirationChanged(newExpirationEvent)
+  })
+
+  test('increase timestamp', () => {
+    assert.fieldEquals('Key', keyID, 'expiration', `${expiration + 1000}`)
   })
 })
