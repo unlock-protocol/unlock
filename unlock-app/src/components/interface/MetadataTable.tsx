@@ -106,7 +106,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
 
   if (metadata?.length === 0) {
     return hasSearchValue ? (
-      <span className="text-gray-600">No key matches your filter</span>
+      <span className="text-gray-600">No key matches your filter.</span>
     ) : (
       <span className="text-gray-600">
         No keys have been purchased yet. Return to your{' '}
