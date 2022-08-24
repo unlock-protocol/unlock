@@ -23,9 +23,9 @@ export function handleTransfer(event: TransferEvent): void {
   // create key
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = new Key(keyID)
-  key.lock = event.address.toString()
+  key.lock = event.address.toHexString()
   key.tokenId = event.params.tokenId
-  key.owner = event.params.to.toString()
+  key.owner = event.params.to.toHexString()
   key.createdAtBlock = event.block.number
 
   // Load the lock
