@@ -23,7 +23,7 @@ import './mocks'
 
 const keyID = `${defaultMockAddress}-${tokenId}`
 
-describe('Describe keys', () => {
+describe('Key transfers', () => {
   beforeAll(() => {
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
@@ -45,6 +45,17 @@ describe('Describe keys', () => {
     assert.fieldEquals('Key', keyID, 'tokenURI', `${tokenURI}`)
     assert.fieldEquals('Key', keyID, 'expiration', `${expiration}`)
     assert.fieldEquals('Key', keyID, 'createdAtBlock', '1')
+  })
+
+  test('Transfer of an existing key', () => {
+    const newOwnerAddress = '0x0000000000000000000000000000000000000132'
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(keyOwnerAddress),
+      Address.fromString(newOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+    assert.fieldEquals('Key', keyID, 'owner', newOwnerAddress)
   })
 })
 

@@ -19,8 +19,7 @@ function genKeyID(lockAddress: Address, tokenId: string): string {
   return lockAddress.toHex().concat('-').concat(tokenId)
 }
 
-export function handleTransfer(event: TransferEvent): void {
-  // create key
+function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = new Key(keyID)
   key.lock = event.address.toHexString()
@@ -35,6 +34,26 @@ export function handleTransfer(event: TransferEvent): void {
 
   // key.manager = Bytes
   key.save()
+}
+
+export function handleTransfer(event: TransferEvent): void {
+  const zeroAddress = '0x0000000000000000000000000000000000000000'
+  if (event.params.from.toHex() == zeroAddress) {
+    // create key
+    newKey(event)
+  } else {
+    // existing key has been transferred
+    const keyID = genKeyID(event.address, event.params.tokenId.toString())
+    const key = Key.load(keyID)
+    if (key) {
+      const lockContract = PublicLock.bind(event.address)
+      key.owner = event.params.to.toHexString()
+      key.expiration = lockContract.keyExpirationTimestampFor(
+        event.params.tokenId
+      )
+      key.save()
+    }
+  }
 }
 
 export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
