@@ -426,7 +426,7 @@ export default class Web3Service extends UnlockService {
    * @param {*} lockAddress
    * @param {*} network
    */
-  async transferFeeBasicPoints(lockAddress: string, network: number) {
+  async transferFeeBasisPoints(lockAddress: string, network: number) {
     const lockContract = await this.getLockContract(
       lockAddress,
       this.providerForNetwork(network)

@@ -59,7 +59,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
 
   const getCancellationFee = async () => {
     const web3Service = new Web3Service(networks)
-    return await web3Service.transferFeeBasicPoints(lockAddress, network)
+    return await web3Service.transferFeeBasisPoints(lockAddress, network)
   }
 
   const getLockDetails = async () => {
@@ -132,7 +132,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
               ) : isRefundable ? (
                 <>
                   <span>
-                    {currency} {parseFloat(refundAmount!).toFixed(6)}
+                    {currency} {parseFloat(refundAmount!).toFixed(3)}
                   </span>
                   {` will be refunded, Do you want to proceed?`}
                 </>
