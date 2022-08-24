@@ -358,3 +358,21 @@ describe('Key managers', () => {
     assert.fieldEquals('Key', keyID, 'manager', newKeyManagerAddress)
   })
 })
+
+describe('Cancel keys', () => {
+  beforeAll(() => {
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+  })
+
+  test('cancel a key', () => {
+    const newCancelKey = createCancelKeyEvent(BigInt.fromU32(tokenId))
+    handleCancelKey(newCancelKey)
+    assert.fieldEquals('Key', keyID, 'cancelled', 'true')
+  })
+})
