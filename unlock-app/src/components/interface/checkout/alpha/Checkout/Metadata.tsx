@@ -29,7 +29,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, isUnlockAccount, email } = useAuth()
   const storage = useStorageService()
-  const { lock, paywallConfig, quantity, skipQuantity } = state.context
+  const { lock, paywallConfig, quantity, skipQuantity, payment } = state.context
   const web3Service = useWeb3Service()
 
   const metadataInputs =
@@ -186,7 +186,8 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       id: 6,
       name: 'Solve captcha',
       to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
     },
     {
       id: 7,
