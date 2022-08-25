@@ -63,7 +63,6 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   isLockManager,
   expireAndRefundDisabled = true,
   metadata = {},
-  refetchKeys,
 }) => {
   const storageService = useContext(StorageServiceContext)
   const walletService = useContext(WalletServiceContext)
