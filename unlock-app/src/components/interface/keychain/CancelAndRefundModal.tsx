@@ -51,40 +51,28 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
       lockAddress,
       owner,
       tokenAddress,
+      network,
       tokenId: keyId,
     }
     if (!walletService) return
-    return await walletService.getCancelAndRefundValueFor(params, () => true)
+    return walletService.getCancelAndRefundValueFor(params)
   }
 
   const getCancellationFee = async () => {
     const web3Service = new Web3Service(networks)
-    return await web3Service.transferFeeBasisPoints(lockAddress, network)
+    return web3Service.transferFeeBasisPoints(lockAddress, network)
   }
 
-  const getLockDetails = async () => {
+  const getLockBalance = async () => {
     const web3Service = new Web3Service(networks)
-    return await web3Service.getLock(lock.address, network)
+    return web3Service.getAddressBalance(lockAddress, network)
   }
-
-  const { isLoading, data: refundAmount = 0 } = useQuery([active], () =>
-    getRefundAmount()
-  )
-
-  const { isLoading: isLoadingCancellationFee, data: transferFee = 0 } =
-    useQuery([active, refundAmount], () => getCancellationFee())
-
-  const { isLoading: isLoadingLockDetails, data: lockDetails } = useQuery(
-    [active],
-    () => getLockDetails()
-  )
 
   const onCancelAndRefund = async () => {
     const params = {
       lockAddress,
       tokenId: keyId,
     }
-
     try {
       await walletService.cancelAndRefund(params, () => true)
       setIsOpen(false)
@@ -103,9 +91,23 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
     }
   }
 
-  const maxFeeReached = transferFee >= MAX_TRANSFER_FEE
-  const canRefund =
-    !maxFeeReached && Number(lockDetails?.balance) < refundAmount
+  const { isLoading, data: refundAmount } = useQuery(
+    [active, lockAddress],
+    () => getRefundAmount()
+  )
+
+  const { isLoading: isLoadingCancellationFee, data: transferFee } = useQuery(
+    [active, refundAmount, lockAddress],
+    () => getCancellationFee()
+  )
+
+  const { isLoading: isLoadingLockDetails, data: lockBalance } = useQuery(
+    [active, lockAddress],
+    () => getLockBalance()
+  )
+
+  const maxFeeReached = Number(transferFee) >= MAX_TRANSFER_FEE
+  const canRefund = !maxFeeReached && Number(lockBalance) <= refundAmount
 
   useEffect(() => {
     setIsRefundable(canRefund)
@@ -116,6 +118,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
 
   if (!lock) return <span>No lock selected</span>
 
+  const buttonDisabled = loading || !isRefundable
   return (
     <Modal isOpen={active} setIsOpen={setIsOpen}>
       {loading ? (
@@ -123,10 +126,10 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
       ) : (
         <div className="flex flex-col w-full gap-5 p-4">
           <div className="text-left">
-            <h3 className="text-xl font-semibold text-black-500 text-left">
+            <h3 className="text-xl font-semibold text-left text-black-500">
               Cancel and Refund
             </h3>
-            <p className="text-md mt-2">
+            <p className="mt-2 text-md">
               {hasMaxCancellationFee ? (
                 <span>This key is not refundable.</span>
               ) : isRefundable ? (
@@ -147,7 +150,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
           <Button
             type="button"
             onClick={onCancelAndRefund}
-            disabled={loading || !isRefundable}
+            disabled={buttonDisabled}
           >
             <span className="ml-2">Confirm</span>
           </Button>
