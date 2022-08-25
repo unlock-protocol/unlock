@@ -9093,10 +9093,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts-upgradeable@npm:4.7.2":
-  version: 4.7.2
-  resolution: "@openzeppelin/contracts-upgradeable@npm:4.7.2"
-  checksum: da4b27323516ef4d2de1262c87532cbd403b4a8a36b96bf40159cb2bfbc8f386b918415de4cd204fba36626a7236e07295ce38312e714f4cea274467d88f949b
+"@openzeppelin/contracts-upgradeable@npm:4.7.3":
+  version: 4.7.3
+  resolution: "@openzeppelin/contracts-upgradeable@npm:4.7.3"
+  checksum: c9ffb40cb847a975d440204fc6a811f43af960050242f707332b984d29bd16dc242ffa0935de61867aeb9e0357fadedb16b09b276deda5e9775582face831021
   languageName: node
   linkType: hard
 
@@ -9114,10 +9114,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/contracts@npm:4.7.2":
-  version: 4.7.2
-  resolution: "@openzeppelin/contracts@npm:4.7.2"
-  checksum: f02f2b44cdec46bafe1b608b495b6e2dc161ae4a3f308ba9921787cb77b8b877232839047b12f03b4d0fee9ca9208887fd5b9e7bdbf9a8c4f01021b1f1181233
+"@openzeppelin/contracts@npm:4.7.3":
+  version: 4.7.3
+  resolution: "@openzeppelin/contracts@npm:4.7.3"
+  checksum: 18382fcacf7cfd652f5dd0e70c08f08ea74eaa8ff11e9f9850639ada70198ae01a3f9493d89a52d724f2db394e9616bf6258017804612ba273167cf657fbb073
   languageName: node
   linkType: hard
 
@@ -16177,6 +16177,7 @@ __metadata:
     express-jwt: 7.5.2
     express-list-endpoints: 6.0.0
     express-winston: 4.2.0
+    fuse.js: 6.6.2
     graphql: 15.8.0
     graphql-tag: 2.12.6
     html-template-tag: 4.0.1
@@ -16304,7 +16305,7 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-truffle5": 2.0.6
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 4.7.2
+    "@openzeppelin/contracts": 4.7.3
     "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades": 2.8.0
     "@typescript-eslint/eslint-plugin": 5.13.0
@@ -16342,8 +16343,8 @@ __metadata:
     "@nomiclabs/hardhat-truffle5": 2.0.6
     "@nomiclabs/hardhat-waffle": 2.0.3
     "@nomiclabs/hardhat-web3": 2.0.0
-    "@openzeppelin/contracts": 4.7.2
-    "@openzeppelin/contracts-upgradeable": 4.7.2
+    "@openzeppelin/contracts": 4.7.3
+    "@openzeppelin/contracts-upgradeable": 4.7.3
     "@openzeppelin/hardhat-upgrades": 1.16.1
     "@openzeppelin/test-helpers": 0.5.15
     "@openzeppelin/upgrades-core": 1.12.0
@@ -31191,6 +31192,13 @@ fsevents@~2.1.1:
   version: 1.2.2
   resolution: "functions-have-names@npm:1.2.2"
   checksum: 25f44b6d1c41ac86ffdf41f25d1de81c0a5b4a3fcf4307a33cdfb23b9d4bd5d0d8bf312eaef5ad368c6500c8a9e19f692b8ce9f96aaab99db9dd936554165558
+  languageName: node
+  linkType: hard
+
+"fuse.js@npm:6.6.2":
+  version: 6.6.2
+  resolution: "fuse.js@npm:6.6.2"
+  checksum: 17ae758ce205276ebd88bd9c9f088a100be0b4896abac9f6b09847151269d1690f41d7f98ff5813d4a58973162dbd99d0072ce807020fee6f9de60170f6b08eb
   languageName: node
   linkType: hard
 

@@ -4,7 +4,7 @@ import { useConfig } from '~/utils/withConfig'
 import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
 import { useQuery } from 'react-query'
 import { getFiatPricing } from '~/hooks/useCards'
@@ -32,7 +32,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
 
-  const { paywallConfig, quantity, recipients } = state.context
+  const { paywallConfig, quantity, recipients, skipQuantity, payment } =
+    state.context
   const lock = state.context.lock!
   const wallet = useWalletService()
   const { account, network } = useAuth()
@@ -94,48 +95,60 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const isWaiting = isLoading || isClaimableLoading
 
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: 'Minting NFT',
+    },
+  ]
+
   return (
     <Fragment>
-      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <IconButton
-              title="Select lock"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('SELECT')
-              }}
-            />
-            <IconButton
-              title="Select Quantity"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('QUANTITY')
-              }}
-            />
-            <IconButton
-              title="Add metadata"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('METADATA')
-              }}
-            />
-            <ProgressCircleIcon />
-          </div>
-          <h4 className="text-sm"> Choose payment </h4>
-        </div>
-        <div className="border-t-4 w-full flex-1"></div>
-        <div className="inline-flex items-center gap-0.5">
-          {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
-          <ProgressCircleIcon disabled />
-          <ProgressFinishIcon disabled />
-        </div>
-      </div>
-      <main className="p-6 overflow-auto h-full ">
+      <Stepper position={4} service={checkoutService} items={stepItems} />
+      <main className="h-full p-6 overflow-auto ">
         {isWaiting ? (
           <div className="space-y-6">
-            <div className="w-full h-24 bg-zinc-50 rounded-lg animate-pulse" />
-            <div className="w-full h-24 bg-zinc-50 rounded-lg animate-pulse" />
+            <div className="w-full h-24 rounded-lg bg-zinc-50 animate-pulse" />
+            <div className="w-full h-24 rounded-lg bg-zinc-50 animate-pulse" />
           </div>
         ) : (
           <div className="space-y-6">
@@ -150,24 +163,24 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   },
                 })
               }}
-              className="border flex flex-col w-full border-gray-400 space-y-2 cursor-pointer shadow p-4 rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+              className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
             >
-              <div className="flex w-full justify-between">
+              <div className="flex justify-between w-full">
                 <h3 className="font-bold"> Pay via cryptocurrency </h3>
                 <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
                   {symbol.toUpperCase()}
                   <CryptoIcon name={symbol.toLowerCase()} size={18} />
                 </div>
               </div>
-              <div className="flex items-center w-full justify-between">
-                <div className="text-sm flex items-center w-full text-left text-gray-500">
+              <div className="flex items-center justify-between w-full">
+                <div className="flex items-center w-full text-sm text-left text-gray-500">
                   Your balance ({symbol.toUpperCase()})
-                  <p className="font-medium ml-2 w-20 truncate">
+                  <p className="w-20 ml-2 font-medium truncate">
                     {balanceAmount?.toString()}
                   </p>
                 </div>
                 <RightArrowIcon
-                  className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
+                  className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
                   size={20}
                 />
               </div>
@@ -183,22 +196,22 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     },
                   })
                 }}
-                className="border flex flex-col w-full border-gray-400 space-y-2 cursor-pointer shadow p-4 rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
-                <div className="items-center flex justify-between w-full">
+                <div className="flex items-center justify-between w-full">
                   <h3 className="font-bold"> Pay via credit card </h3>
-                  <div className="flex items-center gap-x-2 text-sm">
+                  <div className="flex items-center text-sm gap-x-2">
                     Accept:
                     <VisaIcon size={18} />
                     <MasterCardIcon size={18} />
                   </div>
                 </div>
-                <div className="flex items-center w-full justify-between">
-                  <div className="text-sm text-gray-500 text-left">
+                <div className="flex items-center justify-between w-full">
+                  <div className="text-sm text-left text-gray-500">
                     Powered by stripe
                   </div>
                   <RightArrowIcon
-                    className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
+                    className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
                     size={20}
                   />
                 </div>
@@ -215,16 +228,16 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     },
                   })
                 }}
-                className="border flex flex-col w-full border-gray-400 space-y-2 cursor-pointer shadow p-4 rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <h3 className="font-bold"> Claim membership for free </h3>
-                <div className="flex items-center w-full justify-between">
-                  <div className="text-sm text-gray-500 text-left">
+                <div className="flex items-center justify-between w-full">
+                  <div className="text-sm text-left text-gray-500">
                     We will airdrop this free membership to you!
                   </div>
                   <div className="flex items-center justify-end">
                     <RightArrowIcon
-                      className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
+                      className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
                       size={20}
                     />
                   </div>
@@ -243,20 +256,20 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     },
                   })
                 }}
-                className="border flex flex-col w-full border-gray-400 space-y-2 cursor-pointer shadow p-4 rounded-lg group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
-                <div className="items-center flex justify-between w-full">
+                <div className="flex items-center justify-between w-full">
                   <h3 className="font-bold"> Pay via superfluid </h3>
-                  <div className="flex items-center gap-x-2 text-sm">
+                  <div className="flex items-center text-sm gap-x-2">
                     Accept: <CryptoIcon name={symbol} size={18} />
                   </div>
                 </div>
-                <div className="flex items-center w-full justify-between">
-                  <div className="text-sm text-gray-500 text-left">
+                <div className="flex items-center justify-between w-full">
+                  <div className="text-sm text-left text-gray-500">
                     Superfluid allows you to stream payment.
                   </div>
                   <RightArrowIcon
-                    className="group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 duration-300 ease-out transition-transform group-disabled:transition-none group-disabled:group-hover:fill-black"
+                    className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
                     size={20}
                   />
                 </div>
@@ -265,7 +278,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
           </div>
         )}
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           service={checkoutService}
           injectedProvider={injectedProvider}

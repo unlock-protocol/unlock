@@ -4,14 +4,14 @@ import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
 import { Fragment, useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
-import { getAddressForName } from '~/hooks/useEns'
+import { getAddressForName, getNameOrAddressForAddress } from '~/hooks/useEns'
 import { Connected } from '../Connected'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
 import { useQuery } from 'react-query'
@@ -29,7 +29,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, isUnlockAccount, email } = useAuth()
   const storage = useStorageService()
-  const { lock, paywallConfig, quantity } = state.context
+  const { lock, paywallConfig, quantity, skipQuantity, payment } = state.context
   const web3Service = useWeb3Service()
 
   const metadataInputs =
@@ -69,6 +69,18 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       return memberships.filter((item) => item)
     },
     {
+      enabled: !!account,
+    }
+  )
+
+  const { data: address, isLoading: isEnsLoading } = useQuery(
+    ['ens', account],
+    () => {
+      return getNameOrAddressForAddress(account!)
+    },
+    {
+      refetchInterval: false,
+      refetchOnMount: false,
       enabled: !!account,
     }
   )
@@ -142,43 +154,61 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   }
   const isLoading = isSubmitting
 
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: 'Minting NFT',
+    },
+  ]
+
   return (
     <Fragment>
-      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <IconButton
-              title="Select lock"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('SELECT')
-              }}
-            />
-            <IconButton
-              title="Choose quantity"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('QUANTITY')
-              }}
-            />
-            <ProgressCircleIcon />
-          </div>
-          <h4 className="text-sm "> Add recipient info </h4>
-        </div>
-        <div className="border-t-4 w-full flex-1"> </div>
-        <div className="inline-flex items-center gap-1">
-          <ProgressCircleIcon disabled />
-          {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
-          <ProgressCircleIcon disabled />
-          <ProgressFinishIcon disabled />
-        </div>
-      </div>
-      <main className="px-6 py-2 overflow-auto h-full">
-        {isMembershipsLoading ? (
-          <div className="grid w-full gap-y-2 pb-6">
-            <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
-            <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
-            <div className="w-full h-8 bg-zinc-50 rounded-full animate-pulse" />
+      <Stepper position={3} service={checkoutService} items={stepItems} />
+      <main className="h-full px-6 py-2 overflow-auto">
+        {isMembershipsLoading || isEnsLoading ? (
+          <div className="grid w-full pb-6 gap-y-2">
+            <div className="w-full h-8 rounded-full bg-zinc-50 animate-pulse" />
+            <div className="w-full h-8 rounded-full bg-zinc-50 animate-pulse" />
+            <div className="w-full h-8 rounded-full bg-zinc-50 animate-pulse" />
           </div>
         ) : (
           <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
@@ -194,10 +224,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                 >
                   {hideRecipient ? (
                     <div className="space-y-1">
-                      <div className="text-sm ml-1"> Recipient #1 </div>
+                      <div className="ml-1 text-sm"> Recipient #1 </div>
                       <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
                         <div className="w-32 text-sm truncate">
-                          {isUnlockAccount ? email : account}
+                          {isUnlockAccount ? email : address}
                         </div>
                         <Button
                           type="button"
@@ -276,7 +306,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
           </form>
         )}
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}

@@ -19,7 +19,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
 import { Framework } from '@superfluid-finance/sdk-core'
 import { ethers, BigNumber } from 'ethers'
@@ -59,6 +59,7 @@ export function Confirm({
     captcha,
     messageToSign,
     paywallConfig,
+    skipQuantity,
   } = state.context
 
   const {
@@ -184,6 +185,9 @@ export function Confirm({
         return
       }
       const keyPrices: string[] = new Array(recipients!.length).fill(keyPrice)
+      const referers: string[] | undefined = paywallConfig.referrer
+        ? new Array(recipients!.length).fill(paywallConfig.referrer)
+        : undefined
       await walletService?.purchaseKeys(
         {
           lockAddress,
@@ -191,6 +195,7 @@ export function Confirm({
           owners: recipients!,
           data: captcha,
           recurringPayments,
+          referers,
         },
         (error, hash) => {
           setIsConfirming(true)
@@ -374,61 +379,58 @@ export function Confirm({
       }
     }
   }
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: 'Minting NFT',
+    },
+  ]
 
   return (
     <Fragment>
-      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <IconButton
-              title="Select lock"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('SELECT')
-              }}
-            />
-            <IconButton
-              title="Choose quantity"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('QUANTITY')
-              }}
-            />
-            <IconButton
-              title="Add metadata"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('METADATA')
-              }}
-            />
-            <IconButton
-              title="Select payment method"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('PAYMENT')
-              }}
-            />
-            {paywallConfig.messageToSign && (
-              <IconButton
-                title="Sign message"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('MESSAGE_TO_SIGN')
-                }}
-              />
-            )}
-            <ProgressCircleIcon />
-          </div>
-          <h4 className="text-sm">Confirm purchase</h4>
-        </div>
-        <div className="border-t-4 w-full flex-1"></div>
-        <div className="inline-flex items-center gap-1">
-          <ProgressFinishIcon disabled />
-        </div>
-      </div>
-      <main className="px-6 py-2 overflow-auto h-full space-y-2">
+      <Stepper position={7} service={checkoutService} items={stepItems} />
+      <main className="h-full px-6 py-2 space-y-2 overflow-auto">
         <div className="flex items-start justify-between">
-          <h3 className="font-bold text-xl">
+          <h3 className="text-xl font-bold">
             {quantity}X {lockName}
           </h3>
           {!isLoading ? (
@@ -455,15 +457,15 @@ export function Confirm({
               </p>
             </div>
           ) : (
-            <div className="flex gap-2 flex-col items-center">
-              <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-              <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+              <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
             </div>
           )}
         </div>
-        <div className="border-t w-full"></div>
+        <div className="w-full border-t"></div>
         {!isLoading ? (
-          <div className="space-y-1 py-2">
+          <div className="py-2 space-y-1">
             <ul className="flex items-center gap-4 text-sm">
               <LabeledItem
                 label="Duration"
@@ -484,19 +486,19 @@ export function Confirm({
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
             >
               View Contract <Icon icon={ExternalLinkIcon} size="small" />
             </a>
           </div>
         ) : (
           <div className="py-1.5 space-y-2 items-center">
-            <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-            <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+            <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
+            <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
           </div>
         )}
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}

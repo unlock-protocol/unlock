@@ -6,7 +6,7 @@ import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { StepItem, Stepper } from '../Stepper'
 import { useQuery } from 'react-query'
 import { Fragment, useState, useMemo } from 'react'
 import { RadioGroup } from '@headlessui/react'
@@ -21,6 +21,7 @@ import {
 import { Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
+import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 
 interface Props {
   injectedProvider: unknown
@@ -29,7 +30,7 @@ interface Props {
 
 export function Select({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { paywallConfig, lock: selectedLock } = state.context
+  const { paywallConfig, lock: selectedLock, payment } = state.context
   const lockOptions = useMemo(() => {
     return Object.entries(paywallConfig.locks).map(([lock, props]) => ({
       ...props,
@@ -44,28 +45,42 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       } else {
         return item.default
       }
-    })
+    }) || lockOptions[0]
   )
+
+  const skipQuantity = useMemo(() => {
+    const maxRecipients =
+      lockOption.maxRecipients || paywallConfig.maxRecipients
+    const minRecipients =
+      lockOption.minRecipients || paywallConfig.minRecipients
+    const hasMaxRecipients = maxRecipients && maxRecipients > 1
+    const hasMinRecipients = minRecipients && minRecipients > 1
+    return !(hasMaxRecipients || hasMinRecipients)
+  }, [lockOption, paywallConfig])
+
+  const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
   const config = useConfig()
-  const { account } = useAuth()
+  const { account, network, changeNetwork, isUnlockAccount } = useAuth()
   const web3Service = useWeb3Service()
+
   const { isLoading: isLocksLoading, data: locks } = useQuery(
     ['locks', JSON.stringify(paywallConfig)],
     async () => {
       const items = await Promise.all(
         Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
-          const lockNetwork = props.network || paywallConfig.network || 1
+          const networkId: number = props.network || paywallConfig.network || 1
           const [lockData, fiatPricing] = await Promise.all([
-            web3Service.getLock(lock, lockNetwork),
-            getFiatPricing(config, lock, lockNetwork),
+            web3Service.getLock(lock, networkId),
+            getFiatPricing(config, lock, networkId),
           ])
           return {
             ...props,
             ...lockData,
             name: props.name || lockData.name,
-            network: lockNetwork,
+            network: networkId,
             address: lock,
             fiatPricing,
+            isSoldOut: numberOfAvailableKeys(lockData) <= 0,
           } as LockState
         })
       )
@@ -107,30 +122,73 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       enabled: !!account,
     }
   )
-  const isDisabled = isLocksLoading || isMembershipsLoading || !lockOption
+  const lock = locks?.[lockOption.network]?.find(
+    (item) => item.address === lockOption.address
+  )
+  const lockNetwork = config?.networks?.[lockOption.network]
+  const isNetworkSwitchRequired =
+    lockOption.network !== network && !isUnlockAccount
+  const existingMember = !!memberships?.includes(lockOption.address)
+
+  const isDisabled =
+    isLocksLoading ||
+    isMembershipsLoading ||
+    !lockOption ||
+    // if locks are sold out and the user is not an existing member of the lock
+    (lock?.isSoldOut && !existingMember)
+
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Choose quantity',
+      skip: skipQuantity,
+      to: 'QUANTITY',
+    },
+    {
+      id: 3,
+      name: 'Add recipients',
+      to: 'METADATA',
+    },
+    {
+      id: 4,
+      name: 'Choose payment',
+      to: 'PAYMENT',
+    },
+    {
+      id: 5,
+      name: 'Sign message',
+      skip: !paywallConfig.messageToSign,
+      to: 'MESSAGE_TO_SIGN',
+    },
+    {
+      id: 6,
+      name: 'Solve captcha',
+      to: 'CAPTCHA',
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
+    },
+    {
+      id: 7,
+      name: 'Confirm',
+      to: 'CONFIRM',
+    },
+    {
+      id: 8,
+      name: 'Minting NFT',
+    },
+  ]
 
   return (
     <Fragment>
-      <div className="flex px-6 p-2 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <ProgressCircleIcon />
-          </div>
-        </div>
-        <h4 className="text-sm"> Select lock</h4>
-        <div className="border-t-4 w-full flex-1"></div>
-        <div className="inline-flex items-center gap-1">
-          <ProgressCircleIcon disabled />
-          <ProgressCircleIcon disabled />
-          <ProgressCircleIcon disabled />
-          {paywallConfig.messageToSign && <ProgressCircleIcon disabled />}
-          <ProgressCircleIcon disabled />
-          <ProgressFinishIcon disabled />
-        </div>
-      </div>
-      <main className="px-6 py-2 overflow-auto h-full">
+      <Stepper position={1} service={checkoutService} items={stepItems} />
+      <main className="h-full px-6 py-2 overflow-auto">
         {isLocksLoading ? (
-          <div className="space-y-4 mt-6">
+          <div className="mt-6 space-y-4">
             {Array.from({ length: lockOptions.length }).map((_, index) => (
               <LockOptionPlaceholder key={index} />
             ))}
@@ -138,7 +196,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         ) : (
           <RadioGroup
             key="select"
-            className="space-y-6 box-content"
+            className="box-content space-y-6"
             value={lockOption}
             onChange={setLockOption}
           >
@@ -146,7 +204,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
               Object.entries(locks).map(([network, items]) => (
                 <section key={network} className="space-y-4">
                   <header>
-                    <p className="font-bold text-brand-ui-primary text-lg">
+                    <p className="text-lg font-bold text-brand-ui-primary">
                       {config.networks[network].name}
                     </p>
                   </header>
@@ -154,9 +212,10 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                     const value = lockOptions.find(
                       (option) => item.address === option.address
                     )
+                    const disabled = item.isSoldOut && !item.isMember
                     return (
                       <RadioGroup.Option
-                        disabled={isMembershipsLoading}
+                        disabled={disabled}
                         key={item.address}
                         value={value}
                         className={({ checked, disabled }) =>
@@ -183,9 +242,9 @@ export function Select({ checkoutService, injectedProvider }: Props) {
 
                           return (
                             <Fragment>
-                              <div className="flex gap-x-2 w-full">
+                              <div className="flex w-full gap-x-2">
                                 <div>
-                                  <Avatar.Root className="inline-flex items-center w-14 h-14 justify-center rounded-xl">
+                                  <Avatar.Root className="inline-flex items-center justify-center w-14 h-14 rounded-xl">
                                     <Avatar.Image
                                       src={lockImageURL}
                                       alt={item.name}
@@ -253,33 +312,51 @@ export function Select({ checkoutService, injectedProvider }: Props) {
           </RadioGroup>
         )}
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           service={checkoutService}
           injectedProvider={injectedProvider}
         >
           <div className="grid">
-            <Button
-              disabled={isDisabled}
-              onClick={(event) => {
-                event.preventDefault()
-                if (lockOption && locks) {
-                  const existingMember = !!memberships?.includes(
-                    lockOption.address
-                  )
-                  const lock = locks[lockOption.network].find(
-                    (lock) => lock.address === lockOption.address
-                  )!
+            {isNetworkSwitchRequired && (
+              <Button
+                disabled={isDisabled || isSwitchingNetwork}
+                loading={isSwitchingNetwork}
+                onClick={async (event) => {
+                  setIsSwitchingNetwork(true)
+                  event.preventDefault()
+                  await changeNetwork(lockNetwork)
+                  setIsSwitchingNetwork(false)
+                }}
+              >
+                Switch to {lockNetwork.name}
+              </Button>
+            )}
+            {!isNetworkSwitchRequired && (
+              <Button
+                disabled={isDisabled}
+                onClick={async (event) => {
+                  event.preventDefault()
+                  // Silently change network to the correct one in the background
+                  if (isUnlockAccount) {
+                    await changeNetwork(lockNetwork)
+                  }
+
+                  if (!lock) {
+                    return
+                  }
+
                   send({
                     type: 'SELECT_LOCK',
                     lock,
                     existingMember,
+                    skipQuantity,
                   })
-                }
-              }}
-            >
-              Next
-            </Button>
+                }}
+              >
+                Next
+              </Button>
+            )}
           </div>
         </Connected>
         <PoweredByUnlock />

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import FileSaver from 'file-saver'
 import Link from 'next/link'
 import { buildCSV } from '../../utils/csv'
-import { MemberFilter } from '../../unlockTypes'
 import { ExpireAndRefundModal } from './ExpireAndRefundModal'
 import {
   MemberCard,
@@ -24,10 +23,11 @@ interface MetadataTableProps {
   columns: string[]
   metadata: KeyMetadata[]
   loading?: boolean
-  filter?: MemberFilter
-  isLockManager?: boolean
+  hasSearchValue?: boolean
+  lockManagerMapping?: {
+    [lockAddress: string]: boolean
+  }
   lockAddresses?: string[]
-  loadMembers?: () => void
   membersCount?: MemberCountProps['membersCount']
 }
 
@@ -77,14 +77,16 @@ const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
 
 export const MetadataTable: React.FC<MetadataTableProps> = ({
   columns,
-  metadata,
-  filter,
-  loadMembers,
+  metadata = [],
   membersCount,
   loading = false,
-  isLockManager,
+  lockManagerMapping,
   lockAddresses = [],
+  hasSearchValue = false,
 }) => {
+  const hasLockManagerStatus = Object.values(lockManagerMapping ?? {}).some(
+    (status) => status
+  )
   const [currentLock, setCurrentLock] = useState(null)
   const [expandAllMetadata, setExpandAllMetadata] = useState(false)
   const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
@@ -102,24 +104,22 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     )
   }
 
-  if (metadata.length === 0) {
-    if (filter === 'all') {
-      return (
-        <span className="text-gray-600">
-          No keys have been purchased yet. Return to your{' '}
-          <Link href="/dashboard">
-            <a>Dashboard</a>
-          </Link>
-          .
-        </span>
-      )
-    }
-
-    return <p>No keys found matching the current filter.</p>
+  if (metadata?.length === 0) {
+    return hasSearchValue ? (
+      <span className="text-gray-600">No key matches your filter.</span>
+    ) : (
+      <span className="text-gray-600">
+        No keys have been purchased yet. Return to your{' '}
+        <Link href="/dashboard">
+          <a>Dashboard</a>
+        </Link>
+        .
+      </span>
+    )
   }
 
-  const onExpireAndRefund = (lock: any) => {
-    if (expireAndRefundDisabled(lock)) return
+  const onExpireAndRefund = (lock: any, isLockManager: boolean) => {
+    if (expireAndRefundDisabled(lock, isLockManager)) return
     setShowExpireAndRefundModal(true)
     setCurrentLock(lock)
   }
@@ -137,12 +137,15 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     return expiration > now
   }
 
-  const expireAndRefundDisabled = (metadata: KeyMetadata): boolean => {
+  const expireAndRefundDisabled = (
+    metadata: KeyMetadata,
+    isLockManager: boolean
+  ): boolean => {
     return !(isLockManager && isKeyValid(metadata))
   }
 
   const onExpandAllMetadata = () => {
-    if (!isLockManager) return
+    if (!hasLockManagerStatus) return
     setExpandAllMetadata(!expandAllMetadata)
   }
 
@@ -169,7 +172,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
           >
             Export as CSV
           </Button>
-          {isLockManager && (
+          {hasLockManagerStatus && (
             <div className="flex justify-end">
               <Button size="small" onClick={onExpandAllMetadata}>
                 Show all metadata
@@ -180,8 +183,11 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
       </div>
 
       {metadata?.map((data: any) => {
-        const { lockName, expiration, keyholderAddress, token } = data
+        const { lockName, expiration, keyholderAddress, token, lockAddress } =
+          data
         const key = `${lockName}${expiration}${keyholderAddress}`
+        const isLockManager =
+          lockManagerMapping?.[lockAddress.toLowerCase()] ?? false
 
         return (
           <MemberCard
@@ -193,10 +199,12 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             metadata={data}
             expandAllMetadata={expandAllMetadata}
             isLockManager={isLockManager}
-            expireAndRefundDisabled={expireAndRefundDisabled(data)}
-            onExpireAndRefund={() => onExpireAndRefund(data)}
+            expireAndRefundDisabled={expireAndRefundDisabled(
+              data,
+              isLockManager
+            )}
+            onExpireAndRefund={() => onExpireAndRefund(data, isLockManager)}
             showCheckInTimeInfo={showCheckInTimeInfo}
-            loadMembers={loadMembers}
           />
         )
       })}
@@ -216,8 +224,8 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
 }
 
 MetadataTable.defaultProps = {
-  filter: 'all',
-  isLockManager: false,
+  hasSearchValue: false,
+  lockManagerMapping: {},
   lockAddresses: [],
 }
 

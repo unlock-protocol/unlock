@@ -13,24 +13,28 @@ const metadata = [
     keyholderAddress: '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2',
     expiration: '123456789',
     emailAddress: 'support@tether.to',
+    lockAddress: '0xx23',
   },
   {
     lockName: 'Giant Martian Insect Party',
     keyholderAddress: '0x84BCb1DFF32Ee9e7Bc7c6868954C3E6F346046b4',
     expiration: '123456789',
     emailAddress: 'rex.smythe@higgi.ns',
+    lockAddress: '0xx23',
   },
   {
     lockName: 'Giant Martian Insect Party',
     keyholderAddress: '0xD6858301c9F434cCcDbFaB8E984bea08BbDBFDCE',
     expiration: '123456789',
     emailAddress: 'ssgt_jones@area51.gov',
+    lockAddress: '0xx23',
   },
   {
     lockName: 'Giant Martian Insect Party',
     keyholderAddress: '0xaFAEfc6dd3C9feF66f92BA838b132644451F0715',
     expiration: '123456789',
     emailAddress: "we don't validate email inputs",
+    lockAddress: '0xx23',
   },
 ]
 
@@ -71,7 +75,6 @@ describe('MetadataTable', () => {
             'emailAddress',
           ]}
           metadata={metadata}
-          filter={'all'}
         />
       )
 
@@ -86,7 +89,7 @@ describe('MetadataTable', () => {
         expect.assertions(1)
 
         const wrapper = render(
-          <MetadataTable columns={[]} metadata={[]} filter={'all'} />
+          <MetadataTable columns={[]} metadata={[]} hasSearchValue={false} />
         )
         expect(
           wrapper.getByText('No keys have been purchased yet.', {
@@ -95,14 +98,16 @@ describe('MetadataTable', () => {
         ).not.toBeNull()
       })
 
-      it('should show a message when there is no match on when showing only active keys', () => {
+      it('should show a message when there is no match when filtering keys', () => {
         expect.assertions(1)
 
         const wrapper = render(
-          <MetadataTable columns={[]} metadata={[]} filter={'active'} />
+          <MetadataTable columns={[]} metadata={[]} hasSearchValue={true} />
         )
         expect(
-          wrapper.getByText('No keys found matching the current filter.')
+          wrapper.getByText('No key matches your filter', {
+            exact: false,
+          })
         ).not.toBeNull()
       })
     })
