@@ -1,11 +1,11 @@
 import networks from '@unlock-protocol/networks'
 import { Button, Modal } from '@unlock-protocol/ui'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import React, { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
+import React from 'react'
+import { useQuery, useMutation } from 'react-query'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
-
+import { FaSpinner as Spinner } from 'react-icons/fa'
 export interface ICancelAndRefundProps {
   active: boolean
   lock: any
@@ -39,8 +39,6 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   keyId,
   network,
 }) => {
-  const [isRefundable, setIsRefundable] = useState(false)
-  const [hasMaxCancellationFee, setHasMaxCancellationFee] = useState(false)
   const walletService = useWalletService()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
@@ -68,57 +66,67 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
     return web3Service.getAddressBalance(lockAddress, network)
   }
 
-  const onCancelAndRefund = async () => {
+  const cancelAndRefund = async () => {
     const params = {
       lockAddress,
       tokenId: keyId,
     }
-    try {
-      await walletService.cancelAndRefund(params, () => true)
-      setIsOpen(false)
+    return walletService.cancelAndRefund(params, () => true)
+  }
+
+  const { isLoading, data: refundAmount = 0 } = useQuery(
+    ['getRefundAmount', active, lockAddress],
+    () => getRefundAmount(),
+    {
+      refetchInterval: false,
+    }
+  )
+
+  const { isLoading: isLoadingCancellationFee, data: transferFee } = useQuery(
+    ['getCancellationFee', active, lockAddress],
+    () => getCancellationFee(),
+    {
+      refetchInterval: false,
+    }
+  )
+
+  const { isLoading: isLoadingLockDetails, data: lockBalance } = useQuery(
+    ['getLockBalance', active, lockAddress],
+    () => getLockBalance(),
+    {
+      refetchInterval: false,
+    }
+  )
+
+  const cancelRefundMutation = useMutation(cancelAndRefund, {
+    onSuccess: () => {
       ToastHelper.success('Key cancelled and successfully refunded.')
-      // reload page to show updated list of keys
+      setIsOpen(false)
       setTimeout(() => {
         window.location.reload()
       }, 2000)
-    } catch (err: any) {
+    },
+    onError: (err: any) => {
       setIsOpen(false)
       ToastHelper.error(
         err?.error?.message ??
           err?.message ??
           'There was an error in refund process. Please try again.'
       )
-    }
-  }
+    },
+  })
 
-  const { isLoading, data: refundAmount } = useQuery(
-    [active, lockAddress],
-    () => getRefundAmount()
-  )
-
-  const { isLoading: isLoadingCancellationFee, data: transferFee } = useQuery(
-    [active, refundAmount, lockAddress],
-    () => getCancellationFee()
-  )
-
-  const { isLoading: isLoadingLockDetails, data: lockBalance } = useQuery(
-    [active, lockAddress],
-    () => getLockBalance()
-  )
-
-  const maxFeeReached = Number(transferFee) >= MAX_TRANSFER_FEE
-  const canRefund = !maxFeeReached && Number(lockBalance) <= refundAmount
-
-  useEffect(() => {
-    setIsRefundable(canRefund)
-    setHasMaxCancellationFee(maxFeeReached)
-  }, [canRefund, maxFeeReached])
+  const hasMaxCancellationFee = Number(transferFee) >= MAX_TRANSFER_FEE
+  const isRefundable =
+    !hasMaxCancellationFee && refundAmount <= Number(lockBalance)
 
   const loading = isLoading || isLoadingCancellationFee || isLoadingLockDetails
 
+  const buttonDisabled =
+    loading || !isRefundable || cancelRefundMutation?.isLoading
+
   if (!lock) return <span>No lock selected</span>
 
-  const buttonDisabled = loading || !isRefundable
   return (
     <Modal isOpen={active} setIsOpen={setIsOpen}>
       {loading ? (
@@ -149,10 +157,15 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
           </div>
           <Button
             type="button"
-            onClick={onCancelAndRefund}
+            onClick={() => cancelRefundMutation.mutate()}
             disabled={buttonDisabled}
           >
-            <span className="ml-2">Confirm</span>
+            <div className="flex items-center">
+              {cancelRefundMutation.isLoading && (
+                <Spinner className="animate-spin" />
+              )}
+              <span className="ml-2">Confirm</span>
+            </div>
           </Button>
         </div>
       )}
