@@ -6,6 +6,7 @@ import { useQuery, useMutation } from 'react-query'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { FaSpinner as Spinner } from 'react-icons/fa'
+
 export interface ICancelAndRefundProps {
   active: boolean
   lock: any
@@ -74,29 +75,26 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
     return walletService.cancelAndRefund(params, () => true)
   }
 
-  const { isLoading, data: refundAmount = 0 } = useQuery(
-    ['getRefundAmount', active, lockAddress],
-    () => getRefundAmount(),
-    {
-      refetchInterval: false,
-    }
-  )
+  const getAmounts = async (): Promise<{
+    refundAmount: number
+    transferFee: number
+    lockBalance: number
+  }> => {
+    const refundAmount = await getRefundAmount()
+    const transferFee = await getCancellationFee()
+    const lockBalance = parseFloat(await getLockBalance())
 
-  const { isLoading: isLoadingCancellationFee, data: transferFee } = useQuery(
-    ['getCancellationFee', active, lockAddress],
-    () => getCancellationFee(),
-    {
-      refetchInterval: false,
+    return {
+      refundAmount,
+      transferFee,
+      lockBalance,
     }
-  )
+  }
 
-  const { isLoading: isLoadingLockDetails, data: lockBalance } = useQuery(
-    ['getLockBalance', active, lockAddress],
-    () => getLockBalance(),
-    {
-      refetchInterval: false,
-    }
-  )
+  const {
+    isLoading: loading,
+    data: { refundAmount = 0, transferFee = 0, lockBalance = 0 } = {},
+  } = useQuery(['getAmounts', active, lockAddress], () => getAmounts())
 
   const cancelRefundMutation = useMutation(cancelAndRefund, {
     onSuccess: () => {
@@ -120,8 +118,6 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   const isRefundable =
     !hasMaxCancellationFee && refundAmount <= Number(lockBalance)
 
-  const loading = isLoading || isLoadingCancellationFee || isLoadingLockDetails
-
   const buttonDisabled =
     loading || !isRefundable || cancelRefundMutation?.isLoading
 
@@ -144,7 +140,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
                 ) : isRefundable ? (
                   <>
                     <span>
-                      {currency} {parseFloat(refundAmount!).toFixed(3)}
+                      {currency} {parseFloat(`${refundAmount}`!).toFixed(3)}
                     </span>
                     {` will be refunded, Do you want to proceed?`}
                   </>
