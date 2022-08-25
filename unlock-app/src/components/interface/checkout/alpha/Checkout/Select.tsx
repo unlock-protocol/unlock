@@ -219,8 +219,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                         key={item.address}
                         value={value}
                         className={({ checked, disabled }) =>
-                          `flex flex-col p-2 w-full gap-4 items-center ring-1 ring-gray-200 rounded-xl cursor-pointer relative ${
-                            checked && 'ring-ui-main-200 bg-ui-main-50'
+                          `flex flex-col p-2 w-full gap-4 items-center border border-gray-200 rounded-xl cursor-pointer relative ${
+                            checked && 'border-ui-main-200 bg-ui-main-50'
                           } ${
                             disabled &&
                             `opacity-80 bg-gray-50  ${
