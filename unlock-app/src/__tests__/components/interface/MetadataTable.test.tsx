@@ -6,6 +6,7 @@ import {
   AuthenticationContext,
   defaultValues,
 } from '../../../contexts/AuthenticationContext'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const metadata = [
   {
@@ -60,22 +61,24 @@ const render = (component: any) => {
     </AuthenticationContext.Provider>
   )
 }
-
+const queryClient = new QueryClient()
 describe('MetadataTable', () => {
   describe('MetadataTable component', () => {
     it('renders members cards correctly', () => {
       expect.assertions(1)
 
       const { container } = render(
-        <MetadataTable
-          columns={[
-            'lockName',
-            'keyholderAddress',
-            'expiration',
-            'emailAddress',
-          ]}
-          metadata={metadata}
-        />
+        <QueryClientProvider client={queryClient}>
+          <MetadataTable
+            columns={[
+              'lockName',
+              'keyholderAddress',
+              'expiration',
+              'emailAddress',
+            ]}
+            metadata={metadata}
+          />
+        </QueryClientProvider>
       )
 
       const memberCards = container.querySelectorAll(
