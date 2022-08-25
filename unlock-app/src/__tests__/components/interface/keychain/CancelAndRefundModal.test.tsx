@@ -31,7 +31,7 @@ const dismiss: jest.Mock<any, any> = jest.fn()
 const web3Service = {
   getAddressBalance: jest.fn(() => Promise.resolve('123.45')),
   transferFeeBasisPoints: jest.fn(() => Promise.resolve(0)),
-  getCancelAndRefundValueFor: jest.fn(() => Promise.resolve(10000)),
+  getCancelAndRefundValueFor: jest.fn(() => Promise.resolve(0.5)),
 }
 
 const renderWithContexts = (component: React.ReactElement<any>) => {
