@@ -94,7 +94,9 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   const {
     isLoading: loading,
     data: { refundAmount = 0, transferFee = 0, lockBalance = 0 } = {},
-  } = useQuery(['getAmounts', active, lockAddress], () => getAmounts())
+  } = useQuery(['getAmounts', active, lockAddress], () => getAmounts(), {
+    refetchInterval: false,
+  })
 
   const cancelRefundMutation = useMutation(cancelAndRefund, {
     onSuccess: () => {
