@@ -411,7 +411,8 @@ export function Confirm({
       id: 6,
       name: 'Solve captcha',
       to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
     },
     {
       id: 7,
@@ -471,7 +472,11 @@ export function Confirm({
                 icon={DurationIcon}
                 value={formattedData.formattedDuration}
               />
-              {recurringPayments && recurringPayment && (
+              {!!(
+                recurringPayments?.length &&
+                recurringPayment &&
+                payment.method === 'crypto'
+              ) && (
                 <LabeledItem
                   label="Recurring"
                   icon={RecurringIcon}

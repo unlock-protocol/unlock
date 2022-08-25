@@ -17,7 +17,7 @@ export function MessageToSign({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, signMessage } = useAuth()
   const [isSigning, setIsSigning] = useState(false)
-  const { paywallConfig, skipQuantity } = state.context
+  const { paywallConfig, skipQuantity, payment } = state.context
   const { messageToSign } = paywallConfig
 
   const onSign = async () => {
@@ -70,7 +70,8 @@ export function MessageToSign({ checkoutService, injectedProvider }: Props) {
       id: 6,
       name: 'Solve captcha',
       to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
     },
     {
       id: 7,

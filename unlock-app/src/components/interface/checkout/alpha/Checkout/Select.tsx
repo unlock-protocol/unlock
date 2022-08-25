@@ -21,6 +21,7 @@ import {
 import { Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
+import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
 
 interface Props {
   injectedProvider: unknown
@@ -29,7 +30,7 @@ interface Props {
 
 export function Select({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { paywallConfig, lock: selectedLock } = state.context
+  const { paywallConfig, lock: selectedLock, payment } = state.context
   const lockOptions = useMemo(() => {
     return Object.entries(paywallConfig.locks).map(([lock, props]) => ({
       ...props,
@@ -67,18 +68,19 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     async () => {
       const items = await Promise.all(
         Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
-          const lockNetwork = props.network || paywallConfig.network || 1
+          const networkId: number = props.network || paywallConfig.network || 1
           const [lockData, fiatPricing] = await Promise.all([
-            web3Service.getLock(lock, lockNetwork),
-            getFiatPricing(config, lock, lockNetwork),
+            web3Service.getLock(lock, networkId),
+            getFiatPricing(config, lock, networkId),
           ])
           return {
             ...props,
             ...lockData,
             name: props.name || lockData.name,
-            network: lockNetwork,
+            network: networkId,
             address: lock,
             fiatPricing,
+            isSoldOut: numberOfAvailableKeys(lockData) <= 0,
           } as LockState
         })
       )
@@ -120,10 +122,20 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       enabled: !!account,
     }
   )
-  const isDisabled = isLocksLoading || isMembershipsLoading || !lockOption
+  const lock = locks?.[lockOption.network]?.find(
+    (item) => item.address === lockOption.address
+  )
   const lockNetwork = config?.networks?.[lockOption.network]
   const isNetworkSwitchRequired =
     lockOption.network !== network && !isUnlockAccount
+  const existingMember = !!memberships?.includes(lockOption.address)
+
+  const isDisabled =
+    isLocksLoading ||
+    isMembershipsLoading ||
+    !lockOption ||
+    // if locks are sold out and the user is not an existing member of the lock
+    (lock?.isSoldOut && !existingMember)
 
   const stepItems: StepItem[] = [
     {
@@ -157,7 +169,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       id: 6,
       name: 'Solve captcha',
       to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
     },
     {
       id: 7,
@@ -199,9 +212,10 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                     const value = lockOptions.find(
                       (option) => item.address === option.address
                     )
+                    const disabled = item.isSoldOut && !item.isMember
                     return (
                       <RadioGroup.Option
-                        disabled={isMembershipsLoading}
+                        disabled={disabled}
                         key={item.address}
                         value={value}
                         className={({ checked, disabled }) =>
@@ -327,20 +341,17 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   if (isUnlockAccount) {
                     await changeNetwork(lockNetwork)
                   }
-                  if (lockOption && locks) {
-                    const existingMember = !!memberships?.includes(
-                      lockOption.address
-                    )
-                    const lock = locks[lockOption.network].find(
-                      (lock) => lock.address === lockOption.address
-                    )!
-                    send({
-                      type: 'SELECT_LOCK',
-                      lock,
-                      existingMember,
-                      skipQuantity,
-                    })
+
+                  if (!lock) {
+                    return
                   }
+
+                  send({
+                    type: 'SELECT_LOCK',
+                    lock,
+                    existingMember,
+                    skipQuantity,
+                  })
                 }}
               >
                 Next
