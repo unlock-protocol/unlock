@@ -132,42 +132,44 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
       {loading ? (
         <CancelAndRefundModalPlaceHolder />
       ) : (
-        <div className="flex flex-col w-full gap-5 p-4">
-          <div className="text-left">
-            <h3 className="text-xl font-semibold text-left text-black-500">
-              Cancel and Refund
-            </h3>
-            <p className="mt-2 text-md">
-              {hasMaxCancellationFee ? (
-                <span>This key is not refundable.</span>
-              ) : isRefundable ? (
-                <>
+        active && (
+          <div className="flex flex-col w-full gap-5 p-4">
+            <div className="text-left">
+              <h3 className="text-xl font-semibold text-left text-black-500">
+                Cancel and Refund
+              </h3>
+              <p className="mt-2 text-md">
+                {hasMaxCancellationFee ? (
+                  <span>This key is not refundable.</span>
+                ) : isRefundable ? (
+                  <>
+                    <span>
+                      {currency} {parseFloat(refundAmount!).toFixed(3)}
+                    </span>
+                    {` will be refunded, Do you want to proceed?`}
+                  </>
+                ) : (
                   <span>
-                    {currency} {parseFloat(refundAmount!).toFixed(3)}
+                    Refund is not possible because the contract does not have
+                    funds to cover.
                   </span>
-                  {` will be refunded, Do you want to proceed?`}
-                </>
-              ) : (
-                <span>
-                  Refund is not possible because the contract does not have
-                  funds to cover.
-                </span>
-              )}
-            </p>
-          </div>
-          <Button
-            type="button"
-            onClick={() => cancelRefundMutation.mutate()}
-            disabled={buttonDisabled}
-          >
-            <div className="flex items-center">
-              {cancelRefundMutation.isLoading && (
-                <Spinner className="animate-spin" />
-              )}
-              <span className="ml-2">Confirm</span>
+                )}
+              </p>
             </div>
-          </Button>
-        </div>
+            <Button
+              type="button"
+              onClick={() => cancelRefundMutation.mutate()}
+              disabled={buttonDisabled}
+            >
+              <div className="flex items-center">
+                {cancelRefundMutation.isLoading && (
+                  <Spinner className="animate-spin" />
+                )}
+                <span className="ml-2">Confirm</span>
+              </div>
+            </Button>
+          </div>
+        )
       )}
     </Modal>
   )
