@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/paywall",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "module": "src/index.ts",
   "main": "dist/unlock.latest.min.js",
   "scripts": {
