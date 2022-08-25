@@ -112,17 +112,13 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const hasExtraData = extraDataItems?.length > 0 || isCheckedIn
 
   const onMarkAsCheckIn = async () => {
-    try {
-      if (!storageService) return
-      const { lockAddress, token: keyId } = data
-      return storageService.markTicketAsCheckedIn({
-        lockAddress,
-        keyId,
-        network: network!,
-      })
-    } catch (err) {
-      ToastHelper.error('Error on marking ticket as checked-in')
-    }
+    if (!storageService) return
+    const { lockAddress, token: keyId } = data
+    return storageService.markTicketAsCheckedIn({
+      lockAddress,
+      keyId,
+      network: network!,
+    })
   }
 
   const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {
@@ -135,6 +131,9 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         setCheckedInTimestamp(new Date().toLocaleString())
         ToastHelper.success('Successfully marked ticket as checked-in')
       }
+    },
+    onError: () => {
+      ToastHelper.error('Error on marking ticket as checked-in')
     },
   })
 
