@@ -5,7 +5,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "generate-networks": "node ./bin/networks.js",
-    "generate-abis": "node ./bin/abis.js",
+    "generate-abis": "node -e 'require(\"./bin\/abis.js\").parseAndCopyAbis()'",
+    "show-events": "node -e 'require(\"./bin\/abis.js\").showAllEvents()'",
     "codegen": "graph codegen",
     "build": "graph build",
     "deploy": "graph deploy --node https://api.thegraph.com/deploy/ ",
