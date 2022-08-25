@@ -195,36 +195,36 @@ const stripeConnected = async (req, res) => {
 const lockIcon = async (req, res) => {
   const { lockAddress } = req.params
   const { original } = req.query
-  try {
-    if (original !== '1') {
-      const lockIcon = await LockIcons.findOne({
-        where: { lock: Normalizer.ethereumAddress(lockAddress) },
-      })
+  let lockIcon
 
-      if (lockIcon) {
-        if (lockIcon.icon.startsWith('data:')) {
-          const parsedDataUri = parseDataUri(lockIcon.icon)
-          res.setHeader('Content-Type', parsedDataUri.mimeType)
-          return res.send(parsedDataUri.data)
-        } else {
-          // This is just a regular URL redirect
-          return res.redirect(lockIcon.icon)
-        }
-      } else {
-        const svg = lockIconUtils.lockIcon(lockAddress)
-        res.setHeader('Content-Type', 'image/svg+xml')
-        return res.send(svg)
-      }
-    } else {
-      const svg = lockIconUtils.lockIcon(lockAddress)
-      res.setHeader('Content-Type', 'image/svg+xml')
-      return res.send(svg)
-    }
-  } catch (e) {
-    logger.error(`Could not serve icon for ${lockAddress}`)
+  let renderDefaultForLock = () => {
     const svg = lockIconUtils.lockIcon(lockAddress)
     res.setHeader('Content-Type', 'image/svg+xml')
     return res.send(svg)
+  }
+
+  try {
+    if (original !== '1') {
+      lockIcon = await LockIcons.findOne({
+        where: { lock: Normalizer.ethereumAddress(lockAddress) },
+      })
+    }
+
+    if (lockIcon) {
+      if (lockIcon.icon.startsWith('data:')) {
+        const parsedDataUri = parseDataUri(lockIcon.icon)
+        res.setHeader('Content-Type', parsedDataUri.mimeType)
+        return res.send(parsedDataUri.data)
+      } else {
+        // This is just a regular URL redirect
+        return res.redirect(lockIcon.icon)
+      }
+    } else {
+      return renderDefaultForLock()
+    }
+  } catch (e) {
+    logger.error(`Could not serve icon for ${lockAddress}`, e)
+    return renderDefaultForLock()
   }
 }
 
