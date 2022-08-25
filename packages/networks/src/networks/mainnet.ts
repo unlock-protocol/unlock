@@ -2,10 +2,8 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const mainnet: NetworkConfig = {
   id: 1,
-  publicProvider:
-    'https://eth-mainnet.alchemyapi.io/v2/6idtzGwDtRbzil3s6QbYHr2Q_WBfn100', // Should we use Infura?
-  provider:
-    'https://eth-mainnet.alchemyapi.io/v2/6idtzGwDtRbzil3s6QbYHr2Q_WBfn100',
+  publicProvider: 'https://cloudflare-eth.com/v1/mainnet',
+  provider: 'https://rpc.unlock-protocol.com/1',
   unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
   multisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
   name: 'Ethereum',

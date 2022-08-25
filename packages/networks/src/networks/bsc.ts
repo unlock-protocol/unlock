@@ -2,7 +2,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const bsc: NetworkConfig = {
   publicProvider: 'https://bsc-dataseed.binance.org/',
-  provider: 'https://bsc-dataseed.binance.org/',
+  provider: 'https://rpc.unlock-protocol.com/56',
   unlockAddress: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
   id: 56,
   name: 'Binance Smart Chain',

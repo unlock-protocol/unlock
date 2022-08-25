@@ -2,7 +2,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const celo: NetworkConfig = {
   publicProvider: 'https://forno.celo.org',
-  provider: 'https://forno.celo.org',
+  provider: 'https://rpc.unlock-protocol.com/42220',
   unlockAddress: '0x1FF7e338d5E582138C46044dc238543Ce555C963',
   multisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
   id: 42220,

@@ -2,7 +2,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const optimism: NetworkConfig = {
   publicProvider: 'https://mainnet.optimism.io',
-  provider: 'https://mainnet.optimism.io',
+  provider: 'https://rpc.unlock-protocol.com/10',
   unlockAddress: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
   multisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   id: 10,
