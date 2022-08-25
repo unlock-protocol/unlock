@@ -3,12 +3,12 @@ import * as rtl from '@testing-library/react'
 import { act, waitFor, screen } from '@testing-library/react'
 import { CancelAndRefundModal } from '../../../../components/interface/keychain/CancelAndRefundModal'
 import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
-import { WalletServiceContext } from '../../../../utils/withWalletService'
 import AuthenticationContext, {
   defaultValues,
 } from '../../../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../../../utils/withConfig'
 import { Web3ServiceContext } from '../../../../utils/withWeb3Service'
+import { QueryClientProvider, QueryClient } from 'react-query'
 
 const accountAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const aKey: OwnedKey = {
@@ -28,6 +28,11 @@ const aKey: OwnedKey = {
   },
 }
 const dismiss: jest.Mock<any, any> = jest.fn()
+const web3Service = {
+  getAddressBalance: jest.fn(() => Promise.resolve('123.45')),
+  transferFeeBasisPoints: jest.fn(() => Promise.resolve(0)),
+  getCancelAndRefundValueFor: jest.fn(() => Promise.resolve(10000)),
+}
 
 const renderWithContexts = (component: React.ReactElement<any>) => {
   const account = '0x123'
@@ -44,22 +49,21 @@ const renderWithContexts = (component: React.ReactElement<any>) => {
     },
   }
 
-  const web3Service = {
-    getAddressBalance: jest.fn(() => '123.45'),
-  }
-
   const Web3ServiceContextProvider = Web3ServiceContext.Provider
+  const queryClient = new QueryClient()
 
   return rtl.render(
-    <Web3ServiceContextProvider value={web3Service}>
-      <ConfigContext.Provider value={config}>
-        <AuthenticationContext.Provider
-          value={{ ...defaultValues, account, network }}
-        >
-          {component}
-        </AuthenticationContext.Provider>
-      </ConfigContext.Provider>
-    </Web3ServiceContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <Web3ServiceContextProvider value={web3Service}>
+        <ConfigContext.Provider value={config}>
+          <AuthenticationContext.Provider
+            value={{ ...defaultValues, account, network }}
+          >
+            {component}
+          </AuthenticationContext.Provider>
+        </ConfigContext.Provider>
+      </Web3ServiceContextProvider>
+    </QueryClientProvider>
   )
 }
 
@@ -87,19 +91,7 @@ const componentInactive: React.ReactElement<any> = (
   />
 )
 
-const mockWalletService = {
-  getCancelAndRefundValueFor: jest.fn(),
-}
-
 describe('CancelAndRefundModal', () => {
-  beforeEach(() => {
-    jest.clearAllMocks()
-    jest.spyOn(React, 'useContext').mockImplementation((context) => {
-      if (context === WalletServiceContext) {
-        return mockWalletService
-      }
-    })
-  })
   it('correctly render CancelAndRefund', () => {
     expect.assertions(1)
     const { container } = renderWithContexts(component)
