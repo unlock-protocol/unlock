@@ -44,22 +44,49 @@ function parseAndCopyAbis() {
   console.log(
     `Abis file saved at: ${abisFolderPath} (PublicLock : ${publicLockVersions.toString()} - Unlock: ${unlockVersions.toString()})`
   )
+
+  // merge
+  mergeAbis()
 }
 
 // show all existing events version by version
-function showAllEvents() {
-  const events = publicLockVersions
-    .map((version) => parseEventsSig('PublicLock', version))
+function showAllContractEvents(contractName) {
+  return (contractName === 'Unlock' ? unlockVersions : publicLockVersions)
+    .map((version) => parseEventsSig(contractName, version))
     .flat()
     .filter(
       ([_, sig], pos, self) => self.map(([v, s]) => s).indexOf(sig) == pos
     )
     .map(([version, sig]) => `${version}-${sig.slice(6, sig.length)}`)
+}
 
-  console.log(events)
+function showAllEvents() {
+  console.log(
+    'Unlock: ',
+    showAllContractEvents('Unlock'),
+    '\nPublicLock: ',
+    showAllContractEvents('PublicLock')
+  )
+}
+
+function mergeAbi(contractName) {
+  const merged = (
+    contractName === 'Unlock' ? unlockVersions : publicLockVersions
+  )
+    .map((version) => abis[`${contractName}${version.toUpperCase()}`])
+    .map(({ abi }) => abi)
+    .flat()
+  const abiPath = path.join(abisFolderPath, `${contractName}-merged.json`)
+  fs.writeJSONSync(abiPath, merged, { spaces: 2 })
+}
+
+function mergeAbis() {
+  mergeAbi('Unlock')
+  mergeAbi('PublicLock')
 }
 
 module.exports = {
   showAllEvents,
   parseAndCopyAbis,
+  mergeAbis,
 }
