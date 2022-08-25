@@ -432,6 +432,11 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
 
+    // lock < v5
+    if (!lockContract.transferFeeBasisPoints) {
+      throw new Error('Lock version is not supported')
+    }
+
     return ethers.BigNumber.from(
       await lockContract.transferFeeBasisPoints()
     ).toNumber()
