@@ -80,13 +80,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     getBalance()
   }, [account, wallet, setBalance, lock, getTokenBalance])
 
+  const lockConfig = paywallConfig.locks[lock!.address]
+
   const isReceiverAccountOnly =
     recipients.length <= 1 && recipients[0] === account
 
   const enableSuperfluid =
-    (paywallConfig.superfluid ||
-      paywallConfig.locks[lock!.address].superfluid) &&
-    isReceiverAccountOnly
+    (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
 
   const enableClaim =
     !!isClaimable && !isClaimableLoading && isReceiverAccountOnly

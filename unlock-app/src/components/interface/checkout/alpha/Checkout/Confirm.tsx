@@ -472,7 +472,11 @@ export function Confirm({
                 icon={DurationIcon}
                 value={formattedData.formattedDuration}
               />
-              {recurringPayments && recurringPayment && (
+              {!!(
+                recurringPayments?.length &&
+                recurringPayment &&
+                payment.method === 'crypto'
+              ) && (
                 <LabeledItem
                   label="Recurring"
                   icon={RecurringIcon}
