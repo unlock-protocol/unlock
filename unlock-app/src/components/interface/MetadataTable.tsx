@@ -64,10 +64,10 @@ const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
   return (
     <div className="flex divide-x-2">
       {showTotal && (
-        <div className="font-semibold text-lg px-1">Total members: {total}</div>
+        <div className="px-1 text-lg font-semibold">Total members: {total}</div>
       )}
       {showActiveTotalRatio && (
-        <div className="font-semibold text-lg px-1">
+        <div className="px-1 text-lg font-semibold">
           Active members: {active}/{total}
         </div>
       )}

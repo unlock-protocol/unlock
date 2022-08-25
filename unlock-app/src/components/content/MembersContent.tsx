@@ -33,7 +33,7 @@ const Pagination = ({
     return null
   }
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex items-center gap-2">
       <span>{`Page: ${currentPage + 1}`}</span>
       <Button
         variant="outlined-primary"
@@ -105,7 +105,7 @@ export const MembersContent = ({ query }: MembersContentProps) => {
           <>
             <div className="grid items-center justify-between grid-cols-1 gap-3 sm:grid-cols-2">
               <Account />
-              <div className="flex gap-2 justify-end">
+              <div className="flex justify-end gap-2">
                 <Button
                   onClick={() => setLockAddresses(() => [])}
                   disabled={!hasLocks}

@@ -2,7 +2,10 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Badge, Button, Input, Modal } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
-import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
+import {
+  FaCheckCircle as CheckIcon,
+  FaSpinner as Spinner,
+} from 'react-icons/fa'
 import {
   StorageServiceContext,
   useStorageService,
@@ -14,6 +17,7 @@ import useClipboard from 'react-use-clipboard'
 import { FieldValues, useForm } from 'react-hook-form'
 import useEns from '~/hooks/useEns'
 import { expirationAsDate } from '~/utils/durations'
+import { useMutation } from 'react-query'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -59,6 +63,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   isLockManager,
   expireAndRefundDisabled = true,
   metadata = {},
+  refetchKeys,
 }) => {
   const storageService = useContext(StorageServiceContext)
   const walletService = useContext(WalletServiceContext)
@@ -110,12 +115,18 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     try {
       if (!storageService) return
       const { lockAddress, token: keyId } = data
-      const response = await storageService.markTicketAsCheckedIn({
+      return storageService.markTicketAsCheckedIn({
         lockAddress,
         keyId,
         network: network!,
       })
+    } catch (err) {
+      ToastHelper.error('Error on marking ticket as checked-in')
+    }
+  }
 
+  const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {
+    onSuccess: (response: any) => {
       if (!response.ok && response.status === 409) {
         ToastHelper.error('Ticket already checked in')
       }
@@ -124,10 +135,8 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         setCheckedInTimestamp(new Date().toLocaleString())
         ToastHelper.success('Successfully marked ticket as checked-in')
       }
-    } catch (err) {
-      ToastHelper.error('Error on marking ticket as checked-in')
-    }
-  }
+    },
+  })
 
   const onSendQrCode = async () => {
     if (!network) return
@@ -168,7 +177,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   return (
     <div
       data-testid="member-card"
-      className="border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
+      className="px-10 py-4 bg-white border-2 rounded-lg hover:shadow-sm"
     >
       <UpdateEmailModal
         isOpen={addEmailModalOpen ?? false}
@@ -182,16 +191,16 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         extraDataItems={extraDataItems}
         onEmailChange={onEmailChange}
       />
-      <div className="grid gap-2 justify-between grid-cols-7 mb-2">
-        <div className="col-span-full	flex flex-col md:col-span-1">
+      <div className="grid justify-between grid-cols-7 gap-2 mb-2">
+        <div className="flex flex-col col-span-full md:col-span-1">
           <span className={styles.description}>Lock name</span>
           <span className={styles.title}>{lockName}</span>
         </div>
-        <div className="col-span-full	flex flex-col md:col-span-1">
+        <div className="flex flex-col col-span-full md:col-span-1">
           <span className={styles.description}>Token ID</span>
           <span className={styles.title}>{tokenId}</span>
         </div>
-        <div className="col-span-full	flex flex-col md:col-span-2">
+        <div className="flex flex-col col-span-full md:col-span-2">
           <span className={styles.description}>Owner</span>
           <span className={[styles.title, 'flex gap-2'].join(' ')}>
             <span className="min-w-[120px]">
@@ -209,11 +218,11 @@ export const MemberCard: React.FC<MemberCardProps> = ({
             </button>
           </span>
         </div>
-        <div className="col-span-full	flex flex-col md:col-span-1">
+        <div className="flex flex-col col-span-full md:col-span-1">
           <span className={styles.description}>Expiration</span>
           <span className={styles.title}>{expirationAsDate(expiration)}</span>
         </div>
-        <div className="col-span-full flex gap-2 justify-start items-center lg:col-span-2 lg:justify-end">
+        <div className="flex items-center justify-start gap-2 col-span-full lg:col-span-2 lg:justify-end">
           <Button
             size="small"
             variant="outlined-primary"
@@ -240,11 +249,17 @@ export const MemberCard: React.FC<MemberCardProps> = ({
             <div className="flex gap-[1rem] my-3">
               {!isCheckedIn && (
                 <Button
-                  onClick={onMarkAsCheckIn}
+                  onClick={() => markAsCheckInMutation.mutate()}
                   variant="outlined-primary"
                   size="tiny"
+                  disabled={markAsCheckInMutation.isLoading}
                 >
-                  Mark as Checked-in
+                  <div className="flex">
+                    {markAsCheckInMutation.isLoading && (
+                      <Spinner className="mr-1 animate-spin" />
+                    )}
+                    <span>Mark as Checked-in</span>
+                  </div>
                 </Button>
               )}
               {hasEmailMetadata ? (
@@ -428,8 +443,8 @@ const UpdateEmailModal = ({
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="flex flex-col p-4 gap-3">
-        <span className="font-semibold text-md mr-0">
+      <div className="flex flex-col gap-3 p-4">
+        <span className="mr-0 font-semibold text-md">
           {hasEmail ? 'Update email address' : 'Add email address to metadata'}
         </span>
         <form onSubmit={handleSubmit(onUpdateValue)}>
@@ -439,7 +454,7 @@ const UpdateEmailModal = ({
               required: true,
             })}
           />
-          <div className="flex gap-2 items-center justify-end">
+          <div className="flex items-center justify-end gap-2">
             <Button
               variant="secondary"
               onClick={() => setIsOpen(false)}
