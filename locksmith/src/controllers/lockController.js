@@ -215,6 +215,10 @@ const lockIcon = async (req, res) => {
         res.setHeader('Content-Type', 'image/svg+xml')
         return res.send(svg)
       }
+    } else {
+      const svg = lockIconUtils.lockIcon(lockAddress)
+      res.setHeader('Content-Type', 'image/svg+xml')
+      return res.send(svg)
     }
   } catch (e) {
     logger.error(`Could not serve icon for ${lockAddress}`)
