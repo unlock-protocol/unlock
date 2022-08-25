@@ -1,11 +1,10 @@
-import networks from '@unlock-protocol/networks'
 import { Button, Modal } from '@unlock-protocol/ui'
-import { Web3Service } from '@unlock-protocol/unlock-js'
 import React from 'react'
-import { useQuery, useMutation } from 'react-query'
+import { useMutation } from 'react-query'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { FaSpinner as Spinner } from 'react-icons/fa'
+import { useKeychain } from '~/hooks/useKeychain'
 
 export interface ICancelAndRefundProps {
   active: boolean
@@ -19,7 +18,7 @@ export interface ICancelAndRefundProps {
 
 const CancelAndRefundModalPlaceHolder = () => {
   return (
-    <div className="flex flex-col w-full gap-5 p-4">
+    <div data-testid="placeholder" className="flex flex-col w-full gap-5 p-4">
       <div className="flex flex-col gap-2">
         <div className="h-[24px] w-2/3 bg-slate-200 animate-pulse"></div>
         <div className="h-[14px] w-1/2 bg-slate-200 animate-pulse"></div>
@@ -43,29 +42,16 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   const walletService = useWalletService()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
-  const getRefundAmount = async () => {
-    if (!active) return
-
-    const params = {
-      lockAddress,
-      owner,
-      tokenAddress,
-      network,
-      tokenId: keyId,
-    }
-    const web3Service = new Web3Service(networks)
-    return web3Service.getCancelAndRefundValueFor(params)
-  }
-
-  const getCancellationFee = async () => {
-    const web3Service = new Web3Service(networks)
-    return web3Service.transferFeeBasisPoints(lockAddress, network)
-  }
-
-  const getLockBalance = async () => {
-    const web3Service = new Web3Service(networks)
-    return web3Service.getAddressBalance(lockAddress, network)
-  }
+  const {
+    isLoading,
+    data: { refundAmount = 0, transferFee = 0, lockBalance = 0 } = {},
+  } = useKeychain({
+    lockAddress,
+    network,
+    owner,
+    keyId,
+    tokenAddress,
+  })
 
   const cancelAndRefund = async () => {
     const params = {
@@ -74,29 +60,6 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
     }
     return walletService.cancelAndRefund(params, () => true)
   }
-
-  const getAmounts = async (): Promise<{
-    refundAmount: number
-    transferFee: number
-    lockBalance: number
-  }> => {
-    const refundAmount = await getRefundAmount()
-    const transferFee = await getCancellationFee()
-    const lockBalance = parseFloat(await getLockBalance())
-
-    return {
-      refundAmount,
-      transferFee,
-      lockBalance,
-    }
-  }
-
-  const {
-    isLoading: loading,
-    data: { refundAmount = 0, transferFee = 0, lockBalance = 0 } = {},
-  } = useQuery(['getAmounts', active, lockAddress], () => getAmounts(), {
-    refetchInterval: false,
-  })
 
   const cancelRefundMutation = useMutation(cancelAndRefund, {
     onSuccess: () => {
@@ -121,13 +84,13 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
     !hasMaxCancellationFee && refundAmount <= Number(lockBalance)
 
   const buttonDisabled =
-    loading || !isRefundable || cancelRefundMutation?.isLoading
+    isLoading || !isRefundable || cancelRefundMutation?.isLoading
 
   if (!lock) return <span>No lock selected</span>
 
   return (
     <Modal isOpen={active} setIsOpen={setIsOpen}>
-      {loading ? (
+      {isLoading ? (
         <CancelAndRefundModalPlaceHolder />
       ) : (
         active && (
