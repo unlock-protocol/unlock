@@ -32,7 +32,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
 
-  const { paywallConfig, quantity, recipients, skipQuantity } = state.context
+  const { paywallConfig, quantity, recipients, skipQuantity, payment } =
+    state.context
   const lock = state.context.lock!
   const wallet = useWalletService()
   const { account, network } = useAuth()
@@ -79,13 +80,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     getBalance()
   }, [account, wallet, setBalance, lock, getTokenBalance])
 
+  const lockConfig = paywallConfig.locks[lock!.address]
+
   const isReceiverAccountOnly =
     recipients.length <= 1 && recipients[0] === account
 
   const enableSuperfluid =
-    (paywallConfig.superfluid ||
-      paywallConfig.locks[lock!.address].superfluid) &&
-    isReceiverAccountOnly
+    (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
 
   const enableClaim =
     !!isClaimable && !isClaimableLoading && isReceiverAccountOnly
@@ -126,7 +127,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       id: 6,
       name: 'Solve captcha',
       to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
+      skip:
+        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
     },
     {
       id: 7,
