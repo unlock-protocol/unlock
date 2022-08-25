@@ -52,8 +52,8 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
       network,
       tokenId: keyId,
     }
-    if (!walletService) return
-    return walletService.getCancelAndRefundValueFor(params)
+    const web3Service = new Web3Service(networks)
+    return web3Service.getCancelAndRefundValueFor(params)
   }
 
   const getCancellationFee = async () => {

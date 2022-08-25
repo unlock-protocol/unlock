@@ -441,4 +441,40 @@ export default class Web3Service extends UnlockService {
       await lockContract.transferFeeBasisPoints()
     ).toNumber()
   }
+
+  async getCancelAndRefundValueFor(params: {
+    lockAddress: string
+    owner: string
+    tokenAddress: string
+    network: number
+  }) {
+    const { lockAddress, owner, tokenAddress, network } = params
+    if (!lockAddress) {
+      throw new Error('Missing lockAddress')
+    }
+    if (!owner) {
+      throw new Error('Missing owner')
+    }
+    if (!tokenAddress) {
+      throw new Error('Missing tokenAddress')
+    }
+    if (!network) {
+      throw new Error('Missing network')
+    }
+
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+
+    if (!version.getCancelAndRefundValueFor) {
+      throw new Error('Lock version not supported')
+    }
+
+    return version.getKeyExpirationByLockForOwner.bind(this)(
+      lockAddress,
+      owner,
+      network
+    )
+  }
 }

@@ -3,6 +3,7 @@
 # 0.26.4
 
 - add support for `transferFeeBasisPoints`
+- move `getCancelAndRefundValueFor` from `walletService` -> `web3Service`
 
 # 0.26.3
 
