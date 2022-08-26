@@ -255,7 +255,6 @@ export function createRenewKeyPurchaseEvent(
 
 // TODO: all functions below
 
-
 export function createLockManagerAddedEvent(
   account: Address
 ): LockManagerAdded {
