@@ -26,8 +26,6 @@ dataSources:
           handler: handleConfigUnlock
         - event: LockUpgraded(address,uint16)
           handler: handleLockUpgraded
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
       file: ./src/unlock.ts
 
 templates:

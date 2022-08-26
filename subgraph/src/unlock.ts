@@ -34,6 +34,3 @@ export function handleNewLock(event: NewLock): void {
   log.debug('New lock: {}', [lockID])
 }
 
-export function handleOwnershipTransferred(
-  _event: OwnershipTransferred
-): void {}
