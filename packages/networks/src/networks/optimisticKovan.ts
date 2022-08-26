@@ -2,7 +2,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const optimisticKovan: NetworkConfig = {
   publicProvider: 'https://kovan.optimism.io',
-  provider: 'https://kovan.optimism.io',
+  provider: 'https://rpc.unlock-protocol.com/69',
   unlockAddress: '0x99b1348a9129ac49c6de7F11245773dE2f51fB0c',
   id: 69,
   name: 'Optimistic Kovan',
