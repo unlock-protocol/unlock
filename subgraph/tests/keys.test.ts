@@ -11,16 +11,18 @@ import { Address, BigInt, Value } from '@graphprotocol/graph-ts'
 import {
   handleTransfer,
   handleCancelKey,
-  handleRenewKeyPurchase,
   handleExpireKey,
   handleExpirationChanged,
+  handleKeyExtended,
   handleKeyManagerChanged,
+  handleRenewKeyPurchase,
 } from '../src/public-lock'
 import {
   createTransferEvent,
   createCancelKeyEvent,
   createExpirationChangedEvent,
   createExpireKeyEvent,
+  createKeyExtendedEvent,
   createKeyManagerChangedEvent,
   createRenewKeyPurchaseEvent,
   mockDataSourceV8,
@@ -152,6 +154,30 @@ describe('Change in expiration timestamp', () => {
 
     handleExpirationChanged(newExpirationEvent)
     assert.fieldEquals('Key', keyIDV8, 'expiration', `${expiration + 1000}`)
+    dataSourceMock.resetValues()
+  })
+})
+
+describe('Extend key', () => {
+  test('should increase key timestamp', () => {
+    mockDataSourceV11()
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+
+    // mock and test
+    updateExpiration(BigInt.fromU64(expiration + 5000))
+    const newKeyExtended = createKeyExtendedEvent(
+      BigInt.fromU32(tokenId),
+      BigInt.fromU64(expiration + 5000)
+    )
+
+    handleKeyExtended(newKeyExtended)
+    assert.fieldEquals('Key', keyID, 'expiration', `${expiration + 5000}`)
     dataSourceMock.resetValues()
   })
 })

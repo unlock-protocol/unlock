@@ -151,6 +151,15 @@ export function handleCancelKey(event: CancelKeyEvent): void {
   }
 }
 
+export function handleKeyExtended(event: KeyExtendedEvent): void {
+  const keyID = genKeyID(event.address, event.params.tokenId.toString())
+  const key = Key.load(keyID)
+  if (key) {
+    key.expiration = event.params.newTimestamp
+    key.save()
+  }
+}
+
 // from < v10 (before using tokenId accross the board)
 export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   const lockContract = PublicLockV11.bind(event.address)
@@ -166,15 +175,6 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
     key.save()
   }
 }
-
-// export function handleKeyExtended(event: KeyExtendedEvent): void {
-//   const entity = new KeyExtended(
-//     event.transaction.hash.toHex() + '-' + event.logIndex.toString()
-//   )
-//   entity.tokenId = event.params.tokenId
-//   entity.newTimestamp = event.params.newTimestamp
-//   entity.save()
-// }
 
 // export function handlePricingChanged(event: PricingChangedEvent): void {
 //   const entity = new PricingChanged(

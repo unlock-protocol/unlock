@@ -206,6 +206,31 @@ export function createExpireKeyEvent(tokenId: BigInt): ExpireKey {
   return expireKeyEvent
 }
 
+export function createKeyExtendedEvent(
+  tokenId: BigInt,
+  newTimestamp: BigInt
+): KeyExtended {
+  const keyExtendedEvent = changetype<KeyExtended>(newMockEvent())
+
+  keyExtendedEvent.address = dataSource.address()
+
+  keyExtendedEvent.parameters = []
+
+  keyExtendedEvent.parameters.push(
+    new ethereum.EventParam(
+      'tokenId',
+      ethereum.Value.fromUnsignedBigInt(tokenId)
+    )
+  )
+  keyExtendedEvent.parameters.push(
+    new ethereum.EventParam(
+      'newTimestamp',
+      ethereum.Value.fromUnsignedBigInt(newTimestamp)
+    )
+  )
+
+  return keyExtendedEvent
+}
 // before v10
 export function createRenewKeyPurchaseEvent(
   owner: Address,
@@ -231,29 +256,7 @@ export function createRenewKeyPurchaseEvent(
 }
 
 // TODO: all functions below
-export function createKeyExtendedEvent(
-  tokenId: bigint,
-  newTimestamp: bigint
-): KeyExtended {
-  const keyExtendedEvent = changetype<KeyExtended>(newMockEvent())
 
-  keyExtendedEvent.parameters = []
-
-  keyExtendedEvent.parameters.push(
-    new ethereum.EventParam(
-      'tokenId',
-      ethereum.Value.fromUnsignedBigInt(tokenId)
-    )
-  )
-  keyExtendedEvent.parameters.push(
-    new ethereum.EventParam(
-      'newTimestamp',
-      ethereum.Value.fromUnsignedBigInt(newTimestamp)
-    )
-  )
-
-  return keyExtendedEvent
-}
 
 export function createLockManagerAddedEvent(
   account: Address
