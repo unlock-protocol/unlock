@@ -8,7 +8,6 @@ import {
   MemberCardPlaceholder,
 } from '../interface/members/MemberCard'
 import { Button } from '@unlock-protocol/ui'
-import { expirationAsDate } from '~/utils/durations'
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
   // strings
