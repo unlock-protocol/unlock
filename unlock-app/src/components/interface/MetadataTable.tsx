@@ -131,8 +131,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   }
 
   const isKeyValid = (metadata: KeyMetadata) => {
-    if (!metadata?.expiration) return // expiration not present
-
     const expiration = expirationAsDate(metadata?.expiration)
     if (expiration.toLowerCase() === 'never') return true
     if (expiration.toLowerCase() === 'expired') return false
