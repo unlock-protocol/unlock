@@ -428,21 +428,21 @@ export default class Web3Service extends UnlockService {
    * @param {Number} network
    */
   async totalKeys(lockAddress: string, owner: string, network: number) {
-    const contract = await this.getLockContract(
+    const version = await this.lockContractAbiVersion(
       lockAddress,
       this.providerForNetwork(network)
     )
 
-    // for locks >= v11
-    if (contract.totalKeys) {
-      return await contract.totalKeys(owner)
+    if (!version.totalKeys) {
+      throw new Error('Lock version not supported')
     }
 
-    // for locks < v11
-    if (contract.balanceOf) {
-      return await contract.balanceOf(owner)
-    }
-
-    return 0 // fallback value to zero
+    return ethers.BigNumber.from(
+      await version.totalKeys.bind(this)(
+        lockAddress,
+        owner,
+        this.providerForNetwork(network)
+      )
+    ).toNumber()
   }
 }

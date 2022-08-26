@@ -540,7 +540,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
           totalKeysBefore = await Promise.all(
             keyGrantees.map((grantee) =>
-              web3Service.totalKeys(lockAddress, grantee)
+              web3Service.totalKeys(lockAddress, grantee, chainId)
             )
           )
 
@@ -639,7 +639,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           expect.assertions(4)
           const totalKeys = await Promise.all(
             keyGrantees.map((owner) =>
-              web3Service.totalKeys(lockAddress, owner)
+              web3Service.totalKeys(lockAddress, owner, chainId)
             )
           )
           expect(totalKeys[0]).toBe(1)
@@ -654,7 +654,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             const owner = accounts[8]
             keyGrantees = [owner, owner] // grant keys for the same address
 
-            const totalKeys = await web3Service.totalKeys(lockAddress, owner)
+            const totalKeys = await web3Service.totalKeys(
+              lockAddress,
+              owner,
+              chainId
+            )
             expect(totalKeys).toBe(2)
           })
         }
@@ -673,7 +677,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           keyPurchaser = accounts[0] // This is the default in walletService
           keyOwner = accounts[5]
 
-          totalKeysBefore = await web3Service.totalKeys(lockAddress, keyOwner)
+          totalKeysBefore = await web3Service.totalKeys(
+            lockAddress,
+            keyOwner,
+            chainId
+          )
           if (lock.currencyContractAddress === null) {
             // Get the ether balance of the lock before the purchase
             lockBalanceBefore = await web3Service.getAddressBalance(
@@ -812,7 +820,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         it('should have increased the number of keys for owner', async () => {
           expect.assertions(2)
 
-          const totalKeys = await web3Service.totalKeys(lockAddress, keyOwner)
+          const totalKeys = await web3Service.totalKeys(
+            lockAddress,
+            keyOwner,
+            chainId
+          )
           expect(totalKeys).toBe(1)
           expect(totalKeysBefore).toBe(0)
         })
