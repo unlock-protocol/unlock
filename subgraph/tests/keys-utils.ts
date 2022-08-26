@@ -26,6 +26,7 @@ import {
 } from '../generated/templates/PublicLock/PublicLock'
 
 import {
+  now,
   lockAddress,
   lockAddressV8,
   tokenId,
@@ -111,28 +112,24 @@ export function createExpirationChangedEvent(
   return expirationChangedEvent
 }
 
-export function updateExpiration(): void {
+export function updateExpiration(exp: BigInt = BigInt.fromU64(now)): void {
   createMockedFunction(
     Address.fromString(lockAddress),
     'keyExpirationTimestampFor',
     'keyExpirationTimestampFor(uint256):(uint256)'
   )
     .withArgs([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(tokenId))])
-    .returns([
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(expiration + 1000)),
-    ])
+    .returns([ethereum.Value.fromUnsignedBigInt(exp)])
 }
 
-export function updateExpirationV8(): void {
+export function updateExpirationV8(exp: BigInt = BigInt.fromU64(now)): void {
   createMockedFunction(
     Address.fromString(lockAddressV8),
     'keyExpirationTimestampFor',
     'keyExpirationTimestampFor(address):(uint256)'
   )
     .withArgs([ethereum.Value.fromAddress(Address.fromString(keyOwnerAddress))])
-    .returns([
-      ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(expiration + 1000)),
-    ])
+    .returns([ethereum.Value.fromUnsignedBigInt(exp)])
 }
 
 export function createKeyManagerChangedEvent(
@@ -192,6 +189,23 @@ export function createCancelKeyEvent(
   return cancelKeyEvent
 }
 
+export function createExpireKeyEvent(tokenId: BigInt): ExpireKey {
+  const expireKeyEvent = changetype<ExpireKey>(newMockEvent())
+
+  expireKeyEvent.address = dataSource.address()
+
+  expireKeyEvent.parameters = []
+
+  expireKeyEvent.parameters.push(
+    new ethereum.EventParam(
+      'tokenId',
+      ethereum.Value.fromUnsignedBigInt(tokenId)
+    )
+  )
+
+  return expireKeyEvent
+}
+
 // before v10
 export function createRenewKeyPurchaseEvent(
   owner: Address,
@@ -217,21 +231,6 @@ export function createRenewKeyPurchaseEvent(
 }
 
 // TODO: all functions below
-export function createExpireKeyEvent(tokenId: bigint): ExpireKey {
-  const expireKeyEvent = changetype<ExpireKey>(newMockEvent())
-
-  expireKeyEvent.parameters = []
-
-  expireKeyEvent.parameters.push(
-    new ethereum.EventParam(
-      'tokenId',
-      ethereum.Value.fromUnsignedBigInt(tokenId)
-    )
-  )
-
-  return expireKeyEvent
-}
-
 export function createKeyExtendedEvent(
   tokenId: bigint,
   newTimestamp: bigint

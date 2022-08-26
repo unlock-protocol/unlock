@@ -107,6 +107,19 @@ export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   }
 }
 
+export function handleExpireKey(event: ExpireKeyEvent): void {
+  const keyID = genKeyID(event.address, event.params.tokenId.toString())
+  const key = Key.load(keyID)
+  if (key) {
+    key.expiration = keyExpirationTimestampFor(
+      event.address,
+      event.params.tokenId,
+      Address.fromString(key.owner)
+    )
+    key.save()
+  }
+}
+
 export function handleExpirationChanged(event: ExpirationChangedEvent): void {
   const keyID = genKeyID(event.address, event.params._tokenId.toString())
   const key = Key.load(keyID)

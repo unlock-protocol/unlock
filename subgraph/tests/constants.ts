@@ -6,6 +6,7 @@ export const lockOwner = '0x0000000000000000000000000000000000000001'
 // key
 export const keyOwnerAddress = '0x0000000000000000000000000000000000000002'
 export const tokenId = 1234
+export const now = 16613300000
 export const expiration = 16613302653
 export const tokenURI = 'http://token-api'
 
