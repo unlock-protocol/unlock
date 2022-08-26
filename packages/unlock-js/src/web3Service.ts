@@ -443,6 +443,6 @@ export default class Web3Service extends UnlockService {
       return await contract.balanceOf(owner)
     }
 
-    return 1 // default value as fallback
+    return 0 // fallback value to zero
   }
 }
