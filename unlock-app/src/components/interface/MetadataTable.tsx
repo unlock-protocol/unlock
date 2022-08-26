@@ -131,10 +131,8 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   }
 
   const isKeyValid = (timestamp: KeyMetadata['expiration']) => {
-    const expiration = expirationAsDate(timestamp)
-    if (expiration.toLowerCase() === 'never') return true
-    if (expiration.toLowerCase() === 'expired') return false
-    return true
+    const now = new Date().getTime() / 1000
+    return parseInt(timestamp) > now
   }
 
   const expireAndRefundDisabled = (
