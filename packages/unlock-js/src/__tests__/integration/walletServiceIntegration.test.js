@@ -546,18 +546,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
           // enable grant of multiple keys for same address for locks > v10
           if (['v10'].indexOf(publicLockVersion) == -1) {
-            await walletService.grantKeys(
-              {
-                lockAddress,
-                recipients: keyGrantees,
-              },
-              (error, hash) => {
-                if (error) {
-                  throw error
-                }
-                transactionHash = hash
-              }
-            )
+            await walletService.setMaxKeysPerAddress({
+              lockAddress,
+              maxKeysPerAddress: 1000,
+              chainId,
+            })
           }
 
           keysBefore = await Promise.all(
