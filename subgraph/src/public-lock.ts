@@ -13,13 +13,10 @@ import {
   Transfer as TransferEvent,
 } from '../generated/templates/PublicLock/PublicLock'
 
-import { PublicLockV11 } from '../generated/templates/PublicLock/PublicLockV11'
-import { PublicLockV7 } from '../generated/templates/PublicLock/PublicLockV7'
+import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
 import { Key, Lock } from '../generated/schema'
 
-function genKeyID(lockAddress: Address, tokenId: string): string {
-  return lockAddress.toHex().concat('-').concat(tokenId)
-}
+import { genKeyID, getKeyExpirationTimestampFor } from './helpers'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -29,9 +26,9 @@ function newKey(event: TransferEvent): void {
   key.owner = event.params.to.toHexString()
   key.createdAtBlock = event.block.number
 
-  const lockContract = PublicLockV11.bind(event.address)
+  const lockContract = PublicLock.bind(event.address)
   key.tokenURI = lockContract.tokenURI(event.params.tokenId)
-  key.expiration = keyExpirationTimestampFor(
+  key.expiration = getKeyExpirationTimestampFor(
     event.address,
     event.params.tokenId,
     event.params.to
@@ -39,27 +36,9 @@ function newKey(event: TransferEvent): void {
   key.save()
 }
 
-function getVersion(lockAddress: Address): BigInt {
-  const lockContract = PublicLockV11.bind(lockAddress)
-  const version = lockContract.publicLockVersion()
-  return BigInt.fromI32(version)
-}
-
-function keyExpirationTimestampFor(
-  lockAddress: Address,
-  tokenId: BigInt,
-  ownerAddress: Address
-): BigInt {
-  const version = getVersion(lockAddress)
-  if (version.ge(BigInt.fromI32(10))) {
-    const lockContract = PublicLockV11.bind(lockAddress)
-    return lockContract.keyExpirationTimestampFor(tokenId)
-  } else {
-    const lockContract = PublicLockV7.bind(lockAddress)
-    return lockContract.keyExpirationTimestampFor(ownerAddress)
-  }
-}
-
+/** -----------
+ *  Events functions
+ */
 export function handleTransfer(event: TransferEvent): void {
   const zeroAddress = '0x0000000000000000000000000000000000000000'
   if (event.params.from.toHex() == zeroAddress) {
@@ -81,37 +60,11 @@ export function handleTransfer(event: TransferEvent): void {
   }
 }
 
-export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
-  const lock = Lock.load(event.address.toHexString())
-
-  if (lock && lock.lockManagers) {
-    const lockManagers = lock.lockManagers
-    lockManagers.push(event.params.account)
-    lock.lockManagers = lockManagers
-    lock.save()
-    log.debug('Lock manager {} added to {}', [
-      event.params.account.toHexString(),
-      event.address.toHexString(),
-    ])
-  }
-}
-
-export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
-  const lock = Lock.load(event.address.toHexString())
-  if (lock && lock.lockManagers) {
-    const lockManagers = lock.lockManagers
-    const i = lockManagers.indexOf(event.params.account)
-    lockManagers.splice(i)
-    lock.lockManagers = lockManagers
-    lock.save()
-  }
-}
-
 export function handleExpireKey(event: ExpireKeyEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
-    key.expiration = keyExpirationTimestampFor(
+    key.expiration = getKeyExpirationTimestampFor(
       event.address,
       event.params.tokenId,
       Address.fromString(key.owner)
@@ -124,7 +77,7 @@ export function handleExpirationChanged(event: ExpirationChangedEvent): void {
   const keyID = genKeyID(event.address, event.params._tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
-    key.expiration = keyExpirationTimestampFor(
+    key.expiration = getKeyExpirationTimestampFor(
       event.address,
       event.params._tokenId,
       Address.fromString(key.owner)
@@ -162,7 +115,7 @@ export function handleKeyExtended(event: KeyExtendedEvent): void {
 
 // from < v10 (before using tokenId accross the board)
 export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
-  const lockContract = PublicLockV11.bind(event.address)
+  const lockContract = PublicLock.bind(event.address)
 
   const tokenId = lockContract.try_tokenOfOwnerByIndex(
     event.params.owner,
@@ -176,13 +129,38 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 }
 
-// export function handlePricingChanged(event: PricingChangedEvent): void {
-//   const entity = new PricingChanged(
-//     event.transaction.hash.toHex() + '-' + event.logIndex.toString()
-//   )
-//   entity.oldKeyPrice = event.params.oldKeyPrice
-//   entity.keyPrice = event.params.keyPrice
-//   entity.oldTokenAddress = event.params.oldTokenAddress
-//   entity.tokenAddress = event.params.tokenAddress
-//   entity.save()
-// }
+// lock functions
+export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+
+  if (lock && lock.lockManagers) {
+    const lockManagers = lock.lockManagers
+    lockManagers.push(event.params.account)
+    lock.lockManagers = lockManagers
+    lock.save()
+    log.debug('Lock manager {} added to {}', [
+      event.params.account.toHexString(),
+      event.address.toHexString(),
+    ])
+  }
+}
+
+export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+  if (lock && lock.lockManagers) {
+    const lockManagers = lock.lockManagers
+    const i = lockManagers.indexOf(event.params.account)
+    lockManagers.splice(i)
+    lock.lockManagers = lockManagers
+    lock.save()
+  }
+}
+
+export function handlePricingChanged(event: PricingChangedEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+  if (lock) {
+    lock.price = event.params.keyPrice
+    lock.tokenAddress = event.params.tokenAddress
+    lock.save()
+  }
+}
