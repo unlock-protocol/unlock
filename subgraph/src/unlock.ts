@@ -13,12 +13,16 @@ export function handleNewLock(event: NewLock): void {
   const lock = new Lock(lockID)
 
   // fetch lock version
-  let publicLock = PublicLock.bind(lockAddress)
+  let lockContract = PublicLock.bind(lockAddress)
   let version = BigInt.fromI32(0)
-  let publicLockVersion = publicLock.try_publicLockVersion()
+  let publicLockVersion = lockContract.try_publicLockVersion()
   if (!publicLockVersion.reverted) {
     version = BigInt.fromI32(publicLockVersion.value)
   }
+
+  // store price info
+  lock.tokenAddress = lockContract.tokenAddress()
+  lock.price = lockContract.keyPrice()
 
   // store info
   lock.address = lockAddress

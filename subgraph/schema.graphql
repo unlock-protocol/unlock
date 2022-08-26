@@ -1,10 +1,12 @@
 type Lock @entity {
   id: ID!
   address: Bytes!
+  tokenAddress: Bytes!
+  price: BigInt!
   lockManagers: [Bytes!]!
+  version: BigInt!
   keys: [Key!] @derivedFrom(field: "lock")
   createdAtBlock: BigInt
-  version: BigInt!
 }
 
 type Key @entity {

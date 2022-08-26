@@ -6,20 +6,29 @@ import {
   beforeAll,
   afterAll,
 } from 'matchstick-as/assembly/index'
-import { Address } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 
 import { handleNewLock } from '../src/unlock'
 import {
   handleLockManagerAdded,
   handleLockManagerRemoved,
+  handlePricingChanged,
 } from '../src/public-lock'
 
 import {
   createNewLockEvent,
   createLockManagerAddedEvent,
   createLockManagerRemovedEvent,
+  createPricingChangedEvent,
 } from './locks-utils'
-import { lockAddress, lockOwner } from './constants'
+import {
+  keyPrice,
+  oldKeyPrice,
+  lockAddress,
+  lockOwner,
+  tokenAddress,
+  nullAddress,
+} from './constants'
 
 // mock contract functions
 import './mocks'
@@ -44,6 +53,8 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'address', lockAddress)
     assert.fieldEquals('Lock', lockAddress, 'createdAtBlock', '1')
     assert.fieldEquals('Lock', lockAddress, 'version', '11')
+    assert.fieldEquals('Lock', lockAddress, 'price', '1000')
+    assert.fieldEquals('Lock', lockAddress, 'tokenAddress', nullAddress)
     assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
   })
 
@@ -78,5 +89,15 @@ describe('Describe Locks events', () => {
       Address.fromString(lockManager)
     )
     handleLockManagerRemoved(newLockManagerRemoved)
+  })
+
+  test('Price changed', () => {
+    const newPricingChanged = createPricingChangedEvent(
+      BigInt.fromU32(keyPrice),
+      BigInt.fromU32(oldKeyPrice),
+      Address.fromString(nullAddress),
+      Address.fromString(tokenAddress)
+    )
+    handlePricingChanged(newPricingChanged)
   })
 })

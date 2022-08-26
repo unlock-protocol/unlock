@@ -36,9 +36,6 @@ function newKey(event: TransferEvent): void {
   key.save()
 }
 
-/** -----------
- *  Events functions
- */
 export function handleTransfer(event: TransferEvent): void {
   const zeroAddress = '0x0000000000000000000000000000000000000000'
   if (event.params.from.toHex() == zeroAddress) {
@@ -50,7 +47,7 @@ export function handleTransfer(event: TransferEvent): void {
     const key = Key.load(keyID)
     if (key) {
       key.owner = event.params.to.toHexString()
-      key.expiration = keyExpirationTimestampFor(
+      key.expiration = getKeyExpirationTimestampFor(
         event.address,
         event.params.tokenId,
         event.params.to

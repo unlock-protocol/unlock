@@ -1,11 +1,12 @@
 import { newMockEvent } from 'matchstick-as'
-import { ethereum, Address } from '@graphprotocol/graph-ts'
+import { ethereum, Address, BigInt } from '@graphprotocol/graph-ts'
 import { NewLock } from '../generated/Unlock/Unlock'
 import {
   LockManagerAdded,
   LockManagerRemoved,
 } from '../generated/templates/PublicLock/PublicLock'
 import { lockAddress } from './constants'
+import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
 
 export function createNewLockEvent(
   lockOwner: Address,
@@ -45,6 +46,7 @@ export function createLockManagerAddedEvent(
 
   return newLockManagerAdded
 }
+
 export function createLockManagerRemovedEvent(
   newLockManager: Address
 ): LockManagerRemoved {
@@ -61,4 +63,45 @@ export function createLockManagerRemovedEvent(
   ]
 
   return newLockManagerRemoved
+}
+
+export function createPricingChangedEvent(
+  oldKeyPrice: BigInt,
+  keyPrice: BigInt,
+  oldTokenAddress: Address,
+  tokenAddress: Address
+): PricingChanged {
+  const pricingChangedEvent = changetype<PricingChanged>(newMockEvent())
+
+  // set existing lock address
+  pricingChangedEvent.address = Address.fromString(lockAddress)
+
+  pricingChangedEvent.parameters = []
+
+  pricingChangedEvent.parameters.push(
+    new ethereum.EventParam(
+      'oldKeyPrice',
+      ethereum.Value.fromUnsignedBigInt(oldKeyPrice)
+    )
+  )
+  pricingChangedEvent.parameters.push(
+    new ethereum.EventParam(
+      'keyPrice',
+      ethereum.Value.fromUnsignedBigInt(keyPrice)
+    )
+  )
+  pricingChangedEvent.parameters.push(
+    new ethereum.EventParam(
+      'oldTokenAddress',
+      ethereum.Value.fromAddress(oldTokenAddress)
+    )
+  )
+  pricingChangedEvent.parameters.push(
+    new ethereum.EventParam(
+      'tokenAddress',
+      ethereum.Value.fromAddress(tokenAddress)
+    )
+  )
+
+  return pricingChangedEvent
 }

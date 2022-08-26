@@ -1,14 +1,31 @@
 import { createMockedFunction } from 'matchstick-as/assembly/index'
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import {
-  defaultMockAddress,
   expiration,
   keyOwnerAddress,
   lockAddressV8,
   lockAddress,
   tokenId,
   tokenURI,
+  nullAddress,
+  keyPrice
 } from './constants'
+
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'tokenAddress',
+  'tokenAddress():(address)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromAddress(Address.fromString(nullAddress))])
+
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'keyPrice',
+  'keyPrice():(uint256)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(keyPrice))])
 
 // mock publicLock version contract call
 createMockedFunction(

@@ -20,7 +20,6 @@ import {
   KeyManagerChanged,
   LockManagerAdded,
   LockManagerRemoved,
-  PricingChanged,
   Transfer,
   RenewKeyPurchase,
 } from '../generated/templates/PublicLock/PublicLock'
@@ -30,7 +29,6 @@ import {
   lockAddress,
   lockAddressV8,
   tokenId,
-  expiration,
   keyOwnerAddress,
 } from './constants'
 
@@ -284,42 +282,4 @@ export function createLockManagerRemovedEvent(
   )
 
   return lockManagerRemovedEvent
-}
-
-export function createPricingChangedEvent(
-  oldKeyPrice: bigint,
-  keyPrice: bigint,
-  oldTokenAddress: Address,
-  tokenAddress: Address
-): PricingChanged {
-  const pricingChangedEvent = changetype<PricingChanged>(newMockEvent())
-
-  pricingChangedEvent.parameters = []
-
-  pricingChangedEvent.parameters.push(
-    new ethereum.EventParam(
-      'oldKeyPrice',
-      ethereum.Value.fromUnsignedBigInt(oldKeyPrice)
-    )
-  )
-  pricingChangedEvent.parameters.push(
-    new ethereum.EventParam(
-      'keyPrice',
-      ethereum.Value.fromUnsignedBigInt(keyPrice)
-    )
-  )
-  pricingChangedEvent.parameters.push(
-    new ethereum.EventParam(
-      'oldTokenAddress',
-      ethereum.Value.fromAddress(oldTokenAddress)
-    )
-  )
-  pricingChangedEvent.parameters.push(
-    new ethereum.EventParam(
-      'tokenAddress',
-      ethereum.Value.fromAddress(tokenAddress)
-    )
-  )
-
-  return pricingChangedEvent
 }
