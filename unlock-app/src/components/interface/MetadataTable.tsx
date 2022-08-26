@@ -130,8 +130,8 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     setCurrentLock(null)
   }
 
-  const isKeyValid = (metadata: KeyMetadata) => {
-    const expiration = expirationAsDate(metadata?.expiration)
+  const isKeyValid = (timestamp: KeyMetadata['expiration']) => {
+    const expiration = expirationAsDate(timestamp)
     if (expiration.toLowerCase() === 'never') return true
     if (expiration.toLowerCase() === 'expired') return false
     return true
@@ -141,7 +141,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     metadata: KeyMetadata,
     isLockManager: boolean
   ): boolean => {
-    return !(isLockManager && isKeyValid(metadata))
+    return !(isLockManager && isKeyValid(metadata.expiration))
   }
 
   const onExpandAllMetadata = () => {
