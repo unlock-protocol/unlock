@@ -13,8 +13,9 @@ import {
   Transfer as TransferEvent,
 } from '../generated/templates/PublicLock/PublicLock'
 
-import { PublicLock } from '../generated/templates/PublicLock/PublicLock'
-import { Key, KeyOwner, Lock } from '../generated/schema'
+import { PublicLockV11 } from '../generated/templates/PublicLock/PublicLockV11'
+import { PublicLockV7 } from '../generated/templates/PublicLock/PublicLockV7'
+import { Key, Lock } from '../generated/schema'
 
 function genKeyID(lockAddress: Address, tokenId: string): string {
   return lockAddress.toHex().concat('-').concat(tokenId)
@@ -28,13 +29,35 @@ function newKey(event: TransferEvent): void {
   key.owner = event.params.to.toHexString()
   key.createdAtBlock = event.block.number
 
-  // Load the lock
-  const lockContract = PublicLock.bind(event.address)
+  const lockContract = PublicLockV11.bind(event.address)
   key.tokenURI = lockContract.tokenURI(event.params.tokenId)
-  key.expiration = lockContract.keyExpirationTimestampFor(event.params.tokenId)
-
-  // key.manager = Bytes
+  key.expiration = keyExpirationTimestampFor(
+    event.address,
+    event.params.tokenId,
+    event.params.to
+  )
   key.save()
+}
+
+function getVersion(lockAddress: Address): BigInt {
+  const lockContract = PublicLockV11.bind(lockAddress)
+  const version = lockContract.publicLockVersion()
+  return BigInt.fromI32(version)
+}
+
+function keyExpirationTimestampFor(
+  lockAddress: Address,
+  tokenId: BigInt,
+  ownerAddress: Address
+): BigInt {
+  const version = getVersion(lockAddress)
+  if (version.ge(BigInt.fromI32(10))) {
+    const lockContract = PublicLockV11.bind(lockAddress)
+    return lockContract.keyExpirationTimestampFor(tokenId)
+  } else {
+    const lockContract = PublicLockV7.bind(lockAddress)
+    return lockContract.keyExpirationTimestampFor(ownerAddress)
+  }
 }
 
 export function handleTransfer(event: TransferEvent): void {
@@ -47,10 +70,11 @@ export function handleTransfer(event: TransferEvent): void {
     const keyID = genKeyID(event.address, event.params.tokenId.toString())
     const key = Key.load(keyID)
     if (key) {
-      const lockContract = PublicLock.bind(event.address)
       key.owner = event.params.to.toHexString()
-      key.expiration = lockContract.keyExpirationTimestampFor(
-        event.params.tokenId
+      key.expiration = keyExpirationTimestampFor(
+        event.address,
+        event.params.tokenId,
+        event.params.to
       )
       key.save()
     }
@@ -80,10 +104,6 @@ export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
     lockManagers.splice(i)
     lock.lockManagers = lockManagers
     lock.save()
-    log.debug('Lock manager {} removed from {}', [
-      event.params.account.toHexString(),
-      event.address.toHexString(),
-    ])
   }
 }
 
@@ -91,11 +111,11 @@ export function handleExpirationChanged(event: ExpirationChangedEvent): void {
   const keyID = genKeyID(event.address, event.params._tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
-    if (event.params._timeAdded) {
-      key.expiration = key.expiration.plus(event.params._amount)
-    } else {
-      key.expiration = key.expiration.minus(event.params._amount)
-    }
+    key.expiration = keyExpirationTimestampFor(
+      event.address,
+      event.params._tokenId,
+      Address.fromString(key.owner)
+    )
     key.save()
   }
 }
@@ -120,7 +140,7 @@ export function handleCancelKey(event: CancelKeyEvent): void {
 
 // from < v10 (before using tokenId accross the board)
 export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
-  const lockContract = PublicLock.bind(event.address)
+  const lockContract = PublicLockV11.bind(event.address)
 
   const tokenId = lockContract.try_tokenOfOwnerByIndex(
     event.params.owner,

@@ -1,13 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
 import { log, BigInt } from '@graphprotocol/graph-ts'
-import {
-  NewLock,
-  NewTokenURI,
-  NewGlobalTokenSymbol,
-  OwnershipTransferred,
-} from '../generated/Unlock/Unlock'
-import { PublicLock } from '../generated/templates/PublicLock/PublicLock'
+import { NewLock, OwnershipTransferred } from '../generated/Unlock/Unlock'
+import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
 import { Lock } from '../generated/schema'
 
 export function handleNewLock(event: NewLock): void {
@@ -35,10 +30,6 @@ export function handleNewLock(event: NewLock): void {
   log.debug('New lock: {}', [lockID])
 }
 
-export function handleNewTokenURI(_event: NewTokenURI): void {}
-export function handleNewGlobalTokenSymbol(
-  _event: NewGlobalTokenSymbol
-): void {}
 export function handleOwnershipTransferred(
   _event: OwnershipTransferred
 ): void {}
