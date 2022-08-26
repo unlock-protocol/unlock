@@ -36,6 +36,27 @@ function newKey(event: TransferEvent): void {
   key.save()
 }
 
+function getVersion(lockAddress: Address): BigInt {
+  const lockContract = PublicLockV11.bind(lockAddress)
+  const version = lockContract.publicLockVersion()
+  return BigInt.fromI32(version)
+}
+
+function keyExpirationTimestampFor(
+  lockAddress: Address,
+  tokenId: BigInt,
+  ownerAddress: Address
+): BigInt {
+  const version = getVersion(lockAddress)
+  if (version.ge(BigInt.fromI32(10))) {
+    const lockContract = PublicLockV11.bind(lockAddress)
+    return lockContract.keyExpirationTimestampFor(tokenId)
+  } else {
+    const lockContract = PublicLockV7.bind(lockAddress)
+    return lockContract.keyExpirationTimestampFor(ownerAddress)
+  }
+}
+
 export function handleTransfer(event: TransferEvent): void {
   const zeroAddress = '0x0000000000000000000000000000000000000000'
   if (event.params.from.toHex() == zeroAddress) {
