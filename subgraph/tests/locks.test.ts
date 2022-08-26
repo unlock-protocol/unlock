@@ -123,4 +123,14 @@ describe('Describe Locks events', () => {
 
     assert.fieldEquals('Lock', lockAddress, 'version', `12`)
   })
+
+  test('Price changed', () => {
+    const newPricingChanged = createPricingChangedEvent(
+      BigInt.fromU32(keyPrice),
+      BigInt.fromU32(oldKeyPrice),
+      Address.fromString(nullAddress),
+      Address.fromString(tokenAddress)
+    )
+    handlePricingChanged(newPricingChanged)
+  })
 })
