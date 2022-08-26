@@ -22,6 +22,7 @@ import { Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
+import { useCheckoutSteps } from './useCheckoutItems'
 
 interface Props {
   injectedProvider: unknown
@@ -137,51 +138,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !existingMember)
 
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Choose quantity',
-      skip: skipQuantity,
-      to: 'QUANTITY',
-    },
-    {
-      id: 3,
-      name: 'Add recipients',
-      to: 'METADATA',
-    },
-    {
-      id: 4,
-      name: 'Choose payment',
-      to: 'PAYMENT',
-    },
-    {
-      id: 5,
-      name: 'Sign message',
-      skip: !paywallConfig.messageToSign,
-      to: 'MESSAGE_TO_SIGN',
-    },
-    {
-      id: 6,
-      name: 'Solve captcha',
-      to: 'CAPTCHA',
-      skip:
-        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
-    },
-    {
-      id: 7,
-      name: 'Confirm',
-      to: 'CONFIRM',
-    },
-    {
-      id: 8,
-      name: 'Minting NFT',
-    },
-  ]
+  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
