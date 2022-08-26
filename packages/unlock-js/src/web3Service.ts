@@ -434,14 +434,12 @@ export default class Web3Service extends UnlockService {
     )
 
     // for locks >= v11
-    if (contract?.totalKeys) {
-      console.log('from totalKeys')
+    if (contract.totalKeys) {
       return await contract.totalKeys(owner)
     }
 
     // for locks < v11
-    if (contract?.balanceOf) {
-      console.log('from balanceOf')
+    if (contract.balanceOf) {
       return await contract.balanceOf(owner)
     }
 
