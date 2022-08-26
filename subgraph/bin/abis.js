@@ -76,8 +76,19 @@ function mergeAbi(contractName) {
     .map((version) => abis[`${contractName}${version.toUpperCase()}`])
     .map(({ abi }) => abi)
     .flat()
+
+  // dedupe
+  const deduped = merged
+    .map((item) => ({
+      ...item,
+      sig: new ethers.utils.Interface([item]).format(
+        ethers.utils.FormatTypes.minimal
+      )[0],
+    }))
+    .filter((v, i, a) => a.findIndex((v2) => v2.sig === v.sig) === i)
+
   const abiPath = path.join(abisFolderPath, `${contractName}-merged.json`)
-  fs.writeJSONSync(abiPath, merged, { spaces: 2 })
+  fs.writeJSONSync(abiPath, deduped, { spaces: 2 })
 }
 
 module.exports = {

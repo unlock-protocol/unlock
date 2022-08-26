@@ -22,7 +22,8 @@
       }
     ],
     "name": "Approval",
-    "type": "event"
+    "type": "event",
+    "sig": "event Approval(address indexed,address indexed,uint256 indexed)"
   },
   {
     "anonymous": false,
@@ -47,7 +48,8 @@
       }
     ],
     "name": "ApprovalForAll",
-    "type": "event"
+    "type": "event",
+    "sig": "event ApprovalForAll(address indexed,address indexed,bool)"
   },
   {
     "anonymous": false,
@@ -78,13 +80,15 @@
       }
     ],
     "name": "CancelKey",
-    "type": "event"
+    "type": "event",
+    "sig": "event CancelKey(uint256 indexed,address indexed,address indexed,uint256)"
   },
   {
     "anonymous": false,
     "inputs": [],
     "name": "Disable",
-    "type": "event"
+    "type": "event",
+    "sig": "event Disable()"
   },
   {
     "anonymous": false,
@@ -109,7 +113,8 @@
       }
     ],
     "name": "ExpirationChanged",
-    "type": "event"
+    "type": "event",
+    "sig": "event ExpirationChanged(uint256 indexed,uint256,bool)"
   },
   {
     "anonymous": false,
@@ -122,7 +127,8 @@
       }
     ],
     "name": "ExpireKey",
-    "type": "event"
+    "type": "event",
+    "sig": "event ExpireKey(uint256 indexed)"
   },
   {
     "anonymous": false,
@@ -135,7 +141,8 @@
       }
     ],
     "name": "KeyGranterAdded",
-    "type": "event"
+    "type": "event",
+    "sig": "event KeyGranterAdded(address indexed)"
   },
   {
     "anonymous": false,
@@ -148,7 +155,8 @@
       }
     ],
     "name": "KeyGranterRemoved",
-    "type": "event"
+    "type": "event",
+    "sig": "event KeyGranterRemoved(address indexed)"
   },
   {
     "anonymous": false,
@@ -167,7 +175,8 @@
       }
     ],
     "name": "KeyManagerChanged",
-    "type": "event"
+    "type": "event",
+    "sig": "event KeyManagerChanged(uint256 indexed,address indexed)"
   },
   {
     "anonymous": false,
@@ -180,7 +189,8 @@
       }
     ],
     "name": "LockManagerAdded",
-    "type": "event"
+    "type": "event",
+    "sig": "event LockManagerAdded(address indexed)"
   },
   {
     "anonymous": false,
@@ -193,7 +203,8 @@
       }
     ],
     "name": "LockManagerRemoved",
-    "type": "event"
+    "type": "event",
+    "sig": "event LockManagerRemoved(address indexed)"
   },
   {
     "anonymous": false,
@@ -206,7 +217,8 @@
       }
     ],
     "name": "NewLockSymbol",
-    "type": "event"
+    "type": "event",
+    "sig": "event NewLockSymbol(string)"
   },
   {
     "anonymous": false,
@@ -225,7 +237,8 @@
       }
     ],
     "name": "NonceChanged",
-    "type": "event"
+    "type": "event",
+    "sig": "event NonceChanged(address indexed,uint256)"
   },
   {
     "anonymous": false,
@@ -256,7 +269,8 @@
       }
     ],
     "name": "PricingChanged",
-    "type": "event"
+    "type": "event",
+    "sig": "event PricingChanged(uint256,uint256,address,address)"
   },
   {
     "anonymous": false,
@@ -275,7 +289,8 @@
       }
     ],
     "name": "RefundPenaltyChanged",
-    "type": "event"
+    "type": "event",
+    "sig": "event RefundPenaltyChanged(uint256,uint256)"
   },
   {
     "anonymous": false,
@@ -294,7 +309,8 @@
       }
     ],
     "name": "RenewKeyPurchase",
-    "type": "event"
+    "type": "event",
+    "sig": "event RenewKeyPurchase(address indexed,uint256)"
   },
   {
     "anonymous": false,
@@ -319,7 +335,8 @@
       }
     ],
     "name": "Transfer",
-    "type": "event"
+    "type": "event",
+    "sig": "event Transfer(address indexed,address indexed,uint256 indexed)"
   },
   {
     "anonymous": false,
@@ -332,7 +349,8 @@
       }
     ],
     "name": "TransferFeeChanged",
-    "type": "event"
+    "type": "event",
+    "sig": "event TransferFeeChanged(uint256)"
   },
   {
     "anonymous": false,
@@ -363,7 +381,8 @@
       }
     ],
     "name": "Withdrawal",
-    "type": "event"
+    "type": "event",
+    "sig": "event Withdrawal(address indexed,address indexed,address indexed,uint256)"
   },
   {
     "payable": true,
@@ -383,7 +402,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function addKeyGranter(address)"
   },
   {
     "constant": false,
@@ -398,7 +418,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function addLockManager(address)"
   },
   {
     "constant": false,
@@ -418,7 +439,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function approve(address,uint256)"
   },
   {
     "constant": true,
@@ -439,7 +461,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function balanceOf(address) view returns (uint256)"
   },
   {
     "constant": true,
@@ -454,7 +477,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function beneficiary() view returns (address)"
   },
   {
     "constant": false,
@@ -469,7 +493,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function cancelAndRefund(uint256)"
   },
   {
     "constant": false,
@@ -504,7 +529,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function cancelAndRefundFor(address,uint8,bytes32,bytes32,uint256)"
   },
   {
     "constant": false,
@@ -513,7 +539,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function disableLock()"
   },
   {
     "constant": true,
@@ -528,7 +555,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function expirationDuration() view returns (uint256)"
   },
   {
     "constant": false,
@@ -548,7 +576,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function expireAndRefundFor(address,uint256)"
   },
   {
     "constant": true,
@@ -563,7 +592,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function freeTrialLength() view returns (uint256)"
   },
   {
     "constant": true,
@@ -584,7 +614,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getApproved(uint256) view returns (address)"
   },
   {
     "constant": true,
@@ -610,7 +641,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getBalance(address,address) view returns (uint256)"
   },
   {
     "constant": true,
@@ -636,7 +668,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getCancelAndRefundApprovalHash(address,address) view returns (bytes32)"
   },
   {
     "constant": true,
@@ -657,7 +690,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getCancelAndRefundValueFor(address) view returns (uint256)"
   },
   {
     "constant": true,
@@ -678,7 +712,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getHasValidKey(address) view returns (bool)"
   },
   {
     "constant": true,
@@ -704,7 +739,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getOwnersByPage(uint256,uint256) view returns (address[])"
   },
   {
     "constant": true,
@@ -725,7 +761,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getTokenIdFor(address) view returns (uint256)"
   },
   {
     "constant": true,
@@ -751,7 +788,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getTransferFee(address,uint256) view returns (uint256)"
   },
   {
     "constant": false,
@@ -776,7 +814,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function grantKeys(address[],uint256[],address[])"
   },
   {
     "constant": false,
@@ -791,7 +830,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function invalidateOffchainApproval(uint256)"
   },
   {
     "constant": true,
@@ -806,7 +846,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function isAlive() view returns (bool)"
   },
   {
     "constant": true,
@@ -832,7 +873,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function isApprovedForAll(address,address) view returns (bool)"
   },
   {
     "constant": true,
@@ -853,7 +895,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function isKeyGranter(address) view returns (bool)"
   },
   {
     "constant": true,
@@ -879,7 +922,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function isKeyOwner(uint256,address) view returns (bool)"
   },
   {
     "constant": true,
@@ -900,7 +944,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function isLockManager(address) view returns (bool)"
   },
   {
     "constant": true,
@@ -921,7 +966,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function keyExpirationTimestampFor(address) view returns (uint256)"
   },
   {
     "constant": true,
@@ -942,7 +988,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function keyManagerOf(uint256) view returns (address)"
   },
   {
     "constant": true,
@@ -963,7 +1010,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function keyManagerToNonce(address) view returns (uint256)"
   },
   {
     "constant": true,
@@ -978,7 +1026,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function keyPrice() view returns (uint256)"
   },
   {
     "constant": true,
@@ -993,7 +1042,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function maxNumberOfKeys() view returns (uint256)"
   },
   {
     "constant": true,
@@ -1008,7 +1058,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function name() view returns (string)"
   },
   {
     "constant": true,
@@ -1023,7 +1074,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function numberOfOwners() view returns (uint256)"
   },
   {
     "constant": true,
@@ -1038,7 +1090,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function onKeyCancelHook() view returns (address)"
   },
   {
     "constant": true,
@@ -1053,7 +1106,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function onKeyPurchaseHook() view returns (address)"
   },
   {
     "constant": true,
@@ -1074,7 +1128,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function ownerOf(uint256) view returns (address)"
   },
   {
     "constant": true,
@@ -1095,7 +1150,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function owners(uint256) view returns (address)"
   },
   {
     "constant": true,
@@ -1110,7 +1166,8 @@
     ],
     "payable": false,
     "stateMutability": "pure",
-    "type": "function"
+    "type": "function",
+    "sig": "function publicLockVersion() pure returns (uint256)"
   },
   {
     "constant": false,
@@ -1140,7 +1197,8 @@
     "outputs": [],
     "payable": true,
     "stateMutability": "payable",
-    "type": "function"
+    "type": "function",
+    "sig": "function purchase(uint256,address,address,bytes) payable"
   },
   {
     "constant": true,
@@ -1171,7 +1229,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function purchasePriceFor(address,address,bytes) view returns (uint256)"
   },
   {
     "constant": true,
@@ -1186,7 +1245,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function refundPenaltyBasisPoints() view returns (uint256)"
   },
   {
     "constant": false,
@@ -1195,7 +1255,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function renounceLockManager()"
   },
   {
     "constant": false,
@@ -1210,7 +1271,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function revokeKeyGranter(address)"
   },
   {
     "constant": false,
@@ -1235,7 +1297,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function safeTransferFrom(address,address,uint256)"
   },
   {
     "constant": false,
@@ -1265,7 +1328,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function safeTransferFrom(address,address,uint256,bytes)"
   },
   {
     "constant": false,
@@ -1285,7 +1349,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function setApprovalForAll(address,bool)"
   },
   {
     "constant": false,
@@ -1300,7 +1365,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function setBaseTokenURI(string)"
   },
   {
     "constant": false,
@@ -1320,7 +1386,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function setEventHooks(address,address)"
   },
   {
     "constant": false,
@@ -1340,7 +1407,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function setKeyManagerOf(uint256,address)"
   },
   {
     "constant": false,
@@ -1365,7 +1433,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function shareKey(address,uint256,uint256)"
   },
   {
     "constant": true,
@@ -1386,7 +1455,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function supportsInterface(bytes4) view returns (bool)"
   },
   {
     "constant": true,
@@ -1401,7 +1471,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function symbol() view returns (string)"
   },
   {
     "constant": true,
@@ -1416,7 +1487,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function tokenAddress() view returns (address)"
   },
   {
     "constant": true,
@@ -1437,7 +1509,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function tokenByIndex(uint256) view returns (uint256)"
   },
   {
     "constant": true,
@@ -1463,7 +1536,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function tokenOfOwnerByIndex(address,uint256) view returns (uint256)"
   },
   {
     "constant": true,
@@ -1484,7 +1558,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function tokenURI(uint256) view returns (string)"
   },
   {
     "constant": true,
@@ -1499,7 +1574,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function totalSupply() view returns (uint256)"
   },
   {
     "constant": true,
@@ -1514,7 +1590,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function transferFeeBasisPoints() view returns (uint256)"
   },
   {
     "constant": false,
@@ -1539,7 +1616,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function transferFrom(address,address,uint256)"
   },
   {
     "constant": true,
@@ -1554,7 +1632,8 @@
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function unlockProtocol() view returns (address)"
   },
   {
     "constant": false,
@@ -1569,7 +1648,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function updateBeneficiary(address)"
   },
   {
     "constant": false,
@@ -1589,7 +1669,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function updateKeyPricing(uint256,address)"
   },
   {
     "constant": false,
@@ -1604,7 +1685,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function updateLockName(string)"
   },
   {
     "constant": false,
@@ -1619,7 +1701,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function updateLockSymbol(string)"
   },
   {
     "constant": false,
@@ -1639,7 +1722,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function updateRefundPenalty(uint256,uint256)"
   },
   {
     "constant": false,
@@ -1654,7 +1738,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function updateTransferFee(uint256)"
   },
   {
     "constant": false,
@@ -1674,7 +1759,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function withdraw(address,uint256)"
   },
   {
     "constant": false,
@@ -1714,7 +1800,8 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function initialize(address,uint256,address,uint256,uint256,string)"
   },
   {
     "constant": false,
@@ -1723,42 +1810,50 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function initialize()"
   },
   {
     "inputs": [],
     "name": "CANNOT_APPROVE_SELF",
-    "type": "error"
+    "type": "error",
+    "sig": "error CANNOT_APPROVE_SELF()"
   },
   {
     "inputs": [],
     "name": "CANT_BE_SMALLER_THAN_SUPPLY",
-    "type": "error"
+    "type": "error",
+    "sig": "error CANT_BE_SMALLER_THAN_SUPPLY()"
   },
   {
     "inputs": [],
     "name": "CANT_EXTEND_NON_EXPIRING_KEY",
-    "type": "error"
+    "type": "error",
+    "sig": "error CANT_EXTEND_NON_EXPIRING_KEY()"
   },
   {
     "inputs": [],
     "name": "GAS_REFUND_FAILED",
-    "type": "error"
+    "type": "error",
+    "sig": "error GAS_REFUND_FAILED()"
   },
   {
     "inputs": [],
     "name": "INSUFFICIENT_ERC20_VALUE",
-    "type": "error"
+    "type": "error",
+    "sig": "error INSUFFICIENT_ERC20_VALUE()"
   },
   {
     "inputs": [],
     "name": "INSUFFICIENT_VALUE",
-    "type": "error"
+    "type": "error",
+    "sig": "error INSUFFICIENT_VALUE()"
   },
   {
     "inputs": [],
     "name": "INVALID_ADDRESS",
-    "type": "error"
+    "type": "error",
+    "sig": "error INVALID_ADDRESS()"
   },
   {
     "inputs": [
@@ -1769,251 +1864,158 @@
       }
     ],
     "name": "INVALID_HOOK",
-    "type": "error"
+    "type": "error",
+    "sig": "error INVALID_HOOK(uint8)"
   },
   {
     "inputs": [],
     "name": "INVALID_LENGTH",
-    "type": "error"
+    "type": "error",
+    "sig": "error INVALID_LENGTH()"
   },
   {
     "inputs": [],
     "name": "INVALID_TOKEN",
-    "type": "error"
+    "type": "error",
+    "sig": "error INVALID_TOKEN()"
   },
   {
     "inputs": [],
     "name": "KEY_NOT_VALID",
-    "type": "error"
+    "type": "error",
+    "sig": "error KEY_NOT_VALID()"
   },
   {
     "inputs": [],
     "name": "KEY_TRANSFERS_DISABLED",
-    "type": "error"
+    "type": "error",
+    "sig": "error KEY_TRANSFERS_DISABLED()"
   },
   {
     "inputs": [],
     "name": "LOCK_HAS_CHANGED",
-    "type": "error"
+    "type": "error",
+    "sig": "error LOCK_HAS_CHANGED()"
   },
   {
     "inputs": [],
     "name": "LOCK_SOLD_OUT",
-    "type": "error"
+    "type": "error",
+    "sig": "error LOCK_SOLD_OUT()"
   },
   {
     "inputs": [],
     "name": "MAX_KEYS_REACHED",
-    "type": "error"
+    "type": "error",
+    "sig": "error MAX_KEYS_REACHED()"
   },
   {
     "inputs": [],
     "name": "MIGRATION_REQUIRED",
-    "type": "error"
+    "type": "error",
+    "sig": "error MIGRATION_REQUIRED()"
   },
   {
     "inputs": [],
     "name": "NON_COMPLIANT_ERC721_RECEIVER",
-    "type": "error"
+    "type": "error",
+    "sig": "error NON_COMPLIANT_ERC721_RECEIVER()"
   },
   {
     "inputs": [],
     "name": "NON_RENEWABLE_LOCK",
-    "type": "error"
+    "type": "error",
+    "sig": "error NON_RENEWABLE_LOCK()"
   },
   {
     "inputs": [],
     "name": "NOT_ENOUGH_FUNDS",
-    "type": "error"
+    "type": "error",
+    "sig": "error NOT_ENOUGH_FUNDS()"
   },
   {
     "inputs": [],
     "name": "NOT_ENOUGH_TIME",
-    "type": "error"
+    "type": "error",
+    "sig": "error NOT_ENOUGH_TIME()"
   },
   {
     "inputs": [],
     "name": "NOT_READY_FOR_RENEWAL",
-    "type": "error"
+    "type": "error",
+    "sig": "error NOT_READY_FOR_RENEWAL()"
   },
   {
     "inputs": [],
     "name": "NO_SUCH_KEY",
-    "type": "error"
+    "type": "error",
+    "sig": "error NO_SUCH_KEY()"
   },
   {
     "inputs": [],
     "name": "NULL_VALUE",
-    "type": "error"
+    "type": "error",
+    "sig": "error NULL_VALUE()"
   },
   {
     "inputs": [],
     "name": "ONLY_KEY_MANAGER_OR_APPROVED",
-    "type": "error"
+    "type": "error",
+    "sig": "error ONLY_KEY_MANAGER_OR_APPROVED()"
   },
   {
     "inputs": [],
     "name": "ONLY_LOCK_MANAGER",
-    "type": "error"
+    "type": "error",
+    "sig": "error ONLY_LOCK_MANAGER()"
   },
   {
     "inputs": [],
     "name": "ONLY_LOCK_MANAGER_OR_BENEFICIARY",
-    "type": "error"
+    "type": "error",
+    "sig": "error ONLY_LOCK_MANAGER_OR_BENEFICIARY()"
   },
   {
     "inputs": [],
     "name": "ONLY_LOCK_MANAGER_OR_KEY_GRANTER",
-    "type": "error"
+    "type": "error",
+    "sig": "error ONLY_LOCK_MANAGER_OR_KEY_GRANTER()"
   },
   {
     "inputs": [],
     "name": "OUT_OF_RANGE",
-    "type": "error"
+    "type": "error",
+    "sig": "error OUT_OF_RANGE()"
   },
   {
     "inputs": [],
     "name": "OWNER_CANT_BE_ADDRESS_ZERO",
-    "type": "error"
+    "type": "error",
+    "sig": "error OWNER_CANT_BE_ADDRESS_ZERO()"
   },
   {
     "inputs": [],
     "name": "SCHEMA_VERSION_NOT_CORRECT",
-    "type": "error"
+    "type": "error",
+    "sig": "error SCHEMA_VERSION_NOT_CORRECT()"
   },
   {
     "inputs": [],
     "name": "TRANSFER_TO_SELF",
-    "type": "error"
+    "type": "error",
+    "sig": "error TRANSFER_TO_SELF()"
   },
   {
     "inputs": [],
     "name": "UNAUTHORIZED",
-    "type": "error"
+    "type": "error",
+    "sig": "error UNAUTHORIZED()"
   },
   {
     "inputs": [],
     "name": "UNAUTHORIZED_KEY_MANAGER_UPDATE",
-    "type": "error"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "approved",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "Approval",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "operator",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "approved",
-        "type": "bool"
-      }
-    ],
-    "name": "ApprovalForAll",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sendTo",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "refund",
-        "type": "uint256"
-      }
-    ],
-    "name": "CancelKey",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "_timeAdded",
-        "type": "bool"
-      }
-    ],
-    "name": "ExpirationChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "ExpireKey",
-    "type": "event"
+    "type": "error",
+    "sig": "error UNAUTHORIZED_KEY_MANAGER_UPDATE()"
   },
   {
     "anonymous": false,
@@ -2038,7 +2040,8 @@
       }
     ],
     "name": "GasRefunded",
-    "type": "event"
+    "type": "event",
+    "sig": "event GasRefunded(address indexed,uint256,address)"
   },
   {
     "anonymous": false,
@@ -2051,7 +2054,8 @@
       }
     ],
     "name": "Initialized",
-    "type": "event"
+    "type": "event",
+    "sig": "event Initialized(uint8)"
   },
   {
     "anonymous": false,
@@ -2070,52 +2074,8 @@
       }
     ],
     "name": "KeyExtended",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "KeyGranterAdded",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "KeyGranterRemoved",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "_newManager",
-        "type": "address"
-      }
-    ],
-    "name": "KeyManagerChanged",
-    "type": "event"
+    "type": "event",
+    "sig": "event KeyExtended(uint256 indexed,uint256)"
   },
   {
     "anonymous": false,
@@ -2128,46 +2088,8 @@
       }
     ],
     "name": "KeysMigrated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "LockManagerAdded",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "LockManagerRemoved",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "symbol",
-        "type": "string"
-      }
-    ],
-    "name": "NewLockSymbol",
-    "type": "event"
+    "type": "event",
+    "sig": "event KeysMigrated(uint256)"
   },
   {
     "anonymous": false,
@@ -2186,57 +2108,8 @@
       }
     ],
     "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "oldKeyPrice",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "keyPrice",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "oldTokenAddress",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      }
-    ],
-    "name": "PricingChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "freeTrialLength",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "refundPenaltyBasisPoints",
-        "type": "uint256"
-      }
-    ],
-    "name": "RefundPenaltyChanged",
-    "type": "event"
+    "type": "event",
+    "sig": "event OwnershipTransferred(address,address)"
   },
   {
     "anonymous": false,
@@ -2261,7 +2134,8 @@
       }
     ],
     "name": "RoleAdminChanged",
-    "type": "event"
+    "type": "event",
+    "sig": "event RoleAdminChanged(bytes32 indexed,bytes32 indexed,bytes32 indexed)"
   },
   {
     "anonymous": false,
@@ -2286,7 +2160,8 @@
       }
     ],
     "name": "RoleGranted",
-    "type": "event"
+    "type": "event",
+    "sig": "event RoleGranted(bytes32 indexed,address indexed,address indexed)"
   },
   {
     "anonymous": false,
@@ -2311,45 +2186,8 @@
       }
     ],
     "name": "RoleRevoked",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "from",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "to",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "Transfer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "transferFeeBasisPoints",
-        "type": "uint256"
-      }
-    ],
-    "name": "TransferFeeChanged",
-    "type": "event"
+    "type": "event",
+    "sig": "event RoleRevoked(bytes32 indexed,address indexed,address indexed)"
   },
   {
     "anonymous": false,
@@ -2368,38 +2206,8 @@
       }
     ],
     "name": "UnlockCallFailed",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "sender",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "internalType": "address",
-        "name": "beneficiary",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "Withdrawal",
-    "type": "event"
+    "type": "event",
+    "sig": "event UnlockCallFailed(address indexed,address)"
   },
   {
     "inputs": [],
@@ -2412,7 +2220,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function DEFAULT_ADMIN_ROLE() view returns (bytes32)"
   },
   {
     "inputs": [],
@@ -2425,7 +2234,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function KEY_GRANTER_ROLE() view returns (bytes32)"
   },
   {
     "inputs": [],
@@ -2438,51 +2248,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "addKeyGranter",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "addLockManager",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_approved",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "approve",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function LOCK_MANAGER_ROLE() view returns (bytes32)"
   },
   {
     "inputs": [
@@ -2506,39 +2273,8 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_keyOwner",
-        "type": "address"
-      }
-    ],
-    "name": "balanceOf",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "balance",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "beneficiary",
-    "outputs": [
-      {
-        "internalType": "address payable",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function approveBeneficiary(address,uint256) returns (bool)"
   },
   {
     "inputs": [
@@ -2551,33 +2287,8 @@
     "name": "burn",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "cancelAndRefund",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "expirationDuration",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function burn(uint256)"
   },
   {
     "inputs": [
@@ -2595,7 +2306,8 @@
     "name": "expireAndRefundFor",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function expireAndRefundFor(uint256,uint256)"
   },
   {
     "inputs": [
@@ -2623,20 +2335,8 @@
     "name": "extend",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "freeTrialLength",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function extend(uint256,uint256,address,bytes) payable"
   },
   {
     "inputs": [],
@@ -2649,26 +2349,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "getApproved",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function gasRefundValue() view returns (uint256)"
   },
   {
     "inputs": [
@@ -2687,26 +2369,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_keyOwner",
-        "type": "address"
-      }
-    ],
-    "name": "getHasValidKey",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "isValid",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getCancelAndRefundValue(uint256) view returns (uint256)"
   },
   {
     "inputs": [
@@ -2725,7 +2389,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getRoleAdmin(bytes32) view returns (bytes32)"
   },
   {
     "inputs": [
@@ -2749,7 +2414,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getTransferFee(uint256,uint256) view returns (uint256)"
   },
   {
     "inputs": [
@@ -2767,7 +2433,8 @@
     "name": "grantKeyExtension",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function grantKeyExtension(uint256,uint256)"
   },
   {
     "inputs": [
@@ -2796,7 +2463,8 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function grantKeys(address[],uint256[],address[]) returns (uint256[])"
   },
   {
     "inputs": [
@@ -2814,7 +2482,8 @@
     "name": "grantRole",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function grantRole(bytes32,address)"
   },
   {
     "inputs": [
@@ -2838,107 +2507,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address payable",
-        "name": "_lockCreator",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_expirationDuration",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_keyPrice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_maxNumberOfKeys",
-        "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "_lockName",
-        "type": "string"
-      }
-    ],
-    "name": "initialize",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_owner",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_operator",
-        "type": "address"
-      }
-    ],
-    "name": "isApprovedForAll",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "isKeyGranter",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "isLockManager",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function hasRole(bytes32,address) view returns (bool)"
   },
   {
     "inputs": [
@@ -2957,7 +2527,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function isOwner(address) view returns (bool)"
   },
   {
     "inputs": [
@@ -2976,7 +2547,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function isValidKey(uint256) view returns (bool)"
   },
   {
     "inputs": [
@@ -2995,39 +2567,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "keyManagerOf",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "keyPrice",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function keyExpirationTimestampFor(uint256) view returns (uint256)"
   },
   {
     "inputs": [
@@ -3050,7 +2591,8 @@
     "name": "lendKey",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function lendKey(address,address,uint256)"
   },
   {
     "inputs": [],
@@ -3063,20 +2605,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "maxNumberOfKeys",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function maxKeysPerAddress() view returns (uint256)"
   },
   {
     "inputs": [
@@ -3099,7 +2629,8 @@
     "name": "mergeKeys",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function mergeKeys(uint256,uint256,uint256)"
   },
   {
     "inputs": [
@@ -3112,59 +2643,8 @@
     "name": "migrate",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "name",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "numberOfOwners",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "onKeyCancelHook",
-    "outputs": [
-      {
-        "internalType": "contract ILockKeyCancelHook",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "onKeyPurchaseHook",
-    "outputs": [
-      {
-        "internalType": "contract ILockKeyPurchaseHook",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function migrate(bytes)"
   },
   {
     "inputs": [],
@@ -3177,7 +2657,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function onKeyTransferHook() view returns (address)"
   },
   {
     "inputs": [],
@@ -3190,7 +2671,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function onTokenURIHook() view returns (address)"
   },
   {
     "inputs": [],
@@ -3203,7 +2685,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function onValidKeyHook() view returns (address)"
   },
   {
     "inputs": [],
@@ -3216,26 +2699,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "ownerOf",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function owner() view returns (address)"
   },
   {
     "inputs": [],
@@ -3248,7 +2713,8 @@
       }
     ],
     "stateMutability": "pure",
-    "type": "function"
+    "type": "function",
+    "sig": "function publicLockVersion() pure returns (uint16)"
   },
   {
     "inputs": [
@@ -3287,36 +2753,8 @@
       }
     ],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_recipient",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_referrer",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes",
-        "name": "_data",
-        "type": "bytes"
-      }
-    ],
-    "name": "purchasePriceFor",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "minKeyPrice",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function purchase(uint256[],address[],address[],address[],bytes[]) payable returns (uint256[])"
   },
   {
     "inputs": [
@@ -3335,20 +2773,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "refundPenaltyBasisPoints",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function referrerFees(address) view returns (uint256)"
   },
   {
     "inputs": [
@@ -3366,14 +2792,8 @@
     "name": "renewMembershipFor",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "renounceLockManager",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function renewMembershipFor(uint256,address)"
   },
   {
     "inputs": [
@@ -3391,20 +2811,8 @@
     "name": "renounceRole",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_granter",
-        "type": "address"
-      }
-    ],
-    "name": "revokeKeyGranter",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function renounceRole(bytes32,address)"
   },
   {
     "inputs": [
@@ -3422,58 +2830,8 @@
     "name": "revokeRole",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "safeTransferFrom",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes",
-        "name": "_data",
-        "type": "bytes"
-      }
-    ],
-    "name": "safeTransferFrom",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function revokeRole(bytes32,address)"
   },
   {
     "inputs": [],
@@ -3486,38 +2844,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "_approved",
-        "type": "bool"
-      }
-    ],
-    "name": "setApprovalForAll",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_baseTokenURI",
-        "type": "string"
-      }
-    ],
-    "name": "setBaseTokenURI",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function schemaVersion() view returns (uint256)"
   },
   {
     "inputs": [
@@ -3550,7 +2878,8 @@
     "name": "setEventHooks",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function setEventHooks(address,address,address,address,address)"
   },
   {
     "inputs": [
@@ -3563,7 +2892,8 @@
     "name": "setExpirationDuration",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function setExpirationDuration(uint256)"
   },
   {
     "inputs": [
@@ -3576,25 +2906,8 @@
     "name": "setGasRefundValue",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_keyManager",
-        "type": "address"
-      }
-    ],
-    "name": "setKeyManagerOf",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function setGasRefundValue(uint256)"
   },
   {
     "inputs": [
@@ -3607,7 +2920,8 @@
     "name": "setMaxKeysPerAddress",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function setMaxKeysPerAddress(uint256)"
   },
   {
     "inputs": [
@@ -3620,7 +2934,8 @@
     "name": "setMaxNumberOfKeys",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function setMaxNumberOfKeys(uint256)"
   },
   {
     "inputs": [
@@ -3633,7 +2948,8 @@
     "name": "setOwner",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function setOwner(address)"
   },
   {
     "inputs": [
@@ -3651,137 +2967,8 @@
     "name": "setReferrerFee",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_tokenIdFrom",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_timeShared",
-        "type": "uint256"
-      }
-    ],
-    "name": "shareKey",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes4",
-        "name": "interfaceId",
-        "type": "bytes4"
-      }
-    ],
-    "name": "supportsInterface",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "symbol",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "tokenAddress",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_index",
-        "type": "uint256"
-      }
-    ],
-    "name": "tokenByIndex",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_keyOwner",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_index",
-        "type": "uint256"
-      }
-    ],
-    "name": "tokenOfOwnerByIndex",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "tokenURI",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function setReferrerFee(address,uint256)"
   },
   {
     "inputs": [
@@ -3800,20 +2987,8 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "totalSupply",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function totalKeys(address) view returns (uint256)"
   },
   {
     "inputs": [
@@ -3842,43 +3017,8 @@
       }
     ],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "transferFeeBasisPoints",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "internalType": "address",
-        "name": "_recipient",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "transferFrom",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function transfer(uint256,address,uint256) returns (bool)"
   },
   {
     "inputs": [
@@ -3896,136 +3036,15 @@
     "name": "unlendKey",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "unlockProtocol",
-    "outputs": [
-      {
-        "internalType": "contract IUnlock",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address payable",
-        "name": "_beneficiary",
-        "type": "address"
-      }
-    ],
-    "name": "updateBeneficiary",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_keyPrice",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_tokenAddress",
-        "type": "address"
-      }
-    ],
-    "name": "updateKeyPricing",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_lockName",
-        "type": "string"
-      }
-    ],
-    "name": "updateLockName",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_lockSymbol",
-        "type": "string"
-      }
-    ],
-    "name": "updateLockSymbol",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_freeTrialLength",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_refundPenaltyBasisPoints",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateRefundPenalty",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function unlendKey(address,uint256)"
   },
   {
     "inputs": [],
     "name": "updateSchemaVersion",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_transferFeeBasisPoints",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateTransferFee",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_tokenAddress",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdraw",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "stateMutability": "payable",
-    "type": "receive"
+    "type": "function",
+    "sig": "function updateSchemaVersion()"
   }
 ]
