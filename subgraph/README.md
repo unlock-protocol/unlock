@@ -31,7 +31,6 @@ Generate via the build script:
 
 `yarn build --network {network name}`
 
-
 ## Generating code
 
 With `subgraph.yaml` created, we should generate the associated code with the following:
@@ -45,3 +44,18 @@ These command require the passing of the following command line arguments `--net
 * `yarn run deploy` - Deploy the latest subgraph code to the graph node
 
 Note: `polygon` is called `matic` in the graph. Please change the subgraph.yaml file manually.
+
+
+## Tests
+
+(preffered way) Run the tests using Docker 
+
+```
+yarn test -d 
+```
+
+Run coverage 
+
+```
+yarn test -d -c
+```
