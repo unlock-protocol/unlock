@@ -46,9 +46,24 @@ These command require the passing of the following command line arguments `--net
 Note: `polygon` is called `matic` in the graph. Please change the subgraph.yaml file manually.
 
 
+## Build deps files 
+
+Generate the `networks.json` file from the `@unlock-protocol/networks` package
+
+```
+yarn generate-networks
+```
+
+Generate the abis file from the `@unlock-protocol/contracts` package
+
+```
+yarn generate-abis
+```
+
+
 ## Tests
 
-(preffered way) Run the tests using Docker 
+(preferred way) Run the tests using Docker 
 
 ```
 yarn test -d 
@@ -58,4 +73,12 @@ Run coverage
 
 ```
 yarn test -d -c
+```
+
+## Helpers
+
+Show all events from different contract versions  
+
+```
+yarn show-events
 ```
