@@ -8,6 +8,7 @@ import {
   MemberCardPlaceholder,
 } from '../interface/members/MemberCard'
 import { Button } from '@unlock-protocol/ui'
+import { expirationAsDate } from '~/utils/durations'
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
   // strings
@@ -130,11 +131,12 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   }
 
   const isKeyValid = (metadata: KeyMetadata) => {
-    if (!metadata?.expiration) return false
-    if (metadata?.expiration.toLowerCase() === 'never') return true
-    const now = new Date().getTime()
-    const expiration = new Date(metadata?.expiration).getTime()
-    return expiration > now
+    if (!metadata?.expiration) return // expiration not present
+
+    const expiration = expirationAsDate(metadata?.expiration)
+    if (expiration.toLowerCase() === 'never') return true
+    if (expiration.toLowerCase() === 'expired') return false
+    return true
   }
 
   const expireAndRefundDisabled = (
