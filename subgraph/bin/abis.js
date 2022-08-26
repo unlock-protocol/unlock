@@ -46,7 +46,7 @@ function parseAndCopyAbis() {
   )
 
   // merge
-  mergeAbis()
+  mergeAbi('PublicLock')
 }
 
 // show all existing events version by version
@@ -80,13 +80,7 @@ function mergeAbi(contractName) {
   fs.writeJSONSync(abiPath, merged, { spaces: 2 })
 }
 
-function mergeAbis() {
-  mergeAbi('Unlock')
-  mergeAbi('PublicLock')
-}
-
 module.exports = {
   showAllEvents,
   parseAndCopyAbis,
-  mergeAbis,
 }
