@@ -24,7 +24,7 @@ import { lockAddress, lockOwner } from './constants'
 // mock contract functions
 import './mocks'
 
-const lockManager = '0x0000000000000000000000000000000000000018'
+const lockManager = '0x0000000000000000000000000000000000000123'
 
 describe('Describe Locks events', () => {
   beforeAll(() => {
@@ -78,6 +78,5 @@ describe('Describe Locks events', () => {
       Address.fromString(lockManager)
     )
     handleLockManagerRemoved(newLockManagerRemoved)
-    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
   })
 })

@@ -1,5 +1,17 @@
 import { newMockEvent } from 'matchstick-as'
-import { ethereum, Address, BigInt } from '@graphprotocol/graph-ts'
+import {
+  createMockedFunction,
+  dataSourceMock,
+} from 'matchstick-as/assembly/index'
+import {
+  ethereum,
+  Address,
+  BigInt,
+  log,
+  DataSourceContext,
+  Value,
+  dataSource,
+} from '@graphprotocol/graph-ts'
 import {
   CancelKey,
   ExpirationChanged,
@@ -13,12 +25,40 @@ import {
   RenewKeyPurchase,
 } from '../generated/templates/PublicLock/PublicLock'
 
+import {
+  lockAddress,
+  lockAddressV8,
+  tokenId,
+  expiration,
+  keyOwnerAddress,
+} from './constants'
+
+export function mockDataSourceV8(): void {
+  const v8context = new DataSourceContext()
+  v8context.set(
+    'lockAddress',
+    Value.fromAddress(Address.fromString(lockAddressV8))
+  )
+  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', v8context)
+}
+
+export function mockDataSourceV11(): void {
+  const v11context = new DataSourceContext()
+  v11context.set(
+    'lockAddress',
+    Value.fromAddress(Address.fromString(lockAddress))
+  )
+  dataSourceMock.setReturnValues(lockAddress, 'rinkeby', v11context)
+}
+
 export function createTransferEvent(
   from: Address,
   to: Address,
   tokenId: BigInt
 ): Transfer {
   const transferEvent = changetype<Transfer>(newMockEvent())
+
+  transferEvent.address = dataSource.address()
 
   transferEvent.parameters = []
 
@@ -45,6 +85,8 @@ export function createExpirationChangedEvent(
 ): ExpirationChanged {
   const expirationChangedEvent = changetype<ExpirationChanged>(newMockEvent())
 
+  expirationChangedEvent.address = dataSource.address()
+
   expirationChangedEvent.parameters = []
 
   expirationChangedEvent.parameters.push(
@@ -69,11 +111,37 @@ export function createExpirationChangedEvent(
   return expirationChangedEvent
 }
 
+export function updateExpiration(): void {
+  createMockedFunction(
+    Address.fromString(lockAddress),
+    'keyExpirationTimestampFor',
+    'keyExpirationTimestampFor(uint256):(uint256)'
+  )
+    .withArgs([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(tokenId))])
+    .returns([
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(expiration + 1000)),
+    ])
+}
+
+export function updateExpirationV8(): void {
+  createMockedFunction(
+    Address.fromString(lockAddressV8),
+    'keyExpirationTimestampFor',
+    'keyExpirationTimestampFor(address):(uint256)'
+  )
+    .withArgs([ethereum.Value.fromAddress(Address.fromString(keyOwnerAddress))])
+    .returns([
+      ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(expiration + 1000)),
+    ])
+}
+
 export function createKeyManagerChangedEvent(
   _tokenId: BigInt,
   _newManager: Address
 ): KeyManagerChanged {
   const keyManagerChangedEvent = changetype<KeyManagerChanged>(newMockEvent())
+
+  keyManagerChangedEvent.address = dataSource.address()
 
   keyManagerChangedEvent.parameters = []
 
@@ -100,6 +168,8 @@ export function createCancelKeyEvent(
   // refund: bigint
 ): CancelKey {
   const cancelKeyEvent = changetype<CancelKey>(newMockEvent())
+
+  cancelKeyEvent.address = dataSource.address()
 
   cancelKeyEvent.parameters = []
 
@@ -128,6 +198,8 @@ export function createRenewKeyPurchaseEvent(
   newTimestamp: BigInt
 ): RenewKeyPurchase {
   const renewKeyPurchaseEvent = changetype<RenewKeyPurchase>(newMockEvent())
+
+  renewKeyPurchaseEvent.address = dataSource.address()
 
   renewKeyPurchaseEvent.parameters = []
 

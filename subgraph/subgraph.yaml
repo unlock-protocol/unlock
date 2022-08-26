@@ -18,14 +18,14 @@ dataSources:
         - NewLock
       abis:
         - name: Unlock
-          file: ./abis/Unlock.json
+          file: ./abis/UnlockV11.json
       eventHandlers:
         - event: NewLock(indexed address,indexed address)
           handler: handleNewLock
-        - event: NewTokenURI(string)
-          handler: handleNewTokenURI
-        - event: NewGlobalTokenSymbol(string)
-          handler: handleNewGlobalTokenSymbol
+        - event: ConfigUnlock(address,address,uint256,string,string,uint256)
+          handler: handleConfigUnlock
+        - event: LockUpgraded(address,uint16)
+          handler: handleLockUpgraded
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
       file: ./src/unlock.ts
@@ -52,7 +52,9 @@ templates:
         - Transfer
       abis:
         - name: PublicLock
-          file: ./abis/PublicLock.json
+          file: ./abis/PublicLock-merged.json
+        - name: PublicLockV11
+          file: ./abis/PublicLockV11.json
         - name: PublicLockV7
           file: ./abis/PublicLockV7.json
       eventHandlers:
@@ -75,5 +77,5 @@ templates:
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
         - event: RenewKeyPurchase(indexed address,uint256)
-          handler: renewKeyPurchase
+          handler: handleRenewKeyPurchase
       file: ./src/public-lock.ts
