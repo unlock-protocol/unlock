@@ -94,5 +94,4 @@ function mergeAbi(contractName) {
 module.exports = {
   showAllEvents,
   parseAndCopyAbis,
-  mergeAbis,
 }
