@@ -323,23 +323,21 @@ describe('Change in expiration timestamp', () => {
     )
     handleTransfer(newTransferEvent)
 
+    // mock and test
+    updateExpiration()
     const newExpirationEvent = createExpirationChangedEvent(
       BigInt.fromU32(tokenId),
       BigInt.fromU32(1000),
       true
     )
+
     handleExpirationChanged(newExpirationEvent)
-  })
-
-  test('increase timestamp', () => {
     assert.fieldEquals('Key', keyID, 'expiration', `${expiration + 1000}`)
+    dataSourceMock.resetValues()
   })
-})
 
-describe('Key managers', () => {
-  const newKeyManagerAddress = '0x0000000000000000000000000000000000000132'
-
-  beforeAll(() => {
+  test('increase timestamp (v8)', () => {
+    mockDataSourceV8()
     // create a key
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
@@ -347,9 +345,35 @@ describe('Key managers', () => {
       BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
+
+    // mock and test
+    updateExpirationV8()
+    const newExpirationEvent = createExpirationChangedEvent(
+      BigInt.fromU32(tokenId),
+      BigInt.fromU32(1000),
+      true
+    )
+
+    handleExpirationChanged(newExpirationEvent)
+    assert.fieldEquals('Key', keyIDV8, 'expiration', `${expiration + 1000}`)
+    dataSourceMock.resetValues()
   })
+})
+
+describe('Key managers', () => {
+  const newKeyManagerAddress = '0x0000000000000000000000000000000000000132'
 
   test('key manager changed', () => {
+    mockDataSourceV11()
+
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+
     const newKeyManagerChanged = createKeyManagerChangedEvent(
       BigInt.fromU32(tokenId),
       Address.fromString(newKeyManagerAddress)
@@ -357,11 +381,34 @@ describe('Key managers', () => {
 
     handleKeyManagerChanged(newKeyManagerChanged)
     assert.fieldEquals('Key', keyID, 'manager', newKeyManagerAddress)
+    dataSourceMock.resetValues()
+  })
+
+  test('key manager changed (v8)', () => {
+    mockDataSourceV8()
+
+    // create a key
+    const newTransferEvent = createTransferEvent(
+      Address.fromString(nullAddress),
+      Address.fromString(keyOwnerAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(newTransferEvent)
+
+    const newKeyManagerChanged = createKeyManagerChangedEvent(
+      BigInt.fromU32(tokenId),
+      Address.fromString(newKeyManagerAddress)
+    )
+
+    handleKeyManagerChanged(newKeyManagerChanged)
+    assert.fieldEquals('Key', keyIDV8, 'manager', newKeyManagerAddress)
+    dataSourceMock.resetValues()
   })
 })
 
 describe('Cancel keys', () => {
-  beforeAll(() => {
+  test('cancel a key', () => {
+    mockDataSourceV11()
     // create a key
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
@@ -369,17 +416,19 @@ describe('Cancel keys', () => {
       BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
-  })
 
-  test('cancel a key', () => {
     const newCancelKey = createCancelKeyEvent(BigInt.fromU32(tokenId))
     handleCancelKey(newCancelKey)
     assert.fieldEquals('Key', keyID, 'cancelled', 'true')
+
+    dataSourceMock.resetValues()
   })
 })
 
 describe('RenewKeyPurchase (lock <v10)', () => {
-  beforeAll(() => {
+  test('extend a key by the correct time (v8)', () => {
+    mockDataSourceV8()
+
     // create a key
     const newTransferEvent = createTransferEvent(
       Address.fromString(nullAddress),
@@ -387,16 +436,16 @@ describe('RenewKeyPurchase (lock <v10)', () => {
       BigInt.fromU32(tokenId)
     )
     handleTransfer(newTransferEvent)
-  })
 
-  test('extend a key by the correct time', () => {
+    updateExpirationV8()
     const newExpiration = expiration + 1000
-
     const newRenewKeyPurchase = createRenewKeyPurchaseEvent(
       Address.fromString(keyOwnerAddress),
       BigInt.fromU64(newExpiration)
     )
     handleRenewKeyPurchase(newRenewKeyPurchase)
-    assert.fieldEquals('Key', keyID, 'expiration', `${newExpiration}`)
+    assert.fieldEquals('Key', keyIDV8, 'expiration', `${newExpiration}`)
+
+    dataSourceMock.resetValues()
   })
 })
