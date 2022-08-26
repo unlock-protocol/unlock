@@ -1,6 +1,5 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import { act, waitFor, screen } from '@testing-library/react'
 import { CancelAndRefundModal } from '../../../../components/interface/keychain/CancelAndRefundModal'
 import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
 import AuthenticationContext, {
@@ -91,7 +90,45 @@ const componentInactive: React.ReactElement<any> = (
   />
 )
 
+const mockUseKeychain = {
+  isLoading: true,
+  data: {
+    refundAmount: 2,
+    transferFee: 0,
+    lockBalance: 10,
+  },
+}
+
+jest.mock('../../../../hooks/useKeychain', () => {
+  return {
+    useKeychain: jest.fn().mockResolvedValue(() => {
+      return mockUseKeychain
+    }),
+  }
+})
+
 describe('CancelAndRefundModal', () => {
+  afterEach(() => {
+    jest.resetAllMocks()
+  })
+
+  it('show loading', () => {
+    expect.assertions(1)
+    const { getByTestId } = renderWithContexts(component)
+
+    expect(getByTestId('placeholder')).toBeDefined()
+  })
+
+  it.todo('it show refund message if refund is possible')
+
+  it.todo('refund button is enabled when refund is possible')
+
+  it.todo('it show refund error message when refund fee is 100%')
+
+  it.todo('it show refund error message when balance cant cover the refund')
+
+  it.todo('refund button is disabled when refund is not possible')
+
   it('correctly render CancelAndRefund', () => {
     expect.assertions(1)
     const { container } = renderWithContexts(component)
@@ -103,21 +140,5 @@ describe('CancelAndRefundModal', () => {
     const { getByText } = renderWithContexts(componentInactive)
     const message = getByText('No lock selected')
     expect(message).toBeDefined()
-  })
-
-  it('should call dismiss when CancelAndRefund confirmed', async () => {
-    expect.assertions(5)
-    const { container } = renderWithContexts(component)
-    expect(await screen.findByText(/Cancel and Refund/i)).toBeInTheDocument()
-    expect(dismiss).toBeCalledTimes(0)
-    const confirmButton = container.querySelector('button') as HTMLElement
-    expect(confirmButton).toBeDefined()
-    await waitFor(() => expect(confirmButton).not.toBeDisabled(), {
-      timeout: 5000,
-    })
-    act(async () => {
-      rtl.fireEvent.click(confirmButton)
-    })
-    expect(dismiss).toBeCalledTimes(1)
   })
 })
