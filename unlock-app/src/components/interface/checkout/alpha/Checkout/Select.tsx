@@ -6,7 +6,7 @@ import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
 import { useQuery } from 'react-query'
 import { Fragment, useState, useMemo } from 'react'
 import { RadioGroup } from '@headlessui/react'
@@ -31,7 +31,7 @@ interface Props {
 
 export function Select({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { paywallConfig, lock: selectedLock, payment } = state.context
+  const { paywallConfig, lock: selectedLock } = state.context
   const lockOptions = useMemo(() => {
     return Object.entries(paywallConfig.locks).map(([lock, props]) => ({
       ...props,

@@ -14,7 +14,7 @@ import {
 import { useActor } from '@xstate/react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
 import { useCheckoutSteps } from './useCheckoutItems'
 

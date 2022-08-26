@@ -103,7 +103,6 @@ export interface PaywallConfigLock {
   maxRecipients?: number
   minRecipients?: number
   superfluid?: boolean
-  password?: boolean
   default?: boolean
 }
 
@@ -207,7 +206,6 @@ export interface PaywallConfig {
   messageToSign?: string
   pessimistic?: boolean
   captcha?: boolean
-  password?: boolean
   maxRecipients?: number
   minRecipients?: number
   superfluid?: boolean

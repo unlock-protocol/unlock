@@ -33,8 +33,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
 
-  const { paywallConfig, quantity, recipients, skipQuantity, payment } =
-    state.context
+  const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
   const wallet = useWalletService()
   const { account, network } = useAuth()
