@@ -119,7 +119,7 @@ contract Ownable is Initializable, Context {
      */
     function initialize(address sender) public initializer {
         _owner = sender;
-        emit OwnershipTransferred(address(0), _owner);
+        emit OwnershipTransferred(address(0), sender);
     }
 
     /**

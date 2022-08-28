@@ -1713,7 +1713,7 @@ contract MixinLockCore is
     );
     keyPrice = _keyPrice;
     tokenAddress = _tokenAddress;
-    emit PricingChanged(oldKeyPrice, keyPrice, oldTokenAddress, tokenAddress);
+    emit PricingChanged(oldKeyPrice, _keyPrice, oldTokenAddress, tokenAddress);
   }
 
   /**
