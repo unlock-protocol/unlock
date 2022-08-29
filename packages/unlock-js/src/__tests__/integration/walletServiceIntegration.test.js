@@ -647,23 +647,46 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           expect(totalKeysBefore[0]).toBe(0)
           expect(totalKeysBefore[1]).toBe(0)
         })
+      })
 
-        // check number of multiple keys for locks v10+
-        if (['v10', 'v11'].indexOf(publicLockVersion) !== -1) {
+      // enable grant of multiple keys for same address for locks v10+
+      if (['v10', 'v11'].indexOf(publicLockVersion) !== -1) {
+        describe('grant multiple keys for same address', () => {
+          let totalKeysBefore
+          let recipients
+          let owner
+
+          beforeAll(async () => {
+            owner = accounts[8]
+            recipients = [owner, owner]
+
+            await walletService.setMaxKeysPerAddress({
+              lockAddress,
+              maxKeysPerAddress: 1000,
+              chainId,
+            })
+
+            totalKeysBefore = await Promise.all(
+              recipients.map((grantee) =>
+                web3Service.totalKeys(lockAddress, grantee, chainId)
+              )
+            )
+          })
+          // check number of multiple keys for locks v10+
           it('should have increased the maxKeysPerAddress and granted multiple keys', async () => {
-            expect.assertions(1)
-            const owner = accounts[8]
-            keyGrantees = [owner, owner] // grant keys for the same address
+            expect.assertions(2)
 
             const totalKeys = await web3Service.totalKeys(
               lockAddress,
               owner,
               chainId
             )
+            expect(totalKeysBefore).toBe(0)
             expect(totalKeys).toBe(2)
           })
-        }
-      })
+        })
+      }
+
       describe('purchaseKey', () => {
         let tokenId
         let key
