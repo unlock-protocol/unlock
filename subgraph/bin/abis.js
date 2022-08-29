@@ -13,7 +13,7 @@ const publicLockVersions = ['v7', 'v11']
 function setupFolder() {
   // make sure we clean up
   if (fs.pathExistsSync(abisFolderPath)) {
-    fs.rmdirSync(abisFolderPath, { recursive: true, force: true })
+    fs.rmSync(abisFolderPath, { recursive: true, force: true })
   }
   fs.mkdirSync(abisFolderPath)
 }
