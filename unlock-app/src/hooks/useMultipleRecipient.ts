@@ -34,7 +34,6 @@ export const useMultipleRecipient = (
   paywallConfig?: PaywallConfig
 ) => {
   const { network } = useContext(AuthenticationContext)
-  console.log(network)
   let maxRecipients = 1
   if (paywallConfig?.maxRecipients) {
     maxRecipients = paywallConfig.maxRecipients
