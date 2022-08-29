@@ -548,7 +548,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           if (['v10', 'v11'].indexOf(publicLockVersion) !== -1) {
             await walletService.setMaxKeysPerAddress({
               lockAddress,
-              maxKeysPerAddress: 1000,
+              maxKeysPerAddress: 100,
               chainId,
             })
           }
@@ -662,7 +662,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
             await walletService.setMaxKeysPerAddress({
               lockAddress,
-              maxKeysPerAddress: 1000,
+              maxKeysPerAddress: 100,
               chainId,
             })
 
