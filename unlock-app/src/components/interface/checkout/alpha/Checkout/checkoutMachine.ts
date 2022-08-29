@@ -1,4 +1,4 @@
-import { Lock, PaywallConfig } from '~/unlockTypes'
+import { Lock, PaywallConfig, PaywallConfigLock } from '~/unlockTypes'
 import { createMachine, assign, InterpreterFrom } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
@@ -24,7 +24,7 @@ export interface FiatPricing {
   }
 }
 
-export interface LockState extends Lock {
+export interface LockState extends Lock, Required<PaywallConfigLock> {
   fiatPricing: FiatPricing
   isMember: boolean
   isSoldOut: boolean
