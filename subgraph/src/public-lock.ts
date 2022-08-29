@@ -23,7 +23,7 @@ function newKey(event: TransferEvent): void {
   const key = new Key(keyID)
   key.lock = event.address.toHexString()
   key.tokenId = event.params.tokenId
-  key.owner = event.params.to.toHexString()
+  key.owner = event.params.to
   key.createdAtBlock = event.block.number
 
   const lockContract = PublicLock.bind(event.address)
@@ -46,7 +46,7 @@ export function handleTransfer(event: TransferEvent): void {
     const keyID = genKeyID(event.address, event.params.tokenId.toString())
     const key = Key.load(keyID)
     if (key) {
-      key.owner = event.params.to.toHexString()
+      key.owner = event.params.to
       key.expiration = getKeyExpirationTimestampFor(
         event.address,
         event.params.tokenId,
@@ -64,7 +64,7 @@ export function handleExpireKey(event: ExpireKeyEvent): void {
     key.expiration = getKeyExpirationTimestampFor(
       event.address,
       event.params.tokenId,
-      Address.fromString(key.owner)
+      Address.fromBytes(key.owner)
     )
     key.save()
   }
@@ -77,7 +77,7 @@ export function handleExpirationChanged(event: ExpirationChangedEvent): void {
     key.expiration = getKeyExpirationTimestampFor(
       event.address,
       event.params._tokenId,
-      Address.fromString(key.owner)
+      Address.fromBytes(key.owner)
     )
     key.save()
   }
