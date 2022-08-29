@@ -12,7 +12,7 @@ export const tokenURI = 'http://token-api'
 
 // prices
 export const keyPrice = 1000
-export const oldKeyPrice = 1001
+export const newKeyPrice = 1001
 export const tokenAddress = '0x0000000000000000000000000000000000000007'
 
 // default address used in newMockEvent() function

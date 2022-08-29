@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
 import { log, BigInt } from '@graphprotocol/graph-ts'
-import { NewLock, OwnershipTransferred } from '../generated/Unlock/Unlock'
+import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
 import { Lock } from '../generated/schema'
 
@@ -34,3 +34,11 @@ export function handleNewLock(event: NewLock): void {
   log.debug('New lock: {}', [lockID])
 }
 
+export function handleLockUpgraded(event: LockUpgraded): void {
+  let lockAddress = event.params.lockAddress
+  const lock = Lock.load(lockAddress.toHexString())
+  if (lock) {
+    lock.version = BigInt.fromI32(event.params.version)
+    lock.save()
+  }
+}

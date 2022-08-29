@@ -1,6 +1,6 @@
 import { newMockEvent } from 'matchstick-as'
 import { ethereum, Address, BigInt } from '@graphprotocol/graph-ts'
-import { NewLock } from '../generated/Unlock/Unlock'
+import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
 import {
   LockManagerAdded,
   LockManagerRemoved,
@@ -104,4 +104,25 @@ export function createPricingChangedEvent(
   )
 
   return pricingChangedEvent
+}
+
+export function createLockUpgradedEvent(
+  lockAddress: Address,
+  version: BigInt
+): LockUpgraded {
+  const lockUpgradedEvent = changetype<LockUpgraded>(newMockEvent())
+
+  // set existing lock address
+  lockUpgradedEvent.parameters = []
+
+  lockUpgradedEvent.parameters.push(
+    new ethereum.EventParam(
+      'lockAddress',
+      ethereum.Value.fromAddress(lockAddress)
+    )
+  )
+  lockUpgradedEvent.parameters.push(
+    new ethereum.EventParam('version', ethereum.Value.fromI32(version.toI32()))
+  )
+  return lockUpgradedEvent
 }

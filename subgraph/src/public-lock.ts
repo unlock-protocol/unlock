@@ -156,6 +156,10 @@ export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
 export function handlePricingChanged(event: PricingChangedEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock) {
+    log.debug('Old price: {}, New price: {}', [
+      lock.price.toString(),
+      event.params.keyPrice.toString(),
+    ])
     lock.price = event.params.keyPrice
     lock.tokenAddress = event.params.tokenAddress
     lock.save()
