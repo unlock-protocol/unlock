@@ -6,7 +6,7 @@ import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
 import { useQuery } from 'react-query'
 import { Fragment, useState, useMemo } from 'react'
 import { RadioGroup } from '@headlessui/react'
@@ -22,6 +22,7 @@ import { Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
+import { useCheckoutSteps } from './useCheckoutItems'
 
 interface Props {
   injectedProvider: unknown
@@ -30,7 +31,7 @@ interface Props {
 
 export function Select({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { paywallConfig, lock: selectedLock, payment } = state.context
+  const { paywallConfig, lock: selectedLock } = state.context
   const lockOptions = useMemo(() => {
     return Object.entries(paywallConfig.locks).map(([lock, props]) => ({
       ...props,
@@ -137,51 +138,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     // if locks are sold out and the user is not an existing member of the lock
     (lock?.isSoldOut && !existingMember)
 
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Choose quantity',
-      skip: skipQuantity,
-      to: 'QUANTITY',
-    },
-    {
-      id: 3,
-      name: 'Add recipients',
-      to: 'METADATA',
-    },
-    {
-      id: 4,
-      name: 'Choose payment',
-      to: 'PAYMENT',
-    },
-    {
-      id: 5,
-      name: 'Sign message',
-      skip: !paywallConfig.messageToSign,
-      to: 'MESSAGE_TO_SIGN',
-    },
-    {
-      id: 6,
-      name: 'Solve captcha',
-      to: 'CAPTCHA',
-      skip:
-        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
-    },
-    {
-      id: 7,
-      name: 'Confirm',
-      to: 'CONFIRM',
-    },
-    {
-      id: 8,
-      name: 'Minting NFT',
-    },
-  ]
+  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
