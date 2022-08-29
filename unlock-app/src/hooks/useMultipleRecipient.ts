@@ -136,7 +136,7 @@ export const useMultipleRecipient = (
     ).length
 
     /**
-     * make so to check the actual keys for address and the keys on list to prevent to try to
+     * make sure to check the actual keys for address and the keys on list to prevent to try to
      * airdrop more keys allowed for the lock
      */
     const totalKeysForAddress = keysInAirdropList + keyPerAddress
