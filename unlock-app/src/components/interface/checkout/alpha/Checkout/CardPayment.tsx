@@ -21,9 +21,9 @@ import {
 } from '@stripe/react-stripe-js'
 import { countries } from '~/utils/countries'
 import { loadStripe } from '@stripe/stripe-js'
-import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
+import { useCheckoutSteps } from './useCheckoutItems'
 
 interface Props {
   injectedProvider: unknown
@@ -31,7 +31,6 @@ interface Props {
 }
 
 export function CardPayment({ checkoutService, injectedProvider }: Props) {
-  const [state, send] = useActor(checkoutService)
   const { account } = useAuth()
   const [editCard, setEditCard] = useState(false)
   const config = useConfig()
@@ -46,55 +45,8 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
       enabled: !!account,
     }
   )
-  const { paywallConfig, skipQuantity, payment } = state.context
-
   const card = data?.[0]
-
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Choose quantity',
-      skip: skipQuantity,
-      to: 'QUANTITY',
-    },
-    {
-      id: 3,
-      name: 'Add recipients',
-      to: 'METADATA',
-    },
-    {
-      id: 4,
-      name: 'Add card',
-      to: 'PAYMENT',
-    },
-    {
-      id: 5,
-      name: 'Sign message',
-      skip: !paywallConfig.messageToSign,
-      to: 'MESSAGE_TO_SIGN',
-    },
-    {
-      id: 6,
-      name: 'Solve captcha',
-      to: 'CAPTCHA',
-      skip:
-        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
-    },
-    {
-      id: 7,
-      name: 'Confirm',
-      to: 'CONFIRM',
-    },
-    {
-      id: 8,
-      name: 'Minting NFT',
-    },
-  ]
+  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
@@ -138,7 +90,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
               className="w-full"
               disabled={!card || isLoading}
               onClick={() => {
-                send({
+                checkoutService.send({
                   type: 'SELECT_CARD_TO_CHARGE',
                   cardId: card.id,
                 })
