@@ -52,7 +52,7 @@ export const StepButton = ({
     `flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full hover:bg-gray-50`
   )
   return (
-    <Tooltip side="top" delay={50} label={label} tip={label}>
+    <Tooltip side="top" delay={0} label={label} tip={label}>
       <button
         className={stepIconClass}
         onClick={(event) => {
