@@ -13,16 +13,10 @@ type Key @entity {
   id: ID!
   lock: Lock!
   tokenId: BigInt!
-  owner: KeyOwner!
+  owner: Bytes!
   manager: Bytes
   expiration: BigInt!
   tokenURI: String
   createdAtBlock: BigInt!
   cancelled: Boolean
-}
-
-type KeyOwner @entity {
-  id: ID!
-  address: Bytes!
-  keys: [Key!] @derivedFrom(field: "owner")
 }
