@@ -8,6 +8,7 @@ import AuthenticationContext, {
 import { ConfigContext } from '../../../../utils/withConfig'
 import { Web3ServiceContext } from '../../../../utils/withWeb3Service'
 import { QueryClientProvider, QueryClient } from 'react-query'
+import { useKeychain } from '~/hooks/useKeychain'
 
 const accountAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const aKey: OwnedKey = {
@@ -101,7 +102,7 @@ const mockUseKeychain = {
 
 jest.mock('../../../../hooks/useKeychain', () => {
   return {
-    useKeychain: jest.fn().mockResolvedValue(() => {
+    useKeychain: jest.fn(() => {
       return mockUseKeychain
     }),
   }
@@ -115,7 +116,6 @@ describe('CancelAndRefundModal', () => {
   it('show loading', () => {
     expect.assertions(1)
     const { getByTestId } = renderWithContexts(component)
-
     expect(getByTestId('placeholder')).toBeDefined()
   })
 
