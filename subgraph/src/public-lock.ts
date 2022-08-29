@@ -46,11 +46,7 @@ export function handleTransfer(event: TransferEvent): void {
     const keyID = genKeyID(event.address, event.params.tokenId.toString())
     const key = Key.load(keyID)
     if (key) {
-<<<<<<< HEAD
-      key.owner = event.params.to
-=======
       key.owner = event.params.to.toHexString()
->>>>>>> 4131f66fd (event change in price)
       key.expiration = getKeyExpirationTimestampFor(
         event.address,
         event.params.tokenId,
