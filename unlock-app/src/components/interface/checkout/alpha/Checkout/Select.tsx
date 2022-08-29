@@ -90,8 +90,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const skipQuantity = useMemo(() => {
     const maxRecipients = lock?.maxRecipients || paywallConfig.maxRecipients
     const minRecipients = lock?.minRecipients || paywallConfig.minRecipients
-    const hasMaxRecipients = maxRecipients && maxRecipients > 1
-    const hasMinRecipients = minRecipients && minRecipients > 1
+    const hasMaxRecipients = maxRecipients > 1
+    const hasMinRecipients = minRecipients > 1
     return !(hasMaxRecipients || hasMinRecipients)
   }, [lock, paywallConfig])
 
