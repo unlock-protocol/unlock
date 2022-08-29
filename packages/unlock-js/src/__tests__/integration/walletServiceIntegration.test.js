@@ -650,7 +650,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           expect(totalKeysBefore[1]).toBe(0)
         })
 
-        if (['v10'].indexOf(publicLockVersion) == -1) {
+        // check number of multiple keys for locks v10+
+        if (['v4', 'v6', 'v7', 'v8', 'v9'].indexOf(publicLockVersion) === -1) {
           it('should have increase the maxKeysPerAddress and granted multiple keys', async () => {
             expect.assertions(1)
             const owner = accounts[8]
