@@ -15,7 +15,7 @@ export const Step = ({
   children = 1,
 }: IconProps & { children?: ReactNode }) => {
   const stepIconClass = twMerge(
-    `flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full`,
+    `flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full cursor-default`,
     active && 'bg-ui-main-500 text-white border-none'
   )
   return <div className={stepIconClass}>{children}</div>
@@ -23,7 +23,7 @@ export const Step = ({
 
 export const StepFinish = ({ active }: IconProps) => {
   const finishIconClass = twMerge(
-    `font-medium box-border border p-0.5 w-5 text-xs h-5 rounded-full`,
+    `font-medium box-border border p-0.5 w-5 text-xs h-5 rounded-full cursor-default`,
     active && 'bg-ui-main-500 text-white fill-white border-none'
   )
   return <FinishIcon size={20} className={finishIconClass} />
@@ -31,7 +31,7 @@ export const StepFinish = ({ active }: IconProps) => {
 
 export const StepFinished = ({ active }: IconProps) => {
   const finishedIconClass = twMerge(
-    `font-medium box-border border w-5 p-0.5 text-xs h-5 rounded-full`,
+    `font-medium box-border border w-5 p-0.5 text-xs h-5 rounded-full cursor-default`,
     active && 'bg-ui-main-500 text-white fill-white border-none'
   )
   return <RocketIcon size={20} className={finishedIconClass} />
@@ -49,10 +49,10 @@ export const StepButton = ({
   label,
 }: StepButtonProps) => {
   const stepIconClass = twMerge(
-    `flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full`
+    `flex items-center justify-center font-medium border-gray-300 box-border border w-5 text-xs h-5 rounded-full hover:bg-gray-50`
   )
   return (
-    <Tooltip side="top" delay={50} label={label} tip={label}>
+    <Tooltip side="top" delay={0} label={label} tip={label}>
       <button
         className={stepIconClass}
         onClick={(event) => {
@@ -82,9 +82,15 @@ interface StepperProps {
   items: StepItem[]
   position: number
   service: CheckoutService | UnlockAccountService
+  disabled?: boolean
 }
 
-export const Stepper = ({ items, position, service }: StepperProps) => {
+export const Stepper = ({
+  items,
+  position,
+  service,
+  disabled,
+}: StepperProps) => {
   const index = items.findIndex((item) => item.id === position)
   const step = items[index]
   const base = items.slice(0, index).filter((item) => !item?.skip)
@@ -93,7 +99,7 @@ export const Stepper = ({ items, position, service }: StepperProps) => {
     <div className="flex items-center justify-between w-full gap-2 p-2 px-6 border-b">
       <div className="flex items-center gap-1.5">
         {base.map((item, idx) =>
-          item.to && rest.length ? (
+          item.to && !disabled ? (
             <StepButton
               key={idx}
               onClick={() => {

@@ -30,16 +30,16 @@ export function Pricing({ usdPrice, keyPrice, isCardEnabled }: PricingProps) {
 
 export const LockOptionPlaceholder = () => {
   return (
-    <div className="flex flex-col p-2 w-full gap-4 items-center ring-1 justify-between ring-gray-200 animate-pulse duration-150 rounded-xl cursor-pointer relative">
-      <div className="inline-flex items-start w-full justify-between gap-x-4">
+    <div className="relative flex flex-col items-center justify-between w-full gap-4 p-2 duration-150 border cursor-pointer ring-gray-200 animate-pulse rounded-xl">
+      <div className="inline-flex items-start justify-between w-full gap-x-4">
         <div>
-          <div className="flex items-center justify-center bg-gray-50 rounded-lg h-16 w-16" />
+          <div className="flex items-center justify-center w-16 h-16 rounded-lg bg-gray-50" />
         </div>
-        <div className="w-full h-6 bg-gray-50 animate-pulse duration-150 rounded-full" />
+        <div className="w-full h-6 duration-150 rounded-full bg-gray-50 animate-pulse" />
       </div>
-      <div className="flex w-full justify-start gap-x-2">
-        <div className="w-24 h-4 bg-gray-50 animate-pulse duration-150 rounded-full" />
-        <div className="w-24 h-4 bg-gray-50 animate-pulse duration-150 rounded-full" />
+      <div className="flex justify-start w-full gap-x-2">
+        <div className="w-24 h-4 duration-150 rounded-full bg-gray-50 animate-pulse" />
+        <div className="w-24 h-4 duration-150 rounded-full bg-gray-50 animate-pulse" />
       </div>
     </div>
   )
