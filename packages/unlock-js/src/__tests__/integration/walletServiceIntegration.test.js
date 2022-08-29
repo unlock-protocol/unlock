@@ -545,9 +545,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           )
 
           // enable grant of multiple keys for same address for locks v10+
-          if (
-            ['v4', 'v6', 'v7', 'v8', 'v9'].indexOf(publicLockVersion) === -1
-          ) {
+          if (['v4', 'v6', 'v7', 'v8', 'v9'].indexOf(unlockVersion) === -1) {
             await walletService.setMaxKeysPerAddress({
               lockAddress,
               maxKeysPerAddress: 1000,
@@ -651,8 +649,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         })
 
         // check number of multiple keys for locks v10+
-        if (['v4', 'v6', 'v7', 'v8', 'v9'].indexOf(publicLockVersion) === -1) {
-          it('should have increase the maxKeysPerAddress and granted multiple keys', async () => {
+        if (['v4', 'v6', 'v7', 'v8', 'v9'].indexOf(unlockVersion) === -1) {
+          it('should have increased the maxKeysPerAddress and granted multiple keys', async () => {
             expect.assertions(1)
             const owner = accounts[8]
             keyGrantees = [owner, owner] // grant keys for the same address
