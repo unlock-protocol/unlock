@@ -125,12 +125,29 @@ describe('Describe Locks events', () => {
   })
 
   test('Price changed', () => {
+    assert.fieldEquals('Lock', lockAddress, 'price', `${keyPrice}`)
+    assert.fieldEquals('Lock', lockAddress, 'tokenAddress', nullAddress)
+
     const newPricingChanged = createPricingChangedEvent(
       BigInt.fromU32(keyPrice),
-      BigInt.fromU32(oldKeyPrice),
+      BigInt.fromU32(newKeyPrice),
       Address.fromString(nullAddress),
       Address.fromString(tokenAddress)
     )
     handlePricingChanged(newPricingChanged)
+
+    assert.fieldEquals('Lock', lockAddress, 'tokenAddress', tokenAddress)
+    assert.fieldEquals('Lock', lockAddress, 'price', `${newKeyPrice}`)
+  })
+
+  test('Lock upgraded', () => {
+    const version = BigInt.fromU32(12)
+    const newLockUpgraded = createLockUpgradedEvent(
+      Address.fromString(lockAddress),
+      version
+    )
+    handleLockUpgraded(newLockUpgraded)
+
+    assert.fieldEquals('Lock', lockAddress, 'version', `12`)
   })
 })
