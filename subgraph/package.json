@@ -4,9 +4,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "prepare": "yarn generate-networks && yarn generate-abis",
-    "generate-networks": "node ./bin/networks.js",
-    "generate-abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
+    "prepare": "yarn prepare:networks && yarn prepare:abis",
+    "prepare:networks": "node ./bin/networks.js",
+    "prepare:abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
     "show-events": "node -e 'require(\"./bin/abis.js\").showAllEvents()'",
     "codegen": "graph codegen",
     "build": "graph build",
@@ -15,7 +15,7 @@
     "remove-local": "graph remove --node http://localhost:8020/ ",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
     "test": "graph test",
-    "ci": "yarn generate-networks && yarn codegen && yarn test",
+    "ci": "yarn codegen && yarn test",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
