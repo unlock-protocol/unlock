@@ -114,11 +114,12 @@ export const useAccount = (address: string, network: number) => {
         recoveryKey = await reEncryptPrivateKey(
           passwordEncryptedPrivateKey,
           password,
-          data.recoveryPhrase
+          result.recoveryPhrase
         )
         ToastHelper.success('Account succesfully created')
       }
     } catch (error: any) {
+      console.error(error)
       const details = error?.response?.data[0]
       if (
         details?.validatorKey === 'not_unique' &&
