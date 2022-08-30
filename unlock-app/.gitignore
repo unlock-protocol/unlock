@@ -27,3 +27,4 @@ yarn-error.log*
 .next/cache/**
 next-env.d.ts
 scripts/paywallURL.ts
+scripts/index.html
