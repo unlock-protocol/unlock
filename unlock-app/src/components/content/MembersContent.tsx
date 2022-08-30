@@ -193,6 +193,8 @@ const MetadataTableWrapper = ({
       },
     })
 
+  const hasExpiredKeys = keysCount.active !== keysCount.total
+
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e?.target?.value || ''
     setRawQueryValue(value)
@@ -313,6 +315,7 @@ const MetadataTableWrapper = ({
         loading={loading}
         membersCount={keysCount}
         hasSearchValue={hasSearchValue}
+        hasExpiredKeys={hasExpiredKeys}
       />
     </>
   )

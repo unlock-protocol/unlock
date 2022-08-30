@@ -221,22 +221,24 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <span className={styles.title}>{expirationAsDate(expiration)}</span>
         </div>
         <div className="flex items-center justify-start gap-2 col-span-full lg:col-span-2 lg:justify-end">
-          <Button
-            size="small"
-            variant="outlined-primary"
-            className="disabled:border-opacity-50 disabled:border-gray-200 disabled:text-opacity-50 hover:disabled:text-opacity-50"
-            disabled={expireAndRefundDisabled}
-            onClick={onExpireAndRefund}
-          >
-            Expire & Refund
-          </Button>
           {isLockManager && (
-            <Button size="small" variant="secondary" onClick={toggleMetada}>
-              <div className="flex items-center">
-                <span>Show metadata</span>
-                <ArrowDown />
-              </div>
-            </Button>
+            <>
+              <Button
+                size="small"
+                variant="outlined-primary"
+                className="disabled:border-opacity-50 disabled:border-gray-200 disabled:text-opacity-50 hover:disabled:text-opacity-50"
+                disabled={expireAndRefundDisabled}
+                onClick={onExpireAndRefund}
+              >
+                Expire & Refund
+              </Button>
+              <Button size="small" variant="secondary" onClick={toggleMetada}>
+                <div className="flex items-center">
+                  <span>Show metadata</span>
+                  <ArrowDown />
+                </div>
+              </Button>
+            </>
           )}
         </div>
       </div>
