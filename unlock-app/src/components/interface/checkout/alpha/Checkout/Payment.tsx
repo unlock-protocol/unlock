@@ -4,7 +4,7 @@ import { useConfig } from '~/utils/withConfig'
 import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
 import { useQuery } from 'react-query'
 import { getFiatPricing } from '~/hooks/useCards'
@@ -18,6 +18,7 @@ import {
 } from 'react-icons/ri'
 import useAccount from '~/hooks/useAccount'
 import { useStorageService } from '~/utils/withStorageService'
+import { useCheckoutSteps } from './useCheckoutItems'
 
 const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
@@ -32,7 +33,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
 
-  const { paywallConfig, quantity, recipients, skipQuantity } = state.context
+  const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
   const wallet = useWalletService()
   const { account, network } = useAuth()
@@ -79,13 +80,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     getBalance()
   }, [account, wallet, setBalance, lock, getTokenBalance])
 
+  const lockConfig = paywallConfig.locks[lock!.address]
+
   const isReceiverAccountOnly =
     recipients.length <= 1 && recipients[0] === account
 
   const enableSuperfluid =
-    (paywallConfig.superfluid ||
-      paywallConfig.locks[lock!.address].superfluid) &&
-    isReceiverAccountOnly
+    (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
 
   const enableClaim =
     !!isClaimable && !isClaimableLoading && isReceiverAccountOnly
@@ -94,50 +95,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const isWaiting = isLoading || isClaimableLoading
 
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Choose quantity',
-      skip: skipQuantity,
-      to: 'QUANTITY',
-    },
-    {
-      id: 3,
-      name: 'Add recipients',
-      to: 'METADATA',
-    },
-    {
-      id: 4,
-      name: 'Choose payment',
-      to: 'PAYMENT',
-    },
-    {
-      id: 5,
-      name: 'Sign message',
-      skip: !paywallConfig.messageToSign,
-      to: 'MESSAGE_TO_SIGN',
-    },
-    {
-      id: 6,
-      name: 'Solve captcha',
-      to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
-    },
-    {
-      id: 7,
-      name: 'Confirm',
-      to: 'CONFIRM',
-    },
-    {
-      id: 8,
-      name: 'Minting NFT',
-    },
-  ]
+  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>

@@ -6,9 +6,9 @@ import { useActor } from '@xstate/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
 import { useQuery } from 'react-query'
-import { Fragment, useState, useMemo } from 'react'
+import { Fragment, useState, useMemo, useEffect } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { getLockProps } from '~/utils/lock'
 import { getFiatPricing } from '~/hooks/useCards'
@@ -21,6 +21,8 @@ import {
 import { Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
+import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
+import { useCheckoutSteps } from './useCheckoutItems'
 
 interface Props {
   injectedProvider: unknown
@@ -30,6 +32,52 @@ interface Props {
 export function Select({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { paywallConfig, lock: selectedLock } = state.context
+  const { isLoading: isLocksLoading, data: locks } = useQuery(
+    ['locks', JSON.stringify(paywallConfig)],
+    async () => {
+      const items = await Promise.all(
+        Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
+          const networkId: number = props.network || paywallConfig.network || 1
+          const [lockData, fiatPricing] = await Promise.all([
+            web3Service.getLock(lock, networkId),
+            getFiatPricing(config, lock, networkId),
+          ])
+          return {
+            ...props,
+            ...lockData,
+            name: props.name || lockData.name,
+            network: networkId,
+            address: lock,
+            fiatPricing,
+            isSoldOut: numberOfAvailableKeys(lockData) <= 0,
+          } as LockState
+        })
+      )
+
+      const locks = items?.filter(
+        (item) => !(item.isSoldOut && paywallConfig.hideSoldOut)
+      )
+
+      return locks
+    }
+  )
+
+  const locksGroupedByNetwork = useMemo(
+    () =>
+      locks?.reduce<{
+        [key: number]: LockState[]
+      }>((acc, item) => {
+        const current = acc[item.network]
+        if (current) {
+          acc[item.network] = [...current, item]
+        } else {
+          acc[item.network] = [item]
+        }
+        return acc
+      }, {}),
+    [locks]
+  )
+
   const lockOptions = useMemo(() => {
     return Object.entries(paywallConfig.locks).map(([lock, props]) => ({
       ...props,
@@ -37,66 +85,21 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       network: props.network || paywallConfig.network || 1,
     }))
   }, [paywallConfig.locks, paywallConfig.network])
-  const [lockOption, setLockOption] = useState(
-    lockOptions.find((item) => {
-      if (selectedLock) {
-        return item.address === selectedLock.address
-      } else {
-        return item.default
-      }
-    }) || lockOptions[0]
-  )
+
+  const [lock, setLock] = useState<LockState | undefined>(selectedLock)
 
   const skipQuantity = useMemo(() => {
-    const maxRecipients =
-      lockOption.maxRecipients || paywallConfig.maxRecipients
-    const minRecipients =
-      lockOption.minRecipients || paywallConfig.minRecipients
+    const maxRecipients = lock?.maxRecipients || paywallConfig.maxRecipients
+    const minRecipients = lock?.minRecipients || paywallConfig.minRecipients
     const hasMaxRecipients = maxRecipients && maxRecipients > 1
     const hasMinRecipients = minRecipients && minRecipients > 1
     return !(hasMaxRecipients || hasMinRecipients)
-  }, [lockOption, paywallConfig])
+  }, [lock, paywallConfig])
 
   const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
   const config = useConfig()
   const { account, network, changeNetwork, isUnlockAccount } = useAuth()
   const web3Service = useWeb3Service()
-
-  const { isLoading: isLocksLoading, data: locks } = useQuery(
-    ['locks', JSON.stringify(paywallConfig)],
-    async () => {
-      const items = await Promise.all(
-        Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
-          const lockNetwork = props.network || paywallConfig.network || 1
-          const [lockData, fiatPricing] = await Promise.all([
-            web3Service.getLock(lock, lockNetwork),
-            getFiatPricing(config, lock, lockNetwork),
-          ])
-          return {
-            ...props,
-            ...lockData,
-            name: props.name || lockData.name,
-            network: lockNetwork,
-            address: lock,
-            fiatPricing,
-          } as LockState
-        })
-      )
-      const locksByNetwork = items?.reduce<{ [key: number]: LockState[] }>(
-        (acc, item) => {
-          const current = acc[item.network]
-          if (current) {
-            acc[item.network] = [...current, item]
-          } else {
-            acc[item.network] = [item]
-          }
-          return acc
-        },
-        {}
-      )
-      return locksByNetwork
-    }
-  )
 
   const { isLoading: isMembershipsLoading, data: memberships } = useQuery(
     ['memberships', account, JSON.stringify(paywallConfig)],
@@ -120,55 +123,26 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       enabled: !!account,
     }
   )
-  const isDisabled = isLocksLoading || isMembershipsLoading || !lockOption
-  const lockNetwork = config?.networks?.[lockOption.network]
-  const isNetworkSwitchRequired =
-    lockOption.network !== network && !isUnlockAccount
 
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Choose quantity',
-      skip: skipQuantity,
-      to: 'QUANTITY',
-    },
-    {
-      id: 3,
-      name: 'Add recipients',
-      to: 'METADATA',
-    },
-    {
-      id: 4,
-      name: 'Choose payment',
-      to: 'PAYMENT',
-    },
-    {
-      id: 5,
-      name: 'Sign message',
-      skip: !paywallConfig.messageToSign,
-      to: 'MESSAGE_TO_SIGN',
-    },
-    {
-      id: 6,
-      name: 'Solve captcha',
-      to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
-    },
-    {
-      id: 7,
-      name: 'Confirm',
-      to: 'CONFIRM',
-    },
-    {
-      id: 8,
-      name: 'Minting NFT',
-    },
-  ]
+  const lockNetwork = lock?.network ? config?.networks?.[lock.network] : null
+  const isNetworkSwitchRequired =
+    lockNetwork && lock?.network !== network && !isUnlockAccount
+  const existingMember = !!memberships?.includes(lock?.address)
+
+  const isDisabled =
+    isLocksLoading ||
+    isMembershipsLoading ||
+    // if locks are sold out and the user is not an existing member of the lock
+    (lock?.isSoldOut && !existingMember)
+
+  const stepItems = useCheckoutSteps(checkoutService)
+
+  useEffect(() => {
+    if (locks?.length) {
+      const item = locks.find((lock) => !lock.isSoldOut)
+      setLock(item)
+    }
+  }, [locks])
 
   return (
     <Fragment>
@@ -184,29 +158,27 @@ export function Select({ checkoutService, injectedProvider }: Props) {
           <RadioGroup
             key="select"
             className="box-content space-y-6"
-            value={lockOption}
-            onChange={setLockOption}
+            value={lock}
+            onChange={setLock}
           >
-            {locks &&
-              Object.entries(locks).map(([network, items]) => (
+            {locksGroupedByNetwork &&
+              Object.entries(locksGroupedByNetwork).map(([network, items]) => (
                 <section key={network} className="space-y-4">
                   <header>
                     <p className="text-lg font-bold text-brand-ui-primary">
-                      {config.networks[network].name}
+                      {config?.networks[network]?.name}
                     </p>
                   </header>
                   {items.map((item) => {
-                    const value = lockOptions.find(
-                      (option) => item.address === option.address
-                    )
+                    const disabled = item.isSoldOut && !item.isMember
                     return (
                       <RadioGroup.Option
-                        disabled={isMembershipsLoading}
+                        disabled={disabled}
                         key={item.address}
-                        value={value}
+                        value={item}
                         className={({ checked, disabled }) =>
-                          `flex flex-col p-2 w-full gap-4 items-center ring-1 ring-gray-200 rounded-xl cursor-pointer relative ${
-                            checked && 'ring-ui-main-200 bg-ui-main-50'
+                          `flex flex-col p-2 w-full gap-4 items-center border border-gray-200 rounded-xl cursor-pointer relative ${
+                            checked && 'border-ui-main-200 bg-ui-main-50'
                           } ${
                             disabled &&
                             `opacity-80 bg-gray-50  ${
@@ -315,7 +287,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   setIsSwitchingNetwork(false)
                 }}
               >
-                Switch to {lockNetwork.name}
+                Switch to {lockNetwork?.name}
               </Button>
             )}
             {!isNetworkSwitchRequired && (
@@ -327,20 +299,17 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   if (isUnlockAccount) {
                     await changeNetwork(lockNetwork)
                   }
-                  if (lockOption && locks) {
-                    const existingMember = !!memberships?.includes(
-                      lockOption.address
-                    )
-                    const lock = locks[lockOption.network].find(
-                      (lock) => lock.address === lockOption.address
-                    )!
-                    send({
-                      type: 'SELECT_LOCK',
-                      lock,
-                      existingMember,
-                      skipQuantity,
-                    })
+
+                  if (!lock) {
+                    return
                   }
+
+                  send({
+                    type: 'SELECT_LOCK',
+                    lock,
+                    existingMember,
+                    skipQuantity,
+                  })
                 }}
               >
                 Next

@@ -2,13 +2,13 @@ import React, { useState } from 'react'
 import FileSaver from 'file-saver'
 import Link from 'next/link'
 import { buildCSV } from '../../utils/csv'
-import { MemberFilter } from '../../unlockTypes'
 import { ExpireAndRefundModal } from './ExpireAndRefundModal'
 import {
   MemberCard,
   MemberCardPlaceholder,
 } from '../interface/members/MemberCard'
 import { Button } from '@unlock-protocol/ui'
+import { MAX_UINT } from '~/constants'
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
   // strings
@@ -24,12 +24,11 @@ interface MetadataTableProps {
   columns: string[]
   metadata: KeyMetadata[]
   loading?: boolean
-  filter?: MemberFilter
+  hasSearchValue?: boolean
   lockManagerMapping?: {
     [lockAddress: string]: boolean
   }
   lockAddresses?: string[]
-  loadMembers?: () => void
   membersCount?: MemberCountProps['membersCount']
 }
 
@@ -66,10 +65,10 @@ const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
   return (
     <div className="flex divide-x-2">
       {showTotal && (
-        <div className="font-semibold text-lg px-1">Total members: {total}</div>
+        <div className="px-1 text-lg font-semibold">Total members: {total}</div>
       )}
       {showActiveTotalRatio && (
-        <div className="font-semibold text-lg px-1">
+        <div className="px-1 text-lg font-semibold">
           Active members: {active}/{total}
         </div>
       )}
@@ -79,13 +78,12 @@ const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
 
 export const MetadataTable: React.FC<MetadataTableProps> = ({
   columns,
-  metadata,
-  filter,
-  loadMembers,
+  metadata = [],
   membersCount,
   loading = false,
   lockManagerMapping,
   lockAddresses = [],
+  hasSearchValue = false,
 }) => {
   const hasLockManagerStatus = Object.values(lockManagerMapping ?? {}).some(
     (status) => status
@@ -107,20 +105,18 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     )
   }
 
-  if (metadata.length === 0) {
-    if (filter === 'all') {
-      return (
-        <span className="text-gray-600">
-          No keys have been purchased yet. Return to your{' '}
-          <Link href="/dashboard">
-            <a>Dashboard</a>
-          </Link>
-          .
-        </span>
-      )
-    }
-
-    return <p>No keys found matching the current filter.</p>
+  if (metadata?.length === 0) {
+    return hasSearchValue ? (
+      <span className="text-gray-600">No key matches your filter.</span>
+    ) : (
+      <span className="text-gray-600">
+        No keys have been purchased yet. Return to your{' '}
+        <Link href="/dashboard">
+          <a>Dashboard</a>
+        </Link>
+        .
+      </span>
+    )
   }
 
   const onExpireAndRefund = (lock: any, isLockManager: boolean) => {
@@ -134,19 +130,17 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     setCurrentLock(null)
   }
 
-  const isKeyValid = (metadata: KeyMetadata) => {
-    if (!metadata?.expiration) return false
-    if (metadata?.expiration.toLowerCase() === 'never') return true
-    const now = new Date().getTime()
-    const expiration = new Date(metadata?.expiration).getTime()
-    return expiration > now
+  const isKeyValid = (timestamp: KeyMetadata['expiration']) => {
+    const now = new Date().getTime() / 1000
+    if (timestamp === MAX_UINT) return true
+    return parseInt(timestamp) > now
   }
 
   const expireAndRefundDisabled = (
     metadata: KeyMetadata,
     isLockManager: boolean
   ): boolean => {
-    return !(isLockManager && isKeyValid(metadata))
+    return !(isLockManager && isKeyValid(metadata.expiration))
   }
 
   const onExpandAllMetadata = () => {
@@ -210,7 +204,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             )}
             onExpireAndRefund={() => onExpireAndRefund(data, isLockManager)}
             showCheckInTimeInfo={showCheckInTimeInfo}
-            loadMembers={loadMembers}
           />
         )
       })}
@@ -230,7 +223,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
 }
 
 MetadataTable.defaultProps = {
-  filter: 'all',
+  hasSearchValue: false,
   lockManagerMapping: {},
   lockAddresses: [],
 }

@@ -14,8 +14,9 @@ import {
 import { useActor } from '@xstate/react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
+import { useCheckoutSteps } from './useCheckoutItems'
 
 interface Props {
   injectedProvider: unknown
@@ -34,16 +35,20 @@ const QuantityPlaceholder = () => {
 export function Quantity({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-  const {
-    paywallConfig,
-    quantity: selectedQuantity,
-    skipQuantity,
-  } = state.context
+
+  const { paywallConfig, quantity: selectedQuantity } = state.context
   const lock = state.context.lock!
+
+  const lockConfig = paywallConfig.locks[lock.address]
+
+  const maxRecipients =
+    lockConfig.maxRecipients || paywallConfig.maxRecipients || 1
+
+  const minRecipients =
+    lockConfig.minRecipients || paywallConfig.minRecipients || 1
+
   const [quantityInput, setQuantityInput] = useState(
-    selectedQuantity?.toString() ||
-      paywallConfig.minRecipients?.toString() ||
-      '1'
+    selectedQuantity?.toString() || minRecipients.toString()
   )
 
   const quantity = Number(quantityInput)
@@ -74,50 +79,7 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
 
   const fiatPrice = fiatPricing?.usd?.keyPrice
   const isDisabled = quantity < 1 || isLoading
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Choose quantity',
-      skip: skipQuantity,
-      to: 'QUANTITY',
-    },
-    {
-      id: 3,
-      name: 'Add recipients',
-      to: 'METADATA',
-    },
-    {
-      id: 4,
-      name: 'Choose payment',
-      to: 'PAYMENT',
-    },
-    {
-      id: 5,
-      name: 'Sign message',
-      skip: !paywallConfig.messageToSign,
-      to: 'MESSAGE_TO_SIGN',
-    },
-    {
-      id: 6,
-      name: 'Solve captcha',
-      to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
-    },
-    {
-      id: 7,
-      name: 'Confirm',
-      to: 'CONFIRM',
-    },
-    {
-      id: 8,
-      name: 'Minting NFT',
-    },
-  ]
+  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
@@ -193,9 +155,8 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
                 event.preventDefault()
                 const count = event.target.value.replace(/\D/, '')
                 const countInt = parseInt(count, 10)
-                const { maxRecipients, minRecipients } = paywallConfig
-                const maxAllowed = maxRecipients && countInt > maxRecipients
-                const minAllowed = minRecipients && countInt < minRecipients
+                const maxAllowed = countInt > maxRecipients
+                const minAllowed = countInt < minRecipients
 
                 if (maxAllowed) {
                   ToastHelper.error(
@@ -203,12 +164,14 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
                   )
                   return setQuantityInput(maxRecipients!.toString())
                 }
+
                 if (minAllowed) {
                   ToastHelper.error(
                     `You cannot purchase less than ${paywallConfig.minRecipients} memberships at once`
                   )
                   return setQuantityInput(minRecipients!.toString())
                 }
+
                 setQuantityInput(count)
               }}
               pattern="[0-9]{0,2}"
