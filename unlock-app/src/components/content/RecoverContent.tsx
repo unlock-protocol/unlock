@@ -3,7 +3,6 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
-import { Heading, Instructions } from '../interface/FinishSignup'
 import { SetPassword } from '../interface/SetPassword'
 import Loading from '../interface/Loading'
 import { StorageService } from '../../services/storageService'
@@ -102,34 +101,34 @@ export const RestoreAccount = ({
   if (success) {
     return (
       <div>
-        <Heading>Recover your Unlock Account</Heading>
-        <Instructions>
+        <h1 className="text-4xl font-bold">Recover your Unlock Account</h1>
+        <span className="mt-1 text-sm font-thin">
           Your password was successfuly changed. Visit{' '}
           <Link href="/settings">
             <a>your settings page</a>
           </Link>
           .
-        </Instructions>
+        </span>
       </div>
     )
   }
   return (
     <>
-      <div>
-        <Heading>Recover your Unlock Account</Heading>
-        <Instructions>
+      <div className="w-1/2 mx-auto">
+        <h1 className="text-4xl font-bold">Recover your Unlock Account</h1>
+        <span className="mt-1 text-sm font-thin">
           Please, set a new password for your account.
-        </Instructions>
+        </span>
         <div className="flex gap-2 mt-2">
           <Badge>{email}</Badge>
         </div>
-      </div>
 
-      <SetPassword
-        loading={loading}
-        buttonLabel="Resetting password"
-        onSubmit={resetPassword}
-      />
+        <SetPassword
+          loading={loading}
+          buttonLabel="Resetting password"
+          onSubmit={resetPassword}
+        />
+      </div>
     </>
   )
 }
@@ -164,10 +163,10 @@ export const RecoverContent = ({ query }: RecoverContentProps) => {
   if (!email || !recoveryKey) {
     content = (
       <div>
-        <Heading>Recover your Unlock Account</Heading>
-        <Instructions>
+        <h1 className="text-4xl font-bold">Recover your Unlock Account</h1>
+        <span className="text-sm font-thin">
           Your recovery link is not valid. Please try again.
-        </Instructions>
+        </span>
       </div>
     )
   } else {
