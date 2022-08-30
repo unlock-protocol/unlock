@@ -8,10 +8,14 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
-import { FieldValues, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
+}
+
+interface FormData {
+  password: string
 }
 
 export function Password({ injectedProvider, checkoutService }: Props) {
@@ -21,11 +25,11 @@ export function Password({ injectedProvider, checkoutService }: Props) {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
-  } = useForm()
+  } = useForm<FormData>()
 
-  const onSubmit = async (formData: FieldValues) => {
+  const onSubmit = async (formData: FormData) => {
     try {
-      const { password } = formData as Record<'password', string>
+      const { password } = formData
       if (!(password && recipients.length)) {
         return
       }
@@ -64,6 +68,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
             {...register('password', {
               required: true,
             })}
+            error={errors.password?.message}
           />
         </form>
       </main>

@@ -542,15 +542,18 @@ export const checkoutMachine = createMachine(
       requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
       requireCaptcha: (context) => {
         return (
-          (!!context.paywallConfig.captcha ||
-            !!context.paywallConfig.locks?.[context.lock!.address]?.captcha) &&
-          context.payment.method !== 'card'
+          !!(
+            context.paywallConfig.captcha ||
+            context.paywallConfig.locks?.[context.lock!.address]?.captcha
+          ) && context.payment.method === 'crypto'
         )
       },
       requirePassword: (context) => {
         return (
-          context.paywallConfig.password ||
-          context.paywallConfig.locks?.[context.lock!.address]?.password
+          !!(
+            context.paywallConfig.password ||
+            context.paywallConfig.locks?.[context.lock!.address]?.password
+          ) && context.payment.method === 'crypto'
         )
       },
     },
