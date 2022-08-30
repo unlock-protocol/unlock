@@ -1,16 +1,8 @@
-// eslint-disable-next-line no-unused-vars
+import { Input, Button } from '@unlock-protocol/ui'
 import React, { FormEvent, useState, useReducer, useEffect } from 'react'
-import styled from 'styled-components'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { useAccount } from '../../hooks/useAccount'
-import {
-  Button,
-  LoadingButton,
-  Form,
-  Input,
-  Label,
-  FormError,
-} from './checkout/FormStyles'
+import { FaSpinner as Spinner } from 'react-icons/fa'
 
 interface LogInProps {
   onCancel?: () => void
@@ -95,49 +87,55 @@ const LogIn = ({
   }, [])
 
   return (
-    <Container>
-      <Form onSubmit={handleSubmit}>
-        <Label htmlFor="emailInput">Email Address</Label>
+    <div className="flex flex-col w-1/2 mx-auto">
+      <form className="flex flex-col" onSubmit={handleSubmit}>
         <Input
           name="emailAddress"
           autoComplete="username"
-          id="emailInput"
+          label="Email Address"
           type="email"
           placeholder="Enter your email"
           onChange={handleInputChange}
           value={emailAddress}
         />
-        <Label htmlFor="passwordInput">Password</Label>
         <Input
           name="password"
-          id="passwordInput"
           type="password"
+          label="Password"
           placeholder="Enter your password"
           autoComplete="current-password"
           onChange={handleInputChange}
         />
-        {submitted && <LoadingButton>Logging In...</LoadingButton>}
         {!submitted && (
           <>
             {storedLoginEmail.length > 0 && (
               <small>Welcome back, type your password to continue</small>
             )}
-            <Button type="submit" value="Submit">
-              Login
-            </Button>
           </>
         )}
-        {error && <FormError>{error}</FormError>}
-      </Form>
-      <Description>
-        {onCancel && <LinkButton onClick={onCancel}>Cancel</LinkButton>}
+        <Button type="submit" value="Submit">
+          <div className="flex">
+            {submitted && <Spinner className="mr-1 animate-spin" />}
+            <span>{!submitted ? 'Login' : 'Logging In...'}</span>
+          </div>
+        </Button>
+        {error && <span className="text-red-500 font-sm">{error}</span>}
+      </form>
+      <p className="mt-2">
+        {onCancel && (
+          <Button size="tiny" variant="outlined-primary" onClick={onCancel}>
+            Cancel
+          </Button>
+        )}
         {useWallet && (
           <p>
-            Use <LinkButton onClick={useWallet}>crypto wallet</LinkButton>
+            <Button size="tiny" variant="outlined-primary" onClick={useWallet}>
+              Use crypto wallet
+            </Button>
           </p>
         )}
-      </Description>
-    </Container>
+      </p>
+    </div>
   )
 }
 
@@ -148,25 +146,3 @@ LogIn.defaultProps = {
 }
 
 export default LogIn
-const Description = styled.p`
-  width: 100%;
-  font-size: 14px;
-  color: var(--grey);
-  button {
-    border: none;
-    outline: none;
-    display: inline;
-    padding: 0;
-    background-color: transparent;
-    color: var(--link);
-    cursor: pointer;
-  }
-`
-
-const LinkButton = styled.a`
-  cursor: pointer;
-`
-
-const Container = styled.div`
-  width: 100%;
-`

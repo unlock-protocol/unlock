@@ -50,7 +50,7 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
   }
 
   return (
-    <div className="w-full">
+    <div className="flex flex-col w-1/2 mx-auto">
       {!embedded && (
         <>
           <h1 className="mb-2 text-4xl font-bold">
