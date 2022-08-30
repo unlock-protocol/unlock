@@ -87,6 +87,9 @@ if (process.env.ARBISCAN_API_KEY) {
 if (process.env.CELO_API_KEY) {
   etherscan.apiKey.celo = process.env.CELO_API_KEY
 }
+if (process.env.SNOWTRACE_API_KEY) {
+  etherscan.apiKey.avalanche = process.env.SNOWTRACE_API_KEY
+}
 
 // add mainnet fork -- if API key is present
 if (process.env.RUN_MAINNET_FORK) {
