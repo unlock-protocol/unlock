@@ -136,6 +136,7 @@ export const useCheckoutCommunication = () => {
   }, [parent, buffer])
 
   const emitUserInfo = (info: UserInfo) => {
+    // if user already emitted, avoid re-emitting
     if (info.address === user && !info.signedMessage) {
       return
     }
