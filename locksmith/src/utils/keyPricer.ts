@@ -42,7 +42,7 @@ export default class KeyPricer {
     }
   }
 
-  async keyPriceUSD(lockAddress: string, network: number): Promise<number> {
+  async keyPriceUSD(lockAddress: string, network: number) {
     const lock = await this.readOnlyEthereumService.getLock(
       Normalizer.ethereumAddress(lockAddress),
       network,
@@ -95,6 +95,9 @@ export default class KeyPricer {
   ): Promise<ItemizedKeyPrice> {
     // Here we need to get the conversion as well!
     const usdKeyPrice = await this.keyPriceUSD(lockAddress, network)
+    if (!usdKeyPrice) {
+      throw new Error('Key does not have usd price')
+    }
     const usdKeyPricing = usdKeyPrice * quantity
     const gasFee = await this.gasFee(network)
     const unlockServiceFee = this.unlockServiceFee(usdKeyPricing) + gasFee

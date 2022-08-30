@@ -15,7 +15,7 @@ export default class PriceConversion {
    * @param amount in cents
    * @returns
    */
-  async convertToUSD(currency: string, amount: number): Promise<number> {
+  async convertToUSD(currency: string, amount: number) {
     const cached = cache[currency]
 
     let rate
@@ -28,7 +28,12 @@ export default class PriceConversion {
         `https://api.coinbase.com/v2/prices/${currency}-USD/buy`
       )
 
+      if (!response.ok) {
+        return undefined
+      }
+
       const { data } = await response.json()
+
       if (!data?.amount) {
         return 0
       }
