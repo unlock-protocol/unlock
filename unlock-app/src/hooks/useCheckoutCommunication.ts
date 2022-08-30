@@ -105,6 +105,7 @@ export const useCheckoutCommunication = () => {
   >(undefined)
   const [buffer, setBuffer] = useState([] as BufferedEvent[])
   const [config, setConfig] = useState<PaywallConfig | undefined>(undefined)
+  const [user, setUser] = useState<string | undefined>(undefined)
   const parent = usePostmateParent({
     setConfig: (config: PaywallConfig) => {
       setConfig(config)
@@ -135,6 +136,11 @@ export const useCheckoutCommunication = () => {
   }, [parent, buffer])
 
   const emitUserInfo = (info: UserInfo) => {
+    // if user already emitted, avoid re-emitting
+    if (info.address === user && !info.signedMessage) {
+      return
+    }
+    setUser(info.address)
     pushOrEmit(CheckoutEvents.userInfo, info)
   }
 
