@@ -44,6 +44,9 @@ const getGasFee = async (network: number, gasCost: number) => {
 const getERC20AmountInUSD = async (symbol: string, amount: string) => {
   const conversion = new PriceConversion()
   const priceUSD = await conversion.convertToUSD(symbol, parseFloat(amount))
+  if (!priceUSD) {
+    throw new Error('Cannot estimate the USD price of lock')
+  }
   return priceUSD * BASE_POINT_ACCURACY
 }
 
