@@ -29,14 +29,14 @@ export default class PriceConversion {
       )
 
       if (!response.ok) {
-        return null
+        throw new Error(`USD price not available on coinbase`)
       }
 
       const { data } = await response.json()
       const amount = data?.amount
 
       if (!amount) {
-        return null
+        throw new Error('Amount is invalid')
       }
 
       cache[currency] = [new Date().getTime(), parseFloat(amount)]

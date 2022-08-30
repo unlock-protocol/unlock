@@ -60,7 +60,8 @@ export default class KeyPricer {
     }
 
     const priceConversion = new PriceConversion()
-    return priceConversion.convertToUSD(symbol, lock.keyPrice)
+    const usdPrice = await priceConversion.convertToUSD(symbol, lock.keyPrice)
+    return usdPrice
   }
 
   // Fee denominated in cents by default. multiply base to get more accurate
@@ -95,9 +96,6 @@ export default class KeyPricer {
   ): Promise<ItemizedKeyPrice> {
     // Here we need to get the conversion as well!
     const usdKeyPrice = await this.keyPriceUSD(lockAddress, network)
-    if (!usdKeyPrice) {
-      throw new Error('Key does not have usd price')
-    }
     const usdKeyPricing = usdKeyPrice * quantity
     const gasFee = await this.gasFee(network)
     const unlockServiceFee = this.unlockServiceFee(usdKeyPricing) + gasFee
