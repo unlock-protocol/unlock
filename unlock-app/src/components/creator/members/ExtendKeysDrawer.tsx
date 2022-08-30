@@ -1,11 +1,14 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import Drawer from '../../interface/Drawer'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
 import { Button, Input } from '@unlock-protocol/ui'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { useKeys } from '~/hooks/useKeys'
 import { addressMinify } from '~/utils/strings'
+import { useWalletService } from '~/utils/withWalletService'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import { FaSpinner as Spinner } from 'react-icons/fa'
 
 interface GrantKeysDrawerInterface {
   isOpen: boolean
@@ -21,12 +24,40 @@ interface ExtendKeyItem {
 }
 
 const ExtendKeysList = ({ items = [] }: { items: ExtendKeyItem[] }) => {
+  const walletService = useWalletService()
   const disabled = items?.length === 0
   const [duration, setDuration] = useState<number>()
 
   const onDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDuration(parseInt(e.target.value))
   }
+
+  const onExtendKeys = async () => {
+    if (!walletService) return
+
+    const duration = 0
+    const extendKeysPromise = items.map(({ lockAddress, tokenId }) =>
+      walletService.grantKeyExtension(
+        {
+          lockAddress,
+          tokenId,
+          duration,
+        },
+        () => void 0
+      )
+    )
+    return await Promise.all(extendKeysPromise)
+  }
+
+  const extendKeysMutation = useMutation(onExtendKeys, {
+    onSuccess: () => {
+      ToastHelper.success('Keys duration extended')
+    },
+    onError: (err: any) => {
+      ToastHelper.error(err?.message || 'Error with extending keys')
+    },
+  })
+
   if (items?.length === 0) return null
   return (
     <div className="flex flex-col gap-3">
@@ -58,8 +89,16 @@ const ExtendKeysList = ({ items = [] }: { items: ExtendKeyItem[] }) => {
       </div>
 
       <Button
-        disabled={disabled || !duration}
-      >{`Extend ${items?.length} keys`}</Button>
+        disabled={disabled || !duration || extendKeysMutation.isLoading}
+        onClick={() => extendKeysMutation.mutate()}
+      >
+        <div className="flex items-center gap-2">
+          {extendKeysMutation.isLoading && (
+            <Spinner className="mr-1 animate-spin" />
+          )}
+          <span>{`Extend ${items?.length} keys`}</span>
+        </div>
+      </Button>
     </div>
   )
 }
@@ -118,6 +157,12 @@ export const ExtendKeysDrawer = ({
     ])
     setKeyId('') // reset selected keys
   }
+
+  useEffect(() => {
+    if (isOpen) return
+    setExtendKeyList([])
+    setKeyId('')
+  }, [isOpen])
 
   return (
     <Drawer title="Extend Keys" isOpen={isOpen} setIsOpen={setIsOpen}>
