@@ -112,7 +112,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
                 ) : (
                   <span>
                     Refund is not possible because the contract does not have
-                    funds to cover.
+                    funds to cover it.
                   </span>
                 )}
               </p>
