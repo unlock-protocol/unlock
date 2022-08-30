@@ -21,6 +21,7 @@ const {
   getLock,
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
+  totalKeys,
 } = v6
 
 export default {
@@ -45,4 +46,5 @@ export default {
   getCancelAndRefundValueFor,
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
+  totalKeys,
 }

@@ -1,5 +1,9 @@
 # Changes
 
+# 0.26.4
+
+- add support for `totalKeys`
+
 # 0.26.3
 
 - Add typing for referer in purchase key methods

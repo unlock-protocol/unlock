@@ -533,8 +533,26 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         let keysBefore
         let keyGrantees
         let transactionHash
+        let totalKeysBefore
+
         beforeAll(async () => {
           keyGrantees = [accounts[8], accounts[9]]
+
+          totalKeysBefore = await Promise.all(
+            keyGrantees.map((grantee) =>
+              web3Service.totalKeys(lockAddress, grantee, chainId)
+            )
+          )
+
+          // enable grant of multiple keys for same address for locks v10+
+          if (['v10', 'v11'].indexOf(publicLockVersion) !== -1) {
+            await walletService.setMaxKeysPerAddress({
+              lockAddress,
+              maxKeysPerAddress: 100,
+              chainId,
+            })
+          }
+
           keysBefore = await Promise.all(
             keyGrantees.map((grantee) =>
               web3Service.getKeyByLockForOwner(lockAddress, grantee, chainId)
@@ -616,7 +634,21 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             expect(keyManager).toBe(accounts[0])
           })
         }
+
+        it('should have increased the total of keys for owners', async () => {
+          expect.assertions(4)
+          const totalKeys = await Promise.all(
+            keyGrantees.map((owner) =>
+              web3Service.totalKeys(lockAddress, owner, chainId)
+            )
+          )
+          expect(totalKeys[0]).toBe(1)
+          expect(totalKeys[1]).toBe(1)
+          expect(totalKeysBefore[0]).toBe(0)
+          expect(totalKeysBefore[1]).toBe(0)
+        })
       })
+
       describe('purchaseKey', () => {
         let tokenId
         let key
@@ -625,11 +657,17 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         let lockBalanceBefore
         let userBalanceBefore
         let transactionHash
+        let totalKeysBefore
 
         beforeAll(async () => {
           keyPurchaser = accounts[0] // This is the default in walletService
           keyOwner = accounts[5]
 
+          totalKeysBefore = await web3Service.totalKeys(
+            lockAddress,
+            keyOwner,
+            chainId
+          )
           if (lock.currencyContractAddress === null) {
             // Get the ether balance of the lock before the purchase
             lockBalanceBefore = await web3Service.getAddressBalance(
@@ -763,6 +801,18 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             Math.floor(key.expiration) -
               Math.floor(lock.expirationDuration + latestBlock.timestamp)
           ).toBeLessThan(60)
+        })
+
+        it('should have increased the number of keys for owner', async () => {
+          expect.assertions(2)
+
+          const totalKeys = await web3Service.totalKeys(
+            lockAddress,
+            keyOwner,
+            chainId
+          )
+          expect(totalKeys).toBe(1)
+          expect(totalKeysBefore).toBe(0)
         })
       })
 

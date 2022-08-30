@@ -17,6 +17,7 @@ import { ToastHelper } from '../../helpers/toast.helper'
 import { useStorageService } from '~/utils/withStorageService'
 import { formResultToMetadata } from '~/utils/userMetadata'
 import { Button, Input } from '@unlock-protocol/ui'
+import { addressMinify } from '~/utils/strings'
 
 interface GrantKeyFormProps {
   lock: Lock
@@ -319,9 +320,9 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
                 <span className="text-sm font-medium text-gray-900">
                   Airdrop recipients list:
                 </span>
-                <ul className="list-disc px-3">
+                <ul className="px-3 list-disc">
                   {recipientItems?.map(({ userAddress, index }) => {
-                    return <li key={index}>{userAddress}</li>
+                    return <li key={index}>{addressMinify(userAddress)}</li>
                   })}
                 </ul>
               </div>

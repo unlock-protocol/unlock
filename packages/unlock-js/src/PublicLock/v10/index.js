@@ -26,6 +26,7 @@ const {
   setMaxNumberOfKeys,
   setExpirationDuration,
   approveBeneficiary,
+  totalKeys,
 } = v9
 
 export default {
@@ -55,4 +56,5 @@ export default {
   getKeyExpirationByLockForOwner,
   getCancelAndRefundValueFor,
   approveBeneficiary,
+  totalKeys,
 }
