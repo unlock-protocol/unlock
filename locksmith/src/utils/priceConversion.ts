@@ -29,12 +29,17 @@ export default class PriceConversion {
       )
 
       if (!response.ok) {
-        return undefined
+        return null
       }
 
       const { data } = await response.json()
+      const amount = data?.amount
 
-      cache[currency] = [new Date().getTime(), parseFloat(data.amount)]
+      if (!amount) {
+        return null
+      }
+
+      cache[currency] = [new Date().getTime(), parseFloat(data?.amount)]
       rate = parseFloat(data.amount)
     }
 
