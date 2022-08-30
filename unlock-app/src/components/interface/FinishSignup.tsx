@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import styled from 'styled-components'
 import { SetPassword } from './SetPassword'
 import SignupSuccess from './SignupSuccess'
 
@@ -41,9 +40,9 @@ export const FinishSignup = ({ emailAddress, onSuccess }: Props) => {
   }
   return (
     <div>
-      <Heading>Create Your Unlock Wallet</Heading>
-      <Instructions>Create a password for your account.</Instructions>
-      <div className="flex flex-col w-1/2">
+      <h1 className="text-4xl font-bold">Create Your Unlock Wallet</h1>
+      <p className="text-lg font-light">Create a password for your account.</p>
+      <div className="flex flex-col justify-center w-1/2">
         <Input
           name="emailPlaceholder"
           type="email"
@@ -57,29 +56,8 @@ export const FinishSignup = ({ emailAddress, onSuccess }: Props) => {
           onSubmit={signup}
         />
       </div>
-      {error && <SignupError>{error}</SignupError>}
+      {error && <span className="m-1 text-red-500">{error}</span>}
     </div>
   )
 }
 export default FinishSignup
-
-export const Heading = styled.h1`
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 36px;
-  line-height: 47px;
-  font-weight: bold;
-  color: var(--darkgrey);
-`
-
-export const Instructions = styled.p`
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-weight: 300;
-  font-size: 20px;
-  color: var(--darkgrey);
-`
-
-export const SignupError = styled.p`
-  color: var(--red);
-  margin-bottom: 5px;
-  margin-top: 5px;
-`

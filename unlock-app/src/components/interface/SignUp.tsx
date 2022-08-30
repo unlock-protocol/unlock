@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react'
-import styled from 'styled-components'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import InvalidLink from './InvalidLink'
@@ -35,9 +34,6 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
   const handleInputChange = (event: any) => {
     setEmailAddress(event.target.value)
   }
-  const LogInLink = (callToAction: string) => (
-    <LinkButton onClick={showLogin}>{callToAction}</LinkButton>
-  )
 
   if (verifiedEmail) {
     const emailAddress = Array.isArray(query.email)
@@ -57,17 +53,19 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
     <div className="w-full">
       {!embedded && (
         <>
-          <Heading>Pay For Content Seamlessly</Heading>
-          <SubHeading>
+          <h1 className="mb-2 text-4xl font-bold">
+            Pay For Content Seamlessly
+          </h1>
+          <span className="block mb-2 text-xl font-light">
             Unlock enables anyone to seamlessly buy and manage access to content
             using blockchain technology.
-          </SubHeading>
-          <Description>
+          </span>
+          <span className="block mb-2 font-light text-md">
             At Unlock, we believe that the more accessible paid content is, the
             better it will be. To do that we&#39;re making it easy for readers
             like you to seamlessly pay for and manage your content.
-          </Description>
-          <Description>
+          </span>
+          <span className="block mb-2 font-light text-md">
             If you want to know more about Unlock&#39;s decentralized payment
             protocol, check out{' '}
             <Link href="https://unlock-protocol.com/blog">
@@ -76,13 +74,13 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
               </a>
             </Link>
             .
-          </Description>
+          </span>
         </>
       )}
-      {embedded && <Heading>Create Your Account</Heading>}
+      {embedded && <h1 className="text-4xl font-bold">Create Your Account</h1>}
       {!submitted && (
         <>
-          <Form onSubmit={handleSubmit}>
+          <form className="max-w-xl" onSubmit={handleSubmit}>
             <div className="flex flex-col mt-2">
               <Input
                 required
@@ -96,31 +94,47 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
             </div>
             <br />
             <div id="signin" />
-          </Form>
-          <Description>
-            Already have an account? {LogInLink('Log in')}.
-            <br />
-            Have an Ethereum Wallet?{' '}
-            <LinkButton
+          </form>
+          <span className="flex flex-col gap-2 text-md">
+            <div className="flex items-center gap-2">
+              <span> Already have an account?</span>
+              <a className="cursor-pointer" onClick={showLogin}>
+                <Button size="tiny" variant="outlined-primary">
+                  Log in
+                </Button>
+              </a>
+              <br />
+            </div>
+            <a
               target="_blank"
               rel="noopener noreferrer"
               href="https://ethereum.org/en/wallets/"
+              className="cursor-pointer"
             >
-              Connect it
-            </LinkButton>
+              <div className="flex items-center gap-2">
+                <span> Have an Ethereum Wallet? </span>
+                <Button size="tiny" variant="outlined-primary">
+                  Connect it
+                </Button>
+              </div>
+            </a>
             .
-          </Description>
+          </span>
         </>
       )}
       {submitted && (
-        <Confirmation>
-          <div>Please check your email</div>
+        <div className="leading-5 text-center font-md">
+          <div className="font-bold">Please check your email</div>
           <div>We need to confirm your email before proceeding.</div>
           <div>
             Once you&#39;ve created your account you can{' '}
-            {LogInLink('log in here')}.
+            <a className="cursor-pointer" onClick={showLogin}>
+              <Button size="tiny" variant="outlined-primary">
+                Log in here
+              </Button>
+            </a>
           </div>
-        </Confirmation>
+        </div>
       )}
     </div>
   )
@@ -131,44 +145,3 @@ SignUp.defaultProps = {
 }
 
 export default SignUp
-
-const Heading = styled.h1`
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 36px;
-  line-height: 47px;
-  font-weight: bold;
-  color: var(--darkgrey);
-`
-
-const SubHeading = styled.h2`
-  font-family: 'IBM Plex Serif', serif;
-  font-size: 32px;
-  line-height: 42px;
-  font-weight: 300;
-  color: var(--darkgrey);
-`
-
-const Description = styled.p`
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 300;
-  font-size: 16px;
-  color: var(--darkgrey);
-`
-
-const Form = styled.form`
-  max-width: 600px;
-`
-
-const Confirmation = styled.div`
-  font-size: 16px;
-  line-height: 20px;
-  text-align: center;
-  color: var(--slate);
-  & > div:first-child {
-    font-weight: bold;
-  }
-`
-
-const LinkButton = styled.a`
-  cursor: pointer;
-`
