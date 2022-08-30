@@ -24,7 +24,7 @@ export function useCheckoutSteps(service: CheckoutService) {
     },
     {
       id: 4,
-      name: 'Add card',
+      name: 'Payment method',
       to: 'PAYMENT',
     },
     {
