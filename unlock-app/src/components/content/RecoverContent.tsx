@@ -3,7 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
-import { Heading, Instructions, Label } from '../interface/FinishSignup'
+import { Heading, Instructions } from '../interface/FinishSignup'
 import { SetPassword } from '../interface/SetPassword'
 import Loading from '../interface/Loading'
 import { StorageService } from '../../services/storageService'
@@ -13,6 +13,7 @@ import UnlockProvider from '../../services/unlockProvider'
 import ProviderContext from '../../contexts/ProviderContext'
 
 import {} from '../interface/Authenticate'
+import { Badge } from '@unlock-protocol/ui'
 
 interface RestoreAccountProps {
   config: any
@@ -119,8 +120,9 @@ export const RestoreAccount = ({
         <Instructions>
           Please, set a new password for your account.
         </Instructions>
-        <Label htmlFor="emailPlaceholder">Email</Label>
-        <p>{email}</p>
+        <div className="flex gap-2 mt-2">
+          <Badge>{email}</Badge>
+        </div>
       </div>
 
       <SetPassword

@@ -18,6 +18,7 @@ import {
   createAccountAndPasswordEncryptKey,
   reEncryptPrivateKey,
 } from '../utils/accounts'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface ApiResponse {
   url: string
@@ -94,6 +95,8 @@ export const useAccount = (address: string, network: number) => {
     let recoveryKey
 
     try {
+      const errorCodes = [500, 401, 404, 400]
+      const successCodes = [200, 201, 204]
       const data = await storageService.createUser(
         UnlockUser.build({
           emailAddress,
@@ -101,12 +104,20 @@ export const useAccount = (address: string, network: number) => {
           passwordEncryptedPrivateKey,
         })
       )
-      // TODO: we can do this without requiring the user to wait but that could be a bit unsafe, because what happens if they close the window?
-      recoveryKey = await reEncryptPrivateKey(
-        passwordEncryptedPrivateKey,
-        password,
-        data.recoveryPhrase
-      )
+      const result = await data.json()
+      if (errorCodes.includes(data.status)) {
+        ToastHelper.error(result[0]?.message ?? 'Ops, something went wrong')
+      }
+
+      if (successCodes.includes(data.status)) {
+        // TODO: we can do this without requiring the user to wait but that could be a bit unsafe, because what happens if they close the window?
+        recoveryKey = await reEncryptPrivateKey(
+          passwordEncryptedPrivateKey,
+          password,
+          data.recoveryPhrase
+        )
+        ToastHelper.success('Account succesfully created')
+      }
     } catch (error: any) {
       const details = error?.response?.data[0]
       if (
