@@ -420,4 +420,29 @@ export default class Web3Service extends UnlockService {
     )
     return ethers.BigNumber.from(await lockContract.numberOfOwners()).toNumber()
   }
+
+  /**
+   * Returns total of key for a specific address
+   * @param {String} lockAddress
+   * @param {String} address
+   * @param {Number} network
+   */
+  async totalKeys(lockAddress: string, owner: string, network: number) {
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+
+    if (!version.totalKeys) {
+      throw new Error('Lock version not supported')
+    }
+
+    return ethers.BigNumber.from(
+      await version.totalKeys.bind(this)(
+        lockAddress,
+        owner,
+        this.providerForNetwork(network)
+      )
+    ).toNumber()
+  }
 }
