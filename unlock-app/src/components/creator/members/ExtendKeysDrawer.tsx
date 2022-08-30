@@ -26,7 +26,7 @@ interface ExtendKeyItem {
 const ExtendKeysList = ({ items = [] }: { items: ExtendKeyItem[] }) => {
   const walletService = useWalletService()
   const disabled = items?.length === 0
-  const [duration, setDuration] = useState<number>()
+  const [duration, setDuration] = useState<number>(0)
 
   const onDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDuration(parseInt(e.target.value))
@@ -35,13 +35,13 @@ const ExtendKeysList = ({ items = [] }: { items: ExtendKeyItem[] }) => {
   const onExtendKeys = async () => {
     if (!walletService) return
 
-    const duration = 0
+    const extendDuration = duration * 86400 // transform days in seconds
     const extendKeysPromise = items.map(({ lockAddress, tokenId }) =>
       walletService.grantKeyExtension(
         {
           lockAddress,
           tokenId,
-          duration,
+          duration: extendDuration,
         },
         () => void 0
       )
