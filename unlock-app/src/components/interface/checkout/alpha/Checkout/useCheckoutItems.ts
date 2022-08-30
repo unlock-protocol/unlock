@@ -33,13 +33,20 @@ export function useCheckoutSteps(service: CheckoutService) {
       skip: !paywallConfig.messageToSign,
       to: 'MESSAGE_TO_SIGN',
     },
-    {
-      id: 6,
-      name: 'Solve captcha',
-      to: 'CAPTCHA',
-      skip:
-        !paywallConfig.captcha || ['card', 'claim'].includes(payment.method),
-    },
+    paywallConfig.password
+      ? {
+          id: 6,
+          name: 'Submit password',
+          to: 'PASSWORD',
+        }
+      : {
+          id: 6,
+          name: 'Solve captcha',
+          to: 'CAPTCHA',
+          skip:
+            !paywallConfig.captcha ||
+            ['card', 'claim'].includes(payment.method),
+        },
     {
       id: 7,
       name: 'Confirm',
