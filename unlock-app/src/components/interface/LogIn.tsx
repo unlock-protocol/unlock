@@ -87,7 +87,7 @@ const LogIn = ({
   }, [])
 
   return (
-    <div className="flex flex-col w-1/2 mx-auto">
+    <div className="flex flex-col mx-auto md:w-1/2">
       <form className="flex flex-col" onSubmit={handleSubmit}>
         <Input
           name="emailAddress"

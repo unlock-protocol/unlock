@@ -39,10 +39,12 @@ export const FinishSignup = ({ emailAddress, onSuccess }: Props) => {
     return <SignupSuccess />
   }
   return (
-    <div>
-      <h1 className="text-4xl font-bold">Create Your Unlock Wallet</h1>
-      <p className="text-lg font-light">Create a password for your account.</p>
-      <div className="flex flex-col justify-center w-1/2">
+    <div className="flex flex-col mx-auto md:w-1/2">
+      <h1 className="mb-1 text-4xl font-bold">Create Your Unlock Wallet</h1>
+      <p className="mb-2 text-lg font-light">
+        Create a password for your account.
+      </p>
+      <div className="flex flex-col justify-center">
         <Input
           name="emailPlaceholder"
           type="email"
