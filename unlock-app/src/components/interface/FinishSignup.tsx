@@ -4,6 +4,7 @@ import { SetPassword } from './SetPassword'
 import SignupSuccess from './SignupSuccess'
 
 import { useAccount } from '../../hooks/useAccount'
+import { Input } from '@unlock-protocol/ui'
 
 interface Props {
   emailAddress: string
@@ -42,19 +43,20 @@ export const FinishSignup = ({ emailAddress, onSuccess }: Props) => {
     <div>
       <Heading>Create Your Unlock Wallet</Heading>
       <Instructions>Create a password for your account.</Instructions>
-      <Label htmlFor="emailPlaceholder">Email</Label>
-      <Input
-        name="emailPlaceholder"
-        type="email"
-        id="emailPlaceholder"
-        value={emailAddress}
-        disabled
-      />
-      <SetPassword
-        loading={loading}
-        buttonLabel="Creating Account"
-        onSubmit={signup}
-      />
+      <div className="flex flex-col w-1/2">
+        <Input
+          name="emailPlaceholder"
+          type="email"
+          label="Email"
+          value={emailAddress}
+          disabled
+        />
+        <SetPassword
+          loading={loading}
+          buttonLabel="Creating Account"
+          onSubmit={signup}
+        />
+      </div>
       {error && <SignupError>{error}</SignupError>}
     </div>
   )
@@ -74,26 +76,6 @@ export const Instructions = styled.p`
   font-weight: 300;
   font-size: 20px;
   color: var(--darkgrey);
-`
-
-export const Label = styled.label`
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 10px;
-  margin-bottom: 5px;
-`
-
-export const Input = styled.input`
-  height: 48px;
-  width: 100%;
-  max-width: 450px;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
 `
 
 export const SignupError = styled.p`

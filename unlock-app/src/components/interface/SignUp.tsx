@@ -6,7 +6,7 @@ import InvalidLink from './InvalidLink'
 import FinishSignUp from './FinishSignup'
 import { verifyEmailSignature } from '../../utils/wedlocks'
 import WedlockServiceContext from '../../contexts/WedlocksContext'
-import { Button } from './checkout/FormStyles'
+import { Button, Input } from '@unlock-protocol/ui'
 
 interface SignUpProps {
   showLogin: () => void
@@ -54,7 +54,7 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
   }
 
   return (
-    <Container>
+    <div className="w-full">
       {!embedded && (
         <>
           <Heading>Pay For Content Seamlessly</Heading>
@@ -83,17 +83,17 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
       {!submitted && (
         <>
           <Form onSubmit={handleSubmit}>
-            <Label htmlFor="emailInput">Email Address</Label>
-            <input
-              required
-              name="emailAddress"
-              id="emailInput"
-              type="email"
-              className="flex w-full"
-              placeholder="Enter your email to get started"
-              onChange={handleInputChange}
-            />
-            <Button type="submit">Sign up </Button>
+            <div className="flex flex-col mt-2">
+              <Input
+                required
+                name="emailAddress"
+                label="Email Address"
+                type="email"
+                placeholder="Enter your email to get started"
+                onChange={handleInputChange}
+              />
+              <Button type="submit">Sign up </Button>
+            </div>
             <br />
             <div id="signin" />
           </Form>
@@ -122,7 +122,7 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
           </div>
         </Confirmation>
       )}
-    </Container>
+    </div>
   )
 }
 
@@ -171,17 +171,4 @@ const Confirmation = styled.div`
 
 const LinkButton = styled.a`
   cursor: pointer;
-`
-
-const Label = styled.label`
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 10px;
-  margin-bottom: 5px;
-`
-
-const Container = styled.div`
-  width: 100%;
 `

@@ -1,7 +1,7 @@
+import { Button, Input } from '@unlock-protocol/ui'
 import React, { useReducer } from 'react'
 import styled from 'styled-components'
 import { LoadingButton } from './user-account/styles'
-import { Button } from './checkout/FormStyles'
 
 interface Props {
   buttonLabel: string
@@ -118,45 +118,33 @@ export const SetPassword = ({ buttonLabel, onSubmit, loading }: Props) => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <Label htmlFor="passwordInput">Password</Label>
-      <input
-        required
-        name="password"
-        type="password"
-        id="passwordInput"
-        placeholder="Password"
-        onChange={handleInputChange}
-      />
-      <br />
-      <Label htmlFor="passwordConfirmationInput">Confirm Password</Label>
-      <input
-        required
-        name="passwordConfirmation"
-        type="password"
-        id="passwordConfirmationInput"
-        placeholder="Confirm Password"
-        onChange={handleInputChange}
-      />
-      <br />
-      {errors.map((error: string) => (
-        <PasswordError key={error}>{error}</PasswordError>
-      ))}
-      <br />
-      {submitButton()}
+      <div className="flex flex-col gap-2">
+        <Input
+          label="Password"
+          required
+          name="password"
+          type="password"
+          placeholder="Password"
+          onChange={handleInputChange}
+        />
+        <Input
+          label="Confirm password"
+          required
+          name="passwordConfirmation"
+          type="password"
+          placeholder="Confirm Password"
+          onChange={handleInputChange}
+        />
+        {errors.map((error: string) => (
+          <PasswordError key={error}>{error}</PasswordError>
+        ))}
+        {submitButton()}
+      </div>
     </Form>
   )
 }
 
 export default SetPassword
-
-const Label = styled.label`
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 10px;
-  margin-bottom: 5px;
-`
 
 const Form = styled.form`
   max-width: 450px;

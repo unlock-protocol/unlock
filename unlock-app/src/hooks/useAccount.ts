@@ -94,14 +94,13 @@ export const useAccount = (address: string, network: number) => {
     let recoveryKey
 
     try {
-      const response = await storageService.createUser(
+      const data = await storageService.createUser(
         UnlockUser.build({
           emailAddress,
           publicKey: address,
           passwordEncryptedPrivateKey,
         })
       )
-      const data = await response.json()
       // TODO: we can do this without requiring the user to wait but that could be a bit unsafe, because what happens if they close the window?
       recoveryKey = await reEncryptPrivateKey(
         passwordEncryptedPrivateKey,
