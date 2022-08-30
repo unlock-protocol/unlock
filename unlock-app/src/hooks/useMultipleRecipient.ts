@@ -117,7 +117,7 @@ export const useMultipleRecipient = (
     return recipients.size < maxRecipients
   }
 
-  const isKeyCanBeGranted = async ({
+  const canKeyBeGranted = async ({
     lockAddress,
     owner,
   }: {
@@ -147,7 +147,7 @@ export const useMultipleRecipient = (
     const owner = await getAddressForName(recipient)
     const lockAddress = lock.address
 
-    const keyCanBeGranted = await isKeyCanBeGranted({
+    const keyCanBeGranted = await canKeyBeGranted({
       lockAddress,
       owner,
     })
