@@ -30,23 +30,12 @@ namespace PriceController {
 
       const pricer = new KeyPricer()
       const pricing = await pricer.generate(lockAddress, req.chain, quantity)
-      if (
-        hasEnoughToPayForGas &&
-        pricing.keyPrice !== undefined &&
-        pricing.keyPrice === 0 &&
-        (await pricer.canAffordGrant(req.chain))
-      ) {
-        return res.json({
-          usd: pricing,
-          creditCardEnabled: true,
-        })
-      }
 
       // let's see if the lock was authorized for credit card payments
       const isAuthorizedForCreditCard =
         await AuthorizedLockOperations.hasAuthorization(lockAddress, req.chain)
 
-      // Let's check tthat the price is larger than 50cts
+      // Let's check that the price is larger than 50cts
       const totalPriceInCents = Object.values(pricing).reduce((a, b) => a + b)
       if (
         !hasEnoughToPayForGas ||
