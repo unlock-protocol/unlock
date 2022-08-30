@@ -589,7 +589,7 @@ export class StorageService extends EventEmitter {
         ...opts.headers,
       },
     })
-    return await response?.json()
+    return response.ok
   }
 
   /**
