@@ -188,7 +188,7 @@ export const ExtendKeysDrawer = ({
             Choose Key
           </option>
           {keys?.map(({ token, keyholderAddress, lockName }: any) => {
-            // disable all selected item from selection
+            // disable all selected item from selection if already present in list
             const keyInList = !!extenKeysList?.find(
               ({ tokenId }) => tokenId === token
             )?.tokenId
