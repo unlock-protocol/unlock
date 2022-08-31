@@ -213,6 +213,7 @@ export const useMultipleRecipient = (
   const addRecipientItem = async <T extends Record<string, any>>(
     userAddress: string,
     metadata: T,
+    itemsToAdd = 1,
     updateIndex?: number
   ): Promise<boolean> => {
     setLoading(true)
@@ -223,16 +224,20 @@ export const useMultipleRecipient = (
       )
       if (valid) {
         try {
-          setRecipients((prev) =>
-            prev.set(index, {
-              userAddress,
-              metadata,
-              index,
-              resolvedAddress: owner ?? userAddress,
-              valid,
+          const itemsToAddList = new Array(itemsToAdd)
+            .fill(0)
+            .map((_, itemIndex) => {
+              return {
+                userAddress,
+                metadata,
+                index: index + itemIndex,
+                resolvedAddress: owner ?? userAddress,
+                valid,
+              }
             })
-          )
-          ToastHelper.success('Recipient correctly added in list.')
+          setRecipients((prev: any[]) => [...prev, ...itemsToAddList])
+
+          ToastHelper.success('Recipients correctly added in list.')
         } catch (err) {
           console.error(err)
           ToastHelper.error('Error by adding recipient in list')
