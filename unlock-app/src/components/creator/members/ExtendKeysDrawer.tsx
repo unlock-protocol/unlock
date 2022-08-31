@@ -116,7 +116,7 @@ const ExtendKeyDurationForm = ({
           tokenId,
         })
         await ToastHelper.promise(keyMutationPromise, {
-          loading: 'Extending key duration...',
+          loading: 'Extending key duration',
           success: 'Keys duration extended',
           error: 'Error with extending keys',
         })
@@ -160,7 +160,11 @@ const ExtendKeyDurationForm = ({
           {extendKeyMutation.isLoading && (
             <Spinner className="mr-1 animate-spin" />
           )}
-          <span>Extend key duration</span>
+          <span>
+            {!extendKeyMutation.isLoading
+              ? 'Extend key duration'
+              : 'Extend key duration...'}
+          </span>
         </div>
       </Button>
     </form>
