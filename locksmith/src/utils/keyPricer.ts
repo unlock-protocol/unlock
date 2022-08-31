@@ -42,7 +42,7 @@ export default class KeyPricer {
     }
   }
 
-  async keyPriceUSD(lockAddress: string, network: number): Promise<number> {
+  async keyPriceUSD(lockAddress: string, network: number) {
     const lock = await this.readOnlyEthereumService.getLock(
       Normalizer.ethereumAddress(lockAddress),
       network,
@@ -60,7 +60,8 @@ export default class KeyPricer {
     }
 
     const priceConversion = new PriceConversion()
-    return priceConversion.convertToUSD(symbol, lock.keyPrice)
+    const usdPrice = await priceConversion.convertToUSD(symbol, lock.keyPrice)
+    return usdPrice
   }
 
   // Fee denominated in cents by default. multiply base to get more accurate

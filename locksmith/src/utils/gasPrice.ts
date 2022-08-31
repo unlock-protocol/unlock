@@ -29,6 +29,7 @@ export default class GasPrice {
     }
     // TODO: support more "native" currencies
     const priceConversion = new PriceConversion()
-    return priceConversion.convertToUSD(symbol, gasPrice)
+    const usdPrice = await priceConversion.convertToUSD(symbol, gasPrice)
+    return usdPrice
   }
 }

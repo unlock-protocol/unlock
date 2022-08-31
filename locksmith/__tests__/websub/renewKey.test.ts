@@ -128,6 +128,7 @@ jest.mock('isomorphic-fetch', () => async () => ({
   json: async () => ({
     data: { base: 'USDT', currency: 'USD', amount: 1 },
   }),
+  ok: true,
 }))
 
 describe('isWorthRenewing', () => {
