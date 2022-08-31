@@ -22,6 +22,7 @@ const {
   getCancelAndRefundValueFor,
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
+  totalKeys,
 } = v7
 
 export default {
@@ -47,4 +48,5 @@ export default {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   approveBeneficiary,
+  totalKeys,
 }
