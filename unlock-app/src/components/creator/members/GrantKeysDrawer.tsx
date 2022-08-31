@@ -148,7 +148,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             expirations,
             keyManagers,
           },
-          (error: any, hash: string) => {
+          (error: any, hash: any) => {
             if (error) {
               ToastHelper.error(
                 'There was an error and the keys could not be granted. Please refresh the page and try again.'
