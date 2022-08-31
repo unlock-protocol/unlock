@@ -86,7 +86,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     recipients.length <= 1 && recipients[0] === account
 
   const enableSuperfluid =
-    (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
+    (paywallConfig.superfluid || lockConfig.superfluid) &&
+    isReceiverAccountOnly &&
+    isPayable
 
   const enableClaim =
     !!isClaimable && !isClaimableLoading && isReceiverAccountOnly
