@@ -17,9 +17,10 @@ import useClipboard from 'react-use-clipboard'
 import { FieldValues, useForm } from 'react-hook-form'
 import useEns from '~/hooks/useEns'
 import { expirationAsDate } from '~/utils/durations'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { MAX_UINT } from '~/constants'
 import { ExtendKeyItem } from '~/components/creator/members/ExtendKeysDrawer'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -70,6 +71,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
 }) => {
   const storageService = useContext(StorageServiceContext)
   const walletService = useContext(WalletServiceContext)
+  const web3Service = useWeb3Service()
   const { network, account } = useContext(AuthenticationContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
   const [emailSent, setEmailSent] = useState(false)
@@ -86,6 +88,15 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const [isCopied, setCopied] = useClipboard(keyholderAddress, {
     successDuration: 2000,
   })
+
+  const getLockVersion = async (): Promise<number> => {
+    return web3Service.publicLockVersion(data.lockAddress, network)
+  }
+
+  const { isLoading: loadingVersion, data: lockVersion } = useQuery(
+    ['getLockVersion'],
+    () => getLockVersion()
+  )
 
   useEffect(() => {
     const items = Object.entries(data || {}).filter(([key]) => {
@@ -188,8 +199,8 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     }
   }
 
-  const canExtendKey = expiration !== MAX_UINT
-
+  const canExtendKey =
+    expiration !== MAX_UINT && lockVersion && lockVersion >= 11
   return (
     <div
       data-testid="member-card"
@@ -247,6 +258,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
                   size="small"
                   variant="outlined-primary"
                   onClick={onExtendKeyCb}
+                  disabled={loadingVersion}
                 >
                   Extend key
                 </Button>
