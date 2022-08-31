@@ -1,4 +1,4 @@
-import { Lock, PaywallConfig } from '~/unlockTypes'
+import { Lock, PaywallConfig, PaywallConfigLock } from '~/unlockTypes'
 import { createMachine, assign, InterpreterFrom } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
@@ -24,7 +24,7 @@ export interface FiatPricing {
   }
 }
 
-export interface LockState extends Lock {
+export interface LockState extends Lock, Required<PaywallConfigLock> {
   fiatPricing: FiatPricing
   isMember: boolean
   isSoldOut: boolean
@@ -165,6 +165,12 @@ export const checkoutMachine = createMachine(
     },
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
+      SELECT: 'SELECT',
+      QUANTITY: 'QUANTITY',
+      PAYMENT: 'PAYMENT',
+      METADATA: 'METADATA',
+      MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
+      CAPTCHA: 'CAPTCHA',
       UPDATE_PAYWALL_CONFIG: {
         target: 'SELECT',
         actions: ['updatePaywallConfig'],
@@ -207,7 +213,6 @@ export const checkoutMachine = createMachine(
             actions: ['selectQuantity'],
             target: 'METADATA',
           },
-          SELECT: 'SELECT',
           BACK: 'SELECT',
           DISCONNECT: {
             target: 'SELECT',
@@ -221,8 +226,6 @@ export const checkoutMachine = createMachine(
             target: 'PAYMENT',
             actions: ['selectRecipients'],
           },
-          SELECT: 'SELECT',
-          QUANTITY: 'QUANTITY',
           BACK: [
             {
               target: 'SELECT',
@@ -263,9 +266,6 @@ export const checkoutMachine = createMachine(
               target: 'CONFIRM',
             },
           ],
-          SELECT: 'SELECT',
-          QUANTITY: 'QUANTITY',
-          METADATA: 'METADATA',
           BACK: 'METADATA',
           DISCONNECT: {
             target: 'SELECT',
@@ -311,10 +311,6 @@ export const checkoutMachine = createMachine(
               actions: ['signMessage'],
             },
           ],
-          SELECT: 'SELECT',
-          QUANTITY: 'QUANTITY',
-          PAYMENT: 'PAYMENT',
-          METADATA: 'METADATA',
           BACK: 'METADATA',
           DISCONNECT: {
             target: 'SELECT',
@@ -328,10 +324,6 @@ export const checkoutMachine = createMachine(
             target: 'CONFIRM',
             actions: ['solveCaptcha'],
           },
-          SELECT: 'SELECT',
-          QUANTITY: 'QUANTITY',
-          PAYMENT: 'PAYMENT',
-          METADATA: 'METADATA',
           BACK: [
             {
               target: 'MESSAGE_TO_SIGN',
@@ -353,20 +345,13 @@ export const checkoutMachine = createMachine(
             target: 'MINTING',
             actions: ['confirmMint'],
           },
-
-          SELECT: 'SELECT',
-          QUANTITY: 'QUANTITY',
-          PAYMENT: 'PAYMENT',
-          METADATA: 'METADATA',
-          MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
-          CAPTCHA: 'CAPTCHA',
           BACK: [
             {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
             },
             {
-              target: 'METADATA',
+              target: 'PAYMENT',
             },
           ],
           DISCONNECT: {
@@ -406,7 +391,6 @@ export const checkoutMachine = createMachine(
             },
           ],
           BACK: 'SELECT',
-          SELECT: 'SELECT',
           DISCONNECT: {
             target: 'SELECT',
             actions: ['disconnect'],

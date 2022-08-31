@@ -209,6 +209,7 @@ export interface PaywallConfig {
   maxRecipients?: number
   minRecipients?: number
   superfluid?: boolean
+  hideSoldOut?: boolean
 }
 
 export interface RawLock {
