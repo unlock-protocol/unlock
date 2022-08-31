@@ -16,6 +16,7 @@ interface ExtendKeyDrawerProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   selectedKey: ExtendKeyItem
+  refetch: any
 }
 
 export interface ExtendKeyItem {
@@ -25,9 +26,6 @@ export interface ExtendKeyItem {
   owner: string
   expiration: string
 }
-
-// Prevents re-rendering when time changes!
-const now = new Date().getTime()
 
 /**
  * https://stackoverflow.com/questions/30166338/setting-value-of-datetime-local-from-date
@@ -49,19 +47,21 @@ const ExtendKeyDurationForm = ({
   lockAddress,
   tokenId,
   onComplete,
-  expiration,
+  currentExpiration,
 }: {
   lockAddress: string
   tokenId: string
   onComplete: () => void
-  expiration: string
+  currentExpiration: string
 }) => {
   const walletService = useWalletService()
 
   const defaultValues = {
     // expiration date as default
-    expiration: formatDate(MAX_UINT === expiration ? -1 : parseInt(expiration)),
-    neverExpires: MAX_UINT === expiration,
+    expiration: formatDate(
+      MAX_UINT === currentExpiration ? -1 : parseInt(currentExpiration)
+    ),
+    neverExpires: MAX_UINT === currentExpiration,
   }
 
   const {
@@ -105,7 +105,9 @@ const ExtendKeyDurationForm = ({
     const isFormValid = await trigger()
     const { expiration, neverExpires } = getValues()
     if (isFormValid) {
-      const timeDiffFromNow = dayjs(expiration).diff(dayjs(), 'second')
+      const prevExpiration = dayjs(parseInt(currentExpiration) * 1000)
+      const newExpiration = dayjs(expiration)
+      const timeDiffFromNow = newExpiration.diff(prevExpiration, 'second')
 
       const extendDuration = neverExpires ? MAX_UINT : timeDiffFromNow
 
@@ -127,7 +129,7 @@ const ExtendKeyDurationForm = ({
       }
     }
   }
-
+  const { neverExpires } = getValues()
   return (
     <form
       className="flex flex-col w-full gap-3"
@@ -137,9 +139,11 @@ const ExtendKeyDurationForm = ({
         type="datetime-local"
         placeholder="Key expiration date"
         label="Key expiration date"
+        disabled={neverExpires}
         min={1}
         {...register('expiration')}
       />
+
       <div>
         <label htmlFor="never-expires">
           Never Expires
@@ -175,16 +179,24 @@ export const ExtendKeysDrawer = ({
   isOpen,
   setIsOpen,
   selectedKey,
+  refetch,
 }: ExtendKeyDrawerProps) => {
   const owner = selectedKey?.owner
   const addressToEns = useEns(owner!)
 
-  const { lockAddress, tokenId, expiration } = selectedKey ?? {}
+  const {
+    lockAddress,
+    tokenId,
+    expiration: currentExpiration,
+  } = selectedKey ?? {}
 
   if (!lockAddress && !tokenId) return null
 
-  const onComplete = () => {
+  const onComplete = async () => {
     setIsOpen(false)
+    if (typeof refetch === 'function') {
+      await refetch()
+    }
   }
 
   return (
@@ -213,7 +225,7 @@ export const ExtendKeysDrawer = ({
         lockAddress={lockAddress}
         tokenId={tokenId}
         onComplete={onComplete}
-        expiration={expiration}
+        currentExpiration={currentExpiration}
       />
     </Drawer>
   )

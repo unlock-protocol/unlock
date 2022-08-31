@@ -242,7 +242,11 @@ const MetadataTableWrapper = ({
     setCurrentPage(0) // reset pagination when has query
   }, [queryValue.length])
 
-  const { isLoading: loading, data: keys = [] } = useQuery(
+  const {
+    isLoading: loading,
+    data: keys = [],
+    refetch,
+  } = useQuery(
     [queryValue, expiration, currentPage, filterKey, rawQueryValue],
     () => getKeys()
   )
@@ -313,6 +317,7 @@ const MetadataTableWrapper = ({
         loading={loading}
         membersCount={keysCount}
         hasSearchValue={hasSearchValue}
+        refetch={refetch}
       />
     </>
   )
