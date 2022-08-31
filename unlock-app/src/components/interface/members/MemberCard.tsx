@@ -18,6 +18,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 import useEns from '~/hooks/useEns'
 import { expirationAsDate } from '~/utils/durations'
 import { useMutation } from 'react-query'
+import { MAX_UINT } from '~/constants'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -35,6 +36,7 @@ interface MemberCardProps {
   isLockManager?: boolean
   expireAndRefundDisabled?: boolean
   metadata?: { [key: string]: any }
+  onExtendKey?: (key: any) => void
 }
 
 const keysToIgnore = [
@@ -63,6 +65,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   isLockManager,
   expireAndRefundDisabled = true,
   metadata = {},
+  onExtendKey,
 }) => {
   const storageService = useContext(StorageServiceContext)
   const walletService = useContext(WalletServiceContext)
@@ -172,6 +175,19 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     .map(([key]) => key.toLowerCase())
     .includes('email')
 
+  const onExtendKeyCb = () => {
+    if (typeof onExtendKey === 'function') {
+      onExtendKey({
+        lockName,
+        owner: data?.keyholderAddress,
+        lockAddress: data?.lockAddress,
+        tokenId,
+      })
+    }
+  }
+
+  const canExtendKey = expiration !== MAX_UINT
+
   return (
     <div
       data-testid="member-card"
@@ -189,7 +205,8 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         extraDataItems={extraDataItems}
         onEmailChange={onEmailChange}
       />
-      <div className="grid justify-between grid-cols-7 gap-2 mb-2">
+
+      <div className="grid justify-between grid-cols-8 gap-2 mb-2">
         <div className="flex flex-col col-span-full md:col-span-1">
           <span className={styles.description}>Lock name</span>
           <span className={styles.title}>{lockName}</span>
@@ -220,18 +237,29 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <span className={styles.description}>Expiration</span>
           <span className={styles.title}>{expirationAsDate(expiration)}</span>
         </div>
-        <div className="flex items-center justify-start gap-2 col-span-full lg:col-span-2 lg:justify-end">
+        <div className="flex items-center justify-start gap-2 col-span-full lg:col-span-3 lg:justify-end">
           {isLockManager && (
             <>
-              <Button
-                size="small"
-                variant="outlined-primary"
-                className="disabled:border-opacity-50 disabled:border-gray-200 disabled:text-opacity-50 hover:disabled:text-opacity-50"
-                disabled={expireAndRefundDisabled}
-                onClick={onExpireAndRefund}
-              >
-                Expire & Refund
-              </Button>
+              {canExtendKey && (
+                <Button
+                  size="small"
+                  variant="outlined-primary"
+                  onClick={onExtendKeyCb}
+                >
+                  Extend key
+                </Button>
+              )}
+              {!expireAndRefundDisabled && (
+                <Button
+                  size="small"
+                  variant="outlined-primary"
+                  className="disabled:border-opacity-50 disabled:border-gray-200 disabled:text-opacity-50 hover:disabled:text-opacity-50"
+                  disabled={expireAndRefundDisabled}
+                  onClick={onExpireAndRefund}
+                >
+                  Expire & Refund
+                </Button>
+              )}
               <Button size="small" variant="secondary" onClick={toggleMetada}>
                 <div className="flex items-center">
                   <span>Show metadata</span>

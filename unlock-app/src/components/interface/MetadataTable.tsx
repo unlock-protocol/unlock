@@ -9,7 +9,10 @@ import {
 } from '../interface/members/MemberCard'
 import { Button } from '@unlock-protocol/ui'
 import { MAX_UINT } from '~/constants'
-import { ExtendKeysDrawer } from '../creator/members/ExtendKeysDrawer'
+import {
+  ExtendKeyItem,
+  ExtendKeysDrawer,
+} from '../creator/members/ExtendKeysDrawer'
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
   // strings
@@ -86,7 +89,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   lockManagerMapping,
   lockAddresses = [],
   hasSearchValue = false,
-  hasExpiredKeys = false,
 }) => {
   const hasLockManagerStatus = Object.values(lockManagerMapping ?? {}).some(
     (status) => status
@@ -96,6 +98,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
     useState(false)
   const [extendKeysOpen, setExtendKeysOpen] = useState(false)
+  const [selectedKey, setSelectedKey] = useState<any>()
 
   if (loading) {
     return (
@@ -152,8 +155,12 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     setExpandAllMetadata(!expandAllMetadata)
   }
 
+  const onExtendKey = (key: ExtendKeyItem) => {
+    setSelectedKey(key)
+    setExtendKeysOpen(true)
+  }
+
   const showCheckInTimeInfo = metadata?.some((item) => item?.checkedInAt)
-  const showExtendKeys = hasExpiredKeys && hasLockManagerStatus
   return (
     <section className="flex flex-col gap-3">
       <ExpireAndRefundModal
@@ -163,13 +170,11 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         lockAddresses={lockAddresses}
       />
 
-      {showExtendKeys && (
-        <ExtendKeysDrawer
-          isOpen={extendKeysOpen}
-          setIsOpen={setExtendKeysOpen}
-          lockAddresses={lockAddresses}
-        />
-      )}
+      <ExtendKeysDrawer
+        isOpen={extendKeysOpen}
+        setIsOpen={setExtendKeysOpen}
+        selectedKey={selectedKey}
+      />
 
       <div className="flex items-center gap-[1rem]">
         <TotalMemberCount membersCount={membersCount} />
@@ -189,11 +194,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
                 Show all metadata
               </Button>
             </div>
-          )}
-          {showExtendKeys && (
-            <Button size="small" onClick={() => setExtendKeysOpen(true)}>
-              Extend keys
-            </Button>
           )}
         </div>
       </div>
@@ -221,6 +221,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             )}
             onExpireAndRefund={() => onExpireAndRefund(data, isLockManager)}
             showCheckInTimeInfo={showCheckInTimeInfo}
+            onExtendKey={onExtendKey}
           />
         )
       })}
