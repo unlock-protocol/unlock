@@ -12,30 +12,37 @@ export default class PriceConversion {
   /**
    * Returns the USD cents price of a currency amount
    * @param currency
-   * @param amount in cents
+   * @param lockPriceAmount in cents
    * @returns
    */
-  async convertToUSD(currency: string, amount: number): Promise<number> {
+  async convertToUSD(currency: string, lockPriceAmount: number) {
     const cached = cache[currency]
 
     let rate
     // Cache is valid for 5 minutes!
     if (cached && cached[0] > new Date().getTime() - 1000 * 60 * 5) {
       ;[, rate] = cached
-      return parseInt((cached[1] * amount * 100).toFixed(0))
+      return parseInt((cached[1] * lockPriceAmount * 100).toFixed(0))
     } else {
       const response = await fetch(
         `https://api.coinbase.com/v2/prices/${currency}-USD/buy`
       )
 
-      const { data } = await response.json()
-      if (!data?.amount) {
-        return 0
+      if (!response.ok) {
+        throw new Error(`USD price not available on coinbase`)
       }
-      cache[currency] = [new Date().getTime(), parseFloat(data.amount)]
-      rate = parseFloat(data.amount)
+
+      const { data } = await response.json()
+      const amount = data?.amount
+
+      if (!amount) {
+        throw new Error('Amount is invalid')
+      }
+
+      cache[currency] = [new Date().getTime(), parseFloat(amount)]
+      rate = parseFloat(amount)
     }
 
-    return parseInt((rate * amount * 100).toFixed(0))
+    return parseInt((rate * lockPriceAmount * 100).toFixed(0))
   }
 }
