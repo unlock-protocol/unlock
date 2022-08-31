@@ -13,7 +13,7 @@ import getLock from './getLock'
 
 import v4 from '../v4'
 
-const { getTokenIdForOwner, getKeyExpirationByLockForOwner } = v4
+const { getTokenIdForOwner, getKeyExpirationByLockForOwner, totalKeys } = v4
 
 export default {
   version: 'v6',
@@ -32,4 +32,5 @@ export default {
   shareKey,
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
+  totalKeys,
 }

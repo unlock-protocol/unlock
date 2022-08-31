@@ -10,6 +10,7 @@ import cancelAndRefund from './cancelAndRefund'
 import getLock from './getLock'
 import getTokenIdForOwner from './getTokenIdForOwner'
 import getKeyExpirationByLockForOwner from './getKeyExpirationByLockForOwner'
+import totalKeys from './totalKeys'
 
 export default {
   purchaseKey,
@@ -26,4 +27,5 @@ export default {
   cancelAndRefund,
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
+  totalKeys,
 }

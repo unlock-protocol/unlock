@@ -8,6 +8,7 @@ import {
   MemberCardPlaceholder,
 } from '../interface/members/MemberCard'
 import { Button } from '@unlock-protocol/ui'
+import { MAX_UINT } from '~/constants'
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
   // strings
@@ -129,19 +130,17 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     setCurrentLock(null)
   }
 
-  const isKeyValid = (metadata: KeyMetadata) => {
-    if (!metadata?.expiration) return false
-    if (metadata?.expiration.toLowerCase() === 'never') return true
-    const now = new Date().getTime()
-    const expiration = new Date(metadata?.expiration).getTime()
-    return expiration > now
+  const isKeyValid = (timestamp: KeyMetadata['expiration']) => {
+    const now = new Date().getTime() / 1000
+    if (timestamp === MAX_UINT) return true
+    return parseInt(timestamp) > now
   }
 
   const expireAndRefundDisabled = (
     metadata: KeyMetadata,
     isLockManager: boolean
   ): boolean => {
-    return !(isLockManager && isKeyValid(metadata))
+    return !(isLockManager && isKeyValid(metadata.expiration))
   }
 
   const onExpandAllMetadata = () => {
