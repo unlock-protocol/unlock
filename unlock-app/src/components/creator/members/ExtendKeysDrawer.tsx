@@ -15,7 +15,7 @@ import dayjs from 'dayjs'
 interface ExtendKeyDrawerProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
-  selectedKey?: any
+  selectedKey: ExtendKeyItem
 }
 
 export interface ExtendKeyItem {
@@ -23,6 +23,7 @@ export interface ExtendKeyItem {
   lockName: string
   tokenId: string
   owner: string
+  expiration: string
 }
 
 // Prevents re-rendering when time changes!
@@ -39,7 +40,7 @@ const formatDate = (timestamp: number) => {
   if (timestamp === -1) {
     return ''
   }
-  const date = new Date(now + timestamp * 1000)
+  const date = new Date(timestamp * 1000)
   date.setMinutes(date.getMinutes() - date.getTimezoneOffset())
   return date.toISOString().slice(0, 16)
 }
@@ -47,15 +48,20 @@ const formatDate = (timestamp: number) => {
 const ExtendKeyDurationForm = ({
   lockAddress,
   tokenId,
+  onComplete,
+  expiration,
 }: {
   lockAddress: string
   tokenId: string
+  onComplete: () => void
+  expiration: string
 }) => {
   const walletService = useWalletService()
 
   const defaultValues = {
-    expiration: formatDate(0),
-    neverExpires: false,
+    // expiration date as default
+    expiration: formatDate(MAX_UINT === expiration ? -1 : parseInt(expiration)),
+    neverExpires: MAX_UINT === expiration,
   }
 
   const {
@@ -93,14 +99,7 @@ const ExtendKeyDurationForm = ({
     )
   }
 
-  const extendKeyMutation = useMutation(onExtendKeys, {
-    onSuccess: () => {
-      ToastHelper.success('Keys duration extended')
-    },
-    onError: (err: any) => {
-      ToastHelper.error(err?.message || 'Error with extending keys')
-    },
-  })
+  const extendKeyMutation = useMutation(onExtendKeys)
 
   const onExtendDuration = async () => {
     const isFormValid = await trigger()
@@ -111,11 +110,17 @@ const ExtendKeyDurationForm = ({
       const extendDuration = neverExpires ? MAX_UINT : timeDiffFromNow
 
       if (extendDuration > 0 || extendDuration === MAX_UINT) {
-        await extendKeyMutation.mutate({
+        const keyMutationPromise = extendKeyMutation.mutateAsync({
           extendDuration,
           lockAddress,
           tokenId,
         })
+        await ToastHelper.promise(keyMutationPromise, {
+          loading: 'Extending key duration...',
+          success: 'Keys duration extended',
+          error: 'Error with extending keys',
+        })
+        onComplete()
         reset(defaultValues)
       } else {
         ToastHelper.error(`Expiration date can't be in the past`)
@@ -168,11 +173,15 @@ export const ExtendKeysDrawer = ({
   selectedKey,
 }: ExtendKeyDrawerProps) => {
   const owner = selectedKey?.owner
-  const addressToEns = useEns(owner)
+  const addressToEns = useEns(owner!)
 
-  const { lockAddress, tokenId } = selectedKey ?? {}
+  const { lockAddress, tokenId, expiration } = selectedKey ?? {}
 
   if (!lockAddress && !tokenId) return null
+
+  const onComplete = () => {
+    setIsOpen(false)
+  }
 
   return (
     <Drawer title="Extend Key" isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -196,7 +205,12 @@ export const ExtendKeysDrawer = ({
         </div>
       </div>
 
-      <ExtendKeyDurationForm lockAddress={lockAddress} tokenId={tokenId} />
+      <ExtendKeyDurationForm
+        lockAddress={lockAddress}
+        tokenId={tokenId}
+        onComplete={onComplete}
+        expiration={expiration}
+      />
     </Drawer>
   )
 }

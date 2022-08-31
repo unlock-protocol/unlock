@@ -98,7 +98,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
     useState(false)
   const [extendKeysOpen, setExtendKeysOpen] = useState(false)
-  const [selectedKey, setSelectedKey] = useState<any>()
+  const [selectedKey, setSelectedKey] = useState<ExtendKeyItem>()
 
   if (loading) {
     return (
@@ -173,7 +173,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
       <ExtendKeysDrawer
         isOpen={extendKeysOpen}
         setIsOpen={setExtendKeysOpen}
-        selectedKey={selectedKey}
+        selectedKey={selectedKey!}
       />
 
       <div className="flex items-center gap-[1rem]">

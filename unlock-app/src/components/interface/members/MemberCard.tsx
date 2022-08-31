@@ -19,6 +19,7 @@ import useEns from '~/hooks/useEns'
 import { expirationAsDate } from '~/utils/durations'
 import { useMutation } from 'react-query'
 import { MAX_UINT } from '~/constants'
+import { ExtendKeyItem } from '~/components/creator/members/ExtendKeysDrawer'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -36,7 +37,7 @@ interface MemberCardProps {
   isLockManager?: boolean
   expireAndRefundDisabled?: boolean
   metadata?: { [key: string]: any }
-  onExtendKey?: (key: any) => void
+  onExtendKey?: (key: ExtendKeyItem) => void
 }
 
 const keysToIgnore = [
@@ -182,6 +183,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         owner: data?.keyholderAddress,
         lockAddress: data?.lockAddress,
         tokenId,
+        expiration,
       })
     }
   }
