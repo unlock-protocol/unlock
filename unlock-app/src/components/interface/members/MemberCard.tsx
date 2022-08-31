@@ -90,6 +90,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   })
 
   const getLockVersion = async (): Promise<number> => {
+    if (!network) return 0
     return web3Service.publicLockVersion(data.lockAddress, network)
   }
 
