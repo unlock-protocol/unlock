@@ -235,7 +235,7 @@ export const useMultipleRecipient = (
                 valid,
               }
             })
-          setRecipients((prev: any[]) => [...prev, ...itemsToAddList])
+          setRecipients((prev: any) => [...prev, ...itemsToAddList])
 
           ToastHelper.success('Recipients correctly added in list.')
         } catch (err) {
