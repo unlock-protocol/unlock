@@ -1,4 +1,4 @@
-import type { providers, Signer, Contract, ContractFactory } from 'ethers'
+import type { Signer, Contract, ContractFactory } from 'ethers'
 
 import fs from 'fs-extra'
 import path from 'path'
@@ -17,42 +17,15 @@ export async function getContractFactory(
   return factory
 }
 
-export async function deployContract(
-  { network }: UnlockHRE,
-  factory: ContractFactory,
-  constructorArguments: any[],
-  confirmations = 5,
-  deploymentOptions: providers.TransactionRequest = {}
-): Promise<Contract> {
-  if (
-    deploymentOptions.gasLimit === undefined &&
-    typeof network.config.gas === 'number'
-  ) {
-    deploymentOptions.gasLimit = network.config.gas
-  }
-
-  const contract = await factory.deploy(...constructorArguments)
-  await contract.deployTransaction.wait(confirmations)
-  return contract
-}
-
 export async function deployUpgreadableContract(
-  { ethers, network }: UnlockHRE,
+  { ethers }: UnlockHRE,
   contractName: string,
   versionNumber: number,
   initializer = 'initialize',
   initializerArguments: any[],
   signer?: Signer,
-  confirmations = 5,
-  deploymentOptions: providers.TransactionRequest = {}
+  confirmations = 5
 ): Promise<Contract> {
-  if (
-    deploymentOptions.gasLimit === undefined &&
-    typeof network.config.gas === 'number'
-  ) {
-    deploymentOptions.gasLimit = network.config.gas
-  }
-
   // check contract exists
   contractExists(contractName, versionNumber)
 

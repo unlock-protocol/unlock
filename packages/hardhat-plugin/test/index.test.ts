@@ -6,8 +6,8 @@ import type { Contract } from 'ethers'
 import { networks } from '@unlock-protocol/networks'
 
 import { useEnvironment, expectThrowsAsync } from './helpers'
-import { LockArgs, UnlockHRE } from '../src/Unlock'
-import type { UnlockProtocolContracts } from '../src/Unlock'
+import { UnlockHRE } from '../src/Unlock'
+import type { LockArgs, UnlockProtocolContracts } from '../src/types'
 import {
   UNLOCK_LATEST_VERSION,
   PUBLIC_LOCK_LATEST_VERSION,
@@ -15,9 +15,7 @@ import {
 } from '../src/constants'
 import { locks } from './fixtures'
 
-const privateKey =
-  '0x47e179ec197488593b187f80a00eb0da91f1b9d0b13f8733639f19c30a34926a'
-const signerFromPrivateKey = '0x15d34aaf54267db7d7c367839aaf71a00a2c6a65'
+const defaultSignerAddress = '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266'
 
 const isIdenticalLock = async (lock: Contract, lockArgs: LockArgs) => {
   assert.equal(await lock.publicLockVersion(), PUBLIC_LOCK_LATEST_VERSION)
@@ -84,13 +82,6 @@ describe('Unlock Hardhat plugin', function () {
           defaultSigner.address
         )
       })
-      it('should parse mnemonic', async function () {
-        process.env.WALLET_PRIVATE_KEY = privateKey
-        assert.equal(
-          (await this.hre.unlock.getSigner()).address.toLowerCase(),
-          signerFromPrivateKey
-        )
-      })
     })
 
     describe('deployUnlock()', function () {
@@ -114,7 +105,6 @@ describe('Unlock Hardhat plugin', function () {
 
       it('Should fail if number version doesnt exist', async function () {
         await expectThrowsAsync(
-          // @ts-expect-error - Argument type mismatch
           this.hre.unlock.deployUnlock,
           [135, 1],
           "Contract 'UnlockV135' is not in present in @unlock-protocol/contracts"
@@ -179,7 +169,7 @@ describe('Unlock Hardhat plugin', function () {
         const { unlock } = protocol
         assert.equal(
           (await unlock.owner()).toLowerCase(),
-          signerFromPrivateKey.toLowerCase()
+          defaultSignerAddress.toLowerCase()
         )
       })
       it('Should set the template correctly', async function () {

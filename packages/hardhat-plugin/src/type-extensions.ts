@@ -1,10 +1,8 @@
-import type { ethers } from 'ethers'
-import type { HardhatEthersHelpers } from '@nomiclabs/hardhat-ethers/types'
-
 import 'hardhat/types/config'
 import 'hardhat/types/runtime'
 
-import { UnlockHRE, UnlockNetworkConfigs } from './Unlock'
+import { UnlockHRE } from './Unlock'
+import { UnlockNetworkConfigs } from './types'
 
 declare module 'hardhat/types/config' {
   export interface HardhatUserConfig {
@@ -18,6 +16,5 @@ declare module 'hardhat/types/config' {
 declare module 'hardhat/types/runtime' {
   export interface HardhatRuntimeEnvironment {
     unlock: UnlockHRE
-    ethers: typeof ethers & HardhatEthersHelpers
   }
 }

@@ -6,7 +6,8 @@ import './type-extensions'
 
 import { TASK_CREATE_LOCK, TASK_DEPLOY_PROTOCOL } from './constants'
 
-import { UnlockHRE, UnlockNetworkConfigs } from './Unlock'
+import { UnlockHRE } from './Unlock'
+import { UnlockNetworkConfigs } from './types'
 import { deployLockTask } from './tasks'
 import networks from './networks.json'
 

@@ -1,82 +1,29 @@
-import { BigNumber } from 'ethers'
-import type { providers, Contract } from 'ethers'
-
 import { Network, HardhatRuntimeEnvironment } from 'hardhat/types'
-import { NetworkConfig } from '@unlock-protocol/types'
-
-import { UNLOCK_LATEST_VERSION, PUBLIC_LOCK_LATEST_VERSION } from './constants'
 import {
-  getContractFactory,
-  deployContract,
-  deployUpgreadableContract,
-} from './deploy'
+  UnlockNetworkConfigs,
+  UnlockProtocolContracts,
+  LockArgs,
+  UnlockConfigArgs,
+} from './types'
+
+import { BigNumber, Contract } from 'ethers'
+import { UNLOCK_LATEST_VERSION, PUBLIC_LOCK_LATEST_VERSION } from './constants'
+import { getContractFactory, deployUpgreadableContract } from './deploy'
 import { getContractAbi } from './utils'
-
-// used to make type optional
-type PartialPick<T, K extends keyof T> = {
-  [P in K]?: T[P]
-}
-
-// make network info optional
-export type UnlockNetworkConfig = PartialPick<
-  NetworkConfig,
-  | 'id'
-  | 'name'
-  | 'subgraphURI'
-  | 'locksmithUri'
-  | 'unlockAddress'
-  | 'serializerAddress'
->
-
-export interface UnlockNetworkConfigs {
-  [networkId: string]: UnlockNetworkConfig
-}
-
-export interface UnlockProtocolContracts {
-  unlock: Contract
-  publicLock: Contract
-}
-
-export interface LockArgs {
-  name: string
-  keyPrice: string | number | BigNumber
-  expirationDuration: number
-  currencyContractAddress: string | null
-  maxNumberOfKeys?: number
-}
-
-export interface UnlockConfigArgs {
-  udtAddress?: string | null
-  wethAddress?: string | null
-  locksmithURI?: string
-  chainId?: number
-  estimatedGasForPurchase?: number
-  symbol?: string
-}
 
 export class UnlockHRE {
   networks: UnlockNetworkConfigs
-
-  network: Network
 
   provider: Network['provider']
 
   ethers: HardhatRuntimeEnvironment['ethers']
 
-  run: HardhatRuntimeEnvironment['run']
-
-  contractsFolder: string
-
   unlock?: Contract
 
-  constructor({ ethers, network, config, run }: HardhatRuntimeEnvironment) {
+  constructor({ network, config, ethers }: HardhatRuntimeEnvironment) {
     // store HRE
     this.provider = network.provider
-    this.network = network
     this.ethers = ethers
-    this.run = run
-
-    this.contractsFolder = config.paths.sources
 
     // parse network info
     this.networks = Object.keys(config.networks)
@@ -104,21 +51,13 @@ export class UnlockHRE {
   }
 
   public getSigner = async () => {
-    if (process.env.WALLET_PRIVATE_KEY !== undefined) {
-      return new this.ethers.Wallet(
-        process.env.WALLET_PRIVATE_KEY,
-        this.ethers.provider
-      )
-    }
-
     const [defaultSigner] = await this.ethers.getSigners()
     return defaultSigner
   }
 
   public deployUnlock = async (
     version = UNLOCK_LATEST_VERSION,
-    confirmations = 5,
-    deploymentOptions: providers.TransactionRequest = {}
+    confirmations = 5
   ) => {
     const signer = await this.getSigner()
     const unlock: Contract = await deployUpgreadableContract(
@@ -128,8 +67,7 @@ export class UnlockHRE {
       'initialize(address)',
       [signer.address],
       signer,
-      confirmations,
-      deploymentOptions
+      confirmations
     )
 
     console.log(`UNLOCK > deployed to : ${unlock.address}`)
@@ -141,8 +79,7 @@ export class UnlockHRE {
 
   public deployPublicLock = async (
     version = PUBLIC_LOCK_LATEST_VERSION,
-    confirmations = 5,
-    deploymentOptions: providers.TransactionRequest = {}
+    confirmations = 5
   ) => {
     const signer = await this.getSigner()
     const PublicLock = await getContractFactory(
@@ -152,40 +89,25 @@ export class UnlockHRE {
       signer
     )
 
-    const publicLock: Contract = await deployContract(
-      this,
-      PublicLock,
-      [],
-      confirmations,
-      deploymentOptions
-    )
+    const publicLock: Contract = await PublicLock.deploy()
+    await publicLock.deployTransaction.wait(confirmations)
 
     console.log(`PUBLICLOCK > deployed to : ${publicLock.address}`)
-
     return publicLock
   }
 
   public deployProtocol = async (
     unlockVersion = UNLOCK_LATEST_VERSION,
     lockVersion = PUBLIC_LOCK_LATEST_VERSION,
-    confirmations = 1, // default to 1, as this is mostly for use on local dev
-    deploymentOptions: providers.TransactionRequest = {}
+    confirmations = 1 // default to 1, as this is mostly for use on local dev
   ): Promise<UnlockProtocolContracts> => {
     const signer = await this.getSigner()
 
     // 1. deploy Unlock
-    const unlock = await this.deployUnlock(
-      unlockVersion,
-      confirmations,
-      deploymentOptions
-    )
+    const unlock = await this.deployUnlock(unlockVersion, confirmations)
 
     // 2. deploy PublicLock template
-    const publicLock = await this.deployPublicLock(
-      lockVersion,
-      confirmations,
-      deploymentOptions
-    )
+    const publicLock = await this.deployPublicLock(lockVersion, confirmations)
 
     // 3. setting lock template
     const version = await publicLock.publicLockVersion()

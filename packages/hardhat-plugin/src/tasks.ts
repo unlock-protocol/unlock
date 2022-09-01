@@ -1,5 +1,6 @@
 import { ActionType } from 'hardhat/types'
-import type { LockArgs, UnlockHRE } from './Unlock'
+import type { UnlockHRE } from './Unlock'
+import type { LockArgs } from './types'
 import { UNLOCK_LATEST_VERSION, PUBLIC_LOCK_LATEST_VERSION } from './constants'
 
 interface CreateLockTaskArgs extends LockArgs {
