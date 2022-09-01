@@ -116,7 +116,7 @@ export const SetPassword = ({ buttonLabel, onSubmit, loading }: Props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         <Input
           label="Password"
           required

@@ -116,10 +116,10 @@ export const RestoreAccount = ({
     <>
       <div className="w-1/2 mx-auto">
         <h1 className="text-4xl font-bold">Recover your Unlock Account</h1>
-        <span className="mt-1 text-sm font-thin">
+        <span className="block mb-5 text-xl font-light">
           Please, set a new password for your account.
         </span>
-        <div className="flex gap-2 mt-2">
+        <div className="flex gap-2 mt-2 mb-3">
           <Badge>{email}</Badge>
         </div>
 

@@ -53,19 +53,18 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
     <div className="flex flex-col mx-auto md:w-1/2">
       {!embedded && (
         <>
-          <h1 className="mb-2 text-4xl font-bold">
+          <h1 className="mb-2 text-3xl font-bold">
             Pay For Content Seamlessly
           </h1>
-          <span className="block mb-2 text-xl font-light">
+          <span className="block mb-3 text-xl font-light">
             Unlock enables anyone to seamlessly buy and manage access to content
             using blockchain technology.
           </span>
-          <span className="block mb-2 font-light text-md">
+          <span className="block mb-3 text-xs font-light">
             At Unlock, we believe that the more accessible paid content is, the
             better it will be. To do that we&#39;re making it easy for readers
             like you to seamlessly pay for and manage your content.
-          </span>
-          <span className="block mb-2 font-light text-md">
+            <br />
             If you want to know more about Unlock&#39;s decentralized payment
             protocol, check out{' '}
             <Link href="https://unlock-protocol.com/blog">
@@ -81,7 +80,7 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
       {!submitted && (
         <>
           <form className="max-w-xl" onSubmit={handleSubmit}>
-            <div className="flex flex-col mt-2">
+            <div className="flex flex-col gap-4 mt-2">
               <Input
                 required
                 name="emailAddress"
@@ -99,26 +98,21 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
             <div className="flex items-center gap-2">
               <span> Already have an account?</span>
               <a className="cursor-pointer" onClick={showLogin}>
-                <Button size="tiny" variant="outlined-primary">
-                  Log in
-                </Button>
+                Log in
               </a>
               <br />
             </div>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://ethereum.org/en/wallets/"
-              className="cursor-pointer"
-            >
-              <div className="flex items-center gap-2">
-                <span> Have an Ethereum Wallet? </span>
-                <Button size="tiny" variant="outlined-primary">
-                  Connect it
-                </Button>
-              </div>
-            </a>
-            .
+            <div className="flex items-center gap-2">
+              Have an Ethereum Wallet?
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://ethereum.org/en/wallets/"
+                className="cursor-pointer"
+              >
+                <div className="flex items-center gap-2">Connect it</div>
+              </a>
+            </div>
           </span>
         </>
       )}
