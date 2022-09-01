@@ -35,7 +35,7 @@ interface MetadataTableProps {
   lockAddresses?: string[]
   membersCount?: MemberCountProps['membersCount']
   hasExpiredKeys?: boolean
-  refetch?: () => any
+  resetSearchFilters?: () => void
 }
 
 /**
@@ -90,7 +90,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   lockManagerMapping,
   lockAddresses = [],
   hasSearchValue = false,
-  refetch,
+  resetSearchFilters,
 }) => {
   const hasLockManagerStatus = Object.values(lockManagerMapping ?? {}).some(
     (status) => status
@@ -176,7 +176,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         isOpen={extendKeysOpen}
         setIsOpen={setExtendKeysOpen}
         selectedKey={selectedKey!}
-        refetch={refetch}
+        resetSearchFilters={resetSearchFilters}
       />
 
       <div className="flex items-center gap-[1rem]">

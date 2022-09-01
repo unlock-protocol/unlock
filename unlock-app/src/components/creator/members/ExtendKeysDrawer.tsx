@@ -16,7 +16,7 @@ interface ExtendKeyDrawerProps {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
   selectedKey: ExtendKeyItem
-  refetch: any
+  resetSearchFilters?: () => void
 }
 
 export interface ExtendKeyItem {
@@ -105,12 +105,12 @@ const ExtendKeyDurationForm = ({
     const isFormValid = await trigger()
     const { expiration, neverExpires } = getValues()
     if (isFormValid) {
-      const prevExpiration = dayjs(parseInt(currentExpiration) * 1000)
+      // the new expiration will extend the key from the current block timestamp
+      const now = dayjs()
       const newExpiration = dayjs(expiration)
-      const timeDiffFromNow = newExpiration.diff(prevExpiration, 'second')
+      const timeDiffFromNow = newExpiration.diff(now, 'second')
 
       const extendDuration = neverExpires ? MAX_UINT : timeDiffFromNow
-
       if (extendDuration > 0 || extendDuration === MAX_UINT) {
         const keyMutationPromise = extendKeyMutation.mutateAsync({
           extendDuration,
@@ -181,7 +181,7 @@ export const ExtendKeysDrawer = ({
   isOpen,
   setIsOpen,
   selectedKey,
-  refetch,
+  resetSearchFilters,
 }: ExtendKeyDrawerProps) => {
   const owner = selectedKey?.owner
   const addressToEns = useEns(owner!)
@@ -196,12 +196,9 @@ export const ExtendKeysDrawer = ({
 
   const onComplete = async () => {
     setIsOpen(false)
-    if (typeof refetch === 'function') {
-      await refetch()
-      // force reload to show keys in defaut list
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
+    if (typeof resetSearchFilters === 'function') {
+      console.log('reset filters')
+      resetSearchFilters()
     }
   }
 

@@ -180,6 +180,11 @@ const MetadataTableWrapper = ({
   const [expiration, setExpiration] = useState<MemberFilter>('active')
   const queryValue = useDebounce<string>(query)
 
+  const resetSearchFilters = () => {
+    setExpiration('active')
+    setFilteKey('owner')
+  }
+
   const { getKeys, columns, hasNextPage, keysCount, lockManagerMapping } =
     useKeys({
       viewer: account!,
@@ -242,11 +247,7 @@ const MetadataTableWrapper = ({
     setCurrentPage(0) // reset pagination when has query
   }, [queryValue.length])
 
-  const {
-    isLoading: loading,
-    data: keys = [],
-    refetch,
-  } = useQuery(
+  const { isLoading: loading, data: keys = [] } = useQuery(
     [queryValue, expiration, currentPage, filterKey, rawQueryValue],
     () => getKeys()
   )
@@ -281,6 +282,7 @@ const MetadataTableWrapper = ({
                 name={currentFilter?.key}
                 className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
                 onChange={onOptionChange}
+                defaultValue={filterKey ? filterKey : ''}
               >
                 {options?.map((option: string) => {
                   return (
@@ -317,7 +319,7 @@ const MetadataTableWrapper = ({
         loading={loading}
         membersCount={keysCount}
         hasSearchValue={hasSearchValue}
-        refetch={refetch}
+        resetSearchFilters={resetSearchFilters}
       />
     </>
   )
