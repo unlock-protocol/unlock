@@ -34,16 +34,19 @@ export function Password({ injectedProvider, checkoutService }: Props) {
         return
       }
       const encoded = ethers.utils.defaultAbiCoder.encode(
-        ['address', 'bytes32'],
-        [lock!.address, ethers.utils.id(password)]
+        ['bytes32'],
+        [ethers.utils.id(password)]
       )
       const privateKey = ethers.utils.keccak256(encoded)
       const privateKeyAccount = new ethers.Wallet(privateKey)
       const data = await Promise.all(
         recipients.map((address) => {
-            const messageHash = ethers.utils.solidityKeccak256(["string"], [address.toLowerCase()])
-            const messageHashBinary = ethers.utils.arrayify(messageHash)
-            return privateKeyAccount.signMessage(messageHashBinary)
+          const messageHash = ethers.utils.solidityKeccak256(
+            ['string'],
+            [address.toLowerCase()]
+          )
+          const messageHashBinary = ethers.utils.arrayify(messageHash)
+          return privateKeyAccount.signMessage(messageHashBinary)
         })
       )
       send({
