@@ -69,6 +69,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
   const {
     recipients: recipientItems,
     addRecipientItem,
+    removeRecipient,
     clear,
   } = useMultipleRecipient(lock, {
     maxRecipients: Infinity,
@@ -353,9 +354,22 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
                 <span className="text-sm font-medium text-gray-900">
                   Airdrop recipients list:
                 </span>
-                <ul className="px-3 list-disc">
+                <ul className="px-3 list-disc ">
                   {recipientItems?.map(({ userAddress, index }) => {
-                    return <li key={index}>{addressMinify(userAddress)}</li>
+                    return (
+                      <li className="flex items-center mb-2" key={index}>
+                        <span>{addressMinify(userAddress)} </span>{' '}
+                        <Button
+                          size="tiny"
+                          variant="outlined-primary"
+                          type="button"
+                          className="ml-2"
+                          onClick={() => removeRecipient(index)}
+                        >
+                          remove
+                        </Button>
+                      </li>
+                    )
                   })}
                 </ul>
               </div>
