@@ -4,7 +4,7 @@ export interface Env {}
 const supportedNetworks = {
   '1': 'https://eth-mainnet.alchemyapi.io/v2/6idtzGwDtRbzil3s6QbYHr2Q_WBfn100',
   '4': 'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
-  '5': 'https://goerli.prylabs.net',
+  '5': 'https://eth-goerli.g.alchemy.com/v2/W3whZVqRNvcuBkI0_ual5xcoYi2jBRGH',
   '10': 'https://mainnet.optimism.io',
   '56': 'https://rpc.ankr.com/bsc',
   '100':

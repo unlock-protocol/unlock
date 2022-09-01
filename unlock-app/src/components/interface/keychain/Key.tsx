@@ -192,6 +192,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
     window.open(networks[network].explorer?.urls.address(lock.address))
   }
 
+  // TODO: use the networks' OpenSea config!
   const viewOnOpenSea = async () => {
     if (network === 137) {
       window.open(
