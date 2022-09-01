@@ -65,9 +65,11 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
   const [expirationInputDisabled, setExpirationInputDisabled] = useState(
     lock.expirationDuration === -1
   )
+  const maxKeysPerAddress = lock?.maxKeysPerAddress || 1
   const {
     recipients: recipientItems,
     addRecipientItem,
+    removeRecipient,
     clear,
   } = useMultipleRecipient(lock, {
     maxRecipients: Infinity,
@@ -80,6 +82,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
   })
 
   const disableGrantKeys = recipientItems?.length === 0 && !loading
+  const canGrantMultipleKeys = maxKeysPerAddress > 1
 
   const defaultValues = {
     recipient: '',
@@ -87,6 +90,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
     expiration: formatDate(lock.expirationDuration),
     keyManager: '',
     neverExpires: lock.expirationDuration === -1,
+    keysToGrant: 1,
   }
 
   const {
@@ -145,7 +149,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             expirations,
             keyManagers,
           },
-          (error, hash) => {
+          (error: any, hash: any) => {
             if (error) {
               ToastHelper.error(
                 'There was an error and the keys could not be granted. Please refresh the page and try again.'
@@ -193,8 +197,14 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
 
   const addRecipient = async () => {
     const isFormValid = await trigger()
-    const { recipient, expiration, keyManager, neverExpires, email } =
-      getValues()
+    const {
+      recipient,
+      expiration,
+      keyManager,
+      neverExpires,
+      email,
+      keysToGrant,
+    } = getValues()
     if (isFormValid) {
       const expirationTime = neverExpires
         ? MAX_UINT
@@ -207,7 +217,11 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
         neverExpires,
         email,
       }
-      const valid = await addRecipientItem(recipient, metadata)
+      const valid = await addRecipientItem(
+        recipient,
+        metadata,
+        parseInt(`${keysToGrant}`)
+      )
       if (valid) {
         reset(defaultValues)
       }
@@ -239,6 +253,27 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             </p>
           )}
         </div>
+        {canGrantMultipleKeys && (
+          <div className="w-full">
+            <Input
+              label="Number of keys to grant"
+              type="number"
+              step={1}
+              {...register('keysToGrant', {
+                required: true,
+                min: 1,
+                max: lock?.maxKeysPerAddress || 1,
+              })}
+            />
+            {errors.keysToGrant && (
+              <p className="text-xs text-[#f24c15]">
+                {`Plese check the value. you can grant up to ${
+                  lock?.maxKeysPerAddress || 1
+                } keys`}
+              </p>
+            )}
+          </div>
+        )}
         <div className="w-full">
           <Input
             label="Email"
@@ -320,9 +355,22 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
                 <span className="text-sm font-medium text-gray-900">
                   Airdrop recipients list:
                 </span>
-                <ul className="px-3 list-disc">
+                <ul className="px-3 list-disc ">
                   {recipientItems?.map(({ userAddress, index }) => {
-                    return <li key={index}>{addressMinify(userAddress)}</li>
+                    return (
+                      <li className="flex items-center mb-2" key={index}>
+                        <span>{addressMinify(userAddress)} </span>{' '}
+                        <Button
+                          size="tiny"
+                          variant="outlined-primary"
+                          type="button"
+                          className="ml-2"
+                          onClick={() => removeRecipient(index)}
+                        >
+                          remove
+                        </Button>
+                      </li>
+                    )
                   })}
                 </ul>
               </div>

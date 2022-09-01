@@ -395,7 +395,7 @@ export const checkoutMachine = createMachine(
               cond: 'requireMessageToSign',
             },
             {
-              target: 'METADATA',
+              target: 'PAYMENT',
             },
           ],
           DISCONNECT: {
