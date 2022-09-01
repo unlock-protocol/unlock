@@ -6,6 +6,7 @@ import { KeyRenewal } from '../../models'
 import GasPrice from '../../utils/gasPrice'
 import PriceConversion from '../../utils/priceConversion'
 import Dispatcher from '../../fulfillment/dispatcher'
+import logger from '../../logger'
 
 // multiply factor to increase precision for gas calculations
 const BASE_POINT_ACCURACY = 1000
@@ -116,38 +117,38 @@ export async function renewKey({
   lockAddress,
   network,
 }: RenewKeyParams): Promise<RenewKeyReturned> {
-  const renewalInfo = {
-    network,
-    keyId,
-    lockAddress,
-  }
+  try {
+    const renewalInfo = {
+      network,
+      keyId,
+      lockAddress,
+    }
 
-  const { shouldRenew, gasRefund, error } = await isWorthRenewing(
-    network,
-    lockAddress,
-    keyId
-  )
+    const { shouldRenew, gasRefund, error } = await isWorthRenewing(
+      network,
+      lockAddress,
+      keyId
+    )
 
-  if (!shouldRenew) {
-    if (error) {
+    if (!shouldRenew) {
+      if (error) {
+        return {
+          network,
+          keyId,
+          lockAddress,
+          error,
+        }
+      }
       return {
         network,
         keyId,
         lockAddress,
-        error,
+        error: `GasRefundValue (${gasRefund}) does not cover gas cost`,
       }
     }
-    return {
-      network,
-      keyId,
-      lockAddress,
-      error: `GasRefundValue (${gasRefund}) does not cover gas cost`,
-    }
-  }
 
-  // send actual tx
-  const fulfillmentDispatcher = new Dispatcher()
-  try {
+    // send actual tx
+    const fulfillmentDispatcher = new Dispatcher()
     const tx = await fulfillmentDispatcher.renewMembershipFor(
       network,
       lockAddress,
@@ -162,6 +163,7 @@ export async function renewKey({
     await KeyRenewal.create(recordedrenewalInfo)
     return recordedrenewalInfo
   } catch (error) {
+    logger.error(error.message)
     return {
       network,
       keyId,
