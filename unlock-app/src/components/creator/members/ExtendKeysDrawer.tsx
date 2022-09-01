@@ -198,6 +198,10 @@ export const ExtendKeysDrawer = ({
     setIsOpen(false)
     if (typeof refetch === 'function') {
       await refetch()
+      // force reload to show keys in defaut list
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000)
     }
   }
 
