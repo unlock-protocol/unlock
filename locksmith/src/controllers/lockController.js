@@ -267,7 +267,7 @@ const changeLockIcon = async (req, res) => {
 
 const disconnectStripe = async (req, res) => {
   const { message, icon } = req.body
-  const { lockAddress, chain, lockManager } = message['Unlink Stripe']
+  const { lockAddress, chain, lockManager } = message['Disconnect Stripe']
 
   try {
     const isAuthorized = await evaluateLockOwnership(
