@@ -40,9 +40,11 @@ export function Password({ injectedProvider, checkoutService }: Props) {
       const privateKey = ethers.utils.keccak256(encoded)
       const privateKeyAccount = new ethers.Wallet(privateKey)
       const data = await Promise.all(
-        recipients.map((address) =>
-          privateKeyAccount.signMessage(address.toLowerCase())
-        )
+        recipients.map((address) => {
+            const messageHash = ethers.utils.solidityKeccak256(["string"], [address.toLowerCase()])
+            const messageHashBinary = ethers.utils.arrayify(messageHash)
+            return privateKeyAccount.signMessage(messageHashBinary)
+        })
       )
       send({
         type: 'SUBMIT_PASSWORD',
