@@ -1,7 +1,5 @@
 import type { providers, Signer, Contract, ContractFactory } from 'ethers'
 
-import { TASK_COMPILE } from 'hardhat/builtin-tasks/task-names'
-
 import fs from 'fs-extra'
 import path from 'path'
 
@@ -39,10 +37,10 @@ export async function deployContract(
 }
 
 export async function deployUpgreadableContract(
-  { ethers, network, upgrades, run, contractsFolder }: UnlockHRE,
+  { ethers, network }: UnlockHRE,
   contractName: string,
   versionNumber: number,
-  initializer: string,
+  initializer = 'initialize',
   initializerArguments: any[],
   signer?: Signer,
   confirmations = 5,
@@ -58,33 +56,29 @@ export async function deployUpgreadableContract(
   // check contract exists
   contractExists(contractName, versionNumber)
 
-  // need to copy .sol for older versions from contracts package
-  const contractPath = path.resolve(
-    contractsFolder,
-    'unlock',
-    `${contractName}V${versionNumber}.sol`
+  // deploy implementation
+  const { bytecode, abi } = getContractAbi(contractName, versionNumber)
+  const Factory = await ethers.getContractFactory(abi, bytecode, signer)
+  const impl = await Factory.deploy()
+  await impl.deployTransaction.wait(confirmations)
+
+  // encode initializer data
+  const fragment = impl.interface.getFunction(initializer)
+  const data = impl.interface.encodeFunctionData(fragment, initializerArguments)
+
+  // deploy proxy
+  const { bytecode: proxyBytecode, abi: proxyAbi } = await fs.readJSON(
+    path.join(__dirname, '..', 'abis', 'ERC1967Proxy.json')
   )
-
-  await fs.copy(
-    require.resolve(
-      `@unlock-protocol/contracts/dist/${contractName}/${contractName}V${versionNumber}.sol`
-    ),
-    contractPath
+  const ERC1967Proxy = await ethers.getContractFactory(
+    proxyAbi,
+    proxyBytecode,
+    signer
   )
+  const proxy = await ERC1967Proxy.deploy(impl.address, data)
 
-  // Make sure that contract artifacts are up-to-date.
-  await run(TASK_COMPILE)
+  // wait for proxy deployment
+  await proxy.deployTransaction.wait(confirmations)
 
-  // delete .sol file now that we have artifact
-  await fs.remove(contractPath)
-
-  // get factory
-  const qualified = `contracts/unlock/${contractName}V${versionNumber}.sol:${contractName}`
-  const factory = await ethers.getContractFactory(qualified, signer)
-
-  const contract = await upgrades.deployProxy(factory, initializerArguments, {
-    initializer,
-  })
-  await contract.deployTransaction.wait(confirmations)
-  return contract
+  return await ethers.getContractAt(abi, proxy.address)
 }

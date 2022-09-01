@@ -2,7 +2,6 @@ import { BigNumber } from 'ethers'
 import type { providers, Contract } from 'ethers'
 
 import { Network, HardhatRuntimeEnvironment } from 'hardhat/types'
-import type { HardhatUpgrades } from '@openzeppelin/hardhat-upgrades'
 import { NetworkConfig } from '@unlock-protocol/types'
 
 import { UNLOCK_LATEST_VERSION, PUBLIC_LOCK_LATEST_VERSION } from './constants'
@@ -60,8 +59,6 @@ export class UnlockHRE {
 
   network: Network
 
-  upgrades: HardhatUpgrades
-
   provider: Network['provider']
 
   ethers: HardhatRuntimeEnvironment['ethers']
@@ -72,18 +69,11 @@ export class UnlockHRE {
 
   unlock?: Contract
 
-  constructor({
-    ethers,
-    network,
-    config,
-    upgrades,
-    run,
-  }: HardhatRuntimeEnvironment) {
+  constructor({ ethers, network, config, run }: HardhatRuntimeEnvironment) {
     // store HRE
     this.provider = network.provider
     this.network = network
     this.ethers = ethers
-    this.upgrades = upgrades
     this.run = run
 
     this.contractsFolder = config.paths.sources
