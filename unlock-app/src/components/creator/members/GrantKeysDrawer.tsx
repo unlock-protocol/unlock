@@ -262,6 +262,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
                 required: true,
                 min: 1,
                 max: lock?.maxKeysPerAddress || 1,
+                step: 1,
               })}
             />
             {errors.keysToGrant && (
