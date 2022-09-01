@@ -7,7 +7,6 @@ import {
 } from '@radix-ui/react-avatar'
 import { MdExplore as ExploreIcon } from 'react-icons/md'
 import { BsTrashFill as CancelIcon } from 'react-icons/bs'
-import styled from 'styled-components'
 import {
   FaWallet as WalletIcon,
   FaQrcode as QrCodeIcon,
@@ -285,9 +284,9 @@ const Key = ({ ownedKey, account, network }: Props) => {
         isKeyExpired={isKeyExpired}
         expirationStatus={expirationStatus}
       />
-      {error && <Error>{error}</Error>}
+      {error && <span className="text-red-500">{error}</span>}
       <div className="grid gap-2 pt-4">
-        <div className="flex items-center flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {!isKeyExpired && (
             <Tooltip label="Scan QR code" tip="Scan QR code">
               <button
@@ -361,6 +360,3 @@ const Key = ({ ownedKey, account, network }: Props) => {
   )
 }
 export default Key
-const Error = styled.p`
-  color: var(--red);
-`

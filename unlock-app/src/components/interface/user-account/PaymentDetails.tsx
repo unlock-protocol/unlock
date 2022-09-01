@@ -7,7 +7,6 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js'
-import styled from 'styled-components'
 import {
   Input,
   Label,
@@ -96,7 +95,7 @@ export const Form = ({
   }
 
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Label>Name</Label>
       <Input {...register('name', { required: true })} />
       <Label>Credit Card Details</Label>
@@ -120,9 +119,9 @@ export const Form = ({
           {buttonLabel}
         </button>
       )}
-      {renderError && <ErrorMessage>{renderError({})}</ErrorMessage>}
+      {renderError && <p className="text-xs text-red-500">{renderError({})}</p>}
       {onCancel && <NeutralButton onClick={onCancel}>Cancel</NeutralButton>}
-    </StyledForm>
+    </form>
   )
 }
 
@@ -132,9 +131,3 @@ Form.defaultProps = {
   renderError: null,
   buttonLabel: 'submit',
 }
-
-const StyledForm = styled.form``
-
-const ErrorMessage = styled.p`
-  color: var(--red);
-`

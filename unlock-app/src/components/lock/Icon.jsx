@@ -11,10 +11,8 @@ import InlineModal from '../interface/InlineModal'
 import {
   Button,
   LoadingButton,
-  Form,
   Input,
   Label,
-  FormError,
   NeutralButton,
 } from '../interface/checkout/FormStyles'
 
@@ -118,8 +116,8 @@ const IconModal = ({ active, dismiss, current, lockAddress, network }) => {
     <InlineModal width={350} active={active} dismiss={resetAndDismiss}>
       <Title>Customize the NFT</Title>
       <FullLockLogo alt="logo" src={url} />
-      {error && <FormError>{error}</FormError>}
-      <Form>
+      {error && <span className="mx-1 text-sm text-red-500">{error}</span>}
+      <form>
         <Label htmlFor="inputFile">Choose a file</Label>
         <button
           className="flex justify-center p-2 items-items [background-color:var(--green)] text-white w-full rounded-lg hover:[background-color:var(--activegreen)] disabled:cursor-not-allowed disabled:[background-color:var(--grey)]"
@@ -163,7 +161,7 @@ const IconModal = ({ active, dismiss, current, lockAddress, network }) => {
             Save
           </button>
         </div>
-      </Form>
+      </form>
     </InlineModal>
   )
 }

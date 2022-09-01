@@ -98,7 +98,7 @@ export const ButtonLink = styled.a`
   }
 `
 
-export const Label = styled.small`
+const Label = styled.small`
   display: none;
   position: relative;
   z-index: var(--alwaysontop);
