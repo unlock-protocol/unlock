@@ -258,11 +258,11 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             <Input
               label="Number of keys to grant"
               type="number"
+              step={1}
               {...register('keysToGrant', {
                 required: true,
                 min: 1,
                 max: lock?.maxKeysPerAddress || 1,
-                step: 1,
               })}
             />
             {errors.keysToGrant && (
