@@ -95,9 +95,8 @@ export const deletePaymentDetailsForAddress = async (
 
 /**
  * Remove stripe account connected to a lock
- * Do we want to store this?
  */
-export const unlinkStripe = async ({
+export const disconnectStripe = async ({
   lockManager,
   lock,
   chain,
@@ -114,14 +113,16 @@ export const unlinkStripe = async ({
     where: { lock },
   })
 
+  let deleted = false
+  let deletedItems = 0
   if (stripeConnectLockDetails) {
     const account = await stripe.accounts.retrieve(
       stripeConnectLockDetails.stripeAccount
     )
 
     // delete stripe connection with SDK and to Database
-    await stripe.accounts.deletePerson(account.id, lock)
-    await StripeConnectLock.destroy({
+    const deletedAccount = await stripe.accounts.deletePerson(account.id, lock)
+    const deletedLockConnect = await StripeConnectLock.destroy({
       where: {
         lock,
         manager: lockManager,
@@ -129,8 +130,11 @@ export const unlinkStripe = async ({
         chain,
       },
     })
+
+    deleted = deletedAccount?.deleted || false
+    deletedItems = deletedLockConnect || 0
   }
-  return Promise.resolve()
+  return deleted && deletedItems > 0
 }
 
 /**
@@ -219,5 +223,5 @@ export default {
   saveStripeCustomerIdForAddress,
   connectStripe,
   getStripeConnectForLock,
-  unlinkStripe,
+  disconnectStripe,
 }
