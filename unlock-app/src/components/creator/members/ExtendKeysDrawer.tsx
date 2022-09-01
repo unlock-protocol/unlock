@@ -130,6 +130,7 @@ const ExtendKeyDurationForm = ({
     }
   }
   const { neverExpires } = getValues()
+  const loading = extendKeyMutation.isLoading
   return (
     <form
       className="flex flex-col w-full gap-3"
@@ -139,7 +140,7 @@ const ExtendKeyDurationForm = ({
         type="datetime-local"
         placeholder="Key expiration date"
         label="Key expiration date"
-        disabled={neverExpires}
+        disabled={neverExpires || loading}
         min={1}
         {...register('expiration')}
       />
@@ -151,6 +152,7 @@ const ExtendKeyDurationForm = ({
             id="never-expires"
             className="ml-2 align-middle"
             type="checkbox"
+            disabled={loading}
             {...register('neverExpires', {
               onChange: () => {
                 setValue('expiration', '')
@@ -159,7 +161,7 @@ const ExtendKeyDurationForm = ({
           />
         </label>
       </div>
-      <Button disabled={!isDirty} type="submit">
+      <Button disabled={!isDirty || loading} type="submit">
         <div className="flex items-center gap-2">
           {extendKeyMutation.isLoading && (
             <Spinner className="mr-1 animate-spin" />
