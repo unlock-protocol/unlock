@@ -38,6 +38,8 @@ router.get('/lock/:lockAddress/stripe', lockController.connectStripe)
 router.post('/lock/:lockAddress/migrate', lockController.lockMigrate)
 router.get('/lock/:lockAddress/migrate', lockController.lockMigrateStatus)
 
+router.delete('/lock/:lockAddress/stripe', lockController.disconnectStripe)
+
 router.get(
   '/lock/:lockAddress/stripe-connected',
   lockController.stripeConnected
