@@ -20,7 +20,7 @@ interface FormData {
 
 export function Password({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { recipients, lock } = state.context
+  const { recipients } = state.context
   const {
     register,
     handleSubmit,
