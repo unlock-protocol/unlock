@@ -265,6 +265,35 @@ const changeLockIcon = async (req, res) => {
   return res.status(200).send('OK')
 }
 
+const unlinkStripe = async (req, res) => {
+  const { message, icon } = req.body
+  const { lockAddress, chain, lockManager } = message['Unlink Stripe']
+
+  try {
+    const isAuthorized = await evaluateLockOwnership(
+      Normalizer.ethereumAddress(lockAddress),
+      Normalizer.ethereumAddress(lockManager),
+      parseInt(chain)
+    )
+    if (!isAuthorized) {
+      return res
+        .status(401)
+        .send(
+          `${req.signee} is not a lock manager for ${lockAddress} on ${chain}`
+        )
+    } else {
+      return await stripeOperations.unlinkStripe({
+        lockManager: Normalizer.ethereumAddress(req.signee),
+        lockAddress: Normalizer.ethereumAddress(lockAddress),
+        chain,
+      })
+    }
+  } catch (err) {
+    logger.error('There is some unexpected issue, please try again', err)
+    res.status(500).send(err)
+  }
+}
+
 module.exports = {
   lockGet,
   lockMigrate,
