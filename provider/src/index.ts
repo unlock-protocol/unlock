@@ -1,5 +1,3 @@
-import { Response } from 'node-fetch'
-
 export interface Env {}
 
 // This is the list of networks currently supported
