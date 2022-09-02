@@ -233,10 +233,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     <CryptoIcon name={symbol.toLowerCase()} size={18} />
                   </div>
                 </div>
-                <div className="flex items-center justify-between w-full">
+                <div className="flex items-center justify-between w-full gap-2">
                   <div className="text-sm text-left text-gray-500">
                     Stream your payment in real time.
-                    {!isPayable && 'Your balance is low'}
+                    {!isPayable && ' Balance is low'}
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
