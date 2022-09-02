@@ -2,7 +2,7 @@ import 'hardhat/types/config'
 import 'hardhat/types/runtime'
 
 import { UnlockNetworkConfigs } from './types'
-import type { Unlock } from './types'
+import type { HardhatUnlock } from '.'
 
 declare module 'hardhat/types/config' {
   export interface HardhatUserConfig {
@@ -15,6 +15,6 @@ declare module 'hardhat/types/config' {
 
 declare module 'hardhat/types/runtime' {
   export interface HardhatRuntimeEnvironment {
-    unlock: Unlock
+    unlock: HardhatUnlock
   }
 }

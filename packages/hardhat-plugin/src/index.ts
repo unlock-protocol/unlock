@@ -6,13 +6,42 @@ import './type-extensions'
 
 import { TASK_CREATE_LOCK, TASK_DEPLOY_PROTOCOL } from './constants'
 
-import { UnlockHRE } from './Unlock'
-import { UnlockNetworkConfigs } from './types'
 import { deployLockTask } from './tasks'
 import networks from './networks.json'
 
+// types
+import { UnlockNetworkConfigs } from './types'
+import type { CreateLockFunction } from './createLock'
+import type { DeployProtocolFunction } from './deployProtocol'
+import type { GetLockVersionFunction } from './getLockVersion'
+import type { GetUnlockContractFunction } from './getUnlockContract'
+import type { GetLockContractFunction } from './getLockContract'
+
+export interface HardhatUnlock {
+  createLock: CreateLockFunction
+  getLockVersion: GetLockVersionFunction
+  deployProtocol: DeployProtocolFunction
+  getLockContract: GetLockContractFunction
+  getUnlockContract: GetUnlockContractFunction
+  networks: UnlockNetworkConfigs
+}
+
 extendEnvironment((hre) => {
-  hre.unlock = lazyObject(() => new UnlockHRE(hre))
+  hre.unlock = lazyObject(() => {
+    const createLock = require('./createLock')
+    const deployProtocol = require('./deployProtocol')
+    const getLockVersion = require('./getLockVersion')
+    const getUnlockContract = require('./getUnlockContract')
+    const getLockContract = require('./getLockContract')
+    return {
+      networks,
+      createLock,
+      deployProtocol,
+      getLockVersion,
+      getUnlockContract,
+      getLockContract,
+    }
+  })
 })
 
 // add unlock networks to config
