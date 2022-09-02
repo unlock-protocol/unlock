@@ -34,7 +34,6 @@ import { useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface KeyBoxProps {
-  tokenURI: string
   lock: any
   expiration: string
   keyId: string
@@ -44,7 +43,6 @@ interface KeyBoxProps {
 }
 
 const KeyBox = ({
-  tokenURI,
   lock,
   expiration,
   keyId,
@@ -52,7 +50,7 @@ const KeyBox = ({
   isKeyExpired,
   expirationStatus,
 }: KeyBoxProps) => {
-  const metadata = useMetadata(tokenURI)
+  const metadata = useMetadata(lock.address, keyId, network)
 
   const [isCopied, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
@@ -140,7 +138,7 @@ export interface Props {
 }
 
 const Key = ({ ownedKey, account, network }: Props) => {
-  const { lock, expiration, tokenURI, keyId } = ownedKey
+  const { lock, expiration, keyId } = ownedKey
   const { network: accountNetwork } = useAuth()
   const walletService = useWalletService()
   const wedlockService = useContext(WedlockServiceContext)
@@ -240,9 +238,10 @@ const Key = ({ ownedKey, account, network }: Props) => {
 
   const isAvailableOnOpenSea = [1, 4, 137].indexOf(network) > -1
   const baseSymbol = walletService.networks[network].baseCurrencySymbol!
-  const symbol = isLockDataLoading
-    ? baseSymbol
-    : lockTickerSymbol(lockData, baseSymbol)
+  const symbol =
+    isLockDataLoading || !lockData
+      ? baseSymbol
+      : lockTickerSymbol(lockData, baseSymbol)
 
   const isRefundable = !isLockDataLoading && !isKeyExpired
 
@@ -279,7 +278,6 @@ const Key = ({ ownedKey, account, network }: Props) => {
         network={network}
         lock={lock}
         expiration={expiration}
-        tokenURI={tokenURI}
         keyId={keyId}
         isKeyExpired={isKeyExpired}
         expirationStatus={expirationStatus}
