@@ -98,11 +98,11 @@ export const deletePaymentDetailsForAddress = async (
  */
 export const disconnectStripe = async ({
   lockManager,
-  lock,
+  lockAddress: lock,
   chain,
 }: {
   lockManager: string
-  lock: string
+  lockAddress: string
   chain: number
 }) => {
   const stripe = new Stripe(config.stripeSecret, {
