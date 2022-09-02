@@ -261,7 +261,7 @@ export const CardConfirmationCheckout = ({
 
   if (!hasValidkey && !lock.fiatPricing?.creditCardEnabled) {
     return (
-      <Wrapper>
+      <div className="flex flex-col">
         <Lock
           network={network}
           lock={lock}
@@ -277,7 +277,7 @@ export const CardConfirmationCheckout = ({
           Unfortunately, credit card is not available for this lock. You need to
           purchase using a crypto-wallet.
         </ErrorMessage>
-      </Wrapper>
+      </div>
     )
   }
 
@@ -286,7 +286,7 @@ export const CardConfirmationCheckout = ({
     (isAdvanced ? purchasePending || !advancedRecipientValid : purchasePending)
 
   return (
-    <Wrapper>
+    <div className="flex flex-col w-full">
       <Lock
         recipient={recipientAddress}
         network={network}
@@ -368,17 +368,11 @@ export const CardConfirmationCheckout = ({
           closeModal={closeModal}
         />
       )}
-    </Wrapper>
+    </div>
   )
 }
 
 export default CardConfirmationCheckout
-
-export const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`
 
 export const InfoIcon = styled(Svg.Info)`
   background-color: var(--green);
@@ -388,7 +382,7 @@ export const InfoIcon = styled(Svg.Info)`
   fill: var(--white);
 `
 
-export const FeeNotice = styled.p`
+const FeeNotice = styled.p`
   margin-top: 8px;
   display: flex;
   align-content: center;
@@ -397,7 +391,7 @@ export const FeeNotice = styled.p`
   color: var(--green);
 `
 
-export const CardNumber = styled.p`
+const CardNumber = styled.p`
   text-align: center;
   color: var(--grey);
 `

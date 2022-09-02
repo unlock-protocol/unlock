@@ -20,13 +20,13 @@ export const Balance = ({ amount, currency }) => {
     <BalanceProvider
       amount={amount}
       render={(ethWithPresentation) => (
-        <BalanceWithConversion>
-          <Currency>
+        <div className="flex flex-col">
+          <span className="flex">
             {!currency && <ERC20 name={baseCurrencySymbol} />}
             {!!currency && <ERC20 name={currency} />}
-            <BalanceWithUnit>{ethWithPresentation}</BalanceWithUnit>
-          </Currency>
-        </BalanceWithConversion>
+            <span className="whitespace-nowrap">{ethWithPresentation}</span>
+          </span>
+        </div>
       )}
     />
   )
@@ -41,18 +41,6 @@ Balance.defaultProps = {
   amount: null,
   currency: '',
 }
-
-export const BalanceWithConversion = styled.div`
-  display: flex;
-  flex-direction: column;
-`
-
-export const Currency = styled.span.attrs({
-  className: 'currency',
-})`
-  display: flex;
-  flex-direction: row;
-`
 
 export const CurrencySymbol = styled.span`
   text-transform: uppercase;
@@ -72,10 +60,6 @@ export const USD = styled(CurrencySymbol)`
   &:before {
     content: '$';
   }
-`
-
-export const BalanceWithUnit = styled.span`
-  white-space: nowrap;
 `
 
 export default Balance

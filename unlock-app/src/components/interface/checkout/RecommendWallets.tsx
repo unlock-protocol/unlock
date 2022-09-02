@@ -37,22 +37,17 @@ const WalletOption: React.FunctionComponent<WalletOptionProps> = ({
     labelText = 'Mobile iOS and Android'
   }
   return (
-    <Container>
+    <div className="w-full text-left">
       <Label>{labelText}</Label>
       <Link target="_blank" rel="noopener" href={href}>
         {children}
         <Arrow />
       </Link>
-    </Container>
+    </div>
   )
 }
 
 const Arrow = styled(Svg.Arrow)``
-
-const Container = styled.div`
-  text-align: left;
-  width: 100%;
-`
 
 const Link = styled.a`
   height: 48px;
