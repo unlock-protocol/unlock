@@ -1,4 +1,3 @@
-import styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import { useWalletService } from '~/utils/withWalletService'
 import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
@@ -6,9 +5,13 @@ import { useAuth } from '../../contexts/AuthenticationContext'
 import { useAccount } from '../../hooks/useAccount'
 import Loading from '../interface/Loading'
 import useLock from '../../hooks/useLock'
-import SvgComponents from '../interface/svg'
 import { useStorageService } from '../../utils/withStorageService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { Badge, Button } from '@unlock-protocol/ui'
+import {
+  FiCheckCircle as CheckIcon,
+  FiArrowRight as ArrowRightIcon,
+} from 'react-icons/fi'
 
 interface ConnectCardProps {
   lockNetwork: number
@@ -23,7 +26,17 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
   const [keyGranter, setKeyGranter] = useState('')
 
   const { isStripeConnected } = useLock({ address: lock.address }, lockNetwork)
-  const { connectStripeToLock } = useAccount(account!, walletNetwork!)
+  const { connectStripeToLock, disconnectStripeToLock } = useAccount(
+    account!,
+    walletNetwork!
+  )
+
+  const disconnectStripe = async () => {
+    const res = await disconnectStripeToLock({
+      lockAddress: lock.address,
+      network: lockNetwork,
+    })
+  }
 
   const connectStripe = async () => {
     const redirectUrl = await connectStripeToLock(
@@ -92,112 +105,112 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
     <>
       {loading && <Loading />}
       {!loading && (
-        <Steps>
-          <Step>
+        <div className="grid grid-cols-2 gap-2">
+          <div>
             {isConnected === 1 && (
-              <Button done>
-                <SvgComponents.Checkmark /> Stripe Connected
-              </Button>
+              <>
+                <Badge variant="green">
+                  <div className="flex items-center gap-1">
+                    <CheckIcon />
+                    <span>Stripe Connected</span>
+                  </div>
+                </Badge>
+                <Button
+                  onClick={disconnectStripe}
+                  className="mt-2"
+                  size="tiny"
+                  variant="outlined-primary"
+                >
+                  <div className="flex items-center gap-1">
+                    <ArrowRightIcon />
+                    <span>Disconnect Stripe</span>
+                  </div>
+                </Button>
+              </>
             )}
 
             {isConnected === -1 && (
-              <Button done={false} onClick={connectStripe}>
-                <SvgComponents.Arrow /> Connect Stripe
+              <Button
+                variant="outlined-primary"
+                size="tiny"
+                onClick={connectStripe}
+              >
+                <div className="flex items-center gap-1">
+                  <ArrowRightIcon />
+                  <span>Connect Stripe</span>
+                </div>
               </Button>
             )}
 
             {isConnected === 0 && (
               <>
-                <Button color="var(--red)" done={false} onClick={connectStripe}>
-                  <SvgComponents.Arrow /> Connect Stripe
+                <Button
+                  color="var(--red)"
+                  size="tiny"
+                  variant="outlined-primary"
+                  onClick={connectStripe}
+                >
+                  <div className="flex items-center gap-1">
+                    <ArrowRightIcon />
+                    <span>Connect Stripe</span>
+                  </div>
                 </Button>
-                <Warning>
+                <span className="text-xs text-red-500 leading-1">
                   You have started connecting your Stripe account, but you are
                   not approved for charges yet. Please complete the application
                   with Stripe or try again in a few hours.
-                </Warning>
+                </span>
               </>
             )}
 
-            <Text>
-              You will be prompted to sign a message to connect your lock to a
-              Stripe account.
-            </Text>
-          </Step>
-          <Step>
+            {isConnected !== 1 && (
+              <span className="block mt-1 text-xs">
+                You will be prompted to sign a message to connect your lock to a
+                Stripe account.
+              </span>
+            )}
+          </div>
+          <div>
             {!hasRole && (
               <Button
-                done={false}
+                variant="outlined-primary"
+                size="tiny"
                 disabled={wrongNetwork || hasRole}
                 onClick={grantKeyGrantorRole}
               >
-                <SvgComponents.Arrow /> Allow Key Granting
+                <span className="flex items-center gap-1">
+                  <ArrowRightIcon />
+                  <span>Allow Key Granting</span>
+                </span>
               </Button>
             )}
             {hasRole && (
-              <Button done onClick={grantKeyGrantorRole}>
-                <SvgComponents.Checkmark /> Role granted
-              </Button>
+              <Badge
+                className="cursor-pointer"
+                variant="green"
+                onClick={grantKeyGrantorRole}
+              >
+                <div className="flex items-center gap-1">
+                  <CheckIcon />
+                  <span>Role granted</span>
+                </div>
+              </Badge>
             )}
             {wrongNetwork && (
-              <Error>
+              <span className="text-xs text-red-500 leading-1">
                 Please connect your wallet to{' '}
                 {ETHEREUM_NETWORKS_NAMES[lockNetwork]}
-              </Error>
+              </span>
             )}
-            <Text>
+            <span className="block mt-1 text-xs">
               We need you to grant us the role of key granter on your lock so we
               can grant an NFT to anyone who pays with a card.
-            </Text>
-          </Step>
-        </Steps>
+            </span>
+          </div>
+        </div>
       )}
     </>
   )
 }
-
-interface ButtonProps {
-  done: boolean
-  color?: string
-}
-
-const Button = styled.button<ButtonProps>`
-  display: flex;
-  align-items: center;
-  border: 1px solid;
-  border-color: ${(props) =>
-    props.done ? 'var(--green)' : props.color || 'var(--blue)'};
-  color: ${(props) =>
-    props.done ? 'var(--green)' : props.color || 'var(--blue)'};
-  cursor: ${(props) => (props.done ? 'auto' : 'pointer')};
-  border-radius: 3px;
-  background-color: transparent;
-  padding-right: 10px;
-  svg {
-    height: 32px;
-    fill: ${(props) =>
-      props.done ? 'var(--green)' : props.color || 'var(--blue)'};
-  }
-`
-
-const Steps = styled.div`
-  margin-top: 10px;
-  display: flex;
-`
-
-const Step = styled.div``
-
-const Text = styled.p`
-  font-size: 12px;
-  margin-right: 12px;
-`
-
-const Error = styled(Text)`
-  color: var(--red);
-`
-
-const Warning = styled(Text)`
-  color: var(--red);
-`
 
 export default ConnectCard

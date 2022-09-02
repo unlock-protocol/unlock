@@ -84,6 +84,42 @@ export const useAccount = (address: string, network: number) => {
     }
   }
 
+  const disconnectStripeToLock = async ({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) => {
+    const storageService = new StorageService(config.services.storage.host)
+    const typedData = generateTypedData(
+      {
+        'Disconnect Stripe': {
+          lockAddress,
+          chain: network,
+          lockManager: address,
+        },
+      },
+      'Disconnect Stripe'
+    )
+    console.log(typedData)
+
+    const message = `I want to connect Stripe to the lock ${lockAddress}`
+    const signature = await walletService.signMessage(message, 'personal_sign')
+
+    try {
+      return (
+        (await storageService.disconnectStripe(
+          lockAddress,
+          signature,
+          typedData
+        )) as ApiResponse
+      ).url
+    } catch (error) {
+      return null
+    }
+  }
+
   const createUserAccount = async (emailAddress: string, password: string) => {
     const storageService = new StorageService(config.services.storage.host)
 
@@ -312,6 +348,7 @@ export const useAccount = (address: string, network: number) => {
     retrieveUserAccount,
     claimMembershipFromLock,
     updateLockIcon,
+    disconnectStripeToLock,
   }
 }
 export default useAccount

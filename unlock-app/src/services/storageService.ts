@@ -568,6 +568,37 @@ export class StorageService extends EventEmitter {
     return response.json()
   }
 
+  /**
+   * Given a lock address and a typed data signature, disconnect stripe
+   * @param {string} lockAddress
+   * @param {string} signature
+   * @param {*} data
+   */
+  async disconnectStripe(lockAddress: string, signature: string, data: any) {
+    const opts = {
+      headers: {
+        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
+          'base64'
+        )}`,
+        'Content-Type': 'application/json',
+      },
+    }
+
+    const url = new URL(`${this.host}/lock/${lockAddress}/stripe`)
+
+    const response = await fetch(url, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        signature,
+        data,
+      }),
+      headers: {
+        ...opts.headers,
+      },
+    })
+    return response.json()
+  }
+
   async updateLockIcon(
     lockAddress: string,
     signature: string,
