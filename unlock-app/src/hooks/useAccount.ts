@@ -92,28 +92,14 @@ export const useAccount = (address: string, network: number) => {
     network: number
   }) => {
     const storageService = new StorageService(config.services.storage.host)
-    const typedData = generateTypedData(
-      {
-        'Disconnect Stripe': {
-          lockAddress,
-          chain: network,
-          lockManager: address,
-        },
-      },
-      'Disconnect Stripe'
-    )
-
-    const message = `I want to disconnect Stripe to the lock ${lockAddress}`
-    const signature = await walletService.signMessage(message, 'personal_sign')
 
     try {
-      return (
-        (await storageService.disconnectStripe(
-          lockAddress,
-          signature,
-          typedData
-        )) as ApiResponse
-      ).url
+      await storageService.loginPrompt({
+        walletService,
+        address,
+        chainId: network,
+      })
+      return await storageService.disconnectStripe(lockAddress, network)
     } catch (error) {
       return null
     }

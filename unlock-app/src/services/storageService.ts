@@ -574,29 +574,17 @@ export class StorageService extends EventEmitter {
    * @param {string} signature
    * @param {*} data
    */
-  async disconnectStripe(lockAddress: string, signature: string, data: any) {
-    const opts = {
-      headers: {
-        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-          'base64'
-        )}`,
-        'Content-Type': 'application/json',
-      },
-    }
+  async disconnectStripe(lockAddress: string, network: number) {
+    const url = new URL(`${this.host}/${network}/lock/${lockAddress}/stripe`)
+    const token = await this.getAccessToken()
 
-    const url = new URL(`${this.host}/lock/${lockAddress}/stripe`)
-
-    const response = await fetch(url, {
+    return await fetch(url, {
       method: 'DELETE',
-      body: JSON.stringify({
-        signature,
-        data,
-      }),
       headers: {
-        ...opts.headers,
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     })
-    return response.json()
   }
 
   async updateLockIcon(
