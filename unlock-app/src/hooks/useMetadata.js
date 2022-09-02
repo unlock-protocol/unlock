@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import fetch from 'node-fetch'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { rewriteIpfsUrl } from '../utils/url'
 
 const defaultMetadata = {
-  image: '',
+  image: '/images/svg/default-lock-logo.svg',
 }
 
 /**
@@ -23,15 +24,10 @@ export const useMetadata = (lockAddress, tokenId, network) => {
           tokenId,
           network
         )
-        let url = new URL(tokenURI)
-        // Handling IPFS addresses
-        // TODO: add detection when IPFS is supported!
-        if (url.protocol === 'ipfs:') {
-          url.protocol = 'https:'
-          url.hostname = 'cloudflare-ipfs.com'
-          url.pathname = `/ipfs${url.pathname}`
-        }
-        tokenMetadata = await fetch(url).then((response) => response.json())
+        tokenMetadata = await fetch(rewriteIpfsUrl(tokenURI)).then((response) =>
+          response.json()
+        )
+        tokenMetadata.image = rewriteIpfsUrl(tokenMetadata.image)
       } catch (error) {
         // Do not fail on error, we'll keep defaulting to the default values
         console.error(

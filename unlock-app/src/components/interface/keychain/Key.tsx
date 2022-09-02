@@ -34,7 +34,6 @@ import { useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface KeyBoxProps {
-  tokenURI: string
   lock: any
   expiration: string
   keyId: string
@@ -139,7 +138,7 @@ export interface Props {
 }
 
 const Key = ({ ownedKey, account, network }: Props) => {
-  const { lock, expiration, tokenURI, keyId } = ownedKey
+  const { lock, expiration, keyId } = ownedKey
   const { network: accountNetwork } = useAuth()
   const walletService = useWalletService()
   const wedlockService = useContext(WedlockServiceContext)
