@@ -1,5 +1,9 @@
 # Changes
 
+# 0.26.5
+
+- add support for `publicLockVersion`
+
 # 0.26.4
 
 - add support for `totalKeys`

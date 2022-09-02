@@ -9,6 +9,10 @@ import {
 } from '../interface/members/MemberCard'
 import { Button } from '@unlock-protocol/ui'
 import { MAX_UINT } from '~/constants'
+import {
+  ExtendKeyItem,
+  ExtendKeysDrawer,
+} from '../creator/members/ExtendKeysDrawer'
 interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
   // strings
@@ -30,6 +34,8 @@ interface MetadataTableProps {
   }
   lockAddresses?: string[]
   membersCount?: MemberCountProps['membersCount']
+  hasExpiredKeys?: boolean
+  resetSearchFilters?: () => void
 }
 
 /**
@@ -84,6 +90,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   lockManagerMapping,
   lockAddresses = [],
   hasSearchValue = false,
+  resetSearchFilters,
 }) => {
   const hasLockManagerStatus = Object.values(lockManagerMapping ?? {}).some(
     (status) => status
@@ -92,6 +99,8 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   const [expandAllMetadata, setExpandAllMetadata] = useState(false)
   const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
     useState(false)
+  const [extendKeysOpen, setExtendKeysOpen] = useState(false)
+  const [selectedKey, setSelectedKey] = useState<ExtendKeyItem>()
 
   if (loading) {
     return (
@@ -148,8 +157,12 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     setExpandAllMetadata(!expandAllMetadata)
   }
 
-  const showCheckInTimeInfo = metadata?.some((item) => item?.checkedInAt)
+  const onExtendKey = (key: ExtendKeyItem) => {
+    setSelectedKey(key)
+    setExtendKeysOpen(true)
+  }
 
+  const showCheckInTimeInfo = metadata?.some((item) => item?.checkedInAt)
   return (
     <section className="flex flex-col gap-3">
       <ExpireAndRefundModal
@@ -157,6 +170,13 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         dismiss={closeExpireAndRefund}
         lock={currentLock}
         lockAddresses={lockAddresses}
+      />
+
+      <ExtendKeysDrawer
+        isOpen={extendKeysOpen}
+        setIsOpen={setExtendKeysOpen}
+        selectedKey={selectedKey!}
+        resetSearchFilters={resetSearchFilters}
       />
 
       <div className="flex items-center gap-[1rem]">
@@ -204,6 +224,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             )}
             onExpireAndRefund={() => onExpireAndRefund(data, isLockManager)}
             showCheckInTimeInfo={showCheckInTimeInfo}
+            onExtendKey={onExtendKey}
           />
         )
       })}
@@ -226,6 +247,7 @@ MetadataTable.defaultProps = {
   hasSearchValue: false,
   lockManagerMapping: {},
   lockAddresses: [],
+  hasExpiredKeys: false,
 }
 
 export default MetadataTable
