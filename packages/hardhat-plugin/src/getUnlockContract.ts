@@ -4,7 +4,7 @@ import type { Contract } from 'ethers'
 import { getContractAbi } from './utils'
 
 export interface GetUnlockContractFunction {
-  (hre: HardhatRuntimeEnvironment, unlockAddress: string): Promise<Contract>
+  (unlockAddress: string): Promise<Contract>
 }
 
 export async function getUnlockVersion(

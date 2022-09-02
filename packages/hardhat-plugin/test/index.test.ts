@@ -57,7 +57,7 @@ describe('Unlock Hardhat plugin', function () {
         publicLock: Contract
       }
       this.beforeEach(async function () {
-        protocol = await this.hre.unlock.deployProtocol(this.hre)
+        protocol = await this.hre.unlock.deployProtocol()
       })
 
       describe('deployProtocol()', function () {
@@ -110,12 +110,11 @@ describe('Unlock Hardhat plugin', function () {
           publicLock: Contract
         }
         this.beforeEach(async function () {
-          protocol = await this.hre.unlock.deployProtocol(this.hre)
+          protocol = await this.hre.unlock.deployProtocol()
         })
         it('Should retrieve the Unlock contract instance', async function () {
           const { unlock } = protocol
           const unlockGet = await this.hre.unlock.getUnlockContract(
-            this.hre,
             unlock.address
           )
           assert.equal(typeof unlock, typeof unlockGet)
@@ -137,9 +136,7 @@ describe('Unlock Hardhat plugin', function () {
         it('Should create a new lock w correct params', async function () {
           const { FIRST } = locks
           const { lock, transactionHash, lockAddress } =
-            await this.hre.unlock.createLock(this.hre, {
-              ...FIRST,
-            })
+            await this.hre.unlock.createLock(FIRST)
 
           assert.equal(await lockAddress, lock.address)
           assert.equal(typeof transactionHash, 'string')
@@ -151,20 +148,12 @@ describe('Unlock Hardhat plugin', function () {
         let lock: Contract
         const { FIRST } = locks
         this.beforeEach(async function () {
-          await this.hre.unlock.deployProtocol(
-            this.hre,
-            undefined,
-            undefined,
-            1
-          )
-          ;({ lock } = await this.hre.unlock.createLock(this.hre, FIRST))
+          await this.hre.unlock.deployProtocol(undefined, undefined, 1)
+          ;({ lock } = await this.hre.unlock.createLock(FIRST))
         })
 
         it('Should retrieve a lock w correct params', async function () {
-          const lockGet = await this.hre.unlock.getLockContract(
-            this.hre,
-            lock.address
-          )
+          const lockGet = await this.hre.unlock.getLockContract(lock.address)
           assert.equal(
             await lockGet.publicLockVersion(),
             PUBLIC_LOCK_LATEST_VERSION
@@ -202,12 +191,12 @@ describe('Tasks', function () {
   describe(TASK_CREATE_LOCK, function () {
     useEnvironment('hardhat-project')
     this.beforeEach(async function () {
-      await this.hre.unlock.deployProtocol(this.hre, undefined, undefined, 1)
+      await this.hre.unlock.deployProtocol(undefined, undefined, 1)
     })
     it('Should create a lock from command line args', async function () {
       const { FIRST } = locks
       const lockAddress: string = await this.hre.run(TASK_CREATE_LOCK, FIRST)
-      const lock = await this.hre.unlock.getLockContract(this.hre, lockAddress)
+      const lock = await this.hre.unlock.getLockContract(lockAddress)
       assert.equal(lockAddress, lock.address)
       isIdenticalLock(lock, FIRST)
     })

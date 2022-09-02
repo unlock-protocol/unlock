@@ -18,7 +18,7 @@ export interface CreateLockArgs {
 }
 
 export interface CreateLockFunction {
-  (hre: HardhatRuntimeEnvironment, args: CreateLockArgs): Promise<{
+  (args: CreateLockArgs): Promise<{
     lock: Contract
     lockAddress: string
     transactionHash: string

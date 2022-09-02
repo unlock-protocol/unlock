@@ -5,11 +5,7 @@ import { Contract } from 'ethers'
 import { getLockVersion } from './getLockVersion'
 
 export interface GetLockContractFunction {
-  (
-    hre: HardhatRuntimeEnvironment,
-    lockAddress: string,
-    versionNumber?: number
-  ): Promise<Contract>
+  (lockAddress: string, versionNumber?: number): Promise<Contract>
 }
 
 export async function getLockContract(

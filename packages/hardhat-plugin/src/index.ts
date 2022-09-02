@@ -36,11 +36,11 @@ extendEnvironment((hre) => {
     const { getLockContract } = require('./getLockContract')
     return {
       networks,
-      createLock,
-      deployProtocol,
-      getLockVersion,
-      getUnlockContract,
-      getLockContract,
+      createLock: (args) => createLock(hre, args),
+      deployProtocol: (args) => deployProtocol(hre, args),
+      getLockVersion: (args) => getLockVersion(hre, args),
+      getUnlockContract: (args) => getUnlockContract(hre, args),
+      getLockContract: (args) => getLockContract(hre, args),
     }
   })
 })

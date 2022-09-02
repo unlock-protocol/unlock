@@ -7,7 +7,6 @@ import { getUnlockContract } from './getUnlockContract'
 
 export interface DeployProtocolFunction {
   (
-    hre: HardhatRuntimeEnvironment,
     unlockVersion?: number,
     lockVersion?: number,
     confirmations?: number

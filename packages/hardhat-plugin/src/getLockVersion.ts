@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 
 export interface GetLockVersionFunction {
-  (hre: HardhatRuntimeEnvironment, lockAddress: string): Promise<number>
+  (lockAddress: string): Promise<number>
 }
 
 export async function getLockVersion(
