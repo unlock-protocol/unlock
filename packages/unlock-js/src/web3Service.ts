@@ -458,4 +458,18 @@ export default class Web3Service extends UnlockService {
     )
     return await lockContract.publicLockVersion()
   }
+
+  /**
+   * Retrieves the tokenUri for a specific token on a lock
+   * @param {String} lockAddress
+   * @param {String} tokenId
+   * @param {Number} network
+   */
+  async tokenUri(lockAddress: string, tokenId: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return lockContract.tokenUri(tokenId)
+  }
 }

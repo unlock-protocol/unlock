@@ -1,5 +1,9 @@
 # Changes
 
+# 0.26.6
+
+- add support for `tokenUri`
+
 # 0.26.5
 
 - add support for `publicLockVersion`
