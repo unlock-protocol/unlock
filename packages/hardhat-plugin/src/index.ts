@@ -12,10 +12,7 @@ import { deployLockTask } from './tasks'
 import networks from './networks.json'
 
 extendEnvironment((hre) => {
-  hre.unlock = lazyObject(() => {
-    const unlock = new UnlockHRE(hre)
-    return unlock
-  })
+  hre.unlock = lazyObject(() => new UnlockHRE(hre))
 })
 
 // add unlock networks to config
