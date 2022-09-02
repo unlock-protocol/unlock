@@ -17,7 +17,7 @@ import type { GetLockVersionFunction } from './getLockVersion'
 import type { GetUnlockContractFunction } from './getUnlockContract'
 import type { GetLockContractFunction } from './getLockContract'
 
-export interface HardhatUnlock {
+export interface HardhatUnlockPlugin {
   createLock: CreateLockFunction
   getLockVersion: GetLockVersionFunction
   deployProtocol: DeployProtocolFunction
@@ -28,11 +28,11 @@ export interface HardhatUnlock {
 
 extendEnvironment((hre) => {
   hre.unlock = lazyObject(() => {
-    const createLock = require('./createLock')
-    const deployProtocol = require('./deployProtocol')
-    const getLockVersion = require('./getLockVersion')
-    const getUnlockContract = require('./getUnlockContract')
-    const getLockContract = require('./getLockContract')
+    const { createLock } = require('./createLock')
+    const { deployProtocol } = require('./deployProtocol')
+    const { getLockVersion } = require('./getLockVersion')
+    const { getUnlockContract } = require('./getUnlockContract')
+    const { getLockContract } = require('./getLockContract')
     return {
       networks,
       createLock,

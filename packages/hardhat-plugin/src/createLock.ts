@@ -41,11 +41,6 @@ export async function createLock(
   lockAddress: string
   transactionHash: string
 }> {
-  const unlock = await getUnlockContract(hre)
-
-  // create2 legacy, currently unused but required
-  const salt = '0x000000000000000000000001'
-
   // send tx
   const [signer] = await hre.ethers.getSigners()
   if (!beneficiary) beneficiary = signer.address
@@ -55,10 +50,9 @@ export async function createLock(
   const iface = new hre.ethers.utils.Interface(abi)
 
   // encode initializer data
-  const initializer =
+  const fragment = iface.getFunction(
     'initialize(address,uint256,address,uint256,uint256,string)'
-  const fragment = iface.getFunction(initializer)
-
+  )
   const calldata = iface.encodeFunctionData(fragment, [
     beneficiary,
     expirationDuration,
@@ -66,15 +60,16 @@ export async function createLock(
     keyPrice,
     maxNumberOfKeys,
     name,
-    salt,
   ])
 
+  // create the lock
+  const unlock = await getUnlockContract(hre)
   const tx = await unlock.createUpgradeableLockAtVersion(calldata, version)
   const { events, transactionHash } = await tx.wait()
   const { args } = events.find(({ event }: any) => event === 'NewLock')
   const { newLockAddress } = args
 
-  const lock = await getLockContract(hre,newLockAddress, version)
+  const lock = await getLockContract(hre, newLockAddress, version)
   return {
     lock,
     lockAddress: newLockAddress,

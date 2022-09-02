@@ -4,7 +4,7 @@ import type { Contract } from 'ethers'
 import { getContractAbi } from './utils'
 
 export interface GetUnlockContractFunction {
-  (hre: HardhatRuntimeEnvironment, unlockAddress: string): Promise<number>
+  (hre: HardhatRuntimeEnvironment, unlockAddress: string): Promise<Contract>
 }
 
 export async function getUnlockVersion(
@@ -17,7 +17,7 @@ export async function getUnlockVersion(
   )
   let version = 0
   try {
-    const contractVersion = await contract.publicLockVersion()
+    const contractVersion = await contract.unlockVersion()
     version = parseInt(contractVersion, 10) || 0
   } catch (error) {
     console.error(

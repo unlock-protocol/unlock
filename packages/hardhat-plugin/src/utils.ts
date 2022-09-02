@@ -59,7 +59,7 @@ export async function deployUpgreadableContract(
 
   // deploy proxy
   const { bytecode: proxyBytecode, abi: proxyAbi } = await fs.readJSON(
-    path.join(__dirname, '..', 'abis', 'ERC1967Proxy.json')
+    path.join(__dirname, 'abis', 'ERC1967Proxy.json')
   )
   const ERC1967Proxy = await hre.ethers.getContractFactory(
     proxyAbi,

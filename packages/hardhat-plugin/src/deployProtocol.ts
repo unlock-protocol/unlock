@@ -89,6 +89,15 @@ export async function deployProtocol(
   await unlock.connect(signer).addLockTemplate(publicLock.address, version)
   await unlock.connect(signer).setLockTemplate(publicLock.address)
 
+  // store deployed Unlock address in hre
+  const { chainId } = await hre.ethers.provider.getNetwork()
+  if (!hre.unlock.networks[chainId]) {
+    hre.unlock.networks[chainId] = {
+      id: chainId,
+    }
+  }
+  hre.unlock.networks[chainId].unlockAddress = unlock.address
+
   return {
     unlock,
     publicLock,
