@@ -8,7 +8,6 @@ export const rewriteIpfsUrl = (stringUrl: string) => {
     const url: URL = new URL(stringUrl)
     // Handling IPFS addresses
     // TODO: add detection when IPFS is supported!
-    console.log(url)
     if (url.protocol === 'ipfs:') {
       const path = `/ipfs${url.pathname}`
       url.protocol = 'https:'
