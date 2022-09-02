@@ -7,15 +7,9 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js'
-import {
-  Input,
-  Label,
-  Select,
-  LoadingButton,
-  NeutralButton,
-} from '../checkout/FormStyles'
 import configure from '../../../config'
 import { countries } from '../../../utils/countries'
+import { Button, Input } from '@unlock-protocol/ui'
 
 interface PaymentDetailsProps {
   saveCard: (stripeToken: string, card: any, data: any) => any
@@ -95,32 +89,40 @@ export const Form = ({
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Label>Name</Label>
-      <Input {...register('name', { required: true })} />
-      <Label>Credit Card Details</Label>
-      <CardElement options={cardElementOptions} />
-      <Label>Country</Label>
-      <Select name="address_country" defaultValue="United States">
-        {countries.map((country) => (
-          <option key={country} value={country}>
-            {country}
-          </option>
-        ))}
-      </Select>
-      {renderChildren && renderChildren({ register })}
-      {loading && <LoadingButton>Saving</LoadingButton>}
-      {!loading && (
-        <button
-          className="bg-[#74ce63] text-white flex justify-center w-full px-4 py-3 font-medium rounded hover:bg-[#59c245]"
-          type="submit"
-          disabled={!stripe}
+    <form className="w-1/2 mx-auto" onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col gap-2">
+        <Input label="Name" {...register('name', { required: true })}></Input>
+        <span className="text-sm">Credit Card Details</span>
+        <CardElement options={cardElementOptions} />
+        <span className="text-sm">Country</span>
+        <select
+          name="address_country"
+          className="box-border flex-1 block w-full text-base transition-all border border-gray-400 rounded-lg shadow-sm hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
+          defaultValue="United States"
         >
-          {buttonLabel}
-        </button>
-      )}
-      {renderError && <p className="text-xs text-red-500">{renderError({})}</p>}
-      {onCancel && <NeutralButton onClick={onCancel}>Cancel</NeutralButton>}
+          {countries.map((country) => (
+            <option key={country} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="my-4">
+        {renderChildren && renderChildren({ register })}
+      </div>
+      <div className="flex flex-col gap-2">
+        <Button type="submit" disabled={!stripe || loading}>
+          {loading ? 'Saving' : buttonLabel}
+        </Button>
+        {renderError && (
+          <p className="text-xs text-red-500">{renderError({})}</p>
+        )}
+        {true && (
+          <Button variant="outlined-primary" onClick={onCancel}>
+            Cancel
+          </Button>
+        )}
+      </div>
     </form>
   )
 }

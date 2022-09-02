@@ -148,7 +148,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const config = useConfig()
   const expirationStatus = expirationAsDate(expiration)
   const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>()
   const [showingQR, setShowingQR] = useState(false)
   const [showMetadata, setShowMetadata] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
@@ -284,7 +284,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         isKeyExpired={isKeyExpired}
         expirationStatus={expirationStatus}
       />
-      {error && <span className="text-red-500">{error}</span>}
+      {error && <span className="text-sm text-red-500">{error}</span>}
       <div className="grid gap-2 pt-4">
         <div className="flex flex-wrap items-center gap-2">
           {!isKeyExpired && (
