@@ -44,7 +44,6 @@ interface KeyBoxProps {
 }
 
 const KeyBox = ({
-  tokenURI,
   lock,
   expiration,
   keyId,
@@ -52,7 +51,7 @@ const KeyBox = ({
   isKeyExpired,
   expirationStatus,
 }: KeyBoxProps) => {
-  const metadata = useMetadata(tokenURI)
+  const metadata = useMetadata(lock.address, keyId, network)
 
   const [isCopied, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
@@ -241,9 +240,10 @@ const Key = ({ ownedKey, account, network }: Props) => {
 
   const isAvailableOnOpenSea = [1, 4, 137].indexOf(network) > -1
   const baseSymbol = walletService.networks[network].baseCurrencySymbol!
-  const symbol = isLockDataLoading
-    ? baseSymbol
-    : lockTickerSymbol(lockData, baseSymbol)
+  const symbol =
+    isLockDataLoading || !lockData
+      ? baseSymbol
+      : lockTickerSymbol(lockData, baseSymbol)
 
   const isRefundable = !isLockDataLoading && !isKeyExpired
 
@@ -280,7 +280,6 @@ const Key = ({ ownedKey, account, network }: Props) => {
         network={network}
         lock={lock}
         expiration={expiration}
-        tokenURI={tokenURI}
         keyId={keyId}
         isKeyExpired={isKeyExpired}
         expirationStatus={expirationStatus}
