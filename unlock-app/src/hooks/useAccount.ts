@@ -84,7 +84,7 @@ export const useAccount = (address: string, network: number) => {
     }
   }
 
-  const disconnectStripeToLock = async ({
+  const disconnectStripeFromLock = async ({
     lockAddress,
     network,
   }: {
@@ -102,7 +102,6 @@ export const useAccount = (address: string, network: number) => {
       },
       'Disconnect Stripe'
     )
-    console.log(typedData)
 
     const message = `I want to disconnect Stripe to the lock ${lockAddress}`
     const signature = await walletService.signMessage(message, 'personal_sign')
@@ -348,7 +347,7 @@ export const useAccount = (address: string, network: number) => {
     retrieveUserAccount,
     claimMembershipFromLock,
     updateLockIcon,
-    disconnectStripeToLock,
+    disconnectStripeFromLock,
   }
 }
 export default useAccount

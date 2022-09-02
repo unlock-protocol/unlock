@@ -8,10 +8,7 @@ import useLock from '../../hooks/useLock'
 import { useStorageService } from '../../utils/withStorageService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Badge, Button } from '@unlock-protocol/ui'
-import {
-  FiCheckCircle as CheckIcon,
-  FiArrowRight as ArrowRightIcon,
-} from 'react-icons/fi'
+import { FiCheckCircle as CheckIcon } from 'react-icons/fi'
 
 interface ConnectCardProps {
   lockNetwork: number
@@ -26,13 +23,13 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
   const [keyGranter, setKeyGranter] = useState('')
 
   const { isStripeConnected } = useLock({ address: lock.address }, lockNetwork)
-  const { connectStripeToLock, disconnectStripeToLock } = useAccount(
+  const { connectStripeToLock, disconnectStripeFromLock } = useAccount(
     account!,
     walletNetwork!
   )
 
   const disconnectStripe = async () => {
-    const res = await disconnectStripeToLock({
+    await disconnectStripeFromLock({
       lockAddress: lock.address,
       network: lockNetwork,
     })
@@ -122,7 +119,6 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
                   variant="outlined-primary"
                 >
                   <div className="flex items-center gap-1">
-                    <ArrowRightIcon />
                     <span>Disconnect Stripe</span>
                   </div>
                 </Button>
@@ -135,10 +131,7 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
                 size="tiny"
                 onClick={connectStripe}
               >
-                <div className="flex items-center gap-1">
-                  <ArrowRightIcon />
-                  <span>Connect Stripe</span>
-                </div>
+                Connect Stripe
               </Button>
             )}
 
@@ -150,10 +143,7 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
                   variant="outlined-primary"
                   onClick={connectStripe}
                 >
-                  <div className="flex items-center gap-1">
-                    <ArrowRightIcon />
-                    <span>Connect Stripe</span>
-                  </div>
+                  Connect Stripe
                 </Button>
                 <span className="text-xs text-red-500 leading-1">
                   You have started connecting your Stripe account, but you are
@@ -178,10 +168,7 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
                 disabled={wrongNetwork || hasRole}
                 onClick={grantKeyGrantorRole}
               >
-                <span className="flex items-center gap-1">
-                  <ArrowRightIcon />
-                  <span>Allow Key Granting</span>
-                </span>
+                Allow Key Granting
               </Button>
             )}
             {hasRole && (
