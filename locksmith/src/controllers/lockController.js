@@ -266,32 +266,34 @@ const changeLockIcon = async (req, res) => {
 }
 
 const disconnectStripe = async (req, res) => {
-  const { message, icon } = req.body
-  const { lockAddress, chain, lockManager } = message['Disconnect Stripe']
+  const { lockAddress, network } = req.params
 
   try {
-    const isAuthorized = await evaluateLockOwnership(
-      Normalizer.ethereumAddress(lockAddress),
-      Normalizer.ethereumAddress(lockManager),
-      parseInt(chain)
+    const loggedUserAddress = Normalizer.ethereumAddress(req.user.walletAddress)
+
+    const isLockOwner = await evaluateLockOwnership(
+      lockAddress,
+      loggedUserAddress,
+      parseInt(network)
     )
-    if (!isAuthorized) {
+
+    if (!isLockOwner) {
       return res
         .status(401)
         .send(
-          `${req.signee} is not a lock manager for ${lockAddress} on ${chain}`
+          `${req.signee} is not a lock manager for ${lockAddress} on ${network}`
         )
     } else {
       const deleted = await stripeOperations.disconnectStripe({
-        lockManager: Normalizer.ethereumAddress(req.signee),
+        lockManager: Normalizer.ethereumAddress(loggedUserAddress),
         lockAddress: Normalizer.ethereumAddress(lockAddress),
-        chain,
+        network,
       })
 
       if (deleted) {
-        res.status(200)
+        res.sendStatus(200)
       } else {
-        res.status(204)
+        res.sendStatus(204)
       }
     }
   } catch (err) {
