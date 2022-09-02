@@ -88,9 +88,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     recipients.length <= 1 && recipients[0] === account
 
   const enableSuperfluid =
-    (paywallConfig.superfluid || lockConfig.superfluid) &&
-    isReceiverAccountOnly &&
-    isPayable
+    (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
 
   const enableClaim =
     !!isClaimable && !isClaimableLoading && isReceiverAccountOnly
@@ -171,8 +169,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               >
                 <div className="flex items-center justify-between w-full">
                   <h3 className="font-bold"> Pay via credit card </h3>
-                  <div className="flex items-center text-sm gap-x-2">
-                    Accept:
+                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
                     <VisaIcon size={18} />
                     <MasterCardIcon size={18} />
                   </div>
@@ -217,7 +214,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
             {enableSuperfluid && (
               <button
-                disabled={isLoading}
+                disabled={isLoading || !isPayable}
                 onClick={(event) => {
                   event.preventDefault()
                   send({
@@ -231,13 +228,15 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               >
                 <div className="flex items-center justify-between w-full">
                   <h3 className="font-bold"> Pay via superfluid </h3>
-                  <div className="flex items-center text-sm gap-x-2">
-                    Accept: <CryptoIcon name={symbol} size={18} />
+                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
+                    {symbol.toUpperCase()}
+                    <CryptoIcon name={symbol.toLowerCase()} size={18} />
                   </div>
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="text-sm text-left text-gray-500">
-                    Superfluid allows you to stream payment.
+                    Stream your payment in real time.
+                    {!isPayable && 'Your balance is low'}
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
