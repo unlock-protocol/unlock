@@ -118,47 +118,6 @@ export const SubmitButton = styled.button.attrs({ type: 'button' })`
   margin-top: 25px;
 `
 
-interface LoadingButtonProps {
-  children?: any
-  backgroundColor?: string
-  roundBottomOnly?: boolean
-}
-export const LoadingButton: React.FunctionComponent<LoadingButtonProps> = ({
-  children,
-  backgroundColor,
-  roundBottomOnly,
-}: LoadingButtonProps) => {
-  return (
-    <SubmitButton
-      backgroundColor={backgroundColor}
-      roundBottomOnly={!!roundBottomOnly}
-    >
-      <LoadingTextWrapper>
-        {children}
-        <Svg.Loading title="loading" alt="loading" />
-      </LoadingTextWrapper>
-    </SubmitButton>
-  )
-}
-
-LoadingButton.defaultProps = {
-  children: [],
-  backgroundColor: 'var(--blue)',
-  roundBottomOnly: false,
-}
-
-const LoadingTextWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 24px;
-  svg {
-    width: 24px;
-    fill: var(--white);
-    margin-left: 16px;
-  }
-`
-
 export const FullWidthButton = styled(SubmitButton)`
   border-radius: 0 0 4px 4px;
 `

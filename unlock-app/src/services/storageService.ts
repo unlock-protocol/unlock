@@ -254,7 +254,7 @@ export class StorageService extends EventEmitter {
    * @returns {Promise<*>}
    */
 
-  async createUser(user: any) {
+  async createUser(user: any): Promise<any> {
     return fetch(`${this.host}/users/`, {
       method: 'POST',
       body: JSON.stringify(user),

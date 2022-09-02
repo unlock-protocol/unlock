@@ -1,12 +1,11 @@
 import React, { useState, useContext } from 'react'
-import styled from 'styled-components'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import InvalidLink from './InvalidLink'
 import FinishSignUp from './FinishSignup'
 import { verifyEmailSignature } from '../../utils/wedlocks'
 import WedlockServiceContext from '../../contexts/WedlocksContext'
-import { Button } from './checkout/FormStyles'
+import { Button, Input } from '@unlock-protocol/ui'
 
 interface SignUpProps {
   showLogin: () => void
@@ -35,9 +34,6 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
   const handleInputChange = (event: any) => {
     setEmailAddress(event.target.value)
   }
-  const LogInLink = (callToAction: string) => (
-    <LinkButton onClick={showLogin}>{callToAction}</LinkButton>
-  )
 
   if (verifiedEmail) {
     const emailAddress = Array.isArray(query.email)
@@ -54,20 +50,21 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
   }
 
   return (
-    <Container>
+    <div className="flex flex-col mx-auto md:w-1/2">
       {!embedded && (
         <>
-          <Heading>Pay For Content Seamlessly</Heading>
-          <SubHeading>
+          <h1 className="mb-2 text-3xl font-bold">
+            Pay For Content Seamlessly
+          </h1>
+          <span className="block mb-3 text-xl font-light">
             Unlock enables anyone to seamlessly buy and manage access to content
             using blockchain technology.
-          </SubHeading>
-          <Description>
+          </span>
+          <span className="block mb-3 text-xs font-light">
             At Unlock, we believe that the more accessible paid content is, the
             better it will be. To do that we&#39;re making it easy for readers
             like you to seamlessly pay for and manage your content.
-          </Description>
-          <Description>
+            <br />
             If you want to know more about Unlock&#39;s decentralized payment
             protocol, check out{' '}
             <Link href="https://unlock-protocol.com/blog">
@@ -76,53 +73,64 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
               </a>
             </Link>
             .
-          </Description>
+          </span>
         </>
       )}
-      {embedded && <Heading>Create Your Account</Heading>}
+      {embedded && <h1 className="text-4xl font-bold">Create Your Account</h1>}
       {!submitted && (
         <>
-          <Form onSubmit={handleSubmit}>
-            <Label htmlFor="emailInput">Email Address</Label>
-            <input
-              required
-              name="emailAddress"
-              id="emailInput"
-              type="email"
-              className="flex w-full"
-              placeholder="Enter your email to get started"
-              onChange={handleInputChange}
-            />
-            <Button type="submit">Sign up </Button>
+          <form className="max-w-xl" onSubmit={handleSubmit}>
+            <div className="flex flex-col gap-4 mt-2">
+              <Input
+                required
+                name="emailAddress"
+                label="Email Address"
+                type="email"
+                placeholder="Enter your email to get started"
+                onChange={handleInputChange}
+              />
+              <Button type="submit">Sign up </Button>
+            </div>
             <br />
             <div id="signin" />
-          </Form>
-          <Description>
-            Already have an account? {LogInLink('Log in')}.
-            <br />
-            Have an Ethereum Wallet?{' '}
-            <LinkButton
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://ethereum.org/en/wallets/"
-            >
-              Connect it
-            </LinkButton>
-            .
-          </Description>
+          </form>
+          <span className="flex flex-col gap-2 text-md">
+            <div className="flex items-center gap-2">
+              <span> Already have an account?</span>
+              <a className="cursor-pointer" onClick={showLogin}>
+                Log in
+              </a>
+              <br />
+            </div>
+            <div className="flex items-center gap-2">
+              Have an Ethereum Wallet?
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://ethereum.org/en/wallets/"
+                className="cursor-pointer"
+              >
+                <div className="flex items-center gap-2">Connect it</div>
+              </a>
+            </div>
+          </span>
         </>
       )}
       {submitted && (
-        <Confirmation>
-          <div>Please check your email</div>
+        <div className="leading-5 text-center font-md">
+          <div className="font-bold">Please check your email</div>
           <div>We need to confirm your email before proceeding.</div>
           <div>
             Once you&#39;ve created your account you can{' '}
-            {LogInLink('log in here')}.
+            <a className="cursor-pointer" onClick={showLogin}>
+              <Button size="tiny" variant="outlined-primary">
+                Log in here
+              </Button>
+            </a>
           </div>
-        </Confirmation>
+        </div>
       )}
-    </Container>
+    </div>
   )
 }
 
@@ -131,57 +139,3 @@ SignUp.defaultProps = {
 }
 
 export default SignUp
-
-const Heading = styled.h1`
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 36px;
-  line-height: 47px;
-  font-weight: bold;
-  color: var(--darkgrey);
-`
-
-const SubHeading = styled.h2`
-  font-family: 'IBM Plex Serif', serif;
-  font-size: 32px;
-  line-height: 42px;
-  font-weight: 300;
-  color: var(--darkgrey);
-`
-
-const Description = styled.p`
-  font-family: 'IBM Plex Serif', serif;
-  font-weight: 300;
-  font-size: 16px;
-  color: var(--darkgrey);
-`
-
-const Form = styled.form`
-  max-width: 600px;
-`
-
-const Confirmation = styled.div`
-  font-size: 16px;
-  line-height: 20px;
-  text-align: center;
-  color: var(--slate);
-  & > div:first-child {
-    font-weight: bold;
-  }
-`
-
-const LinkButton = styled.a`
-  cursor: pointer;
-`
-
-const Label = styled.label`
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 10px;
-  margin-bottom: 5px;
-`
-
-const Container = styled.div`
-  width: 100%;
-`
