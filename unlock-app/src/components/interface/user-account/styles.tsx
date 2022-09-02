@@ -15,10 +15,6 @@ export const Grid = styled.div`
   }
 `
 
-export const GridPadding = styled.div`
-  padding: 25px;
-`
-
 export const SectionHeader = styled.span`
   font-family: IBM Plex Sans;
   font-style: normal;
@@ -72,17 +68,6 @@ export const ItemValue = styled.span`
   height: 21px;
   display: flex;
   color: var(--slate);
-`
-
-export const Input = styled.input`
-  height: 48px;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 1rem;
-  width: 100%;
 `
 
 export const Error = styled.span`
@@ -179,13 +164,6 @@ export const Item = ({ title, children, count }: ItemProps) => {
     </Column>
   )
 }
-
-// To be used when two credit card fields need to sit on the same line
-export const CardContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  grid-gap: 16px;
-`
 
 // To be used in place of <Layout> when we embed an app page in an iframe. This
 // avoids including all the UI chrome and positioning, and adds a white

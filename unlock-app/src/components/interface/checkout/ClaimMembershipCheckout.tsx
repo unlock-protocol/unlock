@@ -103,7 +103,7 @@ export const ClaimMembershipCheckout = ({
 
   if (!lock.fiatPricing?.creditCardEnabled) {
     return (
-      <Wrapper>
+      <div className="flex flex-col w-full">
         <Lock
           recipient={account}
           network={network}
@@ -118,12 +118,12 @@ export const ClaimMembershipCheckout = ({
           Unfortunately, you cannot claim a membership from this lock. You need
           to send a transaction using a crypto-wallet.
         </ErrorMessage>
-      </Wrapper>
+      </div>
     )
   }
 
   return (
-    <Wrapper>
+    <div className="flex flex-col w-full">
       <Lock
         recipient={account}
         network={network}
@@ -174,17 +174,11 @@ export const ClaimMembershipCheckout = ({
           closeModal={closeModal}
         />
       )}
-    </Wrapper>
+    </div>
   )
 }
 
 export default ClaimMembershipCheckout
-
-export const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`
 
 const Message = styled.p`
   text-align: left;

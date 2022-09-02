@@ -3,8 +3,6 @@ import styled from 'styled-components'
 import Svg from '../svg'
 import { ConfigContext } from '../../../utils/withConfig'
 
-export const Form = styled.form``
-
 export const Input = styled.input`
   height: 48px;
   width: 100%;
@@ -110,24 +108,6 @@ export const Button = styled.button`
 
 export const NeutralButton = styled(Button)`
   background-color: var(--grey);
-`
-
-export const DefaultButton = styled(Button)`
-  background-color: var(--lightgrey);
-  color: #000;
-  font-weight: 600;
-
-  &:hover {
-    background-color: var(--lightgrey);
-    border: 1px solid var(--blue);
-  }
-`
-
-export const FormError = styled.p`
-  font-size: 12px;
-  color: var(--red);
-  margin-bottom: 5px;
-  margin-top: 5px;
 `
 
 interface LoadingButtonProps {

@@ -1,5 +1,4 @@
 import React, { useEffect, useContext, useState } from 'react'
-import styled from 'styled-components'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
 import { PaymentDetails } from '../user-account/PaymentDetails'
@@ -36,23 +35,12 @@ export const CardCheckout = ({ network, handleCard }: CardCheckoutProps) => {
   }
 
   return (
-    <Wrapper>
+    <div className="flex flex-col w-full">
       {loading && <Loading />}
 
       {!loading && <PaymentDetails saveCard={saveCard} />}
-    </Wrapper>
+    </div>
   )
 }
 
 export default CardCheckout
-
-export const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`
-
-export const CardNumber = styled.p`
-  text-align: center;
-  color: var(--grey);
-`

@@ -346,7 +346,7 @@ const FormLockKeys = styled(LockKeys)`
   }
 `
 
-const FormBalanceWithUnit = styled(BalanceWithUnit)`
+const FormBalanceWithUnit = styled.span`
   white-space: nowrap;
   input[type='text'],
   input[type='number'] {
