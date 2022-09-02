@@ -123,9 +123,7 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
           <div>
             Once you&#39;ve created your account you can{' '}
             <a className="cursor-pointer" onClick={showLogin}>
-              <Button size="tiny" variant="outlined-primary">
-                Log in here
-              </Button>
+              Log in here
             </a>
           </div>
         </div>
