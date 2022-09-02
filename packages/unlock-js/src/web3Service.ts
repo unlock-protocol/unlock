@@ -445,4 +445,17 @@ export default class Web3Service extends UnlockService {
       )
     ).toNumber()
   }
+
+  /**
+   * Returns lock version
+   * @param {String} lockAddress
+   * @param {Number} network
+   */
+  async publicLockVersion(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return await lockContract.publicLockVersion()
+  }
 }
