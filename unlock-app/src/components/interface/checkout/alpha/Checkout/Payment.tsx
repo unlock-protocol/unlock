@@ -227,16 +227,18 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="flex items-center justify-between w-full">
-                  <h3 className="font-bold"> Pay via superfluid </h3>
+                  <h3 className="font-bold"> Stream payment via superfluid </h3>
                   <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
                     {symbol.toUpperCase()}
                     <CryptoIcon name={symbol.toLowerCase()} size={18} />
                   </div>
                 </div>
                 <div className="flex items-center justify-between w-full gap-2">
-                  <div className="text-sm text-left text-gray-500">
-                    Stream your payment in real time.
-                    {!isPayable && ' Balance is low'}
+                  <div className="flex items-center w-full text-sm text-left text-gray-500">
+                    Your balance ({symbol.toUpperCase()})
+                    <p className="w-20 ml-2 font-medium truncate">
+                      {balanceAmount?.toString()}
+                    </p>
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
