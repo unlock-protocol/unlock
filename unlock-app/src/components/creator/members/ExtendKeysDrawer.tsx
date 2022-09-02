@@ -197,7 +197,6 @@ export const ExtendKeysDrawer = ({
   const onComplete = async () => {
     setIsOpen(false)
     if (typeof resetSearchFilters === 'function') {
-      console.log('reset filters')
       resetSearchFilters()
     }
   }
