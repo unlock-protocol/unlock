@@ -104,7 +104,7 @@ export const useAccount = (address: string, network: number) => {
     )
     console.log(typedData)
 
-    const message = `I want to connect Stripe to the lock ${lockAddress}`
+    const message = `I want to disconnect Stripe to the lock ${lockAddress}`
     const signature = await walletService.signMessage(message, 'personal_sign')
 
     try {
