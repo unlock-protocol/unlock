@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/hardhat-plugin",
-  "version": "0.0.7",
+  "version": "0.0.10",
   "description": "Hardhat Plugin for Unlock Protocol",
   "author": "Unlock Protocol",
   "license": "MIT",
@@ -26,8 +26,7 @@
     "networks": "node scripts/parseNetworks.js"
   },
   "files": [
-    "dist/src/",
-    "src/",
+    "dist/src/**/*",
     "LICENSE",
     "README.md"
   ],

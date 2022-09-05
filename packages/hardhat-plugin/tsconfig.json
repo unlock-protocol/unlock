@@ -12,6 +12,7 @@
   "exclude": ["dist", "node_modules"],
   "include": [
     "./test",
-    "./src"
+    "./src",
+    "./src/abis/*.json"
   ]
 }
