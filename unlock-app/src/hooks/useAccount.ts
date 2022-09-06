@@ -84,6 +84,27 @@ export const useAccount = (address: string, network: number) => {
     }
   }
 
+  const disconnectStripeFromLock = async ({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) => {
+    const storageService = new StorageService(config.services.storage.host)
+
+    try {
+      await storageService.loginPrompt({
+        walletService,
+        address,
+        chainId: network,
+      })
+      return await storageService.disconnectStripe(lockAddress, network)
+    } catch (error) {
+      return null
+    }
+  }
+
   const createUserAccount = async (emailAddress: string, password: string) => {
     const storageService = new StorageService(config.services.storage.host)
 
@@ -312,6 +333,7 @@ export const useAccount = (address: string, network: number) => {
     retrieveUserAccount,
     claimMembershipFromLock,
     updateLockIcon,
+    disconnectStripeFromLock,
   }
 }
 export default useAccount
