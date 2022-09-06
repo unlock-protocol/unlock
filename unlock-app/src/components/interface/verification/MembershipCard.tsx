@@ -57,7 +57,6 @@ export function MembershipCard({
   keyId,
   onClose,
   children = null,
-  showWarning = false,
 }: Props) {
   const timeSinceSigned = dayjs().from(timestamp, true)
   const timeSinceCheckedIn = dayjs().from(checkedInAt, true)
@@ -124,26 +123,18 @@ export function MembershipCard({
             <Item label="ID" value={keyId} />
           </div>
         </div>
-        {showWarning ? (
-          <div className="space-y-2">
-            {
-              'Make sure to mark as "checked in" the current ticket before scanning the next one.'
-            }
-          </div>
-        ) : (
-          <div className="space-y-2">
-            <Item label="Lock Address" value={addressMinify(lock.address)} />
-            <Item label="Network" value={config.networks[network].name} />
-            <Item label="Time since signed" value={timeSinceSigned} />
-            <Item label="Owner" value={addressMinify(owner)} />
-            {!!membershipData?.userMetadata?.public && (
-              <MetadataItems metadata={membershipData.userMetadata.public} />
-            )}
-            {!!membershipData?.userMetadata?.protected && (
-              <MetadataItems metadata={membershipData.userMetadata.protected} />
-            )}
-          </div>
-        )}
+        <div className="space-y-2">
+          <Item label="Lock Address" value={addressMinify(lock.address)} />
+          <Item label="Network" value={config.networks[network].name} />
+          <Item label="Time since signed" value={timeSinceSigned} />
+          <Item label="Owner" value={addressMinify(owner)} />
+          {!!membershipData?.userMetadata?.public && (
+            <MetadataItems metadata={membershipData.userMetadata.public} />
+          )}
+          {!!membershipData?.userMetadata?.protected && (
+            <MetadataItems metadata={membershipData.userMetadata.protected} />
+          )}
+        </div>
         {children}
       </div>
     </div>
