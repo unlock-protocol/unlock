@@ -190,7 +190,7 @@ contract Ownable is Initializable {
      */
     function initialize(address sender) public initializer {
         _owner = sender;
-        emit OwnershipTransferred(address(0), _owner);
+        emit OwnershipTransferred(address(0), sender);
     }
 
     /**
@@ -772,7 +772,7 @@ contract MixinLockCore is
   {
     uint oldKeyPrice = keyPrice;
     keyPrice = _keyPrice;
-    emit PriceChanged(oldKeyPrice, keyPrice);
+    emit PriceChanged(oldKeyPrice, _keyPrice);
   }
 
   /**

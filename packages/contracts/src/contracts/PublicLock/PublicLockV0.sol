@@ -976,7 +976,7 @@ contract PublicLock is ILockCore, ERC165, IERC721, IERC721Receiver, Ownable {
   {
     uint oldKeyPrice = keyPrice;
     keyPrice = _keyPrice;
-    emit PriceChanged(oldKeyPrice, keyPrice);
+    emit PriceChanged(oldKeyPrice, _keyPrice);
   }
 
   /**
