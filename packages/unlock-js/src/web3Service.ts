@@ -458,4 +458,12 @@ export default class Web3Service extends UnlockService {
     )
     return await lockContract.publicLockVersion()
   }
+
+  async tokenURI(lockAddress: string, tokenId: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return await lockContract.tokenURI(tokenId)
+  }
 }
