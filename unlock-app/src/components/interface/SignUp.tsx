@@ -97,7 +97,7 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
           <span className="flex flex-col gap-2 text-md">
             <div className="flex items-center gap-2">
               <span> Already have an account?</span>
-              <a className="cursor-pointer" onClick={showLogin}>
+              <a className="underline cursor-pointer" onClick={showLogin}>
                 Log in
               </a>
               <br />
@@ -110,7 +110,9 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
                 href="https://ethereum.org/en/wallets/"
                 className="cursor-pointer"
               >
-                <div className="flex items-center gap-2">Connect it</div>
+                <div className="flex items-center gap-2 underline">
+                  Connect it
+                </div>
               </a>
             </div>
           </span>
@@ -122,10 +124,8 @@ const SignUp = ({ showLogin, embedded }: SignUpProps) => {
           <div>We need to confirm your email before proceeding.</div>
           <div>
             Once you&#39;ve created your account you can{' '}
-            <a className="cursor-pointer" onClick={showLogin}>
-              <Button size="tiny" variant="outlined-primary">
-                Log in here
-              </Button>
+            <a className="underline cursor-pointer" onClick={showLogin}>
+              Log in here
             </a>
           </div>
         </div>
