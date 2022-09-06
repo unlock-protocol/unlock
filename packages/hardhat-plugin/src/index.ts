@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 import '@nomiclabs/hardhat-ethers'
-import '@openzeppelin/hardhat-upgrades'
 import { task, extendEnvironment, extendConfig, types } from 'hardhat/config'
 import { HardhatConfig, HardhatUserConfig } from 'hardhat/types'
 import { lazyObject } from 'hardhat/plugins'
@@ -7,14 +7,41 @@ import './type-extensions'
 
 import { TASK_CREATE_LOCK, TASK_DEPLOY_PROTOCOL } from './constants'
 
-import { UnlockHRE, UnlockNetworkConfigs } from './Unlock'
 import { deployLockTask } from './tasks'
 import networks from './networks.json'
 
+// types
+import { UnlockNetworkConfigs } from './types'
+import type { CreateLockFunction } from './createLock'
+import type { DeployProtocolFunction } from './deployProtocol'
+import type { GetLockVersionFunction } from './getLockVersion'
+import type { GetUnlockContractFunction } from './getUnlockContract'
+import type { GetLockContractFunction } from './getLockContract'
+
+export interface HardhatUnlockPlugin {
+  createLock: CreateLockFunction
+  getLockVersion: GetLockVersionFunction
+  deployProtocol: DeployProtocolFunction
+  getLockContract: GetLockContractFunction
+  getUnlockContract: GetUnlockContractFunction
+  networks: UnlockNetworkConfigs
+}
+
 extendEnvironment((hre) => {
   hre.unlock = lazyObject(() => {
-    const unlock = new UnlockHRE(hre)
-    return unlock
+    const { createLock } = require('./createLock')
+    const { deployProtocol } = require('./deployProtocol')
+    const { getLockVersion } = require('./getLockVersion')
+    const { getUnlockContract } = require('./getUnlockContract')
+    const { getLockContract } = require('./getLockContract')
+    return {
+      networks,
+      createLock: (args) => createLock(hre, args),
+      deployProtocol: (args) => deployProtocol(hre, args),
+      getLockVersion: (args) => getLockVersion(hre, args),
+      getUnlockContract: (args) => getUnlockContract(hre, args),
+      getLockContract: (args) => getLockContract(hre, args),
+    }
   })
 })
 

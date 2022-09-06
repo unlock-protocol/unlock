@@ -1,14 +1,18 @@
 {
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
     "outDir": "./dist",
     "rootDirs": ["./src", "./test"],
-    "resolveJsonModule": true,
-    "noImplicitReturns": false
+    "esModuleInterop": true,
+    "resolveJsonModule": true
   },
   "exclude": ["dist", "node_modules"],
   "include": [
     "./test",
-    "./src"
+    "./src",
+    "./src/abis/*.json"
   ]
 }
