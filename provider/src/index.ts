@@ -68,7 +68,7 @@ export default {
       body: request.body,
       headers: new Headers({
         Accept: '*/*',
-        Origin: 'rpc.unlock-protocol.com', // required to add this to allowlists
+        Origin: 'https://rpc.unlock-protocol.com/', // required to add this to allowlists
       }),
     })
     const json = await response.json()
