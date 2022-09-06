@@ -9,6 +9,7 @@ import { useStorageService } from '../../utils/withStorageService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Badge, Button } from '@unlock-protocol/ui'
 import { FiCheckCircle as CheckIcon } from 'react-icons/fi'
+import { ToastHelper } from '../helpers/toast.helper'
 
 interface ConnectCardProps {
   lockNetwork: number
@@ -29,10 +30,16 @@ export const ConnectCard = ({ lockNetwork, lock }: ConnectCardProps) => {
   )
 
   const disconnectStripe = async () => {
-    await disconnectStripeFromLock({
+    const res = await disconnectStripeFromLock({
       lockAddress: lock.address,
       network: lockNetwork,
     })
+    if (res?.ok) {
+      ToastHelper.success('Stripe succesfully disconnected')
+      setIsConnected(-1)
+    } else {
+      ToastHelper.error('There is some issue, please try again')
+    }
   }
 
   const connectStripe = async () => {
