@@ -45,7 +45,13 @@ export default {
 
     // Reject requests that are not POST
     if (request.method !== 'POST') {
-      return new Response('Method not supported', { status: 400 })
+      return new Response(
+        { message: 'Method not supported' },
+        {
+          status: 400,
+          'content-type': 'application/json',
+        }
+      )
     }
 
     const url = new URL(request.url)
@@ -54,12 +60,21 @@ export default {
 
     // Missing network
     if (!networkId) {
-      return new Response('Bad Request', { status: 400 })
+      return new Response(
+        { message: 'Bad Request' },
+        {
+          status: 400,
+          'content-type': 'application/json',
+        }
+      )
     }
 
     // Network not supported
     if (!supportedNetworks[networkId]) {
-      return new Response('Network not supported', { status: 404 })
+      return new Response(
+        JSON.stringify({ message: 'Network not supported' }),
+        { status: 404, 'content-type': 'application/json' }
+      )
     }
 
     // Make JSON RPC request
