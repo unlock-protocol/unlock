@@ -8,7 +8,6 @@ import AuthenticationContext, {
 import { ConfigContext } from '../../../../utils/withConfig'
 import { Web3ServiceContext } from '../../../../utils/withWeb3Service'
 import { QueryClientProvider, QueryClient } from 'react-query'
-import { useKeychain } from '~/hooks/useKeychain'
 
 const accountAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const aKey: OwnedKey = {
@@ -118,16 +117,6 @@ describe('CancelAndRefundModal', () => {
     const { getByTestId } = renderWithContexts(component)
     expect(getByTestId('placeholder')).toBeDefined()
   })
-
-  it.todo('it show refund message if refund is possible')
-
-  it.todo('refund button is enabled when refund is possible')
-
-  it.todo('it show refund error message when refund fee is 100%')
-
-  it.todo('it show refund error message when balance cant cover the refund')
-
-  it.todo('refund button is disabled when refund is not possible')
 
   it('correctly render CancelAndRefund', () => {
     expect.assertions(1)
