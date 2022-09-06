@@ -7,7 +7,6 @@ import {
 } from '@radix-ui/react-avatar'
 import { MdExplore as ExploreIcon } from 'react-icons/md'
 import { BsTrashFill as CancelIcon } from 'react-icons/bs'
-import styled from 'styled-components'
 import {
   FaWallet as WalletIcon,
   FaQrcode as QrCodeIcon,
@@ -34,7 +33,6 @@ import { useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface KeyBoxProps {
-  tokenURI: string
   lock: any
   expiration: string
   keyId: string
@@ -44,7 +42,6 @@ interface KeyBoxProps {
 }
 
 const KeyBox = ({
-  tokenURI,
   lock,
   expiration,
   keyId,
@@ -52,7 +49,7 @@ const KeyBox = ({
   isKeyExpired,
   expirationStatus,
 }: KeyBoxProps) => {
-  const metadata = useMetadata(tokenURI)
+  const metadata = useMetadata(lock.address, keyId, network)
 
   const [isCopied, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
@@ -140,7 +137,7 @@ export interface Props {
 }
 
 const Key = ({ ownedKey, account, network }: Props) => {
-  const { lock, expiration, tokenURI, keyId } = ownedKey
+  const { lock, expiration, keyId } = ownedKey
   const { network: accountNetwork } = useAuth()
   const walletService = useWalletService()
   const wedlockService = useContext(WedlockServiceContext)
@@ -149,7 +146,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const config = useConfig()
   const expirationStatus = expirationAsDate(expiration)
   const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>()
   const [showingQR, setShowingQR] = useState(false)
   const [showMetadata, setShowMetadata] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
@@ -192,6 +189,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
     window.open(networks[network].explorer?.urls.address(lock.address))
   }
 
+  // TODO: use the networks' OpenSea config!
   const viewOnOpenSea = async () => {
     if (network === 137) {
       window.open(
@@ -236,9 +234,10 @@ const Key = ({ ownedKey, account, network }: Props) => {
 
   const isAvailableOnOpenSea = [1, 4, 137].indexOf(network) > -1
   const baseSymbol = walletService.networks[network].baseCurrencySymbol!
-  const symbol = isLockDataLoading
-    ? baseSymbol
-    : lockTickerSymbol(lockData, baseSymbol)
+  const symbol =
+    isLockDataLoading || !lockData
+      ? baseSymbol
+      : lockTickerSymbol(lockData, baseSymbol)
 
   const isRefundable = !isLockDataLoading && !isKeyExpired
 
@@ -276,14 +275,13 @@ const Key = ({ ownedKey, account, network }: Props) => {
         network={network}
         lock={lock}
         expiration={expiration}
-        tokenURI={tokenURI}
         keyId={keyId}
         isKeyExpired={isKeyExpired}
         expirationStatus={expirationStatus}
       />
-      {error && <Error>{error}</Error>}
+      {error && <span className="text-sm text-red-500">{error}</span>}
       <div className="grid gap-2 pt-4">
-        <div className="flex items-center flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {!isKeyExpired && (
             <Tooltip label="Scan QR code" tip="Scan QR code">
               <button
@@ -357,6 +355,3 @@ const Key = ({ ownedKey, account, network }: Props) => {
   )
 }
 export default Key
-const Error = styled.p`
-  color: var(--red);
-`

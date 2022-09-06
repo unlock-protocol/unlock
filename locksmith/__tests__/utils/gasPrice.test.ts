@@ -5,6 +5,7 @@ jest.mock('isomorphic-fetch', () => async () => ({
   json: async () => ({
     data: { base: 'ETH', currency: 'USD', amount: '420000' },
   }),
+  ok: true,
 }))
 
 jest.mock('@unlock-protocol/networks', () => ({

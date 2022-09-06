@@ -165,6 +165,10 @@ export function Confirm({
           transactionHash: response.transactionHash,
           status: 'PROCESSING',
         })
+        communication.emitTransactionInfo({
+          hash: response.transactionHash,
+          lock: lockAddress,
+        })
       }
     } catch (error) {
       if (error instanceof Error) {

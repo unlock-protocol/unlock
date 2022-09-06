@@ -15,10 +15,6 @@ export const Grid = styled.div`
   }
 `
 
-export const GridPadding = styled.div`
-  padding: 25px;
-`
-
 export const SectionHeader = styled.span`
   font-family: IBM Plex Sans;
   font-style: normal;
@@ -74,17 +70,6 @@ export const ItemValue = styled.span`
   color: var(--slate);
 `
 
-export const Input = styled.input`
-  height: 48px;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 1rem;
-  width: 100%;
-`
-
 export const Error = styled.span`
   height: 48px;
   display: flex;
@@ -116,47 +101,6 @@ export const SubmitButton = styled.button.attrs({ type: 'button' })`
   justify-content: center;
   color: var(--white);
   margin-top: 25px;
-`
-
-interface LoadingButtonProps {
-  children?: any
-  backgroundColor?: string
-  roundBottomOnly?: boolean
-}
-export const LoadingButton: React.FunctionComponent<LoadingButtonProps> = ({
-  children,
-  backgroundColor,
-  roundBottomOnly,
-}: LoadingButtonProps) => {
-  return (
-    <SubmitButton
-      backgroundColor={backgroundColor}
-      roundBottomOnly={!!roundBottomOnly}
-    >
-      <LoadingTextWrapper>
-        {children}
-        <Svg.Loading title="loading" alt="loading" />
-      </LoadingTextWrapper>
-    </SubmitButton>
-  )
-}
-
-LoadingButton.defaultProps = {
-  children: [],
-  backgroundColor: 'var(--blue)',
-  roundBottomOnly: false,
-}
-
-const LoadingTextWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 24px;
-  svg {
-    width: 24px;
-    fill: var(--white);
-    margin-left: 16px;
-  }
 `
 
 export const FullWidthButton = styled(SubmitButton)`
@@ -220,13 +164,6 @@ export const Item = ({ title, children, count }: ItemProps) => {
     </Column>
   )
 }
-
-// To be used when two credit card fields need to sit on the same line
-export const CardContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  grid-gap: 16px;
-`
 
 // To be used in place of <Layout> when we embed an app page in an iframe. This
 // avoids including all the UI chrome and positioning, and adds a white

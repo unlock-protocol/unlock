@@ -36,8 +36,9 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
   const wallet = useWalletService()
-  const { account, network } = useAuth()
+  const { account, network, isUnlockAccount } = useAuth()
   const { getTokenBalance } = useAccount(account!, network!)
+  const [isTokenBalanceLoading, setIsTokenBalanceLoading] = useState(true)
   const [balance, setBalance] = useState<string | null>(null)
   const storageService = useStorageService()
   const baseSymbol = config.networks[lock.network].baseCurrencySymbol
@@ -75,6 +76,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       if (account) {
         const balance = await getTokenBalance(lock!.currencyContractAddress!)
         setBalance(balance)
+        setIsTokenBalanceLoading(false)
       }
     }
     getBalance()
@@ -93,9 +95,18 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const enableCreditCard = !!fiatPricing?.creditCardEnabled
 
-  const isWaiting = isLoading || isClaimableLoading
+  const enableCrypto = isPayable && !isUnlockAccount && !isTokenBalanceLoading
+
+  const isWaiting = isLoading || isClaimableLoading || isTokenBalanceLoading
 
   const stepItems = useCheckoutSteps(checkoutService)
+
+  const allDisabled = [
+    enableCreditCard,
+    enableClaim,
+    enableCrypto,
+    enableSuperfluid,
+  ].every((item) => !item)
 
   return (
     <Fragment>
@@ -108,39 +119,41 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
           </div>
         ) : (
           <div className="space-y-6">
-            <button
-              disabled={!isPayable || isLoading}
-              onClick={(event) => {
-                event.preventDefault()
-                send({
-                  type: 'SELECT_PAYMENT_METHOD',
-                  payment: {
-                    method: 'crypto',
-                  },
-                })
-              }}
-              className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
-            >
-              <div className="flex justify-between w-full">
-                <h3 className="font-bold"> Pay via cryptocurrency </h3>
-                <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-                  {symbol.toUpperCase()}
-                  <CryptoIcon name={symbol.toLowerCase()} size={18} />
+            {enableCrypto && (
+              <button
+                disabled={!isPayable || isLoading}
+                onClick={(event) => {
+                  event.preventDefault()
+                  send({
+                    type: 'SELECT_PAYMENT_METHOD',
+                    payment: {
+                      method: 'crypto',
+                    },
+                  })
+                }}
+                className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+              >
+                <div className="flex justify-between w-full">
+                  <h3 className="font-bold"> Pay via cryptocurrency </h3>
+                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
+                    {symbol.toUpperCase()}
+                    <CryptoIcon name={symbol.toLowerCase()} size={18} />
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center w-full text-sm text-left text-gray-500">
-                  Your balance ({symbol.toUpperCase()})
-                  <p className="w-20 ml-2 font-medium truncate">
-                    {balanceAmount?.toString()}
-                  </p>
+                <div className="flex items-center justify-between w-full">
+                  <div className="flex items-center w-full text-sm text-left text-gray-500">
+                    Your balance ({symbol.toUpperCase()})
+                    <p className="w-20 ml-2 font-medium truncate">
+                      {balanceAmount?.toString()}
+                    </p>
+                  </div>
+                  <RightArrowIcon
+                    className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
+                    size={20}
+                  />
                 </div>
-                <RightArrowIcon
-                  className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
-                  size={20}
-                />
-              </div>
-            </button>
+              </button>
+            )}
             {enableCreditCard && (
               <button
                 onClick={(event) => {
@@ -156,8 +169,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               >
                 <div className="flex items-center justify-between w-full">
                   <h3 className="font-bold"> Pay via credit card </h3>
-                  <div className="flex items-center text-sm gap-x-2">
-                    Accept:
+                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
                     <VisaIcon size={18} />
                     <MasterCardIcon size={18} />
                   </div>
@@ -202,7 +214,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
             {enableSuperfluid && (
               <button
-                disabled={isLoading}
+                disabled={isLoading || !isPayable}
                 onClick={(event) => {
                   event.preventDefault()
                   send({
@@ -215,14 +227,18 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="flex items-center justify-between w-full">
-                  <h3 className="font-bold"> Pay via superfluid </h3>
-                  <div className="flex items-center text-sm gap-x-2">
-                    Accept: <CryptoIcon name={symbol} size={18} />
+                  <h3 className="font-bold"> Stream payment via superfluid </h3>
+                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
+                    {symbol.toUpperCase()}
+                    <CryptoIcon name={symbol.toLowerCase()} size={18} />
                   </div>
                 </div>
-                <div className="flex items-center justify-between w-full">
-                  <div className="text-sm text-left text-gray-500">
-                    Superfluid allows you to stream payment.
+                <div className="flex items-center justify-between w-full gap-2">
+                  <div className="flex items-center w-full text-sm text-left text-gray-500">
+                    Your balance ({symbol.toUpperCase()})
+                    <p className="w-20 ml-2 font-medium truncate">
+                      {balanceAmount?.toString()}
+                    </p>
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -230,6 +246,15 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   />
                 </div>
               </button>
+            )}
+            {allDisabled && (
+              <div>
+                <p className="text-sm">
+                  No payment option is available to pay for the lock. You need
+                  to connect a crypto wallet with balance or ask creator to
+                  enable credit card payments.
+                </p>
+              </div>
             )}
           </div>
         )}

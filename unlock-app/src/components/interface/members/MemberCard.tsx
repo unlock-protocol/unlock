@@ -17,7 +17,10 @@ import useClipboard from 'react-use-clipboard'
 import { FieldValues, useForm } from 'react-hook-form'
 import useEns from '~/hooks/useEns'
 import { expirationAsDate } from '~/utils/durations'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
+import { MAX_UINT } from '~/constants'
+import { ExtendKeyItem } from '~/components/creator/members/ExtendKeysDrawer'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -35,6 +38,7 @@ interface MemberCardProps {
   isLockManager?: boolean
   expireAndRefundDisabled?: boolean
   metadata?: { [key: string]: any }
+  onExtendKey?: (key: ExtendKeyItem) => void
 }
 
 const keysToIgnore = [
@@ -63,9 +67,11 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   isLockManager,
   expireAndRefundDisabled = true,
   metadata = {},
+  onExtendKey,
 }) => {
   const storageService = useContext(StorageServiceContext)
   const walletService = useContext(WalletServiceContext)
+  const web3Service = useWeb3Service()
   const { network, account } = useContext(AuthenticationContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
   const [emailSent, setEmailSent] = useState(false)
@@ -82,6 +88,16 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const [isCopied, setCopied] = useClipboard(keyholderAddress, {
     successDuration: 2000,
   })
+
+  const getLockVersion = async (): Promise<number> => {
+    if (!network) return 0
+    return web3Service.publicLockVersion(data.lockAddress, network)
+  }
+
+  const { isLoading: loadingVersion, data: lockVersion } = useQuery(
+    ['getLockVersion'],
+    () => getLockVersion()
+  )
 
   useEffect(() => {
     const items = Object.entries(data || {}).filter(([key]) => {
@@ -172,6 +188,20 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     .map(([key]) => key.toLowerCase())
     .includes('email')
 
+  const onExtendKeyCb = () => {
+    if (typeof onExtendKey === 'function') {
+      onExtendKey({
+        lockName,
+        owner: data?.keyholderAddress,
+        lockAddress: data?.lockAddress,
+        tokenId,
+        expiration,
+      })
+    }
+  }
+
+  const canExtendKey =
+    expiration !== MAX_UINT && lockVersion && lockVersion >= 11
   return (
     <div
       data-testid="member-card"
@@ -189,7 +219,8 @@ export const MemberCard: React.FC<MemberCardProps> = ({
         extraDataItems={extraDataItems}
         onEmailChange={onEmailChange}
       />
-      <div className="grid justify-between grid-cols-7 gap-2 mb-2">
+
+      <div className="grid justify-between grid-cols-8 gap-2 mb-2">
         <div className="flex flex-col col-span-full md:col-span-1">
           <span className={styles.description}>Lock name</span>
           <span className={styles.title}>{lockName}</span>
@@ -220,23 +251,37 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <span className={styles.description}>Expiration</span>
           <span className={styles.title}>{expirationAsDate(expiration)}</span>
         </div>
-        <div className="flex items-center justify-start gap-2 col-span-full lg:col-span-2 lg:justify-end">
-          <Button
-            size="small"
-            variant="outlined-primary"
-            className="disabled:border-opacity-50 disabled:border-gray-200 disabled:text-opacity-50 hover:disabled:text-opacity-50"
-            disabled={expireAndRefundDisabled}
-            onClick={onExpireAndRefund}
-          >
-            Expire & Refund
-          </Button>
+        <div className="flex items-center justify-start gap-2 col-span-full lg:col-span-3 lg:justify-end">
           {isLockManager && (
-            <Button size="small" variant="secondary" onClick={toggleMetada}>
-              <div className="flex items-center">
-                <span>Show metadata</span>
-                <ArrowDown />
-              </div>
-            </Button>
+            <>
+              {canExtendKey && (
+                <Button
+                  size="small"
+                  variant="outlined-primary"
+                  onClick={onExtendKeyCb}
+                  disabled={loadingVersion}
+                >
+                  Extend key
+                </Button>
+              )}
+              {!expireAndRefundDisabled && (
+                <Button
+                  size="small"
+                  variant="outlined-primary"
+                  className="disabled:border-opacity-50 disabled:border-gray-200 disabled:text-opacity-50 hover:disabled:text-opacity-50"
+                  disabled={expireAndRefundDisabled}
+                  onClick={onExpireAndRefund}
+                >
+                  Expire & Refund
+                </Button>
+              )}
+              <Button size="small" variant="secondary" onClick={toggleMetada}>
+                <div className="flex items-center">
+                  <span>Show metadata</span>
+                  <ArrowDown />
+                </div>
+              </Button>
+            </>
           )}
         </div>
       </div>
