@@ -36,6 +36,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const router = useRouter()
   const [isCheckingIn, setIsCheckingIn] = useState(false)
   const { locksmithSigners } = useConfig()
+  const [showWarning, setShowWarning] = useState(false)
 
   const { isLoading: isKeyGranterLoading, data: keyGranter } = useQuery(
     [network],
@@ -169,7 +170,9 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     !isVerifier || isCheckingIn || !!invalid || !!checkedInAt
 
   const onClickVerified = () => {
-    if (typeof onVerified === 'function') {
+    if (!checkedInAt && !!isVerifier && !showWarning) {
+      setShowWarning(true)
+    } else if (typeof onVerified === 'function') {
       onVerified()
     }
   }
@@ -221,6 +224,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
         lock={lock!}
         network={network}
         checkedInAt={checkedInAt}
+        showWarning={showWarning}
       >
         <CardActions />
       </MembershipCard>

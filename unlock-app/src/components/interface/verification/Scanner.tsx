@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { Fragment, useState, useEffect, useRef } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 import {
@@ -58,15 +59,15 @@ export function Scanner() {
 
   return (
     <>
-      <div className="grid w-full justify-center">
+      <div className="grid justify-center w-full">
         <div>
-          <div className="text-center mb-6">
+          <div className="mb-6 text-center">
             <h3 className="font-medium">Scan to check in ticket</h3>
           </div>
           {!membershipVerificationConfig && (
             <video
               ref={videoRef}
-              className="rounded-xl object-cover w-80 h-80 shadow-lg"
+              className="object-cover shadow-lg rounded-xl w-80 h-80"
               muted
               id="scanner"
             />
@@ -83,7 +84,7 @@ export function Scanner() {
             }}
             open
           >
-            <div className="fixed inset-0 backdrop-filter backdrop-blur-sm bg-zinc-500 bg-opacity-25" />
+            <div className="fixed inset-0 bg-opacity-25 backdrop-filter backdrop-blur-sm bg-zinc-500" />
             <Transition.Child
               as={Fragment}
               enter="transition ease-out duration-300"
@@ -93,9 +94,9 @@ export function Scanner() {
               leaveFrom="opacity-100"
               leaveTo="opacity-0 translate-y-1"
             >
-              <div className="fixed p-6 inset-0 overflow-y-auto">
-                <div className="flex min-h-full items-center justify-center">
-                  <Dialog.Panel className="max-w-sm w-full">
+              <div className="fixed inset-0 p-6 overflow-y-auto">
+                <div className="flex items-center justify-center min-h-full">
+                  <Dialog.Panel className="w-full max-w-sm">
                     <VerificationStatus
                       onClose={() => setMembershipVerificationConfig(null)}
                       onVerified={() => setMembershipVerificationConfig(null)}
