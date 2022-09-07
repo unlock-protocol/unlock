@@ -1,6 +1,6 @@
 import { Button, Modal } from '@unlock-protocol/ui'
 import React from 'react'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { FaSpinner as Spinner } from 'react-icons/fa'
@@ -44,13 +44,21 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   const walletService = useWalletService()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
-  const { isLoading, data } = useKeychain({
+  const { getAmounts } = useKeychain({
     lockAddress,
     network,
     owner,
     keyId,
     tokenAddress,
   })
+
+  const { isLoading, data } = useQuery(
+    ['getAmounts', lockAddress],
+    () => getAmounts(),
+    {
+      refetchInterval: false,
+    }
+  )
 
   const { refundAmount = 0, transferFee = 0, lockBalance = 0 } = data ?? {}
 

@@ -1,6 +1,5 @@
 import networks from '@unlock-protocol/networks'
 import { Web3Service } from '@unlock-protocol/unlock-js'
-import { useQuery } from 'react-query'
 
 export const useKeychain = ({
   lockAddress,
@@ -51,16 +50,7 @@ export const useKeychain = ({
     }
   }
 
-  const { isLoading, data } = useQuery(
-    ['getAmounts', lockAddress],
-    () => getAmounts(),
-    {
-      refetchInterval: false,
-    }
-  )
-
   return {
-    isLoading,
-    data,
+    getAmounts,
   }
 }
