@@ -1,6 +1,6 @@
 ---
 title: Members page Filters
-subTitle: A new way to filter for keys in members page
+subTitle: A new way to filter keys in the members page
 authorName: Kalidou Diagne
 publishDate: September 8, 2022
 description: Unlock introduce a new set of filters to improve search experience.
