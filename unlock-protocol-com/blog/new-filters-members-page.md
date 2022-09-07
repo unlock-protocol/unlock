@@ -42,7 +42,7 @@ _Only lock manager are able to see this filter because checked in time is a prot
 
 #### Email
 
-This filter refers to email, and gives the ability to search a key by email if present in the metadata.
+This filter refers to the email address of the key owner if it was [collected during checkout](https://docs.unlock-protocol.com/tools/checkout/collecting-metadata), and gives the ability to search a key by email if present in the metadata.
 
 _Only lock manager are able to see this filter because email is a protected data._
 
