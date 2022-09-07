@@ -17,7 +17,6 @@ const aKey: OwnedKey = {
   keyId: '1',
   tokenURI:
     'https://locksmith.unlock-protocol.com/api/key/0x80bc6d2870bb72cb3e37b648c160da20733386f7/1',
-
   lock: {
     address: '0xf8112a74d38f56e404282c3c5071eaaed0c29b40',
     expirationDuration: '300',
@@ -27,6 +26,9 @@ const aKey: OwnedKey = {
     owner: '0x455375453031ac5fd7cf0e42291f2d8e3df67f85',
   },
 }
+
+const keyOwner = '0x455375453031ac5fd7cf0e42291f2d8e3df67f85'
+
 const dismiss: jest.Mock<any, any> = jest.fn()
 
 const renderWithContexts = (component: React.ReactElement<any>) => {
@@ -64,8 +66,9 @@ const modalActive: React.ReactElement<any> = (
   <ExpireAndRefundModal
     active
     dismiss={dismiss}
-    lock={aKey.lock}
-    lockAddresses={[aKey.lock.address]}
+    lockAddress={aKey.lock.address}
+    keyOwner={keyOwner}
+    tokenId={aKey.keyId}
   />
 )
 
