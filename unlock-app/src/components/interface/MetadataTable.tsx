@@ -2,18 +2,16 @@ import React, { useState } from 'react'
 import FileSaver from 'file-saver'
 import Link from 'next/link'
 import { buildCSV } from '../../utils/csv'
-import { ExpireAndRefundModal } from './ExpireAndRefundModal'
 import {
   MemberCard,
   MemberCardPlaceholder,
 } from '../interface/members/MemberCard'
 import { Button } from '@unlock-protocol/ui'
-import { MAX_UINT } from '~/constants'
 import {
   ExtendKeyItem,
   ExtendKeysDrawer,
 } from '../creator/members/ExtendKeysDrawer'
-interface KeyMetadata {
+export interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
   // strings
   lockName: string
@@ -88,17 +86,13 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   membersCount,
   loading = false,
   lockManagerMapping,
-  lockAddresses = [],
   hasSearchValue = false,
   resetSearchFilters,
 }) => {
   const hasLockManagerStatus = Object.values(lockManagerMapping ?? {}).some(
     (status) => status
   )
-  const [currentLock, setCurrentLock] = useState(null)
   const [expandAllMetadata, setExpandAllMetadata] = useState(false)
-  const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
-    useState(false)
   const [extendKeysOpen, setExtendKeysOpen] = useState(false)
   const [selectedKey, setSelectedKey] = useState<ExtendKeyItem>()
 
@@ -128,30 +122,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     )
   }
 
-  const onExpireAndRefund = (lock: any, isLockManager: boolean) => {
-    if (expireAndRefundDisabled(lock, isLockManager)) return
-    setShowExpireAndRefundModal(true)
-    setCurrentLock(lock)
-  }
-
-  const closeExpireAndRefund = () => {
-    setShowExpireAndRefundModal(false)
-    setCurrentLock(null)
-  }
-
-  const isKeyValid = (timestamp: KeyMetadata['expiration']) => {
-    const now = new Date().getTime() / 1000
-    if (timestamp === MAX_UINT) return true
-    return parseInt(timestamp) > now
-  }
-
-  const expireAndRefundDisabled = (
-    metadata: KeyMetadata,
-    isLockManager: boolean
-  ): boolean => {
-    return !(isLockManager && isKeyValid(metadata.expiration))
-  }
-
   const onExpandAllMetadata = () => {
     if (!hasLockManagerStatus) return
     setExpandAllMetadata(!expandAllMetadata)
@@ -165,13 +135,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   const showCheckInTimeInfo = metadata?.some((item) => item?.checkedInAt)
   return (
     <section className="flex flex-col gap-3">
-      <ExpireAndRefundModal
-        active={showExpireAndRefundModal}
-        dismiss={closeExpireAndRefund}
-        lock={currentLock}
-        lockAddresses={lockAddresses}
-      />
-
       <ExtendKeysDrawer
         isOpen={extendKeysOpen}
         setIsOpen={setExtendKeysOpen}
@@ -211,6 +174,7 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
         return (
           <MemberCard
             key={key}
+            lockAddress={lockAddress}
             lockName={lockName}
             expiration={expiration}
             tokenId={token}
@@ -218,11 +182,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             metadata={data}
             expandAllMetadata={expandAllMetadata}
             isLockManager={isLockManager}
-            expireAndRefundDisabled={expireAndRefundDisabled(
-              data,
-              isLockManager
-            )}
-            onExpireAndRefund={() => onExpireAndRefund(data, isLockManager)}
             showCheckInTimeInfo={showCheckInTimeInfo}
             onExtendKey={onExtendKey}
           />
