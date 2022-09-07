@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Badge, Button, Input, Modal } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
+import { ExpireAndRefundModal } from '../ExpireAndRefundModal'
+import { KeyMetadata } from '../MetadataTable'
 import {
   FaCheckCircle as CheckIcon,
   FaSpinner as Spinner,
@@ -17,7 +19,10 @@ import useClipboard from 'react-use-clipboard'
 import { FieldValues, useForm } from 'react-hook-form'
 import useEns from '~/hooks/useEns'
 import { expirationAsDate } from '~/utils/durations'
-import { useMutation } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
+import { MAX_UINT } from '~/constants'
+import { ExtendKeysDrawer } from '~/components/creator/members/ExtendKeysDrawer'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -26,14 +31,13 @@ const styles = {
 }
 interface MemberCardProps {
   lockName: string
+  lockAddress: string
   expiration: string
   keyholderAddress: string
   tokenId: string
-  onExpireAndRefund: (lock: any) => void
   expandAllMetadata: boolean
   showCheckInTimeInfo: boolean
   isLockManager?: boolean
-  expireAndRefundDisabled?: boolean
   metadata?: { [key: string]: any }
 }
 
@@ -54,18 +58,18 @@ export const MemberCardPlaceholder: React.FC<any> = () => {
 
 export const MemberCard: React.FC<MemberCardProps> = ({
   lockName,
+  lockAddress,
   expiration,
   keyholderAddress,
   tokenId,
-  onExpireAndRefund,
   expandAllMetadata,
   showCheckInTimeInfo,
   isLockManager,
-  expireAndRefundDisabled = true,
   metadata = {},
 }) => {
   const storageService = useContext(StorageServiceContext)
   const walletService = useContext(WalletServiceContext)
+  const web3Service = useWeb3Service()
   const { network, account } = useContext(AuthenticationContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
   const [emailSent, setEmailSent] = useState(false)
@@ -78,10 +82,24 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const [extraDataItems, setExtraDataItems] = useState<
     [string, string | number][]
   >([])
+  const [extendKeysOpen, setExtendKeysOpen] = useState(false)
 
   const [isCopied, setCopied] = useClipboard(keyholderAddress, {
     successDuration: 2000,
   })
+
+  const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
+    useState(false)
+
+  const getLockVersion = async (): Promise<number> => {
+    if (!network) return 0
+    return web3Service.publicLockVersion(lockAddress, network)
+  }
+
+  const { isLoading: loadingVersion, data: lockVersion } = useQuery(
+    ['getLockVersion'],
+    () => getLockVersion()
+  )
 
   useEffect(() => {
     const items = Object.entries(data || {}).filter(([key]) => {
@@ -110,6 +128,16 @@ export const MemberCard: React.FC<MemberCardProps> = ({
 
   const hasExtraData = extraDataItems?.length > 0 || isCheckedIn
 
+  const isKeyValid = (timestamp: KeyMetadata['expiration']) => {
+    const now = new Date().getTime() / 1000
+    if (timestamp === MAX_UINT) return true
+    return parseInt(timestamp) > now
+  }
+
+  const expireAndRefundDisabled = !(
+    isLockManager && isKeyValid(metadata.expiration)
+  )
+
   const onMarkAsCheckIn = async () => {
     if (!storageService) return
     const { lockAddress, token: keyId } = data
@@ -118,6 +146,15 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       keyId,
       network: network!,
     })
+  }
+
+  const onExpireAndRefund = () => {
+    if (expireAndRefundDisabled) return
+    setShowExpireAndRefundModal(true)
+  }
+
+  const closeExpireAndRefund = () => {
+    setShowExpireAndRefundModal(false)
   }
 
   const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {
@@ -148,7 +185,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     })
 
     const sendEmailPromise = storageService.sendKeyQrCodeViaEmail({
-      lockAddress: data.lockAddress,
+      lockAddress,
       network,
       tokenId,
     })
@@ -172,24 +209,49 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     .map(([key]) => key.toLowerCase())
     .includes('email')
 
+  const canExtendKey =
+    expiration !== MAX_UINT && lockVersion && lockVersion >= 11
   return (
     <div
       data-testid="member-card"
       className="px-10 py-4 bg-white border-2 rounded-lg hover:shadow-sm"
     >
+      <ExtendKeysDrawer
+        isOpen={extendKeysOpen}
+        setIsOpen={() => setExtendKeysOpen(true)}
+        selectedKey={
+          {
+            lockName,
+            owner: data?.keyholderAddress,
+            lockAddress: data?.lockAddress,
+            tokenId,
+            expiration,
+          }!
+        }
+      />
+
+      <ExpireAndRefundModal
+        active={showExpireAndRefundModal}
+        dismiss={closeExpireAndRefund}
+        lockAddress={lockAddress}
+        keyOwner={data?.keyholderAddress}
+        tokenId={tokenId}
+      />
+
       <UpdateEmailModal
         isOpen={addEmailModalOpen ?? false}
         setIsOpen={setAddEmailModalOpen}
         isLockManager={isLockManager ?? false}
         userAddress={keyholderAddress}
-        lockAddress={data.lockAddress}
+        lockAddress={lockAddress}
         network={network!}
         hasExtraData={hasExtraData}
         hasEmail={hasEmailMetadata}
         extraDataItems={extraDataItems}
         onEmailChange={onEmailChange}
       />
-      <div className="grid justify-between grid-cols-7 gap-2 mb-2">
+
+      <div className="grid justify-between grid-cols-8 gap-2 mb-2">
         <div className="flex flex-col col-span-full md:col-span-1">
           <span className={styles.description}>Lock name</span>
           <span className={styles.title}>{lockName}</span>
@@ -220,23 +282,37 @@ export const MemberCard: React.FC<MemberCardProps> = ({
           <span className={styles.description}>Expiration</span>
           <span className={styles.title}>{expirationAsDate(expiration)}</span>
         </div>
-        <div className="flex items-center justify-start gap-2 col-span-full lg:col-span-2 lg:justify-end">
-          <Button
-            size="small"
-            variant="outlined-primary"
-            className="disabled:border-opacity-50 disabled:border-gray-200 disabled:text-opacity-50 hover:disabled:text-opacity-50"
-            disabled={expireAndRefundDisabled}
-            onClick={onExpireAndRefund}
-          >
-            Expire & Refund
-          </Button>
+        <div className="flex items-center justify-start gap-2 col-span-full lg:col-span-3 lg:justify-end">
           {isLockManager && (
-            <Button size="small" variant="secondary" onClick={toggleMetada}>
-              <div className="flex items-center">
-                <span>Show metadata</span>
-                <ArrowDown />
-              </div>
-            </Button>
+            <>
+              {canExtendKey && (
+                <Button
+                  size="small"
+                  variant="outlined-primary"
+                  onClick={() => setExtendKeysOpen(true)}
+                  disabled={loadingVersion}
+                >
+                  Extend key
+                </Button>
+              )}
+              {!expireAndRefundDisabled && (
+                <Button
+                  size="small"
+                  variant="outlined-primary"
+                  className="disabled:border-opacity-50 disabled:border-gray-200 disabled:text-opacity-50 hover:disabled:text-opacity-50"
+                  disabled={expireAndRefundDisabled}
+                  onClick={onExpireAndRefund}
+                >
+                  Expire & Refund
+                </Button>
+              )}
+              <Button size="small" variant="secondary" onClick={toggleMetada}>
+                <div className="flex items-center">
+                  <span>Show metadata</span>
+                  <ArrowDown />
+                </div>
+              </Button>
+            </>
           )}
         </div>
       </div>
