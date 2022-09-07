@@ -45,13 +45,10 @@ export default {
 
     // Reject requests that are not POST
     if (request.method !== 'POST') {
-      return new Response(
-        { message: 'Method not supported' },
-        {
-          status: 400,
-          'content-type': 'application/json',
-        }
-      )
+      return new Response(JSON.stringify({ message: 'Method not supported' }), {
+        status: 400,
+        'content-type': 'application/json',
+      })
     }
 
     const url = new URL(request.url)
@@ -60,13 +57,10 @@ export default {
 
     // Missing network
     if (!networkId) {
-      return new Response(
-        { message: 'Bad Request' },
-        {
-          status: 400,
-          'content-type': 'application/json',
-        }
-      )
+      return new Response(JSON.stringify({ message: 'Bad Request' }), {
+        status: 400,
+        'content-type': 'application/json',
+      })
     }
 
     // Network not supported
