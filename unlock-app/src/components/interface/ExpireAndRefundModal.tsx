@@ -6,18 +6,19 @@ import { ToastHelper } from '../helpers/toast.helper'
 
 interface ExpireAndRefundProps {
   active: boolean
-  lock: any
-  lockAddresses: string[]
+  lockAddress: string
+  keyOwner: string
+  tokenId: string
   dismiss: () => void
 }
 
 export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
   active,
-  lock,
-  lockAddresses = [],
+  lockAddress,
+  keyOwner,
+  tokenId,
   dismiss,
 }) => {
-  const [lockAddress] = lockAddresses
   const walletService = useWalletService()
 
   const [refundAmount, setRefundAmount] = useState(0)
@@ -35,19 +36,16 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
   }
 
   const onExpireAndRefund = async () => {
-    const { keyholderAddress: keyOwner } = lock ?? {}
     const amount = `${refundAmount}`
     setLoading(true)
 
-    const params = {
-      lockAddress,
-      keyOwner,
-      amount,
-    }
-
     try {
-      // @ts-expect-error
-      await walletService.expireAndRefundFor(params)
+      await walletService.expireAndRefundFor({
+        lockAddress,
+        keyOwner,
+        tokenId,
+        amount,
+      })
       onCloseCallback()
       ToastHelper.success('Key successfully refunded.')
       // reload page to show updated list of keys
@@ -64,7 +62,6 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
     }
   }
 
-  if (!lockAddresses?.length) return <span>No lock selected</span>
   return (
     <InlineModal active={active} dismiss={onCloseCallback}>
       <div
