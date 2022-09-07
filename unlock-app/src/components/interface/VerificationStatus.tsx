@@ -205,12 +205,13 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
               <Dialog.Panel className="w-full max-w-sm">
                 <div className="w-full max-w-sm bg-white rounded-xl">
                   <div className="flex flex-col gap-3">
-                    <div className="p-2 bg-amber-300 rounded-t-xl">
-                      <span className="text-lg text-center">Warning</span>
+                    <div className="p-2 text-center bg-amber-300 rounded-t-xl">
+                      <span className="text-lg">Warning</span>
                     </div>
                     <div className="flex flex-col w-full gap-3 p-4">
                       <span>
-                        {`The current ticket ticket is not marked as "checked in"`}
+                        The current ticket has not been checked-in. Are you sure
+                        you want to scan the next one?
                       </span>
                       <Button onClick={() => setShowWarning(false)}>
                         Cancel
