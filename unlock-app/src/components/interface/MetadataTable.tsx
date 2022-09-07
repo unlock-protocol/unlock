@@ -7,10 +7,6 @@ import {
   MemberCardPlaceholder,
 } from '../interface/members/MemberCard'
 import { Button } from '@unlock-protocol/ui'
-import {
-  ExtendKeyItem,
-  ExtendKeysDrawer,
-} from '../creator/members/ExtendKeysDrawer'
 export interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as
   // strings
@@ -33,7 +29,6 @@ interface MetadataTableProps {
   lockAddresses?: string[]
   membersCount?: MemberCountProps['membersCount']
   hasExpiredKeys?: boolean
-  resetSearchFilters?: () => void
 }
 
 /**
@@ -87,14 +82,11 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
   loading = false,
   lockManagerMapping,
   hasSearchValue = false,
-  resetSearchFilters,
 }) => {
   const hasLockManagerStatus = Object.values(lockManagerMapping ?? {}).some(
     (status) => status
   )
   const [expandAllMetadata, setExpandAllMetadata] = useState(false)
-  const [extendKeysOpen, setExtendKeysOpen] = useState(false)
-  const [selectedKey, setSelectedKey] = useState<ExtendKeyItem>()
 
   if (loading) {
     return (
@@ -127,21 +119,9 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
     setExpandAllMetadata(!expandAllMetadata)
   }
 
-  const onExtendKey = (key: ExtendKeyItem) => {
-    setSelectedKey(key)
-    setExtendKeysOpen(true)
-  }
-
   const showCheckInTimeInfo = metadata?.some((item) => item?.checkedInAt)
   return (
     <section className="flex flex-col gap-3">
-      <ExtendKeysDrawer
-        isOpen={extendKeysOpen}
-        setIsOpen={setExtendKeysOpen}
-        selectedKey={selectedKey!}
-        resetSearchFilters={resetSearchFilters}
-      />
-
       <div className="flex items-center gap-[1rem]">
         <TotalMemberCount membersCount={membersCount} />
         <div className="flex ml-auto gap-[1rem]">
@@ -183,7 +163,6 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             expandAllMetadata={expandAllMetadata}
             isLockManager={isLockManager}
             showCheckInTimeInfo={showCheckInTimeInfo}
-            onExtendKey={onExtendKey}
           />
         )
       })}
