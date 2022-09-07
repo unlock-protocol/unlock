@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Badge, Button, Input, Modal } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
+import { ExpireAndRefundModal } from '../ExpireAndRefundModal'
+import { KeyMetadata } from '../MetadataTable'
 import {
   FaCheckCircle as CheckIcon,
   FaSpinner as Spinner,
@@ -29,14 +31,13 @@ const styles = {
 }
 interface MemberCardProps {
   lockName: string
+  lockAddress: string
   expiration: string
   keyholderAddress: string
   tokenId: string
-  onExpireAndRefund: (lock: any) => void
   expandAllMetadata: boolean
   showCheckInTimeInfo: boolean
   isLockManager?: boolean
-  expireAndRefundDisabled?: boolean
   metadata?: { [key: string]: any }
   onExtendKey?: (key: ExtendKeyItem) => void
 }
@@ -58,14 +59,13 @@ export const MemberCardPlaceholder: React.FC<any> = () => {
 
 export const MemberCard: React.FC<MemberCardProps> = ({
   lockName,
+  lockAddress,
   expiration,
   keyholderAddress,
   tokenId,
-  onExpireAndRefund,
   expandAllMetadata,
   showCheckInTimeInfo,
   isLockManager,
-  expireAndRefundDisabled = true,
   metadata = {},
   onExtendKey,
 }) => {
@@ -89,9 +89,12 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     successDuration: 2000,
   })
 
+  const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
+    useState(false)
+
   const getLockVersion = async (): Promise<number> => {
     if (!network) return 0
-    return web3Service.publicLockVersion(data.lockAddress, network)
+    return web3Service.publicLockVersion(lockAddress, network)
   }
 
   const { isLoading: loadingVersion, data: lockVersion } = useQuery(
@@ -126,6 +129,16 @@ export const MemberCard: React.FC<MemberCardProps> = ({
 
   const hasExtraData = extraDataItems?.length > 0 || isCheckedIn
 
+  const isKeyValid = (timestamp: KeyMetadata['expiration']) => {
+    const now = new Date().getTime() / 1000
+    if (timestamp === MAX_UINT) return true
+    return parseInt(timestamp) > now
+  }
+
+  const expireAndRefundDisabled = !(
+    isLockManager && isKeyValid(metadata.expiration)
+  )
+
   const onMarkAsCheckIn = async () => {
     if (!storageService) return
     const { lockAddress, token: keyId } = data
@@ -134,6 +147,15 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       keyId,
       network: network!,
     })
+  }
+
+  const onExpireAndRefund = () => {
+    if (expireAndRefundDisabled) return
+    setShowExpireAndRefundModal(true)
+  }
+
+  const closeExpireAndRefund = () => {
+    setShowExpireAndRefundModal(false)
   }
 
   const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {
@@ -164,7 +186,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     })
 
     const sendEmailPromise = storageService.sendKeyQrCodeViaEmail({
-      lockAddress: data.lockAddress,
+      lockAddress,
       network,
       tokenId,
     })
@@ -207,12 +229,20 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       data-testid="member-card"
       className="px-10 py-4 bg-white border-2 rounded-lg hover:shadow-sm"
     >
+      <ExpireAndRefundModal
+        active={showExpireAndRefundModal}
+        dismiss={closeExpireAndRefund}
+        lockAddress={lockAddress}
+        keyOwner={data?.keyholderAddress}
+        tokenId={tokenId}
+      />
+
       <UpdateEmailModal
         isOpen={addEmailModalOpen ?? false}
         setIsOpen={setAddEmailModalOpen}
         isLockManager={isLockManager ?? false}
         userAddress={keyholderAddress}
-        lockAddress={data.lockAddress}
+        lockAddress={lockAddress}
         network={network!}
         hasExtraData={hasExtraData}
         hasEmail={hasEmailMetadata}
