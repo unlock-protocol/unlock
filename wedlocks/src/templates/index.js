@@ -3,10 +3,10 @@ import ejectedEmail from './ejectedEmail'
 import ejectionWarningEmail from './ejectionWarningEmail'
 import welcome from './welcome'
 import recoveryKeyConfirmEmail from './recoveryKeyConfirmEmail'
-import confirmEvent from './confirmEvent'
 import keyOwnership from './keyOwnership'
 import keyMined from './keyMined'
 import debug from './debug'
+import dappcon from './dappcon'
 
 import * as LockTemplates from './locks'
 
@@ -16,10 +16,10 @@ const baseTemplates = {
   ejectionWarningEmail,
   welcome,
   recoveryKeyConfirmEmail,
-  confirmEvent,
   keyOwnership,
   keyMined,
   debug,
+  dappcon,
 }
 
 const templates = {}
