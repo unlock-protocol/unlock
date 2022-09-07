@@ -1,5 +1,5 @@
 ---
-title: New Members page Filters
+title: Members page Filters
 subTitle: A new way to filter for keys in members page
 authorName: Kalidou Diagne
 publishDate: September 8, 2022
