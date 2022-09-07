@@ -21,7 +21,7 @@ import useEns from '~/hooks/useEns'
 import { expirationAsDate } from '~/utils/durations'
 import { useMutation, useQuery } from 'react-query'
 import { MAX_UINT } from '~/constants'
-import { ExtendKeyItem } from '~/components/creator/members/ExtendKeysDrawer'
+import { ExtendKeysDrawer } from '~/components/creator/members/ExtendKeysDrawer'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const styles = {
@@ -39,7 +39,6 @@ interface MemberCardProps {
   showCheckInTimeInfo: boolean
   isLockManager?: boolean
   metadata?: { [key: string]: any }
-  onExtendKey?: (key: ExtendKeyItem) => void
 }
 
 const keysToIgnore = [
@@ -67,7 +66,6 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   showCheckInTimeInfo,
   isLockManager,
   metadata = {},
-  onExtendKey,
 }) => {
   const storageService = useContext(StorageServiceContext)
   const walletService = useContext(WalletServiceContext)
@@ -84,6 +82,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const [extraDataItems, setExtraDataItems] = useState<
     [string, string | number][]
   >([])
+  const [extendKeysOpen, setExtendKeysOpen] = useState(false)
 
   const [isCopied, setCopied] = useClipboard(keyholderAddress, {
     successDuration: 2000,
@@ -210,18 +209,6 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     .map(([key]) => key.toLowerCase())
     .includes('email')
 
-  const onExtendKeyCb = () => {
-    if (typeof onExtendKey === 'function') {
-      onExtendKey({
-        lockName,
-        owner: data?.keyholderAddress,
-        lockAddress: data?.lockAddress,
-        tokenId,
-        expiration,
-      })
-    }
-  }
-
   const canExtendKey =
     expiration !== MAX_UINT && lockVersion && lockVersion >= 11
   return (
@@ -229,6 +216,20 @@ export const MemberCard: React.FC<MemberCardProps> = ({
       data-testid="member-card"
       className="px-10 py-4 bg-white border-2 rounded-lg hover:shadow-sm"
     >
+      <ExtendKeysDrawer
+        isOpen={extendKeysOpen}
+        setIsOpen={() => setExtendKeysOpen(true)}
+        selectedKey={
+          {
+            lockName,
+            owner: data?.keyholderAddress,
+            lockAddress: data?.lockAddress,
+            tokenId,
+            expiration,
+          }!
+        }
+      />
+
       <ExpireAndRefundModal
         active={showExpireAndRefundModal}
         dismiss={closeExpireAndRefund}
@@ -288,7 +289,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
                 <Button
                   size="small"
                   variant="outlined-primary"
-                  onClick={onExtendKeyCb}
+                  onClick={() => setExtendKeysOpen(true)}
                   disabled={loadingVersion}
                 >
                   Extend key
