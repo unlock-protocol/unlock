@@ -121,7 +121,7 @@ export const disconnectStripe = async ({
     )
 
     // delete stripe connection and remove record from db
-    const deletedAccount = await stripe.accounts.deletePerson(account.id, lock)
+    const deletedAccount = await stripe.accounts.del(account.id)
     const deletedLockConnect = await StripeConnectLock.destroy({
       where: {
         lock,
