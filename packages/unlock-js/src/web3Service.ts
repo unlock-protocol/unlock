@@ -442,42 +442,6 @@ export default class Web3Service extends UnlockService {
     ).toNumber()
   }
 
-  async getCancelAndRefundValueFor(params: {
-    lockAddress: string
-    owner: string
-    tokenAddress: string
-    network: number
-  }) {
-    const { lockAddress, owner, tokenAddress, network } = params
-    if (!lockAddress) {
-      throw new Error('Missing lockAddress')
-    }
-    if (!owner) {
-      throw new Error('Missing owner')
-    }
-    if (!tokenAddress) {
-      throw new Error('Missing tokenAddress')
-    }
-    if (!network) {
-      throw new Error('Missing network')
-    }
-
-    const version = await this.lockContractAbiVersion(
-      lockAddress,
-      this.providerForNetwork(network)
-    )
-
-    if (!version.getCancelAndRefundValueFor) {
-      throw new Error('Lock version not supported')
-    }
-
-    return version.getKeyExpirationByLockForOwner.bind(this)(
-      lockAddress,
-      owner,
-      network
-    )
-  }
-
   /**
    * Returns total of key for a specific address
    * @param {String} lockAddress
@@ -522,5 +486,28 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     return await lockContract.tokenURI(tokenId)
+  }
+
+  async getCancelAndRefundValueFor(params: {
+    lockAddress: string
+    owner: string
+    tokenAddress: string
+    network: number
+    tokenId: string
+  }) {
+    const { lockAddress, network } = params
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+
+    if (!version.getCancelAndRefundValueFor) {
+      throw new Error('Lock version not supported')
+    }
+
+    return await version.getCancelAndRefundValueFor.bind(this)(
+      params,
+      this.providerForNetwork(network)
+    )
   }
 }

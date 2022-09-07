@@ -78,18 +78,6 @@ const component: React.ReactElement<any> = (
   />
 )
 
-const componentInactive: React.ReactElement<any> = (
-  <CancelAndRefundModal
-    active
-    setIsOpen={dismiss}
-    lock={undefined}
-    account={accountAddress}
-    currency="eth"
-    keyId="1"
-    network={4}
-  />
-)
-
 const mockUseKeychain = {
   isLoading: true,
   data: {
@@ -122,12 +110,5 @@ describe('CancelAndRefundModal', () => {
     expect.assertions(1)
     const { container } = renderWithContexts(component)
     expect(container).toBeDefined()
-  })
-
-  it('should show error if lock is not passaed as prop', () => {
-    expect.assertions(1)
-    const { getByText } = renderWithContexts(componentInactive)
-    const message = getByText('No lock selected')
-    expect(message).toBeDefined()
   })
 })

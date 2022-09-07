@@ -26,15 +26,13 @@ export const useKeychain = ({
   }
 
   const getRefundAmount = async () => {
-    const params = {
+    return web3Service.getCancelAndRefundValueFor({
       lockAddress,
       owner,
       tokenAddress,
       network,
       tokenId: keyId,
-    }
-    const web3Service = new Web3Service(networks)
-    return web3Service.getCancelAndRefundValueFor(params)
+    })
   }
 
   const getAmounts = async (): Promise<{

@@ -145,12 +145,15 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const { watchAsset } = useAuth()
   const config = useConfig()
   const expirationStatus = expirationAsDate(expiration)
-  const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
+
   const [error, setError] = useState<string | null>()
   const [showingQR, setShowingQR] = useState(false)
   const [showMetadata, setShowMetadata] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
+  const [expireAndRefunded, setExpireAndRefunded] = useState(false)
+  const isKeyExpired =
+    expirationStatus.toLocaleLowerCase() === 'expired' || expireAndRefunded
   const { data: lockData, isLoading: isLockDataLoading } = useQuery(
     ['lock', lock.address, network],
     () => {
@@ -253,15 +256,19 @@ const Key = ({ ownedKey, account, network }: Props) => {
         keyId={keyId}
         network={network}
       />
-      <CancelAndRefundModal
-        active={showCancelModal}
-        lock={lock}
-        keyId={keyId}
-        setIsOpen={setShowCancelModal}
-        account={account}
-        currency={symbol}
-        network={network}
-      />
+      {!isKeyExpired && (
+        <CancelAndRefundModal
+          active={showCancelModal}
+          lock={lock}
+          keyId={keyId}
+          setIsOpen={setShowCancelModal}
+          account={account}
+          currency={symbol}
+          network={network}
+          onExpireAndRefund={() => setExpireAndRefunded(true)}
+        />
+      )}
+
       {signature && (
         <QRModal
           lock={lock}

@@ -14,6 +14,7 @@ export interface ICancelAndRefundProps {
   currency: string
   keyId: string
   network: number
+  onExpireAndRefund?: () => void
 }
 
 const CancelAndRefundModalPlaceHolder = () => {
@@ -38,20 +39,20 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   currency,
   keyId,
   network,
+  onExpireAndRefund,
 }) => {
   const walletService = useWalletService()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
-  const {
-    isLoading,
-    data: { refundAmount = 0, transferFee = 0, lockBalance = 0 } = {},
-  } = useKeychain({
+  const { isLoading, data } = useKeychain({
     lockAddress,
     network,
     owner,
     keyId,
     tokenAddress,
   })
+
+  const { refundAmount = 0, transferFee = 0, lockBalance = 0 } = data ?? {}
 
   const cancelAndRefund = async () => {
     const params = {
@@ -65,9 +66,9 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
     onSuccess: () => {
       ToastHelper.success('Key cancelled and successfully refunded.')
       setIsOpen(false)
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
+      if (typeof onExpireAndRefund === 'function') {
+        onExpireAndRefund()
+      }
     },
     onError: (err: any) => {
       setIsOpen(false)
@@ -126,7 +127,9 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
                 {cancelRefundMutation.isLoading && (
                   <Spinner className="animate-spin" />
                 )}
-                <span className="ml-2">Confirm</span>
+                <span className="ml-2">
+                  {cancelRefundMutation.isLoading ? 'Refunding...' : 'Confirm'}
+                </span>
               </div>
             </Button>
           </div>
