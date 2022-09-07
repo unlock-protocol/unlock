@@ -28,7 +28,7 @@ This filter refers to the public wallet address, the user will be able to filter
 
 #### Token id
 
-This filter refers to token id, you will be able to filter by a specific token id.
+This filter refers to token id, the user will be able to filter by a specific token id.
 
 ![Filter by owner token id](/images/blog/new-filters-members-page/filter-by-token-id.png)
 
