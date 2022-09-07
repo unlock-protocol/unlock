@@ -105,10 +105,4 @@ describe('CancelAndRefundModal', () => {
     const { getByTestId } = renderWithContexts(component)
     expect(getByTestId('placeholder')).toBeDefined()
   })
-
-  it('correctly render CancelAndRefund', () => {
-    expect.assertions(1)
-    const { container } = renderWithContexts(component)
-    expect(container).toBeDefined()
-  })
 })
