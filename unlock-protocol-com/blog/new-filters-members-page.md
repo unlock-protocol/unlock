@@ -8,7 +8,7 @@ image: /images/blog/new-filters-members-page/filter-overview.png
 ---
 
 Our Members page is now improved with more specific filters, that now makes more simplier to find a specific key.
-The set of filter introduced are `owner`, `toked id`, `check in time`, `type of expiration` and `email`.
+We have introduced filters that let you find specific memberships by `owner`, `toked id`, `check-in time`, `type of expiration`, and `email`.
 
 ### Filter selection
 
