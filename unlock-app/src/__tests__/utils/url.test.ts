@@ -17,4 +17,11 @@ describe('url', () => {
 
     expect(rewriteIpfsUrl(url)).toBe('https://google.it/')
   })
+
+  it('wrong url returns same url', () => {
+    expect.assertions(1)
+    const url = 'google.it'
+
+    expect(rewriteIpfsUrl(url)).toBe('google.it')
+  })
 })
