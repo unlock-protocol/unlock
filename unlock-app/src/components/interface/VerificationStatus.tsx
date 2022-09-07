@@ -17,7 +17,6 @@ import { useRouter } from 'next/router'
 import { isSignatureValidForAddress } from '~/utils/signatures'
 import { useConfig } from '~/utils/withConfig'
 import { Dialog, Transition } from '@headlessui/react'
-import { FaSpinner as Spinner } from 'react-icons/fa'
 
 interface Props {
   config: MembershipVerificationConfig
@@ -213,21 +212,14 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
                       <span>
                         {`The current ticket ticket is not marked as "checked in"`}
                       </span>
-                      <Button
-                        onClick={() => setShowWarning(false)}
-                        disabled={isCheckingIn}
-                      >
+                      <Button onClick={() => setShowWarning(false)}>
                         Cancel
                       </Button>
                       <Button
                         variant="outlined-primary"
-                        onClick={onCheckIn}
-                        disabled={isCheckingIn}
+                        onClick={onClickVerified}
                       >
                         <div className="flex items-center">
-                          {isCheckingIn && (
-                            <Spinner className="mr-1 animate-spin" />
-                          )}
                           <span>Ok, continue</span>
                         </div>
                       </Button>
