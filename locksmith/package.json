@@ -6,6 +6,7 @@
   "scripts": {
     "prod": "cd build && node -r ./src/utils/envLoader.js ./server.js",
     "start": "yarn build && node -r ./src/utils/envLoader.js ./build/server.js",
+    "dappcon-mailer": "ts-node-dev -r ./src/utils/envLoader.js --files dappcon-mailer.js",
     "debug": "ts-node-dev -r ./src/utils/envLoader.js --files debug.js",
     "dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js --files server.js",
     "test": "yarn test:db:setup && yarn test:run",
