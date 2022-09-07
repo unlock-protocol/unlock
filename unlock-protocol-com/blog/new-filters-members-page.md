@@ -14,7 +14,7 @@ We have introduced filters that let you find specific memberships by `owner`, `t
 
 ![Filter selection](/images/blog/new-filters-members-page/filter-selection.png)
 
-When a filter is selected you will be able to see a input or a dropdown (with a set of default values) based on the active filter.
+When a filter is selected the user will see an input or a dropdown (with a set of default values) that lets them enter the specific values they are looking for.
 
 ![Filter by owner](/images/blog/new-filters-members-page/filter-by-owner.png)
 
