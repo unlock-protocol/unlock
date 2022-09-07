@@ -34,7 +34,7 @@ This filter refers to token id, the user will be able to filter by a specific to
 
 #### Check in time
 
-This filter shows all keys marked as checked in.
+This filter shows all keys marked as checked in. This is useful for conferences that are trying to list all ticket holders that did show up and attended the event.
 
 _Only lock manager are able to see this filter because checked in time is a protected data._
 
