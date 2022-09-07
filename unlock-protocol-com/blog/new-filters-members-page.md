@@ -50,7 +50,7 @@ _Only lock manager are able to see this filter because email is a protected data
 
 #### Expiration
 
-This filters refers to expiration status, when active you can choose between 3 default values:
+This filter refer to expiration status; when active you can choose between 3 default values:
 
 - `ALL` to show all the keys without any distiction
 - `EXPIRED` to show all the expired keys
