@@ -22,7 +22,7 @@ When a filter is selected the user will see an input or a dropdown (with a set o
 
 #### Owner
 
-This filter refers to public address, you will be able to filter by partial text or also with ens domain.
+This filter refers to the public wallet address, the user will be able to filter by partial (`0x123` to find all addresses that start with `0x123`) text or also with an [ENS domain](https://ens.domains/).
 
 ![Filter by owner](/images/blog/new-filters-members-page/filter-by-owner-partial.png)
 
