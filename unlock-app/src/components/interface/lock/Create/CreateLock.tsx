@@ -72,7 +72,7 @@ const CreateLockSummary = ({ lock, network, setStep }: any) => {
             Here is the overview of your Lock
           </span>
           <img
-            className="hidden mt-9 md:block"
+            className="hidden max-w-xs mt-28 md:block"
             src="/images/svg/lock.svg"
             alt=""
           />
