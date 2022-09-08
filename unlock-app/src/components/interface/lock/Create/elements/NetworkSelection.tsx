@@ -22,15 +22,20 @@ export const NetworkSelection = () => {
             {currentNetworkName}
           </Listbox.Button>
           <Listbox.Options className="absolute z-10 w-full mt-1 overflow-hidden bg-white border border-gray-400 rounded-xl">
-            {Object.values(networks).map(({ id, name }: any) => (
-              <Listbox.Option
-                key={id}
-                value={id}
-                className="p-1.5 cursor-pointer odd:bg-gray-50 hover:bg-gray-100"
-              >
-                {name}
-              </Listbox.Option>
-            ))}
+            {Object.values(networks).map(({ id, name }: any) => {
+              const currentSelection = name === currentNetworkName
+              return (
+                <Listbox.Option
+                  key={id}
+                  value={id}
+                  className="p-3 cursor-pointer odd:bg-gray-50 hover:bg-gray-100"
+                >
+                  <span className={currentSelection ? 'font-bold' : ''}>
+                    {name}
+                  </span>
+                </Listbox.Option>
+              )
+            })}
           </Listbox.Options>
         </div>
       </Listbox>
