@@ -40,9 +40,9 @@ module.exports = {
             900: '#3A258D',
           },
           secondary: {
-            50: 'FFFDFA',
-            100: 'FFFDF8',
-            200: 'FFFCF6',
+            50: '#FFFDFA',
+            100: '#FFFDF8',
+            200: '#FFFCF6',
             300: '#FFFAF1',
             400: '#FFF9ED',
             500: '#FFF7E8',
