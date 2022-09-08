@@ -2,6 +2,7 @@ import Sequelize = require('sequelize')
 import { ethers } from 'ethers'
 import networks from '@unlock-protocol/networks'
 import * as Normalizer from '../utils/normalizer'
+import { Web3Service } from '@unlock-protocol/unlock-js'
 
 const models = require('../models')
 
@@ -117,45 +118,8 @@ export async function isSoldOut(
   chain: number,
   keysNeeded = 10
 ): Promise<boolean> {
-  const provider = new ethers.providers.JsonRpcProvider(
-    networks[chain].publicProvider
-  )
+  const web3Service = new Web3Service(networks)
 
-  const lock = new ethers.Contract(
-    address,
-    [
-      {
-        inputs: [],
-        name: 'totalSupply',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256',
-          },
-        ],
-        stateMutability: 'view',
-        type: 'function',
-      },
-      {
-        inputs: [],
-        name: 'maxNumberOfKeys',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256',
-          },
-        ],
-        stateMutability: 'view',
-        type: 'function',
-      },
-    ],
-    provider
-  )
-
-  const maxNumberOfKeys = await lock.maxNumberOfKeys()
-  const totalSupply = await lock.totalSupply()
-  const newMaxNumberOfKeys = maxNumberOfKeys.add(keysNeeded)
-  return newMaxNumberOfKeys.lte(totalSupply)
+  const keysAvailable = await web3Service.keysAvailable(address, chain)
+  return keysAvailable.lte(keysNeeded) // true of keysAvailable smaller than keysNeeded
 }
