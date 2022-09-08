@@ -12,6 +12,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { LockFormProps, useCreateLock } from '../useCreateLock'
 import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
+import { useConfig } from '~/utils/withConfig'
 
 const Radio = ({ checked }: { checked: boolean }) => {
   return checked ? (
@@ -30,8 +31,10 @@ const Radio = ({ checked }: { checked: boolean }) => {
 }
 
 export const CreateLockForm = ({ onSubmit }: any) => {
+  const { networks } = useConfig()
   const { network } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
+  const baseCurrencySymbol = networks[network!].baseCurrencySymbol
 
   const {
     form: {
@@ -69,6 +72,7 @@ export const CreateLockForm = ({ onSubmit }: any) => {
             <div className="relative">
               <Input
                 label="Name"
+                autoComplete="off"
                 placeholder="Lock Name"
                 {...register('name', {
                   required: true,
@@ -128,6 +132,7 @@ export const CreateLockForm = ({ onSubmit }: any) => {
                               <div className="relative flex grow">
                                 <Input
                                   tabIndex={-1}
+                                  autoComplete="off"
                                   {...register('duration', {
                                     required: value !== true,
                                     min: 1,
@@ -187,6 +192,7 @@ export const CreateLockForm = ({ onSubmit }: any) => {
                               <Input
                                 placeholder="Enter duration"
                                 type="number"
+                                autoComplete="off"
                                 step={1}
                                 {...register('quantity', {
                                   min: 1,
@@ -212,11 +218,12 @@ export const CreateLockForm = ({ onSubmit }: any) => {
                   onClick={() => setIsOpen(true)}
                   className="box-border flex-1 block w-full py-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                 >
-                  currency
+                  {baseCurrencySymbol}
                 </div>
                 <div className="relative">
                   <Input
                     type="number"
+                    autoComplete="off"
                     placeholder="0.00"
                     {...register('price', {
                       min: 0,
