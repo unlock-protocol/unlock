@@ -5,7 +5,6 @@ import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import Account from '../interface/Account'
 import Layout from '../interface/Layout'
 import Loading from '../interface/Loading'
-import { Heading, Instructions } from '../interface/FinishSignup'
 import { pageTitle } from '../../constants'
 import { ConfigContext } from '../../utils/withConfig'
 import { ToastHelper } from '../helpers/toast.helper'
@@ -90,15 +89,15 @@ export const CloneContent = ({ query }: CloneContentProps) => {
         <title>{pageTitle('Clone Lock')}</title>
       </Head>
       <Account />
-      <Heading>Clone your Lock</Heading>
+      <h1 className="mb-1 text-4xl font-bold">Clone your Lock</h1>
       {(!Object.keys(lockMigration).length || !success) && (
         <div>
-          <Instructions>
+          <span className="mb-2 text-lg font-light">
             We had to redeploy Unlock{' '}
             {network && `on ${config.networks[network].name}`}. We strongly
             recommend that you clone your lock in order to use that new version
             of Unlock.
-          </Instructions>
+          </span>
           <p>
             Note: An identical lock with a new address will be created, with all
             members in an identical state. <br />
