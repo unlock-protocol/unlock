@@ -488,6 +488,31 @@ export default class Web3Service extends UnlockService {
     return await lockContract.tokenURI(tokenId)
   }
 
+  /**
+   * Returns the number of keys available for sale
+   * @param lockAddress
+   * @param network
+   * @returns
+   */
+  async keysAvailable(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const totalSupply = await lockContract.totalSupply()
+    const maxNumberOfKeys = await lockContract.maxNumberOfKeys()
+    return maxNumberOfKeys.sub(totalSupply)
+  }
+
+  /**
+   * Returns how much of a refund a key owner would receive
+   * @param lockAddress
+   * @param network
+   * @param owner
+   * @param tokenAddress
+   * @param tokenId
+   * @returns
+   */
   async getCancelAndRefundValueFor(params: {
     lockAddress: string
     owner: string

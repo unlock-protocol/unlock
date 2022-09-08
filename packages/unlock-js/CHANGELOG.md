@@ -1,9 +1,14 @@
 # Changes
 
-# 0.26.7
+# 0.26.8
 
 - add support for `transferFeeBasisPoints`
 - move `getCancelAndRefundValueFor` from `walletService` -> `web3Service`
+
+# 0.26.7
+
+- add support for `keysAvailable`
+
 # 0.26.6
 
 - add support for `tokenURI`
