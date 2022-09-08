@@ -48,6 +48,7 @@ const keysToIgnore = [
   'checkedInAt',
   'lockAddress',
   'keyholderAddress',
+  'recipient',
 ]
 
 export const MemberCardPlaceholder: React.FC<any> = () => {
