@@ -254,7 +254,7 @@ export class StorageService extends EventEmitter {
    * @returns {Promise<*>}
    */
 
-  async createUser(user: any) {
+  async createUser(user: any): Promise<any> {
     return fetch(`${this.host}/users/`, {
       method: 'POST',
       body: JSON.stringify(user),
@@ -566,6 +566,25 @@ export class StorageService extends EventEmitter {
       },
     })
     return response.json()
+  }
+
+  /**
+   * Given a lock address and a typed data signature, disconnect stripe
+   * @param {string} lockAddress
+   * @param {string} signature
+   * @param {*} data
+   */
+  async disconnectStripe(lockAddress: string, network: number) {
+    const url = new URL(`${this.host}/${network}/lock/${lockAddress}/stripe`)
+    const token = await this.getAccessToken()
+
+    return await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
   }
 
   async updateLockIcon(

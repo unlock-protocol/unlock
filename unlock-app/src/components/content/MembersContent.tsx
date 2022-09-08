@@ -177,7 +177,7 @@ const MetadataTableWrapper = ({
   const [filterKey, setFilteKey] = useState<string>('owner')
   const [currentFilter, setCurrentFilter] = useState<Filter>()
   const [currentOption, setCurrentOption] = useState<string>()
-  const [expiration, setExpiration] = useState<MemberFilter>('active')
+  const [expiration, setExpiration] = useState<MemberFilter>('all')
   const queryValue = useDebounce<string>(query)
 
   const { getKeys, columns, hasNextPage, keysCount, lockManagerMapping } =
@@ -277,6 +277,7 @@ const MetadataTableWrapper = ({
                 name={currentFilter?.key}
                 className="rounded-md shadow-sm border border-gray-400 hover:border-gray-500 h-[33px] text-xs"
                 onChange={onOptionChange}
+                defaultValue={filterKey ? filterKey : ''}
               >
                 {options?.map((option: string) => {
                   return (

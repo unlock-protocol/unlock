@@ -213,7 +213,7 @@ export class PurchaseController {
       const pricing = await pricer.generate(lockAddress, network)
 
       if (pricing.keyPrice !== undefined && pricing.keyPrice > 0) {
-        return response.status(500).send({
+        return response.status(400).send({
           message: 'Lock is not free.',
         })
       }

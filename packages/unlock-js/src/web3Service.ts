@@ -466,4 +466,20 @@ export default class Web3Service extends UnlockService {
     )
     return await lockContract.tokenURI(tokenId)
   }
+
+  /**
+   * Returns the number of keys available for sale
+   * @param lockAddress
+   * @param network
+   * @returns
+   */
+  async keysAvailable(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const totalSupply = await lockContract.totalSupply()
+    const maxNumberOfKeys = await lockContract.maxNumberOfKeys()
+    return maxNumberOfKeys.sub(totalSupply)
+  }
 }

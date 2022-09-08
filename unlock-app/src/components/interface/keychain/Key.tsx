@@ -7,7 +7,6 @@ import {
 } from '@radix-ui/react-avatar'
 import { MdExplore as ExploreIcon } from 'react-icons/md'
 import { BsTrashFill as CancelIcon } from 'react-icons/bs'
-import styled from 'styled-components'
 import {
   FaWallet as WalletIcon,
   FaQrcode as QrCodeIcon,
@@ -147,7 +146,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const config = useConfig()
   const expirationStatus = expirationAsDate(expiration)
   const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>()
   const [showingQR, setShowingQR] = useState(false)
   const [showMetadata, setShowMetadata] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
@@ -190,6 +189,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
     window.open(networks[network].explorer?.urls.address(lock.address))
   }
 
+  // TODO: use the networks' OpenSea config!
   const viewOnOpenSea = async () => {
     if (network === 137) {
       window.open(
@@ -282,9 +282,9 @@ const Key = ({ ownedKey, account, network }: Props) => {
         isKeyExpired={isKeyExpired}
         expirationStatus={expirationStatus}
       />
-      {error && <Error>{error}</Error>}
+      {error && <span className="text-sm text-red-500">{error}</span>}
       <div className="grid gap-2 pt-4">
-        <div className="flex items-center flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {!isKeyExpired && (
             <Tooltip label="Scan QR code" tip="Scan QR code">
               <button
@@ -358,6 +358,3 @@ const Key = ({ ownedKey, account, network }: Props) => {
   )
 }
 export default Key
-const Error = styled.p`
-  color: var(--red);
-`
