@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button, Icon, Input } from '@unlock-protocol/ui'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { RadioGroup } from '@headlessui/react'
 import {
   MdRadioButtonUnchecked as UncheckedIcon,
@@ -27,11 +27,11 @@ const Radio = ({ checked }: { checked: boolean }) => {
 
 export const CreateLockForm = () => {
   const { network } = useAuth()
-  const [expiration, setExpiration] = useState('forever')
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, control } = useForm({
     defaultValues: {
       name: '',
+      duration: null,
       price: null,
       network,
     },
@@ -51,44 +51,49 @@ export const CreateLockForm = () => {
           <label className="block px-1 mb-4 text-base" htmlFor="">
             Duration
           </label>
-          <RadioGroup
-            className="flex flex-col w-full gap-5"
-            value={expiration}
-            onChange={setExpiration}
-          >
-            <RadioGroup.Option value="forever">
-              {({ checked }) => (
-                <div className="flex items-center gap-4">
-                  <Radio checked={checked} />
-                  <span className="text-lg font-bold">Good forever</span>
-                </div>
-              )}
-            </RadioGroup.Option>
-            <RadioGroup.Option value="duration">
-              {({ checked }) => (
-                <div className="flex items-center w-full gap-4">
-                  <Radio checked={checked} />
-                  <div className="flex items-center gap-4">
-                    <label className="text-lg font-bold " htmlFor="">
-                      Expired at
-                    </label>
-                    <Input placeholder="Enter quantity" type="date" />
-                  </div>
-                </div>
-              )}
-            </RadioGroup.Option>
-          </RadioGroup>
+          <Controller
+            control={control}
+            name="duration"
+            render={({ field: { value, onChange } }) => {
+              console.log(value)
+              return (
+                <RadioGroup
+                  className="flex flex-col w-full gap-5"
+                  value={value}
+                  onChange={onChange}
+                >
+                  <RadioGroup.Option value="1">
+                    {({ checked }) => (
+                      <div className="flex items-center gap-4">
+                        <Radio checked={checked} />
+                        <span className="text-lg font-bold">Good forever</span>
+                      </div>
+                    )}
+                  </RadioGroup.Option>
+                  <RadioGroup.Option value="2">
+                    {({ checked }) => (
+                      <div className="flex items-center w-full gap-4">
+                        <Radio checked={checked} />
+                        <div className="flex items-center gap-4">
+                          <label className="text-lg font-bold " htmlFor="">
+                            Expired at
+                          </label>
+                          <Input placeholder="Enter quantity" type="date" />
+                        </div>
+                      </div>
+                    )}
+                  </RadioGroup.Option>
+                </RadioGroup>
+              )
+            }}
+          />
         </div>
 
         <div>
           <label className="block px-1 mb-4 text-base" htmlFor="">
             Quantity
           </label>
-          <RadioGroup
-            className="flex flex-col gap-5"
-            value={expiration}
-            onChange={setExpiration}
-          >
+          <RadioGroup className="flex flex-col gap-5">
             <RadioGroup.Option value="forever">
               {({ checked }) => (
                 <div className="flex items-center gap-4">
