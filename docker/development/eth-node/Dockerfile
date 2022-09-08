@@ -17,4 +17,4 @@ RUN yarn install --pure-lockfile
 COPY --chown=node . .
 
 EXPOSE 8545
-CMD [ "yarn", "start" ]
+CMD [  "yarn", "hardhat", "node", "--hostname", "0.0.0.0" ]

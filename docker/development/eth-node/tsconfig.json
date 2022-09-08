@@ -1,9 +1,11 @@
 {
-  "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
     "outDir": "./dist",
     "rootDirs": ["./src", "./test"],
     "resolveJsonModule": true,
+    "noImplicitAny": true,
     "noImplicitReturns": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -11,7 +13,5 @@
     "skipLibCheck": true
   },
   "exclude": ["dist", "node_modules"],
-  "include": [
-    "./src"
-  ]
+  "include": ["scripts", "utils", "lib"]
 }

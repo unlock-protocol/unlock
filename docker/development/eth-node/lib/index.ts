@@ -4,8 +4,6 @@ import type { Contract } from 'ethers'
 import fs from 'fs-extra'
 import path from 'path'
 
-const subgraphFolder = path.join(__dirname, '..', '..', 'subgraph')
-
 /**
  * A method which deploys an ERC20 contract
  * @param {*} providerUrl
@@ -26,7 +24,7 @@ export const outputSubgraphNetworkConf = async (
 ): Promise<void> => {
   // update subgraph configuration
   await fs.writeJSON(
-    path.join(subgraphFolder, 'networks.json'),
+    path.join('.', 'networks.json'),
     {
       localhost: {
         Unlock: {
