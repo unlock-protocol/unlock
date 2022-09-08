@@ -5,8 +5,8 @@ import '@unlock-protocol/hardhat-plugin'
 const config: HardhatUserConfig = {
   solidity: '0.8.9',
   networks: {
-    hardhat: {
-      chainId: 31337,
+    docker: {
+      url: 'http://localhost:8545',
     },
   },
 }

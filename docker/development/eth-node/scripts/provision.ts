@@ -8,7 +8,7 @@
 
 import { ethers, unlock } from 'hardhat'
 
-import { deployErc20 } from '../lib'
+import { deployErc20, outputSubgraphNetworkConf } from '../lib'
 import locksArgs from '../lib/locks'
 
 const { AddressZero } = ethers.constants
@@ -117,6 +117,10 @@ async function main() {
       return lock
     })
   )
+
+  // replace subraph conf
+  await outputSubgraphNetworkConf(unlockContract.address)
+  log('Subgraph conf written at : ')
 
   // Mark the node as ready by sending 1 WEI to the address 0xa3056617a6f63478ca68a890c0d28b42f4135ae4 which is KECCAK256(UNLOCKREADY)
   // This way, any test or application which requires the node to be completely set can just wait for the balance of 0xa3056617a6f63478ca68a890c0d28b42f4135ae4 to be >0.
