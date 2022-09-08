@@ -217,6 +217,7 @@ export const CreateLockForm = ({ onSubmit }: any) => {
                 <div className="relative">
                   <Input
                     type="number"
+                    placeholder="0.00"
                     {...register('price', {
                       min: 0,
                       required: true,

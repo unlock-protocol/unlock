@@ -28,7 +28,7 @@ export const NetworkSelection = () => {
                 <Listbox.Option
                   key={id}
                   value={id}
-                  className="p-3 cursor-pointer odd:bg-gray-50 hover:bg-gray-100"
+                  className="p-3 cursor-pointer hover:bg-gray-100"
                 >
                   <span className={currentSelection ? 'font-bold' : ''}>
                     {name}
