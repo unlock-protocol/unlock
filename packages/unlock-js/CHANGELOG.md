@@ -1,5 +1,9 @@
 # Changes
 
+# 0.26.7
+
+- add support for `keysAvailable`
+
 # 0.26.6
 
 - add support for `tokenURI`
