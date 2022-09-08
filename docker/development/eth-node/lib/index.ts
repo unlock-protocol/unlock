@@ -21,17 +21,17 @@ export const deployErc20 = async (): Promise<Contract> => {
 
 export const outputSubgraphNetworkConf = async (
   unlockAddress: string
-): Promise<void> => {
-  // update subgraph configuration
-  await fs.writeJSON(
-    path.join('.', 'networks.json'),
-    {
-      localhost: {
-        Unlock: {
-          address: unlockAddress,
-        },
+): Promise<{}> => {
+  const networkConf = {
+    localhost: {
+      Unlock: {
+        address: unlockAddress,
       },
     },
-    { spaces: 2 }
-  )
+  }
+  // update subgraph configuration
+  await fs.writeJSON(path.join('.', 'networks.json'), networkConf, {
+    spaces: 2,
+  })
+  return networkConf
 }

@@ -2,6 +2,9 @@
 
 echo "Migrating subgraph..."
 
+# show networks
+cat /home/unlock/subgraph/networks.json
+
 # generate ts code 
 yarn workspace @unlock-protocol/subgraph codegen
 
