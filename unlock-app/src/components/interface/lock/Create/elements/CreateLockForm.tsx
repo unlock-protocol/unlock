@@ -30,7 +30,6 @@ const Radio = ({ checked }: { checked: boolean }) => {
 export const CreateLockForm = ({ onSubmit }: any) => {
   const { network } = useAuth()
 
-  console.log('onSubmit', onSubmit)
   const {
     form: {
       register,
@@ -39,12 +38,10 @@ export const CreateLockForm = ({ onSubmit }: any) => {
       setValue,
       formState: { isValid, errors },
     },
-    values,
   } = useCreateLock(network!)
 
   const onHandleSubmit = (values: LockFormProps) => {
     if (isValid) {
-      console.log(values)
       if (typeof onSubmit === 'function') {
         onSubmit(values)
       }
