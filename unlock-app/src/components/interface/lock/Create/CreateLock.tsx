@@ -187,7 +187,6 @@ const CreateLockSummary: React.FC<CreateLockSummaryProps> = ({
             <Button onClick={onHandleSubmit}>Look good for me</Button>
             <Button
               variant="transparent"
-              className="font-bold text-center cursor-pointer"
               onClick={() => setStep('data', formData)}
             >
               Back to Edit

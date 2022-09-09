@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { useEffect } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from 'react-query'
+import { useRouter } from 'next/router'
+
 interface StatusProps {
   active: boolean
   label: string
@@ -54,6 +56,7 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
   showStatus = false,
   transactionHash,
 }) => {
+  const router = useRouter()
   const web3Service = useWeb3Service()
   const { networks, requiredConfirmations } = useConfig()
   const { unlimitedDuration = false, unlimitedQuantity = false } =
@@ -93,10 +96,10 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
     // redirect to dashboard after the key is deployed
     if (isDeployed) {
       setTimeout(() => {
-        window.location.href = '/dashboard'
+        router.push('/dashboard')
       }, 5000)
     }
-  }, [isDeployed])
+  }, [isDeployed, router])
 
   return (
     <div>
