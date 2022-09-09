@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import styled from 'styled-components'
 
 import {
   Input,
@@ -40,7 +39,7 @@ export const SignUp = ({ onCancel, createAccount, showLogin }: SignUpProps) => {
   }
 
   return (
-    <StyledForm onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <Label>Email</Label>
       <Input
         autoComplete="username"
@@ -63,19 +62,16 @@ export const SignUp = ({ onCancel, createAccount, showLogin }: SignUpProps) => {
       {error && error === 'ACCOUNT_ALREADY_EXISTS' && (
         <>
           An account with this email already exists,{' '}
-          <LinkButton onClick={() => showLogin()}>please login</LinkButton>.
+          <a className="cursor-pointer" onClick={() => showLogin()}>
+            please login
+          </a>
+          .
         </>
       )}
-    </StyledForm>
+    </form>
   )
 }
 
 SignUp.defaultProps = {
   onCancel: null,
 }
-
-const StyledForm = styled.form``
-
-const LinkButton = styled.a`
-  cursor: pointer;
-`

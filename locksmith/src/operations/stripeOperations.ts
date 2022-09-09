@@ -98,11 +98,11 @@ export const deletePaymentDetailsForAddress = async (
  */
 export const disconnectStripe = async ({
   lockManager,
-  lock,
+  lockAddress: lock,
   chain,
 }: {
   lockManager: string
-  lock: string
+  lockAddress: string
   chain: number
 }) => {
   const stripe = new Stripe(config.stripeSecret, {
@@ -113,15 +113,13 @@ export const disconnectStripe = async ({
     where: { lock },
   })
 
-  let deleted = false
   let deletedItems = 0
   if (stripeConnectLockDetails) {
     const account = await stripe.accounts.retrieve(
       stripeConnectLockDetails.stripeAccount
     )
 
-    // delete stripe connection and remove record from db
-    const deletedAccount = await stripe.accounts.deletePerson(account.id, lock)
+    // delete record from db to unlink stripe
     const deletedLockConnect = await StripeConnectLock.destroy({
       where: {
         lock,
@@ -131,10 +129,9 @@ export const disconnectStripe = async ({
       },
     })
 
-    deleted = deletedAccount?.deleted || false
-    deletedItems = deletedLockConnect || 0
+    deletedItems = deletedLockConnect
   }
-  return deleted && deletedItems > 0
+  return deletedItems > 0
 }
 
 /**
