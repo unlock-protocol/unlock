@@ -1,8 +1,11 @@
 import { Button } from '@unlock-protocol/ui'
-import { useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
 import { LockFormProps } from './CreateLockForm'
-
+import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
+import Link from 'next/link'
+import { useEffect } from 'react'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useQuery } from 'react-query'
 interface StatusProps {
   active: boolean
   label: string
@@ -28,9 +31,10 @@ const StatusLabel: React.FC<StatusProps> = ({
 }
 
 interface CreateLockFormSummaryProps {
-  lock: LockFormProps
+  formData: LockFormProps
   network: number
   showStatus?: boolean
+  transactionHash?: string
 }
 
 const DEPLOY_STATUS_MAPPING: Record<string, DeployStatusProps> = {
@@ -45,18 +49,54 @@ const DEPLOY_STATUS_MAPPING: Record<string, DeployStatusProps> = {
 }
 
 export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
-  lock,
+  formData,
   network,
   showStatus = false,
+  transactionHash,
 }) => {
-  const { networks } = useConfig()
-  const { unlimitedDuration = false, unlimitedQuantity = false } = lock ?? {}
-  const networkName = networks[network!]?.name
-  const isDeploying = false
+  const web3Service = useWeb3Service()
+  const { networks, requiredConfirmations } = useConfig()
+  const { unlimitedDuration = false, unlimitedQuantity = false } =
+    formData ?? {}
+
+  const { name: networkName, explorer } = networks[network!] ?? {}
+
+  const transactionDetailUrl = transactionHash
+    ? explorer?.urls?.transaction(transactionHash)
+    : null
+
+  const getTransactionDetails = async (hash: string) => {
+    return await web3Service.getTransaction(hash, network!)
+  }
+
+  const { data: { confirmations = 0 } = {} } = useQuery(
+    ['getTransactionDetails'],
+    () => {
+      if (transactionHash) {
+        return getTransactionDetails(transactionHash!)
+      }
+    },
+    {
+      refetchInterval: 5000,
+    }
+  )
+
+  const isDeploying = confirmations < requiredConfirmations
+
+  const isDeployed = confirmations >= requiredConfirmations
 
   const status = isDeploying
     ? DEPLOY_STATUS_MAPPING.progress
     : DEPLOY_STATUS_MAPPING.deployed
+
+  useEffect(() => {
+    // redirect to dashboard after the key is deployed
+    if (isDeployed) {
+      setTimeout(() => {
+        window.location.href = '/dashboard'
+      }, 5000)
+    }
+  }, [isDeployed])
 
   return (
     <div>
@@ -72,45 +112,62 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-base">Name</span>
-            <span className="text-xl font-bold">{lock?.name}</span>
+            <span className="text-xl font-bold">{formData?.name}</span>
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-base">Duration</span>
             <span className="text-xl font-bold">
-              {unlimitedDuration ? 'Unlimited' : lock?.expirationDuration}
+              {unlimitedDuration ? 'Unlimited' : formData?.expirationDuration}
             </span>
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-base">Quantity</span>
             <span className="text-xl font-bold">
-              {unlimitedQuantity ? 'Unlimited' : lock?.maxNumberOfKeys}
+              {unlimitedQuantity ? 'Unlimited' : formData?.maxNumberOfKeys}
             </span>
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-base">Currency & Price</span>
-            <span className="text-xl font-bold">{lock?.keyPrice}</span>
+            <span className="text-xl font-bold">{formData?.keyPrice}</span>
           </div>
         </div>
         {showStatus && (
-          <div data-testid="status" className="flex flex-col gap-8 px-8 py-10 ">
-            <StatusLabel
-              label="Deploying..."
-              description="Block 1/20 confirmed."
-              active={true}
-            />
-            <StatusLabel label="Deployed." active={false} />
-            <StatusLabel label="Confirming..." active={false} />
-            <StatusLabel label="Confirmed." active={false} />
+          <div className="px-8 py-10 ">
+            <div data-testid="status" className="flex flex-col gap-8">
+              <StatusLabel
+                label="Deploying..."
+                description={`Block ${confirmations}/${requiredConfirmations} confirmed.`}
+                active={isDeploying}
+              />
+              <StatusLabel label="Deployed." active={isDeployed} />
+            </div>
+            {transactionDetailUrl && (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 mt-20 text-lg font-bold text-brand-ui-primary"
+                href={transactionDetailUrl}
+              >
+                <span>See on Etherscan</span>
+                <ExternalLinkIcon size={20} />
+              </a>
+            )}
           </div>
         )}
       </div>
       {showStatus && (
         <div className="flex flex-col items-center mt-12">
-          <h3 className="block mb-4 text-4xl font-bold">{status.label}</h3>
-          <span className="mb-4 font-base">{status.description}</span>
-          <Button className="w-full max-w-lg" variant="outlined-primary">
-            Return to main
-          </Button>
+          {(isDeployed || isDeploying) && (
+            <>
+              <h3 className="block mb-4 text-4xl font-bold">{status.label}</h3>
+              <span className="mb-4 font-base">{status.description}</span>
+            </>
+          )}
+          <Link href={'/dashboard'}>
+            <Button className="w-full max-w-lg" variant="outlined-primary">
+              Return to main
+            </Button>
+          </Link>
         </div>
       )}
     </div>

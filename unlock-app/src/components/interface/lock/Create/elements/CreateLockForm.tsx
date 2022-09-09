@@ -141,13 +141,13 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
                       }}
                     >
                       <RadioGroup.Option
-                        className="focus:outline-none"
+                        className="inline-flex focus:outline-none"
                         value="true"
                       >
                         {({ checked }) => (
-                          <div className="flex items-center gap-4 ">
+                          <div className="flex items-center gap-4">
                             <Radio checked={checked} />
-                            <span className="text-lg font-bold">
+                            <span className="text-lg font-bold cursor-pointer">
                               Good forever
                             </span>
                           </div>
@@ -161,7 +161,10 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
                           <div className="flex items-center w-full gap-4">
                             <Radio checked={checked} />
                             <div className="relative flex items-center w-full gap-4">
-                              <label className="text-lg font-bold " htmlFor="">
+                              <label
+                                className="text-lg font-bold cursor-pointer"
+                                htmlFor=""
+                              >
                                 Key duration
                               </label>
                               <div className="relative grow">
@@ -210,9 +213,11 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
                         value="true"
                       >
                         {({ checked }) => (
-                          <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-4 ">
                             <Radio checked={checked} />
-                            <span className="text-lg font-bold">Unlimited</span>
+                            <span className="text-lg font-bold cursor-pointer">
+                              Unlimited
+                            </span>
                           </div>
                         )}
                       </RadioGroup.Option>

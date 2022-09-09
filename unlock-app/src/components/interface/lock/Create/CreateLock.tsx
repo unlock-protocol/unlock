@@ -18,7 +18,7 @@ interface LockCreatePayloadProps {
   keyPrice?: string | number
 }
 interface CreateLockSummaryProps {
-  lock: LockFormProps
+  formData: LockFormProps
   network: number
   setStep: (step: Step, data: LockFormProps) => void
   onSubmit: (data: LockFormProps) => void
@@ -39,7 +39,10 @@ export const CreateLockSteps: React.FC<CreateLockStepsProps> = ({
   const { account: owner, network } = useAuth()
   const [step, setStep] = useState<Step>('data')
   const [values, setValues] = useState<LockFormProps | undefined>(undefined)
-  const { addLock, locks } = useLocks(owner!)
+  const { addLock } = useLocks(owner!)
+  const [transactionHash, setTransactionHash] = useState<string | undefined>(
+    undefined
+  )
 
   const changeStep = (step: Step, data?: LockFormProps) => {
     setStep(step)
@@ -61,14 +64,14 @@ export const CreateLockSteps: React.FC<CreateLockStepsProps> = ({
   }, [onStepChange, step])
 
   const createLockPromise = async (data: LockCreatePayloadProps) => {
-    return await addLock(data, () => {
+    return await addLock(data, (_: any, lock: any) => {
       if (step !== 'deploy') {
+        const [transactionHash] = Object.keys(lock?.transactions ?? {})
         changeStep('deploy', values)
+        setTransactionHash(transactionHash) // keep transaction hash to retrive transaction details
       }
     })
   }
-
-  console.log(locks)
 
   const createLockMutation = useMutation(
     ({
@@ -110,14 +113,19 @@ export const CreateLockSteps: React.FC<CreateLockStepsProps> = ({
         <div>
           <CreateLockSummary
             setStep={setStep}
-            lock={values!}
+            formData={values!}
             network={network!}
             onSubmit={onSummarySubmit}
           />
         </div>
       )}
       {step === 'deploy' && (
-        <CreateLockFormSummary lock={values!} network={network!} showStatus />
+        <CreateLockFormSummary
+          formData={values!}
+          network={network!}
+          transactionHash={transactionHash}
+          showStatus
+        />
       )}
     </div>
   )
@@ -149,17 +157,16 @@ const CreateLock: React.FC<CreateLockProps> = ({ onSubmit, defaultValues }) => {
 }
 
 const CreateLockSummary: React.FC<CreateLockSummaryProps> = ({
-  lock,
+  formData,
   network,
   setStep,
   onSubmit,
 }) => {
   const onHandleSubmit = () => {
     if (typeof onSubmit === 'function') {
-      onSubmit(lock)
+      onSubmit(formData)
     }
   }
-
   return (
     <div>
       <div className="grid gap-4 md:grid-cols-2 md:gap-28">
@@ -175,12 +182,12 @@ const CreateLockSummary: React.FC<CreateLockSummaryProps> = ({
           />
         </div>
         <div className="md:max-w-lg">
-          <CreateLockFormSummary lock={lock} network={network} />
+          <CreateLockFormSummary formData={formData} network={network} />
           <div className="flex flex-col justify-between w-full gap-4 px-12 mt-12">
             <Button onClick={onHandleSubmit}>Look good for me</Button>
             <span
               className="font-bold text-center cursor-pointer"
-              onClick={() => setStep('data', lock)}
+              onClick={() => setStep('data', formData)}
             >
               Back to Edit
             </span>
