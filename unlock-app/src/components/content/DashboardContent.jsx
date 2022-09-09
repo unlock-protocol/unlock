@@ -11,6 +11,8 @@ import CreatorLocks from '../creator/CreatorLocks'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
 import LoginPrompt from '../interface/LoginPrompt'
+import { Button } from '@unlock-protocol/ui'
+import Link from 'next/link'
 
 import {
   CreateLockButton,
@@ -18,38 +20,6 @@ import {
   AccountWrapper,
 } from '../interface/buttons/ActionButton'
 import { Phone } from '../../theme/media'
-
-const ButtonToCreateLock = ({ formIsVisible, toggleForm }) => {
-  const { account } = useContext(AuthenticationContext)
-
-  return (
-    <>
-      {formIsVisible && (
-        <CancelCreateLockButton id="CreateLockButton" onClick={toggleForm}>
-          Cancel Lock
-        </CancelCreateLockButton>
-      )}
-      {!formIsVisible && (
-        <CreateLockButton
-          disabled={!account}
-          id="CreateLockButton"
-          onClick={toggleForm}
-        >
-          Create Lock
-        </CreateLockButton>
-      )}
-    </>
-  )
-}
-
-ButtonToCreateLock.propTypes = {
-  formIsVisible: PropTypes.bool,
-  toggleForm: PropTypes.func.isRequired,
-}
-
-ButtonToCreateLock.defaultProps = {
-  formIsVisible: false,
-}
 
 export const DashboardContent = () => {
   const { account, network } = useContext(AuthenticationContext)
@@ -84,10 +54,6 @@ export const DashboardContent = () => {
         <BrowserOnly>
           <AccountWrapper>
             <Account />
-            <ButtonToCreateLock
-              toggleForm={toggleForm}
-              formIsVisible={formIsVisible}
-            />
           </AccountWrapper>
           <Phone>
             <Warning>
@@ -120,6 +86,20 @@ export const DashboardContent = () => {
             </Warning>
           )}
 
+          <div className="grid justify-between grid-cols-2">
+            <div>
+              <h1 className="mb-3 text-4xl font-bold">Locks</h1>
+              <span>
+                Create membership for Event ticketing, Media membership, DAO,
+                Certification, collectibles and more.
+              </span>
+            </div>
+            <div className="flex justify-end mt-auto">
+              <Link href="/lock/create">
+                <Button disabled={!account}>Create Lock</Button>
+              </Link>
+            </div>
+          </div>
           <CreatorLocks hideForm={hideForm} formIsVisible={formIsVisible} />
         </BrowserOnly>
       )}
