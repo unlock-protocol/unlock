@@ -1,16 +1,23 @@
 import { Button } from '@unlock-protocol/ui'
 import { useState } from 'react'
 import { useConfig } from '~/utils/withConfig'
-import { LockFormProps } from '../useCreateLock'
+import { LockFormProps } from './CreateLockForm'
 
-const StatusLabel = ({
-  active = false,
-  label,
-  description,
-}: {
+interface StatusProps {
   active: boolean
   label: string
   description?: string
+}
+
+interface DeployStatusProps {
+  label: string
+  description: string
+}
+
+const StatusLabel: React.FC<StatusProps> = ({
+  active = false,
+  label,
+  description,
 }) => {
   return (
     <div className={active ? 'text-black' : 'text-gray-300'}>
@@ -25,7 +32,7 @@ interface CreateLockFormSummaryProps {
   network: number
 }
 
-const DEPLOY_STATUS_MAPPING = {
+const DEPLOY_STATUS_MAPPING: Record<string, DeployStatusProps> = {
   progress: {
     label: 'This will take few minutes...',
     description: 'Feel free to wait in this screen or return to main page.',

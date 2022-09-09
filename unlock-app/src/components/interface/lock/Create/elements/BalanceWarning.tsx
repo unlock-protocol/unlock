@@ -3,13 +3,13 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import useAccount from '~/hooks/useAccount'
 import { useConfig } from '~/utils/withConfig'
 
-const CALL_TO_ACTION_MAPPING: {
-  [network: string]: {
-    label: string
-    link: string
-    ref: string
-  }
-} = {
+interface LinkProps {
+  label: string
+  link: string
+  ref: string
+}
+
+const CALL_TO_ACTION_MAPPING: Record<number, LinkProps> = {
   1: {
     label: 'Purchase some Ether using ',
     link: 'https://www.coinbase.com/',
@@ -63,7 +63,7 @@ export const BalanceWarning = () => {
 
   useEffect(() => {
     const getBalance = async () => {
-      const _balance = await getTokenBalance()
+      const _balance = await getTokenBalance('')
       setBalance(parseFloat(_balance))
     }
     getBalance()

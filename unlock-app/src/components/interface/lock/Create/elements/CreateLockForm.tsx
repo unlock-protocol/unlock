@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Icon, Input } from '@unlock-protocol/ui'
-import { Controller } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import { RadioGroup } from '@headlessui/react'
 import {
   MdRadioButtonUnchecked as UncheckedIcon,
@@ -9,7 +9,6 @@ import {
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { NetworkSelection } from './NetworkSelection'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { LockFormProps, useCreateLock } from '../useCreateLock'
 import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
@@ -30,6 +29,16 @@ const Radio = ({ checked }: { checked: boolean }) => {
   )
 }
 
+export interface LockFormProps {
+  name: string
+  price?: number
+  duration?: number
+  quantity?: number
+  network: number
+  unlimitedDuration: boolean
+  unlimitedQuantity: boolean
+}
+
 export const CreateLockForm = ({ onSubmit }: any) => {
   const { networks } = useConfig()
   const { network } = useAuth()
@@ -37,14 +46,23 @@ export const CreateLockForm = ({ onSubmit }: any) => {
   const baseCurrencySymbol = networks[network!].baseCurrencySymbol
 
   const {
-    form: {
-      register,
-      handleSubmit,
-      control,
-      setValue,
-      formState: { isValid, errors },
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    formState: { isValid, errors },
+  } = useForm<LockFormProps>({
+    mode: 'onChange',
+    defaultValues: {
+      name: '',
+      network,
+      quantity: undefined,
+      duration: undefined,
+      price: undefined,
+      unlimitedDuration: true,
+      unlimitedQuantity: true,
     },
-  } = useCreateLock(network!)
+  })
 
   const onHandleSubmit = (values: LockFormProps) => {
     if (isValid) {
