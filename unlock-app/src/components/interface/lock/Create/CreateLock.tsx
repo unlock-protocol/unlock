@@ -185,12 +185,13 @@ const CreateLockSummary: React.FC<CreateLockSummaryProps> = ({
           <CreateLockFormSummary formData={formData} network={network} />
           <div className="flex flex-col justify-between w-full gap-4 px-12 mt-12">
             <Button onClick={onHandleSubmit}>Look good for me</Button>
-            <span
+            <Button
+              variant="transparent"
               className="font-bold text-center cursor-pointer"
               onClick={() => setStep('data', formData)}
             >
               Back to Edit
-            </span>
+            </Button>
           </div>
         </div>
       </div>
