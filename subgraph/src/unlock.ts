@@ -2,7 +2,8 @@
 /* eslint-disable prefer-const */
 import { log, BigInt } from '@graphprotocol/graph-ts'
 import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
-import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
+import { PublicLockV11 } from '../generated/templates/PublicLock/PublicLockV11'
+import { PublicLock } from '../generated/templates'
 import { Lock } from '../generated/schema'
 
 export function handleNewLock(event: NewLock): void {
@@ -13,7 +14,7 @@ export function handleNewLock(event: NewLock): void {
   const lock = new Lock(lockID)
 
   // fetch lock version
-  let lockContract = PublicLock.bind(lockAddress)
+  let lockContract = PublicLockV11.bind(lockAddress)
   let version = BigInt.fromI32(0)
   let publicLockVersion = lockContract.try_publicLockVersion()
   if (!publicLockVersion.reverted) {
@@ -30,6 +31,9 @@ export function handleNewLock(event: NewLock): void {
   lock.createdAtBlock = event.block.number
   lock.lockManagers = [event.params.lockOwner]
   lock.save()
+
+  // instantiate the new lock to start tracking events there
+  PublicLock.create(event.params.newLockAddress)
 
   log.debug('New lock: {}', [lockID])
 }
