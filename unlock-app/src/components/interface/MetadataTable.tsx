@@ -27,6 +27,7 @@ interface MetadataTableProps {
   // The keys to the metadata object, in the order they will be displayed.
   columns: string[]
   metadata: KeyMetadata[]
+  allMetadata: KeyMetadata[]
   loading?: boolean
   hasSearchValue?: boolean
   lockManagerMapping?: {
@@ -85,6 +86,7 @@ const TotalMemberCount = ({ membersCount }: MemberCountProps) => {
 export const MetadataTable: React.FC<MetadataTableProps> = ({
   columns,
   metadata = [],
+  allMetadata = [],
   membersCount,
   loading = false,
   lockManagerMapping,
@@ -186,10 +188,10 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
             className="flex-initial"
             size="small"
             onClick={() => {
-              downloadAsCSV(columns, metadata)
+              downloadAsCSV(columns, allMetadata)
             }}
           >
-            Export as CSV
+            Export all members
           </Button>
           {hasLockManagerStatus && (
             <div className="flex justify-end">
@@ -232,11 +234,12 @@ export const MetadataTable: React.FC<MetadataTableProps> = ({
       <div className="flex justify-end">
         <Button
           className="flex-initial"
+          size="small"
           onClick={() => {
             downloadAsCSV(columns, metadata)
           }}
         >
-          Export as CSV
+          Export current members
         </Button>
       </div>
     </section>
