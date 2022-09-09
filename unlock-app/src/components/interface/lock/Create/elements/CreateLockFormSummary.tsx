@@ -8,10 +8,12 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
 
+type Variant = 'default' | 'red'
 interface StatusProps {
   active: boolean
   label: string
   description?: string
+  variant?: Variant
 }
 
 interface DeployStatusProps {
@@ -23,9 +25,15 @@ const StatusLabel: React.FC<StatusProps> = ({
   active = false,
   label,
   description,
+  variant = 'default',
 }) => {
+  const VARIANTS_STYLES: Record<Variant, string> = {
+    default: 'text-black',
+    red: 'text-red-700',
+  }
+
   return (
-    <div className={active ? 'text-black' : 'text-gray-300'}>
+    <div className={active ? VARIANTS_STYLES[variant] : 'text-gray-300'}>
       <span className="block text-4xl font-bold">{label}</span>
       {description && <span className="mt-2 text-base">{description}</span>}
     </div>
@@ -39,7 +47,8 @@ interface CreateLockFormSummaryProps {
   transactionHash?: string
 }
 
-const DEPLOY_STATUS_MAPPING: Record<string, DeployStatusProps> = {
+type DeployStatus = 'progress' | 'deployed' | 'txError'
+const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   progress: {
     label: 'This will take few minutes...',
     description: 'Feel free to wait in this screen or return to main page.',
@@ -47,6 +56,10 @@ const DEPLOY_STATUS_MAPPING: Record<string, DeployStatusProps> = {
   deployed: {
     label: '🚀​ Lock is successfully deployed',
     description: 'Redirecting you back to main page...',
+  },
+  txError: {
+    label: 'Something went wrong...',
+    description: 'Please try again.',
   },
 }
 
@@ -72,7 +85,7 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
     return await web3Service.getTransaction(hash, network!)
   }
 
-  const { data: { confirmations = 0 } = {} } = useQuery(
+  const { data: { confirmations = 0 } = {}, isError } = useQuery(
     ['getTransactionDetails'],
     () => {
       if (transactionHash) {
@@ -84,13 +97,16 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
     }
   )
 
-  const isDeploying = confirmations < requiredConfirmations
+  const isDeploying = confirmations < requiredConfirmations && !isError
+  const isDeployed = confirmations >= requiredConfirmations && !isError
 
-  const isDeployed = confirmations >= requiredConfirmations
+  const status: DeployStatus = isError
+    ? 'txError'
+    : isDeployed
+    ? 'deployed'
+    : 'progress'
 
-  const status = isDeploying
-    ? DEPLOY_STATUS_MAPPING.progress
-    : DEPLOY_STATUS_MAPPING.deployed
+  const { label, description } = DEPLOY_STATUS_MAPPING[status]
 
   useEffect(() => {
     // redirect to dashboard after the key is deployed
@@ -143,6 +159,14 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
                 active={isDeploying}
               />
               <StatusLabel label="Deployed." active={isDeployed} />
+              {isError && (
+                <StatusLabel
+                  label="Failed..."
+                  description="TX failed."
+                  active={isError}
+                  variant="red"
+                />
+              )}
             </div>
             {transactionDetailUrl && (
               <a
@@ -160,12 +184,8 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
       </div>
       {showStatus && (
         <div className="flex flex-col items-center mt-12">
-          {(isDeployed || isDeploying) && (
-            <>
-              <h3 className="block mb-4 text-4xl font-bold">{status.label}</h3>
-              <span className="mb-4 font-base">{status.description}</span>
-            </>
-          )}
+          <h3 className="block mb-4 text-4xl font-bold">{label}</h3>
+          <span className="mb-4 font-base">{description}</span>
           <Link href={'/dashboard'}>
             <Button className="w-full max-w-lg" variant="outlined-primary">
               Return to main

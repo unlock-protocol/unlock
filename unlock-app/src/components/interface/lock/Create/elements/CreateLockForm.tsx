@@ -77,8 +77,6 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
     },
   })
 
-  console.log(errors)
-
   useEffect(() => {
     reset(defaultValues)
   }, [defaultValues, reset])

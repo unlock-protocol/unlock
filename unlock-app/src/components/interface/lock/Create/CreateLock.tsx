@@ -104,31 +104,37 @@ export const CreateLockSteps: React.FC<CreateLockStepsProps> = ({
     }
   )
 
-  return (
-    <div>
-      {step === 'data' && (
-        <CreateLock onSubmit={onFormSubmit} defaultValues={values!} />
-      )}
-      {step === 'summary' && (
-        <div>
-          <CreateLockSummary
-            setStep={setStep}
-            formData={values!}
-            network={network!}
-            onSubmit={onSummarySubmit}
-          />
-        </div>
-      )}
-      {step === 'deploy' && (
+  switch (step) {
+    case 'data': {
+      return <CreateLock onSubmit={onFormSubmit} defaultValues={values!} />
+    }
+
+    case 'summary': {
+      return (
+        <CreateLockSummary
+          setStep={setStep}
+          formData={values!}
+          network={network!}
+          onSubmit={onSummarySubmit}
+        />
+      )
+    }
+
+    case 'deploy': {
+      return (
         <CreateLockFormSummary
           formData={values!}
           network={network!}
           transactionHash={transactionHash}
           showStatus
         />
-      )}
-    </div>
-  )
+      )
+    }
+
+    default: {
+      return null
+    }
+  }
 }
 
 const CreateLock: React.FC<CreateLockProps> = ({ onSubmit, defaultValues }) => {
