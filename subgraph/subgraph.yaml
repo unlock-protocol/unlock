@@ -19,6 +19,10 @@ dataSources:
       abis:
         - name: Unlock
           file: ./abis/UnlockV11.json
+        - name: PublicLockV11
+          file: ./abis/PublicLockV11.json
+        - name: PublicLockV7
+          file: ./abis/PublicLockV7.json
       eventHandlers:
         - event: NewLock(indexed address,indexed address)
           handler: handleNewLock
