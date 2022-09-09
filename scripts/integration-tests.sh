@@ -30,7 +30,10 @@ docker-compose $COMPOSE_CONFIG exec eth-node cat networks.json > ./docker/develo
 # docker-compose $COMPOSE_CONFIG exec eth-node cat networks.json
 
 # Deploy the subgraph
-docker-compose $COMPOSE_CONFIG up subgraph
+docker-compose $COMPOSE_CONFIG up --build subgraph
+
+# Launch
+# docker-compose $COMPOSE_CONFIG up --build locksmith websub unlock-app 
 
 # And then run the integration tests
 # COMMAND="yarn run ci"
