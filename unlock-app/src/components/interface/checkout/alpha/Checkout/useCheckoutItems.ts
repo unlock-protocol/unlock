@@ -4,7 +4,13 @@ import { CheckoutService } from './checkoutMachine'
 
 export function useCheckoutSteps(service: CheckoutService) {
   const [state] = useActor(service)
-  const { paywallConfig, skipQuantity, payment } = state.context
+  const { paywallConfig, skipQuantity, payment, lock } = state.context
+
+  const isCaptcha =
+    paywallConfig.locks[lock!.address].captcha || paywallConfig.captcha
+  const isPassword =
+    paywallConfig.locks[lock!.address].password || paywallConfig.password
+
   const stepItems: StepItem[] = [
     {
       id: 1,
@@ -33,7 +39,7 @@ export function useCheckoutSteps(service: CheckoutService) {
       skip: !paywallConfig.messageToSign,
       to: 'MESSAGE_TO_SIGN',
     },
-    paywallConfig.password
+    isPassword
       ? {
           id: 6,
           name: 'Submit password',
@@ -43,9 +49,7 @@ export function useCheckoutSteps(service: CheckoutService) {
           id: 6,
           name: 'Solve captcha',
           to: 'CAPTCHA',
-          skip:
-            !paywallConfig.captcha ||
-            ['card', 'claim'].includes(payment.method),
+          skip: !isCaptcha || ['card', 'claim'].includes(payment.method),
         },
     {
       id: 7,
