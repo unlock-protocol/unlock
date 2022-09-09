@@ -30,6 +30,7 @@ const StatusLabel: React.FC<StatusProps> = ({
 interface CreateLockFormSummaryProps {
   lock: LockFormProps
   network: number
+  showStatus?: boolean
 }
 
 const DEPLOY_STATUS_MAPPING: Record<string, DeployStatusProps> = {
@@ -46,11 +47,12 @@ const DEPLOY_STATUS_MAPPING: Record<string, DeployStatusProps> = {
 export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
   lock,
   network,
+  showStatus = false,
 }) => {
   const { networks } = useConfig()
   const { unlimitedDuration = false, unlimitedQuantity = false } = lock ?? {}
   const networkName = networks[network!]?.name
-  const [isDeploying, setIsDeploying] = useState(true)
+  const isDeploying = false
 
   const status = isDeploying
     ? DEPLOY_STATUS_MAPPING.progress
@@ -58,7 +60,11 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
 
   return (
     <div>
-      <div className="grid grid-cols-2 border border-gray-400 divide-x divide-gray-400 rounded-xl">
+      <div
+        className={`${
+          showStatus ? 'grid-cols-2' : 'grid-cols-1'
+        } grid border border-gray-400 divide-x divide-gray-400 rounded-xl`}
+      >
         <div data-testid="summary" className="flex flex-col gap-8 px-8 py-10">
           <div className="flex flex-col gap-2">
             <span className="text-base">Network</span>
@@ -71,21 +77,21 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
           <div className="flex flex-col gap-2">
             <span className="text-base">Duration</span>
             <span className="text-xl font-bold">
-              {unlimitedDuration ? 'Unlimited' : lock?.duration}
+              {unlimitedDuration ? 'Unlimited' : lock?.expirationDuration}
             </span>
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-base">Quantity</span>
             <span className="text-xl font-bold">
-              {unlimitedQuantity ? 'Unlimited' : lock?.quantity}
+              {unlimitedQuantity ? 'Unlimited' : lock?.maxNumberOfKeys}
             </span>
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-base">Currency & Price</span>
-            <span className="text-xl font-bold">{lock?.price}</span>
+            <span className="text-xl font-bold">{lock?.keyPrice}</span>
           </div>
         </div>
-        {isDeploying && (
+        {showStatus && (
           <div data-testid="status" className="flex flex-col gap-8 px-8 py-10 ">
             <StatusLabel
               label="Deploying..."
@@ -98,7 +104,7 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
           </div>
         )}
       </div>
-      {isDeploying && (
+      {showStatus && (
         <div className="flex flex-col items-center mt-12">
           <h3 className="block mb-4 text-4xl font-bold">{status.label}</h3>
           <span className="mb-4 font-base">{status.description}</span>

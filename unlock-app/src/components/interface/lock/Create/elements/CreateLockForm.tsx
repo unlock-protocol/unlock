@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Icon, Input } from '@unlock-protocol/ui'
 import { Controller, useForm } from 'react-hook-form'
 import { RadioGroup } from '@headlessui/react'
@@ -12,6 +12,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
+import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 
 const Radio = ({ checked }: { checked: boolean }) => {
   return checked ? (
@@ -31,38 +32,54 @@ const Radio = ({ checked }: { checked: boolean }) => {
 
 export interface LockFormProps {
   name: string
-  price?: number
-  duration?: number
-  quantity?: number
+  keyPrice?: number
+  expirationDuration?: number
+  maxNumberOfKeys?: number
   network: number
   unlimitedDuration: boolean
   unlimitedQuantity: boolean
+  currencyContractAddress?: string
 }
 
-export const CreateLockForm = ({ onSubmit }: any) => {
+interface CreateLockFormProps {
+  onSubmit: any
+  defaultValues: LockFormProps
+}
+
+export const CreateLockForm: React.FC<CreateLockFormProps> = ({
+  onSubmit,
+  defaultValues,
+}) => {
   const { networks } = useConfig()
   const { network } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
-  const baseCurrencySymbol = networks[network!].baseCurrencySymbol
 
+  const { baseCurrencySymbol } = networks[network!] ?? {}
+
+  const currency = lockTickerSymbol(networks[network!], baseCurrencySymbol)
   const {
     register,
     handleSubmit,
     control,
     setValue,
+    reset,
     formState: { isValid, errors },
   } = useForm<LockFormProps>({
     mode: 'onChange',
     defaultValues: {
       name: '',
-      network,
-      quantity: undefined,
-      duration: undefined,
-      price: undefined,
+      network: network!,
+      maxNumberOfKeys: undefined,
+      expirationDuration: undefined,
+      keyPrice: undefined,
       unlimitedDuration: true,
       unlimitedQuantity: true,
     },
   })
+
+  useEffect(() => {
+    reset(defaultValues)
+  }, [defaultValues, reset])
 
   const onHandleSubmit = (values: LockFormProps) => {
     if (isValid) {
@@ -119,7 +136,7 @@ export const CreateLockForm = ({ onSubmit }: any) => {
                       onChange={(current: any) => {
                         onChange(current === 'true')
                         if (current === 'true') {
-                          setValue('duration', undefined)
+                          setValue('expirationDuration', undefined)
                         }
                       }}
                     >
@@ -147,11 +164,11 @@ export const CreateLockForm = ({ onSubmit }: any) => {
                               <label className="text-lg font-bold " htmlFor="">
                                 Key duration
                               </label>
-                              <div className="relative flex grow">
+                              <div className="relative grow">
                                 <Input
                                   tabIndex={-1}
                                   autoComplete="off"
-                                  {...register('duration', {
+                                  {...register('expirationDuration', {
                                     required: value !== true,
                                     min: 1,
                                   })}
@@ -183,7 +200,7 @@ export const CreateLockForm = ({ onSubmit }: any) => {
                       onChange={(current: any) => {
                         onChange(current === 'true')
                         if (current === 'true') {
-                          setValue('quantity', undefined)
+                          setValue('maxNumberOfKeys', undefined)
                         }
                       }}
                       className="flex flex-col w-full gap-5"
@@ -212,7 +229,7 @@ export const CreateLockForm = ({ onSubmit }: any) => {
                                 type="number"
                                 autoComplete="off"
                                 step={1}
-                                {...register('quantity', {
+                                {...register('maxNumberOfKeys', {
                                   min: 1,
                                   required: value !== true,
                                 })}
@@ -231,24 +248,29 @@ export const CreateLockForm = ({ onSubmit }: any) => {
               <label className="block px-1 mb-2 text-base" htmlFor="">
                 Currency & Price
               </label>
-              <div className="grid grid-cols-2 gap-2">
-                <div
-                  onClick={() => setIsOpen(true)}
-                  className="box-border flex-1 block w-full py-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
-                >
-                  {baseCurrencySymbol}
+              <div className="grid grid-cols-2 gap-2 justify-items-stretch">
+                <div className="flex flex-col gap-1.5">
+                  <div
+                    onClick={() => setIsOpen(true)}
+                    className="box-border flex-1 block w-full py-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
+                  >
+                    {currency}
+                  </div>
+                  <div className="pl-1"></div>
                 </div>
+
                 <div className="relative">
                   <Input
                     type="number"
                     autoComplete="off"
                     placeholder="0.00"
-                    {...register('price', {
-                      min: 0,
+                    step={0.05}
+                    {...register('keyPrice', {
                       required: true,
+                      min: 0,
                     })}
                   />
-                  {errors?.price && (
+                  {errors?.keyPrice && (
                     <span className="absolute text-xs text-red-500">
                       This field is required
                     </span>
