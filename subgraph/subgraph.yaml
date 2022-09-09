@@ -26,12 +26,9 @@ dataSources:
       eventHandlers:
         - event: NewLock(indexed address,indexed address)
           handler: handleNewLock
-        - event: ConfigUnlock(address,address,uint256,string,string,uint256)
-          handler: handleConfigUnlock
         - event: LockUpgraded(address,uint16)
           handler: handleLockUpgraded
       file: ./src/unlock.ts
-
 templates:
   - kind: ethereum
     name: PublicLock
