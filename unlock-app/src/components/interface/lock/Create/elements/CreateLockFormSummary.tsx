@@ -180,7 +180,7 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 mt-20 text-lg font-bold text-brand-ui-primary"
+                className="inline-flex items-center gap-3 mt-20 text-lg font-bold text-brand-ui-primary"
                 href={transactionDetailUrl}
               >
                 <span>See on Etherscan</span>
