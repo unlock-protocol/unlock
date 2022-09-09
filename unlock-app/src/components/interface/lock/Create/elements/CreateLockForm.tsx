@@ -13,6 +13,7 @@ import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
+import { TokenImage } from './KeyPrice'
 
 const Radio = ({ checked }: { checked: boolean }) => {
   return checked ? (
@@ -267,16 +268,17 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
                 <div className="flex flex-col gap-1.5">
                   <div
                     onClick={() => setIsOpen(true)}
-                    className="box-border flex-1 block w-full py-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
+                    className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                   >
-                    {currency}
+                    <TokenImage currency={baseCurrencySymbol} />
+                    <span>{currency}</span>
                   </div>
                   <div className="pl-1"></div>
                 </div>
 
                 <div className="relative">
                   <Input
-                    type="number"
+                    type="numeric"
                     autoComplete="off"
                     placeholder="0.00"
                     step={0.05}

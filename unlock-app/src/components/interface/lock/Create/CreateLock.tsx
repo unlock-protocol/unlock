@@ -150,7 +150,7 @@ const CreateLock: React.FC<CreateLockProps> = ({ onSubmit, defaultValues }) => {
           </span>
           <img
             className="hidden mt-9 md:block"
-            src="/images/svg/members.svg"
+            src="/images/svg/create-lock/members.svg"
             alt=""
           />
         </div>
@@ -183,7 +183,7 @@ const CreateLockSummary: React.FC<CreateLockSummaryProps> = ({
           </span>
           <img
             className="hidden max-w-xs mt-28 md:block"
-            src="/images/svg/lock.svg"
+            src="/images/svg/create-lock/lock.svg"
             alt=""
           />
         </div>

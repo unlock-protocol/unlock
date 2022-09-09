@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
+import { KeyPrice } from './KeyPrice'
 
 type Variant = 'default' | 'red'
 interface StatusProps {
@@ -75,7 +76,11 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
   const { unlimitedDuration = false, unlimitedQuantity = false } =
     formData ?? {}
 
-  const { name: networkName, explorer } = networks[network!] ?? {}
+  const {
+    name: networkName,
+    explorer,
+    baseCurrencySymbol,
+  } = networks[network!] ?? {}
 
   const transactionDetailUrl = transactionHash
     ? explorer?.urls?.transaction(transactionHash)
@@ -147,7 +152,10 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-base">Currency & Price</span>
-            <span className="text-xl font-bold">{formData?.keyPrice}</span>
+            <KeyPrice
+              price={formData?.keyPrice}
+              currency={baseCurrencySymbol}
+            />
           </div>
         </div>
         {showStatus && (
