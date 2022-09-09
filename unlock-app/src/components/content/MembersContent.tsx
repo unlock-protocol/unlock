@@ -177,13 +177,8 @@ const MetadataTableWrapper = ({
   const [filterKey, setFilteKey] = useState<string>('owner')
   const [currentFilter, setCurrentFilter] = useState<Filter>()
   const [currentOption, setCurrentOption] = useState<string>()
-  const [expiration, setExpiration] = useState<MemberFilter>('active')
+  const [expiration, setExpiration] = useState<MemberFilter>('all')
   const queryValue = useDebounce<string>(query)
-
-  const resetSearchFilters = () => {
-    setExpiration('active')
-    setFilteKey('owner')
-  }
 
   const {
     getKeys,
@@ -326,7 +321,6 @@ const MetadataTableWrapper = ({
         loading={loading}
         membersCount={keysCount}
         hasSearchValue={hasSearchValue}
-        resetSearchFilters={resetSearchFilters}
       />
     </>
   )

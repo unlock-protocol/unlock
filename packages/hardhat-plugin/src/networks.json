@@ -25,7 +25,8 @@
     },
     "startBlock": 7120795,
     "description": "The most popular network",
-    "isTestNetwork": false
+    "isTestNetwork": false,
+    "teamMultisig": "0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9"
   },
   "4": {
     "unlockAddress": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
@@ -54,7 +55,8 @@
     },
     "startBlock": 3530008,
     "description": "Ethereum test network. Do not use for production",
-    "isTestNetwork": true
+    "isTestNetwork": true,
+    "teamMultisig": "0x04e855D82c079222d6bDBc041F6202d5A0137267"
   },
   "5": {
     "unlockAddress": "0x627118a4fB747016911e5cDA82e2E77C531e8206",
@@ -80,7 +82,8 @@
     },
     "startBlock": 7179039,
     "previousDeploys": [],
-    "isTestNetwork": true
+    "isTestNetwork": true,
+    "teamMultisig": "0x95C06469e557d8645966077891B4aeDe8D55A755"
   },
   "10": {
     "unlockAddress": "0x99b1348a9129ac49c6de7F11245773dE2f51fB0c",
@@ -103,7 +106,8 @@
       "decimals": 18
     },
     "description": "Layer 2 network. Cheaper transaction cost.",
-    "isTestNetwork": false
+    "isTestNetwork": false,
+    "teamMultisig": "0x6E78b4447e34e751EC181DCBed63633aA753e145"
   },
   "56": {
     "unlockAddress": "0xeC83410DbC48C7797D2f2AFe624881674c65c856",
@@ -134,7 +138,8 @@
       }
     ],
     "description": "EVM compatible network. Cheaper transaction cost.",
-    "isTestNetwork": false
+    "isTestNetwork": false,
+    "teamMultisig": "0x373D7cbc4F2700719DEa237500c7a154310B0F9B"
   },
   "100": {
     "unlockAddress": "0x1bc53f4303c711cc693F6Ec3477B83703DcB317f",
@@ -166,7 +171,8 @@
       }
     ],
     "description": "EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.",
-    "isTestNetwork": false
+    "isTestNetwork": false,
+    "teamMultisig": "0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D"
   },
   "137": {
     "unlockAddress": "0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f",
@@ -198,7 +204,8 @@
       }
     ],
     "description": "Popular side chain network. Cheaper transaction cost.",
-    "isTestNetwork": false
+    "isTestNetwork": false,
+    "teamMultisig": "0x479f3830fbd715342868BA95E438609BCe443DFB"
   },
   "31337": {
     "id": 31337,
@@ -209,6 +216,59 @@
     "serializerAddress": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
     "description": "Localhost network.",
     "isTestNetwork": true
+  },
+  "42220": {
+    "unlockAddress": "0x1FF7e338d5E582138C46044dc238543Ce555C963",
+    "multisig": "0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8",
+    "id": 42220,
+    "name": "Celo",
+    "description": "Celo is a EVM compatible proof-of-stake blockchain designed for mobile with the ability to pay gas with tokens or stablecoins.",
+    "blockTime": 1000,
+    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/celo",
+    "explorer": {
+      "name": "Celoscan",
+      "urls": {}
+    },
+    "opensea": {},
+    "requiredConfirmations": 12,
+    "erc20": null,
+    "baseCurrencySymbol": "CELO",
+    "locksmithUri": "https://locksmith.unlock-protocol.com",
+    "nativeCurrency": {
+      "name": "CELO",
+      "symbol": "CELO",
+      "decimals": 18
+    },
+    "startBlock": 7179039,
+    "previousDeploys": [],
+    "isTestNetwork": false,
+    "teamMultisig": "0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8"
+  },
+  "43114": {
+    "unlockAddress": "0x70cBE5F72dD85aA634d07d2227a421144Af734b3",
+    "multisig": "0xEc7777C51327917fd2170c62873272ea168120Cb",
+    "id": 43114,
+    "name": "Avalanche (C-Chain)",
+    "blockTime": 1000,
+    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche",
+    "explorer": {
+      "name": "Snowtrace (Avalanche)",
+      "urls": {}
+    },
+    "opensea": {},
+    "requiredConfirmations": 12,
+    "erc20": null,
+    "baseCurrencySymbol": "AVAX",
+    "locksmithUri": "https://locksmith.unlock-protocol.com",
+    "nativeCurrency": {
+      "name": "AVAX",
+      "symbol": "AVAX",
+      "decimals": 18
+    },
+    "startBlock": 17188332,
+    "previousDeploys": [],
+    "isTestNetwork": false,
+    "description": "Avalanche is an open, programmable smart contracts platform for decentralized applications."
   },
   "80001": {
     "unlockAddress": "0x1FF7e338d5E582138C46044dc238543Ce555C963",
@@ -234,6 +294,7 @@
     "startBlock": 26584912,
     "previousDeploys": [],
     "description": "Polygon test network. Do not use for production",
-    "isTestNetwork": true
+    "isTestNetwork": true,
+    "teamMultisig": "0x12E37A8880801E1e5290c815a894d322ac591607"
   }
 }

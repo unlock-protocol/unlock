@@ -8940,6 +8940,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nomiclabs/hardhat-ethers@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "@nomiclabs/hardhat-ethers@npm:2.1.1"
+  peerDependencies:
+    ethers: ^5.0.0
+    hardhat: ^2.0.0
+  checksum: c702ffcd2830cdd4eda90e0f6ee191be327bb4c0293d90631eb7e44442662ff4f7282725f0e2f8f456cd2a3dbf7590a682ef31f5c6c141ba6b562870a02e1523
+  languageName: node
+  linkType: hard
+
 "@nomiclabs/hardhat-etherscan@npm:3.1.0":
   version: 3.1.0
   resolution: "@nomiclabs/hardhat-etherscan@npm:3.1.0"
@@ -16047,14 +16057,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@npm:0.0.4":
-  version: 0.0.4
-  resolution: "@unlock-protocol/contracts@npm:0.0.4"
-  checksum: c95579cf87d00b3c4ddda79deb02e0a8ff50f055a686746c54606fa5597a0f7c4b9b831b4c0f963f7d33e64340543fb900e9f946ada3c2a91aa7d23aa5f40e24
-  languageName: node
-  linkType: hard
-
-"@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
+"@unlock-protocol/contracts@0.0.8, @unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
@@ -16091,13 +16094,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
-    "@nomiclabs/hardhat-ethers": 2.0.6
-    "@openzeppelin/hardhat-upgrades": 1.19.1
+    "@nomiclabs/hardhat-ethers": ^2.1.1
     "@types/chai": 4.3.0
     "@types/fs-extra": 9.0.13
     "@types/mocha": 9.1.1
     "@types/node": 8.10.66
-    "@unlock-protocol/contracts": 0.0.4
+    "@unlock-protocol/contracts": 0.0.8
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
@@ -16115,6 +16117,7 @@ __metadata:
     tslint-plugin-prettier: 2.3.0
     typescript: 4.7.4
   peerDependencies:
+    ethers: 5.7.0
     hardhat: 2.9.9
   languageName: unknown
   linkType: soft
