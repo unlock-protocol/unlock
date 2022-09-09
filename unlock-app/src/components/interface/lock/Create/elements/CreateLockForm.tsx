@@ -61,8 +61,8 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
     register,
     handleSubmit,
     control,
-    setValue,
     reset,
+    resetField,
     formState: { isValid, errors },
   } = useForm<LockFormProps>({
     mode: 'onChange',
@@ -76,6 +76,8 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
       unlimitedQuantity: true,
     },
   })
+
+  console.log(errors)
 
   useEffect(() => {
     reset(defaultValues)
@@ -115,8 +117,8 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
                 })}
               />
               {errors?.name && (
-                <span className="absolute text-xs text-red-500">
-                  This field is required
+                <span className="absolute text-xs text-red-700">
+                  A cool name is required.
                 </span>
               )}
             </div>
@@ -136,7 +138,7 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
                       onChange={(current: any) => {
                         onChange(current === 'true')
                         if (current === 'true') {
-                          setValue('expirationDuration', undefined)
+                          resetField('expirationDuration')
                         }
                       }}
                     >
@@ -187,6 +189,11 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
                   )
                 }}
               />
+              {errors?.expirationDuration && (
+                <span className="absolute mt-2 text-xs text-red-700">
+                  Please enter amount of days.
+                </span>
+              )}
             </div>
 
             <div>
@@ -203,7 +210,7 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
                       onChange={(current: any) => {
                         onChange(current === 'true')
                         if (current === 'true') {
-                          setValue('maxNumberOfKeys', undefined)
+                          resetField('maxNumberOfKeys')
                         }
                       }}
                       className="flex flex-col w-full gap-5"
@@ -247,6 +254,11 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
                   )
                 }}
               />
+              {errors?.maxNumberOfKeys && (
+                <span className="absolute mt-2 text-xs text-red-700">
+                  How many do you say?
+                </span>
+              )}
             </div>
 
             <div>
@@ -275,13 +287,13 @@ export const CreateLockForm: React.FC<CreateLockFormProps> = ({
                       min: 0,
                     })}
                   />
-                  {errors?.keyPrice && (
-                    <span className="absolute text-xs text-red-500">
-                      This field is required
-                    </span>
-                  )}
                 </div>
               </div>
+              {errors?.keyPrice && (
+                <span className="absolute mt-2 text-xs text-red-700">
+                  Require to have postive number here.
+                </span>
+              )}
             </div>
 
             <Button type="submit" disabled={!isValid}>

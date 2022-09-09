@@ -12,6 +12,7 @@ export const CreateLockPage = () => {
   const [step, setStep] = useState<Step>('data')
 
   const title = TITLE_BY_STATUS_MAPPING[step]
+
   return (
     <div className="min-w-full min-h-screen bg-ui-secondary-200">
       <div className="px-4 mx-auto lg:container pt-9">
