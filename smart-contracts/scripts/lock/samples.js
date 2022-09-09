@@ -2,19 +2,23 @@ const { ethers } = require('hardhat')
 const Locks = require('../../test/fixtures/locks')
 const createLock = require('../deployments/lock.js')
 
-async function main({ unlockAddress, unlockVersion, tokenAddress }) {
+const { AddressZero } = ethers.constants
+
+async function main({
+  unlockAddress,
+  unlockVersion,
+  tokenAddress = AddressZero,
+}) {
   const PublicLock = await ethers.getContractFactory('PublicLock')
 
-  // loop through all locks and deploy them
-  const serializedLocks = Object.keys(Locks).map((name) => ({
-    expirationDuration: Locks[name].expirationDuration.toFixed(),
-    tokenAddress: tokenAddress || ethers.constants.AddressZero,
-    keyPrice: Locks[name].keyPrice.toFixed(),
-    maxNumberOfKeys: Locks[name].maxNumberOfKeys.toFixed(),
-    name: Locks[name].lockName,
-  }))
-
   const signers = await ethers.getSigners()
+
+  // loop through all locks and deploy them
+  const serializedLocks = Object.keys(Locks).map((name, i) => ({
+    ...Locks[name],
+    tokenAddress,
+    name: `Lock ${i}`,
+  }))
 
   // eslint-disable-next-line no-restricted-syntax
   for (const serializedLock of serializedLocks) {
@@ -32,23 +36,22 @@ async function main({ unlockAddress, unlockVersion, tokenAddress }) {
     // purchase a bunch of keys
     const { maxNumberOfKeys, keyPrice } = serializedLock
     const purchasers = signers.slice(0, maxNumberOfKeys) // prevent soldout revert
-    const txs = await Promise.all(
-      purchasers.map((purchaser) =>
-        lock
-          .connect(purchaser)
-          .purchase(
-            keyPrice,
-            purchaser.address,
-            web3.utils.padLeft(0, 40),
-            web3.utils.padLeft(0, 40),
-            [],
-            { value: keyPrice }
-          )
-      )
+    const value =
+      keyPrice.toString() === '0' ? 0 : keyPrice.mul(maxNumberOfKeys)
+
+    const tx = await lock.purchase(
+      [],
+      purchasers.map(({ address }) => address),
+      purchasers.map(() => web3.utils.padLeft(0, 40)),
+      purchasers.map(() => web3.utils.padLeft(0, 40)),
+      purchasers.map(() => []),
+      { value }
     )
-    const purchases = await Promise.all(txs.map((tx) => tx.wait()))
-    purchases
-      .map(({ events }) => events.find(({ event }) => event === 'Transfer'))
+
+    // get token ids
+    const { events } = await tx.wait()
+    events
+      .filter((v) => v.event === 'Transfer')
       .forEach(({ args: { to, tokenId } }) => {
         // eslint-disable-next-line no-console
         console.log(`LOCK SAMPLES > key (${tokenId}) purchased by ${to}`)
