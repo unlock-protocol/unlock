@@ -70,6 +70,7 @@ describe('MetadataTable', () => {
       const { container } = render(
         <QueryClientProvider client={queryClient}>
           <MetadataTable
+            allMetadata={metadata}
             columns={[
               'lockName',
               'keyholderAddress',
@@ -92,7 +93,12 @@ describe('MetadataTable', () => {
         expect.assertions(1)
 
         const wrapper = render(
-          <MetadataTable columns={[]} metadata={[]} hasSearchValue={false} />
+          <MetadataTable
+            allMetadata={[]}
+            columns={[]}
+            metadata={[]}
+            hasSearchValue={false}
+          />
         )
         expect(
           wrapper.getByText('No keys have been purchased yet.', {
@@ -105,7 +111,12 @@ describe('MetadataTable', () => {
         expect.assertions(1)
 
         const wrapper = render(
-          <MetadataTable columns={[]} metadata={[]} hasSearchValue={true} />
+          <MetadataTable
+            allMetadata={[]}
+            columns={[]}
+            metadata={[]}
+            hasSearchValue={true}
+          />
         )
         expect(
           wrapper.getByText('No key matches your filter', {
