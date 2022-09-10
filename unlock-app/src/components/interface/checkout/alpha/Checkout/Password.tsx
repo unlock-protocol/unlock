@@ -69,6 +69,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
             label="Enter password"
             description="You need to enter the password to purchase the key. If password is wrong, purchase will fail."
             required
+            type="password"
             size="small"
             {...register('password', {
               required: true,
