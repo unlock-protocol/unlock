@@ -83,6 +83,12 @@
     },
     {
       "minor": {
+        "groupName": "packages/unlock-web"
+      },
+      "matchPaths": ["packages/unlock-web/**"]
+    },
+    {
+      "minor": {
         "groupName": "tests"
       },
       "matchPaths": ["tests/**"]

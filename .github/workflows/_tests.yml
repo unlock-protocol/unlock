@@ -14,6 +14,7 @@ on:
           "packages/hardhat-plugin",
           "packages/unlock-js",
           "packages/paywall",
+          "packages/unlock-web",
           "smart-contracts",
           "smart-contract-extensions",
           "unlock-protocol-com",

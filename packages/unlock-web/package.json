@@ -1,0 +1,11 @@
+{
+  "name": "unlock-web",
+  "version": "1.0.0",
+  "description": "A javascript package for front-end integration of the Unlock Protocol in popular frameworks and more!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT"
+}
