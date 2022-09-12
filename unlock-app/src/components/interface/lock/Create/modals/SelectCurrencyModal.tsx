@@ -45,6 +45,7 @@ export const SelectCurrencyModal = ({
       const address = utils.getAddress(queryValue)
       setContractAddress(address)
     } catch (err: any) {
+      setContractAddress('')
       console.error('Error: ', err)
     }
   }, [queryValue])
@@ -55,7 +56,12 @@ export const SelectCurrencyModal = ({
       token.symbol?.toLowerCase().includes(queryValue?.toLowerCase())
   )
 
-  const noItems = tokensFiltred?.length === 0 && queryValue?.length > 0
+  const noItems =
+    tokensFiltred?.length === 0 &&
+    queryValue?.length > 0 &&
+    !contractAddress?.length
+
+  const onAddContractAddress = () => {}
 
   return (
     <Transition show={isOpen} appear as={Fragment}>
@@ -88,12 +94,14 @@ export const SelectCurrencyModal = ({
                     onChange={onSearch}
                   />
 
-                  <div>
-                    <div className="flex items-center justify-between">
+                  {contractAddress?.length > 0 && (
+                    <div className="flex items-center justify-between mt-3">
                       <span>{addressMinify(contractAddress)}</span>
-                      <Button>Save</Button>
+                      <Button size="small" onClick={onAddContractAddress}>
+                        Save
+                      </Button>
                     </div>
-                  </div>
+                  )}
 
                   <div className="grid grid-cols-1 gap-6 mt-6 overflow-scroll max-h-48">
                     {noItems && (
