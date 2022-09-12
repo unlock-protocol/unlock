@@ -43,6 +43,7 @@ export interface LockFormProps {
   unlimitedDuration: boolean
   unlimitedQuantity: boolean
   currencyContractAddress?: string
+  symbol?: string
 }
 
 interface CreateLockFormProps {
@@ -109,12 +110,16 @@ export const CreateLockForm = ({
   const onSelectToken = (token: Token) => {
     setSelectedToken(token)
     setValue('currencyContractAddress', token.address)
+    setValue('symbol', token.symbol)
   }
 
   const noBalance = balance === 0
   const submitDisabled = isLoadingBalance || noBalance
-  const selectedCurrency =
-    selectedToken?.symbol?.toUpperCase() || baseCurrencySymbol?.toUpperCase()
+  const selectedCurrency = (
+    defaultValues?.symbol ||
+    selectedToken?.symbol ||
+    baseCurrencySymbol
+  )?.toLowerCase()
 
   const symbol = lockTickerSymbol(networks[network!], selectedCurrency)
 

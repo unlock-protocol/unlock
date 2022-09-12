@@ -89,6 +89,7 @@ export const CreateLockFormSummary = ({
     : 'progress'
 
   const { title, description, status } = DEPLOY_STATUS_MAPPING[currentStatus]
+  const symbol = formData?.symbol || baseCurrencySymbol
 
   useEffect(() => {
     // redirect to dashboard after the key is deployed
@@ -174,7 +175,7 @@ export const CreateLockFormSummary = ({
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-base">Currency & Price</span>
-            <KeyPrice price={formData?.keyPrice} symbol={baseCurrencySymbol} />
+            <KeyPrice price={formData?.keyPrice} symbol={symbol} />
           </div>
         </div>
       </div>
