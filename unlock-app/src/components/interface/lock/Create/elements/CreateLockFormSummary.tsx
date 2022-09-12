@@ -18,8 +18,9 @@ interface StatusProps {
 }
 
 interface DeployStatusProps {
-  label: string
+  title: string
   description: string
+  status: string
 }
 
 const StatusLabel = ({
@@ -51,16 +52,19 @@ interface CreateLockFormSummaryProps {
 type DeployStatus = 'progress' | 'deployed' | 'txError'
 const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   progress: {
-    label: 'This will take few minutes...',
+    title: 'This will take few minutes...',
     description: 'Feel free to wait in this screen or return to main page.',
+    status: 'Progressing...',
   },
   deployed: {
-    label: '🚀​ Lock is successfully deployed',
+    title: '🚀​ Lock is successfully deployed',
     description: 'Redirecting you back to main page...',
+    status: 'Completed!',
   },
   txError: {
-    label: 'Something went wrong...',
+    title: 'Something went wrong...',
     description: 'Please try again.',
+    status: 'Not completed.',
   },
 }
 
@@ -105,13 +109,13 @@ export const CreateLockFormSummary = ({
   const isDeploying = confirmations < requiredConfirmations && !isError
   const isDeployed = confirmations >= requiredConfirmations && !isError
 
-  const status: DeployStatus = isError
+  const currentStatus: DeployStatus = isError
     ? 'txError'
     : isDeployed
     ? 'deployed'
     : 'progress'
 
-  const { label, description } = DEPLOY_STATUS_MAPPING[status]
+  const { title, description, status } = DEPLOY_STATUS_MAPPING[currentStatus]
 
   useEffect(() => {
     // redirect to dashboard after the key is deployed
@@ -146,26 +150,32 @@ export const CreateLockFormSummary = ({
                   alt="Deploying"
                 />
               )}
+              {/** todo: replace with error image when available */}
               {isError && (
-                <StatusLabel
-                  label="Failed..."
-                  description="TX failed."
-                  active={isError}
-                  variant="red"
+                <img
+                  className="object-contain animate-pulse max-h-96"
+                  src="/images/svg/create-lock/deploying.svg"
+                  alt="Error"
                 />
               )}
             </div>
-            {transactionDetailUrl && (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 mt-5 text-lg font-bold text-brand-ui-primary"
-                href={transactionDetailUrl}
-              >
-                <span>See on Etherscan</span>
-                <ExternalLinkIcon size={20} />
-              </a>
-            )}
+            <div className="grid grid-cols-2">
+              <div className="flex flex-col">
+                <span className="text-base">Status</span>
+                <span className="text-lg font-bold">{status}</span>
+              </div>
+              {transactionDetailUrl && (
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 mt-5 ml-auto text-lg font-bold text-brand-ui-primary"
+                  href={transactionDetailUrl}
+                >
+                  <span>See on Etherscan</span>
+                  <ExternalLinkIcon size={20} />
+                </a>
+              )}
+            </div>
           </div>
         )}
         <div data-testid="summary" className="flex flex-col gap-8 px-8 py-10">
@@ -191,16 +201,13 @@ export const CreateLockFormSummary = ({
           </div>
           <div className="flex flex-col gap-2">
             <span className="text-base">Currency & Price</span>
-            <KeyPrice
-              price={formData?.keyPrice}
-              currency={baseCurrencySymbol}
-            />
+            <KeyPrice price={formData?.keyPrice} symbol={baseCurrencySymbol} />
           </div>
         </div>
       </div>
       {showStatus && (
         <div className="flex flex-col items-center mt-12">
-          <h3 className="block mb-4 text-4xl font-bold">{label}</h3>
+          <h3 className="block mb-4 text-4xl font-bold">{title}</h3>
           <span className="mb-4 font-base">{description}</span>
           <Link href={'/dashboard'}>
             <Button className="w-full max-w-lg" variant="outlined-primary">
