@@ -35,6 +35,20 @@ export const mumbai: NetworkConfig = {
   description: 'Polygon test network. Do not use for production',
   isTestNetwork: true,
   teamMultisig: '0x12E37A8880801E1e5290c815a894d322ac591607',
+  tokens: [
+    {
+      name: 'Wrapped Ether',
+      address: '0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa',
+      symbol: 'WETH',
+      decimals: 18,
+    },
+    {
+      name: 'Wrapped Matic',
+      address: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+      symbol: 'WMATIC',
+      decimals: 18,
+    },
+  ],
 }
 
 export default mumbai
