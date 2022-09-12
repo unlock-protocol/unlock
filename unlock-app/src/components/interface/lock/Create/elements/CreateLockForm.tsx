@@ -13,7 +13,7 @@ import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import { TokenImage } from './KeyPrice'
+import { CryptoIcon } from './KeyPrice'
 
 const Radio = ({ checked }: { checked: boolean }) => {
   return checked ? (
@@ -270,7 +270,7 @@ export const CreateLockForm = ({
                     onClick={() => setIsOpen(true)}
                     className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                   >
-                    <TokenImage currency={baseCurrencySymbol} />
+                    <CryptoIcon symbol={baseCurrencySymbol} />
                     <span>{currency}</span>
                   </div>
                   <div className="pl-1"></div>
