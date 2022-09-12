@@ -14,6 +14,7 @@ import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { Captcha } from './Captcha'
 import { Returning } from './Returning'
 import { Payment } from './Payment'
+import { Password } from './Password'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { isEqual } from 'lodash'
 import { CheckoutHead, CheckoutTransition, TopNavigation } from '../Shell'
@@ -190,6 +191,15 @@ export function Checkout({
       case 'CAPTCHA': {
         return (
           <Captcha
+            injectedProvider={injectedProvider}
+            checkoutService={checkoutService}
+          />
+        )
+      }
+
+      case 'PASSWORD': {
+        return (
+          <Password
             injectedProvider={injectedProvider}
             checkoutService={checkoutService}
           />

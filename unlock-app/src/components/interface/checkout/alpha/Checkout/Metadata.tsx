@@ -1,6 +1,6 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
-import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { Fragment, useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
@@ -42,7 +42,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<FormData>({
     shouldUnregister: false,
     shouldFocusError: true,
     mode: 'onSubmit',
@@ -120,9 +120,9 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     isMembershipsLoading,
   ])
 
-  async function onSubmit(data: FieldValues) {
+  async function onSubmit(data: FormData) {
     try {
-      const formData = data as FormData
+      const formData = data
       const recipients = await Promise.all(
         formData.metadata.map(async (item) => {
           const address = await getAddressForName(item.recipient)
@@ -205,10 +205,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                       }
                       size="small"
                       description="Enter Ethereum address or an ENS"
-                      error={
-                        errors?.metadata?.[index]?.recipient
-                          ?.message as unknown as string
-                      }
+                      error={errors?.metadata?.[index]?.recipient?.message}
                       {...register(`metadata.${index}.recipient`, {
                         required: 'Ethereum address or an ENS is required',
                         validate: {
@@ -245,7 +242,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                       type={metadataInputItem.type}
                       error={
                         errors?.metadata?.[index]?.[metadataInputItem.name]
-                          ?.message as unknown as string
+                          ?.message
                       }
                       {...register(
                         `metadata.${index}.${metadataInputItem.name}`,
