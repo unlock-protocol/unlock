@@ -60,6 +60,7 @@ export function Confirm({
     captcha,
     messageToSign,
     paywallConfig,
+    password,
   } = state.context
 
   const {
@@ -197,7 +198,7 @@ export function Confirm({
           lockAddress,
           keyPrices,
           owners: recipients!,
-          data: captcha,
+          data: password?.length ? password : captcha,
           recurringPayments,
           referers,
         },
