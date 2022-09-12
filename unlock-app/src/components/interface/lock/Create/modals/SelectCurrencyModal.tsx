@@ -1,9 +1,12 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Token } from '@unlock-protocol/types'
-import { Input } from '@unlock-protocol/ui'
-import { Fragment } from 'react'
+import { Button, Input } from '@unlock-protocol/ui'
+import { Fragment, useEffect, useState } from 'react'
+import useDebounce from '~/hooks/useDebouce'
+import { utils } from 'ethers'
 import { useConfig } from '~/utils/withConfig'
 import { CryptoIcon } from '../elements/KeyPrice'
+import { addressMinify } from '~/utils/strings'
 
 interface SelectCurrencyModalProps {
   isOpen: boolean
@@ -19,6 +22,9 @@ export const SelectCurrencyModal = ({
   onSelect,
 }: SelectCurrencyModalProps) => {
   const { networks } = useConfig()
+  const [contractAddress, setContractAddress] = useState<string>('')
+  const [query, setQuery] = useState<string>('')
+  const queryValue = useDebounce<string>(query)
   const tokens = networks[network!]?.tokens ?? []
 
   const onSelectToken = (token: Token) => {
@@ -27,6 +33,29 @@ export const SelectCurrencyModal = ({
       setIsOpen(false)
     }
   }
+
+  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e?.target?.value || ''
+    setQuery(value)
+  }
+
+  useEffect(() => {
+    if (!queryValue?.length) return
+    try {
+      const address = utils.getAddress(queryValue)
+      setContractAddress(address)
+    } catch (err: any) {
+      console.error('Error: ', err)
+    }
+  }, [queryValue])
+
+  const tokensFiltred = tokens?.filter(
+    (token: Token) =>
+      token.name?.toLowerCase().includes(queryValue?.toLowerCase()) ||
+      token.symbol?.toLowerCase().includes(queryValue?.toLowerCase())
+  )
+
+  const noItems = tokensFiltred?.length === 0 && queryValue?.length > 0
 
   return (
     <Transition show={isOpen} appear as={Fragment}>
@@ -56,9 +85,23 @@ export const SelectCurrencyModal = ({
                     label="Select a token as currency"
                     placeholder="Search or paste contract address"
                     className="bg-transparent"
+                    onChange={onSearch}
                   />
+
+                  <div>
+                    <div className="flex items-center justify-between">
+                      <span>{addressMinify(contractAddress)}</span>
+                      <Button>Save</Button>
+                    </div>
+                  </div>
+
                   <div className="grid grid-cols-1 gap-6 mt-6 overflow-scroll max-h-48">
-                    {tokens?.map((token: Token) => {
+                    {noItems && (
+                      <span className="text-base">
+                        No token matches your filter.
+                      </span>
+                    )}
+                    {tokensFiltred?.map((token: Token) => {
                       return (
                         <div key={token.symbol}>
                           <span

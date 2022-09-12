@@ -111,7 +111,8 @@ export const CreateLockForm = ({
     setValue('currencyContractAddress', token.address)
   }
 
-  const submitDisabled = isLoadingBalance || balance === 0
+  const noBalance = balance === 0
+  const submitDisabled = isLoadingBalance || noBalance
   const selectedCurrency =
     selectedToken?.symbol?.toUpperCase() || baseCurrencySymbol?.toUpperCase()
 
