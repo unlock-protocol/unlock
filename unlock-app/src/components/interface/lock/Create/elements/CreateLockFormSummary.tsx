@@ -211,7 +211,7 @@ export const CreateLockFormSummary = ({
           <span className="mb-4 font-base">{description}</span>
           <Link href={'/dashboard'}>
             <Button className="w-full max-w-lg" variant="outlined-primary">
-              Return to main
+              Return to Lock list
             </Button>
           </Link>
         </div>
