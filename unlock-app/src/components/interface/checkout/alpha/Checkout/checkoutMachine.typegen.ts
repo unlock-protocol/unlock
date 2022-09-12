@@ -14,6 +14,7 @@ export interface Typegen0 {
   }
   eventsCausingActions: {
     confirmMint: 'CONFIRM_MINT'
+    confirmRenew: 'CONFIRM_RENEW'
     disconnect: 'DISCONNECT'
     selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
     selectLock: 'SELECT_LOCK'
@@ -45,6 +46,8 @@ export interface Typegen0 {
     | 'MINTING'
     | 'PAYMENT'
     | 'QUANTITY'
+    | 'RENEW'
+    | 'RENEWED'
     | 'RETURNING'
     | 'SELECT'
     | 'UNLOCK_ACCOUNT'

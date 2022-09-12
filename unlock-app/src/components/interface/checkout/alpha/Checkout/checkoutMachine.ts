@@ -14,6 +14,8 @@ export type CheckoutPage =
   | 'RETURNING'
   | 'UNLOCK_ACCOUNT'
   | 'PAYMENT'
+  | 'RENEW'
+  | 'RENEWED'
 
 export interface FiatPricing {
   creditCardEnabled: boolean
@@ -34,6 +36,7 @@ export interface SelectLockEvent {
   type: 'SELECT_LOCK'
   lock: LockState
   existingMember: boolean
+  expiredMember: boolean
   skipQuantity?: boolean
 }
 
@@ -71,8 +74,12 @@ export interface MakeAnotherPurchaseEvent {
   type: 'MAKE_ANOTHER_PURCHASE'
 }
 
-interface ConfirmMintEvent extends Mint {
+interface ConfirmMintEvent extends Transaction {
   type: 'CONFIRM_MINT'
+}
+
+interface RenewedEvent extends Transaction {
+  type: 'CONFIRM_RENEW'
 }
 
 interface SolveCaptchaEvent {
@@ -102,6 +109,7 @@ export type CheckoutMachineEvents =
   | MakeAnotherPurchaseEvent
   | SolveCaptchaEvent
   | ConfirmMintEvent
+  | RenewedEvent
   | UnlockAccountEvent
   | UpdatePaywallConfigEvent
   | DisconnectEvent
@@ -121,7 +129,7 @@ type Payment =
   | {
       method: 'claim'
     }
-export interface Mint {
+export interface Transaction {
   status: 'ERROR' | 'PROCESSING' | 'FINISHED'
   transactionHash?: string
 }
@@ -137,7 +145,8 @@ interface CheckoutMachineContext {
   }
   quantity: number
   recipients: string[]
-  mint?: Mint
+  mint?: Transaction
+  renewed?: Transaction
   skipQuantity: boolean
 }
 
@@ -160,6 +169,7 @@ export const checkoutMachine = createMachine(
         method: 'crypto',
       },
       quantity: 1,
+      renewed: undefined,
       recipients: [],
       skipQuantity: false,
     },
@@ -183,6 +193,11 @@ export const checkoutMachine = createMachine(
       SELECT: {
         on: {
           SELECT_LOCK: [
+            {
+              actions: ['selectLock'],
+              target: 'RENEW',
+              cond: (_, event) => event.expiredMember,
+            },
             {
               actions: ['selectLock'],
               target: 'RETURNING',
@@ -397,6 +412,22 @@ export const checkoutMachine = createMachine(
           },
         },
       },
+      RENEW: {
+        on: {
+          CONFIRM_RENEW: {
+            actions: ['confirmRenew'],
+            target: 'RENEWED',
+          },
+        },
+      },
+      RENEWED: {
+        on: {
+          CONFIRM_RENEW: {
+            type: 'final',
+            actions: ['confirmRenew'],
+          },
+        },
+      },
     },
   },
   {
@@ -455,6 +486,21 @@ export const checkoutMachine = createMachine(
       }),
       confirmMint: assign({
         mint: (context, { status, transactionHash }) => {
+          if (!context.paywallConfig.pessimistic) {
+            return {
+              status: 'FINISHED',
+              transactionHash,
+            } as const
+          } else {
+            return {
+              status,
+              transactionHash,
+            } as const
+          }
+        },
+      }),
+      confirmRenew: assign({
+        renewed: (context, { status, transactionHash }) => {
           if (!context.paywallConfig.pessimistic) {
             return {
               status: 'FINISHED',

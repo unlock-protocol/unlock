@@ -189,7 +189,7 @@ export function Confirm({
         return
       }
       const keyPrices: string[] = new Array(recipients!.length).fill(keyPrice)
-      const referers: string[] | undefined = paywallConfig.referrer
+      const referrers: string[] | undefined = paywallConfig.referrer
         ? new Array(recipients!.length).fill(paywallConfig.referrer)
         : undefined
       await walletService?.purchaseKeys(
@@ -199,10 +199,10 @@ export function Confirm({
           owners: recipients!,
           data: captcha,
           recurringPayments,
-          referers,
+          referrers,
         },
         (error, hash) => {
-          setIsConfirming(true)
+          setIsConfirming(false)
           if (error) {
             send({
               type: 'CONFIRM_MINT',

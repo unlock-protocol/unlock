@@ -10,9 +10,9 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { Stepper } from '../Stepper'
-import { useCheckoutSteps } from './useCheckoutItems'
+import { StepItem, Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
+
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -20,7 +20,7 @@ interface Props {
   communication: CheckoutCommunication
 }
 
-export function Minting({
+export function Renewed({
   injectedProvider,
   onClose,
   checkoutService,
@@ -29,94 +29,117 @@ export function Minting({
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-  const { mint, lock, messageToSign } = state.context
-  const processing = mint?.status === 'PROCESSING'
-  const status = mint?.status
+  const { renewed, lock, messageToSign } = state.context
+  const { status: renewStatus, transactionHash } = renewed!
+  const processing = renewStatus === 'PROCESSING'
 
   useEffect(() => {
-    if (mint?.status !== 'PROCESSING') {
+    if (renewStatus !== 'PROCESSING') {
       return
     }
     const waitForConfirmation = async () => {
       try {
         const network = config.networks[lock!.network]
-        if (network) {
+        if (network && transactionHash) {
           const provider = new ethers.providers.JsonRpcProvider(
             network.provider
           )
-          await provider.waitForTransaction(mint!.transactionHash!)
+          await provider.waitForTransaction(transactionHash)
           communication.emitTransactionInfo({
-            hash: mint!.transactionHash!,
+            hash: transactionHash,
             lock: lock?.address,
           })
-
           communication.emitUserInfo({
             address: account,
             signedMessage: messageToSign?.signature,
           })
           send({
-            type: 'CONFIRM_MINT',
+            type: 'CONFIRM_RENEW',
             status: 'FINISHED',
-            transactionHash: mint!.transactionHash!,
+            transactionHash,
           })
         }
       } catch (error) {
         if (error instanceof Error) {
           ToastHelper.error(error.message)
           send({
-            type: 'CONFIRM_MINT',
+            type: 'CONFIRM_RENEW',
             status: 'ERROR',
-            transactionHash: mint!.transactionHash,
+            transactionHash,
           })
         }
       }
     }
     waitForConfirmation()
-  }, [mint, lock, config, send, communication, account, messageToSign])
+  }, [
+    renewStatus,
+    transactionHash,
+    lock,
+    config,
+    send,
+    communication,
+    account,
+    messageToSign,
+  ])
 
   const content = useMemo(() => {
-    switch (status) {
+    switch (renewStatus) {
       case 'PROCESSING': {
         return {
-          title: 'Minting NFT',
-          text: 'Purchasing NFT...',
+          title: 'Renewing NFT',
+          text: 'Renewing NFT...',
         }
       }
       case 'FINISHED': {
         return {
-          title: 'You have NFT!',
-          text: 'Successfully purchased NFT',
+          title: 'You have renewed!',
+          text: 'Successfully renewed NFT',
         }
       }
       case 'ERROR': {
         return {
-          title: 'Minting failed',
-          text: 'Failed to purchase NFT',
+          title: 'Renewal failed',
+          text: 'Failed to renew NFT',
         }
       }
     }
-  }, [status])
+  }, [renewStatus])
 
-  const stepItems = useCheckoutSteps(checkoutService)
+  const stepItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    {
+      id: 2,
+      name: 'Renew membership',
+      to: 'RENEW',
+    },
+    {
+      id: 3,
+      name: 'Renewed!',
+    },
+  ]
 
   return (
     <Fragment>
       <Stepper
-        position={8}
+        position={3}
         disabled
         service={checkoutService}
         items={stepItems}
       />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex flex-col items-center justify-center h-full space-y-2">
-          <TransactionAnimation status={status} />
+          <TransactionAnimation status={renewStatus} />
           <p className="text-lg font-bold text-brand-ui-primary">
             {content?.text}
           </p>
-          {mint?.transactionHash && (
+          {transactionHash && (
             <a
               href={config.networks[lock!.network].explorer.urls.transaction(
-                mint.transactionHash
+                transactionHash
               )}
               target="_blank"
               rel="noopener noreferrer"
