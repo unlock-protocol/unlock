@@ -129,6 +129,45 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
           showStatus ? 'grid-cols-2' : 'grid-cols-1'
         } grid border border-gray-400 divide-x divide-gray-400 rounded-xl`}
       >
+        {showStatus && (
+          <div className="px-8 py-10 ">
+            <div data-testid="status" className="flex flex-col gap-8 r">
+              {isDeploying && (
+                <img
+                  className="object-contain animate-pulse max-h-96"
+                  src="/images/svg/create-lock/deploying.svg"
+                  alt="Deploying"
+                />
+              )}
+              {isDeployed && (
+                <img
+                  className="object-contain max-h-96"
+                  src="/images/svg/create-lock/deployed.svg"
+                  alt="Deploying"
+                />
+              )}
+              {isError && (
+                <StatusLabel
+                  label="Failed..."
+                  description="TX failed."
+                  active={isError}
+                  variant="red"
+                />
+              )}
+            </div>
+            {transactionDetailUrl && (
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 mt-5 text-lg font-bold text-brand-ui-primary"
+                href={transactionDetailUrl}
+              >
+                <span>See on Etherscan</span>
+                <ExternalLinkIcon size={20} />
+              </a>
+            )}
+          </div>
+        )}
         <div data-testid="summary" className="flex flex-col gap-8 px-8 py-10">
           <div className="flex flex-col gap-2">
             <span className="text-base">Network</span>
@@ -158,37 +197,6 @@ export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
             />
           </div>
         </div>
-        {showStatus && (
-          <div className="px-8 py-10 ">
-            <div data-testid="status" className="flex flex-col gap-8">
-              <StatusLabel
-                label="Deploying..."
-                description={`Block ${confirmations}/${requiredConfirmations} confirmed.`}
-                active={isDeploying}
-              />
-              <StatusLabel label="Deployed." active={isDeployed} />
-              {isError && (
-                <StatusLabel
-                  label="Failed..."
-                  description="TX failed."
-                  active={isError}
-                  variant="red"
-                />
-              )}
-            </div>
-            {transactionDetailUrl && (
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 mt-20 text-lg font-bold text-brand-ui-primary"
-                href={transactionDetailUrl}
-              >
-                <span>See on Etherscan</span>
-                <ExternalLinkIcon size={20} />
-              </a>
-            )}
-          </div>
-        )}
       </div>
       {showStatus && (
         <div className="flex flex-col items-center mt-12">

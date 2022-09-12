@@ -1,0 +1,14 @@
+<svg width="492" height="445" viewBox="0 0 492 445" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="270" y="128" width="78" height="78" rx="7" fill="#BFB1F7" stroke="#603DEB" stroke-width="2"/>
+<circle cx="309" cy="167" r="9" fill="#603DEB"/>
+<rect x="144" y="251" width="78" height="78" rx="7" fill="#BFB1F7" stroke="#603DEB" stroke-width="2"/>
+<circle cx="183" cy="290" r="9" fill="#603DEB"/>
+<line x1="309" y1="165" x2="184" y2="165" stroke="#603DEB" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line x1="308" y1="291" x2="183" y2="291" stroke="#603DEB" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line x1="308" y1="290" x2="308" y2="165" stroke="#603DEB" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line x1="182" y1="289" x2="182" y2="164" stroke="#603DEB" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="144" y="128" width="78" height="78" rx="7" fill="#BFB1F7" stroke="#603DEB" stroke-width="2"/>
+<circle cx="183" cy="167" r="9" fill="#603DEB"/>
+<rect x="270" y="251" width="78" height="78" rx="7" fill="#BFB1F7" stroke="#603DEB" stroke-width="2"/>
+<circle cx="309" cy="290" r="9" fill="#603DEB"/>
+</svg>
