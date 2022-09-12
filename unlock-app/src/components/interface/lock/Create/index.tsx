@@ -27,3 +27,5 @@ export const CreateLockPage = () => {
     </div>
   )
 }
+
+export default CreateLockPage

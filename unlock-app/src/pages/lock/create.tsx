@@ -1,9 +1,9 @@
 import React from 'react'
 import type { NextPage } from 'next'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
-import { CreateLockPage } from '~/components/interface/lock/create'
+import CreateLockPage from '~/components/interface/lock/Create'
 
-const Checkout: NextPage = () => {
+const Create: NextPage = () => {
   return (
     <BrowserOnly>
       <CreateLockPage />
@@ -11,4 +11,4 @@ const Checkout: NextPage = () => {
   )
 }
 
-export default Checkout
+export default Create
