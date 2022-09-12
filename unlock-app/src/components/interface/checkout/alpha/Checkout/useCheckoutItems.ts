@@ -6,10 +6,12 @@ export function useCheckoutSteps(service: CheckoutService) {
   const [state] = useActor(service)
   const { paywallConfig, skipQuantity, payment, lock } = state.context
 
+  const lockAddress = lock?.address || ''
+
   const isCaptcha =
-    paywallConfig.locks[lock!.address].captcha || paywallConfig.captcha
+    paywallConfig.locks[lockAddress]?.captcha || paywallConfig.captcha
   const isPassword =
-    paywallConfig.locks[lock!.address].password || paywallConfig.password
+    paywallConfig.locks[lockAddress]?.password || paywallConfig.password
 
   const stepItems: StepItem[] = [
     {
