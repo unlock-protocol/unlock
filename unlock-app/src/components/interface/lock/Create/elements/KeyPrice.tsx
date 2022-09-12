@@ -9,7 +9,7 @@ export const TokenImage = ({ currency }: { currency: string }) => (
   <img src={`/images/svg/tokens/${currency.toUpperCase()}.svg`} alt="" />
 )
 
-export const KeyPrice: React.FC<KeyPriceProps> = ({ price, currency }) => {
+export const KeyPrice = ({ price, currency }: KeyPriceProps) => {
   const keyPrice = price ? parseFloat(`${price}`)?.toFixed(2) : null
 
   return (

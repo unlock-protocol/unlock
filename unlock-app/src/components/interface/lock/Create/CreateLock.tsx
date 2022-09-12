@@ -33,9 +33,7 @@ interface CreateLockStepsProps {
   onStepChange: (step: Step) => void
 }
 
-export const CreateLockSteps: React.FC<CreateLockStepsProps> = ({
-  onStepChange,
-}) => {
+export const CreateLockSteps = ({ onStepChange }: CreateLockStepsProps) => {
   const { account: owner, network } = useAuth()
   const [step, setStep] = useState<Step>('data')
   const [values, setValues] = useState<LockFormProps | undefined>(undefined)
@@ -137,7 +135,7 @@ export const CreateLockSteps: React.FC<CreateLockStepsProps> = ({
   }
 }
 
-const CreateLock: React.FC<CreateLockProps> = ({ onSubmit, defaultValues }) => {
+const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
   return (
     <div>
       <div className="grid gap-4 md:grid-cols-2 md:gap-28">
@@ -162,12 +160,12 @@ const CreateLock: React.FC<CreateLockProps> = ({ onSubmit, defaultValues }) => {
   )
 }
 
-const CreateLockSummary: React.FC<CreateLockSummaryProps> = ({
+const CreateLockSummary = ({
   formData,
   network,
   setStep,
   onSubmit,
-}) => {
+}: CreateLockSummaryProps) => {
   const onHandleSubmit = () => {
     if (typeof onSubmit === 'function') {
       onSubmit(formData)

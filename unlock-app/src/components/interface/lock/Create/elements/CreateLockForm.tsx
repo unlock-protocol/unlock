@@ -47,10 +47,10 @@ interface CreateLockFormProps {
   defaultValues: LockFormProps
 }
 
-export const CreateLockForm: React.FC<CreateLockFormProps> = ({
+export const CreateLockForm = ({
   onSubmit,
   defaultValues,
-}) => {
+}: CreateLockFormProps) => {
   const { networks } = useConfig()
   const { network } = useAuth()
   const [isOpen, setIsOpen] = useState(false)

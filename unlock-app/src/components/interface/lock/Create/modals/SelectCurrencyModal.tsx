@@ -6,10 +6,10 @@ interface SelectCurrencyModalProps {
   isOpen: boolean
   setIsOpen: (status: boolean) => void
 }
-export const SelectCurrencyModal: React.FC<SelectCurrencyModalProps> = ({
+export const SelectCurrencyModal = ({
   isOpen,
   setIsOpen,
-}) => {
+}: SelectCurrencyModalProps) => {
   return (
     <Transition show={isOpen} appear as={Fragment}>
       <Dialog

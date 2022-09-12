@@ -22,12 +22,12 @@ interface DeployStatusProps {
   description: string
 }
 
-const StatusLabel: React.FC<StatusProps> = ({
+const StatusLabel = ({
   active = false,
   label,
   description,
   variant = 'default',
-}) => {
+}: StatusProps) => {
   const VARIANTS_STYLES: Record<Variant, string> = {
     default: 'text-black',
     red: 'text-red-700',
@@ -64,12 +64,12 @@ const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   },
 }
 
-export const CreateLockFormSummary: React.FC<CreateLockFormSummaryProps> = ({
+export const CreateLockFormSummary = ({
   formData,
   network,
   showStatus = false,
   transactionHash,
-}) => {
+}: CreateLockFormSummaryProps) => {
   const router = useRouter()
   const web3Service = useWeb3Service()
   const { networks, requiredConfirmations } = useConfig()
