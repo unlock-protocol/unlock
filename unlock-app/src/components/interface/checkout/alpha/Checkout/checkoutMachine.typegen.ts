@@ -23,6 +23,7 @@ export interface Typegen0 {
     selectRecipients: 'SELECT_RECIPIENTS'
     signMessage: 'SIGN_MESSAGE'
     solveCaptcha: 'SOLVE_CAPTCHA'
+    submitPassword: 'SUBMIT_PASSWORD'
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
   }
   eventsCausingServices: {}
@@ -35,6 +36,10 @@ export interface Typegen0 {
       | 'BACK'
       | 'SELECT_CARD_TO_CHARGE'
       | 'SELECT_PAYMENT_METHOD'
+    requirePassword:
+      | 'SELECT_CARD_TO_CHARGE'
+      | 'SELECT_PAYMENT_METHOD'
+      | 'SIGN_MESSAGE'
   }
   eventsCausingDelays: {}
   matchesStates:
@@ -44,6 +49,7 @@ export interface Typegen0 {
     | 'MESSAGE_TO_SIGN'
     | 'METADATA'
     | 'MINTING'
+    | 'PASSWORD'
     | 'PAYMENT'
     | 'QUANTITY'
     | 'RENEW'
