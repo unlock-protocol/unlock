@@ -7,7 +7,6 @@ export const BSC: Token[] = [
     symbol: 'ETH',
     decimals: 18,
     address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
-    logoURI: 'https://wallet-asset.matic.network/img/tokens/eth.svg',
   },
   {
     chainId: 56,
@@ -15,7 +14,6 @@ export const BSC: Token[] = [
     symbol: 'USDC',
     decimals: 18,
     address: '0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d',
-    logoURI: 'https://wallet-asset.matic.network/img/tokens/usdc.svg',
   },
   {
     chainId: 56,
@@ -23,7 +21,6 @@ export const BSC: Token[] = [
     symbol: 'USDT',
     decimals: 18,
     address: '0x55d398326f99059ff775485246999027b3197955',
-    logoURI: 'https://wallet-asset.matic.network/img/tokens/usdt.svg',
   },
   {
     chainId: 56,
@@ -31,6 +28,5 @@ export const BSC: Token[] = [
     symbol: 'DAI',
     decimals: 18,
     address: '0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3',
-    logoURI: 'https://wallet-asset.matic.network/img/tokens/dai.svg',
   },
 ]

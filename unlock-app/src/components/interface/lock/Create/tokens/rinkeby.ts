@@ -7,8 +7,6 @@ export const RINKEBY: Token[] = [
     symbol: 'WETH',
     decimals: 18,
     chainId: 4,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc778417E063141139Fce010982780140Aa0cD5Ab/logo.png',
   },
   {
     name: 'Dai Stablecoin',
@@ -16,8 +14,6 @@ export const RINKEBY: Token[] = [
     symbol: 'DAI',
     decimals: 18,
     chainId: 4,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735/logo.png',
   },
   {
     name: 'Maker',
@@ -25,8 +21,6 @@ export const RINKEBY: Token[] = [
     symbol: 'MKR',
     decimals: 18,
     chainId: 4,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xF9bA5210F91D0474bd1e1DcDAeC4C58E359AaD85/logo.png',
   },
   {
     name: 'Uniswap',
@@ -34,6 +28,5 @@ export const RINKEBY: Token[] = [
     symbol: 'UNI',
     decimals: 18,
     chainId: 4,
-    logoURI: 'ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg',
   },
 ]

@@ -7,8 +7,6 @@ export const MAINNET: Token[] = [
     symbol: 'WETH',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2/logo.png',
   },
   {
     name: 'Dai Stablecoin',
@@ -16,8 +14,6 @@ export const MAINNET: Token[] = [
     symbol: 'DAI',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png',
   },
   {
     name: '0x Protocol Token',
@@ -25,8 +21,6 @@ export const MAINNET: Token[] = [
     symbol: 'ZRX',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xE41d2489571d322189246DaFA5ebDe1F4699F498/logo.png',
   },
   {
     name: 'Curve DAO Token',
@@ -34,8 +28,6 @@ export const MAINNET: Token[] = [
     symbol: 'CRV',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xD533a949740bb3306d119CC777fa900bA034cd52/logo.png',
   },
   {
     name: 'Uniswap',
@@ -43,7 +35,6 @@ export const MAINNET: Token[] = [
     symbol: 'UNI',
     decimals: 18,
     chainId: 1,
-    logoURI: 'ipfs://QmXttGpZrECX5qCyXbBQiqgQNytVGeZW5Anewvh2jc4psg',
   },
   {
     name: 'Tether USD',
@@ -51,8 +42,6 @@ export const MAINNET: Token[] = [
     symbol: 'USDT',
     decimals: 6,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',
   },
   {
     name: 'USDCoin',
@@ -60,8 +49,6 @@ export const MAINNET: Token[] = [
     symbol: 'USDC',
     decimals: 6,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',
   },
   {
     name: 'Orchid',
@@ -69,8 +56,6 @@ export const MAINNET: Token[] = [
     symbol: 'OXT',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x4575f41308EC1483f3d399aa9a2826d74Da13Deb/logo.png',
   },
   {
     name: 'Maker',
@@ -78,8 +63,6 @@ export const MAINNET: Token[] = [
     symbol: 'MKR',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2/logo.png',
   },
   {
     name: 'ChainLink Token',
@@ -87,8 +70,6 @@ export const MAINNET: Token[] = [
     symbol: 'LINK',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x514910771AF9Ca656af840dff83E8264EcF986CA/logo.png',
   },
   {
     name: 'Reputation Augur v1',
@@ -96,8 +77,6 @@ export const MAINNET: Token[] = [
     symbol: 'REP',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1985365e9f78359a9B6AD760e32412f4a445E862/logo.png',
   },
   {
     name: 'Reputation Augur v2',
@@ -105,8 +84,6 @@ export const MAINNET: Token[] = [
     symbol: 'REPv2',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x221657776846890989a759BA2973e427DfF5C9bB/logo.png',
   },
   {
     name: 'Kyber Network Crystal',
@@ -114,8 +91,6 @@ export const MAINNET: Token[] = [
     symbol: 'KNC',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdd974D5C2e2928deA5F71b9825b8b646686BD200/logo.png',
   },
   {
     name: 'Compound',
@@ -123,8 +98,6 @@ export const MAINNET: Token[] = [
     symbol: 'COMP',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc00e94Cb662C3520282E6f5717214004A7f26888/logo.png',
   },
   {
     chainId: 1,
@@ -132,8 +105,6 @@ export const MAINNET: Token[] = [
     name: 'Band Protocol',
     symbol: 'BAND',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/9545/thumb/band-protocol.png?1568730326',
   },
   {
     name: 'Numeraire',
@@ -141,8 +112,6 @@ export const MAINNET: Token[] = [
     symbol: 'NMR',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1776e1F26f98b1A5dF9cD347953a26dd3Cb46671/logo.png',
   },
   {
     name: 'UMA Voting Token v1',
@@ -150,8 +119,6 @@ export const MAINNET: Token[] = [
     symbol: 'UMA',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x04Fa0d235C4abf4BcF4787aF4CF447DE572eF828/logo.png',
   },
   {
     name: 'LoopringCoin V2',
@@ -159,8 +126,6 @@ export const MAINNET: Token[] = [
     symbol: 'LRC',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xBBbbCA6A901c926F240b89EacB641d8Aec7AEafD/logo.png',
   },
   {
     chainId: 1,
@@ -168,8 +133,6 @@ export const MAINNET: Token[] = [
     name: 'yearn finance',
     symbol: 'YFI',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11849/thumb/yfi-192x192.png?1598325330',
   },
   {
     name: 'Republic Token',
@@ -177,8 +140,6 @@ export const MAINNET: Token[] = [
     symbol: 'REN',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x408e41876cCCDC0F92210600ef50372656052a38/logo.png',
   },
   {
     name: 'Wrapped BTC',
@@ -186,8 +147,6 @@ export const MAINNET: Token[] = [
     symbol: 'WBTC',
     decimals: 8,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png',
   },
   {
     name: 'Balancer',
@@ -195,8 +154,6 @@ export const MAINNET: Token[] = [
     symbol: 'BAL',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xba100000625a3754423978a60c9317c58a424e3D/logo.png',
   },
   {
     chainId: 1,
@@ -204,8 +161,6 @@ export const MAINNET: Token[] = [
     name: 'NuCypher',
     symbol: 'NU',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/3318/thumb/photo1198982838879365035.jpg?1547037916',
   },
   {
     chainId: 1,
@@ -213,8 +168,6 @@ export const MAINNET: Token[] = [
     name: 'Aave',
     symbol: 'AAVE',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12645/thumb/AAVE.png?1601374110',
   },
   {
     chainId: 1,
@@ -222,8 +175,6 @@ export const MAINNET: Token[] = [
     name: 'The Graph',
     symbol: 'GRT',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13397/thumb/Graph_Token.png?1608145566',
   },
   {
     name: 'Bancor Network Token',
@@ -231,8 +182,6 @@ export const MAINNET: Token[] = [
     symbol: 'BNT',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x1F573D6Fb3F13d689FF844B4cE37794d79a7FF1C/logo.png',
   },
   {
     name: 'Synthetix Network Token',
@@ -240,8 +189,6 @@ export const MAINNET: Token[] = [
     symbol: 'SNX',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F/logo.png',
   },
   {
     chainId: 1,
@@ -249,8 +196,6 @@ export const MAINNET: Token[] = [
     name: 'Decentraland',
     symbol: 'MANA',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/878/thumb/decentraland-mana.png?1550108745',
   },
   {
     name: 'Loom Network',
@@ -258,8 +203,6 @@ export const MAINNET: Token[] = [
     symbol: 'LOOM',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA4e8C3Ec456107eA67d3075bF9e3DF3A75823DB0/logo.png',
   },
   {
     chainId: 1,
@@ -267,8 +210,6 @@ export const MAINNET: Token[] = [
     name: 'Civic',
     symbol: 'CVC',
     decimals: 8,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/788/thumb/civic.png?1547034556',
   },
   {
     chainId: 1,
@@ -276,8 +217,6 @@ export const MAINNET: Token[] = [
     name: 'district0x',
     symbol: 'DNT',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/849/thumb/district0x.png?1547223762',
   },
   {
     name: 'Storj Token',
@@ -285,8 +224,6 @@ export const MAINNET: Token[] = [
     symbol: 'STORJ',
     decimals: 8,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xB64ef51C888972c908CFacf59B47C1AfBC0Ab8aC/logo.png',
   },
   {
     chainId: 1,
@@ -294,8 +231,6 @@ export const MAINNET: Token[] = [
     name: 'Amp',
     symbol: 'AMP',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12409/thumb/amp-200x200.png?1599625397',
   },
   {
     name: 'Gnosis Token',
@@ -303,8 +238,6 @@ export const MAINNET: Token[] = [
     symbol: 'GNO',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6810e776880C02933D47DB1b9fc05908e5386b96/logo.png',
   },
   {
     name: 'Aragon Network Token',
@@ -312,8 +245,6 @@ export const MAINNET: Token[] = [
     symbol: 'ANT',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x960b236A07cf122663c4303350609A66A7B288C0/logo.png',
   },
   {
     chainId: 1,
@@ -321,8 +252,6 @@ export const MAINNET: Token[] = [
     name: 'Keep Network',
     symbol: 'KEEP',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/3373/thumb/IuNzUb5b_400x400.jpg?1589526336',
   },
   {
     chainId: 1,
@@ -330,8 +259,6 @@ export const MAINNET: Token[] = [
     name: 'tBTC',
     symbol: 'TBTC',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11224/thumb/tBTC.png?1589620754',
   },
   {
     chainId: 1,
@@ -339,8 +266,6 @@ export const MAINNET: Token[] = [
     name: 'Melon',
     symbol: 'MLN',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/605/thumb/melon.png?1547034295',
   },
   {
     chainId: 1,
@@ -348,8 +273,6 @@ export const MAINNET: Token[] = [
     name: 'Ethereum Name Service',
     symbol: 'ENS',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/19785/thumb/acatxTm8_400x400.jpg?1635850140',
   },
   {
     name: 'Synth sUSD',
@@ -357,8 +280,6 @@ export const MAINNET: Token[] = [
     symbol: 'sUSD',
     decimals: 18,
     chainId: 1,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/5013/thumb/sUSD.png?1616150765',
   },
   {
     chainId: 1,
@@ -366,8 +287,6 @@ export const MAINNET: Token[] = [
     name: 'Polygon',
     symbol: 'MATIC',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/4713/thumb/matic-token-icon.png?1624446912',
   },
   {
     chainId: 1,
@@ -375,8 +294,6 @@ export const MAINNET: Token[] = [
     name: 'ApeCoin',
     symbol: 'APE',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/24383/small/apecoin.jpg?1647476455',
   },
   {
     chainId: 1,
@@ -384,8 +301,6 @@ export const MAINNET: Token[] = [
     name: '1inch',
     symbol: '1INCH',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13469/thumb/1inch-token.png?1608803028',
   },
   {
     chainId: 1,
@@ -393,8 +308,6 @@ export const MAINNET: Token[] = [
     name: 'Aergo',
     symbol: 'AERGO',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/4490/thumb/aergo.png?1647696770',
   },
   {
     chainId: 1,
@@ -402,8 +315,6 @@ export const MAINNET: Token[] = [
     name: 'AIOZ Network',
     symbol: 'AIOZ',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14631/thumb/aioz_logo.png?1617413126',
   },
   {
     chainId: 1,
@@ -411,8 +322,6 @@ export const MAINNET: Token[] = [
     name: 'Alchemix',
     symbol: 'ALCX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14113/thumb/Alchemix.png?1614409874',
   },
   {
     chainId: 1,
@@ -420,8 +329,6 @@ export const MAINNET: Token[] = [
     name: 'Artverse Token',
     symbol: 'AVT',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/19727/thumb/ewnektoB_400x400.png?1635767094',
   },
   {
     chainId: 1,
@@ -429,8 +336,6 @@ export const MAINNET: Token[] = [
     name: 'Adventure Gold',
     symbol: 'AGLD',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/18125/thumb/lpgblc4h_400x400.jpg?1630570955',
   },
   {
     chainId: 1,
@@ -438,8 +343,6 @@ export const MAINNET: Token[] = [
     name: 'BarnBridge',
     symbol: 'BOND',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12811/thumb/barnbridge.jpg?1602728853',
   },
   {
     chainId: 1,
@@ -447,8 +350,6 @@ export const MAINNET: Token[] = [
     name: 'Ampleforth Governance Token',
     symbol: 'FORTH',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14917/thumb/photo_2021-04-22_00.00.03.jpeg?1619020835',
   },
   {
     chainId: 1,
@@ -456,8 +357,6 @@ export const MAINNET: Token[] = [
     name: 'Ankr',
     symbol: 'ANKR',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/4324/thumb/U85xTl2.png?1608111978',
   },
   {
     chainId: 1,
@@ -465,8 +364,6 @@ export const MAINNET: Token[] = [
     name: 'API3',
     symbol: 'API3',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13256/thumb/api3.jpg?1606751424',
   },
   {
     chainId: 1,
@@ -474,8 +371,6 @@ export const MAINNET: Token[] = [
     name: 'ARPA Chain',
     symbol: 'ARPA',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/8506/thumb/9u0a23XY_400x400.jpg?1559027357',
   },
   {
     chainId: 1,
@@ -483,8 +378,6 @@ export const MAINNET: Token[] = [
     name: 'Assemble Protocol',
     symbol: 'ASM',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11605/thumb/gpvrlkSq_400x400_%281%29.jpg?1591775789',
   },
   {
     chainId: 1,
@@ -492,8 +385,6 @@ export const MAINNET: Token[] = [
     name: 'Clover Finance',
     symbol: 'CLV',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/15278/thumb/clover.png?1645084454',
   },
   {
     chainId: 1,
@@ -501,8 +392,6 @@ export const MAINNET: Token[] = [
     name: 'Cryptex Finance',
     symbol: 'CTX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14932/thumb/glossy_icon_-_C200px.png?1619073171',
   },
   {
     chainId: 1,
@@ -510,8 +399,6 @@ export const MAINNET: Token[] = [
     name: 'Axie Infinity',
     symbol: 'AXS',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13029/thumb/axie_infinity_logo.png?1604471082',
   },
   {
     chainId: 1,
@@ -519,8 +406,6 @@ export const MAINNET: Token[] = [
     name: 'Badger DAO',
     symbol: 'BADGER',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13287/thumb/badger_dao_logo.jpg?1607054976',
   },
   {
     chainId: 1,
@@ -528,8 +413,6 @@ export const MAINNET: Token[] = [
     name: 'Cronos',
     symbol: 'CRO',
     decimals: 8,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/7310/thumb/oCw2s3GI_400x400.jpeg?1645172042',
   },
   {
     chainId: 1,
@@ -537,8 +420,6 @@ export const MAINNET: Token[] = [
     name: 'Basic Attention Token',
     symbol: 'BAT',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/677/thumb/basic-attention-token.png?1547034427',
   },
   {
     chainId: 1,
@@ -546,8 +427,6 @@ export const MAINNET: Token[] = [
     name: 'Biconomy',
     symbol: 'BICO',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/21061/thumb/biconomy_logo.jpg?1638269749',
   },
   {
     chainId: 1,
@@ -555,8 +434,6 @@ export const MAINNET: Token[] = [
     name: 'Gitcoin',
     symbol: 'GTC',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/15810/thumb/gitcoin.png?1621992929',
   },
   {
     chainId: 1,
@@ -564,8 +441,6 @@ export const MAINNET: Token[] = [
     name: 'Immutable X',
     symbol: 'IMX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/17233/thumb/imx.png?1636691817',
   },
   {
     chainId: 1,
@@ -573,8 +448,6 @@ export const MAINNET: Token[] = [
     name: 'Bluzelle',
     symbol: 'BLZ',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/2848/thumb/ColorIcon_3x.png?1622516510',
   },
   {
     chainId: 1,
@@ -582,8 +455,6 @@ export const MAINNET: Token[] = [
     name: 'Mask Network',
     symbol: 'MASK',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14051/thumb/Mask_Network.jpg?1614050316',
   },
   {
     chainId: 1,
@@ -591,8 +462,6 @@ export const MAINNET: Token[] = [
     name: 'Bounce',
     symbol: 'AUCTION',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13860/thumb/1_KtgpRIJzuwfHe0Rl0avP_g.jpeg?1612412025',
   },
   {
     chainId: 1,
@@ -600,8 +469,6 @@ export const MAINNET: Token[] = [
     name: 'Braintrust',
     symbol: 'BTRST',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/18100/thumb/braintrust.PNG?1630475394',
   },
   {
     chainId: 1,
@@ -609,8 +476,6 @@ export const MAINNET: Token[] = [
     name: 'PlayDapp',
     symbol: 'PLA',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14316/thumb/54023228.png?1615366911',
   },
   {
     chainId: 1,
@@ -618,8 +483,6 @@ export const MAINNET: Token[] = [
     name: 'Cartesi',
     symbol: 'CTSI',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11038/thumb/cartesi.png?1592288021',
   },
   {
     chainId: 1,
@@ -627,8 +490,6 @@ export const MAINNET: Token[] = [
     name: 'Pluton',
     symbol: 'PLU',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/1241/thumb/pluton.png?1548331624',
   },
   {
     chainId: 1,
@@ -636,8 +497,6 @@ export const MAINNET: Token[] = [
     name: 'Chiliz',
     symbol: 'CHZ',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/8834/thumb/Chiliz.png?1561970540',
   },
   {
     chainId: 1,
@@ -645,8 +504,6 @@ export const MAINNET: Token[] = [
     name: 'PolySwarm',
     symbol: 'NCT',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/2843/thumb/ImcYCVfX_400x400.jpg?1628519767',
   },
   {
     chainId: 1,
@@ -654,8 +511,6 @@ export const MAINNET: Token[] = [
     name: 'Rai Reflex Index',
     symbol: 'RAI',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14004/thumb/RAI-logo-coin.png?1613592334',
   },
   {
     chainId: 1,
@@ -663,8 +518,6 @@ export const MAINNET: Token[] = [
     name: 'COTI',
     symbol: 'COTI',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/2962/thumb/Coti.png?1559653863',
   },
   {
     chainId: 1,
@@ -672,8 +525,6 @@ export const MAINNET: Token[] = [
     name: 'SOL Wormhole ',
     symbol: 'SOL',
     decimals: 9,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/22876/thumb/SOL_wh_small.png?1644224316',
   },
   {
     chainId: 1,
@@ -681,8 +532,6 @@ export const MAINNET: Token[] = [
     name: 'Crypterium',
     symbol: 'CRPT',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/1901/thumb/crypt.png?1547036205',
   },
   {
     chainId: 1,
@@ -690,8 +539,6 @@ export const MAINNET: Token[] = [
     name: 'SuperFarm',
     symbol: 'SUPER',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14040/thumb/6YPdWn6.png?1613975899',
   },
   {
     chainId: 1,
@@ -699,8 +546,6 @@ export const MAINNET: Token[] = [
     name: 'Synapse',
     symbol: 'SYN',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/18024/thumb/syn.png?1635002049',
   },
   {
     chainId: 1,
@@ -708,8 +553,6 @@ export const MAINNET: Token[] = [
     name: 'TrueFi',
     symbol: 'TRU',
     decimals: 8,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13180/thumb/truefi_glyph_color.png?1617610941',
   },
   {
     chainId: 1,
@@ -717,8 +560,6 @@ export const MAINNET: Token[] = [
     name: 'DerivaDAO',
     symbol: 'DDX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13453/thumb/ddx_logo.png?1608741641',
   },
   {
     chainId: 1,
@@ -726,8 +567,6 @@ export const MAINNET: Token[] = [
     name: 'DFI money',
     symbol: 'YFII',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11902/thumb/YFII-logo.78631676.png?1598677348',
   },
   {
     chainId: 1,
@@ -735,8 +574,6 @@ export const MAINNET: Token[] = [
     name: 'DIA',
     symbol: 'DIA',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11955/thumb/image.png?1646041751',
   },
   {
     chainId: 1,
@@ -744,8 +581,6 @@ export const MAINNET: Token[] = [
     name: 'Rubic',
     symbol: 'RBC',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12629/thumb/200x200.png?1607952509',
   },
   {
     chainId: 1,
@@ -753,8 +588,6 @@ export const MAINNET: Token[] = [
     name: 'Enjin Coin',
     symbol: 'ENJ',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/1102/thumb/enjin-coin-logo.png?1547035078',
   },
   {
     chainId: 1,
@@ -762,8 +595,6 @@ export const MAINNET: Token[] = [
     name: 'SuperRare',
     symbol: 'RARE',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/17753/thumb/RARE.jpg?1629220534',
   },
   {
     chainId: 1,
@@ -771,8 +602,6 @@ export const MAINNET: Token[] = [
     name: 'Tokemak',
     symbol: 'TOKE',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/17495/thumb/tokemak-avatar-200px-black.png?1628131614',
   },
   {
     chainId: 1,
@@ -780,8 +609,6 @@ export const MAINNET: Token[] = [
     name: 'Ethernity Chain',
     symbol: 'ERN',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14238/thumb/LOGO_HIGH_QUALITY.png?1647831402',
   },
   {
     chainId: 1,
@@ -789,8 +616,6 @@ export const MAINNET: Token[] = [
     name: 'Fetch ai',
     symbol: 'FET',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/5681/thumb/Fetch.jpg?1572098136',
   },
   {
     chainId: 1,
@@ -798,8 +623,6 @@ export const MAINNET: Token[] = [
     name: 'Function X',
     symbol: 'FX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/8186/thumb/47271330_590071468072434_707260356350705664_n.jpg?1556096683',
   },
   {
     chainId: 1,
@@ -807,8 +630,6 @@ export const MAINNET: Token[] = [
     name: 'Gods Unchained',
     symbol: 'GODS',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/17139/thumb/10631.png?1635718182',
   },
   {
     chainId: 1,
@@ -816,8 +637,6 @@ export const MAINNET: Token[] = [
     name: 'Goldfinch',
     symbol: 'GFI',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/19081/thumb/GOLDFINCH.png?1634369662',
   },
   {
     chainId: 1,
@@ -825,8 +644,6 @@ export const MAINNET: Token[] = [
     name: 'Golem',
     symbol: 'GLM',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/542/thumb/Golem_Submark_Positive_RGB.png?1606392013',
   },
   {
     chainId: 1,
@@ -834,8 +651,6 @@ export const MAINNET: Token[] = [
     name: 'GYEN',
     symbol: 'GYEN',
     decimals: 6,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14191/thumb/icon_gyen_200_200.png?1614843343',
   },
   {
     chainId: 1,
@@ -843,8 +658,6 @@ export const MAINNET: Token[] = [
     name: 'Harvest Finance',
     symbol: 'FARM',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12304/thumb/Harvest.png?1613016180',
   },
   {
     chainId: 1,
@@ -852,8 +665,6 @@ export const MAINNET: Token[] = [
     name: 'Highstreet',
     symbol: 'HIGH',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/18973/thumb/logosq200200Coingecko.png?1634090470',
   },
   {
     chainId: 1,
@@ -861,8 +672,6 @@ export const MAINNET: Token[] = [
     name: 'IDEX',
     symbol: 'IDEX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/2565/thumb/logomark-purple-286x286.png?1638362736',
   },
   {
     chainId: 1,
@@ -870,8 +679,6 @@ export const MAINNET: Token[] = [
     name: 'iExec RLC',
     symbol: 'RLC',
     decimals: 9,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/646/thumb/pL1VuXm.png?1604543202',
   },
   {
     chainId: 1,
@@ -879,8 +686,6 @@ export const MAINNET: Token[] = [
     name: 'Inverse Finance',
     symbol: 'INV',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14205/thumb/inverse_finance.jpg?1614921871',
   },
   {
     chainId: 1,
@@ -888,8 +693,6 @@ export const MAINNET: Token[] = [
     name: 'JasmyCoin',
     symbol: 'JASMY',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13876/thumb/JASMY200x200.jpg?1612473259',
   },
   {
     chainId: 1,
@@ -897,8 +700,6 @@ export const MAINNET: Token[] = [
     name: 'KRYLL',
     symbol: 'KRL',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/2807/thumb/krl.png?1547036979',
   },
   {
     chainId: 1,
@@ -906,8 +707,6 @@ export const MAINNET: Token[] = [
     name: 'LCX',
     symbol: 'LCX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/9985/thumb/zRPSu_0o_400x400.jpg?1574327008',
   },
   {
     chainId: 1,
@@ -915,8 +714,6 @@ export const MAINNET: Token[] = [
     name: 'Liquity',
     symbol: 'LQTY',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14665/thumb/200-lqty-icon.png?1617631180',
   },
   {
     chainId: 1,
@@ -924,8 +721,6 @@ export const MAINNET: Token[] = [
     name: 'Livepeer',
     symbol: 'LPT',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/7137/thumb/logo-circle-green.png?1619593365',
   },
   {
     chainId: 1,
@@ -933,8 +728,6 @@ export const MAINNET: Token[] = [
     name: 'Maple',
     symbol: 'MPL',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14097/thumb/photo_2021-05-03_14.20.41.jpeg?1620022863',
   },
   {
     chainId: 1,
@@ -942,8 +735,6 @@ export const MAINNET: Token[] = [
     name: 'Measurable Data Token',
     symbol: 'MDT',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/2441/thumb/mdt_logo.png?1569813574',
   },
   {
     chainId: 1,
@@ -951,8 +742,6 @@ export const MAINNET: Token[] = [
     name: 'Mirror Protocol',
     symbol: 'MIR',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13295/thumb/mirror_logo_transparent.png?1611554658',
   },
   {
     chainId: 1,
@@ -960,8 +749,6 @@ export const MAINNET: Token[] = [
     name: 'Moss Carbon Credit',
     symbol: 'MCO2',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14414/thumb/ENtxnThA_400x400.jpg?1615948522',
   },
   {
     chainId: 1,
@@ -969,8 +756,6 @@ export const MAINNET: Token[] = [
     name: 'mStable USD',
     symbol: 'MUSD',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11576/thumb/mStable_USD.png?1595591803',
   },
   {
     chainId: 1,
@@ -978,8 +763,6 @@ export const MAINNET: Token[] = [
     name: 'OMG Network',
     symbol: 'OMG',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/776/thumb/OMG_Network.jpg?1591167168',
   },
   {
     chainId: 1,
@@ -987,8 +770,6 @@ export const MAINNET: Token[] = [
     name: 'Origin Protocol',
     symbol: 'OGN',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/3296/thumb/op.jpg?1547037878',
   },
   {
     chainId: 1,
@@ -996,8 +777,6 @@ export const MAINNET: Token[] = [
     name: 'OriginTrail',
     symbol: 'TRAC',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/1877/thumb/TRAC.jpg?1635134367',
   },
   {
     chainId: 1,
@@ -1005,8 +784,6 @@ export const MAINNET: Token[] = [
     name: 'Orion Protocol',
     symbol: 'ORN',
     decimals: 8,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11841/thumb/orion_logo.png?1594943318',
   },
   {
     chainId: 1,
@@ -1014,8 +791,6 @@ export const MAINNET: Token[] = [
     name: 'Pawtocol',
     symbol: 'UPI',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12186/thumb/pawtocol.jpg?1597962008',
   },
   {
     chainId: 1,
@@ -1023,8 +798,6 @@ export const MAINNET: Token[] = [
     name: 'Perpetual Protocol',
     symbol: 'PERP',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12381/thumb/60d18e06844a844ad75901a9_mark_only_03.png?1628674771',
   },
   {
     chainId: 1,
@@ -1032,7 +805,6 @@ export const MAINNET: Token[] = [
     name: 'IoTeX',
     symbol: 'IOTX',
     decimals: 18,
-    logoURI: 'https://s2.coinmarketcap.com/static/img/coins/64x64/2777.png',
   },
   {
     chainId: 1,
@@ -1040,8 +812,6 @@ export const MAINNET: Token[] = [
     name: 'Polkastarter',
     symbol: 'POLS',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12648/thumb/polkastarter.png?1609813702',
   },
   {
     chainId: 1,
@@ -1049,8 +819,6 @@ export const MAINNET: Token[] = [
     name: 'Polymath',
     symbol: 'POLY',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/2784/thumb/inKkF01.png?1605007034',
   },
   {
     chainId: 1,
@@ -1058,8 +826,6 @@ export const MAINNET: Token[] = [
     name: 'Propy',
     symbol: 'PRO',
     decimals: 8,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/869/thumb/propy.png?1548332100',
   },
   {
     chainId: 1,
@@ -1067,8 +833,6 @@ export const MAINNET: Token[] = [
     name: 'Quant',
     symbol: 'QNT',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/3370/thumb/5ZOu7brX_400x400.jpg?1612437252',
   },
   {
     chainId: 1,
@@ -1076,8 +840,6 @@ export const MAINNET: Token[] = [
     name: 'Quantstamp',
     symbol: 'QSP',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/1219/thumb/0_E0kZjb4dG4hUnoDD_.png?1604815917',
   },
   {
     chainId: 1,
@@ -1085,8 +847,6 @@ export const MAINNET: Token[] = [
     name: 'Quickswap',
     symbol: 'QUICK',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13970/thumb/1_pOU6pBMEmiL-ZJVb0CYRjQ.png?1613386659',
   },
   {
     chainId: 1,
@@ -1094,8 +854,6 @@ export const MAINNET: Token[] = [
     name: 'Radicle',
     symbol: 'RAD',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14013/thumb/radicle.png?1614402918',
   },
   {
     chainId: 1,
@@ -1103,8 +861,6 @@ export const MAINNET: Token[] = [
     name: 'NKN',
     symbol: 'NKN',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/3375/thumb/nkn.png?1548329212',
   },
   {
     chainId: 1,
@@ -1112,8 +868,6 @@ export const MAINNET: Token[] = [
     name: 'Rally',
     symbol: 'RLY',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12843/thumb/image.png?1611212077',
   },
   {
     chainId: 1,
@@ -1121,8 +875,6 @@ export const MAINNET: Token[] = [
     name: 'Rari Governance Token',
     symbol: 'RGT',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12900/thumb/Rari_Logo_Transparent.png?1613978014',
   },
   {
     chainId: 1,
@@ -1130,8 +882,6 @@ export const MAINNET: Token[] = [
     name: 'Rarible',
     symbol: 'RARI',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11845/thumb/Rari.png?1594946953',
   },
   {
     chainId: 1,
@@ -1139,8 +889,6 @@ export const MAINNET: Token[] = [
     name: 'Render Token',
     symbol: 'RNDR',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11636/thumb/rndr.png?1638840934',
   },
   {
     chainId: 1,
@@ -1148,8 +896,6 @@ export const MAINNET: Token[] = [
     name: 'Request',
     symbol: 'REQ',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/1031/thumb/Request_icon_green.png?1643250951',
   },
   {
     chainId: 1,
@@ -1157,8 +903,6 @@ export const MAINNET: Token[] = [
     name: 'Ribbon Finance',
     symbol: 'RBN',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/15823/thumb/RBN_64x64.png?1633529723',
   },
   {
     chainId: 1,
@@ -1166,8 +910,6 @@ export const MAINNET: Token[] = [
     name: 'ShapeShift FOX Token',
     symbol: 'FOX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/9988/thumb/FOX.png?1574330622',
   },
   {
     chainId: 1,
@@ -1175,8 +917,6 @@ export const MAINNET: Token[] = [
     name: 'Shiba Inu',
     symbol: 'SHIB',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11939/thumb/shiba.png?1622619446',
   },
   {
     chainId: 1,
@@ -1184,8 +924,6 @@ export const MAINNET: Token[] = [
     name: 'Shping',
     symbol: 'SHPING',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/2588/thumb/r_yabKKi_400x400.jpg?1639470164',
   },
   {
     chainId: 1,
@@ -1193,8 +931,6 @@ export const MAINNET: Token[] = [
     name: 'SKALE',
     symbol: 'SKL',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13245/thumb/SKALE_token_300x300.png?1606789574',
   },
   {
     chainId: 1,
@@ -1202,7 +938,6 @@ export const MAINNET: Token[] = [
     name: 'ORCA Alliance',
     symbol: 'ORCA',
     decimals: 18,
-    logoURI: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5183.png',
   },
   {
     chainId: 1,
@@ -1210,8 +945,6 @@ export const MAINNET: Token[] = [
     name: 'Spell Token',
     symbol: 'SPELL',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/15861/thumb/abracadabra-3.png?1622544862',
   },
   {
     chainId: 1,
@@ -1219,8 +952,6 @@ export const MAINNET: Token[] = [
     name: 'Stox',
     symbol: 'STX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/1230/thumb/stox-token.png?1547035256',
   },
   {
     chainId: 1,
@@ -1228,8 +959,6 @@ export const MAINNET: Token[] = [
     name: 'Status',
     symbol: 'SNT',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/779/thumb/status.png?1548610778',
   },
   {
     chainId: 1,
@@ -1237,8 +966,6 @@ export const MAINNET: Token[] = [
     name: 'PayperEx',
     symbol: 'PAX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/1601/thumb/pax.png?1547035800',
   },
   {
     chainId: 1,
@@ -1246,8 +973,6 @@ export const MAINNET: Token[] = [
     name: 'SUKU',
     symbol: 'SUKU',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/11969/thumb/UmfW5S6f_400x400.jpg?1596602238',
   },
   {
     chainId: 1,
@@ -1255,8 +980,6 @@ export const MAINNET: Token[] = [
     name: 'Sushi',
     symbol: 'SUSHI',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12271/thumb/512x512_Logo_no_chop.png?1606986688',
   },
   {
     chainId: 1,
@@ -1264,8 +987,6 @@ export const MAINNET: Token[] = [
     name: 'Tellor',
     symbol: 'TRB',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/9644/thumb/Blk_icon_current.png?1584980686',
   },
   {
     chainId: 1,
@@ -1273,8 +994,6 @@ export const MAINNET: Token[] = [
     name: 'Tribe',
     symbol: 'TRIBE',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14575/thumb/tribe.PNG?1617487954',
   },
   {
     chainId: 1,
@@ -1282,8 +1001,6 @@ export const MAINNET: Token[] = [
     name: 'Unifi Protocol DAO',
     symbol: 'UNFI',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13152/thumb/logo-2.png?1605748967',
   },
   {
     chainId: 1,
@@ -1291,8 +1008,6 @@ export const MAINNET: Token[] = [
     name: 'Voyager Token',
     symbol: 'VGX',
     decimals: 8,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/794/thumb/Voyager-vgx.png?1575693595',
   },
   {
     chainId: 1,
@@ -1300,8 +1015,6 @@ export const MAINNET: Token[] = [
     name: 'XYO Network',
     symbol: 'XYO',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/4519/thumb/XYO_Network-logo.png?1547039819',
   },
   {
     chainId: 1,
@@ -1309,8 +1022,6 @@ export const MAINNET: Token[] = [
     name: 'Smooth Love Potion',
     symbol: 'SLP',
     decimals: 0,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/10366/thumb/SLP.png?1578640057',
   },
   {
     chainId: 1,
@@ -1318,8 +1029,6 @@ export const MAINNET: Token[] = [
     name: 'Convex Finance',
     symbol: 'CVX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/15585/thumb/convex.png?1621256328',
   },
   {
     chainId: 1,
@@ -1327,8 +1036,6 @@ export const MAINNET: Token[] = [
     name: 'dYdX',
     symbol: 'DYDX',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/17500/thumb/hjnIm9bV.jpg?1628009360',
   },
   {
     chainId: 1,
@@ -1336,8 +1043,6 @@ export const MAINNET: Token[] = [
     name: 'Frax Share',
     symbol: 'FXS',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13423/thumb/frax_share.png?1608478989',
   },
   {
     chainId: 1,
@@ -1345,8 +1050,6 @@ export const MAINNET: Token[] = [
     name: 'Keep3rV1',
     symbol: 'KP3R',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12966/thumb/kp3r_logo.jpg?1607057458',
   },
   {
     chainId: 1,
@@ -1354,8 +1057,6 @@ export const MAINNET: Token[] = [
     name: 'Multichain',
     symbol: 'MULTI',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/22087/thumb/1_Wyot-SDGZuxbjdkaOeT2-A.png?1640764238',
   },
   {
     chainId: 1,
@@ -1363,8 +1064,6 @@ export const MAINNET: Token[] = [
     name: 'Ocean Protocol',
     symbol: 'OCEAN',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/3687/thumb/ocean-protocol-logo.jpg?1547038686',
   },
   {
     chainId: 1,
@@ -1372,8 +1071,6 @@ export const MAINNET: Token[] = [
     name: 'PAX Gold',
     symbol: 'PAXG',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/9519/thumb/paxg.PNG?1568542565',
   },
   {
     chainId: 1,
@@ -1381,8 +1078,6 @@ export const MAINNET: Token[] = [
     name: 'Alchemy Pay',
     symbol: 'ACH',
     decimals: 8,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12390/thumb/ACH_%281%29.png?1599691266',
   },
   {
     chainId: 1,
@@ -1390,8 +1085,6 @@ export const MAINNET: Token[] = [
     name: 'Circuits of Value',
     symbol: 'COVAL',
     decimals: 8,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/588/thumb/coval-logo.png?1599493950',
   },
   {
     chainId: 1,
@@ -1399,8 +1092,6 @@ export const MAINNET: Token[] = [
     name: 'The Sandbox',
     symbol: 'SAND',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12129/thumb/sandbox_logo.jpg?1597397942',
   },
   {
     chainId: 1,
@@ -1408,8 +1099,6 @@ export const MAINNET: Token[] = [
     name: 'Gemini Dollar',
     symbol: 'GUSD',
     decimals: 2,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/5992/thumb/gemini-dollar-gusd.png?1536745278',
   },
   {
     chainId: 1,
@@ -1417,8 +1106,6 @@ export const MAINNET: Token[] = [
     name: 'Audius',
     symbol: 'AUDIO',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12913/thumb/AudiusCoinLogo_2x.png?1603425727',
   },
   {
     chainId: 1,
@@ -1426,8 +1113,6 @@ export const MAINNET: Token[] = [
     name: 'ASH',
     symbol: 'ASH',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/15714/thumb/omnPqaTY.png?1622820503',
   },
   {
     chainId: 1,
@@ -1435,8 +1120,6 @@ export const MAINNET: Token[] = [
     name: 'Dogelon Mars',
     symbol: 'ELON',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14962/thumb/6GxcPRo3_400x400.jpg?1619157413',
   },
   {
     chainId: 1,
@@ -1444,8 +1127,6 @@ export const MAINNET: Token[] = [
     name: 'Fantom',
     symbol: 'FTM',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/4001/thumb/Fantom.png?1558015016',
   },
   {
     chainId: 1,
@@ -1453,8 +1134,6 @@ export const MAINNET: Token[] = [
     name: 'Injective',
     symbol: 'INJ',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12882/thumb/Secondary_Symbol.png?1628233237',
   },
   {
     chainId: 1,
@@ -1462,8 +1141,6 @@ export const MAINNET: Token[] = [
     name: 'Lido DAO',
     symbol: 'LDO',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/13573/thumb/Lido_DAO.png?1609873644',
   },
   {
     chainId: 1,
@@ -1471,8 +1148,6 @@ export const MAINNET: Token[] = [
     name: 'Magic Internet Money',
     symbol: 'MIM',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/16786/thumb/mimlogopng.png?1624979612',
   },
   {
     chainId: 1,
@@ -1480,8 +1155,6 @@ export const MAINNET: Token[] = [
     name: 'Merit Circle',
     symbol: 'MC',
     decimals: 18,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/19304/thumb/Db4XqML.png?1634972154',
   },
   {
     chainId: 1,
@@ -1489,8 +1162,6 @@ export const MAINNET: Token[] = [
     name: 'Gala',
     symbol: 'GALA',
     decimals: 8,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/12493/thumb/GALA-COINGECKO.png?1600233435',
   },
   {
     chainId: 1,
@@ -1498,8 +1169,6 @@ export const MAINNET: Token[] = [
     name: 'Somnium Space CUBEs',
     symbol: 'CUBE',
     decimals: 8,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/10687/thumb/CUBE_icon.png?1617026861',
   },
   {
     chainId: 1,
@@ -1507,8 +1176,6 @@ export const MAINNET: Token[] = [
     name: 'My Neighbor Alice',
     symbol: 'ALICE',
     decimals: 6,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/14375/thumb/alice_logo.jpg?1615782968',
   },
   {
     chainId: 1,
@@ -1516,8 +1183,6 @@ export const MAINNET: Token[] = [
     name: 'Power Ledger',
     symbol: 'POWR',
     decimals: 6,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/1104/thumb/power-ledger.png?1547035082',
   },
   {
     chainId: 1,
@@ -1525,7 +1190,5 @@ export const MAINNET: Token[] = [
     name: 'Euro Coin',
     symbol: 'EUROC',
     decimals: 6,
-    logoURI:
-      'https://assets.coingecko.com/coins/images/26045/thumb/euro-coin.png?1655394420',
   },
 ]
