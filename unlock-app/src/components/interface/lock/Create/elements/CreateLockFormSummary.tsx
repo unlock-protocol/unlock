@@ -9,37 +9,10 @@ import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
 import { KeyPrice } from './KeyPrice'
 
-type Variant = 'default' | 'red'
-interface StatusProps {
-  active: boolean
-  label: string
-  description?: string
-  variant?: Variant
-}
-
 interface DeployStatusProps {
   title: string
   description: string
   status: string
-}
-
-const StatusLabel = ({
-  active = false,
-  label,
-  description,
-  variant = 'default',
-}: StatusProps) => {
-  const VARIANTS_STYLES: Record<Variant, string> = {
-    default: 'text-black',
-    red: 'text-red-700',
-  }
-
-  return (
-    <div className={active ? VARIANTS_STYLES[variant] : 'text-gray-300'}>
-      <span className="block text-4xl font-bold">{label}</span>
-      {description && <span className="mt-2 text-base">{description}</span>}
-    </div>
-  )
 }
 
 interface CreateLockFormSummaryProps {
