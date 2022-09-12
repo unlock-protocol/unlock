@@ -11,15 +11,45 @@ import CreatorLocks from '../creator/CreatorLocks'
 import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
 import LoginPrompt from '../interface/LoginPrompt'
-import { Button } from '@unlock-protocol/ui'
-import Link from 'next/link'
 
 import {
   CreateLockButton,
   CancelCreateLockButton,
-  AccountWrapper,
 } from '../interface/buttons/ActionButton'
 import { Phone } from '../../theme/media'
+import { Button } from '@unlock-protocol/ui'
+
+const ButtonToCreateLock = ({ formIsVisible, toggleForm }) => {
+  const { account } = useContext(AuthenticationContext)
+
+  return (
+    <>
+      {formIsVisible && (
+        <Button
+          variant="outlined-primary"
+          id="CreateLockButton"
+          onClick={toggleForm}
+        >
+          Cancel Lock
+        </Button>
+      )}
+      {!formIsVisible && (
+        <Button disabled={!account} id="CreateLockButton" onClick={toggleForm}>
+          Create Lock
+        </Button>
+      )}
+    </>
+  )
+}
+
+ButtonToCreateLock.propTypes = {
+  formIsVisible: PropTypes.bool,
+  toggleForm: PropTypes.func.isRequired,
+}
+
+ButtonToCreateLock.defaultProps = {
+  formIsVisible: false,
+}
 
 export const DashboardContent = () => {
   const { account, network } = useContext(AuthenticationContext)
@@ -52,9 +82,15 @@ export const DashboardContent = () => {
       )}
       {account && (
         <BrowserOnly>
-          <AccountWrapper>
+          <div className="flex items-center">
             <Account />
-          </AccountWrapper>
+            <div className="ml-auto">
+              <ButtonToCreateLock
+                toggleForm={toggleForm}
+                formIsVisible={formIsVisible}
+              />
+            </div>
+          </div>
           <Phone>
             <Warning>
               The Dashboard is currently not optimized for a mobile experience.
@@ -86,20 +122,6 @@ export const DashboardContent = () => {
             </Warning>
           )}
 
-          <div className="grid justify-between grid-cols-2">
-            <div>
-              <h1 className="mb-3 text-4xl font-bold">Locks</h1>
-              <span>
-                Create membership for Event ticketing, Media membership, DAO,
-                Certification, collectibles and more.
-              </span>
-            </div>
-            <div className="flex justify-end mt-auto">
-              <Link href="/lock/create">
-                <Button disabled={!account}>Create Lock</Button>
-              </Link>
-            </div>
-          </div>
           <CreatorLocks hideForm={hideForm} formIsVisible={formIsVisible} />
         </BrowserOnly>
       )}
