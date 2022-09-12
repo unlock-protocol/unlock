@@ -1,7 +1,8 @@
 import fetch from 'isomorphic-fetch'
+import BigNumber from 'bignumber.js'
 
 interface PricesCache {
-  [currency: string]: [timestamp: number, price: number]
+  [currency: string]: [timestamp: number, price: BigNumber]
 }
 
 const cache: PricesCache = {}
@@ -21,8 +22,10 @@ export default class PriceConversion {
     let rate
     // Cache is valid for 5 minutes!
     if (cached && cached[0] > new Date().getTime() - 1000 * 60 * 5) {
-      ;[, rate] = cached
-      return parseInt((cached[1] * lockPriceAmount * 100).toFixed(0))
+      return cached[1]
+        .multipliedBy(lockPriceAmount)
+        .multipliedBy(100)
+        .toNumber()
     } else {
       const response = await fetch(
         `https://api.coinbase.com/v2/prices/${currency}-USD/buy`
@@ -39,10 +42,15 @@ export default class PriceConversion {
         throw new Error('Amount is invalid')
       }
 
-      cache[currency] = [new Date().getTime(), parseFloat(amount)]
-      rate = parseFloat(amount)
+      rate = new BigNumber(amount)
+      cache[currency] = [new Date().getTime(), rate]
     }
 
-    return parseInt((rate * lockPriceAmount * 100).toFixed(0))
+    const price = rate
+      .multipliedBy(lockPriceAmount)
+      .multipliedBy(100)
+      .toNumber()
+
+    return price
   }
 }
