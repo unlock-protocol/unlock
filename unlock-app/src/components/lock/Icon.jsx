@@ -6,17 +6,9 @@ import { ConfigContext } from '../../utils/withConfig'
 
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 
+import { Button, Input } from '@unlock-protocol/ui'
 import { useAccount } from '../../hooks/useAccount'
 import InlineModal from '../interface/InlineModal'
-import {
-  Button,
-  LoadingButton,
-  Form,
-  Input,
-  Label,
-  FormError,
-  NeutralButton,
-} from '../interface/checkout/FormStyles'
 
 const SvgCamera = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 24 24">
@@ -116,19 +108,16 @@ const IconModal = ({ active, dismiss, current, lockAddress, network }) => {
 
   return (
     <InlineModal width={350} active={active} dismiss={resetAndDismiss}>
-      <Title>Customize the NFT</Title>
+      <h1 className="mb-2 text-lg font-semibold">Customize the NFT</h1>
       <FullLockLogo alt="logo" src={url} />
-      {error && <FormError>{error}</FormError>}
-      <Form>
-        <Label htmlFor="inputFile">Choose a file</Label>
-        <button
-          className="flex justify-center p-2 items-items [background-color:var(--green)] text-white w-full rounded-lg hover:[background-color:var(--activegreen)] disabled:cursor-not-allowed disabled:[background-color:var(--grey)]"
-          type="button"
-          id="inputFile"
-          onClick={handleFileInputClick}
-        >
+      {error && <span className="mx-1 text-sm text-red-500">{error}</span>}
+      <form className="flex flex-col w-full gap-3">
+        <span className="text-sm" htmlFor="inputFile">
+          Choose a file
+        </span>
+        <Button type="button" id="inputFile" onClick={handleFileInputClick}>
           Upload a file
-        </button>
+        </Button>
         <input
           accept="image/*"
           type="file"
@@ -136,34 +125,31 @@ const IconModal = ({ active, dismiss, current, lockAddress, network }) => {
           onChange={imagePicked}
           style={{ display: 'none' }}
         />
-        <Label htmlFor="inputUrl">Or, enter a URL</Label>
         <Input
+          label="Or, enter a URL"
           style={{ marginBottom: '0px' }}
           id="inputUrl"
           type="text"
           onChange={urlPicked}
         />
 
-        <Label htmlFor="restoreDefaultButton">Or</Label>
+        <span className="text-sm" htmlFor="restoreDefaultButton">
+          Or
+        </span>
         <div className="flex flex-col gap-2 py-4">
-          <button
-            className="flex justify-center p-2 items-items [background-color:var(--green)] text-white w-full rounded-lg hover:[background-color:var(--activegreen)] disabled:cursor-not-allowed disabled:[background-color:var(--grey)]"
+          <Button
             id="restoreDefaultButton"
             type="button"
+            variant="outlined-primary"
             onClick={restoreDefault}
           >
             Restore default
-          </button>
-          <button
-            className="flex justify-center p-2 items-items [background-color:var(--green)] text-white w-full rounded-lg hover:[background-color:var(--activegreen)] disabled:cursor-not-allowed disabled:[background-color:var(--grey)]"
-            disabled={error || !url}
-            type="submit"
-            onClick={save}
-          >
+          </Button>
+          <Button disabled={error || !url} type="submit" onClick={save}>
             Save
-          </button>
+          </Button>
         </div>
-      </Form>
+      </form>
     </InlineModal>
   )
 }
@@ -279,11 +265,6 @@ const Wrapper = styled.div`
       display: flex;
     }
   }
-`
-
-const Title = styled.h1`
-  color: var(--grey);
-  font-family: IBM Plex Sans;
 `
 
 export default Icon

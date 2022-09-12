@@ -69,14 +69,3 @@ export const Greyout = styled.div`
   align-items: center;
   z-index: var(--alwaysontop);
 `
-
-export const Input = styled.input`
-  height: 50px;
-  width: 75%;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 1em;
-`

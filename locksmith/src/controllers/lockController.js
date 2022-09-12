@@ -265,6 +265,31 @@ const changeLockIcon = async (req, res) => {
   return res.status(200).send('OK')
 }
 
+const disconnectStripe = async (req, res) => {
+  const { lockAddress, network } = req.params
+
+  try {
+    const loggedUserAddress = Normalizer.ethereumAddress(
+      req?.user?.walletAddress
+    )
+
+    const deleted = await stripeOperations.disconnectStripe({
+      lockManager: Normalizer.ethereumAddress(loggedUserAddress),
+      lockAddress: Normalizer.ethereumAddress(lockAddress),
+      network,
+    })
+
+    if (deleted) {
+      res.sendStatus(200)
+    } else {
+      res.sendStatus(204)
+    }
+  } catch (err) {
+    logger.error('There is some unexpected issue, please try again', err)
+    res.status(500).send(err)
+  }
+}
+
 module.exports = {
   lockGet,
   lockMigrate,
@@ -276,4 +301,5 @@ module.exports = {
   connectStripe,
   stripeConnected,
   changeLockIcon,
+  disconnectStripe,
 }

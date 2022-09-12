@@ -420,4 +420,66 @@ export default class Web3Service extends UnlockService {
     )
     return ethers.BigNumber.from(await lockContract.numberOfOwners()).toNumber()
   }
+
+  /**
+   * Returns total of key for a specific address
+   * @param {String} lockAddress
+   * @param {String} address
+   * @param {Number} network
+   */
+  async totalKeys(lockAddress: string, owner: string, network: number) {
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+
+    if (!version.totalKeys) {
+      throw new Error('Lock version not supported')
+    }
+
+    return ethers.BigNumber.from(
+      await version.totalKeys.bind(this)(
+        lockAddress,
+        owner,
+        this.providerForNetwork(network)
+      )
+    ).toNumber()
+  }
+
+  /**
+   * Returns lock version
+   * @param {String} lockAddress
+   * @param {Number} network
+   */
+  async publicLockVersion(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return await lockContract.publicLockVersion()
+  }
+
+  async tokenURI(lockAddress: string, tokenId: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return await lockContract.tokenURI(tokenId)
+  }
+
+  /**
+   * Returns the number of keys available for sale
+   * @param lockAddress
+   * @param network
+   * @returns
+   */
+  async keysAvailable(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const totalSupply = await lockContract.totalSupply()
+    const maxNumberOfKeys = await lockContract.maxNumberOfKeys()
+    return maxNumberOfKeys.sub(totalSupply)
+  }
 }
