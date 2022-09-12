@@ -98,7 +98,7 @@ export const SelectCurrencyModal = ({
                     <div className="flex items-center justify-between mt-3">
                       <span>{addressMinify(contractAddress)}</span>
                       <Button size="small" onClick={onAddContractAddress}>
-                        Save
+                        Import
                       </Button>
                     </div>
                   )}
