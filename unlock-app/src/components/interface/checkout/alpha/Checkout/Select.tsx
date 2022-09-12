@@ -320,7 +320,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                     lock,
                     existingMember,
                     skipQuantity,
-                    expiredMember,
+                    // unlock account are unable to renew
+                    expiredMember: isUnlockAccount ? false : expiredMember,
                   })
                 }}
               >
