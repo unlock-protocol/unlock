@@ -41,32 +41,6 @@ export const rinkeby: NetworkConfig = {
   description: 'Ethereum test network. Do not use for production',
   isTestNetwork: true,
   teamMultisig: '0x04e855D82c079222d6bDBc041F6202d5A0137267',
-  tokens: [
-    {
-      name: 'Wrapped Ether',
-      address: '0xc778417E063141139Fce010982780140Aa0cD5Ab',
-      symbol: 'WETH',
-      decimals: 18,
-    },
-    {
-      name: 'Dai Stablecoin',
-      address: '0xc7AD46e0b8a400Bb3C915120d284AafbA8fc4735',
-      symbol: 'DAI',
-      decimals: 18,
-    },
-    {
-      name: 'Maker',
-      address: '0xF9bA5210F91D0474bd1e1DcDAeC4C58E359AaD85',
-      symbol: 'MKR',
-      decimals: 18,
-    },
-    {
-      name: 'Uniswap',
-      address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
-      symbol: 'UNI',
-      decimals: 18,
-    },
-  ],
 }
 
 export default rinkeby
