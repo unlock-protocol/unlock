@@ -41,7 +41,7 @@ export default class PriceConversion {
       if (!amount) {
         throw new Error('Amount is invalid')
       }
-
+      // BigNumber.js is used instead of ether.BigNumber due to lack of support for decimals.
       rate = new BigNumber(amount)
       cache[currency] = [new Date().getTime(), rate]
     }
