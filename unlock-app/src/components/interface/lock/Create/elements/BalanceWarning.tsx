@@ -55,20 +55,13 @@ const CallToAction = ({ network }: { network: number }) => {
     </div>
   )
 }
-export const BalanceWarning = () => {
-  const { account, network } = useAuth()
-  const { getTokenBalance } = useAccount(account!, network!)
-
-  const [balance, setBalance] = useState(-1)
-
-  useEffect(() => {
-    const getBalance = async () => {
-      const _balance = await getTokenBalance('')
-      setBalance(parseFloat(_balance))
-    }
-    getBalance()
-  }, [account, getTokenBalance, network])
-
+export const BalanceWarning = ({
+  network,
+  balance = 0,
+}: {
+  network: number
+  balance: number
+}) => {
   if (balance !== 0) {
     return null
   }

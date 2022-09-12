@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Icon, Input } from '@unlock-protocol/ui'
+import { Token } from '@unlock-protocol/types'
 import { Controller, useForm } from 'react-hook-form'
 import { RadioGroup } from '@headlessui/react'
 import {
@@ -14,6 +15,8 @@ import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { CryptoIcon } from './KeyPrice'
+import { useQuery } from 'react-query'
+import useAccount from '~/hooks/useAccount'
 
 const Radio = ({ checked }: { checked: boolean }) => {
   return checked ? (
@@ -52,18 +55,19 @@ export const CreateLockForm = ({
   defaultValues,
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
-  const { network } = useAuth()
+  const { network, account } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
-
+  const [selectedToken, setSelectedToken] = useState<Token | null>(null)
+  const { getTokenBalance } = useAccount(account!, network!)
   const { baseCurrencySymbol } = networks[network!] ?? {}
 
-  const currency = lockTickerSymbol(networks[network!], baseCurrencySymbol)
   const {
     register,
     handleSubmit,
     control,
     reset,
     resetField,
+    setValue,
     formState: { isValid, errors },
   } = useForm<LockFormProps>({
     mode: 'onChange',
@@ -77,6 +81,16 @@ export const CreateLockForm = ({
       unlimitedQuantity: true,
     },
   })
+
+  const getBalance = async () => {
+    const balance = await getTokenBalance('')
+    return parseFloat(balance)
+  }
+
+  const { isLoading: isLoadingBalance, data: balance } = useQuery(
+    ['getBalance'],
+    () => getBalance()
+  )
 
   useEffect(() => {
     reset(defaultValues)
@@ -92,11 +106,27 @@ export const CreateLockForm = ({
     }
   }
 
+  const onSelectToken = (token: Token) => {
+    setSelectedToken(token)
+    setValue('currencyContractAddress', token.address)
+  }
+
+  const submitDisabled = isLoadingBalance || balance === 0
+  const selectedCurrency =
+    selectedToken?.symbol?.toUpperCase() || baseCurrencySymbol?.toUpperCase()
+
+  const symbol = lockTickerSymbol(networks[network!], selectedCurrency)
+
   return (
     <>
-      <SelectCurrencyModal isOpen={isOpen} setIsOpen={setIsOpen} />
+      <SelectCurrencyModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        network={network!}
+        onSelect={onSelectToken}
+      />
       <div className="mb-4">
-        <BalanceWarning />
+        <BalanceWarning network={network!} balance={balance!} />
       </div>
       <div className="overflow-hidden bg-white rounded-xl">
         <div className="px-3 py-4">
@@ -104,7 +134,7 @@ export const CreateLockForm = ({
             className="flex flex-col w-full gap-10"
             onSubmit={handleSubmit(onHandleSubmit)}
           >
-            <NetworkSelection />
+            <NetworkSelection onChange={() => setSelectedToken(null)} />
             <div className="relative">
               <Input
                 label="Name"
@@ -270,8 +300,8 @@ export const CreateLockForm = ({
                     onClick={() => setIsOpen(true)}
                     className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
                   >
-                    <CryptoIcon symbol={baseCurrencySymbol} />
-                    <span>{currency}</span>
+                    <CryptoIcon symbol={symbol} />
+                    <span>{symbol}</span>
                   </div>
                   <div className="pl-1"></div>
                 </div>
@@ -296,7 +326,7 @@ export const CreateLockForm = ({
               )}
             </div>
 
-            <Button type="submit" disabled={!isValid}>
+            <Button type="submit" disabled={submitDisabled}>
               Next
             </Button>
           </form>

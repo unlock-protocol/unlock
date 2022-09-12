@@ -2,7 +2,10 @@ import { Listbox } from '@headlessui/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useConfig } from '~/utils/withConfig'
 
-export const NetworkSelection = () => {
+interface NetworkSelectionProps {
+  onChange?: () => void
+}
+export const NetworkSelection = ({ onChange }: NetworkSelectionProps) => {
   const { networks } = useConfig()
   const { network, changeNetwork } = useAuth()
 
@@ -10,6 +13,9 @@ export const NetworkSelection = () => {
 
   const onChangeNetwork = (network: number) => {
     changeNetwork(networks[network])
+    if (typeof onChange === 'function') {
+      onChange()
+    }
   }
   return (
     <>
