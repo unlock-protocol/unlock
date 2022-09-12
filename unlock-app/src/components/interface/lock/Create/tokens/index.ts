@@ -17,6 +17,7 @@ export interface Token {
   logoURI?: string
 }
 
+// Array of all tokens
 const TOKENS: Token[] = {
   ...AVALANCHE,
   ...BSC,
@@ -28,6 +29,12 @@ const TOKENS: Token[] = {
   ...POLYGON,
   ...RINKEBY,
 }
+
+/**
+ * Extract tokens list by network from list.
+ * @param {network} number - network id
+ * @return {Token} list of tokens by network
+ */
 
 export const getTokensById = (network: number) => {
   return TOKENS.filter((token) => token.chainId === network)
