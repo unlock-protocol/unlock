@@ -18,7 +18,7 @@ export interface Token {
 }
 
 // Array of all tokens
-const TOKENS: Token[] = {
+const TOKENS: Token[] = [
   ...AVALANCHE,
   ...BSC,
   ...GOERLI,
@@ -28,7 +28,7 @@ const TOKENS: Token[] = {
   ...OPTIMISM,
   ...POLYGON,
   ...RINKEBY,
-}
+]
 
 /**
  * Extract tokens list by network from list.
@@ -36,6 +36,6 @@ const TOKENS: Token[] = {
  * @return {Token} list of tokens by network
  */
 
-export const getTokensById = (network: number) => {
-  return TOKENS.filter((token) => token.chainId === network)
+export const getTokensByNetwork = (network: number): Token[] => {
+  return TOKENS?.filter((token) => token.chainId === network)
 }
