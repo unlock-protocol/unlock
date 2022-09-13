@@ -6,6 +6,7 @@ import {
   AuthenticationContext,
   defaultValues,
 } from '../../../contexts/AuthenticationContext'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const metadata = [
   {
@@ -60,23 +61,25 @@ const render = (component: any) => {
     </AuthenticationContext.Provider>
   )
 }
-
+const queryClient = new QueryClient()
 describe('MetadataTable', () => {
   describe('MetadataTable component', () => {
     it('renders members cards correctly', () => {
       expect.assertions(1)
 
       const { container } = render(
-        <MetadataTable
-          columns={[
-            'lockName',
-            'keyholderAddress',
-            'expiration',
-            'emailAddress',
-          ]}
-          metadata={metadata}
-          filter={'all'}
-        />
+        <QueryClientProvider client={queryClient}>
+          <MetadataTable
+            allMetadata={metadata}
+            columns={[
+              'lockName',
+              'keyholderAddress',
+              'expiration',
+              'emailAddress',
+            ]}
+            metadata={metadata}
+          />
+        </QueryClientProvider>
       )
 
       const memberCards = container.querySelectorAll(
@@ -90,7 +93,12 @@ describe('MetadataTable', () => {
         expect.assertions(1)
 
         const wrapper = render(
-          <MetadataTable columns={[]} metadata={[]} filter={'all'} />
+          <MetadataTable
+            allMetadata={[]}
+            columns={[]}
+            metadata={[]}
+            hasSearchValue={false}
+          />
         )
         expect(
           wrapper.getByText('No keys have been purchased yet.', {
@@ -99,14 +107,21 @@ describe('MetadataTable', () => {
         ).not.toBeNull()
       })
 
-      it('should show a message when there is no match on when showing only active keys', () => {
+      it('should show a message when there is no match when filtering keys', () => {
         expect.assertions(1)
 
         const wrapper = render(
-          <MetadataTable columns={[]} metadata={[]} filter={'active'} />
+          <MetadataTable
+            allMetadata={[]}
+            columns={[]}
+            metadata={[]}
+            hasSearchValue={true}
+          />
         )
         expect(
-          wrapper.getByText('No keys found matching the current filter.')
+          wrapper.getByText('No key matches your filter', {
+            exact: false,
+          })
         ).not.toBeNull()
       })
     })

@@ -1,6 +1,6 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
-import { FieldValues, useFieldArray, useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 import { Fragment, useEffect, useState } from 'react'
 import { Button, Input } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
@@ -11,10 +11,11 @@ import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
 import { useQuery } from 'react-query'
+import { useCheckoutSteps } from './useCheckoutItems'
 
 interface Props {
   injectedProvider: unknown
@@ -29,7 +30,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, isUnlockAccount, email } = useAuth()
   const storage = useStorageService()
-  const { lock, paywallConfig, quantity, skipQuantity } = state.context
+  const { lock, paywallConfig, quantity } = state.context
   const web3Service = useWeb3Service()
 
   const metadataInputs =
@@ -41,7 +42,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<FormData>({
     shouldUnregister: false,
     shouldFocusError: true,
     mode: 'onSubmit',
@@ -51,22 +52,15 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     name: 'metadata',
     control,
   })
-  const { isLoading: isMembershipsLoading, data: memberships } = useQuery(
-    ['memberships', account, JSON.stringify(paywallConfig)],
+  const { isLoading: isMemberLoading, data: isMember } = useQuery(
+    ['isMember', account, lock],
     async () => {
-      const memberships = await Promise.all(
-        Object.entries(paywallConfig.locks).map(async ([lock, { network }]) => {
-          const valid = await web3Service.getHasValidKey(
-            lock,
-            account!,
-            network || paywallConfig.network || 1
-          )
-          if (valid) {
-            return lock
-          }
-        })
+      const total = await web3Service.totalKeys(
+        lock!.address,
+        account!,
+        lock!.network
       )
-      return memberships.filter((item) => item)
+      return total > 0
     },
     {
       enabled: !!account,
@@ -79,23 +73,17 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       return getNameOrAddressForAddress(account!)
     },
     {
-      refetchInterval: false,
-      refetchOnMount: false,
       enabled: !!account,
     }
   )
 
-  const existingMember = !!memberships?.includes(lock!.address)
-
-  const [hideFirstRecipient, setHideFirstRecipient] = useState<boolean>(
-    !existingMember
-  )
+  const [hideFirstRecipient, setHideFirstRecipient] = useState<boolean>(true)
 
   useEffect(() => {
-    if (quantity > fields.length && !isMembershipsLoading) {
+    if (quantity > fields.length && !isMemberLoading) {
       const fieldsRequired = quantity - fields.length
       Array.from({ length: fieldsRequired }).map((_, index) => {
-        const addAccountAddress = !index && !existingMember
+        const addAccountAddress = !index && !isMember
         const recipient = addAccountAddress
           ? { recipient: account }
           : { recipient: '' }
@@ -109,19 +97,11 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         remove(fields.length - index)
       )
     }
-  }, [
-    quantity,
-    account,
-    fields,
-    append,
-    remove,
-    existingMember,
-    isMembershipsLoading,
-  ])
+  }, [quantity, account, fields, append, remove, isMember, isMemberLoading])
 
-  async function onSubmit(data: FieldValues) {
+  async function onSubmit(data: FormData) {
     try {
-      const formData = data as FormData
+      const formData = data
       const recipients = await Promise.all(
         formData.metadata.map(async (item) => {
           const address = await getAddressForName(item.recipient)
@@ -153,57 +133,13 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     }
   }
   const isLoading = isSubmitting
-
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Choose quantity',
-      skip: skipQuantity,
-      to: 'QUANTITY',
-    },
-    {
-      id: 3,
-      name: 'Add recipients',
-      to: 'METADATA',
-    },
-    {
-      id: 4,
-      name: 'Choose payment',
-      to: 'PAYMENT',
-    },
-    {
-      id: 5,
-      name: 'Sign message',
-      skip: !paywallConfig.messageToSign,
-      to: 'MESSAGE_TO_SIGN',
-    },
-    {
-      id: 6,
-      name: 'Solve captcha',
-      to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
-    },
-    {
-      id: 7,
-      name: 'Confirm',
-      to: 'CONFIRM',
-    },
-    {
-      id: 8,
-      name: 'Minting NFT',
-    },
-  ]
+  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
       <Stepper position={3} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
-        {isMembershipsLoading || isEnsLoading ? (
+        {isMemberLoading || isEnsLoading ? (
           <div className="grid w-full pb-6 gap-y-2">
             <div className="w-full h-8 rounded-full bg-zinc-50 animate-pulse" />
             <div className="w-full h-8 rounded-full bg-zinc-50 animate-pulse" />
@@ -212,7 +148,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         ) : (
           <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
             {fields.map((item, index) => {
-              const hideRecipient = !index && hideFirstRecipient
+              const hideRecipient = !index && hideFirstRecipient && !isMember
               return (
                 <div
                   key={item.id}
@@ -246,11 +182,9 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                         quantity > 1 ? `Recipient #${index + 1}` : 'Recipient'
                       }
                       size="small"
+                      disabled={isSubmitting}
                       description="Enter Ethereum address or an ENS"
-                      error={
-                        errors?.metadata?.[index]?.recipient
-                          ?.message as unknown as string
-                      }
+                      error={errors?.metadata?.[index]?.recipient?.message}
                       {...register(`metadata.${index}.recipient`, {
                         required: 'Ethereum address or an ENS is required',
                         validate: {
@@ -283,11 +217,12 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                       label={metadataInputItem.name}
                       defaultValue={metadataInputItem.defaultValue}
                       size="small"
+                      disabled={isSubmitting}
                       placeholder={metadataInputItem.placeholder}
                       type={metadataInputItem.type}
                       error={
                         errors?.metadata?.[index]?.[metadataInputItem.name]
-                          ?.message as unknown as string
+                          ?.message
                       }
                       {...register(
                         `metadata.${index}.${metadataInputItem.name}`,
@@ -312,7 +247,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         >
           <Button
             loading={isLoading}
-            disabled={isLoading}
+            disabled={isLoading || isMemberLoading}
             className="w-full"
             form="metadata"
           >

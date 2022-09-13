@@ -8,7 +8,8 @@ import { useConfig } from '~/utils/withConfig'
 import { useStorageService } from '~/utils/withStorageService'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
+import { useCheckoutSteps } from './useCheckoutItems'
 
 interface Props {
   injectedProvider: unknown
@@ -22,7 +23,6 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
   const { recipients } = state.context
   const [isContinuing, setIsContinuing] = useState(false)
-  const { paywallConfig, skipQuantity } = state.context
   const onContinue = async () => {
     try {
       setIsContinuing(true)
@@ -51,50 +51,7 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
     }
   }
 
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Choose quantity',
-      skip: skipQuantity,
-      to: 'QUANTITY',
-    },
-    {
-      id: 3,
-      name: 'Add recipients',
-      to: 'METADATA',
-    },
-    {
-      id: 4,
-      name: 'Choose payment',
-      to: 'PAYMENT',
-    },
-    {
-      id: 5,
-      name: 'Sign message',
-      skip: !paywallConfig.messageToSign,
-      to: 'MESSAGE_TO_SIGN',
-    },
-    {
-      id: 6,
-      name: 'Solve captcha',
-      to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
-    },
-    {
-      id: 7,
-      name: 'Confirm',
-      to: 'CONFIRM',
-    },
-    {
-      id: 8,
-      name: 'Minting NFT',
-    },
-  ]
+  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>

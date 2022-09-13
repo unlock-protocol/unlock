@@ -254,7 +254,7 @@ export class StorageService extends EventEmitter {
    * @returns {Promise<*>}
    */
 
-  async createUser(user: any) {
+  async createUser(user: any): Promise<any> {
     return fetch(`${this.host}/users/`, {
       method: 'POST',
       body: JSON.stringify(user),
@@ -568,6 +568,25 @@ export class StorageService extends EventEmitter {
     return response.json()
   }
 
+  /**
+   * Given a lock address and a typed data signature, disconnect stripe
+   * @param {string} lockAddress
+   * @param {string} signature
+   * @param {*} data
+   */
+  async disconnectStripe(lockAddress: string, network: number) {
+    const url = new URL(`${this.host}/${network}/lock/${lockAddress}/stripe`)
+    const token = await this.getAccessToken()
+
+    return await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+  }
+
   async updateLockIcon(
     lockAddress: string,
     signature: string,
@@ -589,7 +608,7 @@ export class StorageService extends EventEmitter {
         ...opts.headers,
       },
     })
-    return await response?.json()
+    return response.ok
   }
 
   /**
@@ -999,5 +1018,34 @@ export class StorageService extends EventEmitter {
       return !!json?.canClaim
     }
     return false
+  }
+
+  async getKeys({
+    lockAddress,
+    network,
+    filters,
+  }: {
+    lockAddress: string
+    network: number
+    filters: { [key: string]: any }
+  }): Promise<any> {
+    const token = await this.getAccessToken()
+    const url = new URL(
+      `${this.host}/v2/api/${network}/locks/${lockAddress}/keys`
+    )
+
+    Object.entries(filters).forEach(([key, value]) => {
+      url.searchParams.append(key, value)
+    })
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    const data = response.json()
+
+    return data
   }
 }

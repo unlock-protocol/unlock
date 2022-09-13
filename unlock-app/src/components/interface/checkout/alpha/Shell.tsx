@@ -10,6 +10,12 @@ import {
 } from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
 import SvgComponents from '../../svg'
+import mintingAnimation from '~/animations/minting.json'
+import mintedAnimation from '~/animations/minted.json'
+import errorAnimation from '~/animations/error.json'
+import Lottie from 'lottie-react'
+import { Transaction } from './Checkout/checkoutMachine'
+
 interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>
 }
@@ -74,7 +80,7 @@ interface CheckoutHeadProps {
 export function CheckoutHead({ title, iconURL }: CheckoutHeadProps) {
   return (
     <header className="px-6 py-2 space-y-2">
-      <div className="flex flex-1 inset-0 flex-wrap items-center gap-6">
+      <div className="inset-0 flex flex-wrap items-center flex-1 gap-6">
         <Avatar.Root>
           <Avatar.Image
             className="inline-flex items-center justify-center w-16 h-16 rounded-full"
@@ -92,7 +98,7 @@ export function CheckoutHead({ title, iconURL }: CheckoutHeadProps) {
           </Avatar.Fallback>
         </Avatar.Root>
         <div>
-          <h1 className="font-bold text-lg"> {title || 'Unlock Protocol'} </h1>
+          <h1 className="text-lg font-bold"> {title || 'Unlock Protocol'} </h1>
           <p className="text-base text-brand-dark"> Membership </p>
         </div>
       </div>
@@ -111,8 +117,33 @@ export function TopNavigation({ onClose, onBack }: NavigationProps) {
   }`
   return (
     <div className={navigationClass}>
-      {onBack && <BackButton onClick={onBack} />}
-      {onClose && <CloseButton onClick={onClose} />}
+      {onBack && <BackButton onClick={() => onBack()} />}
+      {onClose && <CloseButton onClick={() => onClose()} />}
     </div>
   )
+}
+
+export function TransactionAnimation({ status }: Partial<Transaction>) {
+  const animationClass = `w-28 sm:w-36 h-28 sm:h-36`
+  switch (status) {
+    case 'PROCESSING':
+      return (
+        <Lottie
+          className={animationClass}
+          loop
+          animationData={mintingAnimation}
+        />
+      )
+    case 'FINISHED':
+      return (
+        <Lottie className={animationClass} animationData={mintedAnimation} />
+      )
+    case 'ERROR': {
+      return (
+        <Lottie className={animationClass} animationData={errorAnimation} />
+      )
+    }
+    default:
+      return null
+  }
 }

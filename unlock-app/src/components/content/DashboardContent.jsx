@@ -15,9 +15,9 @@ import LoginPrompt from '../interface/LoginPrompt'
 import {
   CreateLockButton,
   CancelCreateLockButton,
-  AccountWrapper,
 } from '../interface/buttons/ActionButton'
 import { Phone } from '../../theme/media'
+import { Button } from '@unlock-protocol/ui'
 
 const ButtonToCreateLock = ({ formIsVisible, toggleForm }) => {
   const { account } = useContext(AuthenticationContext)
@@ -25,18 +25,18 @@ const ButtonToCreateLock = ({ formIsVisible, toggleForm }) => {
   return (
     <>
       {formIsVisible && (
-        <CancelCreateLockButton id="CreateLockButton" onClick={toggleForm}>
-          Cancel Lock
-        </CancelCreateLockButton>
-      )}
-      {!formIsVisible && (
-        <CreateLockButton
-          disabled={!account}
+        <Button
+          variant="outlined-primary"
           id="CreateLockButton"
           onClick={toggleForm}
         >
+          Cancel Lock
+        </Button>
+      )}
+      {!formIsVisible && (
+        <Button disabled={!account} id="CreateLockButton" onClick={toggleForm}>
           Create Lock
-        </CreateLockButton>
+        </Button>
       )}
     </>
   )
@@ -82,31 +82,21 @@ export const DashboardContent = () => {
       )}
       {account && (
         <BrowserOnly>
-          <AccountWrapper>
+          <div className="flex items-center">
             <Account />
-            <ButtonToCreateLock
-              toggleForm={toggleForm}
-              formIsVisible={formIsVisible}
-            />
-          </AccountWrapper>
+            <div className="ml-auto">
+              <ButtonToCreateLock
+                toggleForm={toggleForm}
+                formIsVisible={formIsVisible}
+              />
+            </div>
+          </div>
           <Phone>
             <Warning>
               The Dashboard is currently not optimized for a mobile experience.
               To create locks, please use a desktop computer.
             </Warning>
           </Phone>
-
-          <Warning>
-            We are switching the current checkout with redesigned checkout on 25
-            August, 2022. The current checkout will be available for the
-            forseable future at a separate legacy path.{' '}
-            <a
-              className="underline"
-              href="https://docs.unlock-protocol.com/tools/paywall/locking-page"
-            >
-              Read more
-            </a>
-          </Warning>
 
           {network === 1 && (
             <Warning>

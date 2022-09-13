@@ -2,7 +2,12 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Badge, Button, Input, Modal } from '@unlock-protocol/ui'
 import { addressMinify } from '../../../utils/strings'
 import { RiArrowDropDownLine as ArrowDown } from 'react-icons/ri'
-import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
+import { ExpireAndRefundModal } from '../ExpireAndRefundModal'
+import { KeyMetadata } from '../MetadataTable'
+import {
+  FaCheckCircle as CheckIcon,
+  FaSpinner as Spinner,
+} from 'react-icons/fa'
 import {
   StorageServiceContext,
   useStorageService,
@@ -13,6 +18,11 @@ import { WalletServiceContext } from '~/utils/withWalletService'
 import useClipboard from 'react-use-clipboard'
 import { FieldValues, useForm } from 'react-hook-form'
 import useEns from '~/hooks/useEns'
+import { expirationAsDate } from '~/utils/durations'
+import { useMutation, useQuery } from 'react-query'
+import { MAX_UINT } from '~/constants'
+import { ExtendKeysDrawer } from '~/components/creator/members/ExtendKeysDrawer'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const styles = {
   title: 'text-base font-medium text-black break-all	',
@@ -21,16 +31,14 @@ const styles = {
 }
 interface MemberCardProps {
   lockName: string
+  lockAddress: string
   expiration: string
   keyholderAddress: string
   tokenId: string
-  onExpireAndRefund: (lock: any) => void
   expandAllMetadata: boolean
   showCheckInTimeInfo: boolean
   isLockManager?: boolean
-  expireAndRefundDisabled?: boolean
   metadata?: { [key: string]: any }
-  loadMembers?: () => void
 }
 
 const keysToIgnore = [
@@ -50,32 +58,48 @@ export const MemberCardPlaceholder: React.FC<any> = () => {
 
 export const MemberCard: React.FC<MemberCardProps> = ({
   lockName,
+  lockAddress,
   expiration,
   keyholderAddress,
   tokenId,
-  onExpireAndRefund,
   expandAllMetadata,
   showCheckInTimeInfo,
-  loadMembers,
   isLockManager,
-  expireAndRefundDisabled = true,
   metadata = {},
 }) => {
   const storageService = useContext(StorageServiceContext)
   const walletService = useContext(WalletServiceContext)
+  const web3Service = useWeb3Service()
   const { network, account } = useContext(AuthenticationContext)
   const [showMetaData, setShowMetaData] = useState(expandAllMetadata)
   const [emailSent, setEmailSent] = useState(false)
   const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [data, setData] = useState(metadata)
   const addressToEns = useEns(keyholderAddress)
+  const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
+    null
+  )
   const [extraDataItems, setExtraDataItems] = useState<
     [string, string | number][]
   >([])
+  const [extendKeysOpen, setExtendKeysOpen] = useState(false)
 
   const [isCopied, setCopied] = useClipboard(keyholderAddress, {
     successDuration: 2000,
   })
+
+  const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
+    useState(false)
+
+  const getLockVersion = async (): Promise<number> => {
+    if (!network) return 0
+    return web3Service.publicLockVersion(lockAddress, network)
+  }
+
+  const { isLoading: loadingVersion, data: lockVersion } = useQuery(
+    ['getLockVersion'],
+    () => getLockVersion()
+  )
 
   useEffect(() => {
     const items = Object.entries(data || {}).filter(([key]) => {
@@ -87,6 +111,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
   const getCheckInTime = () => {
     const [_, checkInTimeValue] =
       Object.entries(data)?.find(([key]) => key === 'checkedInAt') ?? []
+    if (checkInTimestamp) return checkInTimestamp
     if (!checkInTimeValue) return null
     return new Date(checkInTimeValue as number).toLocaleString()
   }
@@ -95,7 +120,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     setShowMetaData(!showMetaData)
   }
 
-  const isCheckedIn = typeof getCheckInTime() === 'string'
+  const isCheckedIn = typeof getCheckInTime() === 'string' || !!checkInTimestamp
 
   useEffect(() => {
     setShowMetaData(expandAllMetadata)
@@ -103,30 +128,50 @@ export const MemberCard: React.FC<MemberCardProps> = ({
 
   const hasExtraData = extraDataItems?.length > 0 || isCheckedIn
 
-  const onMarkAsCheckIn = async () => {
-    try {
-      if (!storageService) return
-      const { lockAddress, token: keyId } = data
-      const response = await storageService.markTicketAsCheckedIn({
-        lockAddress,
-        keyId,
-        network: network!,
-      })
+  const isKeyValid = (timestamp: KeyMetadata['expiration']) => {
+    const now = new Date().getTime() / 1000
+    if (timestamp === MAX_UINT) return true
+    return parseInt(timestamp) > now
+  }
 
+  const expireAndRefundDisabled = !(
+    isLockManager && isKeyValid(metadata.expiration)
+  )
+
+  const onMarkAsCheckIn = async () => {
+    if (!storageService) return
+    const { lockAddress, token: keyId } = data
+    return storageService.markTicketAsCheckedIn({
+      lockAddress,
+      keyId,
+      network: network!,
+    })
+  }
+
+  const onExpireAndRefund = () => {
+    if (expireAndRefundDisabled) return
+    setShowExpireAndRefundModal(true)
+  }
+
+  const closeExpireAndRefund = () => {
+    setShowExpireAndRefundModal(false)
+  }
+
+  const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {
+    onSuccess: (response: any) => {
       if (!response.ok && response.status === 409) {
         ToastHelper.error('Ticket already checked in')
       }
 
       if (response.ok) {
+        setCheckedInTimestamp(new Date().toLocaleString())
         ToastHelper.success('Successfully marked ticket as checked-in')
-        if (typeof loadMembers === 'function') {
-          loadMembers()
-        }
       }
-    } catch (err) {
+    },
+    onError: () => {
       ToastHelper.error('Error on marking ticket as checked-in')
-    }
-  }
+    },
+  })
 
   const onSendQrCode = async () => {
     if (!network) return
@@ -140,7 +185,7 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     })
 
     const sendEmailPromise = storageService.sendKeyQrCodeViaEmail({
-      lockAddress: data.lockAddress,
+      lockAddress,
       network,
       tokenId,
     })
@@ -164,33 +209,58 @@ export const MemberCard: React.FC<MemberCardProps> = ({
     .map(([key]) => key.toLowerCase())
     .includes('email')
 
+  const canExtendKey =
+    expiration !== MAX_UINT && lockVersion && lockVersion >= 11
   return (
     <div
       data-testid="member-card"
-      className="border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
+      className="px-10 py-4 bg-white border-2 rounded-lg hover:shadow-sm"
     >
+      <ExtendKeysDrawer
+        isOpen={extendKeysOpen}
+        setIsOpen={() => setExtendKeysOpen(true)}
+        selectedKey={
+          {
+            lockName,
+            owner: data?.keyholderAddress,
+            lockAddress: data?.lockAddress,
+            tokenId,
+            expiration,
+          }!
+        }
+      />
+
+      <ExpireAndRefundModal
+        active={showExpireAndRefundModal}
+        dismiss={closeExpireAndRefund}
+        lockAddress={lockAddress}
+        keyOwner={data?.keyholderAddress}
+        tokenId={tokenId}
+      />
+
       <UpdateEmailModal
         isOpen={addEmailModalOpen ?? false}
         setIsOpen={setAddEmailModalOpen}
         isLockManager={isLockManager ?? false}
         userAddress={keyholderAddress}
-        lockAddress={data.lockAddress}
+        lockAddress={lockAddress}
         network={network!}
         hasExtraData={hasExtraData}
         hasEmail={hasEmailMetadata}
         extraDataItems={extraDataItems}
         onEmailChange={onEmailChange}
       />
-      <div className="grid gap-2 justify-between grid-cols-7 mb-2">
-        <div className="col-span-full	flex flex-col md:col-span-1">
+
+      <div className="grid justify-between grid-cols-8 gap-2 mb-2">
+        <div className="flex flex-col col-span-full md:col-span-1">
           <span className={styles.description}>Lock name</span>
           <span className={styles.title}>{lockName}</span>
         </div>
-        <div className="col-span-full	flex flex-col md:col-span-1">
+        <div className="flex flex-col col-span-full md:col-span-1">
           <span className={styles.description}>Token ID</span>
           <span className={styles.title}>{tokenId}</span>
         </div>
-        <div className="col-span-full	flex flex-col md:col-span-2">
+        <div className="flex flex-col col-span-full md:col-span-2">
           <span className={styles.description}>Owner</span>
           <span className={[styles.title, 'flex gap-2'].join(' ')}>
             <span className="min-w-[120px]">
@@ -208,27 +278,41 @@ export const MemberCard: React.FC<MemberCardProps> = ({
             </button>
           </span>
         </div>
-        <div className="col-span-full	flex flex-col md:col-span-1">
+        <div className="flex flex-col col-span-full md:col-span-1">
           <span className={styles.description}>Expiration</span>
-          <span className={styles.title}>{expiration}</span>
+          <span className={styles.title}>{expirationAsDate(expiration)}</span>
         </div>
-        <div className="col-span-full flex gap-2 justify-start items-center lg:col-span-2 lg:justify-end">
-          <Button
-            size="small"
-            variant="outlined-primary"
-            className="disabled:border-opacity-50 disabled:border-gray-200 disabled:text-opacity-50 hover:disabled:text-opacity-50"
-            disabled={expireAndRefundDisabled}
-            onClick={onExpireAndRefund}
-          >
-            Expire & Refund
-          </Button>
+        <div className="flex items-center justify-start gap-2 col-span-full lg:col-span-3 lg:justify-end">
           {isLockManager && (
-            <Button size="small" variant="secondary" onClick={toggleMetada}>
-              <div className="flex items-center">
-                <span>Show metadata</span>
-                <ArrowDown />
-              </div>
-            </Button>
+            <>
+              {canExtendKey && (
+                <Button
+                  size="small"
+                  variant="outlined-primary"
+                  onClick={() => setExtendKeysOpen(true)}
+                  disabled={loadingVersion}
+                >
+                  Extend key
+                </Button>
+              )}
+              {!expireAndRefundDisabled && (
+                <Button
+                  size="small"
+                  variant="outlined-primary"
+                  className="disabled:border-opacity-50 disabled:border-gray-200 disabled:text-opacity-50 hover:disabled:text-opacity-50"
+                  disabled={expireAndRefundDisabled}
+                  onClick={onExpireAndRefund}
+                >
+                  Expire & Refund
+                </Button>
+              )}
+              <Button size="small" variant="secondary" onClick={toggleMetada}>
+                <div className="flex items-center">
+                  <span>Show metadata</span>
+                  <ArrowDown />
+                </div>
+              </Button>
+            </>
           )}
         </div>
       </div>
@@ -239,11 +323,17 @@ export const MemberCard: React.FC<MemberCardProps> = ({
             <div className="flex gap-[1rem] my-3">
               {!isCheckedIn && (
                 <Button
-                  onClick={onMarkAsCheckIn}
+                  onClick={() => markAsCheckInMutation.mutate()}
                   variant="outlined-primary"
                   size="tiny"
+                  disabled={markAsCheckInMutation.isLoading}
                 >
-                  Mark as Checked-in
+                  <div className="flex">
+                    {markAsCheckInMutation.isLoading && (
+                      <Spinner className="mr-1 animate-spin" />
+                    )}
+                    <span>Mark as Checked-in</span>
+                  </div>
                 </Button>
               )}
               {hasEmailMetadata ? (
@@ -427,8 +517,8 @@ const UpdateEmailModal = ({
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="flex flex-col p-4 gap-3">
-        <span className="font-semibold text-md mr-0">
+      <div className="flex flex-col gap-3 p-4">
+        <span className="mr-0 font-semibold text-md">
           {hasEmail ? 'Update email address' : 'Add email address to metadata'}
         </span>
         <form onSubmit={handleSubmit(onUpdateValue)}>
@@ -438,7 +528,7 @@ const UpdateEmailModal = ({
               required: true,
             })}
           />
-          <div className="flex gap-2 items-center justify-end">
+          <div className="flex items-center justify-end gap-2">
             <Button
               variant="secondary"
               onClick={() => setIsOpen(false)}

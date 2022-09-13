@@ -1,11 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { Mint, CheckoutService } from './checkoutMachine'
+import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button, Icon } from '@unlock-protocol/ui'
-import mintingAnimation from '~/animations/minting.json'
-import mintedAnimation from '~/animations/minted.json'
-import errorAnimation from '~/animations/error.json'
-import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useMemo } from 'react'
@@ -14,38 +10,14 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
-
+import { Stepper } from '../Stepper'
+import { useCheckoutSteps } from './useCheckoutItems'
+import { TransactionAnimation } from '../Shell'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication: CheckoutCommunication
-}
-
-function AnimationContent({ status }: { status: Mint['status'] }) {
-  const animationClass = `w-28 sm:w-36 h-28 sm:h-36`
-  switch (status) {
-    case 'PROCESSING':
-      return (
-        <Lottie
-          className={animationClass}
-          loop
-          animationData={mintingAnimation}
-        />
-      )
-    case 'FINISHED':
-      return (
-        <Lottie className={animationClass} animationData={mintedAnimation} />
-      )
-    case 'ERROR': {
-      return (
-        <Lottie className={animationClass} animationData={errorAnimation} />
-      )
-    }
-    default:
-      return null
-  }
 }
 
 export function Minting({
@@ -57,8 +29,7 @@ export function Minting({
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-  const { mint, lock, messageToSign, skipQuantity, paywallConfig } =
-    state.context
+  const { mint, lock, messageToSign } = state.context
   const processing = mint?.status === 'PROCESSING'
   const status = mint?.status
 
@@ -126,57 +97,19 @@ export function Minting({
     }
   }, [status])
 
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Choose quantity',
-      skip: skipQuantity,
-      to: 'QUANTITY',
-    },
-    {
-      id: 3,
-      name: 'Add recipients',
-      to: 'METADATA',
-    },
-    {
-      id: 4,
-      name: 'Choose payment',
-      to: 'PAYMENT',
-    },
-    {
-      id: 5,
-      name: 'Sign message',
-      skip: !paywallConfig.messageToSign,
-      to: 'MESSAGE_TO_SIGN',
-    },
-    {
-      id: 6,
-      name: 'Solve captcha',
-      to: 'CAPTCHA',
-      skip: !paywallConfig.captcha,
-    },
-    {
-      id: 7,
-      name: 'Confirm',
-      to: 'CONFIRM',
-    },
-    {
-      id: 8,
-      name: status === 'PROCESSING' ? 'Minting NFT' : 'Minted NFT!',
-    },
-  ]
+  const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
-      <Stepper position={8} service={checkoutService} items={stepItems} />
+      <Stepper
+        position={8}
+        disabled
+        service={checkoutService}
+        items={stepItems}
+      />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex flex-col items-center justify-center h-full space-y-2">
-          {status && <AnimationContent status={status} />}
+          <TransactionAnimation status={status} />
           <p className="text-lg font-bold text-brand-ui-primary">
             {content?.text}
           </p>

@@ -8,13 +8,11 @@ import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import UnlockPropTypes from '../../../propTypes'
 import Svg from '../../interface/svg'
 import Button from '../../interface/buttons/Button'
-import {
-  Input,
-  Button as FormButton,
-} from '../../interface/checkout/FormStyles'
+import { Button as FormButton } from '../../interface/checkout/FormStyles'
 import Alert from '../../interface/Alert'
 import { useAlert } from '../../../hooks/useAlert'
 import { MAX_UINT } from '../../../constants'
+import { Input } from '@unlock-protocol/ui'
 
 const Integration = ({ name, icon, href }) => (
   <App>
@@ -164,12 +162,12 @@ const AppStore = ({ lock }) => {
   }
 
   return (
-    <Wrapper>
+    <div className="block px-10 py-3">
       <Alert {...alertProps} />
 
       <Details>
         <DetailTitle>Generate Purchase Addresses</DetailTitle>
-        <p>
+        <p className="mb-1">
           Generate purchase addresses that you can share with your fans if you
           want them to easily purchase this lock&apos;s NFT membership.{' '}
           <a
@@ -183,7 +181,7 @@ const AppStore = ({ lock }) => {
         </p>
         {!checkoutUrl && (
           <>
-            <RedirectUriInput
+            <Input
               pattern={isValidUrl() ? '.*' : '^\b$'}
               onChange={onRedirectUriChange}
               placeholder="URL to which your members are redirected when they have a membership"
@@ -261,7 +259,7 @@ const AppStore = ({ lock }) => {
           </ExtraLink>
         </DetailBlock>
       </Details>
-    </Wrapper>
+    </div>
   )
 }
 

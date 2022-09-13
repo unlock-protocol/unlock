@@ -1,8 +1,8 @@
 {
   "name": "@unlock-protocol/paywall",
-  "version": "0.1.0",
-  "module": "src/index.ts",
-  "main": "dist/unlock.latest.min.js",
+  "version": "0.1.2",
+  "exports": "./dist/unlock.latest.min.js",
+  "main": "./dist/unlock.latest.min.js",
   "scripts": {
     "build:tsc": "tsc",
     "build": "webpack --mode=production --config webpack.config.js",
@@ -16,6 +16,10 @@
     "@types/jest": "27.5.2",
     "@types/postmate": "1.5.2",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
+    "@unlock-protocol/jest-config": "workspace:^",
+    "@unlock-protocol/networks": "workspace:^",
+    "@unlock-protocol/tsconfig": "workspace:^",
+    "@unlock-protocol/types": "workspace:^",
     "babel-jest": "28.1.3",
     "css-loader": "6.7.1",
     "dotenv": "16.0.1",
@@ -31,10 +35,6 @@
     "webpack-cli": "4.10.0"
   },
   "dependencies": {
-    "@unlock-protocol/jest-config": "workspace:^",
-    "@unlock-protocol/networks": "workspace:^",
-    "@unlock-protocol/tsconfig": "workspace:^",
-    "@unlock-protocol/types": "workspace:^",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-plugin-styled-components": "2.0.7",
     "postmate": "1.5.2"

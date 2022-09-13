@@ -201,20 +201,20 @@ export class PurchaseController {
       const pricer = new KeyPricer()
       const fulfillmentDispatcher = new Dispatcher()
 
+      const pricing = await pricer.generate(lockAddress, network)
+
+      if (pricing.keyPrice && pricing.keyPrice > 0) {
+        return response.status(400).send({
+          message: 'Lock is not free.',
+        })
+      }
+
       const hasEnoughToPayForGas =
         await fulfillmentDispatcher.hasFundsForTransaction(network)
       if (!hasEnoughToPayForGas) {
         return response.status(500).send({
           message:
             'Purchaser does not have enough funds to allow claiming the membership',
-        })
-      }
-
-      const pricing = await pricer.generate(lockAddress, network)
-
-      if (pricing.keyPrice !== undefined && pricing.keyPrice > 0) {
-        return response.status(500).send({
-          message: 'Lock is not free.',
         })
       }
 

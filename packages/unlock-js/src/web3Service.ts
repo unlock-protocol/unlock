@@ -420,4 +420,93 @@ export default class Web3Service extends UnlockService {
     )
     return ethers.BigNumber.from(await lockContract.numberOfOwners()).toNumber()
   }
+
+  /**
+   * Returns total of key for a specific address
+   * @param {String} lockAddress
+   * @param {String} address
+   * @param {Number} network
+   */
+  async totalKeys(lockAddress: string, owner: string, network: number) {
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+
+    if (!version.totalKeys) {
+      throw new Error('Lock version not supported')
+    }
+
+    const count = await version.totalKeys.bind(this)(
+      lockAddress,
+      owner,
+      this.providerForNetwork(network)
+    )
+
+    return count.toNumber()
+  }
+
+  /**
+   * Returns lock version
+   * @param {String} lockAddress
+   * @param {Number} network
+   */
+  async publicLockVersion(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return await lockContract.publicLockVersion()
+  }
+
+  async tokenURI(lockAddress: string, tokenId: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return await lockContract.tokenURI(tokenId)
+  }
+
+  /**
+   * Returns the number of keys available for sale
+   * @param lockAddress
+   * @param network
+   * @returns
+   */
+  async keysAvailable(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const totalSupply = await lockContract.totalSupply()
+    const maxNumberOfKeys = await lockContract.maxNumberOfKeys()
+    return maxNumberOfKeys.sub(totalSupply)
+  }
+
+  // For <= v10, it returns the total number of keys.
+  // Starting with v11, it returns the total number of valid
+  async balanceOf(lockAddress: string, owner: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const balance = await lockContract.balanceOf(owner)
+    return balance.toNumber()
+  }
+
+  // Return key ID of owner at the specified index.
+  // If a owner has multiple keys, you can iterate over all of them starting from 0 as index until you hit a zero value which implies no more.
+  async tokenOfOwnerByIndex(
+    lockAddress: string,
+    owner: string,
+    index: number,
+    network: number
+  ) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const id = await lockContract.tokenOfOwnerByIndex(owner, index)
+    return id.toNumber()
+  }
 }
