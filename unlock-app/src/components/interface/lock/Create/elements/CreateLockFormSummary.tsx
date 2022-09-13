@@ -183,7 +183,9 @@ export const CreateLockFormSummary = ({
           <div className="flex flex-col gap-2">
             <span className="text-base">Duration</span>
             <span className="text-xl font-bold">
-              {unlimitedDuration ? 'Unlimited' : formData?.expirationDuration}
+              {unlimitedDuration
+                ? 'Unlimited'
+                : `${formData?.expirationDuration} days`}
             </span>
           </div>
           <div className="flex flex-col gap-2">
