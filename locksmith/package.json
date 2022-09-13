@@ -6,8 +6,7 @@
   "scripts": {
     "prod": "cd build && node -r ./src/utils/envLoader.js ./server.js",
     "start": "yarn build && node -r ./src/utils/envLoader.js ./build/server.js",
-    "dappcon-mailer": "ts-node-dev -r ./src/utils/envLoader.js --files dappcon-mailer.js",
-    "debug": "ts-node-dev -r ./src/utils/envLoader.js --files debug.js",
+    "debug": "ts-node-dev -r ./src/utils/envLoader.js ./scripts/debug.js",
     "dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js --files server.js",
     "test": "yarn test:db:setup && yarn test:run",
     "test:db:setup": "yarn run test:db:drop && yarn run test:db:create && yarn run test:db:migrate",
@@ -51,6 +50,7 @@
     "apollo-link-http": "1.5.17",
     "apollo-server": "3.6.7",
     "apollo-server-express": "2.25.4",
+    "bignumber.js": "9.1.0",
     "color-scheme": "1.0.1",
     "cookie-parser": "1.4.6",
     "cors": "2.8.5",
