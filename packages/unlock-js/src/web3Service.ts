@@ -432,19 +432,32 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
-
+    const publicLockVersion = await contract.publicLockVersion()
     if (!contract.totalKeys) {
-      /**
-       * v10 lock support multiple keys but does not have a reliable way to find the total.
-       * For < v10, there is no support for multiple keys so we can assume 1 if any key is present.
-       */
-      const hasKey = await this.tokenOfOwnerByIndex(
-        lockAddress,
-        owner,
-        0,
-        network
-      )
-      return hasKey ? 1 : 0
+      try {
+        /**
+         * v10 lock support multiple keys but does not have a reliable way to find the total.
+         * For < v10, there is no support for multiple keys so we can assume 1 if any key is present.
+         */
+        if (publicLockVersion <= 9) {
+          const hasId = await this.getTokenIdForOwner(
+            lockAddress,
+            owner,
+            network
+          )
+          return hasId ? 1 : 0
+        } else {
+          const hasKey = await this.tokenOfOwnerByIndex(
+            lockAddress,
+            owner,
+            0,
+            network
+          )
+          return hasKey ? 1 : 0
+        }
+      } catch (error) {
+        return 0
+      }
     }
     const count = await contract.totalKeys(owner)
     return count.toNumber()
