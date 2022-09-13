@@ -113,7 +113,7 @@ export const CreateLockForm = ({
     setValue('symbol', token.symbol)
   }
 
-  const noBalance = balance === 0
+  const noBalance = balance === 0 && !isLoadingBalance
   const submitDisabled = isLoadingBalance || noBalance
   const selectedCurrency = (
     defaultValues?.symbol ||
@@ -132,7 +132,7 @@ export const CreateLockForm = ({
         onSelect={onSelectToken}
       />
       <div className="mb-4">
-        <BalanceWarning network={network!} balance={balance!} />
+        {noBalance && <BalanceWarning network={network!} balance={balance!} />}
       </div>
       <div className="overflow-hidden bg-white rounded-xl">
         <div className="px-3 py-4">

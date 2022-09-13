@@ -9,7 +9,7 @@ interface LinkProps {
   ref: string
 }
 
-const CALL_TO_ACTION_MAPPING: Record<number, LinkProps> = {
+const CALL_TO_ACTION_MAPPING: Record<number | 'default', LinkProps> = {
   1: {
     label: 'Purchase some Ether using ',
     link: 'https://www.coinbase.com/',
@@ -25,34 +25,49 @@ const CALL_TO_ACTION_MAPPING: Record<number, LinkProps> = {
     link: 'https://wallet.matic.network/bridge',
     ref: 'the Bridge.',
   },
+  default: {
+    label: '',
+    link: '',
+    ref: '',
+  },
 }
 
+export const WarningBar = ({ children }: any) => {
+  return (
+    <div className="p-2 text-red-700 bg-red-100 border-2 border-red-500 rounded-xl">
+      {children}
+    </div>
+  )
+}
 const CallToAction = ({ network }: { network: number }) => {
   const config = useConfig()
-  const info = CALL_TO_ACTION_MAPPING[network]
+  const info = CALL_TO_ACTION_MAPPING[network] || CALL_TO_ACTION_MAPPING.default
 
   if (!info) return null
 
   const currency = config.networks[network!].baseCurrencySymbol
   const networkName = config.networks[network!].name
   return (
-    <div className="p-2 text-red-700 bg-red-100 border-2 border-red-500 rounded-xl">
-      <span>
-        {` You currently do not have any ${currency} token to pay for gas to deploy
-        on the ${networkName} network.`}
-      </span>
+    <WarningBar>
       <>
-        <span>{` ${info?.label}`}</span>
-        <a
-          className="underline"
-          href={info.link}
-          target="_blank"
-          rel="noreferrer"
-        >
-          {info.ref}
-        </a>
+        {' '}
+        <span>
+          {` You currently do not have any ${currency} token to pay for gas to deploy
+  on the ${networkName} network.`}
+        </span>
+        <>
+          <span>{` ${info?.label}`}</span>
+          <a
+            className="underline"
+            href={info.link}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {info.ref}
+          </a>
+        </>
       </>
-    </div>
+    </WarningBar>
   )
 }
 export const BalanceWarning = ({
