@@ -507,6 +507,6 @@ export default class Web3Service extends UnlockService {
       this.providerForNetwork(network)
     )
     const id = lockContract.tokenOfOwnerByIndex(owner, index)
-    return id.toNumber()
+    return id
   }
 }
