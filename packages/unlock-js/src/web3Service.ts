@@ -484,7 +484,7 @@ export default class Web3Service extends UnlockService {
   }
 
   // For <= v10, it returns the total number of keys.
-  // Starting with v11, it returns the total number of valid keys.
+  // Starting with v11, it returns the total number of valid
   async balanceOf(lockAddress: string, owner: string, network: number) {
     const lockContract = await this.getLockContract(
       lockAddress,
@@ -506,7 +506,7 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
-    const id = lockContract.tokenOfOwnerByIndex(owner, index)
-    return id
+    const id = await lockContract.tokenOfOwnerByIndex(owner, index)
+    return id.toNumber()
   }
 }
