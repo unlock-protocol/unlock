@@ -180,18 +180,24 @@ const MetadataTableWrapper = ({
   const [expiration, setExpiration] = useState<MemberFilter>('all')
   const queryValue = useDebounce<string>(query)
 
-  const { getKeys, columns, hasNextPage, keysCount, lockManagerMapping } =
-    useKeys({
-      viewer: account!,
-      locks: lockAddresses,
-      network: network!,
-      filters: {
-        query: queryValue,
-        filterKey,
-        expiration,
-        page: currentPage,
-      },
-    })
+  const {
+    getKeys,
+    allKeys,
+    columns,
+    hasNextPage,
+    keysCount,
+    lockManagerMapping,
+  } = useKeys({
+    viewer: account!,
+    locks: lockAddresses,
+    network: network!,
+    filters: {
+      query: queryValue,
+      filterKey,
+      expiration,
+      page: currentPage,
+    },
+  })
 
   const search = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e?.target?.value || ''
@@ -309,6 +315,7 @@ const MetadataTableWrapper = ({
       <MetadataTable
         columns={columns}
         metadata={keys}
+        allMetadata={allKeys}
         lockManagerMapping={lockManagerMapping}
         lockAddresses={lockAddresses}
         loading={loading}
