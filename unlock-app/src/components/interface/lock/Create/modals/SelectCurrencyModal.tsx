@@ -50,14 +50,14 @@ export const SelectCurrencyModal = ({
     }
   }, [queryValue])
 
-  const tokensFiltred = tokens?.filter(
+  const tokensFiltered = tokens?.filter(
     (token: Token) =>
       token.name?.toLowerCase().includes(queryValue?.toLowerCase()) ||
       token.symbol?.toLowerCase().includes(queryValue?.toLowerCase())
   )
 
   const noItems =
-    tokensFiltred?.length === 0 &&
+    tokensFiltered?.length === 0 &&
     queryValue?.length > 0 &&
     !contractAddress?.length
 
@@ -97,7 +97,11 @@ export const SelectCurrencyModal = ({
                   {contractAddress?.length > 0 && (
                     <div className="flex items-center justify-between mt-3">
                       <span>{addressMinify(contractAddress)}</span>
-                      <Button size="small" onClick={onAddContractAddress}>
+                      <Button
+                        size="small"
+                        onClick={onAddContractAddress}
+                        disabled
+                      >
                         Import
                       </Button>
                     </div>
@@ -109,7 +113,7 @@ export const SelectCurrencyModal = ({
                         No token matches your filter.
                       </span>
                     )}
-                    {tokensFiltred?.map((token: Token) => {
+                    {tokensFiltered?.map((token: Token) => {
                       return (
                         <div key={token.symbol}>
                           <span
