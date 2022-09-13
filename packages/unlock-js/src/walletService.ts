@@ -1,4 +1,4 @@
-import { BigNumber, ethers } from 'ethers'
+import { ethers } from 'ethers'
 import { Lock, WalletServiceCallback } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
