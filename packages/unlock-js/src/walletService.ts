@@ -215,7 +215,11 @@ export default class WalletService extends UnlockService {
    */
   async renewMembershipFor(
     params: { lockAddress: string; referrer: string | null; tokenId: string },
-    purchaseForOptions: { gasLimit: number },
+    purchaseForOptions: {
+      gasLimit?: number
+      maxFeePerGas?: number
+      maxPriorityFeePerGas?: number
+    },
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')

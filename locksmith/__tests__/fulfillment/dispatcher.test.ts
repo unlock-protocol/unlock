@@ -100,7 +100,7 @@ describe('Dispatcher', () => {
   describe('renewMembershipFor', () => {
     it('should call the function directly on lock contract', async () => {
       expect.assertions(2)
-      const keyId = 1
+      const keyId = '1'
       // check contract is fetched correctly
       await new Dispatcher().renewMembershipFor(31337, lockAddress, keyId)
       expect(mockWalletService.getLockContract).toBeCalledWith(lockAddress)

@@ -6,7 +6,7 @@ import { renewKey, isWorthRenewing } from '../../src/websub/helpers/renewKey'
 
 const renewalInfo = {
   network: 31137,
-  keyId: 1,
+  keyId: '1',
   lockAddress: '0xaaa',
 }
 

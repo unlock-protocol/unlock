@@ -148,7 +148,7 @@ export default class Dispatcher {
   async renewMembershipFor(
     network: number,
     lockAddress: string,
-    keyId: number
+    keyId: string
   ) {
     const walletService = new WalletService(networks)
     const provider = new ethers.providers.JsonRpcProvider(
