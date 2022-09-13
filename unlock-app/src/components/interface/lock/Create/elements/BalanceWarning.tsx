@@ -1,6 +1,3 @@
-import { useEffect, useState } from 'react'
-import { useAuth } from '~/contexts/AuthenticationContext'
-import useAccount from '~/hooks/useAccount'
 import { useConfig } from '~/utils/withConfig'
 
 interface LinkProps {
