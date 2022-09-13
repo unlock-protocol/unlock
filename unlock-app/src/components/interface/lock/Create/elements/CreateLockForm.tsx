@@ -185,7 +185,7 @@ export const CreateLockForm = ({
                           <div className="flex items-center gap-4">
                             <Radio checked={checked} />
                             <span className="text-lg font-bold cursor-pointer">
-                              Good forever
+                              Unlimited
                             </span>
                           </div>
                         )}
