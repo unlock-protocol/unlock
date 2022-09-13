@@ -108,13 +108,12 @@ export function Select({ checkoutService, injectedProvider }: Props) {
         Object.entries(paywallConfig.locks).map(
           async ([lockAddress, props]) => {
             const lockNetwork = props.network || paywallConfig.network || 1
-            const [balance, total] = await Promise.all([
-              web3Service.balanceOf(lockAddress, account!, lockNetwork),
+            const [member, total] = await Promise.all([
+              web3Service.getHasValidKey(lockAddress, account!, lockNetwork),
               web3Service.totalKeys(lockAddress, account!, lockNetwork),
             ])
-            // if balance is 0 but total number of keys is non zero. We can assume some have expired.
-            const expired = balance <= 0 && total > 0
-            const member = balance > 0
+            // if not member but total is above 0
+            const expired = !member && total > 0
             return {
               lock: lockAddress,
               expired,
