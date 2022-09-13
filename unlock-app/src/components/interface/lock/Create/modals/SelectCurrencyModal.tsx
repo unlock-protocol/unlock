@@ -7,7 +7,9 @@ import { utils } from 'ethers'
 import { useConfig } from '~/utils/withConfig'
 import { CryptoIcon } from '../elements/KeyPrice'
 import { addressMinify } from '~/utils/strings'
-
+import { useQuery } from 'react-query'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { FaSpinner as Spinner } from 'react-icons/fa'
 interface SelectCurrencyModalProps {
   isOpen: boolean
   setIsOpen: (status: boolean) => void
@@ -22,10 +24,12 @@ export const SelectCurrencyModal = ({
   onSelect,
 }: SelectCurrencyModalProps) => {
   const { networks } = useConfig()
+  const web3Service = useWeb3Service()
   const [contractAddress, setContractAddress] = useState<string>('')
   const [query, setQuery] = useState<string>('')
   const queryValue = useDebounce<string>(query)
-  const tokens = networks[network!]?.tokens ?? []
+  const { tokens: tokenItems } = networks[network!] || {}
+  const [tokens, setTokens] = useState(tokenItems)
 
   const onSelectToken = (token: Token) => {
     if (typeof onSelect === 'function') {
@@ -56,12 +60,43 @@ export const SelectCurrencyModal = ({
       token.symbol?.toLowerCase().includes(queryValue?.toLowerCase())
   )
 
+  const getContractTokenSymbol = async () => {
+    return await web3Service.getTokenSymbol(contractAddress, network)
+  }
+
+  const { isLoading: isLoadingContractToken, data: contractTokenSymbol } =
+    useQuery(
+      ['getContractTokenSymbol', contractAddress, queryValue],
+      async () => getContractTokenSymbol()
+    )
+
+  const onImport = () => {
+    const currentList = tokens || []
+    setTokens([
+      {
+        name: contractTokenSymbol || addressMinify(contractAddress),
+        symbol: contractTokenSymbol || addressMinify(contractAddress),
+        address: contractAddress,
+        decimals: 18,
+      },
+      ...currentList,
+    ])
+    setQuery('')
+    setContractAddress('')
+  }
+
   const noItems =
     tokensFiltered?.length === 0 &&
-    queryValue?.length > 0 &&
-    !contractAddress?.length
+    query?.length > 0 &&
+    !contractAddress?.length &&
+    !isLoadingContractToken
 
-  const onAddContractAddress = () => {}
+  useEffect(() => {
+    if (isOpen) return
+    // clear state when modal close
+    setQuery('')
+    setContractAddress('')
+  }, [isOpen])
 
   return (
     <Transition show={isOpen} appear as={Fragment}>
@@ -92,17 +127,25 @@ export const SelectCurrencyModal = ({
                     placeholder="Search or paste contract address"
                     className="bg-transparent"
                     onChange={onSearch}
+                    value={query ? query : ''}
                   />
 
                   {contractAddress?.length > 0 && (
                     <div className="flex items-center justify-between mt-3">
-                      <span>{addressMinify(contractAddress)}</span>
+                      <span>
+                        {contractTokenSymbol || addressMinify(contractAddress)}
+                      </span>
                       <Button
                         size="small"
-                        onClick={onAddContractAddress}
-                        disabled
+                        onClick={onImport}
+                        disabled={isLoadingContractToken}
                       >
-                        Import
+                        <div className="flex items-center gap-2">
+                          {isLoadingContractToken && (
+                            <Spinner className="mr-1 animate-spin" />
+                          )}
+                          <span>Import</span>
+                        </div>
                       </Button>
                     </div>
                   )}
@@ -113,9 +156,10 @@ export const SelectCurrencyModal = ({
                         No token matches your filter.
                       </span>
                     )}
-                    {tokensFiltered?.map((token: Token) => {
+                    {tokensFiltered?.map((token: Token, index: number) => {
+                      const key = `${token.symbol}-${index}`
                       return (
-                        <div key={token.symbol}>
+                        <div key={key}>
                           <span
                             onClick={() => onSelectToken(token)}
                             className="inline-flex items-center gap-3 cursor-pointer"
