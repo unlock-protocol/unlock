@@ -1,16 +1,16 @@
 const { ethers } = require('hardhat')
 const Locks = require('../../test/fixtures/locks')
 const createLock = require('../deployments/lock.js')
+const contracts = require('@unlock-protocol/contracts')
 
 const { AddressZero } = ethers.constants
 
 async function main({
   unlockAddress,
   unlockVersion,
+  lockVersion,
   tokenAddress = AddressZero,
 }) {
-  const PublicLock = await ethers.getContractFactory('PublicLock')
-
   const signers = await ethers.getSigners()
 
   // loop through all locks and deploy them
@@ -26,9 +26,19 @@ async function main({
       unlockAddress,
       unlockVersion,
       serializedLock,
+      lockVersion,
       salt: web3.utils.randomHex(12),
     })
-    const lock = PublicLock.attach(newLockAddress)
+
+    // get correct versio  of the lock abi
+    let Lock
+    if (!lockVersion) {
+      Lock = await ethers.getContractFactory('PublicLock')
+    } else {
+      const { abi, bytecode } = contracts[`UnlockV${unlockVersion}`]
+      Lock = await ethers.getContractFactory(abi, bytecode)
+    }
+    const lock = Lock.attach(newLockAddress)
 
     // eslint-disable-next-line no-console
     console.log('LOCK SAMPLES > Buying a bunch of locks...')
