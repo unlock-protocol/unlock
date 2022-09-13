@@ -152,7 +152,7 @@ export const CreateLockFormSummary = ({
             <div data-testid="status" className="flex flex-col gap-8 r">
               {status && <AnimationContent status={currentStatus} />}
             </div>
-            <div className="grid grid-cols-2">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
               <div className="flex flex-col">
                 <span className="text-base">Status</span>
                 <span className="text-lg font-bold">{status}</span>
@@ -161,7 +161,7 @@ export const CreateLockFormSummary = ({
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 mt-5 ml-auto text-lg font-bold text-brand-ui-primary"
+                  className="inline-flex items-center gap-3 mt-3 text-lg font-bold lg:mt-auto lg:ml-auto text-brand-ui-primary"
                   href={transactionDetailUrl}
                 >
                   <span>See on block explorer</span>

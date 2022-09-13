@@ -162,11 +162,19 @@ export const CreateLockSteps = () => {
   return (
     <div>
       <div className="grid items-center grid-cols-3">
-        {showBackUrl && (
-          <ArrowBack size={20} className="cursor-pointer" onClick={onBack} />
-        )}
+        <div>
+          {showBackUrl && (
+            <ArrowBack size={20} className="cursor-pointer" onClick={onBack} />
+          )}
+        </div>
         <h1 className="text-xl font-semibold text-center">{title}</h1>
       </div>
+      <CreateLockFormSummary
+        formData={values!}
+        network={network!}
+        transactionHash={transactionHash}
+        showStatus
+      />
       <div className="pt-14">{Step()}</div>
     </div>
   )
