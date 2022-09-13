@@ -1,7 +1,8 @@
 import { NetworkConfig } from '@unlock-protocol/types'
 
 export const goerli: NetworkConfig = {
-  publicProvider: 'https://goerli.prylabs.net',
+  publicProvider:
+    'https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161',
   provider: 'https://rpc.unlock-protocol.com/5',
   unlockAddress: '0x627118a4fB747016911e5cDA82e2E77C531e8206',
   multisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
