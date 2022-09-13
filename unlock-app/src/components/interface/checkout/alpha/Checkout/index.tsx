@@ -18,6 +18,8 @@ import { Password } from './Password'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { isEqual } from 'lodash'
 import { CheckoutHead, CheckoutTransition, TopNavigation } from '../Shell'
+import { Renew } from './Renew'
+import { Renewed } from './Renewed'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
@@ -215,6 +217,28 @@ export function Checkout({
           />
         )
       }
+
+      case 'RENEW': {
+        return (
+          <Renew
+            communication={communication}
+            injectedProvider={injectedProvider}
+            checkoutService={checkoutService}
+          />
+        )
+      }
+
+      case 'RENEWED': {
+        return (
+          <Renewed
+            onClose={onClose}
+            injectedProvider={injectedProvider}
+            checkoutService={checkoutService}
+            communication={communication}
+          />
+        )
+      }
+
       default: {
         return null
       }
