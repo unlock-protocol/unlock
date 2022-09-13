@@ -31,12 +31,12 @@ type DeployStatus = 'progress' | 'deployed' | 'txError'
 const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   progress: {
     title: 'This will take few minutes...',
-    description: 'Feel free to wait in this screen or return to main page.',
-    status: 'Progressing...',
+    description: 'Feel free to wait here or return to main page.',
+    status: 'In progress...',
     backText: 'Return to Lock list',
   },
   deployed: {
-    title: '🚀​ Lock is successfully deployed',
+    title: '🚀​ Lock has successfully been deployed',
     description: 'Redirecting you back to main page...',
     status: 'Completed!',
     backText: 'Return to Lock list',
@@ -66,7 +66,13 @@ function AnimationContent({ status }: { status: DeployStatus }) {
       )
     case 'txError': {
       // todo: add error animation when available
-      return <Lottie className={animationClass} animationData={null} />
+      return (
+        <Lottie
+          className={animationClass}
+          animationData={deployedAnimation}
+          loop={false}
+        />
+      )
     }
     default:
       return null
@@ -158,7 +164,7 @@ export const CreateLockFormSummary = ({
                   className="inline-flex items-center gap-3 mt-5 ml-auto text-lg font-bold text-brand-ui-primary"
                   href={transactionDetailUrl}
                 >
-                  <span>See on Etherscan</span>
+                  <span>See on block explorer</span>
                   <ExternalLinkIcon size={20} />
                 </a>
               )}

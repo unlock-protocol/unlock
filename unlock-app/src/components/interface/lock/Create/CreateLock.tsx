@@ -178,7 +178,7 @@ const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
       <div className="grid gap-4 md:grid-cols-2 md:gap-28">
         <div className="flex flex-col mx-auto md:max-w-lg">
           <h4 className="mb-4 text-5xl font-bold">
-            Connect with your 1000 true fans
+            Deploy your membership contract
           </h4>
           <span className="text-lg font-normal">
             For creative communities and the humans who build them

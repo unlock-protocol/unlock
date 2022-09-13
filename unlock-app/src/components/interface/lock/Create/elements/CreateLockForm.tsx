@@ -153,14 +153,14 @@ export const CreateLockForm = ({
               />
               {errors?.name && (
                 <span className="absolute text-xs text-red-700">
-                  A cool name is required.
+                  A name is required.
                 </span>
               )}
             </div>
 
             <div>
               <label className="block px-1 mb-4 text-base" htmlFor="">
-                Duration
+                Memberships duration (days)
               </label>
               <Controller
                 control={control}
@@ -198,12 +198,6 @@ export const CreateLockForm = ({
                           <div className="flex items-center w-full gap-4">
                             <Radio checked={checked} />
                             <div className="relative flex items-center w-full gap-4">
-                              <label
-                                className="text-lg font-bold cursor-pointer"
-                                htmlFor=""
-                              >
-                                Key duration
-                              </label>
                               <div className="relative grow">
                                 <Input
                                   tabIndex={-1}
@@ -233,7 +227,7 @@ export const CreateLockForm = ({
 
             <div>
               <label className="block px-1 mb-4 text-base" htmlFor="">
-                Quantity
+                Number of memberships
               </label>
               <Controller
                 control={control}
@@ -291,7 +285,7 @@ export const CreateLockForm = ({
               />
               {errors?.maxNumberOfKeys && (
                 <span className="absolute mt-2 text-xs text-red-700">
-                  How many do you say?
+                  Please choose a number of memberships for your lock.
                 </span>
               )}
             </div>
@@ -327,7 +321,7 @@ export const CreateLockForm = ({
               </div>
               {errors?.keyPrice && (
                 <span className="absolute mt-2 text-xs text-red-700">
-                  Require to have postive number here.
+                  Please enter a positive number
                 </span>
               )}
             </div>
