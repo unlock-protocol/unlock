@@ -10,6 +10,12 @@ import {
 } from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
 import SvgComponents from '../../svg'
+import mintingAnimation from '~/animations/minting.json'
+import mintedAnimation from '~/animations/minted.json'
+import errorAnimation from '~/animations/error.json'
+import Lottie from 'lottie-react'
+import { Transaction } from './Checkout/checkoutMachine'
+
 interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>
 }
@@ -115,4 +121,29 @@ export function TopNavigation({ onClose, onBack }: NavigationProps) {
       {onClose && <CloseButton onClick={() => onClose()} />}
     </div>
   )
+}
+
+export function TransactionAnimation({ status }: Partial<Transaction>) {
+  const animationClass = `w-28 sm:w-36 h-28 sm:h-36`
+  switch (status) {
+    case 'PROCESSING':
+      return (
+        <Lottie
+          className={animationClass}
+          loop
+          animationData={mintingAnimation}
+        />
+      )
+    case 'FINISHED':
+      return (
+        <Lottie className={animationClass} animationData={mintedAnimation} />
+      )
+    case 'ERROR': {
+      return (
+        <Lottie className={animationClass} animationData={errorAnimation} />
+      )
+    }
+    default:
+      return null
+  }
 }

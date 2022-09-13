@@ -167,7 +167,7 @@ export default class WalletService extends UnlockService {
       erc20Address?: string
       decimals?: number
       recurringPayments?: number
-      referer?: string
+      referrer?: string
     },
     callback?: WalletServiceCallback
   ) {
@@ -195,7 +195,7 @@ export default class WalletService extends UnlockService {
       data?: string[]
       erc20Address?: string
       decimals?: number
-      referers?: (string | null)[]
+      referrers?: (string | null)[]
       recurringPayments?: number[]
     },
     callback?: WalletServiceCallback
@@ -214,6 +214,10 @@ export default class WalletService extends UnlockService {
     params: {
       lockAddress: string
       tokenId: string
+      referrer?: string
+      data?: string[]
+      decimals?: number
+      erc20Address?: string
     },
     callback?: WalletServiceCallback
   ) {

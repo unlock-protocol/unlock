@@ -71,10 +71,10 @@ export function SignedOut({
     'inline-flex items-center p-1 hover:[box-shadow:_0px_4px_15px_rgba(0,0,0,0.08)] [box-shadow:_0px_8px_30px_rgba(0,0,0,0.08)] rounded-full'
 
   return (
-    <div className="w-full grid grid-flow-col grid-cols-11">
-      <div className="grid items-center col-span-5 justify-items-center space-y-2">
+    <div className="grid w-full grid-flow-col grid-cols-11">
+      <div className="grid items-center col-span-5 space-y-2 justify-items-center">
         <h4 className="text-sm"> Have a crypto wallet? </h4>
-        <div className="flex items-center w-full justify-around">
+        <div className="flex items-center justify-around w-full">
           <button
             onClick={() => authenticateWithProvider('METAMASK')}
             type="button"
@@ -98,10 +98,10 @@ export function SignedOut({
           </button>
         </div>
       </div>
-      <div className="col-span-1 flex justify-center">
-        <div className="border-l h-full"></div>
+      <div className="flex justify-center col-span-1">
+        <div className="h-full border-l"></div>
       </div>
-      <div className="grid items-center space-y-2 col-span-5 justify-items-center">
+      <div className="grid items-center col-span-5 space-y-2 justify-items-center">
         <h4 className="text-sm"> Don&apos;t have a crypto wallet? </h4>
         <Button
           onClick={(event) => {
