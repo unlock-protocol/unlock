@@ -37,11 +37,11 @@ interface StatusMappingProps {
 
 const TITLE_BY_STATUS_MAPPING: Record<Step, StatusMappingProps> = {
   data: {
-    title: 'Creating Lock',
+    title: 'Create a Lock',
     backUrl: null,
   },
   summary: {
-    title: 'Creating Lock',
+    title: 'Create a Lock',
     backUrl: 'data',
   },
   deploy: {
@@ -227,12 +227,12 @@ const CreateLockSummary = ({
         <div className="md:max-w-lg">
           <CreateLockFormSummary formData={formData} network={network} />
           <div className="flex flex-col justify-between w-full gap-4 px-12 mt-12">
-            <Button onClick={onHandleSubmit}>Look good for me</Button>
+            <Button onClick={onHandleSubmit}>Looks good to me</Button>
             <Button
               variant="transparent"
               onClick={() => setStep('data', formData)}
             >
-              Back to Edit
+              Change
             </Button>
           </div>
         </div>
