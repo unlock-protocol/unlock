@@ -78,7 +78,6 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
     quantity
   )
 
-  const fiatPrice = fiatPricing?.usd?.keyPrice
   const isDisabled = quantity < 1 || isLoading
   const stepItems = useCheckoutSteps(checkoutService)
 
