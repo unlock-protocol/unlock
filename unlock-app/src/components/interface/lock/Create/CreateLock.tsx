@@ -169,12 +169,6 @@ export const CreateLockSteps = () => {
         </div>
         <h1 className="text-xl font-semibold text-center">{title}</h1>
       </div>
-      <CreateLockFormSummary
-        formData={values!}
-        network={network!}
-        transactionHash={transactionHash}
-        showStatus
-      />
       <div className="pt-14">{Step()}</div>
     </div>
   )
