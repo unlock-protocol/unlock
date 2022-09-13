@@ -487,6 +487,7 @@ export const checkoutMachine = createMachine(
           messageToSign: undefined,
           recipients: [],
           mint: undefined,
+          renewed: undefined,
           skipQuantity: false,
         } as CheckoutMachineContext
       }),
@@ -570,6 +571,7 @@ export const checkoutMachine = createMachine(
           },
           quantity: 1,
           recipients: [],
+          renewed: undefined,
           skipQuantity: false,
         } as CheckoutMachineContext
       }),

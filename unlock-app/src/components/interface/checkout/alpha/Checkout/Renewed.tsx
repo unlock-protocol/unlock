@@ -130,7 +130,7 @@ export function Renewed({
         service={checkoutService}
         items={stepItems}
       />
-      <main className="h-full px-6 py-2 overflow-auto">
+      <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="flex flex-col items-center justify-center h-full space-y-2">
           <TransactionAnimation status={renewStatus} />
           <p className="text-lg font-bold text-brand-ui-primary">

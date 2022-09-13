@@ -52,22 +52,15 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     name: 'metadata',
     control,
   })
-  const { isLoading: isMembershipsLoading, data: memberships } = useQuery(
-    ['memberships', account, JSON.stringify(paywallConfig)],
+  const { isLoading: isMembershipsLoading, data: isMember } = useQuery(
+    ['isMember', account, lock],
     async () => {
-      const memberships = await Promise.all(
-        Object.entries(paywallConfig.locks).map(async ([lock, { network }]) => {
-          const valid = await web3Service.getHasValidKey(
-            lock,
-            account!,
-            network || paywallConfig.network || 1
-          )
-          if (valid) {
-            return lock
-          }
-        })
+      const valid = await web3Service.getHasValidKey(
+        lock!.address,
+        account!,
+        lock!.network
       )
-      return memberships.filter((item) => item)
+      return valid
     },
     {
       enabled: !!account,
@@ -80,23 +73,19 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       return getNameOrAddressForAddress(account!)
     },
     {
-      refetchInterval: false,
-      refetchOnMount: false,
       enabled: !!account,
     }
   )
 
-  const existingMember = !!memberships?.includes(lock!.address)
-
   const [hideFirstRecipient, setHideFirstRecipient] = useState<boolean>(
-    !existingMember
+    !isMember
   )
 
   useEffect(() => {
     if (quantity > fields.length && !isMembershipsLoading) {
       const fieldsRequired = quantity - fields.length
       Array.from({ length: fieldsRequired }).map((_, index) => {
-        const addAccountAddress = !index && !existingMember
+        const addAccountAddress = !index && !isMember
         const recipient = addAccountAddress
           ? { recipient: account }
           : { recipient: '' }
@@ -116,7 +105,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     fields,
     append,
     remove,
-    existingMember,
+    isMember,
     isMembershipsLoading,
   ])
 

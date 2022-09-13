@@ -17,6 +17,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { LabeledItem } from '../LabeledItem'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { Pricing } from '../Lock'
 
 interface Props {
   injectedProvider: unknown
@@ -85,100 +86,89 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
     <Fragment>
       <Stepper position={2} service={checkoutService} items={stepItems} />
       <main className="h-full p-6 space-y-2 overflow-auto">
-        <div className="flex items-start justify-between">
-          <h3 className="text-xl font-bold"> {lock?.name}</h3>
-          {!isLoading ? (
-            <div className="text-right grid min-h-[3rem]">
-              {fiatPricing.creditCardEnabled ? (
-                <>
-                  {!!fiatPrice && (
-                    <span className="font-semibold">
-                      ${(fiatPrice / 100).toFixed(2)}
-                    </span>
-                  )}
-                  <span>{formattedData.formattedKeyPrice} </span>
-                </>
-              ) : (
-                <>
-                  <span className="font-semibold">
-                    {formattedData.formattedKeyPrice}
-                  </span>
-                  {!!fiatPrice && <span>${(fiatPrice / 100).toFixed(2)}</span>}
-                </>
-              )}
-            </div>
-          ) : (
-            <QuantityPlaceholder />
-          )}
-        </div>
-        <div className="w-full border-t"></div>
-        <div className="flex justify-between w-full pt-2 mt-2">
-          {!isLoading ? (
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-4">
-                <LabeledItem
-                  label="Duration"
-                  icon={DurationIcon}
-                  value={formattedData.formattedDuration}
-                />
-                <LabeledItem
-                  label="Quantity"
-                  icon={QuantityIcon}
-                  value={
-                    formattedData.isSoldOut
-                      ? 'Sold out'
-                      : formattedData.formattedKeysAvailable
-                  }
+        <div className="space-y-6">
+          <div className="flex items-start justify-between">
+            <h3 className="text-xl font-bold"> {lock?.name}</h3>
+            {!isLoading ? (
+              <div className="grid text-right">
+                <Pricing
+                  keyPrice={formattedData.formattedKeyPrice}
+                  usdPrice={formattedData.convertedKeyPrice}
+                  isCardEnabled={formattedData.cardEnabled}
                 />
               </div>
-              <a
-                href={config.networks[lock!.network].explorer.urls.address(
-                  lock!.address
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-              >
-                View Contract <Icon icon={ExternalLinkIcon} size="small" />
-              </a>
+            ) : (
+              <QuantityPlaceholder />
+            )}
+          </div>
+          <div className="flex justify-between w-full">
+            {!isLoading ? (
+              <div className="space-y-2">
+                <div className="flex flex-wrap items-center gap-4">
+                  <LabeledItem
+                    label="Duration"
+                    icon={DurationIcon}
+                    value={formattedData.formattedDuration}
+                  />
+                  <LabeledItem
+                    label="Quantity"
+                    icon={QuantityIcon}
+                    value={
+                      formattedData.isSoldOut
+                        ? 'Sold out'
+                        : formattedData.formattedKeysAvailable
+                    }
+                  />
+                </div>
+                <a
+                  href={config.networks[lock!.network].explorer.urls.address(
+                    lock!.address
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+                >
+                  View Contract <Icon icon={ExternalLinkIcon} size="small" />
+                </a>
+              </div>
+            ) : (
+              <div className="py-1.5 space-y-2 items-center">
+                <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
+                <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
+              </div>
+            )}
+            <div>
+              <input
+                aria-label="Quantity"
+                onChange={(event) => {
+                  event.preventDefault()
+                  const count = event.target.value.replace(/\D/, '')
+                  const countInt = parseInt(count, 10)
+                  const maxAllowed = countInt > maxRecipients
+                  const minAllowed = countInt < minRecipients
+
+                  if (maxAllowed) {
+                    ToastHelper.error(
+                      `You cannot purchase more than ${paywallConfig.maxRecipients} memberships at once`
+                    )
+                    return setQuantityInput(maxRecipients!.toString())
+                  }
+
+                  if (minAllowed) {
+                    ToastHelper.error(
+                      `You cannot purchase less than ${paywallConfig.minRecipients} memberships at once`
+                    )
+                    return setQuantityInput(minRecipients!.toString())
+                  }
+
+                  setQuantityInput(count)
+                }}
+                pattern="[0-9]{0,2}"
+                value={quantityInput}
+                type="text"
+                className="w-16 text-sm border-2 border-gray-300 rounded-lg focus:ring-0 focus:border-brand-ui-primary"
+              ></input>
             </div>
-          ) : (
-            <div className="py-1.5 space-y-2 items-center">
-              <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
-              <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
-            </div>
-          )}
-          <div>
-            <input
-              aria-label="Quantity"
-              onChange={(event) => {
-                event.preventDefault()
-                const count = event.target.value.replace(/\D/, '')
-                const countInt = parseInt(count, 10)
-                const maxAllowed = countInt > maxRecipients
-                const minAllowed = countInt < minRecipients
-
-                if (maxAllowed) {
-                  ToastHelper.error(
-                    `You cannot purchase more than ${paywallConfig.maxRecipients} memberships at once`
-                  )
-                  return setQuantityInput(maxRecipients!.toString())
-                }
-
-                if (minAllowed) {
-                  ToastHelper.error(
-                    `You cannot purchase less than ${paywallConfig.minRecipients} memberships at once`
-                  )
-                  return setQuantityInput(minRecipients!.toString())
-                }
-
-                setQuantityInput(count)
-              }}
-              pattern="[0-9]{0,2}"
-              value={quantityInput}
-              type="text"
-              className="w-16 text-sm border-2 border-gray-300 rounded-lg focus:ring-0 focus:border-brand-ui-primary"
-            ></input>
           </div>
         </div>
       </main>

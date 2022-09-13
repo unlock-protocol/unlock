@@ -112,10 +112,13 @@ export function Select({ checkoutService, injectedProvider }: Props) {
               web3Service.balanceOf(lockAddress, account!, lockNetwork),
               web3Service.totalKeys(lockAddress, account!, lockNetwork),
             ])
+            // if balance is 0 but total number of keys is non zero. We can assume some have expired.
+            const expired = balance <= 0 && total > 0
+            const member = balance > 0
             return {
               lock: lockAddress,
-              balance,
-              total,
+              expired,
+              member,
               network: lockNetwork,
             }
           }
@@ -132,19 +135,14 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const isNetworkSwitchRequired =
     lockNetwork && lock?.network !== network && !isUnlockAccount
 
-  const existingMember = !!memberships?.find(
-    (item) => item.balance > 0 && item.lock === lock?.address
-  )
-
-  const expiredMember = !!memberships?.find(
-    (item) => item.total > 0 && item.lock === lock?.address && item.balance <= 0
-  )
+  const membership = memberships?.find((item) => item.lock === lock?.address)
 
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
+    !lock ||
     // if locks are sold out and the user is not an existing member of the lock
-    (lock?.isSoldOut && !existingMember)
+    (lock?.isSoldOut && !(membership?.member || membership?.expired))
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -318,10 +316,12 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   send({
                     type: 'SELECT_LOCK',
                     lock,
-                    existingMember,
+                    existingMember: !!membership?.member,
                     skipQuantity,
                     // unlock account are unable to renew
-                    expiredMember: isUnlockAccount ? false : expiredMember,
+                    expiredMember: isUnlockAccount
+                      ? false
+                      : !!membership?.expired,
                   })
                 }}
               >

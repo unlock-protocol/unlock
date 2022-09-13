@@ -163,50 +163,52 @@ export function Renew({
   return (
     <Fragment>
       <Stepper position={2} service={checkoutService} items={stepItems} />
-      <main className="h-full px-6 py-2 space-y-2 overflow-auto">
-        <div className="flex items-start justify-between">
-          <h3 className="text-xl font-bold">{lockName}</h3>
+      <main className="h-full p-6 space-y-2 overflow-auto">
+        <div className="space-y-6">
+          <div className="flex items-start justify-between">
+            <h3 className="text-xl font-bold">{lockName}</h3>
+            {!isFiatPricingLoading ? (
+              <div className="grid">
+                <Pricing
+                  keyPrice={formattedData.formattedKeyPrice}
+                  usdPrice={formattedData.convertedKeyPrice}
+                  isCardEnabled={formattedData.cardEnabled}
+                />
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-2">
+                <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+                <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+              </div>
+            )}
+          </div>
           {!isFiatPricingLoading ? (
-            <div className="grid">
-              <Pricing
-                keyPrice={formattedData.formattedKeyPrice}
-                usdPrice={formattedData.convertedKeyPrice}
-                isCardEnabled={formattedData.cardEnabled}
-              />
+            <div className="space-y-2">
+              <ul className="flex items-center gap-4 text-sm">
+                <LabeledItem
+                  label="Duration"
+                  icon={DurationIcon}
+                  value={formattedData.formattedDuration}
+                />
+              </ul>
+              <a
+                href={config.networks[lockNetwork].explorer.urls.address(
+                  lockAddress
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+              >
+                View Contract <Icon icon={ExternalLinkIcon} size="small" />
+              </a>
             </div>
           ) : (
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
-              <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div className="py-1.5 space-y-2 items-center">
+              <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
+              <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
             </div>
           )}
         </div>
-        {!isFiatPricingLoading ? (
-          <div className="py-2 space-y-1">
-            <ul className="flex items-center gap-4 text-sm">
-              <LabeledItem
-                label="Duration"
-                icon={DurationIcon}
-                value={formattedData.formattedDuration}
-              />
-            </ul>
-            <a
-              href={config.networks[lockNetwork].explorer.urls.address(
-                lockAddress
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-            >
-              View Contract <Icon icon={ExternalLinkIcon} size="small" />
-            </a>
-          </div>
-        ) : (
-          <div className="py-1.5 space-y-2 items-center">
-            <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
-            <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
-          </div>
-        )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
