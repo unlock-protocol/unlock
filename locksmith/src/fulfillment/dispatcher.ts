@@ -162,18 +162,20 @@ export default class Dispatcher {
 
     await walletService.connect(provider, walletWithProvider)
 
-    // get lock
-    const lock = await walletService.getLockContract(lockAddress)
-
     // TODO: use team multisig here (based on network config) instead of purchaser address!
     const referrer = walletWithProvider.address
 
-    // send tx with custom gas
+    // send tx with custom gas (Polygon estimates are too often wrong...)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
-    return await lock.renewMembershipFor(keyId, referrer, {
-      maxFeePerGas,
-      maxPriorityFeePerGas,
-    })
+
+    return walletService.renewMembershipFor(
+      {
+        lockAddress,
+        referrer,
+        tokenId: keyId,
+      },
+      { maxFeePerGas, maxPriorityFeePerGas }
+    )
   }
 
   /**

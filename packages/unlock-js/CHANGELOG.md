@@ -1,5 +1,9 @@
 # Changes
 
+# 0.26.8
+
+- add support for `renewMembershipFor`
+
 # 0.26.7
 
 - add support for `keysAvailable`
