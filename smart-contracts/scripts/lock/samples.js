@@ -39,23 +39,45 @@ async function main({
     const value =
       keyPrice.toString() === '0' ? 0 : keyPrice.mul(maxNumberOfKeys)
 
-    const tx = await lock.purchase(
-      [],
-      purchasers.map(({ address }) => address),
-      purchasers.map(() => web3.utils.padLeft(0, 40)),
-      purchasers.map(() => web3.utils.padLeft(0, 40)),
-      purchasers.map(() => []),
-      { value }
-    )
+    // multiple purchases was introduced in v11
+    if ((await lock.publicLockVersion()) <= 10) {
+      const tx = await lock.purchase(
+        [],
+        purchasers.map(({ address }) => address),
+        purchasers.map(() => web3.utils.padLeft(0, 40)),
+        purchasers.map(() => web3.utils.padLeft(0, 40)),
+        purchasers.map(() => []),
+        { value }
+      )
 
-    // get token ids
-    const { events } = await tx.wait()
-    events
-      .filter((v) => v.event === 'Transfer')
-      .forEach(({ args: { to, tokenId } }) => {
-        // eslint-disable-next-line no-console
-        console.log(`LOCK SAMPLES > key (${tokenId}) purchased by ${to}`)
-      })
+      // get token ids
+      const { events } = await tx.wait()
+      events
+        .filter((v) => v.event === 'Transfer')
+        .forEach(({ args: { to, tokenId } }) => {
+          // eslint-disable-next-line no-console
+          console.log(`LOCK SAMPLES > key (${tokenId}) purchased by ${to}`)
+        })
+    } else {
+      const txs = await Promise.all(
+        purchasers.map((purchaser) =>
+          lock
+            .connect(purchaser)
+            .purchase(
+              keyPrice,
+              purchaser.address,
+              web3.utils.padLeft(0, 40),
+              web3.utils.padLeft(0, 40),
+              [],
+              { value: keyPrice }
+            )
+        )
+      )
+      const purchases = await Promise.all(txs.map((tx) => tx.wait()))
+      purchases.map(({ events }) =>
+        events.find(({ event }) => event === 'Transfer')
+      )
+    }
   }
 }
 
