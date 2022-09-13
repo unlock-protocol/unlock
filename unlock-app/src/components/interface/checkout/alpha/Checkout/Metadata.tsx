@@ -55,12 +55,12 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   const { isLoading: isMemberLoading, data: isMember } = useQuery(
     ['isMember', account, lock],
     async () => {
-      const valid = await web3Service.getHasValidKey(
+      const total = await web3Service.totalKeys(
         lock!.address,
         account!,
         lock!.network
       )
-      return valid
+      return total > 0
     },
     {
       enabled: !!account,
