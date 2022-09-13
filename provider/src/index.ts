@@ -11,7 +11,6 @@ const supportedNetworks = {
     'https://cool-empty-bird.xdai.quiknode.pro/4edba942fb43c718f24480484684e907fe3fe1d3/',
   '137':
     'https://snowy-weathered-waterfall.matic.quiknode.pro/5b11a0413a62a295070c0dfb25637d5f8c591aba/',
-  '42220': 'https://forno.celo.org',
   '42161':
     'https://arb-mainnet.g.alchemy.com/v2/vwvJn-FammE6EtHhy30U40z3OwPYBjCM',
   '42220':
