@@ -8,11 +8,15 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
 import { KeyPrice } from './KeyPrice'
+import Lottie from 'lottie-react'
+import deployedAnimation from '~/animations/deployed.json'
+import deployingAnimation from '~/animations/deploying.json'
 
 interface DeployStatusProps {
   title: string
   description: string
   status: string
+  backText: string
 }
 
 interface CreateLockFormSummaryProps {
@@ -23,22 +27,50 @@ interface CreateLockFormSummaryProps {
 }
 
 type DeployStatus = 'progress' | 'deployed' | 'txError'
+
 const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
   progress: {
     title: 'This will take few minutes...',
     description: 'Feel free to wait in this screen or return to main page.',
     status: 'Progressing...',
+    backText: 'Return to Lock list',
   },
   deployed: {
     title: '🚀​ Lock is successfully deployed',
     description: 'Redirecting you back to main page...',
     status: 'Completed!',
+    backText: 'Return to Lock list',
   },
   txError: {
     title: 'Something went wrong...',
     description: 'Please try again.',
     status: 'Not completed.',
+    backText: 'Close',
   },
+}
+
+function AnimationContent({ status }: { status: DeployStatus }) {
+  const animationClass = `h-96`
+  switch (status) {
+    case 'progress':
+      return (
+        <Lottie className={animationClass} animationData={deployingAnimation} />
+      )
+    case 'deployed':
+      return (
+        <Lottie
+          className={animationClass}
+          animationData={deployedAnimation}
+          loop={false}
+        />
+      )
+    case 'txError': {
+      // todo: add error animation when available
+      return <Lottie className={animationClass} animationData={null} />
+    }
+    default:
+      return null
+  }
 }
 
 export const CreateLockFormSummary = ({
@@ -79,7 +111,6 @@ export const CreateLockFormSummary = ({
     }
   )
 
-  const isDeploying = confirmations < requiredConfirmations && !isError
   const isDeployed = confirmations >= requiredConfirmations && !isError
 
   const currentStatus: DeployStatus = isError
@@ -88,7 +119,8 @@ export const CreateLockFormSummary = ({
     ? 'deployed'
     : 'progress'
 
-  const { title, description, status } = DEPLOY_STATUS_MAPPING[currentStatus]
+  const { title, description, status, backText } =
+    DEPLOY_STATUS_MAPPING[currentStatus]
   const symbol = formData?.symbol || baseCurrencySymbol
 
   useEffect(() => {
@@ -104,34 +136,15 @@ export const CreateLockFormSummary = ({
     <div>
       <div
         className={`${
-          showStatus ? 'grid-cols-2' : 'grid-cols-1'
-        } grid border border-gray-400 divide-x divide-gray-400 rounded-xl`}
+          showStatus
+            ? 'grid-rows-2 md:grid-cols-2 md:grid-rows-1'
+            : 'md:grid-cols-1'
+        } grid border border-gray-400 divide-y md:divide-x md:divide-y-0 divide-gray-400 rounded-xl`}
       >
         {showStatus && (
           <div className="px-8 py-10 ">
             <div data-testid="status" className="flex flex-col gap-8 r">
-              {isDeploying && (
-                <img
-                  className="object-contain animate-pulse max-h-96"
-                  src="/images/svg/create-lock/deploying.svg"
-                  alt="Deploying"
-                />
-              )}
-              {isDeployed && (
-                <img
-                  className="object-contain max-h-96"
-                  src="/images/svg/create-lock/deployed.svg"
-                  alt="Deploying"
-                />
-              )}
-              {/** todo: replace with error image when available */}
-              {isError && (
-                <img
-                  className="object-contain animate-pulse max-h-96"
-                  src="/images/svg/create-lock/deploying.svg"
-                  alt="Error"
-                />
-              )}
+              {status && <AnimationContent status={currentStatus} />}
             </div>
             <div className="grid grid-cols-2">
               <div className="flex flex-col">
@@ -180,12 +193,12 @@ export const CreateLockFormSummary = ({
         </div>
       </div>
       {showStatus && (
-        <div className="flex flex-col items-center mt-12">
+        <div className="flex flex-col items-center my-12 text-center">
           <h3 className="block mb-4 text-4xl font-bold">{title}</h3>
           <span className="mb-4 font-base">{description}</span>
           <Link href={'/dashboard'}>
             <Button className="w-full max-w-lg" variant="outlined-primary">
-              Return to Lock list
+              {backText}
             </Button>
           </Link>
         </div>

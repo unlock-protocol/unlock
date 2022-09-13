@@ -1,5 +1,5 @@
 import { Button } from '@unlock-protocol/ui'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useMutation } from 'react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
@@ -7,6 +7,8 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import useLocks from '~/hooks/useLocks'
 import { CreateLockForm, LockFormProps } from './elements/CreateLockForm'
 import { CreateLockFormSummary } from './elements/CreateLockFormSummary'
+import { BsArrowLeft as ArrowBack } from 'react-icons/bs'
+import { useRouter } from 'next/router'
 
 export type Step = 'data' | 'summary' | 'deploy'
 
@@ -28,12 +30,27 @@ interface CreateLockProps {
   onSubmit: (data: LockFormProps) => void
   defaultValues: LockFormProps
 }
-
-interface CreateLockStepsProps {
-  onStepChange: (step: Step) => void
+interface StatusMappingProps {
+  title: string
+  backUrl: Step | null
 }
 
-export const CreateLockSteps = ({ onStepChange }: CreateLockStepsProps) => {
+const TITLE_BY_STATUS_MAPPING: Record<Step, StatusMappingProps> = {
+  data: {
+    title: 'Creating Lock',
+    backUrl: null,
+  },
+  summary: {
+    title: 'Creating Lock',
+    backUrl: 'data',
+  },
+  deploy: {
+    title: 'Deploying Lock',
+    backUrl: null,
+  },
+}
+
+export const CreateLockSteps = () => {
   const { account: owner, network } = useAuth()
   const [step, setStep] = useState<Step>('data')
   const [values, setValues] = useState<LockFormProps | undefined>(undefined)
@@ -41,6 +58,8 @@ export const CreateLockSteps = ({ onStepChange }: CreateLockStepsProps) => {
   const [transactionHash, setTransactionHash] = useState<string | undefined>(
     undefined
   )
+  const { title, backUrl } = TITLE_BY_STATUS_MAPPING[step]
+  const router = useRouter()
 
   const changeStep = (step: Step, data?: LockFormProps) => {
     setStep(step)
@@ -54,12 +73,6 @@ export const CreateLockSteps = ({ onStepChange }: CreateLockStepsProps) => {
   const onSummarySubmit = async (data: LockFormProps) => {
     await createLockMutation.mutateAsync(data)
   }
-
-  useEffect(() => {
-    if (typeof onStepChange === 'function') {
-      onStepChange(step)
-    }
-  }, [onStepChange, step])
 
   const createLockPromise = async (data: LockCreatePayloadProps) => {
     return await addLock(data, (_: any, lock: any) => {
@@ -102,37 +115,61 @@ export const CreateLockSteps = ({ onStepChange }: CreateLockStepsProps) => {
     }
   )
 
-  switch (step) {
-    case 'data': {
-      return <CreateLock onSubmit={onFormSubmit} defaultValues={values!} />
-    }
-
-    case 'summary': {
-      return (
-        <CreateLockSummary
-          setStep={setStep}
-          formData={values!}
-          network={network!}
-          onSubmit={onSummarySubmit}
-        />
-      )
-    }
-
-    case 'deploy': {
-      return (
-        <CreateLockFormSummary
-          formData={values!}
-          network={network!}
-          transactionHash={transactionHash}
-          showStatus
-        />
-      )
-    }
-
-    default: {
-      return null
+  const onBack = () => {
+    if (!backUrl) {
+      router?.back()
+    } else {
+      setStep(backUrl)
     }
   }
+
+  const Step = () => {
+    switch (step) {
+      case 'data': {
+        return <CreateLock onSubmit={onFormSubmit} defaultValues={values!} />
+      }
+
+      case 'summary': {
+        return (
+          <CreateLockSummary
+            setStep={setStep}
+            formData={values!}
+            network={network!}
+            onSubmit={onSummarySubmit}
+          />
+        )
+      }
+
+      case 'deploy': {
+        return (
+          <CreateLockFormSummary
+            formData={values!}
+            network={network!}
+            transactionHash={transactionHash}
+            showStatus
+          />
+        )
+      }
+
+      default: {
+        return null
+      }
+    }
+  }
+
+  const showBackUrl = step !== 'deploy'
+
+  return (
+    <div>
+      <div className="grid items-center grid-cols-3">
+        {showBackUrl && (
+          <ArrowBack size={20} className="cursor-pointer" onClick={onBack} />
+        )}
+        <h1 className="text-xl font-semibold text-center">{title}</h1>
+      </div>
+      <div className="pt-14">{Step()}</div>
+    </div>
+  )
 }
 
 const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
