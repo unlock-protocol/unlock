@@ -190,7 +190,7 @@ export function Confirm({
         return
       }
       const keyPrices: string[] = new Array(recipients!.length).fill(keyPrice)
-      const referers: string[] | undefined = paywallConfig.referrer
+      const referrers: string[] | undefined = paywallConfig.referrer
         ? new Array(recipients!.length).fill(paywallConfig.referrer)
         : undefined
       await walletService?.purchaseKeys(
@@ -200,10 +200,10 @@ export function Confirm({
           owners: recipients!,
           data: password?.length ? password : captcha,
           recurringPayments,
-          referers,
+          referrers,
         },
         (error, hash) => {
-          setIsConfirming(true)
+          setIsConfirming(false)
           if (error) {
             send({
               type: 'CONFIRM_MINT',
@@ -390,7 +390,7 @@ export function Confirm({
   return (
     <Fragment>
       <Stepper position={7} service={checkoutService} items={stepItems} />
-      <main className="h-full px-6 py-2 space-y-2 overflow-auto">
+      <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="flex items-start justify-between">
           <h3 className="text-xl font-bold">
             {quantity}X {lockName}
@@ -425,9 +425,8 @@ export function Confirm({
             </div>
           )}
         </div>
-        <div className="w-full border-t"></div>
         {!isLoading ? (
-          <div className="py-2 space-y-1">
+          <div className="space-y-2">
             <ul className="flex items-center gap-4 text-sm">
               <LabeledItem
                 label="Duration"

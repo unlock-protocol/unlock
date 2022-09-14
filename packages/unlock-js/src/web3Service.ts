@@ -437,13 +437,13 @@ export default class Web3Service extends UnlockService {
       throw new Error('Lock version not supported')
     }
 
-    return ethers.BigNumber.from(
-      await version.totalKeys.bind(this)(
-        lockAddress,
-        owner,
-        this.providerForNetwork(network)
-      )
-    ).toNumber()
+    const count = await version.totalKeys.bind(this)(
+      lockAddress,
+      owner,
+      this.providerForNetwork(network)
+    )
+
+    return count.toNumber()
   }
 
   /**
@@ -481,5 +481,32 @@ export default class Web3Service extends UnlockService {
     const totalSupply = await lockContract.totalSupply()
     const maxNumberOfKeys = await lockContract.maxNumberOfKeys()
     return maxNumberOfKeys.sub(totalSupply)
+  }
+
+  // For <= v10, it returns the total number of keys.
+  // Starting with v11, it returns the total number of valid
+  async balanceOf(lockAddress: string, owner: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const balance = await lockContract.balanceOf(owner)
+    return balance.toNumber()
+  }
+
+  // Return key ID of owner at the specified index.
+  // If a owner has multiple keys, you can iterate over all of them starting from 0 as index until you hit a zero value which implies no more.
+  async tokenOfOwnerByIndex(
+    lockAddress: string,
+    owner: string,
+    index: number,
+    network: number
+  ) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const id = await lockContract.tokenOfOwnerByIndex(owner, index)
+    return id.toNumber()
   }
 }
