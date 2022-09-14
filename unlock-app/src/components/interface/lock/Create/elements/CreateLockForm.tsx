@@ -122,12 +122,14 @@ export const CreateLockForm = ({
 
   const symbol = lockTickerSymbol(networks[network!], selectedCurrency)
 
-  const networkOptions = Object.values(networks).map(({ name, id }: any) => {
-    return {
-      label: name,
-      value: id,
+  const networkOptions = Object.values(networks || {})?.map(
+    ({ name, id }: any) => {
+      return {
+        label: name,
+        value: id,
+      }
     }
-  })
+  )
 
   const onChangeNetwork = (network: number | string) => {
     changeNetwork(networks[parseInt(`${network}`)])
