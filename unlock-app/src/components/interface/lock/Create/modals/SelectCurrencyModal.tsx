@@ -15,6 +15,7 @@ interface SelectCurrencyModalProps {
   setIsOpen: (status: boolean) => void
   network: number
   onSelect: (token: Token) => void
+  defaultCurrency: string
 }
 
 export const SelectCurrencyModal = ({
@@ -22,14 +23,22 @@ export const SelectCurrencyModal = ({
   setIsOpen,
   network,
   onSelect,
+  defaultCurrency,
 }: SelectCurrencyModalProps) => {
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
   const [contractAddress, setContractAddress] = useState<string>('')
   const [query, setQuery] = useState<string>('')
   const queryValue = useDebounce<string>(query)
-  const { tokens: tokenItems } = networks[network!] || {}
-  const [tokens, setTokens] = useState(tokenItems)
+  const { tokens: tokenItems = [] } = networks[network!] || {}
+  const [tokens, setTokens] = useState<Token[]>([])
+
+  useEffect(() => {
+    setTokens([
+      { name: defaultCurrency, symbol: defaultCurrency },
+      ...tokenItems,
+    ])
+  }, [defaultCurrency, tokenItems, network])
 
   const onSelectToken = (token: Token) => {
     if (typeof onSelect === 'function') {
@@ -56,8 +65,8 @@ export const SelectCurrencyModal = ({
 
   const tokensFiltered = tokens?.filter(
     (token: Token) =>
-      token.name?.toLowerCase().includes(queryValue?.toLowerCase()) ||
-      token.symbol?.toLowerCase().includes(queryValue?.toLowerCase())
+      token?.name?.toLowerCase().includes(queryValue?.toLowerCase()) ||
+      token?.symbol?.toLowerCase().includes(queryValue?.toLowerCase())
   )
 
   const getContractTokenSymbol = async () => {
@@ -70,17 +79,30 @@ export const SelectCurrencyModal = ({
       async () => getContractTokenSymbol()
     )
 
-  const onImport = () => {
+  const addToken = ({
+    name,
+    symbol,
+    address = undefined,
+    decimals = 18,
+  }: Partial<Token>) => {
     const currentList = tokens || []
     setTokens([
       {
-        name: contractTokenSymbol || addressMinify(contractAddress),
-        symbol: contractTokenSymbol || addressMinify(contractAddress),
-        address: contractAddress,
-        decimals: 18,
+        name: name!,
+        symbol: symbol!,
+        address: address!,
+        decimals,
       },
       ...currentList,
     ])
+  }
+
+  const onImport = () => {
+    addToken({
+      name: contractTokenSymbol || addressMinify(contractAddress),
+      symbol: contractTokenSymbol || addressMinify(contractAddress),
+      address: contractAddress,
+    })
     setQuery('')
     setContractAddress('')
   }
@@ -165,7 +187,9 @@ export const SelectCurrencyModal = ({
                             className="inline-flex items-center gap-3 cursor-pointer"
                           >
                             <CryptoIcon symbol={token.symbol} />
-                            <span className="font-bold">{token.symbol}</span>
+                            <span className="font-bold">
+                              {token.symbol.toUpperCase()}
+                            </span>
                           </span>
                         </div>
                       )
