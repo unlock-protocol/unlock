@@ -10,7 +10,7 @@ export interface Option {
 interface SelectProps {
   label?: string
   options: Option[]
-  onChange?: (option: Option) => void
+  onChange?: (value: string | number) => void
   defaultValue?: string | number
 }
 
@@ -26,7 +26,7 @@ export const Select = ({
     const currentItem = options?.find((option) => option.value == value)
     setSelected(currentItem || null)
     if (currentItem && typeof onChange === 'function') {
-      onChange(currentItem)
+      onChange(currentItem?.value)
     }
   }
 
