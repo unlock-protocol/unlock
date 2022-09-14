@@ -25,6 +25,7 @@ function svgTemplate(
       title: ''
     }
 
+    export type { SVGRProps }
     ${exports}
   `
 }

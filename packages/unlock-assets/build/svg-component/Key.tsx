@@ -29,4 +29,5 @@ SvgKey.propTypes = {
 SvgKey.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgKey

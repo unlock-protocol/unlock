@@ -34,4 +34,5 @@ SvgFirebase.propTypes = {
 SvgFirebase.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgFirebase

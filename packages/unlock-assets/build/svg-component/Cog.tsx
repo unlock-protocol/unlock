@@ -28,4 +28,5 @@ SvgCog.propTypes = {
 SvgCog.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgCog

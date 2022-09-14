@@ -27,4 +27,5 @@ SvgDiscord.propTypes = {
 SvgDiscord.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgDiscord

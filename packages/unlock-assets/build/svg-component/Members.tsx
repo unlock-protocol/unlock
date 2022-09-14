@@ -27,4 +27,5 @@ SvgMembers.propTypes = {
 SvgMembers.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgMembers

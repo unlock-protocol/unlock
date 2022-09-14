@@ -39,4 +39,5 @@ SvgWalletConnect.propTypes = {
 SvgWalletConnect.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgWalletConnect

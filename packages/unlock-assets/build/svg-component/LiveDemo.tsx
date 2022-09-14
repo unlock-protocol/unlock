@@ -43,4 +43,5 @@ SvgLiveDemo.propTypes = {
 SvgLiveDemo.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgLiveDemo

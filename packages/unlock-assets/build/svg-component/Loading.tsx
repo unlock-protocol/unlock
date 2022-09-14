@@ -121,4 +121,5 @@ SvgLoading.propTypes = {
 SvgLoading.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgLoading

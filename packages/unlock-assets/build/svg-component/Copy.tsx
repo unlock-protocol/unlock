@@ -27,4 +27,5 @@ SvgCopy.propTypes = {
 SvgCopy.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgCopy

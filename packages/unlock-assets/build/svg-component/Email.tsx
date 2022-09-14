@@ -27,4 +27,5 @@ SvgEmail.propTypes = {
 SvgEmail.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgEmail

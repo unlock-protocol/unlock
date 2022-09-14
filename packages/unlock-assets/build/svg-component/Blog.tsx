@@ -37,4 +37,5 @@ SvgBlog.propTypes = {
 SvgBlog.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgBlog

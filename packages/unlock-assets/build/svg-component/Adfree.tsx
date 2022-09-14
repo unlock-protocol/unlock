@@ -28,4 +28,5 @@ SvgAdfree.propTypes = {
 SvgAdfree.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgAdfree

@@ -27,4 +27,5 @@ SvgEtherscan.propTypes = {
 SvgEtherscan.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgEtherscan

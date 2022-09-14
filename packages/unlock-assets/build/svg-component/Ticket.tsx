@@ -27,4 +27,5 @@ SvgTicket.propTypes = {
 SvgTicket.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgTicket

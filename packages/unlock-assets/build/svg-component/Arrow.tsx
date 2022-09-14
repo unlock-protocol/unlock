@@ -27,4 +27,5 @@ SvgArrow.propTypes = {
 SvgArrow.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgArrow

@@ -23,4 +23,5 @@ SvgPerson.propTypes = {
 SvgPerson.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgPerson

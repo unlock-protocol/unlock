@@ -27,4 +27,5 @@ SvgLockOpen.propTypes = {
 SvgLockOpen.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgLockOpen

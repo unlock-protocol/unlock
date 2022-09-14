@@ -28,4 +28,5 @@ SvgShopify.propTypes = {
 SvgShopify.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgShopify

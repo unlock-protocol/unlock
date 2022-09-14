@@ -23,4 +23,5 @@ SvgHeart.propTypes = {
 SvgHeart.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgHeart

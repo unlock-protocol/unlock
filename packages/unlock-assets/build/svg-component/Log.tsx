@@ -27,4 +27,5 @@ SvgLog.propTypes = {
 SvgLog.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgLog

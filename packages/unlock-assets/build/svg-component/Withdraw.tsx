@@ -27,4 +27,5 @@ SvgWithdraw.propTypes = {
 SvgWithdraw.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgWithdraw

@@ -23,4 +23,5 @@ SvgWallet.propTypes = {
 SvgWallet.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgWallet

@@ -40,4 +40,5 @@ SvgRocketLaunch.propTypes = {
 SvgRocketLaunch.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgRocketLaunch

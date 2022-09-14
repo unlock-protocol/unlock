@@ -27,4 +27,5 @@ SvgJobs.propTypes = {
 SvgJobs.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgJobs

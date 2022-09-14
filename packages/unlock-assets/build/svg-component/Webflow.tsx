@@ -28,4 +28,5 @@ SvgWebflow.propTypes = {
 SvgWebflow.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgWebflow

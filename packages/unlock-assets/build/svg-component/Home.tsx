@@ -28,4 +28,5 @@ SvgHome.propTypes = {
 SvgHome.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgHome

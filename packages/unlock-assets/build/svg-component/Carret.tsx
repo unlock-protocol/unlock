@@ -23,4 +23,5 @@ SvgCarret.propTypes = {
 SvgCarret.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgCarret

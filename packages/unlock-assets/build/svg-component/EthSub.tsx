@@ -23,4 +23,5 @@ SvgEthSub.propTypes = {
 SvgEthSub.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgEthSub

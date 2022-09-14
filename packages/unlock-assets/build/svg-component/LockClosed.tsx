@@ -27,4 +27,5 @@ SvgLockClosed.propTypes = {
 SvgLockClosed.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgLockClosed

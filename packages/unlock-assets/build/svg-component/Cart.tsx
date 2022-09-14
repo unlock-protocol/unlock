@@ -27,4 +27,5 @@ SvgCart.propTypes = {
 SvgCart.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgCart

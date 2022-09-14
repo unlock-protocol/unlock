@@ -32,4 +32,5 @@ SvgUnlockMonogram.propTypes = {
 SvgUnlockMonogram.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgUnlockMonogram

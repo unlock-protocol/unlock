@@ -28,4 +28,5 @@ SvgIdea.propTypes = {
 SvgIdea.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgIdea

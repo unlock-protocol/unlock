@@ -27,4 +27,5 @@ SvgHamburger.propTypes = {
 SvgHamburger.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgHamburger

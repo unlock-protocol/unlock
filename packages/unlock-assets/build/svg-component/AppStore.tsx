@@ -27,4 +27,5 @@ SvgAppStore.propTypes = {
 SvgAppStore.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgAppStore

@@ -29,4 +29,5 @@ SvgPreview.propTypes = {
 SvgPreview.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgPreview

@@ -4,12 +4,12 @@
   "description": "A module with all of the unlock assets (images...)",
   "author": "unlock inc",
   "license": "MIT",
-  "main": "dist/index.ts.js",
-  "module": "dist/index.ts.modern.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "source": "src/index.tsx",
   "scripts": {
     "svg-2-components": "svgr --typescript --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",
-    "build": "microbundle-crl --no-compress --format modern,cjs",
+    "build": "tsup src/index.tsx --dts --format esm,cjs",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "prepublish": "run-s build",
     "test": "run-s test:unit test:lint test:build",
@@ -50,7 +50,8 @@
     "react": "17.0.2",
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
-    "styled-components": "5.3.5"
+    "styled-components": "5.3.5",
+    "tsup": "6.2.1"
   },
   "files": [
     "dist"

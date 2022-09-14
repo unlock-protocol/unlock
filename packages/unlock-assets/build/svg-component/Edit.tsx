@@ -28,4 +28,5 @@ SvgEdit.propTypes = {
 SvgEdit.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgEdit

@@ -32,4 +32,5 @@ SvgAttention.propTypes = {
 SvgAttention.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgAttention

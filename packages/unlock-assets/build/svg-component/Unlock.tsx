@@ -28,4 +28,5 @@ SvgUnlock.propTypes = {
 SvgUnlock.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgUnlock

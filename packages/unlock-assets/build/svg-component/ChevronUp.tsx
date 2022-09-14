@@ -27,4 +27,5 @@ SvgChevronUp.propTypes = {
 SvgChevronUp.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgChevronUp

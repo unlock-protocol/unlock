@@ -49,4 +49,5 @@ SvgCoinbaseWallet.propTypes = {
 SvgCoinbaseWallet.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgCoinbaseWallet

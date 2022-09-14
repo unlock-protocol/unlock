@@ -32,4 +32,5 @@ SvgUnlockWordMark.propTypes = {
 SvgUnlockWordMark.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgUnlockWordMark

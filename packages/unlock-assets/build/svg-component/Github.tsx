@@ -23,4 +23,5 @@ SvgGithub.propTypes = {
 SvgGithub.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgGithub

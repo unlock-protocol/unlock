@@ -23,4 +23,5 @@ SvgBars.propTypes = {
 SvgBars.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgBars

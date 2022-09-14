@@ -27,4 +27,5 @@ SvgTelegram.propTypes = {
 SvgTelegram.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgTelegram

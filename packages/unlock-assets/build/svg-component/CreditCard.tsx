@@ -23,4 +23,5 @@ SvgCreditCard.propTypes = {
 SvgCreditCard.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgCreditCard

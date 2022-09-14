@@ -27,4 +27,5 @@ SvgTwitter.propTypes = {
 SvgTwitter.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgTwitter

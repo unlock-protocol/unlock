@@ -112,4 +112,5 @@ SvgMetamask.propTypes = {
 SvgMetamask.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgMetamask

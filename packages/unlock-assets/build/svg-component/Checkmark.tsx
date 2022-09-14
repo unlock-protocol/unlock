@@ -27,4 +27,5 @@ SvgCheckmark.propTypes = {
 SvgCheckmark.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgCheckmark

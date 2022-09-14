@@ -27,4 +27,5 @@ SvgCode.propTypes = {
 SvgCode.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgCode

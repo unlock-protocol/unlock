@@ -27,4 +27,5 @@ SvgDownload.propTypes = {
 SvgDownload.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgDownload

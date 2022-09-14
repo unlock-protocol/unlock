@@ -46,4 +46,5 @@ SvgQr.propTypes = {
 SvgQr.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgQr

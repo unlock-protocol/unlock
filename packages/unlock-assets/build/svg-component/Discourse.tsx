@@ -29,4 +29,5 @@ SvgDiscourse.propTypes = {
 SvgDiscourse.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgDiscourse

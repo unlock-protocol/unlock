@@ -71,4 +71,5 @@ SvgLoadingDots.propTypes = {
 SvgLoadingDots.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgLoadingDots

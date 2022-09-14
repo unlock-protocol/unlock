@@ -23,4 +23,5 @@ SvgDecentraland.propTypes = {
 SvgDecentraland.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgDecentraland

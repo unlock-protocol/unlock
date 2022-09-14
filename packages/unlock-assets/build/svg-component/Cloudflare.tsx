@@ -27,4 +27,5 @@ SvgCloudflare.propTypes = {
 SvgCloudflare.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgCloudflare

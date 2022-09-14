@@ -32,4 +32,5 @@ SvgInfo.propTypes = {
 SvgInfo.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgInfo

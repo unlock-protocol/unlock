@@ -28,4 +28,5 @@ SvgWordpress.propTypes = {
 SvgWordpress.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgWordpress

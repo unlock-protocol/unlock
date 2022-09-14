@@ -24,4 +24,5 @@ SvgLemniscate.propTypes = {
 SvgLemniscate.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgLemniscate

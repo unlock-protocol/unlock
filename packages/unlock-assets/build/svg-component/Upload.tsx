@@ -27,4 +27,5 @@ SvgUpload.propTypes = {
 SvgUpload.defaultProps = {
   title: '',
 }
+export type { SVGRProps }
 export default SvgUpload
