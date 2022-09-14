@@ -1,5 +1,6 @@
 import { Listbox } from '@headlessui/react'
 import { useState } from 'react'
+import { BsCheck as CheckIcon } from 'react-icons/bs'
 
 export interface Option {
   label: string
@@ -42,14 +43,19 @@ export const Select = ({
               <Listbox.Option
                 key={option.value}
                 value={option.value}
-                className="p-3 cursor-pointer hover:bg-gray-100"
+                className="cursor-pointer"
               >
                 {({ selected }) => (
-                  <>
+                  <div
+                    className={`${
+                      selected ? 'bg-gray-100' : ''
+                    } flex items-center justify-between p-3 hover:bg-gray-100`}
+                  >
                     <span className={selected ? 'font-bold' : ''}>
                       {option.label}
                     </span>
-                  </>
+                    {selected && <CheckIcon size={20} />}
+                  </div>
                 )}
               </Listbox.Option>
             )
