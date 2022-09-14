@@ -11,7 +11,7 @@ import { KeyPrice } from './KeyPrice'
 import Lottie from 'lottie-react'
 import deployedAnimation from '~/animations/deployed.json'
 import deployingAnimation from '~/animations/deploying.json'
-import deployError from '~/animations/deploy-error.json'
+import deployErrorAnimation from '~/animations/deploy-error.json'
 
 interface DeployStatusProps {
   title: string
@@ -69,7 +69,7 @@ function AnimationContent({ status }: { status: DeployStatus }) {
       return (
         <Lottie
           className={animationClass}
-          animationData={deployError}
+          animationData={deployErrorAnimation}
           loop={false}
         />
       )
