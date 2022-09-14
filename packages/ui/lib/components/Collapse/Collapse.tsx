@@ -14,13 +14,14 @@ export const Collapse = ({
   disabled = false,
   collapsed = false,
 }: CollapseProps) => {
-  const [isOpen, setIsOpen] = useState(collapsed)
+  const [isOpen, setIsOpen] = useState(false)
 
   const onCollapse = () => {
     if (disabled) return
     setIsOpen(!isOpen)
   }
 
+  const extend = collapsed || isOpen
   return (
     <div className="bg-white border border-gray-200 rounded-2xl">
       <div className="flex items-start gap-3 p-4">
@@ -42,7 +43,7 @@ export const Collapse = ({
         </div>
         <div className="w-full">{content}</div>
       </div>
-      {isOpen && <div className="p-6">{children}</div>}
+      {extend && <div className="p-6">{children}</div>}
     </div>
   )
 }
