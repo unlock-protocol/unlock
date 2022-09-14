@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Icon, Input } from '@unlock-protocol/ui'
+import { Button, Icon, Input, Select } from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { Controller, useForm } from 'react-hook-form'
 import { RadioGroup } from '@headlessui/react'
@@ -8,7 +8,6 @@ import {
   MdRadioButtonChecked as CheckedIcon,
 } from 'react-icons/md'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { NetworkSelection } from './NetworkSelection'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
@@ -56,7 +55,7 @@ export const CreateLockForm = ({
   defaultValues,
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
-  const { network, account } = useAuth()
+  const { network, account, changeNetwork } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
   const { getTokenBalance } = useAccount(account!, network!)
@@ -123,6 +122,18 @@ export const CreateLockForm = ({
 
   const symbol = lockTickerSymbol(networks[network!], selectedCurrency)
 
+  const networkOptions = Object.values(networks).map(({ name, id }: any) => {
+    return {
+      label: name,
+      value: id,
+    }
+  })
+
+  const onChangeNetwork = (network: number | string) => {
+    changeNetwork(networks[parseInt(`${network}`)])
+    setSelectedToken(null)
+  }
+
   return (
     <>
       <SelectCurrencyModal
@@ -140,7 +151,12 @@ export const CreateLockForm = ({
             className="flex flex-col w-full gap-10"
             onSubmit={handleSubmit(onHandleSubmit)}
           >
-            <NetworkSelection onChange={() => setSelectedToken(null)} />
+            <Select
+              label="Network:"
+              defaultValue={networks[network!].id}
+              options={networkOptions}
+              onChange={onChangeNetwork}
+            />
             <div className="relative">
               <Input
                 label="Name:"
