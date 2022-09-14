@@ -79,7 +79,7 @@ export const CreateLockSteps = () => {
       if (step !== 'deploy') {
         const [transactionHash] = Object.keys(lock?.transactions ?? {})
         changeStep('deploy', values)
-        setTransactionHash(transactionHash) // keep transaction hash to retrive transaction details
+        setTransactionHash(transactionHash) // keep transaction hash to retrieve transaction details
       }
     })
   }
