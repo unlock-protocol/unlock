@@ -7,19 +7,19 @@ export interface Option {
   value: string | number
 }
 
-interface SelectProps {
+interface SelectProps<T> {
   label?: string
   options: Option[]
   onChange?: (value: string | number) => void
-  defaultValue?: string | number
+  defaultValue?: T
 }
 
-export const Select = ({
+export const Select = <T extends unknown>({
   options,
   onChange,
   label = 'Select',
   defaultValue,
-}: SelectProps) => {
+}: SelectProps<T>) => {
   const [selected, setSelected] = useState<Option | null>(null)
 
   const onChangeOption = (value: Option['value']) => {
@@ -34,7 +34,7 @@ export const Select = ({
   useEffect(() => {
     if (!defaultValue) return
     const defaultSelection =
-      options?.find((option) => option.value == defaultValue) || null
+      options?.find((option) => option.value == `${defaultValue}`) || null
     setSelected(defaultSelection)
   }, [])
 
