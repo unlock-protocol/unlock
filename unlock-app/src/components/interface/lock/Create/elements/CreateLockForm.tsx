@@ -144,7 +144,7 @@ export const CreateLockForm = ({
             <NetworkSelection onChange={() => setSelectedToken(null)} />
             <div className="relative">
               <Input
-                label="Name"
+                label="Name:"
                 autoComplete="off"
                 placeholder="Lock Name"
                 {...register('name', {
@@ -161,7 +161,7 @@ export const CreateLockForm = ({
 
             <div>
               <label className="block px-1 mb-4 text-base" htmlFor="">
-                Memberships duration (days)
+                Memberships duration (days):
               </label>
               <Controller
                 control={control}
@@ -207,7 +207,7 @@ export const CreateLockForm = ({
                                     required: value !== true,
                                     min: 1,
                                   })}
-                                  placeholder="Enter quantity"
+                                  placeholder="Enter duration"
                                   type="number"
                                 />
                               </div>
@@ -228,7 +228,7 @@ export const CreateLockForm = ({
 
             <div>
               <label className="block px-1 mb-4 text-base" htmlFor="">
-                Number of memberships
+                Number of memberships:
               </label>
               <Controller
                 control={control}
@@ -267,7 +267,7 @@ export const CreateLockForm = ({
                             <Radio checked={checked} />
                             <div className="relative grow">
                               <Input
-                                placeholder="Enter duration"
+                                placeholder="Enter quantity"
                                 type="number"
                                 autoComplete="off"
                                 step={1}
@@ -293,7 +293,7 @@ export const CreateLockForm = ({
 
             <div>
               <label className="block px-1 mb-2 text-base" htmlFor="">
-                Currency & Price
+                Currency & Price:
               </label>
               <div className="grid grid-cols-2 gap-2 justify-items-stretch">
                 <div className="flex flex-col gap-1.5">
