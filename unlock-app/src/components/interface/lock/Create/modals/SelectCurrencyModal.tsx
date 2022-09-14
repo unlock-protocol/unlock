@@ -10,6 +10,7 @@ import { addressMinify } from '~/utils/strings'
 import { useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { FaSpinner as Spinner } from 'react-icons/fa'
+import { useForm } from 'react-hook-form'
 interface SelectCurrencyModalProps {
   isOpen: boolean
   setIsOpen: (status: boolean) => void
@@ -33,12 +34,19 @@ export const SelectCurrencyModal = ({
   const { tokens: tokenItems = [] } = networks[network!] || {}
   const [tokens, setTokens] = useState<Token[]>([])
 
+  const { register, resetField } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      query: '',
+    },
+  })
+
   useEffect(() => {
     setTokens([
       { name: defaultCurrency, symbol: defaultCurrency },
       ...tokenItems,
     ])
-  }, [defaultCurrency, tokenItems, network])
+  }, [network])
 
   const onSelectToken = (token: Token) => {
     if (typeof onSelect === 'function') {
@@ -103,6 +111,7 @@ export const SelectCurrencyModal = ({
       symbol: contractTokenSymbol || addressMinify(contractAddress),
       address: contractAddress,
     })
+    resetField('query')
     setQuery('')
     setContractAddress('')
   }
@@ -148,8 +157,10 @@ export const SelectCurrencyModal = ({
                     label="Select a token as currency"
                     placeholder="Search or paste contract address"
                     className="bg-transparent"
-                    onChange={onSearch}
-                    value={query ? query : ''}
+                    autoComplete="off"
+                    {...register('query', {
+                      onChange: onSearch,
+                    })}
                   />
 
                   {contractAddress?.length > 0 && (
