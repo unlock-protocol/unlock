@@ -14,11 +14,12 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe, SetupIntentResult } from '@stripe/stripe-js'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { useStorageService } from '~/utils/withStorageService'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface Props {
   injectedProvider: unknown
@@ -103,7 +104,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
 }
 
 interface SetupProps {
-  onSubmit(info: any): void
+  onSubmit(intent: SetupIntentResult): void
 }
 
 export function Setup({ onSubmit }: SetupProps) {
@@ -153,10 +154,12 @@ export function PaymentForm({ onSubmit }: SetupProps) {
     })
 
     if (error) {
-      console.error(error)
+      ToastHelper.error(error.message!)
     } else {
-      await stripe.retrieveSetupIntent(setupIntent.client_secret!)
-      onSubmit({})
+      const intent = await stripe.retrieveSetupIntent(
+        setupIntent.client_secret!
+      )
+      onSubmit(intent)
     }
   }
   return (
