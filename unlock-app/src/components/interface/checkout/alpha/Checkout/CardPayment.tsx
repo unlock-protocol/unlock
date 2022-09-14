@@ -2,28 +2,23 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { useQuery } from 'react-query'
-import {
-  deleteCardForAddress,
-  getCardsForAddress,
-  saveCardsForAddress,
-} from '~/hooks/useCards'
+import { deleteCardForAddress } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button } from '@unlock-protocol/ui'
 import { useWalletService } from '~/utils/withWalletService'
-import { Fragment, useState } from 'react'
+import { FormEventHandler, Fragment, useState, useEffect } from 'react'
 import { Card, CardPlaceholder } from '../Card'
-import { FieldValues, useForm } from 'react-hook-form'
 import {
-  CardElement,
   Elements,
+  PaymentElement,
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js'
-import { countries } from '~/utils/countries'
 import { loadStripe } from '@stripe/stripe-js'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { useStorageService } from '~/utils/withStorageService'
 
 interface Props {
   injectedProvider: unknown
@@ -33,42 +28,49 @@ interface Props {
 export function CardPayment({ checkoutService, injectedProvider }: Props) {
   const { account } = useAuth()
   const [editCard, setEditCard] = useState(false)
+  const storageService = useStorageService()
   const config = useConfig()
-  const stripe = loadStripe(config.stripeApiKey, {})
   const walletService = useWalletService()
-  const [isSaving, setIsSaving] = useState(false)
-  const { isLoading, data, refetch } = useQuery(
-    ['cards', account],
-    () => getCardsForAddress(config, walletService, account!),
+  const {
+    data: methods,
+    isLoading: isMethodLoading,
+    refetch,
+  } = useQuery(
+    ['list-cards', account],
+    async () => {
+      return storageService.listCardMethods()
+    },
     {
       staleTime: Infinity,
       enabled: !!account,
     }
   )
-  const card = data?.[0]
+
+  const card = methods?.[0]?.card
   const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
       <Stepper position={4} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
-        <Elements stripe={stripe}>
-          {isLoading ? (
-            <CardPlaceholder />
-          ) : editCard || !card ? (
-            <CardForm
-              isSaving={isSaving}
-              setIsSaving={setIsSaving}
-              onSave={async () => {
-                await refetch()
-                setIsSaving(false)
-                setEditCard(false)
-              }}
-            />
-          ) : (
-            <Card onChange={() => setEditCard(true)} {...card} />
-          )}
-        </Elements>
+        {isMethodLoading ? (
+          <CardPlaceholder />
+        ) : editCard || !card ? (
+          <Setup
+            onSubmit={async () => {
+              await refetch()
+              setEditCard(false)
+            }}
+          />
+        ) : (
+          <Card
+            onChange={async () => {
+              await deleteCardForAddress(config, walletService, account!)
+              setEditCard(true)
+            }}
+            {...card}
+          />
+        )}
       </main>
       <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
@@ -76,19 +78,13 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
           service={checkoutService}
         >
           {editCard || !card ? (
-            <Button
-              disabled={isSaving || isLoading}
-              loading={isSaving}
-              type="submit"
-              form="card-save"
-              className="w-full"
-            >
-              {isSaving ? 'Saving' : 'Save'}
+            <Button type="submit" form="payment" className="w-full">
+              Save
             </Button>
           ) : (
             <Button
               className="w-full"
-              disabled={!card || isLoading}
+              disabled={!card}
               onClick={() => {
                 checkoutService.send({
                   type: 'SELECT_CARD_TO_CHARGE',
@@ -106,82 +102,66 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
   )
 }
 
-interface CardFormProps {
-  isSaving: boolean
-  setIsSaving(value: boolean): void
-  onSave(): void
+interface SetupProps {
+  onSubmit(info: any): void
 }
 
-function CardForm({ onSave, setIsSaving }: CardFormProps) {
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm()
-  const stripe = useStripe()
-  const elements = useElements()
-  const { account } = useAuth()
+export function Setup({ onSubmit }: SetupProps) {
+  const storageService = useStorageService()
   const config = useConfig()
-  const walletService = useWalletService()
+  const stripe = loadStripe(config.stripeApiKey, {})
+  const [clientSecret, setClientSecret] = useState('')
 
-  const onSubmit = async (data: FieldValues) => {
-    setIsSaving(true)
-    const cardElement = elements!.getElement(CardElement)
-    const result = await stripe!.createToken(cardElement!, {
-      address_country: data.address_country,
-      name: data.name,
-    })
-    if (result.token && account) {
-      deleteCardForAddress(config, walletService, account)
-      await saveCardsForAddress(config, walletService, account, result.token.id)
+  useEffect(() => {
+    const set = async () => {
+      const secret = await storageService.getSetupIntent()
+      setClientSecret(secret)
     }
-    onSave()
-  }
+    set()
+  }, [storageService])
 
-  let errorMessage = ''
-  if (errors?.name?.message) {
-    errorMessage = errors.name.message as unknown as string
+  if (!clientSecret) {
+    return null
   }
 
   return (
-    <form
-      id="card-save"
-      onSubmit={handleSubmit(onSubmit)}
-      className="space-y-2"
+    <Elements
+      stripe={stripe}
+      options={{
+        clientSecret,
+      }}
     >
-      <Input
-        error={errorMessage}
-        size="small"
-        label="Name"
-        autoComplete="name"
-        description="Please use the name on your card"
-        {...register('name')}
-      />
-      <div className="space-y-1">
-        <label className="pl-1 text-sm" htmlFor="card-element">
-          Card
-        </label>
-        <CardElement id="card-element" />
-      </div>
-      <div className="pt-2 space-y-1">
-        <label className="pl-1 text-sm" htmlFor="card-element">
-          Country
-        </label>
-        <select
-          autoComplete="country"
-          defaultValue="United States"
-          {...register('address_country', {
-            required: true,
-          })}
-          className="block w-full text-sm border border-gray-400 rounded-lg hover:border-gray-500"
-        >
-          {countries.map((country) => (
-            <option key={country} value={country}>
-              {country}
-            </option>
-          ))}
-        </select>
-      </div>
+      <PaymentForm onSubmit={onSubmit} />
+    </Elements>
+  )
+}
+
+export function PaymentForm({ onSubmit }: SetupProps) {
+  const stripe = useStripe()
+  const elements = useElements()
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault()
+
+    if (!stripe || !elements) {
+      return
+    }
+
+    const { error, setupIntent } = await stripe.confirmSetup({
+      elements,
+      redirect: 'if_required',
+    })
+
+    if (error) {
+      console.error(error)
+    } else {
+      await stripe.retrieveSetupIntent(setupIntent.client_secret!)
+      onSubmit({})
+    }
+  }
+  return (
+    <form onSubmit={handleSubmit} id="payment">
+      <PaymentElement />
     </form>
   )
 }

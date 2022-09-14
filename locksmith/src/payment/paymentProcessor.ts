@@ -266,6 +266,31 @@ export class PaymentProcessor {
     }
   }
 
+  async createSetupIntent({ customerId }: { customerId: string }) {
+    const setupIntent = await this.stripe.setupIntents.create({
+      customer: customerId,
+      payment_method_types: ['card', 'link'],
+    })
+    return {
+      clientSecret: setupIntent.client_secret,
+    }
+  }
+
+  async listCardMethods({ customerId }: { customerId: string }) {
+    const methods = await this.stripe.paymentMethods.list({
+      customer: customerId,
+      type: 'card',
+    })
+    return methods.data
+  }
+
+  async detachPaymentMethod({
+    paymentMethod,
+  }: Record<'paymentMethod', string>) {
+    const detached = await this.stripe.paymentMethods.detach(paymentMethod)
+    return detached
+  }
+
   /**
    * This function captures a payment intent previous confirmed
    * Note: Since the CC charge should always succeed as it was previously confirmed,
