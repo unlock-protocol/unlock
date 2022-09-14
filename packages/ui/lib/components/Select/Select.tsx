@@ -1,5 +1,5 @@
 import { Listbox } from '@headlessui/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BsCheck as CheckIcon } from 'react-icons/bs'
 
 export interface Option {
@@ -11,12 +11,14 @@ interface SelectProps {
   label?: string
   options: Option[]
   onChange?: (option: Option) => void
+  defaultValue?: string | number
 }
 
 export const Select = ({
   options,
   onChange,
   label = 'Select',
+  defaultValue,
 }: SelectProps) => {
   const [selected, setSelected] = useState<Option | null>(null)
 
@@ -27,6 +29,14 @@ export const Select = ({
       onChange(currentItem)
     }
   }
+
+  // Set default value if present
+  useEffect(() => {
+    if (!defaultValue) return
+    const defaultSelection =
+      options?.find((option) => option.value == defaultValue) || null
+    setSelected(defaultSelection)
+  }, [])
 
   return (
     <Listbox value={selected?.value || ''} onChange={onChangeOption}>
