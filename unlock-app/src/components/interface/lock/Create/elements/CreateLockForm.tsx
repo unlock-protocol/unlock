@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Icon, Input, Select } from '@unlock-protocol/ui'
+import { Button, Icon, Input } from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { Controller, useForm } from 'react-hook-form'
 import { RadioGroup } from '@headlessui/react'
@@ -140,13 +140,6 @@ export const CreateLockForm = ({
             className="flex flex-col w-full gap-10"
             onSubmit={handleSubmit(onHandleSubmit)}
           >
-            <Select
-              label="Network"
-              options={[
-                { label: 'test', value: 'test' },
-                { label: 'test1', value: 'test1' },
-              ]}
-            ></Select>
             <NetworkSelection onChange={() => setSelectedToken(null)} />
             <div className="relative">
               <Input
