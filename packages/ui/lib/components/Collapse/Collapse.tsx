@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '../Button/Button'
 import { FiChevronUp as ArrowUpIcon } from 'react-icons/fi'
 
@@ -21,7 +21,10 @@ export const Collapse = ({
     setIsOpen(!isOpen)
   }
 
-  const extend = collapsed || isOpen
+  useEffect(() => {
+    setIsOpen(collapsed)
+  }, [collapsed])
+
   return (
     <div className="bg-white border border-gray-200 rounded-2xl">
       <div className="flex items-start gap-3 p-4">
