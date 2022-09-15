@@ -144,7 +144,7 @@ describe('Unlock Hardhat plugin', function () {
         })
       })
 
-      describe.only('deployAndSetTemplate()', function () {
+      describe('deployAndSetTemplate()', function () {
         it('Should deploy and set a new version', async function () {
           const version = 11
           const { unlock, publicLock: publicLockBefore } = protocol
