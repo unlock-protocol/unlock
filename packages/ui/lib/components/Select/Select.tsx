@@ -67,7 +67,7 @@ export const Select = <T extends unknown>({
         <Listbox.Button className={inputClass}>
           <div className="flex items-center justify-between">
             <span>{selected?.label || 'Choose option'}</span>
-            <ArrowDownIcon />
+            <ArrowDownIcon size={20} />
           </div>
         </Listbox.Button>
         <Listbox.Options className="absolute z-10 w-full mt-1 overflow-hidden bg-white border border-gray-400 rounded-xl">
