@@ -149,7 +149,7 @@ export const CreateLockForm = ({
         {noBalance && <BalanceWarning network={network!} balance={balance!} />}
       </div>
       <div className="overflow-hidden bg-white rounded-xl">
-        <div className="px-3 py-4">
+        <div className="px-3 py-8 md:py-4">
           <form
             className="flex flex-col w-full gap-10"
             onSubmit={handleSubmit(onHandleSubmit)}
@@ -345,7 +345,11 @@ export const CreateLockForm = ({
               )}
             </div>
 
-            <Button type="submit" disabled={submitDisabled}>
+            <Button
+              className="mt-8 md:mt-0"
+              type="submit"
+              disabled={submitDisabled}
+            >
               Next
             </Button>
           </form>
