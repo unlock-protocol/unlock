@@ -6,7 +6,6 @@ import recoveryKeyConfirmEmail from './recoveryKeyConfirmEmail'
 import keyOwnership from './keyOwnership'
 import keyMined from './keyMined'
 import debug from './debug'
-import dappcon from './dappcon'
 
 import * as LockTemplates from './locks'
 
@@ -19,7 +18,6 @@ const baseTemplates = {
   keyOwnership,
   keyMined,
   debug,
-  dappcon,
 }
 
 const templates = {}

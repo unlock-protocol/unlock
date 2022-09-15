@@ -21,7 +21,6 @@ export default class PriceConversion {
     let rate
     // Cache is valid for 5 minutes!
     if (cached && cached[0] > new Date().getTime() - 1000 * 60 * 5) {
-      ;[, rate] = cached
       return parseInt((cached[1] * lockPriceAmount * 100).toFixed(0))
     } else {
       const response = await fetch(

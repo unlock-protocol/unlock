@@ -5,6 +5,5 @@
  */
 export default async function (lockAddres, owner, provider) {
   const lockContract = await this.getLockContract(lockAddres, provider)
-
   return lockContract.balanceOf(owner)
 }

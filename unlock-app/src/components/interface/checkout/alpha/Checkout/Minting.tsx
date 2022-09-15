@@ -1,11 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { Mint, CheckoutService } from './checkoutMachine'
+import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button, Icon } from '@unlock-protocol/ui'
-import mintingAnimation from '~/animations/minting.json'
-import mintedAnimation from '~/animations/minted.json'
-import errorAnimation from '~/animations/error.json'
-import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useMemo } from 'react'
@@ -16,37 +12,12 @@ import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
-
+import { TransactionAnimation } from '../Shell'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication: CheckoutCommunication
-}
-
-function AnimationContent({ status }: { status: Mint['status'] }) {
-  const animationClass = `w-28 sm:w-36 h-28 sm:h-36`
-  switch (status) {
-    case 'PROCESSING':
-      return (
-        <Lottie
-          className={animationClass}
-          loop
-          animationData={mintingAnimation}
-        />
-      )
-    case 'FINISHED':
-      return (
-        <Lottie className={animationClass} animationData={mintedAnimation} />
-      )
-    case 'ERROR': {
-      return (
-        <Lottie className={animationClass} animationData={errorAnimation} />
-      )
-    }
-    default:
-      return null
-  }
 }
 
 export function Minting({
@@ -138,7 +109,7 @@ export function Minting({
       />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex flex-col items-center justify-center h-full space-y-2">
-          {status && <AnimationContent status={status} />}
+          <TransactionAnimation status={status} />
           <p className="text-lg font-bold text-brand-ui-primary">
             {content?.text}
           </p>

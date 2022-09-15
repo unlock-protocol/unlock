@@ -105,19 +105,25 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     ['memberships', account, JSON.stringify(paywallConfig)],
     async () => {
       const memberships = await Promise.all(
-        Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
-          const lockNetwork = props.network || paywallConfig.network || 1
-          const valid = await web3Service.getHasValidKey(
-            lock,
-            account!,
-            lockNetwork
-          )
-          if (valid) {
-            return lock
+        Object.entries(paywallConfig.locks).map(
+          async ([lockAddress, props]) => {
+            const lockNetwork = props.network || paywallConfig.network || 1
+            const [member, total] = await Promise.all([
+              web3Service.getHasValidKey(lockAddress, account!, lockNetwork),
+              web3Service.totalKeys(lockAddress, account!, lockNetwork),
+            ])
+            // if not member but total is above 0
+            const expired = !member && total > 0
+            return {
+              lock: lockAddress,
+              expired,
+              member,
+              network: lockNetwork,
+            }
           }
-        })
+        )
       )
-      return memberships.filter((item) => item)
+      return memberships
     },
     {
       enabled: !!account,
@@ -127,13 +133,15 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const lockNetwork = lock?.network ? config?.networks?.[lock.network] : null
   const isNetworkSwitchRequired =
     lockNetwork && lock?.network !== network && !isUnlockAccount
-  const existingMember = !!memberships?.includes(lock?.address)
+
+  const membership = memberships?.find((item) => item.lock === lock?.address)
 
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
+    !lock ||
     // if locks are sold out and the user is not an existing member of the lock
-    (lock?.isSoldOut && !existingMember)
+    (lock?.isSoldOut && !(membership?.member || membership?.expired))
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -307,8 +315,12 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   send({
                     type: 'SELECT_LOCK',
                     lock,
-                    existingMember,
+                    existingMember: !!membership?.member,
                     skipQuantity,
+                    // unlock account are unable to renew
+                    expiredMember: isUnlockAccount
+                      ? false
+                      : !!membership?.expired,
                   })
                 }}
               >
