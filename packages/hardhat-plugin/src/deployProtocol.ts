@@ -16,6 +16,13 @@ export interface DeployProtocolFunction {
   }>
 }
 
+export interface DeployAndSetTemplate {
+  (
+    lockVersion?: number,
+    confirmations?: number
+  ): Promise<Contract>
+}
+
 export interface UnlockConfigArgs {
   udtAddress?: string | null
   wethAddress?: string | null
@@ -46,6 +53,26 @@ export async function deployUnlock(
   return unlock
 }
 
+export async function deployAndSetTemplate(
+  hre: HardhatRuntimeEnvironment, 
+  lockVersion = PUBLIC_LOCK_LATEST_VERSION,
+  confirmations = 5
+  
+) {
+  const [signer] = await hre.ethers.getSigners()
+  const unlock = await getUnlockContract(hre)
+
+  // deploy PublicLock template
+  const publicLock = await deployPublicLock(hre, lockVersion, confirmations)
+  const version = await publicLock.publicLockVersion()
+
+  // set lock template
+  await unlock.connect(signer).addLockTemplate(publicLock.address, version)
+  await unlock.connect(signer).setLockTemplate(publicLock.address)
+
+  return publicLock
+}
+
 export async function deployPublicLock(
   hre: HardhatRuntimeEnvironment,
   version = PUBLIC_LOCK_LATEST_VERSION,
@@ -58,7 +85,6 @@ export async function deployPublicLock(
     version,
     signer
   )
-
   const publicLock: Contract = await PublicLock.deploy()
   await publicLock.deployTransaction.wait(confirmations)
 
@@ -75,20 +101,10 @@ export async function deployProtocol(
   unlock: Contract
   publicLock: Contract
 }> {
-  const [signer] = await hre.ethers.getSigners()
-
   // 1. deploy Unlock
   const unlock = await deployUnlock(hre, unlockVersion, confirmations)
 
-  // 2. deploy PublicLock template
-  const publicLock = await deployPublicLock(hre, lockVersion, confirmations)
-
-  // 3. setting lock template
-  const version = await publicLock.publicLockVersion()
-  await unlock.connect(signer).addLockTemplate(publicLock.address, version)
-  await unlock.connect(signer).setLockTemplate(publicLock.address)
-
-  // store deployed Unlock address in hre
+  // 2. store deployed Unlock address in hre
   const { chainId } = await hre.ethers.provider.getNetwork()
   if (!hre.unlock.networks[chainId]) {
     hre.unlock.networks[chainId] = {
@@ -96,6 +112,9 @@ export async function deployProtocol(
     }
   }
   hre.unlock.networks[chainId].unlockAddress = unlock.address
+
+  // 3. deploy and set template
+  const publicLock = await deployAndSetTemplate(hre, lockVersion, confirmations)
 
   return {
     unlock,
