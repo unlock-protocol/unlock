@@ -73,26 +73,28 @@ export const Select = <T extends unknown>({
         </Listbox.Button>
         <Listbox.Options className="absolute z-10 w-full mt-1 overflow-hidden bg-white border border-gray-400 rounded-xl">
           {options?.map((option: Option) => {
-            const optionClass = twMerge(
-              `${
-                selected ? 'bg-gray-100' : ''
-              } flex items-center justify-between p-3 hover:bg-gray-100`,
-              inputSizeStyle
-            )
             return (
               <Listbox.Option
                 key={option.value}
                 value={option.value}
                 className="cursor-pointer"
               >
-                {({ selected }) => (
-                  <div className={optionClass}>
-                    <span className={selected ? 'font-bold' : ''}>
-                      {option.label}
-                    </span>
-                    {selected && <CheckIcon size={20} />}
-                  </div>
-                )}
+                {({ selected }) => {
+                  const optionClass = twMerge(
+                    `${
+                      selected ? 'bg-gray-100' : ''
+                    } flex items-center justify-between p-3 hover:bg-gray-100`,
+                    inputSizeStyle
+                  )
+                  return (
+                    <div className={optionClass}>
+                      <span className={selected ? 'font-bold' : ''}>
+                        {option.label}
+                      </span>
+                      {selected && <CheckIcon size={20} />}
+                    </div>
+                  )
+                }}
               </Listbox.Option>
             )
           })}
