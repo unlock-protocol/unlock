@@ -16907,22 +16907,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/hardhat-plugin@npm:0.0.10":
-  version: 0.0.10
-  resolution: "@unlock-protocol/hardhat-plugin@npm:0.0.10"
-  dependencies:
-    "@nomiclabs/hardhat-ethers": ^2.1.1
-    "@unlock-protocol/contracts": 0.0.8
-    eslint-plugin-jest: 26.6.0
-    eslint-plugin-mocha: 10.1.0
-  peerDependencies:
-    ethers: 5.7.0
-    hardhat: 2.9.9
-  checksum: 60830db73e65be831eb52bc3ad2d246f79115cf86968d083f7953334359fde4194c3b4011da5afc6c210f20e1172cbccd534b2bb73f2ffefa0bac43cac025aad
-  languageName: node
-  linkType: hard
-
-"@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin":
+"@unlock-protocol/hardhat-plugin@0.0.10, @unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
@@ -52552,6 +52537,7 @@ resolve@^2.0.0-next.3:
     ethers: ^5.4.7
     hardhat: ^2.11.0
     hardhat-gas-reporter: ^1.0.8
+    node-fetch: 2.6.7
     solidity-coverage: ^0.7.21
     ts-node: ">=8.0.0"
     typechain: ^8.1.0

@@ -1,13 +1,19 @@
-# Sample Hardhat Project
+# Integration tests
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
+This folder contains tests to make sure that the different parts of the Unlock Protocol plays nicely together (i.e. contracts, subgraph, server, ui, etc...).
 
-Try running some of the following tasks:
+### Run the entire test suite
 
-```shell
-npx hardhat help
-npx hardhat test
-GAS_REPORT=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+The easiest way to run the tests is to use the command (from the root of the repo)
+
+```
+sh ./scripts/integration-tests.sh
+```
+
+### Development
+
+For development, you will need to first run the docker stack
+
+```
+sh ./bin/tests.sh
 ```
