@@ -82,9 +82,9 @@ export const DashboardContent = () => {
       )}
       {account && (
         <BrowserOnly>
-          <div className="flex items-center">
+          <div className="flex flex-col gap-3 md:items-center md:flex-row">
             <Account />
-            <div className="ml-auto">
+            <div className="md:ml-auto">
               <ButtonToCreateLock
                 toggleForm={toggleForm}
                 formIsVisible={formIsVisible}
