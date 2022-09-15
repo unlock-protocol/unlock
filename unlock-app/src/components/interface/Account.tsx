@@ -43,39 +43,35 @@ export function Account() {
   return (
     <div>
       <div className="flex items-end gap-3 md:flex-row">
-        <div className="col-auto">
+        <div className="hidden col-auto md:block">
           {account && iconSeed && <UserIcon seed={iconSeed} />}
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="text-xs break-words word-wrap">
-            {account && addressMinify(account)}
-          </div>
-          <span className="text-base uppercase ">
-            {network && (
-              <div className="flex items-start gap-2 space-y-2">
-                <div className="w-96">
-                  <Select
-                    options={networkOptions}
-                    label={''}
-                    defaultValue={network}
-                    onChange={onNetworkChange}
-                  />
-                </div>
-
-                <Button
-                  type="button"
+        <div className="flex flex-col w-full gap-2">
+          {network && (
+            <div className="flex flex-col items-end w-full gap-2 md:flex-row">
+              <div className="w-full md:w-96">
+                <Select
+                  options={networkOptions}
+                  label={account && addressMinify(account)}
+                  defaultValue={network}
+                  onChange={onNetworkChange}
                   size="small"
-                  variant="outlined-primary"
-                  onClick={() => {
-                    deAuthenticate()
-                    storageService.signOut()
-                  }}
-                >
-                  Disconnect
-                </Button>
+                />
               </div>
-            )}
-          </span>
+
+              <Button
+                type="button"
+                size="tiny"
+                variant="outlined-primary"
+                onClick={() => {
+                  deAuthenticate()
+                  storageService.signOut()
+                }}
+              >
+                Disconnect
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
