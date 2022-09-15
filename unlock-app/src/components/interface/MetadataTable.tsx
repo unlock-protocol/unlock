@@ -7,6 +7,7 @@ import {
   MemberCardPlaceholder,
 } from '../interface/members/MemberCard'
 import { Button } from '@unlock-protocol/ui'
+import { TotalBar } from './lock/Manage/elements/TotalBar'
 
 export interface KeyMetadata {
   // These 3 properties are always present -- they come down from the graph as

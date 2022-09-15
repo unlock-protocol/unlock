@@ -10,8 +10,12 @@ const CryptoIconComponent = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
 })
 
-export const CryptoIcon = ({ symbol }: { symbol: string }) => (
-  <CryptoIconComponent name={symbol?.toLowerCase()} size={18} />
+interface CryptoIconProps {
+  symbol: string
+  size?: number
+}
+export const CryptoIcon = ({ symbol, size = 20 }: CryptoIconProps) => (
+  <CryptoIconComponent name={symbol?.toLowerCase()} size={size} />
 )
 
 export const KeyPrice = ({ price, symbol = '' }: KeyPriceProps) => {
