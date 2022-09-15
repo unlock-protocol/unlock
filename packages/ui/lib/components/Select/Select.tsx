@@ -19,6 +19,7 @@ interface SelectProps<T> {
 }
 
 const SIZE_STYLES: SizeStyleProp = {
+  tiny: 'p-1 text-sm',
   small: 'px-2.5 py-1.5 text-sm',
   medium: 'px-4 py-2 text-base',
   large: 'px-4 py-2.5',
