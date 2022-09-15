@@ -143,6 +143,7 @@ export const CreateLockForm = ({
         setIsOpen={setIsOpen}
         network={network!}
         onSelect={onSelectToken}
+        defaultCurrency={baseCurrencySymbol}
       />
       <div className="mb-4">
         {noBalance && <BalanceWarning network={network!} balance={balance!} />}
