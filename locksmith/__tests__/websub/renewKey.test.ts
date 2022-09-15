@@ -60,6 +60,9 @@ const mockWeb3Service = {
 const mockWalletService = {
   connect: jest.fn(),
   getLockContract: mockGetLockContract,
+  renewMembershipFor: async () => ({
+    hash: 'txhash',
+  }),
 }
 
 jest.mock('@unlock-protocol/networks', () => ({
