@@ -161,15 +161,17 @@ export const CreateLockSteps = () => {
 
   return (
     <div>
-      <div className="grid items-center grid-cols-3">
-        <div>
+      <div className="grid items-center grid-cols-6 md:grid-cols-3">
+        <div className="col-auto">
           {showBackUrl && (
             <ArrowBack size={20} className="cursor-pointer" onClick={onBack} />
           )}
         </div>
-        <h1 className="text-xl font-semibold text-center">{title}</h1>
+        <h1 className="col-span-4 text-lg font-semibold text-center md:col-auto md:text-xl">
+          {title}
+        </h1>
       </div>
-      <div className="pt-14">{Step()}</div>
+      <div className="pt-8 md:pt-14">{Step()}</div>
     </div>
   )
 }
@@ -178,7 +180,7 @@ const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
   return (
     <div>
       <div className="grid gap-4 md:grid-cols-2 md:gap-28">
-        <div className="flex flex-col mx-auto md:max-w-lg">
+        <div className="flex-col hidden mx-auto md:flex md:max-w-lg">
           <h4 className="mb-4 text-5xl font-bold">
             Deploy your membership contract
           </h4>
@@ -186,7 +188,7 @@ const CreateLock = ({ onSubmit, defaultValues }: CreateLockProps) => {
             For creative communities and the humans who build them
           </span>
           <img
-            className="hidden mt-9 md:block"
+            className="mt-9"
             src="/images/svg/create-lock/members.svg"
             alt="Create lock members"
           />
@@ -213,8 +215,10 @@ const CreateLockSummary = ({
   return (
     <div>
       <div className="grid gap-4 md:grid-cols-2 md:gap-28">
-        <div className="flex flex-col mx-auto md:max-w-lg">
-          <h4 className="mb-4 text-5xl font-bold">Ready to deploy?</h4>
+        <div className="flex flex-col md:mx-auto md:max-w-lg">
+          <h4 className="mb-4 text-3xl font-bold md:text-5xl md:block">
+            Ready to deploy?
+          </h4>
           <span className="text-lg font-normal">
             Here is the overview of your Lock
           </span>
@@ -226,7 +230,7 @@ const CreateLockSummary = ({
         </div>
         <div className="md:max-w-lg">
           <CreateLockFormSummary formData={formData} network={network} />
-          <div className="flex flex-col justify-between w-full gap-4 px-12 mt-12">
+          <div className="flex flex-col justify-between w-full gap-4 mt-8 md:mt-12 md:px-12">
             <Button onClick={onHandleSubmit}>Looks good to me</Button>
             <Button
               variant="transparent"
