@@ -99,7 +99,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
         >
           {editCard || !card ? (
             <Button
-              loading={isMethodLoading || isSaving}
+              loading={isSaving}
               disabled={isMethodLoading || isSaving || !stripe}
               type="submit"
               form="payment"
