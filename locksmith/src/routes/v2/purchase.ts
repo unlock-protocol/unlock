@@ -16,13 +16,4 @@ router.get('/list', authenticatedMiddleware, userOnlyMiddleware, (req, res) =>
   purchaseController.list(req, res)
 )
 
-router.post(
-  '/detach',
-  authenticatedMiddleware,
-  userOnlyMiddleware,
-  (req, res) => {
-    purchaseController.detachPaymentMethod(req, res)
-  }
-)
-
 module.exports = router

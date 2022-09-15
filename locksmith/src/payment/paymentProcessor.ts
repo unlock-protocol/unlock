@@ -287,13 +287,6 @@ export class PaymentProcessor {
     return methods.data
   }
 
-  async detachPaymentMethod({
-    paymentMethod,
-  }: Record<'paymentMethod', string>) {
-    const detached = await this.stripe.paymentMethods.detach(paymentMethod)
-    return detached
-  }
-
   /**
    * This function captures a payment intent previous confirmed
    * Note: Since the CC charge should always succeed as it was previously confirmed,

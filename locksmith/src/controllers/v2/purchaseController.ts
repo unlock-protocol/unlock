@@ -57,32 +57,4 @@ export class PurchaseController {
       })
     }
   }
-
-  async detachPaymentMethod(request: Request, response: Response) {
-    try {
-      const userAddress = Normalizer.ethereumAddress(
-        request.user!.walletAddress
-      )
-      const paymentMethod: string = request.body.paymentMethod
-      const customerId = await getStripeCustomerIdForAddress(userAddress)
-      if (!customerId) {
-        return response.status(404).send({
-          message: 'Customer not found',
-        })
-      }
-
-      const detached = await this.processor.detachPaymentMethod({
-        paymentMethod,
-      })
-
-      return response.status(201).send({
-        detached,
-      })
-    } catch (error) {
-      logger.error(error.message)
-      return response.status(500).send({
-        message: 'Unable to detach the payment method',
-      })
-    }
-  }
 }
