@@ -206,24 +206,27 @@ export class PaymentProcessor {
       }
     }
 
-    // If not, we create another intent
-    const token = await this.stripe.tokens.create(
-      { customer: stripeCustomerId },
-      { stripeAccount }
-    )
+    const globalPaymentMethods = await this.stripe.paymentMethods.list({
+      customer: stripeCustomerId,
+      type: 'card',
+    })
 
-    //
-    const connectedCustomer = await this.stripe.customers.create(
-      { source: token.id },
-      { stripeAccount }
-    )
+    const primaryMethod = globalPaymentMethods.data[0]
 
-    // How do we list the right payment methods?
-    const paymentMethods = await this.stripe.paymentMethods.list(
+    // Clone payment method
+    const method = await this.stripe.paymentMethods.create(
       {
-        customer: connectedCustomer.id,
-        type: 'card',
+        payment_method: primaryMethod.id,
+        customer: stripeCustomerId,
       },
+      {
+        stripeAccount,
+      }
+    )
+
+    // Clone customer
+    const connectedCustomer = await this.stripe.customers.create(
+      { payment_method: method.id },
       { stripeAccount }
     )
 
@@ -232,7 +235,7 @@ export class PaymentProcessor {
         amount: totalPriceInCents,
         currency: 'usd',
         customer: connectedCustomer.id,
-        payment_method: paymentMethods.data[0].id,
+        payment_method: method.id,
         capture_method: 'manual', // We need to confirm on front-end but will capture payment back on backend.
         metadata: {
           purchaser: userAddress,
@@ -264,6 +267,24 @@ export class PaymentProcessor {
       clientSecret: intent.client_secret,
       stripeAccount,
     }
+  }
+
+  async createSetupIntent({ customerId }: { customerId: string }) {
+    const setupIntent = await this.stripe.setupIntents.create({
+      customer: customerId,
+      payment_method_types: ['card', 'link'],
+    })
+    return {
+      clientSecret: setupIntent.client_secret,
+    }
+  }
+
+  async listCardMethods({ customerId }: { customerId: string }) {
+    const methods = await this.stripe.paymentMethods.list({
+      customer: customerId,
+      type: 'card',
+    })
+    return methods.data
   }
 
   /**

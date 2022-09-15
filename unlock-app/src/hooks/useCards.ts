@@ -291,7 +291,8 @@ export const getCardsForAddress = async (
     )}/credit-cards?data=${JSON.stringify(typedData)}`,
     opts
   )
-  return response.json()
+  const json = await response.json()
+  return json.map((item: any) => item.card)
 }
 
 /**

@@ -1044,8 +1044,36 @@ export class StorageService extends EventEmitter {
         Authorization: `Bearer ${token}`,
       },
     })
-    const data = response.json()
+    const data = await response.json()
 
     return data
+  }
+
+  async listCardMethods() {
+    const response = await this.getEndpoint(
+      '/v2/purchase/list',
+      {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+      },
+      true
+    )
+    return response.methods
+  }
+
+  async getSetupIntent() {
+    const response = await this.getEndpoint(
+      '/v2/purchase/setup',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+      },
+      true
+    )
+    return response.clientSecret
   }
 }

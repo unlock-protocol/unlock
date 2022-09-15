@@ -13,7 +13,7 @@ const { Op } = Sequelize
 const config = require('../../config/config')
 
 export const createStripeCustomer = async (
-  stripeToken: string,
+  stripeToken: string | undefined,
   publicKey: string
 ): Promise<string> => {
   const stripe = new Stripe(config.stripeSecret, {
