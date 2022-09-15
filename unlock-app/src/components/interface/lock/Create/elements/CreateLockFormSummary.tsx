@@ -11,6 +11,7 @@ import { KeyPrice } from './KeyPrice'
 import Lottie from 'lottie-react'
 import deployedAnimation from '~/animations/deployed.json'
 import deployingAnimation from '~/animations/deploying.json'
+import deployErrorAnimation from '~/animations/deploy-error.json'
 
 interface DeployStatusProps {
   title: string
@@ -65,11 +66,10 @@ function AnimationContent({ status }: { status: DeployStatus }) {
         />
       )
     case 'txError': {
-      // todo: add error animation when available
       return (
         <Lottie
           className={animationClass}
-          animationData={deployedAnimation}
+          animationData={deployErrorAnimation}
           loop={false}
         />
       )
