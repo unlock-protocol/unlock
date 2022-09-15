@@ -101,7 +101,7 @@ export interface PaywallConfigLock {
   recurringPayments?: number
   captcha?: boolean
   password?: boolean
-  email?: boolean
+  emailRequired?: boolean
   maxRecipients?: number
   minRecipients?: number
   superfluid?: boolean
@@ -213,7 +213,7 @@ export interface PaywallConfig {
   superfluid?: boolean
   hideSoldOut?: boolean
   password?: boolean
-  email?: boolean
+  emailRequired?: boolean
 }
 
 export interface RawLock {

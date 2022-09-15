@@ -101,23 +101,25 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   }, [quantity, account, fields, append, remove, isMember, isMemberLoading])
 
   useEffect(() => {
-    if (!metadataInputs) {
-      const emailInput: MetadataInput = {
-        type: 'email',
-        name: 'email',
-        required: true,
-        placeholder: 'unlock-protocol@gmail.com',
-      }
-
-      const inputs: MetadataInput[] =
-        locksConfig.metadataInputs || paywallConfig.metadataInputs || []
-
-      if (locksConfig.email || paywallConfig.email) {
-        inputs.push(emailInput)
-      }
-
-      setMetadataInputs(inputs)
+    if (metadataInputs) {
+      return
     }
+
+    const emailInput: MetadataInput = {
+      type: 'email',
+      name: 'email',
+      required: true,
+      placeholder: 'unlock-protocol@gmail.com',
+    }
+
+    const inputs: MetadataInput[] =
+      locksConfig.metadataInputs || paywallConfig.metadataInputs || []
+
+    if (locksConfig.emailRequired || paywallConfig.emailRequired) {
+      inputs.push(emailInput)
+    }
+
+    setMetadataInputs(inputs)
   }, [locksConfig, paywallConfig, metadataInputs])
 
   async function onSubmit(data: FormData) {
