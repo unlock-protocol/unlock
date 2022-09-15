@@ -15,12 +15,12 @@ const BASE_POINT_ACCURACY = 1000
 const MAX_RENEWAL_COST_COVERED = 5 * BASE_POINT_ACCURACY
 
 interface RenewKeyParams {
-  keyId: number
+  keyId: string
   lockAddress: string
   network: number
 }
 interface RenewKeyReturned {
-  keyId: number
+  keyId: string
   lockAddress: string
   network: number
   tx?: string
@@ -51,7 +51,7 @@ const getERC20AmountInUSD = async (symbol: string, amount: string) => {
 export const isWorthRenewing = async (
   network: number,
   lockAddress: string,
-  keyId: number
+  keyId: string
 ): Promise<ShouldRenew> => {
   const web3Service = new Web3Service(networks)
   const provider = new ethers.providers.JsonRpcProvider(

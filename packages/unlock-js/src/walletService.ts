@@ -206,6 +206,29 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Function to renew a membership, callable by anyone.
+   * This is only useful for ERC20 locks for which the key owner has approved
+   * a large enough token amount!
+   * @param params
+   * @param callback
+   * @returns
+   */
+  async renewMembershipFor(
+    params: { lockAddress: string; referrer: string | null; tokenId: string },
+    purchaseForOptions: {
+      gasLimit?: number
+      maxFeePerGas?: number
+      maxPriorityFeePerGas?: number
+    },
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.tokenId) throw new Error('Missing tokenId')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.renewMembershipFor.bind(this)(params, callback)
+  }
+
+  /**
    * Extends an expired key
    * @param {*} params
    * @param {*} callback
