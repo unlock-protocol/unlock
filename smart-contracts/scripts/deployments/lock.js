@@ -5,7 +5,13 @@ const createLockHash = require('../../test/helpers/createLockCalldata')
 const toBigNumber = (mayBN) =>
   ethers.BigNumber.isBigNumber(mayBN) ? mayBN : ethers.BigNumber.from(mayBN)
 
-async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
+async function main({
+  unlockAddress,
+  unlockVersion,
+  lockVersion,
+  serializedLock,
+  salt,
+}) {
   const [signer] = await ethers.getSigners()
   // get the right version of Unlock
   let Unlock
@@ -38,7 +44,11 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
       args: [expirationDuration, tokenAddress, keyPrice, maxNumberOfKeys, name],
       from: signer.address,
     })
-    tx = await unlock.createUpgradeableLock(calldata)
+    if (lockVersion) {
+      tx = await unlock.createUpgradeableLockAtVersion(calldata, lockVersion)
+    } else {
+      tx = await unlock.createUpgradeableLock(calldata)
+    }
   }
 
   const { events, transactionHash } = await tx.wait()
@@ -50,7 +60,7 @@ async function main({ unlockAddress, unlockVersion, serializedLock, salt }) {
     `LOCK DEPLOY > deployed to : ${newLockAddress} (tx: ${transactionHash})`
   )
 
-  // get versionof the original lock
+  // get version of the original lock
   const publicLockVersion = 8 // await unlock.publicLockVersion()
   const { abi: publicLockABI, bytecode: publicLockBytecode } =
     contracts[`PublicLockV${publicLockVersion}`]
