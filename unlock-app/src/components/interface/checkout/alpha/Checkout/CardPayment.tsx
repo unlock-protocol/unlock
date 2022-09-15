@@ -6,13 +6,7 @@ import { deleteCardForAddress } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useWalletService } from '~/utils/withWalletService'
-import {
-  FormEventHandler,
-  Fragment,
-  useState,
-  useEffect,
-  useCallback,
-} from 'react'
+import { Fragment, useState, useEffect, useCallback } from 'react'
 import { Card, CardPlaceholder } from '../Card'
 import {
   Elements,
