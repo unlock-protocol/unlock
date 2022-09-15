@@ -6,7 +6,13 @@ import { deleteCardForAddress } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { useWalletService } from '~/utils/withWalletService'
-import { FormEventHandler, Fragment, useState, useEffect } from 'react'
+import {
+  FormEventHandler,
+  Fragment,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react'
 import { Card, CardPlaceholder } from '../Card'
 import {
   Elements,
@@ -14,7 +20,7 @@ import {
   useElements,
   useStripe,
 } from '@stripe/react-stripe-js'
-import { loadStripe, SetupIntentResult } from '@stripe/stripe-js'
+import { loadStripe, SetupIntentResult, Stripe } from '@stripe/stripe-js'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
@@ -27,11 +33,14 @@ interface Props {
 }
 
 export function CardPayment({ checkoutService, injectedProvider }: Props) {
-  const { account } = useAuth()
+  const { account, network } = useAuth()
   const [editCard, setEditCard] = useState(false)
   const storageService = useStorageService()
   const config = useConfig()
   const walletService = useWalletService()
+  const stripe = loadStripe(config.stripeApiKey, {})
+  const [isSaving, setIsSaving] = useState(false)
+
   const {
     data: methods,
     isLoading: isMethodLoading,
@@ -39,6 +48,11 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
   } = useQuery(
     ['list-cards', account],
     async () => {
+      await storageService.loginPrompt({
+        walletService,
+        address: account!,
+        chainId: network!,
+      })
       return storageService.listCardMethods()
     },
     {
@@ -58,7 +72,12 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
           <CardPlaceholder />
         ) : editCard || !card ? (
           <Setup
-            onSubmit={async () => {
+            stripe={stripe}
+            onSubmit={() => {
+              setIsSaving(true)
+            }}
+            onSubmitted={async () => {
+              setIsSaving(false)
               await refetch()
               setEditCard(false)
             }}
@@ -79,7 +98,13 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
           service={checkoutService}
         >
           {editCard || !card ? (
-            <Button type="submit" form="payment" className="w-full">
+            <Button
+              loading={isMethodLoading || isSaving}
+              disabled={isMethodLoading || isSaving}
+              type="submit"
+              form="payment"
+              className="w-full"
+            >
               Save
             </Button>
           ) : (
@@ -104,22 +129,32 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
 }
 
 interface SetupProps {
-  onSubmit(intent: SetupIntentResult): void
+  onSubmit(): void
+  onSubmitted(intent?: SetupIntentResult): void
+  stripe: Promise<Stripe | null>
 }
 
-export function Setup({ onSubmit }: SetupProps) {
+export function Setup({ onSubmit, stripe, onSubmitted }: SetupProps) {
   const storageService = useStorageService()
-  const config = useConfig()
-  const stripe = loadStripe(config.stripeApiKey, {})
   const [clientSecret, setClientSecret] = useState('')
+  const walletService = useWalletService()
+  const { account, network } = useAuth()
+
+  const fetchSecret = useCallback(async () => {
+    await storageService.loginPrompt({
+      walletService,
+      address: account!,
+      chainId: network!,
+    })
+    const secret = await storageService.getSetupIntent()
+    setClientSecret(secret)
+  }, [storageService, account, network, walletService])
 
   useEffect(() => {
-    const set = async () => {
-      const secret = await storageService.getSetupIntent()
-      setClientSecret(secret)
+    if (!clientSecret) {
+      fetchSecret()
     }
-    set()
-  }, [storageService])
+  }, [fetchSecret, clientSecret])
 
   if (!clientSecret) {
     return null
@@ -132,12 +167,17 @@ export function Setup({ onSubmit }: SetupProps) {
         clientSecret,
       }}
     >
-      <PaymentForm onSubmit={onSubmit} />
+      <PaymentForm onSubmit={onSubmit} onSubmitted={onSubmitted} />
     </Elements>
   )
 }
 
-export function PaymentForm({ onSubmit }: SetupProps) {
+interface PaymentFormProps {
+  onSubmit(): void
+  onSubmitted(intent?: SetupIntentResult): void
+}
+
+export function PaymentForm({ onSubmit, onSubmitted }: PaymentFormProps) {
   const stripe = useStripe()
   const elements = useElements()
 
@@ -148,6 +188,8 @@ export function PaymentForm({ onSubmit }: SetupProps) {
       return
     }
 
+    onSubmit()
+
     const { error, setupIntent } = await stripe.confirmSetup({
       elements,
       redirect: 'if_required',
@@ -155,11 +197,12 @@ export function PaymentForm({ onSubmit }: SetupProps) {
 
     if (error) {
       ToastHelper.error(error.message!)
+      onSubmitted(undefined)
     } else {
       const intent = await stripe.retrieveSetupIntent(
         setupIntent.client_secret!
       )
-      onSubmit(intent)
+      onSubmitted(intent)
     }
   }
   return (
