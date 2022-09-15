@@ -109,7 +109,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       type: 'email',
       name: 'email',
       required: true,
-      placeholder: 'unlock-protocol@gmail.com',
+      placeholder: 'hello@unlock-protocol.com',
     }
 
     const inputs: MetadataInput[] =
