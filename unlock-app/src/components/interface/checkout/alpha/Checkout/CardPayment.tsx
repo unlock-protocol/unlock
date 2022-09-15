@@ -165,6 +165,12 @@ export function Setup({ onSubmit, stripe, onSubmitted }: SetupProps) {
       stripe={stripe}
       options={{
         clientSecret,
+        appearance: {
+          theme: 'stripe',
+          variables: {
+            colorBackground: '#fff',
+          },
+        },
       }}
     >
       <PaymentForm onSubmit={onSubmit} onSubmitted={onSubmitted} />

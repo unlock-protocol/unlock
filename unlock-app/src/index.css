@@ -5,3 +5,10 @@
 body {
   @apply bg-gray-50;
 }
+
+/* 
+  Style override due to styled components global styling. Remove when that's replaced.
+*/
+.StripeElement {
+  background-color: #fff !important;
+}
