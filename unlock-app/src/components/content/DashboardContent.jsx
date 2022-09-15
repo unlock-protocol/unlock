@@ -15,9 +15,9 @@ import LoginPrompt from '../interface/LoginPrompt'
 import {
   CreateLockButton,
   CancelCreateLockButton,
-  AccountWrapper,
 } from '../interface/buttons/ActionButton'
 import { Phone } from '../../theme/media'
+import { Button } from '@unlock-protocol/ui'
 
 const ButtonToCreateLock = ({ formIsVisible, toggleForm }) => {
   const { account } = useContext(AuthenticationContext)
@@ -25,18 +25,18 @@ const ButtonToCreateLock = ({ formIsVisible, toggleForm }) => {
   return (
     <>
       {formIsVisible && (
-        <CancelCreateLockButton id="CreateLockButton" onClick={toggleForm}>
-          Cancel Lock
-        </CancelCreateLockButton>
-      )}
-      {!formIsVisible && (
-        <CreateLockButton
-          disabled={!account}
+        <Button
+          variant="outlined-primary"
           id="CreateLockButton"
           onClick={toggleForm}
         >
+          Cancel Lock
+        </Button>
+      )}
+      {!formIsVisible && (
+        <Button disabled={!account} id="CreateLockButton" onClick={toggleForm}>
           Create Lock
-        </CreateLockButton>
+        </Button>
       )}
     </>
   )
@@ -82,13 +82,15 @@ export const DashboardContent = () => {
       )}
       {account && (
         <BrowserOnly>
-          <AccountWrapper>
+          <div className="flex flex-col gap-3 md:items-center md:flex-row">
             <Account />
-            <ButtonToCreateLock
-              toggleForm={toggleForm}
-              formIsVisible={formIsVisible}
-            />
-          </AccountWrapper>
+            <div className="md:ml-auto">
+              <ButtonToCreateLock
+                toggleForm={toggleForm}
+                formIsVisible={formIsVisible}
+              />
+            </div>
+          </div>
           <Phone>
             <Warning>
               The Dashboard is currently not optimized for a mobile experience.

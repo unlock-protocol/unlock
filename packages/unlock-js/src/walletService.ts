@@ -167,7 +167,7 @@ export default class WalletService extends UnlockService {
       erc20Address?: string
       decimals?: number
       recurringPayments?: number
-      referer?: string
+      referrer?: string
     },
     callback?: WalletServiceCallback
   ) {
@@ -195,7 +195,7 @@ export default class WalletService extends UnlockService {
       data?: string[]
       erc20Address?: string
       decimals?: number
-      referers?: (string | null)[]
+      referrers?: (string | null)[]
       recurringPayments?: number[]
     },
     callback?: WalletServiceCallback
@@ -203,6 +203,29 @@ export default class WalletService extends UnlockService {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
     return version.purchaseKeys.bind(this)(params, callback)
+  }
+
+  /**
+   * Function to renew a membership, callable by anyone.
+   * This is only useful for ERC20 locks for which the key owner has approved
+   * a large enough token amount!
+   * @param params
+   * @param callback
+   * @returns
+   */
+  async renewMembershipFor(
+    params: { lockAddress: string; referrer: string | null; tokenId: string },
+    purchaseForOptions: {
+      gasLimit?: number
+      maxFeePerGas?: number
+      maxPriorityFeePerGas?: number
+    },
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.tokenId) throw new Error('Missing tokenId')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.renewMembershipFor.bind(this)(params, callback)
   }
 
   /**
@@ -214,6 +237,10 @@ export default class WalletService extends UnlockService {
     params: {
       lockAddress: string
       tokenId: string
+      referrer?: string
+      data?: string[]
+      decimals?: number
+      erc20Address?: string
     },
     callback?: WalletServiceCallback
   ) {
