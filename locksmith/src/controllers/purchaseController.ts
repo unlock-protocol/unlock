@@ -39,6 +39,7 @@ export class PurchaseController {
       network,
       recipients,
       userAddress,
+      recurring,
     } = req.body.message['Charge Card']
 
     const normalizedRecipients: string[] = recipients.map((address: string) =>

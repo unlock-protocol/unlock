@@ -22,6 +22,7 @@ import { HookEvent } from './hookEvent'
 import { ProcessedHookItem } from './processedHookItem'
 import { RefreshToken } from './refreshToken'
 import { Application } from './application'
+import { FiatRecurringPurchase } from './FiatRecurringPurchase'
 
 const config = require('../../config/sequelize.config')
 
@@ -53,6 +54,7 @@ sequelize.addModels([
   UserTokenMetadata,
   Application,
   Verifier,
+  FiatRecurringPurchase,
 ])
 
 User.removeAttribute('id')
@@ -77,3 +79,4 @@ export * from './hookEvent'
 export * from './processedHookItem'
 export * from './keyRenewal'
 export * from './paymentIntent'
+export * from './FiatRecurringPurchase'

@@ -13,6 +13,17 @@ interface KeyToGrant {
   expiration?: number
 }
 export default class Dispatcher {
+  async getUser(network: number) {
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].publicProvider
+    )
+    const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
+    return {
+      wallet,
+      provider,
+    }
+  }
+
   async balances() {
     const balances = await Promise.all(
       Object.values(networks).map(async (network: any) => {
@@ -35,9 +46,26 @@ export default class Dispatcher {
         }
       })
     )
-    // @ts-expect-error
+    // @ts-expect-error - map type
     const entries = new Map(balances)
     return Object.fromEntries(entries)
+  }
+
+  async grantKeyExtension(lockAddress: string, keyId: string, network: number) {
+    const walletService = new WalletService(networks)
+    const { wallet, provider } = await this.getUser(network)
+    await walletService.connect(provider, wallet)
+    const result = await walletService.grantKeyExtension(
+      {
+        lockAddress,
+        tokenId: keyId,
+        duration: 0,
+      },
+      (_, hash) => {
+        return hash
+      }
+    )
+    return result
   }
 
   /**
