@@ -4,7 +4,7 @@ import { Connected } from '../Connected'
 import { useQuery } from 'react-query'
 import { deleteCardForAddress } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
-import { Button } from '@unlock-protocol/ui'
+import { Button, Input } from '@unlock-protocol/ui'
 import { useWalletService } from '~/utils/withWalletService'
 import {
   FormEventHandler,
@@ -26,6 +26,7 @@ import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { useStorageService } from '~/utils/withStorageService'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useForm } from 'react-hook-form'
 
 interface Props {
   injectedProvider: unknown
@@ -167,6 +168,7 @@ export function Setup({ onSubmit, stripe, onSubmitted }: SetupProps) {
         clientSecret,
         appearance: {
           theme: 'stripe',
+
           variables: {
             colorBackground: '#fff',
           },
@@ -186,10 +188,15 @@ interface PaymentFormProps {
 export function PaymentForm({ onSubmit, onSubmitted }: PaymentFormProps) {
   const stripe = useStripe()
   const elements = useElements()
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<{
+    name: string
+  }>()
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-    event.preventDefault()
-
+  const onHandleSubmit = async ({ name }: Record<'name', string>) => {
     if (!stripe || !elements) {
       return
     }
@@ -199,6 +206,13 @@ export function PaymentForm({ onSubmit, onSubmitted }: PaymentFormProps) {
     const { error, setupIntent } = await stripe.confirmSetup({
       elements,
       redirect: 'if_required',
+      confirmParams: {
+        payment_method_data: {
+          billing_details: {
+            name,
+          },
+        },
+      },
     })
 
     if (error) {
@@ -212,7 +226,19 @@ export function PaymentForm({ onSubmit, onSubmitted }: PaymentFormProps) {
     }
   }
   return (
-    <form onSubmit={handleSubmit} id="payment">
+    <form
+      className="space-y-1"
+      onSubmit={handleSubmit(onHandleSubmit)}
+      id="payment"
+    >
+      <div className="px-2">
+        <Input
+          error={errors?.name?.message}
+          label="Name"
+          autoComplete="name"
+          {...register('name')}
+        />
+      </div>
       <PaymentElement />
     </form>
   )
