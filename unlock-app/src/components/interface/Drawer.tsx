@@ -36,9 +36,9 @@ export const Drawer = ({
       >
         <div className="absolute inset-0 overflow-hidden">
           <Transition.Child {...easeOutTransaction}>
-            <Dialog.Overlay className="absolute inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+            <Dialog.Overlay className="absolute inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
           </Transition.Child>
-          <div className="fixed inset-y-0 right-0 pl-10 max-w-full flex">
+          <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
             <Transition.Child
               as={React.Fragment}
               enter="transform transition ease-in-out duration-300 sm:duration-500"
@@ -50,11 +50,11 @@ export const Drawer = ({
             >
               <div className="relative w-screen max-w-md">
                 <Transition.Child {...easeOutTransaction}>
-                  <div className="absolute top-0 right-0 h-12 w-12 p-4">
+                  <div className="absolute top-0 w-12 h-12 p-4 right-3">
                     <CloseIcon size="25px" onClick={() => setIsOpen(false)} />
                   </div>
                 </Transition.Child>
-                <div className="h-full flex flex-col py-6 bg-brand-beige shadow-xl overflow-y-scroll">
+                <div className="flex flex-col h-full py-6 overflow-y-scroll shadow-xl bg-brand-beige">
                   <div className="px-4 sm:px-6">
                     {title && (
                       <Dialog.Title className="text-lg font-medium text-gray-900">
@@ -63,7 +63,7 @@ export const Drawer = ({
                     )}
                   </div>
 
-                  <div className="mt-2 relative flex-1 px-4 sm:px-6">
+                  <div className="relative flex-1 px-4 mt-2 sm:px-6">
                     {children}
                   </div>
                 </div>
