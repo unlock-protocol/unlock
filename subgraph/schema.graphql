@@ -1,6 +1,7 @@
 type Lock @entity {
   id: ID!
   address: Bytes!
+  name: String
   tokenAddress: Bytes!
   price: BigInt!
   lockManagers: [Bytes!]!

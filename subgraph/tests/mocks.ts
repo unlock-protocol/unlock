@@ -8,7 +8,7 @@ import {
   tokenId,
   tokenURI,
   nullAddress,
-  keyPrice
+  keyPrice,
 } from './constants'
 
 createMockedFunction(
@@ -26,6 +26,10 @@ createMockedFunction(
 )
   .withArgs([])
   .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(keyPrice))])
+
+createMockedFunction(Address.fromString(lockAddress), 'name', 'name():(string)')
+  .withArgs([])
+  .returns([ethereum.Value.fromString('My lock graph')])
 
 // mock publicLock version contract call
 createMockedFunction(

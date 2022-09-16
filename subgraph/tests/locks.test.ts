@@ -55,6 +55,7 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'createdAtBlock', '1')
     assert.fieldEquals('Lock', lockAddress, 'version', '11')
     assert.fieldEquals('Lock', lockAddress, 'price', '1000')
+    assert.fieldEquals('Lock', lockAddress, 'name', 'My lock graph')
     assert.fieldEquals('Lock', lockAddress, 'tokenAddress', nullAddress)
     assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
   })

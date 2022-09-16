@@ -18,12 +18,14 @@ export function handleNewLock(event: NewLock): void {
   let version = BigInt.fromI32(0)
   let publicLockVersion = lockContract.try_publicLockVersion()
   if (!publicLockVersion.reverted) {
-    version = BigInt.fromI32(publicLockVersion.value)
+    version = BigInt.fromI32(publicLockVersion.value.toI32())
   }
 
   // store price info
   lock.tokenAddress = lockContract.tokenAddress()
   lock.price = lockContract.keyPrice()
+
+  lock.name = lockContract.name()
 
   // store info
   lock.address = lockAddress
