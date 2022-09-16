@@ -76,28 +76,40 @@ export async function renewFiatKey({
       charge.lock,
       provider
     )
-    const receipt = await web3Service.provider.waitForTransaction(
-      charge.transactionHash
-    )
+    // Get the transaction reciept from the chain for the original grant keys function
+    const receipt = await provider.waitForTransaction(charge.transactionHash)
     const parser = lockContract.interface
 
-    const keyIds = receipt.logs
-      .map((log: any) => {
-        if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
-        return parser.parseLog(log)
-      })
-      .filter((event: any) => {
+    // Parse the logs
+    const logs = receipt.logs.map((log) => {
+      const item = parser.parseLog(log)
+      return item
+    })
+
+    // Filter the transfer events to find the token ID and whom they were transfered to.
+    const users = logs
+      .filter((event) => {
         return event && event.name === 'Transfer'
       })
-      ?.map((item: any) => item.args._tokenId.toString())
+      .map((item) => {
+        return {
+          keyId: item.args.tokenId.toNumber(),
+          to: item.args.to,
+        } as const
+      })
 
-    const keyIdToRenew = keyIds?.find((id: string) => id === keyId.toString())
+    // Find the user from transfer which matches the user address on the expired key
+    const user = users.find((item) => item.to === userAddress)
+
+    if (!user) {
+      throw new Error('User address does not match the charge')
+    }
 
     const fulfillmentDispatcher = new Dispatcher()
 
     const tx = await fulfillmentDispatcher.grantKeyExtension(
       charge.lock,
-      keyIdToRenew,
+      user.keyId,
       charge.chain
     )
 
@@ -112,7 +124,7 @@ export async function renewFiatKey({
     )
 
     const paymentMethodId = paymentMethod.data[0].id
-    const split = charge.recipients?.length || 0
+    const split = charge.recipients?.length || 1
     const amount = Number(charge.totalPriceInCents / split)
     const applicationFee = Number(charge.unlockServiceFee / split)
     const paymentIntent = await stripe.paymentIntents.create(
