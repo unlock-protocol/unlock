@@ -189,6 +189,7 @@ export const checkoutMachine = createMachine(
       METADATA: 'METADATA',
       MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
       CAPTCHA: 'CAPTCHA',
+      PASSWORD: 'PASSWORD',
       UPDATE_PAYWALL_CONFIG: {
         target: 'SELECT',
         actions: ['updatePaywallConfig'],
@@ -405,6 +406,14 @@ export const checkoutMachine = createMachine(
             actions: ['confirmMint'],
           },
           BACK: [
+            {
+              target: 'PASSWORD',
+              cond: (ctx) => !!ctx.paywallConfig.password,
+            },
+            {
+              target: 'CAPTCHA',
+              cond: (ctx) => !!ctx.paywallConfig.captcha,
+            },
             {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
