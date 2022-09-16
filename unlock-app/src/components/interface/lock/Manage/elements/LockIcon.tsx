@@ -147,8 +147,8 @@ export const IconModal = ({
                 className="w-0 h-0 v"
               />
               <div className="flex items-center justify-center min-h-full">
-                <div className="max-w-md">
-                  <div className="max-w-xs p-6 bg-white rounded-2xl">
+                <div className="max-w-sm">
+                  <div className="w-full p-6 bg-white rounded-2xl">
                     <div className="flex justify-end">
                       <Button
                         variant="transparent"
@@ -168,7 +168,7 @@ export const IconModal = ({
                       </span>
                     </div>
                     <div className="flex justify-center mt-4">
-                      <div className="flex items-center max-w-xs p-3 border border-gray-400 border-dashed max-h-xs h-80 w-80 rounded-3xl">
+                      <div className="flex items-center justify-center p-3 border border-gray-400 border-dashed max-h-xs h-80 w-80 rounded-3xl">
                         <img
                           className="object-contain"
                           alt="logo"
@@ -203,7 +203,7 @@ export const IconModal = ({
                         </Tab.List>
                         <Tab.Panels className="mt-6">
                           <Tab.Panel key="image">
-                            <div className="grid items-center grid-cols-5 gap-2">
+                            <div className="grid items-center grid-cols-1 gap-2">
                               <div className="col-span-2">
                                 <Button
                                   type="button"
