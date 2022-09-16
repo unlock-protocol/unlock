@@ -13,7 +13,10 @@ import networks from './networks.json'
 // types
 import { UnlockNetworkConfigs } from './types'
 import type { CreateLockFunction } from './createLock'
-import type { DeployProtocolFunction, DeployAndSetTemplate } from './deployProtocol'
+import type {
+  DeployProtocolFunction,
+  DeployAndSetTemplate,
+} from './deployProtocol'
 import type { GetLockVersionFunction } from './getLockVersion'
 import type { GetUnlockContractFunction } from './getUnlockContract'
 import type { GetLockContractFunction } from './getLockContract'
@@ -23,7 +26,7 @@ export interface HardhatUnlockPlugin {
   getLockVersion: GetLockVersionFunction
   deployProtocol: DeployProtocolFunction
   getLockContract: GetLockContractFunction
-  deployAndSetTemplate : DeployAndSetTemplate,
+  deployAndSetTemplate: DeployAndSetTemplate
   getUnlockContract: GetUnlockContractFunction
   networks: UnlockNetworkConfigs
 }
@@ -38,10 +41,13 @@ extendEnvironment((hre) => {
     return {
       networks,
       createLock: (args) => createLock(hre, args),
-      deployProtocol: (unlockVersion, lockVersion, confirmations) => deployProtocol(hre, unlockVersion, lockVersion, confirmations),
-      deployAndSetTemplate: (version, confirmations) => deployAndSetTemplate(hre, version, confirmations),
+      deployProtocol: (unlockVersion, lockVersion, confirmations) =>
+        deployProtocol(hre, unlockVersion, lockVersion, confirmations),
+      deployAndSetTemplate: (version, confirmations) =>
+        deployAndSetTemplate(hre, version, confirmations),
       getLockVersion: (lockAddress) => getLockVersion(hre, lockAddress),
-      getUnlockContract: (unlockAddress) => getUnlockContract(hre, unlockAddress),
+      getUnlockContract: (unlockAddress) =>
+        getUnlockContract(hre, unlockAddress),
       getLockContract: (lockAddress) => getLockContract(hre, lockAddress),
     }
   })

@@ -17,10 +17,7 @@ export interface DeployProtocolFunction {
 }
 
 export interface DeployAndSetTemplate {
-  (
-    lockVersion?: number,
-    confirmations?: number
-  ): Promise<Contract>
+  (lockVersion?: number, confirmations?: number): Promise<Contract>
 }
 
 export interface UnlockConfigArgs {
@@ -54,10 +51,9 @@ export async function deployUnlock(
 }
 
 export async function deployAndSetTemplate(
-  hre: HardhatRuntimeEnvironment, 
+  hre: HardhatRuntimeEnvironment,
   lockVersion = PUBLIC_LOCK_LATEST_VERSION,
   confirmations = 5
-  
 ) {
   const [signer] = await hre.ethers.getSigners()
   const unlock = await getUnlockContract(hre)
