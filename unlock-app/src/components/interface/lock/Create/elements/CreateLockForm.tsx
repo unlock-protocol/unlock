@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Icon, Input } from '@unlock-protocol/ui'
+import { Button, Icon, Input, Select } from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { Controller, useForm } from 'react-hook-form'
 import { RadioGroup } from '@headlessui/react'
@@ -8,13 +8,12 @@ import {
   MdRadioButtonChecked as CheckedIcon,
 } from 'react-icons/md'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { NetworkSelection } from './NetworkSelection'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import { CryptoIcon } from './KeyPrice'
+import { CryptoIcon } from '../../elements/KeyPrice'
 import { useQuery } from 'react-query'
 import useAccount from '~/hooks/useAccount'
 
@@ -56,7 +55,7 @@ export const CreateLockForm = ({
   defaultValues,
 }: CreateLockFormProps) => {
   const { networks } = useConfig()
-  const { network, account } = useAuth()
+  const { network, account, changeNetwork } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
   const { getTokenBalance } = useAccount(account!, network!)
@@ -123,6 +122,20 @@ export const CreateLockForm = ({
 
   const symbol = lockTickerSymbol(networks[network!], selectedCurrency)
 
+  const networkOptions = Object.values(networks || {})?.map(
+    ({ name, id }: any) => {
+      return {
+        label: name,
+        value: id,
+      }
+    }
+  )
+
+  const onChangeNetwork = (network: number | string) => {
+    changeNetwork(networks[parseInt(`${network}`)])
+    setSelectedToken(null)
+  }
+
   return (
     <>
       <SelectCurrencyModal
@@ -130,17 +143,23 @@ export const CreateLockForm = ({
         setIsOpen={setIsOpen}
         network={network!}
         onSelect={onSelectToken}
+        defaultCurrency={baseCurrencySymbol}
       />
       <div className="mb-4">
         {noBalance && <BalanceWarning network={network!} balance={balance!} />}
       </div>
       <div className="overflow-hidden bg-white rounded-xl">
-        <div className="px-3 py-4">
+        <div className="px-3 py-8 md:py-4">
           <form
             className="flex flex-col w-full gap-10"
             onSubmit={handleSubmit(onHandleSubmit)}
           >
-            <NetworkSelection onChange={() => setSelectedToken(null)} />
+            <Select
+              label="Network:"
+              defaultValue={networks[network!].id}
+              options={networkOptions}
+              onChange={onChangeNetwork}
+            />
             <div className="relative">
               <Input
                 label="Name:"
@@ -326,7 +345,11 @@ export const CreateLockForm = ({
               )}
             </div>
 
-            <Button type="submit" disabled={submitDisabled}>
+            <Button
+              className="mt-8 md:mt-0"
+              type="submit"
+              disabled={submitDisabled}
+            >
               Next
             </Button>
           </form>

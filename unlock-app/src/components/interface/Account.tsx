@@ -1,11 +1,11 @@
 import React, { useContext } from 'react'
 import styled from 'styled-components'
 import Jazzicon from 'react-jazzicon'
-import Media from '../../theme/media'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { ConfigContext } from '../../utils/withConfig'
 import { useStorageService } from '~/utils/withStorageService'
-
+import { Select, Button } from '@unlock-protocol/ui'
+import { addressMinify } from '~/utils/strings'
 interface NetworkType {
   name: string
   id: number
@@ -28,53 +28,53 @@ export function Account() {
   // Using https://github.com/MetaMask/metamask-extension/blob/develop/ui/lib/icon-factory.js#L60 to make sure jazzicons are consistent between Metamask and unlock.
   const iconSeed = parseInt((account || '0x0000').slice(2, 10), 16)
 
-  const networkSelected = (event: any) => {
-    changeNetwork(networks[event?.target?.value])
+  const onNetworkChange = (id: string | number) => {
+    changeNetwork(networks?.[parseInt(`${id}`)!])
   }
 
+  const networkOptions = Object.keys(networks).map((networkId) => {
+    const { id, name } = networks[networkId] ?? {}
+    return {
+      value: id,
+      label: name,
+    }
+  })
+
   return (
-    <AccountWrapper>
-      <AccountDetails className="items-center">
-        {account && iconSeed && <UserIcon seed={iconSeed} />}
-        <div className="grid gap-2 w-[155px]">
-          <div
-            style={{
-              wordWrap: 'break-word',
-            }}
-            className="font-mono text-xs w-[155px] word-wrap"
-          >
-            {account}
-          </div>
-          <Label>
-            {network && (
-              <div className="grid space-y-2">
-                <select
-                  className="px-2 py-1 text-sm text-black bg-white border rounded"
-                  onChange={networkSelected}
-                  value={network}
-                >
-                  {Object.keys(networks).map((networkId) => {
-                    return (
-                      <Network network={networks[networkId]} key={networkId} />
-                    )
-                  })}
-                </select>
-                <button
-                  className="px-2 py-1 text-gray-900 bg-gray-200 rounded"
-                  type="button"
-                  onClick={() => {
-                    deAuthenticate()
-                    storageService.signOut()
-                  }}
-                >
-                  Disconnect
-                </button>
-              </div>
-            )}
-          </Label>
+    <div>
+      <div className="flex items-end gap-3 md:flex-row">
+        <div className="hidden col-auto md:block">
+          {account && iconSeed && <UserIcon seed={iconSeed} />}
         </div>
-      </AccountDetails>
-    </AccountWrapper>
+        <div className="flex flex-col w-full gap-2">
+          {network && (
+            <div className="flex flex-col items-end w-full gap-2 md:flex-row">
+              <div className="w-full md:w-96">
+                <Select
+                  options={networkOptions}
+                  label={account && addressMinify(account)}
+                  defaultValue={network}
+                  onChange={onNetworkChange}
+                  size="small"
+                />
+              </div>
+
+              <Button
+                type="button"
+                size="tiny"
+                variant="outlined-primary"
+                onClick={() => {
+                  deAuthenticate()
+                  storageService.signOut()
+                }}
+              >
+                Disconnect
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -83,23 +83,3 @@ const UserIcon = styled(Jazzicon).attrs({
 })``
 
 export default Account
-
-const AccountWrapper = styled.section``
-const AccountDetails = styled.div`
-  font-family: 'IBM Plex Mono', monospace;
-  display: grid;
-  row-gap: 8px;
-  column-gap: 16px;
-  grid-template-columns: 40px 200px repeat(2, 100px) repeat(3, 24px) 1fr;
-  ${Media.phone`
-    column-gap: 2px;
-    grid-template-columns: 45px 145px repeat(2, 0px);
-  `};
-`
-
-const Label = styled.div`
-  font-weight: 100;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 8px;
-`

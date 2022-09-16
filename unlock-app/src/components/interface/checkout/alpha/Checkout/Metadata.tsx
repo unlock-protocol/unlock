@@ -16,6 +16,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
 import { useQuery } from 'react-query'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { MetadataInput } from '~/unlockTypes'
 
 interface Props {
   injectedProvider: unknown
@@ -32,10 +33,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   const storage = useStorageService()
   const { lock, paywallConfig, quantity } = state.context
   const web3Service = useWeb3Service()
-
-  const metadataInputs =
-    paywallConfig.locks[lock!.address].metadataInputs ??
-    paywallConfig.metadataInputs
+  const locksConfig = paywallConfig.locks[lock!.address]
+  const [metadataInputs, setMetadataInputs] = useState<
+    MetadataInput[] | undefined
+  >(undefined)
 
   const {
     register,
@@ -99,6 +100,28 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     }
   }, [quantity, account, fields, append, remove, isMember, isMemberLoading])
 
+  useEffect(() => {
+    if (metadataInputs) {
+      return
+    }
+
+    const emailInput: MetadataInput = {
+      type: 'email',
+      name: 'email',
+      required: true,
+      placeholder: 'hello@unlock-protocol.com',
+    }
+
+    const inputs: MetadataInput[] =
+      locksConfig.metadataInputs || paywallConfig.metadataInputs || []
+
+    if (locksConfig.emailRequired || paywallConfig.emailRequired) {
+      inputs.push(emailInput)
+    }
+
+    setMetadataInputs(inputs)
+  }, [locksConfig, paywallConfig, metadataInputs])
+
   async function onSubmit(data: FormData) {
     try {
       const formData = data
@@ -109,10 +132,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         })
       )
       if (metadataInputs) {
-        const users = formData.metadata.map((props, index) => {
+        const users = formData.metadata.map(({ recipient, ...props }) => {
           const formattedMetadata = formResultToMetadata(props, metadataInputs!)
           return {
-            userAddress: recipients[index],
+            userAddress: recipient,
             metadata: {
               public: formattedMetadata.publicData,
               protected: formattedMetadata.protectedData,
