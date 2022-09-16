@@ -15,6 +15,8 @@ const lockQuery = gql`
       version
       price
       lockManagers
+      expirationDuration
+      name
       createdAtBlock
     }
   }
@@ -68,10 +70,10 @@ describe('Unlock', function () {
       )
 
       // to be implemented in the graph yet...
-      // expect(lockInGraph.expirationDuration).to.equals(
-      //   lockParams.expirationDuration
-      // )
-      // expect(lockInGraph.name).to.equals(lockParams.name)
+      expect(parseInt(lockInGraph.expirationDuration)).to.equals(
+        lockParams.expirationDuration
+      )
+      expect(lockInGraph.name).to.equals(lockParams.name)
       // expect(lockInGraph.maxNumberOfKeys).to.equals(lockParams.maxNumberOfKeys)
     })
   })
