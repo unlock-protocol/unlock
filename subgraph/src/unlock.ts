@@ -2,7 +2,7 @@
 /* eslint-disable prefer-const */
 import { log, BigInt } from '@graphprotocol/graph-ts'
 import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
-import { PublicLockV11 } from '../generated/templates/PublicLock/PublicLockV11'
+import { PublicLock as PublicLockMerged } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock } from '../generated/templates'
 import { Lock } from '../generated/schema'
 
@@ -14,7 +14,7 @@ export function handleNewLock(event: NewLock): void {
   const lock = new Lock(lockID)
 
   // fetch lock version
-  let lockContract = PublicLockV11.bind(lockAddress)
+  let lockContract = PublicLockMerged.bind(lockAddress)
   let version = BigInt.fromI32(0)
   let publicLockVersion = lockContract.try_publicLockVersion()
   if (!publicLockVersion.reverted) {
