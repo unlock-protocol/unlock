@@ -10,6 +10,7 @@ import { MdOutlineClose as CloseIcon } from 'react-icons/md'
 interface LockIconProps {
   lockAddress: string
   network: number
+  loading?: boolean
 }
 
 interface IconModalProps {
@@ -265,7 +266,11 @@ export const IconModal = ({
   )
 }
 
-export const LockIcon = ({ lockAddress, network }: LockIconProps) => {
+const LockIconPlaceholder = () => {
+  return <div className="w-full animate-pulse bg-slate-200 h-80"></div>
+}
+
+export const LockIcon = ({ lockAddress, network, loading }: LockIconProps) => {
   const config = useConfig()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -285,6 +290,7 @@ export const LockIcon = ({ lockAddress, network }: LockIconProps) => {
     setImageSrc(image)
   }
 
+  if (loading) return <LockIconPlaceholder />
   return (
     <>
       <IconModal

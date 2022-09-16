@@ -149,7 +149,11 @@ export const LockDetailCard = ({
   return (
     <div className="flex flex-col">
       <div className="flex flex-col gap-2">
-        <LockIcon lockAddress={lockAddress} network={network} />
+        <LockIcon
+          lockAddress={lockAddress}
+          network={network}
+          loading={loading}
+        />
         <LockInfoCard
           lockAddress={lockAddress}
           network={network}
