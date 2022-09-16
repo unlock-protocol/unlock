@@ -24,6 +24,9 @@ const config: HardhatUserConfig = {
       unlockAddress,
     },
   },
+  mocha: {
+    timeout: 2000000,
+  },
 }
 
 export default config
