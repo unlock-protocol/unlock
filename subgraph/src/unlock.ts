@@ -21,13 +21,13 @@ export function handleNewLock(event: NewLock): void {
     version = BigInt.fromI32(publicLockVersion.value.toI32())
   }
 
-  // store price info
+  // store lock info from contract
   lock.tokenAddress = lockContract.tokenAddress()
   lock.price = lockContract.keyPrice()
-
   lock.name = lockContract.name()
+  lock.expirationDuration = lockContract.expirationDuration()
 
-  // store info
+  // store info from event
   lock.address = lockAddress
   lock.version = version
   lock.createdAtBlock = event.block.number

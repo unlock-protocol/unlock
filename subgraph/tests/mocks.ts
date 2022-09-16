@@ -1,6 +1,7 @@
 import { createMockedFunction } from 'matchstick-as/assembly/index'
 import { Address, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import {
+  duration,
   expiration,
   keyOwnerAddress,
   lockAddressV8,
@@ -57,6 +58,14 @@ createMockedFunction(
 )
   .withArgs([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(tokenId))])
   .returns([ethereum.Value.fromString(tokenURI)])
+
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'expirationDuration',
+  'expirationDuration():(uint256)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(duration))])
 
 createMockedFunction(
   Address.fromString(lockAddress),
