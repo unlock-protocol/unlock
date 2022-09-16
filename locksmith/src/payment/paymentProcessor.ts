@@ -12,6 +12,7 @@ import {
   saveStripeCustomerIdForAddress,
 } from '../operations/stripeOperations'
 import logger from '../logger'
+import { FiatRecurringPurchase } from '../models'
 
 const Sequelize = require('sequelize')
 
@@ -152,7 +153,8 @@ export class PaymentProcessor {
     lock: ethereumAddress,
     maxPrice: any,
     network: number,
-    stripeAccount: string
+    stripeAccount: string,
+    recurring = 0
   ) {
     const pricing = await new KeyPricer().generate(
       lock,
@@ -240,6 +242,7 @@ export class PaymentProcessor {
         metadata: {
           purchaser: userAddress,
           lock,
+          recurring,
           // For compaitibility and stripe limitation (cannot store an array), we are using the same recipient field name but storing multiple recipients in case we have them.
           recipient: recipients.join(','),
           network,

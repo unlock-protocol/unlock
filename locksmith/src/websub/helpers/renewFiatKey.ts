@@ -2,12 +2,12 @@ import { getStripeConnectForLock } from '../../operations/stripeOperations'
 import Dispatcher from '../../fulfillment/dispatcher'
 import { logger } from '../../logger'
 import { Charge, KeyRenewal } from '../../models'
-import { FiatRecurringPurchase } from '../../models/FiatRecurringPurchase'
 import Stripe from 'stripe'
 import config from '../../../config/config'
+import { Op } from 'sequelize'
 
 interface RenewKeyReturned {
-  keyId: number
+  keyId?: number
   lockAddress: string
   network: number
   tx?: string
@@ -30,7 +30,6 @@ export async function renewFiatKey({
   try {
     const renewalInfo = {
       network,
-      keyId,
       lockAddress,
     }
 
@@ -44,20 +43,24 @@ export async function renewFiatKey({
       throw new Error('No stripe connect account associated with the lock')
     }
 
-    const purchase = await FiatRecurringPurchase.findOne({
+    const charge = await Charge.findOne({
       where: {
-        lockAddress,
-        keyId,
-        network,
-        userAddress,
+        lock: lockAddress,
+        chain: network,
+        recurring: {
+          [Op.gt]: 0,
+        },
+        recipients: {
+          [Op.in]: [userAddress],
+        },
       },
     })
 
-    if (!purchase) {
+    if (!charge) {
       throw new Error('Fiat purchase not found!')
     }
 
-    const customer = await stripe.customers.retrieve(purchase.customerId, {
+    const customer = await stripe.customers.retrieve(charge.connectedCustomer, {
       stripeAccount,
     })
 
@@ -65,12 +68,14 @@ export async function renewFiatKey({
       throw new Error('Customer does not exist anymore')
     }
 
+    // Get the key ID from transaction hash...
+    const keyId = ''
     const fulfillmentDispatcher = new Dispatcher()
 
     const tx = await fulfillmentDispatcher.grantKeyExtension(
-      purchase.lockAddress,
-      purchase.keyId.toString(),
-      purchase.network
+      charge.lock,
+      keyId,
+      charge.chain
     )
 
     const paymentMethod = await stripe.paymentMethods.list(
@@ -84,12 +89,15 @@ export async function renewFiatKey({
     )
 
     const paymentMethodId = paymentMethod.data[0].id
-
+    const split = charge.recipients?.length || 0
+    const amount = Number(charge.totalPriceInCents / split)
+    const applicationFee = Number(charge.unlockServiceFee / split)
     const paymentIntent = await stripe.paymentIntents.create(
       {
-        amount: purchase.amount,
+        amount: amount,
         currency: 'USD',
         confirm: true,
+        application_fee_amount: applicationFee,
         off_session: true,
         customer: customer.id,
         payment_method: paymentMethodId,
@@ -120,8 +128,7 @@ export async function renewFiatKey({
           tx: tx,
         }
         await KeyRenewal.create(recordedrenewalInfo)
-        purchase.transacted += 1
-        await purchase.save()
+        await charge.save()
         return recordedrenewalInfo
       }
 

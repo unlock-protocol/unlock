@@ -39,7 +39,7 @@ export class PurchaseController {
       network,
       recipients,
       userAddress,
-      recurring,
+      recurring = 0,
     } = req.body.message['Charge Card']
 
     const normalizedRecipients: string[] = recipients.map((address: string) =>
@@ -100,7 +100,8 @@ export class PurchaseController {
         Normalizer.ethereumAddress(lock),
         pricing,
         network,
-        stripeConnectApiKey
+        stripeConnectApiKey,
+        recurring
       )
       return res.send(paymentIntentDetails)
     } catch (error) {
