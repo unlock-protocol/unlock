@@ -144,26 +144,12 @@ export async function renewFiatKey({
 
     switch (paymentIntent.status) {
       case 'succeeded': {
-        const charge: Charge = await Charge.create({
-          userAddress: paymentIntent.metadata.purchaser,
-          recipients: paymentIntent.metadata.recipient.split(','),
-          lock: paymentIntent.metadata.lock,
-          stripeCustomerId: paymentIntent.customer, // TODO: consider checking the customer id under Unlock's stripe account?
-          connectedCustomer: paymentIntent.customer,
-          totalPriceInCents: paymentIntent.amount,
-          unlockServiceFee: paymentIntent.application_fee_amount,
-          stripeCharge: paymentIntent.id,
-          chain: network,
-        })
-
-        await charge.save()
         // record renewal in db
         const recordedrenewalInfo = {
           ...renewalInfo,
           tx: tx,
         }
         await KeyRenewal.create(recordedrenewalInfo)
-        await charge.save()
         return recordedrenewalInfo
       }
 
