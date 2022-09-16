@@ -12,7 +12,6 @@ import {
   saveStripeCustomerIdForAddress,
 } from '../operations/stripeOperations'
 import logger from '../logger'
-import { FiatRecurringPurchase } from '../models'
 
 const Sequelize = require('sequelize')
 
@@ -376,6 +375,7 @@ export class PaymentProcessor {
       totalPriceInCents: paymentIntent.amount,
       unlockServiceFee: paymentIntent.application_fee_amount,
       stripeCharge: paymentIntent.id,
+      recurring: paymentIntent.metadata.recurring,
       chain: network,
     })
 

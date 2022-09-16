@@ -5,6 +5,8 @@ import { Charge, KeyRenewal } from '../../models'
 import Stripe from 'stripe'
 import config from '../../../config/config'
 import { Op } from 'sequelize'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 
 interface RenewKeyReturned {
   keyId?: number
@@ -68,13 +70,34 @@ export async function renewFiatKey({
       throw new Error('Customer does not exist anymore')
     }
 
-    // Get the key ID from transaction hash...
-    const keyId = ''
+    const web3Service = new Web3Service(networks)
+    const provider = await web3Service.providerForNetwork(charge.chain)
+    const lockContract = await web3Service.getLockContract(
+      charge.lock,
+      provider
+    )
+    const receipt = await web3Service.provider.waitForTransaction(
+      charge.transactionHash
+    )
+    const parser = lockContract.interface
+
+    const keyIds = receipt.logs
+      .map((log: any) => {
+        if (log.address !== lockAddress) return // Some events are triggered by the ERC20 contract
+        return parser.parseLog(log)
+      })
+      .filter((event: any) => {
+        return event && event.name === 'Transfer'
+      })
+      ?.map((item: any) => item.args._tokenId.toString())
+
+    const keyIdToRenew = keyIds?.find((id: string) => id === keyId.toString())
+
     const fulfillmentDispatcher = new Dispatcher()
 
     const tx = await fulfillmentDispatcher.grantKeyExtension(
       charge.lock,
-      keyId,
+      keyIdToRenew,
       charge.chain
     )
 
