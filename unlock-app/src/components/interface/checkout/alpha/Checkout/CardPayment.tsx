@@ -29,7 +29,6 @@ interface Props {
 
 export function CardPayment({ checkoutService, injectedProvider }: Props) {
   const { account, network } = useAuth()
-  const [editCard, setEditCard] = useState(false)
   const storageService = useStorageService()
   const config = useConfig()
   const walletService = useWalletService()
@@ -51,7 +50,6 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
       return storageService.listCardMethods()
     },
     {
-      staleTime: Infinity,
       enabled: !!account,
     }
   )
@@ -65,7 +63,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
       <main className="h-full px-6 py-2 overflow-auto">
         {isMethodLoading ? (
           <CardPlaceholder />
-        ) : editCard || !card ? (
+        ) : !card ? (
           <Setup
             stripe={stripe}
             onSubmit={() => {
@@ -74,14 +72,13 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
             onSubmitted={async () => {
               setIsSaving(false)
               await refetch()
-              setEditCard(false)
             }}
           />
         ) : (
           <Card
             onChange={async () => {
               await deleteCardForAddress(config, walletService, account!)
-              setEditCard(true)
+              await refetch()
             }}
             {...card}
           />
@@ -92,7 +89,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
           injectedProvider={injectedProvider}
           service={checkoutService}
         >
-          {editCard || !card ? (
+          {!card ? (
             <Button
               loading={isSaving}
               disabled={isMethodLoading || isSaving || !stripe}
@@ -162,10 +159,6 @@ export function Setup({ onSubmit, stripe, onSubmitted }: SetupProps) {
         clientSecret,
         appearance: {
           theme: 'stripe',
-
-          variables: {
-            colorBackground: '#fff',
-          },
         },
       }}
     >
@@ -221,18 +214,19 @@ export function PaymentForm({ onSubmit, onSubmitted }: PaymentFormProps) {
   }
   return (
     <form
-      className="space-y-1"
+      className="space-y-1 "
       onSubmit={handleSubmit(onHandleSubmit)}
       id="payment"
     >
-      <div className="px-2">
-        <Input
-          error={errors?.name?.message}
-          label="Name"
-          autoComplete="name"
-          {...register('name')}
-        />
-      </div>
+      <Input
+        error={errors?.name?.message}
+        label="Name"
+        className="px-2"
+        autoComplete="name"
+        {...register('name', {
+          required: true,
+        })}
+      />
       <PaymentElement />
     </form>
   )

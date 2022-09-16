@@ -19,9 +19,9 @@ export function Card({
   exp_year,
 }: Props) {
   return (
-    <div className="border rounded-xl border-zinc-300">
+    <div className="w-full max-w-sm bg-white border rounded-xl">
       <div className="px-6 pt-6">
-        <p className="font-medium inline-flex items-center gap-2">
+        <p className="inline-flex items-center gap-2 font-medium">
           <CreditCardIcon size={18} /> XXXX-XXXX-XXXX-{last4}
         </p>
         <p> {name}</p>
@@ -30,7 +30,7 @@ export function Card({
           {String(exp_month)?.padStart(2, '0')}/{exp_year}
         </time>
       </div>
-      <div className="flex items-center p-2 justify-end">
+      <div className="flex items-center justify-end p-2">
         <Button onClick={onChange} size="small">
           Change
         </Button>
@@ -41,11 +41,11 @@ export function Card({
 
 export function CardPlaceholder() {
   return (
-    <div className="border rounded-xl p-6 not-sr-only flex flex-col gap-2">
-      <div className="w-full bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-      <div className="w-54 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-      <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-      <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+    <div className="flex flex-col gap-2 p-6 border not-sr-only rounded-xl">
+      <div className="w-full p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+      <div className="p-2 bg-gray-100 rounded-lg w-54 animate-pulse"></div>
+      <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+      <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
     </div>
   )
 }
