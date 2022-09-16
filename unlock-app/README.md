@@ -14,10 +14,6 @@ On the front-end, you should have a [web3](https://web3js.readthedocs.io/en/1.0/
 
 See README at the root of the repo;
 
-## Stripe
-
-To support apple pay, we need an apple merchant domain verification file hosted in .well-known folder. This file can be updated from the stripe dashboard when configuring apple pay.
-
 ## Default accounts for testing (set up thru ganache-cli)
 
 # Available Accounts
