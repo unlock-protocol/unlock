@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useState } from 'react'
 import Head from 'next/head'
 import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
