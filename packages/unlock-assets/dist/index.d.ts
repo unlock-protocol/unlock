@@ -1,11 +1,6 @@
 import * as PropTypes from 'prop-types';
 import * as react from 'react';
 
-interface SVGRProps$d {
-    title?: string;
-    titleId?: string;
-}
-
 interface SVGRProps$c {
     title?: string;
     titleId?: string;
@@ -70,10 +65,11 @@ interface SVGRProps {
     title?: string;
     titleId?: string;
 }
+
 declare const _default: {
     SvgComponents: {
         About: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$1): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -87,7 +83,7 @@ declare const _default: {
         Attention: (props: any) => JSX.Element;
         Bars: (props: any) => JSX.Element;
         Blog: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$2): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$1): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -103,7 +99,7 @@ declare const _default: {
         Cloudflare: (props: any) => JSX.Element;
         Code: (props: any) => JSX.Element;
         Cog: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$3): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$2): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -112,7 +108,7 @@ declare const _default: {
             };
         };
         CoinbaseWallet: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$4): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$3): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -137,7 +133,7 @@ declare const _default: {
         Github: (props: any) => JSX.Element;
         Heart: (props: any) => JSX.Element;
         Home: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$5): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$4): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -146,7 +142,7 @@ declare const _default: {
             };
         };
         Idea: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$6): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$5): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -155,7 +151,7 @@ declare const _default: {
             };
         };
         Info: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$7): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$6): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -165,7 +161,7 @@ declare const _default: {
         };
         Jobs: (props: any) => JSX.Element;
         Key: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$8): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$7): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -177,7 +173,7 @@ declare const _default: {
         LiveDemo: (props: any) => JSX.Element;
         Loading: (props: any) => JSX.Element;
         LoadingDots: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$9): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$8): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -190,7 +186,7 @@ declare const _default: {
         Log: (props: any) => JSX.Element;
         Members: (props: any) => JSX.Element;
         Metamask: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$a): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$9): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -200,7 +196,7 @@ declare const _default: {
         };
         Newsletter: (props: any) => JSX.Element;
         Opera: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$b): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$a): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -216,7 +212,7 @@ declare const _default: {
         Ticket: (props: any) => JSX.Element;
         Twitter: (props: any) => JSX.Element;
         RocketLaunch: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$c): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$b): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -228,7 +224,7 @@ declare const _default: {
         UnlockWordMark: (props: any) => JSX.Element;
         Upload: (props: any) => JSX.Element;
         UnlockMonogram: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$d): JSX.Element;
+            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$c): JSX.Element;
             propTypes: {
                 title: PropTypes.Requireable<string>;
             };
@@ -244,4 +240,4 @@ declare const _default: {
     };
 };
 
-export { SVGRProps, _default as default };
+export { _default as default };
