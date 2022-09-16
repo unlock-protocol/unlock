@@ -87,7 +87,7 @@ function mergeAbi(contractName) {
     }))
     .filter((v, i, a) => a.findIndex((v2) => v2.sig === v.sig) === i)
 
-  const abiPath = path.join(abisFolderPath, `${contractName}-merged.json`)
+  const abiPath = path.join(abisFolderPath, `${contractName}.json`)
   fs.writeJSONSync(abiPath, deduped, { spaces: 2 })
 }
 
