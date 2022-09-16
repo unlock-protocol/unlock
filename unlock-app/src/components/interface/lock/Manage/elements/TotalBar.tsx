@@ -1,6 +1,6 @@
 import { Button } from '@unlock-protocol/ui'
 import React from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQueries } from 'react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -105,20 +105,34 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
 
   const withdrawMutation = useMutation(withdrawFromLockPromise)
 
-  const { isLoading, data: lock } = useQuery(
-    ['getLock', lockAddress, network, withdrawMutation.isSuccess],
-    async () => getLock()
-  )
-
-  const { isLoading: isLoadingTotalMembers, data: numberOfOwners } = useQuery(
-    ['totalMembers', lockAddress, network, withdrawMutation.isSuccess],
-    async () => getNumberOfOwners()
-  )
-
-  const { isLoading: isLoadingSymbol, data: symbol } = useQuery(
-    ['getTokenSymbol', lockAddress, network, withdrawMutation.isSuccess],
-    async () => getTokenSymbol()
-  )
+  const [
+    { isLoading, data: lock },
+    { isLoading: isLoadingTotalMembers, data: numberOfOwners },
+    { isLoading: isLoadingSymbol, data: symbol },
+  ] = useQueries([
+    {
+      queryKey: ['getLock', lockAddress, network, withdrawMutation.isSuccess],
+      queryFn: getLock,
+    },
+    {
+      queryKey: [
+        'totalMembers',
+        lockAddress,
+        network,
+        withdrawMutation.isSuccess,
+      ],
+      queryFn: getNumberOfOwners,
+    },
+    {
+      queryKey: [
+        'getTokenSymbol',
+        lockAddress,
+        network,
+        withdrawMutation.isSuccess,
+      ],
+      queryFn: getTokenSymbol,
+    },
+  ])
 
   const { balance = 0, outstandingKeys: keySold = 0 } = lock ?? {}
 
