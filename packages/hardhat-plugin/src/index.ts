@@ -13,7 +13,10 @@ import networks from './networks.json'
 // types
 import { UnlockNetworkConfigs } from './types'
 import type { CreateLockFunction } from './createLock'
-import type { DeployProtocolFunction } from './deployProtocol'
+import type {
+  DeployProtocolFunction,
+  DeployAndSetTemplate,
+} from './deployProtocol'
 import type { GetLockVersionFunction } from './getLockVersion'
 import type { GetUnlockContractFunction } from './getUnlockContract'
 import type { GetLockContractFunction } from './getLockContract'
@@ -23,6 +26,7 @@ export interface HardhatUnlockPlugin {
   getLockVersion: GetLockVersionFunction
   deployProtocol: DeployProtocolFunction
   getLockContract: GetLockContractFunction
+  deployAndSetTemplate: DeployAndSetTemplate
   getUnlockContract: GetUnlockContractFunction
   networks: UnlockNetworkConfigs
 }
@@ -30,17 +34,21 @@ export interface HardhatUnlockPlugin {
 extendEnvironment((hre) => {
   hre.unlock = lazyObject(() => {
     const { createLock } = require('./createLock')
-    const { deployProtocol } = require('./deployProtocol')
+    const { deployProtocol, deployAndSetTemplate } = require('./deployProtocol')
     const { getLockVersion } = require('./getLockVersion')
     const { getUnlockContract } = require('./getUnlockContract')
     const { getLockContract } = require('./getLockContract')
     return {
       networks,
       createLock: (args) => createLock(hre, args),
-      deployProtocol: (args) => deployProtocol(hre, args),
-      getLockVersion: (args) => getLockVersion(hre, args),
-      getUnlockContract: (args) => getUnlockContract(hre, args),
-      getLockContract: (args) => getLockContract(hre, args),
+      deployProtocol: (unlockVersion, lockVersion, confirmations) =>
+        deployProtocol(hre, unlockVersion, lockVersion, confirmations),
+      deployAndSetTemplate: (version, confirmations) =>
+        deployAndSetTemplate(hre, version, confirmations),
+      getLockVersion: (lockAddress) => getLockVersion(hre, lockAddress),
+      getUnlockContract: (unlockAddress) =>
+        getUnlockContract(hre, unlockAddress),
+      getLockContract: (lockAddress) => getLockContract(hre, lockAddress),
     }
   })
 })
