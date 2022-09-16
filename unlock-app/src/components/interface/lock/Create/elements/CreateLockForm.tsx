@@ -13,7 +13,7 @@ import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import { CryptoIcon } from './KeyPrice'
+import { CryptoIcon } from '../../elements/KeyPrice'
 import { useQuery } from 'react-query'
 import useAccount from '~/hooks/useAccount'
 
