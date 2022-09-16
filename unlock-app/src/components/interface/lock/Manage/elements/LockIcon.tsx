@@ -147,7 +147,7 @@ export const IconModal = ({
                 className="w-0 h-0 v"
               />
               <div className="flex items-center justify-center min-h-full">
-                <div className="max-w-sm">
+                <div className="max-w-md">
                   <div className="max-w-xs p-6 bg-white rounded-2xl">
                     <div className="flex justify-end">
                       <Button
