@@ -19,6 +19,8 @@ dataSources:
       abis:
         - name: Unlock
           file: ./abis/UnlockV11.json
+        - name: PublicLock
+          file: ./abis/PublicLock.json
         - name: PublicLockV11
           file: ./abis/PublicLockV11.json
         - name: PublicLockV7
@@ -51,7 +53,7 @@ templates:
         - Transfer
       abis:
         - name: PublicLock
-          file: ./abis/PublicLock-merged.json
+          file: ./abis/PublicLock.json
         - name: PublicLockV11
           file: ./abis/PublicLockV11.json
         - name: PublicLockV7
