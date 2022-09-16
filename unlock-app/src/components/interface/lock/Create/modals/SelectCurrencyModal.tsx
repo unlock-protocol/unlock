@@ -5,14 +5,18 @@ import { Fragment, useEffect, useState } from 'react'
 import useDebounce from '~/hooks/useDebouce'
 import { utils } from 'ethers'
 import { useConfig } from '~/utils/withConfig'
-import { CryptoIcon } from '../elements/KeyPrice'
+import { CryptoIcon } from '../../elements/KeyPrice'
 import { addressMinify } from '~/utils/strings'
-
+import { useQuery } from 'react-query'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { FaSpinner as Spinner } from 'react-icons/fa'
+import { useForm } from 'react-hook-form'
 interface SelectCurrencyModalProps {
   isOpen: boolean
   setIsOpen: (status: boolean) => void
   network: number
   onSelect: (token: Token) => void
+  defaultCurrency: string
 }
 
 export const SelectCurrencyModal = ({
@@ -20,12 +24,29 @@ export const SelectCurrencyModal = ({
   setIsOpen,
   network,
   onSelect,
+  defaultCurrency,
 }: SelectCurrencyModalProps) => {
   const { networks } = useConfig()
+  const web3Service = useWeb3Service()
   const [contractAddress, setContractAddress] = useState<string>('')
   const [query, setQuery] = useState<string>('')
   const queryValue = useDebounce<string>(query)
-  const tokens = networks[network!]?.tokens ?? []
+  const { tokens: tokenItems = [] } = networks[network!] || {}
+  const [tokens, setTokens] = useState<Token[]>([])
+
+  const { register, resetField } = useForm({
+    mode: 'onChange',
+    defaultValues: {
+      query: '',
+    },
+  })
+
+  useEffect(() => {
+    setTokens([
+      { name: defaultCurrency, symbol: defaultCurrency },
+      ...tokenItems,
+    ])
+  }, [network])
 
   const onSelectToken = (token: Token) => {
     if (typeof onSelect === 'function') {
@@ -52,16 +73,61 @@ export const SelectCurrencyModal = ({
 
   const tokensFiltered = tokens?.filter(
     (token: Token) =>
-      token.name?.toLowerCase().includes(queryValue?.toLowerCase()) ||
-      token.symbol?.toLowerCase().includes(queryValue?.toLowerCase())
+      token?.name?.toLowerCase().includes(queryValue?.toLowerCase()) ||
+      token?.symbol?.toLowerCase().includes(queryValue?.toLowerCase())
   )
+
+  const getContractTokenSymbol = async () => {
+    return await web3Service.getTokenSymbol(contractAddress, network)
+  }
+
+  const { isLoading: isLoadingContractToken, data: contractTokenSymbol } =
+    useQuery(
+      ['getContractTokenSymbol', contractAddress, queryValue],
+      async () => getContractTokenSymbol()
+    )
+
+  const addToken = ({
+    name,
+    symbol,
+    address = undefined,
+    decimals = 18,
+  }: Partial<Token>) => {
+    const currentList = tokens || []
+    setTokens([
+      {
+        name: name!,
+        symbol: symbol!,
+        address: address!,
+        decimals,
+      },
+      ...currentList,
+    ])
+  }
+
+  const onImport = () => {
+    addToken({
+      name: contractTokenSymbol || addressMinify(contractAddress),
+      symbol: contractTokenSymbol || addressMinify(contractAddress),
+      address: contractAddress,
+    })
+    resetField('query')
+    setQuery('')
+    setContractAddress('')
+  }
 
   const noItems =
     tokensFiltered?.length === 0 &&
-    queryValue?.length > 0 &&
-    !contractAddress?.length
+    query?.length > 0 &&
+    !contractAddress?.length &&
+    !isLoadingContractToken
 
-  const onAddContractAddress = () => {}
+  useEffect(() => {
+    if (isOpen) return
+    // clear state when modal close
+    setQuery('')
+    setContractAddress('')
+  }, [isOpen])
 
   return (
     <Transition show={isOpen} appear as={Fragment}>
@@ -91,18 +157,28 @@ export const SelectCurrencyModal = ({
                     label="Select a token as currency"
                     placeholder="Search or paste contract address"
                     className="bg-transparent"
-                    onChange={onSearch}
+                    autoComplete="off"
+                    {...register('query', {
+                      onChange: onSearch,
+                    })}
                   />
 
                   {contractAddress?.length > 0 && (
                     <div className="flex items-center justify-between mt-3">
-                      <span>{addressMinify(contractAddress)}</span>
+                      <span>
+                        {contractTokenSymbol || addressMinify(contractAddress)}
+                      </span>
                       <Button
                         size="small"
-                        onClick={onAddContractAddress}
-                        disabled
+                        onClick={onImport}
+                        disabled={isLoadingContractToken}
                       >
-                        Import
+                        <div className="flex items-center gap-2">
+                          {isLoadingContractToken && (
+                            <Spinner className="mr-1 animate-spin" />
+                          )}
+                          <span>Import</span>
+                        </div>
                       </Button>
                     </div>
                   )}
@@ -113,15 +189,18 @@ export const SelectCurrencyModal = ({
                         No token matches your filter.
                       </span>
                     )}
-                    {tokensFiltered?.map((token: Token) => {
+                    {tokensFiltered?.map((token: Token, index: number) => {
+                      const key = `${token.symbol}-${index}`
                       return (
-                        <div key={token.symbol}>
+                        <div key={key}>
                           <span
                             onClick={() => onSelectToken(token)}
                             className="inline-flex items-center gap-3 cursor-pointer"
                           >
                             <CryptoIcon symbol={token.symbol} />
-                            <span className="font-bold">{token.symbol}</span>
+                            <span className="font-bold">
+                              {token.symbol.toUpperCase()}
+                            </span>
                           </span>
                         </div>
                       )

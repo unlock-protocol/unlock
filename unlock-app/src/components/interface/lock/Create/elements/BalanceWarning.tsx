@@ -1,3 +1,4 @@
+import React from 'react'
 import { useConfig } from '~/utils/withConfig'
 
 interface LinkProps {
@@ -29,9 +30,9 @@ const CALL_TO_ACTION_MAPPING: Record<number | 'default', LinkProps> = {
   },
 }
 
-export const WarningBar = ({ children }: any) => {
+export const WarningBar = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="p-2 text-red-700 bg-red-100 border-2 border-red-500 rounded-xl">
+    <div className="p-2 text-base text-red-700 bg-red-100 border border-red-700 rounded-xl">
       {children}
     </div>
   )

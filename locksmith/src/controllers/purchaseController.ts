@@ -13,6 +13,8 @@ import Dispatcher from '../fulfillment/dispatcher'
 
 import logger from '../logger'
 import { isSoldOut } from '../operations/lockOperations'
+import { Web3Service } from '@unlock-protocol/unlock-js'
+import networks from '@unlock-protocol/networks'
 
 const config = require('../../config/config')
 
@@ -199,11 +201,12 @@ export class PurchaseController {
       const network = Number(request.params.network)
       const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
       const pricer = new KeyPricer()
+      const web3Service = new Web3Service(networks)
       const fulfillmentDispatcher = new Dispatcher()
+      const lock = await web3Service.getLock(lockAddress, network)
+      const keyPrice = parseFloat(lock.keyPrice)
 
-      const pricing = await pricer.generate(lockAddress, network)
-
-      if (pricing.keyPrice && pricing.keyPrice > 0) {
+      if (keyPrice > 0) {
         return response.status(400).send({
           message: 'Lock is not free.',
         })
