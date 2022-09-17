@@ -1,7 +1,7 @@
 import networksConfig from '@unlock-protocol/networks'
 import { NetworkConfigs } from '@unlock-protocol/types'
 
-const env = process.env.VITE_UNLOCK_ENV
+const env = process.env.NEXT_PUBLIC_UNLOCK_ENV
 
 const staging = {
   paywallUrl: 'https://staging-paywall.unlock-protocol.com',
@@ -12,11 +12,11 @@ const staging = {
 }
 
 const dev = {
-  paywallUrl: process.env.VITE_PAYWALL_URL || staging.paywallUrl,
-  locksmithHost: process.env.VITE_LOCKSMITH_URI || staging.locksmithHost,
+  paywallUrl: process.env.NEXT_PUBLIC_PAYWALL_URL || staging.paywallUrl,
+  locksmithHost: process.env.NEXT_PUBLIC_LOCKSMITH_URI || staging.locksmithHost,
   unlockStaticUrl:
-    process.env.VITE_UNLOCK_STATIC_URL || staging.unlockStaticUrl,
-  wedlocksUri: process.env.VITE_WEDLOCKS_URI || staging.wedlocksUri,
+    process.env.NEXT_PUBLIC_UNLOCK_STATIC_URL || staging.unlockStaticUrl,
+  wedlocksUri: process.env.NEXT_PUBLIC_WEDLOCKS_URI || staging.wedlocksUri,
 }
 
 const production = {
@@ -45,6 +45,7 @@ export const config = {
   wedlocksPublicKey: process.env.NEXT_PUBLIC_BASE64_WEDLOCKS_PUBLIC_KEY!,
   stripeApiKey: process.env.NEXT_PUBLIC_STRIPE_KEY!,
   httpProvider: process.env.NEXT_PUBLIC_HTTP_PROVIDER || 'localhost',
+  locksmithSigners: ['0x58b5CeDE554a39666091F96C8058920dF5906581'],
   networks: Object.keys(networksConfig).reduce<NetworkConfigs>(
     (networks, network) => {
       networks[network] = {
@@ -55,7 +56,7 @@ export const config = {
     },
     {}
   ),
-  isServer: false,
+  isServer: typeof window === 'undefined',
   tagManagerArgs: {
     gtmId: 'GTM-5XL2RNW',
   },
@@ -68,5 +69,6 @@ export const config = {
     },
   },
   recaptchaKey: '6LfuZF4UAAAAANz9dvVjCxzX-i2w7HOuV5_hq_Ir',
+  requiredConfirmations: 12,
   ...app,
 }
