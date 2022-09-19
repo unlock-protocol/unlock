@@ -20,7 +20,7 @@
     "ci": "yarn test && yarn lint",
     "prepublishOnly": "yarn build",
     "grant-keys": "node ./scripts/grant-keys.js",
-    "generate:locksmith": "rm -rf ./@generated/locksmith-client && openapi-generator-cli generate -i ../../locksmith/openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./@generated/locksmith-client"
+    "generate:client": "rm -rf ./@generated/locksmith-client && openapi-generator-cli generate -i ../../locksmith/openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./@generated/locksmith-client"
   },
   "author": "Unlock Inc",
   "license": "MIT",
