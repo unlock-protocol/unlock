@@ -8,6 +8,7 @@ module.exports = {
         {
           type: Sequelize.INTEGER,
           allowNull: true,
+          defaultValue: 0,
         },
         {
           transaction,
@@ -20,7 +21,6 @@ module.exports = {
         {
           type: Sequelize.DataTypes.JSONB,
           defaultValue: [],
-          allowNull: true,
         },
         {
           transaction,
@@ -47,7 +47,6 @@ module.exports = {
         {
           type: Sequelize.DataTypes.JSON,
           defaultValue: [],
-          allowNull: true,
         },
         {
           transaction,

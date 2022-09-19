@@ -51,21 +51,23 @@ export default class Dispatcher {
     return Object.fromEntries(entries)
   }
 
-  async grantKeyExtension(lockAddress: string, keyId: string, network: number) {
+  async grantKeyExtension(
+    lockAddress: string,
+    keyId: number,
+    network: number,
+    callback: (error: any, hash: string | null) => Promise<void>
+  ) {
     const walletService = new WalletService(networks)
     const { wallet, provider } = await this.getUser(network)
     await walletService.connect(provider, wallet)
-    const result = await walletService.grantKeyExtension(
+    await walletService.grantKeyExtension(
       {
         lockAddress,
-        tokenId: keyId,
+        tokenId: keyId.toString(),
         duration: 0,
       },
-      (_, hash) => {
-        return hash
-      }
+      callback
     )
-    return result
   }
 
   /**

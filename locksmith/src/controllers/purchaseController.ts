@@ -15,6 +15,7 @@ import logger from '../logger'
 import { isSoldOut } from '../operations/lockOperations'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import { KeySubscription } from '../models'
 
 const config = require('../../config/config')
 
@@ -162,40 +163,60 @@ export class PurchaseController {
 
       // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
       // This should be fine though since grantKeys transaction should succeed anyway
-      await fulfillmentDispatcher.grantKeys(
-        paymentIntent.metadata.lock,
-        paymentIntent.metadata.recipient.split(',').map((recipient) => ({
-          recipient,
-        })),
-        parseInt(paymentIntent.metadata.network, 10),
-        async (_: any, transactionHash: string) => {
-          // Update our charge object
-          charge.transactionHash = transactionHash
-          await charge.save()
+      const items: Record<'id' | 'owner', string>[] | null =
+        await fulfillmentDispatcher.grantKeys(
+          paymentIntent.metadata.lock,
+          paymentIntent.metadata.recipient.split(',').map((recipient) => ({
+            recipient,
+          })),
+          parseInt(paymentIntent.metadata.network, 10),
+          async (_: any, transactionHash: string) => {
+            // Update our charge object
+            charge.transactionHash = transactionHash
+            await charge.save()
 
-          // Update Stripe's payment Intent
-          await processor.stripe.paymentIntents.update(
-            paymentIntentId,
-            {
-              metadata: {
-                transactionHash,
+            // Update Stripe's payment Intent
+            await processor.stripe.paymentIntents.update(
+              paymentIntentId,
+              {
+                metadata: {
+                  transactionHash,
+                },
               },
-            },
-            {
-              stripeAccount: paymentIntentRecord.connectedStripeId,
-            }
-          )
+              {
+                stripeAccount: paymentIntentRecord.connectedStripeId,
+              }
+            )
 
-          // We only charge the card when everything else was successful
-          await processor.stripe.paymentIntents.capture(paymentIntentId, {
-            stripeAccount: paymentIntentRecord.connectedStripeId,
-          })
-          // Send the transaction hash without waiting.
-          response.status(201).send({
-            transactionHash,
-          })
-        }
-      )
+            // We only charge the card when everything else was successful
+            await processor.stripe.paymentIntents.capture(paymentIntentId, {
+              stripeAccount: paymentIntentRecord.connectedStripeId,
+            })
+            // Send the transaction hash without waiting.
+            response.status(201).send({
+              transactionHash,
+            })
+          }
+        )
+
+      // Find the granted key Id and the owner
+      const key = items?.find((item) => item.owner === userAddress)
+      if (!key) {
+        return
+      }
+      const split = recipients?.length || 1
+      const subscription = new KeySubscription()
+      subscription.connectedCustomer = paymentIntentRecord.connectedCustomerId
+      subscription.stripeCustomerId = paymentIntentRecord.stripeCustomerId
+      subscription.keyId = Number(key.id)
+      subscription.amount = paymentIntent.amount / split
+      subscription.unlockServiceFee = paymentIntent.application_fee_amount
+        ? paymentIntent.application_fee_amount / split
+        : 0
+      subscription.lockAddress = lockAddress
+      subscription.userAddress = userAddress
+      subscription.network = network
+      await subscription.save()
     } catch (error) {
       logger.error('There was an error when capturing payment', error)
       return response.status(400).send({ error: error.message })
