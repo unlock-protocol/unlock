@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Button } from '../Button/Button'
 import { FiChevronUp as ArrowUpIcon } from 'react-icons/fi'
 
 interface CollapseProps {
-  collapsed?: boolean
+  isOpen: boolean
+  setIsOpen: (open: boolean) => void
   content: React.ReactNode
   children: React.ReactNode
   disabled?: boolean
@@ -12,7 +13,6 @@ export const Collapse = ({
   children,
   content,
   disabled = false,
-  collapsed = false,
 }: CollapseProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -20,10 +20,6 @@ export const Collapse = ({
     if (disabled) return
     setIsOpen(!isOpen)
   }
-
-  useEffect(() => {
-    setIsOpen(collapsed)
-  }, [collapsed])
 
   return (
     <div className="bg-white border border-gray-200 rounded-2xl">
@@ -46,7 +42,7 @@ export const Collapse = ({
         </div>
         <div className="w-full">{content}</div>
       </div>
-      {extend && <div className="p-6">{children}</div>}
+      {isOpen && <div className="p-6">{children}</div>}
     </div>
   )
 }

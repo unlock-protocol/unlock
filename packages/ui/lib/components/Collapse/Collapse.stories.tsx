@@ -50,5 +50,5 @@ CollapseOpen.args = {
     </div>
   ),
   disabled: true,
-  collapsed: true,
+  isOpen: true,
 }
