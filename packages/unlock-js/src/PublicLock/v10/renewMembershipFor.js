@@ -13,7 +13,7 @@ import formatKeyPrice from '../utils/formatKeyPrice'
  */
 export default async function (
   { lockAddress, referrer, tokenId },
-  purchaseForOptions,
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
@@ -23,14 +23,14 @@ export default async function (
   }
 
   // Estimate gas. Bump by 30% because estimates are wrong!
-  if (!purchaseForOptions.gasLimit) {
+  if (!transactionOptions.gasLimit) {
     try {
       const gasLimit = await lockContract.estimateGas.renewMembershipFor(
         tokenId,
         referrer,
-        purchaseForOptions
+        transactionOptions
       )
-      purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
+      transactionOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',
@@ -42,7 +42,7 @@ export default async function (
   const transactionPromise = lockContract.renewMembershipFor(
     tokenId,
     referrer,
-    purchaseForOptions
+    transactionOptions
   )
 
   const hash = await this._handleMethodCall(transactionPromise)
