@@ -1,6 +1,7 @@
 import React from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { MdClose as CloseIcon } from 'react-icons/md'
+import { Button } from '@unlock-protocol/ui'
 
 interface DrawerInterface {
   isOpen: boolean
@@ -50,9 +51,11 @@ export const Drawer = ({
             >
               <div className="relative w-screen max-w-md">
                 <Transition.Child {...easeOutTransaction}>
-                  <div className="absolute top-0 w-12 h-12 p-4 right-3">
-                    <CloseIcon size="25px" onClick={() => setIsOpen(false)} />
-                  </div>
+                  <Button variant="transparent" className="p-0">
+                    <div className="absolute top-0 w-12 h-12 p-4 right-3">
+                      <CloseIcon size="25px" onClick={() => setIsOpen(false)} />
+                    </div>
+                  </Button>
                 </Transition.Child>
                 <div className="flex flex-col h-full py-6 overflow-y-scroll shadow-xl bg-brand-beige">
                   <div className="px-4 sm:px-6">

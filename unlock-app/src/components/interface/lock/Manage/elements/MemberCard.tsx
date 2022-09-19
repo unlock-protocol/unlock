@@ -9,6 +9,7 @@ import useClipboard from 'react-use-clipboard'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { Address } from './Members'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
+import ExtendKeysDrawer from '~/components/creator/members/ExtendKeysDrawer'
 
 interface MemberCardProps {
   token: string
@@ -43,8 +44,8 @@ export const MemberCard = ({
   lockAddress,
 }: MemberCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
-    useState(false)
+  const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
+  const [extendKeysOpen, setExtendKeysOpen] = useState(false)
   const [isCopied, setCopied] = useClipboard(owner, {
     successDuration: 2000,
   })
@@ -63,17 +64,31 @@ export const MemberCard = ({
   const canExtendKey = expiration !== MAX_UINT && version && version >= 11
   const refundDisabled = !(isLockManager && isKeyValid(expiration))
 
-  const { token: tokenId } = metadata ?? {}
+  const { token: tokenId, lockName } = metadata ?? {}
 
   const MemberInfo = () => {
     return (
       <>
         <ExpireAndRefundModal
-          active={showExpireAndRefundModal}
-          dismiss={() => setShowExpireAndRefundModal(false)}
+          active={expireAndRefundOpen}
+          dismiss={() => setExpireAndRefundOpen(false)}
           lockAddress={lockAddress}
           keyOwner={owner}
           tokenId={tokenId}
+        />
+
+        <ExtendKeysDrawer
+          isOpen={extendKeysOpen}
+          setIsOpen={setExtendKeysOpen}
+          selectedKey={
+            {
+              lockName,
+              owner,
+              lockAddress,
+              tokenId,
+              expiration,
+            }!
+          }
         />
         <div className="justify-between md:grid md:grid-cols-7">
           <div className="md:col-span-1">
@@ -108,14 +123,18 @@ export const MemberCard = ({
                     disabled={refundDisabled}
                     onClick={() => {
                       if (refundDisabled) return
-                      setShowExpireAndRefundModal(true)
+                      setExpireAndRefundOpen(true)
                     }}
                   >
                     Refund
                   </Button>
                 )}
                 {canExtendKey && (
-                  <Button variant="outlined-primary" size="small">
+                  <Button
+                    variant="outlined-primary"
+                    size="small"
+                    onClick={() => setExtendKeysOpen(true)}
+                  >
                     Extend
                   </Button>
                 )}
