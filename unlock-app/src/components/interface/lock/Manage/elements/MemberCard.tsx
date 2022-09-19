@@ -19,6 +19,7 @@ interface MemberCardProps {
   isLockManager: boolean
   metadata: any
   lockAddress: string
+  network: number
 }
 
 interface DetailProps {
@@ -42,6 +43,7 @@ export const MemberCard = ({
   isLockManager,
   metadata,
   lockAddress,
+  network,
 }: MemberCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
@@ -153,7 +155,7 @@ export const MemberCard = ({
       disabled={!isLockManager}
       content={<MemberInfo />}
     >
-      <MetadataCard metadata={metadata} owner={owner} />
+      <MetadataCard metadata={metadata} owner={owner} network={network} />
     </Collapse>
   )
 }

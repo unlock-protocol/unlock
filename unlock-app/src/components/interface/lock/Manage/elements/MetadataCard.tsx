@@ -1,10 +1,22 @@
 import { Button, Badge } from '@unlock-protocol/ui'
 import { useState } from 'react'
-import { FaCheckCircle as CheckIcon } from 'react-icons/fa'
+import {
+  FaCheckCircle as CheckIcon,
+  FaSpinner as Spinner,
+} from 'react-icons/fa'
+import { useMutation } from 'react-query'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useStorageService } from '~/utils/withStorageService'
 
 interface DetailProps {
   title: string
   value: React.ReactNode
+}
+
+interface MetadataCardProps {
+  metadata: any
+  owner: string
+  network: number
 }
 
 const keysToIgnore = [
@@ -25,7 +37,13 @@ const MetadataDetail = ({ title, value }: DetailProps) => {
   )
 }
 
-export const MetadataCard = ({ metadata, owner }: any) => {
+export const MetadataCard = ({
+  metadata,
+  owner,
+  network,
+}: MetadataCardProps) => {
+  const storageService = useStorageService()
+  const [data, setData] = useState(metadata)
   const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
     null
   )
@@ -46,12 +64,48 @@ export const MetadataCard = ({ metadata, owner }: any) => {
   const isCheckedIn = typeof getCheckInTime() === 'string' || !!checkInTimestamp
   const hasEmail = items.map(([key]) => key.toLowerCase()).includes('email')
 
+  const onMarkAsCheckIn = async () => {
+    if (!storageService) return
+    const { lockAddress, token: keyId } = data
+    return storageService.markTicketAsCheckedIn({
+      lockAddress,
+      keyId,
+      network: network!,
+    })
+  }
+
+  const markAsCheckInMutation = useMutation(onMarkAsCheckIn, {
+    onSuccess: (response: any) => {
+      if (!response.ok && response.status === 409) {
+        ToastHelper.error('Ticket already checked in')
+      }
+
+      if (response.ok) {
+        setCheckedInTimestamp(new Date().toLocaleString())
+        ToastHelper.success('Successfully marked ticket as checked-in')
+      }
+    },
+    onError: () => {
+      ToastHelper.error('Error on marking ticket as checked-in')
+    },
+  })
+
   return (
     <>
       <div className="flex gap-3">
         {!isCheckedIn && (
-          <Button variant="outlined-primary" size="small">
-            Mark as Checked-in
+          <Button
+            variant="outlined-primary"
+            size="small"
+            onClick={() => markAsCheckInMutation.mutate()}
+            disabled={markAsCheckInMutation.isLoading}
+          >
+            <div className="flex">
+              {markAsCheckInMutation.isLoading && (
+                <Spinner className="mr-1 animate-spin" />
+              )}
+              <span>Mark as Checked-in</span>
+            </div>
           </Button>
         )}
         {hasEmail ? (

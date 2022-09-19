@@ -105,6 +105,7 @@ export const Members = ({
             isLockManager={isLockManager}
             metadata={metadata}
             lockAddress={lockAddress!}
+            network={network}
           />
         )
       })}
