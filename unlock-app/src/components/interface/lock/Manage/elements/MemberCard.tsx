@@ -8,6 +8,7 @@ import { MetadataCard } from './MetadataCard'
 import useClipboard from 'react-use-clipboard'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { Address } from './Members'
+import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
 
 interface MemberCardProps {
   token: string
@@ -16,6 +17,7 @@ interface MemberCardProps {
   version: number
   isLockManager: boolean
   metadata: any
+  lockAddress: string
 }
 
 interface DetailProps {
@@ -38,8 +40,11 @@ export const MemberCard = ({
   version,
   isLockManager,
   metadata,
+  lockAddress,
 }: MemberCardProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [showExpireAndRefundModal, setShowExpireAndRefundModal] =
+    useState(false)
   const [isCopied, setCopied] = useClipboard(owner, {
     successDuration: 2000,
   })
@@ -58,52 +63,67 @@ export const MemberCard = ({
   const canExtendKey = expiration !== MAX_UINT && version && version >= 11
   const refundDisabled = !(isLockManager && isKeyValid(expiration))
 
-  const onExpireAndRefund = () => {}
+  const { token: tokenId } = metadata ?? {}
 
   const MemberInfo = () => {
     return (
-      <div className="justify-between md:grid md:grid-cols-7">
-        <div className="md:col-span-1">
-          <CardDetail title="Token ID" value={token} />
-        </div>
-        <div className="flex gap-2 md:col-span-2">
-          <CardDetail title="Owner" value={<Address address={owner} />} />
-          <div className="pb-1 mt-auto">
-            <Button
-              variant="transparent"
-              className="p-0 m-0 "
-              onClick={setCopied}
-            >
-              <CopyIcon size={20} />
-            </Button>
+      <>
+        <ExpireAndRefundModal
+          active={showExpireAndRefundModal}
+          dismiss={() => setShowExpireAndRefundModal(false)}
+          lockAddress={lockAddress}
+          keyOwner={owner}
+          tokenId={tokenId}
+        />
+        <div className="justify-between md:grid md:grid-cols-7">
+          <div className="md:col-span-1">
+            <CardDetail title="Token ID" value={token} />
           </div>
-        </div>
-        <div className="md:col-span-2">
-          <CardDetail title="Expiration" value={expirationAsDate(expiration)} />
-        </div>
-
-        {isLockManager && (
-          <div className="ml-auto md:col-span-2">
-            <div className="flex gap-3">
-              {!refundDisabled && (
-                <Button
-                  size="small"
-                  variant="outlined-primary"
-                  disabled={refundDisabled}
-                  onClick={onExpireAndRefund}
-                >
-                  Refund
-                </Button>
-              )}
-              {canExtendKey && (
-                <Button variant="outlined-primary" size="small">
-                  Extend
-                </Button>
-              )}
+          <div className="flex gap-2 md:col-span-2">
+            <CardDetail title="Owner" value={<Address address={owner} />} />
+            <div className="pb-1 mt-auto">
+              <Button
+                variant="transparent"
+                className="p-0 m-0 "
+                onClick={setCopied}
+              >
+                <CopyIcon size={20} />
+              </Button>
             </div>
           </div>
-        )}
-      </div>
+          <div className="md:col-span-2">
+            <CardDetail
+              title="Expiration"
+              value={expirationAsDate(expiration)}
+            />
+          </div>
+
+          {isLockManager && (
+            <div className="ml-auto md:col-span-2">
+              <div className="flex gap-3">
+                {!refundDisabled && (
+                  <Button
+                    size="small"
+                    variant="outlined-primary"
+                    disabled={refundDisabled}
+                    onClick={() => {
+                      if (refundDisabled) return
+                      setShowExpireAndRefundModal(true)
+                    }}
+                  >
+                    Refund
+                  </Button>
+                )}
+                {canExtendKey && (
+                  <Button variant="outlined-primary" size="small">
+                    Extend
+                  </Button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </>
     )
   }
 
