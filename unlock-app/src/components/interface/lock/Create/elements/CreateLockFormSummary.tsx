@@ -7,11 +7,13 @@ import { useEffect } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
-import { KeyPrice } from './KeyPrice'
+import { KeyPrice } from '../../elements/KeyPrice'
 import Lottie from 'lottie-react'
 import deployedAnimation from '~/animations/deployed.json'
 import deployingAnimation from '~/animations/deploying.json'
 import deployErrorAnimation from '~/animations/deploy-error.json'
+import { durationsAsTextFromSeconds } from '~/utils/durations'
+import { ONE_DAY_IN_SECONDS } from '~/constants'
 
 interface DeployStatusProps {
   title: string
@@ -51,7 +53,7 @@ const DEPLOY_STATUS_MAPPING: Record<DeployStatus, DeployStatusProps> = {
 }
 
 function AnimationContent({ status }: { status: DeployStatus }) {
-  const animationClass = `h-96`
+  const animationClass = `h-60 md:h-96`
   switch (status) {
     case 'progress':
       return (
@@ -138,18 +140,21 @@ export const CreateLockFormSummary = ({
     }
   }, [isDeployed, router])
 
+  const durationAsText = formData?.expirationDuration
+    ? durationsAsTextFromSeconds(
+        formData.expirationDuration * ONE_DAY_IN_SECONDS
+      )
+    : null
+
   return (
     <div>
-      <div
-        className={`${
-          showStatus
-            ? 'grid-rows-2 md:grid-cols-2 md:grid-rows-1'
-            : 'md:grid-cols-1'
-        } grid border border-gray-400 divide-y md:divide-x md:divide-y-0 divide-gray-400 rounded-xl`}
-      >
+      <div className="flex flex-col items-stretch border border-gray-400 divide-y divide-gray-400 md:flex-row md:divide-x md:divide-y-0 rounded-xl">
         {showStatus && (
-          <div className="px-8 py-10 ">
-            <div data-testid="status" className="flex flex-col gap-8 r">
+          <div className="self-start w-full px-6 py-10 grow basis-0 md:px-8">
+            <div
+              data-testid="status"
+              className="flex flex-col justify-center gap-8"
+            >
               {status && <AnimationContent status={currentStatus} />}
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -171,7 +176,10 @@ export const CreateLockFormSummary = ({
             </div>
           </div>
         )}
-        <div data-testid="summary" className="flex flex-col gap-8 px-8 py-10">
+        <div
+          data-testid="summary"
+          className="flex flex-col gap-8 px-6 py-10 md:px-8 grow basis-0"
+        >
           <div className="flex flex-col gap-2">
             <span className="text-base">Network</span>
             <span className="text-xl font-bold">{networkName}</span>
@@ -183,9 +191,7 @@ export const CreateLockFormSummary = ({
           <div className="flex flex-col gap-2">
             <span className="text-base">Duration</span>
             <span className="text-xl font-bold">
-              {unlimitedDuration
-                ? 'Unlimited'
-                : `${formData?.expirationDuration} days`}
+              {unlimitedDuration ? 'Unlimited' : durationAsText}
             </span>
           </div>
           <div className="flex flex-col gap-2">
@@ -202,7 +208,7 @@ export const CreateLockFormSummary = ({
       </div>
       {showStatus && (
         <div className="flex flex-col items-center my-12 text-center">
-          <h3 className="block mb-4 text-4xl font-bold">{title}</h3>
+          <h3 className="block mb-4 text-2xl font-bold md:text-4xl">{title}</h3>
           <span className="mb-4 font-base">{description}</span>
           <Link href={'/dashboard'}>
             <Button className="w-full max-w-lg" variant="outlined-primary">

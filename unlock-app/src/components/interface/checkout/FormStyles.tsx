@@ -49,19 +49,6 @@ export const SmallButton = styled.button`
   }
 `
 
-export const Select = styled.select`
-  height: 48px;
-  width: 100%;
-  border: thin var(--lightgrey) solid;
-  border-radius: 4px;
-  background-color: var(--lightgrey);
-  font-size: 16px;
-  padding: 0 8px;
-  color: var(--darkgrey);
-  margin-bottom: 16px;
-  appearance: none;
-`
-
 export const Button = styled.button`
   height: 48px;
   width: 100%;

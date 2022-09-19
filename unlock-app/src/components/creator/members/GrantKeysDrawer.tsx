@@ -6,17 +6,14 @@ import { useWalletService } from '~/utils/withWalletService'
 import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 
-import {
-  Select,
-  TransactionPendingButton,
-} from '../../interface/checkout/FormStyles'
+import { TransactionPendingButton } from '../../interface/checkout/FormStyles'
 import { ACCOUNT_REGEXP, MAX_UINT } from '../../../constants'
 import { getAddressForName } from '../../../hooks/useEns'
 import { useMultipleRecipient } from '../../../hooks/useMultipleRecipient'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { useStorageService } from '~/utils/withStorageService'
 import { formResultToMetadata } from '~/utils/userMetadata'
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, Input, Select } from '@unlock-protocol/ui'
 import { addressMinify } from '~/utils/strings'
 
 interface GrantKeyFormProps {
@@ -435,8 +432,8 @@ export const GrantKeysDrawer = ({
     loadLocks(lockAddresses)
   }, [lockAddresses.join('')])
 
-  const handleLockChanged = (evt: React.ChangeEvent<HTMLSelectElement>) => {
-    setLock(locks[evt.target.value])
+  const handleLockChanged = (value: string | number) => {
+    setLock(locks[value])
   }
 
   const handleGranted = (granted: boolean) => {
@@ -444,6 +441,11 @@ export const GrantKeysDrawer = ({
       setIsOpen(false)
     }
   }
+
+  const locksOptions = Object.keys(locks)?.map((address: string) => ({
+    label: locks?.[address]?.name,
+    value: address,
+  }))
 
   return (
     <Drawer title="Airdrop Keys" isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -459,13 +461,12 @@ export const GrantKeysDrawer = ({
             Lock
           </label>
 
-          <Select id="grid-lock" onChange={handleLockChanged}>
-            {Object.keys(locks).map((address) => (
-              <option value={address} key={address}>
-                {locks[address].name}
-              </option>
-            ))}
-          </Select>
+          <Select
+            options={locksOptions}
+            label={''}
+            defaultValue={locks[0] ?? undefined}
+            onChange={handleLockChanged}
+          />
         </div>
       </div>
 
