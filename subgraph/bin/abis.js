@@ -8,7 +8,7 @@ const ethers = require('ethers')
 const abisFolderPath = path.join(__dirname, '..', 'abis')
 
 const unlockVersions = ['v11']
-const publicLockVersions = ['v7', 'v11']
+const publicLockVersions = ['v7', 'v8', 'v9', 'v10', 'v11']
 
 function setupFolder() {
   // make sure we clean up
