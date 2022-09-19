@@ -115,44 +115,90 @@ export class PurchaseController {
   /*
    * Captures a payment intent and exexutes the transaction to airdrop an NFT to the user.
    */
-  async capturePaymentIntent(req: SignedRequest, res: Response): Promise<any> {
-    const { lock, network, recipients, userAddress, paymentIntent } = req.body
-
+  async capturePaymentIntent(
+    request: SignedRequest,
+    response: Response
+  ): Promise<any> {
+    const { network, recipients, paymentIntent: paymentIntentId } = request.body
+    const userAddress = Normalizer.ethereumAddress(request.body.userAddress)
+    const lockAddress = Normalizer.ethereumAddress(request.body.lockAddress)
     const normalizedRecipients: string[] = recipients.map((address: string) =>
       Normalizer.ethereumAddress(address)
     )
+
     const dispatcher = new Dispatcher()
     const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
       network
     )
     if (!hasEnoughToPayForGas) {
-      return res.status(400).send({
+      return response.status(400).send({
         error: `Purchaser does not have enough to pay for gas on ${network}`,
       })
     }
 
-    const soldOut = await isSoldOut(lock, network, normalizedRecipients.length)
+    const soldOut = await isSoldOut(
+      lockAddress,
+      network,
+      normalizedRecipients.length
+    )
     if (soldOut) {
-      return res.status(400).send({
+      return response.status(400).send({
         error: 'Lock is sold out.',
       })
     }
 
     try {
       const processor = new PaymentProcessor(config.stripeSecret)
-      const hash = await processor.captureConfirmedPaymentIntent(
-        Normalizer.ethereumAddress(userAddress),
-        normalizedRecipients,
-        Normalizer.ethereumAddress(lock),
-        network,
-        paymentIntent
+      const { charge, paymentIntent, paymentIntentRecord } =
+        await processor.getPaymentIntentRecordAndCharge({
+          userAddress,
+          lockAddress,
+          network,
+          paymentIntentId,
+          recipients,
+        })
+
+      const fulfillmentDispatcher = new Dispatcher()
+
+      // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
+      // This should be fine though since grantKeys transaction should succeed anyway
+      await fulfillmentDispatcher.grantKeys(
+        paymentIntent.metadata.lock,
+        paymentIntent.metadata.recipient.split(',').map((recipient) => ({
+          recipient,
+        })),
+        parseInt(paymentIntent.metadata.network, 10),
+        async (_: any, transactionHash: string) => {
+          // Update our charge object
+          charge.transactionHash = transactionHash
+          await charge.save()
+
+          // Update Stripe's payment Intent
+          await processor.stripe.paymentIntents.update(
+            paymentIntentId,
+            {
+              metadata: {
+                transactionHash,
+              },
+            },
+            {
+              stripeAccount: paymentIntentRecord.connectedStripeId,
+            }
+          )
+
+          // We only charge the card when everything else was successful
+          await processor.stripe.paymentIntents.capture(paymentIntentId, {
+            stripeAccount: paymentIntentRecord.connectedStripeId,
+          })
+          // Send the transaction hash without waiting.
+          response.status(201).send({
+            transactionHash,
+          })
+        }
       )
-      return res.send({
-        transactionHash: hash,
-      })
     } catch (error) {
       logger.error('There was an error when capturing payment', error)
-      return res.status(400).send({ error: error.message })
+      return response.status(400).send({ error: error.message })
     }
   }
 

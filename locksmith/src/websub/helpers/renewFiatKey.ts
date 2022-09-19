@@ -1,4 +1,7 @@
-import { getStripeConnectForLock } from '../../operations/stripeOperations'
+import {
+  getStripeConnectForLock,
+  getStripeCustomerIdForAddress,
+} from '../../operations/stripeOperations'
 import Dispatcher from '../../fulfillment/dispatcher'
 import { logger } from '../../logger'
 import { Charge, KeyRenewal } from '../../models'
@@ -31,6 +34,7 @@ export async function renewFiatKey({
 }: Options): Promise<RenewKeyReturned> {
   try {
     const renewalInfo = {
+      keyId,
       network,
       lockAddress,
     }
@@ -49,11 +53,9 @@ export async function renewFiatKey({
       where: {
         lock: lockAddress,
         chain: network,
+        userAddress,
         recurring: {
           [Op.gt]: 0,
-        },
-        recipients: {
-          [Op.in]: [userAddress],
         },
       },
     })

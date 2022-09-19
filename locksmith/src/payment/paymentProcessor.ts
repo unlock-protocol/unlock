@@ -12,7 +12,6 @@ import {
   saveStripeCustomerIdForAddress,
 } from '../operations/stripeOperations'
 import logger from '../logger'
-
 const Sequelize = require('sequelize')
 
 const { Op } = Sequelize
@@ -225,11 +224,30 @@ export class PaymentProcessor {
       }
     )
 
-    // Clone customer
-    const connectedCustomer = await this.stripe.customers.create(
-      { payment_method: method.id },
-      { stripeAccount }
+    // Find existing customer with the user address in the metadata
+    const customers = await this.stripe.customers.search(
+      {
+        query: `metadata["userAddress"]:"${userAddress}"`,
+      },
+      {
+        stripeAccount,
+      }
     )
+
+    let connectedCustomer = customers.data[0]
+
+    if (!connectedCustomer) {
+      // Clone customer if no customer with user address in the metadata exists.
+      connectedCustomer = await this.stripe.customers.create(
+        {
+          payment_method: method.id,
+          metadata: {
+            userAddress,
+          },
+        },
+        { stripeAccount }
+      )
+    }
 
     const intent = await this.stripe.paymentIntents.create(
       {
@@ -289,27 +307,21 @@ export class PaymentProcessor {
     return methods.data
   }
 
-  /**
-   * This function captures a payment intent previous confirmed
-   * Note: Since the CC charge should always succeed as it was previously confirmed,
-   * we can do it only after the onchain tx has been sent to avoid receiving payment for tx which were not successful
-   * @param recipient
-   * @param stripeCustomerId
-   * @param lock
-   * @param maxPrice
-   * @param network
-   * @param stripeAccount
-   * @returns
-   */
-  async captureConfirmedPaymentIntent(
-    userAddress: ethereumAddress,
-    recipients: ethereumAddress[],
-    lock: ethereumAddress,
-    network: number,
+  async getPaymentIntentRecordAndCharge({
+    userAddress,
+    lockAddress,
+    recipients,
+    network,
+    paymentIntentId,
+  }: {
+    userAddress: ethereumAddress
+    lockAddress: ethereumAddress
+    recipients: ethereumAddress[]
+    network: number
     paymentIntentId: string
-  ) {
+  }) {
     const pricing = await new KeyPricer().generate(
-      lock,
+      lockAddress,
       network,
       recipients.length
     )
@@ -336,7 +348,7 @@ export class PaymentProcessor {
       )
     }
 
-    if (paymentIntent.metadata.lock !== lock) {
+    if (paymentIntent.metadata.lock !== lockAddress) {
       throw new Error('Lock does not match with initial intent.')
     }
 
@@ -358,7 +370,7 @@ export class PaymentProcessor {
       0.03 * maxPriceInCents
     ) {
       // if price diverged by more than 3%, we fail!
-      console.error('Price diverged by more than 3%', {
+      logger.error('Price diverged by more than 3%', {
         totalPriceInCents,
         maxPriceInCents,
       })
@@ -379,48 +391,11 @@ export class PaymentProcessor {
       chain: network,
     })
 
-    const fulfillmentDispatcher = new Dispatcher()
-
-    // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
-    // This should be fine though since grantKeys transaction should succeed anyway
-    return new Promise((resolve, reject) => {
-      try {
-        fulfillmentDispatcher.grantKeys(
-          paymentIntent.metadata.lock,
-          paymentIntent.metadata.recipient.split(',').map((recipient) => ({
-            recipient,
-          })),
-          parseInt(paymentIntent.metadata.network, 10),
-          async (_: any, transactionHash: string) => {
-            // Update our charge object
-            charge.transactionHash = transactionHash
-            await charge.save()
-
-            // Update Stripe's payment Intent
-            await this.stripe.paymentIntents.update(
-              paymentIntentId,
-              {
-                metadata: {
-                  transactionHash,
-                },
-              },
-              {
-                stripeAccount: paymentIntentRecord.connectedStripeId,
-              }
-            )
-
-            // We only charge the card when everything else was successful
-            await this.stripe.paymentIntents.capture(paymentIntentId, {
-              stripeAccount: paymentIntentRecord.connectedStripeId,
-            })
-
-            return resolve(charge.transactionHash)
-          }
-        )
-      } catch (error) {
-        reject(error)
-      }
-    })
+    return {
+      paymentIntent,
+      paymentIntentRecord,
+      charge,
+    }
   }
 }
 
