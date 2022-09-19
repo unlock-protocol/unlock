@@ -18,7 +18,9 @@ async function fetchKeysToRenew(network: number, page = 0) {
     network,
     page ? page * FETCH_LIMIT : 0 // page
   )
-  return keys
+
+  // Key grant extension function is only supported on lock 11 or above.
+  return keys.filter((key) => key.lock.version >= 11)
 }
 
 async function renewFiatKeys(network: number) {
@@ -40,7 +42,7 @@ async function renewFiatKeys(network: number) {
     for (const { keyId, lock, owner } of keys) {
       try {
         const renewal = await renewFiatKey({
-          keyId,
+          keyId: Number(keyId),
           lockAddress: lock.address,
           network,
           userAddress: owner.address,

@@ -1,7 +1,7 @@
 import { getStripeConnectForLock } from '../../operations/stripeOperations'
 import Dispatcher from '../../fulfillment/dispatcher'
 import { logger } from '../../logger'
-import { KeyRenewal, KeySubscription } from '../../models'
+import { Charge, KeyRenewal, KeySubscription } from '../../models'
 import Stripe from 'stripe'
 import config from '../../../config/config'
 import { Op } from 'sequelize'
@@ -61,6 +61,10 @@ export async function renewFiatKey({
       throw new Error('No subscription found')
     }
 
+    if (subscription.userAddress !== userAddress) {
+      throw new Error('Key owner is not the subscriber')
+    }
+
     const customer = await stripe.customers.retrieve(
       subscription.connectedCustomer,
       {
@@ -68,15 +72,28 @@ export async function renewFiatKey({
       }
     )
 
-    if (!customer) {
+    if (customer.deleted) {
       throw new Error('Customer does not exist anymore')
     }
 
-    if (subscription.userAddress !== userAddress) {
-      throw new Error('Key owner is not the subscriber')
+    const paymentMethod = await stripe.paymentMethods.list(
+      {
+        customer: customer.id,
+        type: 'card',
+      },
+      {
+        stripeAccount,
+      }
+    )
+
+    const paymentMethodId = paymentMethod.data?.[0]?.id
+
+    if (!paymentMethodId) {
+      throw new Error('No payment method available on the customer profile.')
     }
 
     const web3Service = new Web3Service(networks)
+
     // Get provider for network
     const provider = await web3Service.providerForNetwork(subscription.network)
 
@@ -89,24 +106,17 @@ export async function renewFiatKey({
         subscription.network,
         async (_, hash) => {
           if (!hash) {
-            return
+            throw new Error("Transaction didn't go through.")
           }
           const receipt = await provider.waitForTransaction(hash)
           // Transaction failed for some reason
           if (!receipt?.status) {
-            return
+            throw new Error('Transaction failed.')
           }
-          const paymentMethod = await stripe.paymentMethods.list(
-            {
-              customer: customer.id,
-              type: 'card',
-            },
-            {
-              stripeAccount,
-            }
-          )
 
-          const paymentMethodId = paymentMethod.data[0].id
+          // Every time, we grant an extension - decrease the recurring left counter.
+          subscription.recurring -= 1
+          await subscription.save()
 
           const paymentIntent = await stripe.paymentIntents.create(
             {
@@ -117,6 +127,14 @@ export async function renewFiatKey({
               off_session: true,
               customer: customer.id,
               payment_method: paymentMethodId,
+              metadata: {
+                lock: lockAddress,
+                keyId,
+                network,
+                recipients: [userAddress].join(','),
+                purchaser: userAddress,
+                renewal: 'true',
+              },
             },
             {
               stripeAccount,
@@ -131,6 +149,19 @@ export async function renewFiatKey({
                 tx: hash,
               }
               await KeyRenewal.create(recordedrenewalInfo)
+              // Create the charge object on our end!
+              await Charge.create({
+                userAddress: paymentIntent.metadata.purchaser,
+                recipients: paymentIntent.metadata.recipient.split(','),
+                lock: paymentIntent.metadata.lock,
+                stripeCustomerId: paymentIntent.customer, // TODO: consider checking the customer id under Unlock's stripe account?
+                connectedCustomer: paymentIntent.customer,
+                totalPriceInCents: paymentIntent.amount,
+                unlockServiceFee: paymentIntent.application_fee_amount,
+                stripeCharge: paymentIntent.id,
+                recurring: 0,
+                chain: network,
+              })
               resolve(recordedrenewalInfo)
               break
             }
