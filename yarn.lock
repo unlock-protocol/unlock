@@ -5232,7 +5232,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.14.8, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.4.4, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.8.7, @babel/runtime@npm:^7.9.2":
+"@babel/runtime@npm:^7.0.0, @babel/runtime@npm:^7.10.2, @babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.14.0, @babel/runtime@npm:^7.14.8, @babel/runtime@npm:^7.3.1, @babel/runtime@npm:^7.4.4, @babel/runtime@npm:^7.5.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.7.2, @babel/runtime@npm:^7.7.6, @babel/runtime@npm:^7.9.2":
   version: 7.15.4
   resolution: "@babel/runtime@npm:7.15.4"
   dependencies:
@@ -5820,7 +5820,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/cache@npm:^10.0.27, @emotion/cache@npm:^10.0.9":
+"@emotion/cache@npm:^10.0.27":
   version: 10.0.29
   resolution: "@emotion/cache@npm:10.0.29"
   dependencies:
@@ -5832,7 +5832,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/core@npm:^10.0.9, @emotion/core@npm:^10.1.1":
+"@emotion/core@npm:^10.1.1":
   version: 10.1.1
   resolution: "@emotion/core@npm:10.1.1"
   dependencies:
@@ -5864,7 +5864,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@emotion/css@npm:^10.0.27, @emotion/css@npm:^10.0.9":
+"@emotion/css@npm:^10.0.27":
   version: 10.0.27
   resolution: "@emotion/css@npm:10.0.27"
   dependencies:
@@ -10717,38 +10717,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-knobs@npm:6.4.0":
-  version: 6.4.0
-  resolution: "@storybook/addon-knobs@npm:6.4.0"
-  dependencies:
-    copy-to-clipboard: ^3.3.1
-    core-js: ^3.8.2
-    escape-html: ^1.0.3
-    fast-deep-equal: ^3.1.3
-    global: ^4.4.0
-    lodash: ^4.17.20
-    prop-types: ^15.7.2
-    qs: ^6.10.0
-    react-colorful: ^5.1.2
-    react-lifecycles-compat: ^3.0.4
-    react-select: ^3.2.0
-  peerDependencies:
-    "@storybook/addons": ^6.4.0
-    "@storybook/api": ^6.4.0
-    "@storybook/components": ^6.4.0
-    "@storybook/core-events": ^6.4.0
-    "@storybook/theming": ^6.4.0
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  peerDependenciesMeta:
-    react:
-      optional: true
-    react-dom:
-      optional: true
-  checksum: d9ea65af55e3983e7150aa0492f99027db06ca267eae5be19ace88f9733d1e858a35ba6cd0ff324f42fc32c03665ebf39e0f04777ec3b715300a2504de81a493
-  languageName: node
-  linkType: hard
-
 "@storybook/addon-links@npm:6.5.0-alpha.31":
   version: 6.5.0-alpha.31
   resolution: "@storybook/addon-links@npm:6.5.0-alpha.31"
@@ -15096,16 +15064,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/storybook__react@npm:4.0.2":
-  version: 4.0.2
-  resolution: "@types/storybook__react@npm:4.0.2"
-  dependencies:
-    "@types/react": "*"
-    "@types/webpack-env": "*"
-  checksum: 76811d6b472813c1890e8b46176cf0b9997c34ffa2ff59ef5197edd55447738bae9e52b04d5df1889041b15e9002f715deab670b17ae6fa80c9557b1068f01bc
-  languageName: node
-  linkType: hard
-
 "@types/strip-bom@npm:^3.0.0":
   version: 3.0.0
   resolution: "@types/strip-bom@npm:3.0.0"
@@ -15229,7 +15187,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/webpack-env@npm:*, @types/webpack-env@npm:^1.16.0":
+"@types/webpack-env@npm:^1.16.0":
   version: 1.16.2
   resolution: "@types/webpack-env@npm:1.16.2"
   checksum: 122273f20e2bed6895aae2f03891f51ddacd826018e395d18aa5d833ad0462bb159637b83f8d202907234a6a48c66a8e4e9fdd703afc66f6afddb83eeac82b13
@@ -16538,11 +16496,6 @@ __metadata:
     "@babel/plugin-proposal-optional-chaining": 7.18.9
     "@headlessui/react": 1.6.5
     "@radix-ui/react-avatar": 1.0.0
-    "@storybook/addon-actions": 6.5.6
-    "@storybook/addon-knobs": 6.4.0
-    "@storybook/addon-viewport": 6.5.6
-    "@storybook/addons": 6.5.6
-    "@storybook/react": 6.5.6
     "@stripe/react-stripe-js": 1.9.0
     "@stripe/stripe-js": 1.32.0
     "@testing-library/jest-dom": 5.16.4
@@ -16555,7 +16508,6 @@ __metadata:
     "@types/react": 17.0.44
     "@types/react-google-recaptcha": 2.1.5
     "@types/react-gtm-module": 2.0.1
-    "@types/storybook__react": 4.0.2
     "@types/styled-components": 5.1.25
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
@@ -16614,7 +16566,6 @@ __metadata:
     react-test-renderer: 17.0.2
     react-use-clipboard: 1.0.8
     siwe: 1.1.6
-    storybook-addon-next-router: 4.0.0
     styled-components: 5.3.5
     tailwind-merge: 1.5.1
     tailwindcss: 3.1.7
@@ -25491,16 +25442,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dom-helpers@npm:^5.0.1":
-  version: 5.2.1
-  resolution: "dom-helpers@npm:5.2.1"
-  dependencies:
-    "@babel/runtime": ^7.8.7
-    csstype: ^3.0.2
-  checksum: 863ba9e086f7093df3376b43e74ce4422571d404fc9828bf2c56140963d5edf0e56160f9b2f3bb61b282c07f8fc8134f023c98fd684bddcb12daf7b0f14d951c
-  languageName: node
-  linkType: hard
-
 "dom-serializer@npm:0":
   version: 0.2.2
   resolution: "dom-serializer@npm:0.2.2"
@@ -27343,7 +27284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"escape-html@npm:^1.0.3, escape-html@npm:~1.0.3":
+"escape-html@npm:~1.0.3":
   version: 1.0.3
   resolution: "escape-html@npm:1.0.3"
   checksum: 6213ca9ae00d0ab8bccb6d8d4e0a98e76237b2410302cf7df70aaa6591d509a2a37ce8998008cbecae8fc8ffaadf3fb0229535e6a145f3ce0b211d060decbb24
@@ -39160,13 +39101,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"memoize-one@npm:^5.0.0":
-  version: 5.2.1
-  resolution: "memoize-one@npm:5.2.1"
-  checksum: a3cba7b824ebcf24cdfcd234aa7f86f3ad6394b8d9be4c96ff756dafb8b51c7f71320785fbc2304f1af48a0467cbbd2a409efc9333025700ed523f254cb52e3d
-  languageName: node
-  linkType: hard
-
 "memoizee@npm:^0.4.15":
   version: 0.4.15
   resolution: "memoizee@npm:0.4.15"
@@ -45103,7 +45037,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"prop-types@npm:15.7.2, prop-types@npm:^15.0.0, prop-types@npm:^15.5.8, prop-types@npm:^15.6.0, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2":
+"prop-types@npm:15.7.2, prop-types@npm:^15.0.0, prop-types@npm:^15.6.0, prop-types@npm:^15.7.2":
   version: 15.7.2
   resolution: "prop-types@npm:15.7.2"
   dependencies:
@@ -45951,17 +45885,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-input-autosize@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "react-input-autosize@npm:3.0.0"
-  dependencies:
-    prop-types: ^15.5.8
-  peerDependencies:
-    react: ^16.3.0 || ^17.0.0
-  checksum: cc3309ddc87446ade742c7d0e88ef089dd8b6981f21506a2bb27daf01a8803ac697f64157c4ffc7e81dfcf3892b54a4072dbc3652fd9addcf6d22dd0b87ab723
-  languageName: node
-  linkType: hard
-
 "react-inspector@npm:^5.1.0":
   version: 5.1.1
   resolution: "react-inspector@npm:5.1.1"
@@ -46033,13 +45956,6 @@ fsevents@~2.1.1:
     fsevents:
       optional: true
   checksum: bc0a6f3a1373725bc092c7a9a0687fc86d78370972474ed3adc8afb001fd626fded3d8b4adf7ee24c9897b505b1ebb242d19b256902c81765a4c5a1b7125d930
-  languageName: node
-  linkType: hard
-
-"react-lifecycles-compat@npm:^3.0.4":
-  version: 3.0.4
-  resolution: "react-lifecycles-compat@npm:3.0.4"
-  checksum: a904b0fc0a8eeb15a148c9feb7bc17cec7ef96e71188280061fc340043fd6d8ee3ff233381f0e8f95c1cf926210b2c4a31f38182c8f35ac55057e453d6df204f
   languageName: node
   linkType: hard
 
@@ -46199,25 +46115,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-select@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "react-select@npm:3.2.0"
-  dependencies:
-    "@babel/runtime": ^7.4.4
-    "@emotion/cache": ^10.0.9
-    "@emotion/core": ^10.0.9
-    "@emotion/css": ^10.0.9
-    memoize-one: ^5.0.0
-    prop-types: ^15.6.0
-    react-input-autosize: ^3.0.0
-    react-transition-group: ^4.3.0
-  peerDependencies:
-    react: ^16.8.0 || ^17.0.0
-    react-dom: ^16.8.0 || ^17.0.0
-  checksum: 082c818369fb8c7ce50bbd51260b21794f58dd41e9df5e0798c10e10478fb44b9fd88247f24720d5b443d77a6ec8afa733ecdd15a7722fde85c27bb87c379962
-  languageName: node
-  linkType: hard
-
 "react-shallow-renderer@npm:^16.13.1":
   version: 16.15.0
   resolution: "react-shallow-renderer@npm:16.15.0"
@@ -46294,21 +46191,6 @@ fsevents@~2.1.1:
   peerDependencies:
     react: ^16.8.0 || ^17.0.0
   checksum: da3d0192825df3d9f27eef33e7eddf928359a7e3e2b01ae7f7f672ecf4e5c1f7a34f27bdde9ccc24e2e9fbe1d1b9dd2a39c7d47323c9bdf63e7b9bd05c325a71
-  languageName: node
-  linkType: hard
-
-"react-transition-group@npm:^4.3.0":
-  version: 4.4.2
-  resolution: "react-transition-group@npm:4.4.2"
-  dependencies:
-    "@babel/runtime": ^7.5.5
-    dom-helpers: ^5.0.1
-    loose-envify: ^1.4.0
-    prop-types: ^15.6.2
-  peerDependencies:
-    react: ">=16.6.0"
-    react-dom: ">=16.6.0"
-  checksum: b67bf5b3e86dbab72d658b9a52a3589e5960583ab28c7c66272427d8fe30d4c7de422d5046ae96bd2683cdf80cc3264b2516f5ce80cae1dbe6cf3ca6dda392c5
   languageName: node
   linkType: hard
 
@@ -49754,22 +49636,6 @@ resolve@^2.0.0-next.3:
   version: 2.12.0
   resolution: "store2@npm:2.12.0"
   checksum: dd4184a677b11e5efc304b910d08f43e2b0ea018930a4e5ac407cb3472f08a6d42004c43b5f249c7299ba9cfd05cbe1eed998ea3f3388d2ca0f0650a6efb5dc4
-  languageName: node
-  linkType: hard
-
-"storybook-addon-next-router@npm:4.0.0":
-  version: 4.0.0
-  resolution: "storybook-addon-next-router@npm:4.0.0"
-  dependencies:
-    tslib: ^2.3.0
-  peerDependencies:
-    "@storybook/addon-actions": ^6.0.0
-    "@storybook/addons": ^6.0.0
-    "@storybook/client-api": ^6.0.0
-    next: ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 3e203fe069d41faa43a0274ecc09d60871b92457bd2c642ead0eeca792188241a658c4f52b7e8dcce8392569fd54192c1e384d7813e3f84a899d27cd22009c62
   languageName: node
   linkType: hard
 
