@@ -1,5 +1,6 @@
 {
   "name": "tests",
+  "description": "Integration tests for Unlock",
   "packageManager": "yarn@3.1.0-rc.7",
   "scripts": {
     "lint:fix": "yarn lint --fix",
