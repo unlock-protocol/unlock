@@ -19,7 +19,7 @@ export function Card({
   exp_year,
 }: Props) {
   return (
-    <div className="w-full max-w-sm bg-white border rounded-xl">
+    <div className="w-full max-w-screen-sm bg-white border rounded-xl">
       <div className="px-6 pt-6">
         <p className="inline-flex items-center gap-2 font-medium">
           <CreditCardIcon size={18} /> XXXX-XXXX-XXXX-{last4}

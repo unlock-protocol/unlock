@@ -14,7 +14,7 @@ import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { Card } from '../interface/checkout/alpha/Card'
 import { deleteCardForAddress } from '~/hooks/useCards'
-import { Setup } from '../interface/checkout/alpha/Checkout/CardPayment'
+import { SetupForm } from '../interface/checkout/alpha/Checkout/CardPayment'
 import { Button } from '@unlock-protocol/ui'
 
 export const PaymentSettings = () => {
@@ -59,12 +59,12 @@ export const PaymentSettings = () => {
     />
   ) : (
     <div className="grid max-w-sm space-y-6">
-      <Setup
+      <SetupForm
         stripe={stripe}
         onSubmit={() => {
           setIsSaving(true)
         }}
-        onSubmitted={async () => {
+        onSuccess={async () => {
           await refetch()
           setIsSaving(false)
         }}
