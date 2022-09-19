@@ -7,8 +7,16 @@ const ethers = require('ethers')
 
 const abisFolderPath = path.join(__dirname, '..', 'abis')
 
+const getVersions = (contractName) =>
+  Object.keys(abis)
+    .filter((n) => n.includes(`${contractName}V`))
+    .map((n) => parseInt(n.slice(contractName.length + 1, n.length)))
+    .sort((a, b) => a - b)
+    .filter((n) => n >= 7)
+    .map((n) => `v${n}`)
+
 const unlockVersions = ['v11']
-const publicLockVersions = ['v7', 'v11']
+const publicLockVersions = getVersions('PublicLock')
 
 function setupFolder() {
   // make sure we clean up

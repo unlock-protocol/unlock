@@ -7,11 +7,13 @@ import { useEffect } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from 'react-query'
 import { useRouter } from 'next/router'
-import { KeyPrice } from './KeyPrice'
+import { KeyPrice } from '../../elements/KeyPrice'
 import Lottie from 'lottie-react'
 import deployedAnimation from '~/animations/deployed.json'
 import deployingAnimation from '~/animations/deploying.json'
 import deployErrorAnimation from '~/animations/deploy-error.json'
+import { durationsAsTextFromSeconds } from '~/utils/durations'
+import { ONE_DAY_IN_SECONDS } from '~/constants'
 
 interface DeployStatusProps {
   title: string
@@ -138,6 +140,12 @@ export const CreateLockFormSummary = ({
     }
   }, [isDeployed, router])
 
+  const durationAsText = formData?.expirationDuration
+    ? durationsAsTextFromSeconds(
+        formData.expirationDuration * ONE_DAY_IN_SECONDS
+      )
+    : null
+
   return (
     <div>
       <div className="flex flex-col items-stretch border border-gray-400 divide-y divide-gray-400 md:flex-row md:divide-x md:divide-y-0 rounded-xl">
@@ -183,9 +191,7 @@ export const CreateLockFormSummary = ({
           <div className="flex flex-col gap-2">
             <span className="text-base">Duration</span>
             <span className="text-xl font-bold">
-              {unlimitedDuration
-                ? 'Unlimited'
-                : `${formData?.expirationDuration} days`}
+              {unlimitedDuration ? 'Unlimited' : durationAsText}
             </span>
           </div>
           <div className="flex flex-col gap-2">
