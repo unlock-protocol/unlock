@@ -92,11 +92,11 @@ export const MemberCard = ({
             }!
           }
         />
-        <div className="justify-between md:grid md:grid-cols-7">
-          <div className="md:col-span-1">
+        <div className="grid justify-between grid-cols-3 gap-4 md:grid-cols-7 md:gap-0">
+          <div className="col-span-1 grow">
             <CardDetail title="Token ID" value={token} />
           </div>
-          <div className="flex gap-2 md:col-span-2">
+          <div className="flex col-span-2 gap-2">
             <CardDetail title="Owner" value={<Address address={owner} />} />
             <div className="pb-1 mt-auto">
               <Button
@@ -108,7 +108,7 @@ export const MemberCard = ({
               </Button>
             </div>
           </div>
-          <div className="md:col-span-2">
+          <div className="col-span-2">
             <CardDetail
               title="Expiration"
               value={expirationAsDate(expiration)}
@@ -116,7 +116,7 @@ export const MemberCard = ({
           </div>
 
           {isLockManager && (
-            <div className="ml-auto md:col-span-2">
+            <div className="col-span-3 mx-auto md:ml-auto md:col-span-2">
               <div className="flex gap-3">
                 {!refundDisabled && (
                   <Button

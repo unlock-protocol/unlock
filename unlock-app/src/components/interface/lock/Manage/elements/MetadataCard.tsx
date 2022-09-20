@@ -36,7 +36,9 @@ const MetadataDetail = ({ title, value }: DetailProps) => {
   return (
     <div className="pb-2 border-b border-gray-400 last-of-type:border-none">
       <span className="text-base">{`${title}: `}</span>
-      <span className="text-base font-bold">{value}</span>
+      <span className="block text-base font-bold break-words md:inline-block">
+        {value}
+      </span>
     </div>
   )
 }
@@ -148,7 +150,7 @@ export const MetadataCard = ({
         extraDataItems={items as any}
         onEmailChange={onEmailChange}
       />
-      <div className="flex gap-3">
+      <div className="flex flex-col gap-3 md:flex-row">
         {!isCheckedIn && (
           <Button
             variant="outlined-primary"
@@ -196,7 +198,7 @@ export const MetadataCard = ({
           </Button>
         )}
       </div>
-      <div className="mt-8">
+      <div className="mt-5 md:mt-8">
         <span className="text-base">Metadata</span>
 
         <div className="mt-6">
