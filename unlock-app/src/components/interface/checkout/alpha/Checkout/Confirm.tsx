@@ -116,7 +116,8 @@ export function Confirm({
         lockAddress,
         lockNetwork,
         formattedData.formattedKeyPrice,
-        recipients
+        recipients,
+        recurringPayment || 0
       )
 
       if (stripeIntent?.error) {
