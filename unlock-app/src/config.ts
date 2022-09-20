@@ -1,6 +1,6 @@
 import { config } from './config/app'
 
-// TODO: Remove use of it.
-export default function configure(options: any) {
+// @ts-expect-error - unused variable. Remove this.
+export default function configure(options?: any) {
   return config
 }
