@@ -6,7 +6,6 @@ import { UserReference } from '../models/userReference'
 import * as Normalizer from '../utils/normalizer'
 import KeyPricer from '../utils/keyPricer'
 import { ethereumAddress } from '../types'
-import Dispatcher from '../fulfillment/dispatcher'
 import {
   getStripeCustomerIdForAddress,
   saveStripeCustomerIdForAddress,
