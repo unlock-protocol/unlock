@@ -9,7 +9,7 @@ export const ManageLockPage = () => {
   const { network } = useAuth()
   const { query } = useRouter()
 
-  const { address: lockAddress } = query ?? {}
+  const { address: lockAddress, network: lockNetwork } = query ?? {}
 
   if (!network) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
@@ -23,11 +23,14 @@ export const ManageLockPage = () => {
             <div className="lg:col-span-3">
               <LockDetailCard
                 lockAddress={lockAddress as string}
-                network={network}
+                network={parseInt(lockNetwork as string)}
               />
             </div>
             <div className="lg:col-span-9">
-              <TotalBar lockAddress={lockAddress as string} network={network} />
+              <TotalBar
+                lockAddress={lockAddress as string}
+                network={parseInt(lockNetwork as string)}
+              />
             </div>
           </div>
         </div>
