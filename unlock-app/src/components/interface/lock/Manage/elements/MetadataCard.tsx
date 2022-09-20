@@ -6,7 +6,9 @@ import {
 } from 'react-icons/fa'
 import { useMutation } from 'react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useAuth } from '~/contexts/AuthenticationContext'
 import { useStorageService } from '~/utils/withStorageService'
+import { useWalletService } from '~/utils/withWalletService'
 
 interface DetailProps {
   title: string
@@ -42,7 +44,9 @@ export const MetadataCard = ({
   owner,
   network,
 }: MetadataCardProps) => {
+  const { account } = useAuth()
   const storageService = useStorageService()
+  const walletService = useWalletService()
   const [data, setData] = useState(metadata)
   const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
     null
@@ -50,6 +54,8 @@ export const MetadataCard = ({
   const items = Object.entries(metadata || {}).filter(([key]) => {
     return !keysToIgnore.includes(key)
   })
+
+  const { lockAddress, token: tokenId } = data ?? {}
 
   const getCheckInTime = () => {
     const [_, checkInTimeValue] =
@@ -59,7 +65,33 @@ export const MetadataCard = ({
     return new Date(checkInTimeValue as number).toLocaleString()
   }
 
-  const onSendQrCode = () => {}
+  const sendEmail = async () => {
+    return storageService.sendKeyQrCodeViaEmail({
+      lockAddress,
+      network,
+      tokenId,
+    })
+  }
+
+  const sendEmailMutation = useMutation(sendEmail)
+
+  const onSendQrCode = async () => {
+    if (!network) return
+    if (!storageService) return
+    if (!walletService) return
+
+    await storageService.loginPrompt({
+      walletService,
+      address: account!,
+      chainId: network,
+    })
+
+    ToastHelper.promise(sendEmailMutation.mutateAsync(), {
+      success: 'QR-code sent by email',
+      loading: 'Sending QR-code by email',
+      error: 'There is some unexpected issue, please try again',
+    })
+  }
 
   const isCheckedIn = typeof getCheckInTime() === 'string' || !!checkInTimestamp
   const hasEmail = items.map(([key]) => key.toLowerCase()).includes('email')
@@ -114,6 +146,9 @@ export const MetadataCard = ({
               size="small"
               variant="outlined-primary"
               onClick={onSendQrCode}
+              disabled={
+                sendEmailMutation.isLoading || sendEmailMutation.isSuccess
+              }
             >
               Send QR-code by email
             </Button>

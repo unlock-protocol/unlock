@@ -32,6 +32,7 @@ export const Members = ({
   filters = {
     query: '',
     filterKey: 'owner',
+    expiration: 'all',
   },
 }: MembersProps) => {
   const { account } = useAuth()
