@@ -221,7 +221,7 @@ export const MetadataCard = ({
                 <MetadataDetail
                   key={`${key}-${index}`}
                   title={`${key}`}
-                  value={value}
+                  value={value as any}
                 />
               )
             })}
