@@ -13,7 +13,7 @@ interface KeyToGrant {
   expiration?: number
 }
 export default class Dispatcher {
-  async getUser(network: number) {
+  async getPurchaser(network: number) {
     const provider = new ethers.providers.JsonRpcProvider(
       networks[network].publicProvider
     )
@@ -58,7 +58,7 @@ export default class Dispatcher {
     callback: (error: any, hash: string | null) => Promise<void>
   ) {
     const walletService = new WalletService(networks)
-    const { wallet, provider } = await this.getUser(network)
+    const { wallet, provider } = await this.getPurchaser(network)
     await walletService.connect(provider, wallet)
     await walletService.grantKeyExtension(
       {

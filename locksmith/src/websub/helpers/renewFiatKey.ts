@@ -99,6 +99,34 @@ export async function renewFiatKey({
 
     const fulfillmentDispatcher = new Dispatcher()
 
+    const paymentIntent = await stripe.paymentIntents.create(
+      {
+        amount: subscription.amount,
+        currency: 'USD',
+        capture_method: 'manual',
+        application_fee_amount: subscription.unlockServiceFee,
+        customer: customer.id,
+        payment_method: paymentMethodId,
+        metadata: {
+          lock: lockAddress,
+          keyId,
+          network,
+          recipients: [userAddress].join(','),
+          purchaser: userAddress,
+          renewal: subscription.recurring,
+        },
+      },
+      {
+        stripeAccount,
+      }
+    )
+
+    if (paymentIntent.status === 'requires_action') {
+      throw new Error(
+        'Payment method require action from user for us to charge'
+      )
+    }
+
     const response = await new Promise((resolve, reject) => {
       fulfillmentDispatcher.grantKeyExtension(
         subscription.lockAddress,
@@ -118,36 +146,20 @@ export async function renewFiatKey({
           subscription.recurring -= 1
           await subscription.save()
 
-          const paymentIntent = await stripe.paymentIntents.create(
-            {
-              amount: subscription.amount,
-              currency: 'USD',
-              confirm: true,
-              application_fee_amount: subscription.unlockServiceFee,
-              off_session: true,
-              customer: customer.id,
-              payment_method: paymentMethodId,
-              metadata: {
-                lock: lockAddress,
-                keyId,
-                network,
-                recipients: [userAddress].join(','),
-                purchaser: userAddress,
-                renewal: 'true',
-              },
-            },
-            {
-              stripeAccount,
-            }
-          )
+          const intent = await stripe.paymentIntents.capture(paymentIntent.id)
 
-          switch (paymentIntent.status) {
+          switch (intent.status) {
             case 'succeeded': {
               // record renewal in db
               const recordedrenewalInfo = {
                 ...renewalInfo,
                 tx: hash,
               }
+              await stripe.paymentIntents.update(intent.id, {
+                metadata: {
+                  transactionHash: hash,
+                },
+              })
               await KeyRenewal.create(recordedrenewalInfo)
               // Create the charge object on our end!
               await Charge.create({

@@ -199,11 +199,17 @@ export class PurchaseController {
           }
         )
 
-      // Find the granted key Id and the owner
+      /**
+       * For now, we are only allowing subscription for the user who purchased the key, not for the multiple recipients
+       * because we don't have a way for them to "accept" the subscription and we don't want owner to be charged for all of them
+       * without a way to manage these from the dashboard.
+       */
       const key = items?.find((item) => item.owner === userAddress)
+
       if (!key) {
         return
       }
+
       const split = recipients?.length || 1
       const subscription = new KeySubscription()
       subscription.connectedCustomer = paymentIntentRecord.connectedCustomerId
@@ -218,6 +224,7 @@ export class PurchaseController {
       subscription.network = network
       subscription.recurring = Number(paymentIntent.metadata.recurring || 0)
       await subscription.save()
+      return
     } catch (error) {
       logger.error('There was an error when capturing payment', error)
       return response.status(400).send({ error: error.message })
