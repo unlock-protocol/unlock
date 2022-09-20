@@ -1,317 +1,468 @@
 [
   {
-    "constant": true,
+    "anonymous": false,
     "inputs": [
       {
-        "name": "interfaceId",
-        "type": "bytes4"
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "approved",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
       }
     ],
-    "name": "supportsInterface",
-    "outputs": [
+    "name": "Approval",
+    "type": "event",
+    "sig": "event Approval(address indexed,address indexed,uint256 indexed)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
       {
-        "name": "",
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "approved",
         "type": "bool"
       }
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    "name": "ApprovalForAll",
+    "type": "event",
+    "sig": "event ApprovalForAll(address indexed,address indexed,bool)"
   },
   {
-    "constant": true,
+    "anonymous": false,
     "inputs": [
       {
-        "name": "",
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sendTo",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "refund",
         "type": "uint256"
       }
     ],
-    "name": "owners",
-    "outputs": [
+    "name": "CancelKey",
+    "type": "event",
+    "sig": "event CancelKey(uint256 indexed,address indexed,address indexed,uint256)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [],
+    "name": "Disable",
+    "type": "event",
+    "sig": "event Disable()"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
       {
-        "name": "",
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "_timeAdded",
+        "type": "bool"
+      }
+    ],
+    "name": "ExpirationChanged",
+    "type": "event",
+    "sig": "event ExpirationChanged(uint256 indexed,uint256,bool)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "ExpireKey",
+    "type": "event",
+    "sig": "event ExpireKey(uint256 indexed)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
         "type": "address"
       }
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    "name": "KeyGranterAdded",
+    "type": "event",
+    "sig": "event KeyGranterAdded(address indexed)"
   },
   {
-    "constant": true,
-    "inputs": [],
-    "name": "name",
-    "outputs": [
+    "anonymous": false,
+    "inputs": [
       {
-        "name": "",
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "KeyGranterRemoved",
+    "type": "event",
+    "sig": "event KeyGranterRemoved(address indexed)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "_newManager",
+        "type": "address"
+      }
+    ],
+    "name": "KeyManagerChanged",
+    "type": "event",
+    "sig": "event KeyManagerChanged(uint256 indexed,address indexed)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "LockManagerAdded",
+    "type": "event",
+    "sig": "event LockManagerAdded(address indexed)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "LockManagerRemoved",
+    "type": "event",
+    "sig": "event LockManagerRemoved(address indexed)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "symbol",
         "type": "string"
       }
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    "name": "NewLockSymbol",
+    "type": "event",
+    "sig": "event NewLockSymbol(string)"
   },
   {
-    "constant": true,
+    "anonymous": false,
     "inputs": [
       {
-        "name": "_tokenId",
+        "indexed": true,
+        "internalType": "address",
+        "name": "keyManager",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "nextAvailableNonce",
         "type": "uint256"
       }
     ],
-    "name": "getApproved",
-    "outputs": [
+    "name": "NonceChanged",
+    "type": "event",
+    "sig": "event NonceChanged(address indexed,uint256)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
       {
-        "name": "",
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oldKeyPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "keyPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "oldTokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "tokenAddress",
         "type": "address"
       }
     ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    "name": "PricingChanged",
+    "type": "event",
+    "sig": "event PricingChanged(uint256,uint256,address,address)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "freeTrialLength",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "refundPenaltyBasisPoints",
+        "type": "uint256"
+      }
+    ],
+    "name": "RefundPenaltyChanged",
+    "type": "event",
+    "sig": "event RefundPenaltyChanged(uint256,uint256)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newExpiration",
+        "type": "uint256"
+      }
+    ],
+    "name": "RenewKeyPurchase",
+    "type": "event",
+    "sig": "event RenewKeyPurchase(address indexed,uint256)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "Transfer",
+    "type": "event",
+    "sig": "event Transfer(address indexed,address indexed,uint256 indexed)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "transferFeeBasisPoints",
+        "type": "uint256"
+      }
+    ],
+    "name": "TransferFeeChanged",
+    "type": "event",
+    "sig": "event TransferFeeChanged(uint256)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "beneficiary",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Withdrawal",
+    "type": "event",
+    "sig": "event Withdrawal(address indexed,address indexed,address indexed,uint256)"
+  },
+  {
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "fallback"
   },
   {
     "constant": false,
     "inputs": [
       {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "addKeyGranter",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function addKeyGranter(address)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "addLockManager",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function addLockManager(address)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "_approved",
         "type": "address"
       },
       {
+        "internalType": "uint256",
         "name": "_tokenId",
         "type": "uint256"
       }
     ],
     "name": "approve",
     "outputs": [],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "function"
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function approve(address,uint256)"
   },
   {
-    "constant": false,
+    "constant": true,
     "inputs": [
       {
-        "name": "_beneficiary",
+        "internalType": "address",
+        "name": "_keyOwner",
         "type": "address"
       }
     ],
-    "name": "updateBeneficiary",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "refundPenaltyDenominator",
+    "name": "balanceOf",
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "refundPenaltyNumerator",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "unlockProtocol",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_page",
-        "type": "uint256"
-      },
-      {
-        "name": "_pageSize",
-        "type": "uint256"
-      }
-    ],
-    "name": "getOwnersByPage",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address[]"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "keyPrice",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "expirationDuration",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "",
-        "type": "address"
-      },
-      {
-        "name": "",
-        "type": "address"
-      },
-      {
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "name": "",
-        "type": "bytes"
-      }
-    ],
-    "name": "onERC721Received",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes4"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "totalSupply",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_keyPrice",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateKeyPrice",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "cancelAndRefund",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "name": "_recipient",
-        "type": "address"
-      },
-      {
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "transferFrom",
-    "outputs": [],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdraw",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_baseTokenURI",
-        "type": "string"
-      }
-    ],
-    "name": "setBaseTokenURI",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function balanceOf(address) view returns (uint256)"
   },
   {
     "constant": true,
@@ -319,649 +470,67 @@
     "name": "beneficiary",
     "outputs": [
       {
+        "internalType": "address",
         "name": "",
         "type": "address"
       }
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function beneficiary() view returns (address)"
   },
   {
     "constant": false,
     "inputs": [
       {
-        "name": "_refundPenaltyNumerator",
-        "type": "uint256"
-      },
-      {
-        "name": "_refundPenaltyDenominator",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateRefundPenalty",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "numberOfKeysSold",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_transferFeeNumerator",
-        "type": "uint256"
-      },
-      {
-        "name": "_transferFeeDenominator",
-        "type": "uint256"
-      }
-    ],
-    "name": "updateTransferFee",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "isAlive",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "name": "_to",
-        "type": "address"
-      },
-      {
+        "internalType": "uint256",
         "name": "_tokenId",
         "type": "uint256"
       }
     ],
-    "name": "safeTransferFrom",
-    "outputs": [],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_a",
-        "type": "string"
-      },
-      {
-        "name": "_b",
-        "type": "string"
-      },
-      {
-        "name": "_c",
-        "type": "string"
-      },
-      {
-        "name": "_d",
-        "type": "string"
-      }
-    ],
-    "name": "strConcat",
-    "outputs": [
-      {
-        "name": "_concatenatedString",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "keyOwnerToNonce",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_i",
-        "type": "uint256"
-      }
-    ],
-    "name": "uint2Str",
-    "outputs": [
-      {
-        "name": "_uintAsString",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_owner",
-        "type": "address"
-      }
-    ],
-    "name": "getCancelAndRefundValueFor",
-    "outputs": [
-      {
-        "name": "refund",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_lockName",
-        "type": "string"
-      }
-    ],
-    "name": "updateLockName",
+    "name": "cancelAndRefund",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_addr",
-        "type": "address"
-      }
-    ],
-    "name": "address2Str",
-    "outputs": [
-      {
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "pure",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "incrementNonce",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "ownerOf",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_owner",
-        "type": "address"
-      }
-    ],
-    "name": "getHasValidKey",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_owner",
-        "type": "address"
-      }
-    ],
-    "name": "balanceOf",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function cancelAndRefund(uint256)"
   },
   {
     "constant": false,
     "inputs": [
       {
-        "name": "_recipient",
+        "internalType": "address",
+        "name": "_keyManager",
         "type": "address"
       },
       {
-        "name": "_referrer",
-        "type": "address"
-      }
-    ],
-    "name": "purchaseForFrom",
-    "outputs": [],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "renounceOwnership",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "maxNumberOfKeys",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_lockSymbol",
-        "type": "string"
-      }
-    ],
-    "name": "updateLockSymbol",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_recipients",
-        "type": "address[]"
+        "internalType": "uint8",
+        "name": "_v",
+        "type": "uint8"
       },
       {
-        "name": "_expirationTimestamps",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "grantKeys",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_owner",
-        "type": "address"
-      }
-    ],
-    "name": "getTransferFee",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_keyOwner",
-        "type": "address"
-      },
-      {
-        "name": "_txSender",
-        "type": "address"
-      }
-    ],
-    "name": "getCancelAndRefundApprovalHash",
-    "outputs": [
-      {
-        "name": "approvalHash",
+        "internalType": "bytes32",
+        "name": "_r",
         "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
+      },
       {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "isOwner",
-    "outputs": [
+        "internalType": "bytes32",
+        "name": "_s",
+        "type": "bytes32"
+      },
       {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "transferFeeNumerator",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "numberOfOwners",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "symbol",
-    "outputs": [
-      {
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_account",
-        "type": "address"
-      }
-    ],
-    "name": "getTokenIdFor",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
+        "internalType": "uint256",
         "name": "_tokenId",
         "type": "uint256"
-      },
-      {
-        "name": "_owner",
-        "type": "address"
-      }
-    ],
-    "name": "isKeyOwner",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_recipient",
-        "type": "address"
-      },
-      {
-        "name": "_expirationTimestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "grantKey",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "tokenAddress",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_owner",
-        "type": "address"
-      }
-    ],
-    "name": "expireKeyFor",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "name": "_approved",
-        "type": "bool"
-      }
-    ],
-    "name": "setApprovalForAll",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "destroyLock",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_owner",
-        "type": "address"
-      }
-    ],
-    "name": "keyExpirationTimestampFor",
-    "outputs": [
-      {
-        "name": "timestamp",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
-        "name": "_data",
-        "type": "bytes"
-      }
-    ],
-    "name": "safeTransferFrom",
-    "outputs": [],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_keyOwner",
-        "type": "address"
-      },
-      {
-        "name": "_signature",
-        "type": "bytes"
       }
     ],
     "name": "cancelAndRefundFor",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function cancelAndRefundFor(address,uint8,bytes32,bytes32,uint256)"
   },
   {
     "constant": false,
@@ -970,110 +539,94 @@
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "sender",
-        "type": "address"
-      }
-    ],
-    "name": "initialize",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "tokenURI",
-    "outputs": [
-      {
-        "name": "",
-        "type": "string"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function disableLock()"
   },
   {
     "constant": true,
     "inputs": [],
-    "name": "transferFeeDenominator",
+    "name": "expirationDuration",
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function expirationDuration() view returns (uint256)"
   },
   {
-    "constant": true,
+    "constant": false,
     "inputs": [
       {
-        "name": "_owner",
+        "internalType": "address",
+        "name": "_keyOwner",
         "type": "address"
       },
       {
-        "name": "_operator",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
       }
     ],
-    "name": "isApprovedForAll",
+    "name": "expireAndRefundFor",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function expireAndRefundFor(address,uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "freeTrialLength",
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
-        "type": "bool"
+        "type": "uint256"
       }
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "transferOwnership",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_recipient",
-        "type": "address"
-      }
-    ],
-    "name": "purchaseFor",
-    "outputs": [],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "function"
+    "type": "function",
+    "sig": "function freeTrialLength() view returns (uint256)"
   },
   {
     "constant": true,
     "inputs": [
       {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getApproved",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function getApproved(uint256) view returns (address)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
         "name": "_account",
         "type": "address"
       }
@@ -1081,317 +634,524 @@
     "name": "getBalance",
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
     ],
     "payable": false,
     "stateMutability": "view",
-    "type": "function"
+    "type": "function",
+    "sig": "function getBalance(address,address) view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_keyManager",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_txSender",
+        "type": "address"
+      }
+    ],
+    "name": "getCancelAndRefundApprovalHash",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "approvalHash",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function getCancelAndRefundApprovalHash(address,address) view returns (bytes32)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_keyOwner",
+        "type": "address"
+      }
+    ],
+    "name": "getCancelAndRefundValueFor",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "refund",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function getCancelAndRefundValueFor(address) view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_keyOwner",
+        "type": "address"
+      }
+    ],
+    "name": "getHasValidKey",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function getHasValidKey(address) view returns (bool)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_page",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_pageSize",
+        "type": "uint256"
+      }
+    ],
+    "name": "getOwnersByPage",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function getOwnersByPage(uint256,uint256) view returns (address[])"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_account",
+        "type": "address"
+      }
+    ],
+    "name": "getTokenIdFor",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function getTokenIdFor(address) view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_keyOwner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_time",
+        "type": "uint256"
+      }
+    ],
+    "name": "getTransferFee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function getTransferFee(address,uint256) view returns (uint256)"
   },
   {
     "constant": false,
     "inputs": [
       {
+        "internalType": "address[]",
         "name": "_recipients",
         "type": "address[]"
       },
       {
-        "name": "_expirationTimestamp",
-        "type": "uint256"
+        "internalType": "uint256[]",
+        "name": "_expirationTimestamps",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "_keyManagers",
+        "type": "address[]"
       }
     ],
     "name": "grantKeys",
     "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "function"
+    "type": "function",
+    "sig": "function grantKeys(address[],uint256[],address[])"
   },
   {
+    "constant": false,
     "inputs": [
       {
-        "name": "_owner",
-        "type": "address"
-      },
-      {
-        "name": "_expirationDuration",
+        "internalType": "uint256",
+        "name": "_nextAvailableNonce",
         "type": "uint256"
-      },
-      {
-        "name": "_tokenAddress",
-        "type": "address"
-      },
-      {
-        "name": "_keyPrice",
-        "type": "uint256"
-      },
-      {
-        "name": "_maxNumberOfKeys",
-        "type": "uint256"
-      },
-      {
-        "name": "_lockName",
-        "type": "string"
       }
     ],
+    "name": "invalidateOffchainApproval",
+    "outputs": [],
     "payable": false,
     "stateMutability": "nonpayable",
-    "type": "constructor"
+    "type": "function",
+    "sig": "function invalidateOffchainApproval(uint256)"
   },
   {
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "fallback"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "name": "owner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "sendTo",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "refund",
-        "type": "uint256"
-      }
-    ],
-    "name": "CancelKey",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "oldRefundPenaltyNumerator",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "oldRefundPenaltyDenominator",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "refundPenaltyNumerator",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "refundPenaltyDenominator",
-        "type": "uint256"
-      }
-    ],
-    "name": "RefundPenaltyChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "oldTransferFeeNumerator",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "oldTransferFeeDenominator",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "transferFeeNumerator",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "transferFeeDenominator",
-        "type": "uint256"
-      }
-    ],
-    "name": "TransferFeeChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "symbol",
-        "type": "string"
-      }
-    ],
-    "name": "NewLockSymbol",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "ExpireKey",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "oldKeyPrice",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "name": "keyPrice",
-        "type": "uint256"
-      }
-    ],
-    "name": "PriceChanged",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "sender",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "beneficiary",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "Withdrawal",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "balance",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
-        "name": "owner",
-        "type": "address"
-      }
-    ],
-    "name": "Destroy",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
+    "constant": true,
     "inputs": [],
-    "name": "Disable",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
+    "name": "isAlive",
+    "outputs": [
       {
-        "indexed": true,
-        "name": "previousOwner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnershipTransferred",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "_from",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "_to",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "Transfer",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "_owner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "_approved",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "Approval",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
-        "name": "_owner",
-        "type": "address"
-      },
-      {
-        "indexed": true,
-        "name": "_operator",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "_approved",
+        "internalType": "bool",
+        "name": "",
         "type": "bool"
       }
     ],
-    "name": "ApprovalForAll",
-    "type": "event"
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function isAlive() view returns (bool)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      }
+    ],
+    "name": "isApprovedForAll",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function isApprovedForAll(address,address) view returns (bool)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "isKeyGranter",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function isKeyGranter(address) view returns (bool)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_keyOwner",
+        "type": "address"
+      }
+    ],
+    "name": "isKeyOwner",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function isKeyOwner(uint256,address) view returns (bool)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "isLockManager",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function isLockManager(address) view returns (bool)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_keyOwner",
+        "type": "address"
+      }
+    ],
+    "name": "keyExpirationTimestampFor",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function keyExpirationTimestampFor(address) view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "keyManagerOf",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function keyManagerOf(uint256) view returns (address)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "keyManagerToNonce",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function keyManagerToNonce(address) view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "keyPrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function keyPrice() view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "maxNumberOfKeys",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function maxNumberOfKeys() view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "name",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function name() view returns (string)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "numberOfOwners",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function numberOfOwners() view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "onKeyCancelHook",
+    "outputs": [
+      {
+        "internalType": "contract ILockKeyCancelHook",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function onKeyCancelHook() view returns (address)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "onKeyPurchaseHook",
+    "outputs": [
+      {
+        "internalType": "contract ILockKeyPurchaseHook",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function onKeyPurchaseHook() view returns (address)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "ownerOf",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function ownerOf(uint256) view returns (address)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "owners",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function owners(uint256) view returns (address)"
   },
   {
     "constant": true,
@@ -1399,12 +1159,1892 @@
     "name": "publicLockVersion",
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
-        "type": "uint16"
+        "type": "uint256"
       }
     ],
     "payable": false,
     "stateMutability": "pure",
-    "type": "function"
+    "type": "function",
+    "sig": "function publicLockVersion() pure returns (uint256)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_referrer",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_data",
+        "type": "bytes"
+      }
+    ],
+    "name": "purchase",
+    "outputs": [],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function",
+    "sig": "function purchase(uint256,address,address,bytes) payable"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_referrer",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_data",
+        "type": "bytes"
+      }
+    ],
+    "name": "purchasePriceFor",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "minKeyPrice",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function purchasePriceFor(address,address,bytes) view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "refundPenaltyBasisPoints",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function refundPenaltyBasisPoints() view returns (uint256)"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "renounceLockManager",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function renounceLockManager()"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_granter",
+        "type": "address"
+      }
+    ],
+    "name": "revokeKeyGranter",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function revokeKeyGranter(address)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "safeTransferFrom",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function safeTransferFrom(address,address,uint256)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_data",
+        "type": "bytes"
+      }
+    ],
+    "name": "safeTransferFrom",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function safeTransferFrom(address,address,uint256,bytes)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "_approved",
+        "type": "bool"
+      }
+    ],
+    "name": "setApprovalForAll",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setApprovalForAll(address,bool)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_baseTokenURI",
+        "type": "string"
+      }
+    ],
+    "name": "setBaseTokenURI",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setBaseTokenURI(string)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_onKeyPurchaseHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onKeyCancelHook",
+        "type": "address"
+      }
+    ],
+    "name": "setEventHooks",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setEventHooks(address,address)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_keyManager",
+        "type": "address"
+      }
+    ],
+    "name": "setKeyManagerOf",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setKeyManagerOf(uint256,address)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_timeShared",
+        "type": "uint256"
+      }
+    ],
+    "name": "shareKey",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function shareKey(address,uint256,uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "bytes4",
+        "name": "interfaceId",
+        "type": "bytes4"
+      }
+    ],
+    "name": "supportsInterface",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function supportsInterface(bytes4) view returns (bool)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function symbol() view returns (string)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "tokenAddress",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function tokenAddress() view returns (address)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_index",
+        "type": "uint256"
+      }
+    ],
+    "name": "tokenByIndex",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function tokenByIndex(uint256) view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_keyOwner",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_index",
+        "type": "uint256"
+      }
+    ],
+    "name": "tokenOfOwnerByIndex",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function tokenOfOwnerByIndex(address,uint256) view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "tokenURI",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function tokenURI(uint256) view returns (string)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function totalSupply() view returns (uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "transferFeeBasisPoints",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function transferFeeBasisPoints() view returns (uint256)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "transferFrom",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function transferFrom(address,address,uint256)"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "unlockProtocol",
+    "outputs": [
+      {
+        "internalType": "contract IUnlock",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function unlockProtocol() view returns (address)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_beneficiary",
+        "type": "address"
+      }
+    ],
+    "name": "updateBeneficiary",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function updateBeneficiary(address)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_keyPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "updateKeyPricing",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function updateKeyPricing(uint256,address)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_lockName",
+        "type": "string"
+      }
+    ],
+    "name": "updateLockName",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function updateLockName(string)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_lockSymbol",
+        "type": "string"
+      }
+    ],
+    "name": "updateLockSymbol",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function updateLockSymbol(string)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_freeTrialLength",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_refundPenaltyBasisPoints",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateRefundPenalty",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function updateRefundPenalty(uint256,uint256)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_transferFeeBasisPoints",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateTransferFee",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function updateTransferFee(uint256)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function withdraw(address,uint256)"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_lockCreator",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_expirationDuration",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_keyPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxNumberOfKeys",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_lockName",
+        "type": "string"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function initialize(address,uint256,address,uint256,uint256,string)"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "initialize",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function initialize()"
+  },
+  {
+    "inputs": [],
+    "name": "CANNOT_APPROVE_SELF",
+    "type": "error",
+    "sig": "error CANNOT_APPROVE_SELF()"
+  },
+  {
+    "inputs": [],
+    "name": "CANT_BE_SMALLER_THAN_SUPPLY",
+    "type": "error",
+    "sig": "error CANT_BE_SMALLER_THAN_SUPPLY()"
+  },
+  {
+    "inputs": [],
+    "name": "CANT_EXTEND_NON_EXPIRING_KEY",
+    "type": "error",
+    "sig": "error CANT_EXTEND_NON_EXPIRING_KEY()"
+  },
+  {
+    "inputs": [],
+    "name": "GAS_REFUND_FAILED",
+    "type": "error",
+    "sig": "error GAS_REFUND_FAILED()"
+  },
+  {
+    "inputs": [],
+    "name": "INSUFFICIENT_ERC20_VALUE",
+    "type": "error",
+    "sig": "error INSUFFICIENT_ERC20_VALUE()"
+  },
+  {
+    "inputs": [],
+    "name": "INSUFFICIENT_VALUE",
+    "type": "error",
+    "sig": "error INSUFFICIENT_VALUE()"
+  },
+  {
+    "inputs": [],
+    "name": "INVALID_ADDRESS",
+    "type": "error",
+    "sig": "error INVALID_ADDRESS()"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "hookIndex",
+        "type": "uint8"
+      }
+    ],
+    "name": "INVALID_HOOK",
+    "type": "error",
+    "sig": "error INVALID_HOOK(uint8)"
+  },
+  {
+    "inputs": [],
+    "name": "INVALID_LENGTH",
+    "type": "error",
+    "sig": "error INVALID_LENGTH()"
+  },
+  {
+    "inputs": [],
+    "name": "INVALID_TOKEN",
+    "type": "error",
+    "sig": "error INVALID_TOKEN()"
+  },
+  {
+    "inputs": [],
+    "name": "KEY_NOT_VALID",
+    "type": "error",
+    "sig": "error KEY_NOT_VALID()"
+  },
+  {
+    "inputs": [],
+    "name": "KEY_TRANSFERS_DISABLED",
+    "type": "error",
+    "sig": "error KEY_TRANSFERS_DISABLED()"
+  },
+  {
+    "inputs": [],
+    "name": "LOCK_HAS_CHANGED",
+    "type": "error",
+    "sig": "error LOCK_HAS_CHANGED()"
+  },
+  {
+    "inputs": [],
+    "name": "LOCK_SOLD_OUT",
+    "type": "error",
+    "sig": "error LOCK_SOLD_OUT()"
+  },
+  {
+    "inputs": [],
+    "name": "MAX_KEYS_REACHED",
+    "type": "error",
+    "sig": "error MAX_KEYS_REACHED()"
+  },
+  {
+    "inputs": [],
+    "name": "MIGRATION_REQUIRED",
+    "type": "error",
+    "sig": "error MIGRATION_REQUIRED()"
+  },
+  {
+    "inputs": [],
+    "name": "NON_COMPLIANT_ERC721_RECEIVER",
+    "type": "error",
+    "sig": "error NON_COMPLIANT_ERC721_RECEIVER()"
+  },
+  {
+    "inputs": [],
+    "name": "NON_RENEWABLE_LOCK",
+    "type": "error",
+    "sig": "error NON_RENEWABLE_LOCK()"
+  },
+  {
+    "inputs": [],
+    "name": "NOT_ENOUGH_FUNDS",
+    "type": "error",
+    "sig": "error NOT_ENOUGH_FUNDS()"
+  },
+  {
+    "inputs": [],
+    "name": "NOT_ENOUGH_TIME",
+    "type": "error",
+    "sig": "error NOT_ENOUGH_TIME()"
+  },
+  {
+    "inputs": [],
+    "name": "NOT_READY_FOR_RENEWAL",
+    "type": "error",
+    "sig": "error NOT_READY_FOR_RENEWAL()"
+  },
+  {
+    "inputs": [],
+    "name": "NO_SUCH_KEY",
+    "type": "error",
+    "sig": "error NO_SUCH_KEY()"
+  },
+  {
+    "inputs": [],
+    "name": "NULL_VALUE",
+    "type": "error",
+    "sig": "error NULL_VALUE()"
+  },
+  {
+    "inputs": [],
+    "name": "ONLY_KEY_MANAGER_OR_APPROVED",
+    "type": "error",
+    "sig": "error ONLY_KEY_MANAGER_OR_APPROVED()"
+  },
+  {
+    "inputs": [],
+    "name": "ONLY_LOCK_MANAGER",
+    "type": "error",
+    "sig": "error ONLY_LOCK_MANAGER()"
+  },
+  {
+    "inputs": [],
+    "name": "ONLY_LOCK_MANAGER_OR_BENEFICIARY",
+    "type": "error",
+    "sig": "error ONLY_LOCK_MANAGER_OR_BENEFICIARY()"
+  },
+  {
+    "inputs": [],
+    "name": "ONLY_LOCK_MANAGER_OR_KEY_GRANTER",
+    "type": "error",
+    "sig": "error ONLY_LOCK_MANAGER_OR_KEY_GRANTER()"
+  },
+  {
+    "inputs": [],
+    "name": "OUT_OF_RANGE",
+    "type": "error",
+    "sig": "error OUT_OF_RANGE()"
+  },
+  {
+    "inputs": [],
+    "name": "OWNER_CANT_BE_ADDRESS_ZERO",
+    "type": "error",
+    "sig": "error OWNER_CANT_BE_ADDRESS_ZERO()"
+  },
+  {
+    "inputs": [],
+    "name": "SCHEMA_VERSION_NOT_CORRECT",
+    "type": "error",
+    "sig": "error SCHEMA_VERSION_NOT_CORRECT()"
+  },
+  {
+    "inputs": [],
+    "name": "TRANSFER_TO_SELF",
+    "type": "error",
+    "sig": "error TRANSFER_TO_SELF()"
+  },
+  {
+    "inputs": [],
+    "name": "UNAUTHORIZED",
+    "type": "error",
+    "sig": "error UNAUTHORIZED()"
+  },
+  {
+    "inputs": [],
+    "name": "UNAUTHORIZED_KEY_MANAGER_UPDATE",
+    "type": "error",
+    "sig": "error UNAUTHORIZED_KEY_MANAGER_UPDATE()"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "refundedAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "GasRefunded",
+    "type": "event",
+    "sig": "event GasRefunded(address indexed,uint256,address)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "version",
+        "type": "uint8"
+      }
+    ],
+    "name": "Initialized",
+    "type": "event",
+    "sig": "event Initialized(uint8)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newTimestamp",
+        "type": "uint256"
+      }
+    ],
+    "name": "KeyExtended",
+    "type": "event",
+    "sig": "event KeyExtended(uint256 indexed,uint256)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "updatedRecordsCount",
+        "type": "uint256"
+      }
+    ],
+    "name": "KeysMigrated",
+    "type": "event",
+    "sig": "event KeysMigrated(uint256)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event",
+    "sig": "event OwnershipTransferred(address,address)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "previousAdminRole",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "newAdminRole",
+        "type": "bytes32"
+      }
+    ],
+    "name": "RoleAdminChanged",
+    "type": "event",
+    "sig": "event RoleAdminChanged(bytes32 indexed,bytes32 indexed,bytes32 indexed)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "RoleGranted",
+    "type": "event",
+    "sig": "event RoleGranted(bytes32 indexed,address indexed,address indexed)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
+    ],
+    "name": "RoleRevoked",
+    "type": "event",
+    "sig": "event RoleRevoked(bytes32 indexed,address indexed,address indexed)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "lockAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "unlockAddress",
+        "type": "address"
+      }
+    ],
+    "name": "UnlockCallFailed",
+    "type": "event",
+    "sig": "event UnlockCallFailed(address indexed,address)"
+  },
+  {
+    "inputs": [],
+    "name": "DEFAULT_ADMIN_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function DEFAULT_ADMIN_ROLE() view returns (bytes32)"
+  },
+  {
+    "inputs": [],
+    "name": "KEY_GRANTER_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function KEY_GRANTER_ROLE() view returns (bytes32)"
+  },
+  {
+    "inputs": [],
+    "name": "LOCK_MANAGER_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function LOCK_MANAGER_ROLE() view returns (bytes32)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_spender",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "approveBeneficiary",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function approveBeneficiary(address,uint256) returns (bool)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "burn",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function burn(uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "expireAndRefundFor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function expireAndRefundFor(uint256,uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_referrer",
+        "type": "address"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_data",
+        "type": "bytes"
+      }
+    ],
+    "name": "extend",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function",
+    "sig": "function extend(uint256,uint256,address,bytes) payable"
+  },
+  {
+    "inputs": [],
+    "name": "gasRefundValue",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "_refundValue",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function gasRefundValue() view returns (uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "getCancelAndRefundValue",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "refund",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function getCancelAndRefundValue(uint256) view returns (uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      }
+    ],
+    "name": "getRoleAdmin",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function getRoleAdmin(bytes32) view returns (bytes32)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_time",
+        "type": "uint256"
+      }
+    ],
+    "name": "getTransferFee",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function getTransferFee(uint256,uint256) view returns (uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_duration",
+        "type": "uint256"
+      }
+    ],
+    "name": "grantKeyExtension",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function grantKeyExtension(uint256,uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address[]",
+        "name": "_recipients",
+        "type": "address[]"
+      },
+      {
+        "internalType": "uint256[]",
+        "name": "_expirationTimestamps",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "_keyManagers",
+        "type": "address[]"
+      }
+    ],
+    "name": "grantKeys",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function grantKeys(address[],uint256[],address[]) returns (uint256[])"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "grantRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function grantRole(bytes32,address)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "hasRole",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function hasRole(bytes32,address) view returns (bool)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "isOwner",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function isOwner(address) view returns (bool)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "isValidKey",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function isValidKey(uint256) view returns (bool)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "keyExpirationTimestampFor",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function keyExpirationTimestampFor(uint256) view returns (uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_from",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "lendKey",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function lendKey(address,address,uint256)"
+  },
+  {
+    "inputs": [],
+    "name": "maxKeysPerAddress",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function maxKeysPerAddress() view returns (uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenIdFrom",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_tokenIdTo",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "mergeKeys",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function mergeKeys(uint256,uint256,uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "name": "migrate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function migrate(bytes)"
+  },
+  {
+    "inputs": [],
+    "name": "onKeyTransferHook",
+    "outputs": [
+      {
+        "internalType": "contract ILockKeyTransferHook",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function onKeyTransferHook() view returns (address)"
+  },
+  {
+    "inputs": [],
+    "name": "onTokenURIHook",
+    "outputs": [
+      {
+        "internalType": "contract ILockTokenURIHook",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function onTokenURIHook() view returns (address)"
+  },
+  {
+    "inputs": [],
+    "name": "onValidKeyHook",
+    "outputs": [
+      {
+        "internalType": "contract ILockValidKeyHook",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function onValidKeyHook() view returns (address)"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function owner() view returns (address)"
+  },
+  {
+    "inputs": [],
+    "name": "publicLockVersion",
+    "outputs": [
+      {
+        "internalType": "uint16",
+        "name": "",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function",
+    "sig": "function publicLockVersion() pure returns (uint16)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "_values",
+        "type": "uint256[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "_recipients",
+        "type": "address[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "_referrers",
+        "type": "address[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "_keyManagers",
+        "type": "address[]"
+      },
+      {
+        "internalType": "bytes[]",
+        "name": "_data",
+        "type": "bytes[]"
+      }
+    ],
+    "name": "purchase",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function",
+    "sig": "function purchase(uint256[],address[],address[],address[],bytes[]) payable returns (uint256[])"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "referrerFees",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function referrerFees(address) view returns (uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_referrer",
+        "type": "address"
+      }
+    ],
+    "name": "renewMembershipFor",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function renewMembershipFor(uint256,address)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "renounceRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function renounceRole(bytes32,address)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "role",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "revokeRole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function revokeRole(bytes32,address)"
+  },
+  {
+    "inputs": [],
+    "name": "schemaVersion",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function schemaVersion() view returns (uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_onKeyPurchaseHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onKeyCancelHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onValidKeyHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onTokenURIHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onKeyTransferHook",
+        "type": "address"
+      }
+    ],
+    "name": "setEventHooks",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setEventHooks(address,address,address,address,address)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_newExpirationDuration",
+        "type": "uint256"
+      }
+    ],
+    "name": "setExpirationDuration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setExpirationDuration(uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_refundValue",
+        "type": "uint256"
+      }
+    ],
+    "name": "setGasRefundValue",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setGasRefundValue(uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_maxKeys",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMaxKeysPerAddress",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setMaxKeysPerAddress(uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_maxNumberOfKeys",
+        "type": "uint256"
+      }
+    ],
+    "name": "setMaxNumberOfKeys",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setMaxNumberOfKeys(uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
+    ],
+    "name": "setOwner",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setOwner(address)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_referrer",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_feeBasisPoint",
+        "type": "uint256"
+      }
+    ],
+    "name": "setReferrerFee",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setReferrerFee(address,uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_keyOwner",
+        "type": "address"
+      }
+    ],
+    "name": "totalKeys",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function totalKeys(address) view returns (uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_valueBasisPoint",
+        "type": "uint256"
+      }
+    ],
+    "name": "transfer",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "success",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function transfer(uint256,address,uint256) returns (bool)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "unlendKey",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function unlendKey(address,uint256)"
+  },
+  {
+    "inputs": [],
+    "name": "updateSchemaVersion",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function updateSchemaVersion()"
   }
 ]

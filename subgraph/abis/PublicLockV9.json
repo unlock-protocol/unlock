@@ -82,6 +82,12 @@
   },
   {
     "anonymous": false,
+    "inputs": [],
+    "name": "Disable",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
     "inputs": [
       {
         "indexed": true,
@@ -148,25 +154,6 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "tokenId",
-        "type": "uint256"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newTimestamp",
-        "type": "uint256"
-      }
-    ],
-    "name": "KeyExtended",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": true,
         "internalType": "address",
         "name": "account",
         "type": "address"
@@ -211,19 +198,6 @@
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "updatedRecordsCount",
-        "type": "uint256"
-      }
-    ],
-    "name": "KeysMigrated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
         "indexed": true,
         "internalType": "address",
         "name": "account",
@@ -257,25 +231,6 @@
       }
     ],
     "name": "NewLockSymbol",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "previousOwner",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "address",
-        "name": "newOwner",
-        "type": "address"
-      }
-    ],
-    "name": "OwnershipTransferred",
     "type": "event"
   },
   {
@@ -657,20 +612,14 @@
         "type": "uint256"
       }
     ],
-    "name": "burn",
+    "name": "cancelAndRefund",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "cancelAndRefund",
+    "inputs": [],
+    "name": "disableLock",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -691,47 +640,19 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
+        "internalType": "address payable",
+        "name": "_keyOwner",
+        "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "_amount",
+        "name": "amount",
         "type": "uint256"
       }
     ],
     "name": "expireAndRefundFor",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_value",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_referrer",
-        "type": "address"
-      },
-      {
-        "internalType": "bytes",
-        "name": "_data",
-        "type": "bytes"
-      }
-    ],
-    "name": "extend",
-    "outputs": [],
-    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -782,12 +703,12 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "_keyOwner",
+        "type": "address"
       }
     ],
-    "name": "getCancelAndRefundValue",
+    "name": "getCancelAndRefundValueFor",
     "outputs": [
       {
         "internalType": "uint256",
@@ -839,9 +760,28 @@
   {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "_account",
+        "type": "address"
+      }
+    ],
+    "name": "getTokenIdFor",
+    "outputs": [
+      {
         "internalType": "uint256",
-        "name": "_tokenId",
+        "name": "",
         "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_keyOwner",
+        "type": "address"
       },
       {
         "internalType": "uint256",
@@ -964,6 +904,19 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "isAlive",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -1029,46 +982,8 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "account",
+        "name": "_keyOwner",
         "type": "address"
-      }
-    ],
-    "name": "isOwner",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "isValidKey",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
       }
     ],
     "name": "keyExpirationTimestampFor",
@@ -1116,19 +1031,6 @@
   },
   {
     "inputs": [],
-    "name": "maxKeysPerAddress",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "maxNumberOfKeys",
     "outputs": [
       {
@@ -1138,42 +1040,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenIdFrom",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_tokenIdTo",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "mergeKeys",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes",
-        "name": "_calldata",
-        "type": "bytes"
-      }
-    ],
-    "name": "migrate",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1255,19 +1121,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -1302,29 +1155,29 @@
   {
     "inputs": [
       {
-        "internalType": "uint256[]",
-        "name": "_values",
-        "type": "uint256[]"
+        "internalType": "uint256",
+        "name": "_value",
+        "type": "uint256"
       },
       {
-        "internalType": "address[]",
-        "name": "_recipients",
-        "type": "address[]"
+        "internalType": "address",
+        "name": "_recipient",
+        "type": "address"
       },
       {
-        "internalType": "address[]",
-        "name": "_referrers",
-        "type": "address[]"
+        "internalType": "address",
+        "name": "_referrer",
+        "type": "address"
       },
       {
-        "internalType": "address[]",
-        "name": "_keyManagers",
-        "type": "address[]"
+        "internalType": "address",
+        "name": "_keyManager",
+        "type": "address"
       },
       {
-        "internalType": "bytes[]",
+        "internalType": "bytes",
         "name": "_data",
-        "type": "bytes[]"
+        "type": "bytes"
       }
     ],
     "name": "purchase",
@@ -1372,24 +1225,6 @@
       }
     ],
     "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "_referrer",
-        "type": "address"
-      }
-    ],
-    "name": "renewMembershipFor",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -1500,19 +1335,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "schemaVersion",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address",
@@ -1619,19 +1441,6 @@
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "_maxKeys",
-        "type": "uint256"
-      }
-    ],
-    "name": "setMaxKeysPerAddress",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
         "name": "_maxNumberOfKeys",
         "type": "uint256"
       }
@@ -1645,25 +1454,12 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "account",
-        "type": "address"
-      }
-    ],
-    "name": "setOwner",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "_to",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "_tokenIdFrom",
+        "name": "_tokenId",
         "type": "uint256"
       },
       {
@@ -1800,18 +1596,13 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      },
-      {
         "internalType": "address",
         "name": "_to",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "_valueBasisPoint",
+        "name": "_value",
         "type": "uint256"
       }
     ],
@@ -1946,13 +1737,6 @@
       }
     ],
     "name": "updateRefundPenalty",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "updateSchemaVersion",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
