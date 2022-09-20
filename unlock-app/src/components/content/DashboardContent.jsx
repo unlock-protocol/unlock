@@ -21,7 +21,9 @@ import { Button } from '@unlock-protocol/ui'
 
 const ButtonToCreateLock = ({ formIsVisible, toggleForm }) => {
   const { account } = useContext(AuthenticationContext)
-
+  if (!account) {
+    return <></>
+  }
   return (
     <>
       {formIsVisible && (

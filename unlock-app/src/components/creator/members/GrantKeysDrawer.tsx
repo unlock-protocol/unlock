@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react'
+import { parse } from 'csv-parse'
 import { useForm } from 'react-hook-form'
 import { Locks, Lock } from '../../../unlockTypes'
 import Drawer from '../../interface/Drawer'
 import { useWalletService } from '~/utils/withWalletService'
 import { Web3ServiceContext } from '../../../utils/withWeb3Service'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
-
 import { TransactionPendingButton } from '../../interface/checkout/FormStyles'
 import { ACCOUNT_REGEXP, MAX_UINT } from '../../../constants'
 import { getAddressForName } from '../../../hooks/useEns'
@@ -176,6 +176,37 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
     setLoading(false)
   }
 
+  const uploadCsv = async (event: any) => {
+    if (event?.target?.files && event.target?.files.length > 0) {
+      const records: any[] = []
+      // Initialize the parser
+      const parser = parse({
+        delimiter: ':',
+      })
+      // Use the readable stream api to consume records
+      parser.on('readable', function () {
+        let record
+        while ((record = parser.read()) !== null) {
+          console.log(record)
+          records.push(record)
+        }
+      })
+      // Catch any error
+      parser.on('error', function (err) {
+        console.error(err.message)
+      })
+      // Test that the parsed records matched the expected records
+      parser.on('end', function () {
+        console.log(records)
+      })
+      // Write data to the stream
+      console.log(event.target.files[0])
+      parser.write(event.target.files[0])
+      // Close the readable stream
+      parser.end()
+    }
+  }
+
   const addressFieldChanged = (name: string) => {
     return async (event: React.ChangeEvent<HTMLInputElement>) => {
       const address = await getAddressForName(event.target.value)
@@ -264,7 +295,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             />
             {errors.keysToGrant && (
               <p className="text-xs text-[#f24c15]">
-                {`Plese check the value. you can grant up to ${
+                {`Please check the value. you can grant up to ${
                   lock?.maxKeysPerAddress || 1
                 } keys`}
               </p>
@@ -376,6 +407,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
           <Button disabled={disableGrantKeys} onClick={onSubmit}>
             {`Grant ${recipientItems?.length} Key`}
           </Button>
+          <input type="file" accept="text/csv" onChange={uploadCsv} />
         </div>
       )}
       {loading && network && (
@@ -464,7 +496,7 @@ export const GrantKeysDrawer = ({
           <Select
             options={locksOptions}
             label={''}
-            defaultValue={locks[0] ?? undefined}
+            defaultValue={locksOptions[0]?.value}
             onChange={handleLockChanged}
           />
         </div>
