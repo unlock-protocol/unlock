@@ -138,9 +138,41 @@ describe('Unlock Hardhat plugin', function () {
           const { lock, transactionHash, lockAddress } =
             await this.hre.unlock.createLock(FIRST)
 
-          assert.equal(await lockAddress, lock.address)
+          assert.equal(lockAddress, lock.address)
           assert.equal(typeof transactionHash, 'string')
           isIdenticalLock(lock, FIRST)
+        })
+      })
+
+      describe('deployAndSetTemplate()', function () {
+        it('Should deploy and set a new version', async function () {
+          const version = 11
+          const { unlock, publicLock: publicLockBefore } = protocol
+
+          // deploy the template
+          const publicLock = await this.hre.unlock.deployAndSetTemplate(
+            version,
+            1
+          )
+          assert.equal(await unlock.publicLockAddress(), publicLock.address)
+          assert.notEqual(publicLockBefore.address, publicLock.address)
+          assert.equal(
+            await unlock.publicLockImpls(version),
+            publicLock.address
+          )
+          assert.equal(
+            await unlock.publicLockVersions(publicLock.address),
+            version
+          )
+          assert.equal(await unlock.publicLockLatestVersion(), version)
+
+          // create a lock at correct version by default
+          const { FIRST } = locks
+          const { lock } = await this.hre.unlock.createLock({
+            ...FIRST,
+            version,
+          })
+          assert.equal(await lock.publicLockVersion(), version)
         })
       })
 
