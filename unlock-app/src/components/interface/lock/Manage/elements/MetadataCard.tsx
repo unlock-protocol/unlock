@@ -1,5 +1,6 @@
-import { Button, Badge } from '@unlock-protocol/ui'
+import { Button, Badge, Input, Modal } from '@unlock-protocol/ui'
 import { useState } from 'react'
+import { FieldValues, useForm } from 'react-hook-form'
 import {
   FaCheckCircle as CheckIcon,
   FaSpinner as Spinner,
@@ -19,6 +20,7 @@ interface MetadataCardProps {
   metadata: any
   owner: string
   network: number
+  isLockManager: boolean
 }
 
 const keysToIgnore = [
@@ -43,15 +45,17 @@ export const MetadataCard = ({
   metadata,
   owner,
   network,
+  isLockManager,
 }: MetadataCardProps) => {
   const { account } = useAuth()
   const storageService = useStorageService()
   const walletService = useWalletService()
   const [data, setData] = useState(metadata)
+  const [addEmailModalOpen, setAddEmailModalOpen] = useState(false)
   const [checkInTimestamp, setCheckedInTimestamp] = useState<string | null>(
     null
   )
-  const items = Object.entries(metadata || {}).filter(([key]) => {
+  const items = Object.entries(data || {}).filter(([key]) => {
     return !keysToIgnore.includes(key)
   })
 
@@ -95,6 +99,14 @@ export const MetadataCard = ({
 
   const isCheckedIn = typeof getCheckInTime() === 'string' || !!checkInTimestamp
   const hasEmail = items.map(([key]) => key.toLowerCase()).includes('email')
+  const hasExtraData = items?.length > 0 || isCheckedIn
+
+  const onEmailChange = (values: FieldValues) => {
+    setData({
+      ...data,
+      ...values,
+    })
+  }
 
   const onMarkAsCheckIn = async () => {
     if (!storageService) return
@@ -124,6 +136,18 @@ export const MetadataCard = ({
 
   return (
     <>
+      <UpdateEmailModal
+        isOpen={addEmailModalOpen ?? false}
+        setIsOpen={setAddEmailModalOpen}
+        isLockManager={isLockManager ?? false}
+        userAddress={owner}
+        lockAddress={lockAddress}
+        network={network!}
+        hasExtraData={hasExtraData}
+        hasEmail={hasEmail}
+        extraDataItems={items as any}
+        onEmailChange={onEmailChange}
+      />
       <div className="flex gap-3">
         {!isCheckedIn && (
           <Button
@@ -150,14 +174,24 @@ export const MetadataCard = ({
                 sendEmailMutation.isLoading || sendEmailMutation.isSuccess
               }
             >
-              Send QR-code by email
+              {sendEmailMutation.isSuccess
+                ? 'QR-code sent by email'
+                : 'Send QR-code by email'}
             </Button>
-            <Button size="small" variant="outlined-primary">
+            <Button
+              size="small"
+              variant="outlined-primary"
+              onClick={() => setAddEmailModalOpen(true)}
+            >
               Edit email
             </Button>
           </>
         ) : (
-          <Button variant="outlined-primary" size="small">
+          <Button
+            variant="outlined-primary"
+            size="small"
+            onClick={() => setAddEmailModalOpen(true)}
+          >
             Add email
           </Button>
         )}
@@ -194,5 +228,148 @@ export const MetadataCard = ({
         </div>
       </div>
     </>
+  )
+}
+
+const UpdateEmailModal = ({
+  isOpen,
+  setIsOpen,
+  isLockManager,
+  userAddress,
+  lockAddress,
+  network,
+  hasExtraData,
+  hasEmail,
+  extraDataItems,
+  onEmailChange,
+}: {
+  isOpen: boolean
+  isLockManager: boolean
+  userAddress: string
+  lockAddress: string
+  network: number
+  hasExtraData: boolean
+  hasEmail: boolean
+  extraDataItems: [string, string | number][]
+  setIsOpen: (status: boolean) => void
+  onEmailChange: (values: FieldValues) => void
+}) => {
+  const storage = useStorageService()
+
+  const [loading, setLoading] = useState(false)
+  const { register, handleSubmit, reset } = useForm({
+    defaultValues: {
+      email: '',
+    },
+  })
+
+  const updateData = (formFields: FieldValues) => {
+    reset() // reset fomr state
+    setLoading(false)
+    setIsOpen(false)
+    if (typeof onEmailChange === 'function') {
+      onEmailChange(formFields)
+    }
+  }
+
+  const createMetadata = async (params: any, callback?: () => void) => {
+    try {
+      const createMetadataPromise = storage.createtMetadata(params)
+      await ToastHelper.promise(createMetadataPromise, {
+        loading: 'Saving email address',
+        success: 'Email succesfully added to member',
+        error: 'There is some unexpected issue, please try again',
+      })
+      if (typeof callback === 'function') {
+        callback()
+      }
+    } catch (err: any) {
+      ToastHelper.error(err?.message || 'There is some unexpected issue')
+    }
+  }
+
+  const updateMetadata = async (params: any, callback?: () => void) => {
+    const updateMetadataPromise = storage.updatetMetadata(params)
+    await ToastHelper.promise(updateMetadataPromise, {
+      loading: 'Updating email address',
+      success: 'Email succesfully added to member',
+      error: 'There is some unexpected issue, please try again',
+    })
+    if (typeof callback === 'function') {
+      callback()
+    }
+  }
+  /**
+   * Update metadata or create a new set when not exists
+   * @param {formFields} formFields - useForm data set, all data present in form will be saved as metadata
+   */
+  const onUpdateValue = async (formFields: FieldValues) => {
+    if (!isLockManager) return
+    try {
+      setLoading(true)
+      let metadata = {}
+
+      extraDataItems.map(([key, value]: [string, string | number]) => {
+        metadata = {
+          ...metadata,
+          [key]: value,
+        }
+      })
+
+      // merge old metadata with new one to prevent data lost
+      metadata = {
+        ...metadata,
+        ...formFields,
+      }
+
+      const params = {
+        lockAddress,
+        userAddress,
+        network,
+        metadata,
+      }
+
+      if (hasExtraData) {
+        updateMetadata(params, () => {
+          updateData(formFields)
+        })
+      } else {
+        createMetadata(params, () => {
+          updateData(formFields)
+        })
+      }
+    } catch (err) {
+      ToastHelper.error('There is some unexpected issue, please try again')
+    }
+  }
+
+  return (
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <div className="flex flex-col gap-3 p-4">
+        <span className="mr-0 font-semibold text-md">
+          {hasEmail ? 'Update email address' : 'Add email address to metadata'}
+        </span>
+        <form onSubmit={handleSubmit(onUpdateValue)}>
+          <Input
+            type="email"
+            {...register('email', {
+              required: true,
+            })}
+          />
+          <div className="flex items-center justify-end gap-2">
+            <Button
+              variant="secondary"
+              onClick={() => setIsOpen(false)}
+              disabled={loading}
+            >
+              Abort
+            </Button>
+            <Button type="submit" disabled={loading}>
+              {hasEmail ? 'Update email' : 'Add email'}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </Modal>
   )
 }

@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query'
+import { useQueries } from 'react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
@@ -39,7 +39,10 @@ export const Members = ({
   const walletService = useWalletService()
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
-  const isLockManager = true
+
+  const getLockManagerStatus = async () => {
+    return await web3Service.isLockManager(lockAddress, account!, network)
+  }
 
   const getMembers = async () => {
     await storageService.loginPrompt({
@@ -59,28 +62,33 @@ export const Members = ({
     return web3Service.publicLockVersion(lockAddress, network)
   }
 
-  const { isLoading, data: members = [] } = useQuery(
-    ['getMembers'],
-    async () => getMembers(),
+  const [
+    { isLoading, data: members = [] },
+    { isLoading: isLoadingVersion, data: lockVersion = 0, isError },
+    { isLoading: isLoadingLockManager, data: isLockManager },
+  ] = useQueries([
     {
+      queryFn: getMembers,
+      queryKey: 'getMembers',
       onError: () => {
         ToastHelper.error('There is some unexpected issue, please try again')
       },
-    }
-  )
-
-  const {
-    isLoading: isLoadingVersion,
-    data: lockVersion = 0,
-    isError,
-  } = useQuery(['getLockVersion'], async () => getLockVersion(), {
-    onError: () => {
-      ToastHelper.error('There is some unexpected issue, please try again')
     },
-  })
+    {
+      queryFn: getLockVersion,
+      queryKey: 'getLockVersion',
+      onError: () => {
+        ToastHelper.error('There is some unexpected issue, please try again')
+      },
+    },
+    {
+      queryFn: getLockManagerStatus,
+      queryHash: 'getLockManagerStatus',
+    },
+  ])
 
-  const loading = isLoadingVersion || isLoading
-  const noItems = members?.length === 0 && !loading && !isError
+  const loading = isLoadingVersion || isLoading || isLoadingLockManager
+  const noItems = members?.length === 0 && !loading
 
   if (noItems) {
     return (

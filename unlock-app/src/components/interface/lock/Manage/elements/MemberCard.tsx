@@ -155,7 +155,12 @@ export const MemberCard = ({
       disabled={!isLockManager}
       content={<MemberInfo />}
     >
-      <MetadataCard metadata={metadata} owner={owner} network={network} />
+      <MetadataCard
+        metadata={metadata}
+        owner={owner}
+        network={network}
+        isLockManager={isLockManager}
+      />
     </Collapse>
   )
 }
