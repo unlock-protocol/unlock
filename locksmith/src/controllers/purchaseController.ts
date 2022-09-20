@@ -122,7 +122,7 @@ export class PurchaseController {
   ): Promise<any> {
     const { network, recipients, paymentIntent: paymentIntentId } = request.body
     const userAddress = Normalizer.ethereumAddress(request.body.userAddress)
-    const lockAddress = Normalizer.ethereumAddress(request.body.lockAddress)
+    const lockAddress = Normalizer.ethereumAddress(request.body.lock)
     const normalizedRecipients: string[] = recipients.map((address: string) =>
       Normalizer.ethereumAddress(address)
     )
@@ -216,6 +216,7 @@ export class PurchaseController {
       subscription.lockAddress = lockAddress
       subscription.userAddress = userAddress
       subscription.network = network
+      subscription.recurring = Number(paymentIntent.metadata.recurring || 0)
       await subscription.save()
     } catch (error) {
       logger.error('There was an error when capturing payment', error)

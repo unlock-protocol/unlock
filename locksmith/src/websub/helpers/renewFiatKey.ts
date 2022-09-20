@@ -152,7 +152,7 @@ export async function renewFiatKey({
               // Create the charge object on our end!
               await Charge.create({
                 userAddress: paymentIntent.metadata.purchaser,
-                recipients: paymentIntent.metadata.recipient.split(','),
+                recipients: paymentIntent.metadata.recipients.split(','),
                 lock: paymentIntent.metadata.lock,
                 stripeCustomerId: paymentIntent.customer, // TODO: consider checking the customer id under Unlock's stripe account?
                 connectedCustomer: paymentIntent.customer,
