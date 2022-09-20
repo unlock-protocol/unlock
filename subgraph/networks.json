@@ -1,0 +1,73 @@
+{
+  "mainnet": {
+    "Unlock": {
+      "address": "0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13",
+      "startBlock": 7120795
+    }
+  },
+  "rinkeby": {
+    "Unlock": {
+      "address": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
+      "startBlock": 3530008
+    }
+  },
+  "xdai": {
+    "Unlock": {
+      "address": "0x1bc53f4303c711cc693F6Ec3477B83703DcB317f",
+      "startBlock": 19338700
+    },
+    "Unlock0": {
+      "address": "0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863",
+      "startBlock": 14521200
+    }
+  },
+  "polygon": {
+    "Unlock": {
+      "address": "0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f",
+      "startBlock": 21986688
+    },
+    "Unlock0": {
+      "address": "0x14bb3586Ce2946E71B95Fe00Fc73dd30ed830863",
+      "startBlock": 15714206
+    }
+  },
+  "bsc": {
+    "Unlock": {
+      "address": "0xeC83410DbC48C7797D2f2AFe624881674c65c856",
+      "startBlock": 13079000
+    },
+    "Unlock0": {
+      "address": "0x99b1348a9129ac49c6de7F11245773dE2f51fB0c",
+      "startBlock": 12396000
+    }
+  },
+  "optimism": {
+    "Unlock": {
+      "address": "0x99b1348a9129ac49c6de7F11245773dE2f51fB0c"
+    }
+  },
+  "mumbai": {
+    "Unlock": {
+      "address": "0x1FF7e338d5E582138C46044dc238543Ce555C963",
+      "startBlock": 26584912
+    }
+  },
+  "goerli": {
+    "Unlock": {
+      "address": "0x627118a4fB747016911e5cDA82e2E77C531e8206",
+      "startBlock": 7179039
+    }
+  },
+  "celo": {
+    "Unlock": {
+      "address": "0x1FF7e338d5E582138C46044dc238543Ce555C963",
+      "startBlock": 7179039
+    }
+  },
+  "avalanche": {
+    "Unlock": {
+      "address": "0x70cBE5F72dD85aA634d07d2227a421144Af734b3",
+      "startBlock": 17188332
+    }
+  }
+}

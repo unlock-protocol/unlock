@@ -2,7 +2,11 @@ import { Button } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { useMutation } from 'react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
+import {
+  ONE_DAY_IN_SECONDS,
+  UNLIMITED_KEYS_COUNT,
+  UNLIMITED_KEYS_DURATION,
+} from '~/constants'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import useLocks from '~/hooks/useLocks'
 import { CreateLockForm, LockFormProps } from './elements/CreateLockForm'
@@ -94,11 +98,13 @@ export const CreateLockSteps = () => {
       maxNumberOfKeys,
       expirationDuration,
     }: LockFormProps) => {
+      const expirationInSeconds =
+        (expirationDuration as number) * ONE_DAY_IN_SECONDS
       const payload: LockCreatePayloadProps = {
         name,
         expirationDuration: unlimitedDuration
           ? UNLIMITED_KEYS_DURATION
-          : expirationDuration,
+          : expirationInSeconds,
         maxNumberOfKeys: unlimitedQuantity
           ? UNLIMITED_KEYS_COUNT
           : maxNumberOfKeys,

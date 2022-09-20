@@ -180,9 +180,12 @@ namespace UserOperations {
     })
 
     try {
-      const cardsResponse = await stripe.customers.listSources(customer_id, {
-        object: 'card',
-      })
+      const cardsResponse = await stripe.customers.listPaymentMethods(
+        customer_id,
+        {
+          type: 'card',
+        }
+      )
 
       return cardsResponse.data
     } catch (_e) {

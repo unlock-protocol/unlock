@@ -13,7 +13,7 @@ import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
 import { BalanceWarning } from './BalanceWarning'
 import { useConfig } from '~/utils/withConfig'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import { CryptoIcon } from './KeyPrice'
+import { CryptoIcon } from '../../elements/KeyPrice'
 import { useQuery } from 'react-query'
 import useAccount from '~/hooks/useAccount'
 
@@ -221,9 +221,10 @@ export const CreateLockForm = ({
                                 <Input
                                   tabIndex={-1}
                                   autoComplete="off"
+                                  step={0.01}
                                   {...register('expirationDuration', {
                                     required: value !== true,
-                                    min: 1,
+                                    min: 0,
                                   })}
                                   placeholder="Enter duration"
                                   type="number"
@@ -286,7 +287,7 @@ export const CreateLockForm = ({
                             <div className="relative grow">
                               <Input
                                 placeholder="Enter quantity"
-                                type="number"
+                                type="numeric"
                                 autoComplete="off"
                                 step={1}
                                 {...register('maxNumberOfKeys', {
@@ -330,7 +331,7 @@ export const CreateLockForm = ({
                     type="numeric"
                     autoComplete="off"
                     placeholder="0.00"
-                    step={0.05}
+                    step={0.01}
                     {...register('keyPrice', {
                       required: true,
                       min: 0,

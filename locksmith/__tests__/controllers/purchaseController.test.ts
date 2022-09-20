@@ -10,7 +10,8 @@ const recipient = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
 const wallet = new ethers.Wallet(
   '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
 )
-const mockPaymentProcessor = {
+// eslint-disable-next-line
+var mockPaymentProcessor = {
   chargeUser: jest.fn().mockResolvedValue('true'),
   initiatePurchase: jest.fn().mockResolvedValue('this is a transaction hash'),
   initiatePurchaseForConnectedStripeAccount: jest.fn().mockResolvedValue(''),
