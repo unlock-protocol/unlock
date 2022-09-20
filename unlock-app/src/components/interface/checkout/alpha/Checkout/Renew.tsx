@@ -102,6 +102,7 @@ export function Renew({
             owner: account,
             referrer,
           },
+          {} /** transactionParams */,
           onTransactionHandler
         )
       } else {
@@ -118,6 +119,7 @@ export function Renew({
             tokenId: tokenId.toString(),
             referrer,
           },
+          {} /** Transaction params */,
           onTransactionHandler
         )
       }

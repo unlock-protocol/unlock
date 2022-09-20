@@ -88,6 +88,7 @@ export default class Dispatcher {
         expirations,
         transactionOptions,
       },
+      {},
       cb
     )
   }
@@ -141,6 +142,7 @@ export default class Dispatcher {
         lockAddress,
         owner,
       },
+      {},
       cb
     )
   }
