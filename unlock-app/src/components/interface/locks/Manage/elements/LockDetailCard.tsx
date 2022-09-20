@@ -54,7 +54,7 @@ const Detail = ({ label, value, prepend, loading }: DetailProps) => {
       {loading ? (
         <DetailValuePlaceholder />
       ) : (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 text-right">
           {prepend && <>{prepend}</>}
           <span className="text-base font-bold text-black">{value || '-'}</span>
         </div>

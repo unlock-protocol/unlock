@@ -168,7 +168,7 @@ export const IconModal = ({
                       </span>
                     </div>
                     <div className="flex justify-center mt-4">
-                      <div className="flex items-center justify-center p-3 border border-gray-400 border-dashed max-h-xs h-80 w-80 rounded-3xl">
+                      <div className="flex items-center justify-center p-3 border border-gray-400 border-dashed max-h-xs h-60 w-60 rounded-3xl">
                         <img
                           className="object-contain"
                           alt="logo"

@@ -9,7 +9,7 @@ import { MdOutlineClose as CloseIcon } from 'react-icons/md'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useAccount } from '../../hooks/useAccount'
 import InlineModal from '../interface/InlineModal'
-import { IconModal } from '../interface/lock/Manage/elements/LockIcon'
+import { IconModal } from '../interface/locks/Manage/elements/LockIcon'
 
 const SvgCamera = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 24 24">
