@@ -17,16 +17,16 @@ export const ManageLockPage = () => {
 
   return (
     <div className="min-h-screen bg-ui-secondary-200">
-      <div className="w-full px-4 md:px-40">
-        <div className="px-4 mx-auto md:container pt-9">
-          <div className="flex flex-col md:grid md:grid-cols-12 gap-14">
-            <div className="md:col-span-3">
+      <div className="w-full px-4 lg:px-40">
+        <div className="px-4 mx-auto lg:container pt-9">
+          <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
+            <div className="lg:col-span-3">
               <LockDetailCard
                 lockAddress={lockAddress as string}
                 network={network}
               />
             </div>
-            <div className="md:col-span-9">
+            <div className="lg:col-span-9">
               <TotalBar lockAddress={lockAddress as string} network={network} />
             </div>
           </div>
