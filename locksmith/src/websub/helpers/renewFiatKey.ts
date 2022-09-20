@@ -121,12 +121,6 @@ export async function renewFiatKey({
       }
     )
 
-    if (paymentIntent.status === 'requires_action') {
-      throw new Error(
-        'Payment method require action from user for us to charge'
-      )
-    }
-
     const response = await new Promise((resolve, reject) => {
       fulfillmentDispatcher.grantKeyExtension(
         subscription.lockAddress,
