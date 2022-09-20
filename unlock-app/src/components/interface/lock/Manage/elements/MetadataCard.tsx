@@ -266,7 +266,7 @@ const UpdateEmailModal = ({
   })
 
   const updateData = (formFields: FieldValues) => {
-    reset() // reset fomr state
+    reset() // reset form state
     setLoading(false)
     setIsOpen(false)
     if (typeof onEmailChange === 'function') {
