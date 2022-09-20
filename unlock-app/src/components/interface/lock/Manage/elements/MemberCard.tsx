@@ -63,7 +63,8 @@ export const MemberCard = ({
     return parseInt(timestamp) > now
   }
 
-  const canExtendKey = expiration !== MAX_UINT && version && version >= 11
+  const canExtendKey =
+    expiration !== MAX_UINT && version !== undefined && version >= 11
   const refundDisabled = !(isLockManager && isKeyValid(expiration))
 
   const { token: tokenId, lockName } = metadata ?? {}
@@ -116,7 +117,7 @@ export const MemberCard = ({
           </div>
 
           {isLockManager && (
-            <div className="col-span-3 mx-auto md:ml-auto md:col-span-2">
+            <div className="col-span-3 mx-auto md:mx-0 md:ml-auto md:col-span-2">
               <div className="flex gap-3">
                 {!refundDisabled && (
                   <Button

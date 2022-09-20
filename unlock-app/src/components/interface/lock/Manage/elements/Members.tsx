@@ -64,7 +64,7 @@ export const Members = ({
 
   const [
     { isLoading, data: members = [] },
-    { isLoading: isLoadingVersion, data: lockVersion = 0, isError },
+    { isLoading: isLoadingVersion, data: lockVersion = 0 },
     { isLoading: isLoadingLockManager, data: isLockManager },
   ] = useQueries([
     {
