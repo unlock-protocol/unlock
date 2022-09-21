@@ -1,7 +1,7 @@
 import React from 'react'
 import type { NextPage } from 'next'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
-import CreateLockPage from '~/components/interface/lock/Create'
+import CreateLockPage from '~/components/interface/locks/Create'
 
 const Create: NextPage = () => {
   return (
