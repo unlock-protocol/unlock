@@ -43,5 +43,14 @@ export const xdai: NetworkConfig = {
     'EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.',
   isTestNetwork: false,
   teamMultisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
+  // 0xddafbb505ad214d7b80b1f830fccc89b60fb7a83
+  tokens: [
+    {
+      name: 'USD Coin',
+      symbol: 'USDC',
+      decimals: 6,
+      address: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',
+    },
+  ],
 }
 export default xdai
