@@ -8,16 +8,13 @@
   "exports": {
     ".": {
       "import": {
-        "typings": "./dist/index.d.ts",
         "default": "./dist/index.mjs"
       },
       "require": {
-        "typings": "./dist/index.d.ts",
         "default": "./dist/index.js"
       }
     }
   },
-  "source": "src/index.tsx",
   "typings": "dist/index.d.ts",
   "scripts": {
     "svg-2-components": "svgr --typescript --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",

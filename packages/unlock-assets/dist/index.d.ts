@@ -1,4 +1,3 @@
-import * as PropTypes from 'prop-types';
 import * as react from 'react';
 
 interface SVGRProps$c {
@@ -68,29 +67,13 @@ interface SVGRProps {
 
 declare const _default: {
     SvgComponents: {
-        About: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
+        About: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps) => JSX.Element;
         Adfree: (props: any) => JSX.Element;
         AppStore: (props: any) => JSX.Element;
         Arrow: (props: any) => JSX.Element;
         Attention: (props: any) => JSX.Element;
         Bars: (props: any) => JSX.Element;
-        Blog: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$1): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
+        Blog: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$1) => JSX.Element;
         Carret: (props: any) => JSX.Element;
         Cart: (props: any) => JSX.Element;
         Checkmark: (props: any) => JSX.Element;
@@ -98,24 +81,8 @@ declare const _default: {
         Close: (props: any) => JSX.Element;
         Cloudflare: (props: any) => JSX.Element;
         Code: (props: any) => JSX.Element;
-        Cog: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$2): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
-        CoinbaseWallet: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$3): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
+        Cog: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$2) => JSX.Element;
+        CoinbaseWallet: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$3) => JSX.Element;
         Copy: (props: any) => JSX.Element;
         CreditCard: (props: any) => JSX.Element;
         Decentraland: (props: any) => JSX.Element;
@@ -132,78 +99,22 @@ declare const _default: {
         Firebase: (props: any) => JSX.Element;
         Github: (props: any) => JSX.Element;
         Heart: (props: any) => JSX.Element;
-        Home: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$4): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
-        Idea: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$5): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
-        Info: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$6): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
+        Home: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$4) => JSX.Element;
+        Idea: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$5) => JSX.Element;
+        Info: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$6) => JSX.Element;
         Jobs: (props: any) => JSX.Element;
-        Key: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$7): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
+        Key: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$7) => JSX.Element;
         Lemniscate: (props: any) => JSX.Element;
         LiveDemo: (props: any) => JSX.Element;
         Loading: (props: any) => JSX.Element;
-        LoadingDots: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$8): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
+        LoadingDots: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$8) => JSX.Element;
         Lock: (props: any) => JSX.Element;
         LockClosed: (props: any) => JSX.Element;
         Log: (props: any) => JSX.Element;
         Members: (props: any) => JSX.Element;
-        Metamask: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$9): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
+        Metamask: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$9) => JSX.Element;
         Newsletter: (props: any) => JSX.Element;
-        Opera: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$a): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
+        Opera: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$a) => JSX.Element;
         Person: (props: any) => JSX.Element;
         Preview: (props: any) => JSX.Element;
         Qr: (props: any) => JSX.Element;
@@ -211,27 +122,11 @@ declare const _default: {
         Telegram: (props: any) => JSX.Element;
         Ticket: (props: any) => JSX.Element;
         Twitter: (props: any) => JSX.Element;
-        RocketLaunch: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$b): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
+        RocketLaunch: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$b) => JSX.Element;
         Unlock: (props: any) => JSX.Element;
         UnlockWordMark: (props: any) => JSX.Element;
         Upload: (props: any) => JSX.Element;
-        UnlockMonogram: {
-            ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$c): JSX.Element;
-            propTypes: {
-                title: PropTypes.Requireable<string>;
-            };
-            defaultProps: {
-                title: string;
-            };
-        };
+        UnlockMonogram: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$c) => JSX.Element;
         Wallet: (props: any) => JSX.Element;
         WalletConnect: (props: any) => JSX.Element;
         Webflow: (props: any) => JSX.Element;

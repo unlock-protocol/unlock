@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { SVGProps } from 'react'
-import PropTypes from 'prop-types'
 interface SVGRProps {
   title?: string;
   titleId?: string;
@@ -26,11 +25,5 @@ const SvgAttention = ({
   </svg>
 )
 
-SvgAttention.propTypes = {
-  title: PropTypes.string,
-}
-SvgAttention.defaultProps = {
-  title: '',
-}
 export type { SVGRProps }
 export default SvgAttention

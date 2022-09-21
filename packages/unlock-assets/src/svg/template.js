@@ -12,18 +12,9 @@ function svgTemplate(
 ) {
   return tpl`
     ${imports}
-    import PropTypes from 'prop-types'
     ${interfaces}
 
     const ${componentName} = ${props} => ${jsx}
-
-    ${componentName}.propTypes = {
-      title: PropTypes.string
-    }
-
-    ${componentName}.defaultProps = {
-      title: ''
-    }
 
     export type { SVGRProps }
     ${exports}

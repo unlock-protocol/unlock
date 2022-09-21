@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { SVGProps } from 'react'
-import PropTypes from 'prop-types'
 interface SVGRProps {
   title?: string;
   titleId?: string;
@@ -43,11 +42,5 @@ const SvgCoinbaseWallet = ({
   </svg>
 )
 
-SvgCoinbaseWallet.propTypes = {
-  title: PropTypes.string,
-}
-SvgCoinbaseWallet.defaultProps = {
-  title: '',
-}
 export type { SVGRProps }
 export default SvgCoinbaseWallet

@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { SVGProps } from 'react'
-import PropTypes from 'prop-types'
 interface SVGRProps {
   title?: string;
   titleId?: string;
@@ -17,11 +16,5 @@ const SvgEthSub = ({
   </svg>
 )
 
-SvgEthSub.propTypes = {
-  title: PropTypes.string,
-}
-SvgEthSub.defaultProps = {
-  title: '',
-}
 export type { SVGRProps }
 export default SvgEthSub

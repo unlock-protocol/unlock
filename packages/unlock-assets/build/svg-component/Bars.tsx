@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { SVGProps } from 'react'
-import PropTypes from 'prop-types'
 interface SVGRProps {
   title?: string;
   titleId?: string;
@@ -17,11 +16,5 @@ const SvgBars = ({
   </svg>
 )
 
-SvgBars.propTypes = {
-  title: PropTypes.string,
-}
-SvgBars.defaultProps = {
-  title: '',
-}
 export type { SVGRProps }
 export default SvgBars

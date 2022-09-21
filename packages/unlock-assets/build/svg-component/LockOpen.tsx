@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { SVGProps } from 'react'
-import PropTypes from 'prop-types'
 interface SVGRProps {
   title?: string;
   titleId?: string;
@@ -21,11 +20,5 @@ const SvgLockOpen = ({
   </svg>
 )
 
-SvgLockOpen.propTypes = {
-  title: PropTypes.string,
-}
-SvgLockOpen.defaultProps = {
-  title: '',
-}
 export type { SVGRProps }
 export default SvgLockOpen

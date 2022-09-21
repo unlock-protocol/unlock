@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { SVGProps } from 'react'
-import PropTypes from 'prop-types'
 interface SVGRProps {
   title?: string;
   titleId?: string;
@@ -106,11 +105,5 @@ const SvgMetamask = ({
   </svg>
 )
 
-SvgMetamask.propTypes = {
-  title: PropTypes.string,
-}
-SvgMetamask.defaultProps = {
-  title: '',
-}
 export type { SVGRProps }
 export default SvgMetamask
