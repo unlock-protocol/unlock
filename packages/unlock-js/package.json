@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.26.8",
+  "version": "0.26.9",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -20,7 +20,7 @@
     "ci": "yarn test && yarn lint",
     "prepublishOnly": "yarn build",
     "grant-keys": "node ./scripts/grant-keys.js",
-    "generate:locksmith-client": "rm -rf ./@generated/locksmith-client && openapi-generator-cli generate -i ../../locksmith/openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./@generated/locksmith-client"
+    "generate:client": "rm -rf ./@generated/locksmith-client && openapi-generator-cli generate -i ../../locksmith/openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./@generated/locksmith-client"
   },
   "author": "Unlock Inc",
   "license": "MIT",
@@ -37,6 +37,7 @@
     "@babel/core": "7.18.10",
     "@babel/preset-env": "7.18.10",
     "@nomiclabs/hardhat-ethers": "2.1.0",
+    "@openapitools/openapi-generator-cli": "^2.5.2",
     "@openzeppelin/hardhat-upgrades": "1.19.1",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
