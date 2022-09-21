@@ -226,6 +226,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                                     as="p"
                                   >
                                     {item.name}
+                                    {lock?.recurringPayments &&
+                                      ` x ${lock?.recurringPayments}`}
                                   </RadioGroup.Label>
                                   <Pricing
                                     keyPrice={formattedData.formattedKeyPrice}
