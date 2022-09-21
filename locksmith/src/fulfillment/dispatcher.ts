@@ -66,6 +66,7 @@ export default class Dispatcher {
         tokenId: keyId.toString(),
         duration: 0,
       },
+      {} /** TransactionOptions */,
       callback
     )
   }
