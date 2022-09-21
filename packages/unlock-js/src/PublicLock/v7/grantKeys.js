@@ -67,7 +67,12 @@ export default async function (
     })
 
   if (transferEvents.length) {
-    return transferEvents.map((item) => item.args.tokenId.toString())
+    return transferEvents.map((item) => {
+      return {
+        id: item.args.tokenId.toString(),
+        owner: item.args.to.toString(),
+      }
+    })
   }
   // There was no Transfer log (transaction failed?)
   return null
