@@ -34,8 +34,8 @@ const keysToIgnore = [
 
 const MetadataDetail = ({ title, value }: DetailProps) => {
   return (
-    <div className="pb-2 border-b border-gray-400 last-of-type:border-none">
-      <span className="text-base">{`${title}: `}</span>
+    <div className="gap-1 pb-2 border-b border-gray-400 last-of-type:border-none">
+      <span className="text-base">{title}: </span>
       <span className="block text-base font-bold break-words md:inline-block">
         {value}
       </span>

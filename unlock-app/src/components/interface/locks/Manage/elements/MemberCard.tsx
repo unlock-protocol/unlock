@@ -104,6 +104,7 @@ export const MemberCard = ({
                 variant="transparent"
                 className="p-0 m-0 "
                 onClick={setCopied}
+                aria-label="copy"
               >
                 <CopyIcon size={20} />
               </Button>
@@ -124,6 +125,7 @@ export const MemberCard = ({
                     size="small"
                     variant="outlined-primary"
                     disabled={refundDisabled}
+                    aria-label="refund"
                     onClick={() => {
                       if (refundDisabled) return
                       setExpireAndRefundOpen(true)

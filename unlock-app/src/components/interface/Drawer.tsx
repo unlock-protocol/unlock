@@ -51,7 +51,11 @@ export const Drawer = ({
             >
               <div className="relative w-screen max-w-md">
                 <Transition.Child {...easeOutTransaction}>
-                  <Button variant="transparent" className="p-0">
+                  <Button
+                    variant="transparent"
+                    className="p-0"
+                    aria-label="close"
+                  >
                     <div className="absolute top-0 w-12 h-12 p-4 right-3">
                       <CloseIcon size="25px" onClick={() => setIsOpen(false)} />
                     </div>

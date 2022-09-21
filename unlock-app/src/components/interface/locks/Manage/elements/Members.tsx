@@ -69,21 +69,21 @@ export const Members = ({
   ] = useQueries([
     {
       queryFn: getMembers,
-      queryKey: 'getMembers',
+      queryKey: ['getMembers', lockAddress, network],
       onError: () => {
         ToastHelper.error('There is some unexpected issue, please try again')
       },
     },
     {
       queryFn: getLockVersion,
-      queryKey: 'getLockVersion',
+      queryKey: ['getLockVersion', lockAddress, network],
       onError: () => {
         ToastHelper.error('There is some unexpected issue, please try again')
       },
     },
     {
       queryFn: getLockManagerStatus,
-      queryHash: 'getLockManagerStatus',
+      queryKey: ['getLockManagerStatus', lockAddress, network],
     },
   ])
 
