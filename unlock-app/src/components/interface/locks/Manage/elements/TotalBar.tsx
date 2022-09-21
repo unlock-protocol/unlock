@@ -70,7 +70,7 @@ const Total = ({
         <div className="flex items-center gap-2">
           {prepend}
           <>
-            <span className="text-4xl font-bold">{value || '-'}</span>
+            <span className="text-4xl font-bold">{value || 0}</span>
             {description && (
               <span className="block text-xs text-gray-700">{description}</span>
             )}

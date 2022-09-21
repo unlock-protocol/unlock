@@ -101,7 +101,7 @@ export const Members = ({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-3 mt-6">
+    <div className="grid grid-cols-1 gap-3">
       {(members || [])?.map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
         return (
