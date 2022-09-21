@@ -459,10 +459,11 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           let transactionHash
           beforeAll(async () => {
             keyGrantee = accounts[15]
-            tokenId = await walletService.grantKey({
+            const { id } = await walletService.grantKey({
               lockAddress,
               recipient: keyGrantee,
             })
+            tokenId = id
             keyBefore = await web3Service.getKeyByLockForOwner(
               lockAddress,
               keyGrantee,

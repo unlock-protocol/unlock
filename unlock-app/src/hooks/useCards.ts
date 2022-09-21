@@ -126,7 +126,8 @@ export const prepareCharge = async (
   network: number,
   lock: string,
   pricing: any,
-  recipients: string[]
+  recipients: string[],
+  recurring = 0
 ) => {
   const typedData = generateTypedData(
     {
@@ -138,6 +139,7 @@ export const prepareCharge = async (
         pricing,
         lock,
         network,
+        recurring,
       },
     },
     'Charge Card'

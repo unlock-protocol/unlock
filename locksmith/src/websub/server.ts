@@ -3,6 +3,7 @@ import { Op } from 'sequelize'
 import { Hook } from '../models'
 import { notifyOfKeys, notifyOfLocks, renewAllKeys } from './jobs'
 import { logger } from '../logger'
+import { renewAllFiatKeys } from './jobs/renewFiatKeys'
 
 logger.info('Websub server started.')
 
@@ -25,6 +26,7 @@ const run = async () => {
     notifyOfKeys(subscribers),
     notifyOfLocks(subscribers),
     renewAllKeys(),
+    renewAllFiatKeys(),
   ])
 
   logger.info('Finished running keys and locks job')
