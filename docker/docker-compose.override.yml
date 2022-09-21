@@ -5,7 +5,7 @@ services:
     restart: always
     build:
       context: ./development/eth-node
-    command: [ "yarn", "start", "--hostname", "0.0.0.0" ]
+    command: [ "sh","-c", "yarn start --hostname 0.0.0.0" ]
     ports:
       - 8545:8545
 
