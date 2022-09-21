@@ -11,7 +11,7 @@ export class Charge extends Model<Charge> {
   @Column
   userAddress!: string
 
-  @Column(DataType.JSON)
+  @Column(DataType.JSONB)
   recipients?: string[]
 
   @Column
@@ -31,4 +31,7 @@ export class Charge extends Model<Charge> {
 
   @Column
   transactionHash!: string
+
+  @Column
+  recurring!: number
 }

@@ -26,6 +26,22 @@ export const Address = ({ address }: { address: string }) => {
   return <>{resolvedAddress}</>
 }
 
+const MembersPlaceholder = () => {
+  const placeHolderCardStyle =
+    'h-[130px] md:h-[92px] border-2 rounded-lg bg-slate-200 animate-pulse'
+  return (
+    <div className="flex flex-col gap-3">
+      <div className={placeHolderCardStyle}></div>
+      <div className={placeHolderCardStyle}></div>
+      <div className={placeHolderCardStyle}></div>
+      <div className={placeHolderCardStyle}></div>
+      <div className={placeHolderCardStyle}></div>
+      <div className={placeHolderCardStyle}></div>
+      <div className={placeHolderCardStyle}></div>
+    </div>
+  )
+}
+
 export const Members = ({
   lockAddress,
   network,
@@ -90,6 +106,10 @@ export const Members = ({
   const loading = isLoadingVersion || isLoading || isLoadingLockManager
   const noItems = members?.length === 0 && !loading
 
+  if (loading) {
+    return <MembersPlaceholder />
+  }
+
   if (noItems) {
     return (
       <ImageBar
@@ -101,7 +121,7 @@ export const Members = ({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-3 mt-6">
+    <div className="grid grid-cols-1 gap-3">
       {(members || [])?.map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
         return (
