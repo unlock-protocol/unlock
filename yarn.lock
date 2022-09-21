@@ -7696,9 +7696,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:0.33.0":
-  version: 0.33.0
-  resolution: "@graphprotocol/graph-cli@npm:0.33.0"
+"@graphprotocol/graph-cli@npm:0.33.1":
+  version: 0.33.1
+  resolution: "@graphprotocol/graph-cli@npm:0.33.1"
   dependencies:
     assemblyscript: 0.19.10
     binary-install-raw: 0.0.13
@@ -7727,7 +7727,7 @@ __metadata:
     yaml: 1.9.2
   bin:
     graph: bin/graph
-  checksum: adf4a2da0e420d76e1eb3ae45ecff11369c18d6e8f318cde2eb43939dd391ff856056c012c3ca2abd69351a59077dc3259ec1f83d01941128b07341a60a6a908
+  checksum: ad792da686a4a1c626be192e9d411122a5374491b00bc99192d22ab8dfaf10276467aabf779d6569a02fb8e50bc5a9090de132bf8f353bd4693e72250aa0f882
   languageName: node
   linkType: hard
 
@@ -16446,7 +16446,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": 0.33.0
+    "@graphprotocol/graph-cli": 0.33.1
     "@graphprotocol/graph-ts": 0.27.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"

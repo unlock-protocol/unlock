@@ -15,11 +15,11 @@
     "remove-local": "graph remove --node http://localhost:8020/ ",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
     "test": "graph test",
-    "ci": "echo \"Not implemented yet. Coming soon...\" && exit 0",
+    "ci": "yarn codegen && yarn test -l",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.33.0",
+    "@graphprotocol/graph-cli": "0.33.1",
     "@graphprotocol/graph-ts": "0.27.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",

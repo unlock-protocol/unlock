@@ -26,9 +26,10 @@ services:
   
   subgraph: # Subgraph unit testing
     image: subgraph
+    platform: linux/amd64
     build:
       context: ../
-      target: dev
+      target: subgraph
       args:
         BUILD_DIR: subgraph
 
