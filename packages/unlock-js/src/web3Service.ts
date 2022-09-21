@@ -509,4 +509,18 @@ export default class Web3Service extends UnlockService {
     const id = await lockContract.tokenOfOwnerByIndex(owner, index)
     return id.toNumber()
   }
+
+  /**
+   * Returns the number of keys already sold
+   * @param lockAddress
+   * @param network
+   * @returns
+   */
+  async totalSupply(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return await lockContract.totalSupply()
+  }
 }

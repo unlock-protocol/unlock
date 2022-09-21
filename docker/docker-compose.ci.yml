@@ -23,6 +23,15 @@ services:
       target: dev
       args:
         BUILD_DIR: smart-contracts
+  
+  subgraph: # Subgraph unit testing
+    image: subgraph
+    platform: linux/amd64
+    build:
+      context: ../
+      target: subgraph
+      args:
+        BUILD_DIR: subgraph
 
   unlock-app: # Container for the dashboard
     env_file:
@@ -146,6 +155,7 @@ services:
       - 8080:8080
     depends_on:
       - postgres
+  
   locksmith-websub:
     image: locksmith-websub
     build:
@@ -159,6 +169,7 @@ services:
     command: sh -c './scripts/wait-for.sh postgres:5432 -- yarn db:migrate && yarn websub:start'
     depends_on:
       - postgres
+
   #############
   # Overrides #
   #############
