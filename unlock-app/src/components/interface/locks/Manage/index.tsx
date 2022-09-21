@@ -1,16 +1,44 @@
+import { Button } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ConnectWalletModal } from '../../ConnectWalletModal'
 import { LockDetailCard } from './elements/LockDetailCard'
 import { Members } from './elements/Members'
 import { TotalBar } from './elements/TotalBar'
+import { FiKey as KeyIcon } from 'react-icons/fi'
+import GrantKeysDrawer from '~/components/creator/members/GrantKeysDrawer'
 
-const ActionBar = () => {
+interface ActionBarProps {
+  lockAddress: string
+}
+
+const ActionBar = ({ lockAddress }: ActionBarProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-xl font-bold">Members</span>
-    </div>
+    <>
+      <GrantKeysDrawer
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        lockAddresses={[lockAddress]}
+      />
+      <div className="flex items-center justify-between">
+        <span className="text-xl font-bold text-brand-ui-primary">Members</span>
+        <div className="flex gap-2">
+          <Button
+            variant="outlined-primary"
+            size="small"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <div className="flex items-center gap-2">
+              <KeyIcon className="text-brand-ui-primary" size={16} />
+              <span className="text-brand-ui-primary">Airdrop Keys</span>
+            </div>
+          </Button>
+        </div>
+      </div>
+    </>
   )
 }
 
@@ -37,7 +65,7 @@ export const ManageLockPage = () => {
             </div>
             <div className="flex flex-col gap-6 lg:col-span-9">
               <TotalBar lockAddress={lockAddress} network={lockNetwork} />
-              <ActionBar />
+              <ActionBar lockAddress={lockAddress} />
               <Members lockAddress={lockAddress} network={lockNetwork} />
             </div>
           </div>
