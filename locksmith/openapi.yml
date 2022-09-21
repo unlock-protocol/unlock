@@ -48,37 +48,42 @@ paths:
           description: OK
   /v2/api/{network}/locks/{lockAddress}/keys:
     get:
-    parameters:
-      - in: path
-        name: network
-        required: true
-        schema:
-          type: integer
-        description: Network id
-      - in: path
-        name: lockAddress
-        required: true
-        schema:
-          type: string
-        description: Lock address
       description: List of lock keys by network with additional metadata if the caller is the lockManager
-      requestBody:
-        content:
-          application/json:
-            schema:
-              properties:
-                query:
-                  type: string
-                filterKey:
-                  type: string
-                expiration:
-                  type: string
-                page: 
-                  type: integer
+      parameters:
+        - in: path
+          name: network
+          required: true
+          schema:
+            type: integer
+          description: Network id
+        - in: path
+          name: lockAddress
+          required: true
+          schema:
+            type: string
+          description: Lock address
+        - in: query
+          name: query
+          required: false
+          schema:
+            type: string
+          description: Query you want to search for.
+        - in: query
+          name: filterKey
+          required: false
+          schema:
+            type: string
+          description: The key you want to search on.
+        - in: query
+          name: expiration
+          schema:
+            type: string
+          description: Expiration time
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: Pagination
       responses:
         '200':
           description: List of keys matching the query
-          content:
-            application/json:
-              schema:
-                type: array

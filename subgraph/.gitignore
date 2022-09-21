@@ -1,3 +1,10 @@
 build/
 generated/
 node_modules/
+
+tests/.latest.json
+tests/.bin
+*.wasm
+*.deprec.ts
+
+subgraph.template.yaml
