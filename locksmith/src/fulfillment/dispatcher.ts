@@ -86,9 +86,8 @@ export default class Dispatcher {
         recipients,
         keyManagers,
         expirations,
-        transactionOptions,
       },
-      {},
+      transactionOptions,
       cb
     )
   }
