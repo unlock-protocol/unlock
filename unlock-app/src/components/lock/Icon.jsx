@@ -1,14 +1,15 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import UnlockPropTypes from '../../propTypes'
 import { ConfigContext } from '../../utils/withConfig'
-
+import { Transition, Dialog, Tab } from '@headlessui/react'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
-
+import { MdOutlineClose as CloseIcon } from 'react-icons/md'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useAccount } from '../../hooks/useAccount'
 import InlineModal from '../interface/InlineModal'
+import { IconModal } from '../interface/locks/Manage/elements/LockIcon'
 
 const SvgCamera = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="-4 -4 24 24">
@@ -20,153 +21,6 @@ const SvgCamera = () => (
   </svg>
 )
 
-const IconModal = ({ active, dismiss, current, lockAddress, network }) => {
-  const [url, setUrl] = useState(current)
-  const [error, setError] = useState(null)
-  const { account } = useContext(AuthenticationContext)
-  const config = useContext(ConfigContext)
-  const { updateLockIcon } = useAccount(account, network)
-
-  const defaultIconUrl = `${config.services.storage.host}/lock/${lockAddress}/icon?original=1`
-
-  const setImageUrlIfValid = (url) => {
-    return new Promise((resolve, reject) => {
-      setError(null)
-      const image = new Image()
-      image.onload = () => {
-        if (image.width) {
-          setUrl(image.src)
-          resolve(true)
-        } else {
-          setError('This is not a valid image...')
-          resolve(false)
-        }
-      }
-      image.onerror = () => {
-        setUrl(null)
-        setError('This is not a valid image...')
-        resolve(false)
-      }
-      image.src = url
-    })
-  }
-
-  const imagePicked = async (event) => {
-    if (event.target.files[0]) {
-      const file = event.target.files[0]
-      // Max size is 1MB
-      if (file.size > 1024 * 1024) {
-        setError(
-          'This file is too large to be used. Please use a file that is at most 1MB, or use an external URL.'
-        )
-      } else {
-        const reader = new FileReader()
-        reader.readAsDataURL(file)
-        reader.onload = async () => {
-          const dataUrl = reader.result
-          const isValid = await setImageUrlIfValid(dataUrl)
-          if (isValid) {
-            setUrl(dataUrl)
-          }
-        }
-      }
-    }
-  }
-
-  const urlPicked = async (event) => {
-    await setImageUrlIfValid(event.target.value)
-  }
-
-  const restoreDefault = () => {
-    setUrl(defaultIconUrl)
-  }
-
-  const save = async () => {
-    event.preventDefault()
-    try {
-      await updateLockIcon(lockAddress, network, url)
-      dismiss(url)
-    } catch (error) {
-      console.error(error)
-      setError('This image could not be saved. Please try again, or reach out.')
-    }
-    return false
-  }
-
-  const hiddenFileInput = React.useRef(null)
-
-  const handleFileInputClick = (event) => {
-    event.preventDefault()
-    hiddenFileInput.current.click()
-    return null
-  }
-
-  const resetAndDismiss = () => {
-    setError('')
-    dismiss(current)
-  }
-
-  return (
-    <InlineModal width={350} active={active} dismiss={resetAndDismiss}>
-      <h1 className="mb-2 text-lg font-semibold">Customize the NFT</h1>
-      <FullLockLogo alt="logo" src={url} />
-      {error && <span className="mx-1 text-sm text-red-500">{error}</span>}
-      <form className="flex flex-col w-full gap-3">
-        <span className="text-sm" htmlFor="inputFile">
-          Choose a file
-        </span>
-        <Button type="button" id="inputFile" onClick={handleFileInputClick}>
-          Upload a file
-        </Button>
-        <input
-          accept="image/*"
-          type="file"
-          ref={hiddenFileInput}
-          onChange={imagePicked}
-          style={{ display: 'none' }}
-        />
-        <Input
-          label="Or, enter a URL"
-          style={{ marginBottom: '0px' }}
-          id="inputUrl"
-          type="text"
-          onChange={urlPicked}
-        />
-
-        <span className="text-sm" htmlFor="restoreDefaultButton">
-          Or
-        </span>
-        <div className="flex flex-col gap-2 py-4">
-          <Button
-            id="restoreDefaultButton"
-            type="button"
-            variant="outlined-primary"
-            onClick={restoreDefault}
-          >
-            Restore default
-          </Button>
-          <Button disabled={error || !url} type="submit" onClick={save}>
-            Save
-          </Button>
-        </div>
-      </form>
-    </InlineModal>
-  )
-}
-
-IconModal.propTypes = {
-  active: PropTypes.bool.isRequired,
-  dismiss: PropTypes.func.isRequired,
-  current: PropTypes.string.isRequired,
-  lockAddress: PropTypes.string,
-  network: PropTypes.number,
-}
-
-IconModal.defaultProps = {
-  lockAddress: '',
-  network: 0,
-}
-
 /**
  * This generates a lock icon unique for each lock
  * It changes the colors of the 3 inner circles and applies a rotation and permutation of layer order
@@ -175,7 +29,7 @@ IconModal.defaultProps = {
  */
 export function Icon({ lock }) {
   const config = useContext(ConfigContext)
-  const [modalShown, setModalShown] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const [imageSrc, setImageSrc] = useState(
     lock.address
       ? `${config.services.storage.host}/lock/${lock.address}/icon`
@@ -189,17 +43,18 @@ export function Icon({ lock }) {
   return (
     <Wrapper>
       {lock.address && (
-        <Overlay onClick={() => setModalShown(true)}>
+        <Overlay onClick={() => setIsOpen(true)}>
           <SvgCamera />
         </Overlay>
       )}
       <IconModal
         lockAddress={lock.address}
         network={lock.network}
-        current={imageSrc}
-        active={modalShown}
+        imageUrl={imageSrc}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
         dismiss={(image) => {
-          setModalShown(false)
+          setIsOpen(false)
           setImageSrc(image)
         }}
       />
@@ -227,18 +82,6 @@ const Overlay = styled.div`
   background-color: var(--grey);
   justify-content: center;
   align-items: center;
-`
-
-const ModalWrapper = styled.div`
-  width: 320px;
-  max-width: 320px;
-  max-width: 320px;
-`
-
-const FullLockLogo = styled.img`
-  max-height: 300px;
-  max-width: 300px;
-  width: 300px;
 `
 
 const LockLogo = styled.img`
