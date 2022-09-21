@@ -39,7 +39,13 @@ export function Renew({
   const web3Service = useWeb3Service()
   const [isSigningMessage, setIsSigningMessage] = useState(false)
   const [isRenewing, setIsRenewing] = useState(false)
-  const { paywallConfig, lock, messageToSign: signedMessage } = state.context
+  const {
+    paywallConfig,
+    lock,
+    messageToSign: signedMessage,
+    password,
+    captcha,
+  } = state.context
   const { messageToSign, referrer } = paywallConfig
   const hasMessageToSign = !signedMessage && paywallConfig.messageToSign
   const { network: lockNetwork, address: lockAddress, name: lockName } = lock!
@@ -111,12 +117,12 @@ export function Renew({
           0,
           lockNetwork
         )
-        console.log(tokenId)
         await walletService.extendKey(
           {
             lockAddress,
             tokenId: tokenId.toString(),
             referrer,
+            data: password || captcha || undefined,
           },
           onTransactionHandler
         )

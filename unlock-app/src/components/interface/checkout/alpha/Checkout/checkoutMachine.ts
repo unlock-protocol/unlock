@@ -156,6 +156,7 @@ interface CheckoutMachineContext {
   renewed?: Transaction
   skipQuantity: boolean
   password?: string[]
+  renew: boolean
 }
 
 export const checkoutMachine = createMachine(
@@ -180,6 +181,7 @@ export const checkoutMachine = createMachine(
       renewed: undefined,
       recipients: [],
       skipQuantity: false,
+      renew: false,
     },
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
@@ -202,6 +204,17 @@ export const checkoutMachine = createMachine(
       SELECT: {
         on: {
           SELECT_LOCK: [
+            {
+              actions: ['selectLock'],
+              target: 'PASSWORD',
+              cond: (ctx, event) =>
+                Boolean(ctx.password && event.expiredMember),
+            },
+            {
+              actions: ['selectLock'],
+              target: 'CAPTCHA',
+              cond: (ctx, event) => Boolean(ctx.captcha && event.expiredMember),
+            },
             {
               actions: ['selectLock'],
               target: 'RENEW',
@@ -359,11 +372,22 @@ export const checkoutMachine = createMachine(
       },
       PASSWORD: {
         on: {
-          SUBMIT_PASSWORD: {
-            target: 'CONFIRM',
-            actions: ['submitPassword'],
-          },
+          SUBMIT_PASSWORD: [
+            {
+              target: 'RENEW',
+              actions: ['submitPassword'],
+              cond: (ctx) => ctx.renew,
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['submitPassword'],
+            },
+          ],
           BACK: [
+            {
+              target: 'SELECT',
+              cond: (ctx) => ctx.renew,
+            },
             {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
@@ -380,11 +404,22 @@ export const checkoutMachine = createMachine(
       },
       CAPTCHA: {
         on: {
-          SOLVE_CAPTCHA: {
-            target: 'CONFIRM',
-            actions: ['solveCaptcha'],
-          },
+          SOLVE_CAPTCHA: [
+            {
+              target: 'RENEW',
+              actions: ['solveCaptcha'],
+              cond: (ctx) => ctx.renew,
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['solveCaptcha'],
+            },
+          ],
           BACK: [
+            {
+              target: 'SELECT',
+              cond: (ctx) => ctx.renew,
+            },
             {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
@@ -498,12 +533,14 @@ export const checkoutMachine = createMachine(
           mint: undefined,
           renewed: undefined,
           skipQuantity: false,
+          renew: false,
         } as CheckoutMachineContext
       }),
       selectLock: assign((context, event) => {
         return {
           ...context,
           lock: event.lock,
+          renew: event.expiredMember,
           skipQuantity: event.skipQuantity,
         }
       }),
@@ -582,6 +619,7 @@ export const checkoutMachine = createMachine(
           recipients: [],
           renewed: undefined,
           skipQuantity: false,
+          renew: false,
         } as CheckoutMachineContext
       }),
       solveCaptcha: assign({
