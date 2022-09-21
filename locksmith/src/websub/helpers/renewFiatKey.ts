@@ -104,6 +104,8 @@ export async function renewFiatKey({
         amount: subscription.amount,
         currency: 'USD',
         capture_method: 'manual',
+        confirm: true,
+        off_session: true,
         application_fee_amount: subscription.unlockServiceFee,
         customer: customer.id,
         payment_method: paymentMethodId,
@@ -120,6 +122,10 @@ export async function renewFiatKey({
         stripeAccount,
       }
     )
+
+    if (paymentIntent.status !== 'requires_capture') {
+      throw new Error('Cannot charge for the payment intent properly.')
+    }
 
     const response = await new Promise((resolve, reject) => {
       fulfillmentDispatcher.grantKeyExtension(
