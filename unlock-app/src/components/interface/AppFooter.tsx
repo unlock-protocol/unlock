@@ -22,9 +22,13 @@ const Link = ({ label, url }: Link) => {
     </a>
   )
 }
-export const AppFooter = () => {
+export const AppFooter = ({ sticky = false }) => {
   return (
-    <div className="px-4 py-8 bg-black md:px-0">
+    <div
+      className={`px-4 py-8 bg-black md:px-0 ${
+        sticky ? 'sticky bottom-0' : ''
+      }`}
+    >
       <div className="flex flex-col items-start w-full gap-10 md:gap-0 md:mx-auto md:justify-between md:items-center md:flex-row md:max-w-screen-lg lg:max-w-screen-xl">
         <a href="/">
           <img
