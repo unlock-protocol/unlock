@@ -104,6 +104,7 @@ export async function renewFiatKey({
         amount: subscription.amount,
         currency: 'USD',
         capture_method: 'manual',
+        // Confirm the payment off-session automatically.
         confirm: true,
         off_session: true,
         application_fee_amount: subscription.unlockServiceFee,
