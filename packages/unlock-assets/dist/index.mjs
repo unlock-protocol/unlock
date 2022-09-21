@@ -1,9 +1,5 @@
-var __create = Object.create;
 var __defProp = Object.defineProperty;
-var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
-var __getOwnPropNames = Object.getOwnPropertyNames;
 var __getOwnPropSymbols = Object.getOwnPropertySymbols;
-var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __propIsEnum = Object.prototype.propertyIsEnumerable;
 var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
@@ -30,33 +26,12 @@ var __objRest = (source, exclude) => {
     }
   return target;
 };
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
-};
-var __copyProps = (to, from, except, desc) => {
-  if (from && typeof from === "object" || typeof from === "function") {
-    for (let key of __getOwnPropNames(from))
-      if (!__hasOwnProp.call(to, key) && key !== except)
-        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
-  }
-  return to;
-};
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target, mod));
-var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
-
-// src/index.tsx
-var src_exports = {};
-__export(src_exports, {
-  default: () => src_default
-});
-module.exports = __toCommonJS(src_exports);
 
 // src/SvgComponents.tsx
-var import_react = __toESM(require("react"));
+import React66 from "react";
 
 // build/svg-component/About.tsx
-var React = __toESM(require("react"));
+import * as React from "react";
 var SvgAbout = (_a) => {
   var _b = _a, {
     title,
@@ -80,7 +55,7 @@ var SvgAbout = (_a) => {
 var About_default = SvgAbout;
 
 // build/svg-component/Adfree.tsx
-var React2 = __toESM(require("react"));
+import * as React2 from "react";
 var SvgAdfree = (_a) => {
   var _b = _a, {
     title,
@@ -105,7 +80,7 @@ var SvgAdfree = (_a) => {
 var Adfree_default = SvgAdfree;
 
 // build/svg-component/AppStore.tsx
-var React3 = __toESM(require("react"));
+import * as React3 from "react";
 var SvgAppStore = (_a) => {
   var _b = _a, {
     title,
@@ -128,7 +103,7 @@ var SvgAppStore = (_a) => {
 var AppStore_default = SvgAppStore;
 
 // build/svg-component/Arrow.tsx
-var React4 = __toESM(require("react"));
+import * as React4 from "react";
 var SvgArrow = (_a) => {
   var _b = _a, {
     title,
@@ -151,7 +126,7 @@ var SvgArrow = (_a) => {
 var Arrow_default = SvgArrow;
 
 // build/svg-component/Attention.tsx
-var React5 = __toESM(require("react"));
+import * as React5 from "react";
 var SvgAttention = (_a) => {
   var _b = _a, {
     title,
@@ -175,7 +150,7 @@ var SvgAttention = (_a) => {
 var Attention_default = SvgAttention;
 
 // build/svg-component/Bars.tsx
-var React6 = __toESM(require("react"));
+import * as React6 from "react";
 var SvgBars = (_a) => {
   var _b = _a, {
     title,
@@ -196,7 +171,7 @@ var SvgBars = (_a) => {
 var Bars_default = SvgBars;
 
 // build/svg-component/Blog.tsx
-var React7 = __toESM(require("react"));
+import * as React7 from "react";
 var SvgBlog = (_a) => {
   var _b = _a, {
     title,
@@ -224,7 +199,7 @@ var SvgBlog = (_a) => {
 var Blog_default = SvgBlog;
 
 // build/svg-component/Carret.tsx
-var React8 = __toESM(require("react"));
+import * as React8 from "react";
 var SvgCarret = (_a) => {
   var _b = _a, {
     title,
@@ -245,7 +220,7 @@ var SvgCarret = (_a) => {
 var Carret_default = SvgCarret;
 
 // build/svg-component/Cart.tsx
-var React9 = __toESM(require("react"));
+import * as React9 from "react";
 var SvgCart = (_a) => {
   var _b = _a, {
     title,
@@ -268,7 +243,7 @@ var SvgCart = (_a) => {
 var Cart_default = SvgCart;
 
 // build/svg-component/Checkmark.tsx
-var React10 = __toESM(require("react"));
+import * as React10 from "react";
 var SvgCheckmark = (_a) => {
   var _b = _a, {
     title,
@@ -291,7 +266,7 @@ var SvgCheckmark = (_a) => {
 var Checkmark_default = SvgCheckmark;
 
 // build/svg-component/ChevronUp.tsx
-var React11 = __toESM(require("react"));
+import * as React11 from "react";
 var SvgChevronUp = (_a) => {
   var _b = _a, {
     title,
@@ -314,7 +289,7 @@ var SvgChevronUp = (_a) => {
 var ChevronUp_default = SvgChevronUp;
 
 // build/svg-component/Close.tsx
-var React12 = __toESM(require("react"));
+import * as React12 from "react";
 var SvgClose = (_a) => {
   var _b = _a, {
     title,
@@ -337,7 +312,7 @@ var SvgClose = (_a) => {
 var Close_default = SvgClose;
 
 // build/svg-component/Cloudflare.tsx
-var React13 = __toESM(require("react"));
+import * as React13 from "react";
 var SvgCloudflare = (_a) => {
   var _b = _a, {
     title,
@@ -360,7 +335,7 @@ var SvgCloudflare = (_a) => {
 var Cloudflare_default = SvgCloudflare;
 
 // build/svg-component/Code.tsx
-var React14 = __toESM(require("react"));
+import * as React14 from "react";
 var SvgCode = (_a) => {
   var _b = _a, {
     title,
@@ -383,7 +358,7 @@ var SvgCode = (_a) => {
 var Code_default = SvgCode;
 
 // build/svg-component/Cog.tsx
-var React15 = __toESM(require("react"));
+import * as React15 from "react";
 var SvgCog = (_a) => {
   var _b = _a, {
     title,
@@ -405,7 +380,7 @@ var SvgCog = (_a) => {
 var Cog_default = SvgCog;
 
 // build/svg-component/CoinbaseWallet.tsx
-var React16 = __toESM(require("react"));
+import * as React16 from "react";
 var SvgCoinbaseWallet = (_a) => {
   var _b = _a, {
     title,
@@ -444,7 +419,7 @@ var SvgCoinbaseWallet = (_a) => {
 var CoinbaseWallet_default = SvgCoinbaseWallet;
 
 // build/svg-component/Copy.tsx
-var React17 = __toESM(require("react"));
+import * as React17 from "react";
 var SvgCopy = (_a) => {
   var _b = _a, {
     title,
@@ -467,7 +442,7 @@ var SvgCopy = (_a) => {
 var Copy_default = SvgCopy;
 
 // build/svg-component/CreditCard.tsx
-var React18 = __toESM(require("react"));
+import * as React18 from "react";
 var SvgCreditCard = (_a) => {
   var _b = _a, {
     title,
@@ -488,7 +463,7 @@ var SvgCreditCard = (_a) => {
 var CreditCard_default = SvgCreditCard;
 
 // build/svg-component/Decentraland.tsx
-var React19 = __toESM(require("react"));
+import * as React19 from "react";
 var SvgDecentraland = (_a) => {
   var _b = _a, {
     title,
@@ -509,7 +484,7 @@ var SvgDecentraland = (_a) => {
 var Decentraland_default = SvgDecentraland;
 
 // build/svg-component/Discord.tsx
-var React20 = __toESM(require("react"));
+import * as React20 from "react";
 var SvgDiscord = (_a) => {
   var _b = _a, {
     title,
@@ -532,7 +507,7 @@ var SvgDiscord = (_a) => {
 var Discord_default = SvgDiscord;
 
 // build/svg-component/Discourse.tsx
-var React21 = __toESM(require("react"));
+import * as React21 from "react";
 var SvgDiscourse = (_a) => {
   var _b = _a, {
     title,
@@ -559,7 +534,7 @@ var SvgDiscourse = (_a) => {
 var Discourse_default = SvgDiscourse;
 
 // build/svg-component/Docs.tsx
-var React22 = __toESM(require("react"));
+import * as React22 from "react";
 var SvgDocs = (_a) => {
   var _b = _a, {
     title,
@@ -582,7 +557,7 @@ var SvgDocs = (_a) => {
 var Docs_default = SvgDocs;
 
 // build/svg-component/Documentation.tsx
-var React23 = __toESM(require("react"));
+import * as React23 from "react";
 var SvgDocumentation = (_a) => {
   var _b = _a, {
     title,
@@ -605,7 +580,7 @@ var SvgDocumentation = (_a) => {
 var Documentation_default = SvgDocumentation;
 
 // build/svg-component/Download.tsx
-var React24 = __toESM(require("react"));
+import * as React24 from "react";
 var SvgDownload = (_a) => {
   var _b = _a, {
     title,
@@ -628,7 +603,7 @@ var SvgDownload = (_a) => {
 var Download_default = SvgDownload;
 
 // build/svg-component/Edit.tsx
-var React25 = __toESM(require("react"));
+import * as React25 from "react";
 var SvgEdit = (_a) => {
   var _b = _a, {
     title,
@@ -653,7 +628,7 @@ var SvgEdit = (_a) => {
 var Edit_default = SvgEdit;
 
 // build/svg-component/Eth.tsx
-var React26 = __toESM(require("react"));
+import * as React26 from "react";
 var SvgEth = (_a) => {
   var _b = _a, {
     title,
@@ -676,7 +651,7 @@ var SvgEth = (_a) => {
 var Eth_default = SvgEth;
 
 // build/svg-component/Etherscan.tsx
-var React27 = __toESM(require("react"));
+import * as React27 from "react";
 var SvgEtherscan = (_a) => {
   var _b = _a, {
     title,
@@ -699,7 +674,7 @@ var SvgEtherscan = (_a) => {
 var Etherscan_default = SvgEtherscan;
 
 // build/svg-component/EthSub.tsx
-var React28 = __toESM(require("react"));
+import * as React28 from "react";
 var SvgEthSub = (_a) => {
   var _b = _a, {
     title,
@@ -721,7 +696,7 @@ var SvgEthSub = (_a) => {
 var EthSub_default = SvgEthSub;
 
 // build/svg-component/Export.tsx
-var React29 = __toESM(require("react"));
+import * as React29 from "react";
 var SvgExport = (_a) => {
   var _b = _a, {
     title,
@@ -744,7 +719,7 @@ var SvgExport = (_a) => {
 var Export_default = SvgExport;
 
 // build/svg-component/Firebase.tsx
-var React30 = __toESM(require("react"));
+import * as React30 from "react";
 var SvgFirebase = (_a) => {
   var _b = _a, {
     title,
@@ -772,7 +747,7 @@ var SvgFirebase = (_a) => {
 var Firebase_default = SvgFirebase;
 
 // build/svg-component/Github.tsx
-var React31 = __toESM(require("react"));
+import * as React31 from "react";
 var SvgGithub = (_a) => {
   var _b = _a, {
     title,
@@ -793,7 +768,7 @@ var SvgGithub = (_a) => {
 var Github_default = SvgGithub;
 
 // build/svg-component/Heart.tsx
-var React32 = __toESM(require("react"));
+import * as React32 from "react";
 var SvgHeart = (_a) => {
   var _b = _a, {
     title,
@@ -814,7 +789,7 @@ var SvgHeart = (_a) => {
 var Heart_default = SvgHeart;
 
 // build/svg-component/Home.tsx
-var React33 = __toESM(require("react"));
+import * as React33 from "react";
 var SvgHome = (_a) => {
   var _b = _a, {
     title,
@@ -836,7 +811,7 @@ var SvgHome = (_a) => {
 var Home_default = SvgHome;
 
 // build/svg-component/Idea.tsx
-var React34 = __toESM(require("react"));
+import * as React34 from "react";
 var SvgIdea = (_a) => {
   var _b = _a, {
     title,
@@ -858,7 +833,7 @@ var SvgIdea = (_a) => {
 var Idea_default = SvgIdea;
 
 // build/svg-component/Info.tsx
-var React35 = __toESM(require("react"));
+import * as React35 from "react";
 var SvgInfo = (_a) => {
   var _b = _a, {
     title,
@@ -882,7 +857,7 @@ var SvgInfo = (_a) => {
 var Info_default = SvgInfo;
 
 // build/svg-component/Jobs.tsx
-var React36 = __toESM(require("react"));
+import * as React36 from "react";
 var SvgJobs = (_a) => {
   var _b = _a, {
     title,
@@ -905,7 +880,7 @@ var SvgJobs = (_a) => {
 var Jobs_default = SvgJobs;
 
 // build/svg-component/Key.tsx
-var React37 = __toESM(require("react"));
+import * as React37 from "react";
 var SvgKey = (_a) => {
   var _b = _a, {
     title,
@@ -929,7 +904,7 @@ var SvgKey = (_a) => {
 var Key_default = SvgKey;
 
 // build/svg-component/Lemniscate.tsx
-var React38 = __toESM(require("react"));
+import * as React38 from "react";
 var SvgLemniscate = (_a) => {
   var _b = _a, {
     title,
@@ -952,7 +927,7 @@ var SvgLemniscate = (_a) => {
 var Lemniscate_default = SvgLemniscate;
 
 // build/svg-component/LiveDemo.tsx
-var React39 = __toESM(require("react"));
+import * as React39 from "react";
 var SvgLiveDemo = (_a) => {
   var _b = _a, {
     title,
@@ -986,7 +961,7 @@ var SvgLiveDemo = (_a) => {
 var LiveDemo_default = SvgLiveDemo;
 
 // build/svg-component/Loading.tsx
-var React40 = __toESM(require("react"));
+import * as React40 from "react";
 var SvgLoading = (_a) => {
   var _b = _a, {
     title,
@@ -1121,7 +1096,7 @@ var SvgLoading = (_a) => {
 var Loading_default = SvgLoading;
 
 // build/svg-component/LoadingDots.tsx
-var React41 = __toESM(require("react"));
+import * as React41 from "react";
 var SvgLoadingDots = (_a) => {
   var _b = _a, {
     title,
@@ -1176,7 +1151,7 @@ var SvgLoadingDots = (_a) => {
 var LoadingDots_default = SvgLoadingDots;
 
 // build/svg-component/Lock.tsx
-var React42 = __toESM(require("react"));
+import * as React42 from "react";
 var SvgLock = (_a) => {
   var _b = _a, {
     title,
@@ -1198,7 +1173,7 @@ var SvgLock = (_a) => {
 var Lock_default = SvgLock;
 
 // build/svg-component/LockClosed.tsx
-var React43 = __toESM(require("react"));
+import * as React43 from "react";
 var SvgLockClosed = (_a) => {
   var _b = _a, {
     title,
@@ -1221,7 +1196,7 @@ var SvgLockClosed = (_a) => {
 var LockClosed_default = SvgLockClosed;
 
 // build/svg-component/Log.tsx
-var React44 = __toESM(require("react"));
+import * as React44 from "react";
 var SvgLog = (_a) => {
   var _b = _a, {
     title,
@@ -1244,7 +1219,7 @@ var SvgLog = (_a) => {
 var Log_default = SvgLog;
 
 // build/svg-component/Members.tsx
-var React45 = __toESM(require("react"));
+import * as React45 from "react";
 var SvgMembers = (_a) => {
   var _b = _a, {
     title,
@@ -1267,7 +1242,7 @@ var SvgMembers = (_a) => {
 var Members_default = SvgMembers;
 
 // build/svg-component/Metamask.tsx
-var React46 = __toESM(require("react"));
+import * as React46 from "react";
 var SvgMetamask = (_a) => {
   var _b = _a, {
     title,
@@ -1360,7 +1335,7 @@ var SvgMetamask = (_a) => {
 var Metamask_default = SvgMetamask;
 
 // build/svg-component/Email.tsx
-var React47 = __toESM(require("react"));
+import * as React47 from "react";
 var SvgEmail = (_a) => {
   var _b = _a, {
     title,
@@ -1383,7 +1358,7 @@ var SvgEmail = (_a) => {
 var Email_default = SvgEmail;
 
 // build/svg-component/Opera.tsx
-var React48 = __toESM(require("react"));
+import * as React48 from "react";
 var SvgOpera = (_a) => {
   var _b = _a, {
     title,
@@ -2385,7 +2360,7 @@ var SvgOpera = (_a) => {
 var Opera_default = SvgOpera;
 
 // build/svg-component/Person.tsx
-var React49 = __toESM(require("react"));
+import * as React49 from "react";
 var SvgPerson = (_a) => {
   var _b = _a, {
     title,
@@ -2406,7 +2381,7 @@ var SvgPerson = (_a) => {
 var Person_default = SvgPerson;
 
 // build/svg-component/Preview.tsx
-var React50 = __toESM(require("react"));
+import * as React50 from "react";
 var SvgPreview = (_a) => {
   var _b = _a, {
     title,
@@ -2433,7 +2408,7 @@ var SvgPreview = (_a) => {
 var Preview_default = SvgPreview;
 
 // build/svg-component/Qr.tsx
-var React51 = __toESM(require("react"));
+import * as React51 from "react";
 var SvgQr = (_a) => {
   var _b = _a, {
     title,
@@ -2473,7 +2448,7 @@ var SvgQr = (_a) => {
 var Qr_default = SvgQr;
 
 // build/svg-component/Shopify.tsx
-var React52 = __toESM(require("react"));
+import * as React52 from "react";
 var SvgShopify = (_a) => {
   var _b = _a, {
     title,
@@ -2495,7 +2470,7 @@ var SvgShopify = (_a) => {
 var Shopify_default = SvgShopify;
 
 // build/svg-component/Telegram.tsx
-var React53 = __toESM(require("react"));
+import * as React53 from "react";
 var SvgTelegram = (_a) => {
   var _b = _a, {
     title,
@@ -2518,7 +2493,7 @@ var SvgTelegram = (_a) => {
 var Telegram_default = SvgTelegram;
 
 // build/svg-component/Ticket.tsx
-var React54 = __toESM(require("react"));
+import * as React54 from "react";
 var SvgTicket = (_a) => {
   var _b = _a, {
     title,
@@ -2541,7 +2516,7 @@ var SvgTicket = (_a) => {
 var Ticket_default = SvgTicket;
 
 // build/svg-component/Twitter.tsx
-var React55 = __toESM(require("react"));
+import * as React55 from "react";
 var SvgTwitter = (_a) => {
   var _b = _a, {
     title,
@@ -2564,7 +2539,7 @@ var SvgTwitter = (_a) => {
 var Twitter_default = SvgTwitter;
 
 // build/svg-component/Unlock.tsx
-var React56 = __toESM(require("react"));
+import * as React56 from "react";
 var SvgUnlock = (_a) => {
   var _b = _a, {
     title,
@@ -2586,7 +2561,7 @@ var SvgUnlock = (_a) => {
 var Unlock_default = SvgUnlock;
 
 // build/svg-component/UnlockWordMark.tsx
-var React57 = __toESM(require("react"));
+import * as React57 from "react";
 var SvgUnlockWordMark = (_a) => {
   var _b = _a, {
     title,
@@ -2608,7 +2583,7 @@ var SvgUnlockWordMark = (_a) => {
 var UnlockWordMark_default = SvgUnlockWordMark;
 
 // build/svg-component/Upload.tsx
-var React58 = __toESM(require("react"));
+import * as React58 from "react";
 var SvgUpload = (_a) => {
   var _b = _a, {
     title,
@@ -2631,7 +2606,7 @@ var SvgUpload = (_a) => {
 var Upload_default = SvgUpload;
 
 // build/svg-component/Wallet.tsx
-var React59 = __toESM(require("react"));
+import * as React59 from "react";
 var SvgWallet = (_a) => {
   var _b = _a, {
     title,
@@ -2652,7 +2627,7 @@ var SvgWallet = (_a) => {
 var Wallet_default = SvgWallet;
 
 // build/svg-component/WalletConnect.tsx
-var React60 = __toESM(require("react"));
+import * as React60 from "react";
 var SvgWalletConnect = (_a) => {
   var _b = _a, {
     title,
@@ -2683,7 +2658,7 @@ var SvgWalletConnect = (_a) => {
 var WalletConnect_default = SvgWalletConnect;
 
 // build/svg-component/Webflow.tsx
-var React61 = __toESM(require("react"));
+import * as React61 from "react";
 var SvgWebflow = (_a) => {
   var _b = _a, {
     title,
@@ -2705,7 +2680,7 @@ var SvgWebflow = (_a) => {
 var Webflow_default = SvgWebflow;
 
 // build/svg-component/Withdraw.tsx
-var React62 = __toESM(require("react"));
+import * as React62 from "react";
 var SvgWithdraw = (_a) => {
   var _b = _a, {
     title,
@@ -2728,7 +2703,7 @@ var SvgWithdraw = (_a) => {
 var Withdraw_default = SvgWithdraw;
 
 // build/svg-component/Wordpress.tsx
-var React63 = __toESM(require("react"));
+import * as React63 from "react";
 var SvgWordpress = (_a) => {
   var _b = _a, {
     title,
@@ -2752,7 +2727,7 @@ var SvgWordpress = (_a) => {
 var Wordpress_default = SvgWordpress;
 
 // build/svg-component/UnlockMonogram.tsx
-var React64 = __toESM(require("react"));
+import * as React64 from "react";
 var SvgUnlockMonogram = (_a) => {
   var _b = _a, {
     title,
@@ -2776,7 +2751,7 @@ var SvgUnlockMonogram = (_a) => {
 var UnlockMonogram_default = SvgUnlockMonogram;
 
 // build/svg-component/RocketLaunch.tsx
-var React65 = __toESM(require("react"));
+import * as React65 from "react";
 var SvgRocketLaunch = (_a) => {
   var _b = _a, {
     title,
@@ -2808,7 +2783,7 @@ var RocketLaunch_default = SvgRocketLaunch;
 
 // src/SvgComponents.tsx
 function wrapViewBox(WrappedComponent, viewBox) {
-  const Wrapped = (props) => /* @__PURE__ */ import_react.default.createElement(WrappedComponent, __spreadValues({
+  const Wrapped = (props) => /* @__PURE__ */ React66.createElement(WrappedComponent, __spreadValues({
     viewBox
   }, props));
   return Wrapped;
@@ -2883,5 +2858,6 @@ var SvgComponents_default = {
 
 // src/index.tsx
 var src_default = { SvgComponents: SvgComponents_default };
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {});
+export {
+  src_default as default
+};
