@@ -8,9 +8,9 @@ export const ImageBar = ({ description, src, alt }: ImageBarProps) => {
   return (
     <div className="text-center">
       <div className="overflow-hidden rounded-2xl">
-        <img className="object-cover w-full h-44 md:h-52" src={src} alt={alt} />
+        <img className="object-cover w-full h-24 md:h-60" src={src} alt={alt} />
       </div>
-      <span className="block mt-4 text-base font-bold">{description}</span>
+      <span className="block mt-4 text-base">{description}</span>
     </div>
   )
 }
