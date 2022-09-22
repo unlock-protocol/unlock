@@ -199,7 +199,6 @@ export default class Dispatcher {
 
     // send tx with custom gas (Polygon estimates are too often wrong...)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
-
     return walletService.renewMembershipFor(
       {
         lockAddress,
