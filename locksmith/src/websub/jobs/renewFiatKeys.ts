@@ -2,7 +2,7 @@ import { networks } from '@unlock-protocol/networks'
 import { KeysToRenew } from '../../graphql/datasource'
 import { renewFiatKey } from '../helpers'
 import { logger } from '../../logger'
-
+import Normalizer from '../../utils/normalizer'
 const FETCH_LIMIT = 25
 
 async function fetchKeysToRenew(network: number, page = 0) {
@@ -42,9 +42,9 @@ async function renewFiatKeys(network: number) {
       try {
         const renewal = await renewFiatKey({
           keyId: Number(keyId),
-          lockAddress: lock.address,
+          lockAddress: Normalizer.ethereumAddress(lock.address),
           network,
-          userAddress: owner.address,
+          userAddress: Normalizer.ethereumAddress(owner.address),
         })
         if (renewal.error) {
           logger.info('Key renewal failed', {
