@@ -1,3 +1,4 @@
+import { keysByQuery } from '../../src/graphql/datasource/keysByQuery'
 import {
   buildKeysWithMetadata,
   getKeysWithMetadata,
@@ -357,6 +358,26 @@ describe('keysOperations operations', () => {
           lockAddress: '0xxee',
         },
       ])
+    })
+  })
+
+  describe('keysByQuery', () => {
+    it('test function', async () => {
+      expect.assertions(3)
+      const graphQLClient = new keysByQuery(network)
+
+      const [lock] = await graphQLClient.get({
+        addresses: [lockAddress],
+        filters: {
+          query: '',
+          filterKey: 'owner',
+          expiration: 'active',
+          page: 0,
+        },
+      })
+      expect(lock.name).toBe('Alice in Borderlands')
+      expect(lock.owner).toBe('0x445')
+      expect(lock.address).toBe('0xxee')
     })
   })
 })
