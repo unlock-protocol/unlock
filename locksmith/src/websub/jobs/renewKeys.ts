@@ -10,7 +10,7 @@ async function fetchKeysToRenew(network: number, page = 0) {
 
   // timeframe to check for renewal
   const end = Math.floor(Date.now() / 1000)
-  const start = end - 60 * 15 // expired during the last 15 min
+  const start = end - 60 * 30 // expired during the last 30 min
 
   const keys = await keysSource.getKeysToRenew(
     start,
