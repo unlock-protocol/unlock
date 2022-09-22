@@ -15,6 +15,7 @@ import logger from '../logger'
 import { isSoldOut } from '../operations/lockOperations'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import { KeySubscription } from '../models'
 
 const config = require('../../config/config')
 
@@ -39,6 +40,7 @@ export class PurchaseController {
       network,
       recipients,
       userAddress,
+      recurring = 0,
     } = req.body.message['Charge Card']
 
     const normalizedRecipients: string[] = recipients.map((address: string) =>
@@ -99,7 +101,8 @@ export class PurchaseController {
         Normalizer.ethereumAddress(lock),
         pricing,
         network,
-        stripeConnectApiKey
+        stripeConnectApiKey,
+        recurring
       )
       return res.send(paymentIntentDetails)
     } catch (error) {
@@ -113,44 +116,123 @@ export class PurchaseController {
   /*
    * Captures a payment intent and exexutes the transaction to airdrop an NFT to the user.
    */
-  async capturePaymentIntent(req: SignedRequest, res: Response): Promise<any> {
-    const { lock, network, recipients, userAddress, paymentIntent } = req.body
-
+  async capturePaymentIntent(
+    request: SignedRequest,
+    response: Response
+  ): Promise<any> {
+    const { network, recipients, paymentIntent: paymentIntentId } = request.body
+    const userAddress = Normalizer.ethereumAddress(request.body.userAddress)
+    const lockAddress = Normalizer.ethereumAddress(request.body.lock)
     const normalizedRecipients: string[] = recipients.map((address: string) =>
       Normalizer.ethereumAddress(address)
     )
+
     const dispatcher = new Dispatcher()
     const hasEnoughToPayForGas = await dispatcher.hasFundsForTransaction(
       network
     )
     if (!hasEnoughToPayForGas) {
-      return res.status(400).send({
+      return response.status(400).send({
         error: `Purchaser does not have enough to pay for gas on ${network}`,
       })
     }
 
-    const soldOut = await isSoldOut(lock, network, normalizedRecipients.length)
+    const soldOut = await isSoldOut(
+      lockAddress,
+      network,
+      normalizedRecipients.length
+    )
     if (soldOut) {
-      return res.status(400).send({
+      return response.status(400).send({
         error: 'Lock is sold out.',
       })
     }
 
     try {
       const processor = new PaymentProcessor(config.stripeSecret)
-      const hash = await processor.captureConfirmedPaymentIntent(
-        Normalizer.ethereumAddress(userAddress),
-        normalizedRecipients,
-        Normalizer.ethereumAddress(lock),
-        network,
-        paymentIntent
+      const { charge, paymentIntent, paymentIntentRecord } =
+        await processor.getPaymentIntentRecordAndCharge({
+          userAddress,
+          lockAddress,
+          network,
+          paymentIntentId,
+          recipients,
+        })
+
+      const fulfillmentDispatcher = new Dispatcher()
+
+      // Note: we will not wait for the tx to be fully executed as it may trigger an HTTP timeout!
+      // This should be fine though since grantKeys transaction should succeed anyway
+      const items: Record<'id' | 'owner', string>[] | null =
+        await fulfillmentDispatcher.grantKeys(
+          paymentIntent.metadata.lock,
+          paymentIntent.metadata.recipient.split(',').map((recipient) => ({
+            recipient,
+          })),
+          parseInt(paymentIntent.metadata.network, 10),
+          async (_: any, transactionHash: string) => {
+            // Update our charge object
+            charge.transactionHash = transactionHash
+            await charge.save()
+
+            // Update Stripe's payment Intent
+            await processor.stripe.paymentIntents.update(
+              paymentIntentId,
+              {
+                metadata: {
+                  transactionHash,
+                },
+              },
+              {
+                stripeAccount: paymentIntentRecord.connectedStripeId,
+              }
+            )
+
+            // We only charge the card when everything else was successful
+            await processor.stripe.paymentIntents.capture(paymentIntentId, {
+              stripeAccount: paymentIntentRecord.connectedStripeId,
+            })
+            // Send the transaction hash without waiting.
+            response.status(201).send({
+              transactionHash,
+            })
+          }
+        )
+
+      /**
+       * For now, we are only allowing subscription for the user who purchased the key, not for the multiple recipients
+       * because we don't have a way for them to "accept" the subscription and we don't want owner to be charged for all of them
+       * without a way to manage these from the dashboard.
+       */
+      const key = items?.find((item) => item.owner === userAddress)
+
+      if (!key) {
+        return
+      }
+
+      const split = recipients?.length || 1
+      const subscription = new KeySubscription()
+      subscription.connectedCustomer = paymentIntentRecord.connectedCustomerId
+      subscription.stripeCustomerId = paymentIntentRecord.stripeCustomerId
+      subscription.keyId = Number(key.id)
+      subscription.amount = paymentIntent.amount / split
+      subscription.unlockServiceFee = paymentIntent.application_fee_amount
+        ? paymentIntent.application_fee_amount / split
+        : 0
+      subscription.lockAddress = lockAddress
+      subscription.userAddress = userAddress
+      subscription.network = network
+      subscription.recurring = Number(paymentIntent.metadata.recurring || 0)
+      await subscription.save()
+
+      logger.info(
+        `Subscription ${subscription.id} created for ${subscription.userAddress} on ${subscription.network} and for lock ${subscription.lockAddress}. It will renew key ${subscription.keyId} for ${subscription.recurring}`
       )
-      return res.send({
-        transactionHash: hash,
-      })
+
+      return
     } catch (error) {
       logger.error('There was an error when capturing payment', error)
-      return res.status(400).send({ error: error.message })
+      return response.status(400).send({ error: error.message })
     }
   }
 
