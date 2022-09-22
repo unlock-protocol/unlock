@@ -153,27 +153,53 @@ export class keysByQuery extends GraphQLDataSource {
   }: KeyGetProps) {
     try {
       const first = 1000 // max items
-      const skip = parseInt(`${page}`, 10) * first
+
       const expireTimestamp = parseInt(`${new Date().getTime() / 1000}`)
       const keyId = getValidNumber(search)
 
-      let query
+      let query: any
       if (filterKey === 'keyId' && `${search}`?.length) {
         query = QUERY_BY_TYPE.keyId
       } else {
         query = QUERY_BY_TYPE[expiration]
       }
 
-      const response = await this.query(query, {
-        variables: {
-          addresses,
-          keyId,
-          first,
-          skip,
-          expireTimestamp,
-        },
-      })
-      return response.data.locks
+      const getData = async (getFromPage = page) => {
+        const skip = parseInt(`${getFromPage}`, 10) * first
+        return await this.query(query, {
+          variables: {
+            addresses,
+            keyId,
+            first,
+            skip,
+            expireTimestamp,
+          },
+        })
+      }
+      const {
+        data: { locks },
+      } = (await getData()) ?? {}
+
+      const keysList = locks[0]?.keys ?? []
+
+      let getForNextPage = keysList?.length === first
+
+      // get next page keys and add it to the list until the length is equal to MAX_ITEMS
+      while (getForNextPage) {
+        page = page + 1
+
+        const {
+          data: {
+            locks: [{ keys: nextPageKeys = [] }],
+          },
+        } = (await getData()) ?? {}
+
+        keysList?.push(...(nextPageKeys ?? []))
+
+        getForNextPage = nextPageKeys?.length === first
+      }
+
+      return locks
     } catch (error) {
       return []
     }
