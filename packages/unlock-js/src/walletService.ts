@@ -225,7 +225,11 @@ export default class WalletService extends UnlockService {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     if (!params.tokenId) throw new Error('Missing tokenId')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    return version.renewMembershipFor.bind(this)(params, callback)
+    return version.renewMembershipFor.bind(this)(
+      params,
+      purchaseForOptions,
+      callback
+    )
   }
 
   /**
