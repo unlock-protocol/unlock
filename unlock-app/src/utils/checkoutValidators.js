@@ -8,7 +8,6 @@ const { env } = configure()
 
 export const log = (message) => {
   if (env !== 'test') {
-    // eslint-disable-next-line no-console
     console.log(message)
   }
 }

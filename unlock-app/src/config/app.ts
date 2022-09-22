@@ -1,7 +1,7 @@
 import networksConfig from '@unlock-protocol/networks'
 import { NetworkConfigs } from '@unlock-protocol/types'
 
-const env = process.env.NEXT_PUBLIC_UNLOCK_ENV
+const env = process.env.NEXT_PUBLIC_UNLOCK_ENV || 'test'
 
 const staging = {
   paywallUrl: 'https://staging-paywall.unlock-protocol.com',
