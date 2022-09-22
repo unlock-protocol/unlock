@@ -131,6 +131,8 @@ export const Members = ({
     itemsPerPage: 30,
   })
 
+  const showPagination = maxNumbersOfPage > 1
+
   return (
     <div className="grid grid-cols-1 gap-6">
       {(items || [])?.map((metadata: any) => {
@@ -149,11 +151,13 @@ export const Members = ({
           />
         )
       })}
-      <PaginationBar
-        maxNumbersOfPage={maxNumbersOfPage}
-        setPage={setPage}
-        page={page}
-      />
+      {showPagination && (
+        <PaginationBar
+          maxNumbersOfPage={maxNumbersOfPage}
+          setPage={setPage}
+          page={page}
+        />
+      )}
     </div>
   )
 }
