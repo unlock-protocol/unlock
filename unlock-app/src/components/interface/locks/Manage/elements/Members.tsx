@@ -8,6 +8,9 @@ import { ImageBar } from './ImageBar'
 import { MemberCard } from './MemberCard'
 import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
+import { paginate } from '~/utils/pagination'
+import { PaginationBar } from './PaginationBar'
+import { useState } from 'react'
 
 interface MembersProps {
   lockAddress: string
@@ -55,6 +58,7 @@ export const Members = ({
   const walletService = useWalletService()
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
+  const [page, setPage] = useState(1)
 
   const getLockManagerStatus = async () => {
     return await web3Service.isLockManager(lockAddress, account!, network)
@@ -120,9 +124,18 @@ export const Members = ({
     )
   }
 
+  const pageOffset = page - 1 ?? 0
+  const { items, maxNumbersOfPage } = paginate({
+    items: members,
+    page: pageOffset,
+    itemsPerPage: 30,
+  })
+
+  const showPagination = maxNumbersOfPage > 1
+
   return (
-    <div className="grid grid-cols-1 gap-3">
-      {(members || [])?.map((metadata: any) => {
+    <div className="grid grid-cols-1 gap-6">
+      {(items || [])?.map((metadata: any) => {
         const { token, keyholderAddress: owner, expiration } = metadata ?? {}
         return (
           <MemberCard
@@ -138,6 +151,13 @@ export const Members = ({
           />
         )
       })}
+      {showPagination && (
+        <PaginationBar
+          maxNumbersOfPage={maxNumbersOfPage}
+          setPage={setPage}
+          page={page}
+        />
+      )}
     </div>
   )
 }
