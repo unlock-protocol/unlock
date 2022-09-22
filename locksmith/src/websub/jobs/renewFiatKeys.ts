@@ -69,10 +69,14 @@ async function renewFiatKeys(network: number) {
 export async function renewAllFiatKeys() {
   const tasks: Promise<void>[] = []
   for (const network of Object.values(networks)) {
-    if (network.id !== 31337) {
-      const task = renewFiatKeys(network.id)
-      tasks.push(task)
+    if (process.env.UNLOCK_ENV === 'prod' && network.isTestNetwork) {
+      continue
     }
+    if (network.id === 31337) {
+      continue
+    }
+    const task = renewFiatKeys(network.id)
+    tasks.push(task)
   }
   await Promise.allSettled(tasks)
 }
