@@ -2,7 +2,7 @@
 title: Unlock Is Live on Arbitrum
 subTitle: The Arbitrum network joins the expanding Unlock Protocol ecosystem
 authorName: Julien Genestoux
-publishDate: September 21, 2022
+publishDate: September 23, 2022
 description: Membership NFT contracts from Unlock Protocol can now be deployed on the Arbitrum network.
 image: /images/blog/arbitrum/arbitrum-share.png
 ---
