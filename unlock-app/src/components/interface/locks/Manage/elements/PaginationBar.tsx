@@ -30,6 +30,33 @@ const Page = ({ page, active, setPage }: PageProps) => {
 }
 
 const LIMIT_NEXT_PREV_PAGE = 5
+
+const Pages = ({ maxNumbersOfPage, page, setPage }: PaginationBarProps) => {
+  const minPage = page - LIMIT_NEXT_PREV_PAGE
+  const maxPage = page + LIMIT_NEXT_PREV_PAGE
+
+  return (
+    <div className="flex flex-wrap gap-2">
+      {Array(maxNumbersOfPage)
+        .fill(null)
+        .map((_, index) => {
+          const currentPage: number = index + 1
+          const isCurrent = currentPage === page
+          const showPage = currentPage >= minPage && currentPage <= maxPage
+
+          return showPage ? (
+            <Page
+              key={index}
+              page={currentPage}
+              active={isCurrent}
+              setPage={setPage}
+            />
+          ) : null
+        })}
+    </div>
+  )
+}
+
 export const PaginationBar = ({
   maxNumbersOfPage,
   page,
@@ -50,27 +77,11 @@ export const PaginationBar = ({
         >
           <ArrowLeftIcon />
         </Button>
-        <div className="flex flex-wrap gap-2">
-          {Array(maxNumbersOfPage)
-            .fill(null)
-            .map((_, index) => {
-              const currentPage: number = index + 1
-              const isCurrent = currentPage === page
-
-              const minPage = page - LIMIT_NEXT_PREV_PAGE
-              const maxPage = page + LIMIT_NEXT_PREV_PAGE
-              const showPage = currentPage >= minPage && currentPage <= maxPage
-
-              return showPage ? (
-                <Page
-                  key={index}
-                  page={currentPage}
-                  active={isCurrent}
-                  setPage={setPage}
-                />
-              ) : null
-            })}
-        </div>
+        <Pages
+          maxNumbersOfPage={maxNumbersOfPage}
+          page={page}
+          setPage={setPage}
+        />
         <Button
           variant="transparent"
           className="p-0 disabled:opacity-50"
