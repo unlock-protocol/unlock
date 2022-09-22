@@ -57,7 +57,7 @@ jobs:
     secrets:
       SITE_ID: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_SITE_ID }}
       AUTH_TOKEN: ${{ secrets.UNLOCK_PROTOCOL_COM_NETLIFY_STAGING_AUTH_TOKEN }}
-      UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_GA_ID }}
+      NEXT_PUBLIC_UNLOCK_GA_ID: ${{ secrets.UNLOCK_APP_NETLIFY_STAGING_UNLOCK_GA_ID }}
 
   deploy-paywall-app:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
