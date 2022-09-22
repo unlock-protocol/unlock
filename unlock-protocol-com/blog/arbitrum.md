@@ -11,7 +11,7 @@ image: /images/blog/arbitrum/arbitrum-share.png
 
 ![Arbitrum](/images/blog/arbitrum/arbitrum.png)
 
-> Today, we're excited to announce that you can start deploying your NFT membership contracts on Arbitrum!
+Today, we're excited to announce that you can start deploying your NFT membership contracts on Arbitrum!
 
 Want to try it out? We deployed the first NFT membership contract on Arbitrum and you can "buy" a free membership [by going here](https://app.unlock-protocol.com/checkout?redirectUri=https%3A%2F%2Funlock-protocol.com%2Fblog%2Farbitrum&paywallConfig=%7B%22locks%22%3A%7B%220xcc04a8E25B712EBbdAD337dfDb59a154Bd6bbd06%22%3A%7B%22network%22%3A42161%7D%7D%2C%22pessimistic%22%3Atrue%2C%22persistentCheckout%22%3Atrue%2C%22icon%22%3A%22https%3A%2F%2Fstaging-locksmith.unlock-protocol.com%2Flock%2F0xcc04a8E25B712EBbdAD337dfDb59a154Bd6bbd06%2Ficon%22%7D) (There are only 100 of these, so be quick!)
 
