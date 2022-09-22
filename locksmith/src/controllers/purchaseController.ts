@@ -224,6 +224,11 @@ export class PurchaseController {
       subscription.network = network
       subscription.recurring = Number(paymentIntent.metadata.recurring || 0)
       await subscription.save()
+
+      logger.info(
+        `Subscription ${subscription.id} created for ${subscription.userAddress} on ${subscription.network} and for lock ${subscription.lockAddress}. It will renew key ${subscription.keyId} for ${subscription.recurring}`
+      )
+
       return
     } catch (error) {
       logger.error('There was an error when capturing payment', error)

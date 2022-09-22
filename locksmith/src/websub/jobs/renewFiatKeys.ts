@@ -18,7 +18,6 @@ async function fetchKeysToRenew(network: number, page = 0) {
     network,
     page ? page * FETCH_LIMIT : 0 // page
   )
-  console.log(keys)
   // Key grant extension function is only supported on lock 11 or above.
   return keys.filter((key) => key.lock.version >= 11)
 }

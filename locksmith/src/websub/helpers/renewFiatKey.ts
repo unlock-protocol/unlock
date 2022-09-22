@@ -147,7 +147,10 @@ export async function renewFiatKey({
           subscription.recurring -= 1
           await subscription.save()
 
-          const intent = await stripe.paymentIntents.capture(paymentIntent.id)
+          // Capture it on the connected stripe account
+          const intent = await stripe.paymentIntents.capture(paymentIntent.id, {
+            stripeAccount,
+          })
 
           switch (intent.status) {
             case 'succeeded': {
@@ -156,11 +159,17 @@ export async function renewFiatKey({
                 ...renewalInfo,
                 tx: hash,
               }
-              await stripe.paymentIntents.update(intent.id, {
-                metadata: {
-                  transactionHash: hash,
+              await stripe.paymentIntents.update(
+                intent.id,
+                {
+                  metadata: {
+                    transactionHash: hash,
+                  },
                 },
-              })
+                {
+                  stripeAccount,
+                }
+              )
               await KeyRenewal.create(recordedrenewalInfo)
               // Create the charge object on our end!
               await Charge.create({
