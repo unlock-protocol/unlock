@@ -13,7 +13,7 @@ import formatKeyPrice from '../utils/formatKeyPrice'
  */
 export default async function (
   { lockAddress, referrer, tokenId },
-  purchaseForOptions,
+  purchaseForOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
@@ -23,7 +23,7 @@ export default async function (
   }
 
   // Estimate gas. Bump by 30% because estimates are wrong!
-  if (!purchaseForOptions.gasLimit) {
+  if (!purchaseForOptions?.gasLimit) {
     try {
       const gasLimit = await lockContract.estimateGas.renewMembershipFor(
         tokenId,
