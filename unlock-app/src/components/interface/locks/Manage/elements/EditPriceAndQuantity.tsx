@@ -158,7 +158,7 @@ export const EditPriceAndQuantity = ({
           className="flex flex-col gap-6 p-6 text-left"
           onSubmit={handleSubmit(onHandleSubmit)}
         >
-          <span className="text-2xl font-bold">Update Duration / Quantity</span>
+          <span className="text-2xl font-bold">Update Price / Quantity</span>
 
           <div>
             <label className="block px-1 mb-4 text-base" htmlFor="">
