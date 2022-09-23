@@ -238,7 +238,8 @@ export const useAccount = (address: string, network: number) => {
     lock: any,
     network: number,
     pricing: any,
-    recipients: string[]
+    recipients: string[],
+    recurring = 0
   ) => {
     const response = await prepareCharge(
       config,
@@ -248,7 +249,8 @@ export const useAccount = (address: string, network: number) => {
       network,
       lock,
       pricing,
-      recipients
+      recipients,
+      recurring
     )
     return response
   }
