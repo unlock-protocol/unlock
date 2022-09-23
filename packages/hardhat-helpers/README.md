@@ -17,6 +17,18 @@ module.exports = {
 }
 ```
 
+### CLI tasks
+
+Importing the package will provide a bunch of cli tasks
+
+```sh
+# show hardhat config in terminal
+yarn hardhat config
+
+# output hardhat config as json
+yarn hardhat config --json
+```
+
 ### Verification
 
 You need to export the API keys in your env for it to work properly
