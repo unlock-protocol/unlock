@@ -23,6 +23,10 @@ Unlock's approach to recurring payment has two distinct elements:
 2. Locksmith
    When a user goes through a recurring purchase, we create a subscription object on the backend to keep track of how many times the user wishes to renew and store details surrounding the purchase. Due to volatile nature of crypto, fiat prices swing drastically between days. To avoid this and protect the users, we lock in the fiat price at the time of subscription for further renewals. This means if user purchased a NFT for 0.1 token which was valued at $10 at the time of purchase, further renewals will only cost that + normal fees associated with using the fiat option. We use the subscription object to renew keys when they expire. We don't depend on stripe subscriptions which allow us to provide flexible schedule to creators for charging their users.
 
+An example of a lock with 5 minute renewal time below getting extended every 5 minutes.
+
+![Etherscan](/images/blog/unlock-fiat-subscription/etherscan.png)
+
 ### Documentation and demo
 
 - Community & Support: [Join the Unlock Discord](https://discord.com/invite/Ah6ZEJyTDp)
