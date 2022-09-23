@@ -56,7 +56,7 @@ export const EditPriceAndQuantity = ({
     resetField,
     getValues,
     reset,
-    formState: { isValid, errors, isDirty },
+    formState: { isValid, errors },
   } = useForm<EditFormProps>({
     mode: 'onChange',
     defaultValues: {
