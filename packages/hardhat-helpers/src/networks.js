@@ -20,4 +20,4 @@ Object.keys(networks).forEach((key) => {
   }
 })
 
-module.exports = hardhatNetworks
+module.exports = { networks: hardhatNetworks }

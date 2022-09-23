@@ -2,7 +2,9 @@
 const fs = require('fs')
 const resolve = require('path').resolve
 const debug = require('debug')
-const networksConfigs = require('../networks.js')
+const {
+  networks: networksConfigs,
+} = require('@unlock-protocol/hardhat-helpers')
 
 const { DEPLOYER_PRIVATE_KEY } = process.env
 const log = debug('hardhat:config')
