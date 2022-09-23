@@ -34,6 +34,7 @@
     "dist"
   ],
   "dependencies": {
+    "@nomiclabs/hardhat-etherscan": "^3.1.0",
     "@unlock-protocol/contracts": "^0.0.9"
   }
 }
