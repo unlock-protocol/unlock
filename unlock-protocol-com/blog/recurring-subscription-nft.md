@@ -34,7 +34,7 @@ Furthermore, creators, fans, developers, and supporters all have the opportunity
 
 ## How does it work?
 
-Unlock's approach to recurring billing through NFTs uses a novel smart contract design that is the first in the industry, bringing the recurring revenue model into a decentralized web3 world. Functionally, a user begins a subscription by agreeing to a smart contract transaction that recurs each month (or at whatever interval the subscription is billed), and the user’s membership NFT maintains its validity as long as the payment occurs each time.
+Unlock's approach to recurring billing through NFTs uses a novel smart contract design that is the first in the industry, bringing the recurring revenue model into a decentralized web3 world. Functionally, a user begins a subscription by agreeing to a smart contract transaction that recurs each month (or at whatever interval the subscription is billed), and the user’s membership NFT maintains its validity as long as the payment occurs each time.
 
 ![unlock-subscription-dashboard.png](/images/blog/subscriptions/unlock-subscription-dashboard.png)
 _Example lock in Unlock Dashboard with recurring subscriptions enabled. This publication’s subscription is 30 XDAI ($30) per month. Subscription duration, price, renewal terms, and currency are all configurable by creators._
