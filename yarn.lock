@@ -16117,6 +16117,8 @@ __metadata:
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
     "@primitivefi/hardhat-dodoc": 0.2.3
+    "@unlock-protocol/contracts": ^0.0.9
+    "@unlock-protocol/hardhat-helpers": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
     chai: 4.3.4
@@ -16127,6 +16129,13 @@ __metadata:
     typescript: 4.7.4
   languageName: unknown
   linkType: soft
+
+"@unlock-protocol/contracts@npm:^0.0.9":
+  version: 0.0.9
+  resolution: "@unlock-protocol/contracts@npm:0.0.9"
+  checksum: 65af9dc747448b1f9ca3b6d5e6c9e04c0a68558d04b142bee3991f7a34a3cf18d20b8bb677c35ac803ac87910aa5561e8d97bbea43413d5cc500fdfaf49c1706
+  languageName: node
+  linkType: hard
 
 "@unlock-protocol/eslint-config@workspace:./packages/eslint-config, @unlock-protocol/eslint-config@workspace:^, @unlock-protocol/eslint-config@workspace:packages/eslint-config":
   version: 0.0.0-use.local
@@ -16142,6 +16151,17 @@ __metadata:
     eslint-plugin-prettier: 4.0.0
     jest: 27.5.1
     typescript: 4.6.4
+  languageName: unknown
+  linkType: soft
+
+"@unlock-protocol/hardhat-helpers@workspace:^, @unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers"
+  dependencies:
+    "@unlock-protocol/networks": "workspace:^"
+    "@unlock-protocol/tsconfig": "workspace:^"
+    "@unlock-protocol/types": "workspace:^"
+    hardhat: 2.10.1
   languageName: unknown
   linkType: soft
 
@@ -16410,6 +16430,7 @@ __metadata:
     "@uniswap/v2-periphery": 1.1.0-beta.0
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/hardhat-helpers": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     babel-eslint: 10.1.0
     babel-polyfill: 6.26.0
@@ -32052,7 +32073,7 @@ fsevents@~2.1.1:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 872685026db07ad1687056a78388f17c6a9bcd22bbf9d99d1e2b21e2d196c6e99a128bcff48063b3f0cf692a4365142fae9dd06cf8c532bc557a45f8ac853308
+  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
   languageName: node
   linkType: hard
 
