@@ -42,7 +42,16 @@ yarn prepare:abis
 Deploy the latest subgraph code to the graph node.
 
 ```sh
-sh bin/deploy <network-name>
+export SUBGRAPH_DEPLOY_KEY=<api-key>
+
+# build 
+sh bin/thegraph deploy <network-name>
+
+# deploy a single network
+sh bin/thegraph deploy <network-name>
+
+# deploy all networks
+sh bin/thegraph deploy <network-name>
 ``` 
 
 ## Tests
