@@ -1,4 +1,4 @@
-import { Badge, Button, Icon } from '@unlock-protocol/ui'
+import { Badge, Button } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
 import { useMutation, useQueries, useQuery } from 'react-query'
 import useLock from '~/hooks/useLock'
