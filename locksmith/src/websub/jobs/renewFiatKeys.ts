@@ -69,6 +69,7 @@ async function renewFiatKeys(network: number) {
 export async function renewAllFiatKeys() {
   const tasks: Promise<void>[] = []
   for (const network of Object.values(networks)) {
+    // Don't run renewal jobs on test networks in production
     if (process.env.UNLOCK_ENV === 'prod' && network.isTestNetwork) {
       continue
     }

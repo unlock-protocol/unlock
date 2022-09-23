@@ -67,10 +67,15 @@ async function renewKeys(network: number) {
 export async function renewAllKeys() {
   const tasks: Promise<void>[] = []
   for (const network of Object.values(networks)) {
-    if (network.id !== 31337) {
-      const task = renewKeys(network.id)
-      tasks.push(task)
+    // Don't run renewal jobs on test networks in production
+    if (process.env.UNLOCK_ENV === 'prod' && network.isTestNetwork) {
+      continue
     }
+    if (network.id === 31337) {
+      continue
+    }
+    const task = renewKeys(network.id)
+    tasks.push(task)
   }
   await Promise.allSettled(tasks)
 }
