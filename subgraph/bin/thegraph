@@ -6,37 +6,45 @@
  * Usage: node bin/thegraph --help
  */
 const { hideBin } = require('yargs/helpers')
-const { exec } = require('child_process')
 const networks = require('@unlock-protocol/networks')
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
 
-const executeCommand = (command) => {
-  exec(command, function (error, stdout, stderr) {
-    console.log(stdout)
+const executeCommand = async (command) => {
+  try {
+    const { stdout, stderr } = await exec(command)
     if (stderr) {
       console.log(`stderr: ${stderr}`)
     }
-    if (error !== null) {
-      console.log(`exec error: ${error}`)
-    }
-  })
+    console.log('stdout:', stdout)
+    console.log('stderr:', stderr)
+  } catch (e) {
+    // should contain code (exit code) and signal (that caused the termination).
+    console.error(`exec error: ${e}`)
+  }
 }
 
-const codegen = () => {
-  executeCommand('yarn codegen')
+const codegen = async () => {
+  console.log('yarn codegen')
+  await executeCommand('yarn codegen')
 }
 
 // Creating subgraphs is only available from hosted-service dashboard
 // yarn graph create $network_name-v2 --node https://api.thegraph.com/deploy/ --access-token $SUBGRAPH_DEPLOY_KEY"
-const build = (network) => {
+const build = async (network) => {
   console.log(`Building subgraph for ${network}`)
   executeCommand(`yarn graph build --network ${network}`)
 }
 
-const deploy = (network, graphLabel) => {
+const deploy = async (network, graphLabel) => {
   if (!process.env.SUBGRAPH_DEPLOY_KEY) {
     throw new Error(
       'Missing --access-token from https://thegraph.com/hosted-service/dashboard?account=unlock-protocol'
     )
+  }
+
+  if (!network) {
+    throw new Error('Missing network name')
   }
 
   const graphNode = 'https://api.thegraph.com/deploy/'
@@ -49,52 +57,64 @@ const deploy = (network, graphLabel) => {
   executeCommand(cmd)
 }
 
-require('yargs/yargs')(hideBin(process.argv))
+const choices = Object.keys(networks).filter(
+  (d) => !['networks', 'default', 'localhost'].includes(d)
+)
+
+const argv = require('yargs/yargs')(hideBin(process.argv))
   .command(
-    'build',
+    'codegen',
+    'Deploy subgraph on all networks',
+    {},
+    async () => await codegen()
+  )
+  .command(
+    'build <network>',
     'build with thegraph hosted service',
-    (yargs) => {
-      return yargs.positional('network', {
+    (yargs) =>
+      yargs.positional('network', {
         describe: 'the network to deploy',
-      })
-    },
-    (argv) => {
-      codegen()
-      build(argv.network)
+        choices,
+      }),
+    async ({ network }) => {
+      await codegen()
+      await build(network)
     }
   )
   .command(
-    'deploy',
+    'deploy <network>',
     'deploy subgraph to thegraph hosted service',
-    (yargs) => {
-      return yargs.positional('network', {
+    (yargs) =>
+      yargs.positional('network', {
         describe: 'the network to deploy',
-      })
-    },
-    (argv) => {
-      codegen()
-      build(argv.network)
-      deploy(argv.network, argv.label)
+        choices,
+      }),
+    async ({ network, label }) => {
+      await codegen()
+      await build(network)
+      await deploy(network, label)
     }
   )
-  .command('deploy-all', 'Deploy subgraph on all networks', {}, (argv) => {
-    // generate code
-    codegen()
-    // build and deploy each network
-    Object.keys(networks)
-      .filter((d) => !['networks', 'default', 'localhost'].includes(d))
-      .forEach((network) => {
-        build(network)
-        deploy(network, argv.label)
-      })
-  })
+  .command(
+    'deploy-all',
+    'Deploy subgraph on all networks',
+    {},
+    async ({ label }) => {
+      // generate code
+      await codegen()
+
+      // build and deploy each network
+      await Promise.all(
+        choices.map(async (network) => {
+          await build(network)
+          await deploy(network, label)
+        })
+      )
+      console.log('Subgraph deployments done.')
+    }
+  )
+  .demandCommand()
   .options({
-    network: {
-      alias: 'n',
-      type: 'string',
-      demandOption: true,
-      description: 'The name of the network',
-    },
     label: {
       type: 'string',
       description: 'The version label to use for deployment',
