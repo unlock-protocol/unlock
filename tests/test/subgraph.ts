@@ -45,11 +45,11 @@ describe('Unlock', function () {
         await lock.publicLockVersion()
       )
 
-      // to be implemented in the graph yet...
       expect(parseInt(lockInGraph.expirationDuration)).to.equals(
         lockParams.expirationDuration
       )
       expect(lockInGraph.name).to.equals(lockParams.name)
+      // to be implemented in the graph yet...
       // expect(lockInGraph.maxNumberOfKeys).to.equals(lockParams.maxNumberOfKeys)
     })
   })

@@ -52,3 +52,16 @@ services:
       - ./development/wait-for-it/wait-for-it.sh:/opt/wait-for-it.sh
     depends_on:
       - graph-node
+
+  integration-tests:
+    build:
+      context: ../
+      target: dev
+      args:
+        BUILD_DIR: tests
+    env_file: test.env
+    volumes:
+      - ./development/subgraph/networks.json:/home/unlock/networks.json
+    depends_on:
+      - graph-node
+      - eth-node

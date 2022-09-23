@@ -36,6 +36,7 @@ docker-compose $COMPOSE_CONFIG up --build subgraph
 if [ "$1" == 'run' ]
 then
   echo "Running integration tests \n"
-  COMMAND="yarn run ci"
-  docker-compose $COMPOSE_CONFIG run -e UNLOCK_ENV=test $EXTRA_ARGS integration-tests bash -c "$COMMAND"
+  COMMAND="yarn workspace tests test --network docker"
+  docker-compose $COMPOSE_CONFIG build integration-tests
+  docker-compose $COMPOSE_CONFIG run -e UNLOCK_ENV=test -e CI=true $EXTRA_ARGS integration-tests bash -c "$COMMAND"
 fi
