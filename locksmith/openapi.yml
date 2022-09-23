@@ -18,10 +18,242 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+
     Application:
       type: apiKey
       name: api-key
       in: query
+
+  schemas:
+    Auth:
+      type: object
+      properties:
+        type:
+          type: string
+          default: user
+          nullable: false
+
+        walletAddress:
+          type: string
+          nullable: false
+
+        id:
+          type: string
+          nullable: true
+
+    AuthResult:
+      type: object
+      properties:
+        walletAddress:
+          type: string
+          nullable: true
+
+        accessToken:
+          type: string
+          nullable: false
+
+        refreshToken:
+          type: string
+          nullable: false
+
+    Application:
+      type: object
+      nullable: false
+      properties:
+        id:
+          type: number
+          nullable: false
+
+        name:
+          type: string
+          nullable: false
+
+        key:
+          type: string
+          nullable: true
+
+        walletAddress:
+          type: string
+          nullable: false
+
+    Verifier:
+      type: object
+      nullable: false
+      properties:
+        address:
+          type: string
+          nullable: false
+
+        lockAddress:
+          type: string
+          nullable: false
+
+        lockManager:
+          type: string
+          nullable: false
+
+        network:
+          type: integer
+          nullable: false
+
+    KeyMetadata:
+      type: object
+      nullable: false
+      properties:
+        token:
+          type: string
+          nullable: false
+
+        lockName:
+          type: string
+          nullable: false
+
+        lockAddress:
+          type: string
+          nullable: false
+
+        expiration:
+          type: integer
+          nullable: false
+
+        keyHolderAddress:
+          type: string
+          nullable: false
+
+    NotAuthenticated:
+      type: object
+      nullable: false
+      properties:
+        message:
+          type: string
+          default: 'You are not authorized or authenticated to perform this action.'
+          nullable: false
+
+    GenericInvalidBodyError:
+      type: object
+      nullable: false
+      properties:
+        message:
+          type: string
+          default: Response body schema is invalid.
+          nullable: false
+
+        error:
+          type: string
+          nullable: true
+
+    GenericServerError:
+      type: object
+      nullable: false
+      properties:
+        message:
+          type: string
+          default: There was an error in fullfiling the request.
+          nullable: false
+
+    GenericSuccess:
+      type: object
+      nullable: false
+      properties:
+        message:
+          type: string
+          default: 'Successfully fulfilled the request.'
+          nullable: false
+
+    GenericNotFound:
+      type: object
+      nullable: false
+      properties:
+        message:
+          type: string
+          default: 'resource not found'
+          nullable: false
+
+  parameters:
+    Network:
+      in: path
+      name: network
+      required: true
+      schema:
+        type: integer
+      description: Network Id.
+
+    LockAddress:
+      in: path
+      name: lockAddress
+      required: true
+      description: Lock address.
+      schema:
+        type: string
+
+    VerifierAddress:
+      in: path
+      name: verifierAddress
+      required: true
+      description: User address to use as verifier
+      schema:
+        type: string
+
+    KeyId:
+      in: path
+      name: KeyId
+      required: true
+      description: Key Id.
+      schema:
+        type: string
+
+  responses:
+    200.GenericSuccess:
+      description: 'Successfully completed the request.'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/responses/200.GenericSuccess'
+
+    204.Empty:
+      description: No response. Request acknowledged.
+
+    400.Invalid:
+      description: Invalid input received. Bad request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericInvalidBodyError'
+
+    401.NotAuthenticated:
+      description: User is not authenticated.
+      content:
+        application:
+          schema:
+            $ref: '#/components/schemas/GenericServerError'
+
+    403.NotAuthenticatedOrAuthorized:
+      description: User is not authenticated or authorized to perform this action.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotAuthenticated'
+
+    404.NotFound:
+      description: The item you are making request for does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericNotFound'
+
+    409.Conflict:
+      description: There is a conflict. The resource already exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericServerError'
+
+    500.InternalError:
+      description: Unable to fullfil request due to internal server error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GenericServerError'
 
 paths:
   /v2/auth/nonce:
@@ -29,8 +261,17 @@ paths:
       description: 'Provide a unique nounce for using in sign in with ethereum'
       parameters: []
       responses:
-        '200':
-          description: OK
+        200:
+          description: Unique nounce.
+          content:
+            html/text:
+              schema:
+                type: string
+                nullable: false
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/auth/login:
     post:
       description: 'Login as a user using Sign in with Ethereum message signed by the wallet address.'
@@ -44,24 +285,413 @@ paths:
                 signature:
                   type: string
       responses:
-        '200':
+        200:
           description: OK
-  /v2/api/{network}/locks/{lockAddress}/keys:
-    get:
-      description: List of lock keys by network with additional metadata if the caller is the lockManager
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/auth/logout:
+    post:
+      security:
+        - User: []
+      description: Logout from locksmith. This will invalidate all your refresh tokens.
+
+      responses:
+        200:
+          $ref: '#/components/responses/200.GenericSuccess'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/auth/revoke:
+    post:
+      description: Invalidate a refresh token.
       parameters:
-        - in: path
-          name: network
-          required: true
-          schema:
-            type: integer
-          description: Network id
-        - in: path
-          name: lockAddress
-          required: true
+        - in: header
+          name: refresh-token
           schema:
             type: string
-          description: Lock address
+            nullable: true
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              nullable: true
+              properties:
+                refresh-token:
+                  type: string
+                  nullable: false
+      responses:
+        200:
+          $ref: '#/components/responses/200.GenericSuccess'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/user:
+    get:
+      description: Get user details.
+      security:
+        - User: []
+      responses:
+        200:
+          description: Return the user details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth'
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/applications/list:
+    get:
+      security:
+        - User: []
+      description: List applications created the user.
+      responses:
+        200:
+          description: List of applications owned by the authenticated user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Application'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/applications:
+    post:
+      security:
+        - User: []
+      description: Create application associated with user wallet.
+      responses:
+        201:
+          description: Created application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/applications/:id:
+    parameters:
+      - in: path
+        required: true
+        schema:
+          type: string
+        name: id
+        description: Application id.
+
+    delete:
+      security:
+        - User: []
+
+      description: Delete application by id.
+      responses:
+        200:
+          description: Deleted application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccess'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+    put:
+      security:
+        - User: []
+      description: Update application by id.
+      responses:
+        200:
+          description: Updated application.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Application'
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/verifier/list/{network}/{lockAddress}:
+    get:
+      security:
+        - User: ['lockManager']
+      description: List of verifiers for the lock address.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+      responses:
+        200:
+          description: 'list of verifier address.'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Verifier'
+
+        204:
+          $ref: '#/components/responses/204.Empty'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/verifier/{network}/{lockAddress}/{verifierAddress}:
+    put:
+      security:
+        - User: ['lockManager']
+      description: Create verifier.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/VerifierAddress'
+      responses:
+        201:
+          description: Added verifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Verifier'
+
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        409:
+          $ref: '#/components/responses/409.Conflict'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+    delete:
+      security:
+        - User: []
+      description: Remove verifier.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/VerifierAddress'
+      responses:
+        200:
+          description: List of remaining verifiers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Verifier'
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/verifier/{network}/{lockAddress}/address/{verifierAddress}:
+    get:
+      security:
+        - User: ['lockManager']
+      description: Check if an address is a verifier of the lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/VerifierAddress'
+      responses:
+        200:
+          description: Address is a verifier on the lock address.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  enabled:
+                    type: boolean
+                    default: true
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/ticket/{network}/{lockAddress}/{keyId}/sign:
+    get:
+      security:
+        - User: ['keyOwner']
+      description: Generate signature to prove validity of token.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Returns signature and payload.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  payload:
+                    type: string
+                    nullable: false
+                  signature:
+                    type: string
+                    nullable: false
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/ticket/{network}/{lockAddress}/{keyId}/check:
+    put:
+      security:
+        - User: ['Verifier']
+      description: Mark a ticket as checked in.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        202:
+          description: Ticket is checked in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericSuccess'
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        409:
+          $ref: '#/components/responses/409.Conflict'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/ticket/{network}/{lockAddress}/{keyId}/email:
+    post:
+      security:
+        - User: ['LockManager']
+      description: Send QR code by email.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: Email sent.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sent:
+                    type: boolean
+                    default: true
+                    nullable: false
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/ticket/{network}/{lockAddress}/{keyId}/qr:
+    get:
+      security:
+        - Application: ['lockManager']
+      description: Get QR code for the key.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      responses:
+        200:
+          description: QR code image.
+          content:
+            'image/gif':
+              schema:
+                nullable: true
+        403:
+          $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/network}/locks/{lockAddress}/keys:
+    get:
+      security:
+        - User: []
+      description: List of lock keys by network with additional metadata if the caller is the lockManager
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
         - in: query
           name: query
           required: false
@@ -85,5 +715,18 @@ paths:
             type: integer
           description: Pagination
       responses:
-        '200':
+        200:
           description: List of keys matching the query
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: array
+                items:
+                  $ref: '#/components/schemas/KeyMetadata'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
