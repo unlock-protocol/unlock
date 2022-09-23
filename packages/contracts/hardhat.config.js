@@ -4,14 +4,14 @@
 
 // to build contract docs
 require('@primitivefi/hardhat-dodoc')
+require('./task/exportAbis')
 
 const fs = require('fs-extra')
 
-require('./task/exportAbis')
-
-const contractsPath = './src/contracts'
+require('@unlock-protocol/hardhat-helpers')
 
 // list all interfaces to document
+const contractsPath = './src/contracts'
 const contractsToDocument = fs
   .readdirSync(contractsPath)
   .map((contractName) =>
@@ -32,6 +32,8 @@ const settings = {
 }
 
 module.exports = {
+  // networks,
+  // etherscan,
   solidity: {
     compilers: [
       { version: '0.4.24', settings },

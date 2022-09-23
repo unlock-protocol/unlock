@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@primitivefi/hardhat-dodoc": "0.2.3",
+    "@unlock-protocol/hardhat-helpers": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
     "@unlock-protocol/types": "workspace:^",
     "chai": "4.3.4",
@@ -31,5 +32,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "dependencies": {
+    "@unlock-protocol/contracts": "^0.0.9"
+  }
 }
