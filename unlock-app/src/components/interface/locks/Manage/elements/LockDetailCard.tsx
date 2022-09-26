@@ -14,6 +14,7 @@ import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { UpdatePriceModal } from './UpdatePriceModal'
 import { UpdateQuantityModal } from './UpdateQuantityModal'
+import { UpdateDurationModal } from './UpdateDurationModal'
 
 interface LockDetailCardProps {
   network: number
@@ -24,6 +25,7 @@ interface DetailProps {
   label: string
   value?: React.ReactNode
   prepend?: React.ReactNode
+  append?: React.ReactNode
   loading?: boolean
 }
 
@@ -49,7 +51,7 @@ const DetailValuePlaceholder = () => {
   return <div className="w-10 h-5 animate-pulse bg-slate-200"></div>
 }
 
-const Detail = ({ label, value, prepend, loading }: DetailProps) => {
+const Detail = ({ label, value, prepend, loading, append }: DetailProps) => {
   return (
     <div className="flex justify-between py-2 border-b border-black last-of-type:border-0">
       <span className="text-base">{label}</span>
@@ -59,6 +61,7 @@ const Detail = ({ label, value, prepend, loading }: DetailProps) => {
         <div className="flex items-center gap-2 text-right">
           {prepend && <>{prepend}</>}
           <span className="text-base font-bold text-black">{value || '-'}</span>
+          {append && <>{append}</>}
         </div>
       )}
     </div>
@@ -165,28 +168,35 @@ export const LockDetailCard = ({
         />
         <div className="flex flex-col mt-14">
           <Detail label="Network" value={networkName} loading={loading} />
-          <Detail label="Key Duration" value={duration} loading={loading} />
+          <Detail
+            label="Key Duration"
+            value={duration}
+            loading={loading}
+            append={<UpdateDurationModal lockAddress={lockAddress} />}
+          />
           <Detail
             label="Key Quantity"
             value={numbersOfKeys}
             loading={loading}
+            append={
+              <UpdateQuantityModal
+                lockAddress={lockAddress}
+                onUpdate={() => setIsUpdated(true)}
+              />
+            }
           />
           <Detail
             label="Price"
             value={keyPrice}
             prepend={<CryptoIcon symbol={symbol} size={22} />}
             loading={loading}
-          />
-        </div>
-        <div className="flex flex-col gap-3 mt-2">
-          <UpdatePriceModal
-            lockAddress={lockAddress}
-            network={network}
-            onUpdate={() => setIsUpdated(true)}
-          />
-          <UpdateQuantityModal
-            lockAddress={lockAddress}
-            onUpdate={() => setIsUpdated(true)}
+            append={
+              <UpdatePriceModal
+                lockAddress={lockAddress}
+                network={network}
+                onUpdate={() => setIsUpdated(true)}
+              />
+            }
           />
         </div>
       </div>

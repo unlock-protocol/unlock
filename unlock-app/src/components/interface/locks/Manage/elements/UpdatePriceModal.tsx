@@ -171,15 +171,12 @@ export const UpdatePriceModal = ({
         </form>
       </Modal>
       <Button
-        variant="secondary"
-        size="small"
-        className="w-full"
+        variant="outlined-primary"
+        size="tiny"
+        className="p-1"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <div className="flex items-center gap-2">
-          <span className="text-sm">Update Price</span>
-          <EditIcon size={16} />
-        </div>
+        <EditIcon size={16} />
       </Button>
     </>
   )
