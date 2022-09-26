@@ -2,7 +2,7 @@ import { networks } from '@unlock-protocol/networks'
 import { KeysToRenew } from '../../graphql/datasource'
 import { renewFiatKey } from '../helpers'
 import { logger } from '../../logger'
-
+import Normalizer from '../../utils/normalizer'
 const FETCH_LIMIT = 25
 
 async function fetchKeysToRenew(network: number, page = 0) {
@@ -18,7 +18,6 @@ async function fetchKeysToRenew(network: number, page = 0) {
     network,
     page ? page * FETCH_LIMIT : 0 // page
   )
-  console.log(keys)
   // Key grant extension function is only supported on lock 11 or above.
   return keys.filter((key) => key.lock.version >= 11)
 }
@@ -43,9 +42,9 @@ async function renewFiatKeys(network: number) {
       try {
         const renewal = await renewFiatKey({
           keyId: Number(keyId),
-          lockAddress: lock.address,
+          lockAddress: Normalizer.ethereumAddress(lock.address),
           network,
-          userAddress: owner.address,
+          userAddress: Normalizer.ethereumAddress(owner.address),
         })
         if (renewal.error) {
           logger.info('Key renewal failed', {
@@ -70,10 +69,15 @@ async function renewFiatKeys(network: number) {
 export async function renewAllFiatKeys() {
   const tasks: Promise<void>[] = []
   for (const network of Object.values(networks)) {
-    if (network.id !== 31337) {
-      const task = renewFiatKeys(network.id)
-      tasks.push(task)
+    // Don't run renewal jobs on test networks in production
+    if (process.env.UNLOCK_ENV === 'prod' && network.isTestNetwork) {
+      continue
     }
+    if (network.id === 31337) {
+      continue
+    }
+    const task = renewFiatKeys(network.id)
+    tasks.push(task)
   }
   await Promise.allSettled(tasks)
 }

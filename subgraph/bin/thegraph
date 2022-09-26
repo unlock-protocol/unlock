@@ -1,0 +1,123 @@
+#!/usr/bin/env node
+
+/**
+ * Interact with the graph
+ *
+ * Usage: node bin/thegraph --help
+ */
+const { hideBin } = require('yargs/helpers')
+const networks = require('@unlock-protocol/networks')
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
+
+const executeCommand = async (command) => {
+  try {
+    const { stdout, stderr } = await exec(command)
+    if (stderr) {
+      console.log(`stderr: ${stderr}`)
+    }
+    console.log('stdout:', stdout)
+    console.log('stderr:', stderr)
+  } catch (e) {
+    // should contain code (exit code) and signal (that caused the termination).
+    console.error(`exec error: ${e}`)
+  }
+}
+
+const codegen = async () => {
+  console.log('yarn codegen')
+  await executeCommand('yarn codegen')
+}
+
+// Creating subgraphs is only available from hosted-service dashboard
+// yarn graph create $network_name-v2 --node https://api.thegraph.com/deploy/ --access-token $SUBGRAPH_DEPLOY_KEY"
+const build = async (network) => {
+  console.log(`Building subgraph for ${network}`)
+  executeCommand(`yarn graph build --network ${network}`)
+}
+
+const deploy = async (network, graphLabel) => {
+  if (!process.env.SUBGRAPH_DEPLOY_KEY) {
+    throw new Error(
+      'Missing --access-token from https://thegraph.com/hosted-service/dashboard?account=unlock-protocol'
+    )
+  }
+
+  if (!network) {
+    throw new Error('Missing network name')
+  }
+
+  const graphNode = 'https://api.thegraph.com/deploy/'
+  const ipfs = 'https://api.thegraph.com/ipfs/'
+  const subgraphName = `unlock-protocol/${network}-v2`
+  console.log(`Deploying subgraph ${subgraphName}`)
+
+  const label = graphLabel ? `--version-label ${graphLabel}` : ''
+  const cmd = `yarn graph deploy --product hosted-service --access-token ${process.env.SUBGRAPH_DEPLOY_KEY} --node ${graphNode} --ipfs ${ipfs} ${label} ${subgraphName}`
+  executeCommand(cmd)
+}
+
+const choices = Object.keys(networks).filter(
+  (d) => !['networks', 'default', 'localhost'].includes(d)
+)
+
+const argv = require('yargs/yargs')(hideBin(process.argv))
+  .command(
+    'codegen',
+    'Deploy subgraph on all networks',
+    {},
+    async () => await codegen()
+  )
+  .command(
+    'build <network>',
+    'build with thegraph hosted service',
+    (yargs) =>
+      yargs.positional('network', {
+        describe: 'the network to deploy',
+        choices,
+      }),
+    async ({ network }) => {
+      await codegen()
+      await build(network)
+    }
+  )
+  .command(
+    'deploy <network>',
+    'deploy subgraph to thegraph hosted service',
+    (yargs) =>
+      yargs.positional('network', {
+        describe: 'the network to deploy',
+        choices,
+      }),
+    async ({ network, label }) => {
+      await codegen()
+      await build(network)
+      await deploy(network, label)
+    }
+  )
+  .command(
+    'deploy-all',
+    'Deploy subgraph on all networks',
+    {},
+    async ({ label }) => {
+      // generate code
+      await codegen()
+
+      // build and deploy each network
+      await Promise.all(
+        choices.map(async (network) => {
+          await build(network)
+          await deploy(network, label)
+        })
+      )
+      console.log('Subgraph deployments done.')
+    }
+  )
+  .demandCommand()
+  .options({
+    label: {
+      type: 'string',
+      description: 'The version label to use for deployment',
+    },
+  })
+  .parse()
