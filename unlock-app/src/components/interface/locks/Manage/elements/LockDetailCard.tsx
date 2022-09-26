@@ -12,7 +12,8 @@ import { useConfig } from '~/utils/withConfig'
 import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
-import { EditPriceAndQuantity } from './EditPriceAndQuantity'
+import { UpdatePriceModal } from './UpdatePriceModal'
+import { UpdateQuantityModal } from './UpdateQuantityModal'
 
 interface LockDetailCardProps {
   network: number
@@ -176,8 +177,9 @@ export const LockDetailCard = ({
             loading={loading}
           />
         </div>
-        <div className="mt-2">
-          <EditPriceAndQuantity lockAddress={lockAddress} network={network} />
+        <div className="flex flex-col gap-3 mt-2">
+          <UpdatePriceModal lockAddress={lockAddress} network={network} />
+          <UpdateQuantityModal lockAddress={lockAddress} network={network} />
         </div>
       </div>
     </div>
