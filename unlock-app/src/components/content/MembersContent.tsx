@@ -8,7 +8,6 @@ import { pageTitle } from '../../constants'
 import { MemberFilter } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
 import LoginPrompt from '../interface/LoginPrompt'
-import GrantKeysDrawer from '../creator/members/GrantKeysDrawer'
 import { Input, Button } from '@unlock-protocol/ui'
 import useDebounce from '../../hooks/useDebouce'
 import 'cross-fetch/polyfill'
@@ -17,6 +16,7 @@ import { Lock } from '@unlock-protocol/types'
 import { getAddressForName } from '~/hooks/useEns'
 import { useQuery } from 'react-query'
 import { useKeys } from '~/hooks/useKeys'
+import { AirdropKeysDrawer } from '../interface/members/airdrop/AirdropDrawer'
 
 interface PaginationProps {
   currentPage: number
@@ -93,10 +93,13 @@ export const MembersContent = ({ query }: MembersContentProps) => {
         <title>{pageTitle('Members')}</title>
       </Head>
 
-      <GrantKeysDrawer
+      <AirdropKeysDrawer
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        lockAddresses={lockAddresses}
+        lock={{
+          address: lockAddresses[0],
+          network: 5,
+        }}
       />
 
       <BrowserOnly>

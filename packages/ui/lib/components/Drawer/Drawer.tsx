@@ -8,12 +8,19 @@ interface DrawerProps {
   setIsOpen: (isOpen: boolean) => void
   children: React.ReactNode
   title: string
+  description: string
 }
 
 /**
  * A side drawer component
  */
-export const Drawer = ({ isOpen, setIsOpen, children, title }: DrawerProps) => {
+export const Drawer = ({
+  isOpen,
+  setIsOpen,
+  children,
+  title,
+  description,
+}: DrawerProps) => {
   const easeOutTransaction = {
     as: React.Fragment,
     enter: 'ease-in-out duration-300',
@@ -27,14 +34,14 @@ export const Drawer = ({ isOpen, setIsOpen, children, title }: DrawerProps) => {
     <Transition.Root show={isOpen} as={React.Fragment}>
       <Dialog
         as="div"
-        className="fixed inset-0 overflow-hidden"
+        className="fixed inset-0 overflow-y-auto"
         onClose={setIsOpen}
       >
-        <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 overflow-y-auto">
           <Transition.Child {...easeOutTransaction}>
-            <Dialog.Overlay className="absolute inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
+            <Dialog.Overlay className="absolute inset-0 transition-opacity bg-opacity-50 bg-zinc-500 backdrop-blur" />
           </Transition.Child>
-          <div className="fixed inset-y-0 right-0 flex max-w-full pl-10">
+          <div className="fixed inset-y-0 right-0 max-w-full">
             <Transition.Child
               as={React.Fragment}
               enter="transform transition ease-in-out duration-300 sm:duration-500"
@@ -44,30 +51,24 @@ export const Drawer = ({ isOpen, setIsOpen, children, title }: DrawerProps) => {
               leaveFrom="translate-x-0"
               leaveTo="translate-x-full"
             >
-              <div className="relative w-screen max-w-md">
+              <div className="relative w-full h-screen p-6 overflow-y-auto sm:max-w-lg bg-ui-secondary-100">
                 <Transition.Child {...easeOutTransaction}>
-                  <div className="absolute top-0 right-0 w-12 h-12 p-4">
-                    <IconButton
-                      icon={<CloseIcon />}
-                      label="close"
-                      size="small"
-                      onClick={() => setIsOpen(false)}
-                    />
-                  </div>
+                  <IconButton
+                    icon={<CloseIcon className="fill-inherit" size={20} />}
+                    label="close"
+                    size="tiny"
+                    onClick={() => setIsOpen(false)}
+                  />
                 </Transition.Child>
-                <div className="flex flex-col h-full py-6 overflow-y-scroll bg-white shadow-xl">
-                  <div className="px-4 sm:px-6">
-                    {title && (
-                      <Dialog.Title className="text-lg font-medium text-gray-900">
-                        {title}
-                      </Dialog.Title>
-                    )}
-                  </div>
-
-                  <div className="relative flex-1 px-4 mt-2 sm:px-6">
-                    {children}
-                  </div>
+                <div className="mt-4 space-y-2">
+                  <Dialog.Title className="text-xl font-medium text-gray-800">
+                    {title}
+                  </Dialog.Title>
+                  <Dialog.Description className="text-base text-gray-800">
+                    {description}
+                  </Dialog.Description>
                 </div>
+                <div className="relative flex-1">{children}</div>
               </div>
             </Transition.Child>
           </div>
