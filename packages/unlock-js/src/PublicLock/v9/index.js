@@ -25,6 +25,7 @@ const {
   getKeyExpirationByLockForOwner,
   approveBeneficiary,
   totalKeys,
+  updateKeypricing,
 } = v8
 
 export default {
@@ -53,4 +54,5 @@ export default {
   getKeyExpirationByLockForOwner,
   approveBeneficiary,
   totalKeys,
+  updateKeypricing,
 }

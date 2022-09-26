@@ -629,4 +629,30 @@ export default class WalletService extends UnlockService {
 
     return version.getCancelAndRefundValueFor.bind(this)(params, callback)
   }
+
+  async updateKeypricing(
+    params: {
+      lockAddress: string
+      keyPrice: string
+      tokenAddress: string | number
+    },
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) {
+      throw new Error('Missing lockAddress')
+    }
+    if (!params.keyPrice) {
+      throw new Error('Missing keyPrice')
+    }
+    if (!params.tokenAddress) {
+      throw new Error('Missing tokenAddress')
+    }
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+
+    if (!version.updateKeypricing) {
+      throw new Error('Lock version not supported')
+    }
+
+    return version.updateKeypricing.bind(this)(params, callback)
+  }
 }

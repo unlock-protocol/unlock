@@ -1,5 +1,9 @@
 # Changes
 
+# 0.26.11
+
+- add support for `updateKeypricing`
+
 # 0.26.10
 
 - add `keyPrice` parameter for `updateKeyPrice` and fix type definitions
