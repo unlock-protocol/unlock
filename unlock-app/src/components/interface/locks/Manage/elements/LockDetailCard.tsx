@@ -101,11 +101,20 @@ const LockInfoCard = ({
       <span className="text-4xl font-bold text-black">{name}</span>
       <div className="flex items-center gap-3">
         <span className="text-base">{addressMinify(lockAddress)}</span>
-        <Button variant="transparent" className="p-0 m-0" onClick={setCopied}>
+        <Button
+          variant="transparent"
+          className="p-0 m-0"
+          onClick={setCopied}
+          aria-label="copy"
+        >
           <CopyIcon size={20} />
         </Button>
         <a href={explorerUrl} target="_blank" rel="noreferrer">
-          <Button variant="transparent" className="p-0 m-0">
+          <Button
+            variant="transparent"
+            className="p-0 m-0"
+            aria-label="external link"
+          >
             <ExternalLinkIcon size={20} className="text-brand-ui-primary" />
           </Button>
         </a>
@@ -163,14 +172,9 @@ export const LockDetailCard = ({
 
   const EditButton = ({ onClick }: EditButtonProps) => {
     return (
-      <Button
-        variant="outlined-primary"
-        size="tiny"
-        className="p-1"
-        onClick={onClick}
-      >
+      <button className="p-1" onClick={onClick} aria-label="edit">
         <EditIcon size={16} />
-      </Button>
+      </button>
     )
   }
 
