@@ -15,6 +15,9 @@ import Link from 'next/link'
 import { Lock } from '~/unlockTypes'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
 import Duration from '~/components/helpers/Duration'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useQuery } from 'react-query'
+import { CryptoIcon } from '../../elements/KeyPrice'
 
 interface LockCardProps {
   lock: Lock
@@ -84,6 +87,7 @@ const LockCardPlaceholder = () => {
 }
 
 export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
+  const web3Service = useWeb3Service()
   const { networks } = useConfig()
   const lockAddress = lock.address
   const [isCopied, setCopied] = useClipboard(lockAddress, {
@@ -99,6 +103,14 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
     ToastHelper.success(`Lock address copied`)
   }, [isCopied])
 
+  const getSymbol = async () => {
+    return web3Service.getTokenSymbol(lockAddress, network)
+  }
+
+  const { data: symbol } = useQuery(
+    ['getSymbol', lockAddress, network],
+    async () => getSymbol()
+  )
   const lockUrl = `/locks/lock?address=${lockAddress}&network=${network}`
 
   if (isLoading) return <LockCardPlaceholder />
@@ -139,7 +151,12 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
             </div>
           </div>
           <div className="flex col-span-3 gap-14">
-            <Detail label="Price" value={lock.keyPrice} icon={TagIcon} />
+            <Detail
+              label="Price"
+              value={lock.keyPrice}
+              icon={TagIcon}
+              prepend={<CryptoIcon symbol={symbol} size={20} />}
+            />
             <Detail
               label="Key Duration"
               value={duration.toString()}
