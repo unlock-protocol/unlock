@@ -7,7 +7,9 @@ import {
 } from '@apollo/client'
 import { HttpLink } from 'apollo-link-http'
 
-const subgraphURI = 'http://127.0.0.1:8000/subgraphs/name/testgraph'
+const subgraphURI = `http://${
+  process.env.CI ? 'graph-node' : '127.0.0.1'
+}:8000/subgraphs/name/testgraph`
 
 const link = new HttpLink({
   uri: subgraphURI,
