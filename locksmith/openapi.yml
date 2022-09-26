@@ -932,6 +932,49 @@ paths:
         500:
           $ref: '#/components/responses/500.InternalError'
 
+  /v2/api/metadata/{network}/locks/{lockAddress}/keys:
+    parameters:
+      - $ref: '#/components/parameters/Network'
+      - $ref: '#/components/parameters/LockAddress'
+    put:
+      security:
+        - User: ['lockManager']
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              nullable: false
+              properties:
+                keys:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      keyId:
+                        type: string
+                      owner:
+                        type: object
+                        additionalProperties: true
+      responses:
+        200:
+          description: Keys metadata.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
   /v2/api/network}/locks/{lockAddress}/keys:
     get:
       security:
