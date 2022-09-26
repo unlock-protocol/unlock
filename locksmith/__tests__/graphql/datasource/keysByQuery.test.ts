@@ -2,7 +2,7 @@ import { keysByQuery } from '../../../src/graphql/datasource/keysByQuery'
 
 const network = 4
 const lockAddress = '0x62ccb13a72e6f991de53b9b7ac42885151588cd2'
-describe('keysByQuery', () => {
+describe.skip('keysByQuery', () => {
   it('test function', async () => {
     expect.assertions(2)
     const graphQLClient = new keysByQuery(network)
