@@ -1,5 +1,9 @@
 # Changes
 
+# 0.26.10
+
+- add `keyPrice` parameter for `updateKeyPrice` and fix type definitions
+
 # 0.26.9
 
 - add support for `totalSupply`

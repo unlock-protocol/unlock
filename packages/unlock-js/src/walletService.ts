@@ -85,7 +85,7 @@ export default class WalletService extends UnlockService {
    * @return Promise<PropTypes.number> newKeyPrice
    */
   async updateKeyPrice(
-    params: { lockAddress: string },
+    params: { lockAddress: string; keyPrice: string },
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -556,7 +556,7 @@ export default class WalletService extends UnlockService {
   async setMaxNumberOfKeys(
     params: {
       lockAddress: string
-      maxNumbeOfKeys: string
+      maxNumberOfKeys: string
     },
     callback?: WalletServiceCallback
   ) {
@@ -586,7 +586,7 @@ export default class WalletService extends UnlockService {
   async setExpirationDuration(
     params: {
       lockAddress: string
-      expirationDuration: number
+      expirationDuration: number | string
     },
     callback?: WalletServiceCallback
   ) {
