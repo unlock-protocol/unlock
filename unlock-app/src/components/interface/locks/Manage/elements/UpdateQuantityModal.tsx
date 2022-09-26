@@ -68,7 +68,7 @@ export const UpdateQuantityModal = ({
     reset()
   }, [isOpen, reset])
 
-  const updateMaxNumberOfKeys = async (): Promise<any> => {
+  const updateQuantity = async (): Promise<any> => {
     const { unlimitedQuantity, maxNumberOfKeys } = getValues()
 
     const numbersOfKeys = unlimitedQuantity
@@ -81,11 +81,11 @@ export const UpdateQuantityModal = ({
     } as any)
   }
 
-  const updateMaxNumberOfKeysMutation = useMutation(updateMaxNumberOfKeys)
+  const updateQuantityMutation = useMutation(updateQuantity)
 
   const onHandleSubmit = async () => {
     if (isValid) {
-      await ToastHelper.promise(updateMaxNumberOfKeysMutation.mutateAsync(), {
+      await ToastHelper.promise(updateQuantityMutation.mutateAsync(), {
         loading: 'Updating quantity...',
         success: 'Quantity updated',
         error: 'There is some unexpected issue, please try again',
@@ -176,7 +176,9 @@ export const UpdateQuantityModal = ({
             )}
           </div>
 
-          <Button type="submit">Update</Button>
+          <Button type="submit" disabled={updateQuantityMutation.isLoading}>
+            Update
+          </Button>
         </form>
       </Modal>
     </>

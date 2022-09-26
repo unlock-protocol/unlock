@@ -179,7 +179,9 @@ export const UpdateDurationModal = ({
             )}
           </div>
 
-          <Button type="submit">Update</Button>
+          <Button type="submit" disabled={updateDurationMutation.isLoading}>
+            Update
+          </Button>
         </form>
       </Modal>
     </>

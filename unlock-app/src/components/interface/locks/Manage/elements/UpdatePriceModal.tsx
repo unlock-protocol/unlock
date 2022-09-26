@@ -1,4 +1,4 @@
-import { Modal, Input } from '@unlock-protocol/ui'
+import { Modal, Input, Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Token } from '@unlock-protocol/types'
@@ -169,6 +169,10 @@ export const UpdatePriceModal = ({
               </span>
             )}
           </div>
+
+          <Button type="submit" disabled={updatePriceMutation.isLoading}>
+            Update
+          </Button>
         </form>
       </Modal>
     </>
