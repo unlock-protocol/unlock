@@ -12,6 +12,23 @@ We recently launched support for [crypto based NFT subscriptions](./recurring-su
 
 Today, we are extending the same support to fiat payment options we provide (including Credit card, [Apple and Google Pay](/blog/support-for-google-and-apple-pay)). Creators can now add `recurringPayments: number` to the `paywallConfig` when building their checkout URL in order to charge their users on a regular frequency.
 
+Here is an example of paywallConfig.
+
+```json
+{
+  "title": "Recurring membership demo",
+  "locks": {
+    "0xf1e4861bbe6aa736084ff829507145a85f4958fc": {
+      "name": "Recurring",
+      "network": 5,
+      "recurringPayments": 12
+    }
+  }
+}
+```
+
+Learn more about how to build and configure the url on the [docs site](https://docs.unlock-protocol.com/tools/checkout/configuration/#building-your-url)
+
 ## How does it work?
 
 Unlock's approach to recurring fiat payment has two distinct elements:
@@ -34,3 +51,9 @@ An example of a lock with 5 minute renewal time below getting extended every 5 m
 - Community & Support: [Join the Unlock Discord](https://discord.com/invite/Ah6ZEJyTDp)
 
 - Developer documentation: [Recurring Memberships](https://docs.unlock-protocol.com/unlock/creators/recurring-memberships)
+
+### Further resources
+
+- Interview: [NFTs for Memberships: The Future of Business](https://www.socialmediaexaminer.com/using-nfts-for-memberships-the-future-of-business/)
+
+- Videos: [NFT Membership videos](https://www.youtube.com/channel/UCFpwtvsk_naOwR_w-vKXw-Q)
