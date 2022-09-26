@@ -195,7 +195,7 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
             onClick={onGrantKeyRole}
             disabled={grantKeyGrantorRoleMutation.isLoading}
           >
-            Accept
+            Grant role
           </Button>
         )}
         <Button
