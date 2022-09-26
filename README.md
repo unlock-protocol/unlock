@@ -44,6 +44,12 @@ yarn
 # install all dependencies (...may take a while)
 ```
 
+Build all packages:
+
+```
+yarn build
+```
+
 To execute commands inside the repo, we use the pattern `yarn workspace <workspace name> <command>`
 
 ```
