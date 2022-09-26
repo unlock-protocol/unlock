@@ -8,14 +8,13 @@ export type KeyFilter = 'all' | 'active' | 'expired' | 'keyId'
 const keyholdersByKeyIdQuery = gql`
   query Lock(
     $addresses: [String!]
-    $expireTimestamp: BigInt! = 0
     $first: Int! = 100
     $skip: Int! = 0
     $keyId: BigInt
   ) {
     locks(where: { address_in: $addresses }) {
       keys(
-        where: { expiration_gt: $expireTimestamp, keyId: $keyId }
+        where: { expiration_gt: 0, keyId: $keyId }
         first: $first
         skip: $skip
         orderBy: keyId
