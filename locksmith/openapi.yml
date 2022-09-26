@@ -120,6 +120,37 @@ components:
           type: string
           nullable: false
 
+    UserMetadataInput:
+      type: object
+      nullable: false
+      properties:
+        public:
+          type: object
+          nullable: true
+          default: {}
+          additionalProperties: true
+
+        protected:
+          type: object
+          nullable: true
+          default: {}
+          additionalProperties: true
+
+    UserMetadata:
+      type: object
+      nullable: false
+      properties:
+        lockAddress:
+          type: string
+          nullable: false
+
+        userAddress:
+          type: string
+          nullable: false
+
+        metadata:
+          $ref: '#/components/schemas/UserMetadataInput'
+
     NotAuthenticated:
       type: object
       nullable: false
@@ -174,15 +205,23 @@ components:
       in: path
       name: network
       required: true
+      description: Network id.
       schema:
         type: integer
-      description: Network Id.
 
     LockAddress:
       in: path
       name: lockAddress
       required: true
       description: Lock address.
+      schema:
+        type: string
+
+    UserAddress:
+      in: path
+      name: userAddress
+      required: true
+      description: User address.
       schema:
         type: string
 
@@ -677,6 +716,215 @@ paths:
                 nullable: true
         403:
           $ref: '#/components/responses/403.NotAuthenticatedOrAuthorized'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/metadata/{network}/locks/{lockAddress}:
+    parameters:
+      - $ref: '#/components/parameters/Network'
+      - $ref: '#/components/parameters/LockAddress'
+    get:
+      description: Get metadata for lock address.
+      responses:
+        200:
+          description: JSON metadata containing name, description, and custom properties for lock.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                additionalProperties: true
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+    put:
+      security:
+        - User: ['lockManager']
+      description: Update or create metadata for lock address.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: JSON metadata inside metadata field will be saved.
+              type: object
+              nullable: false
+              properties:
+                metadata:
+                  type: object
+                  additionalProperties: true
+      responses:
+        201:
+          description: JSON metadata containing name, description, and custom properties for lock address.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                additionalProperties: true
+
+        204:
+          description: JSON metadata containing name, description, and custom properties for lock address.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                additionalProperties: true
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/metadata/{network}/locks/{lockAddress}/keys/{keyId}:
+    get:
+      security:
+        - User: []
+        - {}
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/KeyId'
+      description: Get key and user metadata.
+      responses:
+        200:
+          description: JSON metadata containing name, description, custom properties and user metadata if authenticated for a key.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                properties:
+                  keyId:
+                    type: string
+                    nullable: false
+                  lockAddress:
+                    type: string
+                    nullable: false
+                  network:
+                    type: integer
+                    nullable: false
+                additionalProperties: true
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/metadata/{network}/locks/{lockAddress}/users/{userAddress}:
+    parameters:
+      - $ref: '#/components/parameters/Network'
+      - $ref: '#/components/parameters/LockAddress'
+      - $ref: '#/components/parameters/UserAddress'
+
+    post:
+      description: Store user metadata for lock.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserMetadataInput'
+
+      responses:
+        201:
+          description: Return user metadata saved.
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                additionalProperties: true
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        409:
+          $ref: '#/components/responses/409.Conflict'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+    put:
+      security:
+        - User: ['user', 'lockManager']
+
+      description: Update user metadata for lock.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserMetadataInput'
+
+      responses:
+        204:
+          description: Return user metadata saved.
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                additionalProperties: true
+
+        400:
+          $ref: '#/components/responses/400.Invalid'
+
+        401:
+          $ref: '#/components/responses/401.NotAuthenticated'
+
+        404:
+          $ref: '#/components/responses/404.NotFound'
+
+        409:
+          $ref: '#/components/responses/409.Conflict'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/api/metadata/{network}/users:
+    parameters:
+      - $ref: '#/components/parameters/Network'
+    post:
+      security:
+        - User: []
+        - {}
+      description: Bulk endpoint for storing user metadata.
+      requestBody:
+        description: users array containing user metadata.
+        content:
+          application/json:
+            schema:
+              type: object
+              nullable: false
+              properties:
+                users:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/UserMetadata'
+
+      responses:
+        201:
+          description: Array containing user metadata which was created. If the user already has metadata, it will not be updated and present in the array.
+          content:
+            application/json:
+              schema:
+                type: object
+                nullable: false
+                properties:
+                  result:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserMetadata'
+        400:
+          $ref: '#/components/responses/400.Invalid'
 
         404:
           $ref: '#/components/responses/404.NotFound'
