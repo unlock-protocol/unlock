@@ -1,7 +1,6 @@
 import { Modal, Input, Button, Icon } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
-import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 import { useMutation } from 'react-query'
@@ -20,6 +19,8 @@ interface EditFormProps {
 interface UpdateDurationModalProps {
   lockAddress: string
   onUpdate?: () => void
+  isOpen: boolean
+  setIsOpen: (open: boolean) => void
 }
 
 const Radio = ({ checked }: { checked: boolean }) => {
@@ -41,9 +42,10 @@ const Radio = ({ checked }: { checked: boolean }) => {
 export const UpdateDurationModal = ({
   lockAddress,
   onUpdate,
+  isOpen,
+  setIsOpen,
 }: UpdateDurationModalProps) => {
   const walletService = useWalletService()
-  const [isOpen, setIsOpen] = useState(false)
 
   const {
     register,
@@ -84,7 +86,7 @@ export const UpdateDurationModal = ({
   const onHandleSubmit = async () => {
     if (isValid) {
       await ToastHelper.promise(updateDurationMutation.mutateAsync(), {
-        loading: 'Updating...',
+        loading: 'Updating duration...',
         success: 'Duration updated',
         error: 'There is some unexpected issue, please try again',
       })
@@ -180,14 +182,6 @@ export const UpdateDurationModal = ({
           <Button type="submit">Update</Button>
         </form>
       </Modal>
-      <Button
-        variant="outlined-primary"
-        size="tiny"
-        className="p-1"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <EditIcon size={16} />
-      </Button>
     </>
   )
 }

@@ -1,8 +1,8 @@
-import { Modal, Input, Button } from '@unlock-protocol/ui'
+import { Modal, Input } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Token } from '@unlock-protocol/types'
-import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
+
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 import { CryptoIcon } from '../../elements/KeyPrice'
@@ -22,17 +22,20 @@ interface UpdatePriceModalProps {
   lockAddress: string
   network: number
   onUpdate?: () => void
+  isOpen: boolean
+  setIsOpen: (open: boolean) => void
 }
 
 export const UpdatePriceModal = ({
   lockAddress,
   network,
   onUpdate,
+  isOpen,
+  setIsOpen,
 }: UpdatePriceModalProps) => {
   const { networks } = useConfig()
   const walletService = useWalletService()
   const web3Service = useWeb3Service()
-  const [isOpen, setIsOpen] = useState(false)
   const [changeCurrencyOpen, setChangeCurrencyModal] = useState(false)
   const [selectedToken, setSelectedToken] = useState<Token | null>(null)
   const { baseCurrencySymbol } = networks[network!] ?? {}
@@ -80,7 +83,7 @@ export const UpdatePriceModal = ({
   const onHandleSubmit = async () => {
     if (isValid) {
       await ToastHelper.promise(updatePriceMutation.mutateAsync(), {
-        loading: 'Updating...',
+        loading: 'Updating price...',
         success: 'Price updated',
         error: 'There is some unexpected issue, please try again',
       })
@@ -166,18 +169,8 @@ export const UpdatePriceModal = ({
               </span>
             )}
           </div>
-
-          <Button type="submit">Update</Button>
         </form>
       </Modal>
-      <Button
-        variant="outlined-primary"
-        size="tiny"
-        className="p-1"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <EditIcon size={16} />
-      </Button>
     </>
   )
 }

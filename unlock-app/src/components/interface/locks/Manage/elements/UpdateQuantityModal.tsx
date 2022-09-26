@@ -1,12 +1,11 @@
 import { RadioGroup } from '@headlessui/react'
 import { Modal, Input, Button, Icon } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import {
   MdRadioButtonUnchecked as UncheckedIcon,
   MdRadioButtonChecked as CheckedIcon,
 } from 'react-icons/md'
-import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 import { UNLIMITED_KEYS_COUNT } from '~/constants'
@@ -36,14 +35,17 @@ interface EditFormProps {
 interface EditQuantityProps {
   lockAddress: string
   onUpdate?: () => void
+  isOpen: boolean
+  setIsOpen: (open: boolean) => void
 }
 
 export const UpdateQuantityModal = ({
   lockAddress,
   onUpdate,
+  isOpen,
+  setIsOpen,
 }: EditQuantityProps) => {
   const walletService = useWalletService()
-  const [isOpen, setIsOpen] = useState(false)
 
   const {
     register,
@@ -84,7 +86,7 @@ export const UpdateQuantityModal = ({
   const onHandleSubmit = async () => {
     if (isValid) {
       await ToastHelper.promise(updateMaxNumberOfKeysMutation.mutateAsync(), {
-        loading: 'Updating...',
+        loading: 'Updating quantity...',
         success: 'Quantity updated',
         error: 'There is some unexpected issue, please try again',
       })
@@ -177,14 +179,6 @@ export const UpdateQuantityModal = ({
           <Button type="submit">Update</Button>
         </form>
       </Modal>
-      <Button
-        variant="outlined-primary"
-        size="tiny"
-        className="p-1"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <EditIcon size={16} />
-      </Button>
     </>
   )
 }

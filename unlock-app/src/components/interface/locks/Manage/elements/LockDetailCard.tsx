@@ -15,6 +15,7 @@ import { CryptoIcon } from '../../elements/KeyPrice'
 import { UpdatePriceModal } from './UpdatePriceModal'
 import { UpdateQuantityModal } from './UpdateQuantityModal'
 import { UpdateDurationModal } from './UpdateDurationModal'
+import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 
 interface LockDetailCardProps {
   network: number
@@ -35,6 +36,11 @@ interface LockInfoCardProps {
   network: number
   loading?: boolean
 }
+
+interface EditButtonProps {
+  onClick: () => void
+}
+
 const LockInfoCardPlaceholder = () => {
   return (
     <div className="flex flex-col gap-2">
@@ -112,7 +118,10 @@ export const LockDetailCard = ({
   lockAddress,
   network,
 }: LockDetailCardProps) => {
-  const [isUpdated, setIsUpdated] = useState(false)
+  const [update, setUpdate] = useState(0)
+  const [editQuantity, setEditQuantity] = useState(false)
+  const [editDuration, setEditDuration] = useState(false)
+  const [editPrice, setEditPrice] = useState(false)
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
 
@@ -129,11 +138,11 @@ export const LockDetailCard = ({
     { isLoading: isLoadingSymbol, data: symbol },
   ] = useQueries([
     {
-      queryKey: ['getLock', lockAddress, network, isUpdated],
+      queryKey: ['getLock', lockAddress, network, update],
       queryFn: getLock,
     },
     {
-      queryKey: ['getTokenSymbol', lockAddress, network, isUpdated],
+      queryKey: ['getTokenSymbol', lockAddress, network, update],
       queryFn: getTokenSymbol,
     },
   ])
@@ -152,54 +161,84 @@ export const LockDetailCard = ({
 
   const loading = isLoading || isLoadingSymbol
 
+  const EditButton = ({ onClick }: EditButtonProps) => {
+    return (
+      <Button
+        variant="outlined-primary"
+        size="tiny"
+        className="p-1"
+        onClick={onClick}
+      >
+        <EditIcon size={16} />
+      </Button>
+    )
+  }
+
+  const onUpdate = () => {
+    setUpdate(update + 1)
+  }
+
   return (
-    <div className="flex flex-col">
-      <div className="flex flex-col gap-2">
-        <LockIcon
-          lockAddress={lockAddress}
-          network={network}
-          loading={loading}
-        />
-        <LockInfoCard
-          lockAddress={lockAddress}
-          network={network}
-          name={lock?.name}
-          loading={loading}
-        />
-        <div className="flex flex-col mt-14">
-          <Detail label="Network" value={networkName} loading={loading} />
-          <Detail
-            label="Key Duration"
-            value={duration}
+    <>
+      <UpdateDurationModal
+        lockAddress={lockAddress}
+        isOpen={editDuration}
+        setIsOpen={setEditDuration}
+        onUpdate={onUpdate}
+      />
+
+      <UpdatePriceModal
+        lockAddress={lockAddress}
+        network={network}
+        onUpdate={onUpdate}
+        isOpen={editPrice}
+        setIsOpen={setEditPrice}
+      />
+
+      <UpdateQuantityModal
+        lockAddress={lockAddress}
+        onUpdate={onUpdate}
+        isOpen={editQuantity}
+        setIsOpen={setEditQuantity}
+      />
+
+      <div className="flex flex-col">
+        <div className="flex flex-col gap-2">
+          <LockIcon
+            lockAddress={lockAddress}
+            network={network}
             loading={loading}
-            append={<UpdateDurationModal lockAddress={lockAddress} />}
           />
-          <Detail
-            label="Key Quantity"
-            value={numbersOfKeys}
+          <LockInfoCard
+            lockAddress={lockAddress}
+            network={network}
+            name={lock?.name}
             loading={loading}
-            append={
-              <UpdateQuantityModal
-                lockAddress={lockAddress}
-                onUpdate={() => setIsUpdated(true)}
-              />
-            }
           />
-          <Detail
-            label="Price"
-            value={keyPrice}
-            prepend={<CryptoIcon symbol={symbol} size={22} />}
-            loading={loading}
-            append={
-              <UpdatePriceModal
-                lockAddress={lockAddress}
-                network={network}
-                onUpdate={() => setIsUpdated(true)}
-              />
-            }
-          />
+          <div className="flex flex-col mt-14">
+            <Detail label="Network" value={networkName} loading={loading} />
+            <Detail
+              label="Key Duration"
+              value={duration}
+              loading={loading}
+              append={<EditButton onClick={() => setEditDuration(true)} />}
+            />
+            <Detail
+              label="Key Quantity"
+              value={numbersOfKeys}
+              loading={loading}
+              append={<EditButton onClick={() => setEditQuantity(true)} />}
+            />
+            <Detail
+              label="Price"
+              value={keyPrice}
+              prepend={<CryptoIcon symbol={symbol} size={22} />}
+              loading={loading}
+              append={<EditButton onClick={() => setEditPrice(true)} />}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
