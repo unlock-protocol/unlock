@@ -9,17 +9,17 @@
     "prepare:abis": "node -e 'require(\"./bin/abis.js\").parseAndCopyAbis()'",
     "show-events": "node -e 'require(\"./bin/abis.js\").showAllEvents()'",
     "codegen": "graph codegen",
-    "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ ",
+    "build": "node bin/thegraph build",
+    "deploy": "node bin/thegraph deploy",
     "create-local": "graph create --node http://localhost:8020/ ",
     "remove-local": "graph remove --node http://localhost:8020/ ",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
     "test": "graph test",
-    "ci": "echo \"Not implemented yet. Coming soon...\" && exit 0",
+    "ci": "yarn codegen && yarn test -l",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/ bin/"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.33.0",
+    "@graphprotocol/graph-cli": "0.33.1",
     "@graphprotocol/graph-ts": "0.27.0",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/networks": "workspace:^",
@@ -27,7 +27,7 @@
     "fs-extra": "10.0.1",
     "handlebars": "4.7.7",
     "lint-staged": "13.0.3",
-    "yargs": "17.3.1"
+    "yargs": "17.5.1"
   },
   "installConfig": {
     "hoistingLimits": "workspaces"

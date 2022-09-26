@@ -8147,9 +8147,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:0.33.0":
-  version: 0.33.0
-  resolution: "@graphprotocol/graph-cli@npm:0.33.0"
+"@graphprotocol/graph-cli@npm:0.33.1":
+  version: 0.33.1
+  resolution: "@graphprotocol/graph-cli@npm:0.33.1"
   dependencies:
     assemblyscript: 0.19.10
     binary-install-raw: 0.0.13
@@ -8178,7 +8178,7 @@ __metadata:
     yaml: 1.9.2
   bin:
     graph: bin/graph
-  checksum: adf4a2da0e420d76e1eb3ae45ecff11369c18d6e8f318cde2eb43939dd391ff856056c012c3ca2abd69351a59077dc3259ec1f83d01941128b07341a60a6a908
+  checksum: ad792da686a4a1c626be192e9d411122a5374491b00bc99192d22ab8dfaf10276467aabf779d6569a02fb8e50bc5a9090de132bf8f353bd4693e72250aa0f882
   languageName: node
   linkType: hard
 
@@ -16960,6 +16960,8 @@ __metadata:
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
     "@primitivefi/hardhat-dodoc": 0.2.3
+    "@unlock-protocol/contracts": ^0.0.9
+    "@unlock-protocol/hardhat-helpers": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
     chai: 4.3.4
@@ -16970,6 +16972,13 @@ __metadata:
     typescript: 4.7.4
   languageName: unknown
   linkType: soft
+
+"@unlock-protocol/contracts@npm:^0.0.9":
+  version: 0.0.9
+  resolution: "@unlock-protocol/contracts@npm:0.0.9"
+  checksum: 65af9dc747448b1f9ca3b6d5e6c9e04c0a68558d04b142bee3991f7a34a3cf18d20b8bb677c35ac803ac87910aa5561e8d97bbea43413d5cc500fdfaf49c1706
+  languageName: node
+  linkType: hard
 
 "@unlock-protocol/eslint-config@workspace:./packages/eslint-config, @unlock-protocol/eslint-config@workspace:^, @unlock-protocol/eslint-config@workspace:packages/eslint-config":
   version: 0.0.0-use.local
@@ -16985,6 +16994,17 @@ __metadata:
     eslint-plugin-prettier: 4.0.0
     jest: 27.5.1
     typescript: 4.6.4
+  languageName: unknown
+  linkType: soft
+
+"@unlock-protocol/hardhat-helpers@workspace:^, @unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers":
+  version: 0.0.0-use.local
+  resolution: "@unlock-protocol/hardhat-helpers@workspace:packages/hardhat-helpers"
+  dependencies:
+    "@unlock-protocol/networks": "workspace:^"
+    "@unlock-protocol/tsconfig": "workspace:^"
+    "@unlock-protocol/types": "workspace:^"
+    hardhat: 2.10.1
   languageName: unknown
   linkType: soft
 
@@ -17253,6 +17273,7 @@ __metadata:
     "@uniswap/v2-periphery": 1.1.0-beta.0
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/hardhat-helpers": "workspace:^"
     "@unlock-protocol/networks": "workspace:./packages/networks"
     babel-eslint: 10.1.0
     babel-polyfill: 6.26.0
@@ -17289,7 +17310,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": 0.33.0
+    "@graphprotocol/graph-cli": 0.33.1
     "@graphprotocol/graph-ts": 0.27.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
@@ -17298,7 +17319,7 @@ __metadata:
     handlebars: 4.7.7
     lint-staged: 13.0.3
     matchstick-as: ^0.5.0
-    yargs: 17.3.1
+    yargs: 17.5.1
   languageName: unknown
   linkType: soft
 
@@ -17542,6 +17563,7 @@ __metadata:
     react-dom: 18.2.0
     react-scripts: 5.0.1
     styled-components: 5.3.5
+    tsup: 6.2.1
   peerDependencies:
     react: 17.0.2
   languageName: unknown
@@ -59597,21 +59619,6 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"yargs@npm:17.3.1, yargs@npm:^17.3.1":
-  version: 17.3.1
-  resolution: "yargs@npm:17.3.1"
-  dependencies:
-    cliui: ^7.0.2
-    escalade: ^3.1.1
-    get-caller-file: ^2.0.5
-    require-directory: ^2.1.1
-    string-width: ^4.2.3
-    y18n: ^5.0.5
-    yargs-parser: ^21.0.0
-  checksum: 64fc2e32c56739f1d14d2d24acd17a6944c3c8e3e3558f09fc1953ac112e868cc16013d282886b9d5be22187f8b9ed4f60741a6b1011f595ce2718805a656852
-  languageName: node
-  linkType: hard
-
 "yargs@npm:17.4.1":
   version: 17.4.1
   resolution: "yargs@npm:17.4.1"
@@ -59624,6 +59631,21 @@ typescript@^3.8.3:
     y18n: ^5.0.5
     yargs-parser: ^21.0.0
   checksum: e9012322870d7e4e912a6ae1f63b203e365f911c0cf158be92c36edefddfb3bd38ce17eb9ef0d18858a4777f047c50589ea22dacb44bd949169ba37dc6d34bee
+  languageName: node
+  linkType: hard
+
+"yargs@npm:17.5.1":
+  version: 17.5.1
+  resolution: "yargs@npm:17.5.1"
+  dependencies:
+    cliui: ^7.0.2
+    escalade: ^3.1.1
+    get-caller-file: ^2.0.5
+    require-directory: ^2.1.1
+    string-width: ^4.2.3
+    y18n: ^5.0.5
+    yargs-parser: ^21.0.0
+  checksum: 00d58a2c052937fa044834313f07910fd0a115dec5ee35919e857eeee3736b21a4eafa8264535800ba8bac312991ce785ecb8a51f4d2cc8c4676d865af1cfbde
   languageName: node
   linkType: hard
 
@@ -59663,6 +59685,21 @@ typescript@^3.8.3:
     y18n: ^4.0.0
     yargs-parser: ^15.0.1
   checksum: 684fcb1896e6c873c31c09c5c16445d6253dfe505aa879cff56d49425f5bca44f2ab8d7a1c949f3b932ae8654128425e89770e5e2f2c3d816e5816b9eb6efb6f
+  languageName: node
+  linkType: hard
+
+"yargs@npm:^17.3.1":
+  version: 17.3.1
+  resolution: "yargs@npm:17.3.1"
+  dependencies:
+    cliui: ^7.0.2
+    escalade: ^3.1.1
+    get-caller-file: ^2.0.5
+    require-directory: ^2.1.1
+    string-width: ^4.2.3
+    y18n: ^5.0.5
+    yargs-parser: ^21.0.0
+  checksum: 64fc2e32c56739f1d14d2d24acd17a6944c3c8e3e3558f09fc1953ac112e868cc16013d282886b9d5be22187f8b9ed4f60741a6b1011f595ce2718805a656852
   languageName: node
   linkType: hard
 

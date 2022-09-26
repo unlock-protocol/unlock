@@ -17,7 +17,8 @@ const supportedNetworks = {
     'https://quiet-maximum-lambo.celo-mainnet.quiknode.pro/31d4d6ed57349dd99a708d80ac17d5aff6583e4e/',
   '43114':
     'https://cool-soft-seed.avalanche-mainnet.quiknode.pro/e5f7a0185de88b77fe80a61dbd0b210fba01c634/',
-  '80001': 'https://matic-mumbai.chainstacklabs.com',
+  '80001':
+    'https://polygon-mumbai.g.alchemy.com/v2/17UXDgmBaQN_gbMd9l25cOMqAGZHR-1B',
 }
 
 /**
