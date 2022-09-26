@@ -10,7 +10,7 @@ image: /images/blog/unlock-fiat-subscription/main.png
 
 We recently launched support for [crypto based NFT subscriptions](./recurring-subscription-nft.md) which allowed people to pre-approve an amount in erc20 to be charged at a regular interval set in the membership contract.
 
-Today, we are extending the same support to fiat payment options we provide (including Credit card, [Apple and Google Pay](/blog/support-for-google-and-apple-pay)). Creators can now add `recurringPayments: number` to the `paywallConfig` when building their checkout URL in order to charge their users on a regular frequency.
+Today, we are extending the same support to fiat payment options we provide (including credit card, [Apple and Google Pay](/blog/support-for-google-and-apple-pay)). Creators can now add `recurringPayments: number` to the `paywallConfig` when building their checkout URL in order to charge their users on a regular frequency.
 
 Here is an example of paywallConfig.
 
