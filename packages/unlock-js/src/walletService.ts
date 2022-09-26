@@ -85,7 +85,7 @@ export default class WalletService extends UnlockService {
    * @return Promise<PropTypes.number> newKeyPrice
    */
   async updateKeyPrice(
-    params: { lockAddress: string },
+    params: { lockAddress: string; keyPrice: string },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
@@ -599,7 +599,7 @@ export default class WalletService extends UnlockService {
   async setMaxNumberOfKeys(
     params: {
       lockAddress: string
-      maxNumbeOfKeys: string
+      maxNumberOfKeys: string
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
@@ -639,7 +639,7 @@ export default class WalletService extends UnlockService {
   async setExpirationDuration(
     params: {
       lockAddress: string
-      expirationDuration: number
+      expirationDuration: number | string
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback

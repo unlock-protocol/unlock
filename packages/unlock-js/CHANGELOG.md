@@ -4,6 +4,10 @@
 
 - adding support for TransactionOptions when sending transactions. Also introducing the ability to use `runEstimate` to check if a transaction succeeds and how much gas it consumes
 
+# 0.26.10
+
+- add `keyPrice` parameter for `updateKeyPrice` and fix type definitions
+
 # 0.26.9
 
 - add support for `totalSupply`
