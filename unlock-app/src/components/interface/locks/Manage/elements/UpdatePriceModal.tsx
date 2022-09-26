@@ -21,11 +21,13 @@ interface EditFormProps {
 interface UpdatePriceModalProps {
   lockAddress: string
   network: number
+  onUpdate?: () => void
 }
 
 export const UpdatePriceModal = ({
   lockAddress,
   network,
+  onUpdate,
 }: UpdatePriceModalProps) => {
   const { networks } = useConfig()
   const walletService = useWalletService()
@@ -79,11 +81,14 @@ export const UpdatePriceModal = ({
     if (isValid) {
       await ToastHelper.promise(updatePriceMutation.mutateAsync(), {
         loading: 'Updating...',
-        success: 'Price and duration updated',
+        success: 'Price updated',
         error: 'There is some unexpected issue, please try again',
       })
       setIsOpen(false)
       reset()
+      if (typeof onUpdate === 'function') {
+        onUpdate()
+      }
     } else {
       ToastHelper.error('Form is not valid')
       setIsOpen(false)

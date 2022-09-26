@@ -35,9 +35,13 @@ interface EditFormProps {
 
 interface EditQuantityProps {
   lockAddress: string
+  onUpdate?: () => void
 }
 
-export const UpdateQuantityModal = ({ lockAddress }: EditQuantityProps) => {
+export const UpdateQuantityModal = ({
+  lockAddress,
+  onUpdate,
+}: EditQuantityProps) => {
   const walletService = useWalletService()
   const [isOpen, setIsOpen] = useState(false)
 
@@ -86,6 +90,9 @@ export const UpdateQuantityModal = ({ lockAddress }: EditQuantityProps) => {
       })
       setIsOpen(false)
       reset()
+      if (typeof onUpdate === 'function') {
+        onUpdate()
+      }
     } else {
       ToastHelper.error('Form is not valid')
       setIsOpen(false)

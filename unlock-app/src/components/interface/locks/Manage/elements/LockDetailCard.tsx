@@ -3,7 +3,7 @@ import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
 import { Button } from '@unlock-protocol/ui'
 import useClipboard from 'react-use-clipboard'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQueries } from 'react-query'
@@ -109,6 +109,7 @@ export const LockDetailCard = ({
   lockAddress,
   network,
 }: LockDetailCardProps) => {
+  const [isUpdated, setIsUpdated] = useState(false)
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
 
@@ -125,11 +126,11 @@ export const LockDetailCard = ({
     { isLoading: isLoadingSymbol, data: symbol },
   ] = useQueries([
     {
-      queryKey: ['getLock', lockAddress, network],
+      queryKey: ['getLock', lockAddress, network, isUpdated],
       queryFn: getLock,
     },
     {
-      queryKey: ['getTokenSymbol', lockAddress, network],
+      queryKey: ['getTokenSymbol', lockAddress, network, isUpdated],
       queryFn: getTokenSymbol,
     },
   ])
@@ -178,8 +179,15 @@ export const LockDetailCard = ({
           />
         </div>
         <div className="flex flex-col gap-3 mt-2">
-          <UpdatePriceModal lockAddress={lockAddress} network={network} />
-          <UpdateQuantityModal lockAddress={lockAddress} network={network} />
+          <UpdatePriceModal
+            lockAddress={lockAddress}
+            network={network}
+            onUpdate={() => setIsUpdated(true)}
+          />
+          <UpdateQuantityModal
+            lockAddress={lockAddress}
+            onUpdate={() => setIsUpdated(true)}
+          />
         </div>
       </div>
     </div>
