@@ -1,5 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import useLocksByNetwork from '~/hooks/useLocksByNetwork'
+import useLocks from '~/hooks/useLocks'
 import { Lock } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import { LockCard, LockCardPlaceholder } from './LockCard'
@@ -13,7 +13,7 @@ const LocksByNetwork = ({ network }: LocksByNetworkProps) => {
   const { networks } = useConfig()
   const { name: networkName } = networks[network]
 
-  const { locks, loading } = useLocksByNetwork(account!, network)
+  const { locks, loading } = useLocks(account!, network!)
 
   if (locks?.length === 0) return null
 
