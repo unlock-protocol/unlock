@@ -86,6 +86,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
           expect.assertions(2)
           publicLockTemplateAddress = await deployTemplate(
             publicLockVersion,
+            {} /** transactionOptions */,
+
             (error, hash) => {
               if (error) {
                 throw error
@@ -113,6 +115,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               estimatedGasForPurchase: 0,
               chainId,
             },
+            {} /** transactionOptions */,
+
             (error, hash) => {
               if (error) {
                 throw error
@@ -173,6 +177,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
         lockAddress = await walletService.createLock(
           lockParams,
+          {} /** transactionOptions */,
           (error, hash) => {
             if (error) {
               throw error
@@ -271,6 +276,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
                 spender: spender.address,
                 amount: '10',
               },
+              {} /** transactionOptions */,
               (error, hash) => {
                 if (error) {
                   throw error
@@ -286,6 +292,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
                 owner: spender.address,
                 keyPrice: lock.keyPrice,
               },
+              {} /** transactionOptions */,
               (error) => {
                 if (error) {
                   throw error
@@ -347,6 +354,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               lockAddress,
               keyPrice: (parseFloat(oldKeyPrice) * 2).toString(),
             },
+            {} /** transactionOptions */,
             (error, hash) => {
               if (error) {
                 throw error
@@ -387,6 +395,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               lockAddress,
               recipient: keyGrantee,
             },
+            {} /** transactionOptions */,
+
             (error, hash) => {
               if (error) {
                 throw error
@@ -464,6 +474,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               recipient: keyGrantee,
             })
             tokenId = id
+
             keyBefore = await web3Service.getKeyByLockForOwner(
               lockAddress,
               keyGrantee,
@@ -475,6 +486,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
                 lockAddress,
                 tokenId,
               },
+              {} /** transactionOptions */,
               (error, hash) => {
                 if (error) {
                   throw error
@@ -565,6 +577,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               lockAddress,
               recipients: keyGrantees,
             },
+            {} /** transactionOptions */,
+
             (error, hash) => {
               if (error) {
                 throw error
@@ -709,6 +723,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               owner: keyOwner,
               keyPrice: lock.keyPrice,
             },
+            {} /** transactionOptions */,
             (error, hash) => {
               if (error) {
                 throw error
@@ -870,6 +885,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
               owners: keyOwners,
               keyPrices: [lock.keyPrice, lock.keyPrice],
             },
+            {} /** transactionOptions */,
+
             (error, hash) => {
               if (error) {
                 throw error
@@ -1040,6 +1057,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
             {
               lockAddress,
             },
+            {} /** transactionOptions */,
+
             (error, hash) => {
               if (error) {
                 throw error
@@ -1399,6 +1418,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
                 tokenIdFrom: tokenIds[0],
                 tokenIdTo: tokenIds[1],
               },
+              {} /** transactionOptions */,
+
               (error, hash) => {
                 if (error) {
                   throw error
@@ -1497,6 +1518,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
                 lockAddress,
                 tokenId,
               },
+              {} /** transactionOptions */,
+
               (error, hash) => {
                 if (error) {
                   throw error

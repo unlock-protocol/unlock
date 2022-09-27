@@ -9,7 +9,7 @@ import * as abis from '@unlock-protocol/contracts'
  * @param {*} version
  * @param {*} callback
  */
-export default async (version, callback) => {
+export default async (version, transactionOptions = {}, callback) => {
   const [signer] = await ethers.getSigners()
   const { abi, bytecode } = abis[`PublicLock${version.toUpperCase()}`]
   const factory = await ethers.getContractFactory(abi, bytecode, signer)

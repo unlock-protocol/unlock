@@ -29,7 +29,7 @@ async function _getKeyPrice(lock, provider) {
  * @param {PropTypes.lock} lock
  * @param {function} callback invoked with the transaction hash
  */
-export default async function (lock, callback) {
+export default async function (lock, transactionOptions = {}, callback) {
   // default lock version to 9
   const lockVersion = lock.publicLockVersion || 9
 

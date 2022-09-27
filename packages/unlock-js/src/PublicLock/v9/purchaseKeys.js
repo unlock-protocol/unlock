@@ -14,6 +14,11 @@ import purchaseKey from './purchaseKey'
  * @param {function} callback invoked with the transaction hash
  * */
 
-export default async function (params, callback) {
-  return await multiplePurchaseWrapper.bind(this)(purchaseKey, params, callback)
+export default async function (params, transactionOptions = {}, callback) {
+  return await multiplePurchaseWrapper.bind(this)(
+    purchaseKey,
+    params,
+    transactionOptions,
+    callback
+  )
 }

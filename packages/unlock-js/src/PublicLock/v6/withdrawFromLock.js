@@ -13,6 +13,7 @@ import { getErc20Decimals } from '../../erc20'
  */
 export default async function (
   { erc20Address, lockAddress, amount = '0', decimals },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)

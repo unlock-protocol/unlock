@@ -146,6 +146,7 @@ const GrantKeyForm = ({ onGranted, lock }: GrantKeyFormProps) => {
             expirations,
             keyManagers,
           },
+          {} /** transactionParams */,
           (error: any, hash: any) => {
             if (error) {
               ToastHelper.error(

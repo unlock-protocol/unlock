@@ -1,4 +1,8 @@
-export default async function ({ lockAddress }, callback) {
+export default async function (
+  { lockAddress },
+  transactionOptions = {},
+  callback
+) {
   const lockContract = await this.getLockContract(lockAddress)
   const transactionPromise = lockContract.cancelAndRefund()
 

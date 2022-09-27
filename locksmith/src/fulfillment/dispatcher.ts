@@ -66,6 +66,7 @@ export default class Dispatcher {
         tokenId: keyId.toString(),
         duration: 0,
       },
+      {} /** TransactionOptions */,
       callback
     )
   }
@@ -116,8 +117,8 @@ export default class Dispatcher {
         recipients,
         keyManagers,
         expirations,
-        transactionOptions,
       },
+      transactionOptions,
       cb
     )
   }
@@ -171,6 +172,7 @@ export default class Dispatcher {
         lockAddress,
         owner,
       },
+      {},
       cb
     )
   }

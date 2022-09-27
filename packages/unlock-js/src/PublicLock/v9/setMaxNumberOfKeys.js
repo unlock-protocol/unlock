@@ -1,5 +1,6 @@
 export async function setMaxNumberOfKeys(
   { lockAddress, maxNumberOfKeys },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
