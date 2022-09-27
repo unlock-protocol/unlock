@@ -4,6 +4,7 @@
 
 // to build contract docs
 require('@primitivefi/hardhat-dodoc')
+require('@nomiclabs/hardhat-etherscan')
 
 const fs = require('fs-extra')
 const { networks, etherscan } = require('@unlock-protocol/hardhat-helpers')
