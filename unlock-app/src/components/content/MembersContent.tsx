@@ -59,7 +59,7 @@ interface MembersContentProps {
   query: any
 }
 export const MembersContent = ({ query }: MembersContentProps) => {
-  const { account } = useContext(AuthenticationContext)
+  const { account, network } = useContext(AuthenticationContext)
   const [lockAddresses, setLockAddresses] = useState<string[]>([])
   const [isOpen, setIsOpen] = useState(false)
 
@@ -96,10 +96,8 @@ export const MembersContent = ({ query }: MembersContentProps) => {
       <AirdropKeysDrawer
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        lock={{
-          address: lockAddresses[0],
-          network: 5,
-        }}
+        lockAddress={lockAddresses[0]}
+        network={network!}
       />
 
       <BrowserOnly>

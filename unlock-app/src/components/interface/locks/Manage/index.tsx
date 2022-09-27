@@ -21,16 +21,15 @@ interface ActionBarProps {
 
 const ActionBar = ({ lockAddress }: ActionBarProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const { network } = useAuth()
 
   return (
     <>
       <AirdropKeysDrawer
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        lock={{
-          address: lockAddress,
-          network: 1,
-        }}
+        lockAddress={lockAddress}
+        network={network!}
       />
       <div className="flex items-center justify-between">
         <span className="text-xl font-bold text-brand-ui-primary">Members</span>

@@ -7,11 +7,8 @@ import { MouseEventHandler } from 'react'
 export const AirdropMember = z.object({
   recipient: z.string(),
   count: z.preprocess((item) => Number(item), z.number().default(1)),
-  expiration: z.preprocess((item) => {
-    if (typeof item === 'string') {
-      return new Date(item)
-    }
-  }, z.date()),
+  expiration: z.string().optional(),
+  expire: z.boolean().optional().default(true),
   manager: z.string().optional(),
   email: z.string().optional(),
 })

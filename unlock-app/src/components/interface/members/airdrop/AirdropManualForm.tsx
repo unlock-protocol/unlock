@@ -2,29 +2,33 @@ import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { getAddressForName } from '~/hooks/useEns'
 import { ACCOUNT_REGEXP } from '~/constants'
-import { useState } from 'react'
 import { AirdropMember } from './AirdropElements'
 import { useList } from 'react-use'
 import { AirdropListItem } from './AirdropElements'
-
+import { Lock } from '~/unlockTypes'
+import { useAuth } from '~/contexts/AuthenticationContext'
+import { formatDate } from '~/utils/lock'
+import { useState } from 'react'
 export interface Props {
   add(member: AirdropMember): void
+  lock: Lock
   list: AirdropMember[]
   defaultValues?: Partial<AirdropMember>
 }
 
-export function AirdropForm({ add, defaultValues }: Props) {
+export function AirdropForm({ add, defaultValues, lock }: Props) {
   const {
     handleSubmit,
     register,
     reset,
     setValue,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<AirdropMember>({
     defaultValues,
   })
 
-  const [customExpiration, setCustomExpiration] = useState(true)
+  const formValues = watch()
 
   const addressFieldChanged = (name: keyof AirdropMember) => {
     return async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,33 +59,35 @@ export function AirdropForm({ add, defaultValues }: Props) {
           onChange: addressFieldChanged('recipient'),
         })}
         error={errors.recipient?.message}
+        description="Enter recipient address or ENS."
       />
       <Input
         pattern="[0-9]+"
         label="Number of keys to airdrop"
         {...register('count', {
           valueAsNumber: true,
+          max: {
+            value: lock?.maxKeysPerAddress || 1,
+            message:
+              "That's the max you can airdrop for this lock to a single address.",
+          },
         })}
         error={errors.count?.message}
       />
 
       <div className="space-y-2">
         <Input
-          disabled={!customExpiration}
+          disabled={formValues.expire}
           label="Expiration"
-          type="date"
-          {...register('expiration', {
-            valueAsDate: true,
-          })}
+          type="datetime-local"
+          {...register('expiration')}
         />
         <div className="flex items-center gap-2 ml-1">
           <input
             id="no-expiration"
             type="checkbox"
             className="rounded text-brand-ui-primary"
-            onChange={(event) => {
-              setCustomExpiration(!event.target.checked)
-            }}
+            {...register('expire')}
           />
           <label className="text-sm" htmlFor="no-expiration">
             No expiration
@@ -111,19 +117,27 @@ export function AirdropForm({ add, defaultValues }: Props) {
 }
 
 interface AirdropManualFormProps {
+  lock: Lock
   onConfirm(members: AirdropMember[]): void | Promise<void>
 }
 
-export function AirdropManualForm({ onConfirm }: AirdropManualFormProps) {
-  const [list, { push, removeAt }] = useList<AirdropMember>([])
+export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
+  const [list, { push, removeAt, clear }] = useList<AirdropMember>([])
+  const { account } = useAuth()
+  const expiration = formatDate(lock.expirationDuration || 0)
+  const [isConfirming, setIsConfirming] = useState(false)
   return (
     <div className="space-y-6 overflow-y-auto">
       <AirdropForm
+        lock={lock}
         add={(member) => push(member)}
         list={list}
-        defaultValues={{}}
+        defaultValues={{
+          expiration,
+          manager: account,
+          expire: lock.expirationDuration === -1,
+        }}
       />
-
       {list.length > 0 && (
         <div className="grid gap-6">
           <div className="p-2 space-y-2">
@@ -139,9 +153,14 @@ export function AirdropManualForm({ onConfirm }: AirdropManualFormProps) {
             ))}
           </div>
           <Button
-            onClick={(event) => {
+            loading={isConfirming}
+            disabled={isConfirming}
+            onClick={async (event) => {
               event.preventDefault()
-              onConfirm(list)
+              setIsConfirming(true)
+              await onConfirm(list)
+              setIsConfirming(false)
+              clear()
             }}
           >
             Confirm Airdrop

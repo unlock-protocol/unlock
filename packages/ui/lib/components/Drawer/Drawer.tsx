@@ -8,7 +8,7 @@ interface DrawerProps {
   setIsOpen: (isOpen: boolean) => void
   children: React.ReactNode
   title: string
-  description: string
+  description?: string
 }
 
 /**
@@ -64,9 +64,11 @@ export const Drawer = ({
                   <Dialog.Title className="text-xl font-medium text-gray-800">
                     {title}
                   </Dialog.Title>
-                  <Dialog.Description className="text-base text-gray-800">
-                    {description}
-                  </Dialog.Description>
+                  {description && (
+                    <Dialog.Description className="text-base text-gray-800">
+                      {description}
+                    </Dialog.Description>
+                  )}
                 </div>
                 <div className="relative flex-1">{children}</div>
               </div>
