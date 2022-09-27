@@ -15,6 +15,7 @@ export default async function (
     recurringPayments, // nb of reccuring payments to approve
     data,
   },
+  transactionOptions = {},
   callback
 ) {
   const keys = await purchaseKeys.bind(this)(
@@ -29,6 +30,7 @@ export default async function (
       erc20Address,
       decimals,
     },
+    (transactionOptions = {}),
     callback
   )
   return keys[0] // Only a single key!

@@ -50,3 +50,10 @@ export type WalletServiceCallback = (
   _hash: string | null,
   _transaction?: any | null
 ) => unknown
+
+export interface TransactionOptions {
+  gasLimit?: number
+  maxFeePerGas?: number
+  maxPriorityFeePerGas?: number
+  runEstimate?: boolean
+}
