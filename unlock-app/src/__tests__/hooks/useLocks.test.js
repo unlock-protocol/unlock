@@ -98,7 +98,7 @@ describe('useLocks', () => {
   it.skip('should default to loading and an empty list', async () => {
     expect.assertions(4)
     const { result, waitForNextUpdate } = renderHook(() =>
-      useLocks(ownerAddress)
+      useLocks(ownerAddress, network)
     )
     const { loading, locks } = result.current
     expect(loading).toBe(true)
@@ -120,14 +120,19 @@ describe('useLocks', () => {
       },
     ]
 
-    const { result, waitFor } = renderHook(() => useLocks(ownerAddress))
+    const { result, waitFor } = renderHook(() =>
+      useLocks(ownerAddress, network)
+    )
     await waitFor(() => {
       return result.current.loading === false
     })
     const { loading, locks } = result.current
     expect(loading).toBe(false)
     expect(locks.length).toBe(2)
-    expect(mockGraphService.locksByManager).toHaveBeenCalledWith(ownerAddress)
+    expect(mockGraphService.locksByManager).toHaveBeenCalledWith(
+      ownerAddress,
+      network
+    )
   })
 
   describe('getLockAtAddress', () => {
