@@ -73,6 +73,7 @@ export function Renew({
       if (!(lock && account)) {
         return
       }
+      const data = password || captcha || undefined
       const onTransactionHandler = (
         error: Error | null,
         hash: string | null
@@ -123,7 +124,7 @@ export function Renew({
             lockAddress,
             tokenId: tokenId.toString(),
             referrer,
-            data: password || captcha || undefined,
+            data,
           },
           onTransactionHandler
         )

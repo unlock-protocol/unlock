@@ -125,10 +125,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   async function onSubmit(data: FormData) {
     try {
       const users = await Promise.all(
-        data.metadata.map(async (item) => {
-          const address = await getAddressForName(item.recipient)
+        data.metadata.map(async ({ recipient, ...props }) => {
+          const address = await getAddressForName(recipient)
           const formattedMetadata = formResultToMetadata(
-            item,
+            props,
             metadataInputs || []
           )
           return {
