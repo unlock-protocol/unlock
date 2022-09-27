@@ -18,6 +18,14 @@ Object.keys(networks).forEach((key) => {
       url: networks[key].publicProvider,
     }
   }
+  // duplicate xdai record as gnosis
+  if (key === 'xdai') {
+    hardhatNetworks['gnosis'] = {
+      chainId: 100,
+      name: 'gnosis',
+      url: networks[key].publicProvider,
+    }
+  }
 })
 
 module.exports = { networks: hardhatNetworks }
