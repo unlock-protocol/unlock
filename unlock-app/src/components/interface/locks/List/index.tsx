@@ -7,15 +7,13 @@ import { LockList } from './elements/LockList'
 
 const PageHeader = () => {
   return (
-    <div className="flex items-end justify-between">
-      <div className="flex flex-col w-full max-w-lg gap-4">
-        <h1 className="text-4xl font-bold">Locks</h1>
-        <span className="text-base text-gray-700">
+    <div className="flex flex-col gap-4">
+      <h1 className="text-4xl font-bold ">Locks</h1>
+      <div className="flex justify-between">
+        <span className="w-full max-w-lg text-base text-gray-700">
           Create membership for Event ticketing, Media membership, DAO,
           Certification, collectibles and more.
         </span>
-      </div>
-      <div>
         <Link href="/locks/create">
           <Button size="large">Create Lock</Button>
         </Link>
