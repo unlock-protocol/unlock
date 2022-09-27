@@ -12,11 +12,11 @@ import { useConfig } from '~/utils/withConfig'
 import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
-import { UpdatePriceModal } from './UpdatePriceModal'
-import { UpdateQuantityModal } from './UpdateQuantityModal'
-import { UpdateDurationModal } from './UpdateDurationModal'
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { CardPayment } from './CardPayment'
+import { UpdateDurationModal } from '../modals/UpdateDurationModal'
+import { UpdatePriceModal } from '../modals/UpdatePriceModal'
+import { UpdateQuantityModal } from '../modals/UpdateQuantityModal'
 
 interface LockDetailCardProps {
   network: number
