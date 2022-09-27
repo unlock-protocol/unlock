@@ -12,6 +12,7 @@ import { useConfig } from '~/utils/withConfig'
 import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
+import { CardPayment } from './CardPayment'
 
 interface LockDetailCardProps {
   network: number
@@ -174,6 +175,9 @@ export const LockDetailCard = ({
             prepend={<CryptoIcon symbol={symbol} size={22} />}
             loading={loading}
           />
+        </div>
+        <div className="mt-6">
+          <CardPayment lockAddress={lockAddress} network={network} />
         </div>
       </div>
     </div>
