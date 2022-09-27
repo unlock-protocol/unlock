@@ -129,10 +129,7 @@ describe('useLocks', () => {
     const { loading, locks } = result.current
     expect(loading).toBe(false)
     expect(locks.length).toBe(2)
-    expect(mockGraphService.locksByManager).toHaveBeenCalledWith(
-      ownerAddress,
-      network
-    )
+    expect(mockGraphService.locksByManager).toHaveBeenCalledWith(ownerAddress)
   })
 
   describe('getLockAtAddress', () => {
