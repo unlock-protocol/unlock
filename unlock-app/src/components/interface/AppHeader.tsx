@@ -33,7 +33,6 @@ const SwitchNetworkButton = ({ network }: SwitchNetworkButtonProps) => {
   const { name: connectedNetwork, baseCurrencySymbol } = networks[network] ?? {}
 
   const onChangeNetwork = async (network: number) => {
-    console.log('change network')
     await changeNetwork(networks[network])
   }
 
