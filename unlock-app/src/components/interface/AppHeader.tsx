@@ -28,8 +28,14 @@ interface SwitchNetworkButtonProps {
 
 const SwitchNetworkButton = ({ network }: SwitchNetworkButtonProps) => {
   const { networks } = useConfig()
+  const { changeNetwork } = useAuth()
 
   const { name: connectedNetwork, baseCurrencySymbol } = networks[network] ?? {}
+
+  const onChangeNetwork = async (network: number) => {
+    console.log('change network')
+    await changeNetwork(networks[network])
+  }
 
   return (
     <>
@@ -69,6 +75,7 @@ const SwitchNetworkButton = ({ network }: SwitchNetworkButtonProps) => {
                         className={`flex cursor-pointer px-4 py-2 gap-2 hover:bg-gray-100 ${
                           isActive ? 'bg-gray-200' : ''
                         }`}
+                        onClick={() => onChangeNetwork(id)}
                       >
                         <div className="w-6 h-6">
                           <CryptoIcon size={24} symbol={baseCurrencySymbol} />
