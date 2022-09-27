@@ -9009,7 +9009,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-etherscan@npm:3.1.0":
+"@nomiclabs/hardhat-etherscan@npm:3.1.0, @nomiclabs/hardhat-etherscan@npm:^3.1.0":
   version: 3.1.0
   resolution: "@nomiclabs/hardhat-etherscan@npm:3.1.0"
   dependencies:
@@ -16116,6 +16116,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
+    "@nomiclabs/hardhat-etherscan": ^3.1.0
     "@primitivefi/hardhat-dodoc": 0.2.3
     "@unlock-protocol/contracts": ^0.0.9
     "@unlock-protocol/hardhat-helpers": "workspace:^"
