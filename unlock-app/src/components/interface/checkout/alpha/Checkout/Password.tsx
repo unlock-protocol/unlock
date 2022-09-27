@@ -9,6 +9,7 @@ import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
+import { useAuth } from '~/contexts/AuthenticationContext'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -19,6 +20,7 @@ interface FormData {
 }
 
 export function Password({ injectedProvider, checkoutService }: Props) {
+  const { account } = useAuth()
   const [state, send] = useActor(checkoutService)
   const { recipients, renew } = state.context
   const {
@@ -26,6 +28,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
     handleSubmit,
     formState: { isSubmitting, errors },
   } = useForm<FormData>()
+  const users = recipients.length > 0 ? recipients : [account!]
 
   const onSubmit = async (formData: FormData) => {
     try {
@@ -34,10 +37,11 @@ export function Password({ injectedProvider, checkoutService }: Props) {
         ['bytes32'],
         [ethers.utils.id(password)]
       )
+
       const privateKey = ethers.utils.keccak256(encoded)
       const privateKeyAccount = new ethers.Wallet(privateKey)
       const data = await Promise.all(
-        recipients.map((address) => {
+        users.map((address) => {
           const messageHash = ethers.utils.solidityKeccak256(
             ['string'],
             [address.toLowerCase()]

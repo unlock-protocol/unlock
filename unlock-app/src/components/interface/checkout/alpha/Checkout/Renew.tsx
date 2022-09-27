@@ -104,11 +104,12 @@ export function Renew({
         }
       }
       if (lock.publicLockVersion! <= 9) {
-        await walletService.purchaseKey(
+        await walletService.purchaseKeys(
           {
             lockAddress,
-            owner: account,
-            referrer,
+            owners: [account],
+            referrers: [referrer || account],
+            data,
           },
           onTransactionHandler
         )
