@@ -3,7 +3,7 @@ import { useConfig } from '~/utils/withConfig'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Button, Icon } from '@unlock-protocol/ui'
-import { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
 import { FiArrowRight as ArrowRightIcon } from 'react-icons/fi'
@@ -15,9 +15,9 @@ import Link from 'next/link'
 import { Lock } from '~/unlockTypes'
 import { UNLIMITED_KEYS_DURATION } from '~/constants'
 import Duration from '~/components/helpers/Duration'
-import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useQuery } from 'react-query'
 import { CryptoIcon } from '../../elements/KeyPrice'
+import { IconModal } from '../../Manage/elements/LockIcon'
+import { ImFilePicture as PictureFile } from 'react-icons/im'
 
 interface LockCardProps {
   lock: Lock
@@ -27,9 +27,13 @@ interface LockCardProps {
 
 interface DetailProps {
   label: string
-  value?: string
+  value?: string | React.ReactNode
   prepend?: React.ReactNode
   icon?: IconType
+}
+
+interface LockIconProps {
+  lock: Lock
 }
 
 const Detail = ({ label, prepend, icon, value = '-' }: DetailProps) => {
@@ -39,7 +43,7 @@ const Detail = ({ label, prepend, icon, value = '-' }: DetailProps) => {
         {icon && <Icon icon={icon} size={10} />}
         <span className="text-xs">{label}</span>
       </div>
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
         {prepend && <>{prepend}</>}
         <span className="text-lg font-bold">{value}</span>
       </div>
@@ -61,7 +65,7 @@ export const LockCardPlaceholder = () => {
   }
   return (
     <div className="flex items-center h-24 px-12 py-4 bg-white rounded-2xl">
-      <div className="grid items-center justify-between w-full grid-flow-col col-span-7 gap-4 ">
+      <div className="flex items-center justify-between w-full grid-flow-col col-span-7 gap-4 ">
         <div className="flex col-span-3 gap-3">
           <div className="rounded-full bg-slate-200 animate-pulse h-14 w-14"></div>
           <div className="flex flex-col gap-2">
@@ -86,31 +90,71 @@ export const LockCardPlaceholder = () => {
   )
 }
 
+const LockIcon = ({ lock }: LockIconProps) => {
+  const config = useConfig()
+  const [isOpen, setIsOpen] = useState(false)
+  const [imageSrc, setImageSrc] = useState(
+    lock.address
+      ? `${config.services.storage.host}/lock/${lock.address}/icon`
+      : '/images/svg/default-lock-logo.svg'
+  )
+
+  const handleError = () => {
+    setImageSrc('/images/svg/default-lock-logo.svg')
+  }
+
+  return (
+    <div className="relative block overflow-hidden bg-gray-200 rounded-full cursor-pointer h-14 w-14 group">
+      {lock.address && (
+        <div
+          className="absolute inset-0 flex items-center justify-center duration-500 bg-black opacity-0 group-hover:opacity-80"
+          onClick={() => setIsOpen(true)}
+        >
+          <PictureFile
+            className="text-white opacity-0 group-hover:opacity-100"
+            size={20}
+          />
+        </div>
+      )}
+      <IconModal
+        lockAddress={lock.address}
+        network={lock.network}
+        imageUrl={imageSrc}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        dismiss={(image: any) => {
+          setIsOpen(false)
+          setImageSrc(image)
+        }}
+      />
+      <img
+        alt="logo"
+        className="object-cover w-full h-full"
+        src={imageSrc}
+        onError={handleError}
+      />
+    </div>
+  )
+}
+
 export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
-  const web3Service = useWeb3Service()
   const { networks } = useConfig()
   const lockAddress = lock.address
   const [isCopied, setCopied] = useClipboard(lockAddress, {
     successDuration: 2000,
   })
 
-  const { explorer } = networks?.[network] ?? {}
+  const { explorer, baseCurrencySymbol } = networks?.[network] ?? {}
 
   const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
+
+  const symbol = (lock as any)?.currencySymbol ?? baseCurrencySymbol
 
   useEffect(() => {
     if (!isCopied) return
     ToastHelper.success(`Lock address copied`)
   }, [isCopied])
 
-  const getSymbol = async () => {
-    return web3Service.getTokenSymbol(lockAddress, network)
-  }
-
-  const { data: symbol } = useQuery(
-    ['getSymbol', lockAddress, network],
-    async () => getSymbol()
-  )
   const lockUrl = `/locks/lock?address=${lockAddress}&network=${network}`
 
   if (isLoading) return <LockCardPlaceholder />
@@ -125,9 +169,9 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
   return (
     <>
       <div className="px-12 py-4 bg-white shadow-lg rounded-2xl">
-        <div className="grid items-center justify-between grid-flow-col col-span-7 gap-4">
+        <div className="grid items-center justify-between grid-cols-7 gap-4">
           <div className="flex col-span-3 gap-3">
-            <div className="bg-gray-200 rounded-full h-14 w-14"></div>
+            <LockIcon lock={lock} />
             <div className="flex flex-col gap-2">
               <span className="text-2xl font-bold">{lock.name}</span>
               <div className="flex items-center gap-3">
@@ -150,25 +194,27 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
               </div>
             </div>
           </div>
-          <div className="flex col-span-3 gap-14">
-            <Detail
-              label="Price"
-              value={lock.keyPrice}
-              icon={TagIcon}
-              prepend={<CryptoIcon symbol={symbol} size={20} />}
-            />
-            <Detail
-              label="Key Duration"
-              value={duration.toString()}
-              icon={TimeIcon}
-            />
-            <Detail
-              label="Key Sold"
-              value={lock.outstandingKeys?.toString()}
-              icon={KeyIcon}
-            />
+          <div className="grid items-center grid-cols-4 col-span-3 gap-14">
+            <div className="col-span-1">
+              <Detail
+                label="Price"
+                value={lock.keyPrice}
+                icon={TagIcon}
+                prepend={<CryptoIcon symbol={symbol} size={20} />}
+              />
+            </div>
+            <div className="col-span-2">
+              <Detail label="Key Duration" value={duration} icon={TimeIcon} />
+            </div>
+            <div className="col-span-1">
+              <Detail
+                label="Key Sold"
+                value={lock.outstandingKeys?.toString()}
+                icon={KeyIcon}
+              />
+            </div>
           </div>
-          <div className="col-span-1">
+          <div className="col-span-1 ml-auto">
             <button>
               <Link href={lockUrl} aria-label="arrow right">
                 <ArrowRightIcon size={20} />
