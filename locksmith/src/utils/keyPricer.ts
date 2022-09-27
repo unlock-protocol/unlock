@@ -50,7 +50,7 @@ export default class KeyPricer {
       { fields: ['currencyContractAddress', 'currencySymbol', 'keyPrice'] }
     )
     let symbol = networks[network]?.nativeCurrency?.symbol
-    if (lock.currencyContractAddress && lock.currencyContractAddress == ZERO) {
+    if (lock?.currencyContractAddress !== ZERO && lock.currencySymbol) {
       symbol = lock.currencySymbol
     }
     if (!symbol) {
@@ -59,9 +59,11 @@ export default class KeyPricer {
       )
       throw new Error(`Missing currency`)
     }
-
     const priceConversion = new PriceConversion()
-    const usdPrice = await priceConversion.convertToUSD(symbol, lock.keyPrice)
+    const usdPrice = await priceConversion.convertToUSD(
+      symbol.toUpperCase(),
+      lock.keyPrice
+    )
     return usdPrice
   }
 
