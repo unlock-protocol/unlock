@@ -6,7 +6,7 @@ import useClipboard from 'react-use-clipboard'
 import { useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useQueries } from 'react-query'
+import { useQuery } from 'react-query'
 import { UNLIMITED_KEYS_COUNT, UNLIMITED_KEYS_DURATION } from '~/constants'
 import { useConfig } from '~/utils/withConfig'
 import { LockIcon } from './LockIcon'
@@ -139,27 +139,14 @@ export const LockDetailCard = ({
     return web3Service.getLock(lockAddress, network)
   }
 
-  const getTokenSymbol = async () => {
-    return web3Service.getTokenSymbol(lockAddress, network)
-  }
-
-  const [
-    { isLoading, data: lock },
-    { isLoading: isLoadingSymbol, data: symbol },
-  ] = useQueries([
-    {
-      queryKey: ['getLock', lockAddress, network, update],
-      queryFn: getLock,
-    },
-    {
-      queryKey: ['getTokenSymbol', lockAddress, network, update],
-      queryFn: getTokenSymbol,
-    },
-  ])
+  const { isLoading, data: lock } = useQuery(
+    ['getLock', lockAddress, network, update],
+    async () => getLock()
+  )
 
   const { keyPrice, maxNumberOfKeys, expirationDuration } = lock ?? {}
 
-  const { name: networkName } = networks?.[network] ?? {}
+  const { name: networkName, baseCurrencySymbol } = networks?.[network] ?? {}
   const numbersOfKeys =
     maxNumberOfKeys === UNLIMITED_KEYS_COUNT ? 'Unlimited' : maxNumberOfKeys
   const duration =
@@ -169,7 +156,7 @@ export const LockDetailCard = ({
       <Duration seconds={expirationDuration} />
     )
 
-  const loading = isLoading || isLoadingSymbol
+  const loading = isLoading
 
   const EditButton = ({ onClick }: EditButtonProps) => {
     return (
@@ -182,6 +169,8 @@ export const LockDetailCard = ({
   const onUpdate = () => {
     setUpdate(update + 1)
   }
+
+  const symbol = lock?.currencySymbol || baseCurrencySymbol
 
   return (
     <>

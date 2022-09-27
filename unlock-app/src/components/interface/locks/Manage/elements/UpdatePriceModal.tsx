@@ -70,11 +70,15 @@ export const UpdatePriceModal = ({
   )
 
   const updatePrice = async (): Promise<any> => {
-    const { keyPrice = '' } = getValues()
+    const { keyPrice = '', currencyContractAddress } = getValues()
+
+    const erc20Address =
+      currencyContractAddress || lock?.currencyContractAddress || 0
 
     return await walletService.updateKeyPrice({
       lockAddress,
       keyPrice,
+      erc20Address,
     } as any)
   }
 
@@ -138,8 +142,6 @@ export const UpdatePriceModal = ({
               <div className="flex flex-col gap-1.5">
                 <div
                   onClick={() => {
-                    // todo: enable currency when function is present
-                    return null
                     setChangeCurrencyModal(true)
                   }}
                   className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
