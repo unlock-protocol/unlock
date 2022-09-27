@@ -10,6 +10,7 @@ import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
   injectedProvider: unknown
@@ -19,18 +20,21 @@ interface Props {
 export function Captcha({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
+  const { account } = useAuth()
   const storage = useStorageService()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-  const { recipients } = state.context
+  const { recipients, renew } = state.context
   const [isContinuing, setIsContinuing] = useState(false)
+  const users = recipients.length > 0 ? recipients : [account!]
+
   const onContinue = async () => {
     try {
       setIsContinuing(true)
-      if (!(recaptchaValue && recipients.length)) {
+      if (!recaptchaValue) {
         return
       }
       const response = await storage.getDataForRecipientsAndCaptcha(
-        recipients,
+        users,
         recaptchaValue!
       )
 
@@ -51,11 +55,15 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
     }
   }
 
-  const stepItems = useCheckoutSteps(checkoutService)
+  const stepItems = useCheckoutSteps(checkoutService, renew)
 
   return (
     <Fragment>
-      <Stepper position={6} service={checkoutService} items={stepItems} />
+      <Stepper
+        position={renew ? 2 : 6}
+        service={checkoutService}
+        items={stepItems}
+      />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="space-y-4">
           <div className="flex justify-center">

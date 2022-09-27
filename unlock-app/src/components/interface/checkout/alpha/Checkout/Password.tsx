@@ -9,6 +9,7 @@ import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
+import { useAuth } from '~/contexts/AuthenticationContext'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
@@ -19,28 +20,28 @@ interface FormData {
 }
 
 export function Password({ injectedProvider, checkoutService }: Props) {
+  const { account } = useAuth()
   const [state, send] = useActor(checkoutService)
-  const { recipients } = state.context
+  const { recipients, renew } = state.context
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
   } = useForm<FormData>()
+  const users = recipients.length > 0 ? recipients : [account!]
 
   const onSubmit = async (formData: FormData) => {
     try {
       const { password } = formData
-      if (!(password && recipients.length)) {
-        return
-      }
       const encoded = ethers.utils.defaultAbiCoder.encode(
         ['bytes32'],
         [ethers.utils.id(password)]
       )
+
       const privateKey = ethers.utils.keccak256(encoded)
       const privateKeyAccount = new ethers.Wallet(privateKey)
       const data = await Promise.all(
-        recipients.map((address) => {
+        users.map((address) => {
           const messageHash = ethers.utils.solidityKeccak256(
             ['string'],
             [address.toLowerCase()]
@@ -58,11 +59,15 @@ export function Password({ injectedProvider, checkoutService }: Props) {
     }
   }
 
-  const stepItems = useCheckoutSteps(checkoutService)
+  const stepItems = useCheckoutSteps(checkoutService, renew)
 
   return (
     <Fragment>
-      <Stepper position={6} service={checkoutService} items={stepItems} />
+      <Stepper
+        position={renew ? 2 : 6}
+        service={checkoutService}
+        items={stepItems}
+      />
       <main className="h-full px-6 py-2 overflow-auto">
         <form id="password" className="space-y-4">
           <Input
@@ -73,6 +78,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
             size="small"
             {...register('password', {
               required: true,
+              min: 1,
             })}
             error={errors.password?.message}
           />
