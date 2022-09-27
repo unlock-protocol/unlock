@@ -12,6 +12,7 @@ import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { StepItem, Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
+import { useCheckoutSteps } from './useCheckoutItems'
 
 interface Props {
   injectedProvider: unknown
@@ -105,27 +106,12 @@ export function Renewed({
     }
   }, [renewStatus])
 
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Renew membership',
-      to: 'RENEW',
-    },
-    {
-      id: 3,
-      name: 'Renewed!',
-    },
-  ]
+  const stepItems = useCheckoutSteps(checkoutService, true)
 
   return (
     <Fragment>
       <Stepper
-        position={3}
+        position={4}
         disabled
         service={checkoutService}
         items={stepItems}

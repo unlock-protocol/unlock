@@ -21,7 +21,7 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
   const config = useConfig()
   const storage = useStorageService()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-  const { recipients } = state.context
+  const { recipients, renew } = state.context
   const [isContinuing, setIsContinuing] = useState(false)
   const onContinue = async () => {
     try {
@@ -51,11 +51,15 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
     }
   }
 
-  const stepItems = useCheckoutSteps(checkoutService)
+  const stepItems = useCheckoutSteps(checkoutService, renew)
 
   return (
     <Fragment>
-      <Stepper position={6} service={checkoutService} items={stepItems} />
+      <Stepper
+        position={renew ? 2 : 6}
+        service={checkoutService}
+        items={stepItems}
+      />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="space-y-4">
           <div className="flex justify-center">

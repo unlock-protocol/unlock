@@ -6,7 +6,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { useCheckoutSteps } from './useCheckoutItems'
+import { useCheckoutSteps, useRenewSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
 interface Props {
@@ -20,7 +20,7 @@ interface FormData {
 
 export function Password({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
-  const { recipients } = state.context
+  const { recipients, renew } = state.context
   const {
     register,
     handleSubmit,
@@ -30,9 +30,6 @@ export function Password({ injectedProvider, checkoutService }: Props) {
   const onSubmit = async (formData: FormData) => {
     try {
       const { password } = formData
-      if (!(password && recipients.length)) {
-        return
-      }
       const encoded = ethers.utils.defaultAbiCoder.encode(
         ['bytes32'],
         [ethers.utils.id(password)]
@@ -58,11 +55,15 @@ export function Password({ injectedProvider, checkoutService }: Props) {
     }
   }
 
-  const stepItems = useCheckoutSteps(checkoutService)
+  const stepItems = useCheckoutSteps(checkoutService, renew)
 
   return (
     <Fragment>
-      <Stepper position={6} service={checkoutService} items={stepItems} />
+      <Stepper
+        position={renew ? 2 : 6}
+        service={checkoutService}
+        items={stepItems}
+      />
       <main className="h-full px-6 py-2 overflow-auto">
         <form id="password" className="space-y-4">
           <Input
@@ -73,6 +74,7 @@ export function Password({ injectedProvider, checkoutService }: Props) {
             size="small"
             {...register('password', {
               required: true,
+              min: 1,
             })}
             error={errors.password?.message}
           />

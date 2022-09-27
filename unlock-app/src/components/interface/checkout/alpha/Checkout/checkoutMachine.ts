@@ -207,13 +207,22 @@ export const checkoutMachine = createMachine(
             {
               actions: ['selectLock'],
               target: 'PASSWORD',
-              cond: (ctx, event) =>
-                Boolean(ctx.password && event.expiredMember),
+              cond: (ctx, event) => {
+                const isPassword =
+                  ctx.paywallConfig.password ||
+                  ctx.paywallConfig.locks?.[event.lock.address].password
+                return !!isPassword && event.expiredMember
+              },
             },
             {
               actions: ['selectLock'],
               target: 'CAPTCHA',
-              cond: (ctx, event) => Boolean(ctx.captcha && event.expiredMember),
+              cond: (ctx, event) => {
+                const isCaptcha =
+                  ctx.paywallConfig.captcha ||
+                  ctx.paywallConfig.locks?.[event.lock.address].captcha
+                return !!isCaptcha && event.expiredMember
+              },
             },
             {
               actions: ['selectLock'],
