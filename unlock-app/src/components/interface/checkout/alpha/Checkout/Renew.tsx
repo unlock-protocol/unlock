@@ -126,7 +126,7 @@ export function Renew({
             lockAddress,
             tokenId: tokenId.toString(),
             referrer,
-            data,
+            data: data[0],
           },
           {} /** Transaction params */,
           onTransactionHandler
