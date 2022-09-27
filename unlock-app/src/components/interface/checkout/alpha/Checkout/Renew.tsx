@@ -20,6 +20,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Pricing } from '../Lock'
 import { LabeledItem } from '../LabeledItem'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { useCheckoutSteps } from './useCheckoutItems'
 
 interface Props {
   injectedProvider: unknown
@@ -39,7 +40,13 @@ export function Renew({
   const web3Service = useWeb3Service()
   const [isSigningMessage, setIsSigningMessage] = useState(false)
   const [isRenewing, setIsRenewing] = useState(false)
-  const { paywallConfig, lock, messageToSign: signedMessage } = state.context
+  const {
+    paywallConfig,
+    lock,
+    messageToSign: signedMessage,
+    password,
+    captcha,
+  } = state.context
   const { messageToSign, referrer } = paywallConfig
   const hasMessageToSign = !signedMessage && paywallConfig.messageToSign
   const { network: lockNetwork, address: lockAddress, name: lockName } = lock!
@@ -66,6 +73,7 @@ export function Renew({
       if (!(lock && account)) {
         return
       }
+      const data = password || captcha || undefined
       const onTransactionHandler = (
         error: Error | null,
         hash: string | null
@@ -96,11 +104,12 @@ export function Renew({
         }
       }
       if (lock.publicLockVersion! <= 9) {
-        await walletService.purchaseKey(
+        await walletService.purchaseKeys(
           {
             lockAddress,
-            owner: account,
-            referrer,
+            owners: [account],
+            referrers: [referrer || account],
+            data,
           },
           {} /** transactionParams */,
           onTransactionHandler
@@ -117,6 +126,7 @@ export function Renew({
             lockAddress,
             tokenId: tokenId.toString(),
             referrer,
+            data: data?.[0],
           },
           {} /** Transaction params */,
           onTransactionHandler
@@ -145,26 +155,11 @@ export function Renew({
     }
   }
 
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Renew membership',
-      to: 'RENEW',
-    },
-    {
-      id: 3,
-      name: 'Renewed!',
-    },
-  ]
+  const stepItems: StepItem[] = useCheckoutSteps(checkoutService, true)
 
   return (
     <Fragment>
-      <Stepper position={2} service={checkoutService} items={stepItems} />
+      <Stepper position={3} service={checkoutService} items={stepItems} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="space-y-6">
           <div className="flex items-start justify-between">

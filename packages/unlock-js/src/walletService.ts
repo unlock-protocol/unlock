@@ -251,7 +251,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       tokenId: string
       referrer?: string
-      data?: string[]
+      data?: string
       decimals?: number
       erc20Address?: string
     },
