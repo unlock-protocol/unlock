@@ -112,7 +112,6 @@ export function Renew({
           0,
           lockNetwork
         )
-        console.log(tokenId)
         await walletService.extendKey(
           {
             lockAddress,
