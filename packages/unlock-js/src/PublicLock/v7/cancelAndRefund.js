@@ -1,4 +1,8 @@
-export default async function ({ lockAddress, tokenId }, callback) {
+export default async function (
+  { lockAddress, tokenId },
+  transactionOptions = {},
+  callback
+) {
   const lockContract = await this.getLockContract(lockAddress)
 
   if (!tokenId) {

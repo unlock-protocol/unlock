@@ -250,15 +250,18 @@ describe('useLocks', () => {
           owner,
           publicLockVersion: 11, // Latest version to be deployed!
         },
+        {},
         expect.any(Function)
       )
     })
 
     it('should call addToLocks', async () => {
       expect.assertions(1)
-      mockWalletService.createLock = jest.fn((lock, callback) => {
-        callback(null, transaction.hash)
-      })
+      mockWalletService.createLock = jest.fn(
+        (lock, transactionParams, callback) => {
+          callback(null, transaction.hash)
+        }
+      )
       await createLock(
         mockWeb3Service,
         mockWalletService,

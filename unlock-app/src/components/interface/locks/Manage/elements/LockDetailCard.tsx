@@ -16,6 +16,7 @@ import { UpdatePriceModal } from './UpdatePriceModal'
 import { UpdateQuantityModal } from './UpdateQuantityModal'
 import { UpdateDurationModal } from './UpdateDurationModal'
 import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
+import { CardPayment } from './CardPayment'
 
 interface LockDetailCardProps {
   network: number
@@ -240,6 +241,9 @@ export const LockDetailCard = ({
               loading={loading}
               append={<EditButton onClick={() => setEditPrice(true)} />}
             />
+          </div>
+          <div className="mt-6">
+            <CardPayment lockAddress={lockAddress} network={network} />
           </div>
         </div>
       </div>

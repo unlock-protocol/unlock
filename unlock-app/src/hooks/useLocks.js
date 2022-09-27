@@ -122,6 +122,7 @@ export const createLock = async (
       currencyContractAddress,
       publicLockVersion: 11, // Current version that we deploy!
     },
+    {} /** transactionParams */,
     async (createLockError, transactionHash) => {
       if (createLockError) {
         setError(createLockError)

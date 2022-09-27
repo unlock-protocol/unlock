@@ -81,14 +81,17 @@ describe('useLock', () => {
           keyPrice: '123',
           lockAddress: lock.address,
         },
+        {},
         expect.any(Function)
       )
     })
     it('should process the transaction to start polling it', async () => {
       expect.assertions(1)
-      mockWalletService.updateKeyPrice = jest.fn((params, callback) => {
-        return callback(null, hash)
-      })
+      mockWalletService.updateKeyPrice = jest.fn(
+        (params, transactionParams, callback) => {
+          return callback(null, hash)
+        }
+      )
       await updateKeyPriceOnLock(
         mockWeb3Service,
         mockWalletService,
@@ -106,9 +109,11 @@ describe('useLock', () => {
 
     it.skip('should callback', async () => {
       expect.assertions(1)
-      mockWalletService.updateKeyPrice = jest.fn((params, callback) => {
-        return callback(null, hash)
-      })
+      mockWalletService.updateKeyPrice = jest.fn(
+        (params, transactionParams, callback) => {
+          return callback(null, hash)
+        }
+      )
       await updateKeyPriceOnLock(
         mockWeb3Service,
         mockWalletService,

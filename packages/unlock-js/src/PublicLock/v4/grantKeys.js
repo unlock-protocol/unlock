@@ -2,6 +2,7 @@ import { ETHERS_MAX_UINT } from '../../constants'
 
 export default async function (
   { lockAddress, recipients, expirations },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)

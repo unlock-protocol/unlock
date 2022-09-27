@@ -31,6 +31,7 @@ export default async function (
     referrers = [],
     data = [],
   },
+  transactionOptions = {},
   callback
 ) {
   if (!erc20Address) {
@@ -88,6 +89,7 @@ export default async function (
           erc20Address,
           decimals,
         },
+        transactionOptions,
         callback
       )
     )
