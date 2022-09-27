@@ -47,7 +47,7 @@ const Detail = ({ label, prepend, icon, value = '-' }: DetailProps) => {
   )
 }
 
-const LockCardPlaceholder = () => {
+export const LockCardPlaceholder = () => {
   const DetailPlaceholder = () => {
     return (
       <div className="flex flex-col gap-1">
