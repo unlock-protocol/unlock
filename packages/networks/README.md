@@ -6,10 +6,10 @@ Contains useful addresses and info about Unlock on different networks
 
 ```js
 // by name
-import { rinkeby } from '@unlock-protocol/networks'; 
+import { goerli } from '@unlock-protocol/networks'
 
 // prefix by chain id
-import networks from '@unlock-protocol/networks'; 
+import networks from '@unlock-protocol/networks'
 console.log(networks[1].name) // mainnet
 ```
 
