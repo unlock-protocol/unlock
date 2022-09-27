@@ -33,7 +33,7 @@ docker-compose $COMPOSE_CONFIG up --build subgraph
 # docker-compose $COMPOSE_CONFIG up --build locksmith websub unlock-app 
 
 # Run the integration tests if needed
-if [ "$1" == 'run' ]
+if [ "$1" = 'run' ]
 then
   echo "Running integration tests \n"
   COMMAND="yarn workspace tests test --network docker"
