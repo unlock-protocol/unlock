@@ -203,6 +203,7 @@ export function Confirm({
           recurringPayments,
           referrers,
         },
+        {} /** Transaction params */,
         (error, hash) => {
           setIsConfirming(false)
           if (error) {

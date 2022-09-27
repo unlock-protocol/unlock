@@ -111,6 +111,7 @@ export function Renew({
             referrers: [referrer || account],
             data,
           },
+          {} /** transactionParams */,
           onTransactionHandler
         )
       } else {
@@ -127,6 +128,7 @@ export function Renew({
             referrer,
             data,
           },
+          {} /** Transaction params */,
           onTransactionHandler
         )
       }
