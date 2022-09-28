@@ -10,7 +10,6 @@ import { Popover, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { AiOutlineMenu as MenuIcon } from 'react-icons/ai'
 import { GrClose as MenuCloseIcon } from 'react-icons/gr'
-import { twMerge } from 'tailwind-merge'
 interface Link {
   label: string
   url: string
