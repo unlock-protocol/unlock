@@ -10,7 +10,7 @@ import { Popover, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { AiOutlineMenu as MenuIcon } from 'react-icons/ai'
 import { GrClose as MenuCloseIcon } from 'react-icons/gr'
-
+import { twMerge } from 'tailwind-merge'
 interface Link {
   label: string
   url: string
@@ -117,8 +117,10 @@ export const AppHeader = () => {
           </div>
 
           <div
-            className={`bg-ui-secondary-200 ${
-              isOpen ? 'fixed inset-0 top-20 px-10 pt-20' : ''
+            className={`bg-ui-secondary-200 h-0 overflow-hidden md:block ${
+              isOpen
+                ? 'absolute h-auto left-0 right-0 top-20 px-10 pt-20 block'
+                : ''
             }`}
           >
             <ul className="flex flex-col gap-8 md:px-0 md:flex-row">
