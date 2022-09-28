@@ -97,7 +97,7 @@ export const MemberCard = ({
           <div className="col-span-1 grow">
             <CardDetail title="Token ID" value={token} />
           </div>
-          <div className="flex col-span-2 gap-2">
+          <div className="flex self-start col-span-2 gap-2">
             <CardDetail title="Owner" value={<Address address={owner} />} />
             <div className="pb-1 mt-auto">
               <Button
