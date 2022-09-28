@@ -6,8 +6,6 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ImageBar } from './ImageBar'
 import { MemberCard } from './MemberCard'
-import useEns from '~/hooks/useEns'
-import { addressMinify } from '~/utils/strings'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import { useState } from 'react'
@@ -18,15 +16,6 @@ interface MembersProps {
   filters?: {
     [key: string]: any
   }
-}
-
-export const Address = ({ address }: { address: string }) => {
-  const addressToEns = useEns(address)
-
-  const resolvedAddress =
-    addressToEns === address ? addressMinify(address) : addressToEns
-
-  return <>{resolvedAddress}</>
 }
 
 const MembersPlaceholder = () => {
