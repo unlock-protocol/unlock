@@ -37,6 +37,7 @@ export default class Dispatcher {
             network.id,
             {
               address: wallet.address,
+              name: network.name,
               balance: ethers.utils.formatEther(balance),
             },
           ]
