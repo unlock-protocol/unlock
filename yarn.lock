@@ -16118,7 +16118,6 @@ __metadata:
   dependencies:
     "@nomiclabs/hardhat-etherscan": ^3.1.0
     "@primitivefi/hardhat-dodoc": 0.2.3
-    "@unlock-protocol/contracts": ^0.0.9
     "@unlock-protocol/hardhat-helpers": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
@@ -16130,13 +16129,6 @@ __metadata:
     typescript: 4.7.4
   languageName: unknown
   linkType: soft
-
-"@unlock-protocol/contracts@npm:^0.0.9":
-  version: 0.0.9
-  resolution: "@unlock-protocol/contracts@npm:0.0.9"
-  checksum: 65af9dc747448b1f9ca3b6d5e6c9e04c0a68558d04b142bee3991f7a34a3cf18d20b8bb677c35ac803ac87910aa5561e8d97bbea43413d5cc500fdfaf49c1706
-  languageName: node
-  linkType: hard
 
 "@unlock-protocol/eslint-config@workspace:./packages/eslint-config, @unlock-protocol/eslint-config@workspace:^, @unlock-protocol/eslint-config@workspace:packages/eslint-config":
   version: 0.0.0-use.local
