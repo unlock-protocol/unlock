@@ -26,14 +26,58 @@
     "startBlock": 7120795,
     "description": "The most popular network",
     "isTestNetwork": false,
-    "teamMultisig": "0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9"
+    "teamMultisig": "0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9",
+    "tokens": [
+      {
+        "name": "Wrapped Ether",
+        "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+        "symbol": "WETH",
+        "decimals": 18
+      },
+      {
+        "name": "Dai Stablecoin",
+        "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+        "symbol": "DAI",
+        "decimals": 18
+      },
+      {
+        "name": "USDCoin",
+        "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "symbol": "USDC",
+        "decimals": 6
+      },
+      {
+        "address": "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
+        "name": "Polygon",
+        "symbol": "MATIC",
+        "decimals": 18
+      },
+      {
+        "name": "Tether USD",
+        "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+        "symbol": "USDT",
+        "decimals": 6
+      },
+      {
+        "name": "Wrapped BTC",
+        "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+        "symbol": "WBTC",
+        "decimals": 8
+      },
+      {
+        "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+        "name": "Basic Attention Token",
+        "symbol": "BAT",
+        "decimals": 18
+      }
+    ]
   },
   "4": {
     "unlockAddress": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
     "serializerAddress": "0x1bd356194d97297F77e081fFFAB97b57297E93e4",
     "multisig": "0x04e855D82c079222d6bDBc041F6202d5A0137267",
     "id": 4,
-    "name": "Rinkeby",
+    "name": "Rinkeby (Testnet, Support ends 10/4/2022)",
     "blockTime": 8000,
     "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby",
     "explorer": {
@@ -83,7 +127,21 @@
     "startBlock": 7179039,
     "previousDeploys": [],
     "isTestNetwork": true,
-    "teamMultisig": "0x95C06469e557d8645966077891B4aeDe8D55A755"
+    "teamMultisig": "0x95C06469e557d8645966077891B4aeDe8D55A755",
+    "tokens": [
+      {
+        "name": "Wrapped Ether",
+        "address": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
+        "symbol": "WETH",
+        "decimals": 18
+      },
+      {
+        "name": "Uniswap",
+        "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+        "symbol": "UNI",
+        "decimals": 18
+      }
+    ]
   },
   "10": {
     "unlockAddress": "0x99b1348a9129ac49c6de7F11245773dE2f51fB0c",
@@ -107,7 +165,33 @@
     },
     "description": "Layer 2 network. Cheaper transaction cost.",
     "isTestNetwork": false,
-    "teamMultisig": "0x6E78b4447e34e751EC181DCBed63633aA753e145"
+    "teamMultisig": "0x6E78b4447e34e751EC181DCBed63633aA753e145",
+    "tokens": [
+      {
+        "name": "Ethereum",
+        "symbol": "ETH",
+        "decimals": 18,
+        "address": "0x0000000000000000000000000000000000000000"
+      },
+      {
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 6,
+        "address": "0x7f5c764cbc14f9669b88837ca1490cca17c31607"
+      },
+      {
+        "name": "Tether",
+        "symbol": "USDT",
+        "decimals": 6,
+        "address": "0x94b008aa00579c1307b0ef2c499ad98a8ce58e58"
+      },
+      {
+        "name": "Dai",
+        "symbol": "DAI",
+        "decimals": 18,
+        "address": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1"
+      }
+    ]
   },
   "56": {
     "unlockAddress": "0xeC83410DbC48C7797D2f2AFe624881674c65c856",
@@ -139,7 +223,33 @@
     ],
     "description": "EVM compatible network. Cheaper transaction cost.",
     "isTestNetwork": false,
-    "teamMultisig": "0x373D7cbc4F2700719DEa237500c7a154310B0F9B"
+    "teamMultisig": "0x373D7cbc4F2700719DEa237500c7a154310B0F9B",
+    "tokens": [
+      {
+        "name": "Ethereum",
+        "symbol": "ETH",
+        "decimals": 18,
+        "address": "0x2170ed0880ac9a755fd29b2688956bd959f933f8"
+      },
+      {
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 18,
+        "address": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d"
+      },
+      {
+        "name": "Tether",
+        "symbol": "USDT",
+        "decimals": 18,
+        "address": "0x55d398326f99059ff775485246999027b3197955"
+      },
+      {
+        "name": "Dai",
+        "symbol": "DAI",
+        "decimals": 18,
+        "address": "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3"
+      }
+    ]
   },
   "100": {
     "unlockAddress": "0x1bc53f4303c711cc693F6Ec3477B83703DcB317f",
@@ -172,7 +282,15 @@
     ],
     "description": "EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.",
     "isTestNetwork": false,
-    "teamMultisig": "0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D"
+    "teamMultisig": "0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D",
+    "tokens": [
+      {
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 6,
+        "address": "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83"
+      }
+    ]
   },
   "137": {
     "unlockAddress": "0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f",
@@ -205,7 +323,39 @@
     ],
     "description": "Popular side chain network. Cheaper transaction cost.",
     "isTestNetwork": false,
-    "teamMultisig": "0x479f3830fbd715342868BA95E438609BCe443DFB"
+    "teamMultisig": "0x479f3830fbd715342868BA95E438609BCe443DFB",
+    "tokens": [
+      {
+        "name": "Wrapped Ether",
+        "address": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+        "symbol": "WETH",
+        "decimals": 18
+      },
+      {
+        "name": "Dai Stablecoin",
+        "address": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063",
+        "symbol": "DAI",
+        "decimals": 18
+      },
+      {
+        "name": "Tether USD",
+        "address": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F",
+        "symbol": "USDT",
+        "decimals": 6
+      },
+      {
+        "name": "USDCoin",
+        "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+        "symbol": "USDC",
+        "decimals": 6
+      },
+      {
+        "name": "Wrapped BTC",
+        "address": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6",
+        "symbol": "WBTC",
+        "decimals": 8
+      }
+    ]
   },
   "31337": {
     "id": 31337,
@@ -216,6 +366,64 @@
     "serializerAddress": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
     "description": "Localhost network.",
     "isTestNetwork": true
+  },
+  "42161": {
+    "unlockAddress": "0x1FF7e338d5E582138C46044dc238543Ce555C963",
+    "multisig": "0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0",
+    "id": 42161,
+    "name": "Arbitrum",
+    "blockTime": 1000,
+    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum",
+    "explorer": {
+      "name": "Arbitrum",
+      "urls": {}
+    },
+    "opensea": {},
+    "requiredConfirmations": 12,
+    "erc20": null,
+    "baseCurrencySymbol": "ETH",
+    "locksmithUri": "https://locksmith.unlock-protocol.com",
+    "nativeCurrency": {
+      "name": "ETH",
+      "symbol": "ETH",
+      "decimals": 18
+    },
+    "startBlock": 17429533,
+    "previousDeploys": [],
+    "isTestNetwork": false,
+    "description": "Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.",
+    "tokens": [
+      {
+        "name": "Ethereum",
+        "symbol": "WETH",
+        "decimals": 18,
+        "address": "0x82af49447d8a07e3bd95bd0d56f35241523fbab1"
+      },
+      {
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 6,
+        "address": "0xff970a61a04b1ca14834a43f5de4533ebddb5cc8"
+      },
+      {
+        "name": "Tether",
+        "symbol": "USDT",
+        "decimals": 6,
+        "address": "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9"
+      },
+      {
+        "name": "Dai",
+        "symbol": "DAI",
+        "decimals": 18,
+        "address": "0xda10009cbd5d07dd0cecc66161fc93d7c9000da1"
+      },
+      {
+        "name": "Wrapped Bitcoin",
+        "symbol": "WBTC",
+        "decimals": 8,
+        "address": "0x2f2a2543b76a4166549f7aab2e75bef0aefc5b0f"
+      }
+    ]
   },
   "42220": {
     "unlockAddress": "0x1FF7e338d5E582138C46044dc238543Ce555C963",
@@ -242,7 +450,15 @@
     "startBlock": 7179039,
     "previousDeploys": [],
     "isTestNetwork": false,
-    "teamMultisig": "0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8"
+    "teamMultisig": "0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8",
+    "tokens": [
+      {
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 6,
+        "address": "0xef4229c8c3250c675f21bcefa42f58efbff6002a"
+      }
+    ]
   },
   "43114": {
     "unlockAddress": "0x70cBE5F72dD85aA634d07d2227a421144Af734b3",
@@ -268,7 +484,39 @@
     "startBlock": 17188332,
     "previousDeploys": [],
     "isTestNetwork": false,
-    "description": "Avalanche is an open, programmable smart contracts platform for decentralized applications."
+    "description": "Avalanche is an open, programmable smart contracts platform for decentralized applications.",
+    "tokens": [
+      {
+        "name": "Ethereum",
+        "symbol": "WETH",
+        "decimals": 18,
+        "address": "0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab"
+      },
+      {
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "decimals": 6,
+        "address": "0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664"
+      },
+      {
+        "name": "Tether",
+        "symbol": "USDT",
+        "decimals": 6,
+        "address": "0xc7198437980c041c805a1edcba50c1ce5db95118"
+      },
+      {
+        "name": "Dai",
+        "symbol": "DAI",
+        "decimals": 18,
+        "address": "0xd586e7f844cea2f87f50152665bcbc2c279d8d70"
+      },
+      {
+        "name": "Wrapped Bitcoin",
+        "symbol": "WBTC",
+        "decimals": 8,
+        "address": "0x50b7545627a5162f82a992c33b87adc75187b218"
+      }
+    ]
   },
   "80001": {
     "unlockAddress": "0x1FF7e338d5E582138C46044dc238543Ce555C963",
@@ -295,6 +543,20 @@
     "previousDeploys": [],
     "description": "Polygon test network. Do not use for production",
     "isTestNetwork": true,
-    "teamMultisig": "0x12E37A8880801E1e5290c815a894d322ac591607"
+    "teamMultisig": "0x12E37A8880801E1e5290c815a894d322ac591607",
+    "tokens": [
+      {
+        "name": "Wrapped Ether",
+        "address": "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
+        "symbol": "WETH",
+        "decimals": 18
+      },
+      {
+        "name": "Wrapped Matic",
+        "address": "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+        "symbol": "WMATIC",
+        "decimals": 18
+      }
+    ]
   }
 }
