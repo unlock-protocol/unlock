@@ -8,15 +8,17 @@ import { LockList } from './elements/LockList'
 const PageHeader = () => {
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-4xl font-bold ">Locks</h1>
-      <div className="flex justify-between">
-        <span className="w-full max-w-lg text-base text-gray-700">
-          Create membership for Event ticketing, Media membership, DAO,
-          Certification, collectibles and more.
-        </span>
-        <Link href="/locks/create">
-          <Button size="large">Create Lock</Button>
-        </Link>
+      <h1 className="text-4xl font-bold">Locks</h1>
+      <div>
+        <div className="flex flex-col gap-4 md:gap-0 md:justify-between md:flex-row">
+          <span className="w-full max-w-lg text-base text-gray-700">
+            Create membership for Event ticketing, Media membership, DAO,
+            Certification, collectibles and more.
+          </span>
+          <Link href="/locks/create">
+            <Button size="large">Create Lock</Button>
+          </Link>
+        </div>
       </div>
     </div>
   )
