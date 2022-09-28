@@ -7,9 +7,10 @@ import { expirationAsDate } from '~/utils/durations'
 import { MetadataCard } from './MetadataCard'
 import useClipboard from 'react-use-clipboard'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
-import { Address } from './Members'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
 import ExtendKeysDrawer from '~/components/creator/members/ExtendKeysDrawer'
+import useEns from '~/hooks/useEns'
+import { addressMinify } from '~/utils/strings'
 
 interface MemberCardProps {
   token: string
@@ -48,7 +49,13 @@ export const MemberCard = ({
   const [isOpen, setIsOpen] = useState(false)
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
   const [extendKeysOpen, setExtendKeysOpen] = useState(false)
-  const [isCopied, setCopied] = useClipboard(owner, {
+
+  const addressToEns = useEns(owner)
+
+  const resolvedAddress =
+    addressToEns === owner ? addressMinify(owner) : addressToEns
+
+  const [isCopied, setCopied] = useClipboard(resolvedAddress, {
     successDuration: 2000,
   })
 
@@ -98,7 +105,7 @@ export const MemberCard = ({
             <CardDetail title="Token ID" value={token} />
           </div>
           <div className="flex self-start col-span-2 gap-2">
-            <CardDetail title="Owner" value={<Address address={owner} />} />
+            <CardDetail title="Owner" value={resolvedAddress} />
             <div className="pb-1 mt-auto">
               <Button
                 variant="transparent"
