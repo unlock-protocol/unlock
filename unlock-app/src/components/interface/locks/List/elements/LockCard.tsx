@@ -201,7 +201,7 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
                 label="Price"
                 value={lock.keyPrice}
                 icon={TagIcon}
-                prepend={<CryptoIcon symbol={symbol} size={20} />}
+                prepend={<CryptoIcon symbol={symbol} size={25} />}
               />
             </div>
             <div className="col-span-1 md:col-span-2">
