@@ -39,7 +39,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/networks,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/contracts,@unlock-protocol/ui}'",
+    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/networks,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/contracts,@unlock-protocol/ui,@unlock-protocol/hardhat-plugin}'",
     "packages:clean": "yarn packages --parallel run clean",
     "packages:build": "yarn packages --topological-dev run build",
     "packages:publish": "yarn packages --no-private npm publish ",
