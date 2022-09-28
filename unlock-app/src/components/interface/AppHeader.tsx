@@ -112,7 +112,11 @@ export const AppHeader = () => {
               {isOpen ? <MenuCloseIcon size={20} /> : <MenuIcon size={20} />}
             </button>
             <div className="h-5 md:h-6">
-              <img src="/images/svg/unlock-logo.svg" alt="logo" />
+              <img
+                className="h-full"
+                src="/images/svg/unlock-logo.svg"
+                alt="logo"
+              />
             </div>
           </div>
 
