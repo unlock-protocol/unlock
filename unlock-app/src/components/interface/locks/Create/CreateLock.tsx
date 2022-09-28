@@ -58,7 +58,7 @@ export const CreateLockSteps = () => {
   const { account: owner, network } = useAuth()
   const [step, setStep] = useState<Step>('data')
   const [values, setValues] = useState<LockFormProps | undefined>(undefined)
-  const { addLock } = useLocks(owner!)
+  const { addLock } = useLocks(owner!, network!)
   const [transactionHash, setTransactionHash] = useState<string | undefined>(
     undefined
   )
