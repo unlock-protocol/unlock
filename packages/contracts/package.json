@@ -19,7 +19,7 @@
     "publish:npm": "yarn prepublish && npm publish"
   },
   "devDependencies": {
-    "@nomiclabs/hardhat-etherscan": "^3.1.0",
+    "@nomiclabs/hardhat-etherscan": "3.1.0",
     "@primitivefi/hardhat-dodoc": "0.2.3",
     "@unlock-protocol/hardhat-helpers": "workspace:^",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
