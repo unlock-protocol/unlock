@@ -15,6 +15,7 @@ import { useState } from 'react'
 interface MembersProps {
   lockAddress: string
   network: number
+  isLockManager: boolean
   filters?: {
     [key: string]: any
   }
@@ -48,6 +49,7 @@ const MembersPlaceholder = () => {
 export const Members = ({
   lockAddress,
   network,
+  isLockManager,
   filters = {
     query: '',
     filterKey: 'owner',
@@ -59,10 +61,6 @@ export const Members = ({
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
   const [page, setPage] = useState(1)
-
-  const getLockManagerStatus = async () => {
-    return await web3Service.isLockManager(lockAddress, account!, network)
-  }
 
   const getMembers = async () => {
     await storageService.loginPrompt({
@@ -85,7 +83,6 @@ export const Members = ({
   const [
     { isLoading, data: members = [] },
     { isLoading: isLoadingVersion, data: lockVersion = 0 },
-    { isLoading: isLoadingLockManager, data: isLockManager },
   ] = useQueries([
     {
       queryFn: getMembers,
@@ -101,13 +98,9 @@ export const Members = ({
         ToastHelper.error('There is some unexpected issue, please try again')
       },
     },
-    {
-      queryFn: getLockManagerStatus,
-      queryKey: ['getLockManagerStatus', lockAddress, network],
-    },
   ])
 
-  const loading = isLoadingVersion || isLoading || isLoadingLockManager
+  const loading = isLoadingVersion || isLoading
   const noItems = members?.length === 0 && !loading
 
   if (loading) {

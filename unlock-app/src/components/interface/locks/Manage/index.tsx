@@ -14,6 +14,8 @@ import { HiOutlineShare as ShareOptionIcon } from 'react-icons/hi'
 import { useForm } from 'react-hook-form'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useQuery } from 'react-query'
 
 interface ActionBarProps {
   lockAddress: string
@@ -146,16 +148,31 @@ const TopActionBar = () => {
 
 export const ManageLockPage = () => {
   const { network: walletNetwork } = useAuth()
+  const web3Service = useWeb3Service()
   const { query } = useRouter()
+  const { account } = useAuth()
 
   const { address, network } = query ?? {}
+
+  const lockNetwork = parseInt(network as string)
+  const lockAddress = address as string
+
+  const getLockManagerStatus = async () => {
+    return await web3Service.isLockManager(
+      lockAddress,
+      account!,
+      walletNetwork!
+    )
+  }
+
+  const { data: isLockManager = false } = useQuery(
+    ['getLockManagerStatus', account, walletNetwork, lockAddress],
+    async () => getLockManagerStatus()
+  )
 
   if (!walletNetwork) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
   }
-
-  const lockNetwork = parseInt(network as string)
-  const lockAddress = address as string
 
   return (
     <div className="min-h-screen bg-ui-secondary-200 pb-60">
@@ -171,7 +188,11 @@ export const ManageLockPage = () => {
             <div className="flex flex-col gap-6 lg:col-span-9">
               <TotalBar lockAddress={lockAddress} network={lockNetwork} />
               <ActionBar lockAddress={lockAddress} />
-              <Members lockAddress={lockAddress} network={lockNetwork} />
+              <Members
+                isLockManager={isLockManager}
+                lockAddress={lockAddress}
+                network={lockNetwork}
+              />
             </div>
           </div>
         </div>
