@@ -1,7 +1,7 @@
 import networksConfig from '@unlock-protocol/networks'
-import { NetworkConfigs } from '@unlock-protocol/types'
+import { NetworkConfig, NetworkConfigs } from '@unlock-protocol/types'
 
-const env = process.env.NEXT_PUBLIC_UNLOCK_ENV || 'test'
+const env = process.env.NEXT_PUBLIC_UNLOCK_ENV || 'dev'
 
 const staging = {
   paywallUrl: 'https://staging-paywall.unlock-protocol.com',
@@ -51,7 +51,8 @@ export const config = {
       networks[network] = {
         ...networksConfig[network],
         locksmithUri: app.locksmithHost,
-      }
+        locksmith: app.locksmithHost,
+      } as NetworkConfig
       return networks
     },
     {}
