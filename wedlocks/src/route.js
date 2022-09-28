@@ -34,9 +34,9 @@ export const route = async (args) => {
   const email = {
     from: config.sender,
     to: args.recipient,
-    subject: template.subject(templateParams),
-    text: template.text ? template.text(templateParams) : undefined,
-    html: template.html ? template.html(templateParams) : undefined,
+    subject: await template.subject(templateParams),
+    text: template.text ? await template.text(templateParams) : undefined,
+    html: template.html ? await template.html(templateParams) : undefined,
     attachments: []
       .concat(args.attachments, template.attachments)
       .filter((x) => !!x),
