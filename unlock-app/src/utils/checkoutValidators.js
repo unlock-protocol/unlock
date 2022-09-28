@@ -7,7 +7,7 @@ import { ACCOUNT_REGEXP } from '../constants'
 const { env } = configure()
 
 export const log = (message) => {
-  if (env !== 'test') {
+  if (env !== 'dev') {
     console.log(message)
   }
 }
