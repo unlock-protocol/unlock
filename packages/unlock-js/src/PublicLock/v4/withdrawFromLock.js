@@ -11,6 +11,7 @@ import utils from '../../utils'
  */
 export default async function (
   { lockAddress, amount = '0', decimals = 18 },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)

@@ -8,7 +8,7 @@ export const rinkeby: NetworkConfig = {
   serializerAddress: '0x1bd356194d97297F77e081fFFAB97b57297E93e4',
   multisig: '0x04e855D82c079222d6bDBc041F6202d5A0137267',
   id: 4,
-  name: 'Rinkeby (Testnet, Support ends 12/21/2022)',
+  name: 'Rinkeby (Testnet, Support ends 10/4/2022)',
   blockTime: 8000,
   subgraphURI:
     'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',

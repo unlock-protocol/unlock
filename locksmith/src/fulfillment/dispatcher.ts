@@ -37,6 +37,7 @@ export default class Dispatcher {
             network.id,
             {
               address: wallet.address,
+              name: network.name,
               balance: ethers.utils.formatEther(balance),
             },
           ]
@@ -66,6 +67,7 @@ export default class Dispatcher {
         tokenId: keyId.toString(),
         duration: 0,
       },
+      {} /** TransactionOptions */,
       callback
     )
   }
@@ -116,8 +118,8 @@ export default class Dispatcher {
         recipients,
         keyManagers,
         expirations,
-        transactionOptions,
       },
+      transactionOptions,
       cb
     )
   }
@@ -171,6 +173,7 @@ export default class Dispatcher {
         lockAddress,
         owner,
       },
+      {},
       cb
     )
   }
@@ -197,7 +200,6 @@ export default class Dispatcher {
 
     // send tx with custom gas (Polygon estimates are too often wrong...)
     const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
-
     return walletService.renewMembershipFor(
       {
         lockAddress,

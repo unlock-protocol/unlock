@@ -98,7 +98,7 @@ describe('useLocks', () => {
   it.skip('should default to loading and an empty list', async () => {
     expect.assertions(4)
     const { result, waitForNextUpdate } = renderHook(() =>
-      useLocks(ownerAddress)
+      useLocks(ownerAddress, network)
     )
     const { loading, locks } = result.current
     expect(loading).toBe(true)
@@ -120,7 +120,9 @@ describe('useLocks', () => {
       },
     ]
 
-    const { result, waitFor } = renderHook(() => useLocks(ownerAddress))
+    const { result, waitFor } = renderHook(() =>
+      useLocks(ownerAddress, network)
+    )
     await waitFor(() => {
       return result.current.loading === false
     })
@@ -250,15 +252,18 @@ describe('useLocks', () => {
           owner,
           publicLockVersion: 11, // Latest version to be deployed!
         },
+        {},
         expect.any(Function)
       )
     })
 
     it('should call addToLocks', async () => {
       expect.assertions(1)
-      mockWalletService.createLock = jest.fn((lock, callback) => {
-        callback(null, transaction.hash)
-      })
+      mockWalletService.createLock = jest.fn(
+        (lock, transactionParams, callback) => {
+          callback(null, transaction.hash)
+        }
+      )
       await createLock(
         mockWeb3Service,
         mockWalletService,
