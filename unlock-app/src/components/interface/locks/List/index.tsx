@@ -3,6 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ImageBar } from '../Manage/elements/ImageBar'
+import { LockList } from './elements/LockList'
 
 const PageHeader = () => {
   return (
@@ -74,7 +75,13 @@ export const LocksListPage = () => {
       <div className="px-4 mx-auto lg:container pt-9">
         <div className="flex flex-col gap-10">
           <PageHeader />
-          {!network ? <WalletNotConnected /> : noItems ? <NoItems /> : null}
+          {!network ? (
+            <WalletNotConnected />
+          ) : noItems ? (
+            <NoItems />
+          ) : (
+            <LockList />
+          )}
         </div>
       </div>
     </div>
