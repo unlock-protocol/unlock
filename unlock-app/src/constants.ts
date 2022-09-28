@@ -1,7 +1,5 @@
 /* eslint import/prefer-default-export: 0 */ // This file does not have a default export
-import configure from './config'
-
-const config = configure()
+import { config } from '~/config/app'
 
 export const ETHEREUM_NETWORKS_NAMES: { [id: number]: string } = {}
 Object.keys(config.networks).forEach((networkId) => {
