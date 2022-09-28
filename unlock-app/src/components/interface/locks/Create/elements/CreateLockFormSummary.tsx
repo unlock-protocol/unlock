@@ -90,21 +90,27 @@ export const CreateLockFormSummary = ({
   const router = useRouter()
   const web3Service = useWeb3Service()
   const { networks, requiredConfirmations } = useConfig()
-  const { unlimitedDuration = false, unlimitedQuantity = false } =
-    formData ?? {}
+  const {
+    unlimitedDuration = false,
+    unlimitedQuantity = false,
+    network: lockNetwork,
+  } = formData ?? {}
+
+  // when lock is deploying use form network to avoid error when user switch network
+  const defaultNetwork = showStatus ? lockNetwork : network
 
   const {
     name: networkName,
     explorer,
     baseCurrencySymbol,
-  } = networks[network!] ?? {}
+  } = networks[defaultNetwork!] ?? {}
 
   const transactionDetailUrl = transactionHash
     ? explorer?.urls?.transaction(transactionHash)
     : null
 
   const getTransactionDetails = async (hash: string) => {
-    return await web3Service.getTransaction(hash, network!)
+    return await web3Service.getTransaction(hash, defaultNetwork)
   }
 
   const { data: { confirmations = 0 } = {}, isError } = useQuery(
