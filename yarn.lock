@@ -16649,7 +16649,7 @@ __metadata:
     babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
     cross-fetch: 3.1.5
-    csv: ^6.2.0
+    csv: 6.2.0
     dayjs: 1.11.4
     deep-object-diff: 1.1.7
     dotenv: 16.0.1
@@ -16678,7 +16678,7 @@ __metadata:
     react: 17.0.2
     react-crypto-icons: 1.0.5
     react-dom: 17.0.2
-    react-dropzone: ^14.2.2
+    react-dropzone: 14.2.2
     react-google-recaptcha: 2.1.0
     react-gtm-module: 2.0.11
     react-hook-form: 7.33.1
@@ -16688,7 +16688,7 @@ __metadata:
     react-jwt: 1.1.6
     react-query: 3.39.2
     react-test-renderer: 17.0.2
-    react-use: ^17.4.0
+    react-use: 17.4.0
     react-use-clipboard: 1.0.8
     siwe: 1.1.6
     styled-components: 5.3.5
@@ -24726,7 +24726,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv@npm:^6.2.0":
+"csv@npm:6.2.0":
   version: 6.2.0
   resolution: "csv@npm:6.2.0"
   dependencies:
@@ -46135,7 +46135,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-dropzone@npm:^14.2.2":
+"react-dropzone@npm:14.2.2":
   version: 14.2.2
   resolution: "react-dropzone@npm:14.2.2"
   dependencies:
@@ -46593,7 +46593,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-use@npm:^17.4.0":
+"react-use@npm:17.4.0":
   version: 17.4.0
   resolution: "react-use@npm:17.4.0"
   dependencies:
