@@ -11,11 +11,9 @@ import {
 } from '../utils/withWalletService'
 import { GraphServiceContext } from '../utils/withGraphService'
 import { ConfigContext } from '../utils/withConfig'
-import {
-  AuthenticationContext,
-  useAuth,
-} from '../contexts/AuthenticationContext'
 import { processTransaction } from './useLock'
+import { useConfig } from '~/utils/withConfig'
+import GraphService from '~/services/graphService'
 
 /**
  * Retrieves a lock object at the address
@@ -48,7 +46,7 @@ export const retrieveLocks = async (
   // The locks from the subgraph miss some important things, such as balance,
   // ERC20 info.. etc so we need to retrieve them from unlock-js too.
   // TODO: add these missing fields to the graph!
-  const locks = await graphService.locksByManager(owner)
+  const locks = await graphService.locksByManager(owner, network)
 
   // Sort locks to show the most recent first
   locks.sort((x, y) => {
@@ -170,16 +168,20 @@ export const createLock = async (
  * A hook which yields locks
  * This hook yields the list of locks for the owner based on data from the graph and the chain
  * @param {*} address
+ * @param {*} network
  */
-export const useLocks = (owner) => {
-  const { network } = useAuth()
+export const useLocks = (owner, network) => {
+  const networks = useConfig()
   const web3Service = useWeb3Service()
   const walletService = useWalletService()
   const storageService = useStorageService()
-  const graphService = useContext(GraphServiceContext)
   const config = useContext(ConfigContext)
   const [error, setError] = useState(undefined)
   const [loading, setLoading] = useState(true)
+
+  const { subgraphURI } = networks[network] ?? {}
+  const graphService = new GraphService()
+  graphService.connect(subgraphURI)
 
   graphService.connect(config.networks[network].subgraphURI)
 
