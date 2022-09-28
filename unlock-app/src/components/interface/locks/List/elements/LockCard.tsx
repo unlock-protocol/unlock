@@ -64,9 +64,9 @@ export const LockCardPlaceholder = () => {
     )
   }
   return (
-    <div className="flex items-center h-24 px-12 py-4 bg-white rounded-2xl">
-      <div className="flex items-center justify-between w-full grid-flow-col col-span-7 gap-4 ">
-        <div className="flex col-span-3 gap-3">
+    <div className="flex items-center px-12 py-4 bg-white md:h-24 rounded-2xl">
+      <div className="grid items-center justify-between w-full grid-cols-1 gap-4 md:grid-cols-7">
+        <div className="flex gap-7 md:gap-3 md:col-span-3">
           <div className="rounded-full bg-slate-200 animate-pulse h-14 w-14"></div>
           <div className="flex flex-col gap-2">
             <div className="h-6 w-52 animate-pulse bg-slate-200"></div>
@@ -77,12 +77,13 @@ export const LockCardPlaceholder = () => {
             </div>
           </div>
         </div>
-        <div className="flex col-span-3 gap-14">
+        <div className="flex md:col-span-3 gap-14">
           <DetailPlaceholder />
           <DetailPlaceholder />
           <DetailPlaceholder />
         </div>
-        <div className="col-span-1">
+        <div className="flex justify-between gap-2 md:col-span-1 md:ml-auto">
+          <div className="w-40 h-6 animate-pulse bg-slate-200 md:hidden"></div>
           <div className="w-6 h-6 animate-pulse bg-slate-200"></div>
         </div>
       </div>
@@ -169,8 +170,8 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
   return (
     <>
       <div className="px-12 py-4 bg-white shadow-lg rounded-2xl">
-        <div className="grid items-center justify-between grid-cols-7 gap-4">
-          <div className="flex col-span-3 gap-3">
+        <div className="grid items-center justify-between grid-cols-1 gap-7 md:gap-4 md:grid-cols-7">
+          <div className="flex gap-3 md:col-span-3">
             <LockIcon lock={lock} />
             <div className="flex flex-col gap-2">
               <span className="text-2xl font-bold">{lock.name}</span>
@@ -194,7 +195,7 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
               </div>
             </div>
           </div>
-          <div className="grid items-center grid-cols-4 col-span-3 gap-14">
+          <div className="grid items-center grid-cols-3 gap-3 md:grid-cols-4 md:col-span-3 md:gap-14">
             <div className="col-span-1">
               <Detail
                 label="Price"
@@ -203,7 +204,7 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
                 prepend={<CryptoIcon symbol={symbol} size={20} />}
               />
             </div>
-            <div className="col-span-2">
+            <div className="col-span-1 md:col-span-2">
               <Detail label="Key Duration" value={duration} icon={TimeIcon} />
             </div>
             <div className="col-span-1">
@@ -214,12 +215,13 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
               />
             </div>
           </div>
-          <div className="col-span-1 ml-auto">
-            <button>
-              <Link href={lockUrl} aria-label="arrow right">
+          <div className="md:ml-auto md:col-span-1">
+            <Link href={lockUrl} aria-label="arrow right">
+              <button className="flex items-center justify-between w-full md:w-auto">
+                <span className="text-base font-bold md:hidden">Manage</span>
                 <ArrowRightIcon size={20} />
-              </Link>
-            </button>
+              </button>
+            </Link>
           </div>
         </div>
       </div>
