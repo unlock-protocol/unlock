@@ -16,6 +16,7 @@
     "babel-plugin-wildcard": "7.0.0",
     "dotenv": "16.0.1",
     "eslint": "8.21.0",
+    "handlebars": "4.7.7",
     "jest": "27.5.1",
     "lint-staged": "13.0.3",
     "node-forge": "1.3.1",

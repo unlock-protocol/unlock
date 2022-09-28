@@ -1,9 +1,12 @@
+import handlebars from 'handlebars'
+
 export default {
-  subject: () => 'Debug Email',
-  text: (params) =>
+  subject: handlebars.compile('Debug Email'),
+  text: handlebars.compile(
     `Welcome to Unlock!
 This is a test email. Please ignore and/or report if you're getting it!
-  ${params.foo}
+  {{foo}}
 The Unlock team
-  `,
+  `
+  ),
 }
