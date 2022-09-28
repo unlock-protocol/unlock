@@ -1,2 +1,3 @@
-recipient,count,email,expiration,expire,manager
-julien51.eth,1,julien@unlock-protocol.com,0,true,julien51.eth
+recipient,count,email,expiration,manager,neverExpire
+julien51.eth,1,julien@unlock-protocol.com,,julien51.eth,FALSE
+unlock-protocol.eth,1,unlock@unlock-protocol.com,10-30-2050,,

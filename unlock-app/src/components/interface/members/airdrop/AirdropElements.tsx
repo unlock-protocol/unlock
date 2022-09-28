@@ -8,7 +8,10 @@ export const AirdropMember = z.object({
   recipient: z.string(),
   count: z.preprocess((item) => Number(item), z.number().default(1)),
   expiration: z.string().optional(),
-  expire: z.boolean().optional().default(true),
+  neverExpire: z.preprocess(
+    (value) => !!value,
+    z.boolean().optional().default(false)
+  ),
   manager: z.string().optional(),
   email: z.string().optional(),
 })

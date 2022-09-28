@@ -7,10 +7,14 @@ import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Lock } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { MAX_UINT } from '~/constants'
+import { formatDate } from '~/utils/lock'
+import dayjs from 'dayjs'
+import customParseFormat from 'dayjs/plugin/customParseFormat'
+
+dayjs.extend(customParseFormat)
 
 export interface Props {
   lockAddress: string
@@ -31,73 +35,78 @@ export function AirdropKeysDrawer({
   const { account } = useAuth()
   const { data: lockData, isLoading: isLockDataLoading } = useQuery<Lock>(
     ['lock', lockAddress, network],
-    () => {
-      return web3Service.getLock(lockAddress, network)
+    async () => {
+      const result = await web3Service.getLock(lockAddress, network)
+      return {
+        ...result,
+        network,
+      }
     }
   )
 
   const handleConfirm = async (items: AirdropMember[]) => {
-    try {
-      // Create metadata
-      const users = items.map(({ recipient: userAddress, email }) => {
-        const user = {
-          userAddress,
-          lockAddress,
-          metadata: {
-            public: {},
-            protected: {} as Record<string, string>,
-          },
-        }
-        if (email) {
-          user.metadata.protected.email = email
-        }
-        return user
-      })
-
-      // Save metadata for users
-      await storageService.submitMetadata(users, network)
-
-      const initialValue: Record<
-        'recipients' | 'keyManagers' | 'expirations',
-        string[]
-      > = {
-        recipients: [],
-        keyManagers: [],
-        expirations: [],
-      }
-
-      // Create options to pass to grant keys from the members
-      const options = items.reduce((prop, item) => {
-        const expiration = item.expiration
-          ? Math.floor(new Date(item.expiration).getTime() / 1000).toString()
-          : MAX_UINT
-
-        prop.recipients.push(item.recipient)
-        prop.expirations.push(expiration)
-
-        prop.keyManagers.push(item.manager || account!)
-        return prop
-      }, initialValue)
-
-      // Grant keys
-      await walletService.grantKeys(
-        {
-          ...options,
-          lockAddress,
+    // Create metadata
+    const users = items.map(({ recipient: userAddress, email }) => {
+      const user = {
+        userAddress,
+        lockAddress,
+        metadata: {
+          public: {},
+          protected: {} as Record<string, string>,
         },
-        {},
-        (error) => {
-          if (error) {
-            throw error
-          }
-        }
-      )
-    } catch (error) {
-      if (error instanceof Error) {
-        ToastHelper.error(error.message)
       }
+      if (email) {
+        user.metadata.protected.email = email
+      }
+      return user
+    })
+
+    // Save metadata for users
+    await storageService.submitMetadata(users, network)
+
+    const initialValue: Record<
+      'recipients' | 'keyManagers' | 'expirations',
+      string[]
+    > = {
+      recipients: [],
+      keyManagers: [],
+      expirations: [],
     }
+
+    // Create options to pass to grant keys from the members
+    const options = items.reduce((prop, item) => {
+      let expiration = Math.floor(
+        new Date(
+          item.expiration || formatDate(lockData!.expirationDuration)
+        ).getTime() / 1000
+      ).toString()
+
+      // if item never expires
+      if (item.neverExpire) {
+        expiration = MAX_UINT
+      }
+
+      prop.recipients.push(item.recipient)
+      prop.expirations.push(expiration!)
+      prop.keyManagers.push(item.manager || account!)
+      return prop
+    }, initialValue)
+
+    // Grant keys
+    await walletService.grantKeys(
+      {
+        ...options,
+        lockAddress,
+      },
+      {},
+      (error) => {
+        if (error) {
+          throw error
+        }
+      }
+    )
   }
+
   return (
     <Drawer
       isOpen={isOpen}
@@ -115,7 +124,16 @@ export function AirdropKeysDrawer({
           Download .CSV template
         </a>
         <div>
-          {isLockDataLoading ? null : (
+          {isLockDataLoading ? (
+            <div className="space-y-6">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="w-full h-8 bg-gray-100 rounded-lg animate-pulse"
+                />
+              ))}
+            </div>
+          ) : (
             <Tab.Group defaultIndex={0}>
               <Tab.List className="flex gap-6 p-2 border-b border-gray-400">
                 {['Manual', 'Bulk'].map((text) => (

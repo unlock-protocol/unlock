@@ -9,6 +9,7 @@ import { Lock } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { formatDate } from '~/utils/lock'
 import { useState } from 'react'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 export interface Props {
   add(member: AirdropMember): void
   lock: Lock
@@ -66,6 +67,11 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
         label="Number of keys to airdrop"
         {...register('count', {
           valueAsNumber: true,
+          validate: (item) => {
+            if (!Number.isInteger(item)) {
+              return 'Only positive numbers are allowed.'
+            }
+          },
           max: {
             value: lock?.maxKeysPerAddress || 1,
             message:
@@ -77,7 +83,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
 
       <div className="space-y-2">
         <Input
-          disabled={formValues.expire}
+          disabled={formValues.neverExpire}
           label="Expiration"
           type="datetime-local"
           {...register('expiration')}
@@ -87,7 +93,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
             id="no-expiration"
             type="checkbox"
             className="rounded text-brand-ui-primary"
-            {...register('expire')}
+            {...register('neverExpire')}
           />
           <label className="text-sm" htmlFor="no-expiration">
             No expiration
@@ -135,7 +141,7 @@ export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
         defaultValues={{
           expiration,
           manager: account,
-          expire: lock.expirationDuration === -1,
+          neverExpire: lock.expirationDuration === -1,
         }}
       />
       {list.length > 0 && (
@@ -158,9 +164,16 @@ export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
             onClick={async (event) => {
               event.preventDefault()
               setIsConfirming(true)
-              await onConfirm(list)
+              try {
+                await onConfirm(list)
+                clear()
+                ToastHelper.success(`Successfully granted ${list.length} keys`)
+              } catch (error) {
+                if (error instanceof Error) {
+                  ToastHelper.error(error.message)
+                }
+              }
               setIsConfirming(false)
-              clear()
             }}
           >
             Confirm Airdrop

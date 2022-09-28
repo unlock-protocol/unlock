@@ -7,8 +7,9 @@ import { RiCloseLine as ClearIcon } from 'react-icons/ri'
 import { Lock } from '~/unlockTypes'
 import { getAddressForName } from '~/hooks/useEns'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
   lock: Lock
@@ -18,14 +19,24 @@ interface Props {
 export function AirdropBulkForm({ lock, onConfirm }: Props) {
   const [list, { set, clear, removeAt }] = useList<AirdropMember>([])
   const web3Service = useWeb3Service()
-  const [errorMessage, setErrorMessage] = useState('')
+  const { account } = useAuth()
   const [isConfirming, setIsConfirming] = useState(false)
+  const [isLoadingMembers, setIsLoadingMembers] = useState(false)
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       'text/plain': ['.csv'],
     },
+    onDropRejected: async () => {
+      ToastHelper.error(
+        'The file cannot be accepted. Try again using the template.'
+      )
+    },
+    onDrop: async () => {
+      setIsLoadingMembers(true)
+    },
     onDropAccepted: async ([file]) => {
       const text = await file.text()
+      let discarded = 0
       const json: any[] =
         parse(text, {
           delimiter: ',',
@@ -36,7 +47,11 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
         json.map(async (item) => {
           try {
             const record = AirdropMember.parse(item)
-            const recipient = await getAddressForName(record.recipient)
+            const [recipient, manager] = await Promise.all([
+              getAddressForName(record.recipient),
+              getAddressForName(record.manager || account!),
+            ])
+
             const balance = await web3Service.totalKeys(
               lock.address,
               recipient,
@@ -50,36 +65,97 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
             const member = {
               ...record,
               recipient,
-              expiration: item.expiration,
+              manager,
             }
             return member
           } catch (error) {
             console.error(error)
-            if (!errorMessage) {
-              setErrorMessage('A few recepients were discarded due to error')
-            }
             return
           }
         })
       )
-      // Filter undefined or null values.
-      const filteredMembers = members.filter(
-        (item) => !!item
-      ) as AirdropMember[]
 
+      const filteredMembers = members.reduce<AirdropMember[]>(
+        (filtered, member) => {
+          // filter null or undefined values
+          if (!member) {
+            // keep track of discarded entries
+            discarded += 1
+            return filtered
+          }
+
+          // find existing member
+          const existingMember = filtered.find(
+            ({ recipient }) => recipient === member.recipient
+          )
+
+          // if exist, discard the current entry to avoid duplicate.
+          if (existingMember) {
+            // keep track of discarded entries
+            discarded += 1
+            return filtered
+          }
+
+          // push the item to array if new unique member found
+          filtered.push(member)
+
+          return filtered
+        },
+        []
+      )
+
+      // Notify how many loaded and discarded.
+      ToastHelper.success(
+        `Loaded ${filteredMembers.length} members. ${discarded} members discarded.`
+      )
+      setIsLoadingMembers(false)
       set(filteredMembers)
     },
   })
 
-  useEffect(() => {
-    if (errorMessage) {
-      ToastHelper.error(errorMessage)
-    }
-  }, [errorMessage])
+  const items = list.length > 0
 
   return (
     <div>
-      {list.length > 0 ? (
+      {!items && (
+        <div>
+          {isLoadingMembers && (
+            <div className="space-y-6">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <div
+                  key={index}
+                  className="w-full h-8 bg-gray-100 rounded-lg animate-pulse"
+                />
+              ))}
+            </div>
+          )}
+          {!isLoadingMembers && (
+            <div className="space-y-6">
+              <p>
+                Once you upload the csv, you can see all the members. Once you
+                upload the csv, you can see all the list of memberships to be
+                granted.
+              </p>
+              <div
+                className="flex flex-col items-center justify-center bg-white border rounded cursor-pointer group aspect-1 group-hover:border-gray-300"
+                {...getRootProps()}
+              >
+                <input {...getInputProps()} />
+                <div className="max-w-xs space-y-2 text-center">
+                  <h3 className="text-lg font-medium">
+                    Drop your recepients file here
+                  </h3>
+                  <p className="text-sm text-gray-600">
+                    Download the template file and fill out the values in the
+                    format.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+      {items && (
         <div className="grid gap-y-6">
           <div className="flex items-center justify-between w-full">
             <div>{list.length} records </div>
@@ -93,45 +169,38 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
               Clear
             </Button>
           </div>
-          {list.map((value, index) => (
-            <AirdropListItem
-              key={index}
-              value={value}
-              onRemove={(event) => {
-                event.preventDefault()
-                removeAt(index)
-              }}
-            />
-          ))}
+          <div className="space-y-2">
+            {list.map((value, index) => (
+              <AirdropListItem
+                key={index}
+                value={value}
+                onRemove={(event) => {
+                  event.preventDefault()
+                  removeAt(index)
+                }}
+              />
+            ))}
+          </div>
           <Button
             loading={isConfirming}
             disabled={isConfirming}
             onClick={async (event) => {
               event.preventDefault()
               setIsConfirming(true)
-              await onConfirm(list)
+              try {
+                await onConfirm(list)
+                clear()
+                ToastHelper.success(`Successfully granted ${list.length} keys`)
+              } catch (error) {
+                if (error instanceof Error) {
+                  ToastHelper.error(error.message)
+                }
+              }
               setIsConfirming(false)
-              clear()
             }}
           >
             Confirm aidrop
           </Button>
-        </div>
-      ) : (
-        <div className="space-y-6">
-          <p>
-            Once you upload the csv, you can see all the members. Lock&apos;s
-            default expiration will be used in case of no expiration provided.
-          </p>
-          <div
-            className="flex flex-col items-center justify-center bg-white border rounded cursor-pointer group aspect-1 group-hover:border-gray-300"
-            {...getRootProps()}
-          >
-            <input {...getInputProps()} />
-            <p className="text-gray-500 group-hover:text-gray-800">
-              Drop your members csv file.
-            </p>
-          </div>
         </div>
       )}
     </div>
