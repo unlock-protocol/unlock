@@ -9009,7 +9009,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-etherscan@npm:3.1.0, @nomiclabs/hardhat-etherscan@npm:^3.1.0":
+"@nomiclabs/hardhat-etherscan@npm:3.1.0":
   version: 3.1.0
   resolution: "@nomiclabs/hardhat-etherscan@npm:3.1.0"
   dependencies:
@@ -16116,9 +16116,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
-    "@nomiclabs/hardhat-etherscan": ^3.1.0
+    "@nomiclabs/hardhat-etherscan": 3.1.0
     "@primitivefi/hardhat-dodoc": 0.2.3
     "@unlock-protocol/hardhat-helpers": "workspace:^"
+    "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:^"
     chai: 4.3.4
