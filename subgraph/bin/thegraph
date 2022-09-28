@@ -9,6 +9,7 @@ const { hideBin } = require('yargs/helpers')
 const networks = require('@unlock-protocol/networks')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
+const { networkName } = require('./networks')
 
 const executeCommand = async (command) => {
   try {
@@ -42,8 +43,8 @@ const codegen = async () => {
 // Creating subgraphs is only available from hosted-service dashboard
 // yarn graph create $network_name-v2 --node https://api.thegraph.com/deploy/ --access-token $SUBGRAPH_DEPLOY_KEY"
 const build = async (network) => {
-  console.log(`Building subgraph for ${network}`)
-  await executeCommand(`yarn graph build --network ${network}`)
+  console.log(`Building subgraph for ${network} (${networkName(network)})`)
+  await executeCommand(`yarn graph build --network ${networkName(network)}`)
 }
 
 const deploy = async (network, graphLabel) => {
@@ -67,13 +68,6 @@ const deploy = async (network, graphLabel) => {
 const choices = Object.keys(networks).filter(
   (d) => !['networks', 'default', 'localhost', 'rinkeby'].includes(d)
 )
-
-const delay = async () =>
-  new Promise((resolve) => {
-    setTimeout(() => {
-      resolve()
-    }, 5000)
-  })
 
 require('yargs/yargs')(hideBin(process.argv))
   .command(

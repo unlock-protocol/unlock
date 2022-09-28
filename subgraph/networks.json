@@ -5,12 +5,6 @@
       "startBlock": 7120795
     }
   },
-  "rinkeby": {
-    "Unlock": {
-      "address": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
-      "startBlock": 3530008
-    }
-  },
   "xdai": {
     "Unlock": {
       "address": "0x1bc53f4303c711cc693F6Ec3477B83703DcB317f",
@@ -21,7 +15,7 @@
       "startBlock": 14521200
     }
   },
-  "polygon": {
+  "matic": {
     "Unlock": {
       "address": "0xE8E5cd156f89F7bdB267EabD5C43Af3d5AF2A78f",
       "startBlock": 21986688
