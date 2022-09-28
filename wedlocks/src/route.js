@@ -2,6 +2,8 @@ import nodemailer from 'nodemailer'
 import templates from './templates'
 import config from '../config'
 import encrypter from './encrypter'
+import wrap from './wrap'
+
 // This function loads the template and performs the actual email sending
 // args: {
 //  template: templateName string
@@ -21,6 +23,9 @@ export const route = async (args) => {
     throw new Error('Missing template')
   }
 
+  // Wrap the template
+  let wrappedTemplate = wrap(template)
+
   const templateParams = {}
   Object.keys(args.params).forEach((key) => {
     const param = args.params[key]
@@ -34,11 +39,15 @@ export const route = async (args) => {
   const email = {
     from: config.sender,
     to: args.recipient,
-    subject: await template.subject(templateParams),
-    text: template.text ? await template.text(templateParams) : undefined,
-    html: template.html ? await template.html(templateParams) : undefined,
+    subject: await wrappedTemplate.subject(templateParams),
+    text: wrappedTemplate.text
+      ? await wrappedTemplate.text(templateParams)
+      : undefined,
+    html: wrappedTemplate.html
+      ? await wrappedTemplate.html(templateParams)
+      : undefined,
     attachments: []
-      .concat(args.attachments, template.attachments)
+      .concat(args.attachments, wrappedTemplate.attachments)
       .filter((x) => !!x),
   }
 
