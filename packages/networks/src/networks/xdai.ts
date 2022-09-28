@@ -26,10 +26,10 @@ export const xdai: NetworkConfig = {
   },
   erc20: null, // no default ERC20 on xdai for now
   locksmithUri: 'https://locksmith.unlock-protocol.com',
-  baseCurrencySymbol: 'xDai',
+  baseCurrencySymbol: 'DAI',
   nativeCurrency: {
-    name: 'xDAI',
-    symbol: 'xDai',
+    name: 'DAI',
+    symbol: 'DAI',
     decimals: 18,
   },
   startBlock: 19338700,
