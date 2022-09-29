@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Icon, Input, Select } from '@unlock-protocol/ui'
+import { Button, Input, Select } from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
-import { Controller, useForm } from 'react-hook-form'
-import { RadioGroup } from '@headlessui/react'
-import {
-  MdRadioButtonUnchecked as UncheckedIcon,
-  MdRadioButtonChecked as CheckedIcon,
-} from 'react-icons/md'
+import { useForm } from 'react-hook-form'
+import { Switch } from '@headlessui/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
@@ -16,22 +12,7 @@ import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { useQuery } from 'react-query'
 import useAccount from '~/hooks/useAccount'
-
-const Radio = ({ checked }: { checked: boolean }) => {
-  return checked ? (
-    <Icon
-      size="large"
-      className="cursor-pointer fill-brand-ui-primary"
-      icon={CheckedIcon}
-    />
-  ) : (
-    <Icon
-      size="large"
-      className="cursor-pointer fill-brand-ui-primary"
-      icon={UncheckedIcon}
-    />
-  )
-}
+import { twMerge } from 'tailwind-merge'
 
 export interface LockFormProps {
   name: string
@@ -41,6 +22,7 @@ export interface LockFormProps {
   network: number
   unlimitedDuration: boolean
   unlimitedQuantity: boolean
+  isFree: boolean
   currencyContractAddress?: string
   symbol?: string
 }
@@ -48,6 +30,32 @@ export interface LockFormProps {
 interface CreateLockFormProps {
   onSubmit: any
   defaultValues: LockFormProps
+}
+
+interface ToggleSwitchProps {
+  enabled: boolean
+  setEnabled: (enabled: boolean) => void
+  title?: string
+}
+
+const ToggleSwitch = ({ title, enabled, setEnabled }: ToggleSwitchProps) => {
+  const switchClass = twMerge(
+    enabled ? 'bg-brand-ui-primary' : 'bg-black',
+    'relative inline-flex h-8 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+  )
+
+  const buttonClass = twMerge(
+    enabled ? 'translate-x-6' : 'translate-x-0',
+    'pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow-lg ring-0 transition duration-100'
+  )
+  return (
+    <div className="flex items-center gap-4">
+      <span className="text-sm font-semibold">{title}</span>
+      <Switch checked={enabled} onChange={setEnabled} className={switchClass}>
+        <span aria-hidden="true" className={buttonClass} />
+      </Switch>
+    </div>
+  )
 }
 
 export const CreateLockForm = ({
@@ -61,12 +69,18 @@ export const CreateLockForm = ({
   const { getTokenBalance } = useAccount(account!, network!)
   const { baseCurrencySymbol } = networks[network!] ?? {}
 
+  const [unlimitedDuration, setUnlimitedDuration] = useState(
+    defaultValues?.unlimitedDuration ?? false
+  )
+  const [unlimitedQuantity, setUnlimitedQuantity] = useState(
+    defaultValues?.unlimitedQuantity
+  )
+  const [isFree, setIsFree] = useState(defaultValues?.isFree ?? false)
+
   const {
     register,
     handleSubmit,
-    control,
     reset,
-    resetField,
     setValue,
     formState: { isValid, errors },
   } = useForm<LockFormProps>({
@@ -77,8 +91,9 @@ export const CreateLockForm = ({
       maxNumberOfKeys: undefined,
       expirationDuration: undefined,
       keyPrice: undefined,
-      unlimitedDuration: true,
-      unlimitedQuantity: true,
+      unlimitedDuration,
+      unlimitedQuantity,
+      isFree,
     },
   })
 
@@ -136,6 +151,30 @@ export const CreateLockForm = ({
     setSelectedToken(null)
   }
 
+  // reset duration value when `unlimited` is active
+  useEffect(() => {
+    setValue('unlimitedDuration', unlimitedDuration)
+    if (unlimitedDuration) {
+      setValue('expirationDuration', undefined)
+    }
+  }, [unlimitedDuration])
+
+  // reset N of keys value when `unlimited` is active
+  useEffect(() => {
+    setValue('unlimitedQuantity', unlimitedDuration)
+    if (unlimitedQuantity) {
+      setValue('maxNumberOfKeys', undefined)
+    }
+  }, [unlimitedQuantity])
+
+  // reset keyPrice when key is free
+  useEffect(() => {
+    setValue('isFree', isFree)
+    if (isFree) {
+      setValue('keyPrice', undefined)
+    }
+  }, [isFree])
+
   return (
     <>
       <SelectCurrencyModal
@@ -177,173 +216,110 @@ export const CreateLockForm = ({
               )}
             </div>
 
-            <div>
-              <label className="block px-1 mb-4 text-base" htmlFor="">
-                Memberships duration (days):
-              </label>
-              <Controller
-                control={control}
-                name="unlimitedDuration"
-                render={({ field: { value, onChange } }) => {
-                  return (
-                    <RadioGroup
-                      className="flex flex-col w-full gap-5"
-                      value={value.toString()}
-                      onChange={(current: any) => {
-                        onChange(current === 'true')
-                        if (current === 'true') {
-                          resetField('expirationDuration')
-                        }
-                      }}
-                    >
-                      <RadioGroup.Option
-                        className="inline-flex focus:outline-none"
-                        value="true"
-                      >
-                        {({ checked }) => (
-                          <div className="flex items-center gap-4">
-                            <Radio checked={checked} />
-                            <span className="text-lg font-bold cursor-pointer">
-                              Unlimited
-                            </span>
-                          </div>
-                        )}
-                      </RadioGroup.Option>
-                      <RadioGroup.Option
-                        className="focus:outline-none"
-                        value="false"
-                      >
-                        {({ checked }) => (
-                          <div className="flex items-center w-full gap-4">
-                            <Radio checked={checked} />
-                            <div className="relative flex items-center w-full gap-4">
-                              <div className="relative grow">
-                                <Input
-                                  tabIndex={-1}
-                                  autoComplete="off"
-                                  step={0.01}
-                                  {...register('expirationDuration', {
-                                    required: value !== true,
-                                    min: 0,
-                                  })}
-                                  placeholder="Enter duration"
-                                  type="number"
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        )}
-                      </RadioGroup.Option>
-                    </RadioGroup>
-                  )
-                }}
-              />
-              {errors?.expirationDuration && (
-                <span className="absolute mt-2 text-xs text-red-700">
-                  Please enter amount of days.
-                </span>
-              )}
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <label className="block px-1 text-base" htmlFor="">
+                  Memberships duration (days):
+                </label>
+                <ToggleSwitch
+                  title="Unlimited"
+                  enabled={unlimitedDuration}
+                  setEnabled={setUnlimitedDuration}
+                />
+              </div>
+              <div className="relative">
+                <Input
+                  tabIndex={-1}
+                  autoComplete="off"
+                  step={0.01}
+                  disabled={unlimitedDuration}
+                  {...register('expirationDuration', {
+                    min: 0,
+                    required: !unlimitedDuration,
+                  })}
+                  placeholder="Enter duration"
+                  type="number"
+                />
+                {errors?.expirationDuration && (
+                  <span className="absolute mt-1 text-xs text-red-700">
+                    Please enter amount of days.
+                  </span>
+                )}
+              </div>
             </div>
 
-            <div>
-              <label className="block px-1 mb-4 text-base" htmlFor="">
-                Number of memberships:
-              </label>
-              <Controller
-                control={control}
-                name="unlimitedQuantity"
-                render={({ field: { value, onChange } }) => {
-                  return (
-                    <RadioGroup
-                      value={value.toString()}
-                      onChange={(current: any) => {
-                        onChange(current === 'true')
-                        if (current === 'true') {
-                          resetField('maxNumberOfKeys')
-                        }
-                      }}
-                      className="flex flex-col w-full gap-5"
-                    >
-                      <RadioGroup.Option
-                        className="focus:outline-none"
-                        value="true"
-                      >
-                        {({ checked }) => (
-                          <div className="flex items-center gap-4 ">
-                            <Radio checked={checked} />
-                            <span className="text-lg font-bold cursor-pointer">
-                              Unlimited
-                            </span>
-                          </div>
-                        )}
-                      </RadioGroup.Option>
-                      <RadioGroup.Option
-                        className="focus:outline-none"
-                        value="false"
-                      >
-                        {({ checked }) => (
-                          <div className="flex items-center w-full gap-4">
-                            <Radio checked={checked} />
-                            <div className="relative grow">
-                              <Input
-                                placeholder="Enter quantity"
-                                type="numeric"
-                                autoComplete="off"
-                                step={1}
-                                {...register('maxNumberOfKeys', {
-                                  min: 1,
-                                  required: value !== true,
-                                })}
-                              />
-                            </div>
-                          </div>
-                        )}
-                      </RadioGroup.Option>
-                    </RadioGroup>
-                  )
-                }}
-              />
-              {errors?.maxNumberOfKeys && (
-                <span className="absolute mt-2 text-xs text-red-700">
-                  Please choose a number of memberships for your lock.
-                </span>
-              )}
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <label className="block px-1 text-base" htmlFor="">
+                  Number of memberships:
+                </label>
+                <ToggleSwitch
+                  title="Unlimited"
+                  enabled={unlimitedQuantity}
+                  setEnabled={setUnlimitedQuantity}
+                />
+              </div>
+              <div className="relative">
+                <Input
+                  placeholder="Enter quantity"
+                  type="numeric"
+                  autoComplete="off"
+                  step={1}
+                  disabled={unlimitedQuantity}
+                  {...register('maxNumberOfKeys', {
+                    min: 1,
+                    required: !unlimitedQuantity,
+                  })}
+                />
+                {errors?.maxNumberOfKeys && (
+                  <span className="absolute mt-1 text-xs text-red-700">
+                    Please choose a number of memberships for your lock.
+                  </span>
+                )}
+              </div>
             </div>
 
-            <div>
-              <label className="block px-1 mb-2 text-base" htmlFor="">
-                Currency & Price:
-              </label>
-              <div className="grid grid-cols-2 gap-2 justify-items-stretch">
-                <div className="flex flex-col gap-1.5">
-                  <div
-                    onClick={() => setIsOpen(true)}
-                    className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
-                  >
-                    <CryptoIcon symbol={symbol} />
-                    <span>{symbol}</span>
+            <div className="relative flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <label className="px-1 mb-2 text-base" htmlFor="">
+                  Currency & Price:
+                </label>
+                <ToggleSwitch
+                  title="Free"
+                  enabled={isFree}
+                  setEnabled={setIsFree}
+                />
+              </div>
+              <div className="relative">
+                <div className="grid grid-cols-2 gap-2 justify-items-stretch">
+                  <div className="flex flex-col gap-1.5">
+                    <div
+                      onClick={() => setIsOpen(true)}
+                      className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
+                    >
+                      <CryptoIcon symbol={symbol} />
+                      <span>{symbol}</span>
+                    </div>
+                    <div className="pl-1"></div>
                   </div>
-                  <div className="pl-1"></div>
-                </div>
 
-                <div className="relative">
                   <Input
                     type="numeric"
                     autoComplete="off"
                     placeholder="0.00"
                     step={0.01}
+                    disabled={isFree}
                     {...register('keyPrice', {
-                      required: true,
-                      min: 0,
+                      required: !isFree,
                     })}
                   />
                 </div>
+                {errors?.keyPrice && (
+                  <span className="absolute text-xs text-red-700 ">
+                    Please enter a positive number
+                  </span>
+                )}
               </div>
-              {errors?.keyPrice && (
-                <span className="absolute mt-2 text-xs text-red-700">
-                  Please enter a positive number
-                </span>
-              )}
             </div>
 
             <Button
