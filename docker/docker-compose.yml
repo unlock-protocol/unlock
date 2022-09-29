@@ -1,14 +1,14 @@
 version: '3.2'
 services:
   graph-node:
-    image: graphprotocol/graph-node:v0.25.2
+    image: graphprotocol/graph-node:v0.27.0
     ports:
       - '8000:8000'
       - '8001:8001'
       - '8020:8020'
 
   ipfs:
-    image: ipfs/go-ipfs:v0.13.0
+    image: ipfs/kubo:v0.14.0
     ports:
       - '5001:5001'
 
