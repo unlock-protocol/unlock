@@ -13,8 +13,6 @@ const wrap = (template) => {
   if (template.text) {
     wrappedTemplate.text = template.text
   }
-  // Add the attachements
-  wrappedTemplate.attachments = template.attachments || []
 
   if (template.html) {
     wrappedTemplate.html = (params) => {
@@ -23,27 +21,9 @@ const wrap = (template) => {
         content,
       })
     }
-    wrappedTemplate.attachments.push({
-      filename: 'unlock-logo.png',
-      path: __dirname + '/../static/attachments/unlock-logo.png',
-      cid: 'unlock-logo.png',
-    })
-    wrappedTemplate.attachments.push({
-      filename: 'discord.png',
-      path: __dirname + '/../static/attachments/discord.png',
-      cid: 'discord.png',
-    })
-    wrappedTemplate.attachments.push({
-      filename: 'github.png',
-      path: __dirname + '/../static/attachments/github.png',
-      cid: 'github.png',
-    })
-    wrappedTemplate.attachments.push({
-      filename: 'twitter.png',
-      path: __dirname + '/../static/attachments/twitter.png',
-      cid: 'twitter.png',
-    })
   }
+
+  wrappedTemplate.attachments = template.attachments || []
 
   return wrappedTemplate
 }
