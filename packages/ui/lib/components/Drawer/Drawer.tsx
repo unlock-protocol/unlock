@@ -39,9 +39,9 @@ export const Drawer = ({
       >
         <div className="absolute inset-0 overflow-y-auto">
           <Transition.Child {...easeOutTransaction}>
-            <Dialog.Overlay className="absolute inset-0 transition-opacity bg-opacity-50 bg-zinc-500 backdrop-blur" />
+            <Dialog.Overlay className="absolute inset-0 transition-opacity bg-gray-500 bg-opacity-50 backdrop-blur" />
           </Transition.Child>
-          <div className="fixed inset-y-0 right-0 max-w-full">
+          <div className="fixed inset-y-0 right-0 w-full max-w-lg">
             <Transition.Child
               as={React.Fragment}
               enter="transform transition ease-in-out duration-300 sm:duration-500"
