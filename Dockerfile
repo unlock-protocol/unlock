@@ -73,6 +73,11 @@ RUN apk add --no-cache --virtual .build-deps \
     openjdk11 \
     && pip3 install --no-cache-dir virtualenv
 
+ENV JAVA_HOME=/usr/lib/jvm/java-1.11-openjdk
+ENV PATH="$JAVA_HOME/bin:${PATH}"
+
+RUN java -version
+RUN javac -version
 # install deps
 USER node
 
