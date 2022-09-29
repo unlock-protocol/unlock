@@ -8,7 +8,7 @@ interface ToggleSwitchProps {
 }
 
 export const ToggleSwitch = ({
-  title,
+  title = '',
   enabled,
   setEnabled,
 }: ToggleSwitchProps) => {
