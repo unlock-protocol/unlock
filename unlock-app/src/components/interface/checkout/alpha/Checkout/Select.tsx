@@ -228,8 +228,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                                       as="p"
                                     >
                                       {item.name}
-                                      {lock?.recurringPayments &&
-                                        ` x ${lock?.recurringPayments}`}
+                                      {item?.recurringPayments &&
+                                        ` x ${item?.recurringPayments}`}
                                     </RadioGroup.Label>
                                     <a
                                       href={config.networks[
