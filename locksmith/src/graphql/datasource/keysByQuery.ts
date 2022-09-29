@@ -139,7 +139,7 @@ interface KeyGetProps {
 export class keysByQuery extends GraphQLDataSource {
   constructor(public network: number) {
     super()
-    this.baseURL = networks[network].subgraphURI
+    this.baseURL = networks[network].subgraph?.endpoint
   }
 
   async get({

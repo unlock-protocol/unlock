@@ -28,14 +28,14 @@ export default async function migrateLock(
   let unlockAddress
   let serializerAddress
   let provider
-  let subgraphURI
+  let subgraph
   if (
     chainId === 100 ||
     chainId === 137 ||
     chainId === 31337 ||
     chainId === 4
   ) {
-    ;({ unlockAddress, serializerAddress, provider, subgraphURI } = network)
+    ;({ unlockAddress, serializerAddress, provider, subgraph } = network)
   } else {
     throw new Error(
       `Chain with id ${chainId} not supported (only Polygon & xDai)`
@@ -153,12 +153,12 @@ export default async function migrateLock(
   })
 
   // fetch managers from graph
-  if (subgraphURI) {
+  if (subgraph?.endpoint) {
     let managers
     try {
       managers = await listManagers({
         lockAddress,
-        subgraphURI,
+        subgraphURI: subgraph.endpoint,
       })
     } catch (error) {
       callback(null, {
