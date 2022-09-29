@@ -45,7 +45,11 @@ export interface NetworkConfig {
   unlockAddress?: string
   serializerAddress?: string
   multisig?: string
-  subgraphURI?: string
+  subgraph?: {
+    endpoint:string
+    endpointV1?:string
+    networkName? :string // for thegraph hosted service
+  },
   ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
