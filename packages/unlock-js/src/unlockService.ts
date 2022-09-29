@@ -33,7 +33,7 @@ export default class UnlockService {
 
     // for convenience, pass directly an ethers provider in the `networks` contructor
     if (this.networks[networkId].ethersProvider) {
-      return this.networks[networkId].ethersProvider!
+      return this.networks[networkId].ethersProvider as JsonRpcProvider
     }
     return new ethers.providers.JsonRpcProvider(
       this.networks[networkId].provider,

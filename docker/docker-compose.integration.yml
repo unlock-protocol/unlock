@@ -1,0 +1,67 @@
+version: '3.4'
+services:
+
+  eth-node:
+    restart: always
+    build:
+      context: ./development/eth-node
+    command: [ "sh","-c", "yarn start --hostname 0.0.0.0" ]
+    ports:
+      - 8545:8545
+  
+  graph-node:
+    env_file: development.env
+    ports:
+      - '8030:8030'
+      - '8040:8040'
+    depends_on:
+      - ipfs
+      - postgres
+
+  postgres:
+    command:
+      [
+        'postgres',
+        '-cshared_preload_libraries=pg_stat_statements'
+      ]
+    env_file: development.env
+    ports:
+      - '5432:5432'
+
+  # deploy the unlock graph on graph-node, then stop after execution
+  subgraph:
+    build:
+      context: ../
+      target: dev
+      args:
+        BUILD_DIR: subgraph
+    env_file: development.env
+    command:
+      [
+        "/opt/wait-for-it.sh",
+        "-t",
+        "0",
+        "graph-node:8020",
+        "--",
+        "sh",
+        "/opt/startup.sh"
+      ]
+    volumes:
+      - ./development/subgraph/startup.sh:/opt/startup.sh
+      - ./development/subgraph/networks.json:/home/unlock/subgraph/networks.json
+      - ./development/wait-for-it/wait-for-it.sh:/opt/wait-for-it.sh
+    depends_on:
+      - graph-node
+
+  integration-tests:
+    build:
+      context: ../
+      target: dev
+      args:
+        BUILD_DIR: tests
+    env_file: test.env
+    volumes:
+      - ./development/subgraph/networks.json:/home/unlock/networks.json
+    depends_on:
+      - graph-node
+      - eth-node
