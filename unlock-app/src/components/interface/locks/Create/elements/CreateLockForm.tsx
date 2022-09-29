@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Input, Select } from '@unlock-protocol/ui'
+import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
 import { Token } from '@unlock-protocol/types'
 import { useForm } from 'react-hook-form'
-import { Switch } from '@headlessui/react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { SelectCurrencyModal } from '../modals/SelectCurrencyModal'
@@ -12,7 +11,6 @@ import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { useQuery } from 'react-query'
 import useAccount from '~/hooks/useAccount'
-import { twMerge } from 'tailwind-merge'
 
 export interface LockFormProps {
   name: string
@@ -30,32 +28,6 @@ export interface LockFormProps {
 interface CreateLockFormProps {
   onSubmit: any
   defaultValues: LockFormProps
-}
-
-interface ToggleSwitchProps {
-  enabled: boolean
-  setEnabled: (enabled: boolean) => void
-  title?: string
-}
-
-const ToggleSwitch = ({ title, enabled, setEnabled }: ToggleSwitchProps) => {
-  const switchClass = twMerge(
-    enabled ? 'bg-brand-ui-primary' : 'bg-black',
-    'relative inline-flex h-8 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
-  )
-
-  const buttonClass = twMerge(
-    enabled ? 'translate-x-6' : 'translate-x-0',
-    'pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow-lg ring-0 transition duration-100'
-  )
-  return (
-    <div className="flex items-center gap-4">
-      <span className="text-sm font-semibold">{title}</span>
-      <Switch checked={enabled} onChange={setEnabled} className={switchClass}>
-        <span aria-hidden="true" className={buttonClass} />
-      </Switch>
-    </div>
-  )
 }
 
 export const CreateLockForm = ({
@@ -225,6 +197,9 @@ export const CreateLockForm = ({
                   title="Unlimited"
                   enabled={unlimitedDuration}
                   setEnabled={setUnlimitedDuration}
+                  onChange={(enable: boolean) => {
+                    setValue('unlimitedDuration', enable)
+                  }}
                 />
               </div>
               <div className="relative">
@@ -257,6 +232,9 @@ export const CreateLockForm = ({
                   title="Unlimited"
                   enabled={unlimitedQuantity}
                   setEnabled={setUnlimitedQuantity}
+                  onChange={(enable: boolean) => {
+                    setValue('unlimitedQuantity', enable)
+                  }}
                 />
               </div>
               <div className="relative">
@@ -288,6 +266,9 @@ export const CreateLockForm = ({
                   title="Free"
                   enabled={isFree}
                   setEnabled={setIsFree}
+                  onChange={(enable: boolean) => {
+                    setValue('isFree', enable)
+                  }}
                 />
               </div>
               <div className="relative">

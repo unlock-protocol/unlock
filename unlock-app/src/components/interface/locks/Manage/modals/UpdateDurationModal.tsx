@@ -1,15 +1,14 @@
-import { Modal, Input, Button, Icon } from '@unlock-protocol/ui'
-import { useEffect } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Modal, Input, Button, ToggleSwitch } from '@unlock-protocol/ui'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 import { useMutation } from 'react-query'
-import { RadioGroup } from '@headlessui/react'
 import {
-  MdRadioButtonUnchecked as UncheckedIcon,
-  MdRadioButtonChecked as CheckedIcon,
-} from 'react-icons/md'
-import { MAX_UINT, ONE_DAY_IN_SECONDS } from '~/constants'
+  MAX_UINT,
+  ONE_DAY_IN_SECONDS,
+  UNLIMITED_KEYS_DURATION,
+} from '~/constants'
 
 interface EditFormProps {
   expirationDuration?: string | number
@@ -21,22 +20,7 @@ interface UpdateDurationModalProps {
   onUpdate?: () => void
   isOpen: boolean
   setIsOpen: (open: boolean) => void
-}
-
-const Radio = ({ checked }: { checked: boolean }) => {
-  return checked ? (
-    <Icon
-      size="large"
-      className="cursor-pointer fill-brand-ui-primary"
-      icon={CheckedIcon}
-    />
-  ) : (
-    <Icon
-      size="large"
-      className="cursor-pointer fill-brand-ui-primary"
-      icon={UncheckedIcon}
-    />
-  )
+  duration?: number
 }
 
 export const UpdateDurationModal = ({
@@ -44,22 +28,26 @@ export const UpdateDurationModal = ({
   onUpdate,
   isOpen,
   setIsOpen,
+  duration,
 }: UpdateDurationModalProps) => {
+  const [unlimitedDuration, setUnlimitedDuration] = useState(
+    duration == UNLIMITED_KEYS_DURATION
+  )
   const walletService = useWalletService()
+  const durationInDays = parseInt(`${(duration ?? 0) / ONE_DAY_IN_SECONDS}`)
 
   const {
     register,
     handleSubmit,
     getValues,
-    control,
     reset,
     formState: { isValid, errors },
-    resetField,
+    setValue,
   } = useForm<EditFormProps>({
     mode: 'onChange',
     defaultValues: {
-      unlimitedDuration: true,
-      expirationDuration: undefined,
+      unlimitedDuration,
+      expirationDuration: durationInDays,
     },
   })
 
@@ -75,6 +63,7 @@ export const UpdateDurationModal = ({
     const expirationDuration = unlimitedDuration
       ? MAX_UINT
       : expirationInSeconds
+
     return await walletService.setExpirationDuration({
       lockAddress,
       expirationDuration: expirationDuration!,
@@ -111,72 +100,44 @@ export const UpdateDurationModal = ({
         >
           <span className="text-2xl font-bold">Update Duration</span>
 
-          <div>
-            <label className="block px-1 mb-4 text-base" htmlFor="">
-              Memberships duration (days):
-            </label>
-            <Controller
-              control={control}
-              name="unlimitedDuration"
-              render={({ field: { value = '', onChange } }) => {
-                return (
-                  <RadioGroup
-                    className="flex flex-col w-full gap-5"
-                    value={value.toString()}
-                    onChange={(current: any) => {
-                      onChange(current === 'true')
-                      if (current === 'true') {
-                        resetField('expirationDuration')
-                      }
-                    }}
-                  >
-                    <RadioGroup.Option
-                      className="inline-flex focus:outline-none"
-                      value="true"
-                    >
-                      {({ checked }) => (
-                        <div className="flex items-center gap-4">
-                          <Radio checked={checked} />
-                          <span className="text-lg font-bold cursor-pointer">
-                            Unlimited
-                          </span>
-                        </div>
-                      )}
-                    </RadioGroup.Option>
-                    <RadioGroup.Option
-                      className="focus:outline-none"
-                      value="false"
-                    >
-                      {({ checked }) => (
-                        <div className="flex items-center w-full gap-4">
-                          <Radio checked={checked} />
-                          <div className="relative flex items-center w-full gap-4">
-                            <div className="relative grow">
-                              <Input
-                                tabIndex={-1}
-                                autoComplete="off"
-                                step={0.01}
-                                {...register('expirationDuration', {
-                                  required: value !== true,
-                                  min: 0,
-                                })}
-                                placeholder="Enter duration"
-                                type="number"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </RadioGroup.Option>
-                  </RadioGroup>
-                )
-              }}
-            />
-            {errors?.expirationDuration && (
-              <span className="absolute mt-2 text-xs text-red-700">
-                Please enter amount of days.
-              </span>
-            )}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <label className="block px-1 text-base" htmlFor="">
+                Memberships duration (days):
+              </label>
+              <ToggleSwitch
+                title="Unlimited"
+                enabled={unlimitedDuration}
+                setEnabled={setUnlimitedDuration}
+                onChange={(enabled: boolean) => {
+                  setValue('unlimitedDuration', enabled)
+                  setValue(
+                    'expirationDuration',
+                    enabled ? undefined : durationInDays
+                  )
+                }}
+              />
+            </div>
+
+            <div className="relative">
+              <Input
+                tabIndex={0}
+                autoComplete="off"
+                step={0.01}
+                disabled={unlimitedDuration}
+                {...register('expirationDuration', {
+                  required: !unlimitedDuration,
+                  min: 0,
+                })}
+                placeholder="Enter duration"
+                type="number"
+              />
+              {errors?.expirationDuration && (
+                <span className="absolute mt-0.5 text-xs text-red-700">
+                  Please enter amount of days.
+                </span>
+              )}
+            </div>
           </div>
 
           <Button type="submit" disabled={updateDurationMutation.isLoading}>

@@ -172,6 +172,8 @@ export const LockDetailCard = ({
 
   const symbol = lock?.currencySymbol || baseCurrencySymbol
 
+  console.table(lock)
+
   return (
     <>
       <UpdateDurationModal
@@ -179,6 +181,7 @@ export const LockDetailCard = ({
         isOpen={editDuration}
         setIsOpen={setEditDuration}
         onUpdate={onUpdate}
+        duration={lock?.expirationDuration}
       />
 
       <UpdatePriceModal
@@ -187,6 +190,7 @@ export const LockDetailCard = ({
         onUpdate={onUpdate}
         isOpen={editPrice}
         setIsOpen={setEditPrice}
+        price={lock?.keyPrice}
       />
 
       <UpdateQuantityModal
@@ -194,6 +198,7 @@ export const LockDetailCard = ({
         onUpdate={onUpdate}
         isOpen={editQuantity}
         setIsOpen={setEditQuantity}
+        maxNumberOfKeys={lock?.maxNumberOfKeys}
       />
 
       <div className="flex flex-col">
