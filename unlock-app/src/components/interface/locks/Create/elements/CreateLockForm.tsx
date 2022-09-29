@@ -123,30 +123,6 @@ export const CreateLockForm = ({
     setSelectedToken(null)
   }
 
-  // reset duration value when `unlimited` is active
-  useEffect(() => {
-    setValue('unlimitedDuration', unlimitedDuration)
-    if (unlimitedDuration) {
-      setValue('expirationDuration', undefined)
-    }
-  }, [unlimitedDuration])
-
-  // reset N of keys value when `unlimited` is active
-  useEffect(() => {
-    setValue('unlimitedQuantity', unlimitedDuration)
-    if (unlimitedQuantity) {
-      setValue('maxNumberOfKeys', undefined)
-    }
-  }, [unlimitedQuantity])
-
-  // reset keyPrice when key is free
-  useEffect(() => {
-    setValue('isFree', isFree)
-    if (isFree) {
-      setValue('keyPrice', undefined)
-    }
-  }, [isFree])
-
   return (
     <>
       <SelectCurrencyModal
