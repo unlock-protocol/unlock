@@ -1,31 +1,10 @@
-import { RadioGroup } from '@headlessui/react'
-import { Modal, Input, Button, Icon } from '@unlock-protocol/ui'
-import { useEffect } from 'react'
-import { Controller, useForm } from 'react-hook-form'
-import {
-  MdRadioButtonUnchecked as UncheckedIcon,
-  MdRadioButtonChecked as CheckedIcon,
-} from 'react-icons/md'
+import { Modal, Input, Button, ToggleSwitch } from '@unlock-protocol/ui'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 import { UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useMutation } from 'react-query'
-
-const Radio = ({ checked }: { checked: boolean }) => {
-  return checked ? (
-    <Icon
-      size="large"
-      className="cursor-pointer fill-brand-ui-primary"
-      icon={CheckedIcon}
-    />
-  ) : (
-    <Icon
-      size="large"
-      className="cursor-pointer fill-brand-ui-primary"
-      icon={UncheckedIcon}
-    />
-  )
-}
 
 interface EditFormProps {
   maxNumberOfKeys?: number
@@ -37,6 +16,7 @@ interface EditQuantityProps {
   onUpdate?: () => void
   isOpen: boolean
   setIsOpen: (open: boolean) => void
+  maxNumberOfKeys?: number
 }
 
 export const UpdateQuantityModal = ({
@@ -44,22 +24,25 @@ export const UpdateQuantityModal = ({
   onUpdate,
   isOpen,
   setIsOpen,
+  maxNumberOfKeys,
 }: EditQuantityProps) => {
+  const [unlimitedQuantity, setUnlimitedQuantity] = useState(
+    maxNumberOfKeys == UNLIMITED_KEYS_COUNT
+  )
   const walletService = useWalletService()
 
   const {
     register,
     handleSubmit,
-    control,
-    resetField,
     getValues,
     reset,
+    setValue,
     formState: { isValid, errors },
   } = useForm<EditFormProps>({
     mode: 'onChange',
     defaultValues: {
-      maxNumberOfKeys: undefined,
-      unlimitedQuantity: true,
+      maxNumberOfKeys,
+      unlimitedQuantity,
     },
   })
 
@@ -102,6 +85,8 @@ export const UpdateQuantityModal = ({
     }
   }
 
+  const defaultMaxNumberOfKeys =
+    maxNumberOfKeys == UNLIMITED_KEYS_COUNT ? '' : maxNumberOfKeys
   return (
     <>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -111,69 +96,42 @@ export const UpdateQuantityModal = ({
         >
           <span className="text-2xl font-bold">Update Quantity</span>
 
-          <div>
-            <label className="block px-1 mb-4 text-base" htmlFor="">
-              Number of memberships:
-            </label>
-            <Controller
-              control={control}
-              name="unlimitedQuantity"
-              render={({ field: { value, onChange } }) => {
-                return (
-                  <RadioGroup
-                    value={value.toString()}
-                    onChange={(current: any) => {
-                      onChange(current === 'true')
-                      if (current === 'true') {
-                        resetField('maxNumberOfKeys')
-                      }
-                    }}
-                    className="flex flex-col w-full gap-5"
-                  >
-                    <RadioGroup.Option
-                      className="focus:outline-none"
-                      value="true"
-                    >
-                      {({ checked }) => (
-                        <div className="flex items-center gap-4 ">
-                          <Radio checked={checked} />
-                          <span className="text-lg font-bold cursor-pointer">
-                            Unlimited
-                          </span>
-                        </div>
-                      )}
-                    </RadioGroup.Option>
-                    <RadioGroup.Option
-                      className="focus:outline-none"
-                      value="false"
-                    >
-                      {({ checked }) => (
-                        <div className="flex items-center w-full gap-4">
-                          <Radio checked={checked} />
-                          <div className="relative grow">
-                            <Input
-                              placeholder="Enter quantity"
-                              type="numeric"
-                              autoComplete="off"
-                              step={1}
-                              {...register('maxNumberOfKeys', {
-                                min: 1,
-                                required: value !== true,
-                              })}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </RadioGroup.Option>
-                  </RadioGroup>
-                )
-              }}
-            />
-            {errors?.maxNumberOfKeys && (
-              <span className="absolute -mt-1 text-xs text-red-700">
-                Please choose a number of memberships for your lock.
-              </span>
-            )}
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <label className="block px-1 mb-4 text-base" htmlFor="">
+                Number of memberships:
+              </label>
+              <ToggleSwitch
+                title="Free"
+                enabled={unlimitedQuantity}
+                setEnabled={setUnlimitedQuantity}
+                onChange={(enabled: boolean) => {
+                  setValue('unlimitedQuantity', enabled)
+                  setValue(
+                    'maxNumberOfKeys',
+                    enabled ? undefined : (defaultMaxNumberOfKeys as number)
+                  )
+                }}
+              />
+            </div>
+            <div className="relative">
+              <Input
+                placeholder="Enter quantity"
+                type="numeric"
+                autoComplete="off"
+                step={1}
+                disabled={unlimitedQuantity}
+                {...register('maxNumberOfKeys', {
+                  min: 1,
+                  required: !unlimitedQuantity,
+                })}
+              />
+              {errors?.maxNumberOfKeys && (
+                <span className="absolute -mt-1 text-xs text-red-700">
+                  Please choose a number of memberships for your lock.
+                </span>
+              )}
+            </div>
           </div>
 
           <Button type="submit" disabled={updateQuantityMutation.isLoading}>
