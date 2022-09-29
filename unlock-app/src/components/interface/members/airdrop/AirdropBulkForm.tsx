@@ -131,11 +131,23 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
           )}
           {!isLoadingMembers && (
             <div className="space-y-6">
-              <p>
-                Once you upload the csv, you can see all the members. Once you
-                upload the csv, you can see all the list of memberships to be
-                granted.
-              </p>
+              <div className="space-y-2">
+                <p>
+                  Once you upload the csv, you can see all the list of
+                  memberships to be granted.
+                </p>
+                <div>
+                  <a
+                    href="/templates/airdrop.csv"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm font-semibold text-brand-ui-primary"
+                  >
+                    Download .CSV template
+                  </a>
+                </div>
+              </div>
+
               <div
                 className="flex flex-col items-center justify-center bg-white border rounded cursor-pointer group aspect-1 group-hover:border-gray-300"
                 {...getRootProps()}

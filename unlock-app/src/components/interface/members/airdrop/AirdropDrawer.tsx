@@ -108,21 +108,8 @@ export function AirdropKeysDrawer({
   }
 
   return (
-    <Drawer
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      title="Airdrop Keys"
-      description="To any single address, or bulk airdrop Keys to a group of members. Set up a custom expiration date and send over email notification."
-    >
+    <Drawer isOpen={isOpen} setIsOpen={setIsOpen} title="Airdrop Keys">
       <div className="mt-2 space-y-6">
-        <a
-          href="/templates/airdrop.csv"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm font-semibold text-brand-ui-primary"
-        >
-          Download .CSV template
-        </a>
         <div>
           {isLockDataLoading ? (
             <div className="space-y-6">
