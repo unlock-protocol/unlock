@@ -1,8 +1,4 @@
-/**
- * @jest-environment jsdom
- */
 import keyMined from '../../templates/keyMined'
-import { asHtml } from '../utils'
 
 describe('keyMined', () => {
   it('should have the right subject', () => {
@@ -19,63 +15,111 @@ describe('keyMined', () => {
 
   it('should have the right text', () => {
     expect.assertions(1)
-    const content = asHtml(
-      keyMined.html({
+    expect(
+      keyMined.text({
         keyId: '1337',
         lockName: 'Ethereal NYC 202',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
         network: 'Polygon',
       })
-    )
-    expect(content).toHaveTextContent(
-      ` new NFT in your wallet! A new NFT key (#1337) to the lock Ethereal NYC 202 was just minted for you! It has been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!`
+    ).toBe(
+      `Hello!
+
+A new NFT key (#1337) to the lock "Ethereal NYC 202" was just mined for you!
+It has been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!
+
+Check out your keychain: https://app.unlock-protocol.com/keychain
+Make sure you select the network Polygon where the NFT has been minted for you.
+
+If you have any questions (or if you do not want to receive emails like this one in the future), please email us at hello@unlock-protocol.com.
+
+The Unlock team
+`
     )
   })
 
-  it('should have a link to the keychain', () => {
+  it('should have the right text and links', () => {
     expect.assertions(1)
-    const content = asHtml(
-      keyMined.html({
+    expect(
+      keyMined.text({
         keyId: '1337',
         lockName: 'Ethereal NYC 202',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
         network: 'Polygon',
+        txUrl: 'http://txurl.com',
+        openSeaUrl: 'http://opensealurl.com',
       })
-    )
-    expect(content).toContainHTML(
-      `<a href="https://app.unlock-protocol.com/keychain">Unlock Keychain</a>`
+    ).toBe(
+      `Hello!
+
+A new NFT key (#1337) to the lock "Ethereal NYC 202" was just mined for you!
+It has been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!
+
+Check out your keychain: https://app.unlock-protocol.com/keychain
+Make sure you select the network Polygon where the NFT has been minted for you.
+
+You can also see it on a block explorer like http://txurl.com or even OpenSea http://opensealurl.com.
+
+If you have any questions (or if you do not want to receive emails like this one in the future), please email us at hello@unlock-protocol.com.
+
+The Unlock team
+`
     )
   })
 
-  it('should have a link to the block explorer', () => {
+  it('should have the right text and have only tx url', () => {
     expect.assertions(1)
-    const content = asHtml(
-      keyMined.html({
+    expect(
+      keyMined.text({
         keyId: '1337',
         lockName: 'Ethereal NYC 202',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
         network: 'Polygon',
         txUrl: 'http://txurl.com',
       })
-    )
-    expect(content).toContainHTML(
-      `<a href="http://txurl.com">block explorer</a>`
+    ).toBe(
+      `Hello!
+
+A new NFT key (#1337) to the lock "Ethereal NYC 202" was just mined for you!
+It has been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!
+
+Check out your keychain: https://app.unlock-protocol.com/keychain
+Make sure you select the network Polygon where the NFT has been minted for you.
+
+You can also see it on a block explorer http://txurl.com.
+
+If you have any questions (or if you do not want to receive emails like this one in the future), please email us at hello@unlock-protocol.com.
+
+The Unlock team
+`
     )
   })
 
   it('should have the right text and have only tx open sea url', () => {
-    expect.assertions(2)
-    const content = keyMined.html({
-      keyId: '1337',
-      lockName: 'Ethereal NYC 202',
-      network: 'Polygon',
-      keychainUrl: 'https://app.unlock-protocol.com/keychain',
-      openSeaUrl: 'http://opensealurl.com',
-    })
+    expect.assertions(1)
+    expect(
+      keyMined.text({
+        keyId: '1337',
+        lockName: 'Ethereal NYC 202',
+        network: 'Polygon',
+        keychainUrl: 'https://app.unlock-protocol.com/keychain',
+        openSeaUrl: 'http://opensealurl.com',
+      })
+    ).toBe(
+      `Hello!
 
-    expect(asHtml(content)).toHaveTextContent(
-      `A new NFT key (#1337) to the lock Ethereal NYC 202 was just minted`
+A new NFT key (#1337) to the lock "Ethereal NYC 202" was just mined for you!
+It has been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!
+
+Check out your keychain: https://app.unlock-protocol.com/keychain
+Make sure you select the network Polygon where the NFT has been minted for you.
+
+You can also see it on OpenSea http://opensealurl.com.
+
+If you have any questions (or if you do not want to receive emails like this one in the future), please email us at hello@unlock-protocol.com.
+
+The Unlock team
+`
     )
-    expect(asHtml(content)).toContainHTML('href="http://opensealurl.com"')
   })
 })
