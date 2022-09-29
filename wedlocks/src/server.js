@@ -15,7 +15,6 @@ http
           httpMethod: req.method,
           headers: req.headers,
           body,
-          url: new URL(req.url, 'https://wedlocks.unlock-protocol.com/'),
         },
         {},
         (error, response) => {
