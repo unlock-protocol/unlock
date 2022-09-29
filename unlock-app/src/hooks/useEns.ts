@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import configure from '../config'
 
 const config = configure()
-// @ts-expect-error (TODO: define type for config.networks)
 const publicProvider = config.networks[1].publicProvider
 
 export const getNameOrAddressForAddress = async (
