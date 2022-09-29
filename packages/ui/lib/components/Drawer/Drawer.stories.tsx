@@ -1,5 +1,6 @@
 import { Drawer } from './Drawer'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { Button } from '../Button/Button'
 
 export default {
   component: Drawer,
@@ -14,5 +15,11 @@ Primary.args = {
   isOpen: true,
   setIsOpen: () => {},
   title: 'Primary Drawer',
-  children: <p> This is primary drawer </p>,
+  description: 'This is a primary drawer.',
+  children: (
+    <div className="space-y-2">
+      <p> This is a drawer. </p>
+      <Button> Confirm </Button>
+    </div>
+  ),
 }

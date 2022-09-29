@@ -7,13 +7,13 @@ import { LockDetailCard } from './elements/LockDetailCard'
 import { Members } from './elements/Members'
 import { TotalBar } from './elements/TotalBar'
 import { FiKey as KeyIcon } from 'react-icons/fi'
-import GrantKeysDrawer from '~/components/creator/members/GrantKeysDrawer'
 import { BsArrowLeft as ArrowBackIcon } from 'react-icons/bs'
 import { BiLink as LinkIcon } from 'react-icons/bi'
 import { HiOutlineShare as ShareOptionIcon } from 'react-icons/hi'
 import { useForm } from 'react-hook-form'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
 
 interface ActionBarProps {
   lockAddress: string
@@ -21,13 +21,15 @@ interface ActionBarProps {
 
 const ActionBar = ({ lockAddress }: ActionBarProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const { network } = useAuth()
 
   return (
     <>
-      <GrantKeysDrawer
+      <AirdropKeysDrawer
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        lockAddresses={[lockAddress]}
+        lockAddress={lockAddress}
+        network={network!}
       />
       <div className="flex items-center justify-between">
         <span className="text-xl font-bold text-brand-ui-primary">Members</span>

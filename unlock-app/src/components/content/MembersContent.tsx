@@ -8,7 +8,6 @@ import { pageTitle } from '../../constants'
 import { MemberFilter } from '../../unlockTypes'
 import { MetadataTable } from '../interface/MetadataTable'
 import LoginPrompt from '../interface/LoginPrompt'
-import GrantKeysDrawer from '../creator/members/GrantKeysDrawer'
 import { Input, Button } from '@unlock-protocol/ui'
 import useDebounce from '../../hooks/useDebouce'
 import 'cross-fetch/polyfill'
@@ -17,6 +16,7 @@ import { Lock } from '@unlock-protocol/types'
 import { getAddressForName } from '~/hooks/useEns'
 import { useQuery } from 'react-query'
 import { useKeys } from '~/hooks/useKeys'
+import { AirdropKeysDrawer } from '../interface/members/airdrop/AirdropDrawer'
 
 interface PaginationProps {
   currentPage: number
@@ -59,7 +59,7 @@ interface MembersContentProps {
   query: any
 }
 export const MembersContent = ({ query }: MembersContentProps) => {
-  const { account } = useContext(AuthenticationContext)
+  const { account, network } = useContext(AuthenticationContext)
   const [lockAddresses, setLockAddresses] = useState<string[]>([])
   const [isOpen, setIsOpen] = useState(false)
 
@@ -93,10 +93,11 @@ export const MembersContent = ({ query }: MembersContentProps) => {
         <title>{pageTitle('Members')}</title>
       </Head>
 
-      <GrantKeysDrawer
+      <AirdropKeysDrawer
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        lockAddresses={lockAddresses}
+        lockAddress={lockAddresses[0]}
+        network={network!}
       />
 
       <BrowserOnly>
