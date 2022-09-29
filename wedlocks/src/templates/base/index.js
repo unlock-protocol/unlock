@@ -1,9 +1,8 @@
 import handlebars from 'handlebars'
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { readFileSync } from 'fs'
+import { join } from 'path'
 
-const readFile = async (name) => {
-}
+const readFile = async (name) => {}
 
 handlebars.registerHelper('inlineImage', function (name) {
   const result = readFileSync(
@@ -12,7 +11,6 @@ handlebars.registerHelper('inlineImage', function (name) {
   )
   return `data:image/png;base64,${result}`
 })
-
 
 export default handlebars.compile(`
 <!DOCTYPE html>
@@ -273,7 +271,7 @@ export default handlebars.compile(`
 
                           {{{content}}}
 
-                          <p style="margin-bottom: 40px">
+                          <p style="margin-top: 40px">
                             If you have any questions, you can always email us at
                             <br /><a
                               href="mailto:hello@unlock-protocol.com"
@@ -469,4 +467,3 @@ export default handlebars.compile(`
     </body>
   </html>
 `)
-

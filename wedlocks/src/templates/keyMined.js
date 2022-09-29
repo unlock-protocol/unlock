@@ -6,33 +6,26 @@ handlebars.registerHelper('links', function (txUrl, openSeaUrl) {
   let linksMessage = ''
 
   if (hasTxUrl && hasOpenSeaUrl) {
-    linksMessage = `\nYou can also see it on a block explorer like ${txUrl} or even OpenSea ${openSeaUrl}.\n`
+    linksMessage = `<p>You can also see it on a <a href="${txUrl}">block explorer</a> or even <a href="${openSeaUrl}">OpenSea</a>.</p>`
   } else if (hasTxUrl) {
-    linksMessage = `\nYou can also see it on a block explorer ${txUrl}.\n`
+    linksMessage = `<p>You can also see it on a <a href="${txUrl}">block explorer</a>.</p>`
   } else if (hasOpenSeaUrl) {
-    linksMessage = `\nYou can also see it on OpenSea ${openSeaUrl}.\n`
+    linksMessage = `<p>You can also see it on <a href="${openSeaUrl}">OpenSea</a>.</p>`
   }
-  return linksMessage
+  return new handlebars.SafeString(linksMessage)
 })
 
 export default {
   subject: handlebars.compile('A key was added to your wallet!'),
-  text: handlebars.compile(
-    `Hello!
+  html: handlebars.compile(
+    `<h1>A new NFT in your wallet!</h1>
 
-A new NFT key (#{{keyId}}) to the lock "{{
-      lockName
-    }}" was just mined for you!
-It has been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!
+<p>A new NFT key (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just minted for you!</p>
 
-Check out your keychain: {{keychainUrl}}
-Make sure you select the network {{
-      network
-    }} where the NFT has been minted for you.
+<p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
+
 {{links txUrl openSeaUrl}}
-If you have any questions (or if you do not want to receive emails like this one in the future), please email us at hello@unlock-protocol.com.
 
-The Unlock team
 `
   ),
 }

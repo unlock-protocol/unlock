@@ -6,8 +6,8 @@ import wrap from './wrap'
 
 /**
  * Builds the template and params
- * @param {*} args 
- * @returns 
+ * @param {*} args
+ * @returns
  */
 const getTemplateAndParams = async (args) => {
   let template = templates[args.template.toLowerCase()]
@@ -63,8 +63,8 @@ export const route = async (args) => {
 
 /**
  * Preview the template
- * @param {*} args 
- * @returns 
+ * @param {*} args
+ * @returns
  */
 export const preview = async (args) => {
   const [template, templateParams] = await getTemplateAndParams(args)

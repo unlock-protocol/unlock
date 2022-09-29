@@ -38,7 +38,7 @@ export const handler = async (event, context, responseCallback) => {
   if (event.httpMethod === 'GET' && match && match[0]) {
     const body = await preview({
       template: match[1],
-      params: Object.fromEntries(event?.url?.searchParams)
+      params: Object.fromEntries(event?.url?.searchParams),
     })
     return callback(null, {
       statusCode: 200,
