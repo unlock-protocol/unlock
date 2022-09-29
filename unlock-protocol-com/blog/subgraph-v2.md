@@ -21,7 +21,7 @@ To facilitate the use of our protocol, Unlock offers several web services (check
 
 ## Unlock subgraph V2 
 
-To continue upgrading existing services, we are now releasing a new version of the subgraph with better formatting and indexing. On the development side, we added extensive unit and integration testing, which which will allow developers to more quickly adapt and update the protocol. The schema has been simplified and now natively support contract upgrades.
+To continue upgrading existing services, we are now releasing a new version of the subgraph with better formatting and indexing. On the development side, we added extensive unit and integration testing, which will allow developers to more quickly adapt and update the protocol. The schema has been simplified and now natively support contract upgrades.
 
 To query the subgraph, you can use a JSON request or a graphql client. Please refer to [our docs](https://docs.unlock-protocol.com/tutorials/misc/using-subgraphs/) for the most extensive explanation about how to use it.
 
