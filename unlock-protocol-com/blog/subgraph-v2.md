@@ -1,7 +1,7 @@
 ---
 title: Unlock Protocol Subgraph Upgrade with The Graph
 subTitle: An upgraded version of the subgraph is now available
-publishedDate: September 29, 2022
+publishDate: September 29, 2022
 authorName: Clement Renaud
 description: An upgraded version of the subgraph which indexes onchain data is now available, with simpler data structure and more robust parsing.
 image: /images/blog/thegraph-share.png
