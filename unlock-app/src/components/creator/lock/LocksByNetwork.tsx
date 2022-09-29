@@ -34,9 +34,9 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
 
   const { isLoading, data: locks = [] } = useQuery([owner], async () => {
     const items = Object.values(networks)
-      .filter(({ subgraphURI }) => !subgraphURI?.includes('localhost'))
-      .map(async ({ id, subgraphURI }) => {
-        graphService.connect(subgraphURI)
+      .filter(({ subgraph }) => !subgraph?.endpoint.includes('localhost'))
+      .map(async ({ id, subgraph }) => {
+        graphService.connect(subgraph?.endpoint)
         const locksByNetwork = await graphService.locksByManager(owner, id)
         return [id, locksByNetwork as any]
       })
