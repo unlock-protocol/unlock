@@ -47,7 +47,7 @@ export interface NetworkConfig {
   multisig?: string
   subgraph?: {
     endpoint:string
-    endpointV1?:string
+    endpointV2?:string
     networkName? :string // for thegraph hosted service
   },
   ethersProvider?: ethers.providers.Provider
