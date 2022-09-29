@@ -21,7 +21,7 @@ const config: HardhatUserConfig = {
       name: 'Custom Localhost Name',
       subgraph: {
         endpoint: 'here goes a subgraph URI',
-      }
+      },
     },
     12345: {
       name: 'New Network',
