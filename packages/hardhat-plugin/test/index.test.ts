@@ -42,8 +42,8 @@ describe('Unlock Hardhat plugin', function () {
       )
       assert.equal(this.hre.unlock.networks['31337'].id, networks['31337'].id)
       assert.equal(
-        this.hre.unlock.networks['31337'].subgraphURI,
-        networks['31337'].subgraphURI
+        this.hre.unlock.networks['31337'].subgraph?.endpoint,
+        networks['31337'].subgraph?.endpoint
       )
       assert.equal(
         this.hre.unlock.networks['31337'].locksmithUri,
