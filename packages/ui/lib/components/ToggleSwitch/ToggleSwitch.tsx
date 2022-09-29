@@ -1,16 +1,19 @@
 import { Switch as SwitchComponent } from '@headlessui/react'
+import { useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 interface ToggleSwitchProps {
   enabled: boolean
   setEnabled: (enabled: boolean) => void
   title?: string
+  onChange?: (enabled: boolean) => void
 }
 
 export const ToggleSwitch = ({
   title = '',
   enabled,
   setEnabled,
+  onChange,
 }: ToggleSwitchProps) => {
   const switchClass = twMerge(
     enabled ? 'bg-brand-ui-primary' : 'bg-black',
@@ -21,6 +24,13 @@ export const ToggleSwitch = ({
     enabled ? 'translate-x-6' : 'translate-x-0',
     'pointer-events-none inline-block h-7 w-7 transform rounded-full bg-white shadow-lg ring-0 transition duration-100'
   )
+
+  useEffect(() => {
+    if (typeof onChange === 'function') {
+      onChange(enabled)
+    }
+  }, [enabled])
+
   return (
     <div className="flex items-center gap-4">
       {title?.length > 0 && (
