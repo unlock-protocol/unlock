@@ -70,7 +70,7 @@ RUN apk add --no-cache --virtual .build-deps \
     python3-dev \
     py3-pip \
     build-base \
-    openjdk18 \
+    openjdk11 \
     && pip3 install --no-cache-dir virtualenv
 
 # install deps
