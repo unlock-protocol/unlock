@@ -267,10 +267,10 @@
     "opensea": {},
     "erc20": null,
     "locksmithUri": "https://locksmith.unlock-protocol.com",
-    "baseCurrencySymbol": "xDai",
+    "baseCurrencySymbol": "DAI",
     "nativeCurrency": {
-      "name": "xDAI",
-      "symbol": "xDai",
+      "name": "DAI",
+      "symbol": "DAI",
       "decimals": 18
     },
     "startBlock": 19338700,
