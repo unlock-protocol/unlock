@@ -17,6 +17,7 @@ import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/Airdro
 import { useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useConfig } from '~/utils/withConfig'
+import { Container } from '../../Container'
 
 interface ActionBarProps {
   lockAddress: string
@@ -229,8 +230,8 @@ export const ManageLockPage = () => {
 
   return (
     <div className="min-h-screen bg-ui-secondary-200 pb-60">
-      <div className="w-full px-4 lg:px-40">
-        <div className="px-4 mx-auto lg:container pt-9">
+      <Container>
+        <div className="pt-9">
           <div className="mb-7">
             <TopActionBar lockAddress={lockAddress} network={lockNetwork} />
           </div>
@@ -245,7 +246,7 @@ export const ManageLockPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   )
 }
