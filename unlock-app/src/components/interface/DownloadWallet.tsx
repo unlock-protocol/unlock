@@ -1,5 +1,4 @@
 import { Button, Modal } from '@unlock-protocol/ui'
-import {} from 'react-icons/'
 import SvgComponents from './svg'
 
 interface Props {

@@ -43,9 +43,9 @@ const LoginPrompt = ({
 
   const ButtonIcon = useMemo(() => {
     const walletIcons = {
-      metamask: <SvgComponents.Metamask width={32} />,
-      brave: <BraveWalletIcon size={20} className="m-1.5" />,
-      default: <WalletIcon size={20} className="m-1.5" />,
+      metamask: <SvgComponents.Metamask />,
+      brave: <BraveWalletIcon />,
+      default: <WalletIcon />,
     }
 
     if (window.ethereum?.isMetaMask) {
@@ -62,14 +62,14 @@ const LoginPrompt = ({
 
   const onInjectedHandler = () => {
     if (window.ethereum) {
-      authenticateWithProvider('METAMASK')
+      return authenticateWithProvider('METAMASK')
     }
 
     if (
       navigator.userAgent.match(/Android/i) ||
       navigator.userAgent.match(/iPhone/i)
     ) {
-      authenticateWithProvider('WALLET_CONNECT')
+      return authenticateWithProvider('WALLET_CONNECT')
     }
 
     setIsDownloadWallet(true)
@@ -92,11 +92,7 @@ const LoginPrompt = ({
             activeColor={activeColor}
             onClick={onInjectedHandler}
           >
-            {window.ethereum?.isMetaMask ? (
-              <SvgComponents.Metamask />
-            ) : (
-              <WalletIcon />
-            )}
+            {ButtonIcon}
             In browser wallet
           </WalletButton>
 

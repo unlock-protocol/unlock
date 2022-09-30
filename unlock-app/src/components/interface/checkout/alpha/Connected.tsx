@@ -94,14 +94,14 @@ export function SignedOut({
 
   const onInjectedHandler = () => {
     if (window.ethereum) {
-      authenticateWithProvider('METAMASK')
+      return authenticateWithProvider('METAMASK')
     }
 
     if (
       navigator.userAgent.match(/Android/i) ||
       navigator.userAgent.match(/iPhone/i)
     ) {
-      authenticateWithProvider('WALLET_CONNECT')
+      return authenticateWithProvider('WALLET_CONNECT')
     }
 
     setIsDownloadWallet(true)
