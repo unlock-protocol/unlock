@@ -105,6 +105,7 @@ export interface PaywallConfigLock {
   maxRecipients?: number
   minRecipients?: number
   superfluid?: boolean
+  dataURL?: string
   default?: boolean
 }
 
@@ -214,6 +215,7 @@ export interface PaywallConfig {
   hideSoldOut?: boolean
   password?: boolean
   emailRequired?: boolean
+  dataURL?: string
 }
 
 export interface RawLock {
