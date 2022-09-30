@@ -14,17 +14,25 @@ const wrap = (template) => {
     wrappedTemplate.text = template.text
   }
 
+  wrappedTemplate.attachments = template.attachments || []
+
   if (template.html) {
     wrappedTemplate.html = (params) => {
       const content = template.html(params)
-      return base({
+      const [buildTemplate, getImages] = base({
         content,
       })
+
+      const result = buildTemplate({ content })
+      const images = getImages()
+
+      images.forEach((image) => {
+        wrappedTemplate.attachments.push(image)
+      })
+
+      return result
     }
   }
-
-  wrappedTemplate.attachments = template.attachments || []
-
   return wrappedTemplate
 }
 

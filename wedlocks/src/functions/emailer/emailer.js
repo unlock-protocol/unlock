@@ -1,5 +1,5 @@
-import { route, preview } from './route'
-import logger from '../logger'
+import { route, preview } from '../../route'
+import logger from '../../../logger'
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
@@ -70,22 +70,22 @@ export const handler = async (event, context, responseCallback) => {
     })
   }
 
-  try {
-    const response = await route(body)
+  // try {
+  const response = await route(body)
 
-    return callback(null, {
-      statusCode: 204,
-      details: response,
-    })
-  } catch (error) {
-    logger.error({
-      event,
-      error,
-    })
-    return callback(null, {
-      statusCode: 500,
-      body: 'Server Error',
-      details: error.toString(),
-    })
-  }
+  return callback(null, {
+    statusCode: 204,
+    details: response,
+  })
+  // } catch (error) {
+  //   logger.error({
+  //     event,
+  //     error,
+  //   })
+  //   return callback(null, {
+  //     statusCode: 500,
+  //     body: 'Server Error',
+  //     details: error.toString(),
+  //   })
+  // }
 }

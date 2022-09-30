@@ -1,21 +1,19 @@
 # Wedlocks
 
 Wedlocks is the email sending service for Unlock.
-This is intended to be deployed as an AWS lambda function (or similar).
-For that purpose we use webpack to build a single js file.
 
-For local dev, we have a local server running which "mimicks" requests sent to lambda.
+You can use it locally with:
+
+```bash
+netlify functions:serve
+```
 
 ## API
 
 There is a single API:
 
-```
-POST http://localhost:1337
-```
-
 ```bash
-curl -X POST  http://127.0.0.1:1337/ \
+curl -X POST http://localhost:9999/.netlify/functions/emailer/ \
    -H 'Content-Type: application/json' \
    -d '{
     "template": "debug",

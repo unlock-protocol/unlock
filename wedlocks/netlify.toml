@@ -1,0 +1,14 @@
+# Settings in the [build] context are global and are applied to
+# all contexts unless otherwise overridden by more specific contexts.
+
+[functions]
+  # Directory with serverless functions, including background
+  # functions, to deploy. This is relative to the base directory
+  # if one has been set, or the root directory if
+  # a base hasn’t been set.
+  directory = "src/functions/"
+  node_bundler="esbuild"
+
+  included_files = ["static/**/*"]
+
+
