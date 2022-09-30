@@ -84,6 +84,7 @@ export const CreateLockForm = ({
   }, [defaultValues, reset])
 
   const onHandleSubmit = (values: LockFormProps) => {
+    console.table(values)
     if (isValid) {
       if (typeof onSubmit === 'function') {
         onSubmit(values)
@@ -244,6 +245,9 @@ export const CreateLockForm = ({
                   setEnabled={setIsFree}
                   onChange={(enable: boolean) => {
                     setValue('isFree', enable)
+                    setValue('keyPrice', enable ? 0 : undefined, {
+                      shouldValidate: true,
+                    })
                   }}
                 />
               </div>
