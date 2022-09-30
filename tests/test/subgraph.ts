@@ -56,7 +56,7 @@ describe('Unlock', function () {
   })
 })
 
-describe.only('Keep track of total keys', function () {
+describe('Keep track of total keys', function () {
   let lock: Contract
   before(async () => {
     ;({ lock } = await unlock.createLock({ ...lockParams }))
