@@ -45,7 +45,7 @@ export interface NetworkConfig {
   unlockAddress?: string
   serializerAddress?: string
   multisig?: string
-  subgraph?: {
+  subgraph: {
     endpoint:string
     endpointV2?:string
     networkName? :string // for thegraph hosted service

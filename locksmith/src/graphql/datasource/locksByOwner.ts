@@ -4,7 +4,7 @@ import networks from '@unlock-protocol/networks'
 
 export class LocksByOwner extends GraphQLDataSource {
   async get(owner: string, network: number) {
-    this.baseURL = networks[network].subgraph?.endpoint
+    this.baseURL = networks[network].subgraph.endpoint
 
     const locksByOwnerQuery = gql`
       query Locks($owner: String!) {

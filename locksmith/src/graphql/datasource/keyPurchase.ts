@@ -17,7 +17,7 @@ export class KeyPurchase extends GraphQLDataSource {
   `
 
   async getKeyPurchases(network: number) {
-    this.baseURL = networks[network].subgraph?.endpoint
+    this.baseURL = networks[network].subgraph.endpoint
 
     try {
       const response = await this.query(this.PURCHASES)
