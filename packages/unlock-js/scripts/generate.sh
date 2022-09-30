@@ -1,6 +1,6 @@
 # !/usr/bin/env bash
 
-OPEN_API_FILEPATH="${1:-"../../locksmith/openapi.yml"}"
+OPEN_API_FILEPATH="${1:-"./openapi.yml"}"
 
 # clean generated folder
 rm -rf src/@generated
