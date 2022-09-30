@@ -195,13 +195,13 @@ export const CreateLockFormSummary = ({
             <span className="text-xl font-bold">{formData?.name}</span>
           </div>
           <div className="flex flex-col gap-2">
-            <span className="text-base">Duration</span>
+            <span className="text-base">Membership duration</span>
             <span className="text-xl font-bold">
               {unlimitedDuration ? 'Unlimited' : durationAsText}
             </span>
           </div>
           <div className="flex flex-col gap-2">
-            <span className="text-base">Quantity</span>
+            <span className="text-base">Maximum number of memberships</span>
             <span className="text-xl font-bold">
               {unlimitedQuantity ? 'Unlimited' : formData?.maxNumberOfKeys}
             </span>
