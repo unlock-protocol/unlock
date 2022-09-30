@@ -7,6 +7,7 @@ interface ToggleSwitchProps {
   setEnabled: (enabled: boolean) => void
   title?: string
   onChange?: (enabled: boolean) => void
+  disabled?: boolean
 }
 
 export const ToggleSwitch = ({
@@ -14,10 +15,11 @@ export const ToggleSwitch = ({
   enabled,
   setEnabled,
   onChange,
+  disabled = false,
 }: ToggleSwitchProps) => {
   const switchClass = twMerge(
-    enabled ? 'bg-brand-ui-primary' : 'bg-black',
-    'relative inline-flex h-8 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
+    enabled ? 'bg-brand-ui-primary' : 'bg-gray-400',
+    'disabled:opacity-50 relative inline-flex h-8 w-14 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75'
   )
 
   const buttonClass = twMerge(
@@ -40,6 +42,7 @@ export const ToggleSwitch = ({
         checked={enabled}
         onChange={setEnabled}
         className={switchClass}
+        disabled={disabled}
       >
         <span aria-hidden="true" className={buttonClass} />
       </SwitchComponent>
