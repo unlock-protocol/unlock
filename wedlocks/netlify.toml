@@ -1,6 +1,9 @@
 # Settings in the [build] context are global and are applied to
 # all contexts unless otherwise overridden by more specific contexts.
 
+[context.production]
+  command = "node config-builder.js > config.js"
+
 [functions]
   # Directory with serverless functions, including background
   # functions, to deploy. This is relative to the base directory
@@ -10,5 +13,3 @@
   node_bundler="esbuild"
 
   included_files = ["static/**/*"]
-
-
