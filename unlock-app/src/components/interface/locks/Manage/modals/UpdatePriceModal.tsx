@@ -132,7 +132,9 @@ export const UpdatePriceModal = ({
           className="flex flex-col gap-6 p-6 text-left"
           onSubmit={handleSubmit(onHandleSubmit)}
         >
-          <span className="text-2xl font-bold">Update Price</span>
+          <span className="text-2xl font-bold">
+            Update the price and currency on your lock
+          </span>
 
           <div>
             <label className="block px-1 mb-2 text-base" htmlFor="">
@@ -171,6 +173,14 @@ export const UpdatePriceModal = ({
               </span>
             )}
           </div>
+
+          <span className="text-sm text-gray-600">
+            When changing the price, please remember that users who have
+            approved recurring memberships will need to manually renew in order
+            to approve the price change. Similarly if users cancel their
+            membership, they will receive a refund in the new currency, and an
+            amount calculated based on the new pricing, not the old one
+          </span>
 
           <Button type="submit" disabled={updatePriceMutation.isLoading}>
             Update
