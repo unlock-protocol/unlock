@@ -15,7 +15,6 @@ import { useState } from 'react'
 interface MembersProps {
   lockAddress: string
   network: number
-  isLockManager: boolean
   filters?: {
     [key: string]: any
   }
@@ -49,7 +48,6 @@ const MembersPlaceholder = () => {
 export const Members = ({
   lockAddress,
   network,
-  isLockManager,
   filters = {
     query: '',
     filterKey: 'owner',
@@ -137,7 +135,6 @@ export const Members = ({
             owner={owner}
             expiration={expiration}
             version={lockVersion}
-            isLockManager={isLockManager}
             metadata={metadata}
             lockAddress={lockAddress!}
             network={network}

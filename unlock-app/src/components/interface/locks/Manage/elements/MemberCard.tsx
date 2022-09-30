@@ -10,6 +10,7 @@ import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { Address } from './Members'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
 import ExtendKeysDrawer from '~/components/creator/members/ExtendKeysDrawer'
+import { useLockManager } from '~/hooks/useLockManager'
 
 interface MemberCardProps {
   token: string
@@ -40,7 +41,6 @@ export const MemberCard = ({
   owner,
   expiration,
   version,
-  isLockManager,
   metadata,
   lockAddress,
   network,
@@ -50,6 +50,11 @@ export const MemberCard = ({
   const [extendKeysOpen, setExtendKeysOpen] = useState(false)
   const [isCopied, setCopied] = useClipboard(owner, {
     successDuration: 2000,
+  })
+
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
   })
 
   useEffect(() => {
@@ -65,7 +70,7 @@ export const MemberCard = ({
 
   const canExtendKey =
     expiration !== MAX_UINT && version !== undefined && version >= 11
-  const refundDisabled = !(isLockManager && isKeyValid(expiration))
+  const refundDisabled = !(isManager && isKeyValid(expiration))
 
   const { token: tokenId, lockName } = metadata ?? {}
 
@@ -117,7 +122,7 @@ export const MemberCard = ({
             />
           </div>
 
-          {isLockManager && (
+          {isManager && (
             <div className="col-span-3 mx-auto md:mx-0 md:ml-auto md:col-span-2">
               <div className="flex gap-3">
                 {!refundDisabled && (
@@ -155,15 +160,10 @@ export const MemberCard = ({
     <Collapse
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      disabled={!isLockManager}
+      disabled={!isManager}
       content={<MemberInfo />}
     >
-      <MetadataCard
-        metadata={metadata}
-        owner={owner}
-        network={network}
-        isLockManager={isLockManager}
-      />
+      <MetadataCard metadata={metadata} owner={owner} network={network} />
     </Collapse>
   )
 }
