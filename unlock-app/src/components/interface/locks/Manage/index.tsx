@@ -29,7 +29,6 @@ interface TopActionBarProps {
 
 const ActionBar = ({ lockAddress }: ActionBarProps) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [generate, setGenerate] = useState(false)
   const { network } = useAuth()
 
   return (
