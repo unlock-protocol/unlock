@@ -9,6 +9,7 @@ import useClipboard from 'react-use-clipboard'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
 import ExtendKeysDrawer from '~/components/creator/members/ExtendKeysDrawer'
+import { useLockManager } from '~/hooks/useLockManager'
 import useEns from '~/hooks/useEns'
 import { addressMinify } from '~/utils/strings'
 
@@ -17,7 +18,6 @@ interface MemberCardProps {
   owner: string
   expiration: string
   version: number
-  isLockManager: boolean
   metadata: any
   lockAddress: string
   network: number
@@ -41,7 +41,6 @@ export const MemberCard = ({
   owner,
   expiration,
   version,
-  isLockManager,
   metadata,
   lockAddress,
   network,
@@ -59,6 +58,11 @@ export const MemberCard = ({
     successDuration: 2000,
   })
 
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
+  })
+
   useEffect(() => {
     if (!isCopied) return
     ToastHelper.success('Address copied')
@@ -72,7 +76,7 @@ export const MemberCard = ({
 
   const canExtendKey =
     expiration !== MAX_UINT && version !== undefined && version >= 11
-  const refundDisabled = !(isLockManager && isKeyValid(expiration))
+  const refundDisabled = !(isManager && isKeyValid(expiration))
 
   const { token: tokenId, lockName } = metadata ?? {}
 
@@ -124,7 +128,7 @@ export const MemberCard = ({
             />
           </div>
 
-          {isLockManager && (
+          {isManager && (
             <div className="col-span-3 mx-auto md:mx-0 md:ml-auto md:col-span-2">
               <div className="flex gap-3">
                 {!refundDisabled && (
@@ -162,15 +166,10 @@ export const MemberCard = ({
     <Collapse
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      disabled={!isLockManager}
+      disabled={!isManager}
       content={<MemberInfo />}
     >
-      <MetadataCard
-        metadata={metadata}
-        owner={owner}
-        network={network}
-        isLockManager={isLockManager}
-      />
+      <MetadataCard metadata={metadata} owner={owner} network={network} />
     </Collapse>
   )
 }
