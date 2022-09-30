@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import SvgComponents from './svg'
-
+import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 import { ActionButton } from './buttons/ActionButton'
 import LogInSignUp from './LogInSignUp'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
@@ -49,9 +49,17 @@ const LoginPrompt = ({
           <WalletButton
             color={backgroundColor}
             activeColor={activeColor}
-            onClick={() => authenticateWithProvider('METAMASK')}
+            onClick={() =>
+              window.ethereum
+                ? authenticateWithProvider('METAMASK')
+                : authenticateWithProvider('WALLET_CONNECT')
+            }
           >
-            <SvgComponents.Metamask />
+            {window.ethereum?.isMetaMask ? (
+              <SvgComponents.Metamask />
+            ) : (
+              <WalletIcon />
+            )}
             In browser wallet
           </WalletButton>
 

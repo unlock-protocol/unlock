@@ -7,6 +7,7 @@ import { addressMinify, minifyEmail } from '~/utils/strings'
 import SvgComponents from '../../svg'
 import { CheckoutService } from './Checkout/checkoutMachine'
 import { ConnectService } from './Connect/connectMachine'
+import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 
 interface SignedInProps {
   onDisconnect?: () => void
@@ -68,7 +69,14 @@ export function SignedOut({
   authenticateWithProvider,
 }: SignedOutProps) {
   const iconButtonClass =
-    'inline-flex items-center p-1 hover:[box-shadow:_0px_4px_15px_rgba(0,0,0,0.08)] [box-shadow:_0px_8px_30px_rgba(0,0,0,0.08)] rounded-full'
+    'inline-flex items-center w-10 h-10 justify-center hover:[box-shadow:_0px_4px_15px_rgba(0,0,0,0.08)] [box-shadow:_0px_8px_30px_rgba(0,0,0,0.08)] rounded-full'
+
+  const ethereum = window.ethereum
+
+  const walletIcon = {
+    metamask: <SvgComponents.Metamask width={32} />,
+    default: <WalletIcon size={20} className="m-1.5" />,
+  }
 
   return (
     <div className="grid w-full grid-flow-col grid-cols-11">
@@ -76,11 +84,17 @@ export function SignedOut({
         <h4 className="text-sm"> Have a crypto wallet? </h4>
         <div className="flex items-center justify-around w-full">
           <button
-            onClick={() => authenticateWithProvider('METAMASK')}
+            onClick={() =>
+              ethereum
+                ? authenticateWithProvider('METAMASK')
+                : authenticateWithProvider('WALLET_CONNECT')
+            }
             type="button"
             className={iconButtonClass}
           >
-            <SvgComponents.Metamask width={32} />
+            {ethereum?.isMetaMask
+              ? walletIcon['metamask']
+              : walletIcon['default']}
           </button>
           <button
             onClick={() => authenticateWithProvider('WALLET_CONNECT')}
@@ -135,6 +149,7 @@ export function Connected({
   const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
   })
+
   const onDisconnect = () => {
     send('DISCONNECT')
     deAuthenticate()
