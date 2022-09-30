@@ -27,7 +27,7 @@ export const UpdateQuantityModal = ({
   maxNumberOfKeys,
 }: EditQuantityProps) => {
   const [unlimitedQuantity, setUnlimitedQuantity] = useState(
-    maxNumberOfKeys == UNLIMITED_KEYS_COUNT
+    maxNumberOfKeys === UNLIMITED_KEYS_COUNT
   )
   const walletService = useWalletService()
 

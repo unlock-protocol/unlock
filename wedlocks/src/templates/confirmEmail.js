@@ -1,17 +1,18 @@
-import handlebars from 'handlebars'
-
 export default {
-  subject: handlebars.compile('Please confirm your email address'),
-  html: handlebars.compile(
-    `<h1>Welcome to Unlock!</h1>
+  subject: () => 'Please confirm your email address',
+  text: (params) =>
+    `Welcome to Unlock!
 
-    <p>To get started, please confirm your email address by clicking on <a href="{{confirmLink}}?email={{email}}&signedEmail={{signedEmail}}">this link</a>.</p>
+To get started, please confirm your email address by clicking on the following link:
 
-    <p>
-      You can also copy and paste the following URL on your web browser: <code>{{confirmLink}}?email={{email}}&signedEmail={{signedEmail}}</code>    
-    </p>
+  ${params.confirmLink}?email=${params.email}&signedEmail=${params.signedEmail}
 
-    <p>Once your email address is confirmed, you'll be able to use your Unlock account to pay for content and services.</p>
-`
-  ),
+Once your email address is confirmed, you'll be able to use your Unlock account to pay for content and services.
+
+If you have any questions, you can always email us at hello@unlock-protocol.com.
+
+And again, welcome!
+
+The Unlock team
+`,
 }
