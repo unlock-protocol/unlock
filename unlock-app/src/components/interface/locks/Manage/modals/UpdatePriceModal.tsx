@@ -34,8 +34,9 @@ export const UpdatePriceModal = ({
   setIsOpen,
   price,
 }: UpdatePriceModalProps) => {
-  const keyPrice: string = price ? parseFloat(`${price}`)?.toFixed(3) : ''
-  const isFreeKey = keyPrice == price
+  const keyPrice: number | undefined =
+    price == undefined ? 0 : parseFloat(`${price}`)
+  const isFreeKey = keyPrice == 0
 
   const [isFree, setIsFree] = useState(isFreeKey)
   const { networks } = useConfig()
@@ -56,7 +57,7 @@ export const UpdatePriceModal = ({
     mode: 'onChange',
     defaultValues: {
       currencyContractAddress: undefined,
-      keyPrice,
+      keyPrice: keyPrice?.toFixed(3),
       symbol: '',
       isFree,
     },
@@ -153,7 +154,9 @@ export const UpdatePriceModal = ({
                 setEnabled={setIsFree}
                 onChange={(enabled: boolean) => {
                   setValue('isFree', enabled)
-                  setValue('keyPrice', enabled ? '0' : keyPrice)
+                  setValue('keyPrice', enabled ? '0' : undefined, {
+                    shouldValidate: true,
+                  })
                 }}
               />
             </div>

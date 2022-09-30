@@ -172,8 +172,6 @@ export const LockDetailCard = ({
 
   const symbol = lock?.currencySymbol || baseCurrencySymbol
 
-  console.table(lock)
-
   return (
     <>
       <UpdateDurationModal
