@@ -72,7 +72,7 @@ export const Input = forwardRef(
       INPUT_BUTTON_SIZE[size]
     )
     const inputClass = twMerge(
-      'block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1',
+      'block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 disabled:bg-gray-100',
       inputSizeStyle,
       inputStateStyles,
       icon ? 'pl-10' : undefined
