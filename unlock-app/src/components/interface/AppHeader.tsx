@@ -15,6 +15,10 @@ interface Link {
   url: string
 }
 
+interface LinksProps {
+  mobile?: boolean
+}
+
 const links: Link[] = [
   { label: 'Locks', url: '/locks' },
   { label: 'Keys', url: '/keychain' },
@@ -98,6 +102,32 @@ export const AppHeader = () => {
   const router = useRouter()
   const loginUrl = `/login?redirect=${encodeURIComponent(window.location.href)}`
 
+  const Links = ({ mobile = false }: LinksProps) => {
+    return (
+      <div
+        className={`${
+          mobile
+            ? 'absolute left-0 right-0 block h-auto px-10 pt-20 top-20'
+            : ''
+        } bg-ui-secondary-200`}
+      >
+        <ul className="flex flex-col gap-8 md:px-0 md:flex-row">
+          {links?.map(({ label, url }, index) => {
+            const isActive = router.pathname === url
+            return (
+              <li
+                key={index}
+                className={`text-lg ${isActive ? 'text-brand-ui-primary' : ''}`}
+              >
+                <Link href={url}>{label}</Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+    )
+  }
+
   return (
     <div className="pt-5 bg-ui-secondary-200">
       <div className="flex justify-between px-4 mx-auto lg:container">
@@ -110,6 +140,7 @@ export const AppHeader = () => {
             >
               {isOpen ? <MenuCloseIcon size={20} /> : <MenuIcon size={20} />}
             </button>
+
             <div className="h-5 md:h-6">
               <img
                 className="h-full"
@@ -119,28 +150,16 @@ export const AppHeader = () => {
             </div>
           </div>
 
-          <div
-            className={`bg-ui-secondary-200 h-0 overflow-hidden md:block ${
-              isOpen
-                ? 'absolute h-auto left-0 right-0 top-20 px-10 pt-20 block'
-                : ''
-            }`}
-          >
-            <ul className="flex flex-col gap-8 md:px-0 md:flex-row">
-              {links?.map(({ label, url }, index) => {
-                const isActive = router.pathname === url
-                return (
-                  <li
-                    key={index}
-                    className={`text-lg ${
-                      isActive ? 'text-brand-ui-primary' : ''
-                    }`}
-                  >
-                    <Link href={url}>{label}</Link>
-                  </li>
-                )
-              })}
-            </ul>
+          <div className="hidden md:block">
+            <Links />
+          </div>
+
+          <div className="md:hidden">
+            {isOpen && (
+              <div className="">
+                <Links mobile={true} />
+              </div>
+            )}
           </div>
         </div>
         <div>
