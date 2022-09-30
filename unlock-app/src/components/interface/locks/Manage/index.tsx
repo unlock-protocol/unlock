@@ -184,7 +184,10 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
               <Button
                 variant="transparent"
                 className="w-full mt-auto"
-                onClick={() => resetField('url')}
+                onClick={() => {
+                  resetField('url')
+                  setLinkGenerated(false)
+                }}
               >
                 Reset
               </Button>
