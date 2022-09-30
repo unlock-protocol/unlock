@@ -17,7 +17,7 @@ repo=git@github.com:unlock-protocol/docs.git
 
 # versioning
 version_number=$(yarn workspace @unlock-protocol/locksmith version:show)
-branch=networks-$version_number
+branch=openapi-$version_number
 echo $branch
 
 # cleanup
@@ -39,7 +39,7 @@ fi
 
 # generate new docs files
 cd $here
-sh -c "cp locksmith/openapi.yml $tmpdir/docs/$dest"
+sh -c "cp packages/unlock-js/openapi.yml $tmpdir/docs/$dest"
 
 # # commit changes
 cd $tmpdir/docs
