@@ -29,6 +29,7 @@
     "smart-contracts",
     "smart-contract-extensions",
     "subgraph",
+    "tests",
     "unlock-app",
     "unlock-js",
     "unlock-protocol-com",

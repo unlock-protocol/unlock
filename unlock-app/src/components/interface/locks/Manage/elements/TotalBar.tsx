@@ -1,10 +1,12 @@
 import { Button } from '@unlock-protocol/ui'
-import React from 'react'
+import React, { useState } from 'react'
 import { useMutation, useQueries } from 'react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useConfig } from '~/utils/withConfig'
 import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { CryptoIcon } from '../../elements/KeyPrice'
+import { VscGraphLine as GraphIcon } from 'react-icons/vsc'
 
 interface Action {
   title: string
@@ -58,7 +60,7 @@ const Total = ({
             disabled={actionDisabled}
           >
             <div className="flex gap-1 flex-items-center">
-              <span> {action.title}</span>
+              <span>{action.title}</span>
             </div>
           </Button>
         )}
@@ -70,7 +72,7 @@ const Total = ({
         <div className="flex items-center gap-2">
           {prepend}
           <>
-            <span className="text-4xl font-bold">{value || 0}</span>
+            <span className="text-2xl font-bold md:text-4xl">{value || 0}</span>
             {description && (
               <span className="block text-xs text-gray-700">{description}</span>
             )}
@@ -82,15 +84,15 @@ const Total = ({
 }
 
 export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
+  const [showStats, setShowStats] = useState(false)
   const web3Service = useWeb3Service()
   const walletService = useWalletService()
+  const { networks } = useConfig()
+
+  const { baseCurrencySymbol } = networks[network] ?? {}
 
   const getNumberOfOwners = async () => {
     return await web3Service.numberOfOwners(lockAddress, network)
-  }
-
-  const getTokenSymbol = async () => {
-    return await web3Service.getTokenSymbol(lockAddress, network)
   }
 
   const getLock = async () => {
@@ -108,7 +110,6 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
   const [
     { isLoading, data: lock },
     { isLoading: isLoadingTotalMembers, data: numberOfOwners },
-    { isLoading: isLoadingSymbol, data: symbol },
   ] = useQueries([
     {
       queryKey: ['getLock', lockAddress, network, withdrawMutation.isSuccess],
@@ -123,15 +124,6 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
       ],
       queryFn: getNumberOfOwners,
     },
-    {
-      queryKey: [
-        'getTokenSymbol',
-        lockAddress,
-        network,
-        withdrawMutation.isSuccess,
-      ],
-      queryFn: getTokenSymbol,
-    },
   ])
 
   const { balance = 0, outstandingKeys: keySold = 0 } = lock ?? {}
@@ -145,28 +137,57 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
     })
   }
 
-  const loading = isLoading || isLoadingSymbol || isLoadingTotalMembers
+  const loading = isLoading || isLoadingTotalMembers
 
   const withdrawDisabled =
     parseFloat(`${balance}`) === 0 || loading || withdrawMutation.isLoading
 
   const formattedBalance = parseFloat(`${balance || 0}`)?.toFixed(3)
+  const symbol = lock?.currencySymbol || baseCurrencySymbol
+
+  const Stats = () => {
+    return (
+      <div className="flex flex-col gap-8 divide-y md:p-8 md:flex-row md:divide-y-0 md:divide-x auto-cols-max divide-x-gray-500">
+        <Total title="Total members" value={numberOfOwners} loading={loading} />
+        <Total title="Key Sold" value={keySold} loading={loading} />
+        <Total
+          title="Balance"
+          value={formattedBalance}
+          loading={loading}
+          prepend={<CryptoIcon symbol={symbol} size={36} />}
+          action={{
+            title: 'Withdraw',
+            disabled: withdrawDisabled,
+            onClick: onWithDraw,
+          }}
+        />
+      </div>
+    )
+  }
 
   return (
-    <div className="flex flex-col gap-8 p-8 border border-gray-500 divide-y md:flex-row md:divide-y-0 md:divide-x auto-cols-max divide-x-gray-500 rounded-2xl">
-      <Total title="Total members" value={numberOfOwners} loading={loading} />
-      <Total title="Key Sold" value={keySold} loading={loading} />
-      <Total
-        title="Balance"
-        value={formattedBalance}
-        loading={loading}
-        prepend={<CryptoIcon symbol={symbol} size={36} />}
-        action={{
-          title: 'Withdraw',
-          disabled: withdrawDisabled,
-          onClick: onWithDraw,
-        }}
-      />
+    <div className="flex flex-col border border-gray-500 rounded-2xl">
+      <div className="hidden md:block">
+        <Stats />
+      </div>
+      <div
+        className={`flex ${
+          showStats ? 'flex-col-reverse' : 'flex-col'
+        } px-4 py-3 md:hidden`}
+      >
+        <button
+          className={`flex ${
+            showStats ? 'mt-4' : ''
+          } items-center justify-between md:hidden`}
+          onClick={() => setShowStats(!showStats)}
+        >
+          <span className="text-sm font-semibold">
+            {showStats ? 'Hide' : 'Stats'}
+          </span>
+          <GraphIcon size={16} />
+        </button>
+        {showStats && <Stats />}
+      </div>
     </div>
   )
 }
