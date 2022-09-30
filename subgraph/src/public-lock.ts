@@ -34,6 +34,12 @@ function newKey(event: TransferEvent): void {
     event.params.to
   )
   key.save()
+
+  // update lock
+  const lock = Lock.load(event.address.toHexString())
+  if (lock) {
+    lock.totalKeys = lock.totalKeys.minus(BigInt.fromI32(1))
+  }
 }
 
 export function handleTransfer(event: TransferEvent): void {
@@ -41,6 +47,12 @@ export function handleTransfer(event: TransferEvent): void {
   if (event.params.from.toHex() == zeroAddress) {
     // create key
     newKey(event)
+  } else if (event.params.to.toHex() == zeroAddress) {
+    // burn key
+    const lock = Lock.load(event.address.toHexString())
+    if (lock) {
+      lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
+    }
   } else {
     // existing key has been transferred
     const keyID = genKeyID(event.address, event.params.tokenId.toString())
