@@ -5,7 +5,7 @@ import base from './templates/base'
  * @param {*} template
  * @returns
  */
-const wrap = (template) => {
+const wrap = (template, opts = {}) => {
   const wrappedTemplate = {
     subject: template.subject,
   }
@@ -19,9 +19,7 @@ const wrap = (template) => {
   if (template.html) {
     wrappedTemplate.html = (params) => {
       const content = template.html(params)
-      const [buildTemplate, getImages] = base({
-        content,
-      })
+      const [buildTemplate, getImages] = base(opts)
 
       const result = buildTemplate({ content })
       const images = getImages()

@@ -22,4 +22,5 @@ Object.keys(LockTemplates).forEach((template) => {
 Object.keys(baseTemplates).forEach((template) => {
   templates[template.toLowerCase()] = baseTemplates[template]
 })
+
 export default templates

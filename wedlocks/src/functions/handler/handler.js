@@ -34,11 +34,11 @@ export const handler = async (event, context, responseCallback) => {
     })
   }
 
-  let match = event?.url?.pathname?.match(/\/preview\/([a-zA-Z0-9]+)/)
+  let match = event?.path?.match(/\/preview\/([a-zA-Z0-9]+)/)
   if (event.httpMethod === 'GET' && match && match[0]) {
     const body = await preview({
       template: match[1],
-      params: Object.fromEntries(event?.url?.searchParams),
+      params: event.queryStringParameters,
     })
     return callback(null, {
       statusCode: 200,
@@ -70,22 +70,22 @@ export const handler = async (event, context, responseCallback) => {
     })
   }
 
-  // try {
-  const response = await route(body)
+  try {
+    const response = await route(body)
 
-  return callback(null, {
-    statusCode: 204,
-    details: response,
-  })
-  // } catch (error) {
-  //   logger.error({
-  //     event,
-  //     error,
-  //   })
-  //   return callback(null, {
-  //     statusCode: 500,
-  //     body: 'Server Error',
-  //     details: error.toString(),
-  //   })
-  // }
+    return callback(null, {
+      statusCode: 204,
+      details: response,
+    })
+  } catch (error) {
+    logger.error({
+      event,
+      error,
+    })
+    return callback(null, {
+      statusCode: 500,
+      body: 'Server Error',
+      details: error.toString(),
+    })
+  }
 }

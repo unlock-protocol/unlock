@@ -13,7 +13,6 @@ PUBLISH=$4
 BUILD_PATH="build";
 STATIC_PATH="static";
 
-
 if [ "$DEPLOY_ENV" = "staging" ]; then
   if [ "$PUBLISH" = "true" ]; then
     # This is a build on master, we deploy to staging as a published build

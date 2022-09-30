@@ -9,7 +9,7 @@ import wrap from './wrap'
  * @param {*} args
  * @returns
  */
-const getTemplateAndParams = async (args) => {
+const getTemplateAndParams = async (args, opts) => {
   let template = templates[args.template.toLowerCase()]
 
   if (!template && args.failoverTemplate) {
@@ -31,7 +31,7 @@ const getTemplateAndParams = async (args) => {
   })
 
   // Wrap the template
-  return [await wrap(template), templateParams]
+  return [await wrap(template, opts), templateParams]
 }
 
 // This function loads the template and performs the actual email sending
@@ -67,7 +67,9 @@ export const route = async (args) => {
  * @returns
  */
 export const preview = async (args) => {
-  const [template, templateParams] = await getTemplateAndParams(args)
+  const [template, templateParams] = await getTemplateAndParams(args, {
+    context: 'web',
+  })
 
   Object.keys(args.params).forEach((key) => {
     const param = args.params[key]

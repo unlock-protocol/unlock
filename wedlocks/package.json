@@ -25,8 +25,6 @@
     "prettier": "2.7.1",
     "ts-jest": "27.1.5",
     "typescript": "4.7.4",
-    "webpack": "5.74.0",
-    "webpack-cli": "4.10.0",
     "winston": "3.8.1"
   },
   "jest": {
@@ -43,9 +41,8 @@
     ]
   },
   "scripts": {
-    "build": "webpack",
-    "dev": "UNLOCK_ENV=dev nodemon src/server.js --exec babel-node",
-    "send": "UNLOCK_ENV=dev nodemon src/send.js --exec babel-node",
+    "build": "npx netlify build",
+    "dev": "UNLOCK_ENV=dev npx netlify functions:serve",
     "test": "UNLOCK_ENV=test jest",
     "lint": "eslint --resolve-plugins-relative-to ../packages/eslint-config --ext .ts,.js src/",
     "ci": "yarn test && yarn lint",
