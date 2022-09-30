@@ -20,8 +20,7 @@
     "ci": "yarn test && yarn lint",
     "prepublishOnly": "yarn build",
     "grant-keys": "node ./scripts/grant-keys.js",
-    "generate": "yarn generate:client",
-    "generate:client": "rm -rf ./src/@generated/client && openapi-generator-cli generate -i ../../locksmith/openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./src/@generated/client"
+    "generate": "./scripts/generate.sh"
   },
   "author": "Unlock Inc",
   "license": "MIT",
