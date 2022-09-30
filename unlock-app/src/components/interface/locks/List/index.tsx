@@ -2,6 +2,7 @@ import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import React from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { Container } from '../../Container'
 import { ImageBar } from '../Manage/elements/ImageBar'
 import { LockList } from './elements/LockList'
 
@@ -72,18 +73,20 @@ export const LocksListPage = () => {
 
   return (
     <div className="min-w-full min-h-screen bg-ui-secondary-200">
-      <div className="px-4 mx-auto lg:container pt-9">
-        <div className="flex flex-col gap-10">
-          <PageHeader />
-          {!network ? (
-            <WalletNotConnected />
-          ) : noItems ? (
-            <NoItems />
-          ) : (
-            <LockList />
-          )}
-        </div>
-      </div>
+      <Container>
+        <div className="pt-9">
+          <div className="flex flex-col gap-10">
+            <PageHeader />
+            {!network ? (
+              <WalletNotConnected />
+            ) : noItems ? (
+              <NoItems />
+            ) : (
+              <LockList />
+            )}
+          </div>
+        </div>{' '}
+      </Container>
     </div>
   )
 }
