@@ -18,7 +18,6 @@ interface MemberCardProps {
   owner: string
   expiration: string
   version: number
-  isLockManager: boolean
   metadata: any
   lockAddress: string
   network: number
