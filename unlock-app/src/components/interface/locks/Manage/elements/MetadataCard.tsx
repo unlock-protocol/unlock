@@ -8,6 +8,7 @@ import {
 import { useMutation } from 'react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useLockManager } from '~/hooks/useLockManager'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 
@@ -20,7 +21,6 @@ interface MetadataCardProps {
   metadata: any
   owner: string
   network: number
-  isLockManager: boolean
 }
 
 const keysToIgnore = [
@@ -47,7 +47,6 @@ export const MetadataCard = ({
   metadata,
   owner,
   network,
-  isLockManager,
 }: MetadataCardProps) => {
   const { account } = useAuth()
   const storageService = useStorageService()
@@ -62,6 +61,11 @@ export const MetadataCard = ({
   })
 
   const { lockAddress, token: tokenId } = data ?? {}
+
+  const { isManager: isLockManager } = useLockManager({
+    lockAddress,
+    network,
+  })
 
   const getCheckInTime = () => {
     const [_, checkInTimeValue] =

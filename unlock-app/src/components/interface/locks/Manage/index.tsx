@@ -220,12 +220,12 @@ export const ManageLockPage = () => {
 
   const { address, network } = query ?? {}
 
+  const lockNetwork = parseInt(network as string)
+  const lockAddress = address as string
+
   if (!walletNetwork) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
   }
-
-  const lockNetwork = parseInt(network as string)
-  const lockAddress = address as string
 
   return (
     <div className="min-h-screen bg-ui-secondary-200 pb-60">
