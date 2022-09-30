@@ -17,7 +17,7 @@ repo=git@github.com:unlock-protocol/docs.git
 
 # versioning
 version_number=$(yarn workspace @unlock-protocol/locksmith version:show)
-branch=networks-$version_number
+branch=openapi-$version_number
 echo $branch
 
 # cleanup
