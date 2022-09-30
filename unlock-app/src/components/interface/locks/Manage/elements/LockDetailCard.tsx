@@ -181,6 +181,7 @@ export const LockDetailCard = ({
         setIsOpen={setEditDuration}
         onUpdate={onUpdate}
         duration={lock?.expirationDuration}
+        network={network}
       />
 
       <UpdatePriceModal
@@ -198,6 +199,7 @@ export const LockDetailCard = ({
         isOpen={editQuantity}
         setIsOpen={setEditQuantity}
         maxNumberOfKeys={lock?.maxNumberOfKeys}
+        network={network}
       />
 
       <div className="flex flex-col">
