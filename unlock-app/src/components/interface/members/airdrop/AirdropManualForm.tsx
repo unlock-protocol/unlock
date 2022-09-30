@@ -43,6 +43,8 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
     }
   }
 
+  const maxKeysPerAddress = lock?.maxKeysPerAddress || 1
+
   return (
     <form
       onSubmit={handleSubmit((member) => {
@@ -73,9 +75,8 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
             }
           },
           max: {
-            value: lock?.maxKeysPerAddress || 1,
-            message:
-              "That's the max you can airdrop for this lock to a single address.",
+            value: maxKeysPerAddress,
+            message: `Your lock currently has a maximum of keys per address set to ${maxKeysPerAddress}.`,
           },
         })}
         error={errors.count?.message}
@@ -142,6 +143,7 @@ export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
           expiration,
           manager: account,
           neverExpire: lock.expirationDuration === -1,
+          count: 1,
         }}
       />
       {list.length > 0 && (
