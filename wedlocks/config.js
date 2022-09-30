@@ -18,7 +18,9 @@ const requiredVariables = [
 ]
 requiredVariables.forEach((envVar) => {
   if (!process.env[envVar]) {
-    console.error(`Environment variable ${envVar} is required.`)
+    if (['test'].indexOf(unlockEnv) === -1) {
+      console.error(`Environment variable ${envVar} is required.`)
+    }
     if (['dev', 'test'].indexOf(unlockEnv) === -1) {
       process.exit(1)
     }
