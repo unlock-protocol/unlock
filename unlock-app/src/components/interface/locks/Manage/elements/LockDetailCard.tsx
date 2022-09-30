@@ -171,6 +171,7 @@ export const LockDetailCard = ({
   }
 
   const symbol = lock?.currencySymbol || baseCurrencySymbol
+  const priceLabel = keyPrice == 0 ? 'FREE' : keyPrice
 
   return (
     <>
@@ -228,7 +229,7 @@ export const LockDetailCard = ({
             />
             <Detail
               label="Price"
-              value={keyPrice}
+              value={priceLabel}
               prepend={<CryptoIcon symbol={symbol} size={22} />}
               loading={loading}
               append={<EditButton onClick={() => setEditPrice(true)} />}
