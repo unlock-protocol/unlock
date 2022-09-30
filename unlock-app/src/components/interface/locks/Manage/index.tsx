@@ -14,13 +14,22 @@ import { useForm } from 'react-hook-form'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
+import { useQuery } from 'react-query'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useConfig } from '~/utils/withConfig'
 
 interface ActionBarProps {
   lockAddress: string
 }
 
+interface TopActionBarProps {
+  lockAddress: string
+  network: number
+}
+
 const ActionBar = ({ lockAddress }: ActionBarProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [generate, setGenerate] = useState(false)
   const { network } = useAuth()
 
   return (
@@ -50,15 +59,27 @@ const ActionBar = ({ lockAddress }: ActionBarProps) => {
   )
 }
 
-const TopActionBar = () => {
+const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
+  const [linkGenerated, setLinkGenerated] = useState(false)
+  const web3Service = useWeb3Service()
+  const config = useConfig()
+
+  const getLock = async () => {
+    return web3Service.getLock(lockAddress, network)
+  }
+
+  const { data: lock } = useQuery(['getLock', lockAddress, network], async () =>
+    getLock()
+  )
 
   const {
     register,
     getValues,
     formState: { isValid, errors },
     resetField,
+    setValue,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -67,9 +88,43 @@ const TopActionBar = () => {
   })
 
   const { url } = getValues()
-  const [isCopied, setCopied] = useClipboard(url, {
+  const [isCopied, setCopied] = useClipboard(url || '', {
     successDuration: 2000,
   })
+
+  const onGenerateURL = async () => {
+    let recurringPayments
+    if (
+      lock.publicLockVersion >= 10 &&
+      lock.currencyContractAddress &&
+      lock.selfAllowance !== '0'
+    ) {
+      recurringPayments = (365 * 24 * 3600) / lock.expirationDuration
+    }
+
+    const checkoutURLConfig = {
+      locks: {
+        [lock.address]: {
+          network: lock.network,
+          recurringPayments,
+        },
+      },
+      pessimistic: true,
+      persistentCheckout: true,
+      icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
+    }
+
+    const urlGenerate = new URL(
+      `/checkout?redirectUri=${encodeURIComponent(
+        url
+      )}&paywallConfig=${encodeURIComponent(
+        JSON.stringify(checkoutURLConfig)
+      )}`,
+      window.location.href
+    )
+    setValue('url', urlGenerate?.toString())
+    setLinkGenerated(true)
+  }
 
   useEffect(() => {
     if (!isCopied) return
@@ -108,23 +163,34 @@ const TopActionBar = () => {
               </span>
             )}
           </div>
-          <Button
-            variant="outlined-primary"
-            disabled={!isValid}
-            onClick={setCopied}
-          >
-            <div className="flex items-center gap-2 text-brand-ui-primary">
-              <span className="text-base">Share link</span>
-              <ShareOptionIcon size={20} />
-            </div>
-          </Button>
-          <Button
-            variant="transparent"
-            className="w-full mt-auto"
-            onClick={() => resetField('url')}
-          >
-            Reset
-          </Button>
+          {!linkGenerated ? (
+            <Button disabled={!isValid} onClick={onGenerateURL}>
+              <div className="flex items-center gap-2">
+                <span className="text-base">Generate</span>
+                <ShareOptionIcon size={20} />
+              </div>
+            </Button>
+          ) : (
+            <>
+              <Button
+                variant="outlined-primary"
+                disabled={!isValid}
+                onClick={setCopied}
+              >
+                <div className="flex items-center gap-2 text-brand-ui-primary">
+                  <span className="text-base">Copy</span>
+                  <ShareOptionIcon size={20} />
+                </div>
+              </Button>
+              <Button
+                variant="transparent"
+                className="w-full mt-auto"
+                onClick={() => resetField('url')}
+              >
+                Reset
+              </Button>
+            </>
+          )}
         </div>
       </Drawer>
       <div className="flex items-center justify-between">
@@ -164,7 +230,7 @@ export const ManageLockPage = () => {
       <div className="w-full px-4 lg:px-40">
         <div className="px-4 mx-auto lg:container pt-9">
           <div className="mb-7">
-            <TopActionBar />
+            <TopActionBar lockAddress={lockAddress} network={lockNetwork} />
           </div>
           <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
             <div className="lg:col-span-3">
