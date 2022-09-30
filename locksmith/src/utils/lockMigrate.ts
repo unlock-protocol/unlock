@@ -153,7 +153,7 @@ export default async function migrateLock(
   })
 
   // fetch managers from graph
-  if (subgraph?.endpoint) {
+  if (subgraph.endpoint) {
     let managers
     try {
       managers = await listManagers({
