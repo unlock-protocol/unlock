@@ -36,9 +36,11 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
     const items = Object.values(networks)
       .filter(({ subgraph }) => !subgraph?.endpoint.includes('localhost'))
       .map(async ({ id, subgraph }) => {
-        graphService.connect(subgraph?.endpoint)
-        const locksByNetwork = await graphService.locksByManager(owner, id)
-        return [id, locksByNetwork as any]
+        if (subgraph?.endpoint) {
+            graphService.connect(subgraph?.endpoint)
+            const locksByNetwork = await graphService.locksByManager(owner, id)
+            return [id, locksByNetwork as any]
+        }
       })
     return Promise.all(items)
   })
