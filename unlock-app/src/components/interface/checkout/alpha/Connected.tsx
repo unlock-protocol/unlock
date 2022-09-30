@@ -1,6 +1,6 @@
 import { Button, Tooltip } from '@unlock-protocol/ui'
 import { useActor } from '@xstate/react'
-import { ReactNode } from 'react'
+import { ReactNode, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { addressMinify, minifyEmail } from '~/utils/strings'
@@ -8,7 +8,8 @@ import SvgComponents from '../../svg'
 import { CheckoutService } from './Checkout/checkoutMachine'
 import { ConnectService } from './Connect/connectMachine'
 import { RiWalletFill as WalletIcon } from 'react-icons/ri'
-
+import { SiBrave as BraveWalletIcon } from 'react-icons/si'
+import { DownloadWallet } from '../../DownloadWallet'
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
@@ -70,31 +71,57 @@ export function SignedOut({
 }: SignedOutProps) {
   const iconButtonClass =
     'inline-flex items-center w-10 h-10 justify-center hover:[box-shadow:_0px_4px_15px_rgba(0,0,0,0.08)] [box-shadow:_0px_8px_30px_rgba(0,0,0,0.08)] rounded-full'
+  const [isDownloadWallet, setIsDownloadWallet] = useState(false)
 
-  const ethereum = window.ethereum
+  const ButtonIcon = useMemo(() => {
+    const walletIcons = {
+      metamask: <SvgComponents.Metamask width={32} />,
+      brave: <BraveWalletIcon size={20} className="m-1.5" />,
+      default: <WalletIcon size={20} className="m-1.5" />,
+    }
 
-  const walletIcon = {
-    metamask: <SvgComponents.Metamask width={32} />,
-    default: <WalletIcon size={20} className="m-1.5" />,
+    if (window.ethereum?.isMetaMask) {
+      return walletIcons.metamask
+    }
+
+    // @ts-expect-error no typing
+    if (window.ethereum?.isBraveWallet) {
+      return walletIcons.brave
+    }
+
+    return walletIcons.default
+  }, [])
+
+  const onInjectedHandler = () => {
+    if (window.ethereum) {
+      authenticateWithProvider('METAMASK')
+    }
+
+    if (
+      navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/iPhone/i)
+    ) {
+      authenticateWithProvider('WALLET_CONNECT')
+    }
+
+    setIsDownloadWallet(true)
   }
 
   return (
     <div className="grid w-full grid-flow-col grid-cols-11">
       <div className="grid items-center col-span-5 space-y-2 justify-items-center">
         <h4 className="text-sm"> Have a crypto wallet? </h4>
+        <DownloadWallet
+          isOpen={isDownloadWallet}
+          setIsOpen={setIsDownloadWallet}
+        />
         <div className="flex items-center justify-around w-full">
           <button
-            onClick={() =>
-              ethereum
-                ? authenticateWithProvider('METAMASK')
-                : authenticateWithProvider('WALLET_CONNECT')
-            }
+            onClick={onInjectedHandler}
             type="button"
             className={iconButtonClass}
           >
-            {ethereum?.isMetaMask
-              ? walletIcon['metamask']
-              : walletIcon['default']}
+            {ButtonIcon}
           </button>
           <button
             onClick={() => authenticateWithProvider('WALLET_CONNECT')}

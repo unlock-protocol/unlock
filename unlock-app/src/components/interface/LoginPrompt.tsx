@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import styled from 'styled-components'
 import SvgComponents from './svg'
 import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 import { ActionButton } from './buttons/ActionButton'
 import LogInSignUp from './LogInSignUp'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
+import { SiBrave as BraveWalletIcon } from 'react-icons/si'
+import { DownloadWallet } from '../interface/DownloadWallet'
 
 interface LoginPromptProps {
   unlockUserAccount?: boolean
@@ -33,13 +35,52 @@ const LoginPrompt = ({
   activeColor,
 }: LoginPromptProps) => {
   const [walletToShow, setWalletToShow] = useState('')
+  const [isDownloadWallet, setIsDownloadWallet] = useState(false)
 
   const { authenticateWithProvider } = useAuthenticate({
     injectedProvider,
   })
 
+  const ButtonIcon = useMemo(() => {
+    const walletIcons = {
+      metamask: <SvgComponents.Metamask width={32} />,
+      brave: <BraveWalletIcon size={20} className="m-1.5" />,
+      default: <WalletIcon size={20} className="m-1.5" />,
+    }
+
+    if (window.ethereum?.isMetaMask) {
+      return walletIcons.metamask
+    }
+
+    // @ts-expect-error no typing
+    if (window.ethereum?.isBraveWallet) {
+      return walletIcons.brave
+    }
+
+    return walletIcons.default
+  }, [])
+
+  const onInjectedHandler = () => {
+    if (window.ethereum) {
+      authenticateWithProvider('METAMASK')
+    }
+
+    if (
+      navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/iPhone/i)
+    ) {
+      authenticateWithProvider('WALLET_CONNECT')
+    }
+
+    setIsDownloadWallet(true)
+  }
+
   return (
     <Container embedded={!!embedded}>
+      <DownloadWallet
+        isOpen={isDownloadWallet}
+        setIsOpen={setIsDownloadWallet}
+      />
       {!walletToShow && (
         <>
           {showTitle && <SubHeading>Connect a wallet</SubHeading>}
@@ -49,11 +90,7 @@ const LoginPrompt = ({
           <WalletButton
             color={backgroundColor}
             activeColor={activeColor}
-            onClick={() =>
-              window.ethereum
-                ? authenticateWithProvider('METAMASK')
-                : authenticateWithProvider('WALLET_CONNECT')
-            }
+            onClick={onInjectedHandler}
           >
             {window.ethereum?.isMetaMask ? (
               <SvgComponents.Metamask />
