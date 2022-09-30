@@ -85,7 +85,7 @@ RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 yarn ins
 # delete deps once packages are built
 USER root
 RUN apk del .build-deps \
-    && apk add bash openjdk11ß
+    && apk add bash openjdk11
 
 RUN java -version
 RUN javac -version
