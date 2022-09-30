@@ -10,6 +10,7 @@ import { Popover, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { AiOutlineMenu as MenuIcon } from 'react-icons/ai'
 import { GrClose as MenuCloseIcon } from 'react-icons/gr'
+import { Container } from './Container'
 interface Link {
   label: string
   url: string
@@ -130,55 +131,57 @@ export const AppHeader = () => {
 
   return (
     <div className="pt-5 bg-ui-secondary-200">
-      <div className="flex justify-between px-4 mx-auto lg:container">
-        <div className="flex items-center gap-10">
-          <div className="flex gap-2">
-            <button
-              className="flex md:hidden"
-              onClick={() => setIsOpen(!isOpen)}
-              aria-label="menu-button"
-            >
-              {isOpen ? <MenuCloseIcon size={20} /> : <MenuIcon size={20} />}
-            </button>
+      <Container>
+        <div className="flex justify-between">
+          <div className="flex items-center gap-10">
+            <div className="flex gap-2">
+              <button
+                className="flex md:hidden"
+                onClick={() => setIsOpen(!isOpen)}
+                aria-label="menu-button"
+              >
+                {isOpen ? <MenuCloseIcon size={20} /> : <MenuIcon size={20} />}
+              </button>
 
-            <div className="h-5 md:h-6">
-              <img
-                className="h-full"
-                src="/images/svg/unlock-logo.svg"
-                alt="logo"
-              />
+              <div className="h-5 md:h-6">
+                <img
+                  className="h-full"
+                  src="/images/svg/unlock-logo.svg"
+                  alt="logo"
+                />
+              </div>
+            </div>
+
+            <div className="hidden md:block">
+              <Links />
+            </div>
+
+            <div className="md:hidden">
+              {isOpen && (
+                <div className="">
+                  <Links mobile={true} />
+                </div>
+              )}
             </div>
           </div>
-
-          <div className="hidden md:block">
-            <Links />
-          </div>
-
-          <div className="md:hidden">
-            {isOpen && (
-              <div className="">
-                <Links mobile={true} />
+          <div>
+            {account ? (
+              <div className="flex gap-2">
+                <SwitchNetworkButton network={network!} />
+                <Button variant="outlined-primary">
+                  <span className="text-brand-ui-primary">
+                    {addressMinify(account)}
+                  </span>
+                </Button>
               </div>
+            ) : (
+              <Link href={loginUrl}>
+                <Button>Connect</Button>
+              </Link>
             )}
           </div>
         </div>
-        <div>
-          {account ? (
-            <div className="flex gap-2">
-              <SwitchNetworkButton network={network!} />
-              <Button variant="outlined-primary">
-                <span className="text-brand-ui-primary">
-                  {addressMinify(account)}
-                </span>
-              </Button>
-            </div>
-          ) : (
-            <Link href={loginUrl}>
-              <Button>Connect</Button>
-            </Link>
-          )}
-        </div>
-      </div>
+      </Container>
     </div>
   )
 }
