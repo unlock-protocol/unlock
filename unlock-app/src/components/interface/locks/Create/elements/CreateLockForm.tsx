@@ -245,9 +245,7 @@ export const CreateLockForm = ({
                   setEnabled={setIsFree}
                   onChange={(enable: boolean) => {
                     setValue('isFree', enable)
-                    setValue('keyPrice', enable ? 0 : undefined, {
-                      shouldValidate: true,
-                    })
+                    setValue('keyPrice', enable ? 0 : undefined)
                   }}
                 />
               </div>
