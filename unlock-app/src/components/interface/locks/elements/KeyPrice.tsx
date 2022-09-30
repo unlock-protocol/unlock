@@ -19,7 +19,7 @@ export const CryptoIcon = ({ symbol, size = 20 }: CryptoIconProps) => (
 )
 
 export const KeyPrice = ({ price, symbol = '' }: KeyPriceProps) => {
-  if (!price) return null
+  if (price == undefined) return null
   const keyPrice = price ? parseFloat(`${price}`)?.toFixed(2) : null
 
   const isFree = price == 0
@@ -28,7 +28,6 @@ export const KeyPrice = ({ price, symbol = '' }: KeyPriceProps) => {
     <div className="flex items-center gap-2">
       <CryptoIcon symbol={symbol} />
       <span className="text-xl font-bold">{isFree ? 'FREE' : keyPrice}</span>
-      <span></span>
     </div>
   )
 }
