@@ -17685,7 +17685,7 @@ __metadata:
     embla-carousel-react: 7.0.0
     eslint: 8.21.0
     eslint-config-next: 12.2.3
-    eslint-plugin-jest: 26.7.0
+    eslint-plugin-jest: 26.9.0
     eslint-plugin-mocha: 10.1.0
     feed: 4.2.2
     gray-matter: 4.0.3
@@ -28851,9 +28851,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:26.7.0":
-  version: 26.7.0
-  resolution: "eslint-plugin-jest@npm:26.7.0"
+"eslint-plugin-jest@npm:26.9.0":
+  version: 26.9.0
+  resolution: "eslint-plugin-jest@npm:26.9.0"
   dependencies:
     "@typescript-eslint/utils": ^5.10.0
   peerDependencies:
@@ -28864,7 +28864,7 @@ __metadata:
       optional: true
     jest:
       optional: true
-  checksum: 21dbeb3820a1640185e0bd3847f65feba98b479812bcaa3f353e725bd0538618b16544b4dfc74ac147b5150afed9cf28760d7aaad54158611403810776fe6353
+  checksum: 6d5fd5c95368f1ca2640389aeb7ce703d6202493c3ec6bdedb4eaca37233710508b0c75829e727765a16fd27029a466d34202bc7f2811c752038ccbbce224400
   languageName: node
   linkType: hard
 
