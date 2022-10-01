@@ -34,7 +34,7 @@
     "eslint-plugin-jest": "26.7.0",
     "eslint-plugin-mocha": "10.1.0",
     "jest": "27.5.1",
-    "jest-styled-components": "7.0.8",
+    "jest-styled-components": "7.1.1",
     "lint-staged": "13.0.3",
     "next": "12.2.4",
     "next-seo": "5.5.0",

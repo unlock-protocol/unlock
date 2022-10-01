@@ -17690,7 +17690,7 @@ __metadata:
     feed: 4.2.2
     gray-matter: 4.0.3
     jest: 27.5.1
-    jest-styled-components: 7.0.8
+    jest-styled-components: 7.1.1
     lint-staged: 13.0.3
     next: 12.2.4
     next-seo: 5.5.0
@@ -37911,6 +37911,17 @@ fsevents@~2.1.1:
   peerDependencies:
     styled-components: ">= 5"
   checksum: 0fc3a71c54ece55b8fd4c8304a9db283acac97cdfd8350ff27ff3b0c3da8e798dca87c7ee5fc004b1b0577d632dec44ebea31750238b82395152c0f8a471ea7c
+  languageName: node
+  linkType: hard
+
+"jest-styled-components@npm:7.1.1":
+  version: 7.1.1
+  resolution: "jest-styled-components@npm:7.1.1"
+  dependencies:
+    "@adobe/css-tools": ^4.0.1
+  peerDependencies:
+    styled-components: ">= 5"
+  checksum: 1376d1211855c459e59e6b030af7294519cd2dd78169a2cb0df185ff4390fff417ab51be3dd520f1e975d2f391f50ff266e803c168ff9f03f3ff7ebbb823d2d7
   languageName: node
   linkType: hard
 
