@@ -15541,7 +15541,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mocha@npm:9.1.1, @types/mocha@npm:^9.1.0":
+"@types/mocha@npm:10.0.0":
+  version: 10.0.0
+  resolution: "@types/mocha@npm:10.0.0"
+  checksum: 69e3896a63ec93374e22afd03fdea4c2f31d609d6ea111c8403508ede90da9dc0140c7bb2edff8404114d9d980308e104e4236324bf6afac1410b2cfe35f98c6
+  languageName: node
+  linkType: hard
+
+"@types/mocha@npm:^9.1.0":
   version: 9.1.1
   resolution: "@types/mocha@npm:9.1.1"
   checksum: 516077c0acd9806dc78317f88aaac0df5aaf0bdc2f63dfdadeabdf0b0137953b6ca65472e6ff7c30bc93ce4e0ae76eae70e8d46764b9a8eae4877a928b6ef49a
@@ -17050,7 +17057,7 @@ __metadata:
     "@nomiclabs/hardhat-ethers": ^2.1.1
     "@types/chai": 4.3.0
     "@types/fs-extra": 9.0.13
-    "@types/mocha": 9.1.1
+    "@types/mocha": 10.0.0
     "@types/node": 8.10.66
     "@unlock-protocol/contracts": 0.0.8
     "@unlock-protocol/eslint-config": "workspace:^"
