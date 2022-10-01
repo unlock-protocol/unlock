@@ -17952,7 +17952,7 @@ __metadata:
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js"
     "@walletconnect/web3-provider": 1.7.8
-    "@xstate/react": 3.0.0
+    "@xstate/react": 3.0.1
     apollo-boost: 0.4.9
     autoprefixer: 10.4.8
     babel-eslint: 10.1.0
@@ -18864,22 +18864,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xstate/react@npm:3.0.0":
-  version: 3.0.0
-  resolution: "@xstate/react@npm:3.0.0"
+"@xstate/react@npm:3.0.1":
+  version: 3.0.1
+  resolution: "@xstate/react@npm:3.0.1"
   dependencies:
     use-isomorphic-layout-effect: ^1.0.0
     use-sync-external-store: ^1.0.0
   peerDependencies:
     "@xstate/fsm": ^2.0.0
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    xstate: ^4.31.0
+    xstate: ^4.33.0
   peerDependenciesMeta:
     "@xstate/fsm":
       optional: true
     xstate:
       optional: true
-  checksum: 3ead5ce2bfda1ac3e6ebd1f1a842d3fcdf7236b11edb548d32e58979de7640a860747434704bace9911e01c9a5c9daa6e31b13a774b35f6b931ca338d722d7c5
+  checksum: c2ca0efa8ba27b2bf85ba34b0327fea997101ceb372e709b4c32ef772d9baab1b405475c38c064ec81a7eb5d6b974c33c70e2d47237fa5e589bec11a49444de0
   languageName: node
   linkType: hard
 
