@@ -42,7 +42,7 @@
     "deep-object-diff": "1.1.7",
     "dotenv": "16.0.1",
     "eslint": "8.20.0",
-    "eslint-plugin-jest": "26.6.0",
+    "eslint-plugin-jest": "27.0.4",
     "eslint-plugin-mocha": "10.1.0",
     "ethers": "5.6.9",
     "file-saver": "2.0.5",

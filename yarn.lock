@@ -17023,7 +17023,7 @@ __metadata:
     eslint: 8.10.0
     eslint-config-next: 12.1.6
     eslint-config-prettier: 8.5.0
-    eslint-plugin-jest: 26.1.5
+    eslint-plugin-jest: 27.0.4
     eslint-plugin-mocha: 10.0.5
     eslint-plugin-prettier: 4.0.0
     jest: 27.5.1
@@ -17057,7 +17057,7 @@ __metadata:
     "@unlock-protocol/tsconfig": "workspace:^"
     chai: 4.3.4
     eslint: 8.18.0
-    eslint-plugin-jest: 26.6.0
+    eslint-plugin-jest: 27.0.4
     eslint-plugin-mocha: 10.1.0
     hardhat: 2.9.9
     mocha: 10.0.0
@@ -17206,7 +17206,7 @@ __metadata:
     copy-webpack-plugin: 11.0.0
     dotenv: 16.0.1
     eslint: 8.16.0
-    eslint-plugin-jest: 26.6.0
+    eslint-plugin-jest: 27.0.4
     eslint-plugin-mocha: 10.1.0
     lint-staged: 13.0.3
     next: 12.1.6
@@ -17522,7 +17522,7 @@ __metadata:
     deep-object-diff: 1.1.7
     dotenv: 16.0.1
     eslint: 8.20.0
-    eslint-plugin-jest: 26.6.0
+    eslint-plugin-jest: 27.0.4
     eslint-plugin-mocha: 10.1.0
     ethers: 5.6.9
     file-saver: 2.0.5
@@ -17685,7 +17685,7 @@ __metadata:
     embla-carousel-react: 7.0.0
     eslint: 8.21.0
     eslint-config-next: 12.2.3
-    eslint-plugin-jest: 26.7.0
+    eslint-plugin-jest: 27.0.4
     eslint-plugin-mocha: 10.1.0
     feed: 4.2.2
     gray-matter: 4.0.3
@@ -28817,54 +28817,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:26.1.5":
-  version: 26.1.5
-  resolution: "eslint-plugin-jest@npm:26.1.5"
+"eslint-plugin-jest@npm:27.0.4":
+  version: 27.0.4
+  resolution: "eslint-plugin-jest@npm:27.0.4"
   dependencies:
     "@typescript-eslint/utils": ^5.10.0
   peerDependencies:
     "@typescript-eslint/eslint-plugin": ^5.0.0
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+    eslint: ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":
       optional: true
     jest:
       optional: true
-  checksum: 727487c6d0cc4aa66f8209fc187a2f4eb56ffea6569dacb04bb1e3272221d6238460fb967a12074acac50b0b545d2190c697bad64ebc6c8bdd4e8f3cc66d5a68
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-jest@npm:26.6.0":
-  version: 26.6.0
-  resolution: "eslint-plugin-jest@npm:26.6.0"
-  dependencies:
-    "@typescript-eslint/utils": ^5.10.0
-  peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^5.0.0
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    "@typescript-eslint/eslint-plugin":
-      optional: true
-    jest:
-      optional: true
-  checksum: 5dd60820d5618175e7203b077788476a6f697316b53d77c4bb7037b32073f3d5d539a72dec910eb3f8eedc97c3b28600ba35c5d3bf8c687ade765bb2d0dc77d2
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-jest@npm:26.7.0":
-  version: 26.7.0
-  resolution: "eslint-plugin-jest@npm:26.7.0"
-  dependencies:
-    "@typescript-eslint/utils": ^5.10.0
-  peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^5.0.0
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    "@typescript-eslint/eslint-plugin":
-      optional: true
-    jest:
-      optional: true
-  checksum: 21dbeb3820a1640185e0bd3847f65feba98b479812bcaa3f353e725bd0538618b16544b4dfc74ac147b5150afed9cf28760d7aaad54158611403810776fe6353
+  checksum: 8408d8a53bae946527ac4120865c29b3468cf58d8e5ff3b9c75c5303bb5aa451ac7e04329fc004cf6302f84431e6c6c1f2ba9009b0150d1718df58ea490ed3f5
   languageName: node
   linkType: hard
 
