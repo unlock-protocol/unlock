@@ -17553,7 +17553,7 @@ __metadata:
     react-hot-toast: 2.3.0
     react-icons: 4.4.0
     react-jazzicon: 1.0.4
-    react-jwt: 1.1.6
+    react-jwt: 1.1.7
     react-query: 3.39.2
     react-test-renderer: 17.0.2
     react-use: 17.4.0
@@ -47549,9 +47549,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-jwt@npm:1.1.6":
-  version: 1.1.6
-  resolution: "react-jwt@npm:1.1.6"
+"react-jwt@npm:1.1.7":
+  version: 1.1.7
+  resolution: "react-jwt@npm:1.1.7"
   dependencies:
     fsevents: ^2.3.2
   peerDependencies:
@@ -47559,7 +47559,7 @@ fsevents@~2.1.1:
   dependenciesMeta:
     fsevents:
       optional: true
-  checksum: bc0a6f3a1373725bc092c7a9a0687fc86d78370972474ed3adc8afb001fd626fded3d8b4adf7ee24c9897b505b1ebb242d19b256902c81765a4c5a1b7125d930
+  checksum: caa8b5f2348af407f1a408eb91b4335491d2062820483361c589f842f1f044deb57db8804c458a6ad15aa8740c1b58b3e05287324f28b9e27b66f2631151bcac
   languageName: node
   linkType: hard
 
