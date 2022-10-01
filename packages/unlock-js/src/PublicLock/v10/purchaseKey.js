@@ -30,7 +30,7 @@ export default async function (
       erc20Address,
       decimals,
     },
-    (transactionOptions = {}),
+    transactionOptions,
     callback
   )
   return keys[0] // Only a single key!

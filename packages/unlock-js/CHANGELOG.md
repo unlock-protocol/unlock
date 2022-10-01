@@ -1,5 +1,9 @@
 # Changes
 
+# 0.28.1
+
+- Preserving gas calculation when previous configured on purchase
+
 # 0.27.0
 
 - adding support for TransactionOptions when sending transactions. Also introducing the ability to use `runEstimate` to check if a transaction succeeds and how much gas it consumes

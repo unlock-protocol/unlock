@@ -120,17 +120,21 @@ export default async function (
 
   // Estimate gas. Bump by 30% because estimates are wrong!
   if (!transactionOptions.gasLimit) {
+    const preserveGasSettings =
+      transactionOptions.maxFeePerGas || transactionOptions.gasPrice
     try {
       // To get good estimates we need the gas price, because it matters in the actual execution (UDT calculation takes it into account)
       // TODO remove once we move to use block.baseFee in UDT calculation
-      const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
-        await this.provider.getFeeData()
+      if (!preserveGasSettings) {
+        const { gasPrice, maxFeePerGas, maxPriorityFeePerGas } =
+          await this.provider.getFeeData()
 
-      if (maxFeePerGas && maxPriorityFeePerGas) {
-        transactionOptions.maxFeePerGas = maxFeePerGas
-        transactionOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
-      } else {
-        transactionOptions.gasPrice = gasPrice
+        if (maxFeePerGas && maxPriorityFeePerGas) {
+          transactionOptions.maxFeePerGas = maxFeePerGas
+          transactionOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+        } else {
+          transactionOptions.gasPrice = gasPrice
+        }
       }
       const gasLimit = await lockContract.estimateGas.purchase(
         keyPrices,
@@ -140,16 +144,14 @@ export default async function (
         data,
         transactionOptions
       )
-      // Remove the gas prices settings for the actual transaction (the wallet will set them)
-      delete transactionOptions.maxFeePerGas
-      delete transactionOptions.maxPriorityFeePerGas
-      delete transactionOptions.gasPrice
       transactionOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',
         error
       )
+    }
+    if (!preserveGasSettings) {
       delete transactionOptions.maxFeePerGas
       delete transactionOptions.maxPriorityFeePerGas
       delete transactionOptions.gasPrice
