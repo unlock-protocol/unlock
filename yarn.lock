@@ -15154,6 +15154,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/express@npm:4.17.14":
+  version: 4.17.14
+  resolution: "@types/express@npm:4.17.14"
+  dependencies:
+    "@types/body-parser": "*"
+    "@types/express-serve-static-core": ^4.17.18
+    "@types/qs": "*"
+    "@types/serve-static": "*"
+  checksum: 15c1af46d02de834e4a225eccaa9d85c0370fdbb3ed4e1bc2d323d24872309961542b993ae236335aeb3e278630224a6ea002078d39e651d78a3b0356b1eaa79
+  languageName: node
+  linkType: hard
+
 "@types/file-saver@npm:2.0.5":
   version: 2.0.5
   resolution: "@types/file-saver@npm:2.0.5"
@@ -17094,7 +17106,7 @@ __metadata:
     "@sentry/tracing": 6.19.7
     "@types/cookie-parser": 1.4.3
     "@types/cors": 2.8.12
-    "@types/express": 4.17.13
+    "@types/express": 4.17.14
     "@types/express-serve-static-core": 4.17.30
     "@types/isomorphic-fetch": 0.0.36
     "@types/jest": 27.4.1
