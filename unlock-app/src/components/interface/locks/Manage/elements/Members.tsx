@@ -6,8 +6,6 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ImageBar } from './ImageBar'
 import { MemberCard } from './MemberCard'
-import useEns from '~/hooks/useEns'
-import { addressMinify } from '~/utils/strings'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import { useState } from 'react'
@@ -18,15 +16,6 @@ interface MembersProps {
   filters?: {
     [key: string]: any
   }
-}
-
-export const Address = ({ address }: { address: string }) => {
-  const addressToEns = useEns(address)
-
-  const resolvedAddress =
-    addressToEns === address ? addressMinify(address) : addressToEns
-
-  return <>{resolvedAddress}</>
 }
 
 const MembersPlaceholder = () => {
@@ -60,10 +49,6 @@ export const Members = ({
   const storageService = useStorageService()
   const [page, setPage] = useState(1)
 
-  const getLockManagerStatus = async () => {
-    return await web3Service.isLockManager(lockAddress, account!, network)
-  }
-
   const getMembers = async () => {
     await storageService.loginPrompt({
       walletService,
@@ -85,7 +70,6 @@ export const Members = ({
   const [
     { isLoading, data: members = [] },
     { isLoading: isLoadingVersion, data: lockVersion = 0 },
-    { isLoading: isLoadingLockManager, data: isLockManager },
   ] = useQueries([
     {
       queryFn: getMembers,
@@ -101,13 +85,9 @@ export const Members = ({
         ToastHelper.error('There is some unexpected issue, please try again')
       },
     },
-    {
-      queryFn: getLockManagerStatus,
-      queryKey: ['getLockManagerStatus', lockAddress, network],
-    },
   ])
 
-  const loading = isLoadingVersion || isLoading || isLoadingLockManager
+  const loading = isLoadingVersion || isLoading
   const noItems = members?.length === 0 && !loading
 
   if (loading) {
@@ -144,7 +124,6 @@ export const Members = ({
             owner={owner}
             expiration={expiration}
             version={lockVersion}
-            isLockManager={isLockManager}
             metadata={metadata}
             lockAddress={lockAddress!}
             network={network}

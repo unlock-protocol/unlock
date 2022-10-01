@@ -42,6 +42,10 @@ components:
           nullable: true
 
     AuthResult:
+      required:
+        - 'accessToken'
+        - 'refreshToken'
+
       type: object
       properties:
         walletAddress:
@@ -317,6 +321,7 @@ paths:
       operationId: login
       description: 'Login as a user using Sign in with Ethereum message signed by the wallet address.'
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -328,12 +333,57 @@ paths:
       responses:
         200:
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResult'
 
         400:
           $ref: '#/components/responses/400.Invalid'
 
         404:
           $ref: '#/components/responses/404.NotFound'
+
+        500:
+          $ref: '#/components/responses/500.InternalError'
+
+  /v2/auth/token:
+    post:
+      operationId: refreshToken
+      description: Refresh access token.
+      parameters:
+        - in: header
+          name: refresh-token
+          schema:
+            type: string
+            nullable: true
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              nullable: true
+              properties:
+                refresh-token:
+                  type: string
+                  nullable: false
+      responses:
+        200:
+          description: New creditionals.
+          content:
+            application/json:
+              schema:
+                required:
+                  - 'walletAddress'
+                  - 'accessToken'
+                type: object
+                properties:
+                  walletAddress:
+                    type: string
+
+                  accessToken:
+                    type: string
 
         500:
           $ref: '#/components/responses/500.InternalError'
@@ -768,6 +818,7 @@ paths:
         - User: ['lockManager']
       description: Update or create metadata for lock address.
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -850,6 +901,7 @@ paths:
       operationId: createUserMetadata
       description: Store user metadata for lock.
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -881,6 +933,7 @@ paths:
 
       description: Update user metadata for lock.
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -921,6 +974,7 @@ paths:
         - {}
       description: Bulk endpoint for storing user metadata.
       requestBody:
+        required: true
         description: users array containing user metadata.
         content:
           application/json:
@@ -964,6 +1018,7 @@ paths:
       security:
         - User: ['lockManager']
       requestBody:
+        required: true
         content:
           application/json:
             schema:

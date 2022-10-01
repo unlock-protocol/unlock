@@ -15,7 +15,7 @@ interface LocksByNetworkProps {
 
 const LocksByNetworkPlaceholder = () => {
   return (
-    <div className="flex flex-col gap-2 w-1/2">
+    <div className="flex flex-col w-1/2 gap-2">
       <div className="h-[14px] w-[200px] animate-pulse bg-slate-200"></div>
       <div className="h-[45px] w-full animate-pulse rounded-lg bg-slate-200"></div>
     </div>
@@ -37,7 +37,7 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
       .filter(({ subgraphURI }) => !subgraphURI?.includes('localhost'))
       .map(async ({ id, subgraphURI }) => {
         graphService.connect(subgraphURI)
-        const locksByNetwork = await graphService.locksByManager(owner)
+        const locksByNetwork = await graphService.locksByManager(owner, id)
         return [id, locksByNetwork as any]
       })
     return Promise.all(items)
@@ -68,11 +68,11 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
   }
 
   return (
-    <div className="flex flex-col gap-2 w-1/2">
+    <div className="flex flex-col w-1/2 gap-2">
       <span className="text-lg">{label}</span>
       <select
         name="form block form-select"
-        className="block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 pl-4 py-2 text-base"
+        className="box-border flex-1 block w-full py-2 pl-4 text-base transition-all border border-gray-400 rounded-lg shadow-sm hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
         onChange={onOptionChange}
         defaultValue=""
       >
