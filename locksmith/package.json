@@ -97,7 +97,7 @@
     "@types/express-serve-static-core": "4.17.30",
     "@types/isomorphic-fetch": "0.0.36",
     "@types/jest": "27.4.1",
-    "@types/jsonwebtoken": "8.5.8",
+    "@types/jsonwebtoken": "8.5.9",
     "@types/nock": "10.0.3",
     "@types/node": "16.11.21",
     "@types/node-cron": "3.0.2",
