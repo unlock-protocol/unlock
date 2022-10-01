@@ -98,7 +98,7 @@ const BalanceWarning = () => {
 
 export const CreatorLocks = ({ formIsVisible, hideForm }) => {
   const { account, network } = useContext(AuthenticationContext)
-  const { loading, locks, addLock, error } = useLocks(account)
+  const { loading, locks, addLock, error } = useLocks(account, network)
 
   return (
     <Locks>

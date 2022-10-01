@@ -2,11 +2,10 @@ import utils from '../../utils'
 import { ZERO } from '../../constants'
 import { getErc20Decimals } from '../../erc20'
 
-export async function getCancelAndRefundValueFor({
-  lockAddress,
-  owner,
-  tokenAddress,
-}) {
+export async function getCancelAndRefundValueFor(
+  { lockAddress, owner, tokenAddress },
+  transactionOptions = {}
+) {
   const lockContract = await this.getLockContract(lockAddress)
   const value = await lockContract.getCancelAndRefundValueFor(owner)
 

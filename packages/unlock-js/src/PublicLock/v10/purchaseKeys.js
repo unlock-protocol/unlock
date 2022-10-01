@@ -28,6 +28,7 @@ export default async function (
     decimals,
     data: _data,
   },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
@@ -113,13 +114,12 @@ export default async function (
   }
 
   // tx options
-  const purchaseForOptions = {}
   if (!erc20Address || erc20Address === ZERO) {
-    purchaseForOptions.value = totalPrice
+    transactionOptions.value = totalPrice
   }
 
   // Estimate gas. Bump by 30% because estimates are wrong!
-  if (!purchaseForOptions.gasLimit) {
+  if (!transactionOptions.gasLimit) {
     try {
       // To get good estimates we need the gas price, because it matters in the actual execution (UDT calculation takes it into account)
       // TODO remove once we move to use block.baseFee in UDT calculation
@@ -127,10 +127,10 @@ export default async function (
         await this.provider.getFeeData()
 
       if (maxFeePerGas && maxPriorityFeePerGas) {
-        purchaseForOptions.maxFeePerGas = maxFeePerGas
-        purchaseForOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+        transactionOptions.maxFeePerGas = maxFeePerGas
+        transactionOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
       } else {
-        purchaseForOptions.gasPrice = gasPrice
+        transactionOptions.gasPrice = gasPrice
       }
       const gasLimit = await lockContract.estimateGas.purchase(
         keyPrices,
@@ -138,21 +138,21 @@ export default async function (
         referrers,
         keyManagers,
         data,
-        purchaseForOptions
+        transactionOptions
       )
       // Remove the gas prices settings for the actual transaction (the wallet will set them)
-      delete purchaseForOptions.maxFeePerGas
-      delete purchaseForOptions.maxPriorityFeePerGas
-      delete purchaseForOptions.gasPrice
-      purchaseForOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
+      delete transactionOptions.maxFeePerGas
+      delete transactionOptions.maxPriorityFeePerGas
+      delete transactionOptions.gasPrice
+      transactionOptions.gasLimit = gasLimit.mul(13).div(10).toNumber()
     } catch (error) {
       console.error(
         'We could not estimate gas ourselves. Let wallet do it.',
         error
       )
-      delete purchaseForOptions.maxFeePerGas
-      delete purchaseForOptions.maxPriorityFeePerGas
-      delete purchaseForOptions.gasPrice
+      delete transactionOptions.maxFeePerGas
+      delete transactionOptions.maxPriorityFeePerGas
+      delete transactionOptions.gasPrice
     }
   }
   const transactionPromise = lockContract.purchase(
@@ -161,7 +161,7 @@ export default async function (
     referrers,
     keyManagers,
     data,
-    purchaseForOptions
+    transactionOptions
   )
 
   const hash = await this._handleMethodCall(transactionPromise)

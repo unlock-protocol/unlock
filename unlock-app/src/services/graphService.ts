@@ -7,6 +7,8 @@ import keyholdersByKeyIdQuery from '../queries/keyholdersByKeyId'
 import { getValidNumber } from '~/utils/strings'
 import { MemberFilter } from '~/unlockTypes'
 import keysCount from '~/queries/keysCount'
+import configure from '../config'
+const config = configure()
 
 export class GraphService {
   public client: any
@@ -17,7 +19,9 @@ export class GraphService {
     })
   }
 
-  locksByManager = async (owner: string) => {
+  locksByManager = async (owner: string, network?: number) => {
+    const { networks } = config as any
+    const { name: networkName } = networks[network!] ?? {}
     const query = locksByManager()
     try {
       const result = await this.client.query({
@@ -40,8 +44,11 @@ export class GraphService {
       })
     } catch (error) {
       console.error(error)
+      if (network === 31337) return [] // ignore localhost
       ToastHelper.error(
-        'We could not load your locks. Please retry and let us know if that keeps failing'
+        network
+          ? `We could not load locks for ${networkName} network.`
+          : 'We could not load your locks. Please retry and let us know if that keeps failing'
       )
       return []
     }

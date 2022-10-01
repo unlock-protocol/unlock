@@ -39,6 +39,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
       }
       const totalToRefund = await walletService.getCancelAndRefundValueFor(
         params,
+        {} /** transactionParams */,
         () => true
       )
       setRefundAmount(totalToRefund)
@@ -70,7 +71,11 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
     }
 
     try {
-      await walletService.cancelAndRefund(params, () => true)
+      await walletService.cancelAndRefund(
+        params,
+        {} /** transactionParams */,
+        () => true
+      )
       onCloseCallback()
       ToastHelper.success('Key cancelled and successfully refunded.')
       // reload page to show updated list of keys
