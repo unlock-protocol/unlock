@@ -28,7 +28,7 @@
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets",
     "@unlock-protocol/unlock-js": "workspace:./packages/unlock-js",
     "@walletconnect/web3-provider": "1.7.8",
-    "@xstate/react": "3.0.0",
+    "@xstate/react": "3.0.1",
     "apollo-boost": "0.4.9",
     "babel-eslint": "10.1.0",
     "babel-jest": "28.1.3",
