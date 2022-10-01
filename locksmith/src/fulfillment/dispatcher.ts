@@ -168,12 +168,14 @@ export default class Dispatcher {
     )
     await walletService.connect(provider, walletWithProvider)
 
+    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
+
     return await walletService.purchaseKey(
       {
         lockAddress,
         owner,
       },
-      {},
+      { maxFeePerGas, maxPriorityFeePerGas },
       cb
     )
   }
