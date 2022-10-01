@@ -1,4 +1,4 @@
-import { handler } from '../handler'
+import { handler } from '../functions/handler/handler'
 import { route } from '../route'
 
 jest.mock('../route')

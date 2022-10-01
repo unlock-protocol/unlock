@@ -13,7 +13,7 @@ const MESSAGE = Symbol.for('message')
 
 const consoleTransport = new winston.transports.Console({
   silent: config.unlockEnv === 'test',
-  log: function(info, callback) {
+  log: function (info, callback) {
     setImmediate(() => this.emit('logged', info))
 
     if (this.stderrLevels[info[LEVEL]]) {
