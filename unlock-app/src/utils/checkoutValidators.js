@@ -7,8 +7,7 @@ import { ACCOUNT_REGEXP } from '../constants'
 const { env } = configure()
 
 export const log = (message) => {
-  if (env !== 'test') {
-    // eslint-disable-next-line no-console
+  if (env !== 'dev') {
     console.log(message)
   }
 }

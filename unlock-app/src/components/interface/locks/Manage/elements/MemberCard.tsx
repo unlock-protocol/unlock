@@ -7,16 +7,17 @@ import { expirationAsDate } from '~/utils/durations'
 import { MetadataCard } from './MetadataCard'
 import useClipboard from 'react-use-clipboard'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
-import { Address } from './Members'
 import { ExpireAndRefundModal } from '~/components/interface/ExpireAndRefundModal'
 import ExtendKeysDrawer from '~/components/creator/members/ExtendKeysDrawer'
+import { useLockManager } from '~/hooks/useLockManager'
+import useEns from '~/hooks/useEns'
+import { addressMinify } from '~/utils/strings'
 
 interface MemberCardProps {
   token: string
   owner: string
   expiration: string
   version: number
-  isLockManager: boolean
   metadata: any
   lockAddress: string
   network: number
@@ -40,7 +41,6 @@ export const MemberCard = ({
   owner,
   expiration,
   version,
-  isLockManager,
   metadata,
   lockAddress,
   network,
@@ -48,8 +48,19 @@ export const MemberCard = ({
   const [isOpen, setIsOpen] = useState(false)
   const [expireAndRefundOpen, setExpireAndRefundOpen] = useState(false)
   const [extendKeysOpen, setExtendKeysOpen] = useState(false)
-  const [isCopied, setCopied] = useClipboard(owner, {
+
+  const addressToEns = useEns(owner)
+
+  const resolvedAddress =
+    addressToEns === owner ? addressMinify(owner) : addressToEns
+
+  const [isCopied, setCopied] = useClipboard(resolvedAddress, {
     successDuration: 2000,
+  })
+
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
   })
 
   useEffect(() => {
@@ -65,7 +76,7 @@ export const MemberCard = ({
 
   const canExtendKey =
     expiration !== MAX_UINT && version !== undefined && version >= 11
-  const refundDisabled = !(isLockManager && isKeyValid(expiration))
+  const refundDisabled = !(isManager && isKeyValid(expiration))
 
   const { token: tokenId, lockName } = metadata ?? {}
 
@@ -97,8 +108,8 @@ export const MemberCard = ({
           <div className="col-span-1 grow">
             <CardDetail title="Token ID" value={token} />
           </div>
-          <div className="flex col-span-2 gap-2">
-            <CardDetail title="Owner" value={<Address address={owner} />} />
+          <div className="flex self-start col-span-2 gap-2">
+            <CardDetail title="Owner" value={resolvedAddress} />
             <div className="pb-1 mt-auto">
               <Button
                 variant="transparent"
@@ -117,7 +128,7 @@ export const MemberCard = ({
             />
           </div>
 
-          {isLockManager && (
+          {isManager && (
             <div className="col-span-3 mx-auto md:mx-0 md:ml-auto md:col-span-2">
               <div className="flex gap-3">
                 {!refundDisabled && (
@@ -155,15 +166,10 @@ export const MemberCard = ({
     <Collapse
       isOpen={isOpen}
       setIsOpen={setIsOpen}
-      disabled={!isLockManager}
+      disabled={!isManager}
       content={<MemberInfo />}
     >
-      <MetadataCard
-        metadata={metadata}
-        owner={owner}
-        network={network}
-        isLockManager={isLockManager}
-      />
+      <MetadataCard metadata={metadata} owner={owner} network={network} />
     </Collapse>
   )
 }

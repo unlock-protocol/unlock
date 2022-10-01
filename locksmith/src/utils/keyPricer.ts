@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
+import logger from '../logger'
 
 import * as Normalizer from './normalizer'
 import { ItemizedKeyPrice } from '../types'
@@ -48,19 +49,21 @@ export default class KeyPricer {
       network,
       { fields: ['currencyContractAddress', 'currencySymbol', 'keyPrice'] }
     )
-    let symbol = 'ETH'
-    if (!lock.currencyContractAddress || lock.currencyContractAddress == ZERO) {
-      if (network === 100) {
-        symbol = 'DAI'
-      } else if (network === 137) {
-        symbol = 'MATIC'
-      }
-    } else {
+    let symbol = networks[network]?.nativeCurrency?.symbol
+    if (lock?.currencyContractAddress !== ZERO && lock.currencySymbol) {
       symbol = lock.currencySymbol
     }
-
+    if (!symbol) {
+      logger.info(
+        `We could not determine currency symbol for ${lockAddress} on ${network}`
+      )
+      throw new Error(`Missing currency`)
+    }
     const priceConversion = new PriceConversion()
-    const usdPrice = await priceConversion.convertToUSD(symbol, lock.keyPrice)
+    const usdPrice = await priceConversion.convertToUSD(
+      symbol.toUpperCase(),
+      lock.keyPrice
+    )
     return usdPrice
   }
 

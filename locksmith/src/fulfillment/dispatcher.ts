@@ -37,6 +37,7 @@ export default class Dispatcher {
             network.id,
             {
               address: wallet.address,
+              name: network.name,
               balance: ethers.utils.formatEther(balance),
             },
           ]
@@ -66,6 +67,7 @@ export default class Dispatcher {
         tokenId: keyId.toString(),
         duration: 0,
       },
+      {} /** TransactionOptions */,
       callback
     )
   }
@@ -116,8 +118,8 @@ export default class Dispatcher {
         recipients,
         keyManagers,
         expirations,
-        transactionOptions,
       },
+      transactionOptions,
       cb
     )
   }
@@ -166,11 +168,14 @@ export default class Dispatcher {
     )
     await walletService.connect(provider, walletWithProvider)
 
+    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
+
     return await walletService.purchaseKey(
       {
         lockAddress,
         owner,
       },
+      { maxFeePerGas, maxPriorityFeePerGas },
       cb
     )
   }
