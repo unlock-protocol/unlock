@@ -15398,12 +15398,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:8.5.8":
-  version: 8.5.8
-  resolution: "@types/jsonwebtoken@npm:8.5.8"
+"@types/jsonwebtoken@npm:8.5.9":
+  version: 8.5.9
+  resolution: "@types/jsonwebtoken@npm:8.5.9"
   dependencies:
     "@types/node": "*"
-  checksum: 56738a918c543dba30786066959f801212e7fb5cd4ec53cf7b8d227711ed358834feb9e5141f7f88ec7c642bb39757330a5a8917e3b22e0ff9084940d35f0d70
+  checksum: 33815ab02d1371b423118316b7706d2f2ec03eeee5e1494be72da50425d2384e5e0a09ea193f7a5ab4b4f6a9c5847147305f50e965f3d927a95bdf8adb471b2a
   languageName: node
   linkType: hard
 
@@ -17098,7 +17098,7 @@ __metadata:
     "@types/express-serve-static-core": 4.17.30
     "@types/isomorphic-fetch": 0.0.36
     "@types/jest": 27.4.1
-    "@types/jsonwebtoken": 8.5.8
+    "@types/jsonwebtoken": 8.5.9
     "@types/nock": 10.0.3
     "@types/node": 16.11.21
     "@types/node-cron": 3.0.2
