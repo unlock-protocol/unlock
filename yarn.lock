@@ -10081,9 +10081,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@openzeppelin/test-helpers@npm:0.5.15":
-  version: 0.5.15
-  resolution: "@openzeppelin/test-helpers@npm:0.5.15"
+"@openzeppelin/test-helpers@npm:0.5.16":
+  version: 0.5.16
+  resolution: "@openzeppelin/test-helpers@npm:0.5.16"
   dependencies:
     "@openzeppelin/contract-loader": ^0.6.2
     "@truffle/contract": ^4.0.35
@@ -10095,7 +10095,7 @@ __metadata:
     semver: ^5.6.0
     web3: ^1.2.5
     web3-utils: ^1.2.5
-  checksum: 7b204f2ad360131a00c967dfad1b0b7ffaa81b98ab2239db335012bc3d14ca723f9a160436eff1ac4564309e96897ed2a328318227d26ccde7c9e1ae4eeaeaf3
+  checksum: 9a69ea5e5a486a773f944724161114b90f768d8a067a52305f2a16e615ed56652baf40798f0101432c78d10971ab55e7bc74c9b59394822b7ea843d49e9488eb
   languageName: node
   linkType: hard
 
@@ -17261,7 +17261,7 @@ __metadata:
     "@nomiclabs/hardhat-truffle5": 2.0.6
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.7.3
-    "@openzeppelin/test-helpers": 0.5.15
+    "@openzeppelin/test-helpers": 0.5.16
     "@openzeppelin/upgrades": 2.8.0
     "@typescript-eslint/eslint-plugin": 5.13.0
     "@typescript-eslint/parser": 5.13.0
@@ -17301,7 +17301,7 @@ __metadata:
     "@openzeppelin/contracts": 4.7.3
     "@openzeppelin/contracts-upgradeable": 4.7.3
     "@openzeppelin/hardhat-upgrades": 1.16.1
-    "@openzeppelin/test-helpers": 0.5.15
+    "@openzeppelin/test-helpers": 0.5.16
     "@openzeppelin/upgrades-core": 1.12.0
     "@uniswap/v2-core": 1.0.1
     "@uniswap/v2-periphery": 1.1.0-beta.0
