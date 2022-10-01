@@ -17274,7 +17274,7 @@ __metadata:
     eslint-config-prettier: 8.4.0
     eslint-plugin-prettier: 4.0.0
     hardhat: 2.9.9
-    hardhat-gas-reporter: 1.0.8
+    hardhat-gas-reporter: 1.0.9
     hardlydifficult-eth: 1.1.4
     jest-specific-snapshot: 5.0.0
     prettier: 2.5.1
@@ -17324,7 +17324,7 @@ __metadata:
     hardhat: 2.8.0
     hardhat-contract-sizer: 2.5.1
     hardhat-erc1820: 0.1.0
-    hardhat-gas-reporter: 1.0.8
+    hardhat-gas-reporter: 1.0.9
     hardhat-storage-layout: 0.1.6
     hardhat-tracer: 1.0.0-alpha.6
     hardlydifficult-eth: 1.1.4
@@ -29925,7 +29925,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eth-gas-reporter@npm:0.2.25":
+"eth-gas-reporter@npm:0.2.25, eth-gas-reporter@npm:^0.2.25":
   version: 0.2.25
   resolution: "eth-gas-reporter@npm:0.2.25"
   dependencies:
@@ -33592,7 +33592,20 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"hardhat-gas-reporter@npm:1.0.8, hardhat-gas-reporter@npm:^1.0.8":
+"hardhat-gas-reporter@npm:1.0.9":
+  version: 1.0.9
+  resolution: "hardhat-gas-reporter@npm:1.0.9"
+  dependencies:
+    array-uniq: 1.0.3
+    eth-gas-reporter: ^0.2.25
+    sha1: ^1.1.1
+  peerDependencies:
+    hardhat: ^2.0.2
+  checksum: 77f8f8d085ff3d9d7787f0227e5355e1800f7d6707bc70171e0567bf69706703ae7f6f53dce1be1d409e7e71e3629a434c94b546bdbbc1e4c1af47cd5d0c6776
+  languageName: node
+  linkType: hard
+
+"hardhat-gas-reporter@npm:^1.0.8":
   version: 1.0.8
   resolution: "hardhat-gas-reporter@npm:1.0.8"
   dependencies:
