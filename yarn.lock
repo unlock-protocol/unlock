@@ -17719,7 +17719,7 @@ __metadata:
     remark: 14.0.2
     remark-html: 15.0.1
     rss: 1.2.2
-    showdown-highlight: 3.0.0
+    showdown-highlight: 3.1.0
     styled-components: 5.3.5
     tailwind-merge: 1.5.1
     tailwindcss: 3.1.8
@@ -50432,14 +50432,14 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"showdown-highlight@npm:3.0.0":
-  version: 3.0.0
-  resolution: "showdown-highlight@npm:3.0.0"
+"showdown-highlight@npm:3.1.0":
+  version: 3.1.0
+  resolution: "showdown-highlight@npm:3.1.0"
   dependencies:
     highlight.js: ^11.5.0
     html-encoder-decoder: ^1.3.9
     showdown: ^2.0.3
-  checksum: 7a10671185727feb50868afef27a76cbcd47cf6d098b17436c9eb3efa3693ecfaa72fd6518d1c6adf5803a63c02bc70a2aab35b70ce09100d1d3444a01f49833
+  checksum: b1dde5d2f4d141b3e56375bb3d59b21bba3a5936fc80bfbe080affe2664905e123b944eb757633ca962f2e18e3adf04cc96b2de543fb2f3ba00bd1e8f6524060
   languageName: node
   linkType: hard
 
