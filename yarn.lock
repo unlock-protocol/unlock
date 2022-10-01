@@ -17713,7 +17713,7 @@ __metadata:
     tailwind-merge: 1.5.1
     tailwindcss: 3.1.7
     ts-jest: 27.1.5
-    typescript: 4.7.4
+    typescript: 4.8.4
     use-local-storage: 2.3.6
     vitest: 0.16.0
     yaml-front-matter: 4.1.1
@@ -54180,6 +54180,16 @@ typescript@4.7.4:
   languageName: node
   linkType: hard
 
+typescript@4.8.4:
+  version: 4.8.4
+  resolution: "typescript@npm:4.8.4"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 3e4f061658e0c8f36c820802fa809e0fd812b85687a9a2f5430bc3d0368e37d1c9605c3ce9b39df9a05af2ece67b1d844f9f6ea8ff42819f13bcb80f85629af0
+  languageName: node
+  linkType: hard
+
 typescript@>=4.5.0:
   version: 4.8.2
   resolution: "typescript@npm:4.8.2"
@@ -54217,6 +54227,16 @@ typescript@^3.8.3:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 96d3030cb01143570567cb4f3a616b10df65f658f0e74e853e77a089a6a954e35c800be7db8b9bfe9a1ae05d9c2897e281359f65e4caa1caf266368e1c4febd3
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@4.8.4#~builtin<compat/typescript>":
+  version: 4.8.4
+  resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=ddd1e8"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 563a0ef47abae6df27a9a3ab38f75fc681f633ccf1a3502b1108e252e187787893de689220f4544aaf95a371a4eb3141e4a337deb9895de5ac3c1ca76430e5f0
   languageName: node
   linkType: hard
 
@@ -54882,7 +54902,7 @@ typescript@^3.8.3:
     lint-staged: 13.0.3
     node-fetch: 2.6.7
     prettier: 2.7.1
-    typescript: 4.7.4
+    typescript: 4.8.4
   languageName: unknown
   linkType: soft
 
