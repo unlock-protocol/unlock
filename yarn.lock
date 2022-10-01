@@ -17767,8 +17767,8 @@ __metadata:
   resolution: "@unlock-protocol/types@workspace:packages/types"
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
-    ethers: 5.6.9
-    typescript: 4.7.4
+    ethers: 5.7.1
+    typescript: 4.8.4
   languageName: unknown
   linkType: soft
 
