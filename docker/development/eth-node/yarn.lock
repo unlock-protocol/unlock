@@ -1390,7 +1390,7 @@ __metadata:
   resolution: "@unlock-protocol/eth-node@workspace:."
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.1.0
-    "@unlock-protocol/hardhat-plugin": 0.0.10
+    "@unlock-protocol/hardhat-plugin": 0.0.11
     cross-fetch: 3.1.5
     eslint: 8.23.0
     ethers: 5.6.9
@@ -1401,9 +1401,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/hardhat-plugin@npm:0.0.10":
-  version: 0.0.10
-  resolution: "@unlock-protocol/hardhat-plugin@npm:0.0.10"
+"@unlock-protocol/hardhat-plugin@npm:0.0.11":
+  version: 0.0.11
+  resolution: "@unlock-protocol/hardhat-plugin@npm:0.0.11"
   dependencies:
     "@nomiclabs/hardhat-ethers": ^2.1.1
     "@unlock-protocol/contracts": 0.0.8
@@ -1412,7 +1412,7 @@ __metadata:
   peerDependencies:
     ethers: 5.7.0
     hardhat: 2.9.9
-  checksum: 60830db73e65be831eb52bc3ad2d246f79115cf86968d083f7953334359fde4194c3b4011da5afc6c210f20e1172cbccd534b2bb73f2ffefa0bac43cac025aad
+  checksum: ee27f1f098ab3df8f5b42a69d9dda3420afe271e91c85daf8d724b7407e155faee73dacee9c11b7ec5b1b63b910f1c64da1cb95778d87cc01cbe12eb40f87d4c
   languageName: node
   linkType: hard
 
