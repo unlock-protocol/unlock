@@ -17403,7 +17403,7 @@ __metadata:
     react-use-clipboard: 1.0.8
     storybook-builder-vite: 0.1.23
     tailwind-merge: 1.5.1
-    tailwindcss: 3.1.7
+    tailwindcss: 3.1.8
     tsconfig-paths-webpack-plugin: 4.0.0
     tsup: 6.2.1
     typescript: 4.7.4
@@ -17561,7 +17561,7 @@ __metadata:
     siwe: 1.1.6
     styled-components: 5.3.5
     tailwind-merge: 1.5.1
-    tailwindcss: 3.1.7
+    tailwindcss: 3.1.8
     ts-jest: 27.1.5
     typescript: 4.7.4
     validator: 13.7.0
@@ -17711,7 +17711,7 @@ __metadata:
     showdown-highlight: 3.0.0
     styled-components: 5.3.5
     tailwind-merge: 1.5.1
-    tailwindcss: 3.1.7
+    tailwindcss: 3.1.8
     ts-jest: 27.1.5
     typescript: 4.7.4
     use-local-storage: 2.3.6
@@ -52517,9 +52517,9 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:3.1.7":
-  version: 3.1.7
-  resolution: "tailwindcss@npm:3.1.7"
+"tailwindcss@npm:3.1.8":
+  version: 3.1.8
+  resolution: "tailwindcss@npm:3.1.8"
   dependencies:
     arg: ^5.0.2
     chokidar: ^3.5.3
@@ -52548,7 +52548,7 @@ resolve@^2.0.0-next.3:
   bin:
     tailwind: lib/cli.js
     tailwindcss: lib/cli.js
-  checksum: adbc9869b72f741e9a0fc281b79710863617a588fd5d897316b676f789b6482c79f46f324223300ca962afbe55bed3ec16a37a6ccf4bb2c99c53cf8c5dd9700d
+  checksum: 86480301fc6ae1e392c2aba8264ab425bd919078176b010fda724518a7c265e950da5f4120c69c9041509c318207985fa9d680b6f5021e23f8214135a61a54b6
   languageName: node
   linkType: hard
 
