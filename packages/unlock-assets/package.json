@@ -59,7 +59,7 @@
     "react": "17.0.2",
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
-    "styled-components": "5.3.5",
+    "styled-components": "5.3.6",
     "tsup": "6.2.1"
   },
   "files": [
