@@ -9333,14 +9333,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/preact@npm:2.1.2":
-  version: 2.1.2
-  resolution: "@mdx-js/preact@npm:2.1.2"
+"@mdx-js/preact@npm:2.1.3":
+  version: 2.1.3
+  resolution: "@mdx-js/preact@npm:2.1.3"
   dependencies:
     "@types/mdx": ^2.0.0
   peerDependencies:
     preact: ">=10.0.0"
-  checksum: a47db00948e1579a2683ba79e83cae2d83898b7afeb13489374146ebb2723c88306f894fb506da746bf5c79b6c399dc6942dc123a6b4e1d7dfdd5818118c9ba1
+  checksum: a4691c3a3ec421be5be9020e21687974f1d07235e2bdde8b231c50a66da53319ff9fe19046dcc3b7a3e05344c4d8f6a895dbcc979dd7bdabbaaae7590c13efbc
   languageName: node
   linkType: hard
 
@@ -9353,15 +9353,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mdx-js/react@npm:2.1.2":
-  version: 2.1.2
-  resolution: "@mdx-js/react@npm:2.1.2"
+"@mdx-js/react@npm:2.1.3":
+  version: 2.1.3
+  resolution: "@mdx-js/react@npm:2.1.3"
   dependencies:
     "@types/mdx": ^2.0.0
     "@types/react": ">=16"
   peerDependencies:
     react: ">=16"
-  checksum: c1114c683403565f45366f43b3e71cd41f4f1c3f73147f447ba2517906400760139f315fe23220a3d633433d77d9a0a95753bb256b2cec392fb5c4a02947f25e
+  checksum: 206124b74b75d9c7e124be6bc6b27b9759875d5824e3c8a0249e6ec717b49fae4d84ccea35c4ade479f30781487c53cf965372409256ead8379850f6250908b3
   languageName: node
   linkType: hard
 
@@ -17819,8 +17819,8 @@ __metadata:
   dependencies:
     "@babel/core": 7.19.3
     "@headlessui/react": 1.7.3
-    "@mdx-js/preact": 2.1.2
-    "@mdx-js/react": 2.1.2
+    "@mdx-js/preact": 2.1.3
+    "@mdx-js/react": 2.1.3
     "@radix-ui/react-tooltip": 1.0.0
     "@storybook/addon-actions": 6.5.0-alpha.31
     "@storybook/addon-docs": 6.5.0-alpha.31
