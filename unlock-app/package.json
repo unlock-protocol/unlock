@@ -40,7 +40,7 @@
     "csv": "6.2.0",
     "dayjs": "1.11.5",
     "deep-object-diff": "1.1.7",
-    "dotenv": "16.0.1",
+    "dotenv": "16.0.3",
     "eslint": "8.20.0",
     "eslint-plugin-jest": "27.0.4",
     "eslint-plugin-mocha": "10.1.0",
