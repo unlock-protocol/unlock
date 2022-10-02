@@ -16024,10 +16024,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-cron@npm:3.0.2":
-  version: 3.0.2
-  resolution: "@types/node-cron@npm:3.0.2"
-  checksum: 921b1276c793ab6ae095436b8cde8d4d3ab02d8749011bd5b2006a4d921e206ae06de66edd9bccff4b1c09726bad16d9274c1ad104ab2d4370ad910f71cb9db2
+"@types/node-cron@npm:3.0.4":
+  version: 3.0.4
+  resolution: "@types/node-cron@npm:3.0.4"
+  checksum: 52d87ca7b64a941a2bfcca56dd823456d0cefacdfbfbed1c5d6ba92c8d60205ad0d42d14f676f96b12cc715f671a0392d82e82b79dda7e943398c996f86d2e33
   languageName: node
   linkType: hard
 
@@ -17541,7 +17541,7 @@ __metadata:
     "@types/jsonwebtoken": 8.5.9
     "@types/nock": 10.0.3
     "@types/node": 16.11.21
-    "@types/node-cron": 3.0.2
+    "@types/node-cron": 3.0.4
     "@types/random-words": 1.1.2
     "@types/request-promise-native": 1.0.18
     "@types/sequelize": 4.28.14
@@ -17583,7 +17583,7 @@ __metadata:
     msw: 0.39.2
     nock: 13.2.9
     node-abort-controller: 3.0.1
-    node-cron: 3.0.1
+    node-cron: 3.0.2
     node-fetch: 2.6.7
     node-mocks-http: 1.11.0
     nodemon: 2.0.20
@@ -43181,10 +43181,12 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"node-cron@npm:3.0.1":
-  version: 3.0.1
-  resolution: "node-cron@npm:3.0.1"
-  checksum: 98636a3d4373d48b5c7f5b922c93d22ca81a4bd38284f264812c7b88f06c995eb9ccde34ee2753cbec9bf5b77bd220c817c18ca82de504e3e324df9af6983b5d
+"node-cron@npm:3.0.2":
+  version: 3.0.2
+  resolution: "node-cron@npm:3.0.2"
+  dependencies:
+    uuid: 8.3.2
+  checksum: dd21585c0d4069a0752022dad9b8380a4393c4783ec78355ffa99ff32b018c3743a35d4ebf9d7c7863949e94e302b440f58c884eb4960e71c7260d817e2d3f25
   languageName: node
   linkType: hard
 
