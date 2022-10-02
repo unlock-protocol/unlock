@@ -10230,7 +10230,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.1.1, @nomiclabs/hardhat-ethers@npm:^2.0.0, @nomiclabs/hardhat-ethers@npm:^2.1.1":
+"@nomiclabs/hardhat-ethers@npm:2.1.1, @nomiclabs/hardhat-ethers@npm:^2.0.0":
   version: 2.1.1
   resolution: "@nomiclabs/hardhat-ethers@npm:2.1.1"
   peerDependencies:
@@ -14635,7 +14635,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@testing-library/jest-dom@npm:5.16.5, @testing-library/jest-dom@npm:^5.16.5":
+"@testing-library/jest-dom@npm:5.16.5":
   version: 5.16.5
   resolution: "@testing-library/jest-dom@npm:5.16.5"
   dependencies:
@@ -17474,7 +17474,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/hardhat-plugin@workspace:packages/hardhat-plugin"
   dependencies:
-    "@nomiclabs/hardhat-ethers": ^2.1.1
+    "@nomiclabs/hardhat-ethers": 2.1.1
     "@types/chai": 4.3.0
     "@types/fs-extra": 9.0.13
     "@types/mocha": 10.0.0
@@ -17780,7 +17780,7 @@ __metadata:
     fs-extra: 10.0.1
     handlebars: 4.7.7
     lint-staged: 13.0.3
-    matchstick-as: ^0.5.0
+    matchstick-as: 0.5.0
     yargs: 17.5.1
   languageName: unknown
   linkType: soft
@@ -18157,7 +18157,7 @@ __metadata:
     "@babel/node": 7.18.10
     "@babel/plugin-transform-runtime": 7.18.10
     "@babel/preset-env": 7.18.10
-    "@testing-library/jest-dom": ^5.16.5
+    "@testing-library/jest-dom": 5.16.5
     "@typescript-eslint/parser": 5.31.0
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     babel-eslint: 10.1.0
@@ -40940,7 +40940,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"matchstick-as@npm:^0.5.0":
+"matchstick-as@npm:0.5.0":
   version: 0.5.0
   resolution: "matchstick-as@npm:0.5.0"
   dependencies:

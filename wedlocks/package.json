@@ -51,7 +51,7 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/plugin-transform-runtime": "7.18.10",
-    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/jest-dom": "5.16.5",
     "regenerator-runtime": "0.13.9"
   }
 }
