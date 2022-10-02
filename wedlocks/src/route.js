@@ -30,6 +30,10 @@ const getTemplateAndParams = async (args, opts) => {
     }
   })
 
+  if (template.nowrap) {
+    return [template, templateParams]
+  }
+
   // Wrap the template
   return [await wrap(template, opts), templateParams]
 }
