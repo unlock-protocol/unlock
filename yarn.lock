@@ -14035,19 +14035,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@superfluid-finance/sdk-core@npm:0.5.2":
-  version: 0.5.2
-  resolution: "@superfluid-finance/sdk-core@npm:0.5.2"
+"@superfluid-finance/metadata@git+https://github.com/superfluid-finance/metadata.git":
+  version: 1.1.0
+  resolution: "@superfluid-finance/metadata@https://github.com/superfluid-finance/metadata.git#commit=daa48fcc3a395f4de7c12fb3d4add7ed3da0de38"
+  checksum: dc4970697c0932b816268ad3f820db349d44bb4c8ecd16bd1c1f2e746cd82d96b686c1589fb3cb5e279f3c241e38b1b9886ea7dfa1642f1164cc55e2ca995d09
+  languageName: node
+  linkType: hard
+
+"@superfluid-finance/sdk-core@npm:0.5.6":
+  version: 0.5.6
+  resolution: "@superfluid-finance/sdk-core@npm:0.5.6"
   dependencies:
+    "@superfluid-finance/metadata": "git+https://github.com/superfluid-finance/metadata.git"
     browserify: ^17.0.0
     graphql-request: ^4.3.0
     lodash: ^4.17.21
-    serialize-error: 8.1.0
     tsify: ^5.0.4
   peerDependencies:
     ethers: ^5.6.9
     graphql: ^16.0.0
-  checksum: 7900a2f4e998e90ebddfc28069f6df1cdb47d00da86a801e84ac559f23f86c00750f2084a0808e65ba87564ba5aafbe9db7826d2fb332d67e7ef4838a7afbe93
+  checksum: d1b0ef35c74a6c531b895d2f1ad7af1d9ad472b79282ed3ff56d9e26bb0778b40f584fa1b1d54977bb6331303a8212317b616c1b0dd9dc3f9644051d016c7361
   languageName: node
   linkType: hard
 
@@ -50551,15 +50558,6 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"serialize-error@npm:8.1.0":
-  version: 8.1.0
-  resolution: "serialize-error@npm:8.1.0"
-  dependencies:
-    type-fest: ^0.20.2
-  checksum: 2eef236d50edd2d7926e602c14fb500dc3a125ee52e9f08f67033181b8e0be5d1122498bdf7c23c80683cddcad083a27974e9e7111ce23165f4d3bcdd6d65102
-  languageName: node
-  linkType: hard
-
 "serialize-javascript@npm:6.0.0, serialize-javascript@npm:^6.0.0":
   version: 6.0.0
   resolution: "serialize-javascript@npm:6.0.0"
@@ -55304,7 +55302,7 @@ typescript@^3.8.3:
   resolution: "unlock@workspace:."
   dependencies:
     "@babel/core": 7.19.3
-    "@superfluid-finance/sdk-core": 0.5.2
+    "@superfluid-finance/sdk-core": 0.5.6
     "@typescript-eslint/eslint-plugin": 5.38.1
     "@typescript-eslint/parser": 5.38.1
     babel-eslint: 10.1.0
