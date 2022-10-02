@@ -70,6 +70,7 @@ RUN apk add --no-cache --virtual .build-deps \
     python3-dev \
     py3-pip \
     build-base \
+    openjdk11 \
     && pip3 install --no-cache-dir virtualenv
 
 # install deps
@@ -84,7 +85,10 @@ RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 yarn ins
 # delete deps once packages are built
 USER root
 RUN apk del .build-deps \
-    && apk add bash
+    && apk add bash openjdk11
+
+RUN java -version
+RUN javac -version
 
 # make sure of cache folder perms
 RUN chown -R node:node /home/unlock/yarn-cache
