@@ -60,7 +60,7 @@
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
     "styled-components": "5.3.6",
-    "tsup": "6.2.1"
+    "tsup": "6.2.3"
   },
   "files": [
     "dist"
