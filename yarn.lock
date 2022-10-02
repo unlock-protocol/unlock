@@ -17837,7 +17837,7 @@ __metadata:
     "@vitejs/plugin-react": 2.1.0
     autoprefixer: 10.4.8
     babel-loader: 8.2.5
-    postcss: 8.4.14
+    postcss: 8.4.17
     prism-react-renderer: 1.3.5
     react-icons: 4.4.0
     react-use-clipboard: 1.0.8
@@ -17977,7 +17977,7 @@ __metadata:
     next: 12.2.4
     node-fetch: 2.6.7
     node-forge: 1.3.1
-    postcss: 8.4.14
+    postcss: 8.4.17
     postmate: 1.5.2
     prettier: 2.7.1
     prop-types: 15.8.1
@@ -18135,7 +18135,7 @@ __metadata:
     next: 12.2.4
     next-seo: 5.5.0
     path-match: 1.2.4
-    postcss: 8.4.14
+    postcss: 8.4.17
     prettier: 2.7.1
     raw-loader: 4.0.2
     react: 17.0.2
@@ -46734,6 +46734,17 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"postcss@npm:8.4.17, postcss@npm:^8.4.16":
+  version: 8.4.17
+  resolution: "postcss@npm:8.4.17"
+  dependencies:
+    nanoid: ^3.3.4
+    picocolors: ^1.0.0
+    source-map-js: ^1.0.2
+  checksum: a6d9096dd711e17f7b1d18ff5dcb4fdedf3941d5a3dc8b0e4ea873b8f31972d57f73d6da9a8aed7ff389eb52190ed34f6a94f299a7f5ddc68b08a24a48f77eb9
+  languageName: node
+  linkType: hard
+
 "postcss@npm:8.4.5, postcss@npm:^8.1.6, postcss@npm:^8.3.5, postcss@npm:^8.4.4":
   version: 8.4.5
   resolution: "postcss@npm:8.4.5"
@@ -46785,17 +46796,6 @@ fsevents@~2.1.1:
     nanoid: ^3.1.25
     source-map-js: ^0.6.2
   checksum: 20073f3f70487e9fa8d40e930d02595c4d96b7db8b2142ee4efe8e0c9a54c844c720370e178aef57c12d2d5bf65592cfdd1d020a74bf2840bc58650590713a35
-  languageName: node
-  linkType: hard
-
-"postcss@npm:^8.4.16":
-  version: 8.4.17
-  resolution: "postcss@npm:8.4.17"
-  dependencies:
-    nanoid: ^3.3.4
-    picocolors: ^1.0.0
-    source-map-js: ^1.0.2
-  checksum: a6d9096dd711e17f7b1d18ff5dcb4fdedf3941d5a3dc8b0e4ea873b8f31972d57f73d6da9a8aed7ff389eb52190ed34f6a94f299a7f5ddc68b08a24a48f77eb9
   languageName: node
   linkType: hard
 
