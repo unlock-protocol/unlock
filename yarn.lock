@@ -14596,12 +14596,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tailwindcss/line-clamp@npm:0.4.0":
-  version: 0.4.0
-  resolution: "@tailwindcss/line-clamp@npm:0.4.0"
+"@tailwindcss/line-clamp@npm:0.4.2":
+  version: 0.4.2
+  resolution: "@tailwindcss/line-clamp@npm:0.4.2"
   peerDependencies:
     tailwindcss: ">=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1"
-  checksum: 71ba25a4a18323496a7af34e55871121b8459530b0e5696c4173fd65a76162675619f1d1158a8a32e1ace2069333949bef6f1061b17f49fef98dc2291a979dcd
+  checksum: 26b8135df24fff51c3d3790ae795bdc12bc4a7113fa22dcab80568ae6ee00710e2ed4154048958c472bb654061f0f1573b7ac5e004ae6222cbd5ac6fcf199478
   languageName: node
   linkType: hard
 
@@ -17830,7 +17830,7 @@ __metadata:
     "@storybook/react": 6.5.0-alpha.31
     "@tailwindcss/aspect-ratio": 0.4.2
     "@tailwindcss/forms": 0.5.3
-    "@tailwindcss/line-clamp": 0.4.0
+    "@tailwindcss/line-clamp": 0.4.2
     "@tailwindcss/typography": 0.5.7
     "@types/react": 17.0.44
     "@types/react-dom": 18.0.6
