@@ -44,7 +44,15 @@ export function Minting({
           const provider = new ethers.providers.JsonRpcProvider(
             network.provider
           )
-          await provider.waitForTransaction(mint!.transactionHash!)
+
+          const transaction = await provider.waitForTransaction(
+            mint!.transactionHash!
+          )
+
+          if (transaction.status !== 1) {
+            throw new Error('Transaction failed.')
+          }
+
           communication.emitTransactionInfo({
             hash: mint!.transactionHash!,
             lock: lock?.address,
