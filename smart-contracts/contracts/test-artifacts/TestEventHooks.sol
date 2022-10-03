@@ -17,6 +17,7 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
   using UnlockUtils for address;
 
   event OnKeyPurchase(
+    uint tokenId,
     address lock,
     address from,
     address recipient,
