@@ -93,7 +93,7 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
                 setValue('expiration', undefined)
               }
             }}
-            title="No expiration"
+            title="Never expires"
           />
         </div>
         <div className="relative">
