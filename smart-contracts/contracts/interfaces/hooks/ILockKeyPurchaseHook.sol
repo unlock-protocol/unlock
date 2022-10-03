@@ -31,7 +31,7 @@ interface ILockKeyPurchaseHook
   /**
    * @notice If the lock owner has registered an implementer then this hook
    * is called with every key sold.
-   * @param the tokenId of the purchased key
+   * @param tokenId the id of the purchased key
    * @param from the msg.sender making the purchase
    * @param recipient the account which will be granted a key
    * @param referrer the account which referred this key sale
