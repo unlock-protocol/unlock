@@ -22,6 +22,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     keyPrice = new BigNumber(await lock.keyPrice())

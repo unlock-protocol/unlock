@@ -20,7 +20,8 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address
+      testEventHooks.address,
+      ADDRESS_ZERO
     )
     keyPrice = await lock.keyPrice()
 

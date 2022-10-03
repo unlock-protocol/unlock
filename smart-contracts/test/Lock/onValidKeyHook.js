@@ -22,6 +22,7 @@ contract('Lock / onValidKeyHook', (accounts) => {
       ADDRESS_ZERO,
       testEventHooks.address,
       ADDRESS_ZERO,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     // still returns value

@@ -15,6 +15,7 @@ contract('Lock / onKeyCancelHook', (accounts) => {
       testEventHooks.address,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     const { tokenId } = await purchaseKey(lock, to)

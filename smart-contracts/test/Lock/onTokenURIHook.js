@@ -17,6 +17,7 @@ contract('Lock / onTokenURIHook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       testEventHooks.address,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     ;({ tokenId } = await purchaseKey(lock, keyOwner))
