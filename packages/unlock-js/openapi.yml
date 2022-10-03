@@ -1101,3 +1101,29 @@ paths:
 
         500:
           $ref: '#/components/responses/500.InternalError'
+
+  /purchase:
+    get:
+      operationId: balance
+      responses:
+        200:
+          description: Balances on different network.
+          content:
+            application/json:
+              schema:
+                nullable: false
+                type: object
+                additionalProperties:
+                  type: object
+                  nullable: true
+                  properties:
+                    address:
+                      type: string
+
+                    name:
+                      type: string
+
+                    balance:
+                      type: string
+        500:
+          $ref: '#/components/responses/500.InternalError'
