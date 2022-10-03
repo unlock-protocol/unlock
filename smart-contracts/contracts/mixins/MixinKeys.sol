@@ -282,7 +282,7 @@ contract MixinKeys is
    uint _tokenId,
    address _recipient
   ) internal { 
-    uint length = balanceOf(_recipient);
+    uint length = totalKeys(_recipient);
     
     // make sure address does not have more keys than allowed
     if(length >= _maxKeysPerAddress) {
@@ -342,7 +342,7 @@ contract MixinKeys is
     address previousOwner = _ownerOf[_tokenId];
 
     // delete previous ownership
-    uint lastTokenIndex = balanceOf(previousOwner) - 1;
+    uint lastTokenIndex = totalKeys(previousOwner) - 1;
     uint index = _ownedKeysIndex[_tokenId];
 
     // When the token to delete is the last token, the swap operation is unnecessary
