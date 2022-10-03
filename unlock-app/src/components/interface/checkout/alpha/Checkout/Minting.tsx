@@ -121,6 +121,17 @@ export function Minting({
           <p className="text-lg font-bold text-brand-ui-primary">
             {content?.text}
           </p>
+          {mint?.status === 'FINISHED' && (
+            <a
+              href="/keychain"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+            >
+              Open keychain
+              <Icon icon={ExternalLinkIcon} size="small" />
+            </a>
+          )}
           {mint?.transactionHash && (
             <a
               href={config.networks[lock!.network].explorer.urls.transaction(
