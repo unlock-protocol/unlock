@@ -190,6 +190,7 @@ contract MixinPurchase is
       uint pricePaid = tokenAddress == address(0) ? msg.value : _values[i];
       if(address(onKeyPurchaseHook) != address(0)) {
         onKeyPurchaseHook.onKeyPurchase(
+          tokenId,
           msg.sender, 
           _recipient, 
           _referrers[i], 
