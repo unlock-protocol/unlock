@@ -442,14 +442,8 @@ contract MixinKeys is
     view
     returns (bool isValid)
   { 
-    uint length = balanceOf(_keyOwner);
-    if(length > 0) {
-      for (uint i = 0; i < length; i++) {
-        if(isValidKey(tokenOfOwnerByIndex(_keyOwner, i))) {
-          return true; // stop looping at the first valid key
-        }
-      }
-    }
+    // `balanceOf` returns only valid keys
+    isValid = balanceOf(_keyOwner) > 0;
 
     // use hook if it exists
     if(address(onValidKeyHook) != address(0)) {
@@ -460,6 +454,7 @@ contract MixinKeys is
         isValid
       );
     }
+
     return isValid;   
   }
 
