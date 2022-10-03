@@ -271,6 +271,13 @@ contract MixinKeys is
     _keys[_tokenId].expirationTimestamp = newTimestamp;
 
     emit KeyExtended(_tokenId, newTimestamp);
+
+    // call the hook
+    onKeyExtendHook.onExtendKey(
+      _tokenId, 
+      msg.sender,
+      newTimestamp
+    );
   } 
 
   /**

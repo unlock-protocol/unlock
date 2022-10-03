@@ -95,6 +95,9 @@ contract MixinLockCore is
   // one more hook (added to v11)
   ILockKeyTransferHook public onKeyTransferHook;
 
+  // one more hook (added to v12)
+  ILockKeyExtendHook public onKeyExtendHook;
+
   // modifier to check if data has been upgraded
   function _lockIsUpToDate() internal view {
     if(schemaVersion != publicLockVersion()) {
@@ -222,7 +225,9 @@ contract MixinLockCore is
     address _onKeyCancelHook,
     address _onValidKeyHook,
     address _onTokenURIHook,
-    address _onKeyTransferHook
+    address _onKeyTransferHook,
+    address _onKeyExtendHook,    
+
   ) external
   {
     _onlyLockManager();
@@ -232,12 +237,14 @@ contract MixinLockCore is
     if(_onValidKeyHook != address(0) && !_onValidKeyHook.isContract()) { revert INVALID_HOOK(2); }
     if(_onTokenURIHook != address(0) && !_onTokenURIHook.isContract()) { revert INVALID_HOOK(3); }
     if(_onKeyTransferHook != address(0) && !_onKeyTransferHook.isContract()) { revert INVALID_HOOK(4); }
+    if(_onKeyExtendHook != address(0) && !_onKeyExtendHook.isContract()) { revert INVALID_HOOK(5); }
     
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
     onTokenURIHook = ILockTokenURIHook(_onTokenURIHook);
     onValidKeyHook = ILockValidKeyHook(_onValidKeyHook);
     onKeyTransferHook = ILockKeyTransferHook(_onKeyTransferHook);
+    onKeyExtendHook = ILockKeyTransferHook(_onKeyExtendHook);
   }
 
   function totalSupply()
@@ -265,5 +272,6 @@ contract MixinLockCore is
 
   // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
   // decreased from 998 to 997 when adding `onKeyTransferHook` in v11
-  uint256[997] private __safe_upgrade_gap;
+  // decreased from 997 to 996 when adding `onKeyExtendHook` in v11
+  uint256[996] private __safe_upgrade_gap;
 }

@@ -94,6 +94,15 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
     emit OnKeyCancel(msg.sender, _operator, _to, _refund);
   }
   
+  function onKeyExtend(
+    uint _tokenId,
+    address _from,
+    uint _newTimestamp
+  ) external
+  {
+    emit OnKeyCancel(_tokenId, msg.sender, _newTimestamp);
+  }
+  
   function onKeyTransfer(
     address _lockAddress,
     uint _tokenId,
