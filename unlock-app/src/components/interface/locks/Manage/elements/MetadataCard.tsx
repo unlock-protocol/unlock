@@ -244,7 +244,7 @@ export const MetadataCard = ({
                   <Button
                     className="p-0 text-brand-ui-primary"
                     variant="transparent"
-                    aria-label="block scout link"
+                    aria-label="blockscan link"
                   >
                     <a
                       href={`https://blockscan.com/address/${owner}`}
