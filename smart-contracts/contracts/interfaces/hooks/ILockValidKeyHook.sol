@@ -11,7 +11,7 @@ interface ILockValidKeyHook
 
   /**
    * @notice If the lock owner has registered an implementer then this hook
-   * is called every time balanceOf is called
+   * is called every time `getHasValidKey` is called
    * @param lockAddress the address of the current lock
    * @param keyOwner the potential owner of the key for which we are retrieving the `balanceof`
    * @param expirationTimestamp the key expiration timestamp

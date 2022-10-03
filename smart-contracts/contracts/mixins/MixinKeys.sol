@@ -175,10 +175,10 @@ contract MixinKeys is
   /**
     * Returns the id of a key for a specific owner at a specific index
     * @notice Enumerate keys assigned to an owner
-    * @dev Throws if `_index` >= `balanceOf(_keyOwner)` or if
+    * @dev Throws if `_index` >= `totalKeys(_keyOwner)` or if
     *  `_keyOwner` is the zero address, representing invalid keys.
     * @param _keyOwner address of the owner
-    * @param _index position index in the array of all keys - less than `balanceOf(_keyOwner)`
+    * @param _index position index in the array of all keys - less than `totalKeys(_keyOwner)`
     * @return The token identifier for the `_index`th key assigned to `_keyOwner`,
     *   (sort order not specified)
     * NB: name kept to be ERC721 compatible
