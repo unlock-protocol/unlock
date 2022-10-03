@@ -13,6 +13,7 @@ import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
 import '../interfaces/hooks/ILockValidKeyHook.sol';
 import '../interfaces/hooks/ILockTokenURIHook.sol';
 import '../interfaces/hooks/ILockKeyTransferHook.sol';
+import '../interfaces/hooks/ILockKeyExtendHook.sol';
 
 /**
  * @title Mixin for core lock data and functions.
@@ -226,8 +227,7 @@ contract MixinLockCore is
     address _onValidKeyHook,
     address _onTokenURIHook,
     address _onKeyTransferHook,
-    address _onKeyExtendHook,    
-
+    address _onKeyExtendHook
   ) external
   {
     _onlyLockManager();
@@ -244,7 +244,7 @@ contract MixinLockCore is
     onTokenURIHook = ILockTokenURIHook(_onTokenURIHook);
     onValidKeyHook = ILockValidKeyHook(_onValidKeyHook);
     onKeyTransferHook = ILockKeyTransferHook(_onKeyTransferHook);
-    onKeyExtendHook = ILockKeyTransferHook(_onKeyExtendHook);
+    onKeyExtendHook = ILockKeyExtendHook(_onKeyExtendHook);
   }
 
   function totalSupply()
