@@ -10,7 +10,7 @@
         "@unlock-protocol/networks": "workspace:^",
         "@unlock-protocol/tsconfig": "workspace:^",
         "@unlock-protocol/types": "workspace:^",
-        "hardhat": "2.10.1"
+        "hardhat": "2.11.2"
     },
     "files": [
         "src"

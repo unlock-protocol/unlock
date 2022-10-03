@@ -1,38 +1,31 @@
-const links = (params) => {
-  const hasTxUrl = params?.txUrl?.length > 0
-  const hasOpenSeaUrl = params?.openSeaUrl?.length > 0
+import handlebars from 'handlebars'
+
+handlebars.registerHelper('links', function (txUrl, openSeaUrl) {
+  const hasTxUrl = txUrl?.length > 0
+  const hasOpenSeaUrl = openSeaUrl?.length > 0
   let linksMessage = ''
 
   if (hasTxUrl && hasOpenSeaUrl) {
-    linksMessage = `You can also see it on a block explorer like ${params.txUrl} or even OpenSea ${params.openSeaUrl}.`
+    linksMessage = `<p>You can also see it on a <a href="${txUrl}">block explorer</a> or even <a href="${openSeaUrl}">OpenSea</a>.</p>`
   } else if (hasTxUrl) {
-    linksMessage = `You can also see it on a block explorer ${params.txUrl}.`
+    linksMessage = `<p>You can also see it on a <a href="${txUrl}">block explorer</a>.</p>`
   } else if (hasOpenSeaUrl) {
-    linksMessage = `You can also see it on OpenSea ${params.openSeaUrl}.`
+    linksMessage = `<p>You can also see it on <a href="${openSeaUrl}">OpenSea</a>.</p>`
   }
-  if (linksMessage?.length) {
-    return `\n${linksMessage}\n`
-  }
-  return linksMessage
-}
+  return new handlebars.SafeString(linksMessage)
+})
 
 export default {
-  subject: () => 'A key was added to your wallet!',
-  text: (params) =>
-    `Hello!
+  subject: handlebars.compile('A key was added to your wallet!'),
+  html: handlebars.compile(
+    `<h1>A new NFT in your wallet!</h1>
 
-A new NFT key (#${params.keyId}) to the lock "${
-      params.lockName
-    }" was just mined for you!
-It has been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!
+<p>A new NFT key (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just minted for you!</p>
 
-Check out your keychain: ${params.keychainUrl}
-Make sure you select the network ${
-      params.network
-    } where the NFT has been minted for you.
-${links(params)}
-If you have any questions (or if you do not want to receive emails like this one in the future), please email us at hello@unlock-protocol.com.
+<p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
 
-The Unlock team
-`,
+{{links txUrl openSeaUrl}}
+
+`
+  ),
 }

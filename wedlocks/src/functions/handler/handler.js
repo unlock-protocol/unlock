@@ -1,5 +1,5 @@
-import { route } from './route'
-import logger from '../logger'
+import { route, preview } from '../../route'
+import logger from '../../../logger'
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
@@ -31,6 +31,18 @@ export const handler = async (event, context, responseCallback) => {
   if (event.httpMethod === 'OPTIONS') {
     return callback(null, {
       statusCode: 204,
+    })
+  }
+
+  let match = event?.path?.match(/\/preview\/([a-zA-Z0-9]+)/)
+  if (event.httpMethod === 'GET' && match && match[0]) {
+    const body = await preview({
+      template: match[1],
+      params: event.queryStringParameters,
+    })
+    return callback(null, {
+      statusCode: 200,
+      body,
     })
   }
 
