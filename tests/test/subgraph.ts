@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { Contract } from 'ethers'
+import { BigNumber, Contract } from 'ethers'
 import { unlock, ethers } from 'hardhat'
 
 import { lockParams } from './helpers/fixtures'
@@ -58,28 +58,35 @@ describe('Unlock', function () {
 
 describe('Keep track of total keys', function () {
   let lock: Contract
+  let lockAddress: string
   before(async () => {
     ;({ lock } = await unlock.createLock({ ...lockParams }))
+    lockAddress = lock.address.toLowerCase()
   })
   describe('totalKeys', () => {
     it('default to zero ', async () => {
       await awaitTimeout(2000)
-      const lockInGraph = await subgraph.getLock(lock.address)
+      const lockInGraph = await subgraph.getLock(lockAddress)
       expect(parseInt(lockInGraph.totalKeys)).to.equals(0)
     })
-    it('increase by the number of keys purchased', async () => {
-      await purchaseKeys(lock.address, 3)
-      await awaitTimeout(2000)
-      const lockInGraph = await subgraph.getLock(lock.address)
-      expect(parseInt(lockInGraph.totalKeys)).to.equals(3)
-    })
-    it('decrease when keys are burnt', async () => {
-      const { tokenIds, keyOwners } = await purchaseKeys(lock.address, 3)
-      const keyOwner = await ethers.getSigner(keyOwners[0])
-      await lock.connect(keyOwner).burn(tokenIds[0])
-      await awaitTimeout(2000)
-      const lockInGraph = await subgraph.getLock(lock.address)
-      expect(parseInt(lockInGraph.totalKeys)).to.equals(2)
+    describe('increase/decrease', () => {
+      let tokenIds: [BigNumber]
+      let keyOwners: [string]
+      before(async () => {
+        ;({ tokenIds, keyOwners } = await purchaseKeys(lockAddress, 3))
+        await awaitTimeout(2000)
+      })
+      it('increase by the number of keys purchased', async () => {
+        const lockInGraph = await subgraph.getLock(lockAddress)
+        expect(parseInt(lockInGraph.totalKeys)).to.equals(3)
+      })
+      it('decrease when keys are burnt', async () => {
+        const keyOwner = await ethers.getSigner(keyOwners[0])
+        await lock.connect(keyOwner).burn(tokenIds[0])
+        await awaitTimeout(2000)
+        const lockInGraph = await subgraph.getLock(lockAddress)
+        expect(parseInt(lockInGraph.totalKeys)).to.equals(2)
+      })
     })
   })
 })

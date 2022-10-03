@@ -46,6 +46,7 @@ const getLockQuery = gql`
       lockManagers
       expirationDuration
       name
+      totalKeys
       createdAtBlock
     }
   }
