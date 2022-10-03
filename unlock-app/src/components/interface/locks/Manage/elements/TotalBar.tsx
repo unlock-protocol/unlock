@@ -7,6 +7,7 @@ import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { VscGraphLine as GraphIcon } from 'react-icons/vsc'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Action {
   title: string
@@ -84,6 +85,7 @@ const Total = ({
 }
 
 export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
+  const { changeNetwork } = useAuth()
   const [showStats, setShowStats] = useState(false)
   const web3Service = useWeb3Service()
   const walletService = useWalletService()
@@ -129,6 +131,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
   const { balance = 0, outstandingKeys: keySold = 0 } = lock ?? {}
 
   const onWithDraw = async () => {
+    await changeNetwork(network)
     const promise = withdrawMutation.mutateAsync(balance)
     await ToastHelper.promise(promise, {
       success: 'Withdraw done',
