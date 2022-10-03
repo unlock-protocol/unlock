@@ -10,6 +10,7 @@ import { SelectCurrencyModal } from '../../Create/modals/SelectCurrencyModal'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { CryptoIcon } from '../../elements/KeyPrice'
 
 interface EditFormProps {
   keyPrice?: string
@@ -165,23 +166,39 @@ export const UpdatePriceModal = ({
                 }}
               />
             </div>
-            <div className="relative">
-              <Input
-                type="numeric"
-                autoComplete="off"
-                placeholder="0.00"
-                step={0.01}
-                disabled={isFree}
-                {...register('keyPrice', {
-                  required: !isFree,
-                  min: 0,
-                })}
-              />
-              {errors?.keyPrice && (
-                <span className="absolute -mt-1 text-xs text-red-700">
-                  Please enter a positive number
-                </span>
-              )}
+
+            <div className="grid grid-cols-2 gap-2 justify-items-stretch">
+              <div className="flex flex-col gap-1.5">
+                <div
+                  onClick={() => {
+                    setChangeCurrencyModal(true)
+                  }}
+                  className="box-border flex items-center flex-1 w-full gap-2 pl-4 text-base text-left transition-all border border-gray-400 rounded-lg shadow-sm cursor-pointer hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
+                >
+                  <CryptoIcon symbol={symbol} />
+                  <span>{symbol}</span>
+                </div>
+                <div className="pl-1"></div>
+              </div>
+
+              <div className="relative">
+                <Input
+                  type="numeric"
+                  autoComplete="off"
+                  placeholder="0.00"
+                  step={0.01}
+                  disabled={isFree}
+                  {...register('keyPrice', {
+                    required: !isFree,
+                    min: 0,
+                  })}
+                />
+                {errors?.keyPrice && (
+                  <span className="absolute -mt-1 text-xs text-red-700">
+                    Please enter a positive number
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
