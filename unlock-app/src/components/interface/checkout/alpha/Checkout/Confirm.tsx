@@ -288,8 +288,12 @@ export function Confirm({
       if (payment.method !== 'claim') {
         return
       }
-      const hash = await claimMembershipFromLock(lockAddress, lockNetwork)
-      if (hash) {
+
+      const response = await claimMembershipFromLock(lockAddress, lockNetwork)
+
+      const { transactionHash: hash, error } = response
+
+      if (hash && !error) {
         communication.emitTransactionInfo({
           hash,
           lock: lockAddress,

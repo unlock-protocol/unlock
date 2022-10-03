@@ -14,7 +14,10 @@ const requiredEnvs = {
 }
 
 for (const [key, value] of Object.entries(requiredEnvs)) {
-  if (unlockEnv !== 'dev' && !value) {
+  if (value) {
+    continue
+  }
+  if (unlockEnv !== 'dev') {
     throw new Error(`${key} is missing in the environment. Please export.`)
   } else {
     console.error(`${key} is missing in the environment.`)
