@@ -3,6 +3,7 @@ import templates from './templates'
 import config from '../config'
 import encrypter from './encrypter'
 import wrap from './wrap'
+import prepare, { prepareAll } from './templates/prepare'
 
 /**
  * Builds the template and params
@@ -19,6 +20,9 @@ const getTemplateAndParams = async (args, opts) => {
   if (!template) {
     throw new Error('Missing template')
   }
+
+  // Extract images... etc
+  template = prepareAll(template, opts)
 
   const templateParams = {}
   Object.keys(args.params).forEach((key) => {

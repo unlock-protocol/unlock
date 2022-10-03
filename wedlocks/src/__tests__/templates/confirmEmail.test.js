@@ -2,19 +2,22 @@
  * @jest-environment jsdom
  */
 import confirmEmail from '../../templates/confirmEmail'
+import { prepareAll } from '../../templates/prepare'
 import { asHtml } from '../utils'
 
 describe('confirmEmail', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
-    expect(confirmEmail.subject()).toBe('Please confirm your email address')
+    expect(prepareAll(confirmEmail).subject()).toBe(
+      'Please confirm your email address'
+    )
   })
 
   it('should have the right text', () => {
     expect.assertions(1)
     expect(
       asHtml(
-        confirmEmail.html({
+        prepareAll(confirmEmail).html({
           confirmLink: 'https://staging-app.unlock-protocol.com/keychain/',
           email: 'julien@unlock-protocol.com',
           signedEmail: 'privatekeyEncryptedEmail',
