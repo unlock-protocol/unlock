@@ -9,7 +9,7 @@ import {
   ONE_DAY_IN_SECONDS,
   UNLIMITED_KEYS_DURATION,
 } from '~/constants'
-import { useNetwork } from '~/hooks/useNetwork'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface EditFormProps {
   expirationDuration?: string | number
@@ -33,12 +33,12 @@ export const UpdateDurationModal = ({
   duration,
   network,
 }: UpdateDurationModalProps) => {
+  const walletService = useWalletService()
+  const { changeNetwork } = useAuth()
   const [unlimitedDuration, setUnlimitedDuration] = useState(
     duration === UNLIMITED_KEYS_DURATION
   )
-  const walletService = useWalletService()
   const durationInDays = parseInt(`${(duration ?? 0) / ONE_DAY_IN_SECONDS}`)
-  const { switchToNetworkBeforeAction } = useNetwork()
 
   const {
     register,
@@ -77,19 +77,18 @@ export const UpdateDurationModal = ({
   const updateDurationMutation = useMutation(updateDuration)
 
   const onHandleSubmit = async () => {
+    await changeNetwork(network)
     if (isValid) {
-      switchToNetworkBeforeAction(network, async () => {
-        await ToastHelper.promise(updateDurationMutation.mutateAsync(), {
-          loading: 'Updating duration...',
-          success: 'Duration updated',
-          error: 'There is some unexpected issue, please try again',
-        })
-        setIsOpen(false)
-        reset()
-        if (typeof onUpdate === 'function') {
-          onUpdate()
-        }
+      await ToastHelper.promise(updateDurationMutation.mutateAsync(), {
+        loading: 'Updating duration...',
+        success: 'Duration updated',
+        error: 'There is some unexpected issue, please try again',
       })
+      setIsOpen(false)
+      reset()
+      if (typeof onUpdate === 'function') {
+        onUpdate()
+      }
     } else {
       ToastHelper.error('Form is not valid')
       setIsOpen(false)

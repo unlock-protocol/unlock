@@ -9,6 +9,7 @@ import { useMutation, useQuery } from 'react-query'
 import { SelectCurrencyModal } from '../../Create/modals/SelectCurrencyModal'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useConfig } from '~/utils/withConfig'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface EditFormProps {
   keyPrice?: string
@@ -34,6 +35,7 @@ export const UpdatePriceModal = ({
   setIsOpen,
   price,
 }: UpdatePriceModalProps) => {
+  const { changeNetwork } = useAuth()
   const keyPrice: number | undefined =
     price == undefined ? 0 : parseFloat(`${price}`)
   const isFreeKey = keyPrice == 0
@@ -94,6 +96,7 @@ export const UpdatePriceModal = ({
   const updatePriceMutation = useMutation(updatePrice)
 
   const onHandleSubmit = async () => {
+    await changeNetwork(network)
     if (isValid) {
       await ToastHelper.promise(updatePriceMutation.mutateAsync(), {
         loading: 'Updating price...',

@@ -5,7 +5,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 import { UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useMutation } from 'react-query'
-import { useNetwork } from '~/hooks/useNetwork'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface EditFormProps {
   maxNumberOfKeys?: number
@@ -29,11 +29,11 @@ export const UpdateQuantityModal = ({
   maxNumberOfKeys,
   network,
 }: EditQuantityProps) => {
+  const { changeNetwork } = useAuth()
   const [unlimitedQuantity, setUnlimitedQuantity] = useState(
     maxNumberOfKeys === UNLIMITED_KEYS_COUNT
   )
   const walletService = useWalletService()
-  const { switchToNetworkBeforeAction } = useNetwork()
 
   const {
     register,
@@ -71,19 +71,18 @@ export const UpdateQuantityModal = ({
   const updateQuantityMutation = useMutation(updateQuantity)
 
   const onHandleSubmit = async () => {
+    await changeNetwork(network)
     if (isValid) {
-      switchToNetworkBeforeAction(network, async () => {
-        await ToastHelper.promise(updateQuantityMutation.mutateAsync(), {
-          loading: 'Updating quantity...',
-          success: 'Quantity updated',
-          error: 'There is some unexpected issue, please try again',
-        })
-        setIsOpen(false)
-        reset()
-        if (typeof onUpdate === 'function') {
-          onUpdate()
-        }
+      await ToastHelper.promise(updateQuantityMutation.mutateAsync(), {
+        loading: 'Updating quantity...',
+        success: 'Quantity updated',
+        error: 'There is some unexpected issue, please try again',
       })
+      setIsOpen(false)
+      reset()
+      if (typeof onUpdate === 'function') {
+        onUpdate()
+      }
     } else {
       ToastHelper.error('Form is not valid')
       setIsOpen(false)
