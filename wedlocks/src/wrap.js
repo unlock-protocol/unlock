@@ -1,5 +1,6 @@
 import base from './templates/base'
 
+
 /**
  * Function which wraps a template into the base stuff
  * @param {*} template
@@ -31,6 +32,7 @@ const wrap = (template, opts = {}) => {
       return result
     }
   }
+
   return wrappedTemplate
 }
 
