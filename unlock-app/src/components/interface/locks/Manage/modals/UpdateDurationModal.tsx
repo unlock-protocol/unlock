@@ -9,7 +9,6 @@ import {
   ONE_DAY_IN_SECONDS,
   UNLIMITED_KEYS_DURATION,
 } from '~/constants'
-import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface EditFormProps {
   expirationDuration?: string | number
@@ -22,7 +21,6 @@ interface UpdateDurationModalProps {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
   duration?: number
-  network: number
 }
 
 export const UpdateDurationModal = ({
@@ -31,10 +29,8 @@ export const UpdateDurationModal = ({
   isOpen,
   setIsOpen,
   duration,
-  network,
 }: UpdateDurationModalProps) => {
   const walletService = useWalletService()
-  const { changeNetwork } = useAuth()
   const [unlimitedDuration, setUnlimitedDuration] = useState(
     duration === UNLIMITED_KEYS_DURATION
   )
@@ -77,7 +73,6 @@ export const UpdateDurationModal = ({
   const updateDurationMutation = useMutation(updateDuration)
 
   const onHandleSubmit = async () => {
-    await changeNetwork(network)
     if (isValid) {
       await ToastHelper.promise(updateDurationMutation.mutateAsync(), {
         loading: 'Updating duration...',

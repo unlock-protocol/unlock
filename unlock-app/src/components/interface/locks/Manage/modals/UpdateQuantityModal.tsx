@@ -18,7 +18,6 @@ interface EditQuantityProps {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
   maxNumberOfKeys?: number
-  network: number
 }
 
 export const UpdateQuantityModal = ({
@@ -27,9 +26,7 @@ export const UpdateQuantityModal = ({
   isOpen,
   setIsOpen,
   maxNumberOfKeys,
-  network,
 }: EditQuantityProps) => {
-  const { changeNetwork } = useAuth()
   const [unlimitedQuantity, setUnlimitedQuantity] = useState(
     maxNumberOfKeys === UNLIMITED_KEYS_COUNT
   )
@@ -71,7 +68,6 @@ export const UpdateQuantityModal = ({
   const updateQuantityMutation = useMutation(updateQuantity)
 
   const onHandleSubmit = async () => {
-    await changeNetwork(network)
     if (isValid) {
       await ToastHelper.promise(updateQuantityMutation.mutateAsync(), {
         loading: 'Updating quantity...',

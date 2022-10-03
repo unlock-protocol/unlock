@@ -85,7 +85,6 @@ const Total = ({
 }
 
 export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
-  const { changeNetwork } = useAuth()
   const [showStats, setShowStats] = useState(false)
   const web3Service = useWeb3Service()
   const walletService = useWalletService()
@@ -131,7 +130,6 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
   const { balance = 0, outstandingKeys: keySold = 0 } = lock ?? {}
 
   const onWithDraw = async () => {
-    await changeNetwork(network)
     const promise = withdrawMutation.mutateAsync(balance)
     await ToastHelper.promise(promise, {
       success: 'Withdraw done',
