@@ -273,11 +273,13 @@ contract MixinKeys is
     emit KeyExtended(_tokenId, newTimestamp);
 
     // call the hook
-    onKeyExtendHook.onKeyExtend(
-      _tokenId, 
-      msg.sender,
-      newTimestamp
-    );
+    if(address(onKeyExtendHook) != address(0)) {
+      onKeyExtendHook.onKeyExtend(
+        _tokenId, 
+        msg.sender,
+        newTimestamp
+      );
+    }
   } 
 
   /**
