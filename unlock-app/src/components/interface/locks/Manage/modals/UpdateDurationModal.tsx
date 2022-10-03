@@ -30,10 +30,10 @@ export const UpdateDurationModal = ({
   setIsOpen,
   duration,
 }: UpdateDurationModalProps) => {
-  const walletService = useWalletService()
   const [unlimitedDuration, setUnlimitedDuration] = useState(
     duration === UNLIMITED_KEYS_DURATION
   )
+  const walletService = useWalletService()
   const durationInDays = parseInt(`${(duration ?? 0) / ONE_DAY_IN_SECONDS}`)
 
   const {

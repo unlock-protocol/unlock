@@ -5,7 +5,6 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 import { UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useMutation } from 'react-query'
-import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface EditFormProps {
   maxNumberOfKeys?: number

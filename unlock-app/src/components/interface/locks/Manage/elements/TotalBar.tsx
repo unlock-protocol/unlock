@@ -7,7 +7,6 @@ import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { VscGraphLine as GraphIcon } from 'react-icons/vsc'
-import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Action {
   title: string
