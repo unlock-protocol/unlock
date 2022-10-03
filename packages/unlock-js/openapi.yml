@@ -1107,7 +1107,7 @@ paths:
       operationId: balance
       responses:
         200:
-          description: Balances on different network.
+          description: Balances for purchaser addresses on each network.
           content:
             application/json:
               schema:
