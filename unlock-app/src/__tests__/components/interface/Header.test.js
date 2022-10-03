@@ -27,11 +27,11 @@ describe('isOnAppPage', () => {
 
   it('should return the pathnam if an app button equals the current pathname', () => {
     expect.assertions(1)
-    expect(isOnAppPage('/dashboard')).toEqual('/dashboard')
+    expect(isOnAppPage('/locks')).toEqual('/locks')
   })
 
   it('should return the pathnam if an app button matches the current pathname', () => {
     expect.assertions(1)
-    expect(isOnAppPage('/dashboard/')).toEqual('/dashboard')
+    expect(isOnAppPage('/locks/')).toEqual('/locks')
   })
 })
