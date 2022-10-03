@@ -364,7 +364,7 @@ contract MixinKeys is
   }
 
   /**
-   * Delete ownership info about a key and expire the key
+   * Internal logic to expire the key
    * @param _tokenId the id of the token to cancel
    * @notice this won't 'burn' the token, as it would still exist in the record
    */
@@ -372,9 +372,6 @@ contract MixinKeys is
     uint _tokenId
   ) internal {
     
-    // Deletes the contents at the last position of the array
-    _deleteOwnershipRecord(_tokenId);
-
     // expire the key
     _keys[_tokenId].expirationTimestamp = block.timestamp;
 
