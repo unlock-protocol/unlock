@@ -144,41 +144,29 @@ contract MixinPurchase is
     }
 
     uint totalPriceToPay;
-    uint tokenId;
     uint[] memory tokenIds = new uint[](_recipients.length);
 
     for (uint256 i = 0; i < _recipients.length; i++) {
       // check recipient address
       address _recipient = _recipients[i];
 
-      // check for a non-expiring key
-      if (expirationDuration == type(uint).max) {
-        // create a new key
-        tokenId = _createNewKey(
-          _recipient,
-          _keyManagers[i],
-          type(uint).max
-        );
-      } else {
-        tokenId = _createNewKey(
-          _recipient,
-          _keyManagers[i],
-          block.timestamp + expirationDuration
-        );
-      }
+      // create a new key, check for a non-expiring key
+      tokenIds[i] = _createNewKey(
+        _recipient,
+        _keyManagers[i],
+        expirationDuration == type(uint).max ? type(uint).max : block.timestamp + expirationDuration
+      );
 
       // price
       uint inMemoryKeyPrice = purchasePriceFor(_recipient, _referrers[i], _data[i]);
       totalPriceToPay = totalPriceToPay + inMemoryKeyPrice;
 
       // store values at purchase time
-      _originalPrices[tokenId] = inMemoryKeyPrice;
-      _originalDurations[tokenId] = expirationDuration;
-      _originalTokens[tokenId] = tokenAddress;
+      _originalPrices[tokenIds[i]] = inMemoryKeyPrice;
+      _originalDurations[tokenIds[i]] = expirationDuration;
+      _originalTokens[tokenIds[i]] = tokenAddress;
 
-      // store tokenIds 
-      tokenIds[i] = tokenId;
-      
+
       if(tokenAddress != address(0) && _values[i] < inMemoryKeyPrice) {
         revert INSUFFICIENT_ERC20_VALUE();
       }
@@ -190,7 +178,7 @@ contract MixinPurchase is
       uint pricePaid = tokenAddress == address(0) ? msg.value : _values[i];
       if(address(onKeyPurchaseHook) != address(0)) {
         onKeyPurchaseHook.onKeyPurchase(
-          tokenId,
+          tokenIds[i],
           msg.sender, 
           _recipient, 
           _referrers[i], 
