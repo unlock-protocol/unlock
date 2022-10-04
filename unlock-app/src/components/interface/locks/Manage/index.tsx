@@ -18,6 +18,8 @@ import { useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useConfig } from '~/utils/withConfig'
 import { Container } from '../../Container'
+import { RiPagesLine as PageIcon } from 'react-icons/ri'
+import { FilterBar } from './elements/FilterBar'
 
 interface ActionBarProps {
   lockAddress: string
@@ -66,6 +68,9 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const web3Service = useWeb3Service()
   const config = useConfig()
 
+  const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
+  const ICON_URL = `${config.services.storage.host}/lock/${lockAddress}/icon`
+
   const getLock = async () => {
     return web3Service.getLock(lockAddress, network)
   }
@@ -104,14 +109,14 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
 
     const checkoutURLConfig = {
       locks: {
-        [lock.address]: {
-          network: lock.network,
+        [lockAddress]: {
+          network,
           recurringPayments,
         },
       },
       pessimistic: true,
       persistentCheckout: true,
-      icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
+      icon: ICON_URL,
     }
 
     const urlGenerate = new URL(
@@ -204,12 +209,22 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
             onClick={() => router.back()}
           />
         </Button>
-        <Button className="p-3 md:px-6" onClick={() => setIsOpen(true)}>
-          <div className="flex items-center gap-2">
-            <LinkIcon size={15} />
-            <span className="hidden md:block">Generate URL</span>
-          </div>
-        </Button>
+        <div className="flex gap-3">
+          <Button variant="outlined-primary">
+            <a href={DEMO_URL} target="_blank" rel="noreferrer">
+              <div className="flex items-center gap-2 text-brand-ui-primary">
+                <PageIcon size={15} />
+                <span className="hidden md:block">View demo</span>
+              </div>
+            </a>
+          </Button>
+          <Button className="p-3 md:px-6" onClick={() => setIsOpen(true)}>
+            <div className="flex items-center gap-2">
+              <LinkIcon size={15} />
+              <span className="hidden md:block">Generate URL</span>
+            </div>
+          </Button>
+        </div>
       </div>
     </>
   )
@@ -223,6 +238,12 @@ export const ManageLockPage = () => {
 
   const lockNetwork = parseInt(network as string)
   const lockAddress = address as string
+
+  const [filters, setFilters] = useState({
+    query: '',
+    filterKey: 'owner',
+    expiration: 'all',
+  })
 
   if (!walletNetwork) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
@@ -242,7 +263,12 @@ export const ManageLockPage = () => {
             <div className="flex flex-col gap-6 lg:col-span-9">
               <TotalBar lockAddress={lockAddress} network={lockNetwork} />
               <ActionBar lockAddress={lockAddress} />
-              <Members lockAddress={lockAddress} network={lockNetwork} />
+              <FilterBar filters={filters} setFilters={setFilters} />
+              <Members
+                lockAddress={lockAddress}
+                network={lockNetwork}
+                filters={filters}
+              />
             </div>
           </div>
         </div>
