@@ -179,8 +179,8 @@ export const connectStripe = async (
 
   return await stripe.accountLinks.create({
     account: account.id,
-    refresh_url: `${baseUrl}/dashboard?lock=${lock}&network=${chain}&stripe=0`,
-    return_url: `${baseUrl}/dashboard?lock=${lock}&network=${chain}&stripe=1`,
+    refresh_url: `${baseUrl}/locks/lock?address=${lock}&network=${chain}&stripe=0`,
+    return_url: `${baseUrl}/locks/lock?address=${lock}&network=${chain}&stripe=1`,
     type: 'account_onboarding',
   })
 }
