@@ -70,7 +70,10 @@ export const ClaimMembershipCheckout = ({
     setError('')
     setPurchasePending(true)
     try {
-      const hash = await claimMembershipFromLock(lock.address, network)
+      const { transactionHash: hash } = await claimMembershipFromLock(
+        lock.address,
+        network
+      )
       if (hash) {
         emitTransactionInfo({
           lock: lock.address,
