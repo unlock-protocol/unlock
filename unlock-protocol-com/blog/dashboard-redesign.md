@@ -1,9 +1,9 @@
 ---
 title: Unlock Launches Redesigned Membership Dashboard
-subTitle: Unlock launches a completely redesigned dashboard, focused on usability
+subTitle: Unlock has a completely redesigned dashboard, focused on usability
 authorName: Kalidou Diagne
 publishDate: October 4, 2022
-description: Unlock launches a completely redesigned membership dashboard, focused on usability.
+description: Unlock launched a completely redesigned membership dashboard, focused on usability.
 image: /images/blog/dashboard-redesign/dashboard-share.png
 ---
 
