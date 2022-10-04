@@ -1,18 +1,19 @@
-interface FetchDataOptions {
-  recipients: string[]
+interface FetchRecipientDataOptions {
+  recipient: string
   network: number
   lockAddress: string
 }
 
-export async function fetchData(url: string, options: FetchDataOptions) {
+export async function fetchRecipientData(
+  url: string,
+  options: FetchRecipientDataOptions
+) {
   try {
     const endpoint = new URL(url)
+
     endpoint.searchParams.append('network', options.network.toString())
     endpoint.searchParams.append('lockAddress', options.lockAddress)
-
-    for (const recipient of options.recipients) {
-      endpoint.searchParams.append('recipients[]', recipient)
-    }
+    endpoint.searchParams.append('recipient', options.recipient)
 
     const abortController = new AbortController()
 
@@ -22,7 +23,7 @@ export async function fetchData(url: string, options: FetchDataOptions) {
 
     const response = await fetch(endpoint, {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/html; charset=UTF-8',
       },
       signal: abortController.signal,
     })
@@ -33,8 +34,8 @@ export async function fetchData(url: string, options: FetchDataOptions) {
       throw new Error('Failed to fetch data.')
     }
 
-    const json = await response.json()
-    return json.data as string[]
+    const data = await response.text()
+    return data
   } catch {
     return null
   }

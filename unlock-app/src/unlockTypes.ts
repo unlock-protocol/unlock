@@ -105,8 +105,8 @@ export interface PaywallConfigLock {
   maxRecipients?: number
   minRecipients?: number
   superfluid?: boolean
-  dataURL?: string
   default?: boolean
+  dataBuilder?: DataBuilder
 }
 
 export enum KeyStatus {
@@ -195,6 +195,11 @@ export interface MetadataInput {
   public?: true // optional, all non-public fields are treated as protected
 }
 
+export interface DataBuilder {
+  url: string
+  metadataInputs?: MetadataInput[]
+}
+
 export interface PaywallConfig {
   title?: string
   icon?: string
@@ -215,7 +220,7 @@ export interface PaywallConfig {
   hideSoldOut?: boolean
   password?: boolean
   emailRequired?: boolean
-  dataURL?: string
+  dataBuilder?: DataBuilder
 }
 
 export interface RawLock {
