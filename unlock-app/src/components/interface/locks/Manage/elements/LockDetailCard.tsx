@@ -17,6 +17,7 @@ import { CardPayment } from './CardPayment'
 import { UpdateDurationModal } from '../modals/UpdateDurationModal'
 import { UpdatePriceModal } from '../modals/UpdatePriceModal'
 import { UpdateQuantityModal } from '../modals/UpdateQuantityModal'
+import { EnableRecurring } from './EnableRecurring'
 
 interface LockDetailCardProps {
   network: number
@@ -234,6 +235,9 @@ export const LockDetailCard = ({
               loading={loading}
               append={<EditButton onClick={() => setEditPrice(true)} />}
             />
+          </div>
+          <div className="mt-6">
+            <EnableRecurring lockAddress={lockAddress} network={network} />
           </div>
           <div className="mt-6">
             <CardPayment lockAddress={lockAddress} network={network} />
