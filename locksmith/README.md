@@ -16,7 +16,7 @@ The locksmith application has several entry points. By default it provides an AP
 
 Locksmith uses postgres under the hood.
 
-To start, you can spin up a local instance of postgres using docker by running `docker run --name locksmith-postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -d locksmith` or go with a traditional install or hosting provider.
+To start, you can spin up a local instance of postgres using docker by running `docker run --name locksmith-postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -d postgres` or go with a traditional install or hosting provider.
 
 1. Configure environment variables (Locksmith will recognize these placed in
    an `.env.dev.local` file at the root of the monorepo)
