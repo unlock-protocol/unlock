@@ -31,13 +31,8 @@ export const EnableRecurring = ({
     async () => getLock()
   )
 
-  const lockProps = {
-    lockAddress,
-    network,
-  }
   const { updateSelfAllowance } = useLock(
     {
-      ...lockProps,
       address: lockAddress,
       network,
     },
