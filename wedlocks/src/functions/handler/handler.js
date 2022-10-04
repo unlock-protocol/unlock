@@ -34,7 +34,7 @@ export const handler = async (event, context, responseCallback) => {
     })
   }
 
-  let match = event?.path?.match(/\/preview\/([a-zA-Z0-9]+)/)
+  let match = event?.path?.match(/\/preview\/([a-zA-Z0-9-]+)/)
   if (event.httpMethod === 'GET' && match && match[0]) {
     const body = await preview({
       template: match[1],
