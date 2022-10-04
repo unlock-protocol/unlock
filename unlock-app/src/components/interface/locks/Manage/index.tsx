@@ -19,6 +19,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useConfig } from '~/utils/withConfig'
 import { Container } from '../../Container'
 import { RiPagesLine as PageIcon } from 'react-icons/ri'
+import { FilterBar } from './elements/FilterBar'
 
 interface ActionBarProps {
   lockAddress: string
@@ -251,6 +252,12 @@ export const ManageLockPage = () => {
     switchToCurrentNetwork()
   }, [])
 
+  const [filters, setFilters] = useState({
+    query: '',
+    filterKey: 'owner',
+    expiration: 'all',
+  })
+
   if (!walletNetwork) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
   }
@@ -269,7 +276,12 @@ export const ManageLockPage = () => {
             <div className="flex flex-col gap-6 lg:col-span-9">
               <TotalBar lockAddress={lockAddress} network={lockNetwork} />
               <ActionBar lockAddress={lockAddress} />
-              <Members lockAddress={lockAddress} network={lockNetwork} />
+              <FilterBar filters={filters} setFilters={setFilters} />
+              <Members
+                lockAddress={lockAddress}
+                network={lockNetwork}
+                filters={filters}
+              />
             </div>
           </div>
         </div>
