@@ -38,6 +38,6 @@
     ]
   },
   "devDependencies": {
-    "matchstick-as": "^0.5.0"
+    "matchstick-as": "0.5.0"
   }
 }
