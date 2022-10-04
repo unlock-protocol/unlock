@@ -1,3 +1,4 @@
+import React from 'react'
 import { Button, Modal } from '@unlock-protocol/ui'
 import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 interface Props {
