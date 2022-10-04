@@ -11,6 +11,8 @@ const subgraphURI = `http://${
   process.env.CI ? 'graph-node' : '127.0.0.1'
 }:8000/subgraphs/name/testgraph`
 
+console.log(subgraphURI)
+
 const link = new HttpLink({
   uri: subgraphURI,
   fetch,
@@ -44,6 +46,7 @@ const getLockQuery = gql`
       lockManagers
       expirationDuration
       name
+      totalKeys
       createdAtBlock
     }
   }

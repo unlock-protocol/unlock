@@ -60,6 +60,7 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'expirationDuration', `${duration}`)
     assert.fieldEquals('Lock', lockAddress, 'tokenAddress', nullAddress)
     assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
+    assert.fieldEquals('Lock', lockAddress, 'totalKeys', '0')
   })
 
   test('Lock manager added', () => {

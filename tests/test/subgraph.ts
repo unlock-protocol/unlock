@@ -1,9 +1,10 @@
 import { expect } from 'chai'
-import { Contract } from 'ethers'
+import { BigNumber, Contract } from 'ethers'
 import { unlock, ethers } from 'hardhat'
 
 import { lockParams } from './helpers/fixtures'
 import * as subgraph from './helpers/subgraph'
+import { purchaseKeys } from './helpers/keys'
 
 const awaitTimeout = (delay: number) =>
   new Promise((resolve) => setTimeout(resolve, delay))
@@ -51,6 +52,41 @@ describe('Unlock', function () {
       expect(lockInGraph.name).to.equals(lockParams.name)
       // to be implemented in the graph yet...
       // expect(lockInGraph.maxNumberOfKeys).to.equals(lockParams.maxNumberOfKeys)
+    })
+  })
+})
+
+describe('Keep track of total keys', function () {
+  let lock: Contract
+  let lockAddress: string
+  before(async () => {
+    ;({ lock } = await unlock.createLock({ ...lockParams }))
+    lockAddress = lock.address.toLowerCase()
+  })
+  describe('totalKeys', () => {
+    it('default to zero ', async () => {
+      await awaitTimeout(2000)
+      const lockInGraph = await subgraph.getLock(lockAddress)
+      expect(parseInt(lockInGraph.totalKeys)).to.equals(0)
+    })
+    describe('increase/decrease', () => {
+      let tokenIds: [BigNumber]
+      let keyOwners: [string]
+      before(async () => {
+        ;({ tokenIds, keyOwners } = await purchaseKeys(lockAddress, 3))
+        await awaitTimeout(2000)
+      })
+      it('increase by the number of keys purchased', async () => {
+        const lockInGraph = await subgraph.getLock(lockAddress)
+        expect(parseInt(lockInGraph.totalKeys)).to.equals(3)
+      })
+      it('decrease when keys are burnt', async () => {
+        const keyOwner = await ethers.getSigner(keyOwners[0])
+        await lock.connect(keyOwner).burn(tokenIds[0])
+        await awaitTimeout(2000)
+        const lockInGraph = await subgraph.getLock(lockAddress)
+        expect(parseInt(lockInGraph.totalKeys)).to.equals(2)
+      })
     })
   })
 })
