@@ -1,6 +1,6 @@
 import React from 'react'
-import Locks from './locks/index'
+import DashboardContent from '../components/content/DashboardContent'
 
-const Dashboard = () => <Locks />
+const Dashboard = () => <DashboardContent />
 
 export default Dashboard
