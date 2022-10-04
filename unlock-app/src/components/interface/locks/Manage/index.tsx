@@ -63,7 +63,7 @@ const ActionBar = ({ lockAddress }: ActionBarProps) => {
 
 const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const router = useRouter()
-  const [url, setUrl] = useState('')
+  const [generatedURL, setGeneratedURL] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [linkGenerated, setLinkGenerated] = useState(false)
   const web3Service = useWeb3Service()
@@ -93,7 +93,7 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
     },
   })
 
-  const [isCopied, setCopied] = useClipboard(url || '', {
+  const [isCopied, setCopied] = useClipboard(generatedURL, {
     successDuration: 2000,
   })
 
@@ -127,7 +127,7 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
     )
 
     setValue('url', urlGenerate?.toString())
-    setUrl(urlGenerate?.toString())
+    setGeneratedURL(urlGenerate?.toString())
     setLinkGenerated(true)
   }
 
