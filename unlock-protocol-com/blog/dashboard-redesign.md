@@ -119,4 +119,6 @@ The mobile experience is improved significantly with the new Dashboard. It featu
 
 Please open an issue on Github or tell us in the Discord and we'll fix it ASAP.
 
+## See the new Dashboard now
+
 Ready to check it out? **[Try out the new Dashboard](https://app.unlock-protocol.com/dashboard)**.
