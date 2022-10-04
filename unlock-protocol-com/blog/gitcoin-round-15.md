@@ -3,8 +3,7 @@ title: Gitcoin Grants Round 15
 subTitle: Unlock is funding public goods with UDT!
 authorName: Angela Steffens
 publishDate: October 5, 2022
-description: Unlock Labs second Gitcoin round matched $25k in UDT tokens for 
-projects in our ecosystem and another $10k for Diversity, Equity & Inclusion (DEI).
+description: Unlock Labs 2nd Gitcoin round matched $25k in UDT tokens for projects in our ecosystem and another $10k for Diversity, Equity & Inclusion (DEI).
 image: /images/blog/gitcoin-round-15.png
 ---
 
