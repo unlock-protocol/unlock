@@ -92,7 +92,8 @@ async function main({ publicLockAddress } = {}) {
       const unlock = await ethers.getContractAt('Unlock', unlockAddress)
       const lock = await deployLock({ unlock })
       console.log(
-        `Lock ${await lock.name()} (${await lock.publicLockVersion()}) deployed at ${lock.address
+        `Lock ${await lock.name()} (${await lock.publicLockVersion()}) deployed at ${
+          lock.address
         }.`
       )
     }
