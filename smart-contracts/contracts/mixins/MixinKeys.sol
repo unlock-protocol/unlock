@@ -7,6 +7,7 @@ import './MixinErrors.sol';
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
  * standard.
+ * @author HardlyDifficult
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
@@ -133,7 +134,7 @@ contract MixinKeys is
   internal
   view 
   {
-    if(_keys[_tokenId].tokenId == 0) {
+    if(_keys[_tokenId].expirationTimestamp == 0) {
       revert NO_SUCH_KEY();
     }
   }
