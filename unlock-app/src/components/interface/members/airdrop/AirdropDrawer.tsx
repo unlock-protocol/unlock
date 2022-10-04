@@ -86,9 +86,12 @@ export function AirdropKeysDrawer({
         expiration = MAX_UINT
       }
 
-      prop.recipients.push(item.recipient)
-      prop.expirations.push(expiration!)
-      prop.keyManagers.push(item.manager || account!)
+      for (const _ of Array.from({ length: item.count })) {
+        prop.recipients.push(item.recipient)
+        prop.expirations.push(expiration!)
+        prop.keyManagers.push(item.manager || account!)
+      }
+
       return prop
     }, initialValue)
 

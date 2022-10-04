@@ -202,7 +202,9 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
               try {
                 await onConfirm(list)
                 clear()
-                ToastHelper.success(`Successfully granted ${list.length} keys`)
+                ToastHelper.success(
+                  `Successfully granted keys to ${list.length} recipients`
+                )
               } catch (error) {
                 if (error instanceof Error) {
                   ToastHelper.error(error.message)
