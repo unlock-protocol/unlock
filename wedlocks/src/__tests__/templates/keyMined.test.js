@@ -2,13 +2,14 @@
  * @jest-environment jsdom
  */
 import keyMined from '../../templates/keyMined'
+import { prepareAll } from '../../templates/prepare'
 import { asHtml } from '../utils'
 
 describe('keyMined', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
     expect(
-      keyMined.subject({
+      prepareAll(keyMined).subject({
         keyId: '1337',
         lockName: 'Ethereal NYC 202',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -20,7 +21,7 @@ describe('keyMined', () => {
   it('should have the right text', () => {
     expect.assertions(1)
     const content = asHtml(
-      keyMined.html({
+      prepareAll(keyMined).html({
         keyId: '1337',
         lockName: 'Ethereal NYC 202',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -35,7 +36,7 @@ describe('keyMined', () => {
   it('should have a link to the keychain', () => {
     expect.assertions(1)
     const content = asHtml(
-      keyMined.html({
+      prepareAll(keyMined).html({
         keyId: '1337',
         lockName: 'Ethereal NYC 202',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -50,7 +51,7 @@ describe('keyMined', () => {
   it('should have a link to the block explorer', () => {
     expect.assertions(1)
     const content = asHtml(
-      keyMined.html({
+      prepareAll(keyMined).html({
         keyId: '1337',
         lockName: 'Ethereal NYC 202',
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
@@ -65,7 +66,7 @@ describe('keyMined', () => {
 
   it('should have the right text and have only tx open sea url', () => {
     expect.assertions(2)
-    const content = keyMined.html({
+    const content = prepareAll(keyMined).html({
       keyId: '1337',
       lockName: 'Ethereal NYC 202',
       network: 'Polygon',
