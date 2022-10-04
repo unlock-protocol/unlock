@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-import Media from '../../../theme/media'
 
 interface ActionButtonProps {
   fontColor?: string
@@ -47,28 +46,6 @@ export const ActionButton = styled.button<ActionButtonProps>`
         ? 'var(--grey)'
         : props.activeColor || 'var(--activegreen) '};
   }
-`
-
-export const CreateLockButton = styled(ActionButton)`
-  padding: 10px;
-  align-self: end;
-  height: 48px;
-  ${Media.phone`
-    display: none;
-  `};
-`
-
-export const CancelCreateLockButton = styled(ActionButton)`
-  padding: 10px;
-  align-self: end;
-  height: 48px;
-  background-color: var(--yellow);
-  &:hover {
-    background-color: var(--red);
-  }
-  ${Media.phone`
-    display: none;
-  `};
 `
 
 export const AccountWrapper = styled.div`
