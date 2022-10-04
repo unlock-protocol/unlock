@@ -231,13 +231,26 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
 }
 
 export const ManageLockPage = () => {
-  const { network: walletNetwork } = useAuth()
+  const { network: walletNetwork, changeNetwork } = useAuth()
   const { query } = useRouter()
 
   const { address, network } = query ?? {}
 
   const lockNetwork = parseInt(network as string)
   const lockAddress = address as string
+
+  // let's force to switch network based on the lockAddress
+  const switchToCurrentNetwork = async () => {
+    const differentNetwork = walletNetwork != network
+
+    if (differentNetwork) {
+      await changeNetwork(parseInt(`${network}`))
+    }
+  }
+
+  useEffect(() => {
+    switchToCurrentNetwork()
+  }, [])
 
   const [filters, setFilters] = useState({
     query: '',
