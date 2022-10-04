@@ -73,7 +73,7 @@ export const Members = ({
   ] = useQueries([
     {
       queryFn: getMembers,
-      queryKey: ['getMembers', lockAddress, network],
+      queryKey: ['getMembers', lockAddress, network, filters],
       onError: () => {
         ToastHelper.error('There is some unexpected issue, please try again')
       },
@@ -90,16 +90,30 @@ export const Members = ({
   const loading = isLoadingVersion || isLoading
   const noItems = members?.length === 0 && !loading
 
+  const hasActiveFilter =
+    filters?.expiration !== 'active' || filters?.filterKey !== 'owner'
+  const hasSearch = filters?.query?.length > 0
+
   if (loading) {
     return <MembersPlaceholder />
   }
 
-  if (noItems) {
+  if (noItems && !hasSearch && !hasActiveFilter) {
     return (
       <ImageBar
         src="/images/illustrations/no-member.svg"
         alt="No members"
         description="There is no member yet, but keep it up."
+      />
+    )
+  }
+
+  if (noItems && (hasSearch || hasActiveFilter)) {
+    return (
+      <ImageBar
+        src="/images/illustrations/no-member.svg"
+        alt="No results"
+        description="No key matches your filter."
       />
     )
   }

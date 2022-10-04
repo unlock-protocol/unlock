@@ -13,7 +13,7 @@ export const paginate = ({
   const maxNumbersOfPage = Math.ceil(items?.length / itemsPerPage || 1)
 
   return {
-    items: items?.slice(start, end),
+    items: (items || [])?.slice(start, end),
     hasNextPage,
     maxNumbersOfPage,
   }
