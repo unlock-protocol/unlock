@@ -63,6 +63,7 @@ const ActionBar = ({ lockAddress }: ActionBarProps) => {
 
 const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const router = useRouter()
+  const [url, setUrl] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [linkGenerated, setLinkGenerated] = useState(false)
   const web3Service = useWeb3Service()
@@ -81,10 +82,10 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
 
   const {
     register,
-    getValues,
     formState: { isValid, errors },
     resetField,
     setValue,
+    handleSubmit,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -92,12 +93,12 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
     },
   })
 
-  const { url } = getValues()
   const [isCopied, setCopied] = useClipboard(url || '', {
     successDuration: 2000,
   })
 
-  const onGenerateURL = async () => {
+  const onGenerateURL = async ({ url }: any) => {
+    setUrl(url)
     let recurringPayments
     if (
       lock.publicLockVersion >= 10 &&
@@ -148,7 +149,7 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
             easily purchase this membership
           </span>
           <div>
-            <form>
+            <form onSubmit={handleSubmit(onGenerateURL)}>
               <Input
                 placeholder="https://example.com"
                 type="url"
@@ -156,48 +157,52 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
                   required: true,
                 })}
               />
-            </form>
-            <span className="text-xs leading-none">
-              Enter the URL to which your members are redirected when they have
-              a membership
-            </span>
-            {errors?.url && (
-              <span className="block mt-2 text-xs text-red-700">
-                Please enter a valid URL
+
+              <span className="text-xs leading-none">
+                Enter the URL to which your members are redirected when they
+                have a membership
               </span>
-            )}
-          </div>
-          {!linkGenerated ? (
-            <Button disabled={!isValid} onClick={onGenerateURL}>
-              <div className="flex items-center gap-2">
-                <span className="text-base">Generate</span>
-                <ShareOptionIcon size={20} />
+              {errors?.url && (
+                <span className="block mt-2 text-xs text-red-700">
+                  Please enter a valid URL
+                </span>
+              )}
+              <div className="flex flex-col gap-3 mt-4">
+                {!linkGenerated ? (
+                  <Button disabled={!isValid} type="submit">
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">Generate</span>
+                      <ShareOptionIcon size={20} />
+                    </div>
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      variant="outlined-primary"
+                      disabled={!isValid}
+                      onClick={setCopied}
+                      className="w-full"
+                    >
+                      <div className="flex items-center gap-2 text-brand-ui-primary">
+                        <span className="text-base">Copy</span>
+                        <ShareOptionIcon size={20} />
+                      </div>
+                    </Button>
+                    <Button
+                      variant="transparent"
+                      className="w-full mt-auto"
+                      onClick={() => {
+                        resetField('url')
+                        setLinkGenerated(false)
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </>
+                )}
               </div>
-            </Button>
-          ) : (
-            <>
-              <Button
-                variant="outlined-primary"
-                disabled={!isValid}
-                onClick={setCopied}
-              >
-                <div className="flex items-center gap-2 text-brand-ui-primary">
-                  <span className="text-base">Copy</span>
-                  <ShareOptionIcon size={20} />
-                </div>
-              </Button>
-              <Button
-                variant="transparent"
-                className="w-full mt-auto"
-                onClick={() => {
-                  resetField('url')
-                  setLinkGenerated(false)
-                }}
-              >
-                Reset
-              </Button>
-            </>
-          )}
+            </form>
+          </div>
         </div>
       </Drawer>
       <div className="flex items-center justify-between">
