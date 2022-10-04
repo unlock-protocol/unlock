@@ -12,10 +12,6 @@ import BrowserOnly from '../helpers/BrowserOnly'
 import { pageTitle } from '../../constants'
 import LoginPrompt from '../interface/LoginPrompt'
 
-import {
-  CreateLockButton,
-  CancelCreateLockButton,
-} from '../interface/buttons/ActionButton'
 import { Phone } from '../../theme/media'
 import { Button } from '@unlock-protocol/ui'
 
