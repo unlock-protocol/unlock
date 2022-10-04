@@ -98,7 +98,6 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   })
 
   const onGenerateURL = async ({ url }: any) => {
-    setUrl(url)
     let recurringPayments
     if (
       lock.publicLockVersion >= 10 &&
@@ -128,6 +127,7 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
     )
 
     setValue('url', urlGenerate?.toString())
+    setUrl(urlGenerate?.toString())
     setLinkGenerated(true)
   }
 
