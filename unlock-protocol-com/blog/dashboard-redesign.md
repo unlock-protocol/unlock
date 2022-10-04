@@ -95,7 +95,7 @@ When the lock has a withdrawable amount, the `Withdraw` button will be active an
 
 ### Generate purchase URL
 
-By clicking `Generate URL` button, the user can generate a URL that can be shared with fans and allow them to easily purchase this membership.
+By clicking the `Generate URL` button, the user can generate a URL that can be shared with fans and allow them to easily purchase this membership.
 
 ![generate-url.png](/images/blog/dashboard-redesign/generate-url.png)
 
