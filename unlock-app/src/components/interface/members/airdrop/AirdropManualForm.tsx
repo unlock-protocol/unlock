@@ -180,7 +180,6 @@ export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
               try {
                 await onConfirm(list)
                 clear()
-                ToastHelper.success(`Successfully granted ${list.length} keys`)
               } catch (error) {
                 if (error instanceof Error) {
                   ToastHelper.error(error.message)
