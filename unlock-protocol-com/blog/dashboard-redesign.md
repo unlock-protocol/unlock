@@ -103,11 +103,11 @@ By clicking `Generate URL` button, the user can generate a URL that can be share
 
 The mobile experience is improved significantly with the new Dashboard. It features a fully responsive layout and provides a better experience and improved usability when using the app through a mobile device.
 
-### Change network & header 
+### Change network and header 
 
 ![mobile-header.png](/images/blog/dashboard-redesign/mobile-header.png)
 
-### Lock list page
+### Lock listing page
 
 ![Screenshot 2022-09-28 at 13.16.57.png](/images/blog/dashboard-redesign/Screenshot_2022-09-28_at_13.16.57.png)
 
