@@ -1,4 +1,4 @@
-import { Button, Input } from '@unlock-protocol/ui'
+import { Button, Input, ToggleSwitch } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
 import { getAddressForName } from '~/hooks/useEns'
 import { ACCOUNT_REGEXP } from '~/constants'
@@ -83,22 +83,32 @@ export function AirdropForm({ add, defaultValues, lock }: Props) {
       />
 
       <div className="space-y-2">
-        <Input
-          disabled={formValues.neverExpire}
-          label="Expiration"
-          type="datetime-local"
-          {...register('expiration')}
-        />
-        <div className="flex items-center gap-2 ml-1">
-          <input
-            id="no-expiration"
-            type="checkbox"
-            className="rounded text-brand-ui-primary"
-            {...register('neverExpire')}
+        <div className="flex items-center justify-between">
+          <span>Expiration</span>
+          <ToggleSwitch
+            enabled={formValues.neverExpire}
+            setEnabled={() => setValue('neverExpire', !formValues.neverExpire)}
+            onChange={(enabled) => {
+              if (enabled) {
+                setValue('expiration', undefined)
+              }
+            }}
+            title="Never expires"
           />
-          <label className="text-sm" htmlFor="no-expiration">
-            No expiration
-          </label>
+        </div>
+        <div className="relative">
+          <Input
+            disabled={formValues.neverExpire}
+            label=""
+            type="datetime-local"
+            required={!formValues.neverExpire}
+            {...register('expiration')}
+          />
+          {errors?.expiration && (
+            <span className="absolute text-xs text-red-700">
+              This field is required
+            </span>
+          )}
         </div>
       </div>
       <Input
@@ -133,6 +143,7 @@ export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
   const { account } = useAuth()
   const expiration = formatDate(lock.expirationDuration || 0)
   const [isConfirming, setIsConfirming] = useState(false)
+
   return (
     <div className="space-y-6 overflow-y-auto">
       <AirdropForm
@@ -169,7 +180,6 @@ export function AirdropManualForm({ onConfirm, lock }: AirdropManualFormProps) {
               try {
                 await onConfirm(list)
                 clear()
-                ToastHelper.success(`Successfully granted ${list.length} keys`)
               } catch (error) {
                 if (error instanceof Error) {
                   ToastHelper.error(error.message)

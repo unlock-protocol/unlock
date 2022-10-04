@@ -1,6 +1,6 @@
 import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { Container } from '../../Container'
 import { ImageBar } from '../Manage/elements/ImageBar'
@@ -26,7 +26,10 @@ const PageHeader = () => {
 }
 
 const WalletNotConnected = () => {
-  const loginUrl = `/login?redirect=${encodeURIComponent(window.location.href)}`
+  const [loginUrl, setLoginUrl] = useState<string>('')
+  useEffect(() => {
+    setLoginUrl(`/login?redirect=${encodeURIComponent(window.location.href)}`)
+  }, [])
 
   return (
     <ImageBar
