@@ -73,10 +73,6 @@ Duration, quantity, or price information for a particular lock can be changed by
 
 ![update-price.png](/images/blog/dashboard-redesign/update-price.png)
 
-Example video: 
-
-[update-key-duration.mov](/images/blog/dashboard-redesign/update-key-duration.mov)
-
 ### Members list
 
 The lock management page displays a list of members for the current lock, as well as metadata such as the expiration time for a particular key.
