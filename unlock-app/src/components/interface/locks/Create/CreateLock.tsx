@@ -109,7 +109,7 @@ export const CreateLockSteps = () => {
           ? UNLIMITED_KEYS_COUNT
           : maxNumberOfKeys,
         currencyContractAddress,
-        keyPrice,
+        keyPrice: `${keyPrice}`, // must be a string
       }
       return createLockPromise(payload)
     },
