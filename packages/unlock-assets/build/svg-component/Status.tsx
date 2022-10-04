@@ -13,9 +13,6 @@ const SvgStatus = ({
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 768.4 759"
-    style={{
-      enableBackground: 'new 0 0 768.4 759',
-    }}
     xmlSpace="preserve"
     aria-labelledby={titleId}
     {...props}

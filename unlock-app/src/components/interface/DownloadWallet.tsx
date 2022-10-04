@@ -1,6 +1,5 @@
 import { Button, Modal } from '@unlock-protocol/ui'
-import SvgComponents from './svg'
-
+import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 interface Props {
   isOpen: boolean
   setIsOpen: (option: boolean) => void
@@ -19,9 +18,9 @@ export function DownloadWallet({ isOpen, setIsOpen }: Props) {
           as="a"
           target="_blank"
           rel="noopener noreferrer"
-          iconRight={<SvgComponents.Metamask width={24} />}
+          iconRight={<WalletIcon key="wallet" />}
         >
-          Download metamask
+          Download wallet
         </Button>
       </div>
     </Modal>

@@ -45,7 +45,7 @@ const LoginPrompt = ({
     const walletIcons = {
       metamask: <SvgComponents.Metamask width={32} />,
       brave: <BraveWalletIcon size={20} className="m-1.5" />,
-      frame: <SvgComponents.Frame width={32} />,
+      frame: <SvgComponents.Frame width={30} />,
       status: <SvgComponents.Status width={32} />,
       default: <WalletIcon size={20} className="m-1.5" />,
     }
