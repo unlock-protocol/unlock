@@ -4,7 +4,7 @@ import keyOwnership from './keyOwnership'
 import keyMined from './keyMined'
 import debug from './debug'
 
-import * as LockTemplates from './locks'
+import LockTemplates from './locks'
 
 const baseTemplates = {
   confirmEmail,

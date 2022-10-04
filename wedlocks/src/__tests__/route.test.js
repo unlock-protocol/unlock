@@ -22,13 +22,13 @@ describe('route', () => {
   })
 
   describe('when there is a matching template', () => {
-    beforeEach(() => {
-      const transporter = {
-        sendMail: jest.fn(() => {
-          return Promise.resolve({ sent: true })
-        }),
-      }
+    let transporter = {
+      sendMail: jest.fn(() => {
+        return Promise.resolve({ sent: true })
+      }),
+    }
 
+    beforeEach(() => {
       nodemailer.createTransport = jest.fn((params) => {
         expect(params).toEqual(config)
         return transporter
@@ -36,10 +36,10 @@ describe('route', () => {
     })
 
     it('should use the template with all the params', async () => {
-      expect.assertions(4)
+      expect.assertions(3)
       templates.template = {
-        subject: jest.fn(() => 'subject'),
-        text: jest.fn(() => 'text'),
+        subject: 'subject',
+        text: 'text',
       }
       const args = {
         template: 'template',
@@ -60,21 +60,20 @@ describe('route', () => {
       })
 
       await route(args)
-      expect(templates.template.subject).toHaveBeenCalledWith({
-        encryptedEmail: 'encrypted!',
-        hello: 'world',
-      })
-      expect(templates.template.text).toHaveBeenCalledWith({
-        encryptedEmail: 'encrypted!',
-        hello: 'world',
-      })
+
+      expect(transporter.sendMail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          subject: 'subject',
+          text: 'text',
+        })
+      )
     })
 
     it('should send the email using the transporter', async () => {
-      expect.assertions(4)
+      expect.assertions(2)
       templates.template = {
-        subject: jest.fn(() => 'subject'),
-        text: jest.fn(() => 'text'),
+        subject: 'subject',
+        text: 'text',
       }
 
       const args = {
@@ -103,16 +102,14 @@ describe('route', () => {
       })
 
       await route(args)
-      expect(templates.template.subject).toHaveBeenCalledWith(args.params)
-      expect(templates.template.text).toHaveBeenCalledWith(args.params)
     })
 
     describe('when the email was sent succesfuly', () => {
       it('should yield its enveloppe', async () => {
         expect.assertions(2)
         templates.template = {
-          subject: jest.fn(() => 'subject'),
-          text: jest.fn(() => 'text'),
+          subject: 'subject',
+          text: 'text',
         }
         const args = {
           template: 'template',
@@ -142,8 +139,8 @@ describe('route', () => {
       it('should yield the error message', async () => {
         expect.assertions(2)
         templates.template = {
-          subject: jest.fn(() => 'subject'),
-          text: jest.fn(() => 'text'),
+          subject: 'subject',
+          text: 'text',
         }
         const args = {
           template: 'template',

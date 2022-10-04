@@ -31,6 +31,7 @@ const wrap = (template, opts = {}) => {
       return result
     }
   }
+
   return wrappedTemplate
 }
 

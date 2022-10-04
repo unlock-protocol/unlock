@@ -3,11 +3,12 @@
  */
 import { asHtml } from '../utils'
 import welcome from '../../templates/welcome'
+import { prepareAll } from '../../templates/prepare'
 
 describe('welcome', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
-    expect(welcome.subject()).toBe(
+    expect(prepareAll(welcome).subject()).toBe(
       'Welcome to Unlock! Please, read this email carefuly'
     )
   })
@@ -16,7 +17,7 @@ describe('welcome', () => {
     expect.assertions(1)
     expect(
       asHtml(
-        welcome.html({
+        prepareAll(welcome).html({
           recoveryLink: 'https://app.unlock-protocol.com/recover?SECRET',
         })
       )

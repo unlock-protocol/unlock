@@ -16,9 +16,8 @@ handlebars.registerHelper('links', function (txUrl, openSeaUrl) {
 })
 
 export default {
-  subject: handlebars.compile('A key was added to your wallet!'),
-  html: handlebars.compile(
-    `<h1>A new NFT in your wallet!</h1>
+  subject: 'A key was added to your wallet!',
+  html: `<h1>A new NFT in your wallet!</h1>
 
 <p>A new NFT key (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just minted for you!</p>
 
@@ -26,6 +25,5 @@ export default {
 
 {{links txUrl openSeaUrl}}
 
-`
-  ),
+`,
 }
