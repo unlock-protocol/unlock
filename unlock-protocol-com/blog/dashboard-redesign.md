@@ -4,7 +4,7 @@ subTitle: Unlock launches a completely redesigned dashboard, focused on usabilit
 authorName: Kalidou Diagne
 publishDate: October 4, 2022
 description: Unlock launches a completely redesigned membership dashboard, focused on usability.
-image: /images/blog/dashboard-redesign/filename.png
+image: /images/blog/dashboard-redesign/dashboard-share.png
 ---
 
 Unlock continues to simplify and improve the user experience. With that goal in mind, Unlock has completely redesigned the Unlock Dashboard. The Dashboard is the key interaction point with Unlock Protocol for most users where they configure memberships, view their member information, and interact with the key functions of the Unlock smart contract and surrounding ecosystem.
