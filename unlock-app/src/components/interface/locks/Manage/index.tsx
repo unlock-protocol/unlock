@@ -119,14 +119,13 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
       icon: ICON_URL,
     }
 
-    const urlGenerate = new URL(
-      `/checkout?redirectUri=${encodeURIComponent(
-        url
-      )}&paywallConfig=${encodeURIComponent(
-        JSON.stringify(checkoutURLConfig)
-      )}`,
-      window.location.href
+    const urlGenerate = new URL('/checkout', window.location.href)
+    urlGenerate.searchParams.append('redirectURI', url)
+    urlGenerate.searchParams.append(
+      'paywallConfig',
+      encodeURIComponent(JSON.stringify(checkoutURLConfig))
     )
+
     setValue('url', urlGenerate?.toString())
     setLinkGenerated(true)
   }
