@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
-import { UNLIMITED_KEYS_COUNT } from '~/constants'
+import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '~/constants'
 import { useMutation } from 'react-query'
 
 interface EditFormProps {
@@ -26,10 +26,12 @@ export const UpdateQuantityModal = ({
   setIsOpen,
   maxNumberOfKeys,
 }: EditQuantityProps) => {
-  const [unlimitedQuantity, setUnlimitedQuantity] = useState(
-    maxNumberOfKeys === UNLIMITED_KEYS_COUNT
-  )
+  const [unlimitedQuantity, setUnlimitedQuantity] = useState(false)
   const walletService = useWalletService()
+
+  useEffect(() => {
+    setUnlimitedQuantity(UNLIMITED_KEYS_COUNT == maxNumberOfKeys)
+  }, [UNLIMITED_KEYS_COUNT, maxNumberOfKeys])
 
   const {
     register,
@@ -54,9 +56,7 @@ export const UpdateQuantityModal = ({
   const updateQuantity = async (): Promise<any> => {
     const { unlimitedQuantity, maxNumberOfKeys } = getValues()
 
-    const numbersOfKeys = unlimitedQuantity
-      ? UNLIMITED_KEYS_COUNT
-      : maxNumberOfKeys
+    const numbersOfKeys = unlimitedQuantity ? MAX_UINT : maxNumberOfKeys
 
     return await walletService.setMaxNumberOfKeys({
       lockAddress,
@@ -102,14 +102,18 @@ export const UpdateQuantityModal = ({
                 Number of memberships:
               </label>
               <ToggleSwitch
-                title="Free"
+                title="Unlimited"
                 enabled={unlimitedQuantity}
                 setEnabled={setUnlimitedQuantity}
                 onChange={(enabled: boolean) => {
                   setValue('unlimitedQuantity', enabled)
+                  setUnlimitedQuantity(enabled)
                   setValue(
                     'maxNumberOfKeys',
-                    enabled ? undefined : (defaultMaxNumberOfKeys as number)
+                    enabled ? undefined : (defaultMaxNumberOfKeys as number),
+                    {
+                      shouldValidate: true,
+                    }
                   )
                 }}
               />
