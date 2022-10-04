@@ -43,9 +43,11 @@ const LoginPrompt = ({
 
   const ButtonIcon = useMemo(() => {
     const walletIcons = {
-      metamask: <SvgComponents.Metamask />,
-      brave: <BraveWalletIcon />,
-      default: <WalletIcon />,
+      metamask: <SvgComponents.Metamask width={32} />,
+      brave: <BraveWalletIcon size={20} className="m-1.5" />,
+      frame: <SvgComponents.Frame width={32} />,
+      status: <SvgComponents.Status width={32} />,
+      default: <WalletIcon size={20} className="m-1.5" />,
     }
 
     if (window.ethereum?.isMetaMask) {
@@ -55,6 +57,16 @@ const LoginPrompt = ({
     // @ts-expect-error no typing
     if (window.ethereum?.isBraveWallet) {
       return walletIcons.brave
+    }
+
+    // @ts-expect-error no typing
+    if (window.ethereum?.isFrame) {
+      return walletIcons.frame
+    }
+
+    // @ts-expect-error no typing
+    if (window.ethereum?.isStatus) {
+      return walletIcons.status
     }
 
     return walletIcons.default
