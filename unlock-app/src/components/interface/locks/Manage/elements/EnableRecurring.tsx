@@ -1,4 +1,4 @@
-import { Button } from '@unlock-protocol/ui'
+import { Badge, Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { MAX_UINT } from '~/constants'
@@ -55,6 +55,15 @@ export const EnableRecurring = ({
   }
 
   if (isLoading) return <EnableRecurringPlaceholder />
+
+  if (isRecurring) {
+    return (
+      <Badge variant="green" className="flex justify-center w-full">
+        <span>Recurring enabled</span>
+      </Badge>
+    )
+  }
+
   return (
     <Button
       variant="outlined-primary"
@@ -63,7 +72,7 @@ export const EnableRecurring = ({
       disabled={isRecurring || !recurringPossible || isLoading}
       onClick={handleApproveRecurring}
     >
-      {isRecurring ? 'Recurring enabled' : 'Enable recurring'}
+      Enable recurring
     </Button>
   )
 }
