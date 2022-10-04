@@ -13,6 +13,7 @@ import { MAX_UINT } from '~/constants'
 import { formatDate } from '~/utils/lock'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 dayjs.extend(customParseFormat)
 
@@ -54,7 +55,7 @@ export function AirdropKeysDrawer({
           public: {},
           protected: {} as Record<string, string>,
         },
-      }
+      } as const
       if (email) {
         user.metadata.protected.email = email
       }
@@ -107,6 +108,10 @@ export function AirdropKeysDrawer({
           throw error
         }
       }
+    )
+
+    ToastHelper.success(
+      `Successfully granted ${options.recipients.length} keys to ${items.length} recipients`
     )
   }
 
