@@ -1,13 +1,13 @@
 ---
-title: NYC Blockchain Week 2022 Recap with Unlock
-subTitle: NFT.NYC, ETHNewYork, DAO NYC and more — and Unlock was everywhere
-authorName: Christopher Carfi
+title: Unlock Launches Redesigned Membership Dashboard
+subTitle: Unlock launches a completely redesigned dashboard, focused on usability
+authorName: Kalidou Diagne
 publishDate: October 4, 2022
-description: NFT.NYC, ETHNewYork, DAO NYC and more — and Unlock Protocol was everywhere.
+description: Unlock launches a completely redesigned membership dashboard, focused on usability.
 image: /images/blog/dashboard-redesign/filename.png
 ---
 
-Unlock continues to simplify and improve the user experience. With that goal in mind, Unlock has completely redesigned the Unlock dashboard. The Dashboard is the key interaction point with Unlock Protocol for most users where they configure memberships, view their member information, and interact with the key functions of the Unlock smart contract and surrounding ecosystem.
+Unlock continues to simplify and improve the user experience. With that goal in mind, Unlock has completely redesigned the Unlock Dashboard. The Dashboard is the key interaction point with Unlock Protocol for most users where they configure memberships, view their member information, and interact with the key functions of the Unlock smart contract and surrounding ecosystem.
 
 There are three main sections to the Dashboard.
 
