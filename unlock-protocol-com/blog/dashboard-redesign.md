@@ -37,7 +37,7 @@ During the deployment, a block explorer link is shown to the user. The user can 
 
 ![Screenshot 2022-10-03 at 11.32.26.png](/images/blog/dashboard-redesign/Screenshot_2022-10-03_at_11.32.26.png)
 
-## **Lock listing**
+## Lock listing
 
 In the new dashboard, locks are now grouped and displayed by network. This makes it easier for creators to see all their memberships and locks in one place in a greatly streamlined interface.
 
@@ -49,7 +49,7 @@ When there are no locks to show on the listing page, the user will be redirected
 
 ![Screenshot 2022-09-27 at 11.06.44.png](/images/blog/dashboard-redesign/Screenshot_2022-09-27_at_11.06.44.png)
 
-**Lock summary cards**
+### Lock summary cards
 
 Lock summary cards show the high-level information about the lock. Lock summary cards now have a new, cleaner interface and contain only the main high-level details for price, key duration, and key total for each lock. To dive into further details for a particular lock, clicking the arrow goes to the lock management page and shows further details for each lock.
 
@@ -61,15 +61,15 @@ Clicking through on a lock summary card brings up the lock management screen, wh
 
 On this page, the lock manager can update settings for the lock, as well as see a list of all the members.
 
-**Customize NFT image**
+### Customize NFT image
 
 By clicking the NFT image, a popup will allow you to update the NFT image. This can be done by uploading a file or via a URL.
 
 ![Screenshot 2022-10-03 at 11.55.56.png](/images/blog/dashboard-redesign/Screenshot_2022-10-03_at_11.55.56.png)
 
-**Edit duration, quantity, and price**
+### Edit duration, quantity, and price
 
-Duration, quantity, or price information for a particular lock can be changed by clicking on the pencil next to the respective field in the left sidebar. Clicking the pencil to edit Key Duration, for example, will bring up a popup to edit the details of that field. By default, the current field value will be shown, which can then be edited. This same process works for updating Quantity and Price as well.
+Duration, quantity, or price information for a particular lock can be changed by clicking on the pencil next to the respective field in the left sidebar. Clicking the pencil to edit `Key Duration`, for example, will bring up a popup to edit the details of that field. By default, the current field value will be shown, which can then be edited. This same process works for updating `Quantity` and `Price` as well.
 
 ![update-price.png](/images/blog/dashboard-redesign/update-price.png)
 
@@ -77,7 +77,7 @@ Example video:
 
 [update-key-duration.mov](/images/blog/dashboard-redesign/update-key-duration.mov)
 
-**Members list**
+### Members list
 
 The lock management page displays a list of members for the current lock, as well as metadata such as the expiration time for a particular key.
 
@@ -91,31 +91,31 @@ Clicking on a key will expand it, and shows basic information about the key, own
 
 ![Screenshot 2022-10-03 at 12.05.24.png](/images/blog/dashboard-redesign/Screenshot_2022-10-03_at_12.05.24.png)
 
-**Withdrawing funds from a lock** 
+### Withdrawing funds from a lock 
 
-When the lock has a withdrawable amount, Withdraw button will be active and allow the lock manager to withdraw the collected amount for the keys sold.
+When the lock has a withdrawable amount, the `Withdraw` button will be active and allow the lock manager to withdraw the collected amount for the keys sold.
 
 ![withdraw-amount.png](/images/blog/dashboard-redesign/withdraw-amount.png)
 
-**Generate Purchase URL**
+### Generate Purchase URL
 
-By clicking Generate URL button, the user can generate an URL that can be shared with fans and allow them to easily purchase this membership.
+By clicking `Generate URL` button, the user can generate an URL that can be shared with fans and allow them to easily purchase this membership.
 
-![genetate-url.png](/images/blog/dashboard-redesign/genetate-url.png)
+![generate-url.png](/images/blog/dashboard-redesign/generate-url.png)
 
 ## Mobile Experience
 
-The mobile experience is improved significantly with the new dashboard, features a fully responsive layout and provides a better experience and improved usability when user the app through a mobile device.
+The mobile experience is improved significantly with the new Dashboard. It features a fully responsive layout and provides a better experience and improved usability when using the app through a mobile device.
 
-**Change network & header** 
+### Change network & header 
 
 ![mobile-header.png](/images/blog/dashboard-redesign/mobile-header.png)
 
-**Lock list page**
+### Lock list page
 
 ![Screenshot 2022-09-28 at 13.16.57.png](/images/blog/dashboard-redesign/Screenshot_2022-09-28_at_13.16.57.png)
 
-**Manage lock page**
+### Manage lock page
 
 ![manage-lock-mobile.png](/images/blog/dashboard-redesign/manage-lock-mobile.png)
 
