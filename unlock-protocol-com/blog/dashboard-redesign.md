@@ -99,7 +99,7 @@ By clicking `Generate URL` button, the user can generate a URL that can be share
 
 ![generate-url.png](/images/blog/dashboard-redesign/generate-url.png)
 
-## Mobile Experience
+## Mobile experience
 
 The mobile experience is improved significantly with the new Dashboard. It features a fully responsive layout and provides a better experience and improved usability when using the app through a mobile device.
 
