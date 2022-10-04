@@ -1,4 +1,4 @@
-// GUEST MAIL TEMPLATE 
+// GUEST MAIL TEMPLATE
 export default {
   nowrap: true,
   subject: 'You are going to LaDegen!',
