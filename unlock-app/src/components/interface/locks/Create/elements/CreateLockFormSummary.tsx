@@ -141,7 +141,7 @@ export const CreateLockFormSummary = ({
     // redirect to dashboard after the key is deployed
     if (isDeployed) {
       setTimeout(() => {
-        router.push('/dashboard')
+        router.push('/locks')
       }, 5000)
     }
   }, [isDeployed, router])
@@ -216,7 +216,7 @@ export const CreateLockFormSummary = ({
         <div className="flex flex-col items-center my-12 text-center">
           <h3 className="block mb-4 text-2xl font-bold md:text-4xl">{title}</h3>
           <span className="mb-4 font-base">{description}</span>
-          <Link href={'/dashboard'}>
+          <Link href={'/locks'}>
             <Button className="w-full max-w-lg" variant="outlined-primary">
               {backText}
             </Button>

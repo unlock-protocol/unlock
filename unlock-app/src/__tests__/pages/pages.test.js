@@ -2,7 +2,6 @@ import React from 'react'
 import * as rtl from '@testing-library/react'
 
 import Home from '../../pages/index'
-import DashboardContent from '../../components/content/DashboardContent'
 
 import { pageTitle, ETHEREUM_NETWORKS_NAMES } from '../../constants'
 import { ConfigContext } from '../../utils/withConfig'
@@ -35,26 +34,6 @@ const ConfigProvider = ConfigContext.Provider
 describe('Pages', () => {
   beforeEach(() => {
     jest.clearAllMocks()
-  })
-
-  describe('Dashboard', () => {
-    it.skip('should render title correctly', () => {
-      expect.assertions(1)
-
-      rtl.render(
-        <ConfigProvider value={config}>
-          <DashboardContent
-            account={account}
-            network={network}
-            transactions={{}}
-            locks={{}}
-            hideForm={() => {}}
-            showForm={() => {}}
-          />
-        </ConfigProvider>
-      )
-      expect(pageTitle).toBeCalledWith('Dashboard')
-    })
   })
 
   describe('Home', () => {

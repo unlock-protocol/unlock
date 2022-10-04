@@ -15,7 +15,7 @@ export const HomeContent = ({ config }) => {
       ['localhost', '127.0.0.1', '0.0,0,0'].indexOf(window.location.hostname) >
       -1
     ) {
-      window.location.assign('/dashboard')
+      window.location.assign('/locks')
     } else {
       window.location.assign(config.unlockStaticUrl)
     }

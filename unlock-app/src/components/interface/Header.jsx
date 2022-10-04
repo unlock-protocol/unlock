@@ -22,7 +22,7 @@ const navigationButtons = [
 const appButtons = [
   {
     Button: PageNavButtons.Dashboard,
-    page: '/dashboard',
+    page: '/locks',
   },
   {
     Button: PageNavButtons.Settings,
