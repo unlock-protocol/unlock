@@ -115,6 +115,8 @@ The mobile experience is improved significantly with the new Dashboard. It featu
 
 ![manage-lock-mobile.png](/images/blog/dashboard-redesign/manage-lock-mobile.png)
 
+[Try out the new Dashboard](https://app.unlock-protocol.com/dashboard).
+
 **What if I find an issue or bug in the new Dashboard?**
 
 Please open an issue on Github or tell us in the Discord and we'll fix it ASAP.
