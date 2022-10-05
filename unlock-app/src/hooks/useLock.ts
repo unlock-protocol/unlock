@@ -29,7 +29,7 @@ export const processTransaction = async (
   const blockTime = config.networks[network].blockTime
   if (
     !transaction ||
-    transaction.confirmations <= config.requiredConfirmations
+    (transaction?.confirmations || 0) <= config.requiredConfirmations
   ) {
     // Polling if the transaction is not confirmed
     setTimeout(async () => {
