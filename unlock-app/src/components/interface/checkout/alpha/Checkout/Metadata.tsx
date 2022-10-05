@@ -17,7 +17,7 @@ import { ethers } from 'ethers'
 import { useQuery } from 'react-query'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { MetadataInput } from '~/unlockTypes'
-import { fetchRecipientData } from './utils'
+import { fetchRecipientsData } from './utils'
 
 interface Props {
   injectedProvider: unknown
@@ -148,19 +148,19 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         paywallConfig.locks[lock!.address].dataBuilder ||
         paywallConfig.dataBuilder
 
-      const generatedData = dataBuilder?.url
-        ? await fetchRecipientData(, {
-            recipient: recipients[0],
-            lockAddress: lock!.address,
-            network: lock!.network,
-          })
-        : null
+      let recipientsData: string[] | undefined
 
-      if (generatedData) {
-        send('SUBMIT_DATA', {
-          data: generatedData,
+      if (dataBuilder) {
+        recipientsData = await fetchRecipientsData(dataBuilder.url, {
+          recipients,
+          lockAddress: lock!.address,
+          network: lock!.network,
         })
       }
+
+      send('SUBMIT_DATA', {
+        data: recipientsData,
+      })
 
       await storage.submitMetadata(users, lock!.network)
 

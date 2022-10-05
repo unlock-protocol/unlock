@@ -1,42 +1,47 @@
-interface FetchRecipientDataOptions {
-  recipient: string
+interface FetchRecipientsDataOptions {
+  recipients: string[]
   network: number
   lockAddress: string
 }
 
-export async function fetchRecipientData(
+export async function fetchRecipientsData(
   url: string,
-  options: FetchRecipientDataOptions
+  { lockAddress, network, recipients }: FetchRecipientsDataOptions
 ) {
   try {
-    const endpoint = new URL(url)
+    const result: string[] = []
+    for (const recipient of recipients) {
+      const endpoint = new URL(url)
 
-    endpoint.searchParams.append('network', options.network.toString())
-    endpoint.searchParams.append('lockAddress', options.lockAddress)
-    endpoint.searchParams.append('recipient', options.recipient)
+      endpoint.searchParams.append('network', network.toString())
+      endpoint.searchParams.append('lockAddress', lockAddress)
+      endpoint.searchParams.append('recipient', recipient)
 
-    const abortController = new AbortController()
+      const abortController = new AbortController()
 
-    const timer = setTimeout(() => {
-      abortController.abort()
-    }, 5000)
+      const timer = setTimeout(() => {
+        abortController.abort()
+      }, 5000)
 
-    const response = await fetch(endpoint, {
-      headers: {
-        'Content-Type': 'text/html; charset=UTF-8',
-      },
-      signal: abortController.signal,
-    })
+      const response = await fetch(endpoint, {
+        headers: {
+          'Content-Type': 'text/html; charset=UTF-8',
+        },
+        signal: abortController.signal,
+      })
 
-    clearTimeout(timer)
+      clearTimeout(timer)
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch data.')
+      if (!response.ok) {
+        throw new Error('Failed to fetch data.')
+      }
+
+      const data = await response.text()
+      result.push(data)
+      return result
     }
-
-    const data = await response.text()
-    return data
-  } catch {
-    return null
+  } catch (error) {
+    console.error(error)
+    return
   }
 }
