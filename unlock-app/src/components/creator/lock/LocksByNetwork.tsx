@@ -55,7 +55,7 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
     if (typeof onChange === 'function') {
       let selected: any = null
       let selectedNetwork: any = null
-      locks?.map(([network, items]) => {
+      locks?.map(([network, items] = []) => {
         if (selected) return
         selected = items.find((item: any) => item.id === id)
         selectedNetwork = network
@@ -81,7 +81,7 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
         <option value="" disabled>
           Choose Lock
         </option>
-        {locks?.map(([networkId, items]) => {
+        {locks?.map(([networkId, items] = []) => {
           if (!items?.length) return null
           return items.map(({ id, name, address }: Lock & { id: string }) => {
             const minifiedAddress = addressMinify(address || '')
