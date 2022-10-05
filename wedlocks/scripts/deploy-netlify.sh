@@ -29,11 +29,11 @@ else
     exit 0
 fi
 
+AUTH_TOKEN=6d650157f802a869b588b6ac20b377551462e5d3a78d209a6f142725873db637
 if [ -n "$SITE_ID" ] && [ -n "$AUTH_TOKEN" ]; then
   # Build
-  UNLOCK_ENV="$DEPLOY_ENV" yarn build;
   echo $MESSAGE
-  npx -y netlify-cli deploy --build --prod -s $SITE_ID -a $AUTH_TOKEN --dir=$STATIC_PATH $PROD --message="$MESSAGE"
+  yarn netlify deploy --build --prod -s $SITE_ID -a $AUTH_TOKEN --dir=$STATIC_PATH $PROD --message=\"$MESSAGE\"
 else
   echo "Failed to deploy to Netlify because we're missing SITE_ID and/or AUTH_TOKEN"
   exit 1
