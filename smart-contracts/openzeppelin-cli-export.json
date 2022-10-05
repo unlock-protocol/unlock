@@ -73,28 +73,6 @@
         ]
       }
     },
-    "rinkeby": {
-      "proxies": {
-        "unlock-protocol/Unlock": [
-          {
-            "address": "0xd8c88be5e8eb88e38e6ff5ce186d764676012b0b",
-            "version": "0.1.0",
-            "implementation": "0x15921d1C6abD6270D2F74B2F2F9D4d28b144245B",
-            "admin": "0xB43499AD74aA983560da379554fe798CF59C3E42",
-            "kind": "Upgradeable"
-          }
-        ],
-        "unlock-protocol/UnlockDiscountToken": [
-          {
-            "address": "0xFB27644cec6ae56509904d42edE0e14F468d5f36",
-            "version": "0.0.8",
-            "implementation": "0xAE8C7Dfb273F37eAa8fCfc4Ac0A023dcA7dF2936",
-            "admin": "0xB43499AD74aA983560da379554fe798CF59C3E42",
-            "kind": "Upgradeable"
-          }
-        ]
-      }
-    },
     "ropsten": {
       "proxies": {
         "unlock-protocol/unlock": [

@@ -27,7 +27,7 @@ const etherscan = {
 }
 
 if (process.env.ETHERSCAN_API_KEY) {
-  ;['mainnet', 'ropsten', 'rinkeby', 'goerli', 'kovan'].forEach(
+  ;['mainnet', 'goerli'].forEach(
     // eslint-disable-next-line no-return-assign
     (netName) => (etherscan.apiKey[netName] = process.env.ETHERSCAN_API_KEY)
   )

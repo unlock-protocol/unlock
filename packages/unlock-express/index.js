@@ -23,12 +23,6 @@ const configureUnlock = (defaultPaywallConfig, passport, config = {}) => {
       'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'
   }
 
-  if (!config.providers[4]) {
-    // eslint-disable-next-line no-param-reassign
-    config.providers[4] =
-      'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'
-  }
-
   if (!config.providers[100]) {
     // eslint-disable-next-line no-param-reassign
     config.providers[100] = 'https://rpc.xdaichain.com/'

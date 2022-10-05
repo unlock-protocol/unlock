@@ -6,7 +6,7 @@ const networks = require('./networks')
 const provider = new ethers.providers.JsonRpcProvider(networks[4].provider)
 
 // Create a wallet.
-// This one should have a little bit of rinkeby eth but please send more if you use it!
+// This one should have a little bit of test eth but please send more if you use it!
 const wallet = new ethers.Wallet.fromMnemonic(
   'solid entry walnut extend aisle skirt myth clog need analyst edit bench'
 )

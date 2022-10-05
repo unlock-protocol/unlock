@@ -46,7 +46,7 @@ const getSafeVersion = async (safeAddress) => {
   }
 }
 
-// mainnet + rinkeby still use older versions of the safe
+// mainnet still uses older versions of the safe
 const submitTxOldMultisig = async ({ safeAddress, tx, signer }) => {
   // encode contract call
   const {
