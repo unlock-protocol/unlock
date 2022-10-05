@@ -8,7 +8,9 @@ export const mainnet: NetworkConfig = {
   multisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
   name: 'Ethereum',
   blockTime: 8000,
-  subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
+  subgraph: {
+    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
+  },
   explorer: {
     name: 'Etherscan',
     urls: {
