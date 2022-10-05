@@ -22,7 +22,7 @@ export const DefaultError = ({
   critical,
 }: DefaultErrorProps) => (
   <Container>
-    <Image src={illustration} />
+    <img className="w-16" src={illustration} alt="error" />
     <Message critical={critical}>
       <h1>{title}</h1>
       {children}
@@ -51,10 +51,6 @@ const Container = styled.section`
   grid-template-columns: 50px repeat(auto-fill, minmax(1fr));
 `
 
-const Image = styled.img`
-  width: 72px;
-`
-
 const Message = styled.div`
   display: grid;
   grid-gap: 16px;
@@ -74,29 +70,6 @@ const Message = styled.div`
     color: var(--dimgrey);
   }
 `
-
-export const MissingAccount = () => (
-  <DefaultError
-    title="Need account"
-    illustration="/images/illustrations/wallet.svg"
-    critical
-  >
-    <p>
-      In order to display this content, you need to connect a crypto-wallet to
-      your browser.
-    </p>
-  </DefaultError>
-)
-
-export const ContractNotDeployed = () => (
-  <DefaultError
-    title="Unlock not deployed"
-    illustration="/images/illustrations/error.svg"
-    critical
-  >
-    <p>The Unlock contract has not been deployed at the configured address.</p>
-  </DefaultError>
-)
 
 export const NetworkNotSupported = () => (
   <DefaultError
