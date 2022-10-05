@@ -23,12 +23,13 @@ export const useLockManager = ({
     return await web3Service.isLockManager(lockAddress, account!, network!)
   }
 
-  const { data: isManager = false } = useQuery(
+  const { data: isManager = false, isLoading } = useQuery(
     ['getLockManagerStatus', account, network, lockAddress],
     async () => getLockManagerStatus()
   )
 
   return {
     isManager,
+    isLoading,
   }
 }

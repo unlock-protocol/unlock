@@ -18,6 +18,7 @@ import { UpdateDurationModal } from '../modals/UpdateDurationModal'
 import { UpdatePriceModal } from '../modals/UpdatePriceModal'
 import { UpdateQuantityModal } from '../modals/UpdateQuantityModal'
 import { EnableRecurring } from './EnableRecurring'
+import { useLockManager } from '~/hooks/useLockManager'
 
 interface LockDetailCardProps {
   network: number
@@ -136,6 +137,10 @@ export const LockDetailCard = ({
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
 
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
+  })
   const getLock = async () => {
     return web3Service.getLock(lockAddress, network)
   }
@@ -220,28 +225,42 @@ export const LockDetailCard = ({
               label="Key Duration"
               value={duration}
               loading={loading}
-              append={<EditButton onClick={() => setEditDuration(true)} />}
+              append={
+                isManager && (
+                  <EditButton onClick={() => setEditDuration(true)} />
+                )
+              }
             />
             <Detail
               label="Key Quantity"
               value={numbersOfKeys}
               loading={loading}
-              append={<EditButton onClick={() => setEditQuantity(true)} />}
+              append={
+                isManager && (
+                  <EditButton onClick={() => setEditQuantity(true)} />
+                )
+              }
             />
             <Detail
               label="Price"
               value={priceLabel}
               prepend={<CryptoIcon symbol={symbol} size={22} />}
               loading={loading}
-              append={<EditButton onClick={() => setEditPrice(true)} />}
+              append={
+                isManager && <EditButton onClick={() => setEditPrice(true)} />
+              }
             />
           </div>
-          <div className="mt-6">
-            <EnableRecurring lockAddress={lockAddress} network={network} />
-          </div>
-          <div className="mt-6">
-            <CardPayment lockAddress={lockAddress} network={network} />
-          </div>
+          {isManager && (
+            <>
+              <div className="mt-6">
+                <EnableRecurring lockAddress={lockAddress} network={network} />
+              </div>
+              <div className="mt-6">
+                <CardPayment lockAddress={lockAddress} network={network} />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </>
