@@ -12,8 +12,7 @@ const dev = {
   tagManagerArgs: {},
   urlBase: process.env.URL_BASE || 'https://unlock-protocol.com',
   unlockApp:
-    process.env.UNLOCK_APP ||
-    'https://staging-app.unlock-protocol.com/dashboard',
+    process.env.UNLOCK_APP || 'https://staging-app.unlock-protocol.com/locks',
 }
 
 const staging = {

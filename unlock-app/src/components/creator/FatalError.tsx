@@ -75,29 +75,6 @@ const Message = styled.div`
   }
 `
 
-export const MissingAccount = () => (
-  <DefaultError
-    title="Need account"
-    illustration="/images/illustrations/wallet.svg"
-    critical
-  >
-    <p>
-      In order to display this content, you need to connect a crypto-wallet to
-      your browser.
-    </p>
-  </DefaultError>
-)
-
-export const ContractNotDeployed = () => (
-  <DefaultError
-    title="Unlock not deployed"
-    illustration="/images/illustrations/error.svg"
-    critical
-  >
-    <p>The Unlock contract has not been deployed at the configured address.</p>
-  </DefaultError>
-)
-
 export const NetworkNotSupported = () => (
   <DefaultError
     title="Network not supported"
