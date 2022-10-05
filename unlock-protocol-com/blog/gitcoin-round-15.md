@@ -58,7 +58,7 @@ is continuing their work on building tools to empower social influencers and
 [MeTag](https://www.getmetag.io) is creating a scannable QR tag which is also NFC 
 enabled to help users share their web3 wallet information and social profiles. 
 [Headline](https://viaheadline.xyz/) a decentrailized publishing platform which 
-got it's start with a [UDT Grant](https://docs.unlock-protocol.com/governance/grants-bounties-and-matchings) from Unlock Protocol jumped onto the Gitcoin 
+got its start with a [UDT Grant](https://docs.unlock-protocol.com/governance/grants-bounties-and-matchings) from Unlock Protocol jumped onto the Gitcoin 
 platform this round to continue their work.
 
 ## Education & Security
