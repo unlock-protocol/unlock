@@ -8,9 +8,8 @@ import { RecipientItem } from '../../../hooks/useMultipleRecipient'
 import { MetadataInput } from '../../../unlockTypes'
 import { ToastHelper } from '../../helpers/toast.helper'
 import Loading from '../Loading'
-import { Button } from './FormStyles'
 import AuthenticationContext from '../../../contexts/AuthenticationContext'
-
+import { Button } from '@unlock-protocol/ui'
 interface LimitMessage {
   ONLY_MAX: string
   ONLY_MIN: string
@@ -186,7 +185,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
 
   return (
     <form>
-      <span className="text-sm block">
+      <span className="block text-sm">
         {recipientsLimitMessage(minRecipients, maxRecipients)}
       </span>
       {showList && (
@@ -211,7 +210,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                         side="right"
                       >
                         <CloseIcon
-                          className="text-red-500 ml-1 cursor-pointer text-base hover:text-red-600"
+                          className="ml-1 text-base text-red-500 cursor-pointer hover:text-red-600"
                           onClick={() => {
                             removeRecipient(index)
                           }}
@@ -223,7 +222,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                         side="right"
                       >
                         <EditIcon
-                          className="text-grey-500 ml-1 cursor-pointer text-base hover:text-black-600"
+                          className="ml-1 text-base cursor-pointer text-grey-500 hover:text-black-600"
                           onClick={() => {
                             onEditRecipient(index, metadata, userAddress)
                           }}
@@ -231,7 +230,7 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                       </Tooltip>
                       {withMetadata && (
                         <button
-                          className="text-sm cursor-pointer text-blue-600 ml-1"
+                          className="ml-1 text-sm text-blue-600 cursor-pointer"
                           style={{
                             fontSize: '0.8rem',
                           }}
@@ -245,8 +244,8 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                   )}
                 </div>
 
-                <ItemRows>
-                  <span className="text-xs block">{userAddress}</span>
+                <div className="flex flex-col">
+                  <span className="block text-xs">{userAddress}</span>
                   {showMetadata &&
                     Object.entries(metadata ?? {}).map(([key, value]) => {
                       return (
@@ -256,18 +255,18 @@ export const MultipleRecipient: React.FC<MultipleRecipientProps> = ({
                         </div>
                       )
                     })}
-                </ItemRows>
+                </div>
               </InputGroup>
             )
           })}
-          <AddButton onClick={toggleAddRecipient} type="button">
+          <Button onClick={toggleAddRecipient} type="button">
             Add recipient
-          </AddButton>
+          </Button>
         </>
       )}
       {showForm && (
         <fieldset className="pt-3" disabled={loading}>
-          <span className="text-xs font-normal uppercase flex justify-between items-center mb-2">
+          <span className="flex items-center justify-between mb-2 text-xs font-normal uppercase">
             {isEdit && <span>Edit recipient {editIndex}</span>}
             {addNewRecipient && <span>Recipient Wallet Address</span>}
           </span>
@@ -382,9 +381,4 @@ const InputGroup = styled.div`
     color: var(--red);
     content: ' *';
   }
-`
-
-const ItemRows = styled.div`
-  display: flex;
-  flex-direction: column;
 `
