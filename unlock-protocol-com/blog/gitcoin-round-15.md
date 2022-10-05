@@ -64,7 +64,7 @@ platform this round to continue their work.
 ## Education & Security
 
 [VestLab](VestLab.io) is aiming to get you all the information about a crypto 
-project before you invest. While [White Hat DAO](https://whitehatdao.com) is 
+project before you invest. [White Hat DAO](https://whitehatdao.com) is 
 looking to give deeper insights on blockchain projects with offerings that 
 include smart contract audits, safety ratings along with tokenomics analysis and 
 due-diligence. [Fractionalize](https://www.amwwaldorf.org) is implementing a 
