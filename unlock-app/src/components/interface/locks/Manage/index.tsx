@@ -237,7 +237,7 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
 export const ManageLockPage = () => {
   const { network: walletNetwork, changeNetwork } = useAuth()
   const { query } = useRouter()
-
+  const [loading, setLoading] = useState(false)
   const { address, network } = query ?? {}
 
   const lockNetwork = parseInt(network as string)
@@ -280,11 +280,16 @@ export const ManageLockPage = () => {
             <div className="flex flex-col gap-6 lg:col-span-9">
               <TotalBar lockAddress={lockAddress} network={lockNetwork} />
               <ActionBar lockAddress={lockAddress} />
-              <FilterBar filters={filters} setFilters={setFilters} />
+              <FilterBar
+                filters={filters}
+                setFilters={setFilters}
+                setLoading={setLoading}
+              />
               <Members
                 lockAddress={lockAddress}
                 network={lockNetwork}
                 filters={filters}
+                loading={loading}
               />
             </div>
           </div>

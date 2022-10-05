@@ -13,6 +13,7 @@ import { useState } from 'react'
 interface MembersProps {
   lockAddress: string
   network: number
+  loading: boolean
   filters?: {
     [key: string]: any
   }
@@ -37,6 +38,7 @@ const MembersPlaceholder = () => {
 export const Members = ({
   lockAddress,
   network,
+  loading: loadingFilters,
   filters = {
     query: '',
     filterKey: 'owner',
@@ -87,7 +89,7 @@ export const Members = ({
     },
   ])
 
-  const loading = isLoadingVersion || isLoading
+  const loading = isLoadingVersion || isLoading || loadingFilters
   const noItems = members?.length === 0 && !loading
 
   const hasActiveFilter =
