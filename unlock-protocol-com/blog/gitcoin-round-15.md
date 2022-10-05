@@ -102,7 +102,7 @@ issue of domestic violence so we're watching closely to see how the community
 reacts to the progess they'll make between this round and next as they get off 
 the ground. Another project supporting women's reproductive rights while also 
 bringing you an innovative music experience is 
-[Beam Per Mint](https://tell.ie/beatspermint/j6upJTcHktEE) who will soon be 
+[Beats Per Mint](https://tell.ie/beatspermint/j6upJTcHktEE) who will soon be 
 releasing their first collection *"Beam Me Down"* and we couldn't be more 
 delighted to be enabling a truly feminist platform.    
 
