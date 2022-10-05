@@ -70,15 +70,6 @@ export const ItemValue = styled.span`
   color: var(--slate);
 `
 
-export const Error = styled.span`
-  height: 48px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: 1rem;
-  margin-top: 13px;
-`
-
 interface SubmitButtonProps {
   roundBottomOnly?: boolean
   backgroundColor?: string
@@ -101,10 +92,6 @@ export const SubmitButton = styled.button.attrs({ type: 'button' })`
   justify-content: center;
   color: var(--white);
   margin-top: 25px;
-`
-
-export const FullWidthButton = styled(SubmitButton)`
-  border-radius: 0 0 4px 4px;
 `
 
 export const Price = styled.span`

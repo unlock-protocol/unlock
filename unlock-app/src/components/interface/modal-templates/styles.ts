@@ -9,36 +9,6 @@ export const Quit = styled(Close)`
   top: 16px;
 `
 
-export const Dismiss = styled.button`
-  height: 24px;
-  font-size: 20px;
-  font-family: Roboto, sans-serif;
-  text-align: center;
-  border: none;
-  background: none;
-  color: var(--grey);
-
-  &:hover {
-    color: var(--link);
-  }
-`
-
-export const Cancel = styled(Dismiss)`
-  color: var(--lightred);
-
-  &:hover {
-    color: var(--red);
-  }
-`
-
-export const Submit = styled(Dismiss)`
-  color: var(--green);
-
-  &:hover {
-    color: var(--darkgreen);
-  }
-`
-
 interface MessageBoxProps {
   width?: number
 }
