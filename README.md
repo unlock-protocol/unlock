@@ -97,7 +97,7 @@ yarn workspace @unlock-protocol/unlock-app start
 
 This will start
 
-- `http://localhost:3000/dashboard` to start using the application and deploy locks locally.
+- `http://localhost:3000/locks` to start using the application and deploy locks locally.
 - `http://localhost:3002` our static landing page site.
 
 ### Config and environment variables
