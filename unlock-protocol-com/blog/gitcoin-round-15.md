@@ -91,9 +91,9 @@ passionate about our support of these projects and we're so enthusiastic to see
 so many in this round. Our friends over at [Blu3 DAO](https://www.blu3dao.com/) 
 continue to do such impressive work educating, preparing and sponsoring hackers 
 in the web3 space. The community seems to agree with our take on the work they 
-do with hundreds of supporters and thousands of dollars in community support they 
-were able to raise close to $60k this round with matching funds and we couldn't 
-be happier to see that happen for them! 
+do, with hundreds of supporters and thousands of dollars in community support. 
+They were able to raise close to $60k this round with matching funds and we 
+couldn't be happier to see that happen for them!
 [End Domestic Violence](https://EndDomesticViolence.Art) is on a mission to 
 create a powerful healing modality for domestic violence victims using art to 
 process trauma and is building an art workshop platform on Unlock Protocol to 
