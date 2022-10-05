@@ -144,24 +144,6 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       )
 
       const recipients = users.map((item) => item.userAddress)
-      const dataBuilder =
-        paywallConfig.locks[lock!.address].dataBuilder ||
-        paywallConfig.dataBuilder
-
-      let recipientsData: string[] | undefined
-
-      if (dataBuilder) {
-        recipientsData = await fetchRecipientsData(dataBuilder, {
-          recipients,
-          lockAddress: lock!.address,
-          network: lock!.network,
-        })
-      }
-
-      send('SUBMIT_DATA', {
-        data: recipientsData,
-      })
-
       await storage.submitMetadata(users, lock!.network)
 
       send({
