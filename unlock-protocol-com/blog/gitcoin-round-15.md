@@ -87,7 +87,7 @@ solution making use of Unlock NFTs.
 
 Last but not least there were several projects both utilizing Unlock Protocol 
 and tackling Diversity, Equity & Inclusion (DEI) in web3. We continue to be 
-passionate about our support of these projects and were so enthusiastic to see 
+passionate about our support of these projects and we're so enthusiastic to see 
 so many in this round. Our friends over at [Blu3 DAO](https://www.blu3dao.com/) 
 continue to do such impressive work educating, preparing and sponsoring hackers 
 in the web3 space. The community seems to agree with our take on the work they 
