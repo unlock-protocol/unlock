@@ -21,6 +21,7 @@ import { Container } from '../../Container'
 import { RiPagesLine as PageIcon } from 'react-icons/ri'
 import { FilterBar } from './elements/FilterBar'
 import { useLockManager } from '~/hooks/useLockManager'
+import { addressMinify } from '~/utils/strings'
 
 interface ActionBarProps {
   lockAddress: string
@@ -243,6 +244,18 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   )
 }
 
+const NotManagerBanner = () => {
+  const { account } = useAuth()
+
+  return (
+    <div className="p-2 text-base text-center text-red-700 bg-red-100 border border-red-700 rounded-xl">
+      You are connected as {addressMinify(account!)} and this address is not a
+      manager for this lock. If you want to update details, please connect as as
+      lock manager.
+    </div>
+  )
+}
+
 export const ManageLockPage = () => {
   const { network: walletNetwork, changeNetwork } = useAuth()
   const { query } = useRouter()
@@ -260,6 +273,13 @@ export const ManageLockPage = () => {
       await changeNetwork(parseInt(`${network}`))
     }
   }
+
+  const { isManager, isLoading: isLoadingLockManager } = useLockManager({
+    lockAddress,
+    network: walletNetwork!,
+  })
+
+  const showNotManagerBanner = !isLoadingLockManager && !isManager
 
   useEffect(() => {
     switchToCurrentNetwork()
@@ -279,8 +299,9 @@ export const ManageLockPage = () => {
     <div className="min-h-screen bg-ui-secondary-200 pb-60">
       <Container>
         <div className="pt-9">
-          <div className="mb-7">
+          <div className="flex flex-col gap-3 mb-7">
             <TopActionBar lockAddress={lockAddress} network={lockNetwork} />
+            {showNotManagerBanner && <NotManagerBanner />}
           </div>
           <div className="flex flex-col lg:grid lg:grid-cols-12 gap-14">
             <div className="lg:col-span-3">
