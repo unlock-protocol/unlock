@@ -20,7 +20,7 @@ describe('account helpers', () => {
       expect(passwordEncryptedPrivateKey.address).toBe(
         address.substring(2).toLowerCase()
       )
-      expect(passwordEncryptedPrivateKey.Crypto.kdfparams.n).toBe(
+      expect(passwordEncryptedPrivateKey.crypto.kdfparams.n).toBe(
         WALLET_ENCRYPTION_OPTIONS.scrypt.N
       )
     })

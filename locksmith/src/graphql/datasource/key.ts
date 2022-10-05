@@ -5,7 +5,7 @@ import networks from '@unlock-protocol/networks'
 export class Key extends GraphQLDataSource {
   constructor(public network: number) {
     super()
-    this.baseURL = networks[network].subgraphURI
+    this.baseURL = networks[network].subgraph.endpoint
   }
 
   async getKeys(args: any) {

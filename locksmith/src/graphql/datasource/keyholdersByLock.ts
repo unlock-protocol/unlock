@@ -12,7 +12,7 @@ export class KeyHoldersByLock extends GraphQLDataSource {
     page: number,
     network: number
   ): Promise<any[]> {
-    this.baseURL = networks[network].subgraphURI
+    this.baseURL = networks[network].subgraph.endpoint
 
     const genKeyHolderQuery = gql`
       query Lock($addresses: [String!], $first: Int!, $skip: Int!) {
