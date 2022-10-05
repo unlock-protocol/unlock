@@ -1,7 +1,15 @@
-import Locks from '../../pages/locks/index'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 export const DashboardContent = () => {
-  return <Locks />
+  const router = useRouter()
+
+  useEffect(() => {
+    // force redirect to new lock page
+    router.push('/locks')
+  }, [])
+
+  return null
 }
 
 export default DashboardContent
