@@ -3,10 +3,11 @@ import { MdFilterList as FilterIcon } from 'react-icons/md'
 import { BiSearch as SearchIcon } from 'react-icons/bi'
 import { useEffect, useState } from 'react'
 import { MemberFilter } from '~/unlockTypes'
-import useDebounce from '~/hooks/useDebouce'
+import { useDebounce } from 'react-use'
 import { getAddressForName } from '~/hooks/useEns'
 interface FilterBarProps {
   setFilters?: (filters: any) => void
+  setLoading?: (loading: boolean) => void
   filters?: {
     [key: string]: any
   }
@@ -40,11 +41,28 @@ export enum ExpirationStatus {
 
 export const FilterBar = ({
   setFilters,
+  setLoading,
   filters: defaultFilters,
 }: FilterBarProps) => {
-  const [query, setQuery] = useState<string>('')
-  const queryValue = useDebounce<string>(query)
+  const [query, setQuery] = useState('')
   const [rawQueryValue, setRawQueryValue] = useState('')
+  const [isReady] = useDebounce(
+    async () => {
+      const ensToAddress = await getAddressForName(rawQueryValue)
+      const search = ensToAddress || rawQueryValue
+      setQuery(search)
+    },
+    500,
+    [rawQueryValue]
+  )
+
+  const isLoading = !isReady()
+  useEffect(() => {
+    if (typeof setLoading === 'function') {
+      setLoading(isLoading)
+    }
+  }, [isLoading, setLoading])
+
   const expirations = Object.values(ExpirationStatus ?? {})
   const [openSearch, setOpenSearch] = useState(false)
   const [expandFilter, setExpandFilter] = useState(false)
@@ -68,16 +86,13 @@ export const FilterBar = ({
     setFilters({
       filterKey,
       expiration,
-      query: queryValue,
+      query,
     })
-  }, [expiration, filterKey, queryValue, setFilters])
+  }, [expiration, filterKey, query, setFilters])
 
   const onSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e?.target?.value || ''
     setRawQueryValue(value)
-    const ensToAddress = await getAddressForName(value)
-    const search = ensToAddress || value
-    setQuery(search)
   }
 
   const Expiration = () => {

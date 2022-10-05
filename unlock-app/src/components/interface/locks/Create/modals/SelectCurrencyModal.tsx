@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Token } from '@unlock-protocol/types'
 import { Button, Input } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
-import useDebounce from '~/hooks/useDebouce'
+import { useDebounce } from 'react-use'
 import { utils } from 'ethers'
 import { useConfig } from '~/utils/withConfig'
 import { CryptoIcon } from '../../elements/KeyPrice'
@@ -29,8 +29,21 @@ export const SelectCurrencyModal = ({
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
   const [contractAddress, setContractAddress] = useState<string>('')
-  const [query, setQuery] = useState<string>('')
-  const queryValue = useDebounce<string>(query)
+  const [query, setQuery] = useState('')
+  const [_isReady] = useDebounce(
+    () => {
+      setQuery(query)
+      try {
+        const address = utils.getAddress(query)
+        setContractAddress(address)
+      } catch (err: any) {
+        setContractAddress('')
+        console.error('Error: ', err)
+      }
+    },
+    500,
+    [query]
+  )
   const { tokens: tokenItems = [] } = networks[network!] || {}
   const [tokens, setTokens] = useState<Token[]>([])
 
@@ -55,26 +68,10 @@ export const SelectCurrencyModal = ({
     }
   }
 
-  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e?.target?.value || ''
-    setQuery(value)
-  }
-
-  useEffect(() => {
-    if (!queryValue?.length) return
-    try {
-      const address = utils.getAddress(queryValue)
-      setContractAddress(address)
-    } catch (err: any) {
-      setContractAddress('')
-      console.error('Error: ', err)
-    }
-  }, [queryValue])
-
   const tokensFiltered = tokens?.filter(
     (token: Token) =>
-      token?.name?.toLowerCase().includes(queryValue?.toLowerCase()) ||
-      token?.symbol?.toLowerCase().includes(queryValue?.toLowerCase())
+      token?.name?.toLowerCase().includes(query?.toLowerCase()) ||
+      token?.symbol?.toLowerCase().includes(query?.toLowerCase())
   )
 
   const getContractTokenSymbol = async () => {
@@ -82,9 +79,8 @@ export const SelectCurrencyModal = ({
   }
 
   const { isLoading: isLoadingContractToken, data: contractTokenSymbol } =
-    useQuery(
-      ['getContractTokenSymbol', contractAddress, queryValue],
-      async () => getContractTokenSymbol()
+    useQuery(['getContractTokenSymbol', contractAddress, query], async () =>
+      getContractTokenSymbol()
     )
 
   const addToken = ({
@@ -159,7 +155,7 @@ export const SelectCurrencyModal = ({
                     className="bg-transparent"
                     autoComplete="off"
                     {...register('query', {
-                      onChange: onSearch,
+                      onChange: (e) => setQuery(e.target.value),
                     })}
                   />
 
