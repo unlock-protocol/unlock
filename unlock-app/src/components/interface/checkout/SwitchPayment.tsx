@@ -13,11 +13,11 @@ export const SwitchPayment = ({
   setActivePayment,
 }: SwitchPaymentProps) => {
   return (
-    <Container>
-      <HeaderRow>
+    <div className="w-60">
+      <div className="grid grid-cols-2 mt-4">
         <Header>Switch payment to</Header>
         <ResetText onClick={() => setActivePayment('Default')}>reset</ResetText>
-      </HeaderRow>
+      </div>
       {paymentOptions.map((option) => {
         if (option === activePayment) {
           return (
@@ -32,19 +32,9 @@ export const SwitchPayment = ({
           </PaymentOption>
         )
       })}
-    </Container>
+    </div>
   )
 }
-
-const Container = styled.div`
-  width: 240px;
-`
-
-const HeaderRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-top: 17px;
-`
 
 const Header = styled.span`
   font-family: IBM Plex Sans;

@@ -541,7 +541,7 @@ export const Checkout = ({
         >
           <PaywallLogoWrapper>
             {paywallConfig?.icon && !skipPaywallIcon ? (
-              <PublisherLogo
+              <img
                 alt="Publisher Icon"
                 src={paywallConfig?.icon}
                 onError={() => setSkipPaywallIcon(true)}
@@ -593,5 +593,3 @@ const Prompt = styled.p`
 Checkout.defaultProps = {
   paywallConfig: {},
 }
-
-const PublisherLogo = styled.img``

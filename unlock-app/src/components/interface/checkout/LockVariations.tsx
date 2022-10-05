@@ -144,10 +144,6 @@ LockContainer.defaultProps = {
   selectable: true,
 }
 
-const DisabledLockContainer = styled(LockContainer)`
-  opacity: 0.5;
-`
-
 export const LockName = styled.span`
   font-size: 13px;
   color: var(--grey);
@@ -283,7 +279,11 @@ export const SoldOutLock = ({
   prepend,
 }: SoldOutLockProps) => {
   return (
-    <DisabledLockContainer data-address={address} data-testid="SoldOutLock">
+    <div
+      className="opacity-50"
+      data-address={address}
+      data-testid="SoldOutLock"
+    >
       <InfoWrapper>
         <LockName>
           {prepend}
@@ -303,7 +303,7 @@ export const SoldOutLock = ({
         </QuantityAndDuration>
         <Cross />
       </DisabledLockBody>
-    </DisabledLockContainer>
+    </div>
   )
 }
 

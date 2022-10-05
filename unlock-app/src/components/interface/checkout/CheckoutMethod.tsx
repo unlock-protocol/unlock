@@ -27,7 +27,7 @@ export const CheckoutMethod = ({
     !inClaimDisallowList(lock.address)
 
   return (
-    <Wrapper>
+    <div className="flex flex-col w-full">
       <MainChoice onClick={onWalletSelected}>
         <Icon>
           <Svg.Wallet />
@@ -56,17 +56,12 @@ export const CheckoutMethod = ({
         </Icon>
         Already have an Unlock account?
       </SecondChoice>
-    </Wrapper>
+    </div>
   )
 }
 
 export default CheckoutMethod
 
-export const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`
 const Icon = styled.div`
   margin-right: 10px;
   border-radius: 50%;

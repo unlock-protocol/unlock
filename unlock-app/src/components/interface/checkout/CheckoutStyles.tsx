@@ -41,7 +41,9 @@ export const CheckoutFooter = ({
         )}
         {account && (
           <span>
-            <Address title={account}>{shortAddr}</Address>
+            <abbr className="cursor-pointer" title={account}>
+              {shortAddr}
+            </abbr>
             <DisconnectButton onClick={onDisconnect}>x</DisconnectButton>
           </span>
         )}
@@ -61,10 +63,6 @@ export const CheckoutFooter = ({
     </FooterWrapper>
   )
 }
-
-const Address = styled.abbr`
-  cursor: pointer;
-`
 
 const DisconnectButton = styled.button`
   color: var(--grey);

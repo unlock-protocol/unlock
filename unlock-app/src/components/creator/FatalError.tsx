@@ -22,7 +22,7 @@ export const DefaultError = ({
   critical,
 }: DefaultErrorProps) => (
   <Container>
-    <Image src={illustration} />
+    <img className="w-16" src={illustration} alt="error" />
     <Message critical={critical}>
       <h1>{title}</h1>
       {children}
@@ -49,10 +49,6 @@ const Container = styled.section`
   padding: 32px;
   padding-bottom: 40px;
   grid-template-columns: 50px repeat(auto-fill, minmax(1fr));
-`
-
-const Image = styled.img`
-  width: 72px;
 `
 
 const Message = styled.div`

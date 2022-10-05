@@ -459,9 +459,13 @@ export const CryptoCheckout = ({
               {!isUnlockAccount && userIsOnWrongNetwork && (
                 <Warning>
                   Crypto wallet on wrong network.{' '}
-                  <LinkButton onClick={connectToNetwork}>
+                  <a
+                    className="cursor-pointer"
+                    rel="noopener noreferrer"
+                    onClick={connectToNetwork}
+                  >
                     Connect to {ETHEREUM_NETWORKS_NAMES[network]}{' '}
-                  </LinkButton>
+                  </a>
                   .
                 </Warning>
               )}
@@ -581,10 +585,6 @@ export const CheckoutButton = styled.div<CheckoutButtonProps>`
 CheckoutButton.defaultProps = {
   disabled: false,
 }
-
-const LinkButton = styled.a`
-  cursor: pointer;
-`
 
 const Message = styled.p`
   text-align: left;
