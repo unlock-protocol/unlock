@@ -41,7 +41,7 @@ community support in this category, has continued to use the funding they've
 recieved by adding more content to their "Learning Data Science on the Ethereum 
 Blockchain" course. Congratulations to 
 [Active Inference Institute](https://www.activeinference.org/) who caught 
-community attention with their plans to create a first of it's kind open source 
+community attention with their plans to create a first of its kind open-source 
 package Active Blockference which aims to implement Active Inference simulations 
 for congnitive modeling for the blockchain space, use Active Blockreference to 
 understand behavior in ETH/Web3 ecosystems and improve educational materials 
