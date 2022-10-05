@@ -21,7 +21,8 @@ export const optimism: NetworkConfig = {
     },
   },
   opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
+    tokenUrl: (_lockAddress, _tokenId) =>
+      `https://opensea.io/assets/optimism/${_lockAddress}/${_tokenId}`,
   },
   requiredConfirmations: 12,
   baseCurrencySymbol: 'Eth',
