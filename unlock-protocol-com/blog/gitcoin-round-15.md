@@ -34,7 +34,7 @@ for climate impact are [Green Academy](https://green-academy.webflow.io/),
 
 ## DeSci
 
-Some impressive projects leveraging Unlock Protocol for decentrailized science, 
+Some impressive projects leveraging Unlock Protocol for decentralized science, 
 or DeSci, tagged us in this round. 
 [Omni Analytics](https://twitter.com/omnianalytics) maintaining the top spot for 
 community support in this category, has continued to use the funding they've 
