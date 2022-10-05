@@ -113,7 +113,7 @@ export const CreateLockFormSummary = ({
     return await web3Service.getTransaction(hash, defaultNetwork)
   }
 
-  const { data: { confirmations = 0 } = {}, isError } = useQuery(
+  const { data, isError } = useQuery(
     ['getTransactionDetails'],
     () => {
       if (transactionHash) {
@@ -125,7 +125,8 @@ export const CreateLockFormSummary = ({
     }
   )
 
-  const isDeployed = confirmations >= requiredConfirmations && !isError
+  const isDeployed =
+    (data?.confirmations || 0) >= requiredConfirmations && !isError
 
   const currentStatus: DeployStatus = isError
     ? 'txError'
