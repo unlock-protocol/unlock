@@ -7,6 +7,7 @@ import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { VscGraphLine as GraphIcon } from 'react-icons/vsc'
+import { useLockManager } from '~/hooks/useLockManager'
 
 interface Action {
   title: string
@@ -89,6 +90,11 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
   const walletService = useWalletService()
   const { networks } = useConfig()
 
+  const { isManager } = useLockManager({
+    lockAddress,
+    network,
+  })
+
   const { baseCurrencySymbol } = networks[network] ?? {}
 
   const getNumberOfOwners = async () => {
@@ -155,11 +161,15 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
           value={formattedBalance}
           loading={loading}
           prepend={<CryptoIcon symbol={symbol} size={36} />}
-          action={{
-            title: 'Withdraw',
-            disabled: withdrawDisabled,
-            onClick: onWithDraw,
-          }}
+          action={
+            isManager
+              ? {
+                  title: 'Withdraw',
+                  disabled: withdrawDisabled,
+                  onClick: onWithDraw,
+                }
+              : undefined
+          }
         />
       </div>
     )
