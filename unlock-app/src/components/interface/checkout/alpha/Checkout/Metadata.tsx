@@ -151,7 +151,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       let recipientsData: string[] | undefined
 
       if (dataBuilder) {
-        recipientsData = await fetchRecipientsData(dataBuilder.url, {
+        recipientsData = await fetchRecipientsData(dataBuilder, {
           recipients,
           lockAddress: lock!.address,
           network: lock!.network,
