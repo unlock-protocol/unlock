@@ -86,8 +86,20 @@ namespace MetadataController {
 
   export const data = async (req: any, res: Response): Promise<any> => {
     try {
-      const address = Normalizer.ethereumAddress(req.params.address)
+      // FIX the Unlock contract's baseTokenUri is misconfigured on Arbitrum
+      // and misses a trailing slash, which means the network and address are
+      // combined. This temporary fixes it.
+      // We need to remove it when we have fixed configuration.
+      let rawAddress = req.params.address
+      let chain = req.params.chain || req.chain
+      const buggyAddress = req.params.address.match(/^([0-9]*)(0x.*)/)
+      if (buggyAddress) {
+        rawAddress = buggyAddress[2]
+        chain = buggyAddress[1]
+      }
+
       const keyId = req.params.keyId.toLowerCase()
+      const address = Normalizer.ethereumAddress(rawAddress)
       const base = `${req.protocol}://${req.headers.host}`
       const lockOwner = await presentProtectedData(req, Number(keyId), address)
 
@@ -96,7 +108,7 @@ namespace MetadataController {
         keyId,
         lockOwner,
         base,
-        parseInt(req.params.chain || req.chain)
+        parseInt(chain)
       )
 
       if (Object.keys(keyMetadata).length === 0) {
@@ -105,7 +117,7 @@ namespace MetadataController {
         res.json(keyMetadata)
       }
     } catch (error) {
-      logger.error(`Error serving metadata`)
+      logger.error(`Error serving metadata`, error)
       res.json({})
     }
   }
