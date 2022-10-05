@@ -17,7 +17,6 @@ import { ethers } from 'ethers'
 import { useQuery } from 'react-query'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { MetadataInput } from '~/unlockTypes'
-import { fetchRecipientsData } from './utils'
 
 interface Props {
   injectedProvider: unknown
