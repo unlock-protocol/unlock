@@ -11,7 +11,7 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 
 ## Creator Dashboard
 * [ ] Click on the \"Go to your Dashboard\" button and ensure that the dashboard loads as expected
-* [ ] Create a new Lock (rinkeby is the best option) and wait for it to confirm with the right values
+* [ ] Create a new Lock (using a test net is the best option) and wait for it to confirm with the right values
 * [ ] Update the price on this new lock or an older lock
 * [ ] Enable credit cards on one of your locks
 * [ ] Withdraw funds on one of the locks
