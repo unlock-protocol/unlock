@@ -51,7 +51,7 @@ around use of Active Blockference.
 
 We saw an increase in the number of web3 social projects taking advantage of 
 the power of Unlock Protocol too! [Nimi](https://nimi.io/) was a crowd favorite 
-with an dApp that allows you to aggregate your soical profiles. Other notable 
+with a dApp that allows you to aggregate your soical profiles. Other notable 
 projects include [Cobogo](https://cobogo.io) for creator profiles and 
 fundraising for the creator economy, [Maven Foundation](https://maven.foundation/) 
 is continuing their work on building tools to empower social influencers and 
