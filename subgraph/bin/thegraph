@@ -9,6 +9,7 @@ const { hideBin } = require('yargs/helpers')
 const networks = require('@unlock-protocol/networks')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
+const { networkName } = require('./networks')
 
 const executeCommand = async (command) => {
   try {
@@ -17,51 +18,58 @@ const executeCommand = async (command) => {
       console.log(`stderr: ${stderr}`)
     }
     console.log('stdout:', stdout)
-    console.log('stderr:', stderr)
   } catch (e) {
     // should contain code (exit code) and signal (that caused the termination).
     console.error(`exec error: ${e}`)
   }
 }
 
+const checkAccessToken = () => {
+  if (!process.env.SUBGRAPH_DEPLOY_KEY) {
+    throw new Error(
+      `
+      Missing access token in SUBGRAPH_DEPLOY_KEY env.
+      You can get a token from https://thegraph.com/hosted-service/dashboard?account=unlock-protocol
+      `
+    )
+  }
+}
+
 const codegen = async () => {
-  console.log('yarn codegen')
+  console.log('codegen...')
   await executeCommand('yarn codegen')
 }
 
 // Creating subgraphs is only available from hosted-service dashboard
 // yarn graph create $network_name-v2 --node https://api.thegraph.com/deploy/ --access-token $SUBGRAPH_DEPLOY_KEY"
 const build = async (network) => {
-  console.log(`Building subgraph for ${network}`)
-  executeCommand(`yarn graph build --network ${network}`)
+  console.log(`Building subgraph for ${network} (${networkName(network)})`)
+  await executeCommand(`yarn graph build --network ${networkName(network)}`)
 }
 
 const deploy = async (network, graphLabel) => {
-  if (!process.env.SUBGRAPH_DEPLOY_KEY) {
-    throw new Error(
-      'Missing --access-token from https://thegraph.com/hosted-service/dashboard?account=unlock-protocol'
-    )
-  }
-
   if (!network) {
     throw new Error('Missing network name')
   }
 
   const graphNode = 'https://api.thegraph.com/deploy/'
   const ipfs = 'https://api.thegraph.com/ipfs/'
-  const subgraphName = `unlock-protocol/${network}-v2`
+
+  const subgraphName = `unlock-protocol/${
+    network === 'xdai' ? 'gnosis' : network
+  }-v2`
   console.log(`Deploying subgraph ${subgraphName}`)
 
   const label = graphLabel ? `--version-label ${graphLabel}` : ''
   const cmd = `yarn graph deploy --product hosted-service --access-token ${process.env.SUBGRAPH_DEPLOY_KEY} --node ${graphNode} --ipfs ${ipfs} ${label} ${subgraphName}`
-  executeCommand(cmd)
+  await executeCommand(cmd)
 }
 
 const choices = Object.keys(networks).filter(
-  (d) => !['networks', 'default', 'localhost'].includes(d)
+  (d) => !['networks', 'default', 'localhost', 'rinkeby'].includes(d)
 )
 
-const argv = require('yargs/yargs')(hideBin(process.argv))
+require('yargs/yargs')(hideBin(process.argv))
   .command(
     'codegen',
     'Deploy subgraph on all networks',
@@ -90,6 +98,7 @@ const argv = require('yargs/yargs')(hideBin(process.argv))
         choices,
       }),
     async ({ network, label }) => {
+      checkAccessToken()
       await codegen()
       await build(network)
       await deploy(network, label)
@@ -100,16 +109,21 @@ const argv = require('yargs/yargs')(hideBin(process.argv))
     'Deploy subgraph on all networks',
     {},
     async ({ label }) => {
+      // check config
+      console.log(
+        `Deploying subgraphs for:\n${choices.map((c) => ` - ${c}\n`).join('')}`
+      )
+      checkAccessToken()
+
       // generate code
       await codegen()
 
       // build and deploy each network
-      await Promise.all(
-        choices.map(async (network) => {
-          await build(network)
-          await deploy(network, label)
-        })
-      )
+      for (const network of choices) {
+        await build(network)
+        await deploy(network, label)
+      }
+
       console.log('Subgraph deployments done.')
     }
   )
