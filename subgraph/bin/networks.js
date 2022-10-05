@@ -6,8 +6,11 @@ const networksConfig = require('@unlock-protocol/networks')
 
 const networkFilePath = path.join(__dirname, '..', 'networks.json')
 
+const networkName = (n) =>
+  n === 'polygon' ? 'matic' : n === 'arbitrum' ? 'arbitrum-one' : n
+
 const networks = Object.keys(networksConfig)
-  .filter((d) => !['networks', 'default', 'localhost'].includes(d))
+  .filter((d) => !['networks', 'default', 'localhost', 'rinkeby'].includes(d))
   .reduce((acc, chainName) => {
     const {
       startBlock,
@@ -32,10 +35,14 @@ const networks = Object.keys(networksConfig)
 
     return {
       ...acc,
-      [chainName]: unlock,
+      [networkName(chainName)]: unlock,
     }
   }, {})
 
 fs.writeJSONSync(networkFilePath, networks, { spaces: 2 })
 
 console.log(`Networks file saved at: ${networkFilePath}`)
+
+module.exports = {
+  networkName,
+}
