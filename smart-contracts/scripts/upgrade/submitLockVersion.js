@@ -7,7 +7,7 @@
  * yarn hardhat submit:version
  *
  * # with an existing address, contract gets deployed and specified
- * yarn hardhat submit:version --network rinkeby --public-lock-address <TEMPLATE_ADDRESS>
+ * yarn hardhat submit:version --network goerli --public-lock-address <TEMPLATE_ADDRESS>
  * ```
  * NB: You can first test on mainnet to make sure the template is deploying correctly * :
  *
@@ -66,7 +66,7 @@ async function main({ publicLockAddress } = {}) {
     functionArgs,
   })
 
-  // rinkeby and mainnet uses old multisigs so we have to send tx 1 by 1
+  // mainnet uses old multisigs so we have to send tx 1 by 1
   if (chainId == 4 || chainId == 1) {
     const nonce1 = await submitTx({
       safeAddress: multisig,

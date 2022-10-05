@@ -50,6 +50,6 @@ console.log(
     unlockEnv,
     wedlocksPrivateKey,
     sender:
-      process.env.SMTP_FROM_ADDRESS || 'Unlock <no-reply@unlock-protocol.com>', // TODO: can we do better eventually?
+      process.env.SMTP_FROM_ADDRESS || 'Unlock Labs <hello@unlock-protocol.com>', // TODO: can we do better eventually?
   })}`
 )
