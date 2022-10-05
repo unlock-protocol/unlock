@@ -20,9 +20,15 @@ import { useConfig } from '~/utils/withConfig'
 import { Container } from '../../Container'
 import { RiPagesLine as PageIcon } from 'react-icons/ri'
 import { FilterBar } from './elements/FilterBar'
+import { buildCSV } from '~/utils/csv'
+import FileSaver from 'file-saver'
+import { FaFileCsv as CsvIcon } from 'react-icons/fa'
+import { useStorageService } from '~/utils/withStorageService'
+import { useWalletService } from '~/utils/withWalletService'
 
 interface ActionBarProps {
   lockAddress: string
+  network: number
 }
 
 interface TopActionBarProps {
@@ -30,9 +36,52 @@ interface TopActionBarProps {
   network: number
 }
 
-const ActionBar = ({ lockAddress }: ActionBarProps) => {
+const defaultCols = [
+  'token',
+  'lockName',
+  'expiration',
+  'keyholderAddress',
+  'lockAddress',
+  'checkedInAt',
+  'email',
+]
+
+export function downloadAsCSV(cols: string[], metadata: any[]) {
+  const csv = buildCSV(cols, metadata)
+
+  const blob = new Blob([csv], {
+    type: 'data:text/csv;charset=utf-8',
+  })
+  FileSaver.saveAs(blob, 'members.csv')
+}
+
+const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
+  const { account } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
-  const { network } = useAuth()
+  const storageService = useStorageService()
+  const walletService = useWalletService()
+
+  const getMembers = async () => {
+    await storageService.loginPrompt({
+      walletService,
+      address: account!,
+      chainId: network,
+    })
+    return storageService.getKeys({
+      lockAddress,
+      network,
+      filters: {
+        query: '',
+        filterKey: 'owner',
+        expiration: 'all',
+      },
+    })
+  }
+
+  const onDownloadCsv = async () => {
+    const members = await getMembers()
+    downloadAsCSV(defaultCols, members)
+  }
 
   return (
     <>
@@ -44,7 +93,18 @@ const ActionBar = ({ lockAddress }: ActionBarProps) => {
       />
       <div className="flex items-center justify-between">
         <span className="text-xl font-bold text-brand-ui-primary">Members</span>
+
         <div className="flex gap-2">
+          <Button
+            variant="outlined-primary"
+            size="small"
+            onClick={onDownloadCsv}
+          >
+            <div className="flex items-center gap-2">
+              <CsvIcon className="text-brand-ui-primary" size={16} />
+              <span className="text-brand-ui-primary">CSV</span>
+            </div>
+          </Button>
           <Button
             variant="outlined-primary"
             size="small"
@@ -279,7 +339,7 @@ export const ManageLockPage = () => {
             </div>
             <div className="flex flex-col gap-6 lg:col-span-9">
               <TotalBar lockAddress={lockAddress} network={lockNetwork} />
-              <ActionBar lockAddress={lockAddress} />
+              <ActionBar lockAddress={lockAddress} network={lockNetwork} />
               <FilterBar
                 filters={filters}
                 setFilters={setFilters}
