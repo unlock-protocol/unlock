@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
 import { useLock } from '../../../hooks/useLock'
 import { Lock } from './Lock'
 import { LoadingLock } from './LockVariations'
@@ -64,7 +63,7 @@ export const Locks = ({
   onSelected,
 }: LocksProps) => {
   return (
-    <Wrapper>
+    <div className="flex flex-col w-full gap-6">
       {Object.entries(locks).map(
         // @ts-expect-error
         ([address, lockProps]: [string, LockProps]) => {
@@ -82,17 +81,10 @@ export const Locks = ({
           )
         }
       )}
-    </Wrapper>
+    </div>
   )
 }
 
 Locks.defaultProps = {
   network: 1,
 }
-
-const Wrapper = styled.div`
-  margin-bottom: 24px;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`

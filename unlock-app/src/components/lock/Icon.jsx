@@ -58,7 +58,12 @@ export function Icon({ lock }) {
           setImageSrc(image)
         }}
       />
-      <LockLogo alt="logo" src={imageSrc} onError={handleError} />
+      <img
+        className="max-h-12"
+        alt="logo"
+        src={imageSrc}
+        onError={handleError}
+      />
     </Wrapper>
   )
 }
@@ -82,10 +87,6 @@ const Overlay = styled.div`
   background-color: var(--grey);
   justify-content: center;
   align-items: center;
-`
-
-const LockLogo = styled.img`
-  max-width: 48px;
 `
 
 const Wrapper = styled.div`

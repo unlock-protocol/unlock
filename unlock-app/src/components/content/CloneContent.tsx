@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
 import Head from 'next/head'
-import styled from 'styled-components'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import Account from '../interface/Account'
 import Layout from '../interface/Layout'
@@ -8,6 +7,7 @@ import Loading from '../interface/Loading'
 import { pageTitle } from '../../constants'
 import { ConfigContext } from '../../utils/withConfig'
 import { ToastHelper } from '../helpers/toast.helper'
+import { Button } from '@unlock-protocol/ui'
 
 interface CloneContentProps {
   query: any
@@ -145,17 +145,4 @@ export const CloneContent = ({ query }: CloneContentProps) => {
   )
 }
 
-const Button = styled.button`
-  cursor: pointer;
-  border: 3px solid #d8d8d8;
-  border-radius: 15px;
-  font-size: 1.3em;
-  background-color: transparent;
-  display: block;
-  padding: 10px 20px;
-  color: rgb(106, 106, 106);
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-`
 export default CloneContent
