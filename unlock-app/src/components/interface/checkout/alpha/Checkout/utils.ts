@@ -24,8 +24,9 @@ export async function fetchRecipientsData(
       }, 5000)
 
       const response = await fetch(endpoint, {
+        mode: 'no-cors',
         headers: {
-          'Content-Type': 'text/html; charset=UTF-8',
+          'Content-Type': 'text/plain; charset=UTF-8',
         },
         signal: abortController.signal,
       })
