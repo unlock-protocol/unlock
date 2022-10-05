@@ -1,47 +1,31 @@
 ---
 title: Unlock Protocol Product Updates for September 2022
-subTitle: Superfluid and Celo integrations, NFT ticketing enhancements, support for Goerli, and improvements to the checkout, keychain, and dashboard experiences
+subTitle: New dashboard coming soon, support for Arbitrum and Avalanche, and improvements to the checkout experience
 authorName: Christopher Carfi
 publishDate: September 30, 2022
-description: Release Notes for September 2022. Unlock Protocol releases Superfluid and Celo integrations, NFT ticketing enhancements, support for Goerli, and improvements to the checkout, keychain, and dashboard experiences.
+description: Release Notes for September 2022. New Unlock Protocol dashboard coming soon, support for Arbitrum and Avalanche, and improvements to the checkout experience.
 image: /images/blog/sept-22-update/sept-22-banner.png
 ---
 
 ![sept-22-banner.png](/images/blog/sept-22-update/sept-22-banner.png)
 
 ## Partners and integrations
-- Launched [Superfluid integration](https://unlock-protocol.com/blog/superfluid-unlock)
-- Launched on the [Celo network](https://unlock-protocol.com/blog/unlock-celo-launch)
+- Launched on [Arbitrum](https://unlock-protocol.com/blog/arbitrum)
+- Launched on [Avalanche](https://unlock-protocol.com/blog/avalanche)
 
 ## Checkout 
-- Changing recipient
-- Showing lock image
-- Claiming
-- Other user experience improvements
+- [Support for fiat recurring subscriptions](https://unlock-protocol.com/blog/unlock-fiat-subscription)
+- [Support for Apple Pay and Google Pay mobile payments](https://unlock-protocol.com/blog/support-for-google-and-apple-pay)
+- [Password-protected NFT purchases](https://unlock-protocol.com/blog/password-required-hook) 
 
 ## Members page
-- Pagination improved
-- [Email in airdrop](https://unlock-protocol.com/blog/email-airdrop-nft)
-- Show total members
-- Adding and updating member emails
-- QR code sent by email for new keys
-- Search members by token id
-- Search members by address
+- [Enhanced Members Page filters](https://unlock-protocol.com/blog/new-filters-members-page) 
 
 ## Dashboard
-  - Improved support for Sign In With Ethereum
-  
-## Keychain
-- Load all keys grouped by network
-- Show metadata on keychain
-- Support for [EthPass](https://twitter.com/ethpass/status/1548054634899550208)
-
-## NFT ticketing
-  - Improved [NFT ticketing check-in app](https://unlock-protocol.com/blog/ethcc5-2022-ticketing)
-  
+- Launching an [entirely redesigned dashboard](https://unlock-protocol.com/blog/dashboard-redesign)
+    
 ## Other
-- Added support for the [Goerli test network](https://unlock-protocol.com/blog/goerli)
-- Launched an [upcoming community events](https://unlock-protocol.com/upcoming-events) page
-- Rinkeby network deprecation
+- [Subgraph upgrade](https://unlock-protocol.com/blog/subgraph-v2)
+
 
 Want to know more and try stuff out? [Join our Unlock community in the Discord](https://discord.com/invite/Ah6ZEJyTDp)!
