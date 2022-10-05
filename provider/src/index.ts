@@ -3,7 +3,6 @@ export interface Env {}
 // This is the list of networks currently supported
 const supportedNetworks = {
   '1': 'https://eth-mainnet.alchemyapi.io/v2/6idtzGwDtRbzil3s6QbYHr2Q_WBfn100',
-  '4': 'https://eth-rinkeby.alchemyapi.io/v2/n0NXRSZ9olpkJUPDLBC00Es75jaqysyT',
   '5': 'https://eth-goerli.g.alchemy.com/v2/W3whZVqRNvcuBkI0_ual5xcoYi2jBRGH',
   '10': 'https://opt-mainnet.g.alchemy.com/v2/m-rf3hR-NDY7a8GQ2IryRITCFrB3bhNq',
   '56': 'https://sparkling-soft-owl.bsc.quiknode.pro/a03a1e9b9672664fa7a21fd6c48c359c6a6f16db/',

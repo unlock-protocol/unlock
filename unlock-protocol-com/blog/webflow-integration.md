@@ -102,7 +102,7 @@ You need to add the Paywall Script, Paywall Configuration, Event Handler and Unl
 <!-- Unlock Paywall Application Configuration -->
 <script>
   var unlockProtocolConfig = {
-    network: "100", // Network ID (1 is for mainnet, 4 for rinkeby... etc)
+    network: "100", // Network ID (1 is for mainnet, 5 for goerli, 100 for Gnosis chain... etc)
     locks: {
         "0xef6389F33ac557405C961030Efcc3b1CE3e6bc17": {
           "name": "Webflow Integration"

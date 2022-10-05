@@ -263,7 +263,7 @@ export const useAccount = (address: string, network: number) => {
       network,
       lock
     )
-    return response.transactionHash
+    return response
   }
 
   const setUserMetadataData = async (

@@ -43,7 +43,7 @@ import {
 
 // mock contract functions
 import './mocks'
-import { Key } from '../generated/schema'
+import { Lock } from '../generated/schema'
 
 const keyID = `${lockAddress}-${tokenId}`
 const keyIDV8 = `${lockAddressV8}-${tokenId}`
@@ -96,6 +96,15 @@ describe('Key transfers', () => {
     assert.fieldEquals('Key', keyID, 'tokenURI', `${tokenURI}`)
     assert.fieldEquals('Key', keyID, 'expiration', `${expiration}`)
     assert.fieldEquals('Key', keyID, 'createdAtBlock', '1')
+  })
+
+  test('Burn of a key', () => {
+    const burnEvent = createTransferEvent(
+      Address.fromString(keyOwnerAddress),
+      Address.fromString(nullAddress),
+      BigInt.fromU32(tokenId)
+    )
+    handleTransfer(burnEvent)
   })
 
   test('Transfer of an existing key', () => {
