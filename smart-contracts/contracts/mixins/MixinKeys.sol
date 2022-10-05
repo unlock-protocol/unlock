@@ -277,7 +277,8 @@ contract MixinKeys is
       onKeyExtendHook.onKeyExtend(
         _tokenId, 
         msg.sender,
-        newTimestamp
+        newTimestamp,
+        expirationTimestamp
       );
     }
   } 

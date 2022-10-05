@@ -1,4 +1,5 @@
 const { ethers } = require('hardhat')
+const { time } = require('@openzeppelin/test-helpers')
 const {
   deployERC20,
   deployLock,
@@ -12,11 +13,11 @@ const someTokens = ethers.utils.parseUnits('10', 'ether')
 
 contract('Lock / onKeyExtendHook', (accounts) => {
   let lock
-  let tsBefore
   let tokenId
   let keyOwner
   let lockOwner
   let testEventHooks
+  let expirationDuration
 
   before(async () => {
     ;[lockOwner, keyOwner] = await ethers.getSigners()
@@ -48,26 +49,69 @@ contract('Lock / onKeyExtendHook', (accounts) => {
       ADDRESS_ZERO,
       testEventHooks.address
     )
-    ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
-    tsBefore = await lock.keyExpirationTimestampFor(tokenId)
-
-    // extend the key
-    await lock.connect(keyOwner).extend(keyPrice, tokenId, ADDRESS_ZERO, [])
+    expirationDuration = await lock.expirationDuration()
+    await lock.setMaxKeysPerAddress(10)
   })
 
-  it('key cancels should log the hook event', async () => {
-    const { args } = (await testEventHooks.queryFilter('OnKeyExtend')).find(
-      ({ event }) => event === 'OnKeyExtend'
-    )
-    console.log(args)
-    assert.equal(args.msgSender, lock.address)
-    assert.equal(args.tokenId.toString(), tokenId.toString())
-    assert.equal(args.from, keyOwner.address)
-    const expirationDuration = await lock.expirationDuration()
-    assert.equal(
-      tsBefore.add(expirationDuration).toString(),
-      args.newTimestamp.toString()
-    )
+  describe('extend', () => {
+    it('key cancels should log the hook event', async () => {
+      ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
+      const tsBefore = await lock.keyExpirationTimestampFor(tokenId)
+      await lock.connect(keyOwner).extend(keyPrice, tokenId, ADDRESS_ZERO, [])
+      const { args } = (await testEventHooks.queryFilter('OnKeyExtend')).filter(
+        ({ event }) => event === 'OnKeyExtend'
+      )[0]
+      assert.equal(args.msgSender, lock.address)
+      assert.equal(args.tokenId.toString(), tokenId.toString())
+      assert.equal(args.from, keyOwner.address)
+      assert.equal(
+        tsBefore.add(expirationDuration).toString(),
+        args.newTimestamp.toString()
+      )
+      assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
+    })
+  })
+
+  describe('grantKeyExtension', () => {
+    it('key cancels should log the hook event', async () => {
+      ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
+      const tsBefore = await lock.keyExpirationTimestampFor(tokenId)
+      await lock.grantKeyExtension(tokenId, expirationDuration)
+      const { args } = (await testEventHooks.queryFilter('OnKeyExtend')).filter(
+        ({ event }) => event === 'OnKeyExtend'
+      )[1]
+      assert.equal(args.msgSender, lock.address)
+      assert.equal(args.tokenId.toString(), tokenId.toString())
+      assert.equal(args.from, lockOwner.address)
+      assert.equal(
+        tsBefore.add(expirationDuration).toString(),
+        args.newTimestamp.toString()
+      )
+      assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
+    })
+  })
+
+  describe('renewMembershipFor', () => {
+    it('key cancels should log the hook event', async () => {
+      ;({ tokenId } = await purchaseKey(lock, keyOwner.address, true))
+      // expire key
+      const newExpirationTs = await lock.keyExpirationTimestampFor(tokenId)
+      await time.increaseTo(newExpirationTs.toNumber() - 1)
+      // renew
+      const tsBefore = await lock.keyExpirationTimestampFor(tokenId)
+      await lock.renewMembershipFor(tokenId, ADDRESS_ZERO)
+      const { args } = (await testEventHooks.queryFilter('OnKeyExtend')).filter(
+        ({ event }) => event === 'OnKeyExtend'
+      )[2]
+      assert.equal(args.msgSender, lock.address)
+      assert.equal(args.tokenId.toString(), tokenId.toString())
+      assert.equal(args.from, lockOwner.address)
+      assert.equal(
+        tsBefore.add(expirationDuration).toString(),
+        args.newTimestamp.toString()
+      )
+      assert.equal(tsBefore.toString(), args.prevTimestamp.toString())
+    })
   })
 
   it('cannot set the hook to a non-contract address', async () => {
