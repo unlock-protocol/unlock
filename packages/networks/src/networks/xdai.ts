@@ -10,7 +10,9 @@ export const xdai: NetworkConfig = {
   name: 'Gnosis Chain',
   blockTime: 5000,
   requiredConfirmations: 12,
-  subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
+  subgraph: {
+    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
+  },
   explorer: {
     name: 'Blockscout',
     urls: {

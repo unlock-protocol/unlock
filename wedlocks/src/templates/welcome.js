@@ -1,11 +1,8 @@
 import handlebars from 'handlebars'
 
 export default {
-  subject: handlebars.compile(
-    'Welcome to Unlock! Please, read this email carefuly'
-  ),
-  html: handlebars.compile(
-    `<h1>Welcome to Unlock!</h1> 
+  subject: 'Welcome to Unlock! Please, read this email carefuly',
+  html: `<h1>Welcome to Unlock!</h1> 
     
     <p>We're excited to have you with us!</p>
 
@@ -22,6 +19,5 @@ export default {
     {{recoveryLink}}
     </small>
     </code>
-`
-  ),
+`,
 }

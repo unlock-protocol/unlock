@@ -10,8 +10,10 @@ export const rinkeby: NetworkConfig = {
   id: 4,
   name: 'Rinkeby (Testnet, Support ends 10/4/2022)',
   blockTime: 8000,
-  subgraphURI:
-    'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
+  subgraph: {
+    endpoint:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-rinkeby',
+  },
   explorer: {
     name: 'Etherscan',
     urls: {

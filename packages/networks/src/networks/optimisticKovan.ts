@@ -7,7 +7,9 @@ export const optimisticKovan: NetworkConfig = {
   id: 69,
   name: 'Optimistic Kovan',
   blockTime: 8000,
-  subgraphURI: '',
+  subgraph: {
+    endpoint: '',
+  },
   explorer: {
     name: 'Etherscan',
     urls: {

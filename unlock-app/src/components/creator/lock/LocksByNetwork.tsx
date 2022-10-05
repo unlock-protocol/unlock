@@ -32,13 +32,15 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
 
   const graphService = useContext(GraphServiceContext)
 
-  const { isLoading, data: locks } = useQuery([owner], async () => {
+  const { isLoading, data: locks = [] } = useQuery([owner], async () => {
     const items = Object.values(networks)
-      .filter(({ subgraphURI }) => !subgraphURI?.includes('localhost'))
-      .map(async ({ id, subgraphURI }) => {
-        graphService.connect(subgraphURI)
-        const locksByNetwork = await graphService.locksByManager(owner, id)
-        return [id, locksByNetwork as any]
+      .filter(({ subgraph }) => !subgraph.endpoint.includes('localhost'))
+      .map(async ({ id, subgraph }) => {
+        if (subgraph.endpoint) {
+          graphService.connect(subgraph.endpoint)
+          const locksByNetwork = await graphService.locksByManager(owner, id)
+          return [id, locksByNetwork as any]
+        }
       })
     return Promise.all(items)
   })
@@ -53,7 +55,7 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
     if (typeof onChange === 'function') {
       let selected: any = null
       let selectedNetwork: any = null
-      locks?.map(([network, items]) => {
+      locks?.map(([network, items] = []) => {
         if (selected) return
         selected = items.find((item: any) => item.id === id)
         selectedNetwork = network
@@ -79,7 +81,7 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
         <option value="" disabled>
           Choose Lock
         </option>
-        {locks?.map(([networkId, items]) => {
+        {locks?.map(([networkId, items] = []) => {
           if (!items?.length) return null
           return items.map(({ id, name, address }: Lock & { id: string }) => {
             const minifiedAddress = addressMinify(address || '')

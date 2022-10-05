@@ -18,6 +18,8 @@ import { useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useConfig } from '~/utils/withConfig'
 import { Container } from '../../Container'
+import { RiPagesLine as PageIcon } from 'react-icons/ri'
+import { FilterBar } from './elements/FilterBar'
 
 interface ActionBarProps {
   lockAddress: string
@@ -61,10 +63,14 @@ const ActionBar = ({ lockAddress }: ActionBarProps) => {
 
 const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   const router = useRouter()
+  const [generatedURL, setGeneratedURL] = useState('')
   const [isOpen, setIsOpen] = useState(false)
   const [linkGenerated, setLinkGenerated] = useState(false)
   const web3Service = useWeb3Service()
   const config = useConfig()
+
+  const DEMO_URL = `/demo?network=${network}&lock=${lockAddress}`
+  const ICON_URL = `${config.services.storage.host}/lock/${lockAddress}/icon`
 
   const getLock = async () => {
     return web3Service.getLock(lockAddress, network)
@@ -76,10 +82,10 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
 
   const {
     register,
-    getValues,
     formState: { isValid, errors },
     resetField,
     setValue,
+    handleSubmit,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -87,12 +93,11 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
     },
   })
 
-  const { url } = getValues()
-  const [isCopied, setCopied] = useClipboard(url || '', {
+  const [isCopied, setCopied] = useClipboard(generatedURL, {
     successDuration: 2000,
   })
 
-  const onGenerateURL = async () => {
+  const onGenerateURL = async ({ url }: any) => {
     let recurringPayments
     if (
       lock.publicLockVersion >= 10 &&
@@ -104,25 +109,25 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
 
     const checkoutURLConfig = {
       locks: {
-        [lock.address]: {
-          network: lock.network,
+        [lockAddress]: {
+          network,
           recurringPayments,
         },
       },
       pessimistic: true,
       persistentCheckout: true,
-      icon: `${config.services.storage.host}/lock/${lock.address}/icon`,
+      icon: ICON_URL,
     }
 
-    const urlGenerate = new URL(
-      `/checkout?redirectUri=${encodeURIComponent(
-        url
-      )}&paywallConfig=${encodeURIComponent(
-        JSON.stringify(checkoutURLConfig)
-      )}`,
-      window.location.href
+    const urlGenerate = new URL('/checkout', window.location.href)
+    urlGenerate.searchParams.append('redirectURI', url)
+    urlGenerate.searchParams.append(
+      'paywallConfig',
+      encodeURIComponent(JSON.stringify(checkoutURLConfig))
     )
+
     setValue('url', urlGenerate?.toString())
+    setGeneratedURL(urlGenerate?.toString())
     setLinkGenerated(true)
   }
 
@@ -144,7 +149,7 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
             easily purchase this membership
           </span>
           <div>
-            <form>
+            <form onSubmit={handleSubmit(onGenerateURL)}>
               <Input
                 placeholder="https://example.com"
                 type="url"
@@ -152,48 +157,52 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
                   required: true,
                 })}
               />
-            </form>
-            <span className="text-xs leading-none">
-              Enter the URL to which your members are redirected when they have
-              a membership
-            </span>
-            {errors?.url && (
-              <span className="block mt-2 text-xs text-red-700">
-                Please enter a valid URL
+
+              <span className="text-xs leading-none">
+                Enter the URL to which your members are redirected when they
+                have a membership
               </span>
-            )}
-          </div>
-          {!linkGenerated ? (
-            <Button disabled={!isValid} onClick={onGenerateURL}>
-              <div className="flex items-center gap-2">
-                <span className="text-base">Generate</span>
-                <ShareOptionIcon size={20} />
+              {errors?.url && (
+                <span className="block mt-2 text-xs text-red-700">
+                  Please enter a valid URL
+                </span>
+              )}
+              <div className="flex flex-col gap-3 mt-4">
+                {!linkGenerated ? (
+                  <Button disabled={!isValid} type="submit">
+                    <div className="flex items-center gap-2">
+                      <span className="text-base">Generate</span>
+                      <ShareOptionIcon size={20} />
+                    </div>
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      variant="outlined-primary"
+                      disabled={!isValid}
+                      onClick={setCopied}
+                      className="w-full"
+                    >
+                      <div className="flex items-center gap-2 text-brand-ui-primary">
+                        <span className="text-base">Copy</span>
+                        <ShareOptionIcon size={20} />
+                      </div>
+                    </Button>
+                    <Button
+                      variant="transparent"
+                      className="w-full mt-auto"
+                      onClick={() => {
+                        resetField('url')
+                        setLinkGenerated(false)
+                      }}
+                    >
+                      Reset
+                    </Button>
+                  </>
+                )}
               </div>
-            </Button>
-          ) : (
-            <>
-              <Button
-                variant="outlined-primary"
-                disabled={!isValid}
-                onClick={setCopied}
-              >
-                <div className="flex items-center gap-2 text-brand-ui-primary">
-                  <span className="text-base">Copy</span>
-                  <ShareOptionIcon size={20} />
-                </div>
-              </Button>
-              <Button
-                variant="transparent"
-                className="w-full mt-auto"
-                onClick={() => {
-                  resetField('url')
-                  setLinkGenerated(false)
-                }}
-              >
-                Reset
-              </Button>
-            </>
-          )}
+            </form>
+          </div>
         </div>
       </Drawer>
       <div className="flex items-center justify-between">
@@ -204,25 +213,54 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
             onClick={() => router.back()}
           />
         </Button>
-        <Button className="p-3 md:px-6" onClick={() => setIsOpen(true)}>
-          <div className="flex items-center gap-2">
-            <LinkIcon size={15} />
-            <span className="hidden md:block">Generate URL</span>
-          </div>
-        </Button>
+        <div className="flex gap-3">
+          <Button variant="outlined-primary">
+            <a href={DEMO_URL} target="_blank" rel="noreferrer">
+              <div className="flex items-center gap-2 text-brand-ui-primary">
+                <PageIcon size={15} />
+                <span className="hidden md:block">View demo</span>
+              </div>
+            </a>
+          </Button>
+          <Button className="p-3 md:px-6" onClick={() => setIsOpen(true)}>
+            <div className="flex items-center gap-2">
+              <LinkIcon size={15} />
+              <span className="hidden md:block">Generate URL</span>
+            </div>
+          </Button>
+        </div>
       </div>
     </>
   )
 }
 
 export const ManageLockPage = () => {
-  const { network: walletNetwork } = useAuth()
+  const { network: walletNetwork, changeNetwork } = useAuth()
   const { query } = useRouter()
-
+  const [loading, setLoading] = useState(false)
   const { address, network } = query ?? {}
 
   const lockNetwork = parseInt(network as string)
   const lockAddress = address as string
+
+  // let's force to switch network based on the lockAddress
+  const switchToCurrentNetwork = async () => {
+    const differentNetwork = walletNetwork != network
+
+    if (differentNetwork) {
+      await changeNetwork(parseInt(`${network}`))
+    }
+  }
+
+  useEffect(() => {
+    switchToCurrentNetwork()
+  }, [])
+
+  const [filters, setFilters] = useState({
+    query: '',
+    filterKey: 'owner',
+    expiration: 'all',
+  })
 
   if (!walletNetwork) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
@@ -242,7 +280,17 @@ export const ManageLockPage = () => {
             <div className="flex flex-col gap-6 lg:col-span-9">
               <TotalBar lockAddress={lockAddress} network={lockNetwork} />
               <ActionBar lockAddress={lockAddress} />
-              <Members lockAddress={lockAddress} network={lockNetwork} />
+              <FilterBar
+                filters={filters}
+                setFilters={setFilters}
+                setLoading={setLoading}
+              />
+              <Members
+                lockAddress={lockAddress}
+                network={lockNetwork}
+                filters={filters}
+                loading={loading}
+              />
             </div>
           </div>
         </div>
