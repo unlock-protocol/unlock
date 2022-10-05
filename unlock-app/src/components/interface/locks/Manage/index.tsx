@@ -20,6 +20,7 @@ import { useConfig } from '~/utils/withConfig'
 import { Container } from '../../Container'
 import { RiPagesLine as PageIcon } from 'react-icons/ri'
 import { FilterBar } from './elements/FilterBar'
+import { useLockManager } from '~/hooks/useLockManager'
 
 interface ActionBarProps {
   lockAddress: string
@@ -34,6 +35,11 @@ const ActionBar = ({ lockAddress }: ActionBarProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const { network } = useAuth()
 
+  const { isManager } = useLockManager({
+    lockAddress,
+    network: network!,
+  })
+
   return (
     <>
       <AirdropKeysDrawer
@@ -44,18 +50,21 @@ const ActionBar = ({ lockAddress }: ActionBarProps) => {
       />
       <div className="flex items-center justify-between">
         <span className="text-xl font-bold text-brand-ui-primary">Members</span>
-        <div className="flex gap-2">
-          <Button
-            variant="outlined-primary"
-            size="small"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <div className="flex items-center gap-2">
-              <KeyIcon className="text-brand-ui-primary" size={16} />
-              <span className="text-brand-ui-primary">Airdrop Keys</span>
-            </div>
-          </Button>
-        </div>
+        {isManager && (
+          <div className="flex gap-2">
+            <Button
+              variant="outlined-primary"
+              size="small"
+              onClick={() => setIsOpen(!isOpen)}
+              disabled={!isManager}
+            >
+              <div className="flex items-center gap-2">
+                <KeyIcon className="text-brand-ui-primary" size={16} />
+                <span className="text-brand-ui-primary">Airdrop Keys</span>
+              </div>
+            </Button>
+          </div>
+        )}
       </div>
     </>
   )
