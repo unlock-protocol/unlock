@@ -1,5 +1,15 @@
 import * as react from 'react';
 
+interface SVGRProps$e {
+    title?: string;
+    titleId?: string;
+}
+
+interface SVGRProps$d {
+    title?: string;
+    titleId?: string;
+}
+
 interface SVGRProps$c {
     title?: string;
     titleId?: string;
@@ -132,6 +142,8 @@ declare const _default: {
         Webflow: (props: any) => JSX.Element;
         Withdraw: (props: any) => JSX.Element;
         Wordpress: (props: any) => JSX.Element;
+        Status: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$d) => JSX.Element;
+        Frame: ({ title, titleId, ...props }: react.SVGProps<SVGSVGElement> & SVGRProps$e) => JSX.Element;
     };
 };
 

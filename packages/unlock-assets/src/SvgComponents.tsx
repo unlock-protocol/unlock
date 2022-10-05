@@ -64,6 +64,8 @@ import Withdraw from '../build/svg-component/Withdraw'
 import Wordpress from '../build/svg-component/Wordpress'
 import UnlockMonogram from '../build/svg-component/UnlockMonogram'
 import RocketLaunch from '../build/svg-component/RocketLaunch'
+import Status from '../build/svg-component/Status'
+import Frame from '../build/svg-component/Frame'
 
 function wrapViewBox(
   WrappedComponent: typeof About,
@@ -141,4 +143,6 @@ export default {
   Webflow: wrapViewBox(Webflow, '-4 -8 32 32'),
   Withdraw: wrapViewBox(Withdraw, '0 0 24 24'),
   Wordpress: wrapViewBox(Wordpress, '0 0 340 340'),
+  Status,
+  Frame,
 }

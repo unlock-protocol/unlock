@@ -2806,6 +2806,66 @@ var SvgRocketLaunch = (_a) => {
 };
 var RocketLaunch_default = SvgRocketLaunch;
 
+// build/svg-component/Status.tsx
+var React66 = __toESM(require("react"));
+var SvgStatus = (_a) => {
+  var _b = _a, {
+    title,
+    titleId
+  } = _b, props = __objRest(_b, [
+    "title",
+    "titleId"
+  ]);
+  return /* @__PURE__ */ React66.createElement("svg", __spreadValues({
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 768.4 759",
+    xmlSpace: "preserve",
+    "aria-labelledby": titleId
+  }, props), title ? /* @__PURE__ */ React66.createElement("title", {
+    id: titleId
+  }, title) : null, /* @__PURE__ */ React66.createElement("circle", {
+    cx: 389.2,
+    cy: 379.4,
+    r: 278.8,
+    style: {
+      fill: "#fff",
+      stroke: "#000",
+      strokeMiterlimit: 10
+    }
+  }), /* @__PURE__ */ React66.createElement("path", {
+    d: "M444.7 375.9c-45.6 2.6-74.2-8-119.8-5.3-11.3.6-22.5 2.3-33.6 4.9 6.7-84.1 66.4-157.7 147.6-162.4 49.8-2.9 99.6 27.8 102.3 77.6 2.7 48.9-34.7 81.7-96.5 85.2zM322.2 548c-47.7 2.7-95.4-26-98-72.6-2.5-45.8 33.3-76.4 92.5-79.8 43.7-2.5 71.1 7.5 114.7 5 10.8-.6 21.6-2.1 32.2-4.6-6.4 78.7-63.6 147.6-141.4 152zM380.5 0C170.4 0 0 169.9 0 379.4s170.4 379.4 380.5 379.4S761 589 761 379.4 590.6 0 380.5 0",
+    style: {
+      fillRule: "evenodd",
+      clipRule: "evenodd",
+      fill: "#4360df"
+    }
+  }));
+};
+var Status_default = SvgStatus;
+
+// build/svg-component/Frame.tsx
+var React67 = __toESM(require("react"));
+var SvgFrame = (_a) => {
+  var _b = _a, {
+    title,
+    titleId
+  } = _b, props = __objRest(_b, [
+    "title",
+    "titleId"
+  ]);
+  return /* @__PURE__ */ React67.createElement("svg", __spreadValues({
+    xmlns: "http://www.w3.org/2000/svg",
+    viewBox: "0 0 153.4 152.9",
+    "aria-labelledby": titleId
+  }, props), title ? /* @__PURE__ */ React67.createElement("title", {
+    id: titleId
+  }, title) : null, /* @__PURE__ */ React67.createElement("path", {
+    fill: "currentColor",
+    d: "M145.1 75.6v-58c0-5.1-4.2-9.3-9.3-9.3H77.7c-.6 0-1.1-.2-1.6-.6l-7-7c-.4-.4-1-.7-1.6-.7H9.3C4.2 0 0 4.1 0 9.3v58c0 .6.2 1.1.6 1.6l7 7c.4.4.7 1 .7 1.6v58c0 5.1 4.2 9.3 9.3 9.3h58.2c.6 0 1.1.2 1.6.6l7 7c.4.4 1 .6 1.6.6h58.2c5.1 0 9.3-4.1 9.3-9.3v-58c0-.6-.2-1.1-.6-1.6l-7-7c-.5-.4-.8-.9-.8-1.5zm-39.5 31H47.9c-.7 0-1.3-.6-1.3-1.3V47.7c0-.7.6-1.3 1.3-1.3h57.7c.7 0 1.3.6 1.3 1.3v57.6c.1.7-.5 1.3-1.3 1.3z"
+  }));
+};
+var Frame_default = SvgFrame;
+
 // src/SvgComponents.tsx
 function wrapViewBox(WrappedComponent, viewBox) {
   const Wrapped = (props) => /* @__PURE__ */ import_react.default.createElement(WrappedComponent, __spreadValues({
@@ -2878,7 +2938,9 @@ var SvgComponents_default = {
   WalletConnect: wrapViewBox(WalletConnect_default, "0 -1 32 32"),
   Webflow: wrapViewBox(Webflow_default, "-4 -8 32 32"),
   Withdraw: wrapViewBox(Withdraw_default, "0 0 24 24"),
-  Wordpress: wrapViewBox(Wordpress_default, "0 0 340 340")
+  Wordpress: wrapViewBox(Wordpress_default, "0 0 340 340"),
+  Status: Status_default,
+  Frame: Frame_default
 };
 
 // src/index.tsx
