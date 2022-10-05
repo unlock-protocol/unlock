@@ -1,7 +1,7 @@
-import LocksListPage from '../interface/locks/List'
+import Locks from '../../pages/locks/index'
 
 export const DashboardContent = () => {
-  return <LocksListPage />
+  return <Locks />
 }
 
 export default DashboardContent
