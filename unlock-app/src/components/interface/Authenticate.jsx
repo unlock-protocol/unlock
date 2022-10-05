@@ -43,13 +43,13 @@ const Providers = ({ network, networkConfig, children, authenticate }) => {
   const apolloClient = useMemo(
     () =>
       new ApolloClient({
-        uri: networkConfig[network].subgraphURI,
+        uri: networkConfig[network].subgraph.endpoint,
       }),
     [networkConfig, network]
   )
 
   const graphService = useMemo(
-    () => new GraphService(networkConfig[network].subgraphURI),
+    () => new GraphService(networkConfig[network].subgrap?.endpoint),
     [networkConfig, network]
   )
 
