@@ -1,9 +1,9 @@
 ---
 title: Unlock Protocol Product Updates for September 2022
-subTitle: New dashboard coming soon, support for Arbitrum and Avalanche, and improvements to the checkout experience
+subTitle: New dashboard preview, support for Arbitrum and Avalanche, and improvements to the checkout experience
 authorName: Christopher Carfi
 publishDate: September 30, 2022
-description: Release Notes for September 2022. New Unlock Protocol dashboard coming soon, support for Arbitrum and Avalanche, and improvements to the checkout experience.
+description: Release Notes for September 2022. New Unlock Protocol dashboard preview, support for Arbitrum and Avalanche, and improvements to the checkout experience.
 image: /images/blog/sept-22-update/sept-22-banner.png
 ---
 
@@ -22,7 +22,7 @@ image: /images/blog/sept-22-update/sept-22-banner.png
 - [Enhanced Members Page filters](https://unlock-protocol.com/blog/new-filters-members-page) 
 
 ## Dashboard
-- Launching an [entirely redesigned dashboard](https://unlock-protocol.com/blog/dashboard-redesign)
+- Preview of an [entirely redesigned dashboard](https://unlock-protocol.com/blog/dashboard-redesign)
     
 ## Other
 - [Subgraph upgrade](https://unlock-protocol.com/blog/subgraph-v2)
