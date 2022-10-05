@@ -134,7 +134,3 @@ export const TransactionPendingButton = ({
     </LoadingButton>
   )
 }
-
-export const LinkButton = styled.a`
-  cursor: pointer;
-`
