@@ -171,7 +171,7 @@ export const createLock = async (
  * @param {*} network
  */
 export const useLocks = (owner, network) => {
-  const { networks } = useConfig()
+  const networks = useConfig()
   const web3Service = useWeb3Service()
   const walletService = useWalletService()
   const storageService = useStorageService()
