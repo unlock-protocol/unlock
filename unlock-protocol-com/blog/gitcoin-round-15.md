@@ -29,7 +29,7 @@ supported project in both climate change and in the entire ecosystem. So far
 they've raised more than $81k through Gitcoin Grants and we're so glad to see the 
 progress they've made with that funding. Some other projects with great potential 
 for climate impact are [Green Academy](https://green-academy.webflow.io/), 
-[Plants & Pillas](https://www.plantsandpillars3.com/), 
+[Plants & Pillars](https://www.plantsandpillars3.com/), 
 [dMeter](https://dmeter.super.site/) and [Foresta](https://foresta.live/).
 
 ## DeSci
