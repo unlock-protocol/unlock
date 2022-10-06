@@ -38,6 +38,7 @@ contract('Lock / onKeyCancelHook', (accounts) => {
         accounts[1],
         ADDRESS_ZERO,
         ADDRESS_ZERO,
+        ADDRESS_ZERO,
         ADDRESS_ZERO
       ),
       'INVALID_HOOK(1)'

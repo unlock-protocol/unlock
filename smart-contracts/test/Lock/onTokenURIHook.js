@@ -45,6 +45,7 @@ contract('Lock / onTokenURIHook', (accounts) => {
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         accounts[3],
+        ADDRESS_ZERO,
         ADDRESS_ZERO
       ),
       'INVALID_HOOK(3)'
