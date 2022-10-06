@@ -97,21 +97,21 @@ export const AppLayout = ({
         <div className="min-w-full min-h-screen">
           <div className="pt-8">
             <Container>
-              {showLogin ? (
-                <div className="flex justify-center">
-                  <WalletNotConnected />
-                </div>
-              ) : (
-                <div className="flex flex-col gap-10">
-                  {(title || description) && (
-                    <div className="flex flex-col gap-4">
-                      {title && <h1 className="text-4xl font-bold">{title}</h1>}
-                      {description && <div>{description}</div>}
-                    </div>
-                  )}
-                  {children}
-                </div>
-              )}
+              <div className="flex flex-col gap-10">
+                {(title || description) && (
+                  <div className="flex flex-col gap-4">
+                    {title && <h1 className="text-4xl font-bold">{title}</h1>}
+                    {description && <div>{description}</div>}
+                  </div>
+                )}
+                {showLogin ? (
+                  <div className="flex justify-center">
+                    <WalletNotConnected />
+                  </div>
+                ) : (
+                  <div>{children}</div>
+                )}
+              </div>
             </Container>
           </div>
         </div>
