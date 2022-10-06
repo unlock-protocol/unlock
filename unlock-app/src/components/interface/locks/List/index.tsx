@@ -1,8 +1,6 @@
-import { Button } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { Container } from '../../Container'
 import { ImageBar } from '../Manage/elements/ImageBar'
 import { LockList } from './elements/LockList'
 
