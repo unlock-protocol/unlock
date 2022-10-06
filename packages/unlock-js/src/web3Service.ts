@@ -7,6 +7,7 @@ import {
   getErc20Decimals,
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
+import { TransactionOptions, WalletServiceCallback } from './types'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -513,13 +514,17 @@ export default class Web3Service extends UnlockService {
    * @param tokenId
    * @returns
    */
-  async getCancelAndRefundValueFor(params: {
-    lockAddress: string
-    owner: string
-    tokenAddress: string
-    network: number
-    tokenId: string
-  }) {
+  async getCancelAndRefundValueFor(
+    params: {
+      lockAddress: string
+      owner: string
+      tokenAddress: string
+      network: number
+      tokenId: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
     const { lockAddress, network } = params
     const version = await this.lockContractAbiVersion(
       lockAddress,
@@ -532,6 +537,7 @@ export default class Web3Service extends UnlockService {
 
     return await version.getCancelAndRefundValueFor.bind(this)(
       params,
+      transactionOptions,
       this.providerForNetwork(network)
     )
   }
