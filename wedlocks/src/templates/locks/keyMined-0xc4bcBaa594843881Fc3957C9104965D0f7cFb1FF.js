@@ -26,7 +26,7 @@ export default {
   </p>
   
   <ul>
-  <li>Chainlink</li>
+  <li>Chainlink ⛓️</li>
   <li>Dopex_io 💎</li>
   <li>GMX_IO 🫐</li>
   <li>Hop Protocol 🐇</li>
@@ -36,7 +36,7 @@ export default {
   <li>Synapse Protocol 🟣</li>
   <li>Treasure DAO ✨</li>
   <li>Uniswap 🦄</li>
-  <li>UnlockProtocol 🔓</li>
+  <li>Unlock Protocol 🔐</li>
   <li>Vesta Finance 🦺</li>
   </ul>  
   `,
