@@ -197,7 +197,8 @@ export const claimMembership = async (
   walletService: any,
   address: string,
   network: number,
-  lock: string
+  lock: string,
+  data?: string
 ) => {
   const typedData = generateTypedData(
     {
@@ -205,6 +206,7 @@ export const claimMembership = async (
         publicKey: address,
         lock,
         network,
+        data,
       },
     },
     'Claim Membership'
