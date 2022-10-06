@@ -3,7 +3,6 @@ import Head from 'next/head'
 import Loading from '../interface/Loading'
 import { ConfigContext } from '../../utils/withConfig'
 import Media from '../../theme/media'
-import { Button } from '@unlock-protocol/ui'
 
 const usePaywall = () => {
   const config = useContext(ConfigContext)
@@ -103,14 +102,14 @@ export const DemoContent = () => {
       <Head>
         <title>Unlock Demo Example - Unlock Times</title>
       </Head>
-      <div className="flex w-3/5 mx-auto font-[SourceSerifPro]">
+      <div className="flex min-w-[500] max-w-[800px] mx-auto font-[SourceSerifPro]">
         <div className="mx-auto">
-          <h1 className="text-4xl font-bold text-gray-500 font-[UnifrakturCook] mb-12">
+          <h1 className="text-4xl font-bold text-gray-600 font-[UnifrakturCook] mb-12">
             Unlock Times
           </h1>
           <div>
-            <div className="w-20 h-1 mb-2 bg-gray-300"></div>
-            <h1 className="mb-10 text-4xl font-bold text-gray-500">
+            <div className="block w-20 h-1 mb-5 bg-gray-300"></div>
+            <h1 className="block mb-10 text-4xl font-bold text-gray-600">
               Demoing the Unlock Paywall
             </h1>
             <span className="block mb-8 text-4xl leading-10 text-gray-600">
@@ -121,7 +120,7 @@ export const DemoContent = () => {
               {error && <p>{error}</p>}
               {loading && <Loading />}
               {!loading && !error && (
-                <div className="text-base text-gray-600">
+                <div className="text-lg text-gray-600">
                   <p>
                     It’s become dangerously clear in the last few years that the
                     business model we thought would support a vibrant, open web
@@ -144,7 +143,7 @@ export const DemoContent = () => {
                     <div
                       style={{
                         background:
-                          'linear-gradient(rgb(253, 250, 247, 0), rgb(253, 250, 247, 1) 70%)',
+                          'linear-gradient(rgba(253, 250, 247, 0), rgb(250, 250, 250) 70%)',
                       }}
                       className={`absolute top-0 w-full h-full ${
                         locked ? 'block' : 'hidden'
@@ -160,13 +159,12 @@ export const DemoContent = () => {
                     Support our work and read the rest of this article by
                     becoming a member today!
                     <div className="flex justify-center w-full mt-4">
-                      <Button
-                        size="large"
+                      <button
                         onClick={unlock}
-                        className="tracking-wide"
+                        className="px-12 py-3 text-2xl tracking-wide border-[3px] border-gray-300"
                       >
                         Join us
-                      </Button>
+                      </button>
                     </div>
                   </div>
 
