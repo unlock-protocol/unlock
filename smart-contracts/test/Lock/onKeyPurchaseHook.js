@@ -12,6 +12,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
   const to = accounts[2]
   const dataField = ethers.utils.hexlify(ethers.utils.toUtf8Bytes('TestData'))
   let keyPrice
+  let tokenId
 
   beforeEach(async () => {
     lock = await deployLock()
@@ -40,7 +41,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
   describe('when enabled without discount', () => {
     beforeEach(async () => {
       await testEventHooks.configure(true, '0')
-      await lock.purchase(
+      const tx = await lock.purchase(
         [],
         [to],
         [ADDRESS_ZERO],
@@ -51,12 +52,14 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
           value: keyPrice.toFixed(),
         }
       )
+      ;({ tokenId } = tx.logs[0].args)
     })
 
     it('key sales should log the hook event', async () => {
       const log = (await testEventHooks.getPastEvents('OnKeyPurchase'))[0]
         .returnValues
       assert.equal(log.lock, lock.address)
+      assert.equal(log.tokenId, tokenId)
       assert.equal(log.from, from)
       assert.equal(log.recipient, to)
       assert.equal(log.referrer, ADDRESS_ZERO)
