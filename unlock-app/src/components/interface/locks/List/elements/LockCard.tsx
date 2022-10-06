@@ -44,8 +44,8 @@ const Detail = ({ label, prepend, icon, value = '-' }: DetailProps) => {
         <span className="text-xs">{label}</span>
       </div>
       <div className="flex items-center gap-2">
-        {prepend && <>{prepend}</>}
-        <span className="text-lg font-bold">{value}</span>
+        {prepend && <div>{prepend}</div>}
+        <span className="text-lg font-bold truncate">{value}</span>
       </div>
     </div>
   )
@@ -195,7 +195,7 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
               </div>
             </div>
           </div>
-          <div className="grid items-center grid-cols-3 gap-3 md:grid-cols-4 md:col-span-3 md:gap-14">
+          <div className="grid items-center grid-cols-3 gap-3 md:col-span-3 md:gap-14">
             <div className="col-span-1">
               <Detail
                 label="Price"
@@ -204,7 +204,7 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
                 prepend={<CryptoIcon symbol={symbol} size={25} />}
               />
             </div>
-            <div className="col-span-1 md:col-span-2">
+            <div className="col-span-1">
               <Detail label="Key Duration" value={duration} icon={TimeIcon} />
             </div>
             <div className="col-span-1">
