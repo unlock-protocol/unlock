@@ -12,6 +12,8 @@ export const celo: NetworkConfig = {
   blockTime: 1000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo-v2',
   },
   explorer: {
     name: 'Celoscan',

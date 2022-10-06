@@ -11,6 +11,8 @@ export const goerli: NetworkConfig = {
   blockTime: 1000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli-v2',
   },
   explorer: {
     name: 'Goerli (Testnet)',

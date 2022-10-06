@@ -12,6 +12,8 @@ export const arbitrum: NetworkConfig = {
     endpoint:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum',
     networkName: 'arbitrum-one',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum-v2',
   },
   explorer: {
     name: 'Arbitrum',

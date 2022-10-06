@@ -11,6 +11,8 @@ export const polygon: NetworkConfig = {
   blockTime: 1000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2',
     networkName: 'matic',
   },
   explorer: {

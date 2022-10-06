@@ -11,6 +11,8 @@ export const avalanche: NetworkConfig = {
   subgraph: {
     endpoint:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche-v2',
   },
   explorer: {
     name: 'Snowtrace (Avalanche)',
