@@ -19,10 +19,10 @@ const CreditCardSettings = ({ lock: lockFromProps, network }) => {
     setFiatPricing(await getCreditCardPricing())
   }, [lock.address])
   return (
-    <Wrapper>
+    <div className="pt-5 pl-12 pb-14">
       <Details>
         <DetailTitle>Credit Card</DetailTitle>
-        <DetailBlock>
+        <div className="flex">
           <Text>
             We are using Stripe to enable credit card payments on your lock. The
             funds are directly accessible for you on Stripe and do not transit
@@ -36,9 +36,9 @@ const CreditCardSettings = ({ lock: lockFromProps, network }) => {
             )}
           </Text>
           <ConnectCard lock={lock} lockNetwork={network} />
-        </DetailBlock>
+        </div>
       </Details>
-    </Wrapper>
+    </div>
   )
 }
 
@@ -49,12 +49,6 @@ CreditCardSettings.propTypes = {
 
 export default CreditCardSettings
 
-const Wrapper = styled.section`
-  padding-top: 20px;
-  padding-left: 50px;
-  padding-bottom: 50px;
-`
-
 const Details = styled.div`
   display: block;
   font-family: IBM Plex Sans;
@@ -64,10 +58,6 @@ const DetailTitle = styled.h3`
   color: var(--blue);
   margin-bottom: 0px;
   margin-top: 8px;
-`
-
-const DetailBlock = styled.div`
-  display: flex;
 `
 
 const Text = styled.p`
