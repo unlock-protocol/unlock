@@ -2,7 +2,7 @@ import { addressMinify } from '~/utils/strings'
 import { useConfig } from '~/utils/withConfig'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { Button, Icon } from '@unlock-protocol/ui'
+import { Button, Icon, Tooltip } from '@unlock-protocol/ui'
 import React, { useEffect, useState } from 'react'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
@@ -45,7 +45,9 @@ const Detail = ({ label, prepend, icon, value = '-' }: DetailProps) => {
       </div>
       <div className="flex items-center gap-2">
         {prepend && <div>{prepend}</div>}
-        <span className="text-lg font-bold truncate">{value}</span>
+        <Tooltip tip={value} label={label} side="bottom">
+          <span className="text-lg font-bold truncate">{value}</span>
+        </Tooltip>
       </div>
     </div>
   )
