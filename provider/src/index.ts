@@ -77,6 +77,7 @@ export default {
       }
 
       return new Response(JSON.stringify(json), {
+        status: 200,
         headers: {
           'content-type': 'application/json',
           'access-control-allow-origin': '*',
