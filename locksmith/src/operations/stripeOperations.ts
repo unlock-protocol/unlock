@@ -13,7 +13,7 @@ const { Op } = Sequelize
 const config = require('../../config/config')
 
 export const createStripeCustomer = async (
-  stripeToken: string,
+  stripeToken: string | undefined,
   publicKey: string
 ): Promise<string> => {
   const stripe = new Stripe(config.stripeSecret, {
@@ -113,15 +113,13 @@ export const disconnectStripe = async ({
     where: { lock },
   })
 
-  let deleted = false
   let deletedItems = 0
   if (stripeConnectLockDetails) {
     const account = await stripe.accounts.retrieve(
       stripeConnectLockDetails.stripeAccount
     )
 
-    // delete stripe connection and remove record from db
-    const deletedAccount = await stripe.accounts.deletePerson(account.id, lock)
+    // delete record from db to unlink stripe
     const deletedLockConnect = await StripeConnectLock.destroy({
       where: {
         lock,
@@ -131,10 +129,9 @@ export const disconnectStripe = async ({
       },
     })
 
-    deleted = deletedAccount?.deleted || false
-    deletedItems = deletedLockConnect || 0
+    deletedItems = deletedLockConnect
   }
-  return deleted && deletedItems > 0
+  return deletedItems > 0
 }
 
 /**
@@ -182,8 +179,8 @@ export const connectStripe = async (
 
   return await stripe.accountLinks.create({
     account: account.id,
-    refresh_url: `${baseUrl}/dashboard?lock=${lock}&network=${chain}&stripe=0`,
-    return_url: `${baseUrl}/dashboard?lock=${lock}&network=${chain}&stripe=1`,
+    refresh_url: `${baseUrl}/locks/lock?address=${lock}&network=${chain}&stripe=0`,
+    return_url: `${baseUrl}/locks/lock?address=${lock}&network=${chain}&stripe=1`,
     type: 'account_onboarding',
   })
 }

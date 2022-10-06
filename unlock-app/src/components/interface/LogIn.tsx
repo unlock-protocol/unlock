@@ -87,8 +87,8 @@ const LogIn = ({
   }, [])
 
   return (
-    <div className="flex flex-col mx-auto md:w-1/2">
-      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+    <div className="flex flex-col w-full mx-auto">
+      <form className="flex flex-col gap-4 mt-5" onSubmit={handleSubmit}>
         <Input
           name="emailAddress"
           autoComplete="username"
@@ -122,10 +122,16 @@ const LogIn = ({
         {error && <span className="text-red-500 font-sm">{error}</span>}
       </form>
       <p className="mt-2">
-        {onCancel && <a onClick={onCancel}>Cancel</a>}
+        {onCancel && (
+          <a className="underline" onClick={onCancel}>
+            Cancel
+          </a>
+        )}
         {useWallet && (
           <p>
-            <a onClick={useWallet}>Use crypto wallet</a>
+            <a className="underline" onClick={useWallet}>
+              Use crypto wallet
+            </a>
           </p>
         )}
       </p>

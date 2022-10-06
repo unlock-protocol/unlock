@@ -10,7 +10,7 @@ async function fetchKeysToRenew(network: number, page = 0) {
 
   // timeframe to check for renewal
   const end = Math.floor(Date.now() / 1000)
-  const start = end - 60 * 15 // expired during the last 15 min
+  const start = end - 60 * 30 // expired during the last 30 min
 
   const keys = await keysSource.getKeysToRenew(
     start,
@@ -67,10 +67,15 @@ async function renewKeys(network: number) {
 export async function renewAllKeys() {
   const tasks: Promise<void>[] = []
   for (const network of Object.values(networks)) {
-    if (network.id !== 31337) {
-      const task = renewKeys(network.id)
-      tasks.push(task)
+    // Don't run renewal jobs on test networks in production
+    if (process.env.UNLOCK_ENV === 'prod' && network.isTestNetwork) {
+      continue
     }
+    if (network.id === 31337) {
+      continue
+    }
+    const task = renewKeys(network.id)
+    tasks.push(task)
   }
   await Promise.allSettled(tasks)
 }

@@ -95,6 +95,7 @@ const ExtendKeyDurationForm = ({
         tokenId,
         duration: extendDuration as number,
       },
+      {} /** TransactionParams */,
       () => void 0
     )
   }

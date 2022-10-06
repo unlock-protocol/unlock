@@ -356,7 +356,7 @@ export class MetadataController {
             )
         )
         .map((user) => {
-          const { userAddress } = user
+          const userAddress = Normalizer.ethereumAddress(user.userAddress)
           const lockAddress = Normalizer.ethereumAddress(user.lockAddress)
           const tokenAddress = lockAddress
           const metadata = UserMetadata.parse(user.metadata)

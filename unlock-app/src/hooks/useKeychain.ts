@@ -25,13 +25,17 @@ export const useKeychain = ({
   }
 
   const getRefundAmount = async () => {
-    return web3Service.getCancelAndRefundValueFor({
-      lockAddress,
-      owner,
-      tokenAddress,
-      network,
-      tokenId: keyId,
-    })
+    return web3Service.getCancelAndRefundValueFor(
+      {
+        lockAddress,
+        owner,
+        tokenAddress,
+        network,
+        tokenId: keyId,
+      },
+      {} /** transactionParams */,
+      () => true
+    )
   }
 
   const getAmounts = async (): Promise<{

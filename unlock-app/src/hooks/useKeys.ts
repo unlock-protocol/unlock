@@ -32,6 +32,7 @@ export const useKeys = ({
   const web3Service = useWeb3Service()
 
   const [keys, setKeys] = useState<KeyItem[]>([])
+  const [allKeys, setAllKeys] = useState<KeyItem[]>([])
   const [keysCount, setKeysCount] = useState<{ active: number; total: number }>(
     {
       active: 0,
@@ -65,7 +66,8 @@ export const useKeys = ({
 
   const getKeysCount = async () => {
     const graphService = new GraphService()
-    graphService.connect(networks[network]!.subgraphURI!)
+    const { subgraph } = networks[network]
+    graphService.connect(subgraph.endpoint!)
     const {
       data: { activeKeys },
     } = await graphService.keysCount(locks)
@@ -108,6 +110,7 @@ export const useKeys = ({
     results.forEach((result) => {
       keys = [...keys, ...result]
     })
+    setAllKeys(keys)
     const { items, hasNextPage } = paginate({
       items: keys,
       page: filters.page,
@@ -123,6 +126,7 @@ export const useKeys = ({
 
   return {
     getKeys,
+    allKeys,
     columns,
     hasNextPage,
     getKeysCount,

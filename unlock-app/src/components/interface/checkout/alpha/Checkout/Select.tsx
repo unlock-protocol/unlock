@@ -17,6 +17,7 @@ import {
   RiCheckboxCircleFill as CheckIcon,
   RiTimer2Line as DurationIcon,
   RiCoupon2Line as QuantityIcon,
+  RiExternalLinkLine as ExternalLinkIcon,
 } from 'react-icons/ri'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
@@ -105,19 +106,25 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     ['memberships', account, JSON.stringify(paywallConfig)],
     async () => {
       const memberships = await Promise.all(
-        Object.entries(paywallConfig.locks).map(async ([lock, props]) => {
-          const lockNetwork = props.network || paywallConfig.network || 1
-          const valid = await web3Service.getHasValidKey(
-            lock,
-            account!,
-            lockNetwork
-          )
-          if (valid) {
-            return lock
+        Object.entries(paywallConfig.locks).map(
+          async ([lockAddress, props]) => {
+            const lockNetwork = props.network || paywallConfig.network || 1
+            const [member, total] = await Promise.all([
+              web3Service.getHasValidKey(lockAddress, account!, lockNetwork),
+              web3Service.totalKeys(lockAddress, account!, lockNetwork),
+            ])
+            // if not member but total is above 0
+            const expired = !member && total > 0
+            return {
+              lock: lockAddress,
+              expired,
+              member,
+              network: lockNetwork,
+            }
           }
-        })
+        )
       )
-      return memberships.filter((item) => item)
+      return memberships
     },
     {
       enabled: !!account,
@@ -127,13 +134,15 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const lockNetwork = lock?.network ? config?.networks?.[lock.network] : null
   const isNetworkSwitchRequired =
     lockNetwork && lock?.network !== network && !isUnlockAccount
-  const existingMember = !!memberships?.includes(lock?.address)
+
+  const membership = memberships?.find((item) => item.lock === lock?.address)
 
   const isDisabled =
     isLocksLoading ||
     isMembershipsLoading ||
+    !lock ||
     // if locks are sold out and the user is not an existing member of the lock
-    (lock?.isSoldOut && !existingMember)
+    (lock?.isSoldOut && !(membership?.member || membership?.expired))
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -200,7 +209,7 @@ export function Select({ checkoutService, injectedProvider }: Props) {
 
                           return (
                             <Fragment>
-                              <div className="flex w-full gap-x-2">
+                              <div className="flex w-full gap-x-4">
                                 <div>
                                   <Avatar.Root className="inline-flex items-center justify-center w-14 h-14 rounded-xl">
                                     <Avatar.Image
@@ -213,12 +222,31 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                                   </Avatar.Root>
                                 </div>
                                 <div className="flex items-start justify-between w-full">
-                                  <RadioGroup.Label
-                                    className="text-lg font-bold"
-                                    as="p"
-                                  >
-                                    {item.name}
-                                  </RadioGroup.Label>
+                                  <div className="flex flex-col gap-1">
+                                    <RadioGroup.Label
+                                      className="text-lg font-bold line-clamp-1"
+                                      as="p"
+                                    >
+                                      {item.name}
+                                      {item?.recurringPayments &&
+                                        ` x ${item?.recurringPayments}`}
+                                    </RadioGroup.Label>
+                                    <a
+                                      href={config.networks[
+                                        item.network
+                                      ].explorer.urls.address(item.address)}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-2 text-sm cursor-pointer text-brand-ui-primary hover:opacity-75"
+                                    >
+                                      View Contract
+                                      <Icon
+                                        icon={ExternalLinkIcon}
+                                        size="small"
+                                      />
+                                    </a>
+                                  </div>
+
                                   <Pricing
                                     keyPrice={formattedData.formattedKeyPrice}
                                     usdPrice={formattedData.convertedKeyPrice}
@@ -307,8 +335,12 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                   send({
                     type: 'SELECT_LOCK',
                     lock,
-                    existingMember,
+                    existingMember: !!membership?.member,
                     skipQuantity,
+                    // unlock account are unable to renew
+                    expiredMember: isUnlockAccount
+                      ? false
+                      : !!membership?.expired,
                   })
                 }}
               >

@@ -16,6 +16,7 @@ on:
           "packages/paywall",
           "smart-contracts",
           "smart-contract-extensions",
+          "subgraph",
           "unlock-protocol-com",
           "wedlocks",
           "unlock-app"
@@ -46,7 +47,6 @@ jobs:
 
   integration-tests:
     name: Integration Tests
-    needs: unit-tests
     runs-on: ubuntu-latest
     env:
       DOCKER_BUILDKIT: 1

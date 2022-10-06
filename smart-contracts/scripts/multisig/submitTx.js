@@ -12,7 +12,6 @@ const EthersAdapter = require('@gnosis.pm/safe-ethers-lib').default
 // see https://docs.gnosis-safe.io/backend/available-services
 const gnosisServiceURLs = {
   1: 'https://safe-transaction.mainnet.gnosis.io/',
-  4: 'https://safe-transaction.rinkeby.gnosis.io/',
   5: 'https://safe-transaction.goerli.gnosis.io/',
   10: 'https://safe-transaction.optimism.gnosis.io/',
   56: 'https://safe-transaction.bsc.gnosis.io/',
@@ -36,7 +35,7 @@ async function main({ safeAddress, tx, signer }) {
   // check safe version
   const version = await getSafeVersion(safeAddress)
 
-  // mainnet + rinkeby still use older versions of the safe
+  // mainnet still use older versions of the safe
   if (version === 'old') {
     const nonce = await submitTxOldMultisig({ safeAddress, tx, signer })
     return nonce

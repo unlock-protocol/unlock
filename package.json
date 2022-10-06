@@ -8,17 +8,17 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@babel/core": "7.18.10",
-    "@superfluid-finance/sdk-core": "0.5.2",
-    "@typescript-eslint/eslint-plugin": "5.32.0",
-    "@typescript-eslint/parser": "5.32.0",
+    "@babel/core": "7.19.3",
+    "@superfluid-finance/sdk-core": "0.5.6",
+    "@typescript-eslint/eslint-plugin": "5.38.1",
+    "@typescript-eslint/parser": "5.38.1",
     "babel-eslint": "10.1.0",
-    "babel-plugin-polyfill-corejs2": "0.3.2",
+    "babel-plugin-polyfill-corejs2": "0.3.3",
     "node-fetch": "2.6.7",
-    "typescript": "4.7.4"
+    "typescript": "4.8.4"
   },
   "devDependencies": {
-    "eslint": "8.21.0",
+    "eslint": "8.24.0",
     "eslint-plugin-prettier": "latest",
     "husky": "8.0.1",
     "lint-staged": "13.0.3",
@@ -29,6 +29,7 @@
     "smart-contracts",
     "smart-contract-extensions",
     "subgraph",
+    "tests",
     "unlock-app",
     "unlock-js",
     "unlock-protocol-com",
@@ -39,7 +40,7 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/networks,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/contracts,@unlock-protocol/ui}'",
+    "packages": "yarn workspaces foreach --from '{@unlock-protocol/types,@unlock-protocol/networks,@unlock-protocol/paywall,@unlock-protocol/unlock-js,@unlock-protocol/contracts,@unlock-protocol/ui,@unlock-protocol/hardhat-plugin}'",
     "packages:clean": "yarn packages --parallel run clean",
     "packages:build": "yarn packages --topological-dev run build",
     "packages:publish": "yarn packages --no-private npm publish ",

@@ -27,6 +27,13 @@ export interface NetworkDeploy {
   unlockAddress: string
   startBlock: number
 }
+
+export interface Token {
+  name: string
+  address: string
+  symbol: string
+  decimals: number
+}
 export interface NetworkConfig {
   id: number
   name: string
@@ -38,7 +45,11 @@ export interface NetworkConfig {
   unlockAddress?: string
   serializerAddress?: string
   multisig?: string
-  subgraphURI?: string
+  subgraph: {
+    endpoint:string
+    endpointV2?:string
+    networkName? :string // for thegraph hosted service
+  },
   ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
@@ -67,6 +78,7 @@ export interface NetworkConfig {
   previousDeploys?: NetworkDeploy[]
   description?: string
   teamMultisig?: string
+  tokens?: Token[]
 }
 
 export interface NetworkConfigs {

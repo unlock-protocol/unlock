@@ -1,5 +1,6 @@
 export async function setExpirationDuration(
   { lockAddress, expirationDuration },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)

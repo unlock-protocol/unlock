@@ -22,7 +22,7 @@ const navigationButtons = [
 const appButtons = [
   {
     Button: PageNavButtons.Dashboard,
-    page: '/dashboard',
+    page: '/locks',
   },
   {
     Button: PageNavButtons.Settings,
@@ -71,17 +71,17 @@ const Header = ({ forContent, title }) => {
           {title}
         </h1>
       )}
-      <AppButtons>
+      <div className="flex items-center h-full gap-4 pt-5 md:pt-0">
         {onAppPage &&
           appButtons.map(({ Button }) => (
             <Button key={Button} activePath={onAppPage} />
           ))}
-      </AppButtons>
-      <DesktopButtons>
+      </div>
+      <div className="items-center hidden h-full gap-4 pt-5 md:flex">
         {navigationButtons.map((NavButton, index) => (
           <NavButton key={NavButton.constructor.name} />
         ))}
-      </DesktopButtons>
+      </div>
       <MobileToggle visibilityToggle={!!menu} onClick={toggleMenu}>
         <Buttons.Bars size="48px" />
         <Buttons.ChevronUp size="48px" />
@@ -122,32 +122,6 @@ const TopHeader = styled.header`
     grid-template-rows: ${(props) =>
       props.visibilityToggle ? '[first] auto [second]' : '[first]'} auto;
     height: auto;
-  `};
-`
-
-const DesktopButtons = styled.div`
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(${() => navigationButtons.length}, 24px);
-  grid-auto-flow: column;
-  align-items: center;
-  height: 100%;
-
-  ${Media.phone`
-    display: none;
-  `};
-`
-
-const AppButtons = styled.div`
-  display: grid;
-  grid-gap: 16px;
-  grid-template-columns: repeat(${() => appButtons.length}, 24px);
-  grid-auto-flow: column;
-  align-items: center;
-  height: 100%;
-
-  ${Media.phone`
-      margin-top: 20px;
   `};
 `
 
@@ -232,11 +206,4 @@ const MobilePopover = styled.div`
   ${Media.nophone`
     display: none;
   `};
-`
-
-const LogoContainer = styled.div`
-  ${Media.nophone`
-    display: none;
-  `};
-  padding-top: 2px;
 `

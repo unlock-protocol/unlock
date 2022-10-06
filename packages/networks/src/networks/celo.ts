@@ -10,7 +10,9 @@ export const celo: NetworkConfig = {
   description:
     'Celo is a EVM compatible proof-of-stake blockchain designed for mobile with the ability to pay gas with tokens or stablecoins.',
   blockTime: 1000,
-  subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo',
+  subgraph: {
+    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/celo',
+  },
   explorer: {
     name: 'Celoscan',
     urls: {
@@ -36,6 +38,14 @@ export const celo: NetworkConfig = {
   previousDeploys: [],
   isTestNetwork: false,
   teamMultisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
+  tokens: [
+    {
+      name: 'USD Coin',
+      symbol: 'USDC',
+      decimals: 6,
+      address: '0xef4229c8c3250c675f21bcefa42f58efbff6002a',
+    },
+  ],
 }
 
 export default celo

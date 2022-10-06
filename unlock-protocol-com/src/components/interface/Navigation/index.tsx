@@ -507,7 +507,7 @@ function Mobile() {
           <div className="flex flex-col gap-4 p-4 bg-white rounded-b-xl">
             <Link
               className="font-medium"
-              href="https://docs.unlock-protocol.com/unlock/creators/faq"
+              href="https://unlock-protocol.com/guides/"
             >
               For Creators
             </Link>

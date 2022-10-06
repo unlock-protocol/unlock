@@ -1,6 +1,6 @@
 import { KeyHolder } from '../../../src/graphql/datasource'
 
-describe('KeyHolder', () => {
+describe.skip('KeyHolder', () => {
   describe('get', () => {
     describe('when data is returned for the data source', () => {
       it('return the requested data', async () => {

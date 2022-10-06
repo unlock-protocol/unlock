@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { Lock, WalletServiceCallback } from './types'
+import { Lock, WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 
@@ -85,12 +85,17 @@ export default class WalletService extends UnlockService {
    * @return Promise<PropTypes.number> newKeyPrice
    */
   async updateKeyPrice(
-    params: { lockAddress: string },
+    params: { lockAddress: string; keyPrice: string },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    return version.updateKeyPrice.bind(this)(params, callback)
+    return version.updateKeyPrice.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   /**
@@ -101,13 +106,14 @@ export default class WalletService extends UnlockService {
    */
   async createLock(
     lock: Lock,
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ): Promise<string> {
     const version = await this.unlockContractAbiVersion()
     if (lock && typeof lock.publicLockVersion !== 'undefined' && version < 11) {
       throw new Error('Lock creation at version only available for lock v11+')
     }
-    return version.createLock.bind(this)(lock, callback)
+    return version.createLock.bind(this)(lock, transactionOptions, callback)
   }
 
   async unlockContractAbiVersion() {
@@ -140,11 +146,16 @@ export default class WalletService extends UnlockService {
     params: {
       templateAddress: string
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.templateAddress) throw new Error('Missing templateAddress')
     const version = await this.lockContractAbiVersion(params.templateAddress)
-    return version.initializeTemplate.bind(this)(params, callback)
+    return version.initializeTemplate.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   /**
@@ -167,13 +178,14 @@ export default class WalletService extends UnlockService {
       erc20Address?: string
       decimals?: number
       recurringPayments?: number
-      referer?: string
+      referrer?: string
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    return version.purchaseKey.bind(this)(params, callback)
+    return version.purchaseKey.bind(this)(params, transactionOptions, callback)
   }
 
   /**
@@ -195,14 +207,38 @@ export default class WalletService extends UnlockService {
       data?: string[]
       erc20Address?: string
       decimals?: number
-      referers?: (string | null)[]
+      referrers?: (string | null)[]
       recurringPayments?: number[]
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    return version.purchaseKeys.bind(this)(params, callback)
+    return version.purchaseKeys.bind(this)(params, transactionOptions, callback)
+  }
+
+  /**
+   * Function to renew a membership, callable by anyone.
+   * This is only useful for ERC20 locks for which the key owner has approved
+   * a large enough token amount!
+   * @param params
+   * @param callback
+   * @returns
+   */
+  async renewMembershipFor(
+    params: { lockAddress: string; referrer: string | null; tokenId: string },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.tokenId) throw new Error('Missing tokenId')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    return version.renewMembershipFor.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   /**
@@ -214,7 +250,12 @@ export default class WalletService extends UnlockService {
     params: {
       lockAddress: string
       tokenId: string
+      referrer?: string
+      data?: string
+      decimals?: number
+      erc20Address?: string
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -222,7 +263,7 @@ export default class WalletService extends UnlockService {
     if (!version.cancelAndRefund) {
       throw new Error('Lock version not supported')
     }
-    return version.extendKey.bind(this)(params, callback)
+    return version.extendKey.bind(this)(params, transactionOptions, callback)
   }
 
   /**
@@ -241,6 +282,7 @@ export default class WalletService extends UnlockService {
       tokenIdTo: string
       amount?: number
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -248,7 +290,7 @@ export default class WalletService extends UnlockService {
     if (!version.mergeKeys) {
       throw new Error('Lock version not supported')
     }
-    return version.mergeKeys.bind(this)(params, callback)
+    return version.mergeKeys.bind(this)(params, transactionOptions, callback)
   }
 
   /**
@@ -265,6 +307,7 @@ export default class WalletService extends UnlockService {
       spender: string
       amount: number
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -272,7 +315,11 @@ export default class WalletService extends UnlockService {
     if (!version.approveBeneficiary) {
       throw new Error('Lock version not supported')
     }
-    return version.approveBeneficiary.bind(this)(params, callback)
+    return version.approveBeneficiary.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   /**
@@ -285,6 +332,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       keyGranter: string
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -293,7 +341,11 @@ export default class WalletService extends UnlockService {
     if (!version.addKeyGranter) {
       throw new Error('Lock version not supported')
     }
-    return version.addKeyGranter.bind(this)(params, callback)
+    return version.addKeyGranter.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   /**
@@ -310,6 +362,7 @@ export default class WalletService extends UnlockService {
       decimals?: number
       erc20Address?: string
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -318,7 +371,11 @@ export default class WalletService extends UnlockService {
     if (!version.expireAndRefundFor) {
       throw new Error('Lock version not supported')
     }
-    return version.expireAndRefundFor.bind(this)(params, callback)
+    return version.expireAndRefundFor.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   /**
@@ -331,6 +388,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       tokenId: string
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -338,7 +396,11 @@ export default class WalletService extends UnlockService {
     if (!version.cancelAndRefund) {
       throw new Error('Lock version not supported')
     }
-    return version.cancelAndRefund.bind(this)(params, callback)
+    return version.cancelAndRefund.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   /**
@@ -357,6 +419,7 @@ export default class WalletService extends UnlockService {
       tokenId: string
       duration?: string
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -365,7 +428,7 @@ export default class WalletService extends UnlockService {
     if (!version.shareKey) {
       throw new Error('Lock version not supported')
     }
-    return version.shareKey.bind(this)(params, callback)
+    return version.shareKey.bind(this)(params, transactionOptions, callback)
   }
 
   /**
@@ -379,11 +442,12 @@ export default class WalletService extends UnlockService {
       expiration?: string
       transactionOptions?: unknown
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    return version.grantKey.bind(this)(params, callback)
+    return version.grantKey.bind(this)(params, transactionOptions, callback)
   }
 
   /**
@@ -396,15 +460,15 @@ export default class WalletService extends UnlockService {
       recipients: string[]
       expirations?: string[]
       keyManagers?: string[]
-      transactionOptions?: unknown
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) {
       throw new Error('Missing lockAddress')
     }
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    return version.grantKeys.bind(this)(params, callback)
+    return version.grantKeys.bind(this)(params, transactionOptions, callback)
   }
 
   /**
@@ -422,14 +486,19 @@ export default class WalletService extends UnlockService {
       tokenId: string
       duration: number
     },
-    callback: WalletServiceCallback
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
     if (!version.grantKeyExtension) {
       throw new Error('Lock version not supported')
     }
-    return version.grantKeyExtension.bind(this)(params, callback)
+    return version.grantKeyExtension.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   /**
@@ -446,11 +515,16 @@ export default class WalletService extends UnlockService {
       decimals?: number
       erc20Address?: string
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    return version.withdrawFromLock.bind(this)(params, callback)
+    return version.withdrawFromLock.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   /**
@@ -525,8 +599,9 @@ export default class WalletService extends UnlockService {
   async setMaxNumberOfKeys(
     params: {
       lockAddress: string
-      maxNumbeOfKeys: string
+      maxNumberOfKeys: string
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -534,7 +609,11 @@ export default class WalletService extends UnlockService {
     if (!version.setMaxNumberOfKeys) {
       throw new Error('Lock version not supported')
     }
-    return version.setMaxNumberOfKeys.bind(this)(params, callback)
+    return version.setMaxNumberOfKeys.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   async setMaxKeysPerAddress(
@@ -542,6 +621,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       maxKeysPerAddress: string
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
@@ -549,14 +629,19 @@ export default class WalletService extends UnlockService {
     if (!version.setMaxKeysPerAddress) {
       throw new Error('Lock version not supported')
     }
-    return version.setMaxKeysPerAddress.bind(this)(params, callback)
+    return version.setMaxKeysPerAddress.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 
   async setExpirationDuration(
     params: {
       lockAddress: string
-      expirationDuration: number
+      expirationDuration: number | string
     },
+    transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ) {
     if (!params.lockAddress) {
@@ -571,6 +656,10 @@ export default class WalletService extends UnlockService {
     if (!version.setExpirationDuration) {
       throw new Error('Lock version not supported')
     }
-    return version.setExpirationDuration.bind(this)(params, callback)
+    return version.setExpirationDuration.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
   }
 }

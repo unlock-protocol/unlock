@@ -5,7 +5,7 @@ import * as abis from '@unlock-protocol/contracts'
  * Deploys the unlock contract and initializes it.
  * This will call the callback twice, once for each transaction
  */
-export default async (version, callback) => {
+export default async (version, transactionOptions = {}, callback) => {
   const [signer] = await ethers.getSigners()
   const versionNumber = parseInt(version.replace('v', ''))
 

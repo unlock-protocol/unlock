@@ -1,11 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { Mint, CheckoutService } from './checkoutMachine'
+import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button, Icon } from '@unlock-protocol/ui'
-import mintingAnimation from '~/animations/minting.json'
-import mintedAnimation from '~/animations/minted.json'
-import errorAnimation from '~/animations/error.json'
-import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
 import { Fragment, useEffect, useMemo } from 'react'
@@ -16,37 +12,12 @@ import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useCheckoutSteps } from './useCheckoutItems'
-
+import { TransactionAnimation } from '../Shell'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
   communication: CheckoutCommunication
-}
-
-function AnimationContent({ status }: { status: Mint['status'] }) {
-  const animationClass = `w-28 sm:w-36 h-28 sm:h-36`
-  switch (status) {
-    case 'PROCESSING':
-      return (
-        <Lottie
-          className={animationClass}
-          loop
-          animationData={mintingAnimation}
-        />
-      )
-    case 'FINISHED':
-      return (
-        <Lottie className={animationClass} animationData={mintedAnimation} />
-      )
-    case 'ERROR': {
-      return (
-        <Lottie className={animationClass} animationData={errorAnimation} />
-      )
-    }
-    default:
-      return null
-  }
 }
 
 export function Minting({
@@ -73,7 +44,15 @@ export function Minting({
           const provider = new ethers.providers.JsonRpcProvider(
             network.provider
           )
-          await provider.waitForTransaction(mint!.transactionHash!)
+
+          const transaction = await provider.waitForTransaction(
+            mint!.transactionHash!
+          )
+
+          if (transaction.status !== 1) {
+            throw new Error('Transaction failed.')
+          }
+
           communication.emitTransactionInfo({
             hash: mint!.transactionHash!,
             lock: lock?.address,
@@ -138,10 +117,21 @@ export function Minting({
       />
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="flex flex-col items-center justify-center h-full space-y-2">
-          {status && <AnimationContent status={status} />}
+          <TransactionAnimation status={status} />
           <p className="text-lg font-bold text-brand-ui-primary">
             {content?.text}
           </p>
+          {mint?.status === 'FINISHED' && (
+            <a
+              href="/keychain"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+            >
+              Open keychain
+              <Icon icon={ExternalLinkIcon} size="small" />
+            </a>
+          )}
           {mint?.transactionHash && (
             <a
               href={config.networks[lock!.network].explorer.urls.transaction(

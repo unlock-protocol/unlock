@@ -10,7 +10,9 @@ export const xdai: NetworkConfig = {
   name: 'Gnosis Chain',
   blockTime: 5000,
   requiredConfirmations: 12,
-  subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
+  subgraph: {
+    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
+  },
   explorer: {
     name: 'Blockscout',
     urls: {
@@ -26,10 +28,10 @@ export const xdai: NetworkConfig = {
   },
   erc20: null, // no default ERC20 on xdai for now
   locksmithUri: 'https://locksmith.unlock-protocol.com',
-  baseCurrencySymbol: 'xDai',
+  baseCurrencySymbol: 'DAI',
   nativeCurrency: {
-    name: 'xDAI',
-    symbol: 'xDai',
+    name: 'DAI',
+    symbol: 'DAI',
     decimals: 18,
   },
   startBlock: 19338700,
@@ -43,5 +45,14 @@ export const xdai: NetworkConfig = {
     'EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.',
   isTestNetwork: false,
   teamMultisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
+  // 0xddafbb505ad214d7b80b1f830fccc89b60fb7a83
+  tokens: [
+    {
+      name: 'USD Coin',
+      symbol: 'USDC',
+      decimals: 6,
+      address: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',
+    },
+  ],
 }
 export default xdai

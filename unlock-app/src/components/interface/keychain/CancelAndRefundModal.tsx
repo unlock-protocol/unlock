@@ -67,7 +67,11 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
       lockAddress,
       tokenId: keyId,
     }
-    return walletService.cancelAndRefund(params, () => true)
+    return walletService.cancelAndRefund(
+      params,
+      {} /** transactionParams */,
+      () => true
+    )
   }
 
   const cancelRefundMutation = useMutation(cancelAndRefund, {
