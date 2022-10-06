@@ -6045,7 +6045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudflare/workers-types@npm:^3.16.0":
+"@cloudflare/workers-types@npm:3.16.0":
   version: 3.16.0
   resolution: "@cloudflare/workers-types@npm:3.16.0"
   checksum: 5fad4d7e5b495e299b8b037043ee406a4e6aadc533e90d2a87009934cd82e1072710264451c5fefc3b71502bbf659f9b1f530f2fcceeaa036704da605194f4f6
@@ -17065,6 +17065,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node@npm:18.8.2":
+  version: 18.8.2
+  resolution: "@types/node@npm:18.8.2"
+  checksum: b7c74dea0e835fb7faf69b4a2e87d43c1d228d88adacdff464d9e92d18a0b43bec6147b9eb3287650ac75fe5af730c53391869d02175e6b032dcb99ae2f54c92
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:8.10.66, @types/node@npm:^8.0.0":
   version: 8.10.66
   resolution: "@types/node@npm:8.10.66"
@@ -17118,13 +17125,6 @@ __metadata:
   version: 16.11.64
   resolution: "@types/node@npm:16.11.64"
   checksum: 3634477efbeb586f8cdc1baf7670d8ea89c1eba1beac0354fa9123ca193d794da84ec40d4f8a54f694587ba5469e4124ebbba37542ed88eca95a3980ec45551a
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^18.8.2":
-  version: 18.8.2
-  resolution: "@types/node@npm:18.8.2"
-  checksum: b7c74dea0e835fb7faf69b4a2e87d43c1d228d88adacdff464d9e92d18a0b43bec6147b9eb3287650ac75fe5af730c53391869d02175e6b032dcb99ae2f54c92
   languageName: node
   linkType: hard
 
@@ -50347,9 +50347,9 @@ fsevents@~2.1.1:
   version: 0.0.0-use.local
   resolution: "provider@workspace:provider"
   dependencies:
-    "@cloudflare/workers-types": ^3.16.0
-    "@types/node": ^18.8.2
-    typescript: ^4.8.4
+    "@cloudflare/workers-types": 3.16.0
+    "@types/node": 18.8.2
+    typescript: 4.8.4
   languageName: unknown
   linkType: soft
 
@@ -58242,7 +58242,7 @@ typescript@4.7.4:
   languageName: node
   linkType: hard
 
-"typescript@4.8.4, typescript@^4.5.4, typescript@^4.5.5, typescript@^4.8.4":
+"typescript@4.8.4, typescript@^4.5.4, typescript@^4.5.5":
   version: 4.8.4
   resolution: "typescript@npm:4.8.4"
   bin:
@@ -58292,7 +58292,7 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.8.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>, typescript@patch:typescript@^4.8.4#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.8.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.4#~builtin<compat/typescript>, typescript@patch:typescript@^4.5.5#~builtin<compat/typescript>":
   version: 4.8.4
   resolution: "typescript@patch:typescript@npm%3A4.8.4#~builtin<compat/typescript>::version=4.8.4&hash=ddd1e8"
   bin:
