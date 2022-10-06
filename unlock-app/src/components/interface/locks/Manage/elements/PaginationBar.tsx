@@ -42,16 +42,36 @@ const Pages = ({ maxNumbersOfPage, page, setPage }: PaginationBarProps) => {
         .map((_, index) => {
           const currentPage: number = index + 1
           const isCurrent = currentPage === page
-          const showPage = currentPage >= minPage && currentPage <= maxPage
+          const isLastPage = maxNumbersOfPage === currentPage
+          const showLastPage = isLastPage && currentPage >= maxNumbersOfPage
 
-          return showPage ? (
-            <Page
-              key={index}
-              page={currentPage}
-              active={isCurrent}
-              setPage={setPage}
-            />
-          ) : null
+          const showNextPage =
+            currentPage >= page && currentPage <= maxPage && !isLastPage
+          const showPrevPage =
+            currentPage >= minPage && currentPage <= page && !isLastPage
+
+          return (
+            <>
+              {(showNextPage || showPrevPage) && (
+                <Page
+                  key={index}
+                  page={currentPage}
+                  active={isCurrent}
+                  setPage={setPage}
+                />
+              )}
+              {showLastPage && (
+                <div className="flex items-center gap-2">
+                  <span>...</span>
+                  <Page
+                    page={currentPage}
+                    setPage={setPage}
+                    active={isCurrent}
+                  />
+                </div>
+              )}
+            </>
+          )
         })}
     </div>
   )
