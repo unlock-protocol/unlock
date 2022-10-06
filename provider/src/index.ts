@@ -45,25 +45,40 @@ export default {
 
     const url = new URL(request.url)
     const { pathname } = url
-    const proxyURL = url.searchParams.get('url')
+    const dataURL = url.searchParams.get('url')
 
-    if (pathname === '/proxy' && proxyURL) {
-      const endpoint = new URL(proxyURL)
+    if (pathname === '/data' && dataURL) {
+      const endpoint = new URL(dataURL)
       // Proxy the request
       const response = await fetch(endpoint.toString(), {
         method: 'GET',
         body: request.body,
         headers: new Headers({
           Accept: '*/*',
-          Origin: 'https://rpc.unlock-protocol.com/',
-          'Content-type': request.headers.get('content-type')!,
+          Origin: 'https://unlock-protocol.com/',
+          'Content-type': 'application/json',
         }),
       })
 
-      const text = await response.text()
-      return new Response(text, {
+      const json: { data?: string } = await response.json()
+
+      if (!json?.data) {
+        return new Response(
+          JSON.stringify({
+            message: 'No data input found in the result.',
+          }),
+          {
+            status: 400,
+            headers: {
+              'content-type': 'application/json',
+            },
+          }
+        )
+      }
+
+      return new Response(JSON.stringify(json), {
         headers: {
-          'content-type': response.headers.get('content-type')!,
+          'content-type': 'application/json',
           'access-control-allow-origin': '*',
         },
       })
