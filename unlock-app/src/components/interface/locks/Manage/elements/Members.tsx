@@ -1,4 +1,4 @@
-import { useQueries } from 'react-query'
+import { useQueries } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'

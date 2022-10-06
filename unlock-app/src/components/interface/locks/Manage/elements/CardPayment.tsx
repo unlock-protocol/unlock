@@ -1,6 +1,6 @@
 import { Badge, Button } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
-import { useMutation, useQueries, useQuery } from 'react-query'
+import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
 import useLock from '~/hooks/useLock'
 import { useWalletService } from '~/utils/withWalletService'
 import { useAuth } from '~/contexts/AuthenticationContext'

@@ -1,6 +1,6 @@
 import { Button } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
-import { useMutation, useQueries } from 'react-query'
+import { useMutation, useQueries } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useConfig } from '~/utils/withConfig'
 import { useWalletService } from '~/utils/withWalletService'

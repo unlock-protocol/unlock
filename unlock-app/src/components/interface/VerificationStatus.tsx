@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import { useAuth } from '../../contexts/AuthenticationContext'
 import { useWeb3Service } from '../../utils/withWeb3Service'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Lock } from '~/unlockTypes'
 import {
   MembershipCard,
