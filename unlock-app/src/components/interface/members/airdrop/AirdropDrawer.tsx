@@ -13,8 +13,12 @@ import { MAX_UINT } from '~/constants'
 import { formatDate } from '~/utils/lock'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import { omit } from 'lodash'
 
 dayjs.extend(customParseFormat)
+
+type Metadata = Record<'public' | 'protected', Record<string, string>>
 
 export interface Props {
   lockAddress: string
@@ -46,18 +50,32 @@ export function AirdropKeysDrawer({
 
   const handleConfirm = async (items: AirdropMember[]) => {
     // Create metadata
-    const users = items.map(({ recipient: userAddress, email }) => {
+    const users = items.map(({ recipient: userAddress, ...rest }) => {
+      const data = omit(rest, ['manager', 'neverExpire', 'count', 'expiration'])
+      const metadata = Object.entries(data).reduce<Metadata>(
+        (result, [key, value]) => {
+          const [name, designation] = key.split('.')
+
+          if (designation !== 'public') {
+            result.protected[name] = value
+          } else {
+            result.public[name] = value
+          }
+
+          return result
+        },
+        {
+          protected: {},
+          public: {},
+        }
+      )
+
       const user = {
         userAddress,
         lockAddress,
-        metadata: {
-          public: {},
-          protected: {} as Record<string, string>,
-        },
-      }
-      if (email) {
-        user.metadata.protected.email = email
-      }
+        metadata,
+      } as const
+
       return user
     })
 
@@ -86,9 +104,12 @@ export function AirdropKeysDrawer({
         expiration = MAX_UINT
       }
 
-      prop.recipients.push(item.recipient)
-      prop.expirations.push(expiration!)
-      prop.keyManagers.push(item.manager || account!)
+      for (const _ of Array.from({ length: item.count })) {
+        prop.recipients.push(item.recipient)
+        prop.expirations.push(expiration!)
+        prop.keyManagers.push(item.manager || account!)
+      }
+
       return prop
     }, initialValue)
 
@@ -104,6 +125,10 @@ export function AirdropKeysDrawer({
           throw error
         }
       }
+    )
+
+    ToastHelper.success(
+      `Successfully granted ${options.recipients.length} keys to ${items.length} recipients`
     )
   }
 

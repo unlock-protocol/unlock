@@ -34,7 +34,7 @@ yarn hardhat config --json
 You need to export the API keys in your env for it to work properly
 
 ```js
-// 'mainnet', 'ropsten', 'rinkeby', 'goerli', 'kovan'].forEach(
+// 'mainnet', 'goerli'
 ETHERSCAN_API_KEY
 
 // polygon mumbai

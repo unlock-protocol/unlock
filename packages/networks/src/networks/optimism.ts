@@ -8,8 +8,10 @@ export const optimism: NetworkConfig = {
   id: 10,
   name: 'Optimism',
   blockTime: 8000,
-  subgraphURI:
-    'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism',
+  subgraph: {
+    endpoint:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism',
+  },
   explorer: {
     name: 'Etherscan',
     urls: {
@@ -21,7 +23,8 @@ export const optimism: NetworkConfig = {
     },
   },
   opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
+    tokenUrl: (_lockAddress, _tokenId) =>
+      `https://opensea.io/assets/optimism/${_lockAddress}/${_tokenId}`,
   },
   requiredConfirmations: 12,
   baseCurrencySymbol: 'Eth',
