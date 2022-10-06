@@ -1,4 +1,4 @@
-import { Button } from '@unlock-protocol/ui'
+import { Button, Modal } from '@unlock-protocol/ui'
 import Link from 'next/link'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
@@ -9,8 +9,10 @@ import { HiChevronDown as ArrowDownButton } from 'react-icons/hi'
 import { Popover, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { AiOutlineMenu as MenuIcon } from 'react-icons/ai'
+import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import { GrClose as MenuCloseIcon } from 'react-icons/gr'
 import { Container } from './Container'
+import { useStorageService } from '~/utils/withStorageService'
 interface Link {
   label: string
   url: string
@@ -98,8 +100,11 @@ const SwitchNetworkButton = ({ network }: SwitchNetworkButtonProps) => {
 }
 
 export const AppHeader = () => {
-  const { account, network } = useAuth()
+  const { account, network, deAuthenticate } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
+  const [disconnectModal, setDisconnectModal] = useState(false)
+
+  const storageService = useStorageService()
   const router = useRouter()
   const loginUrl = `/login?redirect=${encodeURIComponent(window.location.href)}`
 
@@ -129,8 +134,39 @@ export const AppHeader = () => {
     )
   }
 
+  const onDisconnect = () => {
+    deAuthenticate()
+    storageService.signOut()
+    setDisconnectModal(false)
+  }
+
   return (
     <div className="pt-5 bg-ui-secondary-200">
+      <Modal isOpen={disconnectModal} setIsOpen={setDisconnectModal}>
+        <div className="flex flex-col gap-10 p-8">
+          <div className="flex">
+            <img
+              src="/images/illustrations/disconnect-wallet.svg"
+              className="object-cover w-full h-24"
+              alt="disconnect wallet"
+            />
+          </div>
+          <div className="flex flex-col gap-4 mx-auto">
+            <span className="text-xl font-bold">
+              Are you sure to disconnect?
+            </span>
+            <div className="flex gap-4">
+              <Button onClick={() => setDisconnectModal(false)}>
+                Never mind
+              </Button>
+              <Button variant="outlined-primary" onClick={onDisconnect}>
+                Yes, Disconnect
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
       <Container>
         <div className="flex justify-between">
           <div className="flex items-center gap-10">
@@ -168,10 +204,19 @@ export const AppHeader = () => {
             {account ? (
               <div className="flex gap-2">
                 <SwitchNetworkButton network={network!} />
-                <Button variant="outlined-primary">
-                  <span className="text-brand-ui-primary">
-                    {addressMinify(account)}
-                  </span>
+                <Button
+                  variant="outlined-primary"
+                  onClick={() => setDisconnectModal(true)}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-brand-ui-primary">
+                      {addressMinify(account)}
+                    </span>
+                    <DisconnectIcon
+                      className="text-brand-ui-primary"
+                      size={20}
+                    />
+                  </div>
                 </Button>
               </div>
             ) : (
