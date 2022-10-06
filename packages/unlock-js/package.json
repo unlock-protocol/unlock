@@ -36,6 +36,8 @@
     "@babel/cli": "7.18.10",
     "@babel/core": "7.18.10",
     "@babel/preset-env": "7.18.10",
+    "@graphql-codegen/cli": "2.13.4",
+    "@graphql-codegen/client-preset": "1.0.3",
     "@nomiclabs/hardhat-ethers": "2.1.1",
     "@openapitools/openapi-generator-cli": "2.5.2",
     "@openzeppelin/hardhat-upgrades": "1.19.1",
