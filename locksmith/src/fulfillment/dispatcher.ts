@@ -151,11 +151,15 @@ export default class Dispatcher {
   }
 
   async purchaseKey(
-    lockAddress: string,
-    owner: string,
-    network: number,
+    options: {
+      lockAddress: string
+      owner: string
+      network: number
+      data?: string
+    },
     cb?: any
   ) {
+    const { network, lockAddress, owner, data } = options
     const walletService = new WalletService(networks)
 
     const provider = new ethers.providers.JsonRpcProvider(
@@ -174,6 +178,7 @@ export default class Dispatcher {
       {
         lockAddress,
         owner,
+        data,
       },
       { maxFeePerGas, maxPriorityFeePerGas },
       cb

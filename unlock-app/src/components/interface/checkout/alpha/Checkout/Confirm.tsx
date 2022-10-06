@@ -289,7 +289,13 @@ export function Confirm({
         return
       }
 
-      const response = await claimMembershipFromLock(lockAddress, lockNetwork)
+      const data = password || captcha || undefined
+
+      const response = await claimMembershipFromLock(
+        lockAddress,
+        lockNetwork,
+        data?.[0]
+      )
 
       const { transactionHash: hash, error } = response
 

@@ -51,7 +51,7 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
           id: 6,
           name: 'Solve captcha',
           to: 'CAPTCHA',
-          skip: !isCaptcha || ['card', 'claim'].includes(payment.method),
+          skip: !isCaptcha || ['card'].includes(payment.method),
         },
     {
       id: 7,

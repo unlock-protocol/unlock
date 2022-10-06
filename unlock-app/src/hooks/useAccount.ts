@@ -255,13 +255,18 @@ export const useAccount = (address: string, network: number) => {
     return response
   }
 
-  const claimMembershipFromLock = async (lock: any, network: number) => {
+  const claimMembershipFromLock = async (
+    lock: any,
+    network: number,
+    data?: string
+  ) => {
     const response = await claimMembership(
       config,
       walletService,
       address,
       network,
-      lock
+      lock,
+      data
     )
     return response
   }

@@ -649,7 +649,7 @@ export const checkoutMachine = createMachine(
           !!(
             context.paywallConfig.captcha ||
             context.paywallConfig.locks?.[context.lock!.address]?.captcha
-          ) && context.payment.method === 'crypto'
+          ) && ['crypto', 'claim'].includes(context.payment.method)
         )
       },
       requirePassword: (context) => {
@@ -657,7 +657,7 @@ export const checkoutMachine = createMachine(
           !!(
             context.paywallConfig.password ||
             context.paywallConfig.locks?.[context.lock!.address]?.password
-          ) && context.payment.method === 'crypto'
+          ) && ['crypto', 'claim'].includes(context.payment.method)
         )
       },
     },

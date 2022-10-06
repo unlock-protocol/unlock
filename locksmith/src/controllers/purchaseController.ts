@@ -239,8 +239,11 @@ export class PurchaseController {
   // TODO: add captcha to avoid spamming!
   // TODO: save claims?
   async claim(req: SignedRequest, res: Response) {
-    const { publicKey, lock, network } = req.body.message['Claim Membership']
+    const { publicKey, lock, network, data } =
+      req.body.message['Claim Membership']
 
+    const lockAddress = Normalizer.ethereumAddress(lock)
+    const owner = Normalizer.ethereumAddress(publicKey)
     // First check that the lock is indeed free and that the gas costs is low enough!
     const pricer = new KeyPricer()
     const pricing = await pricer.generate(lock, network)
@@ -262,9 +265,12 @@ export class PurchaseController {
 
     try {
       await fulfillmentDispatcher.purchaseKey(
-        Normalizer.ethereumAddress(lock),
-        Normalizer.ethereumAddress(publicKey),
-        network,
+        {
+          lockAddress,
+          owner,
+          network,
+          data,
+        },
         async (_: any, transactionHash: string) => {
           return res.send({
             transactionHash,
