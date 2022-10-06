@@ -10,6 +10,8 @@ export const mumbai: NetworkConfig = {
   blockTime: 1000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai-v2',
   },
   explorer: {
     name: 'PolygonScan (Mumbai)',
