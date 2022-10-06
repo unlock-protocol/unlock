@@ -320,6 +320,7 @@ contract('Lock / Recurring memberships', (accounts) => {
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
+        ADDRESS_ZERO,
         ADDRESS_ZERO
       )
       await reverts(

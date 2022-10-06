@@ -33,6 +33,14 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
     uint refund
   );
   
+  event OnKeyExtend(
+    uint tokenId,
+    address msgSender,
+    address from,
+    uint newTimestamp,
+    uint prevTimestamp
+  );
+  
   event OnKeyTransfer(
     address lock,
     uint tokenId,
@@ -94,6 +102,16 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
   ) external
   {
     emit OnKeyCancel(msg.sender, _operator, _to, _refund);
+  }
+  
+  function onKeyExtend(
+    uint _tokenId,
+    address _from,
+    uint _newTimestamp,
+    uint _prevTimestamp
+  ) external
+  {
+    emit OnKeyExtend(_tokenId, msg.sender, _from, _newTimestamp, _prevTimestamp);
   }
   
   function onKeyTransfer(
