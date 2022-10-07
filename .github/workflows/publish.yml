@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'production'
+      - 'auto-publish'
 
 jobs:
   publish:
@@ -24,4 +25,4 @@ jobs:
       - run: yarn release
 
     env:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
