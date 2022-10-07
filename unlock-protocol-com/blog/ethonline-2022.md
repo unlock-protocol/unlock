@@ -27,7 +27,7 @@ The third place prize went to [Impact Self](https://ethglobal.com/showcase/impac
 
 The [Raindrop](https://ethglobal.com/showcase/raindrop-omz63) team created a decentralized platform alternative to subscription sites like Patreon or OnlyFans. Raindrop’s approach enables creatives to connect with their fans without the worry of being censored or de-platformed or having to worry about the portability of their user data. 
 
-![raindrop.jpeg](/images/blog/ethonline-2022/raindrop.jpeg)
+[![raindrop.jpeg](/images/blog/ethonline-2022/raindrop.jpeg)](https://medium.com/@hidetaka.ko/summary-of-what-we-learned-from-protocol-who-developed-a-web3-version-of-patreon-at-ethonline-and-a0e4d1815952)
 
 This team won several other prizes during this event including ones from Worldcoin, Livepeer and IPFS. [You can read more about their experience building on Unlock here](https://medium.com/@hidetaka.ko/summary-of-what-we-learned-from-protocol-who-developed-a-web3-version-of-patreon-at-ethonline-and-a0e4d1815952). 
 
