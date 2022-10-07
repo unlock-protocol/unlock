@@ -19,11 +19,6 @@ import { GraphService } from '../../services/graphService'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { useProvider } from '../../hooks/useProvider'
 import Loading from './Loading'
-import {
-  NotEnabledInProvider,
-  NetworkNotSupported,
-  WrongNetwork,
-} from '../creator/FatalError'
 import { ConfigContext } from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
 

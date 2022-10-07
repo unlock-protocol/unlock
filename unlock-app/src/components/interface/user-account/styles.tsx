@@ -94,42 +94,6 @@ export const SubmitButton = styled.button.attrs({ type: 'button' })`
   margin-top: 25px;
 `
 
-export const Price = styled.span`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 30px;
-  line-height: 39px;
-  color: var(--slate);
-  margin-bottom: 8px;
-`
-
-export const TimeRemaining = styled.span`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: 26px;
-  color: var(--grey);
-`
-
-export const CenterRow = styled.div`
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-`
-
-interface LockInfoProps {
-  price: string
-  timeRemaining: string | JSX.Element
-}
-export const LockInfo = ({ price, timeRemaining }: LockInfoProps) => (
-  <CenterRow>
-    <Price>{price}</Price>
-    <TimeRemaining>{timeRemaining}</TimeRemaining>
-  </CenterRow>
-)
-
 export const DisabledButton = styled(SubmitButton)`
   cursor: not-allowed;
   background-color: var(--grey);
@@ -149,41 +113,6 @@ export const Item = ({ title, children, count }: ItemProps) => {
       <ItemLabel>{title}</ItemLabel>
       {children}
     </Column>
-  )
-}
-
-// To be used in place of <Layout> when we embed an app page in an iframe. This
-// avoids including all the UI chrome and positioning, and adds a white
-// background.
-export const IframeLayout = styled.div`
-  background-color: var(--offwhite);
-  max-height: 100%;
-  overflow-y: scroll;
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-  position: relative;
-`
-
-export const XYCenter = styled.div`
-  background: rgba(0, 0, 0, 0.4) none repeat scroll 0% 0%;
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-
-export const IframeWrapper = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <XYCenter>
-      <IframeLayout>{children}</IframeLayout>
-    </XYCenter>
   )
 }
 
@@ -286,23 +215,18 @@ export const StyledCheckbox = styled.div<StyledCheckboxProps>`
   }
 `
 
-const CheckboxContainer = styled.div`
-  display: inline-block;
-  vertical-align: middle;
-`
-
 interface CheckboxProps {
   id: string
   checked: boolean
   onChange: () => void
 }
 export const Checkbox = ({ checked, onChange, id }: CheckboxProps) => (
-  <CheckboxContainer>
+  <div className="inline-block align-middle">
     <HiddenCheckbox id={id} checked={checked} onChange={onChange} />
     <StyledCheckbox checked={checked}>
       <Checkmark fill="var(--red)" />
     </StyledCheckbox>
-  </CheckboxContainer>
+  </div>
 )
 
 // TODO: steal input/button elements from other parts of app and integrate here
