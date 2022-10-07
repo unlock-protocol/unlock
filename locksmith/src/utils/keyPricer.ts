@@ -35,7 +35,10 @@ export default class KeyPricer {
         return gasCost < 100
 
       case 10:
-        return gasCost < 100
+        return gasCost < 10
+
+      case 42161:
+        return gasCost < 10
 
       default:
         // We max at 1 cent

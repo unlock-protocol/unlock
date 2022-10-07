@@ -1,13 +1,5 @@
 import React from 'react'
 import styled from 'styled-components'
-import { ETHEREUM_NETWORKS_NAMES } from '../../constants'
-
-const defaultError = (
-  <p>
-    This is a generic error because something just broke but we’re not sure
-    what.
-  </p>
-)
 
 interface DefaultErrorProps {
   illustration: string
@@ -28,16 +20,6 @@ export const DefaultError = ({
       {children}
     </Message>
   </Container>
-)
-
-export const FallbackError = () => (
-  <DefaultError
-    illustration="/images/illustrations/error.svg"
-    title="Fatal Error"
-    critical
-  >
-    {defaultError}
-  </DefaultError>
 )
 
 const Container = styled.section`
@@ -70,42 +52,3 @@ const Message = styled.div`
     color: var(--dimgrey);
   }
 `
-
-export const NetworkNotSupported = () => (
-  <DefaultError
-    title="Network not supported"
-    illustration="/images/illustrations/network.svg"
-    critical
-  >
-    <p>Unlock is currently not supported on this Ethereum network.</p>
-  </DefaultError>
-)
-
-export const NotEnabledInProvider = () => (
-  <DefaultError
-    title="Not enabled in provider"
-    illustration="/images/illustrations/wallet.svg"
-    critical
-  >
-    <p>You did not approve Unlock in your web3 wallet.</p>
-  </DefaultError>
-)
-
-interface WrongNetworkProps {
-  network: number
-}
-export const WrongNetwork = ({ network }: WrongNetworkProps) => {
-  return (
-    <DefaultError
-      title="Wrong network"
-      illustration="/images/illustrations/network.svg"
-      critical
-    >
-      <p>
-        You are on the wrong network. Please switch to{' '}
-        <strong>{ETHEREUM_NETWORKS_NAMES[network]}</strong> in your wallet of
-        choice.
-      </p>
-    </DefaultError>
-  )
-}
