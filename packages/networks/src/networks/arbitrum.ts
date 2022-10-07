@@ -8,8 +8,13 @@ export const arbitrum: NetworkConfig = {
   id: 42161,
   name: 'Arbitrum',
   blockTime: 1000,
-  subgraphURI:
-    'https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum',
+  subgraph: {
+    endpoint:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum',
+    networkName: 'arbitrum-one',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum-v2',
+  },
   explorer: {
     name: 'Arbitrum',
     urls: {

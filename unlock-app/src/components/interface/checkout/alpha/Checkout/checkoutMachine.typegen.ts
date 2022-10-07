@@ -23,6 +23,7 @@ export interface Typegen0 {
     selectRecipients: 'SELECT_RECIPIENTS'
     signMessage: 'SIGN_MESSAGE'
     solveCaptcha: 'SOLVE_CAPTCHA'
+    submitData: 'SUBMIT_DATA'
     submitPassword: 'SUBMIT_PASSWORD'
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
   }

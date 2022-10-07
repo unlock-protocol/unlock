@@ -8,8 +8,12 @@ export const avalanche: NetworkConfig = {
   id: 43114,
   name: 'Avalanche (C-Chain)',
   blockTime: 1000,
-  subgraphURI:
-    'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche',
+  subgraph: {
+    endpoint:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche-v2',
+  },
   explorer: {
     name: 'Snowtrace (Avalanche)',
     urls: {

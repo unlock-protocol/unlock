@@ -171,7 +171,7 @@ export const createLock = async (
  * @param {*} network
  */
 export const useLocks = (owner, network) => {
-  const networks = useConfig()
+  const { networks } = useConfig()
   const web3Service = useWeb3Service()
   const walletService = useWalletService()
   const storageService = useStorageService()
@@ -179,11 +179,9 @@ export const useLocks = (owner, network) => {
   const [error, setError] = useState(undefined)
   const [loading, setLoading] = useState(true)
 
-  const { subgraphURI } = networks[network] ?? {}
+  const { subgraph } = networks[network] ?? {}
   const graphService = new GraphService()
-  graphService.connect(subgraphURI)
-
-  graphService.connect(config.networks[network].subgraphURI)
+  graphService.connect(subgraph.endpoint)
 
   // We use a reducer so we can easily add locks as they are retrieved
   const [locks, addToLocks] = useReducer((locks, lock) => {

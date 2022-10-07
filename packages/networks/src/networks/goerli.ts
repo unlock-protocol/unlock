@@ -9,7 +9,11 @@ export const goerli: NetworkConfig = {
   id: 5,
   name: 'Goerli (Testnet)',
   blockTime: 1000,
-  subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli',
+  subgraph: {
+    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli-v2',
+  },
   explorer: {
     name: 'Goerli (Testnet)',
     urls: {

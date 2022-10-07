@@ -19,11 +19,6 @@ import { GraphService } from '../../services/graphService'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { useProvider } from '../../hooks/useProvider'
 import Loading from './Loading'
-import {
-  NotEnabledInProvider,
-  NetworkNotSupported,
-  WrongNetwork,
-} from '../creator/FatalError'
 import { ConfigContext } from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
 
@@ -43,13 +38,13 @@ const Providers = ({ network, networkConfig, children, authenticate }) => {
   const apolloClient = useMemo(
     () =>
       new ApolloClient({
-        uri: networkConfig[network].subgraphURI,
+        uri: networkConfig[network].subgraph.endpoint,
       }),
     [networkConfig, network]
   )
 
   const graphService = useMemo(
-    () => new GraphService(networkConfig[network].subgraphURI),
+    () => new GraphService(networkConfig[network].subgrap?.endpoint),
     [networkConfig, network]
   )
 
