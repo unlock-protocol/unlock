@@ -290,8 +290,6 @@ export const Checkout = ({
         showTitle={false}
         unlockUserAccount={false}
         injectedProvider={web3Provider}
-        backgroundColor="var(--white)"
-        activeColor="var(--offwhite)"
       >
         <p>Select your crypto wallet of choice.</p>
       </LoginPrompt>
