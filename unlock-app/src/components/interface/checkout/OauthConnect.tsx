@@ -137,13 +137,7 @@ export const OAuthConnect = ({
   }
 
   return (
-    <LoginPrompt
-      embedded
-      showTitle={false}
-      unlockUserAccount
-      backgroundColor="var(--white)"
-      activeColor="var(--offwhite)"
-    >
+    <LoginPrompt embedded showTitle={false} unlockUserAccount>
       <p>
         The application {clientId} wants to identify you and access your
         membership status.

@@ -3,7 +3,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { Button, Modal, Input } from '@unlock-protocol/ui'
-import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import { VerifiersList } from '../interface/verifiers/VerifiersList'
 import { getAddressForName } from '../../hooks/useEns'
@@ -13,6 +12,7 @@ import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
 import { Lock } from '@unlock-protocol/types'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { useRouter } from 'next/router'
+import { AppLayout } from '../interface/layouts/AppLayout'
 
 const styling = {
   sectionWrapper: 'text-left mx-2 my-3',
@@ -150,7 +150,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
 
   const withoutParams = !lockAddress || !network
   return (
-    <Layout title="Verifiers">
+    <AppLayout title="Verifiers">
       <Head>
         <title>{pageTitle('Verifiers')}</title>
       </Head>
@@ -214,7 +214,7 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
           </div>
         </div>
       </Modal>
-    </Layout>
+    </AppLayout>
   )
 }
 
