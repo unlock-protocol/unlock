@@ -109,9 +109,11 @@ export function Confirm({
   const onConfirmCard = async () => {
     try {
       setIsConfirming(true)
+
       if (payment.method !== 'card') {
         return
       }
+
       const stripeIntent = await prepareChargeForCard(
         payment.cardId!,
         lockAddress,
@@ -242,7 +244,7 @@ export function Confirm({
             }
             send({
               type: 'CONFIRM_MINT',
-              status: 'PROCESSING',
+              status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
               transactionHash: hash!,
             })
           }

@@ -595,33 +595,19 @@ export const checkoutMachine = createMachine(
         },
       }),
       confirmMint: assign({
-        mint: (context, { status, transactionHash }) => {
-          if (!context.paywallConfig.pessimistic) {
-            return {
-              status: 'FINISHED',
-              transactionHash,
-            } as const
-          } else {
-            return {
-              status,
-              transactionHash,
-            } as const
-          }
+        mint: (_, { status, transactionHash }) => {
+          return {
+            status,
+            transactionHash,
+          } as const
         },
       }),
       confirmRenew: assign({
-        renewed: (context, { status, transactionHash }) => {
-          if (!context.paywallConfig.pessimistic) {
-            return {
-              status: 'FINISHED',
-              transactionHash,
-            } as const
-          } else {
-            return {
-              status,
-              transactionHash,
-            } as const
-          }
+        renewed: (_, { status, transactionHash }) => {
+          return {
+            status,
+            transactionHash,
+          } as const
         },
       }),
       updatePaywallConfig: assign((_, event) => {

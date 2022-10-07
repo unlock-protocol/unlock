@@ -114,7 +114,7 @@ export function Renew({
           }
           send({
             type: 'CONFIRM_RENEW',
-            status: 'PROCESSING',
+            status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
             transactionHash: hash!,
           })
         }

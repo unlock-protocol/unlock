@@ -6,7 +6,7 @@ import { deleteCardForAddress } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
 import { useWalletService } from '~/utils/withWalletService'
-import { Fragment, useState } from 'react'
+import { Fragment, useCallback, useEffect, useState } from 'react'
 import { Card, CardPlaceholder } from '../Card'
 import {
   Elements,
@@ -82,8 +82,16 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
         ) : (
           <Card
             onChange={async () => {
-              await deleteCardForAddress(config, walletService, account!)
-              await refetch()
+              const succeeeded = await deleteCardForAddress(
+                config,
+                walletService,
+                account!
+              )
+              if (succeeeded) {
+                await refetch()
+              } else {
+                ToastHelper.error('Failed to remove the card.')
+              }
             }}
             {...card}
           />
@@ -135,23 +143,21 @@ export function SetupForm({ onSubmit, stripe, onSuccess }: SetupFormProps) {
   const storageService = useStorageService()
   const walletService = useWalletService()
   const { account, network } = useAuth()
-  const { data: clientSecret, refetch } = useQuery(
-    ['checkout-setup-intent'],
-    async () => {
-      await storageService.loginPrompt({
-        walletService,
-        address: account!,
-        chainId: network!,
-      })
-      const secret = await storageService.getSetupIntent()
-      return secret
-    },
-    {
-      refetchInterval: false,
-      refetchOnMount: true,
-      refetchOnWindowFocus: false,
-    }
-  )
+  const [clientSecret, setClientSecret] = useState(null)
+
+  const fetchSetupIntent = useCallback(async () => {
+    await storageService.loginPrompt({
+      walletService,
+      address: account!,
+      chainId: network!,
+    })
+    const secret = await storageService.getSetupIntent()
+    setClientSecret(secret)
+  }, [walletService, account, network, storageService])
+
+  useEffect(() => {
+    fetchSetupIntent()
+  }, [fetchSetupIntent])
 
   if (!clientSecret) {
     return null
@@ -159,7 +165,7 @@ export function SetupForm({ onSubmit, stripe, onSuccess }: SetupFormProps) {
 
   const onError = async (error: StripeError) => {
     ToastHelper.error(error.message!)
-    await refetch()
+    await fetchSetupIntent()
   }
 
   return (
