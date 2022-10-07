@@ -50,7 +50,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   )
 
   const { isLoading: isLockLoading, data: lock } = useQuery(
-    [lockAddress, network],
+    ['lock', lockAddress, network],
     async () => {
       const result: Lock = await web3Service.getLock(lockAddress, network)
       return result
@@ -63,7 +63,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
   const lockVersion = lock?.publicLockVersion
 
   const { isLoading: isKeyLoading, data: key } = useQuery(
-    [network, tokenId, lockAddress],
+    ['key', lockAddress, tokenId, network],
     async () => {
       // Some older QR codes might have been generated without a tokenId in the payload. Clean up after January 2023
       if (lockVersion && lockVersion >= 10 && tokenId) {

@@ -72,22 +72,24 @@ export const Members = ({
   const [
     { isLoading, data: members = [] },
     { isLoading: isLoadingVersion, data: lockVersion = 0 },
-  ] = useQueries([
-    {
-      queryFn: getMembers,
-      queryKey: ['getMembers', lockAddress, network, filters],
-      onError: () => {
-        ToastHelper.error('There is some unexpected issue, please try again')
+  ] = useQueries({
+    queries: [
+      {
+        queryFn: getMembers,
+        queryKey: ['getMembers', lockAddress, network, filters],
+        onError: () => {
+          ToastHelper.error('There is some unexpected issue, please try again')
+        },
       },
-    },
-    {
-      queryFn: getLockVersion,
-      queryKey: ['getLockVersion', lockAddress, network],
-      onError: () => {
-        ToastHelper.error('There is some unexpected issue, please try again')
+      {
+        queryFn: getLockVersion,
+        queryKey: ['getLockVersion', lockAddress, network],
+        onError: () => {
+          ToastHelper.error('There is some unexpected issue, please try again')
+        },
       },
-    },
-  ])
+    ],
+  })
 
   const loading = isLoadingVersion || isLoading || loadingFilters
   const noItems = members?.length === 0 && !loading

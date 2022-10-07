@@ -90,30 +90,32 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
   const [
     { isLoading, data: isConnected = 0 },
     { isLoading: isLoadingKeyGranter, data: keyGranter },
-  ] = useQueries([
-    {
-      queryKey: [
-        'isStripeConnected',
-        lockAddress,
-        network,
-        hasRole,
-        disconnectStipeMutation.isSuccess,
-        connectStripeMutation.isSuccess,
-      ],
-      queryFn: isStripeConnected,
-    },
-    {
-      queryKey: [
-        'getKeyGranter',
-        lockAddress,
-        network,
-        hasRole,
-        disconnectStipeMutation.isSuccess,
-        connectStripeMutation.isSuccess,
-      ],
-      queryFn: getKeyGranter,
-    },
-  ])
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: [
+          'isStripeConnected',
+          lockAddress,
+          network,
+          hasRole,
+          disconnectStipeMutation.isSuccess,
+          connectStripeMutation.isSuccess,
+        ],
+        queryFn: isStripeConnected,
+      },
+      {
+        queryKey: [
+          'getKeyGranter',
+          lockAddress,
+          network,
+          hasRole,
+          disconnectStipeMutation.isSuccess,
+          connectStripeMutation.isSuccess,
+        ],
+        queryFn: getKeyGranter,
+      },
+    ],
+  })
 
   const { isLoading: isLoadingCheckGrantedStatus, data: isGranted } = useQuery(
     [

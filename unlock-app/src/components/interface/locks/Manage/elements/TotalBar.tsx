@@ -116,21 +116,23 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
   const [
     { isLoading, data: lock },
     { isLoading: isLoadingTotalMembers, data: numberOfOwners },
-  ] = useQueries([
-    {
-      queryKey: ['getLock', lockAddress, network, withdrawMutation.isSuccess],
-      queryFn: getLock,
-    },
-    {
-      queryKey: [
-        'totalMembers',
-        lockAddress,
-        network,
-        withdrawMutation.isSuccess,
-      ],
-      queryFn: getNumberOfOwners,
-    },
-  ])
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: ['getLock', lockAddress, network, withdrawMutation.isSuccess],
+        queryFn: getLock,
+      },
+      {
+        queryKey: [
+          'totalMembers',
+          lockAddress,
+          network,
+          withdrawMutation.isSuccess,
+        ],
+        queryFn: getNumberOfOwners,
+      },
+    ],
+  })
 
   const { balance = 0, outstandingKeys: keySold = 0 } = lock ?? {}
 
