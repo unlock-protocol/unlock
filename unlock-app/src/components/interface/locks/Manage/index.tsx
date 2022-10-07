@@ -14,11 +14,12 @@ import { useForm } from 'react-hook-form'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery } from 'react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useConfig } from '~/utils/withConfig'
 import { Container } from '../../Container'
 import { RiPagesLine as PageIcon } from 'react-icons/ri'
+import { FaSpinner as SpinnerIcon } from 'react-icons/fa'
 import { FilterBar } from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
 import FileSaver from 'file-saver'
@@ -37,16 +38,6 @@ interface TopActionBarProps {
   lockAddress: string
   network: number
 }
-
-const defaultCols = [
-  'token',
-  'lockName',
-  'expiration',
-  'keyholderAddress',
-  'lockAddress',
-  'checkedInAt',
-  'email',
-]
 
 export function downloadAsCSV(cols: string[], metadata: any[]) {
   const csv = buildCSV(cols, metadata)
@@ -82,12 +73,29 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
 
   const onDownloadCsv = async () => {
     const members = await getMembers()
-    downloadAsCSV(defaultCols, members)
+    const cols: string[] = []
+    members?.map((member: any) => {
+      Object.keys(member).map((key: string) => {
+        if (!cols.includes(key)) {
+          cols.push(key) // add key once only if not present in list
+        }
+      })
+    })
+    downloadAsCSV(cols, members)
   }
 
   const { isManager } = useLockManager({
     lockAddress,
     network: network!,
+  })
+
+  const onDownloadMutation = useMutation(onDownloadCsv, {
+    onSuccess: () => {
+      ToastHelper.success('CSV downloaded')
+    },
+    onError: () => {
+      ToastHelper.success('There is some unexpected issue, please try it again')
+    },
   })
 
   return (
@@ -105,10 +113,18 @@ const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
             <Button
               variant="outlined-primary"
               size="small"
-              onClick={onDownloadCsv}
+              disabled={onDownloadMutation.isLoading}
+              onClick={() => onDownloadMutation.mutate()}
             >
               <div className="flex items-center gap-2">
-                <CsvIcon className="text-brand-ui-primary" size={16} />
+                {onDownloadMutation?.isLoading ? (
+                  <SpinnerIcon
+                    className="text-brand-ui-primary animate-spin"
+                    size={16}
+                  />
+                ) : (
+                  <CsvIcon className="text-brand-ui-primary" size={16} />
+                )}
                 <span className="text-brand-ui-primary">CSV</span>
               </div>
             </Button>
