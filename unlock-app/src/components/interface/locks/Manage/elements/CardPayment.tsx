@@ -141,7 +141,10 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
   )
 
   const loading =
-    isLoading || isLoadingKeyGranter || isLoadingCheckGrantedStatus
+    isLoading ||
+    isLoadingKeyGranter ||
+    isLoadingCheckGrantedStatus ||
+    isLoadingPricing
 
   const grantKeyGrantorRole = async (): Promise<any> => {
     return await walletService.addKeyGranter({
