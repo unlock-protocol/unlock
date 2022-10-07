@@ -49,7 +49,7 @@
     "version:apply": "yarn version apply --all",
     "version:check": "yarn version check --interactive",
     "bump": "yarn packages:version patch && yarn version:apply",
-    "release": "yarn build && && yarn bump && yarn packages:publish",
+    "release": "yarn build && yarn bump && yarn packages:publish",
     "start": "./scripts/start.sh",
     "nuke": "./scripts/nuke.sh",
     "lint": "yarn workspaces foreach -p lint",
