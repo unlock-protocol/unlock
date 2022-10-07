@@ -17,7 +17,7 @@ First, we’d like to give a shout-out to a number of participating teams we thi
 - [3toN](https://ethglobal.com/showcase/3ton-ftzq1) built a web3 pay-per-view Dapp using Unlock Protocol for [web3 subscriptions](https://unlock-protocol.com/blog/recurring-subscription-nft).
 - [Streamharbour](https://ethglobal.com/showcase/streamharbour-h1uqk) built a tool for streamers to monetize their content, accept donations, and communicate with their fans — and also won prizes from Covalent, XMTP and IPFS.
 
-Now, onto the Unlock hackathon prize winners!
+Now, let's see the Unlock hackathon prize winners!
 
 ## Impact Self - 3rd place
 
