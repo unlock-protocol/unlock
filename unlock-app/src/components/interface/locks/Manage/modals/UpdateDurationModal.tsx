@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import {
   MAX_UINT,
   ONE_DAY_IN_SECONDS,

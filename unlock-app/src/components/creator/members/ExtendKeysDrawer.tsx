@@ -2,7 +2,7 @@ import React from 'react'
 import Drawer from '../../interface/Drawer'
 
 import { Button, Input } from '@unlock-protocol/ui'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { addressMinify } from '~/utils/strings'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '~/components/helpers/toast.helper'

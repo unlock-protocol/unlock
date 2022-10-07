@@ -5,7 +5,7 @@ import {
   FaCheckCircle as CheckIcon,
   FaSpinner as Spinner,
 } from 'react-icons/fa'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useLockManager } from '~/hooks/useLockManager'

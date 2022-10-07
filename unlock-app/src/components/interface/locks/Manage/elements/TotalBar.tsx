@@ -1,6 +1,6 @@
 import { Button } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
-import { useMutation, useQueries } from 'react-query'
+import { useMutation, useQueries } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useConfig } from '~/utils/withConfig'
 import { useWalletService } from '~/utils/withWalletService'
@@ -116,21 +116,23 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
   const [
     { isLoading, data: lock },
     { isLoading: isLoadingTotalMembers, data: numberOfOwners },
-  ] = useQueries([
-    {
-      queryKey: ['getLock', lockAddress, network, withdrawMutation.isSuccess],
-      queryFn: getLock,
-    },
-    {
-      queryKey: [
-        'totalMembers',
-        lockAddress,
-        network,
-        withdrawMutation.isSuccess,
-      ],
-      queryFn: getNumberOfOwners,
-    },
-  ])
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: ['getLock', lockAddress, network, withdrawMutation.isSuccess],
+        queryFn: getLock,
+      },
+      {
+        queryKey: [
+          'totalMembers',
+          lockAddress,
+          network,
+          withdrawMutation.isSuccess,
+        ],
+        queryFn: getNumberOfOwners,
+      },
+    ],
+  })
 
   const { balance = 0, outstandingKeys: keySold = 0 } = lock ?? {}
 

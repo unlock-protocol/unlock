@@ -1,7 +1,7 @@
 import networks from '@unlock-protocol/networks'
 import { Lock } from '@unlock-protocol/types'
 import React, { ChangeEvent, useContext } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { network } from '~/propTypes'
 import { addressMinify } from '~/utils/strings'

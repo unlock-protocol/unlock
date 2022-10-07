@@ -1,6 +1,6 @@
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Fragment, useState } from 'react'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'

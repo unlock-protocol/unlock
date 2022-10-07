@@ -29,7 +29,7 @@ import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
 import { KeyMetadataModal } from './KeyMetadataModal'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface KeyBoxProps {

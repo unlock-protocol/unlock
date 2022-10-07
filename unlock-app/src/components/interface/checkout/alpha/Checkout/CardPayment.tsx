@@ -1,7 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { deleteCardForAddress } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { Button } from '@unlock-protocol/ui'
