@@ -255,19 +255,22 @@ contract MixinLockCore is
   }
 
   /**
-   * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
-   * @param _spender address that can spend tokens belonging to the lock
-   * @param _amount amount of tokens that can be spent by the spender
+   * Execute an arbitrary transaction on behalf of the lock
+   * @notice this can be useful to approve/withdraw ERC20 tokens for instance
+   * @param target the contract address
+   * @param data the call data of the encoded function
+   * @param value the value to be paid to tx (if any)
    */
-  function approveBeneficiary(
-    address _spender,
-    uint _amount
-  ) public
-    returns (bool)
-  {
-    _onlyLockManagerOrBeneficiary();
-    return IERC20Upgradeable(tokenAddress).approve(_spender, _amount);
+  function execTransaction(
+    address target,
+    bytes calldata data,
+    uint value
+  ) external payable {
+    _onlyLockManager();
+    (bool success, bytes memory reason) = target.call{value: value}(data);
+    require(success, string(reason));
   }
+
 
 
   // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
