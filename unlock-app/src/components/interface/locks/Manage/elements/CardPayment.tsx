@@ -42,7 +42,10 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
   const walletService = useWalletService()
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
-  const { isStripeConnected } = useLock({ address: lockAddress }, network)
+  const { isStripeConnected, getCreditCardPricing } = useLock(
+    { address: lockAddress },
+    network
+  )
   const { connectStripeToLock, disconnectStripeFromLock } = useAccount(
     account!,
     network!
@@ -90,6 +93,7 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
   const [
     { isLoading, data: isConnected = 0 },
     { isLoading: isLoadingKeyGranter, data: keyGranter },
+    { isLoading: isLoadingPricing, data: fiatPricing },
   ] = useQueries([
     {
       queryKey: [
@@ -113,7 +117,13 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
       ],
       queryFn: getKeyGranter,
     },
+    {
+      queryKey: ['getCreditCardPricing', lockAddress, network],
+      queryFn: getCreditCardPricing,
+    },
   ])
+
+  const isPricingLow = fiatPricing?.usd?.keyPrice < 50
 
   const { isLoading: isLoadingCheckGrantedStatus, data: isGranted } = useQuery(
     [
@@ -232,11 +242,19 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
   if (loading) return <CardPaymentPlaceholder />
 
   return (
-    <div className="px-4 py-6 border rounded-2xl border-brand-ui-primary">
-      <span className="text-base">Credit card payment</span>
-      <div className="mt-4">
-        <Status />
+    <div className="flex flex-col gap-2">
+      <div className="px-4 py-6 border rounded-2xl border-brand-ui-primary">
+        <span className="text-base">Credit card payment</span>
+        <div className="mt-4">
+          <Status />
+        </div>
       </div>
+      {isPricingLow && (
+        <span className="text-sm text-red-600">
+          Your current price is too low for us to process credit cards. It needs
+          to be at least $0.50.
+        </span>
+      )}
     </div>
   )
 }
