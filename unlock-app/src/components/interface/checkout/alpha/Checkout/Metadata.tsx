@@ -142,9 +142,8 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         })
       )
 
-      await storage.submitMetadata(users, lock!.network)
-
       const recipients = users.map((item) => item.userAddress)
+      await storage.submitMetadata(users, lock!.network)
 
       send({
         type: 'SELECT_RECIPIENTS',

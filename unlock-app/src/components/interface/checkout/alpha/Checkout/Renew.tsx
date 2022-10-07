@@ -21,6 +21,7 @@ import { Pricing } from '../Lock'
 import { LabeledItem } from '../LabeledItem'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { fetchRecipientsData } from './utils'
 
 interface Props {
   injectedProvider: unknown
@@ -73,7 +74,22 @@ export function Renew({
       if (!(lock && account)) {
         return
       }
-      const data = password || captcha || undefined
+
+      let data = password || captcha || undefined
+
+      const dataBuilder =
+        paywallConfig.locks[lock!.address].dataBuilder ||
+        paywallConfig.dataBuilder
+
+      // if Data builder url is present, prioritize that above rest.
+      if (dataBuilder) {
+        data = await fetchRecipientsData(dataBuilder, {
+          recipients: [account],
+          lockAddress: lock!.address,
+          network: lock!.network,
+        })
+      }
+
       const onTransactionHandler = (
         error: Error | null,
         hash: string | null

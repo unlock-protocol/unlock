@@ -106,6 +106,7 @@ export interface PaywallConfigLock {
   minRecipients?: number
   superfluid?: boolean
   default?: boolean
+  dataBuilder?: string
 }
 
 export enum KeyStatus {
@@ -214,6 +215,7 @@ export interface PaywallConfig {
   hideSoldOut?: boolean
   password?: boolean
   emailRequired?: boolean
+  dataBuilder?: string
 }
 
 export interface RawLock {

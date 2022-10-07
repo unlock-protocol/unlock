@@ -52,6 +52,11 @@ export interface SelectQuantityEvent {
   quantity: number
 }
 
+export interface SubmitDataEvent {
+  type: 'SUBMIT_DATA'
+  data: string[]
+}
+
 export interface SubmitPasswordEvent {
   type: 'SUBMIT_PASSWORD'
   data: string[]
@@ -113,6 +118,7 @@ export type CheckoutMachineEvents =
   | SelectCardToChargeEvent
   | SignMessageEvent
   | SubmitPasswordEvent
+  | SubmitDataEvent
   | MakeAnotherPurchaseEvent
   | SolveCaptchaEvent
   | ConfirmMintEvent
@@ -156,6 +162,7 @@ interface CheckoutMachineContext {
   renewed?: Transaction
   skipQuantity: boolean
   password?: string[]
+  data?: string[]
   renew: boolean
 }
 
@@ -198,6 +205,9 @@ export const checkoutMachine = createMachine(
       },
       SIGN_MESSAGE: {
         actions: ['signMessage'],
+      },
+      SUBMIT_DATA: {
+        actions: ['submitData'],
       },
     },
     states: {
@@ -638,6 +648,11 @@ export const checkoutMachine = createMachine(
       }),
       submitPassword: assign({
         password: (_, event) => {
+          return event.data
+        },
+      }),
+      submitData: assign({
+        data: (_, event) => {
           return event.data
         },
       }),
