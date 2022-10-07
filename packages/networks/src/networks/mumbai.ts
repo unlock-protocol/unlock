@@ -8,7 +8,11 @@ export const mumbai: NetworkConfig = {
   id: 80001,
   name: 'Mumbai (Polygon)',
   blockTime: 1000,
-  subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai',
+  subgraph: {
+    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai-v2',
+  },
   explorer: {
     name: 'PolygonScan (Mumbai)',
     urls: {

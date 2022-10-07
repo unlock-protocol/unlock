@@ -5,7 +5,9 @@
     "multisig": "0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9",
     "name": "Ethereum",
     "blockTime": 8000,
-    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock",
+    "subgraph": {
+      "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock"
+    },
     "explorer": {
       "name": "Etherscan",
       "urls": {}
@@ -78,7 +80,9 @@
     "id": 5,
     "name": "Goerli (Testnet)",
     "blockTime": 1000,
-    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli",
+    "subgraph": {
+      "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli"
+    },
     "explorer": {
       "name": "Goerli (Testnet)",
       "urls": {}
@@ -119,7 +123,9 @@
     "id": 10,
     "name": "Optimism",
     "blockTime": 8000,
-    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism",
+    "subgraph": {
+      "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism"
+    },
     "explorer": {
       "name": "Etherscan",
       "urls": {}
@@ -169,7 +175,9 @@
     "name": "Binance Smart Chain",
     "blockTime": 1000,
     "multisig": "0x373D7cbc4F2700719DEa237500c7a154310B0F9B",
-    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc",
+    "subgraph": {
+      "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc"
+    },
     "explorer": {
       "name": "BscScan",
       "urls": {}
@@ -229,7 +237,9 @@
     "name": "Gnosis Chain",
     "blockTime": 5000,
     "requiredConfirmations": 12,
-    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai",
+    "subgraph": {
+      "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai"
+    },
     "explorer": {
       "name": "Blockscout",
       "urls": {}
@@ -269,7 +279,10 @@
     "id": 137,
     "name": "Polygon",
     "blockTime": 1000,
-    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon",
+    "subgraph": {
+      "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon",
+      "networkName": "matic"
+    },
     "explorer": {
       "name": "Polygonscan",
       "urls": {}
@@ -332,7 +345,9 @@
     "name": "localhost",
     "locksmithUri": "http://127.0.0.1:8080",
     "unlockAppUrl": "http://0.0.0.0:3000",
-    "subgraphURI": "http://localhost:8000/subgraphs/name/unlock-protocol/unlock",
+    "subgraph": {
+      "endpoint": "http://localhost:8000/subgraphs/name/unlock-protocol/unlock"
+    },
     "serializerAddress": "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
     "description": "Localhost network.",
     "isTestNetwork": true
@@ -343,7 +358,10 @@
     "id": 42161,
     "name": "Arbitrum",
     "blockTime": 1000,
-    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum",
+    "subgraph": {
+      "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum",
+      "networkName": "arbitrum-one"
+    },
     "explorer": {
       "name": "Arbitrum",
       "urls": {}
@@ -402,7 +420,9 @@
     "name": "Celo",
     "description": "Celo is a EVM compatible proof-of-stake blockchain designed for mobile with the ability to pay gas with tokens or stablecoins.",
     "blockTime": 1000,
-    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/celo",
+    "subgraph": {
+      "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/celo"
+    },
     "explorer": {
       "name": "Celoscan",
       "urls": {}
@@ -436,7 +456,9 @@
     "id": 43114,
     "name": "Avalanche (C-Chain)",
     "blockTime": 1000,
-    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche",
+    "subgraph": {
+      "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche"
+    },
     "explorer": {
       "name": "Snowtrace (Avalanche)",
       "urls": {}
@@ -494,7 +516,9 @@
     "id": 80001,
     "name": "Mumbai (Polygon)",
     "blockTime": 1000,
-    "subgraphURI": "https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai",
+    "subgraph": {
+      "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai"
+    },
     "explorer": {
       "name": "PolygonScan (Mumbai)",
       "urls": {}

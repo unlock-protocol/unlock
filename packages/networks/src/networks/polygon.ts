@@ -9,8 +9,12 @@ export const polygon: NetworkConfig = {
   id: 137,
   name: 'Polygon',
   blockTime: 1000,
-  subgraphURI:
-    'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
+  subgraph: {
+    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2',
+    networkName: 'matic',
+  },
   explorer: {
     name: 'Polygonscan',
     urls: {

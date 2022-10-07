@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components'
+import { css } from 'styled-components'
 import { MAX_DEVICE_WIDTHS } from '../constants'
 
 const sizes: { [key: string]: any } = {
@@ -39,29 +39,5 @@ const Media: { [key: string]: any } = Object.keys(sizes).reduce(
   },
   {}
 )
-
-export const NoPhone = styled.div`
-  ${Media.phone`
-    display: none;
-  `};
-`
-
-export const Phone = styled.div`
-  ${Media.nophone`
-    display: none;
-  `};
-`
-
-export const Mobile = styled.div`
-  ${Media.desktop`
-    display: none;
-  `};
-`
-
-export const Desktop = styled.div`
-  ${Media.nodesktop`
-    display: none;
-  `};
-`
 
 export default Media

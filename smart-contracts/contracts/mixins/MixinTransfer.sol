@@ -218,7 +218,7 @@ contract MixinTransfer is
     key.expirationTimestamp = keyExpirationTimestampFor(_tokenId);
 
     // increase total number of unique owners
-    if(balanceOf(_recipient) == 0 ) {
+    if(totalKeys(_recipient) == 0 ) {
       numberOfOwners++;
     }
 

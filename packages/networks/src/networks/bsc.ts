@@ -8,7 +8,11 @@ export const bsc: NetworkConfig = {
   name: 'Binance Smart Chain',
   blockTime: 1000,
   multisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
-  subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
+  subgraph: {
+    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc-v2',
+  },
   explorer: {
     name: 'BscScan',
     urls: {

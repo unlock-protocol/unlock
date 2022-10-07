@@ -37,6 +37,7 @@ contract('Lock / totalKeys', (accounts) => {
     const expirationTs = await lock.keyExpirationTimestampFor(tokenIds[0])
     await time.increaseTo(expirationTs.toNumber() + 10)
 
+    assert.equal((await lock.balanceOf(accounts[1])).toNumber(), 0)
     assert.equal((await lock.totalKeys(accounts[1])).toNumber(), 3)
   })
 
@@ -52,6 +53,7 @@ contract('Lock / totalKeys', (accounts) => {
     await time.increaseTo(expirationTs.toNumber() + 10)
 
     assert.equal((await lock.totalKeys(accounts[1])).toNumber(), 3)
+    assert.equal((await lock.balanceOf(accounts[1])).toNumber(), 0)
 
     // renew one
     await lock.extend(0, tokenIds[0], ADDRESS_ZERO, [], {
@@ -59,6 +61,7 @@ contract('Lock / totalKeys', (accounts) => {
       from: accounts[1],
     })
 
+    assert.equal((await lock.balanceOf(accounts[1])).toNumber(), 1)
     assert.equal((await lock.totalKeys(accounts[1])).toNumber(), 3)
   })
 })

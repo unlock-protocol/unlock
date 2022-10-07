@@ -26,6 +26,7 @@ import { ethers, BigNumber } from 'ethers'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { fetchRecipientsData } from './utils'
 
 interface Props {
   injectedProvider: unknown
@@ -194,12 +195,28 @@ export function Confirm({
       const referrers: string[] | undefined = paywallConfig.referrer
         ? new Array(recipients!.length).fill(paywallConfig.referrer)
         : undefined
+
+      let data = password || captcha || undefined
+
+      const dataBuilder =
+        paywallConfig.locks[lock!.address].dataBuilder ||
+        paywallConfig.dataBuilder
+
+      // if Data builder url is present, prioritize that above rest.
+      if (dataBuilder) {
+        data = await fetchRecipientsData(dataBuilder, {
+          recipients,
+          lockAddress: lock!.address,
+          network: lock!.network,
+        })
+      }
+
       await walletService?.purchaseKeys(
         {
           lockAddress,
           keyPrices,
           owners: recipients!,
-          data: password?.length ? password : captcha,
+          data,
           recurringPayments,
           referrers,
         },
@@ -289,7 +306,13 @@ export function Confirm({
         return
       }
 
-      const response = await claimMembershipFromLock(lockAddress, lockNetwork)
+      const data = password || captcha || undefined
+
+      const response = await claimMembershipFromLock(
+        lockAddress,
+        lockNetwork,
+        data?.[0]
+      )
 
       const { transactionHash: hash, error } = response
 

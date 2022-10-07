@@ -3,10 +3,11 @@ import { MdFilterList as FilterIcon } from 'react-icons/md'
 import { BiSearch as SearchIcon } from 'react-icons/bi'
 import { useEffect, useState } from 'react'
 import { MemberFilter } from '~/unlockTypes'
-import useDebounce from '~/hooks/useDebouce'
+import { useDebounce } from 'react-use'
 import { getAddressForName } from '~/hooks/useEns'
 interface FilterBarProps {
   setFilters?: (filters: any) => void
+  setLoading?: (loading: boolean) => void
   filters?: {
     [key: string]: any
   }
@@ -40,11 +41,30 @@ export enum ExpirationStatus {
 
 export const FilterBar = ({
   setFilters,
+  setLoading,
   filters: defaultFilters,
 }: FilterBarProps) => {
-  const [query, setQuery] = useState<string>('')
-  const queryValue = useDebounce<string>(query)
+  const [isTyping, setIsTyping] = useState(false)
+  const [query, setQuery] = useState('')
   const [rawQueryValue, setRawQueryValue] = useState('')
+
+  const [_isReady] = useDebounce(
+    async () => {
+      const ensToAddress = await getAddressForName(rawQueryValue)
+      const search = ensToAddress || rawQueryValue
+      setQuery(search)
+      setIsTyping(false)
+    },
+    500,
+    [rawQueryValue]
+  )
+
+  useEffect(() => {
+    if (typeof setLoading === 'function') {
+      setLoading(isTyping)
+    }
+  }, [setLoading, isTyping])
+
   const expirations = Object.values(ExpirationStatus ?? {})
   const [openSearch, setOpenSearch] = useState(false)
   const [expandFilter, setExpandFilter] = useState(false)
@@ -68,17 +88,9 @@ export const FilterBar = ({
     setFilters({
       filterKey,
       expiration,
-      query: queryValue,
+      query,
     })
-  }, [expiration, filterKey, queryValue, setFilters])
-
-  const onSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e?.target?.value || ''
-    setRawQueryValue(value)
-    const ensToAddress = await getAddressForName(value)
-    const search = ensToAddress || value
-    setQuery(search)
-  }
+  }, [expiration, filterKey, query, setFilters])
 
   const Expiration = () => {
     return (
@@ -131,7 +143,6 @@ export const FilterBar = ({
                     defaultValue={filterKey}
                     onChange={(filter) => {
                       setFilterKey(filter)
-                      setQuery('')
                       setRawQueryValue('')
                     }}
                   />
@@ -140,7 +151,10 @@ export const FilterBar = ({
               <div className="mt-auto -mb-1.5">
                 <Input
                   size="small"
-                  onChange={onSearch}
+                  onChange={(e: any) => {
+                    setIsTyping(true)
+                    setRawQueryValue(e?.target?.value)
+                  }}
                   value={rawQueryValue}
                   disabled={disableSearch}
                 />
