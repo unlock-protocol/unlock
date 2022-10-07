@@ -1,6 +1,6 @@
 import { Badge, Button } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
-import { useMutation, useQueries, useQuery } from 'react-query'
+import { useMutation, useQueries, useQuery } from '@tanstack/react-query'
 import useLock from '~/hooks/useLock'
 import { useWalletService } from '~/utils/withWalletService'
 import { useAuth } from '~/contexts/AuthenticationContext'
@@ -94,34 +94,36 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
     { isLoading, data: isConnected = 0 },
     { isLoading: isLoadingKeyGranter, data: keyGranter },
     { isLoading: isLoadingPricing, data: fiatPricing },
-  ] = useQueries([
-    {
-      queryKey: [
-        'isStripeConnected',
-        lockAddress,
-        network,
-        hasRole,
-        disconnectStipeMutation.isSuccess,
-        connectStripeMutation.isSuccess,
-      ],
-      queryFn: isStripeConnected,
-    },
-    {
-      queryKey: [
-        'getKeyGranter',
-        lockAddress,
-        network,
-        hasRole,
-        disconnectStipeMutation.isSuccess,
-        connectStripeMutation.isSuccess,
-      ],
-      queryFn: getKeyGranter,
-    },
-    {
-      queryKey: ['getCreditCardPricing', lockAddress, network],
-      queryFn: getCreditCardPricing,
-    },
-  ])
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: [
+          'isStripeConnected',
+          lockAddress,
+          network,
+          hasRole,
+          disconnectStipeMutation.isSuccess,
+          connectStripeMutation.isSuccess,
+        ],
+        queryFn: isStripeConnected,
+      },
+      {
+        queryKey: [
+          'getKeyGranter',
+          lockAddress,
+          network,
+          hasRole,
+          disconnectStipeMutation.isSuccess,
+          connectStripeMutation.isSuccess,
+        ],
+        queryFn: getKeyGranter,
+      },
+      {
+        queryKey: ['getCreditCardPricing', lockAddress, network],
+        queryFn: getCreditCardPricing,
+      },
+    ],
+  })
 
   const isPricingLow = fiatPricing?.usd?.keyPrice < 50
 
