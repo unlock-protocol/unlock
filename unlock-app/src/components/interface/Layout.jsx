@@ -49,7 +49,7 @@ const Terms = withConfig(({ setTermsAccepted, config }) => {
   return (
     <styles.Greyout>
       <TermsModal>
-        <Message>
+        <span className="m-0 text-base">
           No account required{' '}
           <span role="img" aria-label="stars">
             ✨
@@ -57,7 +57,7 @@ const Terms = withConfig(({ setTermsAccepted, config }) => {
           , but you need to agree to our{' '}
           <a href={`${config.unlockStaticUrl}/terms`}>Terms of Service</a> and{' '}
           <a href={`${config.unlockStaticUrl}/privacy`}>Privacy Policy</a>.
-        </Message>
+        </span>
         <TermsButton onClick={() => setTermsAccepted(true)}>
           I agree
         </TermsButton>
@@ -93,9 +93,4 @@ const Content = styled.div`
   display: grid;
   row-gap: 24px;
   width: 100%;
-`
-
-const Message = styled.p`
-  margin: 0px;
-  font-size: 16px;
 `
