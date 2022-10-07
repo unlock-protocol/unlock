@@ -18314,7 +18314,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@0.0.8, @unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
+"@unlock-protocol/contracts@npm:0.0.8":
+  version: 0.0.8
+  resolution: "@unlock-protocol/contracts@npm:0.0.8"
+  checksum: 89b444067e5cf56179d1029704450bea58ab7258007240ee780014959c89dba2a659e520c1749356105b573b75993375a7db76876769aadc2b0eef96091947a6
+  languageName: node
+  linkType: hard
+
+"@unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
   dependencies:
