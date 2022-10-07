@@ -39,6 +39,8 @@ We hope that the Raindrop team continues their journey building on Unlock Protoc
 
 Our first-prize winner, [Homebase](https://ethglobal.com/showcase/homebase-4kyoh), set out to tackle monetization for creators, a sweet spot for the use of Unlock Protocol. In contrast to Raindrop, Homebase focused on the social aspect and introduced social graph functionality through [Lens Protocol](https://lens.xyz/). In addition to implementing Unlock, Homebase paired with Next.js, The Graph, IPFS and Google Firebase.  (Note: Unlock has integrations with [Firebase](https://david-layton.gitbook.io/novum/) and [many other](https://unlock-protocol.com/guides/category/plugins/) existing web2 and web3 tools. Interoperability continues to be a core reason people build on Unlock Protocol.)
 
+[![homebase.png](/images/blog/ethonline-2022/homebase.png)](https://ethglobal.com/showcase/homebase-4kyoh)
+
 Homebase did a beautiful job thinking through the design and flow of their application and it’s certainly the type of social platform I’d like to see more of.
 
 If you’re interested in joining a hackathon where you can get some experience building in web3 on Unlock Protocol, come hack with us at [ETH San Francisco](https://sf.ethglobal.com/)! That said, you don’t need to be at an event to learn from us or ask questions. Join the Unlock Locksmith community by jumping into our [Discord](http://discord.unlock-protocol.com) server, where you’ll find the veteran builders and core team hanging out, answering questions, talking about the future of web3 and just generally supporting each other.
