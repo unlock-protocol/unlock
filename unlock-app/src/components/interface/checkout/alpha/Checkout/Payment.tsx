@@ -90,12 +90,15 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const enableSuperfluid =
     (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
 
-  const enableClaim =
-    !!isClaimable && !isClaimableLoading && isReceiverAccountOnly
-
   const enableCreditCard = !!fiatPricing?.creditCardEnabled
 
   const enableCrypto = isPayable && !isUnlockAccount && !isTokenBalanceLoading
+
+  const enableClaim =
+    !!isClaimable &&
+    !isClaimableLoading &&
+    isReceiverAccountOnly &&
+    !enableCrypto
 
   const isWaiting = isLoading || isClaimableLoading || isTokenBalanceLoading
 
