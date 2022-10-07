@@ -11,11 +11,15 @@ export async function fetchRecipientsData(
   try {
     const result: string[] = []
     for (const recipient of recipients) {
-      const endpoint = new URL(url)
+      const dataEndpoint = new URL(url)
 
-      endpoint.searchParams.append('network', network.toString())
-      endpoint.searchParams.append('lockAddress', lockAddress)
-      endpoint.searchParams.append('recipient', recipient)
+      dataEndpoint.searchParams.append('network', network.toString())
+      dataEndpoint.searchParams.append('lockAddress', lockAddress)
+      dataEndpoint.searchParams.append('recipient', recipient)
+
+      // We need to proxy to avoid cors.
+      const endpoint = new URL('/data', 'https://rpc.unlock-protocol.com')
+      endpoint.searchParams.append('url', dataEndpoint.toString())
 
       const abortController = new AbortController()
 
@@ -24,9 +28,8 @@ export async function fetchRecipientsData(
       }, 5000)
 
       const response = await fetch(endpoint, {
-        mode: 'no-cors',
         headers: {
-          'Content-Type': 'text/plain; charset=UTF-8',
+          'Content-Type': 'application/json; charset=UTF-8',
         },
         signal: abortController.signal,
       })
@@ -37,8 +40,8 @@ export async function fetchRecipientsData(
         throw new Error('Failed to fetch data.')
       }
 
-      const data = await response.text()
-      result.push(data)
+      const json = await response.json()
+      result.push(json.data)
       return result
     }
   } catch (error) {
