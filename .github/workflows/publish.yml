@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - 'production'
+      - 'auto-publish'
 
 jobs:
   publish:
