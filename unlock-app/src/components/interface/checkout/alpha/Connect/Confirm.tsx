@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { Button, Icon } from '@unlock-protocol/ui'
 import { RiUser3Line as UserIcon } from 'react-icons/ri'
 import { FaEthereum as EthereumIcon } from 'react-icons/fa'
-import { OAuthConfig } from '~/unlockTypes'
+import { OAuthConfig, PaywallConfig } from '~/unlockTypes'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { createMessageToSignIn } from '~/utils/oauth'
 import { Connected } from '../Connected'
@@ -10,6 +10,7 @@ import { ConnectService } from './connectMachine'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 
 interface Props {
+  paywallConfig?: PaywallConfig
   oauthConfig: OAuthConfig
   connectService: ConnectService
   injectedProvider: unknown
@@ -20,6 +21,7 @@ export function ConfirmConnect({
   injectedProvider,
   oauthConfig,
   connectService,
+  paywallConfig,
   onClose,
 }: Props) {
   const [loading, setLoading] = useState(false)
@@ -29,7 +31,7 @@ export function ConfirmConnect({
       setLoading(true)
       const message = createMessageToSignIn({
         clientId: oauthConfig.clientId,
-        statement: '',
+        statement: paywallConfig?.messageToSign || '',
         address: account!,
         chainId: network,
       })
@@ -54,9 +56,9 @@ export function ConfirmConnect({
 
   return (
     <Fragment>
-      <main className="px-6 pb-2 space-y-2 overflow-auto h-full">
+      <main className="h-full px-6 pb-2 space-y-2 overflow-auto">
         <header>
-          <h1 className="font-medium text-xl">
+          <h1 className="text-xl font-medium">
             <span className="font-bold text-brand-ui-primary">
               {oauthConfig.clientId}
             </span>{' '}
@@ -64,7 +66,7 @@ export function ConfirmConnect({
           </h1>
         </header>
         <ol>
-          <li className="flex gap-6 items-center">
+          <li className="flex items-center gap-6">
             <div>
               <UserIcon className="fill-brand-ui-primary" size={36} />
             </div>
@@ -79,7 +81,7 @@ export function ConfirmConnect({
           </li>
         </ol>
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected injectedProvider={injectedProvider} service={connectService}>
           <Button
             onClick={onSignIn}

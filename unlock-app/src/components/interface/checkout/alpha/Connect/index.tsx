@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import type { OAuthConfig } from '~/unlockTypes'
+import type { OAuthConfig, PaywallConfig } from '~/unlockTypes'
 import { ConfirmConnect } from './Confirm'
 import { useActor, useInterpret } from '@xstate/react'
 import { connectMachine } from './connectMachine'
@@ -8,12 +8,17 @@ import { UnlockAccountSignIn } from './UnlockAccountSignIn'
 import { CheckoutTransition, TopNavigation } from '../Shell'
 
 interface Props {
+  paywallConfig?: PaywallConfig
   oauthConfig: OAuthConfig
   injectedProvider: unknown
   communication: ReturnType<typeof useCheckoutCommunication>
 }
 
-export function Connect({ injectedProvider, oauthConfig }: Props) {
+export function Connect({
+  injectedProvider,
+  oauthConfig,
+  paywallConfig,
+}: Props) {
   const connectService = useInterpret(connectMachine)
   const [state] = useActor(connectService)
   const matched = state.value.toString()
@@ -52,6 +57,7 @@ export function Connect({ injectedProvider, oauthConfig }: Props) {
             onClose={onClose}
             connectService={connectService}
             oauthConfig={oauthConfig}
+            paywallConfig={paywallConfig}
             injectedProvider={injectedProvider}
           />
         )
