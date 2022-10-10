@@ -1,7 +1,7 @@
 import {
-  LocksmithService,
   WalletService,
-  Configuration,
+  LocksmithService,
+  LocksmithServiceConfiguration,
 } from '@unlock-protocol/unlock-js'
 
 import { EventEmitter } from 'events'
@@ -69,7 +69,7 @@ export class StorageService extends EventEmitter {
     super()
     this.host = host
     this.locksmith = new LocksmithService(
-      new Configuration({
+      new LocksmithServiceConfiguration({
         basePath: host,
       })
     )
