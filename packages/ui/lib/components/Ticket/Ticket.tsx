@@ -5,7 +5,8 @@ import {
   RiTimer2Line as TimeIcon,
   RiMapPinLine as LocationIcon,
 } from 'react-icons/ri'
-
+import { networks } from '@unlock-protocol/networks'
+import { minifyAddress } from '~/utils'
 const { SvgComponents } = UnlockAssets
 
 interface Props {
@@ -17,6 +18,8 @@ interface Props {
   location?: string
   time?: string
   date?: string
+  lockAddress: string
+  network: number
   QRCodeURL: string
 }
 
@@ -30,7 +33,10 @@ export function Ticket({
   date,
   time,
   location,
+  lockAddress,
+  network,
 }: Props) {
+  const networkConfig = networks[network]
   return (
     <div className="flex flex-col max-w-sm">
       <div className="p-6 space-y-6 bg-white rounded-3xl">
@@ -51,9 +57,14 @@ export function Ticket({
           {items}
         </div>
 
-        <div className="grid sm:grid-cols-2">
+        <div className="grid gap-2 sm:grid-cols-2">
           <TicketLabel label="Token ID" value={id} />
-          <TicketLabel label="Recipient" value={recipient} />
+          <TicketLabel label="Recipient" value={minifyAddress(recipient)} />
+          <TicketLabel label="Network" value={networkConfig.name} />
+          <TicketLabel
+            label="Lock Address"
+            value={minifyAddress(lockAddress)}
+          />
         </div>
       </div>
       <div className="p-6 bg-white border-t-2 border-dashed rounded-3xl">
