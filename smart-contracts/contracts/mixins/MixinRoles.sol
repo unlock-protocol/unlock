@@ -13,12 +13,6 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
   bytes32 public constant LOCK_MANAGER_ROLE = keccak256("LOCK_MANAGER");
   bytes32 public constant KEY_GRANTER_ROLE = keccak256("KEY_GRANTER");
 
-  // events
-  event LockManagerAdded(address indexed account);
-  event LockManagerRemoved(address indexed account);
-  event KeyGranterAdded(address indexed account);
-  event KeyGranterRemoved(address indexed account);
-
   // initializer
   function _initializeMixinRoles(address sender) internal {
 
@@ -55,14 +49,11 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
   function addLockManager(address account) public {
     _onlyLockManager();
     grantRole(LOCK_MANAGER_ROLE, account);
-    emit LockManagerAdded(account);
   }
 
   function renounceLockManager() public {
     renounceRole(LOCK_MANAGER_ROLE, msg.sender);
-    emit LockManagerRemoved(msg.sender);
   }
-
 
   // key granter functions
   function isKeyGranter(address account) public view returns (bool) {
@@ -72,13 +63,11 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
   function addKeyGranter(address account) public {
     _onlyLockManager();
     grantRole(KEY_GRANTER_ROLE, account);
-    emit KeyGranterAdded(account);
   }
 
   function revokeKeyGranter(address _granter) public {
     _onlyLockManager();
     revokeRole(KEY_GRANTER_ROLE, _granter);
-    emit KeyGranterRemoved(_granter);
   }
 
   uint256[1000] private __safe_upgrade_gap;
