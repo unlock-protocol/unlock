@@ -84,8 +84,8 @@ export const MemberCard = ({
     return (
       <>
         <ExpireAndRefundModal
-          active={expireAndRefundOpen}
-          dismiss={() => setExpireAndRefundOpen(false)}
+          isOpen={expireAndRefundOpen}
+          setIsOpen={setExpireAndRefundOpen}
           lockAddress={lockAddress}
           keyOwner={owner}
           tokenId={tokenId}

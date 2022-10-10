@@ -2,6 +2,7 @@ import React from 'react'
 import * as rtl from '@testing-library/react'
 import QRModal from '../../../../components/interface/keychain/QRModal'
 
+let setIsOpen: jest.Mock<any, any>
 let dismiss: jest.Mock<any, any>
 let sendEmail: jest.Mock<any, any>
 const lock = {
@@ -9,12 +10,13 @@ const lock = {
 }
 
 const render = () => {
-  dismiss = jest.fn()
+  setIsOpen = jest.fn()
   sendEmail = jest.fn()
   return rtl.render(
     <QRModal
       lock={lock}
-      active
+      isOpen
+      setIsOpen={setIsOpen}
       dismiss={dismiss}
       sendEmail={sendEmail}
       signature="signature"

@@ -1,22 +1,22 @@
+import { Button, Modal } from '@unlock-protocol/ui'
 import React, { useState, useEffect } from 'react'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
-import InlineModal from '../InlineModal'
 import Loading from '../Loading'
 
 export interface ICancelAndRefundProps {
-  active: boolean
+  isOpen: boolean
   lock: any
-  dismiss: () => void
+  setIsOpen: (open: boolean) => void
   account: string
   currency: string
   keyId: string
 }
 
 export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
-  active,
+  isOpen,
   lock,
-  dismiss,
+  setIsOpen,
   account: owner,
   currency,
   keyId,
@@ -28,7 +28,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
   useEffect(() => {
-    if (!active) return
+    if (!isOpen) return
     const getRefundAmount = async () => {
       setLoadingAmount(true)
       const params = {
@@ -47,7 +47,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
     }
     getRefundAmount()
   }, [
-    active,
+    isOpen,
     setRefundAmount,
     setLoadingAmount,
     lockAddress,
@@ -56,11 +56,6 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
     owner,
     walletService,
   ])
-
-  const onCloseCallback = () => {
-    if (typeof dismiss === 'function') dismiss()
-    setLoading(false)
-  }
 
   const onCancelAndRefund = async () => {
     setLoading(true)
@@ -76,14 +71,14 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
         {} /** transactionParams */,
         () => true
       )
-      onCloseCallback()
+      setIsOpen(false)
       ToastHelper.success('Key cancelled and successfully refunded.')
       // reload page to show updated list of keys
       setTimeout(() => {
         window.location.reload()
       }, 2000)
     } catch (err: any) {
-      onCloseCallback()
+      setIsOpen(false)
       ToastHelper.error(
         err?.error?.message ??
           err?.message ??
@@ -94,14 +89,8 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
 
   if (!lock) return <span>No lock selected</span>
   return (
-    <InlineModal active={active} dismiss={onCloseCallback}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-        }}
-      >
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
+      <div className="flex flex-col w-full gap-3 px-8 py-4">
         {loadingAmount ? (
           <Loading />
         ) : (
@@ -115,8 +104,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
             </p>
           </>
         )}
-        <button
-          className="bg-gray-200 rounded px-2 py-1 text-sm mt-4 flex justify-center disabled:opacity-50 w-100"
+        <Button
           type="button"
           onClick={onCancelAndRefund}
           disabled={loading || loadingAmount}
@@ -126,8 +114,8 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
           ) : (
             <span className="ml-2">Confirm</span>
           )}
-        </button>
+        </Button>
       </div>
-    </InlineModal>
+    </Modal>
   )
 }

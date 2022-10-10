@@ -209,14 +209,6 @@ const Key = ({ ownedKey, account, network }: Props) => {
     }
   }
 
-  const onCancelAndRefund = () => {
-    setShowCancelModal(true)
-  }
-
-  const closeCancelAndRefund = () => {
-    setShowCancelModal(false)
-  }
-
   const iconButtonClass =
     'flex items-center disabled:opacity-50 disabled:border-gray-200 disabled:cursor-not-allowed p-2 border border-gray-100 rounded shadow opacity-90 hover:opacity-100 hover:border-gray-200'
   const sendEmail = (recipient: string, qrImage: string) => {
@@ -258,17 +250,18 @@ const Key = ({ ownedKey, account, network }: Props) => {
         network={network}
       />
       <CancelAndRefundModal
-        active={showCancelModal}
+        isOpen={showCancelModal}
+        setIsOpen={setShowCancelModal}
         lock={lock}
         keyId={keyId}
-        dismiss={closeCancelAndRefund}
         account={account}
         currency={symbol}
       />
       {signature && (
         <QRModal
           lock={lock}
-          active={showingQR}
+          isOpen={showingQR}
+          setIsOpen={setShowingQR}
           dismiss={() => setSignature(null)}
           sendEmail={sendEmail}
           signature={signature}
@@ -337,7 +330,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
                 className={iconButtonClass}
                 type="button"
                 disabled={wrongNetwork}
-                onClick={onCancelAndRefund}
+                onClick={() => setShowCancelModal(!showCancelModal)}
               >
                 <CancelIcon />
               </button>

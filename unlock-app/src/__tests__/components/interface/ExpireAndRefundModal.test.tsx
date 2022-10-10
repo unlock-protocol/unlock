@@ -29,7 +29,7 @@ const aKey: OwnedKey = {
 
 const keyOwner = '0x455375453031ac5fd7cf0e42291f2d8e3df67f85'
 
-const dismiss: jest.Mock<any, any> = jest.fn()
+const setIsOpen: jest.Mock<any, any> = jest.fn()
 
 const renderWithContexts = (component: React.ReactElement<any>) => {
   const network = 1337
@@ -64,8 +64,8 @@ const renderWithContexts = (component: React.ReactElement<any>) => {
 
 const modalActive: React.ReactElement<any> = (
   <ExpireAndRefundModal
-    active
-    dismiss={dismiss}
+    isOpen
+    setIsOpen={setIsOpen}
     lockAddress={aKey.lock.address}
     keyOwner={keyOwner}
     tokenId={aKey.keyId}
@@ -115,10 +115,10 @@ describe('ExpireAndRefundModal', () => {
     expect.assertions(3)
     const { getByText } = renderWithContexts(modalActive)
 
-    expect(dismiss).toBeCalledTimes(0)
+    expect(setIsOpen).toBeCalledTimes(0)
     const confirmButton = getByText('Expire and Refund')
     expect(confirmButton).toBeDefined()
     rtl.fireEvent.click(confirmButton)
-    expect(dismiss).toBeCalledTimes(1)
+    expect(setIsOpen).toBeCalledTimes(1)
   })
 })
