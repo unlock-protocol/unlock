@@ -1,3 +1,4 @@
+import React from 'react'
 interface ImageBarProps {
   description: React.ReactNode
   src: string

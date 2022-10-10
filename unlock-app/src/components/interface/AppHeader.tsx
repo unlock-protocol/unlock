@@ -9,6 +9,8 @@ import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import { GrClose as MenuCloseIcon } from 'react-icons/gr'
 import { Container } from './Container'
 import { useStorageService } from '~/utils/withStorageService'
+import React from 'react'
+
 interface Link {
   label: string
   url: string
