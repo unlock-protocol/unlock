@@ -80,6 +80,22 @@ components:
           type: string
           nullable: false
 
+    ApplicationBody:
+      type: object
+      nullable: false
+      properties:
+        name:
+          type: string
+          nullable: false
+
+        key:
+          type: string
+          nullable: true
+
+        walletAddress:
+          type: string
+          nullable: false
+
     Verifier:
       type: object
       nullable: false
@@ -477,6 +493,12 @@ paths:
       security:
         - User: []
       description: Create application associated with user wallet.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationBody'
+
       responses:
         201:
           description: Created application.
@@ -495,20 +517,19 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
   /v2/applications/:id:
-    parameters:
-      - in: path
-        required: true
-        schema:
-          type: string
-        name: id
-        description: Application id.
-
     delete:
       operationId: deleteApplication
       security:
         - User: []
 
       description: Delete application by id.
+      parameters:
+        - in: path
+          required: true
+          schema:
+            type: string
+          name: id
+          description: Application id.
       responses:
         200:
           description: Deleted application.
@@ -530,10 +551,22 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
     put:
+      parameters:
+        - in: path
+          required: true
+          schema:
+            type: string
+          name: id
+          description: Application id.
       operationId: updateApplication
       security:
         - User: []
       description: Update application by id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationBody'
       responses:
         200:
           description: Updated application.
@@ -791,12 +824,12 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
   /v2/api/metadata/{network}/locks/{lockAddress}:
-    parameters:
-      - $ref: '#/components/parameters/Network'
-      - $ref: '#/components/parameters/LockAddress'
     get:
       operationId: lockMetadata
       description: Get metadata for lock address.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
       responses:
         200:
           description: JSON metadata containing name, description, and custom properties for lock.
@@ -817,6 +850,9 @@ paths:
       security:
         - User: ['lockManager']
       description: Update or create metadata for lock address.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
       requestBody:
         required: true
         content:
@@ -892,14 +928,13 @@ paths:
           $ref: '#/components/responses/500.InternalError'
 
   /v2/api/metadata/{network}/locks/{lockAddress}/users/{userAddress}:
-    parameters:
-      - $ref: '#/components/parameters/Network'
-      - $ref: '#/components/parameters/LockAddress'
-      - $ref: '#/components/parameters/UserAddress'
-
     post:
       operationId: createUserMetadata
       description: Store user metadata for lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/UserAddress'
       requestBody:
         required: true
         content:
@@ -932,6 +967,11 @@ paths:
         - User: ['user', 'lockManager']
 
       description: Update user metadata for lock.
+      parameters:
+        - $ref: '#/components/parameters/Network'
+        - $ref: '#/components/parameters/LockAddress'
+        - $ref: '#/components/parameters/UserAddress'
+
       requestBody:
         required: true
         content:
