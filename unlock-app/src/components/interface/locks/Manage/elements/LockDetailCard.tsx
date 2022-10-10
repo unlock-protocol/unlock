@@ -1,7 +1,7 @@
 import { addressMinify } from '~/utils/strings'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
-import { Button } from '@unlock-protocol/ui'
+import { Button, Tooltip } from '@unlock-protocol/ui'
 import useClipboard from 'react-use-clipboard'
 import React, { useEffect, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -38,6 +38,7 @@ interface LockInfoCardProps {
   lockAddress: string
   network: number
   loading?: boolean
+  version?: string
 }
 
 interface EditButtonProps {
@@ -82,6 +83,7 @@ const LockInfoCard = ({
   lockAddress,
   network,
   loading,
+  version,
 }: LockInfoCardProps) => {
   const { networks } = useConfig()
   const [isCopied, setCopied] = useClipboard(lockAddress, {
@@ -102,7 +104,19 @@ const LockInfoCard = ({
   return (
     <>
       <span className="text-4xl font-bold text-black">{name}</span>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2.5">
+        <div>
+          <Tooltip
+            tip={`Lock version ${version}`}
+            label={`Lock version ${version}`}
+            side="bottom"
+          >
+            <span className="font-medium rounded-full px-2.5 py-1 inline-flex items-center gap-2 text-xs bg-ui-main-50 text-brand-ui-primary">
+              v.{version}
+            </span>
+          </Tooltip>
+        </div>
+
         <span className="text-base">{addressMinify(lockAddress)}</span>
         <Button
           variant="transparent"
@@ -218,6 +232,7 @@ export const LockDetailCard = ({
             network={network}
             name={lock?.name}
             loading={loading}
+            version={lock?.publicLockVersion}
           />
           <div className="flex flex-col mt-14">
             <Detail label="Network" value={networkName} loading={loading} />
