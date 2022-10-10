@@ -9,7 +9,6 @@ import './MixinErrors.sol';
 
 /**
  * @title Mixin for the purchase-related functions.
- * @author HardlyDifficult
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */

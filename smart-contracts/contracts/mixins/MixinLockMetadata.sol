@@ -10,7 +10,6 @@ import './MixinRoles.sol';
 
 /**
  * @title Mixin for metadata about the Lock.
- * @author HardlyDifficult
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */

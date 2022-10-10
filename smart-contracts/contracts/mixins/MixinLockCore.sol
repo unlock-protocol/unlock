@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 import './MixinDisable.sol';
 import './MixinRoles.sol';
@@ -17,7 +16,6 @@ import '../interfaces/hooks/ILockKeyExtendHook.sol';
 
 /**
  * @title Mixin for core lock data and functions.
- * @author HardlyDifficult
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
@@ -58,7 +56,6 @@ contract MixinLockCore is
   event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
 
   // Unlock Protocol address
-  // TODO: should we make that private/internal?
   IUnlock public unlockProtocol;
 
   // Duration in seconds for which the keys are valid, after creation
@@ -66,7 +63,6 @@ contract MixinLockCore is
   uint public expirationDuration;
 
   // price in wei of the next key
-  // TODO: allow support for a keyPriceCalculator which could set prices dynamically
   uint public keyPrice;
 
   // Max number of keys sold if the keyReleaseMechanism is public

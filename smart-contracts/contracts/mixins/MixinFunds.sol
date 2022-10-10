@@ -8,7 +8,6 @@ import '@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeab
 
 /**
  * @title An implementation of the money related functions.
- * @author HardlyDifficult (unlock-protocol.com)
  */
 contract MixinFunds is MixinErrors
 {
