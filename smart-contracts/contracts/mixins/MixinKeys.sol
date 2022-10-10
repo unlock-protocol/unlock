@@ -25,10 +25,10 @@ contract MixinKeys is
 
   // Emitted when the expiration of a key is modified
   event ExpirationChanged(
-    uint indexed _tokenId,
+    uint indexed tokenId,
     uint newExpiration,
-    uint _amount,
-    bool _timeAdded
+    uint amount,
+    bool timeAdded
   );
 
   // fire when a key is extended
