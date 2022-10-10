@@ -18719,7 +18719,7 @@ __metadata:
     "@vitejs/plugin-react": 2.1.0
     autoprefixer: 10.4.12
     babel-loader: 8.2.5
-    ethers: ^5.7.1
+    ethers: 5.7.1
     postcss: 8.4.17
     prism-react-renderer: 1.3.5
     react-icons: 4.4.0
@@ -32478,7 +32478,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.1, ethers@npm:^5.7.1":
+"ethers@npm:5.7.1":
   version: 5.7.1
   resolution: "ethers@npm:5.7.1"
   dependencies:
