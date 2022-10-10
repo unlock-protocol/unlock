@@ -27,7 +27,7 @@ const aKey: OwnedKey = {
     owner: '0x455375453031ac5fd7cf0e42291f2d8e3df67f85',
   },
 }
-const dismiss: jest.Mock<any, any> = jest.fn()
+const setIsOpen: jest.Mock<any, any> = jest.fn()
 
 const renderWithContexts = (component: React.ReactElement<any>) => {
   const account = '0x123'
@@ -65,8 +65,8 @@ const renderWithContexts = (component: React.ReactElement<any>) => {
 
 const component: React.ReactElement<any> = (
   <CancelAndRefundModal
-    active
-    dismiss={dismiss}
+    isOpen
+    setIsOpen={setIsOpen}
     lock={aKey.lock}
     account={accountAddress}
     currency="eth"
@@ -76,8 +76,8 @@ const component: React.ReactElement<any> = (
 
 const componentInactive: React.ReactElement<any> = (
   <CancelAndRefundModal
-    active
-    dismiss={dismiss}
+    isOpen
+    setIsOpen={setIsOpen}
     lock={undefined}
     account={accountAddress}
     currency="eth"
@@ -115,7 +115,7 @@ describe('CancelAndRefundModal', () => {
     expect.assertions(5)
     const { container } = renderWithContexts(component)
     expect(await screen.findByText(/Cancel and Refund/i)).toBeInTheDocument()
-    expect(dismiss).toBeCalledTimes(0)
+    expect(setIsOpen).toBeCalledTimes(0)
     const confirmButton = container.querySelector('button') as HTMLElement
     expect(confirmButton).toBeDefined()
     await waitFor(() => expect(confirmButton).not.toBeDisabled(), {
@@ -124,6 +124,6 @@ describe('CancelAndRefundModal', () => {
     act(async () => {
       rtl.fireEvent.click(confirmButton)
     })
-    expect(dismiss).toBeCalledTimes(1)
+    expect(setIsOpen).toBeCalledTimes(1)
   })
 })
