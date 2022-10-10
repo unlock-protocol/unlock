@@ -1,5 +1,5 @@
 import { Button, Badge, Input, Modal } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 import {
   FaCheckCircle as CheckIcon,

@@ -1,3 +1,4 @@
+import React from 'react'
 import { Button } from '@unlock-protocol/ui'
 import {
   FaArrowRight as ArrowRightIcon,

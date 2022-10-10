@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { MemberFilter } from '~/unlockTypes'
 import { useDebounce } from 'react-use'
 import { getAddressForName } from '~/hooks/useEns'
+import React from 'react'
 interface FilterBarProps {
   setFilters?: (filters: any) => void
   setLoading?: (loading: boolean) => void

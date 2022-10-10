@@ -8,7 +8,7 @@ import { ImageBar } from './ImageBar'
 import { MemberCard } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 interface MembersProps {
   lockAddress: string

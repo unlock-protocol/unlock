@@ -1,3 +1,4 @@
+import React from 'react'
 import { Badge, Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
