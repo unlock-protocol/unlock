@@ -37,30 +37,15 @@ interface IPublicLock
   function publicLockVersion() external pure returns (uint16);
 
   /**
-   * @dev Called by a lock manager or beneficiary to withdraw all funds from the lock and send them to the `beneficiary`.
-   * @dev Throws if called by other than a lock manager or beneficiary
-   * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually
-   * the same as `tokenAddress` in MixinFunds.
+   * @dev Called by owner to withdraw all ETH funds from the lock
+   * @param _recipient specifies the address to send ETH to.
    * @param _amount specifies the max amount to withdraw, which may be reduced when
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
-   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor`
-   * use cases.
    */
   function withdraw(
-    address _tokenAddress,
+    address _recipient,
     uint _amount
   ) external;
-
-  /**
-   * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
-   * @param _spender address that can spend tokens belonging to the lock
-   * @param _amount amount of tokens that can be spent by the spender
-   */
-  function approveBeneficiary(
-    address _spender,
-    uint _amount
-  ) external
-    returns (bool);
 
   /**
    * A function which lets a Lock manager of the lock to change the price for future purchases.
@@ -81,15 +66,6 @@ interface IPublicLock
    * or type(uint).max for a non-expiring key
    */
   function setExpirationDuration(uint _newExpirationDuration) external;
-
-  /**
-   * A function which lets a Lock manager update the beneficiary account,
-   * which receives funds on withdrawal.
-   * @dev Throws if called by other than a Lock manager or beneficiary
-   * @dev Throws if _beneficiary is address(0)
-   * @param _beneficiary The new address to set as the beneficiary
-   */
-  function updateBeneficiary( address _beneficiary ) external;
 
   /**
    * Checks if the user has a non-expired key.
@@ -403,7 +379,7 @@ interface IPublicLock
   ///===================================================================
   /// Auto-generated getter functions from public state variables
 
-  function beneficiary() external view returns (address );
+  function beneficiary() external view returns (address);
 
   function expirationDuration() external view returns (uint256 );
 
