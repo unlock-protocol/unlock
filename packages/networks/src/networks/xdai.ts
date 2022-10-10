@@ -13,7 +13,7 @@ export const xdai: NetworkConfig = {
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
     endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai-v2',
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/gnosis-v2',
   },
   explorer: {
     name: 'Blockscout',
