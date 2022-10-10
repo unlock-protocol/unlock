@@ -275,24 +275,6 @@ contract MixinTransfer is
     return true;
   }
 
-  /**
-  * @notice Transfers the ownership of an NFT from one address to another address
-  * @dev This works identically to the other function with an extra data parameter,
-  *  except this function just sets data to ''
-  * @param _from The current owner of the NFT
-  * @param _to The new owner
-  * @param _tokenId The NFT to transfer
-  */
-  function safeTransferFrom(
-    address _from,
-    address _to,
-    uint _tokenId
-  )
-    public
-  {
-    safeTransferFrom(_from, _to, _tokenId, '');
-  }
-
    /**
    * @dev Sets or unsets the approval of a given operator
    * An operator is allowed to transfer all tokens of the sender on their behalf
