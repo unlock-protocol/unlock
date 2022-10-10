@@ -101,8 +101,6 @@ const LockInfoCard = ({
 
   if (loading) return <LockInfoCardPlaceholder />
 
-  console.table(version)
-
   return (
     <>
       <span className="text-4xl font-bold text-black">{name}</span>
