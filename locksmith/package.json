@@ -62,7 +62,6 @@
     "express-winston": "4.2.0",
     "fuse.js": "6.6.2",
     "graphql": "15.8.0",
-    "graphql-tag": "2.12.6",
     "html-template-tag": "4.0.1",
     "isomorphic-fetch": "3.0.0",
     "jsonwebtoken": "8.5.1",
