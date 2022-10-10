@@ -11,7 +11,7 @@ export const mainnet: NetworkConfig = {
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
     endpointV2:
-      'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock-v2',
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/mainnet-v2',
   },
   explorer: {
     name: 'Etherscan',
