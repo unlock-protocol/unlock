@@ -56,7 +56,7 @@ contract MixinLockMetadata is
    * @param _lockSymbol a Symbol for this Lock (default to KEY).
    * @param _baseTokenURI the baseTokenURI for this Lock
    */
-  function setLockConfig(
+  function setLockMetadata(
     string calldata _lockName,
     string calldata _lockSymbol,
     string calldata _baseTokenURI
