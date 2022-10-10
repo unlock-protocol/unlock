@@ -43,6 +43,12 @@ contract MixinKeys is
     uint updatedRecordsCount
   );
 
+  event LockConfig(
+    uint newExpirationDuration,
+    uint maxNumberOfKeys,
+    uint maxKeysPerAcccount
+  );
+
   // Deprecated: don't use this anymore as we know enable multiple keys per owner.
   mapping (address => Key) internal keyByOwner;
 
@@ -654,41 +660,39 @@ contract MixinKeys is
   }
 
   /**
-   * @notice Change the maximum number of keys the lock can edit
+   * Set the maximum number of keys a specific address can use
+   * A function to change the default duration of each key in the lock
+   * - Change the maximum number of keys the lock can edit
+   * @notice keys previously bought are unaffected by this change in expiration duration (i.e.
+   * existing keys timestamps are not recalculated/updated)
+   * @param _newExpirationDuration the new amount of time for each key purchased or type(uint).max for a non-expiring key
+   * @param _maxKeysPerAcccount the maximum amount of key a single user can own
    * @param _maxNumberOfKeys uint the maximum number of keys
-   * @dev Can't be smaller than the existing supply
+   * @dev _maxNumberOfKeys Can't be smaller than the existing supply 
    */
-  function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
+   function updateLockConfig(
+    uint _newExpirationDuration,
+    uint _maxKeysPerAcccount,
+    uint _maxNumberOfKeys
+  ) external {
      _onlyLockManager();
+     if(_maxKeysPerAcccount == 0) {
+       revert NULL_VALUE();
+     }
      if (_maxNumberOfKeys < _totalSupply) {
        revert CANT_BE_SMALLER_THAN_SUPPLY();
      }
-     maxNumberOfKeys = _maxNumberOfKeys;
-  }
-
-  /**
-   * A function to change the default duration of each key in the lock
-   * @notice keys previously bought are unaffected by this change (i.e.
-   * existing keys timestamps are not recalculated/updated)
-   * @param _newExpirationDuration the new amount of time for each key purchased 
-   * or type(uint).max for a non-expiring key
-   */
-  function setExpirationDuration(uint _newExpirationDuration) external {
-     _onlyLockManager();
+     _maxKeysPerAddress = _maxKeysPerAcccount;
      expirationDuration = _newExpirationDuration;
+     maxNumberOfKeys = _maxNumberOfKeys;
+
+     emit LockConfig(
+      _newExpirationDuration, 
+      _maxNumberOfKeys,
+      _maxKeysPerAddress
+      );
   }
   
-  /**
-   * Set the maximum number of keys a specific address can use
-   * @param _maxKeys the maximum amount of key a user can own
-   */
-  function setMaxKeysPerAddress(uint _maxKeys) external {
-     _onlyLockManager();
-     if(_maxKeys == 0) {
-       revert NULL_VALUE();
-     }
-     _maxKeysPerAddress = _maxKeys;
-  }
 
   /**
    * @return the maximum number of key allowed for a single address
