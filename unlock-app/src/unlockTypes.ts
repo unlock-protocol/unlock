@@ -97,7 +97,6 @@ export interface PaywallConfigLock {
   name?: string
   network?: number
   metadataInputs?: MetadataInput[]
-  secret?: string
   recurringPayments?: number
   captcha?: boolean
   password?: boolean
