@@ -1,5 +1,5 @@
 import { Button, Collapse } from '@unlock-protocol/ui'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { MAX_UINT } from '~/constants'
 import { KeyMetadata } from '~/unlockTypes'
