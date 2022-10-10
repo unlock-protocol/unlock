@@ -54,7 +54,8 @@ export const MemberCard = ({
   const resolvedAddress =
     addressToEns === owner ? addressMinify(owner) : addressToEns
 
-  const [isCopied, setCopied] = useClipboard(resolvedAddress, {
+  const addressToCopy = addressToEns === owner ? owner : addressToEns
+  const [isCopied, setCopied] = useClipboard(addressToCopy, {
     successDuration: 2000,
   })
 
