@@ -1,0 +1,21 @@
+# .graphclientrc.yml
+sources:
+  - name: uniswapv2
+    handler:
+      graphql:
+        endpoint: https://api.thegraph.com/subgraphs/name/unlock-protocol/{context.network:optimism-v2}
+        retry: 2
+    transforms:
+      - autoPagination:
+          validateSchema: true
+
+documents:
+  - ./subgraph.graphql
+
+additionalTypeDefs: |
+  extend type Lock {
+    network: String!
+  }
+
+codegen:
+  contextType: 'MeshContext & { network: string }'

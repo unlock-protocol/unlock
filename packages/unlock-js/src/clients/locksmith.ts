@@ -1,7 +1,7 @@
 import { SiweMessage } from 'siwe'
-import { DefaultApi } from './@generated/client'
+import { DefaultApi, Configuration } from '../@generated/client'
 
-export class LocksmithService extends DefaultApi {
+export class LocksmithClient extends DefaultApi {
   /**
    * Helper static createSiweMessage method wrapping SIWE or sign in with ethereum standard message
    */
@@ -9,3 +9,5 @@ export class LocksmithService extends DefaultApi {
     return new SiweMessage(options)
   }
 }
+
+export const LocksmithClientConfiguration = Configuration

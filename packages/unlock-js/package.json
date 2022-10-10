@@ -20,7 +20,8 @@
     "ci": "yarn test && yarn lint",
     "prepublishOnly": "yarn build",
     "grant-keys": "node ./scripts/grant-keys.js",
-    "generate": "openapi-generator-cli generate -i ./openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./src/@generated/client"
+    "generate:locksmith": "openapi-generator-cli generate -i ./openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./src/@generated/client",
+    "generate:subgraph": "graphclient build && mkdir -p src/@generated && mv .graphclient src/@generated/subgraph"
   },
   "author": "Unlock Inc",
   "license": "MIT",
@@ -36,6 +37,7 @@
     "@babel/cli": "7.18.10",
     "@babel/core": "7.18.10",
     "@babel/preset-env": "7.18.10",
+    "@graphprotocol/client-cli": "^2.2.12",
     "@graphql-codegen/cli": "2.13.4",
     "@graphql-codegen/client-preset": "1.0.3",
     "@nomiclabs/hardhat-ethers": "2.1.1",
@@ -54,10 +56,12 @@
     "prettier": "2.7.1",
     "ts-jest": "27.1.5",
     "tsup": "6.2.3",
+    "tsx": "^3.10.1",
     "typescript": "4.7.4"
   },
   "dependencies": {
     "cross-fetch": "3.1.5",
+    "graphql": "^16.6.0",
     "siwe": "1.1.6"
   }
 }
