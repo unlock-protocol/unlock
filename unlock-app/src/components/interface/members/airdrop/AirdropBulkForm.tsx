@@ -39,7 +39,7 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
       let discarded = 0
       const json: any[] =
         parse(text, {
-          delimiter: ',',
+          delimiter: [',', ';'],
           columns: true,
         }) || []
 
@@ -49,7 +49,7 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
             const record = AirdropMember.parse(item)
             const [recipient, manager] = await Promise.all([
               getAddressForName(record.recipient),
-              getAddressForName(record.manager || account!),
+              record.manager ? getAddressForName(record.manager) : account,
             ])
 
             const balance = await web3Service.totalKeys(
