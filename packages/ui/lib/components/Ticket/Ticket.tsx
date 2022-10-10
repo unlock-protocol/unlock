@@ -57,7 +57,7 @@ export function Ticket({
           {items}
         </div>
 
-        <div className="grid gap-2 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           <TicketLabel label="Token ID" value={id} />
           <TicketLabel label="Recipient" value={minifyAddress(recipient)} />
           <TicketLabel label="Network" value={networkConfig.name} />
