@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import { SetPassword } from '../interface/SetPassword'
 import Loading from '../interface/Loading'
@@ -13,6 +12,7 @@ import ProviderContext from '../../contexts/ProviderContext'
 
 import {} from '../interface/Authenticate'
 import { Badge } from '@unlock-protocol/ui'
+import { AppLayout } from '../interface/layouts/AppLayout'
 
 interface RestoreAccountProps {
   config: any
@@ -180,12 +180,12 @@ export const RecoverContent = ({ query }: RecoverContentProps) => {
     )
   }
   return (
-    <Layout title="Acccount Recovery">
+    <AppLayout title="Account Recovery" showLinks={false} authRequired={false}>
       <Head>
         <title>{pageTitle('Account Recovery')}</title>
       </Head>
       {content}
-    </Layout>
+    </AppLayout>
   )
 }
 export default RecoverContent
