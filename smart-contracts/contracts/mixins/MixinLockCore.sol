@@ -140,14 +140,20 @@ contract MixinLockCore is
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
    */
   function withdraw(
-    address _recipient,
+    address _tokenAddress,
+    address payable _recipient,
     uint _amount
   ) external
   {
     _onlyLockManager();
 
     // get balance
-    uint balance = address(this).balance;
+    uint balance;
+    if(_tokenAddress == address(0)) {
+      balance = address(this).balance;
+    } else {
+      balance = IERC20Upgradeable(_tokenAddress).balanceOf(address(this));
+    }
 
     uint amount;
     if(_amount == 0 || _amount > balance)
