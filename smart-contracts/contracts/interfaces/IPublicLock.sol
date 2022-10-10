@@ -40,7 +40,7 @@ interface IPublicLock
    * @dev Called by owner to withdraw all ETH funds from the lock
    * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually
    * the same as `tokenAddress` in MixinFunds.
-   * @param _recipient specifies the address to send ETH to.
+   * @param _recipient specifies the address that will receive the tokens
    * @param _amount specifies the max amount to withdraw, which may be reduced when
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
    */
