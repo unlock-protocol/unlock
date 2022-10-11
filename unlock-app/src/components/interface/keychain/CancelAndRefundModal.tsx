@@ -52,13 +52,18 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
     tokenAddress,
   })
 
-  const { isLoading, data } = useQuery(
+  const { isInitialLoading: isLoading, data } = useQuery(
     ['getAmounts', lockAddress],
-    () => getAmounts(),
+    getAmounts,
     {
       refetchInterval: false,
+      onError: () => {
+        ToastHelper.error('There is some unexpected error, please try again')
+      },
     }
   )
+
+  console.table(data)
 
   const { refundAmount = 0, transferFee = 0, lockBalance = 0 } = data ?? {}
 
