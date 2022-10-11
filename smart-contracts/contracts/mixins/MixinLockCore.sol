@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// import '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/IERC721EnumerableUpgradeable.sol';
 import '@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol';
 import './MixinDisable.sol';
 import './MixinRoles.sol';
@@ -13,10 +12,10 @@ import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
 import '../interfaces/hooks/ILockValidKeyHook.sol';
 import '../interfaces/hooks/ILockTokenURIHook.sol';
 import '../interfaces/hooks/ILockKeyTransferHook.sol';
+import '../interfaces/hooks/ILockKeyExtendHook.sol';
 
 /**
  * @title Mixin for core lock data and functions.
- * @author HardlyDifficult
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
@@ -57,7 +56,6 @@ contract MixinLockCore is
   event ApprovalForAll(address indexed owner, address indexed operator, bool approved);
 
   // Unlock Protocol address
-  // TODO: should we make that private/internal?
   IUnlock public unlockProtocol;
 
   // Duration in seconds for which the keys are valid, after creation
@@ -65,7 +63,6 @@ contract MixinLockCore is
   uint public expirationDuration;
 
   // price in wei of the next key
-  // TODO: allow support for a keyPriceCalculator which could set prices dynamically
   uint public keyPrice;
 
   // Max number of keys sold if the keyReleaseMechanism is public
@@ -94,6 +91,9 @@ contract MixinLockCore is
 
   // one more hook (added to v11)
   ILockKeyTransferHook public onKeyTransferHook;
+
+  // one more hook (added to v12)
+  ILockKeyExtendHook public onKeyExtendHook;
 
   // modifier to check if data has been upgraded
   function _lockIsUpToDate() internal view {
@@ -222,7 +222,8 @@ contract MixinLockCore is
     address _onKeyCancelHook,
     address _onValidKeyHook,
     address _onTokenURIHook,
-    address _onKeyTransferHook
+    address _onKeyTransferHook,
+    address _onKeyExtendHook
   ) external
   {
     _onlyLockManager();
@@ -232,12 +233,14 @@ contract MixinLockCore is
     if(_onValidKeyHook != address(0) && !_onValidKeyHook.isContract()) { revert INVALID_HOOK(2); }
     if(_onTokenURIHook != address(0) && !_onTokenURIHook.isContract()) { revert INVALID_HOOK(3); }
     if(_onKeyTransferHook != address(0) && !_onKeyTransferHook.isContract()) { revert INVALID_HOOK(4); }
+    if(_onKeyExtendHook != address(0) && !_onKeyExtendHook.isContract()) { revert INVALID_HOOK(5); }
     
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
     onTokenURIHook = ILockTokenURIHook(_onTokenURIHook);
     onValidKeyHook = ILockValidKeyHook(_onValidKeyHook);
     onKeyTransferHook = ILockKeyTransferHook(_onKeyTransferHook);
+    onKeyExtendHook = ILockKeyExtendHook(_onKeyExtendHook);
   }
 
   function totalSupply()
@@ -265,5 +268,6 @@ contract MixinLockCore is
 
   // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
   // decreased from 998 to 997 when adding `onKeyTransferHook` in v11
-  uint256[997] private __safe_upgrade_gap;
+  // decreased from 997 to 996 when adding `onKeyExtendHook` in v11
+  uint256[996] private __safe_upgrade_gap;
 }

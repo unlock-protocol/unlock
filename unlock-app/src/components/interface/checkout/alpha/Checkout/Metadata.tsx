@@ -14,7 +14,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { MetadataInput } from '~/unlockTypes'
 
@@ -142,9 +142,8 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         })
       )
 
-      await storage.submitMetadata(users, lock!.network)
-
       const recipients = users.map((item) => item.userAddress)
+      await storage.submitMetadata(users, lock!.network)
 
       send({
         type: 'SELECT_RECIPIENTS',

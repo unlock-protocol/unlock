@@ -10,6 +10,8 @@ export const bsc: NetworkConfig = {
   multisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/bsc-v2',
   },
   explorer: {
     name: 'BscScan',
