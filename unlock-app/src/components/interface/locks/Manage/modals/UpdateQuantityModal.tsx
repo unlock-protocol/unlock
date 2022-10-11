@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 import { MAX_UINT, UNLIMITED_KEYS_COUNT } from '~/constants'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 
 interface EditFormProps {
   maxNumberOfKeys?: number

@@ -1,4 +1,4 @@
-import { useQueries } from 'react-query'
+import { useQueries } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
@@ -8,7 +8,7 @@ import { ImageBar } from './ImageBar'
 import { MemberCard } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 interface MembersProps {
   lockAddress: string
@@ -72,22 +72,24 @@ export const Members = ({
   const [
     { isLoading, data: members = [] },
     { isLoading: isLoadingVersion, data: lockVersion = 0 },
-  ] = useQueries([
-    {
-      queryFn: getMembers,
-      queryKey: ['getMembers', lockAddress, network, filters],
-      onError: () => {
-        ToastHelper.error('There is some unexpected issue, please try again')
+  ] = useQueries({
+    queries: [
+      {
+        queryFn: getMembers,
+        queryKey: ['getMembers', lockAddress, network, filters],
+        onError: () => {
+          ToastHelper.error('There is some unexpected issue, please try again')
+        },
       },
-    },
-    {
-      queryFn: getLockVersion,
-      queryKey: ['getLockVersion', lockAddress, network],
-      onError: () => {
-        ToastHelper.error('There is some unexpected issue, please try again')
+      {
+        queryFn: getLockVersion,
+        queryKey: ['getLockVersion', lockAddress, network],
+        onError: () => {
+          ToastHelper.error('There is some unexpected issue, please try again')
+        },
       },
-    },
-  ])
+    ],
+  })
 
   const loading = isLoadingVersion || isLoading || loadingFilters
   const noItems = members?.length === 0 && !loading

@@ -5,7 +5,7 @@ import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 import Link from 'next/link'
 import { useEffect } from 'react'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import { KeyPrice } from '../../elements/KeyPrice'
 import Lottie from 'lottie-react'
@@ -116,19 +116,18 @@ export const CreateLockFormSummary = ({
   const { data, isError } = useQuery(
     ['getTransactionDetails'],
     () => {
-      if (transactionHash) {
-        return getTransactionDetails(transactionHash!)
-      }
+      return getTransactionDetails(transactionHash!)
     },
     {
       refetchInterval: 5000,
     }
   )
 
+  const hasError = isError && data
   const isDeployed =
     (data?.confirmations || 0) >= requiredConfirmations && !isError
 
-  const currentStatus: DeployStatus = isError
+  const currentStatus: DeployStatus = hasError
     ? 'txError'
     : isDeployed
     ? 'deployed'

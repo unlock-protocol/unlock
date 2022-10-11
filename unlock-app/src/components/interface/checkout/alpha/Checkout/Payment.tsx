@@ -6,7 +6,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { lockTickerSymbol, userCanAffordKey } from '~/utils/checkoutLockUtils'
 import dynamic from 'next/dynamic'
@@ -90,12 +90,15 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const enableSuperfluid =
     (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
 
-  const enableClaim =
-    !!isClaimable && !isClaimableLoading && isReceiverAccountOnly
-
   const enableCreditCard = !!fiatPricing?.creditCardEnabled
 
   const enableCrypto = isPayable && !isUnlockAccount && !isTokenBalanceLoading
+
+  const enableClaim =
+    !!isClaimable &&
+    !isClaimableLoading &&
+    isReceiverAccountOnly &&
+    !enableCrypto
 
   const isWaiting = isLoading || isClaimableLoading || isTokenBalanceLoading
 

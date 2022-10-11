@@ -9,6 +9,8 @@ import { MdExitToApp as DisconnectIcon } from 'react-icons/md'
 import { GrClose as MenuCloseIcon } from 'react-icons/gr'
 import { Container } from './Container'
 import { useStorageService } from '~/utils/withStorageService'
+import React from 'react'
+
 interface Link {
   label: string
   url: string
@@ -24,7 +26,11 @@ const links: Link[] = [
   { label: 'Settings', url: '/settings' },
 ]
 
-export const AppHeader = () => {
+interface AppHeaderProps {
+  showLinks?: boolean
+}
+
+export const AppHeader = ({ showLinks = true }: AppHeaderProps) => {
   const { account, deAuthenticate } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [disconnectModal, setDisconnectModal] = useState(false)
@@ -113,17 +119,21 @@ export const AppHeader = () => {
               </div>
             </div>
 
-            <div className="hidden md:block">
-              <Links />
-            </div>
-
-            <div className="md:hidden">
-              {isOpen && (
-                <div className="">
-                  <Links mobile={true} />
+            {showLinks && (
+              <>
+                <div className="hidden md:block">
+                  <Links />
                 </div>
-              )}
-            </div>
+
+                <div className="md:hidden">
+                  {isOpen && (
+                    <div className="">
+                      <Links mobile={true} />
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
           </div>
           <div>
             {account ? (
