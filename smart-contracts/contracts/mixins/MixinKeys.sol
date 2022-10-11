@@ -44,7 +44,7 @@ contract MixinKeys is
   );
 
   event LockConfig(
-    uint newExpirationDuration,
+    uint expirationDuration,
     uint maxNumberOfKeys,
     uint maxKeysPerAcccount
   );
