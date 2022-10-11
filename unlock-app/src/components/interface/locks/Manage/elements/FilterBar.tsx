@@ -143,7 +143,7 @@ export const FilterBar = ({
                     label="Filter by"
                     options={filters}
                     defaultValue={filterKey}
-                    onChange={(filter) => {
+                    onChange={(filter: any) => {
                       setFilterKey(filter)
                       setRawQueryValue('')
                     }}
@@ -176,7 +176,7 @@ export const FilterBar = ({
           )}
         </div>
       </div>
-      {expandFilter && (
+      {expandFilter && filterKey !== 'keyId' && (
         <div className="block">
           <Expiration />
         </div>

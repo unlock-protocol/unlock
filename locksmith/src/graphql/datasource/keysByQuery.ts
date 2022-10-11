@@ -8,13 +8,14 @@ export type KeyFilter = 'all' | 'active' | 'expired' | 'keyId'
 const keyholdersByKeyIdQuery = gql`
   query Lock(
     $addresses: [String!]
+    $expireTimestamp: BigInt! = 0
     $first: Int! = 100
     $skip: Int! = 0
     $keyId: BigInt
   ) {
     locks(where: { address_in: $addresses }) {
       keys(
-        where: { expiration_gt: 0, keyId: $keyId }
+        where: { expiration_gt: $expireTimestamp, keyId: $keyId }
         first: $first
         skip: $skip
         orderBy: keyId
@@ -153,7 +154,11 @@ export class keysByQuery extends GraphQLDataSource {
     try {
       const first = 1000 // max items
 
-      const expireTimestamp = parseInt(`${new Date().getTime() / 1000}`)
+      // need to show all keys when searching by token id
+      const expireTimestamp =
+        expiration === 'all' || filterKey === 'keyId'
+          ? 0
+          : parseInt(`${new Date().getTime() / 1000}`)
       const keyId = getValidNumber(search)
 
       let query: any
