@@ -154,7 +154,7 @@ export class keysByQuery extends GraphQLDataSource {
     try {
       const first = 1000 // max items
 
-      // need to show all keys when searching by token id
+      // need to query all keys ignoring expiration duration when searching by token id
       const expireTimestamp =
         expiration === 'all' || filterKey === 'keyId'
           ? 0
