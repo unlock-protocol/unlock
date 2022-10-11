@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { ethers } from 'ethers'
-import styled from 'styled-components'
 import { Lock } from './Lock'
 import { TransactionInfo } from '../../../hooks/useCheckoutCommunication'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
@@ -70,7 +69,10 @@ export const ClaimMembershipCheckout = ({
     setError('')
     setPurchasePending(true)
     try {
-      const hash = await claimMembershipFromLock(lock.address, network)
+      const { transactionHash: hash } = await claimMembershipFromLock(
+        lock.address,
+        network
+      )
       if (hash) {
         emitTransactionInfo({
           lock: lock.address,
@@ -114,10 +116,10 @@ export const ClaimMembershipCheckout = ({
           hasOptimisticKey={hasOptimisticKey}
           purchasePending={purchasePending}
         />
-        <ErrorMessage>
+        <p className="w-full text-base text-left text-red-500">
           Unfortunately, you cannot claim a membership from this lock. You need
           to send a transaction using a crypto-wallet.
-        </ErrorMessage>
+        </p>
       </div>
     )
   }
@@ -140,12 +142,16 @@ export const ClaimMembershipCheckout = ({
           <Button disabled={purchasePending} onClick={charge}>
             Claim your membership
           </Button>
-          {error && <ErrorMessage>{error}</ErrorMessage>}
+          {error && (
+            <p className="w-full text-base text-left text-red-500">{error}</p>
+          )}
         </>
       )}
       {hasValidkey && (
         <>
-          <Message>You already have a valid membership!</Message>
+          <p className="w-full text-base text-left">
+            You already have a valid membership!
+          </p>
           <EnjoyYourMembership
             redirectUri={redirectUri}
             closeModal={closeModal}
@@ -153,7 +159,7 @@ export const ClaimMembershipCheckout = ({
         </>
       )}
       {purchasePending && typeof purchasePending === 'string' && (
-        <Message>
+        <p className="w-full text-base text-left">
           Waiting for your{' '}
           <a
             target="_blank"
@@ -165,7 +171,7 @@ export const ClaimMembershipCheckout = ({
             NFT membership to be minted
           </a>
           ! This should take a few seconds :)
-        </Message>
+        </p>
       )}
 
       {hasOptimisticKey && (
@@ -179,13 +185,3 @@ export const ClaimMembershipCheckout = ({
 }
 
 export default ClaimMembershipCheckout
-
-const Message = styled.p`
-  text-align: left;
-  font-size: 13px;
-  width: 100%;
-`
-
-const ErrorMessage = styled(Message)`
-  color: var(--red);
-`

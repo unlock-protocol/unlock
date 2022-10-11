@@ -1,7 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
@@ -26,6 +26,7 @@ import { ethers, BigNumber } from 'ethers'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { fetchRecipientsData } from './utils'
 
 interface Props {
   injectedProvider: unknown
@@ -108,9 +109,11 @@ export function Confirm({
   const onConfirmCard = async () => {
     try {
       setIsConfirming(true)
+
       if (payment.method !== 'card') {
         return
       }
+
       const stripeIntent = await prepareChargeForCard(
         payment.cardId!,
         lockAddress,
@@ -194,15 +197,32 @@ export function Confirm({
       const referrers: string[] | undefined = paywallConfig.referrer
         ? new Array(recipients!.length).fill(paywallConfig.referrer)
         : undefined
+
+      let data = password || captcha || undefined
+
+      const dataBuilder =
+        paywallConfig.locks[lock!.address].dataBuilder ||
+        paywallConfig.dataBuilder
+
+      // if Data builder url is present, prioritize that above rest.
+      if (dataBuilder) {
+        data = await fetchRecipientsData(dataBuilder, {
+          recipients,
+          lockAddress: lock!.address,
+          network: lock!.network,
+        })
+      }
+
       await walletService?.purchaseKeys(
         {
           lockAddress,
           keyPrices,
           owners: recipients!,
-          data: password?.length ? password : captcha,
+          data,
           recurringPayments,
           referrers,
         },
+        {} /** Transaction params */,
         (error, hash) => {
           setIsConfirming(false)
           if (error) {
@@ -224,7 +244,7 @@ export function Confirm({
             }
             send({
               type: 'CONFIRM_MINT',
-              status: 'PROCESSING',
+              status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
               transactionHash: hash!,
             })
           }
@@ -287,8 +307,18 @@ export function Confirm({
       if (payment.method !== 'claim') {
         return
       }
-      const hash = await claimMembershipFromLock(lockAddress, lockNetwork)
-      if (hash) {
+
+      const data = password || captcha || undefined
+
+      const response = await claimMembershipFromLock(
+        lockAddress,
+        lockNetwork,
+        data?.[0]
+      )
+
+      const { transactionHash: hash, error } = response
+
+      if (hash && !error) {
         communication.emitTransactionInfo({
           hash,
           lock: lockAddress,

@@ -5,22 +5,24 @@ import {
   FaCheckCircle as CheckIcon,
   FaSpinner as Spinner,
 } from 'react-icons/fa'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
+import { useLockManager } from '~/hooks/useLockManager'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
+import { FiExternalLink as ExternalLinkIcon } from 'react-icons/fi'
 
 interface DetailProps {
   title: string
   value: React.ReactNode
+  append?: React.ReactNode
 }
 
 interface MetadataCardProps {
   metadata: any
   owner: string
   network: number
-  isLockManager: boolean
 }
 
 const keysToIgnore = [
@@ -32,13 +34,18 @@ const keysToIgnore = [
   'checkedInAt',
 ]
 
-const MetadataDetail = ({ title, value }: DetailProps) => {
+const MetadataDetail = ({ title, value, append }: DetailProps) => {
   return (
     <div className="gap-1 pb-2 border-b border-gray-400 last-of-type:border-none">
-      <span className="text-base">{title}: </span>
-      <span className="block text-base font-bold break-words md:inline-block">
-        {value}
-      </span>
+      <div className="flex items-center gap-2">
+        <span className="text-base">{title}: </span>
+        <div className="flex items-center gap-2">
+          <span className="block text-base font-bold break-words md:inline-block">
+            {value}
+          </span>
+          {append && <div>{append}</div>}
+        </div>
+      </div>
     </div>
   )
 }
@@ -47,7 +54,6 @@ export const MetadataCard = ({
   metadata,
   owner,
   network,
-  isLockManager,
 }: MetadataCardProps) => {
   const { account } = useAuth()
   const storageService = useStorageService()
@@ -62,6 +68,11 @@ export const MetadataCard = ({
   })
 
   const { lockAddress, token: tokenId } = data ?? {}
+
+  const { isManager: isLockManager } = useLockManager({
+    lockAddress,
+    network,
+  })
 
   const getCheckInTime = () => {
     const [_, checkInTimeValue] =
@@ -225,7 +236,27 @@ export const MetadataCard = ({
                 />
               )
             })}
-            <MetadataDetail title="Key Holder" value={owner} />
+            <MetadataDetail
+              title="Key Holder"
+              value={owner}
+              append={
+                <>
+                  <Button
+                    className="p-0 text-brand-ui-primary"
+                    variant="transparent"
+                    aria-label="blockscan link"
+                  >
+                    <a
+                      href={`https://blockscan.com/address/${owner}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <ExternalLinkIcon size={20} />
+                    </a>
+                  </Button>
+                </>
+              }
+            />
           </div>
         </div>
       </div>

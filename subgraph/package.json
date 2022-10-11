@@ -11,6 +11,7 @@
     "codegen": "graph codegen",
     "build": "node bin/thegraph build",
     "deploy": "node bin/thegraph deploy",
+    "deploy-all": "node bin/thegraph deploy-all",
     "create-local": "graph create --node http://localhost:8020/ ",
     "remove-local": "graph remove --node http://localhost:8020/ ",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001",
@@ -38,6 +39,6 @@
     ]
   },
   "devDependencies": {
-    "matchstick-as": "^0.5.0"
+    "matchstick-as": "0.5.0"
   }
 }

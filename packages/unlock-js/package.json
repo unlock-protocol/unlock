@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.26.9",
+  "version": "0.29.2",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -15,12 +15,12 @@
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build:lib": "tsup src/index.ts --dts --format esm,cjs ",
     "build:abis": "node ./scripts/compressAbi.js",
-    "build": "yarn clean && yarn build:abis && yarn build:lib",
+    "build": "yarn clean && yarn generate && yarn build:abis && yarn build:lib",
     "clean": "rm -rf lib esm cache coverage src/__tests__/contracts src/__tests__/artifacts",
     "ci": "yarn test && yarn lint",
     "prepublishOnly": "yarn build",
     "grant-keys": "node ./scripts/grant-keys.js",
-    "generate:client": "rm -rf ./@generated/locksmith-client && openapi-generator-cli generate -i ../../locksmith/openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./@generated/locksmith-client"
+    "generate": "openapi-generator-cli generate -i ./openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./src/@generated/client"
   },
   "author": "Unlock Inc",
   "license": "MIT",
@@ -36,8 +36,8 @@
     "@babel/cli": "7.18.10",
     "@babel/core": "7.18.10",
     "@babel/preset-env": "7.18.10",
-    "@nomiclabs/hardhat-ethers": "2.1.0",
-    "@openapitools/openapi-generator-cli": "^2.5.2",
+    "@nomiclabs/hardhat-ethers": "2.1.1",
+    "@openapitools/openapi-generator-cli": "2.5.2",
     "@openzeppelin/hardhat-upgrades": "1.19.1",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
@@ -51,7 +51,7 @@
     "lint-staged": "13.0.3",
     "prettier": "2.7.1",
     "ts-jest": "27.1.5",
-    "tsup": "6.2.1",
+    "tsup": "6.2.3",
     "typescript": "4.7.4"
   },
   "dependencies": {

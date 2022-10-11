@@ -1,6 +1,6 @@
 import { Button } from '@unlock-protocol/ui'
 import React, { useState } from 'react'
-import { useMutation } from 'react-query'
+import { useMutation } from '@tanstack/react-query'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import {
   ONE_DAY_IN_SECONDS,
@@ -58,7 +58,7 @@ export const CreateLockSteps = () => {
   const { account: owner, network } = useAuth()
   const [step, setStep] = useState<Step>('data')
   const [values, setValues] = useState<LockFormProps | undefined>(undefined)
-  const { addLock } = useLocks(owner!)
+  const { addLock } = useLocks(owner!, network!)
   const [transactionHash, setTransactionHash] = useState<string | undefined>(
     undefined
   )
@@ -109,7 +109,7 @@ export const CreateLockSteps = () => {
           ? UNLIMITED_KEYS_COUNT
           : maxNumberOfKeys,
         currencyContractAddress,
-        keyPrice,
+        keyPrice: `${keyPrice}`, // must be a string
       }
       return createLockPromise(payload)
     },

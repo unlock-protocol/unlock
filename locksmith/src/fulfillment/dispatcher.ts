@@ -37,6 +37,7 @@ export default class Dispatcher {
             network.id,
             {
               address: wallet.address,
+              name: network.name,
               balance: ethers.utils.formatEther(balance),
             },
           ]
@@ -66,6 +67,7 @@ export default class Dispatcher {
         tokenId: keyId.toString(),
         duration: 0,
       },
+      {} /** TransactionOptions */,
       callback
     )
   }
@@ -116,8 +118,8 @@ export default class Dispatcher {
         recipients,
         keyManagers,
         expirations,
-        transactionOptions,
       },
+      transactionOptions,
       cb
     )
   }
@@ -149,11 +151,15 @@ export default class Dispatcher {
   }
 
   async purchaseKey(
-    lockAddress: string,
-    owner: string,
-    network: number,
+    options: {
+      lockAddress: string
+      owner: string
+      network: number
+      data?: string
+    },
     cb?: any
   ) {
+    const { network, lockAddress, owner, data } = options
     const walletService = new WalletService(networks)
 
     const provider = new ethers.providers.JsonRpcProvider(
@@ -166,11 +172,15 @@ export default class Dispatcher {
     )
     await walletService.connect(provider, walletWithProvider)
 
+    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
+
     return await walletService.purchaseKey(
       {
         lockAddress,
         owner,
+        data,
       },
+      { maxFeePerGas, maxPriorityFeePerGas },
       cb
     )
   }

@@ -118,7 +118,7 @@ export const MetadataForm = ({
   }
   return (
     <form onSubmit={handleSubmit(wrappedOnSubmit)}>
-      <Message>{callToAction}</Message>
+      <p>{callToAction}</p>
       {error && <Error>{error}</Error>}
 
       {fields.map(({ name, type, required, placeholder }) => (
@@ -160,7 +160,6 @@ const StyledLabel = styled(Label)<LabelProps>`
     content: ${(props: LabelProps) => (props.required ? '" *"' : '')};
   }
 `
-const Message = styled.p``
 
 const Error = styled.p`
   width: 100%;

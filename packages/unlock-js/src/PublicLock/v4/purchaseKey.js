@@ -14,6 +14,7 @@ import { approveTransfer, getErc20Decimals, getAllowance } from '../../erc20'
  */
 export default async function (
   { lockAddress, owner, keyPrice, erc20Address, decimals },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
@@ -40,8 +41,6 @@ export default async function (
     actualAmount = utils.toDecimal(keyPrice, decimals)
   }
 
-  const purchaseForOptions = {}
-
   if (erc20Address && erc20Address !== ZERO) {
     const approvedAmount = await getAllowance(
       erc20Address,
@@ -62,10 +61,10 @@ export default async function (
       ).wait()
     }
   } else {
-    purchaseForOptions.value = actualAmount
+    transactionOptions.value = actualAmount
   }
 
-  const transactionPromise = lockContract.purchaseFor(owner, purchaseForOptions)
+  const transactionPromise = lockContract.purchaseFor(owner, transactionOptions)
 
   const hash = await this._handleMethodCall(transactionPromise)
 

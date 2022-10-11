@@ -10,8 +10,9 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { StepItem, Stepper } from '../Stepper'
+import { Stepper } from '../Stepper'
 import { TransactionAnimation } from '../Shell'
+import { useCheckoutSteps } from './useCheckoutItems'
 
 interface Props {
   injectedProvider: unknown
@@ -105,27 +106,12 @@ export function Renewed({
     }
   }, [renewStatus])
 
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Renew membership',
-      to: 'RENEW',
-    },
-    {
-      id: 3,
-      name: 'Renewed!',
-    },
-  ]
+  const stepItems = useCheckoutSteps(checkoutService, true)
 
   return (
     <Fragment>
       <Stepper
-        position={3}
+        position={4}
         disabled
         service={checkoutService}
         items={stepItems}
@@ -136,6 +122,17 @@ export function Renewed({
           <p className="text-lg font-bold text-brand-ui-primary">
             {content?.text}
           </p>
+          {renewStatus === 'FINISHED' && (
+            <a
+              href="/keychain"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+            >
+              Open keychain
+              <Icon icon={ExternalLinkIcon} size="small" />
+            </a>
+          )}
           {transactionHash && (
             <a
               href={config.networks[lock!.network].explorer.urls.transaction(

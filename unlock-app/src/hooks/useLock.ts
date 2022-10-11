@@ -29,7 +29,7 @@ export const processTransaction = async (
   const blockTime = config.networks[network].blockTime
   if (
     !transaction ||
-    transaction.confirmations <= config.requiredConfirmations
+    (transaction?.confirmations || 0) <= config.requiredConfirmations
   ) {
     // Polling if the transaction is not confirmed
     setTimeout(async () => {
@@ -92,6 +92,7 @@ export function setMaxNumberOfKeysOnLock({
       lockAddress: lock.address,
       maxNumberOfKeys,
     },
+    {} /** transactionParams */,
     async (error: any, tHash: string) => {
       if (error) {
         throw error
@@ -129,6 +130,7 @@ export const updateKeyPriceOnLock = (
       lockAddress: lock.address,
       keyPrice: newKeyPrice,
     },
+    {} /** transactionParams */,
     async (error: any, transactionHash: string) => {
       if (error) {
         throw error
@@ -168,6 +170,7 @@ export const updateSelfAllowanceOnLock = (
       amount: allowanceAmount,
       erc20Address: lock.currencyContractAddress,
     },
+    {} /** transactionParams */,
     async (error: any, transactionHash: string) => {
       if (error) {
         throw error
@@ -202,6 +205,7 @@ export const withdrawFromLock = (
     {
       lockAddress: lock.address,
     },
+    {} /** transactionParams */,
     async (error: any, transactionHash: string) => {
       if (error) {
         throw error
@@ -270,6 +274,7 @@ export const purchaseKeyFromLock = async (
       keyPrice: lock.keyPrice,
       data,
     },
+    {} /** transactionParams */,
     async (error: any, transactionHash: string) => {
       if (error) {
         throw error
@@ -311,6 +316,7 @@ export const purchaseMultipleKeysFromLock = async (
       recurringPayments,
       data,
     },
+    {} /** transactionParams */,
     async (error: any, transactionHash: string) => {
       if (error) {
         throw error

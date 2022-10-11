@@ -60,10 +60,7 @@ export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
   return (
     <div className="flex flex-col mb-[2rem]">
       <div className="flex flex-col">
-        <small className="font-semibold uppercase text-gray-300 text-[10px] tracking-[.4px] mb-[.5px]">
-          network
-        </small>
-        <span className="font-semibold text-lg mb-3">{name}</span>
+        <h2 className="text-lg font-bold text-brand-ui-primary">{name}</h2>
       </div>
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {keys.map((key: OwnedKey) => (
@@ -85,7 +82,7 @@ export const KeyDetails = () => {
     <div>
       <div>
         {Object.entries(networks).map(([networkId, networkObj]) => {
-          const subgraphURI = networkObj.subgraphURI
+          const subgraphURI = networkObj.subgraph.endpoint
           const apolloClientByNetwork = new ApolloClient({
             uri: subgraphURI!,
           }) as any

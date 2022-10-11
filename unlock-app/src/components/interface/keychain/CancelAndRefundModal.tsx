@@ -1,128 +1,157 @@
-import React, { useState, useEffect } from 'react'
+import { Button, Modal } from '@unlock-protocol/ui'
+import React from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
-import InlineModal from '../InlineModal'
-import Loading from '../Loading'
+import { FaSpinner as Spinner } from 'react-icons/fa'
+import { useKeychain } from '~/hooks/useKeychain'
 
 export interface ICancelAndRefundProps {
   active: boolean
   lock: any
-  dismiss: () => void
+  setIsOpen: (status: boolean) => void
   account: string
   currency: string
   keyId: string
+  network: number
+  onExpireAndRefund?: () => void
 }
+
+const CancelAndRefundModalPlaceHolder = () => {
+  return (
+    <div data-testid="placeholder" className="flex flex-col w-full gap-5 p-4">
+      <div className="flex flex-col gap-2">
+        <div className="h-[24px] w-2/3 bg-slate-200 animate-pulse"></div>
+        <div className="h-[14px] w-1/2 bg-slate-200 animate-pulse"></div>
+      </div>
+      <div className="h-[50px] w-full rounded-full bg-slate-200 animate-pulse"></div>
+    </div>
+  )
+}
+
+const MAX_TRANSFER_FEE = 10000
 
 export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   active,
   lock,
-  dismiss,
+  setIsOpen,
   account: owner,
   currency,
   keyId,
+  network,
+  onExpireAndRefund,
 }) => {
-  const [loading, setLoading] = useState(false)
-  const [loadingAmount, setLoadingAmount] = useState(false)
-  const [refundAmount, setRefundAmount] = useState('')
   const walletService = useWalletService()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
-  useEffect(() => {
-    if (!active) return
-    const getRefundAmount = async () => {
-      setLoadingAmount(true)
-      const params = {
-        lockAddress,
-        owner,
-        tokenAddress,
-        tokenId: keyId,
-      }
-      const totalToRefund = await walletService.getCancelAndRefundValueFor(
-        params,
-        () => true
-      )
-      setRefundAmount(totalToRefund)
-      setLoadingAmount(false)
-    }
-    getRefundAmount()
-  }, [
-    active,
-    setRefundAmount,
-    setLoadingAmount,
+  const { getAmounts } = useKeychain({
     lockAddress,
-    tokenAddress,
-    keyId,
+    network,
     owner,
-    walletService,
-  ])
+    keyId,
+    tokenAddress,
+  })
 
-  const onCloseCallback = () => {
-    if (typeof dismiss === 'function') dismiss()
-    setLoading(false)
-  }
+  const { isInitialLoading: isLoading, data } = useQuery(
+    ['getAmounts', lockAddress],
+    getAmounts,
+    {
+      refetchInterval: false,
+      onError: () => {
+        ToastHelper.error('There is some unexpected error, please try again')
+      },
+    }
+  )
 
-  const onCancelAndRefund = async () => {
-    setLoading(true)
+  console.table(data)
 
+  const { refundAmount = 0, transferFee = 0, lockBalance = 0 } = data ?? {}
+
+  const cancelAndRefund = async () => {
     const params = {
       lockAddress,
       tokenId: keyId,
     }
+    return walletService.cancelAndRefund(
+      params,
+      {} /** transactionParams */,
+      () => true
+    )
+  }
 
-    try {
-      await walletService.cancelAndRefund(params, () => true)
-      onCloseCallback()
+  const cancelRefundMutation = useMutation(cancelAndRefund, {
+    onSuccess: () => {
       ToastHelper.success('Key cancelled and successfully refunded.')
-      // reload page to show updated list of keys
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
-    } catch (err: any) {
-      onCloseCallback()
+      setIsOpen(false)
+      if (typeof onExpireAndRefund === 'function') {
+        onExpireAndRefund()
+      }
+    },
+    onError: (err: any) => {
+      setIsOpen(false)
       ToastHelper.error(
         err?.error?.message ??
           err?.message ??
           'There was an error in refund process. Please try again.'
       )
-    }
-  }
+    },
+  })
+
+  const hasMaxCancellationFee = Number(transferFee) >= MAX_TRANSFER_FEE
+  const isRefundable =
+    !hasMaxCancellationFee && refundAmount <= Number(lockBalance)
+
+  const buttonDisabled =
+    isLoading || !isRefundable || cancelRefundMutation?.isLoading
 
   if (!lock) return <span>No lock selected</span>
+
   return (
-    <InlineModal active={active} dismiss={onCloseCallback}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '100%',
-        }}
-      >
-        {loadingAmount ? (
-          <Loading />
-        ) : (
-          <>
-            <h3 className="text-black-500">Cancel and Refund</h3>
-            <p className="text-sm">
-              <span>
-                {currency} {parseFloat(refundAmount!).toFixed(6)}
-              </span>
-              {` will be refunded, Do you want to proceed?`}
-            </p>
-          </>
-        )}
-        <button
-          className="bg-gray-200 rounded px-2 py-1 text-sm mt-4 flex justify-center disabled:opacity-50 w-100"
-          type="button"
-          onClick={onCancelAndRefund}
-          disabled={loading || loadingAmount}
-        >
-          {loading ? (
-            <Loading size={20} />
-          ) : (
-            <span className="ml-2">Confirm</span>
-          )}
-        </button>
-      </div>
-    </InlineModal>
+    <Modal isOpen={active} setIsOpen={setIsOpen}>
+      {isLoading ? (
+        <CancelAndRefundModalPlaceHolder />
+      ) : (
+        active && (
+          <div className="flex flex-col w-full gap-5 p-4">
+            <div className="text-left">
+              <h3 className="text-xl font-semibold text-left text-black-500">
+                Cancel and Refund
+              </h3>
+              <p className="mt-2 text-md">
+                {hasMaxCancellationFee ? (
+                  <span>This key is not refundable.</span>
+                ) : isRefundable ? (
+                  <>
+                    <span>
+                      {currency} {parseFloat(`${refundAmount}`!).toFixed(3)}
+                    </span>
+                    {` will be refunded, Do you want to proceed?`}
+                  </>
+                ) : (
+                  <span>
+                    Refund is not possible because the contract does not have
+                    funds to cover it.
+                  </span>
+                )}
+              </p>
+            </div>
+            <Button
+              type="button"
+              onClick={() => cancelRefundMutation.mutate()}
+              disabled={buttonDisabled}
+            >
+              <div className="flex items-center">
+                {cancelRefundMutation.isLoading && (
+                  <Spinner className="animate-spin" />
+                )}
+                <span className="ml-2">
+                  {cancelRefundMutation.isLoading ? 'Refunding...' : 'Confirm'}
+                </span>
+              </div>
+            </Button>
+          </div>
+        )
+      )}
+    </Modal>
   )
 }

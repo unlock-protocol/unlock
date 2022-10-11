@@ -1,4 +1,4 @@
-import { useQueries } from 'react-query'
+import { useQueries } from '@tanstack/react-query'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
@@ -6,27 +6,17 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ImageBar } from './ImageBar'
 import { MemberCard } from './MemberCard'
-import useEns from '~/hooks/useEns'
-import { addressMinify } from '~/utils/strings'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 interface MembersProps {
   lockAddress: string
   network: number
+  loading: boolean
   filters?: {
     [key: string]: any
   }
-}
-
-export const Address = ({ address }: { address: string }) => {
-  const addressToEns = useEns(address)
-
-  const resolvedAddress =
-    addressToEns === address ? addressMinify(address) : addressToEns
-
-  return <>{resolvedAddress}</>
 }
 
 const MembersPlaceholder = () => {
@@ -48,6 +38,7 @@ const MembersPlaceholder = () => {
 export const Members = ({
   lockAddress,
   network,
+  loading: loadingFilters,
   filters = {
     query: '',
     filterKey: 'owner',
@@ -59,10 +50,6 @@ export const Members = ({
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
   const [page, setPage] = useState(1)
-
-  const getLockManagerStatus = async () => {
-    return await web3Service.isLockManager(lockAddress, account!, network)
-  }
 
   const getMembers = async () => {
     await storageService.loginPrompt({
@@ -85,41 +72,52 @@ export const Members = ({
   const [
     { isLoading, data: members = [] },
     { isLoading: isLoadingVersion, data: lockVersion = 0 },
-    { isLoading: isLoadingLockManager, data: isLockManager },
-  ] = useQueries([
-    {
-      queryFn: getMembers,
-      queryKey: ['getMembers', lockAddress, network],
-      onError: () => {
-        ToastHelper.error('There is some unexpected issue, please try again')
+  ] = useQueries({
+    queries: [
+      {
+        queryFn: getMembers,
+        queryKey: ['getMembers', lockAddress, network, filters],
+        onError: () => {
+          ToastHelper.error('There is some unexpected issue, please try again')
+        },
       },
-    },
-    {
-      queryFn: getLockVersion,
-      queryKey: ['getLockVersion', lockAddress, network],
-      onError: () => {
-        ToastHelper.error('There is some unexpected issue, please try again')
+      {
+        queryFn: getLockVersion,
+        queryKey: ['getLockVersion', lockAddress, network],
+        onError: () => {
+          ToastHelper.error('There is some unexpected issue, please try again')
+        },
       },
-    },
-    {
-      queryFn: getLockManagerStatus,
-      queryKey: ['getLockManagerStatus', lockAddress, network],
-    },
-  ])
+    ],
+  })
 
-  const loading = isLoadingVersion || isLoading || isLoadingLockManager
+  const loading = isLoadingVersion || isLoading || loadingFilters
   const noItems = members?.length === 0 && !loading
+
+  const hasActiveFilter =
+    filters?.expiration !== 'active' || filters?.filterKey !== 'owner'
+  const hasSearch = filters?.query?.length > 0
 
   if (loading) {
     return <MembersPlaceholder />
   }
 
-  if (noItems) {
+  if (noItems && !hasSearch && !hasActiveFilter) {
     return (
       <ImageBar
         src="/images/illustrations/no-member.svg"
         alt="No members"
         description="There is no member yet, but keep it up."
+      />
+    )
+  }
+
+  if (noItems && (hasSearch || hasActiveFilter)) {
+    return (
+      <ImageBar
+        src="/images/illustrations/no-member.svg"
+        alt="No results"
+        description="No key matches your filter."
       />
     )
   }
@@ -144,7 +142,6 @@ export const Members = ({
             owner={owner}
             expiration={expiration}
             version={lockVersion}
-            isLockManager={isLockManager}
             metadata={metadata}
             lockAddress={lockAddress!}
             network={network}

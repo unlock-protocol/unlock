@@ -2,7 +2,7 @@ import { useActor } from '@xstate/react'
 import { StepItem } from '../Stepper'
 import { CheckoutService } from './checkoutMachine'
 
-export function useCheckoutSteps(service: CheckoutService) {
+export function useCheckoutSteps(service: CheckoutService, renewal = false) {
   const [state] = useActor(service)
   const { paywallConfig, skipQuantity, payment, lock } = state.context
 
@@ -13,7 +13,7 @@ export function useCheckoutSteps(service: CheckoutService) {
   const isPassword =
     paywallConfig.locks[lockAddress]?.password || paywallConfig.password
 
-  const stepItems: StepItem[] = [
+  const checkoutItems: StepItem[] = [
     {
       id: 1,
       name: 'Select lock',
@@ -51,7 +51,7 @@ export function useCheckoutSteps(service: CheckoutService) {
           id: 6,
           name: 'Solve captcha',
           to: 'CAPTCHA',
-          skip: !isCaptcha || ['card', 'claim'].includes(payment.method),
+          skip: !isCaptcha || ['card'].includes(payment.method),
         },
     {
       id: 7,
@@ -63,5 +63,35 @@ export function useCheckoutSteps(service: CheckoutService) {
       name: 'Minting NFT',
     },
   ]
-  return stepItems
+
+  const renewItems: StepItem[] = [
+    {
+      id: 1,
+      name: 'Select lock',
+      to: 'SELECT',
+    },
+    isPassword
+      ? {
+          id: 2,
+          name: 'Submit password',
+          to: 'PASSWORD',
+        }
+      : {
+          id: 2,
+          name: 'Solve captcha',
+          to: 'CAPTCHA',
+          skip: !isCaptcha,
+        },
+    {
+      id: 3,
+      name: 'Renew membership',
+      to: 'RENEW',
+    },
+    {
+      id: 4,
+      name: 'Renewed!',
+    },
+  ]
+
+  return renewal ? renewItems : checkoutItems
 }

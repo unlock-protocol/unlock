@@ -52,6 +52,11 @@ export interface SelectQuantityEvent {
   quantity: number
 }
 
+export interface SubmitDataEvent {
+  type: 'SUBMIT_DATA'
+  data: string[]
+}
+
 export interface SubmitPasswordEvent {
   type: 'SUBMIT_PASSWORD'
   data: string[]
@@ -113,6 +118,7 @@ export type CheckoutMachineEvents =
   | SelectCardToChargeEvent
   | SignMessageEvent
   | SubmitPasswordEvent
+  | SubmitDataEvent
   | MakeAnotherPurchaseEvent
   | SolveCaptchaEvent
   | ConfirmMintEvent
@@ -156,6 +162,8 @@ interface CheckoutMachineContext {
   renewed?: Transaction
   skipQuantity: boolean
   password?: string[]
+  data?: string[]
+  renew: boolean
 }
 
 export const checkoutMachine = createMachine(
@@ -180,6 +188,7 @@ export const checkoutMachine = createMachine(
       renewed: undefined,
       recipients: [],
       skipQuantity: false,
+      renew: false,
     },
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
@@ -197,11 +206,34 @@ export const checkoutMachine = createMachine(
       SIGN_MESSAGE: {
         actions: ['signMessage'],
       },
+      SUBMIT_DATA: {
+        actions: ['submitData'],
+      },
     },
     states: {
       SELECT: {
         on: {
           SELECT_LOCK: [
+            {
+              actions: ['selectLock'],
+              target: 'PASSWORD',
+              cond: (ctx, event) => {
+                const isPassword =
+                  ctx.paywallConfig.password ||
+                  ctx.paywallConfig.locks?.[event.lock.address].password
+                return !!isPassword && event.expiredMember
+              },
+            },
+            {
+              actions: ['selectLock'],
+              target: 'CAPTCHA',
+              cond: (ctx, event) => {
+                const isCaptcha =
+                  ctx.paywallConfig.captcha ||
+                  ctx.paywallConfig.locks?.[event.lock.address].captcha
+                return !!isCaptcha && event.expiredMember
+              },
+            },
             {
               actions: ['selectLock'],
               target: 'RENEW',
@@ -359,11 +391,22 @@ export const checkoutMachine = createMachine(
       },
       PASSWORD: {
         on: {
-          SUBMIT_PASSWORD: {
-            target: 'CONFIRM',
-            actions: ['submitPassword'],
-          },
+          SUBMIT_PASSWORD: [
+            {
+              target: 'RENEW',
+              actions: ['submitPassword'],
+              cond: (ctx) => ctx.renew,
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['submitPassword'],
+            },
+          ],
           BACK: [
+            {
+              target: 'SELECT',
+              cond: (ctx) => ctx.renew,
+            },
             {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
@@ -380,11 +423,22 @@ export const checkoutMachine = createMachine(
       },
       CAPTCHA: {
         on: {
-          SOLVE_CAPTCHA: {
-            target: 'CONFIRM',
-            actions: ['solveCaptcha'],
-          },
+          SOLVE_CAPTCHA: [
+            {
+              target: 'RENEW',
+              actions: ['solveCaptcha'],
+              cond: (ctx) => ctx.renew,
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['solveCaptcha'],
+            },
+          ],
           BACK: [
+            {
+              target: 'SELECT',
+              cond: (ctx) => ctx.renew,
+            },
             {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
@@ -498,12 +552,14 @@ export const checkoutMachine = createMachine(
           mint: undefined,
           renewed: undefined,
           skipQuantity: false,
+          renew: false,
         } as CheckoutMachineContext
       }),
       selectLock: assign((context, event) => {
         return {
           ...context,
           lock: event.lock,
+          renew: event.expiredMember,
           skipQuantity: event.skipQuantity,
         }
       }),
@@ -539,33 +595,19 @@ export const checkoutMachine = createMachine(
         },
       }),
       confirmMint: assign({
-        mint: (context, { status, transactionHash }) => {
-          if (!context.paywallConfig.pessimistic) {
-            return {
-              status: 'FINISHED',
-              transactionHash,
-            } as const
-          } else {
-            return {
-              status,
-              transactionHash,
-            } as const
-          }
+        mint: (_, { status, transactionHash }) => {
+          return {
+            status,
+            transactionHash,
+          } as const
         },
       }),
       confirmRenew: assign({
-        renewed: (context, { status, transactionHash }) => {
-          if (!context.paywallConfig.pessimistic) {
-            return {
-              status: 'FINISHED',
-              transactionHash,
-            } as const
-          } else {
-            return {
-              status,
-              transactionHash,
-            } as const
-          }
+        renewed: (_, { status, transactionHash }) => {
+          return {
+            status,
+            transactionHash,
+          } as const
         },
       }),
       updatePaywallConfig: assign((_, event) => {
@@ -582,6 +624,7 @@ export const checkoutMachine = createMachine(
           recipients: [],
           renewed: undefined,
           skipQuantity: false,
+          renew: false,
         } as CheckoutMachineContext
       }),
       solveCaptcha: assign({
@@ -594,6 +637,11 @@ export const checkoutMachine = createMachine(
           return event.data
         },
       }),
+      submitData: assign({
+        data: (_, event) => {
+          return event.data
+        },
+      }),
     },
     guards: {
       requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
@@ -602,7 +650,7 @@ export const checkoutMachine = createMachine(
           !!(
             context.paywallConfig.captcha ||
             context.paywallConfig.locks?.[context.lock!.address]?.captcha
-          ) && context.payment.method === 'crypto'
+          ) && ['crypto', 'claim'].includes(context.payment.method)
         )
       },
       requirePassword: (context) => {
@@ -610,7 +658,7 @@ export const checkoutMachine = createMachine(
           !!(
             context.paywallConfig.password ||
             context.paywallConfig.locks?.[context.lock!.address]?.password
-          ) && context.payment.method === 'crypto'
+          ) && ['crypto', 'claim'].includes(context.payment.method)
         )
       },
     },

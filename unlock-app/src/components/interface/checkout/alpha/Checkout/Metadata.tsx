@@ -14,7 +14,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { MetadataInput } from '~/unlockTypes'
 
@@ -124,18 +124,15 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
 
   async function onSubmit(data: FormData) {
     try {
-      const formData = data
-      const recipients = await Promise.all(
-        formData.metadata.map(async (item) => {
-          const address = await getAddressForName(item.recipient)
-          return address
-        })
-      )
-      if (metadataInputs) {
-        const users = formData.metadata.map(({ recipient, ...props }) => {
-          const formattedMetadata = formResultToMetadata(props, metadataInputs!)
+      const users = await Promise.all(
+        data.metadata.map(async ({ recipient, ...props }) => {
+          const address = await getAddressForName(recipient)
+          const formattedMetadata = formResultToMetadata(
+            props,
+            metadataInputs || []
+          )
           return {
-            userAddress: recipient,
+            userAddress: address,
             metadata: {
               public: formattedMetadata.publicData,
               protected: formattedMetadata.protectedData,
@@ -143,8 +140,11 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
             lockAddress: lock!.address,
           }
         })
-        await storage.submitMetadata(users, lock!.network)
-      }
+      )
+
+      const recipients = users.map((item) => item.userAddress)
+      await storage.submitMetadata(users, lock!.network)
+
       send({
         type: 'SELECT_RECIPIENTS',
         recipients,

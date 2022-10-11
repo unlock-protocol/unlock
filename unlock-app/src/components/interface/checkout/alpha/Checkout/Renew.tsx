@@ -7,7 +7,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { StepItem, Stepper } from '../Stepper'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
@@ -20,6 +20,8 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { Pricing } from '../Lock'
 import { LabeledItem } from '../LabeledItem'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { useCheckoutSteps } from './useCheckoutItems'
+import { fetchRecipientsData } from './utils'
 
 interface Props {
   injectedProvider: unknown
@@ -39,7 +41,13 @@ export function Renew({
   const web3Service = useWeb3Service()
   const [isSigningMessage, setIsSigningMessage] = useState(false)
   const [isRenewing, setIsRenewing] = useState(false)
-  const { paywallConfig, lock, messageToSign: signedMessage } = state.context
+  const {
+    paywallConfig,
+    lock,
+    messageToSign: signedMessage,
+    password,
+    captcha,
+  } = state.context
   const { messageToSign, referrer } = paywallConfig
   const hasMessageToSign = !signedMessage && paywallConfig.messageToSign
   const { network: lockNetwork, address: lockAddress, name: lockName } = lock!
@@ -66,6 +74,22 @@ export function Renew({
       if (!(lock && account)) {
         return
       }
+
+      let data = password || captcha || undefined
+
+      const dataBuilder =
+        paywallConfig.locks[lock!.address].dataBuilder ||
+        paywallConfig.dataBuilder
+
+      // if Data builder url is present, prioritize that above rest.
+      if (dataBuilder) {
+        data = await fetchRecipientsData(dataBuilder, {
+          recipients: [account],
+          lockAddress: lock!.address,
+          network: lock!.network,
+        })
+      }
+
       const onTransactionHandler = (
         error: Error | null,
         hash: string | null
@@ -90,18 +114,20 @@ export function Renew({
           }
           send({
             type: 'CONFIRM_RENEW',
-            status: 'PROCESSING',
+            status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
             transactionHash: hash!,
           })
         }
       }
       if (lock.publicLockVersion! <= 9) {
-        await walletService.purchaseKey(
+        await walletService.purchaseKeys(
           {
             lockAddress,
-            owner: account,
-            referrer,
+            owners: [account],
+            referrers: [referrer || account],
+            data,
           },
+          {} /** transactionParams */,
           onTransactionHandler
         )
       } else {
@@ -111,13 +137,14 @@ export function Renew({
           0,
           lockNetwork
         )
-        console.log(tokenId)
         await walletService.extendKey(
           {
             lockAddress,
             tokenId: tokenId.toString(),
             referrer,
+            data: data?.[0],
           },
+          {} /** Transaction params */,
           onTransactionHandler
         )
       }
@@ -144,26 +171,11 @@ export function Renew({
     }
   }
 
-  const stepItems: StepItem[] = [
-    {
-      id: 1,
-      name: 'Select lock',
-      to: 'SELECT',
-    },
-    {
-      id: 2,
-      name: 'Renew membership',
-      to: 'RENEW',
-    },
-    {
-      id: 3,
-      name: 'Renewed!',
-    },
-  ]
+  const stepItems: StepItem[] = useCheckoutSteps(checkoutService, true)
 
   return (
     <Fragment>
-      <Stepper position={2} service={checkoutService} items={stepItems} />
+      <Stepper position={3} service={checkoutService} items={stepItems} />
       <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="space-y-6">
           <div className="flex items-start justify-between">

@@ -21,11 +21,15 @@ export function handleNewLock(event: NewLock): void {
     version = BigInt.fromI32(publicLockVersion.value.toI32())
   }
 
+  // dont index locks with versions lower than 5
+  if (version.lt(BigInt.fromI32(5))) return
+
   // store lock info from contract
   lock.tokenAddress = lockContract.tokenAddress()
   lock.price = lockContract.keyPrice()
   lock.name = lockContract.name()
   lock.expirationDuration = lockContract.expirationDuration()
+  lock.totalKeys = BigInt.fromI32(0)
 
   // store info from event
   lock.address = lockAddress

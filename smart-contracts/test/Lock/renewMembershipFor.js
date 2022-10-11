@@ -83,8 +83,10 @@ contract('Lock / Recurring memberships', (accounts) => {
       it('can not renew lock with no ERC20 tokens set', async () => {
         // remove dai token
         await lock.updateKeyPricing(keyPrice, ADDRESS_ZERO)
-
+        await lock.setMaxKeysPerAddress(2)
+        assert.equal(await lock.totalKeys(keyOwner), 1)
         const { tokenId: newTokenId } = await purchaseKey(lock, keyOwner)
+        assert.equal(await lock.totalKeys(keyOwner), 2)
         await reverts(
           lock.renewMembershipFor(newTokenId, ADDRESS_ZERO),
           'NON_RENEWABLE_LOCK'
@@ -315,6 +317,7 @@ contract('Lock / Recurring memberships', (accounts) => {
       const testEventHooks = await TestEventHooks.new()
       await lock.setEventHooks(
         testEventHooks.address,
+        ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,

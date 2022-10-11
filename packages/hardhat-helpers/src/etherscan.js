@@ -1,4 +1,5 @@
 // Etherscan api for verification
+// NB: list of supported network can be obtained with `yarn hardhat verify --list-networks`
 const etherscan = {
   apiKey: {
     // xdai requires only placeholder api key
@@ -13,11 +14,20 @@ const etherscan = {
         browserURL: 'https://celoscan.io/',
       },
     },
+    // below could be removeed once https://github.com/NomicFoundation/hardhat/pull/3207/files is merged
+    {
+      network: 'gnosis',
+      chainId: 100,
+      urls: {
+        apiURL: 'https://gnosisscan.io/api',
+        browserURL: 'https://gnosisscan.io',
+      },
+    },
   ],
 }
 
 if (process.env.ETHERSCAN_API_KEY) {
-  ;['mainnet', 'ropsten', 'rinkeby', 'goerli', 'kovan'].forEach(
+  ;['mainnet', 'goerli'].forEach(
     // eslint-disable-next-line no-return-assign
     (netName) => (etherscan.apiKey[netName] = process.env.ETHERSCAN_API_KEY)
   )
@@ -40,6 +50,9 @@ if (process.env.CELO_API_KEY) {
 }
 if (process.env.SNOWTRACE_API_KEY) {
   etherscan.apiKey.avalanche = process.env.SNOWTRACE_API_KEY
+}
+if (process.env.GNOSISSCAN_API_KEY) {
+  etherscan.apiKey.gnosis = process.env.GNOSISSCAN_API_KEY
 }
 
 module.exports = { etherscan }
