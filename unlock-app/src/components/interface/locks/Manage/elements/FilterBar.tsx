@@ -180,7 +180,7 @@ export const FilterBar = ({
           )}
         </div>
       </div>
-      {expandFilter && (
+      {expandFilter && filterKey !== 'keyId' && (
         <div className="block">
           <Expiration />
         </div>
