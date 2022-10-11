@@ -16,7 +16,7 @@ Our [docs site](https://docs.unlock-protocol.com/api/locksmith) is also updated 
 
 Here is an example of how you can use the new locksmith service client. It is fully typed so you will get intellisense for arguments and responses in your editor.
 
-```tsx
+```js
 import { LocksmithService } from '@unlock-protocol/unlock-js'
 
 const service = new LocksmithService()
