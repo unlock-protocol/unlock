@@ -4,6 +4,7 @@
 
 - add support for `transferFeeBasisPoints`
 - move `getCancelAndRefundValueFor` from `walletService` -> `web3Service`
+
 # 0.28.1
 
 - Preserving gas calculation when previous configured on purchase
