@@ -23,7 +23,6 @@ contract('Lock / shareKey', (accounts) => {
 
   beforeEach(async () => {
     lock = await deployLock()
-    await lock.setMaxKeysPerAddress(10)
     ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 

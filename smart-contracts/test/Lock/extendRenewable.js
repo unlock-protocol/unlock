@@ -30,7 +30,6 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
     })
 
     lock = await deployLock({ tokenAddress: dai.address })
-    await lock.setMaxKeysPerAddress(10)
 
     // set ERC20 approval for entire scope
     await dai.approve(lock.address, someDai, {

@@ -43,6 +43,12 @@ async function deployLock({
   }
   const { newLockAddress } = evt.args
   const lock = await PublicLock.at(newLockAddress)
+
+  await lock.updateLockConfig(
+    expirationDuration,
+    maxNumberOfKeys,
+    10 // default maxKeysPerAddress to 10 for tests
+  )
   return lock
 }
 

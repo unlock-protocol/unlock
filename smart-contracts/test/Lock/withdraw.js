@@ -10,7 +10,6 @@ contract('Lock / withdraw', (accounts) => {
   const owner = accounts[0]
   before(async () => {
     lock = await deployLock()
-    await lock.setMaxKeysPerAddress(10)
     tokenAddress = await lock.tokenAddress()
     await purchaseKeys(lock, 2)
   })

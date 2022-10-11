@@ -83,7 +83,6 @@ contract('Lock / Recurring memberships', (accounts) => {
       it('can not renew lock with no ERC20 tokens set', async () => {
         // remove dai token
         await lock.updateKeyPricing(keyPrice, ADDRESS_ZERO)
-        await lock.setMaxKeysPerAddress(2)
         assert.equal(await lock.totalKeys(keyOwner), 1)
         const { tokenId: newTokenId } = await purchaseKey(lock, keyOwner)
         assert.equal(await lock.totalKeys(keyOwner), 2)
