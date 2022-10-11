@@ -121,6 +121,7 @@ export const CreateLockForm = ({
   const onChangeNetwork = (network: number | string) => {
     changeNetwork(networks[parseInt(`${network}`)])
     setSelectedToken(null)
+    setValue('network', parseInt(`${network}`))
   }
 
   return (
@@ -143,7 +144,7 @@ export const CreateLockForm = ({
           >
             <Select
               label="Network:"
-              defaultValue={networks[network!].id}
+              defaultValue={network}
               options={networkOptions}
               onChange={onChangeNetwork}
             />

@@ -116,19 +116,18 @@ export const CreateLockFormSummary = ({
   const { data, isError } = useQuery(
     ['getTransactionDetails'],
     () => {
-      if (transactionHash) {
-        return getTransactionDetails(transactionHash!)
-      }
+      return getTransactionDetails(transactionHash!)
     },
     {
       refetchInterval: 5000,
     }
   )
 
+  const hasError = isError && data
   const isDeployed =
     (data?.confirmations || 0) >= requiredConfirmations && !isError
 
-  const currentStatus: DeployStatus = isError
+  const currentStatus: DeployStatus = hasError
     ? 'txError'
     : isDeployed
     ? 'deployed'
