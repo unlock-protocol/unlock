@@ -114,6 +114,7 @@ contract('Lock / updateLockConfig', (accounts) => {
     it('update the expiration duration of an existing lock', async () => {
       const tx = await lock.updateLockConfig(10, 20, 30)
       const { args } = tx.logs.find((v) => v.event === 'LockConfig')
+
       expect(args.expirationDuration.toNumber()).to.be.equal(10)
       expect(args.maxNumberOfKeys.toNumber()).to.be.equal(20)
       expect(args.maxKeysPerAcccount.toNumber()).to.be.equal(30)
