@@ -56,15 +56,9 @@ export function Ticket({
           {location && <TicketItem icon={<LocationIcon />} value={location} />}
           {items}
         </div>
-
         <div className="grid gap-4 sm:grid-cols-2">
           <TicketLabel label="Token ID" value={id} />
           <TicketLabel label="Recipient" value={minifyAddress(recipient)} />
-          <TicketLabel label="Network" value={networkConfig.name} />
-          <TicketLabel
-            label="Lock Address"
-            value={minifyAddress(lockAddress)}
-          />
         </div>
       </div>
       <div className="p-6 bg-white border-t-2 border-dashed rounded-3xl">
