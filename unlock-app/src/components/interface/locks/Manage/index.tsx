@@ -364,6 +364,7 @@ export const ManageLockPage = () => {
     filterKey: 'owner',
     expiration: 'all',
   })
+  const [page, setPage] = useState(1)
 
   if (!walletNetwork) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
@@ -388,12 +389,16 @@ export const ManageLockPage = () => {
                 filters={filters}
                 setFilters={setFilters}
                 setLoading={setLoading}
+                setPage={setPage}
+                page={page}
               />
               <Members
                 lockAddress={lockAddress}
                 network={lockNetwork}
                 filters={filters}
                 loading={loading}
+                setPage={setPage}
+                page={page}
               />
             </div>
           </div>
