@@ -43,6 +43,7 @@ interface Props {
   keyId: string
   children?: ReactNode
   onClose?: () => void
+  showWarning?: boolean
 }
 
 export function MembershipCard({
