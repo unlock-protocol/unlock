@@ -14,6 +14,7 @@ module.exports = {
       },
     },
   ],
+  staticDirs: ['../public'],
   framework: '@storybook/react',
   webpackFinal: async (config) => {
     config.resolve.plugins = [
