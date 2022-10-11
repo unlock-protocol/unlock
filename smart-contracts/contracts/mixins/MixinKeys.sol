@@ -25,9 +25,10 @@ contract MixinKeys is
 
   // Emitted when the expiration of a key is modified
   event ExpirationChanged(
-    uint indexed _tokenId,
-    uint _amount,
-    bool _timeAdded
+    uint indexed tokenId,
+    uint newExpiration,
+    uint amount,
+    bool timeAdded
   );
 
   // fire when a key is extended
@@ -643,7 +644,12 @@ contract MixinKeys is
         _keys[_tokenId].expirationTimestamp = formerTimestamp - _deltaT;
     }
 
-    emit ExpirationChanged(_tokenId, _deltaT, _addTime);
+    emit ExpirationChanged(
+      _tokenId, 
+      _keys[_tokenId].expirationTimestamp,
+      _deltaT, 
+      _addTime
+    );
   }
 
   /**

@@ -1,5 +1,5 @@
+const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
 
 const {
   reverts,
@@ -8,13 +8,12 @@ const {
   purchaseKeys,
 } = require('../helpers')
 
+const ONE_DAY = ethers.BigNumber.from(60 * 60 * 24)
+const TOO_MUCH_TIME = 60 * 60 * 24 * 30 * 2 // 60 days
+
 contract('Lock / shareKey', (accounts) => {
   let lock
   let tokenIds
-  let event
-  let event1
-  let event2
-  let tx2
 
   const keyOwners = [accounts[1], accounts[2], accounts[3]]
   const accountWithNoKey2 = accounts[5]
@@ -87,13 +86,11 @@ contract('Lock / shareKey', (accounts) => {
       let tx
 
       beforeEach(async () => {
-        const tooMuchTime = new BigNumber(60 * 60 * 24 * 30 * 2) // 60 days
         assert.equal(await lock.isValidKey(tokenIds[1]), true)
-
         remaining = await lock.keyExpirationTimestampFor(tokenIds[1])
         assert.equal(await lock.balanceOf(accounts[4]), 0)
 
-        tx = await lock.shareKey(accounts[4], tokenIds[1], tooMuchTime, {
+        tx = await lock.shareKey(accounts[4], tokenIds[1], TOO_MUCH_TIME, {
           from: keyOwners[1],
         })
       })
@@ -106,14 +103,15 @@ contract('Lock / shareKey', (accounts) => {
         assert.equal(await lock.balanceOf(accounts[4]), 1)
         assert.equal(await lock.getHasValidKey(accounts[4]), true)
 
-        let newExpirationTimestamp = new BigNumber(
-          await lock.keyExpirationTimestampFor(args.tokenId)
+        let newExpirationTimestamp = await lock.keyExpirationTimestampFor(
+          args.tokenId
         )
         assert.equal(newExpirationTimestamp.toString(), remaining.toString())
       })
 
       it('should emit the expireKey Event', async () => {
-        assert.equal(tx.logs[0].event, 'ExpireKey')
+        const evt = tx.logs.find(({ event }) => event === 'ExpireKey')
+        assert.equal(evt.args.tokenId.toNumber(), tokenIds[1].toNumber())
       })
 
       it('The origin key is expired', async () => {
@@ -127,114 +125,127 @@ contract('Lock / shareKey', (accounts) => {
     })
   })
 
-  describe('successful key sharing', () => {
-    let oneDay = new BigNumber(60 * 60 * 24)
-    let hadKeyBefore
-    let expirationBeforeSharing
-    let expirationAfterSharing
-    let sharedKeyExpiration
-    let fee
-    let timestampBeforeSharing
-    let timestampAfterSharing
-    let newTokenId
-
+  describe('approved account sharing a key', () => {
     beforeEach(async () => {
-      // Change the fee to 5%
-      await lock.updateTransferFee(500)
       // approve an address
       await lock.approve(approvedAddress, tokenIds[2], {
         from: keyOwners[2],
       })
-
-      hadKeyBefore = await lock.getHasValidKey(accountWithNoKey2)
-      expirationBeforeSharing = new BigNumber(
-        await lock.keyExpirationTimestampFor(tokenIds[2])
-      )
-
-      const { timestamp: timestampBf } = await ethers.provider.getBlock(
-        'latest'
-      )
-      timestampBeforeSharing = new BigNumber(timestampBf)
-
-      fee = new BigNumber(await lock.getTransferFee(tokenIds[2], oneDay))
-
-      tx2 = await lock.shareKey(accountWithNoKey2, tokenIds[2], oneDay, {
-        from: keyOwners[2],
-      })
-      event = tx2.logs[0].event
-      event1 = tx2.logs[1].event
-      event2 = tx2.logs[2].event
-      const { tokenId } = tx2.logs[2].args
-      newTokenId = tokenId
-
-      expirationAfterSharing = new BigNumber(
-        await lock.keyExpirationTimestampFor(tokenIds[2])
-      )
-
-      sharedKeyExpiration = new BigNumber(
-        await lock.keyExpirationTimestampFor(newTokenId)
-      )
-
-      const { timestamp: timestampAf } = await ethers.provider.getBlock(
-        'latest'
-      )
-      timestampAfterSharing = new BigNumber(timestampAf)
-    })
-
-    it('should emit the ExpirationChanged event', async () => {
-      assert.equal(event, 'ExpirationChanged')
-      assert.equal(tx2.logs[0].args._timeAdded, false)
-    })
-
-    it('should emit the Transfer event', async () => {
-      assert.equal(event1, 'Transfer')
-      assert.equal(event2, 'Transfer')
-    })
-
-    it('should subtract the time shared + fee from the key owner', async () => {
-      assert(
-        expirationAfterSharing.eq(
-          expirationBeforeSharing.minus(fee).minus(oneDay)
-        )
-      )
-    })
-
-    it('should create a new key and add the time shared to it', async () => {
-      assert.equal(await lock.getHasValidKey(accountWithNoKey2), true)
-      assert.equal(hadKeyBefore, false)
-      assert.equal(
-        sharedKeyExpiration.toString(),
-        oneDay.plus(timestampAfterSharing).toString()
-      )
-    })
-
-    it('should not assign the recipient of the granted key as the owner of tokenId 0', async () => {
-      assert.equal(await lock.ownerOf(0), ADDRESS_ZERO)
-    })
-
-    it('total time remaining is <= original time + fee', async () => {
-      const timeRemainingBefore = expirationBeforeSharing.minus(
-        timestampBeforeSharing.toString()
-      )
-
-      const totalTimeRemainingAfter = expirationAfterSharing
-        .minus(timestampAfterSharing)
-        .plus(sharedKeyExpiration.minus(timestampAfterSharing))
-
-      assert(
-        timeRemainingBefore.minus(fee.toString()).gte(totalTimeRemainingAfter)
-      )
     })
 
     it('should allow an approved address to share a key', async () => {
       // make sure recipient does not have a key
       assert.equal(await lock.getHasValidKey(accountWithNoKey3), false)
-      const tx = await lock.shareKey(accountWithNoKey3, tokenIds[2], oneDay, {
+      const tx = await lock.shareKey(accountWithNoKey3, tokenIds[2], ONE_DAY, {
         from: approvedAddress,
       })
       // make sure recipient has a key
       const { args } = tx.logs.find((v) => v.event === 'Transfer')
       assert.equal(await lock.ownerOf(args.tokenId), accountWithNoKey3)
+    })
+  })
+
+  describe('successful key sharing', () => {
+    let fee
+    let tx
+    let timestampAfter
+    let expirationBefore
+    let newTokenId
+
+    beforeEach(async () => {
+      // Change the fee to 5%
+      await lock.updateTransferFee(500)
+
+      assert.equal(await lock.getHasValidKey(accountWithNoKey2), false)
+      expirationBefore = await lock.keyExpirationTimestampFor(tokenIds[2])
+      fee = await lock.getTransferFee(tokenIds[2], ONE_DAY)
+
+      tx = await lock.shareKey(accountWithNoKey2, tokenIds[2], ONE_DAY, {
+        from: keyOwners[2],
+      })
+
+      // fetch new token Id
+      const { args } = tx.logs.find((v) => v.event === 'Transfer')
+      ;({ tokenId: newTokenId } = args)
+      ;({ timestamp: timestampAfter } = await ethers.provider.getBlock(
+        'latest'
+      ))
+    })
+
+    describe('events', () => {
+      it('should emit the ExpirationChanged event', async () => {
+        const expirationAfter = await lock.keyExpirationTimestampFor(
+          tokenIds[2]
+        )
+        const { args } = tx.logs.find(
+          ({ event }) => event === 'ExpirationChanged'
+        )
+        assert.equal(args.timeAdded, false)
+        assert.equal(args.tokenId.toNumber(), tokenIds[2].toNumber())
+        assert.equal(args.newExpiration.toString(), expirationAfter.toString())
+        assert.equal(
+          args.amount.toString(),
+          expirationBefore.sub(expirationAfter).toString()
+        )
+      })
+
+      it('should emit Transfer events', async () => {
+        const transfers = tx.logs.filter(({ event }) => event === 'Transfer')
+        assert.equal(transfers.length, 2)
+
+        // issuer mint a new token
+        assert.equal(transfers[0].args.from, ADDRESS_ZERO)
+        assert.equal(transfers[0].args.to, accountWithNoKey2)
+        assert.equal(
+          transfers[0].args.tokenId.toString(),
+          newTokenId.toString()
+        )
+        // issuer send the token to destination account
+        assert.equal(transfers[1].args.from, keyOwners[2])
+        assert.equal(transfers[1].args.to, accountWithNoKey2)
+        assert.equal(
+          transfers[1].args.tokenId.toString(),
+          newTokenId.toString()
+        )
+      })
+    })
+
+    describe('original key', () => {
+      it('should subtract the time shared + fee from the original key', async () => {
+        const toSubstract = ONE_DAY.add(fee.toString())
+        const expirationAfter = await lock.keyExpirationTimestampFor(
+          tokenIds[2]
+        )
+        assert.equal(
+          expirationAfter.toString(),
+          ethers.BigNumber.from(expirationBefore.toString())
+            .sub(toSubstract)
+            .toString()
+        )
+      })
+
+      it('should preserve ownership record', async () => {
+        assert.equal(await lock.ownerOf(tokenIds[2]), keyOwners[2])
+      })
+    })
+
+    describe('new key', () => {
+      it('should create a new key and add the time shared to it', async () => {
+        const sharedKeyExpiration = await lock.keyExpirationTimestampFor(
+          newTokenId
+        )
+        assert.equal(await lock.isValidKey(newTokenId), true)
+        assert.equal(await lock.getHasValidKey(accountWithNoKey2), true)
+        assert.equal(
+          sharedKeyExpiration.toString(),
+          ONE_DAY.add(timestampAfter).toString()
+        )
+      })
+      it('should create new ownership record', async () => {
+        assert.equal(await lock.ownerOf(newTokenId), accountWithNoKey2)
+        assert.equal(await lock.totalKeys(accountWithNoKey2), 1)
+        assert.equal(await lock.balanceOf(accountWithNoKey2), 1)
+      })
     })
   })
 })
