@@ -4,6 +4,7 @@ import { getErc20Decimals } from '../../erc20'
 
 export async function getCancelAndRefundValueFor(
   { lockAddress, tokenAddress, tokenId },
+  transactionOptions = {},
   provider
 ) {
   const lockContract = await this.getLockContract(lockAddress, provider)
