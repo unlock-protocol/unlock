@@ -3,16 +3,16 @@ title: Unlock Adds OpenAPI Support And Typescript Client For Locksmith
 authorName: searchableguy
 publishDate: October 11, 2022
 description: Explore all our APIs and play around with the locksmith client.
-image: images/blog/open-api-support/docs.png
+image: images/blog/open-api-support/main.png
 ---
 
 Locksmith is our backend service. It is used for handling metadata, ticketing, processing payments, [unlock accounts](https://docs.unlock-protocol.com/tools/sign-in-with-ethereum/unlock-accounts/) and other features on our frontends.
 
 Many developers have asked for documentation and tooling to interact with it to build applications or automate various tasks such as updating metadata in bulk, adding ticket verifiers, and more. We can’t cover all of these use cases on our frontend without increasing complexity so, we are releasing [OpenAPI](https://www.openapis.org/) spec for our endpoints and a client SDK in `unlock-protocol/unlock-js`
 
-Our docs site is also updated to show endpoints relevant to developers with examples and usage.
+Our [docs site](https://docs.unlock-protocol.com/api/locksmith) is also updated to show endpoints relevant to developers with examples and usage.
 
-![docs site](images/blog/open-api-support/docs.png)
+![docs explorer](/images/blog/open-api-support/docs.png)
 
 Here is an example of how you can use the new locksmith service client. It is fully typed so you will get intellisense for arguments and responses in your editor.
 
