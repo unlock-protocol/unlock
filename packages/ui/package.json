@@ -20,7 +20,7 @@
       "require": "./dist/unlock-tailwind-preset.js"
     }
   },
-  "version": "0.1.3",
+  "version": "0.1.4",
   "scripts": {
     "preview": "yarn build && vite --config ./vite.config.ts src",
     "build": "tsc && vite build && tsup ./lib/index.tsx --dts-only",
