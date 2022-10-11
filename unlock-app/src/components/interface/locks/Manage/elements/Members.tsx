@@ -8,12 +8,14 @@ import { ImageBar } from './ImageBar'
 import { MemberCard } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
-import React, { useState } from 'react'
+import React from 'react'
 
 interface MembersProps {
   lockAddress: string
   network: number
   loading: boolean
+  setPage: (page: number) => void
+  page: number
   filters?: {
     [key: string]: any
   }
@@ -39,6 +41,8 @@ export const Members = ({
   lockAddress,
   network,
   loading: loadingFilters,
+  setPage,
+  page,
   filters = {
     query: '',
     filterKey: 'owner',
@@ -49,7 +53,6 @@ export const Members = ({
   const walletService = useWalletService()
   const web3Service = useWeb3Service()
   const storageService = useStorageService()
-  const [page, setPage] = useState(1)
 
   const getMembers = async () => {
     await storageService.loginPrompt({
