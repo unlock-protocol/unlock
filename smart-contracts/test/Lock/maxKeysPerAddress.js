@@ -8,7 +8,7 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
   let lock
 
   before(async () => {
-    lock = await deployLock()
+    lock = await deployLock({ name: 'NO_MAX_KEYS' })
   })
 
   describe('enforcing the number of keys per address', () => {
@@ -37,9 +37,9 @@ contract('Lock / maxKeysPerAddress', (accounts) => {
           [accounts[9], accounts[9]],
           [ADDRESS_ZERO, ADDRESS_ZERO],
           [ADDRESS_ZERO, ADDRESS_ZERO],
-          [[]],
+          [[], []],
           {
-            value: ethers.utils.parseUnits('0.01', 'ether'),
+            value: ethers.utils.parseUnits('0.02', 'ether'),
           }
         ),
         'MAX_KEYS'
