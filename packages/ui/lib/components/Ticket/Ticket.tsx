@@ -73,6 +73,15 @@ export function Ticket({
           Powered by <SvgComponents.UnlockWordMark width={56} />
         </div>
       </div>
+      <div className="p-6 bg-white border-t-2 border-dashed rounded-3xl">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <TicketLabel label="Network" value={networkConfig.name} />
+          <TicketLabel
+            label="Lock Address"
+            value={minifyAddress(lockAddress)}
+          />
+        </div>
+      </div>
     </div>
   )
 }
