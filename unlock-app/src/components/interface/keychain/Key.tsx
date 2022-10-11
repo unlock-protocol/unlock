@@ -145,12 +145,15 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const { watchAsset } = useAuth()
   const config = useConfig()
   const expirationStatus = expirationAsDate(expiration)
-  const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
+
   const [error, setError] = useState<string | null>()
   const [showingQR, setShowingQR] = useState(false)
   const [showMetadata, setShowMetadata] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
+  const [expireAndRefunded, setExpireAndRefunded] = useState(false)
+  const isKeyExpired =
+    expirationStatus.toLocaleLowerCase() === 'expired' || expireAndRefunded
   const { data: lockData, isLoading: isLockDataLoading } = useQuery(
     ['lock', lock.address, network],
     () => {
@@ -213,10 +216,6 @@ const Key = ({ ownedKey, account, network }: Props) => {
     setShowCancelModal(true)
   }
 
-  const closeCancelAndRefund = () => {
-    setShowCancelModal(false)
-  }
-
   const iconButtonClass =
     'flex items-center disabled:opacity-50 disabled:border-gray-200 disabled:cursor-not-allowed p-2 border border-gray-100 rounded shadow opacity-90 hover:opacity-100 hover:border-gray-200'
   const sendEmail = (recipient: string, qrImage: string) => {
@@ -257,14 +256,19 @@ const Key = ({ ownedKey, account, network }: Props) => {
         keyId={keyId}
         network={network}
       />
-      <CancelAndRefundModal
-        active={showCancelModal}
-        lock={lock}
-        keyId={keyId}
-        dismiss={closeCancelAndRefund}
-        account={account}
-        currency={symbol}
-      />
+      {!isKeyExpired && (
+        <CancelAndRefundModal
+          active={showCancelModal}
+          lock={lock}
+          keyId={keyId}
+          setIsOpen={setShowCancelModal}
+          account={account}
+          currency={symbol}
+          network={network}
+          onExpireAndRefund={() => setExpireAndRefunded(true)}
+        />
+      )}
+
       {signature && (
         <QRModal
           lock={lock}

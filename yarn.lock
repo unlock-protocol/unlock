@@ -18460,7 +18460,6 @@ __metadata:
     express-winston: 4.2.0
     fuse.js: 6.6.2
     graphql: 15.8.0
-    graphql-tag: 2.12.6
     html-template-tag: 4.0.1
     isomorphic-fetch: 3.0.0
     jest: 27.5.1
@@ -18721,9 +18720,12 @@ __metadata:
     "@tailwindcss/typography": 0.5.7
     "@types/react": 17.0.44
     "@types/react-dom": 18.0.6
+    "@unlock-protocol/networks": "workspace:./packages/networks"
+    "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@vitejs/plugin-react": 2.1.0
     autoprefixer: 10.4.12
     babel-loader: 8.2.5
+    ethers: 5.7.1
     postcss: 8.4.17
     prism-react-renderer: 1.3.5
     react-icons: 4.4.0
@@ -35562,17 +35564,6 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"graphql-tag@npm:2.12.6, graphql-tag@npm:^2.12.6":
-  version: 2.12.6
-  resolution: "graphql-tag@npm:2.12.6"
-  dependencies:
-    tslib: ^2.1.0
-  peerDependencies:
-    graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
-  checksum: b15162a3d62f17b9b79302445b9ee330e041582f1c7faca74b9dec5daa74272c906ec1c34e1c50592bb6215e5c3eba80a309103f6ba9e4c1cddc350c46f010df
-  languageName: node
-  linkType: hard
-
 "graphql-tag@npm:^2.11.0, graphql-tag@npm:^2.12.3, graphql-tag@npm:^2.4.2":
   version: 2.12.5
   resolution: "graphql-tag@npm:2.12.5"
@@ -35581,6 +35572,17 @@ fsevents@~2.1.1:
   peerDependencies:
     graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
   checksum: 7afe8b0a261bc81278e8350cbc48a641986665fa88521ece137feb8d1d62aacbe79afd4e159b618d56af106291ae8369592e46584fd8fbaf4f440201ea884fdd
+  languageName: node
+  linkType: hard
+
+"graphql-tag@npm:^2.12.6":
+  version: 2.12.6
+  resolution: "graphql-tag@npm:2.12.6"
+  dependencies:
+    tslib: ^2.1.0
+  peerDependencies:
+    graphql: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+  checksum: b15162a3d62f17b9b79302445b9ee330e041582f1c7faca74b9dec5daa74272c906ec1c34e1c50592bb6215e5c3eba80a309103f6ba9e4c1cddc350c46f010df
   languageName: node
   linkType: hard
 
