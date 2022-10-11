@@ -7,7 +7,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { StepItem, Stepper } from '../Stepper'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
@@ -114,7 +114,7 @@ export function Renew({
           }
           send({
             type: 'CONFIRM_RENEW',
-            status: 'PROCESSING',
+            status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
             transactionHash: hash!,
           })
         }

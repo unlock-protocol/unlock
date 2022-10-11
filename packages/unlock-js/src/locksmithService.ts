@@ -9,3 +9,5 @@ export class LocksmithService extends DefaultApi {
     return new SiweMessage(options)
   }
 }
+
+export { Configuration as LocksmithServiceConfiguration } from './@generated/client'

@@ -1,7 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
@@ -109,9 +109,11 @@ export function Confirm({
   const onConfirmCard = async () => {
     try {
       setIsConfirming(true)
+
       if (payment.method !== 'card') {
         return
       }
+
       const stripeIntent = await prepareChargeForCard(
         payment.cardId!,
         lockAddress,
@@ -242,7 +244,7 @@ export function Confirm({
             }
             send({
               type: 'CONFIRM_MINT',
-              status: 'PROCESSING',
+              status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
               transactionHash: hash!,
             })
           }

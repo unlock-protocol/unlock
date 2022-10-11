@@ -3,6 +3,7 @@ import {
   FaArrowRight as ArrowRightIcon,
   FaArrowLeft as ArrowLeftIcon,
 } from 'react-icons/fa'
+import React from 'react'
 
 interface PageProps {
   page: number

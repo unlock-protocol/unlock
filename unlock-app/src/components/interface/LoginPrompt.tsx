@@ -1,12 +1,11 @@
 import React, { useMemo, useState } from 'react'
-import styled from 'styled-components'
 import SvgComponents from './svg'
 import { RiWalletFill as WalletIcon } from 'react-icons/ri'
-import { ActionButton } from './buttons/ActionButton'
 import LogInSignUp from './LogInSignUp'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { SiBrave as BraveWalletIcon } from 'react-icons/si'
 import { DownloadWallet } from '../interface/DownloadWallet'
+import { Button } from '@unlock-protocol/ui'
 
 interface LoginPromptProps {
   unlockUserAccount?: boolean
@@ -26,13 +25,11 @@ export interface EthereumWindow extends Window {
 
 const LoginPrompt = ({
   children,
-  unlockUserAccount,
   onCancel,
-  embedded,
-  showTitle,
-  backgroundColor,
   injectedProvider,
-  activeColor,
+  unlockUserAccount = false,
+  embedded = false,
+  showTitle = true,
 }: LoginPromptProps) => {
   const [walletToShow, setWalletToShow] = useState('')
   const [isDownloadWallet, setIsDownloadWallet] = useState(false)
@@ -87,57 +84,62 @@ const LoginPrompt = ({
     setIsDownloadWallet(true)
   }
 
+  const WalletButton = ({ title, icon, ...props }: any) => {
+    return (
+      <Button variant="secondary" {...props} className="justify-start">
+        <div className="flex items-center justify-start gap-2">
+          <div className="w-8 h-8">{icon}</div>
+          <span>{title}</span>
+        </div>
+      </Button>
+    )
+  }
+
   return (
-    <Container embedded={!!embedded}>
+    <div
+      className={`flex flex-col self-center mx-auto gap-4 ${
+        !embedded ? 'w-96' : ''
+      }`}
+    >
       <DownloadWallet
         isOpen={isDownloadWallet}
         setIsOpen={setIsDownloadWallet}
       />
       {!walletToShow && (
         <>
-          {showTitle && <SubHeading>Connect a wallet</SubHeading>}
+          {showTitle && (
+            <h2 className="text-3xl font-semibold">Connect a wallet</h2>
+          )}
 
           {children}
 
           <WalletButton
-            color={backgroundColor}
-            activeColor={activeColor}
+            title="In browser wallet"
+            icon={ButtonIcon}
             onClick={onInjectedHandler}
-          >
-            {ButtonIcon}
-            In browser wallet
-          </WalletButton>
+          />
 
           <WalletButton
-            color={backgroundColor}
-            activeColor={activeColor}
+            title="WalletConnect"
             onClick={() => authenticateWithProvider('WALLET_CONNECT')}
-          >
-            <SvgComponents.WalletConnect fill="var(--blue)" />
-            WalletConnect
-          </WalletButton>
+            icon={<SvgComponents.WalletConnect fill="var(--blue)" />}
+          />
 
           <WalletButton
-            color={backgroundColor}
-            activeColor={activeColor}
+            title="Coinbase Wallet"
             onClick={() => authenticateWithProvider('COINBASE')}
-          >
-            <SvgComponents.CoinbaseWallet fill="var(--blue)" />
-            Coinbase Wallet
-          </WalletButton>
+            icon={<SvgComponents.CoinbaseWallet fill="var(--blue)" />}
+          />
 
           {unlockUserAccount && (
             <WalletButton
-              color={backgroundColor}
-              activeColor={activeColor}
               disabled={!unlockUserAccount}
+              title="Unlock Account"
+              icon={<SvgComponents.Unlock fill="var(--brand)" />}
               onClick={() => {
                 setWalletToShow('unlock')
               }}
-            >
-              <SvgComponents.Unlock fill="var(--brand)" />
-              Unlock Account
-            </WalletButton>
+            />
           )}
         </>
       )}
@@ -151,65 +153,8 @@ const LoginPrompt = ({
           useWallet={() => setWalletToShow('')}
         />
       )}
-    </Container>
+    </div>
   )
-}
-const SubHeading = styled.h2`
-  margin-bottom: 10px;
-  font-family: 'IBM Plex Serif', serif;
-  font-size: 32px;
-  line-height: 42px;
-  font-weight: 300;
-  color: var(--darkgrey);
-`
-
-const WalletButton = styled(ActionButton).attrs({
-  fontColor: 'var(--dimgrey)',
-  fontActiveColor: 'var(--dimgrey)',
-  borderColor: 'transparent',
-  activeBorderColor: 'transparent',
-})`
-  margin: 10px 0px;
-
-  display: flex;
-  text-align: left;
-  margin: 10px 0px;
-  align-items: center;
-
-  a,
-  a:hover,
-  a:visited,
-  a:active {
-    color: inherit !important;
-  }
-
-  svg {
-    margin-right: 10px;
-    width: 32px;
-    height: 32px;
-  }
-`
-
-interface ContainerProps {
-  embedded?: boolean
-}
-
-const Container = styled.div<ContainerProps>`
-  display: flex;
-  flex-direction: column;
-  width: ${({ embedded }) => (!embedded ? '400px' : '')};
-  justify-self: center;
-`
-
-LoginPrompt.defaultProps = {
-  unlockUserAccount: false,
-  onCancel: null,
-  embedded: false,
-  children: null,
-  showTitle: true,
-  backgroundColor: 'var(--offwhite)',
-  activeColor: 'var(--white)',
-  injectedProvider: null,
 }
 
 export default LoginPrompt

@@ -64,23 +64,6 @@ const NetworkName = styled.span`
   padding-top: 5px;
 `
 
-export const InsufficentBalanceOverlay = styled.div`
-  height: 48px;
-  width: 120px;
-  border-radius: 4px;
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
-  z-index: 1000;
-  color: var(--red);
-  font-size: 9px;
-  position: absolute;
-  justify-content: flex-end;
-  margin-left: 12px;
-  margin-bottom: 2px;
-  white-space: nowrap;
-`
-
 export const LoadingLockBody = styled(BaseLockBody)`
   box-shadow: none;
   cursor: wait;

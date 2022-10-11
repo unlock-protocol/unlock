@@ -14,7 +14,7 @@ import { useForm } from 'react-hook-form'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { AirdropKeysDrawer } from '~/components/interface/members/airdrop/AirdropDrawer'
-import { useMutation, useQuery } from 'react-query'
+import { useQuery, useMutation } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useConfig } from '~/utils/withConfig'
 import { Container } from '../../Container'
@@ -364,6 +364,7 @@ export const ManageLockPage = () => {
     filterKey: 'owner',
     expiration: 'all',
   })
+  const [page, setPage] = useState(1)
 
   if (!walletNetwork) {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
@@ -388,12 +389,16 @@ export const ManageLockPage = () => {
                 filters={filters}
                 setFilters={setFilters}
                 setLoading={setLoading}
+                setPage={setPage}
+                page={page}
               />
               <Members
                 lockAddress={lockAddress}
                 network={lockNetwork}
                 filters={filters}
                 loading={loading}
+                setPage={setPage}
+                page={page}
               />
             </div>
           </div>

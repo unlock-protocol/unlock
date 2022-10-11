@@ -329,13 +329,16 @@ export const deleteCardForAddress = async (
     },
   }
 
-  const response = fetch(
+  const response = await fetch(
     `${config.services.storage.host}/users/${encodeURIComponent(
       address!
     )}/credit-cards?data=${JSON.stringify(typedData)}`,
     opts
   )
-  return (await response).status === 202
+
+  const text = await response.text()
+
+  return response.status === 202 && text
 }
 
 /**
