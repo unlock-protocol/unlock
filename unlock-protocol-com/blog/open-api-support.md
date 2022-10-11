@@ -4,7 +4,7 @@ subTitle: Explore all our APIs and play around with the Locksmith client
 authorName: searchableguy
 publishDate: October 11, 2022
 description: Explore all our APIs and play around with the Locksmith client.
-image: /images/blog/open-api-support/unlock-api-share.jpg
+image: /images/blog/open-api-support/unlock-api-share.png
 ---
 
 Locksmith is our backend service. It is used for handling metadata, NFT ticketing, processing payments, [Unlock accounts](https://docs.unlock-protocol.com/tools/sign-in-with-ethereum/unlock-accounts/) and other features.
