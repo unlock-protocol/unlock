@@ -1,5 +1,6 @@
 ---
 title: Unlock Adds OpenAPI Support and TypeScript Client For Locksmith
+subTitle: Explore all our APIs and play around with the Locksmith client
 authorName: searchableguy
 publishDate: October 11, 2022
 description: Explore all our APIs and play around with the Locksmith client.
