@@ -672,8 +672,8 @@ contract MixinKeys is
    */
    function updateLockConfig(
     uint _newExpirationDuration,
-    uint _maxKeysPerAcccount,
-    uint _maxNumberOfKeys
+    uint _maxNumberOfKeys,
+    uint _maxKeysPerAcccount
   ) external {
      _onlyLockManager();
      if(_maxKeysPerAcccount == 0) {
