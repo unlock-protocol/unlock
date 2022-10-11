@@ -1,0 +1,6 @@
+query getLocks($first: Int!, $skip: Int!, $networks: [String!]!) {
+  allLocks(first: $first, skip: $skip, networks: $networks) {
+    id
+    network
+  }
+}

@@ -1,5 +1,0 @@
-query getLocks($first: Int) {
-  locks(first: $first) {
-    id
-  }
-}

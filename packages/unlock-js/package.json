@@ -21,7 +21,8 @@
     "prepublishOnly": "yarn build",
     "grant-keys": "node ./scripts/grant-keys.js",
     "generate:locksmith": "openapi-generator-cli generate -i ./openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./src/@generated/client",
-    "generate:subgraph": "graphclient build && mkdir -p src/@generated && mv .graphclient src/@generated/subgraph"
+    "generate:subgraph": "graphclient build && mkdir -p src/@generated && mv .graphclient src/@generated/subgraph",
+    "generate": "rm -rf src/@generated && mkdir -p src/@generated && yarn generate:locksmith && yarn generate:subgraph"
   },
   "author": "Unlock Inc",
   "license": "MIT",
@@ -38,8 +39,6 @@
     "@babel/core": "7.18.10",
     "@babel/preset-env": "7.18.10",
     "@graphprotocol/client-cli": "^2.2.12",
-    "@graphql-codegen/cli": "2.13.4",
-    "@graphql-codegen/client-preset": "1.0.3",
     "@nomiclabs/hardhat-ethers": "2.1.1",
     "@openapitools/openapi-generator-cli": "2.5.2",
     "@openzeppelin/hardhat-upgrades": "1.19.1",

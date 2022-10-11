@@ -1,21 +1,25 @@
 # .graphclientrc.yml
 sources:
-  - name: uniswapv2
+  - name: unlockv2
     handler:
       graphql:
-        endpoint: https://api.thegraph.com/subgraphs/name/unlock-protocol/{context.network:optimism-v2}
+        endpoint: https://api.thegraph.com/subgraphs/name/unlock-protocol/{context.network:goerli-v2}
         retry: 2
-    transforms:
-      - autoPagination:
-          validateSchema: true
 
 documents:
-  - ./subgraph.graphql
+  - ./src/subgraph/schema.graphql
 
 additionalTypeDefs: |
   extend type Lock {
-    network: String!
+    network: String
   }
+
+  extend type Query {
+    allLocks(first: Int!, skip: Int!, networks: [String!]!): [Lock!]!
+  }
+
+additionalResolvers:
+  - ../subgraph/resolvers.ts
 
 codegen:
   contextType: 'MeshContext & { network: string }'
