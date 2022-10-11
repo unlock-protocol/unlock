@@ -74,13 +74,21 @@ interface IPublicLock
   function updateKeyPricing( uint _keyPrice, address _tokenAddress ) external;
 
   /**
+   * Set the maximum number of keys a specific address can use
    * A function to change the default duration of each key in the lock
-   * @notice keys previously bought are unaffected by this change (i.e.
+   * - Change the maximum number of keys the lock can edit
+   * @notice keys previously bought are unaffected by this change in expiration duration (i.e.
    * existing keys timestamps are not recalculated/updated)
-   * @param _newExpirationDuration the new amount of time for each key purchased 
-   * or type(uint).max for a non-expiring key
+   * @param _newExpirationDuration the new amount of time for each key purchased or type(uint).max for a non-expiring key
+   * @param _maxKeysPerAcccount the maximum amount of key a single user can own
+   * @param _maxNumberOfKeys uint the maximum number of keys
+   * @dev _maxNumberOfKeys Can't be smaller than the existing supply 
    */
-  function setExpirationDuration(uint _newExpirationDuration) external;
+   function updateLockConfig(
+    uint _newExpirationDuration,
+    uint _maxNumberOfKeys,
+    uint _maxKeysPerAcccount
+  ) external;
 
   /**
    * A function which lets a Lock manager update the beneficiary account,
@@ -381,18 +389,6 @@ interface IPublicLock
   function revokeKeyGranter(address _granter) external;
 
   function renounceLockManager() external;
-
-  /**
-   * @dev Change the maximum number of keys the lock can edit
-   * @param _maxNumberOfKeys uint the maximum number of keys
-   */
-  function setMaxNumberOfKeys (uint _maxNumberOfKeys) external;
-
-   /**
-   * Set the maximum number of keys a specific address can use
-   * @param _maxKeysPerAddress the maximum amount of key a user can own
-   */
-  function setMaxKeysPerAddress (uint _maxKeysPerAddress) external;
 
   /**
    * @return the maximum number of key allowed for a single address
