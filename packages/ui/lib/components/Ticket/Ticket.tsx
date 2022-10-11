@@ -14,7 +14,8 @@ interface Props {
   recipient: string
   title: string
   iconURL: string
-  items?: ReactNode[]
+  bottomItems?: ReactNode[]
+  topItems?: ReactNode[]
   location?: string
   time?: string
   date?: string
@@ -26,7 +27,8 @@ interface Props {
 export function Ticket({
   iconURL,
   title,
-  items,
+  bottomItems,
+  topItems,
   recipient,
   id,
   QRCodeURL,
@@ -54,11 +56,7 @@ export function Ticket({
           {date && <TicketItem icon={<DateIcon />} value={date} />}
           {time && <TicketItem icon={<TimeIcon />} value={time} />}
           {location && <TicketItem icon={<LocationIcon />} value={location} />}
-          {items}
-        </div>
-        <div className="grid gap-4 sm:grid-cols-2">
-          <TicketLabel label="Token ID" value={id} />
-          <TicketLabel label="Recipient" value={minifyAddress(recipient)} />
+          {topItems}
         </div>
       </div>
       <div className="p-6 bg-white border-t-2 border-dashed rounded-3xl">
@@ -67,13 +65,16 @@ export function Ticket({
           Powered by <SvgComponents.UnlockWordMark width={56} />
         </div>
       </div>
-      <div className="p-6 bg-white border-t-2 border-dashed rounded-3xl">
+      <div className="p-6 space-y-6 bg-white border-t-2 border-dashed rounded-3xl">
+        <div className="space-y-2">{bottomItems}</div>
         <div className="grid gap-4 sm:grid-cols-2">
           <TicketLabel label="Network" value={networkConfig.name} />
           <TicketLabel
             label="Lock Address"
             value={minifyAddress(lockAddress)}
           />
+          <TicketLabel label="Token ID" value={id} />
+          <TicketLabel label="Recipient" value={minifyAddress(recipient)} />
         </div>
       </div>
     </div>
