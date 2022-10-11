@@ -1,6 +1,6 @@
 {
   "name": "provider",
-  "packageManager": "yarn@3.1.0-rc.7",
+  "packageManager": "yarn@3.2.4",
   "devDependencies": {
     "@cloudflare/workers-types": "3.16.0",
     "@types/node": "18.8.2",

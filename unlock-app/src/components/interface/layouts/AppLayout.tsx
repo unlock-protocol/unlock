@@ -9,12 +9,14 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
+import React from 'react'
 
 interface DashboardLayoutProps {
   title?: string
   description?: React.ReactNode
   children: React.ReactNode
   authRequired?: boolean
+  showLinks?: boolean
 }
 
 const WalletNotConnected = () => {
@@ -47,6 +49,7 @@ export const AppLayout = ({
   description,
   children,
   authRequired = true,
+  showLinks = true,
 }: DashboardLayoutProps) => {
   const { account } = useAuth()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
@@ -93,7 +96,7 @@ export const AppLayout = ({
       </Modal>
 
       <div className="w-full">
-        <AppHeader />
+        <AppHeader showLinks={showLinks} />
         <div className="min-w-full min-h-screen">
           <div className="pt-8">
             <Container>

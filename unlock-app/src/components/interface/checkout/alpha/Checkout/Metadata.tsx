@@ -14,7 +14,7 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { MetadataInput } from '~/unlockTypes'
 
