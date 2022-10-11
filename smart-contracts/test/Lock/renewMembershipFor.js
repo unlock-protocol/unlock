@@ -154,7 +154,12 @@ contract('Lock / Recurring memberships', (accounts) => {
       })
 
       it('should revert if duration has changed', async () => {
-        await lock.setExpirationDuration(1000, { from: lockOwner })
+        await lock.updateLockConfig(
+          1000,
+          await lock.maxNumberOfKeys(),
+          await lock.maxKeysPerAddress(),
+          { from: lockOwner }
+        )
         await reverts(
           lock.renewMembershipFor(tokenId, ADDRESS_ZERO),
           'LOCK_HAS_CHANGED'

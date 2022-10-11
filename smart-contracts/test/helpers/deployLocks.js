@@ -53,7 +53,8 @@ async function deployLock({
     await lock.updateLockConfig(
       expirationDuration,
       maxNumberOfKeys,
-      10 // default maxKeysPerAddress to 10 for tests
+      10, // default maxKeysPerAddress to 10 for tests
+      { from: deployer }
     )
   }
   return lock
