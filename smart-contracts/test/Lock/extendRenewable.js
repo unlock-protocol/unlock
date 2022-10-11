@@ -92,7 +92,12 @@ contract('Lock / Extend with recurring memberships', (accounts) => {
     describe('duration changed', () => {
       it('should renew once key has been extended', async () => {
         // change duration
-        await lock.setExpirationDuration(6000, { from: lockOwner })
+        await lock.updateLockConfig(
+          6000,
+          await lock.maxNumberOfKeys(),
+          await lock.maxKeysPerAddress(),
+          { from: lockOwner }
+        )
 
         // fails because price has changed
         await reverts(
