@@ -1,6 +1,6 @@
 import { Button, Modal } from '@unlock-protocol/ui'
 import React from 'react'
-import { useMutation, useQuery } from 'react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { FaSpinner as Spinner } from 'react-icons/fa'
