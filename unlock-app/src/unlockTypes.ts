@@ -2,6 +2,67 @@
 // throughout unlock-app.
 
 import { Card } from '@stripe/stripe-js'
+import { z } from 'zod'
+
+export const MetadataInputSchema = z.object({
+  name: z.string(),
+  defaultValue: z.string().optional(),
+  type: z.enum(['text', 'date', 'color', 'email', 'url']),
+  required: z.boolean(),
+  placeholder: z.string().optional(),
+  public: z.boolean().optional(), // optional, all non-public fields are treated as protected
+})
+
+export const PaywallCallToActionSchema = z.object({
+  default: z.string(),
+  expired: z.string(),
+  pending: z.string(),
+  confirmed: z.string(),
+  noWallet: z.string(),
+  metadata: z.string(),
+  card: z.string(),
+  quantity: z.string(),
+})
+
+export const PaywallConfigLockSchema = z.object({
+  name: z.string().optional(),
+  network: z.number().int().positive().optional(),
+  metadataInputs: z.array(MetadataInputSchema),
+  recurringPayments: z.boolean().optional(),
+  captcha: z.boolean().optional(),
+  password: z.boolean().optional(),
+  emailRequired: z.boolean().optional(),
+  maxRecipients: z.number().int().positive().optional(),
+  minRecipients: z.number().int().positive().optional(),
+  superfluid: z.boolean().optional(),
+  default: z.boolean().optional(),
+  dataBuilder: z.string().optional(),
+})
+
+export const PaywallConfigLocksSchema = z.record(PaywallConfigLockSchema)
+
+export const PaywallConfigSchema = z.object({
+  title: z.string().optional(),
+  icon: z.string().optional(),
+  callToAction: PaywallCallToActionSchema.partial().optional(),
+  locks: z.record(PaywallConfigLockSchema),
+  metadataInputs: z.array(MetadataInputSchema),
+  persistentCheckout: z.boolean().optional(),
+  redirectUri: z.boolean().optional(),
+  useDelegatedProvider: z.boolean().optional(),
+  network: z.number().int().optional(),
+  referrer: z.string().optional(),
+  messageToSign: z.string().optional(),
+  pessimistic: z.boolean().optional(),
+  captcha: z.boolean().optional(),
+  maxRecipients: z.number().int().optional(),
+  minRecipients: z.number().int().optional(),
+  superfluid: z.boolean().optional(),
+  hideSoldOut: z.boolean().optional(),
+  password: z.boolean().optional(),
+  emailRequired: z.boolean().optional(),
+  dataBuilder: z.string().optional(),
+})
 
 export enum TransactionType {
   LOCK_CREATION = 'Lock Creation',
@@ -77,36 +138,11 @@ export interface Error {
   }
 }
 
-export interface PaywallCallToAction {
-  default: string
-  expired: string
-  pending: string
-  confirmed: string
-  noWallet: string
-  metadata: string
-  card: string
-  quantity: string
-  [name: string]: string
-}
-
-export interface PaywallConfigLocks {
-  [address: string]: PaywallConfigLock
-}
-
-export interface PaywallConfigLock {
-  name?: string
-  network?: number
-  metadataInputs?: MetadataInput[]
-  recurringPayments?: number
-  captcha?: boolean
-  password?: boolean
-  emailRequired?: boolean
-  maxRecipients?: number
-  minRecipients?: number
-  superfluid?: boolean
-  default?: boolean
-  dataBuilder?: string
-}
+export type PaywallCallToAction = z.infer<typeof PaywallCallToActionSchema>
+export type PaywallConfigLock = z.infer<typeof PaywallConfigLockSchema>
+export type MetadataInput = z.infer<typeof MetadataInputSchema>
+export type PaywallConfig = z.infer<typeof PaywallConfigSchema>
+export type PaywallConfigLocks = z.infer<typeof PaywallConfigLocksSchema>
 
 export enum KeyStatus {
   NONE = 'none',
@@ -185,38 +221,7 @@ export interface KeyholdersByLock {
   }[]
 }
 
-export interface MetadataInput {
-  name: string
-  defaultValue?: string
-  type: 'text' | 'date' | 'color' | 'email' | 'url'
-  required: boolean
-  placeholder?: string
-  public?: true // optional, all non-public fields are treated as protected
-}
-
-export interface PaywallConfig {
-  title?: string
-  icon?: string
-  callToAction?: Partial<PaywallCallToAction>
-  locks: PaywallConfigLocks
-  metadataInputs?: MetadataInput[]
-  persistentCheckout?: boolean
-  redirectUri?: string
-  useDelegatedProvider?: boolean
-  network?: number
-  referrer?: string
-  messageToSign?: string
-  pessimistic?: boolean
-  captcha?: boolean
-  maxRecipients?: number
-  minRecipients?: number
-  superfluid?: boolean
-  hideSoldOut?: boolean
-  password?: boolean
-  emailRequired?: boolean
-  dataBuilder?: string
-}
-
+// todo: to remove? not used anywhere
 export interface RawLock {
   name: string
   address: string
