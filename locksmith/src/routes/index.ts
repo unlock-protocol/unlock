@@ -1,7 +1,6 @@
 import express from 'express'
 import { authMiddleware } from '../utils/middlewares/auth'
 
-const transactionRouter = require('./transaction')
 const lockRouter = require('./lock')
 const userRouter = require('./user')
 const purchaseRouter = require('./purchase')
@@ -39,7 +38,6 @@ router.use((request, _, next) => {
   request.chain = chain
   next()
 })
-router.use('/', transactionRouter)
 router.use('/', lockRouter)
 router.use('/users', userRouter)
 router.use('/purchase', purchaseRouter)
