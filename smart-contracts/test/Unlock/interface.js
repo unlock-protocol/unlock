@@ -1,29 +1,34 @@
-const unlockContract = artifacts.require('Unlock.sol')
-const unlockInterface = artifacts.require('IUnlock.sol')
+const { assert } = require('chai')
+const { ethers } = require('hardhat')
+const {
+  ADDRESS_ZERO,
+  parseInterface,
+  compareInterfaces,
+} = require('../helpers')
 
 contract('Unlock / interface', () => {
-  it('The interface includes all public functions', async () => {
-    // log any missing entries
-    unlockContract.abi
-      .filter((x) => x.type === 'function')
-      .forEach((entry) => {
-        if (
-          unlockInterface.abi.filter((x) => x.name === entry.name).length > 0
-        ) {
-          return
-        }
-        // eslint-disable-next-line no-console
-        console.log(entry)
-      })
+  let unlockContract
+  let unlockInterface
 
-    // and assert the count matches
-    const count = unlockInterface.abi.filter(
-      (x) => x.type === 'function'
-    ).length
-    const expected = unlockContract.abi.filter(
-      (x) => x.type === 'function'
-    ).length
-    assert.notEqual(count, 0)
-    assert.equal(count, expected)
+  before(async () => {
+    ;({ interface: unlockContract } = await ethers.getContractFactory(
+      'contracts/Unlock.sol:Unlock'
+    ))
+    ;({ interface: unlockInterface } = await ethers.getContractAt(
+      'contracts/interfaces/IUnlock.sol:IUnlock',
+      ADDRESS_ZERO
+    ))
+  })
+
+  it('The interface includes all public functions', async () => {
+    // assert function signatures are identical
+    const missing = compareInterfaces(unlockContract, unlockInterface)
+    assert.equal(missing.length, 0, `Not in interface:\n${missing.join('\n')}`)
+
+    // assert the function count matches
+    assert.equal(
+      parseInterface(unlockInterface).length,
+      parseInterface(unlockContract).length
+    )
   })
 })

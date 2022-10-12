@@ -16,8 +16,11 @@ interface IUnlock
   */
   function initializeProxyAdmin() external;
 
-  // store contract proxy admin address
-  function proxyAdminAddress() external view;
+  /** 
+  * Retrieve the contract address of the proxy admin that manages the locks
+  * @return the address of the ProxyAdmin instance
+  */ 
+  function proxyAdminAddress() external view returns (address);
 
   /**
   * @notice Create lock (legacy)
@@ -108,8 +111,7 @@ interface IUnlock
   function recordConsumedDiscount(
     uint _discount,
     uint _tokens // solhint-disable-line no-unused-vars
-  )
-    external;
+  ) external view;
 
     /**
    * @notice [DEPRECATED] Call to this function has been removed from PublicLock > v9.
@@ -124,7 +126,7 @@ interface IUnlock
     uint _keyPrice // solhint-disable-line no-unused-vars
   )
     external
-    view
+    pure
     returns(uint discount, uint tokens);
 
   // Function to read the globalTokenURI field.
@@ -180,14 +182,25 @@ interface IUnlock
    */
   function addLockTemplate(address impl, uint16 version) external;
 
-  // match lock templates addresses with version numbers
-  function publicLockImpls(uint16 _version) external view;
+  /** 
+  * Match lock templates addresses with version numbers
+  * @param _version the number of the version of the template 
+  * @return address of the lock templates
+  */ 
+  function publicLockImpls(uint16 _version) external view returns (address);
   
-  // match version numbers with lock templates addresses 
-  function publicLockVersions(address _impl) external view;
+  /** 
+  * Match version numbers with lock templates addresses 
+  * @param _impl the address of the deployed template contract (PublicLock)
+  * @return number of the version corresponding to this address
+  */ 
+  function publicLockVersions(address _impl) external view returns (uint16);
 
-  // the latest existing lock template version
-  function publicLockLatestVersion() external view;
+  /** 
+  * Retrive the latest existing lock template version
+  * @return the version number of the latest template (used to deploy contracts)
+  */ 
+  function publicLockLatestVersion() external view returns (uint16);
 
   /**
    * @notice Upgrade the PublicLock template used for future calls to `createLock`.
