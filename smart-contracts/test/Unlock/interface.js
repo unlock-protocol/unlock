@@ -11,7 +11,9 @@ contract('Unlock / interface', () => {
   let unlockInterface
 
   before(async () => {
-    ;({ interface: unlockContract } = await ethers.getContractFactory('Unlock'))
+    ;({ interface: unlockContract } = await ethers.getContractFactory(
+      'contracts/interfaces/IUnlock.sol:IUnlock'
+    ))
     ;({ interface: unlockInterface } = await ethers.getContractAt(
       'IUnlock',
       ADDRESS_ZERO
