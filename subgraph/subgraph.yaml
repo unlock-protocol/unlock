@@ -56,12 +56,16 @@ templates:
           file: ./abis/PublicLock.json
         - name: PublicLockV11
           file: ./abis/PublicLockV11.json
+        - name: PublicLockV12
+          file: ./abis/PublicLockV11.json
         - name: PublicLockV7
           file: ./abis/PublicLockV7.json
       eventHandlers:
         - event: CancelKey(indexed uint256,indexed address,indexed address,uint256)
           handler: handleCancelKey
         - event: ExpirationChanged(indexed uint256,uint256,bool)
+          handler: handleExpirationChangedUntilV11
+        - event: ExpirationChanged(indexed uint256,uint256,uint256,bool)
           handler: handleExpirationChanged
         - event: ExpireKey(indexed uint256)
           handler: handleExpireKey
