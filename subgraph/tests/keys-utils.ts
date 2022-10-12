@@ -14,7 +14,8 @@ import {
 } from '@graphprotocol/graph-ts'
 import {
   CancelKey,
-  ExpirationChanged,
+  ExpirationChanged as ExpirationChangedUntilV11,
+  ExpirationChanged1 as ExpirationChanged,
   ExpireKey,
   KeyExtended,
   KeyManagerChanged,
@@ -77,12 +78,14 @@ export function createTransferEvent(
   return transferEvent
 }
 
-export function createExpirationChangedEvent(
+export function createExpirationChangedEventUntilV11(
   _tokenId: BigInt,
   _amount: BigInt,
   _timeAdded: boolean
-): ExpirationChanged {
-  const expirationChangedEvent = changetype<ExpirationChanged>(newMockEvent())
+): ExpirationChangedUntilV11 {
+  const expirationChangedEvent = changetype<ExpirationChangedUntilV11>(
+    newMockEvent()
+  )
 
   expirationChangedEvent.address = dataSource.address()
 
@@ -105,6 +108,41 @@ export function createExpirationChangedEvent(
       '_timeAdded',
       ethereum.Value.fromBoolean(_timeAdded)
     )
+  )
+
+  return expirationChangedEvent
+}
+
+export function createExpirationChangedEvent(
+  tokenId: BigInt,
+  amount: BigInt,
+  expirationDuration: BigInt,
+  timeAdded: boolean
+): ExpirationChanged {
+  const expirationChangedEvent = changetype<ExpirationChanged>(newMockEvent())
+
+  expirationChangedEvent.address = dataSource.address()
+
+  expirationChangedEvent.parameters = []
+
+  expirationChangedEvent.parameters.push(
+    new ethereum.EventParam(
+      'tokenId',
+      ethereum.Value.fromUnsignedBigInt(tokenId)
+    )
+  )
+  expirationChangedEvent.parameters.push(
+    new ethereum.EventParam('amount', ethereum.Value.fromUnsignedBigInt(amount))
+  )
+
+  expirationChangedEvent.parameters.push(
+    new ethereum.EventParam(
+      'expirationDuration',
+      ethereum.Value.fromUnsignedBigInt(expirationDuration)
+    )
+  )
+  expirationChangedEvent.parameters.push(
+    new ethereum.EventParam('timeAdded', ethereum.Value.fromBoolean(timeAdded))
   )
 
   return expirationChangedEvent

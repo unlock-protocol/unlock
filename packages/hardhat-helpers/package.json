@@ -1,6 +1,6 @@
 {
     "name": "@unlock-protocol/hardhat-helpers",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Some internal parser/helpers for Unlock Protocol's hardhat configs",
     "main": "src/index.js",
     "scripts": {

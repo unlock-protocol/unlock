@@ -5,9 +5,13 @@ import { useEffect, useState } from 'react'
 import { MemberFilter } from '~/unlockTypes'
 import { useDebounce } from 'react-use'
 import { getAddressForName } from '~/hooks/useEns'
+import React from 'react'
+
 interface FilterBarProps {
   setFilters?: (filters: any) => void
   setLoading?: (loading: boolean) => void
+  setPage: (page: number) => void
+  page?: number
   filters?: {
     [key: string]: any
   }
@@ -43,6 +47,7 @@ export const FilterBar = ({
   setFilters,
   setLoading,
   filters: defaultFilters,
+  setPage,
 }: FilterBarProps) => {
   const [isTyping, setIsTyping] = useState(false)
   const [query, setQuery] = useState('')
@@ -90,7 +95,8 @@ export const FilterBar = ({
       expiration,
       query,
     })
-  }, [expiration, filterKey, query, setFilters])
+    setPage(1) // set default page on search to show results
+  }, [expiration, filterKey, query, setFilters, setPage])
 
   const Expiration = () => {
     return (
@@ -141,7 +147,7 @@ export const FilterBar = ({
                     label="Filter by"
                     options={filters}
                     defaultValue={filterKey}
-                    onChange={(filter) => {
+                    onChange={(filter: any) => {
                       setFilterKey(filter)
                       setRawQueryValue('')
                     }}
@@ -174,7 +180,7 @@ export const FilterBar = ({
           )}
         </div>
       </div>
-      {expandFilter && (
+      {expandFilter && filterKey !== 'keyId' && (
         <div className="block">
           <Expiration />
         </div>

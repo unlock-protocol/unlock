@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import Head from 'next/head'
-import Layout from '../interface/Layout'
 import { pageTitle } from '../../constants'
 import { TwitterTags } from '../page/TwitterTags'
 import { OpenGraphTags } from '../page/OpenGraphTags'
 import withConfig from '../../utils/withConfig'
 import Loading from '../interface/Loading'
 import UnlockPropTypes from '../../propTypes'
+import { AppLayout } from '../interface/layouts/AppLayout'
 
 export const HomeContent = ({ config }) => {
   useEffect(() => {
@@ -21,14 +21,14 @@ export const HomeContent = ({ config }) => {
     }
   })
   return (
-    <Layout forContent>
+    <AppLayout forContent authRequired={false} showLinks={false}>
       <Head>
         <title>{pageTitle()}</title>
         <TwitterTags />
         <OpenGraphTags />
       </Head>
       <Loading />
-    </Layout>
+    </AppLayout>
   )
 }
 
