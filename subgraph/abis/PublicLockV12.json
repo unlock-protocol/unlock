@@ -428,7 +428,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "maxKeysPerAcccount",
+        "name": "maxKeysPerAddress",
         "type": "uint256"
       }
     ],
