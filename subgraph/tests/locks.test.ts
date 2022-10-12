@@ -30,6 +30,8 @@ import {
   lockOwner,
   tokenAddress,
   nullAddress,
+  maxNumberOfKeys,
+  maxKeysPerAddress,
 } from './constants'
 
 // mock contract functions
@@ -61,6 +63,18 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'tokenAddress', nullAddress)
     assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
     assert.fieldEquals('Lock', lockAddress, 'totalKeys', '0')
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'maxNumberOfKeys',
+      `${maxNumberOfKeys}`
+    )
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'maxKeysPerAddress',
+      `${maxKeysPerAddress}`
+    )
   })
 
   test('Lock manager added', () => {
