@@ -610,4 +610,17 @@ interface IPublicLock
     uint _tokenId,
     address _referrer
   ) external;
+
+   /**
+   * Execute an arbitrary transaction on behalf of the lock
+   * @notice this can be useful to approve/withdraw ERC20 tokens for instance
+   * @param target the contract address
+   * @param data the call data of the encoded function
+   * @param value the value to be paid to tx (if any)
+   */
+  function execTransaction(
+    address target,
+    bytes calldata data,
+    uint value
+  ) external payable;
 }
