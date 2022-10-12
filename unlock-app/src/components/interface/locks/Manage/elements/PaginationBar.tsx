@@ -33,8 +33,9 @@ const Page = ({ page, active, setPage }: PageProps) => {
 const LIMIT_NEXT_PREV_PAGE = 5
 
 const Pages = ({ maxNumbersOfPage, page, setPage }: PaginationBarProps) => {
-  const minPage = page - LIMIT_NEXT_PREV_PAGE
   const maxPage = page + LIMIT_NEXT_PREV_PAGE
+
+  const minFromMaxPage = maxNumbersOfPage - LIMIT_NEXT_PREV_PAGE
 
   return (
     <div className="flex flex-wrap gap-2">
@@ -44,16 +45,27 @@ const Pages = ({ maxNumbersOfPage, page, setPage }: PaginationBarProps) => {
           const currentPage: number = index + 1
           const isCurrent = currentPage === page
           const isLastPage = maxNumbersOfPage === currentPage
-          const showLastPage = isLastPage && currentPage >= maxNumbersOfPage
 
           const showNextPage =
-            currentPage >= page && currentPage <= maxPage && !isLastPage
+            currentPage >= page &&
+            currentPage <= maxPage &&
+            page < minFromMaxPage
+
           const showPrevPage =
-            currentPage >= minPage && currentPage <= page && !isLastPage
+            currentPage >= minFromMaxPage &&
+            currentPage < maxNumbersOfPage &&
+            page >= minFromMaxPage
+
+          const showLastPage = isLastPage && currentPage >= maxNumbersOfPage
+
+          const showDots =
+            currentPage === maxPage &&
+            !showPrevPage &&
+            maxNumbersOfPage - maxPage > 1
 
           return (
             <>
-              {(showNextPage || showPrevPage) && (
+              {(showPrevPage || showNextPage) && (
                 <Page
                   key={index}
                   page={currentPage}
@@ -61,9 +73,11 @@ const Pages = ({ maxNumbersOfPage, page, setPage }: PaginationBarProps) => {
                   setPage={setPage}
                 />
               )}
+
+              {showDots && <span>...</span>}
+
               {showLastPage && (
                 <div className="flex items-center gap-2">
-                  <span>...</span>
                   <Page
                     page={currentPage}
                     setPage={setPage}
