@@ -352,7 +352,6 @@ interface IPublicLock
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
    * @param _tokenId the id of the token to get the refund value for.
-   * a cancelAndRefund block.timestamp.
    * @notice due to the time required to mine a tx, the actual refund amount will be lower
    * than what the user reads from this call.
    * @return refund the amount of tokens refunded
