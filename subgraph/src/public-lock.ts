@@ -2,7 +2,8 @@ import { Address, BigInt, log } from '@graphprotocol/graph-ts'
 
 import {
   CancelKey as CancelKeyEvent,
-  ExpirationChanged as ExpirationChangedEvent,
+  ExpirationChanged as ExpirationChangedUntilV11Event,
+  ExpirationChanged1 as ExpirationChangedEvent,
   ExpireKey as ExpireKeyEvent,
   KeyExtended as KeyExtendedEvent,
   KeyManagerChanged as KeyManagerChangedEvent,
@@ -84,13 +85,27 @@ export function handleExpireKey(event: ExpireKeyEvent): void {
   }
 }
 
-export function handleExpirationChanged(event: ExpirationChangedEvent): void {
+export function handleExpirationChangedUntilV11(
+  event: ExpirationChangedUntilV11Event
+): void {
   const keyID = genKeyID(event.address, event.params._tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
     key.expiration = getKeyExpirationTimestampFor(
       event.address,
       event.params._tokenId,
+      Address.fromBytes(key.owner)
+    )
+    key.save()
+  }
+}
+export function handleExpirationChanged(event: ExpirationChangedEvent): void {
+  const keyID = genKeyID(event.address, event.params.tokenId.toString())
+  const key = Key.load(keyID)
+  if (key) {
+    key.expiration = getKeyExpirationTimestampFor(
+      event.address,
+      event.params.tokenId,
       Address.fromBytes(key.owner)
     )
     key.save()
