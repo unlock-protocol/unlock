@@ -75,8 +75,8 @@ contract MixinLockCore is
   // A count of how many new key purchases there have been
   uint internal _totalSupply;
 
-  // DEPREC: this is not used anymore (ketp for stroage layout compat)
-  address payable public beneficiary;
+  // DEPREC: this is not used anymore (kept as private var for storage layout compat)
+  address private beneficiary;
 
   // The denominator component for values specified in basis points.
   uint internal constant BASIS_POINTS_DEN = 10000;

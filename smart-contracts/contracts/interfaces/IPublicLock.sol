@@ -382,8 +382,6 @@ interface IPublicLock
   ///===================================================================
   /// Auto-generated getter functions from public state variables
 
-  function beneficiary() external view returns (address);
-
   function expirationDuration() external view returns (uint256 );
 
   function freeTrialLength() external view returns (uint256 );
