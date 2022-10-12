@@ -49,6 +49,7 @@ export function CheckoutPage() {
           injectedProvider={injectedProvider}
           communication={communication}
           oauthConfig={oauthConfig}
+          paywallConfig={paywallConfig}
         />
       </Container>
     )

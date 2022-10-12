@@ -14,8 +14,9 @@ import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { ethers } from 'ethers'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { MetadataInput } from '~/unlockTypes'
 
 interface Props {
   injectedProvider: unknown
@@ -32,10 +33,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   const storage = useStorageService()
   const { lock, paywallConfig, quantity } = state.context
   const web3Service = useWeb3Service()
-
-  const metadataInputs =
-    paywallConfig.locks[lock!.address].metadataInputs ??
-    paywallConfig.metadataInputs
+  const locksConfig = paywallConfig.locks[lock!.address]
+  const [metadataInputs, setMetadataInputs] = useState<
+    MetadataInput[] | undefined
+  >(undefined)
 
   const {
     register,
@@ -52,22 +53,15 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     name: 'metadata',
     control,
   })
-  const { isLoading: isMembershipsLoading, data: memberships } = useQuery(
-    ['memberships', account, JSON.stringify(paywallConfig)],
+  const { isLoading: isMemberLoading, data: isMember } = useQuery(
+    ['isMember', account, lock],
     async () => {
-      const memberships = await Promise.all(
-        Object.entries(paywallConfig.locks).map(async ([lock, { network }]) => {
-          const valid = await web3Service.getHasValidKey(
-            lock,
-            account!,
-            network || paywallConfig.network || 1
-          )
-          if (valid) {
-            return lock
-          }
-        })
+      const total = await web3Service.totalKeys(
+        lock!.address,
+        account!,
+        lock!.network
       )
-      return memberships.filter((item) => item)
+      return total > 0
     },
     {
       enabled: !!account,
@@ -80,23 +74,17 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
       return getNameOrAddressForAddress(account!)
     },
     {
-      refetchInterval: false,
-      refetchOnMount: false,
       enabled: !!account,
     }
   )
 
-  const existingMember = !!memberships?.includes(lock!.address)
-
-  const [hideFirstRecipient, setHideFirstRecipient] = useState<boolean>(
-    !existingMember
-  )
+  const [hideFirstRecipient, setHideFirstRecipient] = useState<boolean>(true)
 
   useEffect(() => {
-    if (quantity > fields.length && !isMembershipsLoading) {
+    if (quantity > fields.length && !isMemberLoading) {
       const fieldsRequired = quantity - fields.length
       Array.from({ length: fieldsRequired }).map((_, index) => {
-        const addAccountAddress = !index && !existingMember
+        const addAccountAddress = !index && !isMember
         const recipient = addAccountAddress
           ? { recipient: account }
           : { recipient: '' }
@@ -110,30 +98,41 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         remove(fields.length - index)
       )
     }
-  }, [
-    quantity,
-    account,
-    fields,
-    append,
-    remove,
-    existingMember,
-    isMembershipsLoading,
-  ])
+  }, [quantity, account, fields, append, remove, isMember, isMemberLoading])
+
+  useEffect(() => {
+    if (metadataInputs) {
+      return
+    }
+
+    const emailInput: MetadataInput = {
+      type: 'email',
+      name: 'email',
+      required: true,
+      placeholder: 'hello@unlock-protocol.com',
+    }
+
+    const inputs: MetadataInput[] =
+      locksConfig.metadataInputs || paywallConfig.metadataInputs || []
+
+    if (locksConfig.emailRequired || paywallConfig.emailRequired) {
+      inputs.push(emailInput)
+    }
+
+    setMetadataInputs(inputs)
+  }, [locksConfig, paywallConfig, metadataInputs])
 
   async function onSubmit(data: FormData) {
     try {
-      const formData = data
-      const recipients = await Promise.all(
-        formData.metadata.map(async (item) => {
-          const address = await getAddressForName(item.recipient)
-          return address
-        })
-      )
-      if (metadataInputs) {
-        const users = formData.metadata.map((props, index) => {
-          const formattedMetadata = formResultToMetadata(props, metadataInputs!)
+      const users = await Promise.all(
+        data.metadata.map(async ({ recipient, ...props }) => {
+          const address = await getAddressForName(recipient)
+          const formattedMetadata = formResultToMetadata(
+            props,
+            metadataInputs || []
+          )
           return {
-            userAddress: recipients[index],
+            userAddress: address,
             metadata: {
               public: formattedMetadata.publicData,
               protected: formattedMetadata.protectedData,
@@ -141,8 +140,11 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
             lockAddress: lock!.address,
           }
         })
-        await storage.submitMetadata(users, lock!.network)
-      }
+      )
+
+      const recipients = users.map((item) => item.userAddress)
+      await storage.submitMetadata(users, lock!.network)
+
       send({
         type: 'SELECT_RECIPIENTS',
         recipients,
@@ -154,14 +156,13 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     }
   }
   const isLoading = isSubmitting
-
   const stepItems = useCheckoutSteps(checkoutService)
 
   return (
     <Fragment>
       <Stepper position={3} service={checkoutService} items={stepItems} />
       <main className="h-full px-6 py-2 overflow-auto">
-        {isMembershipsLoading || isEnsLoading ? (
+        {isMemberLoading || isEnsLoading ? (
           <div className="grid w-full pb-6 gap-y-2">
             <div className="w-full h-8 rounded-full bg-zinc-50 animate-pulse" />
             <div className="w-full h-8 rounded-full bg-zinc-50 animate-pulse" />
@@ -170,7 +171,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         ) : (
           <form id="metadata" onSubmit={handleSubmit(onSubmit)}>
             {fields.map((item, index) => {
-              const hideRecipient = !index && hideFirstRecipient
+              const hideRecipient = !index && hideFirstRecipient && !isMember
               return (
                 <div
                   key={item.id}
@@ -204,6 +205,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                         quantity > 1 ? `Recipient #${index + 1}` : 'Recipient'
                       }
                       size="small"
+                      disabled={isSubmitting}
                       description="Enter Ethereum address or an ENS"
                       error={errors?.metadata?.[index]?.recipient?.message}
                       {...register(`metadata.${index}.recipient`, {
@@ -238,6 +240,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                       label={metadataInputItem.name}
                       defaultValue={metadataInputItem.defaultValue}
                       size="small"
+                      disabled={isSubmitting}
                       placeholder={metadataInputItem.placeholder}
                       type={metadataInputItem.type}
                       error={
@@ -267,7 +270,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
         >
           <Button
             loading={isLoading}
-            disabled={isLoading}
+            disabled={isLoading || isMemberLoading}
             className="w-full"
             form="metadata"
           >

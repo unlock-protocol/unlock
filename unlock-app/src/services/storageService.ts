@@ -1,4 +1,9 @@
-import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
+import {
+  WalletService,
+  LocksmithService,
+  LocksmithServiceConfiguration,
+} from '@unlock-protocol/unlock-js'
+
 import { EventEmitter } from 'events'
 import { isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
@@ -63,16 +68,25 @@ export class StorageService extends EventEmitter {
   constructor(host: string) {
     super()
     this.host = host
-    this.locksmith = new LocksmithService({
-      host,
-    })
+    this.locksmith = new LocksmithService(
+      new LocksmithServiceConfiguration({
+        basePath: host,
+      })
+    )
   }
 
   async login(message: string, signature: string) {
-    const { refreshToken, accessToken } = await this.locksmith.login(
+    const response = await this.locksmith.login({
       message,
-      signature
-    )
+      signature,
+    })
+
+    if (response.status !== 200) {
+      throw new Error('login failed')
+    }
+
+    const { refreshToken, accessToken } = response.data
+
     this.refreshToken = refreshToken
     this.#accessToken = accessToken
   }
@@ -144,8 +158,11 @@ export class StorageService extends EventEmitter {
       throw new Error('User is not authenticated')
     }
     if (!this.#accessToken || isExpired(this.#accessToken)) {
-      const { accessToken } = await this.locksmith.refreshToken(refreshToken)
-      this.#accessToken = accessToken
+      const { data, status } = await this.locksmith.refreshToken(refreshToken)
+      if (status !== 200) {
+        throw new Error('Could not get access token')
+      }
+      this.#accessToken = data.accessToken
     }
     return this.#accessToken
   }
@@ -1044,8 +1061,36 @@ export class StorageService extends EventEmitter {
         Authorization: `Bearer ${token}`,
       },
     })
-    const data = response.json()
+    const data = await response.json()
 
     return data
+  }
+
+  async listCardMethods() {
+    const response = await this.getEndpoint(
+      '/v2/purchase/list',
+      {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+      },
+      true
+    )
+    return response.methods
+  }
+
+  async getSetupIntent() {
+    const response = await this.getEndpoint(
+      '/v2/purchase/setup',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+      },
+      true
+    )
+    return response.clientSecret
   }
 }

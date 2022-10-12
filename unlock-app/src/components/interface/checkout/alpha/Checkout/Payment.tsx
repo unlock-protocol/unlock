@@ -6,7 +6,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
 import { RiArrowRightLine as RightArrowIcon } from 'react-icons/ri'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { lockTickerSymbol, userCanAffordKey } from '~/utils/checkoutLockUtils'
 import dynamic from 'next/dynamic'
@@ -90,12 +90,15 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const enableSuperfluid =
     (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
 
-  const enableClaim =
-    !!isClaimable && !isClaimableLoading && isReceiverAccountOnly
-
   const enableCreditCard = !!fiatPricing?.creditCardEnabled
 
   const enableCrypto = isPayable && !isUnlockAccount && !isTokenBalanceLoading
+
+  const enableClaim =
+    !!isClaimable &&
+    !isClaimableLoading &&
+    isReceiverAccountOnly &&
+    !enableCrypto
 
   const isWaiting = isLoading || isClaimableLoading || isTokenBalanceLoading
 
@@ -168,7 +171,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="flex items-center justify-between w-full">
-                  <h3 className="font-bold"> Pay via credit card </h3>
+                  <h3 className="font-bold"> Pay via card </h3>
                   <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
                     <VisaIcon size={18} />
                     <MasterCardIcon size={18} />
@@ -176,7 +179,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="text-sm text-left text-gray-500">
-                    Powered by stripe
+                    use cards, google pay, and apple pay.
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"

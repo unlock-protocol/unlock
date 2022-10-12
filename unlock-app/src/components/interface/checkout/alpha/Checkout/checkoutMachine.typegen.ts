@@ -14,6 +14,7 @@ export interface Typegen0 {
   }
   eventsCausingActions: {
     confirmMint: 'CONFIRM_MINT'
+    confirmRenew: 'CONFIRM_RENEW'
     disconnect: 'DISCONNECT'
     selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
     selectLock: 'SELECT_LOCK'
@@ -22,6 +23,7 @@ export interface Typegen0 {
     selectRecipients: 'SELECT_RECIPIENTS'
     signMessage: 'SIGN_MESSAGE'
     solveCaptcha: 'SOLVE_CAPTCHA'
+    submitData: 'SUBMIT_DATA'
     submitPassword: 'SUBMIT_PASSWORD'
     updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
   }
@@ -51,6 +53,8 @@ export interface Typegen0 {
     | 'PASSWORD'
     | 'PAYMENT'
     | 'QUANTITY'
+    | 'RENEW'
+    | 'RENEWED'
     | 'RETURNING'
     | 'SELECT'
     | 'UNLOCK_ACCOUNT'

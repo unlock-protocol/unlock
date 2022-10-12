@@ -9,7 +9,7 @@ image: /images/blog/first-lock/new-lock.jpg
 
 ![new lock](/images/blog/first-lock/new-lock.jpg)
 
-A lock is a way to represent a *membership*. Each member has a key to the lock which they can purchase from the lock directly.
+A lock is a way to represent a _membership_. Each member has a key to the lock which they can purchase from the lock directly.
 
 ## So, you want to create your first lock?
 
@@ -21,7 +21,7 @@ For now, it should be empty and look like this:
 
 ![empty dashboard](/images/blog/first-lock/empty-dashboard.png)
 
-On the top left, you can see which network you're connected to. Ethereum has a single "Main Network" and several test networks, such as Rinkeby or Goerli. Make sure you're on the Main Network. You can also view which address your wallet is currently using.
+On the top left, you can see which network you're connected to. Ethereum has a single "Main Network" and several test networks such as Goerli. Make sure you're on the Main Network. You can also view which address your wallet is currently using.
 
 On the top right, a button lets you create a lock. Once you click on it, a form appears and lets you prepare your first lock.
 

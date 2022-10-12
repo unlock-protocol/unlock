@@ -97,14 +97,15 @@ export interface PaywallConfigLock {
   name?: string
   network?: number
   metadataInputs?: MetadataInput[]
-  secret?: string
   recurringPayments?: number
   captcha?: boolean
   password?: boolean
+  emailRequired?: boolean
   maxRecipients?: number
   minRecipients?: number
   superfluid?: boolean
   default?: boolean
+  dataBuilder?: string
 }
 
 export enum KeyStatus {
@@ -212,6 +213,8 @@ export interface PaywallConfig {
   superfluid?: boolean
   hideSoldOut?: boolean
   password?: boolean
+  emailRequired?: boolean
+  dataBuilder?: string
 }
 
 export interface RawLock {

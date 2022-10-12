@@ -238,7 +238,8 @@ export const useAccount = (address: string, network: number) => {
     lock: any,
     network: number,
     pricing: any,
-    recipients: string[]
+    recipients: string[],
+    recurring = 0
   ) => {
     const response = await prepareCharge(
       config,
@@ -248,20 +249,26 @@ export const useAccount = (address: string, network: number) => {
       network,
       lock,
       pricing,
-      recipients
+      recipients,
+      recurring
     )
     return response
   }
 
-  const claimMembershipFromLock = async (lock: any, network: number) => {
+  const claimMembershipFromLock = async (
+    lock: any,
+    network: number,
+    data?: string
+  ) => {
     const response = await claimMembership(
       config,
       walletService,
       address,
       network,
-      lock
+      lock,
+      data
     )
-    return response.transactionHash
+    return response
   }
 
   const setUserMetadataData = async (

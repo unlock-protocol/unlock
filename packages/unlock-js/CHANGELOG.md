@@ -1,5 +1,30 @@
 # Changes
 
+# 0.28.2
+
+- add support for `transferFeeBasisPoints`
+- move `getCancelAndRefundValueFor` from `walletService` -> `web3Service`
+
+# 0.28.1
+
+- Preserving gas calculation when previous configured on purchase
+
+# 0.27.0
+
+- adding support for TransactionOptions when sending transactions. Also introducing the ability to use `runEstimate` to check if a transaction succeeds and how much gas it consumes
+
+# 0.26.10
+
+- add `keyPrice` parameter for `updateKeyPrice` and fix type definitions
+
+# 0.26.9
+
+- add support for `totalSupply`
+
+# 0.26.8
+
+- add support for `renewMembershipFor`
+
 # 0.26.7
 
 - add support for `keysAvailable`

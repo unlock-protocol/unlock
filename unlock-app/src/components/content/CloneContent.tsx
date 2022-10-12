@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react'
 import Head from 'next/head'
-import styled from 'styled-components'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
-import Account from '../interface/Account'
-import Layout from '../interface/Layout'
 import Loading from '../interface/Loading'
 import { pageTitle } from '../../constants'
 import { ConfigContext } from '../../utils/withConfig'
 import { ToastHelper } from '../helpers/toast.helper'
+import { Button } from '@unlock-protocol/ui'
+import { AppLayout } from '../interface/layouts/AppLayout'
 
 interface CloneContentProps {
   query: any
@@ -84,12 +83,10 @@ export const CloneContent = ({ query }: CloneContentProps) => {
   const success = Object.keys(lockMigration).length && lockMigration.migrated
 
   return (
-    <Layout title="Clone Lock">
+    <AppLayout title="Clone your Lock" showLinks={false}>
       <Head>
         <title>{pageTitle('Clone Lock')}</title>
       </Head>
-      <Account />
-      <h1 className="mb-1 text-4xl font-bold">Clone your Lock</h1>
       {(!Object.keys(lockMigration).length || !success) && (
         <div>
           <span className="mb-2 text-lg font-light">
@@ -104,11 +101,10 @@ export const CloneContent = ({ query }: CloneContentProps) => {
           </p>
         </div>
       )}
-      {!account && <p>Please authentificate to clone this lock</p>}
-      {account && !existing && (
-        <p>
-          <Button onClick={cloneLock}>Clone your lock now</Button>
-        </p>
+      {!existing && (
+        <Button className="mt-3" onClick={cloneLock}>
+          Clone your lock now
+        </Button>
       )}
       {isCloning && <Loading />}
       {existing && !success && (
@@ -141,21 +137,8 @@ export const CloneContent = ({ query }: CloneContentProps) => {
           <p>Please update your system with the new lock address.</p>
         </div>
       )}
-    </Layout>
+    </AppLayout>
   )
 }
 
-const Button = styled.button`
-  cursor: pointer;
-  border: 3px solid #d8d8d8;
-  border-radius: 15px;
-  font-size: 1.3em;
-  background-color: transparent;
-  display: block;
-  padding: 10px 20px;
-  color: rgb(106, 106, 106);
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-`
 export default CloneContent

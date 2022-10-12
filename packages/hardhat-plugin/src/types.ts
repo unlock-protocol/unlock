@@ -10,7 +10,7 @@ export type UnlockNetworkConfig = PartialPick<
   NetworkConfig,
   | 'id'
   | 'name'
-  | 'subgraphURI'
+  | 'subgraph'
   | 'locksmithUri'
   | 'unlockAddress'
   | 'serializerAddress'

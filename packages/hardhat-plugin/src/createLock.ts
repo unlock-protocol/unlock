@@ -69,7 +69,7 @@ export async function createLock(
   const { args } = events.find(({ event }: any) => event === 'NewLock')
   const { newLockAddress } = args
 
-  const lock = await getLockContract(hre, newLockAddress, version)
+  const lock = await getLockContract(hre, newLockAddress)
   return {
     lock,
     lockAddress: newLockAddress,

@@ -1,7 +1,7 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
@@ -26,6 +26,7 @@ import { ethers, BigNumber } from 'ethers'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { fetchRecipientsData } from './utils'
 
 interface Props {
   injectedProvider: unknown
@@ -108,15 +109,18 @@ export function Confirm({
   const onConfirmCard = async () => {
     try {
       setIsConfirming(true)
+
       if (payment.method !== 'card') {
         return
       }
+
       const stripeIntent = await prepareChargeForCard(
         payment.cardId!,
         lockAddress,
         lockNetwork,
         formattedData.formattedKeyPrice,
-        recipients
+        recipients,
+        recurringPayment || 0
       )
 
       if (stripeIntent?.error) {
@@ -190,20 +194,37 @@ export function Confirm({
         return
       }
       const keyPrices: string[] = new Array(recipients!.length).fill(keyPrice)
-      const referers: string[] | undefined = paywallConfig.referrer
+      const referrers: string[] | undefined = paywallConfig.referrer
         ? new Array(recipients!.length).fill(paywallConfig.referrer)
         : undefined
+
+      let data = password || captcha || undefined
+
+      const dataBuilder =
+        paywallConfig.locks[lock!.address].dataBuilder ||
+        paywallConfig.dataBuilder
+
+      // if Data builder url is present, prioritize that above rest.
+      if (dataBuilder) {
+        data = await fetchRecipientsData(dataBuilder, {
+          recipients,
+          lockAddress: lock!.address,
+          network: lock!.network,
+        })
+      }
+
       await walletService?.purchaseKeys(
         {
           lockAddress,
           keyPrices,
           owners: recipients!,
-          data: password?.length ? password : captcha,
+          data,
           recurringPayments,
-          referers,
+          referrers,
         },
+        {} /** Transaction params */,
         (error, hash) => {
-          setIsConfirming(true)
+          setIsConfirming(false)
           if (error) {
             send({
               type: 'CONFIRM_MINT',
@@ -223,7 +244,7 @@ export function Confirm({
             }
             send({
               type: 'CONFIRM_MINT',
-              status: 'PROCESSING',
+              status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
               transactionHash: hash!,
             })
           }
@@ -286,8 +307,18 @@ export function Confirm({
       if (payment.method !== 'claim') {
         return
       }
-      const hash = await claimMembershipFromLock(lockAddress, lockNetwork)
-      if (hash) {
+
+      const data = password || captcha || undefined
+
+      const response = await claimMembershipFromLock(
+        lockAddress,
+        lockNetwork,
+        data?.[0]
+      )
+
+      const { transactionHash: hash, error } = response
+
+      if (hash && !error) {
         communication.emitTransactionInfo({
           hash,
           lock: lockAddress,
@@ -390,7 +421,7 @@ export function Confirm({
   return (
     <Fragment>
       <Stepper position={7} service={checkoutService} items={stepItems} />
-      <main className="h-full px-6 py-2 space-y-2 overflow-auto">
+      <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="flex items-start justify-between">
           <h3 className="text-xl font-bold">
             {quantity}X {lockName}
@@ -425,20 +456,15 @@ export function Confirm({
             </div>
           )}
         </div>
-        <div className="w-full border-t"></div>
         {!isLoading ? (
-          <div className="py-2 space-y-1">
+          <div className="space-y-2">
             <ul className="flex items-center gap-4 text-sm">
               <LabeledItem
                 label="Duration"
                 icon={DurationIcon}
                 value={formattedData.formattedDuration}
               />
-              {!!(
-                recurringPayments?.length &&
-                recurringPayment &&
-                payment.method === 'crypto'
-              ) && (
+              {!!(recurringPayments?.length && recurringPayment) && (
                 <LabeledItem
                   label="Recurring"
                   icon={RecurringIcon}

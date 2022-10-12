@@ -16,9 +16,7 @@ Read more about [why we're building Unlock](https://medium.com/unlock-protocol/i
 [You can try Unlock using the Ethereum blockchain on our homepage.](https://unlock-protocol.com/)
 
 We are building this in the open, which means you can also run the code locally (see instructions below).
-You can try out the staging version - which runs the latest, in-progress code, but against the Rinkeby test network - at [https://staging.unlock-protocol.com](https://staging.unlock-protocol.com).
-
-Finally, you can learn more [on our documentation wiki](https://github.com/unlock-protocol/unlock/wiki).
+You can try out the staging version - which runs the latest, in-progress code, but against the Goerli test network.
 
 ## Contributing
 
@@ -42,6 +40,12 @@ You'll need [yarn](https://yarnpkg.com) installed globally.
 ```
 yarn
 # install all dependencies (...may take a while)
+```
+
+Build all packages:
+
+```
+yarn build
 ```
 
 To execute commands inside the repo, we use the pattern `yarn workspace <workspace name> <command>`
@@ -93,7 +97,7 @@ yarn workspace @unlock-protocol/unlock-app start
 
 This will start
 
-- `http://localhost:3000/dashboard` to start using the application and deploy locks locally.
+- `http://localhost:3000/locks` to start using the application and deploy locks locally.
 - `http://localhost:3002` our static landing page site.
 
 ### Config and environment variables

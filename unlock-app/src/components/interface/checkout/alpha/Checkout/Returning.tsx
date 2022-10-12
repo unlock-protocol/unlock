@@ -106,6 +106,9 @@ export function Returning({
               </Button>
             ) : (
               <div className="flex justify-between gap-4">
+                <Button className="w-full" onClick={() => onClose()}>
+                  Return
+                </Button>
                 {!lock?.isSoldOut && (
                   <Button
                     className="w-full"
@@ -113,12 +116,9 @@ export function Returning({
                       checkoutService.send('MAKE_ANOTHER_PURCHASE')
                     }
                   >
-                    Buy another
+                    Buy more
                   </Button>
                 )}
-                <Button className="w-full" onClick={() => onClose()}>
-                  Return
-                </Button>
               </div>
             )}
           </div>
