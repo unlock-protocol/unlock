@@ -580,7 +580,6 @@ interface IPublicLock
   function hasRole(bytes32 role, address account) external view returns (bool);
 
   /**
-    * @notice An ERC-20 style transfer for time.
     * @param _tokenId the id of the token to transfer time from
     * @param _to the recipient of the new token with time
     * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).
