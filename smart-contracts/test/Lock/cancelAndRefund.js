@@ -34,7 +34,6 @@ contract('Lock / cancelAndRefund', (accounts) => {
     })
     lock = await deployLock()
     lockFree = await deployLock({ name: 'FREE' })
-    await lock.setMaxKeysPerAddress(10)
     ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 

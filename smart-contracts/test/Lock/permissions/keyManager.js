@@ -30,7 +30,6 @@ contract('Permissions / KeyManager', (accounts) => {
 
     // purchase keys
     lock = await deployLock()
-    await lock.setMaxKeysPerAddress(10)
     ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 

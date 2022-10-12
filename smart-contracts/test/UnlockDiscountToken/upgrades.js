@@ -211,8 +211,14 @@ contract('UnlockDiscountToken upgrade', async () => {
           }
         )
 
-      // allow multiiple keys per owner
-      await lock.connect(lockOwner).setMaxKeysPerAddress(10)
+      // allow multiple keys per owner
+      await lock
+        .connect(lockOwner)
+        .updateLockConfig(
+          await lock.expirationDuration(),
+          await lock.maxNumberOfKeys(),
+          10
+        )
 
       rate = await oracle.consult(
         udt.address,

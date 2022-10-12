@@ -16,7 +16,6 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
 
   beforeEach(async () => {
     lock = await deployLock()
-    await lock.setMaxKeysPerAddress(10)
     testEventHooks = await TestEventHooks.new()
     await lock.setEventHooks(
       testEventHooks.address,

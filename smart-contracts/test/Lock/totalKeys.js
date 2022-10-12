@@ -9,8 +9,6 @@ let tokenIds
 contract('Lock / totalKeys', (accounts) => {
   before(async () => {
     lock = await deployLock()
-    await lock.setMaxKeysPerAddress(10)
-
     const tx = await lock.purchase(
       [],
       [accounts[1], accounts[1], accounts[1]],

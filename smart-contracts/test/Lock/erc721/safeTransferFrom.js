@@ -15,7 +15,6 @@ contract('Lock / erc721 / safeTransferFrom', (accounts) => {
   before(async () => {
     lock = await deployLock()
     await lock.updateTransferFee(0) // disable the transfer fee for this test
-    await lock.setMaxKeysPerAddress(10)
 
     // first, let's purchase a brand new key that we can transfer
     ;({ tokenId } = await purchaseKey(lock, from))

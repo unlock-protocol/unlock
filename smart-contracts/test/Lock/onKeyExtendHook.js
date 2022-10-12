@@ -50,7 +50,6 @@ contract('Lock / onKeyExtendHook', (accounts) => {
       testEventHooks.address
     )
     expirationDuration = await lock.expirationDuration()
-    await lock.setMaxKeysPerAddress(10)
   })
 
   describe('extend', () => {

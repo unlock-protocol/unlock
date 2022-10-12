@@ -8,6 +8,7 @@ let publicLock = {
   keyPrice: ethers.utils.parseUnits('0.01', 'ether'),
   maxNumberOfKeys: 10,
   lockName: 'Unlock-Protocol Lock',
+  maxKeysPerAddress: 10,
 }
 
 module.exports = {
@@ -32,4 +33,5 @@ module.exports = {
     ...publicLock,
     expirationDuration: MAX_UINT, // indicates that the lock should not expired
   },
+  NO_MAX_KEYS: { ...publicLock, maxKeysPerAddress: null },
 }

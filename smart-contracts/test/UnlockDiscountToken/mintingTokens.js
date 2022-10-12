@@ -70,9 +70,6 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', (accounts) => {
       value: await lock.keyPrice(),
     })
 
-    // allow multiiple keys per owner
-    await lock.setMaxKeysPerAddress(10)
-
     rate = await oracle.consult(
       udt.address,
       ethers.utils.parseUnits('1', 'ether'),

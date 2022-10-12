@@ -20,7 +20,6 @@ contract('Lock / erc20', (accounts) => {
       from: accounts[0],
     })
     lock = await deployLock({ tokenAddress: token.address })
-    await lock.setMaxKeysPerAddress(10)
   })
 
   describe('creating ERC20 priced locks', () => {

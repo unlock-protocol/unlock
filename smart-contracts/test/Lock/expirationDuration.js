@@ -5,7 +5,7 @@ const deployContracts = require('../fixtures/deploy')
 
 const keyPrice = ethers.utils.parseEther('0.01')
 
-contract('Lock / setExpirationDuration', () => {
+contract('Lock / expirationDuration', () => {
   let lock
 
   beforeEach(async () => {
@@ -27,13 +27,6 @@ contract('Lock / setExpirationDuration', () => {
     lock = PublicLock.attach(newLockAddress)
   })
 
-  it('update the expiration duration of an existing lock', async () => {
-    expect((await lock.expirationDuration()).toString()).to.be.equal('1800')
-
-    await lock.setExpirationDuration(1000)
-    expect((await lock.expirationDuration()).toString()).to.be.equal('1000')
-  })
-
   it('affects newly purchased keys', async () => {
     const [, , buyer, buyer2] = await ethers.getSigners()
     const { tokenId, blockNumber } = await purchaseKey(lock, buyer.address)
@@ -43,7 +36,12 @@ contract('Lock / setExpirationDuration', () => {
     ).to.be.equals(transfer1Block.timestamp + 1800)
 
     // update duration
-    await lock.setExpirationDuration(5000)
+    await lock.updateLockConfig(
+      5000,
+      await lock.maxNumberOfKeys(),
+      await lock.maxKeysPerAddress()
+    )
+
     const { tokenId: tokenId2, blockNumber: blockNumber2 } = await purchaseKey(
       lock,
       buyer2.address
@@ -61,7 +59,11 @@ contract('Lock / setExpirationDuration', () => {
     await purchaseKey(lock, buyer.address)
 
     const tsBefore = await lock.keyExpirationTimestampFor(buyer.address)
-    await lock.setExpirationDuration(1000)
+    await lock.updateLockConfig(
+      1000,
+      await lock.maxNumberOfKeys(),
+      await lock.maxKeysPerAddress()
+    )
     const tsAfter = await lock.keyExpirationTimestampFor(buyer.address)
 
     expect(tsBefore.toString()).to.be.equal(tsAfter.toString())

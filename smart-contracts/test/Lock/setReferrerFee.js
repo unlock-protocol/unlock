@@ -40,8 +40,6 @@ contract('Lock / setReferrerFee', (accounts) => {
 
         // deploy a lock
         lock = await deployLock({ tokenAddress })
-        await lock.setMaxKeysPerAddress(10)
-
         keyPrice = await lock.keyPrice()
 
         // Approve the lock to make transfers

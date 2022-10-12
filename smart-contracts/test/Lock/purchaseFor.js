@@ -15,7 +15,6 @@ contract('Lock / purchaseFor', (accounts) => {
     anotherLock = await deployLock()
     lockSingleKey = await deployLock({ name: 'SINGLE KEY' })
     lockFree = await deployLock({ name: 'FREE' })
-    await lock.setMaxKeysPerAddress(10)
   })
 
   describe('when the contract has a public key release', () => {
@@ -78,7 +77,6 @@ contract('Lock / purchaseFor', (accounts) => {
 
     describe('when the user already owns an expired key', () => {
       it('should create a new key', async () => {
-        await anotherLock.setMaxKeysPerAddress(2)
         const tx = await anotherLock.purchase(
           [],
           [accounts[4]],
