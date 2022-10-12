@@ -6,10 +6,10 @@ import { ToastHelper } from '../../helpers/toast.helper'
 import { FaSpinner as Spinner } from 'react-icons/fa'
 import { useKeychain } from '~/hooks/useKeychain'
 
-export interface ICancelAndRefundProps {
-  active: boolean
+export interface CancelAndRefundProps {
+  isOpen: boolean
   lock: any
-  setIsOpen: (status: boolean) => void
+  setIsOpen: (open: boolean) => void
   account: string
   currency: string
   keyId: string
@@ -31,8 +31,8 @@ const CancelAndRefundModalPlaceHolder = () => {
 
 const MAX_TRANSFER_FEE = 10000
 
-export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
-  active,
+export const CancelAndRefundModal = ({
+  isOpen,
   lock,
   setIsOpen,
   account: owner,
@@ -40,7 +40,7 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   keyId,
   network,
   onExpireAndRefund,
-}) => {
+}: CancelAndRefundProps) => {
   const walletService = useWalletService()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
@@ -62,8 +62,6 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
       },
     }
   )
-
-  console.table(data)
 
   const { refundAmount = 0, transferFee = 0, lockBalance = 0 } = data ?? {}
 
@@ -107,11 +105,11 @@ export const CancelAndRefundModal: React.FC<ICancelAndRefundProps> = ({
   if (!lock) return <span>No lock selected</span>
 
   return (
-    <Modal isOpen={active} setIsOpen={setIsOpen}>
+    <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
       {isLoading ? (
         <CancelAndRefundModalPlaceHolder />
       ) : (
-        active && (
+        isOpen && (
           <div className="flex flex-col w-full gap-5 p-4">
             <div className="text-left">
               <h3 className="text-xl font-semibold text-left text-black-500">
