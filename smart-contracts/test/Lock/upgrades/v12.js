@@ -6,9 +6,9 @@ const {
 } = require('../../helpers/versions')
 
 const keyPrice = ethers.utils.parseEther('0.01')
-const previousVersionNumber = 10
+const previousVersionNumber = 11
 
-describe('PublicLock upgrade v10 > v11', () => {
+describe('PublicLock upgrade v11 > v12', () => {
   let lock
   let PublicLockLatest
   let PublicLockPast
@@ -19,13 +19,18 @@ describe('PublicLock upgrade v10 > v11', () => {
     // make sure mocha doesnt time out
     this.timeout(200000)
 
+    PublicLockLatest = await ethers.getContractFactory(
+      'contracts/PublicLock.sol:PublicLock'
+    )
+
+    // get latest version number
+    const publicLockLatest = await PublicLockLatest.deploy()
+    await publicLockLatest.deployed()
+
+    // get previous version
     PublicLockPast = await getContractFactoryAtVersion(
       'PublicLock',
       previousVersionNumber
-    )
-    PublicLockLatest = await getContractFactoryAtVersion(
-      'PublicLock',
-      previousVersionNumber + 1
     )
 
     // deploy a simple lock
@@ -41,6 +46,9 @@ describe('PublicLock upgrade v10 > v11', () => {
 
     lock = await upgrades.deployProxy(PublicLockPast, args)
     await lock.deployed()
+
+    // set many keys
+    await lock.connect(lockOwner).setMaxKeysPerAddress(10)
   })
 
   describe('perform upgrade', async () => {
@@ -88,14 +96,10 @@ describe('PublicLock upgrade v10 > v11', () => {
 
       // make sure ownership is preserved
       assert.equal(await lock.ownerOf(tokenIds[0]), buyers[0].address)
-
-      // set many keys
-      const [, lockOwner] = await ethers.getSigners()
-      await lock.connect(lockOwner).setMaxKeysPerAddress(10)
     })
 
     it('upgraded successfully ', async () => {
-      assert.equal(await lock.publicLockVersion(), 11)
+      assert.equal(await lock.publicLockVersion(), 12)
     })
 
     it('totalSupply is preserved', async () => {
@@ -106,7 +110,7 @@ describe('PublicLock upgrade v10 > v11', () => {
     })
 
     it('schemaVersion is not set correctly before migration', async () => {
-      assert.equal((await lock.schemaVersion()).toNumber(), 10)
+      assert.equal((await lock.schemaVersion()).toNumber(), 11)
     })
 
     describe('data migration', () => {
