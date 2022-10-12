@@ -21,8 +21,7 @@ ${description || ''}
 const doc = `
 # Networks
 
-You should **not need to deploy an Unlock contract yourself**. Here are the addresses of contracts 
-deployed on respective networks and you can call them directly using the block explorer.
+You should **not need to deploy an Unlock contract yourself**. Here are the addresses of contracts deployed on respective networks and you can call them directly using the block explorer.
 
 ${Object.keys(networks)
   .filter((chainId) => chainId !== '31337')
