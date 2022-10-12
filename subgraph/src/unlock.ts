@@ -34,6 +34,9 @@ export function handleNewLock(event: NewLock): void {
   let maxKeysPerAddress = lockContract.try_maxKeysPerAddress()
   if (!maxKeysPerAddress.reverted) {
     lock.maxKeysPerAddress = maxKeysPerAddress.value
+  } else {
+    // set to 1 when using address instead of tokenId prior to lock v10
+    lock.maxKeysPerAddress = BigInt.fromI32(1)
   }
 
   let maxNumberOfKeys = lockContract.try_maxNumberOfKeys()
