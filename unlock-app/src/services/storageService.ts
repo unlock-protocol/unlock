@@ -75,6 +75,8 @@ export class StorageService extends EventEmitter {
     )
   }
 
+  loginRequest = false
+
   async login(message: string, signature: string) {
     const response = await this.locksmith.login({
       message,
@@ -110,6 +112,10 @@ export class StorageService extends EventEmitter {
   }
 
   async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
+    if (this.loginRequest) {
+      return
+    }
+    this.loginRequest = true
     try {
       const refreshToken = this.refreshToken
       if (refreshToken) {
@@ -130,6 +136,7 @@ export class StorageService extends EventEmitter {
         console.error(err.message)
       }
     }
+    this.loginRequest = false
   }
 
   #accessToken: null | string = null
