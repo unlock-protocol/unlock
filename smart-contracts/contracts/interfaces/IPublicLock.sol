@@ -37,7 +37,7 @@ interface IPublicLock
   function publicLockVersion() external pure returns (uint16);
 
   /**
-   * @dev Called by owner to withdraw all ETH funds from the lock
+   * @dev Called by owner to withdraw all funds from the lock
    * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually
    * the same as `tokenAddress` in MixinFunds.
    * @param _recipient specifies the address that will receive the tokens
