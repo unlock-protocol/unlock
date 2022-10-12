@@ -113,7 +113,7 @@ contract('Lock / erc20', (accounts) => {
         const lockBalance = new BigNumber(await token.balanceOf(lock.address))
         const ownerBalance = new BigNumber(await token.balanceOf(accounts[0]))
 
-        await lock.withdraw(await lock.tokenAddress(), 0, {
+        await lock.withdraw(await lock.tokenAddress(), accounts[0], 0, {
           from: accounts[0],
         })
 
