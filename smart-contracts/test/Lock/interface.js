@@ -1,13 +1,10 @@
 const { assert } = require('chai')
 const { ethers } = require('hardhat')
-const { ADDRESS_ZERO } = require('../helpers')
-
-const parseFunctions = ({ functions }) => {
-  const iface = new ethers.utils.Interface(Object.values(functions))
-  return iface
-    .format(ethers.utils.FormatTypes.minimal)
-    .map((d) => d.split('@')[0].trim())
-}
+const {
+  ADDRESS_ZERO,
+  parseInterface,
+  compareInterfaces,
+} = require('../helpers')
 
 contract('Lock / interface', () => {
   let lockContract
@@ -24,18 +21,14 @@ contract('Lock / interface', () => {
   })
 
   it('The interface includes all public functions', async () => {
-    // log any missing entries
-    parseFunctions(lockContract).forEach((entry) => {
-      assert(
-        parseFunctions(lockInterface).includes(entry),
-        `${entry} not in interface`
-      )
-    })
+    // aseert function signature are identical
+    const missing = compareInterfaces(lockContract, lockInterface)
+    assert.equal(missing.length, 0, `Not in interface:\n${missing.join('\n')}`)
 
-    // and assert the count matches
+    // assert the function count matches
     assert.equal(
-      parseFunctions(lockInterface).length,
-      parseFunctions(lockContract).length
+      parseInterface(lockInterface).length,
+      parseInterface(lockContract).length
     )
   })
 })
