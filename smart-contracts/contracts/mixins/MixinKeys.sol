@@ -666,10 +666,11 @@ contract MixinKeys is
   }
 
   /**
-   * Set the maximum number of keys a specific address can use
-   * A function to change the default duration of each key in the lock
-   * - Change the maximum number of keys the lock can edit
-   * @notice keys previously bought are unaffected by this change in expiration duration (i.e.
+   * Update the main key properties for the entire lock: 
+   * - default duration of each key
+   * - the maximum number of keys the lock can edit
+   * - the maximum number of keys a single address can hold
+   * @notice keys previously bought are unaffected by this changes in expiration duration (i.e.
    * existing keys timestamps are not recalculated/updated)
    * @param _newExpirationDuration the new amount of time for each key purchased or type(uint).max for a non-expiring key
    * @param _maxKeysPerAcccount the maximum amount of key a single user can own
