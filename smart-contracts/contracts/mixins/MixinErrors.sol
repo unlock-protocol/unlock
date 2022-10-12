@@ -22,7 +22,6 @@ contract MixinErrors {
   error ONLY_LOCK_MANAGER_OR_KEY_GRANTER();
   error ONLY_KEY_MANAGER_OR_APPROVED();
   error UNAUTHORIZED_KEY_MANAGER_UPDATE();
-  error ONLY_LOCK_MANAGER_OR_BENEFICIARY();
   error ONLY_LOCK_MANAGER();
 
   // single key status

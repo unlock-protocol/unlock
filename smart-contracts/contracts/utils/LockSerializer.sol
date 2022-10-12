@@ -18,8 +18,7 @@ contract LockSerializer {
     uint expirationDuration;
     uint keyPrice;
     uint maxNumberOfKeys;
-    address beneficiary;
-
+    
     // fees
     uint256 freeTrialLength;
     uint256 refundPenaltyBasisPoints;
@@ -49,7 +48,6 @@ contract LockSerializer {
     uint expirationDuration;
     uint keyPrice;
     uint maxNumberOfKeys;
-    address beneficiary;
   }
   
   struct LockFees {
@@ -70,12 +68,10 @@ contract LockSerializer {
     uint expirationDuration = lock.expirationDuration();
     uint keyPrice = lock.keyPrice();
     uint maxNumberOfKeys = lock.maxNumberOfKeys();
-    address beneficiary = lock.beneficiary();
     return LockPriceInfo(
       expirationDuration,
       keyPrice,
-      maxNumberOfKeys,
-      beneficiary
+      maxNumberOfKeys
     );
   }
   
@@ -139,7 +135,6 @@ contract LockSerializer {
       priceInfo.expirationDuration,
       priceInfo.keyPrice,
       priceInfo.maxNumberOfKeys,
-      priceInfo.beneficiary,
       // fees
       fees.freeTrialLength,
       fees.refundPenaltyBasisPoints,

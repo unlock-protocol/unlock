@@ -29,7 +29,7 @@ contract MixinLockCore is
   event Withdrawal(
     address indexed sender,
     address indexed tokenAddress,
-    address indexed beneficiary,
+    address indexed recipient,
     uint amount
   );
 
@@ -71,8 +71,8 @@ contract MixinLockCore is
   // A count of how many new key purchases there have been
   uint internal _totalSupply;
 
-  // The account which will receive funds on withdrawal
-  address payable public beneficiary;
+  // DEPREC: this is not used anymore (kept as private var for storage layout compat)
+  address private beneficiary;
 
   // The denominator component for values specified in basis points.
   uint internal constant BASIS_POINTS_DEN = 10000;
@@ -101,26 +101,15 @@ contract MixinLockCore is
       revert MIGRATION_REQUIRED();
     }
   }
-
-  // modifier
-  function _onlyLockManagerOrBeneficiary() 
-  internal 
-  view
-  {
-    if(!isLockManager(msg.sender) && msg.sender != beneficiary) {
-      revert ONLY_LOCK_MANAGER_OR_BENEFICIARY();
-    }
-  }
   
   function _initializeMixinLockCore(
-    address payable _beneficiary,
+    address payable _lockOwner,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
   ) internal
   {
     unlockProtocol = IUnlock(msg.sender); // Make sure we link back to Unlock's smart contract.
-    beneficiary = _beneficiary;
     expirationDuration = _expirationDuration;
     keyPrice = _keyPrice;
     maxNumberOfKeys = _maxNumberOfKeys;
@@ -141,18 +130,18 @@ contract MixinLockCore is
   }
 
   /**
-   * @dev Called by owner to withdraw all funds from the lock and send them to the `beneficiary`.
-   * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually
-   * the same as `tokenAddress` in MixinFunds.
+   * @dev Called by owner to withdraw all ETH funds from the lock
+   * @param _recipient specifies the address to send ETH to.
    * @param _amount specifies the max amount to withdraw, which may be reduced when
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
    */
   function withdraw(
     address _tokenAddress,
+    address payable _recipient,
     uint _amount
   ) external
   {
-    _onlyLockManagerOrBeneficiary();
+    _onlyLockManager();
 
     // get balance
     uint balance;
@@ -175,9 +164,9 @@ contract MixinLockCore is
       amount = _amount;
     }
 
-    emit Withdrawal(msg.sender, _tokenAddress, beneficiary, amount);
+    emit Withdrawal(msg.sender, _tokenAddress, _recipient, amount);
     // Security: re-entrancy not a risk as this is the last line of an external function
-    _transfer(_tokenAddress, beneficiary, amount);
+    _transfer(_tokenAddress, _recipient, amount);
   }
 
   /**
@@ -198,20 +187,6 @@ contract MixinLockCore is
     keyPrice = _keyPrice;
     tokenAddress = _tokenAddress;
     emit PricingChanged(oldKeyPrice, keyPrice, oldTokenAddress, tokenAddress);
-  }
-
-  /**
-   * A function which lets the owner of the lock update the beneficiary account,
-   * which receives funds on withdrawal.
-   */
-  function updateBeneficiary(
-    address payable _beneficiary
-  ) external {
-    _onlyLockManagerOrBeneficiary();
-    if(_beneficiary == address(0)) {
-      revert INVALID_ADDRESS();
-    }
-    beneficiary = _beneficiary;
   }
 
   /**
@@ -249,22 +224,6 @@ contract MixinLockCore is
   {
     return _totalSupply;
   }
-
-  /**
-   * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
-   * @param _spender address that can spend tokens belonging to the lock
-   * @param _amount amount of tokens that can be spent by the spender
-   */
-  function approveBeneficiary(
-    address _spender,
-    uint _amount
-  ) public
-    returns (bool)
-  {
-    _onlyLockManagerOrBeneficiary();
-    return IERC20Upgradeable(tokenAddress).approve(_spender, _amount);
-  }
-
 
   // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
   // decreased from 998 to 997 when adding `onKeyTransferHook` in v11

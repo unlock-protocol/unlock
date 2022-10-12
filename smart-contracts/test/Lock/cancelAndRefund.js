@@ -208,7 +208,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
   describe('should fail when', () => {
     it('should fail if the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw(await lock.tokenAddress(), 0, {
+      await lock.withdraw(await lock.tokenAddress(), lockCreator, 0, {
         from: lockCreator,
       })
       await reverts(
