@@ -32,7 +32,6 @@ contract('Lock / withdraw', (accounts) => {
           })
         }
         lock = await deployLock({ tokenAddress })
-        await lock.setMaxKeysPerAddress(10)
 
         if (isErc20) {
           await testToken.approve(lock.address, someTokens, {
