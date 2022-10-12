@@ -1,13 +1,28 @@
-const { CreateSubgraphService } = require('..')
+const { SubgraphService } = require('..')
 
 async function main() {
-  const sdk = CreateSubgraphService()
-  const { allLocks } = await sdk.getLocks({
-    first: 100,
-    skip: 100,
-    networks: ['gnosis-v2', 'polygon-v2'],
-  })
-  console.table(allLocks)
+  const service = new SubgraphService()
+  const locks = await service.locks(
+    {
+      first: 100,
+      skip: 100,
+    },
+    {
+      networks: [1, 5],
+    }
+  )
+  console.log(locks)
+
+  const keys = await service.locks(
+    {
+      first: 100,
+      skip: 100,
+    },
+    {
+      networks: [1, 5],
+    }
+  )
+  console.log(keys)
 }
 
 main().catch(console.error)

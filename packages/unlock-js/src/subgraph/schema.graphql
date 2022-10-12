@@ -1,6 +1,59 @@
-query getLocks($first: Int!, $skip: Int!, $networks: [String!]!) {
-  allLocks(first: $first, skip: $skip, networks: $networks) {
+query allLocks(
+  $first: Int!
+  $skip: Int
+  $where: Lock_filter
+  $orderBy: Lock_orderBy
+  $orderDirection: OrderDirection
+) {
+  locks(
+    first: $first
+    skip: $skip
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
     id
-    network
+    name
+    expirationDuration
+    tokenAddress
+    price
+    lockManagers
+    version
+    createdAtBlock
+  }
+}
+
+query AllKeys(
+  $first: Int!
+  $skip: Int
+  $where: Key_filter
+  $orderBy: Key_orderBy
+  $orderDirection: OrderDirection
+) {
+  keys(
+    first: $first
+    skip: $skip
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    id
+    lock {
+      id
+      name
+      expirationDuration
+      tokenAddress
+      price
+      lockManagers
+      version
+      createdAtBlock
+    }
+    tokenId
+    owner
+    manager
+    expiration
+    tokenURI
+    createdAtBlock
+    cancelled
   }
 }
