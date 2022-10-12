@@ -11,6 +11,8 @@ export const optimism: NetworkConfig = {
   subgraph: {
     endpoint:
       'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism-v2',
   },
   explorer: {
     name: 'Etherscan',

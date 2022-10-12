@@ -10,6 +10,8 @@ export const mainnet: NetworkConfig = {
   blockTime: 8000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/mainnet-v2',
   },
   explorer: {
     name: 'Etherscan',
