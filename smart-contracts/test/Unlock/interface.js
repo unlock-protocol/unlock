@@ -19,7 +19,7 @@ contract('Unlock / interface', () => {
   })
 
   it('The interface includes all public functions', async () => {
-    // aseert function signature are identical
+    // assert function signatures are identical
     const missing = compareInterfaces(unlockContract, unlockInterface)
     assert.equal(missing.length, 0, `Not in interface:\n${missing.join('\n')}`)
 
