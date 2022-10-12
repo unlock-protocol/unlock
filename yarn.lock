@@ -18459,7 +18459,7 @@ __metadata:
     express-list-endpoints: 6.0.0
     express-winston: 4.2.0
     fuse.js: 6.6.2
-    graphql: 15.8.0
+    graphql: 16.6.0
     html-template-tag: 4.0.1
     isomorphic-fetch: 3.0.0
     jest: 27.5.1
@@ -18856,7 +18856,7 @@ __metadata:
     eslint-plugin-mocha: 10.1.0
     ethers: 5.7.1
     file-saver: 2.0.5
-    graphql: 15.8.0
+    graphql: 16.6.0
     jest: 27.5.1
     jest-canvas-mock: 2.4.0
     jest-fetch-mock: 3.0.3
@@ -35608,17 +35608,17 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"graphql@npm:15.8.0":
-  version: 15.8.0
-  resolution: "graphql@npm:15.8.0"
-  checksum: 423325271db8858428641b9aca01699283d1fe5b40ef6d4ac622569ecca927019fce8196208b91dd1d8eb8114f00263fe661d241d0eb40c10e5bfd650f86ec5e
-  languageName: node
-  linkType: hard
-
 "graphql@npm:16.5.0":
   version: 16.5.0
   resolution: "graphql@npm:16.5.0"
   checksum: a82a926d085818934d04fdf303a269af170e79de943678bd2726370a96194f9454ade9d6d76c2de69afbd7b9f0b4f8061619baecbbddbe82125860e675ac219e
+  languageName: node
+  linkType: hard
+
+"graphql@npm:16.6.0, graphql@npm:^16.6.0":
+  version: 16.6.0
+  resolution: "graphql@npm:16.6.0"
+  checksum: bf1d9e3c1938ce3c1a81e909bd3ead1ae4707c577f91cff1ca2eca474bfbc7873d5d7b942e1e9777ff5a8304421dba57a4b76d7a29eb19de8711cb70e3c2415e
   languageName: node
   linkType: hard
 
@@ -35635,13 +35635,6 @@ fsevents@~2.1.1:
   version: 16.3.0
   resolution: "graphql@npm:16.3.0"
   checksum: ba540641e9cd2a8de5b989ff1433b015f232fa73aaef478d6709c1339cd43113347917acb965a5799c004667687852fc8ff0cfaa935eb26374c91c1fd7fdaeb1
-  languageName: node
-  linkType: hard
-
-"graphql@npm:^16.6.0":
-  version: 16.6.0
-  resolution: "graphql@npm:16.6.0"
-  checksum: bf1d9e3c1938ce3c1a81e909bd3ead1ae4707c577f91cff1ca2eca474bfbc7873d5d7b942e1e9777ff5a8304421dba57a4b76d7a29eb19de8711cb70e3c2415e
   languageName: node
   linkType: hard
 
