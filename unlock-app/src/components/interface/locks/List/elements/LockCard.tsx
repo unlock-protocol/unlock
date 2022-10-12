@@ -169,8 +169,6 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
       <Duration seconds={lock.expirationDuration} />
     )
 
-  console.log(lock)
-
   return (
     <>
       <div className="px-12 py-4 bg-white shadow-lg rounded-2xl">
