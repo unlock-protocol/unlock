@@ -31,6 +31,16 @@ export function handleNewLock(event: NewLock): void {
   lock.expirationDuration = lockContract.expirationDuration()
   lock.totalKeys = BigInt.fromI32(0)
 
+  let maxKeysPerAddress = lockContract.try_maxKeysPerAddress()
+  if (!maxKeysPerAddress.reverted) {
+    lock.maxKeysPerAddress = maxKeysPerAddress.value
+  }
+
+  let maxNumberOfKeys = lockContract.try_maxNumberOfKeys()
+  if (!maxNumberOfKeys.reverted) {
+    lock.maxNumberOfKeys = maxNumberOfKeys.value
+  }
+
   // store info from event
   lock.address = lockAddress
   lock.version = version
