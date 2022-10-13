@@ -1,6 +1,6 @@
 # Changes
 
-# 0.29.4
+# 0.30.0
 
 - Add subgraph service
 
