@@ -179,6 +179,7 @@ export default class WalletService extends UnlockService {
       decimals?: number
       recurringPayments?: number
       referrer?: string
+      totalApproval?: string
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
@@ -209,6 +210,7 @@ export default class WalletService extends UnlockService {
       decimals?: number
       referrers?: (string | null)[]
       recurringPayments?: number[] | string[]
+      totalApproval?: string
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback

@@ -10,6 +10,7 @@ type Variant =
   | 'yellow'
   | 'green'
   | 'blue'
+  | 'primary'
   | 'default'
 
 interface Props extends BoxProps {
@@ -33,6 +34,7 @@ const VARIANT_STYLES: Record<Variant, string> = {
   blue: 'bg-blue-100 text-blue-800',
   dark: 'bg-gray-100 text-gray-800',
   red: 'bg-[#ffe1e3] text-brand-secondary',
+  primary: 'bg-brand-ui-primary text-white',
 }
 
 export function Badge(props: Props) {

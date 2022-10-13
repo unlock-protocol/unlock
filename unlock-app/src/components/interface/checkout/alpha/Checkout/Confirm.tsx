@@ -73,19 +73,19 @@ export function Confirm({
   } = lock!
 
   const recurringPayment = paywallConfig?.locks[lockAddress]?.recurringPayments
-
-  let recurringPaymentAmount: string | undefined | number
-
-  if (recurringPayment) {
-    recurringPaymentAmount === 'forever'
+  const totalApproval =
+    typeof recurringPayment === 'string' &&
+    recurringPayment.toLowerCase() === 'forever'
       ? MAX_UINT
-      : Math.abs(Math.floor(Number(recurringPayment)))
-  }
-
-  const recurringPayments: number[] | string[] | undefined =
-    recurringPaymentAmount
-      ? new Array(recipients.length).fill(recurringPaymentAmount)
       : undefined
+
+  const recurringPaymentAmount = typeof recurringPayment
+    ? Math.abs(Math.floor(Number(recurringPayment)))
+    : undefined
+
+  const recurringPayments: number[] | undefined = recurringPaymentAmount
+    ? new Array(recipients.length).fill(recurringPaymentAmount)
+    : undefined
 
   const { isLoading, data: fiatPricing } = useQuery(
     [quantity, lockAddress, lockNetwork],
@@ -127,7 +127,7 @@ export function Confirm({
         lockNetwork,
         formattedData.formattedKeyPrice,
         recipients,
-        typeof recurringPaymentAmount === 'number' ? recurringPaymentAmount : 0
+        recurringPaymentAmount || 0
       )
 
       if (stripeIntent?.error) {
@@ -228,6 +228,7 @@ export function Confirm({
           data,
           recurringPayments,
           referrers,
+          totalApproval,
         },
         {} /** Transaction params */,
         (error, hash) => {
@@ -465,7 +466,7 @@ export function Confirm({
         </div>
         {!isLoading ? (
           <div className="space-y-2">
-            <ul className="flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-4 text-sm">
               <LabeledItem
                 label="Duration"
                 icon={DurationIcon}
@@ -478,7 +479,12 @@ export function Confirm({
                   value={recurringPayment.toString()}
                 />
               )}
-            </ul>
+              {totalApproval && (
+                <div className="flex items-center gap-2 text-gray-500">
+                  <RecurringIcon /> <span> Renewed until cancelled </span>
+                </div>
+              )}
+            </div>
             <a
               href={config.networks[lockNetwork].explorer.urls.address(
                 lockAddress

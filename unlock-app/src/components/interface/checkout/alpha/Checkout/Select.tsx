@@ -19,7 +19,7 @@ import {
   RiCoupon2Line as QuantityIcon,
   RiExternalLinkLine as ExternalLinkIcon,
 } from 'react-icons/ri'
-import { Button, Icon } from '@unlock-protocol/ui'
+import { Badge, Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
@@ -33,6 +33,8 @@ interface Props {
 export function Select({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { paywallConfig, lock: selectedLock } = state.context
+  const [lock, setLock] = useState<LockState | undefined>(selectedLock)
+
   const { isLoading: isLocksLoading, data: locks } = useQuery(
     ['locks', JSON.stringify(paywallConfig)],
     async () => {
@@ -86,8 +88,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       network: props.network || paywallConfig.network || 1,
     }))
   }, [paywallConfig.locks, paywallConfig.network])
-
-  const [lock, setLock] = useState<LockState | undefined>(selectedLock)
 
   const skipQuantity = useMemo(() => {
     const maxRecipients = lock?.maxRecipients || paywallConfig.maxRecipients
@@ -148,8 +148,9 @@ export function Select({ checkoutService, injectedProvider }: Props) {
 
   useEffect(() => {
     if (locks?.length) {
-      const item = locks.find((lock) => !lock.isSoldOut)
-      setLock(item)
+      const filtered = locks.filter((lock) => !lock.isSoldOut)
+      const item = filtered.find((lock) => lock.default)
+      setLock(item || filtered[0])
     }
   }, [locks])
 
@@ -206,7 +207,9 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                             item.name
                           )
                           const lockImageURL = `${config.services.storage.host}/lock/${item?.address}/icon`
-
+                          const isMember = memberships?.find(
+                            (m) => m.lock === item.address
+                          )?.member
                           return (
                             <Fragment>
                               <div className="flex w-full gap-x-4">
@@ -228,10 +231,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                                       as="p"
                                     >
                                       {item.name}
-                                      {item?.recurringPayments &&
-                                      Number.isInteger(item.recurringPayments)
-                                        ? ` x ${item?.recurringPayments}`
-                                        : '- Forever'}
                                     </RadioGroup.Label>
                                     <a
                                       href={config.networks[
@@ -256,37 +255,56 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                                   />
                                 </div>
                               </div>
-                              <div className="flex items-center justify-between w-full">
-                                <div className="flex items-center gap-2">
-                                  <LabeledItem
-                                    label="Duration"
-                                    icon={DurationIcon}
-                                    value={formattedData.formattedDuration}
-                                  />
-                                  <LabeledItem
-                                    label="Quantity"
-                                    icon={QuantityIcon}
-                                    value={
-                                      formattedData.isSoldOut
-                                        ? 'Sold out'
-                                        : formattedData.formattedKeysAvailable
-                                    }
-                                  />
-                                </div>
-                                <div>
-                                  {checked ? (
-                                    <Icon
-                                      size="large"
-                                      className="fill-brand-ui-primary"
-                                      icon={CheckIcon}
-                                    />
-                                  ) : (
-                                    <Icon
-                                      size="large"
-                                      className="fill-brand-ui-primary"
-                                      icon={CheckBlankIcon}
-                                    />
+
+                              <div className="w-full space-y-2">
+                                <div className="flex items-center w-full grid-cols-2 gap-2">
+                                  {item.recurringPayments && (
+                                    <Badge variant="primary" size="tiny">
+                                      Renew{' '}
+                                      {typeof item.recurringPayments ===
+                                      'number'
+                                        ? `${item.recurringPayments} times`
+                                        : item.recurringPayments}
+                                    </Badge>
                                   )}
+                                  {isMember && (
+                                    <Badge size="tiny" variant="primary">
+                                      Owned
+                                    </Badge>
+                                  )}
+                                </div>
+                                <div className="flex justify-between w-full place-items-center">
+                                  <div className="grid grid-cols-2 gap-2">
+                                    <LabeledItem
+                                      label="Duration"
+                                      icon={DurationIcon}
+                                      value={formattedData.formattedDuration}
+                                    />
+                                    <LabeledItem
+                                      label="Quantity"
+                                      icon={QuantityIcon}
+                                      value={
+                                        formattedData.isSoldOut
+                                          ? 'Sold out'
+                                          : formattedData.formattedKeysAvailable
+                                      }
+                                    />
+                                  </div>
+                                  <div>
+                                    {checked ? (
+                                      <Icon
+                                        size="large"
+                                        className="fill-brand-ui-primary"
+                                        icon={CheckIcon}
+                                      />
+                                    ) : (
+                                      <Icon
+                                        size="large"
+                                        className="fill-brand-ui-primary"
+                                        icon={CheckBlankIcon}
+                                      />
+                                    )}
+                                  </div>
                                 </div>
                               </div>
                             </Fragment>
