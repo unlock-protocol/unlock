@@ -23,7 +23,17 @@ contract('Lock / interface', () => {
   it('The interface includes all public functions', async () => {
     // assert function signatures are identical
     const missing = compareInterfaces(lockContract, lockInterface)
-    assert.equal(missing.length, 0, `Not in interface:\n${missing.join('\n')}`)
+    const remaining = compareInterfaces(lockInterface, lockContract)
+
+    assert.equal(
+      missing.length + remaining.length,
+      0,
+      `\n${missing.length + remaining.length} errors.
+---
+${missing.length ? `Missing in interface:\n${missing.join('\n')}` : ''}.
+---
+${remaining.length ? `Missing in contract:\n${remaining.join('\n')}` : ''}`
+    )
 
     // assert the function count matches
     assert.equal(
