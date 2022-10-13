@@ -3232,6 +3232,32 @@
     "sig": "event LockConfig(uint256,uint256,uint256)"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "baseTokenURI",
+        "type": "string"
+      }
+    ],
+    "name": "LockMetadata",
+    "type": "event",
+    "sig": "event LockMetadata(string,string,string)"
+  },
+  {
     "inputs": [],
     "name": "onKeyExtendHook",
     "outputs": [
@@ -3287,6 +3313,30 @@
   {
     "inputs": [
       {
+        "internalType": "string",
+        "name": "_lockName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_lockSymbol",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_baseTokenURI",
+        "type": "string"
+      }
+    ],
+    "name": "setLockMetadata",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setLockMetadata(string,string,string)"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "uint256",
         "name": "_newExpirationDuration",
         "type": "uint256"
@@ -3307,5 +3357,29 @@
     "stateMutability": "nonpayable",
     "type": "function",
     "sig": "function updateLockConfig(uint256,uint256,uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "_recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function withdraw(address,address,uint256)"
   }
 ]
