@@ -5,7 +5,11 @@
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
     "outDir": "build",
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "moduleResolution": "Node"
   },
   "exclude": [
     "build"

@@ -1,4 +1,4 @@
-class Forage {
+export default class Forage {
   private normalizedAddress(address: string) {
     return address.toLowerCase()
   }
@@ -15,5 +15,3 @@ class Forage {
     return `${this.normalizedAddress(data.address)}/tickets/banner`
   }
 }
-
-export = Forage

@@ -1,4 +1,4 @@
-import ColorScheme = require('color-scheme')
+import ColorScheme from 'color-scheme'
 
 export const lockIcon = (address: string) => {
   /**
