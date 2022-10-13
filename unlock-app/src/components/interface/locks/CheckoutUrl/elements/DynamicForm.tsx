@@ -4,6 +4,7 @@ import { component } from '~/propTypes'
 interface DynamicFormProps {
   title: string
   schema: any
+  description?: Record<string, string>
 }
 
 interface ComponentByTypeMapProps {
@@ -28,7 +29,7 @@ const TextInput = ({ props, type, ...rest }: any) => {
 
 const BooleanInput = ({ props, ...rest }: any) => {
   return (
-    <div className="flex items-center gap-3 ">
+    <div className="block gap-3 py-2">
       <ToggleSwitch title={rest.label} {...rest} />
     </div>
   )
@@ -55,7 +56,12 @@ const TypeMap: Record<string, string> = {
   integer: 'number',
 }
 
-export const DynamicForm = ({ title, schema }: DynamicFormProps) => {
+export const DynamicForm = ({
+  title,
+  schema,
+  description = {},
+}: DynamicFormProps) => {
+  console.log(Object.entries(schema?.properties ?? {}), description)
   return (
     <div className="flex flex-col gap-3 px-4 py-6 bg-white shadow-sm rounded-xl">
       <h2 className="text-lg font-semibold">{title}</h2>
@@ -63,14 +69,19 @@ export const DynamicForm = ({ title, schema }: DynamicFormProps) => {
         {Object.entries(schema?.properties ?? {}).map(
           ([title, props], index) => {
             const type = (props as any)?.type
-            console.log(title, type, props)
+
+            //console.log(title, type, props)
             const Component = ComponentByTypeMap?.[type] ?? undefined
             const inputType: string = TypeMap?.[type] || type
+            const desc = description?.[title]
 
             if (!component) return null
             return (
-              <div key={index}>
+              <div className="flex flex-col gap-2" key={index}>
                 <Component props={props} label={title} type={inputType} />
+                {desc && (
+                  <small className="text-xs text-gray-600">{desc}</small>
+                )}
               </div>
             )
           }
