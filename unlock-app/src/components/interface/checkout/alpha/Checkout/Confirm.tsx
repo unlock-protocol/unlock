@@ -27,6 +27,7 @@ import { selectProvider } from '~/hooks/useAuthenticate'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { fetchRecipientsData } from './utils'
+import { MAX_UINT } from '~/constants'
 
 interface Props {
   injectedProvider: unknown
@@ -73,11 +74,17 @@ export function Confirm({
 
   const recurringPayment = paywallConfig?.locks[lockAddress]?.recurringPayments
 
-  const recurringPayments: number[] | undefined =
-    typeof recurringPayment === 'number'
-      ? new Array(recipients.length).fill(
-          Math.abs(Math.floor(recurringPayment))
-        )
+  let recurringPaymentAmount: string | undefined | number
+
+  if (recurringPayment) {
+    recurringPaymentAmount === 'forever'
+      ? MAX_UINT
+      : Math.abs(Math.floor(Number(recurringPayment)))
+  }
+
+  const recurringPayments: number[] | string[] | undefined =
+    recurringPaymentAmount
+      ? new Array(recipients.length).fill(recurringPaymentAmount)
       : undefined
 
   const { isLoading, data: fiatPricing } = useQuery(
@@ -120,7 +127,7 @@ export function Confirm({
         lockNetwork,
         formattedData.formattedKeyPrice,
         recipients,
-        recurringPayment || 0
+        typeof recurringPaymentAmount === 'number' ? recurringPaymentAmount : 0
       )
 
       if (stripeIntent?.error) {

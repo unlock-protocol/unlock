@@ -17,7 +17,7 @@ export const PaywallConfigLockSchema = z.object({
   name: z.string().optional(),
   network: z.number().int().positive().optional(),
   metadataInputs: z.array(MetadataInputSchema).optional(),
-  recurringPayments: z.number().int().optional(),
+  recurringPayments: z.union([z.string(), z.number()]).optional(),
   captcha: z.boolean().optional(),
   password: z.boolean().optional(),
   emailRequired: z.boolean().optional(),

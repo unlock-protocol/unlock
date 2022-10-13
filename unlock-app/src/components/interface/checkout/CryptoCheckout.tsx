@@ -23,7 +23,7 @@ import {
   userCanAffordKey,
 } from '../../../utils/checkoutLockUtils'
 import Buttons from '../buttons/lock'
-import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
+import { ETHEREUM_NETWORKS_NAMES, MAX_UINT } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
 import { ToastHelper } from '../../helpers/toast.helper'
@@ -128,6 +128,8 @@ export const CryptoCheckout = ({
   nbPayments =
     typeof nbPayments === 'number'
       ? Math.abs(Math.floor(nbPayments))
+      : nbPayments === 'forever'
+      ? MAX_UINT
       : undefined
 
   const cantBuyWithCrypto = isAdvanced

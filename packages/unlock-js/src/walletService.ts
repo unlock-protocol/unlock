@@ -208,7 +208,7 @@ export default class WalletService extends UnlockService {
       erc20Address?: string
       decimals?: number
       referrers?: (string | null)[]
-      recurringPayments?: number[]
+      recurringPayments?: number[] | string[]
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback

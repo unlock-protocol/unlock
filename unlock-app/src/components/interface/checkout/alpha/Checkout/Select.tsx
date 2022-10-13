@@ -229,7 +229,9 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                                     >
                                       {item.name}
                                       {item?.recurringPayments &&
-                                        ` x ${item?.recurringPayments}`}
+                                      Number.isInteger(item.recurringPayments)
+                                        ? ` x ${item?.recurringPayments}`
+                                        : '- Forever'}
                                     </RadioGroup.Label>
                                     <a
                                       href={config.networks[
