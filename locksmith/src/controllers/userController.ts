@@ -1,6 +1,6 @@
 import { Request, Response } from 'express-serve-static-core'
 import { DecoyUser } from '../utils/decoyUser'
-import * as StripeOperations from '../operations/stripeOperations'
+import StripeOperations from '../operations/stripeOperations'
 import * as Normalizer from '../utils/normalizer'
 import UserOperations from '../operations/userOperations'
 import logger from '../logger'
