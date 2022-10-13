@@ -101,8 +101,8 @@ contract('Lock / erc721 / tokenURI', (accounts) => {
       assert.equal(uri, `${metadata.baseTokenURI}1`)
     })
 
-    it('should emit the NewLockConfig event', async () => {
-      const event = txObj.logs.find(({ event }) => event === 'NewLockConfig')
+    it('should emit the LockMetadata event', async () => {
+      const event = txObj.logs.find(({ event }) => event === 'LockMetadata')
       assert.equal(event.args.baseTokenURI, metadata.baseTokenURI)
     })
 
