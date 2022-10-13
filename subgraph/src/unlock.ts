@@ -30,6 +30,7 @@ export function handleNewLock(event: NewLock): void {
   lock.name = lockContract.name()
   lock.expirationDuration = lockContract.expirationDuration()
   lock.totalKeys = BigInt.fromI32(0)
+  lock.symbol = 'KEY'
 
   // store info from event
   lock.address = lockAddress

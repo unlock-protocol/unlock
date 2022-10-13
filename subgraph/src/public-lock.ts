@@ -12,6 +12,7 @@ import {
   PricingChanged as PricingChangedEvent,
   RenewKeyPurchase as RenewKeyPurchaseEvent,
   Transfer as TransferEvent,
+  LockMetadata as LockMetadataEvent,
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
@@ -191,6 +192,17 @@ export function handlePricingChanged(event: PricingChangedEvent): void {
     ])
     lock.price = event.params.keyPrice
     lock.tokenAddress = event.params.tokenAddress
+    lock.save()
+  }
+}
+
+export function handleLockMetadata(event: LockMetadataEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+  if (lock) {
+    log.info('name: {}, symbol: {}', [event.params.name, event.params.symbol])
+    lock.name = event.params.name
+    lock.symbol = event.params.symbol
+    // lock.symbol = event.params.symbol
     lock.save()
   }
 }
