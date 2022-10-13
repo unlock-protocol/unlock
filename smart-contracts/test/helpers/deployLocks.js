@@ -19,8 +19,13 @@ async function deployLock({
     deployer = defaultDeployer.address
   }
 
-  const { expirationDuration, keyPrice, maxNumberOfKeys, lockName } =
-    Locks[name]
+  const {
+    expirationDuration,
+    keyPrice,
+    maxNumberOfKeys,
+    lockName,
+    maxKeysPerAddress,
+  } = Locks[name]
 
   const args = [
     name === 'NON_EXPIRING' ? MAX_UINT : expirationDuration.toString(),
@@ -43,6 +48,15 @@ async function deployLock({
   }
   const { newLockAddress } = evt.args
   const lock = await PublicLock.at(newLockAddress)
+
+  if (maxKeysPerAddress) {
+    await lock.updateLockConfig(
+      expirationDuration,
+      maxNumberOfKeys,
+      10, // default maxKeysPerAddress to 10 for tests
+      { from: deployer }
+    )
+  }
   return lock
 }
 

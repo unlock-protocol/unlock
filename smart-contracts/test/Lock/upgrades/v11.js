@@ -19,14 +19,9 @@ describe('PublicLock upgrade v10 > v11', () => {
     // make sure mocha doesnt time out
     this.timeout(200000)
 
-    PublicLockPast = await getContractFactoryAtVersion(
-      'PublicLock',
-      previousVersionNumber
-    )
-    PublicLockLatest = await getContractFactoryAtVersion(
-      'PublicLock',
-      previousVersionNumber + 1
-    )
+    // getr previous versions
+    PublicLockPast = await getContractFactoryAtVersion('PublicLock', 10)
+    PublicLockLatest = await getContractFactoryAtVersion('PublicLock', 11)
 
     // deploy a simple lock
     const [, lockOwner] = await ethers.getSigners()
