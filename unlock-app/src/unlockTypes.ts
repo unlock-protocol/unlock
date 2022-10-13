@@ -212,20 +212,6 @@ export interface KeyholdersByLock {
   }[]
 }
 
-// todo: to remove? not used anywhere
-export interface RawLock {
-  name: string
-  address: string
-  keyPrice: string
-  expirationDuration: number
-  currencyContractAddress: string | null
-  asOf?: number
-  maxNumberOfKeys?: number
-  outstandingKeys?: number
-  balance?: string
-  owner?: string
-}
-
 export interface Balances {
   eth: string
   [contractAddress: string]: string
