@@ -4,7 +4,7 @@ const config = {
   schema: networks['5'].subgraph.endpointV2,
   documents: ['./src/subgraph/schema.graphql'],
   generates: {
-    './src/@generated/subgraph.ts': {
+    './src/@generated/subgraph/index.ts': {
       plugins: [
         'typescript',
         'typescript-operations',
