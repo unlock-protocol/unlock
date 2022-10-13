@@ -1,4 +1,5 @@
 import { CheckoutService } from './checkoutMachine'
+import { route } from '@depay/web3-payments'
 import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { useActor } from '@xstate/react'
@@ -10,7 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { lockTickerSymbol, userCanAffordKey } from '~/utils/checkoutLockUtils'
 import dynamic from 'next/dynamic'
-import { Fragment } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
@@ -47,7 +48,7 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
 export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-
+  const [routes, setRoutes] = useState([])
   const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
   const { account, network, isUnlockAccount } = useAuth()
@@ -55,7 +56,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const storageService = useStorageService()
   const baseSymbol = config.networks[lock.network].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
-  const web3Service = useWeb3Service()
+
   const { isLoading, data: fiatPricing } = useQuery(
     ['fiat', quantity, lock.address, lock.network],
     async () => {
@@ -82,14 +83,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { isLoading: isWalletInfoLoading, data: walletInfo } = useQuery(
     ['balance', account, lock.address],
     async () => {
-      const [balance, networkBalance, gasPrice] = await Promise.all([
+      const [balance, networkBalance] = await Promise.all([
         getTokenBalance(lock.currencyContractAddress),
         getTokenBalance(null),
-        web3Service.providerForNetwork(lock.network).getGasPrice(),
       ])
 
-      const gas = parseFloat(ethers.utils.formatUnits(gasPrice || 200, 'gwei'))
-      const isGasPayable = parseFloat(networkBalance) > gas
+      const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation
 
       const isPayable =
         userCanAffordKey(lock, balance, recipients.length) && isGasPayable
@@ -108,10 +107,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const isWaiting = isLoading || isClaimableLoading || isWalletInfoLoading
 
   const networkConfig = config.networks[lock.network]
+
   const lockConfig = paywallConfig.locks[lock!.address]
 
   const isReceiverAccountOnly =
     recipients.length <= 1 && recipients[0] === account
+
+  const enableSwapAndPurchase = routes.length > 0
 
   const enableSuperfluid =
     (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
@@ -133,7 +135,30 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     enableClaim,
     enableCrypto,
     enableSuperfluid,
+    enableSwapAndPurchase,
   ].every((item) => !item)
+
+  useEffect(() => {
+    const findRoutes = async () => {
+      // That's where we look for the route!
+      const params = {
+        accept: [
+          {
+            blockchain: 'polygon',
+            token: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', // lock!.currencyContractAddress!, // Change to 0xE for base currency?
+            amount: lock.keyPrice,
+            toAddress: account, // lock!.address, // We use the user's address because if we pass the lock address the library will try to apply the signature?
+          },
+        ],
+        from: {
+          polygon: account,
+        },
+      }
+
+      setRoutes(await route(params))
+    }
+    findRoutes()
+  }, [account, lock])
 
   return (
     <Fragment>
@@ -273,6 +298,48 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     `You don't have enough funds to pay for gas in ${networkConfig.nativeCurrency.symbol}`}
                 </div>
               </button>
+            )}
+            {enableSwapAndPurchase && (
+              <>
+                {routes.map((route, id) => {
+                  console.log(route)
+                  return (
+                    <button
+                      key={id}
+                      disabled={!walletInfo?.isPayable}
+                      onClick={(event) => {
+                        event.preventDefault()
+                        send({
+                          type: 'SELECT_PAYMENT_METHOD',
+                          payment: {
+                            method: 'swap',
+                          },
+                        })
+                      }}
+                      className="grid w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                    >
+                      <div className="flex justify-between w-full">
+                        <h3 className="font-bold"> Swap and Purchase </h3>
+                        <AmountBadge amount={lock.keyPrice} symbol={symbol} />
+                      </div>
+                      <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center w-full text-sm text-left text-gray-500">
+                          Your balance ({symbol.toUpperCase()}){' '}
+                          {parseFloat(walletInfo?.balance).toFixed(6)}{' '}
+                        </div>
+                        <RightArrowIcon
+                          className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
+                          size={20}
+                        />
+                      </div>
+                      <div className="inline-flex text-sm text-start">
+                        {!walletInfo?.isGasPayable &&
+                          `You don't have enough ${networkConfig.nativeCurrency.symbol} for gas fee.`}
+                      </div>
+                    </button>
+                  )
+                })}
+              </>
             )}
             {allDisabled && (
               <div>
