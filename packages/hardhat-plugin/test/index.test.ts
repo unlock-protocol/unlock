@@ -146,33 +146,46 @@ describe('Unlock Hardhat plugin', function () {
 
       describe('deployAndSetTemplate()', function () {
         it('Should deploy and set a new version', async function () {
-          const version = 11
-          const { unlock, publicLock: publicLockBefore } = protocol
+          const previousVersion = PUBLIC_LOCK_LATEST_VERSION - 1
+          const { FIRST } = locks
 
-          // deploy the template
+          // deploy protocol w previous lock version
+          const { unlock, publicLock: publicLockBefore } =
+            await this.hre.unlock.deployProtocol(undefined, previousVersion)
+
+          // makes sure version is set correctly
+          assert.equal(await unlock.publicLockLatestVersion(), previousVersion)
+          assert.equal(
+            await unlock.publicLockAddress(),
+            publicLockBefore.address
+          )
+
+          // deploy and set the new template
           const publicLock = await this.hre.unlock.deployAndSetTemplate(
-            version,
+            PUBLIC_LOCK_LATEST_VERSION,
             1
           )
           assert.equal(await unlock.publicLockAddress(), publicLock.address)
           assert.notEqual(publicLockBefore.address, publicLock.address)
           assert.equal(
-            await unlock.publicLockImpls(version),
+            await unlock.publicLockImpls(PUBLIC_LOCK_LATEST_VERSION),
             publicLock.address
           )
           assert.equal(
             await unlock.publicLockVersions(publicLock.address),
-            version
+            PUBLIC_LOCK_LATEST_VERSION
           )
-          assert.equal(await unlock.publicLockLatestVersion(), version)
+          assert.equal(
+            await unlock.publicLockLatestVersion(),
+            PUBLIC_LOCK_LATEST_VERSION
+          )
 
           // create a lock at correct version by default
-          const { FIRST } = locks
-          const { lock } = await this.hre.unlock.createLock({
-            ...FIRST,
-            version,
-          })
-          assert.equal(await lock.publicLockVersion(), version)
+          const { lock } = await this.hre.unlock.createLock(FIRST)
+          assert.equal(
+            await lock.publicLockVersion(),
+            PUBLIC_LOCK_LATEST_VERSION
+          )
         })
       })
 
