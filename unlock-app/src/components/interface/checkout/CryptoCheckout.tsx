@@ -128,8 +128,6 @@ export const CryptoCheckout = ({
   nbPayments =
     typeof nbPayments === 'number'
       ? Math.abs(Math.floor(nbPayments))
-      : nbPayments === 'forever'
-      ? MAX_UINT
       : undefined
 
   const cantBuyWithCrypto = isAdvanced
