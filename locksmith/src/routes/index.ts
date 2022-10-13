@@ -34,7 +34,6 @@ router.use((request, _, next) => {
   } else if (request.query?.chain) {
     chain = parseInt(String(request.query.chain))
   }
-  // @ts-expect-error chain type
   request.chain = chain
   next()
 })
