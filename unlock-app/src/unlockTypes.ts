@@ -38,7 +38,7 @@ export const PaywallConfigSchema = z
     locks: z.record(PaywallConfigLockSchema),
     metadataInputs: z.array(MetadataInputSchema).optional(),
     persistentCheckout: z.boolean().optional(),
-    redirectUri: z.boolean().optional(),
+    redirectUri: z.string().optional(),
     useDelegatedProvider: z.boolean().optional(),
     network: z.number().int().optional(),
     referrer: z.string().optional(),
