@@ -23,7 +23,7 @@ import {
   userCanAffordKey,
 } from '../../../utils/checkoutLockUtils'
 import Buttons from '../buttons/lock'
-import { ETHEREUM_NETWORKS_NAMES, MAX_UINT } from '../../../constants'
+import { ETHEREUM_NETWORKS_NAMES } from '../../../constants'
 import { ConfigContext } from '../../../utils/withConfig'
 import { useAdvancedCheckout } from '../../../hooks/useAdvancedCheckout'
 import { ToastHelper } from '../../helpers/toast.helper'
