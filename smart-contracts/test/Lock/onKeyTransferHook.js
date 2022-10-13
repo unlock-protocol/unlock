@@ -24,8 +24,6 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
       ADDRESS_ZERO
     )
     keyPrice = await lock.keyPrice()
-
-    await lock.setMaxKeysPerAddress(10)
   })
 
   beforeEach(async () => {
