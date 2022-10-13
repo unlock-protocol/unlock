@@ -1,5 +1,4 @@
 import { Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
-import { useForm } from 'react-hook-form'
 import { component } from '~/propTypes'
 
 interface DynamicFormProps {
@@ -11,7 +10,7 @@ interface ComponentByTypeMapProps {
   [type: string]: any
 }
 
-const String = ({ props, ...rest }: any) => {
+const TextInput = ({ props, type, ...rest }: any) => {
   const { enum: enumList } = props
   const hasOptions = enumList?.length
 
@@ -27,7 +26,7 @@ const String = ({ props, ...rest }: any) => {
   return <Select options={options} />
 }
 
-const Boolean = ({ props, ...rest }: any) => {
+const BooleanInput = ({ props, ...rest }: any) => {
   return (
     <div className="flex items-center gap-3 ">
       <ToggleSwitch title={rest.label} {...rest} />
@@ -35,19 +34,28 @@ const Boolean = ({ props, ...rest }: any) => {
   )
 }
 
+const ObjectInput = () => {
+  return null
+}
+
+const ArrayInput = () => {
+  return null
+}
+
 const ComponentByTypeMap: ComponentByTypeMapProps = {
-  string: String,
-  boolean: Boolean,
+  string: TextInput,
+  integer: TextInput,
+  boolean: BooleanInput,
+  object: ObjectInput, // todo: add support for objects
+  array: ArrayInput, // todo: add support for arrays
+}
+
+const TypeMap: Record<string, string> = {
+  string: 'text',
+  integer: 'number',
 }
 
 export const DynamicForm = ({ title, schema }: DynamicFormProps) => {
-  console.log('dynamic form schema', schema)
-  console.log(Object.entries(schema?.properties))
-
-  const { register } = useForm({
-    defaultValues: {},
-  })
-
   return (
     <div className="flex flex-col gap-3 px-4 py-6 bg-white shadow-sm rounded-xl">
       <h2 className="text-lg font-semibold">{title}</h2>
@@ -55,13 +63,14 @@ export const DynamicForm = ({ title, schema }: DynamicFormProps) => {
         {Object.entries(schema?.properties ?? {}).map(
           ([title, props], index) => {
             const type = (props as any)?.type
+            console.log(title, type, props)
             const Component = ComponentByTypeMap?.[type] ?? undefined
+            const inputType: string = TypeMap?.[type] || type
 
-            //console.log(title, type)
             if (!component) return null
             return (
               <div key={index}>
-                <Component props={props} label={title} />
+                <Component props={props} label={title} type={inputType} />
               </div>
             )
           }

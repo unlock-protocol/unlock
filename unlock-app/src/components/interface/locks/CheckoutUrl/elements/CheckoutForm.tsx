@@ -1,5 +1,7 @@
+import { Tab } from '@headlessui/react'
 import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
+import { MetadataInputSchema, PaywallConfigLockSchema } from '~/unlockTypes'
 import { DynamicForm } from './DynamicForm'
 
 interface Schema {
@@ -12,30 +14,44 @@ const schemas: Schema[] = [
   {
     title: 'Paywall Config',
     name: 'paywallConfig',
-    schema: z.object({
-      name: z.string(),
-      defaultValue: z.string().optional(),
-      type: z.enum(['text', 'date', 'color', 'email', 'url']),
-      required: z.boolean(),
-      placeholder: z.string().optional(),
-      public: z.boolean().optional(), // optional, all non-public fields are treated as protected
-    }),
+    schema: PaywallConfigLockSchema,
+  },
+  {
+    title: 'Metadata Input',
+    name: 'MetadataInputSchema',
+    schema: MetadataInputSchema,
   },
 ]
 
 export const CheckoutForm = () => {
   return (
-    <div>
-      {schemas?.map(({ title, name, schema }) => {
-        const jsonSchema = zodToJsonSchema(schema, name)
-        return (
-          <DynamicForm
+    <Tab.Group defaultIndex={0}>
+      <Tab.List className="flex gap-6 p-2 border-b border-gray-400">
+        {schemas.map(({ title, name }) => (
+          <Tab
             key={name}
-            title={title}
-            schema={jsonSchema?.definitions[name]}
-          />
-        )
-      })}
-    </div>
+            className={({ selected }) => {
+              return `font-medium ${selected ? 'text-brand-ui-primary' : ''}`
+            }}
+          >
+            {title}
+          </Tab>
+        ))}
+      </Tab.List>
+      <Tab.Panels className="mt-6">
+        {schemas?.map(({ title, name, schema }) => {
+          const jsonSchema = zodToJsonSchema(schema, name)
+          return (
+            <Tab.Panel key={name}>
+              <DynamicForm
+                key={name}
+                title={title}
+                schema={jsonSchema?.definitions[name]}
+              />
+            </Tab.Panel>
+          )
+        })}
+      </Tab.Panels>
+    </Tab.Group>
   )
 }
