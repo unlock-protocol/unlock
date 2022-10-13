@@ -72,7 +72,7 @@ contract('Lock / erc721 / tokenSymbol', (accounts) => {
       txObj = await lock.setLockMetadata(...Object.values(metadata), {
         from: accounts[0],
       })
-      const event = txObj.logs.find(({ event }) => event === 'NewLockConfig')
+      const event = txObj.logs.find(({ event }) => event === 'LockMetadata')
       assert.equal(event.args.symbol, metadata.symbol)
     })
 
