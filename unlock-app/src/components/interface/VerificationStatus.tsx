@@ -172,8 +172,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     !isVerifier || isCheckingIn || !!invalid || !!checkedInAt
 
   const onClickVerified = () => {
-    const promptWarning = viewer && !checkedInAt && isVerifier && !showWarning
-    if (promptWarning) {
+    if (!checkedInAt && !!isVerifier && !showWarning) {
       setShowWarning(true)
     } else if (typeof onVerified === 'function') {
       onVerified()
@@ -283,6 +282,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
         lock={lock!}
         network={network}
         checkedInAt={checkedInAt}
+        showWarning={showWarning}
       >
         <CardActions />
       </MembershipCard>

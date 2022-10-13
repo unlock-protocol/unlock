@@ -3,6 +3,7 @@ import {
   FaArrowRight as ArrowRightIcon,
   FaArrowLeft as ArrowLeftIcon,
 } from 'react-icons/fa'
+import React from 'react'
 
 interface PageProps {
   page: number
@@ -32,8 +33,9 @@ const Page = ({ page, active, setPage }: PageProps) => {
 const LIMIT_NEXT_PREV_PAGE = 5
 
 const Pages = ({ maxNumbersOfPage, page, setPage }: PaginationBarProps) => {
-  const minPage = page - LIMIT_NEXT_PREV_PAGE
   const maxPage = page + LIMIT_NEXT_PREV_PAGE
+
+  const minFromMaxPage = maxNumbersOfPage - LIMIT_NEXT_PREV_PAGE
 
   return (
     <div className="flex flex-wrap gap-2">
@@ -42,16 +44,49 @@ const Pages = ({ maxNumbersOfPage, page, setPage }: PaginationBarProps) => {
         .map((_, index) => {
           const currentPage: number = index + 1
           const isCurrent = currentPage === page
-          const showPage = currentPage >= minPage && currentPage <= maxPage
+          const isLastPage = maxNumbersOfPage === currentPage
 
-          return showPage ? (
-            <Page
-              key={index}
-              page={currentPage}
-              active={isCurrent}
-              setPage={setPage}
-            />
-          ) : null
+          const showNextPage =
+            currentPage >= page &&
+            currentPage <= maxPage &&
+            page < minFromMaxPage
+
+          const showPrevPage =
+            currentPage >= minFromMaxPage &&
+            currentPage < maxNumbersOfPage &&
+            page >= minFromMaxPage
+
+          const showLastPage = isLastPage && currentPage >= maxNumbersOfPage
+
+          const showDots =
+            currentPage === maxPage &&
+            !showPrevPage &&
+            maxNumbersOfPage - maxPage > 1
+
+          return (
+            <>
+              {(showPrevPage || showNextPage) && (
+                <Page
+                  key={index}
+                  page={currentPage}
+                  active={isCurrent}
+                  setPage={setPage}
+                />
+              )}
+
+              {showDots && <span>...</span>}
+
+              {showLastPage && (
+                <div className="flex items-center gap-2">
+                  <Page
+                    page={currentPage}
+                    setPage={setPage}
+                    active={isCurrent}
+                  />
+                </div>
+              )}
+            </>
+          )
         })}
     </div>
   )

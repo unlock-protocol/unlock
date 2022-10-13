@@ -8,7 +8,6 @@ contract('Lock / getHasValidKey', (accounts) => {
 
   beforeEach(async () => {
     lock = await deployLock()
-    await lock.setMaxKeysPerAddress(10)
     await lock.updateTransferFee(0) // disable the transfer fee for this test
   })
 

@@ -26,9 +26,9 @@ interface IPublicLock
 
 
   // roles
-  function DEFAULT_ADMIN_ROLE() external pure returns (bytes32 role);
-  function KEY_GRANTER_ROLE() external pure returns (bytes32 role);
-  function LOCK_MANAGER_ROLE() external pure returns (bytes32 role);
+  function DEFAULT_ADMIN_ROLE() external view returns (bytes32 role);
+  function KEY_GRANTER_ROLE() external view returns (bytes32 role);
+  function LOCK_MANAGER_ROLE() external view returns (bytes32 role);
 
   /**
   * @notice The version number of the current implementation on this network.
@@ -37,30 +37,18 @@ interface IPublicLock
   function publicLockVersion() external pure returns (uint16);
 
   /**
-   * @dev Called by a lock manager or beneficiary to withdraw all funds from the lock and send them to the `beneficiary`.
-   * @dev Throws if called by other than a lock manager or beneficiary
+   * @dev Called by owner to withdraw all funds from the lock
    * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually
    * the same as `tokenAddress` in MixinFunds.
+   * @param _recipient specifies the address that will receive the tokens
    * @param _amount specifies the max amount to withdraw, which may be reduced when
    * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
-   *  -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor`
-   * use cases.
    */
   function withdraw(
     address _tokenAddress,
+    address payable _recipient,
     uint _amount
   ) external;
-
-  /**
-   * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
-   * @param _spender address that can spend tokens belonging to the lock
-   * @param _amount amount of tokens that can be spent by the spender
-   */
-  function approveBeneficiary(
-    address _spender,
-    uint _amount
-  ) external
-    returns (bool);
 
   /**
    * A function which lets a Lock manager of the lock to change the price for future purchases.
@@ -74,22 +62,22 @@ interface IPublicLock
   function updateKeyPricing( uint _keyPrice, address _tokenAddress ) external;
 
   /**
-   * A function to change the default duration of each key in the lock
-   * @notice keys previously bought are unaffected by this change (i.e.
+   * Update the main key properties for the entire lock: 
+   * - default duration of each key
+   * - the maximum number of keys the lock can edit
+   * - the maximum number of keys a single address can hold
+   * @notice keys previously bought are unaffected by this changes in expiration duration (i.e.
    * existing keys timestamps are not recalculated/updated)
-   * @param _newExpirationDuration the new amount of time for each key purchased 
-   * or type(uint).max for a non-expiring key
+   * @param _newExpirationDuration the new amount of time for each key purchased or type(uint).max for a non-expiring key
+   * @param _maxKeysPerAcccount the maximum amount of key a single user can own
+   * @param _maxNumberOfKeys uint the maximum number of keys
+   * @dev _maxNumberOfKeys Can't be smaller than the existing supply 
    */
-  function setExpirationDuration(uint _newExpirationDuration) external;
-
-  /**
-   * A function which lets a Lock manager update the beneficiary account,
-   * which receives funds on withdrawal.
-   * @dev Throws if called by other than a Lock manager or beneficiary
-   * @dev Throws if _beneficiary is address(0)
-   * @param _beneficiary The new address to set as the beneficiary
-   */
-  function updateBeneficiary( address _beneficiary ) external;
+   function updateLockConfig(
+    uint _newExpirationDuration,
+    uint _maxNumberOfKeys,
+    uint _maxKeysPerAcccount
+  ) external;
 
   /**
    * Checks if the user has a non-expired key.
@@ -185,12 +173,13 @@ interface IPublicLock
    * @dev Throws if called by other than a Lock manager
    * @param _recipients An array of receiving addresses
    * @param _expirationTimestamps An array of expiration Timestamps for the keys being granted
+   * @return the ids of the granted tokens
    */
   function grantKeys(
     address[] calldata _recipients,
     uint[] calldata _expirationTimestamps,
     address[] calldata _keyManagers
-  ) external;
+  ) external returns (uint256[] memory);
 
   /**
    * Allows the Lock owner to extend an existing keys with no charge.
@@ -212,6 +201,7 @@ interface IPublicLock
   * @dev Setting _value to keyPrice exactly doubles as a security feature. That way if the lock owner increases the
   * price while my transaction is pending I can't be charged more than I expected (only applicable to ERC-20 when more
   * than keyPrice is approved for spending).
+  * @return tokenIds the ids of the created tokens 
   */
   function purchase(
     uint256[] calldata _values,
@@ -219,7 +209,7 @@ interface IPublicLock
     address[] calldata _referrers,
     address[] calldata _keyManagers,
     bytes[] calldata _data
-  ) external payable;
+  ) external payable returns (uint256[] memory tokenIds);
   
   /**
   * @dev Extend function
@@ -242,7 +232,7 @@ interface IPublicLock
   * Returns the percentage of the keyPrice to be sent to the referrer (in basis points)
   * @param _referrer the address of the referrer
   */
-  function referrerFees(address _referrer) external view;
+  function referrerFees(address _referrer) external view returns (uint);
   
   /**
   * Set a specific percentage of the keyPrice to be sent to the referrer while purchasing, 
@@ -349,13 +339,13 @@ interface IPublicLock
 
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
-   * @param _keyOwner The key owner to get the refund value for.
-   * a cancelAndRefund block.timestamp.
-   * Note that due to the time required to mine a tx, the actual refund amount will be lower
+   * @param _tokenId the id of the token to get the refund value for.
+   * @notice due to the time required to mine a tx, the actual refund amount will be lower
    * than what the user reads from this call.
+   * @return refund the amount of tokens refunded
    */
   function getCancelAndRefundValue(
-    address _keyOwner
+    uint _tokenId
   ) external view returns (uint refund);
 
   function addKeyGranter(address account) external;
@@ -383,18 +373,6 @@ interface IPublicLock
   function renounceLockManager() external;
 
   /**
-   * @dev Change the maximum number of keys the lock can edit
-   * @param _maxNumberOfKeys uint the maximum number of keys
-   */
-  function setMaxNumberOfKeys (uint _maxNumberOfKeys) external;
-
-   /**
-   * Set the maximum number of keys a specific address can use
-   * @param _maxKeysPerAddress the maximum amount of key a user can own
-   */
-  function setMaxKeysPerAddress (uint _maxKeysPerAddress) external;
-
-  /**
    * @return the maximum number of key allowed for a single address
    */
   function maxKeysPerAddress() external view returns (uint);
@@ -402,8 +380,6 @@ interface IPublicLock
 
   ///===================================================================
   /// Auto-generated getter functions from public state variables
-
-  function beneficiary() external view returns (address );
 
   function expirationDuration() external view returns (uint256 );
 
@@ -578,12 +554,15 @@ interface IPublicLock
   function hasRole(bytes32 role, address account) external view returns (bool);
 
   /**
-    * @notice An ERC-20 style transfer.
+    * @param _tokenId the id of the token to transfer time from
+    * @param _to the recipient of the new token with time
     * @param _value sends a token with _value * expirationDuration (the amount of time remaining on a standard purchase).
     * @dev The typical use case would be to call this with _value 1, which is on par with calling `transferFrom`. If the user
     * has more than `expirationDuration` time remaining this may use the `shareKey` function to send some but not all of the token.
+    * @return success the result of the transfer operation
     */
   function transfer(
+    uint _tokenId,
     address _to,
     uint _value
   ) external
@@ -598,7 +577,7 @@ interface IPublicLock
     */
   function owner() external view returns (address owner);
   function setOwner(address account) external;
-  function isOwner(address account) external returns (bool isOwner);
+  function isOwner(address account) view external returns (bool isOwner);
 
   /**
   * Migrate data from the previous single owner => key mapping to 
