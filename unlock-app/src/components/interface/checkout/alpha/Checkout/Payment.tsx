@@ -1,4 +1,6 @@
 import { CheckoutService } from './checkoutMachine'
+import { Blockchain } from '@depay/web3-blockchains'
+import { route } from '@depay/web3-payments'
 import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { useActor } from '@xstate/react'
@@ -82,10 +84,37 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     getBalance()
   }, [account, wallet, setBalance, lock, getTokenBalance])
 
+  useEffect(() => {
+    const findRoutes = async () => {
+      // Thatr's where we look for the route!
+      console.log(lock)
+      const params = {
+        accept: [
+          {
+            blockchain: 'polygon',
+            token: lock!.currencyContractAddress!, // Change to 0xE for base currency?
+            amount: lock.keyPrice,
+            toAddress: lock!.address, // We use the user's address because if we pass the lock address the library will try to apply the signature?
+          },
+        ],
+        from: {
+          polygon: account,
+        },
+      }
+      console.log(params)
+
+      const paymentRoutes = await route(params)
+      console.log(paymentRoutes)
+    }
+    findRoutes()
+  }, [account, lock])
+
   const lockConfig = paywallConfig.locks[lock!.address]
 
   const isReceiverAccountOnly =
     recipients.length <= 1 && recipients[0] === account
+
+  const enableSwapAndPurchase = true
 
   const enableSuperfluid =
     (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
@@ -250,6 +279,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
               </button>
             )}
+            {enableSwapAndPurchase && <p>Here you swap!</p>}
             {allDisabled && (
               <div>
                 <p className="text-sm">

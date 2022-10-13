@@ -4,3 +4,5 @@
 declare module 'react-jazzicon'
 
 declare module '@unlock-protocol/unlock-assets'
+
+declare module '@depay/web3-payments'
