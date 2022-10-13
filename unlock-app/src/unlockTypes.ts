@@ -13,22 +13,11 @@ export const MetadataInputSchema = z.object({
   public: z.boolean().optional(), // optional, all non-public fields are treated as protected
 })
 
-export const PaywallCallToActionSchema = z.object({
-  default: z.string(),
-  expired: z.string(),
-  pending: z.string(),
-  confirmed: z.string(),
-  noWallet: z.string(),
-  metadata: z.string(),
-  card: z.string(),
-  quantity: z.string(),
-})
-
 export const PaywallConfigLockSchema = z.object({
   name: z.string().optional(),
   network: z.number().int().positive().optional(),
-  metadataInputs: z.array(MetadataInputSchema),
-  recurringPayments: z.boolean().optional(),
+  metadataInputs: z.array(MetadataInputSchema).optional(),
+  recurringPayments: z.number().int().optional(),
   captcha: z.boolean().optional(),
   password: z.boolean().optional(),
   emailRequired: z.boolean().optional(),
@@ -41,28 +30,30 @@ export const PaywallConfigLockSchema = z.object({
 
 export const PaywallConfigLocksSchema = z.record(PaywallConfigLockSchema)
 
-export const PaywallConfigSchema = z.object({
-  title: z.string().optional(),
-  icon: z.string().optional(),
-  callToAction: PaywallCallToActionSchema.partial().optional(),
-  locks: z.record(PaywallConfigLockSchema),
-  metadataInputs: z.array(MetadataInputSchema),
-  persistentCheckout: z.boolean().optional(),
-  redirectUri: z.boolean().optional(),
-  useDelegatedProvider: z.boolean().optional(),
-  network: z.number().int().optional(),
-  referrer: z.string().optional(),
-  messageToSign: z.string().optional(),
-  pessimistic: z.boolean().optional(),
-  captcha: z.boolean().optional(),
-  maxRecipients: z.number().int().optional(),
-  minRecipients: z.number().int().optional(),
-  superfluid: z.boolean().optional(),
-  hideSoldOut: z.boolean().optional(),
-  password: z.boolean().optional(),
-  emailRequired: z.boolean().optional(),
-  dataBuilder: z.string().optional(),
-})
+export const PaywallConfigSchema = z
+  .object({
+    title: z.string().optional(),
+    icon: z.string().optional(),
+    callToAction: z.any().optional(),
+    locks: z.record(PaywallConfigLockSchema),
+    metadataInputs: z.array(MetadataInputSchema).optional(),
+    persistentCheckout: z.boolean().optional(),
+    redirectUri: z.boolean().optional(),
+    useDelegatedProvider: z.boolean().optional(),
+    network: z.number().int().optional(),
+    referrer: z.string().optional(),
+    messageToSign: z.string().optional(),
+    pessimistic: z.boolean().optional(),
+    captcha: z.boolean().optional(),
+    maxRecipients: z.number().int().optional(),
+    minRecipients: z.number().int().optional(),
+    superfluid: z.boolean().optional(),
+    hideSoldOut: z.boolean().optional(),
+    password: z.boolean().optional(),
+    emailRequired: z.boolean().optional(),
+    dataBuilder: z.string().optional(),
+  })
+  .passthrough()
 
 export enum TransactionType {
   LOCK_CREATION = 'Lock Creation',
@@ -138,7 +129,7 @@ export interface Error {
   }
 }
 
-export type PaywallCallToAction = z.infer<typeof PaywallCallToActionSchema>
+export type PaywallCallToAction = any
 export type PaywallConfigLock = z.infer<typeof PaywallConfigLockSchema>
 export type MetadataInput = z.infer<typeof MetadataInputSchema>
 export type PaywallConfig = z.infer<typeof PaywallConfigSchema>
