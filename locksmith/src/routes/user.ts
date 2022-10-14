@@ -2,7 +2,8 @@ import express from 'express'
 import signatureValidationMiddleware from '../middlewares/signatureValidationMiddleware'
 
 const router = express.Router({ mergeParams: true })
-const userController = require('../controllers/userController')
+import userController from '../controllers/userController'
+import { SignedRequest } from '../types'
 
 const passwordEncryptedPrivateKeyPathRegex = new RegExp(
   '^/users/S+/passwordEncryptedPrivateKey/?$',
@@ -78,7 +79,9 @@ router.get(
 
 router.get('/:emailAddress', userController.exist)
 
-router.get(cardsPathRegex, userController.getAddressPaymentDetails)
+router.get(cardsPathRegex, (req, res) =>
+  userController.getAddressPaymentDetails(req as unknown as SignedRequest, res)
+)
 // Deprecated: we are now using ethereumAddress to store credit cards
 router.get('/:emailAddress/cards', userController.cards)
 

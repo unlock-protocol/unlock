@@ -1,6 +1,8 @@
-import app = require('../../../src/app')
-import UserOperations = require('../../../src/operations/userOperations')
-import models = require('../../../src/models')
+const models = require('../../../src/models')
+const app = require('../../../src/app')
+const request = require('supertest')
+
+import UserOperations from '../../../src/operations/userOperations'
 
 beforeAll(() => {
   const { UserReference } = models
@@ -13,8 +15,6 @@ beforeAll(() => {
 })
 
 describe("retrieving a user's recovery phrase", () => {
-  const request = require('supertest')
-
   describe('when the user exists', () => {
     it("returns the user's recovery phrase", async () => {
       expect.assertions(1)

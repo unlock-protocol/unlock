@@ -16623,9 +16623,9 @@ __metadata:
   linkType: hard
 
 "@types/bluebird@npm:*":
-  version: 3.5.36
-  resolution: "@types/bluebird@npm:3.5.36"
-  checksum: efe7484e1f6c3443c083f052efb7688b461a9f43899b1891c10b1faf92e4932d686265d10c3e02b8c8fe0c8c371774e6a55ff6eec5e79525390a1ddeee7eb41b
+  version: 3.5.37
+  resolution: "@types/bluebird@npm:3.5.37"
+  checksum: 851a2eca0ae2daa422d4bcea5f8f659a673fcff5f51d18997ffb19bb9e54b64800301b167613d9cbbebaa8fdfd2433f0f9f8bb39267efd7b6898011aedcc944d
   languageName: node
   linkType: hard
 
@@ -16805,11 +16805,11 @@ __metadata:
   linkType: hard
 
 "@types/continuation-local-storage@npm:*":
-  version: 3.2.3
-  resolution: "@types/continuation-local-storage@npm:3.2.3"
+  version: 3.2.4
+  resolution: "@types/continuation-local-storage@npm:3.2.4"
   dependencies:
     "@types/node": "*"
-  checksum: 4329f2169911207ed75e187e7b9b74ef2ed3dad25c0a0d45c5ebb5650c2b491bccf0d83b409bbc6a609a32b195c106cf36269f3a4ffc80030f451796e26de69f
+  checksum: c61e1dce54897dde8a2d080494daac173d549b7fb3b58173b2bf7aca419c1003afbd615a62a12fa736b1ad2bd5d3886f05f8fd8fb5c49af40ec1248e14d2a678
   languageName: node
   linkType: hard
 
@@ -17374,7 +17374,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:*, @types/lodash@npm:^4.14.159":
+"@types/lodash@npm:*":
+  version: 4.14.186
+  resolution: "@types/lodash@npm:4.14.186"
+  checksum: ee0c1368a8100bb6efb88335107473a41928fc307ff1ef4ff1278868ccddba9c04c68c36d1ffe3a0392ef4a956e1955f7de3203ec09df4f1655dd1b88485c549
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.14.159":
   version: 4.14.173
   resolution: "@types/lodash@npm:4.14.173"
   checksum: 9e97ef5816299e5470db1cb32a93e981af60f74f18a35d045ed4caf224a065df96bfae6e444ec96aa392fc01258592b965d840ae042eef77ef719a578c7daef8
@@ -18083,9 +18090,9 @@ __metadata:
   linkType: hard
 
 "@types/validator@npm:*":
-  version: 13.6.3
-  resolution: "@types/validator@npm:13.6.3"
-  checksum: b06b684d4d1ff4b59449a974cb8cdd96ccde4660958e541acf66711c8f60026912202e4d924ccd2016ec8bdd4e1f71e8122e5c568deefcdecffc04a73acff460
+  version: 13.7.7
+  resolution: "@types/validator@npm:13.7.7"
+  checksum: e32d2bc3b86317da2dff7565e371a2bd0108cdbd7c0b426070c9b9fab30cf07572eea4fb193cb7420261b2eb99b2fc112bf021d48f98eee181844a47533f817a
   languageName: node
   linkType: hard
 
