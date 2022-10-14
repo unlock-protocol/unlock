@@ -135,6 +135,8 @@ export function createLockMetadata(
 ): LockMetadata {
   const LockMetadataEvent = changetype<LockMetadata>(newMockEvent())
 
+  LockMetadataEvent.address = Address.fromString(lockAddress)
+
   // set existing lock address
   LockMetadataEvent.parameters = []
 

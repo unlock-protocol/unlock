@@ -199,7 +199,6 @@ export function handlePricingChanged(event: PricingChangedEvent): void {
 export function handleLockMetadata(event: LockMetadataEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock) {
-    log.info('name: {}, symbol: {}', [event.params.name, event.params.symbol])
     lock.name = event.params.name
     lock.symbol = event.params.symbol
     // lock.symbol = event.params.symbol
