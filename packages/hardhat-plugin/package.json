@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/hardhat-plugin",
-  "version": "0.0.15-alpha.2",
+  "version": "0.0.15-alpha.4",
   "description": "Hardhat Plugin for Unlock Protocol",
   "author": "Unlock Protocol",
   "license": "MIT",
@@ -56,7 +56,7 @@
   },
   "dependencies": {
     "@nomiclabs/hardhat-ethers": "2.1.1",
-    "@unlock-protocol/contracts": "0.0.11-alpha.1",
+    "@unlock-protocol/contracts": "0.0.11-alpha.3",
     "eslint-plugin-jest": "27.0.4",
     "eslint-plugin-mocha": "10.1.0"
   }
