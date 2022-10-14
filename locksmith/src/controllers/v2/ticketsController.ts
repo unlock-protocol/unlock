@@ -4,15 +4,9 @@ import { notifyNewKeyToWedlocks } from '../../operations/wedlocksOperations'
 import Normalizer from '../../utils/normalizer'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
-// import { generateQrCode } from '../../utils/qrcode'
+import { generateQrCode } from '../../utils/qrcode'
 import { KeyMetadata } from '../../models/keyMetadata'
 import { Lock } from '@unlock-protocol/types'
-
-const generate = async () => {
-  const satori = await import('satori')
-  console.log(satori)
-  return ''
-}
 
 export class TicketsController {
   public web3Service: Web3Service
@@ -148,14 +142,19 @@ export class TicketsController {
    * @param response
    * @returns
    */
-  async getQrCode(_: Request, response: Response) {
+  async getQrCode(request: Request, response: Response) {
     try {
-      // const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
-      // const network = Number(request.params.network)
-      // const tokenId = request.params.keyId.toLowerCase()
+      const lockAddress = Normalizer.ethereumAddress(request.params.lockAddress)
+      const network = Number(request.params.network)
+      const tokenId = request.params.keyId.toLowerCase()
 
-      const qrCode = await generate()
-      console.log(qrCode)
+      const qrCode = (
+        await generateQrCode({
+          network,
+          lockAddress,
+          tokenId,
+        })
+      ).replace('data:image/gif;base64,', '')
       const img = Buffer.from(qrCode, 'base64')
 
       response.writeHead(200, {
