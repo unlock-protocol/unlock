@@ -80,7 +80,7 @@ export function Confirm({
       ? MAX_UINT
       : undefined
 
-  const recurringPaymentAmount = typeof recurringPayment
+  const recurringPaymentAmount = recurringPayment
     ? Math.abs(Math.floor(Number(recurringPayment)))
     : undefined
 
