@@ -155,7 +155,7 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
                 <input {...getInputProps()} />
                 <div className="max-w-xs space-y-2 text-center">
                   <h3 className="text-lg font-medium">
-                    Drop your recepients file here
+                    Drop your recipients file here
                   </h3>
                   <p className="text-sm text-gray-600">
                     Download the template file and fill out the values in the
