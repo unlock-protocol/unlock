@@ -6,7 +6,7 @@ const TestEventHooks = artifacts.require('TestEventHooks.sol')
 let lock
 let testEventHooks
 
-contract('Lock / onKeyPurchaseHook', (accounts) => {
+contract('Lock / onKeyGrantHook', (accounts) => {
   const lockManager = accounts[0]
   const to = accounts[2]
   const keyManager = accounts[2]

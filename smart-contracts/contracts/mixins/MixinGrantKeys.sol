@@ -42,8 +42,8 @@ contract MixinGrantKeys is
         _expirationTimestamps[i]
       ); 
 
-      if(address(onKeyGrantedHook) != address(0)) {
-        onKeyGrantedHook.onKeyGranted(
+      if(address(onKeyGrantHook) != address(0)) {
+        onKeyGrantHook.onKeyGranted(
           tokenIds[i],
           msg.sender, 
           _recipients[i],

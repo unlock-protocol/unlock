@@ -141,7 +141,7 @@ interface IPublicLock
    * @param _onTokenURIHook Hook called to generate a data URI used for NFT metadata
    * @param _onKeyTransferHook Hook called when a key is transfered
    * @param _onKeyExtendHook Hook called when a key is extended or renewed
-   * @param _onKeyGrantedHook Hook called when a key is granted
+   * @param _onKeyGrantHook Hook called when a key is granted
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
@@ -150,7 +150,7 @@ interface IPublicLock
     address _onTokenURIHook,
     address _onKeyTransferHook,
     address _onKeyExtendHook,
-    address _onKeyGrantedHook
+    address _onKeyGrantHook
   ) external;
 
   /**
@@ -354,7 +354,7 @@ interface IPublicLock
 
   function onKeyExtendHook() external view returns(address hookAddress);
 
-  function onKeyGrantedHook() external view returns(address hookAddress);
+  function onKeyGrantHook() external view returns(address hookAddress);
 
   function revokeKeyGranter(address _granter) external;
 

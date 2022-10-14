@@ -6,7 +6,7 @@ pragma solidity >=0.5.17 <0.9.0;
  * @notice Functions to be implemented by a KeyGrantedHook.
  * @dev Lock hooks are configured by calling `setEventHooks` on the lock.
  */
-interface ILockKeyGrantedHook
+interface ILockKeyGrantHook
 {
   /**
    * @notice If the lock owner has registered an implementer then this hook
