@@ -60,7 +60,9 @@ contract('LockSerializer', () => {
       )
 
       // custom URI
-      await lock.connect(lockOwner).setBaseTokenURI(baseTokenURI)
+      await lock
+        .connect(lockOwner)
+        .setLockMetadata(await lock.name(), await lock.symbol(), baseTokenURI)
       const serializedCustomBaseURI = await serializer.serialize(lock.address)
       await assert.equal(
         serializedCustomBaseURI.tokenURISample,
