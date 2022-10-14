@@ -52,9 +52,9 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
 
   event OnKeyGranted(
     uint tokenId, 
-    address operator, 
     address from, 
     address to, 
+    address keyManager,
     uint expiration
   );
 
@@ -87,14 +87,15 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
     uint _tokenId,
     address _from,
     address _recipient,
+    address _keyManager,
     uint _expiration
   ) external
   {
     emit OnKeyGranted(
       _tokenId, 
-      msg.sender, 
       _from, 
       _recipient, 
+      _keyManager,
       _expiration
     );
   }
