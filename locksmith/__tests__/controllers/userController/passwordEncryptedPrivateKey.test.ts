@@ -1,7 +1,11 @@
 import { ethers } from 'ethers'
+import UserOperations from '../../../src/operations/userOperations'
+const models = require('../../../src/models')
+const { User } = models
+const request = require('supertest')
+const app = require('../../../src/app')
 
-import models = require('../../../src/models')
-
+const Base64 = require('../../../src/utils/base64')
 function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
@@ -32,14 +36,6 @@ beforeAll(() => {
 })
 
 describe("updating a user's password encrypted private key", () => {
-  const models = require('../../../src/models')
-  const { User } = models
-  const request = require('supertest')
-  const app = require('../../../src/app')
-
-  const UserOperations = require('../../../src/operations/userOperations')
-  const Base64 = require('../../../src/utils/base64')
-
   const wallet = new ethers.Wallet(
     '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
   )
