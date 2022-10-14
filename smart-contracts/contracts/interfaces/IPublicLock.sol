@@ -156,7 +156,8 @@ interface IPublicLock
    * @param _onValidKeyHook Hook called to determine if the contract should overide the status for a given address
    * @param _onTokenURIHook Hook called to generate a data URI used for NFT metadata
    * @param _onKeyTransferHook Hook called when a key is transfered
-   * @param _onKeyExtendHook Hook called when a key is exended or renewed
+   * @param _onKeyExtendHook Hook called when a key is extended or renewed
+   * @param _onKeyGrantedHook Hook called when a key is granted
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
@@ -164,7 +165,8 @@ interface IPublicLock
     address _onValidKeyHook,
     address _onTokenURIHook,
     address _onKeyTransferHook,
-    address _onKeyExtendHook
+    address _onKeyExtendHook,
+    address _onKeyGrantedHook
   ) external;
 
   /**
@@ -367,6 +369,8 @@ interface IPublicLock
   function onKeyTransferHook() external view returns(address hookAddress);
 
   function onKeyExtendHook() external view returns(address hookAddress);
+
+  function onKeyGrantedHook() external view returns(address hookAddress);
 
   function revokeKeyGranter(address _granter) external;
 

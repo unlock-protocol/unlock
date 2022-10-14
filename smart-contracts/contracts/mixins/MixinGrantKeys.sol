@@ -41,6 +41,16 @@ contract MixinGrantKeys is
         _keyManagers[i],  
         _expirationTimestamps[i]
       ); 
+
+      if(address(onKeyGrantedHook) != address(0)) {
+        onKeyGrantedHook.onKeyGranted(
+          tokenIds[i],
+          msg.sender, 
+          _recipients[i],
+          _keyManagers[i],  
+          _expirationTimestamps[i]
+        );
+      }
     }
     return tokenIds;
   }

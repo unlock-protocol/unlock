@@ -10,6 +10,7 @@ import './MixinFunds.sol';
 import '../interfaces/hooks/ILockKeyCancelHook.sol';
 import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
 import '../interfaces/hooks/ILockValidKeyHook.sol';
+import '../interfaces/hooks/ILockKeyGrantedHook.sol';
 import '../interfaces/hooks/ILockTokenURIHook.sol';
 import '../interfaces/hooks/ILockKeyTransferHook.sol';
 import '../interfaces/hooks/ILockKeyExtendHook.sol';
@@ -82,6 +83,7 @@ contract MixinLockCore is
   ILockKeyCancelHook public onKeyCancelHook;
   ILockValidKeyHook public onValidKeyHook;
   ILockTokenURIHook public onTokenURIHook;
+  ILockKeyGrantedHook public onKeyGrantedHook;
 
   // use to check data version (added to v10)
   uint public schemaVersion;
@@ -198,7 +200,8 @@ contract MixinLockCore is
     address _onValidKeyHook,
     address _onTokenURIHook,
     address _onKeyTransferHook,
-    address _onKeyExtendHook
+    address _onKeyExtendHook,
+    address _onKeyGrantedHook
   ) external
   {
     _onlyLockManager();
@@ -209,6 +212,7 @@ contract MixinLockCore is
     if(_onTokenURIHook != address(0) && !_onTokenURIHook.isContract()) { revert INVALID_HOOK(3); }
     if(_onKeyTransferHook != address(0) && !_onKeyTransferHook.isContract()) { revert INVALID_HOOK(4); }
     if(_onKeyExtendHook != address(0) && !_onKeyExtendHook.isContract()) { revert INVALID_HOOK(5); }
+    if(_onKeyGrantedHook != address(0) && !_onKeyGrantedHook.isContract()) { revert INVALID_HOOK(6); }
     
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
@@ -216,6 +220,7 @@ contract MixinLockCore is
     onValidKeyHook = ILockValidKeyHook(_onValidKeyHook);
     onKeyTransferHook = ILockKeyTransferHook(_onKeyTransferHook);
     onKeyExtendHook = ILockKeyExtendHook(_onKeyExtendHook);
+    onKeyGrantedHook = ILockKeyGrantedHook(_onKeyGrantedHook);
   }
 
   function totalSupply()
@@ -227,6 +232,7 @@ contract MixinLockCore is
 
   // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
   // decreased from 998 to 997 when adding `onKeyTransferHook` in v11
-  // decreased from 997 to 996 when adding `onKeyExtendHook` in v11
-  uint256[996] private __safe_upgrade_gap;
+  // decreased from 997 to 996 when adding `onKeyExtendHook` in v12
+  // decreased from 996 to 995 when adding `onKeyGrantedHook` in v12
+  uint256[995] private __safe_upgrade_gap;
 }
