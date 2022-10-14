@@ -1,5 +1,9 @@
 # Changes
 
+# 0.30.1
+
+- Add totalApproval option in purchase method
+
 # 0.30.0
 
 - Add subgraph service
