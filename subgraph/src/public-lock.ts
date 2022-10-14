@@ -198,9 +198,33 @@ export function handlePricingChanged(event: PricingChangedEvent): void {
 
 export function handleLockMetadata(event: LockMetadataEvent): void {
   const lock = Lock.load(event.address.toHexString())
+  const lockContract = PublicLock.bind(event.address)
+
   if (lock) {
     lock.name = event.params.name
     lock.symbol = event.params.symbol
+
+    // handle change in URI for all keys
+    const totalKeys = lock.totalKeys
+    const baseTokenURI = lockContract.try_tokenURI(BigInt.fromI32(0))
+
+    // update only if baseTokenURI has changed
+    if (
+      !baseTokenURI.reverted &&
+      baseTokenURI.value !== event.params.baseTokenURI
+    ) {
+      for (let i = 0; i < totalKeys.toI32(); i++) {
+        const keyID = genKeyID(event.address, `${i + 1}`)
+        const key = Key.load(keyID)
+        if (key) {
+          const tokenURI = lockContract.try_tokenURI(key.tokenId)
+          if (!tokenURI.reverted) {
+            key.tokenURI = tokenURI.value
+          }
+        }
+      }
+    }
+
     // lock.symbol = event.params.symbol
     lock.save()
   }
