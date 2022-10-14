@@ -105,7 +105,7 @@ contract MixinLockCore is
   }
   
   function _initializeMixinLockCore(
-    address payable _lockOwner,
+    address payable,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
