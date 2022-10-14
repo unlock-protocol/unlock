@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.29.3",
+  "version": "0.30.0",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -20,7 +20,9 @@
     "ci": "yarn test && yarn lint",
     "prepublishOnly": "yarn build",
     "grant-keys": "node ./scripts/grant-keys.js",
-    "generate": "openapi-generator-cli generate -i ./openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./src/@generated/client"
+    "generate:locksmith": "openapi-generator-cli generate -i ./openapi.yml -g typescript-axios -c ./openapi.ts.config.json -o ./src/@generated/client",
+    "generate:subgraph": "yarn graphql-codegen",
+    "generate": "yarn generate:locksmith && yarn generate:subgraph"
   },
   "author": "Unlock Inc",
   "license": "MIT",
@@ -36,6 +38,10 @@
     "@babel/cli": "7.18.10",
     "@babel/core": "7.18.10",
     "@babel/preset-env": "7.18.10",
+    "@graphql-codegen/cli": "2.13.4",
+    "@graphql-codegen/typescript": "2.7.4",
+    "@graphql-codegen/typescript-graphql-request": "4.5.6",
+    "@graphql-codegen/typescript-operations": "2.5.4",
     "@nomiclabs/hardhat-ethers": "2.1.1",
     "@openapitools/openapi-generator-cli": "2.5.2",
     "@openzeppelin/hardhat-upgrades": "1.19.1",
@@ -56,6 +62,8 @@
   },
   "dependencies": {
     "cross-fetch": "3.1.5",
+    "graphql": "16.6.0",
+    "graphql-request": "5.0.0",
     "siwe": "1.1.6"
   }
 }
