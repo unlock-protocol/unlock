@@ -1,14 +1,11 @@
 import { Tab } from '@headlessui/react'
+import { useState } from 'react'
 import { z } from 'zod'
-import zodToJsonSchema from 'zod-to-json-schema'
-import {
-  MetadataInputSchema,
-  PaywallConfigLockSchema,
-  PaywallConfigSchema,
-} from '~/unlockTypes'
+
+import { BasicPaywallConfigSchema, MetadataInputSchema } from '~/unlockTypes'
 import { DynamicForm } from './DynamicForm'
 
-interface Schema {
+export interface Schema {
   title: string
   name: string
   schema: z.Schema
@@ -17,7 +14,7 @@ interface Schema {
 
 const schemas: Schema[] = [
   {
-    title: 'Base Config',
+    title: 'Default Config',
     name: 'baseConfig',
     description: {
       title: 'Title for your checkout. This will show up on the head.',
@@ -33,53 +30,52 @@ const schemas: Schema[] = [
       hideSoldOut:
         'When set to true, sold our locks are not shown to users when they load the checkout modal.',
     },
-    schema: PaywallConfigSchema.pick({
-      title: true,
-      icon: true,
-      persistentCheckout: true,
-      referrer: true,
-      messageToSign: true,
-      pessimistic: true,
-      hideSoldOut: true,
-    }),
+    schema: BasicPaywallConfigSchema,
   },
   {
-    title: 'Locks',
+    title: 'Add locks',
     name: 'MetadataInputSchema',
     schema: MetadataInputSchema,
   },
 ]
 
 export const CheckoutForm = () => {
+  const [tabOpen, setTabOpen] = useState(0)
+
   return (
-    <Tab.Group defaultIndex={0}>
-      <Tab.List className="flex gap-6 p-2 border-b border-gray-400">
-        {schemas.map(({ title, name }) => (
-          <Tab
-            key={name}
-            className={({ selected }) => {
-              return `font-medium ${selected ? 'text-brand-ui-primary' : ''}`
-            }}
-          >
-            {title}
-          </Tab>
-        ))}
-      </Tab.List>
-      <Tab.Panels className="mt-6">
-        {schemas?.map(({ title, name, schema, description = [] }) => {
-          const jsonSchema = zodToJsonSchema(schema, name)
-          return (
-            <Tab.Panel key={name}>
-              <DynamicForm
-                key={name}
-                title={title}
-                schema={jsonSchema?.definitions[name]}
-                description={description}
-              />
-            </Tab.Panel>
-          )
-        })}
-      </Tab.Panels>
-    </Tab.Group>
+    <div className="px-4 py-6 bg-white rounded-xl">
+      <Tab.Group defaultIndex={tabOpen}>
+        <Tab.List className="flex gap-6">
+          {schemas.map(({ title, name }, index) => (
+            <Tab
+              key={name}
+              className={({ selected }) => {
+                return `font-medium outline-none ${
+                  selected ? 'text-brand-ui-primary' : ''
+                }`
+              }}
+              onClick={() => setTabOpen(index)}
+            >
+              {title}
+            </Tab>
+          ))}
+        </Tab.List>
+        <Tab.Panels>
+          {schemas?.map(({ title, name, schema, description = {} }) => {
+            return (
+              <Tab.Panel key={name}>
+                <DynamicForm
+                  key={name}
+                  title={title}
+                  name={name}
+                  schema={schema}
+                  description={description}
+                />
+              </Tab.Panel>
+            )
+          })}
+        </Tab.Panels>
+      </Tab.Group>
+    </div>
   )
 }

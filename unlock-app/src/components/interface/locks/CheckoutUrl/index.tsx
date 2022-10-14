@@ -13,9 +13,13 @@ const Header = () => {
 
 export const CheckoutUrlPage = () => {
   return (
-    <div className="grid grid-cols-5 gap-10">
-      <div className="col-span-2">{/* preview component space*/}</div>
-      <div className="col-span-3">
+    <div className="grid grid-cols-5 gap-8 pb-20">
+      <div className="col-span-2">
+        <div className="flex items-center justify-center w-full h-screen bg-gray-300 rounded-xl">
+          <span className="text-sm">preview</span>
+        </div>
+      </div>
+      <div className="flex flex-col col-span-3 gap-4">
         <Header />
         <CheckoutForm />
       </div>

@@ -55,6 +55,16 @@ export const PaywallConfigSchema = z
   })
   .passthrough()
 
+export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
+  title: true,
+  icon: true,
+  persistentCheckout: true,
+  referrer: true,
+  messageToSign: true,
+  pessimistic: true,
+  hideSoldOut: true,
+})
+
 export enum TransactionType {
   LOCK_CREATION = 'Lock Creation',
   KEY_PURCHASE = 'Key Purchase',
