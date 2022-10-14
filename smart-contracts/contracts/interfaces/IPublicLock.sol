@@ -103,39 +103,23 @@ interface IPublicLock
   function numberOfOwners() external view returns (uint);
 
   /**
-   * Allows a Lock manager to assign a descriptive name for this Lock.
-   * @param _lockName The new name for the lock
-   * @dev Throws if called by other than a Lock manager
+   * Allows the Lock owner to assign 
+   * @param _lockName a descriptive name for this Lock.
+   * @param _lockSymbol a Symbol for this Lock (default to KEY).
+   * @param _baseTokenURI the baseTokenURI for this Lock
    */
-  function updateLockName(
-    string calldata _lockName
-  ) external;
-
-  /**
-   * Allows a Lock manager to assign a Symbol for this Lock.
-   * @param _lockSymbol The new Symbol for the lock
-   * @dev Throws if called by other than a Lock manager
-   */
-  function updateLockSymbol(
-    string calldata _lockSymbol
-  ) external;
-
-  /**
-    * @dev Gets the token symbol
-    * @return string representing the token symbol
-    */
-  function symbol()
-    external view
-    returns(string memory);
-
-    /**
-   * Allows a Lock manager to update the baseTokenURI for this Lock.
-   * @dev Throws if called by other than a Lock manager
-   * @param _baseTokenURI String representing the base of the URI for this lock.
-   */
-  function setBaseTokenURI(
+  function setLockMetadata(
+    string calldata _lockName,
+    string calldata _lockSymbol,
     string calldata _baseTokenURI
   ) external;
+
+  /**
+   * @dev Gets the token symbol
+   * @return string representing the token symbol
+   */
+  function symbol() external view returns(string memory);
+
 
   /**  @notice A distinct Uniform Resource Identifier (URI) for a given asset.
    * @dev Throws if `_tokenId` is not a valid NFT. URIs are defined in RFC
