@@ -83,7 +83,6 @@ contract MixinLockCore is
   ILockKeyCancelHook public onKeyCancelHook;
   ILockValidKeyHook public onValidKeyHook;
   ILockTokenURIHook public onTokenURIHook;
-  ILockKeyGrantHook public onKeyGrantHook;
 
   // use to check data version (added to v10)
   uint public schemaVersion;
@@ -94,8 +93,9 @@ contract MixinLockCore is
   // one more hook (added to v11)
   ILockKeyTransferHook public onKeyTransferHook;
 
-  // one more hook (added to v12)
+  // two more hooks (added to v12)
   ILockKeyExtendHook public onKeyExtendHook;
+  ILockKeyGrantHook public onKeyGrantHook;
 
   // modifier to check if data has been upgraded
   function _lockIsUpToDate() internal view {
