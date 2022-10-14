@@ -220,6 +220,7 @@ export function handleLockMetadata(event: LockMetadataEvent): void {
           const tokenURI = lockContract.try_tokenURI(key.tokenId)
           if (!tokenURI.reverted) {
             key.tokenURI = tokenURI.value
+            key.save()
           }
         }
       }

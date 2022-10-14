@@ -127,3 +127,67 @@ describe('Upgrade a lock', function () {
     expect(parseInt(lockInGraphAfterUpgrade.version)).to.equals(latestVersion)
   })
 })
+
+describe('Keep track of changes in metadata', function () {
+  let lock: Contract
+  let lockAddress: string
+  let lockInGraph: any
+  let tokenIds: [BigNumber]
+
+  before(async () => {
+    ;({ lock } = await unlock.createLock({ ...lockParams }))
+    lockAddress = lock.address.toLowerCase()
+
+    // purchase a bunch of keys
+    ;({ tokenIds } = await purchaseKeys(lockAddress, 3))
+  })
+  describe('defaults', () => {
+    before(async () => {
+      await awaitTimeout(2000)
+      lockInGraph = await subgraph.getLock(lockAddress)
+    })
+    it('name is correct ', async () => {
+      expect(lockInGraph.name).to.equals(lockParams.name)
+    })
+    it('symbol is correct ', async () => {
+      expect(lockInGraph.symbol).to.equals(await lock.symbol())
+    })
+    it('tokenURIs are correct ', async () => {
+      // default tokenURI before config
+      const unlockContract = await unlock.getUnlockContract()
+      const baseTokenURI = await unlockContract.globalBaseTokenURI()
+      expect(await lock.tokenURI(0)).to.equals(baseTokenURI)
+
+      // lockInGraph
+      expect(lockInGraph.totalKeys).to.equals(3)
+      for (let i = 0; i < lockInGraph.totalKeys; i++) {
+        const keyInGraph = await subgraph.getKey(lockAddress, tokenIds[i])
+        expect(await lock.tokenURI(tokenIds[i])).to.equals(keyInGraph.tokenURI)
+      }
+    })
+  })
+
+  describe('when metadata changes', () => {
+    const metadata = {
+      name: 'Lock Metadata',
+      symbol: 'METAKEY',
+      baseTokenURI: 'https:/custom-lock.com/api/key/',
+    }
+
+    before(async () => {
+      await lock.setLockMetadata(...Object.values(metadata))
+      await awaitTimeout(2000)
+      lockInGraph = await subgraph.getLock(lockAddress)
+    })
+    it('set correctly', async () => {
+      expect(lockInGraph.name).to.equals(metadata.name)
+      expect(lockInGraph.symbol).to.equals(metadata.symbol)
+      for (let i = 0; i < lockInGraph.totalKeys; i++) {
+        const keyInGraph = await subgraph.getKey(lockAddress, tokenIds[i])
+        expect(await lock.tokenURI(tokenIds[i])).to.equals(
+          `${keyInGraph.tokenURI}`
+        )
+      }
+    })
+  })
+})

@@ -6,6 +6,8 @@ import {
   DefaultOptions,
 } from '@apollo/client'
 import { HttpLink } from 'apollo-link-http'
+import { genKeyId } from './keys'
+import type { BigNumber } from 'ethers'
 
 const subgraphURI = `http://${
   process.env.CI ? 'graph-node' : '127.0.0.1'
@@ -46,6 +48,7 @@ const getLockQuery = gql`
       lockManagers
       expirationDuration
       name
+      symbol
       totalKeys
       createdAtBlock
     }
@@ -61,4 +64,31 @@ export const getLock = async (lockAddress: string) => {
     },
   })
   return lock
+}
+
+const getKeyQuery = gql`
+  query Key($id: Bytes!) {
+    key(id: $id) {
+      lock
+      tokenId
+      owner
+      manager
+      expiration
+      tokenURI
+      cancelled
+      createdAtBlock
+    }
+  }
+`
+export const getKey = async (lockAddress: string, tokenId: BigNumber) => {
+  const keyId = genKeyId(lockAddress, tokenId)
+  const {
+    data: { key },
+  } = await subgraph.query({
+    query: getKeyQuery,
+    variables: {
+      id: keyId,
+    },
+  })
+  return key
 }
