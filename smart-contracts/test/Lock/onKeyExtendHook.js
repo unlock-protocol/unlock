@@ -47,7 +47,8 @@ contract('Lock / onKeyExtendHook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address
+      testEventHooks.address,
+      ADDRESS_ZERO
     )
     expirationDuration = await lock.expirationDuration()
   })
@@ -121,7 +122,8 @@ contract('Lock / onKeyExtendHook', (accounts) => {
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
-        accounts[1]
+        accounts[1],
+        ADDRESS_ZERO
       ),
       'INVALID_HOOK(5)'
     )
