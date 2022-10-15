@@ -7,15 +7,17 @@ export const prepareAll = (template, opts = {}) => {
   Object.keys(template).forEach((format) => {
     if (['html', 'text', 'subject'].indexOf(format) > -1) {
       const [compiled, getImages] = prepare(template[format], opts)
-      const images = getImages()
 
-      images.forEach((image) => {
-        prepared.attachments.push(image)
-      })
-      prepared[format] = compiled
+      prepared[format] = (args) => {
+        const content = compiled(args)
+        const images = getImages()
+        images.forEach((image) => {
+          prepared.attachments.push(image)
+        })
+        return content
+      }
     }
   })
-
   return prepared
 }
 
