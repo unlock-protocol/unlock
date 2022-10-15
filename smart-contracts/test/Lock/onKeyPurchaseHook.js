@@ -23,6 +23,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
+      ADDRESS_ZERO,
       ADDRESS_ZERO
     )
     keyPrice = new BigNumber(await lock.keyPrice())
@@ -81,6 +82,7 @@ contract('Lock / onKeyPurchaseHook', (accounts) => {
       await reverts(
         lock.setEventHooks(
           accounts[1],
+          ADDRESS_ZERO,
           ADDRESS_ZERO,
           ADDRESS_ZERO,
           ADDRESS_ZERO,
