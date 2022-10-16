@@ -29,7 +29,7 @@ const contractsToDocument = fs
 const settings = {
   optimizer: {
     enabled: true,
-    runs: 200,
+    runs: 80,
   },
 }
 
