@@ -19,6 +19,7 @@ const { ethers, run } = require('hardhat')
 const { networks } = require('@unlock-protocol/networks')
 const submitTx = require('../multisig/submitTx')
 const deployTemplate = require('../deployments/template')
+const contracts = require('@unlock-protocol/contracts')
 
 const {
   addSomeETH,
@@ -27,7 +28,7 @@ const {
   deployLock,
 } = require('../../test/helpers')
 
-async function main({ publicLockAddress } = {}) {
+async function main({ publicLockAddress, publicLockVersion } = {}) {
   await run('compile')
 
   // make sure we get the correct chain id on local mainnet fork
@@ -36,10 +37,23 @@ async function main({ publicLockAddress } = {}) {
     : await ethers.provider.getNetwork()
 
   const { unlockAddress, multisig } = networks[chainId]
+  let publicLock
 
-  // if not address is specified, deploy the latest public lock
+  // if not address is specified, deploy the lock template
   if (!publicLockAddress) {
-    publicLockAddress = await deployTemplate({})
+    // deploy from contracts package
+    if (publicLockVersion) {
+      console.log(
+        `Deploying PublicLock v${publicLockVersion} from contracts package`
+      )
+      publicLockAddress = await deployTemplate({ publicLockVersion })
+      const { abi } = contracts[`PublicLockV${publicLockVersion}`]
+      publicLock = await ethers.getContractAt(abi, publicLockAddress)
+    } else {
+      // deploy latest from local folder
+      publicLockAddress = await deployTemplate({})
+      publicLock = await ethers.getContractAt('PublicLock', publicLockAddress)
+    }
   }
 
   // get multisig signer
@@ -52,7 +66,6 @@ async function main({ publicLockAddress } = {}) {
     await addSomeETH(signer.address)
   }
 
-  const publicLock = await ethers.getContractAt('PublicLock', publicLockAddress)
   const version = await publicLock.publicLockVersion()
 
   console.log(`Setting PublicLock v${version} on network ${chainId}`)
