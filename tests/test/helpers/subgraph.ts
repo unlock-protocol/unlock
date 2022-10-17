@@ -51,6 +51,8 @@ const getLockQuery = gql`
       symbol
       totalKeys
       createdAtBlock
+      maxNumberOfKeys
+      maxKeysPerAddress
     }
   }
 `

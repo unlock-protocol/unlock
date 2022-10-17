@@ -7,6 +7,7 @@ const {
 
 const keyPrice = ethers.utils.parseEther('0.01')
 const previousVersionNumber = 11
+const nextVersionNumber = previousVersionNumber + 1
 
 describe('PublicLock upgrade v11 > v12', () => {
   let lock
@@ -51,6 +52,10 @@ describe('PublicLock upgrade v11 > v12', () => {
     await lock.connect(lockOwner).setMaxKeysPerAddress(10)
   })
 
+  it('past version has correct version number', async () => {
+    assert.equal(await lock.publicLockVersion(), previousVersionNumber)
+  })
+
   describe('perform upgrade', async () => {
     let buyers
     let tokenIds
@@ -60,7 +65,7 @@ describe('PublicLock upgrade v11 > v12', () => {
     before(async () => {
       // buy some keys
       const signers = await ethers.getSigners()
-      buyers = signers.slice(1, 11)
+      buyers = signers.slice(1, 10)
 
       // purchase many keys
       const tx = await lock.purchase(
@@ -99,7 +104,7 @@ describe('PublicLock upgrade v11 > v12', () => {
     })
 
     it('upgraded successfully ', async () => {
-      assert.equal(await lock.publicLockVersion(), 12)
+      assert.equal(await lock.publicLockVersion(), nextVersionNumber)
     })
 
     it('totalSupply is preserved', async () => {
@@ -110,7 +115,10 @@ describe('PublicLock upgrade v11 > v12', () => {
     })
 
     it('schemaVersion is not set correctly before migration', async () => {
-      assert.equal((await lock.schemaVersion()).toNumber(), 11)
+      assert.equal(
+        (await lock.schemaVersion()).toNumber(),
+        previousVersionNumber
+      )
     })
 
     describe('data migration', () => {

@@ -9,6 +9,8 @@ type Lock @entity {
   lockManagers: [Bytes!]!
   version: BigInt!
   totalKeys: BigInt!
+  maxNumberOfKeys: BigInt
+  maxKeysPerAddress: BigInt
   keys: [Key!] @derivedFrom(field: "lock")
   createdAtBlock: BigInt
 }

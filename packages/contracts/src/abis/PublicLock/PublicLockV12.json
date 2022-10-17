@@ -427,7 +427,7 @@
         {
           "indexed": false,
           "internalType": "uint256",
-          "name": "maxKeysPerAddress",
+          "name": "maxKeysPerAcccount",
           "type": "uint256"
         }
       ],
@@ -1447,6 +1447,19 @@
     },
     {
       "inputs": [],
+      "name": "onKeyGrantHook",
+      "outputs": [
+        {
+          "internalType": "contract ILockKeyGrantHook",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "onKeyPurchaseHook",
       "outputs": [
         {
@@ -1828,6 +1841,11 @@
         {
           "internalType": "address",
           "name": "_onKeyExtendHook",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_onKeyGrantHook",
           "type": "address"
         }
       ],
