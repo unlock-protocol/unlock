@@ -47,8 +47,9 @@ export const retrieveLocks = async (
   // The locks from the subgraph miss some important things, such as balance,
   // ERC20 info.. etc so we need to retrieve them from unlock-js too.
   // TODO: add these missing fields to the graph!
+
+  // ignore localhost
   if (network == 31337) return []
-  console.log('NETWORK', network)
   const service = new SubgraphService()
   const locks = await service.locks(
     {
