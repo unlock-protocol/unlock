@@ -197,25 +197,25 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
               </div>
             </div>
           </div>
-          <div className="grid items-center grid-cols-3 gap-3 md:col-span-3 md:gap-14">
-            <div className="col-span-1">
-              <Detail
-                label="Price"
-                value={lock.keyPrice}
-                icon={TagIcon}
-                prepend={<CryptoIcon symbol={symbol} size={25} />}
-              />
-            </div>
-            <div className="col-span-1">
-              <Detail label="Key Duration" value={duration} icon={TimeIcon} />
-            </div>
-            <div className="col-span-1">
-              <Detail
-                label="Key Sold"
-                value={lock.outstandingKeys?.toString()}
-                icon={KeyIcon}
-              />
-            </div>
+          <div className="grid items-center grid-cols-4 gap-3 md:col-span-3 md:gap-14">
+            <Detail
+              label="Price"
+              value={lock.keyPrice}
+              icon={TagIcon}
+              prepend={<CryptoIcon symbol={symbol} size={25} />}
+            />
+            <Detail
+              label="Balance"
+              value={lock.balance}
+              icon={TagIcon}
+              prepend={<CryptoIcon symbol={symbol} size={25} />}
+            />
+            <Detail label="Key Duration" value={duration} icon={TimeIcon} />
+            <Detail
+              label="Key Sold"
+              value={lock.outstandingKeys?.toString()}
+              icon={KeyIcon}
+            />
           </div>
           <div className="md:ml-auto md:col-span-1">
             <Link href={lockUrl} aria-label="arrow right">

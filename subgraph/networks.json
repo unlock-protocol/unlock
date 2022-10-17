@@ -58,6 +58,12 @@
       "startBlock": 7179039
     }
   },
+  "arbitrum-one": {
+    "Unlock": {
+      "address": "0x1FF7e338d5E582138C46044dc238543Ce555C963",
+      "startBlock": 17429533
+    }
+  },
   "avalanche": {
     "Unlock": {
       "address": "0x70cBE5F72dD85aA634d07d2227a421144Af734b3",

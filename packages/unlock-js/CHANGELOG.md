@@ -1,5 +1,21 @@
 # Changes
 
+# 0.30.1
+
+- Add `address` to schema.graphql
+
+# 0.30.0
+
+- Add subgraph service
+
+# 0.29.3
+
+- Breaking change in the locksmith service configuration export
+
+# 0.28.3
+
+- Add support for locksmith service.
+
 # 0.28.2
 
 - add support for `transferFeeBasisPoints`

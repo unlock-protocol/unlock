@@ -75,6 +75,8 @@ export class StorageService extends EventEmitter {
     )
   }
 
+  loginRequest = false
+
   async login(message: string, signature: string) {
     const response = await this.locksmith.login({
       message,
@@ -110,6 +112,10 @@ export class StorageService extends EventEmitter {
   }
 
   async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
+    if (this.loginRequest) {
+      return
+    }
+    this.loginRequest = true
     try {
       const refreshToken = this.refreshToken
       if (refreshToken) {
@@ -130,6 +136,7 @@ export class StorageService extends EventEmitter {
         console.error(err.message)
       }
     }
+    this.loginRequest = false
   }
 
   #accessToken: null | string = null
@@ -182,78 +189,6 @@ export class StorageService extends EventEmitter {
       nonce: generateNonce(),
     })
     return siweMessage.prepareMessage()
-  }
-
-  /**
-   * Stores transaction hashes and the sender
-   * @param {*} transactionHash
-   * @param {*} senderAddress
-   * @param {*} recipientAddress
-   * @param {*} chain
-   * @paran {*} data (input of transaction, optional)
-   */
-  async storeTransaction(
-    transactionHash: string,
-    senderAddress: string,
-    recipientAddress: string,
-    chain: number,
-    beneficiaryAddress: string /** Used in the context of key purchase *for* */,
-    data: any
-  ) {
-    const payload = {
-      transactionHash,
-      sender: senderAddress,
-      for: beneficiaryAddress || senderAddress,
-      recipient: recipientAddress,
-      data,
-      chain,
-    }
-
-    try {
-      await fetch(`${this.host}/transaction`, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      this.emit(success.storeTransaction, transactionHash)
-    } catch (error) {
-      this.emit(failure.storeTransaction, error)
-    }
-  }
-
-  /**
-   * Gets all the transactions sent by a given address, in the last 24 hours
-   * Returns an empty array by default
-   * TODO: consider a more robust url building
-   * @param {*} senderAddress
-   */
-  async getRecentTransactionsHashesSentBy(senderAddress: string) {
-    let hashes = [] // TODO This is badly named! this returns full transactions
-    try {
-      const oneDayAgo = new Date().getTime() - 1000 * 60 * 60 * 24
-      const response = await fetch(
-        `${this.host}/transactions?sender=${senderAddress}&createdAfter=${oneDayAgo}`,
-        {
-          method: 'GET',
-        }
-      )
-      const data = await response.json()
-      if (data && data.transactions) {
-        hashes = data.transactions.map((t: any) => ({
-          hash: t.transactionHash,
-          network: t.chain,
-          to: t.recipient,
-          from: t.sender,
-        }))
-      }
-      this.emit(success.getTransactionHashesSentBy, { senderAddress, hashes })
-      return { senderAddress, hashes }
-    } catch (error) {
-      this.emit(failure.getTransactionHashesSentBy, error)
-      return { senderAddress, hashes } // TODO: consider if thos should be an error
-    }
   }
 
   genAuthorizationHeader(token: string) {
