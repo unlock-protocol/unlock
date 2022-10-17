@@ -13,6 +13,7 @@ query allLocks(
     orderDirection: $orderDirection
   ) {
     id
+    address
     name
     expirationDuration
     tokenAddress
@@ -40,6 +41,7 @@ query AllKeys(
     id
     lock {
       id
+      address
       name
       expirationDuration
       tokenAddress
