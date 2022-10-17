@@ -73,7 +73,7 @@ contract MixinLockCore is
   uint internal _totalSupply;
 
   // DEPREC: this is not used anymore (kept as private var for storage layout compat)
-  address private beneficiary;
+  address payable private beneficiary;
 
   // The denominator component for values specified in basis points.
   uint internal constant BASIS_POINTS_DEN = 10000;
