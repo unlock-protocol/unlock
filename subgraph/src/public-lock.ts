@@ -30,7 +30,10 @@ function newKey(event: TransferEvent): void {
   key.createdAtBlock = event.block.number
 
   const lockContract = PublicLock.bind(event.address)
-  key.tokenURI = lockContract.tokenURI(event.params.tokenId)
+  const tokenURI = lockContract.try_tokenURI(event.params.tokenId)
+  if (!tokenURI.reverted) {
+    key.tokenURI = tokenURI.value
+  }
   key.expiration = getKeyExpirationTimestampFor(
     event.address,
     event.params.tokenId,
