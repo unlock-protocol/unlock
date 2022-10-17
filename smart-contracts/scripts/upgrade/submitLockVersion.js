@@ -54,6 +54,8 @@ async function main({ publicLockAddress, publicLockVersion } = {}) {
       publicLockAddress = await deployTemplate({})
       publicLock = await ethers.getContractAt('PublicLock', publicLockAddress)
     }
+  } else {
+    publicLock = await ethers.getContractAt('PublicLock', publicLockAddress)
   }
 
   // get multisig signer
