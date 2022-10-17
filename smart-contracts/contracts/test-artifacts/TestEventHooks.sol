@@ -50,6 +50,14 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
     uint time
   );
 
+  event OnKeyGranted(
+    uint tokenId, 
+    address from, 
+    address to, 
+    address keyManager,
+    uint expiration
+  );
+
   uint public discount;
   bool public isPurchaseSupported;
 
@@ -73,6 +81,23 @@ contract TestEventHooks is ILockKeyPurchaseHook, ILockKeyCancelHook, ILockTokenU
   ) external
   {
     emit OnKeyPurchase(_tokenId, msg.sender, _from, _recipient, _referrer, _minKeyPrice, _pricePaid);
+  }
+  
+  function onKeyGranted(
+    uint _tokenId,
+    address _from,
+    address _recipient,
+    address _keyManager,
+    uint _expiration
+  ) external
+  {
+    emit OnKeyGranted(
+      _tokenId, 
+      _from, 
+      _recipient, 
+      _keyManager,
+      _expiration
+    );
   }
 
   function keyPurchasePrice(

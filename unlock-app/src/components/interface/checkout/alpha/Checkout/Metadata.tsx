@@ -182,7 +182,9 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                 >
                   {hideRecipient ? (
                     <div className="space-y-1">
-                      <div className="ml-1 text-sm"> Recipient #1 </div>
+                      <div className="ml-1 text-sm">
+                        {quantity > 1 ? `Recipient #1` : 'Recipient'}
+                      </div>
                       <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
                         <div className="w-32 text-sm truncate">
                           {isUnlockAccount ? email : address}
@@ -198,6 +200,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                           Change
                         </Button>
                       </div>
+                      <p className="text-gray-600 text-xs">
+                        The Ethereum address that will receive the membership
+                        NFT
+                      </p>
                     </div>
                   ) : (
                     <Input
@@ -206,10 +212,10 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                       }
                       size="small"
                       disabled={isSubmitting}
-                      description="Enter Ethereum address or an ENS"
+                      description="Enter the wallet address or an ENS that will receive the membership NFT"
                       error={errors?.metadata?.[index]?.recipient?.message}
                       {...register(`metadata.${index}.recipient`, {
-                        required: 'Ethereum address or an ENS is required',
+                        required: 'An ethereum address or an ENS is required',
                         validate: {
                           max_keys: async (value) => {
                             try {

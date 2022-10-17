@@ -57,10 +57,12 @@ templates:
         - name: PublicLockV11
           file: ./abis/PublicLockV11.json
         - name: PublicLockV12
-          file: ./abis/PublicLockV11.json
+          file: ./abis/PublicLockV12.json
         - name: PublicLockV7
           file: ./abis/PublicLockV7.json
       eventHandlers:
+        - event: LockConfig(uint256,uint256,uint256)
+          handler: handleLockConfig
         - event: CancelKey(indexed uint256,indexed address,indexed address,uint256)
           handler: handleCancelKey
         - event: ExpirationChanged(indexed uint256,uint256,bool)

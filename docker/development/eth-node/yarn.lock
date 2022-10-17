@@ -1036,7 +1036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.1.1, @nomiclabs/hardhat-ethers@npm:^2.1.1":
+"@nomiclabs/hardhat-ethers@npm:2.1.1":
   version: 2.1.1
   resolution: "@nomiclabs/hardhat-ethers@npm:2.1.1"
   peerDependencies:
@@ -1343,10 +1343,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@unlock-protocol/contracts@npm:0.0.8":
-  version: 0.0.8
-  resolution: "@unlock-protocol/contracts@npm:0.0.8"
-  checksum: 89b444067e5cf56179d1029704450bea58ab7258007240ee780014959c89dba2a659e520c1749356105b573b75993375a7db76876769aadc2b0eef96091947a6
+"@unlock-protocol/contracts@npm:0.0.12":
+  version: 0.0.12
+  resolution: "@unlock-protocol/contracts@npm:0.0.12"
+  checksum: 827acc0bd291beafba84732363150fa366d307d916a0620d63f83bc7a4e3c51201e3acde7706a8bd81412f1c96cea12e99b27a78255f946958400bd61212bced
   languageName: node
   linkType: hard
 
@@ -1355,7 +1355,7 @@ __metadata:
   resolution: "@unlock-protocol/eth-node@workspace:."
   dependencies:
     "@nomiclabs/hardhat-ethers": 2.1.1
-    "@unlock-protocol/hardhat-plugin": 0.0.11
+    "@unlock-protocol/hardhat-plugin": 0.0.15
     cross-fetch: 3.1.5
     eslint: 8.24.0
     ethers: 5.7.1
@@ -1366,18 +1366,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@unlock-protocol/hardhat-plugin@npm:0.0.11":
-  version: 0.0.11
-  resolution: "@unlock-protocol/hardhat-plugin@npm:0.0.11"
+"@unlock-protocol/hardhat-plugin@npm:0.0.15":
+  version: 0.0.15
+  resolution: "@unlock-protocol/hardhat-plugin@npm:0.0.15"
   dependencies:
-    "@nomiclabs/hardhat-ethers": ^2.1.1
-    "@unlock-protocol/contracts": 0.0.8
-    eslint-plugin-jest: 26.6.0
+    "@nomiclabs/hardhat-ethers": 2.1.1
+    "@unlock-protocol/contracts": 0.0.12
+    eslint-plugin-jest: 27.0.4
     eslint-plugin-mocha: 10.1.0
   peerDependencies:
-    ethers: 5.7.0
+    ethers: 5.7.1
     hardhat: 2.9.9
-  checksum: ee27f1f098ab3df8f5b42a69d9dda3420afe271e91c85daf8d724b7407e155faee73dacee9c11b7ec5b1b63b910f1c64da1cb95778d87cc01cbe12eb40f87d4c
+  checksum: 52ac3e2ce9e0ec30ebb5e87bbcfb01045b7608d57a480694e01d925a0b71b07a119ae5442d35bd17bcc1341f8d02eb68a4ead2cfc3621786887acc5de998a930
   languageName: node
   linkType: hard
 
@@ -2285,20 +2285,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:26.6.0":
-  version: 26.6.0
-  resolution: "eslint-plugin-jest@npm:26.6.0"
+"eslint-plugin-jest@npm:27.0.4":
+  version: 27.0.4
+  resolution: "eslint-plugin-jest@npm:27.0.4"
   dependencies:
     "@typescript-eslint/utils": ^5.10.0
   peerDependencies:
     "@typescript-eslint/eslint-plugin": ^5.0.0
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+    eslint: ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":
       optional: true
     jest:
       optional: true
-  checksum: 5dd60820d5618175e7203b077788476a6f697316b53d77c4bb7037b32073f3d5d539a72dec910eb3f8eedc97c3b28600ba35c5d3bf8c687ade765bb2d0dc77d2
+  checksum: 8408d8a53bae946527ac4120865c29b3468cf58d8e5ff3b9c75c5303bb5aa451ac7e04329fc004cf6302f84431e6c6c1f2ba9009b0150d1718df58ea490ed3f5
   languageName: node
   linkType: hard
 

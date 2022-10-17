@@ -10,6 +10,7 @@ import './MixinFunds.sol';
 import '../interfaces/hooks/ILockKeyCancelHook.sol';
 import '../interfaces/hooks/ILockKeyPurchaseHook.sol';
 import '../interfaces/hooks/ILockValidKeyHook.sol';
+import '../interfaces/hooks/ILockKeyGrantHook.sol';
 import '../interfaces/hooks/ILockTokenURIHook.sol';
 import '../interfaces/hooks/ILockKeyTransferHook.sol';
 import '../interfaces/hooks/ILockKeyExtendHook.sol';
@@ -72,7 +73,7 @@ contract MixinLockCore is
   uint internal _totalSupply;
 
   // DEPREC: this is not used anymore (kept as private var for storage layout compat)
-  address private beneficiary;
+  address payable private beneficiary;
 
   // The denominator component for values specified in basis points.
   uint internal constant BASIS_POINTS_DEN = 10000;
@@ -92,8 +93,9 @@ contract MixinLockCore is
   // one more hook (added to v11)
   ILockKeyTransferHook public onKeyTransferHook;
 
-  // one more hook (added to v12)
+  // two more hooks (added to v12)
   ILockKeyExtendHook public onKeyExtendHook;
+  ILockKeyGrantHook public onKeyGrantHook;
 
   // modifier to check if data has been upgraded
   function _lockIsUpToDate() internal view {
@@ -103,7 +105,7 @@ contract MixinLockCore is
   }
   
   function _initializeMixinLockCore(
-    address payable _lockOwner,
+    address payable,
     uint _expirationDuration,
     uint _keyPrice,
     uint _maxNumberOfKeys
@@ -198,7 +200,8 @@ contract MixinLockCore is
     address _onValidKeyHook,
     address _onTokenURIHook,
     address _onKeyTransferHook,
-    address _onKeyExtendHook
+    address _onKeyExtendHook,
+    address _onKeyGrantHook
   ) external
   {
     _onlyLockManager();
@@ -209,6 +212,7 @@ contract MixinLockCore is
     if(_onTokenURIHook != address(0) && !_onTokenURIHook.isContract()) { revert INVALID_HOOK(3); }
     if(_onKeyTransferHook != address(0) && !_onKeyTransferHook.isContract()) { revert INVALID_HOOK(4); }
     if(_onKeyExtendHook != address(0) && !_onKeyExtendHook.isContract()) { revert INVALID_HOOK(5); }
+    if(_onKeyGrantHook != address(0) && !_onKeyGrantHook.isContract()) { revert INVALID_HOOK(6); }
     
     onKeyPurchaseHook = ILockKeyPurchaseHook(_onKeyPurchaseHook);
     onKeyCancelHook = ILockKeyCancelHook(_onKeyCancelHook);
@@ -216,6 +220,7 @@ contract MixinLockCore is
     onValidKeyHook = ILockValidKeyHook(_onValidKeyHook);
     onKeyTransferHook = ILockKeyTransferHook(_onKeyTransferHook);
     onKeyExtendHook = ILockKeyExtendHook(_onKeyExtendHook);
+    onKeyGrantHook = ILockKeyGrantHook(_onKeyGrantHook);
   }
 
   function totalSupply()
@@ -227,6 +232,7 @@ contract MixinLockCore is
 
   // decreased from 1000 to 998 when adding `schemaVersion` and `maxKeysPerAddress` in v10 
   // decreased from 998 to 997 when adding `onKeyTransferHook` in v11
-  // decreased from 997 to 996 when adding `onKeyExtendHook` in v11
-  uint256[996] private __safe_upgrade_gap;
+  // decreased from 997 to 996 when adding `onKeyExtendHook` in v12
+  // decreased from 996 to 995 when adding `onKeyGrantHook` in v12
+  uint256[995] private __safe_upgrade_gap;
 }

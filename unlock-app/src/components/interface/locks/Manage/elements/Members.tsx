@@ -110,7 +110,7 @@ export const Members = ({
       <ImageBar
         src="/images/illustrations/no-member.svg"
         alt="No members"
-        description="There is no member yet, but keep it up."
+        description="There are no members yet, but keep it up."
       />
     )
   }
