@@ -113,7 +113,7 @@ NB: for Polygon, you need an API key from https://polygonscan.com
 
 ### Update PublicLock template
 
-#### Detect changes in storage layout
+#### Check changes in storage layout
 
 ```
 yarn hardhat run scripts/lock/testUpgrade.js
@@ -126,8 +126,54 @@ using the openzeppellin plugin. It will deploy first the version `LATEST_PUBLIC_
 then deploy the version in `contracts/PublicLock.sol`. The errors thrown by the upgrades plugin
 should allow to detect changes in storage layout.
 
-#### Deploy a PublicLock upgrade
+#### Test the PublicLock template on mainnet fork
 
+Make a dry run of the upgrade on a mainnet fork by 
+
+- deploy the specified PublicLock tempalte
+- parse the calldata for `addLockTemplate`
+- send the calldata tx to the multisig
+- impersonate all signers to run the tx
+
+```shell
+export ALCHEMY_API_KEY=<alchemy api key>
+
+# to deploy a version already in the contracts package
+RUN_MAINNET_FORK=1 yarn hardhat submit:version --public-lock-version 12
+
+# to deploy a version from the local ./contracts folder
+RUN_MAINNET_FORK=1 yarn hardhat submit:version
+```
+
+#### Update the PublicLock template 
+
+Export all block explorers api keys into the terminal
+
+```
+cp .env.copy .env
+source .env
+```
+
+Deploy a template 
+
+```
+# deploy and submit tx to the multisig
+yarn hardhat submit:version --public-lock-version 12
+
+# to just submit an exsiting version to the mulisig
+yarn hardhat submit:version --public-lock-address 0x....
+```
+
+Deploy on all networks at once
+
+```
+./sh all_networks.sh yarn hardhat submit:version --public-lock-version 12
+```
+
+
+
+
+#### Deploy a PublicLock upgrade (step by step)
 ```
 # deploy a new template
 yarn hardhat deploy:template
