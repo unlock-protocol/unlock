@@ -207,7 +207,9 @@ describe('Keep track of changes in metadata', function () {
     it('tokenURIs are correct ', async () => {
       // default tokenURI before config
 
-      const baseTokenURI = await unlockContract.globalBaseTokenURI()
+      const baseTokenURI = `${await unlockContract.globalBaseTokenURI()}${
+        lock.address
+      }/`
       expect(await lock.tokenURI(0)).to.equals(baseTokenURI)
 
       // lockInGraph
