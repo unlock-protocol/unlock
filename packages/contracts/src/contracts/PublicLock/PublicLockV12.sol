@@ -199,7 +199,6 @@ library AddressUpgradeable {
 }
 
 
-
 // File @openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol@v4.7.3
 
 // OpenZeppelin Contracts (last updated v4.7.0) (proxy/utils/Initializable.sol)
@@ -339,7 +338,6 @@ abstract contract Initializable {
 }
 
 
-
 // File @openzeppelin/contracts-upgradeable/utils/introspection/IERC165Upgradeable.sol@v4.7.3
 
 // OpenZeppelin Contracts v4.4.1 (utils/introspection/IERC165.sol)
@@ -366,7 +364,6 @@ interface IERC165Upgradeable {
      */
     function supportsInterface(bytes4 interfaceId) external view returns (bool);
 }
-
 
 
 // File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol@v4.7.3
@@ -410,7 +407,6 @@ abstract contract ERC165Upgradeable is Initializable, IERC165Upgradeable {
      */
     uint256[50] private __gap;
 }
-
 
 
 // File @openzeppelin/contracts-upgradeable/utils/introspection/ERC165StorageUpgradeable.sol@v4.7.3
@@ -469,7 +465,6 @@ abstract contract ERC165StorageUpgradeable is Initializable, ERC165Upgradeable {
 }
 
 
-
 // File contracts/mixins/MixinDisable.sol
 
 pragma solidity ^0.8.0;
@@ -484,7 +479,6 @@ contract MixinDisable {
   bool isAlive;
   uint256[1000] private __safe_upgrade_gap;
 }
-
 
 
 // File @openzeppelin/contracts-upgradeable/access/IAccessControlUpgradeable.sol@v4.7.3
@@ -578,7 +572,6 @@ interface IAccessControlUpgradeable {
 }
 
 
-
 // File @openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol@v4.7.3
 
 // OpenZeppelin Contracts v4.4.1 (utils/Context.sol)
@@ -616,7 +609,6 @@ abstract contract ContextUpgradeable is Initializable {
      */
     uint256[50] private __gap;
 }
-
 
 
 // File @openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol@v4.7.3
@@ -695,7 +687,6 @@ library StringsUpgradeable {
         return toHexString(uint256(uint160(addr)), _ADDRESS_LENGTH);
     }
 }
-
 
 
 // File @openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol@v4.7.3
@@ -959,7 +950,6 @@ abstract contract AccessControlUpgradeable is Initializable, ContextUpgradeable,
 }
 
 
-
 // File contracts/mixins/MixinErrors.sol
 
 pragma solidity ^0.8.0;
@@ -1030,7 +1020,6 @@ contract MixinErrors {
   error INVALID_HOOK(uint8 hookIndex);
 
 }
-
 
 
 // File contracts/mixins/MixinRoles.sol
@@ -1117,7 +1106,6 @@ contract MixinRoles is AccessControlUpgradeable, MixinErrors {
 
   uint256[1000] private __safe_upgrade_gap;
 }
-
 
 
 // File contracts/interfaces/IUnlock.sol
@@ -1411,7 +1399,6 @@ interface IUnlock
 }
 
 
-
 // File @openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol@v4.7.3
 
 // OpenZeppelin Contracts (last updated v4.6.0) (token/ERC20/IERC20.sol)
@@ -1497,7 +1484,6 @@ interface IERC20Upgradeable {
 }
 
 
-
 // File @openzeppelin/contracts-upgradeable/token/ERC20/extensions/draft-IERC20PermitUpgradeable.sol@v4.7.3
 
 // OpenZeppelin Contracts v4.4.1 (token/ERC20/extensions/draft-IERC20Permit.sol)
@@ -1559,7 +1545,6 @@ interface IERC20PermitUpgradeable {
     // solhint-disable-next-line func-name-mixedcase
     function DOMAIN_SEPARATOR() external view returns (bytes32);
 }
-
 
 
 // File @openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol@v4.7.3
@@ -1679,7 +1664,6 @@ library SafeERC20Upgradeable {
 }
 
 
-
 // File contracts/mixins/MixinFunds.sol
 
 pragma solidity ^0.8.0;
@@ -1750,7 +1734,6 @@ contract MixinFunds is MixinErrors
 }
 
 
-
 // File contracts/interfaces/hooks/ILockKeyCancelHook.sol
 
 pragma solidity >=0.5.17 <0.9.0;
@@ -1775,7 +1758,6 @@ interface ILockKeyCancelHook
     uint256 refund
   ) external;
 }
-
 
 
 // File contracts/interfaces/hooks/ILockKeyPurchaseHook.sol
@@ -1834,7 +1816,6 @@ interface ILockKeyPurchaseHook
 }
 
 
-
 // File contracts/interfaces/hooks/ILockValidKeyHook.sol
 
 pragma solidity >=0.5.17 <0.9.0;
@@ -1863,7 +1844,6 @@ interface ILockValidKeyHook
   external view
   returns (bool);
 }
-
 
 
 // File contracts/interfaces/hooks/ILockKeyGrantHook.sol
@@ -1897,7 +1877,6 @@ interface ILockKeyGrantHook
 }
 
 
-
 // File contracts/interfaces/hooks/ILockTokenURIHook.sol
 
 pragma solidity >=0.5.17 <0.9.0;
@@ -1926,7 +1905,6 @@ interface ILockTokenURIHook
     uint expirationTimestamp
   ) external view returns(string memory);
 }
-
 
 
 // File contracts/interfaces/hooks/ILockKeyTransferHook.sol
@@ -1963,7 +1941,6 @@ interface ILockKeyTransferHook
 }
 
 
-
 // File contracts/interfaces/hooks/ILockKeyExtendHook.sol
 
 pragma solidity >=0.5.17 <0.9.0;
@@ -1989,7 +1966,6 @@ interface ILockKeyExtendHook
     uint prevTimestamp
   ) external;
 }
-
 
 
 // File contracts/mixins/MixinLockCore.sol
@@ -2231,7 +2207,6 @@ contract MixinLockCore is
 }
 
 
-
 // File contracts/mixins/MixinKeys.sol
 
 pragma solidity ^0.8.0;
@@ -2280,7 +2255,7 @@ contract MixinKeys is
   event LockConfig(
     uint expirationDuration,
     uint maxNumberOfKeys,
-    uint maxKeysPerAcccount
+    uint maxKeysPerAddress
   );
 
   // Deprecated: don't use this anymore as we know enable multiple keys per owner.
@@ -2946,7 +2921,6 @@ contract MixinKeys is
 }
 
 
-
 // File contracts/mixins/MixinERC721Enumerable.sol
 
 pragma solidity ^0.8.0;
@@ -3006,7 +2980,6 @@ contract MixinERC721Enumerable is
   
   uint256[1000] private __safe_upgrade_gap;
 }
-
 
 
 // File contracts/mixins/MixinGrantKeys.sol
@@ -3083,7 +3056,6 @@ contract MixinGrantKeys is
 }
 
 
-
 // File contracts/UnlockUtils.sol
 
 pragma solidity >=0.5.17 <=0.8.13;
@@ -3150,7 +3122,6 @@ library UnlockUtils {
     return string(str);
   }
 }
-
 
 
 // File contracts/mixins/MixinLockMetadata.sol
@@ -3307,7 +3278,6 @@ contract MixinLockMetadata is
 
   uint256[1000] private __safe_upgrade_gap;
 }
-
 
 
 // File contracts/mixins/MixinPurchase.sol
@@ -3677,7 +3647,6 @@ contract MixinPurchase is
 }
 
 
-
 // File contracts/mixins/MixinRefunds.sol
 
 pragma solidity ^0.8.0;
@@ -3840,7 +3809,6 @@ contract MixinRefunds is
 }
 
 
-
 // File @openzeppelin/contracts-upgradeable/token/ERC721/IERC721ReceiverUpgradeable.sol@v4.7.3
 
 // OpenZeppelin Contracts (last updated v4.6.0) (token/ERC721/IERC721Receiver.sol)
@@ -3869,7 +3837,6 @@ interface IERC721ReceiverUpgradeable {
         bytes calldata data
     ) external returns (bytes4);
 }
-
 
 
 // File contracts/mixins/MixinTransfer.sol
@@ -4287,7 +4254,6 @@ contract MixinTransfer is
 }
 
 
-
 // File contracts/mixins/MixinConvenienceOwnable.sol
 
 pragma solidity ^0.8.0;
@@ -4343,7 +4309,6 @@ contract MixinConvenienceOwnable is MixinErrors, MixinLockCore {
   uint256[1000] private __safe_upgrade_gap;
 
 }
-
 
 
 // File contracts/PublicLock.sol
