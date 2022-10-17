@@ -12,6 +12,7 @@ import {
   PricingChanged as PricingChangedEvent,
   RenewKeyPurchase as RenewKeyPurchaseEvent,
   Transfer as TransferEvent,
+  LockConfig as LockConfigEvent,
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
@@ -40,6 +41,16 @@ function newKey(event: TransferEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock) {
     lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
+    lock.save()
+  }
+}
+
+export function handleLockConfig(event: LockConfigEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+  if (lock) {
+    lock.expirationDuration = event.params.expirationDuration
+    lock.maxNumberOfKeys = event.params.maxNumberOfKeys
+    lock.maxKeysPerAddress = event.params.maxKeysPerAddress
     lock.save()
   }
 }
@@ -99,6 +110,7 @@ export function handleExpirationChangedUntilV11(
     key.save()
   }
 }
+
 export function handleExpirationChanged(event: ExpirationChangedEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)

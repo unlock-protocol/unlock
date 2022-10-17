@@ -113,11 +113,11 @@ contract('Lock / updateLockConfig', (accounts) => {
   describe('emit correct event', () => {
     it('update the expiration duration of an existing lock', async () => {
       const tx = await lock.updateLockConfig(10, 20, 30)
-      const { args } = tx.logs.find((v) => v.event === 'LockConfig')
+      const { args } = tx.logs.find(({ event }) => event === 'LockConfig')
 
       expect(args.expirationDuration.toNumber()).to.be.equal(10)
       expect(args.maxNumberOfKeys.toNumber()).to.be.equal(20)
-      expect(args.maxKeysPerAcccount.toNumber()).to.be.equal(30)
+      expect(args.maxKeysPerAddress.toNumber()).to.be.equal(30)
     })
   })
 })

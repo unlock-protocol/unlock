@@ -9,6 +9,8 @@ export const tokenId = 1234
 export const now = 16613300000
 export const expiration = 16613302653
 export const tokenURI = 'http://token-api'
+export const maxNumberOfKeys = 10
+export const maxKeysPerAddress = 5
 
 // prices
 export const keyPrice = 1000
