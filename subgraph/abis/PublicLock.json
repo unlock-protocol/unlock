@@ -3185,7 +3185,7 @@
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "expirationDuration",
+        "name": "newExpiration",
         "type": "uint256"
       },
       {
@@ -3204,5 +3204,108 @@
     "name": "ExpirationChanged",
     "type": "event",
     "sig": "event ExpirationChanged(uint256 indexed,uint256,uint256,bool)"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "expirationDuration",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maxNumberOfKeys",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "maxKeysPerAddress",
+        "type": "uint256"
+      }
+    ],
+    "name": "LockConfig",
+    "type": "event",
+    "sig": "event LockConfig(uint256,uint256,uint256)"
+  },
+  {
+    "inputs": [],
+    "name": "onKeyExtendHook",
+    "outputs": [
+      {
+        "internalType": "contract ILockKeyExtendHook",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function onKeyExtendHook() view returns (address)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_onKeyPurchaseHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onKeyCancelHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onValidKeyHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onTokenURIHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onKeyTransferHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onKeyExtendHook",
+        "type": "address"
+      }
+    ],
+    "name": "setEventHooks",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setEventHooks(address,address,address,address,address,address)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_newExpirationDuration",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxNumberOfKeys",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_maxKeysPerAcccount",
+        "type": "uint256"
+      }
+    ],
+    "name": "updateLockConfig",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function updateLockConfig(uint256,uint256,uint256)"
   }
 ]
