@@ -178,6 +178,7 @@ describe('(v12) Lock config', function () {
 
 describe('Keep track of changes in metadata', function () {
   let lock: Contract
+  let unlockContract: Contract
   let lockAddress: string
   let lockInGraph: any
   let tokenIds: [BigNumber]
@@ -185,6 +186,7 @@ describe('Keep track of changes in metadata', function () {
   before(async () => {
     ;({ lock } = await unlock.createLock({ ...lockParams }))
     lockAddress = lock.address.toLowerCase()
+    unlockContract = await unlock.getUnlockContract()
 
     // purchase a bunch of keys
     ;({ tokenIds } = await purchaseKeys(lockAddress, 3))
@@ -198,11 +200,13 @@ describe('Keep track of changes in metadata', function () {
       expect(lockInGraph.name).to.equals(lockParams.name)
     })
     it('symbol is correct ', async () => {
-      expect(lockInGraph.symbol).to.equals(await lock.symbol())
+      expect(lockInGraph.symbol).to.equals(
+        await unlockContract.globalTokenSymbol()
+      )
     })
     it('tokenURIs are correct ', async () => {
       // default tokenURI before config
-      const unlockContract = await unlock.getUnlockContract()
+
       const baseTokenURI = await unlockContract.globalBaseTokenURI()
       expect(await lock.tokenURI(0)).to.equals(baseTokenURI)
 

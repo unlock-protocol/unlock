@@ -89,7 +89,7 @@ async function main() {
     udt.address,
     AddressZero, // wrappedEth
     16000,
-    'UDT',
+    'DEVKEY',
     `http://${locksmithHost}:${locksmithPort}/api/key/`,
     31337
   )
