@@ -4,7 +4,7 @@ import networks from '@unlock-protocol/networks'
 
 export class KeyHolder extends GraphQLDataSource {
   async get(address: string, network: number) {
-    this.baseURL = networks[network].subgraph.endpoint
+    this.baseURL = networks[network].subgraph.endpointV2
 
     const keyHolderQuery = gql`
       query KeyHolder($address: String!) {
