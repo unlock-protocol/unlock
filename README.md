@@ -102,7 +102,7 @@ This will start
 
 ### Config and environment variables
 
-If you run the app locally on you machine, you will have to create a file called `.env.dev.local` at the root of the repo, containing variables for the different apps :
+If you run the app locally on your machine, you will have to create a file called `.env.dev.local` at the root of the repo, containing variables for the different apps :
 
 ```
 # your wallet address to the first line
@@ -131,7 +131,7 @@ BOOTSTRAP_AMOUNT=15.0
 LOCKSMITH_PURCHASER_ADDRESS=0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
 ```
 
-Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example). This will let you interract with the application using your regular setup.
+Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example). This will let you interact with the application using your regular setup.
 
 NB: The environments config files for the infrastructure are located inside the [`./docker`](./docker) folder.
 
