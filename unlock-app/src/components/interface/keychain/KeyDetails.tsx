@@ -82,7 +82,7 @@ export const KeyDetails = () => {
     <div>
       <div>
         {Object.entries(networks).map(([networkId, networkObj]) => {
-          const subgraphURI = networkObj.subgraph.endpoint
+          const subgraphURI = networkObj.subgraph?.endpointV2
           const apolloClientByNetwork = new ApolloClient({
             uri: subgraphURI!,
           }) as any

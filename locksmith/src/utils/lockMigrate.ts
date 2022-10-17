@@ -153,12 +153,12 @@ export default async function migrateLock(
   })
 
   // fetch managers from graph
-  if (subgraph.endpoint) {
+  if (subgraph.endpointV2) {
     let managers
     try {
       managers = await listManagers({
         lockAddress,
-        subgraphURI: subgraph.endpoint,
+        subgraphURI: subgraph.endpointV2,
       })
     } catch (error) {
       callback(null, {

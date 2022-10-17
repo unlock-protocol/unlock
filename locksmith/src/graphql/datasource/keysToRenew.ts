@@ -9,7 +9,7 @@ export class KeysToRenew extends GraphQLDataSource {
     network: number,
     page: number
   ): Promise<any[]> {
-    this.baseURL = networks[network].subgraph.endpoint
+    this.baseURL = networks[network].subgraph.endpointV2
     const keysToRenewQuery = gql`
       query Keys($start: Int!, $end: Int!, $skip: Int) {
         keys(

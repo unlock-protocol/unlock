@@ -67,7 +67,7 @@ export const useKeys = ({
   const getKeysCount = async () => {
     const graphService = new GraphService()
     const { subgraph } = networks[network]
-    graphService.connect(subgraph.endpoint!)
+    graphService.connect(subgraph.endpointV2!)
     const {
       data: { activeKeys },
     } = await graphService.keysCount(locks)

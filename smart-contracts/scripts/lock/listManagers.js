@@ -9,7 +9,7 @@ async function main({ lockAddress }) {
   const { chainId } = await ethers.provider.getNetwork()
   const { subgraph } = networks[chainId]
 
-  if (!subgraph || !subgraph.endpoint) {
+  if (!subgraph || !subgraph.endpointV2) {
     console.log(
       'Missing subGraphURI for this network. Can not fetch from The Graph'
     )
@@ -28,7 +28,7 @@ async function main({ lockAddress }) {
     }
   `
 
-  const q = await fetch(subgraph.endpoint, {
+  const q = await fetch(subgraph.endpointV2, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

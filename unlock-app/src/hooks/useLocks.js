@@ -181,7 +181,7 @@ export const useLocks = (owner, network) => {
 
   const { subgraph } = networks[network] ?? {}
   const graphService = new GraphService()
-  graphService.connect(subgraph.endpoint)
+  graphService.connect(subgraph.endpointV2)
 
   // We use a reducer so we can easily add locks as they are retrieved
   const [locks, addToLocks] = useReducer((locks, lock) => {
