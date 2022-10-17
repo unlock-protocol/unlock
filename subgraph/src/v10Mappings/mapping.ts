@@ -133,19 +133,12 @@ function genKey(event: Transfer, lockContract: PublicLock): void {
   key.keyId = event.params.tokenId
   key.owner = event.params.to.toHex()
   key.expiration = lockContract.keyExpirationTimestampFor(event.params.tokenId)
-  key.tokenURI = lockContract.tokenURI(key.keyId)
   key.createdAt = event.block.timestamp
 
-  let lock = Lock.load(key.lock)
-
-  if (lock.version > BigInt.fromI32(0)) {
-    let tokenURI = lockContract.try_tokenURI(key.keyId)
-
-    if (!tokenURI.reverted) {
-      key.tokenURI = lockContract.tokenURI(key.keyId)
-    }
+  let tokenURI = lockContract.try_tokenURI(key.keyId)
+  if (!tokenURI.reverted) {
+    key.tokenURI = lockContract.tokenURI(key.keyId)
   }
-
   key.save()
 }
 
