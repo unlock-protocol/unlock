@@ -1443,6 +1443,19 @@
   },
   {
     "inputs": [],
+    "name": "onKeyGrantHook",
+    "outputs": [
+      {
+        "internalType": "contract ILockKeyGrantHook",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "onKeyPurchaseHook",
     "outputs": [
       {
@@ -1824,6 +1837,11 @@
       {
         "internalType": "address",
         "name": "_onKeyExtendHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onKeyGrantHook",
         "type": "address"
       }
     ],

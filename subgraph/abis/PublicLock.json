@@ -3272,6 +3272,20 @@
     "sig": "function onKeyExtendHook() view returns (address)"
   },
   {
+    "inputs": [],
+    "name": "onKeyGrantHook",
+    "outputs": [
+      {
+        "internalType": "contract ILockKeyGrantHook",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function onKeyGrantHook() view returns (address)"
+  },
+  {
     "inputs": [
       {
         "internalType": "address",
@@ -3302,13 +3316,18 @@
         "internalType": "address",
         "name": "_onKeyExtendHook",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onKeyGrantHook",
+        "type": "address"
       }
     ],
     "name": "setEventHooks",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function",
-    "sig": "function setEventHooks(address,address,address,address,address,address)"
+    "sig": "function setEventHooks(address,address,address,address,address,address,address)"
   },
   {
     "inputs": [
