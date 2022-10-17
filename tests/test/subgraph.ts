@@ -128,6 +128,54 @@ describe('Upgrade a lock', function () {
   })
 })
 
+describe('(v12) Lock config', function () {
+  let lock: Contract
+  let lockAddress: string
+  before(async () => {
+    ;({ lock } = await unlock.createLock({ ...lockParams }))
+    lockAddress = lock.address.toLowerCase()
+  })
+
+  it('stores default values correctly', async () => {
+    expect(await lock.expirationDuration()).to.equals(
+      lockParams.expirationDuration
+    )
+    expect(await lock.maxNumberOfKeys()).to.equals(lockParams.maxNumberOfKeys)
+    expect(await lock.maxKeysPerAddress()).to.equals(1)
+
+    await awaitTimeout(2000)
+    const lockInGraph = await subgraph.getLock(lockAddress)
+    expect(parseInt(lockInGraph.expirationDuration)).to.equals(
+      lockParams.expirationDuration
+    )
+    expect(parseInt(lockInGraph.maxNumberOfKeys)).to.equals(
+      lockParams.maxNumberOfKeys
+    )
+    expect(parseInt(lockInGraph.maxKeysPerAddress)).to.equals(1)
+  })
+
+  it('stores new values correctly', async () => {
+    const config = {
+      expirationDuration: 100,
+      maxNumberOfKeys: 50,
+      maxKeysPerAddress: 10,
+    }
+
+    await lock.updateLockConfig(...Object.values(config))
+    await awaitTimeout(2000)
+    const lockInGraph = await subgraph.getLock(lockAddress)
+    expect(parseInt(lockInGraph.expirationDuration)).to.equals(
+      config.expirationDuration
+    )
+    expect(parseInt(lockInGraph.maxNumberOfKeys)).to.equals(
+      config.maxNumberOfKeys
+    )
+    expect(parseInt(lockInGraph.maxKeysPerAddress)).to.equals(
+      config.maxKeysPerAddress
+    )
+  })
+})
+
 describe('Keep track of changes in metadata', function () {
   let lock: Contract
   let lockAddress: string
