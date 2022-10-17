@@ -4,7 +4,6 @@ let lock
 contract('Lock / erc721 / ownerOf', (accounts) => {
   before(async () => {
     lock = await deployLock()
-    await lock.setMaxKeysPerAddress(10)
   })
 
   it('should return 0x0 when key is nonexistent', async () => {

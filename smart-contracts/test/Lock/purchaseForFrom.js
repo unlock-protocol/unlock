@@ -7,7 +7,6 @@ contract('Lock / purchaseForFrom', (accounts) => {
   before(async () => {
     lock = await deployLock()
     lockFree = await deployLock({ name: 'FREE' })
-    await lock.setMaxKeysPerAddress(10)
   })
 
   describe('if the referrer does not have a key', () => {

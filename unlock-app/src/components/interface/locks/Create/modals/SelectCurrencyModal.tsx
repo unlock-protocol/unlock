@@ -3,7 +3,7 @@ import { Token } from '@unlock-protocol/types'
 import { Button, Input } from '@unlock-protocol/ui'
 import { Fragment, useEffect, useState } from 'react'
 import { useDebounce } from 'react-use'
-import { utils } from 'ethers'
+import { ethers, utils } from 'ethers'
 import { useConfig } from '~/utils/withConfig'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { addressMinify } from '~/utils/strings'
@@ -18,6 +18,8 @@ interface SelectCurrencyModalProps {
   onSelect: (token: Token) => void
   defaultCurrency: string
 }
+
+export const ZERO = ethers.constants.AddressZero
 
 export const SelectCurrencyModal = ({
   isOpen,
@@ -56,7 +58,7 @@ export const SelectCurrencyModal = ({
 
   useEffect(() => {
     setTokens([
-      { name: defaultCurrency, symbol: defaultCurrency },
+      { name: defaultCurrency, symbol: defaultCurrency, address: ZERO },
       ...tokenItems,
     ])
   }, [network])
@@ -86,7 +88,7 @@ export const SelectCurrencyModal = ({
   const addToken = ({
     name,
     symbol,
-    address = undefined,
+    address,
     decimals = 18,
   }: Partial<Token>) => {
     const currentList = tokens || []
