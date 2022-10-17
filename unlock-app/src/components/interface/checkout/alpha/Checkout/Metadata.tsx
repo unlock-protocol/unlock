@@ -182,7 +182,9 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                 >
                   {hideRecipient ? (
                     <div className="space-y-1">
-                      <div className="ml-1 text-sm">Recipient</div>
+                      <div className="ml-1 text-sm">
+                        {quantity > 1 ? `Recipient #1` : 'Recipient'}
+                      </div>
                       <div className="flex items-center pl-4 pr-2 py-1.5 justify-between bg-gray-200 rounded-lg">
                         <div className="w-32 text-sm truncate">
                           {isUnlockAccount ? email : address}
