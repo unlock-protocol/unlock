@@ -24,13 +24,13 @@ class MockWeb3Service extends EventEmitter {
 let mockWeb3Service
 
 const mockWalletService = {
-  networkId: 1337,
+  networkId: 5,
 }
 const mockStorageService = {}
 const mockGraphService = {}
 const mockConfig = {
   networks: {
-    1337: {
+    5: {
       blockTime: 2,
     },
   },
@@ -45,9 +45,19 @@ const web3ServiceLock = {
   name: 'My Lock',
 }
 
-const network = 1337
+const network = 5
 
 const transaction = {}
+
+const mockSubGraphService = {
+  locks: jest.fn(() => Promise.resolve(graphLocks)),
+}
+
+jest.mock('@unlock-protocol/unlock-js', () => ({
+  SubgraphService: function SubgraphService() {
+    return mockSubGraphService
+  },
+}))
 
 describe('useLocks', () => {
   beforeEach(() => {
@@ -91,8 +101,6 @@ describe('useLocks', () => {
       })
     )
     mockStorageService.storeTransaction = jest.fn(() => {})
-
-    mockGraphService.locksByManager = jest.fn(() => Promise.resolve(graphLocks))
   })
 
   it.skip('should default to loading and an empty list', async () => {
@@ -110,7 +118,7 @@ describe('useLocks', () => {
   })
 
   it.skip('retrieve the list of locks from the graph', async () => {
-    expect.assertions(3)
+    expect.assertions(2)
     graphLocks = [
       {
         address: '0x123',
@@ -129,26 +137,15 @@ describe('useLocks', () => {
     const { loading, locks } = result.current
     expect(loading).toBe(false)
     expect(locks.length).toBe(2)
-    expect(mockGraphService.locksByManager).toHaveBeenCalledWith(ownerAddress)
   })
 
   describe('getLockAtAddress', () => {
     it('should retrieve the lock using web3Service', async () => {
       expect.assertions(2)
       mockWeb3Service.getLock = jest.fn(() => Promise.resolve(web3ServiceLock))
-      const lock = await getLockAtAddress(mockWeb3Service, lockAddress, 1337)
+      const lock = await getLockAtAddress(mockWeb3Service, lockAddress, 5)
       expect(lock).toEqual(web3ServiceLock)
       expect(mockWeb3Service.getLock).toHaveBeenCalledWith(lockAddress, network)
-    })
-
-    it('should unlimited keys', async () => {
-      expect.assertions(1)
-      const web3ServiceLock = {
-        maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-      }
-      mockWeb3Service.getLock = jest.fn(() => Promise.resolve(web3ServiceLock))
-      const lock = await getLockAtAddress(mockWeb3Service, lockAddress, 1337)
-      expect(lock.unlimitedKeys).toBe(true)
     })
   })
 
@@ -181,7 +178,7 @@ describe('useLocks', () => {
         },
       ]
 
-      mockGraphService.locksByManager = jest.fn(() => Promise.resolve(locks))
+      mockSubGraphService.locks = jest.fn(() => Promise.resolve(locks))
       const addToLocks = jest.fn()
       const setLoading = jest.fn()
       await retrieveLocks(
