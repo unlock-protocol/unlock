@@ -23,7 +23,6 @@ export const getLockAtAddress = async (web3Service, address, network) => {
   let lock
   try {
     lock = await web3Service.getLock(address, network)
-    lock.unlimitedKeys = lock.maxNumberOfKeys === UNLIMITED_KEYS_COUNT
     lock.address = address
     lock.network = network
   } catch (error) {
