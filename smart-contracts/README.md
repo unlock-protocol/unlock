@@ -167,7 +167,7 @@ yarn hardhat submit:version --public-lock-address 0x....
 Deploy on all networks at once
 
 ```
-./sh all_networks.sh yarn hardhat submit:version --public-lock-version 12
+sh scripts/all_networks.sh submit:version --public-lock-version 12
 ```
 
 
