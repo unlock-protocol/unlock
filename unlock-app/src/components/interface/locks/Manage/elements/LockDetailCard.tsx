@@ -12,13 +12,14 @@ import { useConfig } from '~/utils/withConfig'
 import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
-import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { CardPayment } from './CardPayment'
 import { UpdateDurationModal } from '../modals/UpdateDurationModal'
 import { UpdatePriceModal } from '../modals/UpdatePriceModal'
 import { UpdateQuantityModal } from '../modals/UpdateQuantityModal'
 import { EnableRecurring } from './EnableRecurring'
 import { useLockManager } from '~/hooks/useLockManager'
+import { RiEditLine as EditIcon } from 'react-icons/ri'
+import Link from 'next/link'
 
 interface LockDetailCardProps {
   network: number
@@ -234,7 +235,16 @@ export const LockDetailCard = ({
             loading={loading}
             version={lock?.publicLockVersion}
           />
-          <div className="flex flex-col mt-14">
+          <div className="grid py-6">
+            <Link
+              href={`/locks/metadata?lockAddress=${lockAddress}&network=${network}`}
+            >
+              <Button iconRight={<EditIcon key="edit" />}>
+                Update Metadata
+              </Button>
+            </Link>
+          </div>
+          <div className="flex flex-col mt-6">
             <Detail label="Network" value={networkName} loading={loading} />
             <Detail
               label="Key Duration"
