@@ -210,7 +210,7 @@ describe('Keep track of changes in metadata', function () {
       expect(await lock.tokenURI(0)).to.equals(baseTokenURI)
 
       // lockInGraph
-      expect(lockInGraph.totalKeys).to.equals(3)
+      expect(lockInGraph.totalKeys).to.equals('3')
       for (let i = 0; i < lockInGraph.totalKeys; i++) {
         const keyInGraph = await subgraph.getKey(lockAddress, tokenIds[i])
         expect(await lock.tokenURI(tokenIds[i])).to.equals(keyInGraph.tokenURI)
