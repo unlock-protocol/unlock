@@ -30,7 +30,14 @@ export function handleNewLock(event: NewLock): void {
   lock.name = lockContract.name()
   lock.expirationDuration = lockContract.expirationDuration()
   lock.totalKeys = BigInt.fromI32(0)
-  lock.symbol = 'KEY'
+
+  // default value
+  const symbol = lockContract.try_symbol()
+  if (!symbol.reverted) {
+    lock.symbol = symbol.value
+  } else {
+    lock.symbol = 'KEY'
+  }
 
   let maxKeysPerAddress = lockContract.try_maxKeysPerAddress()
   if (!maxKeysPerAddress.reverted) {
