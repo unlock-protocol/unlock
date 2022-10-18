@@ -2,7 +2,7 @@ import path from 'path'
 import PaymentProcessor from '../../src/payment/paymentProcessor'
 import * as Normalizer from '../../src/utils/normalizer'
 import { UserReference } from '../../src/models/userReference'
-
+jest.useFakeTimers()
 const nock = require('nock')
 const nockBack = require('nock').back
 const models = require('../../src/models')
