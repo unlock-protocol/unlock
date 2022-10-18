@@ -34,7 +34,7 @@ COPY packages  /opt/manifests/packages
 ##
 ## 2. fetch all deps
 ##
-FROM node:16-alpine as dev
+FROM node:16.10.0-alpine as dev
 LABEL Unlock <ops@unlock-protocol.com>
 
 # args need to be mentioned at each stage
@@ -120,7 +120,7 @@ ENV GLIBC_VERSION=2.30-r0
 RUN set -ex && \
     apk --update add libstdc++ curl ca-certificates && \
     for pkg in glibc-${GLIBC_VERSION} glibc-bin-${GLIBC_VERSION}; \
-        do curl -sSL ${GLIBC_REPO}/releases/download/${GLIBC_VERSION}/${pkg}.apk -o /tmp/${pkg}.apk; done && \
+    do curl -sSL ${GLIBC_REPO}/releases/download/${GLIBC_VERSION}/${pkg}.apk -o /tmp/${pkg}.apk; done && \
     apk add --allow-untrusted /tmp/*.apk && \
     rm -v /tmp/*.apk && \
     /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib
@@ -142,7 +142,7 @@ RUN cd $BUILD_DIR && yarn prod-install --pack /home/node/app
 ##
 ## 4. export a minimal image w only the prod app
 ##
-FROM node:16-alpine as prod
+FROM node:16.10.0-alpine as prod
 
 ARG BUILD_DIR
 ARG PORT
