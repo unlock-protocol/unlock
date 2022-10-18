@@ -11,7 +11,7 @@ yarn prepare
 yarn codegen
 
 # build Web Assemly binaries
-yarn build --network <network-name>
+yarn build <network-name>
 ```
 
 ### Config
@@ -31,7 +31,6 @@ yarn prepare:networks
 
 Are Unlock's contracts are upgreadable, we parse the multiple ABIs that are required from our `@unlock-protocol/contracts` package.
 
-
 ```sh
 # parse and build the require ABIs
 yarn prepare:abis
@@ -44,7 +43,7 @@ Deploy the latest subgraph code to the graph node.
 ```sh
 export SUBGRAPH_DEPLOY_KEY=<api-key>
 
-# build 
+# build
 sh bin/thegraph deploy <network-name>
 
 # deploy a single network
@@ -52,17 +51,17 @@ sh bin/thegraph deploy <network-name>
 
 # deploy all networks
 sh bin/thegraph deploy <network-name>
-``` 
+```
 
 ## Tests
 
-(preferred way) Run the tests using Docker 
+(preferred way) Run the tests using Docker
 
 ```
-yarn test -d 
+yarn test -d
 ```
 
-Run coverage 
+Run coverage
 
 ```
 yarn test -d -c
@@ -78,7 +77,7 @@ yarn show-events
 
 ## Add to the subgraph
 
-To add a particular property to the subgraph you need to 
+To add a particular property to the subgraph you need to
 
 1. add to schema
 2. edit the mappings
@@ -95,7 +94,7 @@ To add a particular property to the subgraph you need to
  }
 ```
 
-Rebuild the code 
+Rebuild the code
 
 ```
 yarn codegen
@@ -147,9 +146,9 @@ describe('Describe Lock creation', () => {
   })
 ```
 
-#### Mocking contract calls 
+#### Mocking contract calls
 
-If the handler does any calls to a contract, this will have to be mocked. All mocks are stored in `tests/mocks`. 
+If the handler does any calls to a contract, this will have to be mocked. All mocks are stored in `tests/mocks`.
 
 ```js
 import { maxNumberOfKeys } from './constants'
@@ -162,4 +161,3 @@ createMockedFunction(
   .withArgs([])
   .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(maxNumberOfKeys))])
 ```
-

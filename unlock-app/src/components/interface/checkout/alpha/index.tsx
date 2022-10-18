@@ -28,7 +28,17 @@ export function CheckoutPage() {
     communication.providerAdapter || selectProvider(config)
 
   const checkoutRedirectURI =
-    paywallConfig?.redirectUri || (query.redirectUri as string)
+    paywallConfig?.redirectUri ||
+    Object.entries(query)
+      .find(([key]) => {
+        return [
+          'redirecturi',
+          'redirect-uri',
+          'redirect-url',
+          'redirecturl',
+        ].includes(key.toLowerCase())
+      })?.[1]
+      ?.toString()
 
   useEffect(() => {
     document.querySelector('body')?.classList.add('bg-transparent')

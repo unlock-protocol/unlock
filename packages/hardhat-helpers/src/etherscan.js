@@ -14,15 +14,6 @@ const etherscan = {
         browserURL: 'https://celoscan.io/',
       },
     },
-    // below could be removeed once https://github.com/NomicFoundation/hardhat/pull/3207/files is merged
-    {
-      network: 'gnosis',
-      chainId: 100,
-      urls: {
-        apiURL: 'https://gnosisscan.io/api',
-        browserURL: 'https://gnosisscan.io',
-      },
-    },
   ],
 }
 
