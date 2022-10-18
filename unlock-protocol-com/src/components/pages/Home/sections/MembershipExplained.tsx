@@ -55,10 +55,7 @@ export function MembershipExplained() {
           ))}
         </ul>
         <div className="flex">
-          <Button
-            as={Link}
-            href="https://docs.unlock-protocol.com/#from-the-attention-economy-to-the-membership-economy"
-          >
+          <Button as={Link} href="https://www.youtube.com/watch?v=0OhrnugJgHY">
             Learn more about memberships
           </Button>
         </div>

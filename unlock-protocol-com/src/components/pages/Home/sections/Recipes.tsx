@@ -68,14 +68,14 @@ export function Recipes() {
   return (
     <section className="pt-12 mx-auto max-w-7xl">
       <header className="flex items-center justify-between px-6">
-        <h3 className="text-xl font-semibold sm:text-3xl"> Recipes </h3>
+        <h3 className="text-xl font-semibold sm:text-3xl"> Guides </h3>
         <div className="flex items-center gap-4">
           <div>
             <Link
-              href="https://docs.unlock-protocol.com/tutorials/"
+              href="https://unlock-protocol.com/guides/"
               className="text-sm font-medium uppercase text-brand-ui-primary sm:text-base"
             >
-              Explore more recipes {'->'}
+              Explore more guides {'->'}
             </Link>
           </div>
           <div className="justify-end hidden gap-4 sm:flex">
