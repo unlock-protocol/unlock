@@ -6,7 +6,7 @@ import { BulletPointIcon } from '../../../icons'
 import Autoplay from 'embla-carousel-autoplay'
 
 const UNLOCK_BENEFITS = [
-  'Create memberships contracts and sell access NFTs in minutes',
+  'Create membership contracts and sell access NFTs in minutes',
   'Token-gating, memberships, ticketing, and more',
   'Open-source, community governed smart contracts',
 ]
