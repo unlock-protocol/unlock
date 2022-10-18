@@ -8,6 +8,7 @@ import {
   lockAddress,
   tokenId,
   tokenURI,
+  symbol,
   nullAddress,
   keyPrice,
   baseTokenURI,
@@ -34,6 +35,14 @@ createMockedFunction(
 createMockedFunction(Address.fromString(lockAddress), 'name', 'name():(string)')
   .withArgs([])
   .returns([ethereum.Value.fromString('My lock graph')])
+
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'symbol',
+  'symbol():(string)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromString(symbol)])
 
 // tokenURIs
 createMockedFunction(
