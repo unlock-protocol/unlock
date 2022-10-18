@@ -12,7 +12,8 @@ export default async function (
     erc20Address,
     decimals,
     referrer,
-    recurringPayments, // nb of reccuring payments to approve
+    recurringPayments, // nb of reccuring payments to approve,
+    totalApproval, // Explicit approval amount
     data,
   },
   transactionOptions = {},
@@ -28,6 +29,7 @@ export default async function (
       recurringPayments: recurringPayments ? [recurringPayments] : null,
       lockAddress,
       erc20Address,
+      totalApproval,
       decimals,
     },
     transactionOptions,

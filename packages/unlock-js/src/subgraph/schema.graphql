@@ -1,0 +1,61 @@
+query allLocks(
+  $first: Int!
+  $skip: Int
+  $where: Lock_filter
+  $orderBy: Lock_orderBy
+  $orderDirection: OrderDirection
+) {
+  locks(
+    first: $first
+    skip: $skip
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    id
+    address
+    name
+    expirationDuration
+    tokenAddress
+    price
+    lockManagers
+    version
+    createdAtBlock
+  }
+}
+
+query AllKeys(
+  $first: Int!
+  $skip: Int
+  $where: Key_filter
+  $orderBy: Key_orderBy
+  $orderDirection: OrderDirection
+) {
+  keys(
+    first: $first
+    skip: $skip
+    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    id
+    lock {
+      id
+      address
+      name
+      expirationDuration
+      tokenAddress
+      price
+      lockManagers
+      version
+      createdAtBlock
+    }
+    tokenId
+    owner
+    manager
+    expiration
+    tokenURI
+    createdAtBlock
+    cancelled
+  }
+}

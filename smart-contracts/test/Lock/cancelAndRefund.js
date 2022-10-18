@@ -34,7 +34,6 @@ contract('Lock / cancelAndRefund', (accounts) => {
     })
     lock = await deployLock()
     lockFree = await deployLock({ name: 'FREE' })
-    await lock.setMaxKeysPerAddress(10)
     ;({ tokenIds } = await purchaseKeys(lock, keyOwners.length))
   })
 
@@ -208,7 +207,7 @@ contract('Lock / cancelAndRefund', (accounts) => {
 
   describe('should fail when', () => {
     it('should fail if the Lock owner withdraws too much funds', async () => {
-      await lock.withdraw(await lock.tokenAddress(), 0, {
+      await lock.withdraw(await lock.tokenAddress(), lockCreator, 0, {
         from: lockCreator,
       })
       await reverts(

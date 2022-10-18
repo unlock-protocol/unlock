@@ -54,7 +54,7 @@
     "eslint-plugin-mocha": "10.1.0",
     "ethers": "5.7.1",
     "file-saver": "2.0.5",
-    "graphql": "15.8.0",
+    "graphql": "16.6.0",
     "jest": "27.5.1",
     "jest-canvas-mock": "2.4.0",
     "jest-fetch-mock": "3.0.3",
