@@ -1,3 +1,10 @@
+/**
+ * Set default duration of a key at creation
+ * @param {object} params:
+ * - {PropTypes.address} lockAddress
+ * - {number} expirationDuration duration of a key (in seconds)
+ * @param {function} callback invoked with the transaction hash
+ */
 export async function setExpirationDuration(
   { lockAddress, expirationDuration },
   transactionOptions = {},
