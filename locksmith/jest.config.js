@@ -13,7 +13,4 @@ module.exports = {
       lines: 65,
     },
   },
-  testTimeout: 10000,
-  maxConcurrency: 3,
-  maxWorkers: 1,
 }

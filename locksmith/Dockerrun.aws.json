@@ -1,11 +1,11 @@
 {
-  "AWSEBDockerrunVersion": "1",
-  "Image": {
-    "Name": "unlockprotocol/locksmith:master"
-  },
-  "Ports": [
-    {
-      "ContainerPort": 8080
-    }
-  ]
-}
+    "AWSEBDockerrunVersion": "1",
+    "Image": {
+      "Name": "unlockprotocol/locksmith:master"
+    },
+    "Ports": [
+      {
+        "ContainerPort": 8080
+      }
+    ]
+  }
