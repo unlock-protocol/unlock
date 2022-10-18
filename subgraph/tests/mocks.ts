@@ -10,6 +10,8 @@ import {
   tokenURI,
   nullAddress,
   keyPrice,
+  maxNumberOfKeys,
+  maxKeysPerAddress,
 } from './constants'
 
 createMockedFunction(
@@ -66,6 +68,24 @@ createMockedFunction(
 )
   .withArgs([])
   .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(duration))])
+
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'maxNumberOfKeys',
+  'maxNumberOfKeys():(uint256)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(maxNumberOfKeys))])
+
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'maxKeysPerAddress',
+  'maxKeysPerAddress():(uint256)'
+)
+  .withArgs([])
+  .returns([
+    ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(maxKeysPerAddress)),
+  ])
 
 createMockedFunction(
   Address.fromString(lockAddress),

@@ -2,7 +2,8 @@ import { Address, BigInt, log } from '@graphprotocol/graph-ts'
 
 import {
   CancelKey as CancelKeyEvent,
-  ExpirationChanged as ExpirationChangedEvent,
+  ExpirationChanged as ExpirationChangedUntilV11Event,
+  ExpirationChanged1 as ExpirationChangedEvent,
   ExpireKey as ExpireKeyEvent,
   KeyExtended as KeyExtendedEvent,
   KeyManagerChanged as KeyManagerChangedEvent,
@@ -11,6 +12,7 @@ import {
   PricingChanged as PricingChangedEvent,
   RenewKeyPurchase as RenewKeyPurchaseEvent,
   Transfer as TransferEvent,
+  LockConfig as LockConfigEvent,
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
@@ -27,7 +29,10 @@ function newKey(event: TransferEvent): void {
   key.createdAtBlock = event.block.number
 
   const lockContract = PublicLock.bind(event.address)
-  key.tokenURI = lockContract.tokenURI(event.params.tokenId)
+  const tokenURI = lockContract.try_tokenURI(event.params.tokenId)
+  if (!tokenURI.reverted) {
+    key.tokenURI = tokenURI.value
+  }
   key.expiration = getKeyExpirationTimestampFor(
     event.address,
     event.params.tokenId,
@@ -39,6 +44,16 @@ function newKey(event: TransferEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock) {
     lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
+    lock.save()
+  }
+}
+
+export function handleLockConfig(event: LockConfigEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+  if (lock) {
+    lock.expirationDuration = event.params.expirationDuration
+    lock.maxNumberOfKeys = event.params.maxNumberOfKeys
+    lock.maxKeysPerAddress = event.params.maxKeysPerAddress
     lock.save()
   }
 }
@@ -84,13 +99,28 @@ export function handleExpireKey(event: ExpireKeyEvent): void {
   }
 }
 
-export function handleExpirationChanged(event: ExpirationChangedEvent): void {
+export function handleExpirationChangedUntilV11(
+  event: ExpirationChangedUntilV11Event
+): void {
   const keyID = genKeyID(event.address, event.params._tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
     key.expiration = getKeyExpirationTimestampFor(
       event.address,
       event.params._tokenId,
+      Address.fromBytes(key.owner)
+    )
+    key.save()
+  }
+}
+
+export function handleExpirationChanged(event: ExpirationChangedEvent): void {
+  const keyID = genKeyID(event.address, event.params.tokenId.toString())
+  const key = Key.load(keyID)
+  if (key) {
+    key.expiration = getKeyExpirationTimestampFor(
+      event.address,
+      event.params.tokenId,
       Address.fromBytes(key.owner)
     )
     key.save()

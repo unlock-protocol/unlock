@@ -50,7 +50,6 @@ export const UpdatePriceModal = ({
   const {
     register,
     handleSubmit,
-    getValues,
     setValue,
     reset,
     formState: { isValid, errors },
@@ -77,9 +76,10 @@ export const UpdatePriceModal = ({
     getLock()
   )
 
-  const updatePrice = async (): Promise<any> => {
-    const { keyPrice = '', currencyContractAddress } = getValues()
-
+  const updatePrice = async ({
+    keyPrice = '',
+    currencyContractAddress,
+  }: EditFormProps): Promise<any> => {
     const erc20Address =
       currencyContractAddress || lock?.currencyContractAddress || 0
 
@@ -94,9 +94,9 @@ export const UpdatePriceModal = ({
 
   const updatePriceMutation = useMutation(updatePrice)
 
-  const onHandleSubmit = async () => {
+  const onHandleSubmit = async (fields: EditFormProps) => {
     if (isValid) {
-      await ToastHelper.promise(updatePriceMutation.mutateAsync(), {
+      await ToastHelper.promise(updatePriceMutation.mutateAsync(fields), {
         loading: 'Updating price...',
         success: 'Price updated',
         error: 'There is some unexpected issue, please try again',

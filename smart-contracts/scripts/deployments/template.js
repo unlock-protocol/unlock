@@ -9,6 +9,9 @@ async function main({ publicLockVersion }) {
   const networkName = getNetworkName(chainId)
   const isLocalNet = networkName === 'localhost'
 
+  const [signer] = await ethers.getSigners()
+  console.log(`Deploying lock template with signer ${signer.address}`)
+
   let PublicLock
   if (publicLockVersion) {
     const { abi, bytecode } = contracts[`PublicLockV${publicLockVersion}`]

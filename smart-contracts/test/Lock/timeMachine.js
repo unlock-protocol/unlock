@@ -82,6 +82,24 @@ contract('Lock / timeMachine', (accounts) => {
 
     it('should emit the ExpirationChanged event', async () => {
       assert.equal(tx.logs[0].event, 'ExpirationChanged')
+      timestampBefore = new BigNumber(
+        await timeMachine.keyExpirationTimestampFor(tokenId)
+      )
+      assert.equal(
+        tx.logs[0].args.newExpiration.toString(),
+        timestampBefore.toString()
+      )
+
+      const tx2 = await timeMachine.timeMachine(tokenId, 42, true, {
+        from: accounts[0],
+      }) // increase the time with "true"
+      timestampAfter = new BigNumber(
+        await timeMachine.keyExpirationTimestampFor(tokenId)
+      )
+      assert(timestampAfter.eq(tx2.logs[0].args.newExpiration))
+      assert.equal(tx2.logs[0].args.amount, 42)
+      assert.equal(tx2.logs[0].args.timeAdded, true)
+      assert.equal(tx2.logs[0].args.tokenId.eq(tokenId), true)
     })
   })
 
