@@ -164,7 +164,7 @@ createMockedFunction(
 
 ## Debug deployed Subgraph
 
-To queryretrieve the error message for failed subgraphs - on the hosted service
+To retrieve the error message for failed subgraphs - on the hosted service
 
 - Find your Deployment ID ("Qm....")
 - Go to https://graphiql-online.com/
