@@ -26,6 +26,7 @@ export default async function (
     erc20Address,
     recurringPayments,
     decimals,
+    totalApproval, // explicit approval amount
     data: _data,
   },
   transactionOptions = {},
@@ -86,15 +87,19 @@ export default async function (
       this.signer.address
     )
 
-    // total amount to approve
-    const totalAmountToApprove = recurringPayments
-      ? keyPrices // for reccuring payments
-          .map((kp, i) => kp.mul(recurringPayments[i]))
-          .reduce(
-            (total, approval) => total.add(approval),
-            utils.bigNumberify(0)
-          )
-      : totalPrice
+    let totalAmountToApprove = totalApproval
+
+    if (!totalAmountToApprove) {
+      // total amount to approve
+      totalAmountToApprove = recurringPayments
+        ? keyPrices // for reccuring payments
+            .map((kp, i) => kp.mul(recurringPayments[i]))
+            .reduce(
+              (total, approval) => total.add(approval),
+              utils.bigNumberify(0)
+            )
+        : totalPrice
+    }
 
     if (
       !approvedAmount ||

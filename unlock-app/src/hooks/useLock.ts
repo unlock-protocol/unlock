@@ -238,7 +238,7 @@ export const purchaseKeyFromLock = async (
   referrer: string,
   setLock: (...args: any) => void,
   data: string,
-  recurringPayments: number | undefined,
+  recurringPayments: number | undefined | string,
   callback: (...args: any) => void
 ) => {
   // In order to not modify the behavior for v10, by default if the user owns a key on
@@ -434,7 +434,7 @@ export const useLock = (lockFromProps: Partial<Lock>, network: number) => {
     recipient: string,
     referrer: string,
     data: string,
-    recurringPayments: number | undefined,
+    recurringPayments: number | undefined | string,
     callback: (...args: any) => void
   ) => {
     if (walletNetwork !== network) {
