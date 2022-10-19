@@ -25,9 +25,8 @@ interface Key {
     address: string
     name: string
   }
-  owner: {
-    address: string
-  }
+  tokenId?: string
+  owner: string
   keyId?: string
 }
 
@@ -102,8 +101,8 @@ export const notifyNewKeyToWedlocks = async (
   includeQrCode = true
 ) => {
   const lockAddress = key.lock.address
-  const ownerAddress = key.owner.address
-  const tokenId = key?.keyId
+  const ownerAddress = key.owner
+  const tokenId = key?.tokenId
 
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
