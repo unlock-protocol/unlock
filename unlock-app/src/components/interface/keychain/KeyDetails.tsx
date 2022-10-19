@@ -68,7 +68,6 @@ export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
       />
     )
   }
-  if (!network) return null
   return (
     <div className="flex flex-col mb-[2rem]">
       <div className="flex flex-col">
