@@ -44,7 +44,7 @@ async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
       break
     }
     logger.info('Found new keys', {
-      keys: keys.map((key: any) => [network, key.lock.address, key.keyId]),
+      keys: keys.map((key: any) => [network, key.lock.address, key.id]),
     })
 
     await Promise.allSettled([
