@@ -1,10 +1,4 @@
-let accounts,
-  web3Service,
-  chainId,
-  walletService,
-  lock,
-  lockAddress,
-  publicLockVersion
+let accounts, web3Service, chainId, walletService, lock, lockAddress
 
 export default ({ publicLockVersion }) =>
   () => {

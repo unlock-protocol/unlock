@@ -1,4 +1,5 @@
-let walletService, web3Service, lockAddress, lock, chainId, accounts, ethers
+import { ethers } from 'hardhat'
+let walletService, web3Service, lockAddress, lock, chainId, accounts
 
 export default () => () => {
   let tokenIds
@@ -7,15 +8,8 @@ export default () => () => {
   let transactionHash
 
   beforeAll(async () => {
-    ;({
-      walletService,
-      web3Service,
-      lockAddress,
-      lock,
-      chainId,
-      accounts,
-      ethers,
-    } = global.suiteData)
+    ;({ walletService, web3Service, lockAddress, lock, chainId, accounts } =
+      global.suiteData)
     keyOwners = [accounts[5], accounts[6]]
 
     tokenIds = await walletService.purchaseKeys({
