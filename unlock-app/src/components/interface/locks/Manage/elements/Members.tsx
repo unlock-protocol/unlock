@@ -9,6 +9,7 @@ import { MemberCard } from './MemberCard'
 import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import React from 'react'
+import { ExpirationStatus } from './FilterBar'
 
 interface MembersProps {
   lockAddress: string
@@ -16,9 +17,7 @@ interface MembersProps {
   loading: boolean
   setPage: (page: number) => void
   page: number
-  filters?: {
-    [key: string]: any
-  }
+  filters?: FilterProps
 }
 
 const MembersPlaceholder = () => {
@@ -37,6 +36,12 @@ const MembersPlaceholder = () => {
   )
 }
 
+export interface FilterProps {
+  query: string
+  filterKey: string
+  expiration: ExpirationStatus
+}
+
 export const Members = ({
   lockAddress,
   network,
@@ -46,7 +51,7 @@ export const Members = ({
   filters = {
     query: '',
     filterKey: 'owner',
-    expiration: 'all',
+    expiration: ExpirationStatus.ALL,
   },
 }: MembersProps) => {
   const { account } = useAuth()
