@@ -85,4 +85,6 @@ templates:
           handler: handleTransfer
         - event: RenewKeyPurchase(indexed address,uint256)
           handler: handleRenewKeyPurchase
+        - event: LockMetadata(string,string,string)
+          handler: handleLockMetadata
       file: ./src/public-lock.ts
