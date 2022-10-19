@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable no-param-reassign */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable prefer-const */
@@ -36,11 +37,27 @@ function genKeyID(lockAddress: Address, tokenId: string): string {
   return lockAddress.toHex().concat('-').concat(tokenId)
 }
 
+export function getKeyExpirationTimestampFor(
+  lockAddress: Address,
+  tokenId: BigInt
+): BigInt {
+  let lockContract = PublicLock.bind(lockAddress)
+  let expiration = lockContract.try_keyExpirationTimestampFor(tokenId)
+  if (!expiration.reverted) {
+    return expiration.value
+  } else {
+    return BigInt.fromString('0')
+  }
+}
+
 export function cancelKey(event: CancelKey): void {
   let keyID = genKeyID(event.address, event.params.tokenId.toString())
   let key = Key.load(keyID)
   let lockContract = PublicLock.bind(event.address)
-  key.expiration = lockContract.keyExpirationTimestampFor(event.params.tokenId)
+  key.expiration = getKeyExpirationTimestampFor(
+    event.address,
+    event.params.tokenId
+  )
   key.save()
 }
 
@@ -102,7 +119,10 @@ export function extendKey(event: KeyExtended): void {
   let key = Key.load(keyID)
 
   // Update its expiration
-  key.expiration = lockContract.keyExpirationTimestampFor(event.params.tokenId)
+  key.expiration = getKeyExpirationTimestampFor(
+    event.address,
+    event.params.tokenId
+  )
   key.save()
 }
 
@@ -112,7 +132,6 @@ function newlyMintedKey(event: Transfer): void {
 }
 
 function existingKeyTransfer(event: Transfer): void {
-  let lockContract = PublicLock.bind(event.address)
   let keyID = genKeyID(event.address, event.params.tokenId.toString())
   let key = Key.load(keyID)
 
@@ -120,7 +139,10 @@ function existingKeyTransfer(event: Transfer): void {
   keyHolder.save()
 
   key.owner = event.params.to.toHex()
-  key.expiration = lockContract.keyExpirationTimestampFor(event.params.tokenId)
+  key.expiration = getKeyExpirationTimestampFor(
+    event.address,
+    event.params.tokenId
+  )
   key.save()
 }
 
@@ -132,7 +154,10 @@ function genKey(event: Transfer, lockContract: PublicLock): void {
   key.lock = event.address.toHex()
   key.keyId = event.params.tokenId
   key.owner = event.params.to.toHex()
-  key.expiration = lockContract.keyExpirationTimestampFor(event.params.tokenId)
+  key.expiration = getKeyExpirationTimestampFor(
+    event.address,
+    event.params.tokenId
+  )
   key.createdAt = event.block.timestamp
 
   let tokenURI = lockContract.try_tokenURI(key.keyId)
