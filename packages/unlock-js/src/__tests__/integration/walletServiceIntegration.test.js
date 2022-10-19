@@ -1,13 +1,16 @@
 import { ethers } from 'hardhat'
-import WalletService from '../../walletService'
-import Web3Service from '../../web3Service'
 import locks from '../helpers/fixtures/locks'
-import { deployUnlock, configureUnlock, deployTemplate } from '../helpers'
+import { configureUnlock, deployTemplate } from '../helpers'
 import { ZERO } from '../../constants'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
-import UnlockVersions from '../../Unlock'
 
-const chainId = 31337
+import {
+  chainId,
+  UnlockVersionNumbers,
+  getPublicLockVersions,
+  setupTest,
+  setupLock,
+} from '../helpers/integration'
 
 // This test suite will do the following:
 // For each version of the Unlock contract
@@ -21,49 +24,21 @@ const chainId = 31337
 // Increasing timeouts
 jest.setTimeout(300000)
 
-let accounts
-const networks = {
-  [chainId]: {
-    provider: 'http://localhost:8545',
-  },
-}
-
-// Unlock versions to test
-const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
-  (v) => v !== 'v6' // 'v6' is disabled it required erc1820
-)
+console.log(UnlockVersionNumbers)
 
 describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let walletService
   let web3Service
   let ERC20
+  let accounts
 
   // Unlock v4 can only interact w PublicLock v4
-  const PublicLockVersions =
-    unlockVersion === 'v4'
-      ? ['v4']
-      : Object.keys(locks).filter((v) => !['v4', 'v6'].includes(v))
+  const PublicLockVersions = getPublicLockVersions(unlockVersion)
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
     ERC20 = await nodeSetup()
-
-    const [signer] = await ethers.getSigners()
-    const ethersProvider = signer.provider
-
-    // pass hardhat ethers provider
-    networks[chainId].ethersProvider = ethersProvider
-
-    // deploy Unlock
-    const unlockAddress = await deployUnlock(unlockVersion)
-    networks[chainId].unlockAddress = unlockAddress
-
-    walletService = new WalletService(networks)
-
-    await walletService.connect(ethersProvider, signer)
-    web3Service = new Web3Service(networks)
-
-    accounts = await walletService.provider.listAccounts()
+    ;({ accounts, walletService, web3Service } = await setupTest(unlockVersion))
   })
 
   it('should yield true to isUnlockContractDeployed', async () => {
@@ -131,7 +106,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
     )
   }
 
-  describe.each(PublicLockVersions)('using Lock %s', (publicLockVersion) => {
+  describe.each()('using Lock %s', (publicLockVersion) => {
     describe.each(
       locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
     )('lock %i: %s', (lockIndex, lockName, lockParams) => {
@@ -142,60 +117,14 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       let itIfErc20 = lockParams.isERC20 ? it : it.skip
 
       beforeAll(async () => {
-        if (publicLockVersion !== 'v4') {
-          // here we need to setup unlock template properly
-          const unlock = await walletService.getUnlockContract()
-
-          // deploy the relevant template
-          const templateAddress = await deployTemplate(publicLockVersion)
-
-          // prepare unlock for upgradeable locks
-          if (['v10', 'v11'].indexOf(unlockVersion) > -1) {
-            const lockVersionNumber = parseInt(
-              publicLockVersion.replace('v', '')
-            )
-            await unlock.addLockTemplate(templateAddress, lockVersionNumber)
-          }
-
-          // set the right template in Unlock
-          const tx = await unlock.setLockTemplate(templateAddress)
-          await tx.wait()
-        }
-        // parse erc20
-        const { isERC20 } = lockParams
-        lockParams.currencyContractAddress = isERC20 ? ERC20.address : null
-
-        // unique Lock name to avoid conflicting addresses
-        lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
-
-        if (['v11'].indexOf(unlockVersion) > -1) {
-          // use createLockAtVersion starting on v10
-          lockParams.publicLockVersion = parseInt(
-            publicLockVersion.replace('v', '')
-          )
-        }
-
-        lockAddress = await walletService.createLock(
+        ;({ lock, lockAddress, lockCreationHash } = await setupLock({
+          walletService,
+          web3Service,
+          publicLockVersion,
+          unlockVersion,
           lockParams,
-          {} /** transactionOptions */,
-          (error, hash) => {
-            if (error) {
-              throw error
-            }
-            lockCreationHash = hash
-          }
-        )
-
-        lock = await web3Service.getLock(lockAddress, chainId)
-
-        // test will fail with default to 1 key per address
-        if (['v10', 'v11'].indexOf(publicLockVersion) !== -1) {
-          await walletService.setMaxKeysPerAddress({
-            lockAddress,
-            chainId,
-            maxKeysPerAddress: 100,
-          })
-        }
+          ERC20,
+        }))
       })
 
       it('should have yielded a transaction hash', () => {
