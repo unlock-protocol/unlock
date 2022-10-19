@@ -1,54 +1,45 @@
 import { Tab } from '@headlessui/react'
-import { useState } from 'react'
-import { z } from 'zod'
-
-import { BasicPaywallConfigSchema, MetadataInputSchema } from '~/unlockTypes'
-import { DynamicForm } from './DynamicForm'
+import React, { useState } from 'react'
+import { BasicConfigForm } from './BasicConfigForm'
+import { LocksForm } from './LocksForm'
 
 export interface Schema {
   title: string
-  name: string
-  schema: z.Schema
-  description?: Record<string, string>
+  children: React.ReactNode
 }
 
-const schemas: Schema[] = [
-  {
-    title: 'Default Config',
-    name: 'baseConfig',
-    description: {
-      title: 'Title for your checkout. This will show up on the head.',
-      icon: 'the URL for a icon to display in the top left corner of the modal.',
-      persistentCheckout:
-        'true if the modal cannot be closed, defaults to false when embedded. When closed, the user will be redirected to the redirect query param when using a purchase address ',
-      referrer:
-        'The address which will receive UDT tokens (if the transaction is applicable)',
-      messageToSign:
-        'If supplied, the user is prompted to sign this message using their wallet. If using a checkout URL, a signature query param is then appended to the redirectUri (see above). If using the embedded paywall, the unlockProtocol.authenticated includes the signature attribute.',
-      pessimistic:
-        ' By default, to reduce friction, we do not require users to wait for the transaction to be mined before offering them to be redirected. By setting this to true, users will need to wait for the transaction to have been mined in order to proceed to the next step.',
-      hideSoldOut:
-        'When set to true, sold our locks are not shown to users when they load the checkout modal.',
-    },
-    schema: BasicPaywallConfigSchema,
-  },
-  {
-    title: 'Add locks',
-    name: 'MetadataInputSchema',
-    schema: MetadataInputSchema,
-  },
-]
-
-export const CheckoutForm = () => {
+export const CheckoutForm = ({
+  onAddLocks,
+  onBasicConfigChange,
+  paywallConfig,
+}: any) => {
   const [tabOpen, setTabOpen] = useState(0)
 
+  const tabs: Schema[] = [
+    {
+      title: 'Base Configuration',
+      children: (
+        <BasicConfigForm
+          onChange={onBasicConfigChange}
+          defaultValues={paywallConfig}
+        />
+      ),
+    },
+    {
+      title: 'Add locks',
+      children: (
+        <LocksForm onChange={onAddLocks} locks={paywallConfig?.locks} />
+      ),
+    },
+  ]
+
   return (
-    <div className="px-4 py-6 bg-white rounded-xl">
+    <div className="px-4 py-6 bg-white shadow-sm rounded-xl">
       <Tab.Group defaultIndex={tabOpen}>
         <Tab.List className="flex gap-6">
-          {schemas.map(({ title, name }, index) => (
+          {tabs.map(({ title }, index) => (
             <Tab
-              key={name}
+              key={index}
               className={({ selected }) => {
                 return `font-medium outline-none ${
                   selected ? 'text-brand-ui-primary' : ''
@@ -61,16 +52,12 @@ export const CheckoutForm = () => {
           ))}
         </Tab.List>
         <Tab.Panels>
-          {schemas?.map(({ title, name, schema, description = {} }) => {
+          {tabs?.map(({ children }, index) => {
             return (
-              <Tab.Panel key={name}>
-                <DynamicForm
-                  key={name}
-                  title={title}
-                  name={name}
-                  schema={schema}
-                  description={description}
-                />
+              <Tab.Panel key={index}>
+                <div className="flex flex-col w-full gap-2 mt-3">
+                  <div className="w-full">{children}</div>
+                </div>
               </Tab.Panel>
             )
           })}

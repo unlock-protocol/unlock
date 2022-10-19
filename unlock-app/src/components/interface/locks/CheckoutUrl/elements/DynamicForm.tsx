@@ -4,11 +4,30 @@ import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { useState } from 'react'
+
+const DESCRIPTIONS: Record<string, string> = {
+  title: 'Title for your checkout. This will show up on the head.',
+  icon: 'the URL for a icon to display in the top left corner of the modal.',
+  persistentCheckout:
+    'true if the modal cannot be closed, defaults to false when embedded. When closed, the user will be redirected to the redirect query param when using a purchase address ',
+  referrer:
+    'The address which will receive UDT tokens (if the transaction is applicable)',
+  messageToSign:
+    'If supplied, the user is prompted to sign this message using their wallet. If using a checkout URL, a signature query param is then appended to the redirectUri (see above). If using the embedded paywall, the unlockProtocol.authenticated includes the signature attribute.',
+  pessimistic:
+    ' By default, to reduce friction, we do not require users to wait for the transaction to be mined before offering them to be redirected. By setting this to true, users will need to wait for the transaction to have been mined in order to proceed to the next step.',
+  hideSoldOut:
+    'When set to true, sold our locks are not shown to users when they load the checkout modal.',
+}
 interface DynamicFormProps {
-  title: string
   name: string
   schema: z.Schema
   description?: Record<string, string>
+  onChange: (fields: any) => void
+  onSubmit?: (fields: any) => void
+  submitLabel?: string
+  defaultValues?: any
+  showSubmit?: boolean
 }
 
 interface ComponentByTypeMapProps {
@@ -74,7 +93,7 @@ const BooleanInput = ({ props, name, label, ...rest }: any) => {
 }
 
 const ObjectInput = () => {
-  return null
+  return <div></div>
 }
 
 const ArrayInput = () => {
@@ -95,25 +114,38 @@ const TypeMap: Record<string, string> = {
 }
 
 export const DynamicForm = ({
-  title,
   name,
   schema,
+  onChange,
+  submitLabel = 'Next',
   description = {},
+  onSubmit: onSubmitCb,
+  defaultValues,
+  showSubmit = false,
 }: DynamicFormProps) => {
   const { properties = {}, required = [] } =
     (zodToJsonSchema(schema, name).definitions?.[name] as any) ?? {}
 
-  const methods = useForm<z.infer<typeof schema>>()
+  const methods = useForm<z.infer<typeof schema>>({
+    mode: 'onChange',
+    defaultValues,
+  })
 
-  const onSubmit = (fields: z.infer<typeof schema>) => {}
+  const onSubmit = (fields: z.infer<typeof schema>) => {
+    if (typeof onSubmitCb === 'function') {
+      onSubmitCb(fields)
+    }
+  }
 
   return (
-    <div className="flex flex-col gap-3 py-6 bg-white shadow-sm rounded-xl">
-      <h2 className="text-lg font-semibold">{title}</h2>
+    <div className="flex flex-col gap-3 py-6">
       <FormProvider {...methods}>
         <form
-          className="flex flex-col gap-5"
+          className="flex flex-col gap-3"
           onSubmit={methods.handleSubmit(onSubmit)}
+          onChange={() => {
+            onChange(methods.getValues())
+          }}
         >
           {Object.entries(properties).map(([fieldName, props], index) => {
             const type = (props as any)?.type
@@ -133,15 +165,18 @@ export const DynamicForm = ({
                   name={fieldName}
                   required={fieldRequired}
                   description={description?.[fieldName]}
+                  size="small"
                 />
               </div>
             )
           })}
-          <div className="flex mt-2">
-            <div className="ml-auto">
-              <Button type="submit">Next</Button>
+          {showSubmit && (
+            <div className="flex mt-2">
+              <div className="ml-auto">
+                <Button type="submit">{submitLabel}</Button>
+              </div>
             </div>
-          </div>
+          )}
         </form>
       </FormProvider>
     </div>

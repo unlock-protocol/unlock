@@ -1,4 +1,7 @@
+import { useState } from 'react'
+import { PaywallConfig } from '~/unlockTypes'
 import { CheckoutForm } from './elements/CheckoutForm'
+import { CheckoutPreview } from './elements/CheckoutPreview'
 
 const Header = () => {
   return (
@@ -12,16 +15,46 @@ const Header = () => {
 }
 
 export const CheckoutUrlPage = () => {
+  const [paywallConfig, setPaywallConfig] = useState<PaywallConfig>({
+    locks: {},
+    metadataInputs: [{ name: 'test', type: 'text', required: false }],
+  })
+
+  const onChange = (schema: string, fields: any) => {
+    setPaywallConfig({
+      ...paywallConfig,
+      ...fields,
+    })
+  }
+
+  const onAddLocks = (locks: any) => {
+    setPaywallConfig({
+      ...paywallConfig,
+      locks,
+    })
+    console.log(locks)
+  }
+
+  const onBasicConfigChange = (fields: Partial<PaywallConfig>) => {
+    setPaywallConfig({
+      ...paywallConfig,
+      ...fields,
+    })
+  }
+
   return (
-    <div className="grid grid-cols-5 gap-8 pb-20">
-      <div className="col-span-2">
-        <div className="flex items-center justify-center w-full h-screen bg-gray-300 rounded-xl">
-          <span className="text-sm">preview</span>
-        </div>
+    <div className="flex flex-col w-full gap-8 pb-20 md:flex-row">
+      <div className="w-1/2">
+        <CheckoutPreview paywallConfig={paywallConfig} />
       </div>
-      <div className="flex flex-col col-span-3 gap-4">
+      <div className="flex flex-col w-1/2 gap-4">
         <Header />
-        <CheckoutForm />
+        <CheckoutForm
+          onChange={onChange}
+          onAddLocks={onAddLocks}
+          onBasicConfigChange={onBasicConfigChange}
+          paywallConfig={paywallConfig}
+        />
       </div>
     </div>
   )
