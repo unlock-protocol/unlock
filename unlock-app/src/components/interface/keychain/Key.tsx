@@ -181,8 +181,6 @@ const Key = ({ ownedKey, account, network }: Props) => {
     }
   )
 
-  console.log(ownedKey)
-
   const handleSignature = async () => {
     setError('')
     const payload = JSON.stringify({
