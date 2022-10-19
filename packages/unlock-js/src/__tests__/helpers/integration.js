@@ -10,7 +10,6 @@ export const chainId = 31337
 export const setupTest = async (unlockVersion) => {
   let walletService
   let web3Service
-  let ERC20
   let accounts
 
   const [signer] = await ethers.getSigners()
@@ -42,14 +41,14 @@ export const setupTest = async (unlockVersion) => {
   }
 }
 
-export const setupLock = async (
+export const setupLock = async ({
   walletService,
   web3Service,
   publicLockVersion,
   unlockVersion,
   lockParams,
-  ERC20
-) => {
+  ERC20,
+}) => {
   let lock
   let lockAddress
   let lockCreationHash
