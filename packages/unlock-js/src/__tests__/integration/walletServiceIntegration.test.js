@@ -38,10 +38,9 @@ import extendKey from './functions/extendKey'
 jest.setTimeout(3000000)
 
 // Unlock versions to test
-export const UnlockVersionNumbers = ['v4']
-//  Object.keys(UnlockVersions).filter(
-//   (v) => v !== 'v6' // 'v6' is disabled it required erc1820
-// )
+export const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
+  (v) => v !== 'v6' // 'v6' is disabled it required erc1820
+)
 
 describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let walletService
@@ -50,10 +49,10 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let accounts
 
   // Unlock v4 can only interact w PublicLock v4
-  const PublicLockVersions = ['v4']
-  // unlockVersion === 'v4' // Unlock v4 can only interact w PublicLock v4
-  //   ? ['v4']
-  //   : Object.keys(locks).filter((v) => !['v4', 'v6'].includes(v))
+  const PublicLockVersions =
+    unlockVersion === 'v4' // Unlock v4 can only interact w PublicLock v4
+      ? ['v4']
+      : Object.keys(locks).filter((v) => !['v4', 'v6'].includes(v))
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
@@ -223,22 +222,22 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
       describe('approveBeneficiary', approveBeneficiary(testSetupArgs))
       describe('grantKey', grantKey(testSetupArgs))
-      // describe('grantKeyExtension', grantKeyExtension(testSetupArgs))
-      // describe('grantKeys', grantKeys(testSetupArgs))
-      // describe('purchaseKey', purchaseKey(testSetupArgs))
-      // describe('purchaseKeys', purchaseKeys(testSetupArgs))
-      // describe('withdrawFromLock', withdrawFromLock(testSetupArgs))
-      // describe('cancelAndRefund', cancelAndRefund(testSetupArgs))
-      // describe('setMaxNumberOfKeys', setMaxNumberOfKeys(testSetupArgs))
-      // describe('setExpirationDuration', setExpirationDuration(testSetupArgs))
-      // describe('keyGranter', keyGranter(testSetupArgs))
-      // describe('expireAndRefundFor', expireAndRefundFor(testSetupArgs))
-      // describe('extendKey', extendKey(testSetupArgs))
-      // describe('maxKeysPerAddress', maxKeysPerAddress(testSetupArgs))
-      // describe('shareKey (to address)', shareKeyToAddress(testSetupArgs))
-      // describe('shareKey (to TokenId)', shareKeyToTokenId(testSetupArgs))
-      // describe('mergeKeys', mergeKeys(testSetupArgs))
-      // describe('updateKeyPrice', updateKeyPrice(testSetupArgs))
+      describe('grantKeyExtension', grantKeyExtension(testSetupArgs))
+      describe('grantKeys', grantKeys(testSetupArgs))
+      describe('purchaseKey', purchaseKey(testSetupArgs))
+      describe('purchaseKeys', purchaseKeys(testSetupArgs))
+      describe('withdrawFromLock', withdrawFromLock(testSetupArgs))
+      describe('cancelAndRefund', cancelAndRefund(testSetupArgs))
+      describe('setMaxNumberOfKeys', setMaxNumberOfKeys(testSetupArgs))
+      describe('setExpirationDuration', setExpirationDuration(testSetupArgs))
+      describe('keyGranter', keyGranter(testSetupArgs))
+      describe('expireAndRefundFor', expireAndRefundFor(testSetupArgs))
+      describe('extendKey', extendKey(testSetupArgs))
+      describe('maxKeysPerAddress', maxKeysPerAddress(testSetupArgs))
+      describe('shareKey (to address)', shareKeyToAddress(testSetupArgs))
+      describe('shareKey (to TokenId)', shareKeyToTokenId(testSetupArgs))
+      describe('mergeKeys', mergeKeys(testSetupArgs))
+      describe('updateKeyPrice', updateKeyPrice(testSetupArgs))
     })
   })
 })
