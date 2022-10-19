@@ -37,10 +37,10 @@ async function renewKeys(network: number) {
     })
 
     // send all renewal txs
-    for (const { keyId, lock } of keys) {
+    for (const { id, lock } of keys) {
       try {
         const renewal = await renewKey({
-          keyId,
+          keyId: id,
           lockAddress: lock.address,
           network,
         })

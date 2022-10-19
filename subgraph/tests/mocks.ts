@@ -8,8 +8,10 @@ import {
   lockAddress,
   tokenId,
   tokenURI,
+  symbol,
   nullAddress,
   keyPrice,
+  baseTokenURI,
   maxNumberOfKeys,
   maxKeysPerAddress,
 } from './constants'
@@ -33,6 +35,23 @@ createMockedFunction(
 createMockedFunction(Address.fromString(lockAddress), 'name', 'name():(string)')
   .withArgs([])
   .returns([ethereum.Value.fromString('My lock graph')])
+
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'symbol',
+  'symbol():(string)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromString(symbol)])
+
+// tokenURIs
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'tokenURI',
+  'tokenURI(uint256):(string)'
+)
+  .withArgs([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(0))])
+  .returns([ethereum.Value.fromString(baseTokenURI)])
 
 // mock publicLock version contract call
 createMockedFunction(

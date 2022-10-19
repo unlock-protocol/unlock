@@ -4,6 +4,7 @@ import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
 import {
   LockManagerAdded,
   LockManagerRemoved,
+  LockMetadata,
 } from '../generated/templates/PublicLock/PublicLock'
 import { lockAddress } from './constants'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
@@ -125,4 +126,32 @@ export function createLockUpgradedEvent(
     new ethereum.EventParam('version', ethereum.Value.fromI32(version.toI32()))
   )
   return lockUpgradedEvent
+}
+
+export function createLockMetadata(
+  name: string,
+  symbol: string,
+  baseTokenURI: string
+): LockMetadata {
+  const LockMetadataEvent = changetype<LockMetadata>(newMockEvent())
+
+  LockMetadataEvent.address = Address.fromString(lockAddress)
+
+  // set existing lock address
+  LockMetadataEvent.parameters = []
+
+  LockMetadataEvent.parameters.push(
+    new ethereum.EventParam('name', ethereum.Value.fromString(name))
+  )
+  LockMetadataEvent.parameters.push(
+    new ethereum.EventParam('symbol', ethereum.Value.fromString(symbol))
+  )
+  LockMetadataEvent.parameters.push(
+    new ethereum.EventParam(
+      'baseTokenURI',
+      ethereum.Value.fromString(baseTokenURI)
+    )
+  )
+
+  return LockMetadataEvent
 }
