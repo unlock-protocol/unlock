@@ -13,6 +13,7 @@ import {
   handleLockManagerAdded,
   handleLockManagerRemoved,
   handlePricingChanged,
+  handleLockMetadata,
 } from '../src/public-lock'
 
 import {
@@ -21,6 +22,7 @@ import {
   createLockManagerRemovedEvent,
   createPricingChangedEvent,
   createLockUpgradedEvent,
+  createLockMetadata,
 } from './locks-utils'
 import {
   duration,
@@ -30,6 +32,9 @@ import {
   lockOwner,
   tokenAddress,
   nullAddress,
+  name,
+  symbol,
+  baseTokenURI,
   maxNumberOfKeys,
   maxKeysPerAddress,
 } from './constants'
@@ -137,5 +142,15 @@ describe('Describe Locks events', () => {
     handleLockUpgraded(newLockUpgraded)
 
     assert.fieldEquals('Lock', lockAddress, 'version', `12`)
+  })
+
+  test('Lock metadata', () => {
+    assert.fieldEquals('Lock', lockAddress, 'name', 'My lock graph')
+    const newLockMetadata = createLockMetadata(name, symbol, baseTokenURI)
+    handleLockMetadata(newLockMetadata)
+
+    assert.fieldEquals('Lock', lockAddress, 'name', name)
+    assert.fieldEquals('Lock', lockAddress, 'symbol', symbol)
+    // assert.fieldEquals('Lock', lockAddress, 'baseTokenURI', `12`)
   })
 })

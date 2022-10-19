@@ -18,6 +18,11 @@ export const newKeyPrice = 1001
 export const duration = 60 * 60 * 24 // 24h
 export const tokenAddress = '0x0000000000000000000000000000000000000007'
 
+// metadata
+export const name = 'Lock Metadata'
+export const symbol = 'METAKEY'
+export const baseTokenURI = 'https:/custom-lock.com/api/key/'
+
 // default address used in newMockEvent() function
 export const defaultMockAddress = '0xa16081f360e3847006db660bae1c6d1b2e17ec2a'
 export const nullAddress = '0x0000000000000000000000000000000000000000'

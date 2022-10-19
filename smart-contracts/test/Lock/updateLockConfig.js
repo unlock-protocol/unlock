@@ -117,7 +117,7 @@ contract('Lock / updateLockConfig', (accounts) => {
 
       expect(args.expirationDuration.toNumber()).to.be.equal(10)
       expect(args.maxNumberOfKeys.toNumber()).to.be.equal(20)
-      expect(args.maxKeysPerAddress.toNumber()).to.be.equal(30)
+      expect(args.maxKeysPerAcccount.toNumber()).to.be.equal(30)
     })
   })
 })

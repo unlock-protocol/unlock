@@ -1,7 +1,11 @@
 const { ethers, unlock } = require('hardhat')
 const { AddressZero } = ethers.constants
+import type { BigNumber } from 'ethers'
 
 export const DEFAULT_KEY_PRICE = ethers.utils.parseEther('0.01')
+
+export const genKeyId = (lockAddress: string, tokenId: BigNumber) =>
+  `${lockAddress}-${tokenId.toString()}`
 
 export const purchaseKey = async (
   lockAddress: string,

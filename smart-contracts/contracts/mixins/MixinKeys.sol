@@ -47,7 +47,7 @@ contract MixinKeys is
   event LockConfig(
     uint expirationDuration,
     uint maxNumberOfKeys,
-    uint maxKeysPerAddress
+    uint maxKeysPerAcccount
   );
 
   // Deprecated: don't use this anymore as we know enable multiple keys per owner.

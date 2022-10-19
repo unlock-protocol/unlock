@@ -2,6 +2,7 @@ type Lock @entity {
   id: ID!
   address: Bytes!
   name: String
+  symbol: String
   expirationDuration: BigInt
   tokenAddress: Bytes!
   price: BigInt!

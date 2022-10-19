@@ -15,7 +15,7 @@ contract('Lock / setLockMetadata', (accounts) => {
 
   it('can only be invoked by lock manager', async () => {
     await reverts(
-      lock.setLockMetadata(...Object.keys(metadata), {
+      lock.setLockMetadata(...Object.values(metadata), {
         from: accounts[5],
       }),
       'ONLY_LOCK_MANAGER'
