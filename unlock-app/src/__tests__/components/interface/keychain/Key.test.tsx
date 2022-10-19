@@ -1,26 +1,29 @@
 import React from 'react'
 import * as rtl from '@testing-library/react'
-import Key from '../../../../components/interface/keychain/Key'
-import { OwnedKey } from '../../../../components/interface/keychain/KeychainTypes'
+import Key, { KeyProps } from '../../../../components/interface/keychain/Key'
 
 const accountAddress = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
-const aKey: OwnedKey = {
+const aKey: KeyProps = {
   id: '0x80bc6d2870bb72cb3e37b648c160da20733386f7-1',
   expiration: '132546546',
-  keyId: '1',
+  tokenId: '1',
+  createdAtBlock: new Date().getDate(),
   tokenURI:
     'https://locksmith.unlock-protocol.com/api/key/0x80bc6d2870bb72cb3e37b648c160da20733386f7/1',
+  owner: '0xaFAEfc6dd3C9feF66f92BA838b132644451F0715',
   lock: {
+    id: '1',
     address: '0x80bc6d2870bb72cb3e37b648c160da20733386f7',
     expirationDuration: '300',
     name: 'ERC20 paywall lock',
     tokenAddress: '0xbadc0ffee',
     price: '50',
-    owner: '0xaFAEfc6dd3C9feF66f92BA838b132644451F0715',
+    version: '1',
+    lockManagers: [],
   },
 }
 
-const aKeyWithNoName: OwnedKey = {
+const aKeyWithNoName: KeyProps = {
   ...aKey,
   lock: {
     ...aKey.lock,
@@ -31,7 +34,7 @@ const aKeyWithNoName: OwnedKey = {
 let signData: jest.Mock<any, any>
 let qrEmail: jest.Mock<any, any>
 interface RenderProps {
-  ownedKey?: OwnedKey
+  ownedKey?: KeyProps
 }
 const render = ({ ownedKey }: RenderProps) => {
   signData = jest.fn()
@@ -58,7 +61,7 @@ describe.skip('keychain -- Key', () => {
     expect.assertions(0)
     const { getByText } = render({})
 
-    getByText(aKey.lock.name)
+    getByText(aKey.lock?.name as string)
   })
 
   it('should dispatch a payload to be signed', () => {

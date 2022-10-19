@@ -10,32 +10,32 @@ const network = 4
 const lock = {
   keys: [
     {
-      owner: { address: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff' },
-      keyId: '1',
+      owner: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
+      tokenId: '1',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: { address: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9' },
-      keyId: '2',
+      owner: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
+      tokenId: '2',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: { address: '0x3fee1f4175001802d3828b76068b8d898e72a25a' },
-      keyId: '3',
+      owner: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
+      tokenId: '3',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: { address: '0xff24307539a043e7fa40c4582090b3029de26b41' },
-      keyId: '42',
+      owner: '0xff24307539a043e7fa40c4582090b3029de26b41',
+      tokenId: '42',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: { address: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5' },
-      keyId: '43',
+      owner: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
+      tokenId: '43',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
@@ -134,7 +134,7 @@ describe('Keys v2 endpoints for lock', () => {
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '43',
-        filterKey: 'keyId',
+        filterKey: 'tokenId',
         expiration: 'all',
       })
 
@@ -156,7 +156,7 @@ describe('Keys v2 endpoints for lock', () => {
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '42',
-        filterKey: 'keyId',
+        filterKey: 'tokenId',
         expiration: 'all',
       })
 
@@ -243,7 +243,7 @@ describe('Keys v2 endpoints for lock', () => {
     expect(getKeysResponse.body[0].token).toBe('42')
   })
 
-  it('should return all keys when keyId query is empty', async () => {
+  it('should return all keys when tokenId query is empty', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)
@@ -252,7 +252,7 @@ describe('Keys v2 endpoints for lock', () => {
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '',
-        filterKey: 'keyId',
+        filterKey: 'tokenId',
         expiration: 'all',
       })
 
@@ -260,7 +260,7 @@ describe('Keys v2 endpoints for lock', () => {
     expect(getKeysResponse.body.length).toBe(5)
   })
 
-  it('should return results with query on existing keyId', async () => {
+  it('should return results with query on existing tokenId', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)
@@ -269,7 +269,7 @@ describe('Keys v2 endpoints for lock', () => {
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '2',
-        filterKey: 'keyId',
+        filterKey: 'tokenId',
         expiration: 'active',
       })
 
@@ -277,7 +277,7 @@ describe('Keys v2 endpoints for lock', () => {
     expect(getKeysResponse.body.length).not.toBe(0)
   })
 
-  it('should not have results with not valid keyId query', async () => {
+  it('should not have results with not valid tokenId query', async () => {
     expect.assertions(2)
 
     const { loginResponse } = await loginRandomUser(app)
@@ -286,7 +286,7 @@ describe('Keys v2 endpoints for lock', () => {
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
       .query({
         query: '424',
-        filterKey: 'keyId',
+        filterKey: 'tokenId',
         expiration: 'all',
       })
 
