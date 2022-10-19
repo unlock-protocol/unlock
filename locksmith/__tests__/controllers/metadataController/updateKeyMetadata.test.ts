@@ -20,19 +20,6 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
-const mockKeyHoldersByLock = {
-  getKeyHoldingAddresses: jest.fn(() => {
-    return Promise.resolve(['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'])
-  }),
-}
-
-jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
-  __esModule: true,
-  KeyHoldersByLock: jest.fn(() => {
-    return mockKeyHoldersByLock
-  }),
-}))
-
 describe('updateKeyMetadata', () => {
   describe('when the signee does not own the lock', () => {
     let typedData: any

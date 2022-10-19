@@ -29,13 +29,6 @@ const mockKeyHoldersByLock = {
   }),
 }
 
-jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
-  __esModule: true,
-  KeyHoldersByLock: jest.fn(() => {
-    return mockKeyHoldersByLock
-  }),
-}))
-
 function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
