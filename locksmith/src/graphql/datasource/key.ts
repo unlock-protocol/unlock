@@ -27,10 +27,7 @@ export class Key extends GraphQLDataSource {
             expirationDuration
           }
           expiration
-          owner {
-            id
-            address
-          }
+          owner
         }
       }
     `
@@ -59,10 +56,7 @@ export class Key extends GraphQLDataSource {
           expirationDuration
         }
         expiration
-        owner {
-          id
-          address
-        }
+        owner
       }
     }
   `
