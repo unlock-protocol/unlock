@@ -6,15 +6,14 @@ import { MemberFilter } from '~/unlockTypes'
 import { useDebounce } from 'react-use'
 import { getAddressForName } from '~/hooks/useEns'
 import React from 'react'
+import { FilterProps } from './Members'
 
 interface FilterBarProps {
-  setFilters?: (filters: any) => void
+  setFilters?: (filters: FilterProps) => void
   setLoading?: (loading: boolean) => void
   setPage: (page: number) => void
   page?: number
-  filters?: {
-    [key: string]: any
-  }
+  filters?: FilterProps
 }
 
 interface Filter {
@@ -74,7 +73,7 @@ export const FilterBar = ({
   const [openSearch, setOpenSearch] = useState(false)
   const [expandFilter, setExpandFilter] = useState(false)
   const [expiration, setExpiration] = useState<ExpirationStatus>(
-    ExpirationStatus.ACTIVE
+    defaultFilters!.expiration
   )
   const [filterKey, setFilterKey] = useState(
     defaultFilters?.filterKey ?? 'owner'
