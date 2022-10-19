@@ -6,7 +6,7 @@ ARG PORT=3000
 ##
 ## 1. get only needed packages
 ##
-FROM alpine:3.16 as manifests
+FROM alpine:3.14 as manifests
 
 # args need to be mentioned at each stage
 ARG BUILD_DIR
@@ -34,7 +34,7 @@ COPY packages  /opt/manifests/packages
 ##
 ## 2. fetch all deps
 ##
-FROM node:16-alpine as dev
+FROM node:16.10.0-alpine as dev
 LABEL Unlock <ops@unlock-protocol.com>
 
 # args need to be mentioned at each stage
@@ -142,7 +142,7 @@ RUN cd $BUILD_DIR && yarn prod-install --pack /home/node/app
 ##
 ## 4. export a minimal image w only the prod app
 ##
-FROM node:16-alpine as prod
+FROM node:16.10.0-alpine as prod
 
 ARG BUILD_DIR
 ARG PORT
