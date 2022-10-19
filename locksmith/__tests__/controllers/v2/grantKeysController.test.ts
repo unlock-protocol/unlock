@@ -5,9 +5,8 @@ import {
   loginAsApplication,
 } from '../../test-helpers/utils'
 
-const app = require('../../../src/app')
+import * as app from '../../../src/app'
 
-jest.setTimeout(600000)
 const lockAddress = '0x3F09aD349a693bB62a162ff2ff3e097bD1cE9a8C'
 const managedLock = '0xdCc44A9502239657578cB626C5afe9c2615733c0'
 const keyGranterLock = '0x7ffC57839B00206D1ad20c69A1981b489f772031'
@@ -15,8 +14,8 @@ const network = 4
 const expensiveNetwork = 1000
 const noGasNetwork = 2000
 
-jest.mock('../../../src/utils/gasPrice', () => {
-  return jest.fn(() => {
+vi.mock('../../../src/utils/gasPrice', () => {
+  return vi.fn(() => {
     return {
       gasPriceUSD: (network: number) =>
         expensiveNetwork === network ? 1000 : 0,
@@ -24,9 +23,9 @@ jest.mock('../../../src/utils/gasPrice', () => {
   })
 })
 
-jest.mock('@unlock-protocol/unlock-js', () => {
+vi.mock('@unlock-protocol/unlock-js', () => {
   return {
-    Web3Service: jest.fn().mockImplementation(() => {
+    Web3Service: vi.fn().mockImplementation(() => {
       return {
         isLockManager: (lockAddress: string) => lockAddress === managedLock,
         isKeyGranter: (lockAddress: string) => lockAddress === keyGranterLock,
@@ -36,15 +35,15 @@ jest.mock('@unlock-protocol/unlock-js', () => {
 })
 
 const mockDispatcher = {
-  grantKeys: jest.fn((_lockAddress, _recipients, _network, _callback) => {
+  grantKeys: vi.fn((_lockAddress, _recipients, _network, _callback) => {
     _callback(null, '0x123')
   }),
   hasFundsForTransaction: (network: number) =>
     noGasNetwork === network ? false : true,
 }
 
-jest.mock('../../../src/fulfillment/dispatcher', () => {
-  return jest.fn().mockImplementation(() => {
+vi.mock('../../../src/fulfillment/dispatcher', () => {
+  return vi.fn().mockImplementation(() => {
     return mockDispatcher
   })
 })

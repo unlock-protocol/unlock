@@ -1,10 +1,12 @@
-const Asset = require('../../src/utils/assets')
+import * as Asset from '../../src/utils/assets'
 
 let returnStatus = { statusCode: 200 }
 
-jest.mock('request-promise-native', () => {
-  return jest.fn(() => {
-    return returnStatus
+vi.mock('request-promise-native', () => {
+  return vi.fn(() => {
+    return {
+      default: returnStatus,
+    }
   })
 })
 

@@ -1,6 +1,6 @@
 import request from 'supertest'
 
-const app = require('../../src/app')
+import * as app from '../../src/app'
 
 // eslint-disable-next-line
 var mockWeb3Service = {

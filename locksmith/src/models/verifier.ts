@@ -1,6 +1,6 @@
 import { Table, Column, Model } from 'sequelize-typescript'
 
-@Table({ tableName: 'Verifiers', timestamps: true })
+@Table({ tableName: 'Verifiers', timestamps: true, modelName: 'Verifier' })
 export class Verifier extends Model<Verifier> {
   @Column
   address!: string

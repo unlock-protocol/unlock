@@ -1,6 +1,6 @@
-const request = require('supertest')
-const app = require('../../src/app')
-const { Lock } = require('../../src/models')
+import request from 'supertest'
+import app from '../../src/app'
+import { Lock } from '../../src/models'
 
 jest.setTimeout(60000)
 const validLockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'

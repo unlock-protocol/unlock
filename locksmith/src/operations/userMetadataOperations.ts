@@ -1,7 +1,7 @@
 import * as Normalizer from '../utils/normalizer'
 import { UserTokenMetadataInput } from '../types' // eslint-disable-line no-unused-vars
 
-import models = require('../models')
+import * as models from '../models'
 
 const { UserTokenMetadata } = models
 

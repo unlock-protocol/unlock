@@ -1,4 +1,4 @@
-const metadataOperations = require('../../src/operations/metadataOperations')
+import * as metadataOperations from '../../src/operations/metadataOperations'
 require('../../src/models')
 
 const chain = 31337

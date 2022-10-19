@@ -4,7 +4,7 @@ import networks from '@unlock-protocol/networks'
 import * as Normalizer from '../utils/normalizer'
 import { Web3Service } from '@unlock-protocol/unlock-js'
 
-const models = require('../models')
+import * as models from '../models'
 
 const { Op, fn, col } = Sequelize
 const { Lock, UserTokenMetadata, LockMigrations } = models

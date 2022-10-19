@@ -1,17 +1,14 @@
 import path from 'path'
 import PaymentProcessor from '../../src/payment/paymentProcessor'
 import * as Normalizer from '../../src/utils/normalizer'
-import { UserReference } from '../../src/models/userReference'
+import { UserReference, User } from '../../src/models'
 
-const nock = require('nock')
-const nockBack = require('nock').back
-const models = require('../../src/models')
+import nock from 'nock'
+const nockBack = nock.back
 
 const lockAddress = '0xf5d0c1cfe659902f9abae67a70d5923ef8dbc1dc'
 const stripeToken = 'sk_test_token'
 const mockVisaToken = 'tok_visa'
-
-const { User } = models
 
 const mockCreateSource = jest.fn()
 

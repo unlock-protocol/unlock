@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
 
-const app = require('../../src/app')
+import * as app from '../../src/app'
 const Base64 = require('../../src/utils/base64')
 
 const participatingLock = '0x5Cd3FC283c42B4d5083dbA4a6bE5ac58fC0f0267'

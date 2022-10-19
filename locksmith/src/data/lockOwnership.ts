@@ -1,7 +1,7 @@
 import { Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 
-const lockOperations = require('../operations/lockOperations')
+import * as lockOperations from '../operations/lockOperations'
 
 const { updateLockOwnership } = lockOperations
 

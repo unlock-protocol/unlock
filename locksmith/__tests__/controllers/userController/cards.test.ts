@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
 
-const app = require('../../../src/app')
+import * as app from '../../../src/app'
 const Base64 = require('../../../src/utils/base64')
 const models = require('../../../src/models')
 import UserOperations from '../../../src/operations/userOperations'

@@ -5,9 +5,15 @@
   "extends": "@unlock-protocol/tsconfig",
   "compilerOptions": {
     "outDir": "build",
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "emitDecoratorMetadata": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "types": [
+      "vitest/globals"
+    ]
   },
   "exclude": [
     "build"
-  ]
+  ],
 }

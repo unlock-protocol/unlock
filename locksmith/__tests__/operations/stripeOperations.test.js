@@ -4,11 +4,10 @@ import {
   deletePaymentDetailsForAddress,
 } from '../../src/operations/stripeOperations'
 
-const Sequelize = require('sequelize')
-
+import Sequelize from 'sequelize'
 const { Op } = Sequelize
 
-const models = require('../../src/models')
+import models from '../../src/models'
 
 let { UserReference, StripeCustomer } = models
 
