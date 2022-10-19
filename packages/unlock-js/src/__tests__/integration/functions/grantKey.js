@@ -6,7 +6,7 @@ let accounts,
   lockAddress,
   publicLockVersion
 
-export default () => {
+export default () => () => {
   let tokenId
   let key
   let keyBefore
