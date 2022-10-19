@@ -10,15 +10,8 @@ export default ({ publicLockVersion }) =>
     let totalKeysBefore
 
     beforeAll(async () => {
-      ;({
-        accounts,
-        web3Service,
-        chainId,
-        walletService,
-        lock,
-        lockAddress,
-        publicLockVersion,
-      } = global.suiteData)
+      ;({ accounts, web3Service, chainId, walletService, lock, lockAddress } =
+        global.suiteData)
       keyGrantees = [accounts[8], accounts[9]]
 
       totalKeysBefore = await Promise.all(
