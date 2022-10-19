@@ -12,7 +12,7 @@ export interface CancelAndRefundProps {
   setIsOpen: (open: boolean) => void
   account: string
   currency: string
-  keyId: string
+  tokenId: string
   network: number
   onExpireAndRefund?: () => void
 }
@@ -37,7 +37,7 @@ export const CancelAndRefundModal = ({
   setIsOpen,
   account: owner,
   currency,
-  keyId,
+  tokenId,
   network,
   onExpireAndRefund,
 }: CancelAndRefundProps) => {
@@ -48,7 +48,7 @@ export const CancelAndRefundModal = ({
     lockAddress,
     network,
     owner,
-    keyId,
+    keyId: tokenId,
     tokenAddress,
   })
 
@@ -68,7 +68,7 @@ export const CancelAndRefundModal = ({
   const cancelAndRefund = async () => {
     const params = {
       lockAddress,
-      tokenId: keyId,
+      tokenId,
     }
     return walletService.cancelAndRefund(
       params,
