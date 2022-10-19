@@ -199,18 +199,21 @@ export const getKeysMetadata = async ({
   lockAddress: string
   network: number
 }) => {
-  const owners: { owner: string; keyId: string }[] = keys?.map(
-    ({ owner, keyId }: any) => {
+  const owners: { owner: string; tokenId: string }[] = keys?.map(
+    ({ owner, tokenId }: any) => {
       return {
-        owner: owner?.address,
-        keyId,
+        owner,
+        tokenId,
       }
     }
   )
 
-  const mergedDataList = owners.map(async ({ owner, keyId }) => {
-    let metadata: any = undefined
-    const keyData = await getKeyCentricData(lockAddress, keyId)
+  const mergedDataList = owners.map(async ({ owner, tokenId }) => {
+    let metadata: Record<string, any> = {
+      owner,
+      tokenId,
+    }
+    const keyData = await getKeyCentricData(lockAddress, tokenId)
     const [keyMetadata] = await lockOperations.getKeyHolderMetadata(
       lockAddress,
       [owner],
@@ -226,6 +229,7 @@ export const getKeysMetadata = async ({
     // build metadata object only if metadata or extraMetadata are present
     if (hasMetadata) {
       metadata = {
+        ...metadata,
         userAddress: owner,
         data: {
           ...keyMetadataData,

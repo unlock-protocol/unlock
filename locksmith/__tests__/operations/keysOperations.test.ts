@@ -14,32 +14,32 @@ const lock = {
   owner: '0x445',
   keys: [
     {
-      owner: { address: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff' },
-      keyId: '1',
+      owner: '0x4ff5a116ff945cc744346cfd32c6c6e3d3a018ff',
+      tokenId: '1',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: { address: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9' },
-      keyId: '2',
+      owner: '0xf44ff7951688bfbbb573967ffcb0d8aabdaf36c9',
+      tokenId: '2',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: { address: '0x3fee1f4175001802d3828b76068b8d898e72a25a' },
-      keyId: '3',
+      owner: '0x3fee1f4175001802d3828b76068b8d898e72a25a',
+      tokenId: '3',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: { address: '0xff24307539a043e7fa40c4582090b3029de26b41' },
-      keyId: '42',
+      owner: '0xff24307539a043e7fa40c4582090b3029de26b41',
+      tokenId: '42',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },
     {
-      owner: { address: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5' },
-      keyId: '43',
+      owner: '0x77ccc37a6d89a75a29cdaa74e757599efc4b30f5',
+      tokenId: '43',
       expiration:
         '115792089237316195423570985008687907853269984665640564039457584007913129639935',
     },

@@ -4,35 +4,33 @@ import gql from 'graphql-tag'
 import { DocumentNode } from 'graphql'
 import { getValidNumber } from '../../utils/normalizer'
 
-export type KeyFilter = 'all' | 'active' | 'expired' | 'keyId'
-const keyholdersByKeyIdQuery = gql`
+export type KeyFilter = 'all' | 'active' | 'expired' | 'tokenId'
+const keyholdersByTokedIdQuery = gql`
   query Lock(
     $addresses: [String!]
     $expireTimestamp: BigInt! = 0
     $first: Int! = 100
     $skip: Int! = 0
-    $keyId: BigInt
+    $tokenId: BigInt
   ) {
     locks(where: { address_in: $addresses }) {
       keys(
-        where: { expiration_gt: $expireTimestamp, keyId: $keyId }
+        where: { expiration_gt: $expireTimestamp, tokenId: $tokenId }
         first: $first
         skip: $skip
-        orderBy: keyId
+        orderBy: tokenId
         orderDirection: asc
       ) {
-        owner {
-          address
-        }
-        keyId
+        owner
+        tokenId
         expiration
       }
       name
       address
-      owner
     }
   }
 `
+
 const ActiveKeys = gql`
   query Lock(
     $addresses: [String!]
@@ -46,18 +44,15 @@ const ActiveKeys = gql`
         where: { expiration_gt: $expireTimestamp, owner_contains: $owner }
         first: $first
         skip: $skip
-        orderBy: keyId
+        orderBy: tokenId
         orderDirection: asc
       ) {
-        owner {
-          address
-        }
-        keyId
+        owner
+        tokenId
         expiration
       }
       name
       address
-      owner
     }
   }
 `
@@ -75,18 +70,15 @@ const ExpiredKeys = gql`
         where: { expiration_lt: $expireTimestamp, owner_contains: $owner }
         first: $first
         skip: $skip
-        orderBy: keyId
+        orderBy: tokenId
         orderDirection: asc
       ) {
-        owner {
-          address
-        }
-        keyId
+        owner
+        tokenId
         expiration
       }
       name
       address
-      owner
     }
   }
 `
@@ -103,18 +95,15 @@ const keyListByLock = gql`
         where: { expiration_gt: 0, owner_contains: $owner }
         first: $first
         skip: $skip
-        orderBy: keyId
+        orderBy: tokenId
         orderDirection: asc
       ) {
-        owner {
-          address
-        }
-        keyId
+        owner
+        tokenId
         expiration
       }
       name
       address
-      owner
     }
   }
 `
@@ -123,7 +112,7 @@ const QUERY_BY_TYPE: { [key in KeyFilter]: DocumentNode } = {
   active: ActiveKeys,
   expired: ExpiredKeys,
   all: keyListByLock,
-  keyId: keyholdersByKeyIdQuery,
+  tokenId: keyholdersByTokedIdQuery,
 }
 
 interface KeyGetProps {
@@ -139,7 +128,7 @@ interface KeyGetProps {
 export class keysByQuery extends GraphQLDataSource {
   constructor(public network: number) {
     super()
-    this.baseURL = networks[network].subgraph.endpoint
+    this.baseURL = networks[network].subgraph.endpointV2
   }
 
   async get({
@@ -156,14 +145,14 @@ export class keysByQuery extends GraphQLDataSource {
 
       // need to query all keys ignoring expiration duration when searching by token id
       const expireTimestamp =
-        expiration === 'all' || filterKey === 'keyId'
+        expiration === 'all' || filterKey === 'tokenId'
           ? 0
           : parseInt(`${new Date().getTime() / 1000}`)
-      const keyId = getValidNumber(search)
+      const tokenId = getValidNumber(search)
 
       let query: any
-      if (filterKey === 'keyId' && `${search}`?.length) {
-        query = QUERY_BY_TYPE.keyId
+      if (filterKey === 'tokenId' && `${search}`?.length) {
+        query = QUERY_BY_TYPE.tokenId
       } else {
         query = QUERY_BY_TYPE[expiration]
       }
@@ -173,7 +162,7 @@ export class keysByQuery extends GraphQLDataSource {
         return await this.query(query, {
           variables: {
             addresses,
-            keyId,
+            tokenId,
             first,
             skip,
             expireTimestamp,

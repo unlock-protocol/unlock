@@ -6,10 +6,8 @@ import Fuse from 'fuse.js'
 
 interface SubgraphLock {
   keys: {
-    owner: {
-      address: string
-    }
-    keyId: string
+    owner: string
+    tokenId: string
     expiration: string
   }[]
   address: string
@@ -19,7 +17,7 @@ interface SubgraphLock {
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
-  keyId: 'token',
+  tokenId: 'token',
   email: 'email',
 }
 /**
@@ -59,8 +57,7 @@ export const buildKeysWithMetadata = (
       const { userMetadata, extraMetadata } =
         metadataItems?.find(
           (metadata) =>
-            metadata?.userAddress?.toLowerCase() ===
-            key?.owner?.address?.toLowerCase()
+            metadata?.userAddress?.toLowerCase() === key?.owner?.toLowerCase()
         )?.data ?? {}
 
       const metadata = {
@@ -70,10 +67,10 @@ export const buildKeysWithMetadata = (
       }
 
       const merged = {
-        token: key?.keyId,
+        token: key?.tokenId,
         lockName: lock?.name,
         expiration: key?.expiration,
-        keyholderAddress: key?.owner?.address,
+        keyholderAddress: key?.owner,
         lockAddress: lock?.address,
         ...metadata,
       }
@@ -100,7 +97,7 @@ export async function getKeysWithMetadata({
     network
   )
 
-  let metadataItems = []
+  let metadataItems: any[] = []
   const graphQLClient = new keysByQuery(network)
 
   const [lock] = await graphQLClient.get({
