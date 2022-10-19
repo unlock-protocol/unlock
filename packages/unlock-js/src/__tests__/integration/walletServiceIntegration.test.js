@@ -38,10 +38,9 @@ import extendKey from './functions/extendKey'
 jest.setTimeout(3000000)
 
 // Unlock versions to test
-export const UnlockVersionNumbers = ['v11']
-// Object.keys(UnlockVersions).filter(
-//   (v) => v !== 'v6' // 'v6' is disabled it required erc1820
-// )
+export const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
+  (v) => v !== 'v6' // 'v6' is disabled it required erc1820
+)
 
 describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let walletService
@@ -50,10 +49,10 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let accounts
 
   // Unlock v4 can only interact w PublicLock v4
-  const PublicLockVersions = ['v11']
-  // unlockVersion === 'v4' // Unlock v4 can only interact w PublicLock v4
-  //   ? ['v4']
-  //   : Object.keys(locks).filter((v) => !['v4', 'v6'].includes(v))
+  const PublicLockVersions =
+    unlockVersion === 'v4' // Unlock v4 can only interact w PublicLock v4
+      ? ['v4']
+      : Object.keys(locks).filter((v) => !['v4', 'v6'].includes(v))
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
