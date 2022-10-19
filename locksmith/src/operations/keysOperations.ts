@@ -6,9 +6,7 @@ import Fuse from 'fuse.js'
 
 interface SubgraphLock {
   keys: {
-    owner: {
-      address: string
-    }
+    owner: string
     tokenId: string
     expiration: string
   }[]
