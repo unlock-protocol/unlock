@@ -3,14 +3,9 @@ import locks from '../helpers/fixtures/locks'
 import { configureUnlock, deployTemplate } from '../helpers'
 import { ZERO } from '../../constants'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
+import UnlockVersions from '../../Unlock'
 
-import {
-  chainId,
-  UnlockVersionNumbers,
-  getPublicLockVersions,
-  setupTest,
-  setupLock,
-} from '../helpers/integration'
+import { chainId, setupTest, setupLock } from '../helpers/integration'
 
 // This test suite will do the following:
 // For each version of the Unlock contract
@@ -24,7 +19,10 @@ import {
 // Increasing timeouts
 jest.setTimeout(300000)
 
-console.log(UnlockVersionNumbers)
+// Unlock versions to test
+export const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
+  (v) => v !== 'v6' // 'v6' is disabled it required erc1820
+)
 
 describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let walletService
@@ -33,7 +31,10 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   let accounts
 
   // Unlock v4 can only interact w PublicLock v4
-  const PublicLockVersions = getPublicLockVersions(unlockVersion)
+  const PublicLockVersions =
+    unlockVersion === 'v4' // Unlock v4 can only interact w PublicLock v4
+      ? ['v4']
+      : Object.keys(locks).filter((v) => !['v4', 'v6'].includes(v))
 
   beforeAll(async () => {
     // deploy ERC20 and set balances
@@ -106,7 +107,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
     )
   }
 
-  describe.each()('using Lock %s', (publicLockVersion) => {
+  describe.each(PublicLockVersions)('using Lock %s', (publicLockVersion) => {
     describe.each(
       locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
     )('lock %i: %s', (lockIndex, lockName, lockParams) => {

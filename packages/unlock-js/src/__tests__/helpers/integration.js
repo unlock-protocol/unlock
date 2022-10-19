@@ -1,22 +1,10 @@
 import { ethers } from 'hardhat'
 import WalletService from '../../walletService'
 import Web3Service from '../../web3Service'
-import UnlockVersions from '../../Unlock'
-import locks from './fixtures/locks'
 
 import { deployUnlock, deployTemplate } from '.'
 
 export const chainId = 31337
-
-// Unlock versions to test
-export const UnlockVersionNumbers = Object.keys(UnlockVersions).filter(
-  (v) => v !== 'v6' // 'v6' is disabled it required erc1820
-)
-
-export const getPublicLockVersions = (unlockVersion) =>
-  unlockVersion === 'v4' // Unlock v4 can only interact w PublicLock v4
-    ? ['v4']
-    : Object.keys(locks).filter((v) => !['v4', 'v6'].includes(v))
 
 // setup all libs for tests
 export const setupTest = async (unlockVersion) => {
