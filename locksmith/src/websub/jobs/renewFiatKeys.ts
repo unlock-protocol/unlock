@@ -38,10 +38,10 @@ async function renewFiatKeys(network: number) {
     })
 
     // send all renewal txs
-    for (const { keyId, lock, owner } of keys) {
+    for (const { id, lock, owner } of keys) {
       try {
         const renewal = await renewFiatKey({
-          keyId: Number(keyId),
+          keyId: Number(id),
           lockAddress: Normalizer.ethereumAddress(lock.address),
           network,
           userAddress: Normalizer.ethereumAddress(owner.address),
