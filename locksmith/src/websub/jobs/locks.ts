@@ -36,6 +36,7 @@ async function notifyHooksOfAllUnprocessedLocks(
 ) {
   let page = 0
   while (true) {
+    logger.info(`Running job on ${network}`)
     const locks = await fetchUnprocessedLocks(network, page)
 
     // If empty, break the loop and return as there are no more new locks to process.

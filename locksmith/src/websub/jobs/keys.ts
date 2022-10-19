@@ -10,25 +10,29 @@ import { logger } from '../../logger'
 const FETCH_LIMIT = 25
 
 async function fetchUnprocessedKeys(network: number, page = 0) {
-  const keySource = new Key(network)
-  const keys = await keySource.getKeys({
-    first: FETCH_LIMIT,
-    skip: page ? page * FETCH_LIMIT : 0,
-  })
+  try {
+    const keySource = new Key(network)
+    const keys = await keySource.getKeys({
+      first: FETCH_LIMIT,
+      skip: page ? page * FETCH_LIMIT : 0,
+    })
 
-  const keyIds = keys.map((key: any) => key.id)
-  const processedKeys = await ProcessedHookItem.findAll({
-    where: {
-      objectId: {
-        [Op.in]: keyIds,
+    const keyIds = keys.map((key: any) => key.id)
+    const processedKeys = await ProcessedHookItem.findAll({
+      where: {
+        objectId: {
+          [Op.in]: keyIds,
+        },
       },
-    },
-  })
+    })
 
-  const unprocessedKeys = keys.filter(
-    (key: any) => !processedKeys.find((item) => item.objectId === key.id)
-  )
-  return unprocessedKeys
+    const unprocessedKeys = keys.filter(
+      (key: any) => !processedKeys.find((item) => item.objectId === key.id)
+    )
+    return unprocessedKeys
+  } catch (error) {
+    console.error(`${network} fetched error`)
+  }
 }
 
 async function notifyHooksOfAllUnprocessedKeys(hooks: Hook[], network: number) {
