@@ -18,8 +18,10 @@ import {
   RiTimer2Line as DurationIcon,
   RiCoupon2Line as QuantityIcon,
   RiExternalLinkLine as ExternalLinkIcon,
+  RiRepeatFill as RecurringIcon,
+  RiCheckboxCircleFill as CheckMarkIcon,
 } from 'react-icons/ri'
-import { Button, Icon } from '@unlock-protocol/ui'
+import { Badge, Button, Icon } from '@unlock-protocol/ui'
 import { LabeledItem } from '../LabeledItem'
 import * as Avatar from '@radix-ui/react-avatar'
 import { numberOfAvailableKeys } from '~/utils/checkoutLockUtils'
@@ -33,6 +35,7 @@ interface Props {
 export function Select({ checkoutService, injectedProvider }: Props) {
   const [state, send] = useActor(checkoutService)
   const { paywallConfig, lock: selectedLock } = state.context
+  const [lock, setLock] = useState<LockState | undefined>(selectedLock)
   const { isLoading: isLocksLoading, data: locks } = useQuery(
     ['locks', JSON.stringify(paywallConfig)],
     async () => {
@@ -86,8 +89,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
       network: props.network || paywallConfig.network || 1,
     }))
   }, [paywallConfig.locks, paywallConfig.network])
-
-  const [lock, setLock] = useState<LockState | undefined>(selectedLock)
 
   const skipQuantity = useMemo(() => {
     const maxRecipients = lock?.maxRecipients || paywallConfig.maxRecipients
@@ -148,8 +149,9 @@ export function Select({ checkoutService, injectedProvider }: Props) {
 
   useEffect(() => {
     if (locks?.length) {
-      const item = locks.find((lock) => !lock.isSoldOut)
-      setLock(item)
+      const filtered = locks.filter((lock) => !lock.isSoldOut)
+      const item = filtered.find((lock) => lock.default)
+      setLock(item || filtered[0])
     }
   }, [locks])
 
@@ -187,10 +189,10 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                         value={item}
                         className={({ checked, disabled }) =>
                           `flex flex-col p-2 w-full gap-4 items-center border border-gray-200 rounded-xl cursor-pointer relative ${
-                            checked && 'border-ui-main-200 bg-ui-main-50'
+                            checked && 'border-ui-main-100 bg-gray-100'
                           } ${
                             disabled &&
-                            `opacity-80 bg-gray-50  ${
+                            `opacity-80 bg-gray-100  ${
                               isMembershipsLoading
                                 ? 'cursor-wait'
                                 : 'cursor-not-allowed'
@@ -206,7 +208,9 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                             item.name
                           )
                           const lockImageURL = `${config.services.storage.host}/lock/${item?.address}/icon`
-
+                          const isMember = memberships?.find(
+                            (m) => m.lock === item.address
+                          )?.member
                           return (
                             <Fragment>
                               <div className="flex w-full gap-x-4">
@@ -228,8 +232,6 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                                       as="p"
                                     >
                                       {item.name}
-                                      {item?.recurringPayments &&
-                                        ` x ${item?.recurringPayments}`}
                                     </RadioGroup.Label>
                                     <a
                                       href={config.networks[
@@ -254,38 +256,66 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                                   />
                                 </div>
                               </div>
-                              <div className="flex items-center justify-between w-full">
-                                <div className="flex items-center gap-2">
-                                  <LabeledItem
-                                    label="Duration"
-                                    icon={DurationIcon}
-                                    value={formattedData.formattedDuration}
-                                  />
-                                  <LabeledItem
-                                    label="Quantity"
-                                    icon={QuantityIcon}
-                                    value={
-                                      formattedData.isSoldOut
-                                        ? 'Sold out'
-                                        : formattedData.formattedKeysAvailable
-                                    }
-                                  />
-                                </div>
-                                <div>
-                                  {checked ? (
-                                    <Icon
-                                      size="large"
-                                      className="fill-brand-ui-primary"
-                                      icon={CheckIcon}
+
+                              <div className="w-full space-y-2">
+                                <div className="flex justify-between w-full place-items-center">
+                                  <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+                                    <LabeledItem
+                                      label="Duration"
+                                      icon={DurationIcon}
+                                      value={formattedData.formattedDuration}
                                     />
-                                  ) : (
-                                    <Icon
-                                      size="large"
-                                      className="fill-brand-ui-primary"
-                                      icon={CheckBlankIcon}
+                                    <LabeledItem
+                                      label="Quantity"
+                                      icon={QuantityIcon}
+                                      value={
+                                        formattedData.isSoldOut
+                                          ? 'Sold out'
+                                          : formattedData.formattedKeysAvailable
+                                      }
                                     />
-                                  )}
+                                    {item.recurringPayments && (
+                                      <LabeledItem
+                                        label="Renew"
+                                        icon={RecurringIcon}
+                                        value={
+                                          typeof item.recurringPayments ===
+                                          'number'
+                                            ? `${item.recurringPayments} times`
+                                            : item.recurringPayments
+                                        }
+                                      />
+                                    )}
+                                  </div>
+                                  <div>
+                                    {checked ? (
+                                      <Icon
+                                        size={25}
+                                        className="fill-brand-ui-primary"
+                                        icon={CheckIcon}
+                                      />
+                                    ) : (
+                                      <Icon
+                                        size={25}
+                                        className="fill-brand-ui-primary"
+                                        icon={CheckBlankIcon}
+                                      />
+                                    )}
+                                  </div>
                                 </div>
+                                {isMember && (
+                                  <div className="flex items-center justify-between w-full px-2 py-1 text-sm text-gray-500 border border-gray-300 rounded">
+                                    You already have this membership{' '}
+                                    <Badge
+                                      size="tiny"
+                                      iconRight={<CheckMarkIcon />}
+                                      variant="green"
+                                    >
+                                      {' '}
+                                      Valid{' '}
+                                    </Badge>
+                                  </div>
+                                )}
                               </div>
                             </Fragment>
                           )

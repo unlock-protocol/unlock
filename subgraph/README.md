@@ -161,3 +161,43 @@ createMockedFunction(
   .withArgs([])
   .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(maxNumberOfKeys))])
 ```
+
+## Debug deployed Subgraph
+
+To retrieve the error message for failed subgraphs - on the hosted service
+
+- Find your Deployment ID ("Qm....")
+- Go to https://graphiql-online.com/
+- Enter API https://api.thegraph.com/index-node/graphql
+- Run Query:
+
+```graphql
+{
+  indexingStatuses(subgraphs: ["Qm..."]) {
+    subgraph
+    synced
+    health
+    entityCount
+    fatalError {
+      handler
+      message
+      deterministic
+      block {
+        hash
+        number
+      }
+    }
+    chains {
+      chainHeadBlock {
+        number
+      }
+      earliestBlock {
+        number
+      }
+      latestBlock {
+        number
+      }
+    }
+  }
+}
+```

@@ -132,11 +132,6 @@
   },
   {
     "inputs": [],
-    "name": "ONLY_LOCK_MANAGER_OR_BENEFICIARY",
-    "type": "error"
-  },
-  {
-    "inputs": [],
     "name": "ONLY_LOCK_MANAGER_OR_KEY_GRANTER",
     "type": "error"
   },
@@ -467,11 +462,23 @@
       {
         "indexed": false,
         "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
         "name": "symbol",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "baseTokenURI",
         "type": "string"
       }
     ],
-    "name": "NewLockSymbol",
+    "name": "LockMetadata",
     "type": "event"
   },
   {
@@ -693,7 +700,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "beneficiary",
+        "name": "recipient",
         "type": "address"
       },
       {
@@ -793,30 +800,6 @@
     "inputs": [
       {
         "internalType": "address",
-        "name": "_spender",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_amount",
-        "type": "uint256"
-      }
-    ],
-    "name": "approveBeneficiary",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "_keyOwner",
         "type": "address"
       }
@@ -827,19 +810,6 @@
         "internalType": "uint256",
         "name": "balance",
         "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "beneficiary",
-    "outputs": [
-      {
-        "internalType": "address payable",
-        "name": "",
-        "type": "address"
       }
     ],
     "stateMutability": "view",
@@ -1473,6 +1443,19 @@
   },
   {
     "inputs": [],
+    "name": "onKeyGrantHook",
+    "outputs": [
+      {
+        "internalType": "contract ILockKeyGrantHook",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "onKeyPurchaseHook",
     "outputs": [
       {
@@ -1827,19 +1810,6 @@
   {
     "inputs": [
       {
-        "internalType": "string",
-        "name": "_baseTokenURI",
-        "type": "string"
-      }
-    ],
-    "name": "setBaseTokenURI",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "address",
         "name": "_onKeyPurchaseHook",
         "type": "address"
@@ -1867,6 +1837,11 @@
       {
         "internalType": "address",
         "name": "_onKeyExtendHook",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onKeyGrantHook",
         "type": "address"
       }
     ],
@@ -1902,6 +1877,29 @@
       }
     ],
     "name": "setKeyManagerOf",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_lockName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_lockSymbol",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_baseTokenURI",
+        "type": "string"
+      }
+    ],
+    "name": "setLockMetadata",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -2198,19 +2196,6 @@
   {
     "inputs": [
       {
-        "internalType": "address payable",
-        "name": "_beneficiary",
-        "type": "address"
-      }
-    ],
-    "name": "updateBeneficiary",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "uint256",
         "name": "_keyPrice",
         "type": "uint256"
@@ -2245,32 +2230,6 @@
       }
     ],
     "name": "updateLockConfig",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_lockName",
-        "type": "string"
-      }
-    ],
-    "name": "updateLockName",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_lockSymbol",
-        "type": "string"
-      }
-    ],
-    "name": "updateLockSymbol",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -2318,6 +2277,11 @@
       {
         "internalType": "address",
         "name": "_tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "_recipient",
         "type": "address"
       },
       {

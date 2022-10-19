@@ -9,7 +9,7 @@ export class KeysToRenew extends GraphQLDataSource {
     network: number,
     page: number
   ): Promise<any[]> {
-    this.baseURL = networks[network].subgraph.endpoint
+    this.baseURL = networks[network].subgraph.endpointV2
     const keysToRenewQuery = gql`
       query Keys($start: Int!, $end: Int!, $skip: Int) {
         keys(
@@ -19,6 +19,7 @@ export class KeysToRenew extends GraphQLDataSource {
           where: { expiration_gte: $start, expiration_lte: $end }
         ) {
           id
+          tokenId
           lock {
             id
             address
@@ -26,15 +27,10 @@ export class KeysToRenew extends GraphQLDataSource {
             tokenAddress
             price
             expirationDuration
-            totalSupply
             version
           }
-          keyId
           expiration
-          owner {
-            id
-            address
-          }
+          owner
         }
       }
     `
