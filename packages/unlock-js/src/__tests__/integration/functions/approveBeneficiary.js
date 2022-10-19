@@ -1,3 +1,5 @@
+import { itIfErc20 } from '../../helpers/integration'
+
 let ethers,
   web3Service,
   chainId,
@@ -5,9 +7,9 @@ let ethers,
   lock,
   lockAddress,
   ERC20,
-  itIfErc20
+  lockParams
 
-export default () => {
+export default (isERC20) => () => {
   let spender
   let receiver
   let receiverBalanceBefore
@@ -22,7 +24,7 @@ export default () => {
       lock,
       lockAddress,
       ERC20,
-      itIfErc20,
+      lockParams,
     } = global.suiteData)
     ;[, spender, receiver] = await ethers.getSigners()
     // Get the erc20 balance of the user before the purchase
@@ -63,12 +65,12 @@ export default () => {
     )
   })
 
-  itIfErc20('should have yielded a transaction hash', () => {
+  itIfErc20(isERC20)('should have yielded a transaction hash', () => {
     expect.assertions(1)
     expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
   })
 
-  itIfErc20('should have set lock erc20 allowance', async () => {
+  itIfErc20(isERC20)('should have set lock erc20 allowance', async () => {
     expect.assertions(1)
 
     // make sure allowance has changed
@@ -76,24 +78,27 @@ export default () => {
     expect(allowance.toString()).toBe('10000000000000000000')
   })
 
-  itIfErc20('should allow to transfer funds directly from lock', async () => {
-    expect.assertions(1)
-    // transfer some tokens directly from lock
-    await ERC20.connect(spender).transferFrom(
-      lockAddress,
-      receiver.address,
-      '1000000000000000000'
-    )
+  itIfErc20(isERC20)(
+    'should allow to transfer funds directly from lock',
+    async () => {
+      expect.assertions(1)
+      // transfer some tokens directly from lock
+      await ERC20.connect(spender).transferFrom(
+        lockAddress,
+        receiver.address,
+        '1000000000000000000'
+      )
 
-    // make sure tokens have been transferred
-    const receiverBalanceAfter = await web3Service.getTokenBalance(
-      lock.currencyContractAddress,
-      receiver.address,
-      chainId
-    )
+      // make sure tokens have been transferred
+      const receiverBalanceAfter = await web3Service.getTokenBalance(
+        lock.currencyContractAddress,
+        receiver.address,
+        chainId
+      )
 
-    expect(parseFloat(receiverBalanceAfter)).toBe(
-      parseFloat(receiverBalanceBefore) + parseFloat(1)
-    )
-  })
+      expect(parseFloat(receiverBalanceAfter)).toBe(
+        parseFloat(receiverBalanceBefore) + parseFloat(1)
+      )
+    }
+  )
 }

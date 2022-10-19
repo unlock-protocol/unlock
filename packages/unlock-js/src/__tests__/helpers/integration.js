@@ -6,6 +6,9 @@ import { deployUnlock, deployTemplate } from '.'
 
 export const chainId = 31337
 
+// used to run some tests only for ERC20 locks
+export const itIfErc20 = (isERC20) => (isERC20 ? it : it.skip)
+
 // setup all libs for tests
 export const setupTest = async (unlockVersion) => {
   let walletService

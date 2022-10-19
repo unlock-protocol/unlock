@@ -125,8 +125,6 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       let lock
       let lockAddress
       let lockCreationHash
-      // used to run some tests only for ERC20 locks
-      let itIfErc20 = lockParams.isERC20 ? it : it.skip
 
       beforeAll(async () => {
         ;({ lock, lockAddress, lockCreationHash } = await setupLock({
@@ -210,7 +208,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
 
       // only v8+
       if (['v4', 'v6', 'v7'].indexOf(publicLockVersion) === -1) {
-        describe('approveBeneficiary', approveBeneficiary)
+        describe('approveBeneficiary', approveBeneficiary(lockParams.isERC20))
       }
 
       describe('updateKeyPrice', updateKeyPrice)
