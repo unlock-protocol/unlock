@@ -9,7 +9,7 @@ interface SubgraphLock {
     owner: {
       address: string
     }
-    keyId: string
+    tokenId: string
     expiration: string
   }[]
   address: string
@@ -19,7 +19,7 @@ interface SubgraphLock {
 
 const KEY_FILTER_MAPPING: { [key: string]: string } = {
   owner: 'keyholderAddress',
-  keyId: 'token',
+  tokenId: 'token',
   email: 'email',
 }
 /**
@@ -70,10 +70,10 @@ export const buildKeysWithMetadata = (
       }
 
       const merged = {
-        token: key?.keyId,
+        token: key?.tokenId,
         lockName: lock?.name,
         expiration: key?.expiration,
-        keyholderAddress: key?.owner?.address,
+        keyholderAddress: key?.owner,
         lockAddress: lock?.address,
         ...metadata,
       }
@@ -100,7 +100,7 @@ export async function getKeysWithMetadata({
     network
   )
 
-  let metadataItems = []
+  let metadataItems: any[] = []
   const graphQLClient = new keysByQuery(network)
 
   const [lock] = await graphQLClient.get({

@@ -26,7 +26,7 @@ interface Filter {
 
 const FILTER_ITEMS: Filter[] = [
   { key: 'owner', label: 'Owner' },
-  { key: 'keyId', label: 'Token id' },
+  { key: 'tokenId', label: 'Token id' },
   { key: 'email', label: 'Email', onlyLockManager: true },
   {
     key: 'checkedInAt',
@@ -179,7 +179,7 @@ export const FilterBar = ({
           )}
         </div>
       </div>
-      {expandFilter && filterKey !== 'keyId' && (
+      {expandFilter && filterKey !== 'tokenId' && (
         <div className="block">
           <Expiration />
         </div>
