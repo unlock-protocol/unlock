@@ -99,7 +99,7 @@ export const UpdateQuantityModal = ({
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between">
               <label className="block px-1 mb-4 text-base" htmlFor="">
-                Number of memberships:
+                Number of memberships for sale:
               </label>
               <ToggleSwitch
                 title="Unlimited"
@@ -132,7 +132,7 @@ export const UpdateQuantityModal = ({
               />
               {errors?.maxNumberOfKeys && (
                 <span className="absolute -mt-1 text-xs text-red-700">
-                  Please choose a number of memberships for your lock.
+                  Please choose a number of memberships for sale for your lock.
                 </span>
               )}
             </div>

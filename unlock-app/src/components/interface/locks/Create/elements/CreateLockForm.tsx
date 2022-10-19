@@ -208,7 +208,7 @@ export const CreateLockForm = ({
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
-                  Number of memberships:
+                  Number of memberships for sale:
                 </label>
                 <ToggleSwitch
                   title="Unlimited"
@@ -232,7 +232,7 @@ export const CreateLockForm = ({
                   step={1}
                   disabled={unlimitedQuantity}
                   {...register('maxNumberOfKeys', {
-                    min: 1,
+                    min: 0,
                     required: !unlimitedQuantity,
                   })}
                 />

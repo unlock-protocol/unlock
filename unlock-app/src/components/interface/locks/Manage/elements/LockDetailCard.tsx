@@ -70,7 +70,7 @@ const Detail = ({ label, value, prepend, loading, append }: DetailProps) => {
       ) : (
         <div className="flex items-center gap-2 text-right">
           {prepend && <>{prepend}</>}
-          <span className="text-base font-bold text-black">{value || '-'}</span>
+          <span className="text-base font-bold text-black">{value ?? '-'}</span>
           {append && <>{append}</>}
         </div>
       )}
