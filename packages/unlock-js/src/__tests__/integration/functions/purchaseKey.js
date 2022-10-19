@@ -1,6 +1,6 @@
 let web3Service, walletService, accounts, lock, lockAddress, chainId
 
-export default function () {
+export default () => () => {
   let tokenId
   let key
   let keyOwner

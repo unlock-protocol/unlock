@@ -1,6 +1,6 @@
 let walletService, web3Service, chainId, lock, lockAddress
 
-export default () => {
+export default () => () => {
   let oldKeyPrice
   let newPrice
   let transactionHash
