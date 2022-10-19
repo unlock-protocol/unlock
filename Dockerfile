@@ -71,7 +71,7 @@ RUN apk add --no-cache --virtual .build-deps \
     py3-pip \
     build-base \
     openjdk11 \
-    && pip3 install --no-cache-dir virtualenv
+    && pip3 install --no-cache-dir --ignore-installed virtualenv
 
 # install deps
 USER node
