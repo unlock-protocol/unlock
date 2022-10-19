@@ -10,6 +10,7 @@ module.exports = {
     '<rootDir>/src/__tests__/integration/lock/',
     '<rootDir>/src/__tests__/integration/unlock/',
     '<rootDir>/src/__tests__/integration/single.js',
+    '<rootDir>/src/__tests__/integration/functions/',
   ],
   transform: {
     '^.+\\.js?$': require.resolve('./jest.transform.js'),
