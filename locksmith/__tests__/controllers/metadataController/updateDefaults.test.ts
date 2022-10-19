@@ -23,12 +23,6 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
-const mockKeyHoldersByLock = {
-  getKeyHoldingAddresses: jest.fn(() => {
-    return Promise.resolve(['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'])
-  }),
-}
-
 function generateTypedData(message: any, messageKey: string) {
   return {
     types: {
