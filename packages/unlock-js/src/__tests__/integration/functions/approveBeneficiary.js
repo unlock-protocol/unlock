@@ -1,6 +1,7 @@
 import { itIfErc20 } from '../../helpers/integration'
+import { ethers } from 'hardhat'
 
-let ethers, web3Service, chainId, walletService, lock, lockAddress, ERC20
+let web3Service, chainId, walletService, lock, lockAddress, ERC20
 
 export default ({ isERC20, publicLockVersion }) =>
   () => {
@@ -12,15 +13,8 @@ export default ({ isERC20, publicLockVersion }) =>
       let transactionHash
 
       beforeAll(async () => {
-        ;({
-          ethers,
-          web3Service,
-          chainId,
-          walletService,
-          lock,
-          lockAddress,
-          ERC20,
-        } = global.suiteData)
+        ;({ web3Service, chainId, walletService, lock, lockAddress, ERC20 } =
+          global.suiteData)
         ;[, spender, receiver] = await ethers.getSigners()
         // Get the erc20 balance of the user before the purchase
         receiverBalanceBefore = await web3Service.getTokenBalance(
