@@ -17,7 +17,6 @@ import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
 import { Badge, Tooltip } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
-import { OwnedKey } from './KeychainTypes'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
 import { useWalletService } from '../../../utils/withWalletService'
@@ -35,7 +34,7 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 interface KeyBoxProps {
   lock: any
   expiration: string
-  keyId: string
+  tokenId: string
   network: number
   isKeyExpired: boolean
   expirationStatus: string
@@ -44,12 +43,12 @@ interface KeyBoxProps {
 const KeyBox = ({
   lock,
   expiration,
-  keyId,
+  tokenId,
   network,
   isKeyExpired,
   expirationStatus,
 }: KeyBoxProps) => {
-  const metadata = useMetadata(lock.address, keyId, network)
+  const metadata = useMetadata(lock.address, tokenId, network)
 
   const [isCopied, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
@@ -96,7 +95,7 @@ const KeyBox = ({
       <div className="pt-4 space-y-1">
         <p className="flex items-center gap-2 text-sm">
           <span className="text-gray-400">Token ID:</span>
-          <span className="font-medium">{keyId}</span>
+          <span className="font-medium">{tokenId}</span>
         </p>
         <div className="flex items-center gap-2 text-sm">
           <span className="text-gray-400">Lock Address:</span>
@@ -130,14 +129,35 @@ const KeyBox = ({
   )
 }
 
+export interface KeyProps {
+  id: string
+  tokenId: string
+  owner: string
+  manager?: any
+  expiration: string
+  tokenURI?: string
+  createdAtBlock: any
+  cancelled?: boolean
+  lock: {
+    id: string
+    address: any
+    name?: string
+    expirationDuration?: any
+    tokenAddress: any
+    price: any
+    lockManagers: any[]
+    version: any
+    createdAtBlock?: any
+  }
+}
 export interface Props {
-  ownedKey: OwnedKey
+  ownedKey: KeyProps
   account: string
   network: number
 }
 
 const Key = ({ ownedKey, account, network }: Props) => {
-  const { lock, expiration, keyId } = ownedKey
+  const { lock, expiration, tokenId } = ownedKey
   const { network: accountNetwork } = useAuth()
   const walletService = useWalletService()
   const wedlockService = useContext(WedlockServiceContext)
@@ -161,6 +181,8 @@ const Key = ({ ownedKey, account, network }: Props) => {
     }
   )
 
+  console.log(ownedKey)
+
   const handleSignature = async () => {
     setError('')
     const payload = JSON.stringify({
@@ -168,7 +190,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
       account,
       lockAddress: lock.address,
       timestamp: Date.now(),
-      tokenId: keyId,
+      tokenId,
     })
 
     const signature = await walletService.signMessage(payload, 'personal_sign')
@@ -196,17 +218,17 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const viewOnOpenSea = async () => {
     if (network === 137) {
       window.open(
-        `https://opensea.io/assets/matic/${lock.address}/${keyId}`,
+        `https://opensea.io/assets/matic/${lock.address}/${tokenId}`,
         '_blank'
       )
     } else if (network === 1) {
       window.open(
-        `https://opensea.io/assets/${lock.address}/${keyId}`,
+        `https://opensea.io/assets/${lock.address}/${tokenId}`,
         '_blank'
       )
     } else if (network === 4) {
       window.open(
-        `https://testnets.opensea.io/assets/${lock.address}/${keyId}`,
+        `https://testnets.opensea.io/assets/${lock.address}/${tokenId}`,
         '_blank'
       )
     }
@@ -220,7 +242,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         wedlockService.keychainQREmail(
           recipient,
           `${window.location.origin}/keychain`,
-          lock.name,
+          lock!.name ?? '',
           qrImage
         )
       } catch {
@@ -249,7 +271,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         setIsOpen={setShowMetadata}
         account={account}
         lock={lock}
-        keyId={keyId}
+        tokenId={tokenId}
         network={network}
       />
 
@@ -258,7 +280,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
           isOpen={showCancelModal}
           setIsOpen={setShowCancelModal}
           lock={lock}
-          keyId={keyId}
+          tokenId={tokenId}
           account={account}
           currency={symbol}
           network={network}
@@ -280,7 +302,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         network={network}
         lock={lock}
         expiration={expiration}
-        keyId={keyId}
+        tokenId={tokenId}
         isKeyExpired={isKeyExpired}
         expirationStatus={expirationStatus}
       />
