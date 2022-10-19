@@ -59,8 +59,7 @@ export const buildKeysWithMetadata = (
       const { userMetadata, extraMetadata } =
         metadataItems?.find(
           (metadata) =>
-            metadata?.userAddress?.toLowerCase() ===
-            key?.owner?.address?.toLowerCase()
+            metadata?.userAddress?.toLowerCase() === key?.owner?.toLowerCase()
         )?.data ?? {}
 
       const metadata = {
