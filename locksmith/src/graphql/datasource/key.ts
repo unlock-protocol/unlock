@@ -1,4 +1,4 @@
-import { gql } from 'apollo-server-express'
+import gql from 'graphql-tag'
 import { GraphQLDataSource } from 'apollo-datasource-graphql'
 import networks from '@unlock-protocol/networks'
 

@@ -23,19 +23,6 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
-const mockKeyHoldersByLock = {
-  getKeyHoldingAddresses: jest.fn(() => {
-    return Promise.resolve([owningAddress])
-  }),
-}
-
-jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
-  __esModule: true,
-  KeyHoldersByLock: jest.fn(() => {
-    return mockKeyHoldersByLock
-  }),
-}))
-
 let typedData: any
 beforeAll(() => {
   typedData = keyTypedData(

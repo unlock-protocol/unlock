@@ -65,19 +65,6 @@ jest.mock('@unlock-protocol/unlock-js', () => ({
   },
 }))
 
-const mockKeyHoldersByLock = {
-  getKeyHoldingAddresses: jest.fn(() => {
-    return Promise.resolve([lockOwningAddress])
-  }),
-}
-
-jest.mock('../../../src/graphql/datasource/keyholdersByLock', () => ({
-  __esModule: true,
-  KeyHoldersByLock: jest.fn(() => {
-    return mockKeyHoldersByLock
-  }),
-}))
-
 describe('Metadata Controller', () => {
   afterEach(async () => {
     await LockMetadata.truncate({ cascade: true })
