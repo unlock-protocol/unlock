@@ -19,6 +19,7 @@ export class KeysToRenew extends GraphQLDataSource {
           where: { expiration_gte: $start, expiration_lte: $end }
         ) {
           id
+          tokenId
           lock {
             id
             address
