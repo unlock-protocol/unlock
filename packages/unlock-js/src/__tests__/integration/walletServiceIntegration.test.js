@@ -1,7 +1,4 @@
-import { ethers } from 'hardhat'
 import locks from '../helpers/fixtures/locks'
-import { configureUnlock, deployTemplate } from '../helpers'
-import { ZERO } from '../../constants'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
 import UnlockVersions from '../../Unlock'
 
@@ -12,7 +9,11 @@ global.suiteData = {
 }
 
 // This test suite will do the following:
-// For each version of the Unlock contract and each lock version,
+
+// For each version of the Unlock contract
+import unlockConfig from './unlock/unlockConfig'
+
+// For each lock version,
 // we check that all walletService functions are working as expected!
 
 import approveBeneficiary from './functions/approveBeneficiary'
@@ -80,54 +81,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   if (['v4'].indexOf(unlockVersion) === -1) {
     describe.each(PublicLockVersions)(
       'configuration using PublicLock %s',
-      (publicLockVersion) => {
-        let publicLockTemplateAddress
-        it('should be able to deploy the lock contract template', async () => {
-          expect.assertions(2)
-          publicLockTemplateAddress = await deployTemplate(
-            publicLockVersion,
-            {} /** transactionOptions */,
-
-            (error, hash) => {
-              if (error) {
-                throw error
-              }
-              expect(hash).toMatch(/^0x[0-9a-fA-F]{64}$/)
-            }
-          )
-          expect(publicLockTemplateAddress).toMatch(/^0x[0-9a-fA-F]{40}$/)
-        })
-
-        it('should configure the unlock contract with the template, the token symbol and base URL', async () => {
-          expect.assertions(2)
-          let transactionHash
-          const { unlockAddress } = walletService
-          const receipt = await configureUnlock(
-            unlockAddress,
-            unlockVersion,
-            {
-              publicLockTemplateAddress,
-              globalTokenSymbol: 'TESTK',
-              globalBaseTokenURI:
-                'https://locksmith.unlock-protocol.com/api/key/',
-              unlockDiscountToken: ZERO,
-              wrappedEth: ZERO,
-              estimatedGasForPurchase: 0,
-              chainId,
-            },
-            {} /** transactionOptions */,
-
-            (error, hash) => {
-              if (error) {
-                throw error
-              }
-              transactionHash = hash
-            }
-          )
-          expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
-          expect(receipt.transactionHash).toEqual(transactionHash)
-        })
-      }
+      unlockConfig
     )
   }
 
