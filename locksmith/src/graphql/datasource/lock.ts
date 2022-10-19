@@ -28,10 +28,7 @@ export class Lock extends GraphQLDataSource {
           keys {
             id
             expiration
-            owner {
-              id
-              address
-            }
+            owner
             tokenURI
             createdAtBlock
           }
@@ -64,10 +61,7 @@ export class Lock extends GraphQLDataSource {
           keys {
             id
             expiration
-            owner {
-              id
-              address
-            }
+            owner
             tokenURI
             createdAtBlock
           }

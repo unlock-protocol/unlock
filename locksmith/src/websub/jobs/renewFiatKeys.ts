@@ -44,7 +44,7 @@ async function renewFiatKeys(network: number) {
           keyId: Number(tokenId),
           lockAddress: Normalizer.ethereumAddress(lock.address),
           network,
-          userAddress: Normalizer.ethereumAddress(owner.address),
+          userAddress: Normalizer.ethereumAddress(owner),
         })
         if (renewal.error) {
           logger.info('Key renewal failed', {

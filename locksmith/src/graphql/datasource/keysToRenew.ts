@@ -30,10 +30,7 @@ export class KeysToRenew extends GraphQLDataSource {
             version
           }
           expiration
-          owner {
-            id
-            address
-          }
+          owner
         }
       }
     `
