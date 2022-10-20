@@ -17,7 +17,7 @@ export const CheckoutForm = ({
 
   const tabs: Schema[] = [
     {
-      title: 'Base Configuration',
+      title: 'Configuration',
       children: (
         <BasicConfigForm
           onChange={onBasicConfigChange}
@@ -26,7 +26,7 @@ export const CheckoutForm = ({
       ),
     },
     {
-      title: 'Add locks',
+      title: 'Locks',
       children: (
         <LocksForm onChange={onAddLocks} locks={paywallConfig?.locks} />
       ),

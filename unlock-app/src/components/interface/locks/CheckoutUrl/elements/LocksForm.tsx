@@ -131,9 +131,12 @@ export const LocksForm = ({
       <LockList />
       {addLock && (
         <>
+          <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
+            Select a lock
+          </h2>
           <div className="flex flex-col w-full gap-2">
             <Select
-              label="Select network"
+              label="Network"
               options={networksOptions}
               size="small"
               defaultValue={network}
@@ -141,10 +144,10 @@ export const LocksForm = ({
             />
 
             <Select
-              label="Select lock"
+              label="Lock"
               options={locksOptions}
               size="small"
-              onChange={(value) => {
+              onChange={(value: string | number) => {
                 setLockAddress(`${value}`)
               }}
             />

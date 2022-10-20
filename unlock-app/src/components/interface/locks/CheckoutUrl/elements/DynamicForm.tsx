@@ -22,6 +22,7 @@ const DESCRIPTIONS: Record<string, string> = {
 interface DynamicFormProps {
   name: string
   schema: z.Schema
+  title?: string
   description?: Record<string, string>
   onChange: (fields: any) => void
   onSubmit?: (fields: any) => void
@@ -82,7 +83,7 @@ const BooleanInput = ({ props, name, label, ...rest }: any) => {
             setEnabled={setEnabled}
             {...rest}
             {...register(name)}
-            onChange={(isActive) => {
+            onChange={(isActive: boolean) => {
               setValue(name, isActive)
             }}
           />
@@ -122,6 +123,7 @@ export const DynamicForm = ({
   onSubmit: onSubmitCb,
   defaultValues,
   showSubmit = false,
+  title,
 }: DynamicFormProps) => {
   const { properties = {}, required = [] } =
     (zodToJsonSchema(schema, name).definitions?.[name] as any) ?? {}
@@ -140,6 +142,11 @@ export const DynamicForm = ({
   return (
     <div className="flex flex-col gap-3 py-6">
       <FormProvider {...methods}>
+        {title && (
+          <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
+            {title}
+          </h2>
+        )}
         <form
           className="flex flex-col gap-3"
           onSubmit={methods.handleSubmit(onSubmit)}

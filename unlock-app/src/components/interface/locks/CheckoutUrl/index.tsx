@@ -20,19 +20,11 @@ export const CheckoutUrlPage = () => {
     metadataInputs: [{ name: 'test', type: 'text', required: false }],
   })
 
-  const onChange = (schema: string, fields: any) => {
-    setPaywallConfig({
-      ...paywallConfig,
-      ...fields,
-    })
-  }
-
   const onAddLocks = (locks: any) => {
     setPaywallConfig({
       ...paywallConfig,
       locks,
     })
-    console.log(locks)
   }
 
   const onBasicConfigChange = (fields: Partial<PaywallConfig>) => {
@@ -43,14 +35,13 @@ export const CheckoutUrlPage = () => {
   }
 
   return (
-    <div className="flex flex-col w-full gap-8 pb-20 md:flex-row">
-      <div className="w-1/2">
+    <div className="flex flex-col w-full h-screen gap-8 pt-10 pb-20 md:flex-row">
+      <div className="md:w-1/2">
         <CheckoutPreview paywallConfig={paywallConfig} />
       </div>
-      <div className="flex flex-col w-1/2 gap-4">
+      <div className="flex flex-col gap-4 md:w-1/2">
         <Header />
         <CheckoutForm
-          onChange={onChange}
           onAddLocks={onAddLocks}
           onBasicConfigChange={onBasicConfigChange}
           paywallConfig={paywallConfig}
