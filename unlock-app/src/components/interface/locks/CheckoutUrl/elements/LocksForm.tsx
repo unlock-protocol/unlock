@@ -3,7 +3,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { Lock, PaywallConfigLock, PaywallConfigLockSchema } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import { DynamicForm } from './DynamicForm'
-import { z } from 'zod'
 import { Button, IconButton, Select } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { addressMinify } from '~/utils/strings'
@@ -13,7 +12,6 @@ const LockSchema = PaywallConfigLockSchema.omit({
   network: true, // network will managed with a custom input with the lock address
 })
 
-type PartialLockSchemaProps = z.infer<typeof LockSchema>
 interface LockListItemProps {
   address: string
   network: string | number
@@ -66,25 +64,7 @@ export const LocksForm = ({
     setAddLock(false)
   }
 
-  const onSubmit = (fields: PartialLockSchemaProps) => {
-    const defaultLockName = locksByNetwork?.find(
-      (lock) => lock.address?.toLowerCase() === lockAddress?.toLowerCase()
-    )?.name
-
-    // set default name if none is set
-    if (!fields.name) {
-      fields.name = defaultLockName
-    }
-
-    const locksByAddress = {
-      ...locks,
-      [lockAddress]: {
-        network: parseInt(`${network}`),
-        ...fields,
-      },
-    }
-    setLocks(locksByAddress)
-    onChange(locksByAddress)
+  const onSubmit = () => {
     reset()
   }
 
@@ -182,44 +162,77 @@ export const LocksForm = ({
     )
   }
 
+  const onAddLock = (
+    lockAddress: string,
+    network?: number | string,
+    fields: any = null
+  ) => {
+    const defaultLockName = locksByNetwork?.find(
+      (lock) => lock.address?.toLowerCase() === lockAddress?.toLowerCase()
+    )?.name
+
+    // set default name if none is set
+    if (!fields && !fields?.name) {
+      fields = {
+        ...fields,
+        name: defaultLockName,
+      }
+    }
+
+    const locksByAddress = {
+      ...locks,
+      [lockAddress]: {
+        network: parseInt(`${network}`),
+        ...fields,
+      },
+    }
+    setLocks(locksByAddress)
+    onChange(locksByAddress)
+  }
+
   return (
     <>
       <LockList />
       {addLock && (
-        <>
-          <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
-            Select a lock
-          </h2>
-          <div className="flex flex-col w-full gap-4">
-            <Select
-              label="Network"
-              options={networksOptions}
-              size="small"
-              defaultValue={network}
-              onChange={setNetwork}
-            />
+        <div className="flex flex-col gap-10">
+          <div>
+            <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
+              Select a lock
+            </h2>
+            <div className="flex flex-col w-full gap-4">
+              <Select
+                label="Network"
+                options={networksOptions}
+                size="small"
+                defaultValue={network}
+                onChange={setNetwork}
+              />
 
-            <Select
-              label="Lock"
-              options={locksOptions}
-              size="small"
-              onChange={(value: string | number) => {
-                setLockAddress(`${value}`)
-              }}
-            />
+              <Select
+                label="Lock"
+                options={locksOptions}
+                size="small"
+                onChange={(lockAddress: any) => {
+                  setLockAddress(`${lockAddress}`)
+                  onAddLock(lockAddress, network!)
+                }}
+              />
+            </div>
           </div>
           {hasMinValue && (
             <DynamicForm
               title="Settings"
               name={'locks'}
               schema={LockSchema}
-              onChange={() => void 0}
+              onChange={(fields: any) =>
+                onAddLock(lockAddress, network, fields)
+              }
               onSubmit={onSubmit}
               submitLabel={'Add lock'}
               showSubmit={true}
             />
           )}
-        </>
+        </div>
       )}
     </>
   )
