@@ -82,7 +82,9 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
   if (['v4'].indexOf(unlockVersion) === -1) {
     describe.each(PublicLockVersions)(
       'configuration using PublicLock %s',
-      unlockConfig
+      (publicLockVersion) => {
+        describe('config steps', unlockConfig({ publicLockVersion }))
+      }
     )
   }
 
