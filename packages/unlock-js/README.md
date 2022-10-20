@@ -40,3 +40,23 @@ You can run the generator for your language through this command. Replace the ge
 `openapi-generator-cli generate -i ./openapi.yml -g [generator] -c config.json -o client`
 
 There is a `yarn generate` command which generates the client and spits it out in the @generated folder for internal use.
+
+## Tests
+
+You can run the entire test suite using 
+
+```
+yarn test
+```
+
+Run a single test 
+
+```
+yarn test:single --file src/__tests__/utils.test.js
+```
+
+Run a single integration test with specific versions
+
+```
+yarn hardhat run test:integration src/__tests__/integration/lock/cancelAndRefund.js --unlock-version 10 --lock-version 12
+```
