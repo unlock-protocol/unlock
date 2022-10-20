@@ -116,12 +116,35 @@ export const LocksForm = ({
     })
   )
 
+  const onRemoveFromList = (lockAddress: string) => {
+    let newObj = {}
+
+    Object.entries(locks)
+      .filter(([address]) => address.toLowerCase() !== lockAddress)
+      .map(([lockAddress, fields]) => {
+        newObj = {
+          ...newObj,
+          [lockAddress]: {
+            ...fields,
+          },
+        }
+      })
+
+    setLocks(newObj)
+    onChange(newObj)
+  }
+
   const locksOptions: any = locksByNetwork?.map(({ address, name }: Lock) => {
+    const disabled = Object.keys(locks)?.find(
+      (lockAddress: string) =>
+        lockAddress?.toLowerCase() === address?.toLowerCase()
+    )
     return {
       prepend: <LockImage lockAddress={address} />,
       label: `${name}`,
       value: address,
       append: addressMinify(address),
+      disabled,
     }
   })
 
@@ -138,6 +161,7 @@ export const LocksForm = ({
                 name={values.name}
                 address={address}
                 network={values!.network!}
+                onRemove={() => onRemoveFromList(address)}
               />
             )
           }
