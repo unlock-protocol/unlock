@@ -30,10 +30,11 @@ async function _getKeyPrice(lock, provider) {
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (lock, transactionOptions = {}, callback) {
-  // default lock version to 9
-  const lockVersion = lock.publicLockVersion || 9
-
   const unlockContract = await this.getUnlockContract()
+
+  const lockVersion =
+    lock.publicLockVersion || (await unlockContract.publicLockLatestVersion())
+
   let { maxNumberOfKeys, expirationDuration } = lock
   if (maxNumberOfKeys === UNLIMITED_KEYS_COUNT) {
     maxNumberOfKeys = ETHERS_MAX_UINT
