@@ -28,6 +28,25 @@ interface LocksFormProps {
   locks: LocksProps
 }
 
+interface LockImageProps {
+  lockAddress: string
+}
+
+const LockImage = ({ lockAddress }: LockImageProps) => {
+  const config = useConfig()
+  const lockImage = `${config.services.storage.host}/lock/${lockAddress}/icon`
+
+  return (
+    <div className="flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
+      <img
+        src={lockImage}
+        alt={lockAddress}
+        className="object-cover w-full h-full bg-center"
+      />
+    </div>
+  )
+}
+
 export const LocksForm = ({
   onChange,
   locks: locksDefault = {},
@@ -48,6 +67,15 @@ export const LocksForm = ({
   }
 
   const onSubmit = (fields: PartialLockSchemaProps) => {
+    const defaultLockName = locksByNetwork?.find(
+      (lock) => lock.address?.toLowerCase() === lockAddress?.toLowerCase()
+    )?.name
+
+    // set default name if none is set
+    if (!fields.name) {
+      fields.name = defaultLockName
+    }
+
     const locksByAddress = {
       ...locks,
       [lockAddress]: {
@@ -88,16 +116,14 @@ export const LocksForm = ({
     })
   )
 
-  const locksOptions: any = locksByNetwork?.map(({ address, name }: Lock) => ({
-    prepend: (
-      <div className="flex items-center justify-center w-8 h-8 bg-gray-100">
-        I
-      </div>
-    ),
-    label: `${name}`,
-    value: address,
-    append: addressMinify(address),
-  }))
+  const locksOptions: any = locksByNetwork?.map(({ address, name }: Lock) => {
+    return {
+      prepend: <LockImage lockAddress={address} />,
+      label: `${name}`,
+      value: address,
+      append: addressMinify(address),
+    }
+  })
 
   const hasMinValue = network && lockAddress && lockAddress?.length > 0
 
@@ -119,12 +145,12 @@ export const LocksForm = ({
         <div className="flex gap-2">
           {!addLock && (
             <Button
-              className="ml-auto"
+              className="w-full"
               size="small"
               variant="outlined-primary"
               onClick={() => setAddLock(true)}
             >
-              Add lock
+              Add more Lock
             </Button>
           )}
         </div>
@@ -140,7 +166,7 @@ export const LocksForm = ({
           <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
             Select a lock
           </h2>
-          <div className="flex flex-col w-full gap-2">
+          <div className="flex flex-col w-full gap-4">
             <Select
               label="Network"
               options={networksOptions}
@@ -160,6 +186,7 @@ export const LocksForm = ({
           </div>
           {hasMinValue && (
             <DynamicForm
+              title="Settings"
               name={'locks'}
               schema={LockSchema}
               onChange={() => void 0}
@@ -177,14 +204,12 @@ export const LocksForm = ({
 const LockListItem = ({ address, name, onRemove }: LockListItemProps) => {
   return (
     <div className="flex items-center justify-between w-full px-2 py-1 text-sm bg-white rounded-lg shadow">
-      <div className="space-x-2">
-        <span>{addressMinify(address)}</span>
-        {name?.length && (
-          <>
-            <span> - </span>
-            <span className="text-gray-500">{name}</span>
-          </>
-        )}
+      <div className="flex items-center w-full">
+        <div className="flex items-center gap-2">
+          <LockImage lockAddress={address} />
+          <span className="text-base font-semibold">{name}</span>
+        </div>
+        <span className="ml-auto">{addressMinify(address)}</span>
       </div>
       <IconButton
         onClick={onRemove}

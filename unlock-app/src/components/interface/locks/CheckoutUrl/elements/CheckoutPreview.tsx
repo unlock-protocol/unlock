@@ -21,7 +21,7 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
 
   const hasLocks = Object.entries(paywallConfig?.locks ?? {})?.length > 0
   return (
-    <div className="flex items-center justify-center w-full py-10 bg-gray-300 rounded-xl">
+    <div className="flex items-center justify-center w-full py-10 bg-gray-300 rounded-3xl">
       <div className="flex items-center justify-center w-full max-w-lg">
         {paywallConfig ? (
           <div className="flex flex-col items-center w-full gap-4">

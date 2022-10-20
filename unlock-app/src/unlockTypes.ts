@@ -29,8 +29,6 @@ export const PaywallConfigLockSchema = z.object({
   superfluid: z.boolean().optional(),
   default: z.boolean().optional(),
   dataBuilder: z.string().optional(),
-  demo: z.string(),
-  test: z.string().optional(),
 })
 
 export const PaywallConfigLocksSchema = z.record(PaywallConfigLockSchema)

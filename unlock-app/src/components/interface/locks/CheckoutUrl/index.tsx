@@ -35,7 +35,7 @@ export const CheckoutUrlPage = () => {
   }
 
   return (
-    <div className="flex flex-col w-full h-screen gap-8 pt-10 pb-20 md:flex-row">
+    <div className="flex flex-col w-full min-h-screen gap-8 pt-10 pb-20 md:flex-row">
       <div className="md:w-1/2">
         <CheckoutPreview paywallConfig={paywallConfig} />
       </div>
