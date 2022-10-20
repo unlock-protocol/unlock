@@ -64,7 +64,7 @@ export const setupLock = async ({
     const templateAddress = await deployTemplate(publicLockVersion)
 
     // prepare unlock for upgradeable locks
-    if (['v10', 'v11'].indexOf(unlockVersion) > -1) {
+    if (versionEqualOrAbove(publicLockVersion, 'v10')) {
       const lockVersionNumber = parseInt(publicLockVersion.replace('v', ''))
       await unlock.addLockTemplate(templateAddress, lockVersionNumber)
     }
@@ -80,7 +80,7 @@ export const setupLock = async ({
   // unique Lock name to avoid conflicting addresses
   lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
 
-  if (['v11'].indexOf(unlockVersion) > -1) {
+  if (versionEqualOrAbove(publicLockVersion, 'v10')) {
     // use createLockAtVersion starting on v10
     lockParams.publicLockVersion = parseInt(publicLockVersion.replace('v', ''))
   }
@@ -99,7 +99,7 @@ export const setupLock = async ({
   lock = await web3Service.getLock(lockAddress, chainId)
 
   // test will fail with default to 1 key per address
-  if (['v10', 'v11'].indexOf(publicLockVersion) !== -1) {
+  if (versionEqualOrAbove(publicLockVersion, 'v10')) {
     await walletService.setMaxKeysPerAddress({
       lockAddress,
       chainId,

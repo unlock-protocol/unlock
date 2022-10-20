@@ -1,3 +1,4 @@
+import { versionEqualOrAbove } from '../../helpers/integration'
 let accounts, web3Service, chainId, walletService, lock, lockAddress
 
 export default ({ publicLockVersion }) =>
@@ -21,7 +22,7 @@ export default ({ publicLockVersion }) =>
       )
 
       // enable grant of multiple keys for same address for locks v10+
-      if (['v10', 'v11'].indexOf(publicLockVersion) !== -1) {
+      if (versionEqualOrAbove(publicLockVersion, 'v10')) {
         await walletService.setMaxKeysPerAddress({
           lockAddress,
           maxKeysPerAddress: 100,
@@ -101,7 +102,7 @@ export default ({ publicLockVersion }) =>
       ).toBeLessThan(60)
     })
 
-    if (['v4', 'v6'].indexOf(publicLockVersion) == -1) {
+    if (versionEqualOrAbove(publicLockVersion, 'v7')) {
       it('should have set the right keyManager', async () => {
         expect.assertions(1)
         const keyManager = await web3Service.keyManagerOf(

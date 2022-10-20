@@ -1,8 +1,10 @@
+import { versionEqualOrAbove } from '../../helpers/integration'
 let walletService, web3Service, lockAddress, lock, chainId
+
 export default ({ publicLockVersion }) =>
   () => {
     // Test only on lock v9 and above.
-    if (['v9'].indexOf(publicLockVersion) !== -1) {
+    if (versionEqualOrAbove(publicLockVersion, 'v9')) {
       let expirationDuration
 
       beforeAll(async () => {
