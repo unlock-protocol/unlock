@@ -1,8 +1,9 @@
 let walletService, web3Service, lockAddress, accounts, chainId
+import { versionEqualOrAbove } from '../../helpers/integration'
 
 export default ({ publicLockVersion }) =>
   () => {
-    if (['v10'].indexOf(publicLockVersion) !== -1) {
+    if (versionEqualOrAbove(publicLockVersion, 'v10')) {
       let keyOwner
       let tokenId
       let transactionHash

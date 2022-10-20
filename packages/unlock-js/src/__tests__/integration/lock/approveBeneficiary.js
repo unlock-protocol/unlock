@@ -1,4 +1,4 @@
-import { itIfErc20 } from '../../helpers/integration'
+import { itIfErc20, versionEqualOrAbove } from '../../helpers/integration'
 import { ethers } from 'hardhat'
 
 let web3Service, chainId, walletService, lock, lockAddress, ERC20
@@ -6,7 +6,7 @@ let web3Service, chainId, walletService, lock, lockAddress, ERC20
 export default ({ isERC20, publicLockVersion }) =>
   () => {
     // only v8+
-    if (['v4', 'v6', 'v7'].indexOf(publicLockVersion) === -1) {
+    if (versionEqualOrAbove(publicLockVersion, 'v8')) {
       let spender
       let receiver
       let receiverBalanceBefore

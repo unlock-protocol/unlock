@@ -1,8 +1,9 @@
+import { versionEqualOrAbove } from '../../helpers/integration'
 let walletService, web3Service, lockAddress, chainId
 
 export default ({ publicLockVersion }) =>
   () => {
-    if (['v4', 'v6'].indexOf(publicLockVersion) === -1) {
+    if (versionEqualOrAbove(publicLockVersion, 'v7')) {
       beforeAll(() => {
         ;({ walletService, web3Service, lockAddress, chainId } =
           global.suiteData)

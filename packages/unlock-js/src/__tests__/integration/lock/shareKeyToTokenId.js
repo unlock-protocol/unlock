@@ -1,23 +1,23 @@
+import { versionEqualOrAbove } from '../../helpers/integration'
 let walletService, web3Service, lockAddress, accounts, chainId
 
 export default ({ publicLockVersion }) =>
   () => {
-    if (['v10'].indexOf(publicLockVersion) !== -1) {
+    if (versionEqualOrAbove(publicLockVersion, 'v10')) {
       beforeAll(() => {
         ;({ walletService, web3Service, lockAddress, accounts, chainId } =
           global.suiteData)
       })
       it('should allow a member to share their key with another one', async () => {
         expect.assertions(3)
-        const grantee = accounts[8]
         const tokenId = await walletService.purchaseKey({
           lockAddress,
         })
 
         // Let's now get the duration for that key!
-        const { expiration } = await web3Service.getKeyByLockForOwner(
+        const expiration = await web3Service.getKeyExpirationByTokenId(
           lockAddress,
-          grantee,
+          tokenId,
           chainId
         )
         const now = Math.floor(new Date().getTime() / 1000)
@@ -32,9 +32,9 @@ export default ({ publicLockVersion }) =>
           duration: expiration - now, // share all of the time!
         })
 
-        const newExpiration = await web3Service.getKeyExpirationByLockForOwner(
+        const newExpiration = await web3Service.getKeyExpirationByTokenId(
           lockAddress,
-          recipient,
+          newTokenId,
           chainId
         )
         expect(newExpiration).toBeGreaterThanOrEqual(expiration)

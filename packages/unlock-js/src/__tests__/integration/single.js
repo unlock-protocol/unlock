@@ -8,12 +8,18 @@ jest.setTimeout(3000000)
 const unlockVersion = process.env.UNLOCK_JS_JEST_RUN_UNLOCK_VERSION || 'v11'
 const publicLockVersion =
   process.env.UNLOCK_JS_JEST_RUN_PUBLIC_LOCK_VERSION || 'v11'
-const testName = process.env.UNLOCK_JS_JEST_RUN_TEST_PATH
+const testPath = process.env.UNLOCK_JS_JEST_RUN_TEST_PATH
+
+// parse describe info from file name
+const testName = testPath
+  .split('/')
+  [testPath.split('/').length - 1].replace('.js', '')
 
 console.log('running test for:', {
   unlockVersion,
   publicLockVersion,
   testName,
+  testPath,
 })
 
 // Unlock contract
@@ -99,7 +105,8 @@ describe(`Unlock ${unlockVersion}`, () => {
       describe('lock creation', lockCreation(testSetupArgs))
 
       // lock tests
-      const testDescribe = require(testName)
+      const testDescribe = require(testPath)
+      console.log(testDescribe.default(testSetupArgs))
       describe(testName, testDescribe.default(testSetupArgs))
     })
   })

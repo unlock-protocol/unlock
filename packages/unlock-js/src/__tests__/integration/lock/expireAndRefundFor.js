@@ -1,8 +1,9 @@
+import { versionEqualOrAbove } from '../../helpers/integration'
 let walletService, web3Service, lockAddress, chainId
 
 export default ({ publicLockVersion }) =>
   () => {
-    if (['v4', 'v6'].indexOf(publicLockVersion) === -1) {
+    if (versionEqualOrAbove(publicLockVersion, 'v7')) {
       let keyOwner = '0x2f883401de65129fd1c368fe3cb26d001c4dc583'
       let expiration
       let tokenId

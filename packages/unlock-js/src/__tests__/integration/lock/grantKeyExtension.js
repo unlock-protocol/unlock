@@ -1,8 +1,10 @@
+import { versionEqualOrAbove } from '../../helpers/integration'
+
 let accounts, web3Service, chainId, walletService, lock, lockAddress
 
 export default ({ publicLockVersion }) =>
   () => {
-    if (['v11'].indexOf(publicLockVersion) > -1) {
+    if (versionEqualOrAbove(publicLockVersion, 'v11')) {
       describe('grantKeyExtension', () => {
         let tokenId
         let key

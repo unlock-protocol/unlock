@@ -1,11 +1,11 @@
 let walletService, web3Service, lockAddress, lock, chainId
+import { versionEqualOrAbove } from '../../helpers/integration'
 
 export default ({ publicLockVersion }) =>
   () => {
     // Test only on lock v9 and above.
-    if (['v9'].indexOf(publicLockVersion) !== -1) {
+    if (versionEqualOrAbove(publicLockVersion, 'v9')) {
       let oldMaxNumberOfKeys
-
       beforeAll(async () => {
         ;({ walletService, web3Service, lockAddress, lock, chainId } =
           global.suiteData)
