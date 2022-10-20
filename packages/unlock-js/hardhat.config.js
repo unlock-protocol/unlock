@@ -27,11 +27,9 @@ subtask(TASK_JEST_RUN_TESTS).setAction(
           (ign) => !files.some((f) => ign.endsWith(f))
         )
     }
-    console.log(jestConfig)
-    const projects = [process.cwd()]
 
     const testFailures = await new Promise((resolve, reject) => {
-      return runCLI({ ...jestConfig, watch }, projects)
+      return runCLI({ ...jestConfig, watch }, [process.cwd()])
         .then((result) => resolve(result))
         .catch((error) => reject(error))
     })
