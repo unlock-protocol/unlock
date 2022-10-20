@@ -15,7 +15,7 @@ import { useMutation } from '@tanstack/react-query'
 import { Container } from '../../Container'
 import { RiPagesLine as PageIcon } from 'react-icons/ri'
 import { FaSpinner as SpinnerIcon } from 'react-icons/fa'
-import { FilterBar } from './elements/FilterBar'
+import { ExpirationStatus, FilterBar } from './elements/FilterBar'
 import { buildCSV } from '~/utils/csv'
 import FileSaver from 'file-saver'
 import { FaFileCsv as CsvIcon } from 'react-icons/fa'
@@ -223,7 +223,7 @@ export const ManageLockPage = () => {
   const [filters, setFilters] = useState({
     query: '',
     filterKey: 'owner',
-    expiration: 'all',
+    expiration: ExpirationStatus.ALL,
   })
   const [page, setPage] = useState(1)
 

@@ -3232,6 +3232,32 @@
     "sig": "event LockConfig(uint256,uint256,uint256)"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "symbol",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "baseTokenURI",
+        "type": "string"
+      }
+    ],
+    "name": "LockMetadata",
+    "type": "event",
+    "sig": "event LockMetadata(string,string,string)"
+  },
+  {
     "inputs": [],
     "name": "onKeyExtendHook",
     "outputs": [
@@ -3244,6 +3270,20 @@
     "stateMutability": "view",
     "type": "function",
     "sig": "function onKeyExtendHook() view returns (address)"
+  },
+  {
+    "inputs": [],
+    "name": "onKeyGrantHook",
+    "outputs": [
+      {
+        "internalType": "contract ILockKeyGrantHook",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "sig": "function onKeyGrantHook() view returns (address)"
   },
   {
     "inputs": [
@@ -3276,13 +3316,42 @@
         "internalType": "address",
         "name": "_onKeyExtendHook",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_onKeyGrantHook",
+        "type": "address"
       }
     ],
     "name": "setEventHooks",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function",
-    "sig": "function setEventHooks(address,address,address,address,address,address)"
+    "sig": "function setEventHooks(address,address,address,address,address,address,address)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_lockName",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_lockSymbol",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_baseTokenURI",
+        "type": "string"
+      }
+    ],
+    "name": "setLockMetadata",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function setLockMetadata(string,string,string)"
   },
   {
     "inputs": [
@@ -3307,5 +3376,29 @@
     "stateMutability": "nonpayable",
     "type": "function",
     "sig": "function updateLockConfig(uint256,uint256,uint256)"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address payable",
+        "name": "_recipient",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "sig": "function withdraw(address,address,uint256)"
   }
 ]

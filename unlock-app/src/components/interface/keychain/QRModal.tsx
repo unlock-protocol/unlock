@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
 import { Button, Input, Icon, Modal } from '@unlock-protocol/ui'
 import { FaEnvelope } from 'react-icons/fa'
+import { KeyProps } from './Key'
 
 interface Props {
   isOpen: boolean
@@ -9,7 +10,7 @@ interface Props {
   setIsOpen: (open: boolean) => void
   sendEmail: (recipient: string, qrImage: string) => void
   signature: any
-  lock: any
+  lock: KeyProps['lock']
 }
 
 export const QRModal = ({

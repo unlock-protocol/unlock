@@ -1,30 +1,45 @@
 import React, { useContext } from 'react'
-import { ApolloProvider, useQuery } from '@apollo/react-hooks'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
-import keyHolderQuery from '../../../queries/keyHolder'
 import 'cross-fetch/polyfill'
 import { DefaultError } from '../../creator/FatalError'
-import { OwnedKey } from './KeychainTypes'
 import Key from './Key'
 import LoginPrompt from '../LoginPrompt'
 import networks from '@unlock-protocol/networks'
-import ApolloClient from 'apollo-boost'
-import { NetworkConfig } from '@unlock-protocol/types'
-
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { useQuery } from '@tanstack/react-query'
+import { ImageBar } from '../locks/Manage/elements/ImageBar'
+import { useConfig } from '~/utils/withConfig'
 interface KeysByNetworkProps {
   account: string
-  network: NetworkConfig
+  network: number
 }
+
 export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
-  const { loading, error, data } = useQuery(keyHolderQuery(), {
-    variables: { address: account },
-  })
+  const { networks } = useConfig()
+  const networkName = networks[network]?.name
+  const getKeys = async () => {
+    const service = new SubgraphService()
 
-  const { name, id } = network
+    return await service.keys(
+      {
+        first: 1000,
+        where: {
+          owner: account,
+        },
+      },
+      {
+        networks: [`${network}`],
+      }
+    )
+  }
 
-  const [keyHolders] = data?.keyHolders ?? []
-  const { keys } = keyHolders ?? []
-  const hasKeys = keys?.length == 0
+  const {
+    isLoading: loading,
+    data: keys,
+    isError,
+  } = useQuery(['getKeys', network], async () => getKeys())
+
+  const noKeys = keys?.length == 0
 
   if (loading) {
     return (
@@ -44,27 +59,30 @@ export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
       </div>
     )
   }
-  if (hasKeys || loading) return null
-  if (error) {
+  if (noKeys || loading) return null
+  if (isError) {
     return (
-      <DefaultError
-        title="Could not retrieve keys"
-        illustration="/images/illustrations/error.svg"
-        critical
-      >
-        {error.message}
-      </DefaultError>
+      <ImageBar
+        description="Could not retrieve keys"
+        src="/images/illustrations/img-error.svg"
+      />
     )
   }
-
   return (
     <div className="flex flex-col mb-[2rem]">
       <div className="flex flex-col">
-        <h2 className="text-lg font-bold text-brand-ui-primary">{name}</h2>
+        <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
+          {networkName}
+        </h2>
       </div>
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {keys.map((key: OwnedKey) => (
-          <Key key={key.id} ownedKey={key} account={account} network={id} />
+        {keys?.map((key: any) => (
+          <Key
+            key={key.id}
+            ownedKey={key as any}
+            account={account}
+            network={network}
+          />
         ))}
       </div>
     </div>
@@ -82,20 +100,14 @@ export const KeyDetails = () => {
     <div>
       <div>
         {Object.entries(networks).map(([networkId, networkObj]) => {
-          const subgraphURI = networkObj.subgraph.endpoint
-          const apolloClientByNetwork = new ApolloClient({
-            uri: subgraphURI!,
-          }) as any
-
+          if (networkObj.id === 31337) return null // ignore localhost
           return (
             <div key={networkId}>
-              <ApolloProvider client={apolloClientByNetwork}>
-                <KeysByNetwork
-                  key={networkId}
-                  network={networkObj}
-                  account={account}
-                />
-              </ApolloProvider>
+              <KeysByNetwork
+                key={networkId}
+                network={networkObj.id}
+                account={account}
+              />
             </div>
           )
         })}
