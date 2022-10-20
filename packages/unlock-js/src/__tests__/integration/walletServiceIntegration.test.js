@@ -123,7 +123,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       const testSetupArgs = { publicLockVersion, isERC20: lockParams.isERC20 }
 
       // make sure everything is ok
-      describe('lock creation', lockCreation())
+      describe('lock creation', lockCreation(testSetupArgs))
 
       // lock tests
       describe('approveBeneficiary', approveBeneficiary(testSetupArgs))
