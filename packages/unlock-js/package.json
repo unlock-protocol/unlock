@@ -11,6 +11,7 @@
   },
   "scripts": {
     "test": "yarn clean && yarn build:abis && yarn build:lib && hardhat test:jest",
+    "test:single": "hardhat test:single",
     "check": "tsc --noEmit",
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build:lib": "tsup src/index.ts --dts --format esm,cjs ",
