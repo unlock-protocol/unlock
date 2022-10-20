@@ -20,7 +20,14 @@ subtask(TASK_JEST_RUN_TESTS).setAction(
       jestConfig.testMatch = files.map((it) =>
         it.endsWith('.js') || it.endsWith('*') ? `**/${it}**` : `${it}\\.js$`
       )
+
+      // make sure path are not ignored
+      jestConfig.testPathIgnorePatterns =
+        jestConfig.testPathIgnorePatterns.filter(
+          (ign) => !files.some((f) => ign.endsWith(f))
+        )
     }
+    console.log(jestConfig)
     const projects = [process.cwd()]
 
     const testFailures = await new Promise((resolve, reject) => {
