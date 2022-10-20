@@ -1,5 +1,7 @@
-import { ethers, upgrades } from 'hardhat'
+import { ethers } from 'hardhat'
 import * as abis from '@unlock-protocol/contracts'
+import fs from 'fs-extra'
+import path from 'path'
 
 /**
  * Deploys the unlock contract and initializes it.
@@ -9,41 +11,32 @@ export default async (version, transactionOptions = {}, callback) => {
   const [signer] = await ethers.getSigners()
   const versionNumber = parseInt(version.replace('v', ''))
 
-  let unlockContract
-
-  // starting with v10, openzeppelin requires to use upgradeable pattern to initialize the contract
-  if (versionNumber >= 10) {
-    const unlockName = `UnlockV${versionNumber}`
-
-    // get contract
-    const Unlock = await ethers.getContractFactory(
-      `src/__tests__/contracts/${unlockName}.sol:Unlock`
-    )
-
-    // deploy using proxy
-    unlockContract = await upgrades.deployProxy(Unlock, [signer.address])
-    if (callback) {
-      callback(null, unlockContract.deployTransaction.hash)
-    }
-  } else {
-    // deploy the contract from abis
-    const { abi, bytecode } = abis[`Unlock${version.toUpperCase()}`]
-    const Unlock = await ethers.getContractFactory(abi, bytecode, signer)
-
-    unlockContract = await Unlock.deploy()
-    if (callback) {
-      callback(null, unlockContract.deployTransaction.hash)
-    }
-    await unlockContract.deployed()
-
-    // run the initialization
-    const address = await signer.getAddress()
-    const writableUnlockContract = unlockContract.connect(signer)
-    const transaction = await writableUnlockContract.initialize(address)
-    if (callback) {
-      callback(null, transaction.hash)
-    }
-    await transaction.wait()
+  // deploy implementation
+  const { abi, bytecode } = abis[`UnlockV${versionNumber}`]
+  const Factory = await ethers.getContractFactory(abi, bytecode)
+  const impl = await Factory.deploy()
+  if (callback) {
+    callback(null, impl.deployTransaction.hash)
   }
-  return unlockContract.address
+  await impl.deployTransaction.wait()
+
+  // encode initializer data
+  const fragment = impl.interface.getFunction('initialize')
+  const initializerArguments = [signer.address]
+  const data = impl.interface.encodeFunctionData(fragment, initializerArguments)
+
+  // deploy proxy
+  const { bytecode: proxyBytecode, abi: proxyAbi } = await fs.readJSON(
+    path.join(__dirname, 'abis', 'ERC1967Proxy.json')
+  )
+  const ERC1967Proxy = await ethers.getContractFactory(proxyAbi, proxyBytecode)
+  const proxy = await ERC1967Proxy.deploy(impl.address, data)
+
+  if (callback) {
+    callback(null, proxy.deployTransaction.hash)
+  }
+  // wait for proxy deployment
+  await proxy.deployTransaction.wait()
+
+  return proxy.address
 }
