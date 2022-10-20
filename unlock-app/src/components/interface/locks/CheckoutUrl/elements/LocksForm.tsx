@@ -89,8 +89,14 @@ export const LocksForm = ({
   )
 
   const locksOptions: any = locksByNetwork?.map(({ address, name }: Lock) => ({
-    label: `${name} - ${addressMinify(address)}`,
+    prepend: (
+      <div className="flex items-center justify-center w-8 h-8 bg-gray-100">
+        I
+      </div>
+    ),
+    label: `${name}`,
     value: address,
+    append: addressMinify(address),
   }))
 
   const hasMinValue = network && lockAddress && lockAddress?.length > 0
