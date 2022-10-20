@@ -1,6 +1,11 @@
 import locks from '../helpers/fixtures/locks'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
-import { chainId, setupTest, setupLock } from '../helpers/integration'
+import {
+  chainId,
+  setupTest,
+  setupLock,
+  versionEqualOrAbove,
+} from '../helpers/integration'
 
 // Increasing timeouts
 jest.setTimeout(3000000)
@@ -46,6 +51,7 @@ describe(`Unlock ${unlockVersion}`, () => {
       walletService,
       accounts,
       unlockVersion,
+      publicLockVersion,
     }
   })
 
@@ -60,14 +66,11 @@ describe(`Unlock ${unlockVersion}`, () => {
     expect(abiVersion.version).toEqual(unlockVersion)
   })
 
-  if (['v4'].indexOf(unlockVersion) === -1) {
-    describe(
-      `configuration using PublicLock ${publicLockVersion}`,
-      unlockConfig({ publicLockVersion })
-    )
-  }
+  describe(`using PublicLock ${publicLockVersion}`, () => {
+    if (versionEqualOrAbove(unlockVersion, 'v4')) {
+      describe(`configuration`, unlockConfig({ publicLockVersion }))
+    }
 
-  describe(`using Lock ${publicLockVersion}`, () => {
     describe.each(
       locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
     )('lock %i: %s', (lockIndex, lockName, lockParams) => {
@@ -106,7 +109,6 @@ describe(`Unlock ${unlockVersion}`, () => {
 
       // lock tests
       const testDescribe = require(testPath)
-      console.log(testDescribe.default(testSetupArgs))
       describe(testName, testDescribe.default(testSetupArgs))
     })
   })

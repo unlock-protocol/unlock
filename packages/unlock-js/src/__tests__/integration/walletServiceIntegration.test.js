@@ -2,7 +2,12 @@ import locks from '../helpers/fixtures/locks'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
 import UnlockVersions from '../../Unlock'
 
-import { chainId, setupTest, setupLock } from '../helpers/integration'
+import {
+  chainId,
+  setupTest,
+  setupLock,
+  versionEqualOrAbove,
+} from '../helpers/integration'
 
 global.suiteData = {
   chainId,
@@ -79,16 +84,24 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
     expect(abiVersion.version).toEqual(unlockVersion)
   })
 
-  if (['v4'].indexOf(unlockVersion) === -1) {
-    describe.each(PublicLockVersions)(
-      'configuration using PublicLock %s',
-      (publicLockVersion) => {
-        describe('config steps', unlockConfig({ publicLockVersion }))
-      }
-    )
-  }
-
+  // loop through PublicLock versions
   describe.each(PublicLockVersions)('using Lock %s', (publicLockVersion) => {
+    beforeAll(async () => {
+      global.suiteData = {
+        ...global.suiteData,
+        publicLockVersion,
+      }
+    })
+    if (versionEqualOrAbove(unlockVersion, 'v4')) {
+      describe.each(PublicLockVersions)(
+        'configuration using PublicLock %s',
+        () => {
+          describe('config steps', unlockConfig())
+        }
+      )
+    }
+
+    // loop through locks
     describe.each(
       locks[publicLockVersion].map((lock, index) => [index, lock.name, lock])
     )('lock %i: %s', (lockIndex, lockName, lockParams) => {

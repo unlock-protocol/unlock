@@ -56,7 +56,7 @@ export const setupLock = async ({
   let lockAddress
   let lockCreationHash
 
-  if (publicLockVersion !== 'v4') {
+  if (versionEqualOrAbove(publicLockVersion, 'v4')) {
     // here we need to setup unlock template properly
     const unlock = await walletService.getUnlockContract()
 
