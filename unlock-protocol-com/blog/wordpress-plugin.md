@@ -19,7 +19,7 @@ Today, we're introducing a [WordPress plugin for Unlock](https://wordpress.org/p
 
 # Demo
 
-First thing first: you can try it today on our [demo wordpress.org website](https://wordpress-demo.unlock-protocol.com/). This blog only has a single story, and some of the content on this page has been put behind a [lock](https://etherscan.io/address/0xb0114bbdce17e0af91b2be32916a1e236cf6034f): you will see a different version of it based on whether you are already a member or if you're not one.
+First thing first: you can try it today on our [demo wordpress.org website](https://wordpress-demo.unlock-protocol.com/). This blog only has a single story, and some of the content on this page has been put behind a [lock](https://etherscan.io/address/0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894): you will see a different version of it based on whether you are already a member or if you're not one.
 
 ![become member](/images/blog/wordpress-plugin/become-member-wordpress.png)
 _If you're not a member you're invited to become one by clicking on a button_
