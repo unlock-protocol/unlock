@@ -69,11 +69,11 @@ export const Select = <T extends unknown>({
         )}
         <Listbox.Button className={inputClass}>
           <div className="flex items-center justify-between">
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               {selected?.prepend && <div>{selected.prepend}</div>}
               <span>{selected?.label || 'Choose option'}</span>
             </div>
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               {selected?.append && <div>{selected.append}</div>}
               <ArrowDownIcon size={20} />
             </div>
