@@ -103,7 +103,9 @@ export const Select = <T extends unknown>({
                     <div className={optionClass}>
                       <div
                         className={
-                          hasAnyPrepend ? 'grid grid-cols-[auto_1fr] gap-2' : ''
+                          hasAnyPrepend
+                            ? 'grid items-center grid-cols-[auto_1fr] gap-2'
+                            : ''
                         }
                       >
                         {prepend && <div>{prepend}</div>}
@@ -113,7 +115,9 @@ export const Select = <T extends unknown>({
                       </div>
                       <div
                         className={
-                          hasAnyAppend ? 'grid grid-cols-[1fr_14px] gap-2' : ''
+                          hasAnyAppend
+                            ? 'grid items-center grid-cols-[1fr_14px] gap-2'
+                            : ''
                         }
                       >
                         {append && <div>{append}</div>}
