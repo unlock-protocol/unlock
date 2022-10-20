@@ -25,7 +25,7 @@ interface Key {
     address: string
     name: string
   }
-  tokenId?: string
+  id?: string
   owner: string
   keyId?: string
 }
@@ -102,7 +102,7 @@ export const notifyNewKeyToWedlocks = async (
 ) => {
   const lockAddress = key.lock.address
   const ownerAddress = key.owner
-  const tokenId = key?.tokenId
+  const tokenId = key?.id
 
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
