@@ -4,7 +4,6 @@ import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { useState } from 'react'
-import { PaywallDescriptions } from '../description'
 
 interface DynamicFormProps {
   name: string
@@ -144,14 +143,12 @@ export const DynamicForm = ({
           }}
         >
           {Object.entries(properties).map(([fieldName, props], index) => {
-            const type = (props as any)?.type
+            const { type, description } = (props as any) ?? {}
 
             const Component = ComponentByTypeMap?.[type] ?? undefined
             const inputType: string = TypeMap?.[type] || type
             const fieldRequired = required.includes(fieldName)
             const label = fieldRequired ? `* ${fieldName}` : fieldName
-
-            const description = (PaywallDescriptions as any)?.[fieldName] ?? ''
 
             if (!component) return null
             return (
