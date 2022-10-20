@@ -129,7 +129,7 @@ export const DynamicForm = ({
   }
 
   return (
-    <div className="flex flex-col gap-3 py-6">
+    <div className="flex flex-col gap-3 pb-6">
       <FormProvider {...methods}>
         {title && (
           <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
