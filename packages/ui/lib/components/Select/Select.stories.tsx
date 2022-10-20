@@ -36,6 +36,7 @@ SelectComponent.args = {
     {
       label: 'Test 3',
       value: 3,
+      disabled: true,
     },
   ],
 }

@@ -10,6 +10,7 @@ export interface Option {
   value: string | number
   append?: React.ReactNode // element to add at the end of the select
   prepend?: React.ReactNode // element to add before the label
+  disabled?: boolean
 }
 
 interface SelectProps<T> {
@@ -85,18 +86,20 @@ export const Select = <T extends unknown>({
 
             const hasAnyAppend = options?.some((option) => option.append)
             const hasAnyPrepend = options?.some((option) => option.prepend)
+            const disabled = option?.disabled ?? false
 
             return (
               <Listbox.Option
                 key={option.value}
                 value={option.value}
-                className="cursor-pointer"
+                className={disabled ? '' : 'cursor-pointer'}
+                disabled={disabled}
               >
                 {({ selected }) => {
                   const optionClass = twMerge(
-                    `${
-                      selected ? 'bg-gray-100' : ''
-                    } flex items-center justify-between p-3 hover:bg-gray-100`,
+                    `${selected ? 'bg-gray-100' : ''} ${
+                      disabled ? 'opacity-40' : 'hover:bg-gray-100'
+                    } flex items-center justify-between p-3`,
                     inputSizeStyle
                   )
                   return (
