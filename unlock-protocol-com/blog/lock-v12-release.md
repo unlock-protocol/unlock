@@ -25,6 +25,6 @@ You can see a full list of related [issues and pull requests](https://github.com
 
 The version 12 template has been published and will soon be available as the default version for all new locks. Meanwhile, you can upgrade an existing version 11 lock by using the `upgradeLock` function from the Unlock factory contract. (To determine the current version of your lock, please check the `publicLockVersion` of your lock in your block explorer.)
 
-As always, if you have any questions, please reach out for us on Discord and we’ll be happy to help you with the upgrade!
+As always, if you have any questions, please reach out to us on Discord and we’ll be happy to help you with the upgrade!
 
 **Implementation note:** Version upgrades are only permitted to bump a single digit at a time. For example, if you have a v10 lock, you will have to upgrade first to v11, and then to v12.
