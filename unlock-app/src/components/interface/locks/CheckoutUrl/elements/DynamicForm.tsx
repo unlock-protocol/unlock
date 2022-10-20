@@ -4,21 +4,8 @@ import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { useState } from 'react'
+import { PaywallDescriptions } from '../description'
 
-const DESCRIPTIONS: Record<string, string> = {
-  title: 'Title for your checkout. This will show up on the head.',
-  icon: 'the URL for a icon to display in the top left corner of the modal.',
-  persistentCheckout:
-    'true if the modal cannot be closed, defaults to false when embedded. When closed, the user will be redirected to the redirect query param when using a purchase address ',
-  referrer:
-    'The address which will receive UDT tokens (if the transaction is applicable)',
-  messageToSign:
-    'If supplied, the user is prompted to sign this message using their wallet. If using a checkout URL, a signature query param is then appended to the redirectUri (see above). If using the embedded paywall, the unlockProtocol.authenticated includes the signature attribute.',
-  pessimistic:
-    ' By default, to reduce friction, we do not require users to wait for the transaction to be mined before offering them to be redirected. By setting this to true, users will need to wait for the transaction to have been mined in order to proceed to the next step.',
-  hideSoldOut:
-    'When set to true, sold our locks are not shown to users when they load the checkout modal.',
-}
 interface DynamicFormProps {
   name: string
   schema: z.Schema
@@ -40,7 +27,6 @@ interface FieldProps {
   label?: string
   type: string
   name: string
-  description?: string
   props: Record<string, any>
 }
 
@@ -114,12 +100,15 @@ const TypeMap: Record<string, string> = {
   integer: 'number',
 }
 
+const camelCaseToText = (text: string) => {
+  return text.replace(/([A-Z](?=[a-z]+)|[A-Z]+(?![a-z]))/g, ' $1').trim()
+}
+
 export const DynamicForm = ({
   name,
   schema,
   onChange,
   submitLabel = 'Next',
-  description = {},
   onSubmit: onSubmitCb,
   defaultValues,
   showSubmit = false,
@@ -162,16 +151,18 @@ export const DynamicForm = ({
             const fieldRequired = required.includes(fieldName)
             const label = fieldRequired ? `* ${fieldName}` : fieldName
 
+            const description = (PaywallDescriptions as any)?.[fieldName] ?? ''
+
             if (!component) return null
             return (
               <div className="flex flex-col gap-2" key={index}>
                 <Component
                   props={props}
-                  label={label}
+                  label={camelCaseToText(label)}
                   type={inputType}
                   name={fieldName}
                   required={fieldRequired}
-                  description={description?.[fieldName]}
+                  description={description}
                   size="small"
                 />
               </div>
