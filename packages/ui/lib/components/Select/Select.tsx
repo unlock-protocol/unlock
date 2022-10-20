@@ -8,6 +8,8 @@ import { Size, SizeStyleProp } from '~/types'
 export interface Option {
   label: string
   value: string | number
+  append?: React.ReactNode // element to add at the end of the select
+  prepend?: React.ReactNode // element to add before the label
 }
 
 interface SelectProps<T> {
@@ -67,12 +69,23 @@ export const Select = <T extends unknown>({
         )}
         <Listbox.Button className={inputClass}>
           <div className="flex items-center justify-between">
-            <span>{selected?.label || 'Choose option'}</span>
-            <ArrowDownIcon size={20} />
+            <div className="flex gap-2">
+              {selected?.prepend && <div>{selected.prepend}</div>}
+              <span>{selected?.label || 'Choose option'}</span>
+            </div>
+            <div className="flex gap-2">
+              {selected?.append && <div>{selected.append}</div>}
+              <ArrowDownIcon size={20} />
+            </div>
           </div>
         </Listbox.Button>
-        <Listbox.Options className="absolute z-10 w-full mt-1 overflow-hidden bg-white border border-gray-400 rounded-xl">
+        <Listbox.Options className="absolute z-10 w-full mt-1 overflow-scroll bg-white border border-gray-400 rounded-xl max-h-[300px] outline-none">
           {options?.map((option: Option) => {
+            const { append = null, prepend = null } = option ?? {}
+
+            const hasAnyAppend = options?.some((option) => option.append)
+            const hasAnyPrepend = options?.some((option) => option.prepend)
+
             return (
               <Listbox.Option
                 key={option.value}
@@ -88,10 +101,24 @@ export const Select = <T extends unknown>({
                   )
                   return (
                     <div className={optionClass}>
-                      <span className={selected ? 'font-bold' : ''}>
-                        {option.label}
-                      </span>
-                      {selected && <CheckIcon size={20} />}
+                      <div
+                        className={
+                          hasAnyPrepend ? 'grid grid-cols-[auto_1fr] gap-2' : ''
+                        }
+                      >
+                        {prepend && <div>{prepend}</div>}
+                        <span className={selected ? 'font-bold' : ''}>
+                          {option.label}
+                        </span>
+                      </div>
+                      <div
+                        className={
+                          hasAnyAppend ? 'grid grid-cols-[1fr_14px] gap-2' : ''
+                        }
+                      >
+                        {append && <div>{append}</div>}
+                        {selected && <CheckIcon size={20} />}
+                      </div>
                     </div>
                   )
                 }}
