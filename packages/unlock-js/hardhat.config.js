@@ -10,7 +10,7 @@ const process = require('process')
 const jestConfig = require('./jest.config')
 
 const TASK_JEST_SINGLE = 'test:single'
-const TASK_JEST_SINGLE_INTEGRATION = 'test:single:integration'
+const TASK_JEST_SINGLE_INTEGRATION = 'test:integration'
 const TASK_JEST = 'test:jest'
 const TASK_JEST_RUN_TESTS = 'jest:run'
 
@@ -57,13 +57,25 @@ task(TASK_JEST_SINGLE, 'Runs jest integration tests separately')
   })
 
 task(TASK_JEST_SINGLE_INTEGRATION, 'Runs jest integration tests separately')
-  .addVariadicPositionalParam('files', 'the path of the file to test')
+  .addPositionalParam('file', 'the path of the file to test')
   .addOptionalParam('lockVersion', 'the version of the PublicLock contract')
   .addOptionalParam('unlockVersion', 'the version of the Unlock contract')
   .setAction(
-    async ({ files, lockVersion, unlockVersion }, { run, network }) => {
-      console.log(files, lockVersion, unlockVersion)
-      const testResults = await run(TASK_JEST_RUN_TESTS, { projects: files })
+    async (
+      { file, lockVersion = 11, unlockVersion = 11 },
+      { run, network }
+    ) => {
+      // pass args to jest test runner using env vars
+      process.env.UNLOCK_JS_JEST_RUN_UNLOCK_VERSION = `v${unlockVersion}`
+      process.env.UNLOCK_JS_JEST_RUN_PUBLIC_LOCK_VERSION = `v${lockVersion}`
+      process.env.UNLOCK_JS_JEST_RUN_TEST_PATH = file.replace(
+        'src/__tests__/integration',
+        '.'
+      )
+
+      const testResults = await run(TASK_JEST_RUN_TESTS, {
+        files: ['src/__tests__/integration/single.js'], // single test runner
+      })
       showTestResults(network, testResults)
     }
   )

@@ -4,52 +4,53 @@ import { ZERO } from '../../../constants'
 
 let walletService
 
-export default (publicLockVersion) => {
-  let publicLockTemplateAddress
-  beforeAll(() => {
-    ;({ walletService } = global.suiteData)
-  })
-  it('should be able to deploy the lock contract template', async () => {
-    expect.assertions(2)
-    publicLockTemplateAddress = await deployTemplate(
-      publicLockVersion,
-      {} /** transactionOptions */,
+export default ({ publicLockVersion }) =>
+  () => {
+    let publicLockTemplateAddress
+    beforeAll(() => {
+      ;({ walletService } = global.suiteData)
+    })
+    it('should be able to deploy the lock contract template', async () => {
+      expect.assertions(2)
+      publicLockTemplateAddress = await deployTemplate(
+        publicLockVersion,
+        {} /** transactionOptions */,
 
-      (error, hash) => {
-        if (error) {
-          throw error
+        (error, hash) => {
+          if (error) {
+            throw error
+          }
+          expect(hash).toMatch(/^0x[0-9a-fA-F]{64}$/)
         }
-        expect(hash).toMatch(/^0x[0-9a-fA-F]{64}$/)
-      }
-    )
-    expect(publicLockTemplateAddress).toMatch(/^0x[0-9a-fA-F]{40}$/)
-  })
+      )
+      expect(publicLockTemplateAddress).toMatch(/^0x[0-9a-fA-F]{40}$/)
+    })
 
-  it('should configure the unlock contract with the template, the token symbol and base URL', async () => {
-    expect.assertions(2)
-    let transactionHash
-    const { unlockAddress } = walletService
-    const receipt = await configureUnlock(
-      unlockAddress,
-      {
-        publicLockTemplateAddress,
-        globalTokenSymbol: 'TESTK',
-        globalBaseTokenURI: 'https://locksmith.unlock-protocol.com/api/key/',
-        unlockDiscountToken: ZERO,
-        wrappedEth: ZERO,
-        estimatedGasForPurchase: 0,
-        chainId,
-      },
-      {} /** transactionOptions */,
+    it('should configure the unlock contract with the template, the token symbol and base URL', async () => {
+      expect.assertions(2)
+      let transactionHash
+      const { unlockAddress } = walletService
+      const receipt = await configureUnlock(
+        unlockAddress,
+        {
+          publicLockTemplateAddress,
+          globalTokenSymbol: 'TESTK',
+          globalBaseTokenURI: 'https://locksmith.unlock-protocol.com/api/key/',
+          unlockDiscountToken: ZERO,
+          wrappedEth: ZERO,
+          estimatedGasForPurchase: 0,
+          chainId,
+        },
+        {} /** transactionOptions */,
 
-      (error, hash) => {
-        if (error) {
-          throw error
+        (error, hash) => {
+          if (error) {
+            throw error
+          }
+          transactionHash = hash
         }
-        transactionHash = hash
-      }
-    )
-    expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
-    expect(receipt.transactionHash).toEqual(transactionHash)
-  })
-}
+      )
+      expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
+      expect(receipt.transactionHash).toEqual(transactionHash)
+    })
+  }
