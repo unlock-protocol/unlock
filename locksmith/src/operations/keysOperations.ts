@@ -67,7 +67,7 @@ export const buildKeysWithMetadata = (
       }
 
       const merged = {
-        token: key?.id,
+        token: key?.tokenId,
         lockName: lock?.name,
         expiration: key?.expiration,
         keyholderAddress: key?.owner,

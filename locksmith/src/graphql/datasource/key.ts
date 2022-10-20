@@ -26,6 +26,7 @@ export class Key extends GraphQLDataSource {
             price
             expirationDuration
           }
+          tokenId
           expiration
           owner
         }
@@ -55,6 +56,7 @@ export class Key extends GraphQLDataSource {
           price
           expirationDuration
         }
+        tokenId
         expiration
         owner
       }
