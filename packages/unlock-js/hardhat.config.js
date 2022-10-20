@@ -71,20 +71,6 @@ task(TASK_JEST_SINGLE_INTEGRATION, 'Runs jest integration tests separately')
 task(TASK_JEST, 'Runs jest tests')
   // .setOptionalFlag('watch', 'Watch if test changes')
   .setAction(async ({ watch }, { run, network }) => {
-    // copy Unlock contracts to be used by OZ upgrades
-    ;['UnlockV10', 'UnlockV11'].forEach(async (unlockName) => {
-      // copy contract source over
-      await fs.copy(
-        require.resolve(
-          `@unlock-protocol/contracts/dist/Unlock/${unlockName}.sol`
-        ),
-        path.resolve(`./src/__tests__/contracts/${unlockName}.sol`)
-      )
-    })
-
-    // pre-compile contracts
-    await run('compile')
-
     const testResults = await run(TASK_JEST_RUN_TESTS, { watch })
     showTestResults(network, testResults)
   })
