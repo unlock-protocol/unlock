@@ -113,3 +113,15 @@ export const setupLock = async ({
     lockCreationHash,
   }
 }
+
+export const versionEqualOrAbove = (publicLockVersion, targetVersion) => {
+  const versionNumber = parseInt(publicLockVersion.replace('v', ''))
+  const targetVersionNumber = parseInt(targetVersion.replace('v', ''))
+  return versionNumber >= targetVersionNumber
+}
+
+export const versionEqualOrBelow = (publicLockVersion, targetVersion) => {
+  const versionNumber = parseInt(publicLockVersion.replace('v', ''))
+  const targetVersionNumber = parseInt(targetVersion.replace('v', ''))
+  return versionNumber <= targetVersionNumber
+}
