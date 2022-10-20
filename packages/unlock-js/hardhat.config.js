@@ -38,7 +38,7 @@ subtask(TASK_JEST_RUN_TESTS).setAction(
   }
 )
 
-const showTestResults = async (network, testResults) => {
+const showTestFailures = async (network) => {
   if (network.name === HARDHAT_NETWORK_NAME) {
     const stackTracesFailures = await network.provider.send(
       'hardhat_getStackTraceFailuresCount'
@@ -50,15 +50,15 @@ const showTestResults = async (network, testResults) => {
       )
     }
   }
-  const exit = testResults.success ? 0 : 1
-  process.exit(exit)
 }
 
 task(TASK_JEST_SINGLE, 'Runs jest integration tests separately')
   .addParam('file', 'the path of the file to test')
   .setAction(async ({ file }, { run, network }) => {
     const testResults = await run(TASK_JEST_RUN_TESTS, { files: [file] })
-    showTestResults(network, testResults)
+    showTestFailures(network)
+    const exit = testResults.success ? 0 : 1
+    process.exit(exit)
   })
 
 task(TASK_JEST_SINGLE_INTEGRATION, 'Runs jest integration tests separately')
@@ -81,7 +81,9 @@ task(TASK_JEST_SINGLE_INTEGRATION, 'Runs jest integration tests separately')
       const testResults = await run(TASK_JEST_RUN_TESTS, {
         files: ['src/__tests__/integration/single.js'], // single test runner
       })
-      showTestResults(network, testResults)
+      showTestFailures(network)
+      const exit = testResults.success ? 0 : 1
+      process.exit(exit)
     }
   )
 
@@ -89,7 +91,9 @@ task(TASK_JEST, 'Runs jest tests')
   // .setOptionalFlag('watch', 'Watch if test changes')
   .setAction(async ({ watch }, { run, network }) => {
     const testResults = await run(TASK_JEST_RUN_TESTS, { watch })
-    showTestResults(network, testResults)
+    showTestFailures(network)
+    const exit = testResults.success ? 0 : 1
+    process.exit(exit)
   })
 
 module.exports = {
