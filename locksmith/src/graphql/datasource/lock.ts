@@ -1,11 +1,11 @@
-import { gql } from 'apollo-server-express'
+import gql from 'graphql-tag'
 import { GraphQLDataSource } from 'apollo-datasource-graphql'
 import networks from '@unlock-protocol/networks'
 
 export class Lock extends GraphQLDataSource {
   constructor(public network: number) {
     super()
-    this.baseURL = networks[network].subgraph.endpoint
+    this.baseURL = networks[network].subgraph.endpointV2
   }
 
   async getLocks(args: any) {
@@ -14,7 +14,7 @@ export class Lock extends GraphQLDataSource {
         locks(
           first: $first
           skip: $skip
-          orderBy: creationBlock
+          orderBy: createdAtBlock
           orderDirection: desc
         ) {
           id
@@ -22,25 +22,15 @@ export class Lock extends GraphQLDataSource {
           name
           tokenAddress
           price
-          creationBlock
-          totalSupply
-          maxNumberOfKeys
-          LockManagers {
-            id
-            address
-          }
-          owner
+          createdAtBlock
+          lockManagers
           version
           keys {
             id
-            keyId
             expiration
-            owner {
-              id
-              address
-            }
+            owner
             tokenURI
-            createdAt
+            createdAtBlock
           }
         }
       }
@@ -65,25 +55,15 @@ export class Lock extends GraphQLDataSource {
           name
           tokenAddress
           price
-          creationBlock
-          totalSupply
-          maxNumberOfKeys
-          LockManagers {
-            id
-            address
-          }
-          owner
+          createdAtBlock
+          lockManagers
           version
           keys {
             id
-            keyId
             expiration
-            owner {
-              id
-              address
-            }
+            owner
             tokenURI
-            createdAt
+            createdAtBlock
           }
         }
       }

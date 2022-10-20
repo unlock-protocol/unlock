@@ -34,9 +34,7 @@ describe('Wedlocks operations', () => {
           address: lockAddress,
           name: lockName,
         },
-        owner: {
-          address: ownerAddress,
-        },
+        owner: ownerAddress,
       })
       expect(fetch).toHaveBeenCalledWith('http://localhost:1337', {
         body: '{"template":"keyMined0x95de5F777A3e283bFf0c47374998E10D8A2183C7","failoverTemplate":"keyMined","recipient":"julien@unlock-protocol.com","params":{"lockName":"Alice in Wonderland","keychainUrl":"https://app.unlock-protocol.com/keychain","keyId":"","network":""},"attachments":[]}',
@@ -57,9 +55,7 @@ describe('Wedlocks operations', () => {
           address: lockAddress,
           name: lockName,
         },
-        owner: {
-          address: ownerAddress,
-        },
+        owner: ownerAddress,
       })
       expect(fetch).not.toHaveBeenCalled()
     })
@@ -87,9 +83,7 @@ describe('Wedlocks operations', () => {
           address: lockAddress,
           name: lockName,
         },
-        owner: {
-          address: ownerAddress,
-        },
+        owner: ownerAddress,
       })
       expect(fetch).not.toHaveBeenCalled()
     })

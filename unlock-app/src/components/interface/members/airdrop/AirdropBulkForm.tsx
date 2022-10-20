@@ -39,7 +39,7 @@ export function AirdropBulkForm({ lock, onConfirm }: Props) {
       let discarded = 0
       const json: any[] =
         parse(text, {
-          delimiter: ',',
+          delimiter: [',', ';'],
           columns: true,
         }) || []
 

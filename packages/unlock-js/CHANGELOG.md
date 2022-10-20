@@ -1,5 +1,9 @@
 # Changes
 
+# 0.30.3
+
+- When no version is supplied, deploy the latest version of template.
+
 # 0.30.2
 
 - Add totalApproval option in purchase method
@@ -7,7 +11,6 @@
 # 0.30.1
 
 - Add `address` to schema.graphql
-
 
 # 0.30.0
 

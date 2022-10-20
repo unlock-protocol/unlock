@@ -8,7 +8,7 @@ export const BLOG_PAGE_SIZE = 10
 
 export const UNLOCK_LINKS = {
   docs: 'https://docs.unlock-protocol.com/',
-  developers: 'https://docs.unlock-protocol.com/basics/',
+  developers: 'https://docs.unlock-protocol.com/',
   governance: 'https://docs.unlock-protocol.com/governance/',
 }
 

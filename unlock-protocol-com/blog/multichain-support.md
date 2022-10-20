@@ -18,13 +18,9 @@ The configuration for these is simple: just pass the network as part of the lock
 ```
 {
   locks: {
-    "0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F": {
+    "0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894": {
       name: "Unlock Community",
-      network: 1
-    },
-    "0xac1fceC2e4064CCd83ac8C9B0c9B8d944AB0D246": {
-      name: "Unlock Community",
-      network: 100
+      network: 100,
     }
   }
 ```
