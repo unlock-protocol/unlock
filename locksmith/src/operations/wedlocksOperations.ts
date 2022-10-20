@@ -83,7 +83,7 @@ export const notifyNewKeysToWedlocks = async (
   network?: number
 ) => {
   logger.info('Notifying following keys to wedlock', {
-    keys: keys.map((key: any) => [key.lock.address, key.keyId]),
+    keys: keys.map((key: any) => [key.lock.address, key.tokenId]),
   })
   for (const key of keys) {
     await notifyNewKeyToWedlocks(key, network, true)
