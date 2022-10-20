@@ -5,8 +5,6 @@ export default ({ publicLockVersion }) =>
   () => {
     // Test only on lock v9 and above.
     if (versionEqualOrAbove(publicLockVersion, 'v9')) {
-      console.log('haha', publicLockVersion)
-
       let oldMaxNumberOfKeys
       beforeAll(async () => {
         ;({ walletService, web3Service, lockAddress, lock, chainId } =
