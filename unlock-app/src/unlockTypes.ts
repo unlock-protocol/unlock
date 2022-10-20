@@ -30,7 +30,6 @@ export const MetadataInputSchema = z
       })
       .optional(), // optional, all non-public fields are treated as protected
   })
-  .array()
   .optional()
 
 export const PaywallConfigLockSchema = z.object({
@@ -40,7 +39,7 @@ export const PaywallConfigLockSchema = z.object({
     })
     .optional(),
   network: z.number().int().positive().optional(),
-  metadataInputs: MetadataInputSchema,
+  metadataInputs: MetadataInputSchema.array(),
   recurringPayments: z
     .number({
       description:
