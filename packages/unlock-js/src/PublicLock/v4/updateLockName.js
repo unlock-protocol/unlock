@@ -1,7 +1,7 @@
 /**
  * Update the name of a lock
  * @param {object} params
- * - {PropTypes.address} lockAddress : address of the lock for which we update the price
+ * - {PropTypes.address} lockAddress : address of the lock for which we update the name
  * - {string} name: the new name of the lock
  * @param {function} callback invoked with the transaction hash
  */
