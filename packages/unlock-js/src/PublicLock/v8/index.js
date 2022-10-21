@@ -23,6 +23,8 @@ const {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   totalKeys,
+  updateLockName,
+  updateLockSymbol,
 } = v7
 
 export default {
@@ -49,4 +51,6 @@ export default {
   getKeyExpirationByLockForOwner,
   approveBeneficiary,
   totalKeys,
+  updateLockName,
+  updateLockSymbol,
 }
