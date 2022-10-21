@@ -1,21 +1,27 @@
 import { Switch as SwitchComponent } from '@headlessui/react'
 import { useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { Size } from '~/types'
+import { FieldLayout } from '../Form'
 
 interface ToggleSwitchProps {
   enabled: boolean
   setEnabled: (enabled: boolean) => void
   title?: string
+  description?: string
   onChange?: (enabled: boolean) => void
   disabled?: boolean
+  size?: Size
 }
 
 export const ToggleSwitch = ({
   title = '',
+  description = '',
   enabled,
   setEnabled,
   onChange,
   disabled = false,
+  size = 'medium',
 }: ToggleSwitchProps) => {
   const switchClass = twMerge(
     enabled ? 'bg-brand-ui-primary' : 'bg-gray-400',
@@ -34,18 +40,20 @@ export const ToggleSwitch = ({
   }, [enabled])
 
   return (
-    <div className="flex items-center gap-4">
-      {title?.length > 0 && (
-        <span className="text-sm font-semibold">{title}</span>
-      )}
-      <SwitchComponent
-        checked={enabled}
-        onChange={setEnabled}
-        className={switchClass}
-        disabled={disabled}
-      >
-        <span aria-hidden="true" className={buttonClass} />
-      </SwitchComponent>
-    </div>
+    <FieldLayout description={description} size={size}>
+      <div className="flex items-center gap-4">
+        {title?.length > 0 && (
+          <span className="text-sm font-semibold">{title}</span>
+        )}
+        <SwitchComponent
+          checked={enabled}
+          onChange={setEnabled}
+          className={switchClass}
+          disabled={disabled}
+        >
+          <span aria-hidden="true" className={buttonClass} />
+        </SwitchComponent>
+      </div>
+    </FieldLayout>
   )
 }
