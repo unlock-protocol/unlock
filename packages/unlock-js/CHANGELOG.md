@@ -1,5 +1,9 @@
 # Changes
 
+# 0.30.4
+
+- Add support for `updateLockName`, `updateLockSymbol` and `setBaseTokenURI` across versions
+
 # 0.30.3
 
 - When no version is supplied, deploy the latest version of template.

@@ -13,7 +13,14 @@ import getLock from './getLock'
 
 import v4 from '../v4'
 
-const { getTokenIdForOwner, getKeyExpirationByLockForOwner, totalKeys } = v4
+const {
+  getTokenIdForOwner,
+  getKeyExpirationByLockForOwner,
+  totalKeys,
+  setBaseTokenURI,
+  updateLockName,
+  updateLockSymbol,
+} = v4
 
 export default {
   version: 'v6',
@@ -33,4 +40,7 @@ export default {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   totalKeys,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
 }
