@@ -62,7 +62,7 @@ cp -R ../package/dist/docs $dest
 rm -rf ../package
 
 # commit changes
-message="Contract API docs generated from @unlock-protocol/contracts@${version_number}"
+message="Contract API docs generated from @unlock-protocol/${branch}"
 git add .
 git commit -a -m"$message"
 git push origin $branch
