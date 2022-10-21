@@ -349,7 +349,7 @@ const LockListItem = ({ address, name, onRemove }: LockListItemProps) => {
       <div className="flex items-center w-full">
         <div className="flex items-center gap-2">
           <LockImage lockAddress={address} />
-          <span className="text-base font-semibold">{name}</span>
+          <span className="text-base font-semibold">{name || 'Default'}</span>
         </div>
         <span className="ml-auto">{addressMinify(address)}</span>
       </div>

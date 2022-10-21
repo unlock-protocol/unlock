@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 import { PaywallConfig } from '~/unlockTypes'
 import { CheckoutForm } from './elements/CheckoutForm'
 import { CheckoutPreview } from './elements/CheckoutPreview'
@@ -15,6 +16,10 @@ const Header = () => {
 }
 
 export const CheckoutUrlPage = () => {
+  const { query } = useRouter()
+
+  const { lock: lockAddress, network } = query ?? {}
+
   const [paywallConfig, setPaywallConfig] = useState<PaywallConfig>({
     locks: {},
   })
@@ -32,6 +37,21 @@ export const CheckoutUrlPage = () => {
       ...fields,
     })
   }
+
+  const addDefaultLockFromQuery = () => {
+    if (!lockAddress && !network) return null
+    setPaywallConfig({
+      locks: {
+        [lockAddress as string]: {
+          network: parseInt(`${network!}`),
+        },
+      },
+    })
+  }
+
+  useEffect(() => {
+    addDefaultLockFromQuery()
+  }, [])
 
   return (
     <div className="flex flex-col w-full min-h-screen gap-8 pt-10 pb-20 md:flex-row">

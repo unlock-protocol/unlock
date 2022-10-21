@@ -6,7 +6,7 @@ import { CheckoutUrlPage } from '~/components/interface/locks/CheckoutUrl'
 export const CheckoutUrl: NextPage = () => {
   return (
     <BrowserOnly>
-      <AppLayout authRequired={false}>
+      <AppLayout>
         <CheckoutUrlPage />
       </AppLayout>
     </BrowserOnly>

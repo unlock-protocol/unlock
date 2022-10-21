@@ -165,7 +165,9 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
               </div>
             </a>
           </Button>
-          <Link href="/locks/checkout-url">
+          <Link
+            href={`/locks/checkout-url?lock=${lockAddress}&network=${network}`}
+          >
             <Button className="p-3 md:px-6">
               <div className="flex items-center gap-2">
                 <LinkIcon size={15} />
