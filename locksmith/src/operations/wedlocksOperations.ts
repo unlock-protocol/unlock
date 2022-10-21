@@ -86,7 +86,7 @@ export const notifyNewKeysToWedlocks = async (
     keys: keys.map((key: any) => [key.lock.address, key.keyId]),
   })
   for (const key of keys) {
-    await notifyNewKeyToWedlocks(key, network)
+    await notifyNewKeyToWedlocks(key, network, true)
   }
 }
 

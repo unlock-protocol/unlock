@@ -58,5 +58,5 @@ yarn test:single --file src/__tests__/utils.test.js
 Run a single integration test with specific versions
 
 ```
-yarn hardhat run test:integration src/__tests__/integration/lock/cancelAndRefund.js --unlock-version 10 --lock-version 12
+yarn hardhat test:integration src/__tests__/integration/lock/cancelAndRefund.js --unlock-version 10 --lock-version 12
 ```

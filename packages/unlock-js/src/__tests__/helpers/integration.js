@@ -56,7 +56,7 @@ export const setupLock = async ({
   let lockAddress
   let lockCreationHash
 
-  if (publicLockVersion !== 'v4') {
+  if (versionEqualOrAbove(unlockVersion, 'v5')) {
     // here we need to setup unlock template properly
     const unlock = await walletService.getUnlockContract()
 
@@ -64,7 +64,7 @@ export const setupLock = async ({
     const templateAddress = await deployTemplate(publicLockVersion)
 
     // prepare unlock for upgradeable locks
-    if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+    if (versionEqualOrAbove(unlockVersion, 'v10')) {
       const lockVersionNumber = parseInt(publicLockVersion.replace('v', ''))
       await unlock.addLockTemplate(templateAddress, lockVersionNumber)
     }
@@ -80,7 +80,7 @@ export const setupLock = async ({
   // unique Lock name to avoid conflicting addresses
   lockParams.name = `Unlock${unlockVersion} - Lock ${publicLockVersion} - ${lockParams.name}`
 
-  if (versionEqualOrAbove(publicLockVersion, 'v10')) {
+  if (versionEqualOrAbove(unlockVersion, 'v10')) {
     // use createLockAtVersion starting on v10
     lockParams.publicLockVersion = parseInt(publicLockVersion.replace('v', ''))
   }
