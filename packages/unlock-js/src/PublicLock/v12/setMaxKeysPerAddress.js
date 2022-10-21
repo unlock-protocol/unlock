@@ -13,7 +13,7 @@ export default async function (
   const lockContract = await this.getLockContract(lockAddress)
   const expirationDuration = await lockContract.expirationDuration()
   const maxNumberOfKeys = await lockContract.maxNumberOfKeys()
-  const transactionPromise = lockContract.setLockConfig(
+  const transactionPromise = lockContract.updateLockConfig(
     expirationDuration,
     maxNumberOfKeys,
     maxKeysPerAddress

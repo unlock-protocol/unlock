@@ -801,7 +801,7 @@ const abis = {
         "event KeyGranterRemoved (address indexed account)",
         "event KeyManagerChanged (uint256 indexed _tokenId,address indexed _newManager)",
         "event KeysMigrated (uint256 updatedRecordsCount)",
-        "event LockConfig (uint256 expirationDuration,uint256 maxNumberOfKeys,uint256 maxKeysPerAddress)",
+        "event LockConfig (uint256 expirationDuration,uint256 maxNumberOfKeys,uint256 maxKeysPerAcccount)",
         "event LockManagerAdded (address indexed account)",
         "event LockManagerRemoved (address indexed account)",
         "event LockMetadata (string name,string symbol,string baseTokenURI)",
@@ -904,7 +904,7 @@ const abis = {
         "function updateTransferFee(uint256 _transferFeeBasisPoints)",
         "function withdraw(address _tokenAddress,address _recipient,uint256 _amount)"
       ],
-      "bytecodeHash": "0xef4123b353478f5610e6b453a73b5e7d3be7661324a07bac64b6eabdf8b4049c"
+      "bytecodeHash": "0xdd005f4fe02b48a06215a3996da43da9689a5638d00ec714d19d6aae81f9dbf6"
     }
   },
   "Unlock": {
