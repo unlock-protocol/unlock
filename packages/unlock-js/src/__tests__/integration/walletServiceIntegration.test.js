@@ -92,7 +92,7 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
         publicLockVersion,
       }
     })
-    if (versionEqualOrAbove(unlockVersion, 'v4')) {
+    if (versionEqualOrAbove(unlockVersion, 'v5')) {
       describe.each(PublicLockVersions)(
         'configuration using PublicLock %s',
         () => {

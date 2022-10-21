@@ -102,20 +102,20 @@ export default {
       name: 'My Lock',
       isERC20: false,
     },
-    // {
-    //   expirationDuration: 60 * 60 * 24 * 30,
-    //   keyPrice: '0.1',
-    //   maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
-    //   name: 'Unlimited Keys lock',
-    //   isERC20: false,
-    // },
-    // {
-    //   expirationDuration: 60 * 60 * 24 * 10,
-    //   keyPrice: '1',
-    //   maxNumberOfKeys: 100,
-    //   name: 'ERC20 lock',
-    //   isERC20: true,
-    // },
+    {
+      expirationDuration: 60 * 60 * 24 * 30,
+      keyPrice: '0.1',
+      maxNumberOfKeys: UNLIMITED_KEYS_COUNT,
+      name: 'Unlimited Keys lock',
+      isERC20: false,
+    },
+    {
+      expirationDuration: 60 * 60 * 24 * 10,
+      keyPrice: '1',
+      maxNumberOfKeys: 100,
+      name: 'ERC20 lock',
+      isERC20: true,
+    },
   ],
   v10: [
     {

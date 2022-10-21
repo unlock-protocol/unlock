@@ -77,7 +77,7 @@ describe(`Unlock ${unlockVersion}`, () => {
   })
 
   describe(`using PublicLock ${publicLockVersion}`, () => {
-    if (versionEqualOrAbove(unlockVersion, 'v4')) {
+    if (versionEqualOrAbove(unlockVersion, 'v5')) {
       describe(`configuration`, unlockConfig({ publicLockVersion }))
     }
 
