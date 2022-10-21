@@ -205,6 +205,7 @@ export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
   messageToSign: true,
   pessimistic: true,
   hideSoldOut: true,
+  redirectUri: true,
 })
 
 export enum TransactionType {

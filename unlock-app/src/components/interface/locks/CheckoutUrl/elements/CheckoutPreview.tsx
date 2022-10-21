@@ -36,15 +36,18 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
 
   const hasLocks = Object.entries(paywallConfig?.locks ?? {})?.length > 0
 
-  const URL_STRING = `${
-    window.location.origin
-  }/alpha/checkout?redirectUri=${checkoutRedirectURI}&paywallConfig=${encodeURIComponent(
-    JSON.stringify(paywallConfig)
-  )}`
-
   useEffect(() => {
-    setCheckoutUrl(URL_STRING)
-  }, [URL_STRING])
+    const url = new URL(`${window.location.origin}/alpha/checkout`)
+    url.searchParams.append(
+      'paywallConfig',
+      encodeURIComponent(JSON.stringify(paywallConfig))
+    )
+
+    if (paywallConfig?.redirectUri?.length) {
+      url.searchParams.append('redirectUri', paywallConfig.redirectUri)
+    }
+    setCheckoutUrl(url.toString())
+  }, [paywallConfig])
 
   const [_isCopied, setCopied] = useClipboard(checkoutUrl, {
     successDuration: 2000,
@@ -55,7 +58,7 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
   return (
     <div className="flex items-center justify-center w-full py-10 bg-gray-300 rounded-3xl">
       <div className="flex items-center justify-center w-full max-w-lg">
-        {paywallConfig ? (
+        {paywallConfig && (
           <div className="flex flex-col items-center w-full gap-4">
             <Checkout
               injectedProvider={injectedProvider as any}
@@ -94,8 +97,6 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
               </div>
             </div>
           </div>
-        ) : (
-          <span className="text-sm">preview</span>
         )}
       </div>
     </div>
