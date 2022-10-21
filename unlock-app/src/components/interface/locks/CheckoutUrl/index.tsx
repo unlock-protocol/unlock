@@ -17,7 +17,6 @@ const Header = () => {
 export const CheckoutUrlPage = () => {
   const [paywallConfig, setPaywallConfig] = useState<PaywallConfig>({
     locks: {},
-    metadataInputs: [{ name: 'test', type: 'text', required: false }],
   })
 
   const onAddLocks = (locks: any) => {

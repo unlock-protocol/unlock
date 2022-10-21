@@ -1,5 +1,4 @@
 import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
-import { component } from '~/propTypes'
 import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
@@ -36,7 +35,7 @@ export const ConnectForm = ({ children }: any) => {
 }
 
 const TextInput = ({ props, type, ...rest }: FieldProps) => {
-  const { enum: enumList } = props
+  const { enum: enumList = [] } = props ?? {}
   const hasOptions = enumList?.length
 
   if (!hasOptions) {
@@ -52,7 +51,7 @@ const TextInput = ({ props, type, ...rest }: FieldProps) => {
     value: enumItem,
   }))
 
-  return <Select options={options} />
+  return <Select options={options} {...rest} />
 }
 
 const BooleanInput = ({ props, name, label, ...rest }: any) => {
@@ -78,20 +77,10 @@ const BooleanInput = ({ props, name, label, ...rest }: any) => {
   )
 }
 
-const ObjectInput = () => {
-  return <div></div>
-}
-
-const ArrayInput = () => {
-  return null
-}
-
 const ComponentByTypeMap: ComponentByTypeMapProps = {
   string: TextInput,
   integer: TextInput,
   boolean: BooleanInput,
-  object: ObjectInput, // todo: add support for objects
-  array: ArrayInput, // todo: add support for arrays
 }
 
 const TypeMap: Record<string, string> = {
@@ -142,15 +131,58 @@ export const DynamicForm = ({
             onChange(methods.getValues())
           }}
         >
-          {Object.entries(properties).map(([fieldName, props], index) => {
+          {Object.entries(properties ?? {}).map(([fieldName, props], index) => {
             const { type = undefined, description = '' } = (props as any) || {}
-
-            const Component = ComponentByTypeMap?.[type] ?? undefined
-            const inputType: string = TypeMap?.[type] || type
+            let Component = ComponentByTypeMap?.[type] ?? undefined
+            let inputType: string = TypeMap?.[type] || type
             const fieldRequired = required.includes(fieldName)
             const label = fieldRequired ? `* ${fieldName}` : fieldName
 
+            // union type
+            if (
+              Array.isArray(type) ||
+              type.includes('string') ||
+              type.includes('number')
+            ) {
+              if (type.includes('string') || type.includes('number')) {
+                inputType = TypeMap.string
+                Component = ComponentByTypeMap.string
+              }
+            }
+
+            if (type === 'array') {
+              return (
+                <div
+                  key="array"
+                  className="grid items-center grid-cols-1 gap-2 p-4 bg-gray-200 rounded-xl"
+                >
+                  {Object.entries((props as any)?.items?.properties ?? {})?.map(
+                    ([name, fieldProps], index) => {
+                      const { type, description } = (fieldProps ?? {}) as any
+                      Component = ComponentByTypeMap?.[type] ?? undefined
+                      if (!Component) return null
+                      return (
+                        <>
+                          <Component
+                            type={type}
+                            key={index}
+                            size="small"
+                            label={name}
+                            name={name}
+                            description={description}
+                            props={fieldProps}
+                            schema={schema}
+                          />
+                        </>
+                      )
+                    }
+                  )}
+                </div>
+              )
+            }
+
             if (!Component) return null
+
             return (
               <div className="flex flex-col gap-2" key={index}>
                 <Component
@@ -161,6 +193,7 @@ export const DynamicForm = ({
                   required={fieldRequired}
                   description={description}
                   size="small"
+                  schema={schema}
                 />
               </div>
             )

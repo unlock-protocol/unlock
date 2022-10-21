@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { Lock, PaywallConfigLock, PaywallConfigLockSchema } from '~/unlockTypes'
+import {
+  Lock,
+  MetadataInput,
+  MetadataInputSchema,
+  PaywallConfigLock,
+  PaywallConfigLockSchema,
+} from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import { DynamicForm } from './DynamicForm'
 import { Button, IconButton, Select } from '@unlock-protocol/ui'
@@ -130,6 +136,51 @@ export const LocksForm = ({
 
   const hasMinValue = network && lockAddress && lockAddress?.length > 0
 
+  const MetadataList = () => {
+    return (
+      <div>
+        {(locks[lockAddress]?.metadataInputs ?? [])?.length > 0 && (
+          <h3 className="mb-2 text-lg font-bold text-brand-ui-primary">
+            Metadata
+          </h3>
+        )}
+        <div className="flex flex-col gap-3">
+          {locks[lockAddress]?.metadataInputs?.map((metadata, index) => {
+            return (
+              <>
+                <div
+                  key={index}
+                  className="flex items-center justify-between w-full px-2 py-1 text-sm bg-white rounded-lg shadow"
+                >
+                  <div className="flex items-center w-full gap-5">
+                    <div className="flex items-center gap-2">
+                      <span>Field name: </span>
+                      <span className="text-base font-semibold">
+                        {metadata?.name}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span>default value: </span>
+                      <span className="text-base font-semibold">
+                        {metadata?.defaultValue}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span>required: </span>
+                      <span className="text-base font-semibold">
+                        {metadata?.required ? 'true' : 'false'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
+
   const LockList = () => {
     return (
       <div className="flex flex-col gap-4">
@@ -188,17 +239,37 @@ export const LocksForm = ({
     }
     setLocks(locksByAddress)
     onChange(locksByAddress)
+    setAddMetadata(false)
   }
 
+  const onAddMetadata = (fields: MetadataInput) => {
+    const lock = locks[lockAddress]
+    const metadata = lock?.metadataInputs || []
+
+    // update metadata by lock address
+    const lockWithMetadata = {
+      ...locks,
+      [lockAddress]: {
+        ...lock,
+        metadataInputs: [...metadata, fields],
+      },
+    }
+
+    setLocks(lockWithMetadata)
+    onChange(lockWithMetadata)
+    setAddMetadata(false)
+  }
   const hasLocks =
     Object.keys(locks ?? {}).length > 0 && !lockAddress && !network
   const showForm = !hasLocks || addLock
+
+  const [addMetadata, setAddMetadata] = useState(false)
 
   return (
     <>
       {!showForm && <LockList />}
       {showForm && (
-        <div className="flex flex-col gap-10">
+        <div className="flex flex-col gap-8">
           <div>
             <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
               Select a lock
@@ -224,17 +295,47 @@ export const LocksForm = ({
             </div>
           </div>
           {hasMinValue && (
-            <DynamicForm
-              title="Settings"
-              name={'locks'}
-              schema={LockSchema}
-              onChange={(fields: any) =>
-                onAddLock(lockAddress, network, fields)
-              }
-              onSubmit={onSubmit}
-              submitLabel={'Add lock'}
-              showSubmit={true}
-            />
+            <>
+              {!addMetadata ? (
+                <>
+                  <MetadataList />
+                  <div className="ml-auto">
+                    <Button
+                      variant="outlined-primary"
+                      size="small"
+                      onClick={() => setAddMetadata(true)}
+                    >
+                      Add metadata
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <div className="grid items-center grid-cols-1 gap-2 p-4 bg-gray-100 rounded-xl">
+                  <DynamicForm
+                    title="Metadata"
+                    name={'locks'}
+                    schema={MetadataInputSchema}
+                    onChange={() => void 0}
+                    onSubmit={onAddMetadata}
+                    submitLabel={'Add metadata'}
+                    showSubmit={true}
+                  />
+                </div>
+              )}
+              <DynamicForm
+                title="Settings"
+                name={'locks'}
+                schema={LockSchema.omit({
+                  metadataInputs: true,
+                })}
+                onChange={(fields: any) =>
+                  onAddLock(lockAddress, network, fields)
+                }
+                onSubmit={onSubmit}
+                submitLabel={'Add lock'}
+                showSubmit={true}
+              />
+            </>
           )}
         </div>
       )}
