@@ -4,33 +4,31 @@
 import { Card } from '@stripe/stripe-js'
 import { z } from 'zod'
 
-export const MetadataInputSchema = z
-  .object({
-    name: z.string({
-      description: 'Field label',
-    }),
-    defaultValue: z
-      .string({
-        description: 'Field default value',
-      })
-      .optional(),
-    type: z.enum(['text', 'date', 'color', 'email', 'url']),
-    required: z.boolean({
-      description: 'When true the field will be required',
-    }),
-    placeholder: z
-      .string({
-        description: 'Field placeholder text',
-      })
-      .optional(),
-    public: z
-      .boolean({
-        description:
-          'If any metadata should be visible to everyone, mark the public field as true.',
-      })
-      .optional(), // optional, all non-public fields are treated as protected
-  })
-  .optional()
+export const MetadataInputSchema = z.object({
+  name: z.string({
+    description: 'Field label',
+  }),
+  defaultValue: z
+    .string({
+      description: 'Field default value',
+    })
+    .optional(),
+  type: z.enum(['text', 'date', 'color', 'email', 'url']),
+  required: z.boolean({
+    description: 'When true the field will be required',
+  }),
+  placeholder: z
+    .string({
+      description: 'Field placeholder text',
+    })
+    .optional(),
+  public: z
+    .boolean({
+      description:
+        'If any metadata should be visible to everyone, mark the public field as true.',
+    })
+    .optional(), // optional, all non-public fields are treated as protected
+})
 
 export const PaywallConfigLockSchema = z.object({
   name: z
@@ -39,7 +37,7 @@ export const PaywallConfigLockSchema = z.object({
     })
     .optional(),
   network: z.number().int().positive().optional(),
-  metadataInputs: MetadataInputSchema.array(),
+  metadataInputs: z.array(MetadataInputSchema).optional(),
   recurringPayments: z
     .number({
       description:
@@ -111,8 +109,8 @@ export const PaywallConfigSchema = z
       })
       .optional(),
     callToAction: z.any().optional(),
-    locks: z.record(PaywallConfigLockSchema).optional(),
-    metadataInputs: MetadataInputSchema,
+    locks: z.record(PaywallConfigLockSchema),
+    metadataInputs: z.array(MetadataInputSchema).optional(),
     persistentCheckout: z
       .boolean({
         description:
