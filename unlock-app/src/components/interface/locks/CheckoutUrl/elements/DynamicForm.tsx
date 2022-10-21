@@ -1,8 +1,7 @@
-import { Button, Input, Select, ToggleSwitch } from '@unlock-protocol/ui'
+import { Button, Input, Select } from '@unlock-protocol/ui'
 import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
-import { useState } from 'react'
 
 interface DynamicFormProps {
   name: string
