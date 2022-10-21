@@ -13,7 +13,10 @@ export const MetadataInputSchema = z.object({
       description: 'Field default value',
     })
     .optional(),
-  type: z.enum(['text', 'date', 'color', 'email', 'url']),
+  type: z.enum(['text', 'date', 'color', 'email', 'url'], {
+    description:
+      'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. The following configuration results in a checkout that looks like image below it.',
+  }),
   required: z.boolean({
     description: 'When true the field will be required',
   }),
@@ -39,11 +42,10 @@ export const PaywallConfigLockSchema = z.object({
   network: z.number().int().positive().optional(),
   metadataInputs: z.array(MetadataInputSchema).optional(),
   recurringPayments: z
-    .number({
+    .union([z.string(), z.number()], {
       description:
         'The number of time a membership should be renewed automatically. This only applies to ERC20 locks.',
     })
-    .int()
     .optional(),
   captcha: z
     .boolean({
