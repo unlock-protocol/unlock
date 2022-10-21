@@ -20,6 +20,7 @@ import { EnableRecurring } from './EnableRecurring'
 import { useLockManager } from '~/hooks/useLockManager'
 import { RiEditLine as EditIcon } from 'react-icons/ri'
 import Link from 'next/link'
+import { UpdateMetadataDrawer } from '../../metadata/MetadataUpdate'
 
 interface LockDetailCardProps {
   network: number
@@ -149,6 +150,7 @@ export const LockDetailCard = ({
   const [editQuantity, setEditQuantity] = useState(false)
   const [editDuration, setEditDuration] = useState(false)
   const [editPrice, setEditPrice] = useState(false)
+  const [updateMetadata, setUpdateMetadata] = useState(false)
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
 
@@ -221,6 +223,11 @@ export const LockDetailCard = ({
         maxNumberOfKeys={lock?.maxNumberOfKeys}
       />
 
+      <UpdateMetadataDrawer
+        isOpen={updateMetadata}
+        setIsOpen={setUpdateMetadata}
+      />
+
       <div className="flex flex-col">
         <div className="flex flex-col gap-2">
           <LockIcon
@@ -236,13 +243,16 @@ export const LockDetailCard = ({
             version={lock?.publicLockVersion}
           />
           <div className="grid py-6">
-            <Link
-              href={`/locks/metadata?lockAddress=${lockAddress}&network=${network}`}
+            <Button
+              variant="black"
+              size="small"
+              onClick={() => {
+                setUpdateMetadata(true)
+              }}
+              iconRight={<EditIcon key="edit" />}
             >
-              <Button iconRight={<EditIcon key="edit" />}>
-                Update Metadata
-              </Button>
-            </Link>
+              Update Metadata
+            </Button>
           </div>
           <div className="flex flex-col mt-6">
             <Detail label="Network" value={networkName} loading={loading} />

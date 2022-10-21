@@ -1,57 +1,96 @@
-import { Input } from '@unlock-protocol/ui'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { Button } from '@unlock-protocol/ui'
 import { useRouter } from 'next/router'
-import { FormProvider, useForm, useFormContext } from 'react-hook-form'
+import { useEffect } from 'react'
+import { FormProvider, useForm } from 'react-hook-form'
+import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useStorageService } from '~/utils/withStorageService'
+import { LockAdvancedForm } from './LockAdvancedForm'
+import { LockDetailForm } from './LockDetailForm'
 
-export function LockDetailInputs() {
-  const { register } = useFormContext()
-  return (
-    <div className="p-6 bg-white shadow">
-      <div></div>
-      <div>
-        <Input
-          {...register('name', {
-            required: true,
-          })}
-          type="text"
-          placeholder="LockSmith Daily Membership"
-          label="Name"
-          description="The name will appear as the NFT name, not as collection name."
-        />
-        <Input
-          {...register('externalURL', {
-            required: true,
-          })}
-          type="url"
-          placeholder="https://example.com"
-          label="External URL"
-          description="Included a link in your NFT, so members can learn more about it."
-        />
-      </div>
-    </div>
-  )
-}
-
-export function LockMetadataPage() {
+export function UpdateLockMetadata() {
   const router = useRouter()
-  const lockAddress = router.query.lockAddress?.toString()
+  const lockAddress = router.query.address!.toString()
   const network = Number(router.query.network)
+  const storageService = useStorageService()
+
+  const { data } = useQuery<Record<string, any>>(
+    ['lockMetadata', lockAddress, network],
+    async () => {
+      const response = await storageService.locksmith.lockMetadata(
+        network,
+        lockAddress
+      )
+      return response.data
+    },
+    {
+      initialData: {},
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      onError() {},
+      refetchInterval: Infinity,
+      retry: false,
+    }
+  )
+
   const methods = useForm({
-    defaultValues: {
+    defaultValues: data || {
       name: 'Locksmith 101',
       externalURL: 'https://example.com',
     },
   })
+
+  const lockMetadata = useMutation(
+    async (metadata: Record<string, any>) => {
+      const token = await storageService.getAccessToken()
+      const result = await storageService.locksmith.updateLockMetadata(
+        network,
+        lockAddress,
+        {
+          metadata,
+        },
+        {
+          headers: storageService.genAuthorizationHeader(token),
+        }
+      )
+      return result.data
+    },
+    {
+      mutationKey: ['lockMetadata', lockAddress, network],
+      onError(error) {
+        ToastHelper.error(error as any)
+      },
+    }
+  )
+
+  const onSubmit = async (data: any) => {
+    await lockMetadata.mutateAsync(data)
+  }
+
+  useEffect(() => {
+    if (Object.keys(data).length) {
+      methods.reset(data)
+    }
+  }, [data, methods])
+
   return (
-    <div>
-      <header>
-        <h1>Update Metadata</h1>
-        <p>Adding the rich data to your membership</p>
+    <div className="max-w-screen-md mx-auto">
+      <header className="pt-2 pb-6 space-y-2">
+        <h1 className="text-xl font-bold sm:text-3xl">Update Metadata</h1>
+        <p className="text-lg text-gray-700">
+          Adding the rich data to your membership
+        </p>
       </header>
-      <main>
-        <FormProvider {...methods}>
-          <LockDetailInputs />
-        </FormProvider>
-      </main>
+      <FormProvider {...methods}>
+        <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
+          <div className="grid gap-6">
+            <LockDetailForm />
+            <LockAdvancedForm />
+            <div className="flex justify-center">
+              <Button className="w-full max-w-sm"> Update </Button>
+            </div>
+          </div>
+        </form>
+      </FormProvider>
     </div>
   )
 }

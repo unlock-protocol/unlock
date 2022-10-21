@@ -381,7 +381,7 @@ paths:
               type: object
               nullable: true
               properties:
-                refresh-token:
+                refreshToken:
                   type: string
                   nullable: false
       responses:
