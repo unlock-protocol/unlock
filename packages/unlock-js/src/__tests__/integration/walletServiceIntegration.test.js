@@ -40,6 +40,8 @@ import shareKeyToTokenId from './lock/shareKeyToTokenId'
 import mergeKeys from './lock/mergeKeys'
 import maxKeysPerAddress from './lock/maxKeysPerAddress'
 import extendKey from './lock/extendKey'
+import updateLockName from './lock/updateLockName'
+import updateLockSymbol from './lock/updateLockSymbol'
 
 // Increasing timeouts
 jest.setTimeout(3000000)
@@ -157,6 +159,8 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       describe('shareKey (to TokenId)', shareKeyToTokenId(testSetupArgs))
       describe('mergeKeys', mergeKeys(testSetupArgs))
       describe('updateKeyPrice', updateKeyPrice(testSetupArgs))
+      describe('updateLockName', updateLockName(testSetupArgs))
+      describe('updateLockSymbol', updateLockSymbol(testSetupArgs))
     })
   })
 })
