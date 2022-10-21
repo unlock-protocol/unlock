@@ -2,11 +2,11 @@
  * Set symbol of the lock
  * @param {object} params:
  * - {PropTypes.address} lockAddress
- * - {string} lockName a symbol of 3-4 letters
+ * - {string} name the name of the new lock
  * @param {function} callback invoked with the transaction hash
  */
 export async function updateLockName(
-  { lockAddress, lockName },
+  { lockAddress, name },
   transactionOptions = {},
   callback
 ) {
@@ -14,7 +14,7 @@ export async function updateLockName(
   const lockSymbol = await lockContract.symbol()
   const baseTokenURI = await lockContract.tokenURI(0)
   const transactionPromise = lockContract.setLockMetadata(
-    lockName,
+    name,
     lockSymbol,
     baseTokenURI
   )
@@ -25,6 +25,8 @@ export async function updateLockName(
   }
 
   await this.provider.waitForTransaction(hash)
+
+  return name
 }
 
 export default updateLockName

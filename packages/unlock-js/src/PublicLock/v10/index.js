@@ -28,6 +28,8 @@ const {
   setExpirationDuration,
   approveBeneficiary,
   totalKeys,
+  updateLockName,
+  updateLockSymbol,
 } = v9
 
 export default {
@@ -59,4 +61,6 @@ export default {
   approveBeneficiary,
   totalKeys,
   renewMembershipFor,
+  updateLockName,
+  updateLockSymbol,
 }
