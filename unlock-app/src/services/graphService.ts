@@ -45,7 +45,6 @@ export class GraphService {
     } catch (error) {
       console.error(error)
       if (network === 31337) return [] // ignore localhost
-      return []
       ToastHelper.error(
         network
           ? `We could not load locks for ${networkName} network.`
