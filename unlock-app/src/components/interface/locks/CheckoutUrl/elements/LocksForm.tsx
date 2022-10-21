@@ -311,7 +311,7 @@ export const LocksForm = ({
                   </div>
                 </div>
               ) : (
-                <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-gray-100 rounded-xl">
+                <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-white rounded-xl">
                   <DynamicForm
                     title="Metadata"
                     name={'locks'}

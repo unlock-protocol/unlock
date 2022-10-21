@@ -34,7 +34,7 @@ export const CheckoutForm = ({
   ]
 
   return (
-    <div className="px-4 py-6 bg-white shadow-sm rounded-xl">
+    <div className="px-4 py-6 rounded-xl">
       <Tab.Group defaultIndex={tabOpen}>
         <Tab.List className="flex gap-6">
           {tabs.map(({ title }, index) => (
