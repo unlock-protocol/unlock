@@ -1,3 +1,13 @@
+/**
+ * This is a helper to run a single test file against specific lock/unlock version
+ * The easiest way to use it is throuhg the hardhat cli
+ *
+ * Usage:
+ *
+ * yarn hardhat test:integration src/__tests__/integration/lock/purchaseKey.js \
+ *     --lock-version 9 \
+ *     --unlock-version 10 \
+ * */
 import locks from '../helpers/fixtures/locks'
 import nodeSetup from '../setup/prepare-eth-node-for-unlock'
 import {
