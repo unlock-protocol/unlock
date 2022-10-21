@@ -297,20 +297,21 @@ export const LocksForm = ({
           {hasMinValue && (
             <>
               {!addMetadata ? (
-                <>
+                <div className="flex flex-col -mt-2">
                   <MetadataList />
                   <div className="ml-auto">
                     <Button
                       variant="outlined-primary"
                       size="small"
                       onClick={() => setAddMetadata(true)}
+                      className="mt-4"
                     >
                       Add metadata
                     </Button>
                   </div>
-                </>
+                </div>
               ) : (
-                <div className="grid items-center grid-cols-1 gap-2 p-4 bg-gray-100 rounded-xl">
+                <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-gray-100 rounded-xl">
                   <DynamicForm
                     title="Metadata"
                     name={'locks'}
