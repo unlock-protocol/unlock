@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.30.3",
+  "version": "0.30.4",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -11,6 +11,7 @@
   },
   "scripts": {
     "test": "yarn clean && yarn build:abis && yarn build:lib && hardhat test:jest",
+    "test:single": "hardhat test:single",
     "check": "tsc --noEmit",
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build:lib": "tsup src/index.ts --dts --format esm,cjs ",
