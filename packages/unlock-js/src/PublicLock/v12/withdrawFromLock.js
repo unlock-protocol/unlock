@@ -12,15 +12,15 @@ import utils from '../../utils'
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (
-  { lockAddress, beneficiary, tokenAddress, amount = '0', decimals = 18 },
+  { lockAddress, amount = '0', decimals = 18 },
   transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
-  if (!tokenAddress) {
-    tokenAddress = await lockContract.tokenAddress()
-  }
+  const tokenAddress = await lockContract.tokenAddress()
 
+  // use the signer as beneficiary
+  const beneficiary = await this.signer.getAddress()
   const actualAmount = utils.toDecimal(amount, decimals)
 
   const transactionPromise = lockContract['withdraw(address,address,uint256)'](
