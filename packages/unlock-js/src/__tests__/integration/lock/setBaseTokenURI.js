@@ -35,11 +35,11 @@ export default () => () => {
     expect(transactionHash).toMatch(/^0x[0-9a-fA-F]{64}$/)
   })
 
-  it('should have changed the symbol', async () => {
-    expect.assertions(2)
+  it('should have updated all tokenURIs', async () => {
+    expect.assertions(4)
     expect(changedTokenURI).toEqual(newTokenURI)
     expect(await lockContract.tokenURI(0)).toEqual(newTokenURI)
     expect(await lockContract.tokenURI(1)).toEqual(`${newTokenURI}1`)
-    expect(await lockContract.baseTokenURI(123)).toEqual(`${newTokenURI}123`)
+    expect(await lockContract.tokenURI(123)).toEqual(`${newTokenURI}123`)
   })
 }
