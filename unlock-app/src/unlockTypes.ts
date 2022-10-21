@@ -4,57 +4,194 @@
 import { Card } from '@stripe/stripe-js'
 import { z } from 'zod'
 
-export const MetadataInputSchema = z
-  .object({
-    name: z.string(),
-    defaultValue: z.string().optional(),
-    type: z.enum(['text', 'date', 'color', 'email', 'url']),
-    required: z.boolean(),
-    placeholder: z.string().optional(),
-    public: z.boolean().optional(), // optional, all non-public fields are treated as protected
-  })
-  .array()
-  .optional()
+export const MetadataInputSchema = z.object({
+  name: z.string({
+    description: 'Field label',
+  }),
+  defaultValue: z
+    .string({
+      description: 'Field default value',
+    })
+    .optional(),
+  type: z.enum(['text', 'date', 'color', 'email', 'url']),
+  required: z.boolean({
+    description: 'When true the field will be required',
+  }),
+  placeholder: z
+    .string({
+      description: 'Field placeholder text',
+    })
+    .optional(),
+  public: z
+    .boolean({
+      description:
+        'If any metadata should be visible to everyone, mark the public field as true.',
+    })
+    .optional(), // optional, all non-public fields are treated as protected
+})
 
 export const PaywallConfigLockSchema = z.object({
-  name: z.string().optional(),
+  name: z
+    .string({
+      description: 'Name of the lock to display.',
+    })
+    .optional(),
   network: z.number().int().positive().optional(),
-  metadataInputs: MetadataInputSchema,
-  recurringPayments: z.number().int().optional(),
-  captcha: z.boolean().optional(),
-  password: z.boolean().optional(),
-  emailRequired: z.boolean().optional(),
-  maxRecipients: z.number().int().positive().optional(),
-  minRecipients: z.number().int().positive().optional(),
-  superfluid: z.boolean().optional(),
+  metadataInputs: z.array(MetadataInputSchema).optional(),
+  recurringPayments: z
+    .number({
+      description:
+        'The number of time a membership should be renewed automatically. This only applies to ERC20 locks.',
+    })
+    .int()
+    .optional(),
+  captcha: z
+    .boolean({
+      description:
+        'If set true, the users will be prompted to go through a captcha during the checkout process. This is better used in conjunction with a purchase hook that verifies that captcha is valid.',
+    })
+    .optional(),
+  password: z
+    .boolean({
+      description:
+        'Defaults to false. If set to true, the user will be prompted to enter a password in order to complete their purchases. This will only be useful if the lock is connected to a hook that will handle the password verification.',
+    })
+    .optional(),
+  emailRequired: z
+    .boolean({
+      description:
+        'If set to true, the user will be prompted to enter an email which will be stored as metadata and be visible to any lock manager.',
+    })
+    .optional(),
+  minRecipients: z
+    .number({
+      description:
+        'Set the minimum number of memberships a user needs to purchase.',
+    })
+    .int()
+    .positive()
+    .optional(),
+  maxRecipients: z
+    .number({
+      description: `Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
+    })
+    .int()
+    .positive()
+    .optional(),
+  superfluid: z
+    .boolean({
+      description:
+        'When set to true, superfluid will be enabled as payment method for the lock.',
+    })
+    .optional(),
   default: z.boolean().optional(),
-  dataBuilder: z.string().optional(),
+  dataBuilder: z
+    .string({
+      description:
+        'If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
+    })
+    .optional(),
 })
 
 export const PaywallConfigLocksSchema = z.record(PaywallConfigLockSchema)
 
 export const PaywallConfigSchema = z
   .object({
-    title: z.string().optional(),
-    icon: z.string().optional(),
+    title: z
+      .string({
+        description: 'Title for your checkout. This will show up on the head.',
+      })
+      .optional(),
+    icon: z
+      .string({
+        description:
+          'The URL for a icon to display in the top left corner of the modal.',
+      })
+      .optional(),
     callToAction: z.any().optional(),
-    locks: z.record(PaywallConfigLockSchema).optional(),
-    metadataInputs: MetadataInputSchema,
-    persistentCheckout: z.boolean().optional(),
-    redirectUri: z.string().optional(),
+    locks: z.record(PaywallConfigLockSchema),
+    metadataInputs: z.array(MetadataInputSchema).optional(),
+    persistentCheckout: z
+      .boolean({
+        description:
+          'true if the modal cannot be closed, defaults to false when embedded. When closed, the user will be redirected to the redirect query param when using a purchase address (see above).',
+      })
+      .optional(),
+    redirectUri: z
+      .string({
+        description:
+          'The URL-encodded address of a webpage where the user will be redirected when their membership is valid.',
+      })
+      .optional(),
     useDelegatedProvider: z.boolean().optional(),
     network: z.number().int().optional(),
-    referrer: z.string().optional(),
-    messageToSign: z.string().optional(),
-    pessimistic: z.boolean().optional(),
-    captcha: z.boolean().optional(),
-    minRecipients: z.number().int().optional(),
-    maxRecipients: z.number().int().optional(),
-    superfluid: z.boolean().optional(),
-    hideSoldOut: z.boolean().optional(),
-    password: z.boolean().optional(),
-    emailRequired: z.boolean().optional(),
-    dataBuilder: z.string().optional(),
+    referrer: z
+      .string({
+        description:
+          'The address which will receive UDT tokens (if the transaction is applicable)',
+      })
+      .optional(),
+    messageToSign: z
+      .string({
+        description:
+          'If supplied, the user is prompted to sign this message using their wallet. If using a checkout URL, a signature query param is then appended to the redirectUri (see above). If using the embedded paywall, the unlockProtocol.authenticated includes the signature attribute.',
+      })
+      .optional(),
+    pessimistic: z
+      .boolean({
+        description:
+          'By default, to reduce friction, we do not require users to wait for the transaction to be mined before offering them to be redirected. By setting this to true, users will need to wait for the transaction to have been mined in order to proceed to the next step.',
+      })
+      .optional(),
+    captcha: z
+      .boolean({
+        description:
+          'If set true, the users will be prompted to go through a captcha during the checkout process. This is better used in conjunction with a purchase hook that verifies that captcha is valid.',
+      })
+      .optional(),
+    minRecipients: z
+      .number({
+        description:
+          'Set the minimum number of memberships a user needs to purchase.',
+      })
+      .int()
+      .optional(),
+    maxRecipients: z
+      .number({
+        description: `Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
+      })
+      .int()
+      .optional(),
+    superfluid: z
+      .boolean({
+        description:
+          'When set to true, superfluid will be enabled as payment method for the lock.',
+      })
+      .optional(),
+    hideSoldOut: z
+      .boolean({
+        description:
+          'When set to true, sold our locks are not shown to users when they load the checkout modal.',
+      })
+      .optional(),
+    password: z
+      .boolean({
+        description:
+          'Defaults to false. If set to true, the user will be prompted to enter a password in order to complete their purchases. This will only be useful if the lock is connected to a hook that will handle the password verification.',
+      })
+      .optional(),
+    emailRequired: z
+      .boolean({
+        description:
+          'If set to true, the user will be prompted to enter an email which will be stored as metadata and be visible to any lock manager.',
+      })
+      .optional(),
+    dataBuilder: z
+      .string({
+        description:
+          'If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
+      })
+      .optional(),
   })
   .passthrough()
 
