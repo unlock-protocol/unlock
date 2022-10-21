@@ -36,8 +36,7 @@ cd $tmpdir
 tar -xf contracts-**.tgz
 
 # versioning
-version_number="$(ls *.tgz | awk -F \- {'print substr($2,0,5) '} | sed 's/\./-/g')"
-branch=contracts-$version_number
+$branch="$(ls *.tgz | sed 's/\./-/g' | awk 'sub("....$", "")')"
 
 # git worflow
 git clone $repo
@@ -62,7 +61,7 @@ cp -R ../package/dist/docs $dest
 rm -rf ../package
 
 # commit changes
-message="Contract API docs generated from @unlock-protocol/contracts@${version_number}"
+message="Contract API docs generated from @unlock-protocol/${branch}"
 git add .
 git commit -a -m"$message"
 git push origin $branch
