@@ -531,6 +531,33 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Update the symbol of a lock
+   * @param {object} params:
+   * - {PropTypes.address} lockAddress
+   * - {string} symbol the new symbol of the lock
+   * @param {function} callback invoked with the transaction hash
+   */
+  async updateLockSymbol(
+    params: {
+      lockAddress: string
+      name: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.updateLockSymbol) {
+      throw new Error('Lock version not supported')
+    }
+    return version.updateLockSymbol.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {object} params
    * - {PropTypes.address} lockAddress
