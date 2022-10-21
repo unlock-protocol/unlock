@@ -30,6 +30,7 @@ const {
   totalKeys,
   updateLockName,
   updateLockSymbol,
+  setBaseTokenURI,
 } = v9
 
 export default {
@@ -63,4 +64,5 @@ export default {
   renewMembershipFor,
   updateLockName,
   updateLockSymbol,
+  setBaseTokenURI,
 }
