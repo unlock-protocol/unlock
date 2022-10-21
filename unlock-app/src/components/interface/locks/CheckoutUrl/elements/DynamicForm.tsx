@@ -55,22 +55,29 @@ const TextInput = ({ props, type, ...rest }: FieldProps) => {
 }
 
 const BooleanInput = ({ props, name, label, ...rest }: any) => {
-  const [enabled, setEnabled] = useState(false)
-
   return (
-    <div className="block gap-3 py-2">
+    <div className="block gap-3 py-2 ">
       <ConnectForm>
-        {({ register, setValue }: any) => (
-          <ToggleSwitch
-            title={label}
-            enabled={enabled}
-            setEnabled={setEnabled}
-            {...rest}
-            {...register(name)}
-            onChange={(isActive: boolean) => {
-              setValue(name, isActive)
-            }}
-          />
+        {({ register }: any) => (
+          <>
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  id={name}
+                  name={name}
+                  className="outline-none focus:outline-none hover:outline-none"
+                  {...register(name)}
+                />
+                <label htmlFor={name}>{label}</label>
+              </div>
+              {rest?.description && (
+                <span className="text-xs text-gray-600 ">
+                  {rest?.description}
+                </span>
+              )}
+            </div>
+          </>
         )}
       </ConnectForm>
     </div>
@@ -125,7 +132,7 @@ export const DynamicForm = ({
           </h2>
         )}
         <form
-          className="flex flex-col gap-3"
+          className="flex flex-col gap-3 outline-none"
           onSubmit={methods.handleSubmit(onSubmit)}
           onChange={() => {
             onChange(methods.getValues())
