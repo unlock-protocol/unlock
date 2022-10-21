@@ -558,6 +558,33 @@ export default class WalletService extends UnlockService {
   }
 
   /**
+   * Update the base URI used to parse the tokenURI
+   * @param {object} params:
+   * - {PropTypes.address} lockAddress
+   * - {string} baseTokenURI the new baseTokenURI of the lock
+   * @param {function} callback invoked with the transaction hash
+   */
+  async setBaseTokenURI(
+    params: {
+      lockAddress: string
+      baseTokenURI: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.setBaseTokenURI) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setBaseTokenURI.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /**
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {object} params
    * - {PropTypes.address} lockAddress

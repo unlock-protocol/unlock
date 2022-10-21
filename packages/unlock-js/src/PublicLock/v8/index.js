@@ -25,6 +25,7 @@ const {
   totalKeys,
   updateLockName,
   updateLockSymbol,
+  setBaseTokenURI,
 } = v7
 
 export default {
@@ -53,4 +54,5 @@ export default {
   totalKeys,
   updateLockName,
   updateLockSymbol,
+  setBaseTokenURI,
 }

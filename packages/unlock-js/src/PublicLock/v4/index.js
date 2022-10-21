@@ -13,6 +13,7 @@ import getKeyExpirationByLockForOwner from './getKeyExpirationByLockForOwner'
 import totalKeys from './totalKeys'
 import updateLockName from './updateLockName'
 import updateLockSymbol from './updateLockSymbol'
+import setBaseTokenURI from './setBaseTokenURI'
 
 export default {
   purchaseKey,
@@ -32,4 +33,5 @@ export default {
   totalKeys,
   updateLockName,
   updateLockSymbol,
+  setBaseTokenURI,
 }
