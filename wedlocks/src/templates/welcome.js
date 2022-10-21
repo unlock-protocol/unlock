@@ -1,7 +1,7 @@
 import handlebars from 'handlebars'
 
 export default {
-  subject: 'Welcome to Unlock! Please, read this email carefuly',
+  subject: 'Welcome to Unlock! Please, read this email carefully',
   html: `<h1>Welcome to Unlock!</h1> 
     
     <p>We're excited to have you with us!</p>
