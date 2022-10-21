@@ -11,6 +11,7 @@ import getLock from './getLock'
 import getTokenIdForOwner from './getTokenIdForOwner'
 import getKeyExpirationByLockForOwner from './getKeyExpirationByLockForOwner'
 import totalKeys from './totalKeys'
+import updateLockName from './updateLockName'
 
 export default {
   purchaseKey,
@@ -28,4 +29,5 @@ export default {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   totalKeys,
+  updateLockName,
 }
