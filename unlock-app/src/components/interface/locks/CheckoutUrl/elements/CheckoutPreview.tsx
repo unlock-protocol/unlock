@@ -14,7 +14,7 @@ interface CheckoutPreviewProps {
 }
 
 const onDownloadJson = (paywallConfig: PaywallConfig) => {
-  const fileName = 'checkout-config.json'
+  const fileName = 'paywall-config.json'
 
   // Create a blob of the data
   const fileToSave = new Blob([JSON.stringify(paywallConfig)], {
