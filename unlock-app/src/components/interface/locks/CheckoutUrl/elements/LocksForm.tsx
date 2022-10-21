@@ -190,10 +190,14 @@ export const LocksForm = ({
     onChange(locksByAddress)
   }
 
+  const hasLocks =
+    Object.keys(locks ?? {}).length > 0 && !lockAddress && !network
+  const showForm = !hasLocks || addLock
+
   return (
     <>
-      <LockList />
-      {addLock && (
+      {!showForm && <LockList />}
+      {showForm && (
         <div className="flex flex-col gap-10">
           <div>
             <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">

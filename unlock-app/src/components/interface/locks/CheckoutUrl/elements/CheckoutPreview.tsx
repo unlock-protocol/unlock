@@ -7,11 +7,22 @@ import { PaywallConfig } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import FileSaver from 'file-saver'
 
 interface CheckoutPreviewProps {
   paywallConfig?: PaywallConfig
 }
 
+const onDownloadJson = (paywallConfig: PaywallConfig) => {
+  const fileName = 'checkout-config.json'
+
+  // Create a blob of the data
+  const fileToSave = new Blob([JSON.stringify(paywallConfig)], {
+    type: 'application/json',
+  })
+
+  FileSaver.saveAs(fileToSave, fileName)
+}
 export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
   const [checkoutUrl, setCheckoutUrl] = useState('')
   const config = useConfig()
@@ -25,7 +36,9 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
 
   const hasLocks = Object.entries(paywallConfig?.locks ?? {})?.length > 0
 
-  const URL_STRING = `http://localhost:3000/alpha/checkout?redirectUri=${checkoutRedirectURI}&paywallConfig=${encodeURIComponent(
+  const URL_STRING = `${
+    window.location.origin
+  }/alpha/checkout?redirectUri=${checkoutRedirectURI}&paywallConfig=${encodeURIComponent(
     JSON.stringify(paywallConfig)
   )}`
 
@@ -74,6 +87,7 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
                   size="small"
                   variant={buttonVariant}
                   disabled={!hasLocks}
+                  onClick={() => onDownloadJson(paywallConfig)}
                 >
                   Download JSON
                 </Button>

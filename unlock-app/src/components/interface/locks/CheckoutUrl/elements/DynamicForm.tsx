@@ -143,14 +143,14 @@ export const DynamicForm = ({
           }}
         >
           {Object.entries(properties).map(([fieldName, props], index) => {
-            const { type, description } = (props as any) ?? {}
+            const { type = undefined, description = '' } = (props as any) || {}
 
             const Component = ComponentByTypeMap?.[type] ?? undefined
             const inputType: string = TypeMap?.[type] || type
             const fieldRequired = required.includes(fieldName)
             const label = fieldRequired ? `* ${fieldName}` : fieldName
 
-            if (!component) return null
+            if (!Component) return null
             return (
               <div className="flex flex-col gap-2" key={index}>
                 <Component
