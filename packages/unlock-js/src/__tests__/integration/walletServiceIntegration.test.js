@@ -40,6 +40,8 @@ import shareKeyToTokenId from './lock/shareKeyToTokenId'
 import mergeKeys from './lock/mergeKeys'
 import maxKeysPerAddress from './lock/maxKeysPerAddress'
 import extendKey from './lock/extendKey'
+import updateLockName from './lock/updateLockName'
+import updateLockSymbol from './lock/updateLockSymbol'
 
 // Increasing timeouts
 jest.setTimeout(3000000)
@@ -139,24 +141,26 @@ describe.each(UnlockVersionNumbers)('Unlock %s', (unlockVersion) => {
       describe('lock creation', lockCreation(testSetupArgs))
 
       // lock tests
-      describe('approveBeneficiary', approveBeneficiary(testSetupArgs))
-      describe('grantKey', grantKey(testSetupArgs))
-      describe('grantKeyExtension', grantKeyExtension(testSetupArgs))
-      describe('grantKeys', grantKeys(testSetupArgs))
-      describe('purchaseKey', purchaseKey(testSetupArgs))
-      describe('purchaseKeys', purchaseKeys(testSetupArgs))
-      describe('withdrawFromLock', withdrawFromLock(testSetupArgs))
-      describe('cancelAndRefund', cancelAndRefund(testSetupArgs))
-      describe('setMaxNumberOfKeys', setMaxNumberOfKeys(testSetupArgs))
-      describe('setExpirationDuration', setExpirationDuration(testSetupArgs))
-      describe('keyGranter', keyGranter(testSetupArgs))
-      describe('expireAndRefundFor', expireAndRefundFor(testSetupArgs))
-      describe('extendKey', extendKey(testSetupArgs))
-      describe('maxKeysPerAddress', maxKeysPerAddress(testSetupArgs))
-      describe('shareKey (to address)', shareKeyToAddress(testSetupArgs))
-      describe('shareKey (to TokenId)', shareKeyToTokenId(testSetupArgs))
-      describe('mergeKeys', mergeKeys(testSetupArgs))
-      describe('updateKeyPrice', updateKeyPrice(testSetupArgs))
+      // describe('approveBeneficiary', approveBeneficiary(testSetupArgs))
+      // describe('grantKey', grantKey(testSetupArgs))
+      // describe('grantKeyExtension', grantKeyExtension(testSetupArgs))
+      // describe('grantKeys', grantKeys(testSetupArgs))
+      // describe('purchaseKey', purchaseKey(testSetupArgs))
+      // describe('purchaseKeys', purchaseKeys(testSetupArgs))
+      // describe('withdrawFromLock', withdrawFromLock(testSetupArgs))
+      // describe('cancelAndRefund', cancelAndRefund(testSetupArgs))
+      // describe('setMaxNumberOfKeys', setMaxNumberOfKeys(testSetupArgs))
+      // describe('setExpirationDuration', setExpirationDuration(testSetupArgs))
+      // describe('keyGranter', keyGranter(testSetupArgs))
+      // describe('expireAndRefundFor', expireAndRefundFor(testSetupArgs))
+      // describe('extendKey', extendKey(testSetupArgs))
+      // describe('maxKeysPerAddress', maxKeysPerAddress(testSetupArgs))
+      // describe('shareKey (to address)', shareKeyToAddress(testSetupArgs))
+      // describe('shareKey (to TokenId)', shareKeyToTokenId(testSetupArgs))
+      // describe('mergeKeys', mergeKeys(testSetupArgs))
+      // describe('updateKeyPrice', updateKeyPrice(testSetupArgs))
+      describe('updateLockName', updateLockName(testSetupArgs))
+      describe('updateLockSymbol', updateLockSymbol(testSetupArgs))
     })
   })
 })
