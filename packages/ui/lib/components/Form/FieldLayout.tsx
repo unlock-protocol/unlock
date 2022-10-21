@@ -72,7 +72,7 @@ export function FieldLayout(props: Props) {
         </label>
       )}
       {children}
-      <div className="pl-1">
+      <div>
         <Message />
       </div>
     </div>
