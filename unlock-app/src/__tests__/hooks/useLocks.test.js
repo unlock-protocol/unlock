@@ -4,7 +4,6 @@ import { EventEmitter } from 'events'
 import { StorageServiceContext } from '../../utils/withStorageService'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
-import { GraphServiceContext } from '../../utils/withGraphService'
 import { ConfigContext } from '../../utils/withConfig'
 import { TransactionStatus } from '../../unlockTypes'
 
@@ -27,7 +26,6 @@ const mockWalletService = {
   networkId: 5,
 }
 const mockStorageService = {}
-const mockGraphService = {}
 const mockConfig = {
   networks: {
     5: {
@@ -73,9 +71,6 @@ describe('useLocks', () => {
       if (context === StorageServiceContext) {
         return mockStorageService
       }
-      if (context === GraphServiceContext) {
-        return mockGraphService
-      }
       if (context === ConfigContext) {
         return mockConfig
       }
@@ -100,7 +95,6 @@ describe('useLocks', () => {
         hashes: Object.keys(pastTransactions),
       })
     )
-    mockStorageService.storeTransaction = jest.fn(() => {})
   })
 
   it.skip('should default to loading and an empty list', async () => {
@@ -153,12 +147,10 @@ describe('useLocks', () => {
     it('should retrieve the locks from the graph', async () => {
       expect.assertions(1)
       const locks = []
-      mockGraphService.getLock = jest.fn(() => Promise.resolve(locks))
       const addToLocks = jest.fn()
       const setLoading = jest.fn()
       await retrieveLocks(
         mockWeb3Service,
-        mockGraphService,
         ownerAddress,
         addToLocks,
         setLoading,
@@ -177,13 +169,11 @@ describe('useLocks', () => {
           address: '0xlock2',
         },
       ]
-
       mockSubGraphService.locks = jest.fn(() => Promise.resolve(locks))
       const addToLocks = jest.fn()
       const setLoading = jest.fn()
       await retrieveLocks(
         mockWeb3Service,
-        mockGraphService,
         ownerAddress,
         addToLocks,
         setLoading,
