@@ -38,7 +38,6 @@ const ownerAddress = '0xlockOwner'
 const lockAddress = '0xlockAddress'
 
 let graphLocks = []
-let pastTransactions = {}
 const web3ServiceLock = {
   name: 'My Lock',
 }
@@ -88,13 +87,6 @@ describe('useLocks', () => {
 
     mockWalletService.connect = jest.fn(() => {})
     mockWalletService.createLock = jest.fn(() => {})
-
-    pastTransactions = {}
-    mockStorageService.getRecentTransactionsHashesSentBy = jest.fn(() =>
-      Promise.resolve({
-        hashes: Object.keys(pastTransactions),
-      })
-    )
   })
 
   it.skip('should default to loading and an empty list', async () => {
