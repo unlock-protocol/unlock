@@ -23,7 +23,6 @@ import UnlockPropTypes from '../../propTypes'
 import LogInSignUp from './LogInSignUp'
 import { useAutoLogin } from '../../hooks/useAutoLogin'
 
-
 const StorageServiceProvider = StorageServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
 
@@ -166,7 +165,7 @@ Authenticate.defaultProps = {
   optional: false,
   onCancel: null,
   embedded: false,
-  onAuthenticated: () => { },
+  onAuthenticated: () => {},
   providerAdapter: null,
 }
 
