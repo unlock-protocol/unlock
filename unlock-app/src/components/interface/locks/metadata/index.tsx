@@ -59,6 +59,9 @@ export function UpdateLockMetadata() {
       onError(error) {
         ToastHelper.error(error as any)
       },
+      onSuccess() {
+        ToastHelper.success('Metadata successfully saved!')
+      },
     }
   )
 
@@ -83,10 +86,16 @@ export function UpdateLockMetadata() {
       <FormProvider {...methods}>
         <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="grid gap-6">
-            <LockDetailForm />
-            <LockAdvancedForm />
+            <LockDetailForm disabled={lockMetadata.isLoading} />
+            <LockAdvancedForm disabled={lockMetadata.isLoading} />
             <div className="flex justify-center">
-              <Button className="w-full max-w-sm"> Update </Button>
+              <Button
+                disabled={lockMetadata.isLoading}
+                loading={lockMetadata.isLoading}
+                className="w-full max-w-sm"
+              >
+                Update
+              </Button>
             </div>
           </div>
         </form>

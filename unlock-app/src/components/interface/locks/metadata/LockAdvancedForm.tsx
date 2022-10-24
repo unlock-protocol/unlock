@@ -6,7 +6,11 @@ import {
   RiArrowDropDownLine as DownIcon,
 } from 'react-icons/ri'
 
-export function LockAdvancedForm() {
+interface Props {
+  disabled?: boolean
+}
+
+export function LockAdvancedForm({ disabled }: Props) {
   const { register } = useFormContext()
   return (
     <div className="p-6 bg-white shadow border-xs rounded-xl">
@@ -29,6 +33,7 @@ export function LockAdvancedForm() {
               <Input
                 {...register('animation_url')}
                 type="url"
+                disabled={disabled}
                 placeholder="https://"
                 label="Animation URL"
                 description="A URL to a multi-media attachment for the item. Also supports HTML pages, allowing you to build rich experiences and interactive NFTs using JavaScript canvas, WebGL, and more. "
@@ -36,6 +41,7 @@ export function LockAdvancedForm() {
               <Input
                 {...register('youtube_url')}
                 type="url"
+                disabled={disabled}
                 placeholder="https://example.com"
                 label="Youtube URL"
                 description="A URL to a YouTube video."
@@ -43,6 +49,7 @@ export function LockAdvancedForm() {
               <Input
                 {...register('background_color')}
                 label="Background Color"
+                disabled={disabled}
                 placeholder="Daily NFT membership lock"
                 type="color"
                 className="The color will be rendered as background color of the item on OpenSea."

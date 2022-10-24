@@ -6,7 +6,11 @@ import {
   RiArrowDropDownLine as DownIcon,
 } from 'react-icons/ri'
 
-export function LockDetailForm() {
+interface Props {
+  disabled?: boolean
+}
+
+export function LockDetailForm({ disabled }: Props) {
   const { register } = useFormContext()
   return (
     <div className="p-6 bg-white shadow border-xs rounded-xl">
@@ -28,6 +32,7 @@ export function LockDetailForm() {
                 {...register('name', {
                   required: true,
                 })}
+                disabled={disabled}
                 type="text"
                 placeholder="LockSmith Daily Membership"
                 label="Name"
@@ -37,12 +42,14 @@ export function LockDetailForm() {
                 {...register('externalURL', {
                   required: false,
                 })}
+                disabled={disabled}
                 type="url"
                 placeholder="https://example.com"
                 label="External URL"
                 description="Included a link in your NFT, so members can learn more about it."
               />
               <TextBox
+                disabled={disabled}
                 label="Description"
                 placeholder="Daily NFT membership lock"
                 {...register('description', {
