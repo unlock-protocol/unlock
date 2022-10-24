@@ -558,10 +558,10 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Update the symbol of a lock
+   * Update the base URI used to parse the tokenURI
    * @param {object} params:
    * - {PropTypes.address} lockAddress
-   * - {string} symbol the new symbol of the lock
+   * - {string} baseTokenURI the new baseTokenURI of the lock
    * @param {function} callback invoked with the transaction hash
    */
   async setBaseTokenURI(
