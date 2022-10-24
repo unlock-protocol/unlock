@@ -93,7 +93,7 @@ const BooleanInput = ({ props, name, label, ...rest }: any) => {
                   type="checkbox"
                   id={name}
                   name={name}
-                  className="outline-none focus:outline-none hover:outline-none"
+                  className="cursor-pointer focus:outline-0 hover:outline-0 outline-0 focus:ring-transparent"
                   {...register(name)}
                 />
                 <label htmlFor={name}>{label}</label>
@@ -172,16 +172,13 @@ export const DynamicForm = ({
             let inputType: string = TypeMap?.[type] || type
             const fieldRequired = required.includes(fieldName)
 
-            // union type
-            if (
-              Array.isArray(type) ||
-              type.includes('string') ||
-              type.includes('number')
-            ) {
-              if (type.includes('string') || type.includes('number')) {
-                inputType = TypeMap.string
-                Component = ComponentByTypeMap.string
-              }
+            const isUnionType =
+              Array.isArray(type) &&
+              (type.includes('string') || type.includes('number'))
+
+            if (isUnionType) {
+              inputType = TypeMap.string
+              Component = ComponentByTypeMap.string
             }
 
             if (type === 'array') {

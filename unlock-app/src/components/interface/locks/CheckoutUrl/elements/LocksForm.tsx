@@ -93,7 +93,7 @@ export const LocksForm = ({
     const getLocksByNetwork = async () => {
       if (!network) return null
       const service = new SubgraphService()
-      setLocksByNetwork(
+      const locksByNetwork =
         (await service.locks(
           {
             first: 1000,
@@ -105,7 +105,7 @@ export const LocksForm = ({
             networks: [`${network!}`],
           }
         )) ?? []
-      )
+      setLocksByNetwork(locksByNetwork)
     }
     getLocksByNetwork()
   }, [account, network])
