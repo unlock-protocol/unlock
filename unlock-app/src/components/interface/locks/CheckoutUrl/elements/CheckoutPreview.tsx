@@ -32,21 +32,21 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
   const injectedProvider =
     communication.providerAdapter || selectProvider(config)
 
-  const checkoutRedirectURI = useRef<string>()
-
   const hasLocks = Object.entries(paywallConfig?.locks ?? {})?.length > 0
 
   useEffect(() => {
     const url = new URL(`${window.location.origin}/checkout`)
+
+    // remove redirectUri if not valorized
+    if (paywallConfig?.redirectUri?.length === 0) {
+      delete paywallConfig.redirectUri
+    }
+
     url.searchParams.append(
       'paywallConfig',
       encodeURIComponent(JSON.stringify(paywallConfig))
     )
 
-    if (paywallConfig?.redirectUri?.length) {
-      url.searchParams.append('redirectUri', paywallConfig.redirectUri)
-      checkoutRedirectURI.current = paywallConfig?.redirectUri ?? ''
-    }
     setCheckoutUrl(url.toString())
   }, [paywallConfig])
 
@@ -65,11 +65,6 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
               injectedProvider={injectedProvider as any}
               communication={communication}
               paywallConfig={paywallConfig as any}
-              redirectURI={
-                checkoutRedirectURI.current
-                  ? new URL(checkoutRedirectURI.current)
-                  : undefined
-              }
             />
             <div className="flex flex-col items-center gap-2">
               <span className="text-sm">
