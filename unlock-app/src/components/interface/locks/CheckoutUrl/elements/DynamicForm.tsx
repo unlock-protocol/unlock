@@ -127,6 +127,11 @@ const getFieldLabel = (fieldName: string, required = false) => {
   return required ? `*${label}` : label
 }
 
+const getComponentByType = (type: string) => {
+  // return Input component based on input type
+  return ComponentByTypeMap?.[type] ?? undefined
+}
+
 export const DynamicForm = ({
   name,
   schema,
@@ -168,7 +173,7 @@ export const DynamicForm = ({
         >
           {Object.entries(properties ?? {}).map(([fieldName, props], index) => {
             const { type = undefined, description = '' } = (props as any) || {}
-            let Component = ComponentByTypeMap?.[type] ?? undefined
+            let Component = getComponentByType(type)
             let inputType: string = TypeMap?.[type] || type
             const fieldRequired = required.includes(fieldName)
 
@@ -190,7 +195,7 @@ export const DynamicForm = ({
                   {Object.entries((props as any)?.items?.properties ?? {})?.map(
                     ([name, fieldProps], index) => {
                       const { type, description } = (fieldProps ?? {}) as any
-                      Component = ComponentByTypeMap?.[type] ?? undefined
+                      Component = getComponentByType(type)
                       if (!Component) return null
                       return (
                         <>
