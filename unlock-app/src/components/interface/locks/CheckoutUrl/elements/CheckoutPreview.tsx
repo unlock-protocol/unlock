@@ -1,5 +1,5 @@
 import { Button } from '@unlock-protocol/ui'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Checkout } from '~/components/interface/checkout/alpha/Checkout'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
@@ -32,12 +32,12 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
   const injectedProvider =
     communication.providerAdapter || selectProvider(config)
 
-  const checkoutRedirectURI = ''
+  const checkoutRedirectURI = useRef<string>()
 
   const hasLocks = Object.entries(paywallConfig?.locks ?? {})?.length > 0
 
   useEffect(() => {
-    const url = new URL(`${window.location.origin}/alpha/checkout`)
+    const url = new URL(`${window.location.origin}/checkout`)
     url.searchParams.append(
       'paywallConfig',
       encodeURIComponent(JSON.stringify(paywallConfig))
@@ -45,6 +45,7 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
 
     if (paywallConfig?.redirectUri?.length) {
       url.searchParams.append('redirectUri', paywallConfig.redirectUri)
+      checkoutRedirectURI.current = paywallConfig?.redirectUri ?? ''
     }
     setCheckoutUrl(url.toString())
   }, [paywallConfig])
@@ -65,7 +66,9 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
               communication={communication}
               paywallConfig={paywallConfig as any}
               redirectURI={
-                checkoutRedirectURI ? new URL(checkoutRedirectURI) : undefined
+                checkoutRedirectURI.current
+                  ? new URL(checkoutRedirectURI.current)
+                  : undefined
               }
             />
             <div className="flex flex-col items-center gap-2">
