@@ -9,10 +9,10 @@ import {
 } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import { DynamicForm } from './DynamicForm'
-import { Button, IconButton, Select } from '@unlock-protocol/ui'
+import { Button, IconButton, Select, Tooltip } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { addressMinify } from '~/utils/strings'
-import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+import { FiDelete as DeleteIcon } from 'react-icons/fi'
 
 const LockSchema = PaywallConfigLockSchema.omit({
   network: true, // network will managed with a custom input with the lock address
@@ -35,6 +35,10 @@ interface LocksFormProps {
 interface LockImageProps {
   lockAddress: string
 }
+interface MetadataDetailProps {
+  title: string
+  value?: string
+}
 
 const LockImage = ({ lockAddress }: LockImageProps) => {
   const config = useConfig()
@@ -47,6 +51,15 @@ const LockImage = ({ lockAddress }: LockImageProps) => {
         alt={lockAddress}
         className="object-cover w-full h-full bg-center"
       />
+    </div>
+  )
+}
+
+const MetadataDetail = ({ title, value }: MetadataDetailProps) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-sm">{title}</span>
+      <span className="text-base font-bold">{value || '-'}</span>
     </div>
   )
 }
@@ -150,27 +163,30 @@ export const LocksForm = ({
               <>
                 <div
                   key={index}
-                  className="flex items-center justify-between w-full px-2 py-1 text-sm bg-white rounded-lg shadow"
+                  className="flex items-center justify-between w-full p-4 text-sm bg-white rounded-lg shadow"
                 >
-                  <div className="flex items-center w-full gap-5">
-                    <div className="flex items-center gap-2">
-                      <span>Field name: </span>
-                      <span className="text-base font-semibold">
-                        {metadata?.name}
-                      </span>
+                  <div className="flex items-center justify-between w-full gap-2">
+                    <div className="grid w-full grid-cols-3">
+                      <MetadataDetail
+                        title="Form label"
+                        value={metadata?.name}
+                      />
+                      <MetadataDetail
+                        title="Default value"
+                        value={metadata?.defaultValue}
+                      />
+                      <MetadataDetail
+                        title="Required"
+                        value={metadata?.required ? 'YES' : 'NO'}
+                      />
                     </div>
-                    <div className="flex items-center gap-2">
-                      <span>default value: </span>
-                      <span className="text-base font-semibold">
-                        {metadata?.defaultValue}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <span>required: </span>
-                      <span className="text-base font-semibold">
-                        {metadata?.required ? 'true' : 'false'}
-                      </span>
-                    </div>
+                    <IconButton
+                      onClick={() => onRemoveMetadata(metadata?.name)}
+                      icon={
+                        <DeleteIcon size={20} className="hover:fill-inherit" />
+                      }
+                      label="Delete"
+                    />
                   </div>
                 </div>
               </>
@@ -259,6 +275,26 @@ export const LocksForm = ({
     onChange(lockWithMetadata)
     setAddMetadata(false)
   }
+
+  const onRemoveMetadata = (fieldName: string) => {
+    const lock = locks[lockAddress]
+    const metadata =
+      lock?.metadataInputs?.filter(
+        (metadata) => metadata?.name?.toLowerCase() !== fieldName?.toLowerCase()
+      ) ?? []
+
+    // update metadata by lock address
+    const lockWithMetadata = {
+      ...locks,
+      [lockAddress]: {
+        ...lock,
+        metadataInputs: [...metadata],
+      },
+    }
+
+    setLocks(lockWithMetadata)
+    onChange(lockWithMetadata)
+  }
   const hasLocks =
     Object.keys(locks ?? {}).length > 0 && !lockAddress && !network
   const showForm = !hasLocks || addLock
@@ -346,7 +382,7 @@ export const LocksForm = ({
 
 const LockListItem = ({ address, name, onRemove }: LockListItemProps) => {
   return (
-    <div className="flex items-center justify-between w-full px-2 py-1 text-sm bg-white rounded-lg shadow">
+    <div className="flex items-center justify-between w-full gap-2 px-2 py-1 text-sm bg-white rounded-lg shadow">
       <div className="flex items-center w-full">
         <div className="flex items-center gap-2">
           <LockImage lockAddress={address} />
@@ -354,11 +390,16 @@ const LockListItem = ({ address, name, onRemove }: LockListItemProps) => {
         </div>
         <span className="ml-auto">{addressMinify(address)}</span>
       </div>
-      <IconButton
-        onClick={onRemove}
-        icon={<CloseIcon size={20} className="hover:fill-inherit" />}
-        label="Close"
-      />
+      <div>
+        <Tooltip label="Delete" tip="Delete" side="right">
+          <IconButton
+            onClick={onRemove}
+            icon={<DeleteIcon size={20} className="hover:fill-inherit" />}
+            label="Delete"
+            className="mt-1"
+          />
+        </Tooltip>
+      </div>
     </div>
   )
 }
