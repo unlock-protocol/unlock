@@ -197,6 +197,17 @@ export const PaywallConfigSchema = z
   })
   .passthrough()
 
+export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
+  redirectUri: true,
+  title: true,
+  icon: true,
+  persistentCheckout: true,
+  referrer: true,
+  messageToSign: true,
+  pessimistic: true,
+  hideSoldOut: true,
+})
+
 export enum TransactionType {
   LOCK_CREATION = 'Lock Creation',
   KEY_PURCHASE = 'Key Purchase',
@@ -276,6 +287,7 @@ export type PaywallConfigLock = z.infer<typeof PaywallConfigLockSchema>
 export type MetadataInput = z.infer<typeof MetadataInputSchema>
 export type PaywallConfig = z.infer<typeof PaywallConfigSchema>
 export type PaywallConfigLocks = z.infer<typeof PaywallConfigLocksSchema>
+export type BasicPaywallConfig = z.infer<typeof BasicPaywallConfigSchema>
 
 export enum KeyStatus {
   NONE = 'none',
