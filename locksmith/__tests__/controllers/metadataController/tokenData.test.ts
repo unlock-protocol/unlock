@@ -8,7 +8,6 @@ import { lockTypedData } from '../../test-helpers/typeDataGenerators'
 import app = require('../../../src/app')
 import Base64 = require('../../../src/utils/base64')
 
-jest.setTimeout(60000)
 
 const lockAddress = '0xb0Feb7BA761A31548FF1cDbEc08affa8FFA3e691'
 const lockOwner = '0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'
