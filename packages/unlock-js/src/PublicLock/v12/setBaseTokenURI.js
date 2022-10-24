@@ -25,6 +25,7 @@ export async function setBaseTokenURI(
   }
 
   await this.provider.waitForTransaction(hash)
+  return baseTokenURI
 }
 
 export default setBaseTokenURI
