@@ -23,7 +23,7 @@ import { Renewed } from './Renewed'
 interface Props {
   injectedProvider: unknown
   paywallConfig: PaywallConfig
-  communication: ReturnType<typeof useCheckoutCommunication>
+  communication?: ReturnType<typeof useCheckoutCommunication>
   redirectURI?: URL
 }
 
@@ -58,7 +58,7 @@ export function Checkout({
 
   useEffect(() => {
     const user = account ? { address: account } : {}
-    if (communication.insideIframe) {
+    if (communication?.insideIframe) {
       communication.emitUserInfo(user)
     }
   }, [account, communication])
@@ -83,7 +83,7 @@ export function Checkout({
         }
         return window.location.assign(redirectURI)
       }
-      if (!communication.insideIframe) {
+      if (!communication?.insideIframe) {
         window.history.back()
       } else {
         communication.emitCloseModal()
