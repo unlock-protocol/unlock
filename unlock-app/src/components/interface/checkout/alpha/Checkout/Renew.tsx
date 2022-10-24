@@ -26,7 +26,7 @@ import { fetchRecipientsData } from './utils'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  communication: CheckoutCommunication
+  communication?: CheckoutCommunication
 }
 
 export function Renew({
@@ -103,11 +103,11 @@ export function Renew({
           })
         } else {
           if (!paywallConfig.pessimistic && hash) {
-            communication.emitTransactionInfo({
+            communication?.emitTransactionInfo({
               hash,
               lock: lockAddress,
             })
-            communication.emitUserInfo({
+            communication?.emitUserInfo({
               address: account,
               signedMessage: signedMessage?.signature,
             })

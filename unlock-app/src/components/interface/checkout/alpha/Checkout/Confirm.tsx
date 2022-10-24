@@ -32,7 +32,7 @@ import { MAX_UINT } from '~/constants'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  communication: CheckoutCommunication
+  communication?: CheckoutCommunication
 }
 
 export function Confirm({
@@ -178,7 +178,7 @@ export function Confirm({
           transactionHash: response.transactionHash,
           status: 'PROCESSING',
         })
-        communication.emitTransactionInfo({
+        communication?.emitTransactionInfo({
           hash: response.transactionHash,
           lock: lockAddress,
         })
@@ -242,11 +242,11 @@ export function Confirm({
             })
           } else {
             if (!paywallConfig.pessimistic && hash) {
-              communication.emitTransactionInfo({
+              communication?.emitTransactionInfo({
                 hash,
                 lock: lockAddress,
               })
-              communication.emitUserInfo({
+              communication?.emitUserInfo({
                 address: account,
                 signedMessage: messageToSign?.signature,
               })
@@ -297,7 +297,7 @@ export function Confirm({
       })
       const signer = web3Provider.getSigner()
       await op.exec(signer)
-      communication.emitUserInfo({
+      communication?.emitUserInfo({
         address: account,
       })
       send({
@@ -328,7 +328,7 @@ export function Confirm({
       const { transactionHash: hash, error } = response
 
       if (hash && !error) {
-        communication.emitTransactionInfo({
+        communication?.emitTransactionInfo({
           hash,
           lock: lockAddress,
         })

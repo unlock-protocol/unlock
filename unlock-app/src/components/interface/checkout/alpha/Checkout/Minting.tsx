@@ -17,7 +17,7 @@ interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
-  communication: CheckoutCommunication
+  communication?: CheckoutCommunication
 }
 
 export function Minting({
@@ -53,12 +53,12 @@ export function Minting({
             throw new Error('Transaction failed.')
           }
 
-          communication.emitTransactionInfo({
+          communication?.emitTransactionInfo({
             hash: mint!.transactionHash!,
             lock: lock?.address,
           })
 
-          communication.emitUserInfo({
+          communication?.emitUserInfo({
             address: account,
             signedMessage: messageToSign?.signature,
           })

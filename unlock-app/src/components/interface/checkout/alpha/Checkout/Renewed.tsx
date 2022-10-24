@@ -18,7 +18,7 @@ interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
-  communication: CheckoutCommunication
+  communication?: CheckoutCommunication
 }
 
 export function Renewed({
@@ -46,11 +46,11 @@ export function Renewed({
             network.provider
           )
           await provider.waitForTransaction(transactionHash)
-          communication.emitTransactionInfo({
+          communication?.emitTransactionInfo({
             hash: transactionHash,
             lock: lock?.address,
           })
-          communication.emitUserInfo({
+          communication?.emitUserInfo({
             address: account,
             signedMessage: messageToSign?.signature,
           })
