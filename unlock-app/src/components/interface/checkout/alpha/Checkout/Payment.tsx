@@ -92,7 +92,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const enableCreditCard = !!fiatPricing?.creditCardEnabled
 
-  const enableCrypto = isPayable && !isUnlockAccount && !isTokenBalanceLoading
+  const enableCrypto = !isTokenBalanceLoading && (!isUnlockAccount || isPayable)
 
   const enableClaim =
     !!isClaimable &&
