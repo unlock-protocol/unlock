@@ -12,7 +12,7 @@ import { DynamicForm } from './DynamicForm'
 import { Button, Select, Tooltip } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { addressMinify } from '~/utils/strings'
-import { FiDelete as DeleteIcon } from 'react-icons/fi'
+import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
 
 const LockSchema = PaywallConfigLockSchema.omit({
   network: true, // network will managed with a custom input with the lock address
@@ -181,7 +181,7 @@ export const LocksForm = ({
                       aria-label="Remove metadata"
                       className="mt-1 text-gray-500"
                     >
-                      <DeleteIcon size={20} className="hover:fill-inherit" />
+                      <DeleteIcon size={20} />
                     </button>
                   </div>
                 </div>
@@ -389,15 +389,25 @@ const LockListItem = ({ address, name, onRemove }: LockListItemProps) => {
         </div>
         <span className="ml-auto">{addressMinify(address)}</span>
       </div>
-      <div>
-        <Tooltip label="Delete" tip="Delete" side="right">
+      <div className="flex gap-2 item-center">
+        <Tooltip label="Edit" tip="Edit" side="bottom">
           <button
-            className="mt-1 text-gray-500"
+            className="text-gray-500 "
+            type="button"
+            onClick={void 0}
+            aria-label="Edit lock"
+          >
+            <EditIcon size={18} />
+          </button>
+        </Tooltip>
+        <Tooltip label="Delete" tip="Delete" side="bottom">
+          <button
+            className="text-gray-500 "
             type="button"
             onClick={onRemove}
             aria-label="Remove lock"
           >
-            <DeleteIcon size={20} className="hover:fill-inherit" />
+            <DeleteIcon size={20} />
           </button>
         </Tooltip>
       </div>

@@ -198,6 +198,7 @@ export const PaywallConfigSchema = z
   .passthrough()
 
 export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
+  redirectUri: true,
   title: true,
   icon: true,
   persistentCheckout: true,
@@ -205,7 +206,6 @@ export const BasicPaywallConfigSchema = PaywallConfigSchema.pick({
   messageToSign: true,
   pessimistic: true,
   hideSoldOut: true,
-  redirectUri: true,
 })
 
 export enum TransactionType {

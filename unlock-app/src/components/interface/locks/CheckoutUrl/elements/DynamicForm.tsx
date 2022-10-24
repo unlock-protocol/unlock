@@ -3,6 +3,34 @@ import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 
+export const LabelMapping: Record<string, string> = {
+  name: 'Name',
+  network: 'Network',
+  lock: 'Lock',
+  title: 'Title',
+  icon: 'Image icon',
+  persistentCheckout: 'Persistent Checkout',
+  referrer: 'Referrer',
+  messageToSign: 'Message to sign',
+  pessimistic: 'Pessimistic',
+  hideSoldOut: 'Hide Sold-out',
+  type: 'Type',
+  placeholder: 'Placeholder text',
+  defaultValue: 'Default value',
+  required: 'Required',
+  public: 'Shown as public',
+  recurringPayments: 'Recurring frequency',
+  minRecipients: 'Min. Quantity',
+  maxRecipients: 'Max. Quantity',
+  password: 'Password verification',
+  captcha: 'Captcha',
+  emailRequired: 'Collect email address',
+  superfluid: 'Enable Superfluid',
+  default: 'Default',
+  dataBuilder: 'Data builder',
+  redirectUri: 'Redirect URL',
+}
+
 interface DynamicFormProps {
   name: string
   schema: z.Schema
@@ -94,8 +122,9 @@ const TypeMap: Record<string, string> = {
   integer: 'number',
 }
 
-const camelCaseToText = (text: string) => {
-  return text.replace(/([A-Z](?=[a-z]+)|[A-Z]+(?![a-z]))/g, ' $1').trim()
+const getFieldLabel = (fieldName: string, required = false) => {
+  const label = LabelMapping?.[fieldName] ?? fieldName
+  return required ? `*${label}` : label
 }
 
 export const DynamicForm = ({
@@ -142,7 +171,6 @@ export const DynamicForm = ({
             let Component = ComponentByTypeMap?.[type] ?? undefined
             let inputType: string = TypeMap?.[type] || type
             const fieldRequired = required.includes(fieldName)
-            const label = fieldRequired ? `* ${fieldName}` : fieldName
 
             // union type
             if (
@@ -173,7 +201,7 @@ export const DynamicForm = ({
                             type={type}
                             key={index}
                             size="small"
-                            label={name}
+                            label={getFieldLabel(name, fieldRequired)}
                             name={name}
                             description={description}
                             props={fieldProps}
@@ -193,7 +221,7 @@ export const DynamicForm = ({
               <div className="flex flex-col gap-2" key={index}>
                 <Component
                   props={props}
-                  label={camelCaseToText(label)}
+                  label={getFieldLabel(fieldName, fieldRequired)}
                   type={inputType}
                   name={fieldName}
                   required={fieldRequired}
