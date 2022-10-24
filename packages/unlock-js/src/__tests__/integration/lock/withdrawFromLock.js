@@ -1,3 +1,5 @@
+import { versionEqualOrBelow } from '../../helpers/integration'
+
 let walletService, web3Service, lockAddress, lock, chainId
 
 export default () => () => {
@@ -5,12 +7,25 @@ export default () => () => {
   let userBalanceBefore
   let withdrawnAmount
   let transactionHash
+  let beneficiary
+  let publicLockVersion
+
   // TODO: support partial withdraws
   // TODO: get the beneficiary address from the lock
-
   beforeAll(async () => {
-    ;({ walletService, web3Service, lockAddress, lock, chainId } =
-      global.suiteData)
+    ;({
+      walletService,
+      web3Service,
+      lockAddress,
+      lock,
+      chainId,
+      publicLockVersion,
+    } = global.suiteData)
+
+    beneficiary = versionEqualOrBelow(publicLockVersion, 'v11')
+      ? lock.beneficiary
+      : await walletService.signer.getAddress()
+
     if (lock.currencyContractAddress === null) {
       // Get the ether balance of the lock before the withdrawal
       lockBalanceBefore = await web3Service.getAddressBalance(
@@ -19,7 +34,7 @@ export default () => () => {
       )
       // Get the ether balance of the beneficiary before the withdrawal
       userBalanceBefore = await web3Service.getAddressBalance(
-        lock.beneficiary,
+        beneficiary,
         chainId
       )
     } else {
@@ -32,7 +47,7 @@ export default () => () => {
       // Get the erc20 balance of the user before the purchase
       userBalanceBefore = await web3Service.getTokenBalance(
         lock.currencyContractAddress,
-        lock.beneficiary,
+        beneficiary,
         chainId
       )
     }
@@ -90,7 +105,7 @@ export default () => () => {
     if (lock.currencyContractAddress === null) {
       // Get the ether balance of the beneficiary before the withdrawal
       beneficiaryBalanceAfter = await web3Service.getAddressBalance(
-        lock.beneficiary,
+        beneficiary,
         chainId
       )
       // We should take gas paid into account... so the amount is larger than before
@@ -102,7 +117,7 @@ export default () => () => {
       // Get the erc20 balance of the user before the purchase
       beneficiaryBalanceAfter = await web3Service.getTokenBalance(
         lock.currencyContractAddress,
-        lock.beneficiary,
+        beneficiary,
         chainId
       )
       expect(parseFloat(beneficiaryBalanceAfter)).toEqual(
