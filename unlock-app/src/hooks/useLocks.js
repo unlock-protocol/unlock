@@ -9,11 +9,9 @@ import {
   useWalletService,
   WalletServiceContext,
 } from '../utils/withWalletService'
-import { GraphServiceContext } from '../utils/withGraphService'
 import { ConfigContext } from '../utils/withConfig'
 import { processTransaction } from './useLock'
 import { useConfig } from '~/utils/withConfig'
-import GraphService from '~/services/graphService'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 
 /**
@@ -37,7 +35,6 @@ export const getLockAtAddress = async (web3Service, address, network) => {
  */
 export const retrieveLocks = async (
   web3Service,
-  graphService,
   owner,
   addToLocks,
   setLoading,
@@ -61,7 +58,6 @@ export const retrieveLocks = async (
       networks: [`${network}`],
     }
   )
-
   // Sort locks to show the most recent first
   locks.sort((x, y) => {
     return parseInt(y.createdAtBlock) - parseInt(x.createdAtBlock)
@@ -194,8 +190,6 @@ export const useLocks = (owner, network) => {
   const [loading, setLoading] = useState(true)
 
   const { subgraph } = networks[network] ?? {}
-  const graphService = new GraphService()
-  graphService.connect(subgraph.endpoint)
 
   // We use a reducer so we can easily add locks as they are retrieved
   const [locks, addToLocks] = useReducer((locks, lock) => {
@@ -259,14 +253,7 @@ export const useLocks = (owner, network) => {
    */
   useEffect(() => {
     addToLocks(-1) // reset all locks!
-    retrieveLocks(
-      web3Service,
-      graphService,
-      owner,
-      addToLocks,
-      setLoading,
-      network
-    )
+    retrieveLocks(web3Service, owner, addToLocks, setLoading, network)
   }, [owner, network])
 
   return { error, loading, locks, addLock }

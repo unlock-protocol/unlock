@@ -7,7 +7,6 @@ import {
 import { EventEmitter } from 'events'
 import { isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
-import { Lock } from '../unlockTypes'
 import fetch, { RequestInit } from 'node-fetch'
 import { APP_NAME } from '~/hooks/useAppStorage'
 
@@ -17,10 +16,6 @@ import { APP_NAME } from '~/hooks/useAppStorage'
 // objects.
 export const success = {
   addPaymentMethod: 'addPaymentMethod.success',
-  storeTransaction: 'storeTransaction.success',
-  getTransactionHashesSentBy: 'getTransactionHashesSentBy.success',
-  getLockAddressesForUser: 'getLockAddressesForUser.success',
-  storeLockDetails: 'storeLockDetails.success',
   createUser: 'createUser.success',
   updateUser: 'updateUser.success',
   getUserPrivateKey: 'getUserPrivateKey.success',
@@ -28,16 +23,10 @@ export const success = {
   getCards: 'getCards.success',
   keyPurchase: 'keyPurchase.success',
   ejectUser: 'ejectUser.success',
-  getMetadataFor: 'getMetadataFor.success',
-  getBulkMetadataFor: 'getBulkMetadataFor.success',
 }
 
 export const failure = {
   addPaymentMethod: 'addPaymentMethod.failure',
-  storeTransaction: 'storeTransaction.failure',
-  getTransactionHashesSentBy: 'getTransactionHashesSentBy.failure',
-  getLockAddressesForUser: 'getLockAddressesForUser.failure',
-  storeLockDetails: 'storeLockDetails.failure',
   createUser: 'createUser.failure',
   updateUser: 'updateUser.failure',
   getUserPrivateKey: 'getUserPrivateKey.failure',
@@ -45,8 +34,6 @@ export const failure = {
   getCards: 'getCards.failure',
   keyPurchase: 'keyPurchase.failure',
   ejectUser: 'ejectUser.failure',
-  getMetadataFor: 'getMetadataFor.failure',
-  getBulkMetadataFor: 'getBulkMetadataFor.failure',
 }
 
 interface GetSiweMessageProps {
@@ -390,34 +377,6 @@ export class StorageService extends EventEmitter {
   }
 
   /**
-   * Retrieves the list of known lock adresses for this user
-   * [Note: locksmith may not know of all the locks by a user at a given point as the lock may not be deployed yet, or the lock might have been transfered]
-   * @param {*} address
-   */
-  async getLockAddressesForUser(address: string) {
-    try {
-      const response = await fetch(`${this.host}/${address}/locks`, {
-        method: 'GET',
-      })
-      const data = await response.json()
-
-      if (data && data.locks) {
-        this.emit(
-          success.getLockAddressesForUser,
-          data.locks.map((lock: Lock) => lock.address)
-        )
-      } else {
-        this.emit(
-          failure.getLockAddressesForUser,
-          'We could not retrieve lock addresses for that user'
-        )
-      }
-    } catch (error) {
-      this.emit(failure.getLockAddressesForUser, error)
-    }
-  }
-
-  /**
    * Ejects a user
    *
    * @param {*} publicKey
@@ -440,54 +399,6 @@ export class StorageService extends EventEmitter {
       this.emit(success.ejectUser, { publicKey })
     } catch (error) {
       this.emit(failure.ejectUser, { publicKey })
-    }
-  }
-
-  /**
-   * Given a lock address and a typed data signature, get the metadata
-   * (public and protected) associated with each key on that lock.
-   * @param {string} lockAddress
-   * @param {string} signature
-   * @param {*} data
-   */
-  async getBulkMetadataFor(
-    lockAddress: string,
-    signature: string,
-    data: any,
-    network: number
-  ) {
-    const stringData = JSON.stringify(data)
-    const opts = {
-      headers: {
-        Authorization: `Bearer-Simple ${Buffer.from(signature).toString(
-          'base64'
-        )}`,
-        'Content-Type': 'application/json',
-      },
-      // No body allowed in GET, so these are passed as query params for this
-      // call.
-      params: {
-        data: stringData,
-        signature,
-      },
-    }
-    try {
-      const url = new URL(
-        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`
-      )
-      url.searchParams.append('data', JSON.stringify(opts.params))
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          ...opts.headers,
-        },
-      })
-      const data = response.json()
-
-      this.emit(success.getBulkMetadataFor, lockAddress, data)
-      return data
-    } catch (error) {
-      this.emit(failure.getBulkMetadataFor, error)
     }
   }
 

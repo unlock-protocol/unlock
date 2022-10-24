@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { network } from '~/propTypes'
 import { addressMinify } from '~/utils/strings'
-import { GraphServiceContext } from '~/utils/withGraphService'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 
 interface LocksByNetworkProps {
   label?: string
@@ -30,15 +30,24 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
     AuthenticationContext
   )
 
-  const graphService = useContext(GraphServiceContext)
+  const service = new SubgraphService()
 
   const { isLoading, data: locks = [] } = useQuery([owner], async () => {
     const items = Object.values(networks)
       .filter(({ subgraph }) => !subgraph.endpoint.includes('localhost'))
       .map(async ({ id, subgraph }) => {
         if (subgraph.endpoint) {
-          graphService.connect(subgraph.endpoint)
-          const locksByNetwork = await graphService.locksByManager(owner, id)
+          const locksByNetwork = await service.locks(
+            {
+              first: 1000, // TODO: what happens when a user has more than 1000 locks?
+              where: {
+                lockManagers_contains: [owner],
+              },
+            },
+            {
+              networks: [`${id}`],
+            }
+          )
           return [id, locksByNetwork as any]
         }
       })
