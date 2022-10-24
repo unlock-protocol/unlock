@@ -2,7 +2,6 @@ import { Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { Checkout } from '~/components/interface/checkout/alpha/Checkout'
 import { selectProvider } from '~/hooks/useAuthenticate'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PaywallConfig } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import useClipboard from 'react-use-clipboard'
@@ -26,8 +25,6 @@ const onDownloadJson = (paywallConfig: PaywallConfig) => {
 export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
   const [checkoutUrl, setCheckoutUrl] = useState('')
   const config = useConfig()
-  // Fetch config from parent in iframe context
-  const communication = useCheckoutCommunication()
 
   const injectedProvider = selectProvider(config)
 
@@ -62,7 +59,6 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
           <div className="flex flex-col items-center w-full gap-4">
             <Checkout
               injectedProvider={injectedProvider as any}
-              communication={communication}
               paywallConfig={paywallConfig as any}
             />
             <div className="flex flex-col items-center gap-2">
