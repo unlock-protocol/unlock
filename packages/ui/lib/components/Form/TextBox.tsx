@@ -1,4 +1,8 @@
-import { InputHTMLAttributes, ForwardedRef } from 'react'
+import {
+  InputHTMLAttributes,
+  ForwardedRef,
+  TextareaHTMLAttributes,
+} from 'react'
 import type { Size, SizeStyleProp } from '../../types'
 import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -6,7 +10,7 @@ import { FieldLayout } from './FieldLayout'
 
 export interface Props
   extends Omit<
-    InputHTMLAttributes<HTMLTextAreaElement>,
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
     'size' | 'id' | 'children'
   > {
   label?: string

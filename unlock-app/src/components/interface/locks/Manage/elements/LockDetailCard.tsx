@@ -19,7 +19,6 @@ import { UpdateQuantityModal } from '../modals/UpdateQuantityModal'
 import { EnableRecurring } from './EnableRecurring'
 import { useLockManager } from '~/hooks/useLockManager'
 import { RiEditLine as EditIcon } from 'react-icons/ri'
-import Link from 'next/link'
 import { UpdateMetadataDrawer } from '../../metadata/MetadataUpdate'
 
 interface LockDetailCardProps {
