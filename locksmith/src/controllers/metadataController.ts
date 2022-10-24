@@ -85,23 +85,28 @@ namespace MetadataController {
   }
 
   export const data = async (req: any, res: Response): Promise<any> => {
-    const address = Normalizer.ethereumAddress(req.params.address)
-    const keyId = req.params.keyId.toLowerCase()
-    const base = `${req.protocol}://${req.headers.host}`
-    const lockOwner = await presentProtectedData(req, Number(keyId), address)
+    try {
+      const address = Normalizer.ethereumAddress(req.params.address)
+      const keyId = req.params.keyId.toLowerCase()
+      const base = `${req.protocol}://${req.headers.host}`
+      const lockOwner = await presentProtectedData(req, Number(keyId), address)
 
-    const keyMetadata = await metadataOperations.generateKeyMetadata(
-      address,
-      keyId,
-      lockOwner,
-      base,
-      parseInt(req.params.chain || req.chain)
-    )
+      const keyMetadata = await metadataOperations.generateKeyMetadata(
+        address,
+        keyId,
+        lockOwner,
+        base,
+        parseInt(req.params.chain || req.chain)
+      )
 
-    if (Object.keys(keyMetadata).length === 0) {
-      res.sendStatus(404)
-    } else {
-      res.json(keyMetadata)
+      if (Object.keys(keyMetadata).length === 0) {
+        res.sendStatus(404)
+      } else {
+        res.json(keyMetadata)
+      }
+    } catch (error) {
+      logger.error(`Error serving metadata`)
+      res.json({})
     }
   }
 

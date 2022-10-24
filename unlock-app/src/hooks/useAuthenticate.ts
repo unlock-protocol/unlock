@@ -1,12 +1,11 @@
 import WalletConnectProvider from '@walletconnect/web3-provider'
-import { useContext } from 'react'
 import WalletLink from 'walletlink'
-import { ConfigContext } from '../utils/withConfig'
-import { AuthenticationContext } from '../contexts/AuthenticationContext'
+import { useConfig } from '../utils/withConfig'
+import { useAuth } from '../contexts/AuthenticationContext'
+import { useAppStorage } from './useAppStorage'
 
 export interface EthereumWindow extends Window {
   ethereum?: any
-  web3?: any
 }
 
 interface RpcType {
@@ -33,11 +32,6 @@ export const selectProvider = (config: any) => {
     provider = `http://${config.httpProvider}:8545`
   } else if (ethereumWindow && ethereumWindow.ethereum) {
     provider = ethereumWindow.ethereum
-  } else if (ethereumWindow.web3) {
-    // Legacy web3 wallet/browser (should we keep supporting?)
-    provider = ethereumWindow.web3.currentProvider
-  } else {
-    // TODO: Let's let the user pick one up from the UI (including the unlock provider!)
   }
   return provider
 }
@@ -46,9 +40,20 @@ interface AuthenticateProps {
   injectedProvider?: any | null
 }
 
-export function useAuthenticate({ injectedProvider }: AuthenticateProps) {
-  const config = useContext(ConfigContext)
-  const { authenticate } = useContext(AuthenticationContext)
+export enum WALLET_PROVIDER {
+  METAMASK,
+  WALLET_CONNECT,
+  COINBASE,
+  UNLOCK,
+}
+
+export type WalletProvider = keyof typeof WALLET_PROVIDER
+
+export function useAuthenticate(options: AuthenticateProps = {}) {
+  const { injectedProvider } = options
+  const config = useConfig()
+  const { authenticate } = useAuth()
+  const { setStorage, removeKey } = useAppStorage()
 
   const injectedOrDefaultProvider = injectedProvider || selectProvider(config)
 
@@ -77,6 +82,38 @@ export function useAuthenticate({ injectedProvider }: AuthenticateProps) {
     return authenticate(ethereum)
   }
 
+  const walletHandlers: {
+    [key in WalletProvider]: (provider?: any) => Promise<any | void>
+  } = {
+    METAMASK: handleInjectProvider,
+    WALLET_CONNECT: handleWalletConnectProvider,
+    COINBASE: handleCoinbaseWalletProvider,
+    UNLOCK: handleUnlockProvider,
+  }
+
+  async function authenticateWithProvider(
+    providerType: WalletProvider,
+    provider?: any
+  ) {
+    if (!walletHandlers[providerType]) {
+      removeKey('provider')
+    }
+    const connectedProvider = walletHandlers[providerType](provider)
+
+    connectedProvider.then((p) => {
+      if (!p?.account) {
+        return console.error('Unable to get provider')
+      }
+      if (p?.isUnlock && p?.email) {
+        setStorage('email', p.email)
+      } else {
+        removeKey('email')
+      }
+      setStorage('provider', providerType)
+    })
+    return connectedProvider
+  }
+
   return {
     handleUnlockProvider,
     handleInjectProvider,
@@ -84,5 +121,6 @@ export function useAuthenticate({ injectedProvider }: AuthenticateProps) {
     handleCoinbaseWalletProvider,
     injectedOrDefaultProvider,
     authenticate,
+    authenticateWithProvider,
   }
 }

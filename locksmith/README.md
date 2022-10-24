@@ -1,6 +1,6 @@
 # Locksmith
 
-Locksmith is a backend service that prvovides some services in the context of Unlock.
+Locksmith is a backend service that provides some services in the context of Unlock.
 None of these services are required to use the core-protocol.
 Among these services, locksmith provides the following:
 
@@ -16,13 +16,13 @@ The locksmith application has several entry points. By default it provides an AP
 
 Locksmith uses postgres under the hood.
 
-To start, you can spin up a local instance of postgres using docker by running `docker run --name locksmith-postgres -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -d postgres` or go with a traditional install or hosting provider.
+To start, you can spin up a local instance of postgres using docker by running `docker run --name locksmith-postgres -p 5432:5432 -e POSTGRES_PASSWORD=postgres -e POSTGRES_USER=postgres -d postgres` or go with a traditional install or hosting provider.
 
 1. Configure environment variables (Locksmith will recognize these placed in
    an `.env.dev.local` file at the root of the monorepo)
 
-   If you used the docker command above, just add
-   `DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/postgres` (you may need to replace the IP)
+   If you used the docker command above, add:
+   `DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/locksmith` (you may need to replace the IP)
 
    Alternatively, you could set these variables:
 
@@ -30,8 +30,6 @@ To start, you can spin up a local instance of postgres using docker by running `
    - `DB_PASSWORD` - Password of User
    - `DB_NAME` - Database Name
    - `DB_HOSTNAME` - Database Host
-
-   **Note**: The following can be used to quickly get started setting up your **local development** database.
 
    You will also need to add the following env var: `DEFAULT_NETWORK=1`
 

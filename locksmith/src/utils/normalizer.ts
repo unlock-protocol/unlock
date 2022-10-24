@@ -15,8 +15,16 @@ export function toLowerCaseKeys(obj: Record<string, unknown>) {
   }, {})
 }
 
+export const getValidNumber = (value: string | number): number | undefined => {
+  const reg = new RegExp('^[0-9]*$')
+  return reg.test(`${value}`) && !isNaN(parseInt(`${value}`))
+    ? parseInt(`${value}`)
+    : undefined
+}
+
 export default {
   emailAddress,
   ethereumAddress,
   toLowerCaseKeys,
+  getValidNumber,
 }

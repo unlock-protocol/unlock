@@ -1,15 +1,11 @@
 import { useCallback, useState } from 'react'
 import { useAppStorage } from './useAppStorage'
-import {
-  useAuthenticateHandler,
-  WalletProvider,
-} from './useAuthenticateHandler'
+import { useAuthenticate, WalletProvider } from './useAuthenticate'
 
 export function useAutoLogin() {
   const [isLoading, setLoading] = useState(false)
   const { getStorage } = useAppStorage()
-
-  const { authenticateWithProvider } = useAuthenticateHandler({})
+  const { authenticateWithProvider } = useAuthenticate()
 
   const getAutoLoginData = useCallback((): Promise<
     [boolean, WalletProvider]
@@ -25,7 +21,7 @@ export function useAutoLogin() {
         resolve([canAutoLogin, storedProvider])
       }, 350)
     })
-  }, [])
+  }, [getStorage])
 
   const getAutoLoginEmail = (): string => {
     if (getStorage('provider') !== 'UNLOCK') return ''
@@ -46,7 +42,7 @@ export function useAutoLogin() {
       }
     }
     setLoading(false)
-  }, [])
+  }, [authenticateWithProvider, getAutoLoginData])
 
   return {
     tryAutoLogin,

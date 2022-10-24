@@ -5,11 +5,20 @@
   "author": "unlock inc",
   "license": "MIT",
   "main": "dist/index.js",
-  "module": "dist/index.modern.js",
-  "source": "src/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "default": "./dist/index.mjs"
+      },
+      "require": {
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "typings": "dist/index.d.ts",
   "scripts": {
-    "svg-2-components": "svgr --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",
-    "build": "microbundle-crl --no-compress --format modern,cjs",
+    "svg-2-components": "svgr --typescript --title-prop --no-dimensions --template src/svg/template.js --no-dimensions -d build/svg-component/ images/svg/",
+    "build": "tsup src/index.tsx --dts --format esm,cjs",
     "start": "microbundle-crl watch --no-compress --format modern,cjs",
     "prepublish": "run-s build",
     "test": "run-s test:unit test:lint test:build",
@@ -26,23 +35,23 @@
     "react": "17.0.2"
   },
   "devDependencies": {
-    "@babel/core": "7.18.2",
+    "@babel/core": "7.19.3",
     "@storybook/addon-actions": "6.5.6",
     "@storybook/addon-essentials": "6.5.6",
     "@storybook/addon-links": "6.5.6",
     "@storybook/react": "6.5.6",
-    "@svgr/cli": "6.2.1",
+    "@svgr/cli": "6.4.0",
     "babel-eslint": "10.1.0",
     "babel-loader": "8.2.5",
-    "eslint": "8.18.0",
+    "eslint": "8.24.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-config-standard": "17.0.0",
     "eslint-config-standard-react": "11.0.1",
     "eslint-plugin-import": "2.26.0",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-prettier": "4.2.1",
-    "eslint-plugin-promise": "6.0.0",
-    "eslint-plugin-react": "7.30.1",
+    "eslint-plugin-promise": "6.0.1",
+    "eslint-plugin-react": "7.31.8",
     "eslint-plugin-standard": "4.1.0",
     "microbundle-crl": "0.13.11",
     "npm-run-all": "4.1.5",
@@ -50,7 +59,8 @@
     "react": "17.0.2",
     "react-dom": "18.2.0",
     "react-scripts": "5.0.1",
-    "styled-components": "5.3.5"
+    "styled-components": "5.3.6",
+    "tsup": "6.2.3"
   },
   "files": [
     "dist"

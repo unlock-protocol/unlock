@@ -5,11 +5,27 @@ import * as abis from '@unlock-protocol/contracts'
  * Configures the Unlock contract by setting its params:
  * @param {*} callback
  */
-export default async (unlockAddress, version, params, callback) => {
-  const { abi } = abis[`Unlock${version.toUpperCase()}`]
+export default async (
+  unlockAddress,
+  params,
+  transactionOptions = {},
+  callback
+) => {
+  const unlockVersionContract = await ethers.getContractAt(
+    ['function unlockVersion() view returns (uint8)'],
+    unlockAddress
+  )
+
+  const version = await unlockVersionContract.unlockVersion()
+  const { abi } = abis[`UnlockV${version}`]
 
   const unlock = await ethers.getContractAt(abi, unlockAddress)
-  return await getConfigure(version)(unlock, params, callback)
+  return await getConfigure(`v${version}`)(
+    unlock,
+    params,
+    transactionOptions,
+    callback
+  )
 }
 
 function getConfigure(version) {
@@ -39,12 +55,14 @@ function getConfigure(version) {
 async function configureUnlockV4(
   unlockContract,
   { publicLockTemplateAddress, globalTokenSymbol, globalBaseTokenURI },
+  transactionOptions = {},
   callback
 ) {
   const transaction = await unlockContract.configUnlock(
     publicLockTemplateAddress,
     globalTokenSymbol,
-    globalBaseTokenURI
+    globalBaseTokenURI,
+    transactionOptions
   )
 
   if (callback) {
@@ -64,6 +82,7 @@ async function configureUnlockV4(
 async function configureUnlockV6(
   unlockContract,
   { publicLockTemplateAddress, globalTokenSymbol, globalBaseTokenURI },
+  transactionOptions = {},
   callback
 ) {
   const transaction = await unlockContract.configUnlock(
@@ -89,6 +108,7 @@ async function configureUnlockV6(
 async function configureUnlockV7(
   unlockContract,
   { publicLockTemplateAddress, globalTokenSymbol, globalBaseTokenURI },
+  transactionOptions = {},
   callback
 ) {
   const configTransaction = await unlockContract.configUnlock(
@@ -126,6 +146,7 @@ async function configureUnlockV8(
     wrappedEth,
     estimatedGasForPurchase,
   },
+  transactionOptions = {},
   callback
 ) {
   const configTransaction = await unlockContract.configUnlock(
@@ -168,6 +189,7 @@ async function configureUnlockV9(
     estimatedGasForPurchase,
     chainId,
   },
+  transactionOptions = {},
   callback
 ) {
   const configTransaction = await unlockContract.configUnlock(

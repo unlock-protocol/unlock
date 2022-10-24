@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react'
-import styled from 'styled-components'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import { useAccount } from '../../../hooks/useAccount'
 import { PaymentDetails } from '../user-account/PaymentDetails'
@@ -7,7 +6,7 @@ import { SignUp } from '../user-account/SignUp'
 import { Input, Label } from './FormStyles'
 import UnlockProvider from '../../../services/unlockProvider'
 import { ConfigContext } from '../../../utils/withConfig'
-import { useAuthenticateHandler } from '../../../hooks/useAuthenticateHandler'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface userData {
   name: string
@@ -33,7 +32,7 @@ export const NewAccountCheckout = ({
   // @ts-expect-error account is _always_ defined in this component
   const { createUserAccount } = useAccount(account, network)
   const [error, setError] = useState('')
-  const { authenticateWithProvider } = useAuthenticateHandler({})
+  const { authenticateWithProvider } = useAuthenticate()
 
   const createAccount = async (email: string, password: string, data?: any) => {
     const { passwordEncryptedPrivateKey } = await createUserAccount(
@@ -74,7 +73,10 @@ export const NewAccountCheckout = ({
     <>
       <p>
         Have you already created an Unlock account?{' '}
-        <LinkButton onClick={() => showLogin()}>Please login</LinkButton>.
+        <a className="cursor-pointer" onClick={() => showLogin()}>
+          Please login
+        </a>
+        .
       </p>
       <PaymentDetails
         saveCard={onCardSaved}
@@ -87,9 +89,9 @@ export const NewAccountCheckout = ({
             return (
               <>
                 An account with this email already exists,{' '}
-                <LinkButton onClick={() => showLogin()}>
+                <a className="cursor-pointer" onClick={() => showLogin()}>
                   please login
-                </LinkButton>
+                </a>
                 .
               </>
             )
@@ -124,23 +126,3 @@ export const NewAccountCheckout = ({
 }
 
 export default NewAccountCheckout
-
-export const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`
-
-export const FeeNotice = styled.p`
-  text-align: center;
-  color: var(--green);
-`
-
-export const CardNumber = styled.p`
-  text-align: center;
-  color: var(--grey);
-`
-
-const LinkButton = styled.a`
-  cursor: pointer;
-`

@@ -8,8 +8,7 @@ import { useWalletService } from '~/utils/withWalletService'
 import { pageTitle } from '../../constants'
 import LocksContext from '../../contexts/LocksContext'
 import { ToastHelper } from '../helpers/toast.helper'
-import Account from '../interface/Account'
-import Layout from '../interface/Layout'
+import { AppLayout } from '../interface/layouts/AppLayout'
 import { Scanner } from '../interface/verification/Scanner'
 import VerificationStatus from '../interface/VerificationStatus'
 
@@ -28,7 +27,12 @@ export const VerificationContent: React.FC<unknown> = () => {
 
   useEffect(() => {
     const login = async () => {
-      if (account && network && walletService && !storageService.token) {
+      if (
+        account &&
+        network &&
+        walletService &&
+        !storageService.isAuthenticated
+      ) {
         const promise = storageService.loginPrompt({
           walletService,
           address: account,
@@ -46,15 +50,14 @@ export const VerificationContent: React.FC<unknown> = () => {
 
   if (!membershipVerificationConfig) {
     return (
-      <Layout title="Verification">
+      <AppLayout title="Verification" showLinks={false} authRequired={false}>
         <Head>
           <title>{pageTitle('Verification')}</title>
         </Head>
-        <Account />
         <main>
           <Scanner />
         </main>
-      </Layout>
+      </AppLayout>
     )
   }
 
@@ -66,11 +69,10 @@ export const VerificationContent: React.FC<unknown> = () => {
   }
 
   return (
-    <Layout title="Verification">
+    <AppLayout title="Verification" showLinks={false} authRequired={false}>
       <Head>
         <title>{pageTitle('Verification')}</title>
       </Head>
-      <Account />
       <LocksContext.Provider
         value={{
           locks,
@@ -84,7 +86,7 @@ export const VerificationContent: React.FC<unknown> = () => {
           }}
         />
       </LocksContext.Provider>
-    </Layout>
+    </AppLayout>
   )
 }
 

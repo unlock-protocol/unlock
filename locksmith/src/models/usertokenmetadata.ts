@@ -15,7 +15,7 @@ export class UserTokenMetadata extends Model<UserTokenMetadataAttributes> {
   @Column
   userAddress!: string
 
-  @Column(DataType.JSON)
+  @Column(DataType.JSONB)
   data!: any
 
   @Column

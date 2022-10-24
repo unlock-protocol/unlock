@@ -28,3 +28,35 @@ Example:
 ```bash
 yarn run grant-keys 4 0x6F6A5558743Fe28F5F4106a83b1E42cF2cB36C0B 0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44,1,0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44 julien51.eth
 ```
+
+## Open API Client
+
+We have openapi.yml file which has our endpoint documented. We use it to generate typescript API client using openapi-generator-tools but it can be used with most programming languages. Check the [openapi documentation](https://openapi-generator.tech/docs/generators) for your language of choice.
+
+Before generating, make sure you install a valid JDK for your platform. You can find installation steps on the [openapi site](https://openapi-generator.tech/docs/installation).
+
+You can run the generator for your language through this command. Replace the generator and config with your own. You may download the open api file directly as well if you don't want to clone this repo.
+
+`openapi-generator-cli generate -i ./openapi.yml -g [generator] -c config.json -o client`
+
+There is a `yarn generate` command which generates the client and spits it out in the @generated folder for internal use.
+
+## Tests
+
+You can run the entire test suite using 
+
+```
+yarn test
+```
+
+Run a single test 
+
+```
+yarn test:single --file src/__tests__/utils.test.js
+```
+
+Run a single integration test with specific versions
+
+```
+yarn hardhat test:integration src/__tests__/integration/lock/cancelAndRefund.js --unlock-version 10 --lock-version 12
+```

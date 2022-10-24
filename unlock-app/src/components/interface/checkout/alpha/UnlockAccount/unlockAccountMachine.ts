@@ -17,10 +17,14 @@ interface BackEvent {
 interface ExitEvent {
   type: 'EXIT'
 }
+interface EnterEmailEvent {
+  type: 'ENTER_EMAIL'
+}
 
 type UnlockAccountMachineEvents =
   | SubmitUserEvent
   | ContinueEvent
+  | EnterEmailEvent
   | BackEvent
   | ExitEvent
 
@@ -67,12 +71,14 @@ export const unlockAccountMachine = createMachine(
       SIGN_UP: {
         on: {
           BACK: 'ENTER_EMAIL',
+          ENTER_EMAIL: 'ENTER_EMAIL',
           CONTINUE: 'EXIT',
         },
       },
       SIGN_IN: {
         on: {
           BACK: 'ENTER_EMAIL',
+          ENTER_EMAIL: 'ENTER_EMAIL',
           CONTINUE: 'EXIT',
         },
       },
@@ -83,8 +89,7 @@ export const unlockAccountMachine = createMachine(
   },
   {
     actions: {
-      // @ts-expect-error - xstate unused type bug
-      submitUser: assign((context, { email, existingUser }) => {
+      submitUser: assign((_, { email, existingUser }) => {
         return {
           email,
           existingUser,

@@ -1,41 +1,40 @@
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button } from '@unlock-protocol/ui'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { useConfig } from '~/utils/withConfig'
 import { useStorageService } from '~/utils/withStorageService'
 import { useActor } from '@xstate/react'
-import { Shell } from '../Shell'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import { ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { Stepper } from '../Stepper'
+import { useCheckoutSteps } from './useCheckoutItems'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(params?: Record<string, string>): void
 }
 
-export function Captcha({ injectedProvider, checkoutService, onClose }: Props) {
+export function Captcha({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
+  const { account } = useAuth()
   const storage = useStorageService()
   const [recaptchaValue, setRecaptchaValue] = useState<string | null>(null)
-  const { recipients } = state.context
+  const { recipients, renew } = state.context
   const [isContinuing, setIsContinuing] = useState(false)
-  const { paywallConfig } = state.context
-  const { title, description, iconURL } =
-    useCheckoutHeadContent(checkoutService)
+  const users = recipients.length > 0 ? recipients : [account!]
+
   const onContinue = async () => {
     try {
       setIsContinuing(true)
-      if (!(recaptchaValue && recipients.length)) {
+      if (!recaptchaValue) {
         return
       }
       const response = await storage.getDataForRecipientsAndCaptcha(
-        recipients,
+        users,
         recaptchaValue!
       )
 
@@ -55,49 +54,17 @@ export function Captcha({ injectedProvider, checkoutService, onClose }: Props) {
       setIsContinuing(false)
     }
   }
+
+  const stepItems = useCheckoutSteps(checkoutService, renew)
+
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
-        title={paywallConfig.title}
-        iconURL={iconURL}
-        description={description}
+    <Fragment>
+      <Stepper
+        position={renew ? 2 : 6}
+        service={checkoutService}
+        items={stepItems}
       />
-      <div className="flex px-6 mt-6 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            {paywallConfig.messageToSign ? (
-              <button
-                aria-label="back"
-                onClick={(event) => {
-                  event.preventDefault()
-                  send('BACK')
-                }}
-                className="p-2 w-32 bg-brand-ui-primary inline-flex items-center justify-center rounded-full"
-              >
-                <div className="p-0.5 w-28 bg-white rounded-full"></div>
-              </button>
-            ) : (
-              <button
-                aria-label="back"
-                onClick={(event) => {
-                  event.preventDefault()
-                  send('BACK')
-                }}
-                className="p-2 w-28 bg-brand-ui-primary inline-flex items-center justify-center rounded-full"
-              >
-                <div className="p-0.5 w-24 bg-white rounded-full"></div>
-              </button>
-            )}
-          </div>
-          <h4 className="text-sm "> {title}</h4>
-        </div>
-        <div className="border-t-4 w-full flex-1"></div>
-        <div className="inline-flex items-center gap-1">
-          <ProgressCircleIcon disabled />
-          <ProgressFinishIcon disabled />
-        </div>
-      </div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
+      <main className="h-full px-6 py-2 overflow-auto">
         <div className="space-y-4">
           <div className="flex justify-center">
             <ReCAPTCHA
@@ -107,7 +74,7 @@ export function Captcha({ injectedProvider, checkoutService, onClose }: Props) {
           </div>
         </div>
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
@@ -130,6 +97,6 @@ export function Captcha({ injectedProvider, checkoutService, onClose }: Props) {
         </Connected>
         <PoweredByUnlock />
       </footer>
-    </Shell.Root>
+    </Fragment>
   )
 }

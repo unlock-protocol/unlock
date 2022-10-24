@@ -5,7 +5,11 @@ import keyHoldersByLocks from '../queries/keyholdersByLock'
 import { ToastHelper } from '../components/helpers/toast.helper'
 import keyholdersByKeyIdQuery from '../queries/keyholdersByKeyId'
 import { getValidNumber } from '~/utils/strings'
-import { MemberFilters } from '~/unlockTypes'
+import { MemberFilter } from '~/unlockTypes'
+import keysCount from '~/queries/keysCount'
+import configure from '../config'
+const config = configure()
+
 export class GraphService {
   public client: any
 
@@ -15,7 +19,9 @@ export class GraphService {
     })
   }
 
-  locksByManager = async (owner: string) => {
+  locksByManager = async (owner: string, network?: number) => {
+    const { networks } = config as any
+    const { name: networkName } = networks[network!] ?? {}
     const query = locksByManager()
     try {
       const result = await this.client.query({
@@ -38,8 +44,11 @@ export class GraphService {
       })
     } catch (error) {
       console.error(error)
+      if (network === 31337) return [] // ignore localhost
       ToastHelper.error(
-        'We could not load your locks. Please retry and let us know if that keeps failing'
+        network
+          ? `We could not load locks for ${networkName} network.`
+          : 'We could not load your locks. Please retry and let us know if that keeps failing'
       )
       return []
     }
@@ -56,14 +65,12 @@ export class GraphService {
   }: {
     locks: string[]
     expireTimestamp: number
-    expiration: MemberFilters
+    expiration: MemberFilter
     first: number
     skip: number
     search: string | number
     filterKey: string
   }) => {
-    const showActive = expiration === MemberFilters.ACTIVE
-
     let query
     const keyId = getValidNumber(search)
 
@@ -71,7 +78,8 @@ export class GraphService {
     if (filterKey === 'keyId' && `${search}`?.length) {
       query = keyholdersByKeyIdQuery()
     } else {
-      query = keyHoldersByLocks(showActive)
+      // pass expiration type filter 'all' | 'expired' | 'active'
+      query = keyHoldersByLocks(expiration)
     }
 
     const owner = `${search}`?.toLowerCase() ?? ''
@@ -85,6 +93,20 @@ export class GraphService {
         skip,
         owner,
         keyId,
+      },
+    })
+    return result
+  }
+
+  keysCount = async (locks: string[]) => {
+    const query = keysCount()
+    const timestamp = parseInt(`${new Date().getTime() / 1000}`)
+
+    const result = await this.client.query({
+      query,
+      variables: {
+        addresses: locks,
+        timestamp,
       },
     })
     return result

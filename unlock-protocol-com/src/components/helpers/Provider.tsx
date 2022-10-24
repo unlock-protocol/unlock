@@ -65,7 +65,7 @@ export function Provider({ children }: Props) {
       script.innerText = `(function(d, s) {
         var js = d.createElement(s),
           sc = d.getElementsByTagName(s)[0];
-        js.src="https://paywall.unlock-protocol.com/static/unlock.latest.min.js";
+        js.src="https://paywall.unlock-protocol.com/static/unlock.latest.min.js?alpha=true";
         sc.parentNode.insertBefore(js, sc); }(document, "script"));
       `.trim()
       document.body.appendChild(script)

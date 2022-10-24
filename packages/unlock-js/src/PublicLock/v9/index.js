@@ -24,6 +24,10 @@ const {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   approveBeneficiary,
+  totalKeys,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
 } = v8
 
 export default {
@@ -51,4 +55,8 @@ export default {
   getTokenIdForOwner,
   getKeyExpirationByLockForOwner,
   approveBeneficiary,
+  totalKeys,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
 }

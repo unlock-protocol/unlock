@@ -2,9 +2,6 @@
 
 export interface Typegen0 {
   '@@xstate/typegen': true
-  eventsCausingActions: {
-    submitUser: 'SUBMIT_USER'
-  }
   internalEvents: {
     'xstate.init': { type: 'xstate.init' }
   }
@@ -15,12 +12,15 @@ export interface Typegen0 {
     guards: never
     delays: never
   }
+  eventsCausingActions: {
+    submitUser: 'SUBMIT_USER'
+  }
   eventsCausingServices: {}
   eventsCausingGuards: {
     isExistingUser: 'CONTINUE'
     isNotExistingUser: 'CONTINUE'
   }
   eventsCausingDelays: {}
-  matchesStates: 'ENTER_EMAIL' | 'SIGN_UP' | 'SIGN_IN' | 'EXIT'
+  matchesStates: 'ENTER_EMAIL' | 'EXIT' | 'SIGN_IN' | 'SIGN_UP'
   tags: never
 }

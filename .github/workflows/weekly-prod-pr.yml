@@ -7,5 +7,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: "Open production PR"
-        run: scripts/automated-production-pr.sh
+      - name: 'Set PR template'
+        id: pr-template
+        run: |
+          template=$(cat scripts/production-pull-request-template.sh)
+          echo "::set-output name=template::$template"
+      - name: 'Set PR params'
+        id: pr-params
+        run: |
+          json_params=$(scripts/automated-production-pr.sh)
+          echo "::set-output name=json_params::$json_params"
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: ${{fromJson(steps.pr-params.outputs.json_params)[0]}}
+          branch: ${{fromJson(steps.pr-params.outputs.json_params)[1]}}
+          assignees: ${{fromJson(steps.pr-params.outputs.json_params)[2]}}
+          reviewers: ${{fromJson(steps.pr-params.outputs.json_params)[2]}}
+          committer: Unlock Deployer <ops@unlock-protocol.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          body: ${{steps.pr-template.outputs.template}}

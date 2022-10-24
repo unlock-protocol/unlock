@@ -7,7 +7,6 @@ import './MixinErrors.sol';
 /**
  * @title Mixin for managing `Key` data, as well as the * Approval related functions needed to meet the ERC721
  * standard.
- * @author HardlyDifficult
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
@@ -26,9 +25,10 @@ contract MixinKeys is
 
   // Emitted when the expiration of a key is modified
   event ExpirationChanged(
-    uint indexed _tokenId,
-    uint _amount,
-    bool _timeAdded
+    uint indexed tokenId,
+    uint newExpiration,
+    uint amount,
+    bool timeAdded
   );
 
   // fire when a key is extended
@@ -42,6 +42,12 @@ contract MixinKeys is
 
   event KeysMigrated(
     uint updatedRecordsCount
+  );
+
+  event LockConfig(
+    uint expirationDuration,
+    uint maxNumberOfKeys,
+    uint maxKeysPerAcccount
   );
 
   // Deprecated: don't use this anymore as we know enable multiple keys per owner.
@@ -134,7 +140,7 @@ contract MixinKeys is
   internal
   view 
   {
-    if(_keys[_tokenId].expirationTimestamp == 0) {
+    if(_keys[_tokenId].tokenId == 0) {
       revert NO_SUCH_KEY();
     }
   }
@@ -175,10 +181,10 @@ contract MixinKeys is
   /**
     * Returns the id of a key for a specific owner at a specific index
     * @notice Enumerate keys assigned to an owner
-    * @dev Throws if `_index` >= `balanceOf(_keyOwner)` or if
+    * @dev Throws if `_index` >= `totalKeys(_keyOwner)` or if
     *  `_keyOwner` is the zero address, representing invalid keys.
     * @param _keyOwner address of the owner
-    * @param _index position index in the array of all keys - less than `balanceOf(_keyOwner)`
+    * @param _index position index in the array of all keys - less than `totalKeys(_keyOwner)`
     * @return The token identifier for the `_index`th key assigned to `_keyOwner`,
     *   (sort order not specified)
     * NB: name kept to be ERC721 compatible
@@ -271,6 +277,16 @@ contract MixinKeys is
     _keys[_tokenId].expirationTimestamp = newTimestamp;
 
     emit KeyExtended(_tokenId, newTimestamp);
+
+    // call the hook
+    if(address(onKeyExtendHook) != address(0)) {
+      onKeyExtendHook.onKeyExtend(
+        _tokenId, 
+        msg.sender,
+        newTimestamp,
+        expirationTimestamp
+      );
+    }
   } 
 
   /**
@@ -282,7 +298,7 @@ contract MixinKeys is
    uint _tokenId,
    address _recipient
   ) internal { 
-    uint length = balanceOf(_recipient);
+    uint length = totalKeys(_recipient);
     
     // make sure address does not have more keys than allowed
     if(length >= _maxKeysPerAddress) {
@@ -342,7 +358,7 @@ contract MixinKeys is
     address previousOwner = _ownerOf[_tokenId];
 
     // delete previous ownership
-    uint lastTokenIndex = balanceOf(previousOwner) - 1;
+    uint lastTokenIndex = totalKeys(previousOwner) - 1;
     uint index = _ownedKeysIndex[_tokenId];
 
     // When the token to delete is the last token, the swap operation is unnecessary
@@ -364,7 +380,7 @@ contract MixinKeys is
   }
 
   /**
-   * Delete ownership info about a key and expire the key
+   * Internal logic to expire the key
    * @param _tokenId the id of the token to cancel
    * @notice this won't 'burn' the token, as it would still exist in the record
    */
@@ -372,9 +388,6 @@ contract MixinKeys is
     uint _tokenId
   ) internal {
     
-    // Deletes the contents at the last position of the array
-    _deleteOwnershipRecord(_tokenId);
-
     // expire the key
     _keys[_tokenId].expirationTimestamp = block.timestamp;
 
@@ -445,14 +458,8 @@ contract MixinKeys is
     view
     returns (bool isValid)
   { 
-    uint length = balanceOf(_keyOwner);
-    if(length > 0) {
-      for (uint i = 0; i < length; i++) {
-        if(isValidKey(tokenOfOwnerByIndex(_keyOwner, i))) {
-          return true; // stop looping at the first valid key
-        }
-      }
-    }
+    // `balanceOf` returns only valid keys
+    isValid = balanceOf(_keyOwner) > 0;
 
     // use hook if it exists
     if(address(onValidKeyHook) != address(0)) {
@@ -463,6 +470,7 @@ contract MixinKeys is
         isValid
       );
     }
+
     return isValid;   
   }
 
@@ -636,7 +644,12 @@ contract MixinKeys is
         _keys[_tokenId].expirationTimestamp = formerTimestamp - _deltaT;
     }
 
-    emit ExpirationChanged(_tokenId, _deltaT, _addTime);
+    emit ExpirationChanged(
+      _tokenId, 
+      _keys[_tokenId].expirationTimestamp,
+      _deltaT, 
+      _addTime
+    );
   }
 
   /**
@@ -653,41 +666,40 @@ contract MixinKeys is
   }
 
   /**
-   * @notice Change the maximum number of keys the lock can edit
+   * Update the main key properties for the entire lock: 
+   * - default duration of each key
+   * - the maximum number of keys the lock can edit
+   * - the maximum number of keys a single address can hold
+   * @notice keys previously bought are unaffected by this changes in expiration duration (i.e.
+   * existing keys timestamps are not recalculated/updated)
+   * @param _newExpirationDuration the new amount of time for each key purchased or type(uint).max for a non-expiring key
+   * @param _maxKeysPerAcccount the maximum amount of key a single user can own
    * @param _maxNumberOfKeys uint the maximum number of keys
-   * @dev Can't be smaller than the existing supply
+   * @dev _maxNumberOfKeys Can't be smaller than the existing supply 
    */
-  function setMaxNumberOfKeys (uint _maxNumberOfKeys) external {
+   function updateLockConfig(
+    uint _newExpirationDuration,
+    uint _maxNumberOfKeys,
+    uint _maxKeysPerAcccount
+  ) external {
      _onlyLockManager();
+     if(_maxKeysPerAcccount == 0) {
+       revert NULL_VALUE();
+     }
      if (_maxNumberOfKeys < _totalSupply) {
        revert CANT_BE_SMALLER_THAN_SUPPLY();
      }
-     maxNumberOfKeys = _maxNumberOfKeys;
-  }
-
-  /**
-   * A function to change the default duration of each key in the lock
-   * @notice keys previously bought are unaffected by this change (i.e.
-   * existing keys timestamps are not recalculated/updated)
-   * @param _newExpirationDuration the new amount of time for each key purchased 
-   * or type(uint).max for a non-expiring key
-   */
-  function setExpirationDuration(uint _newExpirationDuration) external {
-     _onlyLockManager();
+     _maxKeysPerAddress = _maxKeysPerAcccount;
      expirationDuration = _newExpirationDuration;
+     maxNumberOfKeys = _maxNumberOfKeys;
+
+     emit LockConfig(
+      _newExpirationDuration, 
+      _maxNumberOfKeys,
+      _maxKeysPerAddress
+      );
   }
   
-  /**
-   * Set the maximum number of keys a specific address can use
-   * @param _maxKeys the maximum amount of key a user can own
-   */
-  function setMaxKeysPerAddress(uint _maxKeys) external {
-     _onlyLockManager();
-     if(_maxKeys == 0) {
-       revert NULL_VALUE();
-     }
-     _maxKeysPerAddress = _maxKeys;
-  }
 
   /**
    * @return the maximum number of key allowed for a single address

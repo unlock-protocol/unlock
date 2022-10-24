@@ -129,3 +129,18 @@ task('upgrade:propose', 'Send an upgrade implementation proposal to multisig')
       implementation,
     })
   })
+
+task(
+  'submit:version',
+  'Send txs to multisig to add and set new PublicLock version'
+)
+  .addOptionalParam('publicLockAddress', 'The deployed contract address')
+  .addOptionalParam(
+    'publicLockVersion',
+    'Specify the template version to deploy (from contracts package)'
+  )
+  .setAction(async ({ publicLockAddress, publicLockVersion }) => {
+    // eslint-disable-next-line global-require
+    const prepareLockUpgrade = require('../scripts/upgrade/submitLockVersion')
+    await prepareLockUpgrade({ publicLockAddress, publicLockVersion })
+  })

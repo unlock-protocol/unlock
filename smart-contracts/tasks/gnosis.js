@@ -30,6 +30,20 @@ task('gnosis:address', 'Get the address of a safe')
     console.log(`safe on network ${chainId} : ${safeAddress}`)
   })
 
+task('gnosis:version', 'Get the address of a safe').setAction(
+  async (_, { ethers }) => {
+    const {
+      getSafeVersion,
+      getSafeAddress,
+    } = require('../scripts/multisig/_helpers')
+    const { chainId } = await ethers.provider.getNetwork()
+    const safeAddress = await getSafeAddress(chainId)
+    const safeVersion = await getSafeVersion(safeAddress)
+    // log the results
+    console.log(`safe on network ${chainId} : ${safeAddress} (${safeVersion})`)
+  }
+)
+
 task('gnosis:owners', 'List owners of a safe')
   .addOptionalParam('safeAddress', 'the address of the multisig contract')
   .addOptionalParam(

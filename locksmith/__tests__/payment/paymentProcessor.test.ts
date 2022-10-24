@@ -37,7 +37,8 @@ jest.mock('stripe', () => {
   })
 })
 
-const mockDispatcher = { purchase: jest.fn() }
+// eslint-disable-next-line
+var mockDispatcher = { purchase: jest.fn() }
 
 jest.mock('../../src/fulfillment/dispatcher', () => {
   return jest.fn().mockImplementation(() => {

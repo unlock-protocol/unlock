@@ -3,7 +3,6 @@ import { Verifier } from './verifier'
 import { User } from './user'
 import { UserReference } from './userReference'
 import { Lock } from './lock'
-import { Transaction } from './transaction'
 import { AuthorizedLock } from './authorizedLock'
 import { LockMetadata } from './lockMetadata'
 import { KeyMetadata } from './keyMetadata'
@@ -22,6 +21,7 @@ import { HookEvent } from './hookEvent'
 import { ProcessedHookItem } from './processedHookItem'
 import { RefreshToken } from './refreshToken'
 import { Application } from './application'
+import { KeySubscription } from './keySubscriptions'
 
 const config = require('../../config/sequelize.config')
 
@@ -47,24 +47,22 @@ sequelize.addModels([
   RefreshToken,
   StripeConnectLock,
   StripeCustomer,
-  Transaction,
   User,
   UserReference,
   UserTokenMetadata,
   Application,
   Verifier,
+  KeySubscription,
 ])
 
 User.removeAttribute('id')
 Lock.removeAttribute('id')
-Transaction.removeAttribute('id')
 LockMetadata.removeAttribute('id')
 StripeCustomer.removeAttribute('id')
 
 export * from './user'
 export * from './userReference'
 export * from './lock'
-export * from './transaction'
 export * from './authorizedLock'
 export * from './usertokenmetadata'
 export * from './stripeCustomer'
@@ -77,3 +75,4 @@ export * from './hookEvent'
 export * from './processedHookItem'
 export * from './keyRenewal'
 export * from './paymentIntent'
+export * from './keySubscriptions'

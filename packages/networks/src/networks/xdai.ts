@@ -2,8 +2,7 @@ import { NetworkConfig } from '@unlock-protocol/types'
 
 export const xdai: NetworkConfig = {
   publicProvider: 'https://rpc.gnosischain.com',
-  provider:
-    'https://cool-empty-bird.xdai.quiknode.pro/4edba942fb43c718f24480484684e907fe3fe1d3/',
+  provider: 'https://rpc.unlock-protocol.com/100',
   unlockAddress: '0x1bc53f4303c711cc693F6Ec3477B83703DcB317f',
   serializerAddress: '0x646E373EAf8a4AEc31Bf62B7Fd6fB59296d6CdA9',
   multisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
@@ -11,7 +10,11 @@ export const xdai: NetworkConfig = {
   name: 'Gnosis Chain',
   blockTime: 5000,
   requiredConfirmations: 12,
-  subgraphURI: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
+  subgraph: {
+    endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
+    endpointV2:
+      'https://api.thegraph.com/subgraphs/name/unlock-protocol/gnosis-v2',
+  },
   explorer: {
     name: 'Blockscout',
     urls: {
@@ -27,10 +30,10 @@ export const xdai: NetworkConfig = {
   },
   erc20: null, // no default ERC20 on xdai for now
   locksmithUri: 'https://locksmith.unlock-protocol.com',
-  baseCurrencySymbol: 'xDai',
+  baseCurrencySymbol: 'DAI',
   nativeCurrency: {
-    name: 'xDAI',
-    symbol: 'xDai',
+    name: 'DAI',
+    symbol: 'DAI',
     decimals: 18,
   },
   startBlock: 19338700,
@@ -40,7 +43,18 @@ export const xdai: NetworkConfig = {
       startBlock: 14521200,
     },
   ],
-  description: 'EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.',
+  description:
+    'EVM compatible network whose base currency is a stable coin. Cheaper transaction cost.',
   isTestNetwork: false,
+  teamMultisig: '0xfAC611a5b5a578628C28F77cEBDDB8C6159Ae79D',
+  // 0xddafbb505ad214d7b80b1f830fccc89b60fb7a83
+  tokens: [
+    {
+      name: 'USD Coin',
+      symbol: 'USDC',
+      decimals: 6,
+      address: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',
+    },
+  ],
 }
 export default xdai

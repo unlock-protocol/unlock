@@ -23,11 +23,10 @@ type Attachment = {
 interface Key {
   lock: {
     address: string
-    name?: string
+    name: string
   }
-  owner: {
-    address: string
-  }
+  tokenId?: string
+  owner: string
   keyId?: string
 }
 
@@ -84,10 +83,10 @@ export const notifyNewKeysToWedlocks = async (
   network?: number
 ) => {
   logger.info('Notifying following keys to wedlock', {
-    keys: keys.map((key: any) => [key.lock.address, key.keyId]),
+    keys: keys.map((key: any) => [key.lock.address, key.tokenId]),
   })
   for (const key of keys) {
-    await notifyNewKeyToWedlocks(key, network)
+    await notifyNewKeyToWedlocks(key, network, true)
   }
 }
 
@@ -99,11 +98,11 @@ export const notifyNewKeysToWedlocks = async (
 export const notifyNewKeyToWedlocks = async (
   key: Key,
   network?: number,
-  includeQrCode = false
+  includeQrCode = true
 ) => {
   const lockAddress = key.lock.address
-  const ownerAddress = key.owner.address
-  const tokenId = key?.keyId
+  const ownerAddress = key.owner
+  const tokenId = key?.tokenId
 
   const userTokenMetadataRecord = await UserTokenMetadata.findOne({
     where: {
@@ -152,7 +151,7 @@ export const notifyNewKeyToWedlocks = async (
       'keyMined',
       recipient,
       {
-        lockName: key?.lock?.name ?? '',
+        lockName: key.lock.name,
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
         keyId: tokenId ?? '',
         network: networks[network!]?.name ?? '',

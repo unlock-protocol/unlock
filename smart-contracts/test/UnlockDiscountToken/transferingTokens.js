@@ -64,9 +64,6 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
       value: await lock.keyPrice(),
     })
 
-    // allow multiiple keys per owner
-    await lock.setMaxKeysPerAddress(10)
-
     rate = await oracle.consult(
       udt.address,
       ethers.utils.parseUnits('1', 'ether'),

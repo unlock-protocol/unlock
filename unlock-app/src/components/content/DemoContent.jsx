@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react'
-import styled, { createGlobalStyle } from 'styled-components'
 import Head from 'next/head'
 import Loading from '../interface/Loading'
 import { ConfigContext } from '../../utils/withConfig'
@@ -98,77 +97,101 @@ export const DemoContent = () => {
   const { locked, loading, error, unlock } = usePaywall()
 
   return (
-    <Container>
+    <div>
       <Fonts />
-      <GlobalStyle />
       <Head>
         <title>Unlock Demo Example - Unlock Times</title>
       </Head>
-      <Left />
-      <Content>
-        <Masthead>Unlock Times</Masthead>
-        <Body>
-          <Title>Demoing the Unlock Paywall</Title>
-          <Subtitle>
-            Unlock Times shows off its new subscription paywall that’s easy to
-            use and streamlined for readers and publishers.{' '}
-          </Subtitle>
-          <Section>
-            {error && <p>{error}</p>}
-            {loading && <Loading />}
-            {!loading && !error && (
-              <Article>
-                <p>
-                  It’s become dangerously clear in the last few years that the
-                  business model we thought would support a vibrant, open web
-                  just isn’t going to work any more. Driving more and more
-                  eyeballs to ads was always considered ethically and morally
-                  borderline, but today, monetizing clickbait isn’t just
-                  economically fragile: it’s feeding our democracies with more
-                  misinformation and fake news.
-                </p>
+      <div className="flex min-w-[500] max-w-[800px] mx-auto font-[SourceSerifPro]">
+        <div className="mx-auto">
+          <h1 className="text-4xl font-bold text-gray-600 font-[UnifrakturCook] mb-12">
+            Unlock Times
+          </h1>
+          <div>
+            <div className="block w-20 h-1 mb-5 bg-gray-300"></div>
+            <h1 className="block mb-10 text-4xl font-bold text-gray-600">
+              Demoing the Unlock Paywall
+            </h1>
+            <span className="block mb-8 text-4xl leading-10 text-gray-600">
+              Unlock Times shows off its new subscription paywall that’s easy to
+              use and streamlined for readers and publishers.{' '}
+            </span>
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_200px] gap-10">
+              {error && <p>{error}</p>}
+              {loading && <Loading />}
+              {!loading && !error && (
+                <div className="text-lg text-gray-600">
+                  <p>
+                    It’s become dangerously clear in the last few years that the
+                    business model we thought would support a vibrant, open web
+                    just isn’t going to work any more. Driving more and more
+                    eyeballs to ads was always considered ethically and morally
+                    borderline, but today, monetizing clickbait isn’t just
+                    economically fragile: it’s feeding our democracies with more
+                    misinformation and fake news.
+                  </p>
 
-                <Locked locked={locked} overlay>
-                  The thing is, plenty of publishers and creators have been
-                  ahead of the curve on this one, even if we don’t give them
-                  much credit for it. They knew that free content can, in fact,
-                  be very costly and that real freedom comes from knowledge
-                  that’s expensive to produce. They understood that when Stewart
-                  Brand famously said that “information wants to be free” he
-                  meant free as in “speech” (libre), not free as in “beer”
-                  (gratis).
-                  <Overlay locked={locked} />
-                </Locked>
+                  <div className="relative block">
+                    The thing is, plenty of publishers and creators have been
+                    ahead of the curve on this one, even if we don’t give them
+                    much credit for it. They knew that free content can, in
+                    fact, be very costly and that real freedom comes from
+                    knowledge that’s expensive to produce. They understood that
+                    when Stewart Brand famously said that “information wants to
+                    be free” he meant free as in “speech” (libre), not free as
+                    in “beer” (gratis).
+                    <div
+                      style={{
+                        background:
+                          'linear-gradient(rgba(253, 250, 247, 0), rgb(250, 250, 250) 70%)',
+                      }}
+                      className={`absolute top-0 w-full h-full ${
+                        locked ? 'block' : 'hidden'
+                      }`}
+                    />
+                  </div>
 
-                <CallToAction locked={locked}>
-                  Support our work and read the rest of this article by becoming
-                  a member today!
-                  <Button onClick={unlock}>Join us</Button>
-                </CallToAction>
+                  <div
+                    className={`text-xl text-center mt-5 ${
+                      locked ? 'block' : 'hidden'
+                    } `}
+                  >
+                    Support our work and read the rest of this article by
+                    becoming a member today!
+                    <div className="flex justify-center w-full mt-4">
+                      <button
+                        onClick={unlock}
+                        className="px-12 py-3 text-2xl tracking-wide border-[3px] border-gray-300"
+                      >
+                        Join us
+                      </button>
+                    </div>
+                  </div>
 
-                <Locked locked={locked}>
-                  Some publishers, like the New York Times, got a lot of heat
-                  when they introduced their paywall, but the trend they set
-                  isn’t reversing: they now have 3M subscribers and aim for 10M
-                  by 2020. Hundreds of other news and content organizations are
-                  going in the same direction, including this very platform.
-                </Locked>
-                <Locked locked={locked}>
-                  Another trend emerged in the last 10 years: ownership does not
-                  seem to matter as much as it used to. People are getting rid
-                  of their meticulously amassed records and DVD collections to
-                  replace them with monthly subscriptions to Spotify and
-                  Netflix. Ride sharing platforms have put yet another dent in
-                  the car ownership status symbol… etc. My generation is putting
-                  access above ownership.
-                </Locked>
-              </Article>
-            )}
-          </Section>
-        </Body>
-      </Content>
-      <Right />
-    </Container>
+                  <div className={`relative ${locked ? 'hidden' : 'block'}`}>
+                    Some publishers, like the New York Times, got a lot of heat
+                    when they introduced their paywall, but the trend they set
+                    isn’t reversing: they now have 3M subscribers and aim for
+                    10M by 2020. Hundreds of other news and content
+                    organizations are going in the same direction, including
+                    this very platform.
+                  </div>
+                  <div className={`relative ${locked ? 'hidden' : 'block'}`}>
+                    Another trend emerged in the last 10 years: ownership does
+                    not seem to matter as much as it used to. People are getting
+                    rid of their meticulously amassed records and DVD
+                    collections to replace them with monthly subscriptions to
+                    Spotify and Netflix. Ride sharing platforms have put yet
+                    another dent in the car ownership status symbol… etc. My
+                    generation is putting access above ownership.
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -180,105 +203,3 @@ const Fonts = () => (
     rel="stylesheet"
   />
 )
-
-const GlobalStyle = createGlobalStyle`
-    body {
-      background-color: #fdfaf7;
-      font-family: 'Source Serif Pro', serif;
-    }
-`
-
-const Container = styled.div`
-  display: grid;
-  width: 100%;
-  grid-template-columns: 1fr minmax(500px, 800px) 1fr;
-
-  ${Media.phone`
-    grid-template-columns: 0px 1fr 0px;
-  `};
-`
-
-const Left = styled.div``
-const Right = styled.div``
-const Content = styled.div``
-const Masthead = styled.h1`
-  font-family: 'UnifrakturCook', cursive;
-  font-weight: bold;
-  font-size: 36px;
-  color: #6a6a6a;
-  margin-bottom: 50px;
-`
-
-const Body = styled.div`
-  &: before {
-    display: block;
-    content: '';
-    width: 87px;
-    height: 3px;
-    background-color: var(--silver);
-    margin-bottom: 16px;
-  }
-`
-
-const Title = styled.h1`
-  font-size: 36px;
-  font-weight: bold;
-  color: #6a6a6a;
-  margin-bottom: 18px;
-`
-
-const Subtitle = styled.div`
-  font-size: 32px;
-  color: #4a4a4a;
-  margin-bottom: 38px;
-`
-
-const Section = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 200px;
-  grid-gap: 40px;
-  @media (max-width: 650px) {
-    grid-template-columns: 1fr;
-  }
-`
-
-const Article = styled.div`
-  color: #4a4a4a;
-  line-height: 1.75;
-  font-size: 16px;
-`
-
-const CallToAction = styled.p`
-  text-align: center;
-  font-size: 1.2em;
-  display: ${(props) => (props.locked === true ? 'block' : 'none')};
-`
-
-const Button = styled.button`
-  cursor: pointer;
-  border: 3px solid #d8d8d8;
-  border-radius: 3px;
-  font-size: 1.3em;
-  background-color: transparent;
-  display: block;
-  padding: 10px 50px;
-  color: rgb(106, 106, 106);
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-`
-
-const Locked = styled.p`
-  display: ${(props) =>
-    props.locked === false || props.overlay ? 'block' : 'none'};
-  position: relative; // Important to make the overlay work
-`
-
-const Overlay = styled.span`
-  display: ${(props) => (props.locked === false ? 'none' : 'block')};
-  position: absolute;
-  background: linear-gradient(rgb(253, 250, 247, 0), rgb(253, 250, 247, 1) 70%);
-  top: 0;
-  width: 100%;
-  height: 100%;
-`

@@ -1,7 +1,5 @@
 /* eslint import/prefer-default-export: 0 */ // This file does not have a default export
-import configure from './config'
-
-const config = configure()
+import { config } from '~/config/app'
 
 export const ETHEREUM_NETWORKS_NAMES: { [id: number]: string } = {}
 Object.keys(config.networks).forEach((networkId) => {
@@ -83,6 +81,7 @@ export const MAX_DEVICE_WIDTHS = {
 export const INFINITY = '∞'
 export const UNLIMITED_KEYS_COUNT = -1
 export const UNLIMITED_KEYS_DURATION = -1
+export const ONE_DAY_IN_SECONDS = 86400
 
 // oneHundredYearsInDays -- based on the calculation for max duration in smart contract.
 export const ONE_HUNDRED_YEARS_IN_SECONDS = 100 * 365 * 24 * 60 * 60

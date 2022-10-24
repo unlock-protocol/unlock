@@ -15,10 +15,6 @@ export const Grid = styled.div`
   }
 `
 
-export const GridPadding = styled.div`
-  padding: 25px;
-`
-
 export const SectionHeader = styled.span`
   font-family: IBM Plex Sans;
   font-style: normal;
@@ -74,26 +70,6 @@ export const ItemValue = styled.span`
   color: var(--slate);
 `
 
-export const Input = styled.input`
-  height: 48px;
-  border: none;
-  background-color: var(--lightgrey);
-  border-radius: 4px;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 1rem;
-  width: 100%;
-`
-
-export const Error = styled.span`
-  height: 48px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-bottom: 1rem;
-  margin-top: 13px;
-`
-
 interface SubmitButtonProps {
   roundBottomOnly?: boolean
   backgroundColor?: string
@@ -118,87 +94,6 @@ export const SubmitButton = styled.button.attrs({ type: 'button' })`
   margin-top: 25px;
 `
 
-interface LoadingButtonProps {
-  children?: any
-  backgroundColor?: string
-  roundBottomOnly?: boolean
-}
-export const LoadingButton: React.FunctionComponent<LoadingButtonProps> = ({
-  children,
-  backgroundColor,
-  roundBottomOnly,
-}: LoadingButtonProps) => {
-  return (
-    <SubmitButton
-      backgroundColor={backgroundColor}
-      roundBottomOnly={!!roundBottomOnly}
-    >
-      <LoadingTextWrapper>
-        {children}
-        <Svg.Loading title="loading" alt="loading" />
-      </LoadingTextWrapper>
-    </SubmitButton>
-  )
-}
-
-LoadingButton.defaultProps = {
-  children: [],
-  backgroundColor: 'var(--blue)',
-  roundBottomOnly: false,
-}
-
-const LoadingTextWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 24px;
-  svg {
-    width: 24px;
-    fill: var(--white);
-    margin-left: 16px;
-  }
-`
-
-export const FullWidthButton = styled(SubmitButton)`
-  border-radius: 0 0 4px 4px;
-`
-
-export const Price = styled.span`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 30px;
-  line-height: 39px;
-  color: var(--slate);
-  margin-bottom: 8px;
-`
-
-export const TimeRemaining = styled.span`
-  font-family: IBM Plex Sans;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 20px;
-  line-height: 26px;
-  color: var(--grey);
-`
-
-export const CenterRow = styled.div`
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-`
-
-interface LockInfoProps {
-  price: string
-  timeRemaining: string | JSX.Element
-}
-export const LockInfo = ({ price, timeRemaining }: LockInfoProps) => (
-  <CenterRow>
-    <Price>{price}</Price>
-    <TimeRemaining>{timeRemaining}</TimeRemaining>
-  </CenterRow>
-)
-
 export const DisabledButton = styled(SubmitButton)`
   cursor: not-allowed;
   background-color: var(--grey);
@@ -218,48 +113,6 @@ export const Item = ({ title, children, count }: ItemProps) => {
       <ItemLabel>{title}</ItemLabel>
       {children}
     </Column>
-  )
-}
-
-// To be used when two credit card fields need to sit on the same line
-export const CardContainer = styled.div`
-  display: grid;
-  grid-template-columns: 1.5fr 1fr;
-  grid-gap: 16px;
-`
-
-// To be used in place of <Layout> when we embed an app page in an iframe. This
-// avoids including all the UI chrome and positioning, and adds a white
-// background.
-export const IframeLayout = styled.div`
-  background-color: var(--offwhite);
-  max-height: 100%;
-  overflow-y: scroll;
-  max-width: 600px;
-  display: flex;
-  flex-direction: column;
-  border-radius: 4px;
-  position: relative;
-`
-
-export const XYCenter = styled.div`
-  background: rgba(0, 0, 0, 0.4) none repeat scroll 0% 0%;
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-
-export const IframeWrapper = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <XYCenter>
-      <IframeLayout>{children}</IframeLayout>
-    </XYCenter>
   )
 }
 
@@ -362,23 +215,18 @@ export const StyledCheckbox = styled.div<StyledCheckboxProps>`
   }
 `
 
-const CheckboxContainer = styled.div`
-  display: inline-block;
-  vertical-align: middle;
-`
-
 interface CheckboxProps {
   id: string
   checked: boolean
   onChange: () => void
 }
 export const Checkbox = ({ checked, onChange, id }: CheckboxProps) => (
-  <CheckboxContainer>
+  <div className="inline-block align-middle">
     <HiddenCheckbox id={id} checked={checked} onChange={onChange} />
     <StyledCheckbox checked={checked}>
       <Checkmark fill="var(--red)" />
     </StyledCheckbox>
-  </CheckboxContainer>
+  </div>
 )
 
 // TODO: steal input/button elements from other parts of app and integrate here

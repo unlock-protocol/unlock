@@ -48,6 +48,8 @@ class MockWalletService extends EventEmitter {
   grantKeys = jest.fn()
 
   getLockContract = jest.fn(async () => mockLockContract)
+
+  renewMembershipFor = jest.fn(async () => ({ hash: 'txhash' }))
 }
 
 const mockWalletService = new MockWalletService()
@@ -88,28 +90,29 @@ describe('Dispatcher', () => {
           expirations: [],
           keyManagers: [],
           recipients: ['0xAaAdEED4c0B861cB36f4cE006a9C90BA2E43fdc2'],
-          transactionOptions: {
-            maxFeePerGas: BigNumber.from(40000000000),
-            maxPriorityFeePerGas: BigNumber.from(40000000000),
-          },
+        },
+        {
+          maxFeePerGas: BigNumber.from(40000000000),
+          maxPriorityFeePerGas: BigNumber.from(40000000000),
         },
         callback
       )
     })
   })
   describe('renewMembershipFor', () => {
-    it('should call the function directly on lock contract', async () => {
-      expect.assertions(2)
-      const keyId = 1
-      // check contract is fetched correctly
-      await new Dispatcher().renewMembershipFor(31337, lockAddress, keyId)
-      expect(mockWalletService.getLockContract).toBeCalledWith(lockAddress)
+    it('should call the function from walletService', async () => {
+      expect.assertions(1)
+      const keyId = '1'
 
-      // check contract call
+      await new Dispatcher().renewMembershipFor(31337, lockAddress, keyId)
       const referrerWallet = new Wallet(config.purchaserCredentials)
-      expect(mockLockContract.renewMembershipFor).toBeCalledWith(
-        keyId,
-        referrerWallet.address,
+
+      expect(mockWalletService.renewMembershipFor).toBeCalledWith(
+        {
+          lockAddress,
+          referrer: referrerWallet.address,
+          tokenId: keyId,
+        },
         {
           maxFeePerGas: BigNumber.from(40000000000),
           maxPriorityFeePerGas: BigNumber.from(40000000000),

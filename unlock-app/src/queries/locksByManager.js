@@ -18,12 +18,3 @@ export default function locksByManagerQuery() {
     }
   `
 }
-
-// query Locks($owner: String!) {
-//   locks(
-//     where: { manager: $owner }
-//     orderBy: creationBlock
-//     orderDirection: desc
-//   ) {
-//   }
-// }

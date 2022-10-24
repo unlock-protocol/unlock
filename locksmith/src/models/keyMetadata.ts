@@ -15,7 +15,7 @@ export class KeyMetadata extends Model<
   KeyMetadataAttributes,
   KeyMetadataCreationAttributes
 > {
-  @Column(DataType.JSON)
+  @Column(DataType.JSONB)
   data!: JSON
 
   @Column({ primaryKey: true })

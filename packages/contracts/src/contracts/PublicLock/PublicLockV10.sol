@@ -10,7 +10,7 @@ pragma experimental ABIEncoderV2;
  */
 
 
-interface IPublicLock
+interface IPublicLockV10
 {
 
 // See indentationissue description here:
@@ -27,16 +27,10 @@ interface IPublicLock
     string calldata _lockName
   ) external;
 
-  /**
-   * @notice Allow the contract to accept tips in ETH sent directly to the contract.
-   * @dev This is okay to use even if the lock is priced in ERC-20 tokens
-   */
-  // receive() external payable;
-
   // roles
-  function DEFAULT_ADMIN_ROLE() external pure returns (bytes32);
-  function KEY_GRANTER_ROLE() external pure returns (bytes32);
-  function LOCK_MANAGER_ROLE() external pure returns (bytes32);
+  function DEFAULT_ADMIN_ROLE() external pure returns (bytes32 role);
+  function KEY_GRANTER_ROLE() external pure returns (bytes32 role);
+  function LOCK_MANAGER_ROLE() external pure returns (bytes32 role);
 
   /**
   * @notice The version number of the current implementation on this network.
@@ -61,6 +55,8 @@ interface IPublicLock
 
   /**
    * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
+   * @param _spender address that can spend tokens belonging to the lock
+   * @param _amount amount of tokens that can be spent by the spender
    */
   function approveBeneficiary(
     address _spender,
@@ -168,7 +164,9 @@ interface IPublicLock
   ) external view returns(string memory);
 
   /**
-   * @notice Allows a Lock manager to add or remove an event hook
+   * Allows a Lock manager to add or remove an event hook
+   * @param _onKeyPurchaseHook Hook called when the `purchase` function is called
+   * @param _onKeyCancelHook Hook called when the internal `_cancelAndRefund` function is called
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
@@ -2425,6 +2423,8 @@ contract MixinLockCore is
 
   /**
    * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
+   * @param _spender address that can spend tokens belonging to the lock
+   * @param _amount amount of tokens that can be spent by the spender
    */
   function approveBeneficiary(
     address _spender,

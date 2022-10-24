@@ -20,7 +20,8 @@ export function invalidMembership({
   if (!isSignatureValid) {
     return 'Signature does not match'
   }
-  if (keyId !== tokenId.toString()) {
+
+  if (tokenId && keyId !== tokenId.toString()) {
     return 'This key does not match the user'
   }
 

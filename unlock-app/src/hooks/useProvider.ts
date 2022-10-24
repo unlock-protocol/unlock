@@ -7,6 +7,7 @@ import UnlockProvider from '../services/unlockProvider'
 import { useAppStorage } from './useAppStorage'
 import { ToastHelper } from '../components/helpers/toast.helper'
 import { StorageService } from '~/services/storageService'
+import { NetworkConfig } from '@unlock-protocol/types'
 
 export interface EthereumWindow extends Window {
   web3: any
@@ -148,8 +149,15 @@ export const useProvider = (config: any) => {
     setEncryptedPrivateKey(null)
     clearStorage()
     try {
+      // unlock provider does not support removing listeners or closing.
+      if (provider?.isUnlock) {
+        return
+      }
       provider.provider.removeAllListeners()
-      await provider.provider.close()
+      // metamask does not support disconnect
+      if (provider?.connection?.url !== 'metamask') {
+        await provider.provider.close()
+      }
     } catch (error) {
       console.error(
         'We could not disconnect provider properly using provider.disconnect()'
@@ -160,33 +168,44 @@ export const useProvider = (config: any) => {
     setLoading(false)
   }
 
-  const changeNetwork = async (network: any) => {
+  const changeNetwork = async (networkConf: NetworkConfig | number) => {
+    const networkConfig =
+      typeof networkConf === 'number'
+        ? config.networks[networkConf]
+        : networkConf
+
+    const { id, name } = networkConfig
+
+    // don't change network if not needed
+    if (id === network) {
+      return
+    }
+
     if (provider.isUnlock) {
-      const newProvider = UnlockProvider.reconnect(provider, network)
+      const newProvider = UnlockProvider.reconnect(provider, networkConfig)
       resetProvider(newProvider)
     } else {
       try {
-        await ToastHelper.promise(
-          provider.send(
-            'wallet_switchEthereumChain',
-            [
-              {
-                chainId: `0x${network.id.toString(16)}`,
-              },
-            ],
-            account
-          ),
-          {
-            loading: `Changing network to ${network.name}. Please Approve on your wallet.`,
-            error: `Error in changing network to ${network.name}`,
-            success: `Successfully changed network to ${network.name}`,
-          }
+        const changeNetworkRequest = provider.send(
+          'wallet_switchEthereumChain',
+          [
+            {
+              chainId: `0x${id.toString(16)}`,
+            },
+          ],
+          account
         )
+        await ToastHelper.promise(changeNetworkRequest, {
+          loading: `Changing network to ${name}. Please Approve on your wallet.`,
+          error: `Error in changing network to ${name}`,
+          success: `Successfully changed network to ${name}`,
+        })
+        setNetwork(id)
       } catch (switchError: any) {
         // This error code indicates that the chain has not been added to the provider yet.
         if (switchError.code === 4902) {
           try {
-            await addNetworkToWallet(network.id)
+            await addNetworkToWallet(id)
           } catch (addError) {
             ToastHelper.error(
               'Network could not be added. Please try manually adding it to your wallet'

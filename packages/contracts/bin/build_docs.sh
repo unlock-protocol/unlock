@@ -16,7 +16,7 @@ rm -rf $DEST_DOCS_FOLDER/archive/col
 
 # docusaurus titles
 echo '{
-  "label": "Protocol Reference",
+  "label": "Reference",
   "position": 3
 }' > "$DEST_DOCS_FOLDER/_category_.json"
 echo '{
@@ -36,7 +36,7 @@ sed -i -e "s/IPublicLockV${latest_template}/PublicLock (v${latest_template})/g" 
 sed -i -e "s/IUnlockV${latest_unlock}/Unlock (v${latest_unlock})/g" "$DEST_DOCS_FOLDER/Unlock.md"
 
 ### add README
-echo '# Protocol Reference
+echo '# Reference
 
 This section of the docs is generated automatically from the smart contracts themselves. 
 You can find out more about contributing [here](https://github.com/unlock-protocol/unlock).
@@ -44,7 +44,7 @@ You can find out more about contributing [here](https://github.com/unlock-protoc
 
 # docusaurus titles
 echo '{
-  "label": "Protocol Reference",
+  "label": "Reference",
   "position": 3
 }' > "$DEST_DOCS_FOLDER/_category_.json"
 echo '{

@@ -1,8 +1,6 @@
+import { Button, Input } from '@unlock-protocol/ui'
 import React, { useReducer } from 'react'
-import styled from 'styled-components'
-import { LoadingButton } from './user-account/styles'
-import { Button } from './checkout/FormStyles'
-
+import { FaSpinner as Spinner } from 'react-icons/fa'
 interface Props {
   buttonLabel: string
   loading: boolean
@@ -101,15 +99,15 @@ export const SetPassword = ({ buttonLabel, onSubmit, loading }: Props) => {
   const submitButton = () => {
     const { errors } = state
     const isValid = errors.length === 0
-    if (loading) {
-      return (
-        <LoadingButton>{buttonLabel || 'Creating Account'}...</LoadingButton>
-      )
-    }
 
     return (
-      <Button type="submit" disabled={!isValid}>
-        Submit
+      <Button type="submit" disabled={!isValid || loading}>
+        <div className="flex items-center">
+          {loading && <Spinner className="mr-1 animate-spin" />}
+          <span>
+            {loading ? buttonLabel || 'Creating Account...' : 'Submit'}
+          </span>
+        </div>
       </Button>
     )
   }
@@ -117,53 +115,33 @@ export const SetPassword = ({ buttonLabel, onSubmit, loading }: Props) => {
   const { errors } = state
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Label htmlFor="passwordInput">Password</Label>
-      <input
-        required
-        name="password"
-        type="password"
-        id="passwordInput"
-        placeholder="Password"
-        onChange={handleInputChange}
-      />
-      <br />
-      <Label htmlFor="passwordConfirmationInput">Confirm Password</Label>
-      <input
-        required
-        name="passwordConfirmation"
-        type="password"
-        id="passwordConfirmationInput"
-        placeholder="Confirm Password"
-        onChange={handleInputChange}
-      />
-      <br />
-      {errors.map((error: string) => (
-        <PasswordError key={error}>{error}</PasswordError>
-      ))}
-      <br />
-      {submitButton()}
-    </Form>
+    <form onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-4">
+        <Input
+          label="Password"
+          required
+          name="password"
+          type="password"
+          placeholder="Password"
+          onChange={handleInputChange}
+        />
+        <Input
+          label="Confirm password"
+          required
+          name="passwordConfirmation"
+          type="password"
+          placeholder="Confirm Password"
+          onChange={handleInputChange}
+        />
+        {errors.map((error: string) => (
+          <p className="px-1 text-red-500" key={error}>
+            {error}
+          </p>
+        ))}
+        {submitButton()}
+      </div>
+    </form>
   )
 }
 
 export default SetPassword
-
-const Label = styled.label`
-  display: block;
-  text-transform: uppercase;
-  font-size: 10px;
-  color: var(--darkgrey);
-  margin-top: 10px;
-  margin-bottom: 5px;
-`
-
-const Form = styled.form`
-  max-width: 450px;
-`
-
-const PasswordError = styled.p`
-  color: var(--red);
-  margin-bottom: 5px;
-  margin-top: 5px;
-`

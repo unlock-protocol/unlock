@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import { PaywallCallToAction } from '../../../unlockTypes'
 
 export const defaultCallToAction: PaywallCallToAction = {
@@ -23,15 +22,9 @@ interface CallToActionProps {
 export const CallToAction = ({ state, callToAction }: CallToActionProps) => {
   const message =
     (callToAction && callToAction[state]) || defaultCallToAction[state]
-  return <Message>{message}</Message>
+  return <span className="w-full text-left min-h-[30px]">{message}</span>
 }
 
 CallToAction.defaultProps = {
   callToAction: {},
 }
-
-const Message = styled.p`
-  width: 100%;
-  text-align: left;
-  min-height: 30px; // This avoids jankiness
-`

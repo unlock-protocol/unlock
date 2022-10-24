@@ -1,4 +1,5 @@
 const { ethers } = require('hardhat')
+const multisigOldABI = require('../../test/helpers/ABIs/multisig.json')
 const { networks } = require('@unlock-protocol/networks')
 
 const {
@@ -10,7 +11,6 @@ const {
 } = require('../helpers')
 
 const {
-  getSafe,
   submitTx,
   getSafeAddress,
   getOwners,
@@ -18,6 +18,11 @@ const {
 
 const { assert } = require('chai')
 const { unlockAddress } = networks[1]
+
+const getSafe = async ({ safeAddress, signer }) => {
+  const safe = new ethers.Contract(safeAddress, multisigOldABI, signer)
+  return safe
+}
 
 // should run on mainnet only
 describe('scripts / gnosis', () => {
@@ -39,16 +44,6 @@ describe('scripts / gnosis', () => {
 
     // get mainnet safe
     safe = await getSafe({ safeAddress: UNLOCK_MULTISIG_ADDRESS, signer })
-  })
-
-  describe('helpers / getSafe', () => {
-    it('get the correct safe', async () => {
-      assert.equal(safe.address, UNLOCK_MULTISIG_ADDRESS)
-      const owners = await safe.getOwners()
-      assert.equal(owners[0], '0xDD8e2548da5A992A63aE5520C6bC92c37a2Bcc44')
-      assert.equal(owners[1], '0x2785f2a3DDaCfDE5947F1A9D6c878CCD7F885400')
-      assert.equal(owners.length, 9)
-    })
   })
 
   describe('get safe address', () => {

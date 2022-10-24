@@ -2,7 +2,7 @@ import 'jest-fetch-mock'
 import { Enabler } from '../utils/enableInjectedProvider'
 import * as isUnlockedUtil from '../utils/isUnlocked'
 import * as optimisticUnlockingUtils from '../utils/optimisticUnlocking'
-
+import { getConfigUrl } from '../urls'
 import { Paywall } from '../Paywall'
 import * as paywallScriptUtils from '../utils'
 import { networkConfigs } from '../networkConfigs'
@@ -248,6 +248,18 @@ describe('Paywall object', () => {
           state: 'unlocked',
         }
       )
+    })
+  })
+
+  describe('getConfigUrl', () => {
+    it('base url is correct', () => {
+      expect.assertions(2)
+      const { unlockAppUrl, locksmithUri } = getConfigUrl(
+        'staging-paywall.unlock-protocol.com',
+        { alpha: true }
+      )
+      expect(unlockAppUrl).toBe('https://staging-app.unlock-protocol.com/alpha')
+      expect(locksmithUri).toBe('https://staging-locksmith.unlock-protocol.com')
     })
   })
 })

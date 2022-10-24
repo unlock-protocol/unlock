@@ -2,23 +2,7 @@
 
 export interface Typegen0 {
   '@@xstate/typegen': true
-  eventsCausingActions: {
-    selectLock: 'SELECT_LOCK'
-    disconnect: 'DISCONNECT'
-    selectQuantity: 'SELECT_QUANTITY'
-    selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
-    selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
-    selectRecipients: 'SELECT_RECIPIENTS'
-    signMessage: 'SIGN_MESSAGE'
-    solveCaptcha: 'SOLVE_CAPTCHA'
-    confirmMint: 'CONFIRM_MINT'
-  }
   internalEvents: {
-    'done.invoke.unlockAccount': {
-      type: 'done.invoke.unlockAccount'
-      data: unknown
-      __tip: 'See the XState TS docs to learn how to strongly type this.'
-    }
     'xstate.init': { type: 'xstate.init' }
   }
   invokeSrcNameMap: {}
@@ -28,24 +12,51 @@ export interface Typegen0 {
     guards: never
     delays: never
   }
+  eventsCausingActions: {
+    confirmMint: 'CONFIRM_MINT'
+    confirmRenew: 'CONFIRM_RENEW'
+    disconnect: 'DISCONNECT'
+    selectCardToCharge: 'SELECT_CARD_TO_CHARGE'
+    selectLock: 'SELECT_LOCK'
+    selectPaymentMethod: 'SELECT_PAYMENT_METHOD'
+    selectQuantity: 'SELECT_QUANTITY'
+    selectRecipients: 'SELECT_RECIPIENTS'
+    signMessage: 'SIGN_MESSAGE'
+    solveCaptcha: 'SOLVE_CAPTCHA'
+    submitData: 'SUBMIT_DATA'
+    submitPassword: 'SUBMIT_PASSWORD'
+    updatePaywallConfig: 'UPDATE_PAYWALL_CONFIG'
+  }
   eventsCausingServices: {}
   eventsCausingGuards: {
-    requireCardPayment: 'CONTINUE'
-    isLockSelected: 'DISCONNECT' | 'done.invoke.unlockAccount'
-    requireMessageToSign: 'SELECT_RECIPIENTS' | 'BACK'
-    requireCaptcha: 'SELECT_RECIPIENTS' | 'SIGN_MESSAGE'
+    requireCaptcha:
+      | 'SELECT_CARD_TO_CHARGE'
+      | 'SELECT_PAYMENT_METHOD'
+      | 'SIGN_MESSAGE'
+    requireMessageToSign:
+      | 'BACK'
+      | 'SELECT_CARD_TO_CHARGE'
+      | 'SELECT_PAYMENT_METHOD'
+    requirePassword:
+      | 'SELECT_CARD_TO_CHARGE'
+      | 'SELECT_PAYMENT_METHOD'
+      | 'SIGN_MESSAGE'
   }
   eventsCausingDelays: {}
   matchesStates:
-    | 'SELECT'
-    | 'QUANTITY'
-    | 'CARD'
-    | 'METADATA'
-    | 'MESSAGE_TO_SIGN'
     | 'CAPTCHA'
+    | 'CARD'
     | 'CONFIRM'
+    | 'MESSAGE_TO_SIGN'
+    | 'METADATA'
     | 'MINTING'
-    | 'UNLOCK_ACCOUNT'
+    | 'PASSWORD'
+    | 'PAYMENT'
+    | 'QUANTITY'
+    | 'RENEW'
+    | 'RENEWED'
     | 'RETURNING'
+    | 'SELECT'
+    | 'UNLOCK_ACCOUNT'
   tags: never
 }

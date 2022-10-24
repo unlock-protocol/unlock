@@ -1,8 +1,8 @@
 import { ActionType } from 'hardhat/types'
-import type { LockArgs, UnlockHRE } from './Unlock'
-import { UNLOCK_LATEST_VERSION, PUBLIC_LOCK_LATEST_VERSION } from './constants'
+import { createLock } from './createLock'
+import type { CreateLockArgs } from './createLock'
 
-interface CreateLockTaskArgs extends LockArgs {
+interface CreateLockTaskArgs extends CreateLockArgs {
   unlockContract?: string
 }
 
@@ -13,15 +13,10 @@ export const deployLockTask: ActionType<CreateLockTaskArgs> = async (
     expirationDuration,
     currencyContractAddress,
     maxNumberOfKeys,
-    unlockContract,
   },
-  { unlock }
+  hre
 ): Promise<string> => {
-  // set unlock contract to a specified address
-  if (unlockContract) {
-    await unlock.setUnlock(unlockContract)
-  }
-  const { lock, transactionHash } = await unlock.createLock({
+  const { lock, transactionHash } = await createLock(hre, {
     name,
     keyPrice,
     expirationDuration,
@@ -35,13 +30,13 @@ export const deployLockTask: ActionType<CreateLockTaskArgs> = async (
   return lock.address
 }
 
-export const deployUnlockProtocol = async (
-  {
-    unlockVersion = UNLOCK_LATEST_VERSION,
-    lockVersion = PUBLIC_LOCK_LATEST_VERSION,
-    confirmations = 5,
-  },
-  { deployProtocol }: UnlockHRE
-): Promise<void> => {
-  await deployProtocol(unlockVersion, lockVersion, confirmations)
-}
+// export const deployUnlockProtocol = async (
+//   {
+//     unlockVersion = UNLOCK_LATEST_VERSION,
+//     lockVersion = PUBLIC_LOCK_LATEST_VERSION,
+//     confirmations = 5,
+//   },
+//   { deployProtocol }: UnlockHRE
+// ): Promise<void> => {
+//   await deployProtocol(unlockVersion, lockVersion, confirmations)
+// }

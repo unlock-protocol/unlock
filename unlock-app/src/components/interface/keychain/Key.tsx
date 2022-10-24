@@ -7,17 +7,16 @@ import {
 } from '@radix-ui/react-avatar'
 import { MdExplore as ExploreIcon } from 'react-icons/md'
 import { BsTrashFill as CancelIcon } from 'react-icons/bs'
-import styled from 'styled-components'
 import {
   FaWallet as WalletIcon,
   FaQrcode as QrCodeIcon,
   FaCheckCircle as CheckIcon,
+  FaInfoCircle as InfoIcon,
 } from 'react-icons/fa'
 import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
 import { Badge, Tooltip } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
-import { OwnedKey } from './KeychainTypes'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
 import { useWalletService } from '../../../utils/withWalletService'
@@ -27,27 +26,29 @@ import { MAX_UINT } from '../../../constants'
 import { useConfig } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
+import { KeyMetadataModal } from './KeyMetadataModal'
+import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
+import { useQuery } from '@tanstack/react-query'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 interface KeyBoxProps {
-  tokenURI: string
   lock: any
   expiration: string
-  keyId: string
+  tokenId: string
   network: number
   isKeyExpired: boolean
   expirationStatus: string
 }
 
 const KeyBox = ({
-  tokenURI,
   lock,
   expiration,
-  keyId,
+  tokenId,
   network,
   isKeyExpired,
   expirationStatus,
 }: KeyBoxProps) => {
-  const metadata = useMetadata(tokenURI)
+  const metadata = useMetadata(lock.address, tokenId, network)
 
   const [isCopied, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
@@ -94,7 +95,7 @@ const KeyBox = ({
       <div className="pt-4 space-y-1">
         <p className="flex items-center gap-2 text-sm">
           <span className="text-gray-400">Token ID:</span>
-          <span className="font-medium">{keyId}</span>
+          <span className="font-medium">{tokenId}</span>
         </p>
         <div className="flex items-center gap-2 text-sm">
           <span className="text-gray-400">Lock Address:</span>
@@ -128,25 +129,57 @@ const KeyBox = ({
   )
 }
 
+export interface KeyProps {
+  id: string
+  tokenId: string
+  owner: string
+  manager?: any
+  expiration: string
+  tokenURI?: string
+  createdAtBlock: any
+  cancelled?: boolean
+  lock: {
+    id: string
+    address: any
+    name?: string
+    expirationDuration?: any
+    tokenAddress: any
+    price: any
+    lockManagers: any[]
+    version: any
+    createdAtBlock?: any
+  }
+}
 export interface Props {
-  ownedKey: OwnedKey
+  ownedKey: KeyProps
   account: string
   network: number
 }
 
 const Key = ({ ownedKey, account, network }: Props) => {
-  const { lock, expiration, tokenURI, keyId } = ownedKey
+  const { lock, expiration, tokenId } = ownedKey
+  const { network: accountNetwork } = useAuth()
   const walletService = useWalletService()
   const wedlockService = useContext(WedlockServiceContext)
+  const web3Service = useWeb3Service()
   const { watchAsset } = useAuth()
   const config = useConfig()
   const expirationStatus = expirationAsDate(expiration)
-  const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
 
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>()
   const [showingQR, setShowingQR] = useState(false)
+  const [showMetadata, setShowMetadata] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
+  const [expireAndRefunded, setExpireAndRefunded] = useState(false)
+  const isKeyExpired =
+    expirationStatus.toLocaleLowerCase() === 'expired' || expireAndRefunded
+  const { data: lockData, isLoading: isLockDataLoading } = useQuery(
+    ['lock', lock.address, network],
+    () => {
+      return web3Service.getLock(lock.address, network)
+    }
+  )
 
   const handleSignature = async () => {
     setError('')
@@ -155,7 +188,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
       account,
       lockAddress: lock.address,
       timestamp: Date.now(),
-      tokenId: keyId,
+      tokenId,
     })
 
     const signature = await walletService.signMessage(payload, 'personal_sign')
@@ -179,31 +212,24 @@ const Key = ({ ownedKey, account, network }: Props) => {
     window.open(networks[network].explorer?.urls.address(lock.address))
   }
 
+  // TODO: use the networks' OpenSea config!
   const viewOnOpenSea = async () => {
     if (network === 137) {
       window.open(
-        `https://opensea.io/assets/matic/${lock.address}/${keyId}`,
+        `https://opensea.io/assets/matic/${lock.address}/${tokenId}`,
         '_blank'
       )
     } else if (network === 1) {
       window.open(
-        `https://opensea.io/assets/${lock.address}/${keyId}`,
+        `https://opensea.io/assets/${lock.address}/${tokenId}`,
         '_blank'
       )
     } else if (network === 4) {
       window.open(
-        `https://testnets.opensea.io/assets/${lock.address}/${keyId}`,
+        `https://testnets.opensea.io/assets/${lock.address}/${tokenId}`,
         '_blank'
       )
     }
-  }
-
-  const onCancelAndRefund = () => {
-    setShowCancelModal(true)
-  }
-
-  const closeCancelAndRefund = () => {
-    setShowCancelModal(false)
   }
 
   const iconButtonClass =
@@ -214,7 +240,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         wedlockService.keychainQREmail(
           recipient,
           `${window.location.origin}/keychain`,
-          lock.name,
+          lock!.name ?? '',
           qrImage
         )
       } catch {
@@ -226,23 +252,45 @@ const Key = ({ ownedKey, account, network }: Props) => {
   }
 
   const isAvailableOnOpenSea = [1, 4, 137].indexOf(network) > -1
-  const baseCurrencySymbol =
-    walletService.networks[network].baseCurrencySymbol ?? ''
+  const baseSymbol = walletService.networks[network].baseCurrencySymbol!
+  const symbol =
+    isLockDataLoading || !lockData
+      ? baseSymbol
+      : lockTickerSymbol(lockData, baseSymbol)
+
+  const isRefundable = !isLockDataLoading && !isKeyExpired
+
+  const wrongNetwork = network !== accountNetwork
 
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
-      <CancelAndRefundModal
-        active={showCancelModal}
-        lock={lock}
-        keyId={keyId}
-        dismiss={closeCancelAndRefund}
+      <KeyMetadataModal
+        isOpen={showMetadata}
+        setIsOpen={setShowMetadata}
         account={account}
-        currency={baseCurrencySymbol}
+        lock={lock}
+        tokenId={tokenId}
+        network={network}
       />
+
+      {!isKeyExpired && (
+        <CancelAndRefundModal
+          isOpen={showCancelModal}
+          setIsOpen={setShowCancelModal}
+          lock={lock}
+          tokenId={tokenId}
+          account={account}
+          currency={symbol}
+          network={network}
+          onExpireAndRefund={() => setExpireAndRefunded(true)}
+        />
+      )}
+
       {signature && (
         <QRModal
           lock={lock}
-          active={showingQR}
+          isOpen={showingQR}
+          setIsOpen={setShowingQR}
           dismiss={() => setSignature(null)}
           sendEmail={sendEmail}
           signature={signature}
@@ -252,14 +300,13 @@ const Key = ({ ownedKey, account, network }: Props) => {
         network={network}
         lock={lock}
         expiration={expiration}
-        tokenURI={tokenURI}
-        keyId={keyId}
+        tokenId={tokenId}
         isKeyExpired={isKeyExpired}
         expirationStatus={expirationStatus}
       />
-      {error && <Error>{error}</Error>}
+      {error && <span className="text-sm text-red-500">{error}</span>}
       <div className="grid gap-2 pt-4">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {!isKeyExpired && (
             <Tooltip label="Scan QR code" tip="Scan QR code">
               <button
@@ -299,24 +346,37 @@ const Key = ({ ownedKey, account, network }: Props) => {
               <OpenSeaIcon />
             </button>
           </Tooltip>
-          {!isKeyExpired && (
-            <Tooltip label="Cancel and Refund" tip="Cancel and Refund">
+          {isRefundable && (
+            <Tooltip
+              label="Cancel and Refund"
+              tip={
+                wrongNetwork
+                  ? `Switch to ${walletService.networks[network].name} network`
+                  : 'Cancel and refund'
+              }
+            >
               <button
-                aria-label="Cancel and Refund"
                 className={iconButtonClass}
                 type="button"
-                onClick={onCancelAndRefund}
+                disabled={wrongNetwork}
+                onClick={() => setShowCancelModal(!showCancelModal)}
               >
                 <CancelIcon />
               </button>
             </Tooltip>
           )}
+          <Tooltip label="Show metadata" tip="Show metadata">
+            <button
+              className={iconButtonClass}
+              type="button"
+              onClick={() => setShowMetadata(true)}
+            >
+              <InfoIcon />
+            </button>
+          </Tooltip>
         </div>
       </div>
     </div>
   )
 }
 export default Key
-const Error = styled.p`
-  color: var(--red);
-`

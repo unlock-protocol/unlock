@@ -290,8 +290,6 @@ export const Checkout = ({
         showTitle={false}
         unlockUserAccount={false}
         injectedProvider={web3Provider}
-        backgroundColor="var(--white)"
-        activeColor="var(--offwhite)"
       >
         <p>Select your crypto wallet of choice.</p>
       </LoginPrompt>
@@ -541,7 +539,7 @@ export const Checkout = ({
         >
           <PaywallLogoWrapper>
             {paywallConfig?.icon && !skipPaywallIcon ? (
-              <PublisherLogo
+              <img
                 alt="Publisher Icon"
                 src={paywallConfig?.icon}
                 onError={() => setSkipPaywallIcon(true)}
@@ -593,5 +591,3 @@ const Prompt = styled.p`
 Checkout.defaultProps = {
   paywallConfig: {},
 }
-
-const PublisherLogo = styled.img``

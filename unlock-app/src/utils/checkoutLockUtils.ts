@@ -63,9 +63,10 @@ export const lockTickerSymbol = (
 
 export const userCanAffordKey = (
   lock: LockPriceLock,
-  balance: string
+  balance: string,
+  recipients = 1
 ): boolean => {
-  const keyPrice = parseFloat(lock.keyPrice)
+  const keyPrice = parseFloat(lock.keyPrice) * recipients
   const _balance = parseFloat(balance)
   // For eth/base currency need some gas so if the balance is exactly the same as key price this would fail
   if (!lock.currencyContractAddress) {

@@ -1,55 +1,35 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { Mint, CheckoutService } from './checkoutMachine'
+import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { Button, Icon } from '@unlock-protocol/ui'
-import mintingAnimation from '~/animations/minting.json'
-import mintedAnimation from '~/animations/minted.json'
-import errorAnimation from '~/animations/error.json'
-import Lottie from 'lottie-react'
 import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useConfig } from '~/utils/withConfig'
-import { useEffect } from 'react'
+import { Fragment, useEffect, useMemo } from 'react'
 import { ethers } from 'ethers'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useActor } from '@xstate/react'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
-import { Shell } from '../Shell'
+import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import { ProgressCircleIcon, ProgressFinishedIcon } from '../Progress'
-
+import { Stepper } from '../Stepper'
+import { useCheckoutSteps } from './useCheckoutItems'
+import { TransactionAnimation } from '../Shell'
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   onClose(params?: Record<string, string>): void
+  communication: CheckoutCommunication
 }
 
-function AnimationContent({ status }: { status: Mint['status'] }) {
-  switch (status) {
-    case 'PROCESSING':
-      return (
-        <Lottie className="w-40 h-40" loop animationData={mintingAnimation} />
-      )
-    case 'FINISHED':
-      return (
-        <Lottie className="w-40 h-40" loop animationData={mintedAnimation} />
-      )
-    case 'ERROR': {
-      return <Lottie className="w-40 h-40" animationData={errorAnimation} />
-    }
-    default:
-      return null
-  }
-}
-
-export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
-  const communication = useCheckoutCommunication()
+export function Minting({
+  injectedProvider,
+  onClose,
+  checkoutService,
+  communication,
+}: Props) {
   const { account } = useAuth()
   const config = useConfig()
   const [state, send] = useActor(checkoutService)
-  const { mint, lock, messageToSign, paywallConfig } = state.context
-  const { title, description, iconURL } =
-    useCheckoutHeadContent(checkoutService)
+  const { mint, lock, messageToSign } = state.context
   const processing = mint?.status === 'PROCESSING'
   const status = mint?.status
 
@@ -57,14 +37,22 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
     if (mint?.status !== 'PROCESSING') {
       return
     }
-    async function waitForConfirmation() {
+    const waitForConfirmation = async () => {
       try {
         const network = config.networks[lock!.network]
         if (network) {
           const provider = new ethers.providers.JsonRpcProvider(
             network.provider
           )
-          await provider.waitForTransaction(mint!.transactionHash!)
+
+          const transaction = await provider.waitForTransaction(
+            mint!.transactionHash!
+          )
+
+          if (transaction.status !== 1) {
+            throw new Error('Transaction failed.')
+          }
+
           communication.emitTransactionInfo({
             hash: mint!.transactionHash!,
             lock: lock?.address,
@@ -94,34 +82,55 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
     waitForConfirmation()
   }, [mint, lock, config, send, communication, account, messageToSign])
 
+  const content = useMemo(() => {
+    switch (status) {
+      case 'PROCESSING': {
+        return {
+          title: 'Minting NFT',
+          text: 'Purchasing NFT...',
+        }
+      }
+      case 'FINISHED': {
+        return {
+          title: 'You have NFT!',
+          text: 'Successfully purchased NFT',
+        }
+      }
+      case 'ERROR': {
+        return {
+          title: 'Minting failed',
+          text: 'Failed to purchase NFT',
+        }
+      }
+    }
+  }, [status])
+
+  const stepItems = useCheckoutSteps(checkoutService)
+
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
-        title={paywallConfig.title}
-        iconURL={iconURL}
-        description={description}
+    <Fragment>
+      <Stepper
+        position={8}
+        disabled
+        service={checkoutService}
+        items={stepItems}
       />
-      <div className="flex px-6 mt-6 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <ProgressCircleIcon disabled />
-            <ProgressCircleIcon disabled />
-            <ProgressCircleIcon disabled />
-            {messageToSign && <ProgressCircleIcon disabled />}
-            <ProgressCircleIcon disabled />
-            <ProgressFinishedIcon />
-          </div>
-          <h4 className="text-sm "> {title}</h4>
-        </div>
-        <div className="border-t-4 w-full flex-1"></div>
-      </div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
-        <div className="space-y-6 justify-items-center grid">
-          {status && <AnimationContent status={status} />}
-          {mint?.status === 'ERROR' && (
-            <p className="font-bold text-lg text-brand-ui-primary">
-              Oh no... something went wrong
-            </p>
+      <main className="h-full px-6 py-2 overflow-auto">
+        <div className="flex flex-col items-center justify-center h-full space-y-2">
+          <TransactionAnimation status={status} />
+          <p className="text-lg font-bold text-brand-ui-primary">
+            {content?.text}
+          </p>
+          {mint?.status === 'FINISHED' && (
+            <a
+              href="/keychain"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+            >
+              Open keychain
+              <Icon icon={ExternalLinkIcon} size="small" />
+            </a>
           )}
           {mint?.transactionHash && (
             <a
@@ -130,15 +139,15 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
             >
-              See in block explorer{' '}
+              See in the block explorer
               <Icon icon={ExternalLinkIcon} size="small" />
             </a>
           )}
         </div>
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
@@ -154,6 +163,6 @@ export function Minting({ injectedProvider, onClose, checkoutService }: Props) {
         </Connected>
         <PoweredByUnlock />
       </footer>
-    </Shell.Root>
+    </Fragment>
   )
 }

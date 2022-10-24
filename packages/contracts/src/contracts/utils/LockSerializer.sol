@@ -2,7 +2,7 @@
 pragma solidity ^0.8.2;
 
 import 'hardhat/console.sol';
-import '@unlock-protocol/contracts/dist/PublicLock/IPublicLockV8sol8.sol';
+import '../PublicLock/IPublicLockV8sol8.sol';
 
 contract LockSerializer {
 

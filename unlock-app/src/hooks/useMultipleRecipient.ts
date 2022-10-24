@@ -5,6 +5,7 @@ import { Web3ServiceContext } from '../utils/withWeb3Service'
 import { getAddressForName } from './useEns'
 import { Lock, PaywallConfig } from '../unlockTypes'
 import { formResultToMetadata } from '../utils/userMetadata'
+import AuthenticationContext from '~/contexts/AuthenticationContext'
 
 const MAX_RETRY_COUNT = 5
 interface User {
@@ -32,6 +33,7 @@ export const useMultipleRecipient = (
   lock: Lock,
   paywallConfig?: PaywallConfig
 ) => {
+  const { network } = useContext(AuthenticationContext)
   let maxRecipients = 1
   if (paywallConfig?.maxRecipients) {
     maxRecipients = paywallConfig.maxRecipients
@@ -115,41 +117,48 @@ export const useMultipleRecipient = (
     return recipients.size < maxRecipients
   }
 
-  const getAddressAndValidation = async (
-    recipient: string,
-    isUpdate: boolean
-  ) => {
-    let address = ''
-    let isAddressWithKey = false
-    try {
-      address = await getAddressForName(recipient)
-      isAddressWithKey = await web3Service.getHasValidKey(
-        lock.address,
-        address,
-        lock.network
-      )
-    } catch (err: any) {
-      console.error(err?.message)
-    }
-
-    const addressList = recipientsList().map(
-      ({ resolvedAddress }) => resolvedAddress
+  const canKeyBeGranted = async ({
+    lockAddress,
+    owner,
+  }: {
+    lockAddress: string
+    owner: string
+  }): Promise<boolean> => {
+    const maxKeysPerAddress = lock?.maxKeysPerAddress || 1
+    const totalKeysOwned = await web3Service.totalKeys(
+      lockAddress,
+      owner,
+      network
     )
 
-    // on updates we ignore duplicates check
-    const isAddressInList = isUpdate ? false : addressList.includes(address)
+    const keysInAirdropList = normalizeRecipients()?.users.filter(
+      ({ userAddress }) => userAddress.toLowerCase() === owner.toLowerCase()
+    ).length
 
-    // todo: need also to check how many keys the address owns to improve this logic
-    const limitNotReached = !isAddressWithKey
-    const addressValid = address?.length > 0
+    /**
+     * make sure to check the actual keys for address and the keys on list to prevent to try to
+     * airdrop more keys allowed for the lock
+     */
+    const totalKeys = keysInAirdropList + totalKeysOwned
+    return totalKeys < maxKeysPerAddress
+  }
 
-    const valid = addressValid && limitNotReached && !isAddressInList
+  const getAddressAndValidation = async (recipient: string) => {
+    const owner = await getAddressForName(recipient)
+    const lockAddress = lock.address
+
+    const keyCanBeGranted = await canKeyBeGranted({
+      lockAddress,
+      owner,
+    })
+
+    const addressValid = owner?.length > 0
+
+    const valid = addressValid && keyCanBeGranted
     return {
       valid,
-      address,
-      isAddressWithKey,
-      isAddressInList,
-      limitNotReached,
+      owner,
+      keyCanBeGranted,
     }
   }
 
@@ -204,48 +213,51 @@ export const useMultipleRecipient = (
   const addRecipientItem = async <T extends Record<string, any>>(
     userAddress: string,
     metadata: T,
+    itemsToAdd = 1,
     updateIndex?: number
   ): Promise<boolean> => {
     setLoading(true)
-    const isUpdate = typeof updateIndex === 'number'
-    if (canAddUser() || isUpdate) {
+    if (canAddUser()) {
       const index = updateIndex || recipients?.size + 1
-      const {
-        valid,
-        address,
-        isAddressWithKey,
-        isAddressInList,
-        limitNotReached,
-      } = await getAddressAndValidation(userAddress, isUpdate)
+      const { valid, owner, keyCanBeGranted } = await getAddressAndValidation(
+        userAddress
+      )
       if (valid) {
         try {
-          setRecipients((prev) =>
-            prev.set(index, {
-              userAddress,
-              metadata,
-              index,
-              resolvedAddress: address ?? userAddress,
-              valid,
+          const itemsToAddList = new Array(itemsToAdd)
+            .fill(0)
+            .map((_, itemIndex) => {
+              return {
+                userAddress,
+                metadata,
+                index: index + itemIndex,
+                resolvedAddress: owner ?? userAddress,
+                valid,
+              }
             })
-          )
-          ToastHelper.success('Recipient correctly added in list.')
+
+          itemsToAddList.map((item, itemIdx) => {
+            setRecipients((prev) => {
+              const index = itemIdx + (recipients?.size + 1)
+              return prev.set(index, {
+                ...item,
+                index,
+              })
+            })
+          })
+
+          ToastHelper.success('Recipients correctly added in list.')
         } catch (err) {
           console.error(err)
           ToastHelper.error('Error by adding recipient in list')
         }
       }
 
-      if (!limitNotReached && isAddressWithKey) {
+      if (!keyCanBeGranted) {
         ToastHelper.error(
-          'This address reached max keys limit. You cannot grant them a new one.'
-        )
-      } else if (isAddressWithKey) {
-        ToastHelper.error(
-          'This address already owns a valid key. You cannot grant them a new one.'
-        )
-      } else if (isAddressInList) {
-        ToastHelper.error(
-          'This address is already present in list. Please add a new one.'
+          `This address reached max keys limit (${
+            lock?.maxKeysPerAddress || 1
+          }). You cannot grant them a new one.`
         )
       } else if (!valid) {
         ToastHelper.error(

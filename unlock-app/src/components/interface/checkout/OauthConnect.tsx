@@ -8,8 +8,7 @@ import UnlockProvider from '../../../services/unlockProvider'
 import { SignUp } from '../user-account/SignUp'
 import useAccount from '../../../hooks/useAccount'
 import { ConfigContext } from '../../../utils/withConfig'
-import { useAuthenticateHandler } from '../../../hooks/useAuthenticateHandler'
-import { LinkButton } from './FormStyles'
+import { useAuthenticate } from '~/hooks/useAuthenticate'
 
 interface OAuthConnectProps {
   oAuthConfig: OAuthConfig
@@ -57,7 +56,7 @@ export const OAuthConnect = ({
   const { clientId } = oAuthConfig
   const { createUserAccount } = useAccount(account || '', 1)
   const config = useContext(ConfigContext)
-  const { authenticateWithProvider } = useAuthenticateHandler({})
+  const { authenticateWithProvider } = useAuthenticate()
 
   useEffect(() => {
     const handleUser = async (account?: string) => {
@@ -116,9 +115,13 @@ export const OAuthConnect = ({
         />
         <p>
           Use{' '}
-          <LinkButton onClick={() => setShowSignup(false)}>
+          <a
+            className="cursor-pointer"
+            rel="noopener noreferrer"
+            onClick={() => setShowSignup(false)}
+          >
             crypto wallet
-          </LinkButton>
+          </a>
         </p>
       </>
     )
@@ -134,22 +137,20 @@ export const OAuthConnect = ({
   }
 
   return (
-    <LoginPrompt
-      embedded
-      showTitle={false}
-      unlockUserAccount
-      backgroundColor="var(--white)"
-      activeColor="var(--offwhite)"
-    >
+    <LoginPrompt embedded showTitle={false} unlockUserAccount>
       <p>
         The application {clientId} wants to identify you and access your
         membership status.
       </p>
       <p>
         Connect to your wallet, or{' '}
-        <LinkButton onClick={() => setShowSignup(true)}>
+        <a
+          className="cursor-pointer"
+          rel="noopener noreferrer"
+          onClick={() => setShowSignup(true)}
+        >
           create an account
-        </LinkButton>
+        </a>
         .
       </p>
     </LoginPrompt>

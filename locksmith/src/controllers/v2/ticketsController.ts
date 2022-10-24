@@ -6,6 +6,7 @@ import { Web3Service } from '@unlock-protocol/unlock-js'
 import logger from '../../logger'
 import { generateQrCode } from '../../utils/qrcode'
 import { KeyMetadata } from '../../models/keyMetadata'
+import { Lock } from '@unlock-protocol/types'
 
 export class TicketsController {
   public web3Service: Web3Service
@@ -108,15 +109,17 @@ export class TicketsController {
         keyId,
         network
       )
+
+      const lock: Lock = await this.web3Service.getLock(lockAddress, network)
+
       await notifyNewKeyToWedlocks(
         {
-          keyId,
+          tokenId: keyId,
           lock: {
             address: lockAddress,
+            name: lock.name,
           },
-          owner: {
-            address: keyOwner,
-          },
+          owner: keyOwner,
         },
         network,
         true

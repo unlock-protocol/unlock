@@ -56,6 +56,10 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
       href: '/blog',
     },
     {
+      name: 'Media Kit',
+      href: 'https://unlockprotocol.notion.site/Press-Kit-35836bdcc88f400eb5bb429c477c3333',
+    },
+    {
       name: 'Integrations',
       href: 'https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/',
     },

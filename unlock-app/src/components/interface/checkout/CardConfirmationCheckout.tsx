@@ -261,7 +261,7 @@ export const CardConfirmationCheckout = ({
 
   if (!hasValidkey && !lock.fiatPricing?.creditCardEnabled) {
     return (
-      <Wrapper>
+      <div className="flex flex-col">
         <Lock
           network={network}
           lock={lock}
@@ -273,11 +273,11 @@ export const CardConfirmationCheckout = ({
           recipient={recipientAddress}
           numberOfRecipients={recipients.length}
         />
-        <ErrorMessage>
+        <span className="text-red-500">
           Unfortunately, credit card is not available for this lock. You need to
           purchase using a crypto-wallet.
-        </ErrorMessage>
-      </Wrapper>
+        </span>
+      </div>
     )
   }
 
@@ -286,7 +286,7 @@ export const CardConfirmationCheckout = ({
     (isAdvanced ? purchasePending || !advancedRecipientValid : purchasePending)
 
   return (
-    <Wrapper>
+    <div className="flex flex-col w-full">
       <Lock
         recipient={recipientAddress}
         network={network}
@@ -301,12 +301,12 @@ export const CardConfirmationCheckout = ({
 
       {hasValidkey && (
         <>
-          <Message>
+          <span className="w-full text-base text-left">
             {!isAdvanced
               ? 'You already have a valid membership!'
               : 'Recipient already has a valid membership!'}
             &nbsp;
-          </Message>
+          </span>
         </>
       )}
 
@@ -324,30 +324,30 @@ export const CardConfirmationCheckout = ({
             {loading && <Svg.Loading title="loading" alt="loading" />}
             Pay {!loading && `$${formattedPrice}`} with Card
           </Button>
-          {error && <ErrorMessage>{error}</ErrorMessage>}
+          {error && <span className="text-red-500">{error}</span>}
           {fee > 0 && (
-            <FeeNotice>
+            <div className="flex items-center justify-center mt-2 text-center text-green-600">
               Includes ${(fee / 100).toFixed(2)} in fees{' '}
               <Link href="https://unlock-protocol.com/guides/enabling-credit-cards/">
                 <a target="_blank">
                   <InfoIcon />
                 </a>
               </Link>
-            </FeeNotice>
+            </div>
           )}
 
-          <CardNumber>
+          <span className="text-left text-gray-500">
             Card ending in {card.last4} (
             <a target="_blank" href="/settings">
               change
             </a>
             )
-          </CardNumber>
+          </span>
         </>
       )}
 
       {purchasePending && typeof purchasePending === 'string' && (
-        <Message>
+        <span className="w-full text-base text-left">
           Waiting for your{' '}
           <a
             target="_blank"
@@ -359,7 +359,7 @@ export const CardConfirmationCheckout = ({
             NFT membership to be minted
           </a>
           ! This should take a few seconds :)
-        </Message>
+        </span>
       )}
 
       {(hasValidkey || hasOptimisticKey) && (
@@ -368,17 +368,11 @@ export const CardConfirmationCheckout = ({
           closeModal={closeModal}
         />
       )}
-    </Wrapper>
+    </div>
   )
 }
 
 export default CardConfirmationCheckout
-
-export const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-`
 
 export const InfoIcon = styled(Svg.Info)`
   background-color: var(--green);
@@ -386,28 +380,4 @@ export const InfoIcon = styled(Svg.Info)`
   height: 18px;
   margin-left: 4px;
   fill: var(--white);
-`
-
-export const FeeNotice = styled.p`
-  margin-top: 8px;
-  display: flex;
-  align-content: center;
-  text-align: center;
-  justify-content: center;
-  color: var(--green);
-`
-
-export const CardNumber = styled.p`
-  text-align: center;
-  color: var(--grey);
-`
-
-const Message = styled.p`
-  text-align: left;
-  font-size: 13px;
-  width: 100%;
-`
-
-const ErrorMessage = styled(Message)`
-  color: var(--red);
 `

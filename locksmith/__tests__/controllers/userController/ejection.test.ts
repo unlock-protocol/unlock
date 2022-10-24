@@ -1,10 +1,9 @@
 import { ethers } from 'ethers'
 import request from 'supertest'
-
-import app = require('../../../src/app')
-import Base64 = require('../../../src/utils/base64')
-import models = require('../../../src/models')
-import UserOperations = require('../../../src/operations/userOperations')
+const app = require('../../../src/app')
+const Base64 = require('../../../src/utils/base64')
+const models = require('../../../src/models')
+import UserOperations from '../../../src/operations/userOperations'
 
 function generateTypedData(message: any, messageKey: string) {
   return {

@@ -8,8 +8,8 @@ interface LockMetadataAttributes {
 
 @Table({ tableName: 'LockMetadata', timestamps: true })
 export class LockMetadata extends Model<LockMetadataAttributes> {
-  @Column(DataType.JSON)
-  data!: any
+  @Column(DataType.JSONB)
+  data!: JSON
 
   @Column({ primaryKey: true })
   address!: string

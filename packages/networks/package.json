@@ -1,11 +1,13 @@
 {
     "name": "@unlock-protocol/networks",
-    "version": "0.0.4",
+    "version": "0.0.7",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "Unlock Protocol's contract addressess for various networks",
     "scripts": {
         "start": "tsc --watch",
+        "lint:fix": "yarn lint --fix",
+        "lint": "eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
         "build": "tsc",
         "clean": "rm -rf ./dist",
         "prepublish": "yarn build",
@@ -15,7 +17,8 @@
     "devDependencies": {
         "@unlock-protocol/tsconfig": "workspace:^",
         "@unlock-protocol/types": "workspace:^",
-        "typescript": "4.7.2"
+        "eslint": "8.24.0",
+        "typescript": "4.8.4"
     },
     "files": [
         "dist"

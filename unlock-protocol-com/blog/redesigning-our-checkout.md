@@ -1,88 +1,88 @@
 ---
 title: Unlock Protocol's Brand New Checkout Experience
-subTitle: We are launching a public preview of the new Unlock checkout experience.
+subTitle: Unlock launches a completely redesigned checkout experience
 authorName: searchableguy
-publishDate: July 6, 2022
-description: We are launching a public preview of the new Unlock checkout experience.
-image: /images/blog/redesigned-checkout/new-checkout.png
+publishDate: August 25, 2022
+description: Unlock launches a completely redesigned checkout experience.
+image: /images/blog/redesigned-checkout/checkout.gif
 ---
 
-## Checkout experience
+Currently, one of the most notable opportunities in web3 is to [improve and simplify the user experience](https://builtin.com/design-ux/web3-design). With that goal in mind, Unlock has completely redesigned the Unlock checkout experience based on extensive user testing and feedback.
 
-We've completely redesigned the Unlock checkout experience after a ton of user testing and feedback.
+Here is what the new Unlock checkout experience looks like.
 
-<video controls autoplay>
-  <source src="/images/blog/redesigned-checkout/checkout-experience.mp4" type="video/mp4">
-</video>
+![Checkout](/images/blog/redesigned-checkout/checkout.gif)
+
+Let's go into the details, step-by-step.
 
 ### Lock selection
 
-Memberships will be grouped by networks and provide information about the network to users. This move is intended to educate users about the network and make it easier for creators to sell memberships on multiple networks with different benefits.
+Memberships are now grouped by network and provide information about the networks to users. This educates users about the network and makes it easier for creators to sell memberships on multiple networks with different benefits.
 
-![lock selection on checkout](/images/blog/redesigned-checkout/new-checkout.png)
+![lock selection on checkout](/images/blog/redesigned-checkout/checkout.png)
 
-### Choosing quantity
+### Quantity selection
 
-You will be able to select the quantity and payment method you want to use earlier in the flow.
+Purchasers can choose to purchase multiple memberships. If creator has enabled `maxRecipients` or `minRecipients` in the paywall config, we will prompt user to select quantity. By default, we skip the quantity selection since most users only want to buy or unlock content for themselves.
 
-![quantity selection on checkout](/images/blog/redesigned-checkout/new-checkout-quantity.jpg)
+![quantity selection on checkout](/images/blog/redesigned-checkout/checkout-quantity.png)
 
 ### Recipient and metadata collection
 
-The recipients field will be populated based on the quantity indicated in the prior step. You will be able to add recipient addresses and fill out metadata information for each recipient. We've added more validation checks to ensure a user cannot buy more memberships than allowed by the lock owner early in the flow.
+The recipient field is now populated based on the quantity indicated in the prior step. Purchasers can add recipient addresses and fill out metadata information for each recipient. Addtionally, we've added additional validation checks to ensure a user cannot buy more memberships than allowed by the lock owner.
 
-![metadata and recipients on checkout](/images/blog/redesigned-checkout/new-checkout-metadata.png)
+![metadata and recipients on checkout](/images/blog/redesigned-checkout/checkout-recipients.png)
 
-### Payment using credit cards
+### Payment using credit cards and other payment types
 
-We've made it easier to pick and change credit cards using the checkout. We're planning to introduce more traditional payment options soon.
+We've made it easier to choose from multiple payment options.
 
-![card selection on checkout](/images/blog/redesigned-checkout/new-checkout-add-card.png)
+![payment selection on checkout](/images/blog/redesigned-checkout/checkout-payment.png)
+
+Similarly, we've made it easier to pick and change credit cards using the checkout.
+
+![card selection on checkout](/images/blog/redesigned-checkout/checkout-card.png)
+
+We've added the support for Superfluid and claim which allow creators to drop claimable memberships to users for free. We will automatically show users different payment options based on what creators enabled on the checkout.
 
 ### Confirmation
 
-Our new confirmation page will show you how many memberships you are buying, what the total amount is, how many times a membership will be renewed if it's a recurring membership and more.
+Our new confirmation page shows the purchaser how many memberships they are buying, what the total amount is, and how many times a membership will be renewed if it's a [recurring membership](https://unlock-protocol.com/blog/recurring-subscription-nft). Trust and communication are key elements of user experience, and we want to reduce the chance of surprises at checkout time.
 
-![confirmation on checkout](/images/blog/redesigned-checkout/new-checkout-confirmation.png)
+![confirmation on checkout](/images/blog/redesigned-checkout/checkout-confirm.png)
 
 ### Minting
 
-We have some cool minting animations to show off while your transactions are confirmed on the chain. In most cases, it will be instant but if not, you have something to look forward to.
+We have some cool minting animations to show off while transactions are confirmed on the chain. In most cases, minting will be instant but if not, there is something to look forward to.
 
-![minting progress on checkout](/images/blog/redesigned-checkout/new-checkout-minting.png)
+![Minting finished](/images/blog/redesigned-checkout/checkout-finished.png)
 
-![minting finished on checkout](/images/blog/redesigned-checkout/new-checkout-finished.png)
+### Using an Unlock Account
 
-### Using an Unlock account
+We've tried to make it easier for purchasers who are using credit cards or who are not crypto-savvy to use an [Unlock Account](https://docs.unlock-protocol.com/basics/new-to-unlock/unlock-accounts). Users can choose to login or checkout using an Unlock Account with an email and password, similar to a traditional login experience as an alternative to using a crypto wallet.
 
-We've tried to make it easier to use an Unlock account and explain who is it intended for. Users can choose to login using their crypto wallet or checkout using Unlock account in which case they would only be able to buy credit card enabled memberships.
-
-![signing using unlock account](/images/blog/redesigned-checkout/new-checkout-unlock-account.png)
+![signing using unlock account](/images/blog/redesigned-checkout/unlock-account.gif)
 
 ## Sign in with Ethereum
 
-Similar to checkout, we've updated our Sign in with Ethereum integration to match our new design.
+We've updated our Sign in with Ethereum integration to match our new design.
 
-<video controls autoplay>
-  <source src="/images/blog/redesigned-checkout/sign-in-with-ethereum.mp4" type="video/mp4">
-</video>
+![Sign in with ethereum](/images/blog/redesigned-checkout/sign-in-with-ethereum.gif)
 
-## Paywall config
+## Paywall configuration
 
-We've not made any breaking changes as part of the redesign effort. However, we have introduced new fields for customizing descriptions on new screens and titles shown on the checkout flow.
+We've not made any breaking changes as part of the redesign effort. However, we now ignore most of the call action fields which were used to display different texts on the checkout. After listening to user feedback, we realized it was often not helpful and confused them due to the amount of information conveyed.
+
+We might bring some of these back in different shape if there is demand but for now, they will be ignored.
 
 You can find more about them inside the [paywall configuration documentation](https://docs.unlock-protocol.com/tools/paywall/configuring-checkout).
 
-## We are listening
+## Unlock's new checkout experience is backward-compatible
 
-We will keep the redesigned checkout experience on a brand new path - `/alpha/checkout` for a month. During this period, we will iron out any bugs, iterate upon user feedback and feature requests and make sure no integration built on top of Unlock Protocol breaks.
+In addition, we have introduced a new path — `/legacy/checkout` — for sites, creators and developers who would like to stay on the existing checkout experience at the current time. Please note that this `legacy` path will not be maintained going forward, so to ensure you're using the latest and greatest checkout experience, please do make plans to migrate to the primary checkout experience in the near future if you have any projects using this legacy checkout experience path. We will deprecate it by the end of the year and remove it.
 
-If you want to be a tester and provide feedback, all you need to do is prefix your checkout or Sign in with Ethereum URL with `/alpha`.
+If you are using our paywall script in your apps, append `?legacy=true` to the paywall URL you are loading to use the legacy checkout.
 
-```
-// from
-https://app.unlock-protocol.com/checkout?client_id=www.ouvre-boite.com&redirect_uri=https%3A%2F%2Fwww.ouvre-boite.com%2F
+## What if I find an issue or bug in the new checkout?
 
-// to
-https://app.unlock-protocol.com/alpha/checkout?client_id=www.ouvre-boite.com&redirect_uri=https%3A%2F%2Fwww.ouvre-boite.com%2F
-```
+Please open an issue on Github or tell us in the Discord and we'll fix it ASAP.

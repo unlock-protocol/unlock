@@ -1,44 +1,58 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { CheckoutService } from './checkoutMachine'
 import { Connected } from '../Connected'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
 import { Button, Icon } from '@unlock-protocol/ui'
-import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
+import {
+  RiExternalLinkLine as ExternalLinkIcon,
+  RiTimer2Line as DurationIcon,
+  RiRepeatFill as RecurringIcon,
+} from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import useAccount from '~/hooks/useAccount'
 import { loadStripe } from '@stripe/stripe-js'
 import { useActor } from '@xstate/react'
-import { Shell } from '../Shell'
-import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
+import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
-import { useCheckoutHeadContent } from '../useCheckoutHeadContent'
-import { IconButton, ProgressCircleIcon, ProgressFinishIcon } from '../Progress'
+import { Stepper } from '../Stepper'
+import { LabeledItem } from '../LabeledItem'
+import { Framework } from '@superfluid-finance/sdk-core'
+import { ethers, BigNumber } from 'ethers'
+import { selectProvider } from '~/hooks/useAuthenticate'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useCheckoutSteps } from './useCheckoutItems'
+import { fetchRecipientsData } from './utils'
+import { MAX_UINT } from '~/constants'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
-  onClose(params?: Record<string, string>): void
+  communication: CheckoutCommunication
 }
 
-export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
+export function Confirm({
+  injectedProvider,
+  checkoutService,
+  communication,
+}: Props) {
   const [state, send] = useActor(checkoutService)
   const { account, network } = useAuth()
   const walletService = useWalletService()
-  const communication = useCheckoutCommunication()
   const config = useConfig()
+  const web3Service = useWeb3Service()
 
-  const { prepareChargeForCard, captureChargeForCard } = useAccount(
-    account!,
-    network!
-  )
+  const {
+    prepareChargeForCard,
+    captureChargeForCard,
+    claimMembershipFromLock,
+  } = useAccount(account!, network!)
+
   const [isConfirming, setIsConfirming] = useState(false)
-  const { title, description, iconURL } =
-    useCheckoutHeadContent(checkoutService)
 
   const {
     lock,
@@ -48,25 +62,39 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
     captcha,
     messageToSign,
     paywallConfig,
+    password,
   } = state.context
 
-  const recurringPayment =
-    paywallConfig?.locks[lock!.address]?.recurringPayments
+  const {
+    address: lockAddress,
+    network: lockNetwork,
+    name: lockName,
+    keyPrice,
+  } = lock!
 
-  const recurringPayments: number[] | undefined =
-    typeof recurringPayment === 'number'
-      ? new Array(recipients.length).fill(
-          Math.abs(Math.floor(recurringPayment))
-        )
+  const recurringPayment = paywallConfig?.locks[lockAddress]?.recurringPayments
+  const totalApproval =
+    typeof recurringPayment === 'string' &&
+    recurringPayment.toLowerCase() === 'forever' &&
+    payment.method === 'crypto'
+      ? MAX_UINT
       : undefined
 
+  const recurringPaymentAmount = recurringPayment
+    ? Math.abs(Math.floor(Number(recurringPayment)))
+    : undefined
+
+  const recurringPayments: number[] | undefined = recurringPaymentAmount
+    ? new Array(recipients.length).fill(recurringPaymentAmount)
+    : undefined
+
   const { isLoading, data: fiatPricing } = useQuery(
-    [quantity, lock!.address, lock!.network],
+    [quantity, lockAddress, lockNetwork],
     async () => {
       const pricing = await getFiatPricing(
         config,
-        lock!.address,
-        lock!.network,
+        lockAddress,
+        lockNetwork,
         quantity
       )
       return pricing
@@ -78,9 +106,9 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
       ...lock,
       fiatPricing,
     },
-    lock!.network,
-    config.networks[lock!.network].baseCurrencySymbol,
-    lock!.name,
+    lockNetwork,
+    config.networks[lockNetwork].baseCurrencySymbol,
+    lockName,
     quantity
   )
 
@@ -89,15 +117,18 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
   const onConfirmCard = async () => {
     try {
       setIsConfirming(true)
+
       if (payment.method !== 'card') {
         return
       }
+
       const stripeIntent = await prepareChargeForCard(
         payment.cardId!,
-        lock!.address,
-        network!,
+        lockAddress,
+        lockNetwork,
         formattedData.formattedKeyPrice,
-        recipients
+        recipients,
+        recurringPaymentAmount || 0
       )
 
       if (stripeIntent?.error) {
@@ -134,8 +165,8 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
         }
       }
       const response = await captureChargeForCard(
-        lock!.address,
-        network!,
+        lockAddress,
+        lockNetwork,
         recipients,
         paymentIntent.id
       )
@@ -146,6 +177,10 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
           type: 'CONFIRM_MINT',
           transactionHash: response.transactionHash,
           status: 'PROCESSING',
+        })
+        communication.emitTransactionInfo({
+          hash: response.transactionHash,
+          lock: lockAddress,
         })
       }
     } catch (error) {
@@ -166,19 +201,39 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
       if (payment.method !== 'crypto') {
         return
       }
-      const keyPrices: string[] = new Array(recipients!.length).fill(
-        lock!.keyPrice
-      )
+      const keyPrices: string[] = new Array(recipients!.length).fill(keyPrice)
+      const referrers: string[] | undefined = paywallConfig.referrer
+        ? new Array(recipients!.length).fill(paywallConfig.referrer)
+        : undefined
+
+      let data = password || captcha || undefined
+
+      const dataBuilder =
+        paywallConfig.locks[lock!.address].dataBuilder ||
+        paywallConfig.dataBuilder
+
+      // if Data builder url is present, prioritize that above rest.
+      if (dataBuilder) {
+        data = await fetchRecipientsData(dataBuilder, {
+          recipients,
+          lockAddress: lock!.address,
+          network: lock!.network,
+        })
+      }
+
       await walletService?.purchaseKeys(
         {
-          lockAddress: lock!.address,
+          lockAddress,
           keyPrices,
           owners: recipients!,
-          data: captcha,
+          data,
           recurringPayments,
+          referrers,
+          totalApproval,
         },
+        {} /** Transaction params */,
         (error, hash) => {
-          setIsConfirming(true)
+          setIsConfirming(false)
           if (error) {
             send({
               type: 'CONFIRM_MINT',
@@ -189,7 +244,7 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
             if (!paywallConfig.pessimistic && hash) {
               communication.emitTransactionInfo({
                 hash,
-                lock: lock?.address,
+                lock: lockAddress,
               })
               communication.emitUserInfo({
                 address: account,
@@ -198,7 +253,7 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
             }
             send({
               type: 'CONFIRM_MINT',
-              status: 'PROCESSING',
+              status: paywallConfig.pessimistic ? 'PROCESSING' : 'FINISHED',
               transactionHash: hash!,
             })
           }
@@ -210,13 +265,94 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
     }
   }
 
+  const onConfirmSuperfluid = async () => {
+    try {
+      if (payment.method !== 'superfluid') {
+        return
+      }
+      setIsConfirming(true)
+      const provider = selectProvider(config)
+      const web3Provider = new ethers.providers.Web3Provider(provider)
+      const sf = await Framework.create({
+        chainId: lock!.network,
+        provider: web3Provider,
+      })
+      const expiration = BigNumber.from(lock!.expirationDuration)
+      const decimals = await web3Service.getTokenDecimals(
+        lock!.currencyContractAddress!,
+        lock!.network
+      )
+
+      const mul = BigNumber.from(10).pow(decimals)
+
+      const flowRate = BigNumber.from(lock!.keyPrice)
+        .mul(mul)
+        .div(expiration)
+        .toString()
+      const op = sf.cfaV1.createFlow({
+        sender: provider.address,
+        receiver: lock!.address,
+        superToken: lock!.currencyContractAddress!,
+        flowRate: flowRate,
+      })
+      const signer = web3Provider.getSigner()
+      await op.exec(signer)
+      communication.emitUserInfo({
+        address: account,
+      })
+      send({
+        type: 'CONFIRM_MINT',
+        status: 'FINISHED',
+      })
+      setIsConfirming(false)
+    } catch (error: any) {
+      setIsConfirming(false)
+      ToastHelper.error(error?.error?.message || error.message)
+    }
+  }
+  const onConfirmClaim = async () => {
+    try {
+      setIsConfirming(true)
+      if (payment.method !== 'claim') {
+        return
+      }
+
+      const data = password || captcha || undefined
+
+      const response = await claimMembershipFromLock(
+        lockAddress,
+        lockNetwork,
+        data?.[0]
+      )
+
+      const { transactionHash: hash, error } = response
+
+      if (hash && !error) {
+        communication.emitTransactionInfo({
+          hash,
+          lock: lockAddress,
+        })
+        send({
+          type: 'CONFIRM_MINT',
+          status: 'FINISHED',
+          transactionHash: hash,
+        })
+      } else {
+        throw new Error('Failed to claim the membership. Try again')
+      }
+      setIsConfirming(false)
+    } catch (error: any) {
+      setIsConfirming(false)
+      ToastHelper.error(error?.error?.message || error.message)
+    }
+  }
+
   const Payment = () => {
     switch (payment.method) {
       case 'card': {
         return (
-          <div>
+          <div className="grid">
             <Button
-              className="w-full"
               loading={isConfirming}
               disabled={isConfirming}
               onClick={(event) => {
@@ -233,9 +369,8 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
       }
       case 'crypto': {
         return (
-          <div>
+          <div className="grid">
             <Button
-              className="w-full"
               loading={isConfirming}
               disabled={isConfirming}
               onClick={(event) => {
@@ -248,65 +383,57 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
           </div>
         )
       }
+      case 'claim': {
+        return (
+          <div className="grid">
+            <Button
+              loading={isConfirming}
+              disabled={isConfirming}
+              onClick={(event) => {
+                event.preventDefault()
+                onConfirmClaim()
+              }}
+            >
+              {isConfirming
+                ? 'Claiming your membership'
+                : 'Claim your membership'}
+            </Button>
+          </div>
+        )
+      }
+      case 'superfluid': {
+        return (
+          <div className="grid">
+            <Button
+              loading={isConfirming}
+              disabled={isConfirming}
+              onClick={(event) => {
+                event.preventDefault()
+                onConfirmSuperfluid()
+              }}
+            >
+              {isConfirming
+                ? 'Paying using superfluid'
+                : 'Pay using superfluid'}
+            </Button>
+          </div>
+        )
+      }
       default: {
         return null
       }
     }
   }
 
+  const stepItems = useCheckoutSteps(checkoutService)
+
   return (
-    <Shell.Root onClose={() => onClose()}>
-      <Shell.Head
-        title={paywallConfig.title}
-        iconURL={iconURL}
-        description={description}
-      />
-      <div className="flex px-6 mt-6 flex-wrap items-center w-full gap-2">
-        <div className="flex items-center gap-2 col-span-4">
-          <div className="flex items-center gap-0.5">
-            <IconButton
-              title="Select lock"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('SELECT')
-              }}
-            />
-            <IconButton
-              title="Choose quantity"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('QUANTITY')
-              }}
-            />
-            <IconButton
-              title="Add metadata"
-              icon={ProgressCircleIcon}
-              onClick={() => {
-                send('METADATA')
-              }}
-            />
-            {paywallConfig.messageToSign && (
-              <IconButton
-                title="Sign message"
-                icon={ProgressCircleIcon}
-                onClick={() => {
-                  send('MESSAGE_TO_SIGN')
-                }}
-              />
-            )}
-            <ProgressCircleIcon />
-          </div>
-          <h4 className="text-sm "> {title}</h4>
-        </div>
-        <div className="border-t-4 w-full flex-1"></div>
-        <div className="inline-flex items-center gap-1">
-          <ProgressFinishIcon disabled />
-        </div>
-      </div>
-      <main className="p-6 overflow-auto h-64 sm:h-72">
+    <Fragment>
+      <Stepper position={7} service={checkoutService} items={stepItems} />
+      <main className="h-full p-6 space-y-2 overflow-auto">
         <div className="flex items-start justify-between">
-          <h3 className="font-bold text-xl">
-            {quantity}X {lock!.name}
+          <h3 className="text-xl font-bold">
+            {quantity}X {lockName}
           </h3>
           {!isLoading ? (
             <div className="grid">
@@ -332,45 +459,52 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
               </p>
             </div>
           ) : (
-            <div className="flex gap-2 flex-col items-center">
-              <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-              <div className="w-16 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+              <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
             </div>
           )}
         </div>
         {!isLoading ? (
-          <div className="space-y-1 border-t-2 py-2 border-brand-gray mt-2">
-            <ul className="flex items-center gap-2 text-sm">
-              <li className="inline-flex items-center gap-2">
-                <span className="text-gray-500"> Duration: </span>
-                <time>{formattedData.formattedDuration}</time>
-              </li>
-              {recurringPayments && (
-                <li className="inline-flex items-center gap-2">
-                  <span className="text-gray-500"> Recurring: </span>
-                  <span> {recurringPayment} times </span>
-                </li>
+          <div className="space-y-2">
+            <div className="flex items-center gap-4 text-sm">
+              <LabeledItem
+                label="Duration"
+                icon={DurationIcon}
+                value={formattedData.formattedDuration}
+              />
+              {!!(recurringPayments?.length && recurringPayment) && (
+                <LabeledItem
+                  label="Recurring"
+                  icon={RecurringIcon}
+                  value={recurringPayment.toString()}
+                />
               )}
-            </ul>
+              {totalApproval && (
+                <div className="flex items-center gap-2 text-gray-500">
+                  <RecurringIcon /> <span> Renewed until cancelled </span>
+                </div>
+              )}
+            </div>
             <a
-              href={config.networks[lock!.network].explorer.urls.address(
-                lock!.address
+              href={config.networks[lockNetwork].explorer.urls.address(
+                lockAddress
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm inline-flex items-center gap-2 text-brand-ui-primary hover:opacity-75"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
             >
               View Contract <Icon icon={ExternalLinkIcon} size="small" />
             </a>
           </div>
         ) : (
           <div className="py-1.5 space-y-2 items-center">
-            <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
-            <div className="w-52 bg-gray-100 p-2 rounded-lg animate-pulse"></div>
+            <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
+            <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
           </div>
         )}
       </main>
-      <footer className="px-6 pt-6 border-t grid items-center">
+      <footer className="grid items-center px-6 pt-6 border-t">
         <Connected
           injectedProvider={injectedProvider}
           service={checkoutService}
@@ -379,6 +513,6 @@ export function Confirm({ injectedProvider, checkoutService, onClose }: Props) {
         </Connected>
         <PoweredByUnlock />
       </footer>
-    </Shell.Root>
+    </Fragment>
   )
 }

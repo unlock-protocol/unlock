@@ -10,6 +10,7 @@ type Variant =
   | 'yellow'
   | 'green'
   | 'blue'
+  | 'primary'
   | 'default'
 
 interface Props extends BoxProps {
@@ -27,12 +28,13 @@ const SIZE_STYLES: SizeStyleProp = {
 
 const VARIANT_STYLES: Record<Variant, string> = {
   default: 'bg-[#dfd8fb] text-brand-ui-primary',
-  green: 'bg-green-100 text-green-800',
+  green: 'bg-[#BDE422] text-brand-dark',
   yellow: 'bg-yellow-100 text-yellow-800',
   orange: 'bg-orange-100 text-orange-800',
   blue: 'bg-blue-100 text-blue-800',
   dark: 'bg-gray-100 text-gray-800',
-  red: 'bg-[#ffe1e3] text-brand-secondary',
+  red: 'bg-[#B23E45] text-brand-secondary',
+  primary: 'bg-brand-ui-primary text-white',
 }
 
 export function Badge(props: Props) {

@@ -3,12 +3,10 @@ import 'cross-fetch/polyfill'
 import type { AppProps } from 'next/app'
 import TagManager from 'react-gtm-module'
 import { Toaster } from 'react-hot-toast'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import configure from '../config'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { config } from '~/config/app'
 import GlobalWrapper from '../components/interface/GlobalWrapper'
 import '../index.css'
-
-const config = configure()
 
 const queryClient = new QueryClient()
 

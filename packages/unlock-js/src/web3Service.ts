@@ -7,6 +7,7 @@ import {
   getErc20Decimals,
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
+import { TransactionOptions, WalletServiceCallback } from './types'
 
 /**
  * This service reads data from the RPC endpoint.
@@ -322,6 +323,12 @@ export default class Web3Service extends UnlockService {
     return utils.fromDecimal(balance, decimals)
   }
 
+  async getTokenDecimals(contractAddress: string, network: number) {
+    const provider = this.providerForNetwork(network)
+    const decimals = await getErc20Decimals(contractAddress, provider)
+    return decimals
+  }
+
   /**
    * Yields true if an address is key granter on a lock
    */
@@ -400,5 +407,178 @@ export default class Web3Service extends UnlockService {
       lockAddress,
       this.providerForNetwork(network)
     )
+  }
+
+  /**
+   * Returns numbers of owners for a specific lock
+   * @param {*} lockAddress
+   * @param {*} network
+   */
+  async numberOfOwners(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return ethers.BigNumber.from(await lockContract.numberOfOwners()).toNumber()
+  }
+
+  /**
+   * Returns transfer fee for lock
+   * @param {*} lockAddress
+   * @param {*} network
+   */
+  async transferFeeBasisPoints(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+
+    // lock < v5
+    if (!lockContract.transferFeeBasisPoints) {
+      throw new Error('Lock version is not supported')
+    }
+
+    return ethers.BigNumber.from(
+      await lockContract.transferFeeBasisPoints()
+    ).toNumber()
+  }
+
+  /**
+   * Returns total of key for a specific address
+   * @param {String} lockAddress
+   * @param {String} address
+   * @param {Number} network
+   */
+  async totalKeys(lockAddress: string, owner: string, network: number) {
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+
+    if (!version.totalKeys) {
+      throw new Error('Lock version not supported')
+    }
+
+    const count = await version.totalKeys.bind(this)(
+      lockAddress,
+      owner,
+      this.providerForNetwork(network)
+    )
+
+    return count.toNumber()
+  }
+
+  /**
+   * Returns lock version
+   * @param {String} lockAddress
+   * @param {Number} network
+   */
+  async publicLockVersion(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return await lockContract.publicLockVersion()
+  }
+
+  async tokenURI(lockAddress: string, tokenId: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return await lockContract.tokenURI(tokenId)
+  }
+
+  /**
+   * Returns the number of keys available for sale
+   * @param lockAddress
+   * @param network
+   * @returns
+   */
+  async keysAvailable(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const totalSupply = await lockContract.totalSupply()
+    const maxNumberOfKeys = await lockContract.maxNumberOfKeys()
+    return maxNumberOfKeys.sub(totalSupply)
+  }
+
+  /**
+   * Returns how much of a refund a key owner would receive
+   * @param lockAddress
+   * @param network
+   * @param owner
+   * @param tokenAddress
+   * @param tokenId
+   * @returns
+   */
+  async getCancelAndRefundValueFor(
+    params: {
+      lockAddress: string
+      owner: string
+      tokenAddress: string
+      network: number
+      tokenId: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    const { lockAddress, network } = params
+    const version = await this.lockContractAbiVersion(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+
+    if (!version.getCancelAndRefundValueFor) {
+      throw new Error('Lock version not supported')
+    }
+
+    return await version.getCancelAndRefundValueFor.bind(this)(
+      params,
+      transactionOptions,
+      this.providerForNetwork(network)
+    )
+  }
+  // For <= v10, it returns the total number of keys.
+  // Starting with v11, it returns the total number of valid
+  async balanceOf(lockAddress: string, owner: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const balance = await lockContract.balanceOf(owner)
+    return balance.toNumber()
+  }
+
+  // Return key ID of owner at the specified index.
+  // If a owner has multiple keys, you can iterate over all of them starting from 0 as index until you hit a zero value which implies no more.
+  async tokenOfOwnerByIndex(
+    lockAddress: string,
+    owner: string,
+    index: number,
+    network: number
+  ) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const id = await lockContract.tokenOfOwnerByIndex(owner, index)
+    return id.toNumber()
+  }
+
+  /**
+   * Returns the number of keys already sold
+   * @param lockAddress
+   * @param network
+   * @returns
+   */
+  async totalSupply(lockAddress: string, network: number) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    return await lockContract.totalSupply()
   }
 }

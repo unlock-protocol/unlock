@@ -80,6 +80,8 @@ contract IPublicLock
 
   /**
    * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
+   * @param _spender address that can spend tokens belonging to the lock
+   * @param _amount amount of tokens that can be spent by the spender
    */
   function approveBeneficiary(
     address _spender,
@@ -208,7 +210,9 @@ contract IPublicLock
   ) external view returns(string memory);
 
   /**
-   * @notice Allows a Lock manager to add or remove an event hook
+   * Allows a Lock manager to add or remove an event hook
+   * @param _onKeyPurchaseHook Hook called when the `purchase` function is called
+   * @param _onKeyCancelHook Hook called when the internal `_cancelAndRefund` function is called
    */
   function setEventHooks(
     address _onKeyPurchaseHook,
@@ -1791,6 +1795,8 @@ contract MixinLockCore is
 
   /**
    * @notice An ERC-20 style approval, allowing the spender to transfer funds directly from this lock.
+   * @param _spender address that can spend tokens belonging to the lock
+   * @param _amount amount of tokens that can be spent by the spender
    */
   function approveBeneficiary(
     address _spender,

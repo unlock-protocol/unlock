@@ -1,5 +1,5 @@
 ---
-title: "Locking Glitch"
+title: 'Locking Glitch'
 authorName: Julien Genestoux
 publishDate: March 17, 2020
 description: Glitch is a modern web development tool which lets you build fast, full-stack web apps in your browser. Here's how to add locks to these applications!
@@ -38,7 +38,6 @@ The markup on the page includes 3 important elements. They all have the class `u
 
 2. The second paragraph is hidden by default (see `style="display:none"`), and has the class `unlocked`. This one will be only shown when the visitor is a member.
 
-
 ```
 <p class="unlock-protocol unlocked" style="display:none">
   Thanks for being a member ;)
@@ -46,7 +45,6 @@ The markup on the page includes 3 important elements. They all have the class `u
 ```
 
 3. The 3rd paragraph is also hidden by default, but this time it has the class `locked`, which means it will be shown when the visitor is not a member. That's in this paragraph that we will add a button for the user to purchase their membership, through the `unlockProtocol.loadCheckoutModal()` method.
-
 
 ```
 <p class="unlock-protocol locked" style="display:none">
@@ -76,11 +74,10 @@ sc.parentNode.insertBefore(js, sc)
 // Configure Unlock
 var unlockProtocolConfig = {
   locks: {
-    '0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F': {
+    '0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894': {
+      network: 100,
     },
   },
-  callToAction: {
-  }
 }
 ```
 
@@ -106,7 +103,7 @@ That's it!
 
 Unlock should be a very small part of any application because it is just about _access control_. What your application grants to users is completely up to you! Here are a few applications which you might be interested in looking at:
 
-* A [chat room application](https://ethcc-chat.glitch.me/) where only members can participate! I built this application for [EthCC](https://ethcc.io/) to show how easy to re-use a locks used to sell tickets in a different context!
-* A [locked Typeform](https://locked-typeform.glitch.me/). Typeform is an application which lets you build surveys and forms. This example shows how you can build a way to collect information only from your members!
+- A [chat room application](https://ethcc-chat.glitch.me/) where only members can participate! I built this application for [EthCC](https://ethcc.io/) to show how easy to re-use a locks used to sell tickets in a different context!
+- A [locked Typeform](https://locked-typeform.glitch.me/). Typeform is an application which lets you build surveys and forms. This example shows how you can build a way to collect information only from your members!
 
 What would you build? Please let us know in the comments!

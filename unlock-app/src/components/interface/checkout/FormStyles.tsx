@@ -1,9 +1,6 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import Svg from '../svg'
-import { ConfigContext } from '../../../utils/withConfig'
-
-export const Form = styled.form``
 
 export const Input = styled.input`
   height: 48px;
@@ -49,19 +46,6 @@ export const SmallButton = styled.button`
     opacity: 0.4;
     cursor: default;
   }
-`
-
-export const Select = styled.select`
-  height: 48px;
-  width: 100%;
-  border: thin var(--lightgrey) solid;
-  border-radius: 4px;
-  background-color: var(--lightgrey);
-  font-size: 16px;
-  padding: 0 8px;
-  color: var(--darkgrey);
-  margin-bottom: 16px;
-  appearance: none;
 `
 
 export const Button = styled.button`
@@ -112,24 +96,6 @@ export const NeutralButton = styled(Button)`
   background-color: var(--grey);
 `
 
-export const DefaultButton = styled(Button)`
-  background-color: var(--lightgrey);
-  color: #000;
-  font-weight: 600;
-
-  &:hover {
-    background-color: var(--lightgrey);
-    border: 1px solid var(--blue);
-  }
-`
-
-export const FormError = styled.p`
-  font-size: 12px;
-  color: var(--red);
-  margin-bottom: 5px;
-  margin-top: 5px;
-`
-
 interface LoadingButtonProps {
   children: React.ReactNode
 }
@@ -140,34 +106,3 @@ export const LoadingButton = ({ children, ...props }: LoadingButtonProps) => (
     <Svg.Loading title="loading" alt="loading" />
   </Button>
 )
-
-interface TransactionPendingButtonProps {
-  network: number
-  transaction: string
-}
-
-export const TransactionPendingButton = ({
-  network,
-  transaction,
-  ...props
-}: TransactionPendingButtonProps) => {
-  const config: any = useContext(ConfigContext)
-  return (
-    <LoadingButton {...props}>
-      Transaction Mining{' '}
-      {transaction && (
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href={config.networks[network].explorer.urls.transaction(transaction)}
-        >
-          ↗
-        </a>
-      )}
-    </LoadingButton>
-  )
-}
-
-export const LinkButton = styled.a`
-  cursor: pointer;
-`

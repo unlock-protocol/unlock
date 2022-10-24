@@ -1,4 +1,4 @@
-import { Lock, PaywallConfig } from '~/unlockTypes'
+import { Lock, PaywallConfig, PaywallConfigLock } from '~/unlockTypes'
 import { createMachine, assign, InterpreterFrom } from 'xstate'
 import { unlockAccountMachine } from '../UnlockAccount/unlockAccountMachine'
 
@@ -13,6 +13,10 @@ export type CheckoutPage =
   | 'CAPTCHA'
   | 'RETURNING'
   | 'UNLOCK_ACCOUNT'
+  | 'PAYMENT'
+  | 'RENEW'
+  | 'RENEWED'
+  | 'PASSWORD'
 
 export interface FiatPricing {
   creditCardEnabled: boolean
@@ -23,13 +27,18 @@ export interface FiatPricing {
   }
 }
 
-export interface LockState extends Lock {
+export interface LockState extends Lock, Required<PaywallConfigLock> {
   fiatPricing: FiatPricing
+  isMember: boolean
+  isSoldOut: boolean
 }
 
 export interface SelectLockEvent {
   type: 'SELECT_LOCK'
   lock: LockState
+  existingMember: boolean
+  expiredMember: boolean
+  skipQuantity?: boolean
 }
 
 export interface SignMessageEvent {
@@ -41,6 +50,16 @@ export interface SignMessageEvent {
 export interface SelectQuantityEvent {
   type: 'SELECT_QUANTITY'
   quantity: number
+}
+
+export interface SubmitDataEvent {
+  type: 'SUBMIT_DATA'
+  data: string[]
+}
+
+export interface SubmitPasswordEvent {
+  type: 'SUBMIT_PASSWORD'
+  data: string[]
 }
 
 export interface SelectRecipientsEvent {
@@ -62,28 +81,29 @@ export interface DisconnectEvent {
   type: 'DISCONNECT'
 }
 
-export interface ContinueEvent {
-  type: 'CONTINUE'
-}
-
 export interface MakeAnotherPurchaseEvent {
   type: 'MAKE_ANOTHER_PURCHASE'
 }
 
-interface ConfirmMintEvent extends Mint {
+interface ConfirmMintEvent extends Transaction {
   type: 'CONFIRM_MINT'
+}
+
+interface RenewedEvent extends Transaction {
+  type: 'CONFIRM_RENEW'
 }
 
 interface SolveCaptchaEvent {
   type: 'SOLVE_CAPTCHA'
   data: string[]
 }
-interface ExistingMemberEvent {
-  type: 'EXISTING_MEMBER'
-}
 
 interface UnlockAccountEvent {
   type: 'UNLOCK_ACCOUNT'
+}
+interface UpdatePaywallConfigEvent {
+  type: 'UPDATE_PAYWALL_CONFIG'
+  config: PaywallConfig
 }
 
 interface BackEvent {
@@ -97,12 +117,14 @@ export type CheckoutMachineEvents =
   | SelectRecipientsEvent
   | SelectCardToChargeEvent
   | SignMessageEvent
+  | SubmitPasswordEvent
+  | SubmitDataEvent
   | MakeAnotherPurchaseEvent
   | SolveCaptchaEvent
   | ConfirmMintEvent
+  | RenewedEvent
   | UnlockAccountEvent
-  | ExistingMemberEvent
-  | ContinueEvent
+  | UpdatePaywallConfigEvent
   | DisconnectEvent
   | BackEvent
 
@@ -114,8 +136,13 @@ type Payment =
   | {
       method: 'crypto'
     }
-
-export interface Mint {
+  | {
+      method: 'superfluid'
+    }
+  | {
+      method: 'claim'
+    }
+export interface Transaction {
   status: 'ERROR' | 'PROCESSING' | 'FINISHED'
   transactionHash?: string
 }
@@ -131,7 +158,12 @@ interface CheckoutMachineContext {
   }
   quantity: number
   recipients: string[]
-  mint?: Mint
+  mint?: Transaction
+  renewed?: Transaction
+  skipQuantity: boolean
+  password?: string[]
+  data?: string[]
+  renew: boolean
 }
 
 export const checkoutMachine = createMachine(
@@ -153,19 +185,78 @@ export const checkoutMachine = createMachine(
         method: 'crypto',
       },
       quantity: 1,
+      renewed: undefined,
       recipients: [],
+      skipQuantity: false,
+      renew: false,
     },
     on: {
       UNLOCK_ACCOUNT: 'UNLOCK_ACCOUNT',
+      SELECT: 'SELECT',
+      QUANTITY: 'QUANTITY',
+      PAYMENT: 'PAYMENT',
+      METADATA: 'METADATA',
+      MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
+      CAPTCHA: 'CAPTCHA',
+      PASSWORD: 'PASSWORD',
+      UPDATE_PAYWALL_CONFIG: {
+        target: 'SELECT',
+        actions: ['updatePaywallConfig'],
+      },
+      SIGN_MESSAGE: {
+        actions: ['signMessage'],
+      },
+      SUBMIT_DATA: {
+        actions: ['submitData'],
+      },
     },
     states: {
       SELECT: {
         on: {
-          SELECT_LOCK: {
-            actions: ['selectLock'],
-          },
-          CONTINUE: 'QUANTITY',
-          EXISTING_MEMBER: 'RETURNING',
+          SELECT_LOCK: [
+            {
+              actions: ['selectLock'],
+              target: 'PASSWORD',
+              cond: (ctx, event) => {
+                const isPassword =
+                  ctx.paywallConfig.password ||
+                  ctx.paywallConfig.locks?.[event.lock.address].password
+                return !!isPassword && event.expiredMember
+              },
+            },
+            {
+              actions: ['selectLock'],
+              target: 'CAPTCHA',
+              cond: (ctx, event) => {
+                const isCaptcha =
+                  ctx.paywallConfig.captcha ||
+                  ctx.paywallConfig.locks?.[event.lock.address].captcha
+                return !!isCaptcha && event.expiredMember
+              },
+            },
+            {
+              actions: ['selectLock'],
+              target: 'RENEW',
+              cond: (_, event) => event.expiredMember,
+            },
+            {
+              actions: ['selectLock'],
+              target: 'RETURNING',
+              cond: (_, event) => event.existingMember,
+            },
+            {
+              actions: ['selectLock'],
+              target: 'METADATA',
+              // Skip quantity page if min or max doesn't require more than 1 recipients
+              cond: (_, event) => {
+                return !!event.skipQuantity
+              },
+            },
+            {
+              actions: ['selectLock'],
+              target: 'QUANTITY',
+            },
+          ],
           DISCONNECT: {
             target: 'SELECT',
             actions: ['disconnect'],
@@ -176,86 +267,112 @@ export const checkoutMachine = createMachine(
         on: {
           SELECT_QUANTITY: {
             actions: ['selectQuantity'],
+            target: 'METADATA',
           },
-          SELECT_PAYMENT_METHOD: {
-            actions: ['selectPaymentMethod'],
+          BACK: 'SELECT',
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
           },
-          CONTINUE: [
+        },
+      },
+      METADATA: {
+        on: {
+          SELECT_RECIPIENTS: {
+            target: 'PAYMENT',
+            actions: ['selectRecipients'],
+          },
+          BACK: [
             {
-              target: 'CARD',
-              cond: 'requireCardPayment',
+              target: 'SELECT',
+              cond: (ctx) => {
+                return !!ctx.skipQuantity
+              },
             },
             {
-              target: 'METADATA',
+              target: 'QUANTITY',
             },
           ],
           DISCONNECT: {
-            target: 'QUANTITY',
+            target: 'SELECT',
             actions: ['disconnect'],
-            cond: 'isLockSelected',
           },
-          SELECT: 'SELECT',
+        },
+      },
+      PAYMENT: {
+        on: {
+          SELECT_PAYMENT_METHOD: [
+            {
+              target: 'CARD',
+              actions: ['selectPaymentMethod'],
+              cond: (_, event) => event.payment.method === 'card',
+            },
+            {
+              target: 'MESSAGE_TO_SIGN',
+              actions: ['selectPaymentMethod'],
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'PASSWORD',
+              actions: ['selectPaymentMethod'],
+              cond: 'requirePassword',
+            },
+            {
+              target: 'CAPTCHA',
+              actions: ['selectPaymentMethod'],
+              cond: 'requireCaptcha',
+            },
+            {
+              actions: ['selectPaymentMethod'],
+              target: 'CONFIRM',
+            },
+          ],
+          BACK: 'METADATA',
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
         },
       },
       CARD: {
         on: {
           SELECT_CARD_TO_CHARGE: [
             {
-              target: 'METADATA',
-              actions: ['selectCardToCharge'],
-            },
-          ],
-          DISCONNECT: [
-            {
-              target: 'QUANTITY',
-              actions: ['disconnect'],
-              cond: 'isLockSelected',
-            },
-            {
-              target: 'SELECT',
-              actions: ['disconnect'],
-            },
-          ],
-          BACK: 'QUANTITY',
-        },
-      },
-      METADATA: {
-        on: {
-          SELECT_RECIPIENTS: [
-            {
               target: 'MESSAGE_TO_SIGN',
-              actions: ['selectRecipients'],
+              actions: ['selectCardToCharge'],
               cond: 'requireMessageToSign',
             },
             {
+              target: 'PASSWORD',
+              actions: ['selectCardToCharge'],
+              cond: 'requirePassword',
+            },
+            {
               target: 'CAPTCHA',
-              actions: ['selectRecipients'],
+              actions: ['selectCardToCharge'],
               cond: 'requireCaptcha',
             },
             {
               target: 'CONFIRM',
-              actions: ['selectRecipients'],
+              actions: ['selectCardToCharge'],
             },
           ],
-          DISCONNECT: [
-            {
-              target: 'QUANTITY',
-              actions: ['disconnect'],
-              cond: 'isLockSelected',
-            },
-            {
-              target: 'SELECT',
-              actions: ['disconnect'],
-            },
-          ],
-          SELECT: 'SELECT',
-          QUANTITY: 'QUANTITY',
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
+          BACK: 'PAYMENT',
         },
       },
       MESSAGE_TO_SIGN: {
         on: {
           SIGN_MESSAGE: [
             {
+              target: 'PASSWORD',
+              actions: ['signMessage'],
+              cond: 'requirePassword',
+            },
+            {
               target: 'CAPTCHA',
               actions: ['signMessage'],
               cond: 'requireCaptcha',
@@ -265,48 +382,75 @@ export const checkoutMachine = createMachine(
               actions: ['signMessage'],
             },
           ],
-          DISCONNECT: [
-            {
-              target: 'QUANTITY',
-              actions: ['disconnect'],
-              cond: 'isLockSelected',
-            },
-            {
-              target: 'SELECT',
-              actions: ['disconnect'],
-            },
-          ],
-          SELECT: 'SELECT',
-          QUANTITY: 'QUANTITY',
-          METADATA: 'METADATA',
+          BACK: 'METADATA',
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
         },
       },
-      CAPTCHA: {
+      PASSWORD: {
         on: {
-          SOLVE_CAPTCHA: {
-            target: 'CONFIRM',
-            actions: ['solveCaptcha'],
-          },
-          DISCONNECT: [
+          SUBMIT_PASSWORD: [
             {
-              target: 'QUANTITY',
-              actions: ['disconnect'],
-              cond: 'isLockSelected',
+              target: 'RENEW',
+              actions: ['submitPassword'],
+              cond: (ctx) => ctx.renew,
             },
             {
-              target: 'SELECT',
-              actions: ['disconnect'],
+              target: 'CONFIRM',
+              actions: ['submitPassword'],
             },
           ],
           BACK: [
+            {
+              target: 'SELECT',
+              cond: (ctx) => ctx.renew,
+            },
             {
               target: 'MESSAGE_TO_SIGN',
               cond: 'requireMessageToSign',
             },
             {
-              target: 'METADATA',
+              target: 'PAYMENT',
             },
           ],
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
+        },
+      },
+      CAPTCHA: {
+        on: {
+          SOLVE_CAPTCHA: [
+            {
+              target: 'RENEW',
+              actions: ['solveCaptcha'],
+              cond: (ctx) => ctx.renew,
+            },
+            {
+              target: 'CONFIRM',
+              actions: ['solveCaptcha'],
+            },
+          ],
+          BACK: [
+            {
+              target: 'SELECT',
+              cond: (ctx) => ctx.renew,
+            },
+            {
+              target: 'MESSAGE_TO_SIGN',
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'PAYMENT',
+            },
+          ],
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
         },
       },
       CONFIRM: {
@@ -315,21 +459,27 @@ export const checkoutMachine = createMachine(
             target: 'MINTING',
             actions: ['confirmMint'],
           },
-          DISCONNECT: [
+          BACK: [
             {
-              target: 'QUANTITY',
-              actions: ['disconnect'],
-              cond: 'isLockSelected',
+              target: 'PASSWORD',
+              cond: (ctx) => !!ctx.paywallConfig.password,
             },
             {
-              target: 'SELECT',
-              actions: ['disconnect'],
+              target: 'CAPTCHA',
+              cond: (ctx) => !!ctx.paywallConfig.captcha,
+            },
+            {
+              target: 'MESSAGE_TO_SIGN',
+              cond: 'requireMessageToSign',
+            },
+            {
+              target: 'PAYMENT',
             },
           ],
-          SELECT: 'SELECT',
-          QUANTITY: 'QUANTITY',
-          METADATA: 'METADATA',
-          MESSAGE_TO_SIGN: 'MESSAGE_TO_SIGN',
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
         },
       },
       MINTING: {
@@ -344,31 +494,45 @@ export const checkoutMachine = createMachine(
         invoke: {
           id: 'unlockAccount',
           src: unlockAccountMachine,
-          onDone: [
-            {
-              target: 'QUANTITY',
-              cond: 'isLockSelected',
-            },
-            {
-              target: 'SELECT',
-            },
-          ],
+          onDone: {
+            target: 'SELECT',
+          },
         },
       },
       RETURNING: {
         on: {
-          MAKE_ANOTHER_PURCHASE: 'QUANTITY',
-          DISCONNECT: [
+          MAKE_ANOTHER_PURCHASE: [
+            {
+              target: 'METADATA',
+              cond: (ctx) => {
+                return ctx.skipQuantity
+              },
+            },
             {
               target: 'QUANTITY',
-              actions: ['disconnect'],
-              cond: 'isLockSelected',
-            },
-            {
-              target: 'SELECT',
-              actions: ['disconnect'],
             },
           ],
+          BACK: 'SELECT',
+          DISCONNECT: {
+            target: 'SELECT',
+            actions: ['disconnect'],
+          },
+        },
+      },
+      RENEW: {
+        on: {
+          CONFIRM_RENEW: {
+            actions: ['confirmRenew'],
+            target: 'RENEWED',
+          },
+        },
+      },
+      RENEWED: {
+        on: {
+          CONFIRM_RENEW: {
+            type: 'final',
+            actions: ['confirmRenew'],
+          },
         },
       },
     },
@@ -386,29 +550,31 @@ export const checkoutMachine = createMachine(
           messageToSign: undefined,
           recipients: [],
           mint: undefined,
+          renewed: undefined,
+          skipQuantity: false,
+          renew: false,
         } as CheckoutMachineContext
       }),
-      selectLock: assign({
-        // @ts-expect-error xstate unused variable type bug
-        lock: (context, event) => {
-          return event.lock
-        },
+      selectLock: assign((context, event) => {
+        return {
+          ...context,
+          lock: event.lock,
+          renew: event.expiredMember,
+          skipQuantity: event.skipQuantity,
+        }
       }),
       selectQuantity: assign({
-        // @ts-expect-error xstate unused variable type bug
-        quantity: (context, event) => {
+        quantity: (_, event) => {
           return event.quantity
         },
       }),
       selectPaymentMethod: assign({
-        // @ts-expect-error xstate unused variable type bug
-        payment: (context, event) => {
+        payment: (_, event) => {
           return event.payment
         },
       }),
       selectRecipients: assign({
-        // @ts-expect-error xstate unused variable type bug
-        recipients: (context, event) => {
+        recipients: (_, event) => {
           return event.recipients
         },
       }),
@@ -421,8 +587,7 @@ export const checkoutMachine = createMachine(
         },
       }),
       signMessage: assign({
-        // @ts-expect-error xstate unused variable type bug
-        messageToSign: (context, event) => {
+        messageToSign: (_, event) => {
           return {
             address: event.address,
             signature: event.signature,
@@ -430,38 +595,72 @@ export const checkoutMachine = createMachine(
         },
       }),
       confirmMint: assign({
-        mint: (context, { status, transactionHash }) => {
-          if (!context.paywallConfig.pessimistic) {
-            return {
-              status: 'FINISHED',
-              transactionHash,
-            } as const
-          } else {
-            return {
-              status,
-              transactionHash,
-            } as const
-          }
+        mint: (_, { status, transactionHash }) => {
+          return {
+            status,
+            transactionHash,
+          } as const
         },
       }),
+      confirmRenew: assign({
+        renewed: (_, { status, transactionHash }) => {
+          return {
+            status,
+            transactionHash,
+          } as const
+        },
+      }),
+      updatePaywallConfig: assign((_, event) => {
+        return {
+          paywallConfig: event.config,
+          lock: undefined,
+          messageToSign: undefined,
+          mint: undefined,
+          captcha: undefined,
+          payment: {
+            method: 'crypto',
+          },
+          quantity: 1,
+          recipients: [],
+          renewed: undefined,
+          skipQuantity: false,
+          renew: false,
+        } as CheckoutMachineContext
+      }),
       solveCaptcha: assign({
-        // @ts-expect-error xstate unused variable type bug
-        captcha: (context, event) => {
+        captcha: (_, event) => {
+          return event.data
+        },
+      }),
+      submitPassword: assign({
+        password: (_, event) => {
+          return event.data
+        },
+      }),
+      submitData: assign({
+        data: (_, event) => {
           return event.data
         },
       }),
     },
     guards: {
-      isLockSelected: (context) => {
-        return !!context.lock
-      },
       requireMessageToSign: (context) => !!context.paywallConfig.messageToSign,
       requireCaptcha: (context) => {
         return (
-          !!context.paywallConfig.captcha && context.payment.method !== 'card'
+          !!(
+            context.paywallConfig.captcha ||
+            context.paywallConfig.locks?.[context.lock!.address]?.captcha
+          ) && ['crypto', 'claim'].includes(context.payment.method)
         )
       },
-      requireCardPayment: (context) => context.payment.method === 'card',
+      requirePassword: (context) => {
+        return (
+          !!(
+            context.paywallConfig.password ||
+            context.paywallConfig.locks?.[context.lock!.address]?.password
+          ) && ['crypto', 'claim'].includes(context.payment.method)
+        )
+      },
     },
   }
 )

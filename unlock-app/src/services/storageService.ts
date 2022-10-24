@@ -1,9 +1,16 @@
-import { LocksmithService, WalletService } from '@unlock-protocol/unlock-js'
+import {
+  WalletService,
+  LocksmithService,
+  LocksmithServiceConfiguration,
+} from '@unlock-protocol/unlock-js'
+
 import { EventEmitter } from 'events'
 import { isExpired } from 'react-jwt'
 import { generateNonce } from 'siwe'
 import { Lock } from '../unlockTypes'
 import fetch, { RequestInit } from 'node-fetch'
+import { APP_NAME } from '~/hooks/useAppStorage'
+
 // The goal of the success and failure objects is to act as a registry of events
 // that StorageService will emit. Nothing should be emitted that isn't in one of
 // these objects, and nothing that isn't emitted should be in one of these
@@ -61,13 +68,29 @@ export class StorageService extends EventEmitter {
   constructor(host: string) {
     super()
     this.host = host
-    this.locksmith = new LocksmithService({
-      host,
-    })
+    this.locksmith = new LocksmithService(
+      new LocksmithServiceConfiguration({
+        basePath: host,
+      })
+    )
   }
 
+  loginRequest = false
+
   async login(message: string, signature: string) {
-    return this.locksmith.login(message, signature)
+    const response = await this.locksmith.login({
+      message,
+      signature,
+    })
+
+    if (response.status !== 200) {
+      throw new Error('login failed')
+    }
+
+    const { refreshToken, accessToken } = response.data
+
+    this.refreshToken = refreshToken
+    this.#accessToken = accessToken
   }
 
   async signOut() {
@@ -79,8 +102,8 @@ export class StorageService extends EventEmitter {
           'refresh-token': this.refreshToken!,
         },
       })
-      localStorage.removeItem(`locksmith-access-token`)
-      localStorage.removeItem(`locksmith-refresh-token`)
+      this.#accessToken = null
+      this.refreshToken = null
     } catch (error) {
       if (error instanceof Error) {
         console.error(error.message)
@@ -89,51 +112,66 @@ export class StorageService extends EventEmitter {
   }
 
   async loginPrompt({ walletService, address, chainId }: LoginPromptProps) {
+    if (this.loginRequest) {
+      return
+    }
+    this.loginRequest = true
     try {
-      const refreshToken = localStorage.getItem('locksmith-refresh-token')
-      const accessToken = localStorage.getItem('locksmith-access-token')
-      if (!accessToken || isExpired(accessToken)) {
-        if (refreshToken) {
-          this.getRefreshToken(refreshToken)
-        } else {
-          const message = await this.getSiweMessage({
-            address,
-            chainId,
-          })
-          const signature = await walletService.signMessage(
-            message,
-            'personal_sign'
-          )
-          const tokens = await this.login(message, signature)
-          localStorage.setItem('locksmith-access-token', tokens.accessToken)
-          localStorage.setItem('locksmith-refresh-token', tokens.refreshToken)
-        }
+      const refreshToken = this.refreshToken
+      if (refreshToken) {
+        await this.getAccessToken()
+      } else {
+        const message = await this.getSiweMessage({
+          address,
+          chainId,
+        })
+        const signature = await walletService.signMessage(
+          message,
+          'personal_sign'
+        )
+        await this.login(message, signature)
       }
     } catch (err) {
       if (err instanceof Error) {
         console.error(err.message)
       }
     }
+    this.loginRequest = false
   }
 
-  get token() {
-    return localStorage.getItem('locksmith-access-token')
-  }
+  #accessToken: null | string = null
 
   get refreshToken() {
-    return localStorage.getItem('locksmith-refresh-token')
+    return localStorage.getItem(`${APP_NAME}.refresh-token`)
+  }
+
+  set refreshToken(refreshToken: string | null) {
+    if (refreshToken) {
+      localStorage.setItem(`${APP_NAME}.refresh-token`, refreshToken)
+    } else {
+      localStorage.removeItem(`${APP_NAME}.refresh-token`)
+    }
   }
 
   get isAuthenticated() {
-    const token = this.token
-    return Boolean(token && !isExpired(token))
+    const accessToken = this.#accessToken
+    const refreshToken = this.refreshToken
+    return Boolean(accessToken && refreshToken && !isExpired(accessToken))
   }
 
-  async getRefreshToken(refreshToken: string) {
-    const tokens = await this.locksmith.refreshToken(refreshToken)
-    localStorage.setItem('locksmith-access-token', tokens.accessToken)
-    localStorage.setItem('locksmith-refresh-token', tokens.refreshToken)
-    return tokens
+  async getAccessToken() {
+    const refreshToken = this.refreshToken
+    if (!refreshToken) {
+      throw new Error('User is not authenticated')
+    }
+    if (!this.#accessToken || isExpired(this.#accessToken)) {
+      const { data, status } = await this.locksmith.refreshToken(refreshToken)
+      if (status !== 200) {
+        throw new Error('Could not get access token')
+      }
+      this.#accessToken = data.accessToken
+    }
+    return this.#accessToken
   }
 
   async getSiweMessage({
@@ -153,78 +191,6 @@ export class StorageService extends EventEmitter {
     return siweMessage.prepareMessage()
   }
 
-  /**
-   * Stores transaction hashes and the sender
-   * @param {*} transactionHash
-   * @param {*} senderAddress
-   * @param {*} recipientAddress
-   * @param {*} chain
-   * @paran {*} data (input of transaction, optional)
-   */
-  async storeTransaction(
-    transactionHash: string,
-    senderAddress: string,
-    recipientAddress: string,
-    chain: number,
-    beneficiaryAddress: string /** Used in the context of key purchase *for* */,
-    data: any
-  ) {
-    const payload = {
-      transactionHash,
-      sender: senderAddress,
-      for: beneficiaryAddress || senderAddress,
-      recipient: recipientAddress,
-      data,
-      chain,
-    }
-
-    try {
-      await fetch(`${this.host}/transaction`, {
-        method: 'POST',
-        body: JSON.stringify(payload),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      this.emit(success.storeTransaction, transactionHash)
-    } catch (error) {
-      this.emit(failure.storeTransaction, error)
-    }
-  }
-
-  /**
-   * Gets all the transactions sent by a given address, in the last 24 hours
-   * Returns an empty array by default
-   * TODO: consider a more robust url building
-   * @param {*} senderAddress
-   */
-  async getRecentTransactionsHashesSentBy(senderAddress: string) {
-    let hashes = [] // TODO This is badly named! this returns full transactions
-    try {
-      const oneDayAgo = new Date().getTime() - 1000 * 60 * 60 * 24
-      const response = await fetch(
-        `${this.host}/transactions?sender=${senderAddress}&createdAfter=${oneDayAgo}`,
-        {
-          method: 'GET',
-        }
-      )
-      const data = await response.json()
-      if (data && data.transactions) {
-        hashes = data.transactions.map((t: any) => ({
-          hash: t.transactionHash,
-          network: t.chain,
-          to: t.recipient,
-          from: t.sender,
-        }))
-      }
-      this.emit(success.getTransactionHashesSentBy, { senderAddress, hashes })
-      return { senderAddress, hashes }
-    } catch (error) {
-      this.emit(failure.getTransactionHashesSentBy, error)
-      return { senderAddress, hashes } // TODO: consider if thos should be an error
-    }
-  }
-
   genAuthorizationHeader(token: string) {
     return { Authorization: ` Bearer ${token}` }
   }
@@ -240,7 +206,7 @@ export class StorageService extends EventEmitter {
    * @returns {Promise<*>}
    */
 
-  async createUser(user: any) {
+  async createUser(user: any): Promise<any> {
     return fetch(`${this.host}/users/`, {
       method: 'POST',
       body: JSON.stringify(user),
@@ -506,16 +472,16 @@ export class StorageService extends EventEmitter {
       },
     }
     try {
-      const response = await fetch(
-        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`,
-        {
-          method: 'GET',
-          body: JSON.stringify(opts.params),
-          headers: {
-            ...opts.headers,
-          },
-        }
+      const url = new URL(
+        `${this.host}/api/key/${lockAddress}/keyHolderMetadata?chain=${network}`
       )
+      url.searchParams.append('data', JSON.stringify(opts.params))
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          ...opts.headers,
+        },
+      })
       const data = response.json()
 
       this.emit(success.getBulkMetadataFor, lockAddress, data)
@@ -539,20 +505,38 @@ export class StorageService extends EventEmitter {
         )}`,
         'Content-Type': 'application/json',
       },
-      params: {
-        data: JSON.stringify(data),
-        signature,
-      },
     }
 
-    const response = await fetch(`${this.host}/lock/${lockAddress}/stripe`, {
+    const url = new URL(`${this.host}/lock/${lockAddress}/stripe`)
+    url.searchParams.append('data', JSON.stringify(data))
+    url.searchParams.append('signature', signature)
+
+    const response = await fetch(url, {
       method: 'GET',
-      body: JSON.stringify(opts.params),
       headers: {
         ...opts.headers,
       },
     })
     return response.json()
+  }
+
+  /**
+   * Given a lock address and a typed data signature, disconnect stripe
+   * @param {string} lockAddress
+   * @param {string} signature
+   * @param {*} data
+   */
+  async disconnectStripe(lockAddress: string, network: number) {
+    const url = new URL(`${this.host}/${network}/lock/${lockAddress}/stripe`)
+    const token = await this.getAccessToken()
+
+    return await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
   }
 
   async updateLockIcon(
@@ -576,7 +560,7 @@ export class StorageService extends EventEmitter {
         ...opts.headers,
       },
     })
-    return await response?.json()
+    return response.ok
   }
 
   /**
@@ -681,7 +665,8 @@ export class StorageService extends EventEmitter {
         headers: options.headers,
       })
 
-      return await response.json()
+      const json = await response.json()
+      return json
     } catch (error) {
       console.error(error)
       return {}
@@ -693,24 +678,27 @@ export class StorageService extends EventEmitter {
     captchaValue: string
   ) {
     try {
-      const url = `${this.host}/api/captcha`
-
+      const url = new URL(`${this.host}/api/captcha`)
+      const rs = recipients.map((r) => r.toLowerCase())
       const options = {
         headers: {
           'Content-Type': 'application/json',
         },
-        params: {
-          recipients: recipients.map((r) => r.toLowerCase()),
-          captchaValue,
-        },
       }
-      const response = await fetch(url, {
+
+      for (const r of rs) {
+        url.searchParams.append('recipients[]', r)
+      }
+
+      url.searchParams.append('captchaValue', captchaValue)
+
+      const response = await fetch(url.toString(), {
         method: 'GET',
         headers: options.headers,
-        body: JSON.stringify(options.params),
       })
 
-      return await response.json()
+      const json = await response.json()
+      return json
     } catch (error) {
       console.error(error)
       return {}
@@ -737,15 +725,6 @@ export class StorageService extends EventEmitter {
       console.error(error)
       return ''
     }
-  }
-
-  async getAccessToken() {
-    const token = this.token
-    if (token && isExpired(token)) {
-      const { accessToken } = await this.getRefreshToken(this.refreshToken!)
-      return accessToken
-    }
-    return token
   }
 
   async getEndpoint(url: string, options: RequestInit = {}, withAuth = false) {
@@ -798,6 +777,71 @@ export class StorageService extends EventEmitter {
       body: JSON.stringify({ users }),
       headers: {
         'content-type': 'application/json',
+      },
+    }
+    const response = await fetch(url, opts)
+    return response.json()
+  }
+
+  async updatetMetadata({
+    lockAddress,
+    userAddress,
+    network,
+    metadata,
+  }: {
+    lockAddress: string
+    userAddress: string
+    network: number
+    metadata: any
+  }) {
+    const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
+    const token = await this.getAccessToken()
+    const formattedMetadata = {
+      metadata: {
+        protected: {
+          ...metadata,
+        },
+      },
+    }
+
+    const opts = {
+      method: 'PUT',
+      body: JSON.stringify(formattedMetadata),
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    return await fetch(url, opts)
+  }
+
+  async createtMetadata({
+    lockAddress,
+    userAddress,
+    network,
+    metadata,
+  }: {
+    lockAddress: string
+    userAddress: string
+    network: number
+    metadata: any
+  }) {
+    const url = `${this.host}/v2/api/metadata/${network}/locks/${lockAddress}/users/${userAddress}`
+    const token = await this.getAccessToken()
+    const formattedMetadata = {
+      metadata: {
+        protected: {
+          ...metadata,
+        },
+      },
+    }
+
+    const opts = {
+      method: 'POST',
+      body: JSON.stringify(formattedMetadata),
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     }
     const response = await fetch(url, opts)
@@ -909,5 +953,79 @@ export class StorageService extends EventEmitter {
       options,
       true
     )
+  }
+
+  async canClaimMembership({
+    network,
+    lockAddress,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const response = await fetch(
+      `${this.host}/claim/${network}/locks/${lockAddress}`
+    )
+    const json = await response.json()
+    if (response.ok) {
+      return !!json?.canClaim
+    }
+    return false
+  }
+
+  async getKeys({
+    lockAddress,
+    network,
+    filters,
+  }: {
+    lockAddress: string
+    network: number
+    filters: { [key: string]: any }
+  }): Promise<any> {
+    const token = await this.getAccessToken()
+    const url = new URL(
+      `${this.host}/v2/api/${network}/locks/${lockAddress}/keys`
+    )
+
+    Object.entries(filters).forEach(([key, value]) => {
+      url.searchParams.append(key, value)
+    })
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    const data = await response.json()
+
+    return data
+  }
+
+  async listCardMethods() {
+    const response = await this.getEndpoint(
+      '/v2/purchase/list',
+      {
+        method: 'GET',
+        headers: {
+          'content-type': 'application/json',
+        },
+      },
+      true
+    )
+    return response.methods
+  }
+
+  async getSetupIntent() {
+    const response = await this.getEndpoint(
+      '/v2/purchase/setup',
+      {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+      },
+      true
+    )
+    return response.clientSecret
   }
 }

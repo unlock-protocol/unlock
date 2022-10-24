@@ -20,11 +20,11 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
       ADDRESS_ZERO,
       ADDRESS_ZERO,
       ADDRESS_ZERO,
-      testEventHooks.address
+      testEventHooks.address,
+      ADDRESS_ZERO,
+      ADDRESS_ZERO
     )
     keyPrice = await lock.keyPrice()
-
-    await lock.setMaxKeysPerAddress(10)
   })
 
   beforeEach(async () => {
@@ -81,7 +81,9 @@ contract('Lock / onKeyTransfer hook', (accounts) => {
         ADDRESS_ZERO,
         ADDRESS_ZERO,
         ADDRESS_ZERO,
-        accounts[1]
+        accounts[1],
+        ADDRESS_ZERO,
+        ADDRESS_ZERO
       ),
       'INVALID_HOOK(4)'
     )
