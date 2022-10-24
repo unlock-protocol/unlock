@@ -9,7 +9,7 @@ import {
 } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import { DynamicForm } from './DynamicForm'
-import { Button, IconButton, Select, Tooltip } from '@unlock-protocol/ui'
+import { Button, Select, Tooltip } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { addressMinify } from '~/utils/strings'
 import { FiDelete as DeleteIcon } from 'react-icons/fi'
@@ -152,11 +152,6 @@ export const LocksForm = ({
   const MetadataList = () => {
     return (
       <div>
-        {(locks[lockAddress]?.metadataInputs ?? [])?.length > 0 && (
-          <h3 className="mb-2 text-lg font-bold text-brand-ui-primary">
-            Metadata
-          </h3>
-        )}
         <div className="flex flex-col gap-3">
           {locks[lockAddress]?.metadataInputs?.map((metadata, index) => {
             return (
@@ -180,13 +175,14 @@ export const LocksForm = ({
                         value={metadata?.required ? 'YES' : 'NO'}
                       />
                     </div>
-                    <IconButton
+                    <button
+                      type="button"
                       onClick={() => onRemoveMetadata(metadata?.name)}
-                      icon={
-                        <DeleteIcon size={20} className="hover:fill-inherit" />
-                      }
-                      label="Delete"
-                    />
+                      aria-label="Remove metadata"
+                      className="mt-1 text-gray-500"
+                    >
+                      <DeleteIcon size={20} className="hover:fill-inherit" />
+                    </button>
                   </div>
                 </div>
               </>
@@ -332,24 +328,27 @@ export const LocksForm = ({
           </div>
           {hasMinValue && (
             <>
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg font-bold text-brand-ui-primary">
+                  Metadata
+                </h2>
+                {!addMetadata && (
+                  <Button
+                    variant="outlined-primary"
+                    size="small"
+                    onClick={() => setAddMetadata(true)}
+                  >
+                    Add
+                  </Button>
+                )}
+              </div>
               {!addMetadata ? (
                 <div className="flex flex-col -mt-2">
                   <MetadataList />
-                  <div className="ml-auto">
-                    <Button
-                      variant="outlined-primary"
-                      size="small"
-                      onClick={() => setAddMetadata(true)}
-                      className="mt-4"
-                    >
-                      Add metadata
-                    </Button>
-                  </div>
                 </div>
               ) : (
                 <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-white rounded-xl">
                   <DynamicForm
-                    title="Metadata"
                     name={'locks'}
                     schema={MetadataInputSchema}
                     onChange={() => void 0}
@@ -392,12 +391,14 @@ const LockListItem = ({ address, name, onRemove }: LockListItemProps) => {
       </div>
       <div>
         <Tooltip label="Delete" tip="Delete" side="right">
-          <IconButton
+          <button
+            className="mt-1 text-gray-500"
+            type="button"
             onClick={onRemove}
-            icon={<DeleteIcon size={20} className="hover:fill-inherit" />}
-            label="Delete"
-            className="mt-1"
-          />
+            aria-label="Remove lock"
+          >
+            <DeleteIcon size={20} className="hover:fill-inherit" />
+          </button>
         </Tooltip>
       </div>
     </div>
