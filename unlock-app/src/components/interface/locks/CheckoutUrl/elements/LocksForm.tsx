@@ -23,6 +23,7 @@ interface LockListItemProps {
   network: string | number
   name?: string
   onRemove?: () => void
+  onEdit?: () => void
 }
 
 type LocksProps = Record<string, PaywallConfigLock>
@@ -74,6 +75,7 @@ export const LocksForm = ({
   const [lockAddress, setLockAddress] = useState<string>('')
   const [locksByNetwork, setLocksByNetwork] = useState<any[]>([])
   const [addLock, setAddLock] = useState(false)
+  const [defaultValue, setDefaultValue] = useState<Record<string, any>>({})
 
   const [locks, setLocks] = useState<LocksProps>(locksDefault)
 
@@ -205,6 +207,7 @@ export const LocksForm = ({
                 address={address}
                 network={values!.network!}
                 onRemove={() => onRemoveFromList(address)}
+                onEdit={() => onEditLock(address)}
               />
             )
           }
@@ -291,6 +294,18 @@ export const LocksForm = ({
     setLocks(lockWithMetadata)
     onChange(lockWithMetadata)
   }
+
+  const onEditLock = (address: string) => {
+    const [, config] =
+      Object.entries(locks).find(
+        ([lockAddress]) => lockAddress?.toLowerCase() === address?.toLowerCase()
+      ) ?? []
+    setLockAddress(address)
+    setNetwork(config?.network)
+    setDefaultValue(config ?? {})
+    setAddLock(true)
+  }
+
   const hasLocks =
     Object.keys(locks ?? {}).length > 0 && !lockAddress && !network
   const showForm = !hasLocks || addLock
@@ -314,11 +329,11 @@ export const LocksForm = ({
                 defaultValue={network}
                 onChange={setNetwork}
               />
-
               <Select
                 label="Lock"
                 options={locksOptions}
                 size="small"
+                defaultValue={lockAddress}
                 onChange={(lockAddress: any) => {
                   setLockAddress(`${lockAddress}`)
                   onAddLock(lockAddress, network!)
@@ -349,7 +364,7 @@ export const LocksForm = ({
               ) : (
                 <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-white rounded-xl">
                   <DynamicForm
-                    name={'locks'}
+                    name={'metadata'}
                     schema={MetadataInputSchema}
                     onChange={() => void 0}
                     onSubmit={onAddMetadata}
@@ -361,6 +376,7 @@ export const LocksForm = ({
               <DynamicForm
                 title="Settings"
                 name={'locks'}
+                defaultValues={defaultValue}
                 schema={LockSchema.omit({
                   metadataInputs: true,
                 })}
@@ -379,7 +395,12 @@ export const LocksForm = ({
   )
 }
 
-const LockListItem = ({ address, name, onRemove }: LockListItemProps) => {
+const LockListItem = ({
+  address,
+  name,
+  onRemove,
+  onEdit,
+}: LockListItemProps) => {
   return (
     <div className="flex items-center justify-between w-full gap-2 px-2 py-1 text-sm bg-white rounded-lg shadow">
       <div className="flex items-center w-full">
@@ -397,7 +418,7 @@ const LockListItem = ({ address, name, onRemove }: LockListItemProps) => {
             onClick={void 0}
             aria-label="Edit lock"
           >
-            <EditIcon size={18} />
+            <EditIcon onClick={onEdit} size={18} />
           </button>
         </Tooltip>
         <Tooltip label="Delete" tip="Delete" side="bottom">
