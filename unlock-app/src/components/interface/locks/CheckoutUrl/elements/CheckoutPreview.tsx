@@ -1,5 +1,5 @@
 import { Button } from '@unlock-protocol/ui'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Checkout } from '~/components/interface/checkout/alpha/Checkout'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { useCheckoutCommunication } from '~/hooks/useCheckoutCommunication'
@@ -29,8 +29,7 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
   // Fetch config from parent in iframe context
   const communication = useCheckoutCommunication()
 
-  const injectedProvider =
-    communication.providerAdapter || selectProvider(config)
+  const injectedProvider = selectProvider(config)
 
   const hasLocks = Object.entries(paywallConfig?.locks ?? {})?.length > 0
 
