@@ -53,6 +53,7 @@ interface FieldProps {
   label?: string
   type: string
   name: string
+  description?: string
   props: Record<string, any>
 }
 
@@ -86,19 +87,24 @@ const TextInput = ({ props, type, ...rest }: FieldProps) => {
   }))
 
   return (
-    <ConnectForm>
-      {({ register }: any) => (
-        <select
-          className="block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 disabled:bg-gray-100 pl-2.5 py-1.5 text-sm"
-          {...register(rest.name)}
-          {...rest}
-        >
-          {options?.map(({ label, value }: any) => (
-            <option value={value}>{label}</option>
-          ))}
-        </select>
-      )}
-    </ConnectForm>
+    <>
+      <ConnectForm>
+        {({ register }: any) => (
+          <select
+            className="block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 disabled:bg-gray-100 pl-2.5 py-1.5 text-sm"
+            {...register(rest.name)}
+            {...rest}
+          >
+            {options?.map(({ label, value }: any) => (
+              <option key={label} value={value}>
+                {label}
+              </option>
+            ))}
+          </select>
+        )}
+      </ConnectForm>
+      <span className="text-xs text-gray-600 ">{rest.description}</span>
+    </>
   )
 }
 
