@@ -364,10 +364,10 @@ export const LocksForm = ({
                   <h2 className="text-lg font-bold text-brand-ui-primary">
                     Metadata
                   </h2>
-                  <p>
+                  <span className="text-xs text-gray-600">
                     (Optional) Collect details about your members during the
                     checkout process.
-                  </p>
+                  </span>
                 </div>
                 {!addMetadata && (
                   <Button
