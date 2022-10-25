@@ -159,34 +159,32 @@ export const LocksForm = ({
       <div className="flex flex-col gap-3">
         {locks[lockAddress]?.metadataInputs?.map((metadata, index) => {
           return (
-            <>
-              <div
-                key={index}
-                className="flex items-center justify-between w-full p-4 text-sm bg-white rounded-lg shadow"
-              >
-                <div className="flex items-center justify-between w-full gap-2">
-                  <div className="grid w-full grid-cols-3">
-                    <MetadataDetail title="Form label" value={metadata?.name} />
-                    <MetadataDetail
-                      title="Default value"
-                      value={metadata?.defaultValue}
-                    />
-                    <MetadataDetail
-                      title="Required"
-                      value={metadata?.required ? 'YES' : 'NO'}
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => onRemoveMetadata(metadata?.name)}
-                    aria-label="Remove metadata"
-                    className="mt-1 text-gray-500"
-                  >
-                    <DeleteIcon size={20} />
-                  </button>
+            <div
+              key={index}
+              className="flex items-center justify-between w-full p-4 text-sm bg-white rounded-lg shadow"
+            >
+              <div className="flex items-center justify-between w-full gap-2">
+                <div className="grid w-full grid-cols-3">
+                  <MetadataDetail title="Form label" value={metadata?.name} />
+                  <MetadataDetail
+                    title="Default value"
+                    value={metadata?.defaultValue}
+                  />
+                  <MetadataDetail
+                    title="Required"
+                    value={metadata?.required ? 'YES' : 'NO'}
+                  />
                 </div>
+                <button
+                  type="button"
+                  onClick={() => onRemoveMetadata(metadata?.name)}
+                  aria-label="Remove metadata"
+                  className="mt-1 text-gray-500"
+                >
+                  <DeleteIcon size={20} />
+                </button>
               </div>
-            </>
+            </div>
           )
         })}
       </div>

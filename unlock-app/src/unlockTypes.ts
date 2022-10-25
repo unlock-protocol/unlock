@@ -6,11 +6,11 @@ import { z } from 'zod'
 
 export const MetadataInputSchema = z.object({
   name: z.string({
-    description: 'Field label',
+    description: 'Name of the attribute to collect.',
   }),
   defaultValue: z
     .string({
-      description: 'Field default value',
+      description: 'Default value for the attribute.',
     })
     .optional(),
   type: z.enum(['text', 'date', 'color', 'email', 'url'], {
@@ -18,17 +18,18 @@ export const MetadataInputSchema = z.object({
       'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. The following configuration results in a checkout that looks like image below it.',
   }),
   required: z.boolean({
-    description: 'When true the field will be required',
+    description:
+      'Check if you require users to enter this before they complete the purchase.',
   }),
   placeholder: z
     .string({
-      description: 'Field placeholder text',
+      description: 'Placeholder displayed to users.',
     })
     .optional(),
   public: z
     .boolean({
       description:
-        'If any metadata should be visible to everyone, mark the public field as true.',
+        'If you check this, the attribute will be visible to everyone. Recommended: leave unchecked.',
     })
     .optional(), // optional, all non-public fields are treated as protected
 })
