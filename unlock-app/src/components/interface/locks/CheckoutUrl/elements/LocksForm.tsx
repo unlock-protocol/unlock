@@ -218,7 +218,7 @@ export const LocksForm = ({
           }
         )}
         <div className="flex gap-2">
-          {!addLock && (
+          {!addLock && !lockAddress && !network && (
             <Button
               className="w-full"
               size="small"
@@ -430,20 +430,6 @@ export const LocksForm = ({
               </div>
               {hasMinValue && (
                 <>
-                  <DynamicForm
-                    title="Settings"
-                    name={'locks'}
-                    defaultValues={defaultValue}
-                    schema={LockSchema.omit({
-                      metadataInputs: true,
-                      minRecipients: true, // This option is confusing. Let's not add it by default.
-                      superfluid: true,
-                      default: true,
-                    })}
-                    onChange={(fields: any) =>
-                      onAddLock(lockAddress, network, fields)
-                    }
-                  />
                   <div className="flex items-center justify-between">
                     <div className="flex flex-col">
                       <h2 className="text-lg font-bold text-brand-ui-primary">
