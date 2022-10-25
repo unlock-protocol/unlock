@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-
+import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 interface Props {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
@@ -15,7 +15,7 @@ export function Modal({ isOpen, setIsOpen, children }: Props) {
         className="fixed inset-0 z-10 overflow-y-auto"
         onClose={setIsOpen}
       >
-        <div className="flex items-end justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div className="flex flex-col items-center justify-center min-h-screen p-6">
           <Transition.Child
             as={React.Fragment}
             enter="ease-out duration-300"
@@ -25,16 +25,9 @@ export function Modal({ isOpen, setIsOpen, children }: Props) {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Dialog.Overlay className="fixed inset-0 transition-opacity bg-gray-100 bg-opacity-75 filter blur" />
+            <Dialog.Overlay className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-50 backdrop-blur" />
           </Transition.Child>
 
-          {/* This element is to trick the browser into centering the modal contents. */}
-          <span
-            className="hidden sm:inline-block sm:align-middle sm:h-screen"
-            aria-hidden="true"
-          >
-            &#8203;
-          </span>
           <Transition.Child
             as={React.Fragment}
             enter="ease-out duration-300"
@@ -44,7 +37,19 @@ export function Modal({ isOpen, setIsOpen, children }: Props) {
             leaveFrom="opacity-100 translate-y-0 sm:scale-100"
             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
           >
-            <div className="inline-block overflow-hidden transition-all transform bg-white border border-gray-100 rounded-lg shadow-xl shadow-gray-200 sm:max-w-lg sm:w-full">
+            <div className="block p-4 overflow-hidden transition-all transform bg-white border border-gray-100 rounded-lg shadow-xl sm:max-w-lg sm:w-full">
+              <div className="flex items-center justify-end">
+                <button
+                  className="hover:fill-brand-ui-primary"
+                  aria-label="close"
+                  onClick={(event) => {
+                    event.preventDefault()
+                    setIsOpen(false)
+                  }}
+                >
+                  <CloseIcon className="fill-inherit" size={24} />
+                </button>
+              </div>
               {children}
             </div>
           </Transition.Child>

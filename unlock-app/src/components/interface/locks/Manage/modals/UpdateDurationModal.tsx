@@ -95,7 +95,7 @@ export const UpdateDurationModal = ({
     <>
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
         <form
-          className="flex flex-col gap-6 p-6 text-left"
+          className="flex flex-col gap-6 text-left"
           onSubmit={handleSubmit(onHandleSubmit)}
         >
           <span className="text-2xl font-bold">Update Duration</span>
