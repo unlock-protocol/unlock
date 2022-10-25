@@ -1,26 +1,21 @@
-export interface LockMetadataFormData {
+export interface Ticket {
+  event_date?: string
+  event_time?: string
+  event_address?: string
+  event_meeting_url?: string
+}
+export interface MetadataFormData {
   name: string
+  description?: string
   external_url?: string
   youtube_url?: string
   animation_url?: string
   background_color?: string
-  ticket: {
-    event_date?: string
-    event_time?: string
-    event_address?: string
-    meeting_url?: string
-  }
-  properties: Record<'type' | 'name', string>[]
-  levels: {
-    type: string
-    value: number
-    maxValue: number
-  }[]
-  stats: {
-    type: string
-    value: number
-    maxValue: number
-  }[]
+  ticket: Ticket
+  properties: Attribute[]
+  levels: Attribute[]
+  stats: Attribute[]
+  [key: string]: any
 }
 
 export interface Attribute {
@@ -30,4 +25,49 @@ export interface Attribute {
   value: string | number
 }
 
-export function toFormData() {}
+export interface Metadata {
+  name: string
+  image?: string
+  description?: string
+  external_url?: string
+  youtube_url?: string
+  animation_url?: string
+  background_color?: string
+  attributes?: Attribute[]
+  [key: string]: any
+}
+
+export function toFormData({
+  name,
+  description,
+  attributes,
+  animation_url,
+  external_url,
+  youtube_url,
+  background_color,
+}: Metadata) {
+  const ticket = attributes
+    ?.filter((item) => item.trait_type.startsWith('event_'))
+    .reduce((item, { trait_type, value }) => {
+      item[trait_type as keyof Ticket] = value as string
+      return item
+    }, {} as Ticket)
+
+  const stats = attributes?.filter((item) => item.display_type === 'number')
+  const levels = attributes?.filter((item) => typeof item.value === 'number')
+  const properties = attributes?.filter(
+    (item) => typeof item.value === 'string'
+  )
+  return {
+    name,
+    description,
+    background_color,
+    animation_url,
+    external_url,
+    youtube_url,
+    ticket,
+    levels,
+    properties,
+    stats,
+  } as MetadataFormData
+}

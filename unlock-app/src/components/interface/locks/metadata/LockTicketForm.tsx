@@ -5,16 +5,17 @@ import {
   RiArrowDropUpLine as UpIcon,
   RiArrowDropDownLine as DownIcon,
 } from 'react-icons/ri'
+import { MetadataFormData } from './utils'
 
 interface Props {
   disabled?: boolean
 }
 
 export function LockTicketForm({ disabled }: Props) {
-  const { register } = useFormContext()
+  const { register } = useFormContext<MetadataFormData>()
   return (
     <div className="p-6 bg-white shadow border-xs rounded-xl">
-      <Disclosure defaultOpen>
+      <Disclosure>
         {({ open }) => (
           <div>
             <Disclosure.Button className="flex items-center justify-between w-full mb-2">
@@ -53,7 +54,7 @@ export function LockTicketForm({ disabled }: Props) {
                 disabled={disabled}
                 label="Meeting link (if any)"
                 placeholder="https://"
-                {...register('ticket.meeting_url')}
+                {...register('ticket.event_meeting_url')}
                 type="url"
               />
             </Disclosure.Panel>

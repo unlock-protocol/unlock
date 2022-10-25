@@ -6,41 +6,10 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useStorageService } from '~/utils/withStorageService'
 import { LockAdvancedForm } from './LockAdvancedForm'
-import { LockCustomForm } from './LockCustomForm'
+import { LockCustomForm } from './custom'
 import { LockDetailForm } from './LockDetailForm'
 import { LockTicketForm } from './LockTicketForm'
-
-export interface LockMetadataFormData {
-  name: string
-  external_url?: string
-  youtube_url?: string
-  animation_url?: string
-  background_color?: string
-  ticket: {
-    event_date?: string
-    event_time?: string
-    event_address?: string
-    meeting_url?: string
-  }
-  properties: Record<'type' | 'name', string>[]
-  levels: {
-    type: string
-    value: number
-    maxValue: number
-  }[]
-  stats: {
-    type: string
-    value: number
-    maxValue: number
-  }[]
-}
-
-export interface Attribute {
-  display_type?: string
-  max_value?: number
-  trait_type: string
-  value: string | number
-}
+import { Attribute, MetadataFormData } from './utils'
 
 export function UpdateLockMetadata() {
   const router = useRouter()
@@ -61,12 +30,15 @@ export function UpdateLockMetadata() {
       initialData: {},
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       onError() {},
-      refetchInterval: Infinity,
+      refetchInterval: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
       retry: false,
     }
   )
 
-  const methods = useForm<LockMetadataFormData>({
+  const methods = useForm<MetadataFormData>({
     defaultValues: data || {
       name: 'Locksmith 101',
       external_url: 'https://example.com',
@@ -107,7 +79,7 @@ export function UpdateLockMetadata() {
     background_color,
     ticket,
     properties,
-  }: LockMetadataFormData) => {
+  }: MetadataFormData) => {
     const metadata = {
       name,
       animation_url,
@@ -126,10 +98,10 @@ export function UpdateLockMetadata() {
       })
     }
 
-    if (ticket.meeting_url) {
+    if (ticket.event_meeting_url) {
       metadata.attributes.push({
         trait_type: 'event_meeting_url',
-        value: ticket.meeting_url,
+        value: ticket.event_meeting_url,
       })
     }
 
@@ -147,15 +119,9 @@ export function UpdateLockMetadata() {
       })
     }
 
-    const propertyAttributes = properties
-      .filter((item) => item.type && item.name)
-      .map(
-        (item) =>
-          ({
-            trait_type: item.type,
-            value: item.name,
-          } as Attribute)
-      )
+    const propertyAttributes = properties.filter(
+      (item) => item.trait_type && item.value
+    )
 
     metadata.attributes.push(...propertyAttributes)
 
