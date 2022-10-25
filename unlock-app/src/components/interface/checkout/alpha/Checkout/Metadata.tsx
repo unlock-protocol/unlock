@@ -53,7 +53,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     name: 'metadata',
     control,
   })
-  const { isLoading: isMemberLoading, data: isMember } = useQuery(
+  const { isInitialLoading: isMemberLoading, data: isMember } = useQuery(
     ['isMember', account, lock],
     async () => {
       const total = await web3Service.totalKeys(
@@ -68,7 +68,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
     }
   )
 
-  const { data: address, isLoading: isEnsLoading } = useQuery(
+  const { data: address, isInitialLoading: isEnsLoading } = useQuery(
     ['ens', account],
     () => {
       return getNameOrAddressForAddress(account!)
@@ -200,7 +200,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                           Change
                         </Button>
                       </div>
-                      <p className="text-gray-600 text-xs">
+                      <p className="text-xs text-gray-600">
                         The Ethereum address that will receive the membership
                         NFT
                       </p>
