@@ -98,10 +98,6 @@ export const LocksForm = ({
     setAddLock(false)
   }
 
-  const onSubmit = () => {
-    reset()
-  }
-
   const getLocksByNetwork = async () => {
     if (!network) return null
 
@@ -335,8 +331,8 @@ export const LocksForm = ({
   const networkHasLocks = (locksByNetwork ?? [])?.length > 0
 
   return (
-    <>
-      {!showForm && <LockList />}
+    <div className="flex flex-col gap-2">
+      {Object.keys(locks ?? {}).length > 0 && <LockList />}
       {showForm && (
         <div className="flex flex-col gap-8">
           <div>
@@ -371,48 +367,18 @@ export const LocksForm = ({
                       }}
                     />
                   ) : (
-                    <span className="text-base">This network has no locks</span>
+                    network && (
+                      <span className="text-base">
+                        This network has no locks
+                      </span>
+                    )
                   )}
                 </>
               )}
             </div>
           </div>
-          {hasMinValue && (
+          {lockAddress && network && (
             <>
-              <div className="flex items-center justify-between">
-                <div className="flex flex-col">
-                  <h2 className="text-lg font-bold text-brand-ui-primary">
-                    Metadata
-                  </h2>
-                  <span className="text-xs text-gray-600">
-                    (Optional) Collect details about your members during the
-                    checkout process.
-                  </span>
-                </div>
-                {!addMetadata && (
-                  <Button
-                    variant="outlined-primary"
-                    size="small"
-                    onClick={() => setAddMetadata(true)}
-                  >
-                    Add
-                  </Button>
-                )}
-              </div>
-              {!addMetadata ? (
-                <MetadataList />
-              ) : (
-                <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-white rounded-xl">
-                  <DynamicForm
-                    name={'metadata'}
-                    schema={MetadataInputSchema}
-                    onChange={() => void 0}
-                    onSubmit={onAddMetadata}
-                    submitLabel={'Save'}
-                    showSubmit={true}
-                  />
-                </div>
-              )}
               <div className="flex flex-col">
                 <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
                   Settings
@@ -459,17 +425,69 @@ export const LocksForm = ({
                     onChange={(fields: any) =>
                       onAddLock(lockAddress, network, fields)
                     }
-                    onSubmit={onSubmit}
-                    submitLabel={'Add lock'}
-                    showSubmit={true}
                   />
                 </div>
               </div>
+              {hasMinValue && (
+                <>
+                  <DynamicForm
+                    title="Settings"
+                    name={'locks'}
+                    defaultValues={defaultValue}
+                    schema={LockSchema.omit({
+                      metadataInputs: true,
+                      minRecipients: true, // This option is confusing. Let's not add it by default.
+                      superfluid: true,
+                      default: true,
+                    })}
+                    onChange={(fields: any) =>
+                      onAddLock(lockAddress, network, fields)
+                    }
+                  />
+                  <div className="flex items-center justify-between">
+                    <div className="flex flex-col">
+                      <h2 className="text-lg font-bold text-brand-ui-primary">
+                        Metadata
+                      </h2>
+                      <span className="text-xs text-gray-600">
+                        (Optional) Collect additional information from your
+                        members during the checkout process.
+                      </span>
+                    </div>
+                    {!addMetadata && (
+                      <Button
+                        variant="outlined-primary"
+                        size="small"
+                        onClick={() => setAddMetadata(true)}
+                      >
+                        Add
+                      </Button>
+                    )}
+                  </div>
+                  {!addMetadata ? (
+                    <MetadataList />
+                  ) : (
+                    <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-white rounded-xl">
+                      <DynamicForm
+                        name={'metadata'}
+                        schema={MetadataInputSchema.omit({
+                          defaultValue: true, // default value is not needed
+                        })}
+                        onChange={() => void 0}
+                        onSubmit={onAddMetadata}
+                        submitLabel={'Save'}
+                        showSubmit={true}
+                      />
+                    </div>
+                  )}
+                  <Button onClick={() => reset()}>Save</Button>
+                </>
+              )}
             </>
           )}
         </div>
       )}
-    </>
+    </div>
   )
 }
 
