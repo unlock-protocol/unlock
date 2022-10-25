@@ -1,5 +1,5 @@
 import { Listbox } from '@headlessui/react'
-import { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { BsCheck as CheckIcon } from 'react-icons/bs'
 import { MdOutlineKeyboardArrowDown as ArrowDownIcon } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
@@ -16,7 +16,7 @@ export interface Option {
 
 interface SelectProps<T> {
   label?: string
-  description?: string
+  description?: ReactNode
   options: Option[]
   size?: Size
   onChange?: (value: string | number) => void
