@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import {
-  Lock,
   MetadataInput,
   MetadataInputSchema,
   PaywallConfigLock,
@@ -13,6 +12,7 @@ import { Button, Select, Tooltip } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { addressMinify } from '~/utils/strings'
 import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
+import { useQuery } from '@tanstack/react-query'
 
 const LockSchema = PaywallConfigLockSchema.omit({
   network: true, // network will managed with a custom input with the lock address
@@ -65,6 +65,12 @@ const MetadataDetail = ({ title, value }: MetadataDetailProps) => {
   )
 }
 
+const SelectPlaceholder = () => {
+  return (
+    <span className="w-full h-8 rounded-lg animate-pulse bg-slate-200"></span>
+  )
+}
+
 export const LocksForm = ({
   onChange,
   locks: locksDefault = {},
@@ -73,7 +79,6 @@ export const LocksForm = ({
   const { account } = useAuth()
   const [network, setNetwork] = useState<string | number>()
   const [lockAddress, setLockAddress] = useState<string>('')
-  const [locksByNetwork, setLocksByNetwork] = useState<any[]>([])
   const [addLock, setAddLock] = useState(false)
   const [defaultValue, setDefaultValue] = useState<Record<string, any>>({})
 
@@ -89,26 +94,26 @@ export const LocksForm = ({
     reset()
   }
 
-  useEffect(() => {
-    const getLocksByNetwork = async () => {
-      if (!network) return null
-      const service = new SubgraphService()
-      const locksByNetwork =
-        (await service.locks(
-          {
-            first: 1000,
-            where: {
-              lockManagers_contains: [account!],
-            },
+  const getLocksByNetwork = async () => {
+    if (!network) return null
+
+    const service = new SubgraphService()
+    return (
+      (await service.locks(
+        {
+          first: 1000,
+          where: {
+            lockManagers_contains: [account!],
           },
-          {
-            networks: [`${network!}`],
-          }
-        )) ?? []
-      setLocksByNetwork(locksByNetwork)
-    }
-    getLocksByNetwork()
-  }, [account, network])
+        },
+        {
+          networks: [`${network!}`],
+        }
+      )) ?? []
+    )
+  }
+  const { isLoading: isLoadingLocksByNetwork, data: locksByNetwork = [] } =
+    useQuery([network, account], async () => getLocksByNetwork())
 
   const networksOptions = Object.entries(networks).map(
     ([id, { name: label }]: [string, any]) => ({
@@ -135,7 +140,7 @@ export const LocksForm = ({
     onChange(newObj)
   }
 
-  const locksOptions: any = locksByNetwork?.map(({ address, name }: Lock) => {
+  const locksOptions: any = locksByNetwork?.map(({ address, name }: any) => {
     const disabled = Object.keys(locks)?.find(
       (lockAddress: string) =>
         lockAddress?.toLowerCase() === address?.toLowerCase()
@@ -311,6 +316,7 @@ export const LocksForm = ({
   const showForm = !hasLocks || addLock
 
   const [addMetadata, setAddMetadata] = useState(false)
+  const networkHasLocks = (locksByNetwork ?? [])?.length > 0
 
   return (
     <>
@@ -327,18 +333,32 @@ export const LocksForm = ({
                 options={networksOptions}
                 size="small"
                 defaultValue={network}
-                onChange={setNetwork}
-              />
-              <Select
-                label="Lock"
-                options={locksOptions}
-                size="small"
-                defaultValue={lockAddress}
-                onChange={(lockAddress: any) => {
-                  setLockAddress(`${lockAddress}`)
-                  onAddLock(lockAddress, network!)
+                onChange={(network) => {
+                  setNetwork(network)
+                  onRemoveFromList(lockAddress)
+                  setLockAddress('')
                 }}
               />
+              {isLoadingLocksByNetwork ? (
+                <SelectPlaceholder />
+              ) : (
+                <>
+                  {networkHasLocks ? (
+                    <Select
+                      label="Lock"
+                      options={locksOptions}
+                      size="small"
+                      defaultValue={lockAddress}
+                      onChange={(lockAddress: any) => {
+                        setLockAddress(`${lockAddress}`)
+                        onAddLock(lockAddress, network!)
+                      }}
+                    />
+                  ) : (
+                    <span className="text-base">This network has no locks</span>
+                  )}
+                </>
+              )}
             </div>
           </div>
           {hasMinValue && (
