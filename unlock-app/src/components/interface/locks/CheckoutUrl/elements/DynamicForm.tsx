@@ -64,11 +64,17 @@ export const ConnectForm = ({ children }: any) => {
 const TextInput = ({ props, type, ...rest }: FieldProps) => {
   const { enum: enumList = [] } = props ?? {}
   const hasOptions = enumList?.length
+  const isNumericField =
+    (Array.isArray(props.type) && props.type.includes('number')) ||
+    type === 'number'
+  const inputType = isNumericField ? 'number' : type
 
   if (!hasOptions) {
     return (
       <ConnectForm>
-        {({ register }: any) => <Input {...register(rest.name)} {...rest} />}
+        {({ register }: any) => (
+          <Input type={inputType} {...register(rest.name)} {...rest} />
+        )}
       </ConnectForm>
     )
   }
