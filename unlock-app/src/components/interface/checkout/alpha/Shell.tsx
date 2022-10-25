@@ -99,7 +99,6 @@ export function CheckoutHead({ title, iconURL }: CheckoutHeadProps) {
         </Avatar.Root>
         <div>
           <h1 className="text-lg font-bold"> {title || 'Unlock Protocol'} </h1>
-          <p className="text-base text-brand-dark"> Membership </p>
         </div>
       </div>
     </header>
