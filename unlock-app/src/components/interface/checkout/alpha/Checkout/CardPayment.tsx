@@ -42,7 +42,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
 
   const {
     data: methods,
-    isLoading: isMethodLoading,
+    isInitialLoading: isMethodLoading,
     refetch,
   } = useQuery(
     ['list-cards', account],
