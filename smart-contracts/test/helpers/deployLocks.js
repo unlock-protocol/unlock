@@ -10,6 +10,7 @@ async function deployLock({
   from: deployer,
   tokenAddress = ADDRESS_ZERO,
   name = 'FIRST',
+  keyPrice,
 } = {}) {
   if (!unlock) {
     ;({ unlock } = await deployContracts())
@@ -21,7 +22,7 @@ async function deployLock({
 
   const {
     expirationDuration,
-    keyPrice,
+    keyPrice: price,
     maxNumberOfKeys,
     lockName,
     maxKeysPerAddress,
@@ -30,7 +31,7 @@ async function deployLock({
   const args = [
     name === 'NON_EXPIRING' ? MAX_UINT : expirationDuration.toString(),
     tokenAddress,
-    keyPrice.toString(),
+    (keyPrice || price).toString(),
     maxNumberOfKeys.toString(),
     lockName,
   ]
