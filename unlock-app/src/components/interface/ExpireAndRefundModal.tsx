@@ -62,7 +62,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
 
   return (
     <Modal isOpen={isOpen} setIsOpen={onCloseCallback}>
-      <div className="flex flex-col gap-3 px-10 py-5">
+      <div className="flex flex-col gap-3">
         <p className="text-sm">Set the amount you want to refund</p>
         <Input
           className="my-2 text-right"
