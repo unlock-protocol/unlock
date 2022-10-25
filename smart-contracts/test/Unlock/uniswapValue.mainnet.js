@@ -2,8 +2,8 @@ const { ethers } = require('hardhat')
 const BigNumber = require('bignumber.js')
 const { mainnet } = require('@unlock-protocol/networks')
 
-const UniswapOracle = require('./ABIs/UniswapOracle.json')
-const USDCabi = require('./ABIs/USDC.json')
+const UniswapOracle = require('../helpers/ABIs/UniswapOracle.json')
+const USDCabi = require('../helpers/ABIs/USDC.json')
 
 const {
   ADDRESS_ZERO,
