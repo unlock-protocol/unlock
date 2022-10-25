@@ -224,7 +224,7 @@ contract('Unlock / uniswapValue', () => {
 
       it('GDP went up by the keyPrice', async () => {
         const gdp = await unlock.grossNetworkProduct()
-        assert.equal(gdp.toString(), gdpBefore.plus(keyPrice).toString())
+        assert.equal(gdp.toString(), gdpBefore.add(keyPrice).toString())
       })
 
       it('a GDP tracking event has been emitted', async () => {
@@ -234,7 +234,7 @@ contract('Unlock / uniswapValue', () => {
         const { args } = events.find(({ event }) => event === 'GNPChanged')
         const {
           grossNetworkProduct,
-          valueInETH,
+          _valueInETH,
           tokenAddress,
           value,
           lockAddress,
@@ -245,7 +245,7 @@ contract('Unlock / uniswapValue', () => {
         assert.equal(lockAddress, lock.address)
         assert.equal(ADDRESS_ZERO, tokenAddress)
         assert.equal(gdp.toString(), grossNetworkProduct.toString())
-        assert.equal(keyPrice, valueInETH)
+        assert.equal(keyPrice.toString(), _valueInETH.toString())
         assert.equal(keyPrice.toString(), value.toString())
       })
     })
