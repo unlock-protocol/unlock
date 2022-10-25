@@ -14,8 +14,6 @@ import { StorageServiceContext } from '../../utils/withStorageService'
 import { StorageService } from '../../services/storageService'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
-import { GraphServiceContext } from '../../utils/withGraphService'
-import { GraphService } from '../../services/graphService'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { useProvider } from '../../hooks/useProvider'
 import Loading from './Loading'
@@ -24,8 +22,6 @@ import UnlockPropTypes from '../../propTypes'
 
 import LogInSignUp from './LogInSignUp'
 import { useAutoLogin } from '../../hooks/useAutoLogin'
-
-const GraphServiceProvider = GraphServiceContext.Provider
 
 const StorageServiceProvider = StorageServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
@@ -40,11 +36,6 @@ const Providers = ({ network, networkConfig, children, authenticate }) => {
       new ApolloClient({
         uri: networkConfig[network].subgraph.endpoint,
       }),
-    [networkConfig, network]
-  )
-
-  const graphService = useMemo(
-    () => new GraphService(networkConfig[network].subgrap?.endpoint),
     [networkConfig, network]
   )
 
@@ -68,9 +59,7 @@ const Providers = ({ network, networkConfig, children, authenticate }) => {
     <ApolloProvider client={apolloClient}>
       <StorageServiceProvider value={storageService}>
         <Web3ServiceProvider value={web3Service}>
-          <GraphServiceProvider value={graphService}>
-            {isLoading ? <Loading /> : children}
-          </GraphServiceProvider>
+          {isLoading ? <Loading /> : children}
         </Web3ServiceProvider>
       </StorageServiceProvider>
     </ApolloProvider>
