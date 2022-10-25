@@ -87,7 +87,7 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
       {loading ? (
         <KeyMetadataPlaceholder />
       ) : (
-        <div className="flex flex-col gap-3 p-4 min-h-[300px] text-left">
+        <div className="flex flex-col gap-3 min-h-[300px] text-left">
           <span className="text-lg font-semibold">
             {`${lock.name} - Metadata`}{' '}
           </span>

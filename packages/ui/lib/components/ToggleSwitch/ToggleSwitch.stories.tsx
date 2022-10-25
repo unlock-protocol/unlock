@@ -18,4 +18,5 @@ Default.args = {
   title: 'Example',
   enabled: true,
   setEnabled: () => void 0,
+  description: 'Example with description',
 }
