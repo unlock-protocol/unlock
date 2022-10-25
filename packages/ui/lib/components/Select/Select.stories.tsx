@@ -12,6 +12,7 @@ export const SelectComponent = Template.bind({})
 
 SelectComponent.args = {
   label: 'Select your option',
+  description: <>description example</>,
   options: [
     {
       label: 'Test 1',
