@@ -110,7 +110,7 @@ export const CancelAndRefundModal = ({
         <CancelAndRefundModalPlaceHolder />
       ) : (
         isOpen && (
-          <div className="flex flex-col w-full gap-5 p-4">
+          <div className="flex flex-col w-full gap-5">
             <div className="text-left">
               <h3 className="text-xl font-semibold text-left text-black-500">
                 Cancel and Refund

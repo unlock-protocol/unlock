@@ -69,7 +69,7 @@ export const AppLayout = ({
           saveTermsAccepted()
         }}
       >
-        <div className="flex flex-col justify-center gap-4 p-8 bg-white">
+        <div className="flex flex-col justify-center gap-4 bg-white">
           <span className="text-base">
             No account required{' '}
             <span role="img" aria-label="stars">

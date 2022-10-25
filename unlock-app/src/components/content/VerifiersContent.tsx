@@ -15,7 +15,7 @@ import { useRouter } from 'next/router'
 import { AppLayout } from '../interface/layouts/AppLayout'
 
 const styling = {
-  sectionWrapper: 'text-left mx-2 my-3',
+  sectionWrapper: 'text-left',
   sectionTitle: 'text-lg text-black font-bold',
   sectionDesctiption: 'text-sm text-black-600 text-align-text',
   input: 'mt-3 mb-4',

@@ -378,7 +378,7 @@ const UpdateEmailModal = ({
 
   return (
     <Modal isOpen={isOpen} setIsOpen={setIsOpen}>
-      <div className="flex flex-col gap-3 p-4">
+      <div className="flex flex-col gap-3">
         <span className="mr-0 font-semibold text-md">
           {hasEmail ? 'Update email address' : 'Add email address to metadata'}
         </span>

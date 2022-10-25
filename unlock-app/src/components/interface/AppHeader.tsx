@@ -74,7 +74,7 @@ export const AppHeader = ({ showLinks = true }: AppHeaderProps) => {
   return (
     <div className="pt-5 bg-ui-secondary-200">
       <Modal isOpen={disconnectModal} setIsOpen={setDisconnectModal}>
-        <div className="flex flex-col gap-10 p-8">
+        <div className="flex flex-col gap-10">
           <div className="flex">
             <img
               src="/images/illustrations/disconnect-wallet.svg"
