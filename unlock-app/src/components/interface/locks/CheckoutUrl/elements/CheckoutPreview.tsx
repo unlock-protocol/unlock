@@ -38,10 +38,7 @@ export const CheckoutPreview = ({ paywallConfig }: CheckoutPreviewProps) => {
       delete paywallConfig.redirectUri
     }
 
-    url.searchParams.append(
-      'paywallConfig',
-      encodeURIComponent(JSON.stringify(paywallConfig))
-    )
+    url.searchParams.append('paywallConfig', JSON.stringify(paywallConfig))
 
     setCheckoutUrl(url.toString())
   }, [paywallConfig])
