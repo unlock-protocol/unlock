@@ -148,14 +148,14 @@ export function Quantity({ injectedProvider, checkoutService }: Props) {
 
                   if (maxAllowed) {
                     ToastHelper.error(
-                      `You cannot purchase more than ${paywallConfig.maxRecipients} memberships at once`
+                      `You cannot purchase more than ${maxRecipients} memberships at once`
                     )
                     return setQuantityInput(maxRecipients!.toString())
                   }
 
                   if (minAllowed) {
                     ToastHelper.error(
-                      `You cannot purchase less than ${paywallConfig.minRecipients} memberships at once`
+                      `You cannot purchase less than ${minRecipients} memberships at once`
                     )
                     return setQuantityInput(minRecipients!.toString())
                   }

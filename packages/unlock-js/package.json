@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.30.3",
+  "version": "0.30.4",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -10,7 +10,8 @@
     "url": "https://github.com/unlock-protocol/unlock.git"
   },
   "scripts": {
-    "test": "yarn build && hardhat test:jest",
+    "test": "yarn clean && yarn build:abis && yarn build:lib && hardhat test:jest",
+    "test:single": "hardhat test:single",
     "check": "tsc --noEmit",
     "lint": "yarn run eslint --resolve-plugins-relative-to ../eslint-config --ext .tsx,.ts,.js src/",
     "build:lib": "tsup src/index.ts --dts --format esm,cjs ",
@@ -44,7 +45,6 @@
     "@graphql-codegen/typescript-operations": "2.5.4",
     "@nomiclabs/hardhat-ethers": "2.2.0",
     "@openapitools/openapi-generator-cli": "2.5.2",
-    "@openzeppelin/hardhat-upgrades": "1.21.0",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/jest-config": "workspace:^",

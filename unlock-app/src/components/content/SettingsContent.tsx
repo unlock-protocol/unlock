@@ -25,7 +25,7 @@ export const PaymentSettings = () => {
   const [isSaving, setIsSaving] = useState(false)
   const {
     data: methods,
-    isLoading: isMethodLoading,
+    isInitialLoading: isMethodLoading,
     refetch,
   } = useQuery(
     ['list-cards', account],

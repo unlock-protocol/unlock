@@ -7,15 +7,20 @@ import * as abis from '@unlock-protocol/contracts'
  */
 export default async (
   unlockAddress,
-  version,
   params,
   transactionOptions = {},
   callback
 ) => {
-  const { abi } = abis[`Unlock${version.toUpperCase()}`]
+  const unlockVersionContract = await ethers.getContractAt(
+    ['function unlockVersion() view returns (uint8)'],
+    unlockAddress
+  )
+
+  const version = await unlockVersionContract.unlockVersion()
+  const { abi } = abis[`UnlockV${version}`]
 
   const unlock = await ethers.getContractAt(abi, unlockAddress)
-  return await getConfigure(version)(
+  return await getConfigure(`v${version}`)(
     unlock,
     params,
     transactionOptions,
