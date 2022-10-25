@@ -3,6 +3,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { MdPerson as PersonIcon } from 'react-icons/md'
 import { FiAtSign as AtSignIcon } from 'react-icons/fi'
 import { IconBaseProps } from 'react-icons'
+
 export default {
   component: Input,
   title: 'Input',
@@ -56,5 +57,24 @@ Error.args = {
   error: 'Invalid username',
   value: 'unlock',
   description: 'Type a good username',
+  copy: true,
+}
+
+export const CustomDescription = Template.bind({})
+
+const Description = () => (
+  <div>
+    Check out this{' '}
+    <a className="underline" href="https://example.com" target="#">
+      link
+    </a>
+  </div>
+)
+
+CustomDescription.args = {
+  icon: AtSignIcon,
+  label: 'Type your username',
+  value: 'unlock',
+  description: <Description />,
   copy: true,
 }
