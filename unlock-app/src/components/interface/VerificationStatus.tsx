@@ -71,7 +71,7 @@ export const VerificationStatus = ({ config, onVerified, onClose }: Props) => {
     }
   )
 
-  const lockVersion = lock?.version
+  const lockVersion = Number(lock?.version)
 
   const { isInitialLoading: isKeyLoading, data: key } = useQuery(
     ['key', lockAddress, tokenId, network],

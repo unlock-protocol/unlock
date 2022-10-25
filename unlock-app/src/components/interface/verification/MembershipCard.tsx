@@ -3,7 +3,6 @@ import {
   Fallback as AvatarFallback,
   Root as Avatar,
 } from '@radix-ui/react-avatar'
-import { Lock } from '~/unlockTypes'
 import dayjs from 'dayjs'
 import relativeTimePlugin from 'dayjs/plugin/relativeTime'
 import { addressMinify } from '~/utils/strings'
