@@ -7,6 +7,7 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useStorageService } from '~/utils/withStorageService'
 import { LockAdvancedForm } from './LockAdvancedForm'
 import { LockDetailForm } from './LockDetailForm'
+import { LockTicketForm } from './LockTicketForm'
 
 export function UpdateLockMetadata() {
   const router = useRouter()
@@ -87,6 +88,7 @@ export function UpdateLockMetadata() {
         <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="grid gap-6">
             <LockDetailForm disabled={lockMetadata.isLoading} />
+            <LockTicketForm disabled={lockMetadata.isLoading} />
             <LockAdvancedForm disabled={lockMetadata.isLoading} />
             <div className="flex justify-center">
               <Button

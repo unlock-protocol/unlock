@@ -241,18 +241,20 @@ export const LockDetailCard = ({
             loading={loading}
             version={lock?.publicLockVersion}
           />
-          <div className="grid py-6">
-            <Button
-              variant="black"
-              size="small"
-              onClick={() => {
-                setUpdateMetadata(true)
-              }}
-              iconRight={<EditIcon key="edit" />}
-            >
-              Update Metadata
-            </Button>
-          </div>
+          {isManager && (
+            <div className="grid py-6">
+              <Button
+                variant="black"
+                size="small"
+                onClick={() => {
+                  setUpdateMetadata(true)
+                }}
+                iconRight={<EditIcon key="edit" />}
+              >
+                Update Metadata
+              </Button>
+            </div>
+          )}
           <div className="flex flex-col mt-6">
             <Detail label="Network" value={networkName} loading={loading} />
             <Detail

@@ -1,4 +1,4 @@
-import { Input, TextBox } from '@unlock-protocol/ui'
+import { Input } from '@unlock-protocol/ui'
 import { useFormContext } from 'react-hook-form'
 import { Disclosure } from '@headlessui/react'
 import {
@@ -10,7 +10,7 @@ interface Props {
   disabled?: boolean
 }
 
-export function LockDetailForm({ disabled }: Props) {
+export function LockTicketForm({ disabled }: Props) {
   const { register } = useFormContext()
   return (
     <div className="p-6 bg-white shadow border-xs rounded-xl">
@@ -18,7 +18,9 @@ export function LockDetailForm({ disabled }: Props) {
         {({ open }) => (
           <div>
             <Disclosure.Button className="flex items-center justify-between w-full mb-2">
-              <h3 className="text-lg font-bold text-brand-ui-primary">Basic</h3>
+              <h3 className="text-lg font-bold text-brand-ui-primary">
+                Event ticketing
+              </h3>
               <div>
                 {open ? (
                   <UpIcon className="fill-brand-ui-primary" size={24} />
@@ -29,27 +31,30 @@ export function LockDetailForm({ disabled }: Props) {
             </Disclosure.Button>
             <Disclosure.Panel className="space-y-6">
               <Input
-                {...register('name')}
+                {...register('ticket.event_date')}
                 disabled={disabled}
-                type="text"
-                placeholder="LockSmith Daily Membership"
-                label="Name"
-                description="The name will appear as the NFT name, not as collection name."
+                type="date"
+                label="Date"
               />
               <Input
-                {...register('external_url')}
+                {...register('ticket.event_time')}
                 disabled={disabled}
-                type="url"
-                placeholder="https://example.com"
-                label="External URL"
-                description="Included a link in your NFT, so members can learn more about it."
+                type="time"
+                label="Time"
               />
-              <TextBox
+              <Input
+                {...register('ticket.event_address')}
                 disabled={disabled}
-                label="Description"
-                placeholder="Daily NFT membership lock"
-                {...register('description')}
-                rows={4}
+                type="text"
+                placeholder="123, Street, NYC"
+                label="Address for in person event"
+              />
+              <Input
+                disabled={disabled}
+                label="Meeting link (if any)"
+                placeholder="https://"
+                {...register('ticket.meeting_url')}
+                type="url"
               />
             </Disclosure.Panel>
           </div>
