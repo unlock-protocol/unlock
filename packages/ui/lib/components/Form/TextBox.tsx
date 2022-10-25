@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, ForwardedRef } from 'react'
+import { InputHTMLAttributes, ForwardedRef, ReactNode } from 'react'
 import type { Size, SizeStyleProp } from '../../types'
 import { forwardRef } from 'react'
 import { twMerge } from 'tailwind-merge'
@@ -13,7 +13,7 @@ export interface Props
   size?: Size
   success?: string
   error?: string
-  description?: string
+  description?: ReactNode
 }
 
 const SIZE_STYLES: SizeStyleProp = {
