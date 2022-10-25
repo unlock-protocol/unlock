@@ -6,8 +6,41 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useStorageService } from '~/utils/withStorageService'
 import { LockAdvancedForm } from './LockAdvancedForm'
+import { LockCustomForm } from './LockCustomForm'
 import { LockDetailForm } from './LockDetailForm'
 import { LockTicketForm } from './LockTicketForm'
+
+export interface LockMetadataFormData {
+  name: string
+  external_url?: string
+  youtube_url?: string
+  animation_url?: string
+  background_color?: string
+  ticket: {
+    event_date?: string
+    event_time?: string
+    event_address?: string
+    meeting_url?: string
+  }
+  properties: Record<'type' | 'name', string>[]
+  levels: {
+    type: string
+    value: number
+    maxValue: number
+  }[]
+  stats: {
+    type: string
+    value: number
+    maxValue: number
+  }[]
+}
+
+export interface Attribute {
+  display_type?: string
+  max_value?: number
+  trait_type: string
+  value: string | number
+}
 
 export function UpdateLockMetadata() {
   const router = useRouter()
@@ -33,10 +66,10 @@ export function UpdateLockMetadata() {
     }
   )
 
-  const methods = useForm({
+  const methods = useForm<LockMetadataFormData>({
     defaultValues: data || {
       name: 'Locksmith 101',
-      externalURL: 'https://example.com',
+      external_url: 'https://example.com',
     },
   })
 
@@ -66,8 +99,67 @@ export function UpdateLockMetadata() {
     }
   )
 
-  const onSubmit = async (data: any) => {
-    await lockMetadata.mutateAsync(data)
+  const onSubmit = async ({
+    name,
+    animation_url,
+    youtube_url,
+    external_url,
+    background_color,
+    ticket,
+    properties,
+  }: LockMetadataFormData) => {
+    const metadata = {
+      name,
+      animation_url,
+      youtube_url,
+      external_url,
+      background_color,
+      properties,
+      ticket,
+      attributes: [] as Attribute[],
+    }
+
+    if (ticket.event_address) {
+      metadata.attributes.push({
+        trait_type: 'event_address',
+        value: ticket.event_address,
+      })
+    }
+
+    if (ticket.meeting_url) {
+      metadata.attributes.push({
+        trait_type: 'event_meeting_url',
+        value: ticket.meeting_url,
+      })
+    }
+
+    if (ticket.event_date) {
+      metadata.attributes.push({
+        trait_type: 'event_date',
+        value: ticket.event_date,
+      })
+    }
+
+    if (ticket.event_time) {
+      metadata.attributes.push({
+        trait_type: 'event_time',
+        value: ticket.event_time,
+      })
+    }
+
+    const propertyAttributes = properties
+      .filter((item) => item.type && item.name)
+      .map(
+        (item) =>
+          ({
+            trait_type: item.type,
+            value: item.name,
+          } as Attribute)
+      )
+
+    metadata.attributes.push(...propertyAttributes)
+
+    await lockMetadata.mutateAsync(metadata)
   }
 
   useEffect(() => {
@@ -90,6 +182,7 @@ export function UpdateLockMetadata() {
             <LockDetailForm disabled={lockMetadata.isLoading} />
             <LockTicketForm disabled={lockMetadata.isLoading} />
             <LockAdvancedForm disabled={lockMetadata.isLoading} />
+            <LockCustomForm />
             <div className="flex justify-center">
               <Button
                 disabled={lockMetadata.isLoading}
