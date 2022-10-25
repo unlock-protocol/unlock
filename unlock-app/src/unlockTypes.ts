@@ -7,7 +7,10 @@ import { z } from 'zod'
 export const MetadataInputSchema = z.object({
   type: z.enum(['text', 'date', 'color', 'email', 'url'], {
     description:
-      'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. The following configuration results in a checkout that looks like image below it.',
+      'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. ',
+  }),
+  name: z.string({
+    description: 'Name of the attribute to collect.',
   }),
   required: z
     .boolean({
@@ -16,9 +19,6 @@ export const MetadataInputSchema = z.object({
     })
     .optional()
     .default(false),
-  name: z.string({
-    description: 'Name of the attribute to collect.',
-  }),
   placeholder: z
     .string({
       description: 'Placeholder displayed to users.',
@@ -79,7 +79,7 @@ export const PaywallConfigLockSchema = z.object({
     .optional(),
   maxRecipients: z
     .number({
-      description: `Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
+      description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
     })
     .int()
     .positive()
@@ -94,7 +94,7 @@ export const PaywallConfigLockSchema = z.object({
   dataBuilder: z
     .string({
       description:
-        'If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
+        '(Optional) If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
     })
     .optional(),
 })
@@ -165,7 +165,7 @@ export const PaywallConfigSchema = z
       .optional(),
     maxRecipients: z
       .number({
-        description: `Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
+        description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
       })
       .int()
       .optional(),
@@ -184,7 +184,7 @@ export const PaywallConfigSchema = z
     password: z
       .boolean({
         description:
-          'If enabled, the user will be prompted to enter a password in order to complete their purchases. Warning: This only works if the lock is connected to a hook that will handle the password verification.',
+          'If enabled, the user will be prompted to enter a password in order to complete their purchases. <em>Warning</em>: This only works if the lock is connected to a hook that will handle the password verification.',
       })
       .optional(),
     emailRequired: z
@@ -196,7 +196,7 @@ export const PaywallConfigSchema = z
     dataBuilder: z
       .string({
         description:
-          'If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
+          '(Optional) If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
       })
       .optional(),
   })

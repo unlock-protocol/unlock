@@ -438,6 +438,10 @@ export const LocksForm = ({
                       <span className="text-xs text-gray-600">
                         (Optional) Collect additional information from your
                         members during the checkout process.
+                        <br />
+                        Note: if you have checked{' '}
+                        <code>Collect email address</code> above, there is no
+                        need to enter email address again here.
                       </span>
                     </div>
                     {!addMetadata && (

@@ -9,7 +9,8 @@ const Header = () => {
     <header className="flex flex-col gap-4">
       <h1 className="text-4xl font-bold">Checkout Builder</h1>
       <span className="text-base text-gray-700">
-        Customize your membership checkout experience.
+        Customize your membership checkout experience. The preview on the left
+        is updated in realtime.
       </span>
     </header>
   )
