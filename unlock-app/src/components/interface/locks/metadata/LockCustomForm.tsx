@@ -8,14 +8,14 @@ import {
   RiAddLine as AddIcon,
 } from 'react-icons/ri'
 import { useEffect, useState } from 'react'
+import { LockMetadataFormData } from './utils'
 export interface Props {
   disabled?: boolean
 }
 
 export function LockCustomForm() {
-  const { control, register, getValues } = useFormContext<{
-    properties: Record<string, string | null>[]
-  }>()
+  const { control, register, getValues } =
+    useFormContext<LockMetadataFormData>()
 
   const items = useWatch({
     control,
@@ -24,6 +24,9 @@ export function LockCustomForm() {
   })
 
   const [addProperties, setAddProperties] = useState(false)
+  const [addStats, setAddStats] = useState(false)
+  const [addLevels, setAddLevels] = useState(false)
+
   const {
     fields: properties,
     append: appendProperty,
@@ -33,14 +36,46 @@ export function LockCustomForm() {
     name: 'properties',
   })
 
+  const {
+    fields: stats,
+    append: appendStat,
+    remove: removeStat,
+  } = useFieldArray({
+    control,
+    name: 'stats',
+  })
+
+  const {
+    fields: levels,
+    append: appendLevel,
+    remove: removeLevel,
+  } = useFieldArray({
+    control,
+    name: 'levels',
+  })
+
   useEffect(() => {
     if (properties.length < 1) {
       appendProperty({
-        name: null,
-        type: null,
+        name: undefined,
+        type: undefined,
       })
     }
-  }, [appendProperty, properties])
+
+    if (levels.length < 1) {
+      appendLevel({
+        type: undefined,
+        value: undefined,
+      })
+    }
+
+    if (stats.length < 1) {
+      appendStat({
+        type: undefined,
+        value: undefined,
+      })
+    }
+  }, [properties, levels, stats, appendProperty, appendLevel, appendStat])
 
   return (
     <div>
@@ -137,10 +172,43 @@ export function LockCustomForm() {
                   <div className="flex flex-wrap gap-6 mt-6">
                     {items
                       .filter((item) => item.type && item.name)
-                      .map((item) => (
+                      .map((item, index) => (
                         <div
                           className="flex flex-col items-center justify-center w-40 h-40 p-4 border rounded-xl aspect-1"
-                          key={item.id}
+                          key={index}
+                        >
+                          <h4 className="text-lg font-bold"> {item.type}</h4>
+                          <p>{item.name}</p>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+                <div className="py-6 border-b border-gray-300">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <h3 className="text-lg font-bold">Levels</h3>
+                      <p className="text-sm text-gray-700">
+                        Numerical attribute that will display as progress bar
+                      </p>
+                    </div>
+                    <button
+                      className="p-2 border rounded-full border-brand-ui-primary"
+                      aria-label="Add Property"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        setAddProperties(true)
+                      }}
+                    >
+                      <AddIcon className="fill-brand-ui-primary" size={24} />
+                    </button>
+                  </div>
+                  <div className="flex flex-wrap gap-6 mt-6">
+                    {items
+                      .filter((item) => item.type && item.name)
+                      .map((item, index) => (
+                        <div
+                          className="flex flex-col items-center justify-center w-40 h-40 p-4 border rounded-xl aspect-1"
+                          key={index}
                         >
                           <h4 className="text-lg font-bold"> {item.type}</h4>
                           <p>{item.name}</p>
