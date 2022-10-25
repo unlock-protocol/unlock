@@ -8,7 +8,13 @@ import {
 } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import { DynamicForm } from './DynamicForm'
-import { Button, Select, Tooltip } from '@unlock-protocol/ui'
+import {
+  Button,
+  Input,
+  Select,
+  ToggleSwitch,
+  Tooltip,
+} from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { addressMinify } from '~/utils/strings'
 import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
@@ -81,6 +87,8 @@ export const LocksForm = ({
   const [lockAddress, setLockAddress] = useState<string>('')
   const [addLock, setAddLock] = useState(false)
   const [defaultValue, setDefaultValue] = useState<Record<string, any>>({})
+  const [recurring, setRecurring] = useState<string | number>('')
+  const [recurringUnlimited, setRecurringUnlimited] = useState(false)
 
   const [locks, setLocks] = useState<LocksProps>(locksDefault)
 
@@ -246,6 +254,12 @@ export const LocksForm = ({
       }
     }
 
+    // merge current field with new fields
+    fields = {
+      ...locks[lockAddress],
+      ...fields,
+    }
+
     const locksByAddress = {
       ...locks,
       [lockAddress]: {
@@ -305,6 +319,12 @@ export const LocksForm = ({
     setNetwork(config?.network)
     setDefaultValue(config ?? {})
     setAddLock(true)
+  }
+
+  const onRecurringChange = ({ recurringPayments }: any) => {
+    onAddLock(lockAddress, network, {
+      recurringPayments,
+    })
   }
 
   const hasLocks =
@@ -393,23 +413,58 @@ export const LocksForm = ({
                   />
                 </div>
               )}
-              <DynamicForm
-                title="Settings"
-                name={'locks'}
-                defaultValues={defaultValue}
-                schema={LockSchema.omit({
-                  metadataInputs: true,
-                  minRecipients: true, // This option is confusing. Let's not add it by default.
-                  superfluid: true,
-                  default: true,
-                })}
-                onChange={(fields: any) =>
-                  onAddLock(lockAddress, network, fields)
-                }
-                onSubmit={onSubmit}
-                submitLabel={'Add lock'}
-                showSubmit={true}
-              />
+              <div className="flex flex-col">
+                <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
+                  Settings
+                </h2>
+                <div className="flex flex-col gap-1">
+                  <div className="flex flex-col gap-1">
+                    <span className="flex items-center justify-between">
+                      <span className="px-1 text-sm">Recurring frequency</span>
+                      <ToggleSwitch
+                        title="Unlimited"
+                        enabled={recurringUnlimited}
+                        setEnabled={(enabled: boolean) => {
+                          setRecurringUnlimited(enabled)
+                          const recurringPayments = enabled ? 'forever' : ''
+                          setRecurring(recurringPayments)
+                          onRecurringChange({
+                            recurringPayments,
+                          })
+                        }}
+                      />
+                    </span>
+                    <Input
+                      size="small"
+                      onChange={(e) => {
+                        setRecurring(e?.target.value)
+                        onRecurringChange({
+                          recurringPayments: e?.target?.value ?? '',
+                        })
+                      }}
+                      value={recurring}
+                      disabled={recurringUnlimited}
+                    />
+                  </div>
+                  <DynamicForm
+                    name={'locks'}
+                    defaultValues={defaultValue}
+                    schema={LockSchema.omit({
+                      metadataInputs: true,
+                      minRecipients: true, // This option is confusing. Let's not add it by default.
+                      superfluid: true,
+                      default: true,
+                      recurringPayments: true, // Managed separately to get Unlimited recurring
+                    })}
+                    onChange={(fields: any) =>
+                      onAddLock(lockAddress, network, fields)
+                    }
+                    onSubmit={onSubmit}
+                    submitLabel={'Add lock'}
+                    showSubmit={true}
+                  />
+                </div>
+              </div>
             </>
           )}
         </div>
