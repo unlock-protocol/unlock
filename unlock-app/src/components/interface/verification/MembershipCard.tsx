@@ -34,7 +34,10 @@ export interface MembershipData {
 
 interface Props {
   timestamp: number
-  lock: Lock
+  lock: {
+    name: string
+    address: string
+  }
   membershipData: MembershipData
   network: number
   invalid?: string
