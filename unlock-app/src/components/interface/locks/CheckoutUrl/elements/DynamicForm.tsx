@@ -3,6 +3,7 @@ import { z } from 'zod'
 import zodToJsonSchema from 'zod-to-json-schema'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 
+// TODO: move to zod config when supported there!
 export const LabelMapping: Record<string, string> = {
   name: 'Name',
   network: 'Network',
@@ -35,7 +36,7 @@ interface DynamicFormProps {
   name: string
   schema: z.Schema
   title?: string
-  description?: Record<string, string>
+  description?: React.ReactNode
   onChange: (fields: any) => void
   onSubmit?: (fields: any) => void
   submitLabel?: string
@@ -140,6 +141,7 @@ const getComponentByType = (type: string) => {
 
 export const DynamicForm = ({
   name,
+  description,
   schema,
   onChange,
   submitLabel = 'Next',
@@ -164,6 +166,7 @@ export const DynamicForm = ({
 
   return (
     <div className="flex flex-col gap-3 pb-6">
+      {description && <>{description}</>}
       <FormProvider {...methods}>
         {title && (
           <h2 className="mb-2 text-lg font-bold text-brand-ui-primary">
@@ -240,6 +243,7 @@ export const DynamicForm = ({
               </div>
             )
           })}
+
           {showSubmit && (
             <div className="flex mt-2">
               <div className="ml-auto">

@@ -6,11 +6,11 @@ import { z } from 'zod'
 
 export const MetadataInputSchema = z.object({
   name: z.string({
-    description: 'Field label',
+    description: 'Name of the attribute to collect.',
   }),
   defaultValue: z
     .string({
-      description: 'Field default value',
+      description: 'Default value for the attribute.',
     })
     .optional(),
   type: z.enum(['text', 'date', 'color', 'email', 'url'], {
@@ -18,17 +18,18 @@ export const MetadataInputSchema = z.object({
       'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. The following configuration results in a checkout that looks like image below it.',
   }),
   required: z.boolean({
-    description: 'When true the field will be required',
+    description:
+      'Check if you require users to enter this before they complete the purchase.',
   }),
   placeholder: z
     .string({
-      description: 'Field placeholder text',
+      description: 'Placeholder displayed to users.',
     })
     .optional(),
   public: z
     .boolean({
       description:
-        'If any metadata should be visible to everyone, mark the public field as true.',
+        'If you check this, the attribute will be visible to everyone. Recommended: leave unchecked.',
     })
     .optional(), // optional, all non-public fields are treated as protected
 })
@@ -50,25 +51,25 @@ export const PaywallConfigLockSchema = z.object({
   captcha: z
     .boolean({
       description:
-        'If set true, the users will be prompted to go through a captcha during the checkout process. This is better used in conjunction with a purchase hook that verifies that captcha is valid.',
+        'If enabled, the users will be prompted to go through a captcha during the checkout process. Warning: This only works if the lock is configured with a purchase hook that verifies that captcha is valid.',
     })
     .optional(),
   password: z
     .boolean({
       description:
-        'Defaults to false. If set to true, the user will be prompted to enter a password in order to complete their purchases. This will only be useful if the lock is connected to a hook that will handle the password verification.',
+        'If enabled, the user will be prompted to enter a password in order to complete their purchases. Warning: This only works if the lock is connected to a hook that will handle the password verification.',
     })
     .optional(),
   emailRequired: z
     .boolean({
       description:
-        'If set to true, the user will be prompted to enter an email which will be stored as metadata and be visible to any lock manager.',
+        'If enabled, the user will be prompted to enter an email which will be stored as metadata and be visible to any lock manager on the dashboard. Additionaly a confirmation email will be sent to the user once the NFT membership has been minted.',
     })
     .optional(),
   minRecipients: z
     .number({
       description:
-        'Set the minimum number of memberships a user needs to purchase.',
+        'During checkout, users can buy multiple memberships at once. You can set a minimum number they can buy.',
     })
     .int()
     .positive()
@@ -116,13 +117,13 @@ export const PaywallConfigSchema = z
     persistentCheckout: z
       .boolean({
         description:
-          'true if the modal cannot be closed, defaults to false when embedded. When closed, the user will be redirected to the redirect query param when using a purchase address (see above).',
+          'If checked, the checkout modal cannot be closed. This is especially useful when the checkout UI is embedded directly. Leave unchecked if unsure.',
       })
       .optional(),
     redirectUri: z
       .string({
         description:
-          'The URL-encodded address of a webpage where the user will be redirected when their membership is valid.',
+          'The address of a webpage where the user will be redirected when they complete the checkout flow.',
       })
       .optional(),
     useDelegatedProvider: z.boolean().optional(),
@@ -130,20 +131,21 @@ export const PaywallConfigSchema = z
     referrer: z
       .string({
         description:
-          'The address which will receive UDT tokens (if the transaction is applicable)',
+          '(Recommended) The address of the purchase referrer. This address may receive a referrer fee if the lock was configured for this, and will receive Unlock Governance tokens if applicable. Put your address if unsure.',
       })
       .optional(),
     messageToSign: z
       .string({
         description:
-          'If supplied, the user is prompted to sign this message using their wallet. If using a checkout URL, a signature query param is then appended to the redirectUri (see above). If using the embedded paywall, the unlockProtocol.authenticated includes the signature attribute.',
+          '(Optional) If supplied, the user is prompted to sign this message using their wallet. Your application needs to handle the signature to identify the user.',
       })
       .optional(),
     pessimistic: z
       .boolean({
         description:
-          'By default, to reduce friction, we do not require users to wait for the transaction to be mined before offering them to be redirected. By setting this to true, users will need to wait for the transaction to have been mined in order to proceed to the next step.',
+          'By default, to reduce friction, we do not require users to wait for the transaction to be mined before offering them to be redirected. If you check this, users will need to wait for the transaction to have been mined in order to proceed to the next step.',
       })
+      .default(true)
       .optional(),
     captcha: z
       .boolean({
@@ -173,19 +175,19 @@ export const PaywallConfigSchema = z
     hideSoldOut: z
       .boolean({
         description:
-          'When set to true, sold our locks are not shown to users when they load the checkout modal.',
+          'When enabled, sold our locks are not shown to users when they load the checkout modal.',
       })
       .optional(),
     password: z
       .boolean({
         description:
-          'Defaults to false. If set to true, the user will be prompted to enter a password in order to complete their purchases. This will only be useful if the lock is connected to a hook that will handle the password verification.',
+          'If enabled, the user will be prompted to enter a password in order to complete their purchases. Warning: This only works if the lock is connected to a hook that will handle the password verification.',
       })
       .optional(),
     emailRequired: z
       .boolean({
         description:
-          'If set to true, the user will be prompted to enter an email which will be stored as metadata and be visible to any lock manager.',
+          'If enabled, the user will be prompted to enter an email which will be stored as metadata and be visible to any lock manager on the dashboard. Additionaly a confirmation email will be sent to the user once the NFT membership has been minted.',
       })
       .optional(),
     dataBuilder: z

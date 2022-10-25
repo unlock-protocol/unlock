@@ -157,45 +157,41 @@ export const LocksForm = ({
   const hasMinValue = network && lockAddress && lockAddress?.length > 0
 
   const MetadataList = () => {
+    if (!locks[lockAddress]?.metadataInputs) {
+      return null
+    }
     return (
-      <div>
-        <div className="flex flex-col gap-3">
-          {locks[lockAddress]?.metadataInputs?.map((metadata, index) => {
-            return (
-              <>
-                <div
-                  key={index}
-                  className="flex items-center justify-between w-full p-4 text-sm bg-white rounded-lg shadow"
-                >
-                  <div className="flex items-center justify-between w-full gap-2">
-                    <div className="grid w-full grid-cols-3">
-                      <MetadataDetail
-                        title="Form label"
-                        value={metadata?.name}
-                      />
-                      <MetadataDetail
-                        title="Default value"
-                        value={metadata?.defaultValue}
-                      />
-                      <MetadataDetail
-                        title="Required"
-                        value={metadata?.required ? 'YES' : 'NO'}
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => onRemoveMetadata(metadata?.name)}
-                      aria-label="Remove metadata"
-                      className="mt-1 text-gray-500"
-                    >
-                      <DeleteIcon size={20} />
-                    </button>
-                  </div>
+      <div className="flex flex-col gap-3">
+        {locks[lockAddress]?.metadataInputs?.map((metadata, index) => {
+          return (
+            <div
+              key={index}
+              className="flex items-center justify-between w-full p-4 text-sm bg-white rounded-lg shadow"
+            >
+              <div className="flex items-center justify-between w-full gap-2">
+                <div className="grid w-full grid-cols-3">
+                  <MetadataDetail title="Form label" value={metadata?.name} />
+                  <MetadataDetail
+                    title="Default value"
+                    value={metadata?.defaultValue}
+                  />
+                  <MetadataDetail
+                    title="Required"
+                    value={metadata?.required ? 'YES' : 'NO'}
+                  />
                 </div>
-              </>
-            )
-          })}
-        </div>
+                <button
+                  type="button"
+                  onClick={() => onRemoveMetadata(metadata?.name)}
+                  aria-label="Remove metadata"
+                  className="mt-1 text-gray-500"
+                >
+                  <DeleteIcon size={20} />
+                </button>
+              </div>
+            </div>
+          )
+        })}
       </div>
     )
   }
@@ -225,7 +221,7 @@ export const LocksForm = ({
               variant="outlined-primary"
               onClick={() => setAddLock(true)}
             >
-              Add more Lock
+              Add another lock
             </Button>
           )}
         </div>
@@ -364,9 +360,15 @@ export const LocksForm = ({
           {hasMinValue && (
             <>
               <div className="flex items-center justify-between">
-                <h2 className="text-lg font-bold text-brand-ui-primary">
-                  Metadata
-                </h2>
+                <div className="flex flex-col">
+                  <h2 className="text-lg font-bold text-brand-ui-primary">
+                    Metadata
+                  </h2>
+                  <p>
+                    (Optional) Collect details about your members during the
+                    checkout process.
+                  </p>
+                </div>
                 {!addMetadata && (
                   <Button
                     variant="outlined-primary"
@@ -378,9 +380,7 @@ export const LocksForm = ({
                 )}
               </div>
               {!addMetadata ? (
-                <div className="flex flex-col -mt-2">
-                  <MetadataList />
-                </div>
+                <MetadataList />
               ) : (
                 <div className="grid items-center grid-cols-1 gap-2 p-4 -mt-4 bg-white rounded-xl">
                   <DynamicForm
@@ -388,7 +388,7 @@ export const LocksForm = ({
                     schema={MetadataInputSchema}
                     onChange={() => void 0}
                     onSubmit={onAddMetadata}
-                    submitLabel={'Add metadata'}
+                    submitLabel={'Save'}
                     showSubmit={true}
                   />
                 </div>
@@ -399,6 +399,9 @@ export const LocksForm = ({
                 defaultValues={defaultValue}
                 schema={LockSchema.omit({
                   metadataInputs: true,
+                  minRecipients: true, // This option is confusing. Let's not add it by default.
+                  superfluid: true,
+                  default: true,
                 })}
                 onChange={(fields: any) =>
                   onAddLock(lockAddress, network, fields)
