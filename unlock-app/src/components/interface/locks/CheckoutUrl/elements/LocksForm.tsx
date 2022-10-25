@@ -90,10 +90,6 @@ export const LocksForm = ({
     setAddLock(false)
   }
 
-  const onSubmit = () => {
-    reset()
-  }
-
   const getLocksByNetwork = async () => {
     if (!network) return null
 
@@ -316,7 +312,7 @@ export const LocksForm = ({
 
   return (
     <div className="flex flex-col gap-2">
-      <LockList />
+      {Object.keys(locks ?? {}).length > 0 && <LockList />}
       {showForm && (
         <div className="flex flex-col gap-8">
           <div>
@@ -376,9 +372,6 @@ export const LocksForm = ({
                 onChange={(fields: any) =>
                   onAddLock(lockAddress, network, fields)
                 }
-                onSubmit={onSubmit}
-                submitLabel={'Add lock'}
-                showSubmit={true}
               />
               <div className="flex items-center justify-between">
                 <div className="flex flex-col">
@@ -416,6 +409,7 @@ export const LocksForm = ({
                   />
                 </div>
               )}
+              <Button onClick={() => reset()}>Save</Button>
             </>
           )}
         </div>
