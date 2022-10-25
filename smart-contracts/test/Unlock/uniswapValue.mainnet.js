@@ -1,6 +1,6 @@
 const { ethers } = require('hardhat')
-const BigNumber = require('bignumber.js')
 const { mainnet } = require('@unlock-protocol/networks')
+const { expect } = require('chai')
 
 const UniswapOracle = require('../helpers/ABIs/UniswapOracle.json')
 const USDCabi = require('../helpers/ABIs/USDC.json')
@@ -18,72 +18,19 @@ const {
 } = require('../helpers')
 
 const { unlockAddress } = mainnet
-console.log({ unlockAddress, USDC })
-
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-
-let unlock
-let lock
-let token
-let oracle
-let signer
-let keyOwner
-
-const decodeGNPEvent = (tx) => {
-  // decode log manually (truffle issue)
-  const debugLog = tx.receipt.rawLogs[1]
-  const eventABI = [
-    {
-      indexed: false,
-      internalType: 'uint256',
-      name: 'grossNetworkProduct',
-      type: 'uint256',
-    },
-    {
-      indexed: false,
-      internalType: 'uint256',
-      name: 'valueInETH',
-      type: 'uint256',
-    },
-    {
-      indexed: false,
-      internalType: 'address',
-      name: 'tokenAddress',
-      type: 'address',
-    },
-    {
-      indexed: false,
-      internalType: 'uint256',
-      name: 'value',
-      type: 'uint256',
-    },
-    {
-      indexed: false,
-      internalType: 'address',
-      name: 'lockAddress',
-      type: 'address',
-    },
-  ]
-
-  const decoded = web3.eth.abi.decodeLog(
-    eventABI,
-    debugLog.data,
-    debugLog.topics
-  )
-
-  const { grossNetworkProduct, valueInETH, tokenAddress, value, lockAddress } =
-    decoded
-
-  return {
-    grossNetworkProduct,
-    valueInETH,
-    tokenAddress,
-    value,
-    lockAddress,
-  }
-}
+const keyPriceUSDC = ethers.utils.parseUnits('50', 6)
+const totalPriceUSDC = keyPriceUSDC.mul(5)
 
 contract('Unlock / uniswapValue', () => {
+  let lock
+  let unlock
+  let token
+  let oracle
+  let oracleAddress
+  let signer
+  let keyOwner
+
   before(async () => {
     if (!process.env.RUN_MAINNET_FORK) {
       // all suite will be skipped
@@ -96,13 +43,15 @@ contract('Unlock / uniswapValue', () => {
     const { abi, bytecode } = UniswapOracle
     const Oracle = await ethers.getContractFactory(abi, bytecode)
     oracle = await Oracle.deploy(UNISWAP_FACTORY_ADDRESS)
-    await oracle.deployed()
-
+    oracleAddress = oracle.address
     //impersonate unlock multisig
     const unlockOwner = await unlock.owner()
     await impersonate(unlockOwner)
     const unlockSigner = await ethers.getSigner(unlockOwner)
     unlock = unlock.connect(unlockSigner)
+
+    // add oracle support for USDC
+    await unlock.setOracle(USDC, oracle.address)
   })
 
   it('weth is set correctly already', async () => {
@@ -110,17 +59,19 @@ contract('Unlock / uniswapValue', () => {
   })
 
   it('sets oracle address correctly', async () => {
-    expect(await unlock.uniswapOracles(USDC)).to.equals(oracle.adress)
+    expect(oracleAddress).to.equals(await unlock.uniswapOracles(USDC))
   })
 
   describe('A supported token (USDC)', () => {
     let usdc
-    const keyPriceUSDC = ethers.utils.parseUnits('50', 6)
-    const totalPrice = keyPriceUSDC.mul(5)
-
     before(async () => {
-      // add oracle support for USDC
-      await unlock.setOracle(USDC, oracle.address)
+      // mint some usdc
+      usdc = await ethers.getContractAt(USDCabi, USDC)
+      const masterMinter = await usdc.masterMinter()
+      await impersonate(masterMinter)
+      const minter = await ethers.getSigner(masterMinter)
+      await usdc.connect(minter).configureMinter(signer.address, totalPriceUSDC)
+      await usdc.mint(signer.address, totalPriceUSDC)
 
       // create a USDC lock
       lock = await deployLock({
@@ -128,20 +79,6 @@ contract('Unlock / uniswapValue', () => {
         tokenAddress: USDC,
         keyPrice: keyPriceUSDC,
       })
-      ;({ lock } = await unlock.createLock({
-        unlockAddress,
-        keyPrice: keyPriceUSDC,
-        tokenAddress: USDC,
-      }))
-
-      usdc = await ethers.getContractAt(USDCabi, USDC)
-
-      // mint some usdc
-      const masterMinter = await usdc.masterMinter()
-      await impersonate(masterMinter)
-      const minter = await ethers.getSigner(masterMinter)
-      await usdc.connect(minter).configureMinter(signer.address, totalPrice)
-      await usdc.mint(signer.address, totalPrice)
     })
 
     it('pricing is set correctly', async () => {
@@ -152,32 +89,29 @@ contract('Unlock / uniswapValue', () => {
       )
     })
 
-    describe('Purchase key', () => {
+    describe('Purchase keys', () => {
       let gnpBefore
-      let tx
+      let blockNumber
+      let rate
 
-      beforeEach(async () => {
-        gnpBefore = new BigNumber(await unlock.grossNetworkProduct())
+      before(async () => {
+        gnpBefore = await unlock.grossNetworkProduct()
         // approve purchase
-        await usdc.approve(lock.address, totalPrice)
-        tx = await purchaseKeys(lock, 5, true)
+        await usdc.connect(signer).approve(lock.address, totalPriceUSDC)
+        ;({ blockNumber } = await purchaseKeys(lock, 5, true))
+
+        // consult our oracle independently for 1 USDC
+        rate = await oracle.consult(USDC, ethers.utils.parseUnits('1', 6), WETH)
       })
 
       it('GDP went up by the expected ETH value', async () => {
-        // consult our oracle independently for 1 USDC
-        const rate = await oracle.consult(
-          USDC,
-          ethers.utils.parseUnits('1', 6),
-          WETH
-        )
-
         const GNP = await unlock.grossNetworkProduct()
         expect(GNP.toString()).to.not.equals(gnpBefore.toString())
 
         // 5 keys at 50 USDC at oracle rate
-        const priceConverted = rate.mul(250).div(1000).toString()
+        const priceConverted = rate.mul(250)
         expect(GNP.div(1000).toString()).to.equals(
-          gnpBefore.add(priceConverted)
+          gnpBefore.add(priceConverted).div(1000).toString()
         )
 
         // show approx value in ETH for reference
@@ -185,69 +119,90 @@ contract('Unlock / uniswapValue', () => {
       })
 
       it('a GDP tracking event has been emitted', async () => {
-        const {
-          grossNetworkProduct,
-          valueInETH,
-          tokenAddress,
-          value,
-          lockAddress,
-        } = decodeGNPEvent(tx)
+        const events = await unlock.queryFilter('GNPChanged', blockNumber)
+        // 1 record per purchase
+        assert.equal(events.length, 5)
 
-        const gdp = new BigNumber(await unlock.grossNetworkProduct())
-
-        assert.equal(gdp.toString(), grossNetworkProduct)
-        assert.equal(
-          '0.00006',
-          new BigNumber(valueInETH).shiftedBy(-18).toFixed(5)
+        events.forEach(
+          (
+            {
+              args: {
+                grossNetworkProduct,
+                _valueInETH,
+                tokenAddress,
+                value,
+                lockAddress,
+              },
+            },
+            i
+          ) => {
+            assert.equal(tokenAddress, USDC)
+            assert.equal(lockAddress, lock.address)
+            assert.equal(value.toString(), keyPriceUSDC.toString())
+            // rate * 50 USDC per key
+            assert.equal(
+              _valueInETH.div(1000).toString(),
+              rate.mul(50).div(1000).toString()
+            )
+            assert.equal(
+              gnpBefore
+                .add(rate.mul(50).mul(i + 1))
+                .div(1000)
+                .toString(),
+              grossNetworkProduct.div(1000).toString()
+            )
+          }
         )
-        assert.equal(token.address, tokenAddress)
-        assert.equal(keyPrice, value)
-        assert.equal(lockAddress, lock.address)
+        const gnp = await unlock.grossNetworkProduct()
+        expect(gnp.toString()).to.equals(
+          events[4].args.grossNetworkProduct.toString()
+        )
       })
     })
   })
 
   describe('A unsupported token', () => {
     beforeEach(async () => {
-      token = await deployERC20()
+      token = await deployERC20(signer, true)
       // Mint some tokens for purchase
-      await token.mint(
-        signer.address,
-        ethers.utils.parseUnits('10000', 'ether')
-      )
-      lock = await deployLock({ unlock, tokenAddress: token.address })
+      await token.mint(signer.address, keyPrice)
+      lock = await deployLock({ unlock, tokenAddress: token.address, keyPrice })
     })
 
     describe('Purchase key', () => {
       let gdpBefore
-      let tx
+      let blockNumber
 
       beforeEach(async () => {
-        gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
-        await token.approve(lock.address, keyPrice)
-        tx = await purchaseKey(lock, keyOwner.address, true)
+        gdpBefore = await unlock.grossNetworkProduct()
+        await token.connect(signer).approve(lock.address, keyPrice)
+        ;({ blockNumber } = await purchaseKey(lock, signer.address, true))
       })
 
       it('GDP did not change', async () => {
-        const gdp = new BigNumber(await unlock.grossNetworkProduct())
-        assert.equal(gdp.toFixed(), gdpBefore.toFixed())
+        const gdp = await unlock.grossNetworkProduct()
+        assert.equal(gdp.toString(), gdpBefore.toString())
       })
 
       it('a GDP tracking event has been emitted', async () => {
+        const events = await unlock.queryFilter('*', blockNumber)
+        assert.equal(events.length, 1)
+
+        const { args } = events.find(({ event }) => event === 'GNPChanged')
         const {
           grossNetworkProduct,
-          valueInETH,
+          _valueInETH,
           tokenAddress,
           value,
           lockAddress,
-        } = decodeGNPEvent(tx)
+        } = args
 
-        const gdp = new BigNumber(await unlock.grossNetworkProduct())
+        const gdp = await unlock.grossNetworkProduct()
 
-        assert.equal(gdp.toString(), grossNetworkProduct)
-        assert.equal(0, valueInETH)
+        assert.equal(gdp.toString(), grossNetworkProduct.toString())
+        assert.equal(0, _valueInETH.toNumber())
         assert.equal(token.address, tokenAddress)
-        assert.equal(keyPrice, value)
+        assert.equal(keyPrice.toString(), value.toString())
         assert.equal(lockAddress, lock.address)
       })
     })
@@ -260,38 +215,38 @@ contract('Unlock / uniswapValue', () => {
 
     describe('Purchase key', () => {
       let gdpBefore
-      let tx
+      let blockNumber
 
       beforeEach(async () => {
-        gdpBefore = new BigNumber(await unlock.grossNetworkProduct())
-
-        tx = await purchaseKey(lock, keyOwner.address)
+        gdpBefore = await unlock.grossNetworkProduct()
+        ;({ blockNumber } = await purchaseKey(lock, keyOwner.address))
       })
 
       it('GDP went up by the keyPrice', async () => {
-        const gdp = new BigNumber(await unlock.grossNetworkProduct())
-        assert.equal(
-          gdp.toFixed(),
-          gdpBefore.plus(keyPrice.toString()).toFixed()
-        )
+        const gdp = await unlock.grossNetworkProduct()
+        assert.equal(gdp.toString(), gdpBefore.plus(keyPrice).toString())
       })
 
       it('a GDP tracking event has been emitted', async () => {
+        const events = await unlock.queryFilter('*', blockNumber)
+        assert.equal(events.length, 1)
+
+        const { args } = events.find(({ event }) => event === 'GNPChanged')
         const {
           grossNetworkProduct,
           valueInETH,
           tokenAddress,
           value,
           lockAddress,
-        } = decodeGNPEvent(tx)
+        } = args
 
-        const gdp = new BigNumber(await unlock.grossNetworkProduct())
+        const gdp = await unlock.grossNetworkProduct()
 
-        assert.equal(gdp.toString(), grossNetworkProduct)
-        assert.equal(keyPrice, valueInETH)
-        assert.equal(ADDRESS_ZERO, tokenAddress)
-        assert.equal(keyPrice, value)
         assert.equal(lockAddress, lock.address)
+        assert.equal(ADDRESS_ZERO, tokenAddress)
+        assert.equal(gdp.toString(), grossNetworkProduct.toString())
+        assert.equal(keyPrice, valueInETH)
+        assert.equal(keyPrice.toString(), value.toString())
       })
     })
   })
