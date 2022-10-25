@@ -50,11 +50,10 @@ export const Select = <T extends unknown>({
 
   // Set default value if present
   useEffect(() => {
-    if (!defaultValue) return
     const defaultSelection =
       options?.find((option) => option.value == `${defaultValue}`) || null
     setSelected(defaultSelection)
-  }, [])
+  }, [defaultValue])
 
   const inputSizeStyle = SIZE_STYLES[size]
 
