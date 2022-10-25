@@ -9,7 +9,7 @@ const Header = () => {
     <header className="flex flex-col gap-4">
       <h1 className="text-4xl font-bold">Checkout Builder</h1>
       <span className="text-base text-gray-700">
-        Easily customize your checkout experience right here.
+        Customize your membership checkout experience.
       </span>
     </header>
   )
@@ -20,8 +20,10 @@ export const CheckoutUrlPage = () => {
 
   const { lock: lockAddress, network } = query ?? {}
 
+  // TODO @kalidou : let's use the default values from zod?
   const [paywallConfig, setPaywallConfig] = useState<PaywallConfig>({
     locks: {},
+    pessimistic: true,
   })
 
   const onAddLocks = (locks: any) => {
