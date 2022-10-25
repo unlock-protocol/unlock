@@ -5,25 +5,28 @@ import { Card } from '@stripe/stripe-js'
 import { z } from 'zod'
 
 export const MetadataInputSchema = z.object({
-  name: z.string({
-    description: 'Name of the attribute to collect.',
-  }),
-  defaultValue: z
-    .string({
-      description: 'Default value for the attribute.',
-    })
-    .optional(),
   type: z.enum(['text', 'date', 'color', 'email', 'url'], {
     description:
       'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. The following configuration results in a checkout that looks like image below it.',
   }),
-  required: z.boolean({
-    description:
-      'Check if you require users to enter this before they complete the purchase.',
+  required: z
+    .boolean({
+      description:
+        'Check if you require users to enter this before they complete the purchase.',
+    })
+    .optional()
+    .default(false),
+  name: z.string({
+    description: 'Name of the attribute to collect.',
   }),
   placeholder: z
     .string({
       description: 'Placeholder displayed to users.',
+    })
+    .optional(),
+  defaultValue: z
+    .string({
+      description: 'Default value for the attribute.',
     })
     .optional(),
   public: z
