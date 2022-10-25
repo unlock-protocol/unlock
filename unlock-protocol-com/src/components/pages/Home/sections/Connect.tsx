@@ -6,9 +6,10 @@ import { BulletPointIcon } from '../../../icons'
 import Autoplay from 'embla-carousel-autoplay'
 
 const UNLOCK_BENEFITS = [
-  'Create membership contracts and sell access NFTs in minutes',
+  'Create and manage your membership contracts',
+  'Airdrop or sell membership NFT in minutes',
   'Token-gating, memberships, ticketing, and more',
-  'Open-source, community governed smart contracts',
+  'Open-source, community governed smart-contracts',
 ]
 
 interface FeaturedUser {
@@ -72,9 +73,10 @@ export function Connect() {
     <section className="flex flex-col-reverse items-center justify-between mx-auto lg:space-x-16 max-w-7xl md:gap-6 md:flex-row">
       <div className="w-full max-w-xl">
         <header className="space-y-4 break-words ">
-          <h1 className="heading">Connect with your 1000 true fans</h1>
+          <h1 className="heading">Create your Membership Contract</h1>
           <p className="sub-heading">
-            For creative communities and the humans who build them
+            Unlock is a protocol for memberships as time-bound Non Fungible
+            Tokens
           </p>
         </header>
         <div className="py-6">
