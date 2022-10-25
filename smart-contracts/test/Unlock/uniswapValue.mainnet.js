@@ -76,6 +76,13 @@ const decodeGNPEvent = (tx) => {
 contract('Unlock / uniswapValue', (accounts) => {
   const [keyOwner, liquidityOwner, protocolOwner] = accounts
 
+  before(async () => {
+    if (!process.env.RUN_MAINNET_FORK) {
+      // all suite will be skipped
+      this.skip()
+    }
+  })
+
   describe('A supported token', () => {
     beforeEach(async () => {
       token = await deployERC20(protocolOwner)
