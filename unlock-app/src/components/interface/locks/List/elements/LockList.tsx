@@ -1,5 +1,6 @@
 import { QueriesOptions, useQueries } from '@tanstack/react-query'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useConfig } from '~/utils/withConfig'
 import { LockCard, LocksByNetworkPlaceholder } from './LockCard'
@@ -50,7 +51,9 @@ export const LockList = () => {
 
   const queries: QueriesOptions<any>[] = Object.entries(networks ?? {}).map(
     ([network]) => {
-      if (account && network) {
+      const lockName = networks[network]?.name
+      // ignore localhost
+      if (account && network && network != '31337') {
         return {
           queryKey: ['getLocks', network, account],
           queryFn: async () =>
@@ -59,6 +62,9 @@ export const LockList = () => {
               network,
             }),
           refetchInterval: false,
+          onError: () => {
+            ToastHelper.error(`Can't load locks from ${lockName} network.`)
+          },
         }
       }
     }
