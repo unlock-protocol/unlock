@@ -19,6 +19,7 @@ import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { addressMinify } from '~/utils/strings'
 import { FiDelete as DeleteIcon, FiEdit as EditIcon } from 'react-icons/fi'
 import { useQuery } from '@tanstack/react-query'
+import Link from 'next/link'
 
 const LockSchema = PaywallConfigLockSchema.omit({
   network: true, // network will managed with a custom input with the lock address
@@ -127,8 +128,10 @@ export const LocksForm = ({
   )
 
   const onRemoveFromList = (lockAddress: string) => {
+    if (!lockAddress) {
+      return
+    }
     let newObj = {}
-
     Object.entries(locks)
       .filter(([address]) => address.toLowerCase() !== lockAddress)
       .map(([lockAddress, fields]) => {
@@ -139,7 +142,7 @@ export const LocksForm = ({
           },
         }
       })
-
+    reset()
     setLocks(newObj)
     onChange(newObj)
   }
@@ -369,7 +372,11 @@ export const LocksForm = ({
                   ) : (
                     network && (
                       <span className="text-base">
-                        This network has no locks
+                        You have not deployed locks on this network yet.{' '}
+                        <Link className="underline" href="/locks/create">
+                          Deploy one now
+                        </Link>
+                        .
                       </span>
                     )
                   )}
@@ -411,6 +418,19 @@ export const LocksForm = ({
                       value={recurring}
                       disabled={recurringUnlimited}
                     />
+                    <span className="text-xs text-gray-600 mb-4">
+                      This only applies to locks which have been enable for
+                      recurring payments.{' '}
+                      <a
+                        className="underline"
+                        target="_blank"
+                        href="https://unlock-protocol.com/guides/recurring-memberships/"
+                        rel="noreferrer"
+                      >
+                        Learn more
+                      </a>
+                      .
+                    </span>
                   </div>
                   <DynamicForm
                     name={'locks'}
@@ -438,6 +458,10 @@ export const LocksForm = ({
                       <span className="text-xs text-gray-600">
                         (Optional) Collect additional information from your
                         members during the checkout process.
+                        <br />
+                        Note: if you have checked{' '}
+                        <code>Collect email address</code> above, there is no
+                        need to enter email address again here.
                       </span>
                     </div>
                     {!addMetadata && (
