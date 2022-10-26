@@ -10,6 +10,7 @@ import { paginate } from '~/utils/pagination'
 import { PaginationBar } from './PaginationBar'
 import React from 'react'
 import { ExpirationStatus } from './FilterBar'
+import Link from 'next/link'
 
 interface MembersProps {
   lockAddress: string
@@ -18,6 +19,7 @@ interface MembersProps {
   setPage: (page: number) => void
   page: number
   filters?: FilterProps
+  onAirdropKeys?: () => void
 }
 
 const MembersPlaceholder = () => {
@@ -48,6 +50,7 @@ export const Members = ({
   loading: loadingFilters,
   setPage,
   page,
+  onAirdropKeys,
   filters = {
     query: '',
     filterKey: 'owner',
@@ -120,12 +123,31 @@ export const Members = ({
     )
   }
 
+  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
+
   if (noItems && (hasSearch || hasActiveFilter)) {
     return (
       <ImageBar
         src="/images/illustrations/no-member.svg"
         alt="No results"
-        description="No key matches your filter."
+        description={
+          <span>
+            Lock is deployed. You can{' '}
+            <button
+              onClick={onAirdropKeys}
+              className="outline-none cursor-pointer text-brand-ui-primary"
+            >
+              Airdrop Keys
+            </button>{' '}
+            or{' '}
+            <Link href={checkoutLink}>
+              <span className="outline-none cursor-pointer text-brand-ui-primary">
+                Share a purchase link
+              </span>
+            </Link>{' '}
+            to your community.
+          </span>
+        }
       />
     )
   }
