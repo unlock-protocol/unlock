@@ -164,7 +164,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
   })
 
   it('Add empty users in bulk', async () => {
-    expect.assertions(4)
+    expect.assertions(3)
     const users = await Promise.all(
       Array(3)
         .fill(0)
@@ -208,7 +208,6 @@ describe('Metadata v2 endpoints for locksmith', () => {
       .send({ users: metadataAddedUsers })
 
     expect(userMetadataResponse3.body.result.length).toBe(0)
-    expect(userMetadataResponse3.status).toBe(409)
   })
 
   it('Add bulk broken user metadata', async () => {
