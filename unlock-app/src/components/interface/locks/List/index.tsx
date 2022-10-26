@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { ImageBar } from '../Manage/elements/ImageBar'
@@ -50,12 +51,24 @@ const NoItems = () => {
 }
 
 export const LocksListPage = () => {
-  const { network } = useAuth()
+  const { network, account } = useAuth()
+  const { query } = useRouter()
+  const { account: manager } = query
+
   const noItems = false
+
+  // show lock for the specific manager if present in query parameters
+  const locksOwner = manager ?? account!
 
   return (
     <>
-      {!network ? <WalletNotConnected /> : noItems ? <NoItems /> : <LockList />}
+      {!network ? (
+        <WalletNotConnected />
+      ) : noItems ? (
+        <NoItems />
+      ) : (
+        <LockList owner={locksOwner as string} />
+      )}
     </>
   )
 }
