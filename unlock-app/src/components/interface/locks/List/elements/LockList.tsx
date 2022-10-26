@@ -6,7 +6,7 @@ import { useConfig } from '~/utils/withConfig'
 import { LockCard, LocksByNetworkPlaceholder } from './LockCard'
 
 interface LocksByNetworkProps {
-  network: number
+  network: string
   isLoading: boolean
   locks?: any[]
 }
@@ -82,6 +82,9 @@ export const LockList = () => {
     <div className="grid gap-20 mb-20">
       {networkItems.map(([network], index) => {
         const locksByNetwork: any = results?.[index]?.data || []
+        console.log({
+          network,
+        })
 
         return (
           <LocksByNetwork

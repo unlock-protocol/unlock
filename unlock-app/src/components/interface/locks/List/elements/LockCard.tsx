@@ -23,7 +23,7 @@ import { useQuery } from '@tanstack/react-query'
 
 interface LockCardProps {
   lock: any
-  network: number
+  network: string
 }
 
 interface DetailProps {
@@ -188,7 +188,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
   const symbol = (lock as any)?.currencySymbol ?? baseCurrencySymbol
 
   const getLockDetail = async () => {
-    return await web3service.getLock(lock.address, network)
+    return await web3service.getLock(lock.address, parseInt(network, 10))
   }
 
   const {
