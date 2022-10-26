@@ -106,30 +106,21 @@ export const Members = ({
   const noItems = members?.length === 0 && !loading
 
   const hasActiveFilter =
-    filters?.expiration !== 'active' || filters?.filterKey !== 'owner'
-  const hasSearch = filters?.query?.length > 0
+    filters?.expiration !== 'all' ||
+    filters?.filterKey !== 'owner' ||
+    filters?.query?.length > 0
+
+  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
 
   if (loading) {
     return <MembersPlaceholder />
   }
 
-  if (noItems && !hasSearch && !hasActiveFilter) {
+  if (noItems && !hasActiveFilter) {
     return (
       <ImageBar
         src="/images/illustrations/no-member.svg"
         alt="No members"
-        description="There are no members yet, but keep it up."
-      />
-    )
-  }
-
-  const checkoutLink = `/locks/checkout-url?lock=${lockAddress}&network=${network}`
-
-  if (noItems && (hasSearch || hasActiveFilter)) {
-    return (
-      <ImageBar
-        src="/images/illustrations/no-member.svg"
-        alt="No results"
         description={
           <span>
             Lock is deployed. You can{' '}
@@ -148,6 +139,16 @@ export const Members = ({
             to your community.
           </span>
         }
+      />
+    )
+  }
+
+  if (noItems && hasActiveFilter) {
+    return (
+      <ImageBar
+        src="/images/illustrations/no-member.svg"
+        alt="No results"
+        description="No key matches your filter."
       />
     )
   }
