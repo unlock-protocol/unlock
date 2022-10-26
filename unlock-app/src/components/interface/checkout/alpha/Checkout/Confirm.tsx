@@ -71,7 +71,7 @@ export function Confirm({
     name: lockName,
     keyPrice,
   } = lock!
-
+  let purchaseData = password || captcha || undefined
   const recurringPayment = paywallConfig?.locks[lockAddress]?.recurringPayments
   const totalApproval =
     typeof recurringPayment === 'string' &&
@@ -98,6 +98,34 @@ export function Confirm({
         quantity
       )
       return pricing
+    }
+  )
+
+  const { data: prices } = useQuery(
+    ['purchasePriceFor', lockAddress, lockNetwork],
+    async () => {
+      const prices = await Promise.all(
+        recipients.map(async (recipient) => {
+          const price = await web3Service.purchasePriceFor({
+            lockAddress: lockAddress,
+            network: lockNetwork,
+            userAddress: recipient,
+            referrer: paywallConfig.referrer || recipient,
+            data: purchaseData?.[0] || recipient,
+          })
+          const decimals = await web3Service.getTokenDecimals(
+            lock!.currencyContractAddress!,
+            lockNetwork
+          )
+          const mul = BigNumber.from(10).pow(decimals)
+          const amount = BigNumber.from(price).div(mul)
+          return {
+            userAddress: recipient,
+            amount: amount.toString(),
+          }
+        })
+      )
+      return prices
     }
   )
 
@@ -201,12 +229,13 @@ export function Confirm({
       if (payment.method !== 'crypto') {
         return
       }
-      const keyPrices: string[] = new Array(recipients!.length).fill(keyPrice)
+      const keyPrices: string[] =
+        prices?.map((item) => item.amount) ||
+        new Array(recipients!.length).fill(keyPrice)
+
       const referrers: string[] | undefined = paywallConfig.referrer
         ? new Array(recipients!.length).fill(paywallConfig.referrer)
         : undefined
-
-      let data = password || captcha || undefined
 
       const dataBuilder =
         paywallConfig.locks[lock!.address].dataBuilder ||
@@ -214,7 +243,7 @@ export function Confirm({
 
       // if Data builder url is present, prioritize that above rest.
       if (dataBuilder) {
-        data = await fetchRecipientsData(dataBuilder, {
+        purchaseData = await fetchRecipientsData(dataBuilder, {
           recipients,
           lockAddress: lock!.address,
           network: lock!.network,
@@ -226,7 +255,7 @@ export function Confirm({
           lockAddress,
           keyPrices,
           owners: recipients!,
-          data,
+          data: purchaseData,
           recurringPayments,
           referrers,
           totalApproval,
@@ -317,16 +346,13 @@ export function Confirm({
         return
       }
 
-      const data = password || captcha || undefined
-
       const response = await claimMembershipFromLock(
         lockAddress,
         lockNetwork,
-        data?.[0]
+        purchaseData?.[0]
       )
 
       const { transactionHash: hash, error } = response
-
       if (hash && !error) {
         communication?.emitTransactionInfo({
           hash,
@@ -496,6 +522,19 @@ export function Confirm({
             >
               View Contract <Icon icon={ExternalLinkIcon} size="small" />
             </a>
+            <div className="grid pt-2 mt-6 border-t gap-y-2">
+              <h4 className="text-sm"> Key prices </h4>
+              {!!prices?.length &&
+                prices.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between px-4 py-2 bg-white border rounded-lg shadow-sm"
+                  >
+                    <div className="w-24 truncate">{item.userAddress}</div>
+                    <div>{item.amount}</div>
+                  </div>
+                ))}
+            </div>
           </div>
         ) : (
           <div className="py-1.5 space-y-2 items-center">

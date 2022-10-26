@@ -1,5 +1,9 @@
 # Changes
 
+# 0.30.5
+
+- Add purchasePriceFor in web3Service
+
 # 0.30.4
 
 - Add support for `updateLockName`, `updateLockSymbol` and `setBaseTokenURI` across versions
