@@ -65,6 +65,17 @@ export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
           ).toFixed(2)}
         </div>
       </div>
+      <div className="flex">
+        <a
+          href="https://unlock-protocol.com/guides/enabling-credit-cards/#faq"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-2 py-0.5 rounded-lg flex items-center gap-2 text-sm hover:bg-gray-50 text-gray-500 hover:text-black"
+        >
+          <span>Learn more</span>
+          <ExternalLinkIcon />
+        </a>
+      </div>
     </div>
   )
 }
