@@ -41,19 +41,19 @@ interface Props {
 export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
   return (
     <div className="mt-6">
-      <div className="flex justify-between w-full p-2 text-sm border-t border-gray-300">
+      <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
         <h4 className="text-gray-600"> Service Fee </h4>
         <div className="font-bold">
           ~${(fiatPricing?.usd?.unlockServiceFee / 100).toString()}
         </div>
       </div>
-      <div className="flex justify-between w-full p-2 text-sm border-t border-gray-300">
+      <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
         <h4 className="text-gray-600"> Credit Card Processing </h4>
         <div className="font-bold">
           ~${(fiatPricing?.usd?.creditCardProcessing / 100).toString()}
         </div>
       </div>
-      <div className="flex justify-between w-full p-2 text-sm border-t border-gray-300">
+      <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
         <h4 className="text-gray-600"> Total </h4>
         <div className="font-bold">
           ~$
@@ -70,7 +70,7 @@ export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
           href="https://unlock-protocol.com/guides/enabling-credit-cards/#faq"
           target="_blank"
           rel="noopener noreferrer"
-          className="px-2 py-0.5 rounded-lg flex items-center gap-2 text-sm hover:bg-gray-50 text-gray-500 hover:text-black"
+          className="px-2 py-0.5 rounded-lg flex items-center gap-2 text-sm hover:bg-gray-100 bg-gray-50 text-gray-500 hover:text-black"
         >
           <span>Learn more</span>
           <ExternalLinkIcon />
