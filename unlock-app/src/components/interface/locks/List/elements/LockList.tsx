@@ -34,6 +34,11 @@ export const LockList = () => {
   const { networks } = useConfig()
   const { account } = useAuth()
 
+  const networkItems: any[] =
+    Object.entries(networks ?? {})
+      // ignore localhost
+      .filter(([network]) => network !== '31337') ?? []
+
   const getLocksByNetwork = async ({ account, network }: any) => {
     const service = new SubgraphService()
     return await service.locks(
@@ -49,26 +54,23 @@ export const LockList = () => {
     )
   }
 
-  const queries: QueriesOptions<any>[] = Object.entries(networks ?? {}).map(
-    ([network]) => {
-      const lockName = networks[network]?.name
-      // ignore localhost
-      if (account && network && network != '31337') {
-        return {
-          queryKey: ['getLocks', network, account],
-          queryFn: async () =>
-            await getLocksByNetwork({
-              account,
-              network,
-            }),
-          refetchInterval: false,
-          onError: () => {
-            ToastHelper.error(`Can't load locks from ${lockName} network.`)
-          },
-        }
+  const queries: QueriesOptions<any>[] = networkItems.map(([network]) => {
+    const lockName = networks[network]?.name
+    if (account && network) {
+      return {
+        queryKey: ['getLocks', network, account],
+        queryFn: async () =>
+          await getLocksByNetwork({
+            account,
+            network,
+          }),
+        refetchInterval: false,
+        onError: () => {
+          ToastHelper.error(`Can't load locks from ${lockName} network.`)
+        },
       }
     }
-  )
+  })
 
   const results = useQueries({
     queries,
@@ -78,7 +80,7 @@ export const LockList = () => {
 
   return (
     <div className="grid gap-20 mb-20">
-      {Object.values(networks ?? {}).map(({ id: network }: any, index) => {
+      {networkItems.map(([network], index) => {
         const locksByNetwork: any = results?.[index]?.data || []
 
         return (
