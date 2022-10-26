@@ -58,6 +58,7 @@ export const LockList = () => {
               account,
               network,
             }),
+          refetchInterval: false,
         }
       }
     }
