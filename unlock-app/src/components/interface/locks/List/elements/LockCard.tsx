@@ -18,11 +18,12 @@ import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { IconModal } from '../../Manage/elements/LockIcon'
 import { ImFilePicture as PictureFile } from 'react-icons/im'
+import { useWeb3Service } from '~/utils/withWeb3Service'
+import { useQuery } from '@tanstack/react-query'
 
 interface LockCardProps {
-  lock: Lock
+  lock: any
   network: number
-  isLoading?: boolean
 }
 
 interface DetailProps {
@@ -30,13 +31,24 @@ interface DetailProps {
   value?: string | React.ReactNode
   prepend?: React.ReactNode
   icon?: IconType
+  isLoading?: boolean
 }
 
 interface LockIconProps {
   lock: Lock
 }
 
-const Detail = ({ label, prepend, icon, value = '-' }: DetailProps) => {
+const DetailPlaceholder = () => {
+  return <div className="w-8 h-4 animate-pulse bg-slate-200"></div>
+}
+
+const Detail = ({
+  label,
+  prepend,
+  icon,
+  value = '-',
+  isLoading,
+}: DetailProps) => {
   return (
     <div className="flex flex-col gap-1">
       <div className="flex items-center gap-1">
@@ -46,14 +58,18 @@ const Detail = ({ label, prepend, icon, value = '-' }: DetailProps) => {
       <div className="flex items-center gap-2">
         {prepend && <div>{prepend}</div>}
         <Tooltip tip={value} label={label} side="bottom">
-          <span className="text-lg font-bold truncate">{value}</span>
+          {isLoading ? (
+            <DetailPlaceholder />
+          ) : (
+            <span className="text-lg font-bold truncate">{value}</span>
+          )}
         </Tooltip>
       </div>
     </div>
   )
 }
 
-export const LockCardPlaceholder = () => {
+export const LocksByNetworkPlaceholder = () => {
   const DetailPlaceholder = () => {
     return (
       <div className="flex flex-col gap-1">
@@ -65,29 +81,47 @@ export const LockCardPlaceholder = () => {
       </div>
     )
   }
-  return (
-    <div className="flex items-center px-12 py-4 bg-white md:h-24 rounded-2xl">
-      <div className="grid items-center justify-between w-full grid-cols-1 gap-4 md:grid-cols-7">
-        <div className="flex gap-7 md:gap-3 md:col-span-3">
-          <div className="rounded-full bg-slate-200 animate-pulse h-14 w-14"></div>
-          <div className="flex flex-col gap-2">
-            <div className="h-6 w-52 animate-pulse bg-slate-200"></div>
-            <div className="flex items-center gap-3">
-              <div className="w-32 h-4 animate-pulse bg-slate-200"></div>
-              <div className="w-4 h-4 animate-pulse bg-slate-200"></div>
-              <div className="w-4 h-4 animate-pulse bg-slate-200"></div>
+
+  const LockCardPlaceHolder = () => {
+    return (
+      <div className="flex items-center px-12 py-4 bg-white md:h-24 rounded-2xl">
+        <div className="grid items-center justify-between w-full grid-cols-1 gap-4 md:grid-cols-7">
+          <div className="flex gap-7 md:gap-3 md:col-span-3">
+            <div className="rounded-full bg-slate-200 animate-pulse h-14 w-14"></div>
+            <div className="flex flex-col gap-2">
+              <div className="h-6 w-52 animate-pulse bg-slate-200"></div>
+              <div className="flex items-center gap-3">
+                <div className="w-32 h-4 animate-pulse bg-slate-200"></div>
+                <div className="w-4 h-4 animate-pulse bg-slate-200"></div>
+                <div className="w-4 h-4 animate-pulse bg-slate-200"></div>
+              </div>
             </div>
           </div>
+          <div className="flex md:col-span-3 gap-14">
+            <DetailPlaceholder />
+            <DetailPlaceholder />
+            <DetailPlaceholder />
+          </div>
+          <div className="flex justify-between gap-2 md:col-span-1 md:ml-auto">
+            <div className="w-40 h-6 animate-pulse bg-slate-200 md:hidden"></div>
+            <div className="w-6 h-6 animate-pulse bg-slate-200"></div>
+          </div>
         </div>
-        <div className="flex md:col-span-3 gap-14">
-          <DetailPlaceholder />
-          <DetailPlaceholder />
-          <DetailPlaceholder />
-        </div>
-        <div className="flex justify-between gap-2 md:col-span-1 md:ml-auto">
-          <div className="w-40 h-6 animate-pulse bg-slate-200 md:hidden"></div>
-          <div className="w-6 h-6 animate-pulse bg-slate-200"></div>
-        </div>
+      </div>
+    )
+  }
+
+  const NetworkNamePlaceholder = () => {
+    return <div className="w-56 h-6 animate-pulse bg-slate-200"></div>
+  }
+
+  return (
+    <div className="flex flex-col gap-4">
+      <NetworkNamePlaceholder />
+      <div className="flex flex-col gap-6">
+        <LockCardPlaceHolder />
+        <LockCardPlaceHolder />
+        <LockCardPlaceHolder />
       </div>
     </div>
   )
@@ -140,18 +174,29 @@ const LockIcon = ({ lock }: LockIconProps) => {
   )
 }
 
-export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
+export const LockCard = ({ lock, network }: LockCardProps) => {
   const { networks } = useConfig()
+  const web3service = useWeb3Service()
   const lockAddress = lock.address
   const [isCopied, setCopied] = useClipboard(lockAddress, {
     successDuration: 2000,
   })
-
   const { explorer, baseCurrencySymbol } = networks?.[network] ?? {}
 
   const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
 
   const symbol = (lock as any)?.currencySymbol ?? baseCurrencySymbol
+
+  const getLockDetail = async () => {
+    return await web3service.getLock(lock.address, network)
+  }
+
+  const {
+    isLoading: isLoadingInfo,
+    data: { keyPrice, balance, outstandingKeys, expirationDuration } = {},
+  } = useQuery(['lockDetail', network, lock?.address], async () =>
+    getLockDetail()
+  )
 
   useEffect(() => {
     if (!isCopied) return
@@ -160,13 +205,11 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
 
   const lockUrl = `/locks/lock?address=${lockAddress}&network=${network}`
 
-  if (isLoading) return <LockCardPlaceholder />
-
   const duration =
-    lock.expirationDuration === UNLIMITED_KEYS_DURATION ? (
+    expirationDuration === UNLIMITED_KEYS_DURATION ? (
       'Unlimited'
     ) : (
-      <Duration seconds={lock.expirationDuration} />
+      <Duration seconds={expirationDuration} />
     )
 
   return (
@@ -200,21 +243,29 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
           <div className="grid items-center grid-cols-4 gap-3 md:col-span-3 md:gap-14">
             <Detail
               label="Price"
-              value={lock.keyPrice}
+              value={keyPrice}
               icon={TagIcon}
               prepend={<CryptoIcon symbol={symbol} size={25} />}
+              isLoading={isLoadingInfo}
             />
             <Detail
               label="Balance"
-              value={lock.balance}
+              value={balance}
               icon={TagIcon}
               prepend={<CryptoIcon symbol={symbol} size={25} />}
+              isLoading={isLoadingInfo}
             />
-            <Detail label="Key Duration" value={duration} icon={TimeIcon} />
+            <Detail
+              isLoading={isLoadingInfo}
+              label="Key Duration"
+              value={duration}
+              icon={TimeIcon}
+            />
             <Detail
               label="Key Sold"
-              value={lock.outstandingKeys?.toString()}
+              value={outstandingKeys?.toString()}
               icon={KeyIcon}
+              isLoading={isLoadingInfo}
             />
           </div>
           <div className="md:ml-auto md:col-span-1">
