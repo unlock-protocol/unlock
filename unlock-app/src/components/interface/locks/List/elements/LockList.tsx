@@ -1,7 +1,6 @@
 import { QueriesOptions, useQueries } from '@tanstack/react-query'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { useAuth } from '~/contexts/AuthenticationContext'
 import { useConfig } from '~/utils/withConfig'
 import { LockCard, LocksByNetworkPlaceholder } from './LockCard'
 
@@ -9,6 +8,10 @@ interface LocksByNetworkProps {
   network: string
   isLoading: boolean
   locks?: any[]
+}
+
+interface LockListProps {
+  owner: string
 }
 
 const LocksByNetwork = ({ network, isLoading, locks }: LocksByNetworkProps) => {
@@ -30,22 +33,21 @@ const LocksByNetwork = ({ network, isLoading, locks }: LocksByNetworkProps) => {
   )
 }
 
-export const LockList = () => {
+export const LockList = ({ owner }: LockListProps) => {
   const { networks } = useConfig()
-  const { account } = useAuth()
 
   const networkItems: any[] =
     Object.entries(networks ?? {})
       // ignore localhost
       .filter(([network]) => network !== '31337') ?? []
 
-  const getLocksByNetwork = async ({ account, network }: any) => {
+  const getLocksByNetwork = async ({ account: owner, network }: any) => {
     const service = new SubgraphService()
     return await service.locks(
       {
         first: 1000,
         where: {
-          lockManagers_contains: [account],
+          lockManagers_contains: [owner],
         },
       },
       {
@@ -56,12 +58,12 @@ export const LockList = () => {
 
   const queries: QueriesOptions<any>[] = networkItems.map(([network]) => {
     const lockName = networks[network]?.name
-    if (account && network) {
+    if (owner && network) {
       return {
-        queryKey: ['getLocks', network, account],
+        queryKey: ['getLocks', network, owner],
         queryFn: async () =>
           await getLocksByNetwork({
-            account,
+            account: owner!,
             network,
           }),
         refetchInterval: false,
@@ -82,9 +84,6 @@ export const LockList = () => {
     <div className="grid gap-20 mb-20">
       {networkItems.map(([network], index) => {
         const locksByNetwork: any = results?.[index]?.data || []
-        console.log({
-          network,
-        })
 
         return (
           <LocksByNetwork
