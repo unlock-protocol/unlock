@@ -62,6 +62,46 @@ describe('Metadata v2 endpoints for locksmith', () => {
     })
   })
 
+  it('Add empty metadata and update it later', async () => {
+    expect.assertions(4)
+    const lockAddress = await ethers.Wallet.createRandom().getAddress()
+    const walletAddress = await ethers.Wallet.createRandom().getAddress()
+    const metadata = {
+      public: {},
+      protected: {},
+    }
+
+    const userMetadataResponse = await request(app)
+      .post(`/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`)
+      .send({ metadata })
+
+    expect(userMetadataResponse.status).toBe(201)
+    expect(userMetadataResponse.body).toStrictEqual({
+      userMetadata: metadata,
+    })
+
+    const metadata2 = {
+      public: {},
+      protected: {
+        email: 'test@gmail.com',
+      },
+    }
+
+    const userMetadataResponse2 = await request(app)
+      .post(`/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`)
+      .send({ metadata: metadata2 })
+
+    expect(userMetadataResponse2.body).toStrictEqual({
+      userMetadata: metadata2,
+    })
+
+    const userMetadataResponse3 = await request(app)
+      .post(`/v2/api/metadata/100/locks/${lockAddress}/users/${walletAddress}`)
+      .send({ metadata: metadata2 })
+
+    expect(userMetadataResponse3.status).toBe(409)
+  })
+
   it('Add invalid user metadata', async () => {
     expect.assertions(2)
     const lockAddress = await ethers.Wallet.createRandom().getAddress()
@@ -94,11 +134,9 @@ describe('Metadata v2 endpoints for locksmith', () => {
             protected: {
               email: `${index}@example.com`,
             },
-          }
-          const keyId = String(index + 1)
+          } as const
           return {
             userAddress,
-            keyId,
             lockAddress,
             metadata,
           }
@@ -123,6 +161,53 @@ describe('Metadata v2 endpoints for locksmith', () => {
     expect(userMetadataResponse.status).toBe(201)
     expect(usersMetadata).toStrictEqual(expectedUsersMetadata)
     expect(userMetadataResponse2.body.result?.length).toBe(0)
+  })
+
+  it('Add empty users in bulk', async () => {
+    expect.assertions(3)
+    const users = await Promise.all(
+      Array(3)
+        .fill(0)
+        .map(async () => {
+          const lockAddress = await ethers.Wallet.createRandom().getAddress()
+          const userAddress = await ethers.Wallet.createRandom().getAddress()
+          const metadata: Record<
+            'public' | 'protected',
+            Record<string, any>
+          > = {
+            public: {},
+            protected: {},
+          }
+          return {
+            userAddress,
+            lockAddress,
+            metadata,
+          }
+        })
+    )
+
+    const userMetadataResponse = await request(app)
+      .post('/v2/api/metadata/100/users')
+      .send({ users })
+
+    expect(userMetadataResponse.body.result.length).toBe(3)
+
+    const metadataAddedUsers = users.map((item, index) => {
+      item.metadata.protected.email = `${index}@gmail.com`
+      return item
+    })
+
+    const userMetadataResponse2 = await request(app)
+      .post('/v2/api/metadata/100/users')
+      .send({ users: metadataAddedUsers })
+
+    expect(userMetadataResponse2.body.result.length).toBe(3)
+
+    const userMetadataResponse3 = await request(app)
+      .post('/v2/api/metadata/100/users')
+      .send({ users: metadataAddedUsers })
+
+    expect(userMetadataResponse3.body.result.length).toBe(0)
   })
 
   it('Add bulk broken user metadata', async () => {

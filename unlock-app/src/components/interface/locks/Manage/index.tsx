@@ -28,6 +28,8 @@ import Link from 'next/link'
 interface ActionBarProps {
   lockAddress: string
   network: number
+  setIsOpen: (open: boolean) => void
+  isOpen: boolean
 }
 
 interface TopActionBarProps {
@@ -44,9 +46,13 @@ export function downloadAsCSV(cols: string[], metadata: any[]) {
   FileSaver.saveAs(blob, 'members.csv')
 }
 
-const ActionBar = ({ lockAddress, network }: ActionBarProps) => {
+const ActionBar = ({
+  lockAddress,
+  network,
+  setIsOpen,
+  isOpen,
+}: ActionBarProps) => {
   const { account } = useAuth()
-  const [isOpen, setIsOpen] = useState(false)
   const storageService = useStorageService()
   const walletService = useWalletService()
 
@@ -198,6 +204,7 @@ export const ManageLockPage = () => {
   const { query } = useRouter()
   const [loading, setLoading] = useState(false)
   const { address, network } = query ?? {}
+  const [airdropKeys, setAirdropKeys] = useState(false)
 
   const lockNetwork = parseInt(network as string)
   const lockAddress = address as string
@@ -233,6 +240,10 @@ export const ManageLockPage = () => {
     return <ConnectWalletModal isOpen={true} setIsOpen={() => void 0} />
   }
 
+  const toggleAirdropKeys = () => {
+    setAirdropKeys(!airdropKeys)
+  }
+
   return (
     <div className="min-h-screen bg-ui-secondary-200 pb-60">
       <Container>
@@ -247,7 +258,12 @@ export const ManageLockPage = () => {
             </div>
             <div className="flex flex-col gap-6 lg:col-span-9">
               <TotalBar lockAddress={lockAddress} network={lockNetwork} />
-              <ActionBar lockAddress={lockAddress} network={lockNetwork} />
+              <ActionBar
+                lockAddress={lockAddress}
+                network={lockNetwork}
+                isOpen={airdropKeys}
+                setIsOpen={setAirdropKeys}
+              />
               <FilterBar
                 filters={filters}
                 setFilters={setFilters}
@@ -262,6 +278,7 @@ export const ManageLockPage = () => {
                 loading={loading}
                 setPage={setPage}
                 page={page}
+                onAirdropKeys={toggleAirdropKeys}
               />
             </div>
           </div>
