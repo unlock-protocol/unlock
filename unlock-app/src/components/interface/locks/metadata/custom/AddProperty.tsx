@@ -2,13 +2,17 @@ import { Button, Input, Modal } from '@unlock-protocol/ui'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { RiDeleteBack2Line as DeleteIcon } from 'react-icons/ri'
 import { ComponentProps } from 'react'
-import { Attribute } from '../utils'
+import { Attribute, MetadataFormData } from '../utils'
 
 export function AddPropertyModal({
   isOpen,
   setIsOpen,
 }: ComponentProps<typeof Modal>) {
-  const { control, register } = useFormContext()
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext<MetadataFormData>()
   const {
     fields: properties,
     append: appendProperty,
@@ -36,12 +40,14 @@ export function AddPropertyModal({
                 type="text"
                 placeholder="type"
                 {...register(`properties.${index}.trait_type`)}
+                error={errors?.properties?.[index]?.trait_type?.message}
               />
               <Input
-                label="Name"
+                label="Value"
                 type="text"
                 placeholder="name"
                 {...register(`properties.${index}.value`)}
+                error={errors?.properties?.[index]?.value?.message}
               />
               <button
                 className="mb-5 hover:fill-brand-ui-primary"

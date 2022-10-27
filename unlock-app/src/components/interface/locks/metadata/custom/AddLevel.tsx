@@ -2,13 +2,17 @@ import { Button, Input, Modal } from '@unlock-protocol/ui'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { RiDeleteBack2Line as DeleteIcon } from 'react-icons/ri'
 import { ComponentProps } from 'react'
-import { Attribute } from '../utils'
+import { Attribute, MetadataFormData } from '../utils'
 
 export function AddLevelModal({
   isOpen,
   setIsOpen,
 }: ComponentProps<typeof Modal>) {
-  const { control, register } = useFormContext()
+  const {
+    control,
+    register,
+    formState: { errors },
+  } = useFormContext<MetadataFormData>()
   const {
     fields: levels,
     append: appendLevel,
@@ -35,6 +39,7 @@ export function AddLevelModal({
                 label="Type"
                 type="text"
                 placeholder="type"
+                error={errors?.levels?.[index]?.trait_type?.message}
                 {...register(`levels.${index}.trait_type`)}
               />
               <div className="space-y-1 max-w-[50%] mb-1.5">
@@ -43,7 +48,9 @@ export function AddLevelModal({
                   <input
                     type="number"
                     placeholder="0"
-                    {...register(`levels.${index}.value`)}
+                    {...register(`levels.${index}.value`, {
+                      valueAsNumber: true,
+                    })}
                     id="value"
                     className="box-border flex-1 block w-full p-2 text-base border-none outline-none focus:outline-none"
                   />
@@ -53,7 +60,9 @@ export function AddLevelModal({
                   <input
                     type="number"
                     placeholder="10"
-                    {...register(`levels.${index}.max_value`)}
+                    {...register(`levels.${index}.max_value`, {
+                      valueAsNumber: true,
+                    })}
                     className="box-border flex-1 block w-full p-2 text-base border-none outline-none"
                   />
                 </div>
