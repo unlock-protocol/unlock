@@ -55,7 +55,7 @@ export function Returning({
   const stepItems: StepItem[] = [
     {
       id: 1,
-      name: 'Select lock',
+      name: 'Select',
       to: 'SELECT',
     },
     {
