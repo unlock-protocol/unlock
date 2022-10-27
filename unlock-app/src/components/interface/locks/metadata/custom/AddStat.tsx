@@ -74,6 +74,7 @@ export function AddStatModal({
             onClick={(event) => {
               event.preventDefault()
               appendStat({
+                display_type: 'number',
                 trait_type: '',
                 value: 1,
                 max_value: 10,

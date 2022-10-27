@@ -32,7 +32,6 @@ export function UpdateLockMetadata() {
         console.error(error)
       },
       refetchInterval: Infinity,
-      refetchOnMount: false,
       refetchOnWindowFocus: false,
       refetchOnReconnect: false,
       retry: 2,
