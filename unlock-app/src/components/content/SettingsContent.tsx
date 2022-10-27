@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { ReactNode, useContext } from 'react'
 import { useState } from 'react'
 import Head from 'next/head'
 import { pageTitle } from '../../constants'
-import AccountInfo from '../interface/user-account/AccountInfo'
 import EjectAccount from '../interface/user-account/EjectAccount'
-import { useAuth } from '../../contexts/AuthenticationContext'
+import AuthenticationContext, {
+  useAuth,
+} from '../../contexts/AuthenticationContext'
 import { loadStripe } from '@stripe/stripe-js'
 import { useConfig } from '~/utils/withConfig'
 import { useQuery } from '@tanstack/react-query'
@@ -15,6 +16,38 @@ import { deleteCardForAddress } from '~/hooks/useCards'
 import { SetupForm } from '../interface/checkout/alpha/Checkout/CardPayment'
 import { Button } from '@unlock-protocol/ui'
 import { AppLayout } from '../interface/layouts/AppLayout'
+import useEns from '~/hooks/useEns'
+
+interface DetailProps {
+  title: string
+  value: ReactNode
+}
+
+const Detail = ({ title, value }: DetailProps) => {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-xs font-semibold text-gray-500 uppercase">
+        {title}
+      </span>
+      <span className="text-base">{value}</span>
+    </div>
+  )
+}
+
+const AccountInfo = () => {
+  const { account, email } = useContext(AuthenticationContext)
+  const name = useEns(account || '')
+
+  return (
+    <div className="flex flex-col gap-4">
+      <span className="text-base font-semibold">Account</span>
+      <div className="flex flex-col gap-4">
+        {email && <Detail title="Email" value={email} />}
+        <Detail title="Wallet Address" value={name} />
+      </div>
+    </div>
+  )
+}
 
 export const PaymentSettings = () => {
   const { account, network } = useAuth()
@@ -86,9 +119,11 @@ export const SettingsContent = () => {
       <Head>
         <title>{pageTitle('Account Settings')}</title>
       </Head>
-      <AccountInfo />
-      <PaymentSettings />
-      <EjectAccount />
+      <div className="flex flex-col gap-2">
+        <AccountInfo />
+        <PaymentSettings />
+        <EjectAccount />
+      </div>
     </AppLayout>
   )
 }
