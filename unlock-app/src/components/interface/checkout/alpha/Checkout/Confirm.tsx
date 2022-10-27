@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
-import { Button, Icon } from '@unlock-protocol/ui'
+import { Badge, Button, Icon, minifyAddress } from '@unlock-protocol/ui'
 import {
   RiExternalLinkLine as ExternalLinkIcon,
   RiTimer2Line as DurationIcon,
@@ -149,7 +149,7 @@ export function Confirm({
     }
   )
 
-  const { data: prices } = useQuery(
+  const { data: prices, isInitialLoading: isPricesLoading } = useQuery(
     ['purchasePriceFor', lockAddress, lockNetwork],
     async () => {
       const prices = await Promise.all(
@@ -174,8 +174,13 @@ export function Confirm({
         })
       )
       return prices
+    },
+    {
+      refetchInterval: Infinity,
     }
   )
+
+  const isLoading = isPricesLoading || isFiatPriceLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
@@ -496,71 +501,16 @@ export function Confirm({
     }
   }
 
+  console.log(prices)
+
   const stepItems = useCheckoutSteps(checkoutService)
   return (
     <Fragment>
       <Stepper position={7} service={checkoutService} items={stepItems} />
       <main className="h-full p-6 space-y-2 overflow-auto">
-        <div className="flex items-start justify-between">
-          <h3 className="text-xl font-bold">
-            {quantity}X {lockName}
-          </h3>
-          {!isFiatPriceLoading ? (
-            <div>
-              <Pricing
-                keyPrice={formattedData.formattedKeyPrice}
-                usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
-                isCardEnabled={formattedData.cardEnabled}
-              />
-              <div className="text-sm text-right text-gray-500">
-                {quantity} X {lock?.keyPrice} {symbol?.toUpperCase()}
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
-              <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
-            </div>
-          )}
-        </div>
-        {!isFiatPriceLoading ? (
+        <div className="grid gap-y-2">
           <div>
-            <div className="space-y-2">
-              <div className="flex items-center gap-4 text-sm">
-                <LabeledItem
-                  label="Duration"
-                  icon={DurationIcon}
-                  value={formattedData.formattedDuration}
-                />
-                {!!(recurringPayments?.length && recurringPayment) && (
-                  <LabeledItem
-                    label="Recurring"
-                    icon={RecurringIcon}
-                    value={recurringPayment.toString()}
-                  />
-                )}
-                {totalApproval && (
-                  <div className="flex items-center gap-2 text-gray-500">
-                    <RecurringIcon /> <span> Renewed until cancelled </span>
-                  </div>
-                )}
-              </div>
-              <a
-                href={config.networks[lockNetwork].explorer.urls.address(
-                  lockAddress
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-              >
-                View Contract <Icon icon={ExternalLinkIcon} size="small" />
-              </a>
-            </div>
-            <div>
-              {!isFiatPriceLoading && fiatPricing.creditCardEnabled && (
-                <CreditCardPricingBreakdown {...fiatPricing} />
-              )}
-            </div>
+            <h4 className="text-xl font-bold"> {lock!.name}</h4>
             <a
               href={config.networks[lockNetwork].explorer.urls.address(
                 lockAddress
@@ -571,18 +521,61 @@ export function Confirm({
             >
               View Contract <Icon icon={ExternalLinkIcon} size="small" />
             </a>
-            <div className="grid pt-2 mt-6 border-t gap-y-2">
-              <h4 className="text-sm"> Key prices </h4>
+          </div>
+
+          {!isLoading && (
+            <div>
               {!!prices?.length &&
-                prices.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between px-4 py-2 bg-white border rounded-lg shadow-sm"
-                  >
-                    <div className="w-24 truncate">{item.userAddress}</div>
-                    <div>{item.amount}</div>
-                  </div>
-                ))}
+                prices.map((item, index) => {
+                  const first = index <= 0
+                  return (
+                    <div
+                      key={index}
+                      className={`flex border-b ${
+                        first ? 'border-t' : null
+                      } items-center justify-between text-sm px-0 py-2`}
+                    >
+                      <div>
+                        1 Key for{' '}
+                        <span className="font-medium">
+                          {minifyAddress(item.userAddress)}
+                        </span>{' '}
+                        {Number(item.amount) < Number(lock!.keyPrice) ? (
+                          <Badge variant="green" size="tiny">
+                            Discounted
+                          </Badge>
+                        ) : null}
+                      </div>
+
+                      <div className="font-bold">
+                        {item.amount} {symbol}{' '}
+                      </div>
+                    </div>
+                  )
+                })}
+            </div>
+          )}
+        </div>
+        {!isLoading ? (
+          <Pricing
+            keyPrice={`${prices?.reduce((acc, item) => {
+              return acc + Number(item.amount)
+            }, 0)} ${symbol}`}
+            usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
+            isCardEnabled={formattedData.cardEnabled}
+          />
+        ) : (
+          <div className="flex flex-col items-center gap-2">
+            <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+          </div>
+        )}
+        {!isLoading ? (
+          <div>
+            <div>
+              {!isLoading && fiatPricing.creditCardEnabled && (
+                <CreditCardPricingBreakdown {...fiatPricing} />
+              )}
             </div>
           </div>
         ) : (
