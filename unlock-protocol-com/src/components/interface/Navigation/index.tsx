@@ -343,8 +343,12 @@ function Desktop() {
         Creators
       </Link>
       <CommunityPopover />
-      <Button href={unlockConfig.appURL} variant="outlined-primary" as={Link}>
-        Dashboard
+      <Button
+        href={`${unlockConfig.appURL}/locks`}
+        variant="outlined-primary"
+        as={Link}
+      >
+        Launch App
       </Button>
     </div>
   )
@@ -511,8 +515,8 @@ function Mobile() {
             >
               For Creators
             </Link>
-            <Button as={Link} href={unlockConfig.appURL}>
-              Dashboard
+            <Button as={Link} href={`${unlockConfig.appURL}/locks`}>
+              Launch App
             </Button>
           </div>
         </div>

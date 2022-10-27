@@ -73,7 +73,7 @@ export function Connect() {
     <section className="flex flex-col-reverse items-center justify-between mx-auto lg:space-x-16 max-w-7xl md:gap-6 md:flex-row">
       <div className="w-full max-w-xl">
         <header className="space-y-4 break-words ">
-          <h1 className="heading">Create your Membership Contract</h1>
+          <h1 className="heading">Membership Protocol</h1>
           <p className="sub-heading">
             Unlock is a protocol for memberships as time-bound Non Fungible
             Tokens
@@ -97,12 +97,17 @@ export function Connect() {
           </ul>
         </div>
 
-        <div className="flex items-center justify-center gap-4 sm:justify-start">
-          <Button href="#get-started" as={Link}>
-            Get Started
+        <div className="flex  gap-4 sm:justify-start">
+          <Button className="text-center" href="#get-started" as={Link}>
+            Join our free Community Membership
           </Button>
-          <Button as={Link} href={unlockConfig.appURL} variant="secondary">
-            Dashboard
+          <Button
+            className="text-center"
+            as={Link}
+            href={`${unlockConfig.appURL}/locks/create`}
+            variant="secondary"
+          >
+            Create your Membership Contract
           </Button>
         </div>
       </div>
