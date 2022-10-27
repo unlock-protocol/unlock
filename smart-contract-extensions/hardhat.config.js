@@ -25,10 +25,6 @@ const settings = {
 
 const networks = {}
 
-// mocha config
-let extension = ['js']
-let ignore = ['**/*.mainnet.js']
-
 // add mainnet fork -- if API key is present
 if (process.env.RUN_MAINNET_FORK) {
   // eslint-disable-next-line no-console
@@ -57,9 +53,5 @@ module.exports = {
     currency: 'USD',
     excludeContracts: ['Migrations'],
     gasPrice: 5,
-  },
-  mocha: {
-    extension,
-    ignore,
   },
 }
