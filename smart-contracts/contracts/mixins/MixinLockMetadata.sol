@@ -99,6 +99,8 @@ contract MixinLockMetadata is
     view
     returns(string memory)
   {
+    _isKey(_tokenId);
+
     string memory URI;
     string memory tokenId;
     string memory lockAddress = address(this).address2Str();
