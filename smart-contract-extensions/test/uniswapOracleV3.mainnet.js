@@ -21,9 +21,13 @@ const round = (bn) => Math.floor(parseInt(bn.toString().slice(0, 3)))
 
 describe(`oracle`, () => {
   let oracle
-  before(async () => {
+  before(async function () {
+    if (!process.env.RUN_MAINNET_FORK) {
+      // all suite will be skipped
+      this.skip()
+    }
     const UnlockUniswapOracle = await ethers.getContractFactory(
-      'UnlockUniswapOracle'
+      'UniswapOracleV3'
     )
     oracle = await UnlockUniswapOracle.deploy(FACTORY_ADDRESS)
   })

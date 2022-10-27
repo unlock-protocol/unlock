@@ -20,10 +20,14 @@ describe('Unlock GNP conversion', () => {
   let unlockContract
   let oracle
 
-  before(async () => {
+  before(async function () {
+    if (!process.env.RUN_MAINNET_FORK) {
+      // all suite will be skipped
+      this.skip()
+    }
     unlockContract = await unlock.getUnlockContract(unlockAddress)
     const UnlockUniswapOracle = await ethers.getContractFactory(
-      'UnlockUniswapOracle'
+      'UniswapOracleV3'
     )
     oracle = await UnlockUniswapOracle.deploy(FACTORY_ADDRESS)
 
