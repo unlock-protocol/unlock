@@ -1,0 +1,41 @@
+FROM node:16.18.0 as build
+LABEL Unlock <ops@unlock-protocol.com>
+
+USER root
+
+WORKDIR /app
+
+# Update repos
+RUN apt-get update
+
+# Install dependencies
+RUN apt-get install -y openjdk-11-jdk postgresql postgresql-contrib
+
+# Start postgres service
+RUN service postgresql start
+
+# Check java and javac is installed and correct version
+RUN java -version
+RUN javac -version
+
+# Copy over all files
+COPY . .
+
+# install node dependencies
+RUN yarn install
+
+# build all packages
+RUN yarn build
+
+FROM build as prod
+
+ENV BUILD_DIR=''
+ENV PORT=3000
+ENV COMMAND="yarn workspace @unlock-protocol/${BUILD_DIR} prod"
+ENV COMMAND=$COMMAND
+
+USER root
+
+EXPOSE $PORT
+
+CMD $COMMAND
