@@ -53,11 +53,17 @@ export function toFormData({
       return item
     }, {} as Ticket)
 
-  const stats = attributes?.filter((item) => item.display_type === 'number')
-  const levels = attributes?.filter((item) => typeof item.value === 'number')
+  const stats = attributes?.filter(
+    (item) => item.display_type === 'number' && typeof item.value === 'number'
+  )
+  const levels = attributes?.filter(
+    (item) => typeof item.value === 'number' && !item.display_type
+  )
   const properties = attributes?.filter(
     (item) =>
-      typeof item.value === 'string' && !item.trait_type.startsWith('event_')
+      typeof item.value === 'string' &&
+      !item.max_value &&
+      !item.trait_type.startsWith('event_')
   )
   return {
     name,
