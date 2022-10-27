@@ -213,7 +213,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
     window.open(networks[network].explorer?.urls.address(lock.address))
   }
 
-  const viewOnOpenSea = async (network: number) => {
+  const viewOnOpenSea = async () => {
     const { opensea, name } = networks[network]
 
     const url = opensea?.tokenUrl(lock.address, tokenId) ?? null
@@ -336,7 +336,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
               className={iconButtonClass}
               type="button"
               disabled={!isAvailableOnOpenSea}
-              onClick={() => viewOnOpenSea(network)}
+              onClick={viewOnOpenSea}
             >
               <OpenSeaIcon />
             </button>
