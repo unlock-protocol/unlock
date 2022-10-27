@@ -5,25 +5,28 @@ import { Card } from '@stripe/stripe-js'
 import { z } from 'zod'
 
 export const MetadataInputSchema = z.object({
+  type: z.enum(['text', 'date', 'color', 'email', 'url'], {
+    description:
+      'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. ',
+  }),
   name: z.string({
     description: 'Name of the attribute to collect.',
   }),
-  defaultValue: z
-    .string({
-      description: 'Default value for the attribute.',
+  required: z
+    .boolean({
+      description:
+        'Check if you require users to enter this before they complete the purchase.',
     })
-    .optional(),
-  type: z.enum(['text', 'date', 'color', 'email', 'url'], {
-    description:
-      'The type field maps to a certain subset of HTML <input> types, which influences how the form renders. The following configuration results in a checkout that looks like image below it.',
-  }),
-  required: z.boolean({
-    description:
-      'Check if you require users to enter this before they complete the purchase.',
-  }),
+    .optional()
+    .default(false),
   placeholder: z
     .string({
       description: 'Placeholder displayed to users.',
+    })
+    .optional(),
+  defaultValue: z
+    .string({
+      description: 'Default value for the attribute.',
     })
     .optional(),
   public: z
@@ -76,7 +79,7 @@ export const PaywallConfigLockSchema = z.object({
     .optional(),
   maxRecipients: z
     .number({
-      description: `Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
+      description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
     })
     .int()
     .positive()
@@ -91,7 +94,7 @@ export const PaywallConfigLockSchema = z.object({
   dataBuilder: z
     .string({
       description:
-        'If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
+        '(Optional) If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
     })
     .optional(),
 })
@@ -162,7 +165,7 @@ export const PaywallConfigSchema = z
       .optional(),
     maxRecipients: z
       .number({
-        description: `Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
+        description: `(Optional) Set the max number of memberships a user can purchase. Note: By default, checkout doesn't allow fiddling with quantity. You have to set maxRecipients to allow for changing to quantity.`,
       })
       .int()
       .optional(),
@@ -193,7 +196,7 @@ export const PaywallConfigSchema = z
     dataBuilder: z
       .string({
         description:
-          'If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
+          '(Optional) If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
       })
       .optional(),
   })

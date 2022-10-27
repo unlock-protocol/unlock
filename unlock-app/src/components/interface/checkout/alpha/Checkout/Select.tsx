@@ -103,34 +103,35 @@ export function Select({ checkoutService, injectedProvider }: Props) {
   const { account, network, changeNetwork, isUnlockAccount } = useAuth()
   const web3Service = useWeb3Service()
 
-  const { isLoading: isMembershipsLoading, data: memberships } = useQuery(
-    ['memberships', account, JSON.stringify(paywallConfig)],
-    async () => {
-      const memberships = await Promise.all(
-        Object.entries(paywallConfig.locks).map(
-          async ([lockAddress, props]) => {
-            const lockNetwork = props.network || paywallConfig.network || 1
-            const [member, total] = await Promise.all([
-              web3Service.getHasValidKey(lockAddress, account!, lockNetwork),
-              web3Service.totalKeys(lockAddress, account!, lockNetwork),
-            ])
-            // if not member but total is above 0
-            const expired = !member && total > 0
-            return {
-              lock: lockAddress,
-              expired,
-              member,
-              network: lockNetwork,
+  const { isInitialLoading: isMembershipsLoading, data: memberships } =
+    useQuery(
+      ['memberships', account, JSON.stringify(paywallConfig)],
+      async () => {
+        const memberships = await Promise.all(
+          Object.entries(paywallConfig.locks).map(
+            async ([lockAddress, props]) => {
+              const lockNetwork = props.network || paywallConfig.network || 1
+              const [member, total] = await Promise.all([
+                web3Service.getHasValidKey(lockAddress, account!, lockNetwork),
+                web3Service.totalKeys(lockAddress, account!, lockNetwork),
+              ])
+              // if not member but total is above 0
+              const expired = !member && total > 0
+              return {
+                lock: lockAddress,
+                expired,
+                member,
+                network: lockNetwork,
+              }
             }
-          }
+          )
         )
-      )
-      return memberships
-    },
-    {
-      enabled: !!account,
-    }
-  )
+        return memberships
+      },
+      {
+        enabled: !!account,
+      }
+    )
 
   const lockNetwork = lock?.network ? config?.networks?.[lock.network] : null
   const isNetworkSwitchRequired =

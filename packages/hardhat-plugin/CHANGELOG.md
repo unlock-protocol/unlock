@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.0.16
+
+- Allow to pass `unlockAddress` when creating a lock
+
 ### 0.0.11
 
 - add `deployAndSetTemplate`

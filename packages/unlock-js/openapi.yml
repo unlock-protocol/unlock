@@ -317,12 +317,12 @@ components:
 paths:
   /v2/auth/nonce:
     get:
-      operationId: nounce
-      description: 'Provide a unique nounce for using in sign in with ethereum'
+      operationId: nonce
+      description: 'Provide a unique nonce for using in sign in with ethereum'
       parameters: []
       responses:
         200:
-          description: Unique nounce.
+          description: Unique nonce.
           content:
             html/text:
               schema:
