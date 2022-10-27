@@ -3,13 +3,13 @@ const { mainnet } = require('@unlock-protocol/networks')
 const { expect } = require('chai')
 
 const UniswapOracle = require('../helpers/ABIs/UniswapOracle.json')
-const USDCabi = require('../helpers/ABIs/USDC.json')
+const ShibaInuAbi = require('../helpers/ABIs/ERC20.js')
 
 const {
   ADDRESS_ZERO,
   deployLock,
   deployERC20,
-  USDC,
+  SHIBA_INU,
   WETH,
   UNISWAP_FACTORY_ADDRESS,
   impersonate,
@@ -19,8 +19,8 @@ const {
 
 const { unlockAddress } = mainnet
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
-const keyPriceUSDC = ethers.utils.parseUnits('50', 6)
-const totalPriceUSDC = keyPriceUSDC.mul(5)
+const keyPriceSHIBA_INU = ethers.utils.parseUnits('50', 6)
+const totalPriceSHIBA_INU = keyPriceSHIBA_INU.mul(5)
 
 contract('Unlock / uniswapValue', () => {
   let lock
@@ -50,8 +50,8 @@ contract('Unlock / uniswapValue', () => {
     const unlockSigner = await ethers.getSigner(unlockOwner)
     unlock = unlock.connect(unlockSigner)
 
-    // add oracle support for USDC
-    await unlock.setOracle(USDC, oracle.address)
+    // add oracle support for SHIBA_INU
+    await unlock.setOracle(SHIBA_INU, oracle.address)
   })
 
   it('weth is set correctly already', async () => {
@@ -59,33 +59,35 @@ contract('Unlock / uniswapValue', () => {
   })
 
   it('sets oracle address correctly', async () => {
-    expect(oracleAddress).to.equals(await unlock.uniswapOracles(USDC))
+    expect(oracleAddress).to.equals(await unlock.uniswapOracles(SHIBA_INU))
   })
 
-  describe('A supported token (USDC)', () => {
+  describe('A supported token (SHIBA_INU)', () => {
     let usdc
     before(async () => {
       // mint some usdc
-      usdc = await ethers.getContractAt(USDCabi, USDC)
+      usdc = await ethers.getContractAt(ShibaInuAbi, SHIBA_INU)
       const masterMinter = await usdc.masterMinter()
       await impersonate(masterMinter)
       const minter = await ethers.getSigner(masterMinter)
-      await usdc.connect(minter).configureMinter(signer.address, totalPriceUSDC)
-      await usdc.mint(signer.address, totalPriceUSDC)
+      await usdc
+        .connect(minter)
+        .configureMinter(signer.address, totalPriceSHIBA_INU)
+      await usdc.mint(signer.address, totalPriceSHIBA_INU)
 
-      // create a USDC lock
+      // create a SHIBA_INU lock
       lock = await deployLock({
         unlock,
-        tokenAddress: USDC,
-        keyPrice: keyPriceUSDC,
+        tokenAddress: SHIBA_INU,
+        keyPrice: keyPriceSHIBA_INU,
       })
     })
 
     it('pricing is set correctly', async () => {
       // make sure price is correct
-      expect(await lock.tokenAddress()).to.equals(USDC)
+      expect(await lock.tokenAddress()).to.equals(SHIBA_INU)
       expect((await lock.keyPrice()).toString()).to.equals(
-        keyPriceUSDC.toString()
+        keyPriceSHIBA_INU.toString()
       )
     })
 
@@ -97,25 +99,29 @@ contract('Unlock / uniswapValue', () => {
       before(async () => {
         gnpBefore = await unlock.grossNetworkProduct()
         // approve purchase
-        await usdc.connect(signer).approve(lock.address, totalPriceUSDC)
+        await usdc.connect(signer).approve(lock.address, totalPriceSHIBA_INU)
         ;({ blockNumber } = await purchaseKeys(lock, 5, true))
 
-        // consult our oracle independently for 1 USDC
-        rate = await oracle.consult(USDC, ethers.utils.parseUnits('1', 6), WETH)
+        // consult our oracle independently for 1 SHIBA_INU
+        rate = await oracle.consult(
+          SHIBA_INU,
+          ethers.utils.parseUnits('1', 6),
+          WETH
+        )
       })
 
       it('GDP went up by the expected ETH value', async () => {
         const GNP = await unlock.grossNetworkProduct()
         expect(GNP.toString()).to.not.equals(gnpBefore.toString())
 
-        // 5 keys at 50 USDC at oracle rate
+        // 5 keys at 50 SHIBA_INU at oracle rate
         const priceConverted = rate.mul(250)
         expect(GNP.div(1000).toString()).to.equals(
           gnpBefore.add(priceConverted).div(1000).toString()
         )
 
         // show approx value in ETH for reference
-        console.log(`250 USDC =~ ${ethers.utils.formatUnits(GNP)} ETH`)
+        console.log(`250 SHIBA_INU =~ ${ethers.utils.formatUnits(GNP)} ETH`)
       })
 
       it('a GDP tracking event has been emitted', async () => {
@@ -136,10 +142,10 @@ contract('Unlock / uniswapValue', () => {
             },
             i
           ) => {
-            assert.equal(tokenAddress, USDC)
+            assert.equal(tokenAddress, SHIBA_INU)
             assert.equal(lockAddress, lock.address)
-            assert.equal(value.toString(), keyPriceUSDC.toString())
-            // rate * 50 USDC per key
+            assert.equal(value.toString(), keyPriceSHIBA_INU.toString())
+            // rate * 50 SHIBA_INU per key
             assert.equal(
               _valueInETH.div(1000).toString(),
               rate.mul(50).div(1000).toString()
