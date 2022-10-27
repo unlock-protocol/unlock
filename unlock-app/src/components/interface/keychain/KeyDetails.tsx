@@ -1,73 +1,57 @@
 import React, { useContext } from 'react'
 import { AuthenticationContext } from '../../../contexts/AuthenticationContext'
 import 'cross-fetch/polyfill'
-import { DefaultError } from '../../creator/FatalError'
 import Key from './Key'
 import LoginPrompt from '../LoginPrompt'
 import networks from '@unlock-protocol/networks'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
-import { useQuery } from '@tanstack/react-query'
+import { QueriesOptions, useQueries, useQuery } from '@tanstack/react-query'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { useConfig } from '~/utils/withConfig'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 interface KeysByNetworkProps {
   account: string
   network: number
+  isLoading?: boolean
+  keys?: any[]
 }
 
-export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
+const KeysByNetworkPlaceholder = () => {
+  return (
+    <div className="flex flex-col mb-3">
+      <div className="h-[1.2rem] w-[17rem] bg-slate-200 mb-2"></div>
+      <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+      </div>
+    </div>
+  )
+}
+
+export const KeysByNetwork = ({
+  account,
+  network,
+  isLoading,
+  keys = [],
+}: KeysByNetworkProps) => {
   const { networks } = useConfig()
   const networkName = networks[network]?.name
-  const getKeys = async () => {
-    const service = new SubgraphService()
-
-    return await service.keys(
-      {
-        first: 1000,
-        where: {
-          owner: account,
-        },
-      },
-      {
-        networks: [`${network}`],
-      }
-    )
-  }
-
-  const {
-    isLoading: loading,
-    data: keys,
-    isError,
-  } = useQuery(['getKeys', network], async () => getKeys())
 
   const noKeys = keys?.length == 0
 
-  if (loading) {
-    return (
-      <div className="flex flex-col mb-3">
-        <div className="h-[1.2rem] w-[17rem] bg-slate-200 mb-2"></div>
-        <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-          <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-        </div>
-      </div>
-    )
+  if (isLoading) {
+    return <KeysByNetworkPlaceholder />
   }
-  if (noKeys || loading) return null
-  if (isError) {
-    return (
-      <ImageBar
-        description="Could not retrieve keys"
-        src="/images/illustrations/img-error.svg"
-      />
-    )
-  }
+
+  if (noKeys) return null
+
   return (
     <div className="flex flex-col mb-[2rem]">
       <div className="flex flex-col">
@@ -92,41 +76,76 @@ export const KeysByNetwork = ({ account, network }: KeysByNetworkProps) => {
 export const KeyDetails = () => {
   const { account, network } = useContext(AuthenticationContext)
 
+  const networkItems: any[] =
+    Object.entries(networks ?? {})
+      // ignore localhost
+      .filter(([network]) => network !== '31337') ?? []
+
+  const getKeys = async (network: string) => {
+    const service = new SubgraphService()
+
+    return await service.keys(
+      {
+        first: 1000,
+        where: {
+          owner: account,
+        },
+      },
+      {
+        networks: [network],
+      }
+    )
+  }
+  const queries: QueriesOptions<any>[] = networkItems.map(([network]) => {
+    const networkName = networks[network]?.name
+    return {
+      queryKey: ['getLocks', network, account],
+      queryFn: async () => await getKeys(network),
+      onError: () => {
+        ToastHelper.error(`Can't load keys from ${networkName} network.`)
+      },
+    }
+  })
+
+  const results = useQueries({
+    queries,
+  })
+
+  const isLoading = results?.some(({ isLoading }) => isLoading)
+  const hasKeys = results?.some(
+    ({ data = [] }: any) => (data ?? [])?.length > 0
+  )
+
   if (!account || !network) {
     return <LoginPrompt />
   }
 
+  if (!hasKeys && !isLoading) {
+    return (
+      <ImageBar
+        description="You don't have any keys yet"
+        src="/images/illustrations/img-error.svg"
+      />
+    )
+  }
+
   return (
-    <div>
-      <div>
-        {Object.entries(networks).map(([networkId, networkObj]) => {
-          if (networkObj.id === 31337) return null // ignore localhost
-          return (
-            <div key={networkId}>
-              <KeysByNetwork
-                key={networkId}
-                network={networkObj.id}
-                account={account}
-              />
-            </div>
-          )
-        })}
-      </div>
+    <div className="flex flex-col gap-5">
+      {networkItems.map(([network], index) => {
+        const keys: any = results?.[index]?.data || []
+
+        return (
+          <KeysByNetwork
+            key={network}
+            network={network}
+            account={account}
+            keys={keys}
+            isLoading={isLoading}
+          />
+        )
+      })}
     </div>
   )
 }
 
 export default KeyDetails
-
-export const NoKeys = () => {
-  return (
-    <DefaultError
-      title="You don't have any keys yet"
-      illustration="/images/illustrations/key.svg"
-      critical={false}
-    >
-      The Keychain lets you view and manage the keys that you own. As soon as
-      you have one, you&apos;ll see it on this page.
-    </DefaultError>
-  )
-}
