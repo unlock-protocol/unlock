@@ -10,7 +10,6 @@ import { ConnectService } from './Connect/connectMachine'
 import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 import { SiBrave as BraveWalletIcon } from 'react-icons/si'
 import { DownloadWallet } from '../../DownloadWallet'
-import { WalletLinkProvider } from 'walletlink'
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
@@ -64,7 +63,7 @@ interface SignedOutProps {
     provider: 'METAMASK' | 'UNLOCK' | 'WALLET_CONNECT' | 'COINBASE'
   ): Promise<void>
   onUnlockAccount(): void
-  injectedProvider: WalletLinkProvider
+  injectedProvider: any
 }
 
 export function SignedOut({
@@ -89,17 +88,14 @@ export function SignedOut({
       return walletIcons.metamask
     }
 
-    // @ts-expect-error no typing
     if (injectedProvider?.isBraveWallet) {
       return walletIcons.brave
     }
 
-    // @ts-expect-error no typing
     if (injectedProvider?.isFrame) {
       return walletIcons.frame
     }
 
-    // @ts-expect-error no typing
     if (injectedProvider?.isStatus) {
       return walletIcons.status
     }
@@ -209,7 +205,7 @@ export function Connected({
   ) : (
     <div>
       <SignedOut
-        injectedProvider={injectedProvider as WalletLinkProvider}
+        injectedProvider={injectedProvider}
         onUnlockAccount={() => {
           send('UNLOCK_ACCOUNT')
         }}
