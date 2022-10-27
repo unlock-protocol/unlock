@@ -147,6 +147,23 @@ export const CreateLockForm = ({
               defaultValue={network}
               options={networkOptions}
               onChange={onChangeNetwork}
+              description={
+                network == 5 ? (
+                  <>
+                    Need some Test ETH?{' '}
+                    <a
+                      className="underline"
+                      target="_blank"
+                      href="https://goerlifaucet.com/"
+                      rel="noreferrer"
+                    >
+                      Check this faucet.
+                    </a>
+                  </>
+                ) : (
+                  ''
+                )
+              }
             />
             <div className="relative">
               <Input
@@ -164,7 +181,6 @@ export const CreateLockForm = ({
                 </span>
               )}
             </div>
-
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
@@ -204,7 +220,6 @@ export const CreateLockForm = ({
                 )}
               </div>
             </div>
-
             <div className="flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <label className="block px-1 text-base" htmlFor="">
@@ -243,7 +258,6 @@ export const CreateLockForm = ({
                 )}
               </div>
             </div>
-
             <div className="relative flex flex-col gap-4">
               <div className="flex items-center justify-between">
                 <label className="px-1 mb-2 text-base" htmlFor="">
@@ -292,7 +306,6 @@ export const CreateLockForm = ({
                 )}
               </div>
             </div>
-
             <Button
               className="mt-8 md:mt-0"
               type="submit"

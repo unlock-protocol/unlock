@@ -13,8 +13,23 @@ const CALL_TO_ACTION_MAPPING: Record<number | 'default', LinkProps> = {
     link: 'https://www.coinbase.com/',
     ref: 'Coinbase',
   },
+  5: {
+    label: 'Get some test ETH from ',
+    link: 'https://goerlifaucet.com/',
+    ref: 'the faucet.',
+  },
+  10: {
+    label: 'Transfer some ETH from ',
+    link: 'https://app.optimism.io/bridge/deposit',
+    ref: 'the Optimism Bridge.',
+  },
+  42161: {
+    label: 'Tranfer some ETH from ',
+    link: 'https://bridge.arbitrum.io/',
+    ref: 'the Arbitrum Bridge.',
+  },
   100: {
-    label: 'Transfer some Ethereum&apos;s DAI to the xDAI chain using ',
+    label: 'Transfer some Ethereum&apos;s DAI to the Gnosis Chain chain using ',
     link: 'https://omni.xdaichain.com/bridge',
     ref: 'the Omnibridge.',
   },
