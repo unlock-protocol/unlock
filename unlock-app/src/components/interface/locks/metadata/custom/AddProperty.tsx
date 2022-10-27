@@ -3,6 +3,7 @@ import { useFormContext, useFieldArray } from 'react-hook-form'
 import { RiDeleteBack2Line as DeleteIcon } from 'react-icons/ri'
 import { ComponentProps } from 'react'
 import { Attribute, MetadataFormData } from '../utils'
+import { LearnMoreAboutOpenseaMetadataLink } from './Item'
 
 export function AddPropertyModal({
   isOpen,
@@ -31,6 +32,7 @@ export function AddPropertyModal({
             This custom attribute will shows up underneath of the NFT image in
             Opensea.
           </p>
+          <LearnMoreAboutOpenseaMetadataLink />
         </header>
         <div className="space-y-2">
           {properties.map((item, index) => (

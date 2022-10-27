@@ -3,6 +3,7 @@ import { useFormContext, useFieldArray } from 'react-hook-form'
 import { RiDeleteBack2Line as DeleteIcon } from 'react-icons/ri'
 import { ComponentProps } from 'react'
 import { Attribute, MetadataFormData } from '../utils'
+import { LearnMoreAboutOpenseaMetadataLink } from './Item'
 
 export function AddStatModal({
   isOpen,
@@ -31,6 +32,7 @@ export function AddStatModal({
             This custom attribute will be shown as numbers. Members can use it
             as filter.
           </p>
+          <LearnMoreAboutOpenseaMetadataLink />
         </header>
         <div className="space-y-2">
           {stats.map((item, index) => (
