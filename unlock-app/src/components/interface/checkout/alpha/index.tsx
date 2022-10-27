@@ -25,7 +25,7 @@ export function CheckoutPage() {
   const paywallConfig = communication.paywallConfig || paywallConfigFromQuery
 
   const injectedProvider =
-    communication.providerAdapter || selectProvider(config)
+    selectProvider(config) || communication.providerAdapter
 
   const checkoutRedirectURI =
     paywallConfig?.redirectUri ||

@@ -10,6 +10,7 @@ import { ConnectService } from './Connect/connectMachine'
 import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 import { SiBrave as BraveWalletIcon } from 'react-icons/si'
 import { DownloadWallet } from '../../DownloadWallet'
+import { WalletLinkProvider } from 'walletlink'
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
@@ -63,11 +64,13 @@ interface SignedOutProps {
     provider: 'METAMASK' | 'UNLOCK' | 'WALLET_CONNECT' | 'COINBASE'
   ): Promise<void>
   onUnlockAccount(): void
+  injectedProvider: WalletLinkProvider
 }
 
 export function SignedOut({
   onUnlockAccount,
   authenticateWithProvider,
+  injectedProvider,
 }: SignedOutProps) {
   const iconButtonClass =
     'inline-flex items-center w-10 h-10 justify-center hover:[box-shadow:_0px_4px_15px_rgba(0,0,0,0.08)] [box-shadow:_0px_8px_30px_rgba(0,0,0,0.08)] rounded-full'
@@ -82,30 +85,30 @@ export function SignedOut({
       default: <WalletIcon size={20} className="m-1.5" />,
     }
 
-    if (window.ethereum?.isMetaMask) {
+    if (injectedProvider?.isMetaMask) {
       return walletIcons.metamask
     }
 
     // @ts-expect-error no typing
-    if (window.ethereum?.isBraveWallet) {
+    if (injectedProvider?.isBraveWallet) {
       return walletIcons.brave
     }
 
     // @ts-expect-error no typing
-    if (window.ethereum?.isFrame) {
+    if (injectedProvider?.isFrame) {
       return walletIcons.frame
     }
 
     // @ts-expect-error no typing
-    if (window.ethereum?.isStatus) {
+    if (injectedProvider?.isStatus) {
       return walletIcons.status
     }
 
     return walletIcons.default
-  }, [])
+  }, [injectedProvider])
 
   const onInjectedHandler = () => {
-    if (window.ethereum) {
+    if (injectedProvider) {
       return authenticateWithProvider('METAMASK')
     }
 
@@ -206,6 +209,7 @@ export function Connected({
   ) : (
     <div>
       <SignedOut
+        injectedProvider={injectedProvider as WalletLinkProvider}
         onUnlockAccount={() => {
           send('UNLOCK_ACCOUNT')
         }}
