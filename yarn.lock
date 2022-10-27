@@ -12058,6 +12058,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@openzeppelin/contracts@npm:4.6.0":
+  version: 4.6.0
+  resolution: "@openzeppelin/contracts@npm:4.6.0"
+  checksum: 1de06211b279d7aef2bb9abbdd58eb80c71256f7e888a10855ea23bb06ef8723b22fb550d06af60247dfbd7f0f23de9821732012d7541a823339070a8442d1db
+  languageName: node
+  linkType: hard
+
 "@openzeppelin/contracts@npm:4.7.3":
   version: 4.7.3
   resolution: "@openzeppelin/contracts@npm:4.7.3"
@@ -18788,6 +18795,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@uniswap/v3-core@Uniswap/v3-core#0.8":
+  version: 1.0.1-solc-0.8
+  resolution: "@uniswap/v3-core@https://github.com/Uniswap/v3-core.git#commit=6562c52e8f75f0c10f9deaf44861847585fc8129"
+  checksum: 8655aaaace9bc06aa03f4ac3b80d64c91f14df0feea80854b36c394e3bc16161d9d7d1197ea85dc1f75cdf2058dd5610d55164cdcc0a41cb059767d4c6fcc504
+  languageName: node
+  linkType: hard
+
+"@uniswap/v3-core@npm:1.0.2-solc-0.8-simulate":
+  version: 1.0.2-solc-0.8-simulate
+  resolution: "@uniswap/v3-core@npm:1.0.2-solc-0.8-simulate"
+  checksum: c2fefe8951062c6152d1cb56f19b9ecb1a20b6ee147534aaf2a710f5c619b9422d9d5661f42272d0e558356657e39ad44bb34114802f2371a2b243d956331b90
+  languageName: node
+  linkType: hard
+
+"@uniswap/v3-periphery@Uniswap/v3-periphery#0.8":
+  version: 1.4.2-solc-0.8
+  resolution: "@uniswap/v3-periphery@https://github.com/Uniswap/v3-periphery.git#commit=b325bb0905d922ae61fcc7df85ee802e8df5e96c"
+  dependencies:
+    "@openzeppelin/contracts": 4.6.0
+    "@uniswap/v2-core": 1.0.1
+    "@uniswap/v3-core": 1.0.2-solc-0.8-simulate
+    base64-sol: 1.1.0
+    hardhat-watcher: ^2.1.1
+  checksum: f3304a1fc08dbc9a3fe7858b593f6529c363618c4133b32d24dea11af8b6e91ba6fa717f8602821750760f3a30675f0e93638d6e345ebf66e34d4007458a4b85
+  languageName: node
+  linkType: hard
+
 "@unlock-protocol/contracts@0.0.12, @unlock-protocol/contracts@workspace:./packages/contracts, @unlock-protocol/contracts@workspace:^, @unlock-protocol/contracts@workspace:packages/contracts":
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/contracts@workspace:packages/contracts"
@@ -19058,8 +19092,11 @@ __metadata:
     "@openzeppelin/upgrades": 2.8.0
     "@typescript-eslint/eslint-plugin": 5.42.0
     "@typescript-eslint/parser": 5.42.0
+    "@uniswap/v3-core": "Uniswap/v3-core#0.8"
+    "@uniswap/v3-periphery": "Uniswap/v3-periphery#0.8"
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
+    "@unlock-protocol/hardhat-plugin": "workspace:^"
     babel-eslint: 10.1.0
     bignumber.js: 9.1.0
     chai: 4.3.4
@@ -23459,6 +23496,13 @@ __metadata:
   version: 1.5.1
   resolution: "base64-js@npm:1.5.1"
   checksum: 669632eb3745404c2f822a18fc3a0122d2f9a7a13f7fb8b5823ee19d1d2ff9ee5b52c53367176ea4ad093c332fd5ab4bd0ebae5a8e27917a4105a4cfc86b1005
+  languageName: node
+  linkType: hard
+
+"base64-sol@npm:1.1.0":
+  version: 1.1.0
+  resolution: "base64-sol@npm:1.1.0"
+  checksum: 9bea828af71e6adcf7c841cf0001e03bd1eae8cc1aef86daedb36f04117b2a626ac23631f700d56a24515f88c2021d7ebdbee4608369f66c53e51c0b4b39ee47
   languageName: node
   linkType: hard
 
@@ -36007,6 +36051,17 @@ fsevents@~2.1.1:
     ethers: ^5.0.24
     hardhat: ^2.0.0
   checksum: 0e3f5085bab210748cc9f327a8734f25cb80edfe66044b99edc7ba60134c36eef4a27f23ed7dcdfafc2167970f484a11533831992bbd80efb730bdcfed2e86be
+  languageName: node
+  linkType: hard
+
+"hardhat-watcher@npm:^2.1.1":
+  version: 2.5.0
+  resolution: "hardhat-watcher@npm:2.5.0"
+  dependencies:
+    chokidar: ^3.5.3
+  peerDependencies:
+    hardhat: ^2.0.0
+  checksum: e6c0d52865529653733b3fed6887b41a676fc5185eb835909b360e8cc24223a2fc4c398e3874b234fa918ec59be9de86d7fe92963022139c05cf07f027377cbb
   languageName: node
   linkType: hard
 
