@@ -15,7 +15,7 @@ describe('keyMined', () => {
         keychainUrl: 'https://app.unlock-protocol.com/keychain',
         network: 'Polygon',
       })
-    ).toBe('A key was added to your wallet!')
+    ).toBe('A membership was added to your wallet!')
   })
 
   it('should have the right text', () => {
@@ -29,7 +29,7 @@ describe('keyMined', () => {
       })
     )
     expect(content).toHaveTextContent(
-      ` new NFT in your wallet! A new NFT key (#1337) to the lock Ethereal NYC 202 was just minted for you! It has been added to your Unlock Keychain, where you can view it and, if needed, print it as a signed QR Code!`
+      `A new Membership NFT in your wallet! A new membership (#1337) to the lock Ethereal NYC 202`
     )
   })
 
@@ -75,7 +75,7 @@ describe('keyMined', () => {
     })
 
     expect(asHtml(content)).toHaveTextContent(
-      `A new NFT key (#1337) to the lock Ethereal NYC 202 was just minted`
+      `A new membership (#1337) to the lock Ethereal NYC 202 was just minted for you`
     )
     expect(asHtml(content)).toContainHTML('href="http://opensealurl.com"')
   })

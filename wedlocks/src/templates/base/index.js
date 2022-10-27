@@ -269,7 +269,7 @@ export default (opts = {}) => {
                             >hello@unlock-protocol.com.</a
                           >
                         </p>
-                        <p>The Unlock team</p>
+                        <p>Unlock Labs</p>
                       </td>
                     </tr>
                   </table>
