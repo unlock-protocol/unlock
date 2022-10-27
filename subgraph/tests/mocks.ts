@@ -118,7 +118,7 @@ createMockedFunction(
 createMockedFunction(
   Address.fromString(lockAddress),
   'balance',
-  'keyOf(string):(uint256)'
+  'balanceOf(string):(uint256)'
 )
   .withArgs([ethereum.Value.fromString(lockAddress)])
   .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(balance))])
