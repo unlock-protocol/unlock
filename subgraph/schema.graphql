@@ -6,6 +6,7 @@ type Lock @entity {
   expirationDuration: BigInt
   tokenAddress: Bytes!
   price: BigInt!
+  balance: BigInt!
   lockManagers: [Bytes!]!
   version: BigInt!
   totalKeys: BigInt!

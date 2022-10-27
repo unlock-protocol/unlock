@@ -11,6 +11,7 @@ export const expiration = 16613302653
 export const tokenURI = 'http://token-api'
 export const maxNumberOfKeys = 10
 export const maxKeysPerAddress = 5
+export const balance = 0.05
 
 // prices
 export const keyPrice = 1000

@@ -14,6 +14,7 @@ import {
   baseTokenURI,
   maxNumberOfKeys,
   maxKeysPerAddress,
+  balance,
 } from './constants'
 
 createMockedFunction(
@@ -113,6 +114,14 @@ createMockedFunction(
 )
   .withArgs([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(tokenId))])
   .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(expiration))])
+
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'balance',
+  'keyOf(string):(uint256)'
+)
+  .withArgs([ethereum.Value.fromString(lockAddress)])
+  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU64(balance))])
 
 /**
  * Mocks function for < v10 locks

@@ -52,6 +52,11 @@ export function handleNewLock(event: NewLock): void {
     lock.maxNumberOfKeys = maxNumberOfKeys.value
   }
 
+  let balance = lockContract.try_balanceOf(lockAddress)
+  if (!balance.reverted) {
+    lock.balance = balance.value
+  }
+
   // store info from event
   lock.address = lockAddress
   lock.version = version

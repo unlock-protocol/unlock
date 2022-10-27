@@ -37,6 +37,7 @@ import {
   baseTokenURI,
   maxNumberOfKeys,
   maxKeysPerAddress,
+  balance,
 } from './constants'
 
 // mock contract functions
@@ -80,6 +81,7 @@ describe('Describe Locks events', () => {
       'maxKeysPerAddress',
       `${maxKeysPerAddress}`
     )
+    assert.fieldEquals('Lock', lockAddress, 'balance', `${balance}`)
   })
 
   test('Lock manager added', () => {
