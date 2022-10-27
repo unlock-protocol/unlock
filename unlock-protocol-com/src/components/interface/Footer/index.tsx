@@ -13,7 +13,7 @@ const FOOTER_BOTTOM_NAVIGATION: Record<string, LinkType[]> = {
   App: [
     {
       name: 'Creator Dashboard',
-      href: unlockConfig.appURL!,
+      href: `${unlockConfig.appURL!}/locks`,
     },
     {
       name: 'Membership',
