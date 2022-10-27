@@ -1,5 +1,5 @@
 import { useAuth } from '~/contexts/AuthenticationContext'
-import { CheckoutService } from './checkoutMachine'
+import { CheckoutService, FiatPricing } from './checkoutMachine'
 import { Connected } from '../Connected'
 import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
@@ -28,11 +28,56 @@ import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { fetchRecipientsData } from './utils'
 import { MAX_UINT } from '~/constants'
+import { Pricing } from '../Lock'
+import { lockTickerSymbol } from '../../../../../utils/checkoutLockUtils'
+import { Lock } from '~/unlockTypes'
 
 interface Props {
   injectedProvider: unknown
   checkoutService: CheckoutService
   communication?: CheckoutCommunication
+}
+
+export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
+  return (
+    <div className="mt-6">
+      <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
+        <h4 className="text-gray-600"> Service Fee </h4>
+        <div className="font-bold">
+          ~${(fiatPricing?.usd?.unlockServiceFee / 100).toString()}
+        </div>
+      </div>
+      <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
+        <h4 className="text-gray-600"> Credit Card Processing </h4>
+        <div className="font-bold">
+          ~${(fiatPricing?.usd?.creditCardProcessing / 100).toString()}
+        </div>
+      </div>
+      <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
+        <h4 className="text-gray-600"> Total </h4>
+        <div className="font-bold">
+          ~$
+          {(
+            Object.values(fiatPricing.usd).reduce<number>(
+              (t, amount) => t + Number(amount),
+              0
+            ) / 100
+          ).toFixed(2)}
+        </div>
+      </div>
+      <div className="flex">
+        <a
+          href="https://unlock-protocol.com/guides/enabling-credit-cards/#faq"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-2 py-0.5 rounded-lg flex items-center gap-2 text-sm hover:bg-gray-100 bg-gray-50 text-gray-500 hover:text-black"
+        >
+          <span>Learn more</span>
+          <ExternalLinkIcon />
+        </a>
+      </div>
+    </div>
+  )
 }
 
 export function Confirm({
@@ -88,7 +133,7 @@ export function Confirm({
     ? new Array(recipients.length).fill(recurringPaymentAmount)
     : undefined
 
-  const { isLoading, data: fiatPricing } = useQuery(
+  const { isInitialLoading: isFiatPriceLoading, data: fiatPricing } = useQuery(
     [quantity, lockAddress, lockNetwork],
     async () => {
       const pricing = await getFiatPricing(
@@ -98,21 +143,21 @@ export function Confirm({
         quantity
       )
       return pricing
+    },
+    {
+      refetchInterval: Infinity,
     }
   )
 
+  const baseCurrencySymbol = config.networks[lockNetwork].baseCurrencySymbol
+  const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
   const formattedData = getLockProps(
-    {
-      ...lock,
-      fiatPricing,
-    },
+    lock,
     lockNetwork,
-    config.networks[lockNetwork].baseCurrencySymbol,
+    baseCurrencySymbol,
     lockName,
     quantity
   )
-
-  const fiatPrice = fiatPricing?.usd?.keyPrice
 
   const onConfirmCard = async () => {
     try {
@@ -426,7 +471,6 @@ export function Confirm({
   }
 
   const stepItems = useCheckoutSteps(checkoutService)
-
   return (
     <Fragment>
       <Stepper position={7} service={checkoutService} items={stepItems} />
@@ -435,28 +479,16 @@ export function Confirm({
           <h3 className="text-xl font-bold">
             {quantity}X {lockName}
           </h3>
-          {!isLoading ? (
-            <div className="grid">
-              {fiatPricing.creditCardEnabled ? (
-                <>
-                  {!!fiatPrice && (
-                    <span className="font-semibold">
-                      ${(fiatPrice / 100).toFixed(2)}
-                    </span>
-                  )}
-                  <span>{formattedData.formattedKeyPrice} </span>
-                </>
-              ) : (
-                <>
-                  <span className="font-semibold">
-                    {formattedData.formattedKeyPrice}{' '}
-                  </span>
-                  {!!fiatPrice && <span>${(fiatPrice / 100).toFixed(2)}</span>}
-                </>
-              )}
-              <p className="text-sm text-gray-500">
-                {quantity} X {formattedData.formattedKeyPrice}
-              </p>
+          {!isFiatPriceLoading ? (
+            <div>
+              <Pricing
+                keyPrice={formattedData.formattedKeyPrice}
+                usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
+                isCardEnabled={formattedData.cardEnabled}
+              />
+              <div className="text-sm text-right text-gray-500">
+                {quantity} X {lock?.keyPrice} {symbol?.toUpperCase()}
+              </div>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-2">
@@ -465,37 +497,44 @@ export function Confirm({
             </div>
           )}
         </div>
-        {!isLoading ? (
-          <div className="space-y-2">
-            <div className="flex items-center gap-4 text-sm">
-              <LabeledItem
-                label="Duration"
-                icon={DurationIcon}
-                value={formattedData.formattedDuration}
-              />
-              {!!(recurringPayments?.length && recurringPayment) && (
+        {!isFiatPriceLoading ? (
+          <div>
+            <div className="space-y-2">
+              <div className="flex items-center gap-4 text-sm">
                 <LabeledItem
-                  label="Recurring"
-                  icon={RecurringIcon}
-                  value={recurringPayment.toString()}
+                  label="Duration"
+                  icon={DurationIcon}
+                  value={formattedData.formattedDuration}
                 />
-              )}
-              {totalApproval && (
-                <div className="flex items-center gap-2 text-gray-500">
-                  <RecurringIcon /> <span> Renewed until cancelled </span>
-                </div>
+                {!!(recurringPayments?.length && recurringPayment) && (
+                  <LabeledItem
+                    label="Recurring"
+                    icon={RecurringIcon}
+                    value={recurringPayment.toString()}
+                  />
+                )}
+                {totalApproval && (
+                  <div className="flex items-center gap-2 text-gray-500">
+                    <RecurringIcon /> <span> Renewed until cancelled </span>
+                  </div>
+                )}
+              </div>
+              <a
+                href={config.networks[lockNetwork].explorer.urls.address(
+                  lockAddress
+                )}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+              >
+                View Contract <Icon icon={ExternalLinkIcon} size="small" />
+              </a>
+            </div>
+            <div>
+              {!isFiatPriceLoading && fiatPricing.creditCardEnabled && (
+                <CreditCardPricingBreakdown {...fiatPricing} />
               )}
             </div>
-            <a
-              href={config.networks[lockNetwork].explorer.urls.address(
-                lockAddress
-              )}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-            >
-              View Contract <Icon icon={ExternalLinkIcon} size="small" />
-            </a>
           </div>
         ) : (
           <div className="py-1.5 space-y-2 items-center">
