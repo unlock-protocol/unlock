@@ -2,6 +2,7 @@ import { Button, Input, Modal } from '@unlock-protocol/ui'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { RiDeleteBack2Line as DeleteIcon } from 'react-icons/ri'
 import { ComponentProps } from 'react'
+import { Attribute } from '../utils'
 
 export function AddLevelModal({
   isOpen,
@@ -34,7 +35,7 @@ export function AddLevelModal({
                 label="Type"
                 type="text"
                 placeholder="type"
-                {...register(`properties.${index}.type`)}
+                {...register(`levels.${index}.trait_type`)}
               />
               <div className="space-y-1 max-w-[50%] mb-1.5">
                 <label htmlFor="value"> Value </label>
@@ -74,13 +75,14 @@ export function AddLevelModal({
               event.preventDefault()
               appendLevel({
                 trait_type: '',
-                value: 1,
+                value: 75,
+                max_value: 100,
               })
             }}
             size="small"
             variant="outlined-primary"
           >
-            Add property
+            Add level
           </Button>
         </div>
         <Button
@@ -93,5 +95,28 @@ export function AddLevelModal({
         </Button>
       </div>
     </Modal>
+  )
+}
+
+export function Level({ trait_type, max_value, value }: Attribute) {
+  return (
+    <div className="flex flex-col gap-2 px-4 py-2 border rounded-lg text-brand-dark border-ui-main-500 w-60">
+      <div className="flex items-center justify-between ">
+        <div>{trait_type}</div>
+        <div>
+          {value} of {max_value}
+        </div>
+      </div>
+      <div className="w-full bg-gray-200 rounded-full">
+        <div
+          className="p-1 text-sm font-medium leading-none text-center text-blue-100 rounded-full bg-ui-main-900"
+          style={{
+            width: `${value}%`,
+          }}
+        >
+          {value}%
+        </div>
+      </div>
+    </div>
   )
 }

@@ -24,16 +24,18 @@ export function UpdateLockMetadata() {
         network,
         lockAddress
       )
+      console.log(response)
       return response.data
     },
     {
       initialData: {},
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onError() {},
+      onError(error) {
+        console.log(error)
+      },
       refetchInterval: false,
       refetchOnWindowFocus: false,
       refetchOnMount: false,
-      refetchOnReconnect: false,
       retry: false,
     }
   )
@@ -79,6 +81,8 @@ export function UpdateLockMetadata() {
     background_color,
     ticket,
     properties,
+    levels,
+    stats,
   }: MetadataFormData) => {
     const metadata = {
       name,
@@ -86,44 +90,43 @@ export function UpdateLockMetadata() {
       youtube_url,
       external_url,
       background_color,
-      properties,
-      ticket,
       attributes: [] as Attribute[],
     }
 
-    if (ticket.event_address) {
+    for (const [key, value] of Object.entries(ticket || {})) {
+      if (!value) {
+        continue
+      }
       metadata.attributes.push({
-        trait_type: 'event_address',
-        value: ticket.event_address,
+        trait_type: key,
+        value,
       })
     }
 
-    if (ticket.event_meeting_url) {
-      metadata.attributes.push({
-        trait_type: 'event_meeting_url',
-        value: ticket.event_meeting_url,
-      })
-    }
-
-    if (ticket.event_date) {
-      metadata.attributes.push({
-        trait_type: 'event_date',
-        value: ticket.event_date,
-      })
-    }
-
-    if (ticket.event_time) {
-      metadata.attributes.push({
-        trait_type: 'event_time',
-        value: ticket.event_time,
-      })
-    }
-
-    const propertyAttributes = properties.filter(
+    const propertyAttributes = properties?.filter(
       (item) => item.trait_type && item.value
     )
 
-    metadata.attributes.push(...propertyAttributes)
+    const levelsAttributes = levels?.filter(
+      (item) => item.trait_type && item.value && item.max_value
+    )
+    const statsAttributes = stats?.filter(
+      (item) => item.trait_type && item.value && item.max_value
+    )
+
+    if (propertyAttributes?.length) {
+      metadata.attributes.push(...propertyAttributes)
+    }
+
+    if (levelsAttributes?.length) {
+      metadata.attributes.push(...levelsAttributes)
+    }
+
+    if (statsAttributes?.length) {
+      metadata.attributes.push(...statsAttributes)
+    }
+
+    console.log(metadata, levels, properties, stats)
 
     await lockMetadata.mutateAsync(metadata)
   }

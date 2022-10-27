@@ -84,9 +84,9 @@ export function AddPropertyModal({
 
 export function Property({ trait_type, value }: Attribute) {
   return (
-    <div className="flex flex-col items-center justify-center w-40 h-40 p-4 border rounded-xl aspect-1">
-      <h4 className="text-lg font-bold"> {trait_type}</h4>
-      <p>{value}</p>
+    <div className="flex flex-col items-center justify-center w-40 h-20 border bg-ui-main-50 rounded-xl aspect-1 border-ui-main-300">
+      <h4 className="text-sm"> {trait_type}</h4>
+      <p className="text-lg font-bold">{value}</p>
     </div>
   )
 }

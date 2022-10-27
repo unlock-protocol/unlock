@@ -75,13 +75,14 @@ export function AddStatModal({
               event.preventDefault()
               appendStat({
                 trait_type: '',
-                value: '',
+                value: 1,
+                max_value: 10,
               })
             }}
             size="small"
             variant="outlined-primary"
           >
-            Add property
+            Add Stat
           </Button>
         </div>
         <Button
@@ -94,5 +95,16 @@ export function AddStatModal({
         </Button>
       </div>
     </Modal>
+  )
+}
+
+export function Stat({ trait_type, max_value, value }: Attribute) {
+  return (
+    <div className="flex items-center justify-between px-4 py-2 border rounded-lg border-ui-main-500 w-60">
+      <div>{trait_type}</div>
+      <div>
+        {value} of {max_value}
+      </div>
+    </div>
   )
 }
