@@ -12,7 +12,10 @@ interface Props {
 }
 
 export function LockTicketForm({ disabled }: Props) {
-  const { register } = useFormContext<MetadataFormData>()
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<MetadataFormData>()
   return (
     <div className="p-6 bg-white shadow border-xs rounded-xl">
       <Disclosure>
@@ -36,12 +39,14 @@ export function LockTicketForm({ disabled }: Props) {
                 disabled={disabled}
                 type="date"
                 label="Date"
+                error={errors.ticket?.event_start_date?.message}
               />
               <Input
                 {...register('ticket.event_start_time')}
                 disabled={disabled}
                 type="time"
                 label="Time"
+                error={errors.ticket?.event_start_time?.message}
               />
               <Input
                 {...register('ticket.event_address')}
@@ -49,6 +54,7 @@ export function LockTicketForm({ disabled }: Props) {
                 type="text"
                 placeholder="123, Street, NYC"
                 label="Address for in person event"
+                error={errors.ticket?.event_address?.message}
               />
               <Input
                 disabled={disabled}
@@ -56,6 +62,7 @@ export function LockTicketForm({ disabled }: Props) {
                 placeholder="https://"
                 {...register('ticket.event_meeting_url')}
                 type="url"
+                error={errors.ticket?.event_meeting_url?.message}
               />
             </Disclosure.Panel>
           </div>

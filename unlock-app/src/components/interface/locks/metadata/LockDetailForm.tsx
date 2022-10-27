@@ -5,13 +5,17 @@ import {
   RiArrowDropUpLine as UpIcon,
   RiArrowDropDownLine as DownIcon,
 } from 'react-icons/ri'
+import { MetadataFormData } from './utils'
 
 interface Props {
   disabled?: boolean
 }
 
 export function LockDetailForm({ disabled }: Props) {
-  const { register } = useFormContext()
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<MetadataFormData>()
   return (
     <div className="p-6 bg-white shadow border-xs rounded-xl">
       <Disclosure defaultOpen>
@@ -32,9 +36,10 @@ export function LockDetailForm({ disabled }: Props) {
                 {...register('name', {
                   required: true,
                 })}
+                error={errors.name?.message}
                 disabled={disabled}
                 type="text"
-                placeholder="LockSmith Daily Membership"
+                placeholder="Name"
                 label="Name"
                 description="The name will appear as the NFT name, not as collection name."
               />
@@ -42,15 +47,17 @@ export function LockDetailForm({ disabled }: Props) {
                 {...register('external_url')}
                 disabled={disabled}
                 type="url"
-                placeholder="https://example.com"
+                placeholder="https://"
                 label="External URL"
-                description="Included a link in your NFT, so members can learn more about it."
+                error={errors.external_url?.message}
+                description="Include a link in the NFT, so members can learn more about it."
               />
               <TextBox
                 {...register('description')}
                 disabled={disabled}
                 label="Description"
-                placeholder="Daily NFT membership lock"
+                placeholder="Write description here."
+                error={errors.description?.message}
                 rows={4}
               />
             </Disclosure.Panel>

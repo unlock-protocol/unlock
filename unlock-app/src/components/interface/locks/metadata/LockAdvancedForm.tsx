@@ -5,13 +5,17 @@ import {
   RiArrowDropUpLine as UpIcon,
   RiArrowDropDownLine as DownIcon,
 } from 'react-icons/ri'
+import { MetadataFormData } from './utils'
 
 interface Props {
   disabled?: boolean
 }
 
 export function LockAdvancedForm({ disabled }: Props) {
-  const { register } = useFormContext()
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<MetadataFormData>()
   return (
     <div className="p-6 bg-white shadow border-xs rounded-xl">
       <Disclosure>
@@ -36,6 +40,7 @@ export function LockAdvancedForm({ disabled }: Props) {
                 disabled={disabled}
                 placeholder="https://"
                 label="Animation URL"
+                error={errors.animation_url?.message}
                 description="A URL to a multi-media attachment for the item. Also supports HTML pages, allowing you to build rich experiences and interactive NFTs using JavaScript canvas, WebGL, and more. "
               />
               <Input
@@ -44,6 +49,7 @@ export function LockAdvancedForm({ disabled }: Props) {
                 disabled={disabled}
                 placeholder="https://example.com"
                 label="Youtube URL"
+                error={errors.youtube_url?.message}
                 description="A URL to a YouTube video."
               />
               <Input
@@ -52,6 +58,7 @@ export function LockAdvancedForm({ disabled }: Props) {
                 disabled={disabled}
                 placeholder="Daily NFT membership lock"
                 type="color"
+                error={errors.background_color?.message}
                 className="The color will be rendered as background color of the item on OpenSea."
               />
             </Disclosure.Panel>

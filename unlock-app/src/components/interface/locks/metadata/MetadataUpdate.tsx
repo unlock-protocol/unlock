@@ -2,9 +2,11 @@ import { Transition, Dialog } from '@headlessui/react'
 import { Fragment } from 'react'
 import { UpdateLockMetadata } from '.'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+import { Lock } from '~/unlockTypes'
 interface Props {
   isOpen: boolean
   setIsOpen(value: boolean): Promise<void> | void
+  lock?: Lock
 }
 
 export function UpdateMetadataDrawer({ isOpen, setIsOpen }: Props) {

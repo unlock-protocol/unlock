@@ -223,6 +223,7 @@ export const LockDetailCard = ({
       />
 
       <UpdateMetadataDrawer
+        lock={lock}
         isOpen={updateMetadata}
         setIsOpen={setUpdateMetadata}
       />

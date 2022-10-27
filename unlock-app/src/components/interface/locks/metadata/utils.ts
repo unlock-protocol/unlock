@@ -1,6 +1,6 @@
 export interface Ticket {
-  event_date?: string
-  event_time?: string
+  event_start_date?: string
+  event_start_time?: string
   event_address?: string
   event_meeting_url?: string
 }

@@ -11,8 +11,13 @@ import { LockDetailForm } from './LockDetailForm'
 import { LockTicketForm } from './LockTicketForm'
 import { Attribute, Metadata, MetadataFormData, toFormData } from './utils'
 import { config } from '~/config/app'
+import { Lock } from '~/unlockTypes'
 
-export function UpdateLockMetadata() {
+interface Props {
+  lock?: Lock
+}
+
+export function UpdateLockMetadata({ lock }: Props) {
   const router = useRouter()
   const lockAddress = router.query.address!.toString()
   const network = Number(router.query.network)
@@ -40,8 +45,7 @@ export function UpdateLockMetadata() {
 
   const methods = useForm<MetadataFormData>({
     defaultValues: {
-      name: 'Locksmith 101',
-      external_url: 'https://example.com',
+      name: lock?.name,
     },
   })
 
@@ -63,7 +67,8 @@ export function UpdateLockMetadata() {
     {
       mutationKey: ['lockMetadata', lockAddress, network],
       onError(error) {
-        ToastHelper.error(error as any)
+        console.error(error)
+        ToastHelper.error('Could not update the lock data')
       },
       onSuccess() {
         ToastHelper.success('Metadata successfully saved!')
