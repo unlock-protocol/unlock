@@ -6,11 +6,7 @@ import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
 import { Badge, Button, Icon, minifyAddress } from '@unlock-protocol/ui'
-import {
-  RiExternalLinkLine as ExternalLinkIcon,
-  RiTimer2Line as DurationIcon,
-  RiRepeatFill as RecurringIcon,
-} from 'react-icons/ri'
+import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
 import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -20,7 +16,6 @@ import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { LabeledItem } from '../LabeledItem'
 import { Framework } from '@superfluid-finance/sdk-core'
 import { ethers, BigNumber } from 'ethers'
 import { selectProvider } from '~/hooks/useAuthenticate'
