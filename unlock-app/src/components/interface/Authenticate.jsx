@@ -6,9 +6,7 @@ import React, {
   useMemo,
   useEffect,
 } from 'react'
-import ApolloClient from 'apollo-boost'
 import PropTypes, { number } from 'prop-types'
-import { ApolloProvider } from '@apollo/react-hooks'
 import { Web3Service, WalletService } from '@unlock-protocol/unlock-js'
 import { StorageServiceContext } from '../../utils/withStorageService'
 import { StorageService } from '../../services/storageService'
@@ -31,14 +29,6 @@ const Web3ServiceProvider = Web3ServiceContext.Provider
  * @returns
  */
 const Providers = ({ network, networkConfig, children, authenticate }) => {
-  const apolloClient = useMemo(
-    () =>
-      new ApolloClient({
-        uri: networkConfig[network].subgraph.endpoint,
-      }),
-    [networkConfig, network]
-  )
-
   const storageService = useMemo(
     () => new StorageService(networkConfig[network].locksmith),
     [networkConfig, network]
@@ -56,13 +46,11 @@ const Providers = ({ network, networkConfig, children, authenticate }) => {
     tryAutoLogin()
   }, [])
   return (
-    <ApolloProvider client={apolloClient}>
-      <StorageServiceProvider value={storageService}>
-        <Web3ServiceProvider value={web3Service}>
-          {isLoading ? <Loading /> : children}
-        </Web3ServiceProvider>
-      </StorageServiceProvider>
-    </ApolloProvider>
+    <StorageServiceProvider value={storageService}>
+      <Web3ServiceProvider value={web3Service}>
+        {isLoading ? <Loading /> : children}
+      </Web3ServiceProvider>
+    </StorageServiceProvider>
   )
 }
 
