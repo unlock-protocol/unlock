@@ -32,13 +32,13 @@ export function LockTicketForm({ disabled }: Props) {
             </Disclosure.Button>
             <Disclosure.Panel className="space-y-6">
               <Input
-                {...register('ticket.event_date')}
+                {...register('ticket.event_start_date')}
                 disabled={disabled}
                 type="date"
                 label="Date"
               />
               <Input
-                {...register('ticket.event_time')}
+                {...register('ticket.event_start_time')}
                 disabled={disabled}
                 type="time"
                 label="Time"
