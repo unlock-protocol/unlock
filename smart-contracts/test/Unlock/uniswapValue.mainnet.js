@@ -31,11 +31,7 @@ contract('Unlock / uniswapValue', () => {
   let signer
   let keyOwner
 
-  before(async () => {
-    if (!process.env.RUN_MAINNET_FORK) {
-      // all suite will be skipped
-      this.skip()
-    }
+  before(async function () {
     ;[signer, keyOwner] = await ethers.getSigners()
     unlock = await ethers.getContractAt('Unlock', unlockAddress)
 

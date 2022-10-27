@@ -11675,7 +11675,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.2.1":
+"@nomiclabs/hardhat-ethers@npm:2.2.1, @nomiclabs/hardhat-ethers@npm:^2.2.1":
   version: 2.2.1
   resolution: "@nomiclabs/hardhat-ethers@npm:2.2.1"
   peerDependencies:
@@ -19085,6 +19085,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/smart-contract-extensions@workspace:smart-contract-extensions"
   dependencies:
+    "@nomiclabs/hardhat-ethers": ^2.2.1
     "@nomiclabs/hardhat-truffle5": 2.0.7
     "@nomiclabs/hardhat-web3": 2.0.0
     "@openzeppelin/contracts": 4.7.3
@@ -19103,6 +19104,7 @@ __metadata:
     eslint: 8.26.0
     eslint-config-prettier: 8.5.0
     eslint-plugin-prettier: 4.2.1
+    ethers: ^5.7.2
     hardhat: 2.12.2
     hardhat-gas-reporter: 1.0.9
     hardlydifficult-eth: 1.1.4
@@ -32665,7 +32667,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.2":
+"ethers@npm:5.7.2, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -35574,7 +35576,7 @@ fsevents@~2.1.1:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 872685026db07ad1687056a78388f17c6a9bcd22bbf9d99d1e2b21e2d196c6e99a128bcff48063b3f0cf692a4365142fae9dd06cf8c532bc557a45f8ac853308
+  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
   languageName: node
   linkType: hard
 

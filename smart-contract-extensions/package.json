@@ -31,6 +31,7 @@
   "author": "HardlyDifficult",
   "license": "MIT",
   "dependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.2.1",
     "@nomiclabs/hardhat-truffle5": "2.0.7",
     "@nomiclabs/hardhat-web3": "2.0.0",
     "@openzeppelin/contracts": "4.7.3",
@@ -49,6 +50,7 @@
     "eslint": "8.26.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.2.1",
+    "ethers": "^5.7.2",
     "hardhat": "2.12.2",
     "hardhat-gas-reporter": "1.0.9",
     "hardlydifficult-eth": "1.1.4",
