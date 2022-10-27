@@ -9,7 +9,7 @@ import { LockAdvancedForm } from './LockAdvancedForm'
 import { LockCustomForm } from './custom'
 import { LockDetailForm } from './LockDetailForm'
 import { LockTicketForm } from './LockTicketForm'
-import { Attribute, MetadataFormData } from './utils'
+import { Attribute, Metadata, MetadataFormData, toFormData } from './utils'
 
 export function UpdateLockMetadata() {
   const router = useRouter()
@@ -24,24 +24,22 @@ export function UpdateLockMetadata() {
         network,
         lockAddress
       )
-      console.log(response)
       return response.data
     },
     {
-      initialData: {},
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
       onError(error) {
-        console.log(error)
+        console.error(error)
       },
-      refetchInterval: false,
-      refetchOnWindowFocus: false,
+      refetchInterval: Infinity,
       refetchOnMount: false,
-      retry: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      retry: 2,
     }
   )
 
   const methods = useForm<MetadataFormData>({
-    defaultValues: data || {
+    defaultValues: {
       name: 'Locksmith 101',
       external_url: 'https://example.com',
     },
@@ -126,14 +124,13 @@ export function UpdateLockMetadata() {
       metadata.attributes.push(...statsAttributes)
     }
 
-    console.log(metadata, levels, properties, stats)
-
     await lockMetadata.mutateAsync(metadata)
   }
 
   useEffect(() => {
-    if (Object.keys(data).length) {
-      methods.reset(data)
+    if (data) {
+      const form = toFormData(data as Metadata)
+      methods.reset(form)
     }
   }, [data, methods])
 

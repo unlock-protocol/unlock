@@ -56,7 +56,8 @@ export function toFormData({
   const stats = attributes?.filter((item) => item.display_type === 'number')
   const levels = attributes?.filter((item) => typeof item.value === 'number')
   const properties = attributes?.filter(
-    (item) => typeof item.value === 'string'
+    (item) =>
+      typeof item.value === 'string' && !item.trait_type.startsWith('event_')
   )
   return {
     name,
