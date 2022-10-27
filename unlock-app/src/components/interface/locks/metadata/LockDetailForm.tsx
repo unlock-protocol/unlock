@@ -29,7 +29,9 @@ export function LockDetailForm({ disabled }: Props) {
             </Disclosure.Button>
             <Disclosure.Panel className="space-y-6">
               <Input
-                {...register('name')}
+                {...register('name', {
+                  required: true,
+                })}
                 disabled={disabled}
                 type="text"
                 placeholder="LockSmith Daily Membership"
@@ -45,10 +47,10 @@ export function LockDetailForm({ disabled }: Props) {
                 description="Included a link in your NFT, so members can learn more about it."
               />
               <TextBox
+                {...register('description')}
                 disabled={disabled}
                 label="Description"
                 placeholder="Daily NFT membership lock"
-                {...register('description')}
                 rows={4}
               />
             </Disclosure.Panel>

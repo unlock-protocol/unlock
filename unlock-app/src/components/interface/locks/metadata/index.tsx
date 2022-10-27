@@ -10,6 +10,7 @@ import { LockCustomForm } from './custom'
 import { LockDetailForm } from './LockDetailForm'
 import { LockTicketForm } from './LockTicketForm'
 import { Attribute, Metadata, MetadataFormData, toFormData } from './utils'
+import { config } from '~/config/app'
 
 export function UpdateLockMetadata() {
   const router = useRouter()
@@ -73,6 +74,7 @@ export function UpdateLockMetadata() {
 
   const onSubmit = async ({
     name,
+    description,
     animation_url,
     youtube_url,
     external_url,
@@ -84,6 +86,8 @@ export function UpdateLockMetadata() {
   }: MetadataFormData) => {
     const metadata = {
       name,
+      image: `${config.locksmithHost}/lock/${lockAddress}/icon`,
+      description,
       animation_url,
       youtube_url,
       external_url,
