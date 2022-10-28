@@ -6,7 +6,8 @@ import {
   LockManagerRemoved,
   LockMetadata,
 } from '../generated/templates/PublicLock/PublicLock'
-import { lockAddress, LOCK_MANAGER } from './constants'
+import { lockAddress } from './constants'
+import { LOCK_MANAGER } from '../src/helpers'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
 
 export function createNewLockEvent(
