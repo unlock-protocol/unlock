@@ -10,10 +10,6 @@ pragma experimental ABIEncoderV2;
 interface IPublicLockV12
 {
 
-// See indentationissue description here:
-// https://github.com/duaraghav8/Ethlint/issues/268
-// solium-disable indentation
-
   /// Functions
   function initialize(
     address _lockCreator,
