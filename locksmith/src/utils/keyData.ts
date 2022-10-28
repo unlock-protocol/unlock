@@ -26,7 +26,7 @@ export default class KeyData {
         `There was an error retrieving info for metadata ${lockAddress} ${tokenId} on ${network}`,
         error
       )
-      return
+      return {}
     }
   }
 
