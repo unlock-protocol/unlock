@@ -172,34 +172,29 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 }
 
-// lock functions
-// keccak 256
-const roles = {
-  B89CDD26CDDD51301940BF2715F765B626B8A5A9E2681AC62DC83CC2DB2530C0:
-    'LOCK_MANAGER',
-  B309C40027C81D382C3B58D8DE24207A34B27E1DB369B1434E4A11311F154B5E:
-    'KEY_GRANTER',
-}
-
-const addLockManager = (lockAddress: Bytes, lockManager: Bytes) => {
-  const lock = Lock.load(lockAddress.toHexString())
-  if (lock) {
-    const lockManagers = lock.lockManagers || []
-    lockManagers.push(lockManager)
-    lock.lockManagers = lockManagers
-    lock.save()
-    log.debug('Lock manager {} added to lock: {}', [
-      lockManager.toHexString(),
-      lockAddress.toHexString(),
-    ])
-  }
-}
+// lock functions below
 
 export function handleRoleGranted(event: RoleGrantedEvent): void {
-  const role = roles[event.params.role.toString()]
-  if (role === 'LOCK_MANAGER') {
-    addLockManager(event.address, event.params.account)
+  // keccak 256 of 'LOCK_MANAGER'
+  log.debug('{}', [event.params.role.toString()])
+  if (
+    event.params.role.toString() ===
+    'B89CDD26CDDD51301940BF2715F765B626B8A5A9E2681AC62DC83CC2DB2530C0'
+  ) {
+    const lock = Lock.load(event.address.toHexString())
+    if (lock) {
+      const lockManagers = lock.lockManagers || []
+      lockManagers.push(event.params.account)
+      lock.lockManagers = lockManagers
+      lock.save()
+      log.debug('Lock manager {} added to lock: {}', [
+        event.params.account.toHexString(),
+        event.address.toHexString(),
+      ])
+    }
   }
+  // const KEY_GRANTER =
+  //   'B309C40027C81D382C3B58D8DE24207A34B27E1DB369B1434E4A11311F154B5E'
 }
 
 export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {

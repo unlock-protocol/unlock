@@ -2,11 +2,11 @@ import { newMockEvent } from 'matchstick-as'
 import { ethereum, Address, BigInt } from '@graphprotocol/graph-ts'
 import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
 import {
-  LockManagerAdded,
+  RoleGranted,
   LockManagerRemoved,
   LockMetadata,
 } from '../generated/templates/PublicLock/PublicLock'
-import { lockAddress } from './constants'
+import { lockAddress, LOCK_MANAGER } from './constants'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
 
 export function createNewLockEvent(
@@ -32,20 +32,26 @@ export function createNewLockEvent(
 
 export function createLockManagerAddedEvent(
   newLockManager: Address
-): LockManagerAdded {
-  const newLockManagerAdded = changetype<LockManagerAdded>(newMockEvent())
+): RoleGranted {
+  const newRoleGranted = changetype<RoleGranted>(newMockEvent())
 
   // set existing lock address
-  newLockManagerAdded.address = Address.fromString(lockAddress)
+  newRoleGranted.address = Address.fromString(lockAddress)
 
-  newLockManagerAdded.parameters = [
+  newRoleGranted.parameters = []
+
+  newRoleGranted.parameters.push(
     new ethereum.EventParam(
       'account',
       ethereum.Value.fromAddress(newLockManager)
-    ),
-  ]
+    )
+  )
 
-  return newLockManagerAdded
+  newRoleGranted.parameters.push(
+    new ethereum.EventParam('role', ethereum.Value.fromString(LOCK_MANAGER))
+  )
+
+  return newRoleGranted
 }
 
 export function createLockManagerRemovedEvent(

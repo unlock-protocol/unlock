@@ -26,3 +26,9 @@ export const baseTokenURI = 'https:/custom-lock.com/api/key/'
 // default address used in newMockEvent() function
 export const defaultMockAddress = '0xa16081f360e3847006db660bae1c6d1b2e17ec2a'
 export const nullAddress = '0x0000000000000000000000000000000000000000'
+
+// keccak 256
+export const LOCK_MANAGER =
+  'B89CDD26CDDD51301940BF2715F765B626B8A5A9E2681AC62DC83CC2DB2530C0'
+export const KEY_GRANTER =
+  'B309C40027C81D382C3B58D8DE24207A34B27E1DB369B1434E4A11311F154B5E'
