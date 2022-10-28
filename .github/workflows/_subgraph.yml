@@ -1,4 +1,4 @@
-name: Run coverage task
+name: Subgraphs deployment
 
 on:
   workflow_call:
