@@ -1,8 +1,14 @@
 # Changes
 
+
 # 0.30.6
 
 - Add support for `key` and `lock` function in subgraph service.
+
+# 0.30.5
+
+- Add purchasePriceFor in web3Service
+
 
 # 0.30.4
 
