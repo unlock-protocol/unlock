@@ -16,7 +16,7 @@ export default class KeyData {
         }
       )
       const data = {
-        expiration: parseInt(key?.expiration),
+        expiration: key?.expiration,
         tokenId: key?.tokenId,
         owner: key?.owner,
       }
