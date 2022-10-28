@@ -31,7 +31,7 @@ export default ({ publicLockVersion }) =>
         global.suiteData)
 
       const [deployer, ...signers] = await ethers.getSigners()
-      keyOwners = signers.slice(2, 7).map(({ address }) => address)
+      keyOwners = signers.slice(14, 19).map(({ address }) => address)
 
       // buy some keys
       await walletService.purchaseKeys({
