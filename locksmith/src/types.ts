@@ -51,3 +51,10 @@ export interface UserTokenMetadataInput {
 }
 
 export type ethereumAddress = string
+
+export interface Attribute {
+  display_type?: string
+  max_value?: number
+  trait_type: string
+  value: string | number
+}

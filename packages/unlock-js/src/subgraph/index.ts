@@ -8,7 +8,7 @@ import { NetworkConfigs } from '@unlock-protocol/types'
 import { networks as networkConfigs } from '@unlock-protocol/networks'
 
 interface QueryOptions {
-  networks?: string[]
+  networks?: number[] | string[]
 }
 
 export class SubgraphService {
@@ -48,6 +48,19 @@ export class SubgraphService {
   }
 
   /**
+   * Get a single lock on a network. This is a helper provided on top of locks.
+   */
+  async lock(
+    variables: Omit<AllLocksQueryVariables, 'first'>,
+    options: { network: number }
+  ) {
+    const locks = await this.locks(variables, {
+      networks: [options.network],
+    })
+    return locks?.[0]
+  }
+
+  /**
    * Get keys and associated lock data from multiple networks. By default, all networks will be queried.
    * If you want to query only specific network, you can pass options as the second parameter with network ids array.
    * ```ts
@@ -69,5 +82,16 @@ export class SubgraphService {
       })
     )
     return items.flat()
+  }
+
+  /**
+   * Get a single key on a network. This is a helper provided on top of keys.
+   */
+  async key(
+    variables: Omit<AllKeysQueryVariables, 'first'>,
+    options: Record<'network', number>
+  ) {
+    const keys = await this.keys(variables, { networks: [options.network] })
+    return keys?.[0]
   }
 }

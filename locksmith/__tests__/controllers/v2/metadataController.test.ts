@@ -2,6 +2,7 @@ import { ethers } from 'ethers'
 import request from 'supertest'
 import { loginRandomUser } from '../../test-helpers/utils'
 import verifierOperations from '../../../src/operations/verifierOperations'
+import logger from '../../../src/logger'
 
 const app = require('../../../src/app')
 
@@ -20,6 +21,18 @@ jest.mock('@unlock-protocol/unlock-js', () => {
           lockAddress === lock || manager === lockManager,
         ownerOf: (_lockAddress: string, _tokenId: string, _network: number) =>
           owner,
+      }
+    }),
+    SubgraphService: jest.fn().mockImplementation(() => {
+      return {
+        key: (filter: any, opts: any) => {
+          logger.info(filter, opts)
+          return {
+            owner,
+            expiration: 0,
+            tokenId: 1,
+          }
+        },
       }
     }),
   }
