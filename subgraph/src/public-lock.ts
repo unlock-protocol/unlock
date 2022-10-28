@@ -202,10 +202,6 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
   }
 }
 
-export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
-  addLockManager(event.address, event.params.account)
-}
-
 export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock && lock.lockManagers) {
