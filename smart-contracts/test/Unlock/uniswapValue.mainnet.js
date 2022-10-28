@@ -57,17 +57,14 @@ contract('Unlock / uniswapValue', () => {
     await impersonate(unlockOwner)
     const unlockSigner = await ethers.getSigner(unlockOwner)
     unlock = unlock.connect(unlockSigner)
-
-    // add oracle support for SHIBA_INU
-    await unlock.setOracle(SHIBA_INU, oracle.address)
   })
 
   it('weth is set correctly already', async () => {
     expect(await unlock.weth()).to.equals(WETH)
   })
 
-  it('sets oracle address correctly', async () => {
-    expect(oracleAddress).to.equals(await unlock.uniswapOracles(SHIBA_INU))
+  it('oracle for USDC was already set to the v2 oracle address', async () => {
+    expect(oracleAddress).to.not.equals(await unlock.uniswapOracles(USDC))
   })
 
   describe('A supported token (USDC)', () => {
@@ -81,12 +78,19 @@ contract('Unlock / uniswapValue', () => {
       await usdc.connect(minter).configureMinter(signer.address, totalPriceUSDC)
       await usdc.mint(signer.address, totalPriceUSDC)
 
+      // add oracle support for USDC
+      await unlock.setOracle(USDC, oracle.address)
+
       // create a USDC lock
       lock = await deployLock({
         unlock,
         tokenAddress: USDC,
         keyPrice: keyPriceUSDC,
       })
+    })
+
+    it('sets oracle address correctly', async () => {
+      expect(oracleAddress).to.equals(await unlock.uniswapOracles(USDC))
     })
 
     it('pricing is set correctly', async () => {
@@ -182,12 +186,19 @@ contract('Unlock / uniswapValue', () => {
         .configureMinter(signer.address, totalPriceSHIBA_INU)
       await usdc.mint(signer.address, totalPriceSHIBA_INU)
 
+      // add oracle support for SHIBA_INU
+      await unlock.setOracle(SHIBA_INU, oracle.address)
+
       // create a SHIBA_INU lock
       lock = await deployLock({
         unlock,
         tokenAddress: SHIBA_INU,
         keyPrice: keyPriceSHIBA_INU,
       })
+    })
+
+    it('sets oracle address correctly', async () => {
+      expect(oracleAddress).to.equals(await unlock.uniswapOracles(SHIBA_INU))
     })
 
     it('pricing is set correctly', async () => {
