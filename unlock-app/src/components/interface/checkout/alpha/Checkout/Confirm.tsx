@@ -111,7 +111,7 @@ export function Confirm({
     name: lockName,
     keyPrice,
   } = lock!
-  let purchaseData = password || captcha || undefined
+
   const recurringPayment = paywallConfig?.locks[lockAddress]?.recurringPayments
   const totalApproval =
     typeof recurringPayment === 'string' &&
@@ -144,6 +144,38 @@ export function Confirm({
     }
   )
 
+  const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
+    useQuery(
+      ['purchaseData', lockAddress, lockNetwork, JSON.stringify(recipients)],
+      async () => {
+        let purchaseData = password || captcha || null
+        const dataBuilder =
+          paywallConfig.locks[lock!.address].dataBuilder ||
+          paywallConfig.dataBuilder
+        // if Data builder url is present, prioritize that above rest.
+        if (dataBuilder) {
+          const delegatedData = await fetchRecipientsData(dataBuilder, {
+            recipients,
+            lockAddress: lock!.address,
+            network: lock!.network,
+          })
+          if (delegatedData) {
+            purchaseData = delegatedData
+          }
+        }
+        return purchaseData
+      },
+      {
+        refetchInterval: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+        onError(error) {
+          console.error(error)
+        },
+      }
+    )
+
   const { data: prices, isInitialLoading: isPricesLoading } = useQuery(
     ['purchasePriceFor', lockAddress, lockNetwork],
     async () => {
@@ -154,7 +186,7 @@ export function Confirm({
             network: lockNetwork,
             userAddress: recipient,
             referrer: paywallConfig.referrer || recipient,
-            data: purchaseData?.[0] || recipient,
+            data: purchaseData?.[0] || '0x',
           })
           const decimals = await web3Service.getTokenDecimals(
             lock!.currencyContractAddress!,
@@ -172,10 +204,12 @@ export function Confirm({
     },
     {
       refetchInterval: Infinity,
+      enabled: !isInitialDataLoading,
     }
   )
 
-  const isLoading = isPricesLoading || isFiatPriceLoading
+  const isLoading =
+    isPricesLoading || isFiatPriceLoading || isInitialDataLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
@@ -281,19 +315,6 @@ export function Confirm({
       const referrers: string[] | undefined = paywallConfig.referrer
         ? new Array(recipients!.length).fill(paywallConfig.referrer)
         : undefined
-
-      const dataBuilder =
-        paywallConfig.locks[lock!.address].dataBuilder ||
-        paywallConfig.dataBuilder
-
-      // if Data builder url is present, prioritize that above rest.
-      if (dataBuilder) {
-        purchaseData = await fetchRecipientsData(dataBuilder, {
-          recipients,
-          lockAddress: lock!.address,
-          network: lock!.network,
-        })
-      }
 
       await walletService?.purchaseKeys(
         {
@@ -496,8 +517,6 @@ export function Confirm({
     }
   }
 
-  console.log(prices)
-
   const stepItems = useCheckoutSteps(checkoutService)
   return (
     <Fragment>
@@ -561,22 +580,24 @@ export function Confirm({
           />
         ) : (
           <div className="flex flex-col items-center gap-2">
-            <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
-            <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+            {recipients.map((user) => (
+              <div
+                key={user}
+                className="w-full p-2 bg-gray-100 rounded-lg animate-pulse"
+              />
+            ))}
           </div>
         )}
         {!isLoading ? (
           <div>
-            <div>
-              {!isLoading && fiatPricing.creditCardEnabled && (
-                <CreditCardPricingBreakdown {...fiatPricing} />
-              )}
-            </div>
+            {!isLoading && fiatPricing.creditCardEnabled && (
+              <CreditCardPricingBreakdown {...fiatPricing} />
+            )}
           </div>
         ) : (
           <div className="py-1.5 space-y-2 items-center">
-            <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
-            <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
+            <div className="w-full p-6 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div className="w-full p-6 bg-gray-100 rounded-lg animate-pulse"></div>
           </div>
         )}
       </main>
