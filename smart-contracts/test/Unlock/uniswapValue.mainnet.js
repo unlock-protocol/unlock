@@ -21,14 +21,11 @@ const {
 
 const { unlockAddress } = mainnet
 const keyPrice = ethers.utils.parseUnits('0.01', 'ether')
+const totalPrice = keyPrice.mul(5)
 
-// USDC
+// USDC (only 6 decimals)
 const keyPriceUSDC = ethers.utils.parseUnits('50', 6)
 const totalPriceUSDC = keyPriceUSDC.mul(5)
-
-// SHIBA INU
-const keyPriceSHIBA_INU = ethers.utils.parseUnits('50')
-const totalPriceSHIBA_INU = keyPriceSHIBA_INU.mul(5)
 
 contract('Unlock / uniswapValue', () => {
   let lock
@@ -174,17 +171,15 @@ contract('Unlock / uniswapValue', () => {
   })
 
   describe('A supported token (SHIBA_INU)', () => {
-    let usdc
+    let shibaInu
     before(async () => {
       // mint some usdc
-      usdc = await ethers.getContractAt(ShibaInuAbi, SHIBA_INU)
-      const masterMinter = await usdc.masterMinter()
-      await impersonate(masterMinter)
-      const minter = await ethers.getSigner(masterMinter)
-      await usdc
-        .connect(minter)
-        .configureMinter(signer.address, totalPriceSHIBA_INU)
-      await usdc.mint(signer.address, totalPriceSHIBA_INU)
+      shibaInu = await ethers.getContractAt(ShibaInuAbi, SHIBA_INU)
+
+      // transfer from the contract itself
+      await impersonate(SHIBA_INU)
+      const shibaInuOwner = await ethers.getSigner(SHIBA_INU)
+      await shibaInu.connect(shibaInuOwner).transfer(signer.address, totalPrice)
 
       // add oracle support for SHIBA_INU
       await unlock.setOracle(SHIBA_INU, oracle.address)
@@ -193,7 +188,7 @@ contract('Unlock / uniswapValue', () => {
       lock = await deployLock({
         unlock,
         tokenAddress: SHIBA_INU,
-        keyPrice: keyPriceSHIBA_INU,
+        keyPrice,
       })
     })
 
@@ -204,9 +199,7 @@ contract('Unlock / uniswapValue', () => {
     it('pricing is set correctly', async () => {
       // make sure price is correct
       expect(await lock.tokenAddress()).to.equals(SHIBA_INU)
-      expect((await lock.keyPrice()).toString()).to.equals(
-        keyPriceSHIBA_INU.toString()
-      )
+      expect((await lock.keyPrice()).toString()).to.equals(keyPrice.toString())
     })
 
     describe('Purchase keys', () => {
@@ -217,7 +210,7 @@ contract('Unlock / uniswapValue', () => {
       before(async () => {
         gnpBefore = await unlock.grossNetworkProduct()
         // approve purchase
-        await usdc.connect(signer).approve(lock.address, totalPriceSHIBA_INU)
+        await shibaInu.connect(signer).approve(lock.address, totalPrice)
         ;({ blockNumber } = await purchaseKeys(lock, 5, true))
 
         // consult our oracle independently for 1 SHIBA_INU
@@ -234,9 +227,8 @@ contract('Unlock / uniswapValue', () => {
 
         // 5 keys at 50 SHIBA_INU at oracle rate
         const priceConverted = rate.mul(250)
-        expect(GNP.div(1000).toString()).to.equals(
-          gnpBefore.add(priceConverted).div(1000).toString()
-        )
+        const diff = GNP.sub(gnpBefore.add(priceConverted))
+        expect(diff.toNumber()).to.be.lte(1000) // price variation
 
         // show approx value in ETH for reference
         console.log(`250 SHIBA_INU =~ ${ethers.utils.formatUnits(GNP)} ETH`)
@@ -262,15 +254,16 @@ contract('Unlock / uniswapValue', () => {
           ) => {
             assert.equal(tokenAddress, SHIBA_INU)
             assert.equal(lockAddress, lock.address)
-            assert.equal(value.toString(), keyPriceSHIBA_INU.toString())
-            // rate * 50 SHIBA_INU per key
+            assert.equal(value.toString(), keyPrice.toString())
+            // rate * 0.01 SHIBA_INU per key
+            console.log(_valueInETH)
             assert.equal(
-              _valueInETH.div(1000).toString(),
-              rate.mul(50).div(1000).toString()
+              _valueInETH.toString(),
+              rate.mul(0.01).div(1000).toString()
             )
             assert.equal(
               gnpBefore
-                .add(rate.mul(50).mul(i + 1))
+                .add(rate.mul(0.01).mul(i + 1))
                 .div(1000)
                 .toString(),
               grossNetworkProduct.div(1000).toString()
