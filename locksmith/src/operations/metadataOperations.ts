@@ -9,7 +9,7 @@ import Normalizer from '../utils/normalizer'
 import * as lockOperations from './lockOperations'
 import * as Asset from '../utils/assets'
 import { Attribute } from '../types'
-
+import metadata from '../../config/metadata'
 const baseURIFragement = 'https://assets.unlock-protocol.com'
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
@@ -93,9 +93,10 @@ export const getBaseTokenData = async (
     where: { address },
   })
 
-  const result: Record<string, any> = persistedBasedMetadata
-    ? persistedBasedMetadata.data
-    : defaultResponse
+  const result: Record<string, any> = {
+    ...defaultResponse,
+    ...(persistedBasedMetadata?.data || {}),
+  }
 
   return result
 }
@@ -140,10 +141,23 @@ const fetchChainData = async (
 const defaultMappings = (address: string, host: string, keyId: string) => {
   const defaultResponse = {
     name: 'Unlock Key',
-    description:
-      'A Key to an Unlock lock. Unlock is a protocol for memberships. https://unlock-protocol.com/',
+    description: 'A Key to an Unlock lock.',
     image: `${host}/lock/${address}/icon?id=${keyId}`,
   }
+
+  // Custom mappings
+  // TODO: move that to a datastore at some point...
+  metadata.forEach((lockMetadata) => {
+    if (address.toLowerCase() == lockMetadata.address.toLowerCase()) {
+      defaultResponse.name = lockMetadata.name
+      defaultResponse.description = lockMetadata.description
+      defaultResponse.image = lockMetadata.image || defaultResponse.image
+    }
+  })
+
+  // Append description
+  defaultResponse.description = `${defaultResponse.description} Unlock is a protocol for memberships. https://unlock-protocol.com/`
+
   return defaultResponse
 }
 
