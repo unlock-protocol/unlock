@@ -3,7 +3,7 @@ const { mainnet } = require('@unlock-protocol/networks')
 const { expect } = require('chai')
 
 const UniswapOracle = require('../helpers/ABIs/UniswapOracle.json')
-const ShibaInuAbi = require('../helpers/ABIs/ERC20.js')
+const ShibaInuAbi = require('../helpers/ABIs/ERC20.json')
 const USDCabi = require('../helpers/ABIs/USDC.json')
 
 const {
