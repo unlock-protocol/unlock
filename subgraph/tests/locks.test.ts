@@ -92,11 +92,6 @@ describe('Describe Locks events', () => {
   })
 
   test('Lock manager removed', () => {
-    // assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[]`)
-    // const newLockManagerAdded = createLockManagerAddedEvent(
-    //   Address.fromString(lockManager)
-    // )
-    // handleRoleGranted(newLockManagerAdded)
     assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockManager}]`)
 
     const newLockManagerRemoved = createLockManagerRemovedEvent(
