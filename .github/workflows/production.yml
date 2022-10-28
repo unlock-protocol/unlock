@@ -14,7 +14,7 @@ jobs:
     needs: run-all-tests
     uses: ./.github/workflows/_subgraph.yml
     secrets:
-      SUBGRAPH_DEPLOY_KEY: ${{ secrets.HEROKU_EMAIL }}
+      SUBGRAPH_DEPLOY_KEY: ${{ secrets.SUBGRAPH_DEPLOY_KEY }}
 
   deploy-locksmith-production:
     if: ${{ github.repository_owner == 'unlock-protocol' }}
