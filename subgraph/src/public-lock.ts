@@ -1,4 +1,4 @@
-import { Address, Bytes, BigInt, log } from '@graphprotocol/graph-ts'
+import { Address, BigInt, log } from '@graphprotocol/graph-ts'
 
 import {
   CancelKey as CancelKeyEvent,
@@ -20,7 +20,7 @@ import {
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
 import { Key, Lock } from '../generated/schema'
 
-import { genKeyID, getKeyExpirationTimestampFor } from './helpers'
+import { genKeyID, getKeyExpirationTimestampFor, LOCK_MANAGER } from './helpers'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -175,11 +175,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
 // lock functions below
 
 export function handleRoleGranted(event: RoleGrantedEvent): void {
-  // keccak 256 of 'LOCK_MANAGER'
-  if (
-    event.params.role.toString() ==
-    'B89CDD26CDDD51301940BF2715F765B626B8A5A9E2681AC62DC83CC2DB2530C0'
-  ) {
+  if (event.params.role.toString() == LOCK_MANAGER) {
     const lock = Lock.load(event.address.toHexString())
     if (lock) {
       const lockManagers = lock.lockManagers || []
@@ -192,8 +188,6 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
       ])
     }
   }
-  // const KEY_GRANTER =
-  //   'B309C40027C81D382C3B58D8DE24207A34B27E1DB369B1434E4A11311F154B5E'
 }
 
 export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
