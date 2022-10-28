@@ -56,7 +56,8 @@ export function handleNewLock(event: NewLock): void {
   lock.address = lockAddress
   lock.version = version
   lock.createdAtBlock = event.block.number
-  lock.lockManagers = [event.params.lockOwner]
+  // lock managers are parsed from events
+  lock.lockManagers = []
   lock.save()
 
   // instantiate the new lock to start tracking events there
