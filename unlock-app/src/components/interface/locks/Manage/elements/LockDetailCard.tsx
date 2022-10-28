@@ -12,13 +12,14 @@ import { useConfig } from '~/utils/withConfig'
 import { LockIcon } from './LockIcon'
 import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
-import { AiOutlineEdit as EditIcon } from 'react-icons/ai'
 import { CardPayment } from './CardPayment'
 import { UpdateDurationModal } from '../modals/UpdateDurationModal'
 import { UpdatePriceModal } from '../modals/UpdatePriceModal'
 import { UpdateQuantityModal } from '../modals/UpdateQuantityModal'
 import { EnableRecurring } from './EnableRecurring'
 import { useLockManager } from '~/hooks/useLockManager'
+import { RiEditLine as EditIcon } from 'react-icons/ri'
+import { UpdateMetadataDrawer } from '../../metadata/MetadataUpdate'
 
 interface LockDetailCardProps {
   network: number
@@ -148,6 +149,7 @@ export const LockDetailCard = ({
   const [editQuantity, setEditQuantity] = useState(false)
   const [editDuration, setEditDuration] = useState(false)
   const [editPrice, setEditPrice] = useState(false)
+  const [updateMetadata, setUpdateMetadata] = useState(false)
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
 
@@ -220,6 +222,12 @@ export const LockDetailCard = ({
         maxNumberOfKeys={lock?.maxNumberOfKeys}
       />
 
+      <UpdateMetadataDrawer
+        lock={lock}
+        isOpen={updateMetadata}
+        setIsOpen={setUpdateMetadata}
+      />
+
       <div className="flex flex-col">
         <div className="flex flex-col gap-2">
           <LockIcon
@@ -234,7 +242,21 @@ export const LockDetailCard = ({
             loading={loading}
             version={lock?.publicLockVersion}
           />
-          <div className="flex flex-col mt-14">
+          {isManager && (
+            <div className="grid py-6">
+              <Button
+                variant="black"
+                size="small"
+                onClick={() => {
+                  setUpdateMetadata(true)
+                }}
+                iconRight={<EditIcon key="edit" />}
+              >
+                Update Metadata
+              </Button>
+            </div>
+          )}
+          <div className="flex flex-col mt-6">
             <Detail label="Network" value={networkName} loading={loading} />
             <Detail
               label="Key Duration"
