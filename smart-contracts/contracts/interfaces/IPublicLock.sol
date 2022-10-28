@@ -7,7 +7,7 @@ pragma experimental ABIEncoderV2;
 */
 
 
-interface IPublicLockV12
+interface IPublicLock
 {
 
   /// Functions
