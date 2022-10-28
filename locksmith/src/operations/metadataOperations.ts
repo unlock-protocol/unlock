@@ -98,6 +98,15 @@ export const getBaseTokenData = async (
     ...(persistedBasedMetadata?.data || {}),
   }
 
+  const assetLocation = Asset.tokenMetadataDefaultImage({
+    base: baseURIFragement,
+    address,
+  })
+
+  if (await Asset.exists(assetLocation)) {
+    result.image = assetLocation
+  }
+
   return result
 }
 
