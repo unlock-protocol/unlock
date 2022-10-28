@@ -1,5 +1,9 @@
 # Changes
 
+# 0.30.6
+
+- Add support for `key` and `lock` function in subgraph service.
+
 # 0.30.4
 
 - Add support for `updateLockName`, `updateLockSymbol` and `setBaseTokenURI` across versions
