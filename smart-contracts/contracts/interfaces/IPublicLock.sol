@@ -10,10 +10,6 @@ pragma experimental ABIEncoderV2;
 interface IPublicLock
 {
 
-// See indentationissue description here:
-// https://github.com/duaraghav8/Ethlint/issues/268
-// solium-disable indentation
-
   /// Functions
   function initialize(
     address _lockCreator,
@@ -37,12 +33,13 @@ interface IPublicLock
   function publicLockVersion() external pure returns (uint16);
 
   /**
-   * @dev Called by owner to withdraw all funds from the lock
+   * @dev Called by lock manager to withdraw all funds from the lock
    * @param _tokenAddress specifies the token address to withdraw or 0 for ETH. This is usually
    * the same as `tokenAddress` in MixinFunds.
    * @param _recipient specifies the address that will receive the tokens
    * @param _amount specifies the max amount to withdraw, which may be reduced when
-   * considering the available balance. Set to 0 or MAX_UINT to withdraw everything.
+   * considering the available balance. Set to 0 or MAX_UINT to withdraw everything. 
+   * -- however be wary of draining funds as it breaks the `cancelAndRefund` and `expireAndRefundFor` use cases.
    */
   function withdraw(
     address _tokenAddress,
@@ -63,9 +60,11 @@ interface IPublicLock
 
   /**
    * Update the main key properties for the entire lock: 
+   * 
    * - default duration of each key
    * - the maximum number of keys the lock can edit
    * - the maximum number of keys a single address can hold
+   *
    * @notice keys previously bought are unaffected by this changes in expiration duration (i.e.
    * existing keys timestamps are not recalculated/updated)
    * @param _newExpirationDuration the new amount of time for each key purchased or type(uint).max for a non-expiring key
@@ -217,8 +216,9 @@ interface IPublicLock
   /**
   * Returns the percentage of the keyPrice to be sent to the referrer (in basis points)
   * @param _referrer the address of the referrer
+  * @return referrerFee the percentage of the keyPrice to be sent to the referrer (in basis points)
   */
-  function referrerFees(address _referrer) external view returns (uint);
+  function referrerFees(address _referrer) external view returns (uint referrerFee);
   
   /**
   * Set a specific percentage of the keyPrice to be sent to the referrer while purchasing, 
@@ -326,7 +326,7 @@ interface IPublicLock
   /**
    * @dev Determines how much of a refund a key owner would receive if they issued
    * @param _tokenId the id of the token to get the refund value for.
-   * @notice due to the time required to mine a tx, the actual refund amount will be lower
+   * @notice Due to the time required to mine a tx, the actual refund amount will be lower
    * than what the user reads from this call.
    * @return refund the amount of tokens refunded
    */
@@ -342,18 +342,47 @@ interface IPublicLock
 
   function isLockManager(address account) external view returns (bool);
 
+  
+ /**
+   * Returns the address of the `onKeyPurchaseHook` hook.
+   * @return hookAddress address of the hook
+   */  
   function onKeyPurchaseHook() external view returns(address hookAddress);
 
+  /**
+   * Returns the address of the `onKeyCancelHook` hook.
+   * @return hookAddress address of the hook
+   */  
   function onKeyCancelHook() external view returns(address hookAddress);
-  
+
+  /**
+   * Returns the address of the `onValidKeyHook` hook.
+   * @return hookAddress address of the hook
+   */  
   function onValidKeyHook() external view returns(address hookAddress);
 
+  /**
+   * Returns the address of the `onTokenURIHook` hook.
+   * @return hookAddress address of the hook
+   */
   function onTokenURIHook() external view returns(address hookAddress);
   
+  /**
+   * Returns the address of the `onKeyTransferHook` hook.
+   * @return hookAddress address of the hook
+   */
   function onKeyTransferHook() external view returns(address hookAddress);
-
+  
+  /**
+   * Returns the address of the `onKeyExtendHook` hook.
+  * @return hookAddress the address ok the hook
+  */
   function onKeyExtendHook() external view returns(address hookAddress);
 
+  /**
+  * Returns the address of the `onKeyGrantHook` hook.
+  * @return hookAddress the address ok the hook
+  */
   function onKeyGrantHook() external view returns(address hookAddress);
 
   function revokeKeyGranter(address _granter) external;
@@ -364,10 +393,6 @@ interface IPublicLock
    * @return the maximum number of key allowed for a single address
    */
   function maxKeysPerAddress() external view returns (uint);
-
-
-  ///===================================================================
-  /// Auto-generated getter functions from public state variables
 
   function expirationDuration() external view returns (uint256 );
 
@@ -431,7 +456,9 @@ interface IPublicLock
     returns (bool);
   
   /**
-   * @return numberOfKeys The number of keys owned by `_keyOwner` (expired or not)
+   * Returns the number of keys owned by `_keyOwner` (expired or not)
+   * @param _keyOwner address for which we are retrieving the total number of keys
+   * @return numberOfKeys total number of keys owned by the address
    */
   function totalKeys(address _keyOwner) external view returns (uint numberOfKeys);
   
@@ -479,12 +506,12 @@ interface IPublicLock
   function transferFrom(address from, address to, uint256 tokenId) external;
 
   /** 
-  * Lending a key allows you to transfer the token while retaining the 
+  * Lending a key allows you to transfer the token while retaining the
   * ownerships right by setting yourself as a key manager first. 
   * @param from the owner of token to transfer
   * @param to the address that will receive the token
   * @param tokenId the id of the token
-  * @notice This function can only called by 1) the key owner when no key manager is set or 2) the key manager.
+  * @notice This function can only be called by 1) the key owner when no key manager is set or 2) the key manager.
   * After calling the function, the `_recipent` will be the new owner, and the sender of the tx
   * will become the key manager.
   */
