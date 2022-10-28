@@ -174,7 +174,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       owner?: string
       keyPrice?: string
-      data?: string
+      data?: string | null
       erc20Address?: string
       decimals?: number
       recurringPayments?: number
@@ -205,7 +205,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       owners?: string[]
       keyPrices?: string[]
-      data?: string[]
+      data?: string[] | null
       erc20Address?: string
       decimals?: number
       referrers?: (string | null)[]

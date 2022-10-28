@@ -581,4 +581,32 @@ export default class Web3Service extends UnlockService {
     )
     return await lockContract.totalSupply()
   }
+
+  /**
+   * Returns the purchase price for the user on the lock
+   */
+  async purchasePriceFor({
+    lockAddress,
+    userAddress,
+    data,
+    referrer,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+    data: string
+    userAddress: string
+    referrer: string
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const price = await lockContract.purchasePriceFor(
+      userAddress,
+      referrer,
+      data
+    )
+    return price
+  }
 }
