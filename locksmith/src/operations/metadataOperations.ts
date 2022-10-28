@@ -57,7 +57,7 @@ export const generateKeyMetadata = async (
 
   const attributes: Attribute[] = []
 
-  if (onChainKeyMetadata.attributes?.length) {
+  if (Array.isArray(onChainKeyMetadata?.attributes)) {
     attributes.push(...onChainKeyMetadata.attributes)
   }
 
@@ -74,6 +74,7 @@ export const generateKeyMetadata = async (
     ...keyCentricData,
     ...onChainKeyMetadata,
     ...userMetadata,
+    attributes,
     keyId,
     lockAddress: address,
     network,
