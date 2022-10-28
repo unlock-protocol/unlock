@@ -176,9 +176,8 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
 
 export function handleRoleGranted(event: RoleGrantedEvent): void {
   // keccak 256 of 'LOCK_MANAGER'
-  log.debug('{}', [event.params.role.toString()])
   if (
-    event.params.role.toString() ===
+    event.params.role.toString() ==
     'B89CDD26CDDD51301940BF2715F765B626B8A5A9E2681AC62DC83CC2DB2530C0'
   ) {
     const lock = Lock.load(event.address.toHexString())

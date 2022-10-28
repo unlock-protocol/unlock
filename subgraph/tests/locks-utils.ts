@@ -1,5 +1,5 @@
 import { newMockEvent } from 'matchstick-as'
-import { ethereum, Address, BigInt } from '@graphprotocol/graph-ts'
+import { ethereum, Address, BigInt, log, Bytes } from '@graphprotocol/graph-ts'
 import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
 import {
   RoleGranted,
@@ -39,6 +39,12 @@ export function createLockManagerAddedEvent(
   newRoleGranted.address = Address.fromString(lockAddress)
 
   newRoleGranted.parameters = []
+  newRoleGranted.parameters.push(
+    new ethereum.EventParam(
+      'role',
+      ethereum.Value.fromBytes(Bytes.fromUTF8(LOCK_MANAGER))
+    )
+  )
 
   newRoleGranted.parameters.push(
     new ethereum.EventParam(
@@ -48,7 +54,7 @@ export function createLockManagerAddedEvent(
   )
 
   newRoleGranted.parameters.push(
-    new ethereum.EventParam('role', ethereum.Value.fromString(LOCK_MANAGER))
+    new ethereum.EventParam('sender', ethereum.Value.fromString(lockAddress))
   )
 
   return newRoleGranted
