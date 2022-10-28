@@ -1,4 +1,4 @@
-import { Address, BigInt, log } from '@graphprotocol/graph-ts'
+import { Address, Bytes, BigInt, log } from '@graphprotocol/graph-ts'
 
 import {
   CancelKey as CancelKeyEvent,
@@ -6,6 +6,7 @@ import {
   ExpirationChanged1 as ExpirationChangedEvent,
   ExpireKey as ExpireKeyEvent,
   KeyExtended as KeyExtendedEvent,
+  RoleGranted as RoleGrantedEvent,
   KeyManagerChanged as KeyManagerChangedEvent,
   LockManagerAdded as LockManagerAddedEvent,
   LockManagerRemoved as LockManagerRemovedEvent,
@@ -172,19 +173,37 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
 }
 
 // lock functions
-export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
-  const lock = Lock.load(event.address.toHexString())
+// keccak 256
+const roles = {
+  B89CDD26CDDD51301940BF2715F765B626B8A5A9E2681AC62DC83CC2DB2530C0:
+    'LOCK_MANAGER',
+  B309C40027C81D382C3B58D8DE24207A34B27E1DB369B1434E4A11311F154B5E:
+    'KEY_GRANTER',
+}
 
-  if (lock && lock.lockManagers) {
-    const lockManagers = lock.lockManagers
-    lockManagers.push(event.params.account)
+const addLockManager = (lockAddress: Bytes, lockManager: Bytes) => {
+  const lock = Lock.load(lockAddress.toHexString())
+  if (lock) {
+    const lockManagers = lock.lockManagers || []
+    lockManagers.push(lockManager)
     lock.lockManagers = lockManagers
     lock.save()
-    log.debug('Lock manager {} added to {}', [
-      event.params.account.toHexString(),
-      event.address.toHexString(),
+    log.debug('Lock manager {} added to lock: {}', [
+      lockManager.toHexString(),
+      lockAddress.toHexString(),
     ])
   }
+}
+
+export function handleRoleGranted(event: RoleGrantedEvent): void {
+  const role = roles[event.params.role.toString()]
+  if (role === 'LOCK_MANAGER') {
+    addLockManager(event.address, event.params.account)
+  }
+}
+
+export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
+  addLockManager(event.address, event.params.account)
 }
 
 export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
