@@ -52,8 +52,11 @@ describe('Unlock', function () {
       // to be implemented in the graph yet...
       // expect(lockInGraph.maxNumberOfKeys).to.equals(lockParams.maxNumberOfKeys)
 
+      // wait for a bit so events from the new lock are processed
       await awaitTimeout(2000)
-      expect(lockInGraph.lockManagers).to.deep.equals([signer.address])
+      const lockInGraphAgain = await subgraph.getLock(lockAddress)
+
+      expect(lockInGraphAgain.lockManagers).to.deep.equals([signer.address])
     })
   })
 })
