@@ -41,7 +41,6 @@ describe('Unlock', function () {
       expect(lockInGraph.tokenAddress).to.equals(
         lockParams.currencyContractAddress
       )
-      expect(lockInGraph.lockManagers).to.deep.equals([signer.address])
       expect(parseInt(lockInGraph.version)).to.equals(
         await lock.publicLockVersion()
       )
@@ -52,6 +51,9 @@ describe('Unlock', function () {
       expect(lockInGraph.name).to.equals(lockParams.name)
       // to be implemented in the graph yet...
       // expect(lockInGraph.maxNumberOfKeys).to.equals(lockParams.maxNumberOfKeys)
+
+      await awaitTimeout(2000)
+      expect(lockInGraph.lockManagers).to.deep.equals([signer.address])
     })
   })
 })
