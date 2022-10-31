@@ -21,15 +21,16 @@ const KeysByNetworkPlaceholder = () => {
     <div className="flex flex-col mb-3">
       <div className="h-[1.2rem] w-[17rem] bg-slate-200 mb-2"></div>
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
-        <div className="h-[250px] rounded-xl bg-slate-200 animate-pulse"></div>
+        {Array(9)
+          .fill(null)
+          .map((index) => {
+            return (
+              <div
+                className="h-[250px] rounded-xl bg-slate-200 animate-pulse"
+                key={index}
+              ></div>
+            )
+          })}
       </div>
     </div>
   )
