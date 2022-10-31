@@ -62,6 +62,7 @@ export function handleNewLock(event: NewLock): void {
   lock.createdAtBlock = event.block.number
 
   // parse lock managers from RoleGranted in the same tx
+  lock.lockManagers = []
   if (event.receipt) {
     const logs = event.receipt!.logs
     for (let i = 0; i < logs.length; i++) {
@@ -72,7 +73,7 @@ export function handleNewLock(event: NewLock): void {
         const role = eventLog.topics[1].toHexString()
         if (role === LOCK_MANAGER) {
           const lockManager = eventLog.topics[2]
-          lock.lockManagers = [lockManager]
+          lock.lockManagers.push(lockManager)
         }
       }
     }
