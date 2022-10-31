@@ -1,0 +1,25 @@
+name: Subgraphs deployment
+
+on:
+  workflow_call:
+  secrets:
+      SUBGRAPH_DEPLOY_KEY:
+        required: true
+
+jobs:
+  coverage:
+    name: Redeploy all existing subgraphs 
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_BUILDKIT: 1
+      BUILDKIT_PROGRESS: plain
+      BLOCKTIME: 0
+    steps:
+      - uses: actions/checkout@v3
+      with:
+          fetch-depth: 0
+      - name: Deploying the subgraphs
+        run: cd subgraph && yarn deploy-all
+        shell: bash
+    env:
+      SUBGRAPH_DEPLOY_KEY: ${{ secrets.SUBGRAPH_DEPLOY_KEY }}

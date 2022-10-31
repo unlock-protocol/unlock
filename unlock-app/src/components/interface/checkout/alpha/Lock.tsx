@@ -38,8 +38,8 @@ export const LockOptionPlaceholder = () => {
         <div className="w-full h-6 duration-150 rounded-full bg-gray-50 animate-pulse" />
       </div>
       <div className="flex justify-start w-full gap-x-2">
-        <div className="w-24 h-4 duration-150 rounded-full bg-gray-50 animate-pulse" />
-        <div className="w-24 h-4 duration-150 rounded-full bg-gray-50 animate-pulse" />
+        <div className="w-24 h-8 duration-150 rounded-full bg-gray-50 animate-pulse" />
+        <div className="w-24 h-8 duration-150 rounded-full bg-gray-50 animate-pulse" />
       </div>
     </div>
   )

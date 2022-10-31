@@ -16,10 +16,10 @@ handlebars.registerHelper('links', function (txUrl, openSeaUrl) {
 })
 
 export default {
-  subject: 'A key was added to your wallet!',
-  html: `<h1>A new NFT in your wallet!</h1>
+  subject: 'A membership was added to your wallet!',
+  html: `<h1>A new Membership NFT in your wallet!</h1>
 
-<p>A new NFT key (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just minted for you!</p>
+<p>A new membership (#{{keyId}}) to the lock <strong>{{lockName}}</strong> was just minted for you!</p>
 
 <p>It has been added to your <a href="{{keychainUrl}}">Unlock Keychain</a>, where you can view it and, if needed, print it as a signed QR Code!</p>
 
