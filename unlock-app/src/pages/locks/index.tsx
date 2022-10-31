@@ -11,8 +11,8 @@ const Locks: NextPage = () => {
     return (
       <div className="flex flex-col gap-4 md:gap-0 md:justify-between md:flex-row">
         <span className="w-full max-w-lg text-base text-gray-700">
-          Create membership for Event ticketing, Media membership, DAO,
-          Certification, collectibles and more.
+          A Lock is a smart contract you create, deploy, and own on Unlock
+          Protocol
         </span>
         <Link href="/locks/create">
           <Button size="large">Create Lock</Button>
