@@ -104,7 +104,11 @@ export const AppLayout = ({
                 {(title || description) && (
                   <div className="flex flex-col gap-4">
                     {title && <h1 className="text-4xl font-bold">{title}</h1>}
-                    {description && <div>{description}</div>}
+                    {description && (
+                      <div className="w-full text-base text-gray-700">
+                        {description}
+                      </div>
+                    )}
                   </div>
                 )}
                 {showLogin ? (
