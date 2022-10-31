@@ -43,7 +43,7 @@ export function createLockManagerAddedEvent(
   newRoleGranted.parameters.push(
     new ethereum.EventParam(
       'role',
-      ethereum.Value.fromBytes(Bytes.fromUTF8(LOCK_MANAGER))
+      ethereum.Value.fromBytes(Bytes.fromHexString(LOCK_MANAGER))
     )
   )
 
