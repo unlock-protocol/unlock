@@ -46,7 +46,7 @@ export const CancelAndRefundModal = ({
 
   const { getAmounts } = useKeychain({
     lockAddress,
-    network,
+    network: parseInt(`${network}`),
     owner,
     keyId: tokenId,
     tokenAddress,
