@@ -1,5 +1,8 @@
 # Changes
 
+# 0.30.7
+
+- add `totalKeys` to subgraph
 
 # 0.30.6
 
@@ -8,7 +11,6 @@
 # 0.30.5
 
 - Add purchasePriceFor in web3Service
-
 
 # 0.30.4
 

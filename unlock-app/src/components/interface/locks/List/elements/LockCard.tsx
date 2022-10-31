@@ -20,6 +20,7 @@ import { IconModal } from '../../Manage/elements/LockIcon'
 import { ImFilePicture as PictureFile } from 'react-icons/im'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { useQuery } from '@tanstack/react-query'
+import { ethers } from 'ethers'
 
 interface LockCardProps {
   lock: any
@@ -193,7 +194,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
 
   const {
     isLoading: isLoadingInfo,
-    data: { keyPrice, balance, outstandingKeys, expirationDuration } = {},
+    data: { balance, expirationDuration } = {},
   } = useQuery(['lockDetail', network, lock?.address], async () =>
     getLockDetail()
   )
@@ -211,6 +212,8 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
     ) : (
       <Duration seconds={expirationDuration} />
     )
+
+  const keyPrice = ethers.utils.formatEther(lock?.price)
 
   return (
     <>
@@ -263,7 +266,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
             />
             <Detail
               label="Key Sold"
-              value={outstandingKeys?.toString()}
+              value={lock?.totalKeys}
               icon={KeyIcon}
               isLoading={isLoadingInfo}
             />
