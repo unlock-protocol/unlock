@@ -18,7 +18,7 @@ const argv = yargs
   .help()
   .alias('h', 'help')
   .example(
-    'yarn ts-node scripts/send_email --network 5 --lockAddress xyz',
+    'yarn ts-node scripts/send_email.ts --network 5 --lockAddress xyz',
     'send emails to all users on goerli on xyz lock address.'
   ).argv
 
@@ -39,7 +39,7 @@ async function run({ lockAddress, network }: Options) {
       networks: [network],
     }
   )
-  await notifyNewKeysToWedlocks(keys)
+  await notifyNewKeysToWedlocks(keys, network)
 }
 
 if (argv.lockAddress && argv.network) {
