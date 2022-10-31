@@ -29,8 +29,8 @@ export function AddLevelModal({
         <header className="space-y-2 text-brand-dark">
           <h3 className="text-xl font-bold"> Add Levels </h3>
           <p>
-            This custom attribute will be shown as progress bar. Members can use
-            it as filter.
+            Numerical traits that show as a progress bar on OpenSea and other
+            marketplaces
           </p>
           <LearnMoreAboutOpenseaMetadataLink />
         </header>

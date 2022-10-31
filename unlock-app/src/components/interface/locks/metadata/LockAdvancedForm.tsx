@@ -48,18 +48,18 @@ export function LockAdvancedForm({ disabled }: Props) {
                 type="url"
                 disabled={disabled}
                 placeholder="https://example.com"
-                label="Youtube URL"
+                label="YouTube URL"
                 error={errors.youtube_url?.message}
                 description="A URL to a YouTube video."
               />
               <Input
                 {...register('background_color')}
+                description="The color will be rendered as background color of the item on OpenSea."
                 label="Background Color"
                 disabled={disabled}
                 placeholder="Daily NFT membership lock"
                 type="color"
                 error={errors.background_color?.message}
-                className="The color will be rendered as background color of the item on OpenSea."
               />
             </Disclosure.Panel>
           </div>
