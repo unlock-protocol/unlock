@@ -31,6 +31,7 @@ async function run({ lockAddress, network }: Options) {
   const service = new SubgraphService()
   const keys = await service.keys(
     {
+      first: 1000,
       where: {
         lock_in: [lockAddress.toLowerCase()],
       },
