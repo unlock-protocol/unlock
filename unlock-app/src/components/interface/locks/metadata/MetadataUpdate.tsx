@@ -9,7 +9,7 @@ interface Props {
   lock?: Lock
 }
 
-export function UpdateMetadataDrawer({ isOpen, setIsOpen }: Props) {
+export function UpdateMetadataDrawer({ isOpen, setIsOpen, lock }: Props) {
   const easeOutTransaction = {
     as: Fragment,
     enter: 'ease-in-out duration-300',
@@ -57,7 +57,7 @@ export function UpdateMetadataDrawer({ isOpen, setIsOpen }: Props) {
                   <Dialog.Description className="text-base text-gray-800"></Dialog.Description>
                 </div>
                 <div className="relative flex-1">
-                  <UpdateLockMetadata />
+                  <UpdateLockMetadata lock={lock} />
                 </div>
               </div>
             </Transition.Child>
