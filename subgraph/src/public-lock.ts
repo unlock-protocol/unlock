@@ -1,4 +1,4 @@
-import { Address, BigInt, log } from '@graphprotocol/graph-ts'
+import { Address, BigInt, log, Bytes } from '@graphprotocol/graph-ts'
 
 import {
   CancelKey as CancelKeyEvent,
@@ -173,14 +173,23 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
 }
 
 // lock functions below
-
 export function handleRoleGranted(event: RoleGrantedEvent): void {
-  if (event.params.role.toString() == LOCK_MANAGER) {
+  if (
+    event.params.role.toHexString() ==
+    Bytes.fromHexString(LOCK_MANAGER).toHexString()
+  ) {
     const lock = Lock.load(event.address.toHexString())
     if (lock) {
-      const lockManagers = lock.lockManagers || []
-      lockManagers.push(event.params.account)
-      lock.lockManagers = lockManagers
+      const lockManagers = lock.lockManagers
+      if (
+        lock.lockManagers &&
+        lock.lockManagers.length &&
+        lock.lockManagers.includes(event.params.account)
+      ) {
+        lockManagers.push(event.params.account)
+      } else {
+        lock.lockManagers = [event.params.account]
+      }
       lock.save()
       log.debug('Lock manager {} added to lock: {}', [
         event.params.account.toHexString(),
