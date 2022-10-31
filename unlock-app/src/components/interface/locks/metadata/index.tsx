@@ -47,6 +47,7 @@ export function UpdateLockMetadata({ lock }: Props) {
     defaultValues: {
       name: lock?.name,
     },
+    mode: 'onChange',
   })
 
   const lockMetadata = useMutation(

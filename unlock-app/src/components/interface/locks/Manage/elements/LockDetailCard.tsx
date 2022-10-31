@@ -266,7 +266,7 @@ export const LockDetailCard = ({
           {isManager && (
             <div className="grid py-6">
               <Button
-                variant="black"
+                variant="primary"
                 size="small"
                 onClick={() => {
                   setUpdateMetadata(true)

@@ -50,18 +50,24 @@ export function AddStatModal({
                   <input
                     type="number"
                     placeholder="0"
+                    pattern="^[0-9]"
                     {...register(`stats.${index}.value`, {
                       valueAsNumber: true,
                     })}
                     id="value"
                     className="box-border flex-1 block w-full p-2 text-base border-none outline-none focus:outline-none"
                   />
-                  <div className="flex items-center justify-center h-full bg-gray-100">
+                  <label
+                    htmlFor="of"
+                    className="flex items-center justify-center h-full bg-gray-100"
+                  >
                     of
-                  </div>
+                  </label>
                   <input
+                    id="of"
                     type="number"
-                    placeholder="10"
+                    placeholder="100"
+                    pattern="^[0-9]"
                     {...register(`stats.${index}.max_value`, {
                       valueAsNumber: true,
                     })}
@@ -98,6 +104,7 @@ export function AddStatModal({
           </Button>
         </div>
         <Button
+          disabled={!!errors.stats?.length}
           onClick={(event) => {
             event.preventDefault()
             setIsOpen(false)
