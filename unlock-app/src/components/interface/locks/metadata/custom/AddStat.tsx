@@ -28,10 +28,7 @@ export function AddStatModal({
       <div className="grid gap-6">
         <header className="space-y-2 text-brand-dark">
           <h3 className="text-xl font-bold">Add Stats </h3>
-          <p>
-            This custom attribute will be shown as numbers. Members can use it
-            as filter.
-          </p>
+          <p>Numerical traits that just show as numbers.</p>
           <LearnMoreAboutOpenseaMetadataLink />
         </header>
         <div className="space-y-2">

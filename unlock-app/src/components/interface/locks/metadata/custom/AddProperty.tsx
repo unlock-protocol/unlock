@@ -29,8 +29,8 @@ export function AddPropertyModal({
         <header className="space-y-2 text-brand-dark">
           <h3 className="text-xl font-bold"> Add Properties </h3>
           <p>
-            This custom attribute will shows up underneath of the NFT image in
-            Opensea.
+            Textual traits that show up as rectangles on OpenSea and other
+            marketplaces
           </p>
           <LearnMoreAboutOpenseaMetadataLink />
         </header>

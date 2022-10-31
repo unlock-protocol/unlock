@@ -273,7 +273,7 @@ export const LockDetailCard = ({
                 }}
                 iconRight={<EditIcon key="edit" />}
               >
-                Update Metadata
+                Edit Metadata
               </Button>
             </div>
           )}

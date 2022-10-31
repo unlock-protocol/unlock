@@ -2,7 +2,7 @@ export interface Ticket {
   event_start_date?: string
   event_start_time?: string
   event_address?: string
-  event_meeting_url?: string
+  event_url?: string
 }
 export interface MetadataFormData {
   name: string
