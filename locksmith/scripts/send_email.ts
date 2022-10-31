@@ -41,13 +41,20 @@ async function run({ lockAddress, network }: Options) {
     }
   )
   await notifyNewKeysToWedlocks(keys, network)
+  return keys
 }
 
 if (argv.lockAddress && argv.network) {
   run({
     lockAddress: argv.lockAddress,
     network: argv.network,
-  }).catch(console.error)
+  })
+    .then((keys) => {
+      console.log(
+        `Successfully sent emails to recipients associated with ${keys.length} keys.`
+      )
+    })
+    .catch(console.error)
 } else {
   console.log(argv)
 }
