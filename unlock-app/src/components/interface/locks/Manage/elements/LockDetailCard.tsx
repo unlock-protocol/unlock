@@ -20,6 +20,7 @@ import { EnableRecurring } from './EnableRecurring'
 import { useLockManager } from '~/hooks/useLockManager'
 import { RiEditLine as EditIcon } from 'react-icons/ri'
 import { UpdateMetadataDrawer } from '../../metadata/MetadataUpdate'
+import { useStorageService } from '~/utils/withStorageService'
 
 interface LockDetailCardProps {
   network: number
@@ -152,7 +153,7 @@ export const LockDetailCard = ({
   const [updateMetadata, setUpdateMetadata] = useState(false)
   const { networks } = useConfig()
   const web3Service = useWeb3Service()
-
+  const storageService = useStorageService()
   const { isManager } = useLockManager({
     lockAddress,
     network,
@@ -194,6 +195,26 @@ export const LockDetailCard = ({
 
   const symbol = lock?.currencySymbol || baseCurrencySymbol
   const priceLabel = keyPrice == 0 ? 'FREE' : keyPrice
+
+  const { data: lockMetadata, isInitialLoading: isLockMetadataLoading } =
+    useQuery<Record<string, any>>(
+      ['lockMetadata', lockAddress, network],
+      async () => {
+        const response = await storageService.locksmith.lockMetadata(
+          network,
+          lockAddress
+        )
+        return response.data
+      },
+      {
+        onError(error) {
+          console.error(error)
+        },
+        refetchInterval: Infinity,
+        retry: 2,
+        initialData: {},
+      }
+    )
 
   return (
     <>
@@ -238,22 +259,39 @@ export const LockDetailCard = ({
           <LockInfoCard
             lockAddress={lockAddress}
             network={network}
-            name={lock?.name}
+            name={lockMetadata?.name || lock?.name}
             loading={loading}
             version={lock?.publicLockVersion}
           />
           {isManager && (
             <div className="grid py-6">
               <Button
-                variant="black"
+                variant="primary"
                 size="small"
                 onClick={() => {
                   setUpdateMetadata(true)
                 }}
                 iconRight={<EditIcon key="edit" />}
               >
-                Update Metadata
+                Edit Metadata
               </Button>
+            </div>
+          )}
+          {!isLockMetadataLoading && (
+            <div className="flex flex-col gap-2 overflow-y-auto max-h-24">
+              {lockMetadata?.external_url && (
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={lockMetadata.external_url}
+                  className=" text-ui-main-500 hover:underline"
+                >
+                  {lockMetadata.external_url}
+                </a>
+              )}
+              {lockMetadata?.description && (
+                <p className="text-gray-700 ">{lockMetadata.description}</p>
+              )}
             </div>
           )}
           <div className="flex flex-col mt-6">
