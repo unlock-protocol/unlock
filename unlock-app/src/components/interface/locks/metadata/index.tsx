@@ -47,6 +47,7 @@ export function UpdateLockMetadata({ lock }: Props) {
     defaultValues: {
       name: lock?.name,
     },
+    mode: 'onChange',
   })
 
   const lockMetadata = useMutation(
@@ -154,7 +155,11 @@ export function UpdateLockMetadata({ lock }: Props) {
         <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
           <div className="grid gap-6">
             <LockDetailForm disabled={lockMetadata.isLoading} />
-            <LockTicketForm disabled={lockMetadata.isLoading} />
+            <LockTicketForm
+              lockAddress={lockAddress}
+              network={network}
+              disabled={lockMetadata.isLoading}
+            />
             <LockAdvancedForm disabled={lockMetadata.isLoading} />
             <LockCustomForm />
             <div className="flex justify-center">
