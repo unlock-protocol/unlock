@@ -61,19 +61,27 @@ export function handleNewLock(event: NewLock): void {
   lock.version = version
   lock.createdAtBlock = event.block.number
 
-  // parse lock managers from RoleGranted in the same tx
-  lock.lockManagers = []
-  if (event.receipt) {
-    const logs = event.receipt!.logs
-    for (let i = 0; i < logs.length; i++) {
-      const eventLog = logs[i]
-      const eventSignature = eventLog.topics[0].toHexString()
-      log.debug('{}', [eventSignature])
-      if (eventSignature === ROLE_GRANTED) {
-        const role = eventLog.topics[1].toHexString()
-        if (role === LOCK_MANAGER) {
-          const lockManager = eventLog.topics[2]
-          lock.lockManagers.push(lockManager)
+  // make sure account from event is a lock manager
+  const isLockManager = lockContract.try_isLockManager(event.params.lockOwner)
+  if (!isLockManager.reverted && isLockManager.value) {
+    lock.lockManagers = [event.params.lockOwner]
+  } else {
+    // parse lock managers from RoleGranted in the same tx
+    if (event.receipt) {
+      const logs = event.receipt!.logs
+      log.info('logs: {}', [logs.length.toString()])
+      for (let i = 0; i < logs.length; i++) {
+        const eventLog = logs[i]
+        const eventSignature = eventLog.topics[0].toHexString()
+        log.info('event: {}', [eventSignature])
+        if (eventSignature === ROLE_GRANTED) {
+          const role = eventLog.topics[1].toHexString()
+          log.info('role: {}', [role])
+          if (role === LOCK_MANAGER) {
+            const lockManager = eventLog.topics[2]
+            log.info('lockManager: {}', [lockManager.toHexString()])
+            lock.lockManagers = [lockManager]
+          }
         }
       }
     }
