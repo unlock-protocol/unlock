@@ -13,7 +13,7 @@ import { FiKey as KeyIcon } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import Link from 'next/link'
 import { Lock } from '~/unlockTypes'
-import { UNLIMITED_KEYS_DURATION } from '~/constants'
+import { MAX_UINT } from '~/constants'
 import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { IconModal } from '../../Manage/elements/LockIcon'
@@ -186,18 +186,16 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
 
   const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
 
-  const symbol = (lock as any)?.currencySymbol ?? baseCurrencySymbol
-
   const getLockDetail = async () => {
     return await web3service.getLock(lock.address, parseInt(network, 10))
   }
 
-  const {
-    isLoading: isLoadingInfo,
-    data: { balance, expirationDuration } = {},
-  } = useQuery(['lockDetail', network, lock?.address], async () =>
-    getLockDetail()
-  )
+  const { isLoading: isLoadingInfo, data: { balance, currencySymbol } = {} } =
+    useQuery(['lockDetail', network, lock?.address], async () =>
+      getLockDetail()
+    )
+
+  const symbol = currencySymbol ?? baseCurrencySymbol
 
   useEffect(() => {
     if (!isCopied) return
@@ -207,10 +205,10 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
   const lockUrl = `/locks/lock?address=${lockAddress}&network=${network}`
 
   const duration =
-    expirationDuration === UNLIMITED_KEYS_DURATION ? (
+    lock?.expirationDuration === MAX_UINT ? (
       'Unlimited'
     ) : (
-      <Duration seconds={expirationDuration} />
+      <Duration seconds={lock?.expirationDuration} />
     )
 
   const keyPrice = ethers.utils.formatEther(lock?.price)
