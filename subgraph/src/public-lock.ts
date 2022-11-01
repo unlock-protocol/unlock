@@ -1,4 +1,4 @@
-import { Address, BigInt, log, Bytes } from '@graphprotocol/graph-ts'
+import { Address, BigInt, log, Bytes, store } from '@graphprotocol/graph-ts'
 
 import {
   CancelKey as CancelKeyEvent,
@@ -142,8 +142,14 @@ export function handleCancelKey(event: CancelKeyEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
-    key.cancelled = true
-    key.save()
+    // remove cancelled keys for v11
+    const lock = Lock.load(key.lock)
+    if (lock && lock.version == BigInt.fromI32(11)) {
+      store.remove('Key', keyID)
+    } else {
+      key.cancelled = true
+      key.save()
+    }
   }
 }
 
