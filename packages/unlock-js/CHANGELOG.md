@@ -1,8 +1,12 @@
 # Changes
 
-# 0.30.7
+# 0.31.1
 
 - add `totalKeys` to subgraph
+# 0.31.0
+
+- Add support for PublicLock version 12
+
 
 # 0.30.6
 
