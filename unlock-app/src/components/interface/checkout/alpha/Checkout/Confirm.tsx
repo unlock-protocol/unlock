@@ -26,6 +26,7 @@ import { MAX_UINT } from '~/constants'
 import { Pricing } from '../Lock'
 import { lockTickerSymbol } from '../../../../../utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
+import { networks } from '@unlock-protocol/networks'
 
 interface Props {
   injectedProvider: unknown
@@ -176,40 +177,52 @@ export function Confirm({
       }
     )
 
-  const { data: prices, isInitialLoading: isPricesLoading } = useQuery(
-    ['purchasePriceFor', lockAddress, lockNetwork],
-    async () => {
-      const prices = await Promise.all(
-        recipients.map(async (recipient) => {
-          const price = await web3Service.purchasePriceFor({
-            lockAddress: lockAddress,
-            network: lockNetwork,
-            userAddress: recipient,
-            referrer: paywallConfig.referrer || recipient,
-            data: purchaseData?.[0] || '0x',
+  const { data: pricingData, isInitialLoading: isPricingDataLoading } =
+    useQuery(
+      ['purchasePriceFor', lockAddress, lockNetwork],
+      async () => {
+        const prices = await Promise.all(
+          recipients.map(async (recipient) => {
+            const options = {
+              lockAddress: lockAddress,
+              network: lockNetwork,
+              userAddress: recipient,
+              referrer: paywallConfig.referrer || recipient,
+              data: purchaseData?.[0] || '0x',
+            }
+            const price = await web3Service.purchasePriceFor(options)
+
+            const decimals = lock!.currencyContractAddress
+              ? await web3Service.getTokenDecimals(
+                  lock!.currencyContractAddress!,
+                  lockNetwork
+                )
+              : networks[lockNetwork].nativeCurrency?.decimals
+
+            const mul = BigNumber.from(10).pow(decimals || 18)
+            const amount = BigNumber.from(price).div(mul)
+            return {
+              userAddress: recipient,
+              amount: amount,
+            }
           })
-          const decimals = await web3Service.getTokenDecimals(
-            lock!.currencyContractAddress!,
-            lockNetwork
-          )
-          const mul = BigNumber.from(10).pow(decimals)
-          const amount = BigNumber.from(price).div(mul)
-          return {
-            userAddress: recipient,
-            amount: amount.toString(),
-          }
-        })
-      )
-      return prices
-    },
-    {
-      refetchInterval: Infinity,
-      enabled: !isInitialDataLoading,
-    }
-  )
+        )
+        return {
+          prices,
+          total: prices.reduce((acc, item) => {
+            return item.amount.add(acc)
+          }, ethers.BigNumber.from(0)),
+        }
+      },
+      {
+        refetchInterval: Infinity,
+        refetchOnMount: false,
+        enabled: !isInitialDataLoading,
+      }
+    )
 
   const isLoading =
-    isPricesLoading || isFiatPriceLoading || isInitialDataLoading
+    isPricingDataLoading || isFiatPriceLoading || isInitialDataLoading
 
   const baseCurrencySymbol = config.networks[lockNetwork].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
@@ -309,7 +322,7 @@ export function Confirm({
         return
       }
       const keyPrices: string[] =
-        prices?.map((item) => item.amount) ||
+        pricingData?.prices.map((item) => item.amount.toString()) ||
         new Array(recipients!.length).fill(keyPrice)
 
       const referrers: string[] | undefined = paywallConfig.referrer
@@ -536,11 +549,10 @@ export function Confirm({
               View Contract <Icon icon={ExternalLinkIcon} size="small" />
             </a>
           </div>
-
           {!isLoading && (
             <div>
-              {!!prices?.length &&
-                prices.map((item, index) => {
+              {!!pricingData?.prices?.length &&
+                pricingData.prices.map((item, index) => {
                   const first = index <= 0
                   return (
                     <div
@@ -562,7 +574,9 @@ export function Confirm({
                       </div>
 
                       <div className="font-bold">
-                        {item.amount} {symbol}{' '}
+                        {item.amount.lte(0)
+                          ? 'FREE'
+                          : item.amount.toString() + ' ' + symbol}
                       </div>
                     </div>
                   )
@@ -570,34 +584,37 @@ export function Confirm({
             </div>
           )}
         </div>
-        {!isLoading ? (
-          <Pricing
-            keyPrice={`${prices?.reduce((acc, item) => {
-              return acc + Number(item.amount)
-            }, 0)} ${symbol}`}
-            usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
-            isCardEnabled={formattedData.cardEnabled}
-          />
-        ) : (
+        {isLoading ? (
           <div className="flex flex-col items-center gap-2">
             {recipients.map((user) => (
               <div
                 key={user}
-                className="w-full p-2 bg-gray-100 rounded-lg animate-pulse"
+                className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
               />
             ))}
           </div>
+        ) : (
+          <Pricing
+            keyPrice={
+              pricingData?.total?.lte(0)
+                ? 'FREE'
+                : `${pricingData?.total?.toString()} ${symbol}`
+            }
+            usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
+            isCardEnabled={formattedData.cardEnabled}
+          />
         )}
-        {!isLoading ? (
+        {isLoading ? (
+          <div className="py-1.5 space-y-2 items-center">
+            <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
+          </div>
+        ) : (
           <div>
             {!isLoading && fiatPricing.creditCardEnabled && (
               <CreditCardPricingBreakdown {...fiatPricing} />
             )}
-          </div>
-        ) : (
-          <div className="py-1.5 space-y-2 items-center">
-            <div className="w-full p-6 bg-gray-100 rounded-lg animate-pulse"></div>
-            <div className="w-full p-6 bg-gray-100 rounded-lg animate-pulse"></div>
           </div>
         )}
       </main>
