@@ -140,20 +140,22 @@ export const FilterBar = ({
           {openSearch ? (
             <div className="flex gap-2">
               <div className="flex flex-col gap-4">
-                <div className="w-40">
-                  <Select
-                    size="small"
-                    label="Filter by"
-                    options={filters}
-                    defaultValue={filterKey}
-                    onChange={(filter: any) => {
-                      setFilterKey(filter)
-                      setRawQueryValue('')
-                    }}
-                  />
+                <div className="flex items-center gap-2">
+                  <span>Filter by</span>
+                  <div className="w-40">
+                    <Select
+                      size="small"
+                      options={filters}
+                      defaultValue={filterKey}
+                      onChange={(filter: any) => {
+                        setFilterKey(filter)
+                        setRawQueryValue('')
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
-              <div className="mt-auto w-80">
+              <div className="mt-auto">
                 <Input
                   size="small"
                   onChange={(e: any) => {
