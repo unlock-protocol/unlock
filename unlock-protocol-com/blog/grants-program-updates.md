@@ -3,7 +3,7 @@ title: Unlock Announces Grants Program Upgrade
 subTitle: Improvements go live to streamline processes and accelerate growth for the Unlock ecosystem
 description: Improvements go live to streamline processes and accelerate growth for the Unlock ecosystem.
 author: Angela Steffens
-date: November, 1 2022
+date: November 1, 2022
 image: /images/blog/grants-upgrade-share.png
 ---
 
