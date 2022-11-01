@@ -272,7 +272,7 @@ export const LockDetailCard = ({
                 }}
                 iconRight={<EditIcon key="edit" />}
               >
-                Edit Properties
+                Edit NFT Properties
               </Button>
             </div>
           )}
