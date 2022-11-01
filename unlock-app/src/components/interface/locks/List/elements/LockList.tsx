@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import useLocks from '~/hooks/useLocks'
 import { Lock } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
@@ -13,6 +14,7 @@ interface LockListProps {
 }
 
 const LocksByNetwork = ({ network, owner }: LocksByNetworkProps) => {
+  const [showLocks, setShowLocks] = useState(true)
   const { networks } = useConfig()
   const { name: networkName } = networks[network]
 
@@ -22,13 +24,25 @@ const LocksByNetwork = ({ network, owner }: LocksByNetworkProps) => {
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-lg font-bold text-brand-ui-primary">{networkName}</h2>
-      <div className="flex flex-col gap-6">
-        {locks?.map((lock: Lock, index: number) => (
-          <LockCard key={index} lock={lock} network={network} />
-        ))}
-        {loading && <LockCardPlaceholder />}
+      <div className="flex gap-2">
+        <h2 className="text-lg font-bold text-brand-ui-primary">
+          {networkName}
+        </h2>
+        <button
+          onClick={() => setShowLocks(!showLocks)}
+          className="text-base underline text-brand-ui-primary"
+        >
+          {showLocks ? 'Hide' : 'Show'}
+        </button>
       </div>
+      {showLocks && (
+        <div className="flex flex-col gap-6">
+          {locks?.map((lock: Lock, index: number) => (
+            <LockCard key={index} lock={lock} network={network} />
+          ))}
+          {loading && <LockCardPlaceholder />}
+        </div>
+      )}
     </div>
   )
 }
