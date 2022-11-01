@@ -3,7 +3,7 @@ import { Tooltip } from '@unlock-protocol/ui'
 import { twMerge } from 'tailwind-merge'
 import { ReactNode } from 'react'
 import { IoIosRocket as RocketIcon } from 'react-icons/io'
-import { CheckoutService } from './Checkout/checkoutMachine'
+import { CheckoutService } from './main/checkoutMachine'
 import { UnlockAccountService } from './UnlockAccount/unlockAccountMachine'
 
 interface IconProps {
