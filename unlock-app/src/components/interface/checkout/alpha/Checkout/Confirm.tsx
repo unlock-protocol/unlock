@@ -199,8 +199,7 @@ export function Confirm({
                 )
               : networks[lockNetwork].nativeCurrency?.decimals
 
-            const mul = BigNumber.from(10).pow(decimals || 18)
-            const amount = BigNumber.from(price).div(mul)
+            const amount = ethers.utils.formatUnits(price, decimals)
             return {
               userAddress: recipient,
               amount: amount,
@@ -209,9 +208,9 @@ export function Confirm({
         )
         return {
           prices,
-          total: prices.reduce((acc, item) => {
-            return item.amount.add(acc)
-          }, ethers.BigNumber.from(0)),
+          total: prices
+            .reduce((acc, item) => acc + parseFloat(item.amount), 0)
+            .toString(),
         }
       },
       {
@@ -574,7 +573,7 @@ export function Confirm({
                       </div>
 
                       <div className="font-bold">
-                        {item.amount.lte(0)
+                        {item.amount === '0'
                           ? 'FREE'
                           : item.amount.toString() + ' ' + symbol}
                       </div>
@@ -596,7 +595,7 @@ export function Confirm({
         ) : (
           <Pricing
             keyPrice={
-              pricingData?.total?.lte(0)
+              pricingData?.total === '0'
                 ? 'FREE'
                 : `${pricingData?.total?.toString()} ${symbol}`
             }
