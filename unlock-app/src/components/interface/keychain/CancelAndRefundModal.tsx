@@ -5,6 +5,7 @@ import { useWalletService } from '~/utils/withWalletService'
 import { ToastHelper } from '../../helpers/toast.helper'
 import { FaSpinner as Spinner } from 'react-icons/fa'
 import { useKeychain } from '~/hooks/useKeychain'
+import { useConfig } from '~/utils/withConfig'
 
 export interface CancelAndRefundProps {
   isOpen: boolean
@@ -42,6 +43,7 @@ export const CancelAndRefundModal = ({
   onExpireAndRefund,
 }: CancelAndRefundProps) => {
   const walletService = useWalletService()
+  const { networks } = useConfig()
   const { address: lockAddress, tokenAddress } = lock ?? {}
 
   const { getAmounts } = useKeychain({
@@ -58,7 +60,9 @@ export const CancelAndRefundModal = ({
     {
       refetchInterval: false,
       onError: () => {
-        ToastHelper.error('There is some unexpected error, please try again')
+        ToastHelper.error(
+          `Can't get refund amount for ${lockAddress} in ${networks[network]?.name}`
+        )
       },
     }
   )
