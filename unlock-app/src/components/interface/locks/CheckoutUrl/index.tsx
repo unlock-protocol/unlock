@@ -35,6 +35,20 @@ export const CheckoutUrlPage = () => {
   }
 
   const onBasicConfigChange = (fields: Partial<PaywallConfig>) => {
+    const hasDefaultLock =
+      Object.keys(fields?.locks ?? {}).length === 0 && lockAddress && network
+
+    if (hasDefaultLock) {
+      fields = {
+        ...fields,
+        locks: {
+          [lockAddress as string]: {
+            network: parseInt(`${network!}`),
+          },
+        },
+      }
+    }
+
     setPaywallConfig({
       ...paywallConfig,
       ...fields,
@@ -43,11 +57,9 @@ export const CheckoutUrlPage = () => {
 
   const addDefaultLockFromQuery = () => {
     if (!lockAddress && !network) return null
-    setPaywallConfig({
-      locks: {
-        [lockAddress as string]: {
-          network: parseInt(`${network!}`),
-        },
+    onAddLocks({
+      [lockAddress as string]: {
+        network: parseInt(`${network!}`),
       },
     })
   }
