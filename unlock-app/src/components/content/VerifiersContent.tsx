@@ -173,7 +173,9 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
         </section>
 
         {withoutParams ? (
-          <LocksByNetwork onChange={onLockChange} owner={account!} />
+          <div className="w-1/2">
+            <LocksByNetwork onChange={onLockChange} owner={account!} />
+          </div>
         ) : (
           <VerifiersList
             lockAddress={lockAddress}

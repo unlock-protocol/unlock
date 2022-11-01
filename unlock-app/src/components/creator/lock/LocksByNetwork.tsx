@@ -42,7 +42,7 @@ const LockImage = ({ lockAddress }: LockImageProps) => {
 export const LocksByNetwork = ({
   owner,
   onChange,
-  customAddress = true,
+  customAddress = false,
 }: LocksByNetworkProps) => {
   const { network: connectedNetwork } = useAuth()
   const [lockAddress, setLockAddress] = useState<any>(undefined)
