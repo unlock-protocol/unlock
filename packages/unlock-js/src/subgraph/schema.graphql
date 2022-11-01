@@ -1,5 +1,5 @@
 query allLocks(
-  $first: Int!
+  $first: Int = 1
   $skip: Int
   $where: Lock_filter
   $orderBy: Lock_orderBy
@@ -25,7 +25,7 @@ query allLocks(
 }
 
 query AllKeys(
-  $first: Int!
+  $first: Int = 1
   $skip: Int
   $where: Key_filter
   $orderBy: Key_orderBy

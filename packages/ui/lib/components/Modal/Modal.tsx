@@ -4,7 +4,7 @@ import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 interface Props {
   isOpen: boolean
   setIsOpen: (isOpen: boolean) => void
-  children: ReactNode
+  children?: ReactNode
 }
 
 export function Modal({ isOpen, setIsOpen, children }: Props) {
