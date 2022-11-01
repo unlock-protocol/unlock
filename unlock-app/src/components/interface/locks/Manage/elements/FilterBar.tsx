@@ -153,7 +153,7 @@ export const FilterBar = ({
                   />
                 </div>
               </div>
-              <div className="mt-auto">
+              <div className="mt-auto w-80">
                 <Input
                   size="small"
                   onChange={(e: any) => {
