@@ -210,7 +210,6 @@ export const LockDetailCard = ({
         onError(error) {
           console.error(error)
         },
-        refetchInterval: Infinity,
         retry: 2,
         initialData: {},
       }
@@ -273,7 +272,7 @@ export const LockDetailCard = ({
                 }}
                 iconRight={<EditIcon key="edit" />}
               >
-                Edit Metadata
+                Edit Properties
               </Button>
             </div>
           )}

@@ -70,7 +70,7 @@ export function LockDetailForm({ disabled }: Props) {
                 disabled={disabled}
                 label="Description"
                 placeholder="Write description here."
-                description="This is each NFT's description on OpenSea and other marketplaces."
+                description="This is each NFT's description on OpenSea and other marketplaces. Markdown is supported."
                 error={errors.description?.message}
                 rows={4}
               />

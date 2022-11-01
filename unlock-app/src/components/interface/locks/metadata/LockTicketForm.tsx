@@ -91,52 +91,55 @@ export function LockTicketForm({ disabled, lockAddress, network }: Props) {
                   )}
                 </div>
               </Disclosure.Button>
-              <Disclosure.Panel className="grid items-center gap-12 sm:grid-cols-2">
-                <div className="flex flex-col justify-center gap-6">
-                  <img src="/images/map.png" alt="map" />
-                  <Button
-                    disabled={disabled}
-                    size="small"
-                    variant="outlined-primary"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      setPreviewTicket(true)
-                    }}
-                  >
-                    Preview QR Ticket
-                  </Button>
-                </div>
-                <div className="grid gap-y-6">
-                  <Input
-                    {...register('ticket.event_start_date')}
-                    disabled={disabled}
-                    type="date"
-                    label="Date"
-                    error={errors.ticket?.event_start_date?.message}
-                  />
-                  <Input
-                    {...register('ticket.event_start_time')}
-                    disabled={disabled}
-                    type="time"
-                    label="Time"
-                    error={errors.ticket?.event_start_time?.message}
-                  />
-                  <Input
-                    {...register('ticket.event_address')}
-                    disabled={disabled}
-                    type="text"
-                    placeholder="123, Street, NYC"
-                    label="Address for in person event"
-                    error={errors.ticket?.event_address?.message}
-                  />
-                  <Input
-                    disabled={disabled}
-                    label="Meeting link (if any)"
-                    placeholder="https://"
-                    {...register('ticket.event_meeting_url')}
-                    type="url"
-                    error={errors.ticket?.event_url?.message}
-                  />
+              <Disclosure.Panel>
+                <p>Add properties for your ticketing event.</p>
+                <div className="grid items-center gap-12 mt-2 sm:grid-cols-2">
+                  <div className="flex flex-col justify-center gap-6">
+                    <img src="/images/map.png" alt="map" />
+                    <Button
+                      disabled={disabled}
+                      size="small"
+                      variant="outlined-primary"
+                      onClick={(event) => {
+                        event.preventDefault()
+                        setPreviewTicket(true)
+                      }}
+                    >
+                      Preview QR Ticket
+                    </Button>
+                  </div>
+                  <div className="grid gap-y-6">
+                    <Input
+                      {...register('ticket.event_start_date')}
+                      disabled={disabled}
+                      type="date"
+                      label="Date"
+                      error={errors.ticket?.event_start_date?.message}
+                    />
+                    <Input
+                      {...register('ticket.event_start_time')}
+                      disabled={disabled}
+                      type="time"
+                      label="Time"
+                      error={errors.ticket?.event_start_time?.message}
+                    />
+                    <Input
+                      {...register('ticket.event_address')}
+                      disabled={disabled}
+                      type="text"
+                      placeholder="123, Street, NYC"
+                      label="Address for in person event"
+                      error={errors.ticket?.event_address?.message}
+                    />
+                    <Input
+                      disabled={disabled}
+                      label="Meeting link (if any)"
+                      placeholder="https://"
+                      {...register('ticket.event_meeting_url')}
+                      type="url"
+                      error={errors.ticket?.event_url?.message}
+                    />
+                  </div>
                 </div>
               </Disclosure.Panel>
             </div>
