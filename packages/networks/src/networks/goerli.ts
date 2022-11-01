@@ -24,7 +24,8 @@ export const goerli: NetworkConfig = {
     },
   },
   opensea: {
-    tokenUrl: (_lockAddress, _tokenId) => null,
+    tokenUrl: (lockAddress, tokenId) =>
+      `https://testnets.opensea.io/assets/goerli/${lockAddress}/${tokenId}`,
   },
   requiredConfirmations: 12,
   erc20: null,
