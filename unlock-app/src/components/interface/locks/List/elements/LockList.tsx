@@ -49,6 +49,8 @@ export const LockList = ({ owner }: LockListProps) => {
         where: {
           lockManagers_contains: [owner],
         },
+        orderBy: 'createdAtBlock' as any,
+        orderDirection: 'desc' as any,
       },
       {
         networks: [network],
