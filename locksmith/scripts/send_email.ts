@@ -37,7 +37,7 @@ async function run({ lockAddress, network }: Options) {
       },
     },
     {
-      networks: [network],
+      networks: [network.toString()],
     }
   )
   await notifyNewKeysToWedlocks(keys, network)
