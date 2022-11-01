@@ -188,7 +188,7 @@ export function UpdateLockMetadata({ lock }: Props) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-brand-ui-primary hover:underline"
           >
-            Learn about the opensea metadata.
+            Learn about the OpenSea metadata.
             <ExternalLinkIcon />
           </a>
         </div>
