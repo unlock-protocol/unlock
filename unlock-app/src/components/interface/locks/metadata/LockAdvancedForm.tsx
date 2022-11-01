@@ -36,7 +36,7 @@ export function LockAdvancedForm({ disabled }: Props) {
             <Disclosure.Panel className="grid gap-6">
               <p>
                 All properties are used to modify what is displayed on the NFT
-                viewer on opensea and other marketplaces.
+                viewer on OpenSea and other marketplaces.
               </p>
               <Input
                 {...register('animation_url')}
