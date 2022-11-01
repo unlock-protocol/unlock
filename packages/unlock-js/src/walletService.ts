@@ -588,7 +588,10 @@ export default class WalletService extends UnlockService {
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {object} params
    * - {PropTypes.address} lockAddress
-   * - {string} amount
+   * - {string} amount the amount to withdraw (0 to withdraw the entire balance)
+   * - {string} Erc20Address the address of the ERC20 currency to withdraw
+   * - {number} decimals the number of decimals of the ERC20
+   * - {string} beneficary the address that will receive the funds (only v12+)
    * @param {function} callback : callback invoked with the transaction hash
    */
   async withdrawFromLock(
@@ -597,6 +600,7 @@ export default class WalletService extends UnlockService {
       amount?: string
       decimals?: number
       erc20Address?: string
+      beneficiary?: string
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
