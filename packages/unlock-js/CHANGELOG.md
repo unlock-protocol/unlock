@@ -1,5 +1,9 @@
 # Changes
 
+# 0.31.0
+
+- Add support for PublicLock version 12
+
 
 # 0.30.6
 
