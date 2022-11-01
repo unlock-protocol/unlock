@@ -5,12 +5,8 @@ import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { useConfig } from '~/utils/withConfig'
 import { getLockProps } from '~/utils/lock'
-import { Button, Icon } from '@unlock-protocol/ui'
-import {
-  RiExternalLinkLine as ExternalLinkIcon,
-  RiTimer2Line as DurationIcon,
-  RiRepeatFill as RecurringIcon,
-} from 'react-icons/ri'
+import { Badge, Button, Icon, minifyAddress } from '@unlock-protocol/ui'
+import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { useWalletService } from '~/utils/withWalletService'
 import { Fragment, useState } from 'react'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -20,7 +16,6 @@ import { useActor } from '@xstate/react'
 import { CheckoutCommunication } from '~/hooks/useCheckoutCommunication'
 import { PoweredByUnlock } from '../PoweredByUnlock'
 import { Stepper } from '../Stepper'
-import { LabeledItem } from '../LabeledItem'
 import { Framework } from '@superfluid-finance/sdk-core'
 import { ethers, BigNumber } from 'ethers'
 import { selectProvider } from '~/hooks/useAuthenticate'
@@ -31,6 +26,7 @@ import { MAX_UINT } from '~/constants'
 import { Pricing } from '../Lock'
 import { lockTickerSymbol } from '../../../../../utils/checkoutLockUtils'
 import { Lock } from '~/unlockTypes'
+import { networks } from '@unlock-protocol/networks'
 
 interface Props {
   injectedProvider: unknown
@@ -149,6 +145,85 @@ export function Confirm({
     }
   )
 
+  const { isInitialLoading: isInitialDataLoading, data: purchaseData } =
+    useQuery(
+      ['purchaseData', lockAddress, lockNetwork, JSON.stringify(recipients)],
+      async () => {
+        let purchaseData = password || captcha || null
+        const dataBuilder =
+          paywallConfig.locks[lock!.address].dataBuilder ||
+          paywallConfig.dataBuilder
+        // if Data builder url is present, prioritize that above rest.
+        if (dataBuilder) {
+          const delegatedData = await fetchRecipientsData(dataBuilder, {
+            recipients,
+            lockAddress: lock!.address,
+            network: lock!.network,
+          })
+          if (delegatedData) {
+            purchaseData = delegatedData
+          }
+        }
+        return purchaseData
+      },
+      {
+        refetchInterval: false,
+        refetchOnMount: false,
+        refetchOnReconnect: false,
+        refetchOnWindowFocus: false,
+        onError(error) {
+          console.error(error)
+        },
+      }
+    )
+
+  const { data: pricingData, isInitialLoading: isPricingDataLoading } =
+    useQuery(
+      ['purchasePriceFor', lockAddress, lockNetwork],
+      async () => {
+        const prices = await Promise.all(
+          recipients.map(async (recipient) => {
+            const options = {
+              lockAddress: lockAddress,
+              network: lockNetwork,
+              userAddress: recipient,
+              referrer: paywallConfig.referrer || recipient,
+              data: purchaseData?.[0] || '0x',
+            }
+            const price = await web3Service.purchasePriceFor(options)
+
+            const decimals = lock!.currencyContractAddress
+              ? await web3Service.getTokenDecimals(
+                  lock!.currencyContractAddress!,
+                  lockNetwork
+                )
+              : networks[lockNetwork].nativeCurrency?.decimals
+
+            const mul = BigNumber.from(10).pow(decimals || 18)
+            const amount = BigNumber.from(price).div(mul)
+            return {
+              userAddress: recipient,
+              amount: amount,
+            }
+          })
+        )
+        return {
+          prices,
+          total: prices.reduce((acc, item) => {
+            return item.amount.add(acc)
+          }, ethers.BigNumber.from(0)),
+        }
+      },
+      {
+        refetchInterval: Infinity,
+        refetchOnMount: false,
+        enabled: !isInitialDataLoading,
+      }
+    )
+
+  const isLoading =
+    isPricingDataLoading || isFiatPriceLoading || isInitialDataLoading
+
   const baseCurrencySymbol = config.networks[lockNetwork].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock as Lock, baseCurrencySymbol)
   const formattedData = getLockProps(
@@ -246,32 +321,20 @@ export function Confirm({
       if (payment.method !== 'crypto') {
         return
       }
-      const keyPrices: string[] = new Array(recipients!.length).fill(keyPrice)
+      const keyPrices: string[] =
+        pricingData?.prices.map((item) => item.amount.toString()) ||
+        new Array(recipients!.length).fill(keyPrice)
+
       const referrers: string[] | undefined = paywallConfig.referrer
         ? new Array(recipients!.length).fill(paywallConfig.referrer)
         : undefined
-
-      let data = password || captcha || undefined
-
-      const dataBuilder =
-        paywallConfig.locks[lock!.address].dataBuilder ||
-        paywallConfig.dataBuilder
-
-      // if Data builder url is present, prioritize that above rest.
-      if (dataBuilder) {
-        data = await fetchRecipientsData(dataBuilder, {
-          recipients,
-          lockAddress: lock!.address,
-          network: lock!.network,
-        })
-      }
 
       await walletService?.purchaseKeys(
         {
           lockAddress,
           keyPrices,
           owners: recipients!,
-          data,
+          data: purchaseData,
           recurringPayments,
           referrers,
           totalApproval,
@@ -362,16 +425,13 @@ export function Confirm({
         return
       }
 
-      const data = password || captcha || undefined
-
       const response = await claimMembershipFromLock(
         lockAddress,
         lockNetwork,
-        data?.[0]
+        purchaseData?.[0]
       )
 
       const { transactionHash: hash, error } = response
-
       if (hash && !error) {
         communication?.emitTransactionInfo({
           hash,
@@ -475,71 +535,86 @@ export function Confirm({
     <Fragment>
       <Stepper position={7} service={checkoutService} items={stepItems} />
       <main className="h-full p-6 space-y-2 overflow-auto">
-        <div className="flex items-start justify-between">
-          <h3 className="text-xl font-bold">
-            {quantity}X {lockName}
-          </h3>
-          {!isFiatPriceLoading ? (
+        <div className="grid gap-y-2">
+          <div>
+            <h4 className="text-xl font-bold"> {lock!.name}</h4>
+            <a
+              href={config.networks[lockNetwork].explorer.urls.address(
+                lockAddress
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
+            >
+              View Contract <Icon icon={ExternalLinkIcon} size="small" />
+            </a>
+          </div>
+          {!isLoading && (
             <div>
-              <Pricing
-                keyPrice={formattedData.formattedKeyPrice}
-                usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
-                isCardEnabled={formattedData.cardEnabled}
-              />
-              <div className="text-sm text-right text-gray-500">
-                {quantity} X {lock?.keyPrice} {symbol?.toUpperCase()}
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center gap-2">
-              <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
-              <div className="w-16 p-2 bg-gray-100 rounded-lg animate-pulse"></div>
+              {!!pricingData?.prices?.length &&
+                pricingData.prices.map((item, index) => {
+                  const first = index <= 0
+                  return (
+                    <div
+                      key={index}
+                      className={`flex border-b ${
+                        first ? 'border-t' : null
+                      } items-center justify-between text-sm px-0 py-2`}
+                    >
+                      <div>
+                        1 Key for{' '}
+                        <span className="font-medium">
+                          {minifyAddress(item.userAddress)}
+                        </span>{' '}
+                        {Number(item.amount) < Number(lock!.keyPrice) ? (
+                          <Badge variant="green" size="tiny">
+                            Discounted
+                          </Badge>
+                        ) : null}
+                      </div>
+
+                      <div className="font-bold">
+                        {item.amount.lte(0)
+                          ? 'FREE'
+                          : item.amount.toString() + ' ' + symbol}
+                      </div>
+                    </div>
+                  )
+                })}
             </div>
           )}
         </div>
-        {!isFiatPriceLoading ? (
-          <div>
-            <div className="space-y-2">
-              <div className="flex items-center gap-4 text-sm">
-                <LabeledItem
-                  label="Duration"
-                  icon={DurationIcon}
-                  value={formattedData.formattedDuration}
-                />
-                {!!(recurringPayments?.length && recurringPayment) && (
-                  <LabeledItem
-                    label="Recurring"
-                    icon={RecurringIcon}
-                    value={recurringPayment.toString()}
-                  />
-                )}
-                {totalApproval && (
-                  <div className="flex items-center gap-2 text-gray-500">
-                    <RecurringIcon /> <span> Renewed until cancelled </span>
-                  </div>
-                )}
-              </div>
-              <a
-                href={config.networks[lockNetwork].explorer.urls.address(
-                  lockAddress
-                )}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-brand-ui-primary hover:opacity-75"
-              >
-                View Contract <Icon icon={ExternalLinkIcon} size="small" />
-              </a>
-            </div>
-            <div>
-              {!isFiatPriceLoading && fiatPricing.creditCardEnabled && (
-                <CreditCardPricingBreakdown {...fiatPricing} />
-              )}
-            </div>
+        {isLoading ? (
+          <div className="flex flex-col items-center gap-2">
+            {recipients.map((user) => (
+              <div
+                key={user}
+                className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"
+              />
+            ))}
           </div>
         ) : (
+          <Pricing
+            keyPrice={
+              pricingData?.total?.lte(0)
+                ? 'FREE'
+                : `${pricingData?.total?.toString()} ${symbol}`
+            }
+            usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
+            isCardEnabled={formattedData.cardEnabled}
+          />
+        )}
+        {isLoading ? (
           <div className="py-1.5 space-y-2 items-center">
-            <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
-            <div className="p-2 bg-gray-100 rounded-lg w-52 animate-pulse"></div>
+            <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
+            <div className="w-full p-4 bg-gray-100 rounded-lg animate-pulse"></div>
+          </div>
+        ) : (
+          <div>
+            {!isLoading && fiatPricing.creditCardEnabled && (
+              <CreditCardPricingBreakdown {...fiatPricing} />
+            )}
           </div>
         )}
       </main>

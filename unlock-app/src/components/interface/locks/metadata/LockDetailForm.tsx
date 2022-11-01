@@ -16,6 +16,19 @@ export function LockDetailForm({ disabled }: Props) {
     register,
     formState: { errors },
   } = useFormContext<MetadataFormData>()
+  const NameDescription = () => (
+    <p>
+      This will appear as each NFT&apos;s name on OpenSea on other marketplaces.{' '}
+      <a
+        className="text-brand-ui-primary hover:underline"
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.youtube.com/watch?v=s_Lo2RxPYGA"
+      >
+        Edit your collection on Opensea
+      </a>
+    </p>
+  )
   return (
     <div className="p-6 bg-white shadow border-xs rounded-xl">
       <Disclosure defaultOpen>
@@ -41,7 +54,7 @@ export function LockDetailForm({ disabled }: Props) {
                 type="text"
                 placeholder="Name"
                 label="Name"
-                description="The name will appear as the NFT name, not as collection name."
+                description={<NameDescription />}
               />
               <Input
                 {...register('external_url')}
@@ -57,6 +70,7 @@ export function LockDetailForm({ disabled }: Props) {
                 disabled={disabled}
                 label="Description"
                 placeholder="Write description here."
+                description="This is each NFT's description on OpenSea and other marketplaces."
                 error={errors.description?.message}
                 rows={4}
               />
