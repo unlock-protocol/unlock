@@ -7,8 +7,6 @@ date: November 1, 2022
 image: /images/blog/grants-upgrade-share.png
 ---
 
-## Improvements  go live to streamline processes and accelerate growth for the Unlock ecosystem.
-
 The original Unlock Protocol UDT Grants program was launched in 2021 with a goal to decentralize governance of Unlock Protocol, expand the number of [integrations](https://unlock-protocol.com/guides/category/plugins/) across the Unlock ecosystem, and increase the number of applications built with Unlock.
 
 We’ve taken the learnings from this last year, along with our mission to continue to decentralize at scale, and made significant improvements to the grants program, which we hope will mean the next year is an even bigger success! Here’s what’s new.
