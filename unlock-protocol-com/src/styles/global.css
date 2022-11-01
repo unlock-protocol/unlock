@@ -20,6 +20,10 @@ body {
   .sub-heading-small {
     @apply text-lg sm:text-xl lg:text-2xl text-brand-gray max-w-prose;
   }
+
+  .trans-pane {
+    @apply border border-gray-400 bg-transparent;
+  }
 }
 
 /*
@@ -30,4 +34,3 @@ body {
     @apply bg-white opacity-100;
   }
 }
-
