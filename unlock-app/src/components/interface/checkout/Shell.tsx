@@ -9,12 +9,12 @@ import {
   RiArrowLeftLine as BackIcon,
 } from 'react-icons/ri'
 import * as Avatar from '@radix-ui/react-avatar'
-import SvgComponents from '../../svg'
+import SvgComponents from '../svg'
 import mintingAnimation from '~/animations/minting.json'
 import mintedAnimation from '~/animations/minted.json'
 import errorAnimation from '~/animations/error.json'
 import Lottie from 'lottie-react'
-import { Transaction } from './Checkout/checkoutMachine'
+import { Transaction } from './main/checkoutMachine'
 
 interface ButtonProps {
   onClick: MouseEventHandler<HTMLButtonElement>

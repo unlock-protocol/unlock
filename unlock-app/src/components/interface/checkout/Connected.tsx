@@ -4,12 +4,12 @@ import { ReactNode, useMemo, useState } from 'react'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { useAuthenticate } from '~/hooks/useAuthenticate'
 import { addressMinify, minifyEmail } from '~/utils/strings'
-import SvgComponents from '../../svg'
-import { CheckoutService } from './Checkout/checkoutMachine'
+import SvgComponents from '../svg'
+import { CheckoutService } from './main/checkoutMachine'
 import { ConnectService } from './Connect/connectMachine'
 import { RiWalletFill as WalletIcon } from 'react-icons/ri'
 import { SiBrave as BraveWalletIcon } from 'react-icons/si'
-import { DownloadWallet } from '../../DownloadWallet'
+import { DownloadWallet } from '../DownloadWallet'
 interface SignedInProps {
   onDisconnect?: () => void
   isUnlockAccount: boolean
@@ -128,6 +128,7 @@ export function SignedOut({
         />
         <div className="flex items-center justify-around w-full">
           <button
+            aria-label="injected wallet"
             onClick={onInjectedHandler}
             type="button"
             className={iconButtonClass}
@@ -135,6 +136,7 @@ export function SignedOut({
             {ButtonIcon}
           </button>
           <button
+            aria-label="wallet connect"
             onClick={() => authenticateWithProvider('WALLET_CONNECT')}
             type="button"
             className={iconButtonClass}
@@ -142,6 +144,7 @@ export function SignedOut({
             <SvgComponents.WalletConnect width={32} />
           </button>
           <button
+            aria-label="coinbase wallet"
             onClick={() => authenticateWithProvider('COINBASE')}
             type="button"
             className={iconButtonClass}

@@ -1,6 +1,6 @@
 import React from 'react'
 import type { NextPage } from 'next'
-import { CheckoutPage } from '~/components/interface/checkout/alpha'
+import { CheckoutPage } from '~/components/interface/checkout'
 import BrowserOnly from '~/components/helpers/BrowserOnly'
 
 const Checkout: NextPage = () => {
