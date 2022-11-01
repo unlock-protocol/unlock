@@ -105,7 +105,7 @@ export function LockTicketForm({ disabled, lockAddress, network }: Props) {
                         setPreviewTicket(true)
                       }}
                     >
-                      Preview QR Ticket
+                      Preview Ticket
                     </Button>
                   </div>
                   <div className="grid gap-y-6">
