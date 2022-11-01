@@ -1,108 +1,161 @@
 import networks from '@unlock-protocol/networks'
-import { Lock } from '@unlock-protocol/types'
-import React, { ChangeEvent, useContext } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import AuthenticationContext from '~/contexts/AuthenticationContext'
-import { network } from '~/propTypes'
 import { addressMinify } from '~/utils/strings'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { Input, Select } from '@unlock-protocol/ui'
+import Link from 'next/link'
+import { useConfig } from '~/utils/withConfig'
+import { useAuth } from '~/contexts/AuthenticationContext'
 
 interface LocksByNetworkProps {
-  label?: string
   owner: string
-  onChange: (lock: any, network: number) => void
+  onChange: (lockAddress?: string, network?: number | string) => void
+  customAddress?: boolean // ability to add custom lock address
 }
 
-const LocksByNetworkPlaceholder = () => {
+interface LockImageProps {
+  lockAddress: string
+}
+
+const SelectPlaceholder = () => {
   return (
-    <div className="flex flex-col w-1/2 gap-2">
-      <div className="h-[14px] w-[200px] animate-pulse bg-slate-200"></div>
-      <div className="h-[45px] w-full animate-pulse rounded-lg bg-slate-200"></div>
+    <span className="w-full h-8 rounded-lg animate-pulse bg-slate-200"></span>
+  )
+}
+
+const LockImage = ({ lockAddress }: LockImageProps) => {
+  const config = useConfig()
+  const lockImage = `${config.services.storage.host}/lock/${lockAddress}/icon`
+
+  return (
+    <div className="flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
+      <img
+        src={lockImage}
+        alt={lockAddress}
+        className="object-cover w-full h-full bg-center"
+      />
     </div>
   )
 }
-export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
+
+export const LocksByNetwork = ({
   owner,
-  label = 'Select lock',
   onChange,
-}) => {
-  const { network: currentNetwork, changeNetwork } = useContext(
-    AuthenticationContext
+  customAddress = true,
+}: LocksByNetworkProps) => {
+  const { network: connectedNetwork } = useAuth()
+  const [lockAddress, setLockAddress] = useState<any>(undefined)
+  const [network, setNetwork] = useState<any>(connectedNetwork)
+  const [customLockAddress, setCustomLockAddress] = useState(false)
+
+  useEffect(() => {}, [])
+
+  const getLocksByNetwork = async () => {
+    if (!network) return null
+
+    const service = new SubgraphService()
+    return (
+      (await service.locks(
+        {
+          first: 1000,
+          where: {
+            lockManagers_contains: [owner!],
+          },
+        },
+        {
+          networks: [`${network!}`],
+        }
+      )) ?? []
+    )
+  }
+
+  const { isLoading: isLoadingLocksByNetwork, data: locksByNetwork = [] } =
+    useQuery([network, owner, connectedNetwork], async () =>
+      getLocksByNetwork()
+    )
+
+  const networkHasLocks = (locksByNetwork ?? [])?.length > 0
+  const networksOptions = Object.entries(networks).map(
+    ([id, { name: label }]: [string, any]) => ({
+      label,
+      value: id,
+    })
   )
 
-  const service = new SubgraphService()
-
-  const { isLoading, data: locks = [] } = useQuery([owner], async () => {
-    const items = Object.values(networks)
-      .filter(({ subgraph }) => !subgraph.endpoint.includes('localhost'))
-      .map(async ({ id, subgraph }) => {
-        if (subgraph.endpoint) {
-          const locksByNetwork = await service.locks(
-            {
-              first: 1000, // TODO: what happens when a user has more than 1000 locks?
-              where: {
-                lockManagers_contains: [owner],
-              },
-            },
-            {
-              networks: [`${id}`],
-            }
-          )
-          return [id, locksByNetwork as any]
-        }
-      })
-    return Promise.all(items)
+  const locksOptions: any = locksByNetwork?.map(({ address, name }: any) => {
+    const disabled = Object.keys(locksByNetwork)?.find(
+      (lockAddress: string) =>
+        lockAddress?.toLowerCase() === address?.toLowerCase()
+    )
+    return {
+      prepend: <LockImage lockAddress={address} />,
+      label: `${name}`,
+      value: address,
+      append: addressMinify(address),
+      disabled,
+    }
   })
 
-  if (isLoading) {
-    return <LocksByNetworkPlaceholder />
-  }
-
-  const onOptionChange = async (e: ChangeEvent<HTMLSelectElement>) => {
-    if (!network) return
-    const id = e?.target?.value
+  useEffect(() => {
     if (typeof onChange === 'function') {
-      let selected: any = null
-      let selectedNetwork: any = null
-      locks?.map(([network, items] = []) => {
-        if (selected) return
-        selected = items.find((item: any) => item.id === id)
-        selectedNetwork = network
-      })
-
-      // change network before switch to the lock if has a different network
-      if (selectedNetwork !== currentNetwork) {
-        await changeNetwork(networks[selectedNetwork])
-      }
-      onChange(selected, selectedNetwork)
+      onChange(lockAddress, network)
     }
-  }
+  }, [lockAddress, network, onChange])
 
   return (
-    <div className="flex flex-col w-1/2 gap-2">
-      <span className="text-lg">{label}</span>
-      <select
-        name="form block form-select"
-        className="box-border flex-1 block w-full py-2 pl-4 text-base transition-all border border-gray-400 rounded-lg shadow-sm hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
-        onChange={onOptionChange}
-        defaultValue=""
-      >
-        <option value="" disabled>
-          Choose Lock
-        </option>
-        {locks?.map(([networkId, items] = []) => {
-          if (!items?.length) return null
-          return items.map(({ id, name, address }: Lock & { id: string }) => {
-            const minifiedAddress = addressMinify(address || '')
-            const networkName = networks[networkId]?.name ?? '-'
-            return (
-              <option key={`${address}-${networkName}`} value={id}>
-                {`${networkName} - ${name} - ${minifiedAddress}`}
-              </option>
-            )
-          })
-        })}
-      </select>
+    <div className="flex flex-col w-full gap-2">
+      <Select
+        label="Network"
+        options={networksOptions}
+        size="small"
+        defaultValue={connectedNetwork}
+        onChange={setNetwork}
+      />
+      {isLoadingLocksByNetwork ? (
+        <SelectPlaceholder />
+      ) : (
+        <>
+          {customLockAddress ? (
+            <Input
+              label="Custom address"
+              size="small"
+              onChange={(e) => setLockAddress(e?.target?.value ?? '')}
+            />
+          ) : (
+            <>
+              {networkHasLocks ? (
+                <Select
+                  label="Lock"
+                  options={locksOptions}
+                  size="small"
+                  onChange={setLockAddress}
+                />
+              ) : (
+                network && (
+                  <span className="text-base">
+                    You have not deployed locks on this network yet.{' '}
+                    <Link className="underline" href="/locks/create">
+                      Deploy one now
+                    </Link>
+                    .
+                  </span>
+                )
+              )}
+            </>
+          )}
+        </>
+      )}
+      {customAddress && (
+        <div className="flex">
+          <button
+            onClick={() => setCustomLockAddress(!customLockAddress)}
+            className="ml-auto underline outline-none cursor-pointer text-brand-ui-primary"
+          >
+            {customLockAddress ? 'Select from list' : 'Custom address'}
+          </button>
+        </div>
+      )}
     </div>
   )
 }

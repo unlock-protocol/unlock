@@ -9,7 +9,6 @@ import { getAddressForName } from '../../hooks/useEns'
 import { ToastHelper } from '../helpers/toast.helper'
 import { useStorageService } from '../../utils/withStorageService'
 import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
-import { Lock } from '@unlock-protocol/types'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { useRouter } from 'next/router'
 import { AppLayout } from '../interface/layouts/AppLayout'
@@ -141,11 +140,13 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
     }
   }
 
-  const onLockChange = (lock: Lock, network: number) => {
-    setParams({
-      lock: lock.address,
-      network,
-    })
+  const onLockChange = (lockAddress?: string, network?: string | number) => {
+    if (lockAddress && network) {
+      setParams({
+        lock: lockAddress,
+        network: parseInt(`${network}`),
+      })
+    }
   }
 
   const withoutParams = !lockAddress || !network
