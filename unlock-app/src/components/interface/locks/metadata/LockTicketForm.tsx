@@ -127,7 +127,7 @@ export function LockTicketForm({ disabled, lockAddress, network }: Props) {
                       {...register('ticket.event_address')}
                       disabled={disabled}
                       type="text"
-                      placeholder="123, Street, NYC"
+                      placeholder="123 1st street, 11217 Springfield, US"
                       label="Address for in person event"
                       error={errors.ticket?.event_address?.message}
                     />
