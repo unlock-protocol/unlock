@@ -10,7 +10,7 @@ import { Address, BigInt } from '@graphprotocol/graph-ts'
 
 import { handleNewLock, handleLockUpgraded } from '../src/unlock'
 import {
-  handleLockManagerAdded,
+  handleRoleGranted,
   handleLockManagerRemoved,
   handlePricingChanged,
   handleLockMetadata,
@@ -18,7 +18,7 @@ import {
 
 import {
   createNewLockEvent,
-  createLockManagerAddedEvent,
+  createLockManagerAddedEvent, // using RoleGranted
   createLockManagerRemovedEvent,
   createPricingChangedEvent,
   createLockUpgradedEvent,
@@ -66,7 +66,7 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'name', 'My lock graph')
     assert.fieldEquals('Lock', lockAddress, 'expirationDuration', `${duration}`)
     assert.fieldEquals('Lock', lockAddress, 'tokenAddress', nullAddress)
-    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[]`)
     assert.fieldEquals('Lock', lockAddress, 'totalKeys', '0')
     assert.fieldEquals(
       'Lock',
@@ -83,38 +83,23 @@ describe('Describe Locks events', () => {
   })
 
   test('Lock manager added', () => {
-    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[]`)
     const newLockManagerAdded = createLockManagerAddedEvent(
       Address.fromString(lockManager)
     )
-    handleLockManagerAdded(newLockManagerAdded)
-
-    assert.fieldEquals(
-      'Lock',
-      lockAddress,
-      'lockManagers',
-      `[${lockOwner}, ${lockManager}]`
-    )
+    handleRoleGranted(newLockManagerAdded)
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockManager}]`)
   })
 
   test('Lock manager removed', () => {
-    assert.fieldEquals(
-      'Lock',
-      lockAddress,
-      'lockManagers',
-      `[${lockOwner}, ${lockManager}]`
-    )
-    const newLockManagerAdded = createLockManagerAddedEvent(
-      Address.fromString(lockManager)
-    )
-    handleLockManagerAdded(newLockManagerAdded)
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockManager}]`)
 
     const newLockManagerRemoved = createLockManagerRemovedEvent(
       Address.fromString(lockManager)
     )
     handleLockManagerRemoved(newLockManagerRemoved)
 
-    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[]`)
   })
 
   test('Price changed', () => {

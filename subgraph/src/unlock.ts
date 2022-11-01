@@ -1,10 +1,14 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prefer-const */
-import { log, BigInt } from '@graphprotocol/graph-ts'
+import { log, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
 import { PublicLock as PublicLockMerged } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock } from '../generated/templates'
 import { Lock } from '../generated/schema'
+import { LOCK_MANAGER } from './helpers'
+
+const ROLE_GRANTED =
+  '0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d'
 
 export function handleNewLock(event: NewLock): void {
   let lockAddress = event.params.newLockAddress
@@ -56,7 +60,10 @@ export function handleNewLock(event: NewLock): void {
   lock.address = lockAddress
   lock.version = version
   lock.createdAtBlock = event.block.number
-  lock.lockManagers = [event.params.lockOwner]
+
+  // lock managers are parsed from RoleGranted events
+  lock.lockManagers = []
+
   lock.save()
 
   // instantiate the new lock to start tracking events there
