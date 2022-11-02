@@ -174,7 +174,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       owner?: string
       keyPrice?: string
-      data?: string
+      data?: string | null
       erc20Address?: string
       decimals?: number
       recurringPayments?: number
@@ -205,7 +205,7 @@ export default class WalletService extends UnlockService {
       lockAddress: string
       owners?: string[]
       keyPrices?: string[]
-      data?: string[]
+      data?: string[] | null
       erc20Address?: string
       decimals?: number
       referrers?: (string | null)[]
@@ -558,10 +558,10 @@ export default class WalletService extends UnlockService {
   }
 
   /**
-   * Update the symbol of a lock
+   * Update the base URI used to parse the tokenURI
    * @param {object} params:
    * - {PropTypes.address} lockAddress
-   * - {string} symbol the new symbol of the lock
+   * - {string} baseTokenURI the new baseTokenURI of the lock
    * @param {function} callback invoked with the transaction hash
    */
   async setBaseTokenURI(
@@ -588,7 +588,10 @@ export default class WalletService extends UnlockService {
    * Triggers a transaction to withdraw funds from the lock and assign them to the owner.
    * @param {object} params
    * - {PropTypes.address} lockAddress
-   * - {string} amount
+   * - {string} amount the amount to withdraw (0 to withdraw the entire balance)
+   * - {string} Erc20Address the address of the ERC20 currency to withdraw
+   * - {number} decimals the number of decimals of the ERC20
+   * - {string} beneficary the address that will receive the funds (only v12+)
    * @param {function} callback : callback invoked with the transaction hash
    */
   async withdrawFromLock(
@@ -597,6 +600,7 @@ export default class WalletService extends UnlockService {
       amount?: string
       decimals?: number
       erc20Address?: string
+      beneficiary?: string
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback

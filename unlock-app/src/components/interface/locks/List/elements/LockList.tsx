@@ -1,4 +1,3 @@
-import { useAuth } from '~/contexts/AuthenticationContext'
 import useLocks from '~/hooks/useLocks'
 import { Lock } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
@@ -6,14 +5,18 @@ import { LockCard, LockCardPlaceholder } from './LockCard'
 
 interface LocksByNetworkProps {
   network: number
+  owner?: string
 }
 
-const LocksByNetwork = ({ network }: LocksByNetworkProps) => {
-  const { account } = useAuth()
+interface LockListProps {
+  owner?: string
+}
+
+const LocksByNetwork = ({ network, owner }: LocksByNetworkProps) => {
   const { networks } = useConfig()
   const { name: networkName } = networks[network]
 
-  const { locks, loading } = useLocks(account!, network!)
+  const { locks, loading } = useLocks(owner, network!)
 
   if (locks?.length === 0) return null
 
@@ -30,13 +33,13 @@ const LocksByNetwork = ({ network }: LocksByNetworkProps) => {
   )
 }
 
-export const LockList = () => {
+export const LockList = ({ owner }: LockListProps) => {
   const { networks } = useConfig()
 
   return (
     <div className="grid gap-20 mb-20">
       {Object.values(networks ?? {}).map(({ id: network }: any) => {
-        return <LocksByNetwork key={network} network={network} />
+        return <LocksByNetwork key={network} network={network} owner={owner} />
       })}
     </div>
   )

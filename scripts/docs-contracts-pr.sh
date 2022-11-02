@@ -36,7 +36,7 @@ cd $tmpdir
 tar -xf contracts-**.tgz
 
 # versioning
-$branch="$(ls *.tgz | sed 's/\./-/g' | awk 'sub("....$", "")')"
+branch="$(ls *.tgz | sed 's/\./-/g' | awk 'sub("....$", "")')"
 
 # git worflow
 git clone $repo

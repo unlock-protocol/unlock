@@ -9,7 +9,7 @@ describe('welcome', () => {
   it('should have the right subject', () => {
     expect.assertions(1)
     expect(prepareAll(welcome).subject()).toBe(
-      'Welcome to Unlock! Please, read this email carefuly'
+      'Welcome to Unlock! Please, read this email carefully'
     )
   })
 

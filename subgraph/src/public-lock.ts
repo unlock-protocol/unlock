@@ -1,4 +1,4 @@
-import { Address, BigInt, log } from '@graphprotocol/graph-ts'
+import { Address, BigInt, log, Bytes, store } from '@graphprotocol/graph-ts'
 
 import {
   CancelKey as CancelKeyEvent,
@@ -6,6 +6,7 @@ import {
   ExpirationChanged1 as ExpirationChangedEvent,
   ExpireKey as ExpireKeyEvent,
   KeyExtended as KeyExtendedEvent,
+  RoleGranted as RoleGrantedEvent,
   KeyManagerChanged as KeyManagerChangedEvent,
   LockManagerAdded as LockManagerAddedEvent,
   LockManagerRemoved as LockManagerRemovedEvent,
@@ -19,7 +20,7 @@ import {
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
 import { Key, Lock } from '../generated/schema'
 
-import { genKeyID, getKeyExpirationTimestampFor } from './helpers'
+import { genKeyID, getKeyExpirationTimestampFor, LOCK_MANAGER } from './helpers'
 
 function newKey(event: TransferEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
@@ -141,8 +142,14 @@ export function handleCancelKey(event: CancelKeyEvent): void {
   const keyID = genKeyID(event.address, event.params.tokenId.toString())
   const key = Key.load(keyID)
   if (key) {
-    key.cancelled = true
-    key.save()
+    // remove cancelled keys for v11
+    const lock = Lock.load(key.lock)
+    if (lock && lock.version == BigInt.fromI32(11)) {
+      store.remove('Key', keyID)
+    } else {
+      key.cancelled = true
+      key.save()
+    }
   }
 }
 
@@ -171,19 +178,30 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 }
 
-// lock functions
-export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
-  const lock = Lock.load(event.address.toHexString())
-
-  if (lock && lock.lockManagers) {
-    const lockManagers = lock.lockManagers
-    lockManagers.push(event.params.account)
-    lock.lockManagers = lockManagers
-    lock.save()
-    log.debug('Lock manager {} added to {}', [
-      event.params.account.toHexString(),
-      event.address.toHexString(),
-    ])
+// lock functions below
+export function handleRoleGranted(event: RoleGrantedEvent): void {
+  if (
+    event.params.role.toHexString() ==
+    Bytes.fromHexString(LOCK_MANAGER).toHexString()
+  ) {
+    const lock = Lock.load(event.address.toHexString())
+    if (lock) {
+      const lockManagers = lock.lockManagers
+      if (
+        lock.lockManagers &&
+        lock.lockManagers.length &&
+        lock.lockManagers.includes(event.params.account)
+      ) {
+        lockManagers.push(event.params.account)
+      } else {
+        lock.lockManagers = [event.params.account]
+      }
+      lock.save()
+      log.debug('Lock manager {} added to lock: {}', [
+        event.params.account.toHexString(),
+        event.address.toHexString(),
+      ])
+    }
   }
 }
 

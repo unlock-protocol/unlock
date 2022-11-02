@@ -16,7 +16,7 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
   const checkoutItems: StepItem[] = [
     {
       id: 1,
-      name: 'Select lock',
+      name: 'Select',
       to: 'SELECT',
     },
     {
@@ -67,7 +67,7 @@ export function useCheckoutSteps(service: CheckoutService, renewal = false) {
   const renewItems: StepItem[] = [
     {
       id: 1,
-      name: 'Select lock',
+      name: 'Select',
       to: 'SELECT',
     },
     isPassword

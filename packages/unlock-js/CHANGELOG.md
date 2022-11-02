@@ -1,5 +1,19 @@
 # Changes
 
+# 0.31.0
+
+- Add support for PublicLock version 12
+
+
+# 0.30.6
+
+- Add support for `key` and `lock` function in subgraph service.
+
+# 0.30.5
+
+- Add purchasePriceFor in web3Service
+
+
 # 0.30.4
 
 - Add support for `updateLockName`, `updateLockSymbol` and `setBaseTokenURI` across versions
