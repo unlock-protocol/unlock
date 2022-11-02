@@ -33,7 +33,7 @@ const SIZE_STYLES: SizeStyleProp = {
 export const Select = <T extends unknown>({
   options,
   onChange,
-  label = 'Select',
+  label = '',
   description = '',
   size = 'medium',
   defaultValue,
