@@ -27,7 +27,7 @@
     "websub:start": "yarn build && node -r ./src/utils/envLoader.js ./build/src/websub/server.js",
     "websub:dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js ./src/websub/server.ts",
     "websub:prod": "cd build && node -r ./src/utils/envLoader ./src/websub/server.js",
-    "send:email": "ts-node scripts/send_email.ts"
+    "send:email": "cd build && node -r ./src/utils/envLoader.js ./scripts/send_email.js"
   },
   "lint-staged": {
     "*.{js,ts}": [

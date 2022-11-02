@@ -46,7 +46,7 @@ export const CancelAndRefundModal = ({
 
   const { getAmounts } = useKeychain({
     lockAddress,
-    network,
+    network: parseInt(`${network}`),
     owner,
     keyId: tokenId,
     tokenAddress,
@@ -58,7 +58,10 @@ export const CancelAndRefundModal = ({
     {
       refetchInterval: false,
       onError: () => {
-        ToastHelper.error('There is some unexpected error, please try again')
+        isOpen &&
+          ToastHelper.error(
+            'We could not retrieve the refund amount for this membership.'
+          )
       },
     }
   )
