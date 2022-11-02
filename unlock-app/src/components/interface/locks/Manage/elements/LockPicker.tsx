@@ -40,7 +40,7 @@ const LockImage = ({ lockAddress }: LockImageProps) => {
 
 export const LockPicker = ({ owner, onChange }: LockPickerProps) => {
   const { network: connectedNetwork } = useAuth()
-  const [lockAddress, setLockAddress] = useState<string>('')
+  const [lockAddress, setLockAddress] = useState<any>(undefined)
   const [network, setNetwork] = useState<any>(connectedNetwork!)
   const [showCustomLockAddress, setShowCustomLockAddress] = useState(false)
   const [customLockAddress, setCustomLockAddress] = useState('')
