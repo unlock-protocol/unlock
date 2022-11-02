@@ -9,7 +9,7 @@ const supportedNetworks: Record<string, string> = {
   '100':
     'https://cool-empty-bird.xdai.quiknode.pro/4edba942fb43c718f24480484684e907fe3fe1d3/',
   '137':
-    'https://snowy-weathered-waterfall.matic.quiknode.pro/5b11a0413a62a295070c0dfb25637d5f8c591aba/',
+    'https://polygon-mainnet.g.alchemy.com/v2/8CKIasH9EPLC3-bicTKsjlaTgLQOH64M',
   '42161':
     'https://arb-mainnet.g.alchemy.com/v2/vwvJn-FammE6EtHhy30U40z3OwPYBjCM',
   '42220':
