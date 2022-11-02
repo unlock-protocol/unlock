@@ -9,6 +9,10 @@ export const getNameOrAddressForAddress = async (
   address: string
 ): Promise<string> => {
   try {
+    const isNotENS = ethers.utils.isAddress(address)
+    if (isNotENS) {
+      return address
+    }
     const result = await new ethers.providers.JsonRpcProvider(
       publicProvider
     ).lookupAddress(address)
