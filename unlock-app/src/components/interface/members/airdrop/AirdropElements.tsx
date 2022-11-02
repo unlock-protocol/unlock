@@ -26,7 +26,7 @@ interface AirdropListItemProps {
 }
 
 export function AirdropListItem({
-  value: { recipient, count, email, ...rest },
+  value: { recipient, count, email },
   onRemove,
 }: AirdropListItemProps) {
   return (
