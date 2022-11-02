@@ -27,6 +27,10 @@ export default class KeyPricer {
     const gasPrice = new GasPrice()
     const gasCost = await gasPrice.gasPriceUSD(network, GAS_COST_TO_GRANT) // in cents!
     switch (network) {
+      case 5:
+        // It does not really matter
+        return gasCost < 100
+
       case 100:
         // we max at $1
         return gasCost < 100
