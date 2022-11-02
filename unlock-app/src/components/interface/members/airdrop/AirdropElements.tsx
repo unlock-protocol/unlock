@@ -26,13 +26,15 @@ interface AirdropListItemProps {
 }
 
 export function AirdropListItem({
-  value: { recipient, count },
+  value: { recipient, count, email },
   onRemove,
 }: AirdropListItemProps) {
   return (
     <div className="flex items-center justify-between w-full px-2 py-1 text-sm bg-white rounded-lg shadow">
       <div className="space-x-2">
-        <span>{addressMinify(recipient)}</span>
+        <span>
+          {addressMinify(recipient)} {email ? `(${email})` : ''}{' '}
+        </span>
         <span> - </span>
         <span className="text-gray-500">
           {count} {count > 1 ? 'keys' : 'key'}
