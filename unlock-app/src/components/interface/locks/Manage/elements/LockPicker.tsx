@@ -8,7 +8,7 @@ import Link from 'next/link'
 import { useConfig } from '~/utils/withConfig'
 import { useAuth } from '~/contexts/AuthenticationContext'
 
-interface LocksByNetworkProps {
+interface LockPickerProps {
   owner: string
   onChange: (lockAddress?: string, network?: number | string) => void
 }
@@ -38,10 +38,10 @@ const LockImage = ({ lockAddress }: LockImageProps) => {
   )
 }
 
-export const LockPicker = ({ owner, onChange }: LocksByNetworkProps) => {
+export const LockPicker = ({ owner, onChange }: LockPickerProps) => {
   const { network: connectedNetwork } = useAuth()
-  const [lockAddress, setLockAddress] = useState<any>(undefined)
-  const [network, setNetwork] = useState<any>(connectedNetwork)
+  const [lockAddress, setLockAddress] = useState<string>('')
+  const [network, setNetwork] = useState<any>(connectedNetwork!)
   const [showCustomLockAddress, setShowCustomLockAddress] = useState(false)
   const [customLockAddress, setCustomLockAddress] = useState('')
 
