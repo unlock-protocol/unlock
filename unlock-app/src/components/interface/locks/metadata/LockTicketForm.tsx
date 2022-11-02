@@ -92,7 +92,10 @@ export function LockTicketForm({ disabled, lockAddress, network }: Props) {
                 </div>
               </Disclosure.Button>
               <Disclosure.Panel>
-                <p>Add NFT properties for event. These will be displayed on NFT marketplaces and wallets that support them.</p>
+                <p>
+                  Add NFT properties for event. These will be displayed on NFT
+                  marketplaces and wallets that support them.
+                </p>
                 <div className="grid items-center gap-12 mt-2 sm:grid-cols-2">
                   <div className="flex flex-col justify-center gap-6">
                     <img src="/images/map.png" alt="map" />
