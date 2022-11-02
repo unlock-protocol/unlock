@@ -1,6 +1,6 @@
 import { Button } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
-import { Checkout } from '~/components/interface/checkout/alpha/Checkout'
+import { Checkout } from '~/components/interface/checkout/main'
 import { selectProvider } from '~/hooks/useAuthenticate'
 import { PaywallConfig } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
