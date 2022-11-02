@@ -23,13 +23,7 @@ describe('KeyData', () => {
       it('passes the data through', () => {
         expect.assertions(1)
         expect(keyData.openSeaPresentation({})).toEqual({
-          attributes: [
-            {
-              trait_type: 'Expiration',
-              value: 0,
-              display_type: 'date',
-            },
-          ],
+          attributes: [],
         })
       })
     })
