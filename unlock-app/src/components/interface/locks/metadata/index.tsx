@@ -12,6 +12,7 @@ import { LockTicketForm } from './LockTicketForm'
 import { Attribute, Metadata, MetadataFormData, toFormData } from './utils'
 import { config } from '~/config/app'
 import { Lock } from '~/unlockTypes'
+import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 
 interface Props {
   lock?: Lock
@@ -100,6 +101,36 @@ export function UpdateLockMetadata({ lock }: Props) {
       attributes: [] as Attribute[],
     }
 
+    if (ticket?.event_start_date) {
+      metadata.attributes.push({
+        trait_type: 'event_start_date',
+        value: ticket.event_start_date,
+        display_type: 'date',
+      })
+    }
+
+    if (ticket?.event_start_time) {
+      metadata.attributes.push({
+        trait_type: 'event_start_time',
+        value: ticket.event_start_time,
+        display_type: 'date',
+      })
+    }
+
+    if (ticket?.event_address) {
+      metadata.attributes.push({
+        trait_type: 'event_address',
+        value: ticket.event_address,
+      })
+    }
+
+    if (ticket?.event_url) {
+      metadata.attributes.push({
+        trait_type: 'event_url',
+        value: ticket.event_url,
+      })
+    }
+
     for (const [key, value] of Object.entries(ticket || {})) {
       if (!value) {
         continue
@@ -146,10 +177,21 @@ export function UpdateLockMetadata({ lock }: Props) {
   return (
     <div className="max-w-screen-md mx-auto">
       <header className="pt-2 pb-6 space-y-2">
-        <h1 className="text-xl font-bold sm:text-3xl">Update Metadata</h1>
-        <p className="text-lg text-gray-700">
-          Adding the rich data to your membership
-        </p>
+        <h1 className="text-xl font-bold sm:text-3xl">Edit Properties</h1>
+        <div>
+          <p className="text-lg text-gray-700">
+            Add rich properties and data to your NFT memberships.{' '}
+          </p>
+          <a
+            href="https://docs.opensea.io/docs/metadata-standards"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-brand-ui-primary hover:underline"
+          >
+            Learn about the OpenSea metadata.
+            <ExternalLinkIcon />
+          </a>
+        </div>
       </header>
       <FormProvider {...methods}>
         <form className="mb-6" onSubmit={methods.handleSubmit(onSubmit)}>
@@ -168,7 +210,7 @@ export function UpdateLockMetadata({ lock }: Props) {
                 loading={lockMetadata.isLoading}
                 className="w-full max-w-sm"
               >
-                Update
+                Save Properties
               </Button>
             </div>
           </div>

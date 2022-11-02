@@ -30,7 +30,7 @@ export function AddPropertyModal({
           <h3 className="text-xl font-bold"> Add Properties </h3>
           <p>
             Textual traits that show up as rectangles on OpenSea and other
-            marketplaces
+            marketplaces.
           </p>
           <LearnMoreAboutOpenseaMetadataLink />
         </header>
