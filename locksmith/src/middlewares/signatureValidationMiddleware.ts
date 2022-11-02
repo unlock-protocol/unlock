@@ -157,7 +157,7 @@ const handleSignaturePresent = (
 export const generateProcessor = (
   configuration: SignatureValidationConfiguration
 ) => {
-  return (req: any, res: Response, next: any) => {
+  return (req: any, res: Response, next?: any) => {
     const signer = extractSignee(req)
     if (signer === null) {
       res.status(401).send('missing signer')
@@ -165,7 +165,7 @@ export const generateProcessor = (
       const owner = handleSignaturePresent(req.body, signer, configuration)
       if (owner) {
         req.owner = owner
-        next()
+        next?.()
       } else {
         res.status(401).send('signature does not match')
       }
