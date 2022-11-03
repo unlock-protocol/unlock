@@ -11,7 +11,7 @@ image: /images/blog/metadata-configurator/main.gif
 
 Most creators want to customize the attributes and add features to their NFTs. These features show up on NFT marketplaces such as OpenSea. Until now, they had to customize and manage the metadata on their own and update it on their own. It required coding and dealing with scripts. It wasn’t user friendly and added friction to working with Unlock.
 
-To simplify this process, we are launching a no-code metadata configurator. With it, creators can add attributes such as properties, levels, stats, etc to their NFT right from the Unlock Dashboard. This new feature also provides custom presets for ticketing and adding creator content such as youtube videos, website, and animations.
+To simplify this process, we are launching a no-code metadata configurator. With it, creators can add attributes such as properties, levels, stats, etc to their NFT right from the Unlock Dashboard. This new feature also provides custom presets for ticketing and adding creator content such as YouTube videos, website, and animations.
 
 ## How to start
 
@@ -41,7 +41,7 @@ As you are making edits, you can click on the Preview Ticket button to see what 
 
 ### Advanced
 
-Creators with a youtube channel or a blog can use this section to display their videos and blog posts in the main preview box on OpenSea and other marketplaces. User will be able to go to OpenSea and watch the video directly on your NFT page.
+Creators with a YouTube channel or a blog can use this section to display their videos and blog posts in the main preview box on OpenSea and other marketplaces. User will be able to go to OpenSea and watch the video directly on your NFT page.
 
 ![Advanced](/images/blog/metadata-configurator/advanced.png)
 
@@ -71,7 +71,7 @@ Stat is same as level but won't be displayed as a progress indicator on OpenSea 
 
 ![Add Stats](/images/blog/metadata-configurator/add-stats.png)
 
-Unlock team is excited to bring more no-code tools to manage your NFT memberships. We are dedicated to improving the user experience to onboard more non-technical users.
+The Unlock team is excited to bring you more no-code tools to manage your NFT memberships. We are dedicated to improving the user experience to onboard more non-technical users.
 
 ## What if I find an issue or bug in the metadata configurator?
 
