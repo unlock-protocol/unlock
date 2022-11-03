@@ -530,6 +530,10 @@ export function Confirm({
   }
 
   const stepItems = useCheckoutSteps(checkoutService)
+
+  const payingWithCard =
+    fiatPricing?.creditCardEnabled && payment?.method === 'card'
+
   return (
     <Fragment>
       <Stepper position={7} service={checkoutService} items={stepItems} />
@@ -611,7 +615,7 @@ export function Confirm({
           </div>
         ) : (
           <div>
-            {!isLoading && fiatPricing.creditCardEnabled && (
+            {!isLoading && payingWithCard && (
               <CreditCardPricingBreakdown {...fiatPricing} />
             )}
           </div>
