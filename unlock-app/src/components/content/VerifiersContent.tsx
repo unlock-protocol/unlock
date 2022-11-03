@@ -8,11 +8,10 @@ import { VerifiersList } from '../interface/verifiers/VerifiersList'
 import { getAddressForName } from '../../hooks/useEns'
 import { ToastHelper } from '../helpers/toast.helper'
 import { useStorageService } from '../../utils/withStorageService'
-import { LocksByNetwork } from '../creator/lock/LocksByNetwork'
-import { Lock } from '@unlock-protocol/types'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { useRouter } from 'next/router'
 import { AppLayout } from '../interface/layouts/AppLayout'
+import { LockPicker } from '../interface/locks/Manage/elements/LockPicker'
 
 const styling = {
   sectionWrapper: 'text-left',
@@ -141,11 +140,13 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
     }
   }
 
-  const onLockChange = (lock: Lock, network: number) => {
-    setParams({
-      lock: lock.address,
-      network,
-    })
+  const onLockChange = (lockAddress?: string, network?: number | string) => {
+    if (lockAddress && network) {
+      setParams({
+        lock: lockAddress,
+        network,
+      })
+    }
   }
 
   const withoutParams = !lockAddress || !network
@@ -172,7 +173,9 @@ export const VerifiersContent: React.FC<VerifiersContentProps> = ({
         </section>
 
         {withoutParams ? (
-          <LocksByNetwork onChange={onLockChange} owner={account!} />
+          <div className="w-1/2">
+            <LockPicker onChange={onLockChange} owner={account!} />
+          </div>
         ) : (
           <VerifiersList
             lockAddress={lockAddress}
