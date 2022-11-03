@@ -23,13 +23,13 @@ The configurator is split into multiple sections. Each section is collapsible fr
 
 ### Basic details
 
-Basic details section contains fields such as name, description, and the external URL for your NFT memberships.
+The basic details section contains fields such as name, description, and the external URL for your NFT memberships.
 
 ![Basics](/images/blog/metadata-configurator/basic.png)
 
 ### Event ticketing
 
-Event ticketing section allow event organizers to set up custom data for their tickets. Any ticket metadata changed here will show up as attributes on OpenSea and other marketplaces. This ticket data is also used by Unlock to generate a QR code ticket for NFTs and power the verification experience.
+The event ticketing section allow event organizers to set up custom data for their tickets. Any ticket metadata changed here will show up as attributes on OpenSea and other marketplaces. This ticket data is also used by Unlock to generate a QR code ticket for NFTs and power the verification experience.
 
 ![Ticket](/images/blog/metadata-configurator/ticket.png)
 
