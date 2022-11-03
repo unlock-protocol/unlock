@@ -55,6 +55,10 @@ contract('UnlockDiscountToken upgrade', async () => {
   const mintAmount = 1000
 
   before(async function copyAndBuildContract() {
+    // deprec this test due until as it uses Uniswap V2
+    // we have mainnet upgrade test instead
+    this.skip()
+
     // make sure mocha doesnt time out
     this.timeout(200000)
 
