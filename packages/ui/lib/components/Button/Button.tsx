@@ -6,7 +6,12 @@ import { Box, Props as BoxProps } from '../Box/Box'
 import { Icon } from '../Icon/Icon'
 import { CgSpinner as SpinnerIcon } from 'react-icons/cg'
 
-type Variant = 'primary' | 'secondary' | 'outlined-primary' | 'transparent'
+type Variant =
+  | 'primary'
+  | 'secondary'
+  | 'outlined-primary'
+  | 'transparent'
+  | 'black'
 
 interface Props extends BoxProps {
   iconRight?: ReactNode
@@ -30,7 +35,8 @@ const VARIANTS_STYLES: Record<Variant, string> = {
   'outlined-primary':
     'border-2 border-brand-ui-primary transition ease-in-out duration-300 hover:text-brand-ui-primary disabled:text-brand-gray disabled:hover:text-brand-gray disabled:hover:bg-opacity-75 font-medium',
   transparent:
-    'bg-transparent text-black transition ease-in-out duration-300 hover:text-brand-ui-primary disabled:text-brand-gray disabled:hover:text-brand-gray disabled:hover:bg-opacity-75 font-medium',
+    'bg-transparent border border-gray-200 hover:border-gray-300 text-black transition ease-in-out duration-300 hover:text-brand-ui-primary disabled:text-brand-gray disabled:hover:text-brand-gray disabled:hover:bg-opacity-75 font-medium',
+  black: 'border-2 border-black text-black text-medium',
 }
 
 export const Button = forwardRef(

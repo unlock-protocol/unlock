@@ -1,62 +1,67 @@
-import { Web3Service } from '@unlock-protocol/unlock-js'
-import networks from '@unlock-protocol/networks'
-
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 import logger from '../logger'
+import { ethers } from 'ethers'
+import { Attribute } from '../types'
 
 interface Key {
-  owner?: string
   expiration?: number
+  tokenId: string
+  owner: string
 }
+
 export default class KeyData {
   async get(lockAddress: string, tokenId: string, network: number) {
-    const web3Service = new Web3Service(networks)
-    const key: Key = {}
-
     try {
-      const owner = await web3Service.ownerOf(lockAddress, tokenId, network)
-      if (!owner) {
-        return {}
+      const subgraphClient = new SubgraphService()
+      const key = await subgraphClient.key(
+        {
+          where: {
+            lock: lockAddress.toLowerCase(),
+            tokenId: Number(tokenId),
+          },
+        },
+        {
+          network,
+        }
+      )
+
+      let keyExpiration = key?.expiration
+
+      // If max uint, then there is no expiration
+      if (
+        keyExpiration &&
+        keyExpiration === ethers.constants.MaxUint256.toString()
+      ) {
+        keyExpiration = undefined
       }
-      key.owner = owner
 
-      const lock = await web3Service.getLock(lockAddress, network)
-      let expiration: number | undefined
-
-      if (lock.publicLockVersion >= 10) {
-        expiration = await web3Service.getKeyExpirationByTokenId(
-          lockAddress,
-          tokenId,
-          network
-        )
-      } else {
-        expiration = await web3Service.getKeyExpirationByLockForOwner(
-          lockAddress,
-          owner,
-          network
-        )
+      const data: Key = {
+        expiration: keyExpiration ? parseInt(keyExpiration) : undefined,
+        tokenId: key?.tokenId,
+        owner: key?.owner,
       }
 
-      key.expiration = expiration
-
-      return key
+      return data
     } catch (error) {
       logger.error(
         `There was an error retrieving info for metadata ${lockAddress} ${tokenId} on ${network}`,
         error
       )
-      return key
+      return {} as Key
     }
   }
 
-  openSeaPresentation(data: any) {
+  openSeaPresentation(data: Partial<Key>) {
+    const attributes: Attribute[] = []
+    if (data.expiration) {
+      attributes.push({
+        trait_type: 'Expiration',
+        display_type: 'date',
+        value: data.expiration,
+      })
+    }
     return {
-      attributes: [
-        {
-          trait_type: 'Expiration',
-          value: data.expiration || 0,
-          display_type: 'date',
-        },
-      ],
+      attributes,
     }
   }
 }

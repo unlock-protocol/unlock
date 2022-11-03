@@ -184,7 +184,7 @@ export const PaywallConfigSchema = z
     password: z
       .boolean({
         description:
-          'If enabled, the user will be prompted to enter a password in order to complete their purchases. <em>Warning</em>: This only works if the lock is connected to a hook that will handle the password verification.',
+          'If enabled, the user will be prompted to enter a password in order to complete their purchases. Warning: This only works if the lock is connected to a hook that will handle the password verification.',
       })
       .optional(),
     emailRequired: z

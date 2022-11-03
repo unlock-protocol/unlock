@@ -229,7 +229,7 @@ describe('useLocks', () => {
           maxNumberOfKeys: lock.maxNumberOfKeys,
           name: lock.name,
           owner,
-          publicLockVersion: 11, // Latest version to be deployed!
+          publicLockVersion: 12, // Latest version to be deployed!
         },
         {},
         expect.any(Function)

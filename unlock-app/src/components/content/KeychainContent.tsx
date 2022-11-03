@@ -7,7 +7,10 @@ import { AppLayout } from '../interface/layouts/AppLayout'
 
 export const KeychainContent = () => {
   return (
-    <AppLayout title="Member Keychain">
+    <AppLayout
+      title="Member Keychain"
+      description="A Key is a membership NFT created on Unlock Protocol"
+    >
       <Head>
         <title>{pageTitle('Member Keychain')}</title>
       </Head>
