@@ -2,7 +2,7 @@ name: Subgraphs deployment
 
 on:
   workflow_call:
-  secrets:
+    secrets:
       SUBGRAPH_DEPLOY_KEY:
         required: true
 
