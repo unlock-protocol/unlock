@@ -29,7 +29,7 @@ The basic details section contains fields such as name, description, and the ext
 
 ### Event ticketing
 
-The event ticketing section allow event organizers to set up custom data for their tickets. Any ticket metadata changed here will show up as attributes on OpenSea and other marketplaces. This ticket data is also used by Unlock to generate a QR code ticket for NFTs and power the verification experience.
+The event ticketing section allows event organizers to set up custom data for their tickets. Any ticket metadata changed here will show up as attributes on OpenSea and other marketplaces. This ticket data is also used by Unlock to generate a QR code ticket for NFTs and power the verification experience.
 
 ![Ticket](/images/blog/metadata-configurator/ticket.png)
 
@@ -41,7 +41,7 @@ As you are making edits, you can click on the Preview Ticket button to see what 
 
 ### Advanced
 
-Creators with a YouTube channel or a blog can use this section to display their videos and blog posts in the main preview box on OpenSea and other marketplaces. User will be able to go to OpenSea and watch the video directly on your NFT page.
+Creators with a YouTube channel or a blog can use this section to display their videos and blog posts in the main preview box on OpenSea and other marketplaces. A user will be able to go to OpenSea and watch the video directly on your NFT page.
 
 ![Advanced](/images/blog/metadata-configurator/advanced.png)
 
@@ -49,25 +49,25 @@ Creators with a YouTube channel or a blog can use this section to display their 
 
 You can add custom properties, levels, and stats to your NFT to truly highlight the unique characteristics of your NFTs.
 
-Please note that each item will be displayed differently on OpenSea and other marketplaces. We provide a preview of how they will be displayed but it is not a 1-1 replication.
+Please note that each item will be displayed slightly differently on OpenSea and other marketplaces. We provide a preview of how they will be displayed but it is not a 1-1 representation.
 
 ![Custom](/images/blog/metadata-configurator/custom.png)
 
 #### Add Properties
 
-You can open the Add Property modal using the Add button inside the property section. On Add Property modal, you can add or remove existing properties. Each property has a trait_type and value.
+You can open the Add Property modal using the Add button inside the property section. On Add Property modal, you can add or remove existing properties. Each property has a trait type and value.
 
 ![Add Properties](/images/blog/metadata-configurator/add-stats.png)
 
 #### Add Levels
 
-Each level has a trait_type, value, and max value. The value and max value is used to display a progress indicator on OpenSea and other marketplaces.
+Each level has a trait type, value, and max value. The value and max value are used to display a progress indicator on OpenSea and other marketplaces.
 
 ![Add Levels](/images/blog/metadata-configurator/add-levels.png)
 
 #### Add Stats
 
-Stat is same as level but won't be displayed as a progress indicator on OpenSea and other marketplaces.
+Stats are the same as levels, but won't be displayed as a progress indicator on OpenSea and other marketplaces.
 
 ![Add Stats](/images/blog/metadata-configurator/add-stats.png)
 
