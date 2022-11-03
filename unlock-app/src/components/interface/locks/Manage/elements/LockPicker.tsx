@@ -11,6 +11,7 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 interface LockPickerProps {
   owner: string
   onChange: (lockAddress?: string, network?: number | string) => void
+  defaultValues?: Record<string, any>
 }
 
 interface LockImageProps {
@@ -28,7 +29,7 @@ const LockImage = ({ lockAddress }: LockImageProps) => {
   const lockImage = `${config.services.storage.host}/lock/${lockAddress}/icon`
 
   return (
-    <div className="flex items-center justify-center w-8 h-8 overflow-hidden bg-gray-200 rounded-full">
+    <div className="flex items-center justify-center overflow-hidden bg-gray-200 rounded-full w-7 h-7">
       <img
         src={lockImage}
         alt={lockAddress}
@@ -38,7 +39,11 @@ const LockImage = ({ lockAddress }: LockImageProps) => {
   )
 }
 
-export const LockPicker = ({ owner, onChange }: LockPickerProps) => {
+export const LockPicker = ({
+  owner,
+  onChange,
+  defaultValues,
+}: LockPickerProps) => {
   const { network: connectedNetwork } = useAuth()
   const [lockAddress, setLockAddress] = useState<any>(undefined)
   const [network, setNetwork] = useState<any>(connectedNetwork!)
@@ -103,7 +108,7 @@ export const LockPicker = ({ owner, onChange }: LockPickerProps) => {
         label="Network"
         options={networksOptions}
         size="small"
-        defaultValue={connectedNetwork}
+        defaultValue={defaultValues?.network ?? connectedNetwork}
         onChange={setNetwork}
       />
       {isLoadingLocksByNetwork ? (
@@ -124,6 +129,7 @@ export const LockPicker = ({ owner, onChange }: LockPickerProps) => {
                   options={locksOptions}
                   size="small"
                   onChange={setLockAddress}
+                  defaultValue={defaultValues?.lockAddress}
                 />
               ) : (
                 network && (
