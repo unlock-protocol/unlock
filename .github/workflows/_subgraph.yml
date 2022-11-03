@@ -16,8 +16,6 @@ jobs:
       BLOCKTIME: 0
     steps:
       - uses: actions/checkout@v3
-      with:
-          fetch-depth: 0
       - name: Deploying the subgraphs
         run: cd subgraph && yarn deploy-all
         shell: bash
