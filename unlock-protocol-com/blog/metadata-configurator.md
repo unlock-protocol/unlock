@@ -11,7 +11,7 @@ image: /images/blog/metadata-configurator/main.gif
 
 Most creators want to customize the attributes and add features to their NFTs. These features show up on NFT marketplaces such as OpenSea. Until now, they had to customize and manage the metadata on their own and update it on their own. It required coding and dealing with scripts. It wasn’t user friendly and added friction to working with Unlock.
 
-To simplify this process, we are launching a no-code metadata configurator. With it, creators can add attributes such as properties, levels, stats, etc to their NFT right from the Unlock Dashboard. This new feature also provides custom presets for ticketing and adding creator content such as YouTube videos, website, and animations.
+To simplify this process, we are launching a no-code metadata configurator. With it, creators can add attributes such as properties, levels, stats, and other metadata to their NFT right from the Unlock Dashboard. This new feature also provides custom presets for ticketing and adding creator content such as YouTube videos, website, and animations.
 
 ## How to start
 
