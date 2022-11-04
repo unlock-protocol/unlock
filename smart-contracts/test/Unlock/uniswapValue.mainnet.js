@@ -2,7 +2,6 @@ const { ethers } = require('hardhat')
 const { mainnet } = require('@unlock-protocol/networks')
 const { expect } = require('chai')
 
-const UniswapOracle = require('../helpers/ABIs/UniswapOracle.json')
 const ShibaInuAbi = require('../helpers/ABIs/erc20.json')
 const USDCabi = require('../helpers/ABIs/USDC.json')
 
@@ -13,10 +12,10 @@ const {
   SHIBA_INU,
   WETH,
   USDC,
-  UNISWAP_FACTORY_ADDRESS,
   impersonate,
   purchaseKey,
   purchaseKeys,
+  deployOracle,
 } = require('../helpers')
 
 const { unlockAddress } = mainnet
@@ -45,10 +44,9 @@ contract('Unlock / uniswapValue', () => {
     unlock = await ethers.getContractAt('Unlock', unlockAddress)
 
     // deploy oracle
-    const { abi, bytecode } = UniswapOracle
-    const Oracle = await ethers.getContractFactory(abi, bytecode)
-    oracle = await Oracle.deploy(UNISWAP_FACTORY_ADDRESS)
+    oracle = await deployOracle()
     oracleAddress = oracle.address
+
     //impersonate unlock multisig
     const unlockOwner = await unlock.owner()
     await impersonate(unlockOwner)

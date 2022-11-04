@@ -11,6 +11,7 @@ async function deployLock({
   tokenAddress = ADDRESS_ZERO,
   name = 'FIRST',
   keyPrice,
+  isEthers,
 } = {}) {
   if (!unlock) {
     ;({ unlock } = await deployContracts())
@@ -58,7 +59,9 @@ async function deployLock({
       { from: deployer }
     )
   }
-  return lock
+  return isEthers
+    ? await ethers.getContractAt('PublicLock', lock.address)
+    : lock
 }
 
 async function deployAllLocks(unlock, from, tokenAddress = ADDRESS_ZERO) {

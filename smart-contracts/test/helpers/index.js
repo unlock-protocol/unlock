@@ -9,6 +9,7 @@ const deployLocks = require('./deployLocks')
 const deployContracts = require('../fixtures/deploy.js')
 const time = require('./time')
 const interface = require('./interface')
+const uniswap = require('./uniswap')
 
 module.exports = {
   getBalance,
@@ -22,4 +23,5 @@ module.exports = {
   ...multisig,
   ...time,
   ...interface,
+  ...uniswap,
 }
