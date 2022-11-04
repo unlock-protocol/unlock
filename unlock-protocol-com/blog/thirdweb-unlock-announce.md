@@ -7,7 +7,7 @@ description: You can now use thirdweb’s SDK and tooling to deploy your members
 image: /images/blog/thirdweb/thirdweb-share.png
 ---
 
-[thirdweb](https://thirdweb.com/) provides powerful SDKs and intuitive tools for developers to build and ship applications faster. As of today, you can deploy your Unlock membership smart contracts directly from the [thirdweb](https://www.thirdweb.com) UI and directly use the thirdweb SDK to interact with the contract.
+[thirdweb](https://thirdweb.com/) provides powerful SDKs and intuitive tools for developers to build and ship applications faster. As of today, you can deploy your Unlock membership smart contracts directly from the thirdweb UI and directly use the thirdweb SDK to interact with the contract.
 
 You can view Unlock’s contracts on thirdweb at [https://thirdweb.com/unlock-protocol.eth/](https://thirdweb.com/unlock-protocol.eth/).
 
