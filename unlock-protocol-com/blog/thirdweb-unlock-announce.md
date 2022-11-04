@@ -15,6 +15,6 @@ You can view Unlock’s contracts on thirdweb at [https://thirdweb.com/unlock-pr
 
 At Unlock, we are building a membership protocol — an underlying set of smart contracts that can be used by anyone who needs to implement memberships or subscriptions. We’re making huge efforts to ensure that these contracts can be used by *any* developer to build their own applications and platforms using the tools of *their* choice. (Of course, we have also crafted no-code interfaces and applications to ease the use of these contracts for creators as well.)
 
-We’re really proud to tell developers that that can now start building applications using thirdweb’s developer tools and SDK. And, as a decentralized protocol, developers could even build applications without telling anyone that they use the Unlock protocol under the hood, in the same way that most web applications don’t advertise that they use HTML or TCP to let you interact with them! That’s the beauty of open protocols.
+We’re really proud to tell developers that they can now start building applications using thirdweb’s developer tools and SDK. And, as a decentralized protocol, developers could even build applications without telling anyone that they use the Unlock protocol under the hood, in the same way that most web applications don’t advertise that they use HTML or TCP to let you interact with them! That’s the beauty of open protocols.
 
 We can’t wait to see what you end up building with thirdweb and Unlock!
