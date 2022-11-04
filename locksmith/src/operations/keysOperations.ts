@@ -34,11 +34,12 @@ async function filterKeys(keys: any[], filters: any) {
   const fuse = new Fuse(keys, {
     threshold: 0,
     ignoreLocation: true,
+    useExtendedSearch: true,
     keys: [KEY_FILTER_MAPPING[filterKey] ?? filterKey],
   })
 
   if (!searchByCheckInTime) {
-    return fuse.search(query).map(({ item }) => item)
+    return fuse.search(`'${query}`).map(({ item }) => item)
   }
 
   return fuse.remove((item: any) => {
