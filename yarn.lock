@@ -19905,7 +19905,7 @@ __metadata:
     rss: 1.2.2
     showdown-highlight: 3.1.0
     styled-components: 5.3.6
-    tailwind-merge: 1.6.1
+    tailwind-merge: 1.7.0
     tailwindcss: 3.1.8
     ts-jest: 27.1.5
     typescript: 4.8.4
@@ -57214,6 +57214,13 @@ resolve@^2.0.0-next.3:
   version: 1.6.1
   resolution: "tailwind-merge@npm:1.6.1"
   checksum: d698c457a29d7defc6f0946ea4fc117250ab35b24791a02e9ce3a8015614d2460679717f7fc200b7dc93b29529d959a7d39bca9856e40e8ed9044705e6ea9fac
+  languageName: node
+  linkType: hard
+
+"tailwind-merge@npm:1.7.0":
+  version: 1.7.0
+  resolution: "tailwind-merge@npm:1.7.0"
+  checksum: 3dca4e28513072cad8a4ff0bd5d771b1caddab44b28caf1fd9b3dfb2e86834872f4c721778022de61a21bcab93ba0b38869ca72e7e8d0fe042b2ef5265b0a295
   languageName: node
   linkType: hard
 
