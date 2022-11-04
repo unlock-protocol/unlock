@@ -19609,7 +19609,7 @@ __metadata:
     babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
     cross-fetch: 3.1.5
-    csv: 6.2.0
+    csv: 6.2.1
     dayjs: 1.11.5
     deep-object-diff: 1.1.7
     dotenv: 16.0.3
@@ -28045,10 +28045,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv-parse@npm:^5.3.0":
-  version: 5.3.0
-  resolution: "csv-parse@npm:5.3.0"
-  checksum: 6754e85aef9dfdf19da99206b4a83f51fb881b3a75f9f7b6221864252c386410e1f535a013911d6e52f77a017d3dadf10f1e526fe31e01b2b79074c3fb4b3aaa
+"csv-parse@npm:^5.3.1":
+  version: 5.3.1
+  resolution: "csv-parse@npm:5.3.1"
+  checksum: 18acfe5295d13632ab4bcebf285b9cb4e1450d8843946882b42f313d8ae3b606e508594d29bb17a1ca4864ff7da7d1b8ad060caa0495266c433bace1c663b745
   languageName: node
   linkType: hard
 
@@ -28059,15 +28059,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"csv@npm:6.2.0":
-  version: 6.2.0
-  resolution: "csv@npm:6.2.0"
+"csv@npm:6.2.1":
+  version: 6.2.1
+  resolution: "csv@npm:6.2.1"
   dependencies:
     csv-generate: ^4.2.0
-    csv-parse: ^5.3.0
+    csv-parse: ^5.3.1
     csv-stringify: ^6.2.0
     stream-transform: ^3.2.0
-  checksum: 2610f248980a0321d6083ad5a5be6525734a27f29ffbdcfaea0cfab5cd979508c519c6c4917482dba670f4e2abf9d05bd4cb8d8e6c82d52291d60a7f675f96bd
+  checksum: 14b8c51a64be52fc47a2f43684de8291a469c287078ad75612c8c91daccc6ceaa6b472a772ac62a53682e9d12f5ecdfc80bd23df5afb7bdd3f5275240101b0b1
   languageName: node
   linkType: hard
 
