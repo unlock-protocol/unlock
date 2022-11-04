@@ -127,16 +127,12 @@ export const FilterBar = ({
     <div className="flex flex-col gap-4 px-2 py-4 rounded-lg md:px-8 bg-ui-secondary-400">
       <div className="flex items-center md:h-12 md:justify-between">
         <div className="flex flex-col items-start gap-8 md:items-center md:flex-center md:flex-row">
-          <Button
-            className="p-0"
-            variant="transparent"
-            onClick={() => setExpandFilter(!expandFilter)}
-          >
+          <button onClick={() => setExpandFilter(!expandFilter)}>
             <div className="flex items-center gap-2">
               <span className="text-sm">Filter</span>
               <FilterIcon size={18} />
             </div>
-          </Button>
+          </button>
           {openSearch ? (
             <div className="flex flex-col gap-2 md:flex-row">
               <div className="flex flex-col gap-4">
@@ -168,16 +164,12 @@ export const FilterBar = ({
               </div>
             </div>
           ) : (
-            <Button
-              onClick={() => setOpenSearch(true)}
-              className="p-0"
-              variant="transparent"
-            >
+            <button onClick={() => setOpenSearch(true)} className="p-0">
               <div className="flex items-center gap-2">
                 <span className="text-sm">Search</span>
                 <SearchIcon size={18} />
               </div>
-            </Button>
+            </button>
           )}
         </div>
       </div>

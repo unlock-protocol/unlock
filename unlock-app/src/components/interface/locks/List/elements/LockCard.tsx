@@ -2,7 +2,7 @@ import { addressMinify } from '~/utils/strings'
 import { useConfig } from '~/utils/withConfig'
 import useClipboard from 'react-use-clipboard'
 import { ToastHelper } from '~/components/helpers/toast.helper'
-import { Button, Icon, Tooltip } from '@unlock-protocol/ui'
+import { Icon, Tooltip } from '@unlock-protocol/ui'
 import React, { useEffect, useState } from 'react'
 import { BiCopy as CopyIcon } from 'react-icons/bi'
 import { HiOutlineExternalLink as ExternalLinkIcon } from 'react-icons/hi'
@@ -179,20 +179,16 @@ export const LockCard = ({ lock, network, isLoading }: LockCardProps) => {
               <span className="text-2xl font-bold">{lock.name}</span>
               <div className="flex items-center gap-3">
                 <span>{addressMinify(lockAddress)}</span>
-                <Button
-                  variant="transparent"
-                  className="p-0 m-0"
-                  onClick={setCopied}
-                >
+                <button onClick={setCopied}>
                   <CopyIcon size={20} />
-                </Button>
+                </button>
                 <a href={explorerUrl} target="_blank" rel="noreferrer">
-                  <Button variant="transparent" className="p-0 m-0">
+                  <button>
                     <ExternalLinkIcon
                       size={20}
                       className="text-brand-ui-primary"
                     />
-                  </Button>
+                  </button>
                 </a>
               </div>
             </div>

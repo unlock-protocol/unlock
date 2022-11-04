@@ -120,14 +120,9 @@ const LockInfoCard = ({
         </div>
 
         <span className="text-base">{addressMinify(lockAddress)}</span>
-        <Button
-          variant="transparent"
-          className="p-0 m-0"
-          onClick={setCopied}
-          aria-label="copy"
-        >
+        <button onClick={setCopied} aria-label="copy">
           <CopyIcon size={20} />
-        </Button>
+        </button>
         <a href={explorerUrl} target="_blank" rel="noreferrer">
           <Button
             variant="transparent"

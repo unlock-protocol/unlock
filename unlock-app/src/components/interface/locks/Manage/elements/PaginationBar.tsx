@@ -1,9 +1,9 @@
-import { Button } from '@unlock-protocol/ui'
 import {
   FaArrowRight as ArrowRightIcon,
   FaArrowLeft as ArrowLeftIcon,
 } from 'react-icons/fa'
 import React from 'react'
+import { twMerge } from 'tailwind-merge'
 
 interface PageProps {
   page: number
@@ -18,15 +18,14 @@ interface PaginationBarProps {
 }
 
 const Page = ({ page, active, setPage }: PageProps) => {
-  const variant = active ? 'primary' : 'transparent'
+  const pageClass = twMerge(
+    'flex items-center justify-center w-8 h-8 p-0 rounded-full',
+    active ? 'bg-brand-ui-primary text-white' : ''
+  )
   return (
-    <Button
-      variant={variant}
-      className="flex items-center justify-center w-8 h-8 p-0"
-      onClick={() => setPage(page)}
-    >
+    <button className={pageClass} onClick={() => setPage(page)}>
       {page}
-    </Button>
+    </button>
   )
 }
 
@@ -103,29 +102,25 @@ export const PaginationBar = ({
   return (
     <div className="flex items-center justify-between">
       <div className="flex gap-6">
-        <Button
-          variant="transparent"
-          className="p-0 disabled:opacity-50"
+        <button
           aria-label="arrow left"
           disabled={backDisabled}
           onClick={() => setPage(page - 1)}
         >
           <ArrowLeftIcon />
-        </Button>
+        </button>
         <Pages
           maxNumbersOfPage={maxNumbersOfPage}
           page={page}
           setPage={setPage}
         />
-        <Button
-          variant="transparent"
-          className="p-0 disabled:opacity-50"
+        <button
           aria-label="arrow right"
           disabled={nextDisabled}
           onClick={() => setPage(page + 1)}
         >
           <ArrowRightIcon />
-        </Button>
+        </button>
       </div>
     </div>
   )

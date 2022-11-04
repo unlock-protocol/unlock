@@ -150,11 +150,7 @@ export const IconModal = ({
                 <div className="max-w-sm">
                   <div className="w-full p-6 bg-white rounded-2xl">
                     <div className="flex justify-end">
-                      <Button
-                        variant="transparent"
-                        className="p-0 m-0"
-                        onClick={resetAndDismiss}
-                      >
+                      <Button onClick={resetAndDismiss}>
                         <CloseIcon size={20} />
                       </Button>
                     </div>
