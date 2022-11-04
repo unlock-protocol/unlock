@@ -19766,7 +19766,7 @@ __metadata:
     eslint: 8.26.0
     eslint-config-prettier: 8.5.0
     eslint-config-standard: 17.0.0
-    eslint-config-standard-react: 11.0.1
+    eslint-config-standard-react: 12.0.0
     eslint-plugin-import: 2.26.0
     eslint-plugin-node: 11.1.0
     eslint-plugin-prettier: 4.2.1
@@ -31178,13 +31178,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-config-standard-react@npm:11.0.1":
-  version: 11.0.1
-  resolution: "eslint-config-standard-react@npm:11.0.1"
+"eslint-config-standard-react@npm:12.0.0":
+  version: 12.0.0
+  resolution: "eslint-config-standard-react@npm:12.0.0"
   peerDependencies:
-    eslint: ^7.12.1
-    eslint-plugin-react: ^7.21.5
-  checksum: 39e3d150e4c8707584de67a799b7e20aca400488ca0f699370a801345fb0ca63a5123a0d460ff5eedd92af40d0a450af55584bacdf7a049ddf45a3c54a3fe9af
+    eslint: ^8.8.0
+    eslint-plugin-react: ^7.28.0
+  checksum: af5511d4bf566b305ed1d320ad67f78281dbe10760475a88a0c17d2f09a8481cc9691e28b52c22de385eb3ed837313aeba2fac09783b6a3a23cbda9ae9e51f55
   languageName: node
   linkType: hard
 
