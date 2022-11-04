@@ -19291,7 +19291,7 @@ __metadata:
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig"
     "@unlock-protocol/types": "workspace:./packages/types"
-    babel-loader: 8.2.5
+    babel-loader: 9.1.0
     babel-plugin-require-context-hook: 1.0.0
     babel-preset-react-app: 10.0.1
     copy-webpack-plugin: 11.0.0
@@ -19489,7 +19489,7 @@ __metadata:
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@vitejs/plugin-react": 2.1.0
     autoprefixer: 10.4.12
-    babel-loader: 8.2.5
+    babel-loader: 9.1.0
     ethers: 5.7.1
     postcss: 8.4.17
     prism-react-renderer: 1.3.5
@@ -19604,7 +19604,7 @@ __metadata:
     autoprefixer: 10.4.12
     babel-eslint: 10.1.0
     babel-jest: 28.1.3
-    babel-loader: 8.2.5
+    babel-loader: 9.1.0
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
@@ -19674,7 +19674,7 @@ __metadata:
     "@storybook/react": 6.5.6
     "@svgr/cli": 6.5.1
     babel-eslint: 10.1.0
-    babel-loader: 8.3.0
+    babel-loader: 9.1.0
     eslint: 8.26.0
     eslint-config-prettier: 8.5.0
     eslint-config-standard: 17.0.0
@@ -19771,7 +19771,7 @@ __metadata:
     autoprefixer: 10.4.12
     babel-eslint: 10.1.0
     babel-jest: 28.1.3
-    babel-loader: 8.2.5
+    babel-loader: 9.1.0
     babel-plugin-require-context-hook: 1.0.0
     babel-plugin-styled-components: 2.0.7
     babel-preset-react-app: 10.0.1
@@ -19831,7 +19831,7 @@ __metadata:
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     babel-eslint: 10.1.0
     babel-jest: 28.1.3
-    babel-loader: 8.2.5
+    babel-loader: 9.1.0
     babel-plugin-wildcard: 7.0.0
     dotenv: 16.0.3
     eslint: 8.21.0
@@ -22728,33 +22728,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-loader@npm:8.2.5":
-  version: 8.2.5
-  resolution: "babel-loader@npm:8.2.5"
+"babel-loader@npm:9.1.0":
+  version: 9.1.0
+  resolution: "babel-loader@npm:9.1.0"
   dependencies:
-    find-cache-dir: ^3.3.1
-    loader-utils: ^2.0.0
-    make-dir: ^3.1.0
-    schema-utils: ^2.6.5
+    find-cache-dir: ^3.3.2
+    schema-utils: ^4.0.0
   peerDependencies:
-    "@babel/core": ^7.0.0
-    webpack: ">=2"
-  checksum: a6605557885eabbc3250412405f2c63ca87287a95a439c643fdb47d5ea3d5326f72e43ab97be070316998cb685d5dfbc70927ce1abe8be7a6a4f5919287773fb
-  languageName: node
-  linkType: hard
-
-"babel-loader@npm:8.3.0":
-  version: 8.3.0
-  resolution: "babel-loader@npm:8.3.0"
-  dependencies:
-    find-cache-dir: ^3.3.1
-    loader-utils: ^2.0.0
-    make-dir: ^3.1.0
-    schema-utils: ^2.6.5
-  peerDependencies:
-    "@babel/core": ^7.0.0
-    webpack: ">=2"
-  checksum: d48bcf9e030e598656ad3ff5fb85967db2eaaf38af5b4a4b99d25618a2057f9f100e6b231af2a46c1913206db506115ca7a8cbdf52c9c73d767070dae4352ab5
+    "@babel/core": ^7.12.0
+    webpack: ">=5"
+  checksum: 774758febd1e8ca804abcae3b8f65634330dc688837424d0946f06d1386914de43435cce691710fa144eccdf1292cf883439ac3598ce7320916acfaaa2372641
   languageName: node
   linkType: hard
 
@@ -34503,7 +34486,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"find-cache-dir@npm:^3.0.0, find-cache-dir@npm:^3.3.1":
+"find-cache-dir@npm:^3.0.0, find-cache-dir@npm:^3.3.1, find-cache-dir@npm:^3.3.2":
   version: 3.3.2
   resolution: "find-cache-dir@npm:3.3.2"
   dependencies:
