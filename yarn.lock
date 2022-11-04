@@ -17643,31 +17643,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:16.11.21":
-  version: 16.11.21
-  resolution: "@types/node@npm:16.11.21"
-  checksum: 75b679dc6375cf09bc14a2d1b344be6f3fd8ea50f212b0d60970dc9e175cef45e44c284c716eb9e766ffa52d0c83b689adb3d1911b6dd8649c560b8f77442a22
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:17.0.21":
-  version: 17.0.21
-  resolution: "@types/node@npm:17.0.21"
-  checksum: 89dcd2fe82f21d3634266f8384e9c865cf8af49685639fbdbd799bdd1040480fb1e8eeda2d3b9fce41edbe704d2a4be9f427118c4ae872e8d9bb7cbeb3c41a94
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:18.8.2":
-  version: 18.8.2
-  resolution: "@types/node@npm:18.8.2"
-  checksum: b7c74dea0e835fb7faf69b4a2e87d43c1d228d88adacdff464d9e92d18a0b43bec6147b9eb3287650ac75fe5af730c53391869d02175e6b032dcb99ae2f54c92
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:8.10.66, @types/node@npm:^8.0.0":
-  version: 8.10.66
-  resolution: "@types/node@npm:8.10.66"
-  checksum: c52039de862654a139abdc6a51de532a69dd80516ac35a959c3b3a2831ecbaaf065b0df5f9db943f5e28b544ebb9a891730d52b52f7a169b86a82bc060210000
+"@types/node@npm:18.11.9":
+  version: 18.11.9
+  resolution: "@types/node@npm:18.11.9"
+  checksum: cc0aae109e9b7adefc32eecb838d6fad931663bb06484b5e9cbbbf74865c721b03d16fd8d74ad90e31dbe093d956a7c2c306ba5429ba0c00f3f7505103d7a496
   languageName: node
   linkType: hard
 
@@ -17717,6 +17696,13 @@ __metadata:
   version: 16.11.64
   resolution: "@types/node@npm:16.11.64"
   checksum: 3634477efbeb586f8cdc1baf7670d8ea89c1eba1beac0354fa9123ca193d794da84ec40d4f8a54f694587ba5469e4124ebbba37542ed88eca95a3980ec45551a
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^8.0.0":
+  version: 8.10.66
+  resolution: "@types/node@npm:8.10.66"
+  checksum: c52039de862654a139abdc6a51de532a69dd80516ac35a959c3b3a2831ecbaaf065b0df5f9db943f5e28b544ebb9a891730d52b52f7a169b86a82bc060210000
   languageName: node
   linkType: hard
 
@@ -19141,7 +19127,7 @@ __metadata:
     "@types/chai": 4.3.0
     "@types/fs-extra": 9.0.13
     "@types/mocha": 10.0.0
-    "@types/node": 8.10.66
+    "@types/node": 18.11.9
     "@unlock-protocol/contracts": 0.0.12
     "@unlock-protocol/eslint-config": "workspace:^"
     "@unlock-protocol/networks": "workspace:^"
@@ -19191,7 +19177,7 @@ __metadata:
     "@types/jest": 27.4.1
     "@types/jsonwebtoken": 8.5.9
     "@types/nock": 10.0.3
-    "@types/node": 16.11.21
+    "@types/node": 18.11.9
     "@types/node-cron": 3.0.4
     "@types/random-words": 1.1.2
     "@types/request-promise-native": 1.0.18
@@ -19282,7 +19268,7 @@ __metadata:
     "@babel/core": 7.18.10
     "@svgr/cli": 6.2.1
     "@types/next": 8.0.7
-    "@types/node": 16.11.21
+    "@types/node": 18.11.9
     "@types/postmate": 1.5.2
     "@types/react": 17.0.44
     "@types/react-dom": 18.0.6
@@ -19759,7 +19745,7 @@ __metadata:
     "@testing-library/react": 12.1.5
     "@types/jest": 27.5.2
     "@types/next": 8.0.7
-    "@types/node": 17.0.21
+    "@types/node": 18.11.9
     "@types/react": 17.0.44
     "@types/styled-components": 5.1.26
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
@@ -50920,7 +50906,7 @@ fsevents@~2.1.1:
   resolution: "provider@workspace:provider"
   dependencies:
     "@cloudflare/workers-types": 3.16.0
-    "@types/node": 18.8.2
+    "@types/node": 18.11.9
     typescript: 4.8.4
   languageName: unknown
   linkType: soft
