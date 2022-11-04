@@ -1,7 +1,6 @@
 import express from 'express'
 import { authMiddleware } from '../utils/middlewares/auth'
 
-const transactionRouter = require('./transaction')
 const lockRouter = require('./lock')
 const userRouter = require('./user')
 const purchaseRouter = require('./purchase')
@@ -19,6 +18,8 @@ const verifierRouter = require('./v2/verifier')
 const grantKeysRouter = require('./v2/grantKeys')
 const ticketRouter = require('./v2/ticket')
 const keyController = require('./v2/key')
+const purchaseRouterV2 = require('./v2/purchase')
+
 const config = require('../../config/config')
 
 const router = express.Router({ mergeParams: true })
@@ -33,11 +34,9 @@ router.use((request, _, next) => {
   } else if (request.query?.chain) {
     chain = parseInt(String(request.query.chain))
   }
-  // @ts-expect-error chain type
   request.chain = chain
   next()
 })
-router.use('/', transactionRouter)
 router.use('/', lockRouter)
 router.use('/users', userRouter)
 router.use('/purchase', purchaseRouter)
@@ -57,6 +56,7 @@ router.use('/v2/api/verifier', verifierRouter)
 router.use('/v2/api/grant', grantKeysRouter)
 router.use('/v2/api/ticket', ticketRouter)
 router.use('/v2/api', keyController)
+router.use('/v2/purchase', purchaseRouterV2)
 
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')

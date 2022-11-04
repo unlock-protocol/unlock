@@ -1,4 +1,4 @@
-FROM node:12-alpine as unlock-eth-node
+FROM node:16-alpine as unlock-eth-node
 LABEL Unlock <ops@unlock-protocol.com>
 
 USER root
@@ -17,4 +17,4 @@ RUN yarn install --pure-lockfile
 COPY --chown=node . .
 
 EXPOSE 8545
-CMD [ "yarn", "start" ]
+CMD [  "yarn", "hardhat", "node", "--hostname", "0.0.0.0" ]

@@ -16,9 +16,7 @@ Read more about [why we're building Unlock](https://medium.com/unlock-protocol/i
 [You can try Unlock using the Ethereum blockchain on our homepage.](https://unlock-protocol.com/)
 
 We are building this in the open, which means you can also run the code locally (see instructions below).
-You can try out the staging version - which runs the latest, in-progress code, but against the Rinkeby test network - at [https://staging.unlock-protocol.com](https://staging.unlock-protocol.com).
-
-Finally, you can learn more [on our documentation wiki](https://github.com/unlock-protocol/unlock/wiki).
+You can try out the staging version - which runs the latest, in-progress code, but against the Goerli test network.
 
 ## Contributing
 
@@ -42,6 +40,12 @@ You'll need [yarn](https://yarnpkg.com) installed globally.
 ```
 yarn
 # install all dependencies (...may take a while)
+```
+
+Build all packages:
+
+```
+yarn build
 ```
 
 To execute commands inside the repo, we use the pattern `yarn workspace <workspace name> <command>`
@@ -93,12 +97,12 @@ yarn workspace @unlock-protocol/unlock-app start
 
 This will start
 
-- `http://localhost:3000/dashboard` to start using the application and deploy locks locally.
+- `http://localhost:3000/locks` to start using the application and deploy locks locally.
 - `http://localhost:3002` our static landing page site.
 
 ### Config and environment variables
 
-If you run the app locally on you machine, you will have to create a file called `.env.dev.local` at the root of the repo, containing variables for the different apps :
+If you run the app locally on your machine, you will have to create a file called `.env.dev.local` at the root of the repo, containing variables for the different apps :
 
 ```
 # your wallet address to the first line
@@ -127,7 +131,7 @@ BOOTSTRAP_AMOUNT=15.0
 LOCKSMITH_PURCHASER_ADDRESS=0xe29ec42f0b620b1c9a716f79a02e9dc5a5f5f98a
 ```
 
-Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example). This will let you interract with the application using your regular setup.
+Make sure you change the value of `ETHEREUM_ADDRESS` to use your main Ethereum address (the one you use with your Metamask for example). This will let you interact with the application using your regular setup.
 
 NB: The environments config files for the infrastructure are located inside the [`./docker`](./docker) folder.
 
@@ -140,4 +144,4 @@ Thanks to [BrowserStack](https://www.browserstack.com/) for providing the infras
 Thank you to all the Members of our lock as well!
 You can easily join this list by clicking on the ❤️ Sponsor button (it's free!) at the top of this page too.
 
-![Members](https://member-wall.julien51.now.sh/api/members?locks=0xB0114bbDCe17e0AF91b2Be32916a1e236cf6034F&maxWidth=1000)
+![Members](https://member-wall.unlock-protocol.com/api/members?network=100&locks=0xCE62D71c768aeD7EA034c72a1bc4CF58830D9894&maxHeight=300)

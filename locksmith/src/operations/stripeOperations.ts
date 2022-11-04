@@ -1,22 +1,19 @@
 import Stripe from 'stripe'
-
 import { StripeConnectLock } from '../models/stripeConnectLock'
 import { ethereumAddress } from '../types'
 import * as Normalizer from '../utils/normalizer'
 import { UserReference } from '../models/userReference'
-
 import { StripeCustomer } from '../models/stripeCustomer'
-
-const Sequelize = require('sequelize')
+import Sequelize from 'sequelize'
+import config from '../../config/config'
 
 const { Op } = Sequelize
-const config = require('../../config/config')
 
 export const createStripeCustomer = async (
-  stripeToken: string,
+  stripeToken: string | undefined,
   publicKey: string
 ): Promise<string> => {
-  const stripe = new Stripe(config.stripeSecret, {
+  const stripe = new Stripe(config.stripeSecret!, {
     apiVersion: '2020-08-27',
   })
   const customer = await stripe.customers.create({
@@ -76,6 +73,7 @@ export const deletePaymentDetailsForAddress = async (
 
   // First, let's delete the StripeCustomer
   const deletedStripeCustomer = await StripeCustomer.destroy({
+    // @ts-expect-error - typescript typing issue
     where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
   })
 
@@ -86,6 +84,7 @@ export const deletePaymentDetailsForAddress = async (
       stripe_customer_id: null,
     },
     {
+      // @ts-expect-error - typescript typing issue
       where: { publicKey: { [Op.eq]: normalizedEthereumAddress } },
     }
   )
@@ -105,7 +104,7 @@ export const disconnectStripe = async ({
   lockAddress: string
   chain: number
 }) => {
-  const stripe = new Stripe(config.stripeSecret, {
+  const stripe = new Stripe(config.stripeSecret!, {
     apiVersion: '2020-08-27',
   })
 
@@ -144,7 +143,7 @@ export const connectStripe = async (
   chain: number,
   baseUrl: string
 ) => {
-  const stripe = new Stripe(config.stripeSecret, {
+  const stripe = new Stripe(config.stripeSecret!, {
     apiVersion: '2020-08-27',
   })
 
@@ -179,8 +178,8 @@ export const connectStripe = async (
 
   return await stripe.accountLinks.create({
     account: account.id,
-    refresh_url: `${baseUrl}/dashboard?lock=${lock}&network=${chain}&stripe=0`,
-    return_url: `${baseUrl}/dashboard?lock=${lock}&network=${chain}&stripe=1`,
+    refresh_url: `${baseUrl}/locks/lock?address=${lock}&network=${chain}&stripe=0`,
+    return_url: `${baseUrl}/locks/lock?address=${lock}&network=${chain}&stripe=1`,
     type: 'account_onboarding',
   })
 }
@@ -192,7 +191,7 @@ export const connectStripe = async (
  * Returns the stripeAccount if all fully enabled
  */
 export const getStripeConnectForLock = async (lock: string, chain: number) => {
-  const stripe = new Stripe(config.stripeSecret, {
+  const stripe = new Stripe(config.stripeSecret!, {
     apiVersion: '2020-08-27',
   })
   const stripeConnectLockDetails = await StripeConnectLock.findOne({

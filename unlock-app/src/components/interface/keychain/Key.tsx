@@ -17,7 +17,6 @@ import { RiErrorWarningFill as DangerIcon } from 'react-icons/ri'
 import { Badge, Tooltip } from '@unlock-protocol/ui'
 import { networks } from '@unlock-protocol/networks'
 import { expirationAsDate } from '../../../utils/durations'
-import { OwnedKey } from './KeychainTypes'
 import QRModal from './QRModal'
 import useMetadata from '../../../hooks/useMetadata'
 import { useWalletService } from '../../../utils/withWalletService'
@@ -29,13 +28,14 @@ import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
 import { KeyMetadataModal } from './KeyMetadataModal'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface KeyBoxProps {
   lock: any
   expiration: string
-  keyId: string
+  tokenId: string
   network: number
   isKeyExpired: boolean
   expirationStatus: string
@@ -44,12 +44,12 @@ interface KeyBoxProps {
 const KeyBox = ({
   lock,
   expiration,
-  keyId,
+  tokenId,
   network,
   isKeyExpired,
   expirationStatus,
 }: KeyBoxProps) => {
-  const metadata = useMetadata(lock.address, keyId, network)
+  const metadata = useMetadata(lock.address, tokenId, network)
 
   const [isCopied, setCopied] = useClipboard(lock.address, {
     successDuration: 2000,
@@ -96,7 +96,7 @@ const KeyBox = ({
       <div className="pt-4 space-y-1">
         <p className="flex items-center gap-2 text-sm">
           <span className="text-gray-400">Token ID:</span>
-          <span className="font-medium">{keyId}</span>
+          <span className="font-medium">{tokenId}</span>
         </p>
         <div className="flex items-center gap-2 text-sm">
           <span className="text-gray-400">Lock Address:</span>
@@ -130,14 +130,35 @@ const KeyBox = ({
   )
 }
 
+export interface KeyProps {
+  id: string
+  tokenId: string
+  owner: string
+  manager?: any
+  expiration: string
+  tokenURI?: string
+  createdAtBlock: any
+  cancelled?: boolean
+  lock: {
+    id: string
+    address: any
+    name?: string
+    expirationDuration?: any
+    tokenAddress: any
+    price: any
+    lockManagers: any[]
+    version: any
+    createdAtBlock?: any
+  }
+}
 export interface Props {
-  ownedKey: OwnedKey
+  ownedKey: KeyProps
   account: string
   network: number
 }
 
 const Key = ({ ownedKey, account, network }: Props) => {
-  const { lock, expiration, keyId } = ownedKey
+  const { lock, expiration, tokenId } = ownedKey
   const { network: accountNetwork } = useAuth()
   const walletService = useWalletService()
   const wedlockService = useContext(WedlockServiceContext)
@@ -145,12 +166,15 @@ const Key = ({ ownedKey, account, network }: Props) => {
   const { watchAsset } = useAuth()
   const config = useConfig()
   const expirationStatus = expirationAsDate(expiration)
-  const isKeyExpired = expirationStatus.toLocaleLowerCase() === 'expired'
+
   const [error, setError] = useState<string | null>()
   const [showingQR, setShowingQR] = useState(false)
   const [showMetadata, setShowMetadata] = useState(false)
   const [signature, setSignature] = useState<any | null>(null)
   const [showCancelModal, setShowCancelModal] = useState(false)
+  const [expireAndRefunded, setExpireAndRefunded] = useState(false)
+  const isKeyExpired =
+    expirationStatus.toLocaleLowerCase() === 'expired' || expireAndRefunded
   const { data: lockData, isLoading: isLockDataLoading } = useQuery(
     ['lock', lock.address, network],
     () => {
@@ -165,7 +189,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
       account,
       lockAddress: lock.address,
       timestamp: Date.now(),
-      tokenId: keyId,
+      tokenId,
     })
 
     const signature = await walletService.signMessage(payload, 'personal_sign')
@@ -189,32 +213,16 @@ const Key = ({ ownedKey, account, network }: Props) => {
     window.open(networks[network].explorer?.urls.address(lock.address))
   }
 
-  // TODO: use the networks' OpenSea config!
   const viewOnOpenSea = async () => {
-    if (network === 137) {
-      window.open(
-        `https://opensea.io/assets/matic/${lock.address}/${keyId}`,
-        '_blank'
-      )
-    } else if (network === 1) {
-      window.open(
-        `https://opensea.io/assets/${lock.address}/${keyId}`,
-        '_blank'
-      )
-    } else if (network === 4) {
-      window.open(
-        `https://testnets.opensea.io/assets/${lock.address}/${keyId}`,
-        '_blank'
-      )
+    const { opensea, name } = networks[network]
+
+    const url = opensea?.tokenUrl(lock.address, tokenId) ?? null
+
+    if (url) {
+      window.open(url, '_blank')
+    } else {
+      ToastHelper.error(`OpenSea URL not unavailable yet for ${name}`)
     }
-  }
-
-  const onCancelAndRefund = () => {
-    setShowCancelModal(true)
-  }
-
-  const closeCancelAndRefund = () => {
-    setShowCancelModal(false)
   }
 
   const iconButtonClass =
@@ -225,7 +233,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         wedlockService.keychainQREmail(
           recipient,
           `${window.location.origin}/keychain`,
-          lock.name,
+          lock!.name ?? '',
           qrImage
         )
       } catch {
@@ -236,7 +244,9 @@ const Key = ({ ownedKey, account, network }: Props) => {
     }
   }
 
-  const isAvailableOnOpenSea = [1, 4, 137].indexOf(network) > -1
+  const isAvailableOnOpenSea =
+    networks[network].opensea?.tokenUrl(lock.address, tokenId) !== null ?? false
+
   const baseSymbol = walletService.networks[network].baseCurrencySymbol!
   const symbol =
     isLockDataLoading || !lockData
@@ -254,21 +264,28 @@ const Key = ({ ownedKey, account, network }: Props) => {
         setIsOpen={setShowMetadata}
         account={account}
         lock={lock}
-        keyId={keyId}
+        tokenId={tokenId}
         network={network}
       />
-      <CancelAndRefundModal
-        active={showCancelModal}
-        lock={lock}
-        keyId={keyId}
-        dismiss={closeCancelAndRefund}
-        account={account}
-        currency={symbol}
-      />
+
+      {!isKeyExpired && (
+        <CancelAndRefundModal
+          isOpen={showCancelModal}
+          setIsOpen={setShowCancelModal}
+          lock={lock}
+          tokenId={tokenId}
+          account={account}
+          currency={symbol}
+          network={network}
+          onExpireAndRefund={() => setExpireAndRefunded(true)}
+        />
+      )}
+
       {signature && (
         <QRModal
           lock={lock}
-          active={showingQR}
+          isOpen={showingQR}
+          setIsOpen={setShowingQR}
           dismiss={() => setSignature(null)}
           sendEmail={sendEmail}
           signature={signature}
@@ -278,7 +295,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         network={network}
         lock={lock}
         expiration={expiration}
-        keyId={keyId}
+        tokenId={tokenId}
         isKeyExpired={isKeyExpired}
         expirationStatus={expirationStatus}
       />
@@ -337,7 +354,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
                 className={iconButtonClass}
                 type="button"
                 disabled={wrongNetwork}
-                onClick={onCancelAndRefund}
+                onClick={() => setShowCancelModal(!showCancelModal)}
               >
                 <CancelIcon />
               </button>

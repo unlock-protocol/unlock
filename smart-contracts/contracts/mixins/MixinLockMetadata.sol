@@ -10,7 +10,6 @@ import './MixinRoles.sol';
 
 /**
  * @title Mixin for metadata about the Lock.
- * @author HardlyDifficult
  * @dev `Mixins` are a design pattern seen in the 0x contracts.  It simply
  * separates logically groupings of code to ease readability.
  */
@@ -33,8 +32,10 @@ contract MixinLockMetadata is
   // the base Token URI for this Lock. If not set by lock owner, the global URI stored in Unlock is used.
   string private baseTokenURI;
 
-  event NewLockSymbol(
-    string symbol
+  event LockMetadata(
+    string name, 
+    string symbol, 
+    string baseTokenURI
   );
 
   function _initializeMixinLockMetadata(
@@ -49,26 +50,23 @@ contract MixinLockMetadata is
   }
 
   /**
-   * Allows the Lock owner to assign a descriptive name for this Lock.
+   * Allows the Lock owner to assign 
+   * @param _lockName a descriptive name for this Lock.
+   * @param _lockSymbol a Symbol for this Lock (default to KEY).
+   * @param _baseTokenURI the baseTokenURI for this Lock
    */
-  function updateLockName(
-    string calldata _lockName
-  ) external
-  {
+  function setLockMetadata(
+    string calldata _lockName,
+    string calldata _lockSymbol,
+    string calldata _baseTokenURI
+  ) public {
     _onlyLockManager();
-    name = _lockName;
-  }
 
-  /**
-   * Allows the Lock owner to assign a Symbol for this Lock.
-   */
-  function updateLockSymbol(
-    string calldata _lockSymbol
-  ) external
-  {
-    _onlyLockManager();
+    name = _lockName;
     lockSymbol = _lockSymbol;
-    emit NewLockSymbol(_lockSymbol);
+    baseTokenURI = _baseTokenURI;
+
+    emit LockMetadata(name, lockSymbol, baseTokenURI);
   }
 
   /**
@@ -84,17 +82,6 @@ contract MixinLockMetadata is
     } else {
       return lockSymbol;
     }
-  }
-
-  /**
-   * Allows the Lock owner to update the baseTokenURI for this Lock.
-   */
-  function setBaseTokenURI(
-    string calldata _baseTokenURI
-  ) external
-  {
-    _onlyLockManager();
-    baseTokenURI = _baseTokenURI;
   }
 
   /**  @notice A distinct Uniform Resource Identifier (URI) for a given asset.

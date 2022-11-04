@@ -1,6 +1,5 @@
 import { KeyMetadata } from '../models/keyMetadata'
 import { LockMetadata } from '../models/lockMetadata'
-import Metadata from '../../config/metadata'
 import KeyData from '../utils/keyData'
 import { getMetadata } from './userMetadataOperations'
 import { Web3Service } from '@unlock-protocol/unlock-js'
@@ -8,11 +7,10 @@ import networks from '@unlock-protocol/networks'
 import { Verifier } from '../models/verifier'
 import Normalizer from '../utils/normalizer'
 import * as lockOperations from './lockOperations'
-
-const Asset = require('../utils/assets')
-
+import * as Asset from '../utils/assets'
+import { Attribute } from '../types'
+import metadata from '../../config/metadata'
 const baseURIFragement = 'https://assets.unlock-protocol.com'
-
 interface IsKeyOrLockOwnerOptions {
   userAddress?: string
   lockAddress: string
@@ -56,17 +54,33 @@ export const generateKeyMetadata = async (
 
   const keyCentricData = await getKeyCentricData(address, keyId)
   const baseTokenData = await getBaseTokenData(address, host, keyId)
-  return Object.assign(
-    baseTokenData,
-    keyCentricData,
-    onChainKeyMetadata,
-    userMetadata,
-    {
-      keyId,
-      lockAddress: address,
-      network,
-    }
-  )
+
+  const attributes: Attribute[] = []
+
+  if (Array.isArray(onChainKeyMetadata?.attributes)) {
+    attributes.push(...onChainKeyMetadata.attributes)
+  }
+
+  if (Array.isArray(baseTokenData?.attributes)) {
+    attributes.push(...baseTokenData.attributes)
+  }
+
+  if (Array.isArray(keyCentricData?.attributes)) {
+    attributes.push(...keyCentricData.attributes)
+  }
+
+  const data = {
+    ...baseTokenData,
+    ...keyCentricData,
+    ...onChainKeyMetadata,
+    ...userMetadata,
+    attributes,
+    keyId,
+    lockAddress: address,
+    network,
+  }
+
+  return data
 }
 
 export const getBaseTokenData = async (
@@ -79,27 +93,25 @@ export const getBaseTokenData = async (
     where: { address },
   })
 
+  const result: Record<string, any> = {
+    ...defaultResponse,
+    ...(persistedBasedMetadata?.data || {}),
+  }
+
   const assetLocation = Asset.tokenMetadataDefaultImage({
     base: baseURIFragement,
     address,
   })
 
-  const result = persistedBasedMetadata
-    ? persistedBasedMetadata.data
-    : defaultResponse
-
   if (await Asset.exists(assetLocation)) {
-    ;(result as { image: string }).image = assetLocation
+    result.image = assetLocation
   }
 
   return result
 }
 
-export const getKeyCentricData = async (
-  address: string,
-  tokenId: string
-): Promise<any> => {
-  const keyCentricData: any = await KeyMetadata.findOne({
+export const getKeyCentricData = async (address: string, tokenId: string) => {
+  const keyCentricData = await KeyMetadata.findOne({
     where: {
       address,
       id: tokenId,
@@ -112,7 +124,7 @@ export const getKeyCentricData = async (
     tokenId,
   })
 
-  const result = keyCentricData ? keyCentricData.data : {}
+  const result: Record<string, any> = keyCentricData ? keyCentricData.data : {}
 
   if (await Asset.exists(assetLocation)) {
     result.image = assetLocation
@@ -125,12 +137,13 @@ const fetchChainData = async (
   address: string,
   keyId: string,
   network: number
-): Promise<any> => {
-  const kd = new KeyData()
-  const data = await kd.get(address, keyId, network)
+) => {
+  const keyData = new KeyData()
+  const data = await keyData.get(address, keyId, network)
+  const { attributes } = keyData.openSeaPresentation(data)
   return {
-    ...kd.openSeaPresentation(data),
     ...data,
+    attributes,
   }
 }
 
@@ -143,7 +156,7 @@ const defaultMappings = (address: string, host: string, keyId: string) => {
 
   // Custom mappings
   // TODO: move that to a datastore at some point...
-  Metadata.forEach((lockMetadata) => {
+  metadata.forEach((lockMetadata) => {
     if (address.toLowerCase() == lockMetadata.address.toLowerCase()) {
       defaultResponse.name = lockMetadata.name
       defaultResponse.description = lockMetadata.description
@@ -153,6 +166,7 @@ const defaultMappings = (address: string, host: string, keyId: string) => {
 
   // Append description
   defaultResponse.description = `${defaultResponse.description} Unlock is a protocol for memberships. https://unlock-protocol.com/`
+
   return defaultResponse
 }
 
@@ -199,18 +213,21 @@ export const getKeysMetadata = async ({
   lockAddress: string
   network: number
 }) => {
-  const owners: { owner: string; keyId: string }[] = keys?.map(
-    ({ owner, keyId }: any) => {
+  const owners: { owner: string; tokenId: string }[] = keys?.map(
+    ({ owner, tokenId }: any) => {
       return {
-        owner: owner?.address,
-        keyId,
+        owner,
+        tokenId,
       }
     }
   )
 
-  const mergedDataList = owners.map(async ({ owner, keyId }) => {
-    let metadata: any = undefined
-    const keyData = await getKeyCentricData(lockAddress, keyId)
+  const mergedDataList = owners.map(async ({ owner, tokenId }) => {
+    let metadata: Record<string, any> = {
+      owner,
+      tokenId,
+    }
+    const keyData = await getKeyCentricData(lockAddress, tokenId)
     const [keyMetadata] = await lockOperations.getKeyHolderMetadata(
       lockAddress,
       [owner],
@@ -226,6 +243,7 @@ export const getKeysMetadata = async ({
     // build metadata object only if metadata or extraMetadata are present
     if (hasMetadata) {
       metadata = {
+        ...metadata,
         userAddress: owner,
         data: {
           ...keyMetadataData,

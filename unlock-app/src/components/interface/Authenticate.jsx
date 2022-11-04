@@ -6,31 +6,20 @@ import React, {
   useMemo,
   useEffect,
 } from 'react'
-import ApolloClient from 'apollo-boost'
 import PropTypes, { number } from 'prop-types'
-import { ApolloProvider } from '@apollo/react-hooks'
 import { Web3Service, WalletService } from '@unlock-protocol/unlock-js'
 import { StorageServiceContext } from '../../utils/withStorageService'
 import { StorageService } from '../../services/storageService'
 import { Web3ServiceContext } from '../../utils/withWeb3Service'
 import { WalletServiceContext } from '../../utils/withWalletService'
-import { GraphServiceContext } from '../../utils/withGraphService'
-import { GraphService } from '../../services/graphService'
 import { AuthenticationContext } from '../../contexts/AuthenticationContext'
 import { useProvider } from '../../hooks/useProvider'
 import Loading from './Loading'
-import {
-  NotEnabledInProvider,
-  NetworkNotSupported,
-  WrongNetwork,
-} from '../creator/FatalError'
 import { ConfigContext } from '../../utils/withConfig'
 import UnlockPropTypes from '../../propTypes'
 
 import LogInSignUp from './LogInSignUp'
 import { useAutoLogin } from '../../hooks/useAutoLogin'
-
-const GraphServiceProvider = GraphServiceContext.Provider
 
 const StorageServiceProvider = StorageServiceContext.Provider
 const Web3ServiceProvider = Web3ServiceContext.Provider
@@ -40,19 +29,6 @@ const Web3ServiceProvider = Web3ServiceContext.Provider
  * @returns
  */
 const Providers = ({ network, networkConfig, children, authenticate }) => {
-  const apolloClient = useMemo(
-    () =>
-      new ApolloClient({
-        uri: networkConfig[network].subgraphURI,
-      }),
-    [networkConfig, network]
-  )
-
-  const graphService = useMemo(
-    () => new GraphService(networkConfig[network].subgraphURI),
-    [networkConfig, network]
-  )
-
   const storageService = useMemo(
     () => new StorageService(networkConfig[network].locksmith),
     [networkConfig, network]
@@ -70,15 +46,11 @@ const Providers = ({ network, networkConfig, children, authenticate }) => {
     tryAutoLogin()
   }, [])
   return (
-    <ApolloProvider client={apolloClient}>
-      <StorageServiceProvider value={storageService}>
-        <Web3ServiceProvider value={web3Service}>
-          <GraphServiceProvider value={graphService}>
-            {isLoading ? <Loading /> : children}
-          </GraphServiceProvider>
-        </Web3ServiceProvider>
-      </StorageServiceProvider>
-    </ApolloProvider>
+    <StorageServiceProvider value={storageService}>
+      <Web3ServiceProvider value={web3Service}>
+        {isLoading ? <Loading /> : children}
+      </Web3ServiceProvider>
+    </StorageServiceProvider>
   )
 }
 

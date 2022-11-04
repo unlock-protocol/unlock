@@ -1,9 +1,9 @@
 import { ethers } from 'ethers'
-
-import models = require('../../../src/models')
-import app = require('../../../src/app')
-import UserOperations = require('../../../src/operations/userOperations')
-import Base64 = require('../../../src/utils/base64')
+const request = require('supertest')
+const models = require('../../../src/models')
+const app = require('../../../src/app')
+import UserOperations from '../../../src/operations/userOperations'
+const Base64 = require('../../../src/utils/base64')
 
 function generateTypedData(message: any, messageKey: string) {
   return {
@@ -36,7 +36,6 @@ beforeAll(() => {
 
 describe("updating a user's email address", () => {
   const { UserReference } = models
-  const request = require('supertest')
   const wallet = new ethers.Wallet(
     '0xfd8abdd241b9e7679e3ef88f05b31545816d6fbcaf11e86ebd5a57ba281ce229'
   )

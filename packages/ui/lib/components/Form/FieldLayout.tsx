@@ -7,7 +7,7 @@ export interface Props {
   size?: Size
   error?: string
   success?: string
-  description?: string
+  description?: ReactNode
   children: ReactNode
 }
 
@@ -46,6 +46,7 @@ export function FieldLayout(props: Props) {
         </p>
       )
     }
+
     if (success) {
       return (
         <p id={label} className={successClass}>
@@ -72,7 +73,7 @@ export function FieldLayout(props: Props) {
         </label>
       )}
       {children}
-      <div className="pl-1">
+      <div>
         <Message />
       </div>
     </div>

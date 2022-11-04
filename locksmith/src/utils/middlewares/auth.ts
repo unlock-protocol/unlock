@@ -16,9 +16,13 @@ export type User =
     }
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
     interface Request {
       user?: User
+      owner: string
+      signee: string
+      chain: number
     }
   }
 }

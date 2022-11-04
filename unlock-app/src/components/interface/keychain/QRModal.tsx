@@ -1,18 +1,25 @@
 import React, { useState } from 'react'
 import QRCode from 'qrcode.react'
-import InlineModal from '../InlineModal'
-import { Button, Input, Icon } from '@unlock-protocol/ui'
+import { Button, Input, Icon, Modal } from '@unlock-protocol/ui'
 import { FaEnvelope } from 'react-icons/fa'
+import { KeyProps } from './Key'
 
 interface Props {
-  active: boolean
+  isOpen: boolean
   dismiss: () => void
+  setIsOpen: (open: boolean) => void
   sendEmail: (recipient: string, qrImage: string) => void
   signature: any
-  lock: any
+  lock: KeyProps['lock']
 }
 
-export const QRModal = ({ active, dismiss, sendEmail, signature }: Props) => {
+export const QRModal = ({
+  isOpen,
+  setIsOpen,
+  sendEmail,
+  signature,
+  dismiss,
+}: Props) => {
   const [recipient, setRecipient] = useState('')
   const [isValid, setIsValid] = useState(false)
   const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,26 +40,36 @@ export const QRModal = ({ active, dismiss, sendEmail, signature }: Props) => {
   }
 
   return (
-    <InlineModal active={active} dismiss={dismiss}>
-      <QRCode value={QRUrl()} size={256} includeMargin />
-      <Input
-        className="w-90 my-4"
-        type="email"
-        required
-        value={recipient}
-        onChange={handleChange}
-        placeholder="me@domain.tld"
-      />
-      <Submit
-        active={isValid}
-        submit={() => {
-          const canvas = document.querySelector('canvas')
-          if (canvas) {
-            sendEmail(recipient, canvas.toDataURL())
-          }
-        }}
-      />
-    </InlineModal>
+    <Modal
+      isOpen={isOpen}
+      setIsOpen={() => {
+        setIsOpen(false)
+        dismiss()
+      }}
+    >
+      <div className="flex flex-col gap-3">
+        <div className="mx-auto">
+          <QRCode value={QRUrl()} size={256} includeMargin />
+        </div>
+        <Input
+          className="my-4 w-90"
+          type="email"
+          required
+          value={recipient}
+          onChange={handleChange}
+          placeholder="me@domain.tld"
+        />
+        <Submit
+          active={isValid}
+          submit={() => {
+            const canvas = document.querySelector('canvas')
+            if (canvas) {
+              sendEmail(recipient, canvas.toDataURL())
+            }
+          }}
+        />
+      </div>
+    </Modal>
   )
 }
 
@@ -67,7 +84,7 @@ const Submit = ({ active, submit }: SubmitProps) => {
   if (active) {
     return (
       <Button
-        className="w-10/12 m-1"
+        className="w-full m-1"
         iconLeft={<Icon icon={FaEnvelope} size="medium" key="Smart Phone" />}
         disabled={submitted}
         onClick={() => {
@@ -81,7 +98,7 @@ const Submit = ({ active, submit }: SubmitProps) => {
   }
   return (
     <Button
-      className="w-10/12 m-1"
+      className="w-full m-1"
       iconLeft={<Icon icon={FaEnvelope} size="medium" key="Smart Phone" />}
       disabled={submitted}
     >

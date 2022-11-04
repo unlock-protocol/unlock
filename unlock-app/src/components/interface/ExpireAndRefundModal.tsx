@@ -1,23 +1,23 @@
 import React, { useState } from 'react'
 import { useWalletService } from '~/utils/withWalletService'
 import Loading from './Loading'
-import InlineModal from './InlineModal'
 import { ToastHelper } from '../helpers/toast.helper'
+import { Button, Input, Modal } from '@unlock-protocol/ui'
 
 interface ExpireAndRefundProps {
-  active: boolean
+  isOpen: boolean
   lockAddress: string
   keyOwner: string
   tokenId: string
-  dismiss: () => void
+  setIsOpen: (open: boolean) => void
 }
 
 export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
-  active,
+  isOpen,
   lockAddress,
   keyOwner,
   tokenId,
-  dismiss,
+  setIsOpen,
 }) => {
   const walletService = useWalletService()
 
@@ -29,9 +29,7 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
   }
 
   const onCloseCallback = () => {
-    if (typeof dismiss === 'function') {
-      dismiss()
-    }
+    setIsOpen(false)
     setLoading(false)
   }
 
@@ -63,16 +61,11 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
   }
 
   return (
-    <InlineModal active={active} dismiss={onCloseCallback}>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+    <Modal isOpen={isOpen} setIsOpen={onCloseCallback}>
+      <div className="flex flex-col gap-3">
         <p className="text-sm">Set the amount you want to refund</p>
-        <input
-          className="text-right my-2"
+        <Input
+          className="my-2 text-right"
           type="number"
           step="0.01"
           value={refundAmount}
@@ -80,19 +73,14 @@ export const ExpireAndRefundModal: React.FC<ExpireAndRefundProps> = ({
           min={0}
           disabled={loading}
         />
-        <button
-          className="bg-gray-200 rounded px-2 py-1 text-sm mt-4 flex justify-center disabled:opacity-50"
-          type="button"
-          onClick={onExpireAndRefund}
-          disabled={loading}
-        >
+        <Button type="button" onClick={onExpireAndRefund} disabled={loading}>
           {loading ? (
             <Loading size={20} />
           ) : (
             <span className="ml-2">Expire and Refund</span>
           )}
-        </button>
+        </Button>
       </div>
-    </InlineModal>
+    </Modal>
   )
 }

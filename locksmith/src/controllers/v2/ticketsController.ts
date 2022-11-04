@@ -114,14 +114,12 @@ export class TicketsController {
 
       await notifyNewKeyToWedlocks(
         {
-          keyId,
+          tokenId: keyId,
           lock: {
             address: lockAddress,
             name: lock.name,
           },
-          owner: {
-            address: keyOwner,
-          },
+          owner: keyOwner,
         },
         network,
         true

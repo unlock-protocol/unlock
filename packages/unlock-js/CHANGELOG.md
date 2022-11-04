@@ -1,5 +1,72 @@
 # Changes
 
+# 0.31.0
+
+- Add support for PublicLock version 12
+
+
+# 0.30.6
+
+- Add support for `key` and `lock` function in subgraph service.
+
+# 0.30.5
+
+- Add purchasePriceFor in web3Service
+
+
+# 0.30.4
+
+- Add support for `updateLockName`, `updateLockSymbol` and `setBaseTokenURI` across versions
+
+# 0.30.3
+
+- When no version is supplied, deploy the latest version of template.
+
+# 0.30.2
+
+- Add totalApproval option in purchase method
+
+# 0.30.1
+
+- Add `address` to schema.graphql
+
+# 0.30.0
+
+- Add subgraph service
+
+# 0.29.3
+
+- Breaking change in the locksmith service configuration export
+
+# 0.28.3
+
+- Add support for locksmith service.
+
+# 0.28.2
+
+- add support for `transferFeeBasisPoints`
+- move `getCancelAndRefundValueFor` from `walletService` -> `web3Service`
+
+# 0.28.1
+
+- Preserving gas calculation when previous configured on purchase
+
+# 0.27.0
+
+- adding support for TransactionOptions when sending transactions. Also introducing the ability to use `runEstimate` to check if a transaction succeeds and how much gas it consumes
+
+# 0.26.10
+
+- add `keyPrice` parameter for `updateKeyPrice` and fix type definitions
+
+# 0.26.9
+
+- add support for `totalSupply`
+
+# 0.26.8
+
+- add support for `renewMembershipFor`
+
 # 0.26.7
 
 - add support for `keysAvailable`

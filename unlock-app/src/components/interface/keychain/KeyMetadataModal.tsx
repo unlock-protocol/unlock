@@ -7,7 +7,7 @@ import { useWalletService } from '~/utils/withWalletService'
 interface MetadataModalProps {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
-  keyId: string
+  tokenId: string
   network: number
   lock: any
   account: string
@@ -30,7 +30,7 @@ const KeyMetadataPlaceholder: React.FC<unknown> = () => {
 export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
   isOpen,
   setIsOpen,
-  keyId,
+  tokenId,
   lock,
   network,
   account,
@@ -56,7 +56,7 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
       await login()
       const data = await storageService.getKeyMetadataValues({
         lockAddress: lock.address,
-        keyId: parseInt(keyId, 10),
+        keyId: parseInt(tokenId, 10),
         network,
       })
       setLoading(false)
@@ -69,7 +69,7 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
   }, [
     account,
     isOpen,
-    keyId,
+    tokenId,
     lock.address,
     lock.owner,
     network,
@@ -87,8 +87,8 @@ export const KeyMetadataModal: React.FC<MetadataModalProps> = ({
       {loading ? (
         <KeyMetadataPlaceholder />
       ) : (
-        <div className="flex flex-col gap-3 p-4 min-h-[300px] text-left">
-          <span className="font-semibold text-lg">
+        <div className="flex flex-col gap-3 min-h-[300px] text-left">
+          <span className="text-lg font-semibold">
             {`${lock.name} - Metadata`}{' '}
           </span>
           {hasValues ? (

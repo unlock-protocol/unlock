@@ -10,6 +10,7 @@ import getTokenIdForOwner from './getTokenIdForOwner'
 import getKeyExpirationByLockForOwner from './getKeyExpirationByLockForOwner'
 import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
 import getLock from './getLock'
+import renewMembershipFor from './renewMembershipFor'
 import v9 from '../v9'
 
 const {
@@ -27,6 +28,9 @@ const {
   setExpirationDuration,
   approveBeneficiary,
   totalKeys,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
 } = v9
 
 export default {
@@ -57,4 +61,8 @@ export default {
   getCancelAndRefundValueFor,
   approveBeneficiary,
   totalKeys,
+  renewMembershipFor,
+  updateLockName,
+  updateLockSymbol,
+  setBaseTokenURI,
 }

@@ -1,5 +1,6 @@
 export default async function (
   { lockAddress, tokenId, recipient, duration },
+  transactionOptions = {},
   callback
 ) {
   const lockContract = await this.getLockContract(lockAddress)
@@ -12,7 +13,6 @@ export default async function (
     duration = Math.floor(new Date().getTime() / 1000) - expiration.toNumber()
   }
 
-  const transactionOptions = {}
   const transactionPromise = lockContract.shareKey(
     recipient,
     tokenId,

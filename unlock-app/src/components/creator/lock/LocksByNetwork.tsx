@@ -1,11 +1,11 @@
 import networks from '@unlock-protocol/networks'
 import { Lock } from '@unlock-protocol/types'
 import React, { ChangeEvent, useContext } from 'react'
-import { useQuery } from 'react-query'
+import { useQuery } from '@tanstack/react-query'
 import AuthenticationContext from '~/contexts/AuthenticationContext'
 import { network } from '~/propTypes'
 import { addressMinify } from '~/utils/strings'
-import { GraphServiceContext } from '~/utils/withGraphService'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
 
 interface LocksByNetworkProps {
   label?: string
@@ -15,7 +15,7 @@ interface LocksByNetworkProps {
 
 const LocksByNetworkPlaceholder = () => {
   return (
-    <div className="flex flex-col gap-2 w-1/2">
+    <div className="flex flex-col w-1/2 gap-2">
       <div className="h-[14px] w-[200px] animate-pulse bg-slate-200"></div>
       <div className="h-[45px] w-full animate-pulse rounded-lg bg-slate-200"></div>
     </div>
@@ -30,15 +30,26 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
     AuthenticationContext
   )
 
-  const graphService = useContext(GraphServiceContext)
+  const service = new SubgraphService()
 
-  const { isLoading, data: locks } = useQuery([owner], async () => {
+  const { isLoading, data: locks = [] } = useQuery([owner], async () => {
     const items = Object.values(networks)
-      .filter(({ subgraphURI }) => !subgraphURI?.includes('localhost'))
-      .map(async ({ id, subgraphURI }) => {
-        graphService.connect(subgraphURI)
-        const locksByNetwork = await graphService.locksByManager(owner)
-        return [id, locksByNetwork as any]
+      .filter(({ subgraph }) => !subgraph.endpoint.includes('localhost'))
+      .map(async ({ id, subgraph }) => {
+        if (subgraph.endpoint) {
+          const locksByNetwork = await service.locks(
+            {
+              first: 1000, // TODO: what happens when a user has more than 1000 locks?
+              where: {
+                lockManagers_contains: [owner],
+              },
+            },
+            {
+              networks: [`${id}`],
+            }
+          )
+          return [id, locksByNetwork as any]
+        }
       })
     return Promise.all(items)
   })
@@ -53,7 +64,7 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
     if (typeof onChange === 'function') {
       let selected: any = null
       let selectedNetwork: any = null
-      locks?.map(([network, items]) => {
+      locks?.map(([network, items] = []) => {
         if (selected) return
         selected = items.find((item: any) => item.id === id)
         selectedNetwork = network
@@ -68,18 +79,18 @@ export const LocksByNetwork: React.FC<LocksByNetworkProps> = ({
   }
 
   return (
-    <div className="flex flex-col gap-2 w-1/2">
+    <div className="flex flex-col w-1/2 gap-2">
       <span className="text-lg">{label}</span>
       <select
         name="form block form-select"
-        className="block w-full box-border rounded-lg transition-all shadow-sm border border-gray-400 hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none flex-1 pl-4 py-2 text-base"
+        className="box-border flex-1 block w-full py-2 pl-4 text-base transition-all border border-gray-400 rounded-lg shadow-sm hover:border-gray-500 focus:ring-gray-500 focus:border-gray-500 focus:outline-none"
         onChange={onOptionChange}
         defaultValue=""
       >
         <option value="" disabled>
           Choose Lock
         </option>
-        {locks?.map(([networkId, items]) => {
+        {locks?.map(([networkId, items] = []) => {
           if (!items?.length) return null
           return items.map(({ id, name, address }: Lock & { id: string }) => {
             const minifiedAddress = addressMinify(address || '')

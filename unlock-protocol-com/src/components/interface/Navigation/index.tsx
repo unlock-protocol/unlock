@@ -343,8 +343,12 @@ function Desktop() {
         Creators
       </Link>
       <CommunityPopover />
-      <Button href={unlockConfig.appURL} variant="outlined-primary" as={Link}>
-        Dashboard
+      <Button
+        href={`${unlockConfig.appURL}/locks`}
+        variant="outlined-primary"
+        as={Link}
+      >
+        Launch App
       </Button>
     </div>
   )
@@ -507,12 +511,12 @@ function Mobile() {
           <div className="flex flex-col gap-4 p-4 bg-white rounded-b-xl">
             <Link
               className="font-medium"
-              href="https://docs.unlock-protocol.com/unlock/creators/faq"
+              href="https://unlock-protocol.com/guides/"
             >
               For Creators
             </Link>
-            <Button as={Link} href={unlockConfig.appURL}>
-              Dashboard
+            <Button as={Link} href={`${unlockConfig.appURL}/locks`}>
+              Launch App
             </Button>
           </div>
         </div>
