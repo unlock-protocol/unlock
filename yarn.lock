@@ -19638,7 +19638,7 @@ __metadata:
     react: 17.0.2
     react-crypto-icons: 1.0.5
     react-dom: 17.0.2
-    react-dropzone: 14.2.2
+    react-dropzone: 14.2.3
     react-google-recaptcha: 2.1.0
     react-gtm-module: 2.0.11
     react-hook-form: 7.33.1
@@ -51663,16 +51663,16 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-dropzone@npm:14.2.2":
-  version: 14.2.2
-  resolution: "react-dropzone@npm:14.2.2"
+"react-dropzone@npm:14.2.3":
+  version: 14.2.3
+  resolution: "react-dropzone@npm:14.2.3"
   dependencies:
     attr-accept: ^2.2.2
     file-selector: ^0.6.0
     prop-types: ^15.8.1
   peerDependencies:
     react: ">= 16.8 || 18.0.0"
-  checksum: ef9ea7b3b5734e8eade2d29efc26da410dd7d6d046216331f6a51e2df4459c35f3a8f950fa7f723f3db6b0ead8aa68f58f6adbd39b98575c9fc8d8dfe02b671f
+  checksum: 174b744d5ca898cf3d84ec1aeb6cef5211c446697e45dc8ece8287a03d291f8d07253206d5a1247ef156fd385d65e7de666d4d5c2986020b8543b8f2434e8b40
   languageName: node
   linkType: hard
 
