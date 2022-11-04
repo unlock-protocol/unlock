@@ -149,7 +149,7 @@ export function Confirm({
     useQuery(
       ['purchaseData', lockAddress, lockNetwork, JSON.stringify(recipients)],
       async () => {
-        let purchaseData = password || captcha || null
+        let purchaseData = password || captcha || []
         const dataBuilder =
           paywallConfig.locks[lock!.address].dataBuilder ||
           paywallConfig.dataBuilder
