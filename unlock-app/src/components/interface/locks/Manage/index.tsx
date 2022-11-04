@@ -96,7 +96,9 @@ const ActionBar = ({
       ToastHelper.success('CSV downloaded')
     },
     onError: () => {
-      ToastHelper.success('There is some unexpected issue, please try it again')
+      ToastHelper.success(
+        `Unexpected issue downloading CSV, please try it again`
+      )
     },
   })
 

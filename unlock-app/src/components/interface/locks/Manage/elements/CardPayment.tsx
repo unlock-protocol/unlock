@@ -74,7 +74,7 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
       if (res.ok) {
         ToastHelper.success('Stripe disconnected')
       } else {
-        ToastHelper.error('There is some unexpected issue, please try again')
+        ToastHelper.error(`Can't disconnect Stripe, please try again`)
       }
     },
   })
@@ -163,7 +163,7 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
 
   const onGrantKeyRole = async () => {
     await ToastHelper.promise(grantKeyGrantorRoleMutation.mutateAsync(), {
-      error: 'There is some unexpected issue, please try again',
+      error: 'Grant role unsuccessful, please try again.',
       success: 'Key granted',
       loading: 'Allow key granting',
     })

@@ -310,8 +310,8 @@ const UpdateEmailModal = ({
       const createMetadataPromise = storage.createtMetadata(params)
       await ToastHelper.promise(createMetadataPromise, {
         loading: 'Saving email address',
-        success: 'Email succesfully added to member',
-        error: 'There is some unexpected issue, please try again',
+        success: 'Email successfully added to member',
+        error: 'We could not save the email address.',
       })
       if (typeof callback === 'function') {
         callback()
@@ -325,8 +325,8 @@ const UpdateEmailModal = ({
     const updateMetadataPromise = storage.updatetMetadata(params)
     await ToastHelper.promise(updateMetadataPromise, {
       loading: 'Updating email address',
-      success: 'Email succesfully added to member',
-      error: 'There is some unexpected issue, please try again',
+      success: 'Email successfully added to member',
+      error: `Can't update the email address.`,
     })
     if (typeof callback === 'function') {
       callback()
