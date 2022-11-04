@@ -42,7 +42,7 @@
     "@svgr/cli": "6.2.1",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/tsconfig": "workspace:./packages/tsconfig",
-    "babel-loader": "8.2.5",
+    "babel-loader": "9.1.0",
     "babel-plugin-require-context-hook": "1.0.0",
     "babel-preset-react-app": "10.0.1",
     "eslint": "8.16.0",
