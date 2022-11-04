@@ -157,7 +157,7 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <button className="p-0" aria-label="arrow back">
+        <button aria-label="arrow back">
           <ArrowBackIcon
             size={20}
             className="cursor-pointer"
