@@ -12380,19 +12380,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-avatar@npm:1.0.0":
-  version: 1.0.0
-  resolution: "@radix-ui/react-avatar@npm:1.0.0"
+"@radix-ui/react-avatar@npm:1.0.1":
+  version: 1.0.1
+  resolution: "@radix-ui/react-avatar@npm:1.0.1"
   dependencies:
     "@babel/runtime": ^7.13.10
     "@radix-ui/react-context": 1.0.0
-    "@radix-ui/react-primitive": 1.0.0
+    "@radix-ui/react-primitive": 1.0.1
     "@radix-ui/react-use-callback-ref": 1.0.0
     "@radix-ui/react-use-layout-effect": 1.0.0
   peerDependencies:
     react: ^16.8 || ^17.0 || ^18.0
     react-dom: ^16.8 || ^17.0 || ^18.0
-  checksum: fdcecd6d126ba7c1fe8d17df2ac1b4c5dd78f57d5047ac0caa415fa29d487f2ab90d9644088f9df63883cd5e3192f3591d96b5127b2102c05440b2cafd32e313
+  checksum: 88f2367340685912da1dcf7ab95b0055271a3909bef0f7d51edead7be3fb77e019b9aa2db5c51df5f47c9fa8a1eb116893c48594bf03a3bd2d9920477fa16f44
   languageName: node
   linkType: hard
 
@@ -12508,6 +12508,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@radix-ui/react-primitive@npm:1.0.1":
+  version: 1.0.1
+  resolution: "@radix-ui/react-primitive@npm:1.0.1"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/react-slot": 1.0.1
+  peerDependencies:
+    react: ^16.8 || ^17.0 || ^18.0
+    react-dom: ^16.8 || ^17.0 || ^18.0
+  checksum: 1cc86b72f926be4a42122e7e456e965de0906f16b0dc244b8448bac05905f208598c984a0dd40026f654b4a71d0235335d48a18e377b07b0ec6c6917576a8080
+  languageName: node
+  linkType: hard
+
 "@radix-ui/react-slot@npm:1.0.0":
   version: 1.0.0
   resolution: "@radix-ui/react-slot@npm:1.0.0"
@@ -12517,6 +12530,18 @@ __metadata:
   peerDependencies:
     react: ^16.8 || ^17.0 || ^18.0
   checksum: 60c0190ebdca21785b4f8b58a0c52717600c98953fc49da9580870519c60f52d5cf873dffa05446f4bb539066326ccec0827f4ca252b02ec4ff1a4ae203f59d7
+  languageName: node
+  linkType: hard
+
+"@radix-ui/react-slot@npm:1.0.1":
+  version: 1.0.1
+  resolution: "@radix-ui/react-slot@npm:1.0.1"
+  dependencies:
+    "@babel/runtime": ^7.13.10
+    "@radix-ui/react-compose-refs": 1.0.0
+  peerDependencies:
+    react: ^16.8 || ^17.0 || ^18.0
+  checksum: a20693f8ce532bd6cbff12ba543dfcf90d451f22923bd60b57dc9e639f6e53348915e182002b33444feb6ab753434e78e2a54085bf7092aadda4418f0423763f
   languageName: node
   linkType: hard
 
@@ -19640,7 +19665,7 @@ __metadata:
     "@babel/core": 7.18.10
     "@babel/plugin-proposal-optional-chaining": 7.18.9
     "@headlessui/react": 1.6.5
-    "@radix-ui/react-avatar": 1.0.0
+    "@radix-ui/react-avatar": 1.0.1
     "@stripe/react-stripe-js": 1.9.0
     "@stripe/stripe-js": 1.32.0
     "@tanstack/react-query": 4.10.1
@@ -19817,7 +19842,7 @@ __metadata:
   dependencies:
     "@babel/core": 7.19.3
     "@headlessui/react": 1.6.5
-    "@radix-ui/react-avatar": 1.0.0
+    "@radix-ui/react-avatar": 1.0.1
     "@testing-library/jest-dom": 5.16.5
     "@testing-library/react": 12.1.5
     "@types/jest": 27.5.2
