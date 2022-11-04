@@ -19488,7 +19488,7 @@ __metadata:
     tsup: 6.2.3
     typescript: 4.8.4
     vite: 3.1.4
-    vite-tsconfig-paths: 3.5.1
+    vite-tsconfig-paths: 3.5.2
   peerDependencies:
     "@headlessui/react": 1.7.3
     react: 17.0.2
@@ -60347,9 +60347,9 @@ typescript@^3.8.3:
   languageName: node
   linkType: hard
 
-"vite-tsconfig-paths@npm:3.5.1":
-  version: 3.5.1
-  resolution: "vite-tsconfig-paths@npm:3.5.1"
+"vite-tsconfig-paths@npm:3.5.2":
+  version: 3.5.2
+  resolution: "vite-tsconfig-paths@npm:3.5.2"
   dependencies:
     debug: ^4.1.1
     globrex: ^0.1.2
@@ -60357,7 +60357,7 @@ typescript@^3.8.3:
     tsconfig-paths: ^4.0.0
   peerDependencies:
     vite: ">2.0.0-0"
-  checksum: 99755d754ceda2c49b862947e991bb0d6e3ca10221bd0edb0441f2c0b6c973d970601f2baada13647330d4d22d5a682c9558c746fda8db00413ee2a82d2ef28e
+  checksum: f3159d05fe2033563ccb7b15d9c1c37b1ed71016c7d0106147e898b68309978f7b2c76df841d563dfdff3be631ad22a5271bc869955b37a4ec1ed4ad6bb21655
   languageName: node
   linkType: hard
 
