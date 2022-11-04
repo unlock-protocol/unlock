@@ -19368,7 +19368,7 @@ __metadata:
   dependencies:
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    eslint: 8.24.0
+    eslint: 8.26.0
     typescript: 4.8.4
   languageName: unknown
   linkType: soft
