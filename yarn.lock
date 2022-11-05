@@ -9115,13 +9115,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@headlessui/react@npm:1.7.3":
-  version: 1.7.3
-  resolution: "@headlessui/react@npm:1.7.3"
+"@headlessui/react@npm:1.7.4":
+  version: 1.7.4
+  resolution: "@headlessui/react@npm:1.7.4"
+  dependencies:
+    client-only: ^0.0.1
   peerDependencies:
     react: ^16 || ^17 || ^18
     react-dom: ^16 || ^17 || ^18
-  checksum: c9391e15e63dc7e459d42125a94e22f964419c440d9f37fd85f6f501612aad42b3e30e79f712e8097c66e08891c26dcd662863e572ff21cc6cf34a3185ae4aa5
+  checksum: cd7192aa0748d715ed0da94435f217a1a618894a09df722c8b6ac0967c0c2f93b4c1e6b29c4993a3303dc453b20b05323d2a37239408740391989a64b7dce38c
   languageName: node
   linkType: hard
 
@@ -19307,7 +19309,7 @@ __metadata:
   resolution: "@unlock-protocol/ui@workspace:packages/ui"
   dependencies:
     "@babel/core": 7.19.3
-    "@headlessui/react": 1.7.3
+    "@headlessui/react": 1.7.4
     "@mdx-js/preact": 2.1.5
     "@mdx-js/react": 2.1.5
     "@radix-ui/react-tooltip": 1.0.2
@@ -19342,7 +19344,7 @@ __metadata:
     vite: 3.1.4
     vite-tsconfig-paths: 3.5.2
   peerDependencies:
-    "@headlessui/react": 1.7.3
+    "@headlessui/react": 1.7.4
     react: 17.0.2
     react-dom: 17.0.2
   languageName: unknown
@@ -19591,7 +19593,7 @@ __metadata:
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
     "@babel/core": 7.20.2
-    "@headlessui/react": 1.6.5
+    "@headlessui/react": 1.7.4
     "@radix-ui/react-avatar": 1.0.1
     "@testing-library/jest-dom": 5.16.5
     "@testing-library/react": 12.1.5
@@ -26030,7 +26032,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"client-only@npm:0.0.1":
+"client-only@npm:0.0.1, client-only@npm:^0.0.1":
   version: 0.0.1
   resolution: "client-only@npm:0.0.1"
   checksum: 0c16bf660dadb90610553c1d8946a7fdfb81d624adea073b8440b7d795d5b5b08beb3c950c6a2cf16279365a3265158a236876d92bce16423c485c322d7dfaf8
