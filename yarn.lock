@@ -320,6 +320,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/compat-data@npm:^7.20.0":
+  version: 7.20.1
+  resolution: "@babel/compat-data@npm:7.20.1"
+  checksum: 989b9b7a6fe43c547bb8329241bd0ba6983488b83d29cc59de35536272ee6bb4cc7487ba6c8a4bceebb3a57f8c5fea1434f80bbbe75202bc79bc1110f955ff25
+  languageName: node
+  linkType: hard
+
 "@babel/core@npm:7.12.9":
   version: 7.12.9
   resolution: "@babel/core@npm:7.12.9"
@@ -20007,7 +20014,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-protocol-com@workspace:unlock-protocol-com"
   dependencies:
-    "@babel/core": 7.19.3
+    "@babel/core": 7.20.2
     "@headlessui/react": 1.6.5
     "@radix-ui/react-avatar": 1.0.1
     "@testing-library/jest-dom": 5.16.5
@@ -59998,7 +60005,7 @@ typescript@^3.8.3:
   version: 0.0.0-use.local
   resolution: "unlock@workspace:."
   dependencies:
-    "@babel/core": 7.19.3
+    "@babel/core": 7.20.2
     "@superfluid-finance/sdk-core": 0.5.6
     "@typescript-eslint/eslint-plugin": 5.42.0
     "@typescript-eslint/parser": 5.42.0
