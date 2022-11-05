@@ -1,8 +1,14 @@
 import { QueriesOptions, useQueries } from '@tanstack/react-query'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { Disclosure } from '@headlessui/react'
+import { Lock } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
 import { LockCard, LocksByNetworkPlaceholder } from './LockCard'
+import {
+  RiArrowDropUpLine as UpIcon,
+  RiArrowDropDownLine as DownIcon,
+} from 'react-icons/ri'
 
 interface LocksByNetworkProps {
   network: string
@@ -22,13 +28,30 @@ const LocksByNetwork = ({ network, isLoading, locks }: LocksByNetworkProps) => {
   if (locks?.length === 0) return null
 
   return (
-    <div className="flex flex-col gap-4">
-      <h2 className="text-lg font-bold text-brand-ui-primary">{networkName}</h2>
-      <div className="flex flex-col gap-6">
-        {locks?.map((lock: any, index: number) => (
-          <LockCard key={index} lock={lock} network={network} />
-        ))}
-      </div>
+    <div className="w-full">
+      <Disclosure defaultOpen>
+        {({ open }) => (
+          <div className="flex flex-col gap-2">
+            <Disclosure.Button className="flex items-center justify-between w-full outline-none ring-0">
+              <h2 className="text-lg font-bold text-brand-ui-primary">
+                {networkName}
+              </h2>
+              {open ? (
+                <UpIcon className="fill-brand-ui-primary" size={24} />
+              ) : (
+                <DownIcon className="fill-brand-ui-primary" size={24} />
+              )}
+            </Disclosure.Button>
+            <Disclosure.Panel>
+              <div className="flex flex-col gap-6">
+                {locks?.map((lock: Lock, index: number) => (
+                  <LockCard key={index} lock={lock} network={network} />
+                ))}
+              </div>
+            </Disclosure.Panel>
+          </div>
+        )}
+      </Disclosure>
     </div>
   )
 }

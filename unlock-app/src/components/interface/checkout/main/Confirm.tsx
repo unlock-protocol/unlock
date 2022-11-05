@@ -149,7 +149,8 @@ export function Confirm({
     useQuery(
       ['purchaseData', lockAddress, lockNetwork, JSON.stringify(recipients)],
       async () => {
-        let purchaseData = password || captcha || null
+        let purchaseData =
+          password || captcha || Array.from({ length: recipients.length })
         const dataBuilder =
           paywallConfig.locks[lock!.address].dataBuilder ||
           paywallConfig.dataBuilder
@@ -182,13 +183,13 @@ export function Confirm({
       ['purchasePriceFor', lockAddress, lockNetwork],
       async () => {
         const prices = await Promise.all(
-          recipients.map(async (recipient) => {
+          recipients.map(async (recipient, index) => {
             const options = {
               lockAddress: lockAddress,
               network: lockNetwork,
               userAddress: recipient,
               referrer: paywallConfig.referrer || recipient,
-              data: purchaseData?.[0] || '0x',
+              data: purchaseData?.[index] || '0x',
             }
             const price = await web3Service.purchasePriceFor(options)
 
@@ -530,6 +531,10 @@ export function Confirm({
   }
 
   const stepItems = useCheckoutSteps(checkoutService)
+
+  const payingWithCard =
+    fiatPricing?.creditCardEnabled && payment?.method === 'card'
+
   return (
     <Fragment>
       <Stepper position={7} service={checkoutService} items={stepItems} />
@@ -611,7 +616,7 @@ export function Confirm({
           </div>
         ) : (
           <div>
-            {!isLoading && fiatPricing.creditCardEnabled && (
+            {!isLoading && payingWithCard && (
               <CreditCardPricingBreakdown {...fiatPricing} />
             )}
           </div>
