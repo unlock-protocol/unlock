@@ -68,7 +68,7 @@
     "remark": "14.0.2",
     "remark-html": "15.0.1",
     "tailwindcss": "3.1.8",
-    "vitest": "0.16.0"
+    "vitest": "0.24.5"
   },
   "scripts": {
     "dev": "next dev -p 3002",
