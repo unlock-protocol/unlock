@@ -9,6 +9,7 @@ import { QueriesOptions, useQueries } from '@tanstack/react-query'
 import { ImageBar } from '../locks/Manage/elements/ImageBar'
 import { useConfig } from '~/utils/withConfig'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+
 interface KeysByNetworkProps {
   account: string
   network: number
@@ -23,7 +24,7 @@ const KeysByNetworkPlaceholder = () => {
       <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {Array(9)
           .fill(null)
-          .map((index) => {
+          .map((_, index) => {
             return (
               <div
                 className="h-[250px] rounded-xl bg-slate-200 animate-pulse"
@@ -79,8 +80,9 @@ export const KeyDetails = () => {
 
   const networkItems: any[] =
     Object.entries(networks ?? {})
+      .map(([network, value]) => [parseInt(network, 10), value])
       // ignore localhost
-      .filter(([network]) => network !== '31337') ?? []
+      .filter(([network]) => network !== 31337) ?? []
 
   const getKeys = async (network: string) => {
     const service = new SubgraphService()
@@ -134,7 +136,6 @@ export const KeyDetails = () => {
     <div className="flex flex-col gap-5">
       {networkItems.map(([network], index) => {
         const keys: any = results?.[index]?.data || []
-
         return (
           <KeysByNetwork
             key={network}
