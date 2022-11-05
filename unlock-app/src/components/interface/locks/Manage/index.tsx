@@ -97,7 +97,7 @@ const ActionBar = ({
     },
     onError: () => {
       ToastHelper.success(
-        `Unexpected issue downloading CSV, please try it again`
+        `Unexpected issue on CSV download, please try it again`
       )
     },
   })

@@ -163,7 +163,7 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
 
   const onGrantKeyRole = async () => {
     await ToastHelper.promise(grantKeyGrantorRoleMutation.mutateAsync(), {
-      error: 'Grant role unsuccessful, please try again.',
+      error: `Can't grant role, please try again.`,
       success: 'Key granted',
       loading: 'Allow key granting',
     })

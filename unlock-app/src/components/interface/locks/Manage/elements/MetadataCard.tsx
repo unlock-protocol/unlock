@@ -318,7 +318,7 @@ const UpdateEmailModal = ({
       }
     } catch (err: any) {
       ToastHelper.error(
-        err?.message || `There is some issue on metadata creation.`
+        err?.message || `Can't update metadata, please try again.`
       )
     }
   }
