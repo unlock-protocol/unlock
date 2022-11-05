@@ -38,6 +38,6 @@ Reviewing code for this Pull Request is not practical, however, you are asked to
 
 ## Verification 
 * [ ] Add a separate address as a verifier
-* [ ] Create QR code for one of the valid NFT you own and check in using your phone or laptop camera
-* [ ] Check if metadata is displayed when you are a verifier and check in is persistent from the members page.
+* [ ] Create QR code for one of the valid NFT you own and check-in using your phone or laptop camera
+* [ ] Check if metadata is displayed when you are a verifier and check-in is persistent from the members page.
 "
