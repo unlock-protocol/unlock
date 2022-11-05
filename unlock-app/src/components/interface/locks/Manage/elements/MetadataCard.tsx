@@ -106,7 +106,7 @@ export const MetadataCard = ({
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
       success: 'QR-code sent by email',
       loading: 'Sending QR-code by email',
-      error: 'There is some unexpected issue, please try again',
+      error: 'We could not send the QR-code.',
     })
   }
 
@@ -317,7 +317,9 @@ const UpdateEmailModal = ({
         callback()
       }
     } catch (err: any) {
-      ToastHelper.error(err?.message || 'There is some unexpected issue')
+      ToastHelper.error(
+        err?.message || `There is some issue on metadata creation.`
+      )
     }
   }
 
