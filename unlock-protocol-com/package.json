@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@babel/core": "7.19.3",
+    "@babel/core": "7.20.2",
     "@headlessui/react": "1.6.5",
     "@radix-ui/react-avatar": "1.0.1",
     "@testing-library/jest-dom": "5.16.5",
@@ -26,7 +26,7 @@
     "babel-plugin-styled-components": "2.0.7",
     "babel-preset-react-app": "10.0.1",
     "cal-parser": "1.0.2",
-    "dayjs": "1.11.5",
+    "dayjs": "1.11.6",
     "dotenv": "16.0.3",
     "embla-carousel-autoplay": "7.0.3",
     "embla-carousel-react": "7.0.4",
@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
-    "autoprefixer": "10.4.12",
+    "autoprefixer": "10.4.13",
     "eslint-config-next": "12.2.3",
     "feed": "4.2.2",
     "gray-matter": "4.0.3",
@@ -68,7 +68,7 @@
     "remark": "14.0.2",
     "remark-html": "15.0.1",
     "tailwindcss": "3.1.8",
-    "vitest": "0.16.0"
+    "vitest": "0.24.5"
   },
   "scripts": {
     "dev": "next dev -p 3002",
