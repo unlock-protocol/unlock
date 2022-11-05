@@ -52,7 +52,7 @@
     "color-scheme": "1.0.1",
     "cookie-parser": "1.4.6",
     "cors": "2.8.5",
-    "dayjs": "1.11.5",
+    "dayjs": "1.11.6",
     "dotenv": "16.0.3",
     "ethers": "5.7.1",
     "express": "4.17.3",
