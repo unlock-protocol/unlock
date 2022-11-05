@@ -188,7 +188,7 @@ export function Confirm({
               network: lockNetwork,
               userAddress: recipient,
               referrer: paywallConfig.referrer || recipient,
-              data: purchaseData?.[0] || [],
+              data: purchaseData?.[0] || '0x',
             }
             const price = await web3Service.purchasePriceFor(options)
 
