@@ -12,7 +12,7 @@
     "@gnosis.pm/safe-ethers-lib": "1.6.1",
     "@gnosis.pm/safe-service-client": "1.3.1",
     "@nomiclabs/hardhat-ethers": "2.0.6",
-    "@nomiclabs/hardhat-etherscan": "3.1.1",
+    "@nomiclabs/hardhat-etherscan": "3.1.2",
     "@nomiclabs/hardhat-truffle5": "2.0.7",
     "@nomiclabs/hardhat-waffle": "2.0.3",
     "@nomiclabs/hardhat-web3": "2.0.0",
