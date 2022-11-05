@@ -19391,7 +19391,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    hardhat: 2.11.2
+    hardhat: 2.12.2
   languageName: unknown
   linkType: soft
 
@@ -19997,7 +19997,7 @@ __metadata:
     eslint: 8.26.0
     graphql: 16.6.0
     graphql-request: 5.0.0
-    hardhat: 2.12.0
+    hardhat: 2.12.2
     jest: 27.5.1
     lint-staged: 13.0.3
     prettier: 2.7.1
@@ -36843,9 +36843,9 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"hardhat@npm:2.12.0":
-  version: 2.12.0
-  resolution: "hardhat@npm:2.12.0"
+"hardhat@npm:2.12.2":
+  version: 2.12.2
+  resolution: "hardhat@npm:2.12.2"
   dependencies:
     "@ethersproject/abi": ^5.1.2
     "@metamask/eth-sig-util": ^4.0.0
@@ -36907,7 +36907,7 @@ fsevents@~2.1.1:
       optional: true
   bin:
     hardhat: internal/cli/cli.js
-  checksum: 28ae9e7d6cf8e66167a94efbabd5ac4c086f0c05a77b190162906f1dd46b4971eb2eb94412b1eaee5626ab2ec6431a94feae15348b10ba10c1a4b7efcef789ec
+  checksum: cd45bf9d4f15d967bd2d8154cc5bc60e7d0d4bab80caea909d36e3660437fc9f6b4faf41736ed3b75b11ff15ac9a9b68828eebb1026ed9fa8d9eb87242f061d2
   languageName: node
   linkType: hard
 
