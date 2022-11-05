@@ -8552,9 +8552,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-cli@npm:0.33.1":
-  version: 0.33.1
-  resolution: "@graphprotocol/graph-cli@npm:0.33.1"
+"@graphprotocol/graph-cli@npm:0.35.0":
+  version: 0.35.0
+  resolution: "@graphprotocol/graph-cli@npm:0.35.0"
   dependencies:
     assemblyscript: 0.19.10
     binary-install-raw: 0.0.13
@@ -8583,11 +8583,20 @@ __metadata:
     yaml: 1.9.2
   bin:
     graph: bin/graph
-  checksum: ad792da686a4a1c626be192e9d411122a5374491b00bc99192d22ab8dfaf10276467aabf779d6569a02fb8e50bc5a9090de132bf8f353bd4693e72250aa0f882
+  checksum: c50ac69ca84fe855b5ab24175cca605d71ba8ad91d8f8fe8c18e6a96e027a13aace3d3b2686162c8f1e89fbfe3796cdc62a18b6fc57e8adff9008f5a244d03f3
   languageName: node
   linkType: hard
 
-"@graphprotocol/graph-ts@npm:0.27.0, @graphprotocol/graph-ts@npm:^0.27.0":
+"@graphprotocol/graph-ts@npm:0.28.1":
+  version: 0.28.1
+  resolution: "@graphprotocol/graph-ts@npm:0.28.1"
+  dependencies:
+    assemblyscript: 0.19.10
+  checksum: f8e7aa9a770bf9e6953b771d7e4a84ec997d692cffc24c4f9ca227f317c1181452c9939de05df23b774b4abfecc7dc1e2e31f5e75b3376070e5f38cbb7885927
+  languageName: node
+  linkType: hard
+
+"@graphprotocol/graph-ts@npm:^0.27.0":
   version: 0.27.0
   resolution: "@graphprotocol/graph-ts@npm:0.27.0"
   dependencies:
@@ -19371,16 +19380,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/subgraph@workspace:subgraph"
   dependencies:
-    "@graphprotocol/graph-cli": 0.33.1
-    "@graphprotocol/graph-ts": 0.27.0
+    "@graphprotocol/graph-cli": 0.35.0
+    "@graphprotocol/graph-ts": 0.28.1
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/networks": "workspace:^"
-    eslint: 8.8.0
-    fs-extra: 10.0.1
+    eslint: 8.26.0
+    fs-extra: 10.1.0
     handlebars: 4.7.7
     lint-staged: 13.0.3
     matchstick-as: 0.5.0
-    yargs: 17.5.1
+    yargs: 17.6.2
   languageName: unknown
   linkType: soft
 
