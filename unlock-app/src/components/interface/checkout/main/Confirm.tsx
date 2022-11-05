@@ -149,7 +149,7 @@ export function Confirm({
     useQuery(
       ['purchaseData', lockAddress, lockNetwork, JSON.stringify(recipients)],
       async () => {
-        let purchaseData = password || captcha || []
+        let purchaseData = password || captcha || ['0x']
         const dataBuilder =
           paywallConfig.locks[lock!.address].dataBuilder ||
           paywallConfig.dataBuilder
@@ -188,7 +188,7 @@ export function Confirm({
               network: lockNetwork,
               userAddress: recipient,
               referrer: paywallConfig.referrer || recipient,
-              data: purchaseData?.[0] || '0x',
+              data: purchaseData?.[0] || [],
             }
             const price = await web3Service.purchasePriceFor(options)
 
