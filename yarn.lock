@@ -11574,16 +11574,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.2.0"
-  peerDependencies:
-    ethers: ^5.0.0
-    hardhat: ^2.0.0
-  checksum: 5ad702c2b784eb446882278abdba2c284eb27d09740c2161f9336f27d607f17fff3ad7cf7f814835302efefb6869322d0e69c87a08164f2d4743181d2fd6d6b0
-  languageName: node
-  linkType: hard
-
 "@nomiclabs/hardhat-ethers@npm:2.2.1":
   version: 2.2.1
   resolution: "@nomiclabs/hardhat-ethers@npm:2.2.1"
@@ -19333,7 +19323,7 @@ __metadata:
     "@graphql-codegen/typescript": 2.8.1
     "@graphql-codegen/typescript-graphql-request": 4.5.8
     "@graphql-codegen/typescript-operations": 2.5.6
-    "@nomiclabs/hardhat-ethers": 2.2.0
+    "@nomiclabs/hardhat-ethers": 2.2.1
     "@openapitools/openapi-generator-cli": 2.5.2
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
