@@ -19,7 +19,7 @@ import { CryptoIcon } from '../../elements/KeyPrice'
 import { IconModal } from '../../Manage/elements/LockIcon'
 import { ImFilePicture as PictureFile } from 'react-icons/im'
 import { useWeb3Service } from '~/utils/withWeb3Service'
-import { useQuery } from '@tanstack/react-query'
+import { useQueries } from '@tanstack/react-query'
 import { ethers } from 'ethers'
 
 interface LockCardProps {
@@ -186,16 +186,43 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
 
   const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
 
-  const getLockDetail = async () => {
-    return await web3service.getLock(lock.address, parseInt(network, 10))
+  const tokenAddress = lock?.tokenAddress
+
+  const getBalance = async (
+    address: string,
+    chainId: number,
+    tokenAddress: string
+  ) => {
+    return await web3service.getAddressBalance(address, chainId, tokenAddress)
   }
 
-  const { isLoading: isLoadingInfo, data: { balance, currencySymbol } = {} } =
-    useQuery(['lockDetail', network, lock?.address], async () =>
-      getLockDetail()
+  const getSymbol = async () => {
+    return await web3service.getTokenSymbol(
+      tokenAddress,
+      parseInt(network!, 10)
     )
+  }
 
-  const symbol = currencySymbol ?? baseCurrencySymbol
+  const [
+    { isLoading: loadingBalance, data: balance },
+    { isLoading: loadingSymbol, data: tokenSymbol },
+  ] = useQueries({
+    queries: [
+      {
+        queryKey: ['getBalance', lockAddress, network, tokenAddress],
+        queryFn: async () =>
+          await getBalance(lockAddress, parseInt(network, 10), tokenAddress),
+      },
+      {
+        queryKey: ['getSymbol', lockAddress, network, tokenAddress],
+        queryFn: async () => await getSymbol(),
+      },
+    ],
+  })
+
+  const isLoading = loadingBalance || loadingSymbol
+
+  const symbol = tokenSymbol ?? baseCurrencySymbol
 
   useEffect(() => {
     if (!isCopied) return
@@ -246,18 +273,18 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               label="Price"
               value={keyPrice}
               icon={TagIcon}
-              prepend={<CryptoIcon symbol={symbol} size={25} />}
-              isLoading={isLoadingInfo}
+              prepend={!isLoading && <CryptoIcon symbol={symbol} size={25} />}
+              isLoading={isLoading}
             />
             <Detail
               label="Balance"
               value={balance}
               icon={TagIcon}
-              prepend={<CryptoIcon symbol={symbol} size={25} />}
-              isLoading={isLoadingInfo}
+              prepend={!isLoading && <CryptoIcon symbol={symbol} size={25} />}
+              isLoading={isLoading}
             />
             <Detail
-              isLoading={isLoadingInfo}
+              isLoading={isLoading}
               label="Key Duration"
               value={duration}
               icon={TimeIcon}
@@ -266,7 +293,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               label="Key Sold"
               value={lock?.totalKeys}
               icon={KeyIcon}
-              isLoading={isLoadingInfo}
+              isLoading={isLoading}
             />
           </div>
           <div className="md:ml-auto md:col-span-1">
