@@ -210,7 +210,7 @@ export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   if (lock && lock.lockManagers) {
     const lockManagers = lock.lockManagers
     const i = lockManagers.indexOf(event.params.account)
-    lockManagers.splice(i)
+    lockManagers.splice(i, 1)
     lock.lockManagers = lockManagers
     lock.save()
   }
