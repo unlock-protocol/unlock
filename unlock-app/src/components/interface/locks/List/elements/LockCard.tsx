@@ -220,8 +220,6 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
     ],
   })
 
-  const isLoading = loadingBalance || loadingSymbol
-
   const symbol = tokenSymbol ?? baseCurrencySymbol
 
   useEffect(() => {
@@ -273,28 +271,22 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               label="Price"
               value={keyPrice}
               icon={TagIcon}
-              prepend={!isLoading && <CryptoIcon symbol={symbol} size={25} />}
-              isLoading={isLoading}
+              prepend={
+                !loadingSymbol && <CryptoIcon symbol={symbol} size={25} />
+              }
+              isLoading={loadingSymbol}
             />
             <Detail
               label="Balance"
               value={balance}
               icon={TagIcon}
-              prepend={!isLoading && <CryptoIcon symbol={symbol} size={25} />}
-              isLoading={isLoading}
+              prepend={
+                !loadingBalance && <CryptoIcon symbol={symbol} size={25} />
+              }
+              isLoading={loadingBalance}
             />
-            <Detail
-              isLoading={isLoading}
-              label="Key Duration"
-              value={duration}
-              icon={TimeIcon}
-            />
-            <Detail
-              label="Key Sold"
-              value={lock?.totalKeys}
-              icon={KeyIcon}
-              isLoading={isLoading}
-            />
+            <Detail label="Key Duration" value={duration} icon={TimeIcon} />
+            <Detail label="Key Sold" value={lock?.totalKeys} icon={KeyIcon} />
           </div>
           <div className="md:ml-auto md:col-span-1">
             <Link href={lockUrl} aria-label="arrow right">
