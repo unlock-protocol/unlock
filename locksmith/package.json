@@ -99,7 +99,7 @@
     "@types/jsonwebtoken": "8.5.9",
     "@types/nock": "10.0.3",
     "@types/node": "18.11.9",
-    "@types/node-cron": "3.0.4",
+    "@types/node-cron": "3.0.5",
     "@types/request-promise-native": "1.0.18",
     "@types/sequelize": "4.28.14",
     "@types/stripe": "8.0.416",
