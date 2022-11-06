@@ -19418,7 +19418,7 @@ __metadata:
     showdown-highlight: 3.1.0
     styled-components: 5.3.6
     tailwind-merge: 1.7.0
-    tailwindcss: 3.1.8
+    tailwindcss: 3.2.2
     ts-jest: 27.1.5
     typescript: 4.8.4
     use-local-storage: 2.3.6
