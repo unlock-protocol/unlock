@@ -1,12 +1,9 @@
 # Changes
 
-# 0.31.2
-
-- support tokenAddress in `getAddressBalance`
-
 # 0.31.1
 
 - add `totalKeys` to subgraph
+- support tokenAddress in `getAddressBalance`
 
 # 0.31.0
 
