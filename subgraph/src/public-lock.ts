@@ -208,10 +208,14 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
 export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock && lock.lockManagers) {
-    const lockManagers = lock.lockManagers
-    const i = lockManagers.indexOf(event.params.account)
-    lockManagers.splice(i)
-    lock.lockManagers = lockManagers
+    let newManagers: Bytes[] = []
+    for (let i = 0; i < lock.lockManagers.length; i++) {
+      const managerAddress = lock.lockManagers[i]
+      if (managerAddress != event.params.account) {
+        newManagers.push(managerAddress)
+      }
+    }
+    lock.lockManagers = newManagers;
     lock.save()
   }
 }
