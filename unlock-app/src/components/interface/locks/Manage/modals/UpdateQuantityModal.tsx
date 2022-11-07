@@ -126,7 +126,7 @@ export const UpdateQuantityModal = ({
                 step={1}
                 disabled={unlimitedQuantity}
                 {...register('maxNumberOfKeys', {
-                  min: 1,
+                  min: 0,
                   required: !unlimitedQuantity,
                 })}
               />
