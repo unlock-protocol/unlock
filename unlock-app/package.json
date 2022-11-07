@@ -42,7 +42,7 @@
     "eslint": "8.20.0",
     "eslint-plugin-jest": "27.0.4",
     "eslint-plugin-mocha": "10.1.0",
-    "ethers": "5.7.1",
+    "ethers": "5.7.2",
     "file-saver": "2.0.5",
     "graphql": "16.6.0",
     "jest": "27.5.1",
