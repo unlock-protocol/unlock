@@ -34,4 +34,4 @@ export const globalStyle = `
 
 export default createGlobalStyle`
   ${globalStyle}
-`
+` as any
