@@ -646,8 +646,12 @@ export default class Web3Service extends UnlockService {
 
     const provider = this.providerForNetwork(networkId)
 
+    if (!networkConfig.unlockAddress) {
+      throw new Error('No unlock contract address found in the network config')
+    }
+
     const unlockContract = await this.getUnlockContract(
-      networkConfig.unlockAddress,
+      networkConfig.unlockAddress!,
       provider
     )
 
