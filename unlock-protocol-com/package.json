@@ -28,7 +28,7 @@
     "cal-parser": "1.0.2",
     "dayjs": "1.11.6",
     "dotenv": "16.0.3",
-    "embla-carousel-autoplay": "7.0.3",
+    "embla-carousel-autoplay": "7.0.4",
     "embla-carousel-react": "7.0.4",
     "eslint": "8.27.0",
     "eslint-plugin-jest": "27.1.3",
