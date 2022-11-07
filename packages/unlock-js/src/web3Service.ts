@@ -80,17 +80,17 @@ export default class Web3Service extends UnlockService {
     network: number,
     tokenAddress?: string
   ) {
-    if (tokenAddress) {
+    if (!tokenAddress) {
       const balance = await this.providerForNetwork(network).getBalance(address)
       return utils.fromWei(balance, 'ether')
     } else {
       const balance = await getErc20BalanceForAddress(
-        tokenAddress!,
+        tokenAddress,
         address,
         this.providerForNetwork(network)
       )
       const decimals = await getErc20Decimals(
-        tokenAddress!,
+        tokenAddress,
         this.providerForNetwork(network)
       )
       return utils.fromDecimal(balance, decimals)
