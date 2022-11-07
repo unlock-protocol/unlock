@@ -28,7 +28,7 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "ethers": "5.7.1"
+    "ethers": "5.7.2"
   },
   "lint-staged": {
     "*.{js,ts}": [
