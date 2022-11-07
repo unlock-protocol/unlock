@@ -81,7 +81,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
   const [hideFirstRecipient, setHideFirstRecipient] = useState<boolean>(true)
 
   useEffect(() => {
-    if (quantity > fields.length && !isMemberLoading) {
+    if (account && quantity > fields.length && !isMemberLoading) {
       const fieldsRequired = quantity - fields.length
       Array.from({ length: fieldsRequired }).map((_, index) => {
         const addAccountAddress = !index && !isMember
