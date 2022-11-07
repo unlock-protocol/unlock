@@ -13,7 +13,7 @@ import { FiKey as KeyIcon } from 'react-icons/fi'
 import { IconType } from 'react-icons'
 import Link from 'next/link'
 import { Lock } from '~/unlockTypes'
-import { MAX_UINT } from '~/constants'
+import { DEFAULT_USER_ACCOUNT_ADDRESS, MAX_UINT } from '~/constants'
 import Duration from '~/components/helpers/Duration'
 import { CryptoIcon } from '../../elements/KeyPrice'
 import { IconModal } from '../../Manage/elements/LockIcon'
@@ -193,7 +193,11 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
     chainId: number,
     tokenAddress: string
   ) => {
-    return await web3service.getAddressBalance(address, chainId, tokenAddress)
+    return await web3service.getAddressBalance(
+      address,
+      chainId,
+      tokenAddress === DEFAULT_USER_ACCOUNT_ADDRESS ? undefined : tokenAddress
+    )
   }
 
   const getSymbol = async () => {
