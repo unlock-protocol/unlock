@@ -208,6 +208,7 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
 export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock && lock.lockManagers) {
+    let newManagers: Bytes[] = []
     for (let i = 0; i < lock.lockManagers.length; i++) {
       const managerAddress = lock.lockManagers[i]
       if (managerAddress != event.params.account) {
