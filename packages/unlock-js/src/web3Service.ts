@@ -615,10 +615,10 @@ export default class Web3Service extends UnlockService {
    * ```ts
    * const web3Service = new Web3Service(networks)
    * const price = await web3Service.consultUniswap({
-   * network: 1,
-   * tokenInAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
-   * tokenOutAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
-   * value: '1',
+   *  network: 1,
+   *  tokenInAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+   *  tokenOutAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+   *  value: '1',
    * })
    *
    * console.log(price)
