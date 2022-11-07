@@ -68,7 +68,7 @@ export const polygon: NetworkConfig = {
       decimals: 6,
     },
     {
-      name: 'USDCoin',
+      name: 'USD Coin',
       address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
       symbol: 'USDC',
       decimals: 6,

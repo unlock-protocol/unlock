@@ -609,4 +609,79 @@ export default class Web3Service extends UnlockService {
     )
     return price
   }
+
+  /**
+   * Get uniswap price in the out token.
+   * ```ts
+   * const web3Service = new Web3Service(networks)
+   * const price = await web3Service.consultUniswap({
+   * network: 1,
+   * tokenInAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+   * tokenOutAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+   * value: '1',
+   * })
+   *
+   * console.log(price)
+   * ```
+   */
+  async consultUniswap(options: {
+    tokenInAddress: string
+    tokenOutAddress?: string
+    value: string
+    network?: number
+  }) {
+    const { network, tokenInAddress, value } = options
+    const networkId = network || 1
+    const networkConfig = this.networks[networkId] // By default, use mainnet
+    const tokenOutAddress =
+      options.tokenOutAddress ||
+      networkConfig?.tokens?.find(
+        // By default, use USDC on each network
+        (item: any) => item.symbol === 'USDC'
+      )?.address
+
+    if (!tokenOutAddress) {
+      throw new Error('You need to provide a tokenOutAddress parameter. ')
+    }
+
+    const provider = this.providerForNetwork(networkId)
+
+    const unlockContract = await this.getUnlockContract(
+      networkConfig.unlockAddress,
+      provider
+    )
+
+    // Get the uniswapContractAddress from unlock contract
+    const uniswapContractAddress = await unlockContract.uniswapOracles(
+      tokenOutAddress
+    )
+
+    // If no contract address found for tokenOutAddress, throw an error.
+    if (uniswapContractAddress === ethers.constants.AddressZero) {
+      throw new Error(
+        `Uniswap contract address not found for the tokenOutAddress: ${tokenOutAddress}`
+      )
+    }
+
+    const uniswapOracleExtensionABI = [
+      'function consult(address _tokenIn,uint256 _amountIn, address _tokenOut) public view returns (uint256 quoteAmount)',
+    ]
+
+    const uniswapContract = new ethers.Contract(
+      uniswapContractAddress,
+      uniswapOracleExtensionABI,
+      provider
+    )
+
+    const fromTokenDecimals = await getErc20Decimals(tokenInAddress, provider)
+    const toTokenDecimals = await getErc20Decimals(tokenOutAddress, provider)
+    const fromTokenValue = ethers.utils.parseUnits(value, fromTokenDecimals)
+    const price = await uniswapContract.consult(
+      tokenInAddress,
+      fromTokenValue,
+      tokenOutAddress
+    )
+    const formatted = ethers.utils.formatUnits(price, toTokenDecimals)
+    return formatted
+  }
 }

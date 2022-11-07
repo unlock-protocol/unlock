@@ -41,6 +41,12 @@ export const mumbai: NetworkConfig = {
   teamMultisig: '0x12E37A8880801E1e5290c815a894d322ac591607',
   tokens: [
     {
+      name: 'USD Coin',
+      address: '0x0FA8781a83E46826621b3BC094Ea2A0212e71B23',
+      symbol: 'USDC',
+      decimals: 6,
+    },
+    {
       name: 'Wrapped Ether',
       address: '0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa',
       symbol: 'WETH',
