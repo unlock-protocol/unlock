@@ -106,7 +106,7 @@ export const MetadataCard = ({
     ToastHelper.promise(sendEmailMutation.mutateAsync(), {
       success: 'QR-code sent by email',
       loading: 'Sending QR-code by email',
-      error: 'There is some unexpected issue, please try again',
+      error: 'We could not send the QR-code.',
     })
   }
 
@@ -310,14 +310,16 @@ const UpdateEmailModal = ({
       const createMetadataPromise = storage.createtMetadata(params)
       await ToastHelper.promise(createMetadataPromise, {
         loading: 'Saving email address',
-        success: 'Email succesfully added to member',
-        error: 'There is some unexpected issue, please try again',
+        success: 'Email successfully added to member',
+        error: 'We could not save the email address.',
       })
       if (typeof callback === 'function') {
         callback()
       }
     } catch (err: any) {
-      ToastHelper.error(err?.message || 'There is some unexpected issue')
+      ToastHelper.error(
+        err?.message || `Can't update metadata, please try again.`
+      )
     }
   }
 
@@ -325,8 +327,8 @@ const UpdateEmailModal = ({
     const updateMetadataPromise = storage.updatetMetadata(params)
     await ToastHelper.promise(updateMetadataPromise, {
       loading: 'Updating email address',
-      success: 'Email succesfully added to member',
-      error: 'There is some unexpected issue, please try again',
+      success: 'Email successfully added to member',
+      error: `Can't update the email address.`,
     })
     if (typeof callback === 'function') {
       callback()

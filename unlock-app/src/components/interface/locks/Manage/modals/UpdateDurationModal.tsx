@@ -77,7 +77,7 @@ export const UpdateDurationModal = ({
       await ToastHelper.promise(updateDurationMutation.mutateAsync(), {
         loading: 'Updating duration...',
         success: 'Duration updated',
-        error: 'There is some unexpected issue, please try again',
+        error: 'We could not update the duration for this lock.',
       })
       setIsOpen(false)
       reset()

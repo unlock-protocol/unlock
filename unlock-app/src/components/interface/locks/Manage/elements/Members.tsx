@@ -89,14 +89,14 @@ export const Members = ({
         queryFn: getMembers,
         queryKey: ['getMembers', lockAddress, network, filters],
         onError: () => {
-          ToastHelper.error('There is some unexpected issue, please try again')
+          ToastHelper.error(`Can't load members, please try again`)
         },
       },
       {
         queryFn: getLockVersion,
         queryKey: ['getLockVersion', lockAddress, network],
         onError: () => {
-          ToastHelper.error('There is some unexpected issue, please try again')
+          ToastHelper.error('Cant get lock version, please try again')
         },
       },
     ],

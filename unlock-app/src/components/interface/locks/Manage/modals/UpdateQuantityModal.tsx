@@ -71,7 +71,7 @@ export const UpdateQuantityModal = ({
       await ToastHelper.promise(updateQuantityMutation.mutateAsync(), {
         loading: 'Updating quantity...',
         success: 'Quantity updated',
-        error: 'There is some unexpected issue, please try again',
+        error: `We could not update the quantity for this lock.`,
       })
       setIsOpen(false)
       reset()
