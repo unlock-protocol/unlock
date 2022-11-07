@@ -44,12 +44,13 @@ export function createMessageToSignIn({
 
   const message = new SiweMessage({
     nonce,
-    domain: clientId,
+    domain: window.location.hostname,
     statement: statement.trim(),
-    uri: 'https://app.unlock-protocol.com/login',
+    uri: window.location.origin,
     version: '1',
     address,
     chainId,
+    resources: [new URL('https://' + clientId).toString()],
     expirationTime: expirationDate.toISOString(),
   })
 
