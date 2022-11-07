@@ -209,9 +209,7 @@ export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock && lock.lockManagers) {
     const lockManagers = lock.lockManagers
-    const i = lockManagers.indexOf(event.params.account)
-    lockManagers.splice(i, 1)
-    lock.lockManagers = lockManagers
+    lock.lockManagers = lockManagers.filter(managerAddress => managerAddress != event.params.account)
     lock.save()
   }
 }
