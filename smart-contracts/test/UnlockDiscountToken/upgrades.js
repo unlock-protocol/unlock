@@ -4,7 +4,7 @@ const fs = require('fs-extra')
 const { time } = require('@openzeppelin/test-helpers')
 const { ethers, upgrades, network, run } = require('hardhat')
 const { ADDRESS_ZERO } = require('../helpers/constants')
-const { createExchange } = require('../helpers')
+const { createUniswapV2Exchange } = require('../helpers')
 const deployContracts = require('../fixtures/deploy')
 
 const createLockHash = require('../helpers/createLockCalldata')
@@ -55,10 +55,6 @@ contract('UnlockDiscountToken upgrade', async () => {
   const mintAmount = 1000
 
   before(async function copyAndBuildContract() {
-    // deprec this test due until as it uses Uniswap V2
-    // we have mainnet upgrade test instead
-    this.skip()
-
     // make sure mocha doesnt time out
     this.timeout(200000)
 
@@ -180,7 +176,7 @@ contract('UnlockDiscountToken upgrade', async () => {
       lock = await PublicLock.attach(evt.args.newLockAddress)
 
       // Deploy the exchange
-      const { oracle, weth } = await createExchange({
+      const { oracle, weth } = await createUniswapV2Exchange({
         protocolOwner: deployer,
         minter: deployer,
         udtAddress: udt.address,
