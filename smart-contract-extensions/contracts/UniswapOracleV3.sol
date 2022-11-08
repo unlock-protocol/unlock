@@ -8,7 +8,7 @@ import 'hardhat/console.sol';
 
 contract UniswapOracleV3 is IUniswapOracleV3 {
 
-    uint256 public constant override PERIOD = 60 * 60; // 1 day in sec
+    uint256 public constant override PERIOD = 60 * 60; // in seconds
     address public immutable override factory;
     uint24 FEE = 500;
 
@@ -30,17 +30,19 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
     ) public view returns (uint256 quoteAmount) {
         address pool = IUniswapV3Factory(factory).getPool(_tokenIn, _tokenOut, FEE);
         if(pool == address(0)){
-            revert MISSING_POOL(_tokenIn, _tokenOut);
+            return 0;
         }
         (int24 timeWeightedAverageTick,) = OracleLibrary.consult(pool, uint32(PERIOD));
         quoteAmount = OracleLibrary.getQuoteAtTick(timeWeightedAverageTick, uint128(_amountIn), _tokenIn, _tokenOut);
     }
 
     // deprec
-    function update(address _tokenIn, address _tokenOut) external {
+    function update(address _tokenIn, address _tokenOut) public {
+        console.log(_tokenIn, _tokenOut);
         address pool = IUniswapV3Factory(factory).getPool(_tokenIn, _tokenOut, FEE);
+        console.log(pool);
         if(pool == address(0)){
-            revert MISSING_POOL(_tokenIn, _tokenOut);
+            pool = IUniswapV3Factory(factory).createPool(_tokenIn, _tokenOut, FEE);
         }
         emit PairAdded(_tokenIn, _tokenOut);
     }
@@ -50,7 +52,8 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
         address _tokenIn,
         uint256 _amountIn,
         address _tokenOut
-    ) external view returns (uint256 _amountOut) {
+    ) external returns (uint256 _amountOut) {
+        update(_tokenIn, _tokenOut);
         _amountOut = consult(_tokenIn, _amountIn, _tokenOut);
     }
 }
