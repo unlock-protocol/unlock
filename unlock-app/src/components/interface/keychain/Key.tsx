@@ -259,16 +259,18 @@ const Key = ({ ownedKey, account, network }: Props) => {
 
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
-      <KeyMetadataModal
-        isOpen={showMetadata}
-        setIsOpen={setShowMetadata}
-        account={account}
-        lock={lock}
-        tokenId={tokenId}
-        network={network}
-      />
+      {showMetadata && (
+        <KeyMetadataModal
+          isOpen={showMetadata}
+          setIsOpen={setShowMetadata}
+          account={account}
+          lock={lock}
+          tokenId={tokenId}
+          network={network}
+        />
+      )}
 
-      {!isKeyExpired && (
+      {!isKeyExpired && showCancelModal && (
         <CancelAndRefundModal
           isOpen={showCancelModal}
           setIsOpen={setShowCancelModal}
@@ -281,7 +283,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
         />
       )}
 
-      {signature && (
+      {signature && showingQR && (
         <QRModal
           lock={lock}
           isOpen={showingQR}

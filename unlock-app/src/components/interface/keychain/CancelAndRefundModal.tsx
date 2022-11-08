@@ -56,6 +56,7 @@ export const CancelAndRefundModal = ({
     ['getAmounts', lockAddress],
     getAmounts,
     {
+      enabled: isOpen, // execute query only when the modal is open
       refetchInterval: false,
       onError: () => {
         isOpen &&
