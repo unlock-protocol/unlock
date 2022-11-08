@@ -92,4 +92,12 @@ export const routes: Routes = {
         'Join the Unlock Protocol community and core teams for conferences, workshops, AMA, Governance and, other activities',
     }),
   },
+  state: {
+    label: 'State of Unlock',
+    seo: customizeSEO({
+      path: '/state',
+      title: 'State of Unlock',
+      description: 'State of Unlock',
+    }),
+  },
 }
