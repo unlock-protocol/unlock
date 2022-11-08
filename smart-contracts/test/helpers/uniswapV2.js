@@ -3,7 +3,7 @@ const { time } = require('@openzeppelin/test-helpers')
 
 const UniswapV2Factory = require('@uniswap/v2-core/build/UniswapV2Factory.json')
 const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
-const UniswapOracle = require('./ABIs/UniswapOracle.json')
+const UniswapOracle = require('./ABIs/UniswapV2Oracle.json')
 
 const { deployWETH } = require('./tokens')
 const { MAX_UINT } = require('./constants')

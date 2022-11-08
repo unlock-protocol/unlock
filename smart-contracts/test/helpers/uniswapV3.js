@@ -16,7 +16,7 @@ const {
 const {
   abi: INonfungiblePositionManager,
 } = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json')
-const UniswapOracle = require('./ABIs/UniswapOracle.json')
+const UniswapOracle = require('./ABIs/UniswapV3Oracle.json')
 const { abi: WethABI } = require('./ABIs/weth.json')
 const { WETH, UDT, addUDT, impersonate, addSomeETH } = require('./mainnet')
 const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
