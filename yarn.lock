@@ -18827,14 +18827,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v2-core@npm:1.0.1":
+"@uniswap/v2-core@npm:1.0.1, @uniswap/v2-core@npm:^1.0.1":
   version: 1.0.1
   resolution: "@uniswap/v2-core@npm:1.0.1"
   checksum: eaa118fe45eac2e80b7468547ce2cde12bd3c8157555d2e40e0462a788c9506c6295247b511382da85e44a89ad92aff7bb3433b23bfbd2eeea23942ecd46e979
   languageName: node
   linkType: hard
 
-"@uniswap/v2-periphery@npm:1.1.0-beta.0":
+"@uniswap/v2-periphery@npm:1.1.0-beta.0, @uniswap/v2-periphery@npm:^1.1.0-beta.0":
   version: 1.1.0-beta.0
   resolution: "@uniswap/v2-periphery@npm:1.1.0-beta.0"
   dependencies:
@@ -19245,6 +19245,8 @@ __metadata:
     "@openzeppelin/hardhat-upgrades": 1.16.1
     "@openzeppelin/test-helpers": 0.5.16
     "@openzeppelin/upgrades-core": 1.12.0
+    "@uniswap/v2-core": ^1.0.1
+    "@uniswap/v2-periphery": ^1.1.0-beta.0
     "@uniswap/v3-core": "Uniswap/v3-core#0.8"
     "@uniswap/v3-sdk": ^3.9.0
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
