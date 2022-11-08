@@ -8,7 +8,7 @@ import {
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
-
+import { UniswapService } from './uniswapService'
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -627,12 +627,17 @@ export default class Web3Service extends UnlockService {
   async consultUniswap(options: {
     tokenInAddress: string
     tokenOutAddress?: string
-    value: string
+    amount: string
     network?: number
   }) {
-    const { network, tokenInAddress, value } = options
+    const { network, tokenInAddress, amount } = options
     const networkId = network || 1
     const networkConfig = this.networks[networkId] // By default, use mainnet
+
+    if (!networkConfig?.uniswapV3) {
+      throw new Error('No uniswap support on the network.')
+    }
+
     const tokenOutAddress =
       options.tokenOutAddress ||
       networkConfig?.tokens?.find(
@@ -644,48 +649,24 @@ export default class Web3Service extends UnlockService {
       throw new Error('You need to provide a tokenOutAddress parameter. ')
     }
 
-    const provider = this.providerForNetwork(networkId)
+    const uniswapService = new UniswapService(this.networks)
 
-    if (!networkConfig.unlockAddress) {
-      throw new Error('No unlock contract address found in the network config')
-    }
+    const tick = await uniswapService.consult({
+      network: networkId,
+      tokenIn: tokenInAddress,
+      tokenOut: tokenOutAddress,
+      // 10 minute weighted range
+      range: [10 * 60, 0],
+    })
 
-    const unlockContract = await this.getUnlockContract(
-      networkConfig.unlockAddress!,
-      provider
-    )
+    const price = await uniswapService.getQuoteAtTick({
+      tick,
+      amount,
+      baseToken: tokenInAddress,
+      quoteToken: tokenOutAddress,
+      network: networkId,
+    })
 
-    // Get the uniswapContractAddress from unlock contract
-    const uniswapContractAddress = await unlockContract.uniswapOracles(
-      tokenOutAddress
-    )
-
-    // If no contract address found for tokenOutAddress, throw an error.
-    if (uniswapContractAddress === ethers.constants.AddressZero) {
-      throw new Error(
-        `Uniswap contract address not found for the tokenOutAddress: ${tokenOutAddress}`
-      )
-    }
-
-    const uniswapOracleExtensionABI = [
-      'function consult(address _tokenIn,uint256 _amountIn, address _tokenOut) public view returns (uint256 quoteAmount)',
-    ]
-
-    const uniswapContract = new ethers.Contract(
-      uniswapContractAddress,
-      uniswapOracleExtensionABI,
-      provider
-    )
-
-    const fromTokenDecimals = await getErc20Decimals(tokenInAddress, provider)
-    const toTokenDecimals = await getErc20Decimals(tokenOutAddress, provider)
-    const fromTokenValue = ethers.utils.parseUnits(value, fromTokenDecimals)
-    const price = await uniswapContract.consult(
-      tokenInAddress,
-      fromTokenValue,
-      tokenOutAddress
-    )
-    const formatted = ethers.utils.formatUnits(price, toTokenDecimals)
-    return formatted
+    return price
   }
 }

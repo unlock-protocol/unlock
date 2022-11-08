@@ -42,6 +42,9 @@ export const mainnet: NetworkConfig = {
   description: 'The most popular network',
   isTestNetwork: false,
   teamMultisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
+  uniswapV3: {
+    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+  },
   tokens: [
     {
       name: 'Wrapped Ether',

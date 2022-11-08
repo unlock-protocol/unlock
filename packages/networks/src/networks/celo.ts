@@ -40,6 +40,9 @@ export const celo: NetworkConfig = {
   previousDeploys: [],
   isTestNetwork: false,
   teamMultisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
+  uniswapV3: {
+    factoryAddress: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',
+  },
   tokens: [
     {
       name: 'USD Coin',

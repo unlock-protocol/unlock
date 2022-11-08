@@ -41,6 +41,9 @@ export const goerli: NetworkConfig = {
   previousDeploys: [],
   isTestNetwork: true,
   teamMultisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
+  uniswapV3: {
+    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+  },
   tokens: [
     {
       name: 'USD Coin',

@@ -39,6 +39,9 @@ export const mumbai: NetworkConfig = {
   description: 'Polygon test network. Do not use for production',
   isTestNetwork: true,
   teamMultisig: '0x12E37A8880801E1e5290c815a894d322ac591607',
+  uniswapV3: {
+    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+  },
   tokens: [
     {
       name: 'USD Coin',

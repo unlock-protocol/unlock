@@ -47,6 +47,9 @@ export const polygon: NetworkConfig = {
   description: 'Popular side chain network. Cheaper transaction cost.',
   isTestNetwork: false,
   teamMultisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
+  uniswapV3: {
+    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+  },
   tokens: [
     {
       name: 'Wrapped Ether',

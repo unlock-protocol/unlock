@@ -50,6 +50,9 @@ export interface NetworkConfig {
     endpointV2?: string
     networkName?: string // for thegraph hosted service
   }
+  uniswapV3?: {
+    factoryAddress: string
+  }
   ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
