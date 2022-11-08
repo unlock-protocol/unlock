@@ -4,14 +4,8 @@
  */
 const bn = require('bignumber.js')
 const { ethers } = require('hardhat')
-const {
-  Pool,
-  Position,
-  Tick,
-  TickListDataProvider,
-  priceToClosestTick,
-} = require('@uniswap/v3-sdk/')
-const { CurrencyAmount, Token, Price } = require('@uniswap/sdk-core')
+const { Pool, Tick, TickListDataProvider } = require('@uniswap/v3-sdk/')
+const { Token } = require('@uniswap/sdk-core')
 const {
   abi: IUniswapV3PoolABI,
 } = require('@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json')
@@ -22,22 +16,18 @@ const {
 const {
   abi: INonfungiblePositionManager,
 } = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json')
-const UniswapOracle = require('../helpers/ABIs/UniswapOracle.json')
-const { abi: WethABI } = require('../helpers/ABIs/weth.json')
-const {
-  WETH,
-  UDT,
-  addUDT,
-  impersonate,
-  addSomeETH,
-} = require('../helpers/mainnet')
-const { ADDRESS_ZERO, MAX_UINT } = require('../helpers/constants')
+const UniswapOracle = require('./ABIs/UniswapOracle.json')
+const { abi: WethABI } = require('./ABIs/weth.json')
+const { WETH, UDT, addUDT, impersonate, addSomeETH } = require('./mainnet')
+const { ADDRESS_ZERO, MAX_UINT } = require('./constants')
 
 const POSITION_MANAGER_ADDRESS = '0xC36442b4a4522E871399CD717aBDD847Ab11FE88'
 const UNISWAP_FACTORY_ADDRESS = '0x1F98431c8aD98523631AE4a59f267346ea31F984'
+// const V3_SWAP_ROUTER_ADDRESS = '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45';
 
 // default fee
 const FEE = 500
+const BASIS_POINTS = 1000000
 
 // returns the sqrt price as a 64x96
 bn.config({ EXPONENTIAL_AT: 999999, DECIMAL_PLACES: 40 })
@@ -51,14 +41,6 @@ function encodePriceSqrt(reserve1, reserve0) {
       .toString()
   )
 }
-// function encodePriceSqrt(reserve0, reserve1) {
-//   return ethers.BigNumber.from(
-//     new BN(reserve0.toString())
-//         .div(new BN(reserve1.toString()))
-//         .sqr()
-//         .toString()
-//   ).mul(ethers.BigNumber.from(2).pow(96))
-// }
 
 async function getPoolImmutables(poolContract) {
   const [factory, token0, token1, fee, tickSpacing, maxLiquidityPerTick] =
@@ -156,46 +138,15 @@ const creditTokens = async (tokenAddress, amount) => {
   return token
 }
 
-const parseTicks = (pool, tickSpacing, amount) => {
-  const { token0, token1 } = pool
-  const lowerPrice = CurrencyAmount.fromRawAmount(
-    token0,
-    ethers.utils.parseUnits('.99', token0.decimals)
-  )
-  const upperPrice = CurrencyAmount.fromRawAmount(
-    token0,
-    ethers.utils.parseUnits('1.01', token0.decimals)
-  )
-
-  const lowerTick = priceToClosestTick(
-    new Price(token1, token0, lowerPrice.numerator, lowerPrice.denominator)
-  )
-  const upperTick = priceToClosestTick(
-    new Price(token1, token0, upperPrice.numerator, upperPrice.denominator)
-  )
-
-  const lowerTickSpacing = Math.floor(lowerTick / tickSpacing) * tickSpacing
-  const upperTickSpacing = Math.floor(upperTick / tickSpacing) * tickSpacing
-  console.log(
-    `To provide liquidity, you need to create at .99/1.01 a position between ${lowerTickSpacing} and ${upperTickSpacing} tick`
-  )
-
-  const position = new Position({
-    pool: pool,
-    liquidity: ethers.utils.parseUnits(amount, token0.decimals),
-    tickLower: lowerTickSpacing,
-    tickUpper: upperTickSpacing,
-  })
-  return {
-    position,
-    lowerTickSpacing,
-    upperTickSpacing,
-  }
-}
+const getMinTick = (tickSpacing) =>
+  Math.ceil(-887272 / tickSpacing) * tickSpacing
+const getMaxTick = (tickSpacing) =>
+  Math.floor(887272 / tickSpacing) * tickSpacing
 
 const addLiquidity = async (
   poolContract,
-  amount = '50000000' // 50M tokens
+  rate = 42, // in basis point
+  amount = 500 // how much tokens we add
 ) => {
   // parse tokens for uniswap SDK
   const [tokenA, tokenB] = await getTokens(poolContract)
@@ -206,11 +157,11 @@ const addLiquidity = async (
   // token balances
   const tokenAContract = await creditTokens(
     tokenA.address,
-    ethers.utils.parseUnits(amount, tokenA.decimals)
+    ethers.utils.parseUnits(amount.toString(), tokenA.decimals)
   )
   const tokenBContract = await creditTokens(
     tokenB.address,
-    ethers.utils.parseUnits(amount, tokenB.decimals)
+    ethers.utils.parseUnits(amount.toString(), tokenB.decimals)
   )
 
   // approve spending
@@ -263,25 +214,24 @@ const addLiquidity = async (
     tickList
   )
 
-  const { position, lowerTickSpacing, upperTickSpacing } = parseTicks(
-    pool,
-    tickSpacing,
-    amount
-  )
-  const { mintAmounts } = position
-
   const [signer] = await ethers.getSigners()
   const deadline = Math.floor(Date.now() / 1000) + 60 * 20
   const mintParams = {
     token0: tokenA.address,
     token1: tokenB.address,
     fee: pool.fee,
-    tickLower: lowerTickSpacing,
-    tickUpper: upperTickSpacing,
-    amount0Desired: mintAmounts.amount0.toString(),
-    amount1Desired: mintAmounts.amount1.toString(),
-    amount0Min: mintAmounts.amount0.toString(),
-    amount1Min: mintAmounts.amount1.toString(),
+    // use min/max ticks to provide liquidity across the whole range of the pool
+    tickLower: getMinTick(tickSpacing),
+    tickUpper: getMaxTick(tickSpacing),
+    // trade a 1:1
+    amount0Desired: ethers.utils
+      .parseUnits(amount.toString(), tokenA.decimals)
+      .mul(rate)
+      .div(BASIS_POINTS), // apply rate
+    amount1Desired: ethers.utils.parseUnits(amount.toString(), tokenB.decimals),
+    // no slippage protection, bad in prod!
+    amount0Min: 0,
+    amount1Min: 0,
     recipient: signer.address,
     deadline: deadline,
   }
@@ -318,7 +268,11 @@ const addLiquidity = async (
 
 // get (or create if non-existing) a pool based on token0/token1 paris
 // default pool is UDT/WETH
-const createPool = async function ({ token0 = UDT, token1 = WETH } = {}) {
+const createPool = async function ({
+  token0 = UDT,
+  token1 = WETH,
+  rate = 42, // in basis point
+} = {}) {
   const factoryContract = await ethers.getContractAt(
     IUniswapV3Factory,
     UNISWAP_FACTORY_ADDRESS
@@ -335,8 +289,8 @@ const createPool = async function ({ token0 = UDT, token1 = WETH } = {}) {
     const { decimals: token0Decimals } = await getTokenInfo(token0)
     const { decimals: token1Decimals } = await getTokenInfo(token1)
     const sqrtPriceX96 = encodePriceSqrt(
-      ethers.utils.parseUnits('1', token0Decimals),
-      ethers.utils.parseUnits('1', token1Decimals)
+      ethers.utils.parseUnits(rate.toString(), token0Decimals),
+      ethers.utils.parseUnits(BASIS_POINTS.toString(), token1Decimals)
     )
     await positionManager.createAndInitializePoolIfNecessary(
       token0,
@@ -356,7 +310,7 @@ const createPool = async function ({ token0 = UDT, token1 = WETH } = {}) {
   return poolContract
 }
 
-const deployOracle = async function () {
+const deployUniswapV3Oracle = async function () {
   const { abi, bytecode } = UniswapOracle
   const Oracle = await ethers.getContractFactory(abi, bytecode)
   const oracle = await Oracle.deploy(UNISWAP_FACTORY_ADDRESS)
@@ -365,8 +319,8 @@ const deployOracle = async function () {
 
 module.exports = {
   addLiquidity,
-  createPool,
-  deployOracle,
+  createUniswapV3Pool: createPool,
+  deployUniswapV3Oracle,
   getPoolState,
   getPoolImmutables,
   POSITION_MANAGER_ADDRESS,
