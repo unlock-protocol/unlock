@@ -362,7 +362,7 @@ function Mobile() {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex items-center justify-between w-full p-4 font-medium bg-white shadow-lg rounded-t-xl border-b">
+                <Disclosure.Button className="flex items-center justify-between w-full p-4 font-medium bg-white border-b shadow-lg rounded-t-xl">
                   For Devs {open ? <UpIcon /> : <DownIcon />}{' '}
                 </Disclosure.Button>
                 <Transition
@@ -375,8 +375,18 @@ function Mobile() {
                   leaveTo="transform opacity-0 scale-95"
                 >
                   <Disclosure.Panel>
-                    <div className="p-6 space-y-4">
-                      <div>
+                    <div className="p-2 m-2 space-y-4">
+                      <Link
+                        href="https://docs.unlock-protocol.com/basics/"
+                        className="flex items-center gap-3 p-2 text-sm font-medium rounded-3xl hover:bg-slate-50"
+                      >
+                        <FilesIcon className="text-lg not-sr-only" />
+                        <span className="mt-1 text-sm font-bold">
+                          Documentation
+                        </span>
+                      </Link>
+
+                      <div className="p-2 m-2">
                         <Link href="https://docs.unlock-protocol.com/move-to-guides/plugins-and-integrations/">
                           <p className="text-xs font-bold uppercase ">
                             Integrations
@@ -397,7 +407,7 @@ function Mobile() {
                           )}
                         </nav>
                       </div>
-                      <div>
+                      <div className="p-2 m-2">
                         <Link href="https://docs.unlock-protocol.com/unlock/developers/tutorials">
                           <p className="text-xs font-bold uppercase ">Tools</p>
                         </Link>
