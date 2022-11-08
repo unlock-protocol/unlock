@@ -1,5 +1,10 @@
 # Changes
 
+# 0.31.2
+
+- Add uniswap service
+- Add consultUniswap method to web3 service for getting price of a token using uniswap pools
+
 # 0.31.1
 
 - add `totalKeys` to subgraph
