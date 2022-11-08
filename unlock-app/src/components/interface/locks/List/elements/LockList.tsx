@@ -1,28 +1,30 @@
+import { QueriesOptions, useQueries } from '@tanstack/react-query'
+import { SubgraphService } from '@unlock-protocol/unlock-js'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 import { Disclosure } from '@headlessui/react'
-import useLocks from '~/hooks/useLocks'
 import { Lock } from '~/unlockTypes'
 import { useConfig } from '~/utils/withConfig'
-import { LockCard, LockCardPlaceholder } from './LockCard'
+import { LockCard, LocksByNetworkPlaceholder } from './LockCard'
 import {
   RiArrowDropUpLine as UpIcon,
   RiArrowDropDownLine as DownIcon,
 } from 'react-icons/ri'
 
 interface LocksByNetworkProps {
-  network: number
-  owner?: string
+  network: string
+  isLoading: boolean
+  locks?: any[]
 }
 
 interface LockListProps {
-  owner?: string
+  owner: string
 }
 
-const LocksByNetwork = ({ network, owner }: LocksByNetworkProps) => {
+const LocksByNetwork = ({ network, isLoading, locks }: LocksByNetworkProps) => {
   const { networks } = useConfig()
   const { name: networkName } = networks[network]
 
-  const { locks, loading } = useLocks(owner, network!)
-
+  if (isLoading) return <LocksByNetworkPlaceholder />
   if (locks?.length === 0) return null
 
   return (
@@ -45,7 +47,6 @@ const LocksByNetwork = ({ network, owner }: LocksByNetworkProps) => {
                 {locks?.map((lock: Lock, index: number) => (
                   <LockCard key={index} lock={lock} network={network} />
                 ))}
-                {loading && <LockCardPlaceholder />}
               </div>
             </Disclosure.Panel>
           </div>
@@ -58,10 +59,65 @@ const LocksByNetwork = ({ network, owner }: LocksByNetworkProps) => {
 export const LockList = ({ owner }: LockListProps) => {
   const { networks } = useConfig()
 
+  const networkItems: any[] =
+    Object.entries(networks ?? {})
+      // ignore localhost
+      .filter(([network]) => network !== '31337') ?? []
+
+  const getLocksByNetwork = async ({ account: owner, network }: any) => {
+    const service = new SubgraphService()
+    return await service.locks(
+      {
+        first: 1000,
+        where: {
+          lockManagers_contains: [owner],
+        },
+        orderBy: 'createdAtBlock' as any,
+        orderDirection: 'desc' as any,
+      },
+      {
+        networks: [network],
+      }
+    )
+  }
+
+  const queries: QueriesOptions<any>[] = networkItems.map(([network]) => {
+    const lockName = networks[network]?.name
+    if (owner && network) {
+      return {
+        queryKey: ['getLocks', network, owner],
+        queryFn: async () =>
+          await getLocksByNetwork({
+            account: owner!,
+            network,
+          }),
+        refetchInterval: false,
+        onError: () => {
+          ToastHelper.error(`Can't load locks from ${lockName} network.`)
+        },
+      }
+    }
+  })
+
+  const results = useQueries({
+    queries,
+  })
+
+  const isLoading = results?.some(({ isLoading }) => isLoading)
+
   return (
     <div className="grid gap-20 mb-20">
-      {Object.values(networks ?? {}).map(({ id: network }: any) => {
-        return <LocksByNetwork key={network} network={network} owner={owner} />
+      {networkItems.map(([network], index) => {
+        const locksByNetwork: any = results?.[index]?.data || []
+
+        return (
+          <LocksByNetwork
+            isLoading={isLoading}
+            key={network}
+            network={network}
+            locks={locksByNetwork}
+          />
+        )
       })}
     </div>
   )

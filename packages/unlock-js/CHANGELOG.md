@@ -1,9 +1,13 @@
 # Changes
 
+# 0.31.1
+
+- add `totalKeys` to subgraph
+- support tokenAddress in `getAddressBalance`
+
 # 0.31.0
 
 - Add support for PublicLock version 12
-
 
 # 0.30.6
 
@@ -12,7 +16,6 @@
 # 0.30.5
 
 - Add purchasePriceFor in web3Service
-
 
 # 0.30.4
 

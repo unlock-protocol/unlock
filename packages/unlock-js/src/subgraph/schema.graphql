@@ -21,6 +21,7 @@ query allLocks(
     lockManagers
     version
     createdAtBlock
+    totalKeys
   }
 }
 
@@ -49,6 +50,7 @@ query AllKeys(
       lockManagers
       version
       createdAtBlock
+      totalKeys
     }
     tokenId
     owner
