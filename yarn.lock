@@ -18844,7 +18844,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v3-core@npm:^1.0.1":
+"@uniswap/v3-core@npm:1.0.1":
   version: 1.0.1
   resolution: "@uniswap/v3-core@npm:1.0.1"
   checksum: 4bfd8b218391a3d9efde44e0f984cfec3bc25889cd4d1386766828521006e71b210a3583ee32b52f3c81d384af9e8c39f471f2229e9af4d50da6801446ecb3e4
@@ -18878,7 +18878,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uniswap/v3-sdk@npm:^3.9.0":
+"@uniswap/v3-sdk@npm:3.9.0":
   version: 3.9.0
   resolution: "@uniswap/v3-sdk@npm:3.9.0"
   dependencies:
@@ -19544,8 +19544,8 @@ __metadata:
     "@graphql-codegen/typescript-operations": 2.5.6
     "@nomiclabs/hardhat-ethers": 2.2.1
     "@openapitools/openapi-generator-cli": 2.5.2
-    "@uniswap/v3-core": ^1.0.1
-    "@uniswap/v3-sdk": ^3.9.0
+    "@uniswap/v3-core": 1.0.1
+    "@uniswap/v3-sdk": 3.9.0
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
@@ -19558,7 +19558,7 @@ __metadata:
     graphql-request: 5.0.0
     hardhat: 2.12.2
     jest: 27.5.1
-    jsbi: ^4.3.0
+    jsbi: 4.3.0
     lint-staged: 13.0.3
     prettier: 2.7.1
     siwe: 1.1.6
@@ -41152,17 +41152,17 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
+"jsbi@npm:4.3.0":
+  version: 4.3.0
+  resolution: "jsbi@npm:4.3.0"
+  checksum: 27c4f178eb7fd9d1756144066fdebc62f4a0176e877f55e646e8ce84075c13551bd575a316b9959ccdcca9d5dc05a81c9907cfa09f0cfeb43c9777797e36b0e9
+  languageName: node
+  linkType: hard
+
 "jsbi@npm:^3.1.4":
   version: 3.2.5
   resolution: "jsbi@npm:3.2.5"
   checksum: 642d1bb139ad1c1e96c4907eb159565e980a0d168487626b493d0d0b7b341da0e43001089d3b21703fe17b18a7a6c0f42c92026f71d54471ed0a0d1b3015ec0f
-  languageName: node
-  linkType: hard
-
-"jsbi@npm:^4.3.0":
-  version: 4.3.0
-  resolution: "jsbi@npm:4.3.0"
-  checksum: 27c4f178eb7fd9d1756144066fdebc62f4a0176e877f55e646e8ce84075c13551bd575a316b9959ccdcca9d5dc05a81c9907cfa09f0cfeb43c9777797e36b0e9
   languageName: node
   linkType: hard
 
