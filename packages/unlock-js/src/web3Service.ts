@@ -75,9 +75,26 @@ export default class Web3Service extends UnlockService {
    * and formats it to a string of ether.
    * Returns a promise with the balance
    */
-  async getAddressBalance(address: string, network: number) {
-    const balance = await this.providerForNetwork(network).getBalance(address)
-    return utils.fromWei(balance, 'ether')
+  async getAddressBalance(
+    address: string,
+    network: number,
+    tokenAddress?: string
+  ) {
+    if (!tokenAddress) {
+      const balance = await this.providerForNetwork(network).getBalance(address)
+      return utils.fromWei(balance, 'ether')
+    } else {
+      const balance = await getErc20BalanceForAddress(
+        tokenAddress,
+        address,
+        this.providerForNetwork(network)
+      )
+      const decimals = await getErc20Decimals(
+        tokenAddress,
+        this.providerForNetwork(network)
+      )
+      return utils.fromDecimal(balance, decimals)
+    }
   }
 
   /**
