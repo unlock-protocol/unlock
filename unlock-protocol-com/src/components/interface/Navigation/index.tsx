@@ -363,7 +363,7 @@ function Mobile() {
             {({ open }) => (
               <>
                 <Disclosure.Button className="flex items-center justify-between w-full p-4 font-medium bg-white border-b shadow-lg rounded-t-xl">
-                  For Devs {open ? <UpIcon /> : <gDownIcon />}{' '}
+                  For Devs {open ? <UpIcon /> : <DownIcon />}{' '}
                 </Disclosure.Button>
                 <Transition
                   as={Fragment}
