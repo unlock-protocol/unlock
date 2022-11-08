@@ -11,6 +11,8 @@ const {
   UDT,
   WETH,
   createPool,
+  addLiquidity,
+  getPoolState,
 } = require('../helpers')
 
 let udt
@@ -44,8 +46,18 @@ contract('UnlockDiscountToken (mainnet) / mintingTokens', () => {
     unlockOwner = await unlock.owner()
     unlockBalanceBefore = await udt.balanceOf(unlockOwner)
 
-    // create UDT/WETH pool w some liquidity
-    await createPool()
+    // create UDT/WETH pool
+    const pool = await createPool()
+    console.log(await getPoolState(pool))
+
+    // add some liquidity
+    const { liquidity, amount0, amount1 } = await addLiquidity(pool)
+    console.log({
+      liquidity,
+      amount0,
+      amount1,
+    })
+    console.log(await getPoolState(pool))
 
     // deploy uniswap oracle
     oracle = await deployOracle()

@@ -2,9 +2,6 @@ const { ethers, network, config } = require('hardhat')
 const { getDeployment } = require('../../helpers/deployments')
 const { mainnet } = require('@unlock-protocol/networks')
 
-// some useful addresses
-const UNISWAP_FACTORY_ADDRESS = '0x1F98431c8aD98523631AE4a59f267346ea31F984'
-
 // currencies
 const USDC = '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48'
 const SHIBA_INU = '0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE'
@@ -35,8 +32,11 @@ const resetNodeState = async () => {
   })
 }
 
-const addSomeETH = async (address) => {
-  const balance = ethers.utils.hexStripZeros(ethers.utils.parseEther('1000'))
+const addSomeETH = async (
+  address,
+  amount = ethers.utils.parseEther('1000')
+) => {
+  const balance = ethers.utils.hexStripZeros(amount)
   await network.provider.send('hardhat_setBalance', [address, balance])
 }
 
@@ -127,5 +127,4 @@ module.exports = {
   UNLOCK_GOVERNOR,
   UNLOCK_TIMELOCK,
   SHIBA_INU,
-  UNISWAP_FACTORY_ADDRESS,
 }
