@@ -178,15 +178,14 @@ const LockIcon = ({ lock }: LockIconProps) => {
 export const LockCard = ({ lock, network }: LockCardProps) => {
   const { networks } = useConfig()
   const web3service = useWeb3Service()
-  const lockAddress = lock.address
+  const tokenAddress = lock?.tokenAddress
+  const lockAddress = lock?.address
   const [isCopied, setCopied] = useClipboard(lockAddress, {
     successDuration: 2000,
   })
   const { explorer, baseCurrencySymbol } = networks?.[network] ?? {}
 
   const explorerUrl = explorer?.urls?.address(lockAddress) || '#'
-
-  const tokenAddress = lock?.tokenAddress
 
   const getBalance = async (
     address: string,
@@ -241,6 +240,7 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
     )
 
   const keyPrice = ethers.utils.formatEther(lock?.price)
+  const isLoading = loadingBalance || loadingSymbol
 
   return (
     <>
@@ -275,19 +275,15 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               label="Price"
               value={keyPrice}
               icon={TagIcon}
-              prepend={
-                !loadingSymbol && <CryptoIcon symbol={symbol} size={25} />
-              }
-              isLoading={loadingSymbol}
+              prepend={<CryptoIcon symbol={symbol} size={25} />}
+              isLoading={isLoading}
             />
             <Detail
               label="Balance"
               value={balance}
               icon={TagIcon}
-              prepend={
-                !loadingBalance && <CryptoIcon symbol={symbol} size={25} />
-              }
-              isLoading={loadingBalance}
+              prepend={<CryptoIcon symbol={symbol} size={25} />}
+              isLoading={isLoading}
             />
             <Detail label="Key Duration" value={duration} icon={TimeIcon} />
             <Detail label="Key Sold" value={lock?.totalKeys} icon={KeyIcon} />
