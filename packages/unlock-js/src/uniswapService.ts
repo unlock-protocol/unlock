@@ -141,8 +141,8 @@ export class UniswapService {
     )!.price
 
     const result = {
-      baseTokenPrice: baseTokenPrice * amount,
-      quoteTokenPrice: quoteTokenPrice * amount,
+      baseTokenPrice: parseFloat(baseTokenPrice) * amount,
+      quoteTokenPrice: parseFloat(quoteTokenPrice) * amount,
     }
 
     return result
