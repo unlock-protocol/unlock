@@ -4,7 +4,7 @@ import { log, BigInt, ethereum } from '@graphprotocol/graph-ts'
 import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
 import { PublicLock as PublicLockMerged } from '../generated/templates/PublicLock/PublicLock'
 import { PublicLock } from '../generated/templates'
-import { Lock, LockStats, LockDayData } from '../generated/schema'
+import { Lock } from '../generated/schema'
 import { LOCK_MANAGER } from './helpers'
 
 const ROLE_GRANTED =
@@ -16,35 +16,6 @@ export function handleNewLock(event: NewLock): void {
   // create new lock
   let lockID = lockAddress.toHexString()
   const lock = new Lock(lockID)
-
-  // create new lockStats if not existing
-  let lockStats = LockStats.load('1')
-  if (lockStats === null) {
-    lockStats = new LockStats('1')
-    lockStats.totalLocksDeployed = BigInt.fromI32(0)
-    lockStats.totalKeysSold = BigInt.fromI32(0)
-    lockStats.save()
-  } else {
-    lockStats.totalLocksDeployed = lockStats.totalLocksDeployed.plus(
-      BigInt.fromI32(1)
-    )
-    lockStats.save()
-  }
-
-  // create lockDayData
-  let timestamp = event.block.timestamp.toI32()
-  let dayID = timestamp / 86400
-  let lockDayData = LockDayData.load(dayID.toString())
-  if (lockDayData === null) {
-    lockDayData = new LockDayData(dayID.toString())
-    lockDayData.lockDeployed = BigInt.fromI32(0)
-    lockDayData.keysSold = BigInt.fromI32(0)
-    lockDayData.activeLocks = BigInt.fromI32(0)
-    lockDayData.save()
-  } else {
-    lockDayData.lockDeployed = lockDayData.lockDeployed.plus(BigInt.fromI32(1))
-    lockDayData.save()
-  }
 
   // fetch lock version
   let lockContract = PublicLockMerged.bind(lockAddress)
@@ -63,7 +34,6 @@ export function handleNewLock(event: NewLock): void {
   lock.name = lockContract.name()
   lock.expirationDuration = lockContract.expirationDuration()
   lock.totalKeys = BigInt.fromI32(0)
-  lock.createdAt = event.block.timestamp
 
   // default value
   const symbol = lockContract.try_symbol()

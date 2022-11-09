@@ -18,7 +18,7 @@ import {
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
-import { Key, Lock, LockDayData, LockStats } from '../generated/schema'
+import { Key, Lock } from '../generated/schema'
 
 import { genKeyID, getKeyExpirationTimestampFor, LOCK_MANAGER } from './helpers'
 
@@ -40,29 +40,12 @@ function newKey(event: TransferEvent): void {
     event.params.tokenId,
     event.params.to
   )
-  key.createdAt = event.block.timestamp
   key.save()
-
-  // update lockStats
-  const lockStats = LockStats.load('1')
-  if (lockStats) {
-    lockStats.totalKeysSold = lockStats.totalKeysSold.plus(BigInt.fromI32(1))
-    lockStats.save()
-  }
-
-  // update lockDayData
-  let dayID = event.block.timestamp.toI32() / 86400
-  const lockDayData = LockDayData.load(dayID.toString())
-  if (lockDayData) {
-    lockDayData.keysSold = lockDayData.keysSold.plus(BigInt.fromI32(1))
-    lockDayData.save()
-  }
 
   // update lock
   const lock = Lock.load(event.address.toHexString())
   if (lock) {
     lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
-    lock.lastKeyMintedAt = event.block.timestamp
     lock.save()
   }
 }

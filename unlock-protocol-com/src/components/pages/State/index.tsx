@@ -13,7 +13,7 @@ import {
 import numeral from 'numeral'
 import dynamic from 'next/dynamic'
 
-import { getGNPs, querySubgraph } from '../../../utils/apisRequest'
+import { getGNPs, querySubgraph } from '../../../utils/apiRequest'
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
