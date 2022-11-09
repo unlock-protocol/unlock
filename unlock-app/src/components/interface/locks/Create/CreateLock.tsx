@@ -116,7 +116,7 @@ export const CreateLockSteps = () => {
     {
       onError: (error) => {
         console.error(error)
-        ToastHelper.error('There is some unexpected issue, please try again')
+        ToastHelper.error('Unexpected issue on lock creation, please try again')
       },
     }
   )
