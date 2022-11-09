@@ -9,7 +9,7 @@ services:
       - 8545:8545
 
   smart-contract-extensions: # example of Unlock integrations
-    image: smart-contract-extensionss
+    image: smart-contract-extensions
     build:
       context: ../
       target: dev
