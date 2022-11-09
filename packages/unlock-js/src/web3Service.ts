@@ -651,16 +651,21 @@ export default class Web3Service extends UnlockService {
     const networkId = network || 1
     const networkConfig = this.networks[networkId] // By default, use mainnet
 
-    if (!networkConfig?.uniswapV3) {
+    if (!networkConfig.uniswapV3) {
       throw new Error('No uniswap support on the network.')
     }
 
-    const tokenOutAddress =
-      options.tokenOutAddress ||
-      networkConfig?.tokens?.find(
-        // By default, use USDC on each network
-        (item: any) => item.symbol === 'USDC'
-      )?.address
+    const tokenOut = (networkConfig.tokens || []).find(
+      // By default, use USDC on each network
+      (item: any) => item.symbol === 'USDC'
+    )
+
+    let tokenOutAddress = options.tokenOutAddress
+
+    // If no tokenOutAddress provided, use USDC address.
+    if (!tokenOutAddress && tokenOut && tokenOut.address) {
+      tokenOutAddress = tokenOut.address
+    }
 
     if (!tokenOutAddress) {
       throw new Error('You need to provide a tokenOutAddress parameter. ')
@@ -684,6 +689,6 @@ export default class Web3Service extends UnlockService {
       network: networkId,
     })
 
-    return price
+    return parseFloat(parseFloat(price).toFixed(2))
   }
 }

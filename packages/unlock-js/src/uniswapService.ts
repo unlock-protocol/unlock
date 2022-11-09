@@ -2,7 +2,7 @@ import { NetworkConfigs } from '@unlock-protocol/types'
 import { TickMath, FullMath } from '@uniswap/v3-sdk'
 import { abi as UniswapV3PoolABI } from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json'
 import { abi as UniswapV3FactoryABI } from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json'
-import { ethers, providers } from 'ethers'
+import { ethers } from 'ethers'
 import JSBI from 'jsbi'
 import { getErc20Decimals } from './erc20'
 
@@ -139,12 +139,17 @@ export class UniswapService {
   /**
    * Get pool address for erc20 token in and token out pairs on uniswap. By default, we find the 5% fee pools.
    */
-  async getPoolAddress({ tokenOut, tokenIn, network, fee = 500 }: PoolOptions) {
+  async getPoolAddress({
+    tokenOut,
+    tokenIn,
+    network,
+    fee = 3000,
+  }: PoolOptions) {
     const { networkConfig, provider } =
       this.getNetworkConfigAndProvider(network)
 
     // Check if network config has uniswap v3 address we can use for querying.
-    if (!networkConfig?.uniswapV3) {
+    if (!networkConfig.uniswapV3) {
       throw new Error(
         'No uniswap address found for the network in networkConfig'
       )
