@@ -3,7 +3,7 @@
 set -e
 
 # Pull all remote
-git fetch
+git fetch origin
 
 # get the timestamp of the latests commit to be deployed
 COMMIT_TO_DEPLOY=`git rev-list -1 --before={2.days.ago} master`
