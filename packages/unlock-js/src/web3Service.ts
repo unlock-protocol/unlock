@@ -644,7 +644,7 @@ export default class Web3Service extends UnlockService {
   async consultUniswap(options: {
     tokenInAddress: string
     tokenOutAddress?: string
-    amount: string
+    amount: number
     network?: number
   }) {
     const { network, tokenInAddress, amount } = options
@@ -672,32 +672,12 @@ export default class Web3Service extends UnlockService {
     }
 
     const uniswapService = new UniswapService(this.networks)
-
-    const poolAddress = await uniswapService.getPoolAddress({
-      tokenIn: tokenInAddress,
-      tokenOut: tokenOutAddress,
-      network: networkId,
-    })
-
-    const secondsAgo = await uniswapService.getOldestObservation({
-      network: networkId,
-      poolAddress,
-    })
-
-    const tick = await uniswapService.consult({
-      network: networkId,
-      poolAddress,
-      range: [secondsAgo - 60, 0],
-    })
-
-    const price = await uniswapService.getQuoteAtTick({
-      tick,
-      amount,
+    const price = await uniswapService.price({
+      network,
       baseToken: tokenInAddress,
       quoteToken: tokenOutAddress,
-      network: networkId,
+      amount,
     })
-
-    return parseFloat(parseFloat(price).toFixed(2))
+    return price.quoteTokenPrice
   }
 }

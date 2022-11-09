@@ -43,6 +43,8 @@ export const arbitrum: NetworkConfig = {
   description:
     'Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.',
   uniswapV3: {
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/ianlapham/arbitrum-minimal',
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
   },
   tokens: [

@@ -1,16 +1,7 @@
 import { NetworkConfigs } from '@unlock-protocol/types'
-import { TickMath, FullMath } from '@uniswap/v3-sdk'
-import { abi as UniswapV3PoolABI } from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json'
-import { abi as UniswapV3FactoryABI } from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json'
 import { ethers } from 'ethers'
-import JSBI from 'jsbi'
-import { getErc20Decimals } from './erc20'
-
-/**
- * Function converted from the following references
- * https://github.com/Uniswap/v3-periphery/blob/main/contracts/libraries/OracleLibrary.sol
- * https://gist.github.com/BlockmanCodes/496b087c3632e93c3998b0020118a33c
- */
+import { GraphQLClient } from 'graphql-request'
+import { abi as UniswapV3FactoryABI } from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json'
 
 export interface PoolOptions {
   network: number
@@ -19,29 +10,15 @@ export interface PoolOptions {
   fee?: number
 }
 
-export interface PoolContractOptions {
-  network: number
-  poolAddress: string
-}
-
-export interface ConsultOptions {
-  network: number
-  poolAddress: string
-  range?: [number, number]
-}
-
-export interface GetQuoteAtTickOptions {
-  tick: number
-  amount: string
+interface PriceOptions {
+  network?: number
   baseToken: string
   quoteToken: string
-  network: number
+  amount: number
 }
 
 export class UniswapService {
   constructor(public networks: NetworkConfigs = networks) {}
-
-  pools = new Map<string, string>()
 
   getNetworkConfigAndProvider(networkId: number) {
     const networkConfig = this.networks[networkId]
@@ -57,88 +34,6 @@ export class UniswapService {
     }
   }
 
-  // Calculates time-weighted means of tick for a uniswap pool. This does not provide for liqiduity.
-  async consult({
-    poolAddress,
-    network = 1,
-    // 5 min by default
-    range = [60 * 5, 0],
-  }: ConsultOptions) {
-    const UniswapV3Pool = this.getPoolContract({
-      poolAddress: poolAddress,
-      network,
-    })
-    // Fetch the data from the pool
-    const observedData = await UniswapV3Pool.observe(range)
-
-    const [firstTickCumulative, secondTickCumulative] =
-      observedData.tickCumulatives.map((value: unknown) => Number(value))
-
-    // Delta of the two points on the range
-    const tickCumulativeDelta = secondTickCumulative - firstTickCumulative
-
-    // Mean arithmetic of the ticks over the start range
-    const meanTick = (tickCumulativeDelta / range[0]).toFixed(0)
-
-    return parseInt(meanTick, 10)
-  }
-
-  // Given a tick, baseToken amount and quoteToken address , calculates the amount of token received in exchange in quoteToken denomination
-  async getQuoteAtTick({
-    tick,
-    amount,
-    baseToken,
-    quoteToken,
-    network,
-  }: GetQuoteAtTickOptions) {
-    const { provider } = this.getNetworkConfigAndProvider(network)
-    const sqrtRatioX96 = TickMath.getSqrtRatioAtTick(tick)
-
-    // get sqrt ratio
-    const ratioX96 = JSBI.multiply(sqrtRatioX96, sqrtRatioX96)
-
-    const [baseTokenDecimal, quoteTokenDecimal] = await Promise.all([
-      getErc20Decimals(baseToken, provider),
-      getErc20Decimals(quoteToken, provider),
-    ])
-
-    // Format the base number using decimal in bigInt
-    const baseAmount = JSBI.BigInt(
-      ethers.utils.parseUnits(amount, baseTokenDecimal)
-    )
-
-    // Create a shift
-    const shift = JSBI.leftShift(JSBI.BigInt(1), JSBI.BigInt(192))
-
-    let quoteAmount: JSBI
-
-    if (baseToken < quoteToken) {
-      quoteAmount = FullMath.mulDivRoundingUp(ratioX96, baseAmount, shift)
-    } else {
-      quoteAmount = FullMath.mulDivRoundingUp(shift, baseAmount, ratioX96)
-    }
-
-    return ethers.utils.formatUnits(quoteAmount.toString(), quoteTokenDecimal)
-  }
-
-  /**
-   * Get the pool contract.
-   */
-  getPoolContract({ poolAddress: address, network = 1 }: PoolContractOptions) {
-    const { provider } = this.getNetworkConfigAndProvider(network)
-
-    if (address === ethers.constants.AddressZero) {
-      throw new Error('No pool address found for the tokens.')
-    }
-
-    const PoolContract = new ethers.Contract(
-      address,
-      UniswapV3PoolABI,
-      provider
-    )
-    return PoolContract
-  }
-
   /**
    * Get pool address for erc20 token in and token out pairs on uniswap. By default, we find the 5% fee pools.
    */
@@ -152,7 +47,7 @@ export class UniswapService {
       this.getNetworkConfigAndProvider(network)
 
     // Check if network config has uniswap v3 address we can use for querying.
-    if (!networkConfig.uniswapV3) {
+    if (!(networkConfig.uniswapV3 && networkConfig.uniswapV3.factoryAddress)) {
       throw new Error(
         'No uniswap address found for the network in networkConfig'
       )
@@ -170,36 +65,86 @@ export class UniswapService {
     return poolAddress
   }
 
-  // Get last observed seconds ago
-  async getOldestObservation({
-    network,
-    poolAddress,
-  }: {
-    network: number
-    poolAddress: string
-  }) {
-    const UniswapV3Pool = this.getPoolContract({
-      poolAddress,
-      network,
-    })
+  /**
+   * Get base and quote token price for uniswap pool
+   */
+  async price({ network = 1, baseToken, quoteToken, amount }: PriceOptions) {
+    const networkConfig = this.networks[network]
 
-    const { observationIndex, observationCardinality } =
-      await UniswapV3Pool.slot0()
-
-    let { blockTimestamp: observationTimestamp, initialized } =
-      await UniswapV3Pool.observations(
-        (observationIndex + 1) % observationCardinality
-      )
-
-    if (!initialized) {
-      const { blockTimestamp: initializedObservationTimestamp } =
-        await UniswapV3Pool.observations(0)
-      observationTimestamp = initializedObservationTimestamp
+    if (!networkConfig.uniswapV3) {
+      throw new Error('No subgraph URI found for the uniswap on this network')
     }
 
-    const secondsAgo: number =
-      Math.round(Date.now() / 1000) - observationTimestamp
+    const subgraphURI = networkConfig.uniswapV3.subgraph
 
-    return secondsAgo
+    if (!subgraphURI) {
+      throw new Error(
+        'No subgraph in the network config provided for this subgraph.'
+      )
+    }
+
+    const poolAddress = await this.getPoolAddress({
+      network,
+      tokenIn: baseToken,
+      tokenOut: quoteToken,
+    })
+
+    if (poolAddress === ethers.constants.AddressZero) {
+      throw new Error('Pool not found for the tokens.')
+    }
+
+    const client = new GraphQLClient(subgraphURI)
+    const response = await client.request(
+      `
+      query PoolPrice($poolAddress: ID!) {
+        pool(id: $poolAddress ) {
+            token0Price
+            token1Price
+            token1 {
+              id
+            }
+            token0 {
+              id
+          }
+        }
+    }
+    `,
+      {
+        poolAddress: poolAddress.toLowerCase(),
+      }
+    )
+
+    const pool = response.pool
+
+    if (!pool) {
+      throw new Error('No pool found with the baseToken and quoteToken')
+    }
+
+    const token1 = {
+      id: pool.token1.id,
+      price: pool.token1Price,
+    }
+
+    const token0 = {
+      id: pool.token0.id,
+      price: pool.token0Price,
+    }
+
+    const tokens = [token0, token1]
+
+    const baseTokenPrice = tokens.find(
+      (item) => item.id.toLowerCase() === baseToken.toLowerCase()
+    )!.price
+
+    const quoteTokenPrice = tokens.find(
+      (item) => item.id.toLowerCase() === quoteToken.toLowerCase()
+    )!.price
+
+    const result = {
+      baseTokenPrice: baseTokenPrice * amount,
+      quoteTokenPrice: quoteTokenPrice * amount,
+    }
+
+    return result
   }
 }

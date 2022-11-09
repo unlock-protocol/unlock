@@ -40,6 +40,8 @@ export const optimism: NetworkConfig = {
   isTestNetwork: false,
   teamMultisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   uniswapV3: {
+    subgraph:
+      'https://api.thegraph.com/subgraphs/name/ianlapham/optimism-post-regenesis',
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
   },
   tokens: [
