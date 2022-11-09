@@ -2,6 +2,9 @@
 
 set -e
 
+# Pull all remote
+git fetch
+
 # get the timestamp of the latests commit to be deployed
 COMMIT_TO_DEPLOY=`git rev-list -1 --before={2.days.ago} master`
 COMMIT_TO_DEPLOY_TIMESTAMP=`git show -s --format=%ct $COMMIT_TO_DEPLOY`
