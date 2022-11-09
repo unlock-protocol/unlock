@@ -4,7 +4,7 @@ subTitle: Unlock upgrades Uniswap Oracle to v3 for more accurate calculations of
 description: Unlock upgrades its price oracle to Uniswap v3 to increase accuracy and coverage when calculating the total value of sales on each network.
 author: Clément Renaud
 publishDate: November 4, 2022
-image: /images/blog/??.png
+image: /images/blog/uniswap-v3-oracle/oracle-uniswap-v3-share.png
 ---
 
 In the Unlock Protocol, every time a key is purchased for any lock, a small transaction is sent back to the core Unlock factory contract to keep track of all existing sales on the network. For each network (Ethereum mainnet, Polygon, etc.), we calculate what we call a Gross Network Product (GNP) that consolidates the value of all sales into a single amount of native currency (ETH for mainnet, MATIC for Polygon, etc). The GNP is a useful indicator to track the evolution of the protocol’s activity across chains.
