@@ -4,7 +4,7 @@ subTitle: Over two dozen teams built memberships into their projects using Unloc
 authorName: Christopher Carfi
 publishDate: November 8, 2022
 description: Over two dozen teams built memberships into their projects using Unlock at the latest ETHGlobal Hackathon — here are the winners.
-image: /images/blog/ethsanfrancisco-2022/ethsf22.png
+image: /images/blog/ethsanfrancisco-2022/palace-of-fine-arts-min.png
 ---
 
 *update this* Whenever we get the call to step into the ETHGlobal Hackathons, our team gets almost giddy at the possibilities. Of course, we have our visions for deploying Unlock in ALL the places, but we love to see the innovation and creativity that flows from the hackers participating in these events. Such collaborations from a decentralized viewpoint really do show what’s possible with this ground-breaking technology.
