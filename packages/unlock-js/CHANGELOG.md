@@ -3,7 +3,7 @@
 # 0.31.2
 
 - Add uniswap service
-- Add consultUniswap method to web3 service for getting price of a token using uniswap pools
+- Add consultUniswap method to web3 service for getting price of a token using uniswap v3 pools
 
 # 0.31.1
 
