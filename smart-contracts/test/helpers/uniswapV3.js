@@ -1,21 +1,8 @@
-/**
- * You need to build the artifacts first by running `yarn && yarn hardhat compile`
- * in `node_modules/@uniswap/v3-core` and `node_modules/@uniswap/v3-periphery`
- */
 const bn = require('bignumber.js')
 const { ethers } = require('hardhat')
 const { Pool, Tick, TickListDataProvider } = require('@uniswap/v3-sdk/')
 const { Token } = require('@uniswap/sdk-core')
-const {
-  abi: IUniswapV3PoolABI,
-} = require('@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json')
-const {
-  abi: IUniswapV3Factory,
-} = require('@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Factory.sol/IUniswapV3Factory.json')
 
-const {
-  abi: INonfungiblePositionManager,
-} = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json')
 const UniswapOracle = require('./ABIs/UniswapV3Oracle.json')
 const { abi: WethABI } = require('./ABIs/weth.json')
 const { WETH, UDT, addUDT, impersonate, addSomeETH } = require('./mainnet')
@@ -148,6 +135,10 @@ const addLiquidity = async (
   rate = 42, // in basis point
   amount = 500 // how much tokens we add
 ) => {
+  const {
+    abi: INonfungiblePositionManager,
+  } = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json')
+
   // parse tokens for uniswap SDK
   const [tokenA, tokenB] = await getTokens(poolContract)
   console.log(
@@ -273,6 +264,20 @@ const createPool = async function ({
   token1 = WETH,
   rate = 42, // in basis point
 } = {}) {
+  /**
+   * You need to build the artifacts first by running `yarn && yarn hardhat compile`
+   * in `node_modules/@uniswap/v3-core` and `node_modules/@uniswap/v3-periphery`
+   */
+  const {
+    abi: IUniswapV3PoolABI,
+  } = require('@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json')
+  const {
+    abi: IUniswapV3Factory,
+  } = require('@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Factory.sol/IUniswapV3Factory.json')
+  const {
+    abi: INonfungiblePositionManager,
+  } = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/INonfungiblePositionManager.sol/INonfungiblePositionManager.json')
+
   const factoryContract = await ethers.getContractAt(
     IUniswapV3Factory,
     UNISWAP_FACTORY_ADDRESS
