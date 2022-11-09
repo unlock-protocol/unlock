@@ -50,7 +50,7 @@
     "eslint": "8.26.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-prettier": "4.2.1",
-    "ethers": "^5.7.2",
+    "ethers": "5.7.2",
     "hardhat": "2.12.2",
     "hardhat-gas-reporter": "1.0.9",
     "hardlydifficult-eth": "1.1.4",
