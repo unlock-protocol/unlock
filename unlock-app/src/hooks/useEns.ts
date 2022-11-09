@@ -9,6 +9,10 @@ export const getNameOrAddressForAddress = async (
   address: string
 ): Promise<string> => {
   try {
+    const isNotENS = ethers.utils.isAddress(address)
+    if (isNotENS) {
+      return address
+    }
     const result = await new ethers.providers.JsonRpcProvider(
       publicProvider
     ).lookupAddress(address)
@@ -18,20 +22,24 @@ export const getNameOrAddressForAddress = async (
     return address
   } catch (error) {
     // Resolution failed. So be it, we'll show the 0x address
-    console.error(`We could not resolve ENS for ${address}`)
+    console.error(`We could not resolve ENS name for ${address}`)
     return address
   }
 }
 
 export const getAddressForName = async (name: string): Promise<string> => {
   try {
+    const isAddress = ethers.utils.isAddress(name)
+    if (isAddress) {
+      return name
+    }
     const result = await new ethers.providers.JsonRpcProvider(
       publicProvider
     ).resolveName(name)
     return result || ''
   } catch (error) {
     // Resolution failed. So be it, we'll show the 0x address
-    console.error(`We could not resolve ENS for ${name}`)
+    console.error(`We could not resolve ENS address for ${name}`)
     return ''
   }
 }
