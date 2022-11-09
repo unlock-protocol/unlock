@@ -19,10 +19,14 @@ export interface PoolOptions {
   fee?: number
 }
 
+export interface PoolContractOptions {
+  network: number
+  poolAddress: string
+}
+
 export interface ConsultOptions {
   network: number
-  tokenIn: string
-  tokenOut: string
+  poolAddress: string
   range?: [number, number]
 }
 
@@ -36,6 +40,9 @@ export interface GetQuoteAtTickOptions {
 
 export class UniswapService {
   constructor(public networks: NetworkConfigs = networks) {}
+
+  pools = new Map<string, string>()
+
   getNetworkConfigAndProvider(networkId: number) {
     const networkConfig = this.networks[networkId]
     if (!networkConfig) {
@@ -52,18 +59,15 @@ export class UniswapService {
 
   // Calculates time-weighted means of tick for a uniswap pool. This does not provide for liqiduity.
   async consult({
-    network,
-    tokenIn,
-    tokenOut,
+    poolAddress,
+    network = 1,
     // 5 min by default
     range = [60 * 5, 0],
   }: ConsultOptions) {
-    const UniswapV3Pool = await this.getPoolContract({
-      tokenIn,
-      tokenOut,
+    const UniswapV3Pool = this.getPoolContract({
+      poolAddress: poolAddress,
       network,
     })
-
     // Fetch the data from the pool
     const observedData = await UniswapV3Pool.observe(range)
 
@@ -93,14 +97,14 @@ export class UniswapService {
     // get sqrt ratio
     const ratioX96 = JSBI.multiply(sqrtRatioX96, sqrtRatioX96)
 
-    // Get the erc20 decimals for the baseToken
-    const baseAmountDecimal = await getErc20Decimals(baseToken, provider)
-    // Get the erc20 decimals for the quoteToken
-    const quoteTokenDecimal = await getErc20Decimals(quoteToken, provider)
+    const [baseTokenDecimal, quoteTokenDecimal] = await Promise.all([
+      getErc20Decimals(baseToken, provider),
+      getErc20Decimals(quoteToken, provider),
+    ])
 
     // Format the base number using decimal in bigInt
     const baseAmount = JSBI.BigInt(
-      ethers.utils.parseUnits(amount, baseAmountDecimal)
+      ethers.utils.parseUnits(amount, baseTokenDecimal)
     )
 
     // Create a shift
@@ -118,18 +122,17 @@ export class UniswapService {
   }
 
   /**
-   * Get the pool contract. This function will find the relevant pool address given the in and out token erc20 addresses.
+   * Get the pool contract.
    */
-  async getPoolContract(options: PoolOptions) {
-    const { provider } = this.getNetworkConfigAndProvider(options.network)
-    const poolAddress = await this.getPoolAddress(options)
+  getPoolContract({ poolAddress: address, network = 1 }: PoolContractOptions) {
+    const { provider } = this.getNetworkConfigAndProvider(network)
 
-    if (poolAddress === ethers.constants.AddressZero) {
+    if (address === ethers.constants.AddressZero) {
       throw new Error('No pool address found for the tokens.')
     }
 
     const PoolContract = new ethers.Contract(
-      poolAddress,
+      address,
       UniswapV3PoolABI,
       provider
     )
@@ -165,5 +168,38 @@ export class UniswapService {
     // Get pool Address for the tokens from the uniswap factory.
     const poolAddress = await UniswapV3Factory.getPool(tokenIn, tokenOut, fee)
     return poolAddress
+  }
+
+  // Get last observed seconds ago
+  async getOldestObservation({
+    network,
+    poolAddress,
+  }: {
+    network: number
+    poolAddress: string
+  }) {
+    const UniswapV3Pool = this.getPoolContract({
+      poolAddress,
+      network,
+    })
+
+    const { observationIndex, observationCardinality } =
+      await UniswapV3Pool.slot0()
+
+    let { blockTimestamp: observationTimestamp, initialized } =
+      await UniswapV3Pool.observations(
+        (observationIndex + 1) % observationCardinality
+      )
+
+    if (!initialized) {
+      const { blockTimestamp: initializedObservationTimestamp } =
+        await UniswapV3Pool.observations(0)
+      observationTimestamp = initializedObservationTimestamp
+    }
+
+    const secondsAgo: number =
+      Math.round(Date.now() / 1000) - observationTimestamp
+
+    return secondsAgo
   }
 }

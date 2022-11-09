@@ -673,12 +673,21 @@ export default class Web3Service extends UnlockService {
 
     const uniswapService = new UniswapService(this.networks)
 
-    const tick = await uniswapService.consult({
-      network: networkId,
+    const poolAddress = await uniswapService.getPoolAddress({
       tokenIn: tokenInAddress,
       tokenOut: tokenOutAddress,
-      // 10 minute weighted range
-      range: [10 * 60, 0],
+      network: networkId,
+    })
+
+    const secondsAgo = await uniswapService.getOldestObservation({
+      network: networkId,
+      poolAddress,
+    })
+
+    const tick = await uniswapService.consult({
+      network: networkId,
+      poolAddress,
+      range: [secondsAgo - 60, 0],
     })
 
     const price = await uniswapService.getQuoteAtTick({
