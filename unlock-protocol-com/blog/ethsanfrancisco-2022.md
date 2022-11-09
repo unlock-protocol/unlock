@@ -46,8 +46,27 @@ Most humbling was the incredible group of hackers, learners, and new friends who
 
 ## Fun and learning for everyone
 
-*update this* Hackathons are one of our favorite ways to connect with our frens in the web3 community who are creating and building the next layer of internet infrastructure. 
+Hackathons are one of our favorite ways to connect with our frens in the web3 community who are creating and building the next layer of internet infrastructure. 
 
-We say a giant THANK YOU to all of the winners and every single team that deployed Unlock to bring their vision to life. Please don’t forget that we offer grants for selected projects for Unlock integrations and our grant committee meets monthly, [so get your application in today!](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22?__hstc=157293157.511609ec6aad35f0d2471241abee4698.1639357465325.1642374234181.1642435770388.31&__hssc=157293157.1.1642435770388&__hsfp=3380286660) 
+We say a giant THANK YOU to all of the winners and every single team that deployed Unlock to bring their vision to life.
 
-We’re so grateful to ETHGlobal for your continued support of the web3 space and for allowing us to participate in these amazing hackathons! We look forward to seeing these projects evolve and for all the amazing hackathons for 2022!
+We’re so grateful to ETHGlobal for its continued support of the web3 space and for allowing us to participate in these amazing hackathons! We look forward to seeing these projects evolve and for all the amazing hackathons for 2022!
+
+As promised, here are a few shots from the event!
+
+![unlock 1](/images/blog/ethsf22/unlock-1.png)
+
+![unlock 2](/images/blog/ethsf22/unlock-2.png)
+
+![unlock 3](/images/blog/ethsf22/unlock-3.png)
+
+![unlock 4](/images/blog/ethsf22/unlock-4.png)
+
+![unlock 5](/images/blog/ethsf22/unlock-5.png)
+
+![unlock 6](/images/blog/ethsf22/unlock-6.png)
+
+![unlock 7](/images/blog/ethsf22/unlock-7.png)
+photo: @ccarfi
+
+Can't wait for the next one!
