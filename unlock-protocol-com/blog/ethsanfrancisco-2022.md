@@ -1,58 +1,47 @@
 ---
 title: ETHSanFrancisco Hackathon's Winners
-subTitle: Over two dozen teams built memberships into their projects using Unlock at the latest ETHGlobal Hackathon
+subTitle: Over two dozen teams built memberships into their projects using Unlock at the latest ETHGlobal Hackathon — here are the winners
 authorName: Christopher Carfi
 publishDate: November 8, 2022
-description: The ETHSanFrancico Hackathon was ETHGlobal's biggest event ever and brought memberships to the forefront.
+description: Over two dozen teams built memberships into their projects using Unlock at the latest ETHGlobal Hackathon — here are the winners.
 image: /images/blog/ethsanfrancisco-2022/ethsf22.png
 ---
 
-Whenever we get the call to step into the ETHGlobal Hackathons, our team gets almost giddy at the possibilities. Of course, we have our visions for deploying Unlock in ALL the places, but we love to see the innovation and creativity that flows from the hackers participating in these events. Such collaborations from a decentralized viewpoint really do show what’s possible with this ground-breaking technology.
+*update this* Whenever we get the call to step into the ETHGlobal Hackathons, our team gets almost giddy at the possibilities. Of course, we have our visions for deploying Unlock in ALL the places, but we love to see the innovation and creativity that flows from the hackers participating in these events. Such collaborations from a decentralized viewpoint really do show what’s possible with this ground-breaking technology.
 
 As a sponsor for the NFTHack 2022, we were able to participate in the judging of these projects and saw all the big visions of these innovators, and were truly inspired. Below are the winners and top projects that deployed the protocol to power their creations. Be sure to visit their showcase pages, linked in each description, and see how the project was made. Many of the projects also have links to their Github so you can get a deeper look at the tech behind their work.
 
 
-## First Prize Winner — Coupons
+## First Prize Winner — Smart Coupons
 
-NFTpay allows you to create blockchain-hosted invoices that are hosted for free using IPFS and can be fulfilled with crypto or credit card payments. Receipts are auto-hosted as NFTs with no chance of losing an attachment or document showing the time and receipt of purchase. Receipt and time of purchase are forever retained on the Ethereum blockchain. 
+**Description:** This project is a frontend + plugin into the Salesforce (SFDC) ecosystem to manage Web3-based marketing campaigns to enable an on-ramp for web2 companies to engage their communities within their existing marketing toolset. Our frontend is a sample implementation of how a client (in this case Adidas) would implement the solution. Within their existing web2 channels, the client would offer gamified incentives for users to connect their wallet details. After connecting their wallet, the users would be able to complete additional data enrichment challenges to earn Web3-based rewards. These rewards would be generated from SFDC directly based on specified campaign goals. Once the wallet data is within Salesforce, we enrich the database with on-chain information, tied to the individual lead profile created for the user. This enables a more robust view of the customer, with the ability to create insights and make more informed decisions about campaign targeting. 
 
-The team used Unlock to create an Ethereum-based paywall where a user chooses an Ethereum wallet as the checkout method of choice. [Visit this link if you’d like to learn more](https://showcase.ethglobal.com/nfthack2022/nftpay) about the project and see the team’s amazing demo! 
+**Demo:** [https://ethglobal.com/showcase/smart-coupons-oh282](https://ethglobal.com/showcase/smart-coupons-oh282)
 
-[![NFTPay thumbnail](/images/blog/nfthack-jan22/nftpay-min.png)](https://showcase.ethglobal.com/nfthack2022/nftpay)
+![smart coupons image](https://storage.googleapis.com/ethglobal-api-production/projects%2Foh282%2Fimages%2FScreenshot_2022-11-06_at_6.50.26_AM.png)
 
 
 ## Second Prize Winner — HNDSHK
 
-NFTResy is a ticketing dapp that allows customers to select and reserve seats for restaurants, concerts, gatherings, and even Metaverse events. The end goal of the NFTResy team is to simply make ticketing easier by using NFTs powered by Unlock. We love that goal! 
+**Description:** HNDSHK allows you to instantly connect and nourish irreplaceable relationships through NFT handshake cards which you can create, manage, and SHK. Exchanging cards is done instantly through NFC tap (HNDSHK). And when you HNDSHK, you also connect on mutual social handles and a POAP is minted which further documents the occasion. Since NFC taps can only be done in person, HNDSHK encourages in-person interactions. In contrast to popular Social Media platforms which are often attention grabs or races to build a following, HNDSHK incentives quality over quantity connections. This is done through a gamified experience - card rarity upgrades, personal card benefits, and reach-out reminders.
 
-Since the tickets are built as NFTs, they can also be re-sold on platforms like OpenSea and exchanged for some other ticket NFTs. This is very common in fine-dining experiences, as you can exchange one reservation for a reservation at another restaurant that is equally as rare to get. The team created a demo that showcases this restaurant ticketing experience. 
+**Demo:** [https://ethglobal.com/showcase/hndshk-bgqfn](https://ethglobal.com/showcase/hndshk-bgqfn)
 
-NFTResy aims to develop in 2 different ways: real-life, and Metaverse. [Please visit this link to see the demo](https://showcase.ethglobal.com/nfthack2022/nftresy) and learn more about the ultimate vision of the team. 
-
-[![NFTResy thumbnail](/images/blog/nfthack-jan22/nftresy-min.png)](https://showcase.ethglobal.com/nfthack2022/nftresy)
+![hndshk image](https://storage.googleapis.com/ethglobal-api-production/projects%2Fbgqfn%2Fimages%2FSolution.png)
 
 
 ## Third Prize Winner — Alexandria
 
-Got It is an NFT-based ecosystem to help broadcasters better engage with their audiences. Got It is a censorship-resistant video live streaming service with membership-only access options powered by Livepeer, IPFS, and Unlock. 
+**Description:** This project allows users to borrow an access NFT that gives them access to view a book through our site. The contract allows anyone to borrow a book for however long they like (as long as you can pay the fee). Whilst giving authors royalties on their payments. We allow authors to make sure they get paid for each time their book gets read. The NFT also acts as a way for you to know all the previous borrowers of your book. Once you run out of collateral on your borrow, the NFT gets automatically transferred back to the marketplace via a liquidation function anyone can call.
 
-Be sure to [head over to the Got It team’s showcase page](https://showcase.ethglobal.com/nfthack2022/got-it) to watch their demo and to better understand and support their big vision for reshaping sectors of the media industry! 
+**Demo:** [https://ethglobal.com/showcase/alexandria-3db0q](https://ethglobal.com/showcase/alexandria-3db0q)
 
-[![Got It thumbnail](/images/blog/nfthack-jan22/gotit-min.png)](https://showcase.ethglobal.com/nfthack2022/got-it)
-
-
-## Graffiti Mint
-
-A dapp to digitize and mint street art from IRL graffiti events. Graffiti Mint helps to digitize, mint, and monetize graffiti events. It integrates ERC1155 NFTs for 4-tier season passes for event supporters and ERC721 contracts to mint street art made in graffiti events at city parks as NFTs. 
-
-[Head over to their showcase page](https://showcase.ethglobal.com/nfthack2022/graffiti-mint) and take a few minutes to see this creative project in action!
-
-
+![alexandria image](https://storage.googleapis.com/ethglobal-api-production/projects%2F3db0q%2Fimages%2Fscreenshot_3.png)
 
 
 ## Conclusion
 
-Hackathons are one of our favorite ways to support the web3 community building the next generation of internet technology but also a chance to see the diversity and creativity of what’s possible with Unlock. 
+*update this* Hackathons are one of our favorite ways to support the web3 community building the next generation of internet technology but also a chance to see the diversity and creativity of what’s possible with Unlock. 
 
 We say a giant THANK YOU to all of the winners and every single team that deployed Unlock to bring their vision to life. Please don’t forget that we offer grants for selected projects for Unlock integrations and our grant committee meets monthly, [so get your application in today!](https://share.hsforms.com/1gAdLgNOESNCWJ9bJxCUAMwbvg22?__hstc=157293157.511609ec6aad35f0d2471241abee4698.1639357465325.1642374234181.1642435770388.31&__hssc=157293157.1.1642435770388&__hsfp=3380286660) 
 
