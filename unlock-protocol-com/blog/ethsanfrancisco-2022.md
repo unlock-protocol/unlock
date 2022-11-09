@@ -16,7 +16,7 @@ photo: @julien51
 
 More pictures and thoughts below, but first...the winners of prizes in the Unlock hackathon!
 
-Most humbling was the incredible group of hackers, learners, and new friends who stopped by for conversations in the booth over the course of the three days of the hackathon. There were over two dozen projects submitted and, when the dust cleared and the entries were judged, three projects stood out. They were...
+The most incredible part of ETHSanFrancisco was getting the opportunity to connect with the incredible group of hackers, learners, and new friends who stopped by for conversations in the booth over the course of the three days of the hackathon. There were over two dozen projects submitted and, when the dust cleared and the entries were judged, three projects stood out. They were...
 
 
 ## First Prize Winner — Smart Coupons
