@@ -50,9 +50,9 @@ Hackathons are one of our favorite ways to connect with our frens in the web3 co
 
 We say a giant THANK YOU to all of the winners and every single team that deployed Unlock to bring their vision to life.
 
-We’re so grateful to ETHGlobal for its continued support of the web3 space and for allowing us to participate in these amazing hackathons! We look forward to seeing these projects evolve and for all the amazing hackathons for 2022!
+We’re so grateful to ETHGlobal for its continued support of the web3 space and for allowing us to participate in these amazing hackathons! We look forward to seeing these projects evolve and for all the incredible connections, learning, and growth they empower.
 
-As promised, here are a few shots from the event!
+As promised, here are a few shots from the event — can't wait for the next one!
 
 ![unlock 1](/images/blog/ethsf22/unlock-1.png)
 
@@ -68,5 +68,3 @@ As promised, here are a few shots from the event!
 
 ![unlock 7](/images/blog/ethsf22/unlock-7.png)
 photo: @ccarfi
-
-Can't wait for the next one!
