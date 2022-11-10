@@ -3,6 +3,9 @@
 # default LISTEN port to 3000
 ARG PORT=3000
 
+#
+# 1. install only deps (to be cached)
+#
 FROM node:16-bullseye-slim as deps
 LABEL Unlock <ops@unlock-protocol.com>
 
@@ -10,37 +13,73 @@ LABEL Unlock <ops@unlock-protocol.com>
 ARG BUILD_DIR
 ARG PORT
 
-# setup home dir
-RUN mkdir -p /home/unlock
-RUN chown -R node /home/unlock
-WORKDIR /home/unlock
-
-# Setting user as root to handle apk install
+# Setting user as root to handle apt install
 USER root
 
-# apk steps merged to leverage virtual install of package
-# allowing for removal after yarn dependencies install
+# install all deps required to build modules
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive \
     apt-get install --no-install-recommends --assume-yes \
     bash \
     git \
     python3 \
-    build-essential \
+    build-essential
+
+# switch to user
+ENV DEST_FOLDER=/opt/manifests
+
+RUN mkdir $DEST_FOLDER
+
+# copy files 
+COPY . .
+
+# copy all package.json files
+RUN find . -maxdepth 3 -mindepth 2 -type f -name "package.json" ! -path '**node_modules**' ! -path './docker' -exec cp --parents '{}' $DEST_FOLDER \;
+COPY package.json $DEST_FOLDER
+COPY yarn.lock $DEST_FOLDER
+
+# copy al yarn related files
+COPY .yarnrc.yml $DEST_FOLDER
+COPY .prettierrc $DEST_FOLDER
+COPY .yarn/plugins $DEST_FOLDER/.yarn/plugins
+COPY .yarn/releases $DEST_FOLDER/.yarn/releases
+RUN chown -R node:node $DEST_FOLDER
+
+# specify yarn cache folder location (to be used by docker buildkit)
+RUN echo "cacheFolder: ${DEST_FOLDER}/yarn-cache" >> $DEST_FOLDER/.yarnrc.yml
+RUN mkdir $DEST_FOLDER/yarn-cache
+RUN chown -R node:node $DEST_FOLDER/yarn-cache
+
+# install deps
+WORKDIR ${DEST_FOLDER}
+RUN yarn
+
+#
+# 2. build packages and prepare image for testing/dev
+#
+FROM node:16-slim as dev
+
+# install all deps required to build packages
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive \
+    apt-get install --no-install-recommends --assume-yes \
     postgresql \
     default-jdk \
     openjdk-11-jre
 
-# install deps
+# args need to be mentioned at each stage
+ARG BUILD_DIR
+ARG PORT
+
+# copy files from deps layer
 USER node
+WORKDIR /home/unlock
+COPY --from=deps --chown=node /opt/manifests .
 
-# copy all code
-COPY --chown=node . /home/unlock/
+# copy all files
+COPY --chown=node . .
 
-# install deps
-RUN yarn
-
-# make sure jav is installed properly
+# make sure java is installed properly
 RUN java -version
 RUN javac -version
 
@@ -48,23 +87,14 @@ RUN javac -version
 RUN yarn build
 
 ##
-## export a minimal image w only the prod app
+## 3. export image for prod app
 ##
-FROM node:16-slim as prod
+FROM dev as prod
 
 ARG BUILD_DIR
 ARG PORT
 ARG COMMAND
 ENV COMMAND=${COMMAND}
-
-USER root
-RUN mkdir /app
-RUN chown node:node /app
-
-WORKDIR /app
-
-# copy package info
-COPY --from=build --chown=node /home/node/app .
 
 # start command
 EXPOSE $PORT
