@@ -1,41 +1,26 @@
 import { Button } from '@unlock-protocol/ui'
 import React, { useEffect, useState } from 'react'
-import {
-  ActiveLock,
-  Lock,
-  Key,
-  PolygonIcon,
-  DAIIcon,
-  EthereumIcon,
-  BSCIcon,
-  CeloIcon,
-} from '../../icons'
+import { ActiveLock, Lock, Key } from '../../icons'
 import numeral from 'numeral'
+import { useQuery } from 'react-query'
 import dynamic from 'next/dynamic'
 
-import { getGNPs, querySubgraph } from '../../../utils/apiRequest'
+import { getGNPs } from '../../../utils/apiRequest'
+import { useSubgraph4GNP } from 'src/hooks/useSubgraph'
+
+const CryptoIconComponent = dynamic(() => import('react-crypto-icons'), {
+  ssr: false,
+})
 
 const ReactApexChart = dynamic(() => import('react-apexcharts'), { ssr: false })
 
-const subgraphConfig = `{
-  locks {
-    id
-    address
-    name
-    symbol
-    lastKeyMintedAt
-  }
-  lockStats(id:"1") {
-    totalLocksDeployed
-    totalKeysSold
-  }
-  lockDayDatas {
-    id
-    lockDeployed
-    activeLocks
-    keysSold
-  }
-}`
+interface CryptoIconProps {
+  symbol: string
+  size?: number
+}
+const CryptoIcon = ({ symbol, size = 20 }: CryptoIconProps) => (
+  <CryptoIconComponent name={symbol?.toLowerCase()} size={size} />
+)
 
 export const OVERVIEW_CONTENTS = [
   {
@@ -68,29 +53,6 @@ const NETWORKS = [
   'Arbitrum',
   'Celo',
   'Avalanche (C-Chain)',
-]
-
-const GROSS_NETWORK_ICONS = [
-  {
-    unit: 'MATIC',
-    Icon: PolygonIcon,
-  },
-  {
-    unit: 'DAI',
-    Icon: DAIIcon,
-  },
-  {
-    unit: 'ETH',
-    Icon: EthereumIcon,
-  },
-  {
-    unit: 'BNB',
-    Icon: BSCIcon,
-  },
-  {
-    unit: 'CELO',
-    Icon: CeloIcon,
-  },
 ]
 
 const filters = ['1D', '7D', '1M', '1Y', 'All']
@@ -213,24 +175,12 @@ function DateFilter({
 }
 
 export function State() {
+  const { data: subgraphData } = useSubgraph4GNP(
+    'https://api.studio.thegraph.com/query/37457/test-unlock/v0.0.8/'
+  )
   const [filter, setFilter] = useState('1Y')
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [gnpValues, setGNPValues] = useState<any[]>([])
-  const [subgraphData, setSubgraphData] = useState({})
-
-  useEffect(() => {
-    const run = async () => {
-      if (gnpValues.length > 0) {
-        const subgraphData = await querySubgraph(
-          'https://api.studio.thegraph.com/query/37457/test-unlock/v0.0.8/',
-          subgraphConfig
-        )
-        setSubgraphData(subgraphData.data)
-        console.log(subgraphData)
-      }
-    }
-    run()
-  }, [])
 
   useEffect(() => {
     const run = async () => {
@@ -240,18 +190,7 @@ export function State() {
         if (a.total > b.total) return -1
         return 0
       })
-      const gnpValueswithIcon = values
-        .map((item) => ({
-          ...item,
-          Icon: GROSS_NETWORK_ICONS.find(
-            (icon) =>
-              icon.unit.toLowerCase() ===
-              item.network.baseCurrencySymbol.toLowerCase()
-          )?.Icon,
-        }))
-        .filter((item) => !item.network.isTestNetwork)
-      console.log(gnpValueswithIcon)
-      setGNPValues(gnpValueswithIcon)
+      setGNPValues(values)
       setIsLoading(false)
     }
     run()
@@ -310,15 +249,16 @@ export function State() {
               </p>
               {!isLoading && (
                 <div className="grid xl:grid-cols-3 lg:grid-cols-2 gap-4 md:grid-cols-2 grid-cols-1">
-                  {gnpValues.map(({ total, network, Icon }, index) => (
+                  {gnpValues.map(({ total, network }, index) => (
                     <div
                       key={index}
                       className="p-6 border border-gray-300 rounded-md"
                     >
                       <div className="flex justify-start pb-4 border-b border-gray-300">
-                        {Icon && (
-                          <Icon className="self-center mr-2 w-10 h-auto" />
-                        )}
+                        <CryptoIcon
+                          symbol={network.baseCurrencySymbol}
+                          size={40}
+                        />
                         <p className="heading-small pr-2 self-center">
                           {numeral(total).format('0,0.000')}{' '}
                         </p>

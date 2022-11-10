@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios'
 import { ethers } from 'ethers'
 import { networks } from '@unlock-protocol/networks'
-
-export const { get, all, post, put, spread } = axios
 
 async function getGdpForNetwork(provider, network) {
   const abi = ['function grossNetworkProduct() constant view returns (uint256)']
@@ -32,40 +29,4 @@ export async function getGNPs() {
     })
   )
   return values.filter((x) => !!x)
-}
-
-type SubgraphAPIResponse = {
-  data: {
-    data?: any
-    errors?: any[]
-  }
-  status: number
-  statusText: string
-  config: any
-  request: any
-  headers: any
-}
-
-type SubgraphResponse = {
-  data: any
-}
-
-export async function querySubgraph(subgraphUrl: string, query: string) {
-  try {
-    const response: SubgraphAPIResponse = await axios.post(`${subgraphUrl}`, {
-      query,
-    })
-    if (response.data.errors !== undefined && response.data.errors.length > 0) {
-      throw Error(
-        response.data.errors[0].message ||
-          'Error: retrieving data from subgraph'
-      )
-    }
-    return {
-      data: response.data.data,
-    }
-  } catch (error) {
-    console.error('subgraph error', error)
-    throw error
-  }
 }
