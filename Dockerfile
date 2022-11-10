@@ -3,7 +3,7 @@
 # default LISTEN port to 3000
 ARG PORT=3000
 
-FROM node:16-bullseye-slim as deps
+FROM node:16-bullseye-slim as dev
 LABEL Unlock <ops@unlock-protocol.com>
 
 # args need to be mentioned at each stage
