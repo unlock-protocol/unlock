@@ -3,7 +3,7 @@
 # default LISTEN port to 3000
 ARG PORT=3000
 
-FROM node:16-alpine as dev
+FROM node:16-slim as dev
 LABEL Unlock <ops@unlock-protocol.com>
 
 # args need to be mentioned at each stage
@@ -20,16 +20,12 @@ USER root
 
 # apk steps merged to leverage virtual install of package
 # allowing for removal after yarn dependencies install
-RUN apk add --no-cache --virtual .build-deps \
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive \
+    apt-get install --no-install-recommends --assume-yes \
     bash \
     git \
-    openssh \
-    python3 \
-    python3-dev \
-    py3-pip \
-    build-base \
-    openjdk11 \
-    && pip3 install --no-cache-dir virtualenv
+    openjdk-11-jre
 
 # install deps
 USER node
@@ -52,30 +48,22 @@ RUN yarn build
 ###
 FROM dev as subgraph 
 
-USER root
-RUN apk add postgresql \ 
-    build-base \ 
-    libpq-dev 
-
-ENV GLIBC_REPO=https://github.com/sgerrand/alpine-pkg-glibc
-ENV GLIBC_VERSION=2.30-r0
-RUN set -ex && \
-    apk --update add libstdc++ curl ca-certificates && \
-    for pkg in glibc-${GLIBC_VERSION} glibc-bin-${GLIBC_VERSION}; \
-        do curl -sSL ${GLIBC_REPO}/releases/download/${GLIBC_VERSION}/${pkg}.apk -o /tmp/${pkg}.apk; done && \
-    apk add --allow-untrusted /tmp/*.apk && \
-    rm -v /tmp/*.apk && \
-    /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive \
+    apt-get install --no-install-recommends --assume-yes \
+    postgresql
 
 ##
 ## export a minimal image w only the prod app
 ##
-FROM node:16-alpine as prod
+FROM node:16-slim as prod
 
 ARG BUILD_DIR
 ARG PORT
-ARG COMMAND="yarn prod"
+ARG COMMAND
 ENV COMMAND=${COMMAND}
+
+
 
 USER root
 RUN mkdir /app
@@ -89,4 +77,4 @@ COPY --from=build --chown=node /home/node/app .
 # start command
 EXPOSE $PORT
 
-CMD $COMMAND
+CMD yarn workspace @unlock-protocol/${BUILD_DIR} prod
