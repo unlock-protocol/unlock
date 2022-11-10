@@ -39,8 +39,6 @@
     "@openzeppelin/upgrades": "2.8.0",
     "@typescript-eslint/eslint-plugin": "5.42.0",
     "@typescript-eslint/parser": "5.42.0",
-    "@uniswap/v3-core": "git+https://github.com/Uniswap/v3-core#0.8",
-    "@uniswap/v3-periphery": "git+https://github.com/Uniswap/v3-core#0.8",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/hardhat-plugin": "workspace:^",
