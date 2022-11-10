@@ -25,6 +25,7 @@ RUN apt-get update \
     apt-get install --no-install-recommends --assume-yes \
     bash \
     git \
+    postgresql \
     openjdk-11-jre
 
 # install deps
@@ -43,15 +44,6 @@ RUN javac -version
 # build all packages in packages/**
 RUN yarn build
 
-###
-## Need to run subgraph test 
-###
-FROM dev as subgraph 
-
-RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive \
-    apt-get install --no-install-recommends --assume-yes \
-    postgresql
 
 ##
 ## export a minimal image w only the prod app
@@ -62,8 +54,6 @@ ARG BUILD_DIR
 ARG PORT
 ARG COMMAND
 ENV COMMAND=${COMMAND}
-
-
 
 USER root
 RUN mkdir /app
