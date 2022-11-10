@@ -5,11 +5,8 @@ schema:
 dataSources:
   - kind: ethereum
     name: Unlock
-    network: goerli
     source:
       abi: Unlock
-      address: "0x627118a4fB747016911e5cDA82e2E77C531e8206"
-      startBlock: 7179039
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -34,7 +31,6 @@ dataSources:
 templates:
   - kind: ethereum
     name: PublicLock
-    network: goerli
     source:
       abi: PublicLock
     mapping:
