@@ -282,27 +282,27 @@ interface IPublicLock
    * Determines how much of a fee would need to be paid in order to
    * transfer to another account.  This is pro-rated so the fee goes 
    * down overtime.
-   * @dev Throws if _tokenId does not have a valid key
-   * @param _tokenId The id of the key check the transfer fee for.
-   * @param _time The amount of time to calculate the fee for.
-   * @return The transfer fee in seconds.
+   * @dev Throws if `tokenId` does not have a valid key
+   * @param tokenId The id of the key check the transfer fee for.
+   * @param time The amount of time to calculate the fee for.
+   * @return transferFee The transfer fee in seconds.
    */
   function getTransferFee(
-    uint _tokenId,
-    uint _time
-  ) external view returns (uint);
+    uint tokenId,
+    uint time
+  ) external view returns (uint transferFee);
 
   /**
    * @dev Invoked by a Lock manager to expire the user's key 
    * and perform a refund and cancellation of the key
-   * @param _tokenId The key id we wish to refund to
-   * @param _amount The amount to refund to the key-owner
+   * @param tokenId The key id we wish to refund to
+   * @param amount The amount to refund to the key-owner
    * @dev Throws if called by other than a Lock manager
    * @dev Throws if _keyOwner does not have a valid key
    */
   function expireAndRefundFor(
-    uint _tokenId,
-    uint _amount
+    uint tokenId,
+    uint amount
   ) external;
 
    /**
@@ -560,7 +560,7 @@ interface IPublicLock
   function tokenByIndex(uint256 index) external view returns (uint256);
 
   /**
-    * Innherited from Open Zeppelin AccessControl.sol
+    * Inherited from Open Zeppelin AccessControl.sol
     */
   function getRoleAdmin(bytes32 role) external view returns (bytes32);
   function grantRole(bytes32 role, address account) external;
