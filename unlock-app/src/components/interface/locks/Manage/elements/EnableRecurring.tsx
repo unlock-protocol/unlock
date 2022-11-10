@@ -45,13 +45,23 @@ export const EnableRecurring = ({
     lock?.currencyContractAddress?.length > 0
 
   useEffect(() => {
-    setIsRecurring(recurringPossible && lock?.selfAllowance !== '0')
-  }, [lock?.selfAllowance, recurringPossible])
+    if (lock?.publicLockVersion >= 11) {
+      // TODO: check gas refund
+      setIsRecurring(recurringPossible)
+    } else {
+      setIsRecurring(recurringPossible && lock?.selfAllowance !== '0')
+    }
+  }, [lock?.publicLockVersion, lock?.selfAllowance, recurringPossible])
 
   const handleApproveRecurring = () => {
-    updateSelfAllowance(MAX_UINT, () => {
+    // We only need to do this for older versions
+    if (lock?.publicLockVersion < 11) {
+      updateSelfAllowance(MAX_UINT, () => {
+        setIsRecurring(true)
+      })
+    } else {
       setIsRecurring(true)
-    })
+    }
   }
 
   if (isLoading) return <EnableRecurringPlaceholder />
@@ -65,14 +75,22 @@ export const EnableRecurring = ({
   }
 
   return (
-    <Button
-      variant="outlined-primary"
-      size="small"
-      className="w-full"
-      disabled={isRecurring || !recurringPossible || isLoading}
-      onClick={handleApproveRecurring}
-    >
-      Enable recurring
-    </Button>
+    <>
+      <Button
+        variant="outlined-primary"
+        size="small"
+        className="w-full"
+        disabled={isRecurring || !recurringPossible || isLoading}
+        onClick={handleApproveRecurring}
+      >
+        Enable recurring
+      </Button>
+      {!recurringPossible && (
+        <small className="text-sm text-gray-400">
+          Recurring memberships are only available for locks that are using and
+          ERC20 currency and that have expirations.
+        </small>
+      )}
+    </>
   )
 }
