@@ -53,7 +53,9 @@ export interface NetworkConfig {
   uniswapV3?: Partial<{
     subgraph: string
     factoryAddress: string
+    quoterAddress: string
   }>
+
   ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
@@ -77,6 +79,12 @@ export interface NetworkConfig {
     name: string
     symbol: string
     decimals: number
+  }
+  wrappedNativeCurrency?: {
+    name: string
+    symbol: string
+    decimals: number
+    address: string
   }
   startBlock?: number
   previousDeploys?: NetworkDeploy[]

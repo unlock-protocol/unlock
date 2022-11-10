@@ -1,8 +1,8 @@
 import { NetworkConfigs } from '@unlock-protocol/types'
 import { ethers } from 'ethers'
-import { GraphQLClient } from 'graphql-request'
-import { abi as UniswapV3FactoryABI } from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json'
-
+import { EthersMulticall } from '@morpho-labs/ethers-multicall'
+import { abi as QuoterABI } from '@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json'
+import { getErc20Decimals } from './erc20'
 export interface PoolOptions {
   network: number
   tokenIn: string
@@ -14,7 +14,7 @@ interface PriceOptions {
   network?: number
   baseToken: string
   quoteToken: string
-  amount: number
+  amount: string
 }
 
 export class UniswapService {
@@ -35,116 +35,76 @@ export class UniswapService {
   }
 
   /**
-   * Get pool address for erc20 token in and token out pairs on uniswap. By default, we find the 5% fee pools.
-   */
-  async getPoolAddress({
-    tokenOut,
-    tokenIn,
-    network,
-    fee = 3000,
-  }: PoolOptions) {
-    const { networkConfig, provider } =
-      this.getNetworkConfigAndProvider(network)
-
-    // Check if network config has uniswap v3 address we can use for querying.
-    if (!(networkConfig.uniswapV3 && networkConfig.uniswapV3.factoryAddress)) {
-      throw new Error(
-        'No uniswap address found for the network in networkConfig'
-      )
-    }
-
-    // Initialize factory contract
-    const UniswapV3Factory = new ethers.Contract(
-      networkConfig.uniswapV3.factoryAddress,
-      UniswapV3FactoryABI,
-      provider
-    )
-
-    // Get pool Address for the tokens from the uniswap factory.
-    const poolAddress = await UniswapV3Factory.getPool(tokenIn, tokenOut, fee)
-    return poolAddress
-  }
-
-  /**
    * Get base and quote token price for uniswap pool
    */
   async price({ network = 1, baseToken, quoteToken, amount }: PriceOptions) {
-    const networkConfig = this.networks[network]
+    const { networkConfig, provider } =
+      this.getNetworkConfigAndProvider(network)
 
     if (!networkConfig.uniswapV3) {
-      throw new Error('No subgraph URI found for the uniswap on this network')
+      throw new Error('The network config does not provide a uniswap object')
     }
 
-    const subgraphURI = networkConfig.uniswapV3.subgraph
+    const multicall = new EthersMulticall(provider)
 
-    if (!subgraphURI) {
+    const wrappedCurrency = networkConfig.wrappedNativeCurrency
+    const quoterAddress = networkConfig.uniswapV3.quoterAddress
+
+    if (!(quoterAddress && wrappedCurrency)) {
       throw new Error(
-        'No subgraph in the network config provided for this subgraph.'
+        'Quoter contract address and wrapped currency missing for the network'
       )
     }
 
-    const poolAddress = await this.getPoolAddress({
-      network,
-      tokenIn: baseToken,
-      tokenOut: quoteToken,
-    })
+    const [baseTokenDecimal, quoteTokenDecimal] = await Promise.all([
+      getErc20Decimals(baseToken, provider),
+      getErc20Decimals(quoteToken, provider),
+    ])
 
-    if (poolAddress === ethers.constants.AddressZero) {
-      throw new Error('Pool not found for the tokens.')
-    }
-
-    const client = new GraphQLClient(subgraphURI)
-    const response = await client.request(
-      `
-      query PoolPrice($poolAddress: ID!) {
-        pool(id: $poolAddress ) {
-            token0Price
-            token1Price
-            token1 {
-              id
-            }
-            token0 {
-              id
-          }
-        }
-    }
-    `,
-      {
-        poolAddress: poolAddress.toLowerCase(),
-      }
+    const UniswapQuoter = multicall.wrap(
+      new ethers.Contract(quoterAddress, QuoterABI, provider)
     )
 
-    const pool = response.pool
+    const isBaseTokenSameAsNativeToken =
+      ethers.utils.getAddress(baseToken) ===
+      ethers.utils.getAddress(wrappedCurrency.address)
 
-    if (!pool) {
-      throw new Error('No pool found with the baseToken and quoteToken')
+    const quoteAmount = ethers.utils.parseUnits(amount, baseTokenDecimal)
+
+    if (isBaseTokenSameAsNativeToken) {
+      const baseToQuotePrice =
+        await UniswapQuoter.callStatic.quoteExactInputSingle(
+          baseToken,
+          quoteToken,
+          3000,
+          quoteAmount,
+          0
+        )
+
+      return parseFloat(
+        ethers.utils.formatUnits(baseToQuotePrice, quoteTokenDecimal)
+      )
     }
 
-    const token1 = {
-      id: pool.token1.id,
-      price: pool.token1Price,
-    }
+    const wrapped = await UniswapQuoter.callStatic.quoteExactInputSingle(
+      baseToken,
+      wrappedCurrency.address,
+      3000,
+      quoteAmount,
+      0
+    )
 
-    const token0 = {
-      id: pool.token0.id,
-      price: pool.token0Price,
-    }
+    const wrappedToQuotePrice =
+      await UniswapQuoter.callStatic.quoteExactInputSingle(
+        wrappedCurrency.address,
+        quoteToken,
+        3000,
+        wrapped,
+        0
+      )
 
-    const tokens = [token0, token1]
-
-    const baseTokenPrice = tokens.find(
-      (item) => item.id.toLowerCase() === baseToken.toLowerCase()
-    )!.price
-
-    const quoteTokenPrice = tokens.find(
-      (item) => item.id.toLowerCase() === quoteToken.toLowerCase()
-    )!.price
-
-    const result = {
-      baseTokenPrice: parseFloat(baseTokenPrice) * amount,
-      quoteTokenPrice: parseFloat(quoteTokenPrice) * amount,
-    }
-
-    return result
+    return parseFloat(
+      ethers.utils.formatUnits(wrappedToQuotePrice, quoteTokenDecimal)
+    )
   }
 }

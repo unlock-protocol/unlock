@@ -49,6 +49,13 @@ export const polygon: NetworkConfig = {
   teamMultisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+  },
+  wrappedNativeCurrency: {
+    name: 'Wrapped MATIC',
+    symbol: 'WMATIC',
+    decimals: 18,
+    address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
   },
   tokens: [
     {

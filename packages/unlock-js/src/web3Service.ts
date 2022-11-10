@@ -644,7 +644,7 @@ export default class Web3Service extends UnlockService {
   async consultUniswap(options: {
     tokenInAddress: string
     tokenOutAddress?: string
-    amount: number
+    amount: string
     network?: number
   }) {
     const { network, tokenInAddress, amount } = options
@@ -678,6 +678,6 @@ export default class Web3Service extends UnlockService {
       quoteToken: tokenOutAddress,
       amount,
     })
-    return price.quoteTokenPrice
+    return price
   }
 }

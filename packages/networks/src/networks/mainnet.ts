@@ -45,6 +45,13 @@ export const mainnet: NetworkConfig = {
   uniswapV3: {
     subgraph: 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3',
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+  },
+  wrappedNativeCurrency: {
+    name: 'Wrapped Ether',
+    symbol: 'WETH',
+    decimals: 18,
+    address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
   },
   tokens: [
     {

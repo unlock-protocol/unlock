@@ -41,6 +41,13 @@ export const mumbai: NetworkConfig = {
   teamMultisig: '0x12E37A8880801E1e5290c815a894d322ac591607',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+  },
+  wrappedNativeCurrency: {
+    name: 'Wrapped MATIC',
+    symbol: 'WMATIC',
+    decimals: 18,
+    address: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
   },
   tokens: [
     {
