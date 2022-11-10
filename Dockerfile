@@ -3,37 +3,6 @@
 # default LISTEN port to 3000
 ARG PORT=3000
 
-##
-## 1. get only needed packages
-##
-FROM alpine:3.16 as manifests
-
-# args need to be mentioned at each stage
-ARG BUILD_DIR
-ARG PORT
-
-# install deps
-RUN apk add coreutils jq
-
-# copy
-WORKDIR /tmp
-COPY package.json .
-COPY yarn.lock .
-
-# only needed workspaces in manifest
-RUN  mkdir /opt/manifests /opt/manifests/packages
-
-# scope workspaces and prevent package hoisting
-RUN jq  -r '.workspaces |= ["packages/**", "'${BUILD_DIR}'"]' /tmp/package.json > /opt/manifests/package.json \
-    && cp yarn.lock /opt/manifests
-
-# add shared folder
-WORKDIR /opt/manifests
-COPY packages  /opt/manifests/packages
-
-##
-## 2. fetch all deps
-##
 FROM node:16-alpine as dev
 LABEL Unlock <ops@unlock-protocol.com>
 
@@ -46,15 +15,7 @@ RUN mkdir -p /home/unlock
 RUN chown -R node /home/unlock
 WORKDIR /home/unlock
 
-# copy packages info
-COPY --chown=node --from=manifests /opt/manifests .
-COPY --chown=node .prettierrc /home/unlock/.
-
-# yarn config
-COPY --chown=node .yarn/ /home/unlock/.yarn/
-COPY --chown=node .yarnrc.yml /home/unlock/.yarnrc.yml
-
-# add yarn cache folder to be used by docker buildkit
+# add yarn cache folder to be used by docker buildkit locally
 RUN echo "cacheFolder: /home/unlock/yarn-cache" >> .yarnrc.yml
 
 # Setting user as root to handle apk install
@@ -76,34 +37,21 @@ RUN apk add --no-cache --virtual .build-deps \
 # install deps
 USER node
 
-# attempt to create dir only for non-packages
-RUN if echo ${BUILD_DIR} | grep -q "packages" ; then echo "skipping"; else mkdir /home/unlock/${BUILD_DIR}; fi
+# copy all code
+COPY --chown=node . /home/unlock/
 
-COPY --chown=node ${BUILD_DIR}/package.json /home/unlock/${BUILD_DIR}/package.json
+# attempt to create dir only for non-packages
 RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 yarn install
 
-# delete deps once packages are built
-USER root
-RUN apk del .build-deps \
-    && apk add bash openjdk11
-
+# make sure jav is installed properly
 RUN java -version
 RUN javac -version
 
 # make sure of cache folder perms
 RUN chown -R node:node /home/unlock/yarn-cache
 
-USER node
-
 # build all packages in packages/**
 RUN yarn build
-
-# copy scripts
-RUN mkdir /home/unlock/scripts
-COPY --chown=node scripts /home/unlock/scripts
-
-# copy app code
-COPY --chown=node ${BUILD_DIR}/ /home/unlock/${BUILD_DIR}/.
 
 ###
 ## Need to run subgraph test 
@@ -126,21 +74,7 @@ RUN set -ex && \
     /usr/glibc-compat/sbin/ldconfig /lib /usr/glibc-compat/lib
 
 ##
-## 3. build the app
-##
-FROM dev as build
-
-ARG BUILD_DIR
-ARG PORT
-
-# additional build step (nb: strip "packages/" to get worspace name)
-RUN yarn workspace @unlock-protocol/${BUILD_DIR/packages\/} build
-
-# package everything for prod
-RUN cd $BUILD_DIR && yarn prod-install --pack /home/node/app
-
-##
-## 4. export a minimal image w only the prod app
+## export a minimal image w only the prod app
 ##
 FROM node:16-alpine as prod
 
