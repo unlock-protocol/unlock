@@ -19,6 +19,7 @@ import {
 import useAccount from '~/hooks/useAccount'
 import { useStorageService } from '~/utils/withStorageService'
 import { useCheckoutSteps } from './useCheckoutItems'
+import { ethers } from 'ethers'
 
 const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
@@ -29,24 +30,31 @@ interface Props {
   checkoutService: CheckoutService
 }
 
+interface AmountBadeProps {
+  symbol: string
+  amount: string
+}
+
+const AmountBadge = ({ symbol, amount }: AmountBadeProps) => {
+  return (
+    <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
+      {amount + ' '} {symbol.toUpperCase()}
+      <CryptoIcon name={symbol.toLowerCase()} size={18} />
+    </div>
+  )
+}
+
 export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
 
   const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
-  const wallet = useWalletService()
   const { account, network, isUnlockAccount } = useAuth()
   const { getTokenBalance } = useAccount(account!, network!)
-  const [isTokenBalanceLoading, setIsTokenBalanceLoading] = useState(true)
-  const [balance, setBalance] = useState<string | null>(null)
   const storageService = useStorageService()
   const baseSymbol = config.networks[lock.network].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
-  const isPayable = balance
-    ? userCanAffordKey(lock as any, balance, recipients.length)
-    : false
-  const balanceAmount = balance
 
   const { isLoading, data: fiatPricing } = useQuery(
     ['fiat', quantity, lock.address, lock.network],
@@ -71,16 +79,28 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     }
   )
 
-  useEffect(() => {
-    const getBalance = async () => {
-      if (account) {
-        const balance = await getTokenBalance(lock!.currencyContractAddress!)
-        setBalance(balance)
-        setIsTokenBalanceLoading(false)
+  const { isLoading: isWalletInfoLoading, data: walletInfo } = useQuery(
+    ['balance', account, lock.address],
+    async () => {
+      const balance = await getTokenBalance(lock.currencyContractAddress)
+      const networkBalance = lock.currencyContractAddress
+        ? await getTokenBalance(null)
+        : balance
+
+      const isPayable =
+        userCanAffordKey(lock, balance, recipients.length) &&
+        ethers.BigNumber.from(networkBalance).gt(0)
+
+      const options = {
+        balance,
+        networkBalance,
+        isPayable,
       }
+      return options
     }
-    getBalance()
-  }, [account, wallet, setBalance, lock, getTokenBalance])
+  )
+
+  const isWaiting = isLoading || isClaimableLoading || isWalletInfoLoading
 
   const lockConfig = paywallConfig.locks[lock!.address]
 
@@ -92,15 +112,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const enableCreditCard = !!fiatPricing?.creditCardEnabled
 
-  const enableCrypto = isPayable && !isUnlockAccount && !isTokenBalanceLoading
+  const enableCrypto = !isUnlockAccount
 
   const enableClaim =
     !!isClaimable &&
     !isClaimableLoading &&
     isReceiverAccountOnly &&
     !enableCrypto
-
-  const isWaiting = isLoading || isClaimableLoading || isTokenBalanceLoading
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -114,7 +132,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   return (
     <Fragment>
       <Stepper position={4} service={checkoutService} items={stepItems} />
-      <main className="h-full p-6 overflow-auto ">
+      <main className="h-full p-6 overflow-auto">
         {isWaiting ? (
           <div className="space-y-6">
             <div className="w-full h-24 rounded-lg bg-zinc-50 animate-pulse" />
@@ -124,7 +142,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
           <div className="space-y-6">
             {enableCrypto && (
               <button
-                disabled={!isPayable || isLoading}
+                disabled={!walletInfo?.isPayable}
                 onClick={(event) => {
                   event.preventDefault()
                   send({
@@ -134,21 +152,16 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     },
                   })
                 }}
-                className="flex flex-col w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
+                className="grid w-full p-4 space-y-2 border border-gray-400 rounded-lg shadow cursor-pointer group hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:bg-white"
               >
                 <div className="flex justify-between w-full">
                   <h3 className="font-bold"> Pay via cryptocurrency </h3>
-                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-                    {symbol.toUpperCase()}
-                    <CryptoIcon name={symbol.toLowerCase()} size={18} />
-                  </div>
+                  <AmountBadge amount={lock.keyPrice} symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
-                    Your balance ({symbol.toUpperCase()})
-                    <p className="w-20 ml-2 font-medium truncate">
-                      {balanceAmount?.toString()}
-                    </p>
+                    Your balance ({symbol.toUpperCase()}){' '}
+                    {parseFloat(walletInfo?.balance).toFixed(6)}{' '}
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -217,7 +230,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
             {enableSuperfluid && (
               <button
-                disabled={isLoading || !isPayable}
+                disabled={!walletInfo?.isPayable}
                 onClick={(event) => {
                   event.preventDefault()
                   send({
@@ -231,16 +244,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               >
                 <div className="flex items-center justify-between w-full">
                   <h3 className="font-bold"> Stream payment via superfluid </h3>
-                  <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-                    {symbol.toUpperCase()}
-                    <CryptoIcon name={symbol.toLowerCase()} size={18} />
-                  </div>
+                  <AmountBadge amount={lock.keyPrice} symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full gap-2">
                   <div className="flex items-center w-full text-sm text-left text-gray-500">
                     Your balance ({symbol.toUpperCase()})
                     <p className="w-20 ml-2 font-medium truncate">
-                      {balanceAmount?.toString()}
+                      {walletInfo?.balance?.toString()}
                     </p>
                   </div>
                   <RightArrowIcon
