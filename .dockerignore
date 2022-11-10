@@ -1,27 +1,37 @@
-**/node_modules
-**/build/**
-
-**/src/.next
-**/src/out
-
-node_modules/
-
-.vscode
-.git
-
 # docker itself (prevent rebuilds when editing)
 Dockerfile
 
-# Artifacts
-unlock-app/src/artifacts/
-smart-contract-extensions/build/
-smart-contracts/build/
-smart-contracts/cache
-smart-contracts/artifacts
+# root level 
+node_modules
 builds/
+.eslintcache
 
-shared/node_modules/
+# for all workspaces 
+**/node_modules
+**/build
+**/dist
+**/coverage
+**/artifacts
+**/cache
+**/.next
+**/out
+**/deprec
 
+# git 
+.git
+
+# Log files
+logs
+*.log
+
+# Temp files
+tmp
+*.tmp
+.DS_Store
+**/.DS_Store
+
+# IDE related
+.idea
 .vscode
 
 # yarn
