@@ -18,9 +18,9 @@ export function handleNewLock(event: NewLock): void {
   const lock = new Lock(lockID)
 
   // create new lockStats if not existing
-  let lockStats = LockStats.load('1')
+  let lockStats = LockStats.load('Total')
   if (lockStats === null) {
-    lockStats = new LockStats('1')
+    lockStats = LockStats.load('Total')
     lockStats.totalLocksDeployed = BigInt.fromI32(0)
     lockStats.totalKeysSold = BigInt.fromI32(0)
     lockStats.save()
@@ -37,7 +37,7 @@ export function handleNewLock(event: NewLock): void {
   let lockDayData = LockDayData.load(dayID.toString())
   if (lockDayData === null) {
     lockDayData = new LockDayData(dayID.toString())
-    lockDayData.lockDeployed = BigInt.fromI32(0)
+    lockDayData.lockDeployed = BigInt.fromI32(1)
     lockDayData.keysSold = BigInt.fromI32(0)
     lockDayData.activeLocks = BigInt.fromI32(0)
     lockDayData.save()
@@ -63,7 +63,6 @@ export function handleNewLock(event: NewLock): void {
   lock.name = lockContract.name()
   lock.expirationDuration = lockContract.expirationDuration()
   lock.totalKeys = BigInt.fromI32(0)
-  lock.createdAt = event.block.timestamp
 
   // default value
   const symbol = lockContract.try_symbol()

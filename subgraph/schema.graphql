@@ -13,7 +13,6 @@ type Lock @entity {
   maxKeysPerAddress: BigInt
   keys: [Key!] @derivedFrom(field: "lock")
   createdAtBlock: BigInt
-  createdAt: BigInt
   lastKeyMintedAt: BigInt
 }
 
@@ -27,7 +26,6 @@ type Key @entity {
   tokenURI: String
   createdAtBlock: BigInt!
   cancelled: Boolean
-  createdAt: BigInt!
 }
 
 type LockDayData @entity {
