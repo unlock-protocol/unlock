@@ -54,9 +54,14 @@ networks.hardhat = {
 if (process.env.RUN_MAINNET_FORK) {
   // eslint-disable-next-line no-console
   console.log('Running a mainnet fork...')
+  const alchemyAPIKey = process.env.ALCHEMY_API_KEY
+  if (!alchemyAPIKey) {
+    throw new Error('Missing Alchemy API Key, couldnt run a mainnet fork')
+  }
+  const alchemyURL = `https://eth-mainnet.alchemyapi.io/v2/${alchemyAPIKey}`
   networks.hardhat = {
     forking: {
-      url: 'https://rpc.unlock-protocol.com/mainnet',
+      url: alchemyURL,
     },
   }
 
