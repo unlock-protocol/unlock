@@ -112,7 +112,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
 
   const enableCreditCard = !!fiatPricing?.creditCardEnabled
 
-  const enableCrypto = !isUnlockAccount
+  const enableCrypto = !isUnlockAccount || !!walletInfo?.isPayable
 
   const enableClaim =
     !!isClaimable &&
