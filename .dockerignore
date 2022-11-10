@@ -3,6 +3,12 @@ Dockerfile
 
 # root level 
 node_modules
+
+# Artifacts
+unlock-app/src/artifacts/
+smart-contracts/build/
+smart-contracts/cache
+smart-contracts/artifacts
 builds/
 .eslintcache
 

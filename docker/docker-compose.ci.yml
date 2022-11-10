@@ -8,14 +8,6 @@ services:
     ports:
       - 8545:8545
 
-  smart-contract-extensions: # example of Unlock integrations
-    image: smart-contract-extensionss
-    build:
-      context: ../
-      target: dev
-      args:
-        BUILD_DIR: smart-contract-extensions
-
   smart-contracts: # Image with our contracts
     image: smart-contracts
     build:
