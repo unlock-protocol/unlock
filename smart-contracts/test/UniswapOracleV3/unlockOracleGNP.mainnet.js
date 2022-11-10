@@ -1,13 +1,18 @@
 const { unlock, config, ethers } = require('hardhat')
 const { expect } = require('chai')
-const { lockParams, purchaseKeys } = require('./fixtures/locks')
-const { abi: USDCabi } = require('./fixtures/abi/usdc')
+const {
+  lockParams,
+  purchaseKeys,
+} = require('../../smart-contract-extensions/test/fixtures/locks')
+const {
+  abi: USDCabi,
+} = require('../../smart-contract-extensions/test/fixtures/abi/usdc')
 const {
   FACTORY_ADDRESS,
   USDC,
   WETH,
   impersonate,
-} = require('./helpers/mainnet')
+} = require('../../smart-contract-extensions/test/helpers/mainnet')
 
 // get unlock address on mainnet
 const {

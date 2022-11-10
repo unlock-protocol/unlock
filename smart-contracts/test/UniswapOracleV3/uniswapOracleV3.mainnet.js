@@ -2,7 +2,7 @@ const { expect } = require('chai')
 const { ethers } = require('hardhat')
 const { expectRevert } = require('@openzeppelin/test-helpers')
 
-const { FACTORY_ADDRESS, USDC, WETH, DAI, ETH } = require('./helpers/mainnet')
+const { FACTORY_ADDRESS, USDC, WETH, DAI } = require('../helpers/mainnet')
 
 const pairs = [
   [USDC, WETH],
