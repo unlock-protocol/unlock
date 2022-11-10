@@ -4,8 +4,6 @@
   "private": true,
   "dependencies": {
     "@babel/core": "7.20.2",
-    "@ethersproject/abi": "^5.7.0",
-    "@ethersproject/providers": "^5.7.2",
     "@headlessui/react": "1.7.4",
     "@radix-ui/react-avatar": "1.0.1",
     "@testing-library/jest-dom": "5.16.5",
