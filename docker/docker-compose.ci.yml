@@ -29,7 +29,7 @@ services:
     platform: linux/amd64
     build:
       context: ../
-      target: subgraph
+      target: dev
       args:
         BUILD_DIR: subgraph
 
