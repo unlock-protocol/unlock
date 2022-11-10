@@ -15,9 +15,6 @@ RUN mkdir -p /home/unlock
 RUN chown -R node /home/unlock
 WORKDIR /home/unlock
 
-# add yarn cache folder to be used by docker buildkit locally
-RUN echo "cacheFolder: /home/unlock/yarn-cache" >> .yarnrc.yml
-
 # Setting user as root to handle apk install
 USER root
 
@@ -41,7 +38,7 @@ USER node
 COPY --chown=node . /home/unlock/
 
 # attempt to create dir only for non-packages
-RUN --mount=type=cache,target=/home/unlock/yarn-cache,uid=1000,gid=1000 yarn install
+RUN yarn install
 
 # make sure jav is installed properly
 RUN java -version
