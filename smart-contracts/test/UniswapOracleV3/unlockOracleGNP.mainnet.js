@@ -1,18 +1,13 @@
 const { unlock, config, ethers } = require('hardhat')
 const { expect } = require('chai')
+const { abi: USDCabi } = require('../helpers/ABIs/USDC.json')
 const {
-  lockParams,
-  purchaseKeys,
-} = require('../../smart-contract-extensions/test/fixtures/locks')
-const {
-  abi: USDCabi,
-} = require('../../smart-contract-extensions/test/fixtures/abi/usdc')
-const {
-  FACTORY_ADDRESS,
+  UNISWAP_FACTORY_ADDRESS,
   USDC,
   WETH,
   impersonate,
-} = require('../../smart-contract-extensions/test/helpers/mainnet')
+  purchaseKeys,
+} = require('../helpers')
 
 // get unlock address on mainnet
 const {
@@ -34,7 +29,7 @@ describe('Unlock GNP conversion', () => {
     const UnlockUniswapOracle = await ethers.getContractFactory(
       'UniswapOracleV3'
     )
-    oracle = await UnlockUniswapOracle.deploy(FACTORY_ADDRESS)
+    oracle = await UnlockUniswapOracle.deploy(UNISWAP_FACTORY_ADDRESS)
 
     //impersonate unlock multisig
     const unlockOwner = await unlockContract.owner()
@@ -66,8 +61,10 @@ describe('Unlock GNP conversion', () => {
       // create a USDC lock
       ;({ lock } = await unlock.createLock({
         unlockAddress,
-        ...lockParams,
+        name: 'USDC lock',
+        expirationDuration: 600,
         keyPrice: keyPriceUSDC,
+        maxNumberOfKeys: 10,
         currencyContractAddress: USDC,
       }))
     })

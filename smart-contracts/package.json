@@ -29,6 +29,7 @@
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/hardhat-helpers": "workspace:^",
+    "@unlock-protocol/hardhat-plugin": "workspace:^",
     "@unlock-protocol/networks": "workspace:./packages/networks",
     "babel-eslint": "10.1.0",
     "babel-polyfill": "6.26.0",

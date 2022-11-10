@@ -2,7 +2,7 @@ const { expect } = require('chai')
 const { ethers } = require('hardhat')
 const { expectRevert } = require('@openzeppelin/test-helpers')
 
-const { FACTORY_ADDRESS, USDC, WETH, DAI } = require('../helpers/mainnet')
+const { UNISWAP_FACTORY_ADDRESS, USDC, WETH, DAI } = require('../helpers')
 
 const pairs = [
   [USDC, WETH],
@@ -29,7 +29,7 @@ describe(`oracle`, () => {
     const UnlockUniswapOracle = await ethers.getContractFactory(
       'UniswapOracleV3'
     )
-    oracle = await UnlockUniswapOracle.deploy(FACTORY_ADDRESS)
+    oracle = await UnlockUniswapOracle.deploy(UNISWAP_FACTORY_ADDRESS)
   })
 
   describe('consult', () => {

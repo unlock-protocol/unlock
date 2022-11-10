@@ -10,9 +10,6 @@ require('hardhat-gas-reporter')
 // truffle testing
 require('@nomiclabs/hardhat-truffle5')
 
-//
-require('@unlock-protocol/hardhat-plugin')
-
 // code coverage
 require('solidity-coverage')
 
