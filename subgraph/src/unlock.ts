@@ -20,7 +20,7 @@ export function handleNewLock(event: NewLock): void {
   // create new lockStats if not existing
   let lockStats = LockStats.load('Total')
   if (lockStats === null) {
-    lockStats = LockStats.load('Total')
+    lockStats = new LockStats('Total')
     lockStats.totalLocksDeployed = BigInt.fromI32(0)
     lockStats.totalKeysSold = BigInt.fromI32(0)
     lockStats.save()
@@ -39,7 +39,7 @@ export function handleNewLock(event: NewLock): void {
     lockDayData = new LockDayData(dayID.toString())
     lockDayData.lockDeployed = BigInt.fromI32(1)
     lockDayData.keysSold = BigInt.fromI32(0)
-    lockDayData.activeLocks = BigInt.fromI32(0)
+    lockDayData.activeLocks = []
     lockDayData.save()
   } else {
     lockDayData.lockDeployed = lockDayData.lockDeployed.plus(BigInt.fromI32(1))

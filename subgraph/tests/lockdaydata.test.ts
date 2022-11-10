@@ -45,10 +45,9 @@ describe('Describe LockDayData Events', () => {
   })
 
   test('Creation of a lockDayData', () => {
-    const lockDayID = 1 / 86400
     assert.entityCount('LockDayData', 1)
-    assert.fieldEquals('LockDayData', lockDayID.toString(), 'lockDeployed', '1')
-    assert.fieldEquals('LockDayData', lockDayID.toString(), 'keysSold', '0')
-    assert.fieldEquals('LockDayData', lockDayID.toString(), 'activeLocks', '0')
+    assert.fieldEquals('LockDayData', '1', 'lockDeployed', '1')
+    assert.fieldEquals('LockDayData', '1', 'keysSold', '0')
+    assert.fieldEquals('LockDayData', '1', 'activeLocks', `[]`)
   })
 })

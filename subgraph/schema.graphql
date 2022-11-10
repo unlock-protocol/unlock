@@ -32,7 +32,7 @@ type LockDayData @entity {
   id: ID!
   lockDeployed: BigInt!
   keysSold: BigInt!
-  activeLocks: BigInt!
+  activeLocks: [Bytes!]
 }
 
 type LockStats @entity {

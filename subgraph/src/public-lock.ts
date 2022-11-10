@@ -42,26 +42,31 @@ function newKey(event: TransferEvent): void {
   )
   key.save()
 
-  // update lockStats
-  const lockStats = LockStats.load('Total')
-  if (lockStats) {
-    lockStats.totalKeysSold = lockStats.totalKeysSold.plus(BigInt.fromI32(1))
-    lockStats.save()
+  // update lock
+  const lock = Lock.load(event.address.toHexString())
+  if (lock) {
+    lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
+    lock.save()
   }
 
   // update lockDayData
   const dayID = event.block.timestamp.toI32() / 86400
   const lockDayData = LockDayData.load(dayID.toString())
   if (lockDayData) {
+    const activeLocks = lockDayData.activeLocks
     lockDayData.keysSold = lockDayData.keysSold.plus(BigInt.fromI32(1))
+    if (activeLocks && !activeLocks.includes(event.address)) {
+      activeLocks.push(event.address)
+      lockDayData.activeLocks = activeLocks
+    }
     lockDayData.save()
   }
 
-  // update lock
-  const lock = Lock.load(event.address.toHexString())
-  if (lock) {
-    lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
-    lock.save()
+  // update lockStats
+  const lockStats = LockStats.load('Total')
+  if (lockStats) {
+    lockStats.totalKeysSold = lockStats.totalKeysSold.plus(BigInt.fromI32(1))
+    lockStats.save()
   }
 }
 
