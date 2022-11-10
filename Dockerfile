@@ -57,7 +57,7 @@ RUN yarn
 #
 # 2. build packages and prepare image for testing/dev
 #
-FROM node:16-slim as dev
+FROM node:16-bullseye-slim as dev
 
 # install all deps required to build packages
 RUN apt-get update \
