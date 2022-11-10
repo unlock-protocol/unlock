@@ -18,7 +18,7 @@ yarn build <network-name>
 
 #### Multiple chains
 
-There is subgraph deployed for each network where Unlock Protocol is deployed. While code is similar for all, the addresses where the contracts are deployed vary, requiring a specifing config per network stored in `networks.json`.
+There is subgraph deployed for each network where Unlock Protocol is deployed. While code is similar for all, the addresses where the contracts are deployed vary, requiring a specifying config per network stored in `networks.json`.
 
 The `networks.json` file is generated from our `@unlock-protocol/networks` package.
 
@@ -29,7 +29,7 @@ yarn prepare:networks
 
 #### Contrat ABIs
 
-Are Unlock's contracts are upgreadable, we parse the multiple ABIs that are required from our `@unlock-protocol/contracts` package.
+Are Unlock's contracts are upgradable, we parse the multiple ABIs that are required from our `@unlock-protocol/contracts` package.
 
 ```sh
 # parse and build the require ABIs
@@ -44,13 +44,13 @@ Deploy the latest subgraph code to the graph node.
 export SUBGRAPH_DEPLOY_KEY=<api-key>
 
 # build
-sh bin/thegraph deploy <network-name>
+yarn run build <network-name>
 
 # deploy a single network
-sh bin/thegraph deploy <network-name>
+yarn run deploy <network-name>
 
 # deploy all networks
-sh bin/thegraph deploy <network-name>
+yarn run deploy-all
 ```
 
 ## Tests
