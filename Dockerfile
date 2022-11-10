@@ -25,6 +25,8 @@ RUN apt-get update \
     apt-get install --no-install-recommends --assume-yes \
     bash \
     git \
+    python3 \
+    build-essential \
     postgresql \
     default-jdk \
     openjdk-11-jre
