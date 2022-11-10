@@ -26,6 +26,7 @@ RUN apt-get update \
     bash \
     git \
     postgresql \
+    default-jdk \
     openjdk-11-jre
 
 # install deps
