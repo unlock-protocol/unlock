@@ -27,7 +27,6 @@
   "workspaces": [
     "packages/**",
     "smart-contracts",
-    "smart-contract-extensions",
     "subgraph",
     "tests",
     "unlock-app",
