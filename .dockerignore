@@ -39,3 +39,7 @@ tmp
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
+
+# check in unlock-assets -- see #9697
+!./packages/unlock-assets/build
+!./packages/unlock-assets/dist

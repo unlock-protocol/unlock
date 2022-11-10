@@ -37,8 +37,8 @@ USER node
 # copy all code
 COPY --chown=node . /home/unlock/
 
-# attempt to create dir only for non-packages
-RUN yarn install
+# install deps
+RUN yarn
 
 # make sure jav is installed properly
 RUN java -version
@@ -46,7 +46,6 @@ RUN javac -version
 
 # build all packages in packages/**
 RUN yarn build
-
 
 ##
 ## export a minimal image w only the prod app
