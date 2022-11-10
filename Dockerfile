@@ -44,9 +44,6 @@ RUN yarn install
 RUN java -version
 RUN javac -version
 
-# make sure of cache folder perms
-RUN chown -R node:node /home/unlock/yarn-cache
-
 # build all packages in packages/**
 RUN yarn build
 
