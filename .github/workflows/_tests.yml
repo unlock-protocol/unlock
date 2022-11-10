@@ -15,6 +15,7 @@ on:
           "packages/unlock-js",
           "packages/paywall",
           "smart-contracts",
+          "smart-contract-extensions",
           "subgraph",
           "unlock-protocol-com",
           "wedlocks",

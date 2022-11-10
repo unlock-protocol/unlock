@@ -107,6 +107,12 @@
     },
     {
       "minor": {
+        "groupName": "smart-contracts-extensions"
+      },
+      "matchPaths": ["smart-contract-extensions/**"]
+    },
+    {
+      "minor": {
         "groupName": "unlock-app"
       },
       "matchPaths": ["unlock-app/**"]

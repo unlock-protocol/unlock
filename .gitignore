@@ -9,6 +9,7 @@ zos.dev-*.json
 
 # Artifacts
 unlock-app/src/artifacts/
+smart-contract-extensions/build/
 smart-contracts/build/
 builds/
 
