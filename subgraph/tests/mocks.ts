@@ -111,6 +111,14 @@ createMockedFunction(
 createMockedFunction(
   Address.fromString(lockAddressV8),
   'publicLockVersion',
+  'publicLockVersion():(uint16)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromString('8'))])
+
+createMockedFunction(
+  Address.fromString(lockAddressV8),
+  'publicLockVersion',
   'publicLockVersion():(uint256)'
 )
   .withArgs([])
