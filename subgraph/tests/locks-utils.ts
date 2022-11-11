@@ -1,14 +1,27 @@
 import { newMockEvent } from 'matchstick-as'
-import { ethereum, Address, BigInt, log, Bytes } from '@graphprotocol/graph-ts'
+import {
+  dataSourceMock,
+} from 'matchstick-as/assembly/index'
+
+import { ethereum, Address, BigInt, Value, Bytes, DataSourceContext } from '@graphprotocol/graph-ts'
 import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
 import {
   RoleGranted,
   LockManagerRemoved,
   LockMetadata,
 } from '../generated/templates/PublicLock/PublicLock'
-import { lockAddress } from './constants'
+import { lockAddress, lockAddressV8 } from './constants'
 import { LOCK_MANAGER } from '../src/helpers'
 import { PricingChanged } from '../generated/templates/PublicLock/PublicLock'
+
+export function mockDataSourceV8(): void {
+  const v8context = new DataSourceContext()
+  v8context.set(
+    'lockAddress',
+    Value.fromAddress(Address.fromString(lockAddressV8))
+  )
+  dataSourceMock.setReturnValues(lockAddressV8, 'rinkeby', v8context)
+}
 
 export function createNewLockEvent(
   lockOwner: Address,
@@ -31,7 +44,8 @@ export function createNewLockEvent(
   return newLockEvent
 }
 
-export function createLockManagerAddedEvent(
+
+export function createRoleGrantedLockManagerAddedEvent(
   newLockManager: Address
 ): RoleGranted {
   const newRoleGranted = changetype<RoleGranted>(newMockEvent())

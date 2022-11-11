@@ -43,12 +43,13 @@ export function handleNewLock(event: NewLock): void {
     lock.symbol = 'KEY'
   }
 
-  let maxKeysPerAddress = lockContract.try_maxKeysPerAddress()
-  if (!maxKeysPerAddress.reverted) {
-    lock.maxKeysPerAddress = maxKeysPerAddress.value
-  } else {
-    // set to 1 when using address instead of tokenId prior to lock v10
-    lock.maxKeysPerAddress = BigInt.fromI32(1)
+  // maxKeysPerAddress set to 1 prior to lock v10
+  lock.maxKeysPerAddress = BigInt.fromI32(1)
+  if (version.ge(BigInt.fromI32(9))) {
+    let maxKeysPerAddress = lockContract.try_maxKeysPerAddress()
+    if (!maxKeysPerAddress.reverted) {
+      lock.maxKeysPerAddress = maxKeysPerAddress.value
+    }
   }
 
   let maxNumberOfKeys = lockContract.try_maxNumberOfKeys()
@@ -61,8 +62,14 @@ export function handleNewLock(event: NewLock): void {
   lock.version = version
   lock.createdAtBlock = event.block.number
 
-  // lock managers are parsed from RoleGranted events
-  lock.lockManagers = []
+  if (version.le(BigInt.fromI32(8))) {
+    // prior to v8, add default lock manager 
+    lock.lockManagers = [event.params.lockOwner]
+  } else {
+    // after v8, lock managers are parsed from `RoleGranted` events
+    lock.lockManagers = []
+  }
+  
 
   lock.save()
 

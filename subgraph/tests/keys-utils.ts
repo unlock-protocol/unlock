@@ -296,6 +296,7 @@ export function createLockManagerAddedEvent(
 ): LockManagerAdded {
   const lockManagerAddedEvent = changetype<LockManagerAdded>(newMockEvent())
 
+  lockManagerAddedEvent.address = dataSource.address()
   lockManagerAddedEvent.parameters = []
 
   lockManagerAddedEvent.parameters.push(
