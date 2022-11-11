@@ -6,33 +6,11 @@ import {
   beforeAll,
   afterAll,
 } from 'matchstick-as/assembly/index'
-import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { Address } from '@graphprotocol/graph-ts'
+import { lockAddress, lockOwner } from './constants'
+import { createNewLockEvent } from './locks-utils'
+import { handleNewLock } from '../src/unlock'
 
-import {
-  duration,
-  keyPrice,
-  newKeyPrice,
-  lockAddress,
-  lockOwner,
-  tokenAddress,
-  nullAddress,
-  name,
-  symbol,
-  baseTokenURI,
-  maxNumberOfKeys,
-  maxKeysPerAddress,
-  now,
-} from './constants'
-
-import {
-  createNewLockEvent,
-  createLockManagerAddedEvent, // using RoleGranted
-  createLockManagerRemovedEvent,
-  createPricingChangedEvent,
-  createLockUpgradedEvent,
-  createLockMetadata,
-} from './locks-utils'
-import { handleNewLock, handleLockUpgraded } from '../src/unlock'
 // mock contract functions
 import './mocks'
 
