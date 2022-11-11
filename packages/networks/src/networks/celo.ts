@@ -40,16 +40,6 @@ export const celo: NetworkConfig = {
   previousDeploys: [],
   isTestNetwork: false,
   teamMultisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
-  uniswapV3: {
-    factoryAddress: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',
-    quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
-  },
-  wrappedNativeCurrency: {
-    name: 'Celo native asset',
-    symbol: 'CELO',
-    decimals: 18,
-    address: '0x471ece3750da237f93b8e339c536989b8978a438',
-  },
   tokens: [
     {
       name: 'USD Coin',

@@ -42,16 +42,6 @@ export const arbitrum: NetworkConfig = {
   isTestNetwork: false,
   description:
     'Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.',
-  uniswapV3: {
-    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
-    quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
-  },
-  wrappedNativeCurrency: {
-    name: 'Wrapped Ether',
-    symbol: 'WETH',
-    decimals: 18,
-    address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
-  },
   tokens: [
     {
       name: 'Ethereum',
