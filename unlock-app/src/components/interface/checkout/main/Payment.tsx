@@ -10,8 +10,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { lockTickerSymbol, userCanAffordKey } from '~/utils/checkoutLockUtils'
 import dynamic from 'next/dynamic'
-import { useWalletService } from '~/utils/withWalletService'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
@@ -20,6 +19,7 @@ import useAccount from '~/hooks/useAccount'
 import { useStorageService } from '~/utils/withStorageService'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
+import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
@@ -30,12 +30,12 @@ interface Props {
   checkoutService: CheckoutService
 }
 
-interface AmountBadeProps {
+interface AmountBadgeProps {
   symbol: string
   amount: string
 }
 
-const AmountBadge = ({ symbol, amount }: AmountBadeProps) => {
+const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
   return (
     <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
       {amount + ' '} {symbol.toUpperCase()}
@@ -55,7 +55,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const storageService = useStorageService()
   const baseSymbol = config.networks[lock.network].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
-
+  const web3Service = useWeb3Service()
   const { isLoading, data: fiatPricing } = useQuery(
     ['fiat', quantity, lock.address, lock.network],
     async () => {
@@ -82,26 +82,32 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { isLoading: isWalletInfoLoading, data: walletInfo } = useQuery(
     ['balance', account, lock.address],
     async () => {
-      const balance = await getTokenBalance(lock.currencyContractAddress)
-      const networkBalance = lock.currencyContractAddress
-        ? await getTokenBalance(null)
-        : balance
+      const [balance, networkBalance, gasPrice] = await Promise.all([
+        getTokenBalance(lock.currencyContractAddress),
+        getTokenBalance(null),
+        await web3Service.providerForNetwork(lock.network).getGasPrice(),
+      ])
+
+      const gas = parseFloat(ethers.utils.formatUnits(gasPrice || 200, 'gwei'))
+      const isGasPayable = parseFloat(networkBalance) > gas
 
       const isPayable =
-        userCanAffordKey(lock, balance, recipients.length) &&
-        ethers.BigNumber.from(networkBalance).gt(0)
+        userCanAffordKey(lock, balance, recipients.length) && isGasPayable
 
       const options = {
         balance,
         networkBalance,
         isPayable,
+        isGasPayable,
       }
+
       return options
     }
   )
 
   const isWaiting = isLoading || isClaimableLoading || isWalletInfoLoading
 
+  const networkConfig = config.networks[lock.network]
   const lockConfig = paywallConfig.locks[lock!.address]
 
   const isReceiverAccountOnly =
@@ -167,6 +173,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
                     size={20}
                   />
+                </div>
+                <div className="inline-flex text-sm text-start">
+                  {!walletInfo?.isGasPayable &&
+                    `You don't have enough ${networkConfig.nativeCurrency.symbol} for gas fee.`}
                 </div>
               </button>
             )}
@@ -257,6 +267,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
                     size={20}
                   />
+                </div>
+                <div className="inline-flex text-sm text-start">
+                  {!walletInfo?.isGasPayable &&
+                    `You don't have enough funds to pay for gas in ${networkConfig.nativeCurrency.symbol}`}
                 </div>
               </button>
             )}
