@@ -28,7 +28,7 @@ type Key @entity {
   cancelled: Boolean
 }
 
-type LockDayData @entity {
+type UnlockDailyData @entity {
   id: ID!
   lockDeployed: BigInt!
   keysSold: BigInt!

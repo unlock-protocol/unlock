@@ -18,7 +18,7 @@ import {
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
-import { Key, Lock, LockDayData, LockStats } from '../generated/schema'
+import { Key, Lock, UnlockDailyData, LockStats } from '../generated/schema'
 
 import { genKeyID, getKeyExpirationTimestampFor, LOCK_MANAGER } from './helpers'
 
@@ -51,19 +51,19 @@ function newKey(event: TransferEvent): void {
 
   // update lockDayData
   const dayID = event.block.timestamp.toI32() / 86400
-  const lockDayData = LockDayData.load(dayID.toString())
-  if (lockDayData) {
-    const activeLocks = lockDayData.activeLocks
-    lockDayData.keysSold = lockDayData.keysSold.plus(BigInt.fromI32(1))
+  const unlockDailyData = UnlockDailyData.load(dayID.toString())
+  if (unlockDailyData) {
+    const activeLocks = unlockDailyData.activeLocks
+    unlockDailyData.keysSold = unlockDailyData.keysSold.plus(BigInt.fromI32(1))
     if (activeLocks && !activeLocks.includes(event.address)) {
       activeLocks.push(event.address)
-      lockDayData.activeLocks = activeLocks
+      unlockDailyData.activeLocks = activeLocks
     }
-    lockDayData.save()
+    unlockDailyData.save()
   }
 
   // update lockStats
-  const lockStats = LockStats.load('Total')
+  const lockStats = LockStats.load('Unlock')
   if (lockStats) {
     lockStats.totalKeysSold = lockStats.totalKeysSold.plus(BigInt.fromI32(1))
     lockStats.save()

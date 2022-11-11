@@ -4,6 +4,7 @@ import {
   test,
   clearStore,
   beforeAll,
+  afterAll,
 } from 'matchstick-as/assembly/index'
 import { Address, BigInt } from '@graphprotocol/graph-ts'
 
@@ -35,7 +36,7 @@ import { handleNewLock, handleLockUpgraded } from '../src/unlock'
 // mock contract functions
 import './mocks'
 
-describe('Describe LockDayData Events', () => {
+describe('Describe UnlockDailyData Events', () => {
   beforeAll(() => {
     const newLockEvent = createNewLockEvent(
       Address.fromString(lockOwner),
@@ -44,11 +45,25 @@ describe('Describe LockDayData Events', () => {
     handleNewLock(newLockEvent)
   })
 
-  test('Creation of a lockDayData', () => {
+  afterAll(() => {
+    clearStore()
+  })
+
+  test('Creation of a unlockDailyData', () => {
     const lockDayID = 1 / 86400
-    assert.entityCount('LockDayData', 1)
-    assert.fieldEquals('LockDayData', lockDayID.toString(), 'lockDeployed', '1')
-    assert.fieldEquals('LockDayData', lockDayID.toString(), 'keysSold', '0')
-    assert.fieldEquals('LockDayData', lockDayID.toString(), 'activeLocks', `[]`)
+    assert.entityCount('UnlockDailyData', 1)
+    assert.fieldEquals(
+      'UnlockDailyData',
+      lockDayID.toString(),
+      'lockDeployed',
+      '1'
+    )
+    assert.fieldEquals('UnlockDailyData', lockDayID.toString(), 'keysSold', '0')
+    assert.fieldEquals(
+      'UnlockDailyData',
+      lockDayID.toString(),
+      'activeLocks',
+      `[]`
+    )
   })
 })
