@@ -1,17 +1,10 @@
 # syntax = docker/dockerfile:experimental
 
-# default LISTEN port to 3000
-ARG PORT=3000
-
 #
 # 1. install only deps (to be cached)
 #
 FROM node:16-bullseye-slim as deps
 LABEL Unlock <ops@unlock-protocol.com>
-
-# args need to be mentioned at each stage
-ARG BUILD_DIR
-ARG PORT
 
 # Setting user as root to handle apt install
 USER root
@@ -63,10 +56,6 @@ RUN yarn
 #
 FROM deps as dev
 
-# args need to be mentioned at each stage
-ARG BUILD_DIR
-ARG PORT
-
 # copy files from deps layer
 USER node
 WORKDIR /home/unlock
@@ -87,10 +76,10 @@ RUN yarn build
 ##
 FROM dev as prod
 
-ARG BUILD_DIR
-ARG PORT
-ARG COMMAND='yarn prod'
-ENV COMMAND=${COMMAND}
+# default values
+ENV PORT=3000
+ENV BUILD_DIR='locksmith'
+ENV COMMAND='yarn prod'
 
 WORKDIR /home/unlock/${BUILD_DIR}
 
