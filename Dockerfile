@@ -93,10 +93,12 @@ FROM dev as prod
 
 ARG BUILD_DIR
 ARG PORT
-ARG COMMAND
+ARG COMMAND='yarn prod'
 ENV COMMAND=${COMMAND}
+
+WORKDIR /home/unlock/${BUILD_DIR}
 
 # start command
 EXPOSE $PORT
 
-CMD yarn workspace @unlock-protocol/${BUILD_DIR} prod
+CMD $COMMAND
