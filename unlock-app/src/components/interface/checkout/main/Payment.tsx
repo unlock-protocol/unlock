@@ -85,7 +85,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       const [balance, networkBalance, gasPrice] = await Promise.all([
         getTokenBalance(lock.currencyContractAddress),
         getTokenBalance(null),
-        await web3Service.providerForNetwork(lock.network).getGasPrice(),
+        web3Service.providerForNetwork(lock.network).getGasPrice(),
       ])
 
       const gas = parseFloat(ethers.utils.formatUnits(gasPrice || 200, 'gwei'))
