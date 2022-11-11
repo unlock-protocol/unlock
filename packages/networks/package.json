@@ -1,6 +1,6 @@
 {
     "name": "@unlock-protocol/networks",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "description": "Unlock Protocol's contract addressess for various networks",

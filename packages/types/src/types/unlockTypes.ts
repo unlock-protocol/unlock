@@ -46,10 +46,16 @@ export interface NetworkConfig {
   serializerAddress?: string
   multisig?: string
   subgraph: {
-    endpoint:string
-    endpointV2?:string
-    networkName? :string // for thegraph hosted service
-  },
+    endpoint: string
+    endpointV2?: string
+    networkName?: string // for thegraph hosted service
+  }
+  uniswapV3?: Partial<{
+    subgraph: string
+    factoryAddress: string
+    quoterAddress: string
+  }>
+
   ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
@@ -73,6 +79,12 @@ export interface NetworkConfig {
     name: string
     symbol: string
     decimals: number
+  }
+  wrappedNativeCurrency?: {
+    name: string
+    symbol: string
+    decimals: number
+    address: string
   }
   startBlock?: number
   previousDeploys?: NetworkDeploy[]

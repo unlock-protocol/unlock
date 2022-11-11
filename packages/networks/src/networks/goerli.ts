@@ -41,13 +41,29 @@ export const goerli: NetworkConfig = {
   previousDeploys: [],
   isTestNetwork: true,
   teamMultisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
+  uniswapV3: {
+    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+  },
+  wrappedNativeCurrency: {
+    name: 'Wrapped Ether',
+    symbol: 'WETH',
+    decimals: 18,
+    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+  },
   tokens: [
+    {
+      name: 'USD Coin',
+      symbol: 'USDC',
+      address: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
+      decimals: 6,
+    },
     {
       name: 'Wrapped Ether',
       address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
       symbol: 'WETH',
       decimals: 18,
     },
+
     {
       name: 'Uniswap',
       address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',

@@ -39,7 +39,23 @@ export const mumbai: NetworkConfig = {
   description: 'Polygon test network. Do not use for production',
   isTestNetwork: true,
   teamMultisig: '0x12E37A8880801E1e5290c815a894d322ac591607',
+  uniswapV3: {
+    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+  },
+  wrappedNativeCurrency: {
+    name: 'Wrapped MATIC',
+    symbol: 'WMATIC',
+    decimals: 18,
+    address: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+  },
   tokens: [
+    {
+      name: 'USD Coin',
+      address: '0x0FA8781a83E46826621b3BC094Ea2A0212e71B23',
+      symbol: 'USDC',
+      decimals: 6,
+    },
     {
       name: 'Wrapped Ether',
       address: '0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa',
