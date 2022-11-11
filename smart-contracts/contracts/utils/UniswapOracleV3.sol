@@ -14,11 +14,6 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
 
     event PairAdded(address token1, address token2);
 
-    error MISSING_POOL(
-        address token1,
-        address token2
-    );
-
     constructor(address _factory) {
         factory = _factory;
     }
@@ -27,7 +22,7 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
         address _tokenIn,
         uint256 _amountIn,
         address _tokenOut
-    ) public view returns (uint256 quoteAmount) {
+    ) public view override returns (uint256 quoteAmount) {
         address pool = IUniswapV3Factory(factory).getPool(_tokenIn, _tokenOut, FEE);
         if(pool == address(0)){
             return 0;
@@ -37,7 +32,7 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
     }
 
     // deprec
-    function update(address _tokenIn, address _tokenOut) public {
+    function update(address _tokenIn, address _tokenOut) public override {
         console.log(_tokenIn, _tokenOut);
         address pool = IUniswapV3Factory(factory).getPool(_tokenIn, _tokenOut, FEE);
         console.log(pool);
@@ -52,7 +47,7 @@ contract UniswapOracleV3 is IUniswapOracleV3 {
         address _tokenIn,
         uint256 _amountIn,
         address _tokenOut
-    ) external returns (uint256 _amountOut) {
+    ) external override returns (uint256 _amountOut) {
         update(_tokenIn, _tokenOut);
         _amountOut = consult(_tokenIn, _amountIn, _tokenOut);
     }
