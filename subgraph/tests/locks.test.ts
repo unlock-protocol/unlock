@@ -40,6 +40,7 @@ import {
   baseTokenURI,
   maxNumberOfKeys,
   maxKeysPerAddress,
+  lockAddressV8,
 } from './constants'
 
 // mock contract functions
@@ -160,16 +161,16 @@ describe('Describe Locks events', () => {
 
 describe('Describe Locks events (v8)', () => {
   beforeAll(() => {
+    mockDataSourceV8()
     const newLockEvent = createNewLockEvent(
       Address.fromString(lockOwner),
-      Address.fromString(lockAddress)
+      Address.fromString(lockAddressV8)
     )
     handleNewLock(newLockEvent)
   })
   test('Creation of a new lock (v8)', () => {
-    mockDataSourceV8()
     assert.entityCount('Lock', 1)
-    assert.fieldEquals('Lock', lockAddress, 'address', lockAddress)
+    assert.fieldEquals('Lock', lockAddress, 'address', lockAddressV8)
     assert.fieldEquals('Lock', lockAddress, 'createdAtBlock', '1')
     assert.fieldEquals('Lock', lockAddress, 'version', '8')
     assert.fieldEquals('Lock', lockAddress, 'price', '1000')
