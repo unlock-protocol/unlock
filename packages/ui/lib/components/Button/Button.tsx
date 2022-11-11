@@ -33,7 +33,7 @@ const VARIANTS_STYLES: Record<Variant, string> = {
   secondary:
     'bg-white transition ease-in-out duration-300 text-brand-dark [box-shadow:0px_8px_30px_0px_rgba(0,_0,_0,_0.08)] hover:[box-shadow:0px_0px_10px_0px_rgba(183,_19,_255,_0.1)] disabled:hover:[box-shadow:0px_8px_30px_0px_rgba(0,_0,_0,_0.08)] disabled:hover:bg-opacity-75',
   'outlined-primary':
-    'border-2 border-brand-ui-primary transition ease-in-out duration-300 hover:text-brand-ui-primary disabled:text-brand-gray disabled:hover:text-brand-gray disabled:hover:bg-opacity-75 font-medium',
+    'border-2 border-brand-ui-primary transition ease-in-out duration-300 hover:text-brand-ui-primary disabled:text-brand-gray disabled:hover:text-brand-gray disabled:hover:bg-opacity-50 font-medium disabled:border-opacity-25 disabled:text-opacity-50',
   transparent:
     'bg-transparent border border-gray-200 hover:border-gray-300 text-black transition ease-in-out duration-300 hover:text-brand-ui-primary disabled:text-brand-gray disabled:hover:text-brand-gray disabled:hover:bg-opacity-75 font-medium',
   black: 'border-2 border-black text-black text-medium',
