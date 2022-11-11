@@ -114,7 +114,7 @@ export function Confirm({
   } = lock!
 
   const recurringPayment =
-    paywallConfig?.recurringPayment ||
+    paywallConfig?.recurringPayments ||
     paywallConfig?.locks[lockAddress]?.recurringPayments
   const totalApproval =
     typeof recurringPayment === 'string' &&
