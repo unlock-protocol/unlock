@@ -61,8 +61,14 @@ export function handleNewLock(event: NewLock): void {
   lock.version = version
   lock.createdAtBlock = event.block.number
 
-  // lock managers are parsed from RoleGranted events
-  lock.lockManagers = []
+  if (version.le(BigInt.fromI32(8))) {
+    // prior to v8, add default lock manager 
+    lock.lockManagers = [event.params.lockOwner]
+  } else {
+    // after v8, lock managers are parsed from `RoleGranted` events
+    lock.lockManagers = []
+  }
+  
 
   lock.save()
 

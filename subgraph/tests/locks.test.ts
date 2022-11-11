@@ -11,6 +11,7 @@ import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { handleNewLock, handleLockUpgraded } from '../src/unlock'
 import {
   handleRoleGranted,
+  handleLockManagerAdded,
   handleLockManagerRemoved,
   handlePricingChanged,
   handleLockMetadata,
@@ -18,11 +19,13 @@ import {
 
 import {
   createNewLockEvent,
-  createLockManagerAddedEvent, // using RoleGranted
+  createRoleGrantedLockManagerAddedEvent, // using RoleGranted
+  createLockManagerAddedEvent, 
   createLockManagerRemovedEvent,
   createPricingChangedEvent,
   createLockUpgradedEvent,
   createLockMetadata,
+  mockDataSourceV8,
 } from './locks-utils'
 import {
   duration,
@@ -82,13 +85,28 @@ describe('Describe Locks events', () => {
     )
   })
 
-  test('Lock manager added', () => {
+  test('Lock manager added (using `RoleGranted`)', () => {
     assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[]`)
-    const newLockManagerAdded = createLockManagerAddedEvent(
+    const newLockManagerAdded = createRoleGrantedLockManagerAddedEvent(
       Address.fromString(lockManager)
     )
     handleRoleGranted(newLockManagerAdded)
     assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockManager}]`)
+  })
+
+  test('Lock manager added (using `LockManagerAdded`)', () => {
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[]`)
+    const newLockManagerAdded = createLockManagerAddedEvent(
+      Address.fromString(lockManager)
+    )
+    handleLockManagerAdded(newLockManagerAdded)
+    // event should be ignored in v11 as we use `RoleGranted` instead
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'lockManagers',
+      `[]`
+    )
   })
 
   test('Lock manager removed', () => {
@@ -137,5 +155,59 @@ describe('Describe Locks events', () => {
     assert.fieldEquals('Lock', lockAddress, 'name', name)
     assert.fieldEquals('Lock', lockAddress, 'symbol', symbol)
     // assert.fieldEquals('Lock', lockAddress, 'baseTokenURI', `12`)
+  })
+})
+
+describe('Describe Locks events (v8)', () => {
+  beforeAll(() => {
+    const newLockEvent = createNewLockEvent(
+      Address.fromString(lockOwner),
+      Address.fromString(lockAddress)
+    )
+    handleNewLock(newLockEvent)
+  })
+  test('Creation of a new lock (v8)', () => {
+    mockDataSourceV8()
+    assert.entityCount('Lock', 1)
+    assert.fieldEquals('Lock', lockAddress, 'address', lockAddress)
+    assert.fieldEquals('Lock', lockAddress, 'createdAtBlock', '1')
+    assert.fieldEquals('Lock', lockAddress, 'version', '8')
+    assert.fieldEquals('Lock', lockAddress, 'price', '1000')
+    assert.fieldEquals('Lock', lockAddress, 'name', 'My lock v8')
+    assert.fieldEquals('Lock', lockAddress, 'expirationDuration', `${duration}`)
+    assert.fieldEquals('Lock', lockAddress, 'tokenAddress', nullAddress)
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
+    assert.fieldEquals('Lock', lockAddress, 'totalKeys', '0')
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'maxNumberOfKeys',
+      `${maxNumberOfKeys}`
+    )
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'maxKeysPerAddress',
+      `${maxKeysPerAddress}`
+    )
+  })
+
+  test('Lock manager added (v8)', () => {
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
+    const newLockManagerAdded = createLockManagerAddedEvent(
+      Address.fromString(lockManager)
+    )
+    handleLockManagerAdded(newLockManagerAdded)
+
+    assert.fieldEquals(
+      'Lock',
+      lockAddress,
+      'lockManagers',
+      `[${lockOwner}, ${lockManager}]`
+    )
+  })
+
+  afterAll(() => {
+    clearStore()
   })
 })

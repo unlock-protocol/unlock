@@ -74,6 +74,8 @@ templates:
         - event: RoleGranted(indexed bytes32,indexed address,indexed address)
           handler: handleRoleGranted
           receipt: true
+        - event: LockManagerAdded(indexed address)
+          handler: handleLockManagerAdded
         - event: LockManagerRemoved(indexed address)
           handler: handleLockManagerRemoved
         - event: PricingChanged(uint256,uint256,address,address)
