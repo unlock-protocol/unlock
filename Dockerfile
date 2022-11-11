@@ -63,6 +63,7 @@ RUN chown -R node:node /home/unlock
 
 # default user
 USER node
+COPY --chown=node . .
 
 # make sure java is installed properly
 RUN java -version
