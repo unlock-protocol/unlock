@@ -70,6 +70,7 @@ ARG PORT
 # copy files from deps layer
 USER node
 WORKDIR /home/unlock
+RUN chown -R node:node /home/unlock
 
 # copy all files
 COPY --chown=node . .
