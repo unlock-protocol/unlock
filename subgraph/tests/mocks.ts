@@ -62,6 +62,14 @@ createMockedFunction(
   .withArgs([])
   .returns([ethereum.Value.fromI32(BigInt.fromString('11').toI32())])
 
+createMockedFunction(
+  Address.fromString(lockAddress),
+  'publicLockVersion',
+  'publicLockVersion():(uint256)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromString('11'))])
+
 // key creation functions
 createMockedFunction(
   Address.fromString(lockAddress),
