@@ -96,7 +96,7 @@ describe('Describe Locks events', () => {
   })
 
   test('Lock manager added (using `LockManagerAdded`)', () => {
-    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[]`)
+    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockManager}]`)
     const newLockManagerAdded = createLockManagerAddedEvent(
       Address.fromString(lockManager)
     )
@@ -106,7 +106,7 @@ describe('Describe Locks events', () => {
       'Lock',
       lockAddress,
       'lockManagers',
-      `[]`
+      `[${lockManager}, ${lockManager}]`
     )
   })
 
@@ -170,15 +170,15 @@ describe('Describe Locks events (v8)', () => {
   })
   test('Creation of a new lock (v8)', () => {
     assert.entityCount('Lock', 1)
-    assert.fieldEquals('Lock', lockAddress, 'address', lockAddressV8)
-    assert.fieldEquals('Lock', lockAddress, 'createdAtBlock', '1')
-    assert.fieldEquals('Lock', lockAddress, 'version', '8')
-    assert.fieldEquals('Lock', lockAddress, 'price', '1000')
-    assert.fieldEquals('Lock', lockAddress, 'name', 'My lock v8')
-    assert.fieldEquals('Lock', lockAddress, 'expirationDuration', `${duration}`)
-    assert.fieldEquals('Lock', lockAddress, 'tokenAddress', nullAddress)
-    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
-    assert.fieldEquals('Lock', lockAddress, 'totalKeys', '0')
+    assert.fieldEquals('Lock', lockAddressV8, 'address', lockAddressV8)
+    assert.fieldEquals('Lock', lockAddressV8, 'createdAtBlock', '1')
+    assert.fieldEquals('Lock', lockAddressV8, 'version', '8')
+    assert.fieldEquals('Lock', lockAddressV8, 'price', '1000')
+    assert.fieldEquals('Lock', lockAddressV8, 'name', 'My lock v8')
+    assert.fieldEquals('Lock', lockAddressV8, 'expirationDuration', `${duration}`)
+    assert.fieldEquals('Lock', lockAddressV8, 'tokenAddress', nullAddress)
+    assert.fieldEquals('Lock', lockAddressV8, 'lockManagers', `[${lockOwner}]`)
+    assert.fieldEquals('Lock', lockAddressV8, 'totalKeys', '0')
     assert.fieldEquals(
       'Lock',
       lockAddress,
@@ -194,7 +194,7 @@ describe('Describe Locks events (v8)', () => {
   })
 
   test('Lock manager added (v8)', () => {
-    assert.fieldEquals('Lock', lockAddress, 'lockManagers', `[${lockOwner}]`)
+    assert.fieldEquals('Lock', lockAddressV8, 'lockManagers', `[${lockOwner}]`)
     const newLockManagerAdded = createLockManagerAddedEvent(
       Address.fromString(lockManager)
     )
