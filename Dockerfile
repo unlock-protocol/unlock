@@ -23,14 +23,18 @@ RUN apt-get update \
     bash \
     git \
     python3 \
+    postgresql \
+    default-jdk \
+    openjdk-11-jre \
     build-essential
 
 # switch to user
-ENV DEST_FOLDER=/opt/manifests
+ENV DEST_FOLDER=/home/unlock
 
 RUN mkdir $DEST_FOLDER
 
 # copy files 
+WORKDIR /tmp
 COPY . .
 
 # copy all package.json files
@@ -57,15 +61,7 @@ RUN yarn
 #
 # 2. build packages and prepare image for testing/dev
 #
-FROM node:16-bullseye-slim as dev
-
-# install all deps required to build packages
-RUN apt-get update \
-    && DEBIAN_FRONTEND=noninteractive \
-    apt-get install --no-install-recommends --assume-yes \
-    postgresql \
-    default-jdk \
-    openjdk-11-jre
+FROM deps as dev
 
 # args need to be mentioned at each stage
 ARG BUILD_DIR
@@ -74,7 +70,6 @@ ARG PORT
 # copy files from deps layer
 USER node
 WORKDIR /home/unlock
-COPY --from=deps --chown=node /opt/manifests .
 
 # copy all files
 COPY --chown=node . .
