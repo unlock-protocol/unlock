@@ -54,6 +54,8 @@ templates:
           file: ./abis/PublicLockV11.json
         - name: PublicLockV12
           file: ./abis/PublicLockV12.json
+        - name: PublicLockV8
+          file: ./abis/PublicLockV8.json
         - name: PublicLockV7
           file: ./abis/PublicLockV7.json
       eventHandlers:
@@ -74,6 +76,8 @@ templates:
         - event: RoleGranted(indexed bytes32,indexed address,indexed address)
           handler: handleRoleGranted
           receipt: true
+        - event: LockManagerAdded(indexed address)
+          handler: handleLockManagerAdded
         - event: LockManagerRemoved(indexed address)
           handler: handleLockManagerRemoved
         - event: PricingChanged(uint256,uint256,address,address)
