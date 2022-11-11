@@ -7,7 +7,6 @@ import { ethereum, Address, BigInt, Value, Bytes, DataSourceContext } from '@gra
 import { NewLock, LockUpgraded } from '../generated/Unlock/Unlock'
 import {
   RoleGranted,
-  LockManagerAdded,
   LockManagerRemoved,
   LockMetadata,
 } from '../generated/templates/PublicLock/PublicLock'
@@ -45,23 +44,6 @@ export function createNewLockEvent(
   return newLockEvent
 }
 
-export function createLockManagerAddedEvent(
-  newLockManager: Address
-): LockManagerAdded {
-  const newLockManagerAdded = changetype<LockManagerAdded>(newMockEvent())
-
-  // set existing lock address
-  newLockManagerAdded.address = Address.fromString(lockAddress)
-
-  newLockManagerAdded.parameters = [
-    new ethereum.EventParam(
-      'account',
-      ethereum.Value.fromAddress(newLockManager)
-    ),
-  ]
-
-  return newLockManagerAdded
-}
 
 export function createRoleGrantedLockManagerAddedEvent(
   newLockManager: Address

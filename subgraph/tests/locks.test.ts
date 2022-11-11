@@ -20,13 +20,16 @@ import {
 import {
   createNewLockEvent,
   createRoleGrantedLockManagerAddedEvent, // using RoleGranted
-  createLockManagerAddedEvent, 
   createLockManagerRemovedEvent,
   createPricingChangedEvent,
   createLockUpgradedEvent,
   createLockMetadata,
   mockDataSourceV8,
 } from './locks-utils'
+import {
+  createLockManagerAddedEvent
+} from './keys-utils'
+
 import {
   duration,
   keyPrice,
