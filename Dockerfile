@@ -56,13 +56,13 @@ RUN yarn
 #
 FROM deps as dev
 
-# copy files from deps layer
-USER node
+# enforce perms
+USER root
 WORKDIR /home/unlock
 RUN chown -R node:node /home/unlock
 
-# copy all files
-COPY --chown=node . .
+# default user
+USER node
 
 # make sure java is installed properly
 RUN java -version
