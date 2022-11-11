@@ -157,6 +157,29 @@ createMockedFunction(
   .returns([ethereum.Value.fromString('My lock v8')])
 
 createMockedFunction(
+    Address.fromString(lockAddressV8),
+  'tokenAddress',
+  'tokenAddress():(address)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromAddress(Address.fromString(nullAddress))])
+
+createMockedFunction(
+  Address.fromString(lockAddressV8),
+  'expirationDuration',
+  'expirationDuration():(uint256)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromUnsignedBigInt(BigInt.fromU32(duration))])
+
+createMockedFunction(
+  Address.fromString(lockAddressV8),
+  'symbol',
+  'symbol():(string)'
+)
+  .withArgs([])
+  .returns([ethereum.Value.fromString(symbol)])
+createMockedFunction(
   Address.fromString(lockAddressV8),
   'tokenURI',
   'tokenURI(uint256):(string)'
