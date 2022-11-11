@@ -9878,6 +9878,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@morpho-labs/ethers-multicall@npm:3.0.0":
+  version: 3.0.0
+  resolution: "@morpho-labs/ethers-multicall@npm:3.0.0"
+  dependencies:
+    dataloader: ^2.1.0
+    ethers: ^5.0.0
+    lodash: ^4.17.21
+  peerDependencies:
+    "@ethersproject/abi": ^5.0.0
+    "@ethersproject/providers": ^5.0.0
+    ethers: ^5.0.0
+  checksum: eafbe1916c164fdaf7f21686da7ee03848db6c92b0a9f1d42d27874df7b9c411e1fd2896a433c73adade16265b83636ae9352e35e3a79236c7c23115c2654ee1
+  languageName: node
+  linkType: hard
+
 "@mrmlnc/readdir-enhanced@npm:^2.2.1":
   version: 2.2.1
   resolution: "@mrmlnc/readdir-enhanced@npm:2.2.1"
@@ -19532,8 +19547,10 @@ __metadata:
     "@graphql-codegen/typescript": 2.8.1
     "@graphql-codegen/typescript-graphql-request": 4.5.8
     "@graphql-codegen/typescript-operations": 2.5.6
+    "@morpho-labs/ethers-multicall": 3.0.0
     "@nomiclabs/hardhat-ethers": 2.2.1
     "@openapitools/openapi-generator-cli": 2.5.2
+    "@uniswap/v3-periphery": 1.4.3
     "@unlock-protocol/contracts": "workspace:./packages/contracts"
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:^"
@@ -27872,7 +27889,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dataloader@npm:2.1.0":
+"dataloader@npm:2.1.0, dataloader@npm:^2.1.0":
   version: 2.1.0
   resolution: "dataloader@npm:2.1.0"
   checksum: bbd43496c41697766f8611f60ed3bae437b450985499140b9603a2447c10d45975d3a0661caaebaa9750bc1bc9fd154676a314423294916c8b8ca1a59a08d139
@@ -32648,7 +32665,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.2":
+"ethers@npm:5.7.2, ethers@npm:^5.0.0":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
