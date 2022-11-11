@@ -106,7 +106,7 @@ describe('Describe Locks events', () => {
       'Lock',
       lockAddress,
       'lockManagers',
-      `[${lockManager}, ${lockManager}]`
+      `[${lockManager}]`
     )
   })
 
@@ -181,19 +181,20 @@ describe('Describe Locks events (v8)', () => {
     assert.fieldEquals('Lock', lockAddressV8, 'totalKeys', '0')
     assert.fieldEquals(
       'Lock',
-      lockAddress,
+      lockAddressV8,
       'maxNumberOfKeys',
       `${maxNumberOfKeys}`
     )
     assert.fieldEquals(
       'Lock',
-      lockAddress,
+      lockAddressV8,
       'maxKeysPerAddress',
-      `${maxKeysPerAddress}`
+      '1'
     )
   })
 
   test('Lock manager added (v8)', () => {
+    mockDataSourceV8()
     assert.fieldEquals('Lock', lockAddressV8, 'lockManagers', `[${lockOwner}]`)
     const newLockManagerAdded = createLockManagerAddedEvent(
       Address.fromString(lockManager)
@@ -202,7 +203,7 @@ describe('Describe Locks events (v8)', () => {
 
     assert.fieldEquals(
       'Lock',
-      lockAddress,
+      lockAddressV8,
       'lockManagers',
       `[${lockOwner}, ${lockManager}]`
     )
