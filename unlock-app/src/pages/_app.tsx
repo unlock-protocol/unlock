@@ -8,7 +8,13 @@ import { config } from '~/config/app'
 import GlobalWrapper from '../components/interface/GlobalWrapper'
 import '../index.css'
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 10,
+    },
+  },
+})
 
 const UnlockApp = ({ Component }: AppProps) => {
   useEffect(() => {
