@@ -25,7 +25,7 @@
     "@uniswap/v2-periphery": "1.1.0-beta.0",
     "@uniswap/v3-core": "Uniswap/v3-core#0.8",
     "@uniswap/v3-periphery": "Uniswap/v3-periphery#0.8",
-    "@uniswap/v3-sdk": "^3.9.0",
+    "@uniswap/v3-sdk": "3.9.0",
     "@unlock-protocol/contracts": "workspace:./packages/contracts",
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config",
     "@unlock-protocol/hardhat-helpers": "workspace:^",
