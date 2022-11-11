@@ -1,9 +1,9 @@
 ---
-title: Data Builder URL
+title: The Data Builder URL
 subTitle: Extending Unlock Protocol’s “hook” capabilities with data
 authorName: Julien Genestoux
 publishDate: November 11, 2022
-description: Today, we’re introducing a new tool that lets a developer change the behavior of deployed locks through hooks while still using the Unlock Labs checkout user interface. This is implemented by way of a data builder URL in the checkout config.
+description: Extending Unlock Protocol’s “hook” capabilities with data.
 image: /images/blog/data-hook.png
 ---
 
