@@ -54,6 +54,8 @@ templates:
           file: ./abis/PublicLockV11.json
         - name: PublicLockV12
           file: ./abis/PublicLockV12.json
+        - name: PublicLockV8
+          file: ./abis/PublicLockV8.json
         - name: PublicLockV7
           file: ./abis/PublicLockV7.json
       eventHandlers:
