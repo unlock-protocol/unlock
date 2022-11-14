@@ -107,25 +107,27 @@ export const PaginationBar = ({
   return (
     <div className="flex items-center justify-between">
       <div className="flex gap-6">
-        <button
+        <Button
+          variant="borderless"
           aria-label="arrow left"
           disabled={backDisabled}
           onClick={() => setPage(page - 1)}
         >
           <ArrowLeftIcon />
-        </button>
+        </Button>
         <Pages
           maxNumbersOfPage={maxNumbersOfPage}
           page={page}
           setPage={setPage}
         />
-        <button
+        <Button
+          variant="borderless"
           aria-label="arrow right"
           disabled={nextDisabled}
           onClick={() => setPage(page + 1)}
         >
           <ArrowRightIcon />
-        </button>
+        </Button>
       </div>
     </div>
   )
