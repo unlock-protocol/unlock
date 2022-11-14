@@ -4,6 +4,10 @@ import networks from '@unlock-protocol/networks'
 import { getCoinbasePricing } from './helpers/coinbase'
 
 var web3Service = new Web3Service(networks)
+const lock = {
+  address: '0xe6a85e67905d41a479a32ff59892861351c825e8',
+  network: 5,
+}
 
 jest.setTimeout(100000)
 
@@ -14,7 +18,7 @@ describe('Web3Service', () => {
       'should invoke the implementation of the corresponding version of %s',
       async (method) => {
         expect.assertions(3)
-        const args = ['0xlock', 31337]
+        const args = [lock.address, lock.network]
         const result = {}
         const version = {
           [method](_args) {
@@ -41,25 +45,27 @@ describe('Web3Service', () => {
         })
       }
     )
+  })
 
-    it.each(Object.keys(PublicLockVersions))('Get lock function', async () => {
-      expect.assertions(2)
-      const lockAddress = '0xe6a85e67905d41a479a32ff59892861351c825e8'
-      const response = await web3Service.getLock(lockAddress, 5)
-
-      expect(response.address).toBe(lockAddress)
-
-      const notFromUnlockFactoryContract = async () => {
-        // Fake generated address
-        const response = await web3Service.getLock(
-          '0xAfC5356c67853fC8045586722fE6a253023039eB',
-          5
-        )
-        return response
+  describe('Lock validation', () => {
+    it.each(Object.keys(PublicLockVersions))(
+      'getLock validation on public lock %s',
+      async () => {
+        expect.assertions(2)
+        const service = new Web3Service(networks)
+        const response = await service.getLock(lock.address, 5)
+        expect(response.address).toBe(lock.address)
+        const notFromUnlockFactoryContract = async () => {
+          // Fake generated address
+          const response = await service.getLock(
+            '0xAfC5356c67853fC8045586722fE6a253023039eB',
+            5
+          )
+          return response
+        }
+        await expect(notFromUnlockFactoryContract).rejects.toThrow()
       }
-
-      await expect(notFromUnlockFactoryContract).rejects.toThrow()
-    })
+    )
   })
 
   describe('recoverAccountFromSignedData', () => {
