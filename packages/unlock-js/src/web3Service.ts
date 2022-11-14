@@ -103,6 +103,25 @@ export default class Web3Service extends UnlockService {
    * @return Promise<Lock>
    */
   async getLock(address: string, network: number) {
+    const networkConfig = this.networks[network]
+    if (!(networkConfig && networkConfig.unlockAddress)) {
+      throw new Error(
+        'No unlock factory contract address found in the networks config.'
+      )
+    }
+
+    const provider = this.providerForNetwork(network)
+    const unlockContract = await this.getUnlockContract(
+      networkConfig.unlockAddress,
+      provider
+    )
+
+    const response = await unlockContract.locks(address)
+
+    if (!response.deployed) {
+      throw new Error('Lock is not deployed from unlock factory contract.')
+    }
+
     const version = await this.lockContractAbiVersion(
       address,
       this.providerForNetwork(network)
