@@ -71,7 +71,7 @@ export const UpdateQuantityModal = ({
       await ToastHelper.promise(updateQuantityMutation.mutateAsync(), {
         loading: 'Updating quantity...',
         success: 'Quantity updated',
-        error: 'There is some unexpected issue, please try again',
+        error: `We could not update the quantity for this lock.`,
       })
       setIsOpen(false)
       reset()
@@ -126,7 +126,7 @@ export const UpdateQuantityModal = ({
                 step={1}
                 disabled={unlimitedQuantity}
                 {...register('maxNumberOfKeys', {
-                  min: 1,
+                  min: 0,
                   required: !unlimitedQuantity,
                 })}
               />

@@ -25,7 +25,21 @@ export function LockDetailForm({ disabled }: Props) {
         rel="noopener noreferrer"
         href="https://www.youtube.com/watch?v=s_Lo2RxPYGA"
       >
-        Edit your collection on Opensea
+        Edit your collection on Opensea.
+      </a>
+    </p>
+  )
+
+  const DescDescription = () => (
+    <p>
+      This is each NFT&apos;s description on OpenSea and other marketplaces.{' '}
+      <a
+        className="text-brand-ui-primary hover:underline"
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.markdownguide.org/cheat-sheet"
+      >
+        Markdown is supported.
       </a>
     </p>
   )
@@ -70,7 +84,7 @@ export function LockDetailForm({ disabled }: Props) {
                 disabled={disabled}
                 label="Description"
                 placeholder="Write description here."
-                description="This is each NFT's description on OpenSea and other marketplaces."
+                description={<DescDescription />}
                 error={errors.description?.message}
                 rows={4}
               />
