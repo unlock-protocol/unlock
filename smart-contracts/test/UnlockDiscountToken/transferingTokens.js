@@ -8,7 +8,7 @@ const {
   deployContracts,
   deployLock,
   ADDRESS_ZERO,
-  createExchange,
+  createUniswapV2Exchange,
 } = require('../helpers')
 
 const UnlockDiscountToken = artifacts.require('UnlockDiscountTokenV3.sol')
@@ -34,7 +34,7 @@ contract('UnlockDiscountToken (l2/sidechain) / granting Tokens', (accounts) => {
     lock = await deployLock({ unlock })
 
     // Deploy the exchange
-    const { oracle, weth } = await createExchange({
+    const { oracle, weth } = await createUniswapV2Exchange({
       protocolOwner: await ethers.getSigner(protocolOwner),
       minter: await ethers.getSigner(minter),
       udtAddress: udt.address,

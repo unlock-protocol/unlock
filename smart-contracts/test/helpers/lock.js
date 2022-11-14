@@ -31,7 +31,7 @@ const purchaseKey = async (lock, keyOwner, isErc20 = false) => {
   const { args } = events.find((v) => v.event === 'Transfer')
   const { tokenId, from, to } = args
 
-  return { tokenId, blockNumber, from, to }
+  return { tokenId, blockNumber, from, to, tx }
 }
 
 const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false) => {
@@ -56,7 +56,7 @@ const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false) => {
     }
   )
   // get token ids
-  const { events } = await tx.wait()
+  const { events, blockNumber } = await tx.wait()
   const tokenIds = events
     .filter((v) => v.event === 'Transfer')
     .map(({ args }) => args.tokenId)
@@ -64,6 +64,8 @@ const purchaseKeys = async (lock, nbOfKeys = 1, isErc20 = false) => {
   return {
     tokenIds,
     keyOwners: keyOwners.map(({ address }) => address),
+    tx,
+    blockNumber,
   }
 }
 

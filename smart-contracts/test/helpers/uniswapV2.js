@@ -3,7 +3,7 @@ const { time } = require('@openzeppelin/test-helpers')
 
 const UniswapV2Factory = require('@uniswap/v2-core/build/UniswapV2Factory.json')
 const UniswapV2Router02 = require('@uniswap/v2-periphery/build/UniswapV2Router02.json')
-const UniswapOracle = require('./ABIs/UniswapOracle.json')
+const UniswapOracle = require('./ABIs/UniswapV2Oracle.json')
 
 const { deployWETH } = require('./tokens')
 const { MAX_UINT } = require('./constants')
@@ -33,7 +33,7 @@ const deployUniswapV2 = async (wethAddress, deployer) => {
   return router
 }
 
-const deployUniswapOracle = async (uniswapFactoryAddress, deployer) => {
+const deployUniswapV2Oracle = async (uniswapFactoryAddress, deployer) => {
   const signer =
     typeof deployer === 'string' ? await ethers.getSigner(deployer) : deployer
 
@@ -48,7 +48,7 @@ const deployUniswapOracle = async (uniswapFactoryAddress, deployer) => {
   return oracle
 }
 
-const createExchange = async ({
+const createUniswapV2Exchange = async ({
   protocolOwner,
   minter,
   udtAddress,
@@ -74,7 +74,7 @@ const createExchange = async ({
       value: ethers.utils.parseEther('40', 'ether'),
     })
 
-  const uniswapOracle = await deployUniswapOracle(
+  const uniswapOracle = await deployUniswapV2Oracle(
     await uniswapRouter.factory(),
     protocolOwner
   )
@@ -102,6 +102,6 @@ const createExchange = async ({
 
 module.exports = {
   deployUniswapV2,
-  deployUniswapOracle,
-  createExchange,
+  deployUniswapV2Oracle,
+  createUniswapV2Exchange,
 }
