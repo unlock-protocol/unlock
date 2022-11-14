@@ -27,6 +27,8 @@ You can see the details of the changes in [this pull request](https://github.com
 
 Here are the addresses of contracts deployed on the [various networks](https://docs.uniswap.org/protocol/reference/deployments) where Uniswap is supported:
 
+
+- mainnet: [`0x951A807b523cF6e178e0ab80fBd2C9B035521931`](https://etherscan.io/address/0x951A807b523cF6e178e0ab80fBd2C9B035521931)
 - polygon : [`0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683`](https://polygonscan.com/address/0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683)
 - arbitrum : [`0x821d830a7b9902F83359Bf3Ac727B04b10FD461d`](https://arbiscan.io/address/0x821d830a7b9902F83359Bf3Ac727B04b10FD461d)
 - optimism : [`0x1FF7e338d5E582138C46044dc238543Ce555C963`](https://optimistic.etherscan.io/address/0x1FF7e338d5E582138C46044dc238543Ce555C963#code)
