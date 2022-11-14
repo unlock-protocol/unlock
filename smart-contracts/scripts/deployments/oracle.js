@@ -10,7 +10,7 @@ async function main({
   uniswapFactoryAddress = UNISWAPV3_FACTORY_ADDRESS,
   uniswapVersion = 3,
 } = {}) {
-  if (!uniswapFactoryAddress) {
+  if (uniswapVersion == 2 && !uniswapFactoryAddress) {
     // eslint-disable-next-line no-console
     throw new Error(
       'UNISWAP ORACLE > Missing Uniswap V2 Factory address... aborting.'
