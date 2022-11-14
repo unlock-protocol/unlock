@@ -13,6 +13,7 @@ import {
 } from 'react-icons/ri'
 import { ReactNode } from 'react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+import { Button } from '@unlock-protocol/ui'
 
 dayjs.extend(relativeTimePlugin)
 
@@ -73,7 +74,8 @@ export function MembershipCard({
       >
         <div className="flex items-center justify-end">
           {onClose && (
-            <button
+            <Button
+              variant="borderless"
               onClick={(event) => {
                 event.preventDefault()
                 onClose()
@@ -86,7 +88,7 @@ export function MembershipCard({
                 size={24}
                 key="close"
               />
-            </button>
+            </Button>
           )}
         </div>
         <div className="p-6 text-center">

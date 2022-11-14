@@ -120,12 +120,7 @@ const LockInfoCard = ({
         </div>
 
         <span className="text-base">{addressMinify(lockAddress)}</span>
-        <Button
-          variant="transparent"
-          className="p-0 m-0"
-          onClick={setCopied}
-          aria-label="copy"
-        >
+        <Button variant="borderless" onClick={setCopied} aria-label="copy">
           <CopyIcon size={20} />
         </Button>
         <a href={explorerUrl} target="_blank" rel="noreferrer">
@@ -183,9 +178,14 @@ export const LockDetailCard = ({
 
   const EditButton = ({ onClick }: EditButtonProps) => {
     return (
-      <button className="p-1" onClick={onClick} aria-label="edit">
+      <Button
+        variant="borderless"
+        className="p-1"
+        onClick={onClick}
+        aria-label="edit"
+      >
         <EditIcon size={16} />
-      </button>
+      </Button>
     )
   }
 
