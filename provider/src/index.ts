@@ -5,7 +5,7 @@ const supportedNetworks: Record<string, string> = {
   '1': 'https://eth-mainnet.alchemyapi.io/v2/6idtzGwDtRbzil3s6QbYHr2Q_WBfn100',
   '5': 'https://eth-goerli.g.alchemy.com/v2/W3whZVqRNvcuBkI0_ual5xcoYi2jBRGH',
   '10': 'https://opt-mainnet.g.alchemy.com/v2/m-rf3hR-NDY7a8GQ2IryRITCFrB3bhNq',
-  '56': 'https://sparkling-soft-owl.bsc.quiknode.pro/a03a1e9b9672664fa7a21fd6c48c359c6a6f16db/',
+  '56': 'https://sparkling-soft-owl.bsc.quiknode.pro/96ed56e013b063893b6b864c91f3caaeb45287d7/',
   '100':
     'https://cool-empty-bird.xdai.quiknode.pro/4edba942fb43c718f24480484684e907fe3fe1d3/',
   '137':
