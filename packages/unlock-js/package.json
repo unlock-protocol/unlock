@@ -1,6 +1,6 @@
 {
   "name": "@unlock-protocol/unlock-js",
-  "version": "0.31.3",
+  "version": "0.31.2",
   "description": "This module provides libraries to include Unlock APIs inside a Javascript application.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -28,7 +28,7 @@
   "author": "Unlock Inc",
   "license": "MIT",
   "peerDependencies": {
-    "ethers": "^5.0.0"
+    "ethers": "5.7.2"
   },
   "lint-staged": {
     "*.{js,ts}": [
