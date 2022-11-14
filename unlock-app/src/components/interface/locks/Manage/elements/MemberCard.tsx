@@ -112,9 +112,13 @@ export const MemberCard = ({
           <div className="flex self-start col-span-2 gap-2">
             <CardDetail title="Owner" value={resolvedAddress} />
             <div className="mt-auto">
-              <button onClick={setCopied} aria-label="copy">
+              <Button
+                variant="borderless"
+                onClick={setCopied}
+                aria-label="copy"
+              >
                 <CopyIcon size={20} />
-              </button>
+              </Button>
             </div>
           </div>
           <div className="col-span-2">

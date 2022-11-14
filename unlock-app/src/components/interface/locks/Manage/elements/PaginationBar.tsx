@@ -4,6 +4,7 @@ import {
 } from 'react-icons/fa'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
+import { Button } from '@unlock-protocol/ui'
 
 interface PageProps {
   page: number
@@ -23,9 +24,13 @@ const Page = ({ page, active, setPage }: PageProps) => {
     active ? 'bg-brand-ui-primary text-white' : ''
   )
   return (
-    <button className={pageClass} onClick={() => setPage(page)}>
+    <Button
+      variant="borderless"
+      className={pageClass}
+      onClick={() => setPage(page)}
+    >
       {page}
-    </button>
+    </Button>
   )
 }
 

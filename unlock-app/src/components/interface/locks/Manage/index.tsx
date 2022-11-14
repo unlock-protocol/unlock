@@ -157,13 +157,13 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <button aria-label="arrow back">
+        <Button variant="borderless" aria-label="arrow back">
           <ArrowBackIcon
             size={20}
             className="cursor-pointer"
             onClick={() => router.back()}
           />
-        </button>
+        </Button>
         <div className="flex gap-3">
           <Button variant="outlined-primary">
             <a href={DEMO_URL} target="_blank" rel="noreferrer">
