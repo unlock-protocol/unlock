@@ -18,7 +18,7 @@ import {
 } from '../generated/templates/PublicLock/PublicLock'
 
 import { PublicLockV11 as PublicLock } from '../generated/templates/PublicLock/PublicLockV11'
-import { Key, Lock } from '../generated/schema'
+import { Key, Lock, UnlockDailyData, LockStats } from '../generated/schema'
 
 import { genKeyID, getKeyExpirationTimestampFor, LOCK_MANAGER } from './helpers'
 
@@ -47,6 +47,26 @@ function newKey(event: TransferEvent): void {
   if (lock) {
     lock.totalKeys = lock.totalKeys.plus(BigInt.fromI32(1))
     lock.save()
+  }
+
+  // update lockDayData
+  const dayID = event.block.timestamp.toI32() / 86400
+  const unlockDailyData = UnlockDailyData.load(dayID.toString())
+  if (unlockDailyData) {
+    const activeLocks = unlockDailyData.activeLocks
+    unlockDailyData.keysSold = unlockDailyData.keysSold.plus(BigInt.fromI32(1))
+    if (activeLocks && !activeLocks.includes(event.address)) {
+      activeLocks.push(event.address)
+      unlockDailyData.activeLocks = activeLocks
+    }
+    unlockDailyData.save()
+  }
+
+  // update lockStats
+  const lockStats = LockStats.load('Unlock')
+  if (lockStats) {
+    lockStats.totalKeysSold = lockStats.totalKeysSold.plus(BigInt.fromI32(1))
+    lockStats.save()
   }
 }
 
@@ -178,7 +198,9 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 }
 
-// lock functions below
+// NB: Up to PublicLock v8, we handle the addition of a new lock managers 
+// with our custom event `LockManagerAdded`. Starting from v9,
+// we use OpenZeppelin native `RoleGranted` event.
 export function handleRoleGranted(event: RoleGrantedEvent): void {
   if (
     event.params.role.toHexString() ==
@@ -205,6 +227,22 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
   }
 }
 
+// `LockManagerAdded` event is used only until v8
+export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
+  const lock = Lock.load(event.address.toHexString())
+
+  if (lock && lock.lockManagers && lock.version.le(BigInt.fromI32(8))) {
+    const lockManagers = lock.lockManagers
+    lockManagers.push(event.params.account)
+    lock.lockManagers = lockManagers
+    lock.save()
+    log.debug('Lock manager {} added to {}', [
+      event.params.account.toHexString(),
+      event.address.toHexString(),
+    ])
+  }
+}
+
 export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock && lock.lockManagers) {
@@ -215,7 +253,7 @@ export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
         newManagers.push(managerAddress)
       }
     }
-    lock.lockManagers = newManagers;
+    lock.lockManagers = newManagers
     lock.save()
   }
 }
