@@ -10,7 +10,6 @@ jest.setTimeout(100000)
 describe('Web3Service', () => {
   describe('versions', () => {
     const versionSpecificLockMethods = ['getLock']
-
     it.each(versionSpecificLockMethods)(
       'should invoke the implementation of the corresponding version of %s',
       async (method) => {
@@ -42,6 +41,25 @@ describe('Web3Service', () => {
         })
       }
     )
+
+    it.each(Object.keys(PublicLockVersions))('Get lock function', async () => {
+      expect.assertions(2)
+      const lockAddress = '0xe6a85e67905d41a479a32ff59892861351c825e8'
+      const response = await web3Service.getLock(lockAddress, 5)
+
+      expect(response.address).toBe(lockAddress)
+
+      const notFromUnlockFactoryContract = async () => {
+        // Fake generated address
+        const response = await web3Service.getLock(
+          '0xAfC5356c67853fC8045586722fE6a253023039eB',
+          5
+        )
+        return response
+      }
+
+      await expect(notFromUnlockFactoryContract).rejects.toThrow()
+    })
   })
 
   describe('recoverAccountFromSignedData', () => {
