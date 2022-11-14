@@ -16,7 +16,7 @@ const pairs = [
   ethers.utils.getAddress(two),
 ])
 
-// very unprecise way tp round up things...
+// very unprecise way to round up things...
 const round = (bn) => Math.floor(parseInt(bn.toString().slice(0, 3)))
 
 describe(`oracle`, () => {
