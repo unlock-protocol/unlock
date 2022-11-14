@@ -10969,16 +10969,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nomiclabs/hardhat-ethers@npm:^2.0.0":
-  version: 2.1.1
-  resolution: "@nomiclabs/hardhat-ethers@npm:2.1.1"
-  peerDependencies:
-    ethers: ^5.0.0
-    hardhat: ^2.0.0
-  checksum: c702ffcd2830cdd4eda90e0f6ee191be327bb4c0293d90631eb7e44442662ff4f7282725f0e2f8f456cd2a3dbf7590a682ef31f5c6c141ba6b562870a02e1523
-  languageName: node
-  linkType: hard
-
 "@nomiclabs/hardhat-etherscan@npm:3.1.2":
   version: 3.1.2
   resolution: "@nomiclabs/hardhat-etherscan@npm:3.1.2"
@@ -18167,7 +18157,7 @@ __metadata:
     copyfiles: 2.4.1
     eslint: 8.26.0
     fs-extra: 10.1.0
-    hardhat: ^2.12.2
+    hardhat: 2.12.2
     typescript: 4.8.4
   languageName: unknown
   linkType: soft
@@ -18196,7 +18186,7 @@ __metadata:
     "@unlock-protocol/networks": "workspace:^"
     "@unlock-protocol/tsconfig": "workspace:^"
     "@unlock-protocol/types": "workspace:^"
-    hardhat: ^2.12.2
+    hardhat: 2.12.2
   languageName: unknown
   linkType: soft
 
@@ -18217,7 +18207,7 @@ __metadata:
     eslint: 8.26.0
     eslint-plugin-jest: 27.1.4
     eslint-plugin-mocha: 10.1.0
-    hardhat: ^2.12.2
+    hardhat: 2.12.2
     mocha: 10.1.0
     prettier: 2.7.1
     ts-mocha: 10.0.0
@@ -18451,7 +18441,7 @@ __metadata:
     eth-sig-util: 3.0.1
     ethers: 5.7.2
     fs-extra: 10.1.0
-    hardhat: ^2.12.2
+    hardhat: 2.12.2
     hardhat-contract-sizer: 2.6.1
     hardhat-erc1820: 0.1.0
     hardhat-gas-reporter: 1.0.9
@@ -18776,7 +18766,7 @@ __metadata:
     eslint: 8.26.0
     graphql: 16.6.0
     graphql-request: 5.0.0
-    hardhat: ^2.12.2
+    hardhat: 2.12.2
     jest: 27.5.1
     lint-staged: 13.0.3
     prettier: 2.7.1
@@ -35038,7 +35028,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"hardhat@npm:^2.12.2":
+"hardhat@npm:2.12.2":
   version: 2.12.2
   resolution: "hardhat@npm:2.12.2"
   dependencies:
@@ -55488,7 +55478,7 @@ resolve@^2.0.0-next.3:
     "@nomicfoundation/hardhat-chai-matchers": ^1.0.0
     "@nomicfoundation/hardhat-network-helpers": ^1.0.0
     "@nomicfoundation/hardhat-toolbox": ^1.0.1
-    "@nomiclabs/hardhat-ethers": ^2.0.0
+    "@nomiclabs/hardhat-ethers": 2.2.1
     "@nomiclabs/hardhat-etherscan": ^3.0.0
     "@typechain/ethers-v5": ^10.1.0
     "@typechain/hardhat": ^6.1.2
@@ -55502,7 +55492,7 @@ resolve@^2.0.0-next.3:
     eslint: ^8.23.0
     ethers: ^5.4.7
     graphql: ^16.6.0
-    hardhat: ^2.12.2
+    hardhat: 2.12.2
     hardhat-gas-reporter: ^1.0.8
     isomorphic-fetch: ^3.0.0
     node-fetch: 2.6.7
