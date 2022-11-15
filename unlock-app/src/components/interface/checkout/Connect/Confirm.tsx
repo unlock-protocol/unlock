@@ -62,7 +62,7 @@ export function ConfirmConnect({
             <span className="font-bold text-brand-ui-primary">
               {oauthConfig.clientId}
             </span>{' '}
-            wants you to sign in using your ethereum wallet.
+            wants you to sign in.
           </h1>
         </header>
         <ol>
@@ -70,14 +70,34 @@ export function ConfirmConnect({
             <div>
               <UserIcon className="fill-brand-ui-primary" size={36} />
             </div>
-            <div className="text-brand-gray">
-              Read all transactions associated with{' '}
-              <span className="font-medium text-brand-ui-primary p-0.5 border rounded border-brand-ui-primary">
-                {account
-                  ? `${account.slice(0, 4)}...${account!.slice(-4)}`
-                  : 'address'}
-              </span>
-            </div>
+            {account && isUnlockAccount && (
+              <div className="text-brand-gray">
+                {oauthConfig.clientId} will be able to read all memberships
+                associated with your Unlock account.
+              </div>
+            )}
+            {account && !isUnlockAccount && (
+              <div className="text-brand-gray">
+                Read all transactions associated with your wallet
+                <span className="m-1 font-medium text-brand-ui-primary p-0.5 border rounded border-brand-ui-primary">
+                  {account.slice(0, 4)}...{account!.slice(-4)}
+                </span>
+              </div>
+            )}
+            {!account && (
+              <div className="text-brand-gray">
+                Please use your{' '}
+                <a
+                  target="_blank"
+                  href="https://ethereum.org/en/wallets/"
+                  rel="noreferrer"
+                >
+                  web3 wallet
+                </a>{' '}
+                if you have one, or click the &quot;Getting Started&quot; button
+                to use an Unlock account.
+              </div>
+            )}
           </li>
         </ol>
       </main>
@@ -90,9 +110,13 @@ export function ConfirmConnect({
             iconLeft={<Icon icon={EthereumIcon} size="medium" key="ethereum" />}
             className="w-full"
           >
-            {loading && !isUnlockAccount
-              ? 'Please sign the message'
-              : 'Sign-in with Ethereum'}
+            {isUnlockAccount && 'Continue'}
+            {!isUnlockAccount && (
+              <>
+                {loading && 'Please sign the message'}
+                {!loading && 'Sign-in with Wallet'}
+              </>
+            )}
           </Button>
         </Connected>
         <PoweredByUnlock />
