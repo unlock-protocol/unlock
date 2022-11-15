@@ -8,7 +8,7 @@ import {
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
-
+import { UniswapService } from './uniswapService'
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -75,9 +75,26 @@ export default class Web3Service extends UnlockService {
    * and formats it to a string of ether.
    * Returns a promise with the balance
    */
-  async getAddressBalance(address: string, network: number) {
-    const balance = await this.providerForNetwork(network).getBalance(address)
-    return utils.fromWei(balance, 'ether')
+  async getAddressBalance(
+    address: string,
+    network: number,
+    tokenAddress?: string
+  ) {
+    if (!tokenAddress) {
+      const balance = await this.providerForNetwork(network).getBalance(address)
+      return utils.fromWei(balance, 'ether')
+    } else {
+      const balance = await getErc20BalanceForAddress(
+        tokenAddress,
+        address,
+        this.providerForNetwork(network)
+      )
+      const decimals = await getErc20Decimals(
+        tokenAddress,
+        this.providerForNetwork(network)
+      )
+      return utils.fromDecimal(balance, decimals)
+    }
   }
 
   /**
@@ -86,6 +103,25 @@ export default class Web3Service extends UnlockService {
    * @return Promise<Lock>
    */
   async getLock(address: string, network: number) {
+    const networkConfig = this.networks[network]
+    if (!(networkConfig && networkConfig.unlockAddress)) {
+      throw new Error(
+        'No unlock factory contract address found in the networks config.'
+      )
+    }
+
+    const provider = this.providerForNetwork(network)
+    const unlockContract = await this.getUnlockContract(
+      networkConfig.unlockAddress,
+      provider
+    )
+
+    const response = await unlockContract.locks(address)
+
+    if (!response.deployed) {
+      throw new Error('Lock is not deployed from unlock factory contract.')
+    }
+
     const version = await this.lockContractAbiVersion(
       address,
       this.providerForNetwork(network)
@@ -607,6 +643,60 @@ export default class Web3Service extends UnlockService {
       referrer,
       data
     )
+    return price
+  }
+
+  /**
+   * Get uniswap price in the out token.
+   * ```ts
+   * const web3Service = new Web3Service(networks)
+   * const price = await web3Service.consultUniswap({
+   *  network: 1,
+   *  tokenInAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+   *  tokenOutAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+   *  value: '1',
+   * })
+   *
+   * console.log(price)
+   * ```
+   */
+  async consultUniswap(options: {
+    tokenInAddress: string
+    tokenOutAddress?: string
+    amount: string
+    network?: number
+  }) {
+    const { network, tokenInAddress, amount } = options
+    const networkId = network || 1
+    const networkConfig = this.networks[networkId] // By default, use mainnet
+
+    if (!networkConfig.uniswapV3) {
+      throw new Error('No uniswap support on the network.')
+    }
+
+    const tokenOut = (networkConfig.tokens || []).find(
+      // By default, use USDC on each network
+      (item: any) => item.symbol === 'USDC'
+    )
+
+    let tokenOutAddress = options.tokenOutAddress
+
+    // If no tokenOutAddress provided, use USDC address.
+    if (!tokenOutAddress && tokenOut && tokenOut.address) {
+      tokenOutAddress = tokenOut.address
+    }
+
+    if (!tokenOutAddress) {
+      throw new Error('You need to provide a tokenOutAddress parameter. ')
+    }
+
+    const uniswapService = new UniswapService(this.networks)
+    const price = await uniswapService.price({
+      network,
+      baseToken: tokenInAddress,
+      quoteToken: tokenOutAddress,
+      amount,
+    })
     return price
   }
 }

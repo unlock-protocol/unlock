@@ -113,7 +113,9 @@ export function Confirm({
     keyPrice,
   } = lock!
 
-  const recurringPayment = paywallConfig?.locks[lockAddress]?.recurringPayments
+  const recurringPayment =
+    paywallConfig?.recurringPayments ||
+    paywallConfig?.locks[lockAddress]?.recurringPayments
   const totalApproval =
     typeof recurringPayment === 'string' &&
     recurringPayment.toLowerCase() === 'forever' &&
@@ -149,7 +151,8 @@ export function Confirm({
     useQuery(
       ['purchaseData', lockAddress, lockNetwork, JSON.stringify(recipients)],
       async () => {
-        let purchaseData = password || captcha || null
+        let purchaseData =
+          password || captcha || Array.from({ length: recipients.length })
         const dataBuilder =
           paywallConfig.locks[lock!.address].dataBuilder ||
           paywallConfig.dataBuilder
@@ -182,13 +185,13 @@ export function Confirm({
       ['purchasePriceFor', lockAddress, lockNetwork],
       async () => {
         const prices = await Promise.all(
-          recipients.map(async (recipient) => {
+          recipients.map(async (recipient, index) => {
             const options = {
               lockAddress: lockAddress,
               network: lockNetwork,
               userAddress: recipient,
               referrer: paywallConfig.referrer || recipient,
-              data: purchaseData?.[0] || '0x',
+              data: purchaseData?.[index] || '0x',
             }
             const price = await web3Service.purchasePriceFor(options)
 

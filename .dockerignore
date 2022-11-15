@@ -14,7 +14,6 @@ Dockerfile
 
 # Artifacts
 unlock-app/src/artifacts/
-smart-contract-extensions/build/
 smart-contracts/build/
 smart-contracts/cache
 smart-contracts/artifacts

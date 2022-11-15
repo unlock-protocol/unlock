@@ -99,7 +99,7 @@ export const UpdatePriceModal = ({
       await ToastHelper.promise(updatePriceMutation.mutateAsync(fields), {
         loading: 'Updating price...',
         success: 'Price updated',
-        error: 'There is some unexpected issue, please try again',
+        error: 'We could not update the price for this lock.',
       })
       setIsOpen(false)
       reset()
