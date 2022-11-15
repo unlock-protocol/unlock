@@ -19,6 +19,7 @@ const grantKeysRouter = require('./v2/grantKeys')
 const ticketRouter = require('./v2/ticket')
 const keyController = require('./v2/key')
 const purchaseRouterV2 = require('./v2/purchase')
+const priceControllerV2 = require('./v2/price')
 
 const config = require('../../config/config')
 
@@ -56,8 +57,8 @@ router.use('/v2/api/verifier', verifierRouter)
 router.use('/v2/api/grant', grantKeysRouter)
 router.use('/v2/api/ticket', ticketRouter)
 router.use('/v2/api', keyController)
+router.use('/v2/api', priceControllerV2)
 router.use('/v2/purchase', purchaseRouterV2)
-
 router.use('/', (_, res) => {
   res.send('<a href="https://unlock-protocol.com/">Unlock Protocol</a>')
 })

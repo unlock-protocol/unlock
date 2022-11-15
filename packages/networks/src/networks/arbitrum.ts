@@ -7,6 +7,7 @@ export const arbitrum: NetworkConfig = {
   multisig: '0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0',
   id: 42161,
   name: 'Arbitrum',
+  chain: 'arbitrum',
   blockTime: 1000,
   subgraph: {
     endpoint:
@@ -36,6 +37,7 @@ export const arbitrum: NetworkConfig = {
     name: 'ETH',
     symbol: 'ETH',
     decimals: 18,
+    coingecko: 'ethereum',
   },
   startBlock: 17429533,
   previousDeploys: [],

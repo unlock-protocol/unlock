@@ -7,6 +7,7 @@ export const mainnet: NetworkConfig = {
   unlockAddress: '0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13',
   multisig: '0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9',
   name: 'Ethereum',
+  chain: 'ethereum',
   blockTime: 8000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock',
@@ -37,6 +38,7 @@ export const mainnet: NetworkConfig = {
     name: 'Ether',
     symbol: 'Eth',
     decimals: 18,
+    coingecko: 'ethereum',
   },
   startBlock: 7120795,
   description: 'The most popular network',
