@@ -1,7 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
 import { Lock } from '@unlock-protocol/types'
 import { ReactNode } from 'react'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 import { UpdateDurationForm } from '../forms/UpdateDurationForm'
 import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
