@@ -53200,10 +53200,10 @@ resolve@^2.0.0-next.3:
   languageName: node
   linkType: hard
 
-"solidity-ast@npm:^0.4.15":
-  version: 0.4.26
-  resolution: "solidity-ast@npm:0.4.26"
-  checksum: bfd07ea806fa3989a91f496457969afb292b840a74b0c4015ea16d9ff861091454e1ce3931e667bcbf8aa5c64f10b932fbe8ce50a4b594a031072ebd1938f948
+"solidity-ast@npm:0.4.36":
+  version: 0.4.36
+  resolution: "solidity-ast@npm:0.4.36"
+  checksum: 660965c2b31ccad2ed5d45ccd065f9c14eae491f3c8b4a1071d01bce81f2d1e109d79a586529b19030bf91ee6356674ac51fb86c248d008a38e1e0cdeb97c21a
   languageName: node
   linkType: hard
 
