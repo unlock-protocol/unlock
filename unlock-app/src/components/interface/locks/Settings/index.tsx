@@ -117,7 +117,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-general.svg"
-          description="General ipsum dolor sit amet consectetur. Magna neque facilisis eu feugiat consectetur congue."
+          description="Change the name and ticker for your membership contract."
         />
       ),
     },
