@@ -44,7 +44,8 @@ export const MembershipTerms = ({
     },
     {
       label: 'Quantity',
-      description: 'The maximum number of memberships that can be sold. Note: There is no limit to the number of memberships that can be airdropped by a lock manager or key granter.',
+      description:
+        'The maximum number of memberships that can be sold. Note: There is no limit to the number of memberships that can be airdropped by a lock manager or key granter.',
       children: (
         <UpdateQuantityForm
           lockAddress={lockAddress}
@@ -57,7 +58,8 @@ export const MembershipTerms = ({
     },
     {
       label: 'Price',
-      description: 'The price that the membership contract is charging for one membership.',
+      description:
+        'The price that the membership contract is charging for one membership.',
       children: (
         <UpdatePriceForm
           lockAddress={lockAddress}
@@ -70,8 +72,7 @@ export const MembershipTerms = ({
     },
     {
       label: 'Subscription',
-      description:
-        'Automatically renew memberships when they expire.',
+      description: 'Automatically renew memberships when they expire.',
       children: null,
     },
     {
