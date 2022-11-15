@@ -57,7 +57,7 @@ export const MembershipTerms = ({
     },
     {
       label: 'Price',
-      description: 'The price that you are charging for membership.',
+      description: 'The price that the membership contract is charging for one membership.',
       children: (
         <UpdatePriceForm
           lockAddress={lockAddress}
