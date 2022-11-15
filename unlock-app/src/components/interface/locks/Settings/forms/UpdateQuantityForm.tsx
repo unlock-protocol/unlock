@@ -67,7 +67,7 @@ export const UpdateQuantityForm = ({
       await ToastHelper.promise(updateQuantityMutation.mutateAsync(), {
         loading: 'Updating quantity...',
         success: 'Quantity updated',
-        error: `We could not update the quantity for this lock.`,
+        error: `We could not update the amount of memberships for sale for this lock.`,
       })
       reset()
       if (typeof onUpdate === 'function') {
