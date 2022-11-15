@@ -91,7 +91,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-terms.svg"
-          description="Membership Terms ipsum dolor sit amet consectetur. Magna neque facilisis eu feugiat consectetur congue."
+          description="Membership Terms include the price, currency, duration, payment mechanisms... as well as cancellation terms and transfer fees."
         />
       ),
     },
