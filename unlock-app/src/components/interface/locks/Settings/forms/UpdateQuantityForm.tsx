@@ -31,7 +31,7 @@ export const UpdateQuantityForm = ({
   const walletService = useWalletService()
 
   useEffect(() => {
-    setUnlimitedQuantity(UNLIMITED_KEYS_COUNT == maxNumberOfKeys)
+    setUnlimitedQuantity(UNLIMITED_KEYS_COUNT === maxNumberOfKeys)
   }, [maxNumberOfKeys])
 
   const {
