@@ -39,7 +39,7 @@ export interface Token {
 export interface NetworkConfig {
   id: number
   name: string
-  chain: string
+  chain?: string
   provider: string
   publicProvider: string
   locksmithUri?: string // TODO: remove as this should not be network specific
