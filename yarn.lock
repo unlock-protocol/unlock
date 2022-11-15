@@ -17435,12 +17435,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:18.0.8":
-  version: 18.0.8
-  resolution: "@types/react-dom@npm:18.0.8"
+"@types/react-dom@npm:17.0.11":
+  version: 17.0.11
+  resolution: "@types/react-dom@npm:17.0.11"
   dependencies:
     "@types/react": "*"
-  checksum: 522e5e949d05f35c6037a2290838c9c7ff92a9d06f7d96b993c7c3f5a86d8f3a6337e059c94e6fb0920227f445e5d1ce10fbfe3d9bbd95fb82a5539249d90646
+  checksum: 4d5730dffbef86c887cecad7e3cecda424ce6a64d0b5441c63b5b015d48219868660a2bb1aa15e897e565ad8867fa6b885d4358b04e1c4e589ba4c07c3fda55c
   languageName: node
   linkType: hard
 
@@ -17489,14 +17489,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:18.0.25":
-  version: 18.0.25
-  resolution: "@types/react@npm:18.0.25"
+"@types/react@npm:17.0.44, @types/react@npm:^17":
+  version: 17.0.44
+  resolution: "@types/react@npm:17.0.44"
   dependencies:
     "@types/prop-types": "*"
     "@types/scheduler": "*"
     csstype: ^3.0.2
-  checksum: 231d658c45abdef044a716b4502774f1585d8336d73b2f5bd68f181acbfc874b7a457686ecd29b415b43ed0922c309bab7e2cf96832d188a3f4f1b02f2af760a
+  checksum: ebee02778ca08f954c316dc907802264e0121c87b8fa2e7e0156ab0ef2a1b0a09d968c016a3600ec4c9a17dc09b4274f292d9b15a1a5369bb7e4072def82808f
   languageName: node
   linkType: hard
 
@@ -17508,17 +17508,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 4079f4f959cd4a4bfaeda8b89fe8a1b1f8bdc9d87acfdc5f74a0b39cec9ec6a470724357c62778c0f063180b360c250e920c5a142f1dbcda67d9cc25a6d43a85
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^17":
-  version: 17.0.44
-  resolution: "@types/react@npm:17.0.44"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: ebee02778ca08f954c316dc907802264e0121c87b8fa2e7e0156ab0ef2a1b0a09d968c016a3600ec4c9a17dc09b4274f292d9b15a1a5369bb7e4072def82808f
   languageName: node
   linkType: hard
 
@@ -18704,8 +18693,8 @@ __metadata:
     "@types/next": 8.0.7
     "@types/node": 18.11.9
     "@types/postmate": 1.5.2
-    "@types/react": 18.0.25
-    "@types/react-dom": 18.0.8
+    "@types/react": 17.0.44
+    "@types/react-dom": 17.0.11
     "@types/styled-components": 5.1.26
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/paywall": "workspace:./packages/paywall"
@@ -18875,8 +18864,8 @@ __metadata:
     "@tailwindcss/forms": 0.5.3
     "@tailwindcss/line-clamp": 0.4.2
     "@tailwindcss/typography": 0.5.7
-    "@types/react": 18.0.25
-    "@types/react-dom": 18.0.8
+    "@types/react": 17.0.44
+    "@types/react-dom": 17.0.11
     "@unlock-protocol/networks": "workspace:./packages/networks"
     "@unlock-protocol/unlock-assets": "workspace:./packages/unlock-assets"
     "@vitejs/plugin-react": 2.2.0
@@ -18980,7 +18969,7 @@ __metadata:
     "@types/jest": 27.5.2
     "@types/postmate": 1.5.2
     "@types/qrcode.react": 1.0.2
-    "@types/react": 18.0.25
+    "@types/react": 17.0.44
     "@types/react-google-recaptcha": 2.1.5
     "@types/react-gtm-module": 2.0.1
     "@types/styled-components": 5.1.26
@@ -19154,7 +19143,7 @@ __metadata:
     "@types/jest": 27.5.2
     "@types/next": 8.0.7
     "@types/node": 18.11.9
-    "@types/react": 18.0.25
+    "@types/react": 17.0.44
     "@types/styled-components": 5.1.26
     "@unlock-protocol/eslint-config": "workspace:./packages/eslint-config"
     "@unlock-protocol/jest-config": "workspace:"
@@ -35015,7 +35004,7 @@ fsevents@~2.1.1:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
+  checksum: 872685026db07ad1687056a78388f17c6a9bcd22bbf9d99d1e2b21e2d196c6e99a128bcff48063b3f0cf692a4365142fae9dd06cf8c532bc557a45f8ac853308
   languageName: node
   linkType: hard
 
