@@ -7,11 +7,11 @@ export interface Options {
 }
 
 interface Price {
-  decimals: 8
-  symbol: 'HUSD'
-  price: 0.159081
-  timestamp: 1668520378
-  confidence: 0.99
+  decimals: number
+  symbol: string
+  price: number
+  timestamp: number
+  confidence: number
 }
 
 export async function defiLammaPrice({ network, address, amount }: Options) {

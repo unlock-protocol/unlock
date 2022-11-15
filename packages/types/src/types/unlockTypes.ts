@@ -30,7 +30,7 @@ export interface NetworkDeploy {
 
 export interface Token {
   name: string
-  address?: string
+  address: string
   symbol: string
   decimals: number
   coingecko?: string
@@ -78,7 +78,7 @@ export interface NetworkConfig {
   } | null
   requiredConfirmations?: number
   baseCurrencySymbol?: string
-  nativeCurrency?: Token
+  nativeCurrency?: Omit<Token, 'address'>
   wrappedNativeCurrency?: Token
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
