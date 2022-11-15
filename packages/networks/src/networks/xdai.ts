@@ -56,6 +56,12 @@ export const xdai: NetworkConfig = {
       decimals: 6,
       address: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',
     },
+    {
+      name: 'Tether USD',
+      decimals: 6,
+      address: '0x4ecaba5870353805a9f068101a40e0f32ed605c6',
+      symbol: 'USDT',
+    },
   ],
 }
 export default xdai
