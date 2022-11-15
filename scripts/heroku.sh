@@ -37,7 +37,7 @@ then
 fi
 
 # build image
-docker build --rm=false --progress=plain -t registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE -e COMMAND="$COMMAND" -e BUILD_DIR="$BUILD_DIRECTORY" .
+docker build --rm=false --progress=plain -t registry.heroku.com/$HEROKU_APP_NAME/$HEROKU_CONTAINER_TYPE .
 
 # push image to Heroku registry
 docker login -username=$HEROKU_EMAIL --password=$HEROKU_API_KEY registry.heroku.com
@@ -50,4 +50,4 @@ heroku container:login
 heroku container:release -a $HEROKU_APP_NAME $HEROKU_CONTAINER_TYPE
 
 # migrate the database
-heroku run --app $HEROKU_APP_NAME --type $HEROKU_CONTAINER_TYPE yarn db:migrate
+heroku run --app $HEROKU_APP_NAME --type $HEROKU_CONTAINER_TYPE yarn db:migrate -e COMMAND="$COMMAND";BUILD_DIR="$BUILD_DIRECTORY" 
