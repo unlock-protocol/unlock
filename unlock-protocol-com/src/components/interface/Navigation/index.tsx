@@ -271,8 +271,7 @@ function CommunityPopover() {
                         <p className="text-sm font-bold"> Community </p>
                       </Link>
                       <p className="text-sm text-brand-gray">
-                        Join community of thousands of developers, creators, and
-                        governants building the future of Unlock!
+                        Join a community of thousands of developers and creators building the future of Unlock!
                       </p>
                     </div>
                   </header>
