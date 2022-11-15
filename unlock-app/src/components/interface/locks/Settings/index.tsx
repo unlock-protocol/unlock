@@ -107,7 +107,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-roles.svg"
-          description="Roles ipsum dolor sit amet consectetur. Magna neque facilisis eu feugiat consectetur congue."
+          description="Roles ipsum dolor sit amet consectetur. Your Lock includes multiple roles, such as "Lock Manager", or "Verifiers". Here you can configure which addresses are assigned which roles."
         />
       ),
     },
