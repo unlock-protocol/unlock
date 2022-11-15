@@ -44,7 +44,7 @@ export const MembershipTerms = ({
     },
     {
       label: 'Quantity',
-      description: 'The maximum number of memberships that can be sold.',
+      description: 'The maximum number of memberships that can be sold. Note: There is no limit to the number of memberships that can be airdropped by a lock manager or key granter.',
       children: (
         <UpdateQuantityForm
           lockAddress={lockAddress}
