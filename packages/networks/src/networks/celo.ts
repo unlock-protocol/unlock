@@ -7,6 +7,7 @@ export const celo: NetworkConfig = {
   multisig: '0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8',
   id: 42220,
   name: 'Celo',
+  chain: 'celo',
   description:
     'Celo is a EVM compatible proof-of-stake blockchain designed for mobile with the ability to pay gas with tokens or stablecoins.',
   blockTime: 1000,
@@ -35,6 +36,7 @@ export const celo: NetworkConfig = {
     name: 'CELO',
     symbol: 'CELO',
     decimals: 18,
+    coingecko: 'celo',
   },
   startBlock: 7179039,
   previousDeploys: [],
@@ -56,6 +58,7 @@ export const celo: NetworkConfig = {
       symbol: 'USDC',
       decimals: 6,
       address: '0xef4229c8c3250c675f21bcefa42f58efbff6002a',
+      mainnetAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
     },
   ],
 }

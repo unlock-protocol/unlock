@@ -7,6 +7,7 @@ export const optimisticKovan: NetworkConfig = {
   id: 69,
   name: 'Optimistic Kovan',
   blockTime: 8000,
+  chain: 'kovan',
   subgraph: {
     endpoint: '',
   },
@@ -30,6 +31,7 @@ export const optimisticKovan: NetworkConfig = {
     name: 'Eth',
     symbol: 'Eth',
     decimals: 18,
+    coingecko: 'ethereum',
   },
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',

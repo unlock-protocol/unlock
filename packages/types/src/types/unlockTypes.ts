@@ -30,13 +30,16 @@ export interface NetworkDeploy {
 
 export interface Token {
   name: string
-  address: string
+  address?: string
   symbol: string
   decimals: number
+  coingecko?: string
+  mainnetAddress?: string
 }
 export interface NetworkConfig {
   id: number
   name: string
+  chain: string
   provider: string
   publicProvider: string
   locksmithUri?: string // TODO: remove as this should not be network specific
@@ -75,17 +78,8 @@ export interface NetworkConfig {
   } | null
   requiredConfirmations?: number
   baseCurrencySymbol?: string
-  nativeCurrency?: {
-    name: string
-    symbol: string
-    decimals: number
-  }
-  wrappedNativeCurrency?: {
-    name: string
-    symbol: string
-    decimals: number
-    address: string
-  }
+  nativeCurrency?: Token
+  wrappedNativeCurrency?: Token
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
   description?: string

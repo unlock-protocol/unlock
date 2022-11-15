@@ -9,6 +9,7 @@ export const rinkeby: NetworkConfig = {
   multisig: '0x04e855D82c079222d6bDBc041F6202d5A0137267',
   id: 4,
   name: 'Rinkeby (Testnet, Support ends 10/4/2022)',
+  chain: 'rinkeby',
   blockTime: 8000,
   subgraph: {
     endpoint:
@@ -38,6 +39,7 @@ export const rinkeby: NetworkConfig = {
     name: 'Rinkeby Eth',
     symbol: 'Eth',
     decimals: 18,
+    coingecko: 'ethereum',
   },
   startBlock: 3530008,
   description: 'Ethereum test network. Do not use for production',

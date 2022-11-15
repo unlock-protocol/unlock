@@ -7,6 +7,7 @@ export const avalanche: NetworkConfig = {
   multisig: '0xEc7777C51327917fd2170c62873272ea168120Cb',
   id: 43114,
   name: 'Avalanche (C-Chain)',
+  chain: 'avax',
   blockTime: 1000,
   subgraph: {
     endpoint:
@@ -34,6 +35,7 @@ export const avalanche: NetworkConfig = {
     name: 'AVAX',
     symbol: 'AVAX',
     decimals: 18,
+    coingecko: 'avalanche-2',
   },
   startBlock: 17188332,
   previousDeploys: [],
