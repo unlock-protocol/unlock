@@ -195,7 +195,7 @@ export const UpdatePriceForm = ({
           recurring memberships will need to manually renew in order to approve
           the price change. Similarly if users cancel their membership, they
           will receive a refund in the new currency, and an amount calculated
-          based on the new pricing, not the old one
+          based on the new pricing, not the old one.
         </span>
 
         {isManager && (
