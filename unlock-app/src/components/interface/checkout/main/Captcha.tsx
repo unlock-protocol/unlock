@@ -67,8 +67,6 @@ export function Captcha({ injectedProvider, checkoutService }: Props) {
       <main className="h-full px-6 py-2 overflow-auto">
         <div className="space-y-4">
           <div className="flex justify-center">
-            {/* 
-              // @ts-expect-error - Its instance type 'ReCAPTCHA' is not a valid JSX element.*/}
             <ReCAPTCHA
               sitekey={config.recaptchaKey}
               onChange={(token) => setRecaptchaValue(token)}
