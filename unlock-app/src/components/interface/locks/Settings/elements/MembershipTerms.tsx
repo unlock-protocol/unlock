@@ -31,7 +31,7 @@ export const MembershipTerms = ({
   const settings: SettingProps[] = [
     {
       label: 'Duration',
-      description: 'Set up how long each membership last.',
+      description: 'Set up how long each membership lasts.',
       children: (
         <UpdateDurationForm
           lockAddress={lockAddress}
