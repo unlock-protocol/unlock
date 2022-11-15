@@ -25,6 +25,7 @@ export const SettingCard = ({
     return <SettingCardPlaceholder />
   }
 
+  // TODO: add component and replace also for metadata
   return (
     <Disclosure>
       {({ open }) => (
