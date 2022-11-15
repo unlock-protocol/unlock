@@ -77,7 +77,7 @@ export const MembershipTerms = ({
     {
       label: 'Credit Card Payment',
       description:
-        'Accept credit cards & ACH payments. Service & Credit card processing fees will apply to your member.',
+        'Accept credit cards, Apple Pay and Google Pay. Service & Credit card processing fees will be applied to the price paid by the member.',
       children: null,
     },
     {
