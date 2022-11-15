@@ -69,7 +69,7 @@ export const MembershipTerms = ({
       ),
     },
     {
-      label: 'Recurring',
+      label: 'Subscription',
       description:
         'Automatically renew memberships when they expire.',
       children: null,
