@@ -88,7 +88,7 @@ export const MembershipTerms = ({
     {
       label: 'Cancellation',
       description:
-        'Select how you would process when member cancel the membership.',
+        'Select how your contract should handle cancellations and optionally issue refunds.',
       children: null,
     },
   ]
