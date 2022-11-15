@@ -71,7 +71,7 @@ export const MembershipTerms = ({
     {
       label: 'Recurring',
       description:
-        'Automatically charge membership for certain amount of time.',
+        'Automatically renew memberships when they expire.',
       children: null,
     },
     {
