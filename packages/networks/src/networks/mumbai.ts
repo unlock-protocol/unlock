@@ -73,6 +73,13 @@ export const mumbai: NetworkConfig = {
       decimals: 18,
       mainnetAddress: '0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0',
     },
+    {
+      name: 'Dai Stablecoin',
+      address: '0xcB1e72786A6eb3b44C2a2429e317c8a2462CFeb1',
+      symbol: 'DAI',
+      decimals: 18,
+      mainnetAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+    },
   ],
 }
 
