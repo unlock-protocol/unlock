@@ -48,7 +48,6 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
 export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-  const [routes, setRoutes] = useState([])
   const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
   const { account, network, isUnlockAccount } = useAuth()
@@ -104,7 +103,32 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     }
   )
 
-  const isWaiting = isLoading || isClaimableLoading || isWalletInfoLoading
+  const { isLoading: isRoutesLoading, data: routes } = useQuery(
+    ['routes', account, lock.address],
+    async () => {
+      const params = {
+        accept: [
+          {
+            blockchain: 'polygon',
+            token: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', // lock!.currencyContractAddress!, // Change to 0xE for base currency?
+            amount: lock.keyPrice,
+            toAddress: account, // lock!.address, // We use the user's address because if we pass the lock address the library will try to apply the signature?
+          },
+        ],
+        from: {
+          polygon: account,
+        },
+      }
+      const routes = await route(params)
+      routes.forEach((route: any) => {
+        route.fromSymbol = 'USDC' // TODO: FIX ME
+      })
+      return routes
+    }
+  )
+
+  const isWaiting =
+    isLoading || isClaimableLoading || isWalletInfoLoading || isRoutesLoading
 
   const networkConfig = config.networks[lock.network]
 
@@ -113,7 +137,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const isReceiverAccountOnly =
     recipients.length <= 1 && recipients[0] === account
 
-  const enableSwapAndPurchase = routes.length > 0
+  const enableSwapAndPurchase = routes && routes.length > 0
 
   const enableSuperfluid =
     (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
@@ -137,28 +161,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     enableSuperfluid,
     enableSwapAndPurchase,
   ].every((item) => !item)
-
-  useEffect(() => {
-    const findRoutes = async () => {
-      // That's where we look for the route!
-      const params = {
-        accept: [
-          {
-            blockchain: 'polygon',
-            token: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', // lock!.currencyContractAddress!, // Change to 0xE for base currency?
-            amount: lock.keyPrice,
-            toAddress: account, // lock!.address, // We use the user's address because if we pass the lock address the library will try to apply the signature?
-          },
-        ],
-        from: {
-          polygon: account,
-        },
-      }
-
-      setRoutes(await route(params))
-    }
-    findRoutes()
-  }, [account, lock])
 
   return (
     <Fragment>
@@ -301,18 +303,17 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             )}
             {enableSwapAndPurchase && (
               <>
-                {routes.map((route, id) => {
-                  console.log(route)
+                {routes.map((route: any, id: number) => {
                   return (
                     <button
                       key={id}
-                      disabled={!walletInfo?.isPayable}
                       onClick={(event) => {
                         event.preventDefault()
                         send({
                           type: 'SELECT_PAYMENT_METHOD',
                           payment: {
                             method: 'swap',
+                            route,
                           },
                         })
                       }}
@@ -320,12 +321,21 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                     >
                       <div className="flex justify-between w-full">
                         <h3 className="font-bold"> Swap and Purchase </h3>
-                        <AmountBadge amount={lock.keyPrice} symbol={symbol} />
+                        <AmountBadge
+                          amount={ethers.utils.formatUnits(
+                            route.fromAmount,
+                            route.fromDecimals
+                          )}
+                          symbol={route.fromSymbol}
+                        />
                       </div>
                       <div className="flex items-center justify-between w-full">
                         <div className="flex items-center w-full text-sm text-left text-gray-500">
-                          Your balance ({symbol.toUpperCase()}){' '}
-                          {parseFloat(walletInfo?.balance).toFixed(6)}{' '}
+                          Your balance ({route.fromSymbol}){' '}
+                          {ethers.utils.formatUnits(
+                            route.fromBalance,
+                            route.fromDecimals
+                          )}{' '}
                         </div>
                         <RightArrowIcon
                           className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"

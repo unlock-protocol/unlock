@@ -142,6 +142,10 @@ type Payment =
   | {
       method: 'claim'
     }
+  | {
+      method: 'swap'
+      route: any
+    }
 export interface Transaction {
   status: 'ERROR' | 'PROCESSING' | 'FINISHED'
   transactionHash?: string
