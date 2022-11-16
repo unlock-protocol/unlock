@@ -109,60 +109,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:latest":
-  version: 3.7.1
-  resolution: "@apollo/client@npm:3.7.1"
-  dependencies:
-    "@graphql-typed-document-node/core": ^3.1.1
-    "@wry/context": ^0.7.0
-    "@wry/equality": ^0.5.0
-    "@wry/trie": ^0.3.0
-    graphql-tag: ^2.12.6
-    hoist-non-react-statics: ^3.3.2
-    optimism: ^0.16.1
-    prop-types: ^15.7.2
-    response-iterator: ^0.2.6
-    symbol-observable: ^4.0.0
-    ts-invariant: ^0.10.3
-    tslib: ^2.3.0
-    zen-observable-ts: ^1.2.5
-  peerDependencies:
-    graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
-    graphql-ws: ^5.5.5
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
-    subscriptions-transport-ws: ^0.9.0 || ^0.11.0
-  peerDependenciesMeta:
-    graphql-ws:
-      optional: true
-    react:
-      optional: true
-    react-dom:
-      optional: true
-    subscriptions-transport-ws:
-      optional: true
-  checksum: 95bb1f226fa8771a3e1a782743a31d76c42c470e4105cd023d7d3925a99c8d49f3a453995e6591a9cb960c42ce7baf8d168eded1c8dc9430a1765898ebbe6290
-  languageName: node
-  linkType: hard
-
-"@apollo/react-hooks@npm:4.0.0":
-  version: 4.0.0
-  resolution: "@apollo/react-hooks@npm:4.0.0"
-  dependencies:
-    "@apollo/client": latest
-  checksum: 067744272e8396e328f7753d8954512e9bd3edbadb2c513692e44d34348cb2e0126d9aa7471634cd47a6b2f36d62dbdf9db912b56a16326ce25bfb47ee37471a
-  languageName: node
-  linkType: hard
-
-"@apollo/react-testing@npm:4.0.0":
-  version: 4.0.0
-  resolution: "@apollo/react-testing@npm:4.0.0"
-  dependencies:
-    "@apollo/client": latest
-  checksum: 89159eb0a51a4254607a462eb2bb34d4575b041cccd1738fbafc8c6afe57d8e49a01891f3397e4df8d453445bb3ea3de9f73357a2e67909dd11a8112fb83318f
-  languageName: node
-  linkType: hard
-
 "@ardatan/relay-compiler@npm:12.0.0":
   version: 12.0.0
   resolution: "@ardatan/relay-compiler@npm:12.0.0"
@@ -6419,73 +6365,77 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@depay/web3-assets@npm:6.5.2":
-  version: 6.5.2
-  resolution: "@depay/web3-assets@npm:6.5.2"
+"@depay/web3-assets-evm@npm:^6.6.0":
+  version: 6.6.0
+  resolution: "@depay/web3-assets-evm@npm:6.6.0"
   peerDependencies:
-    "@depay/web3-blockchains": ^5.0.1
-    "@depay/web3-client": ^8.5.0
-    "@depay/web3-constants": ^6.0.0
-    "@depay/web3-tokens": ^8.2.0
-  checksum: b70d6a51d4a1d9c76d44da4efdb671cd9f63a7d9550222941bdc0acc5fa69ad841056ace1112598ced785b87358901c78277c09cf705f9a41e26f7ac0dae321d
+    "@depay/solana-web3.js": ^1.19.0
+    "@depay/web3-blockchains": ^6.2.3
+    "@depay/web3-client-evm": ^10.1.22
+    "@depay/web3-constants": ^6.3.2
+    "@depay/web3-tokens-evm": ^9.12.6
+  checksum: 0b8e621e7f172005c3aa56c7cd4b31597e23a35abcef039838df2aa7e2b364f2753ca163e46513764dd783d3a10a383671a9ee177b0e0abb490a5faf54eca309
   languageName: node
   linkType: hard
 
-"@depay/web3-blockchains@npm:6.1.1":
-  version: 6.1.1
-  resolution: "@depay/web3-blockchains@npm:6.1.1"
-  checksum: b15dd93bff0883d0f753d1982de4eb81b87696cc7e5db13d66445d500e398cf8f833bf7dabd037c518d3e049b6f1f24a541b3763c1e725a0b200d30b2365d3a6
-  languageName: node
-  linkType: hard
-
-"@depay/web3-client@npm:8.5.0":
-  version: 8.5.0
-  resolution: "@depay/web3-client@npm:8.5.0"
-  peerDependencies:
-    "@depay/web3-blockchains": ^5.0.1
-    ethers: ^5.6.8
-  checksum: f337425fbf9a37fb79895b4f82ef2d2cdecb69f5f535cc26c614ce632a1d448b770b46ec64a7dbaf1ac06b31db65f3e494ad291ccf76c3543c60043bacf21716
-  languageName: node
-  linkType: hard
-
-"@depay/web3-constants@npm:6.2.3":
+"@depay/web3-blockchains@npm:6.2.3":
   version: 6.2.3
-  resolution: "@depay/web3-constants@npm:6.2.3"
-  checksum: a09703c76cb91f6af2ca3b04a1162b89cba7efe993f630e599fdb77951374011aaa636cdbe5595c64452d99c25b49a20f5cd93dc57c1411536957fcca9389d44
+  resolution: "@depay/web3-blockchains@npm:6.2.3"
+  checksum: 0350cae57dd2fb707692a1fac48b3124f16c0b9eabbc8659e75276c14a4374e9367eb790d97197a51d33bad954c789d7581997cb0a0293e46a0f29f22f695910
   languageName: node
   linkType: hard
 
-"@depay/web3-exchanges@npm:8.2.0":
-  version: 8.2.0
-  resolution: "@depay/web3-exchanges@npm:8.2.0"
+"@depay/web3-client-evm@npm:^10.1.22":
+  version: 10.1.22
+  resolution: "@depay/web3-client-evm@npm:10.1.22"
   peerDependencies:
-    "@depay/web3-client": ^8.0.0
-    "@depay/web3-constants": ^5.0.0
-    "@depay/web3-tokens": ^8.0.0
-  checksum: 90605bbc9cfdc2751a070ea2b31624fcbcdd71ba10d0dc834daedbb94dd90251d5c2fa7627a73ea01e9f275d1ac4c22715a602969b389fe453597b3a2ff242bd
+    "@depay/web3-blockchains": ^6.2.3
+    ethers: ^5.7.1
+  checksum: 910980ebe0f0639228e15b266b0fb9aef01b0c48abd20102966fddfea68efeebb9d5922bf58e3c3e273948b3bf4301588f52d957ee70b5c0b1048d98ec97bca4
   languageName: node
   linkType: hard
 
-"@depay/web3-payments@npm:10.6.3":
-  version: 10.6.3
-  resolution: "@depay/web3-payments@npm:10.6.3"
-  peerDependencies:
-    "@depay/web3-assets": ^6.5.1
-    "@depay/web3-constants": ^6.0.0
-    "@depay/web3-exchanges": ^9.2.0
-    "@depay/web3-tokens": ^8.2.0
-  checksum: ae074457467f4a5e9d853fe5010eafe8b5ebc7770f4aacb73fb298058049c5833f48f01e25b3def16dcaabfa8d8f4ff819720838aee7b01d82890b5cc54e4416
+"@depay/web3-constants@npm:^6.3.2":
+  version: 6.3.2
+  resolution: "@depay/web3-constants@npm:6.3.2"
+  checksum: f91052181f416e64ae7b41d3a701d59ac077b506fe7f1428b7fb5ed24762ac59b00bece6fe53fb4b643b69826ea078dee735546bdd8ca3c5c89921e407d247de
   languageName: node
   linkType: hard
 
-"@depay/web3-tokens@npm:8.2.0":
-  version: 8.2.0
-  resolution: "@depay/web3-tokens@npm:8.2.0"
+"@depay/web3-exchanges-evm@npm:^11.2.2":
+  version: 11.2.2
+  resolution: "@depay/web3-exchanges-evm@npm:11.2.2"
   peerDependencies:
-    "@depay/web3-client": ^8.5.0
-    "@depay/web3-constants": ^6.0.0
-    ethers: ^5.6.8
-  checksum: d9810257809c1778b749100ff0d927f4c58f8e928f78c8e6680c13dc94d7927428ec37cdc8b530506c7cada17b1bf79a7db2441230d220b575b28a6a27f4397f
+    "@depay/web3-client-evm": ^10.1.22
+    "@depay/web3-constants": ^6.3.2
+    "@depay/web3-tokens-evm": ^9.12.6
+    ethers: ^5.7.1
+  checksum: 8172b14551f195bf9684e0e8e0d105efd33feca9554691fa0fd8e1bc88df5963ecc559f9c2f398236136cf9a3e8ca6e686889973890d5a8b5beab64e80a22016
+  languageName: node
+  linkType: hard
+
+"@depay/web3-payments-evm@npm:10.8.2":
+  version: 10.8.2
+  resolution: "@depay/web3-payments-evm@npm:10.8.2"
+  peerDependencies:
+    "@depay/web3-assets-evm": ^6.6.0
+    "@depay/web3-constants": ^6.3.2
+    "@depay/web3-exchanges-evm": ^11.2.1
+    "@depay/web3-tokens-evm": ^9.12.6
+    ethers: ^5.7.1
+  checksum: 43bad47bc6ee48f5775a9b2636afbfd7de4765d7362839f18fada1599fee00dd91d79ea821d9671e1f67a6a985d10ed452c2ca864ca104003379980a7bcd7d96
+  languageName: node
+  linkType: hard
+
+"@depay/web3-tokens-evm@npm:^9.12.7":
+  version: 9.12.7
+  resolution: "@depay/web3-tokens-evm@npm:9.12.7"
+  peerDependencies:
+    "@depay/web3-blockchains": ^6.2.3
+    "@depay/web3-client-evm": ^10.1.22
+    "@depay/web3-constants": ^6.3.2
+    ethers: ^5.7.1
+  checksum: 9922c5c325955accc366fe2c5e1496d7a82141c72cbcdfead867b8f4adbc123b4b288c2590cc51783d511e6565fcd9f8b3e8f36f588623417945a666299c888b
   languageName: node
   linkType: hard
 
@@ -19079,17 +19029,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@unlock-protocol/unlock-app@workspace:unlock-app"
   dependencies:
-    "@apollo/react-hooks": 4.0.0
-    "@apollo/react-testing": 4.0.0
     "@babel/core": 7.20.2
     "@babel/plugin-proposal-optional-chaining": 7.18.9
-    "@depay/web3-assets": 6.5.2
-    "@depay/web3-blockchains": 6.1.1
-    "@depay/web3-client": 8.5.0
-    "@depay/web3-constants": 6.2.3
-    "@depay/web3-exchanges": 8.2.0
-    "@depay/web3-payments": 10.6.3
-    "@depay/web3-tokens": 8.2.0
+    "@depay/web3-assets-evm": ^6.6.0
+    "@depay/web3-blockchains": 6.2.3
+    "@depay/web3-client-evm": ^10.1.22
+    "@depay/web3-constants": ^6.3.2
+    "@depay/web3-exchanges-evm": ^11.2.2
+    "@depay/web3-payments-evm": 10.8.2
+    "@depay/web3-tokens-evm": ^9.12.7
     "@headlessui/react": 1.7.4
     "@radix-ui/react-avatar": 1.0.1
     "@stripe/react-stripe-js": 1.14.2
@@ -20043,15 +19991,6 @@ __metadata:
   dependencies:
     tslib: ^2.3.0
   checksum: 4187863175061a8f54659f124e3e5c202e010b2b65bf886b4de9777ce8a45cf183b6f6d88f1f537002cbcbea52103a2eadc337d494106490def10acaf9522c5d
-  languageName: node
-  linkType: hard
-
-"@wry/context@npm:^0.7.0":
-  version: 0.7.0
-  resolution: "@wry/context@npm:0.7.0"
-  dependencies:
-    tslib: ^2.3.0
-  checksum: f4ff78023a0b949122037aae766232b7d2284dc415204d22d9ea6d7969ff8f5f29b18128bc9a40e68dc054c8a12b1bf5868a357fdb50c398c447290c3a5b0496
   languageName: node
   linkType: hard
 
@@ -52195,13 +52134,6 @@ resolve@^2.0.0-next.3:
     is-core-module: ^2.2.0
     path-parse: ^1.0.6
   checksum: 21684b4d99a4877337cdbd5484311c811b3e8910edb5d868eec85c6e6550b0f570d911f9a384f9e176172d6713f2715bd0b0887fa512cb8c6aeece018de6a9f8
-  languageName: node
-  linkType: hard
-
-"response-iterator@npm:^0.2.6":
-  version: 0.2.6
-  resolution: "response-iterator@npm:0.2.6"
-  checksum: b0db3c0665a0d698d65512951de9623c086b9c84ce015a76076d4bd0bf733779601d0b41f0931d16ae38132fba29e1ce291c1f8e6550fc32daaa2dc3ab4f338d
   languageName: node
   linkType: hard
 

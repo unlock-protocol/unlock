@@ -1,5 +1,7 @@
 import { CheckoutService } from './checkoutMachine'
-import { route } from '@depay/web3-payments'
+
+import { Blockchain } from '@depay/web3-blockchains'
+import { route } from '@depay/web3-payments-evm'
 import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { useActor } from '@xstate/react'
@@ -36,9 +38,12 @@ interface AmountBadgeProps {
 }
 
 const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
+  if (!symbol || !amount) {
+    return null
+  }
   return (
     <div className="flex items-center gap-x-1 px-2 py-0.5 rounded border font-medium text-sm">
-      {amount + ' '} {symbol.toUpperCase()}
+      {parseFloat(amount).toFixed(2) + ' '} {symbol.toUpperCase()}
       <CryptoIcon name={symbol.toLowerCase()} size={18} />
     </div>
   )
@@ -105,23 +110,35 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { isLoading: isRoutesLoading, data: routes } = useQuery(
     ['routes', account, lock.address],
     async () => {
+      const blockchain = Blockchain.findByNetworkId(lock.network)
+
       const params = {
         accept: [
           {
-            blockchain: 'polygon',
-            token: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', // lock!.currencyContractAddress!, // Change to 0xE for base currency?
+            blockchain: blockchain.name,
+            token: lock!.currencyContractAddress!, // Change to 0xE for base currency?
             amount: lock.keyPrice,
-            toAddress: account, // lock!.address, // We use the user's address because if we pass the lock address the library will try to apply the signature?
+            toAddress: lock!.address,
           },
         ],
         from: {
-          polygon: account,
+          [blockchain.name]: account,
         },
       }
-      const routes = await route(params)
-      routes.forEach((route: any) => {
-        route.fromSymbol = 'USDC' // TODO: FIX ME
-      })
+      let routes
+      try {
+        routes = await route(params)
+        await Promise.all(
+          routes.map(async (route: any) => {
+            route.fromSymbol = await route.fromToken.symbol()
+          })
+        )
+      } catch (error) {
+        console.error(`We could not fetch routes for swap and purchase.`)
+      }
+      if (routes.length == 0) {
+        console.info(`No routes found to swap`, params)
+      }
       return routes
     }
   )

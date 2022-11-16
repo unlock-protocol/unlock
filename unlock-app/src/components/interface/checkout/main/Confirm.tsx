@@ -526,6 +526,23 @@ export function Confirm({
           </div>
         )
       }
+      case 'swap': {
+        return (
+          <div className="grid">
+            <Button
+              loading={isConfirming}
+              disabled={isConfirming}
+              onClick={(event) => {
+                event.preventDefault()
+                console.log(payment)
+                alert('Send tx thru DePay!')
+              }}
+            >
+              {isConfirming ? 'Processing' : 'Swap and Purchase'}
+            </Button>
+          </div>
+        )
+      }
       default: {
         return null
       }
