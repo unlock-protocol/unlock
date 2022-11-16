@@ -97,13 +97,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
     },
     {
       label: 'Roles',
-      children: (
-        <Roles
-          lockAddress={lockAddress}
-          network={network}
-          isManager={isManager}
-        />
-      ),
+      children: <Roles />,
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-roles.svg"
