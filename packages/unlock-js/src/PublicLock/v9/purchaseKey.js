@@ -67,7 +67,7 @@ export default async function (
       erc20Address,
       lockAddress,
       this.provider,
-      this.signer.address
+      this.signer.getAddress()
     )
     if (!approvedAmount || approvedAmount.lt(actualAmount)) {
       await (

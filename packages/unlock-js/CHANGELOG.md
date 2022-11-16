@@ -1,5 +1,9 @@
 # Changes
 
+# 0.31.5
+
+- Added suppport for `runEstimate`
+
 # 0.31.4
 
 - Add check to ensure lock is deployed from unlock factory contract in getLock method

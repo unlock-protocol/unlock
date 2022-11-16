@@ -46,7 +46,7 @@ export default async function (
       erc20Address,
       lockAddress,
       this.provider,
-      this.signer.address
+      this.signer.getAddress()
     )
     if (!approvedAmount || approvedAmount.lt(actualAmount)) {
       // We must wait for the transaction to pass if we want the next one to succeed!
