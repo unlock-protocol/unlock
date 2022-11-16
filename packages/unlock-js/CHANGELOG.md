@@ -1,5 +1,9 @@
 # Changes
 
+# 0.32.0
+
+Allow passing creator in the createLock method and improve typing.
+
 # 0.31.4
 
 - Add check to ensure lock is deployed from unlock factory contract in getLock method
