@@ -1,10 +1,9 @@
-import {
+import React, {
   useState,
   createContext,
   useContext,
   useEffect,
   ReactNode,
-  Dispatch,
   SetStateAction,
 } from 'react'
 import { authenticateFromCode, getMemberships, Membership } from './utils'
@@ -20,17 +19,17 @@ interface Unlock {
 /**
  * An internal context
  */
-const UnlockContext = createContext<[Unlock, Dispatch<SetStateAction<Unlock>>]>(
-  [
-    {
-      user: null,
-      signature: null,
-      code: null,
-      digest: null,
-    },
-    () => {},
-  ]
-)
+const UnlockContext = createContext<
+  [Unlock, React.Dispatch<SetStateAction<Unlock>>]
+>([
+  {
+    user: null,
+    signature: null,
+    code: null,
+    digest: null,
+  },
+  () => {},
+])
 
 /**
  * A react hook
