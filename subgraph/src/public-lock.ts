@@ -198,7 +198,7 @@ export function handleRenewKeyPurchase(event: RenewKeyPurchaseEvent): void {
   }
 }
 
-// NB: Up to PublicLock v8, we handle the addition of a new lock managers 
+// NB: Up to PublicLock v8, we handle the addition of a new lock managers
 // with our custom event `LockManagerAdded`. Starting from v9,
 // we use OpenZeppelin native `RoleGranted` event.
 export function handleRoleGranted(event: RoleGrantedEvent): void {
@@ -209,20 +209,15 @@ export function handleRoleGranted(event: RoleGrantedEvent): void {
     const lock = Lock.load(event.address.toHexString())
     if (lock) {
       const lockManagers = lock.lockManagers
-      if (
-        lock.lockManagers &&
-        lock.lockManagers.length &&
-        lock.lockManagers.includes(event.params.account)
-      ) {
-        lockManagers.push(event.params.account)
+      if (lockManagers && lockManagers.length) {
+        if (!lockManagers.includes(event.params.account)) {
+          lockManagers.push(event.params.account)
+          lock.lockManagers = lockManagers
+        }
       } else {
         lock.lockManagers = [event.params.account]
       }
       lock.save()
-      log.debug('Lock manager {} added to lock: {}', [
-        event.params.account.toHexString(),
-        event.address.toHexString(),
-      ])
     }
   }
 }
@@ -246,7 +241,7 @@ export function handleLockManagerAdded(event: LockManagerAddedEvent): void {
 export function handleLockManagerRemoved(event: LockManagerRemovedEvent): void {
   const lock = Lock.load(event.address.toHexString())
   if (lock && lock.lockManagers) {
-    let newManagers: Bytes[] = []
+    const newManagers: Bytes[] = []
     for (let i = 0; i < lock.lockManagers.length; i++) {
       const managerAddress = lock.lockManagers[i]
       if (managerAddress != event.params.account) {
