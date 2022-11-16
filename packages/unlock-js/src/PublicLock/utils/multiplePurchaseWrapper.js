@@ -64,7 +64,7 @@ export default async function (
         erc20Address,
         lockAddress,
         this.provider,
-        this.signer.address
+        this.signer.getAddress()
       )
       // approve entire price
       if (!approvedAmount || approvedAmount.lt(totalPrice)) {

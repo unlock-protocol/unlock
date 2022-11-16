@@ -78,7 +78,6 @@ export default async function (
     utils.bigNumberify(0)
   )
 
-  console.log('HERE?')
   // fix ERC20 allowance
   if (erc20Address && erc20Address !== ZERO) {
     const approvedAmount = await getAllowance(
@@ -172,7 +171,6 @@ export default async function (
     data,
     transactionOptions
   )
-  console.log({ transactionRequest, transactionOptions })
 
   if (transactionOptions.runEstimate) {
     const estimate = lockContract.signer.estimateGas(transactionRequest)
