@@ -102,7 +102,7 @@ const RenounceModal = ({
                       <span className="text-base text-brand-dark">
                         You are about to permanently renounce yourself as Lock
                         manager. You will not be able to revert this action.
-                        Please type “Renounce” to confirm.
+                        Please type “renounce” to confirm.
                       </span>
                     </div>
                     <Input
