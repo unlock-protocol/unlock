@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query'
 import { Button, Input } from '@unlock-protocol/ui'
 import { useForm } from 'react-hook-form'
-import { FaSpinner as Spinner } from 'react-icons/fa'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 
@@ -80,13 +79,9 @@ export const LockNameForm = ({
         type="submit"
         className="w-full md:w-1/3"
         disabled={disabledInput}
+        loading={changeNameMutation.isLoading}
       >
-        <div className="flex items-center gap-2">
-          <span>Update</span>
-          {changeNameMutation.isLoading && (
-            <Spinner className="mr-1 animate-spin" />
-          )}
-        </div>
+        Update
       </Button>
     </form>
   )
