@@ -1,9 +1,22 @@
 # Changes
 
+# 0.31.4
+
+- Add check to ensure lock is deployed from unlock factory contract in getLock method
+
+# 0.31.2
+
+- Add uniswap service
+- Add consultUniswap method to web3 service for getting price of a token using uniswap v3 pools
+
+# 0.31.1
+
+- add `totalKeys` to subgraph
+- support tokenAddress in `getAddressBalance`
+
 # 0.31.0
 
 - Add support for PublicLock version 12
-
 
 # 0.30.6
 
@@ -12,7 +25,6 @@
 # 0.30.5
 
 - Add purchasePriceFor in web3Service
-
 
 # 0.30.4
 

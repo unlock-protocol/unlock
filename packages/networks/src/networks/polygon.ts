@@ -9,6 +9,7 @@ export const polygon: NetworkConfig = {
   id: 137,
   name: 'Polygon',
   blockTime: 1000,
+  chain: 'polygon',
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
     endpointV2:
@@ -36,6 +37,7 @@ export const polygon: NetworkConfig = {
     name: 'Matic',
     symbol: 'MATIC',
     decimals: 18,
+    coingecko: 'matic-network',
   },
   startBlock: 21986688,
   previousDeploys: [
@@ -47,6 +49,16 @@ export const polygon: NetworkConfig = {
   description: 'Popular side chain network. Cheaper transaction cost.',
   isTestNetwork: false,
   teamMultisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
+  uniswapV3: {
+    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+  },
+  wrappedNativeCurrency: {
+    name: 'Wrapped MATIC',
+    symbol: 'WMATIC',
+    decimals: 18,
+    address: '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270',
+  },
   tokens: [
     {
       name: 'Wrapped Ether',
@@ -68,7 +80,7 @@ export const polygon: NetworkConfig = {
       decimals: 6,
     },
     {
-      name: 'USDCoin',
+      name: 'USD Coin',
       address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
       symbol: 'USDC',
       decimals: 6,

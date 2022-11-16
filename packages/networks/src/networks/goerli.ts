@@ -8,6 +8,7 @@ export const goerli: NetworkConfig = {
   multisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
   id: 5,
   name: 'Goerli (Testnet)',
+  chain: 'goerli',
   blockTime: 1000,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli',
@@ -36,23 +37,42 @@ export const goerli: NetworkConfig = {
     name: 'ETH',
     symbol: 'ETH',
     decimals: 18,
+    coingecko: 'ethereum',
   },
   startBlock: 7179039,
   previousDeploys: [],
   isTestNetwork: true,
   teamMultisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
+  uniswapV3: {
+    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+  },
+  wrappedNativeCurrency: {
+    name: 'Wrapped Ether',
+    symbol: 'WETH',
+    decimals: 18,
+    address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
+  },
   tokens: [
+    {
+      name: 'USD Coin',
+      symbol: 'USDC',
+      address: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
+      decimals: 6,
+      mainnetAddress: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    },
     {
       name: 'Wrapped Ether',
       address: '0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6',
       symbol: 'WETH',
       decimals: 18,
+      mainnetAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
     },
     {
       name: 'Uniswap',
       address: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
       symbol: 'UNI',
       decimals: 18,
+      mainnetAddress: '0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',
     },
   ],
 }

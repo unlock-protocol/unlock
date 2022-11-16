@@ -140,7 +140,7 @@ export const TotalBar = ({ lockAddress, network }: TotalsProps) => {
     const promise = withdrawMutation.mutateAsync(balance)
     await ToastHelper.promise(promise, {
       success: 'Withdraw done',
-      error: 'There is some unexpected issue, please try again',
+      error: `Withdraw can't be processed, please try again`,
       loading: 'Withdrawing...',
     })
   }

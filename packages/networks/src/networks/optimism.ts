@@ -7,6 +7,7 @@ export const optimism: NetworkConfig = {
   multisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   id: 10,
   name: 'Optimism',
+  chain: 'optimism',
   blockTime: 8000,
   subgraph: {
     endpoint:
@@ -35,10 +36,21 @@ export const optimism: NetworkConfig = {
     name: 'Eth',
     symbol: 'Eth',
     decimals: 18,
+    coingecko: 'ethereum',
   },
   description: 'Layer 2 network. Cheaper transaction cost.',
   isTestNetwork: false,
   teamMultisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
+  uniswapV3: {
+    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+  },
+  wrappedNativeCurrency: {
+    name: 'Wrapped Ether',
+    symbol: 'WETH',
+    decimals: 18,
+    address: '0x4200000000000000000000000000000000000006',
+  },
   tokens: [
     {
       name: 'Ethereum',

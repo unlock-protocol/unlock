@@ -96,7 +96,9 @@ const ActionBar = ({
       ToastHelper.success('CSV downloaded')
     },
     onError: () => {
-      ToastHelper.success('There is some unexpected issue, please try it again')
+      ToastHelper.success(
+        `Unexpected issue on CSV download, please try it again`
+      )
     },
   })
 
@@ -157,7 +159,7 @@ const TopActionBar = ({ lockAddress, network }: TopActionBarProps) => {
   return (
     <>
       <div className="flex items-center justify-between">
-        <Button variant="transparent" className="p-0" aria-label="arrow back">
+        <Button variant="borderless" aria-label="arrow back">
           <ArrowBackIcon
             size={20}
             className="cursor-pointer"
