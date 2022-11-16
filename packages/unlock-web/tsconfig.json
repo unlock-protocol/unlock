@@ -1,0 +1,18 @@
+{
+    "extends": "@unlock-protocol/tsconfig",
+    "compilerOptions": {
+        "target": "esnext",
+        "outDir": "lib",
+        "lib": [
+            "DOM",
+            "DOM.iterable",
+        ],
+        "allowJs": true,
+        "jsx": "react-jsx",
+        "forceConsistentCasingInFileNames": true
+    },
+    "include": [
+        "examples/**/*",
+        "src/**/*"
+    ]
+}
