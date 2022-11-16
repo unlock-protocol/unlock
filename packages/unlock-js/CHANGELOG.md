@@ -1,5 +1,10 @@
 # Changes
 
+# 0.31.5
+
+- add `addLockManager` in walletService
+- add `renounceLockManager` in walletService
+
 # 0.31.4
 
 - Add check to ensure lock is deployed from unlock factory contract in getLock method
