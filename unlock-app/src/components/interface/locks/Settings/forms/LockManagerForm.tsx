@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { Button, Input, Modal } from '@unlock-protocol/ui'
+import { Button, Input } from '@unlock-protocol/ui'
 import { SubgraphService } from '@unlock-protocol/unlock-js'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
@@ -8,7 +8,7 @@ import { addressMinify } from '~/utils/strings'
 import { useWalletService } from '~/utils/withWalletService'
 import { FaSpinner as Spinner } from 'react-icons/fa'
 import { getAddressForName } from '~/hooks/useEns'
-import { Fragment, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 interface LockManagerFormProps {
   lockAddress: string
