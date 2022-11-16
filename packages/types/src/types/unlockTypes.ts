@@ -33,10 +33,13 @@ export interface Token {
   address: string
   symbol: string
   decimals: number
+  coingecko?: string
+  mainnetAddress?: string
 }
 export interface NetworkConfig {
   id: number
   name: string
+  chain?: string
   provider: string
   publicProvider: string
   locksmithUri?: string // TODO: remove as this should not be network specific
@@ -46,10 +49,16 @@ export interface NetworkConfig {
   serializerAddress?: string
   multisig?: string
   subgraph: {
-    endpoint:string
-    endpointV2?:string
-    networkName? :string // for thegraph hosted service
-  },
+    endpoint: string
+    endpointV2?: string
+    networkName?: string // for thegraph hosted service
+  }
+  uniswapV3?: Partial<{
+    subgraph: string
+    factoryAddress: string
+    quoterAddress: string
+  }>
+
   ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
@@ -69,11 +78,8 @@ export interface NetworkConfig {
   } | null
   requiredConfirmations?: number
   baseCurrencySymbol?: string
-  nativeCurrency?: {
-    name: string
-    symbol: string
-    decimals: number
-  }
+  nativeCurrency?: Omit<Token, 'address'>
+  wrappedNativeCurrency?: Token
   startBlock?: number
   previousDeploys?: NetworkDeploy[]
   description?: string

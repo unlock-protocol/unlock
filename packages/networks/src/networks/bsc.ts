@@ -6,6 +6,7 @@ export const bsc: NetworkConfig = {
   unlockAddress: '0xeC83410DbC48C7797D2f2AFe624881674c65c856',
   id: 56,
   name: 'Binance Smart Chain',
+  chain: 'bsc',
   blockTime: 1000,
   multisig: '0x373D7cbc4F2700719DEa237500c7a154310B0F9B',
   subgraph: {
@@ -33,6 +34,7 @@ export const bsc: NetworkConfig = {
     name: 'BNB',
     symbol: 'BNB',
     decimals: 18,
+    coingecko: 'binancecoin',
   },
   startBlock: 13079000, // 12368889,
   previousDeploys: [
