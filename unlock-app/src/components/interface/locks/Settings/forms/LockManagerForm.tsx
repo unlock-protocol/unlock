@@ -183,7 +183,9 @@ const LockManagerCard = ({
       />
       <div className="flex items-center justify-between px-4 py-2 border border-gray-200 rounded-lg">
         <div className="flex flex-col gap-2 ">
-          <span className="text-base text-brand-dark">{manager}</span>
+          <span className="text-base text-brand-dark">
+            {addressMinify(manager)}
+          </span>
           {isLoggedUser && (
             <span className="text-sm font-semibold text-brand-ui-primary">
               {`That's you`}
@@ -280,7 +282,9 @@ export const LockManagerForm = ({
     <div className="relative">
       <div className="flex flex-col gap-4">
         {noManagers && !isLoading && (
-          <span>This lock does not have any Lock Manager.</span>
+          <span className="text-red-500">
+            This lock does not have any Lock Manager.
+          </span>
         )}
         {managers?.map((manager) => (
           <LockManagerCard
