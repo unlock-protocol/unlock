@@ -138,7 +138,7 @@ export const UnlockProvider = ({
   })
 
   useEffect(() => {
-    let url = new URL(path, window.location.href)
+    let url = window.location
     const urlSearchParams = new URLSearchParams(url.search)
     const params = Object.fromEntries(urlSearchParams.entries())
     if (params.code) {
