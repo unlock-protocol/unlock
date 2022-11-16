@@ -70,7 +70,7 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
     )
   }
 
-  const disconnectStipeMutation = useMutation(disconnectStripeFromLock, {
+  const disconnectStripeMutation = useMutation(disconnectStripeFromLock, {
     onSuccess: (res: any) => {
       if (res.ok) {
         ToastHelper.success('Stripe disconnected')
@@ -103,7 +103,7 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
           lockAddress,
           network,
           hasRole,
-          disconnectStipeMutation.isSuccess,
+          disconnectStripeMutation.isSuccess,
           connectStripeMutation.isSuccess,
         ],
         queryFn: isStripeConnected,
@@ -114,7 +114,7 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
           lockAddress,
           network,
           hasRole,
-          disconnectStipeMutation.isSuccess,
+          disconnectStripeMutation.isSuccess,
           connectStripeMutation.isSuccess,
         ],
         queryFn: getKeyGranter,
@@ -135,7 +135,7 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
       network,
       hasRole,
       keyGranter,
-      disconnectStipeMutation.isSuccess,
+      disconnectStripeMutation.isSuccess,
       connectStripeMutation.isSuccess,
     ],
     async () => {
@@ -218,9 +218,9 @@ export const CardPayment = ({ lockAddress, network }: CardPaymentProps) => {
           size="small"
           variant="transparent"
           className="text-brand-ui-primary"
-          disabled={disconnectStipeMutation.isLoading}
+          disabled={disconnectStripeMutation.isLoading}
           onClick={() =>
-            disconnectStipeMutation.mutate({
+            disconnectStripeMutation.mutate({
               lockAddress,
               network,
             })
