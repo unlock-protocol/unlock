@@ -1,5 +1,5 @@
 import { CheckoutService } from './checkoutMachine'
-
+import DepayConstants from '@depay/web3-constants'
 import { Blockchain } from '@depay/web3-blockchains'
 import { route } from '@depay/web3-payments-evm'
 import { Connected } from '../Connected'
@@ -127,11 +127,16 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
       const blockchain = Blockchain.findByNetworkId(lock.network)
       const networkBalance = await getTokenBalance(null)
       if (parseFloat(networkBalance) > 0) {
+        // defaults to base/native token
+        let token = DepayConstants.CONSTANTS[blockchain.name].NATIVE
+        if (lock!.currencyContractAddress!) {
+          token = lock.currencyContractAddress
+        }
         const params = {
           accept: [
             {
               blockchain: blockchain.name,
-              token: lock!.currencyContractAddress!, // Change to 0xE for base currency?
+              token,
               amount: lock.keyPrice,
               toAddress: lock!.address,
               // TODO : get these values from UnlockJs.
