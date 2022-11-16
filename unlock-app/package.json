@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@apollo/react-hooks": "4.0.0",
-    "@apollo/react-testing": "4.0.0",
     "@babel/core": "7.20.2",
     "@depay/web3-assets": "6.5.2",
     "@depay/web3-blockchains": "6.1.1",
