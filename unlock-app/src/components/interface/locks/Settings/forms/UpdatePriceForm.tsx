@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from '@tanstack/react-query'
 import { Token } from '@unlock-protocol/types'
 import { ToggleSwitch, Input, Button } from '@unlock-protocol/ui'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
@@ -22,7 +22,6 @@ interface UpdatePriceFormProps {
   lockAddress: string
   network: string
   price: number
-  onUpdate?: any
   isManager: boolean
   disabled: boolean
 }
@@ -31,7 +30,6 @@ export const UpdatePriceForm = ({
   lockAddress,
   network,
   price,
-  onUpdate,
   isManager,
   disabled,
 }: UpdatePriceFormProps) => {
@@ -96,10 +94,6 @@ export const UpdatePriceForm = ({
         success: 'Price updated',
         error: 'We could not update the price for this lock.',
       })
-      reset()
-      if (typeof onUpdate === 'function') {
-        onUpdate()
-      }
     } else {
       ToastHelper.error('Form is not valid')
       reset()
@@ -145,7 +139,7 @@ export const UpdatePriceForm = ({
               disabled={disabled}
               onChange={(enabled: boolean) => {
                 setValue('isFree', enabled)
-                setValue('keyPrice', enabled ? '0' : undefined, {
+                setValue('keyPrice', enabled ? '0' : keyPrice.toString(), {
                   shouldValidate: true,
                 })
               }}

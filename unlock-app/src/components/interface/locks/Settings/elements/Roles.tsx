@@ -1,12 +1,6 @@
 import { SettingCard } from './SettingCard'
 
-interface RolesProps {
-  lockAddress: string
-  network: string
-  isManager: boolean
-}
-
-export const Roles = ({ lockAddress, network, isManager }: RolesProps) => {
+export const Roles = () => {
   return (
     <div className="grid grid-cols-1 gap-6">
       <SettingCard

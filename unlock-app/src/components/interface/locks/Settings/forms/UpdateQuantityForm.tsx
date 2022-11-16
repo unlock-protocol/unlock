@@ -10,7 +10,6 @@ interface UpdateQuantityFormProps {
   maxNumberOfKeys: number
   network: string
   lockAddress: string
-  onUpdate?: any
   isManager: boolean
   disabled: boolean
 }
@@ -23,7 +22,6 @@ interface EditFormProps {
 export const UpdateQuantityForm = ({
   lockAddress,
   maxNumberOfKeys,
-  onUpdate,
   isManager,
   disabled,
 }: UpdateQuantityFormProps) => {
@@ -69,10 +67,6 @@ export const UpdateQuantityForm = ({
         success: 'Quantity updated',
         error: `We could not update the amount of memberships for sale for this lock.`,
       })
-      reset()
-      if (typeof onUpdate === 'function') {
-        onUpdate()
-      }
     } else {
       ToastHelper.error('Form is not valid')
       reset()

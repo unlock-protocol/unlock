@@ -19,7 +19,6 @@ interface UpdateDurationFormProps {
 }
 export const UpdateDurationForm = ({
   lockAddress,
-  network,
   duration,
   isManager,
   disabled,
@@ -61,7 +60,13 @@ export const UpdateDurationForm = ({
     } as any)
   }
 
-  const updateDurationMutation = useMutation(updateDuration)
+  const updateDurationMutation = useMutation(updateDuration, {
+    onSuccess: () => {
+      const { unlimitedDuration, expirationDuration } = getValues()
+      setValue('expirationDuration', expirationDuration)
+      setValue('unlimitedDuration', unlimitedDuration)
+    },
+  })
 
   const onHandleSubmit = async () => {
     if (isValid) {
@@ -70,7 +75,6 @@ export const UpdateDurationForm = ({
         success: 'Duration updated',
         error: 'We could not update the duration for this lock.',
       })
-      reset()
     } else {
       ToastHelper.error('Form is not valid')
       reset()
