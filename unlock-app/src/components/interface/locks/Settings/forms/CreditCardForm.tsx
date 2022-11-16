@@ -224,7 +224,7 @@ export const CreditCardForm = ({ lockAddress, network }: CardPaymentProps) => {
           {isGranted ? (
             <Badge variant="green" className="justify-center w-1/3">
               <div className="flex items-center gap-2">
-                <span>Role granted</span>
+                <span>Payment method enabled</span>
                 <CheckCircleIcon />
               </div>
             </Badge>
