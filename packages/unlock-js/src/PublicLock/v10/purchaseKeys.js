@@ -78,13 +78,14 @@ export default async function (
     utils.bigNumberify(0)
   )
 
+  console.log('HERE?')
   // fix ERC20 allowance
   if (erc20Address && erc20Address !== ZERO) {
     const approvedAmount = await getAllowance(
       erc20Address,
       lockAddress,
       this.provider,
-      this.signer.address
+      this.signer.getAddress()
     )
 
     let totalAmountToApprove = totalApproval
@@ -163,7 +164,7 @@ export default async function (
     }
   }
 
-  const transactionRequest = lockContract.populateTransaction.purchase(
+  const transactionRequest = await lockContract.populateTransaction.purchase(
     keyPrices,
     owners,
     referrers,
@@ -171,6 +172,7 @@ export default async function (
     data,
     transactionOptions
   )
+  console.log({ transactionRequest, transactionOptions })
 
   if (transactionOptions.runEstimate) {
     const estimate = lockContract.signer.estimateGas(transactionRequest)
