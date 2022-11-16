@@ -162,7 +162,8 @@ export default async function (
       delete transactionOptions.gasPrice
     }
   }
-  const transactionPromise = lockContract.purchase(
+
+  const transactionRequest = lockContract.populateTransaction.purchase(
     keyPrices,
     owners,
     referrers,
@@ -170,6 +171,16 @@ export default async function (
     data,
     transactionOptions
   )
+
+  if (transactionOptions.runEstimate) {
+    const estimate = lockContract.signer.estimateGas(transactionRequest)
+    return {
+      transactionRequest,
+      estimate,
+    }
+  }
+
+  const transactionPromise = lockContract.signer.call(transactionRequest)
 
   const hash = await this._handleMethodCall(transactionPromise)
 
