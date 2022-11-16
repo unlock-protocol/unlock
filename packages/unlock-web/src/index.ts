@@ -1,2 +1,2 @@
-export { useUnlock } from './useUnlock'
+export { useUnlock, UnlockProvider } from './useUnlock'
 export * from './utils'
