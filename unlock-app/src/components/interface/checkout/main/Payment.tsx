@@ -32,6 +32,19 @@ interface Props {
   checkoutService: CheckoutService
 }
 
+interface YourBalanceProps {
+  symbol: string
+  balance: string
+}
+
+const YourBalance = ({ symbol, balance }: YourBalanceProps) => {
+  return (
+    <div className="flex items-center w-full text-sm text-left text-gray-500">
+      Your {symbol.toUpperCase()} balance: {parseFloat(balance).toFixed(6)}{' '}
+    </div>
+  )
+}
+
 interface AmountBadgeProps {
   symbol: string
   amount: string
@@ -110,34 +123,41 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { isLoading: isRoutesLoading, data: routes } = useQuery(
     ['routes', account, lock.address],
     async () => {
+      let routes = []
       const blockchain = Blockchain.findByNetworkId(lock.network)
-
-      const params = {
-        accept: [
-          {
-            blockchain: blockchain.name,
-            token: lock!.currencyContractAddress!, // Change to 0xE for base currency?
-            amount: lock.keyPrice,
-            toAddress: lock!.address,
+      const networkBalance = await getTokenBalance(null)
+      if (parseFloat(networkBalance) > 0) {
+        const params = {
+          accept: [
+            {
+              blockchain: blockchain.name,
+              token: lock!.currencyContractAddress!, // Change to 0xE for base currency?
+              amount: lock.keyPrice,
+              toAddress: lock!.address,
+              // TODO : get these values from UnlockJs.
+              toContract: {
+                signature: 'claim(address,uint256,bool)',
+                params: ['true'], // And params
+              },
+            },
+          ],
+          from: {
+            [blockchain.name]: account,
           },
-        ],
-        from: {
-          [blockchain.name]: account,
-        },
-      }
-      let routes
-      try {
-        routes = await route(params)
-        await Promise.all(
-          routes.map(async (route: any) => {
-            route.fromSymbol = await route.fromToken.symbol()
-          })
-        )
-      } catch (error) {
-        console.error(`We could not fetch routes for swap and purchase.`)
-      }
-      if (routes.length == 0) {
-        console.info(`No routes found to swap`, params)
+        }
+        try {
+          routes = await route(params)
+          await Promise.all(
+            routes.map(async (route: any) => {
+              route.fromSymbol = await route.fromToken.symbol()
+            })
+          )
+        } catch (error) {
+          console.error(`We could not fetch routes for swap and purchase.`)
+        }
+        if (routes.length == 0) {
+          console.info(`No routes found to swap`, params)
+        }
       }
       return routes
     }
@@ -208,10 +228,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   <AmountBadge amount={lock.keyPrice} symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full">
-                  <div className="flex items-center w-full text-sm text-left text-gray-500">
-                    Your balance ({symbol.toUpperCase()}){' '}
-                    {parseFloat(walletInfo?.balance).toFixed(6)}{' '}
-                  </div>
+                  <YourBalance symbol={symbol} balance={walletInfo?.balance} />
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
                     size={20}
@@ -300,12 +317,10 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                   <AmountBadge amount={lock.keyPrice} symbol={symbol} />
                 </div>
                 <div className="flex items-center justify-between w-full gap-2">
-                  <div className="flex items-center w-full text-sm text-left text-gray-500">
-                    Your balance ({symbol.toUpperCase()})
-                    <p className="w-20 ml-2 font-medium truncate">
-                      {walletInfo?.balance?.toString()}
-                    </p>
-                  </div>
+                  <YourBalance
+                    symbol={symbol}
+                    balance={walletInfo?.balance?.toString()}
+                  />
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
                     size={20}
@@ -346,13 +361,13 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                         />
                       </div>
                       <div className="flex items-center justify-between w-full">
-                        <div className="flex items-center w-full text-sm text-left text-gray-500">
-                          Your balance ({route.fromSymbol}){' '}
-                          {ethers.utils.formatUnits(
+                        <YourBalance
+                          symbol={route.fromSymbol}
+                          balance={ethers.utils.formatUnits(
                             route.fromBalance,
                             route.fromDecimals
-                          )}{' '}
-                        </div>
+                          )}
+                        />
                         <RightArrowIcon
                           className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
                           size={20}
