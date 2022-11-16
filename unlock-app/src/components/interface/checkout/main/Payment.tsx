@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getFiatPricing } from '~/hooks/useCards'
 import { lockTickerSymbol, userCanAffordKey } from '~/utils/checkoutLockUtils'
 import dynamic from 'next/dynamic'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 import {
   RiVisaLine as VisaIcon,
   RiMastercardLine as MasterCardIcon,
@@ -20,7 +20,6 @@ import useAccount from '~/hooks/useAccount'
 import { useStorageService } from '~/utils/withStorageService'
 import { useCheckoutSteps } from './useCheckoutItems'
 import { ethers } from 'ethers'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
