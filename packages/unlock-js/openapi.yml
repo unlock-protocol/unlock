@@ -1167,3 +1167,50 @@ paths:
                       type: string
         500:
           $ref: '#/components/responses/500.InternalError'
+  /v2/api/{network}/price:
+    get:
+      parameters:
+        - $ref: '#/components/parameters/Network'
+
+        - in: query
+          name: amount
+          required: false
+          description: Amount of tokens you want to get the price for in USD.
+          schema:
+            type: number
+
+        - in: query
+          name: address
+          required: false
+          description: The erc20 address you want to get the price for. If nothing is passed, the API will return the native token price.
+          schema:
+            type: string
+
+      operationId: price
+      responses:
+        200:
+          description: Get price for the native token or any erc20 on the network.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      decimals:
+                        type: number
+                        nullable: true
+                      price:
+                        type: number
+                      timestamp:
+                        type: number
+                      symbol:
+                        type: string
+                      confidence:
+                        type: number
+                      priceInAmount:
+                        type: number
+                        nullable: true
+        500:
+          $ref: '#/components/responses/500.InternalError'
