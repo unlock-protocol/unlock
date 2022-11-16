@@ -6,7 +6,6 @@ import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
 import { useWalletService } from '~/utils/withWalletService'
-import { FaSpinner as Spinner } from 'react-icons/fa'
 import { getAddressForName } from '~/hooks/useEns'
 import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
@@ -309,13 +308,13 @@ export const LockManagerForm = ({
           <Input disabled={disableInput} {...register('manager')} />
         </div>
         {isManager && (
-          <Button className="w-1/2" type="submit" disabled={disableInput}>
-            <div className="flex items-center gap-2">
-              <span>Add</span>
-              {addLockManagerMutation.isLoading && (
-                <Spinner className="mr-1 animate-spin" />
-              )}
-            </div>
+          <Button
+            className="w-1/2"
+            type="submit"
+            disabled={disableInput}
+            loading={addLockManagerMutation.isLoading}
+          >
+            Add
           </Button>
         )}
       </form>
