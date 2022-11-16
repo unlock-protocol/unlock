@@ -180,7 +180,8 @@ export default async function (
     }
   }
 
-  const transactionPromise = lockContract.signer.call(transactionRequest)
+  const transactionPromise =
+    lockContract.signer.sendTransaction(transactionRequest)
 
   const hash = await this._handleMethodCall(transactionPromise)
 
