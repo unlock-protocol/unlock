@@ -67,7 +67,7 @@ export class UniswapService {
 
     const isBaseTokenSameAsNativeToken =
       ethers.utils.getAddress(baseToken) ===
-      ethers.utils.getAddress(wrappedCurrency.address)
+      ethers.utils.getAddress(wrappedCurrency.address!)
 
     const quoteAmount = ethers.utils.parseUnits(amount, baseTokenDecimal)
 

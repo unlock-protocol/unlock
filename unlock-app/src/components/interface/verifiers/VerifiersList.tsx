@@ -1,3 +1,4 @@
+// TODO: to delete when Settings page goes online
 import React, { useEffect, useState } from 'react'
 import { HiOutlineTrash as TrashIcon } from 'react-icons/hi'
 import { Button, IconButton, Modal, Tooltip } from '@unlock-protocol/ui'
@@ -113,7 +114,7 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
 
   if (loading) {
     return (
-      <div className="flex w-full justify-center">
+      <div className="flex justify-center w-full">
         <Loading />
       </div>
     )
@@ -137,19 +138,19 @@ export const VerifiersList: React.FC<VerifiersListProsps> = ({
 
           return (
             <div
-              className="flex justify-between border-2 rounded-lg py-4 px-10 hover:shadow-sm bg-white"
+              className="flex justify-between px-10 py-4 bg-white border-2 rounded-lg hover:shadow-sm"
               key={key}
             >
-              <div className="grid gap-2 justify-between items-center grid-cols-4 mb-2 w-full">
-                <div className="col-span-full	flex flex-col md:col-span-2">
+              <div className="grid items-center justify-between w-full grid-cols-4 gap-2 mb-2">
+                <div className="flex flex-col col-span-full md:col-span-2">
                   <span className={styling.description}>Address</span>
                   <span className={styling.title}>{verifier?.address}</span>
                 </div>
-                <div className="col-span-full	flex flex-col md:col-span-1">
+                <div className="flex flex-col col-span-full md:col-span-1">
                   <span className={styling.description}>Created at</span>
                   <span className={styling.title}>{createdAt ?? '-'}</span>
                 </div>
-                <div className="flex col-span-full	md:col-span-1">
+                <div className="flex col-span-full md:col-span-1">
                   <Tooltip tip="Remove verifier" label="Remove verifier">
                     <IconButton
                       className="ml-auto"
