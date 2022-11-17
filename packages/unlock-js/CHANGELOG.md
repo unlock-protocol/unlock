@@ -1,5 +1,9 @@
 # Changes
 
+# 0.32.0
+
+Allow passing creator in the createLock method and improve typing.
+
 # 0.31.6
 
 - add `addLockManager` in walletService
