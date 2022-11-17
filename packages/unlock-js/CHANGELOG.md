@@ -1,5 +1,11 @@
 # Changes
 
+# 0.32.2
+
+- add `updateRefundPenalty` in walletService
+- add `freeTrialLength` in web3Service
+- add `refundPenaltyBasisPoints` in web3Service
+
 # 0.32.1
 
 - Change parameter name for `updateLockSymbol`
