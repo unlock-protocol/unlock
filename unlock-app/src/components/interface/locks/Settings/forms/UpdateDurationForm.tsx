@@ -12,7 +12,7 @@ import { useWalletService } from '~/utils/withWalletService'
 
 interface UpdateDurationFormProps {
   lockAddress: string
-  network: string
+  network: number
   duration: number
   isManager: boolean
   disabled: boolean

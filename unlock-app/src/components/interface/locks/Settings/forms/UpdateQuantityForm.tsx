@@ -8,7 +8,6 @@ import { useWalletService } from '~/utils/withWalletService'
 
 interface UpdateQuantityFormProps {
   maxNumberOfKeys: number
-  network: string
   lockAddress: string
   isManager: boolean
   disabled: boolean
