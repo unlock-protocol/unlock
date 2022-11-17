@@ -9,6 +9,7 @@ import { addressMinify } from '~/utils/strings'
 import { SettingHeader } from './elements/SettingHeader'
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
+import { SettingGeneral } from './elements/SettingGeneral'
 
 interface LockSettingsPageProps {
   lockAddress: string
@@ -114,7 +115,14 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
     },
     {
       label: 'General',
-      children: <span></span>,
+      children: (
+        <SettingGeneral
+          lockAddress={lockAddress}
+          isManager={isManager}
+          isLoading={isLoading}
+          lock={lock}
+        />
+      ),
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-general.svg"
