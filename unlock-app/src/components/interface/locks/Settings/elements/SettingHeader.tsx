@@ -12,7 +12,7 @@ import Link from 'next/link'
 
 interface SettingHeaderProps {
   lockAddress: string
-  network: string
+  network: number
   isLoading: boolean
   lock: Lock
 }
