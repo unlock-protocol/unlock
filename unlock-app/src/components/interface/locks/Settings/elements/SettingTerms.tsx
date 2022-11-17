@@ -1,5 +1,6 @@
 import { Lock } from '@unlock-protocol/types'
 import { ReactNode } from 'react'
+import { CreditCardForm } from '../forms/CreditCardForm'
 import { UpdateDurationForm } from '../forms/UpdateDurationForm'
 import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
@@ -77,7 +78,12 @@ export const SettingTerms = ({
       label: 'Credit Card Payment',
       description:
         'Accept credit cards, Apple Pay and Google Pay. Service & Credit card processing fees will be applied to the price paid by the member.',
-      children: null,
+      children: (
+        <CreditCardForm
+          lockAddress={lockAddress}
+          network={parseInt(network, 10)}
+        />
+      ),
     },
     {
       label: 'Transfer',
