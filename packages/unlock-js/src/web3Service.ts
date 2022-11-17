@@ -111,26 +111,56 @@ export default class Web3Service extends UnlockService {
     }
 
     const provider = this.providerForNetwork(network)
+
+    const version = await this.lockContractAbiVersion(
+      address,
+      this.providerForNetwork(network)
+    )
+
+    const lock = await version.getLock.bind(this)(
+      address,
+      this.providerForNetwork(network)
+    )
+    // Add the lock address
+    lock.address = address
+
+    lock.unlockContractAddress = ethers.utils.getAddress(
+      lock.unlockContractAddress
+    )
+    // Check that the Unlock address matches one of the configured ones
+    if (
+      ethers.utils.getAddress(networkConfig.unlockAddress) !==
+        lock.unlockContractAddress &&
+      networkConfig.previousDeploys
+        ?.map((d) => ethers.utils.getAddress(d.unlockAddress))
+        .indexOf(lock.unlockContractAddress) == -1
+    ) {
+      console.log('____')
+      console.log('NOT GOOD!')
+      console.log(lock.unlockContractAddress)
+      console.log(ethers.utils.getAddress(networkConfig.unlockAddress))
+      console.log(
+        networkConfig.previousDeploys?.map((d) =>
+          ethers.utils.getAddress(d.unlockAddress)
+        )
+      )
+      console.log('____')
+    }
+
+    // Check that the Unlock contract has indeed deployed this lock
     const unlockContract = await this.getUnlockContract(
-      networkConfig.unlockAddress,
+      lock.unlockContractAddress,
       provider
     )
 
     const response = await unlockContract.locks(address)
 
     if (!response.deployed) {
-      throw new Error('Lock is not deployed from unlock factory contract.')
+      console.warn(
+        'Lock is not deployed from most recent unlock factory contract.'
+      )
     }
 
-    const version = await this.lockContractAbiVersion(
-      address,
-      this.providerForNetwork(network)
-    )
-    const lock = await version.getLock.bind(this)(
-      address,
-      this.providerForNetwork(network)
-    )
-    lock.address = address
     return lock
   }
 
