@@ -131,7 +131,7 @@ export default class Web3Service extends UnlockService {
     if (
       ethers.utils.getAddress(networkConfig.unlockAddress) !==
         lock.unlockContractAddress &&
-      networkConfig.previousDeploys
+      (networkConfig.previousDeploys || [])
         ?.map((d) => ethers.utils.getAddress(d.unlockAddress))
         .indexOf(lock.unlockContractAddress) == -1
     ) {
