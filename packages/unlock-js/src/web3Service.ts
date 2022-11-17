@@ -119,7 +119,7 @@ export default class Web3Service extends UnlockService {
     const response = await unlockContract.locks(address)
 
     if (!response.deployed) {
-      throw new Error('Lock is not deployed from unlock factory contract.')
+      console.warn('Lock is not deployed from unlock factory contract.')
     }
 
     const version = await this.lockContractAbiVersion(
