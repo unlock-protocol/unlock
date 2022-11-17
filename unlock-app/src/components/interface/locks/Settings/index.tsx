@@ -13,7 +13,7 @@ import { SettingGeneral } from './elements/SettingGeneral'
 
 interface LockSettingsPageProps {
   lockAddress: string
-  network: string
+  network: number
 }
 
 interface SidebarCardProps {
@@ -57,20 +57,20 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { isManager, isLoading: isLoadingManager } = useLockManager({
     lockAddress,
-    network: parseInt(network!, 10),
+    network,
   })
 
   const web3Service = useWeb3Service()
 
   const getLock = async () => {
-    return web3Service.getLock(lockAddress, parseInt(network))
+    return web3Service.getLock(lockAddress, network)
   }
 
   const { isLoading: isLoadingLock, data: lock } = useQuery(
     ['getLock', lockAddress, network],
     async () => await getLock(),
     {
-      enabled: lockAddress?.length > 0 && network?.length > 0,
+      enabled: lockAddress?.length > 0 && network !== undefined,
       refetchInterval: 1000,
     }
   )
@@ -118,6 +118,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
       children: (
         <SettingGeneral
           lockAddress={lockAddress}
+          network={network}
           isManager={isManager}
           isLoading={isLoading}
           lock={lock}

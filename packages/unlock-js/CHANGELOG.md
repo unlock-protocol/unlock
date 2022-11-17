@@ -1,5 +1,9 @@
 # Changes
 
+# 0.32.1
+
+- Change parameter name for `updateLockSymbol`
+
 # 0.32.0
 
 Allow passing creator in the createLock method and improve typing.

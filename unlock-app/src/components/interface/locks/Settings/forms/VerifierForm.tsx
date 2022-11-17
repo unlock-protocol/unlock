@@ -21,7 +21,7 @@ interface VerifierProps {
 
 interface VerifierFormProps {
   lockAddress: string
-  network: string
+  network: number
   isManager: boolean
   disabled: boolean
 }
@@ -101,7 +101,7 @@ export const VerifierForm = ({
     await storageService.loginPrompt({
       walletService,
       address: account!,
-      chainId: parseInt(network, 10)!,
+      chainId: network,
     })
 
     const options = {
@@ -183,6 +183,7 @@ export const VerifierForm = ({
     ],
     async () => await getVerifiers(),
     {
+      enabled: isManager,
       refetchInterval: false,
       onSuccess: (res: any) => {
         if (res.message) {
@@ -250,7 +251,7 @@ export const VerifierForm = ({
           <Button
             type="submit"
             className="w-1/2 gap-2"
-            disabled={isLoading}
+            disabled={isLoading || disabled}
             loading={addVerifierMutation.isLoading}
           >
             Add
