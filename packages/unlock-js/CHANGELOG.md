@@ -1,5 +1,10 @@
 # Changes
 
+# 0.31.6
+
+- add `addLockManager` in walletService
+- add `renounceLockManager` in walletService
+
 # 0.31.5
 
 - Added suppport for `runEstimate`
