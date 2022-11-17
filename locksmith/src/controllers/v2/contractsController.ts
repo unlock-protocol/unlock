@@ -33,18 +33,28 @@ export class ContractsController {
     const lock = await LockContractOptions.parseAsync(request.body)
     const dispatcher = new Dispatcher()
 
-    const transactionHash = await dispatcher.createLockContract(network, {
-      name: lock.name,
-      currencyContractAddress: lock.currencyContractAddress,
-      maxNumberOfKeys: lock.maxNumberOfKeys,
-      creator: lock.creator || user,
-      keyPrice: lock.keyPrice,
-      expirationDuration: lock.maxNumberOfKeys,
-      publicLockVersion: lock.publicLockVersion,
-    })
-
-    return response.status(201).send({
-      transactionHash,
-    })
+    return dispatcher.createLockContract(
+      network,
+      {
+        name: lock.name,
+        currencyContractAddress: lock.currencyContractAddress,
+        maxNumberOfKeys: lock.maxNumberOfKeys,
+        creator: lock.creator || user,
+        keyPrice: lock.keyPrice,
+        expirationDuration: lock.maxNumberOfKeys,
+        publicLockVersion: lock.publicLockVersion,
+      },
+      (error, hash) => {
+        if (error) {
+          response.status(500).send({
+            message: 'Transaction failed for some reason',
+          })
+        } else if (hash) {
+          response.status(201).send({
+            transactionHash: hash,
+          })
+        }
+      }
+    )
   }
 }

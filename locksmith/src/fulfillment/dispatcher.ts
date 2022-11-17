@@ -246,7 +246,8 @@ export default class Dispatcher {
 
   async createLockContract(
     network: number,
-    options: Parameters<InstanceType<typeof WalletService>['createLock']>[0]
+    options: Parameters<InstanceType<typeof WalletService>['createLock']>[0],
+    callback: (error: any, hash: string | null) => Promise<void> | void
   ) {
     const provider = new ethers.providers.JsonRpcProvider(
       networks[network].publicProvider
@@ -254,11 +255,6 @@ export default class Dispatcher {
     const signer = new ethers.Wallet(config.purchaserCredentials, provider)
     const walletService = new WalletService(networks)
     await walletService.connect(provider, signer)
-    return walletService.createLock(options, {}, (error, hash) => {
-      if (error) {
-        throw new Error(error?.message)
-      }
-      return hash
-    })
+    return walletService.createLock(options, {}, callback)
   }
 }
