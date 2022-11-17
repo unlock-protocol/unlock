@@ -9,6 +9,7 @@ export const polygon: NetworkConfig = {
   id: 137,
   name: 'Polygon',
   blockTime: 1000,
+  chain: 'polygon',
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon',
     endpointV2:
@@ -36,6 +37,7 @@ export const polygon: NetworkConfig = {
     name: 'Matic',
     symbol: 'MATIC',
     decimals: 18,
+    coingecko: 'matic-network',
   },
   startBlock: 21986688,
   previousDeploys: [

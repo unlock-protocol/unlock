@@ -73,7 +73,7 @@ export function Connect() {
     <section className="flex flex-col-reverse items-center justify-between mx-auto lg:space-x-16 max-w-7xl md:gap-6 md:flex-row">
       <div className="w-full max-w-xl">
         <header className="space-y-4 break-words ">
-          <h1 className="heading">Membership Protocol</h1>
+          <h1 className="heading">Memberships in minutes</h1>
           <p className="sub-heading">
             Unlock is a protocol for memberships as time-bound Non Fungible
             Tokens

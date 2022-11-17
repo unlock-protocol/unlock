@@ -252,15 +252,11 @@ export const LockCard = ({ lock, network }: LockCardProps) => {
               <span className="text-2xl font-bold">{lock.name}</span>
               <div className="flex items-center gap-3">
                 <span>{addressMinify(lockAddress)}</span>
-                <Button
-                  variant="transparent"
-                  className="p-0 m-0"
-                  onClick={setCopied}
-                >
+                <Button variant="borderless" onClick={setCopied}>
                   <CopyIcon size={20} />
                 </Button>
                 <a href={explorerUrl} target="_blank" rel="noreferrer">
-                  <Button variant="transparent" className="p-0 m-0">
+                  <Button variant="borderless">
                     <ExternalLinkIcon
                       size={20}
                       className="text-brand-ui-primary"
