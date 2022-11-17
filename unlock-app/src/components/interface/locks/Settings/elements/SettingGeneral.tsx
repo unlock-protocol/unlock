@@ -35,7 +35,7 @@ export const SettingGeneral = ({
 
       <SettingCard
         label="Ticker Symbol"
-        description="Default: KEY. Customize your membership experience by change the token symbol, aka Ticker."
+        description="Default: KEY. Customize your membership experience by changing the token symbol (sometimes called 'ticker')."
         isLoading={isLoading}
       >
         <UpdateSymbolForm
