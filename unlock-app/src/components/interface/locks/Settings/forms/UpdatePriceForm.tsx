@@ -20,7 +20,7 @@ interface EditFormProps {
 
 interface UpdatePriceFormProps {
   lockAddress: string
-  network: string
+  network: number
   price: number
   isManager: boolean
   disabled: boolean
@@ -62,7 +62,7 @@ export const UpdatePriceForm = ({
   })
 
   const getLock = async () => {
-    return await web3Service.getLock(lockAddress, parseInt(network, 10))
+    return await web3Service.getLock(lockAddress, network)
   }
 
   const { data: lock } = useQuery(['getLock', lockAddress, network], async () =>
@@ -118,7 +118,7 @@ export const UpdatePriceForm = ({
       <SelectCurrencyModal
         isOpen={changeCurrencyOpen}
         setIsOpen={setChangeCurrencyModal}
-        network={parseInt(network!, 10)}
+        network={network}
         onSelect={onSelectToken}
         defaultCurrency={symbol}
       />

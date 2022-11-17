@@ -14,7 +14,7 @@ const Create: NextPage = () => {
       <AppLayout authRequired={true} showHeader={false}>
         <LockSettingsPage
           lockAddress={address! as string}
-          network={network! as string}
+          network={parseInt((network as string)!, 10)}
         />
       </AppLayout>
     </BrowserOnly>

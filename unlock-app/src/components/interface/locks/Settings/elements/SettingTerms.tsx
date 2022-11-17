@@ -8,7 +8,7 @@ import { SettingCard } from './SettingCard'
 
 interface SettingTermsProps {
   lockAddress: string
-  network: string
+  network: number
   isManager: boolean
   lock: Lock
   isLoading: boolean
@@ -48,7 +48,6 @@ export const SettingTerms = ({
       children: (
         <UpdateQuantityForm
           lockAddress={lockAddress}
-          network={network}
           maxNumberOfKeys={lock?.maxNumberOfKeys ?? 0}
           isManager={isManager}
           disabled={!isManager}
@@ -78,12 +77,7 @@ export const SettingTerms = ({
       label: 'Credit Card Payment',
       description:
         'Accept credit cards, Apple Pay and Google Pay. Service & Credit card processing fees will be applied to the price paid by the member.',
-      children: (
-        <CreditCardForm
-          lockAddress={lockAddress}
-          network={parseInt(network, 10)}
-        />
-      ),
+      children: <CreditCardForm lockAddress={lockAddress} network={network} />,
     },
     {
       label: 'Transfer',

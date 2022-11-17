@@ -1,17 +1,20 @@
 import { Lock } from '@unlock-protocol/types'
-import { LockNameForm } from '../forms/LockNameForm'
+import { UpdateNameForm } from '../forms/UpdateNameForm'
+import { UpdateSymbolForm } from '../forms/UpdateSymbolForm'
 import { SettingCard } from './SettingCard'
 
 interface SettingGeneralProps {
   lockAddress: string
+  network: number
   isManager: boolean
   isLoading: boolean
-  lock: Lock
+  lock?: Lock
 }
 
 export const SettingGeneral = ({
   isManager,
   lockAddress,
+  network,
   isLoading,
   lock,
 }: SettingGeneralProps) => {
@@ -19,14 +22,27 @@ export const SettingGeneral = ({
     <div className="grid grid-cols-1 gap-6">
       <SettingCard
         label="Contract name"
-        description="Customize the contract name on chain. "
+        description="Customize the contract name on chain."
         isLoading={isLoading}
       >
-        <LockNameForm
+        <UpdateNameForm
           lockAddress={lockAddress}
           isManager={isManager}
           disabled={!isManager}
           lockName={lock?.name ?? ''}
+        />
+      </SettingCard>
+
+      <SettingCard
+        label="Ticker Symbol"
+        description="Default: KEY. Customize your membership experience by changing the token symbol (sometimes called 'ticker')."
+        isLoading={isLoading}
+      >
+        <UpdateSymbolForm
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
         />
       </SettingCard>
     </div>

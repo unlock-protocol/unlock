@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react'
 import { Transition, Dialog } from '@headlessui/react'
 interface LockManagerFormProps {
   lockAddress: string
-  network: string
+  network: number
   isManager: boolean
   disabled: boolean
 }
@@ -231,7 +231,7 @@ export const LockManagerForm = ({
         },
       },
       {
-        network: parseInt(network, 10),
+        network,
       }
     )
   }

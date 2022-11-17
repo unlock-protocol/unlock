@@ -4,7 +4,7 @@ import { SettingCard } from './SettingCard'
 
 interface SettingRolesProps {
   lockAddress: string
-  network: string
+  network: number
   isManager: boolean
   isLoading: boolean
 }
