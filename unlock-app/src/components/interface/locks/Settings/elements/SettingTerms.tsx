@@ -5,7 +5,7 @@ import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
 import { SettingCard } from './SettingCard'
 
-interface MembershipTermsProps {
+interface SettingTermsProps {
   lockAddress: string
   network: string
   isManager: boolean
@@ -19,13 +19,13 @@ interface SettingProps {
   children: ReactNode
 }
 
-export const MembershipTerms = ({
+export const SettingTerms = ({
   lockAddress,
   network,
   isManager,
   lock,
   isLoading,
-}: MembershipTermsProps) => {
+}: SettingTermsProps) => {
   const settings: SettingProps[] = [
     {
       label: 'Duration',

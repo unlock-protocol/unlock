@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
+// TODO: to delete when Settings page goes online
 import React, { useContext, useEffect, useState } from 'react'
 import Head from 'next/head'
 import { Button, Modal, Input } from '@unlock-protocol/ui'
