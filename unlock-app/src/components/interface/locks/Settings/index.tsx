@@ -1,8 +1,8 @@
 import { Tab } from '@headlessui/react'
 import { ReactNode, useState } from 'react'
-import { MembershipTerms } from './elements/MembershipTerms'
+import { SettingTerms } from './elements/SettingTerms'
 
-import { Roles } from './elements/Roles'
+import { SettingRoles } from './elements/SettingRoles'
 import { useLockManager } from '~/hooks/useLockManager'
 import { useAuth } from '~/contexts/AuthenticationContext'
 import { addressMinify } from '~/utils/strings'
@@ -80,7 +80,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
     {
       label: 'Membership Terms',
       children: (
-        <MembershipTerms
+        <SettingTerms
           lockAddress={lockAddress}
           network={network}
           isManager={isManager}
@@ -97,7 +97,14 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
     },
     {
       label: 'Roles',
-      children: <Roles />,
+      children: (
+        <SettingRoles
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          isLoading={isLoading}
+        />
+      ),
       sidebar: (
         <SidebarCard
           src="/images/illustrations/img-roles.svg"

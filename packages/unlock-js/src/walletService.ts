@@ -759,4 +759,54 @@ export default class WalletService extends UnlockService {
       callback
     )
   }
+
+  /**
+   * Add lock manager to Contact
+   * @param {*} params
+   * @param {*} callback
+   */
+  async addLockManager(
+    params: {
+      lockAddress: string
+      userAddress: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.userAddress) throw new Error('Missing userAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.addLockManager) {
+      throw new Error('Lock version not supported')
+    }
+    return version.addLockManager.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /**
+   * Renounce lock manager status for Contract
+   * @param {*} params
+   * @param {*} callback
+   */
+  async renounceLockManager(
+    params: {
+      lockAddress: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.addLockManager) {
+      throw new Error('Lock version not supported')
+    }
+    return version.renounceLockManager.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
 }
