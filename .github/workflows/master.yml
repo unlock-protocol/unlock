@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - master
-      - simplify-dockerfile
 
 jobs:
   run-all-tests:
