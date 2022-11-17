@@ -3,6 +3,16 @@ import { Lock, WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 
+interface CreateLockOptions {
+  publicLockVersion?: number | string
+  name: string
+  expirationDuration?: number | string
+  maxNumberOfKeys?: number | string
+  currencyContractAddress?: string | null
+  keyPrice?: string | number
+  creator?: string
+}
+
 /**
  * This service interacts with the user's wallet.
  * The functionality is on purpose only about sending transaction and returning the corresponding
@@ -105,7 +115,7 @@ export default class WalletService extends UnlockService {
    * @return Promise<PropTypes.address> lockAddress
    */
   async createLock(
-    lock: Lock,
+    lock: CreateLockOptions,
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ): Promise<string> {

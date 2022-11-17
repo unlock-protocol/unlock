@@ -2,6 +2,7 @@ import { Response } from 'express-serve-static-core'
 import { ethers } from 'ethers'
 import { SignedRequest } from '../types'
 import config from '../../config/config'
+import fetch from 'isomorphic-fetch'
 
 export const sign = async (req: SignedRequest, res: Response): Promise<any> => {
   const { recipients, captchaValue } = req.query

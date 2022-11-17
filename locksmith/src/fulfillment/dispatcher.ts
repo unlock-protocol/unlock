@@ -2,7 +2,6 @@ import { WalletService, Web3Service } from '@unlock-protocol/unlock-js'
 import networks from '@unlock-protocol/networks'
 import { ethers } from 'ethers'
 import logger from '../logger'
-
 const config = require('../../config/config')
 const { GAS_COST } = require('../utils/keyPricer')
 const { getGasSettings } = require('../utils/gasSettings')
@@ -243,5 +242,23 @@ export default class Dispatcher {
     const wallet = new ethers.Wallet(config.purchaserCredentials, provider)
 
     return [payload, await wallet.signMessage(payload)]
+  }
+
+  async createLockContract(
+    network: number,
+    options: Parameters<InstanceType<typeof WalletService>['createLock']>[0]
+  ) {
+    const provider = new ethers.providers.JsonRpcProvider(
+      networks[network].publicProvider
+    )
+    const signer = new ethers.Wallet(config.purchaserCredentials, provider)
+    const walletService = new WalletService(networks)
+    await walletService.connect(provider, signer)
+    return walletService.createLock(options, {}, (error, hash) => {
+      if (error) {
+        throw new Error(error?.message)
+      }
+      return hash
+    })
   }
 }
