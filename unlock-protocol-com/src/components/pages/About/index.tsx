@@ -42,7 +42,8 @@ export function About({ updates }: Props) {
                     We are community built and governed
                   </h2>
                   <p className="text-lg text-brand-gray sm:text-xl">
-                    Join a community of thousands of developers and creators building the future of Unlock!
+                    Join a community of thousands of developers and creators
+                    building the future of Unlock!
                   </p>
                 </header>
                 <div className="flex flex-wrap items-center justify-center gap-4">
