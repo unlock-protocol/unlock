@@ -6,7 +6,6 @@ import { useAuth } from '~/contexts/AuthenticationContext'
 import { getAddressForName } from '~/hooks/useEns'
 import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
-import { FaSpinner as Spinner } from 'react-icons/fa'
 import { useState } from 'react'
 import { addressMinify } from '~/utils/strings'
 
@@ -248,13 +247,13 @@ export const VerifierForm = ({
           />
         </div>
         {isManager && (
-          <Button type="submit" className="w-1/2 gap-2" disabled={isLoading}>
-            <div className="flex items-center gap-2">
-              <span>Add</span>
-              {addVerifierMutation.isLoading && (
-                <Spinner className="mr-1 animate-spin" />
-              )}
-            </div>
+          <Button
+            type="submit"
+            className="w-1/2 gap-2"
+            disabled={isLoading}
+            loading={addVerifierMutation.isLoading}
+          >
+            Add
           </Button>
         )}
       </form>
