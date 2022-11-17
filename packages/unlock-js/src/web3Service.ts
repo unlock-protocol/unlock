@@ -135,16 +135,9 @@ export default class Web3Service extends UnlockService {
         ?.map((d) => ethers.utils.getAddress(d.unlockAddress))
         .indexOf(lock.unlockContractAddress) == -1
     ) {
-      console.log('____')
-      console.log('NOT GOOD!')
-      console.log(lock.unlockContractAddress)
-      console.log(ethers.utils.getAddress(networkConfig.unlockAddress))
-      console.log(
-        networkConfig.previousDeploys?.map((d) =>
-          ethers.utils.getAddress(d.unlockAddress)
-        )
+      throw new Error(
+        'This contract is not deployed from Unlock factory contract.'
       )
-      console.log('____')
     }
 
     // Check that the Unlock contract has indeed deployed this lock
@@ -156,8 +149,8 @@ export default class Web3Service extends UnlockService {
     const response = await unlockContract.locks(address)
 
     if (!response.deployed) {
-      console.warn(
-        'Lock is not deployed from most recent unlock factory contract.'
+      throw new Error(
+        'This contract is not deployed from Unlock factory contract.'
       )
     }
 
