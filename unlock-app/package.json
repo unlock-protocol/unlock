@@ -37,7 +37,7 @@
     "cross-fetch": "3.1.5",
     "csv": "6.2.1",
     "dayjs": "1.11.6",
-    "deep-object-diff": "1.1.7",
+    "deep-object-diff": "1.1.9",
     "dotenv": "16.0.3",
     "eslint": "8.27.0",
     "eslint-plugin-jest": "27.1.4",
