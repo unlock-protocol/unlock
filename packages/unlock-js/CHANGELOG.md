@@ -1,7 +1,7 @@
 # Changes
 
 
-# 0.32.3
+# 0.32.4
 
 - Using `transactionOptions` for `createLock`
 
