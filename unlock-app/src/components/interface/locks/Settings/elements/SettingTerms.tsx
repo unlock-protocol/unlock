@@ -1,6 +1,7 @@
 import { Lock } from '@unlock-protocol/types'
 import { ReactNode } from 'react'
 import { CreditCardForm } from '../forms/CreditCardForm'
+import { SubscriptionForm } from '../forms/SubscriptionForm'
 import { UpdateDurationForm } from '../forms/UpdateDurationForm'
 import { UpdatePriceForm } from '../forms/UpdatePriceForm'
 import { UpdateQuantityForm } from '../forms/UpdateQuantityForm'
@@ -71,7 +72,15 @@ export const SettingTerms = ({
     {
       label: 'Subscription',
       description: 'Automatically renew memberships when they expire.',
-      children: null,
+      children: (
+        <SubscriptionForm
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+          lock={lock}
+        />
+      ),
     },
     {
       label: 'Credit Card Payment',
