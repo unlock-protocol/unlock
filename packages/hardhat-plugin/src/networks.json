@@ -4,6 +4,7 @@
     "unlockAddress": "0x3d5409CcE1d45233dE1D4eBDEe74b8E004abDD13",
     "multisig": "0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9",
     "name": "Ethereum",
+    "chain": "ethereum",
     "blockTime": 8000,
     "subgraph": {
       "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/unlock",
@@ -24,12 +25,24 @@
     "nativeCurrency": {
       "name": "Ether",
       "symbol": "Eth",
-      "decimals": 18
+      "decimals": 18,
+      "coingecko": "ethereum"
     },
     "startBlock": 7120795,
     "description": "The most popular network",
     "isTestNetwork": false,
     "teamMultisig": "0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9",
+    "uniswapV3": {
+      "subgraph": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    },
     "tokens": [
       {
         "name": "Wrapped Ether",
@@ -44,7 +57,7 @@
         "decimals": 18
       },
       {
-        "name": "USDCoin",
+        "name": "USD Coin",
         "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
         "symbol": "USDC",
         "decimals": 6
@@ -80,6 +93,7 @@
     "multisig": "0x95C06469e557d8645966077891B4aeDe8D55A755",
     "id": 5,
     "name": "Goerli (Testnet)",
+    "chain": "goerli",
     "blockTime": 1000,
     "subgraph": {
       "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/goerli",
@@ -98,24 +112,43 @@
     "nativeCurrency": {
       "name": "ETH",
       "symbol": "ETH",
-      "decimals": 18
+      "decimals": 18,
+      "coingecko": "ethereum"
     },
     "startBlock": 7179039,
     "previousDeploys": [],
     "isTestNetwork": true,
     "teamMultisig": "0x95C06469e557d8645966077891B4aeDe8D55A755",
+    "uniswapV3": {
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6"
+    },
     "tokens": [
+      {
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "address": "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
+        "decimals": 6,
+        "mainnetAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
       {
         "name": "Wrapped Ether",
         "address": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
         "symbol": "WETH",
-        "decimals": 18
+        "decimals": 18,
+        "mainnetAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
       },
       {
         "name": "Uniswap",
         "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
         "symbol": "UNI",
-        "decimals": 18
+        "decimals": 18,
+        "mainnetAddress": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984"
       }
     ]
   },
@@ -124,6 +157,7 @@
     "multisig": "0x6E78b4447e34e751EC181DCBed63633aA753e145",
     "id": 10,
     "name": "Optimism",
+    "chain": "optimism",
     "blockTime": 8000,
     "subgraph": {
       "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/optimism",
@@ -140,11 +174,22 @@
     "nativeCurrency": {
       "name": "Eth",
       "symbol": "Eth",
-      "decimals": 18
+      "decimals": 18,
+      "coingecko": "ethereum"
     },
     "description": "Layer 2 network. Cheaper transaction cost.",
     "isTestNetwork": false,
     "teamMultisig": "0x6E78b4447e34e751EC181DCBed63633aA753e145",
+    "uniswapV3": {
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0x4200000000000000000000000000000000000006"
+    },
     "tokens": [
       {
         "name": "Ethereum",
@@ -176,6 +221,7 @@
     "unlockAddress": "0xeC83410DbC48C7797D2f2AFe624881674c65c856",
     "id": 56,
     "name": "Binance Smart Chain",
+    "chain": "bsc",
     "blockTime": 1000,
     "multisig": "0x373D7cbc4F2700719DEa237500c7a154310B0F9B",
     "subgraph": {
@@ -194,7 +240,8 @@
     "nativeCurrency": {
       "name": "BNB",
       "symbol": "BNB",
-      "decimals": 18
+      "decimals": 18,
+      "coingecko": "binancecoin"
     },
     "startBlock": 13079000,
     "previousDeploys": [
@@ -240,6 +287,7 @@
     "id": 100,
     "name": "Gnosis Chain",
     "blockTime": 5000,
+    "chain": "xdai",
     "requiredConfirmations": 12,
     "subgraph": {
       "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai",
@@ -256,7 +304,8 @@
     "nativeCurrency": {
       "name": "DAI",
       "symbol": "DAI",
-      "decimals": 18
+      "decimals": 18,
+      "coingecko": "xdai"
     },
     "startBlock": 19338700,
     "previousDeploys": [
@@ -274,6 +323,12 @@
         "symbol": "USDC",
         "decimals": 6,
         "address": "0xddafbb505ad214d7b80b1f830fccc89b60fb7a83"
+      },
+      {
+        "name": "Tether USD",
+        "decimals": 6,
+        "address": "0x4ecaba5870353805a9f068101a40e0f32ed605c6",
+        "symbol": "USDT"
       }
     ]
   },
@@ -284,6 +339,7 @@
     "id": 137,
     "name": "Polygon",
     "blockTime": 1000,
+    "chain": "polygon",
     "subgraph": {
       "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon",
       "endpointV2": "https://api.thegraph.com/subgraphs/name/unlock-protocol/polygon-v2",
@@ -301,7 +357,8 @@
     "nativeCurrency": {
       "name": "Matic",
       "symbol": "MATIC",
-      "decimals": 18
+      "decimals": 18,
+      "coingecko": "matic-network"
     },
     "startBlock": 21986688,
     "previousDeploys": [
@@ -313,6 +370,16 @@
     "description": "Popular side chain network. Cheaper transaction cost.",
     "isTestNetwork": false,
     "teamMultisig": "0x479f3830fbd715342868BA95E438609BCe443DFB",
+    "uniswapV3": {
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped MATIC",
+      "symbol": "WMATIC",
+      "decimals": 18,
+      "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
+    },
     "tokens": [
       {
         "name": "Wrapped Ether",
@@ -333,7 +400,7 @@
         "decimals": 6
       },
       {
-        "name": "USDCoin",
+        "name": "USD Coin",
         "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
         "symbol": "USDC",
         "decimals": 6
@@ -349,6 +416,7 @@
   "31337": {
     "id": 31337,
     "name": "localhost",
+    "chain": "localhost",
     "locksmithUri": "http://127.0.0.1:8080",
     "unlockAppUrl": "http://0.0.0.0:3000",
     "subgraph": {
@@ -364,6 +432,7 @@
     "multisig": "0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0",
     "id": 42161,
     "name": "Arbitrum",
+    "chain": "arbitrum",
     "blockTime": 1000,
     "subgraph": {
       "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/arbitrum",
@@ -382,12 +451,23 @@
     "nativeCurrency": {
       "name": "ETH",
       "symbol": "ETH",
-      "decimals": 18
+      "decimals": 18,
+      "coingecko": "ethereum"
     },
     "startBlock": 17429533,
     "previousDeploys": [],
     "isTestNetwork": false,
     "description": "Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.",
+    "uniswapV3": {
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
+    },
     "tokens": [
       {
         "name": "Ethereum",
@@ -426,6 +506,7 @@
     "multisig": "0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8",
     "id": 42220,
     "name": "Celo",
+    "chain": "celo",
     "description": "Celo is a EVM compatible proof-of-stake blockchain designed for mobile with the ability to pay gas with tokens or stablecoins.",
     "blockTime": 1000,
     "subgraph": {
@@ -444,18 +525,37 @@
     "nativeCurrency": {
       "name": "CELO",
       "symbol": "CELO",
-      "decimals": 18
+      "decimals": 18,
+      "coingecko": "celo"
     },
     "startBlock": 7179039,
     "previousDeploys": [],
     "isTestNetwork": false,
     "teamMultisig": "0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8",
+    "uniswapV3": {
+      "factoryAddress": "0xAfE208a311B21f13EF87E33A90049fC17A7acDEc",
+      "quoterAddress": "0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Celo native asset",
+      "symbol": "CELO",
+      "decimals": 18,
+      "address": "0x471ece3750da237f93b8e339c536989b8978a438"
+    },
     "tokens": [
       {
         "name": "USD Coin",
         "symbol": "USDC",
         "decimals": 6,
-        "address": "0xef4229c8c3250c675f21bcefa42f58efbff6002a"
+        "address": "0xef4229c8c3250c675f21bcefa42f58efbff6002a",
+        "mainnetAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "name": "Dai Stablecoin",
+        "address": "0xE4fE50cdD716522A56204352f00AA110F731932d",
+        "symbol": "DAI",
+        "decimals": 18,
+        "mainnetAddress": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
       }
     ]
   },
@@ -464,6 +564,7 @@
     "multisig": "0xEc7777C51327917fd2170c62873272ea168120Cb",
     "id": 43114,
     "name": "Avalanche (C-Chain)",
+    "chain": "avax",
     "blockTime": 1000,
     "subgraph": {
       "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/avalanche",
@@ -481,7 +582,8 @@
     "nativeCurrency": {
       "name": "AVAX",
       "symbol": "AVAX",
-      "decimals": 18
+      "decimals": 18,
+      "coingecko": "avalanche-2"
     },
     "startBlock": 17188332,
     "previousDeploys": [],
@@ -526,6 +628,7 @@
     "id": 80001,
     "name": "Mumbai (Polygon)",
     "blockTime": 1000,
+    "chain": "mumbai",
     "subgraph": {
       "endpoint": "https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai",
       "endpointV2": "https://api.thegraph.com/subgraphs/name/unlock-protocol/mumbai-v2"
@@ -542,25 +645,52 @@
     "nativeCurrency": {
       "name": "MATIC",
       "symbol": "MATIC",
-      "decimals": 18
+      "decimals": 18,
+      "coingecko": "matic-network"
     },
     "startBlock": 26584912,
     "previousDeploys": [],
     "description": "Polygon test network. Do not use for production",
     "isTestNetwork": true,
     "teamMultisig": "0x12E37A8880801E1e5290c815a894d322ac591607",
+    "uniswapV3": {
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped MATIC",
+      "symbol": "WMATIC",
+      "decimals": 18,
+      "address": "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"
+    },
     "tokens": [
+      {
+        "name": "USD Coin",
+        "address": "0x0FA8781a83E46826621b3BC094Ea2A0212e71B23",
+        "symbol": "USDC",
+        "decimals": 6,
+        "mainnetAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
       {
         "name": "Wrapped Ether",
         "address": "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
         "symbol": "WETH",
-        "decimals": 18
+        "decimals": 18,
+        "mainnetAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
       },
       {
         "name": "Wrapped Matic",
         "address": "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
         "symbol": "WMATIC",
-        "decimals": 18
+        "decimals": 18,
+        "mainnetAddress": "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0"
+      },
+      {
+        "name": "Dai Stablecoin",
+        "address": "0xcB1e72786A6eb3b44C2a2429e317c8a2462CFeb1",
+        "symbol": "DAI",
+        "decimals": 18,
+        "mainnetAddress": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
       }
     ]
   }
