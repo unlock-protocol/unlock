@@ -98,6 +98,14 @@ export function Select({ checkoutService, injectedProvider }: Props) {
     return !(hasMaxRecipients || hasMinRecipients)
   }, [lock, paywallConfig])
 
+  const skipRecipient = useMemo(() => {
+    const skipRecipient = lock?.skipRecipient || paywallConfig.skipRecipient
+    const collectsMetadadata =
+      lock?.metadataInputs || paywallConfig.metadataInputs
+
+    return skipRecipient && !collectsMetadadata
+  }, [lock, paywallConfig])
+
   const [isSwitchingNetwork, setIsSwitchingNetwork] = useState(false)
   const config = useConfig()
   const { account, network, changeNetwork, isUnlockAccount } = useAuth()
@@ -368,7 +376,8 @@ export function Select({ checkoutService, injectedProvider }: Props) {
                     lock,
                     existingMember: !!membership?.member,
                     skipQuantity,
-                    // unlock account are unable to renew
+                    skipRecipient,
+                    // unlock account are unable to renew : wut?
                     expiredMember: isUnlockAccount
                       ? false
                       : !!membership?.expired,

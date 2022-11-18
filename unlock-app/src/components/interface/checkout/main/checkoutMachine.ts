@@ -39,6 +39,7 @@ export interface SelectLockEvent {
   existingMember: boolean
   expiredMember: boolean
   skipQuantity?: boolean
+  skipRecipient?: boolean
 }
 
 export interface SignMessageEvent {
@@ -561,6 +562,7 @@ export const checkoutMachine = createMachine(
           lock: event.lock,
           renew: event.expiredMember,
           skipQuantity: event.skipQuantity,
+          skipRecipient: event.skipRecipient,
         }
       }),
       selectQuantity: assign({
