@@ -3,6 +3,16 @@ import { Lock, WalletServiceCallback, TransactionOptions } from './types'
 import UnlockService from './unlockService'
 import utils from './utils'
 
+interface CreateLockOptions {
+  publicLockVersion?: number | string
+  name: string
+  expirationDuration?: number | string
+  maxNumberOfKeys?: number | string
+  currencyContractAddress?: string | null
+  keyPrice?: string | number
+  creator?: string
+}
+
 /**
  * This service interacts with the user's wallet.
  * The functionality is on purpose only about sending transaction and returning the corresponding
@@ -105,7 +115,7 @@ export default class WalletService extends UnlockService {
    * @return Promise<PropTypes.address> lockAddress
    */
   async createLock(
-    lock: Lock,
+    lock: CreateLockOptions,
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
   ): Promise<string> {
@@ -540,7 +550,7 @@ export default class WalletService extends UnlockService {
   async updateLockSymbol(
     params: {
       lockAddress: string
-      name: string
+      symbol: string
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback
@@ -744,6 +754,56 @@ export default class WalletService extends UnlockService {
       throw new Error('Lock version not supported')
     }
     return version.setExpirationDuration.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /**
+   * Add lock manager to Contact
+   * @param {*} params
+   * @param {*} callback
+   */
+  async addLockManager(
+    params: {
+      lockAddress: string
+      userAddress: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    if (!params.userAddress) throw new Error('Missing userAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.addLockManager) {
+      throw new Error('Lock version not supported')
+    }
+    return version.addLockManager.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
+
+  /**
+   * Renounce lock manager status for Contract
+   * @param {*} params
+   * @param {*} callback
+   */
+  async renounceLockManager(
+    params: {
+      lockAddress: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.addLockManager) {
+      throw new Error('Lock version not supported')
+    }
+    return version.renounceLockManager.bind(this)(
       params,
       transactionOptions,
       callback

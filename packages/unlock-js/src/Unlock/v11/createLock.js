@@ -49,10 +49,13 @@ export default async function (lock, transactionOptions = {}, callback) {
 
   const lockName = lock.name
 
+  const signerAddress = await this.signer.getAddress()
+
   // get lock creator
-  const lockCreator = await this.signer.getAddress()
+  const lockCreator = lock.creator || signerAddress
+
   if (!lockCreator) {
-    throw new Error('No signer detected')
+    throw new Error('No lock creator passed or found.')
   }
 
   // parse interface

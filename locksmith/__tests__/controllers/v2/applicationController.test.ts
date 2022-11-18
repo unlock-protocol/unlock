@@ -54,7 +54,7 @@ describe('Application endpoint', () => {
       .get('/v2/auth/user')
       .set('Authorization', `Api-key 24${application.key}`)
 
-    expect(applicationData.statusCode).toBe(403)
+    expect(applicationData.statusCode).toBe(401)
   })
 
   describe('list applications', () => {
@@ -85,7 +85,7 @@ describe('Application endpoint', () => {
         .get('/v2/applications/list')
         .send()
 
-      expect(applicationList.statusCode).toBe(403)
+      expect(applicationList.statusCode).toBe(401)
     })
 
     it('list application with API KEY', async () => {
@@ -172,7 +172,7 @@ describe('Application endpoint', () => {
         .send()
 
       expect(deletedApplication.statusCode).toBe(200)
-      expect(userResponse.statusCode).toBe(403)
+      expect(userResponse.statusCode).toBe(401)
     })
   })
 })

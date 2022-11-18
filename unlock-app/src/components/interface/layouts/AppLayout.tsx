@@ -17,6 +17,7 @@ interface DashboardLayoutProps {
   children: React.ReactNode
   authRequired?: boolean
   showLinks?: boolean
+  showHeader?: boolean
 }
 
 const WalletNotConnected = () => {
@@ -50,6 +51,7 @@ export const AppLayout = ({
   children,
   authRequired = true,
   showLinks = true,
+  showHeader = true,
 }: DashboardLayoutProps) => {
   const { account } = useAuth()
   const { termsAccepted, saveTermsAccepted, termsLoading } = useTermsOfService()
@@ -96,7 +98,7 @@ export const AppLayout = ({
       </Modal>
 
       <div className="w-full">
-        <AppHeader showLinks={showLinks} />
+        {showHeader && <AppHeader showLinks={showLinks} />}
         <div className="min-w-full min-h-screen">
           <div className="pt-8">
             <Container>
