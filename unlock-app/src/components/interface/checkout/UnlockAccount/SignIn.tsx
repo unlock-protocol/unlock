@@ -49,10 +49,10 @@ export function SignIn({ unlockAccountService, signIn }: Props) {
   return (
     <div className="h-full flex flex-col justify-between">
       <main className="px-6 pb-2 space-y-2 overflow-auto h-full">
-        <h3 className="font-bold ml-0.5">Please enter your password</h3>
+        <h3 className="font-bold ml-0.5">Welcome back!</h3>
         <form id="password" onSubmit={handleSubmit(onSubmit)}>
           <Input
-            label="Password"
+            label="Enter your password"
             type="password"
             size="small"
             placeholder="password"

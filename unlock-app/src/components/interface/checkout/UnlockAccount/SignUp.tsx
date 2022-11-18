@@ -50,16 +50,16 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
   return (
     <div className="h-full flex flex-col justify-between">
       <main className="px-6 pb-2 space-y-2 overflow-auto h-full">
-        <h3 className="font-bold ml-0.5">Let&apos;s set it up, shall we?</h3>
+        <h3 className="font-bold ml-0.5">Sign-up</h3>
         <form
           id="confirmPassword"
           className="space-y-2"
           onSubmit={handleSubmit(onSubmit)}
         >
           <Input
-            label="Password"
+            label="Pick a password"
             type="password"
-            placeholder="password"
+            placeholder="Password"
             required
             size="small"
             error={errors?.password?.message as unknown as string}
@@ -72,9 +72,9 @@ export function SignUp({ unlockAccountService, signUp }: Props) {
             })}
           />
           <Input
-            label="Confirm Password"
+            label="Confirm the password"
             type="password"
-            placeholder="confirm"
+            placeholder="Confirm"
             required
             size="small"
             error={errors?.confirmedPassword?.message as unknown as string}
