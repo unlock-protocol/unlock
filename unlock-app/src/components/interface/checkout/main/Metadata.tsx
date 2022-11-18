@@ -201,8 +201,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
                         </Button>
                       </div>
                       <p className="text-xs text-gray-600">
-                        The Ethereum address that will receive the membership
-                        NFT
+                        The wallet address that will receive the membership NFT
                       </p>
                     </div>
                   ) : (
