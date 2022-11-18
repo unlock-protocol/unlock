@@ -255,6 +255,12 @@ export default class Dispatcher {
     const signer = new ethers.Wallet(config.purchaserCredentials, provider)
     const walletService = new WalletService(networks)
     await walletService.connect(provider, signer)
-    return walletService.createLock(options, {}, callback)
+    const { maxFeePerGas, maxPriorityFeePerGas } = await getGasSettings(network)
+
+    return walletService.createLock(
+      options,
+      { maxFeePerGas, maxPriorityFeePerGas },
+      callback
+    )
   }
 }
