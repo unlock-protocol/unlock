@@ -47,11 +47,11 @@ describe('Auth login endpoints for locksmith', () => {
       .get('/v2/auth/user')
       .set('authorization', `Bearer ${loginResponse.body.accessToken}`)
 
-    expect(userResponse2.status).toBe(403)
+    expect(userResponse2.status).toBe(401)
 
     const userResponse3 = await request(app).get('/v2/auth/user')
 
-    expect(userResponse3.status).toBe(403)
+    expect(userResponse3.status).toBe(401)
   })
 
   it('Refresh token can be used to get new access token', async () => {
