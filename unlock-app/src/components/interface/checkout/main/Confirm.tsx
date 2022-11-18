@@ -40,19 +40,19 @@ export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
       <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
         <h4 className="text-gray-600"> Service Fee </h4>
         <div className="font-bold">
-          ~${(fiatPricing?.usd?.unlockServiceFee / 100).toString()}
+          ${(fiatPricing?.usd?.unlockServiceFee / 100).toFixed(2)}
         </div>
       </div>
       <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
         <h4 className="text-gray-600"> Credit Card Processing </h4>
         <div className="font-bold">
-          ~${(fiatPricing?.usd?.creditCardProcessing / 100).toString()}
+          ${(fiatPricing?.usd?.creditCardProcessing / 100).toFixed(2)}
         </div>
       </div>
       <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
         <h4 className="text-gray-600"> Total </h4>
         <div className="font-bold">
-          ~$
+          $
           {(
             Object.values(fiatPricing.usd).reduce<number>(
               (t, amount) => t + Number(amount),
