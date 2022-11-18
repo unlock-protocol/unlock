@@ -1,5 +1,9 @@
 # Changes
 
+# 0.32.2
+
+- Using `transactionOptions` for `createLock`
+
 # 0.32.1
 
 - Change parameter name for `updateLockSymbol`
