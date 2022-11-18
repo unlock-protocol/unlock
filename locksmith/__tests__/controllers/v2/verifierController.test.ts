@@ -25,7 +25,7 @@ describe('Verifier v2 endpoints for locksmith', () => {
     const getListEndpoint = await request(app).get(
       `/v2/api/verifier/${network}/${lock}`
     )
-    expect(getListEndpoint.status).toBe(403)
+    expect(getListEndpoint.status).toBe(401)
   })
 
   it('Get list items from lock with random address (not lockManager)', async () => {

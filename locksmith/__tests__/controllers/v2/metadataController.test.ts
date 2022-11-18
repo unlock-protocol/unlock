@@ -382,7 +382,7 @@ describe('Metadata v2 endpoints for locksmith', () => {
     const lockAddressMetadataResponse = await request(app).put(
       `/v2/api/metadata/4/locks/${lockAddress}/keys`
     )
-    expect(lockAddressMetadataResponse.status).toBe(403)
+    expect(lockAddressMetadataResponse.status).toBe(401)
   })
 
   it('Bulk lock metadata returns no error when authentication is present and user is lock manager', async () => {

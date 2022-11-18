@@ -66,7 +66,7 @@ describe('grantKeys endpoint', () => {
           },
         ],
       })
-    expect(response.status).toBe(403)
+    expect(response.status).toBe(401)
   })
 
   it('returns an error when authentication is there but the user is not a lock manager or key granter', async () => {

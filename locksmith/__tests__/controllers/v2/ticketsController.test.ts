@@ -51,7 +51,7 @@ describe('tickets endpoint', () => {
     const response = await request(app).get(
       `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/sign`
     )
-    expect(response.status).toBe(403)
+    expect(response.status).toBe(401)
   })
 
   it('returns an error when authentication is there but the user is not the key owner', async () => {
@@ -96,7 +96,7 @@ describe('tickets endpoint', () => {
       `/v2/api/ticket/${network}/lock/${lockAddress}/key/${keyId}/check`
     )
 
-    expect(response.status).toBe(403)
+    expect(response.status).toBe(401)
   })
 
   it('marks ticket as checked-in fails when user is not a verifier', async () => {
@@ -205,7 +205,7 @@ describe('tickets endpoint', () => {
     const response = await request(app).post(
       `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/email`
     )
-    expect(response.status).toBe(403)
+    expect(response.status).toBe(401)
   })
 
   it('does not send email when auhentication is present but the user is not the key manager', async () => {
@@ -242,7 +242,7 @@ describe('tickets endpoint', () => {
       const response = await request(app).get(
         `/v2/api/ticket/${network}/${lockAddress}/${tokenId}/qr`
       )
-      expect(response.status).toBe(403)
+      expect(response.status).toBe(401)
     })
 
     it('returns an error when authentication is there but the user is not the lock manager', async () => {
