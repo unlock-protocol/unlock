@@ -250,7 +250,7 @@ export const VerifierForm = ({
         {isManager && (
           <Button
             type="submit"
-            className="w-1/2 gap-2"
+            className="w-full md:w-1/2"
             disabled={isLoading || disabled}
             loading={addVerifierMutation.isLoading}
           >

@@ -309,7 +309,7 @@ export const LockManagerForm = ({
         </div>
         {isManager && (
           <Button
-            className="w-1/2"
+            className="w-full md:w-1/2"
             type="submit"
             disabled={disableInput}
             loading={addLockManagerMutation.isLoading}
