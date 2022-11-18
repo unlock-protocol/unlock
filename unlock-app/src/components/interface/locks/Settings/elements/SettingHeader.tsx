@@ -12,7 +12,7 @@ import Link from 'next/link'
 
 interface SettingHeaderProps {
   lockAddress: string
-  network: string
+  network: number
   isLoading: boolean
   lock: Lock
 }
@@ -63,7 +63,7 @@ export const SettingHeader = ({
   const lockUrl = `/locks/lock?address=${lockAddress}&network=${network}`
 
   return (
-    <div className="flex flex-col items-start gap-10">
+    <div className="flex flex-col items-start gap-4 md:gap-10">
       <Link href={lockUrl}>
         <Button variant="borderless">
           <CloseIcon size={20} />

@@ -550,7 +550,7 @@ export default class WalletService extends UnlockService {
   async updateLockSymbol(
     params: {
       lockAddress: string
-      name: string
+      symbol: string
     },
     transactionOptions?: TransactionOptions,
     callback?: WalletServiceCallback

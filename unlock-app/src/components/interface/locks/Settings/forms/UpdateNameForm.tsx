@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
 import { useWalletService } from '~/utils/withWalletService'
 
-interface LockNameFormProps {
+interface UpdateNameFormProps {
   disabled: boolean
   isManager: boolean
   lockAddress: string
@@ -15,12 +15,12 @@ interface FormProps {
   name: string
 }
 
-export const LockNameForm = ({
+export const UpdateNameForm = ({
   disabled,
   isManager,
   lockAddress,
   lockName,
-}: LockNameFormProps) => {
+}: UpdateNameFormProps) => {
   const walletService = useWalletService()
   const {
     register,
@@ -58,12 +58,14 @@ export const LockNameForm = ({
   }
 
   const disabledInput = disabled || changeNameMutation.isLoading
+
   return (
     <form className="flex flex-col gap-6" onSubmit={handleSubmit(onChangeName)}>
       <div className="relative">
         <Input
           {...register('name', {
             minLength: 3,
+            required: true,
           })}
           autoComplete="off"
           disabled={disabledInput}
@@ -75,14 +77,16 @@ export const LockNameForm = ({
         )}
       </div>
 
-      <Button
-        type="submit"
-        className="w-full md:w-1/3"
-        disabled={disabledInput}
-        loading={changeNameMutation.isLoading}
-      >
-        Update
-      </Button>
+      {isManager && (
+        <Button
+          type="submit"
+          className="w-full md:w-1/3"
+          disabled={disabledInput}
+          loading={changeNameMutation.isLoading}
+        >
+          Update
+        </Button>
+      )}
     </form>
   )
 }

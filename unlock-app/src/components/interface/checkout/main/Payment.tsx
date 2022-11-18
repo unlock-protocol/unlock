@@ -119,7 +119,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     !!isClaimable &&
     !isClaimableLoading &&
     isReceiverAccountOnly &&
-    !enableCrypto
+    !!walletInfo?.isPayable
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -197,7 +197,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="text-sm text-left text-gray-500">
-                    use cards, google pay, and apple pay.
+                    Use cards, Google Pay, or Apple Pay. <br />
+                    <span className="text-xs">Additional fees may apply</span>
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
