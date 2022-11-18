@@ -36,10 +36,10 @@ const NotManagerBanner = () => {
 
 const SidebarCard = ({ src, alt, description }: SidebarCardProps) => {
   return (
-    <div className="relative w-full h-80 bg-slate-200 rounded-2xl">
+    <div className="relative w-full bg-slate-200 rounded-2xl">
       <div className="overflow-hidden rounded-2xl">
         <img
-          className="object-cover w-full h-24 bg-center md:h-80"
+          className="object-cover w-full bg-center h-80 md:h-80"
           src={src}
           alt={alt ?? 'Sidebar image'}
         />
@@ -158,8 +158,8 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
         selectedIndex={selectedIndex}
         onChange={setSelectedIndex}
       >
-        <div className="grid grid-cols-5 gap-10 my-8">
-          <div className="col-span-1">
+        <div className="flex flex-col gap-6 my-8 md:gap-10 md:grid md:grid-cols-5">
+          <div className="md:col-span-1">
             <Tab.List className="flex flex-col gap-4">
               {tabs?.map(({ label }, index) => {
                 const isActive = index === selectedIndex
@@ -178,14 +178,14 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
               })}
             </Tab.List>
           </div>
-          <div className="col-span-4">
-            <div className="grid grid-cols-4 gap-10">
-              <div className="col-span-3">
+          <div className="md:col-span-4">
+            <div className="flex flex-col gap-10 md:grid md:grid-cols-4">
+              <div className="md:col-span-3">
                 <Tab.Panels>
                   {tabs?.map(({ label, children }, index) => {
                     return (
                       <Tab.Panel className="flex flex-col gap-6" key={index}>
-                        <h2 className="text-4xl font-bold text-brand-dark">
+                        <h2 className="text-2xl font-bold md:text-4xl text-brand-dark">
                           {label}
                         </h2>
                         <div>{children}</div>
@@ -194,7 +194,7 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
                   })}
                 </Tab.Panels>
               </div>
-              <div className="col-span-1">{tabs[selectedIndex].sidebar}</div>
+              <div className="md:col-span-1">{tabs[selectedIndex].sidebar}</div>
             </div>
           </div>
         </div>
