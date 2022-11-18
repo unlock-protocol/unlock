@@ -1,4 +1,5 @@
 import { CheckoutService } from './checkoutMachine'
+import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { useActor } from '@xstate/react'
@@ -270,12 +271,33 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
             {allDisabled && (
-              <div>
-                <p className="text-sm">
-                  No payment option is available to pay for the lock. You need
-                  to connect a crypto wallet with balance or ask creator to
-                  enable credit card payments.
+              <div className="text-sm">
+                <p className="mb-4">
+                  There is currently no payment option available for you to
+                  purchase this membership.
                 </p>
+                {isUnlockAccount && (
+                  <>
+                    <p className="mb-4">
+                      This membership contract currently only accepts
+                      cryptocurrency payments for which you need your own web3
+                      wallet.{' '}
+                      <a
+                        href="https://ethereum.org/en/wallets/find-wallet/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-sm text-gray-500 underline"
+                      >
+                        <span>Learn more</span>
+                        <ExternalLinkIcon />
+                      </a>
+                    </p>
+                    <p>
+                      You could also ask the merchant to enable credit card
+                      payments using Unlock.
+                    </p>
+                  </>
+                )}
               </div>
             )}
           </div>
