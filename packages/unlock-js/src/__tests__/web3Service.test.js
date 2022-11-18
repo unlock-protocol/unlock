@@ -19,7 +19,9 @@ describe('Web3Service', () => {
       async (method) => {
         expect.assertions(3)
         const args = [lock.address, lock.network]
-        const result = {}
+        const result = {
+          unlockContractAddress: networks[lock.network].unlockAddress,
+        }
         const version = {
           [method](_args) {
             // Needs to be a function because it is bound to web3Service

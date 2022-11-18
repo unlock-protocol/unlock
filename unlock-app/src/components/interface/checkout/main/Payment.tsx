@@ -120,7 +120,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     !!isClaimable &&
     !isClaimableLoading &&
     isReceiverAccountOnly &&
-    !enableCrypto
+    !!walletInfo?.isPayable
 
   const stepItems = useCheckoutSteps(checkoutService)
 
@@ -198,7 +198,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="text-sm text-left text-gray-500">
-                    use cards, google pay, and apple pay.
+                    Use cards, Google Pay, or Apple Pay. <br />
+                    <span className="text-xs">Additional fees may apply</span>
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -273,28 +274,23 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
             {allDisabled && (
               <div className="text-sm">
                 <p className="mb-4">
-                  There is currently no payment option available for you to
-                  purchase this membership.
+                  Credit card payments have not been enabled for this
+                  membership.
                 </p>
                 {isUnlockAccount && (
                   <>
                     <p className="mb-4">
-                      This membership contract currently only accepts
-                      cryptocurrency payments for which you need your own web3
-                      wallet.{' '}
+                      Ready to get your own wallet to purchase this membership
+                      with cryptocurrency?{' '}
                       <a
                         href="https://ethereum.org/en/wallets/find-wallet/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-sm text-gray-500 underline"
                       >
-                        <span>Learn more</span>
+                        <span>Click here</span>
                         <ExternalLinkIcon />
                       </a>
-                    </p>
-                    <p>
-                      You could also ask the merchant to enable credit card
-                      payments using Unlock.
                     </p>
                   </>
                 )}
