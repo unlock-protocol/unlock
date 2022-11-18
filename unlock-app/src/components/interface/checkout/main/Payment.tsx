@@ -1,4 +1,5 @@
 import { CheckoutService } from './checkoutMachine'
+import { RiExternalLinkLine as ExternalLinkIcon } from 'react-icons/ri'
 import { Connected } from '../Connected'
 import { useConfig } from '~/utils/withConfig'
 import { useActor } from '@xstate/react'
@@ -197,7 +198,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div className="text-sm text-left text-gray-500">
-                    use cards, google pay, and apple pay.
+                    Use cards, Google Pay, or Apple Pay. <br />
+                    <span className="text-xs">Additional fees may apply</span>
                   </div>
                   <RightArrowIcon
                     className="transition-transform duration-300 ease-out group-hover:fill-brand-ui-primary group-hover:translate-x-1 group-disabled:translate-x-0 group-disabled:transition-none group-disabled:group-hover:fill-black"
@@ -270,12 +272,28 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
               </button>
             )}
             {allDisabled && (
-              <div>
-                <p className="text-sm">
-                  No payment option is available to pay for the lock. You need
-                  to connect a crypto wallet with balance or ask creator to
-                  enable credit card payments.
+              <div className="text-sm">
+                <p className="mb-4">
+                  Credit card payments have not been enabled for this
+                  membership.
                 </p>
+                {isUnlockAccount && (
+                  <>
+                    <p className="mb-4">
+                      Ready to get your own wallet to purchase this membership
+                      with cryptocurrency?{' '}
+                      <a
+                        href="https://ethereum.org/en/wallets/find-wallet/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-sm text-gray-500 underline"
+                      >
+                        <span>Click here</span>
+                        <ExternalLinkIcon />
+                      </a>
+                    </p>
+                  </>
+                )}
               </div>
             )}
           </div>

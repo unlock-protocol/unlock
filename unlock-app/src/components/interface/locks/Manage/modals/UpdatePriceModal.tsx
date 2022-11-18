@@ -1,3 +1,4 @@
+// TODO: to delete after setting page goes online
 import { Modal, Input, Button, ToggleSwitch } from '@unlock-protocol/ui'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'

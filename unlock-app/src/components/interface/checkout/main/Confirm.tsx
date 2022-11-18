@@ -36,23 +36,30 @@ interface Props {
 
 export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
   return (
-    <div className="mt-6">
-      <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
-        <h4 className="text-gray-600"> Service Fee </h4>
-        <div className="font-bold">
-          ~${(fiatPricing?.usd?.unlockServiceFee / 100).toString()}
-        </div>
+    <div className="mt-6 text-sm">
+      <h4 className="text-gray-600 ">
+        Credit Card Fees{' '}
+        <a
+          href="https://unlock-protocol.com/guides/enabling-credit-cards/#faq"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-2 py-0.5 rounded-lg gap-2 text-xs hover:bg-gray-100 bg-gray-50 text-gray-500 hover:text-black"
+        >
+          <span>Learn more</span> <ExternalLinkIcon className="inline" />
+        </a>
+      </h4>
+      <div className="flex justify-between w-full pt-2 text-xs border-t border-gray-300">
+        <span className="text-gray-600">Service Fee</span>
+        <div>${(fiatPricing?.usd?.unlockServiceFee / 100).toFixed(2)}</div>
       </div>
-      <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
-        <h4 className="text-gray-600"> Credit Card Processing </h4>
-        <div className="font-bold">
-          ~${(fiatPricing?.usd?.creditCardProcessing / 100).toString()}
-        </div>
+      <div className="flex justify-between w-full pb-2 text-xs ">
+        <span className="text-gray-600"> Payment Processor </span>
+        <div>${(fiatPricing?.usd?.creditCardProcessing / 100).toFixed(2)}</div>
       </div>
       <div className="flex justify-between w-full py-2 text-sm border-t border-gray-300">
         <h4 className="text-gray-600"> Total </h4>
         <div className="font-bold">
-          ~$
+          $
           {(
             Object.values(fiatPricing.usd).reduce<number>(
               (t, amount) => t + Number(amount),
@@ -60,17 +67,6 @@ export function CreditCardPricingBreakdown(fiatPricing: FiatPricing) {
             ) / 100
           ).toFixed(2)}
         </div>
-      </div>
-      <div className="flex">
-        <a
-          href="https://unlock-protocol.com/guides/enabling-credit-cards/#faq"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="px-2 py-0.5 rounded-lg flex items-center gap-2 text-sm hover:bg-gray-100 bg-gray-50 text-gray-500 hover:text-black"
-        >
-          <span>Learn more</span>
-          <ExternalLinkIcon />
-        </a>
       </div>
     </div>
   )
@@ -600,15 +596,17 @@ export function Confirm({
             ))}
           </div>
         ) : (
-          <Pricing
-            keyPrice={
-              pricingData?.total === '0'
-                ? 'FREE'
-                : `${pricingData?.total?.toString()} ${symbol}`
-            }
-            usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
-            isCardEnabled={formattedData.cardEnabled}
-          />
+          <>
+            <Pricing
+              keyPrice={
+                pricingData?.total === '0'
+                  ? 'FREE'
+                  : `${pricingData?.total?.toString()} ${symbol}`
+              }
+              usdPrice={`~$${(fiatPricing?.usd?.keyPrice / 100).toFixed()}`}
+              isCardEnabled={formattedData.cardEnabled}
+            />
+          </>
         )}
         {isLoading ? (
           <div className="py-1.5 space-y-2 items-center">
