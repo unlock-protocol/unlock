@@ -99,7 +99,7 @@ export const SubscriptionForm = ({
           onClick={handleApproveRecurring}
           loading={isLoading}
         >
-          Update
+          Apply
         </Button>
       )}
     </div>
