@@ -127,14 +127,20 @@ export default class Web3Service extends UnlockService {
     lock.unlockContractAddress = ethers.utils.getAddress(
       lock.unlockContractAddress
     )
+
+    const previousDeployAddresses = (networkConfig.previousDeploys || []).map(
+      (d) => ethers.utils.getAddress(d.unlockAddress)
+    )
+    const isPreviousUnlockContract = previousDeployAddresses.includes(
+      lock.unlockContractAddress
+    )
+
+    const isUnlockContract =
+      ethers.utils.getAddress(networkConfig.unlockAddress) ===
+      lock.unlockContractAddress
+
     // Check that the Unlock address matches one of the configured ones
-    if (
-      ethers.utils.getAddress(networkConfig.unlockAddress) !==
-        lock.unlockContractAddress &&
-      (networkConfig.previousDeploys || [])
-        ?.map((d) => ethers.utils.getAddress(d.unlockAddress))
-        .indexOf(lock.unlockContractAddress) == -1
-    ) {
+    if (!isUnlockContract && !isPreviousUnlockContract) {
       throw new Error(
         'This contract is not deployed from Unlock factory contract.'
       )
