@@ -84,9 +84,10 @@ export const CancellationForm = ({
         updateRefundPenaltyMutation.mutateAsync(fields)
 
       await ToastHelper.promise(updateRefundPenaltyPromise, {
-        loading: 'Updating refund penalty values.',
-        success: 'Penalty value successfully updated.',
-        error: 'There is some issue with value updating, please try again.',
+        loading: 'Updating the refund policy.',
+        success: 'Penalty policy updated!',
+        error:
+          'There was an issue updating the refund policy. Please try again.',
       })
     } else {
       ToastHelper.error('Form is not valid.')
@@ -193,11 +194,11 @@ export const CancellationForm = ({
       <div className="flex flex-col gap-6">
         <SettingCardDetail
           title="Allow Trial"
-          description="Member can cancel the membership and a refund will be issue. Typically the refund is issued manually by you, and the amount will be lower due of transaction fee"
+          description="If you enable a free trial period, users will be able to get a full refund when they cancel their memberships. It is strongly advised to add transfer penalties when enabling free trials to avoid risks of people stealing funds from your contract."
         />
         <div className="relative">
           <div className="flex items-center justify-between">
-            <span className="text-base">Free trial within</span>
+            <span className="text-base">Free trial duration (in days)</span>
             <ToggleSwitch
               disabled={disabledInput}
               enabled={allowTrial}
@@ -224,7 +225,7 @@ export const CancellationForm = ({
       <div className="flex flex-col gap-6">
         <SettingCardDetail
           title="Cancel Penalty"
-          description="Enable this feature if you wish to collect penalty from the member when they cancel membership."
+          description="Enable this feature if you wish to apply a cancellation penalty. The penalty is a percentage of the membership cost. The refund amount is pro-rated after the penalty has been applied. If you select 100%, the users will not receive any refund."
         />
         <div className="relative">
           <div className="flex items-center justify-between">

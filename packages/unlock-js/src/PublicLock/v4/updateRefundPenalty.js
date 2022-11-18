@@ -1,8 +1,10 @@
 /**
- * Update the name of a lock
+ * Update refund penalty
  * @param {object} params
- * - {PropTypes.address} lockAddress : address of the lock for which we update the name
- * - {string} name: the new name of the lock
+ * - {PropTypes.lockAddress} lockAddress : address of the lock for which we update refund penalty
+ * - {PropTypes.freeTrialLength} freeTrialLength value
+ * - {PropTypes.refundPenaltyBasisPoints} refundPenaltyBasisPoints value
+ * @param {function} transactionOptions
  * @param {function} callback invoked with the transaction hash
  */
 export default async function (

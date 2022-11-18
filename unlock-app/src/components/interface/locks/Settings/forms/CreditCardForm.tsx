@@ -217,9 +217,9 @@ export const CreditCardForm = ({
             />
           )}
         </span>
-        <div className="flex items-center gap-8">
+        <div className="flex flex-col items-center gap-4 md:gap-8 md:flex-row">
           {isGranted ? (
-            <Badge variant="green" className="justify-center w-1/3">
+            <Badge variant="green" className="justify-center w-full md:w-1/3">
               <div className="flex items-center gap-2">
                 <span>Payment method enabled</span>
                 <CheckCircleIcon />
@@ -229,7 +229,7 @@ export const CreditCardForm = ({
             <Button
               size="small"
               variant="outlined-primary"
-              className="w-1/3"
+              className="w-full md:w-1/3"
               onClick={onGrantKeyRole}
               disabled={grantKeyGrantorRoleMutation.isLoading || disabled}
             >
