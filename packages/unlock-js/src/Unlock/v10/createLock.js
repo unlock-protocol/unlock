@@ -55,7 +55,8 @@ export default async function (lock, transactionOptions = {}, callback) {
     decimalKeyPrice,
     maxNumberOfKeys,
     lockName,
-    salt
+    salt,
+    transactionOptions
   )
 
   const hash = await this._handleMethodCall(transactionPromise)
