@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - simplify-dockerfile
+      - dockerfile-fix
 
 jobs:
   run-all-tests:
