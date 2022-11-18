@@ -6,35 +6,30 @@ const subgraphApi = axios.create({
   responseType: 'json',
 })
 
-const subgraphConfig = `{
-  locks {
-    id
-    address
-    name
-    symbol
-    lastKeyMintedAt
-  }
-  lockStats(id:"1") {
+const subgraphConfig = (upToDate: number) => `{
+  lockStats(id: "Unlock") {
     totalLocksDeployed
     totalKeysSold
   }
-  lockDayDatas {
+  unlockDailyDatas(where: {
+    id_gt: ${upToDate}
+  }) {
     id
     lockDeployed
-    activeLocks
     keysSold
+    activeLocks
   }
 }`
 
-async function getSubgraph4GNP(subgraphUrl: string) {
+export async function getSubgraph4GNP(subgraphUrl: string, upToDate?: number) {
   const { data } = await subgraphApi.post(`${subgraphUrl}`, {
-    query: subgraphConfig,
+    query: subgraphConfig(upToDate),
   })
   return data
 }
 
-export function useSubgraph4GNP(subgraphUrl: string) {
-  return useQuery(['subgraphData4GNP', subgraphUrl], () =>
-    getSubgraph4GNP(subgraphUrl)
+export function useSubgraph4GNP(subgraphUrl: string, upToDate?: number) {
+  return useQuery(['subgraphData4GNP', subgraphUrl, upToDate], () =>
+    getSubgraph4GNP(subgraphUrl, upToDate)
   )
 }

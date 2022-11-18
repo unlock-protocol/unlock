@@ -342,9 +342,9 @@ function Desktop() {
       <Link className={link} href="https://unlock-protocol.com/guides">
         Creators
       </Link>
-      <Link className={link} href="/state">
+      {/* <Link className={link} href="/state">
         State
-      </Link>
+      </Link> */}
       <CommunityPopover />
       <Button
         href={`${unlockConfig.appURL}/locks`}
@@ -528,9 +528,9 @@ function Mobile() {
             >
               For Creators
             </Link>
-            <Link className="font-medium" href="/state">
+            {/* <Link className="font-medium" href="/state">
               For State
-            </Link>
+            </Link> */}
             <Button as={Link} href={`${unlockConfig.appURL}/locks`}>
               Launch App
             </Button>

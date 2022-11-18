@@ -19203,6 +19203,7 @@ __metadata:
     raw-loader: 4.0.2
     react: 17.0.2
     react-apexcharts: ^1.4.0
+    react-crypto-icons: ^1.0.5
     react-dom: 17.0.2
     react-ga: 3.3.1
     react-gtm-module: 2.0.11
@@ -32239,7 +32240,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:5.7.2, ethers@npm:^5.0.0":
+"ethers@npm:5.7.2, ethers@npm:^5.0.0, ethers@npm:^5.7.2":
   version: 5.7.2
   resolution: "ethers@npm:5.7.2"
   dependencies:
@@ -35059,7 +35060,7 @@ fsevents@~2.1.1:
     yargs-parser: ^16.1.0
   bin:
     gluegun: bin/gluegun
-  checksum: 7a45a5a606a1e651c891467a693552b5237f8e90410f9c9daad4621ff0693d1c92b69aa35fc30eccf7c3b92ee724f15fc297e054086cfb312717ef01f48d2290
+  checksum: 71abe7f31555f169a47510675596f79193c8f55e4beeb4e6efa06c22d41988fa9c747d5e398af7f8401cca22c08ffb7a6d57b03d764c14858513c9eba23b53b8
   languageName: node
   linkType: hard
 
@@ -50297,7 +50298,7 @@ fsevents@~2.1.1:
   languageName: node
   linkType: hard
 
-"react-crypto-icons@npm:1.0.5":
+"react-crypto-icons@npm:1.0.5, react-crypto-icons@npm:^1.0.5":
   version: 1.0.5
   resolution: "react-crypto-icons@npm:1.0.5"
   peerDependencies:

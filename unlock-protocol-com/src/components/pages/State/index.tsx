@@ -4,9 +4,11 @@ import { ActiveLock, Lock, Key } from '../../icons'
 import numeral from 'numeral'
 import { useQuery } from 'react-query'
 import dynamic from 'next/dynamic'
+import { networks } from '@unlock-protocol/networks'
 
 import { getGNPs } from '../../../utils/apiRequest'
-import { useSubgraph4GNP } from 'src/hooks/useSubgraph'
+import { getSubgraph4GNP } from 'src/hooks/useSubgraph'
+import { IconBaseProps } from 'react-icons'
 
 const CryptoIconComponent = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
@@ -18,63 +20,50 @@ interface CryptoIconProps {
   symbol: string
   size?: number
 }
+
+type IOverView = {
+  Icon: (props: IconBaseProps) => JSX.Element
+  value: number
+  title: string
+  description: string
+}
+
+type ISeries = {
+  name: string
+  data: number[]
+}
+
+type INetworkSubgraph = {
+  lockStats: {
+    totalKeysSold: string
+    totalLocksDeployed: string
+  }
+  unlockDailyDatas: {
+    activeLocks: string[]
+    id: number
+    keysSold: string
+    lockDeployed: string
+  }[]
+}
+
+type IXaxis = {
+  categories: string[]
+}
+
 const CryptoIcon = ({ symbol, size = 20 }: CryptoIconProps) => (
   <CryptoIconComponent name={symbol?.toLowerCase()} size={size} />
 )
 
-export const OVERVIEW_CONTENTS = [
-  {
-    value: 84019,
-    title: 'Total of Locks Deployed',
-    description: 'All Time, production networks only',
-    Icon: Lock,
-  },
-  {
-    value: 4293238,
-    title: 'Total of Keys Sold',
-    description: 'All Time, production networks only',
-    Icon: Key,
-  },
-  {
-    value: 281,
-    title: 'Active Locks',
-    description: 'Minted at least 1 membership in the last 30 days',
-    Icon: ActiveLock,
-  },
-]
-
-const NETWORKS = [
-  'All Networks',
-  'Ethereum',
-  'Optimism',
-  'Binance Smart Chain',
-  'Gnosis Chain',
-  'Polygon',
-  'Arbitrum',
-  'Celo',
-  'Avalanche (C-Chain)',
-]
-
 const filters = ['1D', '7D', '1M', '1Y', 'All']
 
-function RenderChart() {
+function RenderChart({ series, xaxis }: { series: any; xaxis?: any }) {
   const chartOptions = {
-    series: [
-      {
-        name: 'Session Duration',
-        data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10],
-      },
-      {
-        name: 'Page Views',
-        data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35],
-      },
-      {
-        name: 'Total Visits',
-        data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47],
-      },
-    ],
     options: {
       chart: { zoom: { enabled: false } },
+      stroke: {
+        curve: 'smooth' as 'smooth' | 'straight' | 'stepline',
+        width: 3,
+      },
       dataLabels: {
         enabled: false,
       },
@@ -84,44 +73,23 @@ function RenderChart() {
           sizeOffset: 6,
         },
       },
-      xaxis: {
-        categories: [
-          '01 Jan',
-          '02 Jan',
-          '03 Jan',
-          '04 Jan',
-          '05 Jan',
-          '06 Jan',
-          '07 Jan',
-          '08 Jan',
-          '09 Jan',
-          '10 Jan',
-          '11 Jan',
-          '12 Jan',
-        ],
-      },
+      xaxis: xaxis,
       yaxis: { show: false },
       tooltip: {
         y: [
           {
             title: {
-              formatter: function (val) {
-                return val + ' (mins)'
-              },
+              formatter: (val) => val,
             },
           },
           {
             title: {
-              formatter: function (val) {
-                return val + ' per session'
-              },
+              formatter: (val) => val,
             },
           },
           {
             title: {
-              formatter: function (val) {
-                return val
-              },
+              formatter: (val) => val,
             },
           },
         ],
@@ -138,7 +106,7 @@ function RenderChart() {
     <div className="w-full h-80">
       <ReactApexChart
         options={chartOptions.options}
-        series={chartOptions.series}
+        series={series}
         type="line"
         height={320}
       />
@@ -174,13 +142,161 @@ function DateFilter({
   )
 }
 
-export function State() {
-  const { data: subgraphData } = useSubgraph4GNP(
-    'https://api.studio.thegraph.com/query/37457/test-unlock/v0.0.8/'
+function CalcRenderData(
+  graphData: INetworkSubgraph,
+  timestampArray: number[],
+  flag: 0 | 1 | 2,
+  filter: string
+) {
+  return timestampArray.map((timestamp) =>
+    graphData.unlockDailyDatas
+      .filter(
+        (data) =>
+          data.id <=
+            timestamp +
+              (filter === '1D' || filter === '7D' || filter === '1M'
+                ? 1
+                : 30) && data.id >= timestamp
+      )
+      .reduce(
+        (a, b) =>
+          a + flag === 0
+            ? parseInt(b.keysSold)
+            : flag === 1
+            ? b.activeLocks.length
+            : parseInt(b.lockDeployed),
+        0
+      )
   )
-  const [filter, setFilter] = useState('1Y')
+}
+
+export function State() {
+  const currentDay = Math.round(new Date().getTime() / 86400000)
+  const [subgraphData, setSubgraphData] = useState<any[]>([])
+  const [filter, setFilter] = useState<string>('1Y')
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [gnpValues, setGNPValues] = useState<any[]>([])
+  const [overViewData, setOverViewData] = useState<IOverView[]>([])
+  const [selectedNetwork, setSelectedNetwork] = useState<string>(
+    Object.keys(networks)[0]
+  )
+  const [selectedNetworkSubgraphData, setSelectedNetworkSubgraphData] =
+    useState<INetworkSubgraph | undefined>(undefined)
+  const [series, setSeries] = useState<ISeries[]>([])
+
+  const [xaxis, setXaxis] = useState<IXaxis | undefined>(undefined)
+
+  useEffect(() => {
+    if (selectedNetworkSubgraphData) {
+      let xAxisLabels
+      let timestampArray
+      switch (filter) {
+        case '1D': {
+          xAxisLabels = [...Array(2).keys()].reverse().map((key) => {
+            const cur = new Date()
+            return new Date(cur.setDate(cur.getDate() - key)).toLocaleString(
+              'default',
+              { dateStyle: 'short' }
+            )
+          })
+          timestampArray = [...Array(2).keys()].reverse().map((key) => {
+            const cur = new Date()
+            return cur.setDate(cur.getDate() - key) / 86400000
+          })
+          break
+        }
+        case '7D': {
+          xAxisLabels = [...Array(7).keys()].reverse().map((key) => {
+            const cur = new Date()
+            return new Date(cur.setDate(cur.getDate() - key)).toLocaleString(
+              'default',
+              { dateStyle: 'short' }
+            )
+          })
+          timestampArray = [...Array(7).keys()].reverse().map((key) => {
+            const cur = new Date()
+            return cur.setDate(cur.getDate() - key) / 86400000
+          })
+          break
+        }
+        case '1M': {
+          xAxisLabels = [...Array(30).keys()].reverse().map((key) => {
+            const cur = new Date()
+            return new Date(cur.setDate(cur.getDate() - key)).toLocaleString(
+              'default',
+              { dateStyle: 'short' }
+            )
+          })
+          timestampArray = [...Array(30).keys()].reverse().map((key) => {
+            const cur = new Date()
+            return cur.setDate(cur.getDate() - key) / 86400000
+          })
+          break
+        }
+        case '1Y': {
+          xAxisLabels = [...Array(12).keys()].reverse().map((key) => {
+            const cur = new Date()
+            return new Date(cur.setMonth(cur.getMonth() - key)).toLocaleString(
+              'default',
+              { month: 'short' }
+            )
+          })
+          timestampArray = [...Array(12).keys()].reverse().map((key) => {
+            const cur = new Date()
+            return cur.setMonth(cur.getMonth() - key) / 86400000
+          })
+          break
+        }
+        case 'All': {
+          xAxisLabels = [...Array(36).keys()].reverse().map((key) => {
+            const cur = new Date()
+            return new Date(cur.setMonth(cur.getMonth() - key)).toLocaleString(
+              'default',
+              { dateStyle: 'short' }
+            )
+          })
+          timestampArray = [...Array(36).keys()].reverse().map((key) => {
+            const cur = new Date()
+            return cur.setMonth(cur.getMonth() - key) / 86400000
+          })
+          break
+        }
+      }
+
+      setXaxis({
+        categories: xAxisLabels,
+      })
+      setSeries([
+        {
+          name: 'Keys Sold',
+          data: CalcRenderData(
+            selectedNetworkSubgraphData,
+            timestampArray,
+            0,
+            filter
+          ),
+        },
+        {
+          name: 'Active Locks',
+          data: CalcRenderData(
+            selectedNetworkSubgraphData,
+            timestampArray,
+            1,
+            filter
+          ),
+        },
+        {
+          name: 'Locks Deployed',
+          data: CalcRenderData(
+            selectedNetworkSubgraphData,
+            timestampArray,
+            2,
+            filter
+          ),
+        },
+      ])
+    }
+  }, [selectedNetworkSubgraphData])
 
   useEffect(() => {
     const run = async () => {
@@ -196,6 +312,89 @@ export function State() {
     run()
   }, [])
 
+  useEffect(() => {
+    const run = async () => {
+      const { data } = await getSubgraph4GNP(
+        networks[selectedNetwork].subgraph.endpointV2,
+        currentDay -
+          (filter === '1D'
+            ? 2
+            : filter === '7D'
+            ? 8
+            : filter === '1M'
+            ? 31
+            : filter === '1Y'
+            ? 366
+            : 1000)
+      )
+      setSelectedNetworkSubgraphData(data)
+    }
+    run()
+  }, [selectedNetwork, filter])
+
+  useEffect(() => {
+    const run = async () => {
+      const subgraphData = await Promise.all(
+        Object.keys(networks).map(async (key) => {
+          if (!networks[key].isTestNetwork) {
+            const { data } = await getSubgraph4GNP(
+              networks[key].subgraph.endpointV2,
+              currentDay - 30
+            )
+            return { name: networks[key].name, data }
+          }
+        })
+      )
+      setSubgraphData(subgraphData.filter((item) => item))
+    }
+    run()
+  }, [networks])
+
+  useEffect(() => {
+    if (subgraphData !== undefined && subgraphData.length > 0) {
+      const overview_contents: IOverView[] = [
+        {
+          value: subgraphData.reduce(
+            (pv, b) => pv + parseInt(b.data.lockStats.totalLocksDeployed),
+            0
+          ),
+          title: 'Total of Locks Deployed',
+          description: 'All Time, production networks only',
+          Icon: Lock,
+        },
+        {
+          value: subgraphData.reduce(
+            (pv, b) => pv + parseInt(b.data.lockStats.totalKeysSold),
+            0
+          ),
+          title: 'Total of Keys Sold',
+          description: 'All Time, production networks only',
+          Icon: Key,
+        },
+        {
+          value: [
+            ...new Set(
+              subgraphData.map((item) => {
+                const _2DArr = item.data.unlockDailyDatas.map(
+                  ({ activeLocks }) => activeLocks
+                )
+                let activeLocks = []
+                for (let i = 0; i < _2DArr.length; i++) {
+                  activeLocks = activeLocks.concat(_2DArr[i])
+                }
+                return activeLocks
+              })
+            ),
+          ].length,
+          title: 'Active Locks',
+          description: 'Minted at least 1 membership in the last 30 days',
+          Icon: ActiveLock,
+        },
+      ]
+      setOverViewData(overview_contents)
+    }
+  }, [subgraphData])
+
   return (
     <div className="p-6">
       <div className="mx-auto max-w-7xl">
@@ -205,25 +404,26 @@ export function State() {
             <div className="space-y-2">
               <p className="text-2xl space-y-1 font-bold">Overview</p>
               <div className="grid gap-1 md:gap-4 grid-cols-1 md:grid-cols-3">
-                {OVERVIEW_CONTENTS.map(
-                  ({ value, title, description, Icon }, index) => (
-                    <div
-                      key={index}
-                      className="w-full p-8 trans-pane rounded-md"
-                    >
-                      <h2 className="heading-small space-y-4">
-                        {numeral(value).format('0,0')}
-                      </h2>
-                      <p className="py-2 text-lg sm:text-xl lg:text-2xl text-black max-w-prose font-bold">
-                        {title}
-                      </p>
-                      <div className="flex justify-between">
-                        <span>{description}</span>
-                        <Icon className="self-center w-7 h-7 not-sr-only" />
+                {overViewData &&
+                  overViewData.map(
+                    ({ value, title, description, Icon }, index) => (
+                      <div
+                        key={index}
+                        className="w-full p-8 trans-pane rounded-md"
+                      >
+                        <h2 className="heading-small space-y-4">
+                          {numeral(value).format('0,0')}
+                        </h2>
+                        <p className="py-2 text-lg sm:text-xl lg:text-2xl text-black max-w-prose font-bold">
+                          {title}
+                        </p>
+                        <div className="flex justify-between">
+                          <span>{description}</span>
+                          <Icon className="self-center w-7 h-7 not-sr-only" />
+                        </div>
                       </div>
-                    </div>
-                  )
-                )}
+                    )
+                  )}
               </div>
             </div>
             <div className="space-y-2">
@@ -232,16 +432,28 @@ export function State() {
                 <select
                   id="network"
                   className="bg-white text-black rounded-md border-none px-4"
+                  value={selectedNetwork}
+                  onChange={(e) => {
+                    setSelectedNetwork(e.target.value)
+                  }}
                 >
-                  {NETWORKS.map((item, index) => (
-                    <option value={item} key={index}>
-                      {item}
-                    </option>
-                  ))}
+                  {gnpValues &&
+                    gnpValues
+                      .filter(({ network }) => !network.isTestNetwork)
+                      .map(({ network }, index) => (
+                        <option
+                          value={Object.keys(networks).find(
+                            (key) => networks[key].name === network.name
+                          )}
+                          key={index}
+                        >
+                          {network.name}
+                        </option>
+                      ))}
                 </select>
                 <DateFilter filter={filter} setFilter={setFilter} />
               </div>
-              <RenderChart />
+              <RenderChart series={series} xaxis={xaxis} />
             </div>
             <div className="space-y-2">
               <p className="text-2xl space-y-1 font-bold">
