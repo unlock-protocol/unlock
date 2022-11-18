@@ -34,14 +34,6 @@ export const UNLOCK_PROJECTS = [
   },
   {
     coverClass:
-      '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/mintgate.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/mintgate.jpg)] [background-blend-mode:normal,screen,normal]',
-    published: 'November 2021',
-    title: 'MintGate',
-    text: 'MintGate is a platform for token-gated access to video, audio, & other content.',
-    href: 'https://unlock-protocol.com/blog/mintgate-unlock-case-study',
-  },
-  {
-    coverClass:
       '[background:linear-gradient(180deg,rgba(96,61,235,0)_39.58%,#3F17DE_100%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/ethanglia.jpg)] group-hover:[background:linear-gradient(180deg,rgba(96,61,235,0)_0%,#3F17DE_75%),linear-gradient(180deg,#A08BF3_0%,#603DEB_100%),url(/images/marketing/projects/ethanglia.jpg)] [background-blend-mode:normal,screen,normal]',
     published: 'February 2022',
     title: 'ETHAnglia',

@@ -18,8 +18,6 @@ import {
 import useAccount from '~/hooks/useAccount'
 import { useStorageService } from '~/utils/withStorageService'
 import { useCheckoutSteps } from './useCheckoutItems'
-import { ethers } from 'ethers'
-import { useWeb3Service } from '~/utils/withWeb3Service'
 
 const CryptoIcon = dynamic(() => import('react-crypto-icons'), {
   ssr: false,
@@ -55,7 +53,6 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const storageService = useStorageService()
   const baseSymbol = config.networks[lock.network].baseCurrencySymbol
   const symbol = lockTickerSymbol(lock, baseSymbol)
-  const web3Service = useWeb3Service()
   const { isLoading, data: fiatPricing } = useQuery(
     ['fiat', quantity, lock.address, lock.network],
     async () => {
@@ -82,14 +79,12 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const { isLoading: isWalletInfoLoading, data: walletInfo } = useQuery(
     ['balance', account, lock.address],
     async () => {
-      const [balance, networkBalance, gasPrice] = await Promise.all([
+      const [balance, networkBalance] = await Promise.all([
         getTokenBalance(lock.currencyContractAddress),
         getTokenBalance(null),
-        web3Service.providerForNetwork(lock.network).getGasPrice(),
       ])
 
-      const gas = parseFloat(ethers.utils.formatUnits(gasPrice || 200, 'gwei'))
-      const isGasPayable = parseFloat(networkBalance) > gas
+      const isGasPayable = parseFloat(networkBalance) > 0 // TODO: improve actual calculation
 
       const isPayable =
         userCanAffordKey(lock, balance, recipients.length) && isGasPayable
@@ -124,7 +119,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     !!isClaimable &&
     !isClaimableLoading &&
     isReceiverAccountOnly &&
-    !enableCrypto
+    !!walletInfo?.isPayable
 
   const stepItems = useCheckoutSteps(checkoutService)
 
