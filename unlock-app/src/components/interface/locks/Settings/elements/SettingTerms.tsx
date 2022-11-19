@@ -1,5 +1,6 @@
 import { Lock } from '@unlock-protocol/types'
 import { ReactNode } from 'react'
+import { CancellationForm } from '../forms/CancellationForm'
 import { CreditCardForm } from '../forms/CreditCardForm'
 import { UpdateDurationForm } from '../forms/UpdateDurationForm'
 import { UpdatePriceForm } from '../forms/UpdatePriceForm'
@@ -77,7 +78,14 @@ export const SettingTerms = ({
       label: 'Credit Card Payment',
       description:
         'Accept credit cards, Apple Pay and Google Pay. Service & Credit card processing fees will be applied to the price paid by the member.',
-      children: <CreditCardForm lockAddress={lockAddress} network={network} />,
+      children: (
+        <CreditCardForm
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      ),
     },
     {
       label: 'Transfer',
@@ -88,7 +96,14 @@ export const SettingTerms = ({
       label: 'Cancellation',
       description:
         'Select how your contract should handle cancellations and optionally issue refunds.',
-      children: null,
+      children: (
+        <CancellationForm
+          lockAddress={lockAddress}
+          network={network}
+          isManager={isManager}
+          disabled={!isManager}
+        />
+      ),
     },
   ]
 

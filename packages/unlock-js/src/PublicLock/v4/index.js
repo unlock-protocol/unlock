@@ -14,6 +14,7 @@ import totalKeys from './totalKeys'
 import updateLockName from './updateLockName'
 import updateLockSymbol from './updateLockSymbol'
 import setBaseTokenURI from './setBaseTokenURI'
+import updateRefundPenalty from './updateRefundPenalty'
 
 export default {
   purchaseKey,
@@ -34,4 +35,5 @@ export default {
   updateLockName,
   updateLockSymbol,
   setBaseTokenURI,
+  updateRefundPenalty,
 }

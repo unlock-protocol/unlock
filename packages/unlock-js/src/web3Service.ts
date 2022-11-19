@@ -728,4 +728,41 @@ export default class Web3Service extends UnlockService {
     })
     return price
   }
+
+  /**
+   * Returns freeTrialLength value
+   */
+  async freeTrialLength({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const freeTrialLength = await lockContract.freeTrialLength()
+    return ethers.BigNumber.from(freeTrialLength).toNumber()
+  }
+
+  /**
+   * Returns refundPenaltyBasisPoints value
+   */
+  async refundPenaltyBasisPoints({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const refundPenaltyBasisPoints =
+      await lockContract.refundPenaltyBasisPoints()
+    return ethers.BigNumber.from(refundPenaltyBasisPoints).toNumber()
+  }
 }

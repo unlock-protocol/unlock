@@ -809,4 +809,30 @@ export default class WalletService extends UnlockService {
       callback
     )
   }
+
+  /**
+   * Update Refund Penalty: Allow the owner to change the refund penalty.
+   * @param {*} params
+   * @param {*} callback
+   */
+  async updateRefundPenalty(
+    params: {
+      lockAddress: string
+      freeTrialLength: number
+      refundPenaltyBasisPoints: number
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.addLockManager) {
+      throw new Error('Lock version not supported')
+    }
+    return version.updateRefundPenalty.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
 }
