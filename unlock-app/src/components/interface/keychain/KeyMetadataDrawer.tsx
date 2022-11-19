@@ -82,16 +82,19 @@ const PublicLockProperties = ({
     }
   )
 
-  const hasLinks =
-    data?.external_url?.length > 0 ||
-    data?.youtube_url?.length > 0 ||
-    data?.animation_url?.length > 0
-
   const {
     stats = [],
     levels = [],
     properties = [],
+    external_url = '',
+    youtube_url = '',
+    animation_url = '',
   } = toFormData((data ?? {}) as Metadata)
+
+  const hasLinks =
+    external_url?.length > 0 ||
+    youtube_url?.length > 0 ||
+    animation_url?.length > 0
 
   const hasAttributes = [...stats, ...levels, ...properties].length > 0
 
@@ -131,14 +134,10 @@ const PublicLockProperties = ({
       {hasLinks && (
         <Disclosure label="Links" isLoading={isLoading}>
           <div className="flex flex-col gap-2">
-            {data?.external_url && (
-              <Link label="External URL" url={data?.external_url} />
-            )}
-            {data?.youtube_url && (
-              <Link label="Youtube URL" url={data?.youtube_url} />
-            )}
-            {data?.animation_url && (
-              <Link label="Animation URL" url={data?.animation_url} />
+            {external_url && <Link label="External URL" url={external_url} />}
+            {youtube_url && <Link label="Youtube URL" url={youtube_url} />}
+            {animation_url && (
+              <Link label="Animation URL" url={animation_url} />
             )}
           </div>
         </Disclosure>
