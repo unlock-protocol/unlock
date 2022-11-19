@@ -1,3 +1,4 @@
+// TODO: delete when settings page goes online
 import { Badge, Button } from '@unlock-protocol/ui'
 import React, { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'

@@ -1,5 +1,5 @@
 import { Switch as SwitchComponent } from '@headlessui/react'
-import { useEffect } from 'react'
+import { ReactNode, useEffect } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { Size } from '~/types'
 import { FieldLayout } from '../Form'
@@ -8,7 +8,7 @@ interface ToggleSwitchProps {
   enabled: boolean
   setEnabled: (enabled: boolean) => void
   title?: string
-  description?: string
+  description?: ReactNode
   onChange?: (enabled: boolean) => void
   disabled?: boolean
   size?: Size
