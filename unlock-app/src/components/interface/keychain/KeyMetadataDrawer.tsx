@@ -96,8 +96,6 @@ const PublicLockProperties = ({
     }
   )
 
-  console.log(data)
-
   const hasLinks =
     data?.external_url || data?.youtube_url || data?.animation_url
 
