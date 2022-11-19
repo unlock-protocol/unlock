@@ -10,6 +10,7 @@ import { Level } from '../locks/metadata/custom/AddLevel'
 import { Stat } from '../locks/metadata/custom/AddStat'
 import { Transition, Dialog } from '@headlessui/react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
+import { ToastHelper } from '~/components/helpers/toast.helper'
 
 interface MetadataProps {
   tokenId: string
@@ -85,8 +86,8 @@ const PublicLockProperties = ({
       return response.data
     },
     {
-      onError(error: any) {
-        console.error(error)
+      onError() {
+        ToastHelper.error('Impossible to retrieve public NFT metadata.')
       },
       refetchInterval: Infinity,
       refetchOnWindowFocus: false,
