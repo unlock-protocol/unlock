@@ -68,7 +68,9 @@ export function toFormData({
   return {
     name,
     description,
-    background_color,
+    background_color: !background_color?.startsWith('#')
+      ? `#${background_color}`
+      : background_color,
     animation_url,
     external_url,
     youtube_url,
