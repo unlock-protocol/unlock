@@ -11,6 +11,7 @@ import { Stat } from '../locks/metadata/custom/AddStat'
 import { Transition, Dialog } from '@headlessui/react'
 import { RiCloseLine as CloseIcon } from 'react-icons/ri'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { Metadata, toFormData } from '../locks/metadata/utils'
 
 interface MetadataProps {
   tokenId: string
@@ -26,21 +27,6 @@ interface MetadataDrawerProps {
   network: number
   lock: any
   account: string
-}
-
-const KeyMetadataPlaceholder: React.FC<unknown> = () => {
-  return (
-    <div className="flex flex-col gap-3 p-4">
-      <div className="w-[120px] h-[24px] bg-slate-200 animate-pulse"></div>
-      <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
-      <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
-      <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
-      <div className="w-full h-[30px] rounded-lg bg-slate-200 animate-pulse"></div>
-      <div className="flex">
-        <div className="ml-auto w-[100px] h-[40px] bg-slate-200 animate-pulse rounded-full"></div>
-      </div>
-    </div>
-  )
 }
 
 interface MetadataPropertiesProps {
@@ -97,76 +83,65 @@ const PublicLockProperties = ({
   )
 
   const hasLinks =
-    data?.external_url || data?.youtube_url || data?.animation_url
+    data?.external_url?.length > 0 ||
+    data?.youtube_url?.length > 0 ||
+    data?.animation_url?.length > 0
 
-  const attributes: {
-    value: string
-    trait_type: string
-    max_value?: number
-    display_type?: string
-  }[] = data?.attributes ?? []
+  const {
+    stats = [],
+    levels = [],
+    properties = [],
+  } = toFormData((data ?? {}) as Metadata)
 
-  const propertyAttributes = attributes.filter(
-    (item) => item.trait_type && item.value && !item?.max_value
-  )
-
-  const levelsAttributes = attributes?.filter(
-    (item) =>
-      item.trait_type && item.value && item.max_value && !item.display_type
-  )
-
-  const statsAttributes = attributes?.filter(
-    (item) =>
-      item.trait_type && item.value && item.max_value && item?.display_type
-  )
+  const hasAttributes = [...stats, ...levels, ...properties].length > 0
 
   return (
     <div className="flex flex-col gap-6">
-      {data?.attributes?.length > 0 && (
+      {hasAttributes && (
         <div className="flex flex-col gap-4">
-          {propertyAttributes?.length > 0 && (
+          {properties?.length > 0 && (
             <Disclosure label="Properties" isLoading={isLoading}>
               <div className="flex flex-wrap gap-6">
-                {propertyAttributes?.map((item, index) => (
+                {properties?.map((item, index) => (
                   <Property {...item} key={index} />
                 ))}
               </div>
             </Disclosure>
           )}
-          {levelsAttributes?.length > 0 && (
+          {levels?.length > 0 && (
             <Disclosure label="Levels" isLoading={isLoading}>
               <div className="flex flex-wrap gap-6">
-                {levelsAttributes?.map((item, index) => (
+                {levels?.map((item, index) => (
                   <Level {...item} key={index} />
                 ))}
               </div>
             </Disclosure>
           )}
-          {statsAttributes?.length > 0 && (
+          {stats?.length > 0 && (
             <Disclosure label="Stats" isLoading={isLoading}>
               <div className="flex flex-wrap gap-6">
-                {statsAttributes?.map((item, index) => (
+                {stats?.map((item, index) => (
                   <Stat {...item} key={index} />
                 ))}
               </div>
             </Disclosure>
           )}
-          {hasLinks && (
-            <Disclosure label="Links" isLoading={isLoading}>
-              <div className="flex flex-col gap-2">
-                {data?.external_url && (
-                  <Link label="External URL" url={data?.external_url} />
-                )}
-                {data?.youtube_url && (
-                  <Link label="Youtube URL" url={data?.youtube_url} />
-                )}
-                {data?.animation_url && (
-                  <Link label="Animation URL" url={data?.animation_url} />
-                )}
-              </div>
-            </Disclosure>
-          )}
         </div>
+      )}
+      {hasLinks && (
+        <Disclosure label="Links" isLoading={isLoading}>
+          <div className="flex flex-col gap-2">
+            {data?.external_url && (
+              <Link label="External URL" url={data?.external_url} />
+            )}
+            {data?.youtube_url && (
+              <Link label="Youtube URL" url={data?.youtube_url} />
+            )}
+            {data?.animation_url && (
+              <Link label="Animation URL" url={data?.animation_url} />
+            )}
+          </div>
+        </Disclosure>
       )}
     </div>
   )
