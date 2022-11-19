@@ -78,7 +78,8 @@ export default async function (lock, transactionOptions = {}, callback) {
   // pass calldata
   const transactionPromise = unlockContract.createUpgradeableLockAtVersion(
     calldata,
-    lockVersion
+    lockVersion,
+    transactionOptions
   )
 
   const hash = await this._handleMethodCall(transactionPromise)

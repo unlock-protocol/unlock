@@ -120,7 +120,7 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
     !!isClaimable &&
     !isClaimableLoading &&
     isReceiverAccountOnly &&
-    !!walletInfo?.isPayable
+    !walletInfo?.isPayable
 
   const stepItems = useCheckoutSteps(checkoutService)
 
