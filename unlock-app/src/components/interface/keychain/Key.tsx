@@ -157,7 +157,7 @@ export interface Props {
   network: number
 }
 
-const Key = ({ ownedKey, account, network }: Props) => {
+function Key({ ownedKey, account, network }: Props) {
   const { lock, expiration, tokenId } = ownedKey
   const { network: accountNetwork } = useAuth()
   const walletService = useWalletService()

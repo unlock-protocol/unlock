@@ -35,7 +35,7 @@ interface MetadataPropertiesProps {
   isLoading: boolean
 }
 
-const Header = ({ title }: any) => {
+function Header({ title }: any) {
   return (
     <div className="flex flex-col">
       <span className="text-xl font-bold text-brand-ui-primary">{title}</span>
@@ -43,7 +43,7 @@ const Header = ({ title }: any) => {
   )
 }
 
-const Link = ({ url, label }: any) => {
+function Link({ url, label }: any) {
   return (
     <a
       className="text- text-brand-ui-primary"
@@ -56,11 +56,11 @@ const Link = ({ url, label }: any) => {
   )
 }
 
-const PublicLockProperties = ({
+function PublicLockProperties({
   lockAddress,
   network,
   isLoading,
-}: MetadataPropertiesProps) => {
+}: MetadataPropertiesProps) {
   const storageService = useStorageService()
   const { data } = useQuery<Record<string, any>>(
     ['lockMetadata', lockAddress, network],
@@ -146,12 +146,12 @@ const PublicLockProperties = ({
   )
 }
 
-const KeyMetadata: React.FC<MetadataProps> = ({
+export function KeyMetadata({
   tokenId,
   lock,
   network,
   account,
-}) => {
+}: MetadataProps) {
   const [metadata, setMetadata] = useState<{ [key: string]: any }>()
   const [loading, setLoading] = useState(false)
   const storageService = useStorageService()
