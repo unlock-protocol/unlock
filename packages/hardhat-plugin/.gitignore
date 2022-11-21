@@ -61,3 +61,6 @@ typings/
 
 # environment variables
 .env
+
+# ignore network file
+src/networks.json
