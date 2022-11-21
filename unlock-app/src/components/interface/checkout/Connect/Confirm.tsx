@@ -92,10 +92,10 @@ export function ConfirmConnect({
                   href="https://ethereum.org/en/wallets/"
                   rel="noreferrer"
                 >
-                  web3 wallet
+                  crypto wallet
                 </a>{' '}
-                if you have one, or click the &quot;Getting Started&quot; button
-                to use an Unlock account.
+                if you have one, or click the &quot;Get Started&quot; button to
+                use an Unlock account.
               </div>
             )}
           </li>
