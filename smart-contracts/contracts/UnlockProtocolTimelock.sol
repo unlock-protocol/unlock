@@ -22,6 +22,6 @@ contract UnlockProtocolTimelock is TimelockControllerUpgradeable {
     address[] memory proposers,
     address[] memory executors
   ) public initializer {
-    __TimelockController_init(minDelay, proposers, executors, address(0));
+    __TimelockController_init(minDelay, proposers, executors, msg.sender);
   }
 }

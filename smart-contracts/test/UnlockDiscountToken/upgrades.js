@@ -172,7 +172,9 @@ contract('UnlockDiscountToken upgrade', async () => {
 
       const { events } = await tx.wait()
       const evt = events.find((v) => v.event === 'NewLock')
-      const PublicLock = await ethers.getContractFactory('PublicLock')
+      const PublicLock = await ethers.getContractFactory(
+        'contracts/PublicLock.sol:PublicLock'
+      )
       lock = await PublicLock.attach(evt.args.newLockAddress)
 
       // Deploy the exchange
