@@ -11,7 +11,7 @@ const subgraphConfig = (upToDate: number) => `{
     totalLocksDeployed
     totalKeysSold
   }
-  unlockDailyDatas(where: {
+  unlockDailyDatas(first: 1000, where: {
     id_gt: ${upToDate}
   }) {
     id

@@ -148,26 +148,29 @@ function CalcRenderData(
   flag: 0 | 1 | 2,
   filter: string
 ) {
-  return timestampArray.map((timestamp) =>
-    graphData.unlockDailyDatas
-      .filter(
+  return timestampArray
+    .map((timestamp) =>
+      graphData.unlockDailyDatas.filter(
         (data) =>
-          data.id <=
-            timestamp +
+          data.id >=
+            timestamp -
               (filter === '1D' || filter === '7D' || filter === '1M'
                 ? 1
-                : 30) && data.id >= timestamp
+                : 30) && data.id <= timestamp
       )
-      .reduce(
+    )
+    .map((item) =>
+      item.reduce(
         (a, b) =>
-          a + flag === 0
+          a +
+          (flag === 0
             ? parseInt(b.keysSold)
             : flag === 1
             ? b.activeLocks.length
-            : parseInt(b.lockDeployed),
+            : parseInt(b.lockDeployed)),
         0
       )
-  )
+    )
 }
 
 export function State() {
@@ -201,7 +204,7 @@ export function State() {
           })
           timestampArray = [...Array(2).keys()].reverse().map((key) => {
             const cur = new Date()
-            return cur.setDate(cur.getDate() - key) / 86400000
+            return Math.round(cur.setDate(cur.getDate() - key) / 86400000)
           })
           break
         }
@@ -215,7 +218,7 @@ export function State() {
           })
           timestampArray = [...Array(7).keys()].reverse().map((key) => {
             const cur = new Date()
-            return cur.setDate(cur.getDate() - key) / 86400000
+            return Math.round(cur.setDate(cur.getDate() - key) / 86400000)
           })
           break
         }
@@ -229,7 +232,7 @@ export function State() {
           })
           timestampArray = [...Array(30).keys()].reverse().map((key) => {
             const cur = new Date()
-            return cur.setDate(cur.getDate() - key) / 86400000
+            return Math.round(cur.setDate(cur.getDate() - key) / 86400000)
           })
           break
         }
@@ -243,7 +246,7 @@ export function State() {
           })
           timestampArray = [...Array(12).keys()].reverse().map((key) => {
             const cur = new Date()
-            return cur.setMonth(cur.getMonth() - key) / 86400000
+            return Math.round(cur.setMonth(cur.getMonth() - key) / 86400000)
           })
           break
         }
@@ -257,7 +260,7 @@ export function State() {
           })
           timestampArray = [...Array(36).keys()].reverse().map((key) => {
             const cur = new Date()
-            return cur.setMonth(cur.getMonth() - key) / 86400000
+            return Math.round(cur.setMonth(cur.getMonth() - key) / 86400000)
           })
           break
         }
