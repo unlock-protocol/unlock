@@ -30,6 +30,8 @@ pragma solidity ^0.8.7;
 import "@openzeppelin/contracts/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "@openzeppelin/contracts/proxy/transparent/ProxyAdmin.sol";
 import "hardlydifficult-eth/contracts/protocols/Uniswap/IUniswapOracle.sol";
+import {IConnext} from "@connext/nxtp-contracts/contracts/core/connext/interfaces/IConnext.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./utils/UnlockOwnable.sol";
 import "./utils/UnlockInitializable.sol";
 import "./interfaces/IPublicLock.sol";
@@ -97,6 +99,9 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
   mapping(address => uint16) private _publicLockVersions;
   mapping(uint16 => address) private _publicLockImpls;
   uint16 public publicLockLatestVersion;
+
+  // The connext contract on the origin domain
+  address connextAddress;
 
   // Events
   event NewLock(
@@ -345,10 +350,71 @@ contract Unlock is UnlockInitializable, UnlockOwnable {
     return lockAddress;
   }
 
-  function _isLockManager(
-    address lockAddress,
-    address _sender
-  ) private view returns (bool isManager) {
+  function setConnext(address _connextAddress) public {
+    connextAddress = _connextAddress;
+  }
+
+  function getDomain(uint chainId) public returns (uint32 domain){
+    // parse domain
+    return domain;
+  }
+
+  /**
+   * @notice Purchase a key on another chain
+   * Purchase a key from a lock on another chain
+   * @param destChainId: the chain id on which the lock is located
+   * @param lock: address of the lock that the user is attempting to purchase a key from
+   * @param currency : address of the token to be swapped into the lock’s currency
+   * @param amount: the *maximum a*mount of `currency` the user is willing to spend in order to complete purchase. (The user needs to have ERC20 approved the Unlock contract for *at least* that amount).
+   * @param callData: blob of data passed to the lock that includes the following:
+   * @param relayerFee The fee offered to connext relayers. On testnet, this can be 0.
+   * @dev to construct the callData you need the following parameter
+      - `recipients`: address of the recipients of the membership
+      - `referrers`: address of the referrers
+      - `keyManagers`: address of the key managers
+      - `callData`: bytes passed to the purchase function function of the lock
+   */
+  function crossChainPurchase(
+    uint destChainId, 
+    address lock, 
+    address currency, 
+    uint amount, 
+    bytes calldata callData,
+    uint relayerFee 
+  ) public {
+
+    // prepare ERC20 if needed
+    if (currency != address(0)) {
+      IERC20 token = IERC20(currency);
+      require(
+        token.allowance(msg.sender, address(this)) >= amount,
+        "User must approve amount"
+      );
+
+      // User sends funds to this contract
+      token.transferFrom(msg.sender, address(this), amount);
+
+      // This contract approves transfer to Connext
+      token.approve(connextAddress, amount);
+    }
+
+    // get the domain
+    uint32 destinationDomain = getDomain(destChainId);
+
+    // send the call over the chain
+    IConnext(connextAddress).xcall{value: relayerFee}(
+      destinationDomain, // _destination: Domain ID of the destination chain
+      lock,            // _to: address of the target contract
+      currency,    // _asset: address of the token contract
+      msg.sender,        // _delegate: address that can revert or forceLocal on destination
+      amount,              // _amount: amount of tokens to transfer
+      30,                // _slippage: the maximum amount of slippage the user will accept in BPS, in this case 0.3%
+      callData           // _callData: the encoded calldata to send
+    );
+
+  }
+
+  function _isLockManager(address lockAddress, address _sender) private view returns(bool isManager) {
     IPublicLock lock = IPublicLock(lockAddress);
     return lock.isLockManager(_sender);
   }
