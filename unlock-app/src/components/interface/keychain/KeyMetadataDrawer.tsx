@@ -35,7 +35,7 @@ interface MetadataPropertiesProps {
   isLoading: boolean
 }
 
-function Header({ title }: any) {
+const Header = ({ title }: any) => {
   return (
     <div className="flex flex-col">
       <span className="text-xl font-bold text-brand-ui-primary">{title}</span>
@@ -43,7 +43,7 @@ function Header({ title }: any) {
   )
 }
 
-function Link({ url, label }: any) {
+const Link = ({ url, label }: any) => {
   return (
     <a
       className="text- text-brand-ui-primary"
@@ -146,12 +146,12 @@ function PublicLockProperties({
   )
 }
 
-export function KeyMetadata({
+export const KeyMetadata = ({
   tokenId,
   lock,
   network,
   account,
-}: MetadataProps) {
+}: MetadataProps) => {
   const [metadata, setMetadata] = useState<{ [key: string]: any }>()
   const [loading, setLoading] = useState(false)
   const storageService = useStorageService()
@@ -233,14 +233,14 @@ export function KeyMetadata({
   )
 }
 
-export function KeyMetadataDrawer({
+export const KeyMetadataDrawer = ({
   isOpen,
   setIsOpen,
   lock,
   tokenId,
   network,
   account,
-}: MetadataDrawerProps) {
+}: MetadataDrawerProps) => {
   const easeOutTransaction = {
     as: Fragment,
     enter: 'ease-in-out duration-300',
