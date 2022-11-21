@@ -110,7 +110,7 @@ export function CardPayment({ checkoutService, injectedProvider }: Props) {
               form="payment"
               className="w-full"
             >
-              Save
+              Next
             </Button>
           ) : (
             <Button
