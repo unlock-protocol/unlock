@@ -107,7 +107,7 @@ export function Metadata({ checkoutService, injectedProvider }: Props) {
 
     const emailInput: MetadataInput = {
       type: 'email',
-      name: 'email',
+      name: 'Email',
       required: true,
       placeholder: 'your@email.com',
     }

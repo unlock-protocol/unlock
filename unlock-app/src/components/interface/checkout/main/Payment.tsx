@@ -46,7 +46,6 @@ const AmountBadge = ({ symbol, amount }: AmountBadgeProps) => {
 export function Payment({ injectedProvider, checkoutService }: Props) {
   const [state, send] = useActor(checkoutService)
   const config = useConfig()
-
   const { paywallConfig, quantity, recipients } = state.context
   const lock = state.context.lock!
   const { account, network, isUnlockAccount } = useAuth()
@@ -107,7 +106,8 @@ export function Payment({ injectedProvider, checkoutService }: Props) {
   const lockConfig = paywallConfig.locks[lock!.address]
 
   const isReceiverAccountOnly =
-    recipients.length <= 1 && recipients[0] === account
+    recipients.length <= 1 &&
+    recipients[0]?.toLowerCase() === account?.toLowerCase()
 
   const enableSuperfluid =
     (paywallConfig.superfluid || lockConfig.superfluid) && isReceiverAccountOnly
