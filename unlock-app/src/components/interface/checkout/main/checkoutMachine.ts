@@ -252,7 +252,6 @@ export const checkoutMachine = createMachine(
               actions: ['selectLock'],
               target: 'PAYMENT',
               cond: (_, event) => {
-                console.log(event)
                 // skip metadata if no quantity and recipient selection
                 return !!(event.skipRecipient && event.skipQuantity)
               },
