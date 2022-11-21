@@ -52,10 +52,8 @@ Creating a membership program and sharing it with your Twitter followers takes o
 
 Here’s a detailed video showing the whole flow.
 
-<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="[https://www.youtube.com/embed/X5DKS48rDBE](https://www.youtube.com/embed/XFBc1U4wtKg](https://www.youtube.com/embed/XFBc1U4wtKg](https://www.youtube.com/embed/XFBc1U4wtKg)))" title="Unlock Protocol and Guild.xyz Integration" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
+<div style="position: relative; overflow: hidden; width: 100%; padding-top: 56.25%;"><iframe style="position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;" src="https://www.youtube.com/embed/XFBc1U4wtKg" title="Introducing Flocker.app: Portable Fans and Followers for Brands and Creators Fed Up with Twitter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>
 
-
-[https://www.youtube.com/watch?v=XFBc1U4wtKg](https://www.youtube.com/embed/XFBc1U4wtKg)
 
 And here is a sample Tweet you can use in order to ask your followers on Twitter to connect directly with you after you’ve created your membership.
 
@@ -97,25 +95,3 @@ To recap, there are two things you need to do immediately in order to minimize t
 - Build your own direct membership connections to fans and followers that can not be taken away from you in the future using [Flocker.app](https://flocker.app)
 
 The steps outlined in this Twitter Rescue Kit can help. That said, if the Unlock Labs team or the members of the Unlock Protocol community can assist in any way, please don’t hesitate to [reach out to us in our Discord](https://discord.unlock-protocol.com).
-
-
-amazing hackathons! We look forward to seeing these projects evolve and for all the incredible connections, learning, and growth they empower.
-
-As promised, here are a few shots from the event — can't wait for the next one!
-
-![unlock 1](/images/blog/ethsf22/unlock-1.png)
-
-![unlock 2](/images/blog/ethsf22/unlock-2.png)
-
-![unlock 3](/images/blog/ethsf22/unlock-3.png)
-
-![unlock 4](/images/blog/ethsf22/unlock-4.png)
-
-![unlock 5](/images/blog/ethsf22/unlock-5.png)
-
-![unlock 6](/images/blog/ethsf22/unlock-6.png)
-
-![unlock 7](/images/blog/ethsf22/unlock-7.png)
-photo: @ccarfi
-
-
