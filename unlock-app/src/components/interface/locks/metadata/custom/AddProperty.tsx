@@ -1,3 +1,4 @@
+import React from 'react'
 import { Button, Input, Modal } from '@unlock-protocol/ui'
 import { useFormContext, useFieldArray } from 'react-hook-form'
 import { RiDeleteBack2Line as DeleteIcon } from 'react-icons/ri'
