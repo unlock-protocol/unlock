@@ -14,7 +14,7 @@ The points below are important, and it’s important to do these things today. T
 
 ## How to export your Twitter data and list of followers
 
-![twitter-download.png](Blog%20Post%20Twitter%20Rescue%20Kit%20for%20Brands%20and%20Creato%20c956bb799c044096ba7c808d011dfd23/twitter-download.png)
+![twitter-download.png](/images/blog/flocker-announce/twitter-download.png)
 
 The first thing you need to do is to backup your information from Twitter. (Note: You should be doing this regularly, regardless, and this also applies to other platforms as well. Backup your stuff.)
 
