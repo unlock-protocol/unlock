@@ -30,6 +30,17 @@
     "description": "The most popular network",
     "isTestNetwork": false,
     "teamMultisig": "0xa39b44c4AFfbb56b76a1BF1d19Eb93a5DfC2EBA9",
+    "uniswapV3": {
+      "subgraph": "https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v3",
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    },
     "tokens": [
       {
         "name": "Wrapped Ether",
@@ -44,7 +55,7 @@
         "decimals": 18
       },
       {
-        "name": "USDCoin",
+        "name": "USD Coin",
         "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
         "symbol": "USDC",
         "decimals": 6
@@ -104,7 +115,22 @@
     "previousDeploys": [],
     "isTestNetwork": true,
     "teamMultisig": "0x95C06469e557d8645966077891B4aeDe8D55A755",
+    "uniswapV3": {
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6"
+    },
     "tokens": [
+      {
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "address": "0x07865c6E87B9F70255377e024ace6630C1Eaa37F",
+        "decimals": 6
+      },
       {
         "name": "Wrapped Ether",
         "address": "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6",
@@ -145,6 +171,16 @@
     "description": "Layer 2 network. Cheaper transaction cost.",
     "isTestNetwork": false,
     "teamMultisig": "0x6E78b4447e34e751EC181DCBed63633aA753e145",
+    "uniswapV3": {
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0x4200000000000000000000000000000000000006"
+    },
     "tokens": [
       {
         "name": "Ethereum",
@@ -313,6 +349,16 @@
     "description": "Popular side chain network. Cheaper transaction cost.",
     "isTestNetwork": false,
     "teamMultisig": "0x479f3830fbd715342868BA95E438609BCe443DFB",
+    "uniswapV3": {
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped MATIC",
+      "symbol": "WMATIC",
+      "decimals": 18,
+      "address": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
+    },
     "tokens": [
       {
         "name": "Wrapped Ether",
@@ -333,7 +379,7 @@
         "decimals": 6
       },
       {
-        "name": "USDCoin",
+        "name": "USD Coin",
         "address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
         "symbol": "USDC",
         "decimals": 6
@@ -388,6 +434,16 @@
     "previousDeploys": [],
     "isTestNetwork": false,
     "description": "Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.",
+    "uniswapV3": {
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
+    },
     "tokens": [
       {
         "name": "Ethereum",
@@ -450,6 +506,16 @@
     "previousDeploys": [],
     "isTestNetwork": false,
     "teamMultisig": "0xc293E2da9E558bD8B1DFfC4a7b174729fAb2e4E8",
+    "uniswapV3": {
+      "factoryAddress": "0xAfE208a311B21f13EF87E33A90049fC17A7acDEc",
+      "quoterAddress": "0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Celo native asset",
+      "symbol": "CELO",
+      "decimals": 18,
+      "address": "0x471ece3750da237f93b8e339c536989b8978a438"
+    },
     "tokens": [
       {
         "name": "USD Coin",
@@ -549,7 +615,23 @@
     "description": "Polygon test network. Do not use for production",
     "isTestNetwork": true,
     "teamMultisig": "0x12E37A8880801E1e5290c815a894d322ac591607",
+    "uniswapV3": {
+      "factoryAddress": "0x1F98431c8aD98523631AE4a59f267346ea31F984",
+      "quoterAddress": "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6"
+    },
+    "wrappedNativeCurrency": {
+      "name": "Wrapped MATIC",
+      "symbol": "WMATIC",
+      "decimals": 18,
+      "address": "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"
+    },
     "tokens": [
+      {
+        "name": "USD Coin",
+        "address": "0x0FA8781a83E46826621b3BC094Ea2A0212e71B23",
+        "symbol": "USDC",
+        "decimals": 6
+      },
       {
         "name": "Wrapped Ether",
         "address": "0xA6FA4fB5f76172d178d61B04b0ecd319C5d1C0aa",
