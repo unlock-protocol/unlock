@@ -49,9 +49,13 @@ export const polygon: NetworkConfig = {
   description: 'Popular side chain network. Cheaper transaction cost.',
   isTestNetwork: false,
   teamMultisig: '0x479f3830fbd715342868BA95E438609BCe443DFB',
+  uniswapV2: {
+    oracle: '0xE20ef269CE3ac2Af8107E706FC2Ec6E1831e3125',
+  },
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+    oracle: '0xE77c7F14e8EB9925ca418bF80c0a81a5B9C87683',
   },
   wrappedNativeCurrency: {
     name: 'Wrapped MATIC',
