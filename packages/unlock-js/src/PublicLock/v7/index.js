@@ -8,6 +8,7 @@ import expireAndRefundFor from './expireAndRefundFor'
 import cancelAndRefund from './cancelAndRefund'
 import keyManagerOf from './keyManagerOf'
 import getCancelAndRefundValueFor from './getCancelAndRefundValueFor'
+import setEventHooks from './setEventHooks'
 
 import v6 from '../v6'
 
@@ -59,4 +60,5 @@ export default {
   addLockManager,
   renounceLockManager,
   updateRefundPenalty,
+  setEventHooks,
 }

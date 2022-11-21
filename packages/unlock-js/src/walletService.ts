@@ -835,4 +835,36 @@ export default class WalletService extends UnlockService {
       callback
     )
   }
+
+  /**
+   * Allows a Lock manager to update or remove an event hook
+   * @param {*} params
+   * @param {*} callback
+   */
+  async setEventHooks(
+    params: {
+      lockAddress: string
+      network: string
+      keyPurchase: string
+      keyCancel: string
+      validKey?: string
+      tokenURI?: string
+      keyTransfer?: string
+      keyExtend?: string
+      keyGrant?: string
+    },
+    transactionOptions?: TransactionOptions,
+    callback?: WalletServiceCallback
+  ) {
+    if (!params.lockAddress) throw new Error('Missing lockAddress')
+    const version = await this.lockContractAbiVersion(params.lockAddress)
+    if (!version.addLockManager) {
+      throw new Error('Lock version not supported')
+    }
+    return version.setEventHooks.bind(this)(
+      params,
+      transactionOptions,
+      callback
+    )
+  }
 }

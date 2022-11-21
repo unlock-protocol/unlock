@@ -29,6 +29,7 @@ const {
   addLockManager,
   renounceLockManager,
   updateRefundPenalty,
+  setEventHooks,
 } = v7
 
 export default {
@@ -61,4 +62,5 @@ export default {
   addLockManager,
   renounceLockManager,
   updateRefundPenalty,
+  setEventHooks,
 }

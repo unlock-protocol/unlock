@@ -1,5 +1,9 @@
 # Changes
 
+# 0.32.6
+
+- add `setEventHooks` in walletService
+
 # 0.32.5
 
 - add `updateRefundPenalty` in walletService
