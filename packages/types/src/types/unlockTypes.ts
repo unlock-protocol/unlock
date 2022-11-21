@@ -60,6 +60,7 @@ export interface NetworkConfig {
     subgraph: string
     factoryAddress: string
     quoterAddress: string
+    oracle?: string
   }>
   ethersProvider?: ethers.providers.Provider
   explorer?: {
