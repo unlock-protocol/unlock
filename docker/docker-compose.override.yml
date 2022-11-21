@@ -24,12 +24,11 @@ services:
     image: locksmith
     build:
       context: ../
-      target: dev
+      target: dev  
       args:
         BUILD_DIR: locksmith
       cache_from:
-        - locksmith
-        - unlockprotocol/locksmith:master
+        - unlocktravis/unlock-dev
     command:
       [
         "/opt/wait-for-it.sh",
@@ -59,8 +58,7 @@ services:
       args:
         BUILD_DIR: locksmith
       cache_from:
-        - locksmith
-        - unlockprotocol/locksmith:master
+        - unlocktravis/unlock-dev
     command:
       [
         "/opt/wait-for-it.sh",
@@ -78,11 +76,14 @@ services:
     depends_on:
       - postgres
       - eth-node
+
   # deploy the unlock graph on graph-node, then stop after execution
   subgraph:
     build:
       context: ../
       target: dev
+      cache_from:
+        - unlocktravis/unlock-dev
       args:
         BUILD_DIR: subgraph
     env_file: development.env
@@ -106,6 +107,8 @@ services:
     image: wedlocks
     build:
       target: dev
+      cache_from:
+        - unlocktravis/unlock-dev
       context: ../
       args:
         BUILD_DIR: wedlocks
