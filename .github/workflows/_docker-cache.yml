@@ -12,7 +12,7 @@ jobs:
         id: prep
         run: |
           TAG=$(echo $GITHUB_SHA | head -c7)
-          IMAGE="my.docker.registry/unlock-protocol/deps"
+          IMAGE="unlocktravis/unlock-dev"
           echo ::set-output name=tagged_image::${IMAGE}:${TAG}
           echo ::set-output name=tag::${TAG}
       - name: Set up Docker Buildx
