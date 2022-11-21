@@ -43,7 +43,7 @@ module.exports = {
   coveragePathIgnorePatterns: ['src/stories/.*/*.stories.js'],
   coverageThreshold: {
     global: {
-      branches: 30,
+      branches: 27,
       functions: 34,
       lines: 55,
       statements: 57,

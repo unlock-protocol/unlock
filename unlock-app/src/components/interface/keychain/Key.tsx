@@ -26,7 +26,7 @@ import { MAX_UINT } from '../../../constants'
 import { useConfig } from '../../../utils/withConfig'
 import { OpenSeaIcon } from '../../icons'
 import { CancelAndRefundModal } from './CancelAndRefundModal'
-import { KeyMetadataModal } from './KeyMetadataModal'
+import { KeyMetadataDrawer } from './KeyMetadataDrawer'
 import { lockTickerSymbol } from '~/utils/checkoutLockUtils'
 import { useQuery } from '@tanstack/react-query'
 import { useWeb3Service } from '~/utils/withWeb3Service'
@@ -157,7 +157,7 @@ export interface Props {
   network: number
 }
 
-const Key = ({ ownedKey, account, network }: Props) => {
+function Key({ ownedKey, account, network }: Props) {
   const { lock, expiration, tokenId } = ownedKey
   const { network: accountNetwork } = useAuth()
   const walletService = useWalletService()
@@ -260,7 +260,7 @@ const Key = ({ ownedKey, account, network }: Props) => {
   return (
     <div className="p-6 bg-white border border-gray-100 shadow shadow-gray-200 rounded-xl">
       {showMetadata && (
-        <KeyMetadataModal
+        <KeyMetadataDrawer
           isOpen={showMetadata}
           setIsOpen={setShowMetadata}
           account={account}
