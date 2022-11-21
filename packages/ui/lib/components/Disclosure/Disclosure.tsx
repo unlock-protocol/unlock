@@ -1,8 +1,8 @@
-import { Disclosure } from '@headlessui/react'
 import { ReactNode } from 'react'
 import { FiChevronUp as ArrowUpIcon } from 'react-icons/fi'
+import { Disclosure as DisclosureComponent } from '@headlessui/react'
 
-interface SettingCardProps {
+interface DisclosureProps {
   label: string
   description?: ReactNode
   children?: ReactNode
@@ -10,46 +10,28 @@ interface SettingCardProps {
   disabled?: boolean
 }
 
-interface SettingCardDetailProps {
-  title: string
-  description: string
-}
-
-export const SettingCardPlaceholder = () => {
+export const DisclosurePlaceholder = () => {
   return (
     <div className="w-full h-32 p-6 border border-gray-100 bg-slate-200 rounded-2xl animate-pulse"></div>
   )
 }
 
-export const SettingCardDetail = ({
-  title,
-  description,
-}: SettingCardDetailProps) => {
-  return (
-    <div className="flex flex-col">
-      <span className="text-base font-bold text-gray-700">{title}</span>
-      <span className="text-sm text-gray-700">{description}</span>
-    </div>
-  )
-}
-
-export const SettingCard = ({
+export const Disclosure = ({
   label,
   description,
   children,
   isLoading,
   disabled,
-}: SettingCardProps) => {
+}: DisclosureProps) => {
   if (isLoading) {
-    return <SettingCardPlaceholder />
+    return <DisclosurePlaceholder />
   }
 
-  // TODO: add component and replace also for metadata
   return (
-    <Disclosure>
+    <DisclosureComponent>
       {({ open }) => (
         <div className="w-full p-6 bg-white border border-gray-100 rounded-2xl">
-          <Disclosure.Button
+          <DisclosureComponent.Button
             className="flex flex-col w-full gap-2 outline-none"
             disabled={disabled}
           >
@@ -68,12 +50,14 @@ export const SettingCard = ({
                 <span className="text-base text-brand-dark">{description}</span>
               </div>
             )}
-          </Disclosure.Button>
+          </DisclosureComponent.Button>
           {children && (
-            <Disclosure.Panel className="pt-10">{children}</Disclosure.Panel>
+            <DisclosureComponent.Panel className="pt-10">
+              {children}
+            </DisclosureComponent.Panel>
           )}
         </div>
       )}
-    </Disclosure>
+    </DisclosureComponent>
   )
 }

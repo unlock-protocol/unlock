@@ -30,6 +30,7 @@ const {
   setBaseTokenURI,
   addLockManager,
   renounceLockManager,
+  updateRefundPenalty,
 } = v8
 
 export default {
@@ -63,4 +64,5 @@ export default {
   setBaseTokenURI,
   addLockManager,
   renounceLockManager,
+  updateRefundPenalty,
 }

@@ -1,5 +1,10 @@
 # Changes
 
+# 0.32.5
+
+- add `updateRefundPenalty` in walletService
+- add `freeTrialLength` in web3Service
+- add `refundPenaltyBasisPoints` in web3Service
 
 # 0.32.4
 

@@ -145,7 +145,11 @@ const LockSettingsPage = ({ lockAddress, network }: LockSettingsPageProps) => {
 
   return (
     <>
-      {!isManager && !isLoading && <NotManagerBanner />}
+      {!isManager && !isLoading && (
+        <div className="mb-2">
+          <NotManagerBanner />
+        </div>
+      )}
       <SettingHeader
         lockAddress={lockAddress}
         network={network}

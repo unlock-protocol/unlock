@@ -97,6 +97,13 @@ export const PaywallConfigLockSchema = z.object({
         '(Optional) If set to a url, checkout will call the URL through a proxy with recipient, lockAddress, and network field for a json response containing data string field. This will be passed to the purchase function when user is claiming or buying the key as is. Make sure the returned data is valid bytes.',
     })
     .optional(),
+  skipRecipient: z
+    .boolean({
+      description:
+        'When set to true, the checkout flow will not let the user customize the recipient of the NFT membership.',
+    })
+    .default(true)
+    .optional(),
 })
 
 export const PaywallConfigLocksSchema = z.record(PaywallConfigLockSchema)
@@ -204,6 +211,13 @@ export const PaywallConfigSchema = z
         description:
           'The number of time a membership should be renewed automatically. This only applies to ERC20 locks.',
       })
+      .optional(),
+    skipRecipient: z
+      .boolean({
+        description:
+          'When set to true, the checkout flow will not let the user customize the recipient of the NFT membership.',
+      })
+      .default(true)
       .optional(),
   })
   .passthrough()

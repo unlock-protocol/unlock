@@ -53,12 +53,15 @@ export interface NetworkConfig {
     endpointV2?: string
     networkName?: string // for thegraph hosted service
   }
+  uniswapV2?: {
+    oracle?: string
+  }
   uniswapV3?: Partial<{
     subgraph: string
     factoryAddress: string
     quoterAddress: string
+    oracle?: string
   }>
-
   ethersProvider?: ethers.providers.Provider
   explorer?: {
     name: string
