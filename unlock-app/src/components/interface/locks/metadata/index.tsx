@@ -90,14 +90,10 @@ export function UpdateLockMetadata({ lock }: Props) {
     levels,
     stats,
   }: MetadataFormData) => {
-    const metadata = {
+    const metadata: Metadata & { attributes: Attribute[] } = {
       name,
       image: `${config.locksmithHost}/lock/${lockAddress}/icon`,
       description,
-      animation_url,
-      youtube_url,
-      external_url,
-      background_color,
       attributes: [] as Attribute[],
     }
 
@@ -162,6 +158,23 @@ export function UpdateLockMetadata({ lock }: Props) {
 
     if (statsAttributes?.length) {
       metadata.attributes.push(...statsAttributes)
+    }
+
+    // Opensea does not handle # in the color. We remove it if it's included in the color.
+    if (background_color) {
+      metadata.background_color = background_color?.trim()?.replace('#', '')
+    }
+
+    if (youtube_url) {
+      metadata.youtube_url = youtube_url
+    }
+
+    if (animation_url) {
+      metadata.animation_url = animation_url
+    }
+
+    if (external_url) {
+      metadata.external_url = external_url
     }
 
     await lockMetadata.mutateAsync(metadata)

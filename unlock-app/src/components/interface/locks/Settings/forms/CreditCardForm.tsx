@@ -9,6 +9,7 @@ import { useStorageService } from '~/utils/withStorageService'
 import { useWalletService } from '~/utils/withWalletService'
 import { useWeb3Service } from '~/utils/withWeb3Service'
 import { BsCheckCircle as CheckCircleIcon } from 'react-icons/bs'
+import { SettingCardDetail } from '../elements/SettingCard'
 
 enum ConnectStatus {
   CONNECTED = 1,
@@ -19,11 +20,8 @@ enum ConnectStatus {
 interface CardPaymentProps {
   lockAddress: string
   network: number
-}
-
-interface DetailProps {
-  title: string
-  description: string
+  isManager: boolean
+  disabled: boolean
 }
 
 const CardPaymentPlaceholder = () => {
@@ -41,16 +39,12 @@ const CardPaymentPlaceholder = () => {
   )
 }
 
-const Detail = ({ title, description }: DetailProps) => {
-  return (
-    <div className="flex flex-col">
-      <span className="text-base font-bold text-gray-700">{title}</span>
-      <span className="text-sm text-gray-700">{description}</span>
-    </div>
-  )
-}
-
-export const CreditCardForm = ({ lockAddress, network }: CardPaymentProps) => {
+export const CreditCardForm = ({
+  lockAddress,
+  network,
+  isManager,
+  disabled,
+}: CardPaymentProps) => {
   const { account } = useAuth()
   const walletService = useWalletService()
   const web3Service = useWeb3Service()
@@ -185,21 +179,24 @@ export const CreditCardForm = ({ lockAddress, network }: CardPaymentProps) => {
   const ConnectStripe = () => {
     return (
       <div className="flex flex-col gap-4">
-        <Detail
+        <SettingCardDetail
           title="Connect Stripe to Your Account"
           description="In order to enable the credit card payment, please connect Stripe
           via your account."
         />
-        <div className="flex flex-col gap-3">
-          <Button
-            variant="outlined-primary"
-            size="small"
-            className="w-full md:w-1/3"
-            onClick={() => connectStripeMutation.mutate()}
-          >
-            Connect
-          </Button>
-        </div>
+        {isManager && (
+          <div className="flex flex-col gap-3">
+            <Button
+              variant="outlined-primary"
+              size="small"
+              className="w-full md:w-1/3"
+              onClick={() => connectStripeMutation.mutate()}
+              disabled={disabled}
+            >
+              Connect
+            </Button>
+          </div>
+        )}
       </div>
     )
   }
@@ -209,20 +206,20 @@ export const CreditCardForm = ({ lockAddress, network }: CardPaymentProps) => {
       <div className="flex flex-col gap-4">
         <span className="text-xs">
           {isGranted ? (
-            <Detail
+            <SettingCardDetail
               title="Credit card payment ready"
               description="Member of this Lock can now pay with credit card or crypto as they wish. "
             />
           ) : (
-            <Detail
+            <SettingCardDetail
               title="Enable Contract to Accept Credit Card"
               description="Please accept Unlock Protocol will be processing this for you. Service & credit card processing fee will apply on your member’s purchase."
             />
           )}
         </span>
-        <div className="flex items-center gap-8">
+        <div className="flex flex-col items-center gap-4 md:gap-8 md:flex-row">
           {isGranted ? (
-            <Badge variant="green" className="justify-center w-1/3">
+            <Badge variant="green" className="justify-center w-full md:w-1/3">
               <div className="flex items-center gap-2">
                 <span>Payment method enabled</span>
                 <CheckCircleIcon />
@@ -232,27 +229,29 @@ export const CreditCardForm = ({ lockAddress, network }: CardPaymentProps) => {
             <Button
               size="small"
               variant="outlined-primary"
-              className="w-1/3"
+              className="w-full md:w-1/3"
               onClick={onGrantKeyRole}
-              disabled={grantKeyGrantorRoleMutation.isLoading}
+              disabled={grantKeyGrantorRoleMutation.isLoading || disabled}
             >
               Accept
             </Button>
           )}
-          <Button
-            size="small"
-            variant="borderless"
-            className="text-brand-ui-primary"
-            disabled={disconnectStipeMutation.isLoading}
-            onClick={() =>
-              disconnectStipeMutation.mutate({
-                lockAddress,
-                network,
-              })
-            }
-          >
-            Disconnect Stripe
-          </Button>
+          {isManager && (
+            <Button
+              size="small"
+              variant="borderless"
+              className="text-brand-ui-primary"
+              disabled={disconnectStipeMutation.isLoading || disabled}
+              onClick={() =>
+                disconnectStipeMutation.mutate({
+                  lockAddress,
+                  network,
+                })
+              }
+            >
+              Disconnect Stripe
+            </Button>
+          )}
         </div>
       </div>
     )

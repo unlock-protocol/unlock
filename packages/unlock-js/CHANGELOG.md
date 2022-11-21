@@ -1,5 +1,19 @@
 # Changes
 
+# 0.32.5
+
+- add `updateRefundPenalty` in walletService
+- add `freeTrialLength` in web3Service
+- add `refundPenaltyBasisPoints` in web3Service
+
+# 0.32.4
+
+- Using `transactionOptions` for `createLock`
+
+# 0.32.3
+
+- Pass network property on locks and keys returned from subgraph.
+
 # 0.32.1
 
 - Change parameter name for `updateLockSymbol`
