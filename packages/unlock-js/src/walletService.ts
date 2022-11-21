@@ -844,7 +844,6 @@ export default class WalletService extends UnlockService {
   async setEventHooks(
     params: {
       lockAddress: string
-      network: string
       keyPurchase: string
       keyCancel: string
       validKey?: string
@@ -858,7 +857,7 @@ export default class WalletService extends UnlockService {
   ) {
     if (!params.lockAddress) throw new Error('Missing lockAddress')
     const version = await this.lockContractAbiVersion(params.lockAddress)
-    if (!version.addLockManager) {
+    if (!version.setEventHooks) {
       throw new Error('Lock version not supported')
     }
     return version.setEventHooks.bind(this)(

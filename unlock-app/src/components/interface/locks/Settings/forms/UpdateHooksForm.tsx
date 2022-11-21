@@ -1,11 +1,12 @@
+import { useMutation } from '@tanstack/react-query'
 import { Button, Input } from '@unlock-protocol/ui'
 import { ethers } from 'ethers'
 import { useForm } from 'react-hook-form'
 import { ToastHelper } from '~/components/helpers/toast.helper'
+import { useWalletService } from '~/utils/withWalletService'
 
 interface UpdateHooksFormProps {
   lockAddress: string
-  network: number
   isManager: boolean
   disabled: boolean
   version?: number
@@ -22,11 +23,11 @@ interface FormProps {
 
 export const UpdateHooksForm = ({
   lockAddress,
-  network,
   isManager,
   disabled,
   version,
 }: UpdateHooksFormProps) => {
+  const walletService = useWalletService()
   const {
     register,
     handleSubmit,
@@ -35,19 +36,33 @@ export const UpdateHooksForm = ({
     defaultValues: {},
   })
 
-  const disabledInput = disabled
-
   const isValidAddress = (address?: string) => {
-    return address?.length ? ethers.utils.isAddress(address) : false
+    return address?.length ? ethers.utils.isAddress(address) : true
   }
 
-  const onSubmit = (fields: FormProps) => {
+  const setEventsHooks = async (fields: FormProps) => {
+    await walletService.setEventHooks({
+      lockAddress,
+      ...fields,
+    })
+  }
+
+  const setEventsHooksMutation = useMutation(setEventsHooks)
+
+  const onSubmit = async (fields: FormProps) => {
     if (isValid) {
-      console.log(lockAddress, network, fields)
+      const setEventsHooksPromise = setEventsHooksMutation.mutateAsync(fields)
+      await ToastHelper.promise(setEventsHooksPromise, {
+        success: 'Event hooks updated.',
+        loading: 'Updating Event hooks.',
+        error: 'Impossible to update event hooks.',
+      })
     } else {
       ToastHelper.error('Form is not valid')
     }
   }
+
+  const disabledInput = disabled || setEventsHooksMutation.isLoading
 
   return (
     <form className="grid gap-6" onSubmit={handleSubmit(onSubmit)}>
@@ -132,7 +147,11 @@ export const UpdateHooksForm = ({
         </>
       )}
       {isManager && (
-        <Button className="w-full md:w-1/3" type="submit">
+        <Button
+          className="w-full md:w-1/3"
+          type="submit"
+          loading={setEventsHooksMutation.isLoading}
+        >
           Apply
         </Button>
       )}
