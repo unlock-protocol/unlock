@@ -45,6 +45,7 @@ export const celo: NetworkConfig = {
   uniswapV3: {
     factoryAddress: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc',
     quoterAddress: '0x82825d0554fA07f7FC52Ab63c961F330fdEFa8E8',
+    oracle: '0x5108412Dd50A6ea79d2F13D5d1A23FDD9bF532db',
   },
   wrappedNativeCurrency: {
     name: 'Celo native asset',

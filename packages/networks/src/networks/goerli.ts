@@ -45,6 +45,7 @@ export const goerli: NetworkConfig = {
   teamMultisig: '0x95C06469e557d8645966077891B4aeDe8D55A755',
   uniswapV3: {
     factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    oracle: '0x25197CaCDE16500032EF4B35d60c6f7aEd4a38a5',
   },
   wrappedNativeCurrency: {
     name: 'Wrapped Ether',
