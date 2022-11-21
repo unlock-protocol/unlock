@@ -55,7 +55,7 @@
     "prettier": "2.5.1",
     "prompt": "1.2.2",
     "solhint": "3.3.7",
-    "solidity-coverage": "0.7.21",
+    "solidity-coverage": "0.8.2",
     "yesno": "0.4.0"
   },
   "devDependencies": {
