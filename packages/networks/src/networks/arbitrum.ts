@@ -7,6 +7,7 @@ export const arbitrum: NetworkConfig = {
   multisig: '0x310e9f9E3918a71dB8230cFCF32a083c7D9536d0',
   id: 42161,
   name: 'Arbitrum',
+  chain: 'arbitrum',
   blockTime: 1000,
   subgraph: {
     endpoint:
@@ -36,12 +37,24 @@ export const arbitrum: NetworkConfig = {
     name: 'ETH',
     symbol: 'ETH',
     decimals: 18,
+    coingecko: 'ethereum',
   },
   startBlock: 17429533,
   previousDeploys: [],
   isTestNetwork: false,
   description:
     'Arbitrum One is a Layer 2 (L2) chain running on top of Ethereum Mainnet that enables high-throughput, low cost smart contracts operations.',
+  uniswapV3: {
+    factoryAddress: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
+    quoterAddress: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+    oracle: '0x821d830a7b9902F83359Bf3Ac727B04b10FD461d',
+  },
+  wrappedNativeCurrency: {
+    name: 'Wrapped Ether',
+    symbol: 'WETH',
+    decimals: 18,
+    address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+  },
   tokens: [
     {
       name: 'Ethereum',

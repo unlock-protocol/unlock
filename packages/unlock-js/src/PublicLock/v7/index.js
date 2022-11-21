@@ -25,6 +25,9 @@ const {
   updateLockName,
   updateLockSymbol,
   setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
 } = v6
 
 export default {
@@ -53,4 +56,7 @@ export default {
   updateLockName,
   updateLockSymbol,
   setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
 }

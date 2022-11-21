@@ -41,7 +41,10 @@ export class SubgraphService {
       networks.map(async (config) => {
         const sdk = this.createSdk(config.id)
         const results = await sdk.allLocks(variables)
-        return results.locks
+        return results.locks.map((item) => ({
+          ...item,
+          network: config.id,
+        }))
       })
     )
     return items.flat()
@@ -78,9 +81,13 @@ export class SubgraphService {
       networks.map(async (config) => {
         const sdk = this.createSdk(config.id)
         const results = await sdk.AllKeys(variables)
-        return results.keys
+        return results.keys.map((item) => ({
+          ...item,
+          network: config.id,
+        }))
       })
     )
+
     return items.flat()
   }
 

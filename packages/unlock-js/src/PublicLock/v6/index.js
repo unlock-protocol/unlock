@@ -10,6 +10,8 @@ import isLockManager from './isLockManager'
 import cancelAndRefund from './cancelAndRefund'
 import shareKey from './shareKey'
 import getLock from './getLock'
+import addLockManager from './addLockManager'
+import renounceLockManager from './renounceLockManager'
 
 import v4 from '../v4'
 
@@ -20,6 +22,7 @@ const {
   setBaseTokenURI,
   updateLockName,
   updateLockSymbol,
+  updateRefundPenalty,
 } = v4
 
 export default {
@@ -43,4 +46,7 @@ export default {
   updateLockName,
   updateLockSymbol,
   setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
 }

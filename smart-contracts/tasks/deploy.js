@@ -114,7 +114,7 @@ task('deploy:uniswap', 'Deploy Uniswap V2 Factory and Router')
     return await uniswapDeployer({ wethAddress })
   })
 
-task('deploy:oracle', 'Deploy UDT <> WETH oracle contract')
+task('deploy:oracle', 'Deploy Uniswap Oracle contract')
   .addOptionalParam(
     'uniswapFactoryAddress',
     'the address of an existing Uniswap V2 Factory contract'

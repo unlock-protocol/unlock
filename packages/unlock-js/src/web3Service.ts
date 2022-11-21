@@ -8,7 +8,7 @@ import {
 } from './erc20'
 import { ETHERS_MAX_UINT } from './constants'
 import { TransactionOptions, WalletServiceCallback } from './types'
-
+import { UniswapService } from './uniswapService'
 /**
  * This service reads data from the RPC endpoint.
  * All transactions should be sent via the WalletService.
@@ -103,15 +103,63 @@ export default class Web3Service extends UnlockService {
    * @return Promise<Lock>
    */
   async getLock(address: string, network: number) {
+    const networkConfig = this.networks[network]
+    if (!(networkConfig && networkConfig.unlockAddress)) {
+      throw new Error(
+        'No unlock factory contract address found in the networks config.'
+      )
+    }
+
+    const provider = this.providerForNetwork(network)
+
     const version = await this.lockContractAbiVersion(
       address,
       this.providerForNetwork(network)
     )
+
     const lock = await version.getLock.bind(this)(
       address,
       this.providerForNetwork(network)
     )
+    // Add the lock address
     lock.address = address
+
+    lock.unlockContractAddress = ethers.utils.getAddress(
+      lock.unlockContractAddress
+    )
+
+    const previousDeployAddresses = (networkConfig.previousDeploys || []).map(
+      (d) => ethers.utils.getAddress(d.unlockAddress)
+    )
+    const isPreviousUnlockContract = previousDeployAddresses.includes(
+      lock.unlockContractAddress
+    )
+
+    const isUnlockContract =
+      ethers.utils.getAddress(networkConfig.unlockAddress) ===
+      lock.unlockContractAddress
+
+    // Check that the Unlock address matches one of the configured ones
+    if (!isUnlockContract && !isPreviousUnlockContract) {
+      throw new Error(
+        'This contract is not deployed from Unlock factory contract.'
+      )
+    }
+
+    // Check that the Unlock contract has indeed deployed this lock
+    const unlockContract = await this.getUnlockContract(
+      lock.unlockContractAddress,
+      provider
+    )
+
+    const response = await unlockContract.locks(address)
+
+    if (!response.deployed) {
+      throw new Error(
+        'This contract is not deployed from Unlock factory contract.'
+      )
+    }
+
     return lock
   }
 
@@ -625,5 +673,96 @@ export default class Web3Service extends UnlockService {
       data
     )
     return price
+  }
+
+  /**
+   * Get uniswap price in the out token.
+   * ```ts
+   * const web3Service = new Web3Service(networks)
+   * const price = await web3Service.consultUniswap({
+   *  network: 1,
+   *  tokenInAddress: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
+   *  tokenOutAddress: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+   *  value: '1',
+   * })
+   *
+   * console.log(price)
+   * ```
+   */
+  async consultUniswap(options: {
+    tokenInAddress: string
+    tokenOutAddress?: string
+    amount: string
+    network?: number
+  }) {
+    const { network, tokenInAddress, amount } = options
+    const networkId = network || 1
+    const networkConfig = this.networks[networkId] // By default, use mainnet
+
+    if (!networkConfig.uniswapV3) {
+      throw new Error('No uniswap support on the network.')
+    }
+
+    const tokenOut = (networkConfig.tokens || []).find(
+      // By default, use USDC on each network
+      (item: any) => item.symbol === 'USDC'
+    )
+
+    let tokenOutAddress = options.tokenOutAddress
+
+    // If no tokenOutAddress provided, use USDC address.
+    if (!tokenOutAddress && tokenOut && tokenOut.address) {
+      tokenOutAddress = tokenOut.address
+    }
+
+    if (!tokenOutAddress) {
+      throw new Error('You need to provide a tokenOutAddress parameter. ')
+    }
+
+    const uniswapService = new UniswapService(this.networks)
+    const price = await uniswapService.price({
+      network,
+      baseToken: tokenInAddress,
+      quoteToken: tokenOutAddress,
+      amount,
+    })
+    return price
+  }
+
+  /**
+   * Returns freeTrialLength value
+   */
+  async freeTrialLength({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const freeTrialLength = await lockContract.freeTrialLength()
+    return ethers.BigNumber.from(freeTrialLength).toNumber()
+  }
+
+  /**
+   * Returns refundPenaltyBasisPoints value
+   */
+  async refundPenaltyBasisPoints({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const refundPenaltyBasisPoints =
+      await lockContract.refundPenaltyBasisPoints()
+    return ethers.BigNumber.from(refundPenaltyBasisPoints).toNumber()
   }
 }
