@@ -7,6 +7,7 @@ export const optimism: NetworkConfig = {
   multisig: '0x6E78b4447e34e751EC181DCBed63633aA753e145',
   id: 10,
   name: 'Optimism',
+  chain: 'optimism',
   blockTime: 8000,
   subgraph: {
     endpoint:
@@ -35,6 +36,7 @@ export const optimism: NetworkConfig = {
     name: 'Eth',
     symbol: 'Eth',
     decimals: 18,
+    coingecko: 'ethereum',
   },
   description: 'Layer 2 network. Cheaper transaction cost.',
   isTestNetwork: false,

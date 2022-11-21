@@ -9,6 +9,7 @@ export const xdai: NetworkConfig = {
   id: 100,
   name: 'Gnosis Chain',
   blockTime: 5000,
+  chain: 'xdai',
   requiredConfirmations: 12,
   subgraph: {
     endpoint: 'https://api.thegraph.com/subgraphs/name/unlock-protocol/xdai',
@@ -35,6 +36,7 @@ export const xdai: NetworkConfig = {
     name: 'DAI',
     symbol: 'DAI',
     decimals: 18,
+    coingecko: 'xdai',
   },
   startBlock: 19338700,
   previousDeploys: [
@@ -53,6 +55,12 @@ export const xdai: NetworkConfig = {
       symbol: 'USDC',
       decimals: 6,
       address: '0xddafbb505ad214d7b80b1f830fccc89b60fb7a83',
+    },
+    {
+      name: 'Tether USD',
+      decimals: 6,
+      address: '0x4ecaba5870353805a9f068101a40e0f32ed605c6',
+      symbol: 'USDT',
     },
   ],
 }

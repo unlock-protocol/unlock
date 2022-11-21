@@ -1,12 +1,13 @@
 {
   "name": "@unlock-protocol/locksmith",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "an unlock storage service",
   "main": "server.js",
   "scripts": {
     "prod": "cd build && node -r ./src/utils/envLoader.js ./server.js",
     "start": "yarn build && node -r ./src/utils/envLoader.js ./build/server.js",
     "debug": "ts-node-dev -r ./src/utils/envLoader.js ./scripts/debug.js",
+    "degen": "ts-node-dev -r ./src/utils/envLoader.js ./scripts/la-degen.js",
     "dev": "NODE_ENV=development yarn db:migrate && ts-node-dev -r ./src/utils/envLoader.js --files server.js",
     "test": "yarn test:db:setup && yarn test:run",
     "test:db:setup": "yarn run test:db:drop && yarn run test:db:create && yarn run test:db:migrate",

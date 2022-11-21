@@ -28,6 +28,9 @@ const {
   updateLockName,
   updateLockSymbol,
   setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
 } = v8
 
 export default {
@@ -59,4 +62,7 @@ export default {
   updateLockName,
   updateLockSymbol,
   setBaseTokenURI,
+  addLockManager,
+  renounceLockManager,
+  updateRefundPenalty,
 }

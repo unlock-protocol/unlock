@@ -103,15 +103,63 @@ export default class Web3Service extends UnlockService {
    * @return Promise<Lock>
    */
   async getLock(address: string, network: number) {
+    const networkConfig = this.networks[network]
+    if (!(networkConfig && networkConfig.unlockAddress)) {
+      throw new Error(
+        'No unlock factory contract address found in the networks config.'
+      )
+    }
+
+    const provider = this.providerForNetwork(network)
+
     const version = await this.lockContractAbiVersion(
       address,
       this.providerForNetwork(network)
     )
+
     const lock = await version.getLock.bind(this)(
       address,
       this.providerForNetwork(network)
     )
+    // Add the lock address
     lock.address = address
+
+    lock.unlockContractAddress = ethers.utils.getAddress(
+      lock.unlockContractAddress
+    )
+
+    const previousDeployAddresses = (networkConfig.previousDeploys || []).map(
+      (d) => ethers.utils.getAddress(d.unlockAddress)
+    )
+    const isPreviousUnlockContract = previousDeployAddresses.includes(
+      lock.unlockContractAddress
+    )
+
+    const isUnlockContract =
+      ethers.utils.getAddress(networkConfig.unlockAddress) ===
+      lock.unlockContractAddress
+
+    // Check that the Unlock address matches one of the configured ones
+    if (!isUnlockContract && !isPreviousUnlockContract) {
+      throw new Error(
+        'This contract is not deployed from Unlock factory contract.'
+      )
+    }
+
+    // Check that the Unlock contract has indeed deployed this lock
+    const unlockContract = await this.getUnlockContract(
+      lock.unlockContractAddress,
+      provider
+    )
+
+    const response = await unlockContract.locks(address)
+
+    if (!response.deployed) {
+      throw new Error(
+        'This contract is not deployed from Unlock factory contract.'
+      )
+    }
+
     return lock
   }
 
@@ -679,5 +727,42 @@ export default class Web3Service extends UnlockService {
       amount,
     })
     return price
+  }
+
+  /**
+   * Returns freeTrialLength value
+   */
+  async freeTrialLength({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const freeTrialLength = await lockContract.freeTrialLength()
+    return ethers.BigNumber.from(freeTrialLength).toNumber()
+  }
+
+  /**
+   * Returns refundPenaltyBasisPoints value
+   */
+  async refundPenaltyBasisPoints({
+    lockAddress,
+    network,
+  }: {
+    lockAddress: string
+    network: number
+  }) {
+    const lockContract = await this.getLockContract(
+      lockAddress,
+      this.providerForNetwork(network)
+    )
+    const refundPenaltyBasisPoints =
+      await lockContract.refundPenaltyBasisPoints()
+    return ethers.BigNumber.from(refundPenaltyBasisPoints).toNumber()
   }
 }
